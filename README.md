@@ -6,6 +6,8 @@ An Open Source Social Network for the positive change that we need in the World.
 
 ## Code
 
-Frontend (coming soon)
+### Frontend
+https://github.com/HumanConnection/HC-Frontend
 
-API (coming soon)
+### API
+https://github.com/HumanConnection/HC-API
