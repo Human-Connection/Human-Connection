@@ -1,0 +1,64 @@
+version: '2'
+
+services:
+  api:
+    build: ../API/
+    environment:
+      NODE_ENV: production
+      API_HOST: 0.0.0.0
+      API_PORT: 3030
+      API_SECRET: TE9TqAk2xK[9EFJL
+      API_BASE_URL: http://localhost:3030
+      WEBAPP_BASE_URL: http://localhost:3000
+      AUTH_SECRET: tspi23efT%FfZ4Uf
+      EMAIL_ADDRESS: your-company@domain.tld
+      MONGO_DB: mongodb://mongodb:27017/hc_api
+      SENTRY_DNS:
+      THUMBOR_KEY: uJV67K8%coEnbDFj
+      THUMBOR_URL: http://localhost:8888
+      SMTP_HOST:
+      SMTP_PASS:
+      SMTP_USER:
+    stdin_open: true
+    links:
+      - mongodb:mongodb
+    tty: true
+    ports:
+    - 3030:3030/tcp
+
+  frontend:
+    build: ../WebApp/
+    environment:
+      NODE_ENV: development
+      WEBAPP_HOST: 0.0.0.0
+      WEBAPP_PORT: 3000
+      WEBAPP_BASE_URL: http://localhost:3000
+      API_HOST: localhost
+      API_PORT: 3030
+      MAPBOX_TOKEN:
+    stdin_open: true
+    tty: true
+    links:
+    - api:api
+    ports:
+    - 3000:3000/tcp
+
+  tumbor:
+    image: apsl/thumbor:latest
+    environment:
+      SECURITY_KEY: uJV67K8%coEnbDFj
+      ALLOW_UNSAFE_URL: 'False'
+      ALLOW_OLD_URLS: 'False'
+      SENTRY_DSN_URL:
+      RESPECT_ORIENTATION: 'True'
+    stdin_open: true
+    tty: true
+    ports:
+    - 8888:8000/tcp
+
+  mongodb:
+    image: mongo:3.4
+    environment:
+      MONGO_SERVICE_NAME: mongodb
+    ports:
+    - 27017:27017/tcp
