@@ -2,7 +2,7 @@ version: '2'
 
 services:
   api:
-    build: ../API/
+    build: API/
 
   frontend:
-    build: ../WebApp/
+    build: WebApp/
