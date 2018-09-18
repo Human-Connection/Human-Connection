@@ -1,0 +1,6 @@
+[submodule "WebApp"]
+	path = WebApp
+	url = https://github.com/Human-Connection/WebApp.git
+[submodule "API"]
+	path = API
+	url = https://github.com/Human-Connection/API.git
