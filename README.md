@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://human-connection.org"><img align="center" src="https://human-connection.org/wp-content/uploads/2017/11/human-connection-logo.svg" alt="Human-Connection" /></a>
+  <a href="https://human-connection.org"><img align="center" src="https://github.com/Human-Connection/Human-Connection/blob/master/lets_get_together_2.png" alt="Human-Connection" /></a>
 </p>
 
 # Human-Connection
