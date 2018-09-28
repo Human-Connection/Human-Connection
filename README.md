@@ -15,7 +15,7 @@ We want to do more than comments and sharing!
 - Pro & Contra Discussions
 - Projects
 - Event Management
-- Organisations
+- Organizations
 - Chats & Group Chats
 - Knowledge Sharing
 - Let's Talk
