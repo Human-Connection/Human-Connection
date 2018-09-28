@@ -5,8 +5,28 @@
 # Human-Connection
 
 An Open Source Social Network for the positive change that we need in the World.
+Human-Connection is beeing build to provide better Communication Tools for everyone.
+We want to do more than comments and sharing!
 
-> This is a placeholder for the next updates
+**Features**
+- Post Builder/Editor
+- Voting
+- Best of Lists
+- Pro & Contra Discussions
+- Projects
+- Event Management
+- Organisations
+- Chats & Group Chats
+- Knowledge Sharing
+- Let's Talk
+- Versus Challenging
+- Modular UI
+
+**Technology Stack**
+- vuejs
+- nuxtjs
+- mongodb
+- feathersjs
 
 ## Code
 
