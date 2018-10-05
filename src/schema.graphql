@@ -13,12 +13,12 @@ enum UserGroupEnum {
 type WrittenPost @relation(name: "WROTE") {
   from: User
   to: Post
-  timestamp: Int
+  timestamp: Int # TODO: change that to custom Date Type
 }
 type WrittenComment @relation(name: "WROTE") {
   from: User
   to: Comment
-  timestamp: Int
+  timestamp: Int # TODO: change that to custom Date Type
 }
 
 type User {

@@ -64,6 +64,13 @@ run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-c
 or [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/).
 Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
 
+## Mocking API Results
+
+Alternatively you can just mock all responses from the api which let
+you build a frontend application without running a neo4j instance.
+
+Just set `MOCK=true` inside `.env` or pass it on application start.
+
 ## Deployment
 
 You can deploy to any service that hosts Node.js apps, but [Zeit Now](https://zeit.co/now) 
@@ -91,3 +98,14 @@ yarn seedDb
 # -or-
 npm run seedDb
 ```
+
+## Todo`s
+
+- [ ] add jwt authentication
+- [ ] get directives working correctly (@toLower, @auth, @role, etc.)
+- [ ] check if search is working
+- [ ] check if sorting is working
+- [ ] check if pagination is working
+- [ ] check if upload is working (using graphql-yoga?)
+- [ ] evaluate middleware 
+- [ ] ignore Posts and Comments by blacklisted Users
