@@ -47,6 +47,9 @@ type User {
 
   organizationsCreated: [Organization] @relation(name: "CREATED_ORGA", direction: "OUT")
   organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
+
+  badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
+  badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
 }
 
 type Post {
@@ -83,6 +86,25 @@ type Category {
   name: String!
   slug: String!
   icon: String!
+}
+
+type Badge {
+  id: ID!
+  key: String!
+  type: BadgeTypeEnum!
+  status: BadgeStatusEnum!
+  icon: String!
+
+  rewarded: [User]! @relation(name: "REWARDED", direction: "OUT")
+}
+
+enum BadgeTypeEnum {
+  Role
+  Crowdfunding
+}
+enum BadgeStatusEnum {
+  Permanent
+  Temorary
 }
 
 type Organization {

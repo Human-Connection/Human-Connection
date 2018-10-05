@@ -1,5 +1,7 @@
 export default `
   mutation {
+
+    # Users
     u1: CreateUser(id: "u1", name: "Will Blast", email: "Will-Blast@Yahoo.com", role: Admin) {
       id
       name
@@ -25,6 +27,22 @@ export default `
       role
     }
 
+    # Badges
+    b1: CreateBadge(id: "b1", key: "indiegogo_en_racoon", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_racoon") { id }
+    b2: CreateBadge(id: "b2", key: "indiegogo_en_rabbit", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_rabbit") { id }
+    b3: CreateBadge(id: "b3", key: "indiegogo_en_wolf", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_wolf") { id }
+    b4: CreateBadge(id: "b4", key: "indiegogo_en_bear", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_bear") { id }
+    b5: CreateBadge(id: "b5", key: "indiegogo_en_turtle", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_turtle") { id }
+    b6: CreateBadge(id: "b6", key: "indiegogo_en_rhino", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_rhino") { id }
+
+    b1_u1: AddUserBadges(from: {id: "b1"}, to: {id: "u1"}) { from { id } }
+    b2_u1: AddUserBadges(from: {id: "b2"}, to: {id: "u1"}) { from { id } }
+    b3_u1: AddUserBadges(from: {id: "b3"}, to: {id: "u1"}) { from { id } }
+    b6_u2: AddUserBadges(from: {id: "b6"}, to: {id: "u2"}) { from { id } }
+    b3_u3: AddUserBadges(from: {id: "b3"}, to: {id: "u3"}) { from { id } }
+    b5_u4: AddUserBadges(from: {id: "b5"}, to: {id: "u4"}) { from { id } }
+
+    # categories
     cat1: CreateCategory( id: "cat1", name: "Just For Fun", slug: "justforfun", icon: "categories-justforfun" ) { name }
     cat2: CreateCategory( id: "cat2", name: "Happyness & Values", slug: "happyness-values", icon: "categories-luck" ) { name }
     cat3: CreateCategory( id: "cat3", name: "Health & Wellbeing", slug: "health-wellbeing", icon: "categories-health" ) { name }
@@ -42,6 +60,7 @@ export default `
     cat15: CreateCategory( id: "cat15", name: "Consumption & Sustainability", slug: "consumption-sustainability", icon: "categories-sustainability" ) { name }
     cat16: CreateCategory( id: "cat16", name: "Global Peace & Nonviolence", slug: "globalpeace-nonviolence", icon: "categories-peace" ) { name }
 
+    # Posts
     p1: CreatePost(
       id: "p1",
       title: "Gedanken eines Polizisten zum Einsatz im Hambacher Forst",
@@ -88,6 +107,7 @@ export default `
     p4_cat9: AddPostCategories(from: {id: "p4"}, to: {id: "cat9"}) { from { id } }
     p4_cat4: AddPostCategories(from: {id: "p4"}, to: {id: "cat4"}) { from { id } }
 
+    # Comments
     c1: CreateComment(
       id: "c1",
       content: "# 1 This is my comment 1",
@@ -161,6 +181,7 @@ export default `
       to: { id: "p4" }
     ) { from { id } }
 
+    # Tags
     t1: CreateTag(
       id: "t1",
       name: "Umwelt"
