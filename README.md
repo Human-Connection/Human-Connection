@@ -31,10 +31,10 @@ We want to do more than comments and sharing!
 ## Code
 
 ### Frontend
-https://github.com/Human-Connection/WebApp
+[Frontend](https://github.com/Human-Connection/WebApp)
 
 ### API
-https://github.com/Human-Connection/API
+[API](https://github.com/Human-Connection/API)
 
 ## Developer Discord
-https://discord.gg/6ub73U3
+[Discord](https://discord.gg/6ub73U3)
