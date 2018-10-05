@@ -37,4 +37,4 @@ https://github.com/Human-Connection/WebApp
 https://github.com/Human-Connection/API
 
 ## Developer Discord
-https://discord.gg/354TGs2
+https://discord.gg/6ub73U3
