@@ -48,6 +48,8 @@ type User {
   organizationsCreated: [Organization] @relation(name: "CREATED_ORGA", direction: "OUT")
   organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
 
+  blacklisted: [User]! @relation(name: "BLACKLISTED", direction: "OUT")
+
   badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
   badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
 }

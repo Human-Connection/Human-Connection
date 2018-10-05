@@ -27,6 +27,8 @@ export default `
       role
     }
 
+    u1_blacklist_u4: AddUserBlacklisted(from: { id: "u1" }, to: { id: "u4" }) { from { id } }
+
     # Badges
     b1: CreateBadge(id: "b1", key: "indiegogo_en_racoon", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_racoon") { id }
     b2: CreateBadge(id: "b2", key: "indiegogo_en_rabbit", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_rabbit") { id }
