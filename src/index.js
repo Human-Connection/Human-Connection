@@ -1,8 +1,12 @@
 // import { GraphQLServer } from 'graphql-yoga'
+import { applyMiddleware } from 'graphql-middleware'
 import { ApolloServer, makeExecutableSchema } from 'apollo-server'
 import { augmentSchema } from 'neo4j-graphql-js'
 import { typeDefs, resolvers } from './graphql-schema'
 import { v1 as neo4j } from 'neo4j-driver'
+import passwordMiddleware from './middleware/passwordMiddleware'
+import sluggifyMiddleware from './middleware/sluggifyMiddleware'
+import excerptMiddleware from './middleware/excerptMiddleware'
 import dotenv from 'dotenv'
 import {
   GraphQLLowerCaseDirective,
@@ -40,12 +44,42 @@ const driver = neo4j.driver(
 const MOCK = (process.env.MOCK === 'true')
 console.log('MOCK:', MOCK)
 
+/* const logInput = async (resolve, root, args, context, info) => {
+  console.log(args)
+  if (args.email) {
+    args.email = args.email.toLowerCase()
+  }
+  console.log(`1. logInput: ${JSON.stringify(args)}`)
+  const result = await resolve(root, args, context, info)
+  console.log(`5. logInput`)
+  return result
+}
+
+const logResult = async (resolve, root, args, context, info) => {
+  console.log(`2. logResult`)
+  let result = await resolve(root, args, context, info)
+  console.log('RESULT:', result)
+  if (Array.isArray(result)) {
+    result.forEach(res => {
+      if (res.email) {
+        res.email = '******'
+        // res.email = res.email.toLowerCase()
+      }
+    })
+  } else if (typeof result === 'string' && info.fieldName === 'email') {
+    result = '******'
+    // result = result.toLowerCase()
+  }
+  console.log(`4. logResult: ${JSON.stringify(result)}`)
+  return result
+} */
+
 const server = new ApolloServer({
   context: {
     driver
   },
   tracing: true,
-  schema: augmentedSchema,
+  schema: applyMiddleware(augmentedSchema, passwordMiddleware, sluggifyMiddleware, excerptMiddleware),
   mocks: MOCK ? {
     User: () => ({
       name: () => `${faker.name.firstName()} ${faker.name.lastName()}`,

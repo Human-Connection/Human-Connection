@@ -19,10 +19,13 @@
     "dotenv": "^6.0.0",
     "faker": "^4.1.0",
     "graphql-custom-directives": "^0.2.13",
+    "graphql-middleware": "^1.7.6",
     "graphql-tag": "^2.9.2",
     "neo4j-driver": "^1.6.1",
     "neo4j-graphql-js": "^1.0.2",
-    "node-fetch": "^2.1.2"
+    "node-fetch": "^2.1.2",
+    "slug": "^0.9.1",
+    "trunc-html": "^1.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

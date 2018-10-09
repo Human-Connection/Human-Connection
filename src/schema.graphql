@@ -25,6 +25,9 @@ type User {
   id: ID!
   name: String!
   email: String
+  slug: String
+  password: String!
+  avatar: String
   disabled: Boolean @default(to: false)
   role: UserGroupEnum
 
@@ -58,11 +61,15 @@ type Post {
   id: ID!
   author: WrittenPost
   title: String!
-  slug: String!
+  slug: String
   content: String!
-  contentExcerpt: String!
+  contentExcerpt: String
+  image: String
   visibility: VisibilityEnum
   disabled: Boolean @default(to: false)
+
+  # relatedContributions: [Post]! @cypher(statement: "MATCH (this)-[:TAGGED]->(t:Tag)<-[:TAGGED]-(p1:Post) MATCH (this)-[:CATEGORIZED]->(t:Category)<-[:CATEGORIZED]-(p2:Post) RETURN collect(distinct p2) + p1")
+  relatedContributions: [Post]! @cypher(statement: "MATCH (this)-[:TAGGED]->(t:Tag)<-[:TAGGED]-(p:Post) return p")
 
   tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
@@ -78,7 +85,7 @@ type Comment {
   id: ID!
   author: WrittenComment
   content: String!
-  contentExcerpt: String!
+  contentExcerpt: String
   post: Post @relation(name: "COMMENT", direction: "OUT")
   disabled: Boolean @default(to: false)
 }
@@ -86,7 +93,7 @@ type Comment {
 type Category {
   id: ID!
   name: String!
-  slug: String!
+  slug: String
   icon: String!
 }
 
@@ -114,7 +121,9 @@ type Organization {
   createdBy: User @relation(name: "CREATED_ORGA", direction: "IN")
   ownedBy: [User] @relation(name: "OWNING_ORGA", direction: "IN")
   name: String!
-  slug: String!
+  slug: String
+  description: String!
+  descriptionExcerpt: String
   disabled: Boolean @default(to: false)
 
   tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
