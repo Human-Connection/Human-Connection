@@ -1,6 +1,6 @@
-# graphql-ui
+# Human Connection - GraphQL UI Prototype 
 
-> Human Connection GraphQL UI Prototype
+> Ui Prototype for HC
 
 ## Build Setup
 
@@ -18,4 +18,16 @@ $ yarn start
 
 ## Styleguide
 
-All reusable Components (for example avatar) should be done inside the 
+All reusable Components (for example avatar) should be done inside the styleguide directory.
+
+### To show the styleguide
+
+``` bash
+$ yarn styleguide
+```
+
+if you changed design tokens or other styles inside the styleguide, run the refresh command to build the styleguide as a lib
+
+``` bash
+$ yarn styleguide:build
+```
