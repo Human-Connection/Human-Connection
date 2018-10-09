@@ -22,6 +22,8 @@ $ yarn start
 
 All reusable Components (for example avatar) should be done inside the styleguide directory.
 
+![Styleguide Screenshot](screenshot-styleguide.png)
+
 ### To show the styleguide
 
 ``` bash
