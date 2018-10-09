@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CopyField.vue matches snapshot 1`] = `
+<div
+  class="ds-copy-field ds-copy-field-base"
+>
+  <div>
+    Test
+  </div>
+   
+  <div
+    class="ds-copy-field-link"
+  >
+    <ds-button
+      color="soft"
+      ghost=""
+      icon="copy"
+    />
+  </div>
+   
+  <div
+    class="ds-copy-field-message"
+    name="ds-copy-field-message"
+    style="display: none;"
+  >
+    <div
+      class="ds-copy-field-message-text"
+    />
+  </div>
+</div>
+`;

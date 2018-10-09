@@ -1,0 +1,17 @@
+.ds-logo {
+  @include reset;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: $text-color-primary;
+}
+
+.ds-logo-inverse {
+  color: $text-color-primary-inverse;
+}
+
+.ds-logo-svg {
+  width: 130px;
+  height: auto;
+  fill: currentColor;
+}

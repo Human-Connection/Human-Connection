@@ -1,0 +1,15 @@
+.ds-page-title {
+  @include reset;
+  padding: $space-large 0;
+  color: $text-color-primary;
+  @include gradient-pattern($background-color-soft, $background-color-softer);
+
+  @media #{$media-query-medium} {
+    padding: $space-x-large 0;
+  }
+}
+
+.ds-page-title-highlight {
+  color: $text-color-primary-inverse;
+  @include gradient-pattern($background-color-primary-active, $background-color-primary);
+}

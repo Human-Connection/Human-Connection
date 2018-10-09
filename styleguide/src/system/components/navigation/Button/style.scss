@@ -1,0 +1,204 @@
+.ds-button {
+  @include reset;
+  position: relative;
+  width: auto;
+  overflow: visible;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  font-family: $font-family-text;
+  font-weight: $font-weight-bold;
+  letter-spacing: $letter-spacing-large;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: $input-padding-vertical $space-small;
+  height: $input-height;
+  border-radius: $border-radius-base;
+  box-shadow: $box-shadow-small-inset;
+  // border: $input-border-size solid transparent;
+  transition: color $duration-short $ease-out,
+    background-color $duration-short $ease-out;
+
+  &:before {
+    position: absolute;
+    content: '';
+    top: $space-xxx-small;
+    left: $space-xxx-small;
+    right: $space-xxx-small;
+    bottom: $space-xxx-small;
+    border-radius: $border-radius-base;
+    // box-shadow: $box-shadow-inset;
+    opacity: 0;
+    visiblity: hidden;
+    pointer-events: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    &:before {
+      opacity: 0.6;
+    }
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  // Default colors
+  color: $text-color-base;
+  background-color: $background-color-softer;
+
+  &:hover,
+  &.ds-button-hover {
+    color: $text-color-base;
+    background-color: $background-color-softer-active;
+  }
+}
+
+.ds-button-primary {
+  color: $text-color-primary-inverse;
+  background-color: $background-color-primary;
+
+  &:hover,
+  &.ds-button-hover {
+    color: $text-color-primary-inverse;
+    background-color: $background-color-primary-active;
+  }
+
+  &:active {
+    &:before {
+      opacity: 1;
+    }
+  }
+}
+
+.ds-button-secondary {
+  color: $text-color-secondary-inverse;
+  background-color: $background-color-secondary;
+
+  &:hover,
+  &.ds-button-hover {
+    color: $text-color-secondary-inverse;
+    background-color: $background-color-secondary-active;
+  }
+
+  &:active {
+    &:before {
+      opacity: 1;
+    }
+  }
+}
+
+.ds-button-danger {
+  color: $text-color-danger-inverse;
+  background-color: $background-color-danger;
+
+  &:hover,
+  &.ds-button-hover {
+    color: $text-color-danger-inverse;
+    background-color: $background-color-danger-active;
+  }
+
+  &:active {
+    &:before {
+      opacity: 1;
+    }
+  }
+}
+
+.ds-button-ghost {
+  color: $text-color-base;
+  background-color: transparent;
+  box-shadow: none;
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:hover,
+  &.ds-hover {
+    color: $text-color-base;
+    background-color: $background-color-soft;
+  }
+
+  &:active {
+    &:before {
+      opacity: 0.6;
+    }
+  }
+
+  &.ds-button-primary {
+    color: $text-color-primary;
+  }
+
+  &.ds-button-secondary {
+    color: $text-color-secondary;
+  }
+
+  &.ds-button-danger {
+    color: $text-color-danger;
+  }
+}
+
+.ds-button-size-small {
+  font-size: $font-size-small;
+  padding: $input-padding-vertical-small $space-x-small;
+  height: $input-height-small;
+}
+
+.ds-button-size-large {
+  font-size: $font-size-large;
+  padding: $input-padding-vertical-large $space-base;
+  height: $input-height-large;
+}
+
+.ds-button-icon-only {
+  width: $input-height;
+  padding: 0;
+  border-radius: $border-radius-rounded;
+
+  &:before {
+    border-radius: $border-radius-rounded;
+  }
+
+  &.ds-button-size-small {
+    width: $input-height-small;
+  }
+
+  &.ds-button-size-large {
+    width: $input-height-large;
+  }
+}
+
+.ds-button-text {
+  line-height: inherit;
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0 $font-space-small;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

@@ -1,0 +1,15 @@
+#
+# BORDER RADIUS TOKENS
+# Use these tokens to change border-radius size.
+#
+
+props:
+  - name: border-radius-base
+    value: "6px"
+  - name: border-radius-rounded
+    value: "2em"
+  - name: border-radius-circle
+    value: "50%"
+global:
+  type: number
+  category: border-radius

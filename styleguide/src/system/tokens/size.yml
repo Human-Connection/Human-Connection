@@ -1,0 +1,20 @@
+#
+# SIZING TOKENS
+# Use these tokens for the width and height properties.
+#
+
+props:
+  - name: size-height-base
+    value: "42px"
+  - name: size-height-large
+    value: "50px"
+  - name: size-height-xlarge
+    value: "60px"
+
+  - name: size-tappable-square
+    value: "44px"
+  - name: size-height-footer
+    value: "64px"
+global:
+  type: number
+  category: size

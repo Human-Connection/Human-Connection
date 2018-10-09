@@ -1,0 +1,19 @@
+#
+# Z-INDEX TOKENS
+# Use these tokens to set z-index.
+#
+
+props:
+  - name: z-index-modal
+    value: "9999"
+  - name: z-index-page-submenu
+    value: "2500"
+  - name: z-index-page-header
+    value: "2000"
+  - name: z-index-page-sidebar
+    value: "1500"
+  - name: z-index-sticky
+    value: "100"
+global:
+  type: number
+  category: z-index

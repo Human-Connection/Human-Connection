@@ -1,0 +1,9 @@
+/* Main Styles
+ *
+ * Include this only once in your outermost component (ex. App.vue)
+ *
+--------------------------------------------- */
+
+@import "./shared";
+@import "./fonts/lato";
+@import "./core/reset";

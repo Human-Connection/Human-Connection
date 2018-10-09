@@ -1,0 +1,102 @@
+@mixin input ($class) {
+  .#{$class}-wrap {
+    position: relative;
+  }
+
+  .#{$class} {
+    box-sizing: border-box;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    font-family: $font-family-text;
+    width: 100%;
+    padding: $input-padding-vertical $space-x-small;
+    height: $input-height;
+
+    color: $text-color-base;
+    background: $background-color-base;
+
+    border: $input-border-size solid $border-color-soft;
+    border-radius: $border-radius-base;
+    outline: none;
+    transition: all $duration-short $ease-out;
+
+    &::placeholder {
+      color: $text-color-disabled;
+    }
+
+    &:focus {
+      border-color: $border-color-active;
+      background: $background-color-base;
+    }
+
+    .#{$class}-is-disabled &,
+    &:disabled {
+      color: $text-color-disabled;
+      opacity: $opacity-disabled;
+      cursor: not-allowed;
+    }
+
+    .#{$class}-has-error & {
+      border-color: $border-color-danger;
+    }
+  }
+
+  .#{$class}-size-small {
+    font-size: $font-size-small;
+
+    .#{$class} {
+      height: $input-height-small;
+      padding: $input-padding-vertical-small $space-x-small;
+    }
+  }
+
+  .#{$class}-size-large {
+    font-size: $font-size-large;
+
+    .#{$class} {
+      height: $input-height-large;
+      padding: $input-padding-vertical-large $space-x-small;
+    }
+  }
+
+  .#{$class}-icon,
+  .#{$class}-icon-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $input-height;
+    color: $text-color-softer;
+    transition: color $duration-short $ease-out;
+
+    .#{$class}-has-focus & {
+      color: $text-color-base;
+    }
+  }
+
+  .#{$class}-icon-right {
+    right: 0;
+    left: auto;
+  }
+
+  .#{$class}-has-icon {
+    padding-left: $input-height;
+
+    .#{$class}-size-small &,
+    .#{$class}-size-large & {
+      padding-left: $input-height;
+    }
+  }
+
+  .#{$class}-has-icon-right {
+    padding-right: $input-height;
+
+    .#{$class}-size-small &,
+    .#{$class}-size-large & {
+      padding-right: $input-height;
+    }
+  }
+}

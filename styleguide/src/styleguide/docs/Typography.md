@@ -1,0 +1,1 @@
+Typographic components are used to give text a semantic meaning. They also create hierarchy and provide styling through size and color.
