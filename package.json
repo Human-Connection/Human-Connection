@@ -1,0 +1,37 @@
+{
+  "name": "hc-webapp-next",
+  "version": "1.0.0",
+  "description": "Human Connection GraphQL UI Prototype",
+  "author": "Grzegorz Leoniec",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "build": "nuxt build",
+    "start": "cross-env NODE_ENV=production node server/index.js",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "styleguide": "(cd ./styleguide && yarn dev)",
+    "styleguide:build": "(cd ./styleguide && yarn build:lib) && yarn upgrade file:./styleguide",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/apollo": "^4.0.0-rc3",
+    "cross-env": "^5.2.0",
+    "express": "^4.16.3",
+    "graphql-tag": "^2.10.0",
+    "nuxt": "^2.0.0",
+    "vue-cion-design-system": "file:./styleguide"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.0.1",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-prettier": "3.0.0",
+    "eslint-plugin-vue": "^4.0.0",
+    "node-sass": "^4.9.3",
+    "nodemon": "^1.11.0",
+    "prettier": "1.14.3",
+    "sass-loader": "^7.1.0"
+  }
+}
