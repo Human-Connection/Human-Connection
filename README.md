@@ -2,6 +2,8 @@
 
 > Ui Prototype for HC
 
+![UI Screenshot](screenshot.png)
+
 ## Build Setup
 
 ``` bash
