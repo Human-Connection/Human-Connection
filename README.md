@@ -71,23 +71,6 @@ you build a frontend application without running a neo4j instance.
 
 Just set `MOCK=true` inside `.env` or pass it on application start.
 
-## Deployment
-
-You can deploy to any service that hosts Node.js apps, but [Zeit Now](https://zeit.co/now) 
-is a great easy to use service for hosting your app that has an easy to use free plan for small projects.
-
-To deploy your GraphQL service on Zeit Now, first install [Now Desktop](https://zeit.co/download) - 
-you'll need to provide an email address. Then run
-
-```
-now
-```
-
-to deploy your GraphQL service on Zeit Now. Once deployed you'll be given 
-a fresh URL that represents the current state of your application where you 
-can access your GraphQL endpoint and GraphQL Playgound. 
-For example: https://hc-graph-api-prototype-sdga96ad7.now.sh/
-
 ## Seeding The Database
 
 Optionally you can seed the GraphQL service by executing mutations that 
@@ -105,7 +88,7 @@ npm run seedDb
 - [ ] get directives working correctly (@toLower, @auth, @role, etc.)
 - [ ] check if search is working
 - [ ] check if sorting is working
-- [ ] check if pagination is working
+- [x] check if pagination is working
 - [ ] check if upload is working (using graphql-yoga?)
-- [ ] evaluate middleware 
+- [x] evaluate middleware 
 - [ ] ignore Posts and Comments by blacklisted Users
