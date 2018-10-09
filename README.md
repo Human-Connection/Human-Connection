@@ -57,6 +57,8 @@ NEO4J_USER=neo4j
 NEO4J_PASSWORD=letmein
 ```
 
+> You need to install APOC as a plugin for the graph you create in the neo4j desktop app!
+
 Note that grand-stack-starter does not currently bundle a distribution
 of Neo4j. You can download [Neo4j Desktop](https://neo4j.com/download/)
 and run locally for development, spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download/),
