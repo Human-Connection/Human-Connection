@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint",
     "dev": "npm-run-all --parallel theo:onchange theo servedev",
     "servedev": "vue-cli-service serve --open",
-    "build:lib": "yarn theo && BUILD=library vue-cli-service build --target lib --name system ./src/library.js",
+    "build:lib": "yarn theo && cross-env BUILD=library vue-cli-service build --target lib --name system ./src/library.js",
     "theo": "theo ./src/system/tokens/tokens.yml --transform web --format map.scss,scss,raw.json,json --dest ./src/system/tokens/generated",
     "theo:onchange": "onchange \"./src/system/tokens/*.yml\" -- npm run theo",
     "test:unit": "vue-cli-service test:unit"
@@ -31,6 +31,7 @@
     "cheerio": "^1.0.0-rc.2",
     "clone-deep": "^4.0.0",
     "codemirror": "^5.39.2",
+    "cross-env": "^5.2.0",
     "dot-prop": "^4.2.0",
     "lodash": "^4.17.10",
     "markdown-it": "^8.4.2",
