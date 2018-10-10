@@ -1,0 +1,20 @@
+.ds-icon {
+  @include reset;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  height: 1em;
+}
+
+.ds-icon-svg {
+  line-height: 1;
+  height: 1.2em;
+  // Use this if the icons are build with strokes
+  // stroke: currentColor;
+  // stroke-width: 2.5px;
+  // stroke-linejoin: miter;
+  // stroke-linecap: miter;
+  // overflow: visible;
+  // Use this if the icons are build with solids
+  fill: currentColor
+}
