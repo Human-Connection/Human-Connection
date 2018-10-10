@@ -6,15 +6,22 @@
 
 ## Build Setup
 
+### Install
 ``` bash
-# install dependencies
+# install all dependencies
 $ yarn install
+```
 
+### Development
+``` bash
 # serve with hot reload at localhost:3000
-$ yarn run dev
+$ yarn dev
+```
 
+### Build for production
+``` bash
 # build for production and launch server
-$ yarn run build
+$ yarn build
 $ yarn start
 ```
 
@@ -25,7 +32,6 @@ All reusable Components (for example avatar) should be done inside the styleguid
 ![Styleguide Screenshot](screenshot-styleguide.png)
 
 ### To show the styleguide
-
 ``` bash
 $ yarn styleguide
 ```
