@@ -178,8 +178,6 @@ export default {
   }
   .ds-card-footer {
     padding: 0;
-    border-radius: 0 0 $border-radius-large $border-radius-large;
-    overflow: hidden;
 
     .ds-section {
       padding: $space-base;

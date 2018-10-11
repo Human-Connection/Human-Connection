@@ -9,7 +9,7 @@
         v-if="user"
         :width="{ base: '100%' }"
         gutter="base">
-        <ds-flex-item :width="{ base: '30%' }">
+        <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
           <ds-card style="position: relative; height: auto;">
             <ds-avatar
               :image="user.avatar"
@@ -17,7 +17,7 @@
               size="120px" />
             <h3 style="text-align: center;">{{ user.name }}</h3>
             <ds-space/>
-            <ds-flex :size="{ base: '100%' }">
+            <ds-flex>
               <ds-flex-item style="text-align: center;">
                 <ds-text
                   size="x-large"
@@ -31,7 +31,12 @@
                 <ds-text size="small">Freunde</ds-text>
               </ds-flex-item>
             </ds-flex>
-            <ds-space margin-bottom="small"/>
+            <ds-space
+              margin="small">
+              <hc-follow-button
+                :follow-id="user.id"
+                @update="fetchUser" />
+            </ds-space>
           </ds-card>
           <ds-space/>
           <h2 style="text-align: center; margin-bottom: 10px;">Netzwerk</h2>
@@ -40,8 +45,7 @@
               <ds-space
                 v-for="friend in user.friends"
                 :key="friend.id"
-                margin-top="x-small"
-                margin-bottom="x-small">
+                margin="x-small">
                 <a
                   v-router-link
                   :href="$router.resolve({ name: 'profile-slug', params: { slug: friend.slug } }).href">
@@ -56,46 +60,33 @@
             </template>
           </ds-card>
         </ds-flex-item>
-        <ds-flex-item :width="{ base: '70%' }">
+        <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
           <ds-flex
             :width="{ base: '100%' }"
             gutter="small">
             <ds-flex-item
-              v-for="item in user.contributions"
+              v-for="{ Post } in user.contributions"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-              :key="item.Post.id">
-              <a
-                v-router-link
-                :href="href(item.Post)"
-              >
-                <ds-card
-                  :header="item.Post.title"
-                  :image="item.Post.image"
-                  style="cursor: pointer">
-                  <div v-html="item.Post.contentExcerpt" />
-                  <template slot="footer">
-                    <span>
-                      <ds-icon name="comments" /> <small v-if="item.Post.commentsCount">{{ item.Post.commentsCount }}</small>
-                    </span>
-                    &nbsp;
-                    <span>
-                      <ds-icon name="heart-o" /> <small v-if="item.Post.shoutedCount">{{ item.Post.shoutedCount }}</small>
-                    </span>
-                  </template>
-                </ds-card>
-              </a>
+              :key="Post.id">
+              <hc-post-card :post="Post" />
             </ds-flex-item>
           </ds-flex>
         </ds-flex-item>
       </ds-flex>
     </no-ssr>
   </div>
+
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import HcPostCard from '~/components/PostCard.vue'
+import HcFollowButton from '~/components/FollowButton.vue'
 
 export default {
+  components: {
+    HcPostCard,
+    HcFollowButton
+  },
   transition: {
     name: 'slide-up',
     mode: 'out-in'
@@ -112,46 +103,14 @@ export default {
     }
   },
   methods: {
-    href(post) {
-      return this.$router.resolve({
-        name: 'post-slug',
-        params: { slug: post.slug }
-      }).href
+    fetchUser() {
+      // TODO: we should use subscriptions instead of fetching the whole user again
+      this.$apollo.queries.User.refetch()
     }
   },
   apollo: {
     User: {
-      query: gql(`
-        query User($slug: String!) {
-          User(slug: $slug) {
-            id
-            name
-            avatar
-            friendsCount
-            friends {
-              id
-              name
-              slug
-              avatar
-            }
-            badgesCount
-            followingCount
-            followedByCount
-            contributionsCount
-            contributions {
-              Post {
-                id
-                slug
-                title
-                contentExcerpt
-                shoutedCount
-                commentsCount
-                image
-              }
-            }
-          }
-        }
-      `),
+      query: require('~/graphql/UserProfileQuery.js').default,
       variables() {
         return {
           slug: this.$route.params.slug

@@ -8,30 +8,7 @@
           v-for="post in Post"
           :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
           :key="post.id">
-          <a
-            v-router-link
-            :href="href(post)"
-          >
-            <ds-card
-              :header="post.title"
-              :image="post.image"
-              style="cursor: pointer">
-              <ds-avatar
-                :image="post.author.User.avatar"
-                size="32px" /> <b class="username">{{ post.author.User.name }}</b>
-              <ds-space />
-              <div v-html="post.contentExcerpt" />
-              <template slot="footer">
-                <span>
-                  <ds-icon name="comments" /> <small v-if="post.commentsCount">{{ post.commentsCount }}</small>
-                </span>
-                &nbsp;
-                <span>
-                  <ds-icon name="heart-o" /> <small v-if="post.shoutedCount">{{ post.shoutedCount }}</small>
-                </span>
-              </template>
-            </ds-card>
-          </a>
+          <hc-post-card :post="post" />
         </ds-flex-item>
       </ds-flex>
     </no-ssr>
@@ -40,8 +17,12 @@
 
 <script>
 import gql from 'graphql-tag'
+import HcPostCard from '~/components/PostCard.vue'
 
 export default {
+  components: {
+    HcPostCard
+  },
   data() {
     return {
       // Initialize your apollo data
