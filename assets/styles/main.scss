@@ -1,0 +1,74 @@
+@import 'vue-cion-design-system/src/system/tokens/generated/tokens.scss';
+
+// Transition Easing
+$easeOut: cubic-bezier(0.19, 1, 0.22, 1);
+
+.layout-enter-active {
+  transition: opacity 80ms ease-out;
+  transition-delay: 80ms;
+}
+.layout-leave-active {
+  transition: opacity 80ms ease-in;
+}
+.layout-enter,
+.layout-leave-active {
+  opacity: 0;
+}
+
+// slide up ease
+.slide-up-enter-active {
+  transition: all 500ms $easeOut;
+  transition-delay: 20ms;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.slide-up-enter,
+.slide-up-leave-active {
+  opacity: 0;
+  box-shadow: none;
+  transform: translate3d(0, 15px, 0);
+}
+
+.main-navigation {
+  background: #fff;
+}
+
+.tags {
+  .ds-tag {
+    margin-right: $space-xx-small;
+  }
+}
+
+blockquote {
+  display: block;
+  padding: 15px 20px 15px 45px;
+  margin: 0 0 20px;
+  position: relative;
+
+  /*Font*/
+  font-size: $font-size-base;
+  line-height: 1.2;
+  color: $color-neutral-40;
+  font-family: $font-family-serif;
+  font-style: italic;
+
+  border-left: 3px dotted $color-neutral-70;
+
+  &::before {
+    content: '\201C'; /*Unicode for Left Double Quote*/
+
+    /*Font*/
+    font-size: $font-size-xxxx-large;
+    font-weight: bold;
+    color: $color-neutral-50;
+
+    /*Positioning*/
+    position: absolute;
+    left: 10px;
+    top: 5px;
+  }
+
+  p {
+    margin-top: 0;
+  }
+}
