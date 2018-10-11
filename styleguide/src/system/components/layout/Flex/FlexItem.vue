@@ -1,5 +1,5 @@
 <template>
-  <component 
+  <component
     :is="tag"
     :style="styles"
     class="ds-flex-item">
@@ -39,6 +39,14 @@ export default {
     tag: {
       type: String,
       default: 'div'
+    },
+
+    /**
+     * Center content vertical and horizontal
+     */
+    center: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -50,9 +58,16 @@ export default {
       const gutter = this.mediaQuery(this.gutter)
       const widthStyle = this.parseWidth(width)
       const gutterStyle = this.parseGutter(gutter)
+      const centerStyle = this.center
+        ? {
+            'align-self': 'center',
+            'jusify-self': 'center'
+          }
+        : {}
       return {
         ...widthStyle,
-        ...gutterStyle
+        ...gutterStyle,
+        ...centerStyle
       }
     }
   },

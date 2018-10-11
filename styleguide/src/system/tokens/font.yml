@@ -10,6 +10,9 @@ props:
   - name: font-family-text
     value: "'LatoWeb', sans-serif"
     category: "font-family"
+  - name: font-family-serif
+    value: "'Gentium Basic', serif"
+    category: "font-family"
   - name: font-family-code
     value: "inconsolata, monospace"
     category: "font-family"

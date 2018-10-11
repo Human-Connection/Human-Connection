@@ -45,6 +45,11 @@ export default {
       type: [String, Object],
       default: null
     },
+
+    align: {
+      type: Boolean,
+      default: false
+    },
     /**
      * The html element name used for this space.
      */
@@ -62,9 +67,19 @@ export default {
       const marginBottom = this.mediaQuery(bottom)
       const marginTopStyle = this.parseMargin('Top')(marginTop)
       const marginBottomStyle = this.parseMargin('Bottom')(marginBottom)
+      const centerStyle = this.center
+        ? {
+            'text-align': 'center',
+            flex: 1,
+            'align-content': 'center',
+            'jusify-content': 'center'
+          }
+        : {}
+
       return {
         ...marginTopStyle,
-        ...marginBottomStyle
+        ...marginBottomStyle,
+        ...centerStyle
       }
     }
   },
