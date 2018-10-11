@@ -32,6 +32,12 @@ Use different sizes to create hierarchy.
 <ds-button size="large">Large</ds-button>
 ```
 
+## Button full width
+
+```
+<ds-button full-width>Full Width</ds-button>
+```
+
 ## Button states
 
 A button can take different states.

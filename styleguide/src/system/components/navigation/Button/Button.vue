@@ -9,20 +9,21 @@
       danger && `ds-button-danger`,
       ghost && `ds-button-ghost`,
       iconOnly && `ds-button-icon-only`,
-      hover && `ds-button-hover`
+      hover && `ds-button-hover`,
+      fullWidth && `ds-button-full-width`
     ]"
     v-bind="bindings"
     :is="linkTag">
-    <ds-icon 
-      v-if="icon" 
+    <ds-icon
+      v-if="icon"
       :name="icon"/>
-    <span 
+    <span
       class="ds-button-text"
       v-if="$slots.default">
       <slot />
     </span>
-    <ds-icon 
-      v-if="iconRight" 
+    <ds-icon
+      v-if="iconRight"
       :name="iconRight"/>
   </component>
 </template>
@@ -122,6 +123,13 @@ export default {
     iconRight: {
       type: String,
       default: null
+    },
+    /**
+     * Should the button spread to the full with of the parent?
+     */
+    fullWidth: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
