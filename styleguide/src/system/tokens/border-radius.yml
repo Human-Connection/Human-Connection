@@ -4,8 +4,10 @@
 #
 
 props:
-  - name: border-radius-large
+  - name: border-radius-x-large
     value: "8px"
+  - name: border-radius-large
+    value: "6px"
   - name: border-radius-base
     value: "3px"
   - name: border-radius-rounded
