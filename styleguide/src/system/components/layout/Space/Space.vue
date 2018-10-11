@@ -1,5 +1,5 @@
 <template>
-  <component 
+  <component
     :is="tag"
     :style="styles"
     class="ds-space">
@@ -39,6 +39,13 @@ export default {
       default: 'large'
     },
     /**
+     * The bottom and top margin of this space.
+     */
+    margin: {
+      type: [String, Object],
+      default: null
+    },
+    /**
      * The html element name used for this space.
      */
     tag: {
@@ -48,8 +55,11 @@ export default {
   },
   computed: {
     styles() {
-      const marginTop = this.mediaQuery(this.marginTop)
-      const marginBottom = this.mediaQuery(this.marginBottom)
+      const top = this.margin ? this.margin : this.marginTop
+      const bottom = this.margin ? this.margin : this.marginBottom
+
+      const marginTop = this.mediaQuery(top)
+      const marginBottom = this.mediaQuery(bottom)
       const marginTopStyle = this.parseMargin('Top')(marginTop)
       const marginBottomStyle = this.parseMargin('Bottom')(marginBottom)
       return {
