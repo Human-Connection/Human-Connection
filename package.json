@@ -21,6 +21,7 @@
     "express": "^4.16.3",
     "graphql-tag": "^2.10.0",
     "nuxt": "^2.0.0",
+    "v-tooltip": "^2.0.0-rc.33",
     "vue-cion-design-system": "file:./styleguide"
   },
   "devDependencies": {

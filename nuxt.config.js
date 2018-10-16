@@ -40,7 +40,8 @@ module.exports = {
   */
   plugins: [
     { src: '~/plugins/design-system.js', ssr: true },
-    { src: '~/plugins/vue-directives.js', ssr: false }
+    { src: '~/plugins/vue-directives.js', ssr: false },
+    { src: '~/plugins/v-tooltip.js', ssr: false }
   ],
 
   router: {
