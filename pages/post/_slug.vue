@@ -32,7 +32,7 @@ export default {
               path: `/post/${this.$route.params.slug}#comments`
             },
             {
-              name: 'Miteinandere reden',
+              name: 'Miteinander reden',
               path: `/post/${this.$route.params.slug}#lets-talk`
             },
             {
