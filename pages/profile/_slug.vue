@@ -13,6 +13,7 @@
           <ds-card style="position: relative; height: auto;">
             <ds-avatar
               :image="user.avatar"
+              :name="user.name || 'Anonymus'"
               class="profile-avatar"
               size="120px" />
             <h3 style="text-align: center;">{{ user.name }}</h3>
@@ -41,22 +42,16 @@
           <ds-space/>
           <h2 style="text-align: center; margin-bottom: 10px;">Netzwerk</h2>
           <ds-card style="position: relative; height: auto;">
-            <template v-if="user.friends.length">
+            <template v-if="user.following.length">
               <ds-space
-                v-for="friend in user.friends"
-                :key="friend.id"
+                v-for="follow in user.following"
+                :key="follow.id"
                 margin="x-small">
-                <a
-                  v-router-link
-                  :href="$router.resolve({ name: 'profile-slug', params: { slug: friend.slug } }).href">
-                  <ds-avatar
-                    :image="friend.avatar"
-                    size="32px" /> <b class="username">{{ friend.name }}</b>
-                </a>
+                <hc-related-user :post="follow" />
               </ds-space>
             </template>
             <template v-else>
-              <p style="text-align: center; opacity: .5;">NO FRIENDS</p>
+              <p style="text-align: center; opacity: .5;">folgt niemandem</p>
             </template>
           </ds-card>
         </ds-flex-item>
@@ -64,11 +59,49 @@
           <ds-flex
             :width="{ base: '100%' }"
             gutter="small">
+            <ds-flex-item>
+              <ds-card class="ds-tab-nav">
+                <ds-flex>
+                  <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
+                    <ds-space margin="small">
+                      <ds-text
+                        size="x-large"
+                        style="margin-bottom: 0; text-align: center">{{ user.contributionsCount }}</ds-text>
+                      <ds-text
+                        size="small"
+                        style="text-align: center">Beiträge</ds-text>
+                    </ds-space>
+                  </ds-flex-item>
+                  <ds-flex-item class="ds-tab-nav-item">
+                    <ds-space margin="small">
+                      <ds-text
+                        size="x-large"
+                        style="margin-bottom: 0; text-align: center">{{ user.commentsCount }}</ds-text>
+                      <ds-text
+                        size="small"
+                        style="text-align: center">Kommentiert</ds-text>
+                    </ds-space>
+                  </ds-flex-item>
+                  <ds-flex-item class="ds-tab-nav-item">
+                    <ds-space margin="small">
+                      <ds-text
+                        size="x-large"
+                        style="margin-bottom: 0; text-align: center">{{ user.shoutedCount }}</ds-text>
+                      <ds-text
+                        size="small"
+                        style="text-align: center">Empfohlen</ds-text>
+                    </ds-space>
+                  </ds-flex-item>
+                </ds-flex>
+              </ds-card>
+            </ds-flex-item>
             <ds-flex-item
               v-for="{ Post } in user.contributions"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
               :key="Post.id">
-              <hc-post-card :post="Post" />
+              <hc-post-card
+                :post="Post"
+                :show-author-popover="false" />
             </ds-flex-item>
           </ds-flex>
         </ds-flex-item>
@@ -79,11 +112,13 @@
 </template>
 
 <script>
+import HcRelatedUser from '~/components/RelatedUser.vue'
 import HcPostCard from '~/components/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 
 export default {
   components: {
+    HcRelatedUser,
     HcPostCard,
     HcFollowButton
   },
@@ -122,10 +157,30 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'vue-cion-design-system/src/system/tokens/generated/tokens.scss';
+
 .profile-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;
   border: #fff 5px solid;
+}
+
+.ds-tab-nav {
+  .ds-card-content {
+    padding: 0 !important;
+
+    .ds-tab-nav-item {
+      &.ds-tab-nav-item-active {
+        border-bottom: 3px solid #17b53f;
+        &:first-child {
+          border-bottom-left-radius: $border-radius-large;
+        }
+        &:last-child {
+          border-bottom-right-radius: $border-radius-large;
+        }
+      }
+    }
+  }
 }
 </style>

@@ -4,13 +4,7 @@
     :image="post.image"
     :header="post.title"
     class="post-card">
-    <a
-      v-router-link
-      :href="$router.resolve({ name: 'profile-slug', params: { slug: post.author.User.slug } }).href">
-      <ds-avatar
-        :image="post.author.User.avatar"
-        size="32px" /> <b class="username">{{ post.author.User.name }}</b>
-    </a>
+    <hc-author :post="post" />
     <ds-space margin-bottom="small" />
     <div
       class="content"
@@ -53,17 +47,11 @@
           :key="comment.id"
           class="comment">
           <ds-space margin-bottom="x-small">
-            <a
-              v-router-link
-              :href="$router.resolve({ name: 'profile-slug', params: { slug: comment.author.User.slug } }).href">
-              <ds-avatar
-                :image="comment.author.User.avatar"
-                size="24px" /> <b class="username">{{ comment.author.User.name }}</b>
-            </a>
+            <hc-author :post="comment" />
           </ds-space>
           <div
             style="padding-left: 32px;"
-            v-html="comment.content" />
+            v-html="comment.contentExcerpt" />
         </div>
         <ds-space margin-bottom="small" />
       </div>
@@ -76,11 +64,15 @@
 
 <script>
 import gql from 'graphql-tag'
+import HcAuthor from '~/components/Author.vue'
 
 export default {
   transition: {
     name: 'slide-up',
     mode: 'out-in'
+  },
+  components: {
+    HcAuthor
   },
 
   data() {
@@ -105,9 +97,14 @@ export default {
             image
             author {
               User {
+                id
                 slug
                 name
                 avatar
+                shoutedCount
+                contributionsCount
+                commentsCount
+                followedByCount
               }
             }
             tags {
@@ -116,12 +113,17 @@ export default {
             commentsCount
             comments(orderBy: _id_desc) {
               id
-              content
+              contentExcerpt
               author {
                 User {
+                  id
                   slug
                   name
                   avatar
+                  shoutedCount
+                  contributionsCount
+                  commentsCount
+                  followedByCount
                 }
               }
             }
