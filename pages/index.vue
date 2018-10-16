@@ -46,7 +46,7 @@ export default {
     Post: {
       query: gql(`
         query {
-          Post {
+          Post(first:10, orderBy: shoutedCount_desc) {
             id
             title
             contentExcerpt
@@ -54,34 +54,21 @@ export default {
             image
             author {
               User {
+                id
                 avatar
                 slug
                 name
+                contributionsCount
+                shoutedCount
+                commentsCount
+                followedByCount
               }
-            }
-            tags {
-              name
             }
             commentsCount
-            comments(orderBy: _id_desc) {
-              id
-              content
-              author {
-                User {
-                  name
-                }
-              }
-            }
             categories {
               name
             }
             shoutedCount
-            shoutedBy {
-              name
-              friends {
-                name
-              }
-            }
           }
         }
       `),

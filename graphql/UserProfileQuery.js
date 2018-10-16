@@ -14,7 +14,18 @@ export default gql(`
         avatar
       }
       badgesCount
+      shoutedCount
+      commentsCount
       followingCount
+      following {
+        id
+        name
+        slug
+        avatar
+        followedByCount
+        contributionsCount
+        commentsCount
+      }
       followedByCount
       contributionsCount
       contributions {
@@ -28,6 +39,7 @@ export default gql(`
           image
           author {
             User {
+              id
               avatar
               name
             }
