@@ -26,7 +26,7 @@
           <ds-space margin="small">
             <ds-text
               size="x-large"
-              style="margin-bottom: 0; text-align: center">{{ author.contributionsCount }}</ds-text>
+              style="margin-bottom: 0; text-align: center">{{ author.contributionsCount || 0 }}</ds-text>
             <ds-text
               size="small"
               style="text-align: center">Beiträge</ds-text>
@@ -36,7 +36,7 @@
           <ds-space margin="small">
             <ds-text
               size="x-large"
-              style="margin-bottom: 0; text-align: center">{{ author.commentsCount }}</ds-text>
+              style="margin-bottom: 0; text-align: center">{{ author.commentsCount || 0 }}</ds-text>
             <ds-text
               size="small"
               style="text-align: center">Kommentare</ds-text>
