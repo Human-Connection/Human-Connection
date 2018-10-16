@@ -6,15 +6,18 @@
     class="post-card">
     <hc-author :post="post" />
     <ds-space margin-bottom="small" />
+    <!-- Content -->
     <div
       class="content"
       v-html="post.content" />
     <ds-space margin-top="large"/>
+    <!-- Categories -->
     <div class="tags">
       <ds-icon name="compass" /> <ds-tag
         v-for="category in post.categories"
         :key="category.id">{{ category.name }}</ds-tag>
     </div>
+    <!-- Tags -->
     <template v-if="post.tags && post.tags.length">
       <div class="tags">
         <ds-icon name="tags" /> <ds-tag
@@ -23,6 +26,7 @@
       </div>
     </template>
     <ds-space margin-bottom="large" />
+    <!-- Comments -->
     <ds-section
       slot="footer">
       <h3 style="margin-top: 0;">
