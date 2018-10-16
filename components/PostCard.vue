@@ -12,17 +12,17 @@
       <ds-space
         margin="small"
         style="position: absolute; bottom: 44px;">
-        <ds-avatar
-          :image="post.author.User.avatar"
-          size="32px" /> <b class="username">{{ post.author.User.name }}</b>
+        <hc-author
+          :post="post"
+          :show-author-popover="showAuthorPopover" />
       </ds-space>
       <template slot="footer">
-        <span>
-          <ds-icon name="comments" /> <small v-if="post.commentsCount">{{ post.commentsCount }}</small>
+        <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
+          <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
         </span>
         &nbsp;
-        <span>
-          <ds-icon name="heart-o" /> <small v-if="post.shoutedCount">{{ post.shoutedCount }}</small>
+        <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
+          <ds-icon name="heart-o" /> <small>{{ post.shoutedCount }}</small>
         </span>
       </template>
     </ds-card>
@@ -30,15 +30,21 @@
 </template>
 
 <script>
-/**
- * TODO: we have to check if the user is already following
- */
+import HcAuthor from '~/components/Author.vue'
+
 export default {
   name: 'HcPostCard',
+  components: {
+    HcAuthor
+  },
   props: {
     post: {
       type: Object,
       required: true
+    },
+    showAuthorPopover: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
