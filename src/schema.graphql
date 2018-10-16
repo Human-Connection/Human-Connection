@@ -82,6 +82,7 @@ type Post {
   image: String
   visibility: VisibilityEnum
   deleted: Boolean @default(to: false)
+  disabled: Boolean @default(to: false)
 
   relatedContributions: [Post]! @cypher(statement: """
     MATCH (this)-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
@@ -106,6 +107,7 @@ type Comment {
   contentExcerpt: String
   post: Post @relation(name: "COMMENT", direction: "OUT")
   deleted: Boolean @default(to: false)
+  disabled: Boolean @default(to: false)
 }
 
 type Category {
@@ -145,6 +147,7 @@ type Organization {
   description: String!
   descriptionExcerpt: String
   deleted: Boolean @default(to: false)
+  disabled: Boolean @default(to: false)
 
   tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")

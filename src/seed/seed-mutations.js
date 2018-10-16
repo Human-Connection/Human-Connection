@@ -74,7 +74,9 @@ export default `
       title: "Gedanken eines Polizisten zum Einsatz im Hambacher Forst",
       content: "<p><strong>Diese Zukunftsstadt ist real und keine Computer-Animation – s</strong>ondern sie ist das Lebenswerk des mittlerweile über 100 Jahre alten Futuristen und Architekten Jacque Fresco aus Florida. In 35 Jahren (seit seinem 13. Lebensjahr) hat dieser zusammen mit seiner Frau seinen futuristischen Traum von einer besonderen Zukunftsstadt auf 85.000 Quadratmetern realisiert. In den Gebäuden und Gärten befinden sich u.a. ein Forschungszentrum, Vortragsräume und unzählige seiner Modelle &amp; Architekturentwürfe.</p><br /><p>Sein zentrales Anliegen ist eine resourcenbasierte Wirtschaft und die Abschaffung von Geld und Privatbesitz. Mit Hilfe von Roboterarbeit und dem Bedingungslosen Grundeinkommen (da nach seiner Ansicht in den kommenden Jahren fast alle Jobs automatisiert werden), möchte er eine ökologische Landwirtschaft mit Permakulturen etc. und eine effiziente Energiegewinnung (ausschließlich durch regenerative Energien) schaffen. Wenige kompatible Formen in einer sparsamen Modulbauweise (in die u.a. bereits variable Service- und Reparaturelemente integriert sind) sollen insgesamt eine soziale &amp; ökologische Utopie im Einklang mit der Natur ermöglichen.</p><br /><p>Nachfolgend der Direkt-Link auf den interessanten Artikel von Zoltan Istvan, der den Architekten und seine Frau in Florida besuchen durfte und seinen Artikel Ende 2016 auf „MOTHERBOARD“ veröffentlicht hatte:</p><br /><p>https://motherboard.vice.com/de/article/vv34nb/ich-habe-die-zukunft-besucht-in-der-wir-ohne-geld-steuern-und-besitz-leben </p><br /><p>Da soll noch jemand behaupten, es gäbe keine Utopien mehr bzw. keine Futuristen, die ihre kreativen und zukunftsfähigen Ideen (auch in ganz großem Stil) selbst in die Tat umsetzen. LG @all :) </p><br /><p><strong>Wir sind eine Menschheitsfamilie. • Wir sind eins. • Wir sind HUMAN CONNECTION</strong> ❤️</p>",
       image: "https://picsum.photos/1280/1024?image=352",
-      visibility: Public
+      visibility: Public,
+      disabled: false,
+      deleted: false
     ) { title }
     p1_cat1: AddPostCategories(from: {id: "p1"}, to: {id: "cat1"}) { from { id } }
     p1_cat2: AddPostCategories(from: {id: "p1"}, to: {id: "cat2"}) { from { id } }
@@ -85,7 +87,9 @@ export default `
       title: "Julian Assange",
       content: "<p><strong>Diese Zukunftsstadt ist real und keine Computer-Animation – s</strong>ondern sie ist das Lebenswerk des mittlerweile über 100 Jahre alten Futuristen und Architekten Jacque Fresco aus Florida. In 35 Jahren (seit seinem 13. Lebensjahr) hat dieser zusammen mit seiner Frau seinen futuristischen Traum von einer besonderen Zukunftsstadt auf 85.000 Quadratmetern realisiert. In den Gebäuden und Gärten befinden sich u.a. ein Forschungszentrum, Vortragsräume und unzählige seiner Modelle &amp; Architekturentwürfe.</p><br /><p>Sein zentrales Anliegen ist eine resourcenbasierte Wirtschaft und die Abschaffung von Geld und Privatbesitz. Mit Hilfe von Roboterarbeit und dem Bedingungslosen Grundeinkommen (da nach seiner Ansicht in den kommenden Jahren fast alle Jobs automatisiert werden), möchte er eine ökologische Landwirtschaft mit Permakulturen etc. und eine effiziente Energiegewinnung (ausschließlich durch regenerative Energien) schaffen. Wenige kompatible Formen in einer sparsamen Modulbauweise (in die u.a. bereits variable Service- und Reparaturelemente integriert sind) sollen insgesamt eine soziale &amp; ökologische Utopie im Einklang mit der Natur ermöglichen.</p><br /><p>Nachfolgend der Direkt-Link auf den interessanten Artikel von Zoltan Istvan, der den Architekten und seine Frau in Florida besuchen durfte und seinen Artikel Ende 2016 auf „MOTHERBOARD“ veröffentlicht hatte:</p><br /><p>https://motherboard.vice.com/de/article/vv34nb/ich-habe-die-zukunft-besucht-in-der-wir-ohne-geld-steuern-und-besitz-leben </p><br /><p>Da soll noch jemand behaupten, es gäbe keine Utopien mehr bzw. keine Futuristen, die ihre kreativen und zukunftsfähigen Ideen (auch in ganz großem Stil) selbst in die Tat umsetzen. LG @all :) </p><br /><p><strong>Wir sind eine Menschheitsfamilie. • Wir sind eins. • Wir sind HUMAN CONNECTION</strong> ❤️</p>",
       image: "https://picsum.photos/1280/1024?image=72",
-      visibility: Public
+      visibility: Public,
+      disabled: false,
+      deleted: false
     ) { title }
     p2_cat1: AddPostCategories(from: {id: "p2"}, to: {id: "cat1"}) { from { id } }
     p2_cat16: AddPostCategories(from: {id: "p2"}, to: {id: "cat16"}) { from { id } }
@@ -96,7 +100,9 @@ export default `
       title: "Hacker, Freaks und Funktionäre...Der CCC",
       content: "${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()}",
       image: "https://picsum.photos/1280/1024?image=121",
-      visibility: Public
+      visibility: Public,
+      disabled: false,
+      deleted: false
     ) { title }
     p3_cat1: AddPostCategories(from: {id: "p3"}, to: {id: "cat1"}) { from { id } }
     p3_cat3: AddPostCategories(from: {id: "p3"}, to: {id: "cat3"}) { from { id } }
@@ -108,7 +114,9 @@ export default `
       title: "Lebensmittel (?)",
       content: "${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()}",
       image: "https://picsum.photos/1280/1024?image=142",
-      visibility: Public
+      visibility: Public,
+      disabled: false,
+      deleted: false
     ) { title }
     p4_cat1: AddPostCategories(from: {id: "p4"}, to: {id: "cat1"}) { from { id } }
     p4_cat9: AddPostCategories(from: {id: "p4"}, to: {id: "cat9"}) { from { id } }
@@ -120,7 +128,9 @@ export default `
       title: "${faker.lorem.sentence()}",
       content: "${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()}",
       image: "https://picsum.photos/1280/1024?image=231",
-      visibility: Public
+      visibility: Public,
+      disabled: false,
+      deleted: false
     ) { title }
     p5_cat8: AddPostCategories(from: {id: "p5"}, to: {id: "cat8"}) { from { id } }
     p5_cat12: AddPostCategories(from: {id: "p5"}, to: {id: "cat12"}) { from { id } }
@@ -131,7 +141,9 @@ export default `
       title: "${faker.lorem.sentence()}",
       content: "${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()}",
       image: "https://picsum.photos/1280/1024?image=424",
-      visibility: Public
+      visibility: Public,
+      disabled: false,
+      deleted: false
     ) { title }
     p6_cat1: AddPostCategories(from: {id: "p6"}, to: {id: "cat1"}) { from { id } }
     p6_cat2: AddPostCategories(from: {id: "p6"}, to: {id: "cat2"}) { from { id } }
@@ -142,42 +154,56 @@ export default `
     c1: CreateComment(
       id: "c1",
       content: "<p>da stimm ich dir zu. Mir ging das auch nie in den kopf, und hatte jesus nie als gott gesehen. </p>",
+      disabled: false,
+      deleted: false
     ) { id }
     c1_u1: AddCommentAuthor(from: { id: "u3" }, to: { id: "c1" }, data: { timestamp: 1538655020 }) { from { id } }
 
     c2: CreateComment(
       id: "c2",
       content: "<p>Schön das es dich gibt ❤️❤️❤️❤️❤️❤️❤️❤️❤️</p>",
+      disabled: false,
+      deleted: false
     ) { id }
     c2_u1: AddCommentAuthor(from: { id: "u1" }, to: { id: "c2" }, data: { timestamp: 1538655020 }) { from { id } }
 
     c3: CreateComment(
       id: "c3",
       content: "<p>Hi Dieter,</p><p>danke für Deine Info. Hast Du mal ein Foto von Deinem Cabrio mit dem Logo drauf?</p>",
+      disabled: false,
+      deleted: false
     ) { id }
     c3_u2: AddCommentAuthor(from: { id: "u1" }, to: { id: "c3" }, data: { timestamp: 1538655020 }) { from { id } }
 
     c4: CreateComment(
       id: "c4",
       content: "<p>Das Zusammenführen aller Gruppen, die mit uns am gleichen Strang in die gleiche Richtung ziehen, in eine gemeinsame Adressenstruktur sehe ich auch als Haupt - Aufgabe für unsere neue Netzwerkbildung an.</p>",
+      disabled: false,
+      deleted: false
     ) { id }
     c4_u3: AddCommentAuthor(from: { id: "u4" }, to: { id: "c4" }, data: { timestamp: 1538655020 }) { from { id } }
 
     c5: CreateComment(
       id: "c5",
       content: "${faker.lorem.paragraph()}",
+      disabled: false,
+      deleted: false
     ) { id }
     c5_u4: AddCommentAuthor(from: { id: "u4" }, to: { id: "c5" }, data: { timestamp: 1538655020 }) { from { id } }
 
     c6: CreateComment(
       id: "c6",
       content: "${faker.lorem.paragraph()}",
+      disabled: false,
+      deleted: false
     ) { id }
     c6_u3: AddCommentAuthor(from: { id: "u3" }, to: { id: "c6" }, data: { timestamp: 1538655020 }) { from { id } }
 
     c7: CreateComment(
       id: "c7",
       content: "${faker.lorem.paragraph()}",
+      disabled: false,
+      deleted: false
     ) { id }
     c7_u2: AddCommentAuthor(from: { id: "u2" }, to: { id: "c7" }, data: { timestamp: 1538655020 }) { from { id } }
 
@@ -260,22 +286,30 @@ export default `
     o1: CreateOrganization(
       id: "o1",
       name: "Democracy Deutschland",
-      description: "Description for democracy-deutschland."
+      description: "Description for democracy-deutschland.",
+      disabled: false,
+      deleted: false
     ) { name }
     o2: CreateOrganization(
       id: "o2",
       name: "Human-Connection",
-      description: "Description for human-connection."
+      description: "Description for human-connection.",
+      disabled: false,
+      deleted: false
     ) { name }
     o3: CreateOrganization(
       id: "o3",
       name: "Pro Veg",
-      description: "Description for pro-veg."
+      description: "Description for pro-veg.",
+      disabled: false,
+      deleted: false
     ) { name }
     o4: CreateOrganization(
       id: "o4",
       name: "Greenpeace",
-      description: "Description for greenpeace."
+      description: "Description for greenpeace.",
+      disabled: false,
+      deleted: false
     ) { name }
 
     u1_c_o1: AddOrganizationCreatedBy(
