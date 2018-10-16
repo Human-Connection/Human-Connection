@@ -3,9 +3,11 @@
   border-radius: 50%;
   display: inline-block;
   position: relative;
+  padding-top: 0.1em;
   margin-right: $space-xx-small;
   min-height: 22px;
   min-width: 22px;
+  text-align: center;
 
   &::after {
     content: '';
@@ -25,5 +27,9 @@
     overflow: hidden;
     object-fit: cover;
     object-position: center;
+  }
+
+  .ds-icon {
+    margin-top: -0.2em;
   }
 }
