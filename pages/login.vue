@@ -9,12 +9,13 @@
       </blockquote>
     </ds-space>
     <ds-card>
-      <ds-flex>
+      <ds-flex gutter="small">
         <ds-flex-item
           :width="{ base: '100%', sm: 1 }"
           center>
           <ds-space
-            margin="large"
+            margin-top="small"
+            margin-bottom="xxx-small"
             center>
             <img
               class="login-image"
@@ -65,6 +66,5 @@ export default {
 .login-image {
   width: 90%;
   max-width: 200px;
-  margin-right: 20px;
 }
 </style>
