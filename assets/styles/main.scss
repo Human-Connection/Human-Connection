@@ -75,4 +75,7 @@ blockquote {
 }
 .main-navigation {
   box-shadow: $box-shadow-base;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
 }
