@@ -46,7 +46,7 @@ export default {
     Post: {
       query: gql(`
         query {
-          Post(first:10, orderBy: shoutedCount_desc) {
+          Post(first:10) {
             id
             title
             contentExcerpt
