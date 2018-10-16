@@ -2,7 +2,7 @@
   <v-popover
     :open.sync="isPopoverOpen"
     :disabled="!hasAuthor || !showAuthorPopover"
-    :open-group="Math.random()"
+    :open-group="Math.random().toString()"
     placement="top-start"
     trigger="manual"
     offset="5">
@@ -14,7 +14,7 @@
       <ds-avatar
         :image="author.avatar"
         :name="author.name"
-        size="32px" /> <b class="username">{{ author.name }}</b>
+        size="32px" /> <b class="username">{{ author.name | truncate(trunc) }}</b>
     </a>
     <div
       slot="popover"
@@ -46,18 +46,25 @@
           <ds-space margin="small">
             <ds-text
               size="x-large"
-              style="margin-bottom: 0; text-align: center">{{ author.followedByCount }}</ds-text>
+              style="margin-bottom: 0; text-align: center">{{ fanCount }}</ds-text>
             <ds-text
               size="small"
               style="text-align: center">Fans</ds-text>
           </ds-space>
         </ds-flex-item>
       </ds-flex>
+      <!--<ds-text
+        color="soft"
+        size="small">
+        <ds-icon name="map-marker" /> Hamburg, Deutschland
+      </ds-text>-->
       <ds-flex
         gutter="x-small"
         style="margin-bottom: 0;">
         <ds-flex-item :width="{base: 3}">
-          <hc-follow-button :follow-id="author.id" />
+          <hc-follow-button
+            :follow-id="author.id"
+            @update="voted = true" />
         </ds-flex-item>
         <ds-flex-item :width="{base: 1}" >
           <ds-button full-width>
@@ -83,14 +90,24 @@ export default {
   },
   props: {
     post: { type: Object, default: null },
+    trunc: { type: Number, default: null },
     showAuthorPopover: { type: Boolean, default: true }
   },
   data() {
     return {
-      isPopoverOpen: false
+      isPopoverOpen: false,
+      voted: false
     }
   },
   computed: {
+    fanCount() {
+      let count = Number(this.author.followedByCount) || 0
+      if (this.voted) {
+        // NOTE: this is used for presentation
+        count += 1
+      }
+      return count
+    },
     author() {
       return this.hasAuthor
         ? this.post.author.User

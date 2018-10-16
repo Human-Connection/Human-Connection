@@ -1,6 +1,6 @@
 <template>
   <ds-button
-    :disabled="disabled"
+    :disabled="disabled || !followId"
     icon="plus"
     primary
     full-width
@@ -14,10 +14,7 @@ export default {
   name: 'HcFollowButton',
 
   props: {
-    followId: {
-      type: String,
-      required: true
-    }
+    followId: { type: String, default: null }
   },
   data() {
     return {
