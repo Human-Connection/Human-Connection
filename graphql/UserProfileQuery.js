@@ -27,6 +27,15 @@ export default gql(`
         commentsCount
       }
       followedByCount
+      followedBy {
+        id
+        name
+        slug
+        avatar
+        followedByCount
+        contributionsCount
+        commentsCount
+      }
       contributionsCount
       contributions {
         Post {

@@ -42,7 +42,13 @@
           <ds-space/>
           <h2 style="text-align: center; margin-bottom: 10px;">Netzwerk</h2>
           <ds-card style="position: relative; height: auto;">
-            <p>Folgt:</p>
+            <ds-space margin="x-small">
+              <ds-text
+                tag="h5"
+                color="soft">
+                Wem folgt {{ user.name | truncate(15) }}?
+              </ds-text>
+            </ds-space>
             <template v-if="user.following.length">
               <ds-space
                 v-for="follow in user.following"
@@ -54,7 +60,30 @@
               </ds-space>
             </template>
             <template v-else>
-              <p style="text-align: center; opacity: .5;">folgt niemandem</p>
+              <p style="text-align: center; opacity: .5;">{{ user.name }} folgt niemandem</p>
+            </template>
+          </ds-card>
+          <ds-space/>
+          <ds-card style="position: relative; height: auto;">
+            <ds-space margin="x-small">
+              <ds-text
+                tag="h5"
+                color="soft">
+                Wer folgt {{ user.name | truncate(15) }}?
+              </ds-text>
+            </ds-space>
+            <template v-if="user.followedBy.length">
+              <ds-space
+                v-for="follow in user.followedBy"
+                :key="follow.id"
+                margin="x-small">
+                <hc-related-user
+                  :post="follow"
+                  :trunc="15" />
+              </ds-space>
+            </template>
+            <template v-else>
+              <p style="text-align: center; opacity: .5;">niemandem folgt {{ user.name }}</p>
             </template>
           </ds-card>
         </ds-flex-item>
