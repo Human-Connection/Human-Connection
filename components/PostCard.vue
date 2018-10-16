@@ -14,15 +14,16 @@
         style="position: absolute; bottom: 44px;">
         <hc-author
           :post="post"
+          :trunc="35"
           :show-author-popover="showAuthorPopover" />
       </ds-space>
       <template slot="footer">
-        <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-          <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
-        </span>
-        &nbsp;
         <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
           <ds-icon name="heart-o" /> <small>{{ post.shoutedCount }}</small>
+        </span>
+        &nbsp;
+        <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
+          <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
         </span>
       </template>
     </ds-card>

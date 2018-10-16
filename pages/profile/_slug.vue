@@ -22,7 +22,7 @@
               <ds-flex-item style="text-align: center;">
                 <ds-text
                   size="x-large"
-                  style="margin-bottom: 0;">{{ user.followedByCount }}</ds-text>
+                  style="margin-bottom: 0;">{{ fanCount }}</ds-text>
                 <ds-text size="small">Fans</ds-text>
               </ds-flex-item>
               <ds-flex-item style="text-align: center;">
@@ -36,18 +36,21 @@
               margin="small">
               <hc-follow-button
                 :follow-id="user.id"
-                @update="fetchUser" />
+                @update="voted = true && fetchUser" />
             </ds-space>
           </ds-card>
           <ds-space/>
           <h2 style="text-align: center; margin-bottom: 10px;">Netzwerk</h2>
           <ds-card style="position: relative; height: auto;">
+            <p>Folgt:</p>
             <template v-if="user.following.length">
               <ds-space
                 v-for="follow in user.following"
                 :key="follow.id"
                 margin="x-small">
-                <hc-related-user :post="follow" />
+                <hc-related-user
+                  :post="follow"
+                  :trunc="15" />
               </ds-space>
             </template>
             <template v-else>
@@ -129,10 +132,19 @@ export default {
 
   data() {
     return {
-      User: []
+      User: [],
+      voted: false
     }
   },
   computed: {
+    fanCount() {
+      let count = Number(this.user.followedByCount) || 0
+      if (this.voted) {
+        // NOTE: this is used for presentation
+        count += 1
+      }
+      return count
+    },
     user() {
       return this.User ? this.User[0] : {}
     }
