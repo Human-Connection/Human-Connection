@@ -10,7 +10,7 @@
       </ds-container>
     </div>
     <ds-container>
-      <div style="padding: 5rem 2rem;">
+      <div style="padding: 6rem 2rem 5rem;">
         <nuxt/>
       </div>
     </ds-container>
