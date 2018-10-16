@@ -83,7 +83,7 @@
               </ds-space>
             </template>
             <template v-else>
-              <p style="text-align: center; opacity: .5;">niemandem folgt {{ user.name }}</p>
+              <p style="text-align: center; opacity: .5;">niemand folgt {{ user.name }}</p>
             </template>
           </ds-card>
         </ds-flex-item>
