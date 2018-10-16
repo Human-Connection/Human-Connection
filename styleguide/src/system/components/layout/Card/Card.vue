@@ -14,7 +14,10 @@
       v-if="image || $slots.image">
       <!-- @slot Content of the card's image -->
       <slot name="image">
-        <img :src="image" >
+        <img 
+          :src="image" 
+          v-if="!error" 
+          @error="onError" >
       </slot>
     </div>
     <div
@@ -27,7 +30,7 @@
       v-if="header || $slots.header">
       <!-- @slot Content of the card's header -->
       <slot name="header">
-        <ds-heading 
+        <ds-heading
           :tag="headerTag"
           size="h3">{{ header }}</ds-heading>
       </slot>
@@ -122,6 +125,16 @@ export default {
     hover: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      error: false
+    }
+  },
+  methods: {
+    onError() {
+      this.error = true
     }
   }
 }
