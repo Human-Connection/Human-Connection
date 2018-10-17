@@ -43,14 +43,16 @@
           <ds-space/>
           <h2 style="text-align: center; margin-bottom: 10px;">Netzwerk</h2>
           <ds-card style="position: relative; height: auto;">
-            <ds-space margin="x-small">
+            <ds-space
+              v-if="user.following && user.following.length"
+              margin="x-small">
               <ds-text
                 tag="h5"
                 color="soft">
                 Wem folgt {{ user.name | truncate(15) }}?
               </ds-text>
             </ds-space>
-            <template v-if="user.following">
+            <template v-if="user.following && user.following.length">
               <ds-space
                 v-for="follow in user.following"
                 :key="follow.id"
@@ -66,14 +68,16 @@
           </ds-card>
           <ds-space/>
           <ds-card style="position: relative; height: auto;">
-            <ds-space margin="x-small">
+            <ds-space
+              v-if="user.followedBy && user.followedBy.length"
+              margin="x-small">
               <ds-text
                 tag="h5"
                 color="soft">
                 Wer folgt {{ user.name | truncate(15) }}?
               </ds-text>
             </ds-space>
-            <template v-if="user.followedBy">
+            <template v-if="user.followedBy && user.followedBy.length">
               <ds-space
                 v-for="follow in user.followedBy"
                 :key="follow.id"
