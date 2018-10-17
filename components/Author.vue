@@ -21,7 +21,22 @@
       style="min-width: 250px;"
       @mouseover="popoverMouseEnter"
       @mouseleave="popoveMouseLeave">
+      <!--<ds-avatar
+        :image="author.avatar"
+        :name="author.name || 'Anonymus'"
+        class="profile-avatar"
+        size="90px" />-->
       <ds-flex>
+        <ds-flex-item class="ds-tab-nav-item">
+          <ds-space margin="small">
+            <ds-text
+              size="x-large"
+              style="margin-bottom: 0; text-align: center">{{ fanCount }}</ds-text>
+            <ds-text
+              size="small"
+              style="text-align: center">Fans</ds-text>
+          </ds-space>
+        </ds-flex-item>
         <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
           <ds-space margin="small">
             <ds-text
@@ -42,16 +57,6 @@
               style="text-align: center">Kommentare</ds-text>
           </ds-space>
         </ds-flex-item>
-        <ds-flex-item class="ds-tab-nav-item">
-          <ds-space margin="small">
-            <ds-text
-              size="x-large"
-              style="margin-bottom: 0; text-align: center">{{ fanCount }}</ds-text>
-            <ds-text
-              size="small"
-              style="text-align: center">Fans</ds-text>
-          </ds-space>
-        </ds-flex-item>
       </ds-flex>
       <!--<ds-text
         color="soft"
@@ -59,6 +64,7 @@
         <ds-icon name="map-marker" /> Hamburg, Deutschland
       </ds-text>-->
       <ds-flex
+        v-if="!itsMe"
         gutter="x-small"
         style="margin-bottom: 0;">
         <ds-flex-item :width="{base: 3}">
@@ -100,6 +106,9 @@ export default {
     }
   },
   computed: {
+    itsMe() {
+      return this.author.slug === this.$store.getters['auth/user'].slug
+    },
     fanCount() {
       let count = Number(this.author.followedByCount) || 0
       if (this.voted) {
@@ -145,3 +154,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.profile-avatar {
+  display: block;
+  margin: auto;
+  margin-top: -45px;
+  border: #fff 5px solid;
+}
+</style>

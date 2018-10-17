@@ -35,8 +35,9 @@
             <ds-space
               margin="small">
               <hc-follow-button
+                v-if="!myProfile"
                 :follow-id="user.id"
-                @update="voted = true && fetchUser" />
+                @update="voted = true && fetchUser()" />
             </ds-space>
           </ds-card>
           <ds-space/>
@@ -49,7 +50,7 @@
                 Wem folgt {{ user.name | truncate(15) }}?
               </ds-text>
             </ds-space>
-            <template v-if="user.following.length">
+            <template v-if="user.following">
               <ds-space
                 v-for="follow in user.following"
                 :key="follow.id"
@@ -72,7 +73,7 @@
                 Wer folgt {{ user.name | truncate(15) }}?
               </ds-text>
             </ds-space>
-            <template v-if="user.followedBy.length">
+            <template v-if="user.followedBy">
               <ds-space
                 v-for="follow in user.followedBy"
                 :key="follow.id"
@@ -158,7 +159,6 @@ export default {
     name: 'slide-up',
     mode: 'out-in'
   },
-
   data() {
     return {
       User: [],
@@ -166,6 +166,9 @@ export default {
     }
   },
   computed: {
+    myProfile() {
+      return this.$route.params.slug === this.$store.getters['auth/user'].slug
+    },
     fanCount() {
       let count = Number(this.user.followedByCount) || 0
       if (this.voted) {

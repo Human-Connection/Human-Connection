@@ -1,4 +1,17 @@
 const pkg = require('./package')
+const envWhitelist = [
+  'BUILD_COMMIT',
+  'NODE_ENV',
+  'WEBAPP_HOST',
+  'WEBAPP_PORT',
+  'WEBAPP_BASE_URL',
+  'API_HOST',
+  'API_PORT',
+  'EMBED_API_URL',
+  'SENTRY_DNS_PUBLIC',
+  'MAPBOX_TOKEN',
+  'MAINTENANCE'
+]
 
 module.exports = {
   mode: 'universal',
@@ -6,6 +19,19 @@ module.exports = {
   transition: {
     name: 'slide-up',
     mode: 'out-in'
+  },
+
+  env: {
+    // pages which do NOT require a login
+    publicPages: [
+      'login',
+      'logout',
+      'register',
+      'signup',
+      'reset',
+      'reset-token',
+      'pages-slug'
+    ]
   },
   /*
   ** Headers of the page
@@ -42,15 +68,12 @@ module.exports = {
     { src: '~/plugins/design-system.js', ssr: true },
     { src: '~/plugins/vue-directives.js', ssr: false },
     { src: '~/plugins/v-tooltip.js', ssr: false },
+    { src: '~/plugins/izi-toast.js', ssr: false },
     { src: '~/plugins/vue-filters.js' }
   ],
 
   router: {
-    // middleware: [
-    //   'maintenance',
-    //   'check-auth',
-    //   'authenticated'
-    // ],
+    middleware: ['authenticated'],
     linkActiveClass: 'router-active-link'
   },
   /* router: {
@@ -81,14 +104,17 @@ module.exports = {
   /*
   ** Nuxt.js modules
   */
-  modules: ['@nuxtjs/apollo'],
+  modules: [
+    '@nuxtjs/apollo',
+    ['@nuxtjs/dotenv', { only: envWhitelist }],
+    ['nuxt-env', { keys: envWhitelist }]
+  ],
 
   // Give apollo module options
   apollo: {
-    tokenName: 'yourApolloTokenName', // optional, default: apollo-token
-    tokenExpires: 10, // optional, default: 7 (days)
-    includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
-    authenticationType: 'Basic', // optional, default: 'Bearer'
+    // tokenName: 'yourApolloTokenName', // optional, default: apollo-token
+    tokenExpires: 1, // optional, default: 7 (days)
+    // includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
     // optional
     errorHandler(error) {
       console.log(
@@ -97,6 +123,14 @@ module.exports = {
         error.message
       )
     },
+
+    // Watch loading state for all queries
+    // See 'Smart Query > options > watchLoading' for detail
+    // TODO: find a way to get this working
+    // watchLoading(isLoading) {
+    //   console.log('Global loading', countModifier)
+    //   this.$nuxt.$loading.start()
+    // },
     // required
     clientConfigs: {
       default: {
@@ -107,6 +141,8 @@ module.exports = {
         httpLinkOptions: {
           credentials: 'same-origin'
         },
+        credentials: true,
+
         // You can use `wss` for secure connection (recommended in production)
         // Use `null` to disable subscriptions
         // wsEndpoint: 'ws://localhost:4000', // optional

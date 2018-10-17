@@ -7,6 +7,15 @@
           href="/">
           <ds-logo />
         </a>
+        <a
+          v-router-link
+          :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href">
+          <ds-avatar
+            :image="user.avatar"
+            :name="user.name"
+            style="float: right"
+            size="42" />
+        </a>
       </ds-container>
     </div>
     <ds-container>
@@ -16,3 +25,13 @@
     </ds-container>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    user() {
+      return this.$store.getters['auth/user']
+    }
+  }
+}
+</script>

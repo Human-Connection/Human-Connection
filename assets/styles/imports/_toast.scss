@@ -1,0 +1,32 @@
+.iziToast-target, .iziToast {
+  &,
+  &:after,
+  &.iziToast-color-dark:after {
+    box-shadow: none !important;
+  }
+}
+
+.iziToast .iziToast-message {
+  font-weight: 400 !important;
+}
+
+.iziToast.iziToast-color-red {
+  background: $color-danger !important;
+  border-color: $color-danger !important;
+}
+.iziToast.iziToast-color-orange {
+  background: $color-warning !important;
+  border-color: $color-warning !important;
+}
+.iziToast.iziToast-color-yellow {
+  background: $color-yellow  !important;
+  border-color: $color-yellow  !important;
+}
+.iziToast.iziToast-color-blue {
+  background: $color-secondary !important;
+  border-color: $color-secondary !important;
+}
+.iziToast.iziToast-color-green {
+  background: $color-success !important;
+  border-color: $color-success !important;
+}

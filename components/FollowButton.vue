@@ -1,6 +1,7 @@
 <template>
   <ds-button
     :disabled="disabled || !followId"
+    :loading="loading"
     icon="plus"
     primary
     full-width
@@ -18,11 +19,13 @@ export default {
   },
   data() {
     return {
-      disabled: false
+      disabled: false,
+      loading: false
     }
   },
   methods: {
     follow() {
+      this.loading = true
       this.$apollo
         .mutate({
           mutation: gql`
@@ -35,11 +38,12 @@ export default {
             }
           `,
           variables: {
-            myId: 'u1',
+            myId: this.$store.getters['auth/user'].id,
             followId: this.followId
           }
         })
         .then(() => {
+          this.loading = false
           this.disabled = true
           this.$emit('update')
         })

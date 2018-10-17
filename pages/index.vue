@@ -71,12 +71,7 @@ export default {
             shoutedCount
           }
         }
-      `),
-      variables() {
-        return {
-          id: this.$route.query.post || 'p1'
-        }
-      }
+      `)
     }
   }
 }
