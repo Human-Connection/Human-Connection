@@ -16,3 +16,8 @@ $input-padding-vertical-large: $space-x-small;
 $input-height-large: calc(
   #{$font-size-large * $line-height-base} + #{($input-padding-vertical-large + $input-border-size) * 2}
 );
+
+$input-padding-vertical-x-large: $space-small;
+$input-height-x-large: calc(
+  #{$font-size-x-large * $line-height-base} + #{($input-padding-vertical-x-large + $input-border-size) * 2}
+);

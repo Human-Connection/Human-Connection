@@ -170,6 +170,12 @@
   height: $input-height-large;
 }
 
+.ds-button-size-x-large {
+  font-size: $font-size-x-large;
+  padding: $input-padding-vertical-large $space-base;
+  height: $input-height-x-large;
+}
+
 .ds-button-icon-only {
   width: $input-height;
   padding: 0;
@@ -185,6 +191,10 @@
 
   &.ds-button-size-large {
     width: $input-height-large;
+  }
+
+  &.ds-button-size-x-large {
+    width: $input-height-x-large;
   }
 }
 

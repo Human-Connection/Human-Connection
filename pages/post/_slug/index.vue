@@ -10,7 +10,12 @@
     <div
       class="content"
       v-html="post.content" />
-    <ds-space margin-top="large"/>
+    <!-- Shout Button -->
+    <ds-space margin="xx-large" />
+    <hc-shout-button
+      v-if="post.author"
+      :count="post.shoutedCount"
+      :post-id="post.id" />
     <!-- Categories -->
     <div class="tags">
       <ds-icon name="compass" /> <ds-tag
@@ -19,13 +24,14 @@
     </div>
     <!-- Tags -->
     <template v-if="post.tags && post.tags.length">
+      <ds-space margin="xx-small"/>
       <div class="tags">
         <ds-icon name="tags" /> <ds-tag
           v-for="tag in post.tags"
           :key="tag.id"><ds-icon name="tag" /> {{ tag.name }}</ds-tag>
       </div>
     </template>
-    <ds-space margin-bottom="large" />
+    <ds-space margin="small"/>
     <!-- Comments -->
     <ds-section
       slot="footer">
@@ -54,8 +60,13 @@
             <hc-author :post="comment" />
           </ds-space>
           <div
-            style="padding-left: 32px;"
+            v-if="!comment.deleted"
+            style="padding-left: 40px;"
             v-html="comment.contentExcerpt" />
+          <ds-text
+            v-else
+            style="padding-left: 40px; font-weight: bold;"
+            color="soft"><ds-icon name="ban" /> Vom Benutzer gelöscht</ds-text>
         </div>
         <ds-space margin-bottom="small" />
       </div>
@@ -69,6 +80,7 @@
 <script>
 import gql from 'graphql-tag'
 import HcAuthor from '~/components/Author.vue'
+import HcShoutButton from '~/components/ShoutButton.vue'
 
 export default {
   transition: {
@@ -76,7 +88,8 @@ export default {
     mode: 'out-in'
   },
   components: {
-    HcAuthor
+    HcAuthor,
+    HcShoutButton
   },
 
   data() {
@@ -118,6 +131,7 @@ export default {
             comments(orderBy: _id_desc) {
               id
               contentExcerpt
+              deleted
               author {
                 User {
                   id
@@ -134,12 +148,7 @@ export default {
             categories {
               name
             }
-            shoutedBy {
-              name
-              friends {
-                name
-              }
-            }
+            shoutedCount
           }
         }
       `),
