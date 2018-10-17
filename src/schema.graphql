@@ -1,3 +1,20 @@
+type Query {
+  isLoggedIn: Boolean!
+}
+type Mutation {
+  login(email: String!, password: String!): LoggedInUser
+  signup(email: String!, password: String!): Boolean!
+}
+type LoggedInUser {
+  id: ID!
+  slug: String!
+  name: String!
+  avatar:String!
+  email: String!
+  role: String!,
+  token: String!
+}
+
 enum VisibilityEnum {
   Public
   Friends
