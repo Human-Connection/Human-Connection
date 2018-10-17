@@ -10,12 +10,16 @@
       ghost && `ds-button-ghost`,
       iconOnly && `ds-button-icon-only`,
       hover && `ds-button-hover`,
-      fullWidth && `ds-button-full-width`
+      fullWidth && `ds-button-full-width`,
+      loading && `ds-button-loading`
     ]"
     v-bind="bindings"
     :is="linkTag">
     <ds-icon
-      v-if="icon"
+      v-if="loading"
+      name="spinner" />
+    <ds-icon
+      v-if="icon && !loading"
       :name="icon"/>
     <span
       class="ds-button-text"
@@ -130,6 +134,13 @@ export default {
     fullWidth: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Show loading state
+     */
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -140,6 +151,9 @@ export default {
       }
       if (this.path && this.linkTag === 'a') {
         bindings.href = this.path
+      }
+      if (this.loading) {
+        bindings.disabled = true
       }
       return bindings
     },

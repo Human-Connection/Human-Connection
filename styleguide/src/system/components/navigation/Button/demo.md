@@ -45,6 +45,7 @@ A button can take different states.
 ```
 <ds-button>Default state</ds-button>
 <ds-button disabled>Disabled state</ds-button>
+<ds-button :loading="true">Loading state</ds-button>
 <ds-button hover>Hover state</ds-button>
 ```
 
