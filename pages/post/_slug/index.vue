@@ -146,6 +146,7 @@ export default {
               }
             }
             categories {
+              id
               name
             }
             shoutedCount

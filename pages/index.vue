@@ -66,6 +66,7 @@ export default {
             }
             commentsCount
             categories {
+              id
               name
             }
             shoutedCount
