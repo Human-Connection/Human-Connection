@@ -1,18 +1,14 @@
 <template>
-  <div>
-    <no-ssr>
-      <ds-flex
-        :width="{ base: '100%' }"
-        gutter="base">
-        <ds-flex-item
-          v-for="post in Post"
-          :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-          :key="post.id">
-          <hc-post-card :post="post" />
-        </ds-flex-item>
-      </ds-flex>
-    </no-ssr>
-  </div>
+  <ds-flex
+    :width="{ base: '100%' }"
+    gutter="base">
+    <ds-flex-item
+      v-for="post in Post"
+      :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
+      :key="post.id">
+      <hc-post-card :post="post" />
+    </ds-flex-item>
+  </ds-flex>
 </template>
 
 <script>

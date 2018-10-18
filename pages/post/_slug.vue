@@ -1,20 +1,17 @@
 <template>
   <div>
-    <no-ssr>
-      <ds-flex gutter="small">
-        <ds-flex-item>
-          <transition
-            name="slide-up"
-            appear>
-            <nuxt-child />
-          </transition>
-        </ds-flex-item>
-        <ds-flex-item :width="{ base: '200px' }">
-          <ds-menu
-            :routes="routes" />
-        </ds-flex-item>
-      </ds-flex>
-    </no-ssr>
+    <ds-flex gutter="small">
+      <ds-flex-item>
+        <transition
+          name="slide-up"
+          appear>
+          <nuxt-child />
+        </transition>
+      </ds-flex-item>
+      <ds-flex-item :width="{ base: '200px' }">
+        <ds-menu :routes="routes" />
+      </ds-flex-item>
+    </ds-flex>
   </div>
 </template>
 
