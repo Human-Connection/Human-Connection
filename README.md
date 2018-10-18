@@ -31,6 +31,12 @@ yarn install
 npm install
 ```
 
+Copy:
+```
+cp .env.template .env
+```
+Configure the file `.env` according to your needs and your local setup.
+
 Start the GraphQL service:
 
 ```bash
