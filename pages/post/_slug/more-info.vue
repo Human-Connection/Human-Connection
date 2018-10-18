@@ -26,7 +26,8 @@
           v-for="relatedPost in post.relatedContributions"
           :key="relatedPost.id"
           :width="{ base: '50%' }">
-          <a
+          <hc-post-card :post="relatedPost" />
+          <!--<a
             v-router-link
             :href="$router.resolve({ name: 'post-slug', params: { slug: relatedPost.slug } }).href">
             <ds-card
@@ -35,7 +36,7 @@
               class="related-post">
               <div v-html="relatedPost.contentExcerpt" />
             </ds-card>
-          </a>
+          </a>-->
         </ds-flex-item>
       </ds-flex>
       <ds-space
@@ -50,11 +51,15 @@
 
 <script>
 import gql from 'graphql-tag'
+import HcPostCard from '~/components/PostCard.vue'
 
 export default {
   transition: {
     name: 'slide-up',
     mode: 'out-in'
+  },
+  components: {
+    HcPostCard
   },
   computed: {
     post() {
@@ -80,18 +85,22 @@ export default {
               id
               title
               slug
-              image
               contentExcerpt
               shoutedCount
               commentsCount
-            }
-            shoutedCount
-            shoutedBy {
-              name
-              friends {
-                name
+              author {
+                User {
+                  id
+                  name
+                  slug
+                  avatar
+                  contributionsCount
+                  followedByCount
+                  commentsCount
+                }
               }
             }
+            shoutedCount
           }
         }
       `),
