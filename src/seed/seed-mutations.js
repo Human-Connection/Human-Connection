@@ -4,21 +4,21 @@ export default `
   mutation {
 
     # Users
-    u1: CreateUser(id: "u1", name: "Peter Lustig", password: "1234", email: "admin@test.de", avatar: "${faker.internet.avatar()}", role: Admin) {
+    u1: CreateUser(id: "u1", name: "Peter Lustig", password: "1234", email: "admin@example.org", avatar: "${faker.internet.avatar()}", role: Admin) {
       id
       name
       email
       avatar
       role
     }
-    u2: CreateUser(id: "u2", name: "Bob der Bausmeister", password: "1234", email: "moderator@test.de", avatar: "${faker.internet.avatar()}", role: Moderator) {
+    u2: CreateUser(id: "u2", name: "Bob der Bausmeister", password: "1234", email: "moderator@example.org", avatar: "${faker.internet.avatar()}", role: Moderator) {
       id
       name
       email
       avatar
       role
     }
-    u3: CreateUser(id: "u3", name: "Jenny Rostock", password: "1234", email: "user@test.de", avatar: "${faker.internet.avatar()}", role: Admin) {
+    u3: CreateUser(id: "u3", name: "Jenny Rostock", password: "1234", email: "user@example.org", avatar: "${faker.internet.avatar()}", role: Admin) {
       id
       name
       email
