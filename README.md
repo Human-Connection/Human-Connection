@@ -87,7 +87,7 @@ npm run seedDb
 
 ## Todo`s
 
-- [ ] add jwt authentication
+- [x] add jwt authentication
 - [ ] get directives working correctly (@toLower, @auth, @role, etc.)
 - [ ] check if search is working
 - [ ] check if sorting is working
