@@ -3,6 +3,8 @@ import Vue from 'vue'
 import format from 'date-fns/format'
 import addSeconds from 'date-fns/add_seconds'
 
+import accounting from 'accounting'
+
 export default ({ app }) => {
   app.$filters = Object.assign(app.$filters || {}, {
     date: (value, fmt = 'DD. MMM YYYY') => {
@@ -12,6 +14,18 @@ export default ({ app }) => {
     dateTime: (value, fmt = 'DD. MMM YYYY HH:mm') => {
       if (!value) return ''
       return format(new Date(value), fmt)
+    },
+    number: (
+      value,
+      precision = 2,
+      thousands = '.',
+      decimals = ',',
+      fallback = null
+    ) => {
+      if (isNaN(value) && fallback) {
+        return fallback
+      }
+      return accounting.formatNumber(value || 0, precision, thousands, decimals)
     },
     // format seconds or milliseconds to durations HH:mm:ss
     duration: (value, unit = 's') => {
@@ -46,7 +60,7 @@ export default ({ app }) => {
       }
       return value.join(glue)
     },
-    listByKey(values, key, glue, truncate) {
+    listByKey: (values, key, glue, truncate) => {
       return app.$filters.list(values.map(item => item[key]), glue, truncate)
     },
     camelCase: (value = '') => {
