@@ -27,16 +27,6 @@
           :key="relatedPost.id"
           :width="{ base: '50%' }">
           <hc-post-card :post="relatedPost" />
-          <!--<a
-            v-router-link
-            :href="$router.resolve({ name: 'post-slug', params: { slug: relatedPost.slug } }).href">
-            <ds-card
-              :image="relatedPost.image"
-              :header="relatedPost.title"
-              class="related-post">
-              <div v-html="relatedPost.contentExcerpt" />
-            </ds-card>
-          </a>-->
         </ds-flex-item>
       </ds-flex>
       <ds-space
