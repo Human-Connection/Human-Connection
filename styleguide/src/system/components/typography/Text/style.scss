@@ -9,6 +9,22 @@
   font-weight: $font-weight-bold;
 }
 
+.ds-text-left {
+  text-align: left;
+}
+
+.ds-text-center {
+  text-align: center;
+}
+
+.ds-text-right {
+  text-align: right;
+}
+
+.ds-text-uppercase {
+  text-transform: uppercase;
+}
+
 .ds-text-size-small {
   font-size: $font-size-small;
 }
@@ -23,6 +39,14 @@
 
 .ds-text-size-x-large {
   font-size: $font-size-x-large;
+}
+
+.ds-text-size-xx-large {
+  font-size: $font-size-xx-large;
+}
+
+.ds-text-size-xxx-large {
+  font-size: $font-size-xxx-large;
 }
 
 .ds-text-soft {

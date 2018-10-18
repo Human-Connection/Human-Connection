@@ -1,11 +1,13 @@
 <template>
-  <component 
+  <component
     :is="tag"
     class="ds-text"
     :class="[
       size && `ds-text-size-${size}`,
       color && `ds-text-${color}`,
-      bold && `ds-text-bold`
+      bold && `ds-text-bold`,
+      align && `ds-text-${align}`,
+      uppercase && `ds-text-uppercase`
     ]"
   >
     <slot />
@@ -60,7 +62,7 @@ export default {
       type: String,
       default: null,
       validator: value => {
-        return value.match(/(small|base|large|x-large)/)
+        return value.match(/(small|base|large|x-large|xx-large|xxx-large)/)
       }
     },
     /**
@@ -71,6 +73,24 @@ export default {
       default() {
         return this.$parentText ? 'span' : 'p'
       }
+    },
+    /**
+     * Align Text
+     * `left, center, right
+     */
+    align: {
+      type: String,
+      default: null,
+      validator: value => {
+        return value.match(/(left|center|right)/)
+      }
+    },
+    /**
+     * Text in Uppdercase
+     */
+    uppercase: {
+      type: Boolean,
+      default: false
     }
   }
 }
