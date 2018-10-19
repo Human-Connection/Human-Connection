@@ -6,10 +6,12 @@
 
 ## Build Setup
 
+
 ### Install
 ``` bash
+# NOTE: currently we need the --ignore-engines parameter as one package is an idiot and dont like new node versions
 # install all dependencies
-$ yarn install
+$ yarn install --ignore-engines
 ```
 
 ### Development
