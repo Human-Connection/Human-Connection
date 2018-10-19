@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  webapp:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+      - 8080:8080
+    networks:
+      - hc-network
+    volumes:
+      - .:/HC-WebApp
+      - node_modules:/HC-WebApp/node_modules
+    command: yarn run dev
+    environment:
+      - HOST=0.0.0.0
+      - BACKEND_URL=http://backend.127.0.0.1.xip.io:4000
+
+networks:
+  hc-network:
+    name: hc-network
+
+volumes:
+  node_modules:

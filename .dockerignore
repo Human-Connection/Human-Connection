@@ -1,0 +1,10 @@
+.vscode/
+
+styleguide/node_modules/
+node_modules/
+npm-debug.log
+
+Dockerfile
+docker-compose*.yml
+
+.env
