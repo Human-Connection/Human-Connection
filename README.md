@@ -26,10 +26,9 @@
 Install dependencies:
 
 ```bash
-# NOTE: currently we need the --ignore-engines parameter as one package is an idiot and dont like new node versions
-yarn install --ignore-engines
+yarn install
 # -or-
-npm install --ignore-engines
+npm install
 ```
 
 Start the GraphQL service:
