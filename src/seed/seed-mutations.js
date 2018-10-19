@@ -18,7 +18,7 @@ export default `
       avatar
       role
     }
-    u3: CreateUser(id: "u3", name: "Jenny Rostock", password: "1234", email: "user@test.de", avatar: "${faker.internet.avatar()}", role: Admin) {
+    u3: CreateUser(id: "u3", name: "Jenny Rostock", password: "1234", email: "user@test.de", avatar: "${faker.internet.avatar()}", role: User) {
       id
       name
       email
