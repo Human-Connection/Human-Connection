@@ -1,5 +1,6 @@
 type Query {
   isLoggedIn: Boolean!
+  statistics: Statistics!
 }
 type Mutation {
   login(email: String!, password: String!): LoggedInUser
@@ -11,8 +12,20 @@ type LoggedInUser {
   name: String!
   avatar:String!
   email: String!
-  role: String!,
+  role: String!
   token: String!
+}
+
+type Statistics {
+  countUsers: Int!
+  countPosts: Int!
+  countComments: Int!
+  countNotifications: Int!
+  countOrganizations: Int!
+  countProjects: Int!
+  countInvites: Int!
+  countFollows: Int!
+  countShouts: Int!
 }
 
 enum VisibilityEnum {
@@ -44,13 +57,13 @@ type WrittenComment @relation(name: "WROTE") {
 
 type User {
   id: ID!
-  name: String @default(to: "Anonymus")
+  name: String
   email: String
   slug: String
   password: String!
   avatar: String
-  deleted: Boolean @default(to: false)
-  disabled: Boolean @default(to: false)
+  deleted: Boolean
+  disabled: Boolean
   role: UserGroupEnum
 
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
@@ -75,10 +88,10 @@ type User {
   )
 
   comments: [WrittenComment]!
-  commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) RETURN COUNT(r)")
+  commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
 
   shouted: [Post]! @relation(name: "SHOUTED", direction: "OUT")
-  shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) RETURN COUNT(r)")
+  shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
 
   organizationsCreated: [Organization] @relation(name: "CREATED_ORGA", direction: "OUT")
   organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
@@ -98,8 +111,8 @@ type Post {
   contentExcerpt: String
   image: String
   visibility: VisibilityEnum
-  deleted: Boolean @default(to: false)
-  disabled: Boolean @default(to: false)
+  deleted: Boolean
+  disabled: Boolean
 
   relatedContributions: [Post]! @cypher(statement: """
     MATCH (this)-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
@@ -114,7 +127,7 @@ type Post {
   commentsCount: Int! @cypher(statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) RETURN COUNT(r)")
 
   shoutedBy: [User]! @relation(name: "SHOUTED", direction: "IN")
-  shoutedCount: Int! @cypher(statement: "MATCH (this)<-[:SHOUTED]-(r:User) RETURN COUNT(r)")
+  shoutedCount: Int! @cypher(statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
 }
 
 type Comment {
@@ -123,8 +136,8 @@ type Comment {
   content: String!
   contentExcerpt: String
   post: Post @relation(name: "COMMENT", direction: "OUT")
-  deleted: Boolean @default(to: false)
-  disabled: Boolean @default(to: false)
+  deleted: Boolean
+  disabled: Boolean
 }
 
 type Category {
@@ -163,8 +176,8 @@ type Organization {
   slug: String
   description: String!
   descriptionExcerpt: String
-  deleted: Boolean @default(to: false)
-  disabled: Boolean @default(to: false)
+  deleted: Boolean
+  disabled: Boolean
 
   tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
@@ -176,5 +189,5 @@ type Tag {
   taggedPosts: [Post]! @relation(name: "TAGGED", direction: "IN")
   taggedOrganizations: [Organization]! @relation(name: "TAGGED", direction: "IN")
   taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(r) RETURN COUNT(r)")
-  deleted: Boolean @default(to: false)
+  deleted: Boolean
 }
