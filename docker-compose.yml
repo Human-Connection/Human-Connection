@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  server:
+  backend:
     build: .
     networks:
       - hc-network
@@ -21,9 +21,14 @@ services:
     image: neo4j:3.4
     networks:
       - hc-network
+    volumes:
+      - neo4j-data:/data
     environment:
       - NEO4J_AUTH=none
 
 networks:
   hc-network:
     name: hc-network
+
+volumes:
+  neo4j-data:
