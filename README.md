@@ -23,6 +23,26 @@
 
 ## Quick Start
 
+### Installation with Docker
+
+Run:
+```sh
+docker-compose up
+# if you want seed data
+# open another terminal and run
+docker-compose exec backend yarn run seedDb
+```
+
+App is [running on port 4000](http://localhost:4000/)
+
+To wipe out your neo4j database run:
+```sh
+docker-compose down -v
+```
+
+
+### Installation without Docker
+
 Install dependencies:
 
 ```bash
