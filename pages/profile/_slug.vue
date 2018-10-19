@@ -182,6 +182,13 @@ export default {
       return this.User ? this.User[0] : {}
     }
   },
+  watch: {
+    User(val) {
+      if (!val || !val.length) {
+        throw new Error('User not found!')
+      }
+    }
+  },
   methods: {
     fetchUser() {
       // TODO: we should use subscriptions instead of fetching the whole user again

@@ -28,6 +28,7 @@
     "nuxt-env": "^0.0.4",
     "v-tooltip": "^2.0.0-rc.33",
     "vue-cion-design-system": "file:./styleguide",
+    "vue-count-to": "^1.0.13",
     "vue-izitoast": "^1.1.0"
   },
   "devDependencies": {

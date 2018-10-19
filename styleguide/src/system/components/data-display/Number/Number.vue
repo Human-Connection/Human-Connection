@@ -8,9 +8,12 @@
     <ds-text
       :size="size"
       class="ds-number-count"
-      style="margin-bottom: 0">{{ count }}</ds-text>
+      style="margin-bottom: 0">
+      <slot name="count">{{ count }}</slot>
+    </ds-text>
     <ds-text
       :uppercase="uppercase"
+      :size="labelSize"
       class="ds-number-label"
       color="soft"
       v-html="label" />
@@ -22,6 +25,7 @@ export default {
   name: 'DsNumber',
   props: {
     size: { type: String, default: 'x-large' },
+    labelSize: { type: String, default: 'small' },
     count: { type: [Number, String], default: 0 },
     label: { type: String, default: null },
     uppercase: { type: Boolean, default: false }
