@@ -4,28 +4,60 @@ export default `
   mutation {
 
     # Users
-    u1: CreateUser(id: "u1", name: "Peter Lustig", password: "1234", email: "admin@example.org", avatar: "${faker.internet.avatar()}", role: admin) {
+    u1: CreateUser(
+      id: "u1",
+      name: "Peter Lustig",
+      password: "1234",
+      email: "admin@example.org",
+      avatar: "${faker.internet.avatar()}",
+      role: admin,
+      disabled: false,
+      deleted: false) {
       id
       name
       email
       avatar
       role
     }
-    u2: CreateUser(id: "u2", name: "Bob der Bausmeister", password: "1234", email: "moderator@example.org", avatar: "${faker.internet.avatar()}", role: moderator) {
+    u2: CreateUser(
+      id: "u2",
+      name: "Bob der Bausmeister",
+      password: "1234",
+      email: "moderator@example.org",
+      avatar: "${faker.internet.avatar()}",
+      role: moderator,
+      disabled: false,
+      deleted: false) {
       id
       name
       email
       avatar
       role
     }
-    u3: CreateUser(id: "u3", name: "Jenny Rostock", password: "1234", email: "user@example.org", avatar: "${faker.internet.avatar()}", role: user) {
+    u3: CreateUser(
+      id: "u3",
+      name: "Jenny Rostock",
+      password: "1234",
+      email: "user@example.org",
+      avatar: "${faker.internet.avatar()}",
+      role: user,
+      disabled: false,
+      deleted: false) {
       id
       name
       email
       avatar
       role
     }
-    u4: CreateUser(id: "u4", name: "Angie Banjie", password: "1234", email: "angie@example.org", avatar: "${faker.internet.avatar()}", role: user) {
+    u4: CreateUser(
+      id: "u4",
+      name: "Angie Banjie",
+      password: "1234",
+      email: "angie@example.org",
+      avatar: "${faker.internet.avatar()}",
+      role: user,
+      disabled: false,
+      deleted: false) {
       id
       name
       email
@@ -36,12 +68,12 @@ export default `
     u1_blacklist_u4: AddUserBlacklisted(from: { id: "u1" }, to: { id: "u4" }) { from { id } }
 
     # Badges
-    b1: CreateBadge(id: "b1", key: "indiegogo_en_racoon", type: Crowdfunding, status: permanent, icon: "indiegogo_en_racoon") { id }
-    b2: CreateBadge(id: "b2", key: "indiegogo_en_rabbit", type: Crowdfunding, status: permanent, icon: "indiegogo_en_rabbit") { id }
-    b3: CreateBadge(id: "b3", key: "indiegogo_en_wolf", type: Crowdfunding, status: permanent, icon: "indiegogo_en_wolf") { id }
-    b4: CreateBadge(id: "b4", key: "indiegogo_en_bear", type: Crowdfunding, status: permanent, icon: "indiegogo_en_bear") { id }
-    b5: CreateBadge(id: "b5", key: "indiegogo_en_turtle", type: Crowdfunding, status: permanent, icon: "indiegogo_en_turtle") { id }
-    b6: CreateBadge(id: "b6", key: "indiegogo_en_rhino", type: Crowdfunding, status: permanent, icon: "indiegogo_en_rhino") { id }
+    b1: CreateBadge(id: "b1", key: "indiegogo_en_racoon", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_racoon.svg") { id }
+    b2: CreateBadge(id: "b2", key: "indiegogo_en_rabbit", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_rabbit.svg") { id }
+    b3: CreateBadge(id: "b3", key: "indiegogo_en_wolf", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_wolf.svg") { id }
+    b4: CreateBadge(id: "b4", key: "indiegogo_en_bear", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_bear.svg") { id }
+    b5: CreateBadge(id: "b5", key: "indiegogo_en_turtle", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_turtle.svg") { id }
+    b6: CreateBadge(id: "b6", key: "indiegogo_en_rhino", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_rhino.svg") { id }
 
     b1_u1: AddUserBadges(from: {id: "b1"}, to: {id: "u1"}) { from { id } }
     b2_u1: AddUserBadges(from: {id: "b2"}, to: {id: "u1"}) { from { id } }
@@ -74,81 +106,81 @@ export default `
       title: "Gedanken eines Polizisten zum Einsatz im Hambacher Forst",
       content: "<p><strong>Diese Zukunftsstadt ist real und keine Computer-Animation</strong> – sondern sie ist das Lebenswerk des mittlerweile über 100 Jahre alten Futuristen und Architekten Jacque Fresco aus Florida. In 35 Jahren (seit seinem 13. Lebensjahr) hat dieser zusammen mit seiner Frau seinen futuristischen Traum von einer besonderen Zukunftsstadt auf 85.000 Quadratmetern realisiert. In den Gebäuden und Gärten befinden sich u.a. ein Forschungszentrum, Vortragsräume und unzählige seiner Modelle &amp; Architekturentwürfe.</p><br /><p>Sein zentrales Anliegen ist eine resourcenbasierte Wirtschaft und die Abschaffung von Geld und Privatbesitz. Mit Hilfe von Roboterarbeit und dem Bedingungslosen Grundeinkommen (da nach seiner Ansicht in den kommenden Jahren fast alle Jobs automatisiert werden), möchte er eine ökologische Landwirtschaft mit Permakulturen etc. und eine effiziente Energiegewinnung (ausschließlich durch regenerative Energien) schaffen. Wenige kompatible Formen in einer sparsamen Modulbauweise (in die u.a. bereits variable Service- und Reparaturelemente integriert sind) sollen insgesamt eine soziale &amp; ökologische Utopie im Einklang mit der Natur ermöglichen.</p><br /><p>Nachfolgend der Direkt-Link auf den interessanten Artikel von Zoltan Istvan, der den Architekten und seine Frau in Florida besuchen durfte und seinen Artikel Ende 2016 auf „MOTHERBOARD“ veröffentlicht hatte:</p><br /><p>https://motherboard.vice.com/de/article/vv34nb/ich-habe-die-zukunft-besucht-in-der-wir-ohne-geld-steuern-und-besitz-leben </p><br /><p>Da soll noch jemand behaupten, es gäbe keine Utopien mehr bzw. keine Futuristen, die ihre kreativen und zukunftsfähigen Ideen (auch in ganz großem Stil) selbst in die Tat umsetzen. LG @all :) </p><br /><p><strong>Wir sind eine Menschheitsfamilie. • Wir sind eins. • Wir sind HUMAN CONNECTION</strong> ❤️</p>",
       image: "https://picsum.photos/1280/1024?image=352",
-      visibility: Public,
+      visibility: public,
       disabled: false,
       deleted: false
     ) { title }
     p1_cat1: AddPostCategories(from: {id: "p1"}, to: {id: "cat1"}) { from { id } }
     p1_cat2: AddPostCategories(from: {id: "p1"}, to: {id: "cat2"}) { from { id } }
-    ur1: AddUserContributions(from: { id: "u1" }, to: { id: "p1" }, data: { timestamp: 1538655020 }) { from { id } }
+    ur1: AddUserContributions(from: { id: "u1" }, to: { id: "p1" }) { from { id } }
 
     p2: CreatePost(
       id: "p2",
       title: "Julian Assange",
-      content: "<p><strong>Diese Zukunftsstadt ist real und keine Computer-Animation – s</strong>ondern sie ist das Lebenswerk des mittlerweile über 100 Jahre alten Futuristen und Architekten Jacque Fresco aus Florida. In 35 Jahren (seit seinem 13. Lebensjahr) hat dieser zusammen mit seiner Frau seinen futuristischen Traum von einer besonderen Zukunftsstadt auf 85.000 Quadratmetern realisiert. In den Gebäuden und Gärten befinden sich u.a. ein Forschungszentrum, Vortragsräume und unzählige seiner Modelle &amp; Architekturentwürfe.</p><br /><p>Sein zentrales Anliegen ist eine resourcenbasierte Wirtschaft und die Abschaffung von Geld und Privatbesitz. Mit Hilfe von Roboterarbeit und dem Bedingungslosen Grundeinkommen (da nach seiner Ansicht in den kommenden Jahren fast alle Jobs automatisiert werden), möchte er eine ökologische Landwirtschaft mit Permakulturen etc. und eine effiziente Energiegewinnung (ausschließlich durch regenerative Energien) schaffen. Wenige kompatible Formen in einer sparsamen Modulbauweise (in die u.a. bereits variable Service- und Reparaturelemente integriert sind) sollen insgesamt eine soziale &amp; ökologische Utopie im Einklang mit der Natur ermöglichen.</p><br /><p>Nachfolgend der Direkt-Link auf den interessanten Artikel von Zoltan Istvan, der den Architekten und seine Frau in Florida besuchen durfte und seinen Artikel Ende 2016 auf „MOTHERBOARD“ veröffentlicht hatte:</p><br /><p>https://motherboard.vice.com/de/article/vv34nb/ich-habe-die-zukunft-besucht-in-der-wir-ohne-geld-steuern-und-besitz-leben </p><br /><p>Da soll noch jemand behaupten, es gäbe keine Utopien mehr bzw. keine Futuristen, die ihre kreativen und zukunftsfähigen Ideen (auch in ganz großem Stil) selbst in die Tat umsetzen. LG @all :) </p><br /><p><strong>Wir sind eine Menschheitsfamilie. • Wir sind eins. • Wir sind HUMAN CONNECTION</strong> ❤️</p>",
+      content: "<p><strong>Diese Zukunftsstadt ist real und keine Computer-Animation</strong> – sondern sie ist das Lebenswerk des mittlerweile über 100 Jahre alten Futuristen und Architekten Jacque Fresco aus Florida. In 35 Jahren (seit seinem 13. Lebensjahr) hat dieser zusammen mit seiner Frau seinen futuristischen Traum von einer besonderen Zukunftsstadt auf 85.000 Quadratmetern realisiert. In den Gebäuden und Gärten befinden sich u.a. ein Forschungszentrum, Vortragsräume und unzählige seiner Modelle &amp; Architekturentwürfe.</p><br /><p>Sein zentrales Anliegen ist eine resourcenbasierte Wirtschaft und die Abschaffung von Geld und Privatbesitz. Mit Hilfe von Roboterarbeit und dem Bedingungslosen Grundeinkommen (da nach seiner Ansicht in den kommenden Jahren fast alle Jobs automatisiert werden), möchte er eine ökologische Landwirtschaft mit Permakulturen etc. und eine effiziente Energiegewinnung (ausschließlich durch regenerative Energien) schaffen. Wenige kompatible Formen in einer sparsamen Modulbauweise (in die u.a. bereits variable Service- und Reparaturelemente integriert sind) sollen insgesamt eine soziale &amp; ökologische Utopie im Einklang mit der Natur ermöglichen.</p><br /><p>Nachfolgend der Direkt-Link auf den interessanten Artikel von Zoltan Istvan, der den Architekten und seine Frau in Florida besuchen durfte und seinen Artikel Ende 2016 auf „MOTHERBOARD“ veröffentlicht hatte:</p><br /><p>https://motherboard.vice.com/de/article/vv34nb/ich-habe-die-zukunft-besucht-in-der-wir-ohne-geld-steuern-und-besitz-leben </p><br /><p>Da soll noch jemand behaupten, es gäbe keine Utopien mehr bzw. keine Futuristen, die ihre kreativen und zukunftsfähigen Ideen (auch in ganz großem Stil) selbst in die Tat umsetzen. LG @all :) </p><br /><p><strong>Wir sind eine Menschheitsfamilie. • Wir sind eins. • Wir sind HUMAN CONNECTION</strong> ❤️</p>",
       image: "https://picsum.photos/1280/1024?image=72",
-      visibility: Public,
+      visibility: public,
       disabled: false,
       deleted: false
     ) { title }
     p2_cat1: AddPostCategories(from: {id: "p2"}, to: {id: "cat1"}) { from { id } }
     p2_cat16: AddPostCategories(from: {id: "p2"}, to: {id: "cat16"}) { from { id } }
-    ur2: AddUserContributions(from: { id: "u2" }, to: { id: "p2" }, data: { timestamp: 1538655120 }) { from { id } }
+    ur2: AddUserContributions(from: { id: "u2" }, to: { id: "p2" }) { from { id } }
 
     p3: CreatePost(
       id: "p3",
       title: "Hacker, Freaks und Funktionäre...Der CCC",
       content: "${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()}",
       image: "https://picsum.photos/1280/1024?image=121",
-      visibility: Public,
+      visibility: public,
       disabled: false,
       deleted: false
     ) { title }
     p3_cat1: AddPostCategories(from: {id: "p3"}, to: {id: "cat1"}) { from { id } }
     p3_cat3: AddPostCategories(from: {id: "p3"}, to: {id: "cat3"}) { from { id } }
     p3_cat14: AddPostCategories(from: {id: "p3"}, to: {id: "cat14"}) { from { id } }
-    ur3: AddUserContributions(from: { id: "u3" }, to: { id: "p3" }, data: { timestamp: 1538653120 }) { from { id } }
+    ur3: AddUserContributions(from: { id: "u3" }, to: { id: "p3" }) { from { id } }
 
     p4: CreatePost(
       id: "p4",
       title: "Lebensmittel (?)",
       content: "${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()}",
       image: "https://picsum.photos/1280/1024?image=142",
-      visibility: Public,
+      visibility: public,
       disabled: false,
       deleted: false
     ) { title }
     p4_cat1: AddPostCategories(from: {id: "p4"}, to: {id: "cat1"}) { from { id } }
     p4_cat9: AddPostCategories(from: {id: "p4"}, to: {id: "cat9"}) { from { id } }
     p4_cat4: AddPostCategories(from: {id: "p4"}, to: {id: "cat4"}) { from { id } }
-    ur4: AddUserContributions(from: { id: "u4" }, to: { id: "p4" }, data: { timestamp: 1538615120 }) { from { id } }
+    ur4: AddUserContributions(from: { id: "u4" }, to: { id: "p4" }) { from { id } }
 
     p5: CreatePost(
       id: "p5",
       title: "${faker.lorem.sentence()}",
       content: "${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()}",
       image: "https://picsum.photos/1280/1024?image=231",
-      visibility: Public,
+      visibility: public,
       disabled: false,
       deleted: false
     ) { title }
     p5_cat8: AddPostCategories(from: {id: "p5"}, to: {id: "cat8"}) { from { id } }
     p5_cat12: AddPostCategories(from: {id: "p5"}, to: {id: "cat12"}) { from { id } }
-    ur5: AddUserContributions(from: { id: "u2" }, to: { id: "p5" }, data: { timestamp: 1538615120 }) { from { id } }
+    ur5: AddUserContributions(from: { id: "u2" }, to: { id: "p5" }) { from { id } }
 
     p6: CreatePost(
       id: "p6",
       title: "${faker.lorem.sentence()}",
       content: "${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()} ${faker.lorem.sentence()}",
       image: "https://picsum.photos/1280/1024?image=424",
-      visibility: Public,
+      visibility: public,
       disabled: false,
       deleted: false
     ) { title }
     p6_cat1: AddPostCategories(from: {id: "p6"}, to: {id: "cat1"}) { from { id } }
     p6_cat2: AddPostCategories(from: {id: "p6"}, to: {id: "cat2"}) { from { id } }
     p6_cat5: AddPostCategories(from: {id: "p6"}, to: {id: "cat5"}) { from { id } }
-    ur6: AddUserContributions(from: { id: "u4" }, to: { id: "p6" }, data: { timestamp: 1538615120 }) { from { id } }
+    ur6: AddUserContributions(from: { id: "u4" }, to: { id: "p6" }) { from { id } }
 
     # Comments
     c1: CreateComment(

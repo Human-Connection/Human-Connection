@@ -1,7 +1,9 @@
+import bcrypt from 'bcryptjs'
+
 export default {
   Mutation: {
     CreateUser: async (resolve, root, args, context, info) => {
-      args.password = 'TRY TO ENCRYPT IT'
+      args.password = await bcrypt.hashSync(args.password, 10)
       const result = await resolve(root, args, context, info)
       result.password = '*****'
       return result

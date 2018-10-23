@@ -29,15 +29,15 @@ type Statistics {
 }
 
 enum VisibilityEnum {
-  Public
-  Friends
-  Private
+  public
+  friends
+  private
 }
 
 enum UserGroupEnum {
-  Admin
-  Moderator
-  User
+  admin
+  moderator
+  user
 }
 
 type WrittenPost @relation(name: "WROTE") {
@@ -193,4 +193,5 @@ type Tag {
   taggedOrganizations: [Organization]! @relation(name: "TAGGED", direction: "IN")
   taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(r) RETURN COUNT(r)")
   deleted: Boolean
+  disabled: Boolean
 }
