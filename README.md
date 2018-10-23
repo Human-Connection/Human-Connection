@@ -1,7 +1,5 @@
 # Human Connection - NITRO WebApp
 
-> Ui Prototype for HC
-
 ![UI Screenshot](screenshot.png)
 
 ## Build Setup
