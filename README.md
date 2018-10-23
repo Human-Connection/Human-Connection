@@ -1,4 +1,4 @@
-# Human Connection - GraphQL UI Prototype 
+# Human Connection - NITRO WebApp
 
 > Ui Prototype for HC
 
