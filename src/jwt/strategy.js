@@ -18,7 +18,6 @@ export default () => {
 
   return new Strategy(options,
     (JWTPayload, next) => {
-      console.log('JWT Payload Received:', JWTPayload)
       // usually this would be a database call:
       // var user = users[_.findIndex(users, {id: JWTPayload.id})]
       if (true) {
