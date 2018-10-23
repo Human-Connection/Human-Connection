@@ -1,4 +1,4 @@
-# Human-Connection - GraphQL API - Prototype
+# Human-Connection - NITRO API
 
 > This Prototype tries to resolve the biggest hurdle of connecting
 > our services together. This is not possible in a sane way using
