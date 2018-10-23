@@ -75,11 +75,12 @@ type User {
   followedBy: [User]! @relation(name: "FOLLOWS", direction: "IN")
   followedByCount: Int! @cypher(statement: "MATCH (this)<-[:FOLLOWS]-(r:User) RETURN COUNT(r)")
 
-  contributions: [WrittenPost]!
+  #contributions: [WrittenPost]!
   #contributions2(first: Int = 10, offset: Int = 0): [WrittenPost2]!
   #  @cypher(
   #    statement: "MATCH (this)-[w:WROTE]->(p:Post) RETURN p as Post, w.timestamp as timestamp"
   #  )
+  contributions: [Post]! @relation(name: "WROTE", direction: "OUT")
   contributionsCount: Int! @cypher(statement: """
     MATCH (this)-[:WROTE]->(r:Post)
     WHERE (NOT exists(r.deleted) OR r.deleted = false)
@@ -113,6 +114,8 @@ type Post {
   visibility: VisibilityEnum
   deleted: Boolean
   disabled: Boolean
+  createdAt: String
+  updatedAt: String
 
   relatedContributions: [Post]! @cypher(statement: """
     MATCH (this)-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
@@ -160,12 +163,12 @@ type Badge {
 }
 
 enum BadgeTypeEnum {
-  Role
-  Crowdfunding
+  role
+  crowdfunding
 }
 enum BadgeStatusEnum {
-  Permanent
-  Temorary
+  permanent
+  temorary
 }
 
 type Organization {
