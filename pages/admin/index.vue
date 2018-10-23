@@ -10,7 +10,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countUsers || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countUsers || 0"
+                  :end-val="statistics.countUsers || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -21,7 +23,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countPosts || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countPosts || 0"
+                  :end-val="statistics.countPosts || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -32,7 +36,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countComments || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countComments || 0"
+                  :end-val="statistics.countComments || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -47,7 +53,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countNotifications || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countNotifications || 0"
+                  :end-val="statistics.countNotifications || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -58,7 +66,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countOrganizations || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countOrganizations || 0"
+                  :end-val="statistics.countOrganizations || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -69,7 +79,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countProjects || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countProjects || 0"
+                  :end-val="statistics.countProjects || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -84,7 +96,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countInvites || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countInvites || 0"
+                  :end-val="statistics.countInvites || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -95,7 +109,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countFollows || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countFollows || 0"
+                  :end-val="statistics.countFollows || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -106,7 +122,9 @@
               size="x-large"
               uppercase>
               <no-ssr slot="count">
-                <hc-count-to :end-val="statistics.countShouts || 0" />
+                <hc-count-to
+                  :start-val="statisticsBefore.countShouts || 0"
+                  :end-val="statistics.countShouts || 0" />
               </no-ssr>
             </ds-number>
           </ds-flex-item>
@@ -126,13 +144,24 @@ export default {
   },
   data() {
     return {
-      statistics: {}
+      statistics: {},
+      statisticsBefore: {}
     }
   },
   computed: {
     isClient() {
       return process.client
     }
+  },
+  watch: {
+    statistics(newVal) {
+      setTimeout(() => {
+        this.statisticsBefore = { ...this.statistics }
+      }, 3000)
+    }
+  },
+  mounted() {
+    this.$apollo.queries.statistics.startPolling(5000)
   },
   apollo: {
     statistics: {
