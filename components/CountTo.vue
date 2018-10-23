@@ -1,7 +1,25 @@
+<template>
+  <span>
+    <no-ssr
+      placeholder="0"
+      tag="span">
+      <count-to
+        :start-val="startVal"
+        :end-val="endVal"
+        :duration="duration"
+        :autoplay="autoplay"
+        :separator="separator"
+      />
+    </no-ssr>
+  </span>
+</template>
+
 <script>
 import CountTo from 'vue-count-to'
 export default {
-  extends: CountTo,
+  components: {
+    CountTo
+  },
   props: {
     startVal: { type: Number, default: 0 },
     endVal: { type: Number, required: true },
