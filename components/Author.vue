@@ -11,10 +11,21 @@
       :href="author.slug ? $router.resolve({ name: 'profile-slug', params: { slug: author.slug } }).href : null"
       @mouseover="popoverMouseEnter"
       @mouseleave="popoveMouseLeave">
-      <ds-avatar
-        :image="author.avatar"
-        :name="author.name"
-        size="32px" /> <b class="username">{{ author.name | truncate(trunc) }}</b>
+      <div style="display: inline-block;">
+        <ds-avatar
+          :image="author.avatar"
+          :name="author.name"
+          style="display: inline-block;"
+          size="32px" />
+      </div>
+      <div style="display: inline-block; padding-top: 20px;">
+        <b class="username">{{ author.name | truncate(trunc) }}</b><br>
+        <ds-text
+          size="small"
+          color="soft">
+          {{ post.createdAt | date }}
+        </ds-text>
+      </div>
     </a>
     <div
       slot="popover"
@@ -26,35 +37,32 @@
         :name="author.name || 'Anonymus'"
         class="profile-avatar"
         size="90px" />-->
+      <hc-badges
+        v-if="author.badges && author.badges.length"
+        :badges="author.badges"
+        size="small"
+        style="padding-top: 5px; margin-bottom: -15px" />
       <ds-flex>
         <ds-flex-item class="ds-tab-nav-item">
           <ds-space margin="small">
-            <ds-text
-              size="x-large"
-              style="margin-bottom: 0; text-align: center">{{ fanCount }}</ds-text>
-            <ds-text
-              size="small"
-              style="text-align: center">Fans</ds-text>
+            <ds-number
+              :count="fanCount"
+              label="Fans"
+              size="x-large" />
           </ds-space>
         </ds-flex-item>
         <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
           <ds-space margin="small">
-            <ds-text
-              size="x-large"
-              style="margin-bottom: 0; text-align: center">{{ author.contributionsCount || 0 }}</ds-text>
-            <ds-text
-              size="small"
-              style="text-align: center">Beiträge</ds-text>
+            <ds-number
+              :count="author.contributionsCount"
+              label="Beiträge" />
           </ds-space>
         </ds-flex-item>
         <ds-flex-item class="ds-tab-nav-item">
           <ds-space margin="small">
-            <ds-text
-              size="x-large"
-              style="margin-bottom: 0; text-align: center">{{ author.commentsCount || 0 }}</ds-text>
-            <ds-text
-              size="small"
-              style="text-align: center">Kommentare</ds-text>
+            <ds-number
+              :count="author.commentsCount"
+              label="Kommentare" />
           </ds-space>
         </ds-flex-item>
       </ds-flex>
@@ -85,6 +93,8 @@
 
 <script>
 import HcFollowButton from '~/components/FollowButton.vue'
+import HcCountTo from '~/components/CountTo.vue'
+import HcBadges from '~/components/Badges.vue'
 
 let mouseEnterTimer = null
 let mouseLeaveTimer = null
@@ -92,7 +102,9 @@ let mouseLeaveTimer = null
 export default {
   name: 'HcAuthor',
   components: {
-    HcFollowButton
+    HcFollowButton,
+    HcCountTo,
+    HcBadges
   },
   props: {
     post: { type: Object, default: null },
