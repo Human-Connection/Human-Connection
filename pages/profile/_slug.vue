@@ -16,19 +16,28 @@
             class="profile-avatar"
             size="120px" />
           <h3 style="text-align: center;">{{ user.name }}</h3>
-          <ds-space/>
+          <hc-badges
+            v-if="user.badges && user.badges.length"
+            :badges="user.badges"
+            style="margin-top: -5px" />
           <ds-flex>
-            <ds-flex-item style="text-align: center;">
-              <ds-text
-                size="x-large"
-                style="margin-bottom: 0;">{{ fanCount }}</ds-text>
-              <ds-text size="small">Fans</ds-text>
+            <ds-flex-item>
+              <no-ssr>
+                <ds-number label="Fans">
+                  <hc-count-to
+                    slot="count"
+                    :end-val="fanCount" />
+                </ds-number>
+              </no-ssr>
             </ds-flex-item>
-            <ds-flex-item style="text-align: center;">
-              <ds-text
-                size="x-large"
-                style="margin-bottom: 0;">{{ user.friendsCount }}</ds-text>
-              <ds-text size="small">Freunde</ds-text>
+            <ds-flex-item>
+              <no-ssr>
+                <ds-number label="Freunde">
+                  <hc-count-to
+                    slot="count"
+                    :end-val="user.friendsCount" />
+                </ds-number>
+              </no-ssr>
             </ds-flex-item>
           </ds-flex>
           <ds-space
@@ -40,7 +49,12 @@
           </ds-space>
         </ds-card>
         <ds-space/>
-        <h2 style="text-align: center; margin-bottom: 10px;">Netzwerk</h2>
+        <ds-heading
+          tag="h3"
+          soft
+          style="text-align: center; margin-bottom: 10px;">
+          Netzwerk
+        </ds-heading>
         <ds-card style="position: relative; height: auto;">
           <ds-space
             v-if="user.following && user.following.length"
@@ -56,9 +70,19 @@
               v-for="follow in user.following"
               :key="follow.id"
               margin="x-small">
-              <hc-related-user
-                :post="follow"
-                :trunc="15" />
+              <!-- TODO: find better solution for rendering errors -->
+              <no-ssr>
+                <hc-related-user
+                  :post="follow"
+                  :trunc="15" />
+              </no-ssr>
+            </ds-space>
+            <ds-space
+              v-if="user.followingCount - user.following.length"
+              margin="small">
+              <ds-text
+                size="small"
+                color="softer">und {{ user.followingCount - user.following.length }} weitere</ds-text>
             </ds-space>
           </template>
           <template v-else>
@@ -81,9 +105,19 @@
               v-for="follow in user.followedBy"
               :key="follow.id"
               margin="x-small">
-              <hc-related-user
-                :post="follow"
-                :trunc="15" />
+              <!-- TODO: find better solution for rendering errors -->
+              <no-ssr>
+                <hc-related-user
+                  :post="follow"
+                  :trunc="15" />
+              </no-ssr>
+            </ds-space>
+            <ds-space
+              v-if="user.followedByCount - user.followedBy.length"
+              margin="small">
+              <ds-text
+                size="small"
+                color="softer">und {{ user.followedByCount - user.followedBy.length }} weitere</ds-text>
             </ds-space>
           </template>
           <template v-else>
@@ -100,46 +134,61 @@
               <ds-flex>
                 <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
                   <ds-space margin="small">
-                    <ds-text
-                      size="x-large"
-                      style="margin-bottom: 0; text-align: center">{{ user.contributionsCount }}</ds-text>
-                    <ds-text
-                      size="small"
-                      style="text-align: center">Beiträge</ds-text>
+                    <!-- TODO: find better solution for rendering errors -->
+                    <no-ssr>
+                      <ds-number label="Beiträge">
+                        <hc-count-to
+                          slot="count"
+                          :end-val="user.contributionsCount" />
+                      </ds-number>
+                    </no-ssr>
                   </ds-space>
                 </ds-flex-item>
                 <ds-flex-item class="ds-tab-nav-item">
                   <ds-space margin="small">
-                    <ds-text
-                      size="x-large"
-                      style="margin-bottom: 0; text-align: center">{{ user.commentsCount }}</ds-text>
-                    <ds-text
-                      size="small"
-                      style="text-align: center">Kommentiert</ds-text>
+                    <!-- TODO: find better solution for rendering errors -->
+                    <no-ssr>
+                      <ds-number label="Kommentiert">
+                        <hc-count-to
+                          slot="count"
+                          :end-val="user.commentsCount" />
+                      </ds-number>
+                    </no-ssr>
                   </ds-space>
                 </ds-flex-item>
                 <ds-flex-item class="ds-tab-nav-item">
                   <ds-space margin="small">
-                    <ds-text
-                      size="x-large"
-                      style="margin-bottom: 0; text-align: center">{{ user.shoutedCount }}</ds-text>
-                    <ds-text
-                      size="small"
-                      style="text-align: center">Empfohlen</ds-text>
+                    <!-- TODO: find better solution for rendering errors -->
+                    <no-ssr>
+                      <ds-number label="Empfohlen">
+                        <hc-count-to
+                          slot="count"
+                          :end-val="user.shoutedCount" />
+                      </ds-number>
+                    </no-ssr>
                   </ds-space>
                 </ds-flex-item>
               </ds-flex>
             </ds-card>
           </ds-flex-item>
           <ds-flex-item
-            v-for="{ Post } in user.contributions"
+            v-for="post in user.contributions"
             :width="{ base: '100%', md: '100%', xl: '50%' }"
-            :key="Post.id">
+            :key="post.id">
             <hc-post-card
-              :post="Post"
+              :post="post"
               :show-author-popover="false" />
           </ds-flex-item>
         </ds-flex>
+        <ds-space
+          margin-top="large"
+          style="text-align: center">
+          <ds-button
+            icon="arrow-down"
+            ghost>
+            mehr laden
+          </ds-button>
+        </ds-space>
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -149,12 +198,16 @@
 import HcRelatedUser from '~/components/RelatedUser.vue'
 import HcPostCard from '~/components/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
+import HcCountTo from '~/components/CountTo.vue'
+import HcBadges from '~/components/Badges.vue'
 
 export default {
   components: {
     HcRelatedUser,
     HcPostCard,
-    HcFollowButton
+    HcFollowButton,
+    HcCountTo,
+    HcBadges
   },
   transition: {
     name: 'slide-up',

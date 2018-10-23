@@ -122,6 +122,11 @@ export default {
                 contributionsCount
                 commentsCount
                 followedByCount
+                badges {
+                  id
+                  key
+                  icon
+                }
               }
             }
             tags {
@@ -142,6 +147,11 @@ export default {
                   contributionsCount
                   commentsCount
                   followedByCount
+                  badges {
+                    id
+                    key
+                    icon
+                  }
                 }
               }
             }

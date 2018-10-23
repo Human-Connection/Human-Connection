@@ -58,6 +58,11 @@ export default {
                 shoutedCount
                 commentsCount
                 followedByCount
+                badges {
+                  id
+                  key
+                  icon
+                }
               }
             }
             commentsCount

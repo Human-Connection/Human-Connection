@@ -87,6 +87,11 @@ export default {
                   contributionsCount
                   followedByCount
                   commentsCount
+                  badges {
+                    id
+                    key
+                    icon
+                  }
                 }
               }
             }
