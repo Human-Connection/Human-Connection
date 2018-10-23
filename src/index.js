@@ -1,21 +1,21 @@
-// import { GraphQLServer } from 'graphql-yoga'
-import { applyMiddleware } from 'graphql-middleware'
-import { ApolloServer, makeExecutableSchema } from 'apollo-server'
+import { GraphQLServer } from 'graphql-yoga'
+import { makeExecutableSchema } from 'apollo-server'
 import { augmentSchema } from 'neo4j-graphql-js'
 import { typeDefs, resolvers } from './graphql-schema'
 import { v1 as neo4j } from 'neo4j-driver'
-import passwordMiddleware from './middleware/passwordMiddleware'
-import softDeleteMiddleware from './middleware/softDeleteMiddleware'
-import sluggifyMiddleware from './middleware/sluggifyMiddleware'
-import fixImageUrlsMiddleware from './middleware/fixImageUrlsMiddleware'
-import excerptMiddleware from './middleware/excerptMiddleware'
 import dotenv from 'dotenv'
-import {
-  GraphQLLowerCaseDirective,
-  GraphQLTrimDirective,
-  GraphQLDefaultToDirective
-} from 'graphql-custom-directives';
-import faker from 'faker'
+import mocks from './mocks'
+import middleware from './middleware'
+
+import passport from 'passport'
+import jwtStrategy from './jwt/strategy'
+import jwt from 'jsonwebtoken'
+
+// import {
+//   GraphQLLowerCaseDirective,
+//   GraphQLTrimDirective,
+//   GraphQLDefaultToDirective
+// } from 'graphql-custom-directives';
 
 dotenv.config()
 
@@ -25,15 +25,15 @@ const schema = makeExecutableSchema({
 })
 
 // augmentSchema will add auto generated mutations based on types in schema
-const augmentedSchema = augmentSchema(schema)
+// const augmentedSchema = augmentSchema(schema)
 
 // add custom directives
-const directives = [
-  GraphQLLowerCaseDirective,
-  GraphQLTrimDirective,
-  GraphQLDefaultToDirective
-]
-augmentedSchema._directives.push.apply(augmentedSchema._directives, directives)
+// const directives = [
+//   GraphQLLowerCaseDirective,
+//   GraphQLTrimDirective,
+//   GraphQLDefaultToDirective
+// ]
+// augmentedSchema._directives.push.apply(augmentedSchema._directives, directives)
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI || 'bolt://localhost:7687',
@@ -46,25 +46,51 @@ const driver = neo4j.driver(
 const MOCK = (process.env.MOCK === 'true')
 console.log('MOCK:', MOCK)
 
-const server = new ApolloServer({
-  context: {
-    driver
+const server = new GraphQLServer({
+  context: async (req) => {
+    const payload = {
+      driver,
+      user: null,
+      req: req.request
+    }
+    try {
+      const token = payload.req.headers.authorization.replace('Bearer ', '')
+      payload.user = await jwt.verify(token, process.env.JWT_SECRET)
+    } catch (err) {}
+
+    return payload
   },
+  schema: augmentSchema(schema),
   tracing: true,
-  schema: applyMiddleware(augmentedSchema, passwordMiddleware, sluggifyMiddleware, excerptMiddleware, fixImageUrlsMiddleware, softDeleteMiddleware),
-  mocks: MOCK ? {
-    User: () => ({
-      name: () => `${faker.name.firstName()} ${faker.name.lastName()}`,
-      email: () => `${faker.internet.email()}`
-    }),
-    Post: () => ({
-      title: () => faker.lorem.lines(1),
-      slug: () => faker.lorem.slug(3),
-      content: () => faker.lorem.paragraphs(5),
-      contentExcerpt: () => faker.lorem.paragraphs(1)
-    })
-  } : false
+  middlewares: middleware,
+  mocks: MOCK ? mocks : false
 })
-server.listen().then(({ url }) => {
-  console.log(`Server ready at ${url} 🚀`);
+
+passport.use('jwt', jwtStrategy())
+server.express.use(passport.initialize())
+
+server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
+
+// session middleware
+// server.express.use(session({
+//   name: 'qid',
+//   secret: process.env.JWT_SECRET,
+//   resave: true,
+//   saveUninitialized: true,
+//   cookie: {
+//     secure: process.env.NODE_ENV === 'production',
+//     maxAge: ms('1d')
+//   }
+// }))
+
+const serverConfig = {
+  port: 4000
+  // cors: {
+  //   credentials: true,
+  //   origin: [process.env.CLIENT_URI] // your frontend url.
+  // }
+}
+
+server.start(serverConfig, options =>  {
+  console.log(`Server ready at ${process.env.GRAPHQL_URI} 🚀`);
 })

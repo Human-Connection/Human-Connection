@@ -4,28 +4,28 @@ export default `
   mutation {
 
     # Users
-    u1: CreateUser(id: "u1", name: "Peter Lustig", password: "1234", email: "admin@test.de", avatar: "${faker.internet.avatar()}", role: Admin) {
+    u1: CreateUser(id: "u1", name: "Peter Lustig", password: "1234", email: "admin@example.org", avatar: "${faker.internet.avatar()}", role: admin) {
       id
       name
       email
       avatar
       role
     }
-    u2: CreateUser(id: "u2", name: "Bob der Bausmeister", password: "1234", email: "moderator@test.de", avatar: "${faker.internet.avatar()}", role: Moderator) {
+    u2: CreateUser(id: "u2", name: "Bob der Bausmeister", password: "1234", email: "moderator@example.org", avatar: "${faker.internet.avatar()}", role: moderator) {
       id
       name
       email
       avatar
       role
     }
-    u3: CreateUser(id: "u3", name: "Jenny Rostock", password: "1234", email: "user@test.de", avatar: "${faker.internet.avatar()}", role: Admin) {
+    u3: CreateUser(id: "u3", name: "Jenny Rostock", password: "1234", email: "user@example.org", avatar: "${faker.internet.avatar()}", role: user) {
       id
       name
       email
       avatar
       role
     }
-    u4: CreateUser(id: "u4", name: "Angie Banjie", password: "1234", email: "Angie_Banjie@yahoo.com", avatar: "${faker.internet.avatar()}", role: User) {
+    u4: CreateUser(id: "u4", name: "Angie Banjie", password: "1234", email: "angie@example.org", avatar: "${faker.internet.avatar()}", role: user) {
       id
       name
       email
@@ -36,12 +36,12 @@ export default `
     u1_blacklist_u4: AddUserBlacklisted(from: { id: "u1" }, to: { id: "u4" }) { from { id } }
 
     # Badges
-    b1: CreateBadge(id: "b1", key: "indiegogo_en_racoon", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_racoon") { id }
-    b2: CreateBadge(id: "b2", key: "indiegogo_en_rabbit", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_rabbit") { id }
-    b3: CreateBadge(id: "b3", key: "indiegogo_en_wolf", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_wolf") { id }
-    b4: CreateBadge(id: "b4", key: "indiegogo_en_bear", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_bear") { id }
-    b5: CreateBadge(id: "b5", key: "indiegogo_en_turtle", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_turtle") { id }
-    b6: CreateBadge(id: "b6", key: "indiegogo_en_rhino", type: Crowdfunding, status: Permanent, icon: "indiegogo_en_rhino") { id }
+    b1: CreateBadge(id: "b1", key: "indiegogo_en_racoon", type: Crowdfunding, status: permanent, icon: "indiegogo_en_racoon") { id }
+    b2: CreateBadge(id: "b2", key: "indiegogo_en_rabbit", type: Crowdfunding, status: permanent, icon: "indiegogo_en_rabbit") { id }
+    b3: CreateBadge(id: "b3", key: "indiegogo_en_wolf", type: Crowdfunding, status: permanent, icon: "indiegogo_en_wolf") { id }
+    b4: CreateBadge(id: "b4", key: "indiegogo_en_bear", type: Crowdfunding, status: permanent, icon: "indiegogo_en_bear") { id }
+    b5: CreateBadge(id: "b5", key: "indiegogo_en_turtle", type: Crowdfunding, status: permanent, icon: "indiegogo_en_turtle") { id }
+    b6: CreateBadge(id: "b6", key: "indiegogo_en_rhino", type: Crowdfunding, status: permanent, icon: "indiegogo_en_rhino") { id }
 
     b1_u1: AddUserBadges(from: {id: "b1"}, to: {id: "u1"}) { from { id } }
     b2_u1: AddUserBadges(from: {id: "b2"}, to: {id: "u1"}) { from { id } }
@@ -72,7 +72,7 @@ export default `
     p1: CreatePost(
       id: "p1",
       title: "Gedanken eines Polizisten zum Einsatz im Hambacher Forst",
-      content: "<p><strong>Diese Zukunftsstadt ist real und keine Computer-Animation – s</strong>ondern sie ist das Lebenswerk des mittlerweile über 100 Jahre alten Futuristen und Architekten Jacque Fresco aus Florida. In 35 Jahren (seit seinem 13. Lebensjahr) hat dieser zusammen mit seiner Frau seinen futuristischen Traum von einer besonderen Zukunftsstadt auf 85.000 Quadratmetern realisiert. In den Gebäuden und Gärten befinden sich u.a. ein Forschungszentrum, Vortragsräume und unzählige seiner Modelle &amp; Architekturentwürfe.</p><br /><p>Sein zentrales Anliegen ist eine resourcenbasierte Wirtschaft und die Abschaffung von Geld und Privatbesitz. Mit Hilfe von Roboterarbeit und dem Bedingungslosen Grundeinkommen (da nach seiner Ansicht in den kommenden Jahren fast alle Jobs automatisiert werden), möchte er eine ökologische Landwirtschaft mit Permakulturen etc. und eine effiziente Energiegewinnung (ausschließlich durch regenerative Energien) schaffen. Wenige kompatible Formen in einer sparsamen Modulbauweise (in die u.a. bereits variable Service- und Reparaturelemente integriert sind) sollen insgesamt eine soziale &amp; ökologische Utopie im Einklang mit der Natur ermöglichen.</p><br /><p>Nachfolgend der Direkt-Link auf den interessanten Artikel von Zoltan Istvan, der den Architekten und seine Frau in Florida besuchen durfte und seinen Artikel Ende 2016 auf „MOTHERBOARD“ veröffentlicht hatte:</p><br /><p>https://motherboard.vice.com/de/article/vv34nb/ich-habe-die-zukunft-besucht-in-der-wir-ohne-geld-steuern-und-besitz-leben </p><br /><p>Da soll noch jemand behaupten, es gäbe keine Utopien mehr bzw. keine Futuristen, die ihre kreativen und zukunftsfähigen Ideen (auch in ganz großem Stil) selbst in die Tat umsetzen. LG @all :) </p><br /><p><strong>Wir sind eine Menschheitsfamilie. • Wir sind eins. • Wir sind HUMAN CONNECTION</strong> ❤️</p>",
+      content: "<p><strong>Diese Zukunftsstadt ist real und keine Computer-Animation</strong> – sondern sie ist das Lebenswerk des mittlerweile über 100 Jahre alten Futuristen und Architekten Jacque Fresco aus Florida. In 35 Jahren (seit seinem 13. Lebensjahr) hat dieser zusammen mit seiner Frau seinen futuristischen Traum von einer besonderen Zukunftsstadt auf 85.000 Quadratmetern realisiert. In den Gebäuden und Gärten befinden sich u.a. ein Forschungszentrum, Vortragsräume und unzählige seiner Modelle &amp; Architekturentwürfe.</p><br /><p>Sein zentrales Anliegen ist eine resourcenbasierte Wirtschaft und die Abschaffung von Geld und Privatbesitz. Mit Hilfe von Roboterarbeit und dem Bedingungslosen Grundeinkommen (da nach seiner Ansicht in den kommenden Jahren fast alle Jobs automatisiert werden), möchte er eine ökologische Landwirtschaft mit Permakulturen etc. und eine effiziente Energiegewinnung (ausschließlich durch regenerative Energien) schaffen. Wenige kompatible Formen in einer sparsamen Modulbauweise (in die u.a. bereits variable Service- und Reparaturelemente integriert sind) sollen insgesamt eine soziale &amp; ökologische Utopie im Einklang mit der Natur ermöglichen.</p><br /><p>Nachfolgend der Direkt-Link auf den interessanten Artikel von Zoltan Istvan, der den Architekten und seine Frau in Florida besuchen durfte und seinen Artikel Ende 2016 auf „MOTHERBOARD“ veröffentlicht hatte:</p><br /><p>https://motherboard.vice.com/de/article/vv34nb/ich-habe-die-zukunft-besucht-in-der-wir-ohne-geld-steuern-und-besitz-leben </p><br /><p>Da soll noch jemand behaupten, es gäbe keine Utopien mehr bzw. keine Futuristen, die ihre kreativen und zukunftsfähigen Ideen (auch in ganz großem Stil) selbst in die Tat umsetzen. LG @all :) </p><br /><p><strong>Wir sind eine Menschheitsfamilie. • Wir sind eins. • Wir sind HUMAN CONNECTION</strong> ❤️</p>",
       image: "https://picsum.photos/1280/1024?image=352",
       visibility: Public,
       disabled: false,

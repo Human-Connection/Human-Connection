@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
+    "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
   },
   "author": "Grzegorz Leoniec",
@@ -16,20 +17,27 @@
     "apollo-client": "^2.3.2",
     "apollo-link-http": "^1.5.4",
     "apollo-server": "^2.0.4",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^6.0.0",
     "graphql-custom-directives": "^0.2.13",
-    "graphql-middleware": "^1.7.6",
+    "graphql-middleware": "1.7.6",
     "graphql-tag": "^2.9.2",
+    "graphql-yoga": "1.16.2",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.11",
+    "ms": "^2.1.1",
     "neo4j-driver": "^1.6.1",
-    "neo4j-graphql-js": "^1.0.2",
+    "neo4j-graphql-js": "1.0.4",
     "node-fetch": "^2.1.2",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
     "slug": "^0.9.1",
     "trunc-html": "^1.1.2"
   },
   "devDependencies": {
-    "faker": "^4.1.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "nodemon": "^1.17.5"
+    "faker": "^4.1.0",
+    "nodemon": "^1.18.4"
   }
 }
