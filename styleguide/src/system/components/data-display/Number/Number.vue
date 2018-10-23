@@ -15,8 +15,9 @@
       :uppercase="uppercase"
       :size="labelSize"
       class="ds-number-label"
-      color="soft"
-      v-html="label" />
+      color="soft">
+      {{ label }}
+    </ds-text>
   </div>
 </template>
 

@@ -26,8 +26,8 @@
 
 ```html
 <ds-number 
-    size="large"
-    label="collected donations from users">
-    <span slot="count">1.123.124,03 EUR</span>
-  <ds-number>
+  size="large"
+  label="collected donations from users">
+  <span slot="count">1.123.124,03 EUR</span>
+<ds-number>
 ```
