@@ -13,11 +13,16 @@ export default gql(`
         slug
         avatar
       }
+      badges {
+        id
+        key
+        icon
+      }
       badgesCount
       shoutedCount
       commentsCount
       followingCount
-      following {
+      following(first: 7) {
         id
         name
         slug
@@ -25,9 +30,14 @@ export default gql(`
         followedByCount
         contributionsCount
         commentsCount
+        badges {
+          id
+          key
+          icon
+        }
       }
       followedByCount
-      followedBy {
+      followedBy(first: 7)  {
         id
         name
         slug
@@ -35,23 +45,27 @@ export default gql(`
         followedByCount
         contributionsCount
         commentsCount
+        badges {
+          id
+          key
+          icon
+        }
       }
       contributionsCount
-      contributions {
-        Post {
-          id
-          slug
-          title
-          contentExcerpt
-          shoutedCount
-          commentsCount
-          image
-          author {
-            User {
-              id
-              avatar
-              name
-            }
+      contributions(first: 6) {
+        id
+        slug
+        title
+        contentExcerpt
+        shoutedCount
+        commentsCount
+        image
+        createdAt
+        author {
+          User {
+            id
+            avatar
+            name
           }
         }
       }
