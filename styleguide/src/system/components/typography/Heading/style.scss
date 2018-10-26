@@ -41,3 +41,17 @@
 .ds-heading-h6 {
   font-size: $font-size-small;
 }
+
+.ds-heading-no-margin {
+  margin: 0;
+}
+
+.ds-heading-align-left {
+  text-align: left
+}
+.ds-heading-align-center {
+  text-align: center
+}
+.ds-heading-align-right {
+  text-align: right
+}

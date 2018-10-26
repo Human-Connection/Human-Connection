@@ -32,3 +32,22 @@ Use primary headings for important headlines, like a page title. Use soft headin
 <ds-heading primary>The quick brown fox</ds-heading>
 <ds-heading soft>The quick brown fox</ds-heading>
 ```
+
+## No Margin
+
+You can remove the margin easily
+
+```
+<ds-heading no-margin>The quick brown fox</ds-heading>
+<ds-heading no-margin>The quick brown fox</ds-heading>
+```
+
+## Text Align
+
+Align text
+
+```
+<ds-heading align="left">The quick brown fox</ds-heading>
+<ds-heading align="center">The quick brown fox</ds-heading>
+<ds-heading align="right">The quick brown fox</ds-heading>
+```

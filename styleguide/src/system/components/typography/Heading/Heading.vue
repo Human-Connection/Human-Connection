@@ -4,8 +4,10 @@
     class="ds-heading"
     :class="[
       `ds-heading-${size || tag}`,
+      align && `ds-heading-align-${align}`,
       primary && `ds-heading-primary`,
-      soft && `ds-heading-soft`
+      soft && `ds-heading-soft`,
+      noMargin && `ds-heading-no-margin`
     ]"
   >
     <slot />
@@ -59,6 +61,25 @@ export default {
     soft: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Remove Margin
+     * `true, false`
+     */
+    noMargin: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * Text Align
+     * `left, center, right`
+     */
+    align: {
+      type: String,
+      default: null,
+      validator: value => {
+        return value.match(/(left|center|right)/)
+      }
     }
   }
 }
