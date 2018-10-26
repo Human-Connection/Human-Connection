@@ -89,7 +89,7 @@ type User {
   )
 
   comments: [WrittenComment]!
-  commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
+  commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true RETURN COUNT(r)")
 
   shouted: [Post]! @relation(name: "SHOUTED", direction: "OUT")
   shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
