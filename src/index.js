@@ -61,6 +61,15 @@ const server = new GraphQLServer({
     return payload
   },
   schema: augmentSchema(schema),
+  // TODO: switch to the part below when neo4j-graphql-js 1.0.5 or higher is available
+  // schema: augmentSchema(schema, {
+  //   query: {
+  //     exclude: ['Statistics']
+  //   },
+  //   mutation: {
+  //     exclude: ['Statistics']
+  //   }
+  // }),
   tracing: true,
   middlewares: middleware,
   mocks: MOCK ? mocks : false

@@ -4,7 +4,6 @@ import path from 'path'
 import bcrypt from 'bcryptjs'
 import zipObject from 'lodash/zipObject'
 import generateJwt from './jwt/generateToken'
-import values from 'lodash/values'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
 
 export const typeDefs =
@@ -78,7 +77,6 @@ export const resolvers = {
         }
         resolve(data)
       })
-
     }
     // usersBySubstring: neo4jgraphql
   },
