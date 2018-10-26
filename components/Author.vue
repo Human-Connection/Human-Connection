@@ -5,26 +5,32 @@
     :open-group="Math.random().toString()"
     placement="top-start"
     trigger="manual"
-    offset="5">
+    offset="0">
     <a
       v-router-link
       :href="author.slug ? $router.resolve({ name: 'profile-slug', params: { slug: author.slug } }).href : null"
+      style="white-space: nowrap; display: flex; align-items: center;"
       @mouseover="popoverMouseEnter"
       @mouseleave="popoveMouseLeave">
-      <div style="display: inline-block;">
+      <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
         <ds-avatar
           :image="author.avatar"
           :name="author.name"
-          style="display: inline-block;"
+          style="display: inline-block; vertical-align: middle;"
           size="32px" />
       </div>
-      <div style="display: inline-block; padding-top: 20px;">
-        <b class="username">{{ author.name | truncate(trunc) }}</b><br>
-        <ds-text
-          size="small"
-          color="soft">
-          {{ post.createdAt | date }}
-        </ds-text>
+      <div style="display: inline-block; height: 100%; vertical-align: middle;">
+        <b
+          class="username"
+          style="vertical-align: middle;">{{ author.name | truncate(trunc, 18) }}</b>
+        <template v-if="post.createdAt">
+          <br>
+          <ds-text
+            size="small"
+            color="soft">
+            {{ post.createdAt | date }}
+          </ds-text>
+        </template>
       </div>
     </a>
     <div
@@ -40,8 +46,7 @@
       <hc-badges
         v-if="author.badges && author.badges.length"
         :badges="author.badges"
-        size="small"
-        style="padding-top: 5px; margin-bottom: -15px" />
+        style="margin-bottom: -10px" />
       <ds-flex>
         <ds-flex-item class="ds-tab-nav-item">
           <ds-space margin="small">
