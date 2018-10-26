@@ -52,13 +52,14 @@ export default gql(`
         }
       }
       contributionsCount
-      contributions(first: $first, offset: $offset) {
+      contributions(first: $first, offset: $offset, orderBy: createdAt_desc) {
         id
         slug
         title
         contentExcerpt
         shoutedCount
         commentsCount
+        deleted
         image
         createdAt
         author {

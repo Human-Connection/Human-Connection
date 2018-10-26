@@ -179,7 +179,7 @@
             </ds-card>
           </ds-flex-item>
           <ds-flex-item
-            v-for="post in user.contributions"
+            v-for="post in user.contributions.filter(post => !post.deleted)"
             :width="{ base: '100%', md: '100%', xl: '50%' }"
             :key="post.id">
             <hc-post-card
@@ -192,7 +192,8 @@
           margin-top="large"
           style="text-align: center">
           <ds-button
-            icon="arrow-down"
+            :icon="$apollo.loading ? 'spinner' : 'arrow-down'"
+            :disabled="$apollo.loading"
             ghost
             @click="showMoreContributions">
             mehr laden
