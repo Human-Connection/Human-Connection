@@ -187,18 +187,10 @@
               :show-author-popover="false" />
           </ds-flex-item>
         </ds-flex>
-        <ds-space
+        <hc-load-more
           v-if="hasMore"
-          margin-top="large"
-          style="text-align: center">
-          <ds-button
-            :icon="$apollo.loading ? 'spinner' : 'arrow-down'"
-            :disabled="$apollo.loading"
-            ghost
-            @click="showMoreContributions">
-            mehr laden
-          </ds-button>
-        </ds-space>
+          :loading="$apollo.loading"
+          @click="showMoreContributions" />
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -212,6 +204,7 @@ import HcPostCard from '~/components/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
+import HcLoadMore from '~/components/LoadMore.vue'
 
 export default {
   components: {
@@ -219,7 +212,8 @@ export default {
     HcPostCard,
     HcFollowButton,
     HcCountTo,
-    HcBadges
+    HcBadges,
+    HcLoadMore
   },
   transition: {
     name: 'slide-up',

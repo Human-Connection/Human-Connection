@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export default gql(`
-  query User($slug: String!, $offset: Int, $first: Int) {
+  query User($slug: String!, $first: Int, $offset: Int) {
     User(slug: $slug) {
       id
       name
