@@ -15,11 +15,18 @@
             :name="user.name || 'Anonymus'"
             class="profile-avatar"
             size="120px" />
-          <h3 style="text-align: center;">{{ user.name }}</h3>
-          <hc-badges
+          <ds-space margin="small">
+            <ds-heading
+              tag="h3"
+              align="center"
+              no-margin>{{ user.name }}</ds-heading>
+          </ds-space>
+          <ds-space
             v-if="user.badges && user.badges.length"
-            :badges="user.badges"
-            style="margin-top: -5px" />
+            margin="x-small">
+            <hc-badges
+              :badges="user.badges" />
+          </ds-space>
           <ds-flex>
             <ds-flex-item>
               <no-ssr>
@@ -181,11 +188,13 @@
           </ds-flex-item>
         </ds-flex>
         <ds-space
+          v-if="hasMore"
           margin-top="large"
           style="text-align: center">
           <ds-button
             icon="arrow-down"
-            ghost>
+            ghost
+            @click="showMoreContributions">
             mehr laden
           </ds-button>
         </ds-space>
@@ -216,7 +225,9 @@ export default {
   data() {
     return {
       User: [],
-      voted: false
+      voted: false,
+      page: 1,
+      pageSize: 6
     }
   },
   computed: {
@@ -233,6 +244,15 @@ export default {
     },
     user() {
       return this.User ? this.User[0] : {}
+    },
+    offset() {
+      return (this.page - 1) * this.pageSize
+    },
+    hasMore() {
+      return (
+        this.user.contributions &&
+        this.user.contributions.length < this.user.contributionsCount
+      )
     }
   },
   watch: {
@@ -246,6 +266,27 @@ export default {
     fetchUser() {
       // TODO: we should use subscriptions instead of fetching the whole user again
       this.$apollo.queries.User.refetch()
+    },
+    showMoreContributions() {
+      // this.page++
+      // Fetch more data and transform the original result
+      this.page++
+      this.$apollo.queries.User.fetchMore({
+        variables: {
+          slug: this.$route.params.slug,
+          first: this.pageSize,
+          offset: this.offset
+        },
+        // Transform the previous result with new data
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          let output = { User: this.User }
+          output.User[0].contributions = [
+            ...previousResult.User[0].contributions,
+            ...fetchMoreResult.User[0].contributions
+          ]
+          return output
+        }
+      })
     }
   },
   apollo: {
@@ -253,7 +294,9 @@ export default {
       query: require('~/graphql/UserProfileQuery.js').default,
       variables() {
         return {
-          slug: this.$route.params.slug
+          slug: this.$route.params.slug,
+          first: this.pageSize,
+          offset: 0
         }
       }
     }
