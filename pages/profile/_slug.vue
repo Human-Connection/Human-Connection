@@ -74,7 +74,7 @@
           </ds-space>
           <template v-if="user.following && user.following.length">
             <ds-space
-              v-for="follow in user.following"
+              v-for="follow in uniq(user.following)"
               :key="follow.id"
               margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
@@ -109,7 +109,7 @@
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
             <ds-space
-              v-for="follow in user.followedBy"
+              v-for="follow in uniq(user.followedBy)"
               :key="follow.id"
               margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
@@ -179,7 +179,7 @@
             </ds-card>
           </ds-flex-item>
           <ds-flex-item
-            v-for="post in user.contributions.filter(post => !post.deleted)"
+            v-for="post in uniq(user.contributions.filter(post => !post.deleted))"
             :width="{ base: '100%', md: '100%', xl: '50%' }"
             :key="post.id">
             <hc-post-card
@@ -205,6 +205,8 @@
 </template>
 
 <script>
+import uniqBy from 'lodash/uniqBy'
+
 import HcRelatedUser from '~/components/RelatedUser.vue'
 import HcPostCard from '~/components/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
@@ -264,6 +266,9 @@ export default {
     }
   },
   methods: {
+    uniq(items, field = 'id') {
+      return uniqBy(items, field)
+    },
     fetchUser() {
       // TODO: we should use subscriptions instead of fetching the whole user again
       this.$apollo.queries.User.refetch()
