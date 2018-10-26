@@ -18,7 +18,9 @@ services:
       - MOCK=false
 
   neo4j:
-    image: neo4j:3.4
+    build:
+      context: .
+      dockerfile: Dockerfile.neo4j
     networks:
       - hc-network
     volumes:
