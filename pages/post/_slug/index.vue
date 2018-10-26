@@ -137,6 +137,7 @@ export default {
             comments(orderBy: _id_desc) {
               id
               contentExcerpt
+              createdAt
               deleted
               author {
                 User {
@@ -168,7 +169,8 @@ export default {
         return {
           slug: this.$route.params.slug
         }
-      }
+      },
+      fetchPolicy: 'cache-and-network'
     }
   }
 }

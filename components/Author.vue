@@ -28,7 +28,7 @@
           <ds-text
             size="small"
             color="soft">
-            {{ post.createdAt | date }}
+            {{ post.createdAt | dateTime }}
           </ds-text>
         </template>
       </div>

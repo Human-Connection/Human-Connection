@@ -46,6 +46,7 @@ export default {
             id
             title
             contentExcerpt
+            createdAt
             slug
             image
             author {

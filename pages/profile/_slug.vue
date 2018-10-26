@@ -286,7 +286,8 @@ export default {
             ...fetchMoreResult.User[0].contributions
           ]
           return output
-        }
+        },
+        fetchPolicy: 'cache-and-network'
       })
     }
   },
@@ -299,7 +300,8 @@ export default {
           first: this.pageSize,
           offset: 0
         }
-      }
+      },
+      fetchPolicy: 'cache-and-network'
     }
   }
 }
