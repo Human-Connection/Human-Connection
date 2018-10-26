@@ -139,6 +139,8 @@ type Comment {
   content: String!
   contentExcerpt: String
   post: Post @relation(name: "COMMENT", direction: "OUT")
+  createdAt: String,
+  updatedAt: String,
   deleted: Boolean
   disabled: Boolean
 }
