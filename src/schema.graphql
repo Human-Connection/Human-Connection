@@ -170,7 +170,7 @@ enum BadgeTypeEnum {
 }
 enum BadgeStatusEnum {
   permanent
-  temorary
+  temporary
 }
 
 type Organization {
