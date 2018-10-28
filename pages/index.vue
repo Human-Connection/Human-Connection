@@ -1,10 +1,11 @@
 <template>
   <div>
     <ds-flex
+      v-if="Post && Post.length"
       :width="{ base: '100%' }"
       gutter="base">
       <ds-flex-item
-        v-for="post in Post"
+        v-for="post in uniq(Post)"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
         :key="post.id">
         <hc-post-card :post="post" />
@@ -19,6 +20,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 
@@ -44,6 +46,9 @@ export default {
     }
   },
   methods: {
+    uniq(items, field = 'id') {
+      return uniqBy(items, field)
+    },
     href(post) {
       return this.$router.resolve({
         name: 'post-slug',
