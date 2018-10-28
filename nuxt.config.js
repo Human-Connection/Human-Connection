@@ -31,7 +31,9 @@ module.exports = {
       'reset',
       'reset-token',
       'pages-slug'
-    ]
+    ],
+    // pages to keep alive
+    keepAlivePages: ['index']
   },
   /*
   ** Headers of the page
@@ -65,6 +67,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/keep-alive.js', ssr: false },
     { src: '~/plugins/design-system.js', ssr: true },
     { src: '~/plugins/vue-directives.js', ssr: false },
     { src: '~/plugins/v-tooltip.js', ssr: false },

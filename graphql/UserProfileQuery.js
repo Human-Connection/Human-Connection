@@ -6,6 +6,7 @@ export default gql(`
       id
       name
       avatar
+      createdAt
       friendsCount
       friends {
         id

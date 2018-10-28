@@ -7,7 +7,9 @@
       :header="post.title"
       :image="post.image"
       style="cursor: pointer; position: relative;">
-      <div v-html="post.contentExcerpt" />
+      <div
+        class="hc-editor-content"
+        v-html="post.contentExcerpt" />
       <ds-space />
       <ds-space
         margin="small"

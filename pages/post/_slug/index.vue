@@ -8,7 +8,7 @@
     <ds-space margin-bottom="small" />
     <!-- Content -->
     <div
-      class="content"
+      class="content hc-editor-content"
       v-html="post.content" />
     <!-- Shout Button -->
     <ds-space margin="xx-large" />
@@ -182,12 +182,6 @@ export default {
 .post-card {
   // max-width: 800px;
   margin: auto;
-
-  .content {
-    br {
-      display: none;
-    }
-  }
 
   .comments {
     margin-top: $space-small;

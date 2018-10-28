@@ -20,6 +20,12 @@
               tag="h3"
               align="center"
               no-margin>{{ user.name }}</ds-heading>
+            <ds-text
+              align="center"
+              color="soft"
+              size="small">
+              Mitglied seid {{ user.createdAt | date('MMMM yyyy') }}
+            </ds-text>
           </ds-space>
           <ds-space
             v-if="user.badges && user.badges.length"
