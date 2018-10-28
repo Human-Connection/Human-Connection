@@ -3,8 +3,12 @@ import softDeleteMiddleware from './softDeleteMiddleware'
 import sluggifyMiddleware from './sluggifyMiddleware'
 import fixImageUrlsMiddleware from './fixImageUrlsMiddleware'
 import excerptMiddleware from './excerptMiddleware'
+import dateTimeMiddleware from './dateTimeMiddleware';
+import xssMiddleware from './xssMiddleware';
 
 export default [
+  xssMiddleware,
+  dateTimeMiddleware,
   passwordMiddleware,
   sluggifyMiddleware,
   excerptMiddleware,

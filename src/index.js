@@ -6,16 +6,12 @@ import { v1 as neo4j } from 'neo4j-driver'
 import dotenv from 'dotenv'
 import mocks from './mocks'
 import middleware from './middleware'
+import applyDirectives from './bootstrap/directives'
+import applyScalars from './bootstrap/scalars'
 
 import passport from 'passport'
 import jwtStrategy from './jwt/strategy'
 import jwt from 'jsonwebtoken'
-
-// import {
-//   GraphQLLowerCaseDirective,
-//   GraphQLTrimDirective,
-//   GraphQLDefaultToDirective
-// } from 'graphql-custom-directives';
 
 dotenv.config()
 
@@ -23,17 +19,6 @@ const schema = makeExecutableSchema({
   typeDefs,
   resolvers
 })
-
-// augmentSchema will add auto generated mutations based on types in schema
-// const augmentedSchema = augmentSchema(schema)
-
-// add custom directives
-// const directives = [
-//   GraphQLLowerCaseDirective,
-//   GraphQLTrimDirective,
-//   GraphQLDefaultToDirective
-// ]
-// augmentedSchema._directives.push.apply(augmentedSchema._directives, directives)
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI || 'bolt://localhost:7687',
@@ -45,6 +30,15 @@ const driver = neo4j.driver(
 
 const MOCK = (process.env.MOCK === 'true')
 console.log('MOCK:', MOCK)
+
+const augumentedSchema = augmentSchema(schema, {
+  query: {
+    exclude: ['Statistics', 'LoggedInUser']
+  },
+  mutation: {
+    exclude: ['Statistics', 'LoggedInUser']
+  }
+})
 
 const server = new GraphQLServer({
   context: async (req) => {
@@ -60,15 +54,7 @@ const server = new GraphQLServer({
 
     return payload
   },
-  // schema: augmentSchema(schema),
-  schema: augmentSchema(schema, {
-    query: {
-      exclude: ['Statistics', 'LoggedInUser']
-    },
-    mutation: {
-      exclude: ['Statistics', 'LoggedInUser']
-    }
-  }),
+  schema: applyScalars(applyDirectives(augumentedSchema)),
   tracing: true,
   middlewares: middleware,
   mocks: MOCK ? mocks : false
@@ -78,18 +64,6 @@ passport.use('jwt', jwtStrategy())
 server.express.use(passport.initialize())
 
 server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
-
-// session middleware
-// server.express.use(session({
-//   name: 'qid',
-//   secret: process.env.JWT_SECRET,
-//   resave: true,
-//   saveUninitialized: true,
-//   cookie: {
-//     secure: process.env.NODE_ENV === 'production',
-//     maxAge: ms('1d')
-//   }
-// }))
 
 const serverConfig = {
   port: 4000
