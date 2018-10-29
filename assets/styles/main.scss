@@ -108,10 +108,11 @@ blockquote {
       margin-top: 15px;
     }
   }
-  .linebreak {
-    display: none;
+  *:first-child {
+    margin-top: 0;
   }
-  // br {
-  //   display: none;
-  // }
+  // avoid double breaks
+  br + p {
+    margin-top: 0;
+  }
 }
