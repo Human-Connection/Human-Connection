@@ -76,6 +76,7 @@ function clean (dirty) {
         return {
           tagName: 'img',
           attribs: {
+            // TODO: use environment variables
             src: `http://localhost:3050/images?url=${src}`
           }
         }
@@ -83,14 +84,20 @@ function clean (dirty) {
     }
   })
 
-  // remove empty html tags and duplicated returns
+  // remove empty html tags and duplicated linebreaks and returns
   dirty = dirty
+    // remove all tags with "space only"
     .replace(/<[a-z]>[\s]*<\/[a-z]>/igm, '')
+    // remove all iframes
     .replace(/(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/igm, '')
-    .replace(/<p>[\s]*(<br ?\/?>)+[\s]*<\/p>/igm, '<br />')
-    .replace(/(<br ?\/?>){2,}/igm, '<br />')
+    // replace all p tags with line breaks (and spaces) only by single linebreaks
+    .replace(/<p>[\s]*(<br ?\/?>)+[\s]*<\/p>/igm, '<br>')
+    // replace multiple linebreaks with single ones
+    // limit linebreaks to max 2 (equivalent to html "br" linebreak)
+    .replace(/(<br ?\/?>){2,}/igm, '<br>')
     .replace(/[\n]{3,}/igm, '\n\n')
     .replace(/(\r\n|\n\r|\r|\n)/g, '<br>$1')
+    // remove additional linebreaks inside p tags
     .replace(/<p><br><\/p>/g, '')
   return dirty
 }
