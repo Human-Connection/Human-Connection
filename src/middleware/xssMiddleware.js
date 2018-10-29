@@ -26,7 +26,7 @@ function clean (dirty) {
   dirty = sanitizeHtml(dirty, {
     allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
     allowedAttributes: {
-      a: ['href', 'class', 'target', 'data-*' , 'contenteditable'],
+      a: ['href', 'class', 'target', 'data-*', 'contenteditable'],
       span: ['contenteditable', 'class', 'data-*'],
       img: ['src'],
       iframe: ['src', 'class', 'frameborder', 'allowfullscreen']
