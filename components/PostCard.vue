@@ -9,7 +9,7 @@
       style="cursor: pointer; position: relative;">
       <div
         class="hc-editor-content"
-        v-html="post.contentExcerpt" />
+        v-html="excerpt" />
       <ds-space />
       <ds-space
         margin="small"
@@ -51,6 +51,12 @@ export default {
     showAuthorPopover: {
       type: Boolean,
       default: true
+    }
+  },
+  computed: {
+    excerpt() {
+      // remove all links from excerpt to prevent issues with the serounding link
+      return this.post.contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '')
     }
   },
   methods: {
