@@ -172,6 +172,11 @@ module.exports = {
   */
   build: {
     /*
+     * Polyfill missing ES6 & 7 Methods to work on older Browser
+     */
+    vendor: ['@babel/polyfill'],
+
+    /*
     ** You can extend webpack config here
     */
     extend(config, ctx) {
