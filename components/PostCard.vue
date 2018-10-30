@@ -7,10 +7,11 @@
       :header="post.title"
       :image="post.image"
       style="cursor: pointer; position: relative;">
-      <div
-        class="hc-editor-content"
-        v-html="excerpt" />
-      <ds-space />
+      <ds-space margin-bottom="large">
+        <div
+          class="hc-editor-content"
+          v-html="excerpt" />
+      </ds-space>
       <ds-space
         margin="small"
         style="position: absolute; bottom: 44px;">
@@ -37,6 +38,7 @@
 
 <script>
 import HcAuthor from '~/components/Author.vue'
+import { randomBytes } from 'crypto'
 
 export default {
   name: 'HcPostCard',
@@ -56,7 +58,13 @@ export default {
   computed: {
     excerpt() {
       // remove all links from excerpt to prevent issues with the serounding link
-      return this.post.contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '')
+      let excerpt = this.post.contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '')
+      // do not display content that is only linebreaks
+      if (excerpt.replace(/<br>/gim, '').trim() === '') {
+        excerpt = ''
+      }
+
+      return excerpt
     }
   },
   methods: {
