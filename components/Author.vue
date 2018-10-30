@@ -52,7 +52,7 @@
           <ds-space margin="small">
             <ds-number
               :count="fanCount"
-              label="Fans"
+              label="Folgen"
               size="x-large" />
           </ds-space>
         </ds-flex-item>

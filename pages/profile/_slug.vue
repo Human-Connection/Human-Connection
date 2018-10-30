@@ -36,19 +36,19 @@
           <ds-flex>
             <ds-flex-item>
               <no-ssr>
-                <ds-number label="Fans">
+                <ds-number label="Folgen">
                   <hc-count-to
                     slot="count"
-                    :end-val="fanCount" />
+                    :end-val="followedByCount" />
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item>
               <no-ssr>
-                <ds-number label="Freunde">
+                <ds-number label="Folgt">
                   <hc-count-to
                     slot="count"
-                    :end-val="user.friendsCount" />
+                    :end-val="Number(user.followingCount) || 0" />
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
@@ -237,7 +237,7 @@ export default {
     myProfile() {
       return this.$route.params.slug === this.$store.getters['auth/user'].slug
     },
-    fanCount() {
+    followedByCount() {
       let count = Number(this.user.followedByCount) || 0
       if (this.voted) {
         // NOTE: this is used for presentation
