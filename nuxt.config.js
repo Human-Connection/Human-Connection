@@ -1,17 +1,10 @@
 const pkg = require('./package')
 const envWhitelist = [
-  'BUILD_COMMIT',
   'NODE_ENV',
-  'WEBAPP_HOST',
-  'WEBAPP_PORT',
-  'WEBAPP_BASE_URL',
-  'API_HOST',
-  'API_PORT',
-  'EMBED_API_URL',
-  'SENTRY_DNS_PUBLIC',
-  'MAPBOX_TOKEN',
+  'BACKEND_URL',
   'MAINTENANCE'
 ]
+
 
 module.exports = {
   mode: 'universal',
@@ -136,27 +129,7 @@ module.exports = {
     // },
     // required
     clientConfigs: {
-      default: {
-        // required
-        httpEndpoint: 'http://localhost:4000',
-        // optional
-        // See https://www.apollographql.com/docs/link/links/http.html#options
-        httpLinkOptions: {
-          credentials: 'same-origin'
-        },
-        credentials: true,
-
-        // You can use `wss` for secure connection (recommended in production)
-        // Use `null` to disable subscriptions
-        // wsEndpoint: 'ws://localhost:4000', // optional
-        // LocalStorage token
-        tokenName: 'apollo-token', // optional
-        // Enable Automatic Query persisting with Apollo Engine
-        persisting: false, // Optional
-        // Use websockets for everything (no HTTP)
-        // You need to pass a `wsEndpoint` for this to work
-        websocketsOnly: false // Optional
-      }
+      default: '~/plugins/apollo-config.js',
     }
   },
 
