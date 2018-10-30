@@ -108,8 +108,10 @@ export const actions = {
             login(email: $email, password: $password) {
               id
               name
+              slug
               email
               avatar
+              role
               token
             }
           }

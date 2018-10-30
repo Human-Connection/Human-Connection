@@ -7,15 +7,38 @@
           href="/">
           <ds-logo />
         </a>
-        <a
-          v-router-link
-          :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href">
-          <ds-avatar
-            :image="user.avatar"
-            :name="user.name"
-            style="float: right"
-            size="42" />
-        </a>
+        <template v-if="isLoggedIn">
+          <no-ssr>
+            <v-popover
+              :open.sync="isPopoverOpen"
+              :open-group="Math.random().toString()"
+              placement="bottom-end"
+              trigger="manual"
+              offset="10"
+              style="float: right">
+              <a
+                :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
+                @click.prevent="toggleMenu()">
+                <ds-avatar
+                  :image="user.avatar"
+                  :name="user.name"
+                  size="42" />
+              </a>
+              <div
+                slot="popover"
+                style="padding-top: .5rem; padding-bottom: .5rem;"
+                @mouseover="popoverMouseEnter"
+                @mouseleave="popoveMouseLeave">
+                Hallo {{ user.name }}
+                <ds-menu
+                  :routes="routes"
+                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;"/>
+                <ds-space margin="xx-small" />
+                <nuxt-link :to="{ name: 'logout'}">Logout</nuxt-link>
+              </div>
+            </v-popover>
+          </no-ssr>
+        </template>
       </ds-container>
     </div>
     <ds-container>
@@ -27,10 +50,71 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { setTimeout } from 'timers'
+let mouseEnterTimer = null
+let mouseLeaveTimer = null
+
 export default {
+  data() {
+    return {
+      isPopoverOpen: false
+    }
+  },
   computed: {
-    user() {
-      return this.$store.getters['auth/user']
+    ...mapGetters({
+      user: 'auth/user',
+      isLoggedIn: 'auth/isLoggedIn',
+      isAdmin: 'auth/isLoggedIn'
+    }),
+    routes() {
+      if (!this.user.slug) {
+        return []
+      }
+      let routes = [
+        {
+          name: 'Mein Profil',
+          path: `/profile/${this.user.slug}`
+        },
+        {
+          name: 'Einstellungen',
+          path: `/settings`
+        }
+      ]
+      if (this.isAdmin) {
+        routes.push({
+          name: 'Systemverwaltung',
+          path: `/admin`
+        })
+      }
+      return routes
+    }
+  },
+  beforeDestroy() {
+    clearTimeout(mouseEnterTimer)
+    clearTimeout(mouseLeaveTimer)
+  },
+  methods: {
+    toggleMenu() {
+      this.isPopoverOpen = !this.isPopoverOpen
+    },
+    popoverMouseEnter() {
+      clearTimeout(mouseEnterTimer)
+      clearTimeout(mouseLeaveTimer)
+      if (!this.isPopoverOpen) {
+        mouseEnterTimer = setTimeout(() => {
+          this.isPopoverOpen = true
+        }, 500)
+      }
+    },
+    popoveMouseLeave() {
+      clearTimeout(mouseEnterTimer)
+      clearTimeout(mouseLeaveTimer)
+      if (this.isPopoverOpen) {
+        mouseLeaveTimer = setTimeout(() => {
+          this.isPopoverOpen = false
+        }, 300)
+      }
     }
   }
 }
