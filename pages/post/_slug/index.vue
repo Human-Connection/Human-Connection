@@ -91,15 +91,21 @@ export default {
     HcAuthor,
     HcShoutButton
   },
-
+  head() {
+    return {
+      title: this.title
+    }
+  },
   data() {
     return {
-      post: null
+      post: null,
+      title: 'loading'
     }
   },
   watch: {
     Post(post) {
       this.post = post[0]
+      this.title = this.post.title
     }
   },
   apollo: {
