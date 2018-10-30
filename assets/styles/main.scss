@@ -111,6 +111,9 @@ blockquote {
   *:first-child {
     margin-top: 0;
   }
+  *:last-child {
+    margin-bottom: 0;
+  }
   // avoid double breaks
   br + p {
     margin-top: 0;
