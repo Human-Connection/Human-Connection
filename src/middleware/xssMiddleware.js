@@ -1,3 +1,4 @@
+import walkRecursive from './helpers/walkRecursive'
 import trunc from 'trunc-html'
 // import { getByDot, setByDot, getItems, replaceItems } from 'feathers-hooks-common'
 import sanitizeHtml from 'sanitize-html'
@@ -62,6 +63,11 @@ function clean (dirty) {
       img: function (tagName, attribs) {
         let src = attribs.src
 
+        if (!src) {
+          // remove broken images
+          return {}
+        }
+
         // if (isEmpty(hook.result)) {
         //   const config = hook.app.get('thumbor')
         //   if (config && src.indexOf(config < 0)) {
@@ -102,30 +108,16 @@ function clean (dirty) {
   return dirty
 }
 
-// iterate through all fields and clean the values
-function cleanAll (result, key, recursive, fields = ['content', 'contentExcerpt']) {
-  if (result && typeof result === 'string' && fields.includes(key)) {
-    result = clean(result)
-  } else if (result && Array.isArray(result)) {
-    result.forEach((res, index) => {
-      result[index] = cleanAll(result[index], index, true, fields)
-    })
-  } else if (result && typeof result === 'object') {
-    Object.keys(result).forEach(key => {
-      result[key] = cleanAll(result[key], key, true, fields)
-    })
-  }
-  return result
-}
+const fields = ['content', 'contentExcerpt']
 
 export default {
   Mutation: async (resolve, root, args, context, info) => {
-    args = cleanAll(args)
+    args = walkRecursive(args, fields, clean)
     const result = await resolve(root, args, context, info)
     return result
   },
   Query: async (resolve, root, args, context, info) => {
     const result = await resolve(root, args, context, info)
-    return cleanAll(result)
+    return walkRecursive(result, fields, clean)
   }
 }

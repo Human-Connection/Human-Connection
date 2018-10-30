@@ -15,7 +15,7 @@ import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
-const schema = makeExecutableSchema({
+let schema = makeExecutableSchema({
   typeDefs,
   resolvers
 })
@@ -31,7 +31,7 @@ const driver = neo4j.driver(
 const MOCK = (process.env.MOCK === 'true')
 console.log('MOCK:', MOCK)
 
-const augumentedSchema = augmentSchema(schema, {
+schema = augmentSchema(schema, {
   query: {
     exclude: ['Statistics', 'LoggedInUser']
   },
@@ -39,6 +39,7 @@ const augumentedSchema = augmentSchema(schema, {
     exclude: ['Statistics', 'LoggedInUser']
   }
 })
+schema = applyScalars(applyDirectives(schema))
 
 const server = new GraphQLServer({
   context: async (req) => {
@@ -54,9 +55,9 @@ const server = new GraphQLServer({
 
     return payload
   },
-  schema: applyScalars(applyDirectives(augumentedSchema)),
+  schema: schema,
   tracing: true,
-  middlewares: middleware,
+  middlewares: middleware(schema),
   mocks: MOCK ? mocks : false
 })
 

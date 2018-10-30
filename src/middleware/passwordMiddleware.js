@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+import walkRecursive from './helpers/walkRecursive'
 
 export default {
   Mutation: {
@@ -11,9 +12,9 @@ export default {
   },
   Query: async (resolve, root, args, context, info) => {
     const result = await resolve(root, args, context, info)
-    if (result && result.password) {
-      result.password = '*****'
-    }
-    return result
+    return walkRecursive(result, ['password'], () => {
+      // replace password with asterix
+      return '*****'
+    })
   }
 }
