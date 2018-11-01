@@ -17,6 +17,9 @@ services:
       - CLIENT_URI=http://localhost:3000
       - JWT_SECRET=b/&&7b78BF&fv/Vd
       - MOCK=false
+    volumes:
+      - .:/Backend
+      - /Backend/node_modules
 
   neo4j:
     ports:
