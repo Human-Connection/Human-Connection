@@ -8,7 +8,7 @@ minikube start
 Build your Docker image, using the Minikube Docker daemon:
 ```sh
 eval $(minikube docker-env)
-docker build -t humanconnection/backend:edge .
+docker build -t humanconnection/backend:latest .
 ```
 
 check that the image is in Minikube’s Docker registry:
