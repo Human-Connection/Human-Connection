@@ -2,7 +2,6 @@ version: "3.7"
 
 services:
   backend:
-    container_name: backend.127.0.0.1.xip.io
     build: .
     networks:
       - hc-network
@@ -37,7 +36,6 @@ services:
 
 networks:
   hc-network:
-    name: hc-network
 
 volumes:
   neo4j-data:
