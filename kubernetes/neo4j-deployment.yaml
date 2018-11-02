@@ -28,6 +28,7 @@ spec:
         - containerPort: 7687
         - containerPort: 7474
         resources: {}
+        imagePullPolicy: IfNotPresent
         volumeMounts:
         - mountPath: /data
           name: neo4j-data
