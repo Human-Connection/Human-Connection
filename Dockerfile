@@ -4,7 +4,7 @@ LABEL Description="Server part of the social network Human Connection" Vendor="H
 # expose the app port
 EXPOSE 4000
 
-ARG WORKDIR=/Backend
+ARG WORKDIR=/backend
 
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR

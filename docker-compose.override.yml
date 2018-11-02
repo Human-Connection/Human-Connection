@@ -3,6 +3,9 @@ version: "3.7"
 services:
   backend:
     container_name: backend.127.0.0.1.xip.io
+    volumes:
+      - .:/backend
+      - /backend/node_modules
 
 networks:
   hc-network:
