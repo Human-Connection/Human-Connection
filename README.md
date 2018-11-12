@@ -1,4 +1,4 @@
-# Human-Connection - NITRO API
+# Human-Connection - NITRO Backend
 
 > This Prototype tries to resolve the biggest hurdle of connecting
 > our services together. This is not possible in a sane way using
@@ -89,7 +89,7 @@ Note that grand-stack-starter does not currently bundle a distribution
 of Neo4j. You can download [Neo4j Desktop](https://neo4j.com/download/)
 and run locally for development, spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download/),
 run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-cloud-deployment/),
-or [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/).
+[spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/) or on Debian-based systems install [Neo4j from the Debian Repository](http://debian.neo4j.org/).
 Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
 
 ## Mocking API Results
@@ -115,7 +115,7 @@ npm run seedDb
 - [x] add jwt authentication
 - [ ] get directives working correctly (@toLower, @auth, @role, etc.)
 - [ ] check if search is working
-- [ ] check if sorting is working
+- [x] check if sorting is working
 - [x] check if pagination is working
 - [ ] check if upload is working (using graphql-yoga?)
 - [x] evaluate middleware 
