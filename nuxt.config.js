@@ -1,10 +1,5 @@
 const pkg = require('./package')
-const envWhitelist = [
-  'NODE_ENV',
-  'BACKEND_URL',
-  'MAINTENANCE'
-]
-
+const envWhitelist = ['NODE_ENV', 'BACKEND_URL', 'MAINTENANCE']
 
 module.exports = {
   mode: 'universal',
@@ -102,6 +97,7 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/apollo',
+    '@nuxtjs/axios',
     ['@nuxtjs/dotenv', { only: envWhitelist }],
     ['nuxt-env', { keys: envWhitelist }]
   ],
@@ -129,7 +125,7 @@ module.exports = {
     // },
     // required
     clientConfigs: {
-      default: '~/plugins/apollo-config.js',
+      default: '~/plugins/apollo-config.js'
     }
   },
 

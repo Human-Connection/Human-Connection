@@ -48,6 +48,10 @@ export default {
           path: `/admin/categories`
         },
         {
+          name: 'Tags',
+          path: `/admin/tags`
+        },
+        {
           name: 'Settings',
           path: `/admin/settings`
         }

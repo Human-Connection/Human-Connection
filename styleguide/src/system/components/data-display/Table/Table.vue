@@ -5,7 +5,11 @@
     <table
       cellpadding="0"
       cellspacing="0"
-      class="ds-table">
+      class="ds-table"
+      :class="[
+        condensed && 'ds-table-condensed',
+        bordered && 'ds-table-bordered'
+    ]">
       <colgroup>
         <col
           v-for="header in headers"
@@ -24,7 +28,7 @@
       <tbody>
         <tr
           v-for="(row, index) in rows"
-          :key="index">
+          :key="row.key || index">
           <ds-table-col
             v-for="col in row"
             :key="col.key">
@@ -75,6 +79,20 @@ export default {
       default() {
         return null
       }
+    },
+    /**
+     * Should the table be more condense?
+     */
+    condensed: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * Should the table have borders?
+     */
+    bordered: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {

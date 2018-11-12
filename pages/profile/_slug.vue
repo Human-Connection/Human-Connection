@@ -21,10 +21,17 @@
               align="center"
               no-margin>{{ user.name }}</ds-heading>
             <ds-text
+              v-if="user.location && user.location.length"
               align="center"
               color="soft"
               size="small">
-              Mitglied seid {{ user.createdAt | date('MMMM yyyy') }}
+              <ds-icon name="map-marker" /> {{ user.location[0].name }}
+            </ds-text>
+            <ds-text
+              align="center"
+              color="soft"
+              size="small">
+              Mitglied seit {{ user.createdAt | date('MMMM yyyy') }}
             </ds-text>
           </ds-space>
           <ds-space
@@ -60,6 +67,18 @@
               :follow-id="user.id"
               @update="voted = true && fetchUser()" />
           </ds-space>
+          <template v-if="user.about">
+            <hr>
+            <ds-space
+              margin-top="small"
+              margin-bottom="small">
+              <ds-text
+                color="soft"
+                size="small">
+                {{ user.about }}
+              </ds-text>
+            </ds-space>
+          </template>
         </ds-card>
         <ds-space/>
         <ds-heading

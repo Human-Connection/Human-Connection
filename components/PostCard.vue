@@ -24,13 +24,22 @@
         </no-ssr>
       </ds-space>
       <template slot="footer">
-        <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
-          <ds-icon name="heart-o" /> <small>{{ post.shoutedCount }}</small>
-        </span>
-        &nbsp;
-        <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-          <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
-        </span>
+        <div style="display: inline-block; opacity: .5;">
+          <ds-icon
+            v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
+            v-for="category in post.categories"
+            :key="category.id"
+            :name="category.icon" />&nbsp;
+        </div>
+        <div style="display: inline-block; float: right">
+          <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
+            <ds-icon name="bullhorn" /> <small>{{ post.shoutedCount }}</small>
+          </span>
+          &nbsp;
+          <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
+            <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
+          </span>
+        </div>
       </template>
     </ds-card>
   </a>

@@ -1,10 +1,9 @@
 <template>
-  <div
+  <div 
     class="ds-form-item"
-    :class="$parentInput ? $parentInput.stateClasses : ''">
-    <ds-input-label
-      v-if="$parentInput"
-      :label="$parentInput.label"
+    :class="$parentInput.stateClasses">
+    <ds-input-label 
+      :label="$parentInput.label" 
       :for="$parentInput.id" />
     <slot/>
     <ds-input-error :error="$parentInput.error" />

@@ -85,7 +85,9 @@ export const actions = {
         slug: user.slug,
         email: user.email,
         avatar: user.avatar,
-        role: user.role
+        role: user.role,
+        locationId: user.locationId,
+        about: user.about
       })
       commit('SET_TOKEN', token)
     }
@@ -95,6 +97,21 @@ export const actions = {
       await dispatch('logout')
     }
     return getters.isLoggedIn
+  },
+  refresh({ state, commit }, { id, name, locationId, about, avatar }) {
+    if (!state.user.id || id !== state.user.id) {
+      return
+    }
+    commit('SET_USER', {
+      id: state.user.id, // do not change
+      name: name || state.user.name,
+      slug: state.user.slug, // do not change
+      email: state.user.email, // do not change
+      avatar: avatar || state.user.avatar,
+      role: state.user.role,
+      locationId: locationId || state.user.locationId,
+      about: about || state.user.about
+    })
   },
   async login({ commit }, { email, password }) {
     try {
@@ -112,6 +129,8 @@ export const actions = {
               email
               avatar
               role
+              locationId
+              about
               token
             }
           }

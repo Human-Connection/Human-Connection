@@ -1,0 +1,81 @@
+.ds-chip {
+  @include reset;
+  @include stack-space($space-xx-small);
+  position: relative;
+  display: inline-block;
+  font-family: $font-family-text;
+  line-height: $line-height-base;
+  padding: $space-xx-small $space-x-small;
+  border-radius: $border-radius-base;
+  font-weight: $font-weight-bold;
+  color: $text-color-base;
+  background-color: $background-color-softest;
+
+  &.ds-chip-removable {
+    padding-right: $space-x-small + $space-small;
+  }
+}
+
+.ds-chip-inverse {
+  color: $text-color-inverse;
+  background-color: $background-color-inverse-softer;
+}
+
+.ds-chip-primary {
+  color: $text-color-primary-inverse;
+  background-color: $background-color-primary;
+}
+
+.ds-chip-success {
+  color: $text-color-success-inverse;
+  background-color: $background-color-success;
+}
+
+.ds-chip-warning {
+  color: $text-color-warning-inverse;
+  background-color: $background-color-warning;
+}
+
+.ds-chip-danger {
+  color: $text-color-danger-inverse;
+  background-color: $background-color-danger;
+}
+
+.ds-chip-round {
+  border-radius: $border-radius-rounded;
+}
+
+.ds-chip-size-base {
+  font-size: $font-size-small;
+}
+
+.ds-chip-size-small {
+  font-size: $font-size-x-small;
+}
+
+.ds-chip-size-large {
+  font-size: $font-size-base;
+}
+
+.ds-chip-close {
+  @include reset-button;
+  position: absolute;
+  right: $space-xx-small;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-x-small;
+  width: $space-small;
+  height: $space-small;
+  border-radius: $border-radius-circle;
+  //background-color: $background-color-base;
+  opacity: $opacity-soft;
+  cursor: pointer;
+  transition: all $duration-short $ease-out-sharp;
+
+  &:hover {
+    opacity: 1;
+  }
+}

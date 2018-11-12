@@ -17,11 +17,18 @@
       :count="post.shoutedCount"
       :post-id="post.id" />
     <!-- Categories -->
-    <div class="tags">
+    <ds-icon
+      v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
+      v-for="category in post.categories"
+      :key="category.id"
+      :name="category.icon"
+      size="large" />&nbsp;
+    <ds-space margin-bottom="small" />
+    <!--<div class="tags">
       <ds-icon name="compass" /> <ds-tag
         v-for="category in post.categories"
-        :key="category.id">{{ category.name }}</ds-tag>
-    </div>
+        :key="category.id"><ds-icon :name="category.icon" /> {{ category.name }}</ds-tag>
+    </div>-->
     <!-- Tags -->
     <template v-if="post.tags && post.tags.length">
       <ds-space margin="xx-small"/>
@@ -140,7 +147,7 @@ export default {
               name
             }
             commentsCount
-            comments(orderBy: _id_desc) {
+            comments(orderBy: createdAt_desc) {
               id
               contentExcerpt
               createdAt
@@ -166,6 +173,7 @@ export default {
             categories {
               id
               name
+              icon
             }
             shoutedCount
           }
