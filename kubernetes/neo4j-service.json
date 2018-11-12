@@ -1,0 +1,43 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "neo4j",
+    "namespace": "default",
+    "selfLink": "/api/v1/namespaces/default/services/neo4j",
+    "uid": "57de6181-dea3-11e8-ace2-080027b5d96d",
+    "resourceVersion": "8326",
+    "creationTimestamp": "2018-11-02T13:29:37Z",
+    "labels": {
+      "io.kompose.service": "neo4j"
+    }
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "port-1",
+        "protocol": "TCP",
+        "port": 7687,
+        "targetPort": 7687,
+        "nodePort": 30116
+      },
+      {
+        "name": "port-2",
+        "protocol": "TCP",
+        "port": 7474,
+        "targetPort": 7474,
+        "nodePort": 32658
+      }
+    ],
+    "selector": {
+      "io.kompose.service": "neo4j"
+    },
+    "clusterIP": "10.108.175.122",
+    "type": "LoadBalancer",
+    "sessionAffinity": "None",
+    "externalTrafficPolicy": "Cluster"
+  },
+  "status": {
+    "loadBalancer": {}
+  }
+}
