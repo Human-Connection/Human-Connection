@@ -36,7 +36,7 @@ import DsButton from '@@/components/navigation/Button/Button'
 export default {
   name: 'DsCopyField',
   components: {
-    DsButton
+    'ds-button': DsButton
   },
   props: {
     /**

@@ -1,4 +1,4 @@
-# Human Connection - NITRO WebApp
+# Human Connection - NITRO Web
 
 ![UI Screenshot](screenshot.png)
 
