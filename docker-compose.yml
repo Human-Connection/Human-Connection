@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   backend:
-    container_name: backend.127.0.0.1.xip.io
+    image: humanconnection/backend:latest
     build: .
     networks:
       - hc-network
@@ -17,14 +17,9 @@ services:
       - CLIENT_URI=http://localhost:3000
       - JWT_SECRET=b/&&7b78BF&fv/Vd
       - MOCK=false
-    volumes:
-      - .:/Backend
-      - /Backend/node_modules
 
   neo4j:
-    ports:
-      - 7687:7687
-      - 7474:7474
+    image: humanconnection/neo4j:latest
     build:
       context: .
       dockerfile: Dockerfile.neo4j
@@ -37,7 +32,6 @@ services:
 
 networks:
   hc-network:
-    name: hc-network
 
 volumes:
   neo4j-data:
