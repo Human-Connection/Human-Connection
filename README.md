@@ -1,4 +1,4 @@
-# Human-Connection - NITRO API
+# Human-Connection - NITRO Backend
 
 > This Prototype tries to resolve the biggest hurdle of connecting
 > our services together. This is not possible in a sane way using
