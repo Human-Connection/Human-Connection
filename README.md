@@ -115,7 +115,7 @@ npm run seedDb
 - [x] add jwt authentication
 - [ ] get directives working correctly (@toLower, @auth, @role, etc.)
 - [ ] check if search is working
-- [ ] check if sorting is working
+- [x] check if sorting is working
 - [x] check if pagination is working
 - [ ] check if upload is working (using graphql-yoga?)
 - [x] evaluate middleware 
