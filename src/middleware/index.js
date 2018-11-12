@@ -3,9 +3,10 @@ import softDeleteMiddleware from './softDeleteMiddleware'
 import sluggifyMiddleware from './sluggifyMiddleware'
 import fixImageUrlsMiddleware from './fixImageUrlsMiddleware'
 import excerptMiddleware from './excerptMiddleware'
-import dateTimeMiddleware from './dateTimeMiddleware';
-import xssMiddleware from './xssMiddleware';
-import permissionsMiddleware from './permissionsMiddleware';
+import dateTimeMiddleware from './dateTimeMiddleware'
+import xssMiddleware from './xssMiddleware'
+import permissionsMiddleware from './permissionsMiddleware'
+import userMiddleware from './userMiddleware'
 
 export default schema => [
   permissionsMiddleware.generate(schema),
@@ -15,5 +16,6 @@ export default schema => [
   excerptMiddleware,
   xssMiddleware,
   fixImageUrlsMiddleware,
-  softDeleteMiddleware
+  softDeleteMiddleware,
+  userMiddleware
 ]

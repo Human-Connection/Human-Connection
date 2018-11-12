@@ -36,6 +36,7 @@
     "node-fetch": "^2.1.2",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "request": "^2.88.0",
     "sanitize-html": "^1.19.1",
     "slug": "^0.9.1",
     "trunc-html": "^1.1.2"

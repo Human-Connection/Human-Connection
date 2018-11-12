@@ -97,12 +97,14 @@ export const resolvers = {
       // }
 
       const session = driver.session()
-      const res = await session.run('MATCH (u:User {email: "' + email + '"}) RETURN u.id, u.slug, u.name, u.avatar, u.email, u.password, u.role LIMIT 1')
+      const res = await session.run('MATCH (u:User {email: "' + email + '"}) RETURN u.id, u.slug, u.name, u.avatar, u.locationId, u.about, u.email, u.password, u.role LIMIT 1')
       let u = res.records[0]._fields ? zipObject([
         'id',
         'slug',
         'name',
         'avatar',
+        'locationId',
+        'about',
         'email',
         'password',
         'role'

@@ -13,6 +13,8 @@ type LoggedInUser {
   avatar:String!
   email: String!
   role: String!
+  locationId: String
+  about: String
   token: String!
 }
 
@@ -59,6 +61,14 @@ type WrittenComment @relation(name: "WROTE") {
   timestamp: Int # TODO: change that to custom Date Type
 }
 
+type Location {
+  id: ID!
+  name: String!
+  type: String!
+  lat: Float!
+  lng: Float!
+}
+
 type User {
   id: ID!
   name: String
@@ -69,6 +79,11 @@ type User {
   deleted: Boolean
   disabled: Boolean
   role: UserGroupEnum
+
+  location: [Location] @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+  locationId: String
+  about: String
+
   createdAt: String
   updatedAt: String
 
@@ -104,6 +119,8 @@ type User {
   organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
 
   blacklisted: [User]! @relation(name: "BLACKLISTED", direction: "OUT")
+
+  categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
   badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
   badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
@@ -199,7 +216,8 @@ type Tag {
   name: String!
   taggedPosts: [Post]! @relation(name: "TAGGED", direction: "IN")
   taggedOrganizations: [Organization]! @relation(name: "TAGGED", direction: "IN")
-  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(r) RETURN COUNT(r)")
+  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p) RETURN COUNT(p)")
+  taggedCountUnique: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p)<-[:WROTE]-(u:User) RETURN COUNT(DISTINCT u)")
   deleted: Boolean
   disabled: Boolean
 }
