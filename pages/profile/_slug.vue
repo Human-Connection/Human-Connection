@@ -161,7 +161,7 @@
         <ds-flex
           :width="{ base: '100%' }"
           gutter="small">
-          <ds-flex-item>
+          <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
                 <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
@@ -339,6 +339,12 @@ export default {
   margin: auto;
   margin-top: -60px;
   border: #fff 5px solid;
+}
+
+.profile-top-navigation {
+  position: sticky;
+  top: 53px;
+  z-index: 1;
 }
 
 .ds-tab-nav {

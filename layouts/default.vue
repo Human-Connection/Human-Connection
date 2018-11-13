@@ -32,7 +32,8 @@
                 Hallo {{ user.name }}
                 <ds-menu
                   :routes="routes"
-                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;"/>
+                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;"
+                  @click.native="toggleMenu"/>
                 <ds-space margin="xx-small" />
                 <nuxt-link :to="{ name: 'logout'}">Logout</nuxt-link>
               </div>
