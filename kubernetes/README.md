@@ -1,6 +1,6 @@
 # Usage with minikube
 
-assuming you installed the packages minikube and virtualbox here...
+assuming you installed the packages git, docker, minikube and virtualbox here...
 
 First of all start minikube on your machine:
 ```sh
@@ -18,11 +18,17 @@ minikube dashboard
 curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.10.0/bin/linux/amd64/kubectl && chmod +x kubectl && sudo cp kubectl /usr/local/bin/ && rm kubectl
 ```
 
+From now on stay in your favorite work directory. First let's clone the necessary sources:
+```sh
+git clone https://github.com/Human-Connection/Nitro-Backend.git
+git clone https://github.com/Human-Connection/Nitro-Web.git
+```
+
 Build Docker images, using the Minikube Docker daemon:
 ```sh
 eval $(minikube docker-env)
-docker build -t humanconnection/backend:latest .
-docker build -t humanconnection/neo4j:latest -f Dockerfile.neo4j .
+docker build -t humanconnection/backend:latest Nitro-Backend/
+docker build -t humanconnection/neo4j:latest -f Dockerfile.neo4j 
 ```
 
 check that the image is in Minikube’s Docker registry:
