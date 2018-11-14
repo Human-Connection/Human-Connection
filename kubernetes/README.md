@@ -38,8 +38,7 @@ minikube ssh docker images
 
 Now change into directory Nitro-Backend/kubernetes and create services and deployments:
 ```sh
-cd kubernetes
-
+cd Nitro-Backend/kubernetes
 kubectl create -f neo4j-deployment.yaml,neo4j-data-persistentvolumeclaim.yaml,backend-deployment.yaml,neo4j-service.json,backend-service.json
 ```
 
