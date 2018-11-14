@@ -28,7 +28,7 @@ Build Docker images, using the Minikube Docker daemon:
 ```sh
 eval $(minikube docker-env)
 docker build -t humanconnection/backend:latest Nitro-Backend/
-docker build -t humanconnection/neo4j:latest -f Dockerfile.neo4j Nitro-Backend/
+docker build -t humanconnection/neo4j:latest -f Nitro-Backend/Dockerfile.neo4j Nitro-Backend/
 ```
 
 check that the image is in Minikube’s Docker registry:
@@ -36,7 +36,7 @@ check that the image is in Minikube’s Docker registry:
 minikube ssh docker images 
 ```
 
-Now change into directory kubernetes and create services and deployments:
+Now change into directory Nitro-Backend/kubernetes and create services and deployments:
 ```sh
 cd kubernetes
 
