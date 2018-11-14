@@ -28,7 +28,7 @@ Build Docker images, using the Minikube Docker daemon:
 ```sh
 eval $(minikube docker-env)
 docker build -t humanconnection/backend:latest Nitro-Backend/
-docker build -t humanconnection/neo4j:latest -f Dockerfile.neo4j 
+docker build -t humanconnection/neo4j:latest -f Dockerfile.neo4j Nitro-Backend/
 ```
 
 check that the image is in Minikube’s Docker registry:
