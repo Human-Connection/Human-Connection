@@ -1,6 +1,7 @@
 import { rule, shield, and, or, not, allow } from 'graphql-shield'
 
 const isAuthenticated = rule()(async (parent, args, ctx, info) => {
+  // TODO: how to get this working while seeding?
   console.log('isSeeding', process.env.IS_SEEDING)
   if (process.env.IS_SEEDING === true) {
     return true
@@ -8,6 +9,7 @@ const isAuthenticated = rule()(async (parent, args, ctx, info) => {
   return ctx.user !== null
 })
 const isOwner = rule()(async (parent, args, ctx, info) => {
+  // TODO: how to get this working while seeding?
   console.log('isSeeding', process.env.IS_SEEDING)
   if (process.env.IS_SEEDING === true) {
     return true
@@ -16,6 +18,7 @@ const isOwner = rule()(async (parent, args, ctx, info) => {
   return ctx.user.id === parent.id
 })
 const isAdmin = rule()(async (parent, args, ctx, info) => {
+  // TODO: how to get this working while seeding?
   console.log('isSeeding', process.env.IS_SEEDING)
   if (process.env.IS_SEEDING === true) {
     return true
@@ -23,6 +26,7 @@ const isAdmin = rule()(async (parent, args, ctx, info) => {
   return ctx.user.role === 'ADMIN'
 })
 const isModerator = rule()(async (parent, args, ctx, info) => {
+  // TODO: how to get this working while seeding?
   console.log('isSeeding', process.env.IS_SEEDING)
   if (process.env.IS_SEEDING === true) {
     return true
