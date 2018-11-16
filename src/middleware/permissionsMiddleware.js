@@ -37,17 +37,19 @@ const isModerator = rule()(async (parent, args, ctx, info) => {
 // Permissions
 const permissions = shield({
   Query: {
-    statistics: isAdmin
+    statistics: isAdmin,
     // fruits: and(isAuthenticated, or(isAdmin, isModerator)),
     // customers: and(isAuthenticated, isAdmin)
   },
   Mutation: {
     // addFruitToBasket: isAuthenticated
+    CreateUser: allow
   },
-  User: {
-    email: isOwner,
-    password: isOwner
-  },
+  // TODO: re-activate this after fixing the initial seed
+  // User: {
+  //   email: isOwner,
+  //   password: isOwner
+  // },
   Post: isAuthenticated
 })
 

@@ -5,6 +5,7 @@ import seedMutations from "./seed-mutations";
 import fetch from "node-fetch";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import Seed from './data/index'
 
 dotenv.config();
 
@@ -13,9 +14,11 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-client
+Seed(client)
+
+/* client
   .mutate({
     mutation: gql(seedMutations)
   })
   .then(data => console.log(data))
-  .catch(error => console.error(error));
+  .catch(error => console.error(error)); **/
