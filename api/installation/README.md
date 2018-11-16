@@ -4,6 +4,10 @@ description: Lets try to install the Human Connection - Nitro Backend
 
 # Backend Installation
 
+{% hint style="warning" %}
+This documentation should be split into a **local** and a **docker** installation variant. Also my be there should be a main docker installation guide for the while system at once!?
+{% endhint %}
+
 ### Clone Repository
 
 The Backend Repository can be found on github.  

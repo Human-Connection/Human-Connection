@@ -1,5 +1,9 @@
 # Web Installation
 
+{% hint style="warning" %}
+This documentation should be split into a **local** and a **docker** installation variant. Also my be there should be a main docker installation guide for the while system at once!?
+{% endhint %}
+
 ### Clone Repository
 
 The Frontend Repository can be found on github.  
