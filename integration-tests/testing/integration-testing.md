@@ -22,7 +22,7 @@ To run the tests, open the directory of our Nitro Frontend in your console and r
 $ cypress run
 ```
 
-![Console output after running cypress test](../../.gitbook/assets/grafik%20%281%29.png)
+![Console output after running cypress test](../../.gitbook/assets/grafik%20%284%29.png)
 
 After the test run, you will get also some video footage of the test run which you can then analyse in more detail.
 
