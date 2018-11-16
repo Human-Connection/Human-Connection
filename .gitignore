@@ -82,3 +82,5 @@ dist
 
 # TEMORIRY
 static/uploads
+
+cypress/videos
