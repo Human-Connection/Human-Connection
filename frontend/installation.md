@@ -1,5 +1,14 @@
 # Web Installation
 
+### Clone Repository
+
+The Frontend Repository can be found on github.  
+[https://github.com/Human-Connection/Nitro-Web](https://github.com/Human-Connection/Nitro-Web)
+
+```bash
+git@github.com:Human-Connection/Nitro-Web.git
+```
+
 ### Install Dependencies
 
 {% hint style="danger" %}

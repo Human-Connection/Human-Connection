@@ -4,6 +4,15 @@ description: Lets try to install the Human Connection - Nitro Backend
 
 # Backend Installation
 
+### Clone Repository
+
+The Backend Repository can be found on github.  
+[https://github.com/Human-Connection/Nitro-Backend](https://github.com/Human-Connection/Nitro-Backend)
+
+```bash
+git@github.com:Human-Connection/Nitro-Backend.git
+```
+
 ### Copy Environment Variables
 
 ```bash

@@ -2,7 +2,7 @@
 
 * [Let's change the World](README.md)
 
-## API
+## Backend
 
 * [Backend Installation](api/installation/README.md)
   * [Configuration](api/installation/configuration.md)
@@ -14,11 +14,11 @@
 * [Import](api/data-import.md)
 * [Todo's](api/todos.md)
 
-## Web UI
+## Web Frontend
 
-* [Web Installation](ui/installation.md)
-* [Styleguide](ui/styleguide.md)
-* [Todo's](ui/todos.md)
+* [Web Installation](frontend/installation.md)
+* [Styleguide](frontend/styleguide.md)
+* [Todo's](frontend/todos.md)
 
 ## Workflow
 
