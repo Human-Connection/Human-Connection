@@ -32,3 +32,8 @@ If you are like me, you might want to see some visual output. The interactive cy
 
 ![Interactive Cypress Environment](../../.gitbook/assets/grafik%20%282%29.png)
 
+### Write some Tests
+
+Go the the Cypress documentation for further information on how to write tests:  
+[https://docs.cypress.io/guides/getting-started/writing-your-first-test.html\#Write-a-simple-test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Write-a-simple-test)
+
