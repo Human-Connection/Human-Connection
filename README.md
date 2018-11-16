@@ -22,6 +22,11 @@ We want to do more than comments and sharing!
 - Versus Challenging
 - Modular UI
 
+--- 
+# BE AWARE: we are currently transitioning to our Nitro version
+> Check out https://docs.human-connection.org/nitro for more information.
+--- 
+
 **Technology Stack**
 - vuejs
 - nuxtjs
