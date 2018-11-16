@@ -22,8 +22,10 @@
 
 ## Workflow
 
-* [Testing](integration-tests/testing/README.md)
+* [Testing Guide](integration-tests/testing/README.md)
   * [Integration Testing](integration-tests/testing/integration-testing.md)
+  * [Component Testing](integration-tests/testing/component-testing.md)
+  * [Unit Testing](integration-tests/testing/unit-testing.md)
 * [Pull-Requests](integration-tests/pull-requests.md)
 * [Deployment](integration-tests/deployment.md)
 
