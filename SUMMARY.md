@@ -22,7 +22,8 @@
 
 ## Workflow
 
-* [Testing](integration-tests/testing.md)
+* [Testing](integration-tests/testing/README.md)
+  * [Integration Testing](integration-tests/testing/integration-testing.md)
 * [Pull-Requests](integration-tests/pull-requests.md)
 * [Deployment](integration-tests/deployment.md)
 
