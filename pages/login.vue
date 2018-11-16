@@ -37,6 +37,7 @@
               v-model="form.email"
               placeholder="Deine E-Mail"
               type="email"
+              name="email"
               icon="envelope"/>
             <ds-input
               :disabled="pending"
@@ -44,11 +45,14 @@
               placeholder="Dein Password"
               icon="lock"
               icon-right="question-circle"
+              name="password"
               type="password"/>
             <ds-button
               :loading="pending"
               primary
-              full-width>
+              full-width
+              name="submit"
+              type="submit">
               Anmelden
             </ds-button>
             <ds-space margin="x-small">

@@ -13,7 +13,7 @@
           iconRight && `ds-input-has-icon-right`
         ]"
         :id="id"
-        :name="model"
+        :name="name"
         :type="type"
         :autofocus="autofocus"
         :placeholder="placeholder"
@@ -60,6 +60,13 @@ export default {
      * The placeholder shown when value is empty.
      */
     placeholder: {
+      type: String,
+      default: null
+    },
+    /**
+     * The name of the field for better accessibility
+     */
+    name: {
       type: String,
       default: null
     },
