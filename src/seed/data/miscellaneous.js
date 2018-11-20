@@ -1,86 +1,11 @@
 import faker from 'faker'
 
-export default `
-  mutation {
+export default () => {
+  return `mutation {
 
-    # Users
-    u1: CreateUser(
-      id: "u1",
-      name: "Peter Lustig",
-      password: "1234",
-      email: "admin@example.org",
-      avatar: "${faker.internet.avatar()}",
-      role: admin,
-      disabled: false,
-      deleted: false) {
-      id
-      name
-      email
-      avatar
-      role
-    }
-    u2: CreateUser(
-      id: "u2",
-      name: "Bob der Bausmeister",
-      password: "1234",
-      email: "moderator@example.org",
-      avatar: "${faker.internet.avatar()}",
-      role: moderator,
-      disabled: false,
-      deleted: false) {
-      id
-      name
-      email
-      avatar
-      role
-    }
-    u3: CreateUser(
-      id: "u3",
-      name: "Jenny Rostock",
-      password: "1234",
-      email: "user@example.org",
-      avatar: "${faker.internet.avatar()}",
-      role: user,
-      disabled: false,
-      deleted: false) {
-      id
-      name
-      email
-      avatar
-      role
-    }
-    u4: CreateUser(
-      id: "u4",
-      name: "Angie Banjie",
-      password: "1234",
-      email: "angie@example.org",
-      avatar: "${faker.internet.avatar()}",
-      role: user,
-      disabled: false,
-      deleted: false) {
-      id
-      name
-      email
-      avatar
-      role
-    }
 
     u1_blacklist_u4: AddUserBlacklisted(from: { id: "u1" }, to: { id: "u4" }) { from { id } }
 
-    # Badges
-    b1: CreateBadge(id: "b1", key: "indiegogo_en_racoon", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_racoon.svg") { id }
-    b2: CreateBadge(id: "b2", key: "indiegogo_en_rabbit", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_rabbit.svg") { id }
-    b3: CreateBadge(id: "b3", key: "indiegogo_en_wolf", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_wolf.svg") { id }
-    b4: CreateBadge(id: "b4", key: "indiegogo_en_bear", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_bear.svg") { id }
-    b5: CreateBadge(id: "b5", key: "indiegogo_en_turtle", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_turtle.svg") { id }
-    b6: CreateBadge(id: "b6", key: "indiegogo_en_rhino", type: crowdfunding, status: permanent, icon: "http://localhost:3000/img/badges/indiegogo_en_rhino.svg") { id }
-
-    b1_u1: AddUserBadges(from: {id: "b1"}, to: {id: "u1"}) { from { id } }
-    b2_u1: AddUserBadges(from: {id: "b2"}, to: {id: "u1"}) { from { id } }
-    b3_u1: AddUserBadges(from: {id: "b3"}, to: {id: "u1"}) { from { id } }
-    b6_u2: AddUserBadges(from: {id: "b6"}, to: {id: "u2"}) { from { id } }
-    b3_u3: AddUserBadges(from: {id: "b3"}, to: {id: "u3"}) { from { id } }
-    b5_u4: AddUserBadges(from: {id: "b5"}, to: {id: "u4"}) { from { id } }
 
     # categories
     cat1: CreateCategory( id: "cat1", name: "Just For Fun", slug: "justforfun", icon: "categories-justforfun" ) { name }
@@ -418,3 +343,4 @@ export default `
     ) { from { id } }
   }
 `
+}

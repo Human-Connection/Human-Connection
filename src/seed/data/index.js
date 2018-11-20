@@ -4,7 +4,8 @@ import helper from '../seed-helpers'
 const seed = {
   Badges: require('./badges.js').default,
   User: require('./users.js').default,
-  UserBadges: require('./users-badges.js').default
+  UserBadges: require('./users-badges.js').default,
+  Miscellaneous: require('./miscellaneous.js').default
 };
 
 let data = {}

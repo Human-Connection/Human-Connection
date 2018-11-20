@@ -1,7 +1,6 @@
 import ApolloClient from "apollo-client";
 import dotenv from "dotenv";
 import gql from 'graphql-tag'
-import seedMutations from "./seed-mutations";
 import fetch from "node-fetch";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
