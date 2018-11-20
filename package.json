@@ -4,7 +4,7 @@
   "description": "GraphQL Backend for Human Connection",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --require @babel/register src/**/*.test.js",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
@@ -46,7 +46,9 @@
     "trunc-html": "^1.1.2"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "faker": "^4.1.0",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.4"
   }
 }
