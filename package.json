@@ -1,7 +1,7 @@
 {
-  "name": "hc-prototype-api-",
+  "name": "human-connection-backend",
   "version": "0.0.1",
-  "description": "Graph API Protype for Human Connection",
+  "description": "GraphQL Backend for Human Connection",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
   },
-  "author": "Grzegorz Leoniec",
+  "author": "Human Connection gGmbh",
   "license": "MIT",
   "dependencies": {
     "apollo-boost": "^0.1.10",
