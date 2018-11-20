@@ -46,6 +46,7 @@
     "trunc-html": "^1.1.2"
   },
   "devDependencies": {
+    "apollo-server-testing": "^2.2.2",
     "chai": "^4.2.0",
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
