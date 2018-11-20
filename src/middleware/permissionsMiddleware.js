@@ -24,11 +24,10 @@ const permissions = shield({
     // addFruitToBasket: isAuthenticated
     CreateUser: allow
   },
-  // TODO: re-activate this after fixing the initial seed
-  // User: {
-  //   email: isOwner,
-  //   password: isOwner
-  // },
+  User: {
+    email: isOwner,
+    password: isOwner
+  },
   Post: isAuthenticated
 })
 
