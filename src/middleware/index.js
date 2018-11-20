@@ -7,13 +7,18 @@ import dateTimeMiddleware from './dateTimeMiddleware';
 import xssMiddleware from './xssMiddleware';
 import permissionsMiddleware from './permissionsMiddleware';
 
-export default schema => [
-  permissionsMiddleware.generate(schema),
-  passwordMiddleware,
-  dateTimeMiddleware,
-  sluggifyMiddleware,
-  excerptMiddleware,
-  xssMiddleware,
-  fixImageUrlsMiddleware,
-  softDeleteMiddleware
-]
+export default schema => {
+  let middleware = [
+    passwordMiddleware,
+    dateTimeMiddleware,
+    sluggifyMiddleware,
+    excerptMiddleware,
+    xssMiddleware,
+    fixImageUrlsMiddleware,
+    softDeleteMiddleware
+  ]
+  if (process.env.PERMISSIONS !== 'disabled') {
+    middleware.push(permissionsMiddleware.generate(schema))
+  }
+  return middleware
+}
