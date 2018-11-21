@@ -12,10 +12,11 @@ const seed = {
   UserFollows: require('./users-follows.js').default,
   UserFriends: require('./users-friends.js').default,
 
+  Organization: require('./organizations.js').default,
   Post: require('./posts.js').default,
   Comment: require('./comments.js').default,
   UserShouts: require('./users-shouts.js').default
-};
+}
 
 let data = {}
 

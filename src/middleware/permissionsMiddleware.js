@@ -4,7 +4,6 @@ const isAuthenticated = rule()(async (parent, args, ctx, info) => {
   return ctx.user !== null
 })
 const isOwner = rule()(async (parent, args, ctx, info) => {
-  console.log('parent', parent)
   return ctx.user.id === parent.id
 })
 const isAdmin = rule()(async (parent, args, ctx, info) => {
@@ -23,14 +22,13 @@ const permissions = shield({
   },
   Mutation: {
     // addFruitToBasket: isAuthenticated
-    CreateUser: allow
+    // CreateUser: allow
   },
-  // TODO: re-activate this after fixing the initial seed
   User: {
     email: isOwner,
     password: isOwner
-  },
-  Post: isAuthenticated
+  }
+  // Post: isAuthenticated
 })
 
 export default permissions
