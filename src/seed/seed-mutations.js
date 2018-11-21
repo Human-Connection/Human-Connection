@@ -263,10 +263,6 @@ export default `
       from: { id: "c6" },
       to: { id: "p4" }
     ) { from { id } }
-    c6_p1: AddCommentPost(
-      from: { id: "c6" },
-      to: { id: "p1" }
-    ) { from { id } }
     c7_p2: AddCommentPost(
       from: { id: "c7" },
       to: { id: "p2" }
