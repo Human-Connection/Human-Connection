@@ -16,7 +16,7 @@ const isModerator = rule()(async (parent, args, ctx, info) => {
 // Permissions
 const permissions = shield({
   Query: {
-    statistics: isAdmin,
+    statistics: allow
     // fruits: and(isAuthenticated, or(isAdmin, isModerator)),
     // customers: and(isAuthenticated, isAdmin)
   },
