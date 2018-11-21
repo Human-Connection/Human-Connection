@@ -61,7 +61,7 @@ server.express.use(passport.initialize())
 server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
 
 const serverConfig = {
-  port: process.env.GRAPHQL_LISTEN_PORT
+  port: process.env.GRAPHQL_PORT
   // cors: {
   //   credentials: true,
   //   origin: [process.env.CLIENT_URI] // your frontend url.
