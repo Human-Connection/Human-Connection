@@ -9460,9 +9460,10 @@ vue@^2.4.2, vue@^2.5.17:
   version "2.5.17"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
 
-"vuep@git://github.com/visualjerk/vuep.git#iframe-preview":
-  version "0.8.0"
-  resolved "git://github.com/visualjerk/vuep.git#98a05b94f54dc30432a8d0ac2da0c0cadd74dae7"
+vuep@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/vuep/-/vuep-0.8.1.tgz#949b455f375788fbd7d1c35ca495a0faa5d5502f"
+  integrity sha512-D4ClmdZ37Itb57KdW9FPqE5820ENAFuJFmc7KyzGfoGBDhVHYxgF/pUbeTjpGe4VF0u2lGQVItfZ1xlh9nMpWg==
   dependencies:
     simple-assign "^0.1.0"
 

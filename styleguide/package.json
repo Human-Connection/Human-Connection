@@ -56,7 +56,7 @@
     "vue-router": "^3.0.1",
     "vue-svg-loader": "^0.8.0",
     "vue-template-compiler": "^2.5.17",
-    "vuep": "git://github.com/visualjerk/vuep.git#iframe-preview",
+    "vuep": "^0.8.1",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-merge-and-include-globally": "^2.0.11"
   },
