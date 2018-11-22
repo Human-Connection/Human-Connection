@@ -17,8 +17,10 @@ export default schema => {
     fixImageUrlsMiddleware,
     softDeleteMiddleware
   ]
+
+  // add permisions middleware if we are not seeding to the first position
   if (process.env.PERMISSIONS !== 'disabled') {
-    middleware.push(permissionsMiddleware.generate(schema))
+    middleware.unshift(permissionsMiddleware.generate(schema))
   }
   return middleware
 }
