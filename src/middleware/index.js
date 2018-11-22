@@ -19,7 +19,8 @@ export default schema => {
   ]
 
   // add permisions middleware if we are not seeding to the first position
-  if (process.env.PERMISSIONS !== 'disabled') {
+  // NOTE: DO NOT SET THE PERMISSION FLAT YOUR SELF
+  if (process.env.PERMISSIONS !== 'disabled' && process.env.NODE_ENV !== 'production') {
     middleware.unshift(permissionsMiddleware.generate(schema))
   }
   return middleware
