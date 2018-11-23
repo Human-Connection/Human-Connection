@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
-    "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
+    "db:seed": "concurrently --kill-others --success first 'cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start' 'wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/seed-db.js'"
   },
   "author": "Human Connection gGmbh",
   "license": "MIT",
@@ -46,7 +46,10 @@
     "trunc-html": "^1.1.2"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
+    "cross-env": "^5.2.0",
     "faker": "^4.1.0",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.4",
+    "wait-on": "^3.2.0"
   }
 }

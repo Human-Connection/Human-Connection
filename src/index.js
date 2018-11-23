@@ -2,12 +2,12 @@ import { GraphQLServer } from 'graphql-yoga'
 import { makeExecutableSchema } from 'apollo-server'
 import { augmentSchema } from 'neo4j-graphql-js'
 import { typeDefs, resolvers } from './graphql-schema'
-import { v1 as neo4j } from 'neo4j-driver'
 import dotenv from 'dotenv'
 import mocks from './mocks'
 import middleware from './middleware'
 import applyDirectives from './bootstrap/directives'
 import applyScalars from './bootstrap/scalars'
+import neo4j from './bootstrap/neo4j'
 
 import passport from 'passport'
 import jwtStrategy from './jwt/strategy'
@@ -20,13 +20,7 @@ let schema = makeExecutableSchema({
   resolvers
 })
 
-const driver = neo4j.driver(
-  process.env.NEO4J_URI || 'bolt://localhost:7687',
-  neo4j.auth.basic(
-    process.env.NEO4J_USER || 'neo4j',
-    process.env.NEO4J_PASSWORD || 'neo4j'
-  )
-)
+const driver = neo4j().getDriver()
 
 const MOCK = (process.env.MOCK === 'true')
 console.log('MOCK:', MOCK)
@@ -67,7 +61,7 @@ server.express.use(passport.initialize())
 server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
 
 const serverConfig = {
-  port: 4000
+  port: process.env.GRAPHQL_PORT || 4000
   // cors: {
   //   credentials: true,
   //   origin: [process.env.CLIENT_URI] // your frontend url.
