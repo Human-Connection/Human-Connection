@@ -1,0 +1,45 @@
+language: node_js
+node_js:
+  - "10"
+cache:
+  yarn: true
+  directories:
+    - node_modules
+services:
+  # we need docker for building the image and mongo for testing
+  - docker
+# install:
+  # nothing!
+
+jobs:
+  include:
+    - stage: Prepare Cache
+      script: true
+    - stage: Build and Test
+      script:
+      - docker build -t humanconnection/backend .
+    - script:
+      - yarn install --frozen-lockfile --non-interactive --ignore-engines
+      - yarn global add codacy-coverage
+      - yarn run ci
+      - cat ./coverage/lcov.info | codacy-coverage
+
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker tag humanconnection/backend humanconnection/backend:latest;
+    docker push humanconnection/backend:alpha;
+    fi
+# - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+#   docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+#   docker tag humanconnection/backend humanconnection/backend:latest;
+#   docker push humanconnection/backend:edge;
+#   fi
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
