@@ -10,6 +10,7 @@
 # NOTE: currently we need the --ignore-engines parameter as one package is an idiot and dont like new node versions
 # install all dependencies
 $ cd styleguide && yarn install --ignore-engines && cd ..
+$ yarn run styleguide:build
 $ yarn install --ignore-engines
 ```
 
