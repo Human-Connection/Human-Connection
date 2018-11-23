@@ -16,6 +16,7 @@ RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-int
 
 COPY package.json .
 COPY yarn.lock .
+RUN yarn run styleguide:build
 RUN yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines
 
 COPY . .
