@@ -14,5 +14,6 @@ COPY yarn.lock .
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 
 COPY . .
+COPY .env.template .env
 
 CMD ["yarn", "run", "start"]
