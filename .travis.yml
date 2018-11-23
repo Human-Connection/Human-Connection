@@ -1,13 +1,48 @@
 language: node_js
 node_js:
   - "10"
-
+services:
+  - docker
 cache:
+  yarn: true
   directories:
-    - "node_modules"
+    - node_modules
+# install
+  # nothing
 
-install:
-  - yarn install
+jobs:
+  include:
+    - stage: Test and Build
+      script:
+      - cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines
+      - yarn run styleguide:build
+      - yarn install --frozen-lockfile --non-interactive --ignore-engines
+      # - yarn run ci
+    - script:
+      - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/webapp .
 
-script:
-  - yarn run test
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" &&
+    docker tag humanconnection/webapp humanconnection/webapp:latest &&
+    docker push humanconnection/webapp:latest &&
+    wget https://raw.githubusercontent.com/Human-Connection/Discord-Bot/develop/tester.sh &&
+    chmod +x tester.sh &&
+    ./tester.sh nitro-alpha $WEBHOOK_URL;
+    fi
+# - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+#   docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" &&
+#   docker tag humanconnection/webapp humanconnection/webapp:latest &&
+#   docker push humanconnection/webapp:latest &&
+#   wget https://raw.githubusercontent.com/Human-Connection/Discord-Bot/develop/tester.sh &&
+#   chmod +x tester.sh &&
+#   ./tester.sh nitro-staging $WEBHOOK_URL;
+#   fi
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
