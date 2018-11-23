@@ -136,7 +136,7 @@ export default {
     },
     author() {
       return this.hasAuthor
-        ? this.post.author.User
+        ? this.post.author
         : {
             name: 'Anonymus'
           }

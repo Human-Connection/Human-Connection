@@ -64,11 +64,9 @@ export default gql(`
         image
         createdAt
         author {
-          User {
-            id
-            avatar
-            name
-          }
+          id
+          avatar
+          name
         }
       }
     }

@@ -86,20 +86,18 @@ export default {
             slug
             image
             author {
-              User {
+              id
+              avatar
+              slug
+              name
+              contributionsCount
+              shoutedCount
+              commentsCount
+              followedByCount
+              badges {
                 id
-                avatar
-                slug
-                name
-                contributionsCount
-                shoutedCount
-                commentsCount
-                followedByCount
-                badges {
-                  id
-                  key
-                  icon
-                }
+                key
+                icon
               }
             }
             commentsCount
