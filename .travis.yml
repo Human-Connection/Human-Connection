@@ -11,18 +11,10 @@ services:
 # install:
   # nothing!
 
-jobs:
-  include:
-    - stage: Prepare Cache
-      script: true
-    - stage: Build and Test
-      script:
-      - docker build -t humanconnection/backend .
-    - script:
-      - yarn install --frozen-lockfile --non-interactive --ignore-engines
-      - yarn global add codacy-coverage
-      - yarn run ci
-      - cat ./coverage/lcov.info | codacy-coverage
+before_script:
+  - docker build -t humanconnection/backend .
+script:
+  - docker run humanconnection/backend yarn run db:seed
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
@@ -33,11 +25,6 @@ after_success:
     docker tag humanconnection/backend humanconnection/backend:latest;
     docker push humanconnection/backend:latest;
     fi
-# - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
-#   docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-#   docker tag humanconnection/backend humanconnection/backend:latest;
-#   docker push humanconnection/backend:latest;
-#   fi
 
 after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
