@@ -31,12 +31,12 @@ after_success:
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
     docker tag humanconnection/backend humanconnection/backend:latest;
-    docker push humanconnection/backend:alpha;
+    docker push humanconnection/backend:latest;
     fi
 # - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
 #   docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
 #   docker tag humanconnection/backend humanconnection/backend:latest;
-#   docker push humanconnection/backend:edge;
+#   docker push humanconnection/backend:latest;
 #   fi
 
 after_failure:
