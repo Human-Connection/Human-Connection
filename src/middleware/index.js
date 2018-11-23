@@ -18,7 +18,7 @@ export default schema => {
     softDeleteMiddleware
   ]
 
-  // add permisions middleware if we are not seeding to the first position
+  // add permisions middleware at the first position (unless we're seeding)
   // NOTE: DO NOT SET THE PERMISSION FLAT YOUR SELF
   if (process.env.PERMISSIONS !== 'disabled' && process.env.NODE_ENV !== 'production') {
     middleware.unshift(permissionsMiddleware.generate(schema))
