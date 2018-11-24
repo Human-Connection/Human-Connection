@@ -11,19 +11,19 @@ cache:
   # nothing
 
 before_script:
-  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/webapp .
+  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-webapp .
 
 script:
-  - docker run humanconnection/webapp yarn run lint
+  - docker run humanconnection/nitro-webapp yarn run lint
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh success $WEBHOOK_URL
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" &&
-    docker tag humanconnection/webapp humanconnection/webapp:latest &&
-    docker push humanconnection/webapp:latest
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker tag humanconnection/nitro-webapp humanconnection/nitro-webapp:latest;
+    docker push humanconnection/nitro-webapp:latest;
     fi
 
 after_failure:
