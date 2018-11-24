@@ -1,20 +1,20 @@
 language: node_js
 node_js:
   - "10"
+services:
+  - docker
 cache:
   yarn: true
   directories:
     - node_modules
-services:
-  # we need docker for building the image and mongo for testing
-  - docker
 # install:
   # nothing!
 
 before_script:
-  - docker build -t humanconnection/backend .
+  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend .
+
 script:
-  - docker run humanconnection/backend yarn run db:seed
+  - docker run humanconnection/nitro-backend yarn run db:seed
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
@@ -22,8 +22,8 @@ after_success:
   - ./send.sh success $WEBHOOK_URL
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker tag humanconnection/backend humanconnection/backend:latest;
-    docker push humanconnection/backend:latest;
+    docker tag humanconnection/nitro-backend humanconnection/nitro-backend:latest;
+    docker push humanconnection/nitro-backend:latest;
     fi
 
 after_failure:
