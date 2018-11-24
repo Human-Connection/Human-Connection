@@ -1,22 +1,27 @@
 FROM node:10-alpine
-LABEL Description="This image builds and runs the Human-Connection Web Application Frontend" Vendor="Human-Connection gGmbH" Version="0.0.1" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
+LABEL Description="Web Frontend of the Social Network Human-Connection.org" Vendor="Human-Connection gGmbH" Version="0.0.1" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
 
-# expose the app port
+# Expose the app port
 EXPOSE 3000
 
-ARG WORKDIR=/HC-WebApp
+ARG WORKDIR=/nitro-web
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
 
 # See: https://github.com/nodejs/docker-node/pull/367#issuecomment-430807898
 RUN apk --no-cache add git
 
+# Install Styleguide
 COPY styleguide/ ./styleguide
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines
 
 COPY package.json .
 COPY yarn.lock .
+
+# Build Styleguide
 RUN yarn run styleguide:build
+
+# Install Web Application
 RUN yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines
 
 COPY . .
