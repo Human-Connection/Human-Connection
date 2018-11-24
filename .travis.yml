@@ -8,7 +8,7 @@ cache:
   directories:
     - node_modules
 
-before_script:
+install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-web .
 
 script:
