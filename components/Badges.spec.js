@@ -5,8 +5,7 @@ describe('Badges.vue', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallowMount(Badges, {
-    })
+    wrapper = shallowMount(Badges, {})
   })
 
   it('renders', () => {
