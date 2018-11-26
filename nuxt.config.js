@@ -1,8 +1,12 @@
 const pkg = require('./package')
 const envWhitelist = ['NODE_ENV', 'BACKEND_URL', 'MAINTENANCE']
+const dev = process.env.NODE_ENV !== 'production'
 
 module.exports = {
   mode: 'universal',
+
+  dev: dev,
+  debug: dev ? 'nuxt:*,app' : null,
 
   transition: {
     name: 'slide-up',

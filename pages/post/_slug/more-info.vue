@@ -91,19 +91,17 @@ export default {
                 icon
               }
               author {
-                User {
+                id
+                name
+                slug
+                avatar
+                contributionsCount
+                followedByCount
+                commentsCount
+                badges {
                   id
-                  name
-                  slug
-                  avatar
-                  contributionsCount
-                  followedByCount
-                  commentsCount
-                  badges {
-                    id
-                    key
-                    icon
-                  }
+                  key
+                  icon
                 }
               }
             }

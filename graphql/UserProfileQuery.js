@@ -66,11 +66,9 @@ export default gql(`
           icon
         }
         author {
-          User {
-            id
-            avatar
-            name
-          }
+          id
+          avatar
+          name
         }
       }
     }

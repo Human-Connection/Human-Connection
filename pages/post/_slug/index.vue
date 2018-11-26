@@ -127,20 +127,18 @@ export default {
             slug
             image
             author {
-              User {
+              id
+              slug
+              name
+              avatar
+              shoutedCount
+              contributionsCount
+              commentsCount
+              followedByCount
+              badges {
                 id
-                slug
-                name
-                avatar
-                shoutedCount
-                contributionsCount
-                commentsCount
-                followedByCount
-                badges {
-                  id
-                  key
-                  icon
-                }
+                key
+                icon
               }
             }
             tags {
@@ -153,20 +151,18 @@ export default {
               createdAt
               deleted
               author {
-                User {
+                id
+                slug
+                name
+                avatar
+                shoutedCount
+                contributionsCount
+                commentsCount
+                followedByCount
+                badges {
                   id
-                  slug
-                  name
-                  avatar
-                  shoutedCount
-                  contributionsCount
-                  commentsCount
-                  followedByCount
-                  badges {
-                    id
-                    key
-                    icon
-                  }
+                  key
+                  icon
                 }
               }
             }
