@@ -46,21 +46,6 @@ enum UserGroupEnum {
   user
 }
 
-type WrittenPost @relation(name: "WROTE") {
-  from: User
-  to: Post
-  timestamp: Int # TODO: change that to custom Date Type
-}
-# type WrittenPost2 {
-#   Post: Post!
-#   timestamp: Int # TODO: change that to custom Date Type
-# }
-type WrittenComment @relation(name: "WROTE") {
-  from: User
-  to: Comment
-  timestamp: Int # TODO: change that to custom Date Type
-}
-
 type Location {
   id: ID!
   name: String!
@@ -109,7 +94,7 @@ type User {
     RETURN COUNT(r)"""
   )
 
-  comments: [WrittenComment]!
+  comments: [Comment]! @relation(name: "WROTE", direction: "OUT")
   commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true RETURN COUNT(r)")
 
   shouted: [Post]! @relation(name: "SHOUTED", direction: "OUT")
@@ -128,7 +113,7 @@ type User {
 
 type Post {
   id: ID!
-  author: WrittenPost
+  author: User @relation(name: "WROTE", direction: "IN")
   title: String!
   slug: String
   content: String!
@@ -158,12 +143,12 @@ type Post {
 
 type Comment {
   id: ID!
-  author: WrittenComment
+  author: User @relation(name: "WROTE", direction: "IN")
   content: String!
   contentExcerpt: String
-  post: Post @relation(name: "COMMENT", direction: "OUT")
-  createdAt: String,
-  updatedAt: String,
+  post: Post @relation(name: "COMMENTS", direction: "OUT")
+  createdAt: String
+  updatedAt: String
   deleted: Boolean
   disabled: Boolean
 }

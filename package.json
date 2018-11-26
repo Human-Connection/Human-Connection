@@ -1,17 +1,22 @@
 {
-  "name": "hc-prototype-api-",
+  "name": "human-connection-backend",
   "version": "0.0.1",
-  "description": "Graph API Protype for Human Connection",
+  "description": "GraphQL Backend for Human Connection",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
-    "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
+    "db:seed": "concurrently --kill-others --success first 'cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start' 'wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/seed-db.js'"
   },
-  "author": "Grzegorz Leoniec",
+  "author": "Human Connection gGmbh",
   "license": "MIT",
   "dependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/register": "^7.0.0",
     "apollo-boost": "^0.1.10",
     "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.2",
@@ -42,9 +47,10 @@
     "trunc-html": "^1.1.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "concurrently": "^4.1.0",
+    "cross-env": "^5.2.0",
     "faker": "^4.1.0",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.4",
+    "wait-on": "^3.2.0"
   }
 }

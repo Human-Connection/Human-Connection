@@ -21,7 +21,7 @@ spec:
       - env:
         - name: CLIENT_URI
           value: http://localhost:3000
-        - name: GRAPHQL_LISTEN_PORT
+        - name: GRAPHQL_PORT
           value: "4000"
         - name: GRAPHQL_URI
           value: http://localhost:4000

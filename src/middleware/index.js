@@ -8,14 +8,22 @@ import xssMiddleware from './xssMiddleware'
 import permissionsMiddleware from './permissionsMiddleware'
 import userMiddleware from './userMiddleware'
 
-export default schema => [
-  permissionsMiddleware.generate(schema),
-  passwordMiddleware,
-  dateTimeMiddleware,
-  sluggifyMiddleware,
-  excerptMiddleware,
-  xssMiddleware,
-  fixImageUrlsMiddleware,
-  softDeleteMiddleware,
-  userMiddleware
-]
+export default schema => {
+  let middleware = [
+    passwordMiddleware,
+    dateTimeMiddleware,
+    sluggifyMiddleware,
+    excerptMiddleware,
+    xssMiddleware,
+    fixImageUrlsMiddleware,
+    softDeleteMiddleware,
+    userMiddleware
+  ]
+
+  // add permisions middleware at the first position (unless we're seeding)
+  // NOTE: DO NOT SET THE PERMISSION FLAT YOUR SELF
+  if (process.env.PERMISSIONS !== 'disabled' && process.env.NODE_ENV !== 'production') {
+    middleware.unshift(permissionsMiddleware.generate(schema))
+  }
+  return middleware
+}
