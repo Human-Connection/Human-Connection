@@ -11,18 +11,18 @@ WORKDIR $WORKDIR
 # See: https://github.com/nodejs/docker-node/pull/367#issuecomment-430807898
 RUN apk --no-cache add git
 
-# Install Styleguide
-COPY styleguide/ ./styleguide
-RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines
-
+# Install Web Application
 COPY package.json .
 COPY yarn.lock .
-
-# Build Styleguide
-RUN yarn run styleguide:build
-
-# Install Web Application
+COPY styleguide/ ./styleguide
 RUN yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines
+
+# Install and build Styleguide
+COPY styleguide/ ./styleguide
+RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines \
+    && cd .. \
+    && yarn run styleguide:build \
+    && rm -Rf styleguide/node_modules
 
 COPY . .
 RUN ["yarn", "run", "build"]
