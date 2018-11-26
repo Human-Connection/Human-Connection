@@ -9,7 +9,7 @@
     "build": "nuxt build",
     "start": "cross-env node server/index.js",
     "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint": "eslint --ext .js,.vue .",
     "styleguide": "cd ./styleguide && yarn dev",
     "styleguide:build": "cd ./styleguide && yarn build:lib && cd ../ && yarn upgrade vue-cion-design-system --ignore-engines",
     "test": "jest",
@@ -48,6 +48,7 @@
     "vue-izitoast": "^1.1.0"
   },
   "devDependencies": {
+    "@vue/eslint-config-prettier": "^4.0.1",
     "@vue/test-utils": "^1.0.0-beta.25",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
