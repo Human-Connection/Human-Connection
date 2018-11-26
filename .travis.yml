@@ -1,13 +1,30 @@
 language: node_js
 node_js:
   - "10"
-
+services:
+  - docker
 cache:
+  yarn: true
   directories:
-    - "node_modules"
+    - node_modules
 
 install:
-  - yarn install
+  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-web .
 
 script:
-  - yarn run test
+  - docker run humanconnection/nitro-web yarn run lint
+
+after_success:
+  # - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  # - chmod +x send.sh
+  # - ./send.sh success $WEBHOOK_URL
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker tag humanconnection/nitro-web humanconnection/nitro-web:latest;
+    docker push humanconnection/nitro-web:latest;
+    fi
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
