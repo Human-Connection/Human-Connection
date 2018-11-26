@@ -7,13 +7,13 @@ Optionally you can seed the GraphQL service by executing mutations that will wri
 {% tabs %}
 {% tab title="Yarn" %}
 ```bash
-yarn seedDb
+yarn db:seed
 ```
 {% endtab %}
 
 {% tab title="NPM" %}
 ```bash
-npm run seedDb
+npm run db:seed
 ```
 {% endtab %}
 {% endtabs %}
