@@ -92,7 +92,7 @@ export default {
       try {
         await this.$store.dispatch('auth/login', { ...this.form })
         this.$toast.success('You are logged in!')
-        this.$router.replace('/')
+        this.$router.replace(this.$route.query.path || '/')
       } catch (err) {
         this.$toast.error(err.message)
       }
