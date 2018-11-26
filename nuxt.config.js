@@ -1,5 +1,5 @@
 const pkg = require('./package')
-const envWhitelist = ['NODE_ENV', 'BACKEND_URL', 'MAINTENANCE']
+const envWhitelist = ['NODE_ENV', 'MAINTENANCE']
 const dev = process.env.NODE_ENV !== 'production'
 
 module.exports = {
@@ -100,15 +100,39 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/apollo',
     ['@nuxtjs/dotenv', { only: envWhitelist }],
-    ['nuxt-env', { keys: envWhitelist }]
+    ['nuxt-env', { keys: envWhitelist }],
+    '@nuxtjs/apollo',
+    '@nuxtjs/axios'
   ],
+
+  /*
+  ** Axios module configuration
+  */
+  axios: {
+    // See https://github.com/nuxt-community/axios-module#options
+    debug: dev,
+    proxy: true
+  },
+  proxy: {
+    '/api': {
+      // make this configurable (nuxt-dotenv)
+      target: process.env.BACKEND_URL || 'http://localhost:4000',
+      pathRewrite: { '^/api': '' },
+      toProxy: true, // cloudflare needs that
+      changeOrigin: true,
+      headers: {
+        Accept: 'application/json',
+        'X-UI-Request': true,
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
+      }
+    }
+  },
 
   // Give apollo module options
   apollo: {
-    // tokenName: 'yourApolloTokenName', // optional, default: apollo-token
-    tokenExpires: 1, // optional, default: 7 (days)
+    tokenName: 'human-connection-token', // optional, default: apollo-token
+    tokenExpires: 3, // optional, default: 7 (days)
     // includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
     // optional
     errorHandler(error) {

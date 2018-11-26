@@ -1,7 +1,6 @@
 export default function({ app }) {
-  const backendUrl = app.$env.BACKEND_URL || 'http://localhost:4000'
   return {
-    httpEndpoint: backendUrl,
+    httpEndpoint: '/api',
     httpLinkOptions: {
       credentials: 'same-origin'
     },
