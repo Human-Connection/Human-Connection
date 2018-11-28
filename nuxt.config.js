@@ -189,7 +189,7 @@ module.exports = {
       config.resolve.alias['@@'] = path.resolve(__dirname, './styleguide/src/system')
       config.module.rules.push({
         resourceQuery: /blockType=docs/,
-        loader: require.resolve('./styleguide/src/loader/docs-loader.js')
+        loader: require.resolve('./styleguide/src/loader/docs-trim-loader.js')
       })
       const svgRule = config.module.rules.find(rule => rule.test.test('.svg'))
       svgRule.test = /\.(png|jpe?g|gif|webp)$/
