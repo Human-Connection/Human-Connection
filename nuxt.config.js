@@ -1,6 +1,7 @@
 const pkg = require('./package')
 const envWhitelist = ['NODE_ENV', 'MAINTENANCE']
 const dev = process.env.NODE_ENV !== 'production'
+const path = require('path')
 
 module.exports = {
   mode: 'universal',
@@ -54,7 +55,6 @@ module.exports = {
   ** Global CSS
   */
   css: ['~assets/styles/main.scss'],
-
   /*
   ** Plugins to load before mounting the App
   */
@@ -103,7 +103,8 @@ module.exports = {
     ['@nuxtjs/dotenv', { only: envWhitelist }],
     ['nuxt-env', { keys: envWhitelist }],
     '@nuxtjs/apollo',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    ['nuxt-sass-resources-loader', path.resolve(__dirname, './styleguide/src/system/styles/shared.scss')]
   ],
 
   /*
@@ -185,6 +186,29 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      config.resolve.alias['@@'] = path.resolve(__dirname, './styleguide/src/system')
+      config.module.rules.push({
+        resourceQuery: /blockType=docs/,
+        loader: require.resolve('./styleguide/src/loader/docs-loader.js')
+      })
+      const svgRule = config.module.rules.find(rule => rule.test.test('.svg'))
+      svgRule.test = /\.(png|jpe?g|gif|webp)$/
+      config.module.rules.push({
+        test: /\.svg$/,
+        loader: 'vue-svg-loader',
+        options: {
+          svgo: {
+            plugins: [
+              {
+                removeViewBox: false
+              },
+              {
+                removeDimensions: true
+              }
+            ]
+          }
+        }
+      })
     }
   }
 }
