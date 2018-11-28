@@ -26,7 +26,7 @@
   * [Integration Testing](workflow/testing/integration-testing.md)
   * [Component Testing](workflow/testing/component-testing.md)
   * [Unit Testing](workflow/testing/unit-testing.md)
-* [Pull-Requests](workflow/pull-requests.md)
+* [Contribut](workflow/pull-requests.md)
 * [Deployment](workflow/deployment.md)
 
 ## Recources
