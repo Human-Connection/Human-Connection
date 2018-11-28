@@ -1,4 +1,10 @@
+---
+description: Want to help on the Backend / API part?
+---
+
 # Todo's
+
+Github Issues: [https://github.com/Human-Connection/Nitro-Backend/issues](https://github.com/Human-Connection/Nitro-Backend/issues)
 
 * [x]  add jwt authentication \(in progress\)
 * [ ]  get directives working correctly \(@toLower, @auth, @role, etc.\)

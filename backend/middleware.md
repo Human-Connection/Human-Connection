@@ -1,10 +1,3 @@
----
-description: >-
-  GraphQL Middleware lets you run arbitrary code before or after a resolver is
-  invoked. It improves your code structure by enabling code reuse and a clear
-  separation of concerns.
----
-
 # Middleware
 
 

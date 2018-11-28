@@ -1,7 +1,3 @@
----
-description: Lets try to install the Human Connection - Nitro Backend
----
-
 # Backend Installation
 
 {% hint style="warning" %}

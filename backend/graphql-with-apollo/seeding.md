@@ -1,6 +1,6 @@
 # Seeding
 
-### Seeding The Database
+## Seeding The Database
 
 Optionally you can seed the GraphQL service by executing mutations that will write sample data to the database:
 

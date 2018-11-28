@@ -1,7 +1,3 @@
----
-description: Explaniation of the main three testing approaches.
----
-
 # Testing Guide
 
 ## [Integration Testing](integration-testing.md)

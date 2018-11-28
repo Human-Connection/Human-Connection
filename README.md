@@ -1,7 +1,3 @@
----
-description: Welcome to the Human-Connection Nitro Documentation.
----
-
 # Let's change the World
 
 ## Why do we need HC Nitro?

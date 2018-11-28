@@ -1,9 +1,3 @@
----
-description: >-
-  Here you can find information on how we are testing the whole application
-  automaicaly.
----
-
 # Integration Testing
 
 ## Install Cypress

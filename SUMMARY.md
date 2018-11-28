@@ -4,30 +4,30 @@
 
 ## Backend
 
-* [Backend Installation](api/installation/README.md)
-  * [Configuration](api/installation/configuration.md)
-  * [Docker](api/installation/docker.md)
-* [GraphQL with Apollo](api/graphql-with-apollo/README.md)
-  * [Mocking](api/graphql-with-apollo/mocking.md)
-  * [Seeding](api/graphql-with-apollo/seeding.md)
-* [Middleware](api/middleware.md)
-* [Import](api/data-import.md)
-* [Todo's](api/todos.md)
+* [Backend Installation](backend/installation/README.md)
+  * [Configuration](backend/installation/configuration.md)
+  * [Docker](backend/installation/docker.md)
+* [GraphQL with Apollo](backend/graphql-with-apollo/README.md)
+  * [Mocking](backend/graphql-with-apollo/mocking.md)
+  * [Seeding](backend/graphql-with-apollo/seeding.md)
+* [Middleware](backend/middleware.md)
+* [Import](backend/data-import.md)
+* [Todo's](backend/todos.md)
 
 ## Web Frontend
 
-* [Web Installation](frontend/installation.md)
-* [Styleguide](frontend/styleguide.md)
-* [Todo's](frontend/todos.md)
+* [Web Installation](web-frontend/installation.md)
+* [Styleguide](web-frontend/styleguide.md)
+* [Todo's](web-frontend/todos.md)
 
 ## Workflow
 
-* [Testing Guide](integration-tests/testing/README.md)
-  * [Integration Testing](integration-tests/testing/integration-testing.md)
-  * [Component Testing](integration-tests/testing/component-testing.md)
-  * [Unit Testing](integration-tests/testing/unit-testing.md)
-* [Pull-Requests](integration-tests/pull-requests.md)
-* [Deployment](integration-tests/deployment.md)
+* [Testing Guide](workflow/testing/README.md)
+  * [Integration Testing](workflow/testing/integration-testing.md)
+  * [Component Testing](workflow/testing/component-testing.md)
+  * [Unit Testing](workflow/testing/unit-testing.md)
+* [Pull-Requests](workflow/pull-requests.md)
+* [Deployment](workflow/deployment.md)
 
 ## Recources
 

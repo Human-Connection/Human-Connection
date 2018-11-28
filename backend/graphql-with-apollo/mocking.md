@@ -1,7 +1,3 @@
----
-description: No Database? No problem!
----
-
 # Mocking
 
 ### Mocking API Results
