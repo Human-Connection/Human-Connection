@@ -105,9 +105,9 @@ Optionally you can seed the GraphQL service by executing mutations that
 will write sample data to the database:
 
 ```bash
-yarn seedDb
+yarn db:seed
 # -or-
-npm run seedDb
+npm run db:seed
 ```
 
 ## Todo`s
