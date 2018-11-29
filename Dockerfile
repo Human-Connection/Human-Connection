@@ -20,9 +20,7 @@ RUN yarn install --production=false --frozen-lockfile --non-interactive
 # Install and build Styleguide
 COPY styleguide/ ./styleguide
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
-    && cd .. \
-    && yarn run styleguide:build \
-    && rm -Rf styleguide/node_modules
+    && cd ..
 
 COPY . .
 RUN ["yarn", "run", "build"]
