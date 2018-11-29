@@ -10505,11 +10505,6 @@ vue-apollo@^3.0.0-beta.25:
     chalk "^2.4.1"
     throttle-debounce "^2.0.0"
 
-"vue-cion-design-system@file:./styleguide":
-  version "1.0.0"
-  dependencies:
-    vue "^2.5.17"
-
 vue-cli-plugin-apollo@^0.17.0:
   version "0.17.4"
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-apollo/-/vue-cli-plugin-apollo-0.17.4.tgz#7d785a112f8491005d2d805d4f717ce40a6befc3"
