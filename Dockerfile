@@ -15,11 +15,11 @@ RUN apk --no-cache add git
 COPY package.json .
 COPY yarn.lock .
 COPY styleguide/ ./styleguide
-RUN yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines
+RUN yarn install --production=false --frozen-lockfile --non-interactive
 
 # Install and build Styleguide
 COPY styleguide/ ./styleguide
-RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive --ignore-engines \
+RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
     && yarn run styleguide:build \
     && rm -Rf styleguide/node_modules
