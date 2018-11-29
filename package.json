@@ -11,6 +11,7 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue .",
     "styleguide": "cd ./styleguide && yarn dev",
+    "styleguide:build": "cd ./styleguide && yarn build:lib && cd ../",
     "test": "jest",
     "precommit": "yarn lint"
   },
