@@ -104,7 +104,10 @@ module.exports = {
     ['nuxt-env', { keys: envWhitelist }],
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
-    ['nuxt-sass-resources-loader', path.resolve(__dirname, './styleguide/src/system/styles/shared.scss')]
+    [
+      'nuxt-sass-resources-loader',
+      path.resolve(__dirname, './styleguide/src/system/styles/shared.scss')
+    ]
   ],
 
   /*
@@ -186,7 +189,10 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-      config.resolve.alias['@@'] = path.resolve(__dirname, './styleguide/src/system')
+      config.resolve.alias['@@'] = path.resolve(
+        __dirname,
+        './styleguide/src/system'
+      )
       config.module.rules.push({
         resourceQuery: /blockType=docs/,
         loader: require.resolve('./styleguide/src/loader/docs-trim-loader.js')
