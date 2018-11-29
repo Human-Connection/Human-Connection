@@ -12,7 +12,7 @@ install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend .
 
 script:
-  - docker run humanconnection/nitro-backend yarn run db:seed
+  # - docker run humanconnection/nitro-backend yarn run db:seed
 
 after_success:
   # - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
