@@ -11,7 +11,7 @@ cache:
 install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend .
 
-test:
+script:
   # TODO: re-add when testing is setup properly
   # - docker run humanconnection/nitro-backend yarn run db:seed
   - docker run humanconnection/nitro-backend yarn run test
