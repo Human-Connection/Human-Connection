@@ -9,7 +9,6 @@
 ``` bash
 # install all dependencies
 $ cd styleguide && yarn install && cd ..
-$ yarn run styleguide:build
 $ yarn install
 ```
 
@@ -22,6 +21,7 @@ $ yarn dev
 ### Build for production
 ``` bash
 # build for production and launch server
+$ yarn styleguide:build
 $ yarn build
 $ yarn start
 ```
@@ -35,10 +35,4 @@ All reusable Components (for example avatar) should be done inside the styleguid
 ### To show the styleguide
 ``` bash
 $ yarn styleguide
-```
-
-if you changed design tokens or other styles inside the styleguide, run the refresh command to build the styleguide as a lib
-
-``` bash
-$ yarn styleguide:build
 ```
