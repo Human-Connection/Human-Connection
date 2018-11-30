@@ -28,6 +28,7 @@
     "async-validator": "^1.8.5",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
+    "babel-plugin-transform-require-context": "^0.0.3",
     "cheerio": "^1.0.0-rc.2",
     "clone-deep": "^4.0.0",
     "codemirror": "^5.39.2",
