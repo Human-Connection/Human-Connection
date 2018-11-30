@@ -12,6 +12,7 @@ install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend .
 
 script:
+  # TODO: re-add when testing is setup properly
   # - docker run humanconnection/nitro-backend yarn run db:seed
 
 after_success:
