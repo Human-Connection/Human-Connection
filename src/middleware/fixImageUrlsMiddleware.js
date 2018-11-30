@@ -1,9 +1,14 @@
 
+const urlSearchAlpha = 'https://api-alpha.human-connection.org'
+const urlSearchLocal = 'http://localhost:3000'
+
 export const fixUrl = (url) => {
-  return url.replace('https://api-alpha.human-connection.org', 'http://localhost:3000')
+  url = url.replace(urlSearchAlpha, '')
+  url = url.replace(urlSearchLocal, '')
+  return url
 }
 const fixImageURLs = (result, recursive) => {
-  if (result && typeof result === 'string' && result.indexOf('https://api-alpha.human-connection.org') === 0) {
+  if (result && typeof result === 'string' && (result.indexOf(urlSearchAlpha) === 0 || result.indexOf(urlSearchLocal) === 0)) {
     result = fixUrl(result)
   } else if (result && Array.isArray(result)) {
     result.forEach((res, index) => {

@@ -31,7 +31,7 @@ spec:
           value: "false"
         - name: NEO4J_URI
           value: bolt://neo4j:7687
-        image: humanconnection/backend:latest
+        image: humanconnection/nitro-backend:latest
         name: backend
         ports:
         - containerPort: 4000
