@@ -1,5 +1,5 @@
 FROM node:10-alpine
-LABEL Description="Backend of the Social Network Human-Connection.org" Vendor="Human-Connection gGmbH" Version="0.0.1" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
+LABEL Description="Backend of the Social Network Human-Connection.org" Vendor="Human Connection gGmbH" Version="0.0.1" Maintainer="Human Connection gGmbH (developer@human-connection.org)"
 
 # Expose the app port
 EXPOSE 4000
