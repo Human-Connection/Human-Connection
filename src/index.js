@@ -1,7 +1,7 @@
 import server from './server'
 
 const serverConfig = {
-  port: 4000
+  port: process.env.GRAPHQL_PORT || 4000
   // cors: {
   //   credentials: true,
   //   origin: [process.env.CLIENT_URI] // your frontend url.
@@ -9,5 +9,5 @@ const serverConfig = {
 }
 
 server.start(serverConfig, options =>  {
-  console.log(`Server ready at ${process.env.GRAPHQL_URI} 🚀`);
+  console.log(`Server ready at ${process.env.GRAPHQL_URI} 🚀`)
 })

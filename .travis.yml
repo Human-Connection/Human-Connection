@@ -1,0 +1,31 @@
+language: node_js
+node_js:
+  - "10"
+services:
+  - docker
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+install:
+  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend .
+
+script:
+  # TODO: re-add when testing is setup properly
+  # - docker run humanconnection/nitro-backend yarn run db:seed
+
+after_success:
+  # - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  # - chmod +x send.sh
+  # - ./send.sh success $WEBHOOK_URL
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker tag humanconnection/nitro-backend humanconnection/nitro-backend:latest;
+    docker push humanconnection/nitro-backend:latest;
+    fi
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL

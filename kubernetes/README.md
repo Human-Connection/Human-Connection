@@ -27,7 +27,7 @@ git clone https://github.com/Human-Connection/Nitro-Web.git
 Build Docker images, using the Minikube Docker daemon:
 ```sh
 eval $(minikube docker-env)
-docker build -t humanconnection/backend:latest Nitro-Backend/
+docker build -t humanconnection/nitro-backend:latest Nitro-Backend/
 docker build -t humanconnection/neo4j:latest -f Nitro-Backend/Dockerfile.neo4j Nitro-Backend/
 ```
 

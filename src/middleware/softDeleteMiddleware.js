@@ -11,12 +11,12 @@ export default {
       return result
     },
     Comment: async (resolve, root, args, context, info) => {
-      // if (typeof args.deleted !== 'boolean') {
-      //   args.deleted = false
-      // }
-      // if (typeof args.disabled !== 'boolean') {
-      //   args.disabled = false
-      // }
+      if (typeof args.deleted !== 'boolean') {
+        args.deleted = false
+      }
+      if (typeof args.disabled !== 'boolean') {
+        args.disabled = false
+      }
       const result = await resolve(root, args, context, info)
       return result
     },

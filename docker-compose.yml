@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   backend:
-    image: humanconnection/backend:latest
+    image: humanconnection/nitro-backend:latest
     build: .
     networks:
       - hc-network
@@ -12,7 +12,7 @@ services:
       - 4000:4000
     environment:
       - NEO4J_URI=bolt://neo4j:7687
-      - GRAPHQL_LISTEN_PORT=4000
+      - GRAPHQL_PORT=4000
       - GRAPHQL_URI=http://localhost:4000
       - CLIENT_URI=http://localhost:3000
       - JWT_SECRET=b/&&7b78BF&fv/Vd

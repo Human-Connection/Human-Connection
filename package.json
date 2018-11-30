@@ -7,7 +7,7 @@
     "test": "mocha --require @babel/register src/**/*.test.js",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
-    "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
+    "db:seed": "concurrently --kill-others --success first 'cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start' 'wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/seed-db.js'"
   },
   "author": "Human Connection gGmbh",
   "license": "MIT",
@@ -24,6 +24,7 @@
     "apollo-server": "^2.0.4",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.2",
+    "cross-env": "^5.2.0",
     "date-fns": "^2.0.0-alpha.24",
     "dotenv": "^6.0.0",
     "graphql-custom-directives": "^0.2.13",
@@ -48,8 +49,10 @@
   "devDependencies": {
     "apollo-server-testing": "^2.2.2",
     "chai": "^4.2.0",
+    "concurrently": "^4.1.0",
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.7",
+    "wait-on": "^3.2.0"
   }
 }
