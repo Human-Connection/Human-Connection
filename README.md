@@ -9,6 +9,7 @@
 ``` bash
 # install all dependencies
 $ cd styleguide && yarn install && cd ..
+$ yarn styleguide:build
 $ yarn install
 ```
 
