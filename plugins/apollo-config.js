@@ -1,12 +1,12 @@
 export default function({ app }) {
-  const backendUrl = app.$env.BACKEND_URL || 'http://localhost:4000'
+  const backendUrl = process.BACKEND_URL || 'http://localhost:4000'
   return {
-    httpEndpoint: backendUrl,
+    httpEndpoint: process.server ? backendUrl : '/api',
     httpLinkOptions: {
       credentials: 'same-origin'
     },
     credentials: true,
-    tokenName: 'apollo-token',
+    tokenName: 'human-connection-token',
     persisting: false,
     websocketsOnly: false
   }
