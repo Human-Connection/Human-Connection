@@ -108,8 +108,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'vue-cion-design-system/src/system/tokens/generated/tokens.scss';
-
 .related-post {
   box-shadow: $box-shadow-base;
 

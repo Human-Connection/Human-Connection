@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import DesignSystem from 'vue-cion-design-system'
-import 'vue-cion-design-system/dist/system.css'
+import DesignSystem from '@@'
+import '@@/styles/main.scss'
 
 Vue.use(DesignSystem)

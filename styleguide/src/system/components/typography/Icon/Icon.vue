@@ -44,7 +44,11 @@ export default {
   },
   computed: {
     svgComponent() {
-      return icons[this.name]
+      const icon = icons[this.name]
+      if (!icon) {
+        return false
+      }
+      return icon.render ? icon : icon.default
     }
   }
 }
