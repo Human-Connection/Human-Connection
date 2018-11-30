@@ -332,8 +332,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'vue-cion-design-system/src/system/tokens/generated/tokens.scss';
-
 .profile-avatar {
   display: block;
   margin: auto;
