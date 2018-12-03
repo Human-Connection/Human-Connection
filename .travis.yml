@@ -24,9 +24,9 @@ script:
 - docker-compose run --rm backend yarn run db:seed # seeding needs neo4j
 
 after_success:
-  # - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  # - chmod +x send.sh
-  # - ./send.sh success $WEBHOOK_URL
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
     docker tag humanconnection/nitro-backend humanconnection/nitro-backend:latest;
