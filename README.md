@@ -99,7 +99,7 @@ you build a frontend application without running a neo4j instance.
 
 Just set `MOCK=true` inside `.env` or pass it on application start.
 
-## Seeding and Unseeding The Database
+## Seeding and Cleaning The Database
 
 Optionally you can seed the GraphQL service by executing mutations that 
 will write sample data to the database:
