@@ -7,21 +7,16 @@ cache:
     - node_modules
 services:
   - docker
-env:
-  - DOCKER_COMPOSE_VERSION=1.23.2
-
-before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
+  - neo4j
 
 install:
+  - yarn install
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend:latest .
 
 script:
 - docker run humanconnection/nitro-backend:latest yarn run eslint
-- docker-compose run --rm backend yarn run db:seed # seeding needs neo4j
+- yarn run db:reset
+- yarn run db:seed
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
