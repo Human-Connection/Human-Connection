@@ -4,6 +4,7 @@
   "description": "GraphQL Backend for Human Connection",
   "main": "src/index.js",
   "scripts": {
+    "eslint": "eslint src --config .eslintrc.js",
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
@@ -46,8 +47,15 @@
     "trunc-html": "^1.1.2"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
+    "eslint": "^5.9.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
     "faker": "^4.1.0",
     "nodemon": "^1.18.7",
     "wait-on": "^3.2.0"

@@ -1,5 +1,3 @@
-import faker from 'faker'
-
 export default () => {
   return `mutation {
     o1: CreateOrganization(

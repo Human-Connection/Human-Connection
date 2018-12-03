@@ -1,16 +1,7 @@
-import { rule, shield, and, or, not, allow } from 'graphql-shield'
+import { rule, shield, allow } from 'graphql-shield'
 
-const isAuthenticated = rule()(async (parent, args, ctx, info) => {
-  return ctx.user !== null
-})
 const isOwner = rule()(async (parent, args, ctx, info) => {
   return ctx.user.id === parent.id
-})
-const isAdmin = rule()(async (parent, args, ctx, info) => {
-  return ctx.user.role === 'ADMIN'
-})
-const isModerator = rule()(async (parent, args, ctx, info) => {
-  return ctx.user.role === 'MODERATOR'
 })
 
 // Permissions

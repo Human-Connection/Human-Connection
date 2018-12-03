@@ -4,7 +4,7 @@ let driver
 
 export default function () {
   return {
-    getDriver() {
+    getDriver () {
       if (!driver) {
         driver = neo4j.driver(
           process.env.NEO4J_URI || 'bolt://localhost:7687',
