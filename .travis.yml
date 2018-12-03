@@ -17,10 +17,10 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 install:
-  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend .
+  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend:latest .
 
 script:
-- docker run humanconnection/backend:latest yarn run eslint
+- docker run humanconnection/nitro-backend:latest yarn run eslint
 - docker-compose run --rm backend yarn run db:seed # seeding needs neo4j
 
 after_success:
