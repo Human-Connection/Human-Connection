@@ -12,6 +12,7 @@ services:
 install:
   - yarn install
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend:latest .
+  - cp .env.template .env
 
 script:
 - docker run humanconnection/nitro-backend:latest yarn run eslint
