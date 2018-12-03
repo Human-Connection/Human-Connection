@@ -99,7 +99,7 @@ you build a frontend application without running a neo4j instance.
 
 Just set `MOCK=true` inside `.env` or pass it on application start.
 
-## Seeding The Database
+## Seeding and Cleaning The Database
 
 Optionally you can seed the GraphQL service by executing mutations that 
 will write sample data to the database:
@@ -108,6 +108,14 @@ will write sample data to the database:
 yarn db:seed
 # -or-
 npm run db:seed
+```
+
+For a reset you can use the reset script:
+
+```bash
+yarn db:reset
+# -or-
+npm run db:reset
 ```
 
 ## Todo`s
