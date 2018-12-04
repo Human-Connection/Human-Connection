@@ -7,9 +7,10 @@
     "test": "mocha --require @babel/register src/**/*.test.js",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
-    "db:seed": "concurrently --kill-others --success first 'cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start' 'wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/seed-db.js'"
+    "db:seed": "concurrently --kill-others --success first 'cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start' 'wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/seed-db.js'",
+    "db:reset": "concurrently --kill-others --success first 'cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start' 'wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/unseed-db.js'"
   },
-  "author": "Human Connection gGmbh",
+  "author": "Human Connection gGmbH",
   "license": "MIT",
   "dependencies": {
     "@babel/cli": "^7.1.5",
@@ -17,7 +18,6 @@
     "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/register": "^7.0.0",
-    "apollo-boost": "^0.1.10",
     "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.2",
     "apollo-link-http": "^1.5.4",
