@@ -4,7 +4,8 @@
       <ds-flex-item>
         <transition
           name="slide-up"
-          appear>
+          appear
+        >
           <nuxt-child />
         </transition>
       </ds-flex-item>
