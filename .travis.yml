@@ -16,7 +16,7 @@ install:
 
 script:
 - docker run humanconnection/nitro-backend:latest yarn run eslint
-- docker-compose run --rm backend yarn run mocha
+- docker run humanconnection/nitro-backend:latest yarn run mocha
 - yarn run db:reset
 - yarn run db:seed
 
