@@ -3,16 +3,18 @@
   "version": "0.0.1",
   "description": "GraphQL Backend for Human Connection",
   "main": "src/index.js",
+  "config": {
+    "no_auth": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled"
+  },
   "scripts": {
     "eslint": "eslint src --config .eslintrc.js",
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
-    "db:no-auth-server": "cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start",
-    "db:script:seed": "wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/seed-db.js",
-    "db:script:reset": "wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/reset-db.js",
-    "db:seed": "concurrently --kill-others --success first -n no-auth-server,seed \"yarn run db:no-auth-server\" \"yarn run db:script:seed\"",
-    "db:reset": "concurrently --kill-others --success first -n no-auth-server,reset \"yarn run db:no-auth-server\" \"yarn run db:script:reset\""
+    "db:script:seed": "wait-on tcp:4001 && $npm_package_config_no_auth ./node_modules/.bin/babel-node src/seed/seed-db.js",
+    "db:script:reset": "wait-on tcp:4001 && $npm_package_config_no_auth ./node_modules/.bin/babel-node src/seed/reset-db.js",
+    "db:seed":  "concurrently --kill-others --success first -n no-auth-server,seed '$npm_package_config_no_auth yarn run start' 'yarn run db:script:seed'",
+    "db:reset": "concurrently --kill-others --success first -n no-auth-server,reset '$npm_package_config_no_auth yarn run start' 'yarn run db:script:reset'"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",

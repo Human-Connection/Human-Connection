@@ -1,5 +1,19 @@
 import { rule, shield, allow } from 'graphql-shield'
 
+/*
+ * TODO: implement
+ * See: https://github.com/Human-Connection/Nitro-Backend/pull/40#pullrequestreview-180898363
+const isAuthenticated = rule()(async (parent, args, ctx, info) => {
+  return ctx.user !== null
+})
+const isAdmin = rule()(async (parent, args, ctx, info) => {
+  return ctx.user.role === 'ADMIN'
+})
+const isModerator = rule()(async (parent, args, ctx, info) => {
+  return ctx.user.role === 'MODERATOR'
+})
+*/
+
 const isOwner = rule()(async (parent, args, ctx, info) => {
   return ctx.user.id === parent.id
 })
