@@ -4,7 +4,7 @@ import {
   GraphQLDefaultToDirective
 } from 'graphql-custom-directives'
 
-export default function applyDirectives(augmentedSchema) {
+export default function applyDirectives (augmentedSchema) {
   const directives = [
     GraphQLLowerCaseDirective,
     GraphQLTrimDirective,
