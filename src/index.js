@@ -8,6 +8,6 @@ const serverConfig = {
   // }
 }
 
-server.start(serverConfig, options =>  {
+server.start(serverConfig, options => {
   console.log(`Server ready at ${process.env.GRAPHQL_URI} 🚀`)
 })

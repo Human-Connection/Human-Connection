@@ -137,7 +137,7 @@ export default {
     const chars = '23456789abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPRSTUVWXYZ'
     let code = ''
     for (let i = 0; i < 8; i++) {
-      const n = _.random(0, chars.length-1)
+      const n = _.random(0, chars.length - 1)
       code += chars.substr(n, 1)
     }
     return code

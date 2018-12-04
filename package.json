@@ -3,12 +3,18 @@
   "version": "0.0.1",
   "description": "GraphQL Backend for Human Connection",
   "main": "src/index.js",
+  "config": {
+    "no_auth": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled"
+  },
   "scripts": {
     "test": "mocha --require @babel/register src/**/*.test.js",
+    "eslint": "eslint src --config .eslintrc.js",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
-    "db:seed": "concurrently --kill-others --success first 'cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start' 'wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/seed-db.js'",
-    "db:reset": "concurrently --kill-others --success first 'cross-env GRAPHQL_URI=http://localhost:4001 PERMISSIONS=disabled GRAPHQL_PORT=4001 yarn run start' 'wait-on tcp:4001 && cross-env GRAPHQL_URI=http://localhost:4001 ./node_modules/.bin/babel-node src/seed/unseed-db.js'"
+    "db:script:seed": "wait-on tcp:4001 && $npm_package_config_no_auth ./node_modules/.bin/babel-node src/seed/seed-db.js",
+    "db:script:reset": "wait-on tcp:4001 && $npm_package_config_no_auth ./node_modules/.bin/babel-node src/seed/reset-db.js",
+    "db:seed":  "concurrently --kill-others --success first -n no-auth-server,seed '$npm_package_config_no_auth yarn run start' 'yarn run db:script:seed'",
+    "db:reset": "concurrently --kill-others --success first -n no-auth-server,reset '$npm_package_config_no_auth yarn run start' 'yarn run db:script:reset'"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
@@ -48,8 +54,16 @@
   },
   "devDependencies": {
     "apollo-server-testing": "^2.2.2",
+    "babel-eslint": "^10.0.1",
     "chai": "^4.2.0",
     "concurrently": "^4.1.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.9.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.7",
