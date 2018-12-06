@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - "10"
+cache:
+  yarn: true
+  directories:
+    - node_modules
+services:
+  - docker
+  - neo4j
+
+install:
+  - git submodule update --remote --merge
+  - yarn global add cypress
+
+script:
+  - cypress run
