@@ -44,6 +44,7 @@
               :disabled="pending"
               placeholder="Deine E-Mail"
               type="email"
+              name="email"
               icon="envelope"
             />
             <ds-input
@@ -52,12 +53,15 @@
               placeholder="Dein Password"
               icon="lock"
               icon-right="question-circle"
+              name="password"
               type="password"
             />
             <ds-button
               :loading="pending"
               primary
               full-width
+              name="submit"
+              type="submit"
             >
               Anmelden
             </ds-button>

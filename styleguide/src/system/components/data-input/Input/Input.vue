@@ -64,6 +64,13 @@ export default {
       default: null
     },
     /**
+     * The name of the field for better accessibility
+     */
+    name: {
+      type: String,
+      default: null
+    },
+    /**
      * Whether the input should be automatically focused
      */
     autofocus: {
