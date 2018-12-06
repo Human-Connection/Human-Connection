@@ -12,54 +12,67 @@
       <ds-flex gutter="small">
         <ds-flex-item
           :width="{ base: '100%', sm: '50%' }"
-          center>
+          center
+        >
           <ds-space
             margin-top="small"
             margin-bottom="xxx-small"
-            center>
+            center
+          >
             <img
               class="login-image"
               src="/img/sign-up/humanconnection.svg"
-              alt="Human Connection">
+              alt="Human Connection"
+            >
           </ds-space>
         </ds-flex-item>
         <ds-flex-item
           :width="{ base: '100%', sm: '50%' }"
-          center>
+          center
+        >
           <ds-space margin="small">
-            <ds-text size="small">Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.</ds-text>
+            <ds-text size="small">
+              Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.
+            </ds-text>
           </ds-space>
           <form
             :disabled="pending"
-            @submit.prevent="onSubmit">
+            @submit.prevent="onSubmit"
+          >
             <ds-input
-              :disabled="pending"
               v-model="form.email"
+              :disabled="pending"
               placeholder="Deine E-Mail"
               type="email"
               name="email"
-              icon="envelope"/>
+              icon="envelope"
+            />
             <ds-input
-              :disabled="pending"
               v-model="form.password"
+              :disabled="pending"
               placeholder="Dein Password"
               icon="lock"
               icon-right="question-circle"
               name="password"
-              type="password"/>
+              type="password"
+            />
             <ds-button
               :loading="pending"
               primary
               full-width
               name="submit"
-              type="submit">
+              type="submit"
+            >
               Anmelden
             </ds-button>
             <ds-space margin="x-small">
               <a
                 href="https://human-connection.org"
                 title="zur Präsentationsseite"
-                target="_blank">Was ist Human Connection?</a>
+                target="_blank"
+              >
+                Was ist Human Connection?
+              </a>
             </ds-space>
           </form>
         </ds-flex-item>
