@@ -30,7 +30,7 @@ Run:
 docker-compose up
 # if you want seed data
 # open another terminal and run
-docker-compose exec backend yarn run seedDb
+docker-compose exec backend yarn run db:seed
 ```
 
 App is [running on port 4000](http://localhost:4000/)
