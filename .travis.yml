@@ -18,14 +18,12 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
-
 install:
   - git submodule update --remote --merge
-  - yarn global add cypress
-
-before_install:
   - cd Nitro-Backend && docker-compose start
   - cd Nitro-Web && docker-compose start
+  - yarn global add cypress
+
 
 script:
   - cypress run
