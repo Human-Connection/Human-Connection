@@ -3,25 +3,32 @@
     <ds-flex>
       <ds-flex-item
         :width="{ base: '100%' }"
-        center>
+        center
+      >
         <ds-space
           style="text-align: center;"
           margin-top="large"
           margin-bottom="xxx-small"
-          center>
+          center
+        >
           <img
             style="width: 200px;"
             src="/img/sign-up/onourjourney.png"
-            alt="Human Connection">
+            alt="Human Connection"
+          >
         </ds-space>
         <ds-space
           style="text-align: center;"
           margin-top="small"
           margin-bottom="xxx-small"
-          center>
+          center
+        >
           <ds-heading
             tag="h3"
-            soft>Logging out...</ds-heading>
+            soft
+          >
+            Logging out...
+          </ds-heading>
         </ds-space>
       </ds-flex-item>
     </ds-flex>

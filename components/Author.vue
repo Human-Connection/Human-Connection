@@ -5,29 +5,36 @@
     :open-group="Math.random().toString()"
     placement="top-start"
     trigger="manual"
-    offset="0">
+    offset="0"
+  >
     <a
       v-router-link
       :href="author.slug ? $router.resolve({ name: 'profile-slug', params: { slug: author.slug } }).href : null"
       style="white-space: nowrap; display: flex; align-items: center;"
       @mouseover="popoverMouseEnter"
-      @mouseleave="popoveMouseLeave">
+      @mouseleave="popoveMouseLeave"
+    >
       <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
         <ds-avatar
           :image="author.avatar"
           :name="author.name"
           style="display: inline-block; vertical-align: middle;"
-          size="32px" />
+          size="32px"
+        />
       </div>
       <div style="display: inline-block; height: 100%; vertical-align: middle;">
         <b
           class="username"
-          style="vertical-align: middle;">{{ author.name | truncate(trunc, 18) }}</b>
+          style="vertical-align: middle;"
+        >
+          {{ author.name | truncate(trunc, 18) }}
+        </b>
         <template v-if="post.createdAt">
           <br>
           <ds-text
             size="small"
-            color="soft">
+            color="soft"
+          >
             {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
           </ds-text>
         </template>
@@ -37,7 +44,8 @@
       slot="popover"
       style="min-width: 250px;"
       @mouseover="popoverMouseEnter"
-      @mouseleave="popoveMouseLeave">
+      @mouseleave="popoveMouseLeave"
+    >
       <!--<ds-avatar
         :image="author.avatar"
         :name="author.name || 'Anonymus'"
@@ -46,28 +54,32 @@
       <hc-badges
         v-if="author.badges && author.badges.length"
         :badges="author.badges"
-        style="margin-bottom: -10px" />
+        style="margin-bottom: -10px"
+      />
       <ds-flex>
         <ds-flex-item class="ds-tab-nav-item">
           <ds-space margin="small">
             <ds-number
               :count="fanCount"
               label="Folgen"
-              size="x-large" />
+              size="x-large"
+            />
           </ds-space>
         </ds-flex-item>
         <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
           <ds-space margin="small">
             <ds-number
               :count="author.contributionsCount"
-              label="Beiträge" />
+              label="Beiträge"
+            />
           </ds-space>
         </ds-flex-item>
         <ds-flex-item class="ds-tab-nav-item">
           <ds-space margin="small">
             <ds-number
               :count="author.commentsCount"
-              label="Kommentare" />
+              label="Kommentare"
+            />
           </ds-space>
         </ds-flex-item>
       </ds-flex>
@@ -79,15 +91,17 @@
       <ds-flex
         v-if="!itsMe"
         gutter="x-small"
-        style="margin-bottom: 0;">
+        style="margin-bottom: 0;"
+      >
         <ds-flex-item :width="{base: 3}">
           <hc-follow-button
             :follow-id="author.id"
-            @update="voted = true" />
+            @update="voted = true"
+          />
         </ds-flex-item>
-        <ds-flex-item :width="{base: 1}" >
+        <ds-flex-item :width="{base: 1}">
           <ds-button full-width>
-            <ds-icon name="user-times"/>
+            <ds-icon name="user-times" />
           </ds-button>
         </ds-flex-item>
       </ds-flex>
@@ -98,7 +112,6 @@
 
 <script>
 import HcFollowButton from '~/components/FollowButton.vue'
-import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
 
 let mouseEnterTimer = null
@@ -108,7 +121,6 @@ export default {
   name: 'HcAuthor',
   components: {
     HcFollowButton,
-    HcCountTo,
     HcBadges
   },
   props: {
