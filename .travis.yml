@@ -28,3 +28,19 @@ after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh failure $WEBHOOK_URL
+
+deploy:
+  - provider: script
+    script: scripts/deploy.sh nitro.human-connection.org
+    on:
+      branch: master
+      tags: true
+  - provider: script
+    script: scripts/deploy.sh nitro-staging.human-connection.org
+    on:
+      branch: master
+  - provider: script
+    script: scripts/deploy.sh "nitro-$(git rev-parse --short HEAD).human-connection.org"
+    on:
+      tags: true
+      all_branches: true
