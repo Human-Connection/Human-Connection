@@ -13,5 +13,9 @@ install:
   - git submodule update --remote --merge
   - yarn global add cypress
 
+before_install:
+  - cd Nitro-Backend && docker-compose start
+  - cd Nitro-Web && docker-compose start
+
 script:
   - cypress run
