@@ -21,6 +21,9 @@
 > We still need to evaluate the drawbacks and estimate the development 
 > cost of such an approach
 
+## How to get in touch 
+Connect with other developers over [Discord](https://discord.gg/6ub73U3)
+
 ## Quick Start
 
 ### Installation with Docker
@@ -30,7 +33,7 @@ Run:
 docker-compose up
 # if you want seed data
 # open another terminal and run
-docker-compose exec backend yarn run seedDb
+docker-compose exec backend yarn run db:seed
 ```
 
 App is [running on port 4000](http://localhost:4000/)
