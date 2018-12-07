@@ -14,9 +14,9 @@
       v-if="image || $slots.image">
       <!-- @slot Content of the card's image -->
       <slot name="image">
-        <img 
-          :src="image" 
-          v-if="!error" 
+        <img
+          :src="image"
+          v-if="!error"
           @error="onError" >
       </slot>
     </div>
@@ -36,7 +36,14 @@
       </slot>
     </header>
     <div class="ds-card-content">
-      <slot />
+      <template v-if="space">
+        <ds-space :margin="space">
+          <slot />
+        </ds-space>
+      </template>
+      <template v-else>
+        <slot />
+      </template>
     </div>
     <footer
       class="ds-card-footer"
@@ -125,6 +132,14 @@ export default {
     hover: {
       type: Boolean,
       default: false
+    },
+    /**
+     * If you need some spacing you can provide it here like for ds-space
+     * `xxx-small, xx-small, x-small, small, large, x-large, xx-large, xxx-large`
+     */
+    space: {
+      type: String,
+      default: null
     }
   },
   data() {

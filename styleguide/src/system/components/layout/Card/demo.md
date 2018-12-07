@@ -21,6 +21,23 @@ Set a header and image for the card and provide some content.
 </ds-flex>
 ```
 
+## Space
+
+Need more or less space top and bottom of the card?
+Specify with with the `space` prop
+
+```html
+<ds-card space="xx-small">
+  xx-small  
+</ds-card>
+```
+
+```html
+<ds-card space="xx-large">
+  xx-large  
+</ds-card>
+```
+
 ## Cards with footer
 
 Most commonly the footer will contain some actions connected to the content.
