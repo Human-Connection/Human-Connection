@@ -1,8 +1,10 @@
 <template>
   <ds-card>
-    <h2 style="margin-bottom: .2em;">Mehr Informationen</h2>
+    <h2 style="margin-bottom: .2em;">
+      Mehr Informationen
+    </h2>
     <p>Hier findest du weitere infos zum Thema.</p>
-    <ds-space/>
+    <ds-space />
     <h3><ds-icon name="compass" /> Themenkategorien</h3>
     <div class="tags">
       <ds-icon
@@ -20,24 +22,30 @@
       <div class="tags">
         <ds-tag
           v-for="tag in post.tags"
-          :key="tag.id"><ds-icon name="tag" /> {{ tag.name }}</ds-tag>
+          :key="tag.id"
+        >
+          <ds-icon name="tag" /> {{ tag.name }}
+        </ds-tag>
       </div>
     </template>
     <h3>Verwandte Beiträge</h3>
     <ds-section style="margin: 0 -1.5rem; padding: 1.5rem;">
       <ds-flex
         v-if="post.relatedContributions && post.relatedContributions.length"
-        gutter="small">
+        gutter="small"
+      >
         <ds-flex-item
           v-for="relatedPost in post.relatedContributions"
           :key="relatedPost.id"
-          :width="{ base: '50%' }">
+          :width="{ base: '50%' }"
+        >
           <hc-post-card :post="relatedPost" />
         </ds-flex-item>
       </ds-flex>
       <ds-space
         v-else
-        style="text-align: center; padding-top: 2em; opacity: .6;">
+        style="text-align: center; padding-top: 2em; opacity: .6;"
+      >
         No related Posts
       </ds-space>
     </ds-section>

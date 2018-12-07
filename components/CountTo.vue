@@ -2,7 +2,8 @@
   <span>
     <no-ssr
       placeholder="0"
-      tag="span">
+      tag="span"
+    >
       <count-to
         :start-val="startVal"
         :end-val="endVal"

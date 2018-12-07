@@ -1,18 +1,23 @@
 <template>
   <ds-space
     margin="large"
-    style="text-align: center">
+    style="text-align: center"
+  >
     <ds-button
       :disabled="disabled || loading"
       danger
       size="x-large"
       icon="bullhorn"
-      @click="shout" />
+      @click="shout"
+    />
     <ds-space margin-bottom="xx-small" />
     <ds-text color="soft">
       <ds-heading
         style="display: inline"
-        tag="h3">{{ shoutedCount }}x</ds-heading> Empfohlen
+        tag="h3"
+      >
+        {{ shoutedCount }}x
+      </ds-heading> Empfohlen
     </ds-text>
   </ds-space>
 </template>

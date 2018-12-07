@@ -5,7 +5,10 @@
     icon="plus"
     primary
     full-width
-    @click.prevent="follow">Folgen</ds-button>
+    @click.prevent="follow"
+  >
+    Folgen
+  </ds-button>
 </template>
 
 <script>

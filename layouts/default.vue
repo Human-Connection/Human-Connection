@@ -4,7 +4,8 @@
       <ds-container style="padding: .5rem 3rem .2rem;">
         <a
           v-router-link
-          href="/">
+          href="/"
+        >
           <ds-logo />
         </a>
         <template v-if="isLoggedIn">
@@ -15,27 +16,34 @@
               placement="bottom-end"
               trigger="manual"
               offset="10"
-              style="float: right">
+              style="float: right"
+            >
               <a
                 :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
-                @click.prevent="toggleMenu()">
+                @click.prevent="toggleMenu()"
+              >
                 <ds-avatar
                   :image="user.avatar"
                   :name="user.name"
-                  size="42" />
+                  size="42"
+                />
               </a>
               <div
                 slot="popover"
                 style="padding-top: .5rem; padding-bottom: .5rem;"
                 @mouseover="popoverMouseEnter"
-                @mouseleave="popoveMouseLeave">
+                @mouseleave="popoveMouseLeave"
+              >
                 Hallo {{ user.name }}
                 <ds-menu
                   :routes="routes"
                   style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;"
-                  @click.native="toggleMenu"/>
+                  @click.native="toggleMenu"
+                />
                 <ds-space margin="xx-small" />
-                <nuxt-link :to="{ name: 'logout'}">Logout</nuxt-link>
+                <nuxt-link :to="{ name: 'logout'}">
+                  Logout
+                </nuxt-link>
               </div>
             </v-popover>
           </no-ssr>
@@ -44,7 +52,7 @@
     </div>
     <ds-container>
       <div style="padding: 6rem 2rem 5rem;">
-        <nuxt/>
+        <nuxt />
       </div>
     </ds-container>
   </div>

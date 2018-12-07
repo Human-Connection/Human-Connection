@@ -9,11 +9,13 @@
                 :count="0"
                 label="Users"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countUsers || 0"
-                    :end-val="statistics.countUsers || 0" />
+                    :end-val="statistics.countUsers || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -24,11 +26,13 @@
                 :count="0"
                 label="Posts"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countPosts || 0"
-                    :end-val="statistics.countPosts || 0" />
+                    :end-val="statistics.countPosts || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -39,11 +43,13 @@
                 :count="0"
                 label="Comments"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countComments || 0"
-                    :end-val="statistics.countComments || 0" />
+                    :end-val="statistics.countComments || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -54,11 +60,13 @@
                 :count="0"
                 label="Notifications"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countNotifications || 0"
-                    :end-val="statistics.countNotifications || 0" />
+                    :end-val="statistics.countNotifications || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -69,11 +77,13 @@
                 :count="0"
                 label="Organization"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countOrganizations || 0"
-                    :end-val="statistics.countOrganizations || 0" />
+                    :end-val="statistics.countOrganizations || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -84,11 +94,13 @@
                 :count="0"
                 label="Projects"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countProjects || 0"
-                    :end-val="statistics.countProjects || 0" />
+                    :end-val="statistics.countProjects || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -99,11 +111,13 @@
                 :count="0"
                 label="Open Invites"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countInvites || 0"
-                    :end-val="statistics.countInvites || 0" />
+                    :end-val="statistics.countInvites || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -114,11 +128,13 @@
                 :count="0"
                 label="Follows"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countFollows || 0"
-                    :end-val="statistics.countFollows || 0" />
+                    :end-val="statistics.countFollows || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -129,11 +145,13 @@
                 :count="0"
                 label="Shouts"
                 size="x-large"
-                uppercase>
+                uppercase
+              >
                 <no-ssr slot="count">
                   <hc-count-to
                     :start-val="statisticsBefore.countShouts || 0"
-                    :end-val="statistics.countShouts || 0" />
+                    :end-val="statistics.countShouts || 0"
+                  />
                 </no-ssr>
               </ds-number>
             </ds-space>

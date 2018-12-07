@@ -3,18 +3,21 @@
     <ds-flex
       v-if="Post && Post.length"
       :width="{ base: '100%' }"
-      gutter="base">
+      gutter="base"
+    >
       <ds-flex-item
         v-for="post in uniq(Post)"
+        :key="post.id"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-        :key="post.id">
+      >
         <hc-post-card :post="post" />
       </ds-flex-item>
     </ds-flex>
     <hc-load-more
       v-if="true"
       :loading="$apollo.loading"
-      @click="showMoreContributions" />
+      @click="showMoreContributions"
+    />
   </div>
 </template>
 

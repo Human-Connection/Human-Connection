@@ -6,21 +6,25 @@
     <ds-card
       :header="post.title"
       :image="post.image"
-      style="cursor: pointer; position: relative;">
+      style="cursor: pointer; position: relative;"
+    >
       <ds-space margin-bottom="large">
         <div
           class="hc-editor-content"
-          v-html="excerpt" />
+          v-html="excerpt"
+        />
       </ds-space>
       <ds-space
         margin="small"
-        style="position: absolute; bottom: 44px;">
+        style="position: absolute; bottom: 44px;"
+      >
         <!-- TODO: find better solution for rendering errors -->
         <no-ssr>
           <hc-author
             :post="post"
             :trunc="35"
-            :show-author-popover="showAuthorPopover" />
+            :show-author-popover="showAuthorPopover"
+          />
         </no-ssr>
       </ds-space>
       <template slot="footer">

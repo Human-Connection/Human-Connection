@@ -3,19 +3,22 @@
     v-if="post"
     :image="post.image"
     :header="post.title"
-    class="post-card">
+    class="post-card"
+  >
     <hc-author :post="post" />
     <ds-space margin-bottom="small" />
     <!-- Content -->
     <div
       class="content hc-editor-content"
-      v-html="post.content" />
+      v-html="post.content"
+    />
     <!-- Shout Button -->
     <ds-space margin="xx-large" />
     <hc-shout-button
       v-if="post.author"
       :count="post.shoutedCount"
-      :post-id="post.id" />
+      :post-id="post.id"
+    />
     <!-- Categories -->
     <ds-icon
       v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
@@ -31,17 +34,21 @@
     </div>-->
     <!-- Tags -->
     <template v-if="post.tags && post.tags.length">
-      <ds-space margin="xx-small"/>
+      <ds-space margin="xx-small" />
       <div class="tags">
         <ds-icon name="tags" /> <ds-tag
           v-for="tag in post.tags"
-          :key="tag.id"><ds-icon name="tag" /> {{ tag.name }}</ds-tag>
+          :key="tag.id"
+        >
+          <ds-icon name="tag" /> {{ tag.name }}
+        </ds-tag>
       </div>
     </template>
-    <ds-space margin="small"/>
+    <ds-space margin="small" />
     <!-- Comments -->
     <ds-section
-      slot="footer">
+      slot="footer"
+    >
       <h3 style="margin-top: 0;">
         <span>
           <ds-icon name="comments" />
@@ -49,7 +56,8 @@
             v-if="post.commentsCount"
             style="transform: scale(.8); margin-top: -4px; margin-left: -12px; position: absolute;"
             color="primary"
-            round>
+            round
+          >
             {{ post.commentsCount }}
           </ds-tag> &nbsp; Comments
         </span>
@@ -58,27 +66,35 @@
       <div
         v-if="post.commentsCount"
         id="comments"
-        class="comments">
+        class="comments"
+      >
         <div
           v-for="comment in post.comments"
           :key="comment.id"
-          class="comment">
+          class="comment"
+        >
           <ds-space margin-bottom="x-small">
             <hc-author :post="comment" />
           </ds-space>
           <div
             v-if="!comment.deleted"
             style="padding-left: 40px;"
-            v-html="comment.contentExcerpt" />
+            v-html="comment.contentExcerpt"
+          />
           <ds-text
             v-else
             style="padding-left: 40px; font-weight: bold;"
-            color="soft"><ds-icon name="ban" /> Vom Benutzer gelöscht</ds-text>
+            color="soft"
+          >
+            <ds-icon name="ban" /> Vom Benutzer gelöscht
+          </ds-text>
         </div>
         <ds-space margin-bottom="small" />
       </div>
       <div v-else>
-        <p style="text-align: center; opacity: .5;">NO COMMENTS</p>
+        <p style="text-align: center; opacity: .5;">
+          NO COMMENTS
+        </p>
       </div>
     </ds-section>
   </ds-card>
