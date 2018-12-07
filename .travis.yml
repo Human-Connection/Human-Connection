@@ -15,8 +15,7 @@ install:
   - cp .env.template .env
 
 script:
-- docker run humanconnection/nitro-backend:latest yarn run eslint
-- docker run humanconnection/nitro-backend:latest yarn run mocha
+- docker run humanconnection/nitro-backend:latest yarn run ci
 - yarn run db:reset
 - yarn run db:seed
 

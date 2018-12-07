@@ -7,8 +7,10 @@
     "no_auth": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled"
   },
   "scripts": {
-    "mocha": "./node_modules/.bin/mocha --require @babel/register src/**/*.test.js",
-    "eslint": "eslint src --config .eslintrc.js",
+    "ci": "yarn run lint && yarn run test && yarn run test:coverage",
+    "lint": "eslint src --config .eslintrc.js",
+    "test": "nyc --reporter=text-lcov mocha --require @babel/register src/**/*.test.js",
+    "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "db:script:seed": "wait-on tcp:4001 && $npm_package_config_no_auth ./node_modules/.bin/babel-node src/seed/seed-db.js",
@@ -67,6 +69,7 @@
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.7",
+    "nyc": "^13.1.0",
     "wait-on": "^3.2.0"
   }
 }
