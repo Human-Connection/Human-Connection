@@ -3,6 +3,7 @@
     :is="tag"
     :aria-label="ariaLabel"
     class="ds-icon"
+    :class="[size && `ds-icon-size-${size}`]"
   >
     <component
       v-if="svgComponent"
@@ -40,6 +41,19 @@ export default {
     tag: {
       type: String,
       default: 'span'
+    },
+    /**
+     * Which size should the icon have?
+     * `xx-small, x-small, small, base, large, x-large, xx-large, xxx-large`
+     */
+    size: {
+      type: String,
+      default: null,
+      validator: value => {
+        return value.match(
+          /(xx-small|x-small|small|base|large|x-large|xx-large|xxx-large)/
+        )
+      }
     }
   },
   computed: {
