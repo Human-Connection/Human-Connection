@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Select.vue matches snapshot 1`] = `
+<dsformitem-stub>
+  <div
+    class="ds-select-wrap"
+    tabindex="-1"
+  >
+    <!---->
+     
+    <div
+      class="ds-select ds-select-has-icon-right"
+    >
+      <div
+        class="ds-select-value"
+      >
+        
+          1
+        
+      </div>
+       
+      <input
+        class="ds-select-search"
+        tabindex="0"
+      />
+    </div>
+     
+    <div
+      class="ds-select-dropdown"
+    >
+      <ul
+        class="ds-select-options"
+      >
+        <li
+          class="ds-select-option ds-select-option-is-selected ds-select-option-hover"
+        >
+          
+            1
+          
+        </li>
+        <li
+          class="ds-select-option"
+        >
+          
+            2
+          
+        </li>
+        <li
+          class="ds-select-option"
+        >
+          
+            3
+          
+        </li>
+      </ul>
+    </div>
+     
+    <div
+      class="ds-select-icon-right"
+    >
+      <dsicon-stub
+        arialabel="icon"
+        name="angle-down"
+        tag="span"
+      />
+    </div>
+  </div>
+</dsformitem-stub>
+`;

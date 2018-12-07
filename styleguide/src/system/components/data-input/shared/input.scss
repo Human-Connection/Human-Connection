@@ -4,8 +4,9 @@
   }
 
   .#{$class} {
+    appearance: none;
     box-sizing: border-box;
-    font-size: $font-size-base;
+    font-size: $input-font-size-base;
     line-height: $line-height-base;
     font-family: $font-family-text;
     width: 100%;
@@ -15,7 +16,7 @@
     color: $text-color-base;
     background: $background-color-base;
 
-    border: $input-border-size solid $border-color-soft;
+    border: $input-border-size solid $border-color-base;
     border-radius: $border-radius-base;
     outline: none;
     transition: all $duration-short $ease-out;
@@ -24,36 +25,39 @@
       color: $text-color-disabled;
     }
 
+    .ds-input-has-focus &,
     &:focus {
       border-color: $border-color-active;
       background: $background-color-base;
     }
 
-    .#{$class}-is-disabled &,
+    .ds-input-is-disabled &,
     &:disabled {
       color: $text-color-disabled;
       opacity: $opacity-disabled;
       cursor: not-allowed;
     }
 
-    .#{$class}-has-error & {
+    .ds-input-has-error & {
       border-color: $border-color-danger;
     }
   }
 
-  .#{$class}-size-small {
+  .ds-input-size-small {
     font-size: $font-size-small;
 
     .#{$class} {
+      font-size: $input-font-size-small;
       height: $input-height-small;
       padding: $input-padding-vertical-small $space-x-small;
     }
   }
 
-  .#{$class}-size-large {
+  .ds-input-size-large {
     font-size: $font-size-large;
 
     .#{$class} {
+      font-size: $input-font-size-large;
       height: $input-height-large;
       padding: $input-padding-vertical-large $space-x-small;
     }
@@ -71,9 +75,18 @@
     width: $input-height;
     color: $text-color-softer;
     transition: color $duration-short $ease-out;
+    pointer-events: none;
 
-    .#{$class}-has-focus & {
+    .ds-input-has-focus & {
       color: $text-color-base;
+    }
+
+    .ds-input-size-small & {
+      width: $input-height-small;
+    }
+
+    .ds-input-size-large & {
+      width: $input-height-large;
     }
   }
 
@@ -85,18 +98,24 @@
   .#{$class}-has-icon {
     padding-left: $input-height;
 
-    .#{$class}-size-small &,
-    .#{$class}-size-large & {
-      padding-left: $input-height;
+    .ds-input-size-small & {
+      padding-left: $input-height-small;
+    }
+
+    .ds-input-size-large & {
+      padding-left: $input-height-large;
     }
   }
 
   .#{$class}-has-icon-right {
     padding-right: $input-height;
 
-    .#{$class}-size-small &,
-    .#{$class}-size-large & {
-      padding-right: $input-height;
+    .ds-input-size-small & {
+      padding-right: $input-height-small;
+    }
+
+    .ds-input-size-large & {
+      padding-right: $input-height-large;
     }
   }
 }

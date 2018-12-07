@@ -6,6 +6,8 @@
 props:
   - name: z-index-modal
     value: "9999"
+  - name: z-index-dropdown
+    value: "8888"
   - name: z-index-page-submenu
     value: "2500"
   - name: z-index-page-header

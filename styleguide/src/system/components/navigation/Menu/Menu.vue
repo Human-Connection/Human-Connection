@@ -13,9 +13,13 @@
           :route="route"
           :parents="[]"
           :name="route.name">
-          <ds-menu-item
-            :key="route.path ? route.path : index"
-            :route="route" />
+          <slot
+            :route="route"
+            name="Navigation">
+            <ds-menu-item
+              :key="route.path ? route.path : index"
+              :route="route" />
+          </slot>
         </slot>
       </slot>
     </ul>
