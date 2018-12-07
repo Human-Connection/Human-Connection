@@ -9,5 +9,6 @@ const serverConfig = {
 }
 
 server.start(serverConfig, options => {
+  /* eslint-disable-next-line no-console */
   console.log(`Server ready at ${process.env.GRAPHQL_URI} 🚀`)
 })

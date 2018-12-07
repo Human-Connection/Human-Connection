@@ -23,6 +23,7 @@ let schema = makeExecutableSchema({
 const driver = neo4j().getDriver()
 
 const MOCK = (process.env.MOCK === 'true')
+/* eslint-disable-next-line no-console */
 console.log('MOCK:', MOCK)
 
 schema = augmentSchema(schema, {
@@ -45,7 +46,9 @@ const server = new GraphQLServer({
     try {
       const token = payload.req.headers.authorization.replace('Bearer ', '')
       payload.user = await jwt.verify(token, process.env.JWT_SECRET)
-    } catch (err) {}
+    } catch (err) {
+      // nothing
+    }
 
     return payload
   },
