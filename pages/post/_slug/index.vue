@@ -8,10 +8,13 @@
     <hc-author :post="post" />
     <ds-space margin-bottom="small" />
     <!-- Content -->
+    <!-- eslint-disable vue/no-v-html -->
+    <!-- TODO: replace editor content with tiptap render view -->
     <div
       class="content hc-editor-content"
       v-html="post.content"
     />
+    <!-- eslint-enable vue/no-v-html -->
     <!-- Shout Button -->
     <ds-space margin="xx-large" />
     <hc-shout-button
@@ -76,11 +79,14 @@
           <ds-space margin-bottom="x-small">
             <hc-author :post="comment" />
           </ds-space>
+          <!-- eslint-disable vue/no-v-html -->
+          <!-- TODO: replace editor content with tiptap render view -->
           <div
             v-if="!comment.deleted"
             style="padding-left: 40px;"
             v-html="comment.contentExcerpt"
           />
+          <!-- eslint-enable vue/no-v-html -->
           <ds-text
             v-else
             style="padding-left: 40px; font-weight: bold;"

@@ -8,12 +8,15 @@
       :image="post.image"
       style="cursor: pointer; position: relative;"
     >
+      <!-- eslint-disable vue/no-v-html -->
+      <!-- TODO: replace editor content with tiptap render view -->
       <ds-space margin-bottom="large">
         <div
           class="hc-editor-content"
           v-html="excerpt"
         />
       </ds-space>
+      <!-- eslint-enable vue/no-v-html -->
       <ds-space
         margin="small"
         style="position: absolute; bottom: 44px;"
