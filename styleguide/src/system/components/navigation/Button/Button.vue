@@ -13,6 +13,7 @@
       fullWidth && `ds-button-full-width`,
       loading && `ds-button-loading`
     ]"
+    :name="name"
     v-bind="bindings"
     :is="linkTag">
     <ds-icon
@@ -73,6 +74,13 @@ export default {
       validator: value => {
         return value.match(/(router-link|a|button)/)
       }
+    },
+    /**
+     * Button name for accessibilty
+     */
+    name: {
+      type: String,
+      default: null
     },
     /**
      * Primary style

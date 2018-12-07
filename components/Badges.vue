@@ -3,15 +3,18 @@
     :class="[
       (badges.length === 2) && 'hc-badges-dual'
     ]"
-    class="hc-badges">
+    class="hc-badges"
+  >
     <div
       v-for="badge in badges"
       :key="badge.key"
-      class="hc-badge-container">
+      class="hc-badge-container"
+    >
       <img
         :title="badge.key"
         :src="badge.icon"
-        class="hc-badge" >
+        class="hc-badge"
+      >
     </div>
   </div>
 </template>
