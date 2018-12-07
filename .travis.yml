@@ -20,7 +20,7 @@ before_install:
 install:
   - git submodule update --remote --merge
   - cd Nitro-Backend && docker-compose up -d && cd ..
-  - cd Nitro-Web && docker-compose up -d
+  - cd Nitro-Web && docker-compose up -d && cd ..
   - yarn global add cypress
 
 
