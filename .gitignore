@@ -3,4 +3,4 @@ node_modules/
 .vscode
 yarn-error.log
 coverage.lcov
-.nyc-output/
+.nyc_output/
