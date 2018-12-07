@@ -24,11 +24,12 @@
     />
     <!-- Categories -->
     <ds-icon
-      v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
       v-for="category in post.categories"
       :key="category.id"
+      v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
       :name="category.icon"
-      size="large" />&nbsp;
+      size="large"
+    />&nbsp;
     <ds-space margin-bottom="small" />
     <!--<div class="tags">
       <ds-icon name="compass" /> <ds-tag

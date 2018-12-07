@@ -1,13 +1,17 @@
 <template>
   <ds-card space="small">
-    <ds-heading tag="h3">Tags</ds-heading>
+    <ds-heading tag="h3">
+      Tags
+    </ds-heading>
     <ds-table
       :data="Tag"
       :fields="fields"
-      condensed>
+      condensed
+    >
       <template
         slot="id"
-        slot-scope="scope">
+        slot-scope="scope"
+      >
         {{ scope.index + 1 }}
       </template>
     </ds-table>

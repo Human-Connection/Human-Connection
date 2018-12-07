@@ -8,12 +8,13 @@
     <h3><ds-icon name="compass" /> Themenkategorien</h3>
     <div class="tags">
       <ds-icon
-        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
         v-for="category in post.categories"
         :key="category.id"
+        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
         :name="category.icon"
-        size="large" />&nbsp;
-        <!--<ds-tag
+        size="large"
+      />&nbsp;
+      <!--<ds-tag
         v-for="category in post.categories"
         :key="category.id"><ds-icon :name="category.icon" /> {{ category.name }}</ds-tag>-->
     </div>

@@ -29,13 +29,15 @@
               v-if="user.location && user.location.length"
               align="center"
               color="soft"
-              size="small">
+              size="small"
+            >
               <ds-icon name="map-marker" /> {{ user.location[0].name }}
             </ds-text>
             <ds-text
               align="center"
               color="soft"
-              size="small">
+              size="small"
+            >
               Mitglied seit {{ user.createdAt | date('MMMM yyyy') }}
             </ds-text>
           </ds-space>
@@ -82,10 +84,12 @@
             <hr>
             <ds-space
               margin-top="small"
-              margin-bottom="small">
+              margin-bottom="small"
+            >
               <ds-text
                 color="soft"
-                size="small">
+                size="small"
+              >
                 {{ user.about }}
               </ds-text>
             </ds-space>
@@ -192,7 +196,8 @@
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
           :width="{ base: '100%' }"
-          gutter="small">
+          gutter="small"
+        >
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
