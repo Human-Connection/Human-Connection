@@ -96,10 +96,6 @@
       padding-left: $input-height-small;
     }
 
-    .ds-input-size-small & {
-      padding-left: $input-height-small;
-    }
-
     .ds-input-size-large & {
       padding-left: $input-height-large;
     }
@@ -110,10 +106,6 @@
 
     .ds-input-size-small & {
       padding-right: $input-height-small;
-    }
-
-    .ds-input-size-large & {
-      padding-right: $input-height-large;
     }
 
     .ds-input-size-large & {
