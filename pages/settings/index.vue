@@ -5,29 +5,37 @@
       v-model="form.name"
       icon="user"
       label="Dein Name"
-      placeholder="Dein Name"/>
+      placeholder="Dein Name"
+    />
+    <!-- eslint-disable vue/use-v-on-exact -->
     <ds-select
       id="city"
-      :options="cities"
       v-model="city"
+      :options="cities"
       icon="map-marker"
       label="Deine Stadt"
       placeholder="Deine Stadt"
       @input="handleCitySelection"
-      @input.native="handleCityInput" />
+      @input.native="handleCityInput"
+    />
+    <!-- eslint-enable vue/use-v-on-exact -->
     <ds-input
       id="bio"
       v-model="form.about"
       type="textarea"
       rows="3"
       label="Erzähl doch ein wenig (in zwei Sätzen) über dich"
-      placeholder="Über mich"/>
+      placeholder="Über mich"
+    />
     <template slot="footer">
       <ds-button
         style="float: right;"
         icon="check"
         primary
-        @click.prevent="submit">Speichern</ds-button>
+        @click.prevent="submit"
+      >
+        Speichern
+      </ds-button>
     </template>
   </ds-card>
 </template>
@@ -110,7 +118,6 @@ export default {
           // and then with the real result of the mutation
           update: (store, { data: { UpdateUser } }) => {
             // this.$store.dispatch('auth/refresh', UpdateUser)
-
             // Read the data from our cache for this query.
             // const data = store.readQuery({ query: TAGS_QUERY })
             // Add our tag from the mutation to the end

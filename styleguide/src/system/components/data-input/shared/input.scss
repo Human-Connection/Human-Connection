@@ -84,15 +84,6 @@
     }
   }
 
-    .ds-input-size-small & {
-      width: $input-height-small;
-    }
-
-    .ds-input-size-large & {
-      width: $input-height-large;
-    }
-  }
-
   .#{$class}-icon-right {
     right: 0;
     left: auto;

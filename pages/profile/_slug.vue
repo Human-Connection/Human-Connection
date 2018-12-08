@@ -28,7 +28,8 @@
             <ds-text
               align="center"
               color="soft"
-              size="small">
+              size="small"
+            >
               Mitglied seit {{ user.createdAt | date('MMMM yyyy') }}
             </ds-text>
           </ds-space>

@@ -1,13 +1,17 @@
 <template>
   <ds-card space="small">
-    <ds-heading tag="h3">Themen / Kategorien</ds-heading>
+    <ds-heading tag="h3">
+      Themen / Kategorien
+    </ds-heading>
     <ds-table
       :data="Category"
       :fields="['icon', 'name', 'postCount']"
-      condensed>
+      condensed
+    >
       <template
         slot="icon"
-        slot-scope="scope">
+        slot-scope="scope"
+      >
         <ds-icon :name="scope.row.icon" />
       </template>
     </ds-table>

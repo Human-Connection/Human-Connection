@@ -33,10 +33,11 @@
       <template slot="footer">
         <div style="display: inline-block; opacity: .5;">
           <ds-icon
-            v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
             v-for="category in post.categories"
             :key="category.id"
-            :name="category.icon" />&nbsp;
+            v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
+            :name="category.icon"
+          />&nbsp;
         </div>
         <div style="display: inline-block; float: right">
           <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">

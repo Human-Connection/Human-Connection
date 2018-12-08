@@ -8,7 +8,8 @@
       danger
       size="x-large"
       icon="bullhorn"
-      @click="shout" />
+      @click="shout"
+    />
     <ds-space margin-bottom="xx-small" />
     <ds-text color="soft">
       <ds-heading
