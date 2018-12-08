@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   backend:
+    container_name: backend
     image: humanconnection/nitro-backend:latest
     build: .
     networks:
