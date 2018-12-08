@@ -22,7 +22,8 @@ install:
   - cd Nitro-Backend && docker-compose up -d && cd ..
   - cd Nitro-Web && docker-compose up -d && cd ..
   - yarn global add cypress
-
+  - yarn global add wait-on
 
 script:
+  - wait-on tcp:3000
   - cypress run
