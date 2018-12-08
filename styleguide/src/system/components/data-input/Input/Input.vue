@@ -13,7 +13,7 @@
           iconRight && `ds-input-has-icon-right`
         ]"
         :id="id"
-        :name="model"
+        :name="name"
         :type="type"
         :autofocus="autofocus"
         :placeholder="placeholder"
