@@ -19,7 +19,8 @@ before_install:
 
 install:
   - git submodule update --remote --merge
-  - docker-compose -f Nitro-Backend/docker-compose.yml -f Nitro-Web/docker-compose.yml up -d
+  - docker-compose -f Nitro-Backend/docker-compose.yml up -d
+  - docker-compose -f Nitro-Web/docker-compose.yml up -d
   - yarn global add cypress
   - yarn global add wait-on
 
