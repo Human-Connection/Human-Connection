@@ -9,8 +9,8 @@
   "scripts": {
     "ci": "yarn run lint && yarn run test && yarn run test:coverage",
     "lint": "eslint src --config .eslintrc.js",
-    "test": "nyc --reporter=text-lcov ./node_modules/.bin/mocha --require @babel/register src/**/*.test.js",
-    "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
+    "test": "./node_modules/.bin/nyc --reporter=text-lcov ./node_modules/.bin/mocha --require @babel/register src/**/*.test.js",
+    "test:coverage": "./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "db:script:seed": "wait-on tcp:4001 && ./node_modules/.bin/babel-node src/seed/seed-db.js",
