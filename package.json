@@ -11,10 +11,10 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
-    "db:script:seed": "wait-on tcp:4001 && $npm_package_config_no_auth ./node_modules/.bin/babel-node src/seed/seed-db.js",
-    "db:script:reset": "wait-on tcp:4001 && $npm_package_config_no_auth ./node_modules/.bin/babel-node src/seed/reset-db.js",
-    "db:seed":  "concurrently --kill-others --success first -n no-auth-server,seed '$npm_package_config_no_auth yarn run start' 'yarn run db:script:seed'",
-    "db:reset": "concurrently --kill-others --success first -n no-auth-server,reset '$npm_package_config_no_auth yarn run start' 'yarn run db:script:reset'"
+    "db:script:seed": "wait-on tcp:4001 && ./node_modules/.bin/babel-node src/seed/seed-db.js",
+    "db:script:reset": "wait-on tcp:4001 && ./node_modules/.bin/babel-node src/seed/reset-db.js",
+    "db:seed": "$npm_package_config_no_auth run-p --race start db:script:seed",
+    "db:reset": "$npm_package_config_no_auth run-p --race start db:script:reset"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
@@ -53,7 +53,6 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
-    "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.9.0",
     "eslint-config-standard": "^12.0.0",
@@ -63,6 +62,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "faker": "^4.1.0",
     "nodemon": "^1.18.7",
+    "npm-run-all": "^4.1.5",
     "wait-on": "^3.2.0"
   }
 }
