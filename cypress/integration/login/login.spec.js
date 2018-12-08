@@ -2,7 +2,7 @@
 
 const loginTestUser = function () {
   // Visiting our app before each test removes any state build up from
-  cy.visit('http://127.0.0.1:3000/')
+  cy.visit('http://localhost:3000/')
     .get('.layout-blank')
     .should('be.visible')
 
@@ -40,7 +40,7 @@ const loginTestUser = function () {
 }
 
 const logout = function () {
-  cy.visit('http://127.0.0.1:3000/logout')
+  cy.visit('http://localhost:3000/logout')
 
   cy.location('pathname')
     .should('contain', '/login')
