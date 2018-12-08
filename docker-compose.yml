@@ -2,7 +2,6 @@ version: "3.7"
 
 services:
   backend:
-    container_name: backend
     image: humanconnection/nitro-backend:latest
     build: .
     networks:
@@ -33,6 +32,7 @@ services:
 
 networks:
   hc-network:
+    name: hc-network
 
 volumes:
   neo4j-data:
