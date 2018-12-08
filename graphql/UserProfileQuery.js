@@ -6,7 +6,6 @@ export default gql(`
       id
       name
       avatar
-      about
       createdAt
       badges {
         id
