@@ -32,6 +32,7 @@ services:
 
 networks:
   hc-network:
+    name: hc-network
 
 volumes:
   neo4j-data:
