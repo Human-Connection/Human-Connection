@@ -3,8 +3,8 @@ version: '3.7'
 services:
   webapp:
     volumes:
-      - .:/HC-WebApp
-      - node_modules:/HC-WebApp/node_modules
+      - .:/nitro-web
+      - node_modules:/nitro-web/node_modules
     command: yarn run dev
 
 volumes:
