@@ -24,5 +24,6 @@ install:
   - yarn global add cypress wait-on
 
 script:
+  - docker-compose -f Nitro-Backend/docker-compose.yml exec backend yarn run db:seed
   - wait-on http://localhost:3000
   - cypress run
