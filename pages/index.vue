@@ -107,6 +107,7 @@ export default {
             categories {
               id
               name
+              icon
             }
             shoutedCount
           }

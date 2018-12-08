@@ -7,7 +7,8 @@
     <ds-space />
     <h3><ds-icon name="compass" /> Themenkategorien</h3>
     <div class="tags">
-      <ds-tag
+      <ds-icon
+        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
         v-for="category in post.categories"
         :key="category.id"
       >
@@ -81,6 +82,7 @@ export default {
             categories {
               id
               name
+              icon
             }
             relatedContributions(first: 2) {
               id
@@ -89,6 +91,11 @@ export default {
               contentExcerpt
               shoutedCount
               commentsCount
+              categories {
+                id
+                name
+                icon
+              }
               author {
                 id
                 name

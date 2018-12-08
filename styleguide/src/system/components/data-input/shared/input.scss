@@ -15,7 +15,6 @@
 
     color: $text-color-base;
     background: $background-color-base;
-
     border: $input-border-size solid $border-color-base;
     border-radius: $border-radius-base;
     outline: none;
@@ -24,25 +23,21 @@
     &::placeholder {
       color: $text-color-disabled;
     }
-
     .ds-input-has-focus &,
     &:focus {
       border-color: $border-color-active;
       background: $background-color-base;
     }
-
     .ds-input-is-disabled &,
     &:disabled {
       color: $text-color-disabled;
       opacity: $opacity-disabled;
       cursor: not-allowed;
     }
-
     .ds-input-has-error & {
       border-color: $border-color-danger;
     }
   }
-
   .ds-input-size-small {
     font-size: $font-size-small;
 
@@ -52,7 +47,6 @@
       padding: $input-padding-vertical-small $space-x-small;
     }
   }
-
   .ds-input-size-large {
     font-size: $font-size-large;
 
@@ -90,6 +84,15 @@
     }
   }
 
+    .ds-input-size-small & {
+      width: $input-height-small;
+    }
+
+    .ds-input-size-large & {
+      width: $input-height-large;
+    }
+  }
+
   .#{$class}-icon-right {
     right: 0;
     left: auto;
@@ -97,6 +100,10 @@
 
   .#{$class}-has-icon {
     padding-left: $input-height;
+
+    .ds-input-size-small & {
+      padding-left: $input-height-small;
+    }
 
     .ds-input-size-small & {
       padding-left: $input-height-small;
@@ -112,6 +119,10 @@
 
     .ds-input-size-small & {
       padding-right: $input-height-small;
+    }
+
+    .ds-input-size-large & {
+      padding-right: $input-height-large;
     }
 
     .ds-input-size-large & {
