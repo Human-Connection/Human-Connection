@@ -25,4 +25,4 @@ install:
 script:
   - docker-compose -f Nitro-Backend/docker-compose.yml exec backend yarn run db:seed > /dev/null
   - wait-on http://localhost:3000
-  - cypress run
+  - cypress run --record --key $CYPRESS_TOKEN
