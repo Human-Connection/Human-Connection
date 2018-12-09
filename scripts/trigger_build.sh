@@ -8,10 +8,7 @@ body=$(cat<< EOF
    "config": {
      "merge_mode": "deep_merge",
      "env": {
-      "global": {
-        "DOCKER_COMPOSE_VERSION":"1.23.2",
-        "COMMON_BRANCH": "$TRAVIS_BRANCH"
-       }
+       "COMMON_BRANCH": "$TRAVIS_BRANCH"
      }
     }
   }
