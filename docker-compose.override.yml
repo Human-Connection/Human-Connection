@@ -2,7 +2,6 @@ version: "3.7"
 
 services:
   backend:
-    container_name: backend.127.0.0.1.xip.io
     volumes:
       - .:/nitro-backend
       - /nitro-backend/node_modules
@@ -10,7 +9,3 @@ services:
     ports:
       - 7687:7687
       - 7474:7474
-
-networks:
-  hc-network:
-    name: hc-network
