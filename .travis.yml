@@ -24,6 +24,7 @@ install:
 
 script:
   - docker-compose exec webapp yarn run lint
+  - docker-compose exec webapp yarn run test
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
