@@ -3,7 +3,6 @@
 body=$(cat<< EOF
 {
  "request": {
-   "branch":"e2e",
    "message": "Triggered by \`$TRAVIS_REPO_SLUG\` on \`$TRAVIS_BRANCH\`",
    "config": {
      "merge_mode": "deep_merge",
