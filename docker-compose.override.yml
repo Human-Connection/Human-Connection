@@ -2,15 +2,10 @@ version: "3.7"
 
 services:
   backend:
-    container_name: backend.127.0.0.1.xip.io
     volumes:
-      - .:/backend
-      - /backend/node_modules
+      - .:/nitro-backend
+      - /nitro-backend/node_modules
   neo4j:
     ports:
       - 7687:7687
       - 7474:7474
-
-networks:
-  hc-network:
-    name: hc-network

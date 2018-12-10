@@ -21,6 +21,9 @@
 > We still need to evaluate the drawbacks and estimate the development 
 > cost of such an approach
 
+## How to get in touch 
+Connect with other developers over [Discord](https://discord.gg/6ub73U3)
+
 ## Quick Start
 
 ### Installation with Docker
@@ -30,7 +33,7 @@ Run:
 docker-compose up
 # if you want seed data
 # open another terminal and run
-docker-compose exec backend yarn run seedDb
+docker-compose exec backend yarn run db:seed
 ```
 
 App is [running on port 4000](http://localhost:4000/)
@@ -92,22 +95,37 @@ run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-c
 [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/) or on Debian-based systems install [Neo4j from the Debian Repository](http://debian.neo4j.org/).
 Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
 
-## Mocking API Results
+## Mock API Results
 
 Alternatively you can just mock all responses from the api which let
 you build a frontend application without running a neo4j instance.
 
 Just set `MOCK=true` inside `.env` or pass it on application start.
 
-## Seeding The Database
+## Seed and Reset the Database
 
 Optionally you can seed the GraphQL service by executing mutations that 
 will write sample data to the database:
 
 ```bash
-yarn db:seed
+yarn run db:seed
 # -or-
 npm run db:seed
+```
+
+For a reset you can use the reset script:
+
+```bash
+yarn db:reset
+# -or-
+npm run db:reset
+```
+
+## Run Tests
+```bash
+yarn run test
+# -or-
+npm run test
 ```
 
 ## Todo`s

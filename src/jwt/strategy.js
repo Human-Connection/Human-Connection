@@ -20,7 +20,10 @@ export default () => {
     (JWTPayload, next) => {
       // usually this would be a database call:
       // var user = users[_.findIndex(users, {id: JWTPayload.id})]
+      // TODO: fix https://github.com/Human-Connection/Nitro-Backend/issues/41
+      /* eslint-disable */
       if (true) {
+      /* eslint-enable */
         next(null, {})
       } else {
         next(null, false)
