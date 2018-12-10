@@ -4,3 +4,9 @@
 [submodule "API"]
 	path = API
 	url = https://github.com/Human-Connection/API.git
+[submodule "Nitro-Web"]
+	path = Nitro-Web
+	url = https://github.com/Human-Connection/Nitro-Web.git
+[submodule "Nitro-Backend"]
+	path = Nitro-Backend
+	url = https://github.com/Human-Connection/Nitro-Backend.git

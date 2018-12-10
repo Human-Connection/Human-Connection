@@ -1,0 +1,30 @@
+language: node_js
+node_js:
+  - "10"
+cache:
+  yarn: true
+  directories:
+    - node_modules
+services:
+  - docker
+
+env:
+  - COMMON_BRANCH=master
+
+before_install:
+  - export DOCKER_COMPOSE_VERSION=1.23.2
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+install:
+  - git submodule foreach "git checkout $COMMON_BRANCH || echo 'Branch \`$COMMON_BRANCH\` does not exist, falling back to master.'"
+  - docker-compose -f Nitro-Backend/docker-compose.yml up -d
+  - docker-compose -f Nitro-Web/docker-compose.yml up -d
+  - yarn global add cypress wait-on
+
+script:
+  - docker-compose -f Nitro-Backend/docker-compose.yml exec backend yarn run db:seed > /dev/null
+  - wait-on http://localhost:3000
+  - cypress run --record --key $CYPRESS_TOKEN
