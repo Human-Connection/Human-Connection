@@ -9,15 +9,17 @@ services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.23.2
+  - COMMON_BRANCH=master
 
 before_install:
+  - export DOCKER_COMPOSE_VERSION=1.23.2
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
 install:
+  - git submodule foreach "git checkout $COMMON_BRANCH || echo 'Branch \`$COMMON_BRANCH\` does not exist, falling back to master.'"
   - docker-compose -f Nitro-Backend/docker-compose.yml up -d
   - docker-compose -f Nitro-Web/docker-compose.yml up -d
   - yarn global add cypress wait-on
