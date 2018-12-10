@@ -108,7 +108,7 @@ Optionally you can seed the GraphQL service by executing mutations that
 will write sample data to the database:
 
 ```bash
-yarn db:seed
+yarn run db:seed
 # -or-
 npm run db:seed
 ```
@@ -119,6 +119,13 @@ For a reset you can use the reset script:
 yarn db:reset
 # -or-
 npm run db:reset
+```
+
+## Run Tests
+```bash
+yarn run test
+# -or-
+npm run test
 ```
 
 ## Todo`s
