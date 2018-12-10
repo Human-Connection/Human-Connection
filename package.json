@@ -29,7 +29,8 @@
       "^@/(.*)$": "<rootDir>/src/$1",
       "^@@/(.*)$": "<rootDir>/styleguide/src/system/$1",
       "^~/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "modulePathIgnorePatterns": ["<rootDir>/styleguide"]
   },
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.0-rc3",
