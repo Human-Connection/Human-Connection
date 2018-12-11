@@ -1,23 +1,35 @@
 language: node_js
 node_js:
   - "10"
-services:
-  - docker
 cache:
   yarn: true
   directories:
     - node_modules
+services:
+  - docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.23.2
+
+before_install:
+  - scripts/run_fullstack_tests.sh # trigger full stack testing in a different repository
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
 
 install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-web .
+  - docker-compose up -d
 
 script:
-  - docker run humanconnection/nitro-web yarn run lint
+  - docker-compose exec webapp yarn run lint
+  - docker-compose exec webapp yarn run test
 
 after_success:
-  # - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  # - chmod +x send.sh
-  # - ./send.sh success $WEBHOOK_URL
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
     docker tag humanconnection/nitro-web humanconnection/nitro-web:latest;

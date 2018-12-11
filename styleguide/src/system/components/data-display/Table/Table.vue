@@ -49,12 +49,16 @@
 
 <script>
 import startCase from 'lodash/startCase'
+import DsTableHeadCol from './TableHeadCol.vue'
 
 /**
  * Used in combination with the table row to create data tables.
  * @version 1.0.0
  */
 export default {
+  components: {
+    'ds-table-head-col': DsTableHeadCol
+  },
   name: 'DsTable',
   provide() {
     return {

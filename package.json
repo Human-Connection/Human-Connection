@@ -29,7 +29,8 @@
       "^@/(.*)$": "<rootDir>/src/$1",
       "^@@/(.*)$": "<rootDir>/styleguide/src/system/$1",
       "^~/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "modulePathIgnorePatterns": ["<rootDir>/styleguide"]
   },
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.0-rc3",
@@ -50,7 +51,8 @@
   },
   "devDependencies": {
     "@vue/eslint-config-prettier": "^4.0.1",
-    "@vue/test-utils": "^1.0.0-beta.25",
+    "@vue/server-test-utils": "^1.0.0-beta.27",
+    "@vue/test-utils": "^1.0.0-beta.27",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
