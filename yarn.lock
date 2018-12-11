@@ -2944,12 +2944,12 @@ graphql-middleware@1.7.7:
   dependencies:
     graphql-tools "^4.0.1"
 
-graphql-middleware@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-2.0.2.tgz#99a3b0ff3f3e3fa66c6ddc8608e6e4eb1d2bb99c"
-  integrity sha512-qDmot+DU2XTRnWS3SJGRUUPQ9jhma9AtUR1GtWnqq3JkzoqzT/dprxS7eszIj0c1gD5UrySpm4yM1fNbQcazwA==
+graphql-middleware@~1.7.8:
+  version "1.7.8"
+  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-1.7.8.tgz#617940d3cd462e9553e582d2b6ce86cb0e95a3dd"
+  integrity sha512-FNl427I9fCZ9ZwuywPHPbpVJCgDiMS+7dbtaEZu7zJiMP8il2+2T0KRKCiXkfLDKefiGkZnl4qVIFbncCDaduA==
   dependencies:
-    graphql-tools "^4.0.3"
+    graphql-tools "^4.0.2"
 
 graphql-playground-html@1.6.4:
   version "1.6.4"
@@ -3006,7 +3006,7 @@ graphql-tag@^2.9.2, graphql-tag@~2.10.0:
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.0.tgz#87da024be863e357551b2b8700e496ee2d4353ae"
   integrity sha512-9FD6cw976TLLf9WYIUPCaaTpniawIjHWZSwIRZSjrfufJamcXbVVYfN2TWvJYbw0Xf2JjYbl1/f2+wDnBVw3/w==
 
-graphql-tools@^4.0.0, graphql-tools@^4.0.1, graphql-tools@^4.0.3:
+graphql-tools@^4.0.0, graphql-tools@^4.0.1, graphql-tools@^4.0.2:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-4.0.3.tgz#23b5cb52c519212b1b2e4630a361464396ad264b"
   integrity sha512-NNZM0WSnVLX1zIMUxu7SjzLZ4prCp15N5L2T2ro02OVyydZ0fuCnZYRnx/yK9xjGWbZA0Q58yEO//Bv/psJWrg==
