@@ -4,6 +4,8 @@
 
 # Human-Connection
 
+[![Build Status](https://travis-ci.com/Human-Connection/Human-Connection.svg?branch=master)](https://travis-ci.com/Human-Connection/Human-Connection)
+
 An Open Source Social Network for the positive change that we need in the World.
 Human-Connection is beeing build to provide better Communication Tools for everyone.
 We want to do more than comments and sharing!
