@@ -20,16 +20,8 @@
 
 <script>
 import gql from 'graphql-tag'
-import DsCard from '@@/components/typography/Heading/Heading.vue'
-import DsHeading from '@@/components/layout/Card/Card.vue'
-import DsTable from '@@/components/data-display/Table/Table.vue'
 
 export default {
-  components: {
-    'ds-card': DsCard,
-    'ds-heading': DsHeading,
-    'ds-table': DsTable
-  },
   data() {
     return {
       Category: []
