@@ -75,3 +75,6 @@ dist
 
 # TEMORIRY
 static/uploads
+
+cypress/videos
+cypress/screenshots/
