@@ -7,8 +7,8 @@
     "no_auth": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled"
   },
   "scripts": {
+    "mocha": "./node_modules/.bin/mocha --require @babel/register src/**/*.test.js",
     "eslint": "eslint src --config .eslintrc.js",
-    "test": "echo \"Error: no test specified\" && exit 0",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "db:script:seed": "wait-on tcp:4001 && ./node_modules/.bin/babel-node src/seed/seed-db.js",
@@ -30,6 +30,7 @@
     "apollo-server": "~2.2.6",
     "bcryptjs": "~2.4.3",
     "cheerio": "~1.0.0-rc.2",
+    "cross-env": "~5.2.0",
     "date-fns": "^2.0.0-alpha.25",
     "dotenv": "~6.2.0",
     "graphql": "~0.13.0",
@@ -53,8 +54,9 @@
     "trunc-html": "~1.1.2"
   },
   "devDependencies": {
+    "apollo-server-testing": "~2.2.6",
     "babel-eslint": "~10.0.1",
-    "cross-env": "~5.2.0",
+    "chai": "~4.2.0",
     "eslint": "~5.9.0",
     "eslint-config-standard": "~12.0.0",
     "eslint-plugin-import": "~2.14.0",
@@ -62,6 +64,7 @@
     "eslint-plugin-promise": "~4.0.1",
     "eslint-plugin-standard": "~4.0.0",
     "faker": "~4.1.0",
+    "mocha": "^5.2.0",
     "nodemon": "~1.18.7",
     "npm-run-all": "~4.1.5",
     "wait-on": "~3.2.0"

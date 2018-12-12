@@ -23,6 +23,7 @@ install:
 
 script:
   - docker-compose exec backend yarn run eslint
+  - docker-compose exec backend yarn run mocha
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
 
