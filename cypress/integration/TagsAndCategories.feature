@@ -16,10 +16,9 @@ Feature: Tags and Categories
   Background:
     Given we have a selection of tags and categories as well as posts
     And my user account has the role "administrator"
-
-	@focus
-  Scenario: See an overview of categories
     Given I am logged in
+
+  Scenario: See an overview of categories
     When I navigate to the administration dashboard
     And I click on "Categories"
     Then I can see a list of categories ordered by post count:
@@ -31,7 +30,7 @@ Feature: Tags and Categories
   Scenario: See an overview of tags
     When I navigate to the administration dashboard
     And I click on "Tags"
-    Then I can see a list of categories ordered by post count:
+    Then I can see a list of tags ordered by user and post count:
       | # | Name        | Nutzer | Beiträge |
       | 1 | Naturschutz | 2      | 2        |
       | 2 | Freiheit    | 2      | 2        |
