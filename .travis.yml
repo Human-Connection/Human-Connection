@@ -19,10 +19,17 @@ before_install:
 
 install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-web .
-  - docker-compose up -d
+  - docker-compose -f docker-compose.yml up -d
+  - git clone --depth=50 https://github.com/Human-Connection/Nitro-Backend.git ../Nitro-Backend
+  - git --work-tree=../Nitro-Backend checkout $TRAVIS_BRANCH || echo "Branch \`$TRAVIS_BRANCH\` does not exist, falling back to \`master\`"
+  - docker-compose -f ../Nitro-Backend/docker-compose.yml up -d
+  - yarn global add cypress wait-on
 
 script:
   - docker-compose exec webapp yarn run lint
+  - docker-compose -f ../Nitro-Backend/docker-compose.yml exec backend yarn run db:seed > /dev/null
+  - wait-on http://localhost:3000
+  - cypress run --record --key $CYPRESS_TOKEN
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
