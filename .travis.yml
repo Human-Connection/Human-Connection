@@ -23,7 +23,7 @@ install:
   - git clone --depth=50 https://github.com/Human-Connection/Nitro-Backend.git ../Nitro-Backend
   - git --work-tree=../Nitro-Backend checkout $TRAVIS_BRANCH || echo "Branch \`$TRAVIS_BRANCH\` does not exist, falling back to \`master\`"
   - docker-compose -f ../Nitro-Backend/docker-compose.yml up -d
-  - yarn global add cypress wait-on
+  - yarn global add cypress cypress-cucumber-preprocessor wait-on
 
 script:
   - docker-compose exec webapp yarn run lint
