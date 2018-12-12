@@ -19,7 +19,7 @@
               style="float: right"
             >
               <a
-                class='avatar-menu'
+                class="avatar-menu"
                 :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
                 @click.prevent="toggleMenu()"
               >
@@ -31,7 +31,7 @@
               </a>
               <div
                 slot="popover"
-                class='avatar-menu-popover'
+                class="avatar-menu-popover"
                 style="padding-top: .5rem; padding-bottom: .5rem;"
                 @mouseover="popoverMouseEnter"
                 @mouseleave="popoveMouseLeave"

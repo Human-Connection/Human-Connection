@@ -12,13 +12,14 @@
 // the project's config changing)
 
 const cucumber = require('cypress-cucumber-preprocessor').default
-module.exports = (on) => { // (on, config) => {
+module.exports = on => {
+  // (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   on('file:preprocessor', cucumber())
 
   on('task', {
-    log () {
+    log() {
       console.log(arguments)
       return null
     }
