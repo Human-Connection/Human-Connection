@@ -7,8 +7,10 @@
     "no_auth": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled"
   },
   "scripts": {
-    "mocha": "./node_modules/.bin/mocha --require @babel/register src/**/*.test.js",
-    "eslint": "eslint src --config .eslintrc.js",
+    "ci": "yarn run lint && yarn run test && yarn run test:coverage",
+    "lint": "eslint src --config .eslintrc.js",
+    "test": "./node_modules/.bin/nyc --reporter=text-lcov ./node_modules/.bin/mocha --require @babel/register src/**/*.test.js",
+    "test:coverage": "./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js",
     "start:debug": "./node_modules/.bin/nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "db:script:seed": "wait-on tcp:4001 && ./node_modules/.bin/babel-node src/seed/seed-db.js",
@@ -36,7 +38,7 @@
     "graphql": "~0.13.0",
     "graphql-custom-directives": "~0.2.14",
     "graphql-iso-date": "~3.6.1",
-    "graphql-middleware": "2.0.2",
+    "graphql-middleware": "~1.7.8",
     "graphql-shield": "~4.1.2",
     "graphql-tag": "~2.10.0",
     "graphql-yoga": "~1.16.7",
@@ -45,7 +47,7 @@
     "lodash": "~4.17.11",
     "ms": "~2.1.1",
     "neo4j-driver": "~1.7.2",
-    "neo4j-graphql-js": "2.0.1",
+    "neo4j-graphql-js": "~2.0.1",
     "node-fetch": "~2.3.0",
     "passport": "~0.4.0",
     "passport-jwt": "~4.0.0",
@@ -67,6 +69,7 @@
     "mocha": "^5.2.0",
     "nodemon": "~1.18.8",
     "npm-run-all": "~4.1.5",
+    "nyc": "^13.1.0",
     "wait-on": "~3.2.0"
   }
 }
