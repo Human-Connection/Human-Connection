@@ -90,6 +90,8 @@ type User {
 
   blacklisted: [User]! @relation(name: "BLACKLISTED", direction: "OUT")
 
+  categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
+
   badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
   badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
 }
@@ -184,7 +186,8 @@ type Tag {
   name: String!
   taggedPosts: [Post]! @relation(name: "TAGGED", direction: "IN")
   taggedOrganizations: [Organization]! @relation(name: "TAGGED", direction: "IN")
-  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(r) RETURN COUNT(r)")
+  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p) RETURN COUNT(p)")
+  taggedCountUnique: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p)<-[:WROTE]-(u:User) RETURN COUNT(DISTINCT u)")
   deleted: Boolean
   disabled: Boolean
 }
