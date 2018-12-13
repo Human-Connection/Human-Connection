@@ -53,7 +53,7 @@ npm run dev
 # you will need to build the app first (done while building the docker image)
 npm run build
 # run after build (dist folder must exist)
-npm run startnpm run start
+npm run start
 ```
 {% endtab %}
 
