@@ -10,8 +10,9 @@
       <ds-tag
         v-for="category in post.categories"
         :key="category.id"
+        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
       >
-        {{ category.name }}
+        <ds-icon :name="category.icon" /> {{ category.name }}
       </ds-tag>
     </div>
     <template v-if="post.tags && post.tags.length">
@@ -81,6 +82,7 @@ export default {
             categories {
               id
               name
+              icon
             }
             relatedContributions(first: 2) {
               id
@@ -89,6 +91,11 @@ export default {
               contentExcerpt
               shoutedCount
               commentsCount
+              categories {
+                id
+                name
+                icon
+              }
               author {
                 id
                 name

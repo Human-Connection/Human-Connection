@@ -7,7 +7,7 @@
       :disabled="disabled || loading"
       danger
       size="x-large"
-      icon="heart"
+      icon="bullhorn"
       @click="shout"
     />
     <ds-space margin-bottom="xx-small" />

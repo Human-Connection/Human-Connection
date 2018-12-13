@@ -30,7 +30,7 @@
               color="soft"
               size="small"
             >
-              Mitglied seid {{ user.createdAt | date('MMMM yyyy') }}
+              Mitglied seit {{ user.createdAt | date('MMMM yyyy') }}
             </ds-text>
           </ds-space>
           <ds-space

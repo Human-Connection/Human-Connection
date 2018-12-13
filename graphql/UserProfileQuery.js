@@ -7,13 +7,6 @@ export default gql(`
       name
       avatar
       createdAt
-      friendsCount
-      friends {
-        id
-        name
-        slug
-        avatar
-      }
       badges {
         id
         key
@@ -63,6 +56,11 @@ export default gql(`
         deleted
         image
         createdAt
+        categories {
+          id
+          name
+          icon
+        }
         author {
           id
           avatar

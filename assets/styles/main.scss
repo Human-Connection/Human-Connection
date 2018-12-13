@@ -118,3 +118,11 @@ blockquote {
     margin-top: 0;
   }
 }
+
+hr {
+  border: 0;
+  width: 100%;
+  color: $color-neutral-80;
+  background-color: $color-neutral-80;
+  height: 1px !important;
+}

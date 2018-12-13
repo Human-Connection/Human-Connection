@@ -15,6 +15,9 @@
     "test": "jest",
     "precommit": "yarn lint"
   },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  },
   "jest": {
     "moduleFileExtensions": [
       "js",
@@ -29,7 +32,10 @@
       "^@/(.*)$": "<rootDir>/src/$1",
       "^@@/(.*)$": "<rootDir>/styleguide/src/system/$1",
       "^~/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "modulePathIgnorePatterns": [
+      "<rootDir>/styleguide"
+    ]
   },
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.0-rc3",
@@ -50,10 +56,12 @@
   },
   "devDependencies": {
     "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/server-test-utils": "^1.0.0-beta.27",
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
+    "cypress-cucumber-preprocessor": "^1.9.1",
     "eslint": "^5.10.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-loader": "^2.0.0",

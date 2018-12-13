@@ -1,18 +1,18 @@
 <template>
   <ds-card space="small">
     <ds-heading tag="h3">
-      Themen / Kategorien
+      Tags
     </ds-heading>
     <ds-table
-      :data="Category"
-      :fields="['icon', 'name', 'postCount']"
+      :data="Tag"
+      :fields="fields"
       condensed
     >
       <template
-        slot="icon"
+        slot="id"
         slot-scope="scope"
       >
-        <ds-icon :name="scope.row.icon" />
+        {{ scope.index + 1 }}
       </template>
     </ds-table>
   </ds-card>
@@ -24,19 +24,24 @@ import gql from 'graphql-tag'
 export default {
   data() {
     return {
-      Category: []
+      Tag: [],
+      fields: {
+        id: { label: '#' },
+        name: { label: 'Name' },
+        taggedCountUnique: { label: 'Nutzer' },
+        taggedCount: { label: 'Beiträge' }
+      }
     }
   },
   apollo: {
-    Category: {
+    Tag: {
       query: gql(`
         query {
-          Category(orderBy: postCount_desc) {
+          Tag(first: 20, orderBy: taggedCountUnique_desc) {
             id
             name
-            slug
-            icon
-            postCount
+            taggedCount
+            taggedCountUnique
           }
         }
       `)
