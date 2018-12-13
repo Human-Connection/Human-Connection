@@ -41,14 +41,36 @@ npm install
 
 {% tabs %}
 {% tab title="Yarn" %}
+#### Development
+
 ```bash
-yarn start
+npm run dev
+```
+
+#### Production
+
+```bash
+# you will need to build the app first (done while building the docker image)
+npm run build
+# run after build (dist folder must exist)
+npm run startnpm run start
 ```
 {% endtab %}
 
 {% tab title="NPM" %}
+#### Development
+
 ```bash
-npm start
+yarn run dev
+```
+
+#### Production
+
+```bash
+# you will need to build the app first (done while building the docker image)
+yarn run build
+# run after build (dist folder must exist)
+yarn run start
 ```
 {% endtab %}
 {% endtabs %}
