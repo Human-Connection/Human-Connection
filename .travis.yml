@@ -26,16 +26,6 @@ script:
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
 
-after_success:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh success $WEBHOOK_URL
-
-after_failure:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh failure $WEBHOOK_URL
-
 deploy:
   - provider: script
     script: scripts/docker_push.sh
@@ -51,7 +41,17 @@ deploy:
     on:
       branch: master
   - provider: script
-    script: scripts/deploy.sh "nitro-$(git rev-parse --short HEAD).human-connection.org"
+    script: scripts/deploy.sh "nitro-$TRAVIS_COMMIT.human-connection.org"
     on:
       tags: true
       all_branches: true
+
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
