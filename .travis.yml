@@ -19,7 +19,7 @@ before_install:
 
 install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-backend:latest .
-  - docker-compose -f docker-compose.yml up -d
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
 
 script:
   - docker-compose exec backend yarn run lint
