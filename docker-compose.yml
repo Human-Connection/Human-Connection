@@ -3,7 +3,9 @@ version: "3.7"
 services:
   backend:
     image: humanconnection/nitro-backend:latest
-    build: .
+    build:
+      context: .
+      target: production
     networks:
       - hc-network
     depends_on:

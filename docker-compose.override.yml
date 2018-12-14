@@ -2,6 +2,9 @@ version: "3.7"
 
 services:
   backend:
+    build:
+      context: .
+      target: builder
     volumes:
       - .:/nitro-backend
       - /nitro-backend/node_modules

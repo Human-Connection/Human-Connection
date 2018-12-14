@@ -18,7 +18,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 install:
-  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend:latest .
+  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-backend:latest .
   - docker-compose -f docker-compose.yml up -d
 
 script:
