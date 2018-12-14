@@ -64,6 +64,14 @@ Configure the file `.env` according to your needs and your local setup.
 Start the GraphQL service:
 
 ```bash
+yarn dev
+# -or-
+npm dev
+```
+
+And on the production machine run following:
+
+```bash
 yarn start
 # -or-
 npm start

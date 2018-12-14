@@ -16,4 +16,5 @@ RUN yarn install --production=false --frozen-lockfile --non-interactive
 COPY . .
 COPY .env.template .env
 
+RUN yarn run build
 CMD ["yarn", "run", "start"]
