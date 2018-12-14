@@ -9,6 +9,7 @@ services:
     volumes:
       - .:/nitro-backend
       - /nitro-backend/node_modules
+    command: yarn run dev
   neo4j:
     ports:
       - 7687:7687
