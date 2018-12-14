@@ -1,10 +1,16 @@
 .vscode/
-
-node_modules/
-npm-debug.log
+.nyc_output/
+.github/
+.travis.yml
+.graphqlconfig
+.env
 
 Dockerfile
-docker-compose*.yml
-scripts/
 
-.env
+./*.png
+./*.log
+
+kubernetes/
+node_modules/
+scripts/
+dist/
