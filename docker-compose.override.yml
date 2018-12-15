@@ -2,9 +2,14 @@ version: "3.7"
 
 services:
   backend:
+    image: humanconnection/nitro-backend:builder
+    build:
+      context: .
+      target: builder
     volumes:
       - .:/nitro-backend
       - /nitro-backend/node_modules
+    command: yarn run dev
   neo4j:
     ports:
       - 7687:7687
