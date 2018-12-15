@@ -1,8 +1,10 @@
 # Human Connection - NITRO Web
+[![Build Status](https://travis-ci.com/Human-Connection/Nitro-Web.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Web)
 
 ![UI Screenshot](screenshot.png)
 
 ## Build Setup
+
 
 
 ### Install
