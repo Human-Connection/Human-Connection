@@ -1,4 +1,5 @@
 # Human-Connection - NITRO Backend
+[![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Backend)
 
 > This Prototype tries to resolve the biggest hurdle of connecting
 > our services together. This is not possible in a sane way using
@@ -61,6 +62,14 @@ cp .env.template .env
 Configure the file `.env` according to your needs and your local setup.
 
 Start the GraphQL service:
+
+```bash
+yarn dev
+# -or-
+npm dev
+```
+
+And on the production machine run following:
 
 ```bash
 yarn start

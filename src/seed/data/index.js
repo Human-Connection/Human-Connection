@@ -31,8 +31,10 @@ export default async function (client) {
         })
       data[key] = Object.assign(data[key] || {}, res.data)
     } catch (err) {
+      /* eslint-disable-next-line no-console */
       console.error(err)
     }
   })
+  /* eslint-disable-next-line no-console */
   console.log('Seeded Data', data)
 }

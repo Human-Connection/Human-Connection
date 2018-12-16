@@ -18,12 +18,13 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 install:
-  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-backend:latest .
-  - docker-compose up -d
+  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-backend:latest .
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
 
 script:
-  - docker-compose exec backend yarn run eslint
-  - docker-compose exec backend yarn run mocha
+  - docker-compose exec backend yarn run lint
+  - docker-compose exec backend yarn run test
+  - docker-compose exec backend yarn run test:coverage
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
 
@@ -31,11 +32,6 @@ after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh success $WEBHOOK_URL
-  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker tag humanconnection/nitro-backend humanconnection/nitro-backend:latest;
-    docker push humanconnection/nitro-backend:latest;
-    fi
 
 after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
@@ -43,6 +39,10 @@ after_failure:
   - ./send.sh failure $WEBHOOK_URL
 
 deploy:
+  - provider: script
+    script: scripts/docker_push.sh
+    on:
+      branch: master
   - provider: script
     script: scripts/deploy.sh nitro.human-connection.org
     on:
@@ -53,7 +53,7 @@ deploy:
     on:
       branch: master
   - provider: script
-    script: scripts/deploy.sh "nitro-$(git rev-parse --short HEAD).human-connection.org"
+    script: scripts/deploy.sh "nitro-$TRAVIS_COMMIT.human-connection.org"
     on:
       tags: true
       all_branches: true
