@@ -1,7 +1,7 @@
 # Web Installation
 
 {% hint style="warning" %}
-This documentation should be split into a **local** and a **docker** installation variant. Also my be there should be a main docker installation guide for the while system at once!?
+This documentation should be split into a **local** and a **docker** installation variant. Also maybe there should be a main docker installation guide for the whole system at once!?
 {% endhint %}
 
 ### Clone Repository
@@ -16,7 +16,7 @@ git@github.com:Human-Connection/Nitro-Web.git
 ### Install Dependencies
 
 {% hint style="danger" %}
-Current you have to use the `--ignore-engines` parameter on install as the izitoast wrapper package claims to not work on node &gt;= 9 which is not true. If the Author does not responde we might fork the package or make our own component out of it. So its an temporary issue.
+Current you have to use the `--ignore-engines` parameter on install, as the izitoast wrapper package claims to not work on node &gt;= 9 which is not true. If the Author does not responde we might fork the package or make our own component out of it. So it's a temporary issue.
 {% endhint %}
 
 {% tabs %}
