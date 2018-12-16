@@ -1,5 +1,5 @@
 ---
-description: 'Want to help? Here you finde the recources for the Web part:'
+description: 'Want to help? Here you find the recources for the Web part:'
 ---
 
 # Todo's
