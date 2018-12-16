@@ -1,7 +1,7 @@
 # Backend Installation
 
 {% hint style="warning" %}
-This documentation should be split into a **local** and a **docker** installation variant. Also my be there should be a main docker installation guide for the while system at once!?
+This documentation should be split into a **local** and a **docker** installation variant. Also maybe there should be a main docker installation guide for the whole system at once!?
 {% endhint %}
 
 ### Clone Repository
@@ -44,23 +44,6 @@ npm install
 #### Development
 
 ```bash
-npm run dev
-```
-
-#### Production
-
-```bash
-# you will need to build the app first (done while building the docker image)
-npm run build
-# run after build (dist folder must exist)
-npm run start
-```
-{% endtab %}
-
-{% tab title="NPM" %}
-#### Development
-
-```bash
 yarn run dev
 ```
 
@@ -71,6 +54,23 @@ yarn run dev
 yarn run build
 # run after build (dist folder must exist)
 yarn run start
+```
+{% endtab %}
+
+{% tab title="NPM" %}
+#### Development
+
+```bash
+npm run dev
+```
+
+#### Production
+
+```bash
+# you will need to build the app first (done while building the docker image)
+npm run build
+# run after build (dist folder must exist)
+npm run start
 ```
 {% endtab %}
 {% endtabs %}
