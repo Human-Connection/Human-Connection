@@ -100,7 +100,8 @@ The value can be a string representing the fields label or an object with option
           name: 'Hero',
           type: {
             label: 'Job',
-            width: '300px'
+            width: '300px',
+            align: 'right'
           }
         },
         tableData: [
