@@ -43,21 +43,18 @@
   }
 }
 
-
-.ds-table {
-  .ds-table-col,
-  .ds-table-head-col {
-    &.ds-table-col-left,
-    &.ds-table-head-col-left {
-      text-align: left;
-    }
-    &.ds-table-col-center,
-    &.ds-table-head-col-center {
-      text-align: center;
-    }
-    &.ds-table-col-right,
-    &.ds-table-head-col-right {
-      text-align: right;
-    }
+.ds-table-col,
+.ds-table-head-col {
+  &.ds-table-col-left,
+  &.ds-table-head-col-left {
+    text-align: left;
+  }
+  &.ds-table-col-center,
+  &.ds-table-head-col-center {
+    text-align: center;
+  }
+  &.ds-table-col-right,
+  &.ds-table-head-col-right {
+    text-align: right;
   }
 }
