@@ -34,16 +34,24 @@
                 class="avatar-menu-popover"
                 style="padding-top: .5rem; padding-bottom: .5rem;"
                 @mouseover="popoverMouseEnter"
-                @mouseleave="popoveMouseLeave"
-              >
-                Hallo {{ user.name }}
+                @mouseleave="popoveMouseLeave">
+                Hallo <b>{{ user.name }}</b>
                 <ds-menu
                   :routes="routes"
-                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;"
-                />
+                  :is-exact="isExact"
+                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;">
+                  <ds-menu-item
+                    slot="Navigation"
+                    slot-scope="item"
+                    :route="item.route"
+                    :parents="item.parents"
+                    @click.native="toggleMenu">
+                    <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+                  </ds-menu-item>
+                </ds-menu>
                 <ds-space margin="xx-small" />
                 <nuxt-link :to="{ name: 'logout'}">
-                  Logout
+                  <ds-icon name="sign-out" /> Logout
                 </nuxt-link>
               </div>
             </v-popover>
@@ -75,7 +83,7 @@ export default {
     ...mapGetters({
       user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',
-      isAdmin: 'auth/isLoggedIn'
+      isAdmin: 'auth/isAdmin'
     }),
     routes() {
       if (!this.user.slug) {
@@ -84,17 +92,20 @@ export default {
       let routes = [
         {
           name: 'Mein Profil',
-          path: `/profile/${this.user.slug}`
+          path: `/profile/${this.user.slug}`,
+          icon: 'user'
         },
         {
           name: 'Einstellungen',
-          path: `/settings`
+          path: `/settings`,
+          icon: 'cogs'
         }
       ]
       if (this.isAdmin) {
         routes.push({
           name: 'Systemverwaltung',
-          path: `/admin`
+          path: `/admin`,
+          icon: 'shield'
         })
       }
       return routes
@@ -107,6 +118,9 @@ export default {
   methods: {
     toggleMenu() {
       this.isPopoverOpen = !this.isPopoverOpen
+    },
+    isExact(url) {
+      return this.$route.path.indexOf(url) === 0
     },
     popoverMouseEnter() {
       clearTimeout(mouseEnterTimer)
