@@ -8,6 +8,22 @@
         >
           <ds-logo />
         </a>
+        <!-- TODO: replace with better menu (maybe footer?) -->
+        <a
+          v-if="$i18n.locale() === 'en'"
+          href="#"
+          @click="changeLanguage('de')"
+        >
+          Deutsch
+        </a>
+        <a
+          v-else
+          href="#"
+          @click="changeLanguage('en')"
+        >
+          English
+        </a>
+        <!-- TODO: end of dummy locale menu -->
         <template v-if="isLoggedIn">
           <no-ssr>
             <v-popover
@@ -105,6 +121,18 @@ export default {
     clearTimeout(mouseLeaveTimer)
   },
   methods: {
+    changeLanguage(locale) {
+      // TODO: make it a component
+      // check if the locale has already been loaded
+      if (this.$i18n.localeExists(locale)) {
+        this.$i18n.set(locale)
+        return
+      }
+      import(`~/locales/${locale}.json`).then(res => {
+        this.$i18n.add(locale, res)
+        this.$i18n.set(locale)
+      })
+    },
     toggleMenu() {
       this.isPopoverOpen = !this.isPopoverOpen
     },
