@@ -37,12 +37,12 @@ export const getters = {
     return !!state.user && state.user.isVerified && !!state.user.name
   },
   isAdmin(state) {
-    return !!state.user && state.user.role === 'ADMIN'
+    return !!state.user && state.user.role === 'admin'
   },
   isModerator(state) {
     return (
       !!state.user &&
-      (state.user.role === 'ADMIN' || state.user.role === 'MODERATOR')
+      (state.user.role === 'admin' || state.user.role === 'moderator')
     )
   },
   user(state) {
