@@ -1,0 +1,75 @@
+{
+  "settings": {
+    "name": "Settings",
+    "data": {
+      "name": "Your data"
+    },
+    "security": {
+      "name": "Security"
+    },
+    "invites": {
+      "name": "Invites"
+    },
+    "download": {
+      "name": "Download Data"
+    },
+    "delete": {
+      "name": "Delete Account"
+    },
+    "organizations": {
+      "name": "My Organizations"
+    },
+    "languages": {
+      "name": "Languages"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Dashboard",
+      "users": "Users",
+      "posts": "Posts",
+      "comments": "Comments",
+      "notifications": "Notifications",
+      "organizations": "Organizations",
+      "projects": "Projekte",
+      "invites": "Invites",
+      "follows": "Follows",
+      "shouts": "Shouts"
+    },
+    "organizations": {
+      "name": "Organizations"
+    },
+    "users": {
+      "name": "Users"
+    },
+    "pages": {
+      "name": "Pages"
+    },
+    "notifications": {
+      "name": "Notifications"
+    },
+    "categories": {
+      "name": "Categories",
+      "categoryName": "Name",
+      "postCount": "Posts"
+    },
+    "tags": {
+      "name": "Tags",
+      "tagCountUnique": "Users",
+      "tagCount": "Posts"
+    },
+    "settings": {
+      "name": "Settings"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "More info"
+    },
+    "takeAction": {
+      "name": "Take action"
+    }
+  }
+}
