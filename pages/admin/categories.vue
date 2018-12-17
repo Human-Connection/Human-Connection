@@ -1,11 +1,11 @@
 <template>
   <ds-card space="small">
     <ds-heading tag="h3">
-      Themen / Kategorien
+      {{ $t('admin.categories.name') }}
     </ds-heading>
     <ds-table
       :data="Category"
-      :fields="['icon', 'name', 'postCount']"
+      :fields="fields"
       condensed
     >
       <template
@@ -25,6 +25,18 @@ export default {
   data() {
     return {
       Category: []
+    }
+  },
+  computed: {
+    fields() {
+      return {
+        icon: ' ',
+        name: this.$t('admin.categories.categoryName'),
+        postCount: {
+          label: this.$t('admin.categories.postCount'),
+          align: 'right'
+        }
+      }
     }
   },
   apollo: {

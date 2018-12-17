@@ -7,7 +7,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Users"
+                :label="$t('admin.dashboard.users')"
                 size="x-large"
                 uppercase
               >
@@ -24,7 +24,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Posts"
+                :label="$t('admin.dashboard.posts')"
                 size="x-large"
                 uppercase
               >
@@ -41,7 +41,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Comments"
+                :label="$t('admin.dashboard.comments')"
                 size="x-large"
                 uppercase
               >
@@ -58,7 +58,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Notifications"
+                :label="$t('admin.dashboard.notifications')"
                 size="x-large"
                 uppercase
               >
@@ -75,7 +75,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Organization"
+                :label="$t('admin.dashboard.organizations')"
                 size="x-large"
                 uppercase
               >
@@ -92,7 +92,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Projects"
+                :label="$t('admin.dashboard.projects')"
                 size="x-large"
                 uppercase
               >
@@ -109,7 +109,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Open Invites"
+                :label="$t('admin.dashboard.invites')"
                 size="x-large"
                 uppercase
               >
@@ -126,7 +126,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Follows"
+                :label="$t('admin.dashboard.follows')"
                 size="x-large"
                 uppercase
               >
@@ -143,7 +143,7 @@
             <ds-space margin="small">
               <ds-number
                 :count="0"
-                label="Shouts"
+                :label="$t('admin.dashboard.shouts')"
                 size="x-large"
                 uppercase
               >
