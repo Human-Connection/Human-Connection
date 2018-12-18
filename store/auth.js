@@ -13,11 +13,6 @@ export const mutations = {
   SET_USER(state, user) {
     state.user = user || null
   },
-  SET_USER_SETTINGS(state, userSettings) {
-    // state.user = Object.assign(state.user, {
-    //   userSettings: Object.assign(this.getters['auth/userSettings'], userSettings)
-    // })
-  },
   SET_TOKEN(state, token) {
     state.token = token || null
   },
@@ -35,9 +30,6 @@ export const getters = {
   },
   pending(state) {
     return !!state.pending
-  },
-  isVerified(state) {
-    return !!state.user && state.user.isVerified && !!state.user.name
   },
   isAdmin(state) {
     return !!state.user && state.user.role === 'admin'
