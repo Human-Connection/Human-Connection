@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 
 export default async ({ store, env, route, redirect }) => {
   let publicPages = env.publicPages
