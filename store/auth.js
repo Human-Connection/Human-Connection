@@ -54,20 +54,6 @@ export const getters = {
   token(state) {
     return state.token
   }
-  // userSettings(state, getters, rootState, rootGetters) {
-  // const userSettings = (state.user && state.user.userSettings) ? state.user.userSettings : {}
-  //
-  // const defaultLanguage = (state.user && state.user.language) ? state.user.language : rootGetters['i18n/locale']
-  // let contentLanguages = !isEmpty(userSettings.contentLanguages) ? userSettings.contentLanguages : []
-  // if (isEmpty(contentLanguages)) {
-  //   contentLanguages = userSettings.uiLanguage ? [userSettings.uiLanguage] : [defaultLanguage]
-  // }
-  //
-  // return Object.assign({
-  //   uiLanguage: defaultLanguage,
-  //   contentLanguages: contentLanguages
-  // }, userSettings)
-  // }
 }
 
 export const actions = {
