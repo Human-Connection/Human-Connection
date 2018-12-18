@@ -8,22 +8,7 @@
         >
           <ds-logo />
         </a>
-        <!-- TODO: replace with better menu (maybe footer?) -->
-        <a
-          v-if="$i18n.locale() === 'en'"
-          href="#"
-          @click="changeLanguage('de')"
-        >
-          Deutsch
-        </a>
-        <a
-          v-else
-          href="#"
-          @click="changeLanguage('en')"
-        >
-          English
-        </a>
-        <!-- TODO: end of dummy locale menu -->
+        <language-switch class="topbar-language-switch" />
         <template v-if="isLoggedIn">
           <no-ssr>
             <v-popover
@@ -77,11 +62,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { setTimeout } from 'timers'
+import LanguageSwitch from '~/components/LanguageSwitch'
+
 let mouseEnterTimer = null
 let mouseLeaveTimer = null
 
 export default {
+  components: {
+    LanguageSwitch
+  },
   data() {
     return {
       isPopoverOpen: false
@@ -121,18 +110,6 @@ export default {
     clearTimeout(mouseLeaveTimer)
   },
   methods: {
-    changeLanguage(locale) {
-      // TODO: make it a component
-      // check if the locale has already been loaded
-      if (this.$i18n.localeExists(locale)) {
-        this.$i18n.set(locale)
-        return
-      }
-      import(`~/locales/${locale}.json`).then(res => {
-        this.$i18n.add(locale, res.default)
-        this.$i18n.set(locale)
-      })
-    },
     toggleMenu() {
       this.isPopoverOpen = !this.isPopoverOpen
     },
@@ -157,3 +134,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.topbar-language-switch {
+  display: inline-block;
+  top: -16px;
+  position: relative;
+}
+</style>
