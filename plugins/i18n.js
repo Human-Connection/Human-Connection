@@ -41,29 +41,32 @@ export default ({ app, req, cookie, store }) => {
     }
   })
 
-  // register the locales
+  // register the fallback locales
   Vue.i18n.add('en', require('~/locales/en.json'))
 
   let userLocale = 'en'
-  // const localeCookie = app.$cookies.get(key)
-  // const userSettings = store.getters['auth/userSettings']
-  // if (userSettings && userSettings.uiLanguage) {
-  //   // try to get saved user preference
-  //   userLocale = userSettings.uiLanguage
-  // } else if (!isEmpty(localeCookie)) {
-  //   userLocale = localeCookie
-  // } else {
-  //   userLocale = process.browser ? (navigator.language || navigator.userLanguage) : req.locale
-  //   if (userLocale && !isEmpty(userLocale.language)) {
-  //     userLocale = userLocale.language.substr(0, 2)
-  //   }
-  // }
+  const localeCookie = app.$cookies.get(key)
+  /* const userSettings = store.getters['auth/userSettings']
+  if (userSettings && userSettings.uiLanguage) {
+    // try to get saved user preference
+    userLocale = userSettings.uiLanguage
+  } else */
+  if (!isEmpty(localeCookie)) {
+    userLocale = localeCookie
+  } else {
+    userLocale = process.browser
+      ? navigator.language || navigator.userLanguage
+      : req.locale
+    if (userLocale && !isEmpty(userLocale.language)) {
+      userLocale = userLocale.language.substr(0, 2)
+    }
+  }
 
   const availableLocales = ['de', 'en']
   const locale = availableLocales.indexOf(userLocale) >= 0 ? userLocale : 'en'
 
   if (locale !== 'en') {
-    Vue.i18n.add(locale, require(`~/locales/${locale}.json`).default)
+    Vue.i18n.add(locale, require(`~/locales/${locale}.json`))
   }
 
   // Set the start locale to use
