@@ -1,25 +1,34 @@
 import Vue from 'vue'
 
-import { en, de } from 'date-fns/locale'
+import { enUS, de } from 'date-fns/locale'
 import format from 'date-fns/format'
 import formatRelative from 'date-fns/formatRelative'
 import addSeconds from 'date-fns/addSeconds'
-
 import accounting from 'accounting'
 
 export default ({ app }) => {
+  const locales = {
+    en: enUS,
+    de: de
+  }
   app.$filters = Object.assign(app.$filters || {}, {
     date: (value, fmt = 'dd. MMM yyyy') => {
       if (!value) return ''
-      return format(new Date(value), fmt, { locale: de })
+      return format(new Date(value), fmt, {
+        locale: locales[app.$i18n.locale()]
+      })
     },
     dateTime: (value, fmt = 'dd. MMM yyyy HH:mm') => {
       if (!value) return ''
-      return format(new Date(value), fmt, { locale: de })
+      return format(new Date(value), fmt, {
+        locale: locales[app.$i18n.locale()]
+      })
     },
     relativeDateTime: value => {
       if (!value) return ''
-      return formatRelative(new Date(value), new Date(), { locale: de })
+      return formatRelative(new Date(value), new Date(), {
+        locale: locales[app.$i18n.locale()]
+      })
     },
     number: (
       value,
