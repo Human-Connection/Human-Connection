@@ -1,4 +1,9 @@
 {
+  "settings": {
+    "delete": {
+      "name": "Elimina Account"
+    }
+  },
   "quotes": {
     "african": {
       "author": "Proverbio africano"
