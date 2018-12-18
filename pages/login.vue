@@ -61,6 +61,7 @@
               full-width
               name="submit"
               type="submit"
+              icon-right="sign-in"
             >
               {{ $t('login.login') }}
             </ds-button>

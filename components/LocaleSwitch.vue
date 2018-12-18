@@ -9,6 +9,7 @@
     >
       <img
         alt="English"
+        title="English"
         src="/img/locale-flags/en.svg"
         height="26"
       />
@@ -20,6 +21,7 @@
     >
       <img
         alt="Deutsch"
+        title="Deutsch"
         src="/img/locale-flags/de.svg"
         height="26"
       />
