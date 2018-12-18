@@ -2,9 +2,18 @@
   "login": {
     "copy": "Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
+    "logout": "Ausloggen",
     "email": "Deine E-Mail",
     "password": "Dein Password",
-    "moreInfo": "Was ist Human Connection?"
+    "moreInfo": "Was ist Human Connection?",
+    "hello": "Hallo"
+  },
+  "profile": {
+    "name": "Mein Profil",
+    "memberSince": "Mitglied seit",
+    "follow": "Folgen",
+    "followers": "Folgen",
+    "following": "Folgt"
   },
   "settings": {
     "name": "Einstellungen",

@@ -2,9 +2,18 @@
   "login": {
     "copy": "If you already have an human-connection account, login here.",
     "login": "Login",
+    "logout": "Logout",
     "email": "Your Email",
     "password": "Your Password",
-    "moreInfo": "What is Human Connection?"
+    "moreInfo": "What is Human Connection?",
+    "hello": "Hello"
+  },
+  "profile": {
+    "name": "My Profile",
+    "memberSince": "Member since",
+    "follow": "Follow",
+    "followers": "Followers",
+    "following": "Following"
   },
   "settings": {
     "name": "Settings",

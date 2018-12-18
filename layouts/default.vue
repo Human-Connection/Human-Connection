@@ -36,7 +36,7 @@
                 style="padding-top: .5rem; padding-bottom: .5rem;"
                 @mouseover="popoverMouseEnter"
                 @mouseleave="popoveMouseLeave">
-                Hallo <b>{{ user.name }}</b>
+                {{ $t('login.hello') }} <b>{{ user.name }}</b>
                 <ds-menu
                   :routes="routes"
                   :is-exact="isExact"
@@ -52,7 +52,7 @@
                 </ds-menu>
                 <ds-space margin="xx-small" />
                 <nuxt-link :to="{ name: 'logout'}">
-                  <ds-icon name="sign-out" /> Logout
+                  <ds-icon name="sign-out" /> {{ $t('login.logout') }}
                 </nuxt-link>
               </div>
             </v-popover>
@@ -96,19 +96,19 @@ export default {
       }
       let routes = [
         {
-          name: 'Mein Profil',
+          name: this.$t('profile.name'),
           path: `/profile/${this.user.slug}`,
           icon: 'user'
         },
         {
-          name: 'Einstellungen',
+          name: this.$t('settings.name'),
           path: `/settings`,
           icon: 'cogs'
         }
       ]
       if (this.isAdmin) {
         routes.push({
-          name: 'Systemverwaltung',
+          name: this.$t('admin.name'),
           path: `/admin`,
           icon: 'shield'
         })
