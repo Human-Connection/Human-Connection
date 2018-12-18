@@ -53,7 +53,7 @@ export default {
           path: `/admin/tags`
         },
         {
-          name: 'Settings',
+          name: this.$t('admin.settings.name'),
           path: `/admin/settings`
         }
       ]
