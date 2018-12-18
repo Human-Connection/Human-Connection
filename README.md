@@ -46,7 +46,7 @@ You can help translating the interface by joining us on [lokalise.co](https://lo
 
 Thanks lokalise.co that we can use your premium account!
 
-<img src="lokalise.png" height="32px" />
+<a href="(https://lokalise.co/public/556252725c18dd752dd546.13222042/)."><img src="lokalise.png" height="32px" /></a>
 
 ## Attributions
 
