@@ -129,7 +129,7 @@ export default {
         return
       }
       import(`~/locales/${locale}.json`).then(res => {
-        this.$i18n.add(locale, res)
+        this.$i18n.add(locale, res.default)
         this.$i18n.set(locale)
       })
     },

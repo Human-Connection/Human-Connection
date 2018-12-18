@@ -63,7 +63,7 @@ export default ({ app, req, cookie, store }) => {
   const locale = availableLocales.indexOf(userLocale) >= 0 ? userLocale : 'en'
 
   if (locale !== 'en') {
-    Vue.i18n.add(locale, require(`~/locales/${locale}.json`))
+    Vue.i18n.add(locale, require(`~/locales/${locale}.json`).default)
   }
 
   // Set the start locale to use
