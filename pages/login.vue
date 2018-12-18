@@ -121,7 +121,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.ready = true
-    }, 500)
+    }, 50)
   },
   methods: {
     async onSubmit() {
