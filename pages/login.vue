@@ -1,84 +1,92 @@
 <template>
-  <ds-container width="small">
-    <ds-space margin="small">
-      <blockquote>
-        <p>{{ $t('quotes.african.quote') }}</p>
-        <b>- {{ $t('quotes.african.author') }}</b>
-      </blockquote>
-    </ds-space>
-    <ds-card class="login-card">
-      <ds-flex gutter="small">
-        <ds-flex-item
-          :width="{ base: '100%', sm: '50%' }"
-          center
-        >
-          <locale-switch class="login-locale-switch" />
-          <ds-space
-            margin-top="small"
-            margin-bottom="xxx-small"
+  <transition
+    name="fade"
+    appear
+  >
+    <ds-container
+      v-if="ready"
+      width="small"
+    >
+      <ds-space margin="small">
+        <blockquote>
+          <p>{{ $t('quotes.african.quote') }}</p>
+          <b>- {{ $t('quotes.african.author') }}</b>
+        </blockquote>
+      </ds-space>
+      <ds-card class="login-card">
+        <ds-flex gutter="small">
+          <ds-flex-item
+            :width="{ base: '100%', sm: '50%' }"
             center
           >
-            <img
-              class="login-image"
-              src="/img/sign-up/humanconnection.svg"
-              alt="Human Connection"
+            <locale-switch class="login-locale-switch" />
+            <ds-space
+              margin-top="small"
+              margin-bottom="xxx-small"
+              center
             >
-          </ds-space>
-        </ds-flex-item>
-        <ds-flex-item
-          :width="{ base: '100%', sm: '50%' }"
-          center
-        >
-          <ds-space margin="small">
-            <ds-text size="small">
-              {{ $t('login.copy') }}
-            </ds-text>
-          </ds-space>
-          <form
-            :disabled="pending"
-            @submit.prevent="onSubmit"
-          >
-            <ds-input
-              v-model="form.email"
-              :disabled="pending"
-              :placeholder="$t('login.email')"
-              type="email"
-              name="email"
-              icon="envelope"
-            />
-            <ds-input
-              v-model="form.password"
-              :disabled="pending"
-              :placeholder="$t('login.password')"
-              icon="lock"
-              icon-right="question-circle"
-              name="password"
-              type="password"
-            />
-            <ds-button
-              :loading="pending"
-              primary
-              full-width
-              name="submit"
-              type="submit"
-              icon-right="sign-in"
-            >
-              {{ $t('login.login') }}
-            </ds-button>
-            <ds-space margin="x-small">
-              <a
-                href="https://human-connection.org"
-                title="zur Präsentationsseite"
-                target="_blank"
+              <img
+                class="login-image"
+                src="/img/sign-up/humanconnection.svg"
+                alt="Human Connection"
               >
-                {{ $t('login.moreInfo') }}
-              </a>
             </ds-space>
-          </form>
-        </ds-flex-item>
-      </ds-flex>
-    </ds-card>
-  </ds-container>
+          </ds-flex-item>
+          <ds-flex-item
+            :width="{ base: '100%', sm: '50%' }"
+            center
+          >
+            <ds-space margin="small">
+              <ds-text size="small">
+                {{ $t('login.copy') }}
+              </ds-text>
+            </ds-space>
+            <form
+              :disabled="pending"
+              @submit.prevent="onSubmit"
+            >
+              <ds-input
+                v-model="form.email"
+                :disabled="pending"
+                :placeholder="$t('login.email')"
+                type="email"
+                name="email"
+                icon="envelope"
+              />
+              <ds-input
+                v-model="form.password"
+                :disabled="pending"
+                :placeholder="$t('login.password')"
+                icon="lock"
+                icon-right="question-circle"
+                name="password"
+                type="password"
+              />
+              <ds-button
+                :loading="pending"
+                primary
+                full-width
+                name="submit"
+                type="submit"
+                icon="sign-in"
+              >
+                {{ $t('login.login') }}
+              </ds-button>
+              <ds-space margin="x-small">
+                <a
+                  href="https://human-connection.org"
+                  title="zur Präsentationsseite"
+                  target="_blank"
+                >
+                  {{ $t('login.moreInfo') }}
+                </a>
+              </ds-space>
+            </form>
+          </ds-flex-item>
+        </ds-flex>
+      </ds-card>
+    </ds-container>
+  </transition>
 </template>
 
 <script>
@@ -93,6 +101,7 @@ export default {
   layout: 'blank',
   data() {
     return {
+      ready: false,
       form: {
         email: '',
         password: ''
@@ -108,6 +117,11 @@ export default {
     pending() {
       return this.$store.getters['auth/pending']
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.ready = true
+    }, 500)
   },
   methods: {
     async onSubmit() {
