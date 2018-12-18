@@ -80,6 +80,19 @@ Then('I am still logged in', () => {
   cy.get('.avatar-menu-popover').contains(username)
 })
 
+When('I can see the english language flag', () => {
+  cy.get('.login-locale-switch img[src$="en.svg"]')
+})
+When('I can see the german language flag', () => {
+  cy.get('.login-locale-switch img[src$="de.svg"]')
+})
+When('I click on the locale switch', () => {
+  cy.get('.login-locale-switch a').click().wait(500)
+})
+Then(`There should be a locale cooke set to de`, () => {
+  cy.getCookie('locale').should('have.property', 'value', 'de')
+})
+
 When('I navigate to the administration dashboard', () => {
   cy.get('.avatar-menu').click()
   cy.get('a').contains('Systemverwaltung').click()
