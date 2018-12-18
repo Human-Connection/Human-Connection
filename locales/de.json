@@ -1,4 +1,11 @@
 {
+  "login": {
+    "copy": "Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.",
+    "login": "Einloggen",
+    "email": "Deine E-Mail",
+    "password": "Dein Password",
+    "moreInfo": "Was ist Human Connection?"
+  },
   "settings": {
     "name": "Einstellungen",
     "data": {
@@ -70,6 +77,12 @@
     },
     "takeAction": {
       "name": "Aktiv werde"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Viele kleine Leute, an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
+      "author": "Afrikanisches Sprichwort"
     }
   }
 }

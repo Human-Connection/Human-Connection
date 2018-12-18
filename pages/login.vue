@@ -2,19 +2,17 @@
   <ds-container width="small">
     <ds-space margin="small">
       <blockquote>
-        <p>
-          Viele kleine Leute, an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.
-        </p>
-        <b>- Afrikanisches Sprichwort</b>
+        <p>{{ $t('quotes.african.quote') }}</p>
+        <b>- {{ $t('quotes.african.author') }}</b>
       </blockquote>
     </ds-space>
-    <ds-card>
+    <ds-card class="login-card">
       <ds-flex gutter="small">
         <ds-flex-item
           :width="{ base: '100%', sm: '50%' }"
           center
         >
-          <locale-switch />
+          <locale-switch class="login-locale-switch" />
           <ds-space
             margin-top="small"
             margin-bottom="xxx-small"
@@ -33,7 +31,7 @@
         >
           <ds-space margin="small">
             <ds-text size="small">
-              Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.
+              {{ $t('login.copy') }}
             </ds-text>
           </ds-space>
           <form
@@ -43,7 +41,7 @@
             <ds-input
               v-model="form.email"
               :disabled="pending"
-              placeholder="Deine E-Mail"
+              :placeholder="$t('login.email')"
               type="email"
               name="email"
               icon="envelope"
@@ -51,7 +49,7 @@
             <ds-input
               v-model="form.password"
               :disabled="pending"
-              placeholder="Dein Password"
+              :placeholder="$t('login.password')"
               icon="lock"
               icon-right="question-circle"
               name="password"
@@ -64,7 +62,7 @@
               name="submit"
               type="submit"
             >
-              Anmelden
+              {{ $t('login.login') }}
             </ds-button>
             <ds-space margin="x-small">
               <a
@@ -72,7 +70,7 @@
                 title="zur Präsentationsseite"
                 target="_blank"
               >
-                Was ist Human Connection?
+                {{ $t('login.moreInfo') }}
               </a>
             </ds-space>
           </form>
@@ -128,5 +126,13 @@ export default {
 .login-image {
   width: 90%;
   max-width: 200px;
+}
+.login-card {
+  position: relative;
+}
+.login-locale-switch {
+  position: absolute;
+  top: 1em;
+  left: 1em;
 }
 </style>
