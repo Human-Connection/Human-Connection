@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { enUS, de, nl, fr, es, pt } from 'date-fns/locale'
+import { enUS, de, nl, fr, es, pt, pl } from 'date-fns/locale'
 import format from 'date-fns/format'
 import formatRelative from 'date-fns/formatRelative'
 import addSeconds from 'date-fns/addSeconds'
@@ -13,25 +13,31 @@ export default ({ app }) => {
     nl: nl,
     fr: fr,
     es: es,
-    pt: pt
+    pt: pt,
+    pl: pl
+  }
+  const getLocalizedFormat = () => {
+    let locale = app.$i18n.locale()
+    locale = locales[locale] ? locale : 'en'
+    return locales[locale]
   }
   app.$filters = Object.assign(app.$filters || {}, {
     date: (value, fmt = 'dd. MMM yyyy') => {
       if (!value) return ''
       return format(new Date(value), fmt, {
-        locale: locales[app.$i18n.locale()]
+        locale: getLocalizedFormat()
       })
     },
     dateTime: (value, fmt = 'dd. MMM yyyy HH:mm') => {
       if (!value) return ''
       return format(new Date(value), fmt, {
-        locale: locales[app.$i18n.locale()]
+        locale: getLocalizedFormat()
       })
     },
     relativeDateTime: value => {
       if (!value) return ''
       return formatRelative(new Date(value), new Date(), {
-        locale: locales[app.$i18n.locale()]
+        locale: getLocalizedFormat()
       })
     },
     number: (

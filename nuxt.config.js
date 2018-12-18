@@ -26,7 +26,9 @@ module.exports = {
       'pages-slug'
     ],
     // pages to keep alive
-    keepAlivePages: ['index']
+    keepAlivePages: ['index'],
+    // active locales
+    locales: ['en', 'de', 'nl', 'fr', 'es', 'pt', 'it', 'pl']
   },
   /*
   ** Headers of the page
