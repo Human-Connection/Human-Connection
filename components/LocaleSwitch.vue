@@ -10,7 +10,7 @@
       <img
         alt="English"
         title="English"
-        src="/img/locale-flags/en.svg"
+        :src="`/img/locale-flags/${$i18n.locale()}.svg`"
         height="26"
       />
     </a>
@@ -22,7 +22,7 @@
       <img
         alt="Deutsch"
         title="Deutsch"
-        src="/img/locale-flags/de.svg"
+        :src="`/img/locale-flags/${$i18n.locale()}.svg`"
         height="26"
       />
     </a>

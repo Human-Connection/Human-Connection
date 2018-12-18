@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { enUS, de } from 'date-fns/locale'
+import { enUS, de, nl, fr, es, pt } from 'date-fns/locale'
 import format from 'date-fns/format'
 import formatRelative from 'date-fns/formatRelative'
 import addSeconds from 'date-fns/addSeconds'
@@ -9,7 +9,11 @@ import accounting from 'accounting'
 export default ({ app }) => {
   const locales = {
     en: enUS,
-    de: de
+    de: de,
+    nl: nl,
+    fr: fr,
+    es: es,
+    pt: pt
   }
   app.$filters = Object.assign(app.$filters || {}, {
     date: (value, fmt = 'dd. MMM yyyy') => {

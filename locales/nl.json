@@ -1,0 +1,56 @@
+{
+  "login": {
+    "copy": "Als u al een mini-aansluiting account heeft, log dan hier in.",
+    "login": "Inloggen",
+    "logout": "Uitloggen",
+    "email": "Uw E-mail",
+    "password": "Uw Wachtwoord",
+    "moreInfo": "Wat is Human Connection?",
+    "hello": "Hallo"
+  },
+  "profile": {
+    "follow": "Volgen",
+    "followers": "Volgelingen",
+    "following": "Volgt"
+  },
+  "settings": {
+    "delete": {
+      "name": "Account verwijderen"
+    },
+    "organizations": {
+      "name": "Mijn Organisaties"
+    },
+    "languages": {
+      "name": "Talen"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "name": "Dashboard",
+      "notifications": "Meldingen",
+      "organizations": "Organisaties",
+      "projects": "Projecten"
+    },
+    "organizations": {
+      "name": "Organisaties"
+    },
+    "notifications": {
+      "name": "Meldingen"
+    },
+    "categories": {
+      "name": "Categorieën",
+      "categoryName": "Naam"
+    },
+    "tags": {
+      "tagCount": "Berichten"
+    },
+    "settings": {
+      "name": "Instellingen"
+    }
+  },
+  "quotes": {
+    "african": {
+      "author": "Afrikaans spreekwoord"
+    }
+  }
+}

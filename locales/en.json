@@ -1,6 +1,6 @@
 {
   "login": {
-    "copy": "If you already have an human-connection account, login here.",
+    "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
     "logout": "Logout",
     "email": "Your Email",
@@ -48,7 +48,7 @@
       "comments": "Comments",
       "notifications": "Notifications",
       "organizations": "Organizations",
-      "projects": "Projekte",
+      "projects": "Projects",
       "invites": "Invites",
       "follows": "Follows",
       "shouts": "Shouts"

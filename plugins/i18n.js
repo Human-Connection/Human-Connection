@@ -62,7 +62,7 @@ export default ({ app, req, cookie, store }) => {
     }
   }
 
-  const availableLocales = ['de', 'en']
+  const availableLocales = ['de', 'en', 'nl', 'fr', 'pt', 'es']
   const locale = availableLocales.indexOf(userLocale) >= 0 ? userLocale : 'en'
 
   if (locale !== 'en') {
