@@ -30,7 +30,7 @@
               color="soft"
               size="small"
             >
-              Mitglied seit {{ user.createdAt | date('MMMM yyyy') }}
+              {{ $t('profile.memberSince') }} {{ user.createdAt | date('MMMM yyyy') }}
             </ds-text>
           </ds-space>
           <ds-space
@@ -44,7 +44,7 @@
           <ds-flex>
             <ds-flex-item>
               <no-ssr>
-                <ds-number label="Folgen">
+                <ds-number :label="$t('profile.following')">
                   <hc-count-to
                     slot="count"
                     :end-val="followedByCount"
@@ -54,7 +54,7 @@
             </ds-flex-item>
             <ds-flex-item>
               <no-ssr>
-                <ds-number label="Folgt">
+                <ds-number :label="$t('profile.followers')">
                   <hc-count-to
                     slot="count"
                     :end-val="Number(user.followingCount) || 0"
