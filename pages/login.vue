@@ -120,6 +120,8 @@ export default {
   },
   mounted() {
     setTimeout(() => {
+      // NOTE: quick fix for jumping flexbox implementation
+      // will be fixed in a future update of the styleguide
       this.ready = true
     }, 50)
   },
