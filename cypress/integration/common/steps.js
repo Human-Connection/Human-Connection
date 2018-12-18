@@ -70,9 +70,7 @@ Then('I can see my name {string} in the dropdown menu', () => {
 
 Then('I see the login screen again', () => {
   cy.location('pathname').should('contain', '/login')
-  cy.contains(
-    'Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.'
-  )
+  cy.contains('If you already have a human-connection account, login here.')
 })
 
 Then('I am still logged in', () => {
@@ -95,7 +93,7 @@ Then(`There should be a locale cooke set to de`, () => {
 
 When('I navigate to the administration dashboard', () => {
   cy.get('.avatar-menu').click()
-  cy.get('a').contains('Systemverwaltung').click()
+  cy.get('a').contains('Admin').click()
 })
 
 When(`I click on {string}`, (linkOrButton) => {
