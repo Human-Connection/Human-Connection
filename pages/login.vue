@@ -14,6 +14,7 @@
           :width="{ base: '100%', sm: '50%' }"
           center
         >
+          <locale-switch />
           <ds-space
             margin-top="small"
             margin-bottom="xxx-small"
@@ -82,9 +83,14 @@
 </template>
 
 <script>
+import LocaleSwitch from '~/components/LocaleSwitch'
+
 import gql from 'graphql-tag'
 
 export default {
+  components: {
+    LocaleSwitch
+  },
   layout: 'blank',
   data() {
     return {

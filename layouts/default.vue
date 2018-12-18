@@ -8,7 +8,7 @@
         >
           <ds-logo />
         </a>
-        <language-switch class="topbar-language-switch" />
+        <locale-switch class="topbar-locale-switch" />
         <template v-if="isLoggedIn">
           <no-ssr>
             <v-popover
@@ -62,14 +62,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import LanguageSwitch from '~/components/LanguageSwitch'
+import LocaleSwitch from '~/components/LocaleSwitch'
 
 let mouseEnterTimer = null
 let mouseLeaveTimer = null
 
 export default {
   components: {
-    LanguageSwitch
+    LocaleSwitch
   },
   data() {
     return {
@@ -136,7 +136,7 @@ export default {
 </script>
 
 <style lang="scss">
-.topbar-language-switch {
+.topbar-locale-switch {
   display: inline-block;
   top: -16px;
   position: relative;
