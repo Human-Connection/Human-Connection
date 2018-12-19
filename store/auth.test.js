@@ -114,10 +114,12 @@ describe('actions', () => {
     })
 
     describe('given invalid credentials and incorrect password response', () => {
+      let onLogin
+      let mutate
+
       beforeEach(() => {
-        const response = Object.assign({}, incorrectPasswordResponse)
-        const mutate = jest.fn(() => Promise.resolve(response))
-        const onLogin = jest.fn(() => Promise.resolve())
+        mutate = jest.fn(() => Promise.reject('This error is expected.'))
+        onLogin = jest.fn(() => Promise.resolve())
         const module = {
           app: {
             apolloProvider: { defaultClient: { mutate } },
@@ -131,22 +133,18 @@ describe('actions', () => {
         action = null
       })
 
-      xit('shows a user friendly error message', async () => {
-        await action(
-          { commit },
-          { email: 'user@example.org', password: 'wrong' }
-        )
+      it('populates error messages', async () => {
+        expect(action({ commit }, { email: 'user@example.org', password: 'wrong' }))
+          .rejects
+          .toThrowError('This error is expected.')
+        expect(mutate).toHaveBeenCalled()
+        expect(onLogin).not.toHaveBeenCalled()
       })
 
       it('saves pending flags in order', async () => {
         try {
-          await action(
-            { commit },
-            { email: 'user@example.org', password: 'wrong' }
-          )
-        } catch (err) {
-          console.log(err)
-        }
+          await action({ commit }, { email: 'user@example.org', password: 'wrong' })
+        } catch(err) {} // ignore
         expect(commit.mock.calls).toEqual(
           expect.arrayContaining([
             ['SET_PENDING', true],
