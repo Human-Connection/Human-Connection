@@ -1,5 +1,5 @@
 Feature: Internationalization
-  As a user
+  As a user who is not very fluent in English
   I would like to see the user interface translated to my preferred language
   In order to be able to understand the interface
 
