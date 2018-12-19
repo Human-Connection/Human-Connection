@@ -19,7 +19,9 @@
             :width="{ base: '100%', sm: '50%' }"
             center
           >
-            <locale-switch class="login-locale-switch" />
+            <no-ssr>
+              <locale-switch class="login-locale-switch" />
+            </no-ssr>
             <ds-space
               margin-top="small"
               margin-bottom="xxx-small"

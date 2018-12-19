@@ -8,7 +8,13 @@
         >
           <ds-logo />
         </a>
-        <locale-switch class="topbar-locale-switch" />
+        <no-ssr>
+          <locale-switch
+            class="topbar-locale-switch"
+            placement="bottom"
+            offset="24"
+          />
+        </no-ssr>
         <template v-if="isLoggedIn">
           <no-ssr>
             <dropdown class="avatar-menu">
@@ -30,28 +36,29 @@
               </template>
               <template
                 slot="popover"
-                class="avatar-menu-popover"
+                slot-scope="{toggleMenu}"
               >
-                {{ $t('login.hello') }} <b>{{ user.name }}</b>
-                <ds-menu
-                  :routes="routes"
-                  :is-exact="isExact"
-                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;"
-                >
-                  <ds-menu-item
-                    slot="Navigation"
-                    slot-scope="item"
-                    :route="item.route"
-                    :parents="item.parents"
-                    @click.native="toggleMenu"
+                <div class="avatar-menu-popover">
+                  {{ $t('login.hello') }} <b>{{ user.name }}</b>
+                  <ds-menu
+                    :routes="routes"
+                    :is-exact="isExact"
                   >
-                    <ds-icon :name="item.route.icon" /> {{ item.route.name }}
-                  </ds-menu-item>
-                </ds-menu>
-                <ds-space margin="xx-small" />
-                <nuxt-link :to="{ name: 'logout'}">
-                  <ds-icon name="sign-out" /> {{ $t('login.logout') }}
-                </nuxt-link>
+                    <ds-menu-item
+                      slot="Navigation"
+                      slot-scope="item"
+                      :route="item.route"
+                      :parents="item.parents"
+                      @click.native="toggleMenu"
+                    >
+                      <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+                    </ds-menu-item>
+                  </ds-menu>
+                  <ds-space margin="xx-small" />
+                  <nuxt-link :to="{ name: 'logout'}">
+                    <ds-icon name="sign-out" /> {{ $t('login.logout') }}
+                  </nuxt-link>
+                </div>
               </template>
             </dropdown>
           </no-ssr>
@@ -125,9 +132,16 @@ export default {
 .avatar-menu {
   float: right;
 }
-.avatar-popup-menu {
+.avatar-menu-popover {
   display: inline-block;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+
+  nav {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 }
 </style>

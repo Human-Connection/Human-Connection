@@ -1,7 +1,8 @@
 <template>
   <dropdown
     ref="menu"
-    placement="right-start"
+    :placement="placement"
+    :offset="offset"
   >
     <template
       slot="default"
@@ -54,6 +55,10 @@ import find from 'lodash/find'
 export default {
   components: {
     Dropdown
+  },
+  props: {
+    placement: { type: String, default: 'right-start' },
+    offset: { type: [String, Number], default: '16' }
   },
   computed: {
     current() {

@@ -4,7 +4,7 @@
     :open-group="Math.random().toString()"
     :placement="placement"
     trigger="manual"
-    offset="10"
+    :offset="offset"
   >
     <slot :toggleMenu="toggleMenu" />
     <div
@@ -12,7 +12,10 @@
       @mouseover="popoverMouseEnter"
       @mouseleave="popoveMouseLeave"
     >
-      <slot name="popover" />
+      <slot
+        name="popover"
+        :toggleMenu="toggleMenu"
+      />
     </div>
   </v-popover>
 </template>
@@ -25,7 +28,8 @@ let mouseLeaveTimer = null
 
 export default {
   props: {
-    placement: { type: String, default: 'bottom-end' }
+    placement: { type: String, default: 'bottom-end' },
+    offset: { type: [String, Number], default: '16' }
   },
   data() {
     return {
