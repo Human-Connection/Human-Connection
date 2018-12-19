@@ -22,6 +22,19 @@ const logout = () => {
   cy.location('pathname').should('contain', '/login') // we're out
 }
 
+const lastColumnIsSortedInDescendingOrder = () => {
+  cy.get('tbody')
+    .find('tr td:last-child')
+    .then(last_column => {
+      cy.wrap(last_column)
+      const values = last_column
+        .map((i, td) => parseInt(td.textContent))
+        .toArray()
+      const ordered_descending = values.slice(0).sort((a, b) => b - a)
+      return cy.wrap(values).should('deep.eq', ordered_descending)
+    })
+}
+
 Given('I am logged in', () => {
   login('admin@example.org', 1234)
 })
@@ -96,17 +109,7 @@ Then('I can see a list of categories ordered by post count:', table => {
   cy.get('thead')
     .find('tr th')
     .should('have.length', 3)
-  const last_column = cy
-    .get('tbody')
-    .find('tr td:last-child')
-    .then(last_column => {
-      cy.wrap(last_column)
-      const values = last_column
-        .map((i, td) => parseInt(td.textContent))
-        .toArray()
-      const ordered_descending = values.slice(0).sort((a, b) => b - a)
-      return cy.wrap(values).should('deep.eq', ordered_descending)
-    })
+  lastColumnIsSortedInDescendingOrder()
 })
 
 Then('I can see a list of tags ordered by user and post count:', table => {
@@ -114,15 +117,5 @@ Then('I can see a list of tags ordered by user and post count:', table => {
   cy.get('thead')
     .find('tr th')
     .should('have.length', 4)
-  const last_column = cy
-    .get('tbody')
-    .find('tr td:last-child')
-    .then(last_column => {
-      cy.wrap(last_column)
-      const values = last_column
-        .map((i, td) => parseInt(td.textContent))
-        .toArray()
-      const ordered_descending = values.slice(0).sort((a, b) => b - a)
-      return cy.wrap(values).should('deep.eq', ordered_descending)
-    })
+  lastColumnIsSortedInDescendingOrder()
 })
