@@ -34,18 +34,21 @@
                 class="avatar-menu-popover"
                 style="padding-top: .5rem; padding-bottom: .5rem;"
                 @mouseover="popoverMouseEnter"
-                @mouseleave="popoveMouseLeave">
+                @mouseleave="popoveMouseLeave"
+              >
                 Hallo <b>{{ user.name }}</b>
                 <ds-menu
                   :routes="routes"
                   :is-exact="isExact"
-                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;">
+                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;"
+                >
                   <ds-menu-item
                     slot="Navigation"
                     slot-scope="item"
                     :route="item.route"
                     :parents="item.parents"
-                    @click.native="toggleMenu">
+                    @click.native="toggleMenu"
+                  >
                     <ds-icon :name="item.route.icon" /> {{ item.route.name }}
                   </ds-menu-item>
                 </ds-menu>

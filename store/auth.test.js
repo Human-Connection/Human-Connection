@@ -3,17 +3,18 @@ import { getters, mutations, actions } from './auth.js'
 let state
 let commit
 
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InUzIiwic2x1ZyI6Implbm55LXJvc3RvY2siLCJuYW1lIjoiSmVubnkgUm9zdG9jayIsImF2YXRhciI6Imh0dHBzOi8vczMuYW1hem9uYXdzLmNvbS91aWZhY2VzL2ZhY2VzL3R3aXR0ZXIvbXV0dV9rcmlzaC8xMjguanBnIiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUub3JnIiwicm9sZSI6InVzZXIiLCJpYXQiOjE1NDUxNDQ2ODgsImV4cCI6MTYzMTU0NDY4OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwIiwic3ViIjoidTMifQ.s5_JeQN9TaUPfymAXPOpbMAwhmTIg9cnOvNEcj4z75k"
+const token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InUzIiwic2x1ZyI6Implbm55LXJvc3RvY2siLCJuYW1lIjoiSmVubnkgUm9zdG9jayIsImF2YXRhciI6Imh0dHBzOi8vczMuYW1hem9uYXdzLmNvbS91aWZhY2VzL2ZhY2VzL3R3aXR0ZXIvbXV0dV9rcmlzaC8xMjguanBnIiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUub3JnIiwicm9sZSI6InVzZXIiLCJpYXQiOjE1NDUxNDQ2ODgsImV4cCI6MTYzMTU0NDY4OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwIiwic3ViIjoidTMifQ.s5_JeQN9TaUPfymAXPOpbMAwhmTIg9cnOvNEcj4z75k'
 const successfulLoginResponse = {
   data: {
     login: {
-      id: "u3",
-      name: "Jenny Rostock",
-      slug: "jenny-rostock",
-      email: "user@example.org",
-      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg",
-      role: "user",
+      id: 'u3',
+      name: 'Jenny Rostock',
+      slug: 'jenny-rostock',
+      email: 'user@example.org',
+      avatar:
+        'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
+      role: 'user',
       token
     }
   }
@@ -24,16 +25,14 @@ const incorrectPasswordResponse = {
   },
   errors: [
     {
-      message: "Incorrect password.",
+      message: 'Incorrect password.',
       locations: [
         {
-          "line": 2,
-          "column": 3
+          line: 2,
+          column: 3
         }
       ],
-      path: [
-        "login"
-      ]
+      path: ['login']
     }
   ]
 }
@@ -69,7 +68,10 @@ describe('actions', () => {
           }
         }
         action = actions.login.bind(module)
-        await action({commit}, {email: 'user@example.org', password: '1234'})
+        await action(
+          { commit },
+          { email: 'user@example.org', password: '1234' }
+        )
       })
 
       afterEach(() => {
@@ -84,14 +86,20 @@ describe('actions', () => {
 
       it('saves user data without token', () => {
         expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([['SET_USER', {
-            id: "u3",
-            name: "Jenny Rostock",
-            slug: "jenny-rostock",
-            email: "user@example.org",
-            avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg",
-            role: "user"
-          }]])
+          expect.arrayContaining([
+            [
+              'SET_USER',
+              {
+                id: 'u3',
+                name: 'Jenny Rostock',
+                slug: 'jenny-rostock',
+                email: 'user@example.org',
+                avatar:
+                  'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
+                role: 'user'
+              }
+            ]
+          ])
         )
       })
 
@@ -124,13 +132,19 @@ describe('actions', () => {
       })
 
       xit('shows a user friendly error message', async () => {
-        await action({commit}, {email: 'user@example.org', password: 'wrong'})
+        await action(
+          { commit },
+          { email: 'user@example.org', password: 'wrong' }
+        )
       })
 
       it('saves pending flags in order', async () => {
         try {
-          await action({commit}, {email: 'user@example.org', password: 'wrong'})
-        } catch(err) {
+          await action(
+            { commit },
+            { email: 'user@example.org', password: 'wrong' }
+          )
+        } catch (err) {
           console.log(err)
         }
         expect(commit.mock.calls).toEqual(
