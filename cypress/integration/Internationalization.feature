@@ -1,6 +1,6 @@
 Feature: Internationalization
   As a user
-  I want users to get the site in my native language
+  I would like to see the user interface translated to my preferred language
   In order to be able to understand the interface
 
   Scenario: See english loginpage
