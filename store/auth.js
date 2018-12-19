@@ -78,10 +78,8 @@ export const actions = {
     return getters.isLoggedIn
   },
   async login({ commit }, { email, password }) {
+    commit('SET_PENDING', true)
     try {
-      commit('SET_PENDING', true)
-      commit('SET_USER', null)
-      commit('SET_TOKEN', null)
       const res = await this.app.apolloProvider.defaultClient
         .mutate({
           mutation: gql(`
@@ -101,23 +99,15 @@ export const actions = {
         })
         .then(({ data }) => data && data.login)
 
-      if (res && res.token) {
-        await this.app.$apolloHelpers.onLogin(res.token)
-        commit('SET_TOKEN', res.token)
-        const userData = Object.assign({}, res)
-        delete userData.token
-        commit('SET_USER', userData)
-        commit('SET_PENDING', false)
-        return true
-      } else {
-        commit('SET_PENDING', false)
-        throw new Error('THERE IS AN ERROR')
-      }
+      await this.app.$apolloHelpers.onLogin(res.token)
+      commit('SET_TOKEN', res.token)
+      const userData = Object.assign({}, res)
+      delete userData.token
+      commit('SET_USER', userData)
     } catch (err) {
-      commit('SET_USER', null)
-      commit('SET_TOKEN', null)
-      commit('SET_PENDING', false)
       throw new Error(err)
+    } finally {
+      commit('SET_PENDING', false)
     }
   },
   async logout({ commit }) {
