@@ -28,7 +28,10 @@
         >
           <a
             href="#"
-            :class="[ current.code === locale.code && 'active' ]"
+            :class="[
+              locale.code,
+              current.code === locale.code && 'active'
+            ]"
             @click.prevent="changeLanguage(locale.code)"
           >
             <img

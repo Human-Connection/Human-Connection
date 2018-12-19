@@ -5,12 +5,12 @@ Feature: Internationalization
 
   Scenario: See english loginpage
     When I visit the "/login" page
-    Then I can see the english language flag
+    Then I can see the english is selected
 
   Scenario: See german loginpage
     When I visit the "/login" page
-    And I click on the locale switch
-    Then I can see the german language flag
+    And I select german
+    Then I can see the german is selected
     Then There should be a locale cooke set to de
     When I refresh the page
-    Then I can see the german language flag
+    Then I can see the german is selected

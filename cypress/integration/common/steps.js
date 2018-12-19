@@ -54,7 +54,7 @@ When('I refresh the page', () => {
 
 When('I log out through the menu in the top right corner', () => {
   cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover')
+  cy.get('.locale-menu-popover')
     .find('a')
     .contains('Logout')
     .click()
@@ -78,14 +78,19 @@ Then('I am still logged in', () => {
   cy.get('.avatar-menu-popover').contains(username)
 })
 
-When('I can see the english language flag', () => {
-  cy.get('.login-locale-switch img[src$="en.svg"]')
+When('I can see the english is selected', () => {
+  cy.get('.login-locale-switch img[alt="English"]')
 })
-When('I can see the german language flag', () => {
-  cy.get('.login-locale-switch img[src$="de.svg"]')
+When('I can see the german is selected', () => {
+  cy.get('.login-locale-switch img[alt="Deutsch"]')
 })
-When('I click on the locale switch', () => {
-  cy.get('.login-locale-switch a').click().wait(500)
+When('I select german', () => {
+  cy.get('.login-locale-switch a')
+    .click()
+    .wait(50)
+  cy.get('.locale-menu-popover a.de')
+    .click()
+    .wait(500)
 })
 Then(`There should be a locale cooke set to de`, () => {
   cy.getCookie('locale').should('have.property', 'value', 'de')
