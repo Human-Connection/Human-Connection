@@ -54,7 +54,7 @@ When('I refresh the page', () => {
 
 When('I log out through the menu in the top right corner', () => {
   cy.get('.avatar-menu').click()
-  cy.get('.locale-menu-popover')
+  cy.get('.avatar-menu-popover')
     .find('a')
     .contains('Logout')
     .click()
@@ -62,6 +62,7 @@ When('I log out through the menu in the top right corner', () => {
 
 Then('I can click on my profile picture in the top right corner', () => {
   cy.get('.avatar-menu').click()
+  cy.get('.avatar-menu-popover')
 })
 
 Then('I can see my name {string} in the dropdown menu', () => {
@@ -97,8 +98,12 @@ Then(`There should be a locale cooke set to de`, () => {
 })
 
 When('I navigate to the administration dashboard', () => {
-  cy.get('.avatar-menu').click()
-  cy.get('a').contains('Admin').click()
+  cy.get('.avatar-menu')
+    .click()
+    .wait(50)
+  cy.get('.avatar-menu-popover')
+    .contains('Admin')
+    .click()
 })
 
 When(`I click on {string}`, (linkOrButton) => {
