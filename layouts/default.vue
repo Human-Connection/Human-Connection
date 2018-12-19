@@ -11,13 +11,13 @@
         <locale-switch class="topbar-locale-switch" />
         <template v-if="isLoggedIn">
           <no-ssr>
-            <dropdown>
+            <dropdown class="avatar-menu">
               <template
                 slot="default"
                 slot-scope="{toggleMenu}"
               >
                 <a
-                  class="avatar-menu"
+                  class="avatar-menu-trigger"
                   :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
                   @click.prevent="toggleMenu()"
                 >
@@ -121,5 +121,13 @@ export default {
   display: inline-block;
   top: -16px;
   position: relative;
+}
+.avatar-menu {
+  float: right;
+}
+.avatar-popup-menu {
+  display: inline-block;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 </style>

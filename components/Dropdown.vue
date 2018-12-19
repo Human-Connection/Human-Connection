@@ -5,12 +5,10 @@
     :placement="placement"
     trigger="manual"
     offset="10"
-    style="float: right"
   >
     <slot :toggleMenu="toggleMenu" />
     <div
       slot="popover"
-      style="padding-top: .5rem; padding-bottom: .5rem;"
       @mouseover="popoverMouseEnter"
       @mouseleave="popoveMouseLeave"
     >
