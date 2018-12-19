@@ -98,9 +98,7 @@ Then(`There should be a locale cooke set to de`, () => {
 })
 
 When('I navigate to the administration dashboard', () => {
-  cy.get('.avatar-menu')
-    .click()
-    .wait(50)
+  cy.get('.avatar-menu').click()
   cy.get('.avatar-menu-popover')
     .contains('Admin')
     .click()
