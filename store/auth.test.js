@@ -134,17 +134,20 @@ describe('actions', () => {
       })
 
       it('populates error messages', async () => {
-        expect(action({ commit }, { email: 'user@example.org', password: 'wrong' }))
-          .rejects
-          .toThrowError('This error is expected.')
+        expect(
+          action({ commit }, { email: 'user@example.org', password: 'wrong' })
+        ).rejects.toThrowError('This error is expected.')
         expect(mutate).toHaveBeenCalled()
         expect(onLogin).not.toHaveBeenCalled()
       })
 
       it('saves pending flags in order', async () => {
         try {
-          await action({ commit }, { email: 'user@example.org', password: 'wrong' })
-        } catch(err) {} // ignore
+          await action(
+            { commit },
+            { email: 'user@example.org', password: 'wrong' }
+          )
+        } catch (err) {} // ignore
         expect(commit.mock.calls).toEqual(
           expect.arrayContaining([
             ['SET_PENDING', true],
