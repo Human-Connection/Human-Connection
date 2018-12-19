@@ -104,8 +104,9 @@ export const actions = {
       if (res && res.token) {
         await this.app.$apolloHelpers.onLogin(res.token)
         commit('SET_TOKEN', res.token)
-        delete res.token
-        commit('SET_USER', res)
+        const userData = Object.assign({}, res)
+        delete userData.token
+        commit('SET_USER', userData)
         commit('SET_PENDING', false)
         return true
       } else {
