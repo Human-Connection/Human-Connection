@@ -72,6 +72,7 @@
     "eslint-plugin-node": "~8.0.0",
     "eslint-plugin-promise": "~4.0.1",
     "eslint-plugin-standard": "~4.0.0",
+    "graphql-request": "^1.8.2",
     "jest": "^23.6.0",
     "nodemon": "~1.18.9",
     "nyc": "^13.1.0",
