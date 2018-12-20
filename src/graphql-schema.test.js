@@ -1,3 +1,8 @@
+import  request from "supertest"
+import  server from './server'
+
+
+
 describe('login', () => {
   describe('asking for a `token`', () => {
     describe('with valid email/password combination', () => {
@@ -12,7 +17,12 @@ describe('login', () => {
     })
 
     describe('with a non-existing email', () => {
-      xit('responds with "Wrong email/password combination"', () => {})
+
+      it('responds with "Wrong email/password combination"', async () => {
+        const app = (await server).createHttpServer({});
+        
+        request(app).post('/graphql').send({}).expect(400)
+      })
     })
   })
 })

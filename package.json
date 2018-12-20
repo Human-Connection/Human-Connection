@@ -74,6 +74,7 @@
     "eslint-plugin-standard": "~4.0.0",
     "jest": "^23.6.0",
     "nodemon": "~1.18.9",
-    "nyc": "^13.1.0"
+    "nyc": "^13.1.0",
+    "supertest": "^3.3.0"
   }
 }
