@@ -2728,6 +2728,11 @@ eslint-plugin-import@~2.14.0:
     read-pkg-up "^2.0.0"
     resolve "^1.6.0"
 
+eslint-plugin-jest@^22.1.2:
+  version "22.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-22.1.2.tgz#1ea36cc3faedbdb788e702ca633d635ca14e91e8"
+  integrity sha512-jSPT4rVmNetkeCIyrvvOM0wJtgoUSbKHIUDoOGzIISsg51eWN/nISPNKVM+jXMMDI9oowbyapOnpKSXlsLiDpQ==
+
 eslint-plugin-node@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-node/-/eslint-plugin-node-8.0.0.tgz#fb9e8911f4543514f154bb6a5924b599aa645568"
@@ -2776,7 +2781,7 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint@~5.10.0:
+eslint@^5.10.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.10.0.tgz#24adcbe92bf5eb1fc2d2f2b1eebe0c5e0713903a"
   integrity sha512-HpqzC+BHULKlnPwWae9MaVZ5AXJKpkxCVXQHrFaRw3hbDj26V/9ArYM4Rr/SQ8pi6qUPLXSSXC4RBJlyq2Z2OQ==
