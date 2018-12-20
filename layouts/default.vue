@@ -8,61 +8,63 @@
         >
           <ds-logo />
         </a>
-        <no-ssr>
-          <locale-switch
-            class="topbar-locale-switch"
-            placement="bottom"
-            offset="24"
-          />
-        </no-ssr>
-        <template v-if="isLoggedIn">
+        <div style="float: right">
           <no-ssr>
-            <dropdown class="avatar-menu">
-              <template
-                slot="default"
-                slot-scope="{toggleMenu}"
-              >
-                <a
-                  class="avatar-menu-trigger"
-                  :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
-                  @click.prevent="toggleMenu()"
-                >
-                  <ds-avatar
-                    :image="user.avatar"
-                    :name="user.name"
-                    size="42"
-                  />
-                </a>
-              </template>
-              <template
-                slot="popover"
-                slot-scope="{toggleMenu}"
-              >
-                <div class="avatar-menu-popover">
-                  {{ $t('login.hello') }} <b>{{ user.name }}</b>
-                  <ds-menu
-                    :routes="routes"
-                    :is-exact="isExact"
-                  >
-                    <ds-menu-item
-                      slot="Navigation"
-                      slot-scope="item"
-                      :route="item.route"
-                      :parents="item.parents"
-                      @click.native="toggleMenu"
-                    >
-                      <ds-icon :name="item.route.icon" /> {{ item.route.name }}
-                    </ds-menu-item>
-                  </ds-menu>
-                  <ds-space margin="xx-small" />
-                  <nuxt-link :to="{ name: 'logout'}">
-                    <ds-icon name="sign-out" /> {{ $t('login.logout') }}
-                  </nuxt-link>
-                </div>
-              </template>
-            </dropdown>
+            <locale-switch
+              class="topbar-locale-switch"
+              placement="bottom"
+              offset="24"
+            />
           </no-ssr>
-        </template>
+          <template v-if="isLoggedIn">
+            <no-ssr>
+              <dropdown class="avatar-menu">
+                <template
+                  slot="default"
+                  slot-scope="{toggleMenu}"
+                >
+                  <a
+                    class="avatar-menu-trigger"
+                    :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
+                    @click.prevent="toggleMenu()"
+                  >
+                    <ds-avatar
+                      :image="user.avatar"
+                      :name="user.name"
+                      size="42"
+                    />
+                  </a>
+                </template>
+                <template
+                  slot="popover"
+                  slot-scope="{toggleMenu}"
+                >
+                  <div class="avatar-menu-popover">
+                    {{ $t('login.hello') }} <b>{{ user.name }}</b>
+                    <ds-menu
+                      :routes="routes"
+                      :is-exact="isExact"
+                    >
+                      <ds-menu-item
+                        slot="Navigation"
+                        slot-scope="item"
+                        :route="item.route"
+                        :parents="item.parents"
+                        @click.native="toggleMenu"
+                      >
+                        <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+                      </ds-menu-item>
+                    </ds-menu>
+                    <ds-space margin="xx-small" />
+                    <nuxt-link :to="{ name: 'logout'}">
+                      <ds-icon name="sign-out" /> {{ $t('login.logout') }}
+                    </nuxt-link>
+                  </div>
+                </template>
+              </dropdown>
+            </no-ssr>
+          </template>
+        </div>
       </ds-container>
     </div>
     <ds-container>
@@ -126,7 +128,8 @@ export default {
 <style lang="scss">
 .topbar-locale-switch {
   display: inline-block;
-  top: -16px;
+  top: 8px;
+  right: 10px;
   position: relative;
 }
 .avatar-menu {
