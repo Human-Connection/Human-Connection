@@ -5,6 +5,14 @@ const baseUrl = 'http://localhost:3000'
 const username = 'Peter Lustig'
 
 const locales = require('../../../locales')
+// TODO: use the native locale files
+const localeStrings = {
+  login: {
+    English: 'Login',
+    Deutsch: 'Einloggen',
+    Français: 'Connexion'
+  }
+}
 
 const login = (email, password) => {
   cy.visit(`${baseUrl}/login`)
@@ -91,7 +99,6 @@ Then('I am still logged in', () => {
 When('I select {string} in the language menu', name => {
   cy.get('.login-locale-switch a')
     .click()
-    .wait(50)
   const code = find(locales, ['name', name]).code
   cy.get(`.locale-menu-popover a.${code}`)
     .click()
@@ -100,6 +107,7 @@ When('I select {string} in the language menu', name => {
 Then('The whole user interface appears in {string}', name => {
   const code = find(locales, ['name', name]).code
   cy.getCookie('locale').should('have.property', 'value', code)
+  cy.contains(localeStrings.login[name])
 })
 
 When('I navigate to the administration dashboard', () => {

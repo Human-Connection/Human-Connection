@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     current() {
-      console.log('locales', this.locales)
+      console.log('current', this.$i18n.locale())
       return find(this.locales, ['code', this.$i18n.locale()])
     }
   },

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import vuexI18n from 'vuex-i18n/dist/vuex-i18n.umd.js'
-import { debounce, isEmpty } from 'lodash'
+import { debounce, isEmpty, find } from 'lodash'
 
 /**
  * TODO: Refactor and simplify browser detection
@@ -63,7 +63,9 @@ export default ({ app, req, cookie, store }) => {
   }
 
   const availableLocales = process.env.locales.filter(lang => !!lang.enabled)
-  const locale = availableLocales.indexOf(userLocale) >= 0 ? userLocale : 'en'
+  const locale = find(availableLocales, ['code', userLocale])
+    ? userLocale
+    : 'en'
 
   if (locale !== 'en') {
     Vue.i18n.add(locale, require(`~/locales/${locale}.json`))
