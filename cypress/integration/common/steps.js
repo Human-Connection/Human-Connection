@@ -1,7 +1,10 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
+import find from 'lodash/find'
 
 const baseUrl = 'http://localhost:3000'
 const username = 'Peter Lustig'
+
+const locales = require('../../../locales')
 
 const login = (email, password) => {
   cy.visit(`${baseUrl}/login`)
@@ -40,8 +43,14 @@ Given('my user account has the role {string}', (role) => {
 
 When('I log out', logout)
 
-When(`I visit the {string} page`, route => {
+When('I visit the {string} page', route => {
+  if (route === 'main') {
+    route = ''
+  }
   cy.visit(`${baseUrl}/${route}`)
+})
+Given('I am on the {string} page', page => {
+  cy.location('pathname').should('contain', `/${page}`)
 })
 
 When('I fill in my email and password combination and click submit', () => {
@@ -79,22 +88,18 @@ Then('I am still logged in', () => {
   cy.get('.avatar-menu-popover').contains(username)
 })
 
-When('I can see the english is selected', () => {
-  cy.get('.login-locale-switch img[alt="English"]')
-})
-When('I can see the german is selected', () => {
-  cy.get('.login-locale-switch img[alt="Deutsch"]')
-})
-When('I select german', () => {
+When('I select {string} in the language menu', name => {
   cy.get('.login-locale-switch a')
     .click()
     .wait(50)
-  cy.get('.locale-menu-popover a.de')
+  const code = find(locales, ['name', name]).code
+  cy.get(`.locale-menu-popover a.${code}`)
     .click()
     .wait(500)
 })
-Then(`There should be a locale cooke set to de`, () => {
-  cy.getCookie('locale').should('have.property', 'value', 'de')
+Then('The whole user interface appears in {string}', name => {
+  const code = find(locales, ['name', name]).code
+  cy.getCookie('locale').should('have.property', 'value', code)
 })
 
 When('I navigate to the administration dashboard', () => {
@@ -104,11 +109,11 @@ When('I navigate to the administration dashboard', () => {
     .click()
 })
 
-When(`I click on {string}`, (linkOrButton) => {
+When('I click on {string}', linkOrButton => {
   cy.contains(linkOrButton).click()
 })
 
-Then('I can see a list of categories ordered by post count:', (table) => {
+Then('I can see a list of categories ordered by post count:', table => {
   // TODO: match the table in the feature with the html table
   cy.get('thead').find('tr th').should('have.length', 3)
   const last_column = cy.get('tbody').find('tr td:last-child').then((last_column) => {
@@ -119,7 +124,7 @@ Then('I can see a list of categories ordered by post count:', (table) => {
   })
 })
 
-Then('I can see a list of tags ordered by user and post count:', (table) => {
+Then('I can see a list of tags ordered by user and post count:', table => {
   // TODO: match the table in the feature with the html table
   cy.get('thead').find('tr th').should('have.length', 4)
   const last_column = cy.get('tbody').find('tr td:last-child').then((last_column) => {

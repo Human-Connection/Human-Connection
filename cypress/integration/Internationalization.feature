@@ -3,14 +3,17 @@ Feature: Internationalization
   I would like to see the user interface translated to my preferred language
   In order to be able to understand the interface
 
-  Scenario: See english loginpage
-    When I visit the "/login" page
-    Then I can see the english is selected
+  Background:
+    When I visit the "login" page
 
-  Scenario: See german loginpage
-    When I visit the "/login" page
-    And I select german
-    Then I can see the german is selected
-    Then There should be a locale cooke set to de
-    When I refresh the page
-    Then I can see the german is selected
+  Scenario: Change the language
+    When I select "Deutsch" in the language menu
+    Then The whole user interface appears in "Deutsch"
+
+    When I select "English" in the language menu
+    Then The whole user interface appears in "English"
+
+  Scenario: Keep preferred language after refresh
+    When I select "Deutsch" in the language menu
+    And I refresh the page
+    Then The whole user interface appears in "Deutsch"
