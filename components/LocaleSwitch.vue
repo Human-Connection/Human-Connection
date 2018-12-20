@@ -40,7 +40,7 @@
               :alt="locale.name"
               :title="locale.name"
               :src="`/img/locale-flags/${locale.code}.svg`"
-              width="22"
+              width="20"
             > {{ locale.name }}
           </a>
         </li>
@@ -61,41 +61,15 @@ export default {
     placement: { type: String, default: 'bottom-start' },
     offset: { type: [String, Number], default: '16' }
   },
+  data() {
+    return {
+      locales: process.env.locales
+    }
+  },
   computed: {
     current() {
+      console.log('locales', this.locales)
       return find(this.locales, ['code', this.$i18n.locale()])
-    },
-    locales() {
-      return [
-        {
-          name: 'English',
-          code: 'en'
-        },
-        {
-          name: 'Deutsch',
-          code: 'de'
-        },
-        {
-          name: 'Nederlands',
-          code: 'nl'
-        },
-        {
-          name: 'Italiano',
-          code: 'it'
-        },
-        {
-          name: 'Español',
-          code: 'es'
-        },
-        {
-          name: 'Portuguese',
-          code: 'pt'
-        },
-        {
-          name: 'Polski',
-          code: 'pl'
-        }
-      ]
     }
   },
   methods: {
@@ -118,6 +92,10 @@ export default {
 </script>
 
 <style lang="scss">
+.locale-menu {
+  user-select: none;
+}
+
 ul.locale-menu-popover {
   list-style: none;
   padding: 0;
@@ -128,7 +106,7 @@ ul.locale-menu-popover {
       opacity: 0.8;
 
       display: block;
-      padding: 0.2rem 0;
+      padding: 0.3rem 0;
 
       img {
         margin-right: 8px;

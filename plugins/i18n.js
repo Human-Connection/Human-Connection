@@ -62,7 +62,7 @@ export default ({ app, req, cookie, store }) => {
     }
   }
 
-  const availableLocales = process.env.locales
+  const availableLocales = process.env.locales.filter(lang => !!lang.enabled)
   const locale = availableLocales.indexOf(userLocale) >= 0 ? userLocale : 'en'
 
   if (locale !== 'en') {

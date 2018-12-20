@@ -28,7 +28,7 @@ module.exports = {
     // pages to keep alive
     keepAlivePages: ['index'],
     // active locales
-    locales: ['en', 'de', 'nl', 'fr', 'es', 'pt', 'it', 'pl']
+    locales: require('./locales')
   },
   /*
   ** Headers of the page

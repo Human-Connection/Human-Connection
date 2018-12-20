@@ -135,6 +135,10 @@ export default {
 .avatar-menu {
   float: right;
 }
+
+.avatar-menu-trigger {
+  user-select: none;
+}
 .avatar-menu-popover {
   display: inline-block;
   padding-top: 0.5rem;
