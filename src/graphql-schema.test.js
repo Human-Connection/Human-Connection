@@ -1,5 +1,20 @@
 import { request } from 'graphql-request'
-import server from './server'
+import createServer from './server'
+
+let getHost
+let app
+let port
+
+beforeEach(async () => {
+  const server = createServer()
+  app = await server.start({ port: 0 })
+  port = app.address().port
+  getHost = () => `http://127.0.0.1:${port}`
+})
+
+afterEach(async () => {
+  await app.close()
+})
 
 describe('login', () => {
   describe('asking for a `token`', () => {
@@ -15,14 +30,6 @@ describe('login', () => {
     })
 
     describe('with a non-existing email', () => {
-      let getHost
-
-      beforeEach(async () => {
-        const app = await server.start({ port: 0 })
-        const { port } = app.address()
-        getHost = () => `http://127.0.0.1:${port}`
-      })
-
       const mutation = `
       mutation {
         login(email:"user@example.com", password:"asdfasd"){
