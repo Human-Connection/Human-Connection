@@ -20,7 +20,10 @@
             center
           >
             <no-ssr>
-              <locale-switch class="login-locale-switch" />
+              <locale-switch
+                class="login-locale-switch"
+                offset="5"
+              />
             </no-ssr>
             <ds-space
               margin-top="small"

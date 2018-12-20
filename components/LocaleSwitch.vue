@@ -29,6 +29,7 @@
         >
           <a
             href="#"
+            style="display: flex; align-items: center;"
             :class="[
               locale.code,
               current.code === locale.code && 'active'
@@ -39,7 +40,7 @@
               :alt="locale.name"
               :title="locale.name"
               :src="`/img/locale-flags/${locale.code}.svg`"
-              height="26"
+              width="22"
             > {{ locale.name }}
           </a>
         </li>
@@ -57,7 +58,7 @@ export default {
     Dropdown
   },
   props: {
-    placement: { type: String, default: 'right-start' },
+    placement: { type: String, default: 'bottom-start' },
     offset: { type: [String, Number], default: '16' }
   },
   computed: {
@@ -128,6 +129,10 @@ ul.locale-menu-popover {
 
       display: block;
       padding: 0.2rem 0;
+
+      img {
+        margin-right: 8px;
+      }
 
       &:hover {
         opacity: 1;
