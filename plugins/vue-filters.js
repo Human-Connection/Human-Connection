@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { enUS, de, nl, fr, es, pt, pl } from 'date-fns/locale'
+import { enUS, de, nl, fr, es } from 'date-fns/locale'
 import format from 'date-fns/format'
 import formatRelative from 'date-fns/formatRelative'
 import addSeconds from 'date-fns/addSeconds'
@@ -13,8 +13,8 @@ export default ({ app }) => {
     nl: nl,
     fr: fr,
     es: es,
-    pt: pt,
-    pl: pl
+    pt: es,
+    pl: de
   }
   const getLocalizedFormat = () => {
     let locale = app.$i18n.locale()
