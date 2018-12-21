@@ -1,5 +1,8 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import find from 'lodash/find'
+import { eq } from 'semver';
+
+/* global cy */
 
 const baseUrl = 'http://localhost:3000'
 const username = 'Peter Lustig'
@@ -12,6 +15,18 @@ const localeStrings = {
     Deutsch: 'Einloggen',
     Français: 'Connexion'
   }
+}
+
+const getLangByName = function(name) {
+  return find(locales, { name })
+}
+
+const openPage = function(page) {
+  if (page === 'landing') {
+    page = ''
+  }
+  cy.visit(`${baseUrl}/${page}`)
+  cy.get('html[data-n-head]')
 }
 
 const login = (email, password) => {
@@ -51,14 +66,11 @@ Given('my user account has the role {string}', (role) => {
 
 When('I log out', logout)
 
-When('I visit the {string} page', route => {
-  if (route === 'main') {
-    route = ''
-  }
-  cy.visit(`${baseUrl}/${route}`)
+When('I visit the {string} page', page => {
+  openPage(page)
 })
 Given('I am on the {string} page', page => {
-  cy.location('pathname').should('contain', `/${page}`)
+  openPage(page)
 })
 
 When('I fill in my email and password combination and click submit', () => {
@@ -97,17 +109,15 @@ Then('I am still logged in', () => {
 })
 
 When('I select {string} in the language menu', name => {
-  cy.get('.login-locale-switch a')
-    .click()
-  const code = find(locales, ['name', name]).code
-  cy.get(`.locale-menu-popover a.${code}`)
-    .click()
-    .wait(500)
+  cy.get('.login-locale-switch a').click()
+  cy.contains('.locale-menu-popover a', name).click()
 })
-Then('The whole user interface appears in {string}', name => {
-  const code = find(locales, ['name', name]).code
-  cy.getCookie('locale').should('have.property', 'value', code)
-  cy.contains(localeStrings.login[name])
+Then('the whole user interface appears in {string}', name => {
+  const lang = getLangByName(name)
+  cy.get(`html[lang=${lang.code}]`)
+  cy.contains('button', localeStrings.login[name])
+  cy.get(`html[lang=${getLangByName(name).code}]`).as('lang')
+  cy.getCookie('locale').should('have.property', 'value', lang.code)
 })
 
 When('I navigate to the administration dashboard', () => {
