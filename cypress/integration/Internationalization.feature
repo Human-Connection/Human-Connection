@@ -19,8 +19,6 @@ Feature: Internationalization
         | Nederlands | Inloggen    |
 
   Scenario: Keep preferred language after refresh
-    When I select "Deutsch" in the language menu
-    Then the whole user interface appears in "Deutsch"
-
+    Given I previously switched the language to "Deutsch"
     And I refresh the page
     Then the whole user interface appears in "Deutsch"

@@ -20,6 +20,11 @@ const openPage = function(page) {
   cy.visit(`${baseUrl}/${page}`)
 }
 
+const switchLanguage = function(name) {
+  cy.get('.login-locale-switch a').click()
+  cy.contains('.locale-menu-popover a', name).click()
+}
+
 const login = (email, password) => {
   cy.visit(`${baseUrl}/login`)
   cy.get('input[name=email]')
@@ -54,6 +59,7 @@ Given('my account has the following details:', (table) => {
 Given('my user account has the role {string}', (role) => {
   // TODO: use db factories instead of seed data
 })
+
 
 When('I log out', logout)
 
@@ -100,8 +106,10 @@ Then('I am still logged in', () => {
 })
 
 When('I select {string} in the language menu', name => {
-  cy.get('.login-locale-switch a').click()
-  cy.contains('.locale-menu-popover a', name).click()
+  switchLanguage(name)
+})
+Given('I previously switched the language to {string}', name => {
+  switchLanguage(name)
 })
 Then('the whole user interface appears in {string}', name => {
   const lang = getLangByName(name)
