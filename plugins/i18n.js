@@ -11,33 +11,46 @@ export default ({ app, req, cookie, store }) => {
   const debug = app.$env.NODE_ENV !== 'production'
   const key = 'locale'
 
-  const changeHandler = debounce((mutation, store) => {
+  const changeHandler = async mutation => {
     if (process.server) return
 
-    const currentLocale = app.$cookies.get(mutation.payload.locale)
-    const isDifferent = mutation.payload.locale !== currentLocale
-    if (isDifferent) {
-      app.$cookies.set(key, mutation.payload.locale)
+    const newLocale = mutation.payload.locale
+    const currentLocale = await app.$cookies.get(key)
+    const isDifferent = newLocale !== currentLocale
+
+    if (!isDifferent) {
+      return
+    }
+
+    app.$cookies.set(key, newLocale)
+    if (!app.$i18n.localeExists(newLocale)) {
+      import(`~/locales/${newLocale}.json`).then(res => {
+        app.$i18n.add(newLocale, res.default)
+      })
     }
 
     const user = store.getters['auth/user']
     const token = store.getters['auth/token']
     // persist language if it differs from last value
-    if (isDifferent && user && user._id && token) {
+    if (user && user._id && token) {
       // TODO: SAVE LOCALE
       // store.dispatch('usersettings/patch', {
-      //   uiLanguage: mutation.payload.locale
+      //   uiLanguage: newLocale
       // }, { root: true })
     }
-  }, 500)
+  }
 
-  const i18nStore = new Vuex.Store({
-    strict: debug
-  })
+  // const i18nStore = new Vuex.Store({
+  //   strict: debug
+  // })
 
-  Vue.use(vuexI18n.plugin, i18nStore, {
+  Vue.use(vuexI18n.plugin, store, {
     onTranslationNotFound: function(locale, key) {
-      console.warn(`vuex-i18n :: Key '${key}' not found for locale '${locale}'`)
+      if (debug) {
+        console.warn(
+          `vuex-i18n :: Key '${key}' not found for locale '${locale}'`
+        )
+      }
     }
   })
 
@@ -75,15 +88,15 @@ export default ({ app, req, cookie, store }) => {
   Vue.i18n.set(locale)
   Vue.i18n.fallback('en')
 
-  if (process.client) {
-    i18nStore.subscribe((mutation, s) => {
+  if (process.browser) {
+    store.subscribe(mutation => {
       if (mutation.type === 'i18n/SET_LOCALE') {
-        changeHandler(mutation, store)
+        changeHandler(mutation)
       }
     })
   }
 
   app.$i18n = Vue.i18n
 
-  return i18nStore
+  return store
 }

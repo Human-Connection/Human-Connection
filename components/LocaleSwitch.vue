@@ -68,24 +68,13 @@ export default {
   },
   computed: {
     current() {
-      console.log('current', this.$i18n.locale())
-      return find(this.locales, ['code', this.$i18n.locale()])
+      return find(this.locales, { code: this.$i18n.locale() })
     }
   },
   methods: {
     changeLanguage(locale) {
-      // TODO: move that logic to store!?
-      // check if the locale has already been loaded
-      if (this.$i18n.localeExists(locale)) {
-        this.$i18n.set(locale)
-        this.$refs.menu.toggleMenu()
-        return
-      }
-      import(`~/locales/${locale}.json`).then(res => {
-        this.$i18n.add(locale, res.default)
-        this.$i18n.set(locale)
-        this.$refs.menu.toggleMenu()
-      })
+      this.$i18n.set(locale)
+      this.$refs.menu.toggleMenu()
     }
   }
 }
