@@ -6,15 +6,17 @@ Feature: Internationalization
   Background:
     Given I am on the "login" page
 
-  Scenario: Change the language
-    When I select "Deutsch" in the language menu
-    Then the whole user interface appears in "Deutsch"
+  Scenario Outline: I select "<language>" in the language menu and see "<buttonLabel>"
+    When I select "<language>" in the language menu
+    Then the whole user interface appears in "<language>"
+    Then I see a button with the label "<buttonLabel>"
 
-    When I select "Français" in the language menu
-    Then the whole user interface appears in "Français"
-
-    When I select "English" in the language menu
-    Then the whole user interface appears in "English"
+    Examples: Login Button
+        | language   | buttonLabel |
+        | English    | Login       |
+        | Deutsch    | Einloggen   |
+        | Français   | Connexion   |
+        | Nederlands | Inloggen    |
 
   Scenario: Keep preferred language after refresh
     When I select "Deutsch" in the language menu

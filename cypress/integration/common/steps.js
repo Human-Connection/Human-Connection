@@ -8,14 +8,6 @@ const baseUrl = 'http://localhost:3000'
 const username = 'Peter Lustig'
 
 const locales = require('../../../locales')
-// TODO: use the native locale files
-const localeStrings = {
-  login: {
-    English: 'Login',
-    Deutsch: 'Einloggen',
-    Français: 'Connexion'
-  }
-}
 
 const getLangByName = function(name) {
   return find(locales, { name })
@@ -26,7 +18,6 @@ const openPage = function(page) {
     page = ''
   }
   cy.visit(`${baseUrl}/${page}`)
-  cy.get('html[data-n-head]')
 }
 
 const login = (email, password) => {
@@ -115,9 +106,10 @@ When('I select {string} in the language menu', name => {
 Then('the whole user interface appears in {string}', name => {
   const lang = getLangByName(name)
   cy.get(`html[lang=${lang.code}]`)
-  cy.contains('button', localeStrings.login[name])
-  cy.get(`html[lang=${getLangByName(name).code}]`).as('lang')
   cy.getCookie('locale').should('have.property', 'value', lang.code)
+})
+Then('I see a button with the label {string}', label => {
+  cy.contains('button', label)
 })
 
 When('I navigate to the administration dashboard', () => {
