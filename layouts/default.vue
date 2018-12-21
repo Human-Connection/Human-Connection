@@ -79,12 +79,14 @@
 import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
+import seo from '~/components/mixins/seo'
 
 export default {
   components: {
     Dropdown,
     LocaleSwitch
   },
+  mixins: [seo],
   computed: {
     ...mapGetters({
       user: 'auth/user',
