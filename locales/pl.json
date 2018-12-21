@@ -10,7 +10,10 @@
   },
   "profile": {
     "name": "Mój profil",
-    "memberSince": "Członek od"
+    "memberSince": "Członek od",
+    "follow": "Obserwuj",
+    "followers": "Obserwujący",
+    "following": "Obserwowani"
   },
   "settings": {
     "name": "Ustawienia",
@@ -29,6 +32,9 @@
     "delete": {
       "name": "Usuń konto"
     },
+    "organizations": {
+      "name": "Moje organizacje"
+    },
     "languages": {
       "name": "Języki"
     }
@@ -44,6 +50,7 @@
       "organizations": "Organizacje",
       "projects": "Projekty",
       "invites": "Zaproszenia",
+      "follows": "Obserwowań",
       "shouts": "Wykrzyki"
     },
     "organizations": {
@@ -73,8 +80,12 @@
     }
   },
   "post": {
+    "name": "Post",
     "moreInfo": {
       "name": "Więcej informacji"
+    },
+    "takeAction": {
+      "name": "Podejmij działanie"
     }
   },
   "quotes": {

@@ -10,7 +10,10 @@
   },
   "profile": {
     "name": "Mon profil",
-    "memberSince": "Membre depuis"
+    "memberSince": "Membre depuis",
+    "follow": "Suivre",
+    "followers": "Suiveurs",
+    "following": "Suivant"
   },
   "settings": {
     "name": "Paramètres",
@@ -47,7 +50,8 @@
       "organizations": "Organisations",
       "projects": "Projets",
       "invites": "Invite",
-      "follows": "Suit"
+      "follows": "Suit",
+      "shouts": "Cris"
     },
     "organizations": {
       "name": "Organisations"
@@ -73,6 +77,15 @@
     },
     "settings": {
       "name": "Paramètres"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "Plus d'infos"
+    },
+    "takeAction": {
+      "name": "Passez à l'action"
     }
   },
   "quotes": {

@@ -1,7 +1,84 @@
 {
+  "login": {
+    "copy": "Se hai già un account di Human Connection, accedi qui.",
+    "logout": "Logout",
+    "email": "La tua email",
+    "password": "La tua password",
+    "moreInfo": "Che cosa è Human Connection?",
+    "hello": "Ciao"
+  },
+  "profile": {
+    "name": "Il mio profilo",
+    "follow": "Seguire",
+    "followers": "Seguaci"
+  },
   "settings": {
+    "name": "Impostazioni",
+    "data": {
+      "name": "I tuoi dati"
+    },
+    "security": {
+      "name": "Sicurezza"
+    },
+    "invites": {
+      "name": "Inviti"
+    },
+    "download": {
+      "name": "Scaricare i dati"
+    },
     "delete": {
       "name": "Elimina Account"
+    },
+    "organizations": {
+      "name": "Mie organizzazioni"
+    },
+    "languages": {
+      "name": "Lingue"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Cruscotto",
+      "users": "Utenti",
+      "comments": "Commenti",
+      "notifications": "Notifiche",
+      "organizations": "Organizzazioni",
+      "projects": "Progetti",
+      "invites": "Inviti",
+      "follows": "Segue"
+    },
+    "organizations": {
+      "name": "Organizzazioni"
+    },
+    "users": {
+      "name": "Utenti"
+    },
+    "pages": {
+      "name": "Pagine"
+    },
+    "notifications": {
+      "name": "Notifiche"
+    },
+    "categories": {
+      "name": "Categorie",
+      "categoryName": "Nome"
+    },
+    "tags": {
+      "name": "Tag",
+      "tagCountUnique": "Utenti",
+      "tagCount": "Messaggi"
+    },
+    "settings": {
+      "name": "Impostazioni"
+    }
+  },
+  "post": {
+    "moreInfo": {
+      "name": "Ulteriori informazioni"
+    },
+    "takeAction": {
+      "name": "Agire"
     }
   },
   "quotes": {

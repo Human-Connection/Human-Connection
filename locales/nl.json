@@ -9,11 +9,23 @@
     "hello": "Hallo"
   },
   "profile": {
+    "name": "Mijn profiel",
+    "memberSince": "Lid sinds",
     "follow": "Volgen",
     "followers": "Volgelingen",
     "following": "Volgt"
   },
   "settings": {
+    "name": "Instellingen",
+    "data": {
+      "name": "Uw gegevens"
+    },
+    "security": {
+      "name": "Veiligheid"
+    },
+    "download": {
+      "name": "Gegevens downloaden"
+    },
     "delete": {
       "name": "Account verwijderen"
     },
@@ -25,31 +37,53 @@
     }
   },
   "admin": {
+    "name": "Admin",
     "dashboard": {
       "name": "Dashboard",
+      "users": "Gebruikers",
+      "posts": "Berichten",
+      "comments": "Opmerkingen",
       "notifications": "Meldingen",
       "organizations": "Organisaties",
-      "projects": "Projecten"
+      "projects": "Projecten",
+      "follows": "Volgt",
+      "shouts": "Shouts"
     },
     "organizations": {
       "name": "Organisaties"
+    },
+    "users": {
+      "name": "Gebruikers"
     },
     "notifications": {
       "name": "Meldingen"
     },
     "categories": {
       "name": "Categorieën",
-      "categoryName": "Naam"
+      "categoryName": "Naam",
+      "postCount": "Berichten"
     },
     "tags": {
+      "name": "Tags",
+      "tagCountUnique": "Gebruikers",
       "tagCount": "Berichten"
     },
     "settings": {
       "name": "Instellingen"
     }
   },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "Meer info"
+    },
+    "takeAction": {
+      "name": "Onderneem actie"
+    }
+  },
   "quotes": {
     "african": {
+      "quote": "Veel kleine mensen op veel kleine plaatsen doen veel kleine dingen, die het gezicht van de wereld kunnen veranderen.",
       "author": "Afrikaans spreekwoord"
     }
   }
