@@ -44,6 +44,19 @@ const logout = () => {
   cy.location('pathname').should('contain', '/login') // we're out
 }
 
+const lastColumnIsSortedInDescendingOrder = () => {
+  cy.get('tbody')
+    .find('tr td:last-child')
+    .then(last_column => {
+      cy.wrap(last_column)
+      const values = last_column
+        .map((i, td) => parseInt(td.textContent))
+        .toArray()
+      const ordered_descending = values.slice(0).sort((a, b) => b - a)
+      return cy.wrap(values).should('deep.eq', ordered_descending)
+    })
+}
+
 Given('I am logged in', () => {
   login('admin@example.org', 1234)
 })
@@ -52,11 +65,11 @@ Given('we have a selection of tags and categories as well as posts', () => {
   // TODO: use db factories instead of seed data
 })
 
-Given('my account has the following details:', (table) => {
+Given('my account has the following details:', table => {
   // TODO: use db factories instead of seed data
 })
 
-Given('my user account has the role {string}', (role) => {
+Given('my user account has the role {string}', role => {
   // TODO: use db factories instead of seed data
 })
 
@@ -127,28 +140,22 @@ When('I navigate to the administration dashboard', () => {
     .click()
 })
 
-When('I click on {string}', linkOrButton => {
+When(`I click on {string}`, linkOrButton => {
   cy.contains(linkOrButton).click()
 })
 
 Then('I can see a list of categories ordered by post count:', table => {
   // TODO: match the table in the feature with the html table
-  cy.get('thead').find('tr th').should('have.length', 3)
-  const last_column = cy.get('tbody').find('tr td:last-child').then((last_column) => {
-    cy.wrap(last_column)
-    const values = last_column.map((i, td) => parseInt(td.textContent)).toArray()
-    const ordered_descending = values.slice(0).sort((a,b) => b - a)
-    return cy.wrap(values).should('deep.eq', ordered_descending)
-  })
+  cy.get('thead')
+    .find('tr th')
+    .should('have.length', 3)
+  lastColumnIsSortedInDescendingOrder()
 })
 
 Then('I can see a list of tags ordered by user and post count:', table => {
   // TODO: match the table in the feature with the html table
-  cy.get('thead').find('tr th').should('have.length', 4)
-  const last_column = cy.get('tbody').find('tr td:last-child').then((last_column) => {
-    cy.wrap(last_column)
-    const values = last_column.map((i, td) => parseInt(td.textContent)).toArray()
-    const ordered_descending = values.slice(0).sort((a,b) => b - a)
-    return cy.wrap(values).should('deep.eq', ordered_descending)
-  })
+  cy.get('thead')
+    .find('tr th')
+    .should('have.length', 4)
+  lastColumnIsSortedInDescendingOrder()
 })
