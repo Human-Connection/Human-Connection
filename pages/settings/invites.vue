@@ -1,7 +1,7 @@
 <template>
   <ds-card>
     <ds-space margin="small">
-      Invites...
+      {{ $t('settings.invites.name') }}
     </ds-space>
   </ds-card>
 </template>

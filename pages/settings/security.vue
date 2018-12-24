@@ -1,7 +1,7 @@
 <template>
   <ds-card>
     <ds-space margin="small">
-      Change my Password...
+      {{ $t('settings.security.name') }}
     </ds-space>
   </ds-card>
 </template>

@@ -20,7 +20,8 @@
         <tr>
           <ds-table-head-col
             v-for="header in headers"
-            :key="header.key">
+            :key="header.key"
+            :align="align(header.key)">
             {{ header.label }}
           </ds-table-head-col>
         </tr>
@@ -31,7 +32,8 @@
           :key="row.key || index">
           <ds-table-col
             v-for="col in row"
-            :key="col.key">
+            :key="col.key"
+            :align="align(col.key)">
             <!-- @slot Slots are named by fields -->
             <slot
               :name="col.key"
@@ -152,6 +154,9 @@ export default {
     }
   },
   methods: {
+    align(colKey) {
+      return this.fields && this.fields[colKey] ? this.fields[colKey].align : null
+    },
     parseLabel(label) {
       return startCase(label)
     }

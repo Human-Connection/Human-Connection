@@ -1,0 +1,79 @@
+{
+  "login": {
+    "copy": "Si ya tiene una cuenta de Human Connection, inicie sesión aquí.",
+    "logout": "Cierre de sesión",
+    "email": "Tu correo electrónico",
+    "password": "Tu contraseña",
+    "moreInfo": "¿Qué es Human Connection?",
+    "hello": "Hola"
+  },
+  "profile": {
+    "name": "Mi perfil",
+    "memberSince": "Miembro desde",
+    "followers": "Seguidores"
+  },
+  "settings": {
+    "data": {
+      "name": "Sus datos"
+    },
+    "security": {
+      "name": "Seguridad"
+    },
+    "invites": {
+      "name": "Invita"
+    },
+    "download": {
+      "name": "Descargar datos"
+    },
+    "organizations": {
+      "name": "Mis organizaciones"
+    },
+    "languages": {
+      "name": "Idiomas"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "users": "Usuarios",
+      "comments": "Comentarios",
+      "organizations": "Organizaciones",
+      "projects": "Proyectos",
+      "invites": "Invita",
+      "follows": "Sigue"
+    },
+    "organizations": {
+      "name": "Organizaciones"
+    },
+    "users": {
+      "name": "Usuarios"
+    },
+    "pages": {
+      "name": "Páginas"
+    },
+    "notifications": {
+      "name": "Notificaciones"
+    },
+    "categories": {
+      "name": "Categorías",
+      "categoryName": "Nombre"
+    },
+    "tags": {
+      "name": "Etiquetas",
+      "tagCountUnique": "Usuarios"
+    }
+  },
+  "post": {
+    "moreInfo": {
+      "name": "Más info"
+    },
+    "takeAction": {
+      "name": "Tomar acción"
+    }
+  },
+  "quotes": {
+    "african": {
+      "author": "Proverbio africano"
+    }
+  }
+}

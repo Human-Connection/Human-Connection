@@ -1,7 +1,7 @@
 <template>
   <ds-card>
     <ds-space margin="small">
-      Settings...
+      {{ $t('admin.settings.name') }}
     </ds-space>
   </ds-card>
 </template>

@@ -1,0 +1,96 @@
+{
+  "login": {
+    "copy": "Se você já tem uma conta no Human Connection, faça o login aqui.",
+    "login": "Login",
+    "logout": "Sair",
+    "email": "Seu email",
+    "password": "Sua senha",
+    "moreInfo": "O que é o Human Connection?",
+    "hello": "Olá"
+  },
+  "profile": {
+    "name": "Meu perfil",
+    "memberSince": "Membro desde",
+    "follow": "Seguir",
+    "followers": "Seguidores",
+    "following": "Seguindo"
+  },
+  "settings": {
+    "name": "Configurações",
+    "data": {
+      "name": "Seus Dados"
+    },
+    "security": {
+      "name": "Segurança"
+    },
+    "invites": {
+      "name": "Convites"
+    },
+    "download": {
+      "name": "Baixar dados"
+    },
+    "delete": {
+      "name": "Deletar conta"
+    },
+    "organizations": {
+      "name": "Minhas Organizações"
+    },
+    "languages": {
+      "name": "Linguagens"
+    }
+  },
+  "admin": {
+    "name": "Administrator",
+    "dashboard": {
+      "name": "Painel de controle",
+      "users": "Usuários",
+      "posts": "Postagens",
+      "comments": "Comentários",
+      "notifications": "Notificações",
+      "organizations": "Organizações",
+      "projects": "Projetos",
+      "invites": "Convites",
+      "follows": "Seguidores"
+    },
+    "organizations": {
+      "name": "Organizações"
+    },
+    "users": {
+      "name": "Usuários"
+    },
+    "pages": {
+      "name": "Páginas"
+    },
+    "notifications": {
+      "name": "Notificações"
+    },
+    "categories": {
+      "name": "Categorias",
+      "categoryName": "Nome",
+      "postCount": "Postagens"
+    },
+    "tags": {
+      "name": "Etiquetas",
+      "tagCountUnique": "Usuários",
+      "tagCount": "Postagens"
+    },
+    "settings": {
+      "name": "Configurações"
+    }
+  },
+  "post": {
+    "name": "Postar",
+    "moreInfo": {
+      "name": "Mais informações"
+    },
+    "takeAction": {
+      "name": "Tomar uma ação"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Pequenos grupos de pessoas, em pequenos locais podem fazer várias coisas pequenas, mas que podem alterar o mundo ao nosso redor.",
+      "author": "Provérbio Africano"
+    }
+  }
+}

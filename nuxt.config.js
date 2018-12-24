@@ -26,7 +26,9 @@ module.exports = {
       'pages-slug'
     ],
     // pages to keep alive
-    keepAlivePages: ['index']
+    keepAlivePages: ['index'],
+    // active locales
+    locales: require('./locales')
   },
   /*
   ** Headers of the page
@@ -59,6 +61,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/i18n.js', ssr: true },
     { src: '~/plugins/keep-alive.js', ssr: false },
     { src: '~/plugins/design-system.js', ssr: true },
     { src: '~/plugins/vue-directives.js', ssr: false },
@@ -71,30 +74,6 @@ module.exports = {
     middleware: ['authenticated'],
     linkActiveClass: 'router-active-link'
   },
-  /* router: {
-    routes: [
-      {
-        name: 'index',
-        path: '/',
-        component: 'pages/index.vue'
-      },
-      {
-        name: 'post-slug',
-        path: '/post/:slug',
-        component: 'pages/post/_slug.vue',
-        children: [
-          {
-            path: 'more-info',
-            component: 'pages/post/_slug.vue'
-          },
-          {
-            path: 'take-action',
-            component: 'pages/post/_slug.vue'
-          }
-        ]
-      }
-    ]
-  }, */
 
   /*
   ** Nuxt.js modules
@@ -102,6 +81,7 @@ module.exports = {
   modules: [
     ['@nuxtjs/dotenv', { only: envWhitelist }],
     ['nuxt-env', { keys: envWhitelist }],
+    'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
     [
@@ -172,6 +152,7 @@ module.exports = {
   */
   build: {
     /*
+     * TODO: import the polyfill instead of using the deprecated vendor key
      * Polyfill missing ES6 & 7 Methods to work on older Browser
      */
     vendor: ['@babel/polyfill'],

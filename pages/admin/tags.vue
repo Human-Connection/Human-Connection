@@ -1,7 +1,7 @@
 <template>
   <ds-card space="small">
     <ds-heading tag="h3">
-      Tags
+      {{ $t('admin.tags.name') }}
     </ds-heading>
     <ds-table
       :data="Tag"
@@ -24,12 +24,22 @@ import gql from 'graphql-tag'
 export default {
   data() {
     return {
-      Tag: [],
-      fields: {
-        id: { label: '#' },
-        name: { label: 'Name' },
-        taggedCountUnique: { label: 'Nutzer' },
-        taggedCount: { label: 'Beiträge' }
+      Tag: []
+    }
+  },
+  computed: {
+    fields() {
+      return {
+        id: '#',
+        name: 'Name',
+        taggedCountUnique: {
+          label: this.$t('admin.tags.tagCountUnique'),
+          align: 'right'
+        },
+        taggedCount: {
+          label: this.$t('admin.tags.tagCount'),
+          align: 'right'
+        }
       }
     }
   },
