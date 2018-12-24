@@ -1,0 +1,97 @@
+{
+  "login": {
+    "copy": "Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.",
+    "login": "Einloggen",
+    "logout": "Ausloggen",
+    "email": "Deine E-Mail",
+    "password": "Dein Passwort",
+    "moreInfo": "Was ist Human Connection?",
+    "hello": "Hallo"
+  },
+  "profile": {
+    "name": "Mein Profil",
+    "memberSince": "Mitglied seit",
+    "follow": "Folgen",
+    "followers": "Folgen",
+    "following": "Folgt"
+  },
+  "settings": {
+    "name": "Einstellungen",
+    "data": {
+      "name": "Deine Daten"
+    },
+    "security": {
+      "name": "Sicherheit"
+    },
+    "invites": {
+      "name": "Einladungen"
+    },
+    "download": {
+      "name": "Daten herunterladen"
+    },
+    "delete": {
+      "name": "Konto löschen"
+    },
+    "organizations": {
+      "name": "Meine Organisationen"
+    },
+    "languages": {
+      "name": "Sprachen"
+    }
+  },
+  "admin": {
+    "name": "Systemverwaltung",
+    "dashboard": {
+      "name": "Startzentrale",
+      "users": "Benutzer",
+      "posts": "Beiträge",
+      "comments": "Kommentare",
+      "notifications": "Benachrichtigungen",
+      "organizations": "Organisationen",
+      "projects": "Projekte",
+      "invites": "Einladungen",
+      "follows": "Folgen",
+      "shouts": "Shouts"
+    },
+    "organizations": {
+      "name": "Organisationen"
+    },
+    "users": {
+      "name": "Benutzer"
+    },
+    "pages": {
+      "name": "Seiten"
+    },
+    "notifications": {
+      "name": "Benachrichtigungen"
+    },
+    "categories": {
+      "name": "Kategorien",
+      "categoryName": "Name",
+      "postCount": "Beiträge"
+    },
+    "tags": {
+      "name": "Schlagworte",
+      "tagCountUnique": "Benutzer",
+      "tagCount": "Beiträge"
+    },
+    "settings": {
+      "name": "Einstellungen"
+    }
+  },
+  "post": {
+    "name": "Beitrag",
+    "moreInfo": {
+      "name": "Mehr Info"
+    },
+    "takeAction": {
+      "name": "Aktiv werden"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Viele kleine Leute, an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
+      "author": "Afrikanisches Sprichwort"
+    }
+  }
+}

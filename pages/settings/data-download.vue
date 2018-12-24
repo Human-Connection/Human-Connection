@@ -1,7 +1,7 @@
 <template>
   <ds-card>
     <ds-space margin="small">
-      Download my Data...
+      {{ $t('settings.download.name') }}
     </ds-space>
   </ds-card>
 </template>

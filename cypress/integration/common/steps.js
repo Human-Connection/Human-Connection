@@ -1,7 +1,29 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
+import find from 'lodash/find'
+import { eq } from 'semver';
+
+/* global cy */
 
 const baseUrl = 'http://localhost:3000'
 const username = 'Peter Lustig'
+
+const locales = require('../../../locales')
+
+const getLangByName = function(name) {
+  return find(locales, { name })
+}
+
+const openPage = function(page) {
+  if (page === 'landing') {
+    page = ''
+  }
+  cy.visit(`${baseUrl}/${page}`)
+}
+
+const switchLanguage = function(name) {
+  cy.get('.login-locale-switch a').click()
+  cy.contains('.locale-menu-popover a', name).click()
+}
 
 const login = (email, password) => {
   cy.visit(`${baseUrl}/login`)
@@ -38,10 +60,14 @@ Given('my user account has the role {string}', (role) => {
   // TODO: use db factories instead of seed data
 })
 
+
 When('I log out', logout)
 
-When(`I visit the {string} page`, route => {
-  cy.visit(`${baseUrl}/${route}`)
+When('I visit the {string} page', page => {
+  openPage(page)
+})
+Given('I am on the {string} page', page => {
+  openPage(page)
 })
 
 When('I fill in my email and password combination and click submit', () => {
@@ -62,6 +88,7 @@ When('I log out through the menu in the top right corner', () => {
 
 Then('I can click on my profile picture in the top right corner', () => {
   cy.get('.avatar-menu').click()
+  cy.get('.avatar-menu-popover')
 })
 
 Then('I can see my name {string} in the dropdown menu', () => {
@@ -70,9 +97,7 @@ Then('I can see my name {string} in the dropdown menu', () => {
 
 Then('I see the login screen again', () => {
   cy.location('pathname').should('contain', '/login')
-  cy.contains(
-    'Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.'
-  )
+  cy.contains('If you already have a human-connection account, login here.')
 })
 
 Then('I am still logged in', () => {
@@ -80,16 +105,33 @@ Then('I am still logged in', () => {
   cy.get('.avatar-menu-popover').contains(username)
 })
 
-When('I navigate to the administration dashboard', () => {
-  cy.get('.avatar-menu').click()
-  cy.get('a').contains('Systemverwaltung').click()
+When('I select {string} in the language menu', name => {
+  switchLanguage(name)
+})
+Given('I previously switched the language to {string}', name => {
+  switchLanguage(name)
+})
+Then('the whole user interface appears in {string}', name => {
+  const lang = getLangByName(name)
+  cy.get(`html[lang=${lang.code}]`)
+  cy.getCookie('locale').should('have.property', 'value', lang.code)
+})
+Then('I see a button with the label {string}', label => {
+  cy.contains('button', label)
 })
 
-When(`I click on {string}`, (linkOrButton) => {
+When('I navigate to the administration dashboard', () => {
+  cy.get('.avatar-menu').click()
+  cy.get('.avatar-menu-popover')
+    .contains('Admin')
+    .click()
+})
+
+When('I click on {string}', linkOrButton => {
   cy.contains(linkOrButton).click()
 })
 
-Then('I can see a list of categories ordered by post count:', (table) => {
+Then('I can see a list of categories ordered by post count:', table => {
   // TODO: match the table in the feature with the html table
   cy.get('thead').find('tr th').should('have.length', 3)
   const last_column = cy.get('tbody').find('tr td:last-child').then((last_column) => {
@@ -100,7 +142,7 @@ Then('I can see a list of categories ordered by post count:', (table) => {
   })
 })
 
-Then('I can see a list of tags ordered by user and post count:', (table) => {
+Then('I can see a list of tags ordered by user and post count:', table => {
   // TODO: match the table in the feature with the html table
   cy.get('thead').find('tr th').should('have.length', 4)
   const last_column = cy.get('tbody').find('tr td:last-child').then((last_column) => {

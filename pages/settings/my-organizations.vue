@@ -1,7 +1,7 @@
 <template>
   <ds-card>
     <ds-space margin="small">
-      My Organizations...
+      {{ $t('settings.organizations.name') }}
     </ds-space>
   </ds-card>
 </template>

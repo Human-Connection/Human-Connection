@@ -1,5 +1,7 @@
 <template>
   <ds-card>
-    <p>My Data...</p>
+    <ds-space margin="small">
+      {{ $t('settings.data.name') }}
+    </ds-space>
   </ds-card>
 </template>
