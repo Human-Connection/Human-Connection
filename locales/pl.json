@@ -1,0 +1,97 @@
+{
+  "login": {
+    "copy": "Jeśli masz już konto Human Connection, zaloguj się tutaj.",
+    "login": "Login",
+    "logout": "Wyloguj się",
+    "email": "Twój adres e-mail",
+    "password": "Twoje hasło",
+    "moreInfo": "Co to jest Human Connection?",
+    "hello": "Cześć"
+  },
+  "profile": {
+    "name": "Mój profil",
+    "memberSince": "Członek od",
+    "follow": "Obserwuj",
+    "followers": "Obserwujący",
+    "following": "Obserwowani"
+  },
+  "settings": {
+    "name": "Ustawienia",
+    "data": {
+      "name": "Twoje dane"
+    },
+    "security": {
+      "name": "Bezpieczeństwo"
+    },
+    "invites": {
+      "name": "Zaproszenia"
+    },
+    "download": {
+      "name": "Pobierz dane"
+    },
+    "delete": {
+      "name": "Usuń konto"
+    },
+    "organizations": {
+      "name": "Moje organizacje"
+    },
+    "languages": {
+      "name": "Języki"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Tablica rozdzielcza",
+      "users": "Użytkownicy",
+      "posts": "Posty",
+      "comments": "Komentarze",
+      "notifications": "Powiadomienia",
+      "organizations": "Organizacje",
+      "projects": "Projekty",
+      "invites": "Zaproszenia",
+      "follows": "Obserwowań",
+      "shouts": "Wykrzyki"
+    },
+    "organizations": {
+      "name": "Organizacje"
+    },
+    "users": {
+      "name": "Użytkownicy"
+    },
+    "pages": {
+      "name": "Strony"
+    },
+    "notifications": {
+      "name": "Powiadomienia"
+    },
+    "categories": {
+      "name": "Kategorie",
+      "categoryName": "Nazwa",
+      "postCount": "Posty"
+    },
+    "tags": {
+      "name": "Tagi",
+      "tagCountUnique": "Użytkownicy",
+      "tagCount": "Posty"
+    },
+    "settings": {
+      "name": "Ustawienia"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "Więcej informacji"
+    },
+    "takeAction": {
+      "name": "Podejmij działanie"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Wielu małych ludzi w wielu małych miejscach robi wiele małych rzeczy, które mogą zmienić oblicze świata.",
+      "author": "Afrykańskie przysłowie"
+    }
+  }
+}

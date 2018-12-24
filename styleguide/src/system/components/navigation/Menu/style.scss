@@ -44,6 +44,7 @@ ul.ds-menu-list {
   text-decoration: none;
   padding: $space-x-small $space-small;
   transition: color $duration-short $ease-out;
+  border-left: 2px solid transparent;
 
   &.router-link-active,
   &.nuxt-link-active {
@@ -56,8 +57,9 @@ ul.ds-menu-list {
 
   &.router-link-exact-active,
   &.nuxt-link-exact-active {
-    color: $text-color-link-active;
-    background-color: $background-color-soft;
+    color: $text-color-link;
+    // background-color: $background-color-soft;
+    border-left: 2px solid $color-primary;
   }
 
   .ds-menu-item-inverse & {

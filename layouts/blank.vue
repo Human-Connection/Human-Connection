@@ -7,3 +7,11 @@
     </ds-container>
   </div>
 </template>
+
+<script>
+import seo from '~/components/mixins/seo'
+
+export default {
+  mixins: [seo]
+}
+</script>

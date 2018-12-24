@@ -1,0 +1,97 @@
+{
+  "login": {
+    "copy": "If you already have a human-connection account, login here.",
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Your Email",
+    "password": "Your Password",
+    "moreInfo": "What is Human Connection?",
+    "hello": "Hello"
+  },
+  "profile": {
+    "name": "My Profile",
+    "memberSince": "Member since",
+    "follow": "Follow",
+    "followers": "Followers",
+    "following": "Following"
+  },
+  "settings": {
+    "name": "Settings",
+    "data": {
+      "name": "Your data"
+    },
+    "security": {
+      "name": "Security"
+    },
+    "invites": {
+      "name": "Invites"
+    },
+    "download": {
+      "name": "Download Data"
+    },
+    "delete": {
+      "name": "Delete Account"
+    },
+    "organizations": {
+      "name": "My Organizations"
+    },
+    "languages": {
+      "name": "Languages"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Dashboard",
+      "users": "Users",
+      "posts": "Posts",
+      "comments": "Comments",
+      "notifications": "Notifications",
+      "organizations": "Organizations",
+      "projects": "Projects",
+      "invites": "Invites",
+      "follows": "Follows",
+      "shouts": "Shouts"
+    },
+    "organizations": {
+      "name": "Organizations"
+    },
+    "users": {
+      "name": "Users"
+    },
+    "pages": {
+      "name": "Pages"
+    },
+    "notifications": {
+      "name": "Notifications"
+    },
+    "categories": {
+      "name": "Categories",
+      "categoryName": "Name",
+      "postCount": "Posts"
+    },
+    "tags": {
+      "name": "Tags",
+      "tagCountUnique": "Users",
+      "tagCount": "Posts"
+    },
+    "settings": {
+      "name": "Settings"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "More info"
+    },
+    "takeAction": {
+      "name": "Take action"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Many small people in many small places do many small things, that can alter the face of the world.",
+      "author": "African proverb"
+    }
+  }
+}

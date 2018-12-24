@@ -1,7 +1,7 @@
 <template>
   <ds-card>
     <ds-space margin="small">
-      Delete my Account...
+      {{ $t('settings.delete.name') }}
     </ds-space>
   </ds-card>
 </template>

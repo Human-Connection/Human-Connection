@@ -46,7 +46,10 @@ export default {
       default: null
     },
 
-    align: {
+    /**
+     * Center content vertacally and horizontally
+     */
+    center: {
       type: Boolean,
       default: false
     },
