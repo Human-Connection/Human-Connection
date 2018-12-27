@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs'
 import zipObject from 'lodash/zipObject'
 import generateJwt from './jwt/generateToken'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
+import { AuthenticationError } from 'apollo-server'
 
 export const typeDefs =
   fs.readFileSync(process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql'))
@@ -95,32 +96,33 @@ export const resolvers = {
       // if (user && user.id) {
       //   throw new Error('Already logged in.')
       // }
-
       const session = driver.session()
-      const res = await session.run('MATCH (u:User {email: "' + email + '"}) RETURN u.id, u.slug, u.name, u.avatar, u.email, u.password, u.role LIMIT 1')
-      let u = res.records[0]._fields ? zipObject([
-        'id',
-        'slug',
-        'name',
-        'avatar',
-        'email',
-        'password',
-        'role'
-      ], res.records[0]._fields) : null
-      if (u) {
-        if (await bcrypt.compareSync(password, u.password)) {
-          delete u.password
-          u.avatar = fixUrl(u.avatar)
-          return Object.assign(u, {
-            token: generateJwt(u)
-          })
+      try {
+        const res = await session.run('MATCH (u:User {email: "' + email + '"}) RETURN u.id, u.slug, u.name, u.avatar, u.email, u.password, u.role LIMIT 1')
+        const u = res.records[0]._fields ? zipObject([
+          'id',
+          'slug',
+          'name',
+          'avatar',
+          'email',
+          'password',
+          'role'
+        ], res.records[0]._fields) : null
+        if (u) {
+          if (await bcrypt.compareSync(password, u.password)) {
+            delete u.password
+            u.avatar = fixUrl(u.avatar)
+            return Object.assign(u, {
+              token: generateJwt(u)
+            })
+          }
+          session.close()
+          throw new Error('Incorrect username or password.')
         }
         session.close()
-        throw new Error('Incorrect password.')
+      } catch (error) {
+        throw new AuthenticationError('Incorrect username or password.')
       }
-
-      session.close()
-      throw new Error('No Such User exists.')
     }
   }
 }
