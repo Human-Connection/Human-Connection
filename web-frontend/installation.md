@@ -55,6 +55,12 @@ npm run dev
 
 This will start the UI under [http://localhost:3000](http://localhost:3000)
 
+login to the app with the following credentials:
+```bash
+email: user@example.org
+password: 1234
+```
+
 ![You should see this under http://localhost:3000](../.gitbook/assets/screenshot.png)
 
 
