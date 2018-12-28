@@ -140,7 +140,7 @@ const scraper = {
     }
     if (data) {
       let output = {
-        type: data.type,
+        type: data.type || 'link',
         embed: data.html,
         author: data.author_name,
         date: data.upload_date ? new Date(data.upload_date).toISOString() : null
@@ -163,6 +163,7 @@ const scraper = {
     const metadata = await metascraper({ html, url })
 
     metadata.sources = ['resource']
+    metadata.type = 'link'
 
     return metadata
   }
