@@ -19,6 +19,7 @@ const metascraper = require('metascraper')([
   // require('./rules/metascraper-embed')()
 ])
 const { ApolloError } = require('apollo-server')
+const parseUrl = require('url')
 
 const got = require('got')
 const request = require('request-promise-native')
@@ -57,6 +58,8 @@ const scraper = {
       targetUrl = targetUrl.replace('//youtu.be/', '//youtube.com/')
     }
 
+    const url = parseUrl.parse(targetUrl, true)
+
     let meta = {}
     let embed = {}
 
@@ -93,6 +96,13 @@ const scraper = {
 
     if (isEmpty(output)) {
       throw new ApolloError('Not found', 404)
+    }
+
+    // fix youtube start parameter
+    const YouTubeStartParam = url.query.t || url.query.start
+    if (output.publisher === 'YouTube' && YouTubeStartParam) {
+      output.embed = output.embed.replace('?feature=oembed', `?feature=oembed&start=${YouTubeStartParam}`)
+      output.url += `&start=${YouTubeStartParam}`
     }
 
     return output
