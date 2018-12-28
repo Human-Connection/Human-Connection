@@ -2275,6 +2275,13 @@ metascraper-publisher@^4.8.5:
   dependencies:
     "@metascraper/helpers" "^4.8.5"
 
+metascraper-soundcloud@^4.8.5:
+  version "4.8.5"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-4.8.5.tgz#6593ba8a26fedbb4a3bebc6d2803e22b38278621"
+  integrity sha512-fChxmwqCLyans9RKKg1jaL7dh/6twIBgaQm/NjvlKcp4+V39J85wQlZPHBgoXl+K/uMwy94wMftKWWQ1Hxxgkw==
+  dependencies:
+    "@metascraper/helpers" "^4.8.5"
+
 metascraper-title@^4.8.5:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-4.8.5.tgz#406de3b443442b34cfffba207d4b53de9343ad98"
