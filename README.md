@@ -3,12 +3,17 @@ API Service for fetching URL Information like images, icons, descriptions etc. t
 
 > early version of simpler embed api with Metascraper and oEmbed for better results.
 
+![API Screenshot](screenshot.png)
+
+---
+
 ## Todo`s
 - [x] Metascraper
 - [x] oEmbed
 - [ ] API Cache
 - [ ] Image Caching
 
+---
 
 ## Install and start development server
 
