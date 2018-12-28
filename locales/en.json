@@ -1,4 +1,21 @@
 {
+  "common": {
+    "post": "Post ::: Posts",
+    "comment": "Comment ::: Comments",
+    "letsTalk": "Let`s Talk",
+    "versus": "Versus",
+    "moreInfo": "More Info",
+    "takeAction": "Take Action",
+    "shout": "Shout ::: Shouts",
+    "user": "User ::: Users",
+    "category": "Category ::: Categories",
+    "organization": "Organization ::: Organizations",
+    "project": "Project ::: Projects",
+    "tag": "Tag ::: Tags",
+    "name": "Name ::: Names",
+    "loadMore": "load more",
+    "loading": "loading"
+  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
