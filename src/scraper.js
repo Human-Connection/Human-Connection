@@ -67,16 +67,20 @@ const scraper = {
           meta = await scraper.fetchMeta(targetUrl)
           resolve()
         } catch(err) {
+          if (process.env.DEBUG) {
+            console.error(`ERROR at fetchMeta | ${err.message}`)
+          }
           resolve()
         }
       }),
       new Promise(async (resolve, reject) => {
         try {
           embed = await scraper.fetchEmbed(targetUrl)
-          console.log(embed)
           resolve()
         } catch(err) {
-          console.error(err)
+          if (process.env.DEBUG) {
+            console.error(`ERROR at fetchEmbed | ${err.message}`)
+          }
           resolve()
         }
       })
@@ -98,7 +102,6 @@ const scraper = {
     const embedMeta = find(oEmbedProviders, provider => {
       return provider.provider_url.indexOf(url.hostname) >= 0
     })
-    console.log('embedMeta', embedMeta)
     if (!embedMeta) {
       return {}
     }

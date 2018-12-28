@@ -12,6 +12,10 @@ const resolvers = {
 
 const server = new ApolloServer({ typeDefs, resolvers })
 
+if (process.env.NODE_ENV !== 'production') {
+  process.env.DEBUG = true
+}
+
 server.listen({ port: 3050 }).then(({ url }) => {
   console.log(`🚀 Nitro Embed - Server is ready at ${url}`)
 })
