@@ -26,6 +26,8 @@ const request = require('request-promise-native')
 const find = require('lodash/find')
 const isEmpty = require('lodash/isEmpty')
 const each = require('lodash/each')
+const isArray = require('lodash/isArray')
+const mergeWith = require('lodash/mergeWith')
 const urlParser = require('url')
 
 // quick in memory cache
@@ -52,10 +54,13 @@ const removeEmptyAttrs = obj => {
 
 const scraper = {
   async fetch(targetUrl) {
-
     if (targetUrl.indexOf('//youtu.be/')) {
       // replace youtu.be to get proper results
       targetUrl = targetUrl.replace('//youtu.be/', '//youtube.com/')
+    }
+
+    if (cache[targetUrl]) {
+      return cache[targetUrl]
     }
 
     const url = parseUrl.parse(targetUrl, true)
@@ -89,10 +94,15 @@ const scraper = {
       })
     ])
 
-    const output = {
-      ...(removeEmptyAttrs(meta)),
-      ...(removeEmptyAttrs(embed))
-    }
+    const output = mergeWith(
+      meta,
+      embed,
+      (objValue, srcValue) => {
+        if (isArray(objValue)) {
+          return objValue.concat(srcValue);
+        }
+      }
+    )
 
     if (isEmpty(output)) {
       throw new ApolloError('Not found', 404)
@@ -104,6 +114,9 @@ const scraper = {
       output.embed = output.embed.replace('?feature=oembed', `?feature=oembed&start=${YouTubeStartParam}`)
       output.url += `&start=${YouTubeStartParam}`
     }
+
+    // write to cache
+    cache[targetUrl] = output
 
     return output
   },
@@ -133,6 +146,8 @@ const scraper = {
         date: data.upload_date ? new Date(data.upload_date).toISOString() : null
       }
 
+      output.sources = ['oembed']
+
       return output
     }
     return {}
@@ -142,16 +157,12 @@ const scraper = {
     // const parsedURL = urlParser.parse(targetUrl)
     // console.log(parsedURL)
 
-    // get from cache
-    if (cache[targetUrl]) {
-      return cache[targetUrl]
-    }
+    // get from cach
 
     const { body: html, url } = await got(targetUrl)
     const metadata = await metascraper({ html, url })
 
-    // write to cache
-    cache[targetUrl] = metadata
+    metadata.sources = ['resource']
 
     return metadata
   }

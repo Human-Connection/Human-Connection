@@ -12,6 +12,7 @@ type Embed {
   lang: String
   logo: String
   embed: String
+  sources: [String]
 }
 
 type Query {
