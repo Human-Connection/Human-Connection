@@ -213,31 +213,33 @@ export default {
 </script>
 
 <style lang="scss">
-.post-card {
-  // max-width: 800px;
-  margin: auto;
+.page-name-post-slug {
+  .post-card {
+    // max-width: 800px;
+    margin: auto;
 
-  .comments {
-    margin-top: $space-small;
-
-    .comment {
+    .comments {
       margin-top: $space-small;
-      position: relative;
-    }
-  }
 
-  .ds-card-image {
-    img {
-      max-height: 300px;
-      object-fit: cover;
-      object-position: center;
+      .comment {
+        margin-top: $space-small;
+        position: relative;
+      }
     }
-  }
-  .ds-card-footer {
-    padding: 0;
 
-    .ds-section {
-      padding: $space-base;
+    .ds-card-image {
+      img {
+        max-height: 300px;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+    .ds-card-footer {
+      padding: 0;
+
+      .ds-section {
+        padding: $space-base;
+      }
     }
   }
 }
