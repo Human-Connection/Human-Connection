@@ -41,6 +41,15 @@
                 >
                   <div class="avatar-menu-popover">
                     {{ $t('login.hello') }} <b>{{ user.name }}</b>
+                    <template v-if="user.role !== 'user'">
+                      <ds-text
+                        color="softer"
+                        size="small"
+                        style="margin-bottom: 0"
+                      >
+                        {{ user.role | camelCase }}
+                      </ds-text>
+                    </template>
                     <ds-menu
                       :routes="routes"
                       :is-exact="isExact"
