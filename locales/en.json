@@ -1,4 +1,7 @@
 {
+  "common": {
+    "reportContent": "Report"
+  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",

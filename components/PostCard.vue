@@ -11,40 +11,6 @@
     >
       {{ post.title }}
     </a>
-    <no-ssr>
-      <dropdown class="post-menu">
-        <template
-          slot="default"
-          slot-scope="{toggleMenu}"
-        >
-          <a
-            class="post-menu-trigger"
-            href="#"
-            @click.prevent="toggleMenu()"
-          >
-            <ds-icon name="angle-down" />
-          </a>
-        </template>
-        <template
-          slot="popover"
-          slot-scope="{toggleMenu}"
-        >
-          <div class="post-menu-popover">
-            <ds-menu :routes="routes">
-              <ds-menu-item
-                slot="Navigation"
-                slot-scope="item"
-                :route="item.route"
-                :parents="item.parents"
-                @click.native="toggleMenu"
-              >
-                <ds-icon :name="item.route.icon" /> {{ item.route.name }}
-              </ds-menu-item>
-            </ds-menu>
-          </div>
-        </template>
-      </dropdown>
-    </no-ssr>
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="large">
@@ -84,6 +50,43 @@
         <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
           <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
         </span>
+        <no-ssr>
+          <dropdown
+            class="post-menu"
+            placement="top-end"
+          >
+            <template
+              slot="default"
+              slot-scope="{toggleMenu}"
+            >
+              <a
+                class="post-menu-trigger"
+                href="#"
+                @click.prevent="toggleMenu()"
+              >
+                <ds-icon name="angle-up" />
+              </a>
+            </template>
+            <template
+              slot="popover"
+              slot-scope="{toggleMenu}"
+            >
+              <div class="post-menu-popover">
+                <ds-menu :routes="routes">
+                  <ds-menu-item
+                    slot="Navigation"
+                    slot-scope="item"
+                    :route="item.route"
+                    :parents="item.parents"
+                    @click.native="toggleMenu"
+                  >
+                    <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+                  </ds-menu-item>
+                </ds-menu>
+              </div>
+            </template>
+          </dropdown>
+        </no-ssr>
       </div>
     </template>
   </ds-card>
@@ -124,14 +127,9 @@ export default {
     routes() {
       let routes = [
         {
-          name: 'Melden',
+          name: this.$t('common.reportContent'),
           path: `/profile/`,
-          icon: 'user'
-        },
-        {
-          name: 'Irgendwass',
-          path: `/settings`,
-          icon: 'cogs'
+          icon: 'flag'
         }
       ]
       // if (this.isAdmin) {
@@ -165,9 +163,11 @@ export default {
   }
 }
 .post-menu {
-  position: absolute;
-  top: $space-small;
-  right: $space-small;
+  // position: absolute;
+  // bottom: $space-small;
+  // right: $space-small;
+  display: inline-block;
+  margin-left: $space-base;
   z-index: 1;
 }
 .post-link {

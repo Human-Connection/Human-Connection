@@ -1,4 +1,7 @@
 {
+  "common": {
+    "reportContent": "Melden"
+  },
   "login": {
     "copy": "Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
