@@ -105,7 +105,7 @@ const scraper = {
     )
 
     if (isEmpty(output)) {
-      throw new ApolloError('Not found', 404)
+      throw new ApolloError('Not found', 'NOT_FOUND')
     }
 
     // fix youtube start parameter
