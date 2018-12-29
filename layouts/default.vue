@@ -138,17 +138,11 @@ export default {
   float: right;
 }
 
-.avatar-menu-trigger {
-  user-select: none;
-}
 .avatar-menu-popover {
-  display: inline-block;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 
   nav {
-    margin-left: -15px;
-    margin-right: -15px;
     padding-top: 1rem;
     padding-bottom: 1rem;
   }

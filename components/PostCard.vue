@@ -1,97 +1,92 @@
 <template>
-  <a
-    v-router-link
-    :href="href(post)"
+  <ds-card
+    :header="post.title"
+    :image="post.image"
+    class="post-card"
   >
-    <ds-card
-      :header="post.title"
-      :image="post.image"
-      style="cursor: pointer; position: relative;"
+    <a
+      v-router-link
+      class="post-link"
+      :href="href(post)"
     >
-      <no-ssr>
-        <dropdown class="post-menu">
-          <template
-            slot="default"
-            slot-scope="{toggleMenu}"
+      {{ post.title }}
+    </a>
+    <no-ssr>
+      <dropdown class="post-menu">
+        <template
+          slot="default"
+          slot-scope="{toggleMenu}"
+        >
+          <a
+            class="post-menu-trigger"
+            href="#"
+            @click.prevent="toggleMenu()"
           >
-            <a
-              class="post-menu-trigger"
-              href="#"
-              @click.prevent="toggleMenu()"
-            >
-              Options
-            </a>
-          </template>
-          <template
-            slot="popover"
-            slot-scope="{toggleMenu}"
-          >
-            <div class="post-menu-popover">
-              <ds-menu
-                :routes="routes"
-                :is-exact="isExact"
+            <ds-icon name="angle-down" />
+          </a>
+        </template>
+        <template
+          slot="popover"
+          slot-scope="{toggleMenu}"
+        >
+          <div class="post-menu-popover">
+            <ds-menu :routes="routes">
+              <ds-menu-item
+                slot="Navigation"
+                slot-scope="item"
+                :route="item.route"
+                :parents="item.parents"
+                @click.native="toggleMenu"
               >
-                <ds-menu-item
-                  slot="Navigation"
-                  slot-scope="item"
-                  :route="item.route"
-                  :parents="item.parents"
-                  @click.native="toggleMenu"
-                >
-                  <ds-icon :name="item.route.icon" /> {{ item.route.name }}
-                </ds-menu-item>
-              </ds-menu>
-              <ds-space margin="xx-small" />
-              <nuxt-link :to="{ name: 'logout'}">
-                <ds-icon name="sign-out" /> {{ $t('login.logout') }}
-              </nuxt-link>
-            </div>
-          </template>
-        </dropdown>
-      </no-ssr>
-      <!-- eslint-disable vue/no-v-html -->
-      <!-- TODO: replace editor content with tiptap render view -->
-      <ds-space margin-bottom="large">
-        <div
-          class="hc-editor-content"
-          v-html="excerpt"
+                <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+              </ds-menu-item>
+            </ds-menu>
+          </div>
+        </template>
+      </dropdown>
+    </no-ssr>
+    <!-- eslint-disable vue/no-v-html -->
+    <!-- TODO: replace editor content with tiptap render view -->
+    <ds-space margin-bottom="large">
+      <div
+        class="hc-editor-content"
+        v-html="excerpt"
+      />
+    </ds-space>
+    <!-- eslint-enable vue/no-v-html -->
+    <ds-space
+      margin="small"
+      style="position: absolute; bottom: 44px; z-index: 1;"
+    >
+      <!-- TODO: find better solution for rendering errors -->
+      <no-ssr>
+        <hc-author
+          :post="post"
+          :trunc="35"
+          :show-author-popover="showAuthorPopover"
         />
-      </ds-space>
-      <!-- eslint-enable vue/no-v-html -->
-      <ds-space
-        margin="small"
-        style="position: absolute; bottom: 44px;"
-      >
-        <!-- TODO: find better solution for rendering errors -->
-        <no-ssr>
-          <hc-author
-            :post="post"
-            :trunc="35"
-            :show-author-popover="showAuthorPopover"
-          />
-        </no-ssr>
-      </ds-space>
-      <template slot="footer">
-        <div style="display: inline-block; opacity: .5;">
-          <ds-icon
-            v-for="category in post.categories"
-            :key="category.id"
-            v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
-            :name="category.icon"
-          />&nbsp;
-        </div>
-        <div style="display: inline-block; float: right">
-          <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
-            <ds-icon name="bullhorn" /> <small>{{ post.shoutedCount }}</small>
-          </span>
-          &nbsp;
-          <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-            <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
-          </span>
-        </div>
-      </template>
-    </ds-card>
-  </a>
+      </no-ssr>
+    </ds-space>
+    <template slot="footer">
+      <div style="display: inline-block; opacity: .5;">
+        <ds-icon
+          v-for="category in post.categories"
+          :key="category.id"
+          v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
+          :name="category.icon"
+        />&nbsp;
+      </div>
+      <div style="display: inline-block; float: right">
+        <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
+          <ds-icon name="bullhorn" /> <small>{{ post.shoutedCount }}</small>
+        </span>
+        &nbsp;
+        <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
+          <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
+        </span>
+      </div>
+    </template>
+  </ds-card>
 </template>
 
 <script>
@@ -155,10 +150,34 @@ export default {
         name: 'post-slug',
         params: { slug: post.slug }
       }).href
-    },
-    isExact(url) {
-      return this.$route.path.indexOf(url) === 0
     }
   }
 }
 </script>
+
+<style lang="scss">
+.post-card {
+  cursor: pointer;
+  position: relative;
+
+  .ds-card-footer {
+    z-index: 1;
+  }
+}
+.post-menu {
+  position: absolute;
+  top: $space-small;
+  right: $space-small;
+  z-index: 1;
+}
+.post-link {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-indent: -999999px;
+}
+</style>

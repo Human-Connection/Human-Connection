@@ -126,3 +126,15 @@ hr {
   background-color: $color-neutral-80;
   height: 1px !important;
 }
+
+[class$=menu-trigger] {
+  user-select: none;
+}
+[class$=menu-popover] {
+  display: inline-block;
+
+  nav {
+    margin-left: -17px;
+    margin-right: -15px;
+  }
+}
