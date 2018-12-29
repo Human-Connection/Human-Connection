@@ -167,7 +167,7 @@ export default {
   // bottom: $space-small;
   // right: $space-small;
   display: inline-block;
-  margin-left: $space-base;
+  margin-left: $space-small;
   z-index: 1;
 }
 .post-link {
