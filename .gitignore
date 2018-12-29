@@ -72,6 +72,10 @@ dist
 
 # IDE
 .idea
+.vscode
 
 # TEMORIRY
 static/uploads
+
+cypress/videos
+cypress/screenshots/

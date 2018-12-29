@@ -1,5 +1,10 @@
 <template>
-  <td class="ds-table-col">
+  <!-- eslint-disable -->
+  <td
+    class="ds-table-col"
+    :class="[
+      align && `ds-table-col-${align}`
+    ]">
     <slot/>
   </td>
 </template>
@@ -25,6 +30,17 @@ export default {
     width: {
       type: [String, Number, Object],
       default: null
+    },
+    /**
+     * The column align
+     * `left, center, right`
+     */
+    align: {
+      type: String,
+      default: null,
+      validator: value => {
+        return value.match(/(left|center|right)/)
+      }
     }
   },
   computed: {}

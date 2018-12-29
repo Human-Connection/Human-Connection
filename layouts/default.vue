@@ -8,46 +8,63 @@
         >
           <ds-logo />
         </a>
-        <template v-if="isLoggedIn">
+        <div style="float: right">
           <no-ssr>
-            <v-popover
-              :open.sync="isPopoverOpen"
-              :open-group="Math.random().toString()"
-              placement="bottom-end"
-              trigger="manual"
-              offset="10"
-              style="float: right"
-            >
-              <a
-                :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
-                @click.prevent="toggleMenu()"
-              >
-                <ds-avatar
-                  :image="user.avatar"
-                  :name="user.name"
-                  size="42"
-                />
-              </a>
-              <div
-                slot="popover"
-                style="padding-top: .5rem; padding-bottom: .5rem;"
-                @mouseover="popoverMouseEnter"
-                @mouseleave="popoveMouseLeave"
-              >
-                Hallo {{ user.name }}
-                <ds-menu
-                  :routes="routes"
-                  style="margin-left: -15px; margin-right: -15px; padding-top: 1rem; padding-bottom: 1rem;"
-                  @click.native="toggleMenu"
-                />
-                <ds-space margin="xx-small" />
-                <nuxt-link :to="{ name: 'logout'}">
-                  Logout
-                </nuxt-link>
-              </div>
-            </v-popover>
+            <locale-switch
+              class="topbar-locale-switch"
+              placement="bottom"
+              offset="24"
+            />
           </no-ssr>
-        </template>
+          <template v-if="isLoggedIn">
+            <no-ssr>
+              <dropdown class="avatar-menu">
+                <template
+                  slot="default"
+                  slot-scope="{toggleMenu}"
+                >
+                  <a
+                    class="avatar-menu-trigger"
+                    :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
+                    @click.prevent="toggleMenu()"
+                  >
+                    <ds-avatar
+                      :image="user.avatar"
+                      :name="user.name"
+                      size="42"
+                    />
+                  </a>
+                </template>
+                <template
+                  slot="popover"
+                  slot-scope="{toggleMenu}"
+                >
+                  <div class="avatar-menu-popover">
+                    {{ $t('login.hello') }} <b>{{ user.name }}</b>
+                    <ds-menu
+                      :routes="routes"
+                      :is-exact="isExact"
+                    >
+                      <ds-menu-item
+                        slot="Navigation"
+                        slot-scope="item"
+                        :route="item.route"
+                        :parents="item.parents"
+                        @click.native="toggleMenu"
+                      >
+                        <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+                      </ds-menu-item>
+                    </ds-menu>
+                    <ds-space margin="xx-small" />
+                    <nuxt-link :to="{ name: 'logout'}">
+                      <ds-icon name="sign-out" /> {{ $t('login.logout') }}
+                    </nuxt-link>
+                  </div>
+                </template>
+              </dropdown>
+            </no-ssr>
+          </template>
+        </div>
       </ds-container>
     </div>
     <ds-container>
@@ -60,21 +77,21 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { setTimeout } from 'timers'
-let mouseEnterTimer = null
-let mouseLeaveTimer = null
+import LocaleSwitch from '~/components/LocaleSwitch'
+import Dropdown from '~/components/Dropdown'
+import seo from '~/components/mixins/seo'
 
 export default {
-  data() {
-    return {
-      isPopoverOpen: false
-    }
+  components: {
+    Dropdown,
+    LocaleSwitch
   },
+  mixins: [seo],
   computed: {
     ...mapGetters({
       user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',
-      isAdmin: 'auth/isLoggedIn'
+      isAdmin: 'auth/isAdmin'
     }),
     routes() {
       if (!this.user.slug) {
@@ -82,49 +99,58 @@ export default {
       }
       let routes = [
         {
-          name: 'Mein Profil',
-          path: `/profile/${this.user.slug}`
+          name: this.$t('profile.name'),
+          path: `/profile/${this.user.slug}`,
+          icon: 'user'
         },
         {
-          name: 'Einstellungen',
-          path: `/settings`
+          name: this.$t('settings.name'),
+          path: `/settings`,
+          icon: 'cogs'
         }
       ]
       if (this.isAdmin) {
         routes.push({
-          name: 'Systemverwaltung',
-          path: `/admin`
+          name: this.$t('admin.name'),
+          path: `/admin`,
+          icon: 'shield'
         })
       }
       return routes
     }
   },
-  beforeDestroy() {
-    clearTimeout(mouseEnterTimer)
-    clearTimeout(mouseLeaveTimer)
-  },
   methods: {
-    toggleMenu() {
-      this.isPopoverOpen = !this.isPopoverOpen
-    },
-    popoverMouseEnter() {
-      clearTimeout(mouseEnterTimer)
-      clearTimeout(mouseLeaveTimer)
-      if (!this.isPopoverOpen) {
-        mouseEnterTimer = setTimeout(() => {
-          this.isPopoverOpen = true
-        }, 500)
-      }
-    },
-    popoveMouseLeave() {
-      clearTimeout(mouseEnterTimer)
-      clearTimeout(mouseLeaveTimer)
-      if (this.isPopoverOpen) {
-        mouseLeaveTimer = setTimeout(() => {
-          this.isPopoverOpen = false
-        }, 300)
-      }
+    isExact(url) {
+      return this.$route.path.indexOf(url) === 0
     }
   }
 }
 </script>
+
+<style lang="scss">
+.topbar-locale-switch {
+  display: inline-block;
+  top: 8px;
+  right: 10px;
+  position: relative;
+}
+.avatar-menu {
+  float: right;
+}
+
+.avatar-menu-trigger {
+  user-select: none;
+}
+.avatar-menu-popover {
+  display: inline-block;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  nav {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+</style>

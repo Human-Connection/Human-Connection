@@ -1,5 +1,9 @@
 <template>
-  <th class="ds-table-head-col">
+  <th
+    class="ds-table-head-col"
+    :class="[
+      align && `ds-table-head-col-${align}`
+    ]">
     <slot>
       {{ label }}
     </slot>
@@ -36,6 +40,17 @@ export default {
     width: {
       type: [String, Number, Object],
       default: null
+    },
+    /**
+     * The column align
+     * `left, center, right`
+     */
+    align: {
+      type: String,
+      default: null,
+      validator: value => {
+        return value.match(/(left|center|right)/)
+      }
     }
   },
   computed: {}

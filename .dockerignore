@@ -6,5 +6,8 @@ npm-debug.log
 
 Dockerfile
 docker-compose*.yml
+scripts/
 
 .env
+
+cypress/

@@ -1,5 +1,6 @@
 <template>
   <ds-card space="small">
+    {{ $t('settings.data.name') }}
     <ds-input
       id="name"
       v-model="form.name"

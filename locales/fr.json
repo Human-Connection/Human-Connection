@@ -1,0 +1,97 @@
+{
+  "login": {
+    "copy": "Si vous avez déjà un compte human-connection, connectez-vous ici.",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Votre Message électronique",
+    "password": "Votre mot de passe",
+    "moreInfo": "Qu'est-ce que Human Connection?",
+    "hello": "Bonjour"
+  },
+  "profile": {
+    "name": "Mon profil",
+    "memberSince": "Membre depuis",
+    "follow": "Suivre",
+    "followers": "Suiveurs",
+    "following": "Suivant"
+  },
+  "settings": {
+    "name": "Paramètres",
+    "data": {
+      "name": "Vos données"
+    },
+    "security": {
+      "name": "Sécurité"
+    },
+    "invites": {
+      "name": "Invite"
+    },
+    "download": {
+      "name": "Télécharger les données"
+    },
+    "delete": {
+      "name": "Supprimer un compte"
+    },
+    "organizations": {
+      "name": "Mes organisations"
+    },
+    "languages": {
+      "name": "Langues"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Tableau de bord",
+      "users": "Utilisateurs",
+      "posts": "Postes",
+      "comments": "Commentaires",
+      "notifications": "Notifications",
+      "organizations": "Organisations",
+      "projects": "Projets",
+      "invites": "Invite",
+      "follows": "Suit",
+      "shouts": "Cris"
+    },
+    "organizations": {
+      "name": "Organisations"
+    },
+    "users": {
+      "name": "Utilisateurs"
+    },
+    "pages": {
+      "name": "Pages"
+    },
+    "notifications": {
+      "name": "Notifications"
+    },
+    "categories": {
+      "name": "Catégories",
+      "categoryName": "Nom",
+      "postCount": "Postes"
+    },
+    "tags": {
+      "name": "Étiquettes",
+      "tagCountUnique": "Utilisateurs",
+      "tagCount": "Postes"
+    },
+    "settings": {
+      "name": "Paramètres"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "Plus d'infos"
+    },
+    "takeAction": {
+      "name": "Passez à l'action"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Beaucoup de petites personnes dans beaucoup de petits endroits font beaucoup de petites choses, qui peuvent changer la face du monde.",
+      "author": "Proverbe africain"
+    }
+  }
+}
