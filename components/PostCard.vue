@@ -8,6 +8,47 @@
       :image="post.image"
       style="cursor: pointer; position: relative;"
     >
+      <no-ssr>
+        <dropdown class="post-menu">
+          <template
+            slot="default"
+            slot-scope="{toggleMenu}"
+          >
+            <a
+              class="post-menu-trigger"
+              href="#"
+              @click.prevent="toggleMenu()"
+            >
+              Options
+            </a>
+          </template>
+          <template
+            slot="popover"
+            slot-scope="{toggleMenu}"
+          >
+            <div class="post-menu-popover">
+              <ds-menu
+                :routes="routes"
+                :is-exact="isExact"
+              >
+                <ds-menu-item
+                  slot="Navigation"
+                  slot-scope="item"
+                  :route="item.route"
+                  :parents="item.parents"
+                  @click.native="toggleMenu"
+                >
+                  <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+                </ds-menu-item>
+              </ds-menu>
+              <ds-space margin="xx-small" />
+              <nuxt-link :to="{ name: 'logout'}">
+                <ds-icon name="sign-out" /> {{ $t('login.logout') }}
+              </nuxt-link>
+            </div>
+          </template>
+        </dropdown>
+      </no-ssr>
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
       <ds-space margin-bottom="large">
@@ -55,12 +96,14 @@
 
 <script>
 import HcAuthor from '~/components/Author.vue'
+import Dropdown from '~/components/Dropdown'
 import { randomBytes } from 'crypto'
 
 export default {
   name: 'HcPostCard',
   components: {
-    HcAuthor
+    HcAuthor,
+    Dropdown
   },
   props: {
     post: {
@@ -82,6 +125,28 @@ export default {
       }
 
       return excerpt
+    },
+    routes() {
+      let routes = [
+        {
+          name: 'Melden',
+          path: `/profile/`,
+          icon: 'user'
+        },
+        {
+          name: 'Irgendwass',
+          path: `/settings`,
+          icon: 'cogs'
+        }
+      ]
+      // if (this.isAdmin) {
+      //   routes.push({
+      //     name: this.$t('admin.name'),
+      //     path: `/admin`,
+      //     icon: 'shield'
+      //   })
+      // }
+      return routes
     }
   },
   methods: {
@@ -90,6 +155,9 @@ export default {
         name: 'post-slug',
         params: { slug: post.slug }
       }).href
+    },
+    isExact(url) {
+      return this.$route.path.indexOf(url) === 0
     }
   }
 }
