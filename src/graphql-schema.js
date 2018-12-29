@@ -117,7 +117,7 @@ export const resolvers = {
             })
           }
           session.close()
-          throw new Error('Incorrect username or password.')
+          throw new AuthenticationError('Incorrect username or password.')
         }
         session.close()
       } catch (error) {
