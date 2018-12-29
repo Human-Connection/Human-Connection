@@ -17,8 +17,8 @@
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
     "db:script:reset": "wait-on tcp:4001 && babel-node src/seed/reset-db.js",
-    "db:seed": "$npm_package_config_no_auth run-p --race start db:script:seed",
-    "db:reset": "$npm_package_config_no_auth run-p --race start db:script:reset"
+    "db:seed": "$npm_package_config_no_auth run-p --race dev db:script:seed",
+    "db:reset": "$npm_package_config_no_auth run-p --race dev db:script:reset"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
