@@ -11682,10 +11682,10 @@ vue@^2.5.17:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
   integrity sha512-mFbcWoDIJi0w0Za4emyLiW72Jae0yjANHbCVquMKijcavBGypqlF7zHRgMa5k4sesdv7hv2rB4JPdZfR+TPfhQ==
 
-vuex-i18n@^1.10.5:
-  version "1.10.5"
-  resolved "https://registry.yarnpkg.com/vuex-i18n/-/vuex-i18n-1.10.5.tgz#635ea2204e0aa3f8fd512f0fab7f6b994d3f666c"
-  integrity sha1-Y16iIE4Ko/j9US8Pq39rmU0/Zmw=
+vuex-i18n@^1.10.9:
+  version "1.10.9"
+  resolved "https://registry.yarnpkg.com/vuex-i18n/-/vuex-i18n-1.10.9.tgz#5d5dc551f33b1d229b9bbff45deec29d9be93143"
+  integrity sha512-9JECE4I9VG0ZDCTV7kAldLdZN7FXJi/wjGi7DP/gosFyiye9jKBuIWO1djxkenl1ablTLfu/O6oTWBZuOIUsbQ==
 
 vuex@^3.0.1:
   version "3.0.1"
