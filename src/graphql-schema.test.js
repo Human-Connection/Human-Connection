@@ -55,21 +55,21 @@ describe.only('login', () => {
       })
 
       describe('with a valid email but incorrect password', () => {
-        it('responds with "Wrong email/password combination"', async () => {
+        it('responds with "Incorrect email address or password."', async () => {
           try {
             await request(getHost(), mutation({email: 'test@example.org', password: 'wrong'}))
           } catch (error) {
-            expect(error.response.errors[0].message).toEqual('Wrong email/password combination')
+            expect(error.response.errors[0].message).toEqual('Incorrect email address or password.')
           }
         })
       })
 
       describe('with a non-existing email', () => {
-        it('responds with "Wrong email/password combination"', async () => {
+        it('responds with "Incorrect email address or password."', async () => {
           try {
             await request(getHost(), mutation({email: 'non-existent@example.org', password: 'wrong'}))
           } catch (error) {
-            expect(error.response.errors[0].message).toEqual('Wrong email/password combination')
+            expect(error.response.errors[0].message).toEqual('Incorrect email address or password.')
           }
         })
       })
