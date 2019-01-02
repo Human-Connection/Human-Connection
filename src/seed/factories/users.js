@@ -1,18 +1,12 @@
 import faker from 'faker'
 
-export default function (params) {
-  const defaults = {
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    password: '1234',
-    avatar: faker.internet.avatar()
-  }
+export default function (params){
   const {
-    name,
-    email,
-    password,
-    avatar
-  } = Object.assign({}, defaults, params)
+    name = faker.name.findName(),
+    email = faker.internet.email(),
+    password =  '1234',
+    avatar = faker.internet.avatar()
+  } = params
 
   return `
     mutation {
