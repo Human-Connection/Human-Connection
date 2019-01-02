@@ -13,11 +13,6 @@ export const mutations = {
   SET_USER(state, user) {
     state.user = user || null
   },
-  SET_USER_SETTINGS(state, userSettings) {
-    // state.user = Object.assign(state.user, {
-    //   userSettings: Object.assign(this.getters['auth/userSettings'], userSettings)
-    // })
-  },
   SET_TOKEN(state, token) {
     state.token = token || null
   },
@@ -27,14 +22,14 @@ export const mutations = {
 }
 
 export const getters = {
+  isAuthenticated(state) {
+    return !!state.token
+  },
   isLoggedIn(state) {
     return !!(state.user && state.token)
   },
   pending(state) {
     return !!state.pending
-  },
-  isVerified(state) {
-    return !!state.user && state.user.isVerified && !!state.user.name
   },
   isAdmin(state) {
     return !!state.user && state.user.role === 'admin'
@@ -51,20 +46,6 @@ export const getters = {
   token(state) {
     return state.token
   }
-  // userSettings(state, getters, rootState, rootGetters) {
-  // const userSettings = (state.user && state.user.userSettings) ? state.user.userSettings : {}
-  //
-  // const defaultLanguage = (state.user && state.user.language) ? state.user.language : rootGetters['i18n/locale']
-  // let contentLanguages = !isEmpty(userSettings.contentLanguages) ? userSettings.contentLanguages : []
-  // if (isEmpty(contentLanguages)) {
-  //   contentLanguages = userSettings.uiLanguage ? [userSettings.uiLanguage] : [defaultLanguage]
-  // }
-  //
-  // return Object.assign({
-  //   uiLanguage: defaultLanguage,
-  //   contentLanguages: contentLanguages
-  // }, userSettings)
-  // }
 }
 
 export const actions = {
@@ -97,10 +78,8 @@ export const actions = {
     return getters.isLoggedIn
   },
   async login({ commit }, { email, password }) {
+    commit('SET_PENDING', true)
     try {
-      commit('SET_PENDING', true)
-      commit('SET_USER', null)
-      commit('SET_TOKEN', null)
       const res = await this.app.apolloProvider.defaultClient
         .mutate({
           mutation: gql(`
@@ -120,22 +99,15 @@ export const actions = {
         })
         .then(({ data }) => data && data.login)
 
-      if (res && res.token) {
-        await this.app.$apolloHelpers.onLogin(res.token)
-        commit('SET_TOKEN', res.token)
-        delete res.token
-        commit('SET_USER', res)
-        commit('SET_PENDING', false)
-        return true
-      } else {
-        commit('SET_PENDING', false)
-        throw new Error('THERE IS AN ERROR')
-      }
+      await this.app.$apolloHelpers.onLogin(res.token)
+      commit('SET_TOKEN', res.token)
+      const userData = Object.assign({}, res)
+      delete userData.token
+      commit('SET_USER', userData)
     } catch (err) {
-      commit('SET_USER', null)
-      commit('SET_TOKEN', null)
-      commit('SET_PENDING', false)
       throw new Error(err)
+    } finally {
+      commit('SET_PENDING', false)
     }
   },
   async logout({ commit }) {
