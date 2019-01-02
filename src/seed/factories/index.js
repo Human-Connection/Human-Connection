@@ -5,6 +5,7 @@ import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import neo4j from '../../bootstrap/neo4j'
 import { query } from '../../graphql-schema'
+import fetch from 'node-fetch'
 
 dotenv.config()
 
@@ -21,7 +22,7 @@ const driver = neo4j().getDriver()
 const session = driver.session()
 
 const builders = {
-  "user": require('./users.js').default,
+  'user': require('./users.js').default
 }
 
 const buildMutation = (model, parameters) => {
@@ -29,7 +30,7 @@ const buildMutation = (model, parameters) => {
 }
 
 const create = async (model, parameters) => {
-  await client.mutate({mutation: gql(buildMutation(model, parameters))})
+  await client.mutate({ mutation: gql(buildMutation(model, parameters)) })
 }
 
 const cleanDatabase = async () => {

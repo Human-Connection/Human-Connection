@@ -1,10 +1,10 @@
 import faker from 'faker'
 
-export default function (params){
+export default function (params) {
   const {
     name = faker.name.findName(),
     email = faker.internet.email(),
-    password =  '1234',
+    password = '1234',
     avatar = faker.internet.avatar()
   } = params
 
