@@ -55,7 +55,7 @@ npm run dev
 
 This will start the UI under [http://localhost:3000](http://localhost:3000)
 
-For development environements, we created three users with different profiles and privileges.
+For development environments, we created three users with different profiles and privileges.
 
 Login to the app with one the following credentials:
 
@@ -63,7 +63,7 @@ Login to the app with one the following credentials:
 * email: moderator@example.org
 * email: admin@example.org
 
-password: 1234 (common to all profiles)
+password: 1234 (same for all profiles)
 
 ![You should see this under http://localhost:3000](../.gitbook/assets/screenshot.png)
 
