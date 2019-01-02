@@ -262,10 +262,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@babel/node@~7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@babel/node/-/node-7.2.0.tgz#0b601be8ef03897923e3908dc18129836d44e6fa"
-  integrity sha512-RFwVH5xWpwd4SfkOI0WsK9AnF5o+C9iMTvUkkTb7jUNaiDieV8BGK38t74bTPjgc4FCxSAWNKqaqgDW4fenkyA==
+"@babel/node@~7.2.2":
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/@babel/node/-/node-7.2.2.tgz#1557dd23545b38d7b1d030a9c0e8fb225dbf70ab"
+  integrity sha512-jPqgTycE26uFsuWpLika9Ohz9dmLQHWjOnMNxBOjYb1HXO+eLKxEr5FfKSXH/tBvFwwaw+pzke3gagnurGOfCA==
   dependencies:
     "@babel/polyfill" "^7.0.0"
     "@babel/register" "^7.0.0"

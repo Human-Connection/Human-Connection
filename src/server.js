@@ -52,7 +52,7 @@ const createServer = (options) => {
     schema: schema,
     tracing: true,
     middlewares: middleware(schema),
-    mocks: (process.env.MOCK === 'true') ? mocks : false
+    mocks: true
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 

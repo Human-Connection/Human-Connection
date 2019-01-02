@@ -11,14 +11,15 @@
     "start": "node dist/",
     "dev": "nodemon --exec babel-node src/index.js",
     "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
-    "jest": "jest",
     "lint": "eslint src --config .eslintrc.js",
-    "test": "nyc --reporter=text-lcov jest",
+    "test": "nyc --reporter=text-lcov test:jest",
+    "test:jest": "$npm_package_config_no_auth run-p --race start test:cmd:jest",
+    "test:cmd:jest": "jest",
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
     "db:script:reset": "wait-on tcp:4001 && babel-node src/seed/reset-db.js",
-    "db:seed": "$npm_package_config_no_auth run-p --race start db:script:seed",
-    "db:reset": "$npm_package_config_no_auth run-p --race start db:script:reset"
+    "db:seed": "$npm_package_config_no_auth run-p --race dev db:script:seed",
+    "db:reset": "$npm_package_config_no_auth run-p --race dev db:script:reset"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
@@ -58,7 +59,7 @@
   "devDependencies": {
     "@babel/cli": "~7.2.0",
     "@babel/core": "^7.2.2",
-    "@babel/node": "~7.2.0",
+    "@babel/node": "~7.2.2",
     "@babel/preset-env": "~7.2.0",
     "@babel/register": "~7.0.0",
     "apollo-server-testing": "~2.2.6",
