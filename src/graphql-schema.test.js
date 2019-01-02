@@ -2,6 +2,7 @@ import { request } from 'graphql-request'
 import createServer from './server'
 import mocks from './mocks'
 import { create, cleanDatabase } from './seed/factories'
+import jwt from 'jsonwebtoken'
 
 let getHost
 let app
@@ -19,14 +20,16 @@ afterEach(async () => {
 })
 
 describe.only('login', () => {
-  let email
-  let password
-  const mutation = `
+  const mutation = (params) => {
+    const { email, password } = params
+    return `
       mutation {
         login(email:"${email}", password:"${password}"){
           token
         }
       }`
+  }
+
   describe('given an existing user', () => {
     beforeEach(async () => {
       await create('user', {
@@ -42,22 +45,19 @@ describe.only('login', () => {
     describe('asking for a `token`', () => {
       describe('with valid email/password combination', () => {
         it('responds with a JWT token', async () => {
-          email = 'user@example.org'
-          password = '1234'
-          try {
-            await request(getHost(), mutation)
-          } catch (error) {
-            expect(error.response.errors[0].message).toEqual('Wrong email/password combination')
-          }
+          const data = await request(getHost(), mutation({email: 'test@example.org', password: '1234'}))
+          const { token } = data.login
+          jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+            expect(data.email).toEqual('test@example.org')
+            expect(err).toBeNull()
+          })
         })
       })
 
       describe('with a valid email but incorrect password', () => {
         it('responds with "Wrong email/password combination"', async () => {
-          email = 'user@example.org'
-          password = 'wrong'
           try {
-            await request(getHost(), mutation)
+            await request(getHost(), mutation({email: 'test@example.org', password: 'wrong'}))
           } catch (error) {
             expect(error.response.errors[0].message).toEqual('Wrong email/password combination')
           }
@@ -66,10 +66,8 @@ describe.only('login', () => {
 
       describe('with a non-existing email', () => {
         it('responds with "Wrong email/password combination"', async () => {
-          email = 'non-existent@example.org'
-          password = '1234'
           try {
-            await request(getHost(), mutation)
+            await request(getHost(), mutation({email: 'non-existent@example.org', password: 'wrong'}))
           } catch (error) {
             expect(error.response.errors[0].message).toEqual('Wrong email/password combination')
           }
