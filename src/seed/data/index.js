@@ -15,7 +15,9 @@ const seed = {
   Organization: require('./organizations.js').default,
   Post: require('./posts.js').default,
   Comment: require('./comments.js').default,
-  UserShouts: require('./users-shouts.js').default
+  UserShouts: require('./users-shouts.js').default,
+
+  Reports: require('./reports.js').default
 }
 
 let data = {}
