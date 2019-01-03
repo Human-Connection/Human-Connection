@@ -7,7 +7,6 @@ cache:
     - node_modules
 services:
   - docker
-  - neo4j
 
 env:
   - DOCKER_COMPOSE_VERSION=1.23.2
