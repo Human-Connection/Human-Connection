@@ -111,7 +111,7 @@ export const resolvers = {
             return Object.assign(currentUser, {
               token: generateJwt(currentUser)
             })
-          } else throw new AuthenticationError('Incorrect username or password.')
+          } else throw new AuthenticationError('Incorrect email address or password.')
         })
     }
   }
