@@ -1344,17 +1344,17 @@
     eslint-plugin-prettier "^3.0.0"
     prettier "^1.15.2"
 
-"@vue/server-test-utils@^1.0.0-beta.27":
-  version "1.0.0-beta.27"
-  resolved "https://registry.yarnpkg.com/@vue/server-test-utils/-/server-test-utils-1.0.0-beta.27.tgz#0c61cb724d04bf44c70938b4a6054e73e914492a"
-  integrity sha512-HKwm1Nw180qNgknPyok/XWJF4ojBZC5vSANPf+f1WR2jYsSc0vvAxUyX2Qeq4F7KLXrfsFwdkfH3a5BxdrA9tg==
+"@vue/server-test-utils@^1.0.0-beta.28":
+  version "1.0.0-beta.28"
+  resolved "https://registry.yarnpkg.com/@vue/server-test-utils/-/server-test-utils-1.0.0-beta.28.tgz#40adb6a6c05e8970cc5e5f0869eb490fa00d9cf3"
+  integrity sha512-CrXQ2ISmLvye4HC4sIHqqR3Gyg02i8XcTwMAyIh+UY7fh1Nz4f9XE4LDsxg0B9uSGsSiR0lwphjlGtbUJjGl4A==
   dependencies:
     cheerio "^1.0.0-rc.2"
 
-"@vue/test-utils@^1.0.0-beta.27":
-  version "1.0.0-beta.27"
-  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-1.0.0-beta.27.tgz#7e5f7b7180c00e28a4ca55c0ff0a7e754377fdb2"
-  integrity sha512-Lzrd4ZBkS70Tl8JbXbDrN/NcSaH9aZT6+7emU3QhTJ+CrorJpyFDA1dkvSIhH+rDTs8sHFbGeXjXV/qorXxtRw==
+"@vue/test-utils@^1.0.0-beta.28":
+  version "1.0.0-beta.28"
+  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-1.0.0-beta.28.tgz#767c43413df8cde86128735e58923803e444b9a5"
+  integrity sha512-uVbFJG0g/H9hf2pgWUdhvQYItRGzQ44cMFf00wp0YEo85pxuvM9e3mx8QLQfx6R2CogxbK4CvV7qvkLblehXeQ==
   dependencies:
     dom-event-types "^1.0.0"
     lodash "^4.17.4"
@@ -3793,19 +3793,20 @@ cookie-signature@1.0.6:
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
   integrity sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
 
-cookie-universal-nuxt@^2.0.11:
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/cookie-universal-nuxt/-/cookie-universal-nuxt-2.0.11.tgz#f7f2ea1d63a497b24d5e630cee4e999475e777f4"
-  integrity sha512-GmzXjkIpCRAe+fIpYavHyFliEDRofiJMbBd17kZJia+nLVEt2CJxjOqcQRqUOXmvtuB0oHDYy+fVflxs863T0w==
+cookie-universal-nuxt@^2.0.12:
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/cookie-universal-nuxt/-/cookie-universal-nuxt-2.0.12.tgz#061bb1864d2dd010fad1c484ae982da42954bfd9"
+  integrity sha512-qZu3rOgsDjWqgq9dU+zCQl3RpsZeevI/c6fN+wgTRsQdSe8MSwYWpl+6Pitu0mXgZKVJ8e+JA3s3jDVoXV5szg==
   dependencies:
     "@types/cookie" "^0.3.1"
-    cookie-universal "^2.0.11"
+    cookie-universal "^2.0.12"
 
-cookie-universal@^2.0.11:
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/cookie-universal/-/cookie-universal-2.0.11.tgz#525f6324b6698a713b46be77a3440daff68e4a6a"
-  integrity sha512-5IA+uAPwBuphUfuk+lpFEajfrUTZA3RmMXfoT/KWs29WMd2ZifHOafAr+w8WdlSixddjTEkOgUWrk27+ErueUg==
+cookie-universal@^2.0.12:
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/cookie-universal/-/cookie-universal-2.0.12.tgz#3627a56045a84c1c53618d38bd30b278db5633f4"
+  integrity sha512-/3ch/W145NHVmX2Oenykb3U/Knmu/78JJZxGY2qw28mIr/Ueve6D+A3BySAncvqIgNUy7lIgmAUjf1hV4D4d/A==
   dependencies:
+    "@types/cookie" "^0.3.1"
     cookie "^0.3.1"
 
 cookie@0.3.1, cookie@^0.3.1:
@@ -4875,17 +4876,17 @@ eslint-loader@^2.0.0:
     object-hash "^1.1.4"
     rimraf "^2.6.1"
 
-eslint-plugin-prettier@3.0.0, eslint-plugin-prettier@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.0.0.tgz#f6b823e065f8c36529918cdb766d7a0e975ec30c"
-  integrity sha512-4g11opzhqq/8+AMmo5Vc2Gn7z9alZ4JqrbZ+D4i8KlSyxeQhZHlmIrY8U9Akf514MoEhogPa87Jgkq87aZ2Ohw==
+eslint-plugin-prettier@3.0.1, eslint-plugin-prettier@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.0.1.tgz#19d521e3981f69dd6d14f64aec8c6a6ac6eb0b0d"
+  integrity sha512-/PMttrarPAY78PLvV3xfWibMOdMDl57hmlQ2XqFeA37wd+CJ7WSxV7txqjVPHi/AAFKd2lX0ZqfsOc/i5yFCSQ==
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-vue@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-5.0.0.tgz#4a2cc1c0e71ea45e1bd9c1a60f925bfe68bb5710"
-  integrity sha512-mSv2Ebz3RaPP+XJO/mu7F+SdR9lrMyGISSExnarLFqqf3pF5wTmwWNrhHW1o9zKzKI811UVTIIkWJJvgO6SsUQ==
+eslint-plugin-vue@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-5.1.0.tgz#d0d373334be8140d698ec4e1fb83f09faa48081b"
+  integrity sha512-C7avvbGLb9J1PyGiFolPcGR4ljUc+dKm5ZJdrUKXwXFxHHx4SqOmRI29AsFyW7PbCGcnOvIlaq7NJS6HDIak+g==
   dependencies:
     vue-eslint-parser "^4.0.2"
 
@@ -4915,10 +4916,10 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint@^5.11.0:
-  version "5.11.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.11.0.tgz#51a0e70f137a425fe044cd48273b96f28a774b1f"
-  integrity sha512-gbEg0ttToZPkZUv2yYjpipxuYrv/9aSSmgM4V6GkiO3u04QosHYBtduUCqLEulEg3YvNDAkk3OWzyQJ/heZ3Nw==
+eslint@^5.11.1:
+  version "5.11.1"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.11.1.tgz#8deda83db9f354bf9d3f53f9677af7e0e13eadda"
+  integrity sha512-gOKhM8JwlFOc2acbOrkYR05NW8M6DCMSvfcJiBB5NDxRE1gv8kbvxKaC9u69e6ZGEMWXcswA/7eKR229cEIpvg==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.5.3"
@@ -11682,10 +11683,10 @@ vue@^2.5.17:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
   integrity sha512-mFbcWoDIJi0w0Za4emyLiW72Jae0yjANHbCVquMKijcavBGypqlF7zHRgMa5k4sesdv7hv2rB4JPdZfR+TPfhQ==
 
-vuex-i18n@^1.10.5:
-  version "1.10.5"
-  resolved "https://registry.yarnpkg.com/vuex-i18n/-/vuex-i18n-1.10.5.tgz#635ea2204e0aa3f8fd512f0fab7f6b994d3f666c"
-  integrity sha1-Y16iIE4Ko/j9US8Pq39rmU0/Zmw=
+vuex-i18n@^1.10.9:
+  version "1.10.9"
+  resolved "https://registry.yarnpkg.com/vuex-i18n/-/vuex-i18n-1.10.9.tgz#5d5dc551f33b1d229b9bbff45deec29d9be93143"
+  integrity sha512-9JECE4I9VG0ZDCTV7kAldLdZN7FXJi/wjGi7DP/gosFyiye9jKBuIWO1djxkenl1ablTLfu/O6oTWBZuOIUsbQ==
 
 vuex@^3.0.1:
   version "3.0.1"
