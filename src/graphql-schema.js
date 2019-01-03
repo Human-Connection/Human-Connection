@@ -2,9 +2,9 @@
 import fs from 'fs'
 import path from 'path'
 import bcrypt from 'bcryptjs'
-import zipObject from 'lodash/zipObject'
 import generateJwt from './jwt/generateToken'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
+import { AuthenticationError } from 'apollo-server'
 
 export const typeDefs =
   fs.readFileSync(process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql'))
@@ -95,32 +95,24 @@ export const resolvers = {
       // if (user && user.id) {
       //   throw new Error('Already logged in.')
       // }
-
       const session = driver.session()
-      const res = await session.run('MATCH (u:User {email: "' + email + '"}) RETURN u.id, u.slug, u.name, u.avatar, u.email, u.password, u.role LIMIT 1')
-      let u = res.records[0]._fields ? zipObject([
-        'id',
-        'slug',
-        'name',
-        'avatar',
-        'email',
-        'password',
-        'role'
-      ], res.records[0]._fields) : null
-      if (u) {
-        if (await bcrypt.compareSync(password, u.password)) {
-          delete u.password
-          u.avatar = fixUrl(u.avatar)
-          return Object.assign(u, {
-            token: generateJwt(u)
+      return session.run(
+        'MATCH (user:User {email: "' + email + '"}) ' +
+        'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1')
+        .then(async (result) => {
+          session.close()
+          const [currentUser] = await result.records.map(function (record) {
+            console.log(record.get('user'))
+            return record.get('user')
           })
-        }
-        session.close()
-        throw new Error('Incorrect password.')
-      }
-
-      session.close()
-      throw new Error('No Such User exists.')
+          if (currentUser && await bcrypt.compareSync(password, currentUser.password)) {
+            delete currentUser.password
+            currentUser.avatar = fixUrl(currentUser.avatar)
+            return Object.assign(currentUser, {
+              token: generateJwt(currentUser)
+            })
+          } else throw new AuthenticationError('Incorrect email address or password.')
+        })
     }
   }
 }

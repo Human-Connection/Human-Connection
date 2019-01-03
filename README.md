@@ -131,6 +131,9 @@ npm run db:reset
 ```
 
 ## Run Tests
+
+**Beware**: We have no multiple database setup at the moment. We clean the database after each test, running the tests will wipe out all your data!
+
 ```bash
 yarn run test
 # -or-
