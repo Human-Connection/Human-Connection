@@ -124,10 +124,10 @@ export const resolvers = {
       throw new Error('No Such User exists.')
     },
     report: async (parent, { resource, description }, { driver, req, user }, resolveInfo) => {
-      return neo4jgraphql(parent, { resource, description }, { driver, req, user }, resolveInfo)
-      // console.log('params', { resource, description })
-      // console.log(`the user with the id ${user.id} tries to create a report on content of type ${resource.type} (${resource.id})`)
-      // throw new Error(`resource.id: ${resource.id}, resource.type: ${resource.type}, description: ${description}, user: ${user.id}`)
+      // return neo4jgraphql(parent, { resource, description }, { driver, req, user }, resolveInfo)
+      console.log('params', { resource, description })
+      console.log(`the user with the id ${user.id} tries to create a report on content of type ${resource.type} (${resource.id})`)
+      throw new Error(`resource.id: ${resource.id}, resource.type: ${resource.type}, description: ${description}, user: ${user.id}`)
     }
   }
 }
