@@ -26,6 +26,7 @@ FROM base as production
 ENV NODE_ENV=production
 ADD package.json ./
 ADD nuxt.config.js ./
+COPY --from=builder ./nitro-web/plugins ./plugins/
 COPY --from=builder ./nitro-web/node_modules ./node_modules/
 COPY --from=builder /nitro-web/.nuxt/ ./.nuxt
 COPY --from=builder ./nitro-web/static ./static/
