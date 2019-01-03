@@ -97,8 +97,8 @@ export const resolvers = {
       // }
       const session = driver.session()
       return session.run(
-        'MATCH (user:User {email: "' + email + '"}) ' +
-        'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1')
+        'MATCH (user:User {email: $userEmail}) ' +
+        'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1', { userEmail: email })
         .then(async (result) => {
           session.close()
           const [currentUser] = await result.records.map(function (record) {
