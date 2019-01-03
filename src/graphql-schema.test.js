@@ -71,7 +71,7 @@ describe.only('login', () => {
       })
 
       describe('with a non-existing email', () => {
-        it('responds with "Incorrect email address or password."', async (doen) => {
+        it('responds with "Incorrect email address or password."', async (done) => {
           try {
             await request(getHost(), mutation({ email: 'non-existent@example.org', password: 'wrong' }))
           } catch (error) {
