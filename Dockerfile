@@ -1,9 +1,9 @@
-FROM node:10-alpine
+FROM node:10-alpine as base
 LABEL Description="Web Frontend of the Social Network Human-Connection.org" Vendor="Human-Connection gGmbH" Version="0.0.1" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
 
 # Expose the app port
-EXPOSE 3000
-
+ARG BUILD_COMMIT
+ENV BUILD_COMMIT=$BUILD_COMMIT
 ARG WORKDIR=/nitro-web
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
@@ -11,18 +11,24 @@ WORKDIR $WORKDIR
 # See: https://github.com/nodejs/docker-node/pull/367#issuecomment-430807898
 RUN apk --no-cache add git
 
-# Install Web Application
-COPY package.json .
-COPY yarn.lock .
+COPY package.json yarn.lock ./
 COPY styleguide/ ./styleguide
-RUN yarn install --production=false --frozen-lockfile --non-interactive
 
-# Install and build Styleguide
-COPY styleguide/ ./styleguide
+FROM base as builder
+RUN yarn install --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
-    && yarn run styleguide:build
+    && yarn run styleguide:build 
+COPY . . 
+RUN yarn run build
 
-COPY . .
-RUN ["yarn", "run", "build"]
+FROM base as production
+ENV NODE_ENV=production
+ADD package.json ./
+ADD nuxt.config.js ./
+COPY --from=builder ./nitro-web/node_modules ./node_modules/
+COPY --from=builder /nitro-web/.nuxt/ ./.nuxt
+COPY --from=builder ./nitro-web/static ./static/
+
+EXPOSE 3000
 CMD ["yarn", "run", "start"]
