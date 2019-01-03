@@ -1,0 +1,8 @@
+version: "3.7"
+
+services:
+  backend:
+    image: humanconnection/nitro-web:builder
+    build:
+      context: .
+      target: builder
