@@ -1,6 +1,6 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import find from 'lodash/find'
-import { eq } from 'semver';
+import { eq } from 'semver'
 
 /* global cy */
 
@@ -72,7 +72,6 @@ Given('my account has the following details:', table => {
 Given('my user account has the role {string}', role => {
   // TODO: use db factories instead of seed data
 })
-
 
 When('I log out', logout)
 
