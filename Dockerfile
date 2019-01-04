@@ -13,6 +13,7 @@ RUN apk --no-cache add git
 
 COPY package.json yarn.lock ./
 COPY styleguide/ ./styleguide
+COPY server/ ./server
 CMD ["yarn", "run", "start"]
 
 FROM base as builder
