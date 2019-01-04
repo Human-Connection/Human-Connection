@@ -49,8 +49,8 @@ export const getters = {
 }
 
 export const actions = {
-  async init({ commit }) {
-    if (process.client) {
+  async init({ commit, dispatch }) {
+    if (!process.server) {
       return
     }
     const token = this.app.$apolloHelpers.getToken()
@@ -58,20 +58,20 @@ export const actions = {
       return
     }
 
-    const user = await jwt.verify(token, 'b/&&7b78BF&fv/Vd')
-    if (user.id) {
-      commit('SET_USER', {
-        id: user.id,
-        name: user.name,
-        slug: user.slug,
-        email: user.email,
-        avatar: user.avatar,
-        role: user.role,
-        locationId: user.locationId,
-        about: user.about
-      })
-      commit('SET_TOKEN', token)
+    const payload = await jwt.verify(
+      token,
+      process.server
+        ? require('dotenv').parse(require('fs').readFileSync('.env')).JWT_SECRET
+        : null
+    )
+    if (!payload.id) {
+      return
     }
+    commit('SET_TOKEN', token)
+    commit('SET_USER', {
+      id: payload.id
+    })
+    await dispatch('fetchCurrentUser')
   },
   async check({ commit, dispatch, getters }) {
     if (!this.app.$apolloHelpers.getToken()) {
@@ -79,20 +79,32 @@ export const actions = {
     }
     return getters.isLoggedIn
   },
-  refresh({ state, commit }, { id, name, locationId, about, avatar }) {
-    if (!state.user.id || id !== state.user.id) {
-      return
-    }
-    commit('SET_USER', {
-      id: state.user.id, // do not change
-      name: name || state.user.name,
-      slug: state.user.slug, // do not change
-      email: state.user.email, // do not change
-      avatar: avatar || state.user.avatar,
-      role: state.user.role,
-      locationId: locationId || state.user.locationId,
-      about: about || state.user.about
-    })
+  async fetchCurrentUser({ commit, getters }) {
+    await this.app.apolloProvider.defaultClient
+      .query({
+        query: gql(`
+          query User($id: ID!) {
+            User(id: $id) {
+              id
+              name
+              slug
+              email
+              avatar
+              role
+              locationName
+              about
+            }
+          }
+        `),
+        variables: { id: getters.user.id }
+      })
+      .then(({ data }) => {
+        const user = data.User.pop()
+        if (user.id && user.email) {
+          commit('SET_USER', user)
+        }
+      })
+    return getters.user
   },
   async login({ commit }, { email, password }) {
     commit('SET_PENDING', true)
@@ -100,20 +112,20 @@ export const actions = {
       const res = await this.app.apolloProvider.defaultClient
         .mutate({
           mutation: gql(`
-          mutation($email: String!, $password: String!) {
-            login(email: $email, password: $password) {
-              id
-              name
-              slug
-              email
-              avatar
-              role
-              locationId
-              about
-              token
+            mutation($email: String!, $password: String!) {
+              login(email: $email, password: $password) {
+                id
+                name
+                slug
+                email
+                avatar
+                role
+                locationName
+                about
+                token
+              }
             }
-          }
-        `),
+          `),
           variables: { email, password }
         })
         .then(({ data }) => data && data.login)

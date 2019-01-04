@@ -13,12 +13,11 @@
     <!-- eslint-disable vue/use-v-on-exact -->
     <ds-select
       id="city"
-      v-model="city"
+      v-model="form.locationName"
       :options="cities"
       icon="map-marker"
       label="Deine Stadt"
       placeholder="Deine Stadt"
-      @input="handleCitySelection"
       @input.native="handleCityInput"
     />
     <!-- eslint-enable vue/use-v-on-exact -->
@@ -51,18 +50,16 @@ import { CancelToken } from 'axios'
 import find from 'lodash/find'
 
 let timeout
-const mapboxToken =
-  'pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ'
+const mapboxToken = process.env.MAPBOX_TOKEN
 
 export default {
   data() {
     return {
       axiosSource: null,
       cities: [],
-      city: null,
       form: {
         name: null,
-        locationId: null,
+        locationName: null,
         about: null
       }
     }
@@ -78,7 +75,7 @@ export default {
       handler: function(user) {
         this.form = {
           name: user.name,
-          locationId: user.locationId,
+          locationName: user.locationName,
           about: user.about
         }
       }
@@ -93,18 +90,18 @@ export default {
             mutation(
               $id: ID!
               $name: String
-              $locationId: String
+              $locationName: String
               $about: String
             ) {
               UpdateUser(
                 id: $id
                 name: $name
-                locationId: $locationId
+                locationName: $locationName
                 about: $about
               ) {
                 id
                 name
-                locationId
+                locationName
                 about
               }
             }
@@ -113,14 +110,14 @@ export default {
           variables: {
             id: this.user.id,
             name: this.form.name,
-            locationId: this.form.locationId,
+            locationName: this.form.locationName,
             about: this.form.about
           },
           // Update the cache with the result
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { UpdateUser } }) => {
-            this.$store.dispatch('auth/refresh', UpdateUser)
+            this.$store.dispatch('auth/fetchCurrentUser')
 
             // Read the data from our cache for this query.
             // const data = store.readQuery({ query: TAGS_QUERY })
@@ -153,15 +150,6 @@ export default {
     handleCityInput(value) {
       clearTimeout(timeout)
       timeout = setTimeout(() => this.requestGeoData(value), 500)
-    },
-    handleCitySelection(value) {
-      console.log('SET CURRENT VALUE', value)
-      const item = find(this.cities, { value: value })
-      console.log('ID:', item.id)
-      this.form.locationId = item.id
-    },
-    handleCityEnter() {
-      console.log('SET CURRENT VALUE')
     },
     processCityResults(res) {
       if (
@@ -199,7 +187,7 @@ export default {
 
       this.$axios
         .get(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?access_token=${mapboxToken}&types=region,postcode,district,place,country&language=de`,
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?access_token=${mapboxToken}&types=region,postcode,district,place,country&language=${this.$i18n.locale()}`,
           {
             cancelToken: this.axiosSource.token
           }
