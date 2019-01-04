@@ -19,7 +19,7 @@ before_install:
 
 install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-web .
-  - docker-compose -f docker-compose.yml up -f docker-compose.travis.yml up -d
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
   - git clone https://github.com/Human-Connection/Nitro-Backend.git ../Nitro-Backend
   - git -C "../Nitro-Backend" checkout $TRAVIS_BRANCH || echo "Branch \`$TRAVIS_BRANCH\` does not exist, falling back to \`master\`"
   - docker-compose -f ../Nitro-Backend/docker-compose.yml -f ../Nitro-Backend/docker-compose.travis.yml up -d
