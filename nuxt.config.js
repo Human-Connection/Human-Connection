@@ -1,5 +1,5 @@
 const pkg = require('./package')
-const envWhitelist = ['NODE_ENV', 'MAINTENANCE']
+const envWhitelist = ['NODE_ENV', 'MAINTENANCE', 'MAPBOX_TOKEN']
 const dev = process.env.NODE_ENV !== 'production'
 const path = require('path')
 
