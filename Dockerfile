@@ -21,7 +21,7 @@ FROM base as build-and-test
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
-    && yarn run styleguide:build
+    && yarn run styleguide:build && eslint --init
 COPY . .
 RUN yarn run build
 
