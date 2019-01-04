@@ -13,6 +13,7 @@ RUN apk --no-cache add git
 
 COPY package.json yarn.lock ./
 COPY styleguide/ ./styleguide
+CMD ["yarn", "run", "start"]
 
 FROM base as builder
 RUN yarn install --frozen-lockfile --non-interactive
@@ -32,4 +33,3 @@ COPY --from=builder /nitro-web/.nuxt/ ./.nuxt
 COPY --from=builder ./nitro-web/static ./static/
 
 EXPOSE 3000
-CMD ["yarn", "run", "start"]
