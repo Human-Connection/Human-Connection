@@ -14,7 +14,9 @@ RUN apk --no-cache add git
 COPY locales ./locales
 COPY styleguide ./styleguide
 COPY server ./server
-COPY package.json yarn.lock .eslintrc.js .eslintignore store/auth.test.js components/Badges.spec.js nuxt.config.js ./
+COPY components ./components
+COPY store ./store
+COPY package.json yarn.lock .eslintrc.js .eslintignore nuxt.config.js ./
 CMD ["yarn", "run", "start"]
 
 FROM base as build-and-test
@@ -27,6 +29,7 @@ RUN yarn run build
 
 FROM base as production
 ENV NODE_ENV=production
+RUN rm -rf ./nitro-web/components ./nitro-web/store
 COPY --from=build-and-test ./nitro-web/node_modules ./node_modules
 COPY --from=build-and-test ./nitro-web/plugins ./plugins
 COPY --from=build-and-test ./nitro-web/.nuxt ./.nuxt
