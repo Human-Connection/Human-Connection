@@ -14,14 +14,14 @@ RUN apk --no-cache add git
 COPY locales ./locales
 COPY styleguide ./styleguide
 COPY server ./server
-COPY package.json yarn.lock nuxt.config.js ./
+COPY package.json yarn.lock .eslintrc.js .eslintignore store/auth.test.js components/Badges.spec.js nuxt.config.js ./
 CMD ["yarn", "run", "start"]
 
 FROM base as build-and-test
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
-    && yarn run styleguide:build && eslint --init
+    && yarn run styleguide:build
 COPY . .
 RUN yarn run build
 
