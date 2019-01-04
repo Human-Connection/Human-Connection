@@ -4,4 +4,4 @@ services:
   webapp:
     build:
       context: .
-      target: builder
+      target: build-and-test

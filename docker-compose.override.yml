@@ -4,7 +4,7 @@ services:
   webapp:
     build:
       context: .
-      target: builder
+      target: build-and-test
     volumes:
       - .:/nitro-web
       - node_modules:/nitro-web/node_modules

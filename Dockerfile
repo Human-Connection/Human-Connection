@@ -11,13 +11,14 @@ WORKDIR $WORKDIR
 # See: https://github.com/nodejs/docker-node/pull/367#issuecomment-430807898
 RUN apk --no-cache add git
 
-COPY package.json yarn.lock ./
-COPY styleguide/ ./styleguide
-COPY server/ ./server
+COPY locales ./locales
+COPY styleguide ./styleguide
+COPY server ./server
+COPY package.json yarn.lock nuxt.config.js ./
 CMD ["yarn", "run", "start"]
 
-FROM base as builder
-RUN yarn install --frozen-lockfile --non-interactive
+FROM base as build-and-test
+RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
     && yarn run styleguide:build
@@ -26,11 +27,9 @@ RUN yarn run build
 
 FROM base as production
 ENV NODE_ENV=production
-ADD package.json ./
-ADD nuxt.config.js ./
-COPY --from=builder ./nitro-web/plugins ./plugins/
-COPY --from=builder ./nitro-web/node_modules ./node_modules/
-COPY --from=builder /nitro-web/.nuxt/ ./.nuxt
-COPY --from=builder ./nitro-web/static ./static/
+COPY --from=build-and-test ./nitro-web/node_modules ./node_modules
+COPY --from=build-and-test ./nitro-web/plugins ./plugins
+COPY --from=build-and-test ./nitro-web/.nuxt ./.nuxt
+COPY --from=build-and-test ./nitro-web/static ./static
 
 EXPOSE 3000
