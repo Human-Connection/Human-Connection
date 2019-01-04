@@ -18,8 +18,8 @@ FROM base as builder
 RUN yarn install --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
-    && yarn run styleguide:build 
-COPY . . 
+    && yarn run styleguide:build
+COPY . .
 RUN yarn run build
 
 FROM base as production
