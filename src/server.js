@@ -14,6 +14,13 @@ import jwtStrategy from './jwt/strategy'
 import jwt from 'jsonwebtoken'
 
 dotenv.config()
+// check env and warn
+const requiredEnvVars = ['MAPBOX_TOKEN', 'JWT_SECRET']
+requiredEnvVars.forEach(env => {
+  if (!process.env[env]) {
+    throw new Error(`ERROR: "${env}" env variable is missing`)
+  }
+})
 
 let schema = makeExecutableSchema({
   typeDefs,
