@@ -1,5 +1,11 @@
 import request from 'request'
-import zipObject from 'lodash/zipObject'
+
+
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+}
 
 const fetch = url => {
   return new Promise((resolve, reject) => {
@@ -13,15 +19,12 @@ const fetch = url => {
   })
 }
 
-const createOrUpdateLocations = async (userId, locationId, driver) =>{
-  if (!locationId) {
+const createOrUpdateLocations = async (userId, locationName, driver) =>{
+  if (!locationName) {
     return
   }
-  console.log('userId', userId)
-  console.log('locationId', locationId)
-
-  const mapboxToken = 'pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ'
-  const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${locationId}.json?access_token=${mapboxToken}&language=de`)
+  const mapboxToken = process.env.MAPBOX_TOKEN
+  const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${locationName}.json?access_token=${mapboxToken}&language=de`)
 
   // TODO: create location in db
 
@@ -29,15 +32,35 @@ const createOrUpdateLocations = async (userId, locationId, driver) =>{
 
   const data = res.features[0]
   const session = driver.session()
-  const r = await session.run(`MERGE (l:Location {id: "${data.id}"}) SET l.name = "${data.place_name}", l.type = "${data.place_type[0]}", l.lat = "${data.center[0]}", l.lng = "${data.center[1]}" RETURN l.id, l.name, l.type, l.lat, l.lng`)
-  // let location = r.records[0]._fields ? zipObject([
-  //   'id',
-  //   'name',
-  //   'type',
-  //   'lat',
-  //   'lng'
-  // ], r.records[0]._fields) : null
+  await session.run(
+    `MERGE (l:Location {id: "${data.id}"}) ` +
+    `SET l.name = "${data.text}", ` +
+        `l.type = "${data.place_type[0].toLowerCase()}", ` +
+        `l.lat = "${data.center[0]}", ` +
+        `l.lng = "${data.center[1]}" ` +
+    'RETURN l.id, l.name, l.type, l.lat, l.lng'
+  )
 
+  let parent = data
+
+  if (data.context) {
+    await asyncForEach(data.context, async ctx => {
+      const type = ctx.id.split('.')[0].toLowerCase()
+      await session.run(
+        `MERGE (l:Location {id: "${ctx.id}"}) ` +
+        `SET l.name = "${ctx.text}", ` +
+            `l.type = "${type}", ` +
+            `l.shortCode = "${ctx.short_code}" ` +
+        'RETURN l.id, l.name, l.type'
+      )
+      await session.run(
+        `MATCH (parent:Location {id: "${parent.id}"}), (child:Location {id: "${ctx.id}"}) ` +
+        'MERGE (child)<-[:IS_IN]-(parent) ' +
+        'RETURN child.id, parent.id')
+
+      parent = ctx
+    })
+  }
   // delete all current locations from user
   await session.run(`MATCH (u:User {id: "${userId}"})-[r:IS_IN]->(l:Location) DETACH DELETE r`)
   // connect user with location
@@ -49,12 +72,12 @@ export default {
   Mutation: {
     CreateUser: async (resolve, root, args, context, info) => {
       const result = await resolve(root, args, context, info)
-      await createOrUpdateLocations(context.user.id, args.locationId, context.driver)
+      await createOrUpdateLocations(context.user.id, args.locationName, context.driver)
       return result
     },
     UpdateUser: async (resolve, root, args, context, info) => {
       const result = await resolve(root, args, context, info)
-      await createOrUpdateLocations(context.user.id, args.locationId, context.driver)
+      await createOrUpdateLocations(context.user.id, args.locationName, context.driver)
       return result
     }
   }

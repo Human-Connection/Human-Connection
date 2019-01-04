@@ -50,8 +50,9 @@ type Location {
   id: ID!
   name: String!
   type: String!
-  lat: Float!
-  lng: Float!
+  lat: Float
+  lng: Float
+  parent: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
 }
 
 type User {
@@ -65,8 +66,8 @@ type User {
   disabled: Boolean
   role: UserGroupEnum
 
-  location: [Location] @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
-  locationId: String
+  location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+  locationName: String
   about: String
 
   createdAt: String

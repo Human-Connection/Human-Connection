@@ -51,6 +51,7 @@ const createServer = (options) => {
     },
     schema: schema,
     tracing: true,
+    debug: process.env.NODE_ENV !== 'production',
     middlewares: middleware(schema),
     mocks: (process.env.MOCK === 'true') ? mocks : false
   }
