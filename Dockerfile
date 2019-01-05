@@ -11,12 +11,7 @@ WORKDIR $WORKDIR
 # See: https://github.com/nodejs/docker-node/pull/367#issuecomment-430807898
 RUN apk --no-cache add git
 
-COPY locales ./locales
-COPY styleguide ./styleguide
-COPY server ./server
-COPY components ./components
-COPY store ./store
-COPY package.json yarn.lock .eslintrc.js .eslintignore nuxt.config.js ./
+COPY . .
 CMD ["yarn", "run", "start"]
 
 FROM base as build-and-test
