@@ -15,6 +15,7 @@ COPY . .
 CMD ["yarn", "run", "start"]
 
 FROM base as build-and-test
+ENV NODE_ENV=test
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
@@ -24,7 +25,6 @@ RUN yarn run build
 
 FROM base as production
 ENV NODE_ENV=production
-RUN rm -rf ./nitro-web/components ./nitro-web/store
 COPY --from=build-and-test ./nitro-web/node_modules ./node_modules
 COPY --from=build-and-test ./nitro-web/plugins ./plugins
 COPY --from=build-and-test ./nitro-web/.nuxt ./.nuxt
