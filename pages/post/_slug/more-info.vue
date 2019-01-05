@@ -107,6 +107,9 @@ export default {
                 contributionsCount
                 followedByCount
                 commentsCount
+                location {
+                  name
+                }
                 badges {
                   id
                   key

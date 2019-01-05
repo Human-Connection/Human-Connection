@@ -97,6 +97,9 @@ export default {
               shoutedCount
               commentsCount
               followedByCount
+              location {
+                name
+              }
               badges {
                 id
                 key

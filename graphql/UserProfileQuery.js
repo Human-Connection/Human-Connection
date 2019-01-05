@@ -70,6 +70,9 @@ export default gql(`
           id
           avatar
           name
+          location {
+            name
+          }
         }
       }
     }

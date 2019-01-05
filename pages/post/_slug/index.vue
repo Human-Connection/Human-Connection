@@ -161,6 +161,9 @@ export default {
               contributionsCount
               commentsCount
               followedByCount
+              location {
+                name
+              }
               badges {
                 id
                 key
@@ -185,6 +188,9 @@ export default {
                 contributionsCount
                 commentsCount
                 followedByCount
+                location {
+                  name
+                }
                 badges {
                   id
                   key
