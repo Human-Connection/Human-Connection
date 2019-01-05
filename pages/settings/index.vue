@@ -195,7 +195,6 @@ export default {
         .then(res => {
           this.cities = this.processCityResults(res)
         })
-      console.log('TRY TO GET DATA FOR ', value)
     }
   }
 }
