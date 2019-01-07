@@ -1,4 +1,4 @@
-import server from './server'
+import createServer from './server'
 
 const serverConfig = {
   port: process.env.GRAPHQL_PORT || 4000
@@ -8,6 +8,7 @@ const serverConfig = {
   // }
 }
 
+const server = createServer()
 server.start(serverConfig, options => {
   /* eslint-disable-next-line no-console */
   console.log(`Server ready at ${process.env.GRAPHQL_URI} 🚀`)
