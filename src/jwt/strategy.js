@@ -24,7 +24,7 @@ export default (driver) => {
         'MATCH (user:User {id: $userId}) ' +
         'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1',
         {
-          id: JWTPayload.id
+          userId: JWTPayload.id
         }
       );
       session.close();
