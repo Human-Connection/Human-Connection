@@ -1,6 +1,7 @@
 {
   "login": {
     "copy": "Si ya tiene una cuenta de Human Connection, inicie sesión aquí.",
+    "login": "Iniciar sesión",
     "logout": "Cierre de sesión",
     "email": "Tu correo electrónico",
     "password": "Tu contraseña",
@@ -10,9 +11,12 @@
   "profile": {
     "name": "Mi perfil",
     "memberSince": "Miembro desde",
-    "followers": "Seguidores"
+    "follow": "Seguir",
+    "followers": "Seguidores",
+    "following": "Siguiendo"
   },
   "settings": {
+    "name": "Configuración",
     "data": {
       "name": "Sus datos"
     },
@@ -25,6 +29,9 @@
     "download": {
       "name": "Descargar datos"
     },
+    "delete": {
+      "name": "Borrar cuenta"
+    },
     "organizations": {
       "name": "Mis organizaciones"
     },
@@ -35,12 +42,16 @@
   "admin": {
     "name": "Admin",
     "dashboard": {
+      "name": "Tablero",
       "users": "Usuarios",
+      "posts": "Mensajes",
       "comments": "Comentarios",
+      "notifications": "Notificaciones",
       "organizations": "Organizaciones",
       "projects": "Proyectos",
       "invites": "Invita",
-      "follows": "Sigue"
+      "follows": "Sigue",
+      "shouts": "Gritos"
     },
     "organizations": {
       "name": "Organizaciones"
@@ -56,14 +67,20 @@
     },
     "categories": {
       "name": "Categorías",
-      "categoryName": "Nombre"
+      "categoryName": "Nombre",
+      "postCount": "Mensajes"
     },
     "tags": {
       "name": "Etiquetas",
-      "tagCountUnique": "Usuarios"
+      "tagCountUnique": "Usuarios",
+      "tagCount": "Mensajes"
+    },
+    "settings": {
+      "name": "Configuración"
     }
   },
   "post": {
+    "name": "Mensaje",
     "moreInfo": {
       "name": "Más info"
     },
@@ -73,7 +90,25 @@
   },
   "quotes": {
     "african": {
+      "quote": "Muchas personas pequeñas en muchos lugares pequeños hacen muchas cosas pequeñas, que pueden alterar la faz del mundo.",
       "author": "Proverbio africano"
     }
+  },
+  "common": {
+    "post": "Mensaje ::: Mensajes",
+    "comment": "Comentario ::: Comentarios",
+    "letsTalk": "Hablemos",
+    "versus": "Versus",
+    "moreInfo": "Más info",
+    "takeAction": "Tomar acción",
+    "shout": "Grito ::: Gritos",
+    "user": "Usuario ::: Usuarios",
+    "category": "Categoría ::: Categorías",
+    "organization": "Organización ::: Organizaciones",
+    "project": "Proyecto ::: Proyectos",
+    "tag": "Etiqueta ::: Etiquetas",
+    "name": "Nombre",
+    "loadMore": "cargar más",
+    "loading": "cargando"
   }
 }
