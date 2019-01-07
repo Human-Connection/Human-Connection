@@ -18,7 +18,7 @@ dotenv.config()
 const requiredEnvVars = ['MAPBOX_TOKEN', 'JWT_SECRET']
 requiredEnvVars.forEach(env => {
   if (!process.env[env]) {
-    throw new Error(`ERROR: "${env}" env variable is missing`)
+    throw new Error(`ERROR: "${env}" env variable is missing.`)
   }
 })
 

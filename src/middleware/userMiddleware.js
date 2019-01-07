@@ -33,12 +33,18 @@ const createOrUpdateLocations = async (userId, locationName, driver) =>{
   const data = res.features[0]
   const session = driver.session()
   await session.run(
-    `MERGE (l:Location {id: "${data.id}"}) ` +
-    `SET l.name = "${data.text}", ` +
-        `l.type = "${data.place_type[0].toLowerCase()}", ` +
-        `l.lat = "${data.center[0]}", ` +
-        `l.lng = "${data.center[1]}" ` +
-    'RETURN l.id, l.name, l.type, l.lat, l.lng'
+    'MERGE (l:Location {id: $id}) ' +
+    'SET l.name = $name, ' +
+        'l.type = $type, ' +
+        'l.lat = $lat, ' +
+        'l.lng = $lng ' +
+    'RETURN l.id, l.name, l.type, l.lat, l.lng', {
+      id: data.id,
+      name: data.text,
+      type: data.place_type[0].toLowerCase(),
+      lat: data.center[0],
+      lng: data.center[1]
+    }
   )
 
   let parent = data
@@ -47,24 +53,37 @@ const createOrUpdateLocations = async (userId, locationName, driver) =>{
     await asyncForEach(data.context, async ctx => {
       const type = ctx.id.split('.')[0].toLowerCase()
       await session.run(
-        `MERGE (l:Location {id: "${ctx.id}"}) ` +
-        `SET l.name = "${ctx.text}", ` +
-            `l.type = "${type}", ` +
-            `l.shortCode = "${ctx.short_code}" ` +
-        'RETURN l.id, l.name, l.type'
+        'MERGE (l:Location {id: $id}) ' +
+        'SET l.name = $name, ' +
+            'l.type = $type, ' +
+            'l.shortCode = $short_code ' +
+        'RETURN l.id, l.name, l.type', {
+          id: ctx.id,
+          name: ctx.text,
+          type: type,
+          shortCode: ctx.short_code
+        }
       )
       await session.run(
-        `MATCH (parent:Location {id: "${parent.id}"}), (child:Location {id: "${ctx.id}"}) ` +
+        'MATCH (parent:Location {id: $parentId}), (child:Location {id: $childId}) ' +
         'MERGE (child)<-[:IS_IN]-(parent) ' +
-        'RETURN child.id, parent.id')
+        'RETURN child.id, parent.id', {
+          parentId: parent.id,
+          childId: ctx.id
+        })
 
       parent = ctx
     })
   }
   // delete all current locations from user
-  await session.run(`MATCH (u:User {id: "${userId}"})-[r:IS_IN]->(l:Location) DETACH DELETE r`)
+  await session.run('MATCH (u:User {id: $userId})-[r:IS_IN]->(l:Location) DETACH DELETE r', {
+    userId: userId
+  })
   // connect user with location
-  await session.run(`MATCH (u:User {id: "${userId}"}), (l:Location {id: "${data.id}"}) MERGE (u)-[:IS_IN]->(l) RETURN l.id, u.id`)
+  await session.run('MATCH (u:User {id: $userId}), (l:Location {id: $locationId}) MERGE (u)-[:IS_IN]->(l) RETURN l.id, u.id', {
+    userId: userId,
+    locationId: data.id
+  })
   session.close()
 }
 
