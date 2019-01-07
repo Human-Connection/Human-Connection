@@ -56,7 +56,7 @@ const createServer = (options) => {
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 
-  passport.use('jwt', jwtStrategy())
+  passport.use('jwt', jwtStrategy(driver))
   server.express.use(passport.initialize())
 
   server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))

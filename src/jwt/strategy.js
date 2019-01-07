@@ -1,4 +1,5 @@
 import { Strategy } from 'passport-jwt'
+import { fixUrl } from '../middleware/fixImageUrlsMiddleware'
 
 const cookieExtractor = (req) => {
   var token = null
@@ -8,7 +9,7 @@ const cookieExtractor = (req) => {
   return token
 }
 
-export default () => {
+export default (driver) => {
   const options = {
     jwtFromRequest: cookieExtractor,
     secretOrKey: process.env.JWT_SECRET,
@@ -17,16 +18,26 @@ export default () => {
   }
 
   return new Strategy(options,
-    (JWTPayload, next) => {
-      // usually this would be a database call:
-      // var user = users[_.findIndex(users, {id: JWTPayload.id})]
-      // TODO: fix https://github.com/Human-Connection/Nitro-Backend/issues/41
-      /* eslint-disable */
-      if (true) {
-      /* eslint-enable */
-        next(null, {})
+    async (JWTPayload, next) => {
+      const session = driver.session();
+      const result = await session.run(
+        'MATCH (user:User {id: $userId}) ' +
+        'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1',
+        {
+          id: JWTPayload.id
+        }
+      );
+      session.close();
+      const [currentUser] = await result.records.map((record) => {
+        return record.get("user");
+      });
+
+      if (currentUser) {
+        delete currentUser.password;
+        currentUser.avatar = fixUrl(currentUser.avatar)
+        return next(null, currentUser);
       } else {
-        next(null, false)
+        return next(null, false);
       }
     })
 }
