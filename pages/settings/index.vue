@@ -7,8 +7,8 @@
       id="name"
       v-model="form.name"
       icon="user"
-      label="Dein Name"
-      placeholder="Dein Name"
+      :label="$t('settings.data.labelName')"
+      :placeholder="$t('settings.data.labelName')"
     />
     <!-- eslint-disable vue/use-v-on-exact -->
     <ds-select
@@ -16,8 +16,8 @@
       v-model="form.locationName"
       :options="cities"
       icon="map-marker"
-      label="Deine Stadt"
-      placeholder="Deine Stadt"
+      :label="$t('settings.data.labelCity')"
+      :placeholder="$t('settings.data.labelCity')"
       @input.native="handleCityInput"
     />
     <!-- eslint-enable vue/use-v-on-exact -->
@@ -26,8 +26,8 @@
       v-model="form.about"
       type="textarea"
       rows="3"
-      label="Erzähl doch ein wenig (in zwei Sätzen) über dich"
-      placeholder="Über mich"
+      :label="$t('settings.data.labelBio')"
+      :placeholder="$t('settings.data.labelBio')"
     />
     <template slot="footer">
       <ds-button
@@ -36,7 +36,7 @@
         primary
         @click.prevent="submit"
       >
-        Speichern
+        {{ $t('actions.save') }}
       </ds-button>
     </template>
   </ds-card>
