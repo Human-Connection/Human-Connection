@@ -1,7 +1,7 @@
 {
   "login": {
     "copy": "Jeśli masz już konto Human Connection, zaloguj się tutaj.",
-    "login": "Login",
+    "login": "logowanie",
     "logout": "Wyloguj się",
     "email": "Twój adres e-mail",
     "password": "Twoje hasło",
@@ -40,7 +40,7 @@
     }
   },
   "admin": {
-    "name": "Admin",
+    "name": "Administrator",
     "dashboard": {
       "name": "Tablica rozdzielcza",
       "users": "Użytkownicy",
@@ -51,7 +51,7 @@
       "projects": "Projekty",
       "invites": "Zaproszenia",
       "follows": "Obserwowań",
-      "shouts": "Wykrzyki"
+      "shouts": "   okrzyk"
     },
     "organizations": {
       "name": "Organizacje"
@@ -93,5 +93,22 @@
       "quote": "Wielu małych ludzi w wielu małych miejscach robi wiele małych rzeczy, które mogą zmienić oblicze świata.",
       "author": "Afrykańskie przysłowie"
     }
+  },
+  "common": {
+    "post": "Post ::: Posty",
+    "comment": "Komentarz ::: Komentarze",
+    "letsTalk": "Porozmawiajmy",
+    "versus": "Versus",
+    "moreInfo": "Więcej informacji",
+    "takeAction": "Podejmij działanie",
+    "shout": "okrzyk       okrzyki",
+    "user": "Użytkownik ::: Użytkownicy",
+    "category": "kategoria kategorie",
+    "organization": "Organizacja ::: Organizacje",
+    "project": "Projekt ::: Projekty",
+    "tag": "Tag ::: Tagi",
+    "name": "imię",
+    "loadMore": "załaduj więcej",
+    "loading": "ładowanie"
   }
 }

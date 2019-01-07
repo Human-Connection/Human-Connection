@@ -3793,19 +3793,20 @@ cookie-signature@1.0.6:
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
   integrity sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
 
-cookie-universal-nuxt@^2.0.11:
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/cookie-universal-nuxt/-/cookie-universal-nuxt-2.0.11.tgz#f7f2ea1d63a497b24d5e630cee4e999475e777f4"
-  integrity sha512-GmzXjkIpCRAe+fIpYavHyFliEDRofiJMbBd17kZJia+nLVEt2CJxjOqcQRqUOXmvtuB0oHDYy+fVflxs863T0w==
+cookie-universal-nuxt@^2.0.12:
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/cookie-universal-nuxt/-/cookie-universal-nuxt-2.0.12.tgz#061bb1864d2dd010fad1c484ae982da42954bfd9"
+  integrity sha512-qZu3rOgsDjWqgq9dU+zCQl3RpsZeevI/c6fN+wgTRsQdSe8MSwYWpl+6Pitu0mXgZKVJ8e+JA3s3jDVoXV5szg==
   dependencies:
     "@types/cookie" "^0.3.1"
-    cookie-universal "^2.0.11"
+    cookie-universal "^2.0.12"
 
-cookie-universal@^2.0.11:
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/cookie-universal/-/cookie-universal-2.0.11.tgz#525f6324b6698a713b46be77a3440daff68e4a6a"
-  integrity sha512-5IA+uAPwBuphUfuk+lpFEajfrUTZA3RmMXfoT/KWs29WMd2ZifHOafAr+w8WdlSixddjTEkOgUWrk27+ErueUg==
+cookie-universal@^2.0.12:
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/cookie-universal/-/cookie-universal-2.0.12.tgz#3627a56045a84c1c53618d38bd30b278db5633f4"
+  integrity sha512-/3ch/W145NHVmX2Oenykb3U/Knmu/78JJZxGY2qw28mIr/Ueve6D+A3BySAncvqIgNUy7lIgmAUjf1hV4D4d/A==
   dependencies:
+    "@types/cookie" "^0.3.1"
     cookie "^0.3.1"
 
 cookie@0.3.1, cookie@^0.3.1:
@@ -4882,10 +4883,10 @@ eslint-plugin-prettier@3.0.1, eslint-plugin-prettier@^3.0.0:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-vue@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-5.0.0.tgz#4a2cc1c0e71ea45e1bd9c1a60f925bfe68bb5710"
-  integrity sha512-mSv2Ebz3RaPP+XJO/mu7F+SdR9lrMyGISSExnarLFqqf3pF5wTmwWNrhHW1o9zKzKI811UVTIIkWJJvgO6SsUQ==
+eslint-plugin-vue@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-5.1.0.tgz#d0d373334be8140d698ec4e1fb83f09faa48081b"
+  integrity sha512-C7avvbGLb9J1PyGiFolPcGR4ljUc+dKm5ZJdrUKXwXFxHHx4SqOmRI29AsFyW7PbCGcnOvIlaq7NJS6HDIak+g==
   dependencies:
     vue-eslint-parser "^4.0.2"
 

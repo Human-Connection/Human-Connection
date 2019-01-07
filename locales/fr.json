@@ -93,5 +93,22 @@
       "quote": "Beaucoup de petites personnes dans beaucoup de petits endroits font beaucoup de petites choses, qui peuvent changer la face du monde.",
       "author": "Proverbe africain"
     }
+  },
+  "common": {
+    "post": "Message ::: Messages",
+    "comment": "Commentaire ::: Commentaires",
+    "letsTalk": "Parlons-en",
+    "versus": "Versus",
+    "moreInfo": "Plus d'infos",
+    "takeAction": "Passer à l'action",
+    "shout": "Shout ::: Shouts",
+    "user": "Utilisateur ::: Utilisateurs",
+    "category": "Catégorie ::: Catégories",
+    "organization": "Organisation ::: Organisations",
+    "project": "Projet ::: Projets",
+    "tag": "Tag ::: Tags",
+    "name": "Nom",
+    "loadMore": "charger plus",
+    "loading": "chargement"
   }
 }
