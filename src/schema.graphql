@@ -13,7 +13,7 @@ type LoggedInUser {
   avatar:String!
   email: String!
   role: String!
-  locationId: String
+  locationName: String
   about: String
   token: String!
 }
