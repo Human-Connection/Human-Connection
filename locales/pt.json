@@ -44,13 +44,14 @@
     "dashboard": {
       "name": "Painel de controle",
       "users": "Usuários",
-      "posts": "Postagens",
+      "posts": "Pastagens",
       "comments": "Comentários",
       "notifications": "Notificações",
       "organizations": "Organizações",
       "projects": "Projetos",
       "invites": "Convites",
-      "follows": "Seguidores"
+      "follows": "Seguidores",
+      "shouts": "Gritos"
     },
     "organizations": {
       "name": "Organizações"
@@ -67,12 +68,12 @@
     "categories": {
       "name": "Categorias",
       "categoryName": "Nome",
-      "postCount": "Postagens"
+      "postCount": "Pastagens"
     },
     "tags": {
       "name": "Etiquetas",
       "tagCountUnique": "Usuários",
-      "tagCount": "Postagens"
+      "tagCount": "Pastagens"
     },
     "settings": {
       "name": "Configurações"
@@ -92,5 +93,22 @@
       "quote": "Pequenos grupos de pessoas, em pequenos locais podem fazer várias coisas pequenas, mas que podem alterar o mundo ao nosso redor.",
       "author": "Provérbio Africano"
     }
+  },
+  "common": {
+    "post": "Post ::: Postagens",
+    "comment": "Comentário ::: Comentários",
+    "letsTalk": "Vamos falar",
+    "versus": "Versus",
+    "moreInfo": "Mais informações",
+    "takeAction": "Tomar uma ação",
+    "shout": "Grito ::: Gritos",
+    "user": "Usuário ::: Usuários",
+    "category": "Categoria ::: Categorias",
+    "organization": "Organização ::: Organizações",
+    "project": "Projeto ::: Projetos",
+    "tag": "Tag ::: Tags",
+    "name": "Nome",
+    "loadMore": "carregar mais",
+    "loading": "carregando"
   }
 }
