@@ -23,6 +23,9 @@
     "security": {
       "name": "Veiligheid"
     },
+    "invites": {
+      "name": "Uitnodigingen"
+    },
     "download": {
       "name": "Gegevens downloaden"
     },
@@ -46,6 +49,7 @@
       "notifications": "Meldingen",
       "organizations": "Organisaties",
       "projects": "Projecten",
+      "invites": "Uitnodigingen",
       "follows": "Volgt",
       "shouts": "Shouts"
     },
@@ -54,6 +58,9 @@
     },
     "users": {
       "name": "Gebruikers"
+    },
+    "pages": {
+      "name": "Pages"
     },
     "notifications": {
       "name": "Meldingen"
@@ -86,5 +93,22 @@
       "quote": "Veel kleine mensen op veel kleine plaatsen doen veel kleine dingen, die het gezicht van de wereld kunnen veranderen.",
       "author": "Afrikaans spreekwoord"
     }
+  },
+  "common": {
+    "post": "Bericht ::: Berichten",
+    "comment": "Opmerking ::: Opmerkingen",
+    "letsTalk": "Laten we praten",
+    "versus": "Versus",
+    "moreInfo": "Meer info",
+    "takeAction": "Onderneem actie",
+    "shout": "Shout ::: Shouts",
+    "user": "Gebruiker ::: Gebruikers",
+    "category": "Categorie ::: Categorieën",
+    "organization": "Organisatie ::: Organisaties",
+    "project": "Project ::: Projecten",
+    "tag": "Tag ::: Tags",
+    "name": "Naam",
+    "loadMore": "meer laden",
+    "loading": "inlading"
   }
 }
