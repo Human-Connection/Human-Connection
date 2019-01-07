@@ -61,7 +61,7 @@
           <ds-space margin="small">
             <ds-number
               :count="fanCount"
-              label="Folgen"
+              :label="$t('profile.followers')"
               size="x-large"
             />
           </ds-space>
@@ -70,7 +70,7 @@
           <ds-space margin="small">
             <ds-number
               :count="author.contributionsCount"
-              label="Beiträge"
+              :label="$t('common.post', null, author.contributionsCount)"
             />
           </ds-space>
         </ds-flex-item>
@@ -78,7 +78,7 @@
           <ds-space margin="small">
             <ds-number
               :count="author.commentsCount"
-              label="Kommentare"
+              :label="$t('common.comment', null, author.commentsCount)"
             />
           </ds-space>
         </ds-flex-item>
