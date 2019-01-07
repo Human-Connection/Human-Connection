@@ -56,7 +56,7 @@ const createOrUpdateLocations = async (userId, locationName, driver) =>{
         'MERGE (l:Location {id: $id}) ' +
         'SET l.name = $name, ' +
             'l.type = $type, ' +
-            'l.shortCode = $short_code ' +
+            'l.shortCode = $shortCode ' +
         'RETURN l.id, l.name, l.type', {
           id: ctx.id,
           name: ctx.text,
