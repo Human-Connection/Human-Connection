@@ -135,7 +135,7 @@ Then('I see a button with the label {string}', label => {
 
 When('I navigate to the administration dashboard', () => {
   cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover')
+  cy.get('.avatar-menu-popover a')
     .contains('Admin')
     .click()
 })
@@ -158,4 +158,38 @@ Then('I can see a list of tags ordered by user and post count:', table => {
     .find('tr th')
     .should('have.length', 4)
   lastColumnIsSortedInDescendingOrder()
+})
+
+When('I enter {string} as my location', location => {
+  cy.get('input[id=city]').type(location)
+  cy.get('.ds-select-option')
+    .contains(location)
+    .click()
+})
+When('I enter {string} to about me', text => {
+  cy.get('textarea[id=bio]')
+    .clear()
+    .type(text)
+})
+When('I enter {string} as my name', text => {
+  cy.get('input[id=name]')
+    .clear()
+    .type(text)
+})
+Then('I can see {string} as my name', text => {
+  cy.get('input[id=name]')
+    .clear()
+    .type(text)
+})
+When('I press {string}', label => {
+  cy.contains(label).click()
+})
+Then('I can see a {string} as my location', location => {
+  cy.contains(location)
+})
+Then('I can see a {string} as my about me', about => {
+  cy.contains(about)
+})
+Then('I can see a {string} as my name', name => {
+  cy.get('.avatar-menu-popover').contains(name)
 })
