@@ -24,13 +24,27 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
     return
   }
   const mapboxToken = process.env.MAPBOX_TOKEN
-  const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(locationName)}.json?access_token=${mapboxToken}&types=region,place,country&language=en,de,fr,nl,it,es,pt,pl&limit=1`)
+  const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(locationName)}.json?access_token=${mapboxToken}&types=region,place,country&language=en,de,fr,nl,it,es,pt,pl`)
 
   if (!res || !res.features || !res.features[0]) {
     throw new UserInputError('locationName is invalid')
   }
 
-  const data = res.features[0]
+  let data
+
+  res.features.forEach(item => {
+    if (item.matching_place_name === locationName) {
+      data = item
+    }
+  })
+  if (!data) {
+    data = res.features[0]
+  }
+
+  if (!data) {
+    throw new UserInputError('locationName is invalid')
+  }
+
   const session = driver.session()
   await session.run(
     'MERGE (l:Location {id: $id}) ' +
@@ -125,8 +139,6 @@ export default {
       return result
     },
     UpdateUser: async (resolve, root, args, context, info) => {
-      console.log(context.req.headers['accept-language'])
-      console.log(context.req.headers)
       const result = await resolve(root, args, context, info)
       await createOrUpdateLocations(context.user.id, args.locationName, context.driver)
       return result
