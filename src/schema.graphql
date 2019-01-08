@@ -49,6 +49,14 @@ enum UserGroupEnum {
 type Location {
   id: ID!
   name: String!
+  nameEN: String
+  nameDE: String
+  nameFR: String
+  nameNL: String
+  nameIT: String
+  nameES: String
+  namePT: String
+  namePL: String
   type: String!
   lat: Float
   lng: Float

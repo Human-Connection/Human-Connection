@@ -1,4 +1,5 @@
 import request from 'request'
+import { UserInputError } from 'apollo-server'
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {
@@ -23,23 +24,38 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
     return
   }
   const mapboxToken = process.env.MAPBOX_TOKEN
-  const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${locationName}.json?access_token=${mapboxToken}&language=de`)
+  const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(locationName)}.json?access_token=${mapboxToken}&types=region,place,country&language=en,de,fr,nl,it,es,pt,pl&limit=1`)
 
-  // TODO: create location in db
-
-  // TODO: get related region, district and country to build the location tree
+  if (!res || !res.features || !res.features[0]) {
+    throw new UserInputError('locationName is invalid')
+  }
 
   const data = res.features[0]
   const session = driver.session()
   await session.run(
     'MERGE (l:Location {id: $id}) ' +
-    'SET l.name = $name, ' +
+    'SET l.name = $nameEN, ' +
+        'l.nameEN = $nameEN, ' +
+        'l.nameDE = $nameDE, ' +
+        'l.nameFR = $nameFR, ' +
+        'l.nameNL = $nameNL, ' +
+        'l.nameIT = $nameIT, ' +
+        'l.nameES = $nameES, ' +
+        'l.namePT = $namePT, ' +
+        'l.namePL = $namePL, ' +
         'l.type = $type, ' +
         'l.lat = $lat, ' +
         'l.lng = $lng ' +
-    'RETURN l.id, l.name, l.type, l.lat, l.lng', {
+    'RETURN l.id', {
       id: data.id,
-      name: data.text,
+      nameEN: data.text_en,
+      nameDE: data.text_de,
+      nameFR: data.text_fr,
+      nameNL: data.text_nl,
+      nameIT: data.text_it,
+      nameES: data.text_es,
+      namePT: data.text_pt,
+      namePL: data.text_pl,
       type: data.place_type[0].toLowerCase(),
       lat: data.center[0],
       lng: data.center[1]
@@ -53,12 +69,27 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
       const type = ctx.id.split('.')[0].toLowerCase()
       await session.run(
         'MERGE (l:Location {id: $id}) ' +
-        'SET l.name = $name, ' +
+        'SET l.name = $nameEN, ' +
+            'l.nameEN = $nameEN, ' +
+            'l.nameDE = $nameDE, ' +
+            'l.nameFR = $nameFR, ' +
+            'l.nameNL = $nameNL, ' +
+            'l.nameIT = $nameIT, ' +
+            'l.nameES = $nameES, ' +
+            'l.namePT = $namePT, ' +
+            'l.namePL = $namePL, ' +
             'l.type = $type, ' +
             'l.shortCode = $shortCode ' +
-        'RETURN l.id, l.name, l.type', {
+        'RETURN l.id', {
           id: ctx.id,
-          name: ctx.text,
+          nameEN: ctx.text_en,
+          nameDE: ctx.text_de,
+          nameFR: ctx.text_fr,
+          nameNL: ctx.text_nl,
+          nameIT: ctx.text_it,
+          nameES: ctx.text_es,
+          namePT: ctx.text_pt,
+          namePL: ctx.text_pl,
           type: type,
           shortCode: ctx.short_code
         }
@@ -94,6 +125,8 @@ export default {
       return result
     },
     UpdateUser: async (resolve, root, args, context, info) => {
+      console.log(context.req.headers['accept-language'])
+      console.log(context.req.headers)
       const result = await resolve(root, args, context, info)
       await createOrUpdateLocations(context.user.id, args.locationName, context.driver)
       return result
