@@ -3,7 +3,7 @@ Feature: About me and and location
   I would like to add some about me text and a location
   So others can get some info about me and my location
 
-  The location and about me are show on the user. Later it will be possible
+  The location and about me are displayed on the user profile. Later it will be possible
   to search for users by location.
 
   Background:
