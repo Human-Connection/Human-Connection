@@ -73,54 +73,56 @@ export default {
   },
   apollo: {
     Post: {
-      query: gql(`
-        query Post($slug: String!) {
-          Post(slug: $slug) {
-            id
-            title
-            tags {
-              id
-              name
-            }
-            categories {
-              id
-              name
-              icon
-            }
-            relatedContributions(first: 2) {
+      query() {
+        return gql(`
+          query Post($slug: String!) {
+            Post(slug: $slug) {
               id
               title
-              slug
-              contentExcerpt
-              shoutedCount
-              commentsCount
+              tags {
+                id
+                name
+              }
               categories {
                 id
                 name
                 icon
               }
-              author {
+              relatedContributions(first: 2) {
                 id
-                name
+                title
                 slug
-                avatar
-                contributionsCount
-                followedByCount
+                contentExcerpt
+                shoutedCount
                 commentsCount
-                location {
-                  name
-                }
-                badges {
+                categories {
                   id
-                  key
+                  name
                   icon
                 }
+                author {
+                  id
+                  name
+                  slug
+                  avatar
+                  contributionsCount
+                  followedByCount
+                  commentsCount
+                  location {
+                    name: name${this.$i18n.locale().toUpperCase()}
+                  }
+                  badges {
+                    id
+                    key
+                    icon
+                  }
+                }
               }
+              shoutedCount
             }
-            shoutedCount
           }
-        }
-      `),
+        `)
+      },
       variables() {
         return {
           slug: this.$route.params.slug

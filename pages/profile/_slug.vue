@@ -360,7 +360,9 @@ export default {
   },
   apollo: {
     User: {
-      query: require('~/graphql/UserProfileQuery.js').default,
+      query() {
+        return require('~/graphql/UserProfileQuery.js').default(this)
+      },
       variables() {
         return {
           slug: this.$route.params.slug,

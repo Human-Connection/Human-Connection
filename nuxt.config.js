@@ -62,6 +62,7 @@ module.exports = {
   */
   plugins: [
     { src: '~/plugins/i18n.js', ssr: true },
+    { src: '~/plugins/axios.js', ssr: false },
     { src: '~/plugins/keep-alive.js', ssr: false },
     { src: '~/plugins/design-system.js', ssr: true },
     { src: '~/plugins/vue-directives.js', ssr: false },
