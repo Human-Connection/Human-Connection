@@ -36,6 +36,27 @@ export default {
       isPopoverOpen: false
     }
   },
+  watch: {
+    isPopoverOpen: {
+      immediate: true,
+      handler(isOpen) {
+        console.log('isOpen', isOpen)
+        try {
+          if (isOpen) {
+            setTimeout(() => {
+              document
+                .getElementsByTagName('body')[0]
+                .classList.add('dropdown-open')
+            }, 10)
+          } else {
+            document
+              .getElementsByTagName('body')[0]
+              .classList.remove('dropdown-open')
+          }
+        } catch (err) {}
+      }
+    }
+  },
   beforeDestroy() {
     clearTimeout(mouseEnterTimer)
     clearTimeout(mouseLeaveTimer)

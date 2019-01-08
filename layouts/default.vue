@@ -81,6 +81,7 @@
         <nuxt />
       </div>
     </ds-container>
+    <div id="overlay" />
   </div>
 </template>
 
@@ -160,6 +161,26 @@ export default {
     margin-right: -15px;
     padding-top: 1rem;
     padding-bottom: 1rem;
+  }
+}
+
+#overlay {
+  display: block;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 99;
+  pointer-events: none;
+  transition: opacity 150ms ease-out;
+  transition-delay: 50ms;
+
+  .dropdown-open & {
+    opacity: 1;
+    transition-delay: 0;
   }
 }
 </style>
