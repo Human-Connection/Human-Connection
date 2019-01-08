@@ -27,6 +27,7 @@ const switchLanguage = function(name) {
 
 const login = (email, password) => {
   cy.visit(`${baseUrl}/login`)
+  switchLanguage('English')
   cy.get('input[name=email]')
     .trigger('focus')
     .type(email)
