@@ -9,10 +9,10 @@
     "build": "nuxt build",
     "start": "cross-env node server/index.js",
     "generate": "nuxt generate",
-    "lint": "set NODE_ENV=test && eslint --ext .js,.vue .",
+    "lint": "eslint --ext .js,.vue .",
     "styleguide": "cd ./styleguide && yarn dev",
     "styleguide:build": "cd ./styleguide && yarn build:lib && cd ../",
-    "test": "set NODE_ENV=test && jest",
+    "test": "jest",
     "precommit": "yarn lint"
   },
   "cypress-cucumber-preprocessor": {
