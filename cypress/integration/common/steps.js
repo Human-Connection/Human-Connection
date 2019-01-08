@@ -1,6 +1,5 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import find from 'lodash/find'
-import { eq } from 'semver'
 
 /* global cy */
 
