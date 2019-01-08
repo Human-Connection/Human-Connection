@@ -205,7 +205,7 @@
                   <ds-space margin="small">
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
-                      <ds-number label="Beiträge">
+                      <ds-number :label="$t('common.post', null, user.contributionsCount)">
                         <hc-count-to
                           slot="count"
                           :end-val="user.contributionsCount"
@@ -218,7 +218,7 @@
                   <ds-space margin="small">
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
-                      <ds-number label="Kommentiert">
+                      <ds-number :label="$t('profile.commented')">
                         <hc-count-to
                           slot="count"
                           :end-val="user.commentsCount"
@@ -231,7 +231,7 @@
                   <ds-space margin="small">
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
-                      <ds-number label="Empfohlen">
+                      <ds-number :label="$t('profile.shouted')">
                         <hc-count-to
                           slot="count"
                           :end-val="user.shoutedCount"
