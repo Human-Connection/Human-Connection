@@ -185,9 +185,12 @@ export default {
 
       this.axiosSource = CancelToken.source()
 
+      const place = encodeURIComponent(value)
+      const lang = this.$i18n.locale()
+
       this.$axios
         .get(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?access_token=${mapboxToken}&types=region,postcode,district,place,country&language=${this.$i18n.locale()}`,
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${place}.json?access_token=${mapboxToken}&types=region,place,country&language=${lang}`,
           {
             cancelToken: this.axiosSource.token
           }
