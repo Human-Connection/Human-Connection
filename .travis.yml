@@ -10,7 +10,6 @@ services:
 
 env:
   - DOCKER_COMPOSE_VERSION=1.23.2
-  - NODE_ENV=test
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
