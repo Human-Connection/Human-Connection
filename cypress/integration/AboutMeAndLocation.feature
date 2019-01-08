@@ -8,9 +8,9 @@ Feature: About me and and location
 
   Background:
     Given I am logged in
+    And I am on the "settings" page
 
   Scenario: I change my name
-    When I visit the "settings" page
     And I enter "Hansi" as my name
     And I press "Save"
     And I can click on my profile picture in the top right corner
@@ -25,8 +25,7 @@ Feature: About me and and location
     And I press "Save"
 
   Scenario Outline: I set my location to "<location>"
-    When I visit the "settings" page
-    And I enter "<location>" as my location
+    When I enter "<location>" as my location
     And I press "Save"
     And I visit the "profile/peter-lustig" page
     Then I can see a "<location>" as my location
@@ -39,8 +38,7 @@ Feature: About me and and location
         | Mecklenburg-Vorpommern |
 
   Scenario: I write about me
-    When I visit the "settings" page
-    And I enter "Some text about me" to about me
+    When I enter "Some text about me" to about me
     And I press "Save"
     And I visit the "profile/peter-lustig" page
     Then I can see a "Some text about me" as my about me
