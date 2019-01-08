@@ -5,6 +5,7 @@
         <nuxt />
       </div>
     </ds-container>
+    <div id="overlay" />
   </div>
 </template>
 
