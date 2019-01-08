@@ -16,6 +16,7 @@ Feature: About me and and location
 
     When I refresh the page
     Then I can see my new name "Hansi" when I click on my profile picture in the top right
+    Then I save "Peter Lustig" as my new name
 
   Scenario Outline: I set my location to "<location>"
     When I save "<location>" as my location
