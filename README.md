@@ -137,6 +137,15 @@ npm run db:reset
 
 **Beware**: We have no multiple database setup at the moment. We clean the database after each test, running the tests will wipe out all your data!
 
+First build `server.js`:
+```bash
+yarn run build
+# -or-
+npm run build
+```
+The additional build step will become obsolete, as soon as [jest transforms global setup teardown modules](https://github.com/facebook/jest/issues/5164).
+
+Now run the tests:
 ```bash
 yarn run test
 # -or-

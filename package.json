@@ -14,7 +14,7 @@
     "lint": "eslint src --config .eslintrc.js",
     "test": "nyc  --reporter=text-lcov yarn run test:jest",
     "test:jest": "$npm_package_config_no_auth run-p --race start test:cmd:jest",
-    "test:cmd:jest": "jest --forceExit",
+    "test:cmd:jest": "jest --forceExit --detectOpenHandles",
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
     "db:script:reset": "wait-on tcp:4001 && babel-node src/seed/reset-db.js",
@@ -25,7 +25,9 @@
   "license": "MIT",
   "jest": {
     "verbose": true,
-    "testMatch": ["**/src/**/?(*.)+(spec|test).js?(x)" ]
+    "testMatch": ["**/src/**/?(*.)+(spec|test).js?(x)" ],
+    "globalSetup": "<rootDir>/src/jest/globalSetup",
+    "globalTeardown": "<rootDir>/src/jest/globalTeardown"
   },
   "dependencies": {
     "apollo-cache-inmemory": "~1.3.11",

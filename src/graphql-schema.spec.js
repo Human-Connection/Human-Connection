@@ -1,23 +1,8 @@
 import { request } from 'graphql-request'
-import createServer from './server'
-import mocks from './mocks'
 import { create, cleanDatabase } from './seed/factories'
 import jwt from 'jsonwebtoken'
 
-let getHost
-let app
-let port
-
-beforeEach(async () => {
-  const server = createServer({ mocks })
-  app = await server.start({ port: 0 })
-  port = app.address().port
-  getHost = () => `http://127.0.0.1:${port}`
-})
-
-afterEach(async () => {
-  await app.close()
-})
+let getHost = () => 'http://127.0.0.1:3123'
 
 describe('login', () => {
   const mutation = (params) => {
