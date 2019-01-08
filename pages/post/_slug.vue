@@ -18,33 +18,33 @@
 
 <script>
 export default {
-  data() {
-    return {
-      routes: [
+  computed: {
+    routes() {
+      return [
         {
-          name: 'Post',
+          name: this.$t('common.post', null, 1),
           path: `/post/${this.$route.params.slug}`,
           children: [
             {
-              name: 'Kommentare',
+              name: this.$t('common.comment', null, 2),
               path: `/post/${this.$route.params.slug}#comments`
             },
             {
-              name: 'Miteinander reden',
+              name: this.$t('common.letsTalk'),
               path: `/post/${this.$route.params.slug}#lets-talk`
             },
             {
-              name: 'Versus',
+              name: this.$t('common.versus'),
               path: `/post/${this.$route.params.slug}#versus`
             }
           ]
         },
         {
-          name: 'Mehr Info',
+          name: this.$t('common.moreInfo'),
           path: `/post/${this.$route.params.slug}/more-info`
         },
         {
-          name: 'Aktiv werden',
+          name: this.$t('common.takeAction'),
           path: `/post/${this.$route.params.slug}/take-action`
         }
       ]
