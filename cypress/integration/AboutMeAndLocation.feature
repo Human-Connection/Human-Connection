@@ -11,18 +11,11 @@ Feature: About me and and location
     And I am on the "settings" page
 
   Scenario: I change my name
-    And I enter "Hansi" as my name
-    And I press "Save"
-    And I can click on my profile picture in the top right corner
-    Then I can see a "Hansi" as my name
+    When save "Hansi" as my new name
+    Then I can see my new name "Hansi" when I click on my profile picture in the top right
 
     When I refresh the page
-    And I can click on my profile picture in the top right corner
-    Then I can see a "Hansi" as my name
-
-    When I visit the "settings" page
-    And I enter "Peter Lustig" as my name
-    And I press "Save"
+    Then I can see my new name "Hansi" when I click on my profile picture in the top right
 
   Scenario Outline: I set my location to "<location>"
     When I enter "<location>" as my location
@@ -31,11 +24,10 @@ Feature: About me and and location
     Then I can see a "<location>" as my location
 
     Examples: Location
-        | location               |
-        | New York               |
-        | Germany                |
-        | Berlin                 |
-        | Mecklenburg-Vorpommern |
+        | location               | type    |
+        | Paris                  | City    |
+        | Mecklenburg-Vorpommern | Region  |
+        | Germany                | Country |
 
   Scenario: I write about me
     When I enter "Some text about me" to about me

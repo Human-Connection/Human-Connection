@@ -172,15 +172,19 @@ When('I enter {string} to about me', text => {
     .clear()
     .type(text)
 })
-When('I enter {string} as my name', text => {
+When('save {string} as my new name', name => {
   cy.get('input[id=name]')
     .clear()
-    .type(text)
+    .type(name)
+  cy.contains('Save').click()
 })
-Then('I can see {string} as my name', text => {
-  cy.get('input[id=name]')
-    .clear()
-    .type(text)
+Then(
+  'I can see my new name {string} when I click on my profile picture in the top right',
+  name => {
+    cy.get('input[id=name]')
+      .clear()
+      .type(name)
+    cy.contains('Save').click()
 })
 When('I press {string}', label => {
   cy.contains(label).click()
