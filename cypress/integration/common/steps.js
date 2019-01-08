@@ -161,18 +161,20 @@ Then('I can see a list of tags ordered by user and post count:', table => {
   lastColumnIsSortedInDescendingOrder()
 })
 
-When('I enter {string} as my location', location => {
+When('I save {string} as my location', location => {
   cy.get('input[id=city]').type(location)
   cy.get('.ds-select-option')
     .contains(location)
     .click()
+  cy.contains('Save').click()
 })
-When('I enter {string} to about me', text => {
+When('I save {string} to about me', text => {
   cy.get('textarea[id=bio]')
     .clear()
     .type(text)
+  cy.contains('Save').click()
 })
-When('save {string} as my new name', name => {
+When('I save {string} as my new name', name => {
   cy.get('input[id=name]')
     .clear()
     .type(name)
@@ -189,7 +191,7 @@ Then(
 When('I press {string}', label => {
   cy.contains(label).click()
 })
-Then('I can see a {string} as my location', location => {
+Then('I can see {string} as my location', location => {
   cy.contains(location)
 })
 Then('I can see a {string} as my about me', about => {

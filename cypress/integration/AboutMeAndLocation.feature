@@ -11,17 +11,16 @@ Feature: About me and and location
     And I am on the "settings" page
 
   Scenario: I change my name
-    When save "Hansi" as my new name
+    When I save "Hansi" as my new name
     Then I can see my new name "Hansi" when I click on my profile picture in the top right
 
     When I refresh the page
     Then I can see my new name "Hansi" when I click on my profile picture in the top right
 
   Scenario Outline: I set my location to "<location>"
-    When I enter "<location>" as my location
-    And I press "Save"
+    When I save "<location>" as my location
     And I visit the "profile/peter-lustig" page
-    Then I can see a "<location>" as my location
+    Then I can see "<location>" as my location
 
     Examples: Location
         | location               | type    |
@@ -30,8 +29,7 @@ Feature: About me and and location
         | Germany                | Country |
 
   Scenario: I write about me
-    When I enter "Some text about me" to about me
-    And I press "Save"
+    When I save "Some text about me" to about me
     And I visit the "profile/peter-lustig" page
     Then I can see a "Some text about me" as my about me
 
