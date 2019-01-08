@@ -24,12 +24,19 @@ Feature: About me and and location
     And I enter "Peter Lustig" as my name
     And I press "Save"
 
-  Scenario: I set my location
+  Scenario Outline: I set my location to "<location>"
     When I visit the "settings" page
-    And I enter "Hamburg" as my location
+    And I enter "<location>" as my location
     And I press "Save"
     And I visit the "profile/peter-lustig" page
-    Then I can see a "Hamburg" as my location
+    Then I can see a "<location>" as my location
+
+    Examples: Location
+        | location               |
+        | New York               |
+        | Germany                |
+        | Berlin                 |
+        | Mecklenburg-Vorpommern |
 
   Scenario: I write about me
     When I visit the "settings" page
