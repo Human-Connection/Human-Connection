@@ -9,7 +9,7 @@ services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.23.2 NODE_ENV=test
+  - DOCKER_COMPOSE_VERSION=1.23.2
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -27,9 +27,8 @@ install:
   - yarn add cypress-cucumber-preprocessor
 
 script:
-  - echo $NODE_ENV
-  - docker-compose exec webapp yarn run lint
-  - docker-compose exec webapp yarn run test
+  - docker-compose exec -e NODE_ENV=test webapp yarn run lint
+  - docker-compose exec -e NODE_ENV=test webapp yarn run test
   - docker-compose -f ../Nitro-Backend/docker-compose.yml exec backend yarn run db:seed > /dev/null
   - wait-on http://localhost:3000
   - cypress run --record --key $CYPRESS_TOKEN
