@@ -19,25 +19,25 @@ export default (driver) => {
 
   return new Strategy(options,
     async (JWTPayload, next) => {
-      const session = driver.session();
+      const session = driver.session()
       const result = await session.run(
         'MATCH (user:User {id: $userId}) ' +
         'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1',
         {
           userId: JWTPayload.id
         }
-      );
-      session.close();
+      )
+      session.close()
       const [currentUser] = await result.records.map((record) => {
-        return record.get("user");
-      });
+        return record.get('user')
+      })
 
       if (currentUser) {
-        delete currentUser.password;
+        delete currentUser.password
         currentUser.avatar = fixUrl(currentUser.avatar)
-        return next(null, currentUser);
+        return next(null, currentUser)
       } else {
-        return next(null, false);
+        return next(null, false)
       }
     })
 }
