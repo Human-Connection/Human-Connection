@@ -1,6 +1,7 @@
 {
   "login": {
     "copy": "Se hai già un account di Human Connection, accedi qui.",
+    "login": "Accesso",
     "logout": "Logout",
     "email": "La tua email",
     "password": "La tua password",
@@ -9,8 +10,10 @@
   },
   "profile": {
     "name": "Il mio profilo",
+    "memberSince": "Membro dal",
     "follow": "Seguire",
-    "followers": "Seguaci"
+    "followers": "Seguaci",
+    "following": "Seguendo"
   },
   "settings": {
     "name": "Impostazioni",
@@ -41,12 +44,14 @@
     "dashboard": {
       "name": "Cruscotto",
       "users": "Utenti",
+      "posts": "Messaggi",
       "comments": "Commenti",
       "notifications": "Notifiche",
       "organizations": "Organizzazioni",
       "projects": "Progetti",
       "invites": "Inviti",
-      "follows": "Segue"
+      "follows": "Segue",
+      "shouts": "Grida"
     },
     "organizations": {
       "name": "Organizzazioni"
@@ -62,7 +67,8 @@
     },
     "categories": {
       "name": "Categorie",
-      "categoryName": "Nome"
+      "categoryName": "Nome",
+      "postCount": "Messaggi"
     },
     "tags": {
       "name": "Tag",
@@ -74,6 +80,7 @@
     }
   },
   "post": {
+    "name": "Messaggio",
     "moreInfo": {
       "name": "Ulteriori informazioni"
     },
@@ -83,7 +90,25 @@
   },
   "quotes": {
     "african": {
+      "quote": "Molte piccole persone in molti piccoli luoghi fanno molte piccole cose, che possono alterare la faccia del mondo.",
       "author": "Proverbio africano"
     }
+  },
+  "common": {
+    "post": "Messaggio ::: Messaggi",
+    "comment": "Commento ::: Commenti",
+    "letsTalk": "Parliamo",
+    "versus": "Contro",
+    "moreInfo": "Ulteriori informazioni",
+    "takeAction": "Agire",
+    "shout": "Grida ::: Grida",
+    "user": "Utente ::: Utenti",
+    "category": "Categoria ::: Categorie",
+    "organization": "Organizzazione ::: Organizzazioni",
+    "project": "Progetto ::: Progetti",
+    "tag": "Tag ::: Tag",
+    "name": "Nome",
+    "loadMore": "caricare di più",
+    "loading": "caricamento"
   }
 }
