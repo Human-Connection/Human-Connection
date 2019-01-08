@@ -12,10 +12,8 @@ WORKDIR $WORKDIR
 RUN apk --no-cache add git
 
 COPY . .
-CMD ["yarn", "run", "start"]
 
 FROM base as build-and-test
-ENV NODE_ENV=test
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
@@ -31,3 +29,4 @@ COPY --from=build-and-test ./nitro-web/.nuxt ./.nuxt
 COPY --from=build-and-test ./nitro-web/static ./static
 
 EXPOSE 3000
+CMD ["yarn", "run", "start"]
