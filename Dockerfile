@@ -18,14 +18,13 @@ RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
     && yarn run styleguide:build
-COPY . .
 RUN yarn run build
 
 FROM base as production
 ENV NODE_ENV=production
 RUN yarn install --frozen-lockfile --non-interactive
 COPY --from=build-and-test ./nitro-web/.nuxt ./.nuxt
-COPY --from=build-and-test ./styleguide/dist ./styleguide/dist
+COPY --from=build-and-test ./nitro-web/styleguide/dist ./styleguide/dist
 
 EXPOSE 3000
 CMD ["yarn", "run", "start"]
