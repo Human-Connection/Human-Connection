@@ -58,12 +58,7 @@ export const actions = {
       return
     }
 
-    const payload = await jwt.verify(
-      token,
-      process.server
-        ? require('dotenv').parse(require('fs').readFileSync('.env')).JWT_SECRET
-        : null
-    )
+    const payload = await jwt.verify(token, process.env.JWT_SECRET)
     if (!payload.id) {
       return
     }
