@@ -1,8 +1,7 @@
 import { request } from 'graphql-request'
 import { create, cleanDatabase } from './seed/factories'
 import jwt from 'jsonwebtoken'
-
-let getHost = () => 'http://127.0.0.1:3123'
+import { host } from './jest/helpers'
 
 describe('login', () => {
   const mutation = (params) => {
@@ -30,7 +29,7 @@ describe('login', () => {
     describe('asking for a `token`', () => {
       describe('with valid email/password combination', () => {
         it('responds with a JWT token', async () => {
-          const data = await request(getHost(), mutation({ email: 'test@example.org', password: '1234' }))
+          const data = await request(host, mutation({ email: 'test@example.org', password: '1234' }))
           const { token } = data.login
           jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
             expect(data.email).toEqual('test@example.org')
@@ -42,7 +41,7 @@ describe('login', () => {
       describe('with a valid email but incorrect password', () => {
         it('responds with "Incorrect email address or password."', async () => {
           try {
-            await request(getHost(), mutation({ email: 'test@example.org', password: 'wrong' }))
+            await request(host, mutation({ email: 'test@example.org', password: 'wrong' }))
           } catch (error) {
             expect(error.response.errors[0].message).toEqual('Incorrect email address or password.')
           }
@@ -52,7 +51,7 @@ describe('login', () => {
       describe('with a non-existing email', () => {
         it('responds with "Incorrect email address or password."', async () => {
           try {
-            await request(getHost(), mutation({ email: 'non-existent@example.org', password: 'wrong' }))
+            await request(host, mutation({ email: 'non-existent@example.org', password: 'wrong' }))
           } catch (error) {
             expect(error.response.errors[0].message).toEqual('Incorrect email address or password.')
           }

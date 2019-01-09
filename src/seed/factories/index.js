@@ -29,12 +29,12 @@ const buildMutation = (model, parameters) => {
   return builders[model](parameters)
 }
 
-const create = async (model, parameters) => {
-  await client.mutate({ mutation: gql(buildMutation(model, parameters)) })
+const create = (model, parameters) => {
+  return client.mutate({ mutation: gql(buildMutation(model, parameters)) })
 }
 
-const cleanDatabase = async () => {
-  await query('MATCH (n) DETACH DELETE n', session)
+const cleanDatabase = () => {
+  return query('MATCH (n) DETACH DELETE n', session)
 }
 
 export {

@@ -1,31 +1,50 @@
-import { request } from 'graphql-request'
-import createServer from '../server'
-import mocks from '../mocks'
+import { GraphQLClient } from 'graphql-request'
 import { create, cleanDatabase } from '../seed/factories'
-import generateJwt from '../jwt/generateToken'
+import { host, login } from '../jest/helpers'
 
 describe('authorization', () => {
-  describe('given an existing user', () => {
+  describe('given two existing users', () => {
+    beforeEach(async () => {
+      await create('user', {
+        email: 'test@example.org',
+        password: '1234'
+      })
+      await create('user', {
+        email: 'someone@example.org',
+        password: 'hello'
+      })
+    })
+
+    afterEach(async () => {
+      await cleanDatabase()
+    })
 
     describe('logged in', () => {
-      let jwt
-      beforeEach(() => {
-        // jwt = generateJwt(user)
+      let jwt, graphQLClient
+
+      beforeEach(async () => {
+        jwt = await login({ email: 'test@example.org', password: '1234' })
+        graphQLClient = new GraphQLClient(host, {
+          headers: {
+            authorization: `Bearer ${jwt}`
+          }
+        })
       })
 
-      describe('query own user profile', () => {
-        const mutation = (params) => {
-          const { email, password } = params
+      describe('query email', () => {
+        const query = (params) => {
+          const { email } = params
           return `{
                     User(email: "${email}") {
-                      name
+                      email
                     }
                   }`
         }
 
-        it('returns the owner\'s email address', async () => {
-          // const data = await request(getHost(), mutation({ email: 'test@example.org' }))
-          console.log('it runs')
+        it('exposes the owner\'s email address', async () => {
+          const data = await graphQLClient.request(query({ email: 'test@example.org' }))
+          console.log(process.env)
+          expect(data).toEqual({ User: [ { email: 'test@example.org' } ] })
         })
       })
     })
