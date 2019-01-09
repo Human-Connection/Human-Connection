@@ -5393,10 +5393,10 @@ neo4j-driver@^1.7.2, neo4j-driver@~1.7.2:
     text-encoding "^0.6.4"
     uri-js "^4.2.1"
 
-neo4j-graphql-js@~2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.1.1.tgz#bdb1af2fb45d1058492852ed9307586f6deab37d"
-  integrity sha512-OcDaFIfOKZF02jmxnWWTLQr64mu79RGAtDULfciwElW59GjRF425M2Yf4gLJuQFscnh7d+Qk/+Ng+jVbz+V4lA==
+neo4j-graphql-js@~2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.2.0.tgz#f0d934b376e9476ef2aa1600e86eb1f8a74c10a2"
+  integrity sha512-DyYRE6wAVPKxDAHkRwiZmNYx+Vv3KVFQp2Ul1Ay4f2ahW52mWzwMFe/Rlbau3phFYSZZAeaRCT7XLBy++sg/cQ==
   dependencies:
     graphql "^14.0.2"
     lodash "^4.17.11"
