@@ -23,6 +23,10 @@
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
+  "jest": {
+    "verbose": true,
+    "testMatch": ["**/src/**/?(*.)+(spec|test).js?(x)" ]
+  },
   "dependencies": {
     "apollo-cache-inmemory": "~1.3.11",
     "apollo-client": "~2.4.8",
