@@ -19,7 +19,7 @@ afterEach(async () => {
   await app.close()
 })
 
-describe.only('login', () => {
+describe('login', () => {
   const mutation = (params) => {
     const { email, password } = params
     return `
