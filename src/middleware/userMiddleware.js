@@ -1,5 +1,6 @@
 import request from 'request'
 import { UserInputError } from 'apollo-server'
+import isEmpty from 'lodash/isEmpty'
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {
@@ -20,7 +21,7 @@ const fetch = url => {
 }
 
 const createOrUpdateLocations = async (userId, locationName, driver) => {
-  if (!locationName) {
+  if (isEmpty(locationName)) {
     return
   }
   const mapboxToken = process.env.MAPBOX_TOKEN
@@ -135,12 +136,12 @@ export default {
   Mutation: {
     CreateUser: async (resolve, root, args, context, info) => {
       const result = await resolve(root, args, context, info)
-      await createOrUpdateLocations(context.user.id, args.locationName, context.driver)
+      await createOrUpdateLocations(args.id, args.locationName, context.driver)
       return result
     },
     UpdateUser: async (resolve, root, args, context, info) => {
       const result = await resolve(root, args, context, info)
-      await createOrUpdateLocations(context.user.id, args.locationName, context.driver)
+      await createOrUpdateLocations(args.id, args.locationName, context.driver)
       return result
     }
   }
