@@ -31,7 +31,7 @@
 
 ## Documentation
 
-* [Edit this Documentation](documentation/testing/edit-this-documentation.md)
+* [Edit this Documentation](documentation/edit-this-documentation.md)
 
 ## Recources
 
