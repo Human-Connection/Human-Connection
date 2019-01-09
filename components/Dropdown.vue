@@ -40,7 +40,6 @@ export default {
     isPopoverOpen: {
       immediate: true,
       handler(isOpen) {
-        console.log('isOpen', isOpen)
         try {
           if (isOpen) {
             setTimeout(() => {
