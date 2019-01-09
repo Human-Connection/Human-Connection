@@ -27,6 +27,9 @@ Connect with other developers over [Discord](https://discord.gg/6ub73U3)
 
 ## Quick Start
 
+### Forking the repository
+Before you start, fork the repository using the fork button above, then clone it to your local machine using `git clone https://github.com/your-username/Nitro-Backend.git`
+
 ### Installation with Docker
 
 Run:

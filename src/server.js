@@ -28,6 +28,7 @@ let schema = makeExecutableSchema({
 })
 
 const driver = neo4j().getDriver()
+const debug = process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true'
 
 schema = augmentSchema(schema, {
   query: {
@@ -35,7 +36,8 @@ schema = augmentSchema(schema, {
   },
   mutation: {
     exclude: ['Statistics', 'LoggedInUser']
-  }
+  },
+  debug: debug
 })
 schema = applyScalars(applyDirectives(schema))
 
@@ -57,8 +59,8 @@ const createServer = (options) => {
       return payload
     },
     schema: schema,
-    tracing: true,
-    debug: process.env.NODE_ENV !== 'production',
+    debug: debug,
+    tracing: debug,
     middlewares: middleware(schema),
     mocks: (process.env.MOCK === 'true') ? mocks : false
   }
