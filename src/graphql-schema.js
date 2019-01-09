@@ -102,7 +102,7 @@ export const resolvers = {
         .then(async (result) => {
           session.close()
           const [currentUser] = await result.records.map(function (record) {
-            console.log(record.get('user'))
+            // console.log(record.get('user'))
             return record.get('user')
           })
           if (currentUser && await bcrypt.compareSync(password, currentUser.password)) {
