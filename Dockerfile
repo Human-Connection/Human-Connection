@@ -14,20 +14,16 @@ RUN apk --no-cache add git
 COPY . .
 
 FROM base as build-and-test
-ENV NODE_ENV=test
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
     && yarn run styleguide:build
-COPY . .
 RUN yarn run build
 
 FROM base as production
 ENV NODE_ENV=production
 COPY --from=build-and-test ./nitro-web/node_modules ./node_modules
-COPY --from=build-and-test ./nitro-web/plugins ./plugins
 COPY --from=build-and-test ./nitro-web/.nuxt ./.nuxt
-COPY --from=build-and-test ./nitro-web/static ./static
 
 EXPOSE 3000
 CMD ["yarn", "run", "start"]
