@@ -17,21 +17,25 @@
 import { getLangByName } from './helpers'
 
 const switchLang = name => {
-  cy.get('.login-locale-switch a').click()
+  cy.get('.locale-menu').click()
   cy.contains('.locale-menu-popover a', name).click()
 }
 
 Cypress.Commands.add('switchLanguage', (name, force) => {
   const code = getLangByName(name).code
-  if (force || !cy.get(`html[lang=${code}]`)) {
+  if (force) {
     switchLang(name)
+  } else {
+    cy.get('html').then($html => {
+      if ($html && $html.attr('lang') !== code) {
+        switchLang(name)
+      }
+    })
   }
 })
 
 Cypress.Commands.add('visitMyProfile', () => {
-  if (!cy.get('.avatar-menu-popover')) {
-    cy.get('.avatar-menu').click()
-  }
+  cy.get('.avatar-menu').click()
   cy.get('.avatar-menu-popover')
     .find('a[href^="/profile/"]')
     .click()
@@ -39,7 +43,6 @@ Cypress.Commands.add('visitMyProfile', () => {
 
 Cypress.Commands.add('login', (email, password) => {
   cy.visit(`/login`)
-  cy.switchLanguage('English')
   cy.get('input[name=email]')
     .trigger('focus')
     .type(email)

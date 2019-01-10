@@ -17,8 +17,8 @@ const lastColumnIsSortedInDescendingOrder = () => {
 
 When('I navigate to the administration dashboard', () => {
   cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover a')
-    .contains('Admin')
+  cy.get('.avatar-menu-popover')
+    .find('a[href="/admin"]')
     .click()
 })
 

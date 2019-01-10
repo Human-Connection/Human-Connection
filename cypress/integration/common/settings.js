@@ -7,8 +7,9 @@ let myLocation
 let myName
 
 const matchNameInUserMenu = name => {
-  cy.get('.avatar-menu').click()
+  cy.get('.avatar-menu').click() // open
   cy.get('.avatar-menu-popover').contains(name)
+  cy.get('.avatar-menu').click() // close again
 }
 
 const setUserName = name => {
@@ -66,3 +67,8 @@ Then('they can see the location in the info box below my avatar', () => {
 Then('my new username is still there', () => {
   matchNameInUserMenu(myName)
 })
+
+Then(
+  'I can see my new name {string} when I click on my profile picture in the top right',
+  name => matchNameInUserMenu(name)
+)
