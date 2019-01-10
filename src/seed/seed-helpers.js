@@ -46,7 +46,7 @@ export default {
     let randomIds = _.shuffle(ids)
     return items[randomIds.pop()]
   },
-  randomItems: (items, key = '_id', min = 1, max = 1) => {
+  randomItems: (items, key = 'id', min = 1, max = 1) => {
     let randomIds = _.shuffle(_.keys(items))
     let res = []
 
@@ -54,7 +54,7 @@ export default {
 
     for (let i = 0; i < count; i++) {
       let r = items[randomIds.pop()][key]
-      if (key === '_id') {
+      if (key === 'id') {
         r = r.toString()
       }
       res.push(r)
@@ -117,21 +117,9 @@ export default {
   mapIdsByKey: (items, values, key) => {
     let res = []
     values.forEach(value => {
-      res.push(_.find(items, [key, value])._id.toString())
+      res.push(_.find(items, [key, value]).id.toString())
     })
     return res
-  },
-  /**
-   * Provide a way to iterate for each element in an array while waiting for async functions to finish
-   *
-   * @param array
-   * @param callback
-   * @returns {Promise<void>}
-   */
-  asyncForEach: async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
-      await callback(array[index], index, array)
-    }
   },
   genInviteCode: () => {
     const chars = '23456789abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPRSTUVWXYZ'

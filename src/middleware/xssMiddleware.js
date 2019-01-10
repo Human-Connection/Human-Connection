@@ -1,4 +1,4 @@
-import walkRecursive from './helpers/walkRecursive'
+import walkRecursive from '../helpers/walkRecursive'
 // import { getByDot, setByDot, getItems, replaceItems } from 'feathers-hooks-common'
 import sanitizeHtml from 'sanitize-html'
 // import { isEmpty, intersection } from 'lodash'
