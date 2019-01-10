@@ -3,10 +3,16 @@
     :open.sync="isPopoverOpen"
     :open-group="Math.random().toString()"
     :placement="placement"
+    :disabled="disabled"
     trigger="manual"
     :offset="offset"
   >
-    <slot :toggleMenu="toggleMenu" />
+    <slot
+      :toggleMenu="toggleMenu"
+      :openMenu="openMenu"
+      :closeMenu="closeMenu"
+      :isOpen="isOpen"
+    />
     <div
       slot="popover"
       @mouseover="popoverMouseEnter"
@@ -15,6 +21,9 @@
       <slot
         name="popover"
         :toggleMenu="toggleMenu"
+        :openMenu="openMenu"
+        :closeMenu="closeMenu"
+        :isOpen="isOpen"
       />
     </div>
   </v-popover>
@@ -29,11 +38,17 @@ let mouseLeaveTimer = null
 export default {
   props: {
     placement: { type: String, default: 'bottom-end' },
+    disabled: { type: Boolean, default: false },
     offset: { type: [String, Number], default: '16' }
   },
   data() {
     return {
       isPopoverOpen: false
+    }
+  },
+  computed: {
+    isOpen() {
+      return this.isPopoverOpen
     }
   },
   watch: {
@@ -43,11 +58,13 @@ export default {
         console.log('isOpen', isOpen)
         try {
           if (isOpen) {
-            setTimeout(() => {
-              document
-                .getElementsByTagName('body')[0]
-                .classList.add('dropdown-open')
-            }, 10)
+            this.$nextTick(() => {
+              setTimeout(() => {
+                document
+                  .getElementsByTagName('body')[0]
+                  .classList.add('dropdown-open')
+              }, 20)
+            })
           } else {
             document
               .getElementsByTagName('body')[0]
@@ -63,9 +80,37 @@ export default {
   },
   methods: {
     toggleMenu() {
+      if (this.disabled) {
+        return
+      }
+      clearTimeout(mouseEnterTimer)
+      clearTimeout(mouseLeaveTimer)
       this.isPopoverOpen = !this.isPopoverOpen
     },
+    openMenu(useTimeout) {
+      if (this.disabled) {
+        return
+      }
+      if (useTimeout) {
+        this.popoverMouseEnter()
+      } else {
+        this.isPopoverOpen = true
+      }
+    },
+    closeMenu(useTimeout) {
+      if (this.disabled) {
+        return
+      }
+      if (useTimeout) {
+        this.popoveMouseLeave()
+      } else {
+        this.isPopoverOpen = false
+      }
+    },
     popoverMouseEnter() {
+      if (this.disabled) {
+        return
+      }
       clearTimeout(mouseEnterTimer)
       clearTimeout(mouseLeaveTimer)
       if (!this.isPopoverOpen) {
@@ -75,6 +120,9 @@ export default {
       }
     },
     popoveMouseLeave() {
+      if (this.disabled) {
+        return
+      }
       clearTimeout(mouseEnterTimer)
       clearTimeout(mouseLeaveTimer)
       if (this.isPopoverOpen) {
