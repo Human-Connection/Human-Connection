@@ -22,7 +22,7 @@ export default (driver) => {
       const session = driver.session()
       const result = await session.run(
         'MATCH (user:User {id: $userId}) ' +
-        'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1',
+        'RETURN user {.id, .slug, .name, .avatar, .email, .role} as user LIMIT 1',
         {
           userId: JWTPayload.id
         }
@@ -33,7 +33,6 @@ export default (driver) => {
       })
 
       if (currentUser) {
-        delete currentUser.password
         currentUser.avatar = fixUrl(currentUser.avatar)
         return next(null, currentUser)
       } else {
