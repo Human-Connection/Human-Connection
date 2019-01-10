@@ -3,10 +3,16 @@
     :open.sync="isPopoverOpen"
     :open-group="Math.random().toString()"
     :placement="placement"
+    :disabled="disabled"
     trigger="manual"
     :offset="offset"
   >
-    <slot :toggleMenu="toggleMenu" />
+    <slot
+      :toggleMenu="toggleMenu"
+      :openMenu="openMenu"
+      :closeMenu="closeMenu"
+      :isOpen="isOpen"
+    />
     <div
       slot="popover"
       @mouseover="popoverMouseEnter"
@@ -15,6 +21,9 @@
       <slot
         name="popover"
         :toggleMenu="toggleMenu"
+        :openMenu="openMenu"
+        :closeMenu="closeMenu"
+        :isOpen="isOpen"
       />
     </div>
   </v-popover>
@@ -29,11 +38,39 @@ let mouseLeaveTimer = null
 export default {
   props: {
     placement: { type: String, default: 'bottom-end' },
+    disabled: { type: Boolean, default: false },
     offset: { type: [String, Number], default: '16' }
   },
   data() {
     return {
       isPopoverOpen: false
+    }
+  },
+  computed: {
+    isOpen() {
+      return this.isPopoverOpen
+    }
+  },
+  watch: {
+    isPopoverOpen: {
+      immediate: true,
+      handler(isOpen) {
+        try {
+          if (isOpen) {
+            this.$nextTick(() => {
+              setTimeout(() => {
+                document
+                  .getElementsByTagName('body')[0]
+                  .classList.add('dropdown-open')
+              }, 20)
+            })
+          } else {
+            document
+              .getElementsByTagName('body')[0]
+              .classList.remove('dropdown-open')
+          }
+        } catch (err) {}
+      }
     }
   },
   beforeDestroy() {
@@ -42,11 +79,35 @@ export default {
   },
   methods: {
     toggleMenu() {
-      this.isPopoverOpen = !this.isPopoverOpen
+      this.isPopoverOpen ? this.closeMenu(false) : this.openMenu(false)
+    },
+    openMenu(useTimeout) {
+      if (this.disabled) {
+        return
+      }
+      this.clearTimeouts()
+      if (useTimeout === true) {
+        this.popoverMouseEnter()
+      } else {
+        this.isPopoverOpen = true
+      }
+    },
+    closeMenu(useTimeout) {
+      if (this.disabled) {
+        return
+      }
+      this.clearTimeouts()
+      if (useTimeout === true) {
+        this.popoveMouseLeave()
+      } else {
+        this.isPopoverOpen = false
+      }
     },
     popoverMouseEnter() {
-      clearTimeout(mouseEnterTimer)
-      clearTimeout(mouseLeaveTimer)
+      if (this.disabled) {
+        return
+      }
+      this.clearTimeouts()
       if (!this.isPopoverOpen) {
         mouseEnterTimer = setTimeout(() => {
           this.isPopoverOpen = true
@@ -54,13 +115,19 @@ export default {
       }
     },
     popoveMouseLeave() {
-      clearTimeout(mouseEnterTimer)
-      clearTimeout(mouseLeaveTimer)
+      if (this.disabled) {
+        return
+      }
+      this.clearTimeouts()
       if (this.isPopoverOpen) {
         mouseLeaveTimer = setTimeout(() => {
           this.isPopoverOpen = false
         }, 300)
       }
+    },
+    clearTimeouts() {
+      clearTimeout(mouseEnterTimer)
+      clearTimeout(mouseLeaveTimer)
     }
   }
 }
