@@ -1,5 +1,4 @@
 export default {
-  baseUrl: 'http://localhost:3000',
   users: {
     admin: {
       email: 'admin@example.org',

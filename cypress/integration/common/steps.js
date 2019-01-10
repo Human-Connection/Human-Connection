@@ -1,22 +1,15 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
-import find from 'lodash/find'
-import { baseUrl } from '../../support/config'
+import { getLangByName } from '../../support/helpers'
 
 /* global cy  */
 
 const username = 'Peter Lustig'
 
-const locales = require('../../../locales')
-
-const getLangByName = function(name) {
-  return find(locales, { name })
-}
-
-const openPage = function(page) {
+const openPage = page => {
   if (page === 'landing') {
     page = ''
   }
-  cy.visit(`${baseUrl}/${page}`)
+  cy.visit(`/${page}`)
 }
 
 Given('I am logged in', () => {
@@ -80,10 +73,10 @@ Then('I am still logged in', () => {
 })
 
 When('I select {string} in the language menu', name => {
-  cy.switchLanguage(name)
+  cy.switchLanguage(name, true)
 })
 Given('I previously switched the language to {string}', name => {
-  cy.switchLanguage(name)
+  cy.switchLanguage(name, true)
 })
 Then('the whole user interface appears in {string}', name => {
   const lang = getLangByName(name)
