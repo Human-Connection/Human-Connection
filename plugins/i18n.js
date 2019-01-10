@@ -67,9 +67,12 @@ export default ({ app, req, cookie, store }) => {
   if (!isEmpty(localeCookie)) {
     userLocale = localeCookie
   } else {
-    userLocale = process.browser
-      ? navigator.language || navigator.userLanguage
-      : req.locale
+    try {
+      userLocale = process.browser
+        ? navigator.language || navigator.userLanguage
+        : req.headers['accept-language'].split(',')[0]
+    } catch (err) {}
+
     if (userLocale && !isEmpty(userLocale.language)) {
       userLocale = userLocale.language.substr(0, 2)
     }
