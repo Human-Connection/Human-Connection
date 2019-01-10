@@ -10,7 +10,7 @@ Feature: About me and and location
     Given I am logged in
     And I am on the "settings" page
 
-  Scenario: I change my name
+  Scenario: Change username
     When I save "Hansi" as my new name
     Then I can see my new name "Hansi" when I click on my profile picture in the top right
 
