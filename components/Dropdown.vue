@@ -55,7 +55,6 @@ export default {
     isPopoverOpen: {
       immediate: true,
       handler(isOpen) {
-        console.log('isOpen', isOpen)
         try {
           if (isOpen) {
             this.$nextTick(() => {
@@ -80,18 +79,14 @@ export default {
   },
   methods: {
     toggleMenu() {
-      if (this.disabled) {
-        return
-      }
-      clearTimeout(mouseEnterTimer)
-      clearTimeout(mouseLeaveTimer)
-      this.isPopoverOpen = !this.isPopoverOpen
+      this.isPopoverOpen ? this.closeMenu(false) : this.openMenu(false)
     },
     openMenu(useTimeout) {
       if (this.disabled) {
         return
       }
-      if (useTimeout) {
+      this.clearTimeouts()
+      if (useTimeout === true) {
         this.popoverMouseEnter()
       } else {
         this.isPopoverOpen = true
@@ -101,7 +96,8 @@ export default {
       if (this.disabled) {
         return
       }
-      if (useTimeout) {
+      this.clearTimeouts()
+      if (useTimeout === true) {
         this.popoveMouseLeave()
       } else {
         this.isPopoverOpen = false
@@ -111,8 +107,7 @@ export default {
       if (this.disabled) {
         return
       }
-      clearTimeout(mouseEnterTimer)
-      clearTimeout(mouseLeaveTimer)
+      this.clearTimeouts()
       if (!this.isPopoverOpen) {
         mouseEnterTimer = setTimeout(() => {
           this.isPopoverOpen = true
@@ -123,13 +118,16 @@ export default {
       if (this.disabled) {
         return
       }
-      clearTimeout(mouseEnterTimer)
-      clearTimeout(mouseLeaveTimer)
+      this.clearTimeouts()
       if (this.isPopoverOpen) {
         mouseLeaveTimer = setTimeout(() => {
           this.isPopoverOpen = false
         }, 300)
       }
+    },
+    clearTimeouts() {
+      clearTimeout(mouseEnterTimer)
+      clearTimeout(mouseLeaveTimer)
     }
   }
 }
