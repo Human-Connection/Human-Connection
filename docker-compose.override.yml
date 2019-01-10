@@ -2,6 +2,8 @@ version: '3.7'
 
 services:
   webapp:
+    environment:
+      - NODE_ENV=development
     build:
       context: .
       target: build-and-test
