@@ -1,9 +1,6 @@
 {
-  "common": {
-    "reportContent": "Melden"
-  },
   "login": {
-    "copy": "Wenn Du ein Konto bei Human Connection hast, melde Dich bitte hier an.",
+    "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
     "logout": "Ausloggen",
     "email": "Deine E-Mail",
@@ -16,7 +13,9 @@
     "memberSince": "Mitglied seit",
     "follow": "Folgen",
     "followers": "Folgen",
-    "following": "Folgt"
+    "following": "Folgt",
+    "shouted": "Empfohlen",
+    "commented": "Kommentiert"
   },
   "settings": {
     "name": "Einstellungen",
@@ -96,5 +95,23 @@
       "quote": "Viele kleine Leute, an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
       "author": "Afrikanisches Sprichwort"
     }
+  },
+  "common": {
+    "reportContent": "Melden",
+    "post": "Beitrag ::: Beiträge",
+    "comment": "Kommentar ::: Kommentare",
+    "letsTalk": "Miteinander reden",
+    "versus": "Versus",
+    "moreInfo": "Mehr Info",
+    "takeAction": "Aktiv werden",
+    "shout": "Empfehlung ::: Empfehlungen",
+    "user": "Benutzer ::: Benutzer",
+    "category": "Kategorie ::: Kategorien",
+    "organization": "Organisation ::: Organisationen",
+    "project": "Projekt ::: Projekte",
+    "tag": "Tag ::: Tags",
+    "name": "Name",
+    "loadMore": "mehr laden",
+    "loading": "wird geladen"
   }
 }

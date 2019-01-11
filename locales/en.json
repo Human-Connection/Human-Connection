@@ -1,7 +1,4 @@
 {
-  "common": {
-    "reportContent": "Report"
-  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
@@ -16,7 +13,9 @@
     "memberSince": "Member since",
     "follow": "Follow",
     "followers": "Followers",
-    "following": "Following"
+    "following": "Following",
+    "shouted": "Shouted",
+    "commented": "Commented"
   },
   "settings": {
     "name": "Settings",
@@ -96,5 +95,23 @@
       "quote": "Many small people in many small places do many small things, that can alter the face of the world.",
       "author": "African proverb"
     }
+  },
+  "common": {
+    "reportContent": "Report",
+    "post": "Post ::: Posts",
+    "comment": "Comment ::: Comments",
+    "letsTalk": "Let`s Talk",
+    "versus": "Versus",
+    "moreInfo": "More Info",
+    "takeAction": "Take Action",
+    "shout": "Shout ::: Shouts",
+    "user": "User ::: Users",
+    "category": "Category ::: Categories",
+    "organization": "Organization ::: Organizations",
+    "project": "Project ::: Projects",
+    "tag": "Tag ::: Tags",
+    "name": "Name",
+    "loadMore": "load more",
+    "loading": "loading"
   }
 }

@@ -26,7 +26,7 @@
                   <a
                     class="avatar-menu-trigger"
                     :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
-                    @click.prevent="toggleMenu()"
+                    @click.prevent="toggleMenu"
                   >
                     <ds-avatar
                       :image="user.avatar"
@@ -37,7 +37,7 @@
                 </template>
                 <template
                   slot="popover"
-                  slot-scope="{toggleMenu}"
+                  slot-scope="{closeMenu}"
                 >
                   <div class="avatar-menu-popover">
                     {{ $t('login.hello') }} <b>{{ user.name }}</b>
@@ -50,13 +50,16 @@
                         slot-scope="item"
                         :route="item.route"
                         :parents="item.parents"
-                        @click.native="toggleMenu"
+                        @click.native="closeMenu(false)"
                       >
                         <ds-icon :name="item.route.icon" /> {{ item.route.name }}
                       </ds-menu-item>
                     </ds-menu>
                     <ds-space margin="xx-small" />
-                    <nuxt-link :to="{ name: 'logout'}">
+                    <nuxt-link
+                      :to="{ name: 'logout'}"
+                      style="margin-left: 0"
+                    >
                       <ds-icon name="sign-out" /> {{ $t('login.logout') }}
                     </nuxt-link>
                   </div>
@@ -72,6 +75,7 @@
         <nuxt />
       </div>
     </ds-container>
+    <div id="overlay" />
     <report-modal />
     <no-ssr>
       <portal-target name="modal" />
@@ -127,6 +131,10 @@ export default {
   },
   methods: {
     isExact(url) {
+      if (url.indexOf('/profile') === 0) {
+        // do only match own profile
+        this.$route.path === url
+      }
       return this.$route.path.indexOf(url) === 0
     }
   }
@@ -149,8 +157,14 @@ export default {
   padding-bottom: 0.5rem;
 
   nav {
+    margin-left: -16px;
+    margin-right: -10px;
     padding-top: 1rem;
     padding-bottom: 1rem;
+
+    a {
+      padding-left: 12px;
+    }
   }
 }
 </style>
