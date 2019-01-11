@@ -89,9 +89,9 @@ export default {
           }
         })
         .then(() => {
-          this.isOpen = false
-          this.$toast.success(err.message)
+          this.$toast.success('Thanks for reporting!')
           this.disabled = true
+          this.close()
         })
         .catch(err => {
           this.$toast.error(err.message)
