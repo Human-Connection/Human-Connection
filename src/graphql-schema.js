@@ -4,6 +4,7 @@ import path from 'path'
 import bcrypt from 'bcryptjs'
 import zipObject from 'lodash/zipObject'
 import generateJwt from './jwt/generateToken'
+import uuid from 'uuid/v4'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 
@@ -124,10 +125,49 @@ export const resolvers = {
       throw new Error('No Such User exists.')
     },
     report: async (parent, { resource, description }, { driver, req, user }, resolveInfo) => {
-      // return neo4jgraphql(parent, { resource, description }, { driver, req, user }, resolveInfo)
-      console.log('params', { resource, description })
-      console.log(`the user with the id ${user.id} tries to create a report on content of type ${resource.type} (${resource.id})`)
-      throw new Error(`resource.id: ${resource.id}, resource.type: ${resource.type}, description: ${description}, user: ${user.id}`)
+      const contextId = uuid()
+      const session = driver.session()
+      const data = {
+        id: contextId,
+        type: resource.type,
+        createdAt: (new Date()).toISOString(),
+        description: resource.description
+      }
+      await session.run(
+        'CREATE (r:Report $report) ' +
+        'RETURN r.id, r.type, r.description', {
+          report: data
+        }
+      )
+      let contentType
+
+      switch (resource.type) {
+        case 'post':
+        case 'contribution':
+          contentType = 'Post'
+          break
+        case 'comment':
+          contentType = 'Comment'
+          break
+        case 'user':
+          contentType = 'User'
+          break
+      }
+
+      await session.run(
+        `MATCH (author:User {id: $userId}), (context:${contentType} {id: $resourceId}), (report:Report {id: $contextId}) ` +
+        'MERGE (report)<-[:REPORTED]-(author) ' +
+        'MERGE (context)<-[:REPORTED]-(report) ' +
+        'RETURN context', {
+          resourceId: resource.id,
+          userId: user.id,
+          contextId: contextId
+        }
+      )
+      session.close()
+
+      // TODO: output Report compatible object
+      return data
     }
   }
 }
