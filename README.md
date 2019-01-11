@@ -27,6 +27,9 @@ Connect with other developers over [Discord](https://discord.gg/6ub73U3)
 
 ## Quick Start
 
+### Forking the repository
+Before you start, fork the repository using the fork button above, then clone it to your local machine using `git clone https://github.com/your-username/Nitro-Backend.git`
+
 ### Installation with Docker
 
 Run:
@@ -131,6 +134,9 @@ npm run db:reset
 ```
 
 ## Run Tests
+
+**Beware**: We have no multiple database setup at the moment. We clean the database after each test, running the tests will wipe out all your data!
+
 ```bash
 yarn run test
 # -or-

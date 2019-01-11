@@ -21,10 +21,7 @@ let schema = makeExecutableSchema({
 })
 
 const driver = neo4j().getDriver()
-
-const MOCK = (process.env.MOCK === 'true')
-/* eslint-disable-next-line no-console */
-console.log('MOCK:', MOCK)
+const debug = process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true'
 
 schema = augmentSchema(schema, {
   query: {
@@ -32,35 +29,40 @@ schema = augmentSchema(schema, {
   },
   mutation: {
     exclude: ['Statistics', 'LoggedInUser']
-  }
+  },
+  debug: debug
 })
 schema = applyScalars(applyDirectives(schema))
 
-const server = new GraphQLServer({
-  context: async (req) => {
-    const payload = {
-      driver,
-      user: null,
-      req: req.request
-    }
-    try {
-      const token = payload.req.headers.authorization.replace('Bearer ', '')
-      payload.user = await jwt.verify(token, process.env.JWT_SECRET)
-    } catch (err) {
-      // nothing
-    }
+const createServer = (options) => {
+  const defaults = {
+    context: async (req) => {
+      const payload = {
+        driver,
+        user: null,
+        req: req.request
+      }
+      try {
+        const token = payload.req.headers.authorization.replace('Bearer ', '')
+        payload.user = await jwt.verify(token, process.env.JWT_SECRET)
+      } catch (err) {
+        // nothing
+      }
 
-    return payload
-  },
-  schema: schema,
-  tracing: true,
-  middlewares: middleware(schema),
-  mocks: MOCK ? mocks : false
-})
+      return payload
+    },
+    schema: schema,
+    tracing: debug,
+    middlewares: middleware(schema),
+    mocks: (process.env.MOCK === 'true') ? mocks : false
+  }
+  const server = new GraphQLServer(Object.assign({}, defaults, options))
 
-passport.use('jwt', jwtStrategy())
-server.express.use(passport.initialize())
+  passport.use('jwt', jwtStrategy())
+  server.express.use(passport.initialize())
 
-server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
+  server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
+  return server
+}
 
-export default server
+export default createServer

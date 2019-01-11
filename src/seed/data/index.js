@@ -38,5 +38,5 @@ export default async function (client) {
     }
   })
   /* eslint-disable-next-line no-console */
-  console.log('Seeded Data', data)
+  console.log('Seeded Data...')
 }
