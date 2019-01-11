@@ -81,6 +81,13 @@
       "name": "Settings"
     }
   },
+  "moderation": {
+    "name": "Moderation",
+    "reports": {
+      "name": "Reports",
+      "reporter": "reported by"
+    }
+  },
   "post": {
     "name": "Post",
     "moreInfo": {

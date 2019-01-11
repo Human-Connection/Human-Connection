@@ -101,6 +101,7 @@ export default {
     ...mapGetters({
       user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',
+      isModerator: 'auth/isModerator',
       isAdmin: 'auth/isAdmin'
     }),
     routes() {
@@ -119,6 +120,13 @@ export default {
           icon: 'cogs'
         }
       ]
+      if (this.isModerator) {
+        routes.push({
+          name: this.$t('moderation.name'),
+          path: `/moderation`,
+          icon: 'balance-scale'
+        })
+      }
       if (this.isAdmin) {
         routes.push({
           name: this.$t('admin.name'),

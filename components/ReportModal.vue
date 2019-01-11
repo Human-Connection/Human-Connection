@@ -73,7 +73,7 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($id: ID!, $type: _ResourceType!, $description: String) {
+            mutation($id: ID!, $type: ResourceEnum!, $description: String) {
               report(
                 resource: { id: $id, type: $type }
                 description: $description
