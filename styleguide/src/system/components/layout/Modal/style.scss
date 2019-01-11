@@ -12,13 +12,16 @@
   transform: translate3d(-50%, -50%, 0);
   display: flex;
   flex-direction: column;
-  max-width: 600px;
+  max-width: 400px;
   width: calc(90vw - 40px);
   max-height: 90vh;
   background: white;
   border-radius: $border-radius-large;
   padding: 0 $space-base;
   box-shadow: $box-shadow-x-large;
+}
+.ds-modal-extended {
+  max-width: 600px;
 }
 .ds-modal-close {
   position: absolute;
@@ -29,7 +32,7 @@
   flex: 1;
   overflow-y: auto;
   height: auto;
-  min-height: 100px;
+  min-height: 70px;
   max-height: 60vh;
 }
 .ds-modal-header {

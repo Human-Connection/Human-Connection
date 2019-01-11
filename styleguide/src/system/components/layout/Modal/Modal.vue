@@ -15,6 +15,7 @@
         <div
           v-if="isOpen"
           class="ds-modal"
+          :class="[extended && 'ds-modal-extended']"
           tableindex="-1"
           role="dialog"
           ref="modal"
@@ -30,7 +31,7 @@
                   {{ title }}
                 </ds-heading>
                 <ds-button
-                  v-if="allowAbort"
+                  v-if="!force"
                   class="ds-modal-close"
                   ghost
                   size="small"
@@ -96,11 +97,18 @@ export default {
       default: false
     },
     /**
+     * Force user input by disabeling the ESC key, close button and click on the backdrop
+     */
+    force: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * Allow closing without choosing action by ESC key, close button or click on the backdrop
      */
-    allowAbort: {
+    extended: {
       type: Boolean,
-      default: true
+      default: false
     },
     /**
      * Cancel button label
@@ -156,7 +164,7 @@ export default {
       this.$emit('close', type)
     },
     backdropHandler () {
-      if (this.allowAbort) {
+      if (!this.force) {
         this.cancel('backdrop')
       }
     }
@@ -170,7 +178,7 @@ export default {
   },
   mounted() {
     const keydownListener = document.addEventListener('keydown', e => {
-      if (this.isOpen && this.allowAbort && e.keyCode === 27) {
+      if (this.isOpen && !this.force && e.keyCode === 27) {
         this.cancel('backdrop')
       }
     })

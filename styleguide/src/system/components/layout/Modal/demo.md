@@ -40,7 +40,8 @@ Customize button labels
       v-if="isOpen"
       v-model="isOpen"
       title="Custom Button Labels" 
-      :allow-abort="false"
+      force
+      extended
       confirm-label="All right"
       cancel-label="Please not"
     >
