@@ -90,6 +90,19 @@
       "name": "Aktiv werden"
     }
   },
+  "report": {
+    "submit": "Meldung senden",
+    "cancel": "Abbrechen",
+    "user": {
+      "title": "Nutzer melden"
+    },
+    "contribution": {
+      "title": "Beitrag melden"
+    },
+    "comment": {
+      "title": "Kommentar melden"
+    }
+  },
   "quotes": {
     "african": {
       "quote": "Viele kleine Leute, an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",

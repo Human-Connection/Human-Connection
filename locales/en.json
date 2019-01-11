@@ -90,6 +90,19 @@
       "name": "Take action"
     }
   },
+  "report": {
+    "submit": "Send Report",
+    "cancel": "Cancel",
+    "user": {
+      "title": "Report User"
+    },
+    "contribution": {
+      "title": "Report Contribution"
+    },
+    "comment": {
+      "title": "Report Comment"
+    }
+  },
   "quotes": {
     "african": {
       "quote": "Many small people in many small places do many small things, that can alter the face of the world.",

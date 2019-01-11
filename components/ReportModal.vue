@@ -2,8 +2,8 @@
   <ds-modal
     :title="title"
     :is-open="isOpen"
-    cancel-label="Cancel"
-    confirm-label="Send Report"
+    :confirm-label="$t('report.submit')"
+    :cancel-label="$t('report.cancel')"
     @close="close"
   >
     <p>Are you sure that you want to report the {{ data.context }} "<b>{{ data.name | truncate(30) }}</b>"?</p>
@@ -17,7 +17,7 @@ export default {
       return this.$store.getters['modal/data'] || {}
     },
     title() {
-      return `Report ${this.data.context}`
+      return this.$t(`report.${this.data.context}.title`)
     },
     isOpen() {
       return this.$store.getters['modal/open'] === 'report'
