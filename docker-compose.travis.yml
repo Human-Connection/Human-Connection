@@ -1,0 +1,7 @@
+version: "3.7"
+
+services:
+  webapp:
+    build:
+      context: .
+      target: build-and-test
