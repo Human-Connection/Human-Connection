@@ -9,9 +9,11 @@ services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.23.2
+  - DOCKER_COMPOSE_VERSION=1.23.2 BACKEND_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-${TRAVIS_BRANCH:-master}}
+
 
 before_install:
+  - echo $BACKEND_BRANCH
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
@@ -21,7 +23,7 @@ install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-web .
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
   - git clone https://github.com/Human-Connection/Nitro-Backend.git ../Nitro-Backend
-  - git -C "../Nitro-Backend" checkout $TRAVIS_PULL_REQUEST_BRANCH || git -C "../Nitro-Backend" checkout $TRAVIS_BRANCH || echo "Branch \`$TRAVIS_PULL_REQUEST_BRANCH\` and \`$TRAVIS_BRANCH\` does not exist, falling back to \`master\`"
+  - git -C "../Nitro-Backend" checkout $BACKEND_BRANCH
   - docker-compose -f ../Nitro-Backend/docker-compose.yml -f ../Nitro-Backend/docker-compose.travis.yml up -d
   - yarn global add cypress wait-on
   - yarn add cypress-cucumber-preprocessor
