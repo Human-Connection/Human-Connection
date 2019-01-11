@@ -72,6 +72,10 @@
         <nuxt />
       </div>
     </ds-container>
+    <report-modal />
+    <no-ssr>
+      <portal-target name="modal" />
+    </no-ssr>
   </div>
 </template>
 
@@ -79,11 +83,13 @@
 import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
+import ReportModal from '~/components/ReportModal'
 import seo from '~/components/mixins/seo'
 
 export default {
   components: {
     Dropdown,
+    ReportModal,
     LocaleSwitch
   },
   mixins: [seo],

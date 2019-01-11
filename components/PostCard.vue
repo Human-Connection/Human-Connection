@@ -51,41 +51,10 @@
           <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
         </span>
         <no-ssr>
-          <dropdown
-            class="post-menu"
-            placement="top-end"
-          >
-            <template
-              slot="default"
-              slot-scope="{toggleMenu}"
-            >
-              <a
-                class="post-menu-trigger"
-                href="#"
-                @click.prevent="toggleMenu()"
-              >
-                <ds-icon name="angle-up" />
-              </a>
-            </template>
-            <template
-              slot="popover"
-              slot-scope="{toggleMenu}"
-            >
-              <div class="post-menu-popover">
-                <ds-menu :routes="routes">
-                  <ds-menu-item
-                    slot="Navigation"
-                    slot-scope="item"
-                    :route="item.route"
-                    :parents="item.parents"
-                    @click.native="toggleMenu"
-                  >
-                    <ds-icon :name="item.route.icon" /> {{ item.route.name }}
-                  </ds-menu-item>
-                </ds-menu>
-              </div>
-            </template>
-          </dropdown>
+          <content-menu
+            context="contribution"
+            :name="post.title"
+          />
         </no-ssr>
       </div>
     </template>
@@ -94,14 +63,14 @@
 
 <script>
 import HcAuthor from '~/components/Author.vue'
-import Dropdown from '~/components/Dropdown'
+import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
 
 export default {
   name: 'HcPostCard',
   components: {
     HcAuthor,
-    Dropdown
+    ContentMenu
   },
   props: {
     post: {
@@ -123,23 +92,6 @@ export default {
       }
 
       return excerpt
-    },
-    routes() {
-      let routes = [
-        {
-          name: this.$t('common.reportContent'),
-          path: `/profile/`,
-          icon: 'flag'
-        }
-      ]
-      // if (this.isAdmin) {
-      //   routes.push({
-      //     name: this.$t('admin.name'),
-      //     path: `/admin`,
-      //     icon: 'shield'
-      //   })
-      // }
-      return routes
     }
   },
   methods: {

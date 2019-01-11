@@ -6,6 +6,14 @@
     class="post-card"
   >
     <hc-author :post="post" />
+    <no-ssr>
+      <content-menu
+        style="float: right; display: inline-block; margin-top: -5rem;"
+        placement="bottom-end"
+        context="contribution"
+        :name="post.title"
+      />
+    </no-ssr>
     <ds-space margin-bottom="small" />
     <!-- Content -->
     <!-- eslint-disable vue/no-v-html -->
@@ -112,6 +120,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import ContentMenu from '~/components/ContentMenu'
 import HcAuthor from '~/components/Author.vue'
 import HcShoutButton from '~/components/ShoutButton.vue'
 
@@ -122,7 +131,8 @@ export default {
   },
   components: {
     HcAuthor,
-    HcShoutButton
+    HcShoutButton,
+    ContentMenu
   },
   head() {
     return {

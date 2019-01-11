@@ -17,6 +17,14 @@
             class="profile-avatar"
             size="120px"
           />
+          <no-ssr>
+            <content-menu
+              style="float: right; display: inline-block; margin-top: -3.5rem; margin-right: -0.5rem;"
+              placement="bottom-start"
+              context="user"
+              :name="user.name"
+            />
+          </no-ssr>
           <ds-space margin="small">
             <ds-heading
               tag="h3"
@@ -251,6 +259,7 @@ import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
+import ContentMenu from '~/components/ContentMenu'
 
 export default {
   components: {
@@ -259,7 +268,8 @@ export default {
     HcFollowButton,
     HcCountTo,
     HcBadges,
-    HcLoadMore
+    HcLoadMore,
+    ContentMenu
   },
   transition: {
     name: 'slide-up',
