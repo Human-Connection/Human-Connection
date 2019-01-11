@@ -11,3 +11,8 @@ scripts/
 .env
 
 cypress/
+
+README.md 
+screenshot*.png
+lokalise.png
+.editorconfig

@@ -18,8 +18,8 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 install:
-  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT -t humanconnection/nitro-web .
-  - docker-compose -f docker-compose.yml up -d
+  - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-web .
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
   - git clone https://github.com/Human-Connection/Nitro-Backend.git ../Nitro-Backend
   - git -C "../Nitro-Backend" checkout $TRAVIS_PULL_REQUEST_BRANCH || git -C "../Nitro-Backend" checkout $TRAVIS_BRANCH || echo "Branch \`$TRAVIS_PULL_REQUEST_BRANCH\` and \`$TRAVIS_BRANCH\` does not exist, falling back to \`master\`"
   - docker-compose -f ../Nitro-Backend/docker-compose.yml -f ../Nitro-Backend/docker-compose.travis.yml up -d
@@ -27,8 +27,8 @@ install:
   - yarn add cypress-cucumber-preprocessor
 
 script:
-  - docker-compose exec webapp yarn run lint
-  - docker-compose exec webapp yarn run test
+  - docker-compose exec -e NODE_ENV=test webapp yarn run lint
+  - docker-compose exec -e NODE_ENV=test webapp yarn run test
   - docker-compose -f ../Nitro-Backend/docker-compose.yml exec backend yarn run db:seed > /dev/null
   - wait-on http://localhost:3000
   - cypress run --record --key $CYPRESS_TOKEN

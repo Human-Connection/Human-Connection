@@ -3,7 +3,9 @@ version: '3.7'
 services:
   webapp:
     image: humanconnection/nitro-web:latest
-    build: .
+    build:
+      context: .
+      target: production
     ports:
       - 3000:3000
       - 8080:8080

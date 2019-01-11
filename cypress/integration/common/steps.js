@@ -1,5 +1,6 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import { getLangByName } from '../../support/helpers'
+import find from 'lodash/find'
 
 /* global cy  */
 
