@@ -5,9 +5,9 @@
 
 props:
   - name: border-radius-x-large
-    value: "8px"
+    value: "5px"
   - name: border-radius-large
-    value: "6px"
+    value: "4px"
   - name: border-radius-base
     value: "3px"
   - name: border-radius-rounded

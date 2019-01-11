@@ -379,10 +379,10 @@ export default {
       &.ds-tab-nav-item-active {
         border-bottom: 3px solid #17b53f;
         &:first-child {
-          border-bottom-left-radius: $border-radius-large;
+          border-bottom-left-radius: $border-radius-x-large;
         }
         &:last-child {
-          border-bottom-right-radius: $border-radius-large;
+          border-bottom-right-radius: $border-radius-x-large;
         }
       }
     }
