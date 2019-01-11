@@ -32,7 +32,10 @@ Feature: About me and and location
         | Germany                | Country |
 
   Scenario: Display a description on profile page
-    Given I have the following self-description: "Ich lebe fettlos, fleischlos, fischlos dahin, fühle mich aber ganz wohl dabei"
+    Given I have the following self-description:
+    """
+    Ich lebe fettlos, fleischlos, fischlos dahin, fühle mich aber ganz wohl dabei
+    """
     And my username is "Peter Lustig"
     When people visit my profile page
     Then they can see the text in the info box below my avatar

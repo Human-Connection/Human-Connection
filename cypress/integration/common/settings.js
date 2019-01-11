@@ -33,7 +33,7 @@ When('I save {string} as my location', location => {
   myLocation = location
 })
 
-When('I have the following self-description: {string}', text => {
+When('I have the following self-description:', text => {
   cy.get('textarea[id=bio]')
     .clear()
     .type(text)
