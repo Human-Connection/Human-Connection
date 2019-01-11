@@ -1,0 +1,75 @@
+
+.ds-modal-wrapper {
+  padding: $space-base;
+  position: relative;
+}
+
+.ds-modal {
+  position: fixed;
+  z-index: $z-index-modal;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: calc(90vw - 40px);
+  max-height: 90vh;
+  background: white;
+  border-radius: $border-radius-large;
+  padding: 0 $space-base;
+  box-shadow: $box-shadow-x-large;
+}
+.ds-modal-close {
+  position: absolute;
+  top: $space-small;
+  right: $space-small;
+}
+.ds-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  height: auto;
+  min-height: 100px;
+  max-height: 60vh;
+}
+.ds-modal-header {
+  padding-top: $space-base;
+
+  .ds-modal-title {
+    margin-bottom: 0;
+  }
+}
+.ds-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: $z-index-modal - 1;
+  background: rgba(0, 0, 0, 0.7);
+}
+.ds-modal-footer {
+  display: flex;
+  padding: $space-base 0;
+  flex-shrink: 0;
+  justify-content: flex-end;
+
+  & > button {
+    margin-left: $space-x-small;
+  }
+}
+
+$easeOut: cubic-bezier(0.19, 1, 0.22, 1);
+
+.ds-transition-modal-appear-enter-active {
+  opacity: 1;
+  transition: all 180ms $easeOut;
+  transition-delay: 0;
+  transform: translate3d(-50%, -50%, 0) scale(1);
+}
+.ds-transition-modal-appear-enter,
+.ds-transition-modal-appear-leave-active {
+  opacity: 0;
+  transition-delay: 0;
+  transform: translate3d(-50%, -50%, 0) scale(0.9);
+}
