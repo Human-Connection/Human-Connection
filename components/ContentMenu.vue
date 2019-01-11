@@ -53,6 +53,7 @@ export default {
   },
   props: {
     placement: { type: String, default: 'top-end' },
+    itemId: { type: String, required: true },
     name: { type: String, required: true },
     context: {
       type: String,
@@ -95,6 +96,7 @@ export default {
         name: 'report',
         data: {
           context: this.context,
+          id: this.itemId,
           name: this.name
         }
       })

@@ -53,6 +53,7 @@
         <no-ssr>
           <content-menu
             context="contribution"
+            :item-id="post.id"
             :name="post.title"
           />
         </no-ssr>

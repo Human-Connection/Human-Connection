@@ -11,6 +11,7 @@
         style="float: right; display: inline-block; margin-top: -5rem;"
         placement="bottom-end"
         context="contribution"
+        :item-id="post.id"
         :name="post.title"
       />
     </no-ssr>
