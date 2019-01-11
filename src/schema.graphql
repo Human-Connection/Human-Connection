@@ -35,10 +35,10 @@ scalar DateTime
 
 input Resource {
   id: ID!,
-  type: _ResourceType!
+  type: ResourceEnum!
 }
 
-enum _ResourceType {
+enum ResourceEnum {
   contribution
   comment
   user
@@ -152,8 +152,9 @@ type Comment {
 
 type Report {
   id: ID!
-  author: User @relation(name: "REPORTED", direction: "IN")
+  reporter: User @relation(name: "REPORTED", direction: "IN")
   description: String
+  type: ResourceEnum!
   createdAt: String
   comment: Comment @relation(name: "REPORTED", direction: "OUT")
   contribution: Post @relation(name: "REPORTED", direction: "OUT")
