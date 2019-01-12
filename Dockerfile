@@ -14,6 +14,7 @@ RUN apk --no-cache add git
 COPY . .
 
 FROM base as build-and-test
+RUN cp .env.template .env
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN cd styleguide && yarn install --production=false --frozen-lockfile --non-interactive \
     && cd .. \
