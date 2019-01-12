@@ -13,7 +13,9 @@
     "memberSince": "Member since",
     "follow": "Follow",
     "followers": "Followers",
-    "following": "Following"
+    "following": "Following",
+    "shouted": "Shouted",
+    "commented": "Commented"
   },
   "settings": {
     "name": "Settings",
