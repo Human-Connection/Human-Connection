@@ -147,6 +147,12 @@ export default {
   margin-right: $space-xx-small;
 }
 
+.main-navigation {
+  a {
+    color: $text-color-soft;
+  }
+}
+
 .main-navigation-left {
   display: flex;
   margin-right: auto;

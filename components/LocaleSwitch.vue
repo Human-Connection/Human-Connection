@@ -93,6 +93,7 @@ export default {
   align-items: center;
   height: 100%;
   padding: $space-xx-small;
+  color: $text-color-soft;
 }
 
 nav.locale-menu-popover {
