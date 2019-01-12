@@ -4,23 +4,23 @@
     :placement="placement"
     :offset="offset"
   >
-    <template
+    <a
       slot="default"
       slot-scope="{toggleMenu}"
+      class="locale-menu"
+      href="#"
+      @click.prevent="toggleMenu()"
     >
-      <a
-        class="locale-menu"
-        href="#"
-        @click.prevent="toggleMenu()"
-      >
-        <img
-          :alt="current.name"
-          :title="current.name"
-          :src="`/img/locale-flags/${current.code}.svg`"
-          height="26"
-        >
-      </a>
-    </template>
+      <ds-icon
+        style="margin-top: -2px; margin-right: 2px;"
+        name="globe"
+      /> {{ current.code.toUpperCase() }}
+      <ds-icon
+        style="margin-top: -2px; margin-left: 2px"
+        size="xx-small"
+        name="angle-down"
+      />
+    </a>
     <template slot="popover">
       <ul class="locale-menu-popover">
         <li
@@ -36,12 +36,7 @@
             ]"
             @click.prevent="changeLanguage(locale.code)"
           >
-            <img
-              :alt="locale.name"
-              :title="locale.name"
-              :src="`/img/locale-flags/${locale.code}.svg`"
-              width="20"
-            > {{ locale.name }}
+            {{ locale.name }}
           </a>
         </li>
       </ul>
@@ -52,6 +47,7 @@
 <script>
 import Dropdown from '~/components/Dropdown'
 import find from 'lodash/find'
+import orderBy from 'lodash/orderBy'
 
 export default {
   components: {
@@ -63,7 +59,7 @@ export default {
   },
   data() {
     return {
-      locales: process.env.locales
+      locales: orderBy(process.env.locales, 'name')
     }
   },
   computed: {
@@ -83,6 +79,9 @@ export default {
 <style lang="scss">
 .locale-menu {
   user-select: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 ul.locale-menu-popover {
