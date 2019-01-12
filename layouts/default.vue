@@ -46,6 +46,7 @@
                 >
                   <div class="avatar-menu-popover">
                     {{ $t('login.hello') }} <b>{{ user.name }}</b>
+                    <hr>
                     <ds-menu
                       :routes="routes"
                       :is-exact="isExact"
@@ -60,10 +61,10 @@
                         <ds-icon :name="item.route.icon" /> {{ item.route.name }}
                       </ds-menu-item>
                     </ds-menu>
-                    <ds-space margin="xx-small" />
+                    <hr>
                     <nuxt-link
+                      class="logout-link"
                       :to="{ name: 'logout'}"
-                      style="margin-left: 0"
                     >
                       <ds-icon name="sign-out" /> {{ $t('login.logout') }}
                     </nuxt-link>
@@ -166,11 +167,25 @@ export default {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 
+  hr {
+    color: $color-neutral-90;
+    background-color: $color-neutral-90;
+  }
+
+  .logout-link {
+    margin-left: -$space-small;
+    margin-right: -$space-small;
+    margin-bottom: -$space-xx-small;
+    padding: $space-xx-small $space-small;
+  }
+
   nav {
-    margin-left: -16px;
-    margin-right: -10px;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    margin-left: -$space-small;
+    margin-right: -$space-small;
+    margin-top: -$space-xx-small;
+    margin-bottom: -$space-xx-small;
+    // padding-top: $space-xx-small;
+    // padding-bottom: $space-xx-small;
 
     a {
       padding-left: 12px;

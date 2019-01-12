@@ -146,3 +146,15 @@ hr {
     transition-delay: 0;
   }
 }
+
+[class$="menu-popover"] {
+  a, button {
+    display: flex;
+    align-content: center;
+    align-items: center;
+
+    .ds-icon {
+      padding-right: $space-xx-small;
+    }
+  }
+}

@@ -101,6 +101,7 @@ nav.locale-menu-popover {
 
   a {
     padding: $space-x-small $space-small;
+    padding-right: $space-base;
   }
 }
 </style>
