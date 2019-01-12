@@ -91,24 +91,34 @@
       border-radius: $border-radius-base;
       padding: $space-x-small $space-small;
       box-shadow: $box-shadow-large;
+
+      nav {
+        margin-left: -$space-small;
+        margin-right: -$space-small;
+
+        a {
+          padding-left: 12px;
+        }
+      }
     }
 
     .popover-arrow {
       border-color: $background-color-soft;
     }
 
-    @include arrow(8px, "popover", $background-color-soft);
+    @include arrow(7px, "popover", $background-color-soft);
   }
+
 
   &[aria-hidden='true'] {
     visibility: hidden;
     opacity: 0;
-    transition: opacity .15s, visibility .15s;
+    transition: opacity .1s, visibility .1s;
   }
 
   &[aria-hidden='false'] {
     visibility: visible;
     opacity: 1;
-    transition: opacity .15s;
+    transition: opacity .1s;
   }
 }

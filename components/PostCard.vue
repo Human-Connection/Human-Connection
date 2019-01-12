@@ -115,7 +115,7 @@ export default {
     z-index: 1;
   }
 }
-.post-menu {
+.content-menu {
   // position: absolute;
   // bottom: $space-small;
   // right: $space-small;

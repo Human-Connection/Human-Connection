@@ -1,6 +1,6 @@
 <template>
   <dropdown
-    class="post-menu"
+    class="content-menu"
     :placement="placement"
     offset="5"
   >
@@ -9,38 +9,30 @@
       slot-scope="{toggleMenu}"
     >
       <a
-        class="post-menu-trigger"
+        class="content-menu-trigger"
         href="#"
         @click.prevent="toggleMenu()"
       >
-        <ds-icon
-          v-if="placement.indexOf('top') === 0"
-          name="angle-up"
-        />
-        <ds-icon
-          v-else
-          name="angle-down"
-        />
+        <ds-icon name="ellipsis-v" />
       </a>
     </template>
-    <template
+    <div
       slot="popover"
       slot-scope="{toggleMenu}"
+      class="content-menu-popover"
     >
-      <div class="post-menu-popover">
-        <ds-menu :routes="routes">
-          <ds-menu-item
-            slot="Navigation"
-            slot-scope="item"
-            :route="item.route"
-            :parents="item.parents"
-            @click.stop.prevent="openItem(item.route, toggleMenu)"
-          >
-            <ds-icon :name="item.route.icon" /> {{ item.route.name }}
-          </ds-menu-item>
-        </ds-menu>
-      </div>
-    </template>
+      <ds-menu :routes="routes">
+        <ds-menu-item
+          slot="Navigation"
+          slot-scope="item"
+          :route="item.route"
+          :parents="item.parents"
+          @click.stop.prevent="openItem(item.route, toggleMenu)"
+        >
+          <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+        </ds-menu-item>
+      </ds-menu>
+    </div>
   </dropdown>
 </template>
 
@@ -104,3 +96,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.content-menu-popover {
+  nav {
+    margin-top: -$space-xx-small;
+    margin-bottom: -$space-xx-small;
+    margin-left: -$space-x-small;
+    margin-right: -$space-x-small;
+  }
+}
+</style>

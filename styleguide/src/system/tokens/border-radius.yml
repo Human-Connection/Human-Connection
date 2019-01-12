@@ -9,7 +9,7 @@ props:
   - name: border-radius-large
     value: "4px"
   - name: border-radius-base
-    value: "3px"
+    value: "4px"
   - name: border-radius-rounded
     value: "2em"
   - name: border-radius-circle

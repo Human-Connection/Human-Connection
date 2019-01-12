@@ -165,14 +165,9 @@ export default {
   padding-bottom: 0.5rem;
 
   nav {
-    margin-left: -16px;
     margin-right: -10px;
     padding-top: 1rem;
     padding-bottom: 1rem;
-
-    a {
-      padding-left: 12px;
-    }
   }
 }
 </style>
