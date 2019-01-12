@@ -116,9 +116,6 @@ export default {
   }
 }
 .content-menu {
-  // position: absolute;
-  // bottom: $space-small;
-  // right: $space-small;
   display: inline-block;
   margin-left: $space-small;
   z-index: 1;

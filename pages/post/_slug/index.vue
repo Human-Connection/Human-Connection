@@ -8,7 +8,6 @@
     <hc-author :post="post" />
     <no-ssr>
       <content-menu
-        style="float: right; display: inline-block; margin-top: -5rem;"
         placement="bottom-end"
         context="contribution"
         :item-id="post.id"
@@ -225,6 +224,12 @@ export default {
 
 <style lang="scss">
 .page-name-post-slug {
+  .content-menu {
+    float: right;
+    margin-right: -$space-x-small;
+    // margin-top: $space-x-small;
+  }
+
   .post-card {
     // max-width: 800px;
     margin: auto;
