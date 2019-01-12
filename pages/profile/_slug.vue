@@ -20,7 +20,7 @@
           <no-ssr>
             <content-menu
               style="float: right; display: inline-block; margin-top: -3.5rem; margin-right: -0.5rem;"
-              placement="bottom-start"
+              placement="bottom-end"
               context="user"
               :item-id="user.id"
               :name="user.name"
