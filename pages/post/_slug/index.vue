@@ -227,7 +227,7 @@ export default {
   .content-menu {
     float: right;
     margin-right: -$space-x-small;
-    // margin-top: $space-x-small;
+    margin-top: -$space-large;
   }
 
   .post-card {
