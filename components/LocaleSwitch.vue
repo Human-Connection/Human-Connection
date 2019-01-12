@@ -21,26 +21,24 @@
         name="angle-down"
       />
     </a>
-    <template slot="popover">
-      <ul class="locale-menu-popover">
-        <li
-          v-for="locale in locales"
-          :key="locale.code"
-        >
-          <a
-            href="#"
-            style="display: flex; align-items: center;"
-            :class="[
-              locale.code,
-              current.code === locale.code && 'active'
-            ]"
-            @click.prevent="changeLanguage(locale.code)"
-          >
-            {{ locale.name }}
-          </a>
-        </li>
-      </ul>
-    </template>
+    <ds-menu
+      slot="popover"
+      slot-scope="{toggleMenu}"
+      class="locale-menu-popover"
+      :is-exact="isExact"
+      :routes="routes"
+    >
+      <ds-menu-item
+        slot="Navigation"
+        slot-scope="item"
+        class="locale-menu-item"
+        :route="item.route"
+        :parents="item.parents"
+        @click.stop.prevent="changeLanguage(item.route.path, toggleMenu)"
+      >
+        {{ item.route.name }}
+      </ds-menu-item>
+    </ds-menu>
   </dropdown>
 </template>
 
@@ -65,12 +63,24 @@ export default {
   computed: {
     current() {
       return find(this.locales, { code: this.$i18n.locale() })
+    },
+    routes() {
+      let routes = this.locales.map(locale => {
+        return {
+          name: locale.name,
+          path: locale.code
+        }
+      })
+      return routes
     }
   },
   methods: {
-    changeLanguage(locale) {
+    changeLanguage(locale, toggleMenu) {
       this.$i18n.set(locale)
-      this.$refs.menu.toggleMenu()
+      toggleMenu()
+    },
+    isExact(locale) {
+      return locale === this.$i18n.locale()
     }
   }
 }
@@ -82,32 +92,15 @@ export default {
   display: flex;
   align-items: center;
   height: 100%;
+  padding: $space-xx-small;
 }
 
-ul.locale-menu-popover {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+nav.locale-menu-popover {
+  margin-left: -$space-small !important;
+  margin-right: -$space-small !important;
 
-  li {
-    a {
-      opacity: 0.8;
-
-      display: block;
-      padding: 0.3rem 0;
-
-      img {
-        margin-right: 8px;
-      }
-
-      &:hover {
-        opacity: 1;
-      }
-      &.active {
-        opacity: 1;
-        font-weight: bold;
-      }
-    }
+  a {
+    padding: $space-x-small $space-small;
   }
 }
 </style>

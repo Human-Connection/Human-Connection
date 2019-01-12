@@ -15,7 +15,6 @@
             <locale-switch
               class="topbar-locale-switch"
               placement="bottom"
-              offset="12"
             />
           </no-ssr>
           <template v-if="isLoggedIn">
@@ -36,7 +35,6 @@
                       size="42"
                     />
                     <ds-icon
-                      style="margin-left: -4px"
                       size="xx-small"
                       name="angle-down"
                     />
@@ -145,10 +143,7 @@ export default {
 <style lang="scss">
 .topbar-locale-switch {
   display: flex;
-  margin-right: $space-small;
-}
-.avatar-menu {
-  float: right;
+  margin-right: $space-xx-small;
 }
 
 .main-navigation-left {
@@ -162,6 +157,9 @@ export default {
 
 .avatar-menu-trigger {
   user-select: none;
+  display: flex;
+  align-items: center;
+  padding-left: $space-xx-small;
 }
 .avatar-menu-popover {
   display: inline-block;
