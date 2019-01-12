@@ -101,13 +101,16 @@
     "submit": "Meldung senden",
     "cancel": "Abbrechen",
     "user": {
-      "title": "Nutzer melden"
+      "title": "Nutzer melden",
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" melden möchtest?"
     },
     "contribution": {
-      "title": "Beitrag melden"
+      "title": "Beitrag melden",
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" melden möchtest?"
     },
     "comment": {
-      "title": "Kommentar melden"
+      "title": "Kommentar melden",
+      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?"
     }
   },
   "quotes": {

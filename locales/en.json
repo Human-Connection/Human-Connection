@@ -101,13 +101,16 @@
     "submit": "Send Report",
     "cancel": "Cancel",
     "user": {
-      "title": "Report User"
+      "title": "Report User",
+      "message": "Do you really want to report the user \"<b>{name}</b>\"?"
     },
     "contribution": {
-      "title": "Report Contribution"
+      "title": "Report Contribution",
+      "message": "Do you really want to report the contribution \"<b>{name}</b>\"?"
     },
     "comment": {
-      "title": "Report Comment"
+      "title": "Report Comment",
+      "message": "Do you really want to report the comment from \"<b>{name}</b>\"?"
     }
   },
   "quotes": {

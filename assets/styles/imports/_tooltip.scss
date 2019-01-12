@@ -90,7 +90,7 @@
       color: $text-color-base;
       border-radius: $border-radius-base;
       padding: $space-x-small $space-small;
-      box-shadow: $box-shadow-large;
+      box-shadow: $box-shadow-x-large;
 
       nav {
         margin-left: -$space-small;
@@ -113,12 +113,12 @@
   &[aria-hidden='true'] {
     visibility: hidden;
     opacity: 0;
-    transition: opacity .1s, visibility .1s;
+    transition: opacity 60ms;
   }
 
   &[aria-hidden='false'] {
     visibility: visible;
     opacity: 1;
-    transition: opacity .1s;
+    transition: opacity 60ms;
   }
 }

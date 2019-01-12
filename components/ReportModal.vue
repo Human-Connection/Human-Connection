@@ -8,7 +8,8 @@
     @confirm="report"
     @cancel="close"
   >
-    <p>Are you sure that you want to report the {{ data.context }} "<b>{{ data.name | truncate(30) }}</b>"?</p>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="$t(`report.${data.context}.message`, { name: name })" />
     <template
       slot="footer"
       slot-scope="{ cancel, confirm, cancelLabel, confirmLabel }"
@@ -50,6 +51,9 @@ export default {
     },
     title() {
       return this.$t(`report.${this.data.context}.title`)
+    },
+    name() {
+      return this.$filters.truncate(this.data.name, 30)
     },
     isOpen() {
       return this.$store.getters['modal/open'] === 'report'
