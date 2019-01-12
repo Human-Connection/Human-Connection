@@ -1,19 +1,21 @@
 <template>
   <div class="layout-default">
     <div class="main-navigation">
-      <ds-container style="padding: .5rem 3rem .2rem;">
-        <a
-          v-router-link
-          href="/"
-        >
-          <ds-logo />
-        </a>
-        <div style="float: right">
+      <ds-container style="padding: .5rem 2rem .2rem; display: flex;">
+        <div class="main-navigation-left">
+          <a
+            v-router-link
+            href="/"
+          >
+            <ds-logo />
+          </a>
+        </div>
+        <div class="main-navigation-right">
           <no-ssr>
             <locale-switch
               class="topbar-locale-switch"
               placement="bottom"
-              offset="24"
+              offset="12"
             />
           </no-ssr>
           <template v-if="isLoggedIn">
@@ -32,6 +34,11 @@
                       :image="user.avatar"
                       :name="user.name"
                       size="42"
+                    />
+                    <ds-icon
+                      style="margin-left: -4px"
+                      size="xx-small"
+                      name="angle-down"
                     />
                   </a>
                 </template>
@@ -137,13 +144,20 @@ export default {
 
 <style lang="scss">
 .topbar-locale-switch {
-  display: inline-block;
-  top: 8px;
-  right: 10px;
-  position: relative;
+  display: flex;
+  margin-right: $space-small;
 }
 .avatar-menu {
   float: right;
+}
+
+.main-navigation-left {
+  display: flex;
+  margin-right: auto;
+}
+.main-navigation-right {
+  display: flex;
+  margin-left: auto;
 }
 
 .avatar-menu-trigger {
