@@ -78,6 +78,10 @@ blockquote {
   position: fixed;
   width: 100%;
   z-index: 10;
+
+  a {
+    outline: none;
+  }
 }
 
 .hc-editor-content {
