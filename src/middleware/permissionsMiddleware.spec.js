@@ -1,6 +1,5 @@
-import { GraphQLClient } from 'graphql-request'
 import { create, cleanDatabase } from '../seed/factories'
-import { host, login } from '../jest/helpers'
+import { authenticatedGraphQLClient } from '../jest/helpers'
 
 describe('authorization', () => {
   describe('given two existing users', () => {
@@ -20,15 +19,10 @@ describe('authorization', () => {
     })
 
     describe('logged in', () => {
-      let jwt, graphQLClient
+      let graphQLClient
 
       beforeEach(async () => {
-        jwt = await login({ email: 'test@example.org', password: '1234' })
-        graphQLClient = new GraphQLClient(host, {
-          headers: {
-            authorization: `Bearer ${jwt}`
-          }
-        })
+        graphQLClient = await authenticatedGraphQLClient({ email: 'test@example.org', password: '1234' })
       })
 
       describe('query email', () => {
@@ -43,7 +37,6 @@ describe('authorization', () => {
 
         it('exposes the owner\'s email address', async () => {
           const data = await graphQLClient.request(query({ email: 'test@example.org' }))
-          console.log(process.env)
           expect(data).toEqual({ User: [ { email: 'test@example.org' } ] })
         })
       })
