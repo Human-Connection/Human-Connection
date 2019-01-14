@@ -53,9 +53,7 @@
     </template>
     <ds-space margin="small" />
     <!-- Comments -->
-    <ds-section
-      slot="footer"
-    >
+    <ds-section slot="footer">
       <h3 style="margin-top: 0;">
         <span>
           <ds-icon name="comments" />
@@ -234,11 +232,7 @@ export default {
     }
   }
   .ds-card-footer {
-    padding: 0;
-
-    .ds-section {
-      padding: $space-base;
-    }
+    padding-bottom: 0;
   }
 }
 </style>

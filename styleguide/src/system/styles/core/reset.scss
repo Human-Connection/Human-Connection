@@ -64,7 +64,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $text-color-base;
-  background-color: $background-color-base; // 2
+  background-color: $background-color-softer;
 }
 
 // Suppress the focus outline on elements that cannot be accessed via keyboard.

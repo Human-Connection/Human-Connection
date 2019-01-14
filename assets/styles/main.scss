@@ -146,3 +146,13 @@ hr {
     transition-delay: 0;
   }
 }
+
+.ds-card .ds-section {
+  padding: 0;
+  margin-left: -$space-base;
+  margin-right: -$space-base;
+
+  .ds-container {
+    padding: $space-base;
+  }
+}
