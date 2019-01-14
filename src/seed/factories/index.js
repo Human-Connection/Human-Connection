@@ -31,17 +31,16 @@ const create = (model, parameters) => {
   return client.mutate({ mutation: gql(buildMutation(model, parameters)) })
 }
 
-const cleanDatabase = () => {
+const cleanDatabase = async () => {
   const session = driver.session()
   const cypher = 'MATCH (n) DETACH DELETE n'
-  return session
-    .run(cypher)
-    .then(function (result) {
-      session.close()
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  try {
+    const result = await session.run(cypher)
+    session.close()
+    return result
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export {

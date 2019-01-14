@@ -5,12 +5,12 @@ describe('authorization', () => {
   describe('given two existing users', () => {
     beforeEach(async () => {
       await create('user', {
-        email: 'test@example.org',
-        password: '1234'
+        email: 'owner@example.org',
+        password: 'iamtheowner'
       })
       await create('user', {
         email: 'someone@example.org',
-        password: 'hello'
+        password: 'else'
       })
     })
 
@@ -18,28 +18,43 @@ describe('authorization', () => {
       await cleanDatabase()
     })
 
-    describe('logged in', () => {
+    describe('access email address', () => {
       let headers = {}
-
-      beforeEach(async () => {
-        // headers = authenticatedHeaders({
-        //   email: 'test@example.org',
-        //   password: '1234'
-        // })
-      })
-
-      describe('query email', async () => {
-        it('exposes the owner\'s email address', async () => {
-          const options = {
-            headers,
-            query: `{
-                    User(email: "test@example.org") {
+      const action = async (headers) => {
+        const options = {
+          headers,
+          query: `{
+                    User(email: "owner@example.org") {
                       email
                     }
                   }`
-          }
-          const json = await queryServer(options)
-          expect(json).toEqual({ User: [ { email: 'test@example.org' } ] })
+        }
+        return await queryServer(options)
+      }
+
+      describe('not logged in', async () => {
+        it('does not expose the owner\'s email address', async () => {
+          expect(await action(headers)).toEqual({ User: [ { email: null } ] })
+        })
+      })
+
+      describe('as owner', () => {
+        it('exposes the owner\'s email address', async () => {
+          headers = await authenticatedHeaders({
+            email: 'owner@example.org',
+            password: 'iamtheowner'
+          })
+          expect(await action(headers)).toEqual({ User: [ { email: 'owner@example.org' } ] })
+        })
+      })
+
+      describe('as someone else', () => {
+        it('does not expose the owner\'s email address', async () => {
+          headers = await authenticatedHeaders({
+            email: 'someone@example.org',
+            password: 'else'
+          })
+          expect(await action(headers)).toEqual({ User: [ { email: null } ] })
         })
       })
     })
