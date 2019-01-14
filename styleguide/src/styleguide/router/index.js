@@ -69,10 +69,16 @@ function createComponentRoute(component) {
 
 function createComponentPage(component) {
   return {
+    // Necessary to keep reactivity (hot-reload)
+    data() {
+      return {
+        component
+      }
+    },
     render: h =>
       h(ComponentPage, {
         props: {
-          component: component
+          component
         }
       })
   }

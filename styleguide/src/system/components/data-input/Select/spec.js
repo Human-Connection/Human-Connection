@@ -239,23 +239,25 @@ describe('Select.vue', () => {
       expect(wrapper.vm.pointer).toEqual(2)
     })
 
-    test('should be set by key down on search input', () => {
+    test('should be set by key down on search input when open', () => {
       const wrapper = shallowMount(Comp, {
         propsData: {
           options: ['1', '2', '3']
         }
       })
+      wrapper.vm.open()
       const searchInput = wrapper.find('.ds-select-search')
       searchInput.trigger('keydown.down')
       expect(wrapper.vm.pointer).toEqual(1)
     })
 
-    test('should be set by key up on search input', () => {
+    test('should be set by key up on search input when open', () => {
       const wrapper = shallowMount(Comp, {
         propsData: {
           options: ['1', '2', '3']
         }
       })
+      wrapper.vm.open()
       const searchInput = wrapper.find('.ds-select-search')
       searchInput.trigger('keydown.up')
       expect(wrapper.vm.pointer).toEqual(2)

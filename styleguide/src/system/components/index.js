@@ -29,7 +29,6 @@ context.keys().forEach(key => {
       parent,
       folder,
       name: c.name,
-      docs: c.__docs,
       component: c
     }
 

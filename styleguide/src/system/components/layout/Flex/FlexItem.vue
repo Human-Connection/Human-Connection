@@ -25,7 +25,8 @@ export default {
   },
   props: {
     /**
-     * The width of the item.
+     * The item's width
+     * @default 1
      */
     width: {
       type: [String, Number, Object],
@@ -34,7 +35,7 @@ export default {
       }
     },
     /**
-     * The html element name used for the wrapper.
+     * The outtermost html tag
      */
     tag: {
       type: String,
@@ -44,7 +45,7 @@ export default {
     /**
      * Center content vertical and horizontal
      */
-    center: {
+    centered: {
       type: Boolean,
       default: false
     }
@@ -58,7 +59,7 @@ export default {
       const gutter = this.mediaQuery(this.gutter)
       const widthStyle = this.parseWidth(width)
       const gutterStyle = this.parseGutter(gutter)
-      const centerStyle = this.center
+      const centerStyle = this.centered
         ? {
             'align-self': 'center',
             'jusify-self': 'center'

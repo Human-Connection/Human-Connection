@@ -3,7 +3,6 @@
     class="ds-code"
     :is="inline ? 'code' : 'pre'"
     :class="[
-      size && `ds-code-size-${size}`,
       inline && `ds-code-inline`
     ]"
   >

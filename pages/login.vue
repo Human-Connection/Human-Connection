@@ -17,7 +17,7 @@
         <ds-flex gutter="small">
           <ds-flex-item
             :width="{ base: '100%', sm: '50%' }"
-            center
+            centered
           >
             <no-ssr>
               <locale-switch
@@ -28,7 +28,7 @@
             <ds-space
               margin-top="small"
               margin-bottom="xxx-small"
-              center
+              centered
             >
               <img
                 class="login-image"
@@ -39,7 +39,7 @@
           </ds-flex-item>
           <ds-flex-item
             :width="{ base: '100%', sm: '50%' }"
-            center
+            centered
           >
             <ds-space margin="small">
               <ds-text size="small">
@@ -70,7 +70,7 @@
               <ds-button
                 :loading="pending"
                 primary
-                full-width
+                fullwidth
                 name="submit"
                 type="submit"
                 icon="sign-in"

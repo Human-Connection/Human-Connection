@@ -91,3 +91,20 @@ $border-radius: $border-radius-large;
     background-color: $background-color-secondary-active;
   }
 }
+
+.ds-card-space-small {
+  padding-top: $space-small;
+  padding-bottom: $space-small;
+}
+.ds-card-space-large {
+  padding-top: $space-large;
+  padding-bottom: $space-large;
+}
+.ds-card-space-x-large {
+  padding-top: $space-x-large;
+  padding-bottom: $space-x-large;
+}
+.ds-card-space-xx-large {
+  padding-top: $space-xx-large;
+  padding-bottom: $space-xx-large;
+}

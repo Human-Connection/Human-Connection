@@ -155,7 +155,9 @@ export default {
   },
   methods: {
     align(colKey) {
-      return this.fields && this.fields[colKey] ? this.fields[colKey].align : null
+      return this.fields && this.fields[colKey]
+        ? this.fields[colKey].align
+        : null
     },
     parseLabel(label) {
       return startCase(label)

@@ -43,7 +43,7 @@ export default {
     },
     /**
      * The column align
-     * `left, center, right`
+     * @options left|center|right
      */
     align: {
       type: String,

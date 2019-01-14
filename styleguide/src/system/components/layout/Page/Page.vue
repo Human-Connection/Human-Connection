@@ -57,7 +57,6 @@ export default {
   props: {
     /**
      * Whether the layout should have a maximum width
-     * `true, false`
      */
     contained: {
       type: Boolean,

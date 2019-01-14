@@ -10,6 +10,11 @@
 #
 # Set hues here (these don't set lightness)
 #
+#
+# Base Hues
+#
+# Set hues here (these don't set lightness)
+#
 aliases:
   neutral:
     value: "210, 29%"
@@ -72,6 +77,13 @@ props:
     value: &color-primary-active "hsla({!teal}, 34%, 1)"
   - name: color-primary-inverse
     value: &color-primary-inverse "hsla({!teal}, 97%, 1)"
+
+  - name: color-secondary
+    value: &color-secondary "hsla({!pink}, 45%, 1)"
+  - name: color-secondary-active
+    value: &color-secondary-active "hsla({!pink}, 52%, 1)"
+  - name: color-secondary-inverse
+    value: &color-secondary-inverse "hsla({!pink}, 97%, 1)"
 
   - name: color-success
     value: &color-success "hsla({!green}, 40%, 1)"
@@ -138,6 +150,14 @@ props:
     value: *color-primary-inverse
     category: text-color
 
+  - name: text-color-secondary
+    value: *color-secondary
+    category: text-color
+
+  - name: text-color-secondary-inverse
+    value: *color-secondary-inverse
+    category: text-color
+
   - name: text-color-success
     value: *color-success
     category: text-color
@@ -167,11 +187,15 @@ props:
     value: *color-neutral-100
     category: background-color
 
+  - name: background-color-soft
+    value: *color-neutral-95
+    category: background-color
+
   - name: background-color-softer
     value: *color-neutral-90
     category: background-color
 
-  - name: background-color-soft
+  - name: background-color-softer-active
     value: *color-neutral-95
     category: background-color
 
@@ -183,20 +207,20 @@ props:
     value: *color-neutral-90
     category: background-color
 
-  - name: background-color-inverse-softer
-    value: *color-neutral-20
-    category: background-color
-
-  - name: background-color-inverse-softer-active
-    value: *color-neutral-30
+  - name: background-color-inverse
+    value: *color-neutral-0
     category: background-color
 
   - name: background-color-inverse-soft
     value: *color-neutral-10
     category: background-color
 
-  - name: background-color-inverse
-    value: *color-neutral-0
+  - name: background-color-inverse-softer
+    value: *color-neutral-20
+    category: background-color
+
+  - name: background-color-inverse-softer-active
+    value: *color-neutral-30
     category: background-color
 
   - name: background-color-primary
@@ -209,6 +233,18 @@ props:
 
   - name: background-color-primary-inverse
     value: *color-primary-inverse
+    category: background-color
+
+  - name: background-color-secondary
+    value: *color-secondary
+    category: background-color
+
+  - name: background-color-secondary-active
+    value: *color-secondary-active
+    category: background-color
+
+  - name: background-color-secondary-inverse
+    value: *color-secondary-inverse
     category: background-color
 
   - name: background-color-success

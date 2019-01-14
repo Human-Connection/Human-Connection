@@ -14,10 +14,6 @@
     <component
       v-if="route"
       class="ds-menu-item-link"
-      :class="[
-        isExact && 'router-active-link',
-        isExact && 'router-link-exact-active'
-      ]"
       v-bind="bindings"
       :exact="isExact"
       :is="linkTag"

@@ -1,0 +1,59 @@
+.ds-spinner {
+  $scale: 40px;
+  
+  animation: rotate 16s linear infinite;
+  position: relative;
+  display: inline-block;
+  width: $scale;
+  height: $scale;
+  
+  & .path {
+    stroke: $text-color-soft;
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+  &.ds-spinner-inverse .path {
+    stroke: $color-primary-inverse;
+  }
+  &.ds-spinner-primary .path {
+    stroke: $text-color-primary;
+  }
+  &.ds-spinner-secondary .path {
+    stroke: $text-color-secondary;
+  }
+  &.ds-spinner-danger .path {
+    stroke: $text-color-danger;
+  }
+
+  &.ds-size-small {
+    width: $scale * 0.5;
+    height: $scale * 0.5;
+  }
+  &.ds-size-large {
+    width: $scale * 1.5;
+    height: $scale * 1.5;
+  }
+  
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(2160deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+

@@ -4,7 +4,7 @@
     :loading="loading"
     icon="plus"
     primary
-    full-width
+    fullwidth
     @click.prevent="follow"
   >
     Folgen

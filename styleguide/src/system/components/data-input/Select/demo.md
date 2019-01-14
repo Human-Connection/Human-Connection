@@ -65,7 +65,7 @@ Use the multiple prop to allow the user selecting multiple values.
 
 ## Options as objects
 
-Options can be objects with a label and a value property.
+Options can be objects. You can define which property to show as the label by defining label-prop. Defaults to "label".
 
 ```
 <template>
@@ -74,14 +74,21 @@ Options can be objects with a label and a value property.
       v-model="color"
       :options="colorOptions"
       placeholder="Color ..."></ds-select>
-    <ds-text>Your color: {{ color }}</ds-text>
+    <ds-text>Selected color: {{ color }}</ds-text>
+    <ds-select
+      v-model="colors"
+      :options="colorOptions"
+      placeholder="Colors ..."
+      multiple></ds-select>
+    <ds-text>Selected colors: {{ colors }}</ds-text>
   </div>
 </template>
 <script>
   export default {
     data() {
       return {
-        color: '',
+        color: null,
+        colors: [],
         colorOptions: [
           {
             label: 'blue',

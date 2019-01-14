@@ -49,7 +49,7 @@ export default {
     /**
      * Center content vertacally and horizontally
      */
-    center: {
+    centered: {
       type: Boolean,
       default: false
     },

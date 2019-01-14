@@ -291,7 +291,7 @@ props:
     value: *color-neutral-80
     category: border-color
 
-  - name: border-color-light
+  - name: border-color-softest
     value: *color-neutral-90
     category: border-color
 
