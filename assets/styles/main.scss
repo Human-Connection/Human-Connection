@@ -78,6 +78,10 @@ blockquote {
   position: fixed;
   width: 100%;
   z-index: 10;
+
+  a {
+    outline: none;
+  }
 }
 
 .hc-editor-content {
@@ -145,4 +149,20 @@ hr {
     opacity: 1;
     transition-delay: 0;
   }
+}
+
+[class$="menu-popover"] {
+  a, button {
+    display: flex;
+    align-content: center;
+    align-items: center;
+
+    .ds-icon {
+      padding-right: $space-xx-small;
+    }
+  }
+}
+
+.v-popover.open .trigger a {
+  color: $text-color-link-active;
 }
