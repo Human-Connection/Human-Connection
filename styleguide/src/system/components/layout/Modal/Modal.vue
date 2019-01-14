@@ -1,55 +1,57 @@
 <template>
-  <portal to="modal">
-    <div :key="key" class="ds-modal-wrapper">
-      <transition name="ds-transition-fade" appear>
-        <div
-          v-if="isOpen"
-          class="ds-modal-backdrop"
-          ref="backdrop"
-          @click="backdropHandler"
-        >
-          &nbsp;
-        </div>
-      </transition>
-      <transition name="ds-transition-modal-appear" appear>
-        <ds-card
-          v-if="isOpen"
-          class="ds-modal"
-          :class="[extended && 'ds-modal-extended']"
-          :header="title"
-          tableindex="-1"
-          role="dialog"
-          ref="modal"
-          style="display: block"
-        >
-          <ds-button
-            v-if="!force"
-            class="ds-modal-close"
-            ghost
-            size="small"
-            icon="close"
-            aria-hidden="true"
-            @click="cancel('close')"
-          />
-          <!-- @slot Modal content -->
-          <slot ref="modalBody"/>
-          <template slot="footer">
-            <!-- @slot Modal footer with action buttons -->
-            <slot
-              name="footer"
-              :confirm="confirm"
-              :cancel="cancel"
-              :cancelLabel="cancelLabel"
-              :confirmLabel="confirmLabel"
-            >
-              <ds-button ghost icon="close" @click.prevent="cancel('cancel')">{{ cancelLabel }}</ds-button>
-              <ds-button primary icon="check" @click.prevent="confirm('confirm')">{{ confirmLabel }}</ds-button>
-            </slot>
-          </template>
-        </ds-card>
-      </transition>
-    </div>
-  </portal>
+  <div>
+    <portal to="modal">
+      <div :key="key" class="ds-modal-wrapper">
+        <transition name="ds-transition-fade" appear>
+          <div
+            v-if="isOpen"
+            class="ds-modal-backdrop"
+            ref="backdrop"
+            @click="backdropHandler"
+          >
+            &nbsp;
+          </div>
+        </transition>
+        <transition name="ds-transition-modal-appear" appear>
+          <ds-card
+            v-if="isOpen"
+            class="ds-modal"
+            :class="[extended && 'ds-modal-extended']"
+            :header="title"
+            tableindex="-1"
+            role="dialog"
+            ref="modal"
+            style="display: block"
+          >
+            <ds-button
+              v-if="!force"
+              class="ds-modal-close"
+              ghost
+              size="small"
+              icon="close"
+              aria-hidden="true"
+              @click="cancel('close')"
+            />
+            <!-- @slot Modal content -->
+            <slot ref="modalBody"/>
+            <template slot="footer">
+              <!-- @slot Modal footer with action buttons -->
+              <slot
+                name="footer"
+                :confirm="confirm"
+                :cancel="cancel"
+                :cancelLabel="cancelLabel"
+                :confirmLabel="confirmLabel"
+              >
+                <ds-button ghost icon="close" @click.prevent="cancel('cancel')">{{ cancelLabel }}</ds-button>
+                <ds-button primary icon="check" @click.prevent="confirm('confirm')">{{ confirmLabel }}</ds-button>
+              </slot>
+            </template>
+          </ds-card>
+        </transition>
+      </div>
+    </portal>
+  </div>
 </template>
 
 <script>

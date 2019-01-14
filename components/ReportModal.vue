@@ -39,6 +39,7 @@
 import gql from 'graphql-tag'
 
 export default {
+  name: 'ReportModal',
   data() {
     return {
       loading: false,
