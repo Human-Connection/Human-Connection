@@ -14,7 +14,7 @@ const isModerator = rule()(async (parent, args, ctx, info) => {
 })
 */
 
-const isOwner = rule()(async (parent, args, ctx, info) => {
+const isOwner = rule({ cache: 'no_cache' })(async (parent, args, ctx, info) => {
   return ctx.user.id === parent.id
 })
 
