@@ -14,32 +14,68 @@
   flex-direction: column;
   max-width: 400px;
   width: calc(90vw - 40px);
+  height: auto;
   max-height: 90vh;
-  background: white;
-  border-radius: $border-radius-large;
-  padding: 0 $space-base;
   box-shadow: $box-shadow-x-large;
+
+  &.ds-modal-extended {
+    max-width: 600px;
+  }
 }
-.ds-modal-extended {
-  max-width: 600px;
+
+.ds-modal .ds-card-header {
+
+  position: relative;
+
+  &::after {
+    content: "";
+    height: 30px;
+    background: linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0));
+    position: absolute;
+    width: calc(100% - 10px);
+    bottom: -30px;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
 }
+
 .ds-modal-close {
   position: absolute;
   top: $space-small;
   right: $space-small;
 }
-.ds-modal-body {
+.ds-modal .ds-card-content {
   flex: 1;
   overflow-y: auto;
   height: auto;
-  min-height: 70px;
-  max-height: 60vh;
+  min-height: 50px;
+  max-height: 50vh;
+  padding-bottom: $space-large !important;
 }
-.ds-modal-header {
-  padding-top: $space-base;
+.ds-modal footer {
+  position: relative;
+  display: flex;
+  overflow: visible;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  background-color: $background-color-softer;
+  padding: $space-small;
 
-  .ds-modal-title {
-    margin-bottom: 0;
+  & > button {
+    margin-left: $space-x-small;
+  }
+
+  &::before {
+    content: "";
+    height: 45px;
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.9));
+    position: absolute;
+    width: calc(100% - 10px);
+    z-index: 1;
+    left: 0;
+    top: -45px;
+    pointer-events: none;
   }
 }
 .ds-modal-backdrop {
@@ -50,16 +86,6 @@
   height: 100%;
   z-index: $z-index-modal - 1;
   background: rgba(0, 0, 0, 0.7);
-}
-.ds-modal-footer {
-  display: flex;
-  padding: $space-base 0;
-  flex-shrink: 0;
-  justify-content: flex-end;
-
-  & > button {
-    margin-left: $space-x-small;
-  }
 }
 
 $easeOut: cubic-bezier(0.19, 1, 0.22, 1);
