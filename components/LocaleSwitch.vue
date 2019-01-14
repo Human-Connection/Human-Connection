@@ -25,7 +25,7 @@
       slot="popover"
       slot-scope="{toggleMenu}"
       class="locale-menu-popover"
-      :is-exact="isExact"
+      :matcher="matcher"
       :routes="routes"
     >
       <ds-menu-item
@@ -79,7 +79,7 @@ export default {
       this.$i18n.set(locale)
       toggleMenu()
     },
-    isExact(locale) {
+    matcher(locale) {
       return locale === this.$i18n.locale()
     }
   }
