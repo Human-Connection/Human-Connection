@@ -1,7 +1,7 @@
 import { request } from 'graphql-request'
 import fetch from 'node-fetch'
 
-export const host = 'http://127.0.0.1:3123'
+export const host = 'http://127.0.0.1:4123'
 
 export async function authenticatedHeaders ({ email, password }) {
   const mutation = `

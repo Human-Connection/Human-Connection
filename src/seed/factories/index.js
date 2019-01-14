@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: process.env.GRAPHQL_URI, fetch }),
+  link: new HttpLink({ uri: 'http://localhost:4001', fetch }),
   cache: new InMemoryCache()
 })
 
