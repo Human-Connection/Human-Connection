@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import neo4j from '../../bootstrap/neo4j'
-import { query } from '../../graphql-schema'
 import fetch from 'node-fetch'
 
 dotenv.config()
@@ -19,7 +18,6 @@ const client = new ApolloClient({
 })
 
 const driver = neo4j().getDriver()
-const session = driver.session()
 
 const builders = {
   'user': require('./users.js').default
@@ -34,7 +32,16 @@ const create = (model, parameters) => {
 }
 
 const cleanDatabase = () => {
-  return query('MATCH (n) DETACH DELETE n', session)
+  const session = driver.session()
+  const cypher = 'MATCH (n) DETACH DELETE n'
+  return session
+    .run(cypher)
+    .then(function (result) {
+      session.close()
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
 }
 
 export {

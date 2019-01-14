@@ -25,7 +25,9 @@
   "license": "MIT",
   "jest": {
     "verbose": true,
-    "testMatch": ["**/src/**/?(*.)+(spec|test).js?(x)" ],
+    "testMatch": [
+      "**/src/**/?(*.)+(spec|test).js?(x)"
+    ],
     "globalSetup": "<rootDir>/src/jest/globalSetup",
     "globalTeardown": "<rootDir>/src/jest/globalTeardown"
   },

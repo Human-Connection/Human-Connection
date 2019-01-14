@@ -1,5 +1,5 @@
 import { create, cleanDatabase } from '../seed/factories'
-import { authenticatedGraphQLClient } from '../jest/helpers'
+import { authenticatedHeaders, queryServer } from '../jest/helpers'
 
 describe('authorization', () => {
   describe('given two existing users', () => {
@@ -19,25 +19,27 @@ describe('authorization', () => {
     })
 
     describe('logged in', () => {
-      let graphQLClient
+      let headers = {}
 
       beforeEach(async () => {
-        graphQLClient = await authenticatedGraphQLClient({ email: 'test@example.org', password: '1234' })
+        // headers = authenticatedHeaders({
+        //   email: 'test@example.org',
+        //   password: '1234'
+        // })
       })
 
-      describe('query email', () => {
-        const query = (params) => {
-          const { email } = params
-          return `{
-                    User(email: "${email}") {
+      describe('query email', async () => {
+        it('exposes the owner\'s email address', async () => {
+          const options = {
+            headers,
+            query: `{
+                    User(email: "test@example.org") {
                       email
                     }
                   }`
-        }
-
-        it('exposes the owner\'s email address', async () => {
-          const data = await graphQLClient.request(query({ email: 'test@example.org' }))
-          expect(data).toEqual({ User: [ { email: 'test@example.org' } ] })
+          }
+          const json = await queryServer(options)
+          expect(json).toEqual({ User: [ { email: 'test@example.org' } ] })
         })
       })
     })
