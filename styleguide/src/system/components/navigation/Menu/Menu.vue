@@ -99,6 +99,15 @@ export default {
       }
     },
     /**
+     * Function that matches items exactly
+     */
+    matcher: {
+      type: Function,
+      default: () => {
+        return false
+      }
+    },
+    /**
      * Function that checks if the url must be matched exactly in order to activate the menu item. By default only '/' must be matched exactly.
      */
     isExact: {

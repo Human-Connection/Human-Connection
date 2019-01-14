@@ -14,6 +14,9 @@
     <component
       v-if="route"
       class="ds-menu-item-link"
+      :class="[
+        matcher && 'router-link-exact-active'
+      ]"
       v-bind="bindings"
       :exact="isExact"
       :is="linkTag"
@@ -105,6 +108,9 @@ export default {
     },
     isExact() {
       return this.$parentMenu.isExact(this.url)
+    },
+    matcher() {
+      return this.$parentMenu.matcher(this.url, this.route)
     },
     level() {
       return this.parents.length
