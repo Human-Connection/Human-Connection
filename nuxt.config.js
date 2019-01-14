@@ -72,7 +72,8 @@ module.exports = {
 
   router: {
     middleware: ['authenticated'],
-    linkActiveClass: 'router-active-link'
+    linkActiveClass: 'router-link-active',
+    linkExactActiveClass: 'router-link-exact-active'
   },
 
   /*
