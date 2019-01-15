@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import helper from '../seed-helpers'
+import asyncForEach from '../../helpers/asyncForEach'
 
 const seed = {
   Badge: require('./badges.js').default,
@@ -22,7 +22,7 @@ let data = {}
 
 export default async function (client) {
   // iterate through seeds
-  await helper.asyncForEach(Object.keys(seed), async key => {
+  await asyncForEach(Object.keys(seed), async key => {
     const mutations = seed[key]
     try {
       const res = await client

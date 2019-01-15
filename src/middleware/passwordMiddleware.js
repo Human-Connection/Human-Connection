@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import walkRecursive from './helpers/walkRecursive'
+import walkRecursive from '../helpers/walkRecursive'
 
 export default {
   Mutation: {
