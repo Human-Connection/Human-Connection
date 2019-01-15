@@ -102,14 +102,17 @@
     "cancel": "Cancel",
     "user": {
       "title": "Report User",
+      "type": "User",
       "message": "Do you really want to report the user \"<b>{name}</b>\"?"
     },
     "contribution": {
       "title": "Report Contribution",
+      "type": "Contribution",
       "message": "Do you really want to report the contribution \"<b>{name}</b>\"?"
     },
     "comment": {
       "title": "Report Comment",
+      "type": "Comment",
       "message": "Do you really want to report the comment from \"<b>{name}</b>\"?"
     }
   },

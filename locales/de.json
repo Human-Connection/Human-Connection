@@ -102,14 +102,17 @@
     "cancel": "Abbrechen",
     "user": {
       "title": "Nutzer melden",
+      "type": "Nutzer",
       "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" melden möchtest?"
     },
     "contribution": {
       "title": "Beitrag melden",
+      "type": "Beitrag",
       "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" melden möchtest?"
     },
     "comment": {
       "title": "Kommentar melden",
+      "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?"
     }
   },
