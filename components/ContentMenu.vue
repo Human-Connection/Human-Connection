@@ -29,7 +29,8 @@
           :parents="item.parents"
           @click.stop.prevent="openItem(item.route, toggleMenu)"
         >
-          <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+          <ds-icon :name="item.route.icon" />
+          {{ $t(`report.${context}.title`) }}
         </ds-menu-item>
       </ds-menu>
     </div>
