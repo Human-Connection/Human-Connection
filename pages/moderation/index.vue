@@ -4,6 +4,7 @@
       {{ $t('moderation.reports.name') }}
     </ds-heading>
     <ds-table
+      v-if="Report && Report.length"
       :data="Report"
       :fields="fields"
       condensed
@@ -72,43 +73,28 @@
           {{ scope.row.reporter.name }}
         </nuxt-link>
       </template>
-      <template slot="actions">
-        <no-ssr>
-          <dropdown
-            class="moderation-menu"
-            placement="left"
-            offset="5"
-          >
-            <template
-              slot="default"
-              slot-scope="{toggleMenu}"
-            >
-              <a
-                class="moderation-menu-trigger"
-                href="#"
-                @click.prevent="toggleMenu"
-              >
-                <ds-icon name="ellipsis-v" />
-              </a>
-            </template>
-            <template slot="popover">
-              Actions...
-            </template>
-          </dropdown>
-        </no-ssr>
-      </template>
     </ds-table>
+    <ds-section
+      v-else
+      centered
+    >
+      <ds-text>
+        <img
+          src="/img/empty-state.svg"
+          width="80"
+          style="margin-bottom: 5px"
+          alt="Empty"
+        ><br>
+        <b>NO REPORTS</b>
+      </ds-text>
+    </ds-section>
   </ds-card>
 </template>
 
 <script>
 import gql from 'graphql-tag'
-import Dropdown from '~/components/Dropdown'
 
 export default {
-  components: {
-    Dropdown
-  },
   data() {
     return {
       Report: []
