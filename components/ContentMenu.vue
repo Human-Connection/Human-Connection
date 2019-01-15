@@ -30,7 +30,7 @@
           @click.stop.prevent="openItem(item.route, toggleMenu)"
         >
           <ds-icon :name="item.route.icon" />
-          {{ $t(`report.${context}.title`) }}
+          {{ item.route.name }}
         </ds-menu-item>
       </ds-menu>
     </div>
@@ -60,19 +60,22 @@ export default {
     routes() {
       let routes = [
         {
-          name: this.$t('common.reportContent'),
+          name: this.$t(`report.${this.context}.title`),
           callback: this.openReportDialog,
           icon: 'flag'
         }
       ]
-      // if (this.isAdmin) {
-      //   routes.push({
-      //     name: this.$t('admin.name'),
-      //     path: `/admin`,
-      //     icon: 'shield'
-      //   })
-      // }
+      if (this.isModerator) {
+        routes.push({
+          name: this.$t(`disable.${this.context}.title`),
+          callback: this.openDisableDialog,
+          icon: 'eye-slash'
+        })
+      }
       return routes
+    },
+    isModerator() {
+      return this.$store.getters['auth/isModerator']
     }
   },
   methods: {
@@ -93,6 +96,9 @@ export default {
           name: this.name
         }
       })
+    },
+    openDisableDialog() {
+      this.$toast.error('NOT IMPLEMENTED!')
     }
   }
 }

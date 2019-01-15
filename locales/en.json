@@ -88,6 +88,23 @@
       "reporter": "reported by"
     }
   },
+  "disable": {
+    "user": {
+      "title": "Disable User",
+      "type": "User",
+      "message": "Do you really want to disable the user \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Disable Contribution",
+      "type": "Contribution",
+      "message": "Do you really want to disable the contribution \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Disable Comment",
+      "type": "Comment",
+      "message": "Do you really want to disable the comment from \"<b>{name}</b>\"?"
+    }
+  },
   "post": {
     "name": "Post",
     "moreInfo": {

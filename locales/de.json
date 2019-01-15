@@ -88,6 +88,23 @@
       "reporter": "gemeldet von"
     }
   },
+  "disable": {
+    "user": {
+      "title": "Nutzer sperren",
+      "type": "Nutzer",
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" deaktivieren möchtest?"
+    },
+    "contribution": {
+      "title": "Beitrag sperren",
+      "type": "Beitrag",
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" deaktivieren möchtest?"
+    },
+    "comment": {
+      "title": "Kommentar sperren",
+      "type": "Kommentar",
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" deaktivieren möchtest?"
+    }
+  },
   "post": {
     "name": "Beitrag",
     "moreInfo": {
