@@ -6,6 +6,7 @@ import excerptMiddleware from './excerptMiddleware'
 import dateTimeMiddleware from './dateTimeMiddleware'
 import xssMiddleware from './xssMiddleware'
 import permissionsMiddleware from './permissionsMiddleware'
+import userMiddleware from './userMiddleware'
 
 export default schema => {
   let middleware = [
@@ -15,7 +16,8 @@ export default schema => {
     excerptMiddleware,
     xssMiddleware,
     fixImageUrlsMiddleware,
-    softDeleteMiddleware
+    softDeleteMiddleware,
+    userMiddleware
   ]
 
   // add permisions middleware at the first position (unless we're seeding)

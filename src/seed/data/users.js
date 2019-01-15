@@ -9,6 +9,7 @@ export default function (data) {
         password: "1234",
         email: "admin@example.org",
         avatar: "${faker.internet.avatar()}",
+        locationName: "Hamburg, Germany",
         role: admin,
         disabled: false,
         deleted: false) {
@@ -24,6 +25,7 @@ export default function (data) {
         password: "1234",
         email: "moderator@example.org",
         avatar: "${faker.internet.avatar()}",
+        locationName: "USA",
         role: moderator,
         disabled: false,
         deleted: false) {
