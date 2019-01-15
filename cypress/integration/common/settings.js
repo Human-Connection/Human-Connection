@@ -16,7 +16,9 @@ const setUserName = name => {
   cy.get('input[id=name]')
     .clear()
     .type(name)
-  cy.contains('Save').click()
+  cy.contains('Save')
+    .click()
+    .wait(200)
   myName = name
 }
 
