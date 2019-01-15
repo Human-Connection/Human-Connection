@@ -9,7 +9,7 @@
       condensed
     >
       <template
-        slot="type"
+        slot="name"
         slot-scope="scope"
       >
         <div v-if="scope.row.type === 'contribution'">
@@ -20,7 +20,7 @@
             size="small"
             color="soft"
           >
-            <ds-icon name="bookmark" /> {{ $t('report.contribution.type') }}
+            {{ scope.row.contribution.author.name }}
           </ds-text>
         </div>
         <div v-else-if="scope.row.type === 'comment'">
@@ -31,20 +31,38 @@
             size="small"
             color="soft"
           >
-            <ds-icon name="comments" /> {{ $t('report.comment.type') }}
+            {{ scope.row.comment.author.name }}
           </ds-text>
         </div>
         <div v-else>
           <nuxt-link :to="{ name: 'profile-slug', params: { slug: scope.row.user.slug } }">
             <b>{{ scope.row.user.name | truncate(50) }}</b>
-          </nuxt-link><br>
-          <ds-text
-            size="small"
-            color="soft"
-          >
-            <ds-icon name="user" /> {{ $t('report.user.type') }}
-          </ds-text>
+          </nuxt-link>
         </div>
+      </template>
+      <template
+        slot="type"
+        slot-scope="scope"
+      >
+        <ds-text
+          color="soft"
+        >
+          <ds-icon
+            v-if="scope.row.type === 'contribution'"
+            v-tooltip="{ content: $t(`report.${scope.row.type}.type`), placement: 'right' }"
+            name="bookmark"
+          />
+          <ds-icon
+            v-else-if="scope.row.type === 'comment'"
+            v-tooltip="{ content: $t(`report.${scope.row.type}.type`), placement: 'right' }"
+            name="comments"
+          />
+          <ds-icon
+            v-else
+            v-tooltip="{ content: $t(`report.${scope.row.type}.type`), placement: 'right' }"
+            name="user"
+          />
+        </ds-text>
       </template>
       <template
         slot="reporter"
@@ -73,9 +91,7 @@
                 <ds-icon name="ellipsis-v" />
               </a>
             </template>
-            <template
-              slot="popover"
-            >
+            <template slot="popover">
               Actions...
             </template>
           </dropdown>
@@ -102,8 +118,9 @@ export default {
     fields() {
       return {
         type: ' ',
-        reporter: this.$t('moderation.reports.reporter'),
-        actions: ' '
+        name: ' ',
+        reporter: this.$t('moderation.reports.reporter')
+        // actions: ' '
       }
     }
   },
