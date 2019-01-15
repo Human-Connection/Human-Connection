@@ -143,39 +143,16 @@ export default {
   },
   apollo: {
     Post: {
-      query: gql(`
-        query Post($slug: String!) {
-          Post(slug: $slug) {
-            id
-            title
-            content
-            createdAt
-            slug
-            image
-            author {
+      query() {
+        return gql(`
+          query Post($slug: String!) {
+            Post(slug: $slug) {
               id
-              slug
-              name
-              avatar
-              shoutedCount
-              contributionsCount
-              commentsCount
-              followedByCount
-              badges {
-                id
-                key
-                icon
-              }
-            }
-            tags {
-              name
-            }
-            commentsCount
-            comments(orderBy: createdAt_desc) {
-              id
-              contentExcerpt
+              title
+              content
               createdAt
-              deleted
+              slug
+              image
               author {
                 id
                 slug
@@ -185,22 +162,53 @@ export default {
                 contributionsCount
                 commentsCount
                 followedByCount
+                location {
+                    name: name${this.$i18n.locale().toUpperCase()}
+                  }
                 badges {
                   id
                   key
                   icon
                 }
               }
+              tags {
+                name
+              }
+              commentsCount
+              comments(orderBy: createdAt_desc) {
+                id
+                contentExcerpt
+                createdAt
+                deleted
+                author {
+                  id
+                  slug
+                  name
+                  avatar
+                  shoutedCount
+                  contributionsCount
+                  commentsCount
+                  followedByCount
+                  location {
+                    name: name${this.$i18n.locale().toUpperCase()}
+                  }
+                  badges {
+                    id
+                    key
+                    icon
+                  }
+                }
+              }
+              categories {
+                id
+                name
+                icon
+              }
+              shoutedCount
             }
-            categories {
-              id
-              name
-              icon
-            }
-            shoutedCount
           }
-        }
-      `),
+        `)
+      },
       variables() {
         return {
           slug: this.$route.params.slug

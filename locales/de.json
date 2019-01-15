@@ -1,4 +1,12 @@
 {
+  "actions": {
+    "loading": "lade",
+    "loadMore": "mehr laden",
+    "create": "Erstellen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
+  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
@@ -20,7 +28,10 @@
   "settings": {
     "name": "Einstellungen",
     "data": {
-      "name": "Deine Daten"
+      "name": "Deine Daten",
+      "labelName": "Dein Name",
+      "labelCity": "Deine Stadt oder Region",
+      "labelBio": "Über dich"
     },
     "security": {
       "name": "Sicherheit"

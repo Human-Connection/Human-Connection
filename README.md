@@ -15,6 +15,12 @@ $ yarn styleguide:build
 $ yarn install
 ```
 
+Copy:
+```
+cp .env.template .env
+```
+Configure the file `.env` according to your needs and your local setup.
+
 ### Development
 ``` bash
 # serve with hot reload at localhost:3000

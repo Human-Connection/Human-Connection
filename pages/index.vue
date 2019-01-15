@@ -79,40 +79,45 @@ export default {
   },
   apollo: {
     Post: {
-      query: gql(`
-        query Post($first: Int, $offset: Int) {
-          Post(first: $first, offset: $offset) {
-            id
-            title
-            contentExcerpt
-            createdAt
-            slug
-            image
-            author {
+      query() {
+        return gql(`
+          query Post($first: Int, $offset: Int) {
+            Post(first: $first, offset: $offset) {
               id
-              avatar
+              title
+              contentExcerpt
+              createdAt
               slug
-              name
-              contributionsCount
-              shoutedCount
-              commentsCount
-              followedByCount
-              badges {
+              image
+              author {
                 id
-                key
+                avatar
+                slug
+                name
+                contributionsCount
+                shoutedCount
+                commentsCount
+                followedByCount
+                location {
+                  name: name${this.$i18n.locale().toUpperCase()}
+                }
+                badges {
+                  id
+                  key
+                  icon
+                }
+              }
+              commentsCount
+              categories {
+                id
+                name
                 icon
               }
+              shoutedCount
             }
-            commentsCount
-            categories {
-              id
-              name
-              icon
-            }
-            shoutedCount
           }
-        }
-      `),
+        `)
+      },
       variables() {
         return {
           first: this.pageSize,

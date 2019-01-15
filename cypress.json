@@ -1,4 +1,5 @@
 {
   "projectId": "qa7fe2",
-  "ignoreTestFiles": "*.js"
+  "ignoreTestFiles": "*.js",
+  "baseUrl": "http://localhost:3000"
 }

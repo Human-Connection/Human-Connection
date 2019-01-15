@@ -12,7 +12,7 @@ scripts/
 
 cypress/
 
-README.md 
+README.md
 screenshot*.png
 lokalise.png
 .editorconfig

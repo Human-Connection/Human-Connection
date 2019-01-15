@@ -1,4 +1,12 @@
 {
+  "actions": {
+    "loading": "loading",
+    "loadMore": "load more",
+    "create": "Create",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
@@ -20,7 +28,10 @@
   "settings": {
     "name": "Settings",
     "data": {
-      "name": "Your data"
+      "name": "Your data",
+      "labelName": "Your Name",
+      "labelCity": "Your City or Region",
+      "labelBio": "About You"
     },
     "security": {
       "name": "Security"

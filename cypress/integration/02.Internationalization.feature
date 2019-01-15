@@ -13,12 +13,11 @@ Feature: Internationalization
 
     Examples: Login Button
         | language   | buttonLabel |
-        | English    | Login       |
-        | Deutsch    | Einloggen   |
         | Français   | Connexion   |
-        | Nederlands | Inloggen    |
+        | Deutsch    | Einloggen   |
+        | English    | Login       |
 
   Scenario: Keep preferred language after refresh
-    Given I previously switched the language to "Deutsch"
+    Given I previously switched the language to "Français"
     And I refresh the page
-    Then the whole user interface appears in "Deutsch"
+    Then the whole user interface appears in "Français"
