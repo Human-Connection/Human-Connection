@@ -26,10 +26,10 @@ Feature: About me and and location
     Then they can see the location in the info box below my avatar
 
     Examples: Location
-        | location               | type    |
-        | Paris                  | City    |
-        | Mecklenburg-Vorpommern | Region  |
-        | Germany                | Country |
+        | location      | type    |
+        | Paris         | City    |
+        | Saxony-Anhalt | Region  |
+        | Germany       | Country |
 
   Scenario: Display a description on profile page
     Given I have the following self-description:
