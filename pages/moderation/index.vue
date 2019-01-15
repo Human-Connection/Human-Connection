@@ -12,27 +12,39 @@
         slot="type"
         slot-scope="scope"
       >
-        <template v-if="scope.row.type === 'contribution'">
+        <div v-if="scope.row.type === 'contribution'">
           <nuxt-link :to="{ name: 'post-slug', params: { slug: scope.row.contribution.slug } }">
             <b>{{ scope.row.contribution.title | truncate(50) }}</b>
-          </nuxt-link>
-        </template>
-        <template v-else-if="scope.row.type === 'comment'">
-          <nuxt-link :to="{ name: 'post-slug', params: { slug: scope.row.comment.contribution.slug } }">
+          </nuxt-link><br>
+          <ds-text
+            size="small"
+            color="soft"
+          >
+            <ds-icon name="bookmark" /> {{ $t('report.contribution.type') }}
+          </ds-text>
+        </div>
+        <div v-else-if="scope.row.type === 'comment'">
+          <nuxt-link :to="{ name: 'post-slug', params: { slug: scope.row.comment.post.slug } }">
             <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
-          </nuxt-link>
-        </template>
-        <template v-else>
+          </nuxt-link><br>
+          <ds-text
+            size="small"
+            color="soft"
+          >
+            <ds-icon name="comments" /> {{ $t('report.comment.type') }}
+          </ds-text>
+        </div>
+        <div v-else>
           <nuxt-link :to="{ name: 'profile-slug', params: { slug: scope.row.user.slug } }">
             <b>{{ scope.row.user.name | truncate(50) }}</b>
-          </nuxt-link>
-        </template><br>
-        <ds-text
-          size="small"
-          color="soft"
-        >
-          {{ scope.row.type }}
-        </ds-text>
+          </nuxt-link><br>
+          <ds-text
+            size="small"
+            color="soft"
+          >
+            <ds-icon name="user" /> {{ $t('report.user.type') }}
+          </ds-text>
+        </div>
       </template>
       <template
         slot="reporter"
@@ -94,6 +106,9 @@ export default {
         actions: ' '
       }
     }
+  },
+  mounted() {
+    this.$apollo.queries.Report.startPolling(5000)
   },
   apollo: {
     Report: {
