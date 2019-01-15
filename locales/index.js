@@ -36,7 +36,7 @@ module.exports = [
     enabled: true
   },
   {
-    name: 'Portuguese',
+    name: 'Português',
     code: 'pt',
     iso: 'pt-PT',
     enabled: true

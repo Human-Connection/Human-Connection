@@ -4,54 +4,48 @@
     :placement="placement"
     :offset="offset"
   >
-    <template
+    <a
       slot="default"
       slot-scope="{toggleMenu}"
+      class="locale-menu"
+      href="#"
+      @click.prevent="toggleMenu()"
     >
-      <a
-        class="locale-menu"
-        href="#"
-        @click.prevent="toggleMenu()"
+      <ds-icon
+        style="margin-top: -2px; margin-right: 2px;"
+        name="globe"
+      /> {{ current.code.toUpperCase() }}
+      <ds-icon
+        style="margin-top: -2px; margin-left: 2px"
+        size="xx-small"
+        name="angle-down"
+      />
+    </a>
+    <ds-menu
+      slot="popover"
+      slot-scope="{toggleMenu}"
+      class="locale-menu-popover"
+      :is-exact="isExact"
+      :routes="routes"
+    >
+      <ds-menu-item
+        slot="Navigation"
+        slot-scope="item"
+        class="locale-menu-item"
+        :route="item.route"
+        :parents="item.parents"
+        @click.stop.prevent="changeLanguage(item.route.path, toggleMenu)"
       >
-        <img
-          :alt="current.name"
-          :title="current.name"
-          :src="`/img/locale-flags/${current.code}.svg`"
-          height="26"
-        >
-      </a>
-    </template>
-    <template slot="popover">
-      <ul class="locale-menu-popover">
-        <li
-          v-for="locale in locales"
-          :key="locale.code"
-        >
-          <a
-            href="#"
-            style="display: flex; align-items: center;"
-            :class="[
-              locale.code,
-              current.code === locale.code && 'active'
-            ]"
-            @click.prevent="changeLanguage(locale.code)"
-          >
-            <img
-              :alt="locale.name"
-              :title="locale.name"
-              :src="`/img/locale-flags/${locale.code}.svg`"
-              width="20"
-            > {{ locale.name }}
-          </a>
-        </li>
-      </ul>
-    </template>
+        {{ item.route.name }}
+      </ds-menu-item>
+    </ds-menu>
   </dropdown>
 </template>
 
 <script>
 import Dropdown from '~/components/Dropdown'
 import find from 'lodash/find'
+import orderBy from 'lodash/orderBy'
 
 export default {
   components: {
@@ -63,18 +57,30 @@ export default {
   },
   data() {
     return {
-      locales: process.env.locales
+      locales: orderBy(process.env.locales, 'name')
     }
   },
   computed: {
     current() {
       return find(this.locales, { code: this.$i18n.locale() })
+    },
+    routes() {
+      let routes = this.locales.map(locale => {
+        return {
+          name: locale.name,
+          path: locale.code
+        }
+      })
+      return routes
     }
   },
   methods: {
-    changeLanguage(locale) {
+    changeLanguage(locale, toggleMenu) {
       this.$i18n.set(locale)
-      this.$refs.menu.toggleMenu()
+      toggleMenu()
+    },
+    isExact(locale) {
+      return locale === this.$i18n.locale()
     }
   }
 }
@@ -83,32 +89,20 @@ export default {
 <style lang="scss">
 .locale-menu {
   user-select: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: $space-xx-small;
+  color: $text-color-soft;
 }
 
-ul.locale-menu-popover {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+nav.locale-menu-popover {
+  margin-left: -$space-small !important;
+  margin-right: -$space-small !important;
 
-  li {
-    a {
-      opacity: 0.8;
-
-      display: block;
-      padding: 0.3rem 0;
-
-      img {
-        margin-right: 8px;
-      }
-
-      &:hover {
-        opacity: 1;
-      }
-      &.active {
-        opacity: 1;
-        font-weight: bold;
-      }
-    }
+  a {
+    padding: $space-x-small $space-small;
+    padding-right: $space-base;
   }
 }
 </style>
