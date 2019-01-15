@@ -91,6 +91,15 @@
           <ds-space margin-bottom="x-small">
             <hc-author :post="comment" />
           </ds-space>
+          <no-ssr>
+            <content-menu
+              placement="bottom-end"
+              context="comment"
+              style="float-right"
+              :item-id="comment.id"
+              :name="comment.author.name"
+            />
+          </no-ssr>
           <!-- eslint-disable vue/no-v-html -->
           <!-- TODO: replace editor content with tiptap render view -->
           <div
