@@ -1,0 +1,75 @@
+CALL apoc.load.json('file:/mongo-export/categories.json') YIELD value as category
+MERGE(c:Category {id: category._id["$oid"]})
+ON CREATE SET  c.name  = category.title,
+    c.slug = category.slug,
+    c.icon = category.icon
+
+
+CALL apoc.load.json('file:/mongo-export/badges.json') YIELD value as badge
+MERGE(b:Badge {id: badge._id["$oid"]})
+ON CREATE SET  b.key   = badge.key,
+    b.type  = badge.type,
+    b.icon  = badge.image.path,
+    b.status  = badge.status
+
+
+CALL apoc.load.json('file:/mongo-export/users.json') YIELD value as user
+MERGE(u:User {id: user._id["$oid"]})
+ON CREATE SET  u.name    = user.name,
+    u.slug   = user.slug,
+    u.email   = user.email,
+    u.password  = user.password,
+    u.avatar   = user.avatar,
+       u.coverImg  = user.coverImg,
+       u.wasInvited = user.wasInvited,
+       u.role   = apoc.text.toUpperCase(user.role)
+WITH u, user, user.badgeIds AS badgeIds
+UNWIND badgeIds AS badgeId
+MATCH (b:Badge {id: badgeId})
+MERGE (b)-[:REWARDED]->(u)
+
+
+
+CALL apoc.load.json('file:/mongo-export/contributions.json') YIELD value as post
+MERGE (p:Post {id: post._id["$oid"]})
+ON CREATE SET  p.title    = post.title,
+    p.slug    = post.slug,
+    p.image    = post.teaserImg,
+    p.content   = post.content,
+    p.contentExcerpt  = post.contentExcerpt,
+    p.visibility  = apoc.text.toUpperCase(post.visibility),
+    p.createdAt   = datetime(post.createdAt["$date"]),
+    p.updatedAt   = datetime(post.updatedAt["$date"])
+WITH p, post, post.tags AS tags, post.categoryIds as categoryIds
+UNWIND tags AS tag
+UNWIND categoryIds AS categoryId
+MATCH (c:Category {id: categoryId}),
+   (u:User {id: post.userId})
+MERGE (t:Tag {id: apoc.create.uuid(), name: tag})
+MERGE (p)-[:TAGGED]->(t)
+MERGE (u)-[:WROTE]->(p)
+MERGE (p)-[:CATEGORIZED]->(c)
+
+
+CALL apoc.load.json('file:/mongo-export/comments.json') YIELD value as comment
+MERGE (c:Comment {id: comment._id["$oid"]})
+ON CREATE SET  c.content       = comment.content,
+            c.contentExcerpt  = comment.contentExcerpt,
+            c.deleted       = comment.deleted
+WITH comment
+MATCH (p:Post {id: comment.contributionId}),
+   (u:User {id: comment.userId})
+MERGE (c)-[:COMMENTS]->(p)
+MERGE (u)-[:WROTE]->(c)
+
+
+CALL apoc.load.json('file:/mongo-export/follows.json') YIELD value as follow
+MATCH (u1:User {id: follow.userId}),
+   (u2:User {id: follow.foreignId})
+MERGE (u1)-[:FOLLOWS]->(u2)
+
+
+CALL apoc.load.json('file:/mongo-export/shouts.json') YIELD value as shout
+MATCH (u:User {id: shout.userId}),
+   (p:Post {id: shout.foreignId})
+MERGE (u)-[:SHOUTED]->(p)

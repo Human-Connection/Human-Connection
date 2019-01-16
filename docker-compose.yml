@@ -24,8 +24,7 @@ services:
   neo4j:
     image: humanconnection/neo4j:latest
     build:
-      context: .
-      dockerfile: Dockerfile.neo4j
+      context: neo4j
     networks:
       - hc-network
     volumes:

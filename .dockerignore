@@ -15,4 +15,6 @@ kubernetes/
 node_modules/
 scripts/
 dist/
+
 db-migration-worker/
+neo4j/
