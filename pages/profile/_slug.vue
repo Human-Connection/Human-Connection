@@ -398,7 +398,7 @@ export default {
 .profile-top-navigation {
   position: sticky;
   top: 53px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .ds-tab-nav {
