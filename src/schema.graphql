@@ -14,6 +14,8 @@ type LoggedInUser {
   avatar:String!
   email: String!
   role: String!
+  locationName: String
+  about: String
   token: String!
 }
 
@@ -56,6 +58,23 @@ enum UserGroupEnum {
   user
 }
 
+type Location {
+  id: ID!
+  name: String!
+  nameEN: String
+  nameDE: String
+  nameFR: String
+  nameNL: String
+  nameIT: String
+  nameES: String
+  namePT: String
+  namePL: String
+  type: String!
+  lat: Float
+  lng: Float
+  parent: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+}
+
 type User {
   id: ID!
   name: String
@@ -66,6 +85,11 @@ type User {
   deleted: Boolean
   disabled: Boolean
   role: UserGroupEnum
+
+  location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+  locationName: String
+  about: String
+
   createdAt: String
   updatedAt: String
 

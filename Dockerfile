@@ -14,6 +14,7 @@ CMD ["yarn", "run", "start"]
 FROM base as builder
 RUN yarn install --frozen-lockfile --non-interactive
 COPY . .
+RUN cp .env.template .env
 RUN yarn run build
 
 # reduce image size with a multistage build
