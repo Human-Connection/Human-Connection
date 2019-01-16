@@ -23,7 +23,7 @@ mongodump --host localhost -d ${MONGODB_DATABASE} --port 27018 --username ${MONG
 ssh -S my-ctrl-socket -O check -l ${SSH_USERNAME} ${SSH_HOST}
 ssh -S my-ctrl-socket -O exit  -l ${SSH_USERNAME} ${SSH_HOST}
 
-# cat ./neo4j_import.cql | /usr/share/neo4j/bin/cypher-shell
-
-
-
+for collection in "categories" "badges" "users" "contributions" "comments" "follows" "shouts"
+do
+  mongoexport --db ${MONGODB_DATABASE} --collection $collection --out "/mongo-export/$collection.json"
+done
