@@ -209,6 +209,9 @@ export default {
     margin-right: -$space-small;
     margin-bottom: -$space-xx-small;
     padding: $space-xx-small $space-small;
+
+    // subtract menu border with from padding
+    padding-left: $space-small - 2;
   }
 
   nav {
