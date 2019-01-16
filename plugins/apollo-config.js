@@ -1,4 +1,4 @@
-export default function({ app }) {
+export default ({ app }) => {
   const backendUrl = process.env.BACKEND_URL || 'http://localhost:4000'
   return {
     httpEndpoint: process.server ? backendUrl : '/api',

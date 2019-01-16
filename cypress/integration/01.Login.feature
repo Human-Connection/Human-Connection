@@ -5,8 +5,10 @@ Feature: Authentication
 
   Background:
     Given my account has the following details:
-      | name         | email             | password |
-      | Peter Lustig | admin@example.org | 1234     |
+      | name                | email                 | password | type
+      | Peter Lustig        | admin@example.org     | 1234     | Admin
+      | Bob der Bausmeister | moderator@example.org | 1234     | Moderator
+      | Jenny Rostock"      | user@example.org      | 1234     | User
 
   Scenario: Log in
     When I visit the "/login" page

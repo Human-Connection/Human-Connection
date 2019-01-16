@@ -7,13 +7,16 @@
     <ds-space />
     <h3><ds-icon name="compass" /> Themenkategorien</h3>
     <div class="tags">
-      <ds-tag
+      <ds-icon
         v-for="category in post.categories"
         :key="category.id"
         v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
-      >
-        <ds-icon :name="category.icon" /> {{ category.name }}
-      </ds-tag>
+        :name="category.icon"
+        size="large"
+      />&nbsp;
+      <!--<ds-tag
+        v-for="category in post.categories"
+        :key="category.id"><ds-icon :name="category.icon" /> {{ category.name }}</ds-tag>-->
     </div>
     <template v-if="post.tags && post.tags.length">
       <h3><ds-icon name="tags" /> Schlagwörter</h3>
@@ -70,51 +73,56 @@ export default {
   },
   apollo: {
     Post: {
-      query: gql(`
-        query Post($slug: String!) {
-          Post(slug: $slug) {
-            id
-            title
-            tags {
-              id
-              name
-            }
-            categories {
-              id
-              name
-              icon
-            }
-            relatedContributions(first: 2) {
+      query() {
+        return gql(`
+          query Post($slug: String!) {
+            Post(slug: $slug) {
               id
               title
-              slug
-              contentExcerpt
-              shoutedCount
-              commentsCount
+              tags {
+                id
+                name
+              }
               categories {
                 id
                 name
                 icon
               }
-              author {
+              relatedContributions(first: 2) {
                 id
-                name
+                title
                 slug
-                avatar
-                contributionsCount
-                followedByCount
+                contentExcerpt
+                shoutedCount
                 commentsCount
-                badges {
+                categories {
                   id
-                  key
+                  name
                   icon
                 }
+                author {
+                  id
+                  name
+                  slug
+                  avatar
+                  contributionsCount
+                  followedByCount
+                  commentsCount
+                  location {
+                    name: name${this.$i18n.locale().toUpperCase()}
+                  }
+                  badges {
+                    id
+                    key
+                    icon
+                  }
+                }
               }
+              shoutedCount
             }
-            shoutedCount
           }
-        }
-      `),
+        `)
+      },
       variables() {
         return {
           slug: this.$route.params.slug

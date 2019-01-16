@@ -35,6 +35,14 @@
               {{ user.name }}
             </ds-heading>
             <ds-text
+              v-if="user.location"
+              align="center"
+              color="soft"
+              size="small"
+            >
+              <ds-icon name="map-marker" /> {{ user.location.name }}
+            </ds-text>
+            <ds-text
               align="center"
               color="soft"
               size="small"
@@ -81,6 +89,20 @@
               @update="voted = true && fetchUser()"
             />
           </ds-space>
+          <template v-if="user.about">
+            <hr>
+            <ds-space
+              margin-top="small"
+              margin-bottom="small"
+            >
+              <ds-text
+                color="soft"
+                size="small"
+              >
+                {{ user.about }}
+              </ds-text>
+            </ds-space>
+          </template>
         </ds-card>
         <ds-space />
         <ds-heading
@@ -185,7 +207,7 @@
           :width="{ base: '100%' }"
           gutter="small"
         >
-          <ds-flex-item>
+          <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
                 <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
@@ -349,7 +371,9 @@ export default {
   },
   apollo: {
     User: {
-      query: require('~/graphql/UserProfileQuery.js').default,
+      query() {
+        return require('~/graphql/UserProfileQuery.js').default(this)
+      },
       variables() {
         return {
           slug: this.$route.params.slug,
@@ -369,6 +393,12 @@ export default {
   margin: auto;
   margin-top: -60px;
   border: #fff 5px solid;
+}
+
+.profile-top-navigation {
+  position: sticky;
+  top: 53px;
+  z-index: 1;
 }
 
 .ds-tab-nav {
