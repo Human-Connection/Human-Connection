@@ -9,7 +9,7 @@
       ghost
       @click="$emit('click')"
     >
-      mehr laden
+      {{ $t('actions.loadMore') }}
     </ds-button>
   </ds-space>
 </template>

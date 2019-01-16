@@ -54,9 +54,20 @@
         <hc-badges
           v-if="author.badges && author.badges.length"
           :badges="author.badges"
-          style="margin-bottom: -10px"
         />
-        <ds-flex>
+        <ds-text
+          v-if="author.location"
+          align="center"
+          color="soft"
+          size="small"
+          style="margin-top: 5px"
+          bold
+        >
+          <ds-icon name="map-marker" /> {{ author.location.name }}
+        </ds-text>
+        <ds-flex
+          style="margin-top: -10px"
+        >
           <ds-flex-item class="ds-tab-nav-item">
             <ds-space margin="small">
               <ds-number

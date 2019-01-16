@@ -41,11 +41,13 @@
         </div>
         <div style="display: inline-block; float: right">
           <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
-            <ds-icon name="bullhorn" /> <small>{{ post.shoutedCount }}</small>
+            <ds-icon name="bullhorn" />
+            <small>{{ post.shoutedCount }}</small>
           </span>
           &nbsp;
           <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-            <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
+            <ds-icon name="comments" />
+            <small>{{ post.commentsCount }}</small>
           </span>
         </div>
       </template>

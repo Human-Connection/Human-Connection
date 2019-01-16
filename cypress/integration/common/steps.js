@@ -1,63 +1,20 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
+import { getLangByName } from '../../support/helpers'
 import find from 'lodash/find'
 
-/* global cy */
+/* global cy  */
 
-const baseUrl = 'http://localhost:3000'
 const username = 'Peter Lustig'
 
-const locales = require('../../../locales')
-
-const getLangByName = function(name) {
-  return find(locales, { name })
-}
-
-const openPage = function(page) {
+const openPage = page => {
   if (page === 'landing') {
     page = ''
   }
-  cy.visit(`${baseUrl}/${page}`)
-}
-
-const switchLanguage = function(name) {
-  cy.get('.login-locale-switch a').click()
-  cy.contains('.locale-menu-popover a', name).click()
-}
-
-const login = (email, password) => {
-  cy.visit(`${baseUrl}/login`)
-  cy.get('input[name=email]')
-    .trigger('focus')
-    .type(email)
-  cy.get('input[name=password]')
-    .trigger('focus')
-    .type(password)
-  cy.get('button[name=submit]')
-    .as('submitButton')
-    .click()
-  cy.location('pathname').should('eq', '/') // we're in!
-}
-
-const logout = () => {
-  cy.visit(`${baseUrl}/logout`)
-  cy.location('pathname').should('contain', '/login') // we're out
-}
-
-const lastColumnIsSortedInDescendingOrder = () => {
-  cy.get('tbody')
-    .find('tr td:last-child')
-    .then(last_column => {
-      cy.wrap(last_column)
-      const values = last_column
-        .map((i, td) => parseInt(td.textContent))
-        .toArray()
-      const ordered_descending = values.slice(0).sort((a, b) => b - a)
-      return cy.wrap(values).should('deep.eq', ordered_descending)
-    })
+  cy.visit(`/${page}`)
 }
 
 Given('I am logged in', () => {
-  login('admin@example.org', 1234)
+  cy.login('admin@example.org', 1234)
 })
 
 Given('we have a selection of tags and categories as well as posts', () => {
@@ -72,7 +29,7 @@ Given('my user account has the role {string}', role => {
   // TODO: use db factories instead of seed data
 })
 
-When('I log out', logout)
+When('I log out', cy.logout)
 
 When('I visit the {string} page', page => {
   openPage(page)
@@ -82,7 +39,7 @@ Given('I am on the {string} page', page => {
 })
 
 When('I fill in my email and password combination and click submit', () => {
-  login('admin@example.org', 1234)
+  cy.login('admin@example.org', 1234)
 })
 
 When('I refresh the page', () => {
@@ -92,8 +49,7 @@ When('I refresh the page', () => {
 When('I log out through the menu in the top right corner', () => {
   cy.get('.avatar-menu').click()
   cy.get('.avatar-menu-popover')
-    .find('a')
-    .contains('Logout')
+    .find('a[href="/logout"]')
     .click()
 })
 
@@ -108,7 +64,6 @@ Then('I can see my name {string} in the dropdown menu', () => {
 
 Then('I see the login screen again', () => {
   cy.location('pathname').should('contain', '/login')
-  cy.contains('If you already have a human-connection account, login here.')
 })
 
 Then('I am still logged in', () => {
@@ -117,10 +72,10 @@ Then('I am still logged in', () => {
 })
 
 When('I select {string} in the language menu', name => {
-  switchLanguage(name)
+  cy.switchLanguage(name, true)
 })
 Given('I previously switched the language to {string}', name => {
-  switchLanguage(name)
+  cy.switchLanguage(name, true)
 })
 Then('the whole user interface appears in {string}', name => {
   const lang = getLangByName(name)
@@ -131,29 +86,10 @@ Then('I see a button with the label {string}', label => {
   cy.contains('button', label)
 })
 
-When('I navigate to the administration dashboard', () => {
-  cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover')
-    .contains('Admin')
-    .click()
-})
-
 When(`I click on {string}`, linkOrButton => {
   cy.contains(linkOrButton).click()
 })
 
-Then('I can see a list of categories ordered by post count:', table => {
-  // TODO: match the table in the feature with the html table
-  cy.get('thead')
-    .find('tr th')
-    .should('have.length', 3)
-  lastColumnIsSortedInDescendingOrder()
-})
-
-Then('I can see a list of tags ordered by user and post count:', table => {
-  // TODO: match the table in the feature with the html table
-  cy.get('thead')
-    .find('tr th')
-    .should('have.length', 4)
-  lastColumnIsSortedInDescendingOrder()
+When('I press {string}', label => {
+  cy.contains(label).click()
 })
