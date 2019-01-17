@@ -214,7 +214,7 @@ If you want to keep the sub menu for this menu item, be sure to use the `ds-menu
   <ds-menu :routes="routes">
     <ds-menu-item
       @click="handleClick"
-      slot="Navigation"
+      slot="menuitem"
       slot-scope="item"
       :route="item.route"
       :parents="item.parents">

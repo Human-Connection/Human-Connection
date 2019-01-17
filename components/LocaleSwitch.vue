@@ -29,7 +29,7 @@
       :routes="routes"
     >
       <ds-menu-item
-        slot="Navigation"
+        slot="menuitem"
         slot-scope="item"
         class="locale-menu-item"
         :route="item.route"

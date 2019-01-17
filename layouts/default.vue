@@ -62,7 +62,7 @@
                       :matcher="matcher"
                     >
                       <ds-menu-item
-                        slot="Navigation"
+                        slot="menuitem"
                         slot-scope="item"
                         :route="item.route"
                         :parents="item.parents"
