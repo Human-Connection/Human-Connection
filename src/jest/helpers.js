@@ -1,5 +1,4 @@
 import { request } from 'graphql-request'
-import fetch from 'node-fetch'
 
 export const host = 'http://127.0.0.1:4123'
 

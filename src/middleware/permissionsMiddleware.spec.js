@@ -1,5 +1,5 @@
 import { create, cleanDatabase } from '../seed/factories'
-import { host, authenticatedHeaders, queryServer } from '../jest/helpers'
+import { host, authenticatedHeaders } from '../jest/helpers'
 import { GraphQLClient } from 'graphql-request'
 
 describe('authorization', () => {
@@ -23,7 +23,7 @@ describe('authorization', () => {
       let headers = {}
       const action = async (headers) => {
         const graphQLClient = new GraphQLClient(host, { headers })
-        return await graphQLClient.request(`{
+        return graphQLClient.request(`{
           User(email: "owner@example.org") {
             email
           }

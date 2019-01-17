@@ -1,18 +1,36 @@
-const createServer = require('../../dist/server.js').default
-let app
-let permissionlessApp
+const { spawn } = require('child_process')
+const waitOn = require('wait-on')
+
+let server
+let seeder
 
 const setup = async function () {
-  const server = createServer()
-  app = await server.start({ port: 4123 })
+  server = spawn('node', ['dist/'], {
+    env: Object.assign({}, process.env, {
+      GRAPHQL_URI: 'http://localhost:4123',
+      GRAPHQL_PORT: '4123'
+    })
+  })
 
-  const permissionless = createServer()
-  permissionlessApp = await server.start({ port: 4001 })
+  seeder = spawn('node', ['dist/'], {
+    env: Object.assign({}, process.env, {
+      GRAPHQL_URI: 'http://localhost:4001',
+      GRAPHQL_PORT: '4001',
+      PERMISSIONS: 'disabled'
+    })
+  })
+
+  try {
+    await waitOn({
+      resources: ['http://localhost:4123', 'http://localhost:4001']
+    })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const teardown = async function () {
-  await app.close()
-  await permissionlessApp.close()
+  [server, seeder].forEach(app => app.kill())
 }
 
 module.exports = {
