@@ -7,6 +7,7 @@
   font-family: $font-family-text;
   line-height: $line-height-base;
   padding: $font-space-xx-small $font-space-large;
+  padding-bottom: $font-space-xxx-small;
   border-radius: $border-radius-base;
   font-weight: $font-weight-bold;
   color: $text-color-base;
@@ -55,12 +56,15 @@
   font-size: $font-size-small;
   padding-left: $font-space-large +  $font-space-xx-small;
   padding-right: $font-space-large +  $font-space-xx-small;
+  padding-top: $font-space-xxx-small;
 }
 
 .ds-chip-size-large {
   font-size: $font-size-base;
   padding-left: $font-space-x-large;
   padding-right: $font-space-x-large;
+  padding-top: $font-space-xx-small;
+  padding-bottom: $font-space-xxx-small;
 }
 
 .ds-chip-close {
