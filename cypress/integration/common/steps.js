@@ -1,10 +1,8 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import { getLangByName } from '../../support/helpers'
-import find from 'lodash/find'
+import users from '../../fixtures/users.json'
 
 /* global cy  */
-
-const username = 'Peter Lustig'
 
 const openPage = page => {
   if (page === 'landing') {
@@ -14,7 +12,10 @@ const openPage = page => {
 }
 
 Given('I am logged in', () => {
-  cy.login('admin@example.org', 1234)
+  cy.loginAs('admin')
+})
+Given('I am logged in as {string}', userType => {
+  cy.loginAs(userType)
 })
 
 Given('we have a selection of tags and categories as well as posts', () => {
@@ -59,7 +60,7 @@ Then('I can click on my profile picture in the top right corner', () => {
 })
 
 Then('I can see my name {string} in the dropdown menu', () => {
-  cy.get('.avatar-menu-popover').should('contain', username)
+  cy.get('.avatar-menu-popover').should('contain', users.admin.name)
 })
 
 Then('I see the login screen again', () => {
@@ -68,7 +69,7 @@ Then('I see the login screen again', () => {
 
 Then('I am still logged in', () => {
   cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover').contains(username)
+  cy.get('.avatar-menu-popover').contains(users.admin.name)
 })
 
 When('I select {string} in the language menu', name => {

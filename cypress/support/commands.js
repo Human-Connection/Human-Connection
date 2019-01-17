@@ -15,6 +15,7 @@
 /* globals Cypress cy */
 
 import { getLangByName } from './helpers'
+import users from '../fixtures/users.json'
 
 const switchLang = name => {
   cy.get('.locale-menu').click()
@@ -54,6 +55,12 @@ Cypress.Commands.add('login', (email, password) => {
     .click()
   cy.location('pathname').should('eq', '/') // we're in!
 })
+
+Cypress.Commands.add('loginAs', userType => {
+  userType = userType || 'admin'
+  cy.login(users[userType].email, users[userType].password)
+})
+
 Cypress.Commands.add('logout', (email, password) => {
   cy.visit(`/logout`)
   cy.location('pathname').should('contain', '/login') // we're out
