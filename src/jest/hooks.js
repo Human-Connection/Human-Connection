@@ -5,14 +5,14 @@ let server
 let seeder
 
 const setup = async function () {
-  server = spawn('node', ['dist/'], {
+  server = spawn('babel-node', ['src/index'], {
     env: Object.assign({}, process.env, {
       GRAPHQL_URI: 'http://localhost:4123',
       GRAPHQL_PORT: '4123'
     })
   })
 
-  seeder = spawn('node', ['dist/'], {
+  seeder = spawn('babel-node', ['src/index'], {
     env: Object.assign({}, process.env, {
       GRAPHQL_URI: 'http://localhost:4001',
       GRAPHQL_PORT: '4001',
