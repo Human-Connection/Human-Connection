@@ -1,0 +1,260 @@
+apiVersion: v1
+items:
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: backend
+    namespace: staging
+  spec:
+    minReadySeconds: 15
+    progressDeadlineSeconds: 60
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        cattle.io/creator: norman
+        workload.user.cattle.io/workloadselector: deployment-staging-backend
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      spec:
+        containers:
+        - env:
+          - name: MOCK
+            valueFrom:
+              configMapKeyRef:
+                key: MOCK
+                name: staging-backend
+                optional: false
+          - name: NEO4J_URI
+            valueFrom:
+              configMapKeyRef:
+                key: NEO4J_URI
+                name: staging-neo4j
+                optional: false
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: JWT_SECRET
+                name: staging
+                optional: false
+          - name: NEO4J_AUTH
+            valueFrom:
+              configMapKeyRef:
+                key: NEO4J_AUTH
+                name: staging-neo4j
+                optional: false
+          - name: CLIENT_URI
+            valueFrom:
+              configMapKeyRef:
+                key: CLIENT_URI
+                name: staging-web
+                optional: false
+          - name: GRAPHQL_PORT
+            valueFrom:
+              configMapKeyRef:
+                key: GRAPHQL_PORT
+                name: staging-backend
+                optional: false
+          - name: GRAPHQL_URI
+            valueFrom:
+              configMapKeyRef:
+                key: GRAPHQL_URI
+                name: staging-backend
+                optional: false
+          image: humanconnection/nitro-backend:latest
+          imagePullPolicy: Always
+          name: backend
+          resources: {}
+          tty: true
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
+#- apiVersion: extensions/v1beta1
+#  kind: Deployment
+#  metadata:
+#    annotations:
+#      deployment.kubernetes.io/revision: "2"
+#      field.cattle.io/creatorId: user-x8jr4
+#      field.cattle.io/publicEndpoints: '[{"nodeName":"c-2kbhr:m-bmgq4","addresses":["104.248.30.130"],"port":7687,"protocol":"TCP","podName":"staging:neo4j-2-6589cbc4d5-q4bxl","allNodes":false},{"nodeName":"c-2kbhr:m-bmgq4","addresses":["104.248.30.130"],"port":7474,"protocol":"TCP","podName":"staging:neo4j-2-6589cbc4d5-q4bxl","allNodes":false},{"nodeName":"c-2kbhr:m-bmgq4","addresses":["104.248.30.130"],"port":7473,"protocol":"TCP","podName":"staging:neo4j-2-6589cbc4d5-q4bxl","allNodes":false}]'
+#    creationTimestamp: 2018-12-10T19:07:58Z
+#    generation: 8
+#    labels:
+#      cattle.io/creator: norman
+#      workload.user.cattle.io/workloadselector: deployment-staging-neo4j-2
+#    name: neo4j-2
+#    namespace: staging
+#    resourceVersion: "2380945"
+#    selfLink: /apis/extensions/v1beta1/namespaces/staging/deployments/neo4j-2
+#    uid: e80460f6-fcae-11e8-943a-c6c288d5f6fa
+#  spec:
+#    progressDeadlineSeconds: 600
+#    replicas: 1
+#    revisionHistoryLimit: 10
+#    selector:
+#      matchLabels:
+#        workload.user.cattle.io/workloadselector: deployment-staging-neo4j-2
+#    strategy:
+#      rollingUpdate:
+#        maxSurge: 1
+#        maxUnavailable: 0
+#      type: RollingUpdate
+#    template:
+#      metadata:
+#        annotations:
+#          cattle.io/timestamp: 2018-12-11T11:11:09Z
+#          field.cattle.io/ports: '[[{"containerPort":7687,"dnsName":"neo4j-2-hostport","hostPort":7687,"kind":"HostPort","name":"7687tcp76870","protocol":"TCP","sourcePort":7687},{"containerPort":7474,"dnsName":"neo4j-2-hostport","hostPort":7474,"kind":"HostPort","name":"7474tcp74740","protocol":"TCP","sourcePort":7474},{"containerPort":7473,"dnsName":"neo4j-2-hostport","hostPort":7473,"kind":"HostPort","name":"7473tcp74730","protocol":"TCP","sourcePort":7473}]]'
+#        creationTimestamp: null
+#        labels:
+#          workload.user.cattle.io/workloadselector: deployment-staging-neo4j-2
+#      spec:
+#        containers:
+#        - env:
+#          - name: NEO4J_AUTH
+#            value: none
+#          image: humanconnection/neo4j:latest
+#          imagePullPolicy: IfNotPresent
+#          name: neo4j-2
+#          ports:
+#          - containerPort: 7687
+#            hostPort: 7687
+#            name: 7687tcp76870
+#            protocol: TCP
+#          - containerPort: 7474
+#            hostPort: 7474
+#            name: 7474tcp74740
+#            protocol: TCP
+#          - containerPort: 7473
+#            hostPort: 7473
+#            name: 7473tcp74730
+#            protocol: TCP
+#          resources: {}
+#          securityContext:
+#            allowPrivilegeEscalation: false
+#            capabilities: {}
+#            privileged: false
+#            readOnlyRootFilesystem: false
+#            runAsNonRoot: false
+#          stdin: true
+#          terminationMessagePath: /dev/termination-log
+#          terminationMessagePolicy: File
+#          tty: true
+#        dnsPolicy: ClusterFirst
+#        restartPolicy: Always
+#        schedulerName: default-scheduler
+#        securityContext: {}
+#        terminationGracePeriodSeconds: 30
+#  status:
+#    availableReplicas: 1
+#    conditions:
+#    - lastTransitionTime: 2018-12-10T19:07:58Z
+#      lastUpdateTime: 2018-12-11T11:11:18Z
+#      message: ReplicaSet "neo4j-2-6589cbc4d5" has successfully progressed.
+#      reason: NewReplicaSetAvailable
+#      status: "True"
+#      type: Progressing
+#    - lastTransitionTime: 2018-12-11T12:12:41Z
+#      lastUpdateTime: 2018-12-11T12:12:41Z
+#      message: Deployment has minimum availability.
+#      reason: MinimumReplicasAvailable
+#      status: "True"
+#      type: Available
+#    observedGeneration: 8
+#    readyReplicas: 1
+#    replicas: 1
+#    updatedReplicas: 1
+##- apiVersion: extensions/v1beta1
+#  kind: Deployment
+#  metadata:
+#    annotations:
+#      deployment.kubernetes.io/revision: "15"
+#      field.cattle.io/creatorId: user-x8jr4
+#      field.cattle.io/publicEndpoints: '[{"addresses":["68.183.211.116"],"port":31726,"protocol":"TCP","serviceName":"staging:web-nodeport","allNodes":true},{"addresses":["104.248.25.205"],"port":80,"protocol":"HTTP","serviceName":"staging:ingress-ef72b2ceebfff95d50b0537c0e9e98d8","ingressName":"staging:web","hostname":"web.staging.104.248.25.205.xip.io","allNodes":true}]'
+#    creationTimestamp: 2018-11-30T13:56:41Z
+#    generation: 56
+#    labels:
+#      cattle.io/creator: norman
+#      workload.user.cattle.io/workloadselector: deployment-staging-web
+#    name: web
+#    namespace: staging
+#    resourceVersion: "2401610"
+#    selfLink: /apis/extensions/v1beta1/namespaces/staging/deployments/web
+#    uid: c3870196-f4a7-11e8-943a-c6c288d5f6fa
+#  spec:
+#    progressDeadlineSeconds: 600
+#    replicas: 1
+#    revisionHistoryLimit: 10
+#    selector:
+#      matchLabels:
+#        workload.user.cattle.io/workloadselector: deployment-staging-web
+#    strategy:
+#      rollingUpdate:
+#        maxSurge: 1
+#        maxUnavailable: 0
+#      type: RollingUpdate
+#    template:
+#      metadata:
+#        labels:
+#          workload.user.cattle.io/workloadselector: deployment-staging-web
+#      spec:
+#        containers:
+#        - env:
+#          - name: HOST
+#            value: 0.0.0.0
+#          - name: JWT_SECRET
+#            valueFrom:
+#              secretKeyRef:
+#                key: JWT_SECRET
+#                name: jwt-secret
+#                optional: false
+#          - name: BACKEND_URL
+#            valueFrom:
+#              configMapKeyRef:
+#                key: GRAPHQL_URI
+#                name: staging-configs
+#                optional: false
+#          image: humanconnection/nitro-web:latest
+#          imagePullPolicy: Always
+#          name: web
+#          ports:
+#          - containerPort: 3000
+#            name: 3000tcp01
+#            protocol: TCP
+#          resources: {}
+#          securityContext:
+#            allowPrivilegeEscalation: false
+#            capabilities: {}
+#            privileged: false
+#            readOnlyRootFilesystem: false
+#            runAsNonRoot: false
+#          stdin: true
+#          terminationMessagePath: /dev/termination-log
+#          terminationMessagePolicy: File
+#          tty: true
+#        dnsPolicy: ClusterFirst
+#        restartPolicy: Always
+#        schedulerName: default-scheduler
+#        securityContext: {}
+#        terminationGracePeriodSeconds: 30
+#  status:
+#    availableReplicas: 1
+#    conditions:
+#    - lastTransitionTime: 2018-11-30T14:53:36Z
+#      lastUpdateTime: 2018-12-11T11:17:34Z
+#      message: ReplicaSet "web-5864d6db9c" has successfully progressed.
+#      reason: NewReplicaSetAvailable
+#      status: "True"
+#      type: Progressing
+#    - lastTransitionTime: 2018-12-11T11:23:17Z
+#      lastUpdateTime: 2018-12-11T11:23:17Z
+#      message: Deployment has minimum availability.
+#      reason: MinimumReplicasAvailable
+#      status: "True"
+#      type: Available
+#    observedGeneration: 56
+#    readyReplicas: 1
+#    replicas: 1
+#    updatedReplicas: 1
+kind: List

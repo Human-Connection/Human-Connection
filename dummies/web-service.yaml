@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    k8s-app: nitro-web
+  name: nitro-web
+  namespace: staging
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    k8s-app: nitro-web
