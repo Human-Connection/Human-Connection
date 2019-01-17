@@ -85,6 +85,7 @@
 <script>
 import gql from 'graphql-tag'
 import HcEmpty from '~/components/Empty.vue'
+import query from '~/graphql/ModerationListQuery.js'
 
 export default {
   components: {
@@ -106,48 +107,11 @@ export default {
     }
   },
   mounted() {
-    this.$apollo.queries.Report.startPolling(5000)
+    this.$apollo.queries.Report.refetch()
+    this.$apollo.queries.Report.startPolling(8000)
   },
   apollo: {
-    Report: {
-      query: gql(`
-        query {
-          Report(first: 20, orderBy: createdAt_desc) {
-            id
-            description
-            type
-            createdAt
-            reporter {
-              name
-              slug
-            }
-            user {
-              name
-              slug
-            }
-            comment {
-              contentExcerpt
-              author {
-                name
-                slug
-              }
-              post {
-                title
-                slug
-              }
-            }
-            contribution {
-              title
-              slug
-              author {
-                name
-                slug
-              }
-            }
-          }
-        }
-      `)
-    }
+    Report: query
   }
 }
 </script>
