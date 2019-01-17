@@ -7,10 +7,12 @@ describe('authorization', () => {
     beforeEach(async () => {
       await create('user', {
         email: 'owner@example.org',
+        name: 'Owner',
         password: 'iamtheowner'
       })
       await create('user', {
         email: 'someone@example.org',
+        name: 'Someone else',
         password: 'else'
       })
     })
@@ -24,7 +26,7 @@ describe('authorization', () => {
       const action = async (headers) => {
         const graphQLClient = new GraphQLClient(host, { headers })
         return graphQLClient.request(`{
-          User(email: "owner@example.org") {
+          User(name: "Owner") {
             email
           }
         }`)
