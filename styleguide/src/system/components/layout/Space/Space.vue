@@ -2,7 +2,11 @@
   <component
     :is="tag"
     :style="styles"
-    class="ds-space">
+    class="ds-space"
+    :class="[
+      centered && 'ds-space-centered'
+    ]"
+  >
     <slot />
   </component>
 </template>
