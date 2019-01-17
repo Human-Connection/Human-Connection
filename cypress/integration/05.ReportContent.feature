@@ -30,5 +30,14 @@ Feature: Report content
     And I visit the "moderation" page
     Then I see my reported post
 
+  Scenario: Report user
+    Given I am logged in as "admin"
+    And I am viewing a post
+
+    When I click on the author
+    And I report the author
+    And I visit the "moderation" page
+    Then I see my reported user
+
   #Scenario: Normal user can't see the moderation page
     #Given I am logged in as "user"

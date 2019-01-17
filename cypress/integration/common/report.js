@@ -2,7 +2,7 @@ import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 
 /* global cy  */
 
-let lastPostTitle
+let lastReportTitle
 
 const savePostTitle = $post => {
   return $post
@@ -11,7 +11,7 @@ const savePostTitle = $post => {
     .first()
     .invoke('text')
     .then(title => {
-      lastPostTitle = title
+      lastReportTitle = title
     })
 }
 const invokeReportOnElement = selector => {
@@ -56,6 +56,23 @@ When('I click on a Post menu and select the report option', () => {
   invokeReportOnElement('.post-card')
 })
 
+When('I click on the author', () => {
+  cy.get('a.author')
+    .first()
+    .click()
+    .wait(200)
+})
+
+When('I report the author', () => {
+  cy.get('.page-name-profile-slug').then(() => {
+    invokeReportOnElement('.ds-card').then(() => {
+      cy.get('button')
+        .contains('Send')
+        .click()
+    })
+  })
+})
+
 When('I click on send in the confirmation dialog', () => {
   cy.get('button')
     .contains('Send')
@@ -68,6 +85,11 @@ Then('I get a success message', () => {
 
 Then('I see my reported post', () => {
   cy.get('table').then(() => {
-    cy.get('tbody tr:first-child()').contains(lastPostTitle.slice(0, 20))
+    cy.get('tbody tr:first-child()').contains(lastReportTitle.slice(0, 20))
+  })
+})
+Then('I see my reported user', () => {
+  cy.get('table').then(() => {
+    cy.get('tbody tr:first-child()').contains(lastReportTitle)
   })
 })
