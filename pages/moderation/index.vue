@@ -74,27 +74,21 @@
         </nuxt-link>
       </template>
     </ds-table>
-    <ds-section
-      v-else
-      centered
-    >
-      <ds-text>
-        <img
-          src="/img/empty-state.svg"
-          width="80"
-          style="margin-bottom: 5px"
-          alt="Empty"
-        ><br>
-        <b>NO REPORTS</b>
-      </ds-text>
-    </ds-section>
+    <hc-empty
+      icon="alert"
+      message="Glückwunsch, es gibt nichts zu moderieren."
+    />
   </ds-card>
 </template>
 
 <script>
 import gql from 'graphql-tag'
+import HcEmpty from '~/components/Empty.vue'
 
 export default {
+  components: {
+    HcEmpty
+  },
   data() {
     return {
       Report: []
