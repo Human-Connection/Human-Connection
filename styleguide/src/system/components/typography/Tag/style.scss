@@ -4,7 +4,7 @@
   @include inline-space($font-space-xx-small);
   display: inline-block;
   font-family: $font-family-text;
-  line-height: $line-height-large;
+  line-height: $line-height-base;
   padding: $font-space-xx-small $font-space-x-large;
   padding-top: $font-space-x-small;
   border-radius: $border-radius-base;
@@ -42,8 +42,8 @@
 
 .ds-tag-round {
   border-radius: $border-radius-rounded;
-  padding: 0 $font-space-base;
-  padding-top: $font-space-xxx-small;
+  padding-left: $font-space-large + $font-space-xxx-small;
+  padding-right: $font-space-large + $font-space-xxx-small;
 }
 
 .ds-tag-size-base {
