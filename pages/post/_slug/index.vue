@@ -59,8 +59,9 @@
           <ds-icon name="comments" />
           <ds-tag
             v-if="post.commentsCount"
-            style="transform: scale(.8); margin-top: -4px; margin-left: -12px; position: absolute;"
+            style="margin-top: -4px; margin-left: -12px; position: absolute;"
             color="primary"
+            size="small"
             round
           >
             {{ post.commentsCount }}

@@ -209,8 +209,9 @@ Here we apply a section footer without margin
       <div slot="footer" class="no-margin">
         <ds-icon name="comments" />
         <ds-tag
-          style="transform: scale(.8); margin-top: -4px; margin-left: -7px; position: absolute;"
+          style="margin-top: -4px; margin-left: -7px; position: absolute;"
           color="primary"
+          size="small"
           round>
           2
         </ds-tag>
@@ -226,8 +227,9 @@ Here we apply a section footer without margin
       <div slot="footer" class="no-margin">
         <ds-icon name="comments" />
         <ds-tag
-          style="transform: scale(.8); margin-top: -4px; margin-left: -7px; position: absolute;"
+          style="margin-top: -4px; margin-left: -7px; position: absolute;"
           color="primary"
+          size="small"
           round>
           34
         </ds-tag>
