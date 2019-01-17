@@ -13,9 +13,10 @@
           :route="route"
           :parents="[]"
           :name="route.name">
+          <!-- @slot Scoped slot for providing a custom menu item -->
           <slot
             :route="route"
-            name="Navigation">
+            name="menuitem">
             <ds-menu-item
               :key="route.path ? route.path : index"
               :route="route" />
@@ -64,7 +65,7 @@ export default {
     },
     /**
      * The default component / tag used for the link of menu items
-     * `router-link, a`
+     * @options router-link|a
      */
     linkTag: {
       type: String,
@@ -96,15 +97,6 @@ export default {
       type: Function,
       default(route) {
         return route.name
-      }
-    },
-    /**
-     * Function that matches items exactly
-     */
-    matcher: {
-      type: Function,
-      default: () => {
-        return false
       }
     },
     /**

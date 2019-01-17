@@ -27,7 +27,6 @@ export default {
   props: {
     /**
      * Whether this section should be fullheight
-     * `true, false`
      */
     fullheight: {
       type: Boolean,
@@ -35,7 +34,6 @@ export default {
     },
     /**
      * Highlight with primary color
-     * `true, false`
      */
     primary: {
       type: Boolean,
@@ -43,7 +41,6 @@ export default {
     },
     /**
      * Highlight with secondary color
-     * `true, false`
      */
     secondary: {
       type: Boolean,
@@ -51,7 +48,6 @@ export default {
     },
     /**
      * Center the content
-     * `true, false`
      */
     centered: {
       type: Boolean,

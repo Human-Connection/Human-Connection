@@ -31,7 +31,7 @@ export default {
   props: {
     /**
      * The background color used for the chip.
-     * `medium, inverse, primary, success, warning, danger`
+     * @options medium|inverse|primary|success|warning|danger
      */
     color: {
       type: String,
@@ -42,7 +42,7 @@ export default {
     },
     /**
      * The size used for the text.
-     * `base, large, small`
+     * @options base|large|small
      */
     size: {
       type: String,
@@ -53,7 +53,6 @@ export default {
     },
     /**
      * Whether the chip should be removeable
-     * `true, false`
      */
     removable: {
       type: Boolean,
@@ -61,7 +60,6 @@ export default {
     },
     /**
      * Whether the chip should be rounded
-     * `true, false`
      */
     round: {
       type: Boolean,

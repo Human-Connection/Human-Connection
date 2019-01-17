@@ -41,7 +41,7 @@ export default {
   props: {
     /**
      * The size used for the text.
-     * `small, base, large`
+     * @options small|base|large
      */
     size: {
       type: String,

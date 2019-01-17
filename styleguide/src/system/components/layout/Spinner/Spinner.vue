@@ -10,7 +10,7 @@
       danger && !inverse && `ds-spinner-danger`,
     ]"
   >
-    <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+    <circle class="ds-spinner-circle" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
   </svg>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   props: {
     /**
      * The size used for the spinner.
-     * `small, base, large`
+     * @options small|base|large
      */
     size: {
       type: String,
@@ -38,7 +38,6 @@ export default {
     },
     /**
      * Primary style
-     * `true, false`
      */
     primary: {
       type: Boolean,
@@ -46,7 +45,6 @@ export default {
     },
     /**
      * Secondary style
-     * `true, false`
      */
     secondary: {
       type: Boolean,
@@ -54,7 +52,6 @@ export default {
     },
     /**
      * Danger style
-     * `true, false`
      */
     danger: {
       type: Boolean,
@@ -64,7 +61,7 @@ export default {
 }
 </script>
 
-<docs src="./demo.md"></docs>
-
 <style lang="scss" src="./style.scss">
 </style>
+
+<docs src="./demo.md"></docs>

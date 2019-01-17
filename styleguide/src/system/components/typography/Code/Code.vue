@@ -20,7 +20,6 @@ export default {
   props: {
     /**
      * Display the code inline.
-     * `true, false`
      */
     inline: {
       type: Boolean,

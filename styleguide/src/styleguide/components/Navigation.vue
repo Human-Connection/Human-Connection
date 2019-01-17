@@ -4,8 +4,7 @@
       <ds-input
         v-model="searchString"
         placeholder="Filter menu ..."
-        icon="search"
-        size="base" />
+        icon="search" />
     </div>
     <ds-menu
       @navigate="$emit('navigate')"

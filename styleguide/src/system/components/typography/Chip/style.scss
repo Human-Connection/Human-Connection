@@ -1,20 +1,16 @@
 .ds-chip {
   @include reset;
   @include stack-space($space-xx-small);
+  @include inline-space($font-space-xx-small);
   position: relative;
   display: inline-block;
   font-family: $font-family-text;
   line-height: $line-height-base;
-  padding: $space-xx-small $space-x-small;
-  margin-right: $font-space-xx-small;
+  padding: $font-space-xx-small $font-space-large;
   border-radius: $border-radius-base;
   font-weight: $font-weight-bold;
   color: $text-color-base;
   background-color: $background-color-softest;
-
-  &:last-child {
-    margin-right: 0;
-  }
 
   &.ds-chip-removable {
     padding-right: $space-x-small + $space-small;
@@ -50,27 +46,27 @@
   border-radius: $border-radius-rounded;
 }
 
-.ds-chip-size-base {
-  font-size: $font-size-small;
-  padding-left: $space-small * 0.9;
-  padding-right: $space-small * 0.9;
+.ds-chip-size-small {
+  font-size: $font-size-xx-small;
+  padding: $font-space-xxx-small ($font-space-large + $font-space-xxx-small);
 }
 
-.ds-chip-size-small {
-  font-size: $font-size-x-small;
-  padding: $space-xxx-small $space-x-small * 1.2;
+.ds-chip-size-base {
+  font-size: $font-size-small;
+  padding-left: $font-space-large +  $font-space-xx-small;
+  padding-right: $font-space-large +  $font-space-xx-small;
 }
 
 .ds-chip-size-large {
   font-size: $font-size-base;
-  padding-left: $space-small;
-  padding-right: $space-small;
+  padding-left: $font-space-x-large;
+  padding-right: $font-space-x-large;
 }
 
 .ds-chip-close {
   @include reset-button;
   position: absolute;
-  right: $space-xx-small;
+  right: $font-space-base;
   top: 50%;
   transform: translateY(-50%);
   display: inline-flex;

@@ -54,7 +54,7 @@ export default {
     },
     /**
      * The size used for the text.
-     * `small, base, large`
+     * @options small|base|large
      */
     size: {
       type: String,
@@ -65,7 +65,7 @@ export default {
     },
     /**
      * The component / tag used for this button
-     * `router-link, a`
+     * @options router-link|a|button
      */
     linkTag: {
       type: String,
@@ -86,7 +86,6 @@ export default {
     },
     /**
      * Primary style
-     * `true, false`
      */
     primary: {
       type: Boolean,
@@ -94,7 +93,6 @@ export default {
     },
     /**
      * Secondary style
-     * `true, false`
      */
     secondary: {
       type: Boolean,
@@ -102,7 +100,6 @@ export default {
     },
     /**
      * Danger style
-     * `true, false`
      */
     danger: {
       type: Boolean,
@@ -110,7 +107,6 @@ export default {
     },
     /**
      * Toggle the hover state
-     * `true, false`
      */
     hover: {
       type: Boolean,
@@ -118,7 +114,6 @@ export default {
     },
     /**
      * Make the buttons background transparent
-     * `true, false`
      */
     ghost: {
       type: Boolean,

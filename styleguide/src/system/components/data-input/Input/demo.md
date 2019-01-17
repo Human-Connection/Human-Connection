@@ -1,7 +1,7 @@
 ## Basic usage
 
 ```
-<ds-input placeholder="Name ..."/>
+<ds-input placeholder="Name ..." />
 ```
 
 ## Usage with label
@@ -10,7 +10,13 @@
 <ds-input
   id="name"
   label="Your name"
-  placeholder="Name ..."/>
+  placeholder="Name ..." />
+```
+
+## Disabled
+
+```
+<ds-input placeholder="Name ..." disabled />
 ```
 
 ## Input types
