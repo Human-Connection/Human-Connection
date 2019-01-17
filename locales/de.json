@@ -95,6 +95,7 @@
   "moderation": {
     "name": "Moderation",
     "reports": {
+      "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
       "reporter": "gemeldet von"
     }

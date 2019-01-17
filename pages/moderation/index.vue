@@ -75,8 +75,9 @@
       </template>
     </ds-table>
     <hc-empty
+      v-else
       icon="alert"
-      message="Glückwunsch, es gibt nichts zu moderieren."
+      :message="$t('moderation.reports.empty')"
     />
   </ds-card>
 </template>

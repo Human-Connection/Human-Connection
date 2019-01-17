@@ -95,6 +95,7 @@
   "moderation": {
     "name": "Moderation",
     "reports": {
+      "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
       "reporter": "reported by"
     }
