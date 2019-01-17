@@ -20,6 +20,11 @@ const setup = async function () {
     })
   })
 
+  server.stdout.on('data', data => console.log(`server stdout:\n${data}`))
+  server.stderr.on('data', data => console.log(`server stderr:\n${data}`))
+  seeder.stdout.on('data', data => console.log(`seeder stdout:\n${data}`))
+  seeder.stderr.on('data', data => console.log(`seeder stderr:\n${data}`))
+
   try {
     await waitOn({
       resources: ['http://localhost:4123', 'http://localhost:4001']
@@ -30,7 +35,8 @@ const setup = async function () {
 }
 
 const teardown = async function () {
-  [server, seeder].forEach(app => app.kill())
+  server.kill()
+  seeder.kill()
 }
 
 module.exports = {
