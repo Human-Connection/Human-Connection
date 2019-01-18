@@ -21,6 +21,7 @@
 
 <script>
 export default {
+  middleware: ['isAdmin'],
   computed: {
     routes() {
       return [

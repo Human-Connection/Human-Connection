@@ -21,6 +21,7 @@
 
 <script>
 export default {
+  middleware: ['isModerator'],
   computed: {
     routes() {
       return [
