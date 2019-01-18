@@ -18,15 +18,12 @@ services:
       - 7474:7474
     environment:
       - NEO4J_apoc_import_file_enabled=true
-      - "NEO4J_USERNAME=${NEO4J_USERNAME}"
-      - "NEO4J_PASSWORD=${NEO4J_PASSWORD}"
   db-migration-worker:
     build:
       context: db-migration-worker
-      args:
-        - "KNOWN_HOST=${SSH_HOST}"
     volumes:
       - mongo-export:/mongo-export
+      - ./db-migration-worker/.ssh/:/root/.ssh/
     networks:
       - hc-network
     environment:
