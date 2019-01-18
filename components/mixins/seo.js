@@ -7,7 +7,6 @@ export default {
       bodyAttrs: {
         class: `page-name-${this.$route.name}`
       }
-      }
     }
   }
 }
