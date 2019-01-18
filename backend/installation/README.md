@@ -9,9 +9,26 @@ This documentation should be split into a **local** and a **docker** installatio
 The Backend Repository can be found on github.  
 [https://github.com/Human-Connection/Nitro-Backend](https://github.com/Human-Connection/Nitro-Backend)
 
+## Fork the repo
+
+Click on the fork button.
+
+![Fork screenshot](https://i.imgur.com/syoN9rF.png)
+
+After you have forked, modify the following command to add your Github user name.
+
+{% tabs %}
+{% tab title="HTTPS" %}
 ```bash
-git@github.com:Human-Connection/Nitro-Backend.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/Nitro-Backend.git
 ```
+{% endtab %}
+{% tab title="SSH" %}
+```bash
+git clone git@github.com:YOUR-GITHUB-USERNAME/Nitro-Backend.git
+```
+{% endtab %}
+{% endtabs %}
 
 ### Copy Environment Variables
 
