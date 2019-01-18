@@ -106,9 +106,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$apollo.queries.Report.startPolling(10000)
-  },
   apollo: {
     Report: {
       query,
