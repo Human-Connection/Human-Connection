@@ -107,11 +107,13 @@ export default {
     }
   },
   mounted() {
-    this.$apollo.queries.Report.refetch()
-    this.$apollo.queries.Report.startPolling(8000)
+    this.$apollo.queries.Report.startPolling(10000)
   },
   apollo: {
-    Report: query
+    Report: {
+      query,
+      fetchPolicy: 'cache-and-network'
+    }
   }
 }
 </script>
