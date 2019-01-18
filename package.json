@@ -47,7 +47,7 @@
     "date-fns": "^2.0.0-alpha.26",
     "express": "^4.16.3",
     "graphql": "^14.0.2",
-    "graphql-tag": "^2.10.0",
+    "graphql-tag": "^2.10.1",
     "jsonwebtoken": "^8.3.0",
     "nuxt": "^2.0.0",
     "nuxt-env": "^0.0.4",
