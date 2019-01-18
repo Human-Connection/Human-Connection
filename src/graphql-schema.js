@@ -135,16 +135,16 @@ export const resolvers = {
       let contentType
 
       switch (resource.type) {
-        case 'post':
-        case 'contribution':
-          contentType = 'Post'
-          break
-        case 'comment':
-          contentType = 'Comment'
-          break
-        case 'user':
-          contentType = 'User'
-          break
+      case 'post':
+      case 'contribution':
+        contentType = 'Post'
+        break
+      case 'comment':
+        contentType = 'Comment'
+        break
+      case 'user':
+        contentType = 'User'
+        break
       }
 
       await session.run(
