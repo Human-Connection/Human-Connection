@@ -11,7 +11,7 @@ u.wasInvited = user.wasInvited,
 u.role       = toLower(user.role),
 u.createdAt  = user.createdAt.`$date`,
 u.updatedAt  = user.updatedAt.`$date`,
-u.deleted    = false,
+u.deleted    = user.deletedAt IS NOT NULL,
 u.disabled   = false
 WITH u, user, user.badgeIds AS badgeIds
 UNWIND badgeIds AS badgeId
