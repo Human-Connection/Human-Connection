@@ -4,7 +4,7 @@ for var in "SSH_USERNAME" "SSH_HOST" "MONGODB_USERNAME" "MONGODB_PASSWORD" "MONG
 do
   if [[ -z "${!var}" ]]; then
     echo "${var} is undefined"
-    exit -1
+    exit 1
   fi
 done
 
