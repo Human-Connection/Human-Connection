@@ -1,4 +1,4 @@
-Feature: Report content
+Feature: Report and Moderate
   As a user
   I would like to report content that viloates the community guidlines
   So the moderators can take action on it

@@ -85,11 +85,15 @@ Then('I get a success message', () => {
 
 Then('I see my reported post', () => {
   cy.get('table').then(() => {
-    cy.get('tbody tr:first-child()').contains(lastReportTitle.slice(0, 20))
+    cy.get('tbody tr')
+      .first()
+      .contains(lastReportTitle.trim().slice(0, 20))
   })
 })
 Then('I see my reported user', () => {
   cy.get('table').then(() => {
-    cy.get('tbody tr:first-child()').contains(lastReportTitle)
+    cy.get('tbody tr')
+      .first()
+      .contains(lastReportTitle.trim())
   })
 })
