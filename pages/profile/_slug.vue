@@ -243,16 +243,26 @@
               </ds-flex>
             </ds-card>
           </ds-flex-item>
-          <ds-flex-item
-            v-for="post in uniq(user.contributions.filter(post => !post.deleted))"
-            :key="post.id"
-            :width="{ base: '100%', md: '100%', xl: '50%' }"
-          >
-            <hc-post-card
-              :post="post"
-              :show-author-popover="false"
-            />
-          </ds-flex-item>
+          <template v-if="activePosts.length">
+            <ds-flex-item
+              v-for="post in activePosts"
+              :key="post.id"
+              :width="{ base: '100%', md: '100%', xl: '50%' }"
+            >
+              <hc-post-card
+                :post="post"
+                :show-author-popover="false"
+              />
+            </ds-flex-item>
+          </template>
+          <template v-else>
+            <ds-flex-item :width="{ base: '100%' }">
+              <hc-empty
+                margin="xx-large"
+                icon="file"
+              />
+            </ds-flex-item>
+          </template>
         </ds-flex>
         <hc-load-more
           v-if="hasMore"
@@ -273,6 +283,7 @@ import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
+import HcEmpty from '~/components/Empty.vue'
 
 export default {
   components: {
@@ -281,7 +292,8 @@ export default {
     HcFollowButton,
     HcCountTo,
     HcBadges,
-    HcLoadMore
+    HcLoadMore,
+    HcEmpty
   },
   transition: {
     name: 'slide-up',
@@ -318,6 +330,12 @@ export default {
         this.user.contributions &&
         this.user.contributions.length < this.user.contributionsCount
       )
+    },
+    activePosts() {
+      if (!this.user.contributions) {
+        return []
+      }
+      return this.uniq(this.user.contributions.filter(post => !post.deleted))
     }
   },
   watch: {
@@ -387,7 +405,7 @@ export default {
 .profile-top-navigation {
   position: sticky;
   top: 53px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .ds-tab-nav {

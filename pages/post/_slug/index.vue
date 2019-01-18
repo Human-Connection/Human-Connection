@@ -100,11 +100,10 @@
         </div>
         <ds-space margin-bottom="small" />
       </div>
-      <div v-else>
-        <p style="text-align: center; opacity: .5;">
-          NO COMMENTS
-        </p>
-      </div>
+      <hc-empty
+        v-else
+        icon="messages"
+      />
     </ds-section>
   </ds-card>
 </template>
@@ -113,6 +112,7 @@
 import gql from 'graphql-tag'
 import HcAuthor from '~/components/Author.vue'
 import HcShoutButton from '~/components/ShoutButton.vue'
+import HcEmpty from '~/components/Empty.vue'
 
 export default {
   transition: {
@@ -121,7 +121,8 @@ export default {
   },
   components: {
     HcAuthor,
-    HcShoutButton
+    HcShoutButton,
+    HcEmpty
   },
   head() {
     return {
