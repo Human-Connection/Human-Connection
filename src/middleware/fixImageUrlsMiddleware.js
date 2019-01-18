@@ -7,7 +7,7 @@ export const fixUrl = (url) => {
   url = url.replace(urlSearchLocal, '')
   return url
 }
-const fixImageURLs = (result, recursive) => {
+export const fixImageURLs = (result, recursive) => {
   if (result && typeof result === 'string' && (result.indexOf(urlSearchAlpha) === 0 || result.indexOf(urlSearchLocal) === 0)) {
     result = fixUrl(result)
   } else if (result && Array.isArray(result)) {
