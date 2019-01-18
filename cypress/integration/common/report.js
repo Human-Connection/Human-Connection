@@ -97,3 +97,10 @@ Then('I see my reported user', () => {
       .contains(lastReportTitle.trim())
   })
 })
+
+Then(`I can't see the moderation menu item`, () => {
+  cy.get('.avatar-menu').click()
+  cy.get('.avatar-menu-popover')
+    .find('a[href="/moderation"]')
+    .should('have.length', 0)
+})

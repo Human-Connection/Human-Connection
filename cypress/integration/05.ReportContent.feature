@@ -39,5 +39,8 @@ Feature: Report and Moderate
     And I visit the "moderation" page
     Then I see my reported user
 
-  #Scenario: Normal user can't see the moderation page
-    #Given I am logged in as "user"
+  Scenario: Normal user can't see the moderation page
+    Given I am logged in as "user"
+
+    When I can click on my profile picture in the top right corner
+    Then I can't see the moderation menu item
