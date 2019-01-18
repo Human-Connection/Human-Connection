@@ -1,8 +1,5 @@
 <template>
-  <ds-card space="small">
-    <ds-heading tag="h3">
-      {{ $t('admin.categories.name') }}
-    </ds-heading>
+  <ds-card :header="$t('admin.categories.name')">
     <ds-table
       :data="Category"
       :fields="fields"

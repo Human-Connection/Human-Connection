@@ -43,12 +43,12 @@
           <hc-post-card :post="relatedPost" />
         </ds-flex-item>
       </ds-flex>
-      <ds-space
+      <hc-empty
         v-else
-        style="text-align: center; padding-top: 2em; opacity: .6;"
-      >
-        No related Posts
-      </ds-space>
+        margin="large"
+        icon="file"
+        message="No related Posts"
+      />
     </ds-section>
     <ds-space margin-bottom="large" />
   </ds-card>
@@ -57,6 +57,7 @@
 <script>
 import gql from 'graphql-tag'
 import HcPostCard from '~/components/PostCard.vue'
+import HcEmpty from '~/components/Empty.vue'
 
 export default {
   transition: {
@@ -64,7 +65,8 @@ export default {
     mode: 'out-in'
   },
   components: {
-    HcPostCard
+    HcPostCard,
+    HcEmpty
   },
   computed: {
     post() {
