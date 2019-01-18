@@ -11,7 +11,7 @@ exports[`CopyField.vue matches snapshot 1`] = `
   <div
     class="ds-copy-field-link"
   >
-    <ds-button-stub
+    <dsbutton-stub
       color="soft"
       ghost="true"
       icon="copy"

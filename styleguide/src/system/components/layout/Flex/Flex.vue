@@ -25,29 +25,29 @@ export default {
   },
   props: {
     /**
-     * The default gutter size for the columns.
+     * Default gutter size of columns
      */
     gutter: {
       type: [String, Object],
       default: null
     },
     /**
-     * The default width for the columns.
+     * Default width of columns
      */
     width: {
       type: [String, Number, Object],
       default: 1
     },
     /**
-     * The direction of the items.
-     * `row, row-reverse, column, column-reverse`
+     * Direction of the flex items
+     * @options row|row-reverse|column|column-reverse
      */
     direction: {
       type: [String, Object],
       default: null
     },
     /**
-     * The html element name used for the wrapper.
+     * The outtermost html tag
      */
     tag: {
       type: String,

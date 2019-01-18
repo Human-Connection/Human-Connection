@@ -3,10 +3,15 @@
   @include stack-space($font-space-x-large);
   font-family: $font-family-text;
   line-height: $line-height-base;
+  display: block;
 }
 
 .ds-text-bold {
   font-weight: $font-weight-bold;
+}
+
+.ds-text-inline {
+  display: inline;
 }
 
 .ds-text-left {

@@ -6,7 +6,7 @@
       :label="$parentInput.label" 
       :for="$parentInput.id" />
     <slot/>
-    <ds-input-error :error="$parentInput ? $parentInput.error : null" />
+    <ds-input-error :error="$parentInput.error" />
   </div>
 </template>
 
@@ -21,6 +21,5 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import 'style';
+<style lang="scss" src="./style.scss">
 </style>

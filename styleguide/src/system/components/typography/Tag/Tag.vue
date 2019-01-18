@@ -23,7 +23,7 @@ export default {
   props: {
     /**
      * The background color used for the tag.
-     * `medium, inverse, primary, success, warning, danger`
+     * @options medium|inverse|primary|success|warning|danger
      */
     color: {
       type: String,
@@ -34,7 +34,7 @@ export default {
     },
     /**
      * The size used for the text.
-     * `base, large, small`
+     * @options base|large|small
      */
     size: {
       type: String,
@@ -45,7 +45,6 @@ export default {
     },
     /**
      * Whether the tag should be round
-     * `true, false`
      */
     round: {
       type: Boolean,

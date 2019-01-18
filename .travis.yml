@@ -23,7 +23,7 @@ install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-web .
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
   - git clone https://github.com/Human-Connection/Nitro-Backend.git ../Nitro-Backend
-  - git -C "../Nitro-Backend" checkout $BACKEND_BRANCH
+  - git -C "../Nitro-Backend" checkout $BACKEND_BRANCH || git -C "../Nitro-Backend" checkout master
   - docker-compose -f ../Nitro-Backend/docker-compose.yml -f ../Nitro-Backend/docker-compose.travis.yml up -d
   - yarn global add cypress wait-on
   - yarn add cypress-cucumber-preprocessor

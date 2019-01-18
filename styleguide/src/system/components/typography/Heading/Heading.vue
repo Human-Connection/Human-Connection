@@ -26,7 +26,7 @@ export default {
   props: {
     /**
      * The heading type used for the heading.
-     * `h1, h2, h3, h4, h5, h6`
+     * @options h1|h2|h3|h4|h5|h6
      */
     tag: {
       type: String,
@@ -37,7 +37,7 @@ export default {
     },
     /**
      * The size used for the heading.
-     * `h1, h2, h3, h4, h5, h6`
+     * @options h1|h2|h3|h4|h5|h6
      */
     size: {
       type: String,
@@ -48,7 +48,6 @@ export default {
     },
     /**
      * Primary style
-     * `true, false`
      */
     primary: {
       type: Boolean,
@@ -56,7 +55,6 @@ export default {
     },
     /**
      * Muted style
-     * `true, false`
      */
     soft: {
       type: Boolean,

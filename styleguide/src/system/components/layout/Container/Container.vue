@@ -3,8 +3,10 @@
     :is="tag"
     class="ds-container"
     :class="[
-      `ds-container-${width}`
-  ]">
+      `ds-container-${width}`,
+      centered && `ds-container-centered`,
+    ]"
+  >
     <slot />
   </component>
 </template>
@@ -18,7 +20,7 @@ export default {
   name: 'DsContainer',
   props: {
     /**
-     * The html element name used for the wrapper.
+     * The outtermost html tag
      */
     tag: {
       type: String,
@@ -27,7 +29,7 @@ export default {
     /**
      * The maximum width the container will take.
      * The widths correspond to the different media breakpoints.
-     * `x-small, small, medium, large, x-large`
+     * @options x-small|small|medium|large|x-large
      */
     width: {
       type: String,
@@ -35,6 +37,13 @@ export default {
       validator: value => {
         return value.match(/(x-small|small|medium|large|x-large)/)
       }
+    },
+    /**
+     * Center the content
+     */
+    centered: {
+      type: Boolean,
+      default: false
     }
   }
 }

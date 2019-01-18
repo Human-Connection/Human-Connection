@@ -3,13 +3,13 @@
     <ds-flex>
       <ds-flex-item
         :width="{ base: '100%' }"
-        center
+        centered
       >
         <ds-space
           style="text-align: center;"
           margin-top="large"
           margin-bottom="xxx-small"
-          center
+          centered
         >
           <img
             style="width: 200px;"
@@ -21,7 +21,7 @@
           style="text-align: center;"
           margin-top="small"
           margin-bottom="xxx-small"
-          center
+          centered
         >
           <ds-heading
             tag="h3"

@@ -10,26 +10,28 @@
       ghost && `ds-button-ghost`,
       iconOnly && `ds-button-icon-only`,
       hover && `ds-button-hover`,
-      fullWidth && `ds-button-full-width`,
-      loading && `ds-button-loading`
+      fullwidth && `ds-button-fullwidth`,
+      loading && `ds-button-loading`,
+      right && `ds-button-right`
     ]"
     :name="name"
     v-bind="bindings"
     :is="linkTag">
-    <ds-icon
-      v-if="loading"
-      name="spinner" />
-    <ds-icon
-      v-if="icon && !loading"
-      :name="icon"/>
-    <span
-      class="ds-button-text"
-      v-if="$slots.default">
-      <slot />
-    </span>
-    <ds-icon
-      v-if="iconRight"
-      :name="iconRight"/>
+    <div class="ds-button-wrap">
+      <ds-icon
+        v-if="icon"
+        :name="icon" 
+      />
+      <span
+        class="ds-button-text"
+        v-if="$slots.default">
+        <slot />
+      </span>
+    </div>
+    <ds-spinner
+      v-if="loading" 
+      :inverse="!ghost && (primary || secondary || danger)"
+    />
   </component>
 </template>
 
@@ -52,7 +54,7 @@ export default {
     },
     /**
      * The size used for the text.
-     * `small, base, large`
+     * @options small|base|large
      */
     size: {
       type: String,
@@ -63,7 +65,7 @@ export default {
     },
     /**
      * The component / tag used for this button
-     * `router-link, a`
+     * @options router-link|a|button
      */
     linkTag: {
       type: String,
@@ -84,7 +86,6 @@ export default {
     },
     /**
      * Primary style
-     * `true, false`
      */
     primary: {
       type: Boolean,
@@ -92,7 +93,6 @@ export default {
     },
     /**
      * Secondary style
-     * `true, false`
      */
     secondary: {
       type: Boolean,
@@ -100,7 +100,6 @@ export default {
     },
     /**
      * Danger style
-     * `true, false`
      */
     danger: {
       type: Boolean,
@@ -108,7 +107,6 @@ export default {
     },
     /**
      * Toggle the hover state
-     * `true, false`
      */
     hover: {
       type: Boolean,
@@ -116,7 +114,6 @@ export default {
     },
     /**
      * Make the buttons background transparent
-     * `true, false`
      */
     ghost: {
       type: Boolean,
@@ -130,16 +127,16 @@ export default {
       default: null
     },
     /**
-     * The name of the buttons right icon.
+     * Put the icon to the right.
      */
-    iconRight: {
-      type: String,
-      default: null
+    right: {
+      type: Boolean,
+      default: false
     },
     /**
      * Should the button spread to the full with of the parent?
      */
-    fullWidth: {
+    fullwidth: {
       type: Boolean,
       default: false
     },
@@ -166,7 +163,7 @@ export default {
       return bindings
     },
     iconOnly() {
-      return !this.$slots.default && this.icon && !this.iconRight
+      return !this.$slots.default && this.icon
     }
   },
   methods: {

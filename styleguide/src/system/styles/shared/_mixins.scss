@@ -2,11 +2,15 @@
 --------------------------------------------- */
 
 /* AUTO SCALING FOR TYPE WITH MIN/MAX SIZES
+
   @param {Number}  $responsive  - Viewport-based size
   @param {Number}  $min         - Minimum font size (px)
   @param {Number}  $max         - Maximum font size (px) (optional)
+
   @param {Number}  $fallback    - Fallback for viewport-based units (optional)
+
   @example SCSS - 5vw size, 35px min & 150px max size + 50px fallback:
+
   @include responsive-font(5vw, 35px, 150px, 50px);
 */
 @mixin responsive-font($responsive, $min, $max: false, $fallback: false) {

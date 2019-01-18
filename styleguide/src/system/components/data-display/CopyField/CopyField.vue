@@ -36,12 +36,12 @@ import DsButton from '@@/components/navigation/Button/Button'
 export default {
   name: 'DsCopyField',
   components: {
-    'ds-button': DsButton
+    DsButton
   },
   props: {
     /**
      * The size used for the text.
-     * `small, base, large`
+     * @options small|base|large
      */
     size: {
       type: String,

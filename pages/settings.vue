@@ -5,7 +5,10 @@
     </ds-heading>
     <ds-flex gutter="small">
       <ds-flex-item :width="{ base: '200px' }">
-        <ds-menu :routes="routes" />
+        <ds-menu
+          :routes="routes"
+          :is-exact="() => true"
+        />
       </ds-flex-item>
       <ds-flex-item>
         <transition

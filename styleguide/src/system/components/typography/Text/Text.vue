@@ -6,6 +6,7 @@
       size && `ds-text-size-${size}`,
       color && `ds-text-${color}`,
       bold && `ds-text-bold`,
+      inline && `ds-text-inline`,
       align && `ds-text-${align}`,
       uppercase && `ds-text-uppercase`
     ]"
@@ -36,7 +37,7 @@ export default {
   props: {
     /**
      * The color used for the text.
-     * `default, soft, softer, primary, inverse, success, warning, danger`
+     * @options default|soft|softer|primary|inverse|success|warning|danger
      */
     color: {
       type: String,
@@ -55,8 +56,18 @@ export default {
       default: null
     },
     /**
+     * Whether the text is inline.
+     * @default false
+     */
+    inline: {
+      type: Boolean,
+      default() {
+        return !!this.$parentText
+      }
+    },
+    /**
      * The size used for the text.
-     * `small, base, large, x-large`
+     * @options small|base|large|x-large|xx-large|xxx-large
      */
     size: {
       type: String,
@@ -66,12 +77,12 @@ export default {
       }
     },
     /**
-     * The html element name used for the text.
+     * The html tag used for the text.
      */
     tag: {
       type: String,
       default() {
-        return this.$parentText ? 'span' : 'p'
+        return this.inline ? 'span' : 'p'
       }
     },
     /**

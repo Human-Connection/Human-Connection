@@ -59,10 +59,10 @@
                     <hr>
                     <ds-menu
                       :routes="routes"
-                      :is-exact="isExact"
+                      :matcher="matcher"
                     >
                       <ds-menu-item
-                        slot="Navigation"
+                        slot="menuitem"
                         slot-scope="item"
                         :route="item.route"
                         :parents="item.parents"
@@ -140,10 +140,10 @@ export default {
     }
   },
   methods: {
-    isExact(url) {
+    matcher(url, route) {
       if (url.indexOf('/profile') === 0) {
         // do only match own profile
-        this.$route.path === url
+        return this.$route.path === url
       }
       return this.$route.path.indexOf(url) === 0
     }
