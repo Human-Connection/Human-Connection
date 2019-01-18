@@ -44,6 +44,7 @@
         </ds-flex-item>
       </ds-flex>
       <hc-empty
+        v-else
         margin="large"
         icon="file"
         message="No related Posts"
