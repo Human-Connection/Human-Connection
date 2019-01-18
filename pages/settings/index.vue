@@ -3,10 +3,7 @@
     v-model="form"
     @submit="submit"
   >
-    <ds-card space="small">
-      <ds-heading tag="h3">
-        {{ $t('settings.data.name') }}
-      </ds-heading>
+    <ds-card :header="$t('settings.data.name')">
       <ds-input
         id="name"
         model="name"

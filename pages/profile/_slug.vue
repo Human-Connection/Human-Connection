@@ -251,7 +251,7 @@
               </ds-flex>
             </ds-card>
           </ds-flex-item>
-          <template v-if="activePosts">
+          <template v-if="activePosts.length">
             <ds-flex-item
               v-for="post in activePosts"
               :key="post.id"
@@ -342,6 +342,9 @@ export default {
       )
     },
     activePosts() {
+      if (!this.user.contributions) {
+        return []
+      }
       return this.uniq(this.user.contributions.filter(post => !post.deleted))
     }
   },
