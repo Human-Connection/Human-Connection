@@ -1,8 +1,8 @@
 <template>
   <ds-space
     class="hc-empty"
-    margin="x-large"
     centered
+    :margin="margin"
   >
     <ds-text>
       <img
@@ -13,6 +13,7 @@
         alt="Empty"
       ><br>
       <ds-text
+        v-show="message"
         class="hc-empty-message"
         color="softer"
       >
@@ -40,7 +41,17 @@ export default {
     /**
      * Message that appears under the icon
      */
-    message: { type: String, required: true }
+    message: {
+      type: String,
+      default: null
+    },
+    /**
+     * Vertical spacing
+     */
+    margin: {
+      type: [String, Object],
+      default: 'x-large'
+    }
   },
   computed: {
     iconPath() {

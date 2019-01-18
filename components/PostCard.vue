@@ -114,11 +114,13 @@ export default {
   .ds-card-footer {
     z-index: 1;
   }
-}
-.content-menu {
-  display: inline-block;
-  margin-left: $space-small;
-  z-index: 1;
+
+  .content-menu {
+    display: inline-block;
+    margin-left: $space-xx-small;
+    margin-right: -$space-x-small;
+    z-index: 1;
+  }
 }
 .post-link {
   display: block;

@@ -19,7 +19,6 @@
           />
           <no-ssr>
             <content-menu
-              style="float: right; display: inline-block; margin-top: -3.5rem; margin-right: -0.5rem;"
               placement="bottom-end"
               context="user"
               :item-id="user.id"
@@ -252,16 +251,26 @@
               </ds-flex>
             </ds-card>
           </ds-flex-item>
-          <ds-flex-item
-            v-for="post in uniq(user.contributions.filter(post => !post.deleted))"
-            :key="post.id"
-            :width="{ base: '100%', md: '100%', xl: '50%' }"
-          >
-            <hc-post-card
-              :post="post"
-              :show-author-popover="false"
-            />
-          </ds-flex-item>
+          <template v-if="activePosts">
+            <ds-flex-item
+              v-for="post in activePosts"
+              :key="post.id"
+              :width="{ base: '100%', md: '100%', xl: '50%' }"
+            >
+              <hc-post-card
+                :post="post"
+                :show-author-popover="false"
+              />
+            </ds-flex-item>
+          </template>
+          <template v-else>
+            <ds-flex-item :width="{ base: '100%' }">
+              <hc-empty
+                margin="xx-large"
+                icon="file"
+              />
+            </ds-flex-item>
+          </template>
         </ds-flex>
         <hc-load-more
           v-if="hasMore"
@@ -282,6 +291,7 @@ import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
+import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 
 export default {
@@ -292,6 +302,7 @@ export default {
     HcCountTo,
     HcBadges,
     HcLoadMore,
+    HcEmpty,
     ContentMenu
   },
   transition: {
@@ -329,6 +340,9 @@ export default {
         this.user.contributions &&
         this.user.contributions.length < this.user.contributionsCount
       )
+    },
+    activePosts() {
+      return this.uniq(this.user.contributions.filter(post => !post.deleted))
     }
   },
   watch: {
@@ -393,6 +407,14 @@ export default {
   margin: auto;
   margin-top: -60px;
   border: #fff 5px solid;
+}
+
+.page-name-profile-slug {
+  .ds-flex-item:first-child .content-menu {
+    position: absolute;
+    top: $space-x-small;
+    right: $space-x-small;
+  }
 }
 
 .profile-top-navigation {

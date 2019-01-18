@@ -8,13 +8,14 @@
       slot="default"
       slot-scope="{toggleMenu}"
     >
-      <a
+      <ds-button
         class="content-menu-trigger"
-        href="#"
-        @click.prevent="toggleMenu()"
+        size="small"
+        ghost
+        @click.prevent="toggleMenu"
       >
         <ds-icon name="ellipsis-v" />
-      </a>
+      </ds-button>
     </template>
     <div
       slot="popover"
