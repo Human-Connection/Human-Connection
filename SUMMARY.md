@@ -29,6 +29,10 @@
 * [Contribute](workflow/pull-requests.md)
 * [Deployment](workflow/deployment.md)
 
+## Documentation
+
+* [Edit this Documentation](documentation/edit-this-documentation.md)
+
 ## Recources
 
 * [Human-Connection.org](https://human-connection.org)
