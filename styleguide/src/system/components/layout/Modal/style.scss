@@ -90,13 +90,11 @@
 
 .ds-transition-modal-appear-enter-active {
   opacity: 1;
-  transition: all 200ms $ease-out-bounce ;
-  transition-delay: 0;
+  transition: all 200ms $ease-out-bounce;
   transform: translate3d(-50%, -50%, 0) scale(1);
 }
 .ds-transition-modal-appear-enter,
 .ds-transition-modal-appear-leave-active {
   opacity: 0;
-  transition-delay: 0;
   transform: translate3d(-50%, -50%, 0) scale(0.8);
 }
