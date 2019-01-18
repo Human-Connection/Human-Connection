@@ -28,7 +28,7 @@ export default {
           })
           removeIdFromResult = true
         }
-      } catch(err) {}
+      } catch (err) {}
       const result = await resolve(root, args, context, info)
       if (!isIdPresent && removeIdFromResult) {
         // remove id if the user did not ask for it
