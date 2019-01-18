@@ -73,7 +73,8 @@ module.exports = {
 
   router: {
     middleware: ['authenticated'],
-    linkActiveClass: 'router-active-link',
+    linkActiveClass: 'router-link-active',
+    linkExactActiveClass: 'router-link-exact-active',
     scrollBehavior: () => {
       return { x: 0, y: 0 }
     }

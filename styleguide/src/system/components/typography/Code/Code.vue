@@ -3,7 +3,6 @@
     class="ds-code"
     :is="inline ? 'code' : 'pre'"
     :class="[
-      size && `ds-code-size-${size}`,
       inline && `ds-code-inline`
     ]"
   >
@@ -21,7 +20,6 @@ export default {
   props: {
     /**
      * Display the code inline.
-     * `true, false`
      */
     inline: {
       type: Boolean,

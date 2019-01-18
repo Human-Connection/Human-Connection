@@ -36,7 +36,7 @@ export default {
     },
     /**
      * The size used for the list.
-     * `small, base, large, x-large`
+     * @options small|base|large|x-large
      */
     size: {
       type: String,

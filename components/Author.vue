@@ -111,7 +111,7 @@
             />
           </ds-flex-item>
           <ds-flex-item :width="{base: 1}">
-            <ds-button full-width>
+            <ds-button fullwidth>
               <ds-icon name="user-times" />
             </ds-button>
           </ds-flex-item>

@@ -15,6 +15,7 @@
 
     color: $text-color-base;
     background: $background-color-base;
+
     border: $input-border-size solid $border-color-base;
     border-radius: $border-radius-base;
     outline: none;
@@ -23,21 +24,31 @@
     &::placeholder {
       color: $text-color-disabled;
     }
+
     .ds-input-has-focus &,
     &:focus {
       border-color: $border-color-active;
       background: $background-color-base;
     }
+
     .ds-input-is-disabled &,
     &:disabled {
       color: $text-color-disabled;
       opacity: $opacity-disabled;
+      pointer-events: none;
       cursor: not-allowed;
+      background-color: $background-color-disabled;
     }
+
+    .ds-input-is-readonly & {
+      pointer-events: none;
+    }
+
     .ds-input-has-error & {
       border-color: $border-color-danger;
     }
   }
+
   .ds-input-size-small {
     font-size: $font-size-small;
 
@@ -47,6 +58,7 @@
       padding: $input-padding-vertical-small $space-x-small;
     }
   }
+
   .ds-input-size-large {
     font-size: $font-size-large;
 

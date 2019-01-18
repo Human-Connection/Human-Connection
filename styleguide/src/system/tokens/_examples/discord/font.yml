@@ -1,0 +1,25 @@
+#
+# FONT TOKENS
+# Use these tokens to set font-weight and font-family.
+#
+
+props:
+  - name: font-family-heading
+    value: "Whitney,Helvetica Neue,Helvetica,Arial,sans-serif"
+    category: "font-family"
+  - name: font-family-text
+    value: "Whitney,Helvetica Neue,Helvetica,Arial,sans-serif"
+    category: "font-family"
+  - name: font-family-code
+    value: "inconsolata, monospace"
+    category: "font-family"
+
+  - name: font-weight-regular
+    value: "normal"
+    category: "font-weight"
+  - name: font-weight-bold
+    value: "700"
+    category: "font-weight"
+global:
+  type: ...
+  category: font

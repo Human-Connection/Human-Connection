@@ -4,7 +4,7 @@
     :style="styles"
     class="ds-space"
     :class="[
-      centered && `ds-space-centered`
+      centered && 'ds-space-centered'
     ]"
   >
     <slot />

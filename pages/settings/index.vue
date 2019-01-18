@@ -1,45 +1,51 @@
 <template>
-  <ds-card space="small">
-    <ds-heading tag="h3">
-      {{ $t('settings.data.name') }}
-    </ds-heading>
-    <ds-input
-      id="name"
-      v-model="form.name"
-      icon="user"
-      :label="$t('settings.data.labelName')"
-      :placeholder="$t('settings.data.labelName')"
-    />
-    <!-- eslint-disable vue/use-v-on-exact -->
-    <ds-select
-      id="city"
-      v-model="form.locationName"
-      :options="cities"
-      icon="map-marker"
-      :label="$t('settings.data.labelCity')"
-      :placeholder="$t('settings.data.labelCity')"
-      @input.native="handleCityInput"
-    />
-    <!-- eslint-enable vue/use-v-on-exact -->
-    <ds-input
-      id="bio"
-      v-model="form.about"
-      type="textarea"
-      rows="3"
-      :label="$t('settings.data.labelBio')"
-      :placeholder="$t('settings.data.labelBio')"
-    />
-    <template slot="footer">
-      <ds-button
-        style="float: right;"
-        icon="check"
-        primary
-        @click.prevent="submit"
-      >
-        {{ $t('actions.save') }}
-      </ds-button>
-    </template>
-  </ds-card>
+  <ds-form
+    v-model="form"
+    @submit="submit"
+  >
+    <ds-card space="small">
+      <ds-heading tag="h3">
+        {{ $t('settings.data.name') }}
+      </ds-heading>
+      <ds-input
+        id="name"
+        model="name"
+        icon="user"
+        :label="$t('settings.data.labelName')"
+        :placeholder="$t('settings.data.labelName')"
+      />
+      <!-- eslint-disable vue/use-v-on-exact -->
+      <ds-select
+        id="city"
+        model="locationName"
+        icon="map-marker"
+        :options="cities"
+        :label="$t('settings.data.labelCity')"
+        :placeholder="$t('settings.data.labelCity')"
+        @input.native="handleCityInput"
+      />
+      <!-- eslint-enable vue/use-v-on-exact -->
+      <ds-input
+        id="bio"
+        model="about"
+        type="textarea"
+        rows="3"
+        :label="$t('settings.data.labelBio')"
+        :placeholder="$t('settings.data.labelBio')"
+      />
+      <template slot="footer">
+        <ds-button
+          style="float: right;"
+          icon="check"
+          type="submit"
+          :loading="sending"
+          primary
+        >
+          {{ $t('actions.save') }}
+        </ds-button>
+      </template>
+    </ds-card>
+  </ds-form>
 </template>
 
 <script>
@@ -57,6 +63,7 @@ export default {
     return {
       axiosSource: null,
       cities: [],
+      sending: false,
       form: {
         name: null,
         locationName: null,
@@ -83,7 +90,7 @@ export default {
   },
   methods: {
     submit() {
-      console.log('SUBMIT', { ...this.form })
+      this.sending = true
       this.$apollo
         .mutate({
           mutation: gql`
@@ -110,7 +117,9 @@ export default {
           variables: {
             id: this.user.id,
             name: this.form.name,
-            locationName: this.form.locationName,
+            locationName: this.form.locationName
+              ? this.form.locationName['label'] || this.form.locationName
+              : null,
             about: this.form.about
           },
           // Update the cache with the result
@@ -139,12 +148,13 @@ export default {
           } */
         })
         .then(data => {
-          console.log(data)
           this.$toast.success('Updated user')
         })
         .catch(err => {
-          console.error(err)
           this.$toast.error(err.message)
+        })
+        .finally(() => {
+          this.sending = false
         })
     },
     handleCityInput(value) {

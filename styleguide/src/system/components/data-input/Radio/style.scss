@@ -1,0 +1,56 @@
+.ds-radio {
+  outline: none;
+
+  .ds-input-is-disabled &,
+  &:disabled {
+    color: $text-color-disabled;
+    opacity: $opacity-disabled;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+}
+
+.ds-radio-option {
+  &:not(.ds-button) {
+    @include inline-space($space-small);
+  }
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-radio-option-mark {
+  display: inline-block;
+  position: relative;
+  width: $font-size-base;
+  height: $font-size-base;
+  border: $input-border-size solid $border-color-base;
+  background-color: $background-color-base;
+  border-radius: $border-radius-circle;
+  margin-right: $space-xx-small;
+
+  &:before {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%) scale(0);
+    opacity: 0;
+    width: $font-size-x-small;
+    height: $font-size-x-small;
+    border-radius: $border-radius-circle;
+    background-color: $text-color-primary;
+    transition: all $duration-short $ease-in-sharp;
+
+    .ds-radio-option-is-selected & {
+      opacity: 1;
+      transform: translateY(-50%) translateX(-50%) scale(1);
+    }
+  }
+}
+
+.ds-radio-option-label {
+  font-size: $font-size-base;
+  cursor: pointer;
+}

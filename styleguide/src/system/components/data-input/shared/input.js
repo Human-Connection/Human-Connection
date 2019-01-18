@@ -31,6 +31,13 @@ export default {
       default: null
     },
     /**
+     * Name to use on the input for accessibility
+     */
+    name: {
+      type: String,
+      default: null
+    },
+    /**
      * The label of the input.
      */
     label: {
@@ -52,7 +59,15 @@ export default {
       default: false
     },
     /**
+     * Whether the input should be read-only
+     */
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * The async-validator schema used for the input.
+     * @default null
      */
     schema: {
       type: Object,
@@ -60,11 +75,11 @@ export default {
     },
     /**
      * The input's size.
-     * `small, base, large`
+     * @options small|base|large
      */
     size: {
       type: String,
-      default: null,
+      default: 'base',
       validator: value => {
         return value.match(/(small|base|large)/)
       }
@@ -86,6 +101,7 @@ export default {
       return [
         this.size && `ds-input-size-${this.size}`,
         this.disabled && 'ds-input-is-disabled',
+        this.readonly && 'ds-input-is-readonly',
         this.error && 'ds-input-has-error',
         this.focus && 'ds-input-has-focus'
       ]

@@ -16,9 +16,9 @@ const setUserName = name => {
   cy.get('input[id=name]')
     .clear()
     .type(name)
-  cy.contains('Save')
+  cy.get('[type=submit]')
     .click()
-    .wait(200)
+    .not('[disabled]')
   myName = name
 }
 
@@ -31,7 +31,9 @@ When('I save {string} as my location', location => {
   cy.get('.ds-select-option')
     .contains(location)
     .click()
-  cy.contains('Save').click()
+  cy.get('[type=submit]')
+    .click()
+    .not('[disabled]')
   myLocation = location
 })
 
@@ -39,7 +41,9 @@ When('I have the following self-description:', text => {
   cy.get('textarea[id=bio]')
     .clear()
     .type(text)
-  cy.contains('Save').click()
+  cy.get('[type=submit]')
+    .click()
+    .not('[disabled]')
   aboutMeText = text
 })
 

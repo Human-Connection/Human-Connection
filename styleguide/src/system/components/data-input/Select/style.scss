@@ -4,10 +4,16 @@
 
 .ds-select {
   user-select: none;
-  .ds-input-has-focus & {
+  .ds-select-is-open & {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
+}
+
+.ds-select-multiple {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
 }
 
 .ds-select-search, .ds-select-value {
@@ -70,7 +76,7 @@
     color: $text-color-disabled;
   }
 
-  .ds-input-has-focus & {
+  .ds-select-is-open & {
     opacity: 1;
   }
 
@@ -87,7 +93,7 @@
 .ds-select-placeholder, .ds-select-value {
   pointer-events: none;
 
-  .ds-input-has-focus & {
+  .ds-select-is-open & {
     opacity: 0;
   }
 }
@@ -98,10 +104,13 @@
 
 .ds-selected-options {
   display: flex;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .ds-selected-option {
   display: inline-flex;
+  align-items: center;
   margin-right: $space-xx-small;
 }
 
@@ -122,10 +131,14 @@
   max-height: 240px;
   overflow: auto;
 
-  .ds-input-has-focus & {
+  .ds-select-is-open & {
     visibility: visible;
     opacity: 1;
   }
+}
+
+.ds-select-dropdown-message {
+  padding: $input-padding-vertical $space-x-small;
 }
 
 .ds-select-options {

@@ -45,20 +45,18 @@ ul.ds-menu-list {
   padding: $space-x-small $space-small;
   transition: color $duration-short $ease-out;
   border-left: 2px solid transparent;
-
-  &.router-link-active,
-  &.nuxt-link-active {
+  
+  &.router-link-active {
     color: $text-color-link-active;
   }
-
+  
   &:hover {
     color: $text-color-link-active;
   }
-
-  &.router-link-exact-active,
-  &.nuxt-link-exact-active {
+  
+  &.router-link-exact-active {
     color: $text-color-link;
-    // background-color: $background-color-soft;
+    background-color: $background-color-soft;
     border-left: 2px solid $color-primary;
   }
 
@@ -117,14 +115,12 @@ ul.ds-menu-list {
 
     &,
     &:hover,
-    &.router-link-exact-active,
-    &.nuxt-link-exact-active {
+    &.router-link-exact-active {
       background-color: transparent;
     }
 
     &:hover,
-    &.router-link-active,
-    &.nuxt-link-active {
+    &.router-link-active {
       &:before {
         opacity: 1;
       }

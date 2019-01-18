@@ -24,6 +24,7 @@ props:
     value: "0.2em"
   - name: font-space-xxx-small
     value: "0.1em"
+
 global:
   type: number
   category: font-spacing

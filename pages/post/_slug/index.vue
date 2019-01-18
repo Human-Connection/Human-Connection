@@ -61,16 +61,15 @@
     </template>
     <ds-space margin="small" />
     <!-- Comments -->
-    <ds-section
-      slot="footer"
-    >
+    <ds-section slot="footer">
       <h3 style="margin-top: 0;">
         <span>
           <ds-icon name="comments" />
           <ds-tag
             v-if="post.commentsCount"
-            style="transform: scale(.8); margin-top: -4px; margin-left: -12px; position: absolute;"
+            style="margin-top: -4px; margin-left: -12px; position: absolute;"
             color="primary"
+            size="small"
             round
           >
             {{ post.commentsCount }}
@@ -268,6 +267,7 @@ export default {
         object-position: center;
       }
     }
+
     .ds-card-footer {
       padding: 0;
 

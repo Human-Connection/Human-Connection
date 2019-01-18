@@ -7,13 +7,16 @@
       primary && `ds-card-primary`,
       secondary && `ds-card-secondary`,
       centered && `ds-card-centered`,
-      hover && `ds-card-hover`
+      hover && `ds-card-hover`,
+      space && `ds-card-space-${space}`
   ]">
     <div
       class="ds-card-image"
       v-if="image || $slots.image">
       <!-- @slot Content of the card's image -->
-      <slot name="image">
+      <slot 
+        name="image"
+        :image="image">
         <img
           :src="image"
           v-if="!error"
@@ -36,12 +39,7 @@
       </slot>
     </header>
     <div class="ds-card-content">
-      <template v-if="space">
-        <ds-space :margin="space">
-          <slot />
-        </ds-space>
-      </template>
-      <template v-else>
+      <template>
         <slot />
       </template>
     </div>
@@ -63,22 +61,22 @@ export default {
   name: 'DsCard',
   props: {
     /**
-     * The html element name used for the card.
+     * The outtermost html tag
      */
     tag: {
       type: String,
       default: 'article'
     },
     /**
-     * The header for the card.
+     * The card's header
      */
     header: {
       type: String,
       default: null
     },
     /**
-     * The heading type used for the header.
-     * `h1, h2, h3, h4, h5, h6`
+     * The card's header tag
+     * @options h1|h2|h3|h4|h5|h6
      */
     headerTag: {
       type: String,
@@ -88,14 +86,14 @@ export default {
       }
     },
     /**
-     * The image for the card.
+     * The card's image
      */
     image: {
       type: String,
       default: null
     },
     /**
-     * The icon for the card.
+     * The card's icon
      */
     icon: {
       type: String,
@@ -103,7 +101,6 @@ export default {
     },
     /**
      * Highlight with primary color
-     * `true, false`
      */
     primary: {
       type: Boolean,
@@ -111,7 +108,6 @@ export default {
     },
     /**
      * Highlight with secondary color
-     * `true, false`
      */
     secondary: {
       type: Boolean,
@@ -119,7 +115,6 @@ export default {
     },
     /**
      * Center the content
-     * `true, false`
      */
     centered: {
       type: Boolean,
@@ -127,7 +122,6 @@ export default {
     },
     /**
      * Make the card hoverable
-     * `true, false`
      */
     hover: {
       type: Boolean,
@@ -135,11 +129,14 @@ export default {
     },
     /**
      * If you need some spacing you can provide it here like for ds-space
-     * `xxx-small, xx-small, x-small, small, large, x-large, xx-large, xxx-large`
+     * @options small|large|x-large|xx-large
      */
     space: {
       type: String,
-      default: null
+      default: null,
+      validator: value => {
+        return value.match(/(small|large|x-large|xx-large)/)
+      }
     }
   },
   data() {
