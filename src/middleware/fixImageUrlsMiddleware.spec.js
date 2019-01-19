@@ -24,7 +24,7 @@ describe('fixImageURLs', () => {
 
   describe('some string', () => {
     it('returns untouched', () => {})
-      const string = "Yeah I'm a String"
-      expect(fixImageURLs(string)).toEqual(string)
+    const string = 'Yeah I\'m a String'
+    expect(fixImageURLs(string)).toEqual(string)
   })
 })

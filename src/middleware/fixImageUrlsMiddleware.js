@@ -19,7 +19,7 @@ const checkUrl = (thing) => {
 }
 
 export const fixImageURLs = (result, recursive) => {
-  if(checkUrl(result)) {
+  if (checkUrl(result)) {
     result = fixUrl(result)
   } else if (result && Array.isArray(result)) {
     result.forEach((res, index) => {
