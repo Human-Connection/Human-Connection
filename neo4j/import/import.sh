@@ -3,5 +3,5 @@ SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pw
 echo "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;" | cypher-shell
 for collection in "users" "contributions" "comments"
 do
-  echo "Import ${collection}..." && cat $SCRIPT_DIRECTORY/$collection.cql | cypher-shell
+  echo "Import ${collection}..." && cypher-shell < $SCRIPT_DIRECTORY/$collection.cql
 done
