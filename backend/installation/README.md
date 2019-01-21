@@ -48,7 +48,7 @@ For further informations see also our [Docker documentation](docker.md).
 
 ## Local Installation
 
-Make sure that you have a recent version of [yarn](https://yarnpkg.com/en/) or [npm](https://www.npmjs.com) installed before you proceed. E.g. we have the following version:
+Make sure that you have a recent version of [yarn](https://yarnpkg.com/en/) or [npm](https://www.npmjs.com) installed before you proceed. E.g. we have the following versions:
 
 ```sh
 $ yarn --version
