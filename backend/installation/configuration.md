@@ -91,6 +91,6 @@ To clear the database from all data after you have changed it somehow and you ma
 $ yarn run db:reset
 ```
 
-Now your database is ready to request. You can click on the **Open Browser** button in Neo4j Desktop to have an insight if the seeding was successful or open [http://localhost:7474/](http://localhost:7474/) in you browser.
+Now your database is ready to request. You can click on the **Open Browser** button in Neo4j Desktop to have an insight if the seeding was successful or open [http://localhost:7474/](http://localhost:7474/) in your browser.
 
 Click the **Data-Symbol** at the left upper corner and than click on the **Node Label** + **User** to see a graph of the user relations, as an example.
