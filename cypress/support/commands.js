@@ -66,13 +66,12 @@ Cypress.Commands.add('logout', (email, password) => {
   cy.location('pathname').should('contain', '/login') // we're out
 })
 
-Cypress.Commands.add('openPage', (page) =>  {
+Cypress.Commands.add('openPage', page => {
   if (page === 'landing') {
     page = ''
   }
   cy.visit(`/${page}`)
 })
-
 
 //
 //

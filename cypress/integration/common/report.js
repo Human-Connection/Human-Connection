@@ -3,9 +3,9 @@ import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 /* global cy  */
 
 let lastReportTitle
-let dummyReportedPostTitle = "Hacker, Freaks und Funktionäre"
-let dummyReportedPostSlug = 'hacker-freaks-und-funktionareder-ccc' 
-let dummyAuthorName = "Jenny Rostock"
+let dummyReportedPostTitle = 'Hacker, Freaks und Funktionäre'
+let dummyReportedPostSlug = 'hacker-freaks-und-funktionareder-ccc'
+let dummyAuthorName = 'Jenny Rostock'
 
 const savePostTitle = $post => {
   return $post
@@ -18,11 +18,11 @@ const savePostTitle = $post => {
     })
 }
 
-Given('I see David Irving\'s post on the landing page', (page) => {
+Given("I see David Irving's post on the landing page", page => {
   cy.openPage('landing')
 })
 
-Given('I see David Irving\'s post on the post page', (page) => {
+Given("I see David Irving's post on the post page", page => {
   cy.visit(`/post/${dummyReportedPostSlug}`)
   cy.contains(dummyReportedPostTitle) // wait
 })
@@ -31,29 +31,35 @@ Given('I am logged in with a {string} role', role => {
   cy.loginAs(role)
 })
 
-When('I click on "Report Contribution" from the triple dot menu of the post', () => {
-  //TODO: match the created post title, not a dummy post title
-  cy.contains('.ds-card', dummyReportedPostTitle)
-    .find('.content-menu-trigger')
-    .first()
-    .click()
+When(
+  'I click on "Report Contribution" from the triple dot menu of the post',
+  () => {
+    //TODO: match the created post title, not a dummy post title
+    cy.contains('.ds-card', dummyReportedPostTitle)
+      .find('.content-menu-trigger')
+      .first()
+      .click()
 
-  cy.get('.popover .ds-menu-item-link')
-    .contains('Report Contribution')
-    .click()
-})
+    cy.get('.popover .ds-menu-item-link')
+      .contains('Report Contribution')
+      .click()
+  }
+)
 
-When('I click on "Report User" from the triple dot menu in the user info box', () => {
-  //TODO: match the created post author, not a dummy author
-  cy.contains('.ds-card', dummyAuthorName)
-    .find('.content-menu-trigger')
-    .first()
-    .click()
+When(
+  'I click on "Report User" from the triple dot menu in the user info box',
+  () => {
+    //TODO: match the created post author, not a dummy author
+    cy.contains('.ds-card', dummyAuthorName)
+      .find('.content-menu-trigger')
+      .first()
+      .click()
 
-  cy.get('.popover .ds-menu-item-link')
-    .contains('Report User')
-    .click()
-})
+    cy.get('.popover .ds-menu-item-link')
+      .contains('Report User')
+      .click()
+  }
+)
 
 When('I click on the author', () => {
   cy.get('a.author')
@@ -114,7 +120,7 @@ When(/^I confirm the reporting dialog .*:$/, () => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach((row) => {
+  table.hashes().forEach(row => {
     //TODO: calll factory here
     // const options = Object.assign({}, row, { reported: true })
     //create('post', options)

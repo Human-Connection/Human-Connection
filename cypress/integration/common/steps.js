@@ -85,14 +85,13 @@ When('I press {string}', label => {
 })
 
 Given('we have the following posts in our database:', table => {
-  table.hashes().forEach((row) => {
+  table.hashes().forEach(row => {
     //TODO: calll factory here
     //create('post', row)
   })
 })
 
-
-Then('I see a success message:', (message) => {
+Then('I see a success message:', message => {
   cy.contains(message)
 })
 
