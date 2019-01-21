@@ -7,40 +7,53 @@ Feature: Report and Moderate
   I would like to see all reported content
   So I can look into it and decide what to do
 
-  Scenario: Report a Post from landingpage
-    Given I am logged in as "user"
-    And I am on the "landing" page
+  Background:
+    Given we have the following posts in our database:
+      | Author       | Title                         | Content           | Slug                          |
+      | David Irving | The Truth about the Holocaust | It never existed! | the-truth-about-the-holocaust |
 
-    When I click on a Post menu and select the report option
-    And I click on send in the confirmation dialog
-    Then I get a success message
-
-  Scenario: See reported content
-    Given I am logged in as "moderator"
-    And I previously reported a post
-
-    When I am on the "moderation" page
-    Then I see my reported post
-
-  Scenario: Report while reading Post
-    Given I am logged in as "admin"
-    And I am viewing a post
-
-    When I report the current post
-    And I visit the "moderation" page
-    Then I see my reported post
+  Scenario Outline: Report a post from various pages
+    Given I am logged in with a "user" role
+    And I see David Irving's post on the <Page>
+    When I click on "Report Contribution" from the triple dot menu of the post
+    And I confirm the reporting dialog because it is a criminal act under German law:
+    """
+    Do you really want to report the contribution "The Truth about the Holocaust"?
+    """
+    Then I see a success message:
+    """
+    Thanks for reporting!
+    """
+    Examples:
+      | Page         |
+      | landing page |
+      | post page    |
 
   Scenario: Report user
-    Given I am logged in as "admin"
-    And I am viewing a post
-
+    Given I am logged in with a "user" role
+    And I see David Irving's post on the post page
     When I click on the author
-    And I report the author
-    And I visit the "moderation" page
-    Then I see my reported user
+    And I click on "Report User" from the triple dot menu in the user info box
+    And I confirm the reporting dialog because he is a holocaust denier:
+    """
+    Do you really want to report the user "David Irving"?
+    """
+    Then I see a success message:
+    """
+    Thanks for reporting!
+    """
+
+  Scenario: Review reported content
+    Given somebody reported the following posts:
+      | Slug                          |
+      | the-truth-about-the-holocaust |
+    And I am logged in with a "moderator" role
+    When I click on the avatar menu in the top right corner
+    And I click on "Moderation"
+    Then I see all the reported posts including the one from above
+    And each list item links to the post page
 
   Scenario: Normal user can't see the moderation page
-    Given I am logged in as "user"
-
-    When I can click on my profile picture in the top right corner
+    Given I am logged in with a "user" role
+    When I click on the avatar menu in the top right corner
     Then I can't see the moderation menu item

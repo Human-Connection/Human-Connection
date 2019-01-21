@@ -4,13 +4,6 @@ import users from '../../fixtures/users.json'
 
 /* global cy  */
 
-const openPage = page => {
-  if (page === 'landing') {
-    page = ''
-  }
-  cy.visit(`/${page}`)
-}
-
 Given('I am logged in', () => {
   cy.loginAs('admin')
 })
@@ -33,10 +26,11 @@ Given('my user account has the role {string}', role => {
 When('I log out', cy.logout)
 
 When('I visit the {string} page', page => {
-  openPage(page)
+  cy.openPage(page)
 })
+
 Given('I am on the {string} page', page => {
-  openPage(page)
+  cy.openPage(page)
 })
 
 When('I fill in my email and password combination and click submit', () => {
@@ -52,11 +46,6 @@ When('I log out through the menu in the top right corner', () => {
   cy.get('.avatar-menu-popover')
     .find('a[href="/logout"]')
     .click()
-})
-
-Then('I can click on my profile picture in the top right corner', () => {
-  cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover')
 })
 
 Then('I can see my name {string} in the dropdown menu', () => {
@@ -93,4 +82,20 @@ When(`I click on {string}`, linkOrButton => {
 
 When('I press {string}', label => {
   cy.contains(label).click()
+})
+
+Given('we have the following posts in our database:', table => {
+  table.hashes().forEach((row) => {
+    //TODO: calll factory here
+    //create('post', row)
+  })
+})
+
+
+Then('I see a success message:', (message) => {
+  cy.contains(message)
+})
+
+When('I click on the avatar menu in the top right corner', () => {
+  cy.get('.avatar-menu').click()
 })
