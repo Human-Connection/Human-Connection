@@ -5,3 +5,5 @@ yarn-error.log
 dist/*
 coverage.lcov
 .nyc_output/
+public/*
+!.gitkeep

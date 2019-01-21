@@ -18,3 +18,5 @@ dist/
 
 db-migration-worker/
 neo4j/
+
+public/
