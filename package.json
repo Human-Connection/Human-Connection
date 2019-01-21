@@ -9,12 +9,16 @@
   "scripts": {
     "build": "babel src/ -d dist/ --copy-files",
     "start": "node dist/",
-    "dev": "nodemon --exec babel-node src/index.js",
+    "dev": "nodemon --exec babel-node src/",
     "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "lint": "eslint src --config .eslintrc.js",
     "test": "nyc  --reporter=text-lcov yarn run test:jest",
-    "test:jest": "$npm_package_config_no_auth run-p --race start test:cmd:jest",
-    "test:cmd:jest": "jest --forceExit",
+    "test:before:server": "cross-env GRAPHQL_URI=http://localhost:4123 GRAPHQL_PORT=4123 babel-node src/ 2> /dev/null",
+    "test:before:seeder": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled babel-node src/ 2> /dev/null",
+    "test:jest:cmd":       "wait-on tcp:4001 tcp:4123 && jest --forceExit --detectOpenHandles --runInBand",
+    "test:jest:cmd:debug": "wait-on tcp:4001 tcp:4123 && node --inspect-brk ./node_modules/.bin/jest -i --forceExit --detectOpenHandles --runInBand",
+    "test:jest":       "run-p --race test:before:* 'test:jest:cmd {@}' --",
+    "test:jest:debug": "run-p --race test:before:* 'test:jest:cmd:debug {@}' --",
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
     "db:script:reset": "wait-on tcp:4001 && babel-node src/seed/reset-db.js",
@@ -25,7 +29,9 @@
   "license": "MIT",
   "jest": {
     "verbose": true,
-    "testMatch": ["**/src/**/?(*.)+(spec|test).js?(x)" ]
+    "testMatch": [
+      "**/src/**/?(*.)+(spec|test).js?(x)"
+    ]
   },
   "dependencies": {
     "apollo-cache-inmemory": "~1.4.0",
