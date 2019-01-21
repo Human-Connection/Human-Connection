@@ -8,8 +8,19 @@
     @confirm="report"
     @cancel="close"
   >
+    <transition name="ds-transition-fade">
+      <ds-flex
+        v-if="success"
+        class="hc-modal-success"
+        centered
+      >
+        <sweetalert-icon icon="success" />
+      </ds-flex>
+    </transition>
+
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="$t(`report.${data.context}.message`, { name: name })" />
+
     <template
       slot="footer"
       slot-scope="{ cancel, confirm, cancelLabel, confirmLabel }"
@@ -37,11 +48,16 @@
 
 <script>
 import gql from 'graphql-tag'
+import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {
   name: 'ReportModal',
+  components: {
+    SweetalertIcon
+  },
   data() {
     return {
+      success: false,
       loading: false,
       disabled: false
     }
@@ -63,6 +79,7 @@ export default {
   watch: {
     isOpen(open) {
       if (open) {
+        this.success = false
         this.disabled = false
         this.loading = false
       }
@@ -75,6 +92,7 @@ export default {
     report() {
       console.log('')
       this.loading = true
+      this.disabled = true
       this.$apollo
         .mutate({
           mutation: gql`
@@ -94,9 +112,9 @@ export default {
           }
         })
         .then(() => {
+          this.success = true
           this.$toast.success('Thanks for reporting!')
-          this.disabled = true
-          this.close()
+          setTimeout(this.close, 1500)
         })
         .catch(err => {
           this.$toast.error(err.message)
@@ -109,3 +127,18 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.hc-modal-success {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  opacity: 1;
+  z-index: $z-index-modal;
+  border-radius: $border-radius-x-large;
+}
+</style>

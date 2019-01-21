@@ -11691,6 +11691,11 @@ vue-svg-loader@^0.11.0:
     loader-utils "^1.1.0"
     svg-to-vue "^0.3.0"
 
+vue-sweetalert-icons@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/vue-sweetalert-icons/-/vue-sweetalert-icons-3.2.0.tgz#2926d3af5590b81c0ba3b104212922fc1709396d"
+  integrity sha512-N18uG8++ZfdCnXO0gHNTmwpB2mAE8WWrwjGeWGa8CnHu6l1emn4RG6E8r1P9crVJ+fx3R9gTUezC+cdVu0mN7w==
+
 vue-template-compiler@^2.5.17:
   version "2.5.17"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.17.tgz#52a4a078c327deb937482a509ae85c06f346c3cb"
