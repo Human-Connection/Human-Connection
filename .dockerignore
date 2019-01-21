@@ -19,4 +19,5 @@ dist/
 db-migration-worker/
 neo4j/
 
-public/
+public/uploads/*
+!.gitkeep
