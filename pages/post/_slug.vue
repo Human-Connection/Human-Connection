@@ -1,7 +1,7 @@
 <template>
   <div>
     <ds-flex gutter="small">
-      <ds-flex-item>
+      <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
         <transition
           name="slide-up"
           appear
