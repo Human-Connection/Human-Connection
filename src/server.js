@@ -2,6 +2,7 @@ import { GraphQLServer } from 'graphql-yoga'
 import { makeExecutableSchema } from 'apollo-server'
 import { augmentSchema } from 'neo4j-graphql-js'
 import { typeDefs, resolvers } from './graphql-schema'
+import express from 'express'
 import dotenv from 'dotenv'
 import mocks from './mocks'
 import middleware from './middleware'
@@ -68,6 +69,7 @@ const createServer = (options) => {
 
   passport.use('jwt', jwtStrategy(driver))
   server.express.use(passport.initialize())
+  server.express.use(express.static('public'))
 
   server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
   return server
