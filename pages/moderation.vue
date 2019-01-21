@@ -4,10 +4,10 @@
       {{ $t('moderation.name') }}
     </ds-heading>
     <ds-flex gutter="small">
-      <ds-flex-item :width="{ base: '200px' }">
+      <ds-flex-item :width="{ base: '100%', md: '200px' }">
         <ds-menu :routes="routes" />
       </ds-flex-item>
-      <ds-flex-item>
+      <ds-flex-item :width="{ base: '100%', md: 1 }">
         <transition
           name="slide-up"
           appear
