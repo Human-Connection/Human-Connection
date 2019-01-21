@@ -4,7 +4,6 @@ ON CREATE SET  c.name  = category.title,
     c.slug = category.slug,
     c.icon = category.icon
 
-
 CALL apoc.load.json('file:/mongo-export/badges.json') YIELD value as badge
 MERGE(b:Badge {id: badge._id["$oid"]})
 ON CREATE SET  b.key   = badge.key,
@@ -12,16 +11,10 @@ ON CREATE SET  b.key   = badge.key,
     b.icon  = badge.image.path,
     b.status  = badge.status
 
-
-
-
-
-
 CALL apoc.load.json('file:/mongo-export/follows.json') YIELD value as follow
 MATCH (u1:User {id: follow.userId}),
    (u2:User {id: follow.foreignId})
 MERGE (u1)-[:FOLLOWS]->(u2)
-
 
 CALL apoc.load.json('file:/mongo-export/shouts.json') YIELD value as shout
 MATCH (u:User {id: shout.userId}),
