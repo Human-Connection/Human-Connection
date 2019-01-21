@@ -43,6 +43,8 @@ TODO: How to install Docker for Human Connection …
 (Also maybe there should be a main docker installation guide for the whole system at once!?)
 {% endhint %}
 
+For further informations see also our [Docker documentation](docker.md).
+
 
 ## Local Installation
 
