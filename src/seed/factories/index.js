@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import neo4j from '../../bootstrap/neo4j'
-import { query } from '../../graphql-schema'
 import fetch from 'node-fetch'
 
 dotenv.config()
@@ -14,12 +13,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: process.env.GRAPHQL_URI, fetch }),
+  link: new HttpLink({ uri: 'http://localhost:4001', fetch }),
   cache: new InMemoryCache()
 })
 
 const driver = neo4j().getDriver()
-const session = driver.session()
 
 const builders = {
   'user': require('./users.js').default
@@ -29,12 +27,20 @@ const buildMutation = (model, parameters) => {
   return builders[model](parameters)
 }
 
-const create = async (model, parameters) => {
-  await client.mutate({ mutation: gql(buildMutation(model, parameters)) })
+const create = (model, parameters) => {
+  return client.mutate({ mutation: gql(buildMutation(model, parameters)) })
 }
 
 const cleanDatabase = async () => {
-  await query('MATCH (n) DETACH DELETE n', session)
+  const session = driver.session()
+  const cypher = 'MATCH (n) DETACH DELETE n'
+  try {
+    const result = await session.run(cypher)
+    session.close()
+    return result
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export {

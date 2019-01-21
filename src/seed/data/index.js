@@ -35,6 +35,7 @@ export default async function (client) {
     } catch (err) {
       /* eslint-disable-next-line no-console */
       console.error(err)
+      process.exit(1)
     }
   })
   /* eslint-disable-next-line no-console */
