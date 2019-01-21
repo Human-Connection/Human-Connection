@@ -40,7 +40,7 @@ Given('I am viewing a post', () => {
   cy.visit('/')
   cy.get('.post-card:nth(2)')
     .click()
-    .wait(200)
+    .wait(300)
   cy.location('pathname').should('contain', '/post')
 })
 
