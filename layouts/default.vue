@@ -207,11 +207,17 @@ export default {
   .logout-link {
     margin-left: -$space-small;
     margin-right: -$space-small;
-    margin-bottom: -$space-xx-small;
-    padding: $space-xx-small $space-small;
-
+    margin-top: -$space-xxx-small;
+    margin-bottom: -$space-x-small;
+    padding: $space-x-small $space-small;
     // subtract menu border with from padding
     padding-left: $space-small - 2;
+
+    color: $text-color-base;
+
+    &:hover {
+      color: $text-color-link-active;
+    }
   }
 
   nav {
