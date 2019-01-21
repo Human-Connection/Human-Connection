@@ -1,9 +1,3 @@
-CALL apoc.load.json('file:/mongo-export/categories.json') YIELD value as category
-MERGE(c:Category {id: category._id["$oid"]})
-ON CREATE SET  c.name  = category.title,
-    c.slug = category.slug,
-    c.icon = category.icon
-
 CALL apoc.load.json('file:/mongo-export/badges.json') YIELD value as badge
 MERGE(b:Badge {id: badge._id["$oid"]})
 ON CREATE SET  b.key   = badge.key,
