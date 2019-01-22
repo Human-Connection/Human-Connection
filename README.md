@@ -12,13 +12,21 @@
 
 > The dummy directory has some lb configurations that did not work properly on Digital Ocean but could be used as a starting point for getting it right
 
+## Install Minikube, kubectl
+There are many Kubernetes distributions, but if you're just getting started, Minikube is a tool that you can use to get your feet wet.
+
+[Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+
+## Create a namespace locally
+```shell
+kubectl create -f namespace-staging.json
+```
 
 ## Apply the config map to staging namespace
 ```shell
 cd ./staging
-kubectl apply -f configmap-neo4j.yaml -f configmap-backend.yaml -f configmap-web.yaml
+kubectl apply -f neo4j-configmap.yaml -f backend-configmap.yaml -f web-configmap.yaml
 ```
-
 
 ## Setup secrets and deploy themn
 ```shell
@@ -31,5 +39,6 @@ kubectl apply -f secrets.yaml
 ## Deploy the app
 ```shell
 cd ./staging
-kubectl apply -f deployment-neo4j.yaml -f deployment-backend.yaml -f deployment-web.yaml
+kubectl apply -f neo4j-deployment.yaml -f backend-deployment.yaml -f web-deployment.yaml
 ```
+ 
