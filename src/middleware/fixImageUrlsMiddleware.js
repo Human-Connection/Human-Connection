@@ -1,14 +1,25 @@
 
-const urlSearchAlpha = 'https://api-alpha.human-connection.org'
-const urlSearchLocal = 'http://localhost:3000'
+const legacyUrls = [
+  'https://api-alpha.human-connection.org',
+  'https://staging-api.human-connection.org',
+  'http://localhost:3000'
+]
 
 export const fixUrl = (url) => {
-  url = url.replace(urlSearchAlpha, '')
-  url = url.replace(urlSearchLocal, '')
+  legacyUrls.forEach((legacyUrl) => {
+    url = url.replace(legacyUrl, '')
+  })
   return url
 }
-const fixImageURLs = (result, recursive) => {
-  if (result && typeof result === 'string' && (result.indexOf(urlSearchAlpha) === 0 || result.indexOf(urlSearchLocal) === 0)) {
+
+const checkUrl = (thing) => {
+  return thing && typeof thing === 'string' && legacyUrls.find((legacyUrl) => {
+    return thing.indexOf(legacyUrl) === 0
+  })
+}
+
+export const fixImageURLs = (result, recursive) => {
+  if (checkUrl(result)) {
     result = fixUrl(result)
   } else if (result && Array.isArray(result)) {
     result.forEach((res, index) => {

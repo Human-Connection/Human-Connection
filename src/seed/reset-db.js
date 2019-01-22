@@ -11,7 +11,12 @@ if (process.env.NODE_ENV === 'production') {
 const driver = neo4j().getDriver()
 const session = driver.session()
 
-query('MATCH (n) DETACH DELETE n', session).then(() => {
+const deleteAll = `
+MATCH (n)
+OPTIONAL MATCH (n)-[r]-()
+DELETE n,r
+`
+query(deleteAll, session).then(() => {
   /* eslint-disable-next-line no-console */
   console.log('Successfully deleted all nodes and relations!')
 }).catch((err) => {
