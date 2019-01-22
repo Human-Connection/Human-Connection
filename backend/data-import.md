@@ -14,12 +14,13 @@ Furthermore you need SSH access to the server and you need to know the following
 | MONGODB_PASSWORD     | Mongo password on the server     |
 | MONGODB_AUTH_DB      | Mongo authentication database    |
 | MONGODB_DATABASE     | The name of the mongo database   |
+| UPLOADS_DIRECTORY    | Path to remote uploads folder    |
 
 ### Run the database migration
 
 Run `docker-compose` with all environment variables specified:
 ```sh
-SSH_USERNAME=username SSH_HOST=some.server.com MONGODB_USERNAME='hc-api' MONGODB_PASSWORD='secret' MONGODB_DATABASE=hc_api MONGODB_AUTH_DB=hc_api  docker-compose up
+SSH_USERNAME=username SSH_HOST=some.server.com MONGODB_USERNAME='hc-api' MONGODB_PASSWORD='secret' MONGODB_DATABASE=hc_api MONGODB_AUTH_DB=hc_api UPLOADS_DIRECTORY=/var/www/api/uploads  docker-compose up
 ```
 
 Download the remote mongo database:
