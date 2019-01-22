@@ -19,16 +19,17 @@ NEO4J_PASSWORD=letmein
 ## Neo4j Installation
 
 {% hint style="warning" %}
-You **need to install APOC** as a plugin for the graph you create in the neo4j desktop app!
+You **need to install APOC** as a plugin for the graph you create in neo4j!
 {% endhint %}
 
 Note that grand-stack-starter does not currently bundle a distribution of Neo4j.
+Now there are a lot alternatives to have Neo4J installed.
 
 {% tabs %}
 
 {% tab title="Neo4j Desktop" %}
 
-You can download [Neo4j Desktop](https://neo4j.com/download-center/) run locally for development.
+You can [download Neo4j Desktop](https://neo4j.com/download-center/) run locally for development.
 Chose tab **Neo4j Desktop**.
 
 ![Neo4j Download-Center screenshot](../../.gitbook/assets/screenshot-neo4j-download-center-current-releases.png)
@@ -42,14 +43,14 @@ Neo4j Desktop 1.1.13
 
 Click on the empty project **My Project** to chose it.
 
-Click in the **Add Graph** area and after two buttons appear in it on **Create a Local Graph**.
+Click in the **Add Graph** area and after two buttons appear in it click on **Create a Local Graph**.
 
 Set the name of the new Graph for clarity to **Human Connection DB**, though the name is free.
 And set the password to **letmein** (means: "let me in"). Than click on **Create** and the database will be generated.
 
 After generation of the database was successful, please click in the **Add Plugin** area.
 And than click the **Install** button of the **APOC** area.
-Now an additional **Install** button appears and you click on it again. If the APOC-Plugin is installed by now close the litte **Plugins** window.
+Now an additional **Install** button appears and you click on it again. If the **APOC-Plugin** is installed by now close the litte **Plugins** window.
 
 In the **Human Connection DB** area is a **Manage** button. By clicking it the area switches into a manage area with a lot of information and setting possibilities.
 
@@ -62,11 +63,11 @@ If you have a look in the **Details** tab you find the connection info. As you h
 
 {% tab title="Neo4j Non-Desktop Alternatives" %}
 
-You can spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download-center/), run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-cloud-deployment/), [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/) or on Debian-based systems install [Neo4j from the Debian Repository ](http://debian.neo4j.org/). Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
+You can spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download-center/), run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-cloud-deployment/), [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/) or on Debian-based systems install [Neo4j from the Debian Repository](http://debian.neo4j.org/). Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
 
 **Install APOC plugin on Debian-based systems**
 
-When you have install Neo4j from the Debian Repository, then download the [APOC plugin](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar) to the `/var/lib/neo4j/plugins` directory manually or with:
+When you have install Neo4j from the Debian Repository, then [download the APOC plugin](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar) to the `/var/lib/neo4j/plugins` directory manually or with:
 
 ```text
 wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar -P /var/lib/neo4j/plugins
@@ -79,14 +80,14 @@ wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.
 
 ## Seeding Database with Data
 
-Yet we have to seed or database with default data, so that GraphQL requests or playing with our GraphQL Playground makes sense.
+Now we have to seed our database with default data, so that GraphQL requests or playing with our GraphQL Playground makes sense.
 
 To fill the database with Nitro-Backend default data send the command:
 ```bash
 $ yarn run db:seed
 ```
 
-To clear the database from all data after you have changed it somehow and you may like to seed it again use:
+To clear the database from all data after you have changed it somehow and before you may like to seed it again use:
 ```bash
 $ yarn run db:reset
 ```
