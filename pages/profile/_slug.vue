@@ -17,6 +17,14 @@
             class="profile-avatar"
             size="120px"
           />
+          <no-ssr>
+            <content-menu
+              placement="bottom-end"
+              context="user"
+              :item-id="user.id"
+              :name="user.name"
+            />
+          </no-ssr>
           <ds-space margin="small">
             <ds-heading
               tag="h3"
@@ -284,6 +292,7 @@ import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
+import ContentMenu from '~/components/ContentMenu'
 
 export default {
   components: {
@@ -293,7 +302,8 @@ export default {
     HcCountTo,
     HcBadges,
     HcLoadMore,
-    HcEmpty
+    HcEmpty,
+    ContentMenu
   },
   transition: {
     name: 'slide-up',
@@ -402,6 +412,14 @@ export default {
   border: #fff 5px solid;
 }
 
+.page-name-profile-slug {
+  .ds-flex-item:first-child .content-menu {
+    position: absolute;
+    top: $space-x-small;
+    right: $space-x-small;
+  }
+}
+
 .profile-top-navigation {
   position: sticky;
   top: 53px;
@@ -416,10 +434,10 @@ export default {
       &.ds-tab-nav-item-active {
         border-bottom: 3px solid #17b53f;
         &:first-child {
-          border-bottom-left-radius: $border-radius-large;
+          border-bottom-left-radius: $border-radius-x-large;
         }
         &:last-child {
-          border-bottom-right-radius: $border-radius-large;
+          border-bottom-right-radius: $border-radius-x-large;
         }
       }
     }

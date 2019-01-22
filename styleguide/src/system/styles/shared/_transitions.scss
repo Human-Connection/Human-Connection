@@ -1,0 +1,66 @@
+$easeOut: cubic-bezier(0.19, 1, 0.22, 1);
+
+// slide up ease
+.ds-transition-slide-up-enter-active {
+  transition: all 500ms $easeOut;
+  transition-delay: 20ms;
+  opacity: 1;
+  transform: translateY(0);
+}
+.ds-transition-slide-up-enter,
+.ds-transition-slide-up-leave-active {
+  opacity: 0;
+  box-shadow: none;
+  transform: translateY(15px);
+}
+
+// slide next / prev
+.ds-transition-slide-next-enter-active,
+.ds-transition-slide-prev-enter-active {
+  transition: transform 500ms $easeOut, opacity 500ms $easeOut;
+  transition-delay: 100ms;
+  opacity: 1;
+}
+.ds-transition-slide-next-enter,
+.ds-transition-slide-next-leave-active {
+  opacity: 0;
+  transform: translateX(10px);
+}
+.ds-transition-slide-prev-enter,
+.ds-transition-slide-prev-leave-active {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+.ds-transition-slide-next-leave-active,
+.ds-transition-slide-prev-leave-active {
+  display: none;
+}
+.ds-transition-slide-next-leave-active,
+.ds-transition-slide-prev-leave-active {
+  opacity: 0;
+  transform: translateX(-2px);
+  transition: transform 100ms $easeOut, opacity 100ms $easeOut;
+}
+
+.ds-transition-fade-delayed-leave-active {
+  transition: opacity 0ms;
+  transition-delay: 0ms;
+}
+.ds-transition-fade-delayed-enter-active {
+  transition: opacity 300ms ease-out;
+  transition-delay: 100ms;
+  opacity: 1;
+}
+.ds-transition-fade-delayed-enter,
+.ds-transition-fade-delayed-leave-active {
+  opacity: 0.1;
+}
+
+.ds-transition-fade-enter-active,
+.ds-transition-fade-leave-active {
+  transition: opacity 200ms;
+}
+.ds-transition-fade-enter,
+.ds-transition-fade-leave-to {
+  opacity: 0;
+}

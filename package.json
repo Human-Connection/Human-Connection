@@ -52,9 +52,11 @@
     "nuxt": "^2.0.0",
     "nuxt-env": "^0.0.4",
     "nuxt-sass-resources-loader": "^2.0.5",
+    "portal-vue": "~1.5.1",
     "v-tooltip": "^2.0.0-rc.33",
     "vue-count-to": "^1.0.13",
     "vue-izitoast": "1.1.2",
+    "vue-sweetalert-icons": "^3.2.0",
     "vuex-i18n": "^1.11.0"
   },
   "devDependencies": {

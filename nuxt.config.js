@@ -74,7 +74,10 @@ module.exports = {
   router: {
     middleware: ['authenticated'],
     linkActiveClass: 'router-link-active',
-    linkExactActiveClass: 'router-link-exact-active'
+    linkExactActiveClass: 'router-link-exact-active',
+    scrollBehavior: () => {
+      return { x: 0, y: 0 }
+    }
   },
 
   /*
@@ -86,6 +89,7 @@ module.exports = {
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
+    'portal-vue/nuxt',
     [
       'nuxt-sass-resources-loader',
       path.resolve(__dirname, './styleguide/src/system/styles/shared.scss')

@@ -8755,6 +8755,11 @@ popper.js@^1.12.9:
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.5.tgz#98abcce7c7c34c4ee47fcbc6b3da8af2c0a127bc"
   integrity sha512-fs4Sd8bZLgEzrk8aS7Em1qh+wcawtE87kRUJQhK6+LndyV1HerX7+LURzAylVaTyWIn5NTB/lyjnWqw/AZ6Yrw==
 
+portal-vue@~1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/portal-vue/-/portal-vue-1.5.1.tgz#6bed79ef168d9676bb79f41d43c5cd4cedf54dbc"
+  integrity sha512-7T0K+qyY8bnjnEpQTiLbGsUaGlFcemK9gLurVSr6x1/qzr2HkHDNCOz5i+xhuTD1CrXckf/AGeCnLzvmAHMOHw==
+
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
@@ -11685,6 +11690,11 @@ vue-svg-loader@^0.11.0:
   dependencies:
     loader-utils "^1.1.0"
     svg-to-vue "^0.3.0"
+
+vue-sweetalert-icons@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/vue-sweetalert-icons/-/vue-sweetalert-icons-3.2.0.tgz#2926d3af5590b81c0ba3b104212922fc1709396d"
+  integrity sha512-N18uG8++ZfdCnXO0gHNTmwpB2mAE8WWrwjGeWGa8CnHu6l1emn4RG6E8r1P9crVJ+fx3R9gTUezC+cdVu0mN7w==
 
 vue-template-compiler@^2.5.17:
   version "2.5.17"
