@@ -6,6 +6,14 @@
     class="post-card"
   >
     <hc-author :post="post" />
+    <no-ssr>
+      <content-menu
+        placement="bottom-end"
+        context="contribution"
+        :item-id="post.id"
+        :name="post.title"
+      />
+    </no-ssr>
     <ds-space margin-bottom="small" />
     <!-- Content -->
     <!-- eslint-disable vue/no-v-html -->
@@ -82,6 +90,15 @@
           <ds-space margin-bottom="x-small">
             <hc-author :post="comment" />
           </ds-space>
+          <no-ssr>
+            <content-menu
+              placement="bottom-end"
+              context="comment"
+              style="float-right"
+              :item-id="comment.id"
+              :name="comment.author.name"
+            />
+          </no-ssr>
           <!-- eslint-disable vue/no-v-html -->
           <!-- TODO: replace editor content with tiptap render view -->
           <div
@@ -110,6 +127,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import ContentMenu from '~/components/ContentMenu'
 import HcAuthor from '~/components/Author.vue'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
@@ -122,7 +140,8 @@ export default {
   components: {
     HcAuthor,
     HcShoutButton,
-    HcEmpty
+    HcEmpty,
+    ContentMenu
   },
   head() {
     return {
@@ -221,28 +240,41 @@ export default {
 </script>
 
 <style lang="scss">
-.post-card {
-  // max-width: 800px;
-  margin: auto;
+.page-name-post-slug {
+  .content-menu {
+    float: right;
+    margin-right: -$space-x-small;
+    margin-top: -$space-large;
+  }
 
-  .comments {
-    margin-top: $space-small;
+  .post-card {
+    // max-width: 800px;
+    margin: auto;
 
-    .comment {
+    .comments {
       margin-top: $space-small;
-      position: relative;
-    }
-  }
 
-  .ds-card-image {
-    img {
-      max-height: 300px;
-      object-fit: cover;
-      object-position: center;
+      .comment {
+        margin-top: $space-small;
+        position: relative;
+      }
     }
-  }
-  .ds-card-footer {
-    padding-bottom: 0;
+
+    .ds-card-image {
+      img {
+        max-height: 300px;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+
+    .ds-card-footer {
+      padding: 0;
+
+      .ds-section {
+        padding: $space-base;
+      }
+    }
   }
 }
 </style>

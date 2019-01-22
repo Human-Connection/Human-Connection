@@ -1,0 +1,17 @@
+{
+  "admin": {
+    "email": "admin@example.org",
+    "password": "1234",
+    "name": "Peter Lustig"
+  },
+  "moderator": {
+    "email": "moderator@example.org",
+    "password": "1234",
+    "name": "Bob der Bausmeister"
+  },
+  "user": {
+    "email": "user@example.org",
+    "password": "1234",
+    "name": "Jenny Rostock"
+  }
+}
