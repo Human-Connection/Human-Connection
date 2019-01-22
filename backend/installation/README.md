@@ -12,7 +12,9 @@ Click on the fork button.
 
 ![Fork screenshot](../../.gitbook/assets/screenshot-forking-nitro-backend.png)
 
-After you have forked, modify the following command to add your Github user name.
+After you have forked and before you clone, create a folder on your computer to where the Nitro-Backend folders and files of your fork will be cloned (copied). In your terminal or commandline tool make this folder the actual path.
+
+For cloning modify the following command to add your Github user name.
 
 {% tabs %}
 {% tab title="HTTPS" %}
@@ -116,5 +118,5 @@ $ npm run start
 This will start the GraphQL service \(by default on [http://localhost:4000](http://localhost:4000)\) where you can issue GraphQL requests or access GraphQL Playground in the browser.
 
 {% hint style="warning" %}
-But before you can issue GraphQL requests or access GraphQL Playground you have to install and start your Neo4j database. See next step …
+But before you can issue GraphQL requests or access GraphQL Playground you have to install, start and seed your Neo4j database. See next step …
 {% endhint %}
