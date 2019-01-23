@@ -8,14 +8,19 @@
       slot="default"
       slot-scope="{toggleMenu}"
     >
-      <ds-button
-        class="content-menu-trigger"
-        size="small"
-        ghost
-        @click.prevent="toggleMenu"
+      <slot
+        name="button"
+        :toggleMenu="toggleMenu"
       >
-        <ds-icon name="ellipsis-v" />
-      </ds-button>
+        <ds-button
+          class="content-menu-trigger"
+          size="small"
+          ghost
+          @click.prevent="toggleMenu"
+        >
+          <ds-icon name="ellipsis-v" />
+        </ds-button>
+      </slot>
     </template>
     <div
       slot="popover"
@@ -49,6 +54,7 @@ export default {
     placement: { type: String, default: 'top-end' },
     itemId: { type: String, required: true },
     name: { type: String, required: true },
+    isAuthor: { type: Boolean, default: false },
     context: {
       type: String,
       required: true,
@@ -59,17 +65,39 @@ export default {
   },
   computed: {
     routes() {
-      let routes = [
-        {
+      let routes = []
+
+      if (this.isAuthor && this.context === 'contribution') {
+        const link = this.$router.resolve({
+          name: 'post-edit-id',
+          params: {
+            id: this.itemId
+          }
+        }).href
+        routes.push({
+          name: this.$t(`contribution.edit`),
+          path: link,
+          callback: () => {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            return this.$router.push('/post/edit/p1')
+            // return this.$router.push(link)
+          },
+          icon: 'edit'
+        })
+      }
+
+      if (!this.isAuthor) {
+        routes.push({
           name: this.$t(`report.${this.context}.title`),
           callback: this.openReportDialog,
           icon: 'flag'
-        }
-      ]
+        })
+      }
+
       if (this.isModerator) {
         routes.push({
           name: this.$t(`disable.${this.context}.title`),
-          callback: this.openDisableDialog,
+          callback: () => {},
           icon: 'eye-slash'
         })
       }
