@@ -1,20 +1,14 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import { getLangByName } from '../../support/helpers'
-import find from 'lodash/find'
+import users from '../../fixtures/users.json'
 
 /* global cy  */
 
-const username = 'Peter Lustig'
-
-const openPage = page => {
-  if (page === 'landing') {
-    page = ''
-  }
-  cy.visit(`/${page}`)
-}
-
 Given('I am logged in', () => {
-  cy.login('admin@example.org', 1234)
+  cy.loginAs('admin')
+})
+Given('I am logged in as {string}', userType => {
+  cy.loginAs(userType)
 })
 
 Given('we have a selection of tags and categories as well as posts', () => {
@@ -32,10 +26,11 @@ Given('my user account has the role {string}', role => {
 When('I log out', cy.logout)
 
 When('I visit the {string} page', page => {
-  openPage(page)
+  cy.openPage(page)
 })
+
 Given('I am on the {string} page', page => {
-  openPage(page)
+  cy.openPage(page)
 })
 
 When('I fill in my email and password combination and click submit', () => {
@@ -53,22 +48,22 @@ When('I log out through the menu in the top right corner', () => {
     .click()
 })
 
-Then('I can click on my profile picture in the top right corner', () => {
-  cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover')
-})
-
 Then('I can see my name {string} in the dropdown menu', () => {
-  cy.get('.avatar-menu-popover').should('contain', username)
+  cy.get('.avatar-menu-popover').should('contain', users.admin.name)
 })
 
 Then('I see the login screen again', () => {
   cy.location('pathname').should('contain', '/login')
 })
 
+Then('I can click on my profile picture in the top right corner', () => {
+  cy.get('.avatar-menu').click()
+  cy.get('.avatar-menu-popover')
+})
+
 Then('I am still logged in', () => {
   cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover').contains(username)
+  cy.get('.avatar-menu-popover').contains(users.admin.name)
 })
 
 When('I select {string} in the language menu', name => {
@@ -92,4 +87,19 @@ When(`I click on {string}`, linkOrButton => {
 
 When('I press {string}', label => {
   cy.contains(label).click()
+})
+
+Given('we have the following posts in our database:', table => {
+  table.hashes().forEach(row => {
+    //TODO: calll factory here
+    //create('post', row)
+  })
+})
+
+Then('I see a success message:', message => {
+  cy.contains(message)
+})
+
+When('I click on the avatar menu in the top right corner', () => {
+  cy.get('.avatar-menu').click()
 })
