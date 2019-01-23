@@ -49,7 +49,7 @@ Set the name of the new Graph for clarity to **Human Connection DB**, though the
 Set the password to **letmein** which is our default password of our `.env.template`. You can choose another password and later change your connection settings, too. Then click on **Create** and the database will be generated.
 
 After generation of the database was successful, please click in the **Add Plugin** area.
-And than click the **Install** button of the **APOC** area.
+Then click the **Install** button of the **APOC** area.
 Now an additional **Install** button appears and you click on it again. If the **APOC-Plugin** is installed by now close the litte **Plugins** window.
 
 In the **Human Connection DB** area is a **Manage** button. By clicking it the area switches into a manage area with a lot of information and setting possibilities.
