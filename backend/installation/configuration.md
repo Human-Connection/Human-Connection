@@ -45,7 +45,7 @@ Click on the empty project **My Project** to choose it.
 
 Click in the **Add Graph** area and after two buttons appear in it click on **Create a Local Graph**.
 
-Set the name of the new Graph for clarity to **Human Connection DB**, though the name is free.
+Optionally, set the name of the new Graph for clarity to **Human Connection DB**.
 Set the password to **letmein** which is our default password of our `.env.template`. You can choose another password and later change your connection settings, too. Then click on **Create** and the database will be generated.
 
 After generation of the database was successful, please click in the **Add Plugin** area.
