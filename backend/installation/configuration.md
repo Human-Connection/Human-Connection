@@ -82,7 +82,7 @@ wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.
 
 Now we have to seed our database with default data, so that GraphQL requests or playing with our GraphQL Playground returns anything else than an empty response.
 
-To fill the database with Nitro-Backend default data send the command:
+To fill the database with some seed data, run the following command in your terminal:
 ```bash
 $ yarn run db:seed
 ```
