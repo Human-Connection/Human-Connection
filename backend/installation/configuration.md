@@ -30,7 +30,7 @@ Now there are a lot alternatives how to install Neo4J.
 {% tab title="Neo4j Desktop" %}
 
 You can [download Neo4j Desktop](https://neo4j.com/download-center/) run locally for development.
-Chose tab **Neo4j Desktop**.
+Choose tab **Neo4j Desktop**.
 
 ![Neo4j Download-Center screenshot](../../.gitbook/assets/screenshot-neo4j-download-center-current-releases.png)
 
