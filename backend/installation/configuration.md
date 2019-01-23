@@ -23,7 +23,7 @@ You **need to install APOC** as a plugin for the graph you create in neo4j!
 {% endhint %}
 
 Note that grand-stack-starter does not currently bundle a distribution of Neo4j.
-Now there are a lot alternatives to have Neo4J installed.
+Now there are a lot alternatives how to install Neo4J.
 
 {% tabs %}
 
