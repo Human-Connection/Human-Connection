@@ -57,7 +57,7 @@ In the **Human Connection DB** area is a **Manage** button. By clicking it the a
 Start the Graph database by clicking the **Play-Symbol** button.
 In the **Logs** tab you'll find the status of the start up.
 
-If you have a look in the **Details** tab you find the connection info. As you hopefully see the Bolt port is set by default to the number we set already for our [enviroment configuration](#configure-enviroment) above.
+If you have a look in the **Details** tab you find the connection info. The bolt port should be `7687` as we set it for our [environment configuration](#configure-environment) above.
 
 {% endtab %}
 
