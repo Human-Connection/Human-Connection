@@ -12,6 +12,7 @@
         context="contribution"
         :item-id="post.id"
         :name="post.title"
+        :is-author="isAuthor"
       />
     </no-ssr>
     <ds-space margin-bottom="small" />
@@ -152,6 +153,11 @@ export default {
     return {
       post: null,
       title: 'loading'
+    }
+  },
+  computed: {
+    isAuthor() {
+      return this.$store.getters['auth/user'].id === this.post.author.id
     }
   },
   watch: {
