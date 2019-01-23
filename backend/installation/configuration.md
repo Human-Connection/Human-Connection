@@ -41,7 +41,7 @@ E.g. we have the following version:
 Neo4j Desktop 1.1.13
 ```
 
-Click on the empty project **My Project** to chose it.
+Click on the empty project **My Project** to choose it.
 
 Click in the **Add Graph** area and after two buttons appear in it click on **Create a Local Graph**.
 
