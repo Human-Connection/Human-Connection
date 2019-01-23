@@ -87,7 +87,7 @@ To fill the database with Nitro-Backend default data send the command:
 $ yarn run db:seed
 ```
 
-To clear the database from all data after you have changed it somehow and before you may like to seed it again use:
+To wipe out the database:
 ```bash
 $ yarn run db:reset
 ```
