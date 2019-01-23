@@ -50,7 +50,7 @@ Set the password to **letmein** which is our default password of our `.env.templ
 
 After generation of the database was successful, please click in the **Add Plugin** area.
 Then click the **Install** button of the **APOC** area.
-Now an additional **Install** button appears and you click on it again. If the **APOC-Plugin** is installed by now close the litte **Plugins** window.
+Now an additional **Install** button appears and you click on it again. If the **APOC-Plugin** is installed by now close the **Plugins** window.
 
 In the **Human Connection DB** area is a **Manage** button. By clicking it the area switches into a manage area with a lot of information and setting possibilities.
 
