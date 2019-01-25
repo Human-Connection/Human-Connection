@@ -1,20 +1,28 @@
 # Backend Installation
 
 
-### Clone Repository
-
-The Backend Repository can be found on github.  
+The Backend repository can be found on GitHub.
 [https://github.com/Human-Connection/Nitro-Backend](https://github.com/Human-Connection/Nitro-Backend)
 
-### Fork the repo
+{% hint style="info" %} TODO: Create documentation section for How to Start and Beginners. {% endhint %}
+
+Here are some general informations about our [GitHub Standard Fork & Pull Request Workflow](https://gist.github.com/Chaser324/ce0505fbed06b947d962).
+
+### Fork the Repository
 
 Click on the fork button.
 
 ![Fork screenshot](../../.gitbook/assets/screenshot-forking-nitro-backend.png)
 
-After you have forked and before you clone, create a folder on your computer to where the Nitro-Backend folders and files of your fork will be cloned (copied). In your terminal or commandline tool make this folder the actual path.
+### Clone your new Repository
 
-For cloning modify the following command to add your Github user name.
+Set the current working folder to the path in which the backend repository should be cloned (copied).
+
+```bash
+$ cd PATH-FOR-NITRO-BACKEND
+```
+
+For cloning your new repository to your local machine modify the following command to add your GitHub user name.
 
 {% tabs %}
 {% tab title="HTTPS" %}
@@ -28,6 +36,12 @@ $ git clone git@github.com:YOUR-GITHUB-USERNAME/Nitro-Backend.git
 ```
 {% endtab %}
 {% endtabs %}
+
+Then set the generated Nitro-Backend folder to current working folder.
+
+```bash
+$ cd Nitro-Backend
+```
 
 ### Copy Environment Variables
 
