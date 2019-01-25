@@ -30,6 +30,11 @@ spec:
             configMapKeyRef:
               name: staging-backend
               key: GRAPHQL_URI
+        - name: MAPBOX_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              name: staging-web
+              key: MAPBOX_TOKEN
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
