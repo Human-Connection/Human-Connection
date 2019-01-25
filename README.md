@@ -41,4 +41,23 @@ kubectl apply -f secrets.yaml
 cd ./staging
 kubectl apply -f neo4j-deployment.yaml -f backend-deployment.yaml -f web-deployment.yaml
 ```
- 
+This can take a while.
+Sit back and relax and have a look into your minikube dashboard:
+```
+minikube dashboard
+```
+Wait until all pods turn green and they don't show a warning `Waiting: ContainerCreating` anymore.
+
+## Expose the services
+
+```shell
+kubectl expose deployment nitro-backend --namespace=staging --type=LoadBalancer --port=4000
+kubectl expose deployment nitro-web     --namespace=staging --type=LoadBalancer --port=3000
+```
+
+## Access the service
+
+```shell
+minikube service nitro-backend --namespace=staging
+minikube service nitro-web     --namespace=staging
+```
