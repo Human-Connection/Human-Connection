@@ -16,6 +16,8 @@ const seed = {
   Post: require('./posts.js').default,
   Comment: require('./comments.js').default,
   UserShouts: require('./users-shouts.js').default
+
+  // Reports: require('./reports.js').default
 }
 
 let data = {}
