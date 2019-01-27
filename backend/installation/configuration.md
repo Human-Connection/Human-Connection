@@ -22,9 +22,9 @@ Note that grand-stack-starter does not currently bundle a distribution of Neo4j.
 
 **Install APOC plugin on Debian-based systems**
 
-When you have install Neo4j from the Debian Repository, then download the [APOC plugin](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar) to the `/var/lib/neo4j/plugins` directory manually or with:
+When you have install Neo4j from the Debian Repository, then download the [APOC plugin](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.5.0.1/apoc-3.5.0.1-all.jar) to the `/var/lib/neo4j/plugins` directory manually or with:
 
 ```text
-wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar -P /var/lib/neo4j/plugins
+wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.5.0.1/apoc-3.5.0.1-all.jar -P /var/lib/neo4j/plugins
 ```
 
