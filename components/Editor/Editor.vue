@@ -1,5 +1,33 @@
 <template>
   <div class="editor">
+    <editor-menu-bubble :editor="editor">
+      <div
+        slot-scope="{ commands, isActive, menu }"
+        class="menububble tooltip"
+        :class="{ 'is-active': menu.isActive }"
+        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+      >
+        <ds-button
+          class="menububble__button"
+          size="small"
+          :hover="isActive.bold()"
+          ghost
+          @click.prevent="commands.bold"
+        >
+          <ds-icon name="bold" />
+        </ds-button>
+
+        <ds-button
+          class="menububble__button"
+          size="small"
+          :hover="isActive.italic()"
+          ghost
+          @click.prevent="commands.italic"
+        >
+          <ds-icon name="italic" />
+        </ds-button>
+      </div>
+    </editor-menu-bubble>
     <editor-floating-menu :editor="editor">
       <div
         slot-scope="{ commands, isActive, menu }"
@@ -76,7 +104,13 @@
 </template>
 
 <script>
-import { Editor, EditorContent, EditorFloatingMenu } from 'tiptap'
+import stringHash from 'string-hash'
+import {
+  Editor,
+  EditorContent,
+  EditorFloatingMenu,
+  EditorMenuBubble
+} from 'tiptap'
 import EventHandler from './plugins/eventHandler.js'
 import {
   Heading,
@@ -95,18 +129,23 @@ import {
   History
 } from 'tiptap-extensions'
 
+let throttleInputEvent
+
 export default {
   components: {
     EditorContent,
-    EditorFloatingMenu
+    EditorFloatingMenu,
+    EditorMenuBubble
   },
   props: {
-    html: { type: String, default: '' },
+    value: { type: String, default: '' },
     doc: { type: Object, default: () => {} }
   },
   data() {
     return {
+      lastValueHash: null,
       editor: new Editor({
+        content: this.value || '',
         doc: this.doc,
         extensions: [
           new EventHandler(),
@@ -128,19 +167,28 @@ export default {
             emptyNodeText: 'Schreib etwas inspirerendes…'
           }),
           new History()
-        ]
+        ],
+        onUpdate: e => {
+          clearTimeout(throttleInputEvent)
+          throttleInputEvent = setTimeout(() => this.onUpdate(e), 300)
+        }
       })
     }
   },
   watch: {
-    html: {
+    value: {
       immediate: true,
-      handler: function(html) {
-        html = html
-          .replace(/(<br\s*\/*>\s*){2,}/gim, '<br/>')
-          .replace(/<\/p>\s*(<br\s*\/*>\s*)+\s*<p>/gim, '</p><p>')
-          .replace(/<p>\s*(<br\s*\/*>\s*)+\s*<\/p>/gim, '')
-        this.editor.setContent(html)
+      handler: function(content, old) {
+        const contentHash = stringHash(content)
+        if (!content || contentHash === this.lastValueHash) {
+          return
+        }
+        this.lastValueHash = contentHash
+        // content = content
+        //   .replace(/(<br\s*\/*>\s*){2,}/gim, '<br/>')
+        //   .replace(/<\/p>\s*(<br\s*\/*>\s*)+\s*<p>/gim, '</p><p>')
+        //   .replace(/<p>\s*(<br\s*\/*>\s*)+\s*<\/p>/gim, '')
+        this.editor.setContent(content)
       }
     }
   },
@@ -148,9 +196,13 @@ export default {
     this.editor.destroy()
   },
   methods: {
-    onDialog({ mark, key, name, focus }) {
-      focus() // focus the editor if not already done to get the needed context
-      this.$emit('dialog', { mark, key, name, focus })
+    onUpdate(e) {
+      const content = e.getHTML()
+      const contentHash = stringHash(content)
+      if (contentHash !== this.lastValueHash) {
+        this.lastValueHash = contentHash
+        this.$emit('input', content)
+      }
     }
   }
 }
@@ -194,6 +246,35 @@ li > p {
     opacity: 0;
     transition: opacity 0.2s, visibility 0.2s;
     background-color: #fff;
+
+    &.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  .menububble {
+    position: absolute;
+    // margin-top: -0.5rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s;
+    transition-delay: 150ms;
+    transform: translate(-50%, -25%);
+
+    background-color: $background-color-inverse-soft;
+    // color: $text-color-inverse;
+    border-radius: $border-radius-base;
+    padding: $space-xx-small;
+    box-shadow: $box-shadow-large;
+
+    .ds-button {
+      color: $text-color-inverse;
+
+      &.ds-button-hover,
+      &:hover {
+        color: $text-color-base;
+      }
+    }
 
     &.is-active {
       opacity: 1;
