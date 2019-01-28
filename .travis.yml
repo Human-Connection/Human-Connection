@@ -31,7 +31,7 @@ install:
 script:
   - docker-compose exec -e NODE_ENV=test webapp yarn run lint
   - docker-compose exec -e NODE_ENV=test webapp yarn run test
-  - docker-compose -f ../Nitro-Backend/docker-compose.yml exec backend yarn run db:seed > /dev/null
+  - docker-compose -f ../Nitro-Backend/docker-compose.yml exec backend yarn run db:seed
   - wait-on http://localhost:3000
   - cypress run --record --key $CYPRESS_TOKEN
 
