@@ -15,18 +15,33 @@ export default class EventHandler extends Extension {
           },
           transformPastedHTML(html) {
             html = html
-              .replace(/(<br\s*\/*>\s*){2,}/gim, '<br/>')
+              // remove all tags with "space only"
+              .replace(/<[a-z-]+>[\s]+<\/[a-z-]+>/gim, '')
+              // remove all iframes
               .replace(
-                /<\/(p|div|th|tr)>\s*(<br\s*\/*>\s*)+\s*<(p|div|th|tr)>/gim,
-                '</p><p>'
-              )
-              .replace(
-                /<(p|div|th|tr)>\s*(<br\s*\/*>\s*)+\s*<\/(p|div|th|tr)>/gim,
+                /(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/gim,
                 ''
               )
-              .replace(/<(p|div|th|tr)>\s*/gim, '<p>')
-              .replace(/\s*<\/(p|div|th|tr)>/gim, '</p>')
+              .replace(/[\n]{3,}/gim, '\n\n')
+              .replace(/(\r\n|\n\r|\r|\n)/g, '<br>')
 
+              // replace all p tags with line breaks (and spaces) only by single linebreaks
+              // limit linebreaks to max 2 (equivalent to html "br" linebreak)
+              .replace(/(<br ?\/?>\s*){2,}/gim, '<br>')
+              // remove additional linebreaks after p tags
+              .replace(
+                /<\/(p|div|th|tr)>\s*(<br ?\/?>\s*)+\s*<(p|div|th|tr)>/gim,
+                '</p><p>'
+              )
+              // remove additional linebreaks inside p tags
+              .replace(
+                /<[a-z-]+>(<[a-z-]+>)*\s*(<br ?\/?>\s*)+\s*(<\/[a-z-]+>)*<\/[a-z-]+>/gim,
+                ''
+              )
+              // remove additional linebreaks when first child inside p tags
+              .replace(/<p>(\s*<br ?\/?>\s*)+/gim, '<p>')
+              // remove additional linebreaks when last child inside p tags
+              .replace(/(\s*<br ?\/?>\s*)+<\/p>/gim, '</p>')
             // console.log('#### transformPastedHTML', html)
             return html
           }

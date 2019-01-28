@@ -78,45 +78,6 @@ blockquote {
   }
 }
 
-.hc-editor-content {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    &:not(:first-child) {
-      margin-top: 2rem;
-    }
-  }
-  p {
-    &:not(:last-child) {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-  }
-  dl,
-  ol,
-  ul,
-  blockquote,
-  pre,
-  table {
-    &:not(:first-child) {
-      margin-top: 15px;
-    }
-  }
-  *:first-child {
-    margin-top: 0;
-  }
-  *:last-child {
-    margin-bottom: 0;
-  }
-  // avoid double breaks
-  br + p {
-    margin-top: 0;
-  }
-}
-
 hr {
   border: 0;
   width: 100%;
