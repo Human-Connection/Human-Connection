@@ -95,15 +95,22 @@ function clean (dirty) {
     .replace(/<[a-z]>[\s]*<\/[a-z]>/igm, '')
     // remove all iframes
     .replace(/(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/igm, '')
-    // replace all p tags with line breaks (and spaces) only by single linebreaks
-    .replace(/<p>[\s]*(<br ?\/?>)+[\s]*<\/p>/igm, '<br>')
-    // replace multiple linebreaks with single ones
-    // limit linebreaks to max 2 (equivalent to html "br" linebreak)
-    .replace(/(<br ?\/?>){2,}/igm, '<br>')
     .replace(/[\n]{3,}/igm, '\n\n')
     .replace(/(\r\n|\n\r|\r|\n)/g, '<br>$1')
+
+    // replace all p tags with line breaks (and spaces) only by single linebreaks
+    // limit linebreaks to max 2 (equivalent to html "br" linebreak)
+    .replace(/(<br ?\/?>\s*){2,}/gim, '<br/>')
+    // remove additional linebreaks after p tags
+    .replace(
+      /<\/(p|div|th|tr)>\s*(<br ?\/?>\s*)+\s*<(p|div|th|tr)>/gim,
+      '</p><p>'
+    )
     // remove additional linebreaks inside p tags
-    .replace(/<p><br><\/p>/g, '')
+    .replace(
+      /<(p|div|th|tr)>\s*(<br ?\/?>\s*)+\s*<\/(p|div|th|tr)>/gim,
+      ''
+    )
   return dirty
 }
 
