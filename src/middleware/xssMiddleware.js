@@ -24,7 +24,7 @@ function clean (dirty) {
   dirty = embedToAnchor(dirty)
   dirty = linkifyHtml(dirty)
   dirty = sanitizeHtml(dirty, {
-    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
+    allowedTags: ['iframe', 'img', 'p', 'h3', 'h4', 'br', 'hr', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
     allowedAttributes: {
       a: ['href', 'class', 'target', 'data-*', 'contenteditable'],
       span: ['contenteditable', 'class', 'data-*'],
@@ -47,6 +47,11 @@ function clean (dirty) {
           }
         }
       },
+      h1: 'h3',
+      h2: 'h3',
+      h3: 'h3',
+      h4: 'h4',
+      h5: 'strong',
       i: 'em',
       // a: function (tagName, attribs) {
       //   return {
@@ -99,7 +104,7 @@ function clean (dirty) {
       ''
     )
     .replace(/[\n]{3,}/gim, '\n\n')
-    .replace(/(\r\n|\n\r|\r|\n)/g, '<br>')
+    .replace(/(\r\n|\n\r|\r|\n)/g, '<br>$1')
 
     // replace all p tags with line breaks (and spaces) only by single linebreaks
     // limit linebreaks to max 2 (equivalent to html "br" linebreak)
