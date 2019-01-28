@@ -2,30 +2,54 @@
   <div class="editor">
     <editor-menu-bubble :editor="editor">
       <div
-        slot-scope="{ commands, isActive, menu }"
+        slot-scope="{ commands, getMarkAttrs, isActive, menu }"
         class="menububble tooltip"
-        :class="{ 'is-active': menu.isActive }"
+        x-placement="top"
+        :class="{ 'is-active': menu.isActive || linkMenuIsActive }"
         :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
       >
-        <ds-button
-          class="menububble__button"
-          size="small"
-          :hover="isActive.bold()"
-          ghost
-          @click.prevent="commands.bold"
-        >
-          <ds-icon name="bold" />
-        </ds-button>
+        <div class="tooltip-wrapper">
+          <template v-if="linkMenuIsActive">
+            <ds-input
+              ref="linkInput"
+              v-model="linkUrl"
+              placeholder="http://"
+              @keydown.native.enter.prevent="setLinkUrl(commands.link, linkUrl)"
+            />
+          </template>
+          <template v-else>
+            <ds-button
+              class="menububble__button"
+              size="small"
+              :hover="isActive.bold()"
+              ghost
+              @click.prevent="commands.bold"
+            >
+              <ds-icon name="bold" />
+            </ds-button>
 
-        <ds-button
-          class="menububble__button"
-          size="small"
-          :hover="isActive.italic()"
-          ghost
-          @click.prevent="commands.italic"
-        >
-          <ds-icon name="italic" />
-        </ds-button>
+            <ds-button
+              class="menububble__button"
+              size="small"
+              :hover="isActive.italic()"
+              ghost
+              @click.prevent="commands.italic"
+            >
+              <ds-icon name="italic" />
+            </ds-button>
+
+            <ds-button
+              class="menububble__button"
+              size="small"
+              :hover="isActive.link()"
+              ghost
+              @click="showLinkMenu(getMarkAttrs('link'))"
+            >
+              <ds-icon name="link" />
+            </ds-button>
+          </template>
+        </div>
+        <div class="tooltip-arrow" />
       </div>
     </editor-menu-bubble>
     <editor-floating-menu :editor="editor">
@@ -172,7 +196,9 @@ export default {
           clearTimeout(throttleInputEvent)
           throttleInputEvent = setTimeout(() => this.onUpdate(e), 300)
         }
-      })
+      }),
+      linkUrl: null,
+      linkMenuIsActive: false
     }
   },
   watch: {
@@ -184,13 +210,19 @@ export default {
           return
         }
         this.lastValueHash = contentHash
-        // content = content
-        //   .replace(/(<br\s*\/*>\s*){2,}/gim, '<br/>')
-        //   .replace(/<\/p>\s*(<br\s*\/*>\s*)+\s*<p>/gim, '</p><p>')
-        //   .replace(/<p>\s*(<br\s*\/*>\s*)+\s*<\/p>/gim, '')
         this.editor.setContent(content)
       }
     }
+  },
+  mounted() {
+    const keydownListener = document.addEventListener('keydown', e => {
+      if (this.linkMenuIsActive && e.keyCode === 27) {
+        this.hideLinkMenu()
+      }
+    })
+    this.$once('hook:beforeDestroy', () => {
+      document.removeEventListener('keydown', keydownListener)
+    })
   },
   beforeDestroy() {
     this.editor.destroy()
@@ -203,6 +235,26 @@ export default {
         this.lastValueHash = contentHash
         this.$emit('input', content)
       }
+    },
+    showLinkMenu(attrs) {
+      this.linkUrl = attrs.href
+      this.linkMenuIsActive = true
+      this.$nextTick(() => {
+        try {
+          const $el = this.$refs.linkInput.$el.getElementsByTagName('input')[0]
+          $el.focus()
+          $el.select()
+        } catch (err) {}
+      })
+    },
+    hideLinkMenu() {
+      this.linkUrl = null
+      this.linkMenuIsActive = false
+    },
+    setLinkUrl(command, url) {
+      command({ href: url })
+      this.hideLinkMenu()
+      this.editor.focus()
     }
   }
 }
@@ -257,9 +309,9 @@ li > p {
     // margin-top: -0.5rem;
     visibility: hidden;
     opacity: 0;
-    transition: all 0.2s;
-    transition-delay: 150ms;
-    transform: translate(-50%, -25%);
+    transition: opacity 200ms, visibility 200ms;
+    // transition-delay: 50ms;
+    transform: translate(-50%, -10%);
 
     background-color: $background-color-inverse-soft;
     // color: $text-color-inverse;
@@ -279,6 +331,10 @@ li > p {
     &.is-active {
       opacity: 1;
       visibility: visible;
+    }
+
+    .tooltip-arrow {
+      left: calc(50% - 10px);
     }
   }
 
