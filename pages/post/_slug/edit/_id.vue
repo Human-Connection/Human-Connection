@@ -3,7 +3,7 @@
     :width="{ base: '100%' }"
     gutter="base"
   >
-    <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
+    <ds-flex-item :width="{ base: '100%' }">
       <ds-card>
         <no-ssr>
           <hc-editor v-model="content" />
@@ -14,6 +14,8 @@
         >
           <ds-button
             icon="check"
+            :loading="loading"
+            :disabled="disabled"
             primary
             @click="save"
           >
@@ -38,25 +40,59 @@ export default {
   },
   data() {
     return {
-      content: ''
+      content: '',
+      loading: false,
+      disabled: false,
+      slug: null
     }
   },
   watch: {
     Post: {
       immediate: true,
       handler: function(post) {
-        console.log('try to set content', this.content, post)
         if (!post || !post[0].content) {
           return
         }
-        console.log(post[0].content)
+        this.slug = post[0].slug
         this.content = post[0].content
       }
     }
   },
   methods: {
     save() {
-      console.log(this.content)
+      this.loading = true
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($id: ID!, $content: String!) {
+              UpdatePost(id: $id, content: $content) {
+                id
+                slug
+                content
+                contentExcerpt
+              }
+            }
+          `,
+          variables: {
+            id: 'p1',
+            content: this.content
+          }
+        })
+        .then(data => {
+          this.loading = false
+          this.$toast.success('Saved!')
+          this.disabled = true
+
+          this.$router.push({
+            name: 'post-slug',
+            params: { slug: this.slug }
+          })
+        })
+        .catch(err => {
+          this.$toast.error(err.message)
+          this.loading = false
+          this.disabled = false
+        })
     }
     //onUpdate(data) {
     //  console.log('onUpdate', data)

@@ -71,19 +71,19 @@
         <ds-button
           class="menubar__button"
           size="small"
-          :ghost="!isActive.heading({ level: 2 })"
-          @click.prevent="commands.heading({ level: 2 })"
+          :ghost="!isActive.heading({ level: 3 })"
+          @click.prevent="commands.heading({ level: 3 })"
         >
-          H2
+          H3
         </ds-button>
 
         <ds-button
           class="menubar__button"
           size="small"
-          :ghost="!isActive.heading({ level: 3 })"
-          @click.prevent="commands.heading({ level: 3 })"
+          :ghost="!isActive.heading({ level: 4 })"
+          @click.prevent="commands.heading({ level: 4 })"
         >
-          H3
+          H4
         </ds-button>
 
         <ds-button
@@ -184,7 +184,7 @@ export default {
           new Strike(),
           new Underline(),
           new Link(),
-          new Heading({ levels: [2, 3] }),
+          new Heading({ levels: [3, 4] }),
           new ListItem(),
           new Placeholder({
             emptyNodeClass: 'is-empty',

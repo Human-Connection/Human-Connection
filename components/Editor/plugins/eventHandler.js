@@ -23,7 +23,7 @@ export default class EventHandler extends Extension {
                 ''
               )
               .replace(/[\n]{3,}/gim, '\n\n')
-              .replace(/(\r\n|\n\r|\r|\n)/g, '<br>')
+              .replace(/(\r\n|\n\r|\r|\n)/g, '<br>$1')
 
               // replace all p tags with line breaks (and spaces) only by single linebreaks
               // limit linebreaks to max 2 (equivalent to html "br" linebreak)
