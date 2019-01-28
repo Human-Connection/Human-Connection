@@ -104,6 +104,10 @@
     "edit": "Edit Contribution",
     "delete": "Delete Contribution"
   },
+  "comment": {
+    "edit": "Edit Comment",
+    "delete": "Delete Comment"
+  },
   "disable": {
     "user": {
       "title": "Disable User",

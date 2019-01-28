@@ -54,7 +54,7 @@ export default {
     placement: { type: String, default: 'top-end' },
     itemId: { type: String, required: true },
     name: { type: String, required: true },
-    isAuthor: { type: Boolean, default: false },
+    isOwner: { type: Boolean, default: false },
     context: {
       type: String,
       required: true,
@@ -67,16 +67,15 @@ export default {
     routes() {
       let routes = []
 
-      if (this.isAuthor && this.context === 'contribution') {
-        const link = this.$router.resolve({
-          name: 'post-edit-id',
-          params: {
-            id: this.itemId
-          }
-        }).href
+      if (this.isOwner && this.context === 'contribution') {
+        // const link = this.$router.resolve({
+        //   name: 'post-edit-id',
+        //   params: {
+        //     id: this.itemId
+        //   }
+        // }).href
         routes.push({
           name: this.$t(`contribution.edit`),
-          path: link,
           callback: () => {
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
             return this.$router.push('/post/edit/p1')
@@ -85,8 +84,17 @@ export default {
           icon: 'edit'
         })
       }
+      if (this.isOwner && this.context === 'comment') {
+        routes.push({
+          name: this.$t(`comment.edit`),
+          callback: () => {
+            console.log('EDIT COMMENT')
+          },
+          icon: 'edit'
+        })
+      }
 
-      if (!this.isAuthor) {
+      if (!this.isOwner) {
         routes.push({
           name: this.$t(`report.${this.context}.title`),
           callback: this.openReportDialog,
@@ -94,11 +102,20 @@ export default {
         })
       }
 
-      if (this.isModerator) {
+      if (!this.isOwner && this.isModerator) {
         routes.push({
           name: this.$t(`disable.${this.context}.title`),
           callback: () => {},
           icon: 'eye-slash'
+        })
+      }
+
+      if (this.isOwner && this.context === 'user') {
+        routes.push({
+          name: this.$t(`settings.data.name`),
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          callback: () => this.$router.push('/settings'),
+          icon: 'edit'
         })
       }
       return routes

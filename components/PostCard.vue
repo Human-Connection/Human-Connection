@@ -55,6 +55,7 @@
             context="contribution"
             :item-id="post.id"
             :name="post.title"
+            :is-owner="isAuthor"
           />
         </no-ssr>
       </div>
@@ -93,6 +94,9 @@ export default {
       }
 
       return excerpt
+    },
+    isAuthor() {
+      return this.$store.getters['auth/user'].id === this.post.author.id
     }
   },
   methods: {

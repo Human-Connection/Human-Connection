@@ -12,7 +12,7 @@
         context="contribution"
         :item-id="post.id"
         :name="post.title"
-        :is-author="isAuthor"
+        :is-owner="isAuthor(post.author.id)"
       />
     </no-ssr>
     <ds-space margin-bottom="small" />
@@ -98,6 +98,7 @@
               style="float-right"
               :item-id="comment.id"
               :name="comment.author.name"
+              :is-owner="isAuthor(comment.author.id)"
             />
           </no-ssr>
           <!-- eslint-disable vue/no-v-html -->
@@ -155,15 +156,15 @@ export default {
       title: 'loading'
     }
   },
-  computed: {
-    isAuthor() {
-      return this.$store.getters['auth/user'].id === this.post.author.id
-    }
-  },
   watch: {
     Post(post) {
       this.post = post[0]
       this.title = this.post.title
+    }
+  },
+  methods: {
+    isAuthor(id) {
+      return this.$store.getters['auth/user'].id === id
     }
   },
   apollo: {

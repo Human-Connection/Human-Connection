@@ -104,6 +104,10 @@
     "edit": "Beitrag bearbeiten",
     "delete": "Beitrag löschen"
   },
+  "comment": {
+    "edit": "Kommentar bearbeiten",
+    "delete": "Kommentar löschen"
+  },
   "disable": {
     "user": {
       "title": "Nutzer sperren",

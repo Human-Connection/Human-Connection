@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     post() {
-      return this.Post ? this.Post[0] : {}
+      return this.Post ? this.Post[0] || {} : {}
     }
   },
   apollo: {

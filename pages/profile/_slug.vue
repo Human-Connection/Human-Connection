@@ -23,6 +23,7 @@
               context="user"
               :item-id="user.id"
               :name="user.name"
+              :is-owner="myProfile"
             />
           </no-ssr>
           <ds-space margin="small">
