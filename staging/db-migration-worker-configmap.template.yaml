@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  SSH_USERNAME: "<REPLACE>"
+  SSH_HOST: "<REPLACE>"
+  MONGODB_USERNAME: "hc-api"
+  MONGODB_AUTH_DB: "hc_api"
+  MONGODB_DATABASE: "hc_api"
+  UPLOADS_DIRECTORY: "/var/www/api/uploads"
+metadata:
+  name: staging-db-migration-worker
+  namespace: staging

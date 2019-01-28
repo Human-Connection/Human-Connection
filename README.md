@@ -22,10 +22,17 @@ There are many Kubernetes distributions, but if you're just getting started, Min
 kubectl create -f namespace-staging.json
 ```
 
+## Change config maps according to your needs
+```shell
+cd ./staging
+cp db-migration-worker-configmap.template.yaml db-migration-worker-configmap.yaml
+# edit all variables according to the setup of the remote legacy server
+```
+
 ## Apply the config map to staging namespace
 ```shell
 cd ./staging
-kubectl apply -f neo4j-configmap.yaml -f backend-configmap.yaml -f web-configmap.yaml
+kubectl apply -f neo4j-configmap.yaml -f backend-configmap.yaml -f web-configmap.yaml -f db-migration-worker-configmap.yaml
 ```
 
 ## Setup secrets and deploy themn
@@ -39,7 +46,7 @@ kubectl apply -f secrets.yaml
 ## Deploy the app
 ```shell
 cd ./staging
-kubectl apply -f neo4j-deployment.yaml -f backend-deployment.yaml -f web-deployment.yaml
+kubectl apply -f neo4j-deployment.yaml -f backend-deployment.yaml -f web-deployment.yaml -f db-migration-worker-deployment.yaml
 ```
 This can take a while.
 Sit back and relax and have a look into your minikube dashboard:
