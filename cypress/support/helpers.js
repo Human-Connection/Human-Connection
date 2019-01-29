@@ -1,4 +1,3 @@
-
 import find from 'lodash/find'
 
 const helpers = {

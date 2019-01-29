@@ -92,6 +92,12 @@
       </div>
     </ds-container>
     <div id="overlay" />
+    <no-ssr>
+      <portal-target name="modal" />
+    </no-ssr>
+    <no-ssr>
+      <report-modal />
+    </no-ssr>
   </div>
 </template>
 
@@ -99,11 +105,13 @@
 import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
+import ReportModal from '~/components/ReportModal'
 import seo from '~/components/mixins/seo'
 
 export default {
   components: {
     Dropdown,
+    ReportModal,
     LocaleSwitch
   },
   mixins: [seo],
@@ -111,6 +119,7 @@ export default {
     ...mapGetters({
       user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',
+      isModerator: 'auth/isModerator',
       isAdmin: 'auth/isAdmin'
     }),
     routes() {
@@ -129,6 +138,13 @@ export default {
           icon: 'cogs'
         }
       ]
+      if (this.isModerator) {
+        routes.push({
+          name: this.$t('moderation.name'),
+          path: `/moderation`,
+          icon: 'balance-scale'
+        })
+      }
       if (this.isAdmin) {
         routes.push({
           name: this.$t('admin.name'),
@@ -178,8 +194,8 @@ export default {
   align-items: center;
   padding-left: $space-xx-small;
 }
+
 .avatar-menu-popover {
-  display: inline-block;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 
@@ -191,8 +207,17 @@ export default {
   .logout-link {
     margin-left: -$space-small;
     margin-right: -$space-small;
-    margin-bottom: -$space-xx-small;
-    padding: $space-xx-small $space-small;
+    margin-top: -$space-xxx-small;
+    margin-bottom: -$space-x-small;
+    padding: $space-x-small $space-small;
+    // subtract menu border with from padding
+    padding-left: $space-small - 2;
+
+    color: $text-color-base;
+
+    &:hover {
+      color: $text-color-link-active;
+    }
   }
 
   nav {
@@ -200,8 +225,6 @@ export default {
     margin-right: -$space-small;
     margin-top: -$space-xx-small;
     margin-bottom: -$space-xx-small;
-    // padding-top: $space-xx-small;
-    // padding-bottom: $space-xx-small;
 
     a {
       padding-left: 12px;

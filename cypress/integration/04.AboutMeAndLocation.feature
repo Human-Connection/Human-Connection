@@ -1,4 +1,4 @@
-Feature: About me and and location
+Feature: About me and location
   As a user
   I would like to add some about me text and a location
   So others can get some info about me and my location
