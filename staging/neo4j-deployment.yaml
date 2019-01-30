@@ -46,5 +46,12 @@ spec:
         # - containerPort: 7473
         resources: {}
         imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /mongo-export/
+            name: mongo-export
       restartPolicy: Always
+      volumes:
+      - name: mongo-export
+        persistentVolumeClaim:
+          claimName: mongo-export-claim
 status: {}

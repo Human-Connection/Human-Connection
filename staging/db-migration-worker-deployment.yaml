@@ -58,6 +58,18 @@ spec:
         name: nitro-db-migration-worker
         resources: {}
         imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /root/
+            name: ssh-keys-directory
+          - mountPath: /mongo-export/
+            name: mongo-export
       restartPolicy: Always
+      volumes:
+      - name: ssh-keys-directory
+        persistentVolumeClaim:
+          claimName: ssh-keys-claim
+      - name: mongo-export
+        persistentVolumeClaim:
+          claimName: mongo-export-claim
       terminationGracePeriodSeconds: 30
 status: {}

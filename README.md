@@ -46,6 +46,7 @@ kubectl apply -f secrets.yaml
 ## Deploy the app
 ```shell
 cd ./staging
+kubectl apply -f ./volumes
 kubectl apply -f neo4j-deployment.yaml -f backend-deployment.yaml -f web-deployment.yaml -f db-migration-worker-deployment.yaml
 ```
 This can take a while.
@@ -67,4 +68,21 @@ kubectl expose deployment nitro-web     --namespace=staging --type=LoadBalancer 
 ```shell
 minikube service nitro-backend --namespace=staging
 minikube service nitro-web     --namespace=staging
+```
+
+
+## Provisioning db-migration-worker
+Copy your private ssh key and the `.known-hosts` file of your remote legacy server.
+```shell
+
+# check the corresponding db-migration-worker pod
+kubectl --namespace=staging get pods
+# change <POD_ID> below
+kubectl cp path/to/your/ssh/keys/folder staging/nitro-db-migration-worker-<POD_ID>:/root/
+```
+
+Run the migration:
+```shell
+# change <POD_ID> below
+kubectl --namespace=staging exec -it nitro-db-migration-worker-<POD_ID> ./import.sh
 ```
