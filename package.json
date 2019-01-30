@@ -13,7 +13,9 @@
     "styleguide": "cd ./styleguide && yarn dev",
     "styleguide:build": "cd ./styleguide && yarn build:lib && cd ../",
     "test": "jest",
-    "precommit": "yarn lint"
+    "precommit": "yarn lint",
+    "e2e:local": "cypress run --headed",
+    "e2e:ci": "npm-run-all --parallel --race start:ci 'cypress:ci --config baseUrl=http://localhost:3000'"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
@@ -46,6 +48,7 @@
     "cross-env": "^5.2.0",
     "date-fns": "^2.0.0-alpha.26",
     "express": "^4.16.3",
+    "global": "^4.3.2",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "jsonwebtoken": "^8.3.0",
