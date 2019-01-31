@@ -37,7 +37,7 @@ $ git clone git@github.com:YOUR-GITHUB-USERNAME/Nitro-Backend.git
 {% endtab %}
 {% endtabs %}
 
-Then set the generated Nitro-Backend folder to current working folder.
+Change into the new folder:
 
 ```bash
 $ cd Nitro-Backend
