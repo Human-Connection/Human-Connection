@@ -7,11 +7,6 @@ spec:
   replicas: 2
   minReadySeconds: 15
   progressDeadlineSeconds: 60
-  # strategy:
-  #   rollingUpdate:
-  #     maxSurge: 1
-  #     maxUnavailable: 0
-  #   type: RollingUpdate
   selector:
     matchLabels:
       workload.user.cattle.io/workloadselector: deployment-staging-backend

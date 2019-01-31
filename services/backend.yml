@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nitro-backend
+  namespace: staging
+  labels:
+    workload.user.cattle.io/workloadselector: deployment-staging-backend
+spec:
+  ports:
+    - name: web
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
+      nodePort: 32612
+  selector:
+    workload.user.cattle.io/workloadselector: deployment-staging-backend
+  type: LoadBalancer
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+status:
+  loadBalancer: {}
+
