@@ -13,8 +13,4 @@ spec:
   selector:
     workload.user.cattle.io/workloadselector: deployment-staging-backend
   type: LoadBalancer
-  sessionAffinity: None
   externalTrafficPolicy: Cluster
-status:
-  loadBalancer: {}
-
