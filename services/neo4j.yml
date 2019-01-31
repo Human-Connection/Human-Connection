@@ -10,11 +10,9 @@ spec:
     workload.user.cattle.io/workloadselector: deployment-staging-neo4j
   ports:
   - name: bolt
-    protocol: TCP
     port: 7687
     targetPort: 7687
   - name: web
-    protocol: TCP
     port: 7474
     targetPort: 7474
   type: LoadBalancer

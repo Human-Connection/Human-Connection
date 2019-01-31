@@ -8,10 +8,8 @@ metadata:
 spec:
   ports:
     - name: web
-      protocol: TCP
       port: 4000
       targetPort: 4000
-      nodePort: 32612
   selector:
     workload.user.cattle.io/workloadselector: deployment-staging-backend
   type: LoadBalancer

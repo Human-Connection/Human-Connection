@@ -19,35 +19,33 @@ There are many Kubernetes distributions, but if you're just getting started, Min
 
 ## Create a namespace locally
 ```shell
-kubectl create -f namespace-staging.json
+kubectl create -f namespace-staging.yml
 ```
 
 ## Change config maps according to your needs
 ```shell
-cd ./staging
+cd config/
 cp db-migration-worker-configmap.template.yaml db-migration-worker-configmap.yaml
 # edit all variables according to the setup of the remote legacy server
+cd ..
 ```
 
 ## Apply the config map to staging namespace
 ```shell
-cd ./staging
-kubectl apply -f neo4j-configmap.yaml -f backend-configmap.yaml -f web-configmap.yaml -f db-migration-worker-configmap.yaml
+kubectl apply -f config/
 ```
 
 ## Setup secrets and deploy themn
 ```shell
-cd ./staging
 cp secrets.yaml.template secrets.yaml
 # change all vars as needed and deploy it afterwards
 kubectl apply -f secrets.yaml
 ```
 
-## Deploy the app
+## Create volumes and deployments
 ```shell
-cd ./staging
-kubectl apply -f ./volumes
-kubectl apply -f neo4j-deployment.yaml -f backend-deployment.yaml -f web-deployment.yaml -f db-migration-worker-deployment.yaml
+kubectl apply -f volumes/
+kubectl apply -f deployments/
 ```
 This can take a while.
 Sit back and relax and have a look into your minikube dashboard:
@@ -59,7 +57,7 @@ Wait until all pods turn green and they don't show a warning `Waiting: Container
 ## Expose the services
 
 ```shell
-kubectl create -f services/
+kubectl apply -f services/
 ```
 
 ## Access the service
@@ -77,11 +75,12 @@ Copy your private ssh key and the `.known-hosts` file of your remote legacy serv
 # check the corresponding db-migration-worker pod
 kubectl --namespace=staging get pods
 # change <POD_ID> below
-kubectl cp path/to/your/ssh/keys/folder staging/nitro-db-migration-worker-<POD_ID>:/root/
+kubectl cp path/to/your/ssh/keys/.ssh staging/nitro-db-migration-worker-<POD_ID>:/root/
 ```
 
 Run the migration:
 ```shell
-# change <POD_ID> below
+# change <POD_IDs> below
 kubectl --namespace=staging exec -it nitro-db-migration-worker-<POD_ID> ./import.sh
+kubectl --namespace=staging exec -it nitro-neo4j-<POD_ID>               ./import/import.sh
 ```
