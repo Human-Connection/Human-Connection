@@ -12,5 +12,3 @@ spec:
       targetPort: 4000
   selector:
     workload.user.cattle.io/workloadselector: deployment-staging-backend
-  type: LoadBalancer
-  externalTrafficPolicy: Cluster

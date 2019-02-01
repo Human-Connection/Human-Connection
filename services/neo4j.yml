@@ -15,5 +15,3 @@ spec:
     targetPort: 7474
   selector:
     workload.user.cattle.io/workloadselector: deployment-staging-neo4j
-  type: ClusterIP
-

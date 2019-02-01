@@ -77,8 +77,7 @@ $ kubectl apply -f services/
 ## Access the services
 
 ```shell
-$ minikube service nitro-backend --namespace=staging
-$ minikube service nitro-web     --namespace=staging
+$ minikube service nitro-web --namespace=staging
 ```
 
 
