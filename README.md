@@ -8,9 +8,8 @@
 - [ ] configure Let's Encrypt cert-manager from yml
 - [ ] configure ingress form yml
 - [ ] configure persistent & shared storage between nodes
-- [ ] reproduce setup locally
+- [x] reproduce setup locally
 
-> The dummy directory has some lb configurations that did not work properly on Digital Ocean but could be used as a starting point for getting it right
 
 ## Install Minikube, kubectl
 There are many Kubernetes distributions, but if you're just getting started, Minikube is a tool that you can use to get your feet wet.
