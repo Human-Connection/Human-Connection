@@ -19,6 +19,8 @@
       spec:
         containers:
         - env:
+          - name: COMMIT
+            value: <BACKEND_COMMIT>
           - name: SSH_USERNAME
             valueFrom:
               configMapKeyRef:
@@ -64,7 +66,6 @@
               name: ssh-keys-directory
             - mountPath: /mongo-export/
               name: mongo-export
-        restartPolicy: Always
         volumes:
         - name: ssh-keys-directory
           persistentVolumeClaim:
@@ -72,6 +73,7 @@
         - name: mongo-export
           persistentVolumeClaim:
             claimName: mongo-export-claim
+        restartPolicy: Always
         terminationGracePeriodSeconds: 30
   status: {}
 ---

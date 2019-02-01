@@ -18,6 +18,8 @@ spec:
     spec:
       containers:
       - env:
+        - name: COMMIT
+          value: <BACKEND_COMMIT>
         - name: MOCK
           value: "false"
         - name: CLIENT_URI

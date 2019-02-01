@@ -18,6 +18,8 @@
       spec:
         containers:
         - env:
+          - name: COMMIT
+            value: <BACKEND_COMMIT>
           - name: NEO4J_apoc_import_file_enabled
             value: "true"
           - name: NEO4J_dbms_memory_pagecache_size
@@ -47,13 +49,12 @@
           - containerPort: 7687
           - containerPort: 7474
           resources: {}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           volumeMounts:
             - mountPath: /data/
               name: neo4j-data
             - mountPath: /mongo-export/
               name: mongo-export
-        restartPolicy: Always
         volumes:
         - name: mongo-export
           persistentVolumeClaim:
@@ -61,6 +62,8 @@
         - name: neo4j-data
           persistentVolumeClaim:
             claimName: neo4j-data-claim
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
   status: {}
 ---
   apiVersion: v1

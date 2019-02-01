@@ -18,6 +18,8 @@ spec:
     spec:
       containers:
       - env:
+        - name: COMMIT
+          value: <WEBAPP_COMMIT>
         - name: HOST
           value: 0.0.0.0
         - name: BACKEND_URL
