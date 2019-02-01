@@ -48,12 +48,12 @@ Add the original Human Connection repository as `upstream`. This prepares you to
 {% tabs %}
 {% tab title="HTTPS" %}
 ```bash
-git remote add upstream https://github.com/Human-Connection/Nitro-Backend.git
+$ git remote add upstream https://github.com/Human-Connection/Nitro-Backend.git
 ```
 {% endtab %}
 {% tab title="SSH" %}
 ```bash
-git remote add upstream git@github.com:Human-Connection/Nitro-Backend.git
+$ git remote add upstream git@github.com:Human-Connection/Nitro-Backend.git
 ```
 {% endtab %}
 {% endtabs %}
