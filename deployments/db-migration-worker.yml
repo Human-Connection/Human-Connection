@@ -1,75 +1,101 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: nitro-db-migration-worker
-  namespace: staging
-spec:
-  replicas: 1
-  minReadySeconds: 15
-  progressDeadlineSeconds: 60
-  selector:
-    matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-staging-db-migration-worker
-  template:
-    metadata:
-      labels:
+---
+  apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: nitro-db-migration-worker
+    namespace: staging
+  spec:
+    replicas: 1
+    minReadySeconds: 15
+    progressDeadlineSeconds: 60
+    selector:
+      matchLabels:
         workload.user.cattle.io/workloadselector: deployment-staging-db-migration-worker
-      name: "nitro-db-migration-worker"
-    spec:
-      containers:
-      - env:
-        - name: SSH_USERNAME
-          valueFrom:
-            configMapKeyRef:
-              name: staging-db-migration-worker
-              key: SSH_USERNAME
-        - name: SSH_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: staging-db-migration-worker
-              key: SSH_HOST
-        - name: MONGODB_USERNAME
-          valueFrom:
-            configMapKeyRef:
-              name: staging-db-migration-worker
-              key: MONGODB_USERNAME
-        - name: MONGODB_AUTH_DB
-          valueFrom:
-            configMapKeyRef:
-              name: staging-db-migration-worker
-              key: MONGODB_AUTH_DB
-        - name: MONGODB_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: staging-db-migration-worker
-              key: MONGODB_DATABASE
-        - name: UPLOADS_DIRECTORY
-          valueFrom:
-            configMapKeyRef:
-              name: staging-db-migration-worker
-              key: UPLOADS_DIRECTORY
-        - name: MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: staging
-              key: MONGODB_PASSWORD
-              optional: false
-        image: humanconnection/db-migration-worker:latest
+    template:
+      metadata:
+        labels:
+          workload.user.cattle.io/workloadselector: deployment-staging-db-migration-worker
         name: nitro-db-migration-worker
-        resources: {}
-        imagePullPolicy: Always
-        volumeMounts:
-          - mountPath: /root/
-            name: ssh-keys-directory
-          - mountPath: /mongo-export/
-            name: mongo-export
-      restartPolicy: Always
-      volumes:
-      - name: ssh-keys-directory
-        persistentVolumeClaim:
-          claimName: ssh-keys-claim
-      - name: mongo-export
-        persistentVolumeClaim:
-          claimName: mongo-export-claim
-      terminationGracePeriodSeconds: 30
-status: {}
+      spec:
+        containers:
+        - env:
+          - name: SSH_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: staging-db-migration-worker
+                key: SSH_USERNAME
+          - name: SSH_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: staging-db-migration-worker
+                key: SSH_HOST
+          - name: MONGODB_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: staging-db-migration-worker
+                key: MONGODB_USERNAME
+          - name: MONGODB_AUTH_DB
+            valueFrom:
+              configMapKeyRef:
+                name: staging-db-migration-worker
+                key: MONGODB_AUTH_DB
+          - name: MONGODB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: staging-db-migration-worker
+                key: MONGODB_DATABASE
+          - name: UPLOADS_DIRECTORY
+            valueFrom:
+              configMapKeyRef:
+                name: staging-db-migration-worker
+                key: UPLOADS_DIRECTORY
+          - name: MONGODB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: staging
+                key: MONGODB_PASSWORD
+                optional: false
+          image: humanconnection/db-migration-worker:latest
+          name: nitro-db-migration-worker
+          resources: {}
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /root/
+              name: ssh-keys-directory
+            - mountPath: /mongo-export/
+              name: mongo-export
+        restartPolicy: Always
+        volumes:
+        - name: ssh-keys-directory
+          persistentVolumeClaim:
+            claimName: ssh-keys-claim
+        - name: mongo-export
+          persistentVolumeClaim:
+            claimName: mongo-export-claim
+        terminationGracePeriodSeconds: 30
+  status: {}
+---
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: ssh-keys-volume
+    namespace: staging
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    capacity:
+      storage: 1Mi
+    hostPath:
+      path: /data/pv0001/
+---
+  kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: ssh-keys-claim
+    namespace: staging
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Mi

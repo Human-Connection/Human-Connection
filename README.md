@@ -57,7 +57,13 @@ $ kubectl apply -f secrets.yml
 ```shell
 $ kubectl apply -f volumes/
 ```
-Wait until the persistent volumes get available.
+
+## Expose the services
+
+```shell
+$ kubectl apply -f services/
+```
+Wait until persistent volumes and services become available.
 
 ## Create deployments
 ```shell
@@ -68,11 +74,6 @@ Sit back and relax and have a look into your kubernetes dashboard.
 Wait until all pods turn green and they don't show a warning
 `Waiting: ContainerCreating` anymore.
 
-## Expose the services
-
-```shell
-$ kubectl apply -f services/
-```
 
 ## Access the services
 

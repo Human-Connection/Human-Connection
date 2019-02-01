@@ -1,59 +1,89 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: nitro-neo4j
-  namespace: staging
-spec:
-  replicas: 1
-  strategy: {}
-  selector:
-    matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-staging-neo4j
-  template:
-    metadata:
-      labels:
+---
+  apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: nitro-neo4j
+    namespace: staging
+  spec:
+    replicas: 1
+    strategy: {}
+    selector:
+      matchLabels:
         workload.user.cattle.io/workloadselector: deployment-staging-neo4j
-      name: "nitro-neo4j"
-    spec:
-      containers:
-      - env:
-        - name: NEO4J_apoc_import_file_enabled
-          value: "true"
-        - name: NEO4J_dbms_memory_pagecache_size
-          value: 1G
-        - name: NEO4J_dbms_memory_heap_max__size
-          value: 1G
-        - name: NEO4J_AUTH
-          value: none
-        - name: NEO4J_URI
-          valueFrom:
-            configMapKeyRef:
-              name: staging-neo4j
-              key: NEO4J_URI
-        - name: NEO4J_USER
-          valueFrom:
-            configMapKeyRef:
-              name: staging-neo4j
-              key: NEO4J_USER
-        - name: NEO4J_AUTH
-          valueFrom:
-            configMapKeyRef:
-              name: staging-neo4j
-              key: NEO4J_AUTH
-        image: humanconnection/neo4j:latest
+    template:
+      metadata:
+        labels:
+          workload.user.cattle.io/workloadselector: deployment-staging-neo4j
         name: nitro-neo4j
-        ports:
-        - containerPort: 7687
-        - containerPort: 7474
-        # - containerPort: 7473
-        resources: {}
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-          - mountPath: /mongo-export/
-            name: mongo-export
-      restartPolicy: Always
-      volumes:
-      - name: mongo-export
-        persistentVolumeClaim:
-          claimName: mongo-export-claim
-status: {}
+      spec:
+        containers:
+        - env:
+          - name: NEO4J_apoc_import_file_enabled
+            value: "true"
+          - name: NEO4J_dbms_memory_pagecache_size
+            value: 1G
+          - name: NEO4J_dbms_memory_heap_max__size
+            value: 1G
+          - name: NEO4J_AUTH
+            value: none
+          - name: NEO4J_URI
+            valueFrom:
+              configMapKeyRef:
+                name: staging-neo4j
+                key: NEO4J_URI
+          - name: NEO4J_USER
+            valueFrom:
+              configMapKeyRef:
+                name: staging-neo4j
+                key: NEO4J_USER
+          - name: NEO4J_AUTH
+            valueFrom:
+              configMapKeyRef:
+                name: staging-neo4j
+                key: NEO4J_AUTH
+          image: humanconnection/neo4j:latest
+          name: nitro-neo4j
+          ports:
+          - containerPort: 7687
+          - containerPort: 7474
+          resources: {}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /data/
+              name: neo4j-data
+            - mountPath: /mongo-export/
+              name: mongo-export
+        restartPolicy: Always
+        volumes:
+        - name: mongo-export
+          persistentVolumeClaim:
+            claimName: mongo-export-claim
+        - name: neo4j-data
+          persistentVolumeClaim:
+            claimName: neo4j-data-claim
+  status: {}
+---
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: neo4j-data-volume
+    namespace: staging
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    capacity:
+      storage: 4Gi
+    hostPath:
+      path: /data/neo4j/
+---
+  kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: neo4j-data-claim
+    namespace: staging
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 4Gi
