@@ -1,17 +1,4 @@
 ---
-  kind: PersistentVolume
-  apiVersion: v1
-  metadata:
-    name: mongo-export-volume
-    namespace: staging
-  spec:
-    accessModes:
-      - ReadWriteMany
-    capacity:
-      storage: 1Gi
-    hostPath:
-      path: /data/shared/mongo-exports/
----
   kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
@@ -19,7 +6,8 @@
     namespace: staging
   spec:
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 1Gi
+    storageClassName: do-block-storage

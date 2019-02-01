@@ -77,19 +77,6 @@
         terminationGracePeriodSeconds: 30
   status: {}
 ---
-  apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: ssh-keys-volume
-    namespace: staging
-  spec:
-    accessModes:
-      - ReadWriteOnce
-    capacity:
-      storage: 1Mi
-    hostPath:
-      path: /data/pv0001/
----
   kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
@@ -100,4 +87,6 @@
       - ReadWriteOnce
     resources:
       requests:
-        storage: 1Mi
+        # waaay too much
+        # unfortunately Digital Oceans volumes start at 1Gi
+        storage: 1Gi
