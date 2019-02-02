@@ -66,19 +66,6 @@
         terminationGracePeriodSeconds: 30
   status: {}
 ---
-  apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: neo4j-data-volume
-    namespace: staging
-  spec:
-    accessModes:
-      - ReadWriteOnce
-    capacity:
-      storage: 4Gi
-    hostPath:
-      path: /data/neo4j/
----
   kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
