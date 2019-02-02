@@ -10,6 +10,9 @@
             <ds-logo />
           </a>
         </div>
+        <div class="main-navigation-center hc-navbar-search">
+          <search-input />
+        </div>
         <div class="main-navigation-right">
           <no-ssr>
             <locale-switch
@@ -105,6 +108,7 @@
 import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
+import SearchInput from '~/components/SearchInput.vue'
 import ReportModal from '~/components/ReportModal'
 import seo from '~/components/mixins/seo'
 
@@ -112,7 +116,8 @@ export default {
   components: {
     Dropdown,
     ReportModal,
-    LocaleSwitch
+    LocaleSwitch,
+    SearchInput
   },
   mixins: [seo],
   computed: {
@@ -183,6 +188,12 @@ export default {
   display: flex;
   margin-right: auto;
 }
+
+.main-navigation-center {
+  display: flex;
+  margin-right: auto;
+}
+
 .main-navigation-right {
   display: flex;
   margin-left: auto;

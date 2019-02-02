@@ -10,5 +10,5 @@ Feature: Search
 
   Scenario: Search for specific words
     Given I am logged in as "user"
-    And I search for a specific word
-    Then I should posts with that word included 
+    When I search for a specific word
+    Then I should see posts with that word included 
