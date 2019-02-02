@@ -39,7 +39,7 @@ $ kubectl apply -f dashboard/
 ```
 Proxy localhost to the remote kubernetes dashboard:
 ```sh
-kubectl proxy
+$ kubectl proxy
 ```
 Get your token on the command line:
 ```sh
