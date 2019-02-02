@@ -10,4 +10,3 @@
     resources:
       requests:
         storage: 8Gi
-    storageClassName: do-block-storage
