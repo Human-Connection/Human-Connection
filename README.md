@@ -1,21 +1,20 @@
 # Human-Connection Nitro | Deployment Configuration
 
-> Currently the deployment is not primetime ready as you still have to do some manual work. That we need to change, the following list gives some glimpse of the missing steps.
-
-## Todo`s
-- [ ] check labels and selectors if they all are correct
-- [ ] configure NGINX from yml
+Todos:
+- [x] check labels and selectors if they all are correct
+- [x] configure NGINX from yml
 - [ ] configure Let's Encrypt cert-manager from yml
-- [ ] configure ingress form yml
-- [ ] configure persistent & shared storage between nodes
+- [x] configure ingress from yml
+- [x] configure persistent & shared storage between nodes
 - [x] reproduce setup locally
 
 ## Minikube
-There are many Kubernetes distributions, but if you're just getting started, Minikube is a tool that you can use to get your feet wet.
+There are many Kubernetes distributions, but if you're just getting started,
+Minikube is a tool that you can use to get your feet wet.
 
 [Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 
-### Open minikube dashboard
+Open minikube dashboard:
 ```
 $ minikube dashboard
 ```
@@ -24,10 +23,9 @@ Some of the steps below need some timing to make ressources available to other
 dependent deployments. Keeping an eye on the dashboard is a great way to check
 that.
 
-### Access exposed services
-
-Follow the installation instruction below. Just at the end, expose the
-`nitro-web` service on your host system with:
+Follow the [installation instruction](#installation-with-kubernetes) below.
+If all the pods and services have settled and everything looks green in your
+minikube dashboard, expose the `nitro-web` service on your host system with:
 
 ```shell
 $ minikube service nitro-web --namespace=staging
@@ -35,7 +33,7 @@ $ minikube service nitro-web --namespace=staging
 
 ## Digital Ocean
 
-Install the kubernetes dashboard first:
+First, install kubernetes dashboard:
 ```sh
 $ kubectl apply -f dashboard/
 ```
@@ -67,20 +65,21 @@ token:      eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZ
 Grab the token and paste it into the login screen at [http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/)
 
 
-## Installation with kubernetes (minikube + Digital Ocean) 
+## Installation with kubernetes
 
-You have to do some prerequisites and change some secrets according to your own setup.
+You have to do some prerequisites e.g. change some secrets according to your
+own setup.
 
 #### Setup config maps
 ```shell
-$ cp db-migration-worker.template.yml staging/config/db-migration-worker.yml
+$ cp configmap-db-migration-worker.template.yaml staging/configmap-db-migration-worker.yaml
 ```
 Edit all variables according to the setup of the remote legacy server.
 
 #### Setup secrets and deploy themn
 
 ```sh
-$ cp secrets.yml.template staging/secrets.yml
+$ cp secrets.template.yaml staging/secrets.yaml
 ```
 Change all secrets as needed.
 
@@ -95,18 +94,13 @@ Those secrets get `base64` decoded in a kubernetes pod.
 
 #### Create a namespace locally
 ```shell
-$ kubectl create -f namespace-staging.yml
+$ kubectl create -f namespace-staging.yaml
 ```
 Switch to the namespace `staging` in your kubernetes dashboard.
 
 ### Run the configuration
 ```shell
-$ cd staging/
-$ kubectl apply -f secrets.yml
-$ kubectl apply -f config/
-$ kubectl apply -f volumes/
-$ kubectl apply -f services/
-$ kubectl apply -f deployments/
+$ kubectl apply -f staging/
 ```
 
 This can take a while because kubernetes will download the docker images.
@@ -116,7 +110,8 @@ Wait until all pods turn green and they don't show a warning
 
 
 ### Provision db-migration-worker
-Copy your private ssh key and the `.known-hosts` file of your remote legacy server.
+Copy your private ssh key and the `.known-hosts` file of your remote legacy
+server.
 ```shell
 
 # check the corresponding db-migration-worker pod
