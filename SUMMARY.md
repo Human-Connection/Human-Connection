@@ -5,7 +5,7 @@
 ## Backend
 
 * [Backend Installation](backend/installation/README.md)
-  * [Configuration](backend/installation/configuration.md)
+  * [Neo4j Installation and Configuration](backend/installation/configuration.md)
   * [Docker](backend/installation/docker.md)
 * [GraphQL with Apollo](backend/graphql-with-apollo/README.md)
   * [Mocking](backend/graphql-with-apollo/mocking.md)
