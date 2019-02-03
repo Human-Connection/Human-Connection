@@ -70,7 +70,7 @@ You can spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download-cen
 Install `neo4j` from the Debian Repository, then [download the APOC plugin](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar) to the `/var/lib/neo4j/plugins` directory, e.g. with:
 
 ```text
-wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar -P /var/lib/neo4j/plugins
+wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.5.0.1/apoc-3.5.0.1-all.jar -P /var/lib/neo4j/plugins
 ```
 
 {% endtab %}
