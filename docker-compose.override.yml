@@ -11,33 +11,6 @@ services:
       - /nitro-backend/node_modules
     command: yarn run dev
   neo4j:
-    volumes:
-      - mongo-export:/mongo-export
-      - ./neo4j/import:/var/lib/neo4j/import
     ports:
       - 7687:7687
       - 7474:7474
-    environment:
-      - NEO4J_apoc_import_file_enabled=true
-  db-migration-worker:
-    build:
-      context: db-migration-worker
-    volumes:
-      - mongo-export:/mongo-export
-      - ./db-migration-worker/.ssh/:/root/.ssh/
-    networks:
-      - hc-network
-    depends_on:
-      - backend
-    environment:
-      - NEO4J_URI=bolt://neo4j:7687
-      - "SSH_USERNAME=${SSH_USERNAME}"
-      - "SSH_HOST=${SSH_HOST}"
-      - "MONGODB_USERNAME=${MONGODB_USERNAME}"
-      - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
-      - "MONGODB_AUTH_DB=${MONGODB_AUTH_DB}"
-      - "MONGODB_DATABASE=${MONGODB_DATABASE}"
-    command: "--smallfiles --logpath=/dev/null"
-
-volumes:
-  mongo-export:
