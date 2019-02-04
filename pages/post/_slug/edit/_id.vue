@@ -25,6 +25,9 @@ export default {
       if (!this.Post || !this.Post[0].id) {
         return
       }
+      if (this.Post[0].author.id !== this.$store.getters['auth/user'].id) {
+        throw new Error(`You can't edit that!`)
+      }
       return this.Post[0]
     }
   },
@@ -40,6 +43,9 @@ export default {
               createdAt
               slug
               image
+              author {
+                id
+              }
               tags {
                 name
               }
