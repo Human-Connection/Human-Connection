@@ -21,7 +21,8 @@ mongo ${MONGODB_DATABASE} --eval "db.dropDatabase();"
 rm -rf /mongo-export/*
 
 ssh -4 -M -S my-ctrl-socket -fnNT -L 27018:localhost:27017 -l ${SSH_USERNAME} ${SSH_HOST}
-mongodump --host localhost -d ${MONGODB_DATABASE} --port 27018 --username ${MONGODB_USERNAME} --password ${MONGODB_PASSWORD} --authenticationDatabase ${MONGODB_AUTH_DB} --gzip --archive | mongorestore --gzip --archive
+mongodump --host localhost -d ${MONGODB_DATABASE} --port 27018 --username ${MONGODB_USERNAME} --password ${MONGODB_PASSWORD} --authenticationDatabase ${MONGODB_AUTH_DB} --gzip --archive=/tmp/mongodump.archive
+mongorestore --gzip  --archive=/tmp/mongodump.archive
 ssh -S my-ctrl-socket -O check -l ${SSH_USERNAME} ${SSH_HOST}
 ssh -S my-ctrl-socket -O exit  -l ${SSH_USERNAME} ${SSH_HOST}
 
