@@ -9,6 +9,7 @@ services:
     volumes:
       - .:/nitro-backend
       - /nitro-backend/node_modules
+      - uploads:/nitro-backend/public/uploads
     command: yarn run dev
   neo4j:
     volumes:
@@ -24,6 +25,7 @@ services:
       context: db-migration-worker
     volumes:
       - mongo-export:/mongo-export
+      - uploads:/uploads
       - ./db-migration-worker/.ssh/:/root/.ssh/
     networks:
       - hc-network
@@ -34,7 +36,9 @@ services:
       - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
       - "MONGODB_AUTH_DB=${MONGODB_AUTH_DB}"
       - "MONGODB_DATABASE=${MONGODB_DATABASE}"
+      - "UPLOADS_DIRECTORY=${UPLOADS_DIRECTORY}"
     command: "--smallfiles --logpath=/dev/null"
 
 volumes:
   mongo-export:
+  uploads:
