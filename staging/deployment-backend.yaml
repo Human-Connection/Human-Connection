@@ -18,7 +18,24 @@
         name: "nitro-backend"
       spec:
         containers:
-        - env:
+        - name: nitro-db-migration-worker
+          image: humanconnection/db-migration-worker:latest
+          imagePullPolicy: Always
+          envFrom:
+          - configMapRef:
+              name: db-migration-worker
+          volumeMounts:
+          - name: secret-volume
+            readOnly: false
+            mountPath: /root/.ssh
+          - name: uploads
+            mountPath: /uploads/
+        - name: nitro-backend
+          image: humanconnection/nitro-backend:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 4000
+          env:
           - name: COMMIT
             value: <BACKEND_COMMIT>
           - name: MOCK
@@ -54,16 +71,14 @@
               configMapKeyRef:
                 name: staging-neo4j
                 key: NEO4J_URI
-          image: humanconnection/nitro-backend:latest
-          name: nitro-backend
-          ports:
-          - containerPort: 4000
-          resources: {}
-          imagePullPolicy: Always
           volumeMounts:
             - mountPath: /nitro-backend/public/uploads
               name: uploads
         volumes:
+        - name: secret-volume
+          secret:
+            secretName: ssh-keys
+            defaultMode: 0400
         - name: uploads
           persistentVolumeClaim:
             claimName: uploads-claim

@@ -17,7 +17,25 @@
         name: nitro-neo4j
       spec:
         containers:
-        - env:
+        - name: nitro-db-migration-worker
+          image: humanconnection/db-migration-worker:latest
+          imagePullPolicy: Always
+          envFrom:
+          - configMapRef:
+              name: db-migration-worker
+          env:
+          - name: COMMIT
+            value: <BACKEND_COMMIT>
+          volumeMounts:
+          - name: secret-volume
+            readOnly: false
+            mountPath: /root/.ssh
+          - name: mongo-export
+            mountPath: /mongo-export/
+        - name: nitro-neo4j
+          image: humanconnection/neo4j:latest
+          imagePullPolicy: Always
+          env:
           - name: COMMIT
             value: <BACKEND_COMMIT>
           - name: NEO4J_apoc_import_file_enabled
@@ -43,19 +61,19 @@
               configMapKeyRef:
                 name: staging-neo4j
                 key: NEO4J_AUTH
-          image: humanconnection/neo4j:latest
-          name: nitro-neo4j
           ports:
           - containerPort: 7687
           - containerPort: 7474
-          resources: {}
-          imagePullPolicy: Always
           volumeMounts:
             - mountPath: /data/
               name: neo4j-data
             - mountPath: /mongo-export/
               name: mongo-export
         volumes:
+        - name: secret-volume
+          secret:
+            secretName: ssh-keys
+            defaultMode: 0400
         - name: mongo-export
           persistentVolumeClaim:
             claimName: mongo-export-claim
@@ -64,7 +82,6 @@
             claimName: neo4j-data-claim
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
-  status: {}
 ---
   kind: PersistentVolumeClaim
   apiVersion: v1
@@ -77,3 +94,15 @@
     resources:
       requests:
         storage: 4Gi
+---
+  kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: mongo-export-claim
+    namespace: staging
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
