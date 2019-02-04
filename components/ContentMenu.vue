@@ -78,7 +78,7 @@ export default {
           name: this.$t(`contribution.edit`),
           callback: () => {
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            return this.$router.push('/post/edit/p1')
+            return this.$router.push(`/post/edit/${this.itemId}`)
             // return this.$router.push(link)
           },
           icon: 'edit'

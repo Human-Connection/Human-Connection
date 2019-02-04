@@ -37,7 +37,7 @@ When(
     //TODO: match the created post title, not a dummy post title
     cy.contains('.ds-card', dummyReportedPostTitle)
       .find('.content-menu-trigger')
-      .first()
+      .find(':nth-child(2)')
       .click()
 
     cy.get('.popover .ds-menu-item-link')

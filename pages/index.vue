@@ -13,6 +13,14 @@
         <hc-post-card :post="post" />
       </ds-flex-item>
     </ds-flex>
+    <ds-button
+      v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+      class="post-add-button"
+      icon="plus"
+      size="x-large"
+      primary
+      @click="$router.push('/post/create')"
+    />
     <hc-load-more
       v-if="true"
       :loading="$apollo.loading"
@@ -82,7 +90,7 @@ export default {
       query() {
         return gql(`
           query Post($first: Int, $offset: Int) {
-            Post(first: $first, offset: $offset) {
+            Post(first: $first, offset: $offset, orderBy: createdAt_desc) {
               id
               title
               contentExcerpt
@@ -123,8 +131,19 @@ export default {
           first: this.pageSize,
           offset: 0
         }
-      }
+      },
+      fetchPolicy: 'cache-and-network'
     }
   }
 }
 </script>
+
+<style lang="scss">
+.post-add-button {
+  z-index: 100;
+  position: fixed;
+  bottom: $space-large;
+  right: $space-small;
+  box-shadow: $box-shadow-x-large;
+}
+</style>

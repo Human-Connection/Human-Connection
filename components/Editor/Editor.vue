@@ -262,7 +262,8 @@ export default {
 
 <style lang="scss">
 .ProseMirror {
-  padding: $space-small;
+  padding: $space-base;
+  margin: -$space-base;
   min-height: $space-large;
 }
 
@@ -273,11 +274,10 @@ export default {
 .editor p.is-empty:first-child::before {
   content: attr(data-empty-text);
   float: left;
-  color: $text-color-softer;
-  padding-left: $space-base;
+  color: $text-color-disabled;
+  padding-left: $space-xx-small;
   pointer-events: none;
   height: 0;
-  font-style: italic;
 }
 
 .menubar__button {
@@ -293,7 +293,7 @@ li > p {
   &__floating-menu {
     position: absolute;
     margin-top: -0.25rem;
-    margin-left: $space-base;
+    margin-left: $space-xx-small;
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.2s, visibility 0.2s;
