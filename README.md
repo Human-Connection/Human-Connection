@@ -98,18 +98,7 @@ $ kubectl create -f namespace-staging.yaml
 ```
 Switch to the namespace `staging` in your kubernetes dashboard.
 
-### Run the configuration
-```shell
-$ kubectl apply -f staging/
-```
-
-This can take a while because kubernetes will download the docker images.
-Sit back and relax and have a look into your kubernetes dashboard.
-Wait until all pods turn green and they don't show a warning
-`Waiting: ContainerCreating` anymore.
-
-
-### Migrate database of Human Connection legacy server
+### Prepare migration of Human Connection legacy server
 Create a configmap with the specific connection data of your legacy server:
 ```sh
 $ kubectl create configmap db-migration-worker   \
@@ -120,7 +109,9 @@ $ kubectl create configmap db-migration-worker   \
   --from-literal=MONGODB_PASSWORD=secretpassword \
   --from-literal=MONGODB_AUTH_DB=hc_api          \
   --from-literal=MONGODB_DATABASE=hc_api         \
-  --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads
+  --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads \
+  --from-literal=NEO4J_URI= \
+
 ```
 Create a secret with your public and private ssh keys:
 ```sh
@@ -135,12 +126,21 @@ points out, you should be careful with your ssh keys. Anyone with access to your
 cluster will have access to your ssh keys. Better create a new pair with
 `ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`.
 
-Create the pod and the required volume:
-```sh
-$ kubectl apply -f db-migration-worker.yaml
+### Run the configuration
+```shell
+$ kubectl apply -f staging/
 ```
+
+This can take a while because kubernetes will download the docker images.
+Sit back and relax and have a look into your kubernetes dashboard.
+Wait until all pods turn green and they don't show a warning
+`Waiting: ContainerCreating` anymore.
+
+### Migrate legacy database
 Run the migration:
 ```shell
+$ kubectl --namespace=staging get pods
 # change <POD_IDs> below
-$ kubectl --namespace=staging exec -it nitro-db-migration-worker ./import.sh
+$ kubectl --namespace=staging exec -it nitro-neo4j-65bbdb597c-nc2lv migrate
+$ kubectl --namespace=staging exec -it nitro-backend-c6cc5ff69-8h96z sync_uploads
 ```
