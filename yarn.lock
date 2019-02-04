@@ -1344,10 +1344,10 @@
     eslint-plugin-prettier "^3.0.0"
     prettier "^1.15.2"
 
-"@vue/server-test-utils@^1.0.0-beta.28":
-  version "1.0.0-beta.28"
-  resolved "https://registry.yarnpkg.com/@vue/server-test-utils/-/server-test-utils-1.0.0-beta.28.tgz#40adb6a6c05e8970cc5e5f0869eb490fa00d9cf3"
-  integrity sha512-CrXQ2ISmLvye4HC4sIHqqR3Gyg02i8XcTwMAyIh+UY7fh1Nz4f9XE4LDsxg0B9uSGsSiR0lwphjlGtbUJjGl4A==
+"@vue/server-test-utils@^1.0.0-beta.29":
+  version "1.0.0-beta.29"
+  resolved "https://registry.yarnpkg.com/@vue/server-test-utils/-/server-test-utils-1.0.0-beta.29.tgz#8a61a9900992b742cda7c143593db1c5e4a019bd"
+  integrity sha512-N6e2cixTnz7+mos0wL+R3LM/2op+f3ym1aSQYuNfksZzvX81lrQtjGr6Aszv0+1Ryms+WrqlL18Jb/MY8XyXaQ==
   dependencies:
     cheerio "^1.0.0-rc.2"
 
