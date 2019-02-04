@@ -109,20 +109,38 @@ Wait until all pods turn green and they don't show a warning
 `Waiting: ContainerCreating` anymore.
 
 
-### Provision db-migration-worker
-Copy your private ssh key and the `.known-hosts` file of your remote legacy
-server.
-```shell
-
-# check the corresponding db-migration-worker pod
-$ kubectl --namespace=staging get pods
-# change <POD_ID> below
-$ kubectl cp path/to/your/ssh/keys/.ssh staging/nitro-db-migration-worker-<POD_ID>:/root/
+### Migrate database of Human Connection legacy server
+Create a configmap with the specific connection data of your legacy server:
+```sh
+$ kubectl create configmap db-migration-worker   \
+  --namespace=staging                            \
+  --from-literal=SSH_USERNAME=someuser           \
+  --from-literal=SSH_HOST=yourhost               \
+  --from-literal=MONGODB_USERNAME=hc-api         \
+  --from-literal=MONGODB_PASSWORD=secretpassword \
+  --from-literal=MONGODB_AUTH_DB=hc_api          \
+  --from-literal=MONGODB_DATABASE=hc_api         \
+  --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads
 ```
+Create a secret with your public and private ssh keys:
+```sh
+$ kubectl create secret generic ssh-keys          \
+  --namespace=staging                             \
+  --from-file=id_rsa=/path/to/.ssh/id_rsa         \
+  --from-file=id_rsa.pub=/path/to/.ssh/id_rsa.pub \
+  --from-file=known_hosts=/path/to/.ssh/known_hosts
+```
+As the [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys)
+points out, you should be careful with your ssh keys. Anyone with access to your
+cluster will have access to your ssh keys. Better create a new pair with
+`ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`.
 
+Create the pod and the required volume:
+```sh
+$ kubectl apply -f db-migration-worker.yaml
+```
 Run the migration:
 ```shell
 # change <POD_IDs> below
-$ kubectl --namespace=staging exec -it nitro-db-migration-worker-<POD_ID> ./import.sh
-$ kubectl --namespace=staging exec -it nitro-neo4j-<POD_ID>               ./import/import.sh
+$ kubectl --namespace=staging exec -it nitro-db-migration-worker ./import.sh
 ```

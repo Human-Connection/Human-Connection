@@ -1,0 +1,39 @@
+---
+  kind: Pod
+  apiVersion: v1
+  metadata:
+    name: nitro-db-migration-worker
+    namespace: staging
+  spec:
+    volumes:
+    - name: secret-volume
+      secret:
+        secretName: ssh-keys
+        defaultMode: 0400
+    - name: mongo-export
+      persistentVolumeClaim:
+        claimName: mongo-export-claim
+    containers:
+    - name: nitro-db-migration-worker
+      image: humanconnection/db-migration-worker:latest
+      envFrom:
+      - configMapRef:
+          name: db-migration-worker
+      volumeMounts:
+      - name: secret-volume
+        readOnly: false
+        mountPath: /root/.ssh
+      - name: mongo-export
+        mountPath: /mongo-export/
+---
+  kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: mongo-export-claim
+    namespace: staging
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
