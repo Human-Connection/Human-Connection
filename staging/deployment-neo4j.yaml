@@ -26,6 +26,8 @@
           env:
           - name: COMMIT
             value: <BACKEND_COMMIT>
+          - name: NEO4J_URI
+            value: bolt://localhost:7687
           volumeMounts:
           - name: secret-volume
             readOnly: false
