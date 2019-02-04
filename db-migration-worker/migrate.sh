@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-/mongo/import.sh && /neo4j/import.sh
+set -e
+/migration/mongo/import.sh
+/migration/neo4j/import.sh

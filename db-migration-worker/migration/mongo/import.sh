@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-for var in "SSH_USERNAME" "SSH_HOST" "MONGODB_USERNAME" "MONGODB_PASSWORD" "MONGODB_DATABASE" "MONGODB_AUTH_DB" "UPLOADS_DIRECTORY"
+for var in "SSH_USERNAME" "SSH_HOST" "MONGODB_USERNAME" "MONGODB_PASSWORD" "MONGODB_DATABASE" "MONGODB_AUTH_DB"
 do
   if [[ -z "${!var}" ]]; then
     echo "${var} is undefined"
@@ -15,7 +15,6 @@ echo "MONGODB_USERNAME         ${MONGODB_USERNAME}"
 echo "MONGODB_PASSWORD         ${MONGODB_PASSWORD}"
 echo "MONGODB_DATABASE         ${MONGODB_DATABASE}"
 echo "MONGODB_AUTH_DB          ${MONGODB_AUTH_DB}"
-echo "UPLOADS_DIRECTORY        ${UPLOADS_DIRECTORY}"
 echo "-------------------------------------------------"
 
 mongo ${MONGODB_DATABASE} --eval "db.dropDatabase();"

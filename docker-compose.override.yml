@@ -27,6 +27,8 @@ services:
       - ./db-migration-worker/.ssh/:/root/.ssh/
     networks:
       - hc-network
+    depends_on:
+      - backend
     environment:
       - NEO4J_URI=bolt://neo4j:7687
       - "SSH_USERNAME=${SSH_USERNAME}"
@@ -35,7 +37,6 @@ services:
       - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
       - "MONGODB_AUTH_DB=${MONGODB_AUTH_DB}"
       - "MONGODB_DATABASE=${MONGODB_DATABASE}"
-      - "UPLOADS_DIRECTORY=${UPLOADS_DIRECTORY}"
     command: "--smallfiles --logpath=/dev/null"
 
 volumes:

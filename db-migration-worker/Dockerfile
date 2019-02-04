@@ -1,4 +1,3 @@
-FROM neo4j:3.5.0 as neo4j
 FROM mongo:4
 
 RUN apt-get update
@@ -9,5 +8,5 @@ RUN apt-get update
 RUN apt-get -y install --no-install-recommends openjdk-8-jre openssh-client neo4j rsync \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
-COPY neo4j/ mongo/ ./
+COPY migration ./migration
 COPY migrate.sh /usr/local/bin/migrate
