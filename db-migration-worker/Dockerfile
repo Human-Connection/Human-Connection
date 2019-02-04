@@ -10,3 +10,4 @@ RUN apt-get -y install --no-install-recommends openjdk-8-jre openssh-client neo4
  && rm -rf /var/lib/apt/lists/*
 COPY migration ./migration
 COPY migrate.sh /usr/local/bin/migrate
+COPY sync_uploads.sh /usr/local/bin/sync_uploads

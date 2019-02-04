@@ -1,6 +1,9 @@
 version: "3.7"
 
 services:
+  backend:
+    volumes:
+      - uploads:/nitro-backend/public/uploads
   neo4j:
     volumes:
       - mongo-export:/mongo-export
@@ -11,6 +14,7 @@ services:
       context: db-migration-worker
     volumes:
       - mongo-export:/mongo-export
+      - uploads:/uploads
       - ./db-migration-worker/.ssh/:/root/.ssh/
     networks:
       - hc-network
@@ -24,6 +28,8 @@ services:
       - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
       - "MONGODB_AUTH_DB=${MONGODB_AUTH_DB}"
       - "MONGODB_DATABASE=${MONGODB_DATABASE}"
+      - "UPLOADS_DIRECTORY=${UPLOADS_DIRECTORY}"
 
 volumes:
   mongo-export:
+  uploads:
