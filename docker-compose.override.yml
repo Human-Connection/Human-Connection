@@ -9,7 +9,6 @@ services:
     volumes:
       - .:/nitro-backend
       - /nitro-backend/node_modules
-      - uploads:/nitro-backend/public/uploads
     command: yarn run dev
   neo4j:
     volumes:
@@ -25,11 +24,11 @@ services:
       context: db-migration-worker
     volumes:
       - mongo-export:/mongo-export
-      - uploads:/uploads
       - ./db-migration-worker/.ssh/:/root/.ssh/
     networks:
       - hc-network
     environment:
+      - NEO4J_URI=bolt://neo4j:7687
       - "SSH_USERNAME=${SSH_USERNAME}"
       - "SSH_HOST=${SSH_HOST}"
       - "MONGODB_USERNAME=${MONGODB_USERNAME}"
@@ -41,4 +40,3 @@ services:
 
 volumes:
   mongo-export:
-  uploads:
