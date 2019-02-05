@@ -17,7 +17,8 @@ spec:
       name: nitro-web
     spec:
       containers:
-      - env:
+      - name: web
+        env:
         - name: COMMIT
           value: <WEBAPP_COMMIT>
         - name: HOST
@@ -39,7 +40,6 @@ spec:
               key: JWT_SECRET
               optional: false
         image: humanconnection/nitro-web:latest
-        name: web
         ports:
         - containerPort: 3000
         resources: {}

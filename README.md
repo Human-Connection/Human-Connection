@@ -101,16 +101,16 @@ Switch to the namespace `staging` in your kubernetes dashboard.
 ### Prepare migration of Human Connection legacy server
 Create a configmap with the specific connection data of your legacy server:
 ```sh
-$ kubectl create configmap db-migration-worker   \
-  --namespace=staging                            \
-  --from-literal=SSH_USERNAME=someuser           \
-  --from-literal=SSH_HOST=yourhost               \
-  --from-literal=MONGODB_USERNAME=hc-api         \
-  --from-literal=MONGODB_PASSWORD=secretpassword \
-  --from-literal=MONGODB_AUTH_DB=hc_api          \
-  --from-literal=MONGODB_DATABASE=hc_api         \
+$ kubectl create configmap db-migration-worker          \
+  --namespace=staging                                   \
+  --from-literal=SSH_USERNAME=someuser                  \
+  --from-literal=SSH_HOST=yourhost                      \
+  --from-literal=MONGODB_USERNAME=hc-api                \
+  --from-literal=MONGODB_PASSWORD=secretpassword        \
+  --from-literal=MONGODB_AUTH_DB=hc_api                 \
+  --from-literal=MONGODB_DATABASE=hc_api                \
   --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads \
-  --from-literal=NEO4J_URI= \
+  --from-literal=NEO4J_URI=bolt://neo4j:7687
 
 ```
 Create a secret with your public and private ssh keys:
