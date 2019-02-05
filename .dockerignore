@@ -11,7 +11,6 @@ docker-compose*.yml
 ./*.png
 ./*.log
 
-kubernetes/
 node_modules/
 scripts/
 dist/

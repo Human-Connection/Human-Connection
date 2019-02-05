@@ -11,13 +11,15 @@ p.createdAt      = post.createdAt.`$date`,
 p.updatedAt      = post.updatedAt.`$date`,
 p.deleted        = post.deleted,
 p.disabled       = NOT post.isEnabled
-WITH p, post, post.tags AS tags, post.categoryIds as categoryIds
-UNWIND tags AS tag
+WITH p, post
+MATCH (u:User {id: post.userId})
+MERGE (u)-[:WROTE]->(p)
+WITH p, post, post.categoryIds as categoryIds
 UNWIND categoryIds AS categoryId
-MATCH (c:Category {id: categoryId}),
-   (u:User {id: post.userId})
+MATCH (c:Category {id: categoryId})
+MERGE (p)-[:CATEGORIZED]->(c)
+WITH p, post.tags AS tags
+UNWIND tags AS tag
 MERGE (t:Tag {id: apoc.create.uuid(), name: tag})
 MERGE (p)-[:TAGGED]->(t)
-MERGE (u)-[:WROTE]->(p)
-MERGE (p)-[:CATEGORIZED]->(c)
 ;
