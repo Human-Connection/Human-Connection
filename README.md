@@ -7,7 +7,7 @@
 > With this Prototype we can explore using the combination of GraphQL and the Neo4j Graph Database for achieving the connected nature of a social graph with better development experience, as we do not need to connect data on our own any more through weird table structures etc.
 >
 > **Advantages:**
-
+>
 > * easier data structure
 > * better connected data
 > * easy to achieve "recommendations" based on actions \(relations\)

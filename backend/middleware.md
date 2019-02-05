@@ -1,10 +1,8 @@
 # Middleware
 
+![](../.gitbook/assets/grafik%20%284%29.png)
 
-
-![](../.gitbook/assets/grafik.png)
-
-### Middleware keeps resolvers clean
+## Middleware keeps resolvers clean
 
 A well-organized codebase is key for the ability to maintain and easily introduce changes into an app. Figuring out the right structure for your code remains a continuous challenge - especially as an application grows and more developers are joining a project.
 
