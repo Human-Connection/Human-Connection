@@ -117,12 +117,12 @@ export default {
     }
   },
   created() {
-    if (this.$parentForm) {
+    if (this.$parentForm && this.model) {
       this.$parentForm.subscribe(this.handleFormUpdate)
     }
   },
   beforeDestroy() {
-    if (this.$parentForm) {
+    if (this.$parentForm && this.model) {
       this.$parentForm.unsubscribe(this.handleFormUpdate)
     }
   },
@@ -132,7 +132,7 @@ export default {
     },
     input(value) {
       this.innerValue = value
-      if (this.$parentForm) {
+      if (this.$parentForm && this.model) {
         this.$parentForm.update(this.model, value)
       } else {
         /**
