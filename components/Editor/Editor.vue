@@ -2,6 +2,7 @@
   <div class="editor">
     <editor-menu-bubble :editor="editor">
       <div
+        ref="menu"
         slot-scope="{ commands, getMarkAttrs, isActive, menu }"
         class="menububble tooltip"
         x-placement="top"
@@ -13,7 +14,10 @@
             <ds-input
               ref="linkInput"
               v-model="linkUrl"
+              class="editor-menu-link-input"
               placeholder="http://"
+              @blur.native.capture="hideMenu(menu.isActive)"
+              @keydown.native.esc.prevent="hideMenu(menu.isActive)"
               @keydown.native.enter.prevent="setLinkUrl(commands.link, linkUrl)"
             />
           </template>
@@ -23,7 +27,8 @@
               size="small"
               :hover="isActive.bold()"
               ghost
-              @click.prevent="commands.bold"
+              @click.prevent="() => {}"
+              @mousedown.native.prevent="commands.bold"
             >
               <ds-icon name="bold" />
             </ds-button>
@@ -33,7 +38,8 @@
               size="small"
               :hover="isActive.italic()"
               ghost
-              @click.prevent="commands.italic"
+              @click.prevent="() => {}"
+              @mousedown.native.prevent="commands.italic"
             >
               <ds-icon name="italic" />
             </ds-button>
@@ -43,7 +49,8 @@
               size="small"
               :hover="isActive.link()"
               ghost
-              @click="showLinkMenu(getMarkAttrs('link'))"
+              @click.prevent="() => {}"
+              @mousedown.native.prevent="showLinkMenu(getMarkAttrs('link'))"
             >
               <ds-icon name="link" />
             </ds-button>
@@ -214,16 +221,6 @@ export default {
       }
     }
   },
-  mounted() {
-    const keydownListener = document.addEventListener('keydown', e => {
-      if (this.linkMenuIsActive && e.keyCode === 27) {
-        this.hideLinkMenu()
-      }
-    })
-    this.$once('hook:beforeDestroy', () => {
-      document.removeEventListener('keydown', keydownListener)
-    })
-  },
   beforeDestroy() {
     this.editor.destroy()
   },
@@ -250,6 +247,11 @@ export default {
     hideLinkMenu() {
       this.linkUrl = null
       this.linkMenuIsActive = false
+      this.editor.focus()
+    },
+    hideMenu(isActive) {
+      isActive = false
+      this.hideLinkMenu()
     },
     setLinkUrl(command, url) {
       command({ href: url })
@@ -335,6 +337,12 @@ li > p {
 
     .tooltip-arrow {
       left: calc(50% - 10px);
+    }
+
+    input,
+    button {
+      border: none;
+      border-radius: 2px;
     }
   }
 
