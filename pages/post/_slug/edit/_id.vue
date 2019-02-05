@@ -21,14 +21,21 @@ export default {
     HcContributionForm
   },
   computed: {
+    user() {
+      return this.$store.getters['auth/user']
+    },
+    author() {
+      return this.contribution ? this.contribution.author : {}
+    },
     contribution() {
-      if (!this.Post || !this.Post[0].id) {
-        return
-      }
-      if (this.Post[0].author.id !== this.$store.getters['auth/user'].id) {
+      return this.Post ? this.Post[0] : {}
+    }
+  },
+  watch: {
+    contribution() {
+      if (this.author.id !== this.user.id) {
         throw new Error(`You can't edit that!`)
       }
-      return this.Post[0]
     }
   },
   apollo: {
