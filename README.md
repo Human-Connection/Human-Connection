@@ -98,7 +98,24 @@ $ kubectl create -f namespace-staging.yaml
 ```
 Switch to the namespace `staging` in your kubernetes dashboard.
 
-### Prepare migration of Human Connection legacy server
+
+### Run the configuration
+```shell
+$ kubectl apply -f staging/
+```
+
+This can take a while because kubernetes will download the docker images.
+Sit back and relax and have a look into your kubernetes dashboard.
+Wait until all pods turn green and they don't show a warning
+`Waiting: ContainerCreating` anymore.
+
+#### Legacy data migration
+
+This setup is completely optional and only required if you have data on a server
+which is running our legacy code and you want to import that data. It will
+import the uploads folder and migrate a dump of mongodb into neo4j.
+
+##### Prepare migration of Human Connection legacy server
 Create a configmap with the specific connection data of your legacy server:
 ```sh
 $ kubectl create configmap db-migration-worker          \
@@ -126,17 +143,16 @@ points out, you should be careful with your ssh keys. Anyone with access to your
 cluster will have access to your ssh keys. Better create a new pair with
 `ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`.
 
-### Run the configuration
-```shell
-$ kubectl apply -f staging/
+##### Migrate legacy database
+Patch the existing deployments to use a multi-container setup:
+```bash
+cd legacy-migration
+kubectl apply -f volume-claim-mongo-export.yaml
+kubectl patch --namespace=staging deployment nitro-backend --patch "$(cat deployment-backend.yaml)"
+kubectl patch --namespace=staging deployment nitro-neo4j   --patch "$(cat deployment-neo4j.yaml)"
+cd ..
 ```
 
-This can take a while because kubernetes will download the docker images.
-Sit back and relax and have a look into your kubernetes dashboard.
-Wait until all pods turn green and they don't show a warning
-`Waiting: ContainerCreating` anymore.
-
-### Migrate legacy database
 Run the migration:
 ```shell
 $ kubectl --namespace=staging get pods

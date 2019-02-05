@@ -18,18 +18,6 @@
         name: "nitro-backend"
       spec:
         containers:
-        - name: nitro-db-migration-worker
-          image: humanconnection/db-migration-worker:latest
-          imagePullPolicy: Always
-          envFrom:
-          - configMapRef:
-              name: db-migration-worker
-          volumeMounts:
-          - name: secret-volume
-            readOnly: false
-            mountPath: /root/.ssh
-          - name: uploads
-            mountPath: /uploads/
         - name: nitro-backend
           image: humanconnection/nitro-backend:latest
           imagePullPolicy: Always
@@ -75,10 +63,6 @@
             - mountPath: /nitro-backend/public/uploads
               name: uploads
         volumes:
-        - name: secret-volume
-          secret:
-            secretName: ssh-keys
-            defaultMode: 0400
         - name: uploads
           persistentVolumeClaim:
             claimName: uploads-claim

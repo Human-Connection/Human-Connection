@@ -17,23 +17,6 @@
         name: nitro-neo4j
       spec:
         containers:
-        - name: nitro-db-migration-worker
-          image: humanconnection/db-migration-worker:latest
-          imagePullPolicy: Always
-          envFrom:
-          - configMapRef:
-              name: db-migration-worker
-          env:
-          - name: COMMIT
-            value: <BACKEND_COMMIT>
-          - name: NEO4J_URI
-            value: bolt://localhost:7687
-          volumeMounts:
-          - name: secret-volume
-            readOnly: false
-            mountPath: /root/.ssh
-          - name: mongo-export
-            mountPath: /mongo-export/
         - name: nitro-neo4j
           image: humanconnection/neo4j:latest
           imagePullPolicy: Always
@@ -69,16 +52,7 @@
           volumeMounts:
             - mountPath: /data/
               name: neo4j-data
-            - mountPath: /mongo-export/
-              name: mongo-export
         volumes:
-        - name: secret-volume
-          secret:
-            secretName: ssh-keys
-            defaultMode: 0400
-        - name: mongo-export
-          persistentVolumeClaim:
-            claimName: mongo-export-claim
         - name: neo4j-data
           persistentVolumeClaim:
             claimName: neo4j-data-claim
@@ -96,15 +70,3 @@
     resources:
       requests:
         storage: 4Gi
----
-  kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: mongo-export-claim
-    namespace: staging
-  spec:
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 1Gi
