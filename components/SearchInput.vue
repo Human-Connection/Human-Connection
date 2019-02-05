@@ -176,4 +176,14 @@ export default {
     color: hsl(0, 0%, 71%);
   }
 }
+
+.input,
+.has-icons-left,
+.has-icons-right {
+  .icon,
+  i {
+    // color: lighten($grey-light, 15%);
+    transition: color 150ms ease-out !important;
+  }
+}
 </style>

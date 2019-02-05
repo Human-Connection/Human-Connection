@@ -168,5 +168,8 @@
     "name": "Name",
     "loadMore": "load more",
     "loading": "loading"
+  },
+  "search": {
+    "placeholder": "Search..."
   }
 }
