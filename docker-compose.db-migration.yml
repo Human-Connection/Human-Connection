@@ -15,6 +15,7 @@ services:
     volumes:
       - mongo-export:/mongo-export
       - uploads:/uploads
+      - ./db-migration-worker/migration/:/migration
       - ./db-migration-worker/.ssh/:/root/.ssh/
     networks:
       - hc-network
