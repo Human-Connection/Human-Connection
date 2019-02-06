@@ -13,14 +13,16 @@
         <hc-post-card :post="post" />
       </ds-flex-item>
     </ds-flex>
-    <ds-button
-      v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
-      class="post-add-button"
-      icon="plus"
-      size="x-large"
-      primary
-      @click="$router.push('/post/create')"
-    />
+    <no-ssr>
+      <ds-button
+        v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+        class="post-add-button"
+        icon="plus"
+        size="x-large"
+        primary
+        @click="$router.push('/post/create')"
+      />
+    </no-ssr>
     <hc-load-more
       v-if="true"
       :loading="$apollo.loading"
@@ -142,8 +144,9 @@ export default {
 .post-add-button {
   z-index: 100;
   position: fixed;
-  bottom: $space-large;
-  right: $space-small;
+  top: 100vh;
+  left: 100vw;
+  transform: translate(-120%, -120%);
   box-shadow: $box-shadow-x-large;
 }
 </style>

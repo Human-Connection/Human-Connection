@@ -252,6 +252,17 @@
               </ds-flex>
             </ds-card>
           </ds-flex-item>
+          <ds-flex-item style="text-align: center">
+            <ds-button
+              v-if="myProfile"
+              v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+              class="profile-post-add-button"
+              icon="plus"
+              size="large"
+              primary
+              @click="$router.push('/post/create')"
+            />
+          </ds-flex-item>
           <template v-if="activePosts.length">
             <ds-flex-item
               v-for="post in activePosts"
