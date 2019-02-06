@@ -36,10 +36,10 @@ To design your documentation see the syntax description at GitBook:
 
 ```text
 {% tabs %}
-{% tab title=„XXX“ %}
+{% tab title="XXX" %}
 XXX
 {% endtab %}
-{% tab title=„XXX“ %}
+{% tab title="XXX" %}
 XXX
 {% endtab %}
 …
@@ -99,21 +99,22 @@ Copy the URL and paste it were you need it.
 ### Add an arrow or some other marking stuff
 
 {% tabs %}
-{% tab %}
+{% tab title="macOS" %}
+
 #### In the Preview App
 
 Got to: **Menu** + **Tools** \(GER: Werkzeuge\) + **Annotate** \(GER: Anmerkungen\) + etc.
 {% endtab %}
 
-{% tab %}
+{% tab title="Windows" %}
 {% hint style="info" %}
-TODO: How to modify screenshots ...
+TODO: How to modify screenshots in Windows ...
 {% endhint %}
 {% endtab %}
 
-{% tab %}
+{% tab title="Linux" %}
 {% hint style="info" %}
-TODO: How to modify screenshots ...
+TODO: How to modify screenshots in Linux ...
 {% endhint %}
 {% endtab %}
 {% endtabs %}
