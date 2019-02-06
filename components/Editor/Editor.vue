@@ -257,11 +257,15 @@ export default {
     setLinkUrl(command, url) {
       const links = linkify().match(url)
       if (links) {
+        // add valid link
         command({
           href: links.pop().url
         })
         this.hideLinkMenu()
         this.editor.focus()
+      } else if (!url) {
+        // remove link
+        command({ href: null })
       }
     }
   }
