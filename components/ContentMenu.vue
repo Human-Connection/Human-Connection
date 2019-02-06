@@ -68,19 +68,14 @@ export default {
       let routes = []
 
       if (this.isOwner && this.context === 'contribution') {
-        // const link = this.$router.resolve({
-        //   name: 'post-edit-id',
-        //   params: {
-        //     id: this.itemId
-        //   }
-        // }).href
         routes.push({
           name: this.$t(`contribution.edit`),
-          callback: () => {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            return this.$router.push(`/post/edit/${this.itemId}`)
-            // return this.$router.push(link)
-          },
+          path: this.$router.resolve({
+            name: 'post-edit-id',
+            params: {
+              id: this.itemId
+            }
+          }).href,
           icon: 'edit'
         })
       }

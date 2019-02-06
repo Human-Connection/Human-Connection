@@ -256,11 +256,11 @@
             <ds-button
               v-if="myProfile"
               v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+              :path="{ name: 'post-create' }"
               class="profile-post-add-button"
               icon="plus"
               size="large"
               primary
-              @click="$router.push('/post/create')"
             />
           </ds-flex-item>
           <template v-if="activePosts.length">

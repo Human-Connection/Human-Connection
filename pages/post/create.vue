@@ -3,10 +3,10 @@
     :width="{ base: '100%' }"
     gutter="base"
   >
-    <ds-flex-item :width="{ base: '100%' }">
+    <ds-flex-item :width="{ base: '100%', md: 3 }">
       <hc-contribution-form />
     </ds-flex-item>
-    <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
+    <ds-flex-item :width="{ base: '100%', md: 1 }">
       &nbsp;
     </ds-flex-item>
   </ds-flex>

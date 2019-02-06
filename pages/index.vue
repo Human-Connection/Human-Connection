@@ -16,11 +16,11 @@
     <no-ssr>
       <ds-button
         v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+        :path="{ name: 'post-create' }"
         class="post-add-button"
         icon="plus"
         size="x-large"
         primary
-        @click="$router.push('/post/create')"
       />
     </no-ssr>
     <hc-load-more
