@@ -87,7 +87,7 @@ export default {
   computed: {
     excerpt() {
       // remove all links from excerpt to prevent issues with the serounding link
-      let excerpt = this.post.contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '')
+      let excerpt = this.post.contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '$1')
       // do not display content that is only linebreaks
       if (excerpt.replace(/<br>/gim, '').trim() === '') {
         excerpt = ''
