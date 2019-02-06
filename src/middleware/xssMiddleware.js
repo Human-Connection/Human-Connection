@@ -53,15 +53,15 @@ function clean (dirty) {
       h4: 'h4',
       h5: 'strong',
       i: 'em',
-      // a: function (tagName, attribs) {
-      //   return {
-      //     tagName: 'a',
-      //     attribs: {
-      //       href: attribs.href,
-      //       target: '_blank',
-      //     }
-      //   }
-      // },
+      a: function (tagName, attribs) {
+        return {
+          tagName: 'a',
+          attribs: {
+            href: attribs.href,
+            target: '_blank'
+          }
+        }
+      },
       b: 'strong',
       s: 'strike',
       img: function (tagName, attribs) {
