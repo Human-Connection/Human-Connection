@@ -135,6 +135,7 @@
 </template>
 
 <script>
+import linkify from 'linkify-it'
 import stringHash from 'string-hash'
 import {
   Editor,
@@ -254,9 +255,14 @@ export default {
       this.hideLinkMenu()
     },
     setLinkUrl(command, url) {
-      command({ href: url })
-      this.hideLinkMenu()
-      this.editor.focus()
+      const links = linkify().match(url)
+      if (links) {
+        command({
+          href: links.pop().url
+        })
+        this.hideLinkMenu()
+        this.editor.focus()
+      }
     }
   }
 }
@@ -344,86 +350,13 @@ li > p {
       border: none;
       border-radius: 2px;
     }
-  }
 
-  // p:not(.is-empty) {
-  // br:first-of-type,
-  // br:last-of-type {
-  //   display: none;
-  // }
-  // br + br + br {
-  //   display: none;
-  // }
-  // }
-}
-
-/*.ProseMirror .is-empty:first-child::before {
-  content: 'Füge hier deinen Text ein…';
-  position: absolute;
-  color: #aaa;
-  pointer-events: none;
-  height: auto;
-  width: auto;
-  padding-bottom: $space-small;
-  font-style: italic;
-}
-
-.editor {
-  position: relative;
-  border: 1px solid #ddd;
-  border-radius: $border-radius;
-  line-height: 1.75;
-}
-
-.editor:focus-within {
-  border: 1px solid rgba($color-primary, 0.5);
-}
-
-.menubar {
-  margin: $border-radius 0;
-}
-
-.editor :matches(p, h1, h2, h3):not(:last-child) {
-  padding-bottom: space-xx-small;
-}*/
-
-/*
-.mark-voice,
-.mark-sound,
-.mark-quote {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-  margin-left: -0.25em;
-  margin-right: -0.25em;
-  border-radius: 1rem;
-
-  &::before {
-    display: inline-block;
-    content: '[' attr(data-label) '] ';
-    opacity: 0.5;
-    font-size: 0.5em;
-    color: $color-text;
+    .ds-input {
+      height: auto;
+    }
+    input {
+      padding: $space-xx-small $space-x-small;
+    }
   }
 }
-
-.mark-voice {
-  background-color: $color-marker-voice;
-  font-style: italic;
-  color: rgba($color-text, 0.7);
-  text-decoration: underline double;
-  text-underline-position: under;
-}
-
-.mark-sound {
-  background-color: $color-marker-sound;
-  text-decoration: underline dashed;
-  text-underline-position: under;
-}
-
-.mark-quote {
-  background-color: $color-marker-quote;
-  text-decoration: underline dotted;
-  text-underline-position: under;
-}
-*/
 </style>

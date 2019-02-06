@@ -49,6 +49,7 @@
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "jsonwebtoken": "^8.3.0",
+    "linkify-it": "^2.1.0",
     "nuxt": "^2.0.0",
     "nuxt-env": "^0.0.4",
     "nuxt-sass-resources-loader": "^2.0.5",
