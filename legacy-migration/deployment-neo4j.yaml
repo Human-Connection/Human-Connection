@@ -1,0 +1,39 @@
+---
+  apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: nitro-neo4j
+    namespace: staging
+  spec:
+    template:
+      spec:
+        containers:
+        - name: nitro-db-migration-worker
+          image: humanconnection/db-migration-worker:latest
+          imagePullPolicy: Always
+          envFrom:
+          - configMapRef:
+              name: db-migration-worker
+          env:
+          - name: COMMIT
+            value: <BACKEND_COMMIT>
+          - name: NEO4J_URI
+            value: bolt://localhost:7687
+          volumeMounts:
+          - name: secret-volume
+            readOnly: false
+            mountPath: /root/.ssh
+          - name: mongo-export
+            mountPath: /mongo-export/
+        - name: nitro-neo4j
+          volumeMounts:
+            - mountPath: /mongo-export/
+              name: mongo-export
+        volumes:
+        - name: secret-volume
+          secret:
+            secretName: ssh-keys
+            defaultMode: 0400
+        - name: mongo-export
+          persistentVolumeClaim:
+            claimName: mongo-export-claim

@@ -1,0 +1,83 @@
+---
+  apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: nitro-backend
+    namespace: staging
+  spec:
+    replicas: 2
+    minReadySeconds: 15
+    progressDeadlineSeconds: 60
+    selector:
+      matchLabels:
+        workload.user.cattle.io/workloadselector: deployment-staging-backend
+    template:
+      metadata:
+        labels:
+          workload.user.cattle.io/workloadselector: deployment-staging-backend
+        name: "nitro-backend"
+      spec:
+        containers:
+        - name: nitro-backend
+          image: humanconnection/nitro-backend:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 4000
+          env:
+          - name: COMMIT
+            value: <BACKEND_COMMIT>
+          - name: MOCK
+            value: "false"
+          - name: CLIENT_URI
+            valueFrom:
+              configMapKeyRef:
+                name: staging-web
+                key: CLIENT_URI
+          - name: GRAPHQL_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: staging-backend
+                key: GRAPHQL_PORT
+          - name: GRAPHQL_URI
+            valueFrom:
+              configMapKeyRef:
+                name: staging-backend
+                key: GRAPHQL_URI
+          - name: MAPBOX_TOKEN
+            valueFrom:
+              configMapKeyRef:
+                name: staging-web
+                key: MAPBOX_TOKEN
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: staging
+                key: JWT_SECRET
+                optional: false
+          - name: NEO4J_URI
+            valueFrom:
+              configMapKeyRef:
+                name: staging-neo4j
+                key: NEO4J_URI
+          volumeMounts:
+            - mountPath: /nitro-backend/public/uploads
+              name: uploads
+        volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: uploads-claim
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
+  status: {}
+---
+  kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: uploads-claim
+    namespace: staging
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi

@@ -7,11 +7,6 @@ spec:
   replicas: 2
   minReadySeconds: 15
   progressDeadlineSeconds: 60
-  # strategy:
-  #   rollingUpdate:
-  #     maxSurge: 1
-  #     maxUnavailable: 0
-  #   type: RollingUpdate
   selector:
     matchLabels:
       workload.user.cattle.io/workloadselector: deployment-staging-web
@@ -22,7 +17,10 @@ spec:
       name: nitro-web
     spec:
       containers:
-      - env:
+      - name: web
+        env:
+        - name: COMMIT
+          value: <WEBAPP_COMMIT>
         - name: HOST
           value: 0.0.0.0
         - name: BACKEND_URL
@@ -42,7 +40,6 @@ spec:
               key: JWT_SECRET
               optional: false
         image: humanconnection/nitro-web:latest
-        name: web
         ports:
         - containerPort: 3000
         resources: {}
