@@ -36,6 +36,8 @@ $ minikube service nitro-web --namespace=human-connection
 First, install kubernetes dashboard:
 ```sh
 $ kubectl apply -f dashboard/
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
+
 ```
 Proxy localhost to the remote kubernetes dashboard:
 ```sh
@@ -70,13 +72,7 @@ Grab the token and paste it into the login screen at [http://localhost:8001/api/
 You have to do some prerequisites e.g. change some secrets according to your
 own setup.
 
-#### Setup config maps
-```shell
-$ cp configmap-db-migration-worker.template.yaml human-connection/configmap-db-migration-worker.yaml
-```
-Edit all variables according to the setup of the remote legacy server.
-
-#### Setup secrets and deploy themn
+### Edit secrets
 
 ```sh
 $ cp secrets.template.yaml human-connection/secrets.yaml
@@ -92,7 +88,7 @@ YWRtaW4=
 ```
 Those secrets get `base64` decoded in a kubernetes pod.
 
-#### Create a namespace locally
+### Create a namespace
 ```shell
 $ kubectl create -f namespace-human-connection.yaml
 ```
