@@ -58,7 +58,8 @@ function clean (dirty) {
           tagName: 'a',
           attribs: {
             href: attribs.href,
-            target: '_blank'
+            target: '_blank',
+            rel: 'noopener noreferrer nofollow'
           }
         }
       },
