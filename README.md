@@ -109,6 +109,21 @@ Sit back and relax and have a look into your kubernetes dashboard.
 Wait until all pods turn green and they don't show a warning
 `Waiting: ContainerCreating` anymore.
 
+### Setup Loadbalancer and Ingress
+
+Basically follow [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nginx-ingress-with-cert-manager-on-digitalocean-kubernetes).
+
+tl;dr:
+```sh
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml
+```
+And create an ingress service in namespace `staging`:
+```sh
+# you should change the domain name according to your needs
+$ kubectl apply -f staging/ingress.yaml
+```
+
 #### Legacy data migration
 
 This setup is completely optional and only required if you have data on a server

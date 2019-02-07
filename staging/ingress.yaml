@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: staging
+spec:
+  rules:
+  - host: master.nitro.human-connection.org
+    http:
+      paths:
+      - backend:
+          serviceName: nitro-web
+          servicePort: 3000
