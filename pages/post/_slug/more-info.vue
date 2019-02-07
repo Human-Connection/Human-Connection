@@ -38,7 +38,7 @@
         <ds-flex-item
           v-for="relatedPost in post.relatedContributions"
           :key="relatedPost.id"
-          :width="{ base: '50%' }"
+          :width="{ base: '100%', lg: 1 }"
         >
           <hc-post-card :post="relatedPost" />
         </ds-flex-item>
