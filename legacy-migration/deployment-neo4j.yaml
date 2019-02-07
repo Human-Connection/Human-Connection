@@ -3,7 +3,7 @@
   kind: Deployment
   metadata:
     name: nitro-neo4j
-    namespace: staging
+    namespace: human-connection
   spec:
     template:
       spec:

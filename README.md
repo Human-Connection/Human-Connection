@@ -28,7 +28,7 @@ If all the pods and services have settled and everything looks green in your
 minikube dashboard, expose the `nitro-web` service on your host system with:
 
 ```shell
-$ minikube service nitro-web --namespace=staging
+$ minikube service nitro-web --namespace=human-connection
 ```
 
 ## Digital Ocean
@@ -72,14 +72,14 @@ own setup.
 
 #### Setup config maps
 ```shell
-$ cp configmap-db-migration-worker.template.yaml staging/configmap-db-migration-worker.yaml
+$ cp configmap-db-migration-worker.template.yaml human-connection/configmap-db-migration-worker.yaml
 ```
 Edit all variables according to the setup of the remote legacy server.
 
 #### Setup secrets and deploy themn
 
 ```sh
-$ cp secrets.template.yaml staging/secrets.yaml
+$ cp secrets.template.yaml human-connection/secrets.yaml
 ```
 Change all secrets as needed.
 
@@ -94,14 +94,14 @@ Those secrets get `base64` decoded in a kubernetes pod.
 
 #### Create a namespace locally
 ```shell
-$ kubectl create -f namespace-staging.yaml
+$ kubectl create -f namespace-human-connection.yaml
 ```
-Switch to the namespace `staging` in your kubernetes dashboard.
+Switch to the namespace `human-connection` in your kubernetes dashboard.
 
 
 ### Run the configuration
 ```shell
-$ kubectl apply -f staging/
+$ kubectl apply -f human-connection/
 ```
 
 This can take a while because kubernetes will download the docker images.
@@ -118,10 +118,10 @@ tl;dr:
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml
 ```
-And create an ingress service in namespace `staging`:
+And create an ingress service in namespace `human-connection`:
 ```sh
 # you should change the domain name according to your needs
-$ kubectl apply -f staging/ingress.yaml
+$ kubectl apply -f human-connection/ingress.yaml
 ```
 
 #### Legacy data migration
@@ -134,7 +134,7 @@ import the uploads folder and migrate a dump of mongodb into neo4j.
 Create a configmap with the specific connection data of your legacy server:
 ```sh
 $ kubectl create configmap db-migration-worker          \
-  --namespace=staging                                   \
+  --namespace=human-connection                          \
   --from-literal=SSH_USERNAME=someuser                  \
   --from-literal=SSH_HOST=yourhost                      \
   --from-literal=MONGODB_USERNAME=hc-api                \
@@ -148,7 +148,7 @@ $ kubectl create configmap db-migration-worker          \
 Create a secret with your public and private ssh keys:
 ```sh
 $ kubectl create secret generic ssh-keys          \
-  --namespace=staging                             \
+  --namespace=human-connection                    \
   --from-file=id_rsa=/path/to/.ssh/id_rsa         \
   --from-file=id_rsa.pub=/path/to/.ssh/id_rsa.pub \
   --from-file=known_hosts=/path/to/.ssh/known_hosts
@@ -163,15 +163,15 @@ Patch the existing deployments to use a multi-container setup:
 ```bash
 cd legacy-migration
 kubectl apply -f volume-claim-mongo-export.yaml
-kubectl patch --namespace=staging deployment nitro-backend --patch "$(cat deployment-backend.yaml)"
-kubectl patch --namespace=staging deployment nitro-neo4j   --patch "$(cat deployment-neo4j.yaml)"
+kubectl patch --namespace=human-connection deployment nitro-backend --patch "$(cat deployment-backend.yaml)"
+kubectl patch --namespace=human-connection deployment nitro-neo4j   --patch "$(cat deployment-neo4j.yaml)"
 cd ..
 ```
 
 Run the migration:
 ```shell
-$ kubectl --namespace=staging get pods
+$ kubectl --namespace=human-connection get pods
 # change <POD_IDs> below
-$ kubectl --namespace=staging exec -it nitro-neo4j-65bbdb597c-nc2lv migrate
-$ kubectl --namespace=staging exec -it nitro-backend-c6cc5ff69-8h96z sync_uploads
+$ kubectl --namespace=human-connection exec -it nitro-neo4j-65bbdb597c-nc2lv migrate
+$ kubectl --namespace=human-connection exec -it nitro-backend-c6cc5ff69-8h96z sync_uploads
 ```

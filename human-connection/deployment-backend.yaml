@@ -3,18 +3,18 @@
   kind: Deployment
   metadata:
     name: nitro-backend
-    namespace: staging
+    namespace: human-connection
   spec:
     replicas: 2
     minReadySeconds: 15
     progressDeadlineSeconds: 60
     selector:
       matchLabels:
-        workload.user.cattle.io/workloadselector: deployment-staging-backend
+        human-connection.org/selector: deployment-human-connection-backend
     template:
       metadata:
         labels:
-          workload.user.cattle.io/workloadselector: deployment-staging-backend
+          human-connection.org/selector: deployment-human-connection-backend
         name: "nitro-backend"
       spec:
         containers:
@@ -31,33 +31,33 @@
           - name: CLIENT_URI
             valueFrom:
               configMapKeyRef:
-                name: staging-web
+                name: human-connection-web
                 key: CLIENT_URI
           - name: GRAPHQL_PORT
             valueFrom:
               configMapKeyRef:
-                name: staging-backend
+                name: human-connection-backend
                 key: GRAPHQL_PORT
           - name: GRAPHQL_URI
             valueFrom:
               configMapKeyRef:
-                name: staging-backend
+                name: human-connection-backend
                 key: GRAPHQL_URI
           - name: MAPBOX_TOKEN
             valueFrom:
               configMapKeyRef:
-                name: staging-web
+                name: human-connection-web
                 key: MAPBOX_TOKEN
           - name: JWT_SECRET
             valueFrom:
               secretKeyRef:
-                name: staging
+                name: human-connection
                 key: JWT_SECRET
                 optional: false
           - name: NEO4J_URI
             valueFrom:
               configMapKeyRef:
-                name: staging-neo4j
+                name: human-connection-neo4j
                 key: NEO4J_URI
           volumeMounts:
             - mountPath: /nitro-backend/public/uploads
@@ -74,7 +74,7 @@
   apiVersion: v1
   metadata:
     name: uploads-claim
-    namespace: staging
+    namespace: human-connection
   spec:
     accessModes:
       - ReadWriteOnce
