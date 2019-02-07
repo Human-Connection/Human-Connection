@@ -26,17 +26,17 @@ spec:
         - name: BACKEND_URL
           valueFrom:
             configMapKeyRef:
-              name: human-connection-backend
+              name: configmap
               key: GRAPHQL_URI
         - name: MAPBOX_TOKEN
           valueFrom:
             configMapKeyRef:
-              name: human-connection-web
+              name: configmap
               key: MAPBOX_TOKEN
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: human-connection
+              name: secret
               key: JWT_SECRET
               optional: false
         image: humanconnection/nitro-web:latest
