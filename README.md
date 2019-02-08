@@ -120,7 +120,7 @@ And create an ingress service in namespace `human-connection`:
 $ kubectl apply -f human-connection/ingress.yaml
 ```
 
-#### Setup SSL
+#### Setup HTTPS
 
 Follow [this quick start guide](https://docs.cert-manager.io/en/latest/tutorials/acme/quick-start/index.html)
 and install certmanager via helm and tiller:
@@ -164,7 +164,13 @@ $ kubectl create configmap db-migration-worker          \
   --from-literal=NEO4J_URI=bolt://neo4j:7687
 
 ```
-Create a secret with your public and private ssh keys:
+
+Create a secret with your public and private ssh keys.  As the
+[kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys)
+points out, you should be careful with your ssh keys. Anyone with access to your
+cluster will have access to your ssh keys. Better create a new pair with
+`ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`:
+
 ```sh
 $ kubectl create secret generic ssh-keys          \
   --namespace=human-connection                    \
@@ -172,10 +178,6 @@ $ kubectl create secret generic ssh-keys          \
   --from-file=id_rsa.pub=/path/to/.ssh/id_rsa.pub \
   --from-file=known_hosts=/path/to/.ssh/known_hosts
 ```
-As the [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys)
-points out, you should be careful with your ssh keys. Anyone with access to your
-cluster will have access to your ssh keys. Better create a new pair with
-`ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`.
 
 ##### Migrate legacy database
 Patch the existing deployments to use a multi-container setup:
