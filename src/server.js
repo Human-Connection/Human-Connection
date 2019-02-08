@@ -1,6 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga'
-import { makeExecutableSchema } from 'apollo-server'
-import { augmentSchema, makeAugmentedSchema } from 'neo4j-graphql-js'
+import { makeAugmentedSchema } from 'neo4j-graphql-js'
 import { typeDefs, resolvers } from './graphql-schema'
 import express from 'express'
 import dotenv from 'dotenv'
