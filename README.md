@@ -120,6 +120,20 @@ And create an ingress service in namespace `human-connection`:
 $ kubectl apply -f human-connection/ingress.yaml
 ```
 
+#### Setup SSL
+
+Follow [this quick start guide](https://docs.cert-manager.io/en/latest/tutorials/acme/quick-start/index.html):
+```
+$ kubectl create serviceaccount tiller --namespace=kube-system
+$ kubectl create clusterrolebinding tiller-admin --serviceaccount=kube-system:tiller --clusterrole=cluster-admin
+$ helm init --service-account=tiller
+$ helm repo update
+$ helm install stable/nginx-ingress --name quickstart
+$ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml<Paste>
+$ helm install --name cert-manager --namespace cert-manager stable/cert-manager
+$ kubectl apply -f certmanager/
+```
+
 #### Legacy data migration
 
 This setup is completely optional and only required if you have data on a server
