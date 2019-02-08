@@ -11,7 +11,7 @@ spec:
   tls:
   - hosts:
     - nitro-master.human-connection.org
-    secretName: quickstart-example-tls
+    secretName: tls
   rules:
   - host: nitro-master.human-connection.org
     http:

@@ -129,7 +129,7 @@ $ kubectl create serviceaccount tiller --namespace=kube-system
 $ kubectl create clusterrolebinding tiller-admin --serviceaccount=kube-system:tiller --clusterrole=cluster-admin
 $ helm init --service-account=tiller
 $ helm repo update
-$ helm install stable/nginx-ingress --name quickstart
+$ helm install stable/nginx-ingress
 $ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
 $ helm install --name cert-manager --namespace cert-manager stable/cert-manager
 ```
