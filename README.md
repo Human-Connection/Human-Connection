@@ -3,7 +3,7 @@
 Todos:
 - [x] check labels and selectors if they all are correct
 - [x] configure NGINX from yml
-- [ ] configure Let's Encrypt cert-manager from yml
+- [x] configure Let's Encrypt cert-manager from yml
 - [x] configure ingress from yml
 - [x] configure persistent & shared storage between nodes
 - [x] reproduce setup locally
@@ -122,16 +122,25 @@ $ kubectl apply -f human-connection/ingress.yaml
 
 #### Setup SSL
 
-Follow [this quick start guide](https://docs.cert-manager.io/en/latest/tutorials/acme/quick-start/index.html):
+Follow [this quick start guide](https://docs.cert-manager.io/en/latest/tutorials/acme/quick-start/index.html)
+and install certmanager via helm and tiller:
 ```
 $ kubectl create serviceaccount tiller --namespace=kube-system
 $ kubectl create clusterrolebinding tiller-admin --serviceaccount=kube-system:tiller --clusterrole=cluster-admin
 $ helm init --service-account=tiller
 $ helm repo update
 $ helm install stable/nginx-ingress --name quickstart
-$ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml<Paste>
+$ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
 $ helm install --name cert-manager --namespace cert-manager stable/cert-manager
-$ kubectl apply -f certmanager/
+```
+
+We provided some configuration in a folder `human-connection/certmanager`. To 
+avoid letsencrypt very strict rate limits, the default issuer is
+`letsencrypt-staging`. If certmanager is working properly, change it to
+`letsencrypt-prod`. Please updated the email address in the configuration, too.
+
+```sh
+$ kubectl apply -f human-connection/certmanager/
 ```
 
 #### Legacy data migration

@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - master.nitro.human-connection.org
+    - nitro-master.human-connection.org
     secretName: quickstart-example-tls
   rules:
-  - host: master.nitro.human-connection.org
+  - host: nitro-master.human-connection.org
     http:
       paths:
       - path: /
