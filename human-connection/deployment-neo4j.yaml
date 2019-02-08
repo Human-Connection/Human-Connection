@@ -69,4 +69,4 @@
       - ReadWriteOnce
     resources:
       requests:
-        storage: 4Gi
+        storage: 1Gi
