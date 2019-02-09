@@ -89,12 +89,13 @@ module.exports = {
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
-    'portal-vue/nuxt',
-    [
-      'nuxt-sass-resources-loader',
-      path.resolve(__dirname, './styleguide/src/system/styles/shared.scss')
-    ]
+    '@nuxtjs/style-resources',
+    'portal-vue/nuxt'
   ],
+
+  styleResources: {
+    scss: ['./styleguide/src/system/styles/shared.scss']
+  },
 
   /*
   ** Axios module configuration
