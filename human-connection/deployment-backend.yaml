@@ -5,7 +5,7 @@
     name: nitro-backend
     namespace: human-connection
   spec:
-    replicas: 2
+    replicas: 1
     minReadySeconds: 15
     progressDeadlineSeconds: 60
     selector:
