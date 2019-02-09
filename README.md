@@ -175,8 +175,7 @@ $ kubectl create configmap db-migration-worker          \
   --from-literal=MONGODB_AUTH_DB=hc_api                 \
   --from-literal=MONGODB_DATABASE=hc_api                \
   --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads \
-  --from-literal=NEO4J_URI=bolt://neo4j:7687
-
+  --from-literal=NEO4J_URI=bolt://localhost:7687
 ```
 
 Create a secret with your public and private ssh keys.  As the
