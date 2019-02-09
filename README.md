@@ -90,7 +90,7 @@ Those secrets get `base64` decoded in a kubernetes pod.
 
 ### Create a namespace
 ```shell
-$ kubectl create -f namespace-human-connection.yaml
+$ kubectl apply -f namespace-human-connection.yaml
 ```
 Switch to the namespace `human-connection` in your kubernetes dashboard.
 
@@ -105,22 +105,7 @@ Sit back and relax and have a look into your kubernetes dashboard.
 Wait until all pods turn green and they don't show a warning
 `Waiting: ContainerCreating` anymore.
 
-### Setup Loadbalancer and Ingress
-
-Basically follow [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nginx-ingress-with-cert-manager-on-digitalocean-kubernetes).
-
-tl;dr:
-```sh
-$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
-$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml
-```
-And create an ingress service in namespace `human-connection`:
-```sh
-# you should change the domain name according to your needs
-$ kubectl apply -f human-connection/ingress.yaml
-```
-
-#### Setup HTTPS
+#### Setup Ingress and HTTPS
 
 Follow [this quick start guide](https://docs.cert-manager.io/en/latest/tutorials/acme/quick-start/index.html)
 and install certmanager via helm and tiller:
@@ -134,14 +119,43 @@ $ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/relea
 $ helm install --name cert-manager --namespace cert-manager stable/cert-manager
 ```
 
-We provided some configuration in a folder `human-connection/certmanager`. To 
-avoid letsencrypt very strict rate limits, the default issuer is
-`letsencrypt-staging`. If certmanager is working properly, change it to
-`letsencrypt-prod`. Please updated the email address in the configuration, too.
+Create letsencrypt issuers. *Change the email address* in these files before
+running this command.
+```sh
+$ kubectl apply -f human-connection/https/
+```
+Create an ingress service in namespace `human-connection`. *Change the domain
+name* according to your needs:
+```sh
+$ kubectl apply -f human-connection/ingress/
+```
+Check the ingress server is working correctly:
+```sh
+$ curl -kivL -H 'Host: <DOMAIN_NAME>' 'https://<IP_ADDRESS>'
+```
+If the response looks good, configure your domain registrar for the new IP
+address and the domain.
+
+Now let's get a valid HTTPS certificate. According to the tutorial above, check
+your tls certificate for staging:
+```sh
+$ kubectl describe --namespace=human-connection certificate tls
+$ kubectl describe --namespace=human-connection secret tls
+```
+
+If everything looks good, update the issuer of your ingress. Change the
+annotation `certmanager.k8s.io/issuer` from `letsencrypt-staging` to
+`letsencrypt-prod` in your ingress configuration in
+`human-connection/ingress/ingress.yaml`.
 
 ```sh
-$ kubectl apply -f human-connection/certmanager/
+$ kubectl apply -f human-connection/ingress/ingress.yaml
 ```
+Delete the former secret to force a refresh:
+```
+$ kubectl  --namespace=human-connection delete secret tls
+```
+Now, HTTPS should be configured on your domain. Congrats.
 
 #### Legacy data migration
 
