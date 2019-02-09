@@ -9,6 +9,8 @@ module.exports = {
   dev: dev,
   debug: dev ? 'nuxt:*,app' : null,
 
+  modern: 'client',
+
   transition: {
     name: 'slide-up',
     mode: 'out-in'
@@ -158,12 +160,6 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    /*
-     * TODO: import the polyfill instead of using the deprecated vendor key
-     * Polyfill missing ES6 & 7 Methods to work on older Browser
-     */
-    vendor: ['@babel/polyfill'],
-
     /*
     ** You can extend webpack config here
     */
