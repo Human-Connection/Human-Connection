@@ -3,7 +3,7 @@
 Todos:
 - [x] check labels and selectors if they all are correct
 - [x] configure NGINX from yml
-- [ ] configure Let's Encrypt cert-manager from yml
+- [x] configure Let's Encrypt cert-manager from yml
 - [x] configure ingress from yml
 - [x] configure persistent & shared storage between nodes
 - [x] reproduce setup locally
@@ -28,7 +28,7 @@ If all the pods and services have settled and everything looks green in your
 minikube dashboard, expose the `nitro-web` service on your host system with:
 
 ```shell
-$ minikube service nitro-web --namespace=staging
+$ minikube service nitro-web --namespace=human-connection
 ```
 
 ## Digital Ocean
@@ -36,6 +36,8 @@ $ minikube service nitro-web --namespace=staging
 First, install kubernetes dashboard:
 ```sh
 $ kubectl apply -f dashboard/
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
+
 ```
 Proxy localhost to the remote kubernetes dashboard:
 ```sh
@@ -70,16 +72,10 @@ Grab the token and paste it into the login screen at [http://localhost:8001/api/
 You have to do some prerequisites e.g. change some secrets according to your
 own setup.
 
-#### Setup config maps
-```shell
-$ cp configmap-db-migration-worker.template.yaml staging/configmap-db-migration-worker.yaml
-```
-Edit all variables according to the setup of the remote legacy server.
-
-#### Setup secrets and deploy themn
+### Edit secrets
 
 ```sh
-$ cp secrets.template.yaml staging/secrets.yaml
+$ cp secrets.template.yaml human-connection/secrets.yaml
 ```
 Change all secrets as needed.
 
@@ -92,22 +88,74 @@ YWRtaW4=
 ```
 Those secrets get `base64` decoded in a kubernetes pod.
 
-#### Create a namespace locally
+### Create a namespace
 ```shell
-$ kubectl create -f namespace-staging.yaml
+$ kubectl apply -f namespace-human-connection.yaml
 ```
-Switch to the namespace `staging` in your kubernetes dashboard.
+Switch to the namespace `human-connection` in your kubernetes dashboard.
 
 
 ### Run the configuration
 ```shell
-$ kubectl apply -f staging/
+$ kubectl apply -f human-connection/
 ```
 
 This can take a while because kubernetes will download the docker images.
 Sit back and relax and have a look into your kubernetes dashboard.
 Wait until all pods turn green and they don't show a warning
 `Waiting: ContainerCreating` anymore.
+
+#### Setup Ingress and HTTPS
+
+Follow [this quick start guide](https://docs.cert-manager.io/en/latest/tutorials/acme/quick-start/index.html)
+and install certmanager via helm and tiller:
+```
+$ kubectl create serviceaccount tiller --namespace=kube-system
+$ kubectl create clusterrolebinding tiller-admin --serviceaccount=kube-system:tiller --clusterrole=cluster-admin
+$ helm init --service-account=tiller
+$ helm repo update
+$ helm install stable/nginx-ingress
+$ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
+$ helm install --name cert-manager --namespace cert-manager stable/cert-manager
+```
+
+Create letsencrypt issuers. *Change the email address* in these files before
+running this command.
+```sh
+$ kubectl apply -f human-connection/https/
+```
+Create an ingress service in namespace `human-connection`. *Change the domain
+name* according to your needs:
+```sh
+$ kubectl apply -f human-connection/ingress/
+```
+Check the ingress server is working correctly:
+```sh
+$ curl -kivL -H 'Host: <DOMAIN_NAME>' 'https://<IP_ADDRESS>'
+```
+If the response looks good, configure your domain registrar for the new IP
+address and the domain.
+
+Now let's get a valid HTTPS certificate. According to the tutorial above, check
+your tls certificate for staging:
+```sh
+$ kubectl describe --namespace=human-connection certificate tls
+$ kubectl describe --namespace=human-connection secret tls
+```
+
+If everything looks good, update the issuer of your ingress. Change the
+annotation `certmanager.k8s.io/issuer` from `letsencrypt-staging` to
+`letsencrypt-prod` in your ingress configuration in
+`human-connection/ingress/ingress.yaml`.
+
+```sh
+$ kubectl apply -f human-connection/ingress/ingress.yaml
+```
+Delete the former secret to force a refresh:
+```
+$ kubectl  --namespace=human-connection delete secret tls
+```
+Now, HTTPS should be configured on your domain. Congrats.
 
 #### Legacy data migration
 
@@ -119,7 +167,7 @@ import the uploads folder and migrate a dump of mongodb into neo4j.
 Create a configmap with the specific connection data of your legacy server:
 ```sh
 $ kubectl create configmap db-migration-worker          \
-  --namespace=staging                                   \
+  --namespace=human-connection                          \
   --from-literal=SSH_USERNAME=someuser                  \
   --from-literal=SSH_HOST=yourhost                      \
   --from-literal=MONGODB_USERNAME=hc-api                \
@@ -127,36 +175,37 @@ $ kubectl create configmap db-migration-worker          \
   --from-literal=MONGODB_AUTH_DB=hc_api                 \
   --from-literal=MONGODB_DATABASE=hc_api                \
   --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads \
-  --from-literal=NEO4J_URI=bolt://neo4j:7687
-
+  --from-literal=NEO4J_URI=bolt://localhost:7687
 ```
-Create a secret with your public and private ssh keys:
+
+Create a secret with your public and private ssh keys.  As the
+[kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys)
+points out, you should be careful with your ssh keys. Anyone with access to your
+cluster will have access to your ssh keys. Better create a new pair with
+`ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`:
+
 ```sh
 $ kubectl create secret generic ssh-keys          \
-  --namespace=staging                             \
+  --namespace=human-connection                    \
   --from-file=id_rsa=/path/to/.ssh/id_rsa         \
   --from-file=id_rsa.pub=/path/to/.ssh/id_rsa.pub \
   --from-file=known_hosts=/path/to/.ssh/known_hosts
 ```
-As the [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys)
-points out, you should be careful with your ssh keys. Anyone with access to your
-cluster will have access to your ssh keys. Better create a new pair with
-`ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`.
 
 ##### Migrate legacy database
 Patch the existing deployments to use a multi-container setup:
 ```bash
 cd legacy-migration
 kubectl apply -f volume-claim-mongo-export.yaml
-kubectl patch --namespace=staging deployment nitro-backend --patch "$(cat deployment-backend.yaml)"
-kubectl patch --namespace=staging deployment nitro-neo4j   --patch "$(cat deployment-neo4j.yaml)"
+kubectl patch --namespace=human-connection deployment nitro-backend --patch "$(cat deployment-backend.yaml)"
+kubectl patch --namespace=human-connection deployment nitro-neo4j   --patch "$(cat deployment-neo4j.yaml)"
 cd ..
 ```
 
 Run the migration:
 ```shell
-$ kubectl --namespace=staging get pods
+$ kubectl --namespace=human-connection get pods
 # change <POD_IDs> below
-$ kubectl --namespace=staging exec -it nitro-neo4j-65bbdb597c-nc2lv migrate
-$ kubectl --namespace=staging exec -it nitro-backend-c6cc5ff69-8h96z sync_uploads
+$ kubectl --namespace=human-connection exec -it nitro-neo4j-65bbdb597c-nc2lv migrate
+$ kubectl --namespace=human-connection exec -it nitro-backend-c6cc5ff69-8h96z sync_uploads
 ```

@@ -2,18 +2,18 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: nitro-web
-  namespace: staging
+  namespace: human-connection
 spec:
   replicas: 2
   minReadySeconds: 15
   progressDeadlineSeconds: 60
   selector:
     matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-staging-web
+      human-connection.org/selector: deployment-human-connection-web
   template:
     metadata:
       labels:
-        workload.user.cattle.io/workloadselector: deployment-staging-web
+        human-connection.org/selector: deployment-human-connection-web
       name: nitro-web
     spec:
       containers:
@@ -26,17 +26,17 @@ spec:
         - name: BACKEND_URL
           valueFrom:
             configMapKeyRef:
-              name: staging-backend
+              name: configmap
               key: GRAPHQL_URI
         - name: MAPBOX_TOKEN
           valueFrom:
             configMapKeyRef:
-              name: staging-web
+              name: configmap
               key: MAPBOX_TOKEN
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: staging
+              name: secret
               key: JWT_SECRET
               optional: false
         image: humanconnection/nitro-web:latest

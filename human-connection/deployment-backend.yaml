@@ -3,18 +3,18 @@
   kind: Deployment
   metadata:
     name: nitro-backend
-    namespace: staging
+    namespace: human-connection
   spec:
-    replicas: 2
+    replicas: 1
     minReadySeconds: 15
     progressDeadlineSeconds: 60
     selector:
       matchLabels:
-        workload.user.cattle.io/workloadselector: deployment-staging-backend
+        human-connection.org/selector: deployment-human-connection-backend
     template:
       metadata:
         labels:
-          workload.user.cattle.io/workloadselector: deployment-staging-backend
+          human-connection.org/selector: deployment-human-connection-backend
         name: "nitro-backend"
       spec:
         containers:
@@ -31,33 +31,33 @@
           - name: CLIENT_URI
             valueFrom:
               configMapKeyRef:
-                name: staging-web
+                name: configmap
                 key: CLIENT_URI
           - name: GRAPHQL_PORT
             valueFrom:
               configMapKeyRef:
-                name: staging-backend
+                name: configmap
                 key: GRAPHQL_PORT
           - name: GRAPHQL_URI
             valueFrom:
               configMapKeyRef:
-                name: staging-backend
+                name: configmap
                 key: GRAPHQL_URI
           - name: MAPBOX_TOKEN
             valueFrom:
               configMapKeyRef:
-                name: staging-web
+                name: configmap
                 key: MAPBOX_TOKEN
           - name: JWT_SECRET
             valueFrom:
               secretKeyRef:
-                name: staging
+                name: secret
                 key: JWT_SECRET
                 optional: false
           - name: NEO4J_URI
             valueFrom:
               configMapKeyRef:
-                name: staging-neo4j
+                name: configmap
                 key: NEO4J_URI
           volumeMounts:
             - mountPath: /nitro-backend/public/uploads
@@ -74,10 +74,10 @@
   apiVersion: v1
   metadata:
     name: uploads-claim
-    namespace: staging
+    namespace: human-connection
   spec:
     accessModes:
       - ReadWriteOnce
     resources:
       requests:
-        storage: 10Gi
+        storage: 2Gi
