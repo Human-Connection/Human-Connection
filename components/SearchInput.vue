@@ -15,10 +15,19 @@
           class="input"
           name="search"
           type="text"
-          placeholder="Search..."
+          :placeholder="$t('search.placeholder')"
           @keyup.exact="onInput"
           @keyup.enter="onEnter"
         >
+        <!-- span class="icon is-small is-left">
+          <hc-icon icon="search"></hc-icon>
+        </span -->
+        <!-- ds-icon
+          class="icon"
+          size="xx-small"
+          name="angle-down"
+          align="right"
+        / -->
       </div>
     </div>
   </div>
@@ -38,6 +47,7 @@ export default {
       type: String,
       default: ''
     },
+    // #: Delay after typing before calling a search query.
     delay: {
       type: Number,
       default: 700
@@ -50,7 +60,9 @@ export default {
   data() {
     return {
       searchValue: '',
+      // #: Returned ID value of the timer given by "setTimeout()".
       searchProcess: null,
+      // #!: Seems to be unused (unquestioned).
       searching: false
     }
   },
@@ -70,6 +82,7 @@ export default {
     this.updateValue()
   },
   methods: {
+    // #: Sets "searchValue" same as "value" if they are different or sets "searchValue" to empty string if "value is undef".
     updateValue() {
       if (!this.value) {
         this.searchValue = ''
@@ -78,6 +91,7 @@ export default {
       }
     },
     onInput() {
+      // #: Prevent "setTimeout()" to call parameter function after "delay".
       clearTimeout(this.searchProcess)
       this.searching = true
       // skip on less then three letters
@@ -88,25 +102,30 @@ export default {
       if (this.searchValue === this.value) {
         return
       }
+      // #: Calls function in first parameter after a delay of "this.delay" milliseconds.
       this.searchProcess = setTimeout(() => {
         this.searching = false
-        this.$emit('search', this.searchValue.toString())
+        //-- avoid querying for dev -- this.$emit('search', this.searchValue.toString())
       }, this.delay)
     },
     onEnter() {
+      // #: Prevent "setTimeout()" to call parameter function after "delay".
       clearTimeout(this.searchProcess)
+      // #: "Vue.nextTick()": Defer the callback to be executed after the next DOM update cycle.
       this.$nextTick(() => {
+        // #: Prevent "setTimeout()" to call parameter function after "delay".
         clearTimeout(this.searchProcess)
       })
       this.searching = false
-      this.$emit('search', this.searchValue.toString())
+      //-- avoid querying for dev -- this.$emit('search', this.searchValue.toString())
     },
     clear() {
+      // #: Prevent "setTimeout()" to call parameter function after "delay".
       clearTimeout(this.searchProcess)
       this.searching = false
       this.searchValue = ''
       if (this.value !== this.searchValue) {
-        this.$emit('search', '')
+        //-- avoid querying for dev -- this.$emit('search', '')
       }
     }
   }

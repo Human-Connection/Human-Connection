@@ -25,6 +25,9 @@
     "shouted": "Shouted",
     "commented": "Commented"
   },
+  "search": {
+    "placeholder": "Search …"
+  },
   "settings": {
     "name": "Settings",
     "data": {
@@ -168,8 +171,5 @@
     "name": "Name",
     "loadMore": "load more",
     "loading": "loading"
-  },
-  "search": {
-    "placeholder": "Search..."
   }
 }

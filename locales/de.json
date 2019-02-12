@@ -25,6 +25,9 @@
     "shouted": "Empfohlen",
     "commented": "Kommentiert"
   },
+  "search": {
+    "placeholder": "Suchen …"
+  },
   "settings": {
     "name": "Einstellungen",
     "data": {
