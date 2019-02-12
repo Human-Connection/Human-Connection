@@ -7,7 +7,7 @@
   >
     <div class="field">
       <div class="control has-icons-left has-icons-right">
-        <input
+        <ds-input
           :id="id"
           ref="input"
           v-model="searchValue"
@@ -15,19 +15,11 @@
           class="input"
           name="search"
           type="text"
+          icon="search"
           :placeholder="$t('search.placeholder')"
           @keyup.exact="onInput"
           @keyup.enter="onEnter"
-        >
-        <!-- span class="icon is-small is-left">
-          <hc-icon icon="search"></hc-icon>
-        </span -->
-        <!-- ds-icon
-          class="icon"
-          size="xx-small"
-          name="angle-down"
-          align="right"
-        / -->
+        />
       </div>
     </div>
   </div>
