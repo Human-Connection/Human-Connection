@@ -2227,7 +2227,7 @@ babel-code-frame@^6.26.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
-babel-core@^7.0.0-bridge.0:
+babel-core@~7.0.0-bridge.0:
   version "7.0.0-bridge.0"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-7.0.0-bridge.0.tgz#95a492ddd90f9b4e9a4a1da14eb335b87b634ece"
   integrity sha512-poPX9mZH/5CSanm50Q+1toVci6pv5KSRv/5TWCwtzQS5XEwn40BcCrgIeMFWP9CKKIniKXNxoIOnOq4VVlGXhg==
@@ -2244,7 +2244,7 @@ babel-eslint@~10.0.1:
     eslint-scope "3.7.1"
     eslint-visitor-keys "^1.0.0"
 
-babel-jest@^24.1.0:
+babel-jest@^24.1.0, babel-jest@~24.1.0:
   version "24.1.0"
   resolved "https://registry.yarnpkg.com/babel-jest/-/babel-jest-24.1.0.tgz#441e23ef75ded3bd547e300ac3194cef87b55190"
   integrity sha512-MLcagnVrO9ybQGLEfZUqnOzv36iQzU7Bj4elm39vCukumLVSfoX+tRy3/jW7lUKc7XdpRmB/jech6L/UCsSZjw==
@@ -3920,10 +3920,10 @@ cyclist@~0.2.2:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   integrity sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA=
 
-cypress-cucumber-preprocessor@~1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.10.0.tgz#eb4456e5dcfc7799630c4bd32c0d2ad7bddc737b"
-  integrity sha512-miiyhrKzrOPQVC+5yXjkH7qN0EnudKm24rWehcSrECDVy1TvpQvmY4llsNB8+EKYeDQWy4UL9DKXFHvmHyVjcA==
+cypress-cucumber-preprocessor@~1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.11.0.tgz#bad39f372ce1a8ae429922b1d3d02ddb8ad10011"
+  integrity sha512-7cEISZVphNcRqOenUB33PlbyppqDyGX7K/sCzrAqNEg91W9Uw9Sq/Dzh7ijzMSracAWa+QKhGNgf7oonCBVNXQ==
   dependencies:
     "@cypress/browserify-preprocessor" "^1.1.2"
     chai "^4.1.2"
