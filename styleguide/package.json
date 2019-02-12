@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "portal-vue": "~1.5.1",
-    "vue": "~2.6.3"
+    "vue": "~2.6.6"
   },
   "devDependencies": {
     "@babel/core": "~7.2.2",
@@ -56,12 +56,12 @@
     "sass-loader": "~7.1.0",
     "theo": "~8.1.1",
     "vue-click-outside": "~1.0.7",
-    "vue-docgen-api": "^2.6.12",
+    "vue-docgen-api": "~2.6.12",
     "vue-router": "~3.0.2",
     "vue-svg-loader": "~0.12.0",
-    "vue-template-compiler": "~2.6.3",
+    "vue-template-compiler": "~2.6.6",
     "vuep": "git+https://github.com/visualjerk/vuep.git#fix-iframe-firefox",
-    "webpack-bundle-analyzer": "~3.0.3",
+    "webpack-bundle-analyzer": "~3.0.4",
     "webpack-merge-and-include-globally": "~2.1.14"
   },
   "author": "visualjerk",
