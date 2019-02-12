@@ -9,7 +9,7 @@ module.exports = {
   dev: dev,
   debug: dev ? 'nuxt:*,app' : null,
 
-  modern: 'client',
+  modern: 'server',
 
   transition: {
     name: 'slide-up',
@@ -96,7 +96,7 @@ module.exports = {
   ],
 
   styleResources: {
-    scss: ['./styleguide/src/system/styles/shared.scss']
+    scss: ['~/styleguide/src/system/styles/shared.scss']
   },
 
   /*
