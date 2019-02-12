@@ -61,7 +61,7 @@ export default {
     }
 
     try {
-      const mdFile = require(`!raw-loader?modules!../docs/${name}.md`)
+      const mdFile = require(`raw-loader!../docs/${name}.md`)
       this.description = mdFile
     } catch (err) {
       this.description = null
