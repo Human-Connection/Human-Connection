@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "http-server ./docs -o -s",
     "build": "yarn theo && vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint --no-fix",
     "dev": "npm-run-all --parallel theo:onchange theo servedev",
     "servedev": "vue-cli-service serve --open",
     "build:lib": "yarn theo && cross-env BUILD=library vue-cli-service build --target lib --name system ./src/library.js",
@@ -25,7 +25,6 @@
     "@vue/cli-plugin-eslint": "~3.4.0",
     "@vue/cli-plugin-unit-jest": "~3.4.0",
     "@vue/cli-service": "~3.4.0",
-    "@vue/eslint-config-prettier": "~4.0.1",
     "@vue/test-utils": "~1.0.0-beta.29",
     "async-validator": "~1.10.1",
     "babel-core": "7.0.0-bridge.0",
