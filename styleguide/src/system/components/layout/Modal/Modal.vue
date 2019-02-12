@@ -122,34 +122,30 @@ export default {
         try {
           if (show) {
             this.$emit('opened')
-            document
-              .getElementsByTagName('body')[0]
-              .classList
-              .add('modal-open')
+            document.getElementsByTagName('body')[0].classList.add('modal-open')
           } else {
             document
               .getElementsByTagName('body')[0]
-              .classList
-              .remove('modal-open')
+              .classList.remove('modal-open')
           }
         } catch (err) {}
       }
     }
   },
   methods: {
-    confirm (type = 'confirm') {
+    confirm(type = 'confirm') {
       this.$emit('confirm')
       this.close(type)
     },
-    cancel (type = 'cancel') {
+    cancel(type = 'cancel') {
       this.$emit('cancel')
       this.close(type)
     },
-    close (type) {
+    close(type) {
       this.$emit('update:isOpen', false)
       this.$emit('close', type)
     },
-    backdropHandler () {
+    backdropHandler() {
       if (!this.force) {
         this.cancel('backdrop')
       }
