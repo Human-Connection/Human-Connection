@@ -1,6 +1,16 @@
 type Query {
   isLoggedIn: Boolean!
   statistics: Statistics!
+  findPosts(filter: String!, limit: Int = 10): [Post]! @cypher(
+    statement: """
+      CALL db.index.fulltext.queryNodes(
+        'postTitleAndContent', $filter+'~')
+      YIELD node AS node
+      RETURN node
+      ORDER BY node.createdAt DESC
+      LIMIT $limit
+    """
+  )
 }
 type Mutation {
   login(email: String!, password: String!): LoggedInUser
