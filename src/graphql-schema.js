@@ -66,15 +66,15 @@ export const resolvers = {
           countShouts: 'MATCH (:User)-[r:SHOUTED]->(:Post) RETURN COUNT(r) AS countShouts'
         }
         let data = {
-          countUsers: (await queryOne(queries.countUsers, session)).countUsers,
-          countPosts: (await queryOne(queries.countPosts, session)).countPosts,
-          countComments: (await queryOne(queries.countComments, session)).countComments,
-          countNotifications: (await queryOne(queries.countNotifications, session)).countNotifications,
-          countOrganizations: (await queryOne(queries.countOrganizations, session)).countOrganizations,
-          countProjects: (await queryOne(queries.countProjects, session)).countProjects,
-          countInvites: (await queryOne(queries.countInvites, session)).countInvites,
-          countFollows: (await queryOne(queries.countFollows, session)).countFollows,
-          countShouts: (await queryOne(queries.countShouts, session)).countShouts
+          countUsers: (await queryOne(queries.countUsers, session)).countUsers.low,
+          countPosts: (await queryOne(queries.countPosts, session)).countPosts.low,
+          countComments: (await queryOne(queries.countComments, session)).countComments.low,
+          countNotifications: (await queryOne(queries.countNotifications, session)).countNotifications.low,
+          countOrganizations: (await queryOne(queries.countOrganizations, session)).countOrganizations.low,
+          countProjects: (await queryOne(queries.countProjects, session)).countProjects.low,
+          countInvites: (await queryOne(queries.countInvites, session)).countInvites.low,
+          countFollows: (await queryOne(queries.countFollows, session)).countFollows.low,
+          countShouts: (await queryOne(queries.countShouts, session)).countShouts.low
         }
         resolve(data)
       })

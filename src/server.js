@@ -1,6 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga'
-import { makeExecutableSchema } from 'apollo-server'
-import { augmentSchema } from 'neo4j-graphql-js'
+import { makeAugmentedSchema } from 'neo4j-graphql-js'
 import { typeDefs, resolvers } from './graphql-schema'
 import express from 'express'
 import dotenv from 'dotenv'
@@ -23,22 +22,21 @@ requiredEnvVars.forEach(env => {
   }
 })
 
-let schema = makeExecutableSchema({
-  typeDefs,
-  resolvers
-})
-
 const driver = neo4j().getDriver()
 const debug = process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true'
 
-schema = augmentSchema(schema, {
-  query: {
-    exclude: ['Statistics', 'LoggedInUser']
-  },
-  mutation: {
-    exclude: ['Statistics', 'LoggedInUser']
-  },
-  debug: debug
+let schema = makeAugmentedSchema({
+  typeDefs,
+  resolvers,
+  config: {
+    query: {
+      exclude: ['Statistics', 'LoggedInUser']
+    },
+    mutation: {
+      exclude: ['Statistics', 'LoggedInUser']
+    },
+    debug: debug
+  }
 })
 schema = applyScalars(applyDirectives(schema))
 
