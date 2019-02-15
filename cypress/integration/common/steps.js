@@ -4,6 +4,9 @@ import users from '../../fixtures/users.json'
 
 /* global cy  */
 
+let lastPost = {
+}
+
 Given('I am logged in', () => {
   cy.loginAs('admin')
 })
@@ -109,25 +112,30 @@ When('I click on the big plus icon in the bottom right corner to create post', (
 })
 
 Given('I previously created a post', () => {
-  cy.fail(new Error('pending'))
+  // TODO: create a post in the database
 })
 
 When('I choose {string} as the title of the post', (title) => {
-  cy.fail(new Error('pending'))
+  lastPost.title = title
+  cy.get('input[name="title"]').type(title)
 })
 
 When('I type in the following text:', (text) => {
-  cy.fail(new Error('pending'))
+  lastPost.text = text
+  cy.get('.ProseMirror').type(text)
 })
 
 Then('the post shows up on the landing page', () => {
-  cy.fail(new Error('pending'))
+  cy.openPage('landing')
+  cy.get('.ds-container').should('contain', lastPost.title)
+  cy.get('.ds-container').should('contain', lastPost.text)
 })
 
 Then('I get redirected to {string}', (route) => {
-  cy.fail(new Error('pending'))
+  cy.location('pathname').should('contain', route)
 })
 
 Then('the post was saved successfully', () => {
-  cy.fail(new Error('pending'))
+  cy.get('.post-card').should('contain', lastPost.title)
+  cy.get('.post-card').should('contain', lastPost.text)
 })
