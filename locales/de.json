@@ -5,7 +5,8 @@
     "create": "Erstellen",
     "save": "Speichern",
     "edit": "Bearbeiten",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "cancel": "Abbrechen"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
