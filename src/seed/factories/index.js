@@ -20,7 +20,8 @@ const client = new ApolloClient({
 const driver = neo4j().getDriver()
 
 const builders = {
-  'user': require('./users.js').default
+  'user': require('./users.js').default,
+  'post': require('./posts.js').default
 }
 
 const buildMutation = (model, parameters) => {

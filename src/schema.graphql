@@ -3,8 +3,7 @@ type Query {
   statistics: Statistics!
   findPosts(filter: String!, limit: Int = 10): [Post]! @cypher(
     statement: """
-      CALL db.index.fulltext.queryNodes(
-        'full_text_search', $filter+'~')
+      CALL db.index.fulltext.queryNodes('full_text_search', $filter+'~')
       YIELD node AS node
       RETURN node
       ORDER BY node.createdAt DESC
