@@ -39,7 +39,3 @@ Feature: About me and location
     And my username is "Peter Lustig"
     When people visit my profile page
     Then they can see the text in the info box below my avatar
-
-
-
-
