@@ -32,15 +32,3 @@ export default function(params) {
     }
   `;
 }
-
-export function relate(type, params) {
-  const { from, to } = params;
-  return `
-    mutation {
-      ${from}_${type}_${to}: AddPost${type}(
-        from: { id: "${from}" },
-        to: { id: "${to}" }
-      ) { from { id } }
-    }
-  `;
-}
