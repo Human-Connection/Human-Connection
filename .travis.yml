@@ -21,7 +21,7 @@ before_install:
 install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-backend:latest .
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
-  - wait-on tcp:7687 && docker-compose exec neo4j migrate
+  - wait-on http://localhost:7474 && docker-compose exec neo4j migrate
 
 script:
   - docker-compose exec backend yarn run lint
