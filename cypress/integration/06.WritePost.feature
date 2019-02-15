@@ -21,4 +21,4 @@ Feature: Create a post
 
   Scenario: See a post on the landing page
     Given I previously created a post
-    Then the post shows up on the landing page
+    Then the post shows up on the landing page at position 1

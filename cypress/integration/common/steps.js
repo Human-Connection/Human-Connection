@@ -116,19 +116,20 @@ Given('I previously created a post', () => {
 })
 
 When('I choose {string} as the title of the post', (title) => {
-  lastPost.title = title
-  cy.get('input[name="title"]').type(title)
+  lastPost.title = title.replace('\n', ' ')
+  cy.get('input[name="title"]').type(lastPost.title)
 })
 
 When('I type in the following text:', (text) => {
-  lastPost.text = text
-  cy.get('.ProseMirror').type(text)
+  lastPost.text = text.replace('\n', ' ')
+  cy.get('.ProseMirror').type(lastPost.text)
 })
 
-Then('the post shows up on the landing page', () => {
+Then('the post shows up on the landing page at position {int}', (index) => {
   cy.openPage('landing')
-  cy.get('.ds-container').should('contain', lastPost.title)
-  cy.get('.ds-container').should('contain', lastPost.text)
+  const selector = `:nth-child(${index}) > .ds-card > .ds-card-content`
+  cy.get(selector).should('contain', lastPost.title)
+  cy.get(selector).should('contain', lastPost.text)
 })
 
 Then('I get redirected to {string}', (route) => {
@@ -136,6 +137,6 @@ Then('I get redirected to {string}', (route) => {
 })
 
 Then('the post was saved successfully', () => {
-  cy.get('.post-card').should('contain', lastPost.title)
-  cy.get('.post-card').should('contain', lastPost.text)
+  cy.get('.ds-card-header > .ds-heading').should('contain', lastPost.title)
+  cy.get('.content').should('contain', lastPost.text)
 })
