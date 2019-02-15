@@ -1,6 +1,9 @@
 version: "3.7"
 
 services:
+  neo4j:
+    ports:
+      - 7687:7687
   backend:
     image: humanconnection/nitro-backend:builder
     build:
