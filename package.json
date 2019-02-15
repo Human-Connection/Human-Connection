@@ -39,9 +39,14 @@
   },
   "dependencies": {
     "linkify-it": "~2.1.0",
-    "string-hash": "~1.1.3",
-    "tiptap": "~1.13.0",
-    "tiptap-extensions": "~1.13.0",
+    "nuxt": "~2.4.3",
+    "nuxt-env": "~0.0.4",
+    "portal-vue": "~1.5.1",
+    "string-hash": "^1.1.3",
+    "tiptap": "^1.13.0",
+    "tiptap-extensions": "^1.13.0",
+    "v-tooltip": "^2.0.0-rc.33",
+    "vue-count-to": "^1.0.13",
     "vue-izitoast": "1.1.2",
     "vue-sweetalert-icons": "~3.2.0",
     "vuex-i18n": "~1.11.0"
