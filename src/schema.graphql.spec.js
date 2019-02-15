@@ -16,11 +16,11 @@ describe('filter for searchQuery', () => {
   describe('given some posts', () => {
     beforeEach(async () => {
       await create('post', {
-        title:   'Hamlet',
+        title: 'Hamlet',
         content: 'To be, or not to be: that is the question'
       })
       await create('post', {
-        title:   'Threepenny Opera',
+        title: 'Threepenny Opera',
         content: 'And the shark, it has teeth, And it wears them in the face.'
       })
     })
@@ -35,9 +35,8 @@ describe('filter for searchQuery', () => {
           MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;
           CALL db.index.fulltext.queryNodes('full_text_search', ''
         `))
-        console.log(data)
         const data = await request(host, query('the'))
-        expect(data).toEqual({findPosts: [{title: 'Hamlet'}, {title: 'Threepenny Opera'}]})
+        expect(data).toEqual({ findPosts: [{ title: 'Hamlet' }, { title: 'Threepenny Opera' }] })
       })
     })
 
@@ -45,17 +44,17 @@ describe('filter for searchQuery', () => {
       describe('includes posts if search term', () => {
         it('matches title', async () => {
           const data = await request(host, query('Hamlet'))
-          expect(data).toEqual({findPosts: [{title: 'Hamlet'}]})
+          expect(data).toEqual({ findPosts: [{ title: 'Hamlet' }] })
         })
 
         it('matches mistyped title', async () => {
           const data = await request(host, query('amlet'))
-          expect(data).toEqual({findPosts: [{title: 'Hamlet'}]})
+          expect(data).toEqual({ findPosts: [{ title: 'Hamlet' }] })
         })
 
         it('matches a part of the content', async () => {
           const data = await request(host, query('shark'))
-          expect(data).toEqual({findPosts: [{title: 'Threepenny Opera'}]})
+          expect(data).toEqual({ findPosts: [{ title: 'Threepenny Opera' }] })
         })
       })
     })
