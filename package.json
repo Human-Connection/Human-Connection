@@ -44,7 +44,7 @@
     "@nuxtjs/style-resources": "~0.1.2",
     "accounting": "~0.4.1",
     "apollo-cache-inmemory": "~1.4.2",
-    "apollo-client": "~2.4.12",
+    "apollo-client": "~2.4.13",
     "cookie-universal-nuxt": "~2.0.14",
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0-alpha.26",
