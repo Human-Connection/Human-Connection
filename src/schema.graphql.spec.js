@@ -21,12 +21,24 @@ describe('filter for searchQuery', () => {
       })
       await create('post', {
         title:   'Threepenny Opera',
-        content: 'And the shark, it has teeth, And it wears them in the face.'  
+        content: 'And the shark, it has teeth, And it wears them in the face.'
       })
     })
 
     afterEach(async () => {
       await cleanDatabase()
+    })
+
+    describe('sanitization', () => {
+      it('escapes cypher statement', async () => {
+        await request(host, query(`'');
+          MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;
+          CALL db.index.fulltext.queryNodes('full_text_search', ''
+        `))
+        console.log(data)
+        const data = await request(host, query('the'))
+        expect(data).toEqual({findPosts: [{title: 'Hamlet'}, {title: 'Threepenny Opera'}]})
+      })
     })
 
     describe('result set', () => {
@@ -36,8 +48,8 @@ describe('filter for searchQuery', () => {
           expect(data).toEqual({findPosts: [{title: 'Hamlet'}]})
         })
 
-        it('matches a part of the title', async () => {
-          const data = await request(host, query('let'))
+        it('matches mistyped title', async () => {
+          const data = await request(host, query('amlet'))
           expect(data).toEqual({findPosts: [{title: 'Hamlet'}]})
         })
 

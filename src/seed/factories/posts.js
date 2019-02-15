@@ -1,7 +1,7 @@
-import faker from 'faker'
-import uuid from 'uuid/v4'
+import faker from "faker";
+import uuid from "uuid/v4";
 
-export default function (params) {
+export default function(params) {
   const {
     id = uuid(),
     title = faker.lorem.sentence(),
@@ -11,12 +11,12 @@ export default function (params) {
       faker.lorem.sentence(),
       faker.lorem.sentence(),
       faker.lorem.sentence()
-    ].join('. '),
+    ].join(". "),
     image = faker.image.image(),
-    visibility = 'public',
+    visibility = "public",
     disabled = false,
     deleted = false
-  } = params
+  } = params;
 
   return `
     mutation {
@@ -30,11 +30,11 @@ export default function (params) {
         deleted: ${deleted}
       ) { title, content }
     }
-  `
+  `;
 }
 
-export function relate (type, params) {
-  const { from, to } = params
+export function relate(type, params) {
+  const { from, to } = params;
   return `
     mutation {
       ${from}_${type}_${to}: AddPost${type}(
@@ -42,5 +42,5 @@ export function relate (type, params) {
         to: { id: "${to}" }
       ) { from { id } }
     }
-  `
+  `;
 }
