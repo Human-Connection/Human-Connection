@@ -103,3 +103,31 @@ Then('I see a success message:', message => {
 When('I click on the avatar menu in the top right corner', () => {
   cy.get('.avatar-menu').click()
 })
+
+When('I click on the big plus icon in the bottom right corner to create post', () => {
+  cy.get('.post-add-button').click()
+})
+
+Given('I previously created a post', () => {
+  cy.fail(new Error('pending'))
+})
+
+When('I choose {string} as the title of the post', (title) => {
+  cy.fail(new Error('pending'))
+})
+
+When('I type in the following text:', (text) => {
+  cy.fail(new Error('pending'))
+})
+
+Then('the post shows up on the landing page', () => {
+  cy.fail(new Error('pending'))
+})
+
+Then('I get redirected to {string}', (route) => {
+  cy.fail(new Error('pending'))
+})
+
+Then('the post was saved successfully', () => {
+  cy.fail(new Error('pending'))
+})
