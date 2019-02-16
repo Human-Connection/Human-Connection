@@ -49,7 +49,7 @@ after_success:
     chmod +x tester.sh &&
     ./tester.sh staging $WEBHOOK_URL;
     fi
-    
+
 after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
