@@ -39,11 +39,21 @@ after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh success $WEBHOOK_URL
-
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    wget https://raw.githubusercontent.com/Human-Connection/Discord-Bot/develop/tester.sh &&
+    chmod +x tester.sh &&
+    ./tester.sh alpha $WEBHOOK_URL;
+    fi
+  - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    wget https://raw.githubusercontent.com/Human-Connection/Discord-Bot/develop/tester.sh &&
+    chmod +x tester.sh &&
+    ./tester.sh staging $WEBHOOK_URL;
+    fi
+    
 after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
-  - ./send.sh failure $WEBHOOK_URL
+- ./send.sh failure $WEBHOOK_URL
 
 deploy:
   - provider: script
