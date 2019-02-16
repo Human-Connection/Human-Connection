@@ -15,7 +15,7 @@
           name="search"
           type="search"
           icon="search"
-          icon-right="times-circle"
+          :icon-right="isActive ? 'times-circle' : null"
           :placeholder="$t('search.placeholder')"
           @input="handleInput"
           @keyup.native.enter="onEnter"
