@@ -10,8 +10,6 @@
 ### Install
 ``` bash
 # install all dependencies
-$ cd styleguide && yarn install && cd ..
-$ yarn styleguide:build
 $ yarn install
 ```
 
@@ -30,7 +28,6 @@ $ yarn dev
 ### Build for production
 ``` bash
 # build for production and launch server
-$ yarn styleguide:build
 $ yarn build
 $ yarn start
 ```
@@ -41,10 +38,8 @@ All reusable Components (for example avatar) should be done inside the styleguid
 
 ![Styleguide Screenshot](screenshot-styleguide.png)
 
-### To show the styleguide
-``` bash
-$ yarn styleguide
-```
+More information can be found here: https://github.com/Human-Connection/Nitro-Styleguide
+
 
 ## Internationalization (i18n)
 

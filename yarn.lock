@@ -10624,9 +10624,9 @@ style-resources-loader@^1.2.1:
     is-promise "^2.1.0"
     loader-utils "^1.1.0"
 
-"styleguide@git+https://github.com/Human-Connection/Nitro-Styleguide.git#fix-missing-files":
+"styleguide@git+https://github.com/Human-Connection/Nitro-Styleguide.git":
   version "1.0.0"
-  resolved "git+https://github.com/Human-Connection/Nitro-Styleguide.git#e767ee5870e833fc3fce43ca824121eef6fb1029"
+  resolved "git+https://github.com/Human-Connection/Nitro-Styleguide.git#c141674c65ad941409745e251d0816f94961444f"
   dependencies:
     portal-vue "~1.5.1"
     vue "~2.6.6"
