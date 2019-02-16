@@ -6,19 +6,19 @@
     :class="{ 'is-active': isActive }"
   >
     <div class="field">
-      <div class="control has-icons-left has-icons-right">
+      <div class="control">
         <ds-input
           :id="id"
           ref="input"
           v-model="searchValue"
-          v-focus="focus"
           class="input"
           name="search"
-          type="text"
+          type="search"
           icon="search"
+          icon-right="times-circle"
           :placeholder="$t('search.placeholder')"
-          @keyup.exact="onInput"
-          @keyup.enter="onEnter"
+          @input="handleInput"
+          @keyup.native.enter="onEnter"
         />
       </div>
     </div>
@@ -43,22 +43,20 @@ export default {
     delay: {
       type: Number,
       default: 700
-    },
-    focus: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
     return {
+      // #: Bind to input text.
       searchValue: '',
       // #: Returned ID value of the timer given by "setTimeout()".
       searchProcess: null,
       // #!: Seems to be unused (unquestioned).
-      searching: false
+      typing: false
     }
   },
   computed: {
+    // #: Unused at the moment?
     isActive() {
       return !isEmpty(this.searchValue)
     }
@@ -82,10 +80,10 @@ export default {
         this.searchValue = this.value.toString()
       }
     },
-    onInput() {
+    handleInput() {
       // #: Prevent "setTimeout()" to call parameter function after "delay".
       clearTimeout(this.searchProcess)
-      this.searching = true
+      this.typing = true
       // skip on less then three letters
       if (this.searchValue && this.searchValue.toString().length < 3) {
         return
@@ -96,7 +94,7 @@ export default {
       }
       // #: Calls function in first parameter after a delay of "this.delay" milliseconds.
       this.searchProcess = setTimeout(() => {
-        this.searching = false
+        this.typing = false
         //-- avoid querying for dev -- this.$emit('search', this.searchValue.toString())
       }, this.delay)
     },
@@ -108,13 +106,14 @@ export default {
         // #: Prevent "setTimeout()" to call parameter function after "delay".
         clearTimeout(this.searchProcess)
       })
-      this.searching = false
+      this.typing = false
       //-- avoid querying for dev -- this.$emit('search', this.searchValue.toString())
+      console.log('Enter !!!!')
     },
     clear() {
       // #: Prevent "setTimeout()" to call parameter function after "delay".
       clearTimeout(this.searchProcess)
-      this.searching = false
+      this.typing = false
       this.searchValue = ''
       if (this.value !== this.searchValue) {
         //-- avoid querying for dev -- this.$emit('search', '')
@@ -185,16 +184,6 @@ export default {
 
   &.is-active .icon {
     color: hsl(0, 0%, 71%);
-  }
-}
-
-.input,
-.has-icons-left,
-.has-icons-right {
-  .icon,
-  i {
-    // color: lighten($grey-light, 15%);
-    transition: color 150ms ease-out !important;
   }
 }
 </style>

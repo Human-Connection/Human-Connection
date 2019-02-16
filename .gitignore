@@ -79,3 +79,6 @@ static/uploads
 
 cypress/videos
 cypress/screenshots/
+
+# Apple macOS folder attribute file
+.DS_Store
