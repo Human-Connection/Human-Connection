@@ -8,9 +8,7 @@ services:
     volumes:
       - .:/nitro-web
       - node_modules:/nitro-web/node_modules
-      - node_modules_styleguide:/nitro-web/styleguide/node_modules
     command: yarn run dev
 
 volumes:
   node_modules:
-  node_modules_styleguide:
