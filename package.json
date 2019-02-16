@@ -10,8 +10,8 @@
     "start": "cross-env node server/index.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue .",
-    "styleguide": "cd ./styleguide && yarn dev",
-    "styleguide:build": "cd ./styleguide && yarn build:lib && cd ../",
+    "styleguide": "cd ./node_modules/styleguide && yarn dev",
+    "styleguide:build": "echo 'STOP DOING IT!'",
     "test": "jest",
     "precommit": "yarn lint"
   },
@@ -30,12 +30,8 @@
     },
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
-      "^@@/(.*)$": "<rootDir>/styleguide/src/system/$1",
       "^~/(.*)$": "<rootDir>/$1"
-    },
-    "modulePathIgnorePatterns": [
-      "<rootDir>/styleguide"
-    ]
+    }
   },
   "dependencies": {
     "@nuxtjs/apollo": "4.0.0-rc4",
@@ -54,6 +50,7 @@
     "nuxt": "~2.4.3",
     "nuxt-env": "~0.1.0",
     "portal-vue": "~1.5.1",
+    "styleguide": "git+https://github.com/Human-Connection/Nitro-Styleguide.git#fix-missing-files",
     "v-tooltip": "~2.0.0-rc.33",
     "vue-count-to": "~1.0.13",
     "vue-izitoast": "1.1.2",

@@ -63,10 +63,10 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/styleguide.js', ssr: true },
     { src: '~/plugins/i18n.js', ssr: true },
     { src: '~/plugins/axios.js', ssr: false },
     { src: '~/plugins/keep-alive.js', ssr: false },
-    { src: '~/plugins/design-system.js', ssr: true },
     { src: '~/plugins/vue-directives.js', ssr: false },
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
@@ -96,7 +96,7 @@ module.exports = {
   ],
 
   styleResources: {
-    scss: ['~/styleguide/src/system/styles/shared.scss']
+    scss: ['~/node_modules/styleguide/dist/shared.scss']
   },
 
   /*
@@ -173,14 +173,6 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-      config.resolve.alias['@@'] = path.resolve(
-        __dirname,
-        './styleguide/src/system'
-      )
-      config.module.rules.push({
-        resourceQuery: /blockType=docs/,
-        loader: require.resolve('./styleguide/src/loader/docs-trim-loader.js')
-      })
       const svgRule = config.module.rules.find(rule => rule.test.test('.svg'))
       svgRule.test = /\.(png|jpe?g|gif|webp)$/
       config.module.rules.push({
