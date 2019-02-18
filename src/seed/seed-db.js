@@ -4,8 +4,8 @@ import gql from 'graphql-tag'
 import asyncForEach from '../helpers/asyncForEach'
 import seed from './data'
 
+/* eslint-disable no-multi-spaces */
 (async function () {
-  // prefer factories
   try {
     await Promise.all([
       create('user', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     email: 'admin@example.org', password: '1234' }),
@@ -104,3 +104,4 @@ import seed from './data'
   /* eslint-disable-next-line no-console */
   console.log('Seeded Data...')
 })()
+/* eslint-enable no-multi-spaces */

@@ -1,30 +1,19 @@
-import { query } from '../graphql-schema'
+import { cleanDatabase } from './factories'
 import dotenv from 'dotenv'
-import neo4j from '../bootstrap/neo4j'
 
 dotenv.config()
 
 if (process.env.NODE_ENV === 'production') {
-  throw new Error('YOU CAN`T UNSEED IN PRODUCTION MODE')
+  throw new Error(`YOU CAN'T CLEAN THE DATABASE WITH NODE_ENV=${process.env.NODE_ENV}`)
 }
 
-const driver = neo4j().getDriver()
-const session = driver.session()
-
-const deleteAll = `
-MATCH (n)
-OPTIONAL MATCH (n)-[r]-()
-DELETE n,r
-`
-query(deleteAll, session).then(() => {
-  /* eslint-disable-next-line no-console */
-  console.log('Successfully deleted all nodes and relations!')
-}).catch((err) => {
-  /* eslint-disable-next-line no-console */
-  console.log(`Error occurred deleting the nodes and relations (reset the db)\n\n${err}`)
-}).finally(() => {
-  if (session) {
-    session.close()
+(async function () {
+  try {
+    await cleanDatabase()
+    console.log('Successfully deleted all nodes and relations!')
+    process.exit(0)
+  } catch (err) {
+    console.log(`Error occurred deleting the nodes and relations (reset the db)\n\n${err}`)
+    process.exit(1)
   }
-  process.exit(0)
-})
+})()

@@ -37,13 +37,13 @@ const create = (model, parameters, options) => {
 
 const cleanDatabase = async () => {
   const session = driver.session()
-  const cypher = 'MATCH (n) DETACH DELETE n'
+  const cypher = 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r'
   try {
-    const result = await session.run(cypher)
-    session.close()
-    return result
+    return await session.run(cypher)
   } catch (error) {
     console.log(error)
+  } finally {
+    session.close()
   }
 }
 
