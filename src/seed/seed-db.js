@@ -1,4 +1,4 @@
-import { create, apolloClient, seedServerHost as host } from './factories'
+import { create, relate, apolloClient, seedServerHost as host } from './factories'
 import { authenticatedHeaders } from '../jest/helpers.js'
 import gql from 'graphql-tag'
 import asyncForEach from '../helpers/asyncForEach'
@@ -24,6 +24,12 @@ import seed from './data'
       create('user', { id: 'u5', name: 'Trick',              role: 'user',      followedUserIds: ['u4'], badgeIds: ['b2'], email: 'trick@example.org' }),
       create('user', { id: 'u6', name: 'Track',              role: 'user',      followedUserIds: ['u5'], badgeIds: ['b1'], email: 'track@example.org' }),
       create('user', { id: 'u7', name: 'Dagobert', role: 'user', badgeIds: ['b1', 'b2'], blacklistedUserIds: ['u4', 'u5', 'u6'], email: 'dagobert@example.org' })
+    ])
+
+    await Promise.all([
+      relate('user', 'friends', { from: 'u1', to: 'u2' }),
+      relate('user', 'friends', { from: 'u1', to: 'u3' }),
+      relate('user', 'friends', { from: 'u2', to: 'u3' })
     ])
 
     const headers = await Promise.all([

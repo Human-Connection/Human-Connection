@@ -1,6 +1,6 @@
 import faker from 'faker'
 
-export default function (params) {
+export default function create (params) {
   const {
     id = `u${faker.random.number()}`,
     name = faker.name.findName(),
@@ -64,4 +64,19 @@ export default function (params) {
     ${followedUserRelations.join('\n')}
     }
   `
+}
+
+export function relate(type, params) {
+  switch(type){
+    case 'friends':
+      const { from, to } = params
+      return `
+        mutation {
+          ${from}_friends_${to}: AddUserFriends(
+            from: { id: "${from}" },
+            to: { id: "${to}" }
+          ) { from { id } }
+        }
+      `
+  }
 }

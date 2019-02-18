@@ -25,13 +25,27 @@ const builders = {
   'tag': require('./tags.js').default
 }
 
+const relationBuilders = {
+  'user': require('./users.js').relate
+}
+
 const buildMutation = (model, parameters) => {
   return builders[model](parameters)
+}
+
+const buildRelationMutation = (model, type, parameters) => {
+  return relationBuilders[model](type, parameters)
 }
 
 const create = (model, parameters, options) => {
   const graphQLClient = new GraphQLClient(seedServerHost, options)
   const mutation = buildMutation(model, parameters)
+  return graphQLClient.request(mutation)
+}
+
+const relate = (model, type, parameters, options) => {
+  const graphQLClient = new GraphQLClient(seedServerHost, options)
+  const mutation = buildRelationMutation(model, type, parameters)
   return graphQLClient.request(mutation)
 }
 
@@ -50,7 +64,9 @@ const cleanDatabase = async () => {
 export {
   driver,
   apolloClient,
-  create,
   buildMutation,
+  buildRelationMutation,
+  create,
+  relate,
   cleanDatabase
 }
