@@ -15,12 +15,21 @@ export default function (params) {
     image = faker.image.image(),
     visibility = 'public',
     disabled = false,
-    deleted = false
+    deleted = false,
+    tagIds = [],
+    categoryIds = []
   } = params
+
+  const categoryRelations = categoryIds.map((categoryId) => {
+    return `${id}_${categoryId}: AddPostCategories(
+      from: {id: "${id}"},
+      to: {id: "${categoryId}"}
+    ) { from { id } }`
+  })
 
   return `
     mutation {
-      CreatePost(
+      ${id}: CreatePost(
         id: "${id}",
         title: "${title}",
         content: "${content}",
@@ -29,6 +38,7 @@ export default function (params) {
         disabled: ${disabled},
         deleted: ${deleted}
       ) { id, title }
+      ${categoryRelations.join('\n')}
     }
   `
 }

@@ -20,7 +20,8 @@ const driver = neo4j().getDriver()
 
 const builders = {
   'user': require('./users.js').default,
-  'post': require('./posts.js').default
+  'post': require('./posts.js').default,
+  'category': require('./categories.js').default
 }
 
 const buildMutation = (model, parameters) => {

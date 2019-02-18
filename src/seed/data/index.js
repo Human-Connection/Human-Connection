@@ -1,6 +1,5 @@
 export default {
   Badge: require('./badges.js').default,
-  Category: require('./categories.js').default,
   Tags: require('./tags.js').default,
 
   UserBadges: require('./users-badges.js').default,
