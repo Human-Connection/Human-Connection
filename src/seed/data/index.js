@@ -1,6 +1,5 @@
 export default {
 
-  UserBadges: require('./users-badges.js').default,
   UserBlacklist: require('./users-blacklist.js').default,
   UserFollows: require('./users-follows.js').default,
   UserFriends: require('./users-friends.js').default,

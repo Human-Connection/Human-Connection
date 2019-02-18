@@ -8,24 +8,31 @@ import seed from './data'
 (async function () {
   try {
     await Promise.all([
-      create('user', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     email: 'admin@example.org', password: '1234' }),
-      create('user', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', email: 'moderator@example.org' }),
-      create('user', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      email: 'user@example.org' }),
-      create('user', { id: 'u4', name: 'Angie Banjie',       role: 'user',      email: 'angie@example.org' })
+      create('badge', { id: 'b1', key: 'indiegogo_en_racoon', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_racoon.svg' }),
+      create('badge', { id: 'b2', key: 'indiegogo_en_rabbit', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_rabbit.svg' }),
+      create('badge', { id: 'b3', key: 'indiegogo_en_wolf',   type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_wolf.svg' }),
+      create('badge', { id: 'b4', key: 'indiegogo_en_bear',   type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_bear.svg' }),
+      create('badge', { id: 'b5', key: 'indiegogo_en_turtle', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_turtle.svg' }),
+      create('badge', { id: 'b6', key: 'indiegogo_en_rhino',  type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_rhino.svg' })
     ])
 
-    const asAdmin = await authenticatedHeaders({
-      email: 'admin@example.org',
-      password: '1234'
-    }, host)
-    const asModerator = await authenticatedHeaders({
-      email: 'moderator@example.org',
-      password: '1234'
-    }, host)
-    const asUser = await authenticatedHeaders({
-      email: 'user@example.org',
-      password: '1234'
-    }, host)
+    await Promise.all([
+      create('user', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     badgeIds: ['b6'], email: 'admin@example.org' }),
+      create('user', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', badgeIds: ['b5'], email: 'moderator@example.org' }),
+      create('user', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      badgeIds: ['b4'], email: 'user@example.org' }),
+      create('user', { id: 'u4', name: 'Tick',               role: 'user',      badgeIds: ['b3'], email: 'tick@example.org' }),
+      create('user', { id: 'u5', name: 'Trick',              role: 'user',      badgeIds: ['b2'], email: 'trick@example.org' }),
+      create('user', { id: 'u6', name: 'Track',              role: 'user',      badgeIds: ['b1'], email: 'track@example.org' })
+    ])
+
+    const headers = await Promise.all([
+     authenticatedHeaders({ email: 'admin@example.org',     password: '1234' }, host),
+     authenticatedHeaders({ email: 'moderator@example.org', password: '1234' }, host),
+     authenticatedHeaders({ email: 'user@example.org',      password: '1234' }, host),
+     authenticatedHeaders({ email: 'tick@example.org',      password: '1234' }, host),
+     authenticatedHeaders({ email: 'trick@example.org',     password: '1234' }, host),
+     authenticatedHeaders({ email: 'track@example.org',     password: '1234' }, host),
+    ])
 
     await Promise.all([
       create('category', { id: 'cat1',  name: 'Just For Fun',                 slug: 'justforfun',                 icon: 'smile' }),
@@ -53,31 +60,23 @@ import seed from './data'
       create('tag', { id: 't4', name: 'Freiheit' })
     ])
 
-    await Promise.all([
-      create('badge', { id: 'b1', key: 'indiegogo_en_racoon', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_racoon.svg' }),
-      create('badge', { id: 'b2', key: 'indiegogo_en_rabbit', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_rabbit.svg' }),
-      create('badge', { id: 'b3', key: 'indiegogo_en_wolf',   type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_wolf.svg' }),
-      create('badge', { id: 'b4', key: 'indiegogo_en_bear',   type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_bear.svg' }),
-      create('badge', { id: 'b5', key: 'indiegogo_en_turtle', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_turtle.svg' }),
-      create('badge', { id: 'b6', key: 'indiegogo_en_rhino',  type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_rhino.svg' })
-    ])
 
     await Promise.all([
-      create('post', { id: 'p0',  categoryIds: ['cat1'],  tagIds: ['t1', 't4'] }, { headers: asAdmin }),
-      create('post', { id: 'p1',  categoryIds: ['cat2'],  tagIds: ['t2', 't3'] }, { headers: asModerator }),
-      create('post', { id: 'p2',  categoryIds: ['cat3'],  tagIds: ['t3', 't4'] }, { headers: asUser }),
-      create('post', { id: 'p3',  categoryIds: ['cat4'],  tagIds: ['t4', 't2'] }, { headers: asAdmin }),
-      create('post', { id: 'p4',  categoryIds: ['cat5'],  tagIds: ['t1', 't2'] }, { headers: asModerator }),
-      create('post', { id: 'p5',  categoryIds: ['cat6'],  tagIds: ['t2', 't4'] }, { headers: asUser }),
-      create('post', { id: 'p6',  categoryIds: ['cat7'],  tagIds: ['t1', 't4'] }, { headers: asAdmin }),
-      create('post', { id: 'p7',  categoryIds: ['cat8'],  tagIds: ['t2', 't3'] }, { headers: asModerator }),
-      create('post', { id: 'p8',  categoryIds: ['cat9'],  tagIds: ['t3', 't4'] }, { headers: asUser }),
-      create('post', { id: 'p10', categoryIds: ['cat11'], tagIds: ['t4', 't2'] }, { headers: asAdmin }),
-      create('post', { id: 'p11', categoryIds: ['cat12'], tagIds: ['t1', 't2'] }, { headers: asModerator }),
-      create('post', { id: 'p12', categoryIds: ['cat13'], tagIds: ['t2', 't4'] }, { headers: asUser }),
-      create('post', { id: 'p13', categoryIds: ['cat14'], tagIds: ['t4', 't2'] }, { headers: asAdmin }),
-      create('post', { id: 'p14', categoryIds: ['cat15'], tagIds: ['t1', 't2'] }, { headers: asModerator }),
-      create('post', { id: 'p15', categoryIds: ['cat16'], tagIds: ['t2', 't4'] }, { headers: asUser })
+      create('post', { id: 'p0',  categoryIds: ['cat1'],  tagIds: ['t1', 't4'] }, { headers: headers[0]}),
+      create('post', { id: 'p1',  categoryIds: ['cat2'],  tagIds: ['t2', 't3'] }, { headers: headers[1]}),
+      create('post', { id: 'p2',  categoryIds: ['cat3'],  tagIds: ['t3', 't4'] }, { headers: headers[2]}),
+      create('post', { id: 'p3',  categoryIds: ['cat4'],  tagIds: ['t4', 't2'] }, { headers: headers[3]}),
+      create('post', { id: 'p4',  categoryIds: ['cat5'],  tagIds: ['t1', 't2'] }, { headers: headers[4]}),
+      create('post', { id: 'p5',  categoryIds: ['cat6'],  tagIds: ['t2', 't4'] }, { headers: headers[5]}),
+      create('post', { id: 'p6',  categoryIds: ['cat7'],  tagIds: ['t1', 't4'] }, { headers: headers[0]}),
+      create('post', { id: 'p7',  categoryIds: ['cat8'],  tagIds: ['t2', 't3'] }, { headers: headers[1]}),
+      create('post', { id: 'p8',  categoryIds: ['cat9'],  tagIds: ['t3', 't4'] }, { headers: headers[2]}),
+      create('post', { id: 'p10', categoryIds: ['cat11'], tagIds: ['t4', 't2'] }, { headers: headers[3]}),
+      create('post', { id: 'p11', categoryIds: ['cat12'], tagIds: ['t1', 't2'] }, { headers: headers[4]}),
+      create('post', { id: 'p12', categoryIds: ['cat13'], tagIds: ['t2', 't4'] }, { headers: headers[5]}),
+      create('post', { id: 'p13', categoryIds: ['cat14'], tagIds: ['t4', 't2'] }, { headers: headers[0]}),
+      create('post', { id: 'p14', categoryIds: ['cat15'], tagIds: ['t1', 't2'] }, { headers: headers[1]}),
+      create('post', { id: 'p15', categoryIds: ['cat16'], tagIds: ['t2', 't4'] }, { headers: headers[2]})
     ])
   } catch (err) {
     /* eslint-disable-next-line no-console */

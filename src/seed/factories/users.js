@@ -8,13 +8,23 @@ export default function (params) {
     password = '1234',
     role = 'user',
     avatar = faker.internet.avatar(),
+    badgeIds = [],
     disabled = false,
     deleted = false
   } = params
 
+  const badgeRelations = badgeIds.map((badgeId) => {
+    return `
+    ${id}_${badgeId}: AddUserBadges(
+      from: {id: "${badgeId}"},
+      to:   {id: "${id}"}
+    ) { from { id } }
+    `
+  })
+
   return `
     mutation {
-      CreateUser(
+      ${id}: CreateUser(
         id: "${id}",
         name: "${name}",
         password: "${password}",
@@ -29,6 +39,7 @@ export default function (params) {
         avatar
         role
       }
+    ${badgeRelations.join('\n')}
     }
   `
 }
