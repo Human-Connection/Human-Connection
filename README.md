@@ -3,15 +3,15 @@
 
 > This Prototype tries to resolve the biggest hurdle of connecting
 > our services together. This is not possible in a sane way using
-> our current approach. 
-> 
-> With this Prototype we can explore using the combination of 
+> our current approach.
+>
+> With this Prototype we can explore using the combination of
 > GraphQL and the Neo4j Graph Database for achieving the connected
 > nature of a social graph with better development experience as we
 > do not need to connect data by our own any more through weird table
 > structures etc.
 
->  
+>
 > #### Advantages:
 > - easer data structure
 > - better connected data
@@ -19,10 +19,10 @@
 > - more performant and better to understand API
 > - better API client that uses caching
 >
-> We still need to evaluate the drawbacks and estimate the development 
+> We still need to evaluate the drawbacks and estimate the development
 > cost of such an approach
 
-## How to get in touch 
+## How to get in touch
 Connect with other developers over [Discord](https://discord.gg/6ub73U3)
 
 ## Quick Start
@@ -35,6 +35,10 @@ Before you start, fork the repository using the fork button above, then clone it
 Run:
 ```sh
 docker-compose up
+
+# create indices etc.
+docker-compose exec neo4j migrate
+
 # if you want seed data
 # open another terminal and run
 docker-compose exec backend yarn run db:seed
@@ -94,7 +98,7 @@ _.env_
 
 ```yaml
 NEO4J_URI=bolt://localhost:7687
-NEO4J_USER=neo4j
+NEO4J_USERNAME=neo4j
 NEO4J_PASSWORD=letmein
 ```
 
@@ -116,7 +120,7 @@ Just set `MOCK=true` inside `.env` or pass it on application start.
 
 ## Seed and Reset the Database
 
-Optionally you can seed the GraphQL service by executing mutations that 
+Optionally you can seed the GraphQL service by executing mutations that
 will write sample data to the database:
 
 ```bash
@@ -152,5 +156,5 @@ npm run test
 - [x] check if sorting is working
 - [x] check if pagination is working
 - [ ] check if upload is working (using graphql-yoga?)
-- [x] evaluate middleware 
+- [x] evaluate middleware
 - [ ] ignore Posts and Comments by blacklisted Users
