@@ -15,17 +15,24 @@ import seed from './data'
       create('user', {id: 'u4', name: 'Angie Banjie'      , role: 'user'     , email: 'angie@example.org'}),
     ])
 
-    // TODO: other users, not only admin, are authors of a post
-    const headers = await authenticatedHeaders({
+    const asAdmin = await authenticatedHeaders({
       email: 'admin@example.org',
       password: '1234'
     }, host)
-    await create('post', {id: 'p1'}, { headers } )
-    await create('post', {id: 'p2'}, { headers } )
-    await create('post', {id: 'p3'}, { headers } )
-    await create('post', {id: 'p4'}, { headers } )
-    await create('post', {id: 'p5'}, { headers } )
-    await create('post', {id: 'p6'}, { headers } )
+    const asModerator = await authenticatedHeaders({
+      email: 'moderator@example.org',
+      password: '1234'
+    }, host)
+    const asUser = await authenticatedHeaders({
+      email: 'user@example.org',
+      password: '1234'
+    }, host)
+    await create('post', {id: 'p1'}, { headers: asAdmin } )
+    await create('post', {id: 'p2'}, { headers: asModerator } )
+    await create('post', {id: 'p3'}, { headers: asUser } )
+    await create('post', {id: 'p4'}, { headers: asAdmin } )
+    await create('post', {id: 'p5'}, { headers: asModerator } )
+    await create('post', {id: 'p6'}, { headers: asUser } )
   } catch(err) {
     /* eslint-disable-next-line no-console */
     console.error(err)

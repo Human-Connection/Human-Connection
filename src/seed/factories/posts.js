@@ -12,7 +12,7 @@ export default function (params) {
       faker.lorem.sentence(),
       faker.lorem.sentence(),
     ].join('. '),
-    image = faker.image.imageUrl(),
+    image = faker.image.image(),
     visibility = 'public',
     disabled = false,
     deleted = false
