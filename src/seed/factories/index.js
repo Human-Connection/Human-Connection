@@ -26,7 +26,8 @@ const builders = {
 }
 
 const relationBuilders = {
-  'user': require('./users.js').relate
+  'user': require('./users.js').relate,
+  'post': require('./posts.js').relate
 }
 
 const buildMutation = (model, parameters) => {

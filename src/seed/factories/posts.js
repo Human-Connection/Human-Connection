@@ -15,24 +15,9 @@ export default function (params) {
     image = faker.image.image(),
     visibility = 'public',
     disabled = false,
-    deleted = false,
-    tagIds = [],
-    categoryIds = []
+    deleted = false
   } = params
 
-  const categoryRelations = categoryIds.map((categoryId) => {
-    return `${id}_${categoryId}: AddPostCategories(
-      from: {id: "${id}"},
-      to: {id: "${categoryId}"}
-    ) { from { id } }`
-  })
-
-  const tagRelations = tagIds.map((tagId) => {
-    return `${id}_${tagId}: AddPostTags(
-      from: {id: "${id}"},
-      to: {id: "${tagId}"}
-    ) { from { id } }`
-  })
 
   return `
     mutation {
@@ -45,8 +30,18 @@ export default function (params) {
         disabled: ${disabled},
         deleted: ${deleted}
       ) { id, title }
-      ${categoryRelations.join('\n')}
-      ${tagRelations.join('\n')}
+    }
+  `
+}
+
+export function relate(type, params) {
+  const { from, to } = params
+  return `
+    mutation {
+      ${from}_${type}_${to}: AddPost${type}(
+        from: { id: "${from}" },
+        to: { id: "${to}" }
+      ) { from { id } }
     }
   `
 }

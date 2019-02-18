@@ -7,6 +7,7 @@ import seed from './data'
 /* eslint-disable no-multi-spaces */
 (async function () {
   try {
+
     await Promise.all([
       create('badge', { id: 'b1', key: 'indiegogo_en_racoon', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_racoon.svg' }),
       create('badge', { id: 'b2', key: 'indiegogo_en_rabbit', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_rabbit.svg' }),
@@ -17,19 +18,34 @@ import seed from './data'
     ])
 
     await Promise.all([
-      create('user', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     followedUserIds: [    ], badgeIds: ['b6'], email: 'admin@example.org' }),
-      create('user', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', followedUserIds: ['u1'], badgeIds: ['b5'], email: 'moderator@example.org' }),
-      create('user', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      followedUserIds: ['u2'], badgeIds: ['b4'], email: 'user@example.org' }),
-      create('user', { id: 'u4', name: 'Tick',               role: 'user',      followedUserIds: ['u3'], badgeIds: ['b3'], email: 'tick@example.org' }),
-      create('user', { id: 'u5', name: 'Trick',              role: 'user',      followedUserIds: ['u4'], badgeIds: ['b2'], email: 'trick@example.org' }),
-      create('user', { id: 'u6', name: 'Track',              role: 'user',      followedUserIds: ['u5'], badgeIds: ['b1'], email: 'track@example.org' }),
-      create('user', { id: 'u7', name: 'Dagobert', role: 'user', badgeIds: ['b1', 'b2'], blacklistedUserIds: ['u4', 'u5', 'u6'], email: 'dagobert@example.org' })
+      create('user', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     email: 'admin@example.org' }),
+      create('user', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', email: 'moderator@example.org' }),
+      create('user', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      email: 'user@example.org' }),
+      create('user', { id: 'u4', name: 'Tick',               role: 'user',      email: 'tick@example.org' }),
+      create('user', { id: 'u5', name: 'Trick',              role: 'user',      email: 'trick@example.org' }),
+      create('user', { id: 'u6', name: 'Track',              role: 'user',      email: 'track@example.org' }),
+      create('user', { id: 'u7', name: 'Dagobert',           role: 'user',      email: 'dagobert@example.org' })
     ])
 
     await Promise.all([
-      relate('user', 'friends', { from: 'u1', to: 'u2' }),
-      relate('user', 'friends', { from: 'u1', to: 'u3' }),
-      relate('user', 'friends', { from: 'u2', to: 'u3' })
+      relate('user', 'Badges',      { from: 'b6', to: 'u1' }),
+      relate('user', 'Badges',      { from: 'b5', to: 'u2' }),
+      relate('user', 'Badges',      { from: 'b4', to: 'u3' }),
+      relate('user', 'Badges',      { from: 'b3', to: 'u4' }),
+      relate('user', 'Badges',      { from: 'b2', to: 'u5' }),
+      relate('user', 'Badges',      { from: 'b1', to: 'u6' }),
+      relate('user', 'Following',   { from: 'u1', to: 'u2' }),
+      relate('user', 'Following',   { from: 'u2', to: 'u3' }),
+      relate('user', 'Following',   { from: 'u3', to: 'u4' }),
+      relate('user', 'Following',   { from: 'u4', to: 'u5' }),
+      relate('user', 'Following',   { from: 'u5', to: 'u6' }),
+      relate('user', 'Following',   { from: 'u6', to: 'u7' }),
+      relate('user', 'Friends',     { from: 'u1', to: 'u2' }),
+      relate('user', 'Friends',     { from: 'u1', to: 'u3' }),
+      relate('user', 'Friends',     { from: 'u2', to: 'u3' }),
+      relate('user', 'Blacklisted', { from: 'u7', to: 'u4' }),
+      relate('user', 'Blacklisted', { from: 'u7', to: 'u5' }),
+      relate('user', 'Blacklisted', { from: 'u7', to: 'u6' })
     ])
 
     const headers = await Promise.all([
@@ -69,22 +85,60 @@ import seed from './data'
 
 
     await Promise.all([
-      create('post', { id: 'p0',  categoryIds: ['cat1'],  tagIds: ['t1', 't4'] }, { headers: headers[0]}),
-      create('post', { id: 'p1',  categoryIds: ['cat2'],  tagIds: ['t2', 't3'] }, { headers: headers[1]}),
-      create('post', { id: 'p2',  categoryIds: ['cat3'],  tagIds: ['t3', 't4'] }, { headers: headers[2]}),
-      create('post', { id: 'p3',  categoryIds: ['cat4'],  tagIds: ['t4', 't2'] }, { headers: headers[3]}),
-      create('post', { id: 'p4',  categoryIds: ['cat5'],  tagIds: ['t1', 't2'] }, { headers: headers[4]}),
-      create('post', { id: 'p5',  categoryIds: ['cat6'],  tagIds: ['t2', 't4'] }, { headers: headers[5]}),
-      create('post', { id: 'p6',  categoryIds: ['cat7'],  tagIds: ['t1', 't4'] }, { headers: headers[0]}),
-      create('post', { id: 'p7',  categoryIds: ['cat8'],  tagIds: ['t2', 't3'] }, { headers: headers[1]}),
-      create('post', { id: 'p8',  categoryIds: ['cat9'],  tagIds: ['t3', 't4'] }, { headers: headers[2]}),
-      create('post', { id: 'p10', categoryIds: ['cat11'], tagIds: ['t4', 't2'] }, { headers: headers[3]}),
-      create('post', { id: 'p11', categoryIds: ['cat12'], tagIds: ['t1', 't2'] }, { headers: headers[4]}),
-      create('post', { id: 'p12', categoryIds: ['cat13'], tagIds: ['t2', 't4'] }, { headers: headers[5]}),
-      create('post', { id: 'p13', categoryIds: ['cat14'], tagIds: ['t4', 't2'] }, { headers: headers[0]}),
-      create('post', { id: 'p14', categoryIds: ['cat15'], tagIds: ['t1', 't2'] }, { headers: headers[1]}),
-      create('post', { id: 'p15', categoryIds: ['cat16'], tagIds: ['t2', 't4'] }, { headers: headers[2]})
+      create('post', { id: 'p0',  tagIds: ['t1', 't4'] }, { headers: headers[0]}),
+      create('post', { id: 'p1',  tagIds: ['t2', 't3'] }, { headers: headers[1]}),
+      create('post', { id: 'p2',  tagIds: ['t3', 't4'] }, { headers: headers[2]}),
+      create('post', { id: 'p3',  tagIds: ['t4', 't2'] }, { headers: headers[3]}),
+      create('post', { id: 'p4',  tagIds: ['t1', 't2'] }, { headers: headers[4]}),
+      create('post', { id: 'p5',  tagIds: ['t2', 't4'] }, { headers: headers[5]}),
+      create('post', { id: 'p6',  tagIds: ['t1', 't4'] }, { headers: headers[0]}),
+      create('post', { id: 'p7',  tagIds: ['t2', 't3'] }, { headers: headers[1]}),
+      create('post', { id: 'p8',  tagIds: ['t3', 't4'] }, { headers: headers[2]}),
+      create('post', { id: 'p9',  tagIds: ['t3', 't4'] }, { headers: headers[3]}),
+      create('post', { id: 'p10', tagIds: ['t4', 't2'] }, { headers: headers[4]}),
+      create('post', { id: 'p11', tagIds: ['t1', 't2'] }, { headers: headers[5]}),
+      create('post', { id: 'p12', tagIds: ['t2', 't4'] }, { headers: headers[0]}),
+      create('post', { id: 'p13', tagIds: ['t4', 't2'] }, { headers: headers[1]}),
+      create('post', { id: 'p14', tagIds: ['t1', 't2'] }, { headers: headers[2]}),
+      create('post', { id: 'p15', tagIds: ['t2', 't4'] }, { headers: headers[3]})
     ])
+
+    await Promise.all([
+      relate('post', 'Categories', { from: 'p0',  to: 'cat16' }),
+      relate('post', 'Categories', { from: 'p1',  to: 'cat1' }),
+      relate('post', 'Categories', { from: 'p2',  to: 'cat2' }),
+      relate('post', 'Categories', { from: 'p3',  to: 'cat3' }),
+      relate('post', 'Categories', { from: 'p4',  to: 'cat4' }),
+      relate('post', 'Categories', { from: 'p5',  to: 'cat5' }),
+      relate('post', 'Categories', { from: 'p6',  to: 'cat6' }),
+      relate('post', 'Categories', { from: 'p7',  to: 'cat7' }),
+      relate('post', 'Categories', { from: 'p8',  to: 'cat8' }),
+      relate('post', 'Categories', { from: 'p9',  to: 'cat9' }),
+      relate('post', 'Categories', { from: 'p10', to: 'cat10' }),
+      relate('post', 'Categories', { from: 'p11', to: 'cat11' }),
+      relate('post', 'Categories', { from: 'p12', to: 'cat12' }),
+      relate('post', 'Categories', { from: 'p13', to: 'cat13' }),
+      relate('post', 'Categories', { from: 'p14', to: 'cat14' }),
+      relate('post', 'Categories', { from: 'p15', to: 'cat15' }),
+
+      relate('post', 'Tags', { from: 'p0',  to: 't4' }),
+      relate('post', 'Tags', { from: 'p1',  to: 't1' }),
+      relate('post', 'Tags', { from: 'p2',  to: 't2' }),
+      relate('post', 'Tags', { from: 'p3',  to: 't3' }),
+      relate('post', 'Tags', { from: 'p4',  to: 't4' }),
+      relate('post', 'Tags', { from: 'p5',  to: 't1' }),
+      relate('post', 'Tags', { from: 'p6',  to: 't2' }),
+      relate('post', 'Tags', { from: 'p7',  to: 't3' }),
+      relate('post', 'Tags', { from: 'p8',  to: 't4' }),
+      relate('post', 'Tags', { from: 'p9',  to: 't1' }),
+      relate('post', 'Tags', { from: 'p10', to: 't2' }),
+      relate('post', 'Tags', { from: 'p11', to: 't3' }),
+      relate('post', 'Tags', { from: 'p12', to: 't4' }),
+      relate('post', 'Tags', { from: 'p13', to: 't1' }),
+      relate('post', 'Tags', { from: 'p14', to: 't2' }),
+      relate('post', 'Tags', { from: 'p15', to: 't3' }),
+    ])
+
   } catch (err) {
     /* eslint-disable-next-line no-console */
     console.error(err)
