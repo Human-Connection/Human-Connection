@@ -9,6 +9,7 @@ export default function (params) {
     role = 'user',
     avatar = faker.internet.avatar(),
     badgeIds = [],
+    blacklistedUserIds = [],
     disabled = false,
     deleted = false
   } = params
@@ -20,6 +21,15 @@ export default function (params) {
       to:   {id: "${id}"}
     ) { from { id } }
     `
+  })
+
+  const blacklistedUserRelations = blacklistedUserIds.map((blacklistedUserId) => {
+    return `
+      ${id}_blacklist_${blacklistedUserId}: AddUserBlacklisted(
+        from: { id: "${id}" },
+        to:   { id: "${blacklistedUserId}" }
+      ) { from { id } }
+      `
   })
 
   return `
@@ -40,6 +50,7 @@ export default function (params) {
         role
       }
     ${badgeRelations.join('\n')}
+    ${blacklistedUserRelations.join('\n')}
     }
   `
 }

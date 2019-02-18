@@ -22,7 +22,8 @@ import seed from './data'
       create('user', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      badgeIds: ['b4'], email: 'user@example.org' }),
       create('user', { id: 'u4', name: 'Tick',               role: 'user',      badgeIds: ['b3'], email: 'tick@example.org' }),
       create('user', { id: 'u5', name: 'Trick',              role: 'user',      badgeIds: ['b2'], email: 'trick@example.org' }),
-      create('user', { id: 'u6', name: 'Track',              role: 'user',      badgeIds: ['b1'], email: 'track@example.org' })
+      create('user', { id: 'u6', name: 'Track',              role: 'user',      badgeIds: ['b1'], email: 'track@example.org' }),
+      create('user', { id: 'u7', name: 'Dagobert', role: 'user', badgeIds: ['b1', 'b2'], blacklistedUserIds: ['u4', 'u5', 'u6'], email: 'dagobert@example.org' })
     ])
 
     const headers = await Promise.all([
