@@ -4,8 +4,12 @@ type Query {
   findPosts(filter: String!, limit: Int = 10): [Post]! @cypher(
     statement: """
       CALL db.index.fulltext.queryNodes('full_text_search', $filter)
-      YIELD node
-      RETURN node
+      YIELD node as post, score
+      MATCH (post)<-[:WROTE]-(user:User)
+      WHERE score >= 0.2
+      AND NOT user.deleted = true AND NOT user.disabled = true
+      AND NOT post.deleted = true AND NOT post.disabled = true
+      RETURN post
       LIMIT $limit
     """
   )
