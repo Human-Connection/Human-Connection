@@ -1,6 +1,4 @@
 export default {
-  Badge: require('./badges.js').default,
-  Tags: require('./tags.js').default,
 
   UserBadges: require('./users-badges.js').default,
   UserBlacklist: require('./users-blacklist.js').default,

@@ -1,6 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
 import ApolloClient from 'apollo-client'
-import gql from 'graphql-tag'
 import dotenv from 'dotenv'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -19,9 +18,11 @@ const apolloClient = new ApolloClient({
 const driver = neo4j().getDriver()
 
 const builders = {
+  'badge': require('./badges.js').default,
   'user': require('./users.js').default,
   'post': require('./posts.js').default,
-  'category': require('./categories.js').default
+  'category': require('./categories.js').default,
+  'tag': require('./tags.js').default
 }
 
 const buildMutation = (model, parameters) => {

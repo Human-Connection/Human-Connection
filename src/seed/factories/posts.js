@@ -10,7 +10,7 @@ export default function (params) {
       faker.lorem.sentence(),
       faker.lorem.sentence(),
       faker.lorem.sentence(),
-      faker.lorem.sentence(),
+      faker.lorem.sentence()
     ].join('. '),
     image = faker.image.image(),
     visibility = 'public',
@@ -27,6 +27,13 @@ export default function (params) {
     ) { from { id } }`
   })
 
+  const tagRelations = tagIds.map((tagId) => {
+    return `${id}_${tagId}: AddPostTags(
+      from: {id: "${id}"},
+      to: {id: "${tagId}"}
+    ) { from { id } }`
+  })
+
   return `
     mutation {
       ${id}: CreatePost(
@@ -39,6 +46,7 @@ export default function (params) {
         deleted: ${deleted}
       ) { id, title }
       ${categoryRelations.join('\n')}
+      ${tagRelations.join('\n')}
     }
   `
 }
