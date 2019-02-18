@@ -49,7 +49,7 @@
     "apollo-client": "~2.4.13",
     "cookie-universal-nuxt": "~2.0.14",
     "cross-env": "~5.2.0",
-    "date-fns": "2.0.0-alpha.26",
+    "date-fns": "2.0.0-alpha.27",
     "express": "~4.16.4",
     "graphql": "~14.1.1",
     "jsonwebtoken": "~8.4.0",
@@ -63,7 +63,7 @@
     "vuex-i18n": "~1.11.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.2.2",
+    "@babel/core": "~7.3.3",
     "@babel/preset-env": "~7.3.1",
     "@vue/cli-shared-utils": "~3.4.0",
     "@vue/eslint-config-prettier": "~4.0.1",
