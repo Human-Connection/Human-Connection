@@ -1,19 +1,28 @@
-import ApolloClient from 'apollo-client'
-import dotenv from 'dotenv'
-import fetch from 'node-fetch'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import Seed from './data/index'
+import { apolloClient } from './factories'
+import gql from 'graphql-tag'
+import asyncForEach from '../helpers/asyncForEach'
+import seed from './data'
 
-dotenv.config()
+(async function () {
 
-if (process.env.NODE_ENV === 'production') {
-  throw new Error('YOU CAN`T SEED IN PRODUCTION MODE')
-}
+  // prefer factories
+let data = {}
+  // legacy seeds
+  await asyncForEach(Object.keys(seed), async key => {
+    const mutations = seed[key]
+    try {
+      const res = await apolloClient
+        .mutate({
+          mutation: gql(mutations(data))
+        })
+      data[key] = Object.assign(data[key] || {}, res.data)
+    } catch (err) {
+      /* eslint-disable-next-line no-console */
+      console.error(err)
+      process.exit(1)
+    }
+  })
+  /* eslint-disable-next-line no-console */
+  console.log('Seeded Data...')
+})()
 
-const client = new ApolloClient({
-  link: new HttpLink({ uri: process.env.GRAPHQL_URI, fetch }),
-  cache: new InMemoryCache()
-})
-
-Seed(client)

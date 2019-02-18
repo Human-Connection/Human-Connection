@@ -1,7 +1,4 @@
-import gql from 'graphql-tag'
-import asyncForEach from '../../helpers/asyncForEach'
-
-const seed = {
+export default {
   Badge: require('./badges.js').default,
   Category: require('./categories.js').default,
   Tags: require('./tags.js').default,
@@ -18,26 +15,4 @@ const seed = {
   UserShouts: require('./users-shouts.js').default
 
   // Reports: require('./reports.js').default
-}
-
-let data = {}
-
-export default async function (client) {
-  // iterate through seeds
-  await asyncForEach(Object.keys(seed), async key => {
-    const mutations = seed[key]
-    try {
-      const res = await client
-        .mutate({
-          mutation: gql(mutations(data))
-        })
-      data[key] = Object.assign(data[key] || {}, res.data)
-    } catch (err) {
-      /* eslint-disable-next-line no-console */
-      console.error(err)
-      process.exit(1)
-    }
-  })
-  /* eslint-disable-next-line no-console */
-  console.log('Seeded Data...')
 }

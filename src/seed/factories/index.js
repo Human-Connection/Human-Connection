@@ -8,11 +8,7 @@ import fetch from 'node-fetch'
 
 dotenv.config()
 
-if (process.env.NODE_ENV === 'production') {
-  throw new Error('YOU CAN`T RUN FACTORIES IN PRODUCTION MODE')
-}
-
-const client = new ApolloClient({
+const apolloClient = new ApolloClient({
   link: new HttpLink({ uri: 'http://localhost:4001', fetch }),
   cache: new InMemoryCache()
 })
@@ -28,7 +24,7 @@ const buildMutation = (model, parameters) => {
 }
 
 const create = (model, parameters) => {
-  return client.mutate({ mutation: gql(buildMutation(model, parameters)) })
+  return apolloClient.mutate({ mutation: gql(buildMutation(model, parameters)) })
 }
 
 const cleanDatabase = async () => {
@@ -44,6 +40,8 @@ const cleanDatabase = async () => {
 }
 
 export {
+  driver,
+  apolloClient,
   create,
   buildMutation,
   cleanDatabase
