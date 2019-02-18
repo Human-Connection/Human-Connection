@@ -2,23 +2,27 @@ import faker from 'faker'
 
 export default function (params) {
   const {
+    id = `u${faker.random.number()}`,
     name = faker.name.findName(),
     email = faker.internet.email(),
     password = '1234',
-    avatar = faker.internet.avatar()
+    role = 'user',
+    avatar = faker.internet.avatar(),
+    disabled = false,
+    deleted = false
   } = params
 
   return `
     mutation {
-      u1: CreateUser(
-        id: "u1",
+      CreateUser(
+        id: "${id}",
         name: "${name}",
         password: "${password}",
         email: "${email}",
         avatar: "${avatar}",
-        role: admin,
-        disabled: false,
-        deleted: false) {
+        role: ${role},
+        disabled: ${disabled},
+        deleted: ${deleted}) {
         id
         name
         email

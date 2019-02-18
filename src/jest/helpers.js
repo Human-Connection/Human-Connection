@@ -1,8 +1,8 @@
 import { request } from 'graphql-request'
 
-export const host = 'http://127.0.0.1:4123'
+export const testServerHost = 'http://127.0.0.1:4123'
 
-export async function authenticatedHeaders ({ email, password }) {
+export async function authenticatedHeaders ({ email, password }, host = testServerHost) {
   const mutation = `
       mutation {
         login(email:"${email}", password:"${password}"){

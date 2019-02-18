@@ -1,7 +1,7 @@
 import { request } from 'graphql-request'
 import { create, cleanDatabase } from './seed/factories'
 import jwt from 'jsonwebtoken'
-import { host } from './jest/helpers'
+import { testServerHost as host } from './jest/helpers'
 
 describe('login', () => {
   const mutation = (params) => {

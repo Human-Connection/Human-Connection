@@ -1,5 +1,5 @@
 import { create, cleanDatabase } from '../seed/factories'
-import { host, authenticatedHeaders } from '../jest/helpers'
+import { testServerHost as host, authenticatedHeaders } from '../jest/helpers'
 import { GraphQLClient } from 'graphql-request'
 
 describe('authorization', () => {
