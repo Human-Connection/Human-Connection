@@ -10,6 +10,7 @@ export default function (params) {
     avatar = faker.internet.avatar(),
     badgeIds = [],
     blacklistedUserIds = [],
+    followedUserIds = [],
     disabled = false,
     deleted = false
   } = params
@@ -32,6 +33,15 @@ export default function (params) {
       `
   })
 
+  const followedUserRelations = followedUserIds.map((followedUserId) => {
+    return `
+      ${id}_follow_${followedUserId}: AddUserFollowing(
+        from: { id: "${id}" },
+        to: { id: "${followedUserId}" }
+      ) { from { id } }
+      `
+  });
+
   return `
     mutation {
       ${id}: CreateUser(
@@ -51,6 +61,7 @@ export default function (params) {
       }
     ${badgeRelations.join('\n')}
     ${blacklistedUserRelations.join('\n')}
+    ${followedUserRelations.join('\n')}
     }
   `
 }

@@ -1,6 +1,5 @@
 export default {
 
-  UserFollows: require('./users-follows.js').default,
   UserFriends: require('./users-friends.js').default,
 
   Organization: require('./organizations.js').default,

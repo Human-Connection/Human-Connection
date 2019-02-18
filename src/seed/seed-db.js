@@ -17,12 +17,12 @@ import seed from './data'
     ])
 
     await Promise.all([
-      create('user', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     badgeIds: ['b6'], email: 'admin@example.org' }),
-      create('user', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', badgeIds: ['b5'], email: 'moderator@example.org' }),
-      create('user', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      badgeIds: ['b4'], email: 'user@example.org' }),
-      create('user', { id: 'u4', name: 'Tick',               role: 'user',      badgeIds: ['b3'], email: 'tick@example.org' }),
-      create('user', { id: 'u5', name: 'Trick',              role: 'user',      badgeIds: ['b2'], email: 'trick@example.org' }),
-      create('user', { id: 'u6', name: 'Track',              role: 'user',      badgeIds: ['b1'], email: 'track@example.org' }),
+      create('user', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     followedUserIds: [    ], badgeIds: ['b6'], email: 'admin@example.org' }),
+      create('user', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', followedUserIds: ['u1'], badgeIds: ['b5'], email: 'moderator@example.org' }),
+      create('user', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      followedUserIds: ['u2'], badgeIds: ['b4'], email: 'user@example.org' }),
+      create('user', { id: 'u4', name: 'Tick',               role: 'user',      followedUserIds: ['u3'], badgeIds: ['b3'], email: 'tick@example.org' }),
+      create('user', { id: 'u5', name: 'Trick',              role: 'user',      followedUserIds: ['u4'], badgeIds: ['b2'], email: 'trick@example.org' }),
+      create('user', { id: 'u6', name: 'Track',              role: 'user',      followedUserIds: ['u5'], badgeIds: ['b1'], email: 'track@example.org' }),
       create('user', { id: 'u7', name: 'Dagobert', role: 'user', badgeIds: ['b1', 'b2'], blacklistedUserIds: ['u4', 'u5', 'u6'], email: 'dagobert@example.org' })
     ])
 
