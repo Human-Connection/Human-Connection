@@ -204,7 +204,8 @@ export default {
     },
     onDelete(e) {
       clearTimeout(this.searchProcess)
-      if (isEmpty(this.unprocessedSearchInput)) {
+      const value = e.target ? e.target.value.trim() : ''
+      if (isEmpty(value)) {
         this.clear()
       }
     },
@@ -238,8 +239,11 @@ export default {
   width: 100%;
   position: relative;
 
+  $padding-left: $space-x-small;
+
   .search-option-label {
     align-self: center;
+    padding-left: $padding-left;
   }
 
   .search-option-meta {
@@ -253,12 +257,18 @@ export default {
   &,
   .ds-select-dropdown {
     transition: box-shadow 100ms;
+    max-height: 70vh;
   }
 
   &.is-open {
     .ds-select-dropdown {
       box-shadow: $box-shadow-x-large;
     }
+  }
+
+  .ds-select-dropdown-message {
+    opacity: 0.5;
+    padding-left: $padding-left;
   }
 
   .search-clear-btn {
@@ -283,17 +293,10 @@ export default {
 
   .ds-select {
     z-index: $z-index-dropdown + 1;
-  }
-
-  .ds-select-option-hover {
-    .ds-text-size-small,
-    .ds-text-size-small-x {
-      color: rgba(#fff, 0.8);
-    }
-  }
-
-  .ds-select {
     transition: border-bottom 0;
+    background-color: $background-color-soft;
+
+    border-color: darken($background-color-soft, 10%);
   }
 
   .ds-select-is-open {
@@ -301,12 +304,12 @@ export default {
       border-bottom: 0;
     }
   }
-  .ds-select-dropdown-message {
-    opacity: 0.5;
-  }
 
-  .ds-select-dropdown {
-    max-height: 70vh;
+  .ds-select-option-hover {
+    .ds-text-size-small,
+    .ds-text-size-small-x {
+      color: rgba(#fff, 0.8);
+    }
   }
 
   .field {
