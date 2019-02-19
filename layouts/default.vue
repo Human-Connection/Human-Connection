@@ -26,7 +26,7 @@
             <locale-switch
               class="topbar-locale-switch"
               placement="bottom"
-              offset="12"
+              offset="23"
             />
           </no-ssr>
           <template v-if="isLoggedIn">
