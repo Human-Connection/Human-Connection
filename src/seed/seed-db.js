@@ -147,6 +147,21 @@ import seed from './data'
       relate('user', 'Shouted', { from: 'u4', to: 'p1' })
     ])
 
+    await Promise.all([
+      create('organization', { id: "o1", name: "Democracy Deutschland", description: "Description for democracy-deutschland."}),
+      create('organization', { id: "o2", name: "Human-Connection",      description: "Description for human-connection." }),
+      create('organization', { id: "o3", name: "Pro Veg",               description: "Description for pro-veg." }),
+      create('organization', { id: "o4", name: "Greenpeace",            description: "Description for greenpeace." })
+    ])
+
+    await Promise.all([
+      relate('organization', 'CreatedBy', {from: 'u1', to: 'o1'}),
+      relate('organization', 'CreatedBy', {from: 'u1', to: 'o2'}),
+      relate('organization', 'OwnedBy',   {from: 'u2', to: 'o2'}),
+      relate('organization', 'OwnedBy',   {from: 'u2', to: 'o3'})
+    ])
+
+
   } catch (err) {
     /* eslint-disable-next-line no-console */
     console.error(err)

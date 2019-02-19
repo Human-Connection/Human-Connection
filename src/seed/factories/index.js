@@ -20,6 +20,7 @@ const driver = neo4j().getDriver()
 const builders = {
   'badge': require('./badges.js').default,
   'user': require('./users.js').default,
+  'organization': require('./organizations.js').default,
   'post': require('./posts.js').default,
   'category': require('./categories.js').default,
   'tag': require('./tags.js').default
@@ -27,6 +28,7 @@ const builders = {
 
 const relationBuilders = {
   'user': require('./users.js').relate,
+  'organization': require('./organizations.js').relate,
   'post': require('./posts.js').relate
 }
 
