@@ -138,6 +138,14 @@ import seed from './data'
       relate('post', 'Tags', { from: 'p14', to: 't2' }),
       relate('post', 'Tags', { from: 'p15', to: 't3' }),
     ])
+    await Promise.all([
+      relate('user', 'Shouted', { from: 'u1', to: 'p2' }),
+      relate('user', 'Shouted', { from: 'u1', to: 'p3' }),
+      relate('user', 'Shouted', { from: 'u2', to: 'p1' }),
+      relate('user', 'Shouted', { from: 'u3', to: 'p1' }),
+      relate('user', 'Shouted', { from: 'u3', to: 'p4' }),
+      relate('user', 'Shouted', { from: 'u4', to: 'p1' })
+    ])
 
   } catch (err) {
     /* eslint-disable-next-line no-console */
