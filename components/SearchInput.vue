@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+// import gql from 'graphql-tag'
 import { isEmpty } from 'lodash'
 
 export default {
@@ -102,20 +102,26 @@ export default {
       type: String,
       default: ''
     },
+    results: {
+      type: Array,
+      default: () => []
+    },
     delay: {
       type: Number,
-      default: 700
+      default: 300
+    },
+    pending: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       searchProcess: null,
       isOpen: false,
-      inProgress: false,
       lastSearchTerm: '',
       unprocessedSearchInput: '',
-      searchValue: '',
-      results: []
+      searchValue: ''
     }
   },
   computed: {
@@ -124,7 +130,7 @@ export default {
       return !isEmpty(this.lastSearchTerm)
     },
     emptyText() {
-      return this.isActive && !this.inProgress
+      return this.isActive && !this.pending
         ? this.$t('search.failed')
         : this.$t('search.hint')
     }
@@ -141,40 +147,41 @@ export default {
     }
   },
   methods: {
-    query(value) {
+    async query(value) {
       if (isEmpty(value) || value.length < 3) {
-        this.results = []
+        this.clear()
         return
       }
-      this.inProgress = true
-      this.$apollo
-        .query({
-          query: gql(`
-            query findPosts($filter: String!) {
-              findPosts(filter: $filter, limit: 10) {
-                id
-                slug
-                label: title
-                value: title,
-                shoutedCount
-                commentsCount
-                createdAt
-                author {
-                  id
-                  name
-                  slug
-                }
-              }
-            }
-          `),
-          variables: {
-            filter: value
-          }
-        })
-        .then(res => {
-          this.results = res.data.findPosts || []
-          this.inProgress = false
-        })
+      this.$emit('search', value)
+      // this.pending = true
+      // this.$apollo
+      //   .query({
+      //     query: gql(`
+      //       query findPosts($filter: String!) {
+      //         findPosts(filter: $filter, limit: 10) {
+      //           id
+      //           slug
+      //           label: title
+      //           value: title,
+      //           shoutedCount
+      //           commentsCount
+      //           createdAt
+      //           author {
+      //             id
+      //             name
+      //             slug
+      //           }
+      //         }
+      //       }
+      //     `),
+      //     variables: {
+      //       filter: value
+      //     }
+      //   })
+      //   .then(res => {
+      //     this.results = res.data.findPosts || []
+      //     this.pending = false
+      //   })
     },
     handleInput(e) {
       clearTimeout(this.searchProcess)
@@ -184,7 +191,7 @@ export default {
       this.searchProcess = setTimeout(() => {
         this.lastSearchTerm = value
         this.query(value)
-      }, 300)
+      }, this.delay)
     },
     onFocus(e) {
       clearTimeout(this.searchProcess)
@@ -208,9 +215,7 @@ export default {
       // console.log('res', this.unprocessedSearchInput)
       // this.isOpen = false
       clearTimeout(this.searchProcess)
-      // e.stopImmediatePropagation()
-      // e.preventDefault()
-      if (!this.inProgress) {
+      if (!this.pending) {
         // this.lastSearchTerm = this.unprocessedSearchInput
         this.query(this.unprocessedSearchInput)
       }
@@ -220,7 +225,7 @@ export default {
       this.isOpen = false
       this.searchValue = null
       this.lastSearchTerm = null
-      this.results = []
+      this.$emit('clear')
     }
   }
 }

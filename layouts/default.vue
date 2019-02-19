@@ -11,18 +11,13 @@
           </a>
         </div>
         <div class="main-navigation-center hc-navbar-search">
-          <!-- avoid querying for dev --  search-input
-            id="nav-search"
-            class="is-hidden-mobile"
-            :value="searchQuery"
-            :style="{ height: '100%' }"
-            @search="onSearch"
-          / -->
           <search-input
             id="nav-search"
-            class="is-hidden-mobile"
-            :style="{ height: '100%' }"
-            @search="onSearch"
+            :delay="300"
+            :pending="quickSearchPending"
+            :results="quickSearchResults"
+            @clear="quickSearchClear"
+            @search="quickSearch"
           />
         </div>
         <div class="main-navigation-right">
@@ -142,7 +137,9 @@ export default {
       user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',
       isModerator: 'auth/isModerator',
-      isAdmin: 'auth/isAdmin'
+      isAdmin: 'auth/isAdmin',
+      quickSearchResults: 'search/quickResults',
+      quickSearchPending: 'search/quickPending'
       //-- avoid querying for dev -- searchQuery: 'search/query'
     }),
     routes() {
@@ -186,21 +183,12 @@ export default {
       }
       return this.$route.path.indexOf(url) === 0
     },
-    // #: Is executet at listener of DOM event "search" is triggered. Set by tag "search-input" above by '@search="onSearch"' is short of 'v-on:search="onSearch"'.
-    onSearch(value) {
-      //-- avoid querying for dev -- this.$store.commit('search/query', value)
+    quickSearch(value) {
+      this.$store.dispatch('search/quickSearch', { value })
+    },
+    quickSearchClear() {
+      this.$store.dispatch('search/quickClear')
     }
-    // #: Used for "hc-dropdown" in Aplpha for mobile mode.
-    // opened() {
-    //   // setTimeout(() => {
-    //   this.mobileSearchVisible = true
-    //   // }, 25)
-    // },
-    // closed() {
-    //   // setTimeout(() => {
-    //   this.mobileSearchVisible = false
-    //   // }, 100)
-    // }
   }
 }
 </script>
