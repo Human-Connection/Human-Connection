@@ -1,9 +1,11 @@
 import gql from 'graphql-tag'
+import isString from 'lodash/isString'
 
 export const state = () => {
   return {
     quickResults: [],
-    quickPending: false
+    quickPending: false,
+    quickValue: ''
   }
 }
 
@@ -13,6 +15,9 @@ export const mutations = {
   },
   SET_QUICK_PENDING(state, pending) {
     state.quickPending = pending
+  },
+  SET_QUICK_VALUE(state, value) {
+    state.quickValue = value
   }
 }
 
@@ -22,11 +27,20 @@ export const getters = {
   },
   quickPending(state) {
     return state.quickPending
+  },
+  quickValue(state) {
+    return state.quickValue
   }
 }
 
 export const actions = {
   async quickSearch({ commit, getters }, { value }) {
+    value = isString(value) ? value.trim() : ''
+    const lastVal = getters.quickValue
+    if (value.length < 3 || lastVal.toLowerCase() === value.toLowerCase()) {
+      return
+    }
+    commit('SET_QUICK_VALUE', value)
     commit('SET_QUICK_PENDING', true)
     await this.app.apolloProvider.defaultClient
       .query({
@@ -61,5 +75,6 @@ export const actions = {
   async quickClear({ commit }) {
     commit('SET_QUICK_PENDING', false)
     commit('SET_QUICK_RESULTS', [])
+    commit('SET_QUICK_VALUE', '')
   }
 }
