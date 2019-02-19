@@ -33,11 +33,14 @@ describe('authorization', () => {
       }
 
       describe('not logged in', async () => {
+        it('rejects', async () => {
+          await expect(action(headers)).rejects.toThrow('Not Authorised!')
+        })
+
         it('does not expose the owner\'s email address', async () => {
-          try {
+          try{
             await action(headers)
-          } catch (error) {
-            expect(error.response.errors[0].message).toEqual('Not Authorised!')
+          } catch(error) {
             expect(error.response.data).toEqual({ User: [ { email: null } ] })
           }
         })
@@ -54,15 +57,21 @@ describe('authorization', () => {
       })
 
       describe('as someone else', () => {
-        it('does not expose the owner\'s email address', async () => {
+        beforeEach(async () => {
           headers = await authenticatedHeaders({
             email: 'someone@example.org',
             password: 'else'
           })
-          try {
+        })
+
+        it('rejects', async () => {
+          await expect(action(headers)).rejects.toThrow('Not Authorised!')
+        })
+
+        it('does not expose the owner\'s email address', async () => {
+          try{
             await action(headers)
-          } catch (error) {
-            expect(error.response.errors[0].message).toEqual('Not Authorised!')
+          } catch(error) {
             expect(error.response.data).toEqual({ User: [ { email: null } ] })
           }
         })
