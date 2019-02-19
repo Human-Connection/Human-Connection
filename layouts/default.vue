@@ -1,10 +1,11 @@
 <template>
   <div class="layout-default">
     <div class="main-navigation">
-      <ds-container style="padding: .5rem 2rem .2rem; display: flex;">
+      <ds-container class="main-navigation-container">
         <div class="main-navigation-left">
           <a
             v-router-link
+            style="display: inline-flex"
             href="/"
           >
             <ds-logo />
@@ -194,6 +195,8 @@ export default {
 .topbar-locale-switch {
   display: flex;
   margin-right: $space-xx-small;
+  align-self: center;
+  display: inline-flex;
 }
 
 .main-navigation {
@@ -202,12 +205,23 @@ export default {
   }
 }
 
+.main-navigation-container {
+  padding: $space-x-small $space-large !important;
+  width: 100%;
+  align-items: center;
+  display: flex;
+}
+
 .main-navigation-left {
   display: flex;
+  flex: 1;
+  width: 100%;
+  align-items: center;
 }
 
 .main-navigation-center {
   display: flex;
+  flex: auto;
   width: 100%;
   padding-right: $space-large;
   padding-left: $space-large;
@@ -215,6 +229,7 @@ export default {
 
 .main-navigation-right {
   display: flex;
+  flex: 1;
 }
 
 .avatar-menu-trigger {

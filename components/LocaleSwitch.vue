@@ -12,11 +12,11 @@
       @click.prevent="toggleMenu()"
     >
       <ds-icon
-        style="margin-top: -2px; margin-right: 2px;"
+        style="margin-right: 2px;"
         name="globe"
       /> {{ current.code.toUpperCase() }}
       <ds-icon
-        style="margin-top: -2px; margin-left: 2px"
+        style="margin-left: 2px"
         size="xx-small"
         name="angle-down"
       />
