@@ -204,20 +204,17 @@ export default {
 
 .main-navigation-left {
   display: flex;
-  // margin-right: auto;
-  margin-right: 40px;
 }
 
 .main-navigation-center {
   display: flex;
-  // margin-right: auto;
   width: 100%;
+  padding-right: $space-large;
+  padding-left: $space-large;
 }
 
 .main-navigation-right {
   display: flex;
-  // margin-left: auto;
-  margin-left: 40px;
 }
 
 .avatar-menu-trigger {
