@@ -156,7 +156,10 @@ export default {
   },
   watch: {
     Post(post) {
-      this.post = post[0]
+      this.post = post[0] || {}
+      // if (!this.post.title) {
+      //   throw new Error('404')
+      // }
       this.title = this.post.title
     }
   },
@@ -194,7 +197,7 @@ export default {
                 name
               }
               commentsCount
-              comments(orderBy: createdAt_desc) {
+              comments(first: 20, orderBy: createdAt_desc) {
                 id
                 contentExcerpt
                 createdAt
@@ -233,6 +236,7 @@ export default {
           slug: this.$route.params.slug
         }
       },
+      prefetch: true,
       fetchPolicy: 'cache-and-network'
     }
   }

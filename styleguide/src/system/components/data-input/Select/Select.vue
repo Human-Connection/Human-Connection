@@ -111,8 +111,9 @@
           v-else-if="!filteredOptions.length">
           {{ noOptionsFound }} "{{ searchString }}"
         </div>
-        <ul 
-          class="ds-select-options" 
+        <ul
+          class="ds-select-options"
+          ref="options"
           v-else>
           <li
             class="ds-select-option"
@@ -136,7 +137,7 @@
       <div
         v-if="iconRight"
         class="ds-select-icon-right">
-        <ds-icon :name="iconRight"/>
+        <ds-icon :name="iconRight" />
       </div>
     </div>
   </ds-form-item>
@@ -225,6 +226,21 @@ export default {
       default: true
     },
     /**
+     * Function to filter the results
+     */
+    filter: {
+      type: Function,
+      default: (option) => {
+        const value = option.value || option
+        return searchParts.every(part => {
+          if (!part) {
+            return true
+          }
+          return value.toLowerCase().includes(part.toLowerCase())
+        })
+      }
+    },
+    /**
      * Message to show when no options are available
      */
     noOptionsAvailable: {
@@ -246,15 +262,7 @@ export default {
       }
       const searchParts = this.searchString.split(' ')
 
-      return this.options.filter(option => {
-        const value = option.value || option
-        return searchParts.every(part => {
-          if (!part) {
-            return true
-          }
-          return value.toLowerCase().includes(part.toLowerCase())
-        })
-      })
+      return this.options.filter(this.filter)
     },
     pointerMax() {
       return this.filteredOptions.length - 1
@@ -327,7 +335,9 @@ export default {
       this.pointerNext()
     },
     setPointer(index) {
-      this.pointer = index
+      if (!this.hadKeyboardInput) {
+        this.pointer = index
+      }
     },
     pointerPrev() {
       if (this.pointer === 0) {
@@ -335,6 +345,7 @@ export default {
       } else {
         this.pointer--
       }
+      this.scrollToHighlighted()
     },
     pointerNext() {
       if (this.pointer === this.pointerMax) {
@@ -342,6 +353,19 @@ export default {
       } else {
         this.pointer++
       }
+      this.scrollToHighlighted()
+    },
+    scrollToHighlighted() {
+      clearTimeout(this.hadKeyboardInput)
+      if (!this.$refs.options || !this.$refs.options.children.length) {
+        return
+      }
+      this.hadKeyboardInput = setTimeout(() => {
+        this.hadKeyboardInput = null
+      }, 250)
+      this.$refs.options.children[this.pointer].scrollIntoView({
+        block: 'nearest'
+      });
     },
     selectPointerOption() {
       this.handleSelect(this.filteredOptions[this.pointer])

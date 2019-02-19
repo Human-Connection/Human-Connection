@@ -3,11 +3,21 @@
     class="search"
     aria-label="search"
     role="search"
-    :class="{ 'is-active': isActive }"
+    :class="{
+      'is-active': isActive,
+      'is-open': isOpen
+    }"
   >
     <div class="field">
       <div class="control">
-        <ds-input
+        <a
+          v-if="isActive"
+          class="search-clear-btn"
+          @click="clear"
+        >
+          &nbsp;
+        </a>
+        <ds-select
           :id="id"
           ref="input"
           v-model="searchValue"
@@ -15,17 +25,70 @@
           name="search"
           type="search"
           icon="search"
-          :icon-right="isActive ? 'times-circle' : null"
+          label-prop="id"
+          :no-options-available="emptyText"
+          :icon-right="isActive ? 'close' : null"
+          :filter="item => item"
+          :options="results"
           :placeholder="$t('search.placeholder')"
-          @input="handleInput"
-          @keyup.native.enter="onEnter"
-        />
+          @keypress.enter.prevent.stop.self="onEnter"
+          @focus.capture.native="onFocus"
+          @blur.capture.native="onBlur"
+          @keyup.delete.native="onDelete"
+          @keyup.esc.native="clear"
+          @input.native="handleInput"
+          @click.capture.native="isOpen = true"
+        >
+          <template
+            slot="option"
+            slot-scope="{option}"
+          >
+            <ds-flex>
+              <ds-flex-item class="search-option-label">
+                <ds-text>
+                  {{ option.label | truncate(70) }}
+                </ds-text>
+              </ds-flex-item>
+              <ds-flex-item
+                class="search-option-meta"
+                width="280px"
+              >
+                <ds-flex>
+                  <ds-flex-item>
+                    <ds-text
+                      size="small"
+                      color="softer"
+                      class="search-meta"
+                    >
+                      <span style="text-align: right;">
+                        <b>{{ option.commentsCount }}</b> <ds-icon name="comments" />
+                      </span>
+                      <span style="width: 36px; display: inline-block; text-align: right;">
+                        <b>{{ option.shoutedCount }}</b> <ds-icon name="bullhorn" />
+                      </span>
+                    </ds-text>
+                  </ds-flex-item>
+                  <ds-flex-item>
+                    <ds-text
+                      size="small"
+                      color="softer"
+                      align="right"
+                    >
+                      {{ option.author.name | truncate(32) }} - {{ option.createdAt | dateTime('dd.MM.yyyy') }}
+                    </ds-text>
+                  </ds-flex-item>
+                </ds-flex>
+              </ds-flex-item>
+            </ds-flex>
+          </template>
+        </ds-select>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import { isEmpty } from 'lodash'
 
 export default {
@@ -39,7 +102,6 @@ export default {
       type: String,
       default: ''
     },
-    // #: Delay after typing before calling a search query.
     delay: {
       type: Number,
       default: 700
@@ -47,87 +109,200 @@ export default {
   },
   data() {
     return {
-      // #: Bind to input text.
-      searchValue: '',
-      // #: Returned ID value of the timer given by "setTimeout()".
       searchProcess: null,
-      // #!: Seems to be unused (unquestioned).
-      typing: false
+      isOpen: false,
+      inProgress: false,
+      lastSearchTerm: '',
+      unprocessedSearchInput: '',
+      searchValue: '',
+      results: []
     }
   },
   computed: {
     // #: Unused at the moment?
     isActive() {
-      return !isEmpty(this.searchValue)
+      return !isEmpty(this.lastSearchTerm)
+    },
+    emptyText() {
+      return this.isActive && !this.inProgress
+        ? this.$t('search.failed')
+        : this.$t('search.hint')
     }
   },
   watch: {
-    value(value) {
-      this.$nextTick(() => {
-        this.updateValue()
-      })
+    searchValue(item) {
+      if (item && item.slug) {
+        this.isOpen = false
+        this.$router.push(`/post/${item.slug}`)
+        this.$nextTick(() => {
+          this.searchValue = this.lastSearchTerm
+        })
+      }
     }
   },
-  mounted() {
-    this.updateValue()
-  },
   methods: {
-    // #: Sets "searchValue" same as "value" if they are different or sets "searchValue" to empty string if "value is undef".
-    updateValue() {
-      if (!this.value) {
-        this.searchValue = ''
-      } else if (this.value.toString() !== this.searchValue.toString()) {
-        this.searchValue = this.value.toString()
+    query(value) {
+      if (isEmpty(value) || value.length < 3) {
+        this.results = []
+        return
       }
+      this.inProgress = true
+      this.$apollo
+        .query({
+          query: gql(`
+            query findPosts($filter: String!) {
+              findPosts(filter: $filter, limit: 10) {
+                id
+                slug
+                label: title
+                value: title,
+                shoutedCount
+                commentsCount
+                createdAt
+                author {
+                  id
+                  name
+                  slug
+                }
+              }
+            }
+          `),
+          variables: {
+            filter: value
+          }
+        })
+        .then(res => {
+          this.results = res.data.findPosts || []
+          this.inProgress = false
+        })
     },
-    handleInput() {
-      // #: Prevent "setTimeout()" to call parameter function after "delay".
+    handleInput(e) {
       clearTimeout(this.searchProcess)
-      this.typing = true
-      // skip on less then three letters
-      if (this.searchValue && this.searchValue.toString().length < 3) {
-        return
-      }
-      // skip if nothing changed
-      if (this.searchValue === this.value) {
-        return
-      }
-      // #: Calls function in first parameter after a delay of "this.delay" milliseconds.
+      const value = e.target ? e.target.value.trim() : ''
+      this.isOpen = true
+      this.unprocessedSearchInput = value
       this.searchProcess = setTimeout(() => {
-        this.typing = false
-        //-- avoid querying for dev -- this.$emit('search', this.searchValue.toString())
-      }, this.delay)
+        this.lastSearchTerm = value
+        this.query(value)
+      }, 300)
     },
-    onEnter() {
-      // #: Prevent "setTimeout()" to call parameter function after "delay".
+    onFocus(e) {
       clearTimeout(this.searchProcess)
-      // #: "Vue.nextTick()": Defer the callback to be executed after the next DOM update cycle.
-      this.$nextTick(() => {
-        // #: Prevent "setTimeout()" to call parameter function after "delay".
-        clearTimeout(this.searchProcess)
-      })
-      this.typing = false
-      //-- avoid querying for dev -- this.$emit('search', this.searchValue.toString())
-      console.log('Enter !!!!')
+      this.isOpen = true
+    },
+    onBlur(e) {
+      this.isOpen = false
+      clearTimeout(this.searchProcess)
+      this.searchValue = this.lastSearchTerm
+    },
+    onDelete(e) {
+      clearTimeout(this.searchProcess)
+      if (isEmpty(this.unprocessedSearchInput)) {
+        this.clear()
+      }
+    },
+    /**
+     * TODO: on enter we should go to a dedicated seach page!?
+     */
+    onEnter(e) {
+      // console.log('res', this.unprocessedSearchInput)
+      // this.isOpen = false
+      clearTimeout(this.searchProcess)
+      // e.stopImmediatePropagation()
+      // e.preventDefault()
+      if (!this.inProgress) {
+        // this.lastSearchTerm = this.unprocessedSearchInput
+        this.query(this.unprocessedSearchInput)
+      }
     },
     clear() {
-      // #: Prevent "setTimeout()" to call parameter function after "delay".
       clearTimeout(this.searchProcess)
-      this.typing = false
-      this.searchValue = ''
-      if (this.value !== this.searchValue) {
-        //-- avoid querying for dev -- this.$emit('search', '')
-      }
+      this.isOpen = false
+      this.searchValue = null
+      this.lastSearchTerm = null
+      this.results = []
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .search {
   display: flex;
+  align-self: center;
   width: 100%;
   position: relative;
+
+  .search-option-label {
+    align-self: center;
+  }
+
+  .search-option-meta {
+    align-self: center;
+
+    .ds-flex {
+      flex-direction: column;
+    }
+  }
+
+  &,
+  .ds-select-dropdown {
+    transition: box-shadow 100ms;
+  }
+
+  &.is-open {
+    .ds-select-dropdown {
+      box-shadow: $box-shadow-x-large;
+    }
+  }
+
+  .search-clear-btn {
+    right: 0;
+    z-index: 10;
+    position: absolute;
+    height: 100%;
+    width: 36px;
+    cursor: pointer;
+  }
+
+  .search-meta {
+    float: right;
+    padding-top: 2px;
+    white-space: nowrap;
+    word-wrap: none;
+
+    .ds-icon {
+      vertical-align: sub;
+    }
+  }
+
+  .ds-select {
+    z-index: $z-index-dropdown + 1;
+  }
+
+  .ds-select-option-hover {
+    .ds-text-size-small,
+    .ds-text-size-small-x {
+      color: rgba(#fff, 0.8);
+    }
+  }
+
+  .ds-select {
+    transition: border-bottom 0;
+  }
+
+  .ds-select-is-open {
+    .ds-select {
+      border-bottom: 0;
+    }
+  }
+  .ds-select-dropdown-message {
+    opacity: 0.5;
+  }
+
+  .ds-select-dropdown {
+    max-height: 70vh;
+  }
 
   .field {
     width: 100%;
@@ -137,53 +312,6 @@ export default {
 
   .control {
     width: 100%;
-    input {
-      width: 100%;
-      border-radius: 2px;
-      height: 2.5em;
-      padding-left: 2em;
-      padding-right: 1em;
-      font-size: 1em;
-      transition-duration: 0.15s;
-      transition-timing-function: ease-out;
-      transition-property: border, background-color;
-
-      & {
-        border-color: hsl(0, 0%, 96%);
-      }
-    }
-  }
-
-  input {
-    padding-right: 2em !important;
-    background-color: hsl(0, 0%, 96%);
-  }
-
-  input:hover {
-    background-color: hsl(0, 0%, 98%);
-  }
-
-  input:focus,
-  &.is-active input.input {
-    background-color: hsl(0, 0%, 98%);
-  }
-
-  .icon {
-    height: 2.5em;
-    font-size: 1em;
-
-    &.btn-clear {
-      position: absolute;
-      right: 0.25rem;
-      cursor: pointer !important;
-      z-index: 10;
-      padding-left: 1em;
-      padding-right: 1em;
-    }
-  }
-
-  &.is-active .icon {
-    color: hsl(0, 0%, 71%);
   }
 }
 </style>
