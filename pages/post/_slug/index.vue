@@ -157,9 +157,6 @@ export default {
   watch: {
     Post(post) {
       this.post = post[0] || {}
-      // if (!this.post.title) {
-      //   throw new Error('404')
-      // }
       this.title = this.post.title
     }
   },
