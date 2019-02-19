@@ -1,19 +1,10 @@
 import { GraphQLClient } from 'graphql-request'
-import ApolloClient from 'apollo-client'
 import dotenv from 'dotenv'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
 import neo4j from '../../bootstrap/neo4j'
-import fetch from 'node-fetch'
 
 export const seedServerHost = 'http://127.0.0.1:4001'
 
 dotenv.config()
-
-const apolloClient = new ApolloClient({
-  link: new HttpLink({ uri: seedServerHost, fetch }),
-  cache: new InMemoryCache()
-})
 
 const driver = neo4j().getDriver()
 
@@ -68,7 +59,6 @@ const cleanDatabase = async () => {
 
 export {
   driver,
-  apolloClient,
   buildMutation,
   buildRelationMutation,
   create,

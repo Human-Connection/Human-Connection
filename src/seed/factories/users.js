@@ -33,7 +33,7 @@ export default function create (params) {
   `
 }
 
-export function relate(type, params) {
+export function relate (type, params) {
   const { from, to } = params
   return `
     mutation {

@@ -1,10 +1,9 @@
-import { create, relate, apolloClient, seedServerHost as host } from './factories'
+import { create, relate, seedServerHost as host } from './factories'
 import { authenticatedHeaders } from '../jest/helpers.js'
 
 /* eslint-disable no-multi-spaces */
 (async function () {
   try {
-
     await Promise.all([
       create('badge', { id: 'b1', key: 'indiegogo_en_racoon', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_racoon.svg' }),
       create('badge', { id: 'b2', key: 'indiegogo_en_rabbit', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_rabbit.svg' }),
@@ -46,12 +45,12 @@ import { authenticatedHeaders } from '../jest/helpers.js'
     ])
 
     const headers = await Promise.all([
-     authenticatedHeaders({ email: 'admin@example.org',     password: '1234' }, host),
-     authenticatedHeaders({ email: 'moderator@example.org', password: '1234' }, host),
-     authenticatedHeaders({ email: 'user@example.org',      password: '1234' }, host),
-     authenticatedHeaders({ email: 'tick@example.org',      password: '1234' }, host),
-     authenticatedHeaders({ email: 'trick@example.org',     password: '1234' }, host),
-     authenticatedHeaders({ email: 'track@example.org',     password: '1234' }, host),
+      authenticatedHeaders({ email: 'admin@example.org',     password: '1234' }, host),
+      authenticatedHeaders({ email: 'moderator@example.org', password: '1234' }, host),
+      authenticatedHeaders({ email: 'user@example.org',      password: '1234' }, host),
+      authenticatedHeaders({ email: 'tick@example.org',      password: '1234' }, host),
+      authenticatedHeaders({ email: 'trick@example.org',     password: '1234' }, host),
+      authenticatedHeaders({ email: 'track@example.org',     password: '1234' }, host)
     ])
 
     await Promise.all([
@@ -80,24 +79,23 @@ import { authenticatedHeaders } from '../jest/helpers.js'
       create('tag', { id: 't4', name: 'Freiheit' })
     ])
 
-
     await Promise.all([
-      create('post', { id: 'p0',  tagIds: ['t1', 't4'] }, { headers: headers[0]}),
-      create('post', { id: 'p1',  tagIds: ['t2', 't3'] }, { headers: headers[1]}),
-      create('post', { id: 'p2',  tagIds: ['t3', 't4'] }, { headers: headers[2]}),
-      create('post', { id: 'p3',  tagIds: ['t4', 't2'] }, { headers: headers[3]}),
-      create('post', { id: 'p4',  tagIds: ['t1', 't2'] }, { headers: headers[4]}),
-      create('post', { id: 'p5',  tagIds: ['t2', 't4'] }, { headers: headers[5]}),
-      create('post', { id: 'p6',  tagIds: ['t1', 't4'] }, { headers: headers[0]}),
-      create('post', { id: 'p7',  tagIds: ['t2', 't3'] }, { headers: headers[1]}),
-      create('post', { id: 'p8',  tagIds: ['t3', 't4'] }, { headers: headers[2]}),
-      create('post', { id: 'p9',  tagIds: ['t3', 't4'] }, { headers: headers[3]}),
-      create('post', { id: 'p10', tagIds: ['t4', 't2'] }, { headers: headers[4]}),
-      create('post', { id: 'p11', tagIds: ['t1', 't2'] }, { headers: headers[5]}),
-      create('post', { id: 'p12', tagIds: ['t2', 't4'] }, { headers: headers[0]}),
-      create('post', { id: 'p13', tagIds: ['t4', 't2'] }, { headers: headers[1]}),
-      create('post', { id: 'p14', tagIds: ['t1', 't2'] }, { headers: headers[2]}),
-      create('post', { id: 'p15', tagIds: ['t2', 't4'] }, { headers: headers[3]})
+      create('post',  { id: 'p0' }, { headers: headers[0] }),
+      create('post',  { id: 'p1' }, { headers: headers[1] }),
+      create('post',  { id: 'p2' }, { headers: headers[2] }),
+      create('post',  { id: 'p3' }, { headers: headers[3] }),
+      create('post',  { id: 'p4' }, { headers: headers[4] }),
+      create('post',  { id: 'p5' }, { headers: headers[5] }),
+      create('post',  { id: 'p6' }, { headers: headers[0] }),
+      create('post',  { id: 'p7' }, { headers: headers[1] }),
+      create('post',  { id: 'p8' }, { headers: headers[2] }),
+      create('post',  { id: 'p9' }, { headers: headers[3] }),
+      create('post', { id: 'p10' }, { headers: headers[4] }),
+      create('post', { id: 'p11' }, { headers: headers[5] }),
+      create('post', { id: 'p12' }, { headers: headers[0] }),
+      create('post', { id: 'p13' }, { headers: headers[1] }),
+      create('post', { id: 'p14' }, { headers: headers[2] }),
+      create('post', { id: 'p15' }, { headers: headers[3] })
     ])
 
     await Promise.all([
@@ -133,7 +131,7 @@ import { authenticatedHeaders } from '../jest/helpers.js'
       relate('post', 'Tags', { from: 'p12', to: 't4' }),
       relate('post', 'Tags', { from: 'p13', to: 't1' }),
       relate('post', 'Tags', { from: 'p14', to: 't2' }),
-      relate('post', 'Tags', { from: 'p15', to: 't3' }),
+      relate('post', 'Tags', { from: 'p15', to: 't3' })
     ])
     await Promise.all([
       relate('user', 'Shouted', { from: 'u1', to: 'p2' }),
@@ -145,44 +143,44 @@ import { authenticatedHeaders } from '../jest/helpers.js'
     ])
 
     await Promise.all([
-      create('comment', { id: "c1"}),
-      create('comment', { id: "c2"}),
-      create('comment', { id: "c3"}),
-      create('comment', { id: "c4"}),
-      create('comment', { id: "c5"}),
-      create('comment', { id: "c6"}),
-      create('comment', { id: "c7"}),
+      create('comment', { id: 'c1' }),
+      create('comment', { id: 'c2' }),
+      create('comment', { id: 'c3' }),
+      create('comment', { id: 'c4' }),
+      create('comment', { id: 'c5' }),
+      create('comment', { id: 'c6' }),
+      create('comment', { id: 'c7' })
     ])
 
     await Promise.all([
-      relate('comment', 'Author', { from: 'u3', to: 'c1'}),
-      relate('comment', 'Post',   { from: 'c1', to: 'p1'}),
-      relate('comment', 'Author', { from: 'u1', to: 'c2'}),
-      relate('comment', 'Post',   { from: 'c2', to: 'p1'}),
-      relate('comment', 'Author', { from: 'u1', to: 'c3'}),
-      relate('comment', 'Post',   { from: 'c3', to: 'p3'}),
-      relate('comment', 'Author', { from: 'u4', to: 'c4'}),
-      relate('comment', 'Post',   { from: 'c4', to: 'p2'}),
-      relate('comment', 'Author', { from: 'u4', to: 'c5'}),
-      relate('comment', 'Post',   { from: 'c5', to: 'p3'}),
-      relate('comment', 'Author', { from: 'u3', to: 'c6'}),
-      relate('comment', 'Post',   { from: 'c6', to: 'p4'}),
-      relate('comment', 'Author', { from: 'u2', to: 'c7'}),
-      relate('comment', 'Post',   { from: 'c7', to: 'p2'}),
+      relate('comment', 'Author', { from: 'u3', to: 'c1' }),
+      relate('comment', 'Post',   { from: 'c1', to: 'p1' }),
+      relate('comment', 'Author', { from: 'u1', to: 'c2' }),
+      relate('comment', 'Post',   { from: 'c2', to: 'p1' }),
+      relate('comment', 'Author', { from: 'u1', to: 'c3' }),
+      relate('comment', 'Post',   { from: 'c3', to: 'p3' }),
+      relate('comment', 'Author', { from: 'u4', to: 'c4' }),
+      relate('comment', 'Post',   { from: 'c4', to: 'p2' }),
+      relate('comment', 'Author', { from: 'u4', to: 'c5' }),
+      relate('comment', 'Post',   { from: 'c5', to: 'p3' }),
+      relate('comment', 'Author', { from: 'u3', to: 'c6' }),
+      relate('comment', 'Post',   { from: 'c6', to: 'p4' }),
+      relate('comment', 'Author', { from: 'u2', to: 'c7' }),
+      relate('comment', 'Post',   { from: 'c7', to: 'p2' })
     ])
 
     await Promise.all([
-      create('organization', { id: "o1", name: "Democracy Deutschland", description: "Description for democracy-deutschland."}),
-      create('organization', { id: "o2", name: "Human-Connection",      description: "Description for human-connection." }),
-      create('organization', { id: "o3", name: "Pro Veg",               description: "Description for pro-veg." }),
-      create('organization', { id: "o4", name: "Greenpeace",            description: "Description for greenpeace." })
+      create('organization', { id: 'o1', name: 'Democracy Deutschland', description: 'Description for democracy-deutschland.' }),
+      create('organization', { id: 'o2', name: 'Human-Connection',      description: 'Description for human-connection.' }),
+      create('organization', { id: 'o3', name: 'Pro Veg',               description: 'Description for pro-veg.' }),
+      create('organization', { id: 'o4', name: 'Greenpeace',            description: 'Description for greenpeace.' })
     ])
 
     await Promise.all([
-      relate('organization', 'CreatedBy', {from: 'u1', to: 'o1'}),
-      relate('organization', 'CreatedBy', {from: 'u1', to: 'o2'}),
-      relate('organization', 'OwnedBy',   {from: 'u2', to: 'o2'}),
-      relate('organization', 'OwnedBy',   {from: 'u2', to: 'o3'})
+      relate('organization', 'CreatedBy', { from: 'u1', to: 'o1' }),
+      relate('organization', 'CreatedBy', { from: 'u1', to: 'o2' }),
+      relate('organization', 'OwnedBy',   { from: 'u2', to: 'o2' }),
+      relate('organization', 'OwnedBy',   { from: 'u2', to: 'o3' })
     ])
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
@@ -191,6 +189,5 @@ import { authenticatedHeaders } from '../jest/helpers.js'
     console.error(err)
     process.exit(1)
   }
-
 })()
 /* eslint-enable no-multi-spaces */

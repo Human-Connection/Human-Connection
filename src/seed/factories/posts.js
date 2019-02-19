@@ -17,7 +17,6 @@ export default function (params) {
     deleted = false
   } = params
 
-
   return `
     mutation {
       ${id}: CreatePost(
@@ -33,7 +32,7 @@ export default function (params) {
   `
 }
 
-export function relate(type, params) {
+export function relate (type, params) {
   const { from, to } = params
   return `
     mutation {
