@@ -19,6 +19,7 @@
             :results="quickSearchResults"
             @clear="quickSearchClear"
             @search="value => quickSearch({ value })"
+            @select="goToPost"
           />
         </div>
         <div class="main-navigation-right">
@@ -180,6 +181,12 @@ export default {
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch'
     }),
+    goToPost(item) {
+      this.$router.push({
+        name: 'post-slug',
+        params: { slug: item.slug }
+      })
+    },
     matcher(url, route) {
       if (url.indexOf('/profile') === 0) {
         // do only match own profile

@@ -36,6 +36,7 @@
           @blur.capture.native="onBlur"
           @keyup.delete.native="onDelete"
           @keyup.esc.native="clear"
+          @input.exact="onSelect"
           @input.native="handleInput"
           @click.capture.native="isOpen = true"
         >
@@ -134,17 +135,6 @@ export default {
         : this.$t('search.hint')
     }
   },
-  watch: {
-    searchValue(item) {
-      if (item && item.slug) {
-        this.isOpen = false
-        this.$router.push(`/post/${item.slug}`)
-        this.$nextTick(() => {
-          this.searchValue = this.lastSearchTerm
-        })
-      }
-    }
-  },
   methods: {
     async query(value) {
       if (isEmpty(value) || value.length < 3) {
@@ -162,6 +152,13 @@ export default {
         this.lastSearchTerm = value
         this.query(value)
       }, this.delay)
+    },
+    onSelect(item) {
+      this.isOpen = false
+      this.$emit('select', item)
+      this.$nextTick(() => {
+        this.searchValue = this.lastSearchTerm
+      })
     },
     onFocus(e) {
       clearTimeout(this.searchProcess)
