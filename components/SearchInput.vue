@@ -88,7 +88,6 @@
 </template>
 
 <script>
-// import gql from 'graphql-tag'
 import { isEmpty } from 'lodash'
 
 export default {
@@ -153,35 +152,6 @@ export default {
         return
       }
       this.$emit('search', value)
-      // this.pending = true
-      // this.$apollo
-      //   .query({
-      //     query: gql(`
-      //       query findPosts($filter: String!) {
-      //         findPosts(filter: $filter, limit: 10) {
-      //           id
-      //           slug
-      //           label: title
-      //           value: title,
-      //           shoutedCount
-      //           commentsCount
-      //           createdAt
-      //           author {
-      //             id
-      //             name
-      //             slug
-      //           }
-      //         }
-      //       }
-      //     `),
-      //     variables: {
-      //       filter: value
-      //     }
-      //   })
-      //   .then(res => {
-      //     this.results = res.data.findPosts || []
-      //     this.pending = false
-      //   })
     },
     handleInput(e) {
       clearTimeout(this.searchProcess)
