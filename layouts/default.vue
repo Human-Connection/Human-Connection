@@ -17,7 +17,7 @@
             :pending="quickSearchPending"
             :results="quickSearchResults"
             @clear="quickSearchClear"
-            @search="quickSearch"
+            @search="value => quickSearch({ value })"
           />
         </div>
         <div class="main-navigation-right">
@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
 import SearchInput from '~/components/SearchInput.vue'
@@ -140,7 +140,6 @@ export default {
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending'
-      //-- avoid querying for dev -- searchQuery: 'search/query'
     }),
     routes() {
       if (!this.user.slug) {
@@ -176,18 +175,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      quickSearchClear: 'search/quickClear',
+      quickSearch: 'search/quickSearch'
+    }),
     matcher(url, route) {
       if (url.indexOf('/profile') === 0) {
         // do only match own profile
         return this.$route.path === url
       }
       return this.$route.path.indexOf(url) === 0
-    },
-    quickSearch(value) {
-      this.$store.dispatch('search/quickSearch', { value })
-    },
-    quickSearchClear() {
-      this.$store.dispatch('search/quickClear')
     }
   }
 }
