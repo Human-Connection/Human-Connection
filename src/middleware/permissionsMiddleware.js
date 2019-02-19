@@ -16,7 +16,7 @@ const isModerator = rule()(async (parent, args, ctx, info) => {
 })
 */
 
-const isOwner = rule({ cache: 'no_cache' })(async (parent, args, ctx, info) => {
+const myself = rule({ cache: 'no_cache' })(async (parent, args, ctx, info) => {
   return ctx.user.id === parent.id
 })
 
@@ -28,13 +28,16 @@ const permissions = shield({
     // customers: and(isAuthenticated, isAdmin)
   },
   Mutation: {
-    report: isAuthenticated
+    CreatePost: isAuthenticated,
+    // TODO UpdatePost: isOwner,
+    // TODO DeletePost: isOwner,
+    report: isAuthenticated,
     // addFruitToBasket: isAuthenticated
     // CreateUser: allow,
   },
   User: {
-    email: isOwner,
-    password: isOwner
+    email: myself,
+    password: myself
   }
   // Post: isAuthenticated
 })
