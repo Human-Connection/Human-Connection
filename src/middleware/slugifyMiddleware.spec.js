@@ -6,7 +6,7 @@ let client
 let headers
 beforeEach(async () => {
   await create('user', {email: 'user@example.org', password: '1234'})
-  headers = authenticatedHeaders({email: 'user@example.org', password: '1234'})
+  headers = await authenticatedHeaders({email: 'user@example.org', password: '1234'})
   client = new GraphQLClient(host, { headers })
 })
 
@@ -22,7 +22,7 @@ describe('slugify', () => {
           title: "I am a brand new post",
           content: "Some content"
         ) { slug }
-      }`)
+      }`, { headers })
       expect(response).toEqual({ CreatePost: { slug: 'i-am-a-brand-new-post' } })
     })
 
@@ -46,18 +46,14 @@ describe('slugify', () => {
 
       describe('but if the client requested a slug', () => {
         it('rejects CreatePost', async () => {
-          try {
-            await client.request(`mutation {
+          await expect(client.request(`mutation {
               CreatePost(
                 title: "Pre-existing post",
                 content: "Some content",
                 slug: "pre-existing-post"
               ) { slug }
             }`)
-          } catch (error) {
-            expect(error.response.errors[0].message).toEqual('Not Authorised!')
-            expect(error.response.data).toEqual({ User: [ { email: null } ] })
-          }
+          ).rejects.toThrow('Unique constraint error')
         })
       })
     })
