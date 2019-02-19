@@ -1,8 +1,5 @@
 import { create, relate, apolloClient, seedServerHost as host } from './factories'
 import { authenticatedHeaders } from '../jest/helpers.js'
-import gql from 'graphql-tag'
-import asyncForEach from '../helpers/asyncForEach'
-import seed from './data'
 
 /* eslint-disable no-multi-spaces */
 (async function () {
@@ -148,6 +145,33 @@ import seed from './data'
     ])
 
     await Promise.all([
+      create('comment', { id: "c1"}),
+      create('comment', { id: "c2"}),
+      create('comment', { id: "c3"}),
+      create('comment', { id: "c4"}),
+      create('comment', { id: "c5"}),
+      create('comment', { id: "c6"}),
+      create('comment', { id: "c7"}),
+    ])
+
+    await Promise.all([
+      relate('comment', 'Author', { from: 'u3', to: 'c1'}),
+      relate('comment', 'Post',   { from: 'c1', to: 'p1'}),
+      relate('comment', 'Author', { from: 'u1', to: 'c2'}),
+      relate('comment', 'Post',   { from: 'c2', to: 'p1'}),
+      relate('comment', 'Author', { from: 'u1', to: 'c3'}),
+      relate('comment', 'Post',   { from: 'c3', to: 'p3'}),
+      relate('comment', 'Author', { from: 'u4', to: 'c4'}),
+      relate('comment', 'Post',   { from: 'c4', to: 'p2'}),
+      relate('comment', 'Author', { from: 'u4', to: 'c5'}),
+      relate('comment', 'Post',   { from: 'c5', to: 'p3'}),
+      relate('comment', 'Author', { from: 'u3', to: 'c6'}),
+      relate('comment', 'Post',   { from: 'c6', to: 'p4'}),
+      relate('comment', 'Author', { from: 'u2', to: 'c7'}),
+      relate('comment', 'Post',   { from: 'c7', to: 'p2'}),
+    ])
+
+    await Promise.all([
       create('organization', { id: "o1", name: "Democracy Deutschland", description: "Description for democracy-deutschland."}),
       create('organization', { id: "o2", name: "Human-Connection",      description: "Description for human-connection." }),
       create('organization', { id: "o3", name: "Pro Veg",               description: "Description for pro-veg." }),
@@ -160,31 +184,13 @@ import seed from './data'
       relate('organization', 'OwnedBy',   {from: 'u2', to: 'o2'}),
       relate('organization', 'OwnedBy',   {from: 'u2', to: 'o3'})
     ])
-
-
+    /* eslint-disable-next-line no-console */
+    console.log('Seeded Data...')
   } catch (err) {
     /* eslint-disable-next-line no-console */
     console.error(err)
     process.exit(1)
   }
 
-  let data = {}
-  // legacy seeds
-  await asyncForEach(Object.keys(seed), async key => {
-    const mutations = seed[key]
-    try {
-      const res = await apolloClient
-        .mutate({
-          mutation: gql(mutations(data))
-        })
-      data[key] = Object.assign(data[key] || {}, res.data)
-    } catch (err) {
-      /* eslint-disable-next-line no-console */
-      console.error(err)
-      process.exit(1)
-    }
-  })
-  /* eslint-disable-next-line no-console */
-  console.log('Seeded Data...')
 })()
 /* eslint-enable no-multi-spaces */

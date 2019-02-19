@@ -2,17 +2,11 @@ import faker from 'faker'
 
 export default function (params) {
   const {
-    id = `u${faker.random.number()}`,
-    title = faker.lorem.sentence(),
+    id = `c${faker.random.number()}`,
     content = [
-      faker.lorem.sentence(),
-      faker.lorem.sentence(),
-      faker.lorem.sentence(),
       faker.lorem.sentence(),
       faker.lorem.sentence()
     ].join('. '),
-    image = faker.image.image(),
-    visibility = 'public',
     disabled = false,
     deleted = false
   } = params
@@ -20,15 +14,12 @@ export default function (params) {
 
   return `
     mutation {
-      ${id}: CreatePost(
+      ${id}: CreateComment(
         id: "${id}",
-        title: "${title}",
         content: "${content}",
-        image: "${image}",
-        visibility: ${visibility},
         disabled: ${disabled},
         deleted: ${deleted}
-      ) { id, title }
+      ) { id }
     }
   `
 }
@@ -37,7 +28,7 @@ export function relate(type, params) {
   const { from, to } = params
   return `
     mutation {
-      ${from}_${type}_${to}: AddPost${type}(
+      ${from}_${type}_${to}: AddComment${type}(
         from: { id: "${from}" },
         to: { id: "${to}" }
       ) { from { id } }

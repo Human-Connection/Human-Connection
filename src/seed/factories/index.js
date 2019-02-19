@@ -22,6 +22,7 @@ const builders = {
   'user': require('./users.js').default,
   'organization': require('./organizations.js').default,
   'post': require('./posts.js').default,
+  'comment': require('./comments.js').default,
   'category': require('./categories.js').default,
   'tag': require('./tags.js').default
 }
@@ -29,7 +30,8 @@ const builders = {
 const relationBuilders = {
   'user': require('./users.js').relate,
   'organization': require('./organizations.js').relate,
-  'post': require('./posts.js').relate
+  'post': require('./posts.js').relate,
+  'comment': require('./comments.js').relate
 }
 
 const buildMutation = (model, parameters) => {
