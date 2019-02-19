@@ -38,9 +38,9 @@ describe('authorization', () => {
         })
 
         it('does not expose the owner\'s email address', async () => {
-          try{
+          try {
             await action(headers)
-          } catch(error) {
+          } catch (error) {
             expect(error.response.data).toEqual({ User: [ { email: null } ] })
           }
         })
@@ -69,9 +69,9 @@ describe('authorization', () => {
         })
 
         it('does not expose the owner\'s email address', async () => {
-          try{
+          try {
             await action(headers)
-          } catch(error) {
+          } catch (error) {
             expect(error.response.data).toEqual({ User: [ { email: null } ] })
           }
         })

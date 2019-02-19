@@ -5,8 +5,8 @@ import { GraphQLClient } from 'graphql-request'
 let client
 let headers
 beforeEach(async () => {
-  await create('user', {email: 'user@example.org', password: '1234'})
-  headers = await authenticatedHeaders({email: 'user@example.org', password: '1234'})
+  await create('user', { email: 'user@example.org', password: '1234' })
+  headers = await authenticatedHeaders({ email: 'user@example.org', password: '1234' })
   client = new GraphQLClient(host, { headers })
 })
 
