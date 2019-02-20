@@ -170,6 +170,12 @@ import { authenticatedHeaders } from '../jest/helpers.js'
     ])
 
     await Promise.all([
+      create('report', { description: 'I don\'t like this comment', resource: { id: 'c1', type: 'comment' } },      { headers: headers[3] }),
+      create('report', { description: 'I don\'t like this post',    resource: { id: 'p1', type: 'contribution' } }, { headers: headers[4] }),
+      create('report', { description: 'I don\'t like this user',    resource: { id: 'u1', type: 'user' } },         { headers: headers[5] })
+    ])
+
+    await Promise.all([
       create('organization', { id: 'o1', name: 'Democracy Deutschland', description: 'Description for democracy-deutschland.' }),
       create('organization', { id: 'o2', name: 'Human-Connection',      description: 'Description for human-connection.' }),
       create('organization', { id: 'o3', name: 'Pro Veg',               description: 'Description for pro-veg.' }),

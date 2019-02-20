@@ -15,7 +15,8 @@ const builders = {
   'post': require('./posts.js').default,
   'comment': require('./comments.js').default,
   'category': require('./categories.js').default,
-  'tag': require('./tags.js').default
+  'tag': require('./tags.js').default,
+  'report': require('./reports.js').default
 }
 
 const relationBuilders = {
