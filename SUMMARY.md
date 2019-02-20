@@ -5,8 +5,9 @@
 ## Backend
 
 * [Backend Installation](backend/installation/README.md)
-  * [Neo4j Installation and Configuration](backend/installation/configuration.md)
-  * [Docker](backend/installation/docker.md)
+  * [Docker Installation](backend/installation/docker-backend.md)
+  * [Local Installation](backend/installation/local-backend.md)
+  * [Kubernetes](backend/installation/kubernetes.md)
 * [GraphQL with Apollo](backend/graphql-with-apollo/README.md)
   * [Mocking](backend/graphql-with-apollo/mocking.md)
   * [Seeding](backend/graphql-with-apollo/seeding.md)
@@ -26,7 +27,8 @@
   * [Integration Testing](workflow/testing/integration-testing.md)
   * [Component Testing](workflow/testing/component-testing.md)
   * [Unit Testing](workflow/testing/unit-testing.md)
-* [Contribute](workflow/pull-requests.md)
+* [Contribute](workflow/README.md)
+  * [Our GitHub Workflow](workflow/contribute/github-workflow.md)
 * [Deployment](workflow/deployment.md)
 
 ## Documentation

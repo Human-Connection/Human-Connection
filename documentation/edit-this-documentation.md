@@ -118,4 +118,3 @@ TODO: How to modify screenshots in Linux ...
 {% endhint %}
 {% endtab %}
 {% endtabs %}
-
