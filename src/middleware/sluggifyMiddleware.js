@@ -1,5 +1,4 @@
 import uniqueSlug from './slugify/uniqueSlug'
-import slug from 'slug'
 
 const isUniqueFor = (context, type) => {
   return async (slug) => {
@@ -25,11 +24,11 @@ export default {
     },
     CreateOrganization: async (resolve, root, args, context, info) => {
       args.slug = args.slug || await uniqueSlug(args.name, isUniqueFor(context, 'Organization'))
-      return  resolve(root, args, context, info)
+      return resolve(root, args, context, info)
     },
     CreateCategory: async (resolve, root, args, context, info) => {
       args.slug = args.slug || await uniqueSlug(args.name, isUniqueFor(context, 'Category'))
-      return  resolve(root, args, context, info)
+      return resolve(root, args, context, info)
     }
   }
 }
