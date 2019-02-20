@@ -17,35 +17,19 @@ export default {
   Mutation: {
     CreatePost: async (resolve, root, args, context, info) => {
       args.slug = args.slug || await uniqueSlug(args.title, isUniqueFor(context, 'Post'))
-      const result = await resolve(root, args, context, info)
-      return result
+      return resolve(root, args, context, info)
     },
     CreateUser: async (resolve, root, args, context, info) => {
-      if (!args.slug) {
-        args.slug = slug(args.name, {
-          lower: true
-        })
-      }
-      const result = await resolve(root, args, context, info)
-      return result
+      args.slug = args.slug || await uniqueSlug(args.name, isUniqueFor(context, 'User'))
+      return resolve(root, args, context, info)
     },
     CreateOrganization: async (resolve, root, args, context, info) => {
-      if (!args.slug) {
-        args.slug = slug(args.name, {
-          lower: true
-        })
-      }
-      const result = await resolve(root, args, context, info)
-      return result
+      args.slug = args.slug || await uniqueSlug(args.name, isUniqueFor(context, 'Organization'))
+      return  resolve(root, args, context, info)
     },
     CreateCategory: async (resolve, root, args, context, info) => {
-      if (!args.slug) {
-        args.slug = slug(args.name, {
-          lower: true
-        })
-      }
-      const result = await resolve(root, args, context, info)
-      return result
+      args.slug = args.slug || await uniqueSlug(args.name, isUniqueFor(context, 'Category'))
+      return  resolve(root, args, context, info)
     }
   }
 }
