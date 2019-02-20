@@ -53,7 +53,7 @@ describe('slugify', () => {
                 slug: "pre-existing-post"
               ) { slug }
             }`)
-          ).rejects.toThrow('Unique constraint error')
+          ).rejects.toThrow('already exists')
         })
       })
     })

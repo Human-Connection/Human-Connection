@@ -16,7 +16,7 @@ const isUniqueFor = (context, type) => {
 export default {
   Mutation: {
     CreatePost: async (resolve, root, args, context, info) => {
-      args.slug = await uniqueSlug(args.title, isUniqueFor(context, 'Post'))
+      args.slug = args.slug || await uniqueSlug(args.title, isUniqueFor(context, 'Post'))
       const result = await resolve(root, args, context, info)
       return result
     },
