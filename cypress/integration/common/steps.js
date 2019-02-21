@@ -6,9 +6,18 @@ import users from '../../fixtures/users.json'
 
 let lastPost = {
 }
+let loginCredentials
 
 Given('I am logged in', () => {
-  cy.loginAs('admin')
+  loginCredentials = {
+    email: 'admin@example.org',
+    password: '1234',
+  }
+  cy.factory().create('user', {
+    role: 'admin',
+    ...loginCredentials
+  })
+  cy.login('admin@example.org', '1234')
 })
 Given('I am logged in as {string}', userType => {
   cy.loginAs(userType)
@@ -112,7 +121,9 @@ When('I click on the big plus icon in the bottom right corner to create post', (
 })
 
 Given('I previously created a post', () => {
-  // TODO: create a post in the database
+  cy.factory()
+    .authenticateAs(loginCredentials)
+    .create('post', lastPost)
 })
 
 When('I choose {string} as the title of the post', (title) => {
@@ -121,15 +132,15 @@ When('I choose {string} as the title of the post', (title) => {
 })
 
 When('I type in the following text:', (text) => {
-  lastPost.text = text.replace('\n', ' ')
-  cy.get('.ProseMirror').type(lastPost.text)
+  lastPost.content = text.replace('\n', ' ')
+  cy.get('.ProseMirror').type(lastPost.content)
 })
 
 Then('the post shows up on the landing page at position {int}', (index) => {
   cy.openPage('landing')
   const selector = `:nth-child(${index}) > .ds-card > .ds-card-content`
   cy.get(selector).should('contain', lastPost.title)
-  cy.get(selector).should('contain', lastPost.text)
+  cy.get(selector).should('contain', lastPost.content)
 })
 
 Then('I get redirected to {string}', (route) => {
@@ -138,5 +149,5 @@ Then('I get redirected to {string}', (route) => {
 
 Then('the post was saved successfully', () => {
   cy.get('.ds-card-header > .ds-heading').should('contain', lastPost.title)
-  cy.get('.content').should('contain', lastPost.text)
+  cy.get('.content').should('contain', lastPost.content)
 })

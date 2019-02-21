@@ -5,7 +5,7 @@ Feature: Create a post
 
   Background:
     Given I am logged in
-    Given I am on the "landing" page
+    And I am on the "landing" page
 
   Scenario: Create a post
     When I click on the big plus icon in the bottom right corner to create post
