@@ -1,7 +1,22 @@
 import { GraphQLClient } from 'graphql-request'
 import { getDriver } from '../../bootstrap/neo4j'
+import { request } from 'graphql-request'
 
 export const seedServerHost = 'http://127.0.0.1:4001'
+export const testServerHost = 'http://127.0.0.1:4123'
+
+const authenticatedHeaders = async ({ email, password }, host = testServerHost) => {
+  const mutation = `
+      mutation {
+        login(email:"${email}", password:"${password}"){
+          token
+        }
+      }`
+  const response = await request(host, mutation)
+  return {
+    authorization: `Bearer ${response.login.token}`
+  }
+}
 
 const factories = {
   'badge':        require('./badges.js').default,
@@ -21,19 +36,19 @@ const relationFactories = {
   'comment':      require('./comments.js').relate
 }
 
-const create = (model, parameters, options) => {
+export const create = (model, parameters, options) => {
   const graphQLClient = new GraphQLClient(seedServerHost, options)
   const mutation = factories[model](parameters)
   return graphQLClient.request(mutation)
 }
 
-const relate = (model, type, parameters, options) => {
+export const relate = (model, type, parameters, options) => {
   const graphQLClient = new GraphQLClient(seedServerHost, options)
   const mutation = relationFactories[model](type, parameters)
   return graphQLClient.request(mutation)
 }
 
-const cleanDatabase = async (options = {}) => {
+export const cleanDatabase = async (options = {}) => {
   const {
     driver = getDriver()
   } = options
@@ -48,8 +63,44 @@ const cleanDatabase = async (options = {}) => {
   }
 }
 
-export {
-  create,
-  relate,
-  cleanDatabase
+export default function factoryFun (options = {}) {
+  const {
+    neo4jDriver = getDriver(),
+    seedServerHost = 'http://127.0.0.1:4001',
+    testServerHost = 'http://127.0.0.1:4123'
+  } = options
+
+  const graphQLClient = new GraphQLClient(seedServerHost)
+
+  const result = {
+    neo4jDriver,
+    seedServerHost,
+    graphQLClient,
+    lastResponse: null,
+    async authenticateAs({email, password}) {
+      const headers =  await authenticatedHeaders({email, password}, seedServerHost)
+      this.lastResponse = headers
+      this.graphQLClient = new GraphQLClient(seedServerHost, { headers })
+      return this
+    },
+    async create(node, properties) {
+      const mutation = factories[node](properties)
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
+    async relate(node, relationship, properties) {
+      const mutation = relationFactories[node](relationship, properties)
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
+    async cleanDatabase() {
+      this.lastResponse = await cleanDatabase({driver: this.neo4jDriver})
+      return this
+    }
+  }
+  result.authenticateAs.bind(result)
+  result.create.bind(result)
+  result.relate.bind(result)
+  result.cleanDatabase.bind(result)
+  return result
 }

@@ -1,5 +1,4 @@
-import { create, relate, seedServerHost as host } from './factories'
-import { authenticatedHeaders } from '../jest/helpers.js'
+import factoryFun, { create, relate, seedServerHost as host } from './factories'
 
 /* eslint-disable no-multi-spaces */
 (async function () {
@@ -44,15 +43,6 @@ import { authenticatedHeaders } from '../jest/helpers.js'
       relate('user', 'Blacklisted', { from: 'u7', to: 'u6' })
     ])
 
-    const headers = await Promise.all([
-      authenticatedHeaders({ email: 'admin@example.org',     password: '1234' }, host),
-      authenticatedHeaders({ email: 'moderator@example.org', password: '1234' }, host),
-      authenticatedHeaders({ email: 'user@example.org',      password: '1234' }, host),
-      authenticatedHeaders({ email: 'tick@example.org',      password: '1234' }, host),
-      authenticatedHeaders({ email: 'trick@example.org',     password: '1234' }, host),
-      authenticatedHeaders({ email: 'track@example.org',     password: '1234' }, host)
-    ])
-
     await Promise.all([
       create('category', { id: 'cat1',  name: 'Just For Fun',                 slug: 'justforfun',                 icon: 'smile' }),
       create('category', { id: 'cat2',  name: 'Happyness & Values',           slug: 'happyness-values',           icon: 'heart-o' }),
@@ -79,23 +69,32 @@ import { authenticatedHeaders } from '../jest/helpers.js'
       create('tag', { id: 't4', name: 'Freiheit' })
     ])
 
+    const [ asAdmin, asModerator, asUser, asTick, asTrick, asTrack ] = await Promise.all([
+      factoryFun().authenticateAs({ email: 'admin@example.org',     password: '1234' }),
+      factoryFun().authenticateAs({ email: 'moderator@example.org', password: '1234' }),
+      factoryFun().authenticateAs({ email: 'user@example.org',      password: '1234' }),
+      factoryFun().authenticateAs({ email: 'tick@example.org',      password: '1234' }),
+      factoryFun().authenticateAs({ email: 'trick@example.org',     password: '1234' }),
+      factoryFun().authenticateAs({ email: 'track@example.org',     password: '1234' })
+    ])
+
     await Promise.all([
-      create('post',  { id: 'p0' }, { headers: headers[0] }),
-      create('post',  { id: 'p1' }, { headers: headers[1] }),
-      create('post',  { id: 'p2' }, { headers: headers[2] }),
-      create('post',  { id: 'p3' }, { headers: headers[3] }),
-      create('post',  { id: 'p4' }, { headers: headers[4] }),
-      create('post',  { id: 'p5' }, { headers: headers[5] }),
-      create('post',  { id: 'p6' }, { headers: headers[0] }),
-      create('post',  { id: 'p7' }, { headers: headers[1] }),
-      create('post',  { id: 'p8' }, { headers: headers[2] }),
-      create('post',  { id: 'p9' }, { headers: headers[3] }),
-      create('post', { id: 'p10' }, { headers: headers[4] }),
-      create('post', { id: 'p11' }, { headers: headers[5] }),
-      create('post', { id: 'p12' }, { headers: headers[0] }),
-      create('post', { id: 'p13' }, { headers: headers[1] }),
-      create('post', { id: 'p14' }, { headers: headers[2] }),
-      create('post', { id: 'p15' }, { headers: headers[3] })
+      asAdmin    .create('post', { id: 'p0' }),
+      asModerator.create('post', { id: 'p1' }),
+      asUser     .create('post', { id: 'p2' }),
+      asTick     .create('post', { id: 'p3' }),
+      asTrick    .create('post', { id: 'p4' }),
+      asTrack    .create('post', { id: 'p5' }),
+      asAdmin    .create('post', { id: 'p6' }),
+      asModerator.create('post', { id: 'p7' }),
+      asUser     .create('post', { id: 'p8' }),
+      asTick     .create('post', { id: 'p9' }),
+      asTrick    .create('post', { id: 'p10' }),
+      asTrack    .create('post', { id: 'p11' }),
+      asAdmin    .create('post', { id: 'p12' }),
+      asModerator.create('post', { id: 'p13' }),
+      asUser     .create('post', { id: 'p14' }),
+      asTick     .create('post', { id: 'p15' })
     ])
 
     await Promise.all([
@@ -170,9 +169,9 @@ import { authenticatedHeaders } from '../jest/helpers.js'
     ])
 
     await Promise.all([
-      create('report', { description: 'I don\'t like this comment', resource: { id: 'c1', type: 'comment' } },      { headers: headers[3] }),
-      create('report', { description: 'I don\'t like this post',    resource: { id: 'p1', type: 'contribution' } }, { headers: headers[4] }),
-      create('report', { description: 'I don\'t like this user',    resource: { id: 'u1', type: 'user' } },         { headers: headers[5] })
+      asTick .create('report', { description: 'I don\'t like this comment', resource: { id: 'c1', type: 'comment' } }),
+      asTrick.create('report', { description: 'I don\'t like this post',    resource: { id: 'p1', type: 'contribution' } }),
+      asTrack.create('report', { description: 'I don\'t like this user',    resource: { id: 'u1', type: 'user' } })
     ])
 
     await Promise.all([

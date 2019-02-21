@@ -2,7 +2,7 @@ import faker from 'faker'
 
 export default function (params) {
   const {
-    id = `u${faker.random.number()}`,
+    id = `p${faker.random.number()}`,
     title = faker.lorem.sentence(),
     content = [
       faker.lorem.sentence(),
@@ -27,7 +27,7 @@ export default function (params) {
         visibility: ${visibility},
         disabled: ${disabled},
         deleted: ${deleted}
-      ) { id, title }
+      ) { title, content }
     }
   `
 }
