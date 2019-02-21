@@ -7,7 +7,7 @@ import mocks from './mocks'
 import middleware from './middleware'
 import applyDirectives from './bootstrap/directives'
 import applyScalars from './bootstrap/scalars'
-import neo4j from './bootstrap/neo4j'
+import { getDriver } from './bootstrap/neo4j'
 
 import passport from 'passport'
 import jwtStrategy from './jwt/strategy'
@@ -22,7 +22,7 @@ requiredEnvVars.forEach(env => {
   }
 })
 
-const driver = neo4j().getDriver()
+const driver = getDriver()
 const debug = process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true'
 
 let schema = makeAugmentedSchema({

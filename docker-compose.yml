@@ -27,14 +27,7 @@ services:
       context: neo4j
     networks:
       - hc-network
-    volumes:
-      - neo4j-data:/data
-    environment:
-      - NEO4J_AUTH=none
 
 networks:
   hc-network:
     name: hc-network
-
-volumes:
-  neo4j-data:

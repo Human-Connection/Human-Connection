@@ -11,6 +11,13 @@ services:
       - /nitro-backend/node_modules
     command: yarn run dev
   neo4j:
+    environment:
+      - NEO4J_AUTH=none
     ports:
       - 7687:7687
       - 7474:7474
+    volumes:
+      - neo4j-data:/data
+
+volumes:
+  neo4j-data:
