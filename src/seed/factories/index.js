@@ -1,11 +1,9 @@
-import { GraphQLClient } from 'graphql-request'
+import { GraphQLClient, request } from 'graphql-request'
 import { getDriver } from '../../bootstrap/neo4j'
-import { request } from 'graphql-request'
 
 export const seedServerHost = 'http://127.0.0.1:4001'
-export const testServerHost = 'http://127.0.0.1:4123'
 
-const authenticatedHeaders = async ({ email, password }, host = testServerHost) => {
+const authenticatedHeaders = async ({ email, password }, host) => {
   const mutation = `
       mutation {
         login(email:"${email}", password:"${password}"){
@@ -19,21 +17,21 @@ const authenticatedHeaders = async ({ email, password }, host = testServerHost) 
 }
 
 const factories = {
-  'badge':        require('./badges.js').default,
-  'user':         require('./users.js').default,
+  'badge': require('./badges.js').default,
+  'user': require('./users.js').default,
   'organization': require('./organizations.js').default,
-  'post':         require('./posts.js').default,
-  'comment':      require('./comments.js').default,
-  'category':     require('./categories.js').default,
-  'tag':          require('./tags.js').default,
-  'report':       require('./reports.js').default
+  'post': require('./posts.js').default,
+  'comment': require('./comments.js').default,
+  'category': require('./categories.js').default,
+  'tag': require('./tags.js').default,
+  'report': require('./reports.js').default
 }
 
 const relationFactories = {
-  'user':         require('./users.js').relate,
+  'user': require('./users.js').relate,
   'organization': require('./organizations.js').relate,
-  'post':         require('./posts.js').relate,
-  'comment':      require('./comments.js').relate
+  'post': require('./posts.js').relate,
+  'comment': require('./comments.js').relate
 }
 
 export const create = (model, parameters, options) => {
@@ -57,7 +55,7 @@ export const cleanDatabase = async (options = {}) => {
   try {
     return await session.run(cypher)
   } catch (error) {
-    throw(error)
+    throw (error)
   } finally {
     session.close()
   }
@@ -66,8 +64,7 @@ export const cleanDatabase = async (options = {}) => {
 export default function factoryFun (options = {}) {
   const {
     neo4jDriver = getDriver(),
-    seedServerHost = 'http://127.0.0.1:4001',
-    testServerHost = 'http://127.0.0.1:4123'
+    seedServerHost = 'http://127.0.0.1:4001'
   } = options
 
   const graphQLClient = new GraphQLClient(seedServerHost)
@@ -77,24 +74,24 @@ export default function factoryFun (options = {}) {
     seedServerHost,
     graphQLClient,
     lastResponse: null,
-    async authenticateAs({email, password}) {
-      const headers =  await authenticatedHeaders({email, password}, seedServerHost)
+    async authenticateAs ({ email, password }) {
+      const headers = await authenticatedHeaders({ email, password }, seedServerHost)
       this.lastResponse = headers
       this.graphQLClient = new GraphQLClient(seedServerHost, { headers })
       return this
     },
-    async create(node, properties) {
+    async create (node, properties) {
       const mutation = factories[node](properties)
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
-    async relate(node, relationship, properties) {
+    async relate (node, relationship, properties) {
       const mutation = relationFactories[node](relationship, properties)
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
-    async cleanDatabase() {
-      this.lastResponse = await cleanDatabase({driver: this.neo4jDriver})
+    async cleanDatabase () {
+      this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
     }
   }

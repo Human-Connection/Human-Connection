@@ -1,4 +1,4 @@
-import factoryFun, { create, relate, seedServerHost as host } from './factories'
+import factoryFun, { create, relate } from './factories'
 
 /* eslint-disable no-multi-spaces */
 (async function () {
@@ -79,22 +79,22 @@ import factoryFun, { create, relate, seedServerHost as host } from './factories'
     ])
 
     await Promise.all([
-      asAdmin    .create('post', { id: 'p0' }),
+      asAdmin.create('post',     { id: 'p0' }),
       asModerator.create('post', { id: 'p1' }),
-      asUser     .create('post', { id: 'p2' }),
-      asTick     .create('post', { id: 'p3' }),
-      asTrick    .create('post', { id: 'p4' }),
-      asTrack    .create('post', { id: 'p5' }),
-      asAdmin    .create('post', { id: 'p6' }),
+      asUser.create('post',      { id: 'p2' }),
+      asTick.create('post',      { id: 'p3' }),
+      asTrick.create('post',     { id: 'p4' }),
+      asTrack.create('post',     { id: 'p5' }),
+      asAdmin.create('post',     { id: 'p6' }),
       asModerator.create('post', { id: 'p7' }),
-      asUser     .create('post', { id: 'p8' }),
-      asTick     .create('post', { id: 'p9' }),
-      asTrick    .create('post', { id: 'p10' }),
-      asTrack    .create('post', { id: 'p11' }),
-      asAdmin    .create('post', { id: 'p12' }),
+      asUser.create('post',      { id: 'p8' }),
+      asTick.create('post',      { id: 'p9' }),
+      asTrick.create('post',     { id: 'p10' }),
+      asTrack.create('post',     { id: 'p11' }),
+      asAdmin.create('post',     { id: 'p12' }),
       asModerator.create('post', { id: 'p13' }),
-      asUser     .create('post', { id: 'p14' }),
-      asTick     .create('post', { id: 'p15' })
+      asUser.create('post',      { id: 'p14' }),
+      asTick.create('post',      { id: 'p15' })
     ])
 
     await Promise.all([
@@ -169,7 +169,7 @@ import factoryFun, { create, relate, seedServerHost as host } from './factories'
     ])
 
     await Promise.all([
-      asTick .create('report', { description: 'I don\'t like this comment', resource: { id: 'c1', type: 'comment' } }),
+      asTick.create('report',  { description: 'I don\'t like this comment', resource: { id: 'c1', type: 'comment' } }),
       asTrick.create('report', { description: 'I don\'t like this post',    resource: { id: 'p1', type: 'contribution' } }),
       asTrack.create('report', { description: 'I don\'t like this user',    resource: { id: 'u1', type: 'user' } })
     ])
