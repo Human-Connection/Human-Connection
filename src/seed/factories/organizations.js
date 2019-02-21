@@ -1,8 +1,9 @@
 import faker from 'faker'
+import uuid from 'uuid/v4'
 
 export default function create (params) {
   const {
-    id = `o${faker.random.number()}`,
+    id = uuid(),
     name = faker.comany.companyName(),
     description = faker.company.catchPhrase(),
     disabled = false,
@@ -11,7 +12,7 @@ export default function create (params) {
 
   return `
     mutation {
-      ${id}: CreateOrganization(
+      CreateOrganization(
         id: "${id}",
         name: "${name}",
         description: "${description}",

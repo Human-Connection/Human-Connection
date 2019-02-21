@@ -1,8 +1,9 @@
 import faker from 'faker'
+import uuid from 'uuid/v4'
 
 export default function (params) {
   const {
-    id = `c${faker.random.number()}`,
+    id = uuid(),
     content = [
       faker.lorem.sentence(),
       faker.lorem.sentence()
@@ -13,7 +14,7 @@ export default function (params) {
 
   return `
     mutation {
-      ${id}: CreateComment(
+      CreateComment(
         id: "${id}",
         content: "${content}",
         disabled: ${disabled},

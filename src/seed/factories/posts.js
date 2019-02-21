@@ -1,8 +1,9 @@
 import faker from 'faker'
+import uuid from 'uuid/v4'
 
 export default function (params) {
   const {
-    id = `p${faker.random.number()}`,
+    id = uuid(),
     title = faker.lorem.sentence(),
     content = [
       faker.lorem.sentence(),
@@ -19,7 +20,7 @@ export default function (params) {
 
   return `
     mutation {
-      ${id}: CreatePost(
+      CreatePost(
         id: "${id}",
         title: "${title}",
         content: "${content}",

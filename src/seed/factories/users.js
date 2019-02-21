@@ -1,8 +1,9 @@
 import faker from 'faker'
+import uuid from 'uuid/v4'
 
 export default function create (params) {
   const {
-    id = `u${faker.random.number()}`,
+    id = uuid(),
     name = faker.name.findName(),
     email = faker.internet.email(),
     password = '1234',
@@ -14,7 +15,7 @@ export default function create (params) {
 
   return `
     mutation {
-      ${id}: CreateUser(
+      CreateUser(
         id: "${id}",
         name: "${name}",
         password: "${password}",
@@ -22,8 +23,8 @@ export default function create (params) {
         avatar: "${avatar}",
         role: ${role},
         disabled: ${disabled},
-        deleted: ${deleted}) {
-        id
+        deleted: ${deleted}
+      ) {
         name
         email
         avatar

@@ -16,7 +16,7 @@ const isModerator = rule()(async (parent, args, ctx, info) => {
 })
 */
 
-const myself = rule({ cache: 'no_cache' })(async (parent, args, ctx, info) => {
+const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, ctx, info) => {
   return ctx.user.id === parent.id
 })
 
@@ -36,8 +36,8 @@ const permissions = shield({
     // CreateUser: allow,
   },
   User: {
-    email: myself,
-    password: myself
+    email: isMyOwn,
+    password: isMyOwn
   }
   // Post: isAuthenticated
 })

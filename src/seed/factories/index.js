@@ -51,7 +51,7 @@ export const cleanDatabase = async (options = {}) => {
     driver = getDriver()
   } = options
   const session = driver.session()
-  const cypher = 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r'
+  const cypher = 'MATCH (n) DETACH DELETE n'
   try {
     return await session.run(cypher)
   } catch (error) {

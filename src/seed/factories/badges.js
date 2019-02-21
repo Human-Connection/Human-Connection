@@ -1,8 +1,8 @@
-import faker from 'faker'
+import uuid from 'uuid/v4'
 
 export default function (params) {
   const {
-    id = `cat${faker.random.number()}`,
+    id = uuid(),
     key,
     type = 'crowdfunding',
     status = 'permanent',
@@ -11,12 +11,13 @@ export default function (params) {
 
   return `
     mutation {
-      ${id}: CreateBadge(
-      id: "${id}",
-      key: "${key}",
-      type: ${type},
-      status: ${status},
-      icon: "${icon}") { id }
+      CreateBadge(
+        id: "${id}",
+        key: "${key}",
+        type: ${type},
+        status: ${status},
+        icon: "${icon}"
+      ) { id }
     }
   `
 }
