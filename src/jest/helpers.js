@@ -1,8 +1,10 @@
 import { request } from 'graphql-request'
 
-export const testServerHost = 'http://127.0.0.1:4123'
+// this is the to-be-tested server host
+// not to be confused with the seeder host
+export const host = 'http://127.0.0.1:4123'
 
-export async function authenticatedHeaders ({ email, password }, host = testServerHost) {
+export async function login ({ email, password }) {
   const mutation = `
       mutation {
         login(email:"${email}", password:"${password}"){

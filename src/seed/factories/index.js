@@ -61,7 +61,7 @@ export const cleanDatabase = async (options = {}) => {
   }
 }
 
-export default function factoryFun (options = {}) {
+export default function Factory (options = {}) {
   const {
     neo4jDriver = getDriver(),
     seedServerHost = 'http://127.0.0.1:4001'

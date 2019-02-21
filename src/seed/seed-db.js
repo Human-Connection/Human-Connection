@@ -1,4 +1,4 @@
-import factoryFun, { create, relate } from './factories'
+import Factory, { create, relate } from './factories'
 
 /* eslint-disable no-multi-spaces */
 (async function () {
@@ -70,12 +70,12 @@ import factoryFun, { create, relate } from './factories'
     ])
 
     const [ asAdmin, asModerator, asUser, asTick, asTrick, asTrack ] = await Promise.all([
-      factoryFun().authenticateAs({ email: 'admin@example.org',     password: '1234' }),
-      factoryFun().authenticateAs({ email: 'moderator@example.org', password: '1234' }),
-      factoryFun().authenticateAs({ email: 'user@example.org',      password: '1234' }),
-      factoryFun().authenticateAs({ email: 'tick@example.org',      password: '1234' }),
-      factoryFun().authenticateAs({ email: 'trick@example.org',     password: '1234' }),
-      factoryFun().authenticateAs({ email: 'track@example.org',     password: '1234' })
+      Factory().authenticateAs({ email: 'admin@example.org',     password: '1234' }),
+      Factory().authenticateAs({ email: 'moderator@example.org', password: '1234' }),
+      Factory().authenticateAs({ email: 'user@example.org',      password: '1234' }),
+      Factory().authenticateAs({ email: 'tick@example.org',      password: '1234' }),
+      Factory().authenticateAs({ email: 'trick@example.org',     password: '1234' }),
+      Factory().authenticateAs({ email: 'track@example.org',     password: '1234' })
     ])
 
     await Promise.all([

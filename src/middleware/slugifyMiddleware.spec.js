@@ -1,41 +1,48 @@
-import { create, cleanDatabase } from '../seed/factories'
-import { testServerHost as host, authenticatedHeaders } from '../jest/helpers'
+import Factory from '../seed/factories'
+import { host, login } from '../jest/helpers'
 import { GraphQLClient } from 'graphql-request'
 
-let client
+let authenticatedClient
 let headers
+const factory = Factory()
+
 beforeEach(async () => {
-  await create('user', { email: 'user@example.org', password: '1234' })
-  headers = await authenticatedHeaders({ email: 'user@example.org', password: '1234' })
-  client = new GraphQLClient(host, { headers })
+  await factory.create('user', { email: 'user@example.org', password: '1234' })
+  await factory.create('user', { email: 'someone@example.org', password: '1234' })
+  headers = await login({ email: 'user@example.org', password: '1234' })
+  authenticatedClient = new GraphQLClient(host, { headers })
 })
 
 afterEach(async () => {
-  await cleanDatabase()
+  await factory.cleanDatabase()
 })
 
 describe('slugify', () => {
   describe('CreatePost', () => {
     it('generates a slug based on title', async () => {
-      const response = await client.request(`mutation {
+      const response = await authenticatedClient.request(`mutation {
         CreatePost(
           title: "I am a brand new post",
           content: "Some content"
         ) { slug }
-      }`, { headers })
+      }`)
       expect(response).toEqual({ CreatePost: { slug: 'i-am-a-brand-new-post' } })
     })
 
     describe('if slug exists', () => {
       beforeEach(async () => {
-        await create('post', {
+        const asSomeoneElse = await Factory().authenticateAs({
+          email: 'someone@example.org',
+          password: '1234'
+        })
+        await asSomeoneElse.create('post', {
           title: 'Pre-existing post',
           slug: 'pre-existing-post'
-        }, { headers })
+        })
       })
 
       it('chooses another slug', async () => {
-        const response = await client.request(`mutation {
+        const response = await authenticatedClient.request(`mutation {
           CreatePost(
             title: "Pre-existing post",
             content: "Some content"
@@ -46,7 +53,7 @@ describe('slugify', () => {
 
       describe('but if the client specifies a slug', () => {
         it('rejects CreatePost', async () => {
-          await expect(client.request(`mutation {
+          await expect(authenticatedClient.request(`mutation {
               CreatePost(
                 title: "Pre-existing post",
                 content: "Some content",
@@ -61,9 +68,9 @@ describe('slugify', () => {
 
   describe('CreateUser', () => {
     const action = async (mutation, params) => {
-      return client.request(`mutation {
+      return authenticatedClient.request(`mutation {
         ${mutation}(password: "yo", ${params}) { slug }
-      }`, { headers })
+      }`)
     }
     it('generates a slug based on name', async () => {
       await expect(action('CreateUser', 'name: "I am a user"'))

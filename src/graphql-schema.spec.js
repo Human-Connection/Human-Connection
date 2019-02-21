@@ -1,17 +1,19 @@
-import { create, cleanDatabase } from './seed/factories'
+import Factory from './seed/factories'
 import jwt from 'jsonwebtoken'
-import { testServerHost as host, authenticatedHeaders } from './jest/helpers'
+import { host, login } from './jest/helpers'
 import { GraphQLClient, request } from 'graphql-request'
 
+const factory = Factory()
+
 beforeEach(async () => {
-  await create('user', {
+  await factory.create('user', {
     email: 'test@example.org',
     password: '1234'
   })
 })
 
 afterEach(async () => {
-  await cleanDatabase()
+  await factory.cleanDatabase()
 })
 
 describe('login', () => {
@@ -28,7 +30,10 @@ describe('login', () => {
   describe('ask for a `token`', () => {
     describe('with valid email/password combination', () => {
       it('responds with a JWT token', async () => {
-        const data = await request(host, mutation({ email: 'test@example.org', password: '1234' }))
+        const data = await request(host, mutation({
+          email: 'test@example.org',
+          password: '1234'
+        }))
         const { token } = data.login
         jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
           expect(data.email).toEqual('test@example.org')
@@ -39,21 +44,23 @@ describe('login', () => {
 
     describe('with a valid email but incorrect password', () => {
       it('responds with "Incorrect email address or password."', async () => {
-        try {
-          await request(host, mutation({ email: 'test@example.org', password: 'wrong' }))
-        } catch (error) {
-          expect(error.response.errors[0].message).toEqual('Incorrect email address or password.')
-        }
+        await expect(
+          request(host, mutation({
+            email: 'test@example.org',
+            password: 'wrong'
+          }))
+        ).rejects.toThrow('Incorrect email address or password.')
       })
     })
 
     describe('with a non-existing email', () => {
       it('responds with "Incorrect email address or password."', async () => {
-        try {
-          await request(host, mutation({ email: 'non-existent@example.org', password: 'wrong' }))
-        } catch (error) {
-          expect(error.response.errors[0].message).toEqual('Incorrect email address or password.')
-        }
+        await expect(
+          request(host, mutation({
+            email: 'non-existent@example.org',
+            password: 'wrong'
+          }))
+        ).rejects.toThrow('Incorrect email address or password.')
       })
     })
   })
@@ -76,7 +83,7 @@ describe('CreatePost', () => {
       let headers
       let response
       beforeEach(async () => {
-        headers = await authenticatedHeaders({ email: 'test@example.org', password: '1234' })
+        headers = await login({ email: 'test@example.org', password: '1234' })
         client = new GraphQLClient(host, { headers })
         response = await client.request(`mutation {
         CreatePost(
