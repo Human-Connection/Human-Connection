@@ -9,13 +9,13 @@ Feature: Report and Moderate
 
   Background:
     Given we have the following posts in our database:
-      | Author       | Title                         | Content           | Slug                          |
-      | David Irving | The Truth about the Holocaust | It never existed! | the-truth-about-the-holocaust |
+      | Author       | title                         | content           |
+      | David Irving | The Truth about the Holocaust | It never existed! |
 
   Scenario Outline: Report a post from various pages
     Given I am logged in with a "user" role
-    And I see David Irving's post on the <Page>
-    When I click on "Report Contribution" from the triple dot menu of the post
+    When I see David Irving's post on the <Page>
+    And I click on "Report Contribution" from the triple dot menu of the post
     And I confirm the reporting dialog because it is a criminal act under German law:
     """
     Do you really want to report the contribution "The Truth about the Holocaust"?

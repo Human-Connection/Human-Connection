@@ -18,9 +18,6 @@ const narratorParams = {
 Given('I am logged in', () => {
   cy.login(loginCredentials)
 })
-Given('I am logged in as {string}', userType => {
-  cy.loginAs(userType)
-})
 
 Given('we have a selection of tags and categories as well as posts', () => {
    cy.factory()
@@ -128,9 +125,18 @@ When('I press {string}', label => {
 })
 
 Given('we have the following posts in our database:', table => {
-  table.hashes().forEach(row => {
-    //TODO: calll factory here
-    //create('post', row)
+  table.hashes().forEach(({Author, title, content}) => {
+    cy.factory()
+      .create('user', {
+        name: Author,
+        email: `${Author}@example.org`,
+        password: '1234'
+      })
+      .authenticateAs({
+        email: `${Author}@example.org`,
+        password: '1234'
+      })
+      .create('post', { title, content })
   })
 })
 
