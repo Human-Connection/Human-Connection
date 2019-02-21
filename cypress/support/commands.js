@@ -49,11 +49,6 @@ Cypress.Commands.add('login', ({email, password}) => {
   cy.location('pathname').should('eq', '/') // we're in!
 })
 
-Cypress.Commands.add('loginAs', role => {
-  role = role || 'admin'
-  cy.login(users[role])
-})
-
 Cypress.Commands.add('logout', (email, password) => {
   cy.visit(`/logout`)
   cy.location('pathname').should('contain', '/login') // we're out
