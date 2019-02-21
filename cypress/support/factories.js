@@ -13,7 +13,7 @@ beforeEach(async () => {
   await factory.cleanDatabase({ neo4jDriver })
 })
 
-Cypress.Commands.add('factory', (node, relationship, properties) => {
+Cypress.Commands.add('factory', () => {
   return Factory()
 })
 
@@ -25,6 +25,6 @@ Cypress.Commands.add('relate', { prevSubject: true }, (factory, node, relationsh
   return factory.relate(node, relationship, properties)
 })
 
-Cypress.Commands.add('authenticateAs', { prevSubject: true }, (factory, node, relationship, properties) => {
-  return factory.authenticateAs(node, relationship, properties)
+Cypress.Commands.add('authenticateAs', { prevSubject: true }, (factory, loginCredentials) => {
+  return factory.authenticateAs(loginCredentials)
 })

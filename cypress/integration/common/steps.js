@@ -1,38 +1,64 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import { getLangByName } from '../../support/helpers'
-import users from '../../fixtures/users.json'
 
 /* global cy  */
 
 let lastPost = {
 }
-let loginCredentials
+
+const loginCredentials = {
+  email: 'peterpan@example.org',
+  password: '1234',
+}
+const narratorParams = {
+  name: "Peter Pan",
+  ...loginCredentials
+}
 
 Given('I am logged in', () => {
-  loginCredentials = {
-    email: 'admin@example.org',
-    password: '1234',
-  }
-  cy.factory().create('user', {
-    role: 'admin',
-    ...loginCredentials
-  })
-  cy.login('admin@example.org', '1234')
+  cy.login(loginCredentials)
 })
 Given('I am logged in as {string}', userType => {
   cy.loginAs(userType)
 })
 
 Given('we have a selection of tags and categories as well as posts', () => {
-  // TODO: use db factories instead of seed data
+   cy.factory()
+    .authenticateAs(loginCredentials)
+    .create('category', { id: 'cat1', name: 'Just For Fun',       slug: 'justforfun',       icon: 'smile' })
+    .create('category', { id: 'cat2', name: 'Happyness & Values', slug: 'happyness-values', icon: 'heart-o' })
+    .create('category', { id: 'cat3', name: 'Health & Wellbeing', slug: 'health-wellbeing', icon: 'medkit' })
+    .create('tag', { id: 't1', name: 'Ecology' })
+    .create('tag', { id: 't2', name: 'Nature' })
+    .create('tag', { id: 't3', name: 'Democracy' })
+    .create('post', { id: 'p0' })
+    .create('post', { id: 'p1' })
+    .create('post', { id: 'p2' })
+    .relate('post', 'Categories', { from: 'p0',  to: 'cat1' })
+    .relate('post', 'Categories', { from: 'p1',  to: 'cat2' })
+    .relate('post', 'Categories', { from: 'p2',  to: 'cat3' })
+    .relate('post', 'Tags', { from: 'p0',  to: 't1' })
+    .relate('post', 'Tags', { from: 'p0',  to: 't2' })
+    .relate('post', 'Tags', { from: 'p0',  to: 't3' })
+    .relate('post', 'Tags', { from: 'p1',  to: 't1' })
+    .relate('post', 'Tags', { from: 'p1',  to: 't2' })
 })
 
-Given('my account has the following details:', table => {
-  // TODO: use db factories instead of seed data
+Given('we have the following user accounts:', table => {
+  table.hashes().forEach((params) => {
+    cy.factory().create('user', params)
+  })
+})
+
+Given('I have a user account', () => {
+  cy.factory().create('user', narratorParams)
 })
 
 Given('my user account has the role {string}', role => {
-  // TODO: use db factories instead of seed data
+  cy.factory().create('user', {
+    role,
+    ...loginCredentials
+  })
 })
 
 When('I log out', cy.logout)
@@ -46,10 +72,10 @@ Given('I am on the {string} page', page => {
 })
 
 When('I fill in my email and password combination and click submit', () => {
-  cy.login('admin@example.org', 1234)
+  cy.login(loginCredentials)
 })
 
-When('I refresh the page', () => {
+When(/(?:when )?I refresh the page/, () => {
   cy.reload()
 })
 
@@ -61,7 +87,7 @@ When('I log out through the menu in the top right corner', () => {
 })
 
 Then('I can see my name {string} in the dropdown menu', () => {
-  cy.get('.avatar-menu-popover').should('contain', users.admin.name)
+  cy.get('.avatar-menu-popover').should('contain', narratorParams.name)
 })
 
 Then('I see the login screen again', () => {
@@ -75,7 +101,7 @@ Then('I can click on my profile picture in the top right corner', () => {
 
 Then('I am still logged in', () => {
   cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover').contains(users.admin.name)
+  cy.get('.avatar-menu-popover').contains(narratorParams.name)
 })
 
 When('I select {string} in the language menu', name => {

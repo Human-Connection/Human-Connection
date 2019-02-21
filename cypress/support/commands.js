@@ -35,14 +35,7 @@ Cypress.Commands.add('switchLanguage', (name, force) => {
   }
 })
 
-Cypress.Commands.add('visitMyProfile', () => {
-  cy.get('.avatar-menu').click()
-  cy.get('.avatar-menu-popover')
-    .find('a[href^="/profile/"]')
-    .click()
-})
-
-Cypress.Commands.add('login', (email, password) => {
+Cypress.Commands.add('login', ({email, password}) => {
   cy.visit(`/login`)
   cy.get('input[name=email]')
     .trigger('focus')
@@ -58,7 +51,7 @@ Cypress.Commands.add('login', (email, password) => {
 
 Cypress.Commands.add('loginAs', role => {
   role = role || 'admin'
-  cy.login(users[role].email, users[role].password)
+  cy.login(users[role])
 })
 
 Cypress.Commands.add('logout', (email, password) => {

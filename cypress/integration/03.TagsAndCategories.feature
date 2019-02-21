@@ -14,9 +14,9 @@ Feature: Tags and Categories
   looking at the popularity of a tag.
 
   Background:
-    Given we have a selection of tags and categories as well as posts
-    And my user account has the role "administrator"
-    Given I am logged in
+    Given my user account has the role "admin"
+    And we have a selection of tags and categories as well as posts
+    And I am logged in
 
   Scenario: See an overview of categories
     When I navigate to the administration dashboard
