@@ -16,6 +16,15 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
+describe('isLoggedIn', () => {
+  describe('unauthenticated', () => {
+    it('returns false', async () => {
+      const query = '{ isLoggedIn }'
+      await expect(request(host, query)).resolves.toEqual({ isLoggedIn: false })
+    })
+  })
+})
+
 describe('login', () => {
   const mutation = (params) => {
     const { email, password } = params
