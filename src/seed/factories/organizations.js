@@ -4,32 +4,21 @@ import uuid from 'uuid/v4'
 export default function create (params) {
   const {
     id = uuid(),
-    name = faker.name.findName(),
-    email = faker.internet.email(),
-    password = '1234',
-    role = 'user',
-    avatar = faker.internet.avatar(),
+    name = faker.comany.companyName(),
+    description = faker.company.catchPhrase(),
     disabled = false,
     deleted = false
   } = params
 
   return `
     mutation {
-      CreateUser(
+      CreateOrganization(
         id: "${id}",
         name: "${name}",
-        password: "${password}",
-        email: "${email}",
-        avatar: "${avatar}",
-        role: ${role},
+        description: "${description}",
         disabled: ${disabled},
         deleted: ${deleted}
-      ) {
-        name
-        email
-        avatar
-        role
-      }
+      ) { name }
     }
   `
 }
@@ -38,7 +27,7 @@ export function relate (type, params) {
   const { from, to } = params
   return `
     mutation {
-      ${from}_${type}_${to}: AddUser${type}(
+      ${from}_${type}_${to}: AddOrganization${type}(
         from: { id: "${from}" },
         to: { id: "${to}" }
       ) { from { id } }

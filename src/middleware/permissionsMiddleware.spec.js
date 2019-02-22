@@ -1,5 +1,5 @@
 import { create, cleanDatabase } from '../seed/factories'
-import { host, authenticatedHeaders } from '../jest/helpers'
+import { host, login } from '../jest/helpers'
 import { GraphQLClient } from 'graphql-request'
 
 describe('authorization', () => {
@@ -45,7 +45,7 @@ describe('authorization', () => {
 
       describe('as owner', () => {
         it('exposes the owner\'s email address', async () => {
-          headers = await authenticatedHeaders({
+          headers = await login({
             email: 'owner@example.org',
             password: 'iamtheowner'
           })
@@ -55,7 +55,7 @@ describe('authorization', () => {
 
       describe('as someone else', () => {
         it('does not expose the owner\'s email address', async () => {
-          headers = await authenticatedHeaders({
+          headers = await login({
             email: 'someone@example.org',
             password: 'else'
           })
