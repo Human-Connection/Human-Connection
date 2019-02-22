@@ -15,10 +15,14 @@ const includeId = async (resolve, root, args, context, resolveInfo) => {
 }
 
 export default {
-  Query: (resolve, root, args, context, info) => {
-    return includeId(resolve, root, args, context, info)
+  Query: {
+    User: (resolve, root, args, context, info) => {
+      return includeId(resolve, root, args, context, info)
+    }
   },
-  Mutation: (resolve, root, args, context, info) => {
-    return includeId(resolve, root, args, context, info)
+  Mutation: {
+    CreatePost: (resolve, root, args, context, info) => {
+      return includeId(resolve, root, args, context, info)
+    }
   }
 }
