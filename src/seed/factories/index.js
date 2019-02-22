@@ -1,50 +1,103 @@
-import ApolloClient from 'apollo-client'
-import gql from 'graphql-tag'
-import dotenv from 'dotenv'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import neo4j from '../../bootstrap/neo4j'
-import fetch from 'node-fetch'
+import { GraphQLClient, request } from 'graphql-request'
+import { getDriver } from '../../bootstrap/neo4j'
 
-dotenv.config()
+export const seedServerHost = 'http://127.0.0.1:4001'
 
-if (process.env.NODE_ENV === 'production') {
-  throw new Error('YOU CAN`T RUN FACTORIES IN PRODUCTION MODE')
-}
-
-const client = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:4001', fetch }),
-  cache: new InMemoryCache()
-})
-
-const driver = neo4j().getDriver()
-
-const builders = {
-  'user': require('./users.js').default
-}
-
-const buildMutation = (model, parameters) => {
-  return builders[model](parameters)
-}
-
-const create = (model, parameters) => {
-  return client.mutate({ mutation: gql(buildMutation(model, parameters)) })
-}
-
-const cleanDatabase = async () => {
-  const session = driver.session()
-  const cypher = 'MATCH (n) DETACH DELETE n'
-  try {
-    const result = await session.run(cypher)
-    session.close()
-    return result
-  } catch (error) {
-    console.log(error)
+const authenticatedHeaders = async ({ email, password }, host) => {
+  const mutation = `
+      mutation {
+        login(email:"${email}", password:"${password}"){
+          token
+        }
+      }`
+  const response = await request(host, mutation)
+  return {
+    authorization: `Bearer ${response.login.token}`
   }
 }
 
-export {
-  create,
-  buildMutation,
-  cleanDatabase
+const factories = {
+  'badge': require('./badges.js').default,
+  'user': require('./users.js').default,
+  'organization': require('./organizations.js').default,
+  'post': require('./posts.js').default,
+  'comment': require('./comments.js').default,
+  'category': require('./categories.js').default,
+  'tag': require('./tags.js').default,
+  'report': require('./reports.js').default
+}
+
+const relationFactories = {
+  'user': require('./users.js').relate,
+  'organization': require('./organizations.js').relate,
+  'post': require('./posts.js').relate,
+  'comment': require('./comments.js').relate
+}
+
+export const create = (model, parameters, options) => {
+  const graphQLClient = new GraphQLClient(seedServerHost, options)
+  const mutation = factories[model](parameters)
+  return graphQLClient.request(mutation)
+}
+
+export const relate = (model, type, parameters, options) => {
+  const graphQLClient = new GraphQLClient(seedServerHost, options)
+  const mutation = relationFactories[model](type, parameters)
+  return graphQLClient.request(mutation)
+}
+
+export const cleanDatabase = async (options = {}) => {
+  const {
+    driver = getDriver()
+  } = options
+  const session = driver.session()
+  const cypher = 'MATCH (n) DETACH DELETE n'
+  try {
+    return await session.run(cypher)
+  } catch (error) {
+    throw (error)
+  } finally {
+    session.close()
+  }
+}
+
+export default function Factory (options = {}) {
+  const {
+    neo4jDriver = getDriver(),
+    seedServerHost = 'http://127.0.0.1:4001'
+  } = options
+
+  const graphQLClient = new GraphQLClient(seedServerHost)
+
+  const result = {
+    neo4jDriver,
+    seedServerHost,
+    graphQLClient,
+    lastResponse: null,
+    async authenticateAs ({ email, password }) {
+      const headers = await authenticatedHeaders({ email, password }, seedServerHost)
+      this.lastResponse = headers
+      this.graphQLClient = new GraphQLClient(seedServerHost, { headers })
+      return this
+    },
+    async create (node, properties) {
+      const mutation = factories[node](properties)
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
+    async relate (node, relationship, properties) {
+      const mutation = relationFactories[node](relationship, properties)
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
+    async cleanDatabase () {
+      this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
+      return this
+    }
+  }
+  result.authenticateAs.bind(result)
+  result.create.bind(result)
+  result.relate.bind(result)
+  result.cleanDatabase.bind(result)
+  return result
 }

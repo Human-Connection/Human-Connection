@@ -1,7 +1,9 @@
 import { GraphQLClient, request } from 'graphql-request'
-import { create, cleanDatabase } from './seed/factories'
+import Factory from './seed/factories'
 import jwt from 'jsonwebtoken'
 import { host, login } from './jest/helpers'
+
+const factory = Factory()
 
 describe('login', () => {
   const mutation = (params) => {
@@ -16,14 +18,14 @@ describe('login', () => {
 
   describe('given an existing user', () => {
     beforeEach(async () => {
-      await create('user', {
+      await factory.create('user', {
         email: 'test@example.org',
         password: '1234'
       })
     })
 
     afterEach(async () => {
-      await cleanDatabase()
+      await factory.cleanDatabase()
     })
 
     describe('asking for a `token`', () => {
@@ -63,16 +65,22 @@ describe('login', () => {
 
 describe('report', () => {
   beforeEach(async () => {
-    await create('user', {
+    await factory.create('user', {
       email: 'test@example.org',
       password: '1234'
+    })
+    await factory.create('user', {
+      id: 'u2',
+      name: 'abusive-user',
+      role: 'user',
+      email: 'abusive-user@example.org'
     })
   })
 
   afterEach(async () => {
-    await cleanDatabase()
+    await factory.cleanDatabase()
   })
-  
+
   describe('unauthenticated', () => {
     let client
     it('throws authorization error', async () => {
@@ -82,14 +90,14 @@ describe('report', () => {
         report(
           description: "I don't like this user",
           resource: {
-            id: "u1",
+            id: "u2",
             type: user
           }
         ) { id, createdAt }
       }`)
       ).rejects.toThrow('Not Authorised')
     })
-    
+
     describe('authenticated', () => {
       let headers
       let response
@@ -100,14 +108,14 @@ describe('report', () => {
           report(
             description: "I don't like this user",
             resource: {
-              id: "u1",
+              id: "u2",
               type: user
             }
             ) { id, createdAt }
           }`,
-          { headers }
-          )
-        })
+        { headers }
+        )
+      })
       it('creates a report', () => {
         let { id, createdAt } = response.report
         expect(response).toEqual({
