@@ -53,7 +53,7 @@ Then('they can see the location in the info box below my avatar', () => {
   cy.contains(myLocation)
 })
 
-Then('the name {string} is still there', (name) => {
+Then('the name {string} is still there', name => {
   matchNameInUserMenu(name)
 })
 

@@ -35,7 +35,7 @@ Cypress.Commands.add('switchLanguage', (name, force) => {
   }
 })
 
-Cypress.Commands.add('login', ({email, password}) => {
+Cypress.Commands.add('login', ({ email, password }) => {
   cy.visit(`/login`)
   cy.get('input[name=email]')
     .trigger('focus')

@@ -3,15 +3,14 @@ import { getLangByName } from '../../support/helpers'
 
 /* global cy  */
 
-let lastPost = {
-}
+let lastPost = {}
 
 const loginCredentials = {
   email: 'peterpan@example.org',
-  password: '1234',
+  password: '1234'
 }
 const narratorParams = {
-  name: "Peter Pan",
+  name: 'Peter Pan',
   ...loginCredentials
 }
 
@@ -20,29 +19,44 @@ Given('I am logged in', () => {
 })
 
 Given('we have a selection of tags and categories as well as posts', () => {
-   cy.factory()
+  cy.factory()
     .authenticateAs(loginCredentials)
-    .create('category', { id: 'cat1', name: 'Just For Fun',       slug: 'justforfun',       icon: 'smile' })
-    .create('category', { id: 'cat2', name: 'Happyness & Values', slug: 'happyness-values', icon: 'heart-o' })
-    .create('category', { id: 'cat3', name: 'Health & Wellbeing', slug: 'health-wellbeing', icon: 'medkit' })
+    .create('category', {
+      id: 'cat1',
+      name: 'Just For Fun',
+      slug: 'justforfun',
+      icon: 'smile'
+    })
+    .create('category', {
+      id: 'cat2',
+      name: 'Happyness & Values',
+      slug: 'happyness-values',
+      icon: 'heart-o'
+    })
+    .create('category', {
+      id: 'cat3',
+      name: 'Health & Wellbeing',
+      slug: 'health-wellbeing',
+      icon: 'medkit'
+    })
     .create('tag', { id: 't1', name: 'Ecology' })
     .create('tag', { id: 't2', name: 'Nature' })
     .create('tag', { id: 't3', name: 'Democracy' })
     .create('post', { id: 'p0' })
     .create('post', { id: 'p1' })
     .create('post', { id: 'p2' })
-    .relate('post', 'Categories', { from: 'p0',  to: 'cat1' })
-    .relate('post', 'Categories', { from: 'p1',  to: 'cat2' })
-    .relate('post', 'Categories', { from: 'p2',  to: 'cat3' })
-    .relate('post', 'Tags', { from: 'p0',  to: 't1' })
-    .relate('post', 'Tags', { from: 'p0',  to: 't2' })
-    .relate('post', 'Tags', { from: 'p0',  to: 't3' })
-    .relate('post', 'Tags', { from: 'p1',  to: 't1' })
-    .relate('post', 'Tags', { from: 'p1',  to: 't2' })
+    .relate('post', 'Categories', { from: 'p0', to: 'cat1' })
+    .relate('post', 'Categories', { from: 'p1', to: 'cat2' })
+    .relate('post', 'Categories', { from: 'p2', to: 'cat3' })
+    .relate('post', 'Tags', { from: 'p0', to: 't1' })
+    .relate('post', 'Tags', { from: 'p0', to: 't2' })
+    .relate('post', 'Tags', { from: 'p0', to: 't3' })
+    .relate('post', 'Tags', { from: 'p1', to: 't1' })
+    .relate('post', 'Tags', { from: 'p1', to: 't2' })
 })
 
 Given('we have the following user accounts:', table => {
-  table.hashes().forEach((params) => {
+  table.hashes().forEach(params => {
     cy.factory().create('user', params)
   })
 })
@@ -125,7 +139,7 @@ When('I press {string}', label => {
 })
 
 Given('we have the following posts in our database:', table => {
-  table.hashes().forEach(({Author, title, content}) => {
+  table.hashes().forEach(({ Author, title, content }) => {
     cy.factory()
       .create('user', {
         name: Author,
@@ -148,9 +162,12 @@ When('I click on the avatar menu in the top right corner', () => {
   cy.get('.avatar-menu').click()
 })
 
-When('I click on the big plus icon in the bottom right corner to create post', () => {
-  cy.get('.post-add-button').click()
-})
+When(
+  'I click on the big plus icon in the bottom right corner to create post',
+  () => {
+    cy.get('.post-add-button').click()
+  }
+)
 
 Given('I previously created a post', () => {
   cy.factory()
@@ -158,24 +175,24 @@ Given('I previously created a post', () => {
     .create('post', lastPost)
 })
 
-When('I choose {string} as the title of the post', (title) => {
+When('I choose {string} as the title of the post', title => {
   lastPost.title = title.replace('\n', ' ')
   cy.get('input[name="title"]').type(lastPost.title)
 })
 
-When('I type in the following text:', (text) => {
+When('I type in the following text:', text => {
   lastPost.content = text.replace('\n', ' ')
   cy.get('.ProseMirror').type(lastPost.content)
 })
 
-Then('the post shows up on the landing page at position {int}', (index) => {
+Then('the post shows up on the landing page at position {int}', index => {
   cy.openPage('landing')
   const selector = `:nth-child(${index}) > .ds-card > .ds-card-content`
   cy.get(selector).should('contain', lastPost.title)
   cy.get(selector).should('contain', lastPost.content)
 })
 
-Then('I get redirected to {string}', (route) => {
+Then('I get redirected to {string}', route => {
   cy.location('pathname').should('contain', route)
 })
 

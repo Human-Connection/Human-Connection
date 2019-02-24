@@ -35,7 +35,7 @@ Given('I am logged in with a {string} role', role => {
   })
   cy.login({
     email: `${role}@example.org`,
-    password: '1234',
+    password: '1234'
   })
 })
 
@@ -125,16 +125,16 @@ When(/^I confirm the reporting dialog .*:$/, () => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach(({slug}, index) => {
-    const author =  {
-        id: `author${index}`,
-        email: `author${index}@example.org`,
-        password: '1234'
+  table.hashes().forEach(({ slug }, index) => {
+    const author = {
+      id: `author${index}`,
+      email: `author${index}@example.org`,
+      password: '1234'
     }
-    const reporter =  {
-        id: `reporter${index}`,
-        email: `reporter${index}@example.org`,
-        password: '1234'
+    const reporter = {
+      id: `reporter${index}`,
+      email: `reporter${index}@example.org`,
+      password: '1234'
     }
     cy.factory()
       .create('user', author)
@@ -143,7 +143,10 @@ Given('somebody reported the following posts:', table => {
     cy.factory()
       .create('user', reporter)
       .authenticateAs(reporter)
-      .create('report', { description: 'I don\'t like this post', resource: { id: `p${index}`, type: 'post' } })
+      .create('report', {
+        description: "I don't like this post",
+        resource: { id: `p${index}`, type: 'post' }
+      })
   })
 })
 
