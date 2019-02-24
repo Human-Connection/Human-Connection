@@ -1,5 +1,12 @@
-# Human-Connection - NITRO Backend
-[![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Backend)
+<p align="center">
+  <a href="https://human-connection.org"><img align="center" src="humanconnection.png" height="200" alt="Human Connection" /></a>
+</p>
+
+# NITRO Backend
+[![Build Status](https://img.shields.io/travis/com/Human-Connection/Nitro-Backend/master.svg)](https://travis-ci.com/Human-Connection/Nitro-Backend)
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Human-Connection/Nitor-Backend/blob/develop/LICENSE.md)
+[![FOSSA Status](https://app.fossa.io/api/projects/git+github.com/Human-Connection/Nitro-Backend.svg?type=shield)](https://app.fossa.io/projects/git+github.com/Human-Connection/Nitro-Backend?ref=badge_shield)
+[![Discord Channel](https://img.shields.io/discord/489522408076738561.svg)](https://discord.gg/6ub73U3)
 
 > This Prototype tries to resolve the biggest hurdle of connecting
 > our services together. This is not possible in a sane way using
