@@ -4,7 +4,7 @@
 
 # NITRO Backend
 [![Build Status](https://img.shields.io/travis/com/Human-Connection/Nitro-Backend/master.svg)](https://travis-ci.com/Human-Connection/Nitro-Backend)
-[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Human-Connection/Nitor-Backend/blob/develop/LICENSE.md)
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Human-Connection/Nitro-Backend/blob/backend/LICENSE.md)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend?ref=badge_shield)
 [![Discord Channel](https://img.shields.io/discord/489522408076738561.svg)](https://discord.gg/6ub73U3)
 
