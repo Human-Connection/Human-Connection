@@ -5,7 +5,7 @@
 # NITRO Backend
 [![Build Status](https://img.shields.io/travis/com/Human-Connection/Nitro-Backend/master.svg)](https://travis-ci.com/Human-Connection/Nitro-Backend)
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Human-Connection/Nitor-Backend/blob/develop/LICENSE.md)
-[![FOSSA Status](https://app.fossa.io/api/projects/git+github.com/Human-Connection/Nitro-Backend.svg?type=shield)](https://app.fossa.io/projects/git+github.com/Human-Connection/Nitro-Backend?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend?ref=badge_shield)
 [![Discord Channel](https://img.shields.io/discord/489522408076738561.svg)](https://discord.gg/6ub73U3)
 
 > This Prototype tries to resolve the biggest hurdle of connecting
@@ -155,9 +155,13 @@ npm run test
 
 - [x] add jwt authentication
 - [ ] get directives working correctly (@toLower, @auth, @role, etc.)
-- [ ] check if search is working
+- [x] check if search is working
 - [x] check if sorting is working
 - [x] check if pagination is working
 - [ ] check if upload is working (using graphql-yoga?)
 - [x] evaluate middleware 
 - [ ] ignore Posts and Comments by blacklisted Users
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend?ref=badge_large)
