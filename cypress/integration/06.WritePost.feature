@@ -4,8 +4,9 @@ Feature: Create a post
   To say something to everyone in the community
 
   Background:
-    Given I am logged in
-    Given I am on the "landing" page
+    Given I have a user account
+    And I am logged in
+    And I am on the "landing" page
 
   Scenario: Create a post
     When I click on the big plus icon in the bottom right corner to create post

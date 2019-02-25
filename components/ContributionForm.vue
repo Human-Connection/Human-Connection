@@ -29,7 +29,7 @@
             ghost
             @click.prevent="$router.back()"
           >
-          {{ $t('actions.cancel') }}
+            {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button
             icon="check"
@@ -38,7 +38,7 @@
             :disabled="disabled || errors"
             primary
           >
-          {{ $t('actions.save') }}
+            {{ $t('actions.save') }}
           </ds-button>
         </div>
       </ds-card>

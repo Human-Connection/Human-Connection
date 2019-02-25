@@ -3,9 +3,9 @@ import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 /* global cy  */
 
 let lastReportTitle
-let dummyReportedPostTitle = 'Hacker, Freaks und Funktionäre'
-let dummyReportedPostSlug = 'hacker-freaks-und-funktionareder-ccc'
-let dummyAuthorName = 'Jenny Rostock'
+let davidIrvingPostTitle = 'The Truth about the Holocaust'
+let davidIrvingPostSlug = 'the-truth-about-the-holocaust'
+let davidIrvingName = 'David Irving'
 
 const savePostTitle = $post => {
   return $post
@@ -23,21 +23,27 @@ Given("I see David Irving's post on the landing page", page => {
 })
 
 Given("I see David Irving's post on the post page", page => {
-  cy.visit(`/post/${dummyReportedPostSlug}`)
-  cy.contains(dummyReportedPostTitle) // wait
+  cy.visit(`/post/${davidIrvingPostSlug}`)
+  cy.contains(davidIrvingPostTitle) // wait
 })
 
 Given('I am logged in with a {string} role', role => {
-  cy.loginAs(role)
+  cy.factory().create('User', {
+    email: `${role}@example.org`,
+    password: '1234',
+    role
+  })
+  cy.login({
+    email: `${role}@example.org`,
+    password: '1234'
+  })
 })
 
 When(
   'I click on "Report Contribution" from the triple dot menu of the post',
   () => {
-    //TODO: match the created post title, not a dummy post title
-    cy.contains('.ds-card', dummyReportedPostTitle)
+    cy.contains('.ds-card', davidIrvingPostTitle)
       .find('.content-menu-trigger')
-      .find(':nth-child(2)')
       .click()
 
     cy.get('.popover .ds-menu-item-link')
@@ -49,8 +55,7 @@ When(
 When(
   'I click on "Report User" from the triple dot menu in the user info box',
   () => {
-    //TODO: match the created post author, not a dummy author
-    cy.contains('.ds-card', dummyAuthorName)
+    cy.contains('.ds-card', davidIrvingName)
       .find('.content-menu-trigger')
       .first()
       .click()
@@ -106,12 +111,8 @@ Then(`I can't see the moderation menu item`, () => {
     .should('not.exist')
 })
 
-When(/^I confirm the reporting dialog .*:$/, () => {
-  //TODO: take message from method argument
-  //TODO: match the right post
-  const message = 'Do you really want to report the'
+When(/^I confirm the reporting dialog .*:$/, (message) => {
   cy.contains(message) // wait for element to become visible
-  //TODO: cy.get('.ds-modal').contains(dummyReportedPostTitle)
   cy.get('.ds-modal').within(() => {
     cy.get('button')
       .contains('Send Report')
@@ -120,22 +121,28 @@ When(/^I confirm the reporting dialog .*:$/, () => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach(row => {
-    //TODO: calll factory here
-    // const options = Object.assign({}, row, { reported: true })
-    //create('post', options)
+  table.hashes().forEach(({ id }) => {
+    const reporter = {
+      email: `reporter${id}@example.org`,
+      password: '1234'
+    }
+    cy.factory()
+      .create('User', reporter)
+      .authenticateAs(reporter)
+      .create('Report', {
+        description: "I don't like this post",
+        resource: { id, type: 'contribution' }
+      })
   })
 })
 
 Then('I see all the reported posts including the one from above', () => {
-  //TODO: match the right post
   cy.get('table tbody').within(() => {
-    cy.contains('tr', dummyReportedPostTitle)
+    cy.contains('tr', davidIrvingPostTitle)
   })
 })
 
 Then('each list item links to the post page', () => {
-  //TODO: match the right post
-  cy.contains(dummyReportedPostTitle).click()
+  cy.contains(davidIrvingPostTitle).click()
   cy.location('pathname').should('contain', '/post')
 })
