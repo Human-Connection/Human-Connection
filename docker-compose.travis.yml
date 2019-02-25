@@ -15,4 +15,3 @@ services:
     build:
       context: .
       target: builder
-    command: yarn run test:cypress
