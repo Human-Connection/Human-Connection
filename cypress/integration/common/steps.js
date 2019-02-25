@@ -21,52 +21,64 @@ Given('I am logged in', () => {
 Given('we have a selection of tags and categories as well as posts', () => {
   cy.factory()
     .authenticateAs(loginCredentials)
-    .create('category', {
+    .create('Category', {
       id: 'cat1',
       name: 'Just For Fun',
       slug: 'justforfun',
       icon: 'smile'
     })
-    .create('category', {
+    .create('Category', {
       id: 'cat2',
       name: 'Happyness & Values',
       slug: 'happyness-values',
       icon: 'heart-o'
     })
-    .create('category', {
+    .create('Category', {
       id: 'cat3',
       name: 'Health & Wellbeing',
       slug: 'health-wellbeing',
       icon: 'medkit'
     })
-    .create('tag', { id: 't1', name: 'Ecology' })
-    .create('tag', { id: 't2', name: 'Nature' })
-    .create('tag', { id: 't3', name: 'Democracy' })
-    .create('post', { id: 'p0' })
-    .create('post', { id: 'p1' })
-    .create('post', { id: 'p2' })
-    .relate('post', 'Categories', { from: 'p0', to: 'cat1' })
-    .relate('post', 'Categories', { from: 'p1', to: 'cat2' })
-    .relate('post', 'Categories', { from: 'p2', to: 'cat3' })
-    .relate('post', 'Tags', { from: 'p0', to: 't1' })
-    .relate('post', 'Tags', { from: 'p0', to: 't2' })
-    .relate('post', 'Tags', { from: 'p0', to: 't3' })
-    .relate('post', 'Tags', { from: 'p1', to: 't1' })
-    .relate('post', 'Tags', { from: 'p1', to: 't2' })
+    .create('Tag', { id: 't1', name: 'Ecology' })
+    .create('Tag', { id: 't2', name: 'Nature' })
+    .create('Tag', { id: 't3', name: 'Democracy' })
+
+  const someAuthor = {
+    id: 'authorId',
+    email: 'author@example.org',
+    password: '1234'
+  }
+  cy.factory()
+    .create('User', someAuthor)
+    .authenticateAs(someAuthor)
+    .create('Post', { id: 'p0' })
+    .create('Post', { id: 'p1' })
+  cy.factory()
+    .authenticateAs(loginCredentials)
+    .create('Post', { id: 'p2' })
+    .relate('Post', 'Categories', { from: 'p0', to: 'cat1' })
+    .relate('Post', 'Categories', { from: 'p1', to: 'cat2' })
+    .relate('Post', 'Categories', { from: 'p2', to: 'cat1' })
+    .relate('Post', 'Tags', { from: 'p0', to: 't1' })
+    .relate('Post', 'Tags', { from: 'p0', to: 't2' })
+    .relate('Post', 'Tags', { from: 'p0', to: 't3' })
+    .relate('Post', 'Tags', { from: 'p1', to: 't2' })
+    .relate('Post', 'Tags', { from: 'p1', to: 't3' })
+    .relate('Post', 'Tags', { from: 'p2', to: 't3' })
 })
 
 Given('we have the following user accounts:', table => {
   table.hashes().forEach(params => {
-    cy.factory().create('user', params)
+    cy.factory().create('User', params)
   })
 })
 
 Given('I have a user account', () => {
-  cy.factory().create('user', narratorParams)
+  cy.factory().create('User', narratorParams)
 })
 
 Given('my user account has the role {string}', role => {
-  cy.factory().create('user', {
+  cy.factory().create('User', {
     role,
     ...loginCredentials
   })
@@ -141,7 +153,7 @@ When('I press {string}', label => {
 Given('we have the following posts in our database:', table => {
   table.hashes().forEach(({ Author, id, title, content }) => {
     cy.factory()
-      .create('user', {
+      .create('User', {
         name: Author,
         email: `${Author}@example.org`,
         password: '1234'
@@ -150,7 +162,7 @@ Given('we have the following posts in our database:', table => {
         email: `${Author}@example.org`,
         password: '1234'
       })
-      .create('post', { id, title, content })
+      .create('Post', { id, title, content })
   })
 })
 
@@ -172,7 +184,7 @@ When(
 Given('I previously created a post', () => {
   cy.factory()
     .authenticateAs(loginCredentials)
-    .create('post', lastPost)
+    .create('Post', lastPost)
 })
 
 When('I choose {string} as the title of the post', title => {

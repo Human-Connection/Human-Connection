@@ -22,20 +22,19 @@ Feature: Tags and Categories
     When I navigate to the administration dashboard
     And I click on "Categories"
     Then I can see a list of categories ordered by post count:
-      | Icon | Name               | Post Count |
-      |      | Just For Fun       | 5          |
-      |      | Happyness & Values | 2          |
-      |      | Health & Wellbeing | 1          |
+      | Icon | Name               | Posts      |
+      |      | Just For Fun       | 2          |
+      |      | Happyness & Values | 1          |
+      |      | Health & Wellbeing | 0          |
 
   Scenario: See an overview of tags
     When I navigate to the administration dashboard
     And I click on "Tags"
-    Then I can see a list of tags ordered by user and post count:
-      | # | Name        | Nutzer | Beiträge |
-      | 1 | Naturschutz | 2      | 2        |
-      | 2 | Freiheit    | 2      | 2        |
-      | 3 | Umwelt      | 1      | 1        |
-      | 4 | Demokratie  | 1      | 1        |
+    Then I can see a list of tags ordered by user count:
+      | # | Name      | Users  | Posts    |
+      | 1 | Democracy | 2      | 3        |
+      | 2 | Ecology   | 1      | 1        |
+      | 3 | Nature    | 1      | 2        |
 
 
 

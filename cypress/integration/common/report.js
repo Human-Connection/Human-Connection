@@ -28,7 +28,7 @@ Given("I see David Irving's post on the post page", page => {
 })
 
 Given('I am logged in with a {string} role', role => {
-  cy.factory().create('user', {
+  cy.factory().create('User', {
     email: `${role}@example.org`,
     password: '1234',
     role
@@ -131,9 +131,9 @@ Given('somebody reported the following posts:', table => {
       password: '1234'
     }
     cy.factory()
-      .create('user', reporter)
+      .create('User', reporter)
       .authenticateAs(reporter)
-      .create('report', {
+      .create('Report', {
         description: "I don't like this post",
         resource: { id, type: 'contribution' }
       })
