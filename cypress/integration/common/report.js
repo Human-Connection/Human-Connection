@@ -125,27 +125,17 @@ When(/^I confirm the reporting dialog .*:$/, () => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach(({ slug }, index) => {
-    const author = {
-      id: `author${index}`,
-      email: `author${index}@example.org`,
-      password: '1234'
-    }
+  table.hashes().forEach(({ id }) => {
     const reporter = {
-      id: `reporter${index}`,
-      email: `reporter${index}@example.org`,
+      email: `reporter${id}@example.org`,
       password: '1234'
     }
-    cy.factory()
-      .create('user', author)
-      .authenticateAs(author)
-      .create('post', { id: `p${index}` })
     cy.factory()
       .create('user', reporter)
       .authenticateAs(reporter)
       .create('report', {
         description: "I don't like this post",
-        resource: { id: `p${index}`, type: 'post' }
+        resource: { id, type: 'contribution' }
       })
   })
 })

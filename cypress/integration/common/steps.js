@@ -139,7 +139,7 @@ When('I press {string}', label => {
 })
 
 Given('we have the following posts in our database:', table => {
-  table.hashes().forEach(({ Author, title, content }) => {
+  table.hashes().forEach(({ Author, id, title, content }) => {
     cy.factory()
       .create('user', {
         name: Author,
@@ -150,7 +150,7 @@ Given('we have the following posts in our database:', table => {
         email: `${Author}@example.org`,
         password: '1234'
       })
-      .create('post', { title, content })
+      .create('post', { id, title, content })
   })
 })
 
