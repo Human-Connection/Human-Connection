@@ -25,8 +25,9 @@ $ yarn install
 Copy:
 ```
 cp .env.template .env
+cp cypress.env.template.json cypress.env.json
 ```
-Configure the file `.env` according to your needs and your local setup.
+Configure the files according to your needs and your local setup.
 
 ### Development
 ``` bash
