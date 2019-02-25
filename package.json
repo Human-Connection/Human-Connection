@@ -13,6 +13,7 @@
     "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
     "lint": "eslint src --config .eslintrc.js",
     "test": "nyc  --reporter=text-lcov yarn run test:jest",
+    "test:cypress": "run-p --race test:before:*",
     "test:before:server": "cross-env GRAPHQL_URI=http://localhost:4123 GRAPHQL_PORT=4123 babel-node src/ 2> /dev/null",
     "test:before:seeder": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled babel-node src/ 2> /dev/null",
     "test:jest:cmd": "wait-on tcp:4001 tcp:4123 && jest --forceExit --detectOpenHandles --runInBand",
@@ -21,9 +22,8 @@
     "test:jest:debug": "run-p --race test:before:* 'test:jest:cmd:debug {@}' --",
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
-    "db:script:reset": "wait-on tcp:4001 && babel-node src/seed/reset-db.js",
-    "db:seed": "$npm_package_config_no_auth run-p --race dev db:script:seed",
-    "db:reset": "$npm_package_config_no_auth run-p --race dev db:script:reset"
+    "db:reset": "babel-node src/seed/reset-db.js",
+    "db:seed": "$npm_package_config_no_auth run-p --race dev db:script:seed"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
