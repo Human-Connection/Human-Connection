@@ -29,6 +29,15 @@ We want to do more than comments and sharing!
 > Check out https://docs.human-connection.org/nitro for more information.
 --- 
 
+**REPO States**
+| Project | Status |
+|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| Nitro Backend | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Backend) |
+| Nitro Web |  |
+| Nitro Embed |  |
+| Nitro Styleguide |  |
+
+
 **Technology Stack**
 - vuejs
 - nuxtjs
