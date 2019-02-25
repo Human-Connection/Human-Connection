@@ -77,6 +77,7 @@ type Location {
 
 type User {
   id: ID!
+  actorId: String
   name: String
   email: String
   slug: String
@@ -85,6 +86,8 @@ type User {
   deleted: Boolean
   disabled: Boolean
   role: UserGroupEnum
+  publicKey: String
+  privateKey: String
 
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
   locationName: String

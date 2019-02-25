@@ -26,6 +26,7 @@ install:
 script:
   - docker-compose exec backend yarn run lint
   - docker-compose exec backend yarn run test --ci
+  - docker-compose exec backend yarn run test:cucumber
   - docker-compose exec backend yarn run test:coverage
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
