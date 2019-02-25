@@ -7,12 +7,12 @@ const factory = Factory()
 describe('authorization', () => {
   describe('given two existing users', () => {
     beforeEach(async () => {
-      await factory.create('user', {
+      await factory.create('User', {
         email: 'owner@example.org',
         name: 'Owner',
         password: 'iamtheowner'
       })
-      await factory.create('user', {
+      await factory.create('User', {
         email: 'someone@example.org',
         name: 'Someone else',
         password: 'else'

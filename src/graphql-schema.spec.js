@@ -6,7 +6,7 @@ import { host, login } from './jest/helpers'
 const factory = Factory()
 
 beforeEach(async () => {
-  await factory.create('user', {
+  await factory.create('User', {
     email: 'test@example.org',
     password: '1234'
   })
@@ -122,11 +122,11 @@ describe('CreatePost', () => {
 
 describe('report', () => {
   beforeEach(async () => {
-    await factory.create('user', {
+    await factory.create('User', {
       email: 'test@example.org',
       password: '1234'
     })
-    await factory.create('user', {
+    await factory.create('User', {
       id: 'u2',
       name: 'abusive-user',
       role: 'user',
