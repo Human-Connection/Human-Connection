@@ -11,7 +11,6 @@ When('I navigate to the administration dashboard', () => {
 })
 
 Then('I can see a list of categories ordered by post count:', table => {
-  // TODO: match the table in the feature with the html table
   cy.get('thead')
     .find('tr th')
     .should('have.length', 3)
@@ -24,7 +23,6 @@ Then('I can see a list of categories ordered by post count:', table => {
 })
 
 Then('I can see a list of tags ordered by user count:', table => {
-  // TODO: match the table in the feature with the html table
   cy.get('thead')
     .find('tr th')
     .should('have.length', 4)

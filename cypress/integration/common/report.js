@@ -111,12 +111,8 @@ Then(`I can't see the moderation menu item`, () => {
     .should('not.exist')
 })
 
-When(/^I confirm the reporting dialog .*:$/, () => {
-  //TODO: take message from method argument
-  //TODO: match the right post
-  const message = 'Do you really want to report the'
+When(/^I confirm the reporting dialog .*:$/, (message) => {
   cy.contains(message) // wait for element to become visible
-  //TODO: cy.get('.ds-modal').contains(davidIrvingPostTitle)
   cy.get('.ds-modal').within(() => {
     cy.get('button')
       .contains('Send Report')
@@ -141,14 +137,12 @@ Given('somebody reported the following posts:', table => {
 })
 
 Then('I see all the reported posts including the one from above', () => {
-  //TODO: match the right post
   cy.get('table tbody').within(() => {
     cy.contains('tr', davidIrvingPostTitle)
   })
 })
 
 Then('each list item links to the post page', () => {
-  //TODO: match the right post
   cy.contains(davidIrvingPostTitle).click()
   cy.location('pathname').should('contain', '/post')
 })
