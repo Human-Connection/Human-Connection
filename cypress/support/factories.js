@@ -8,13 +8,14 @@ const neo4jDriver = getDriver({
   password: Cypress.env('NEO4J_PASSWORD')
 })
 const factory = Factory({ neo4jDriver })
+const seedServerHost = Cypress.env('SEED_SERVER_HOST')
 
 beforeEach(async () => {
-  await factory.cleanDatabase({ neo4jDriver })
+  await factory.cleanDatabase({ seedServerHost, neo4jDriver })
 })
 
 Cypress.Commands.add('factory', () => {
-  return Factory()
+  return Factory({seedServerHost})
 })
 
 Cypress.Commands.add(

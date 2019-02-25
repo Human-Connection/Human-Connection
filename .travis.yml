@@ -18,6 +18,7 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+  - cp cypress.env.template.json cypress.env.json
 
 install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-web .
@@ -31,9 +32,8 @@ install:
 script:
   - docker-compose exec -e NODE_ENV=test webapp yarn run lint
   - docker-compose exec -e NODE_ENV=test webapp yarn run test
-  - docker-compose -f ../Nitro-Backend/docker-compose.yml exec backend yarn run db:seed
-  - wait-on http://localhost:3000
-  - cypress run --record --key $CYPRESS_TOKEN
+  - wait-on http://localhost:7474 && docker-compose -f ../Nitro-Backend/docker-compose.yml exec neo4j migrate
+  - wait-on http://localhost:3000 && cypress run --record --key $CYPRESS_TOKEN
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
