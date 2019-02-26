@@ -866,6 +866,14 @@
     fs-extra "7.0.0"
     watchify "3.11.0"
 
+"@human-connection/styleguide@~0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.0.tgz#14d5f696461996708b25126dc1e9e900c3a841cf"
+  integrity sha512-xR8iqGnjxGABoSI3AIq2R9YibZi4TTIe5R6/A9cEbWo3XqD/82+tNBjyKhv84Op4KJTgedR6IJtIIOh3H0aeOg==
+  dependencies:
+    portal-vue "~1.5.1"
+    vue "~2.6.7"
+
 "@nuxt/babel-preset-app@2.4.3":
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/@nuxt/babel-preset-app/-/babel-preset-app-2.4.3.tgz#5204dc1e533175f1566d206f32ccdd90477f3908"
@@ -11546,7 +11554,7 @@ uuid@^3.1.0, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-v-tooltip@^2.0.0-rc.33:
+v-tooltip@~2.0.0-rc.33:
   version "2.0.0-rc.33"
   resolved "https://registry.yarnpkg.com/v-tooltip/-/v-tooltip-2.0.0-rc.33.tgz#78f7d8e9c34265622be65ba9dc78c67f1dc02b73"
   integrity sha1-ePfY6cNCZWIr5lup3HjGfx3AK3M=
@@ -11628,7 +11636,7 @@ vue-cli-plugin-apollo@^0.19.1:
     subscriptions-transport-ws "^0.9.15"
     ts-node "^7.0.1"
 
-vue-count-to@^1.0.13:
+vue-count-to@~1.0.13:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/vue-count-to/-/vue-count-to-1.0.13.tgz#3e7573ea6e64c2b2972f64e0a2ab2e23c7590ff3"
   integrity sha512-6R4OVBVNtQTlcbXu6SJ8ENR35M2/CdWt3Jmv57jOUM+1ojiFmjVGvZPH8DfHpMDSA+ITs+EW5V6qthADxeyYOQ==
@@ -11761,6 +11769,11 @@ vue@^2.5.22:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.6.tgz#dde41e483c11c46a7bf523909f4f2f816ab60d25"
   integrity sha512-Y2DdOZD8sxApS+iUlwv1v8U1qN41kq6Kw45lM6nVZKhygeWA49q7VCCXkjXqeDBXgurrKWkYQ9cJeEJwAq0b9Q==
+
+vue@~2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.7.tgz#254f188e7621d2d19ee28d0c0442c6d21b53ae2d"
+  integrity sha512-g7ADfQ82QU+j6F/bVDioVQf2ccIMYLuR4E8ev+RsDBlmwRkhGO3HhgF4PF9vpwjdPpxyb1zzLur2nQ2oIMAMEg==
 
 vuex-i18n@~1.11.0:
   version "1.11.0"

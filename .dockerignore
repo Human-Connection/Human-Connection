@@ -1,6 +1,6 @@
 .vscode/
 
-styleguide/node_modules/
+styleguide/
 node_modules/
 npm-debug.log
 
