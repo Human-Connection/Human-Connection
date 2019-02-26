@@ -7,8 +7,8 @@ let headers
 const factory = Factory()
 
 beforeEach(async () => {
-  await factory.create('user', { email: 'user@example.org', password: '1234' })
-  await factory.create('user', { email: 'someone@example.org', password: '1234' })
+  await factory.create('User', { email: 'user@example.org', password: '1234' })
+  await factory.create('User', { email: 'someone@example.org', password: '1234' })
   headers = await login({ email: 'user@example.org', password: '1234' })
   authenticatedClient = new GraphQLClient(host, { headers })
 })
@@ -35,7 +35,7 @@ describe('slugify', () => {
           email: 'someone@example.org',
           password: '1234'
         })
-        await asSomeoneElse.create('post', {
+        await asSomeoneElse.create('Post', {
           title: 'Pre-existing post',
           slug: 'pre-existing-post'
         })
