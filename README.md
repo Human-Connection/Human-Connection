@@ -42,7 +42,7 @@ $ minikube service nitro-web --namespace=human-connection
 
 5. Now check if you can connect to the cluster and if its your newly created one by running: `kubectl get nodes`
 
-If you got the steps right above and see your nodes you can precede.
+If you got the steps right above and see your nodes you can continue.
 
 First, install kubernetes dashboard:
 ```sh
