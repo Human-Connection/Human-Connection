@@ -19,6 +19,7 @@
     "nonGlobalStepDefinitions": true
   },
   "jest": {
+    "verbose": true,
     "moduleFileExtensions": [
       "js",
       "json",
