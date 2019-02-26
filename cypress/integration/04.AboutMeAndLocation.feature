@@ -7,21 +7,18 @@ Feature: About me and location
   to search for users by location.
 
   Background:
-    Given I am logged in
+    Given I have a user account
+    And I am logged in
     And I am on the "settings" page
 
   Scenario: Change username
     When I save "Hansi" as my new name
     Then I can see my new name "Hansi" when I click on my profile picture in the top right
-
-  Scenario: Keep changes after refresh
-    When I changed my username to "Hansi" previously
-    And I refresh the page
-    Then my new username is still there
+    And when I refresh the page
+    Then the name "Hansi" is still there
 
   Scenario Outline: I set my location to "<location>"
     When I save "<location>" as my location
-    And my username is "Peter Lustig"
     When people visit my profile page
     Then they can see the location in the info box below my avatar
 
@@ -36,10 +33,5 @@ Feature: About me and location
     """
     Ich lebe fettlos, fleischlos, fischlos dahin, fühle mich aber ganz wohl dabei
     """
-    And my username is "Peter Lustig"
     When people visit my profile page
     Then they can see the text in the info box below my avatar
-
-
-
-
