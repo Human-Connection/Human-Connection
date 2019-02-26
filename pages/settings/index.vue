@@ -135,6 +135,9 @@ export default {
           update: (store, { data: { UpdateUser } }) => {
             const { name, locationName, about } = UpdateUser
             this.form = { name, locationName, about }
+            // update the user menu, too
+            // which listens on auth/user
+            this.$store.dispatch('auth/fetchCurrentUser')
           }
         })
         .then(data => {
