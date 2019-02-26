@@ -25,6 +25,7 @@ install:
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
   - git clone https://github.com/Human-Connection/Nitro-Backend.git ../Nitro-Backend
   - git -C "../Nitro-Backend" checkout $BACKEND_BRANCH || git -C "../Nitro-Backend" checkout master
+  - cd ../Nitro-Backend && yarn install && cd -
   - docker-compose -f ../Nitro-Backend/docker-compose.yml -f ../Nitro-Backend/docker-compose.travis.yml up -d
   - docker-compose -f ../Nitro-Backend/docker-compose.yml -f ../Nitro-Backend/docker-compose.travis.yml exec backend yarn run test:cypress &
   - yarn global add cypress wait-on
