@@ -137,6 +137,7 @@ type User {
 
 type Post {
   id: ID!
+  activityId: String
   author: User @relation(name: "WROTE", direction: "IN")
   title: String!
   slug: String
@@ -167,6 +168,7 @@ type Post {
 
 type Comment {
   id: ID!
+  activityId: String
   author: User @relation(name: "WROTE", direction: "IN")
   content: String!
   contentExcerpt: String
@@ -240,4 +242,8 @@ type Tag {
   taggedCountUnique: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p)<-[:WROTE]-(u:User) RETURN COUNT(DISTINCT u)")
   deleted: Boolean
   disabled: Boolean
+}
+type SharedInboxEndpoint {
+  id: ID!
+  uri: String
 }

@@ -1,4 +1,10 @@
-import { sendAcceptActivity, sendRejectActivity, extractNameFromId, extractDomainFromUrl } from './utils'
+import {
+  sendAcceptActivity,
+  sendRejectActivity,
+  extractNameFromId,
+  extractDomainFromUrl,
+  signAndSend
+} from './utils'
 import request from 'request'
 import as from 'activitystrea.ms'
 import NitroDatasource from './NitroDatasource'
@@ -69,6 +75,8 @@ export default class ActivityPub {
       }, async (err, response, toActorObject) => {
         if (err) return reject(err)
         debug(`name = ${toActorName}@${this.domain}`)
+        // save shared inbox
+        await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
 
         let followersCollectionPage = await this.dataSource.getFollowersCollectionPage(activity.object)
 
@@ -123,9 +131,9 @@ export default class ActivityPub {
     case 'Note':
       const articleObject = activity.object
       if (articleObject.inReplyTo) {
-        return this.dataSource.createComment(articleObject)
+        return this.dataSource.createComment(activity)
       } else {
-        return this.dataSource.createPost(articleObject)
+        return this.dataSource.createPost(activity)
       }
     default:
     }
@@ -133,5 +141,18 @@ export default class ActivityPub {
 
   handleDeleteActivity (activity) {
     debug('inside delete')
+  }
+
+  async sendActivity (activity) {
+    if (Array.isArray(activity.to) && activity.to.includes('https://www.w3.org/ns/activitystreams#Public')) {
+      delete activity.send
+      const fromName = extractNameFromId(activity.actor)
+      const sharedInboxEndpoints = await this.dataSource.getSharedInboxEndpoints()
+      await Promise.all(
+        sharedInboxEndpoints.map((el) => {
+          return signAndSend(activity, fromName, new URL(el).host, el)
+        })
+      )
+    }
   }
 }

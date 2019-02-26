@@ -278,15 +278,17 @@ export default class NitroDatasource {
     )
   }
 
-  async createPost (postObject) {
+  async createPost (activity) {
     // TODO how to handle the to field? Now the post is just created, doesn't matter who is the recipient
     // createPost
+    const postObject = activity.object
     const title = postObject.summary ? postObject.summary : postObject.content.split(' ').slice(0, 5).join(' ')
-    const id = extractIdFromActivityId(postObject.id)
+    const postId = extractIdFromActivityId(postObject.id)
+    const activityId = extractIdFromActivityId(activity.id)
     let result = await this.client.mutate({
       mutation: gql`
           mutation {
-              CreatePost(content: "${postObject.content}", title: "${title}", id: "${id}") {
+              CreatePost(content: "${postObject.content}", title: "${title}", id: "${postId}", activityId: "${activityId}") {
                   id
               }
           }
@@ -300,7 +302,7 @@ export default class NitroDatasource {
     result = await this.client.mutate({
       mutation: gql`
           mutation {
-              AddPostAuthor(from: {id: "${userId}"}, to: {id: "${id}"})
+              AddPostAuthor(from: {id: "${userId}"}, to: {id: "${postId}"})
           }
       `
     })
@@ -308,11 +310,41 @@ export default class NitroDatasource {
     throwErrorIfGraphQLErrorOccurred(result)
   }
 
-  async createComment (postObject) {
+  async getSharedInboxEndpoints () {
+    const result = await this.client.query({
+      query: gql`
+        query {
+            SharedInboxEndpoint {
+                uri
+            }
+        }
+      `
+    })
+    throwErrorIfGraphQLErrorOccurred(result)
+    return result.data.SharedInboxEnpoint
+  }
+  async addSharedInboxEndpoint (uri) {
+    try {
+      const result = await this.client.mutate({
+        mutation: gql`
+            mutation {
+                CreateSharedInboxEndpoint(uri: "${uri}")
+            }
+        `
+      })
+      throwErrorIfGraphQLErrorOccurred(result)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+
+  async createComment (activity) {
+    const postObject = activity.object
     let result = await this.client.mutate({
       mutation: gql`
           mutation {
-              CreateComment(content: "${postObject.content}") {
+              CreateComment(content: "${postObject.content}", activityId: "${extractIdFromActivityId(activity.id)}") {
                   id
               }
           }

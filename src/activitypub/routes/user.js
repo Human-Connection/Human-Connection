@@ -1,7 +1,7 @@
 import { sendCollection } from '../utils'
 import express from 'express'
 import { serveUser } from '../utils/serveUser'
-import { verify } from '../security'
+import { verifySignature } from '../security'
 
 const router = express.Router()
 const debug = require('debug')('ea:user')
@@ -47,7 +47,7 @@ router.get('/:name/outbox', (req, res) => {
 router.post('/:name/inbox', async function (req, res, next) {
   debug(`body = ${JSON.stringify(req.body, null, 2)}`)
   debug(`actorId = ${req.body.actor}`)
-  debug(`verify = ${await verify(`${req.protocol}://${req.hostname}:${req.port}${req.originalUrl}`, req.headers)}`)
+  debug(`verify = ${await verifySignature(`${req.protocol}://${req.hostname}:${req.port}${req.originalUrl}`, req.headers)}`)
   // const result = await saveActorId(req.body.actor)
   switch (req.body.type) {
   case 'Create':

@@ -1,5 +1,5 @@
 import express from 'express'
-import { verify } from '../security'
+import { verifySignature } from '../security'
 const debug = require('debug')('ea:inbox')
 
 const router = express.Router()
@@ -10,21 +10,25 @@ router.post('/', async function (req, res, next) {
   debug(`Content-Type = ${req.get('Content-Type')}`)
   debug(`body = ${JSON.stringify(req.body, null, 2)}`)
   debug(`Request headers = ${JSON.stringify(req.headers, null, 2)}`)
-  debug(`verify = ${await verify(`${req.protocol}://${req.hostname}:${req.port}${req.originalUrl}`, req.headers)}`)
+  debug(`verify = ${await verifySignature(`${req.protocol}://${req.hostname}:${req.port}${req.originalUrl}`, req.headers)}`)
   switch (req.body.type) {
   case 'Create':
-    await await req.app.get('activityPub').handleCreateActivity(req.body).catch(next)
+    if (req.body.send) {
+      await req.app.get('ap').sendActivity(req.body).catch(next)
+      break
+    }
+    await req.app.get('ap').handleCreateActivity(req.body).catch(next)
     break
   case 'Undo':
-    await await req.app.get('activityPub').handleUndoActivity(req.body).catch(next)
+    await req.app.get('ap').handleUndoActivity(req.body).catch(next)
     break
   case 'Follow':
     debug('handleFollow')
-    await req.app.get('activityPub').handleFollowActivity(req.body)
+    await req.app.get('ap').handleFollowActivity(req.body)
     debug('handledFollow')
     break
   case 'Delete':
-    await await req.app.get('activityPub').handleDeleteActivity(req.body).catch(next)
+    await req.app.get('ap').handleDeleteActivity(req.body).catch(next)
     break
     /* eslint-disable */
   case 'Update':
