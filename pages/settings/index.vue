@@ -55,12 +55,40 @@ import find from 'lodash/find'
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
 
+const query = gql`
+  query getUser($id: ID) {
+    User(id: $id) {
+      id
+      name
+      locationName
+      about
+    }
+  }
+`
+
+const mutation = gql`
+  mutation($id: ID!, $name: String, $locationName: String, $about: String) {
+    UpdateUser(
+      id: $id
+      name: $name
+      locationName: $locationName
+      about: $about
+    ) {
+      id
+      name
+      locationName
+      about
+    }
+  }
+`
+
 export default {
   data() {
     return {
       axiosSource: null,
       cities: [],
       sending: false,
+      users: [],
       form: {
         name: null,
         locationName: null,
@@ -70,18 +98,23 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
+      currentUser: 'auth/user'
     })
   },
   watch: {
-    user: {
-      immediate: true,
-      handler: function(user) {
-        this.form = {
-          name: user.name,
-          locationName: user.locationName,
-          about: user.about
-        }
+    users: function(users) {
+      const { name, locationName, about } = users[0]
+      this.form = { name, locationName, about }
+    }
+  },
+  apollo: {
+    users: function() {
+      return {
+        query,
+        variables: {
+          id: this.currentUser.id
+        },
+        update: data => data.User
       }
     }
   },
@@ -90,59 +123,19 @@ export default {
       this.sending = true
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation(
-              $id: ID!
-              $name: String
-              $locationName: String
-              $about: String
-            ) {
-              UpdateUser(
-                id: $id
-                name: $name
-                locationName: $locationName
-                about: $about
-              ) {
-                id
-                name
-                locationName
-                about
-              }
-            }
-          `,
-          // Parameters
+          mutation,
           variables: {
-            id: this.user.id,
+            id: this.currentUser.id,
             name: this.form.name,
             locationName: this.form.locationName
               ? this.form.locationName['label'] || this.form.locationName
               : null,
             about: this.form.about
           },
-          // Update the cache with the result
-          // The query will be updated with the optimistic response
-          // and then with the real result of the mutation
           update: (store, { data: { UpdateUser } }) => {
-            this.$store.dispatch('auth/fetchCurrentUser')
-
-            // Read the data from our cache for this query.
-            // const data = store.readQuery({ query: TAGS_QUERY })
-            // Add our tag from the mutation to the end
-            // data.tags.push(addTag)
-            // Write our data back to the cache.
-            // store.writeQuery({ query: TAGS_QUERY, data })
+            const { name, locationName, about } = UpdateUser
+            this.form = { name, locationName, about }
           }
-          // Optimistic UI
-          // Will be treated as a 'fake' result as soon as the request is made
-          // so that the UI can react quickly and the user be happy
-          /* optimisticResponse: {
-            __typename: 'Mutation',
-            addTag: {
-              __typename: 'Tag',
-              id: -1,
-              label: newTag
-            }
-          } */
         })
         .then(data => {
           this.$toast.success('Updated user')
