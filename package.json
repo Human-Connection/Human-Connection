@@ -50,7 +50,7 @@
     "nuxt": "~2.4.3",
     "nuxt-env": "~0.1.0",
     "portal-vue": "~1.5.1",
-    "styleguide": "git+https://github.com/Human-Connection/Nitro-Styleguide.git",
+    "@human-connection/styleguide": "~0.5.0",
     "v-tooltip": "~2.0.0-rc.33",
     "vue-count-to": "~1.0.13",
     "vue-izitoast": "1.1.2",

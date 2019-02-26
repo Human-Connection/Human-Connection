@@ -96,7 +96,7 @@ module.exports = {
   ],
 
   styleResources: {
-    scss: ['~/node_modules/styleguide/dist/shared.scss']
+    scss: ['@human-connection/styleguide/dist/shared.scss']
   },
 
   /*
