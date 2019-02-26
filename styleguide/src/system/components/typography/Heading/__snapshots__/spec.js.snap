@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Heading.vue matches snapshot 1`] = `
-<h1
-  class="ds-heading ds-heading-h1"
->
-  Winter is coming
-</h1>
-`;

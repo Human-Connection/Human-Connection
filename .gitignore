@@ -30,6 +30,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+styleguide/
 
 # TypeScript v1 declaration files
 typings/
