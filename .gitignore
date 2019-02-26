@@ -80,3 +80,4 @@ static/uploads
 
 cypress/videos
 cypress/screenshots/
+cypress.env.json
