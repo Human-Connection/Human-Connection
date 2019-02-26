@@ -103,8 +103,6 @@ export const actions = {
                 email
                 avatar
                 role
-                locationName
-                about
                 token
               }
             }
