@@ -65,7 +65,7 @@
     "vuex-i18n": "~1.11.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.3.3",
+    "@babel/core": "~7.3.4",
     "@babel/preset-env": "~7.3.1",
     "@vue/cli-shared-utils": "~3.4.0",
     "@vue/eslint-config-prettier": "~4.0.1",
