@@ -38,7 +38,7 @@ $ minikube service nitro-web --namespace=human-connection
 3. Put the config file where you can find it later (preferable in your home directory under `~/.kube/`)
 4. In the open terminal you can set the current config for the active session: `export KUBECONFIG=~/.kube/THE-NAME-OF-YOUR-CLUSTER-kubeconfig.yaml`. You could make this change permanent by adding the line to your `.bashrc` or `~/.config/fish/config.fish` depending on your shell.
    
-   Otherwise you would have to always add `--kubeconfig ~/.kube/THE-NAME-OF-YOUR-CLUSTER-kubeconfig.yaml` on every `kubectl` command that our are running.
+   Otherwise you would have to always add `--kubeconfig ~/.kube/THE-NAME-OF-YOUR-CLUSTER-kubeconfig.yaml` on every `kubectl` command that you are running.
 
 5. Now check if you can connect to the cluster and if its your newly created one by running: `kubectl get nodes`
 
