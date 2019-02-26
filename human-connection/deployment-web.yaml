@@ -36,7 +36,7 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: secret
+              name: human-connection
               key: JWT_SECRET
               optional: false
         image: humanconnection/nitro-web:latest
