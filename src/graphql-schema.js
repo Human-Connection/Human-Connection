@@ -1,4 +1,3 @@
-// import { neo4jgraphql } from "neo4j-graphql-js"
 import fs from 'fs'
 import path from 'path'
 import bcrypt from 'bcryptjs'
@@ -6,6 +5,7 @@ import generateJwt from './jwt/generateToken'
 import uuid from 'uuid/v4'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
 import { AuthenticationError } from 'apollo-server'
+import { neo4jgraphql } from 'neo4j-graphql-js'
 
 export const typeDefs =
   fs.readFileSync(process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql'))
@@ -161,6 +161,22 @@ export const resolvers = {
 
       // TODO: output Report compatible object
       return data
+    },
+    CreatePost: async (object, params, ctx, resolveInfo) => {
+      const result = await neo4jgraphql(object, params, ctx, resolveInfo, false)
+
+      const session = ctx.driver.session()
+      await session.run(
+        'MATCH (author:User {id: $userId}), (post:Post {id: $postId}) ' +
+        'MERGE (post)<-[:WROTE]-(author) ' +
+        'RETURN author', {
+          userId: ctx.user.id,
+          postId: result.id
+        })
+      session.close()
+
+      return result
     }
+
   }
 }

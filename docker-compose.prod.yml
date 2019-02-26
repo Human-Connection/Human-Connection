@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  neo4j:
+    environment:
+      - NEO4J_PASSWORD=letmein
+  backend:
+    environment:
+      - NEO4J_PASSWORD=letmein

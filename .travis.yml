@@ -16,10 +16,12 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+  - yarn global add wait-on
 
 install:
   - docker build --build-arg BUILD_COMMIT=$TRAVIS_COMMIT --target production -t humanconnection/nitro-backend:latest .
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
+  - wait-on http://localhost:7474 && docker-compose exec neo4j migrate
 
 script:
   - docker-compose exec backend yarn run lint

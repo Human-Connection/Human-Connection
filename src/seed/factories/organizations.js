@@ -22,15 +22,3 @@ export default function create (params) {
     }
   `
 }
-
-export function relate (type, params) {
-  const { from, to } = params
-  return `
-    mutation {
-      ${from}_${type}_${to}: AddOrganization${type}(
-        from: { id: "${from}" },
-        to: { id: "${to}" }
-      ) { from { id } }
-    }
-  `
-}

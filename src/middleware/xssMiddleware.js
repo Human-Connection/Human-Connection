@@ -24,7 +24,7 @@ function clean (dirty) {
   dirty = embedToAnchor(dirty)
   dirty = linkifyHtml(dirty)
   dirty = sanitizeHtml(dirty, {
-    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
+    allowedTags: ['iframe', 'img', 'p', 'h3', 'h4', 'br', 'hr', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
     allowedAttributes: {
       a: ['href', 'class', 'target', 'data-*', 'contenteditable'],
       span: ['contenteditable', 'class', 'data-*'],
@@ -47,16 +47,22 @@ function clean (dirty) {
           }
         }
       },
+      h1: 'h3',
+      h2: 'h3',
+      h3: 'h3',
+      h4: 'h4',
+      h5: 'strong',
       i: 'em',
-      // a: function (tagName, attribs) {
-      //   return {
-      //     tagName: 'a',
-      //     attribs: {
-      //       href: attribs.href,
-      //       target: '_blank',
-      //     }
-      //   }
-      // },
+      a: function (tagName, attribs) {
+        return {
+          tagName: 'a',
+          attribs: {
+            href: attribs.href,
+            target: '_blank',
+            rel: 'noopener noreferrer nofollow'
+          }
+        }
+      },
       b: 'strong',
       s: 'strike',
       img: function (tagName, attribs) {
@@ -92,18 +98,32 @@ function clean (dirty) {
   // remove empty html tags and duplicated linebreaks and returns
   dirty = dirty
     // remove all tags with "space only"
-    .replace(/<[a-z]>[\s]*<\/[a-z]>/igm, '')
+    .replace(/<[a-z-]+>[\s]+<\/[a-z-]+>/gim, '')
     // remove all iframes
-    .replace(/(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/igm, '')
-    // replace all p tags with line breaks (and spaces) only by single linebreaks
-    .replace(/<p>[\s]*(<br ?\/?>)+[\s]*<\/p>/igm, '<br>')
-    // replace multiple linebreaks with single ones
-    // limit linebreaks to max 2 (equivalent to html "br" linebreak)
-    .replace(/(<br ?\/?>){2,}/igm, '<br>')
-    .replace(/[\n]{3,}/igm, '\n\n')
+    .replace(
+      /(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/gim,
+      ''
+    )
+    .replace(/[\n]{3,}/gim, '\n\n')
     .replace(/(\r\n|\n\r|\r|\n)/g, '<br>$1')
+
+    // replace all p tags with line breaks (and spaces) only by single linebreaks
+    // limit linebreaks to max 2 (equivalent to html "br" linebreak)
+    .replace(/(<br ?\/?>\s*){2,}/gim, '<br>')
+    // remove additional linebreaks after p tags
+    .replace(
+      /<\/(p|div|th|tr)>\s*(<br ?\/?>\s*)+\s*<(p|div|th|tr)>/gim,
+      '</p><p>'
+    )
     // remove additional linebreaks inside p tags
-    .replace(/<p><br><\/p>/g, '')
+    .replace(
+      /<[a-z-]+>(<[a-z-]+>)*\s*(<br ?\/?>\s*)+\s*(<\/[a-z-]+>)*<\/[a-z-]+>/gim,
+      ''
+    )
+    // remove additional linebreaks when first child inside p tags
+    .replace(/<p>(\s*<br ?\/?>\s*)+/gim, '<p>')
+    // remove additional linebreaks when last child inside p tags
+    .replace(/(\s*<br ?\/?>\s*)+<\/p+>/gim, '</p>')
   return dirty
 }
 
