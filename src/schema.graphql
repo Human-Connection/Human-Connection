@@ -1,5 +1,6 @@
 type Query {
   isLoggedIn: Boolean!
+  currentUser: LoggedInUser
   statistics: Statistics!
 }
 type Mutation {
@@ -7,6 +8,7 @@ type Mutation {
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
 }
+
 type LoggedInUser {
   id: ID!
   slug: String!
@@ -14,8 +16,6 @@ type LoggedInUser {
   avatar:String!
   email: String!
   role: String!
-  locationName: String
-  about: String
   token: String!
 }
 
