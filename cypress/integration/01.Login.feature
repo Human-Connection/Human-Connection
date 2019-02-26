@@ -4,11 +4,7 @@ Feature: Authentication
   In order to attribute posts and other contributions to their authors
 
   Background:
-    Given my account has the following details:
-      | name                | email                 | password | type
-      | Peter Lustig        | admin@example.org     | 1234     | Admin
-      | Bob der Bausmeister | moderator@example.org | 1234     | Moderator
-      | Jenny Rostock"      | user@example.org      | 1234     | User
+    Given I have a user account
 
   Scenario: Log in
     When I visit the "/login" page
