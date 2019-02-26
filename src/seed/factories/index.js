@@ -1,6 +1,15 @@
 import { GraphQLClient, request } from 'graphql-request'
 import { getDriver } from '../../bootstrap/neo4j'
 
+import createBadge from './badges.js'
+import createUser from './users.js'
+import createOrganization from './organizations.js'
+import createPost from './posts.js'
+import createComment from './comments.js'
+import createCategory from './categories.js'
+import createTag from './tags.js'
+import createReport from './reports.js'
+
 export const seedServerHost = 'http://127.0.0.1:4001'
 
 const authenticatedHeaders = async ({ email, password }, host) => {
@@ -15,35 +24,15 @@ const authenticatedHeaders = async ({ email, password }, host) => {
     authorization: `Bearer ${response.login.token}`
   }
 }
-
 const factories = {
-  'badge': require('./badges.js').default,
-  'user': require('./users.js').default,
-  'organization': require('./organizations.js').default,
-  'post': require('./posts.js').default,
-  'comment': require('./comments.js').default,
-  'category': require('./categories.js').default,
-  'tag': require('./tags.js').default,
-  'report': require('./reports.js').default
-}
-
-const relationFactories = {
-  'user': require('./users.js').relate,
-  'organization': require('./organizations.js').relate,
-  'post': require('./posts.js').relate,
-  'comment': require('./comments.js').relate
-}
-
-export const create = (model, parameters, options) => {
-  const graphQLClient = new GraphQLClient(seedServerHost, options)
-  const mutation = factories[model](parameters)
-  return graphQLClient.request(mutation)
-}
-
-export const relate = (model, type, parameters, options) => {
-  const graphQLClient = new GraphQLClient(seedServerHost, options)
-  const mutation = relationFactories[model](type, parameters)
-  return graphQLClient.request(mutation)
+  'Badge': createBadge,
+  'User': createUser,
+  'Organization': createOrganization,
+  'Post': createPost,
+  'Comment': createComment,
+  'Category': createCategory,
+  'Tag': createTag,
+  'Report': createReport
 }
 
 export const cleanDatabase = async (options = {}) => {
@@ -73,6 +62,7 @@ export default function Factory (options = {}) {
     neo4jDriver,
     seedServerHost,
     graphQLClient,
+    factories,
     lastResponse: null,
     async authenticateAs ({ email, password }) {
       const headers = await authenticatedHeaders({ email, password }, seedServerHost)
@@ -81,12 +71,20 @@ export default function Factory (options = {}) {
       return this
     },
     async create (node, properties) {
-      const mutation = factories[node](properties)
+      const mutation = this.factories[node](properties)
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
     async relate (node, relationship, properties) {
-      const mutation = relationFactories[node](relationship, properties)
+      const { from, to } = properties
+      const mutation = `
+        mutation {
+          Add${node}${relationship}(
+            from: { id: "${from}" },
+            to: { id: "${to}" }
+          ) { from { id } }
+        }
+      `
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
