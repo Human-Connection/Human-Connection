@@ -51,7 +51,7 @@
           - name: JWT_SECRET
             valueFrom:
               secretKeyRef:
-                name: secret
+                name: human-connection
                 key: JWT_SECRET
                 optional: false
           - name: NEO4J_URI
