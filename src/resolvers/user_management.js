@@ -1,16 +1,18 @@
 import encode from '../jwt/encode'
-import { fixUrl } from '../middleware/fixImageUrlsMiddleware'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
+import { neo4jgraphql } from 'neo4j-graphql-js'
 
 export default {
   Query: {
     isLoggedIn: (parent, args, { driver, user }) => {
       return Boolean(user && user.id)
     },
-    currentUser: (parent, args, { user }) => {
-      return user
-    }
+    currentUser: async (object, params, ctx, resolveInfo) => {
+      const { user} = ctx
+      if(!user) return null
+      return neo4jgraphql(object, {id: user.id}, ctx, resolveInfo, false)
+    },
   },
   Mutation: {
     signup: async (parent, { email, password }, { req }) => {
@@ -41,10 +43,7 @@ export default {
 
           if (currentUser && await bcrypt.compareSync(password, currentUser.password)) {
             delete currentUser.password
-            currentUser.avatar = fixUrl(currentUser.avatar)
-            return Object.assign(currentUser, {
-              token: encode(currentUser)
-            })
+            return encode(currentUser)
           } else throw new AuthenticationError('Incorrect email address or password.')
         })
     }

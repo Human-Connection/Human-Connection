@@ -1,22 +1,12 @@
 type Query {
   isLoggedIn: Boolean!
-  currentUser: LoggedInUser
+  currentUser: User
   statistics: Statistics!
 }
 type Mutation {
-  login(email: String!, password: String!): LoggedInUser
+  login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
-}
-
-type LoggedInUser {
-  id: ID!
-  slug: String!
-  name: String!
-  avatar:String!
-  email: String!
-  role: String!
-  token: String!
 }
 
 type Statistics {

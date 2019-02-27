@@ -82,7 +82,6 @@ describe('currentUser', () => {
       avatar
       email
       role
-      token
     }
   }`
 
@@ -122,8 +121,7 @@ describe('currentUser', () => {
             id: 'acb2d923-f3af-479e-9f00-61b12e864666',
             name: 'Matilde Hermiston',
             slug: 'matilde-hermiston',
-            role: 'user',
-            token: headers.authorization.replace('Bearer ', '')
+            role: 'user'
           }
         }
         await expect(client.request(query)).resolves.toEqual(expected)
@@ -137,9 +135,7 @@ describe('login', () => {
     const { email, password } = params
     return `
       mutation {
-        login(email:"${email}", password:"${password}"){
-          token
-        }
+        login(email:"${email}", password:"${password}")
       }`
   }
 
@@ -150,7 +146,7 @@ describe('login', () => {
           email: 'test@example.org',
           password: '1234'
         }))
-        const { token } = data.login
+        const token = data.login
         jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
           expect(data.email).toEqual('test@example.org')
           expect(err).toBeNull()
