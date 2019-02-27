@@ -14,22 +14,8 @@ const currentUser = {
   avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
   role: 'user'
 }
-const successfulLoginResponse = {
-  data: {
-    login: {
-      ...currentUser,
-      token
-    }
-  }
-}
-const successfulCurrentUserResponse = {
-  data: {
-    currentUser: {
-      ...currentUser,
-      token
-    }
-  }
-}
+const successfulLoginResponse = { data: { login: token } }
+const successfulCurrentUserResponse = { data: { currentUser } }
 
 const incorrectPasswordResponse = {
   data: {
@@ -168,7 +154,7 @@ describe('actions', () => {
         }
         action = actions.login.bind(module)
         await action(
-          { commit },
+          { commit, dispatch },
           { email: 'user@example.org', password: '1234' }
         )
       })
@@ -183,23 +169,8 @@ describe('actions', () => {
         )
       })
 
-      it('saves user data without token', () => {
-        expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([
-            [
-              'SET_USER',
-              {
-                id: 'u3',
-                name: 'Jenny Rostock',
-                slug: 'jenny-rostock',
-                email: 'user@example.org',
-                avatar:
-                  'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
-                role: 'user'
-              }
-            ]
-          ])
-        )
+      it('fetches the user', () => {
+        expect(dispatch.mock.calls).toEqual( [['fetchCurrentUser']])
       })
 
       it('saves pending flags in order', () => {

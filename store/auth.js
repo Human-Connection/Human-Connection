@@ -67,6 +67,7 @@ export const actions = {
     }
     return getters.isLoggedIn
   },
+
   async fetchCurrentUser({ commit, dispatch }) {
     const client = this.app.apolloProvider.defaultClient
     const {
@@ -80,15 +81,17 @@ export const actions = {
             email
             avatar
             role
+            about
+            locationName
           }
         }`)
     })
     if (!currentUser) return dispatch('logout')
-    const { token, ...user } = currentUser
-    commit('SET_USER', user)
-    return user
+    commit('SET_USER', currentUser)
+    return currentUser
   },
-  async login({ commit }, { email, password }) {
+
+  async login({ commit, dispatch }, { email, password }) {
     commit('SET_PENDING', true)
     try {
       const client = this.app.apolloProvider.defaultClient
@@ -97,35 +100,27 @@ export const actions = {
       } = await client.mutate({
         mutation: gql(`
             mutation($email: String!, $password: String!) {
-              login(email: $email, password: $password) {
-                id
-                name
-                slug
-                email
-                avatar
-                role
-                token
-              }
+              login(email: $email, password: $password)
             }
           `),
         variables: { email, password }
       })
-      const { token, ...user } = login
-
-      await this.app.$apolloHelpers.onLogin(token)
-      commit('SET_TOKEN', token)
-      commit('SET_USER', user)
+      await this.app.$apolloHelpers.onLogin(login)
+      commit('SET_TOKEN', login)
+      await dispatch('fetchCurrentUser')
     } catch (err) {
       throw new Error(err)
     } finally {
       commit('SET_PENDING', false)
     }
   },
+
   async logout({ commit }) {
     commit('SET_USER', null)
     commit('SET_TOKEN', null)
     return this.app.$apolloHelpers.onLogout()
   },
+
   register(
     { dispatch, commit },
     { email, password, inviteCode, invitedByUserId }
