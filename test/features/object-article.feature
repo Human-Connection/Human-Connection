@@ -21,7 +21,7 @@ Feature: Send and receive Articles
           "type": "Article",
           "published": "2019-02-07T19:37:55.002Z",
           "attributedTo": "https://aronda.org/users/marvin",
-          "content": "Hi John, how are you?",
+          "content": "Hi Max, how are you?",
           "to": "https://localhost:4100/activitypub/users/max"
       }
     }

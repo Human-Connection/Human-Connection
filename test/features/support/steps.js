@@ -108,16 +108,17 @@ Then('the post with id {string} to be created', async function (id) {
   const result = await client.request(`
       query {
           Post(id: "${id}") {
-              name
+              title
           }
       }
    `)
-
   expect(result.data.Post).to.be.an('array').that.is.not.empty // eslint-disable-line
 })
 
-Then('the object is removed from the outbox collection of {string}', (name) => {
-
+Then('the object is removed from the outbox collection of {string}', async function (name, object) {
+  const response = await this.get(`/activitypub/users/${name}/outbox?page=true`)
+  const parsedResponse = JSON.parse(response.lastResponse)
+  expect(parsedResponse.orderedItems).to.not.include(object)
 })
 
 Then('I send a GET request to {string} and expect a ordered collection', () => {

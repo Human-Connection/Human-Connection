@@ -10,7 +10,7 @@ class CustomWorld {
     this.lastContentType = null
     this.lastInboxUrl = null
     this.lastActivity = null
-    // activity-article.feature.disable
+    // object-article.feature
     this.statusCode = null
   }
   get (pathname) {

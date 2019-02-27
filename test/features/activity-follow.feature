@@ -36,7 +36,6 @@ Feature: Follow a user
       "type": "Undo",
       "actor": "http://localhost:4123/activitypub/users/peter-lustiger",
       "object": {
-        "@context": "https://www.w3.org/ns/activitystreams",
         "id": "https://localhost:4123/activitypub/users/bob-der-baumeister/status/83J23549sda1k72fsa4567na42312455kad83",
         "type": "Follow",
         "actor": "http://localhost:4123/activitypub/users/bob-der-baumeister",
