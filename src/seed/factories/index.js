@@ -1,6 +1,5 @@
 import { GraphQLClient, request } from 'graphql-request'
 import { getDriver } from '../../bootstrap/neo4j'
-
 import createBadge from './badges.js'
 import createUser from './users.js'
 import createOrganization from './organizations.js'

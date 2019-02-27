@@ -34,7 +34,7 @@ export const query = (cypher, session) => {
     })
   })
 }
-const queryOne = (cypher, session) => {
+export const queryOne = (cypher, session) => {
   return new Promise((resolve, reject) => {
     query(cypher, session)
       .then(res => {
