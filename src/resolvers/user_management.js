@@ -9,10 +9,10 @@ export default {
       return Boolean(user && user.id)
     },
     currentUser: async (object, params, ctx, resolveInfo) => {
-      const { user} = ctx
-      if(!user) return null
-      return neo4jgraphql(object, {id: user.id}, ctx, resolveInfo, false)
-    },
+      const { user } = ctx
+      if (!user) return null
+      return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, false)
+    }
   },
   Mutation: {
     signup: async (parent, { email, password }, { req }) => {
