@@ -48,7 +48,7 @@
 <script>
 import gql from 'graphql-tag'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
 import find from 'lodash/find'
 
@@ -99,6 +99,9 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'auth/user'
+    }),
+    ...mapMutations({
+      currentUser: 'auth/user'
     })
   },
   watch: {
@@ -135,9 +138,12 @@ export default {
           update: (store, { data: { UpdateUser } }) => {
             const { name, locationName, about } = UpdateUser
             this.form = { name, locationName, about }
-            // update the user menu, too
-            // which listens on auth/user
-            this.$store.dispatch('auth/fetchCurrentUser')
+            this.currentUser = {
+              ...this.currentUser,
+              name,
+              locationName,
+              about
+            }
           }
         })
         .then(data => {
