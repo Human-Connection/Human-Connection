@@ -88,62 +88,49 @@ export default {
       axiosSource: null,
       cities: [],
       sending: false,
-      users: [],
-      form: {
-        name: null,
-        locationName: null,
-        about: null
-      }
+      formData: {}
     }
   },
   computed: {
     ...mapGetters({
       currentUser: 'auth/user'
     }),
-    ...mapMutations({
-      currentUser: 'auth/user'
-    })
-  },
-  watch: {
-    users: function(users) {
-      const { name, locationName, about } = users[0]
-      this.form = { name, locationName, about }
-    }
-  },
-  apollo: {
-    users: function() {
-      return {
-        query,
-        variables: {
-          id: this.currentUser.id
-        },
-        update: data => data.User
+    form: {
+      get: function() {
+        const { name, locationName, about } = this.currentUser
+        return { name, locationName, about }
+      },
+      set: function(formData) {
+        this.formData = formData
       }
     }
   },
   methods: {
+    ...mapMutations({
+      setCurrentUser: 'auth/SET_USER'
+    }),
     submit() {
       this.sending = true
+      const { name, about } = this.formData
+      let { locationName } = this.formData
+      locationName = locationName && (locationName['label'] || locationName)
       this.$apollo
         .mutate({
           mutation,
           variables: {
             id: this.currentUser.id,
-            name: this.form.name,
-            locationName: this.form.locationName
-              ? this.form.locationName['label'] || this.form.locationName
-              : null,
-            about: this.form.about
+            name,
+            locationName,
+            about
           },
           update: (store, { data: { UpdateUser } }) => {
             const { name, locationName, about } = UpdateUser
-            this.form = { name, locationName, about }
-            this.currentUser = {
+            this.setCurrentUser({
               ...this.currentUser,
               name,
               locationName,
               about
-            }
+            })
           }
         })
         .then(data => {
