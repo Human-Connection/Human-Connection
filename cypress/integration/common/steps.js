@@ -151,7 +151,9 @@ When('I press {string}', label => {
 })
 
 Given('we have the following posts in our database:', table => {
-  table.hashes().forEach(({ Author, id, title, content }) => {
+  table.hashes().forEach(({ Author, ...postAttributes}) => {
+    postAttributes.deleted  = Boolean(postAttributes.deleted)
+    postAttributes.disabled = Boolean(postAttributes.disabled)
     cy.factory()
       .create('User', {
         name: Author,
@@ -162,7 +164,7 @@ Given('we have the following posts in our database:', table => {
         email: `${Author}@example.org`,
         password: '1234'
       })
-      .create('Post', { id, title, content })
+      .create('Post', postAttributes)
   })
 })
 
@@ -211,4 +213,16 @@ Then('I get redirected to {string}', route => {
 Then('the post was saved successfully', () => {
   cy.get('.ds-card-header > .ds-heading').should('contain', lastPost.title)
   cy.get('.content').should('contain', lastPost.content)
+})
+
+Then(/^I should see only ([0-9]+) posts? on the landing page/, (postCount) => {
+  cy.get('.post-card').should('have.length', postCount)
+})
+
+Then('the first post on the landing page has the title:', (title) => {
+  cy.get('.post-card:first').should('contain', title)
+})
+
+Then('I see a 404 error with the following message:', (message) => {
+  cy.get('.error').should('contain', message)
 })
