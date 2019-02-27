@@ -67,7 +67,7 @@ export const actions = {
     }
     return getters.isLoggedIn
   },
-  async fetchCurrentUser({ commit }) {
+  async fetchCurrentUser({ commit, dispatch }) {
     const client = this.app.apolloProvider.defaultClient
     const {
       data: { currentUser }
@@ -83,6 +83,7 @@ export const actions = {
           }
         }`)
     })
+    if (!currentUser) return dispatch('logout')
     const { token, ...user } = currentUser
     commit('SET_USER', user)
     return user
