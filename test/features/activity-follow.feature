@@ -6,9 +6,10 @@ Feature: Follow a user
   Background:
     Given our own server runs at "http://localhost:4123"
     And we have the following users in our database:
-      | Slug           |
-      | karl-heinz     |
-      | peter-lustiger |
+      | Slug               |
+      | peter-lustiger     |
+      | bob-der-baumeister |
+      | karl-heinz         |
 
   Scenario: Send a follow to a user inbox and make sure it's added to the right followers collection
     When I send a POST request with the following activity to "/activitypub/users/peter-lustiger/inbox":

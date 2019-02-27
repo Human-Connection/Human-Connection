@@ -122,6 +122,8 @@ export default class ActivityPub {
     case 'Follow':
       const followActivity = activity.object
       return this.dataSource.undoFollowActivity(followActivity.actor, followActivity.object)
+    case 'Like':
+      return this.dataSource.deleteShouted(activity)
     default:
     }
   }
@@ -180,10 +182,25 @@ export default class ActivityPub {
     }
   }
 
+  getActorObject (url) {
+    return new Promise((resolve, reject) => {
+      request({
+        url: url,
+        headers: {
+          'Accept': 'application/json'
+        }
+      }, (err, response, body) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(JSON.parse(body))
+      })
+    })
+  }
+
   async sendActivity (activity) {
     delete activity.send
     const fromName = extractNameFromId(activity.actor)
-
     if (Array.isArray(activity.to) && isPublicAddressed(activity)) {
       const sharedInboxEndpoints = await this.dataSource.getSharedInboxEndpoints()
       // serve shared inbox endpoints
@@ -194,14 +211,17 @@ export default class ActivityPub {
         return !(isPublicAddressed({ to: el }))
       })
       // serve the rest
-      activity.to.map((el) => {
-        return this.trySend(activity, fromName, new URL(el).host, el)
+      activity.to.map(async (el) => {
+        const actorObject = await this.getActorObject(el)
+        return this.trySend(activity, fromName, new URL(el).host, actorObject.inbox)
       })
     } else if (typeof activity.to === 'string') {
-      return this.trySend(activity, fromName, new URL(activity.to).host, activity.to)
+      const actorObject = await this.getActorObject(activity.to)
+      return this.trySend(activity, fromName, new URL(activity.to).host, actorObject.inbox)
     } else if (Array.isArray(activity.to)) {
-      activity.to.map((el) => {
-        return this.trySend(activity, fromName, new URL(el).host, el)
+      activity.to.map(async (el) => {
+        const actorObject = await this.getActorObject(el)
+        return this.trySend(activity, fromName, new URL(el).host, actorObject.inbox)
       })
     }
   }

@@ -472,10 +472,21 @@ export default class NitroDatasource {
           }
       `
     })
-
     throwErrorIfApolloErrorOccurred(result)
-    const postId = extractIdFromActivityId(postObject.inReplyTo)
 
+    const toUserId = await this.ensureUser(activity.actor)
+    const result2 = await this.client.mutate({
+      mutation: gql`
+          mutation {
+              AddCommentAuthor(from: {id: "${result.data.CreateComment.id}"}, to: {id: "${toUserId}"}) {
+                  id
+              }
+          }
+      `
+    })
+    throwErrorIfApolloErrorOccurred(result2)
+
+    const postId = extractIdFromActivityId(postObject.inReplyTo)
     result = await this.client.mutate({
       mutation: gql`
           mutation {
