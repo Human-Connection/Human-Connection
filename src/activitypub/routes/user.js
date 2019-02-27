@@ -1,7 +1,8 @@
-import { sendCollection } from '../utils'
+import { sendCollection } from '../utils/collection'
 import express from 'express'
-import { serveUser } from '../utils/serveUser'
+import { serveUser } from './serveUser'
 import { verifySignature } from '../security'
+import { activityPub } from '../ActivityPub'
 
 const router = express.Router()
 const debug = require('debug')('ea:user')
@@ -47,36 +48,41 @@ router.get('/:name/outbox', (req, res) => {
 router.post('/:name/inbox', async function (req, res, next) {
   debug(`body = ${JSON.stringify(req.body, null, 2)}`)
   debug(`actorId = ${req.body.actor}`)
+  // TODO stop if signature validation fails
   debug(`verify = ${await verifySignature(`${req.protocol}://${req.hostname}:${req.port}${req.originalUrl}`, req.headers)}`)
   // const result = await saveActorId(req.body.actor)
   switch (req.body.type) {
   case 'Create':
-    await req.app.get('ap').handleCreateActivity(req.body).catch(next)
+    await activityPub.handleCreateActivity(req.body).catch(next)
     break
   case 'Undo':
-    await req.app.get('ap').handleUndoActivity(req.body).catch(next)
+    await activityPub.handleUndoActivity(req.body).catch(next)
     break
   case 'Follow':
-    debug('handleFollow')
-    await req.app.get('ap').handleFollowActivity(req.body).catch(next)
-    debug('handledFollow')
+    await activityPub.handleFollowActivity(req.body).catch(next)
     break
   case 'Delete':
-    req.app.get('ap').handleDeleteActivity(req.body).catch(next)
+    await activityPub.handleDeleteActivity(req.body).catch(next)
     break
   /* eslint-disable */
   case 'Update':
-
+    await activityPub.handleUpdateActivity(req.body).catch(next)
+    break
   case 'Accept':
-
+    await activityPub.handleAcceptActivity(req.body).catch(next)
   case 'Reject':
-
+    // Do nothing
+    break
   case 'Add':
-
+    break
   case 'Remove':
-
+    break
   case 'Like':
-
+    await activityPub.handleLikeActivity(req.body).catch(next)
+    break
+  case 'Dislike':
+    await activityPub.handleDislikeActivity(req.body).catch(next)
+    break
   case 'Announce':
     debug('else!!')
     debug(JSON.stringify(req.body, null, 2))

@@ -169,6 +169,7 @@ export const resolvers = {
     CreatePost: async (object, params, ctx, resolveInfo) => {
       params.activityId = uuid()
       const result = await neo4jgraphql(object, params, ctx, resolveInfo, false)
+      debug(`user = ${JSON.stringify(ctx.user, null, 2)}`)
       const session = ctx.driver.session()
       const author = await session.run(
         'MATCH (author:User {id: $userId}), (post:Post {id: $postId}) ' +
@@ -177,7 +178,7 @@ export const resolvers = {
           userId: ctx.user.id,
           postId: result.id
         })
-      session.close()
+      debug(`author = ${JSON.stringify(author, null, 2)}`)
       const actorId = author.records[0]._fields[0].properties.actorId
       const createActivity = await new Promise((resolve, reject) => {
         as.create()
@@ -188,6 +189,7 @@ export const resolvers = {
               .id(`${actorId}/status/${result.id}`)
               .content(result.content)
               .to('https://www.w3.org/ns/activitystreams#Public')
+              .publishedNow()
               .attributedTo(`${actorId}`)
           ).prettyWrite((err, doc) => {
             if (err) {
@@ -200,6 +202,7 @@ export const resolvers = {
             }
           })
       })
+      session.close()
       // try sending post via ActivityPub
       await new Promise((resolve) => {
         const url = new URL(actorId)

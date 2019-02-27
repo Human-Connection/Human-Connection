@@ -1,10 +1,13 @@
 import {
-  sendAcceptActivity,
-  sendRejectActivity,
   extractNameFromId,
   extractDomainFromUrl,
   signAndSend
 } from './utils'
+import {
+  isPublicAddressed,
+  sendAcceptActivity,
+  sendRejectActivity
+} from './utils/activity'
 import request from 'request'
 import as from 'activitystrea.ms'
 import NitroDatasource from './NitroDatasource'
@@ -30,9 +33,9 @@ export default class ActivityPub {
       activityPub = new ActivityPub(process.env.ACTIVITYPUB_DOMAIN || 'localhost', process.env.ACTIVITYPUB_PORT || 4100)
       server.express.set('ap', activityPub)
       server.express.use(router)
-      debug('ActivityPub service added to graphql endpoint')
+      debug('ActivityPub middleware added to the express service')
     } else {
-      debug('ActivityPub service already added to graphql endpoint')
+      debug('ActivityPub middleware already added to the express service')
     }
   }
 
@@ -101,7 +104,6 @@ export default class ActivityPub {
         debug(`followers = ${toActorObject.followers}`)
         debug(`following = ${toActorObject.following}`)
 
-        // TODO save after accept activity for the corresponding follow is received
         try {
           await dataSource.saveFollowersCollectionPage(followersCollectionPage)
           debug('follow activity saved')
@@ -141,18 +143,77 @@ export default class ActivityPub {
 
   handleDeleteActivity (activity) {
     debug('inside delete')
+    switch (activity.object.type) {
+    case 'Article':
+    case 'Note':
+      return this.dataSource.deletePost(activity)
+    default:
+    }
+  }
+
+  handleUpdateActivity (activity) {
+    debug('inside update')
+    switch (activity.object.type) {
+    case 'Note':
+    case 'Article':
+      return this.dataSource.updatePost(activity)
+    default:
+    }
+  }
+
+  handleLikeActivity (activity) {
+    return this.dataSource.createShouted(activity)
+  }
+
+  handleDislikeActivity (activity) {
+    return this.dataSource.deleteShouted(activity)
+  }
+
+  async handleAcceptActivity (activity) {
+    debug('inside accept')
+    switch (activity.object.type) {
+    case 'Follow':
+      const followObject = activity.object
+      const followingCollectionPage = await this.getFollowingCollectionPage(followObject.actor)
+      followingCollectionPage.orderedItems.push(followObject.object)
+      await this.dataSource.saveFollowingCollectionPage(followingCollectionPage)
+    }
   }
 
   async sendActivity (activity) {
-    if (Array.isArray(activity.to) && activity.to.includes('https://www.w3.org/ns/activitystreams#Public')) {
-      delete activity.send
-      const fromName = extractNameFromId(activity.actor)
+    delete activity.send
+    const fromName = extractNameFromId(activity.actor)
+
+    if (Array.isArray(activity.to) && isPublicAddressed(activity)) {
       const sharedInboxEndpoints = await this.dataSource.getSharedInboxEndpoints()
-      await Promise.all(
-        sharedInboxEndpoints.map((el) => {
-          return signAndSend(activity, fromName, new URL(el).host, el)
-        })
-      )
+      // serve shared inbox endpoints
+      sharedInboxEndpoints.map((el) => {
+        return this.trySend(activity, fromName, new URL(el).host, el)
+      })
+      activity.to = activity.to.filter((el) => {
+        return !(isPublicAddressed({ to: el }))
+      })
+      // serve the rest
+      activity.to.map((el) => {
+        return this.trySend(activity, fromName, new URL(el).host, el)
+      })
+    } else if (typeof activity.to === 'string') {
+      return this.trySend(activity, fromName, new URL(activity.to).host, activity.to)
+    } else if (Array.isArray(activity.to)) {
+      activity.to.map((el) => {
+        return this.trySend(activity, fromName, new URL(el).host, el)
+      })
+    }
+  }
+  async trySend (activity, fromName, host, url, tries = 5) {
+    try {
+      return await signAndSend(activity, fromName, host, url)
+    } catch (e) {
+      if (tries > 0) {
+        setTimeout(function () {
+          return this.trySend(activity, fromName, host, url, --tries)
+        }, 20000)
+      }
     }
   }
 }

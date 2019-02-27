@@ -1,22 +1,32 @@
 import {
-  throwErrorIfGraphQLErrorOccurred,
+  throwErrorIfApolloErrorOccurred,
   extractIdFromActivityId,
-  createOrderedCollection,
-  createOrderedCollectionPage,
   extractNameFromId,
-  createArticleActivity,
   constructIdFromName
 } from './utils'
+import {
+  createOrderedCollection,
+  createOrderedCollectionPage
+} from './utils/collection'
+import {
+  createArticleActivity,
+  isPublicAddressed
+} from './utils/activity'
 import crypto from 'crypto'
 import gql from 'graphql-tag'
 import { createHttpLink } from 'apollo-link-http'
+import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import fetch from 'node-fetch'
 import { ApolloClient } from 'apollo-client'
 import dotenv from 'dotenv'
+import uuid from 'uuid'
+import generateJwtToken from '../jwt/generateToken'
+import { resolve } from 'path'
+import trunc from 'trunc-html'
 const debug = require('debug')('ea:nitro-datasource')
 
-dotenv.config()
+dotenv.config({ path: resolve('src', 'activitypub', '.env') })
 
 export default class NitroDatasource {
   constructor (domain) {
@@ -29,8 +39,19 @@ export default class NitroDatasource {
     }
     const link = createHttpLink({ uri: process.env.GRAPHQL_URI, fetch: fetch }) // eslint-disable-line
     const cache = new InMemoryCache()
+    const authLink = setContext((_, { headers }) => {
+      // generate the authentication token (maybe from env? Which user?)
+      const token = generateJwtToken({ name: 'ActivityPub', id: uuid() })
+      // return the headers to the context so httpLink can read them
+      return {
+        headers: {
+          ...headers,
+          authorization: token ? `Bearer ${token}` : ''
+        }
+      }
+    })
     this.client = new ApolloClient({
-      link: link,
+      link: authLink.concat(link),
       cache: cache,
       defaultOptions
     })
@@ -59,7 +80,7 @@ export default class NitroDatasource {
 
       return followersCollection
     } else {
-      throwErrorIfGraphQLErrorOccurred(result)
+      throwErrorIfApolloErrorOccurred(result)
     }
   }
 
@@ -96,7 +117,7 @@ export default class NitroDatasource {
 
       return followersCollection
     } else {
-      throwErrorIfGraphQLErrorOccurred(result)
+      throwErrorIfApolloErrorOccurred(result)
     }
   }
 
@@ -122,7 +143,7 @@ export default class NitroDatasource {
 
       return followingCollection
     } else {
-      throwErrorIfGraphQLErrorOccurred(result)
+      throwErrorIfApolloErrorOccurred(result)
     }
   }
 
@@ -158,7 +179,7 @@ export default class NitroDatasource {
 
       return followingCollection
     } else {
-      throwErrorIfGraphQLErrorOccurred(result)
+      throwErrorIfApolloErrorOccurred(result)
     }
   }
 
@@ -190,7 +211,7 @@ export default class NitroDatasource {
 
       return outboxCollection
     } else {
-      throwErrorIfGraphQLErrorOccurred(result)
+      throwErrorIfApolloErrorOccurred(result)
     }
   }
 
@@ -229,7 +250,7 @@ export default class NitroDatasource {
       debug('after createNote')
       return outboxCollection
     } else {
-      throwErrorIfGraphQLErrorOccurred(result)
+      throwErrorIfApolloErrorOccurred(result)
     }
   }
 
@@ -246,7 +267,7 @@ export default class NitroDatasource {
       `
     })
     debug(`undoFollowActivity result = ${JSON.stringify(result, null, 2)}`)
-    throwErrorIfGraphQLErrorOccurred(result)
+    throwErrorIfApolloErrorOccurred(result)
   }
 
   async saveFollowersCollectionPage (followersCollection, onlyNewestItem = true) {
@@ -257,7 +278,7 @@ export default class NitroDatasource {
     orderedItems = onlyNewestItem ? [orderedItems.pop()] : orderedItems
 
     return Promise.all(
-      await Promise.all(orderedItems.map(async (follower) => {
+      orderedItems.map(async (follower) => {
         debug(`follower = ${follower}`)
         const fromUserId = await this.ensureUser(follower)
         debug(`fromUserId = ${fromUserId}`)
@@ -272,9 +293,36 @@ export default class NitroDatasource {
           `
         })
         debug(`addUserFollowedBy edge = ${JSON.stringify(result, null, 2)}`)
-        throwErrorIfGraphQLErrorOccurred(result)
+        throwErrorIfApolloErrorOccurred(result)
         debug('saveFollowers: added follow edge successfully')
-      }))
+      })
+    )
+  }
+  async saveFollowingCollectionPage (followingCollection, onlyNewestItem = true) {
+    debug('inside saveFollowers')
+    let orderedItems = followingCollection.orderedItems
+    const fromUserName = extractNameFromId(followingCollection.id)
+    const fromUserId = await this.ensureUser(constructIdFromName(fromUserName))
+    orderedItems = onlyNewestItem ? [orderedItems.pop()] : orderedItems
+    return Promise.all(
+      orderedItems.map(async (following) => {
+        debug(`follower = ${following}`)
+        const toUserId = await this.ensureUser(following)
+        debug(`fromUserId = ${fromUserId}`)
+        debug(`toUserId = ${toUserId}`)
+        const result = await this.client.mutate({
+          mutation: gql`
+              mutation {
+                  AddUserFollowing(from: {id: "${fromUserId}"}, to: {id: "${toUserId}"}) {
+                      from { name }
+                  }
+              }
+          `
+        })
+        debug(`addUserFollowing edge = ${JSON.stringify(result, null, 2)}`)
+        throwErrorIfApolloErrorOccurred(result)
+        debug('saveFollowing: added follow edge successfully')
+      })
     )
   }
 
@@ -282,6 +330,9 @@ export default class NitroDatasource {
     // TODO how to handle the to field? Now the post is just created, doesn't matter who is the recipient
     // createPost
     const postObject = activity.object
+    if (!isPublicAddressed(postObject)) {
+      return debug('createPost: not send to public (sending to specific persons is not implemented yet)')
+    }
     const title = postObject.summary ? postObject.summary : postObject.content.split(' ').slice(0, 5).join(' ')
     const postId = extractIdFromActivityId(postObject.id)
     const activityId = extractIdFromActivityId(activity.id)
@@ -295,7 +346,7 @@ export default class NitroDatasource {
       `
     })
 
-    throwErrorIfGraphQLErrorOccurred(result)
+    throwErrorIfApolloErrorOccurred(result)
 
     // ensure user and add author to post
     const userId = await this.ensureUser(postObject.attributedTo)
@@ -307,7 +358,78 @@ export default class NitroDatasource {
       `
     })
 
-    throwErrorIfGraphQLErrorOccurred(result)
+    throwErrorIfApolloErrorOccurred(result)
+  }
+
+  async deletePost (activity) {
+    const result = await this.client.mutate({
+      mutation: gql`
+        mutation {
+            DeletePost(id: "${extractIdFromActivityId(activity.object.id)}") {
+                title
+            }
+        }
+      `
+    })
+    throwErrorIfApolloErrorOccurred(result)
+  }
+
+  async updatePost (activity) {
+    const postObject = activity.object
+    const postId = extractIdFromActivityId(postObject.id)
+    const date = postObject.updated ? postObject.updated : new Date().toISOString()
+    const result = await this.client.mutate({
+      mutation: gql`
+        mutation {
+            UpdatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120).html}", id: "${postId}", updatedAt: "${date}") {
+                title
+            }
+        }
+      `
+    })
+    throwErrorIfApolloErrorOccurred(result)
+  }
+
+  async createShouted (activity) {
+    const userId = await this.ensureUser(activity.actor)
+    const postId = extractIdFromActivityId(activity.object)
+    const result = await this.client.mutate({
+      mutation: gql`
+          mutation {
+              AddUserShouted(from: {id: "${userId}"}, to: {id: "${postId}"}) {
+                  from {
+                      name
+                  }
+              }
+          }
+      `
+    })
+    throwErrorIfApolloErrorOccurred(result)
+    if (!result.data.AddUserShouted) {
+      debug('something went wrong shouting post')
+      throw Error('User or Post not exists')
+    }
+  }
+
+  async deleteShouted (activity) {
+    const userId = await this.ensureUser(activity.actor)
+    const postId = extractIdFromActivityId(activity.object)
+    const result = await this.client.mutate({
+      mutation: gql`
+          mutation {
+              RemoveUserShouted(from: {id: "${userId}"}, to: {id: "${postId}"}) {
+                  from {
+                      name
+                  }
+              }
+          }
+      `
+    })
+    throwErrorIfApolloErrorOccurred(result)
+    if (!result.data.AddUserShouted) {
+      debug('something went wrong disliking a post')
+      throw Error('User or Post not exists')
+    }
   }
 
   async getSharedInboxEndpoints () {
@@ -320,7 +442,7 @@ export default class NitroDatasource {
         }
       `
     })
-    throwErrorIfGraphQLErrorOccurred(result)
+    throwErrorIfApolloErrorOccurred(result)
     return result.data.SharedInboxEnpoint
   }
   async addSharedInboxEndpoint (uri) {
@@ -332,7 +454,7 @@ export default class NitroDatasource {
             }
         `
       })
-      throwErrorIfGraphQLErrorOccurred(result)
+      throwErrorIfApolloErrorOccurred(result)
       return true
     } catch (e) {
       return false
@@ -351,7 +473,7 @@ export default class NitroDatasource {
       `
     })
 
-    throwErrorIfGraphQLErrorOccurred(result)
+    throwErrorIfApolloErrorOccurred(result)
     const postId = extractIdFromActivityId(postObject.inReplyTo)
 
     result = await this.client.mutate({
@@ -364,7 +486,7 @@ export default class NitroDatasource {
       `
     })
 
-    throwErrorIfGraphQLErrorOccurred(result)
+    throwErrorIfApolloErrorOccurred(result)
   }
 
   /**
@@ -375,10 +497,11 @@ export default class NitroDatasource {
    */
   async ensureUser (actorId) {
     debug(`inside ensureUser = ${actorId}`)
+    const name = extractNameFromId(actorId)
     const queryResult = await this.client.query({
       query: gql`
           query {
-              User(slug: "${extractNameFromId(actorId)}") {
+              User(slug: "${name}") {
                   id
               }
           }
@@ -392,16 +515,17 @@ export default class NitroDatasource {
     } else {
       debug('ensureUser: user not exists.. createUser')
       // user does not exist.. create it
+      const pw = crypto.randomBytes(16).toString('hex')
       const result = await this.client.mutate({
         mutation: gql`
             mutation {
-                CreateUser(password: "${crypto.randomBytes(16).toString('hex')}", slug:"${extractNameFromId(actorId)}", actorId: "${actorId}", name: "${extractNameFromId(actorId)}") {
+                CreateUser(password: "${pw}", slug:"${name}", actorId: "${actorId}", name: "${name}") {
                     id
                 }
             }
         `
       })
-      throwErrorIfGraphQLErrorOccurred(result)
+      throwErrorIfApolloErrorOccurred(result)
 
       return result.data.CreateUser.id
     }

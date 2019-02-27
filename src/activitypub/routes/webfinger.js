@@ -1,5 +1,5 @@
 import express from 'express'
-import { createWebFinger } from '../utils'
+import { createWebFinger } from '../utils/actor'
 import gql from 'graphql-tag'
 
 const router = express.Router()

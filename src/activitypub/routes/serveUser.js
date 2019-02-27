@@ -1,4 +1,4 @@
-import { createActor } from '../utils'
+import { createActor } from '../utils/actor'
 const gql = require('graphql-tag')
 const debug = require('debug')('ea:serveUser')
 
