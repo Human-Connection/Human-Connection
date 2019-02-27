@@ -1,38 +1,23 @@
+const normalize = (args) => {
+  if (typeof args.deleted !== 'boolean') {
+    args.deleted = false
+  }
+  if (typeof args.disabled !== 'boolean') {
+    args.disabled = false
+  }
+  return args
+}
+
 export default {
   Query: {
-    Post: async (resolve, root, args, context, info) => {
-      if (typeof args.deleted !== 'boolean') {
-        args.deleted = false
-      }
-      if (typeof args.disabled !== 'boolean') {
-        args.disabled = false
-      }
-      const result = await resolve(root, args, context, info)
-      return result
+    Post: (resolve, root, args, context, info) => {
+      return resolve(root, normalize(args), context, info)
     },
     Comment: async (resolve, root, args, context, info) => {
-      if (typeof args.deleted !== 'boolean') {
-        args.deleted = false
-      }
-      if (typeof args.disabled !== 'boolean') {
-        args.disabled = false
-      }
-      const result = await resolve(root, args, context, info)
-      return result
+      return resolve(root, normalize(args), context, info)
     },
     User: async (resolve, root, args, context, info) => {
-      if (typeof args.deleted !== 'boolean') {
-        args.deleted = false
-      }
-      if (typeof args.disabled !== 'boolean') {
-        args.disabled = false
-      }
-      // console.log('ROOT', root)
-      // console.log('ARGS', args)
-      // console.log('CONTEXT', context)
-      // console.log('info', info.fieldNodes[0].arguments)
-      const result = await resolve(root, args, context, info)
-      return result
+      return resolve(root, normalize(args), context, info)
     }
   }
 }
