@@ -28,7 +28,7 @@ const debug = require('debug')('ea:nitro-datasource')
 
 dotenv.config({ path: resolve('src', 'activitypub', '.env') })
 
-export default class NitroDatasource {
+export default class NitroDataSource {
   constructor (domain) {
     this.domain = domain
     const defaultOptions = {

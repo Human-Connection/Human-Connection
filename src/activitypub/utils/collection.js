@@ -30,27 +30,27 @@ export function sendCollection (collectionName, req, res) {
 
   switch (collectionName) {
   case 'followers':
-    attachThenCatch(activityPub.getFollowersCollection(id), res)
+    attachThenCatch(activityPub.collections.getFollowersCollection(id), res)
     break
 
   case 'followersPage':
-    attachThenCatch(activityPub.getFollowersCollectionPage(id), res)
+    attachThenCatch(activityPub.collections.getFollowersCollectionPage(id), res)
     break
 
   case 'following':
-    attachThenCatch(activityPub.getFollowingCollection(id), res)
+    attachThenCatch(activityPub.collections.getFollowingCollection(id), res)
     break
 
   case 'followingPage':
-    attachThenCatch(activityPub.getFollowingCollectionPage(id), res)
+    attachThenCatch(activityPub.collections.getFollowingCollectionPage(id), res)
     break
 
   case 'outbox':
-    attachThenCatch(activityPub.getOutboxCollection(id), res)
+    attachThenCatch(activityPub.collections.getOutboxCollection(id), res)
     break
 
   case 'outboxPage':
-    attachThenCatch(activityPub.getOutboxCollectionPage(id), res)
+    attachThenCatch(activityPub.collections.getOutboxCollectionPage(id), res)
     break
 
   default:

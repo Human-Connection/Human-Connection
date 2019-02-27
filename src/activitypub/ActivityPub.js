@@ -12,12 +12,13 @@ import cluster from 'cluster'
 import os from 'os'
 import request from 'request'
 import as from 'activitystrea.ms'
-import NitroDatasource from './NitroDatasource'
+import NitroDataSource from './NitroDataSource'
 import router from './routes'
 import dotenv from 'dotenv'
 import express from 'express'
 import http from 'http'
 import { resolve } from 'path'
+import Collections from './Collections'
 const debug = require('debug')('ea')
 const numCPUs = os.cpus().length
 
@@ -29,7 +30,8 @@ export default class ActivityPub {
   constructor (domain, port) {
     if (domain === 'localhost') { this.domain = `${domain}:${port}` } else { this.domain = domain }
     this.port = port
-    this.dataSource = new NitroDatasource(this.domain)
+    this.dataSource = new NitroDataSource(this.domain)
+    this.collections = new Collections(this.dataSource)
   }
   static init (server) {
     if (!activityPub) {
@@ -43,6 +45,7 @@ export default class ActivityPub {
         server.express.use(router)
         debug('ActivityPub middleware added to the express service')
       } else {
+        // standalone clustered ActivityPub service
         if (cluster.isMaster) {
           debug(`master with pid = ${process.pid} is running`)
           for (let i = 0; i < numCPUs; i++) {
@@ -52,7 +55,6 @@ export default class ActivityPub {
             debug(`worker ${worker.process.pid} died with code ${code} and signal ${signal}`)
           })
         } else {
-          // Standalone
           const app = express()
           app.set('ap', activityPub)
           app.use(router)
@@ -64,30 +66,6 @@ export default class ActivityPub {
     } else {
       debug('ActivityPub middleware already added to the express service')
     }
-  }
-
-  getFollowersCollection (actorId) {
-    return this.dataSource.getFollowersCollection(actorId)
-  }
-
-  getFollowersCollectionPage (actorId) {
-    return this.dataSource.getFollowersCollectionPage(actorId)
-  }
-
-  getFollowingCollection (actorId) {
-    return this.dataSource.getFollowingCollection(actorId)
-  }
-
-  getFollowingCollectionPage (actorId) {
-    return this.dataSource.getFollowingCollectionPage(actorId)
-  }
-
-  getOutboxCollection (actorId) {
-    return this.dataSource.getOutboxCollection(actorId)
-  }
-
-  getOutboxCollectionPage (actorId) {
-    return this.dataSource.getOutboxCollectionPage(actorId)
   }
 
   handleFollowActivity (activity) {
@@ -191,10 +169,12 @@ export default class ActivityPub {
   }
 
   handleLikeActivity (activity) {
+    // TODO differ if activity is an Article/Note/etc.
     return this.dataSource.createShouted(activity)
   }
 
   handleDislikeActivity (activity) {
+    // TODO differ if activity is an Article/Note/etc.
     return this.dataSource.deleteShouted(activity)
   }
 
