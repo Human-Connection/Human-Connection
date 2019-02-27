@@ -170,7 +170,7 @@ describe('actions', () => {
       })
 
       it('fetches the user', () => {
-        expect(dispatch.mock.calls).toEqual( [['fetchCurrentUser']])
+        expect(dispatch.mock.calls).toEqual([['fetchCurrentUser']])
       })
 
       it('saves pending flags in order', () => {
