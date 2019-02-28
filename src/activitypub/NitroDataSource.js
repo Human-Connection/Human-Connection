@@ -339,7 +339,7 @@ export default class NitroDataSource {
     let result = await this.client.mutate({
       mutation: gql`
           mutation {
-              CreatePost(content: "${postObject.content}", title: "${title}", id: "${postId}", activityId: "${activityId}") {
+              CreatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120)}", title: "${title}", id: "${postId}", activityId: "${activityId}") {
                   id
               }
           }

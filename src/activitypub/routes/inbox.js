@@ -1,5 +1,4 @@
 import express from 'express'
-import { verifySignature } from '../security'
 import { activityPub } from '../ActivityPub'
 
 const debug = require('debug')('ea:inbox')
@@ -12,8 +11,6 @@ router.post('/', async function (req, res, next) {
   debug(`Content-Type = ${req.get('Content-Type')}`)
   debug(`body = ${JSON.stringify(req.body, null, 2)}`)
   debug(`Request headers = ${JSON.stringify(req.headers, null, 2)}`)
-  // TODO stop if signature validation fails
-  debug(`verify = ${await verifySignature(`${req.protocol}://${req.hostname}:${req.port}${req.originalUrl}`, req.headers)}`)
   switch (req.body.type) {
   case 'Create':
     if (req.body.send) {
