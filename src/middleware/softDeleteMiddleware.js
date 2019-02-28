@@ -1,4 +1,4 @@
-const normalize = (args) => {
+const setDefaults = (args) => {
   if (typeof args.deleted !== 'boolean') {
     args.deleted = false
   }
@@ -11,13 +11,13 @@ const normalize = (args) => {
 export default {
   Query: {
     Post: (resolve, root, args, context, info) => {
-      return resolve(root, normalize(args), context, info)
+      return resolve(root, setDefaults(args), context, info)
     },
     Comment: async (resolve, root, args, context, info) => {
-      return resolve(root, normalize(args), context, info)
+      return resolve(root, setDefaults(args), context, info)
     },
     User: async (resolve, root, args, context, info) => {
-      return resolve(root, normalize(args), context, info)
+      return resolve(root, setDefaults(args), context, info)
     }
   }
 }
