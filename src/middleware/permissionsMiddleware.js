@@ -23,7 +23,8 @@ const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, ctx, info) => {
 // Permissions
 const permissions = shield({
   Query: {
-    statistics: allow
+    statistics: allow,
+    currentUser: allow
     // fruits: and(isAuthenticated, or(isAdmin, isModerator)),
     // customers: and(isAuthenticated, isAdmin)
   },

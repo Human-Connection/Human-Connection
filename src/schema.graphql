@@ -1,5 +1,6 @@
 type Query {
   isLoggedIn: Boolean!
+  currentUser: User
   statistics: Statistics!
   findPosts(filter: String!, limit: Int = 10): [Post]! @cypher(
     statement: """
@@ -15,20 +16,9 @@ type Query {
   )
 }
 type Mutation {
-  login(email: String!, password: String!): LoggedInUser
+  login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
-}
-type LoggedInUser {
-  id: ID!
-  slug: String!
-  name: String!
-  avatar:String!
-  email: String!
-  role: String!
-  locationName: String
-  about: String
-  token: String!
 }
 
 type Statistics {

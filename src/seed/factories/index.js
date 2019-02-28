@@ -14,13 +14,11 @@ export const seedServerHost = 'http://127.0.0.1:4001'
 const authenticatedHeaders = async ({ email, password }, host) => {
   const mutation = `
       mutation {
-        login(email:"${email}", password:"${password}"){
-          token
-        }
+        login(email:"${email}", password:"${password}")
       }`
   const response = await request(host, mutation)
   return {
-    authorization: `Bearer ${response.login.token}`
+    authorization: `Bearer ${response.login}`
   }
 }
 const factories = {
