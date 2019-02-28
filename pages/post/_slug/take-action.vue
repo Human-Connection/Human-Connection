@@ -2,7 +2,7 @@
   <ds-card header="Werde aktiv!">
     <hc-empty
       icon="tasks"
-      message="Comming Soon…"
+      message="Coming Soon…"
     />
   </ds-card>
 </template>

@@ -4,7 +4,6 @@ import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 
 let aboutMeText
 let myLocation
-let myName
 
 const matchNameInUserMenu = name => {
   cy.get('.avatar-menu').click() // open
@@ -12,18 +11,13 @@ const matchNameInUserMenu = name => {
   cy.get('.avatar-menu').click() // close again
 }
 
-const setUserName = name => {
+When('I save {string} as my new name', name => {
   cy.get('input[id=name]')
     .clear()
     .type(name)
   cy.get('[type=submit]')
     .click()
     .not('[disabled]')
-  myName = name
-}
-
-When('I save {string} as my new name', name => {
-  setUserName(name)
 })
 
 When('I save {string} as my location', location => {
@@ -47,31 +41,20 @@ When('I have the following self-description:', text => {
   aboutMeText = text
 })
 
-When('my username is {string}', name => {
-  if (myName !== name) {
-    setUserName(name)
-  }
-  matchNameInUserMenu(name)
-})
-
 When('people visit my profile page', url => {
-  cy.visitMyProfile()
+  cy.openPage('/profile/peter-pan')
 })
 
 When('they can see the text in the info box below my avatar', () => {
   cy.contains(aboutMeText)
 })
 
-When('I changed my username to {string} previously', name => {
-  myName = name
-})
-
 Then('they can see the location in the info box below my avatar', () => {
-  matchNameInUserMenu(myName)
+  cy.contains(myLocation)
 })
 
-Then('my new username is still there', () => {
-  matchNameInUserMenu(myName)
+Then('the name {string} is still there', name => {
+  matchNameInUserMenu(name)
 })
 
 Then(

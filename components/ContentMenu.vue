@@ -8,14 +8,19 @@
       slot="default"
       slot-scope="{toggleMenu}"
     >
-      <ds-button
-        class="content-menu-trigger"
-        size="small"
-        ghost
-        @click.prevent="toggleMenu"
+      <slot
+        name="button"
+        :toggleMenu="toggleMenu"
       >
-        <ds-icon name="ellipsis-v" />
-      </ds-button>
+        <ds-button
+          class="content-menu-trigger"
+          size="small"
+          ghost
+          @click.prevent="toggleMenu"
+        >
+          <ds-icon name="ellipsis-v" />
+        </ds-button>
+      </slot>
     </template>
     <div
       slot="popover"
@@ -49,6 +54,7 @@ export default {
     placement: { type: String, default: 'top-end' },
     itemId: { type: String, required: true },
     name: { type: String, required: true },
+    isOwner: { type: Boolean, default: false },
     context: {
       type: String,
       required: true,
@@ -59,18 +65,52 @@ export default {
   },
   computed: {
     routes() {
-      let routes = [
-        {
+      let routes = []
+
+      if (this.isOwner && this.context === 'contribution') {
+        routes.push({
+          name: this.$t(`contribution.edit`),
+          path: this.$router.resolve({
+            name: 'post-edit-id',
+            params: {
+              id: this.itemId
+            }
+          }).href,
+          icon: 'edit'
+        })
+      }
+      if (this.isOwner && this.context === 'comment') {
+        routes.push({
+          name: this.$t(`comment.edit`),
+          callback: () => {
+            console.log('EDIT COMMENT')
+          },
+          icon: 'edit'
+        })
+      }
+
+      if (!this.isOwner) {
+        routes.push({
           name: this.$t(`report.${this.context}.title`),
           callback: this.openReportDialog,
           icon: 'flag'
-        }
-      ]
-      if (this.isModerator) {
+        })
+      }
+
+      if (!this.isOwner && this.isModerator) {
         routes.push({
           name: this.$t(`disable.${this.context}.title`),
-          callback: this.openDisableDialog,
+          callback: () => {},
           icon: 'eye-slash'
+        })
+      }
+
+      if (this.isOwner && this.context === 'user') {
+        routes.push({
+          name: this.$t(`settings.data.name`),
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          callback: () => this.$router.push('/settings'),
+          icon: 'edit'
         })
       }
       return routes

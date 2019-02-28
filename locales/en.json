@@ -5,7 +5,8 @@
     "create": "Create",
     "save": "Save",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "cancel": "Cancel"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
@@ -104,6 +105,14 @@
       "name": "Reports",
       "reporter": "reported by"
     }
+  },
+  "contribution": {
+    "edit": "Edit Contribution",
+    "delete": "Delete Contribution"
+  },
+  "comment": {
+    "edit": "Edit Comment",
+    "delete": "Delete Comment"
   },
   "disable": {
     "user": {
