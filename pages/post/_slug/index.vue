@@ -1,46 +1,50 @@
 <template>
-  <ds-card
-    v-if="post"
-    :image="post.image"
-    :header="post.title"
-    class="post-card"
+  <transition
+    name="fade"
+    appear
   >
-    <hc-author :post="post" />
-    <no-ssr>
-      <content-menu
-        placement="bottom-end"
-        context="contribution"
-        :item-id="post.id"
-        :name="post.title"
-        :is-owner="isAuthor(post.author.id)"
+    <ds-card
+      v-if="post && ready"
+      :image="post.image"
+      :header="post.title"
+      class="post-card"
+    >
+      <hc-author :post="post" />
+      <no-ssr>
+        <content-menu
+          placement="bottom-end"
+          context="contribution"
+          :item-id="post.id"
+          :name="post.title"
+          :is-owner="isAuthor(post.author.id)"
+        />
+      </no-ssr>
+      <ds-space margin-bottom="small" />
+      <!-- Content -->
+      <!-- eslint-disable vue/no-v-html -->
+      <!-- TODO: replace editor content with tiptap render view -->
+      <div
+        class="content hc-editor-content"
+        v-html="post.content"
       />
-    </no-ssr>
-    <ds-space margin-bottom="small" />
-    <!-- Content -->
-    <!-- eslint-disable vue/no-v-html -->
-    <!-- TODO: replace editor content with tiptap render view -->
-    <div
-      class="content hc-editor-content"
-      v-html="post.content"
-    />
-    <!-- eslint-enable vue/no-v-html -->
-    <!-- Shout Button -->
-    <ds-space margin="xx-large" />
-    <hc-shout-button
-      v-if="post.author"
-      :count="post.shoutedCount"
-      :post-id="post.id"
-    />
-    <!-- Categories -->
-    <ds-icon
-      v-for="category in post.categories"
-      :key="category.id"
-      v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
-      :name="category.icon"
-      size="large"
-    />&nbsp;
-    <ds-space margin-bottom="small" />
-    <!--<div class="tags">
+      <!-- eslint-enable vue/no-v-html -->
+      <!-- Shout Button -->
+      <ds-space margin="xx-large" />
+      <hc-shout-button
+        v-if="post.author"
+        :count="post.shoutedCount"
+        :post-id="post.id"
+      />
+      <!-- Categories -->
+      <ds-icon
+        v-for="category in post.categories"
+        :key="category.id"
+        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
+        :name="category.icon"
+        size="large"
+      />&nbsp;
+      <ds-space margin-bottom="small" />
+      <!--<div class="tags">
       <ds-icon name="compass" /> <ds-tag
         v-for="category in post.categories"
         :key="category.id"
@@ -48,83 +52,84 @@
         {{ category.name }}
       </ds-tag>
     </div>-->
-    <!-- Tags -->
-    <template v-if="post.tags && post.tags.length">
-      <ds-space margin="xx-small" />
-      <div class="tags">
-        <ds-icon name="tags" /> <ds-tag
-          v-for="tag in post.tags"
-          :key="tag.id"
-        >
-          <ds-icon name="tag" /> {{ tag.name }}
-        </ds-tag>
-      </div>
-    </template>
-    <ds-space margin="small" />
-    <!-- Comments -->
-    <ds-section slot="footer">
-      <h3 style="margin-top: 0;">
-        <span>
-          <ds-icon name="comments" />
-          <ds-tag
-            v-if="post.commentsCount"
-            style="margin-top: -4px; margin-left: -12px; position: absolute;"
-            color="primary"
-            size="small"
-            round
+      <!-- Tags -->
+      <template v-if="post.tags && post.tags.length">
+        <ds-space margin="xx-small" />
+        <div class="tags">
+          <ds-icon name="tags" /> <ds-tag
+            v-for="tag in post.tags"
+            :key="tag.id"
           >
-            {{ post.commentsCount }}
-          </ds-tag> &nbsp; Comments
-        </span>
-      </h3>
-      <ds-space margin-bottom="large" />
-      <div
-        v-if="post.commentsCount"
-        id="comments"
-        class="comments"
-      >
-        <div
-          v-for="comment in post.comments"
-          :key="comment.id"
-          class="comment"
-        >
-          <ds-space margin-bottom="x-small">
-            <hc-author :post="comment" />
-          </ds-space>
-          <no-ssr>
-            <content-menu
-              placement="bottom-end"
-              context="comment"
-              style="float-right"
-              :item-id="comment.id"
-              :name="comment.author.name"
-              :is-owner="isAuthor(comment.author.id)"
-            />
-          </no-ssr>
-          <!-- eslint-disable vue/no-v-html -->
-          <!-- TODO: replace editor content with tiptap render view -->
-          <div
-            v-if="!comment.deleted"
-            style="padding-left: 40px;"
-            v-html="comment.contentExcerpt"
-          />
-          <!-- eslint-enable vue/no-v-html -->
-          <ds-text
-            v-else
-            style="padding-left: 40px; font-weight: bold;"
-            color="soft"
-          >
-            <ds-icon name="ban" /> Vom Benutzer gelöscht
-          </ds-text>
+            <ds-icon name="tag" /> {{ tag.name }}
+          </ds-tag>
         </div>
-        <ds-space margin-bottom="small" />
-      </div>
-      <hc-empty
-        v-else
-        icon="messages"
-      />
-    </ds-section>
-  </ds-card>
+      </template>
+      <ds-space margin="small" />
+      <!-- Comments -->
+      <ds-section slot="footer">
+        <h3 style="margin-top: 0;">
+          <span>
+            <ds-icon name="comments" />
+            <ds-tag
+              v-if="post.commentsCount"
+              style="margin-top: -4px; margin-left: -12px; position: absolute;"
+              color="primary"
+              size="small"
+              round
+            >
+              {{ post.commentsCount }}
+            </ds-tag> &nbsp; Comments
+          </span>
+        </h3>
+        <ds-space margin-bottom="large" />
+        <div
+          v-if="post.commentsCount"
+          id="comments"
+          class="comments"
+        >
+          <div
+            v-for="comment in post.comments"
+            :key="comment.id"
+            class="comment"
+          >
+            <ds-space margin-bottom="x-small">
+              <hc-author :post="comment" />
+            </ds-space>
+            <no-ssr>
+              <content-menu
+                placement="bottom-end"
+                context="comment"
+                style="float-right"
+                :item-id="comment.id"
+                :name="comment.author.name"
+                :is-owner="isAuthor(comment.author.id)"
+              />
+            </no-ssr>
+            <!-- eslint-disable vue/no-v-html -->
+            <!-- TODO: replace editor content with tiptap render view -->
+            <div
+              v-if="!comment.deleted"
+              style="padding-left: 40px;"
+              v-html="comment.contentExcerpt"
+            />
+            <!-- eslint-enable vue/no-v-html -->
+            <ds-text
+              v-else
+              style="padding-left: 40px; font-weight: bold;"
+              color="soft"
+            >
+              <ds-icon name="ban" /> Vom Benutzer gelöscht
+            </ds-text>
+          </div>
+          <ds-space margin-bottom="small" />
+        </div>
+        <hc-empty
+          v-else
+          icon="messages"
+        />
+      </ds-section>
+    </ds-card>
+  </transition>
 </template>
 
 <script>
@@ -152,41 +157,17 @@ export default {
   },
   data() {
     return {
-      post: null,
-      title: 'loading'
-    }
-  },
-  watch: {
-    Post(post) {
-      this.post = post[0]
-      this.title = this.post.title
+      ready: false
     }
   },
   async asyncData(context) {
     const {
       params,
       error,
-      app: { apolloProvider }
+      app: { apolloProvider, $i18n }
     } = context
     const client = apolloProvider.defaultClient
-    const query = gql('query Post($slug: String!) { Post(slug: $slug) { id } }')
-    const variables = { slug: params.slug }
-    const {
-      data: { Post }
-    } = await client.query({ query, variables })
-    if (Post.length <= 0) {
-      error({ statusCode: 404, message: 'We cannot find that post :(' })
-    }
-  },
-  methods: {
-    isAuthor(id) {
-      return this.$store.getters['auth/user'].id === id
-    }
-  },
-  apollo: {
-    Post: {
-      query() {
-        return gql(`
+    const query = gql(`
           query Post($slug: String!) {
             Post(slug: $slug) {
               id
@@ -205,7 +186,7 @@ export default {
                 commentsCount
                 followedByCount
                 location {
-                    name: name${this.$i18n.locale().toUpperCase()}
+                    name: name${$i18n.locale().toUpperCase()}
                   }
                 badges {
                   id
@@ -232,7 +213,7 @@ export default {
                   commentsCount
                   followedByCount
                   location {
-                    name: name${this.$i18n.locale().toUpperCase()}
+                    name: name${$i18n.locale().toUpperCase()}
                   }
                   badges {
                     id
@@ -250,13 +231,29 @@ export default {
             }
           }
         `)
-      },
-      variables() {
-        return {
-          slug: this.$route.params.slug
-        }
-      },
-      fetchPolicy: 'cache-and-network'
+    const variables = { slug: params.slug }
+    const {
+      data: { Post }
+    } = await client.query({ query, variables })
+    if (Post.length <= 0) {
+      return error({ statusCode: 404, message: 'We cannot find that post :(' })
+    }
+    const [post] = Post
+    return {
+      post,
+      title: post.title
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      // NOTE: quick fix for jumping flexbox implementation
+      // will be fixed in a future update of the styleguide
+      this.ready = true
+    }, 50)
+  },
+  methods: {
+    isAuthor(id) {
+      return this.$store.getters['auth/user'].id === id
     }
   }
 }
