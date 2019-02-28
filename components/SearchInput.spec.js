@@ -28,10 +28,10 @@ describe('SearchInput.vue', () => {
   })
 
   it('changes searchValue as a user inputs a value', () => {
-    wrapper = mount(SearchInput, { mocks })
-    const input = wrapper.find('#nav-search')
+    wrapper = shallowMount(SearchInput, { mocks })
+    let input = wrapper.find('#nav-search')
     input.element.value = 'abc'
     input.trigger('input')
-    expect(wrapper.vm.searchValue).toBe('abc')
+    expect(wrapper.vm.value).toBe('abc')
   })
 })

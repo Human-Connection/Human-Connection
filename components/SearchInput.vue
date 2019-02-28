@@ -92,7 +92,7 @@
 import { isEmpty } from 'lodash'
 
 export default {
-  name: 'HcSearchInput',
+  name: 'SearchInput',
   props: {
     id: {
       type: String,

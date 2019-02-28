@@ -15,7 +15,7 @@ beforeEach(async () => {
 })
 
 Cypress.Commands.add('factory', () => {
-  return Factory({seedServerHost})
+  return Factory({ seedServerHost })
 })
 
 Cypress.Commands.add(

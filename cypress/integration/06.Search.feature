@@ -4,11 +4,12 @@ Feature: Search
   In order to find related content
 
   Background:
-    Given we have the following posts in our database:
-      | Author        | Title                                         | Content                | Slug       |
-      | Brianna Wiest | 101 Essays that will change the way you think | 101 Essays, of course! | 101-essays |
+    Given I have a user account
+    And we have the following posts in our database:
+      | Author        | id | title                                         | content                |
+      | Brianna Wiest | p1 | 101 Essays that will change the way you think | 101 Essays, of course! |
 
   Scenario: Search for specific words
-    Given I am logged in as "user"
+    Given I am logged in
     When I search for a specific word
-    Then I should see posts with that word included 
+    Then I should see posts with that word included

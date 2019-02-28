@@ -111,7 +111,7 @@ Then(`I can't see the moderation menu item`, () => {
     .should('not.exist')
 })
 
-When(/^I confirm the reporting dialog .*:$/, (message) => {
+When(/^I confirm the reporting dialog .*:$/, message => {
   cy.contains(message) // wait for element to become visible
   cy.get('.ds-modal').within(() => {
     cy.get('button')
