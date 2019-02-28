@@ -1,8 +1,8 @@
 import { sendCollection } from '../utils/collection'
 import express from 'express'
 import { serveUser } from './serveUser'
-import { verifySignature } from '../security'
 import { activityPub } from '../ActivityPub'
+import verify from './verify'
 
 const router = express.Router()
 const debug = require('debug')('ea:user')
@@ -45,11 +45,9 @@ router.get('/:name/outbox', (req, res) => {
   }
 })
 
-router.post('/:name/inbox', async function (req, res, next) {
+router.post('/:name/inbox', verify, async function (req, res, next) {
   debug(`body = ${JSON.stringify(req.body, null, 2)}`)
   debug(`actorId = ${req.body.actor}`)
-  // TODO stop if signature validation fails
-  debug(`verify = ${await verifySignature(`${req.protocol}://${req.hostname}:${req.port}${req.originalUrl}`, req.headers)}`)
   // const result = await saveActorId(req.body.actor)
   switch (req.body.type) {
   case 'Create':
