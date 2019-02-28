@@ -124,3 +124,17 @@ Then('the object is removed from the outbox collection of {string}', async funct
 Then('I send a GET request to {string} and expect a ordered collection', () => {
 
 })
+
+Then('the post with id {string} has been liked by {string}', async function (id, slug) {
+  const result = await client.request(`
+    query {
+      Post(id: "${id}") {
+        shoutedBy {
+          slug
+        }
+      }
+    }
+  `)
+  expect(result.data.Post[0].shoutedBy).to.be.an('array').that.is.not.empty // eslint-disable-line
+  expect(result.data.Post[0].shoutedBy[0].slug).to.equal(slug)
+})

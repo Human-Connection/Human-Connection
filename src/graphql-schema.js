@@ -6,8 +6,10 @@ import uuid from 'uuid/v4'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
 import { AuthenticationError } from 'apollo-server'
 import { neo4jgraphql } from 'neo4j-graphql-js'
+/*
 import as from 'activitystrea.ms'
 import request from 'request'
+*/
 
 const debug = require('debug')('backend:schema')
 
@@ -179,19 +181,20 @@ export const resolvers = {
           postId: result.id
         })
       debug(`author = ${JSON.stringify(author, null, 2)}`)
-      const actorId = author.records[0]._fields[0].properties.actorId
-      const createActivity = await new Promise((resolve, reject) => {
-        as.create()
-          .id(`${actorId}/status/${params.activityId}`)
-          .actor(`${actorId}`)
-          .object(
-            as.article()
-              .id(`${actorId}/status/${result.id}`)
-              .content(result.content)
-              .to('https://www.w3.org/ns/activitystreams#Public')
-              .publishedNow()
-              .attributedTo(`${actorId}`)
-          ).prettyWrite((err, doc) => {
+      /* if (Array.isArray(author.records) && author.records.length > 0) {
+        const actorId = author.records[0]._fields[0].properties.actorId
+        const createActivity = await new Promise((resolve, reject) => {
+          as.create()
+            .id(`${actorId}/status/${params.activityId}`)
+            .actor(`${actorId}`)
+            .object(
+              as.article()
+                .id(`${actorId}/status/${result.id}`)
+                .content(result.content)
+                .to('https://www.w3.org/ns/activitystreams#Public')
+                .publishedNow()
+                .attributedTo(`${actorId}`)
+            ).prettyWrite((err, doc) => {
             if (err) {
               reject(err)
             } else {
@@ -201,27 +204,27 @@ export const resolvers = {
               resolve(JSON.stringify(parsedDoc))
             }
           })
-      })
-      session.close()
-      // try sending post via ActivityPub
-      await new Promise((resolve) => {
-        const url = new URL(actorId)
-        request(`${url.origin}/activitypub/inbox`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/activity+json'
-          },
-          body: createActivity
-        }, (err) => {
-          if (err) {
-            debug(`error = ${JSON.stringify(err, null, 2)}`)
-            resolve(err)
-          }
-          resolve(null)
         })
-      })
-      return result
+        session.close()
+        // try sending post via ActivityPub
+        await new Promise((resolve) => {
+          const url = new URL(actorId)
+          request(`${url.origin}/activitypub/inbox`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/activity+json'
+            },
+            body: createActivity
+          }, (err) => {
+            if (err) {
+              debug(`error = ${JSON.stringify(err, null, 2)}`)
+              resolve(err)
+            }
+            resolve(null)
+          })
+        })
+        return result
+      } */
     }
-
   }
 }
