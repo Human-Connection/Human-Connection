@@ -1,4 +1,15 @@
 {
+  "error": {
+    "header": {
+      "404": "Seite nicht gefunden"
+    },
+    "subHeader": {
+      "404": "Ups, ich wars nicht"
+    },
+    "message": {
+      "404": "Tut uns leid, wir haben diese Seite nicht gefunden."
+    }
+  },
   "actions": {
     "loading": "lade",
     "loadMore": "mehr laden",

@@ -22,5 +22,5 @@ Feature: Hide Posts
     Given I am logged in with a "user" role
     Then the page "/post/this-post-is-disabled" returns a 404 error with a message:
     """
-    We cannot find that post :(
+    Sorry, the page you're looking for cannot be found.
     """

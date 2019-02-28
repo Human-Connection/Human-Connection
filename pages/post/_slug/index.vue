@@ -236,7 +236,7 @@ export default {
       data: { Post }
     } = await client.query({ query, variables })
     if (Post.length <= 0) {
-      return error({ statusCode: 404, message: 'We cannot find that post :(' })
+      return error({ statusCode: 404 })
     }
     const [post] = Post
     return {
