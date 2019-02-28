@@ -10,14 +10,14 @@ export default function (params) {
   } = params
 
   return `
-    mutation {
-      CreateBadge(
-        id: "${id}",
-        key: "${key}",
-        type: ${type},
-        status: ${status},
-        icon: "${icon}"
-      ) { id }
-    }
+  mutation {
+    CreateBadge(
+      id: "${id}",
+      key: "${key}",
+      type: ${type},
+      status: ${status},
+      icon: "${icon}"
+    ) { id }
+  }
   `
 }
