@@ -223,6 +223,11 @@ Then('the first post on the landing page has the title:', title => {
   cy.get('.post-card:first').should('contain', title)
 })
 
-Then('I see a 404 error with the following message:', message => {
-  cy.get('.error').should('contain', message)
-})
+Then(
+  'the page {string} returns a 404 error with a message:',
+  (route, message) => {
+    // TODO: how can we check HTTP codes with cypress?
+    cy.visit(route, { failOnStatusCode: false })
+    cy.get('.error').should('contain', message)
+  }
+)

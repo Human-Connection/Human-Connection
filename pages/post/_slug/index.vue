@@ -162,6 +162,22 @@ export default {
       this.title = this.post.title
     }
   },
+  async asyncData(context) {
+    const {
+      params,
+      error,
+      app: { apolloProvider }
+    } = context
+    const client = apolloProvider.defaultClient
+    const query = gql('query Post($slug: String!) { Post(slug: $slug) { id } }')
+    const variables = { slug: params.slug }
+    const {
+      data: { Post }
+    } = await client.query({ query, variables })
+    if (Post.length <= 0) {
+      error({ statusCode: 404, message: 'We cannot find that post :(' })
+    }
+  },
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id

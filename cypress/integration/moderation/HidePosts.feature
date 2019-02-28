@@ -20,8 +20,7 @@ Feature: Hide Posts
 
   Scenario: Visiting a disabled post's page should return 404
     Given I am logged in with a "user" role
-    When I visit the "/post/this-post-is-disabled" page
-    Then I see a 404 error with the following message:
+    Then the page "/post/this-post-is-disabled" returns a 404 error with a message:
     """
     We cannot find that post :(
     """
