@@ -5,7 +5,8 @@
     "create": "Erstellen",
     "save": "Speichern",
     "edit": "Bearbeiten",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "cancel": "Abbrechen"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
@@ -104,6 +105,14 @@
       "name": "Meldungen",
       "reporter": "gemeldet von"
     }
+  },
+  "contribution": {
+    "edit": "Beitrag bearbeiten",
+    "delete": "Beitrag löschen"
+  },
+  "comment": {
+    "edit": "Kommentar bearbeiten",
+    "delete": "Kommentar löschen"
   },
   "disable": {
     "user": {

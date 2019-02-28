@@ -2,7 +2,7 @@
   <ds-card :header="$t('admin.users.name')">
     <hc-empty
       icon="tasks"
-      message="Comming Soon…"
+      message="Coming Soon…"
     />
   </ds-card>
 </template>

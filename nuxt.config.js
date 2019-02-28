@@ -9,6 +9,8 @@ module.exports = {
   dev: dev,
   debug: dev ? 'nuxt:*,app' : null,
 
+  modern: 'server',
+
   transition: {
     name: 'slide-up',
     mode: 'out-in'
@@ -41,7 +43,14 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: pkg.description }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        src:
+          'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver',
+        body: true
+      }
+    ]
   },
 
   /*
@@ -61,10 +70,10 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/styleguide.js', ssr: true },
     { src: '~/plugins/i18n.js', ssr: true },
     { src: '~/plugins/axios.js', ssr: false },
     { src: '~/plugins/keep-alive.js', ssr: false },
-    { src: '~/plugins/design-system.js', ssr: true },
     { src: '~/plugins/vue-directives.js', ssr: false },
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
@@ -89,12 +98,13 @@ module.exports = {
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
-    'portal-vue/nuxt',
-    [
-      'nuxt-sass-resources-loader',
-      path.resolve(__dirname, './styleguide/src/system/styles/shared.scss')
-    ]
+    '@nuxtjs/style-resources',
+    'portal-vue/nuxt'
   ],
+
+  styleResources: {
+    scss: ['@human-connection/styleguide/dist/shared.scss']
+  },
 
   /*
   ** Axios module configuration
@@ -158,12 +168,6 @@ module.exports = {
   */
   build: {
     /*
-     * TODO: import the polyfill instead of using the deprecated vendor key
-     * Polyfill missing ES6 & 7 Methods to work on older Browser
-     */
-    vendor: ['@babel/polyfill'],
-
-    /*
     ** You can extend webpack config here
     */
     extend(config, ctx) {
@@ -176,14 +180,6 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-      config.resolve.alias['@@'] = path.resolve(
-        __dirname,
-        './styleguide/src/system'
-      )
-      config.module.rules.push({
-        resourceQuery: /blockType=docs/,
-        loader: require.resolve('./styleguide/src/loader/docs-trim-loader.js')
-      })
       const svgRule = config.module.rules.find(rule => rule.test.test('.svg'))
       svgRule.test = /\.(png|jpe?g|gif|webp)$/
       config.module.rules.push({

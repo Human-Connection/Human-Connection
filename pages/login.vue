@@ -113,14 +113,14 @@ export default {
       }
     }
   },
-  asyncData({ store, redirect }) {
-    if (store.getters['auth/isLoggedIn']) {
-      redirect('/')
-    }
-  },
   computed: {
     pending() {
       return this.$store.getters['auth/pending']
+    }
+  },
+  asyncData({ store, redirect }) {
+    if (store.getters['auth/isLoggedIn']) {
+      redirect('/')
     }
   },
   mounted() {

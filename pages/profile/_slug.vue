@@ -23,6 +23,7 @@
               context="user"
               :item-id="user.id"
               :name="user.name"
+              :is-owner="myProfile"
             />
           </no-ssr>
           <ds-space margin="small">
@@ -250,6 +251,17 @@
                 </ds-flex-item>
               </ds-flex>
             </ds-card>
+          </ds-flex-item>
+          <ds-flex-item style="text-align: center">
+            <ds-button
+              v-if="myProfile"
+              v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+              :path="{ name: 'post-create' }"
+              class="profile-post-add-button"
+              icon="plus"
+              size="large"
+              primary
+            />
           </ds-flex-item>
           <template v-if="activePosts.length">
             <ds-flex-item
