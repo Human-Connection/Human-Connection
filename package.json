@@ -10,8 +10,8 @@
     "start": "cross-env node server/index.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue .",
-    "styleguide": "cd ./styleguide && yarn dev",
-    "styleguide:build": "cd ./styleguide && yarn build:lib && cd ../",
+    "styleguide": "echo 'Command styleguide is Deprecated!'",
+    "styleguide:build": "echo 'Command styleguide:build is Deprecated!'",
     "test": "jest",
     "precommit": "yarn lint",
     "e2e:local": "cypress run --headed",
@@ -21,6 +21,7 @@
     "nonGlobalStepDefinitions": true
   },
   "jest": {
+    "verbose": true,
     "moduleFileExtensions": [
       "js",
       "json",
@@ -32,12 +33,8 @@
     },
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
-      "^@@/(.*)$": "<rootDir>/styleguide/src/system/$1",
       "^~/(.*)$": "<rootDir>/$1"
-    },
-    "modulePathIgnorePatterns": [
-      "<rootDir>/styleguide"
-    ]
+    }
   },
   "dependencies": {
     "@nuxtjs/apollo": "4.0.0-rc4",
@@ -45,26 +42,31 @@
     "@nuxtjs/dotenv": "~1.3.0",
     "@nuxtjs/style-resources": "~0.1.2",
     "accounting": "~0.4.1",
-    "apollo-cache-inmemory": "~1.4.3",
-    "apollo-client": "~2.4.13",
+    "apollo-cache-inmemory": "~1.5.1",
+    "apollo-client": "~2.5.1",
     "cookie-universal-nuxt": "~2.0.14",
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0-alpha.27",
     "express": "~4.16.4",
     "graphql": "~14.1.1",
     "jsonwebtoken": "~8.5.0",
-    "nuxt": "~2.4.3",
+    "linkify-it": "~2.1.0",
+    "nuxt": "~2.4.5",
     "nuxt-env": "~0.1.0",
     "portal-vue": "~1.5.1",
+    "@human-connection/styleguide": "~0.5.0",
     "v-tooltip": "~2.0.0-rc.33",
     "vue-count-to": "~1.0.13",
+    "string-hash": "^1.1.3",
+    "tiptap": "^1.13.0",
+    "tiptap-extensions": "^1.13.0",
     "vue-izitoast": "1.1.2",
     "vue-sweetalert-icons": "~3.2.0",
     "vuex-i18n": "~1.11.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.3.3",
-    "@babel/preset-env": "~7.3.1",
+    "@babel/core": "~7.3.4",
+    "@babel/preset-env": "~7.3.4",
     "@vue/cli-shared-utils": "~3.4.0",
     "@vue/eslint-config-prettier": "~4.0.1",
     "@vue/server-test-utils": "~1.0.0-beta.29",

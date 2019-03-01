@@ -30,6 +30,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+styleguide/
 
 # TypeScript v1 declaration files
 typings/
@@ -79,3 +80,4 @@ static/uploads
 
 cypress/videos
 cypress/screenshots/
+cypress.env.json

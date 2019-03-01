@@ -1,1 +1,0 @@
-Navigation components allow the user to navigate through the application.

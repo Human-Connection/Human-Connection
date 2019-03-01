@@ -1,1 +1,0 @@
-Data Display components are used to present data in an approachable way.

@@ -48,12 +48,39 @@
 <script>
 import gql from 'graphql-tag'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
 import find from 'lodash/find'
 
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
+
+const query = gql`
+  query getUser($id: ID) {
+    User(id: $id) {
+      id
+      name
+      locationName
+      about
+    }
+  }
+`
+
+const mutation = gql`
+  mutation($id: ID!, $name: String, $locationName: String, $about: String) {
+    UpdateUser(
+      id: $id
+      name: $name
+      locationName: $locationName
+      about: $about
+    ) {
+      id
+      name
+      locationName
+      about
+    }
+  }
+`
 
 export default {
   data() {
@@ -61,88 +88,50 @@ export default {
       axiosSource: null,
       cities: [],
       sending: false,
-      form: {
-        name: null,
-        locationName: null,
-        about: null
-      }
+      formData: {}
     }
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
-    })
-  },
-  watch: {
-    user: {
-      immediate: true,
-      handler: function(user) {
-        this.form = {
-          name: user.name,
-          locationName: user.locationName,
-          about: user.about
-        }
+      currentUser: 'auth/user'
+    }),
+    form: {
+      get: function() {
+        const { name, locationName, about } = this.currentUser
+        return { name, locationName, about }
+      },
+      set: function(formData) {
+        this.formData = formData
       }
     }
   },
   methods: {
+    ...mapMutations({
+      setCurrentUser: 'auth/SET_USER'
+    }),
     submit() {
       this.sending = true
+      const { name, about } = this.formData
+      let { locationName } = this.formData
+      locationName = locationName && (locationName['label'] || locationName)
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation(
-              $id: ID!
-              $name: String
-              $locationName: String
-              $about: String
-            ) {
-              UpdateUser(
-                id: $id
-                name: $name
-                locationName: $locationName
-                about: $about
-              ) {
-                id
-                name
-                locationName
-                about
-              }
-            }
-          `,
-          // Parameters
+          mutation,
           variables: {
-            id: this.user.id,
-            name: this.form.name,
-            locationName: this.form.locationName
-              ? this.form.locationName['label'] || this.form.locationName
-              : null,
-            about: this.form.about
+            id: this.currentUser.id,
+            name,
+            locationName,
+            about
           },
-          // Update the cache with the result
-          // The query will be updated with the optimistic response
-          // and then with the real result of the mutation
           update: (store, { data: { UpdateUser } }) => {
-            this.$store.dispatch('auth/fetchCurrentUser')
-
-            // Read the data from our cache for this query.
-            // const data = store.readQuery({ query: TAGS_QUERY })
-            // Add our tag from the mutation to the end
-            // data.tags.push(addTag)
-            // Write our data back to the cache.
-            // store.writeQuery({ query: TAGS_QUERY, data })
+            const { name, locationName, about } = UpdateUser
+            this.setCurrentUser({
+              ...this.currentUser,
+              name,
+              locationName,
+              about
+            })
           }
-          // Optimistic UI
-          // Will be treated as a 'fake' result as soon as the request is made
-          // so that the UI can react quickly and the user be happy
-          /* optimisticResponse: {
-            __typename: 'Mutation',
-            addTag: {
-              __typename: 'Tag',
-              id: -1,
-              label: newTag
-            }
-          } */
         })
         .then(data => {
           this.$toast.success('Updated user')

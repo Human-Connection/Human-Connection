@@ -5,3 +5,5 @@ services:
     build:
       context: .
       target: build-and-test
+    environment:
+      - BACKEND_URL=http://backend:4123
