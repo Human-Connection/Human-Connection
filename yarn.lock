@@ -876,10 +876,10 @@
     fs-extra "7.0.0"
     watchify "3.11.0"
 
-"@human-connection/styleguide@~0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.0.tgz#14d5f696461996708b25126dc1e9e900c3a841cf"
-  integrity sha512-xR8iqGnjxGABoSI3AIq2R9YibZi4TTIe5R6/A9cEbWo3XqD/82+tNBjyKhv84Op4KJTgedR6IJtIIOh3H0aeOg==
+"@human-connection/styleguide@~0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.2.tgz#a7d05b612562cfbe4377032bdf32df4a8f0e3f45"
+  integrity sha512-8RSQDv6hRvdToQKtOGv+aNA/lfrNu+eNDy/JBaynJN7bB7veNgQ0XGt9Otq1KmdW2nthWrwsnZLTRaUaGqyAZw==
   dependencies:
     portal-vue "~1.5.1"
     vue "~2.6.7"

@@ -42,12 +42,15 @@ $ yarn start
 
 ## Styleguide
 
-All reusable Components (for example avatar) should be done inside the styleguide directory.
+All reusable Components (for example avatar) should be done inside the [Nitro-Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) repository.
 
 ![Styleguide Screenshot](screenshot-styleguide.png)
 
 More information can be found here: https://github.com/Human-Connection/Nitro-Styleguide
 
+
+If you need to change something in the styleguide and want to see the effects on the frontend immediately, then we have you covered.
+You need to clone the styleguide to the parent directory `../Nitro-Styleguide` and run `yarn && yarn run dev`. After that you run `yarn run dev:styleguide` instead of `yarn run dev` and you will see your changes reflected inside the fronten!
 
 ## Internationalization (i18n)
 
