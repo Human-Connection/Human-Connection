@@ -1,7 +1,14 @@
 const pkg = require('./package')
 const envWhitelist = ['NODE_ENV', 'MAINTENANCE', 'MAPBOX_TOKEN']
 const dev = process.env.NODE_ENV !== 'production'
-const path = require('path')
+
+const styleguidePath = '../Nitro-Styleguide'
+const styleguideStyles = process.env.STYLEGUIDE_DEV
+  ? [
+      `${styleguidePath}/src/system/styles/main.scss`,
+      `${styleguidePath}/src/system/styles/shared.scss`
+    ]
+  : '@human-connection/styleguide/dist/shared.scss'
 
 module.exports = {
   mode: 'universal',
@@ -9,7 +16,7 @@ module.exports = {
   dev: dev,
   debug: dev ? 'nuxt:*,app' : null,
 
-  modern: 'server',
+  modern: !dev ? 'server' : false,
 
   transition: {
     name: 'slide-up',
@@ -66,11 +73,22 @@ module.exports = {
   ** Global CSS
   */
   css: ['~assets/styles/main.scss'],
+
+  /*
+  ** Global processed styles
+  */
+  styleResources: {
+    scss: styleguideStyles
+  },
+
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/styleguide.js', ssr: true },
+    {
+      src: `~/plugins/styleguide${process.env.STYLEGUIDE_DEV ? '-dev' : ''}.js`,
+      ssr: true
+    },
     { src: '~/plugins/i18n.js', ssr: true },
     { src: '~/plugins/axios.js', ssr: false },
     { src: '~/plugins/keep-alive.js', ssr: false },
@@ -101,10 +119,6 @@ module.exports = {
     '@nuxtjs/style-resources',
     'portal-vue/nuxt'
   ],
-
-  styleResources: {
-    scss: ['@human-connection/styleguide/dist/shared.scss']
-  },
 
   /*
   ** Axios module configuration
@@ -180,6 +194,20 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      if (process.env.STYLEGUIDE_DEV) {
+        const path = require('path')
+        config.resolve.alias['@@'] = path.resolve(
+          __dirname,
+          `${styleguidePath}/src/system`
+        )
+        config.module.rules.push({
+          resourceQuery: /blockType=docs/,
+          loader: require.resolve(
+            `${styleguidePath}/src/loader/docs-trim-loader.js`
+          )
+        })
+      }
+
       const svgRule = config.module.rules.find(rule => rule.test.test('.svg'))
       svgRule.test = /\.(png|jpe?g|gif|webp)$/
       config.module.rules.push({

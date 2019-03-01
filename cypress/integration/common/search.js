@@ -1,9 +1,9 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 
-When('I search for a specific word', () => {
+When('I search for {string}', value => {
   cy.get('#nav-search')
     .focus()
-    .type('Essays')
+    .type(value)
 })
 
 Then('I should see posts with that word included', () => {

@@ -11,5 +11,5 @@ Feature: Search
 
   Scenario: Search for specific words
     Given I am logged in
-    When I search for a specific word
+    When I search for "Essays"
     Then I should see posts with that word included
