@@ -8,3 +8,6 @@ coverage.lcov
 .nyc_output/
 public/uploads/*
 !.gitkeep
+
+# Apple macOS folder attribute file
+.DS_Store
