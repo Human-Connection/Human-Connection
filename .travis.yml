@@ -1,5 +1,4 @@
 language: generic
-
 before_install:
   - openssl aes-256-cbc -K $encrypted_87342d90efbe_key -iv $encrypted_87342d90efbe_iv -in kubeconfig.yaml.enc -out kubeconfig.yaml -d
 install:
@@ -8,7 +7,5 @@ install:
   - sudo mv ./kubectl /usr/local/bin/kubectl
   - mkdir ${HOME}/.kube
   - cp kubeconfig.yaml ${HOME}/.kube/config
-
 script:
   - kubectl get nodes
-
