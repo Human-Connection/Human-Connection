@@ -22,4 +22,4 @@ deploy:
   # this happens if more than two pods access a volume
   script: kubectl --namespace=human-connection delete pods --all
   on:
-    all_branches: true
+    branch: master
