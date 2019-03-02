@@ -1,12 +1,25 @@
 language: generic
+
 before_install:
 - openssl aes-256-cbc -K $encrypted_87342d90efbe_key -iv $encrypted_87342d90efbe_iv
   -in kubeconfig.yaml.enc -out kubeconfig.yaml -d
+
 install:
 - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 - chmod +x ./kubectl
 - sudo mv ./kubectl /usr/local/bin/kubectl
 - mkdir ${HOME}/.kube
 - cp kubeconfig.yaml ${HOME}/.kube/config
+
 script:
 - kubectl get nodes
+
+deploy:
+  provider: script
+  # TODO: fix downtime
+  # instead of deleting all pods, update the deployment and make a rollout
+  # TODO: fix multiple access error on volumes
+  # this happens if more than two pods access a volume
+  script: kubectl --namespace=human-connection delete pods --all
+  on:
+    all_branches: true
