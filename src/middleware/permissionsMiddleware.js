@@ -16,14 +16,19 @@ const isModerator = rule()(async (parent, args, ctx, info) => {
 })
 */
 
-const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, ctx, info) => {
-  return ctx.user.id === parent.id
+const isAdmin = rule()(async (parent, args, { user }, info) => {
+  return user && (user.role === 'admin')
+})
+
+const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, context, info) => {
+  return context.user.id === parent.id
 })
 
 // Permissions
 const permissions = shield({
   Query: {
-    statistics: allow
+    statistics: allow,
+    currentUser: allow
     // fruits: and(isAuthenticated, or(isAdmin, isModerator)),
     // customers: and(isAuthenticated, isAdmin)
   },
@@ -31,7 +36,10 @@ const permissions = shield({
     CreatePost: isAuthenticated,
     // TODO UpdatePost: isOwner,
     // TODO DeletePost: isOwner,
-    report: isAuthenticated
+    report: isAuthenticated,
+    CreateBadge: isAdmin,
+    UpdateBadge: isAdmin,
+    DeleteBadge: isAdmin
     // addFruitToBasket: isAuthenticated
     // CreateUser: allow,
   },
