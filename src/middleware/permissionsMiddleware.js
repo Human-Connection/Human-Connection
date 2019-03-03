@@ -37,7 +37,9 @@ const permissions = shield({
     // TODO UpdatePost: isOwner,
     // TODO DeletePost: isOwner,
     report: isAuthenticated,
-    CreateBadge: isAdmin
+    CreateBadge: isAdmin,
+    UpdateBadge: isAdmin,
+    DeleteBadge: isAdmin
     // addFruitToBasket: isAuthenticated
     // CreateUser: allow,
   },
