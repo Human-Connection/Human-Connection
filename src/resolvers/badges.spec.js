@@ -4,7 +4,7 @@ import { host, login } from '../jest/helpers'
 
 const factory = Factory()
 
-describe('Badge', () => {
+describe('badges', () => {
   beforeEach(async () => {
     await factory.create('User', {
       email: 'user@example.org',
@@ -27,82 +27,68 @@ describe('Badge', () => {
     await factory.cleanDatabase()
   })
 
-  const params = {
-    id: 'b1',
-    key: 'indiegogo_en_racoon',
-    type: 'crowdfunding',
-    status: 'permanent',
-    icon: '/img/badges/indiegogo_en_racoon.svg'
-  }
+  describe('CreateBadge', () => {
+    const params = {
+      id: 'b1',
+      key: 'indiegogo_en_racoon',
+      type: 'crowdfunding',
+      status: 'permanent',
+      icon: '/img/badges/indiegogo_en_racoon.svg'
+    }
 
-  describe('unauthenticated', () => {
-    let client
+    const mutation = `
+      mutation(
+        $id: ID
+        $key: String!
+        $type: BadgeTypeEnum!
+        $status: BadgeStatusEnum!
+        $icon: String!
+      ) {
+        CreateBadge(id: $id, key: $key, type: $type, status: $status, icon: $icon) {
+          id
+        }
+      }
+    `
 
-    it('throws authorization error', async () => {
-      client = new GraphQLClient(host)
-      let { id, key, type, status, icon } = params
-      await expect(
-        client.request(`mutation {
-        CreateBadge(
-          id: "${id}",
-          key: "${key}",
-          type: ${type},
-          status: ${status},
-          icon: "${icon}"
-        ) { id }
-      }`)
-      ).rejects.toThrow('Not Authorised')
-    })
-  })
+    describe('unauthenticated', () => {
+      let client
 
-  describe('authenticated admin', () => {
-    let client
-    let headers
-    let response
-    let { id, key, type, status, icon } = params
-    beforeEach(async () => {
-      headers = await login({ email: 'admin@example.org', password: '1234' })
-      client = new GraphQLClient(host, { headers })
-      response = await client.request(`mutation {
-        CreateBadge(
-            id: "${id}",
-            key: "${key}",
-            type: ${type},
-            status: ${status},
-            icon: "${icon}"
-          ) { id }
-        }`,
-      { headers }
-      )
-    })
-    it('creates a badge', () => {
-      let { id } = response.CreateBadge
-      expect(response).toEqual({
-        CreateBadge: { id }
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+        await expect(
+          client.request(mutation, params)
+        ).rejects.toThrow('Not Authorised')
       })
     })
-  })
 
-  describe('authenticated moderator', () => {
-    let client
-    let headers
-    let { id, key, type, status, icon } = params
-    beforeEach(async () => {
-      headers = await login({ email: 'moderator@example.org', password: '1234' })
-      client = new GraphQLClient(host, { headers })
+    describe('authenticated admin', () => {
+      let client
+      beforeEach(async () => {
+        const headers = await login({ email: 'admin@example.org', password: '1234' })
+        client = new GraphQLClient(host, { headers })
+      })
+      it('creates a badge', async () => {
+        const expected = {
+          CreateBadge: {
+            id: 'b1'
+          }
+        }
+        await expect(client.request(mutation, params)).resolves.toEqual(expected)
+      })
     })
-    it('throws authorization error', async () => {
-      await expect(client.request(`mutation {
-        CreateBadge(
-            id: "${id}",
-            key: "${key}",
-            type: ${type},
-            status: ${status},
-            icon: "${icon}"
-          ) { id }
-        }`,
-      { headers }
-      )).rejects.toThrow('Not Authorised')
+
+    describe('authenticated moderator', () => {
+      let client
+      beforeEach(async () => {
+        const headers = await login({ email: 'moderator@example.org', password: '1234' })
+        client = new GraphQLClient(host, { headers })
+      })
+
+      it('throws authorization error', async () => {
+        await expect(
+          client.request(mutation, params)
+        ).rejects.toThrow('Not Authorised')
+      })
     })
   })
 })
