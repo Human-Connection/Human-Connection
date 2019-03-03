@@ -45,7 +45,10 @@ const createServer = (options) => {
       return {
         driver,
         user,
-        req: request
+        req: request,
+        cypherParams: {
+          currentUserId: user ? user.id : null
+        }
       }
     },
     schema: schema,
