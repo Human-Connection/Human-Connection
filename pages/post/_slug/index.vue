@@ -29,6 +29,7 @@
     <hc-shout-button
       v-if="post.author"
       :count="post.shoutedCount"
+      :is-shouted="post.shoutedByCurrentUser"
       :post-id="post.id"
     />
     <!-- Categories -->
@@ -188,6 +189,7 @@ export default {
                 contributionsCount
                 commentsCount
                 followedByCount
+                followedByCurrentUser
                 location {
                     name: name${this.$i18n.locale().toUpperCase()}
                   }
@@ -215,6 +217,7 @@ export default {
                   contributionsCount
                   commentsCount
                   followedByCount
+                  followedByCurrentUser
                   location {
                     name: name${this.$i18n.locale().toUpperCase()}
                   }
@@ -231,6 +234,7 @@ export default {
                 icon
               }
               shoutedCount
+              shoutedByCurrentUser
             }
           }
         `)

@@ -86,6 +86,7 @@
             <hc-follow-button
               v-if="!myProfile"
               :follow-id="user.id"
+              :is-followed="user.followedByCurrentUser"
               @update="voted = true && fetchUser()"
             />
           </ds-space>

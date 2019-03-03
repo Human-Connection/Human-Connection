@@ -107,6 +107,7 @@
           <ds-flex-item :width="{base: 3}">
             <hc-follow-button
               :follow-id="author.id"
+              :is-followed="author.followedByCurrentUser"
               @update="voted = true"
             />
           </ds-flex-item>

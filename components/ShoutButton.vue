@@ -4,7 +4,7 @@
     style="text-align: center"
   >
     <ds-button
-      :disabled="disabled || loading"
+      :disabled="disabled || loading || isShouted"
       danger
       size="x-large"
       icon="bullhorn"
@@ -28,7 +28,8 @@ import gql from 'graphql-tag'
 export default {
   props: {
     count: { type: Number, default: 0 },
-    postId: { type: String, default: null }
+    postId: { type: String, default: null },
+    isShouted: { type: Boolean, default: false }
   },
   data() {
     return {
