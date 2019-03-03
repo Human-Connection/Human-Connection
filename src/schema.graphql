@@ -84,13 +84,13 @@ type User {
   updatedAt: String
 
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
-  friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(r)")
+  friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(DISTINCT r)")
 
   following: [User]! @relation(name: "FOLLOWS", direction: "OUT")
-  followingCount: Int! @cypher(statement: "MATCH (this)-[:FOLLOWS]->(r:User) RETURN COUNT(r)")
+  followingCount: Int! @cypher(statement: "MATCH (this)-[:FOLLOWS]->(r:User) RETURN COUNT(DISTINCT r)")
 
   followedBy: [User]! @relation(name: "FOLLOWS", direction: "IN")
-  followedByCount: Int! @cypher(statement: "MATCH (this)<-[:FOLLOWS]-(r:User) RETURN COUNT(r)")
+  followedByCount: Int! @cypher(statement: "MATCH (this)<-[:FOLLOWS]-(r:User) RETURN COUNT(DISTINCT r)")
 
   #contributions: [WrittenPost]!
   #contributions2(first: Int = 10, offset: Int = 0): [WrittenPost2]!
@@ -109,7 +109,7 @@ type User {
   commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true RETURN COUNT(r)")
 
   shouted: [Post]! @relation(name: "SHOUTED", direction: "OUT")
-  shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
+  shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
 
   organizationsCreated: [Organization] @relation(name: "CREATED_ORGA", direction: "OUT")
   organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
@@ -149,7 +149,7 @@ type Post {
   commentsCount: Int! @cypher(statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) RETURN COUNT(r)")
 
   shoutedBy: [User]! @relation(name: "SHOUTED", direction: "IN")
-  shoutedCount: Int! @cypher(statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
+  shoutedCount: Int! @cypher(statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
 }
 
 type Comment {
@@ -223,7 +223,7 @@ type Tag {
   name: String!
   taggedPosts: [Post]! @relation(name: "TAGGED", direction: "IN")
   taggedOrganizations: [Organization]! @relation(name: "TAGGED", direction: "IN")
-  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p) RETURN COUNT(p)")
+  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p) RETURN COUNT(DISTINCT p)")
   taggedCountUnique: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p)<-[:WROTE]-(u:User) RETURN COUNT(DISTINCT u)")
   deleted: Boolean
   disabled: Boolean
