@@ -25,6 +25,22 @@ const onlyEnabledContent = rule({ cache: 'strict' })(async (parent, args, ctx, i
   return !(disabled || deleted)
 })
 
+const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver }) => {
+  if (!user) return false
+  const session = driver.session()
+  const { id: postId } = args
+  const result = await session.run(`
+  MATCH (post:Post {id: $postId})<-[:WROTE]-(author)
+  RETURN author
+  `, { postId })
+  const [author] = result.records.map((record) => {
+    return record.get('author')
+  })
+  const { properties: { id: authorId } } = author
+  session.close()
+  return authorId === user.id
+})
+
 // Permissions
 const permissions = shield({
   Query: {
@@ -34,6 +50,8 @@ const permissions = shield({
   },
   Mutation: {
     CreatePost: isAuthenticated,
+    UpdatePost: isAuthor,
+    DeletePost: isAuthor,
     report: isAuthenticated,
     CreateBadge: isAdmin,
     UpdateBadge: isAdmin,
