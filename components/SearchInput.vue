@@ -30,8 +30,9 @@
           :icon-right="isActive ? 'close' : null"
           :filter="item => item"
           :options="results"
+          :auto-reset-search="!searchValue"
           :placeholder="$t('search.placeholder')"
-          @keypress.enter.prevent.stop.self="onEnter"
+          @enter="onEnter"
           @focus.capture.native="onFocus"
           @blur.capture.native="onBlur"
           @keyup.delete.native="onDelete"
@@ -162,25 +163,32 @@ export default {
     },
     onFocus(e) {
       clearTimeout(this.searchProcess)
+      //this.$nextTick(() => {
+      //  this.searchValue = this.lastSearchTerm
+      //})
       this.isOpen = true
     },
     onBlur(e) {
+      this.searchValue = this.lastSearchTerm
+      this.$nextTick(() => {
+        this.searchValue = this.lastSearchTerm
+      })
       this.isOpen = false
       clearTimeout(this.searchProcess)
-      this.searchValue = this.lastSearchTerm
     },
     onDelete(e) {
       clearTimeout(this.searchProcess)
       const value = e.target ? e.target.value.trim() : ''
       if (isEmpty(value)) {
         this.clear()
+      } else {
+        this.handleInput(e)
       }
     },
     /**
      * TODO: on enter we should go to a dedicated seach page!?
      */
     onEnter(e) {
-      // console.log('res', this.unprocessedSearchInput)
       // this.isOpen = false
       clearTimeout(this.searchProcess)
       if (!this.pending) {
@@ -189,11 +197,12 @@ export default {
       }
     },
     clear() {
+      this.$emit('clear')
       clearTimeout(this.searchProcess)
       this.isOpen = false
-      this.searchValue = null
-      this.lastSearchTerm = null
-      this.$emit('clear')
+      this.unprocessedSearchInput = ''
+      this.lastSearchTerm = ''
+      this.searchValue = ''
     }
   }
 }

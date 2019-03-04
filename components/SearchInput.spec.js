@@ -1,6 +1,10 @@
 import { shallowMount, mount } from '@vue/test-utils'
 import SearchInput from './SearchInput.vue'
 
+import Vue from 'vue'
+import Styleguide from '@human-connection/styleguide'
+Vue.use(Styleguide)
+
 describe('SearchInput.vue', () => {
   let wrapper
   const mocks = { $t: () => {} }

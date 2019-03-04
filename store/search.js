@@ -70,6 +70,10 @@ export const actions = {
         commit('SET_QUICK_RESULTS', res.data.findPosts || [])
         commit('SET_QUICK_PENDING', false)
       })
+      .catch(() => {
+        commit('SET_QUICK_RESULTS', [])
+        commit('SET_QUICK_PENDING', false)
+      })
     return getters.quickResults
   },
   async quickClear({ commit }) {
