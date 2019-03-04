@@ -34,8 +34,6 @@ const permissions = shield({
   },
   Mutation: {
     CreatePost: isAuthenticated,
-    // TODO UpdatePost: isOwner,
-    // TODO DeletePost: isOwner,
     report: isAuthenticated,
     CreateBadge: isAdmin,
     UpdateBadge: isAdmin,
