@@ -236,7 +236,9 @@ export default {
       data: { Post }
     } = await client.query({ query, variables })
     if (Post.length <= 0) {
-      return error({ statusCode: 404 })
+      // TODO: custom 404 error page with translations
+      const message = 'This post could not be found'
+      return error({ statusCode: 404, message })
     }
     const [post] = Post
     return {
