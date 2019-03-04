@@ -20,7 +20,7 @@ Feature: Tags and Categories
 
   Scenario: See an overview of categories
     When I navigate to the administration dashboard
-    And I click on "Categories"
+    And I click on the menu item "Categories"
     Then I can see a list of categories ordered by post count:
       | Icon | Name               | Posts      |
       |      | Just For Fun       | 2          |
@@ -29,7 +29,7 @@ Feature: Tags and Categories
 
   Scenario: See an overview of tags
     When I navigate to the administration dashboard
-    And I click on "Tags"
+    And I click on the menu item "Tags"
     Then I can see a list of tags ordered by user count:
       | # | Name      | Users  | Posts    |
       | 1 | Democracy | 2      | 3        |
