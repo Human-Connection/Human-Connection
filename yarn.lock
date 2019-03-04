@@ -894,13 +894,10 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@human-connection/styleguide@~0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.2.tgz#a7d05b612562cfbe4377032bdf32df4a8f0e3f45"
-  integrity sha512-8RSQDv6hRvdToQKtOGv+aNA/lfrNu+eNDy/JBaynJN7bB7veNgQ0XGt9Otq1KmdW2nthWrwsnZLTRaUaGqyAZw==
-  dependencies:
-    portal-vue "~1.5.1"
-    vue "~2.6.7"
+"@human-connection/styleguide@~0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.5.tgz#17866c78f34ea12c6eb0831e22f4b655a4f222bf"
+  integrity sha512-QwD8Y2ds1tQbqTpA7sm0J1RUrB7071clcZmKaKHV9BMTrGR4IJhoYWIjOjNWakkM3u9bNm4SY9S/RTKupMuX2A==
 
 "@nuxt/babel-preset-app@2.4.5":
   version "2.4.5"
@@ -12375,11 +12372,6 @@ vue@^2.5.22:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.6.tgz#dde41e483c11c46a7bf523909f4f2f816ab60d25"
   integrity sha512-Y2DdOZD8sxApS+iUlwv1v8U1qN41kq6Kw45lM6nVZKhygeWA49q7VCCXkjXqeDBXgurrKWkYQ9cJeEJwAq0b9Q==
-
-vue@~2.6.7:
-  version "2.6.7"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.7.tgz#254f188e7621d2d19ee28d0c0442c6d21b53ae2d"
-  integrity sha512-g7ADfQ82QU+j6F/bVDioVQf2ccIMYLuR4E8ev+RsDBlmwRkhGO3HhgF4PF9vpwjdPpxyb1zzLur2nQ2oIMAMEg==
 
 vuex-i18n@~1.11.0:
   version "1.11.0"
