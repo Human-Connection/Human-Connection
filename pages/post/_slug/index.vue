@@ -191,8 +191,8 @@ export default {
                 followedByCount
                 followedByCurrentUser
                 location {
-                    name: name${this.$i18n.locale().toUpperCase()}
-                  }
+                  name: name${this.$i18n.locale().toUpperCase()}
+                }
                 badges {
                   id
                   key

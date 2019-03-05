@@ -5,11 +5,12 @@
   >
     <ds-button
       :loading="loading"
-      :disabled="disabled || loading || isShouted"
-      danger
+      :disabled="disabled"
+      :ghost="!shouted"
+      :primary="shouted"
       size="x-large"
       icon="bullhorn"
-      @click="shout"
+      @click="toggle"
     />
     <ds-space margin-bottom="xx-small" />
     <ds-text color="soft">
@@ -36,17 +37,30 @@ export default {
     return {
       loading: false,
       disabled: false,
-      shoutedCount: this.count
+      shoutedCount: this.count,
+      shouted: false
+    }
+  },
+  watch: {
+    isShouted: {
+      immediate: true,
+      handler: function(shouted) {
+        this.shouted = shouted
+      }
     }
   },
   methods: {
-    shout() {
+    toggle() {
+      const shout = !this.shouted
+      const mutation = shout ? 'shout' : 'unshout'
+      const count = shout ? this.shoutedCount + 1 : this.shoutedCount - 1
+
       this.loading = true
       this.$apollo
         .mutate({
           mutation: gql`
             mutation($id: ID!) {
-              shout(id: $id, type: Post)
+              ${mutation}(id: $id, type: Post)
             }
           `,
           variables: {
@@ -54,13 +68,9 @@ export default {
           }
         })
         .then(res => {
-          if (res && res.data && res.data.shout) {
-            this.shoutedCount = this.count + 1
-          }
+          this.shoutedCount = count
+          this.shouted = shout
           this.$emit('update')
-          this.$nextTick(() => {
-            this.disabled = true
-          })
         })
         .finally(() => {
           this.loading = false
