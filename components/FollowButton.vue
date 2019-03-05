@@ -33,17 +33,12 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($myId: ID!, $followId: ID!) {
-              AddUserFollowing(from: { id: $myId }, to: { id: $followId }) {
-                from {
-                  id
-                }
-              }
+            mutation($id: ID!) {
+              follow(id: $id)
             }
           `,
           variables: {
-            myId: this.$store.getters['auth/user'].id,
-            followId: this.followId
+            id: this.followId
           }
         })
         .then(() => {
