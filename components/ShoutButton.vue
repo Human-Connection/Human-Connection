@@ -58,7 +58,14 @@ export default {
       const mutation = shout ? 'shout' : 'unshout'
       const count = shout ? this.shoutedCount + 1 : this.shoutedCount - 1
 
-      this.loading = true
+      const backup = {
+        shoutedCount: this.shoutedCount,
+        shouted: this.shouted
+      }
+
+      this.shoutedCount = count
+      this.shouted = shout
+
       this.$apollo
         .mutate({
           mutation: gql`
@@ -71,9 +78,13 @@ export default {
           }
         })
         .then(res => {
-          this.shoutedCount = count
-          this.shouted = shout
-          this.$emit('update')
+          if (res && res.data) {
+            this.$emit('update')
+          }
+        })
+        .catch(() => {
+          this.shoutedCount = backup.shoutedCount
+          this.shouted = backup.shouted
         })
         .finally(() => {
           this.loading = false

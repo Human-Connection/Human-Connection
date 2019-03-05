@@ -19,8 +19,7 @@
   },
   "followButton": {
     "follow": "Follow",
-    "following": "Following",
-    "unfollow": "Unfollow"
+    "following": "Following"
   },
   "shoutButton": {
     "shouted": "shouted"

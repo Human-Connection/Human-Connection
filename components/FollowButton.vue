@@ -6,7 +6,7 @@
     :primary="isFollowed && !hovered"
     :danger="isFollowed && hovered"
     fullwidth
-    @mouseenter.native="hovered = !disabled"
+    @mouseenter.native="onHover"
     @mouseleave.native="hovered = false"
     @click.prevent="toggle"
   >
@@ -40,9 +40,7 @@ export default {
       }
     },
     label() {
-      if (this.isFollowed && this.hovered) {
-        return this.$t('followButton.unfollow')
-      } else if (this.isFollowed) {
+      if (this.isFollowed) {
         return this.$t('followButton.following')
       } else {
         return this.$t('followButton.follow')
@@ -52,14 +50,20 @@ export default {
   watch: {
     isFollowed() {
       this.loading = false
+      this.hovered = false
     }
   },
   methods: {
+    onHover() {
+      if (!this.disabled && !this.loading) {
+        this.hovered = true
+      }
+    },
     toggle() {
       const follow = !this.isFollowed
       const mutation = follow ? 'follow' : 'unfollow'
 
-      this.loading = true
+      this.hovered = false
       this.$apollo
         .mutate({
           mutation: gql`
@@ -72,10 +76,9 @@ export default {
           }
         })
         .then(res => {
-          this.$emit('update', !this.isFollowed)
-        })
-        .catch(() => {
-          this.loading = false
+          if (res && res.data) {
+            this.$emit('update', follow)
+          }
         })
     }
   }

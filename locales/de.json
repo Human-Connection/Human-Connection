@@ -19,8 +19,7 @@
   },
   "followButton": {
     "follow": "Folgen",
-    "following": "Folgst",
-    "unfollow": "Entfolgen"
+    "following": "Folge Ich"
   },
   "shoutButton": {
     "shouted": "empfohlen"
