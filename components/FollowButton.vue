@@ -34,17 +34,23 @@ export default {
         .mutate({
           mutation: gql`
             mutation($id: ID!) {
-              follow(id: $id)
+              follow(id: $id, type: User)
             }
           `,
           variables: {
             id: this.followId
           }
         })
-        .then(() => {
+        .then(res => {
+          if (res && res.data && res.data.follow) {
+            this.$emit('update')
+            this.$nextTick(() => {
+              this.disabled = true
+            })
+          }
+        })
+        .finally(() => {
           this.loading = false
-          this.disabled = true
-          this.$emit('update')
         })
     }
   }

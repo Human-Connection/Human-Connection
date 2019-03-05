@@ -4,6 +4,7 @@
     style="text-align: center"
   >
     <ds-button
+      :loading="loading"
       :disabled="disabled || loading || isShouted"
       danger
       size="x-large"
@@ -53,13 +54,16 @@ export default {
           }
         })
         .then(res => {
-          console.log(res)
-          this.loading = false
-          this.disabled = true
           if (res && res.data && res.data.shout) {
-            this.shoutedCount++
+            this.shoutedCount = this.count + 1
           }
           this.$emit('update')
+          this.$nextTick(() => {
+            this.disabled = true
+          })
+        })
+        .finally(() => {
+          this.loading = false
         })
     }
   }
