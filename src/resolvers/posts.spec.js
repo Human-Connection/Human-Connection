@@ -206,10 +206,16 @@ describe('DeletePost', () => {
 
 describe('disabledBy relation', () => {
   const setup = async (params = {}) => {
+    await factory.create('User', {email: 'author@example.org', password: '1234'})
+    await factory.authenticateAs({email: 'author@example.org', password: '1234'})
+    await factory.create('Post', {
+      id: 'p9' // that's the ID we will look for
+    })
+
     let headers = {}
     const { email, password } = params
     if (email && password) {
-      await factory.create('User', params)
+      const user = await factory.create('User', params)
       headers = await login({email, password})
     }
     client = new GraphQLClient(host, { headers })
@@ -218,7 +224,7 @@ describe('disabledBy relation', () => {
   describe('AddPostDisabledBy', () => {
     const mutation = `
     mutation {
-      AddPostDisabledBy(from: { id: "u8" }, to: { id: "p9" }) {
+      AddPostDisabledBy(from: { id: "u7" }, to: { id: "p9" }) {
         from {
           id
         }
@@ -263,17 +269,47 @@ describe('disabledBy relation', () => {
             })
           })
 
-          it.todo('sets current user')
-          it.todo('updates .disabled on post')
+          it('returns created relation', async () => {
+            const expected = {
+              AddPostDisabledBy: {
+                from: { id: 'u7' },
+                to: { id: 'p9' }
+              }
+            }
+            await expect(client.request(mutation)).resolves.toEqual(expected)
+          })
+
+          it('sets current user', async () => {
+            await client.request(mutation)
+            const query = `{ Post { id,  disabledBy { id } } }`
+            const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
+            await expect(client.request(query)).resolves.toEqual(expected)
+          })
+
+          it('updates .disabled on post', async () => {
+            await client.request(mutation)
+            const query = `{ Post { id disabled } }`
+            const expected = { Post: [ { id: 'p9', disabled: true } ] }
+            await expect(client.request(query)).resolves.toEqual(expected)
+          })
         })
       })
     })
   })
 
   describe('RemovePostDisabledBy', () => {
+    beforeEach(async () => {
+      await factory.create('User', {email: 'anotherModerator@example.org', password: '1234', role: 'moderator'})
+      await factory.authenticateAs({email: 'anotherModerator@example.org', password: '1234'})
+      await factory.relate('Post', 'DisabledBy', {
+        from: 'u7',
+        to: 'p9'
+      })
+    })
+
     const mutation = `
       mutation {
-        AddPostDisabledBy(from: { id: "u8" }, to: { id: "p9" }) {
+        RemovePostDisabledBy(from: { id: "u7" }, to: { id: "p9" }) {
           from {
             id
           }
@@ -318,8 +354,22 @@ describe('disabledBy relation', () => {
             })
           })
 
-          it.todo('sets current user')
-          it.todo('updates .disabled on post')
+          it('returns deleted relation', async () => {
+            const expected = {
+              RemovePostDisabledBy: {
+                from: { id: 'u7' },
+                to: { id: 'p9' }
+              }
+            }
+            await expect(client.request(mutation)).resolves.toEqual(expected)
+          })
+
+          it('updates .disabled on post', async () => {
+            await client.request(mutation)
+            const query = `{ Post { id disabled } }`
+            const expected = { Post: [ { id: 'p9', disabled: false } ] }
+            await expect(client.request(query)).resolves.toEqual(expected)
+          })
         })
       })
     })

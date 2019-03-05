@@ -42,6 +42,7 @@ const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver
 })
 
 const fromUserMatchesCurrentUser = rule({ cache: 'no_cache' })(async (parent, args, { user, driver }) => {
+  if (!user) return false
   const { from: { id: fromId } } = args
   return user.id === fromId
 })
