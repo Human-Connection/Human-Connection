@@ -200,3 +200,49 @@ describe('DeletePost', () => {
     })
   })
 })
+
+describe('AddPostDisabledBy', () => {
+  const mutation = `
+    mutation {
+      AddPostDisabledBy(from: { id: "u8" }, to: { id: "p9" }) {
+        from {
+          id
+        }
+        to {
+          id
+        }
+      }
+    }
+  `
+  it.todo('throws authorization error')
+
+  describe('authenticated', () => {
+    it.todo('throws authorization error')
+
+    describe('as moderator', () => {
+      it.todo('throws authorization error')
+
+      describe('current user matches provided user', () => {
+        it.todo('sets current user')
+        it.todo('updates .disabled on post')
+      })
+    })
+  })
+})
+
+describe('RemovePostDisabledBy', () => {
+  it.todo('throws authorization error')
+
+  describe('authenticated', () => {
+    it.todo('throws authorization error')
+
+    describe('as moderator', () => {
+      it.todo('throws authorization error')
+
+      describe('current user matches provided user', () => {
+        it.todo('sets current user')
+        it.todo('updates .disabled on post')
+      })
+    })
+  })
+})

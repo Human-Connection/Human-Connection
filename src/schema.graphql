@@ -133,6 +133,7 @@ type Post {
   visibility: VisibilityEnum
   deleted: Boolean
   disabled: Boolean
+  disabledBy: User! @relation(name: "DISABLED", direction: "IN")
   createdAt: String
   updatedAt: String
 
