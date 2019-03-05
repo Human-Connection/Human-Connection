@@ -28,6 +28,7 @@
     <ds-space margin="xx-large" />
     <hc-shout-button
       v-if="post.author"
+      :disabled="isAuthor(post.author.id)"
       :count="post.shoutedCount"
       :is-shouted="post.shoutedByCurrentUser"
       :post-id="post.id"

@@ -31,12 +31,12 @@ export default {
   props: {
     count: { type: Number, default: 0 },
     postId: { type: String, default: null },
-    isShouted: { type: Boolean, default: false }
+    isShouted: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false }
   },
   data() {
     return {
       loading: false,
-      disabled: false,
       shoutedCount: this.count,
       shouted: false
     }
