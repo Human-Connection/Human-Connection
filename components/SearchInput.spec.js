@@ -4,10 +4,6 @@ import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
 Vue.use(Styleguide) 
 
-import Vue from 'vue'
-import Styleguide from '@human-connection/styleguide'
-Vue.use(Styleguide)
-
 describe('SearchInput.vue', () => {
   let wrapper
   const mocks = { $t: () => {} }
@@ -36,9 +32,7 @@ describe('SearchInput.vue', () => {
 
   it('changes searchValue as a user inputs a value', () => {
     wrapper = mount(SearchInput, { mocks })
-    console.log(wrapper.html())
     let input = wrapper.find('input#nav-search')
-    console.log(input)
     input.trigger('focus')
     input.setValue('abc')
     expect(wrapper.vm.searchValue).toBe('abc')
