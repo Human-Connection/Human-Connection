@@ -13,9 +13,9 @@ type Mutation {
 
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): String! @cypher(statement: """
-    MATCH (n {id: $id})
+    MATCH (n {id: $id}), (u:User {id: $cypherParams.currentUserId})
     WHERE $type IN labels(n)
-    MERGE (:User {id: $cypherParams.currentUserId})-[r:SHOUTED]->(n)
+    MERGE (u)-[r:SHOUTED]->(n)
     RETURN COUNT(r) > 0
   """)
   "Unshout the given Type and ID"
@@ -28,9 +28,9 @@ type Mutation {
 
   "Follow the given Type and ID"
   follow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
-    MATCH (n {id: $id})
+    MATCH (n {id: $id}), (u:User {id: $cypherParams.currentUserId})
     WHERE $type IN labels(n) AND NOT $id = $cypherParams.currentUserId
-    MERGE (:User {id: $cypherParams.currentUserId})-[r:FOLLOWS]->(n)
+    MERGE (u)-[r:FOLLOWS]->(n)
     RETURN COUNT(r) > 0
   """)
   "Unfollow the given Type and ID"
