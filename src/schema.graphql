@@ -1,12 +1,45 @@
 type Query {
   isLoggedIn: Boolean!
+  "Get the currently logged in User based on the given JWT Token"
   currentUser: User
+  "Get the latest Network Statistics"
   statistics: Statistics!
 }
 type Mutation {
+  "Get a JWT Token for the given Email and password"
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
+
+  "Shout the given Type and ID"
+  shout(id: ID!, type: ShoutTypeEnum): String! @cypher(statement: """
+    MATCH (n {id: $id})
+    WHERE $type IN labels(n)
+    MERGE (:User {id: $cypherParams.currentUserId})-[r:SHOUTED]->(n)
+    RETURN COUNT(r) > 0
+  """)
+  "Unshout the given Type and ID"
+  unshout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
+    MATCH (:User {id: $cypherParams.currentUserId})-[r:SHOUTED]->(n {id: $id})
+    WHERE $type IN labels(n)
+    DELETE r
+    RETURN COUNT(r) > 0
+  """)
+
+  "Follow the given Type and ID"
+  follow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
+    MATCH (n {id: $id})
+    WHERE $type IN labels(n) AND NOT $id = $cypherParams.currentUserId
+    MERGE (:User {id: $cypherParams.currentUserId})-[r:FOLLOWS]->(n)
+    RETURN COUNT(r) > 0
+  """)
+  "Unfollow the given Type and ID"
+  unfollow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
+    MATCH (:User {id: $cypherParams.currentUserId})-[r:FOLLOWS]->(n {id: $id})
+    WHERE $type IN labels(n)
+    DELETE r
+    RETURN COUNT(r) > 0
+  """)
 }
 
 type Statistics {
@@ -213,6 +246,16 @@ enum BadgeTypeEnum {
 enum BadgeStatusEnum {
   permanent
   temporary
+}
+enum ShoutTypeEnum {
+  Post
+  Organization
+  Project
+}
+enum FollowTypeEnum {
+  User
+  Organization
+  Project
 }
 
 type Organization {
