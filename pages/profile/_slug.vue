@@ -88,7 +88,7 @@
               :follow-id="user.id"
               :is-followed="user.followedByCurrentUser"
               @optimistic="follow => user.followedByCurrentUser = follow"
-              @update="follow => fetchUser()"
+              @update="follow => user.followedByCurrentUser = follow && fetchUser()"
             />
           </ds-space>
           <template v-if="user.about">

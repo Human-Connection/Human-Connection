@@ -109,6 +109,7 @@
               :follow-id="author.id"
               :is-followed="author.followedByCurrentUser"
               @optimistic="follow => author.followedByCurrentUser = follow"
+              @update="follow => author.followedByCurrentUser = follow"
             />
           </ds-flex-item>
           <ds-flex-item :width="{base: 1}">
