@@ -2,6 +2,26 @@ import { neo4jgraphql } from 'neo4j-graphql-js'
 
 export default {
   Mutation: {
+    AddPostDisabledBy: async (object, params, context, resolveInfo) => {
+      const { to: { id: postId } } = params
+      const session = context.driver.session()
+      await session.run(`
+        MATCH (p:Post {id: $postId})
+        SET p.disabled = true`, { postId })
+      session.close()
+      return neo4jgraphql(object, params, context, resolveInfo, false)
+    },
+
+    RemovePostDisabledBy: async (object, params, context, resolveInfo) => {
+      const { to: { id: postId } } = params
+      const session = context.driver.session()
+      await session.run(`
+        MATCH (p:Post {id: $postId})
+        SET p.disabled = false`, { postId })
+      session.close()
+      return neo4jgraphql(object, params, context, resolveInfo, false)
+    },
+
     CreatePost: async (object, params, context, resolveInfo) => {
       const result = await neo4jgraphql(object, params, context, resolveInfo, false)
 

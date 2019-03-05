@@ -204,7 +204,7 @@ describe('DeletePost', () => {
 
 
 
-describe('disabledBy relation', () => {
+describe('AddPostDisabledBy', () => {
   const setup = async (params = {}) => {
     await factory.create('User', {email: 'author@example.org', password: '1234'})
     await factory.authenticateAs({email: 'author@example.org', password: '1234'})
@@ -221,8 +221,7 @@ describe('disabledBy relation', () => {
     client = new GraphQLClient(host, { headers })
   }
 
-  describe('AddPostDisabledBy', () => {
-    const mutation = `
+  const mutation = `
     mutation {
       AddPostDisabledBy(from: { id: "u7" }, to: { id: "p9" }) {
         from {
@@ -235,79 +234,96 @@ describe('disabledBy relation', () => {
     }
   `
 
+  it('throws authorization error', async () => {
+    await setup()
+    await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+  })
+
+  describe('authenticated', () => {
     it('throws authorization error', async () => {
-      await setup()
+      await setup({
+        email: 'someUser@example.org',
+        password: '1234'
+      })
       await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
     })
 
-    describe('authenticated', () => {
+    describe('as moderator', () => {
       it('throws authorization error', async () => {
         await setup({
-          email: 'someUser@example.org',
-          password: '1234'
+          email: 'attributedUserMismatch@example.org',
+          password: '1234',
+          role: 'moderator'
         })
         await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
       })
 
-      describe('as moderator', () => {
-        it('throws authorization error', async () => {
+      describe('current user matches provided user', () => {
+        beforeEach(async () => {
           await setup({
-            email: 'attributedUserMismatch@example.org',
+            id: 'u7',
+            email: 'moderator@example.org',
             password: '1234',
             role: 'moderator'
           })
-          await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
         })
 
-        describe('current user matches provided user', () => {
-          beforeEach(async () => {
-            await setup({
-              id: 'u7',
-              email: 'moderator@example.org',
-              password: '1234',
-              role: 'moderator'
-            })
-          })
-
-          it('returns created relation', async () => {
-            const expected = {
-              AddPostDisabledBy: {
-                from: { id: 'u7' },
-                to: { id: 'p9' }
-              }
+        it('returns created relation', async () => {
+          const expected = {
+            AddPostDisabledBy: {
+              from: { id: 'u7' },
+              to: { id: 'p9' }
             }
-            await expect(client.request(mutation)).resolves.toEqual(expected)
-          })
+          }
+          await expect(client.request(mutation)).resolves.toEqual(expected)
+        })
 
-          it('sets current user', async () => {
-            await client.request(mutation)
-            const query = `{ Post { id,  disabledBy { id } } }`
-            const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
-            await expect(client.request(query)).resolves.toEqual(expected)
-          })
+        it('sets current user', async () => {
+          await client.request(mutation)
+          const query = `{ Post(disabled: true) { id,  disabledBy { id } } }`
+          const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
+          await expect(client.request(query)).resolves.toEqual(expected)
+        })
 
-          it('updates .disabled on post', async () => {
-            await client.request(mutation)
-            const query = `{ Post { id disabled } }`
-            const expected = { Post: [ { id: 'p9', disabled: true } ] }
-            await expect(client.request(query)).resolves.toEqual(expected)
-          })
+        it('updates .disabled on post', async () => {
+          const before = { Post: [ { id: 'p9', disabled: false } ] }
+          const expected = { Post: [ { id: 'p9', disabled: true } ] }
+
+          await expect(client.request(
+            `{ Post { id disabled } }`
+          )).resolves.toEqual(before)
+          await client.request(mutation) // this updates .disabled
+          await expect(client.request(
+            `{ Post(disabled: true) { id disabled } }`
+          )).resolves.toEqual(expected)
         })
       })
     })
   })
+})
 
-  describe('RemovePostDisabledBy', () => {
-    beforeEach(async () => {
-      await factory.create('User', {email: 'anotherModerator@example.org', password: '1234', role: 'moderator'})
-      await factory.authenticateAs({email: 'anotherModerator@example.org', password: '1234'})
-      await factory.relate('Post', 'DisabledBy', {
-        from: 'u7',
-        to: 'p9'
-      })
+describe('RemovePostDisabledBy', () => {
+  const setup = async (params = {}) => {
+    await factory.create('User', {email: 'anotherModerator@example.org', password: '1234', id: 'u123', role: 'moderator'})
+    await factory.authenticateAs({email: 'anotherModerator@example.org', password: '1234'})
+    await factory.create('Post', {
+      id: 'p9' // that's the ID we will look for
     })
+    await factory.relate('Post', 'DisabledBy', {
+      from: 'u123',
+      to: 'p9'
+    }) // that's we want to delete
 
-    const mutation = `
+    let headers = {}
+    const { email, password } = params
+    if (email && password) {
+      const user = await factory.create('User', params)
+      headers = await login({email, password})
+    }
+    client = new GraphQLClient(host, { headers })
+  }
+
+  const mutation = `
       mutation {
         RemovePostDisabledBy(from: { id: "u7" }, to: { id: "p9" }) {
           from {
@@ -320,56 +336,61 @@ describe('disabledBy relation', () => {
       }
     `
 
+  it('throws authorization error', async () => {
+    await setup()
+    await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+  })
+
+  describe('authenticated', () => {
     it('throws authorization error', async () => {
-      await setup()
+      await setup({
+        email: 'someUser@example.org',
+        password: '1234'
+      })
       await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
     })
 
-    describe('authenticated', () => {
+    describe('as moderator', () => {
       it('throws authorization error', async () => {
         await setup({
+          role: 'moderator',
           email: 'someUser@example.org',
           password: '1234'
         })
         await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
       })
 
-      describe('as moderator', () => {
-        it('throws authorization error', async () => {
+      describe('current user matches provided user', () => {
+        beforeEach(async () => {
           await setup({
+            id: 'u7',
             role: 'moderator',
             email: 'someUser@example.org',
             password: '1234'
           })
-          await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
         })
 
-        describe('current user matches provided user', () => {
-          beforeEach(async () => {
-            await setup({
-              id: 'u7',
-              role: 'moderator',
-              email: 'someUser@example.org',
-              password: '1234'
-            })
-          })
-
-          it('returns deleted relation', async () => {
-            const expected = {
-              RemovePostDisabledBy: {
-                from: { id: 'u7' },
-                to: { id: 'p9' }
-              }
+        it('returns deleted relation', async () => {
+          const expected = {
+            RemovePostDisabledBy: {
+              from: { id: 'u7' },
+              to: { id: 'p9' }
             }
-            await expect(client.request(mutation)).resolves.toEqual(expected)
-          })
+          }
+          await expect(client.request(mutation)).resolves.toEqual(expected)
+        })
 
-          it('updates .disabled on post', async () => {
-            await client.request(mutation)
-            const query = `{ Post { id disabled } }`
-            const expected = { Post: [ { id: 'p9', disabled: false } ] }
-            await expect(client.request(query)).resolves.toEqual(expected)
-          })
+        it('updates .disabled on post', async () => {
+          const before = { Post: [ { id: 'p9', disabled: true } ] }
+          const expected = { Post: [ { id: 'p9', disabled: false } ] }
+
+          await expect(client.request(
+            `{ Post(disabled: true) { id disabled } }`
+          )).resolves.toEqual(before)
+          await client.request(mutation) // this updates .disabled
+          await expect(client.request(
+            `{ Post { id disabled } }`
+          )).resolves.toEqual(expected)
         })
       })
     })
