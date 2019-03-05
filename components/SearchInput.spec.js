@@ -4,6 +4,10 @@ import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
 Vue.use(Styleguide) 
 
+import Vue from 'vue'
+import Styleguide from '@human-connection/styleguide'
+Vue.use(Styleguide)
+
 describe('SearchInput.vue', () => {
   let wrapper
   const mocks = { $t: () => {} }
