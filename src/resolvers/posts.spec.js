@@ -214,10 +214,25 @@ describe('AddPostDisabledBy', () => {
       }
     }
   `
-  it.todo('throws authorization error')
+  it('throws authorization error', async () => {
+    client = new GraphQLClient(host)
+    await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+  })
 
   describe('authenticated', () => {
-    it.todo('throws authorization error')
+    let headers
+    beforeEach(async () => {
+      await factory.create('User', {
+        email: 'someUser@example.org',
+        password: '1234'
+      })
+      headers = await login({ email: 'someUser@example.org', password: '1234' })
+      client = new GraphQLClient(host, { headers })
+    })
+
+    it('throws authorization error', async () => {
+      await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+    })
 
     describe('as moderator', () => {
       it.todo('throws authorization error')
@@ -231,10 +246,38 @@ describe('AddPostDisabledBy', () => {
 })
 
 describe('RemovePostDisabledBy', () => {
-  it.todo('throws authorization error')
+  const mutation = `
+    mutation {
+      AddPostDisabledBy(from: { id: "u8" }, to: { id: "p9" }) {
+        from {
+          id
+        }
+        to {
+          id
+        }
+      }
+    }
+  `
+
+  it('throws authorization error', async () => {
+    client = new GraphQLClient(host)
+    await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+  })
 
   describe('authenticated', () => {
-    it.todo('throws authorization error')
+    let headers
+    beforeEach(async () => {
+      await factory.create('User', {
+        email: 'someUser@example.org',
+        password: '1234'
+      })
+      headers = await login({ email: 'someUser@example.org', password: '1234' })
+      client = new GraphQLClient(host, { headers })
+    })
+
+    it('throws authorization error', async () => {
+      await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+    })
 
     describe('as moderator', () => {
       it.todo('throws authorization error')
