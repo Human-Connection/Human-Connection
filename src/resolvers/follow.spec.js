@@ -3,7 +3,7 @@ import { GraphQLClient } from 'graphql-request'
 import { host, login } from '../jest/helpers'
 
 const factory = Factory()
-let clientUser1, clientUser2
+let clientUser1
 
 const mutationFollowUser = (id) => `
   mutation {
@@ -33,15 +33,12 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-
 describe('follow ', () => {
   describe('(un)follow user', () => {
-    let headersUser1, headersUser2
+    let headersUser1
     beforeEach(async () => {
       headersUser1 = await login({ email: 'test@example.org', password: '1234' })
-      headersUser2 = await login({ email: 'test2@example.org', password: '1234' })
       clientUser1 = new GraphQLClient(host, { headers: headersUser1 })
-      clientUser2 = new GraphQLClient(host, { headers: headersUser2 })
     })
 
     it('I can follow another user', async () => {

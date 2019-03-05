@@ -33,7 +33,6 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-
 describe('shout ', () => {
   describe('(un)shout foreign post', () => {
     let headersUser1, headersUser2
