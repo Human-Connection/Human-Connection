@@ -69,6 +69,16 @@ describe('shout ', () => {
         shout: true
       }
       expect(res).toMatchObject(expected)
+
+      const { Post } = await clientUser1.request(`{
+        Post(id: "p2") {
+          shoutedByCurrentUser
+        }
+      }`)
+      const expected2 = {
+        shoutedByCurrentUser: true
+      }
+      expect(Post[0]).toMatchObject(expected2)
     })
 
     it('I unshout a post of another user', async () => {
@@ -82,6 +92,16 @@ describe('shout ', () => {
       // unshout
       const res = await clientUser1.request(mutationUnshoutPost('p2'))
       expect(res).toMatchObject(expected)
+
+      const { Post } = await clientUser1.request(`{
+        Post(id: "p2") {
+          shoutedByCurrentUser
+        }
+      }`)
+      const expected2 = {
+        shoutedByCurrentUser: false
+      }
+      expect(Post[0]).toMatchObject(expected2)
     })
 
     it('I can`t shout my own post', async () => {
@@ -92,6 +112,16 @@ describe('shout ', () => {
         shout: false
       }
       expect(res).toMatchObject(expected)
+
+      const { Post } = await clientUser1.request(`{
+        Post(id: "p1") {
+          shoutedByCurrentUser
+        }
+      }`)
+      const expected2 = {
+        shoutedByCurrentUser: false
+      }
+      expect(Post[0]).toMatchObject(expected2)
     })
   })
 })
