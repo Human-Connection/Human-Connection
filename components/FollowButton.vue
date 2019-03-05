@@ -1,13 +1,16 @@
 <template>
   <ds-button
-    :disabled="disabled || !followId || isFollowed"
+    :disabled="disabled || !followId"
     :loading="loading"
-    icon="plus"
-    primary
+    :icon="icon"
+    :primary="isFollowed && !hovered"
+    :danger="isFollowed && hovered"
     fullwidth
-    @click.prevent="follow"
+    @mouseenter.native="hovered = !disabled"
+    @mouseleave.native="hovered = false"
+    @click.prevent="toggle"
   >
-    Folgen
+    {{ label }}
   </ds-button>
 </template>
 
@@ -24,17 +27,44 @@ export default {
   data() {
     return {
       disabled: false,
-      loading: false
+      loading: false,
+      hovered: false
+    }
+  },
+  computed: {
+    icon() {
+      if (this.isFollowed && this.hovered) {
+        return 'close'
+      } else {
+        return this.isFollowed ? 'check' : 'plus'
+      }
+    },
+    label() {
+      if (this.isFollowed && this.hovered) {
+        return this.$t('followButton.unfollow')
+      } else if (this.isFollowed) {
+        return this.$t('followButton.following')
+      } else {
+        return this.$t('followButton.follow')
+      }
+    }
+  },
+  watch: {
+    isFollowed() {
+      this.loading = false
     }
   },
   methods: {
-    follow() {
+    toggle() {
+      const follow = !this.isFollowed
+      const mutation = follow ? 'follow' : 'unfollow'
+
       this.loading = true
       this.$apollo
         .mutate({
           mutation: gql`
             mutation($id: ID!) {
-              follow(id: $id, type: User)
+              ${mutation}(id: $id, type: User)
             }
           `,
           variables: {
@@ -42,14 +72,9 @@ export default {
           }
         })
         .then(res => {
-          if (res && res.data && res.data.follow) {
-            this.$emit('update')
-            this.$nextTick(() => {
-              this.disabled = true
-            })
-          }
+          this.$emit('update', !this.isFollowed)
         })
-        .finally(() => {
+        .catch(() => {
           this.loading = false
         })
     }

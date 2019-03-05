@@ -17,6 +17,11 @@
     "moreInfo": "What is Human Connection?",
     "hello": "Hello"
   },
+  "followButton": {
+    "follow": "Follow",
+    "following": "Following",
+    "unfollow": "Unfollow"
+  },
   "profile": {
     "name": "My Profile",
     "memberSince": "Member since",
