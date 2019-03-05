@@ -201,52 +201,22 @@ describe('DeletePost', () => {
   })
 })
 
-describe('AddPostDisabledBy', () => {
-  const mutation = `
-    mutation {
-      AddPostDisabledBy(from: { id: "u8" }, to: { id: "p9" }) {
-        from {
-          id
-        }
-        to {
-          id
-        }
-      }
+
+
+
+describe('disabledBy relation', () => {
+  const setup = async (params = {}) => {
+    let headers = {}
+    const { email, password } = params
+    if (email && password) {
+      await factory.create('User', params)
+      headers = await login({email, password})
     }
-  `
-  it('throws authorization error', async () => {
-    client = new GraphQLClient(host)
-    await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
-  })
+    client = new GraphQLClient(host, { headers })
+  }
 
-  describe('authenticated', () => {
-    let headers
-    beforeEach(async () => {
-      await factory.create('User', {
-        email: 'someUser@example.org',
-        password: '1234'
-      })
-      headers = await login({ email: 'someUser@example.org', password: '1234' })
-      client = new GraphQLClient(host, { headers })
-    })
-
-    it('throws authorization error', async () => {
-      await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
-    })
-
-    describe('as moderator', () => {
-      it.todo('throws authorization error')
-
-      describe('current user matches provided user', () => {
-        it.todo('sets current user')
-        it.todo('updates .disabled on post')
-      })
-    })
-  })
-})
-
-describe('RemovePostDisabledBy', () => {
-  const mutation = `
+  describe('AddPostDisabledBy', () => {
+    const mutation = `
     mutation {
       AddPostDisabledBy(from: { id: "u8" }, to: { id: "p9" }) {
         from {
@@ -259,32 +229,98 @@ describe('RemovePostDisabledBy', () => {
     }
   `
 
-  it('throws authorization error', async () => {
-    client = new GraphQLClient(host)
-    await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
-  })
-
-  describe('authenticated', () => {
-    let headers
-    beforeEach(async () => {
-      await factory.create('User', {
-        email: 'someUser@example.org',
-        password: '1234'
-      })
-      headers = await login({ email: 'someUser@example.org', password: '1234' })
-      client = new GraphQLClient(host, { headers })
-    })
-
     it('throws authorization error', async () => {
+      await setup()
       await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
     })
 
-    describe('as moderator', () => {
-      it.todo('throws authorization error')
+    describe('authenticated', () => {
+      it('throws authorization error', async () => {
+        await setup({
+          email: 'someUser@example.org',
+          password: '1234'
+        })
+        await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+      })
 
-      describe('current user matches provided user', () => {
-        it.todo('sets current user')
-        it.todo('updates .disabled on post')
+      describe('as moderator', () => {
+        it('throws authorization error', async () => {
+          await setup({
+            email: 'attributedUserMismatch@example.org',
+            password: '1234',
+            role: 'moderator'
+          })
+          await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+        })
+
+        describe('current user matches provided user', () => {
+          beforeEach(async () => {
+            await setup({
+              id: 'u7',
+              email: 'moderator@example.org',
+              password: '1234',
+              role: 'moderator'
+            })
+          })
+
+          it.todo('sets current user')
+          it.todo('updates .disabled on post')
+        })
+      })
+    })
+  })
+
+  describe('RemovePostDisabledBy', () => {
+    const mutation = `
+      mutation {
+        AddPostDisabledBy(from: { id: "u8" }, to: { id: "p9" }) {
+          from {
+            id
+          }
+          to {
+            id
+          }
+        }
+      }
+    `
+
+    it('throws authorization error', async () => {
+      await setup()
+      await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+    })
+
+    describe('authenticated', () => {
+      it('throws authorization error', async () => {
+        await setup({
+          email: 'someUser@example.org',
+          password: '1234'
+        })
+        await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+      })
+
+      describe('as moderator', () => {
+        it('throws authorization error', async () => {
+          await setup({
+            role: 'moderator',
+            email: 'someUser@example.org',
+            password: '1234'
+          })
+          await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+        })
+
+        describe('current user matches provided user', () => {
+          beforeEach(async () => {
+            await setup({
+              id: 'u7',
+              role: 'moderator',
+              email: 'someUser@example.org',
+              password: '1234'
+            })
+          })
+
+          it.todo('sets current user')
+          it.todo('updates .disabled on post')
+        })
       })
     })
   })
