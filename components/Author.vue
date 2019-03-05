@@ -141,21 +141,12 @@ export default {
     trunc: { type: Number, default: null },
     showAuthorPopover: { type: Boolean, default: true }
   },
-  data() {
-    return {
-      voted: false
-    }
-  },
   computed: {
     itsMe() {
       return this.author.slug === this.$store.getters['auth/user'].slug
     },
     fanCount() {
       let count = Number(this.author.followedByCount) || 0
-      if (this.voted) {
-        // NOTE: this is used for presentation
-        count += 1
-      }
       return count
     },
     author() {
