@@ -79,7 +79,7 @@ export default {
         })
         .then(res => {
           if (res && res.data) {
-            this.$emit('update')
+            this.$emit('update', shout)
           }
         })
         .catch(() => {

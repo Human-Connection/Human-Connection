@@ -64,6 +64,9 @@ export default {
       const mutation = follow ? 'follow' : 'unfollow'
 
       this.hovered = false
+
+      this.$emit('optimistic', follow)
+
       this.$apollo
         .mutate({
           mutation: gql`
@@ -78,7 +81,12 @@ export default {
         .then(res => {
           if (res && res.data) {
             this.$emit('update', follow)
+          } else {
+            this.$emit('optimistic', this.isFollowed)
           }
+        })
+        .catch(() => {
+          this.$emit('optimistic', this.isFollowed)
         })
     }
   }

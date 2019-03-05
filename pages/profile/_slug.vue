@@ -87,7 +87,8 @@
               v-if="!myProfile"
               :follow-id="user.id"
               :is-followed="user.followedByCurrentUser"
-              @update="voted = true && fetchUser()"
+              @optimistic="follow => user.followedByCurrentUser = follow"
+              @update="follow => fetchUser()"
             />
           </ds-space>
           <template v-if="user.about">
@@ -336,10 +337,6 @@ export default {
     },
     followedByCount() {
       let count = Number(this.user.followedByCount) || 0
-      if (this.voted) {
-        // NOTE: this is used for presentation
-        count += 1
-      }
       return count
     },
     user() {
