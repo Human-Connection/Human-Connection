@@ -201,13 +201,10 @@ describe('DeletePost', () => {
   })
 })
 
-
-
-
 describe('AddPostDisabledBy', () => {
   const setup = async (params = {}) => {
-    await factory.create('User', {email: 'author@example.org', password: '1234'})
-    await factory.authenticateAs({email: 'author@example.org', password: '1234'})
+    await factory.create('User', { email: 'author@example.org', password: '1234' })
+    await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
     await factory.create('Post', {
       id: 'p9' // that's the ID we will look for
     })
@@ -215,8 +212,8 @@ describe('AddPostDisabledBy', () => {
     let headers = {}
     const { email, password } = params
     if (email && password) {
-      const user = await factory.create('User', params)
-      headers = await login({email, password})
+      await factory.create('User', params)
+      headers = await login({ email, password })
     }
     client = new GraphQLClient(host, { headers })
   }
@@ -280,7 +277,7 @@ describe('AddPostDisabledBy', () => {
 
         it('sets current user', async () => {
           await client.request(mutation)
-          const query = `{ Post(disabled: true) { id,  disabledBy { id } } }`
+          const query = '{ Post(disabled: true) { id,  disabledBy { id } } }'
           const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
           await expect(client.request(query)).resolves.toEqual(expected)
         })
@@ -290,11 +287,11 @@ describe('AddPostDisabledBy', () => {
           const expected = { Post: [ { id: 'p9', disabled: true } ] }
 
           await expect(client.request(
-            `{ Post { id disabled } }`
+            '{ Post { id disabled } }'
           )).resolves.toEqual(before)
           await client.request(mutation) // this updates .disabled
           await expect(client.request(
-            `{ Post(disabled: true) { id disabled } }`
+            '{ Post(disabled: true) { id disabled } }'
           )).resolves.toEqual(expected)
         })
       })
@@ -304,8 +301,8 @@ describe('AddPostDisabledBy', () => {
 
 describe('RemovePostDisabledBy', () => {
   const setup = async (params = {}) => {
-    await factory.create('User', {email: 'anotherModerator@example.org', password: '1234', id: 'u123', role: 'moderator'})
-    await factory.authenticateAs({email: 'anotherModerator@example.org', password: '1234'})
+    await factory.create('User', { email: 'anotherModerator@example.org', password: '1234', id: 'u123', role: 'moderator' })
+    await factory.authenticateAs({ email: 'anotherModerator@example.org', password: '1234' })
     await factory.create('Post', {
       id: 'p9' // that's the ID we will look for
     })
@@ -317,8 +314,8 @@ describe('RemovePostDisabledBy', () => {
     let headers = {}
     const { email, password } = params
     if (email && password) {
-      const user = await factory.create('User', params)
-      headers = await login({email, password})
+      await factory.create('User', params)
+      headers = await login({ email, password })
     }
     client = new GraphQLClient(host, { headers })
   }
@@ -385,11 +382,11 @@ describe('RemovePostDisabledBy', () => {
           const expected = { Post: [ { id: 'p9', disabled: false } ] }
 
           await expect(client.request(
-            `{ Post(disabled: true) { id disabled } }`
+            '{ Post(disabled: true) { id disabled } }'
           )).resolves.toEqual(before)
           await client.request(mutation) // this updates .disabled
           await expect(client.request(
-            `{ Post { id disabled } }`
+            '{ Post { id disabled } }'
           )).resolves.toEqual(expected)
         })
       })

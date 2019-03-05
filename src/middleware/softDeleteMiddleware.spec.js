@@ -19,8 +19,8 @@ beforeEach(async () => {
     factory.create('Post', { title: 'Publicly visible post', deleted: false })
   ])
   const moderatorFactory = Factory()
-  await moderatorFactory.authenticateAs({ email: 'moderator@example.org', password: '1234'})
-  await moderatorFactory.relate('Post', 'DisabledBy', { from: 'm1', to: 'p2'})
+  await moderatorFactory.authenticateAs({ email: 'moderator@example.org', password: '1234' })
+  await moderatorFactory.relate('Post', 'DisabledBy', { from: 'm1', to: 'p2' })
 })
 
 afterEach(async () => {

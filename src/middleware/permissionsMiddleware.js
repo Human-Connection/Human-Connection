@@ -64,7 +64,7 @@ const permissions = shield({
     DeleteBadge: isAdmin,
 
     AddPostDisabledBy: and(isModerator, fromUserMatchesCurrentUser),
-    RemovePostDisabledBy: and(isModerator, fromUserMatchesCurrentUser),
+    RemovePostDisabledBy: and(isModerator, fromUserMatchesCurrentUser)
     // addFruitToBasket: isAuthenticated
     // CreateUser: allow,
   },
