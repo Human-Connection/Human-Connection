@@ -7,6 +7,8 @@ type Mutation {
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
+  disable(resource: Resource!): Boolean!
+  enable(resource: Resource!): Boolean!
 }
 
 type Statistics {
@@ -133,7 +135,7 @@ type Post {
   visibility: VisibilityEnum
   deleted: Boolean
   disabled: Boolean
-  disabledBy: User! @relation(name: "DISABLED", direction: "IN")
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
   createdAt: String
   updatedAt: String
 
