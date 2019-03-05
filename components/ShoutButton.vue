@@ -44,23 +44,21 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($myId: ID!, $postId: ID!) {
-              AddUserShouted(from: { id: $myId }, to: { id: $postId }) {
-                from {
-                  id
-                }
-              }
+            mutation($id: ID!) {
+              shout(id: $id, type: Post)
             }
           `,
           variables: {
-            myId: this.$store.getters['auth/user'].id,
-            postId: this.postId
+            id: this.postId
           }
         })
-        .then(() => {
+        .then(res => {
+          console.log(res)
           this.loading = false
           this.disabled = true
-          this.shoutedCount++
+          if (res && res.data && res.data.shout) {
+            this.shoutedCount++
+          }
           this.$emit('update')
         })
     }
