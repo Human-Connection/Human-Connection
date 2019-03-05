@@ -22,6 +22,9 @@
     "following": "Following",
     "unfollow": "Unfollow"
   },
+  "shoutButton": {
+    "shouted": "shouted"
+  },
   "profile": {
     "name": "My Profile",
     "memberSince": "Member since",

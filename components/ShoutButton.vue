@@ -13,13 +13,16 @@
       @click="toggle"
     />
     <ds-space margin-bottom="xx-small" />
-    <ds-text color="soft">
+    <ds-text
+      color="soft"
+      class="shout-button-text"
+    >
       <ds-heading
         style="display: inline"
         tag="h3"
       >
         {{ shoutedCount }}x
-      </ds-heading> Empfohlen
+      </ds-heading> {{ $t('shoutButton.shouted') }}
     </ds-text>
   </ds-space>
 </template>
@@ -79,3 +82,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.shout-button-text {
+  user-select: none;
+}
+</style>
