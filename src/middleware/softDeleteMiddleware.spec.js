@@ -10,14 +10,17 @@ let action
 beforeEach(async () => {
   await Promise.all([
     factory.create('User', { role: 'user', email: 'user@example.org', password: '1234' }),
-    factory.create('User', { role: 'moderator', email: 'moderator@example.org', password: '1234' })
+    factory.create('User', { id: 'm1', role: 'moderator', email: 'moderator@example.org', password: '1234' })
   ])
   await factory.authenticateAs({ email: 'user@example.org', password: '1234' })
   await Promise.all([
-    factory.create('Post', { title: 'Deleted post', deleted: true, disabled: false }),
-    factory.create('Post', { title: 'Disabled post', deleted: false, disabled: true }),
-    factory.create('Post', { title: 'Publicly visible post', deleted: false, disabled: false })
+    factory.create('Post', { title: 'Deleted post', deleted: true }),
+    factory.create('Post', { id: 'p2', title: 'Disabled post', deleted: false }),
+    factory.create('Post', { title: 'Publicly visible post', deleted: false })
   ])
+  const moderatorFactory = Factory()
+  await moderatorFactory.authenticateAs({ email: 'moderator@example.org', password: '1234'})
+  await moderatorFactory.relate('Post', 'DisabledBy', { from: 'm1', to: 'p2'})
 })
 
 afterEach(async () => {
