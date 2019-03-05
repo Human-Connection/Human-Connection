@@ -13,8 +13,8 @@ type Mutation {
 
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): String! @cypher(statement: """
-    MATCH (n {id: $id}), (u:User {id: $cypherParams.currentUserId})
-    WHERE $type IN labels(n)
+    MATCH (n {id: $id})<-[:WROTE]-(wu:User), (u:User {id: $cypherParams.currentUserId})
+    WHERE $type IN labels(n) AND NOT wu.id = $cypherParams.currentUserId
     MERGE (u)-[r:SHOUTED]->(n)
     RETURN COUNT(r) > 0
   """)
