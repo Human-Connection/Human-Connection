@@ -98,10 +98,15 @@ import Factory from './factories'
       asTick.create('Post',      { id: 'p15' })
     ])
 
-    await asModerator.relate('Post', 'DisabledBy', {
-      from: 'u2',
-      to: 'p15'
-    })
+    const disableMutation = `
+      mutation {
+        disable(resource: {
+          id: "p11"
+          type: contribution
+        })
+      }
+    `
+    await asModerator.mutate(disableMutation)
 
     await Promise.all([
       f.relate('Post', 'Categories', { from: 'p0',  to: 'cat16' }),

@@ -20,7 +20,15 @@ beforeEach(async () => {
   ])
   const moderatorFactory = Factory()
   await moderatorFactory.authenticateAs({ email: 'moderator@example.org', password: '1234' })
-  await moderatorFactory.relate('Post', 'DisabledBy', { from: 'm1', to: 'p2' })
+  const disableMutation = `
+      mutation {
+        disable(resource: {
+          id: "p2"
+          type: contribution
+        })
+      }
+    `
+  await moderatorFactory.mutate(disableMutation)
 })
 
 afterEach(async () => {

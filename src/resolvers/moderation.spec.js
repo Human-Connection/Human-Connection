@@ -65,8 +65,8 @@ describe('disable', () => {
         await expect(client.request(mutation)).resolves.toEqual(expected)
       })
 
-      it('sets current user', async () => {
-        const before =   { Post: [{ id: 'p9', disabledBy: null }] }
+      it('changes .disabledBy', async () => {
+        const before = { Post: [{ id: 'p9', disabledBy: null }] }
         const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
 
         await expect(client.request(
@@ -101,10 +101,15 @@ describe('enable', () => {
     await factory.create('Post', {
       id: 'p9' // that's the ID we will look for
     })
-    await factory.relate('Post', 'DisabledBy', {
-      from: 'u123',
-      to: 'p9'
-    }) // that's we want to delete
+    const disableMutation = `
+      mutation {
+        disable(resource: {
+          id: "p9"
+          type: contribution
+        })
+      }
+    `
+    await factory.mutate(disableMutation) // that's we want to delete
 
     let headers = {}
     const { email, password } = params
@@ -114,7 +119,6 @@ describe('enable', () => {
     }
     client = new GraphQLClient(host, { headers })
   }
-
 
   const mutation = `
     mutation {
@@ -151,6 +155,19 @@ describe('enable', () => {
       it('returns true', async () => {
         const expected = { enable: true }
         await expect(client.request(mutation)).resolves.toEqual(expected)
+      })
+
+      it('changes .disabledBy', async () => {
+        const before = { Post: [{ id: 'p9', disabledBy: { id: 'u123' } }] }
+        const expected = { Post: [{ id: 'p9', disabledBy: null }] }
+
+        await expect(client.request(
+          '{ Post(disabled: true) { id,  disabledBy { id } } }'
+        )).resolves.toEqual(before)
+        await client.request(mutation)
+        await expect(client.request(
+          '{ Post { id,  disabledBy { id } } }'
+        )).resolves.toEqual(expected)
       })
 
       it('updates .disabled on post', async () => {

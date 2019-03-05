@@ -1,4 +1,4 @@
-import { rule, shield, allow, and, or } from 'graphql-shield'
+import { rule, shield, allow, or } from 'graphql-shield'
 
 /*
 * TODO: implement
@@ -41,12 +41,6 @@ const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver
   return authorId === user.id
 })
 
-const fromUserMatchesCurrentUser = rule({ cache: 'no_cache' })(async (parent, args, { user, driver }) => {
-  if (!user) return false
-  const { from: { id: fromId } } = args
-  return user.id === fromId
-})
-
 // Permissions
 const permissions = shield({
   Query: {
@@ -64,7 +58,7 @@ const permissions = shield({
     DeleteBadge: isAdmin,
 
     enable: isModerator,
-    disable: isModerator,
+    disable: isModerator
     // addFruitToBasket: isAuthenticated
     // CreateUser: allow,
   },
