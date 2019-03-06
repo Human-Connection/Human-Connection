@@ -13,7 +13,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countUsers || 0"
+                    :start-val="0"
                     :end-val="statistics.countUsers || 0"
                   />
                 </no-ssr>
@@ -30,7 +30,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countPosts || 0"
+                    :start-val="0"
                     :end-val="statistics.countPosts || 0"
                   />
                 </no-ssr>
@@ -47,7 +47,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countComments || 0"
+                    :start-val="0"
                     :end-val="statistics.countComments || 0"
                   />
                 </no-ssr>
@@ -64,7 +64,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countNotifications || 0"
+                    :start-val="0"
                     :end-val="statistics.countNotifications || 0"
                   />
                 </no-ssr>
@@ -81,7 +81,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countOrganizations || 0"
+                    :start-val="0"
                     :end-val="statistics.countOrganizations || 0"
                   />
                 </no-ssr>
@@ -98,7 +98,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countProjects || 0"
+                    :start-val="0"
                     :end-val="statistics.countProjects || 0"
                   />
                 </no-ssr>
@@ -115,7 +115,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countInvites || 0"
+                    :start-val="0"
                     :end-val="statistics.countInvites || 0"
                   />
                 </no-ssr>
@@ -132,7 +132,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countFollows || 0"
+                    :start-val="0"
                     :end-val="statistics.countFollows || 0"
                   />
                 </no-ssr>
@@ -149,7 +149,7 @@
               >
                 <no-ssr slot="count">
                   <hc-count-to
-                    :start-val="statisticsBefore.countShouts || 0"
+                    :start-val="0"
                     :end-val="statistics.countShouts || 0"
                   />
                 </no-ssr>
@@ -172,20 +172,12 @@ export default {
   },
   data() {
     return {
-      statistics: {},
-      statisticsBefore: {}
+      statistics: {}
     }
   },
   computed: {
     isClient() {
       return process.client
-    }
-  },
-  watch: {
-    statistics(newVal) {
-      setTimeout(() => {
-        this.statisticsBefore = { ...this.statistics }
-      }, 3000)
     }
   },
   mounted() {
