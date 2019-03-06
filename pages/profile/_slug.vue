@@ -61,7 +61,7 @@
           <ds-flex>
             <ds-flex-item>
               <no-ssr>
-                <ds-number :label="$t('profile.following')">
+                <ds-number :label="$t('profile.followers')">
                   <hc-count-to
                     slot="count"
                     :end-val="followedByCount"
@@ -71,7 +71,7 @@
             </ds-flex-item>
             <ds-flex-item>
               <no-ssr>
-                <ds-number :label="$t('profile.followers')">
+                <ds-number :label="$t('profile.following')">
                   <hc-count-to
                     slot="count"
                     :end-val="Number(user.followingCount) || 0"
@@ -88,7 +88,7 @@
               :follow-id="user.id"
               :is-followed="user.followedByCurrentUser"
               @optimistic="follow => user.followedByCurrentUser = follow"
-              @update="follow => user.followedByCurrentUser = follow && fetchUser()"
+              @update="follow => fetchUser()"
             />
           </ds-space>
           <template v-if="user.about">

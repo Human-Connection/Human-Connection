@@ -79,8 +79,8 @@ export default {
           }
         })
         .then(res => {
-          this.$emit('update', follow ? res.data.follow : follow)
-          this.$emit('optimistic', follow ? res.data.follow : follow)
+          // this.$emit('optimistic', follow ? res.data.follow : follow)
+          this.$emit('update', follow)
         })
         .catch(() => {
           this.$emit('optimistic', !follow)
