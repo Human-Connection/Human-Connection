@@ -76,6 +76,7 @@ type User {
   avatar: String
   deleted: Boolean
   disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
   role: UserGroupEnum
 
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
@@ -165,6 +166,7 @@ type Comment {
   updatedAt: String
   deleted: Boolean
   disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
 }
 
 type Report {
