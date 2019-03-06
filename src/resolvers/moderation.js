@@ -17,8 +17,8 @@ export default {
     enable: async (object, params, { user, driver }) => {
       const { resource: { id } } = params
       const cypher = `
-      MATCH (p {id: $id})<-[d:DISABLED]-()
-      SET p.disabled = false
+      MATCH (r {id: $id})<-[d:DISABLED]-()
+      SET r.disabled = false
       DELETE d
       `
       const session = driver.session()

@@ -92,12 +92,10 @@ describe('disable', () => {
           setup.createResource = async () => {
             await factory.create('User', { id: 'u45', email: 'commenter@example.org', password: '1234' })
             await factory.authenticateAs({ email: 'commenter@example.org', password: '1234' })
-            await factory.create('Post', {
-              id: 'p3'
-            })
-            await factory.create('Comment', {
-              id: 'c47'
-            })
+            await Promise.all([
+              factory.create('Post', { id: 'p3' }),
+              factory.create('Comment', { id: 'c47' })
+            ])
             await Promise.all([
               factory.relate('Comment', 'Author', { from: 'u45', to: 'c47' }),
               factory.relate('Comment', 'Post', { from: 'c47', to: 'p3' })
@@ -251,13 +249,10 @@ describe('enable', () => {
           setup.createResource = async () => {
             await factory.create('User', { id: 'u123', email: 'author@example.org', password: '1234' })
             await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
-            await factory.create('Post', {
-              id: 'p9' // that's the ID we will look for
-            })
-
-            await factory.create('Comment', {
-              id: 'c456'
-            })
+            await Promise.all([
+              factory.create('Post', { id: 'p9' }),
+              factory.create('Comment', { id: 'c456' })
+            ])
             await Promise.all([
               factory.relate('Comment', 'Author', { from: 'u123', to: 'c456' }),
               factory.relate('Comment', 'Post', { from: 'c456', to: 'p9' })
