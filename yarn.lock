@@ -894,7 +894,7 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@human-connection/styleguide@~0.5.2":
+"@human-connection/styleguide@~0.5.5":
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.5.tgz#17866c78f34ea12c6eb0831e22f4b655a4f222bf"
   integrity sha512-QwD8Y2ds1tQbqTpA7sm0J1RUrB7071clcZmKaKHV9BMTrGR4IJhoYWIjOjNWakkM3u9bNm4SY9S/RTKupMuX2A==
