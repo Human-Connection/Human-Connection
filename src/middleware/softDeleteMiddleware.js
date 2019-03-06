@@ -19,5 +19,8 @@ export default {
     User: async (resolve, root, args, context, info) => {
       return resolve(root, setDefaults(args), context, info)
     }
+  },
+  Mutation: async (resolve, root, args, context, info) => {
+    return resolve(root, setDefaults(args), context, info)
   }
 }
