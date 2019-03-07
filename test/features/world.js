@@ -5,7 +5,7 @@ const debug = require('debug')('ea:test:world')
 
 class CustomWorld {
   constructor () {
-    // webfinger.feature
+    // webFinger.feature
     this.lastResponses = []
     this.lastContentType = null
     this.lastInboxUrl = null

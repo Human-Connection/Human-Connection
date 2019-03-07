@@ -1,14 +1,14 @@
 import { GraphQLClient, request } from 'graphql-request'
 import { getDriver } from '../../bootstrap/neo4j'
 
-import createBadge        from './badges.js'
-import createUser         from './users.js'
+import createBadge from './badges.js'
+import createUser from './users.js'
 import createOrganization from './organizations.js'
-import createPost         from './posts.js'
-import createComment      from './comments.js'
-import createCategory     from './categories.js'
-import createTag          from './tags.js'
-import createReport       from './reports.js'
+import createPost from './posts.js'
+import createComment from './comments.js'
+import createCategory from './categories.js'
+import createTag from './tags.js'
+import createReport from './reports.js'
 
 export const seedServerHost = 'http://127.0.0.1:4001'
 
@@ -25,14 +25,14 @@ const authenticatedHeaders = async ({ email, password }, host) => {
   }
 }
 const factories = {
-  'Badge':        createBadge,
-  'User':         createUser,
+  'Badge': createBadge,
+  'User': createUser,
   'Organization': createOrganization,
-  'Post':         createPost,
-  'Comment':      createComment,
-  'Category':     createCategory,
-  'Tag':          createTag,
-  'Report':       createReport
+  'Post': createPost,
+  'Comment': createComment,
+  'Category': createCategory,
+  'Tag': createTag,
+  'Report': createReport
 }
 
 export const cleanDatabase = async (options = {}) => {

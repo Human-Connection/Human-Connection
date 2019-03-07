@@ -9,7 +9,7 @@ import {
   createOrderedCollectionPage
 } from './utils/collection'
 import {
-  createArticleActivity,
+  createArticleObject,
   isPublicAddressed
 } from './utils/activity'
 import crypto from 'crypto'
@@ -221,6 +221,7 @@ export default class NitroDataSource {
       query: gql`
           query {
               User(slug:"${slug}") {
+                  actorId
                   contributions {
                       id
                       title
@@ -242,8 +243,8 @@ export default class NitroDataSource {
       const outboxCollection = createOrderedCollectionPage(slug, 'outbox')
       outboxCollection.totalItems = posts.length
       await Promise.all(
-        posts.map((post) => {
-          outboxCollection.orderedItems.push(createArticleActivity(post.content, slug, post.id, post.createdAt))
+        posts.map(async (post) => {
+          outboxCollection.orderedItems.push(await createArticleObject(post.activityId, post.objectId, post.content, extractNameFromId(post.id), post.id, post.createdAt))
         })
       )
 
@@ -335,11 +336,10 @@ export default class NitroDataSource {
     }
     const title = postObject.summary ? postObject.summary : postObject.content.split(' ').slice(0, 5).join(' ')
     const postId = extractIdFromActivityId(postObject.id)
-    const activityId = extractIdFromActivityId(activity.id)
     let result = await this.client.mutate({
       mutation: gql`
           mutation {
-              CreatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120)}", title: "${title}", id: "${postId}", activityId: "${activityId}") {
+              CreatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120)}", title: "${title}", id: "${postId}", objectId: "${postObject.id}", activityId: "${activity.id}") {
                   id
               }
           }

@@ -1,10 +1,12 @@
-import crypto from 'crypto'
 import { activityPub } from '../ActivityPub'
+import { signAndSend, throwErrorIfApolloErrorOccurred } from './index'
+
+import crypto from 'crypto'
 import as from 'activitystrea.ms'
-import { signAndSend } from './index'
+import gql from 'graphql-tag'
 const debug = require('debug')('ea:utils:activity')
 
-export function createNoteActivity (text, name, id, published) {
+export function createNoteObject (text, name, id, published) {
   const createUuid = crypto.randomBytes(16).toString('hex')
 
   return {
@@ -23,22 +25,40 @@ export function createNoteActivity (text, name, id, published) {
   }
 }
 
-export function createArticleActivity (text, name, id, published) {
-  const createUuid = crypto.randomBytes(16).toString('hex')
+export async function createArticleObject (activityId, objectId, text, name, id, published) {
+  const actorId = await getActorId(name)
 
   return {
     '@context': 'https://www.w3.org/ns/activitystreams',
-    'id': `https://${activityPub.domain}/activitypub/users/${name}/status/${createUuid}`,
+    'id': `${activityId}`,
     'type': 'Create',
-    'actor': `https://${activityPub.domain}/activitypub/users/${name}`,
+    'actor': `${actorId}`,
     'object': {
-      'id': `https://${activityPub.domain}/activitypub/users/${name}/status/${id}`,
+      'id': `${objectId}`,
       'type': 'Article',
       'published': published,
-      'attributedTo': `https://${activityPub.domain}/activitypub/users/${name}`,
+      'attributedTo': `${actorId}`,
       'content': text,
       'to': 'https://www.w3.org/ns/activitystreams#Public'
     }
+  }
+}
+
+export async function getActorId (name) {
+  const result = await activityPub.dataSource.client.query({
+    query: gql`
+        query {
+            User(slug: "${name}") {
+                actorId
+            }
+        }
+    `
+  })
+  throwErrorIfApolloErrorOccurred(result)
+  if (Array.isArray(result.data.User) && result.data.User[0]) {
+    return result.data.User[0].actorId
+  } else {
+    throw Error(`No user with name: ${name}`)
   }
 }
 

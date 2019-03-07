@@ -12,6 +12,7 @@ import { getDriver } from './bootstrap/neo4j'
 import passport from 'passport'
 import jwtStrategy from './jwt/strategy'
 import jwt from 'jsonwebtoken'
+import helmet from 'helmet'
 
 dotenv.config()
 // check env and warn
@@ -66,6 +67,7 @@ const createServer = (options) => {
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 
   passport.use('jwt', jwtStrategy(driver))
+  server.express.use(helmet())
   server.express.use(passport.initialize())
   server.express.use(express.static('public'))
 

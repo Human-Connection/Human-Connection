@@ -6,6 +6,8 @@ import uuid from 'uuid/v4'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
 import { AuthenticationError } from 'apollo-server'
 import { neo4jgraphql } from 'neo4j-graphql-js'
+import { activityPub } from './activitypub/ActivityPub'
+import as from 'activitystrea.ms'
 /*
 import as from 'activitystrea.ms'
 import request from 'request'
@@ -174,14 +176,15 @@ export const resolvers = {
       debug(`user = ${JSON.stringify(ctx.user, null, 2)}`)
       const session = ctx.driver.session()
       const author = await session.run(
-        'MATCH (author:User {id: $userId}), (post:Post {id: $postId}) ' +
+        'MATCH (author:User {slug: $slug}), (post:Post {id: $postId}) ' +
         'MERGE (post)<-[:WROTE]-(author) ' +
         'RETURN author', {
-          userId: ctx.user.id,
+          slug: ctx.user.slug,
           postId: result.id
         })
-      debug(`author = ${JSON.stringify(author, null, 2)}`)
-      /* if (Array.isArray(author.records) && author.records.length > 0) {
+      // debug(`result = ${JSON.stringify(author, null, 2)}`)
+      debug(`actorId = ${author.records[0]._fields[0].properties.actorId}`)
+      if (Array.isArray(author.records) && author.records.length > 0) {
         const actorId = author.records[0]._fields[0].properties.actorId
         const createActivity = await new Promise((resolve, reject) => {
           as.create()
@@ -195,36 +198,22 @@ export const resolvers = {
                 .publishedNow()
                 .attributedTo(`${actorId}`)
             ).prettyWrite((err, doc) => {
-            if (err) {
-              reject(err)
-            } else {
-              debug(doc)
-              const parsedDoc = JSON.parse(doc)
-              parsedDoc.send = true
-              resolve(JSON.stringify(parsedDoc))
-            }
-          })
+              if (err) {
+                reject(err)
+              } else {
+                debug(doc)
+                const parsedDoc = JSON.parse(doc)
+                parsedDoc.send = true
+                resolve(JSON.stringify(parsedDoc))
+              }
+            })
         })
-        session.close()
-        // try sending post via ActivityPub
-        await new Promise((resolve) => {
-          const url = new URL(actorId)
-          request(`${url.origin}/activitypub/inbox`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/activity+json'
-            },
-            body: createActivity
-          }, (err) => {
-            if (err) {
-              debug(`error = ${JSON.stringify(err, null, 2)}`)
-              resolve(err)
-            }
-            resolve(null)
-          })
-        })
-        return result
-      } */
+        try {
+          await activityPub.sendActivity(createActivity)
+        } catch (e) {
+          debug(`error sending post activity = ${JSON.stringify(e, null, 2)}`)
+        }
+      }
     }
   }
 }

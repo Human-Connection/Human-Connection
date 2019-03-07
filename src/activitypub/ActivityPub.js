@@ -8,19 +8,14 @@ import {
   sendAcceptActivity,
   sendRejectActivity
 } from './utils/activity'
-import cluster from 'cluster'
-import os from 'os'
 import request from 'request'
 import as from 'activitystrea.ms'
 import NitroDataSource from './NitroDataSource'
 import router from './routes'
 import dotenv from 'dotenv'
-import express from 'express'
-import http from 'http'
 import { resolve } from 'path'
 import Collections from './Collections'
 const debug = require('debug')('ea')
-const numCPUs = os.cpus().length
 
 let activityPub = null
 
@@ -39,30 +34,10 @@ export default class ActivityPub {
       const port = process.env.ACTIVITYPUB_PORT
       activityPub = new ActivityPub(process.env.ACTIVITYPUB_DOMAIN || 'localhost', port || 4100)
 
-      if (server) {
-        // integrated into "server" express framework
-        server.express.set('ap', activityPub)
-        server.express.use(router)
-        debug('ActivityPub middleware added to the express service')
-      } else {
-        // standalone clustered ActivityPub service
-        if (cluster.isMaster) {
-          debug(`master with pid = ${process.pid} is running`)
-          for (let i = 0; i < numCPUs; i++) {
-            cluster.fork()
-          }
-          cluster.on('exit', (worker, code, signal) => {
-            debug(`worker ${worker.process.pid} died with code ${code} and signal ${signal}`)
-          })
-        } else {
-          const app = express()
-          app.set('ap', activityPub)
-          app.use(router)
-          http.createServer(app).listen(port, () => {
-            debug(`ActivityPub express service listening on port ${port}`)
-          })
-        }
-      }
+      // integrated into "server" express framework
+      server.express.set('ap', activityPub)
+      server.express.use(router)
+      debug('ActivityPub middleware added to the express service')
     } else {
       debug('ActivityPub middleware already added to the express service')
     }
