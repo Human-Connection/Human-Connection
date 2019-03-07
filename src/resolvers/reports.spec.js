@@ -5,8 +5,12 @@ import { host, login } from '../jest/helpers'
 const factory = Factory()
 
 describe('report', () => {
+  let mutation
+  let headers
   beforeEach(async () => {
+    headers = {}
     await factory.create('User', {
+      id: 'u1',
       email: 'test@example.org',
       password: '1234'
     })
@@ -16,23 +20,18 @@ describe('report', () => {
       role: 'user',
       email: 'abusive-user@example.org'
     })
+    mutation = `
+      mutation {
+        report(
+          id: "u2",
+          description: "I don't like this user"
+        ) { description }
+      }
+  `
   })
 
   afterEach(async () => {
     await factory.cleanDatabase()
-  })
-
-  const mutation = `
-    mutation {
-      report(
-        id: "u2",
-        description: "I don't like this user"
-      ) { description }
-    }
-  `
-  let headers
-  beforeEach(async () => {
-    headers = {}
   })
 
   let client
@@ -54,6 +53,52 @@ describe('report', () => {
       it('creates a report', async () => {
         await expect(action()).resolves.toEqual({
           report: { description: 'I don\'t like this user' }
+        })
+      })
+
+      it('returns the reporter', async () => {
+        mutation = `
+          mutation {
+            report(
+              id: "u2",
+              description: "I don't like this user"
+            ) { reporter {
+                email
+            } }
+          }
+        `
+        await expect(action()).resolves.toEqual({
+          report: { reporter: { email: 'test@example.org' } }
+        })
+      })
+
+      it('returns type', async () => {
+        mutation = `
+          mutation {
+            report(
+              id: "u2",
+              description: "I don't like this user"
+            ) { type }
+          }
+        `
+        await expect(action()).resolves.toEqual({
+          report: { type: 'User' }
+        })
+      })
+
+      it('returns user', async () => {
+        mutation = `
+          mutation {
+            report(
+              id: "u2",
+              description: "I don't like this user"
+            ) { user {
+                name
+            } }
+          }
+        `
+        await expect(action()).resolves.toEqual({
+          report: { user: { name: 'abusive-user' } }
         })
       })
     })
