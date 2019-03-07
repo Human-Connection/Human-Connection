@@ -64,7 +64,7 @@ export const actions = {
           }
         `),
         variables: {
-          filter: value
+          filter: value.replace(/\s/g, '~ ') + '~'
         }
       })
       .then(res => {
