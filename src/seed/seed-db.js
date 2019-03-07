@@ -173,9 +173,9 @@ import Factory from './factories'
     ])
 
     await Promise.all([
-      asTick.create('Report',  { description: 'I don\'t like this comment', resource: { id: 'c1', type: 'comment' } }),
-      asTrick.create('Report', { description: 'I don\'t like this post',    resource: { id: 'p1', type: 'contribution' } }),
-      asTrack.create('Report', { description: 'I don\'t like this user',    resource: { id: 'u1', type: 'user' } })
+      asTick.create('Report',  { description: 'I don\'t like this comment', id: 'c1' }),
+      asTrick.create('Report', { description: 'I don\'t like this post',    id: 'p1' }),
+      asTrack.create('Report', { description: 'I don\'t like this user',    id: 'u1' })
     ])
 
     await Promise.all([
