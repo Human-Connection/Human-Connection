@@ -98,14 +98,7 @@ import Factory from './factories'
       asTick.create('Post',      { id: 'p15' })
     ])
 
-    const disableMutation = `
-      mutation {
-        disable(resource: {
-          id: "p11"
-          type: contribution
-        })
-      }
-    `
+    const disableMutation = 'mutation { disable( id: "p11") }'
     await asModerator.mutate(disableMutation)
 
     await Promise.all([

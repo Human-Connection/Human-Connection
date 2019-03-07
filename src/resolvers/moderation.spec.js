@@ -36,8 +36,8 @@ afterEach(async () => {
 
 describe('disable', () => {
   const mutation = `
-    mutation($id: ID!, $type: ResourceEnum!) {
-      disable(resource: { id: $id, type: $type }) { id type }
+    mutation($id: ID!) {
+      disable(id: $id)
     }
   `
   let variables
@@ -45,8 +45,7 @@ describe('disable', () => {
   beforeEach(() => {
     // our defaul set of variables
     variables = {
-      id: 'blabla',
-      type: 'contribution'
+      id: 'blabla'
     }
   })
 
@@ -85,8 +84,7 @@ describe('disable', () => {
       describe('on a comment', () => {
         beforeEach(async () => {
           variables = {
-            id: 'c47',
-            type: 'comment'
+            id: 'c47'
           }
 
           setup.createResource = async () => {
@@ -103,8 +101,8 @@ describe('disable', () => {
           }
         })
 
-        it('returns disabled Resource', async () => {
-          const expected = { disable: { id: 'c47', type: 'comment' } }
+        it('returns disabled resource id', async () => {
+          const expected = { disable: 'c47' }
           await runSetup()
           await expect(action()).resolves.toEqual(expected)
         })
@@ -141,8 +139,7 @@ describe('disable', () => {
       describe('on a post', () => {
         beforeEach(async () => {
           variables = {
-            id: 'p9',
-            type: 'contribution'
+            id: 'p9'
           }
 
           setup.createResource = async () => {
@@ -154,8 +151,8 @@ describe('disable', () => {
           }
         })
 
-        it('returns disabled Resource', async () => {
-          const expected = { disable: { id: 'p9', type: 'contribution' } }
+        it('returns disabled resource id', async () => {
+          const expected = { disable: 'p9' }
           await runSetup()
           await expect(action()).resolves.toEqual(expected)
         })
@@ -194,8 +191,8 @@ describe('disable', () => {
 
 describe('enable', () => {
   const mutation = `
-    mutation($id: ID!, $type: ResourceEnum!) {
-      enable(resource: { id: $id, type: $type }) { id type }
+    mutation($id: ID!) {
+      enable(id: $id)
     }
   `
   let variables
@@ -207,8 +204,7 @@ describe('enable', () => {
   beforeEach(() => {
     // our defaul set of variables
     variables = {
-      id: 'blabla',
-      type: 'contribution'
+      id: 'blabla'
     }
   })
 
@@ -242,8 +238,7 @@ describe('enable', () => {
       describe('on a comment', () => {
         beforeEach(async () => {
           variables = {
-            id: 'c456',
-            type: 'comment'
+            id: 'c456'
           }
 
           setup.createResource = async () => {
@@ -260,18 +255,15 @@ describe('enable', () => {
 
             const disableMutation = `
               mutation {
-                disable(resource: {
-                  id: "c456"
-                  type: comment
-                })
+                disable(id: "c456")
               }
             `
             await factory.mutate(disableMutation) // that's we want to delete
           }
         })
 
-        it('returns disabled Resource', async () => {
-          const expected = { enable: { id: 'c456', type: 'comment' } }
+        it('returns disabled resource id', async () => {
+          const expected = { enable: 'c456' }
           await runSetup()
           await expect(action()).resolves.toEqual(expected)
         })
@@ -308,8 +300,7 @@ describe('enable', () => {
       describe('on a post', () => {
         beforeEach(async () => {
           variables = {
-            id: 'p9',
-            type: 'contribution'
+            id: 'p9'
           }
 
           setup.createResource = async () => {
@@ -321,18 +312,15 @@ describe('enable', () => {
 
             const disableMutation = `
               mutation {
-                disable(resource: {
-                  id: "p9"
-                  type: contribution
-                })
+                disable(id: "p9")
               }
             `
             await factory.mutate(disableMutation) // that's we want to delete
           }
         })
 
-        it('returns disabled Resource', async () => {
-          const expected = { enable: { id: 'p9', type: 'contribution' } }
+        it('returns disabled resource id', async () => {
+          const expected = { enable: 'p9' }
           await runSetup()
           await expect(action()).resolves.toEqual(expected)
         })
