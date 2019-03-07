@@ -90,24 +90,19 @@ export default {
       this.$store.commit('modal/SET_OPEN', {})
     },
     report() {
-      console.log('')
       this.loading = true
       this.disabled = true
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($id: ID!, $type: ResourceEnum!, $description: String) {
-              report(
-                resource: { id: $id, type: $type }
-                description: $description
-              ) {
+            mutation($id: ID!, $description: String) {
+              report(id: $id, description: $description) {
                 id
               }
             }
           `,
           variables: {
             id: this.data.id,
-            type: this.data.context,
             description: '-'
           }
         })
