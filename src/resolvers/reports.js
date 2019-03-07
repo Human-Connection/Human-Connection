@@ -34,7 +34,7 @@ export default {
           type: r.get('type')
         }
       })
-      if(!dbResponse) return null
+      if (!dbResponse) return null
       const { report, submitter, resource, type } = dbResponse
 
       let response = {
@@ -45,16 +45,16 @@ export default {
         submitter: submitter.properties,
         type
       }
-      switch(type){
-        case "Post":
-          response.post = resource.properties
-          break;
-        case "Comment":
-          response.comment = resource.properties
-          break;
-        case "User":
-          response.user = resource.properties
-          break;
+      switch (type) {
+      case 'Post':
+        response.post = resource.properties
+        break
+      case 'Comment':
+        response.comment = resource.properties
+        break
+      case 'User':
+        response.user = resource.properties
+        break
       }
       return response
     }

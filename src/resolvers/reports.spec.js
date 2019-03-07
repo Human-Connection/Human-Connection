@@ -64,7 +64,7 @@ describe('report', () => {
 
       describe('valid resource id', () => {
         beforeEach(async () => {
-          variables = {id: 'u2'}
+          variables = { id: 'u2' }
         })
 
         it('creates a report', async () => {
@@ -98,8 +98,8 @@ describe('report', () => {
 
         describe('reported resource is a post', () => {
           beforeEach(async () => {
-            await factory.authenticateAs({email: 'test@example.org', password: '1234'})
-            await factory.create('Post', {id: 'p23', title: 'Matt and Robert having a pair-programming' })
+            await factory.authenticateAs({ email: 'test@example.org', password: '1234' })
+            await factory.create('Post', { id: 'p23', title: 'Matt and Robert having a pair-programming' })
             variables = { id: 'p23' }
           })
 
@@ -127,8 +127,8 @@ describe('report', () => {
 
         describe('reported resource is a comment', () => {
           beforeEach(async () => {
-            await factory.authenticateAs({email: 'test@example.org', password: '1234'})
-            await factory.create('Comment', {id: 'c34', content: 'Robert getting tired.' })
+            await factory.authenticateAs({ email: 'test@example.org', password: '1234' })
+            await factory.create('Comment', { id: 'c34', content: 'Robert getting tired.' })
             variables = { id: 'c34' }
           })
 
