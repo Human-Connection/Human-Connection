@@ -12,36 +12,51 @@ export default {
       }
 
       const res = await session.run(`
-        MATCH (author:User {id: $userId})
+        MATCH (submitter:User {id: $userId})
         MATCH (resource {id: $resourceId})
         CREATE (report:Report $reportData)
         MERGE (resource)<-[:REPORTED]-(report)
-        MERGE (report)<-[:REPORTED]-(author)
-        RETURN report, author, resource
+        MERGE (report)<-[:REPORTED]-(submitter)
+        RETURN report, submitter, resource, labels(resource)[0] as type
         `, {
         resourceId: id,
         userId: user.id,
         reportData
       }
       )
-      const [{ report, author, resource }] = res.records.map(r => {
+      session.close()
+
+      const [dbResponse] = res.records.map(r => {
         return {
           report: r.get('report'),
-          author: r.get('author'),
-          resource: r.get('resource')
+          submitter: r.get('submitter'),
+          resource: r.get('resource'),
+          type: r.get('type')
         }
       })
-      session.close()
-      console.log(report)
-      console.log(author)
+      if(!dbResponse) return null
+      const { report, submitter, resource, type } = dbResponse
 
-      // TODO: output Report compatible object
-      return {
+      let response = {
         ...report.properties,
-        reporter: author.properties,
-        user: resource.properties,
-        type: 'blablabla'
+        post: null,
+        comment: null,
+        user: null,
+        submitter: submitter.properties,
+        type
       }
+      switch(type){
+        case "Post":
+          response.post = resource.properties
+          break;
+        case "Comment":
+          response.comment = resource.properties
+          break;
+        case "User":
+          response.user = resource.properties
+          break;
+      }
+      return response
     }
   }
 }

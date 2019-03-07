@@ -7,6 +7,9 @@ const factory = Factory()
 describe('report', () => {
   let mutation
   let headers
+  let returnedObject
+  let variables
+
   beforeEach(async () => {
     headers = {}
     await factory.create('User', {
@@ -20,14 +23,6 @@ describe('report', () => {
       role: 'user',
       email: 'abusive-user@example.org'
     })
-    mutation = `
-      mutation {
-        report(
-          id: "u2",
-          description: "I don't like this user"
-        ) { description }
-      }
-  `
   })
 
   afterEach(async () => {
@@ -36,8 +31,17 @@ describe('report', () => {
 
   let client
   const action = () => {
+    mutation = `
+      mutation($id: ID!) {
+        report(
+          id: $id,
+          description: "Violates code of conduct"
+        ) ${returnedObject || '{ description }'}
+      }
+    `
+    variables = variables || { id: 'whatever' }
     client = new GraphQLClient(host, { headers })
-    return client.request(mutation)
+    return client.request(mutation, variables)
   }
 
   describe('unauthenticated', () => {
@@ -50,55 +54,97 @@ describe('report', () => {
         headers = await login({ email: 'test@example.org', password: '1234' })
       })
 
-      it('creates a report', async () => {
-        await expect(action()).resolves.toEqual({
-          report: { description: 'I don\'t like this user' }
+      describe('invalid resource id', () => {
+        it('returns null', async () => {
+          await expect(action()).resolves.toEqual({
+            report: null
+          })
         })
       })
 
-      it('returns the reporter', async () => {
-        mutation = `
-          mutation {
-            report(
-              id: "u2",
-              description: "I don't like this user"
-            ) { reporter {
-                email
-            } }
-          }
-        `
-        await expect(action()).resolves.toEqual({
-          report: { reporter: { email: 'test@example.org' } }
+      describe('valid resource id', () => {
+        beforeEach(async () => {
+          variables = {id: 'u2'}
         })
-      })
 
-      it('returns type', async () => {
-        mutation = `
-          mutation {
-            report(
-              id: "u2",
-              description: "I don't like this user"
-            ) { type }
-          }
-        `
-        await expect(action()).resolves.toEqual({
-          report: { type: 'User' }
+        it('creates a report', async () => {
+          await expect(action()).resolves.toEqual({
+            report: { description: 'Violates code of conduct' }
+          })
         })
-      })
 
-      it('returns user', async () => {
-        mutation = `
-          mutation {
-            report(
-              id: "u2",
-              description: "I don't like this user"
-            ) { user {
-                name
-            } }
-          }
-        `
-        await expect(action()).resolves.toEqual({
-          report: { user: { name: 'abusive-user' } }
+        it('returns the submitter', async () => {
+          returnedObject = '{ submitter { email } }'
+          await expect(action()).resolves.toEqual({
+            report: { submitter: { email: 'test@example.org' } }
+          })
+        })
+
+        describe('reported resource is a user', () => {
+          it('returns type "User"', async () => {
+            returnedObject = '{ type }'
+            await expect(action()).resolves.toEqual({
+              report: { type: 'User' }
+            })
+          })
+
+          it('returns resource in user attribute', async () => {
+            returnedObject = '{ user { name } }'
+            await expect(action()).resolves.toEqual({
+              report: { user: { name: 'abusive-user' } }
+            })
+          })
+        })
+
+        describe('reported resource is a post', () => {
+          beforeEach(async () => {
+            await factory.authenticateAs({email: 'test@example.org', password: '1234'})
+            await factory.create('Post', {id: 'p23', title: 'Matt and Robert having a pair-programming' })
+            variables = { id: 'p23' }
+          })
+
+          it('returns type "Post"', async () => {
+            returnedObject = '{ type }'
+            await expect(action()).resolves.toEqual({
+              report: { type: 'Post' }
+            })
+          })
+
+          it('returns resource in post attribute', async () => {
+            returnedObject = '{ post { title } }'
+            await expect(action()).resolves.toEqual({
+              report: { post: { title: 'Matt and Robert having a pair-programming' } }
+            })
+          })
+
+          it('returns null in user attribute', async () => {
+            returnedObject = '{ user { name } }'
+            await expect(action()).resolves.toEqual({
+              report: { user: null }
+            })
+          })
+        })
+
+        describe('reported resource is a comment', () => {
+          beforeEach(async () => {
+            await factory.authenticateAs({email: 'test@example.org', password: '1234'})
+            await factory.create('Comment', {id: 'c34', content: 'Robert getting tired.' })
+            variables = { id: 'c34' }
+          })
+
+          it('returns type "Comment"', async () => {
+            returnedObject = '{ type }'
+            await expect(action()).resolves.toEqual({
+              report: { type: 'Comment' }
+            })
+          })
+
+          it('returns resource in comment attribute', async () => {
+            returnedObject = '{ comment { content } }'
+            await expect(action()).resolves.toEqual({
+              report: { comment: { content: 'Robert getting tired.' } }
+            })
+          })
         })
       })
     })
