@@ -7,8 +7,8 @@ type Mutation {
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
-  disable(resource: Resource!): Boolean!
-  enable(resource: Resource!): Boolean!
+  disable(resource: Resource!): ResourcePayload!
+  enable(resource: Resource!): ResourcePayload!
 }
 
 type Statistics {
@@ -28,6 +28,11 @@ scalar Time
 scalar DateTime
 
 input Resource {
+  id: ID!,
+  type: ResourceEnum!
+}
+
+type ResourcePayload {
   id: ID!,
   type: ResourceEnum!
 }

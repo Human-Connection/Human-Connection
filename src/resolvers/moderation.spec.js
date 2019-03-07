@@ -37,7 +37,7 @@ afterEach(async () => {
 describe('disable', () => {
   const mutation = `
     mutation($id: ID!, $type: ResourceEnum!) {
-      disable(resource: { id: $id, type: $type })
+      disable(resource: { id: $id, type: $type }) { id type }
     }
   `
   let variables
@@ -103,8 +103,8 @@ describe('disable', () => {
           }
         })
 
-        it('returns true', async () => {
-          const expected = { disable: true }
+        it('returns disabled Resource', async () => {
+          const expected = { disable: { id: 'c47', type: 'comment' } }
           await runSetup()
           await expect(action()).resolves.toEqual(expected)
         })
@@ -154,8 +154,8 @@ describe('disable', () => {
           }
         })
 
-        it('returns true', async () => {
-          const expected = { disable: true }
+        it('returns disabled Resource', async () => {
+          const expected = { disable: { id: 'p9', type: 'contribution' } }
           await runSetup()
           await expect(action()).resolves.toEqual(expected)
         })
@@ -195,7 +195,7 @@ describe('disable', () => {
 describe('enable', () => {
   const mutation = `
     mutation($id: ID!, $type: ResourceEnum!) {
-      enable(resource: { id: $id, type: $type })
+      enable(resource: { id: $id, type: $type }) { id type }
     }
   `
   let variables
@@ -270,8 +270,8 @@ describe('enable', () => {
           }
         })
 
-        it('returns true', async () => {
-          const expected = { enable: true }
+        it('returns disabled Resource', async () => {
+          const expected = { enable: { id: 'c456', type: 'comment' } }
           await runSetup()
           await expect(action()).resolves.toEqual(expected)
         })
@@ -331,8 +331,8 @@ describe('enable', () => {
           }
         })
 
-        it('returns true', async () => {
-          const expected = { enable: true }
+        it('returns disabled Resource', async () => {
+          const expected = { enable: { id: 'p9', type: 'contribution' } }
           await runSetup()
           await expect(action()).resolves.toEqual(expected)
         })
