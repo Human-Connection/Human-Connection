@@ -38,6 +38,7 @@
 ## Recources
 
 * [Human-Connection.org](https://human-connection.org)
+* [Styleguide](http://styleguide.human-connection.org)
 * [Staging \(comming soon\)](https://staging.nitro.human-connection.org/)
 
 ## Translations
