@@ -152,8 +152,6 @@ When('I press {string}', label => {
 
 Given('we have the following posts in our database:', table => {
   table.hashes().forEach(({ Author, id, title, content }) => {
-    console.log('table', table)
-    console.log('id', id, 'title', title, 'content', content)
     cy.factory()
       .create('User', {
         name: Author,

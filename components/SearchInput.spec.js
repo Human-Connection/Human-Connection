@@ -2,7 +2,7 @@ import { shallowMount, mount } from '@vue/test-utils'
 import SearchInput from './SearchInput.vue'
 import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
-Vue.use(Styleguide) 
+Vue.use(Styleguide)
 
 describe('SearchInput.vue', () => {
   let wrapper
@@ -35,6 +35,6 @@ describe('SearchInput.vue', () => {
     let input = wrapper.find('input#nav-search')
     input.trigger('focus')
     input.setValue('abc')
-    expect(wrapper.vm.searchValue).toBe('abc')
+    expect(wrapper.vm.value).toBe('abc')
   })
 })
