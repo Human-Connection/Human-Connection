@@ -182,9 +182,11 @@ export default {
       quickSearch: 'search/quickSearch'
     }),
     goToPost(item) {
-      this.$router.push({
-        name: 'post-slug',
-        params: { slug: item.slug }
+      this.$nextTick(() => {
+        this.$router.push({
+          name: 'post-slug',
+          params: { slug: item.slug }
+        })
       })
     },
     matcher(url, route) {

@@ -12,6 +12,7 @@ export const state = () => {
 export const mutations = {
   SET_QUICK_RESULTS(state, results) {
     state.quickResults = results || []
+    state.quickPending = false
   },
   SET_QUICK_PENDING(state, pending) {
     state.quickPending = pending
@@ -68,10 +69,11 @@ export const actions = {
       })
       .then(res => {
         commit('SET_QUICK_RESULTS', res.data.findPosts || [])
-        commit('SET_QUICK_PENDING', false)
       })
       .catch(() => {
         commit('SET_QUICK_RESULTS', [])
+      })
+      .finally(() => {
         commit('SET_QUICK_PENDING', false)
       })
     return getters.quickResults

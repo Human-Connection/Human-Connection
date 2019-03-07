@@ -885,10 +885,10 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@human-connection/styleguide@~0.5.5":
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.5.tgz#17866c78f34ea12c6eb0831e22f4b655a4f222bf"
-  integrity sha512-QwD8Y2ds1tQbqTpA7sm0J1RUrB7071clcZmKaKHV9BMTrGR4IJhoYWIjOjNWakkM3u9bNm4SY9S/RTKupMuX2A==
+"@human-connection/styleguide@0.5.10":
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.10.tgz#31ad345a2ff79e4e3a005e38d8ebc100dcc47aa2"
+  integrity sha512-JP65q373ut/qlRA39xWnadO1nsdTY0GSFgV6Q/KNaL4OHMkglKB5KRPgpYenvs+M8+pl9MHREt0XtonLvZAjsQ==
 
 "@nuxt/babel-preset-app@2.4.5":
   version "2.4.5"

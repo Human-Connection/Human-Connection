@@ -32,6 +32,7 @@
           :options="results"
           :auto-reset-search="!searchValue"
           :placeholder="$t('search.placeholder')"
+          :loading="pending"
           @enter="onEnter"
           @focus.capture.native="onFocus"
           @blur.capture.native="onBlur"
@@ -163,16 +164,13 @@ export default {
     },
     onFocus(e) {
       clearTimeout(this.searchProcess)
-      //this.$nextTick(() => {
-      //  this.searchValue = this.lastSearchTerm
-      //})
       this.isOpen = true
     },
     onBlur(e) {
       this.searchValue = this.lastSearchTerm
-      this.$nextTick(() => {
-        this.searchValue = this.lastSearchTerm
-      })
+      // this.$nextTick(() => {
+      //   this.searchValue = this.lastSearchTerm
+      // })
       this.isOpen = false
       clearTimeout(this.searchProcess)
     },
@@ -269,22 +267,12 @@ export default {
 
   .ds-select {
     z-index: $z-index-dropdown + 1;
-    transition: border-bottom 0;
-    background-color: $background-color-soft;
-
-    border-color: darken($background-color-soft, 10%);
-  }
-
-  .ds-select-is-open {
-    .ds-select {
-      border-bottom: 0;
-    }
   }
 
   .ds-select-option-hover {
     .ds-text-size-small,
     .ds-text-size-small-x {
-      color: rgba(#fff, 0.8);
+      color: $text-color-soft;
     }
   }
 
