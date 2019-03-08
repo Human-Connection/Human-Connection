@@ -28,8 +28,9 @@ We want to do more than comments and sharing!
 **Technology Stack**
 - vuejs
 - nuxtjs
-- mongodb
 - feathersjs
+- graphql 
+- neo4j 
 
 ## Code
 
