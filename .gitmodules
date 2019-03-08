@@ -1,9 +1,3 @@
-[submodule "WebApp"]
-	path = WebApp
-	url = https://github.com/Human-Connection/WebApp.git
-[submodule "API"]
-	path = API
-	url = https://github.com/Human-Connection/API.git
 [submodule "Nitro-Web"]
 	path = Nitro-Web
 	url = https://github.com/Human-Connection/Nitro-Web.git
