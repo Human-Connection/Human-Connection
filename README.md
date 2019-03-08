@@ -11,11 +11,7 @@ Human-Connection is beeing build to provide better Communication Tools for every
 We want to do more than comments and sharing!
 
 **Features**
-
---- 
-# BE AWARE: we are currently transitioning to our Nitro version
-> Check out https://docs.human-connection.org/nitro for more information.
---- 
+-
 
 **REPO States**
 
@@ -44,7 +40,7 @@ We want to do more than comments and sharing!
 [Backend](https://github.com/Human-Connection/Nitro-Backend)
 
 ## Documentation
-[Nitro Docs](https://docs.human-connection.org/nitro)
+[Docs](https://docs.human-connection.org/nitro)
 
 ## Developer Discord
 [Discord](https://discord.gg/6ub73U3)
