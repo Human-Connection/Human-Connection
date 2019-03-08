@@ -12,7 +12,6 @@ describe('SearchInput.vue', () => {
   let wrapper
   let mocks
   let propsData
-  let data
 
   beforeEach(() => {
     propsData = {}
