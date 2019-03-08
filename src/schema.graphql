@@ -1,14 +1,49 @@
 type Query {
   isLoggedIn: Boolean!
+  "Get the currently logged in User based on the given JWT Token"
   currentUser: User
+  "Get the latest Network Statistics"
   statistics: Statistics!
 }
 type Mutation {
+  "Get a JWT Token for the given Email and password"
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   report(id: ID!, description: String): Report
   disable(id: ID!): ID!
   enable(id: ID!): ID!
+  report(resource: Resource!, description: String): Report
+  "Shout the given Type and ID"
+  shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
+    MATCH (n {id: $id})<-[:WROTE]-(wu:User), (u:User {id: $cypherParams.currentUserId})
+    WHERE $type IN labels(n) AND NOT wu.id = $cypherParams.currentUserId
+    MERGE (u)-[r:SHOUTED]->(n)
+    RETURN COUNT(r) > 0
+  """)
+  "Unshout the given Type and ID"
+  unshout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
+    MATCH (:User {id: $cypherParams.currentUserId})-[r:SHOUTED]->(n {id: $id})
+    WHERE $type IN labels(n)
+    DELETE r
+    RETURN COUNT(r) > 0
+  """)
+
+  "Follow the given Type and ID"
+  follow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
+    MATCH (n {id: $id}), (u:User {id: $cypherParams.currentUserId})
+    WHERE $type IN labels(n) AND NOT $id = $cypherParams.currentUserId
+    MERGE (u)-[r:FOLLOWS]->(n)
+    RETURN COUNT(r) > 0
+  """)
+  "Unfollow the given Type and ID"
+  unfollow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
+    MATCH (:User {id: $cypherParams.currentUserId})-[r:FOLLOWS]->(n {id: $id})
+    WHERE $type IN labels(n)
+    DELETE r
+    RETURN COUNT(r) > 0
+  """)
+  disable(resource: Resource!): Boolean!
+  enable(resource: Resource!): Boolean!
 }
 
 type Statistics {
@@ -76,13 +111,19 @@ type User {
   updatedAt: String
 
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
-  friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(r)")
+  friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(DISTINCT r)")
 
   following: [User]! @relation(name: "FOLLOWS", direction: "OUT")
-  followingCount: Int! @cypher(statement: "MATCH (this)-[:FOLLOWS]->(r:User) RETURN COUNT(r)")
+  followingCount: Int! @cypher(statement: "MATCH (this)-[:FOLLOWS]->(r:User) RETURN COUNT(DISTINCT r)")
 
   followedBy: [User]! @relation(name: "FOLLOWS", direction: "IN")
-  followedByCount: Int! @cypher(statement: "MATCH (this)<-[:FOLLOWS]-(r:User) RETURN COUNT(r)")
+  followedByCount: Int! @cypher(statement: "MATCH (this)<-[:FOLLOWS]-(r:User) RETURN COUNT(DISTINCT r)")
+
+  "Is the currently logged in user following that user?"
+  followedByCurrentUser: Boolean! @cypher(statement: """
+    MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId})
+    RETURN COUNT(u) >= 1
+  """)
 
   #contributions: [WrittenPost]!
   #contributions2(first: Int = 10, offset: Int = 0): [WrittenPost2]!
@@ -101,7 +142,7 @@ type User {
   commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true RETURN COUNT(r)")
 
   shouted: [Post]! @relation(name: "SHOUTED", direction: "OUT")
-  shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
+  shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
 
   organizationsCreated: [Organization] @relation(name: "CREATED_ORGA", direction: "OUT")
   organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
@@ -142,7 +183,13 @@ type Post {
   commentsCount: Int! @cypher(statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) RETURN COUNT(r)")
 
   shoutedBy: [User]! @relation(name: "SHOUTED", direction: "IN")
-  shoutedCount: Int! @cypher(statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
+  shoutedCount: Int! @cypher(statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
+
+  "Has the currently logged in user shouted that post?"
+  shoutedByCurrentUser: Boolean! @cypher(statement: """
+    MATCH (this)<-[:SHOUTED]-(u:User {id: $cypherParams.currentUserId})
+    RETURN COUNT(u) >= 1
+  """)
 }
 
 type Comment {
@@ -196,6 +243,16 @@ enum BadgeStatusEnum {
   permanent
   temporary
 }
+enum ShoutTypeEnum {
+  Post
+  Organization
+  Project
+}
+enum FollowTypeEnum {
+  User
+  Organization
+  Project
+}
 
 type Organization {
   id: ID!
@@ -217,7 +274,7 @@ type Tag {
   name: String!
   taggedPosts: [Post]! @relation(name: "TAGGED", direction: "IN")
   taggedOrganizations: [Organization]! @relation(name: "TAGGED", direction: "IN")
-  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p) RETURN COUNT(p)")
+  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p) RETURN COUNT(DISTINCT p)")
   taggedCountUnique: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p)<-[:WROTE]-(u:User) RETURN COUNT(DISTINCT u)")
   deleted: Boolean
   disabled: Boolean
