@@ -1,5 +1,6 @@
 import { shallowMount, render, mount, createLocalVue } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
+import ModalTestbed from './ModalTestbed.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
@@ -12,7 +13,7 @@ localVue.use(Styleguide)
 localVue.use(portal)
 
 describe('ReportModal.vue', () => {
-  let wrapper
+  let Wrapper
   let getters
   let store
   let mocks
@@ -29,44 +30,55 @@ describe('ReportModal.vue', () => {
       }
     }
     $apollo = {
-      mutate: jest.fn()
+      mutate: jest.fn().mockResolvedValue(null)
     }
   })
 
   describe('mount', () => {
-    const wrapper = () => {
+    const Wrapper = () => {
       mocks = {
         $t: () => {},
+        $toast: {
+          success: () => {},
+          error: () => {}
+        },
         $apollo
       }
       store = new Vuex.Store({
         getters
       })
-      return mount(ReportModal, { store, mocks, localVue })
+      return mount(ModalTestbed, { store, mocks, localVue })
     }
 
     it('renders', () => {
-      expect(wrapper().is('div')).toBe(true)
+      expect(Wrapper().is('div')).toBe(true)
     })
 
-    describe('when open', () => {
-      beforeEach(() => {
-        getters['modal/open'] = () => 'report'
-      })
+    describe('modal visible', () => {
+      describe('shows a report', () => {
+        beforeEach(() => {
+          getters['modal/open'] = () => 'report'
+        })
 
-      describe('confirm', () => {
-        it('calls a mutation', () => {
-          console.log(wrapper().html())
-          const confirmButton = wrapper().find('.ds-button-danger')
-          confirmButton.trigger('click')
-          expect($apollo.mutate).toHaveBeenCalled()
+        describe('click confirm button', () => {
+          let wrapper
+
+          beforeEach(() => {
+            wrapper = Wrapper()
+            const confirmButton = wrapper.find('.ds-button-danger')
+            confirmButton.trigger('click')
+          })
+
+          it('calls report mutation', () => {
+            expect($apollo.mutate).toHaveBeenCalled()
+          })
         })
       })
     })
   })
 
   describe('shallowMount', () => {
-    const wrapper = () => {
+    const Wrapper = () => {
       mocks = {
         $t: () => {},
         $apollo
@@ -79,7 +91,7 @@ describe('ReportModal.vue', () => {
 
     describe('isOpen', () => {
       it('defaults to false', () => {
-        expect(wrapper().vm.isOpen).toBe(false)
+        expect(Wrapper().vm.isOpen).toBe(false)
       })
     })
   })
