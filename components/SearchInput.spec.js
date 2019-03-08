@@ -1,40 +1,51 @@
-import { shallowMount, mount } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import SearchInput from './SearchInput.vue'
 import Vue from 'vue'
+import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
-Vue.use(Styleguide)
+const localVue = createLocalVue()
+
+localVue.use(Vuex)
+localVue.use(Styleguide)
 
 describe('SearchInput.vue', () => {
   let wrapper
-  const mocks = { $t: () => {} }
+  let mocks
+  let propsData
 
   beforeEach(() => {
-    wrapper = shallowMount(SearchInput, { mocks })
+    propsData = {}
   })
 
-  it('renders', () => {
-    expect(wrapper.is('div')).toBe(true)
-  })
+  describe('mount', () => {
+    const Wrapper = () => {
+      mocks = {
+        $t: () => {}
+      }
+      return mount(SearchInput, { mocks, localVue, propsData })
+    }
 
-  it('has id "nav-search"', () => {
-    expect(wrapper.contains('#nav-search')).toBe(true)
-  })
+    it('renders', () => {
+      expect(Wrapper().is('div')).toBe(true)
+    })
 
-  it('defaults to an empty value', () => {
-    wrapper = mount(SearchInput, { mocks })
-    expect(wrapper.vm.value).toBe('')
-  })
+    it('defaults to an empty value', () => {
+      expect(Wrapper().vm.value).toBe('')
+    })
 
-  it('defaults to id "nav-search"', () => {
-    wrapper = mount(SearchInput, { mocks })
-    expect(wrapper.vm.id).toBe('nav-search')
-  })
+    it('has id "nav-search"', () => {
+      expect(Wrapper().contains('#nav-search')).toBe(true)
+    })
 
-  it('changes searchValue as a user inputs a value', () => {
-    wrapper = mount(SearchInput, { mocks })
-    let input = wrapper.find('input#nav-search')
-    input.trigger('focus')
-    input.setValue('abc')
-    expect(wrapper.vm.value).toBe('abc')
+    it('defaults to id "nav-search"', () => {
+      expect(Wrapper().vm.id).toBe('nav-search')
+    })
+
+    it('changes searchValue as a user inputs a value', () => {
+      const wrapper = Wrapper()
+      let input = wrapper.find('input')
+      input.setValue('abc') 
+      expect(wrapper.vm.searchValue).toBe('abc')
+    })
   })
 })
