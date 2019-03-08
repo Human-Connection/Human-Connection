@@ -1,4 +1,4 @@
-import { rule, shield, allow } from 'graphql-shield'
+import { rule, shield, allow, or } from 'graphql-shield'
 
 /*
 * TODO: implement
@@ -7,31 +7,58 @@ import { rule, shield, allow } from 'graphql-shield'
 const isAuthenticated = rule()(async (parent, args, ctx, info) => {
   return ctx.user !== null
 })
-/*
-const isAdmin = rule()(async (parent, args, ctx, info) => {
-  return ctx.user.role === 'ADMIN'
-})
-const isModerator = rule()(async (parent, args, ctx, info) => {
-  return ctx.user.role === 'MODERATOR'
-})
-*/
 
-const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, ctx, info) => {
-  return ctx.user.id === parent.id
+const isModerator = rule()(async (parent, args, { user }, info) => {
+  return user && (user.role === 'moderator' || user.role === 'admin')
+})
+
+const isAdmin = rule()(async (parent, args, { user }, info) => {
+  return user && (user.role === 'admin')
+})
+
+const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, context, info) => {
+  return context.user.id === parent.id
+})
+
+const onlyEnabledContent = rule({ cache: 'strict' })(async (parent, args, ctx, info) => {
+  const { disabled, deleted } = args
+  return !(disabled || deleted)
+})
+
+const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver }) => {
+  if (!user) return false
+  const session = driver.session()
+  const { id: postId } = args
+  const result = await session.run(`
+  MATCH (post:Post {id: $postId})<-[:WROTE]-(author)
+  RETURN author
+  `, { postId })
+  const [author] = result.records.map((record) => {
+    return record.get('author')
+  })
+  const { properties: { id: authorId } } = author
+  session.close()
+  return authorId === user.id
 })
 
 // Permissions
 const permissions = shield({
   Query: {
-    statistics: allow
-    // fruits: and(isAuthenticated, or(isAdmin, isModerator)),
-    // customers: and(isAuthenticated, isAdmin)
+    statistics: allow,
+    currentUser: allow,
+    Post: or(onlyEnabledContent, isModerator)
   },
   Mutation: {
     CreatePost: isAuthenticated,
-    // TODO UpdatePost: isOwner,
-    // TODO DeletePost: isOwner,
-    report: isAuthenticated
+    UpdatePost: isAuthor,
+    DeletePost: isAuthor,
+    report: isAuthenticated,
+    CreateBadge: isAdmin,
+    UpdateBadge: isAdmin,
+    DeleteBadge: isAdmin,
+
+    enable: isModerator,
+    disable: isModerator
     // addFruitToBasket: isAuthenticated
     // CreateUser: allow,
   },
@@ -39,7 +66,6 @@ const permissions = shield({
     email: isMyOwn,
     password: isMyOwn
   }
-  // Post: isAuthenticated
 })
 
 export default permissions

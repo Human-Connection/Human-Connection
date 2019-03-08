@@ -8,11 +8,7 @@ services:
       - 7687:7687
       - 7474:7474
   backend:
-    ports:
-      - 4001:4001
-      - 4123:4123
     image: humanconnection/nitro-backend:builder
     build:
       context: .
       target: builder
-    command: yarn run test:cypress

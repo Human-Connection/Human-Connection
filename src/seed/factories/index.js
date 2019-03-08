@@ -15,13 +15,11 @@ export const seedServerHost = 'http://127.0.0.1:4001'
 const authenticatedHeaders = async ({ email, password }, host) => {
   const mutation = `
       mutation {
-        login(email:"${email}", password:"${password}"){
-          token
-        }
+        login(email:"${email}", password:"${password}")
       }`
   const response = await request(host, mutation)
   return {
-    authorization: `Bearer ${response.login.token}`
+    authorization: `Bearer ${response.login}`
   }
 }
 const factories = {
@@ -88,6 +86,36 @@ export default function Factory (options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
+    async mutate (mutation, variables) {
+      this.lastResponse = await this.graphQLClient.request(mutation, variables)
+      return this
+    },
+    async shout (properties) {
+      const { id, type } = properties
+      const mutation = `
+        mutation {
+          shout(
+            id: "${id}",
+            type: ${type}
+          )
+        }
+      `
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
+    async follow (properties) {
+      const { id, type } = properties
+      const mutation = `
+        mutation {
+          follow(
+            id: "${id}",
+            type: ${type}
+          )
+        }
+      `
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
     async cleanDatabase () {
       this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
@@ -96,6 +124,7 @@ export default function Factory (options = {}) {
   result.authenticateAs.bind(result)
   result.create.bind(result)
   result.relate.bind(result)
+  result.mutate.bind(result)
   result.cleanDatabase.bind(result)
   return result
 }

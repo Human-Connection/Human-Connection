@@ -4,7 +4,7 @@ import uuid from 'uuid/v4'
 export default function create (params) {
   const {
     id = uuid(),
-    name = faker.comany.companyName(),
+    name = faker.company.companyName(),
     description = faker.company.catchPhrase(),
     disabled = false,
     deleted = false

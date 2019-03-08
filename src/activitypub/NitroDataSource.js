@@ -21,7 +21,7 @@ import fetch from 'node-fetch'
 import { ApolloClient } from 'apollo-client'
 import dotenv from 'dotenv'
 import uuid from 'uuid'
-import generateJwtToken from '../jwt/generateToken'
+import encode from '../jwt/encode'
 import { resolve } from 'path'
 import trunc from 'trunc-html'
 const debug = require('debug')('ea:nitro-datasource')
@@ -41,7 +41,7 @@ export default class NitroDataSource {
     const cache = new InMemoryCache()
     const authLink = setContext((_, { headers }) => {
       // generate the authentication token (maybe from env? Which user?)
-      const token = generateJwtToken({ name: 'ActivityPub', id: uuid() })
+      const token = encode({ name: 'ActivityPub', id: uuid() })
       // return the headers to the context so httpLink can read them
       return {
         headers: {

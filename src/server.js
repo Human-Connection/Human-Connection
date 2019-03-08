@@ -8,11 +8,8 @@ import middleware from './middleware'
 import applyDirectives from './bootstrap/directives'
 import applyScalars from './bootstrap/scalars'
 import { getDriver } from './bootstrap/neo4j'
-
-import passport from 'passport'
-import jwtStrategy from './jwt/strategy'
-import jwt from 'jsonwebtoken'
 import helmet from 'helmet'
+import decode from './jwt/decode'
 
 dotenv.config()
 // check env and warn
@@ -43,20 +40,17 @@ schema = applyScalars(applyDirectives(schema))
 
 const createServer = (options) => {
   const defaults = {
-    context: async (req) => {
-      const payload = {
+    context: async ({ request }) => {
+      const authorizationHeader = request.headers.authorization || ''
+      const user = await decode(driver, authorizationHeader)
+      return {
         driver,
-        user: null,
-        req: req.request
+        user,
+        req: request,
+        cypherParams: {
+          currentUserId: user ? user.id : null
+        }
       }
-      try {
-        const token = payload.req.headers.authorization.replace('Bearer ', '')
-        payload.user = await jwt.verify(token, process.env.JWT_SECRET)
-      } catch (err) {
-        // nothing
-      }
-
-      return payload
     },
     schema: schema,
     debug: debug,
@@ -66,12 +60,8 @@ const createServer = (options) => {
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 
-  passport.use('jwt', jwtStrategy(driver))
   server.express.use(helmet())
-  server.express.use(passport.initialize())
   server.express.use(express.static('public'))
-
-  server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
   return server
 }
 
