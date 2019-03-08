@@ -35,7 +35,7 @@ We want to do more than comments and sharing!
 
   [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Web.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Web) | [Nitro Web](https://github.com/Human-Connection/Nitro-Web)
 
-  [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Embed.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Embed) | [Nitro Embed](https://github.com/Human-Connection/Nitro-Embed)
+  ![Always green](https://camo.githubusercontent.com/14b2ac1fc61cf21f2022ff3ee5ad6feca559ee18/68747470733a2f2f7472617669732d63692e636f6d2f48756d616e2d436f6e6e656374696f6e2f4e6974726f2d5374796c6567756964652e7376673f6272616e63683d6d6173746572) | [Nitro Embed](https://github.com/Human-Connection/Nitro-Embed)
 
   [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Styleguide.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Styleguide) | [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide)
 
