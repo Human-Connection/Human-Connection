@@ -16,13 +16,15 @@ export default {
       const result = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       const session = context.driver.session()
+
       const author = await session.run(
         'MATCH (author:User {id: $userId}), (post:Post {id: $postId}) ' +
         'MERGE (post)<-[:WROTE]-(author) ' +
         'RETURN author', {
           userId: context.user.id,
           postId: result.id
-        })
+        }
+      )
 
       debug(`actorId = ${author.records[0]._fields[0].properties.actorId}`)
       if (Array.isArray(author.records) && author.records.length > 0) {
