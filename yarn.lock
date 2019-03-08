@@ -5171,10 +5171,10 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
   integrity sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
 
-neo4j-driver@^1.7.2, neo4j-driver@~1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.2.tgz#c72a6dfa6bd2106b00a42794dc52a82b227b48e0"
-  integrity sha512-0IvCFYhcP9hb5JveZk33epbReDKpFTn2u5vAa8zzGG344i6yFqZrBo0mtC114ciP9zFjAtfNOP72mRm8+NV0Fg==
+neo4j-driver@^1.7.2, neo4j-driver@~1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.3.tgz#1c1108ab26b7243975f1b20045daf31d8f685207"
+  integrity sha512-UCNOFiQdouq14PvZGTr+psy657BJsBpO6O2cJpP+NprZnEF4APrDzAcydPZSFxE1nfooLNc50vfuZ0q54UyY2Q==
   dependencies:
     babel-runtime "^6.26.0"
     text-encoding "^0.6.4"
