@@ -33,13 +33,13 @@ We want to do more than comments and sharing!
 
   *Project* | *Status*
 
-  *Nitro Backend* | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Backend) |
+  *Nitro Backend* | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Backend)
 
-  *Nitro Web* | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Web.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Web) |
+  *Nitro Web* | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Web.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Web)
 
-  *Nitro Embed* | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Embed.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Embed) |
+  *Nitro Embed* | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Embed.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Embed)
 
-  *Nitro Styleguide* | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Styleguide.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Styleguide) |
+  *Nitro Styleguide* | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Styleguide.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Styleguide)
 
 
 
