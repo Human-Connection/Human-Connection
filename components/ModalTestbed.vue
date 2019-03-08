@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h1> Hello </h1>
-    <portal-target name="modal" />
+    <portal-target
+      id="portal"
+      name="modal"
+    />
     <report-modal />
   </div>
 </template>
