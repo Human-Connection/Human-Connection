@@ -86,6 +86,10 @@ export default function Factory (options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
+    async mutate (mutation, variables) {
+      this.lastResponse = await this.graphQLClient.request(mutation, variables)
+      return this
+    },
     async cleanDatabase () {
       this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
@@ -94,6 +98,7 @@ export default function Factory (options = {}) {
   result.authenticateAs.bind(result)
   result.create.bind(result)
   result.relate.bind(result)
+  result.mutate.bind(result)
   result.cleanDatabase.bind(result)
   return result
 }

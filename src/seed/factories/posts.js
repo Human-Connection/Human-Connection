@@ -14,7 +14,6 @@ export default function (params) {
     ].join('. '),
     image = faker.image.image(),
     visibility = 'public',
-    disabled = false,
     deleted = false
   } = params
 
@@ -26,7 +25,6 @@ export default function (params) {
         content: "${content}",
         image: "${image}",
         visibility: ${visibility},
-        disabled: ${disabled},
         deleted: ${deleted}
       ) { title, content }
     }

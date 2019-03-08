@@ -87,7 +87,7 @@ import Factory from './factories'
       asTrick.create('Post',     { id: 'p4' }),
       asTrack.create('Post',     { id: 'p5' }),
       asAdmin.create('Post',     { id: 'p6' }),
-      asModerator.create('Post', { id: 'p7', disabled: true }),
+      asModerator.create('Post', { id: 'p7' }),
       asUser.create('Post',      { id: 'p8' }),
       asTick.create('Post',      { id: 'p9' }),
       asTrick.create('Post',     { id: 'p10' }),
@@ -97,6 +97,16 @@ import Factory from './factories'
       asUser.create('Post',      { id: 'p14' }),
       asTick.create('Post',      { id: 'p15' })
     ])
+
+    const disableMutation = `
+      mutation {
+        disable(resource: {
+          id: "p11"
+          type: contribution
+        })
+      }
+    `
+    await asModerator.mutate(disableMutation)
 
     await Promise.all([
       f.relate('Post', 'Categories', { from: 'p0',  to: 'cat16' }),

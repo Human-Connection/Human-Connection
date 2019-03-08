@@ -25,10 +25,13 @@ export default function create (params) {
         disabled: ${disabled},
         deleted: ${deleted}
       ) {
+        id
         name
         email
         avatar
         role
+        deleted
+        disabled
       }
     }
   `
