@@ -12,7 +12,6 @@ type Mutation {
   report(id: ID!, description: String): Report
   disable(id: ID!): ID!
   enable(id: ID!): ID!
-  report(resource: Resource!, description: String): Report
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
     MATCH (n {id: $id})<-[:WROTE]-(wu:User), (u:User {id: $cypherParams.currentUserId})
@@ -42,8 +41,6 @@ type Mutation {
     DELETE r
     RETURN COUNT(r) > 0
   """)
-  disable(resource: Resource!): Boolean!
-  enable(resource: Resource!): Boolean!
 }
 
 type Statistics {
