@@ -9451,15 +9451,15 @@ prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0:
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.7.5:
+prosemirror-utils@^0.7.5, prosemirror-utils@^0.7.6:
   version "0.7.6"
   resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.7.6.tgz#c462ddfbf2452e56e4b25d1f02b34caccddb0f33"
   integrity sha512-vzsCBTiJ56R3nRDpIJnKOJzsZP7KFO8BkXk7zvQgQiXpml2o/djPCRhuyaFc7VTqSHlLPQHVI1feTLAwHp+prQ==
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.7.1.tgz#f0ea75faa6d7bd25ea22897dd5bae35708c59a28"
-  integrity sha512-UFY/h4i5H1Yen8u2ZTve0WL+nh/y1qU3geC3SrWl5yIKSgGbvllD5vr5LxmeRgVsY8hb+oDXRHk5KvLwqmu7Lg==
+prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.7.1, prosemirror-view@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.8.3.tgz#f8deff22c7d371f63db2686ac6f3661ded1b3ae3"
+  integrity sha512-CAW3SycaJgfPlWwYcDGiwNaCwcikBLSFAgLF+H+bTn0aCAUzcl2DXQdU9dMvK3HeWG+6Xn/QPQbhyyqCcV3ZBw==
   dependencies:
     prosemirror-model "^1.1.0"
     prosemirror-state "^1.0.0"
@@ -11041,16 +11041,16 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
-tiptap-commands@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.6.0.tgz#567b7b218bd7d1c1214534a2007acbb7b8d06688"
-  integrity sha512-9HO8UYJz1qGyqsHn0+PifmndlRTInqfcb7vjNDvqWQA2P7r8koJqrP8CYMR0DXQHlys1druJnaBaOzLa1d5PQQ==
+tiptap-commands@^1.6.0, tiptap-commands@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.7.0.tgz#d15cec2cb09264b5c1f6f712dab8819bb9ab7e13"
+  integrity sha512-JhgvBPIhGnisEdxD6gmM3U76BUlKF9n1LW1X/dO1AUOsm3Xc9tQB5BIOV/DpZTvrjntLP3AUTfd+yJeRIz5CPA==
   dependencies:
     prosemirror-commands "^1.0.7"
     prosemirror-inputrules "^1.0.1"
     prosemirror-schema-list "^1.0.2"
     prosemirror-state "^1.2.2"
-    tiptap-utils "^1.2.0"
+    tiptap-utils "^1.3.0"
 
 tiptap-extensions@^1.13.0:
   version "1.13.0"
@@ -11066,20 +11066,20 @@ tiptap-extensions@^1.13.0:
     tiptap "^1.13.0"
     tiptap-commands "^1.6.0"
 
-tiptap-utils@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/tiptap-utils/-/tiptap-utils-1.2.0.tgz#e1e566af1212acff6b2e3c4ca6edc21ebf306440"
-  integrity sha512-p8Q0UfNhYHXqMDSwvCc6x0Vm95AYgM/f1V+8oNu9FI0aRWwXpTwIJj+1CAGO1mb6NFUSxn9HcZaUvEcBKR5WzQ==
+tiptap-utils@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/tiptap-utils/-/tiptap-utils-1.3.0.tgz#bfc77cf57c07cd5c1f1d33f65ef94c4190506b77"
+  integrity sha512-b9GRQB3Kilu9Yq6hwjjzQgZtQDXDOrB/vZPV5OzwcKRN5a9PfLGrTLJ5LbU414Vcy9HTXiqX2pq0o5FslJhHpg==
   dependencies:
     prosemirror-model "^1.7.0"
     prosemirror-state "^1.2.2"
     prosemirror-tables "^0.7.9"
-    prosemirror-utils "^0.7.5"
+    prosemirror-utils "^0.7.6"
 
-tiptap@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.13.0.tgz#52b086fc8d4df7534123d31571366dd90ee62a23"
-  integrity sha512-kwzgtOY5PnbSfzMyNPFchI/Cyi1O3kFNiRP7K4p6t0zcNCXy9EaWgaM/U2bKArI0/HxG/GSPM6RTTCCOF3I6EA==
+tiptap@^1.13.0, tiptap@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.14.0.tgz#8dd84b199533e08f0dcc34b39d517ea73e20fb95"
+  integrity sha512-38gCYeJx5O83oTnpfgMGGrjem1ZNDK2waaUMq+bkYPaQwvvtyMDGffvEIT9/jcLvA+WYfaNp8BWnn1rqNpYKxA==
   dependencies:
     prosemirror-commands "^1.0.7"
     prosemirror-dropcursor "^1.1.1"
@@ -11088,9 +11088,9 @@ tiptap@^1.13.0:
     prosemirror-keymap "^1.0.1"
     prosemirror-model "^1.7.0"
     prosemirror-state "^1.2.1"
-    prosemirror-view "^1.7.1"
-    tiptap-commands "^1.6.0"
-    tiptap-utils "^1.2.0"
+    prosemirror-view "^1.8.3"
+    tiptap-commands "^1.7.0"
+    tiptap-utils "^1.3.0"
 
 title-case@^2.1.1:
   version "2.1.1"
