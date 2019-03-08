@@ -94,11 +94,11 @@ export default {
     close() {
       this.$store.commit('modal/SET_OPEN', {})
     },
-    report() {
+    async report() {
       this.loading = true
       this.disabled = true
-      this.$apollo
-        .mutate({
+      try {
+        await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!, $description: String) {
               report(id: $id, description: $description) {
@@ -111,18 +111,15 @@ export default {
             description: '-'
           }
         })
-        .then(() => {
-          this.success = true
-          this.$toast.success('Thanks for reporting!')
-          setTimeout(this.close, 1500)
-        })
-        .catch(err => {
-          this.$toast.error(err.message)
-          this.disabled = false
-        })
-        .finally(() => {
-          this.loading = false
-        })
+        this.success = true
+        this.$toast.success('Thanks for reporting!')
+        setTimeout(this.close, 1500)
+      } catch (err) {
+        this.$toast.error(err.message)
+        this.disabled = false
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
