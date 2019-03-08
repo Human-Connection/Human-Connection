@@ -166,6 +166,26 @@ import Factory from './factories'
       asTrack
         .shout({ id: 'p10', type: 'Post' })
     ])
+    await Promise.all([
+      asAdmin
+        .shout({ id: 'p2', type: 'Post' }),
+      asAdmin
+        .shout({ id: 'p6', type: 'Post' }),
+      asModerator
+        .shout({ id: 'p0', type: 'Post' }),
+      asModerator
+        .shout({ id: 'p6', type: 'Post' }),
+      asUser
+        .shout({ id: 'p6', type: 'Post' }),
+      asUser
+        .shout({ id: 'p7', type: 'Post' }),
+      asTick
+        .shout({ id: 'p8', type: 'Post' }),
+      asTick
+        .shout({ id: 'p9', type: 'Post' }),
+      asTrack
+        .shout({ id: 'p10', type: 'Post' })
+    ])
 
     await Promise.all([
       f.create('Comment', { id: 'c1' }),
