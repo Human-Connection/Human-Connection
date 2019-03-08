@@ -23,6 +23,15 @@ import Factory from './factories'
       f.create('User', { id: 'u7', name: 'Dagobert',           role: 'user',      email: 'dagobert@example.org' })
     ])
 
+    const [ asAdmin, asModerator, asUser, asTick, asTrick, asTrack ] = await Promise.all([
+      Factory().authenticateAs({ email: 'admin@example.org',     password: '1234' }),
+      Factory().authenticateAs({ email: 'moderator@example.org', password: '1234' }),
+      Factory().authenticateAs({ email: 'user@example.org',      password: '1234' }),
+      Factory().authenticateAs({ email: 'tick@example.org',      password: '1234' }),
+      Factory().authenticateAs({ email: 'trick@example.org',     password: '1234' }),
+      Factory().authenticateAs({ email: 'track@example.org',     password: '1234' })
+    ])
+
     await Promise.all([
       f.relate('User', 'Badges',      { from: 'b6', to: 'u1' }),
       f.relate('User', 'Badges',      { from: 'b5', to: 'u2' }),
@@ -30,18 +39,27 @@ import Factory from './factories'
       f.relate('User', 'Badges',      { from: 'b3', to: 'u4' }),
       f.relate('User', 'Badges',      { from: 'b2', to: 'u5' }),
       f.relate('User', 'Badges',      { from: 'b1', to: 'u6' }),
-      f.relate('User', 'Following',   { from: 'u1', to: 'u2' }),
-      f.relate('User', 'Following',   { from: 'u2', to: 'u3' }),
-      f.relate('User', 'Following',   { from: 'u3', to: 'u4' }),
-      f.relate('User', 'Following',   { from: 'u4', to: 'u5' }),
-      f.relate('User', 'Following',   { from: 'u5', to: 'u6' }),
-      f.relate('User', 'Following',   { from: 'u6', to: 'u7' }),
       f.relate('User', 'Friends',     { from: 'u1', to: 'u2' }),
       f.relate('User', 'Friends',     { from: 'u1', to: 'u3' }),
       f.relate('User', 'Friends',     { from: 'u2', to: 'u3' }),
       f.relate('User', 'Blacklisted', { from: 'u7', to: 'u4' }),
       f.relate('User', 'Blacklisted', { from: 'u7', to: 'u5' }),
       f.relate('User', 'Blacklisted', { from: 'u7', to: 'u6' })
+    ])
+
+    await Promise.all([
+      asAdmin
+        .follow({ id: 'u3', type: 'User' }),
+      asModerator
+        .follow({ id: 'u4', type: 'User' }),
+      asUser
+        .follow({ id: 'u4', type: 'User' }),
+      asTick
+        .follow({ id: 'u6', type: 'User' }),
+      asTrick
+        .follow({ id: 'u4', type: 'User' }),
+      asTrack
+        .follow({ id: 'u3', type: 'User' })
     ])
 
     await Promise.all([
@@ -68,15 +86,6 @@ import Factory from './factories'
       f.create('Tag', { id: 't2', name: 'Naturschutz' }),
       f.create('Tag', { id: 't3', name: 'Demokratie' }),
       f.create('Tag', { id: 't4', name: 'Freiheit' })
-    ])
-
-    const [ asAdmin, asModerator, asUser, asTick, asTrick, asTrack ] = await Promise.all([
-      Factory().authenticateAs({ email: 'admin@example.org',     password: '1234' }),
-      Factory().authenticateAs({ email: 'moderator@example.org', password: '1234' }),
-      Factory().authenticateAs({ email: 'user@example.org',      password: '1234' }),
-      Factory().authenticateAs({ email: 'tick@example.org',      password: '1234' }),
-      Factory().authenticateAs({ email: 'trick@example.org',     password: '1234' }),
-      Factory().authenticateAs({ email: 'track@example.org',     password: '1234' })
     ])
 
     await Promise.all([
@@ -150,6 +159,26 @@ import Factory from './factories'
       f.relate('User', 'Shouted', { from: 'u3', to: 'p1' }),
       f.relate('User', 'Shouted', { from: 'u3', to: 'p4' }),
       f.relate('User', 'Shouted', { from: 'u4', to: 'p1' })
+    ])
+    await Promise.all([
+      asAdmin
+        .shout({ id: 'p2', type: 'Post' }),
+      asAdmin
+        .shout({ id: 'p6', type: 'Post' }),
+      asModerator
+        .shout({ id: 'p0', type: 'Post' }),
+      asModerator
+        .shout({ id: 'p6', type: 'Post' }),
+      asUser
+        .shout({ id: 'p6', type: 'Post' }),
+      asUser
+        .shout({ id: 'p7', type: 'Post' }),
+      asTick
+        .shout({ id: 'p8', type: 'Post' }),
+      asTick
+        .shout({ id: 'p9', type: 'Post' }),
+      asTrack
+        .shout({ id: 'p10', type: 'Post' })
     ])
 
     await Promise.all([
