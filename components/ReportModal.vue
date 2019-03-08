@@ -19,7 +19,7 @@
     </transition>
 
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$t(`report.${data.context}.message`, { name: name })" />
+    <p v-html="message" />
 
     <template
       slot="footer"
@@ -67,7 +67,12 @@ export default {
       return this.$store.getters['modal/data'] || {}
     },
     title() {
+      if (!this.data.context) return ''
       return this.$t(`report.${this.data.context}.title`)
+    },
+    message() {
+      if (!this.data.context) return ''
+      return this.$t(`report.${this.data.context}.message`, { name: this.name })
     },
     name() {
       return this.$filters.truncate(this.data.name, 30)

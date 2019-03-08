@@ -128,7 +128,7 @@ Given('somebody reported the following posts:', table => {
       .authenticateAs(submitter)
       .create('Report', {
         id,
-        description: "Offensive content"
+        description: 'Offensive content'
       })
   })
 })
