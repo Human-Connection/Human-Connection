@@ -152,14 +152,7 @@ import Factory from './factories'
       f.relate('Post', 'Tags', { from: 'p14', to: 't2' }),
       f.relate('Post', 'Tags', { from: 'p15', to: 't3' })
     ])
-    await Promise.all([
-      f.relate('User', 'Shouted', { from: 'u1', to: 'p2' }),
-      f.relate('User', 'Shouted', { from: 'u1', to: 'p3' }),
-      f.relate('User', 'Shouted', { from: 'u2', to: 'p1' }),
-      f.relate('User', 'Shouted', { from: 'u3', to: 'p1' }),
-      f.relate('User', 'Shouted', { from: 'u3', to: 'p4' }),
-      f.relate('User', 'Shouted', { from: 'u4', to: 'p1' })
-    ])
+
     await Promise.all([
       asAdmin
         .shout({ id: 'p2', type: 'Post' }),
