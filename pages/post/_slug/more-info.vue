@@ -109,6 +109,7 @@ export default {
                   avatar
                   contributionsCount
                   followedByCount
+                  followedByCurrentUser
                   commentsCount
                   location {
                     name: name${this.$i18n.locale().toUpperCase()}

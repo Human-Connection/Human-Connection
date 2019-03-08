@@ -28,7 +28,9 @@
     <ds-space margin="xx-large" />
     <hc-shout-button
       v-if="post.author"
+      :disabled="isAuthor(post.author.id)"
       :count="post.shoutedCount"
+      :is-shouted="post.shoutedByCurrentUser"
       :post-id="post.id"
     />
     <!-- Categories -->
@@ -188,9 +190,10 @@ export default {
                 contributionsCount
                 commentsCount
                 followedByCount
+                followedByCurrentUser
                 location {
-                    name: name${this.$i18n.locale().toUpperCase()}
-                  }
+                  name: name${this.$i18n.locale().toUpperCase()}
+                }
                 badges {
                   id
                   key
@@ -215,6 +218,7 @@ export default {
                   contributionsCount
                   commentsCount
                   followedByCount
+                  followedByCurrentUser
                   location {
                     name: name${this.$i18n.locale().toUpperCase()}
                   }
@@ -231,6 +235,7 @@ export default {
                 icon
               }
               shoutedCount
+              shoutedByCurrentUser
             }
           }
         `)
