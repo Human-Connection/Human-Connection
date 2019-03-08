@@ -98,7 +98,7 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "reporter": "reported by"
+      "submitter": "reported by"
     }
   },
   "contribution": {

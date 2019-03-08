@@ -13,18 +13,18 @@
         slot="name"
         slot-scope="scope"
       >
-        <div v-if="scope.row.type === 'contribution'">
-          <nuxt-link :to="{ name: 'post-slug', params: { slug: scope.row.contribution.slug } }">
-            <b>{{ scope.row.contribution.title | truncate(50) }}</b>
+        <div v-if="scope.row.type === 'Post'">
+          <nuxt-link :to="{ name: 'post-slug', params: { slug: scope.row.post.slug } }">
+            <b>{{ scope.row.post.title | truncate(50) }}</b>
           </nuxt-link><br>
           <ds-text
             size="small"
             color="soft"
           >
-            {{ scope.row.contribution.author.name }}
+            {{ scope.row.post.author.name }}
           </ds-text>
         </div>
-        <div v-else-if="scope.row.type === 'comment'">
+        <div v-else-if="scope.row.type === 'Comment'">
           <nuxt-link :to="{ name: 'post-slug', params: { slug: scope.row.comment.post.slug } }">
             <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
           </nuxt-link><br>
@@ -49,28 +49,28 @@
           color="soft"
         >
           <ds-icon
-            v-if="scope.row.type === 'contribution'"
-            v-tooltip="{ content: $t(`report.${scope.row.type}.type`), placement: 'right' }"
+            v-if="scope.row.type === 'Post'"
+            v-tooltip="{ content: $t('report.contribution.type'), placement: 'right' }"
             name="bookmark"
           />
           <ds-icon
-            v-else-if="scope.row.type === 'comment'"
-            v-tooltip="{ content: $t(`report.${scope.row.type}.type`), placement: 'right' }"
+            v-else-if="scope.row.type === 'Comment'"
+            v-tooltip="{ content: $t('report.comment.type'), placement: 'right' }"
             name="comments"
           />
           <ds-icon
-            v-else
-            v-tooltip="{ content: $t(`report.${scope.row.type}.type`), placement: 'right' }"
+            v-else-if="scope.row.type === 'User'"
+            v-tooltip="{ content: $t('report.user.type'), placement: 'right' }"
             name="user"
           />
         </ds-text>
       </template>
       <template
-        slot="reporter"
+        slot="submitter"
         slot-scope="scope"
       >
-        <nuxt-link :to="{ name: 'profile-slug', params: { slug: scope.row.reporter.slug } }">
-          {{ scope.row.reporter.name }}
+        <nuxt-link :to="{ name: 'profile-slug', params: { slug: scope.row.submitter.slug } }">
+          {{ scope.row.submitter.name }}
         </nuxt-link>
       </template>
     </ds-table>
@@ -101,7 +101,7 @@ export default {
       return {
         type: ' ',
         name: ' ',
-        reporter: this.$t('moderation.reports.reporter')
+        submitter: this.$t('moderation.reports.submitter')
         // actions: ' '
       }
     }
