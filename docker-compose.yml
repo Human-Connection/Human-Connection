@@ -20,6 +20,7 @@ services:
       - JWT_SECRET=b/&&7b78BF&fv/Vd
       - MOCK=false
       - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
+      - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
 
   neo4j:
     image: humanconnection/neo4j:latest
