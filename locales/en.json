@@ -28,6 +28,13 @@
     "moreInfo": "What is Human Connection?",
     "hello": "Hello"
   },
+  "followButton": {
+    "follow": "Follow",
+    "following": "Following"
+  },
+  "shoutButton": {
+    "shouted": "shouted"
+  },
   "profile": {
     "name": "My Profile",
     "memberSince": "Member since",

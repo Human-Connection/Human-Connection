@@ -32,7 +32,9 @@
       <ds-space margin="xx-large" />
       <hc-shout-button
         v-if="post.author"
+        :disabled="isAuthor(post.author.id)"
         :count="post.shoutedCount"
+        :is-shouted="post.shoutedByCurrentUser"
         :post-id="post.id"
       />
       <!-- Categories -->
@@ -168,69 +170,72 @@ export default {
     } = context
     const client = apolloProvider.defaultClient
     const query = gql(`
-          query Post($slug: String!) {
-            Post(slug: $slug) {
+      query Post($slug: String!) {
+        Post(slug: $slug) {
+          id
+          title
+          content
+          createdAt
+          slug
+          image
+          author {
+            id
+            slug
+            name
+            avatar
+            shoutedCount
+            contributionsCount
+            commentsCount
+            followedByCount
+            followedByCurrentUser
+            location {
+              name: name${$i18n.locale().toUpperCase()}
+            }
+            badges {
               id
-              title
-              content
-              createdAt
-              slug
-              image
-              author {
-                id
-                slug
-                name
-                avatar
-                shoutedCount
-                contributionsCount
-                commentsCount
-                followedByCount
-                location {
-                    name: name${$i18n.locale().toUpperCase()}
-                  }
-                badges {
-                  id
-                  key
-                  icon
-                }
-              }
-              tags {
-                name
-              }
-              commentsCount
-              comments(orderBy: createdAt_desc) {
-                id
-                contentExcerpt
-                createdAt
-                deleted
-                author {
-                  id
-                  slug
-                  name
-                  avatar
-                  shoutedCount
-                  contributionsCount
-                  commentsCount
-                  followedByCount
-                  location {
-                    name: name${$i18n.locale().toUpperCase()}
-                  }
-                  badges {
-                    id
-                    key
-                    icon
-                  }
-                }
-              }
-              categories {
-                id
-                name
-                icon
-              }
-              shoutedCount
+              key
+              icon
             }
           }
-        `)
+          tags {
+            name
+          }
+          commentsCount
+          comments(orderBy: createdAt_desc) {
+            id
+            contentExcerpt
+            createdAt
+            deleted
+            author {
+              id
+              slug
+              name
+              avatar
+              shoutedCount
+              contributionsCount
+              commentsCount
+              followedByCount
+              followedByCurrentUser
+              location {
+                name: name${$i18n.locale().toUpperCase()}
+              }
+              badges {
+                id
+                key
+                icon
+              }
+            }
+          }
+          categories {
+            id
+            name
+            icon
+          }
+          shoutedCount
+          shoutedByCurrentUser
+        }
+      }
+    `)
     const variables = { slug: params.slug }
     const {
       data: { Post }
