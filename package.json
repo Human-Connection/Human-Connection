@@ -9,8 +9,8 @@
   "scripts": {
     "build": "babel src/ -d dist/ --copy-files",
     "start": "node dist/",
-    "dev": "nodemon --exec babel-node src/",
-    "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js",
+    "dev": "nodemon --exec babel-node src/ -e js,graphql",
+    "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js -e js,graphql",
     "lint": "eslint src --config .eslintrc.js",
     "test": "nyc  --reporter=text-lcov yarn run test:jest",
     "test:cypress": "run-p --race test:before:*",
