@@ -11,18 +11,6 @@ Human-Connection is beeing build to provide better Communication Tools for every
 We want to do more than comments and sharing!
 
 **Features**
-- Post Builder/Editor
-- Voting
-- Best of Lists
-- Pro & Contra Discussions
-- Projects
-- Event Management
-- Organizations
-- Chats & Group Chats
-- Knowledge Sharing
-- Let's Talk
-- Versus Challenging
-- Modular UI
 
 --- 
 # BE AWARE: we are currently transitioning to our Nitro version
@@ -54,6 +42,9 @@ We want to do more than comments and sharing!
 
 ### Backend
 [Backend](https://github.com/Human-Connection/Nitro-Backend)
+
+## Documentation
+[Nitro Docs](https://docs.human-connection.org/nitro)
 
 ## Developer Discord
 [Discord](https://discord.gg/6ub73U3)
