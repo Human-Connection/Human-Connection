@@ -29,6 +29,18 @@ We want to do more than comments and sharing!
 > Check out https://docs.human-connection.org/nitro for more information.
 --- 
 
+**REPO States**
+
+  [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Backend) | [Nitro Backend](https://github.com/Human-Connection/Nitro-Backend)
+
+  [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Web.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Web) | [Nitro Web](https://github.com/Human-Connection/Nitro-Web)
+
+  [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Embed.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Embed) | [Nitro Embed](https://github.com/Human-Connection/Nitro-Embed)
+
+  [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Styleguide.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Styleguide) | [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide)
+
+
+
 **Technology Stack**
 - vuejs
 - nuxtjs
@@ -38,10 +50,10 @@ We want to do more than comments and sharing!
 ## Code
 
 ### Frontend
-[Frontend](https://github.com/Human-Connection/WebApp)
+[Frontend](https://github.com/Human-Connection/Nitro-Web)
 
-### API
-[API](https://github.com/Human-Connection/API)
+### Backend
+[Backend](https://github.com/Human-Connection/Nitro-Backend)
 
 ## Developer Discord
 [Discord](https://discord.gg/6ub73U3)
