@@ -19,7 +19,7 @@
     </transition>
 
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="$t(`report.${data.context}.message`, { name: name })" />
+    <p v-html="message" />
 
     <template
       slot="footer"
@@ -51,7 +51,7 @@ import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {
-  name: 'ReportModal',
+  name: 'DisableModal',
   components: {
     SweetalertIcon
   },
@@ -67,7 +67,12 @@ export default {
       return this.$store.getters['modal/data'] || {}
     },
     title() {
+      if (!this.data.context) return ''
       return this.$t(`report.${this.data.context}.title`)
+    },
+    message() {
+      if (!this.data.context) return ''
+      return this.$t(`report.${this.data.context}.message`, { name: this.name })
     },
     name() {
       return this.$filters.truncate(this.data.name, 30)
@@ -90,24 +95,19 @@ export default {
       this.$store.commit('modal/SET_OPEN', {})
     },
     report() {
-      console.log('')
       this.loading = true
       this.disabled = true
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($id: ID!, $type: ResourceEnum!, $description: String) {
-              report(
-                resource: { id: $id, type: $type }
-                description: $description
-              ) {
+            mutation($id: ID!, $description: String) {
+              report(id: $id, description: $description) {
                 id
               }
             }
           `,
           variables: {
             id: this.data.id,
-            type: this.data.context,
             description: '-'
           }
         })
