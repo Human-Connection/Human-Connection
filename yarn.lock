@@ -3687,7 +3687,7 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
   integrity sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=
 
-graphql-auth-directives@^2.0.0:
+graphql-auth-directives@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/graphql-auth-directives/-/graphql-auth-directives-2.1.0.tgz#85b83817844e2ec5fba8fe5de444287d6dd0f85a"
   integrity sha512-mRVsjeMeMABPyjxyzl9mhkcW02YBwSj7dnu7C6wy2dIhiby6xTKy6Q54C8KeqXSYsy6ua4VmBH++d7GKqpvIoA==
@@ -5637,13 +5637,13 @@ neo4j-driver@^1.7.2, neo4j-driver@~1.7.3:
     text-encoding "^0.6.4"
     uri-js "^4.2.1"
 
-neo4j-graphql-js@~2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.4.1.tgz#a1de65340fb6f1ad0ae6aadab90a0bb78b490b32"
-  integrity sha512-Py6RJuMT7A03Hzoo6qfKyo6DUnHQgbZlBcgucnhgQjbeysAzvM3F02UAVn/HxEtOgowAeGWjyjJvwozoNtiiqQ==
+neo4j-graphql-js@~2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.4.2.tgz#0acf1d0b3a8a1da516c29dbc6b7c90ef1d0c82bd"
+  integrity sha512-K1A61T6ZaEePXg2wZ4plYsQYxo7cxjHtZ6wZX7JXiX4y96c82J5VcD++FXcUys2jG4z4Bz40YS0Ce7ybMjsmUg==
   dependencies:
     graphql "^14.0.2"
-    graphql-auth-directives "^2.0.0"
+    graphql-auth-directives "^2.1.0"
     lodash "^4.17.11"
     neo4j-driver "^1.7.2"
 
