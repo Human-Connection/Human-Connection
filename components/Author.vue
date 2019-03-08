@@ -107,7 +107,9 @@
           <ds-flex-item :width="{base: 3}">
             <hc-follow-button
               :follow-id="author.id"
-              @update="voted = true"
+              :is-followed="author.followedByCurrentUser"
+              @optimistic="follow => author.followedByCurrentUser = follow"
+              @update="follow => author.followedByCurrentUser = follow"
             />
           </ds-flex-item>
           <ds-flex-item :width="{base: 1}">
@@ -139,21 +141,12 @@ export default {
     trunc: { type: Number, default: null },
     showAuthorPopover: { type: Boolean, default: true }
   },
-  data() {
-    return {
-      voted: false
-    }
-  },
   computed: {
     itsMe() {
       return this.author.slug === this.$store.getters['auth/user'].slug
     },
     fanCount() {
       let count = Number(this.author.followedByCount) || 0
-      if (this.voted) {
-        // NOTE: this is used for presentation
-        count += 1
-      }
       return count
     },
     author() {

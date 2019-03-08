@@ -61,7 +61,7 @@
           <ds-flex>
             <ds-flex-item>
               <no-ssr>
-                <ds-number :label="$t('profile.following')">
+                <ds-number :label="$t('profile.followers')">
                   <hc-count-to
                     slot="count"
                     :end-val="followedByCount"
@@ -71,7 +71,7 @@
             </ds-flex-item>
             <ds-flex-item>
               <no-ssr>
-                <ds-number :label="$t('profile.followers')">
+                <ds-number :label="$t('profile.following')">
                   <hc-count-to
                     slot="count"
                     :end-val="Number(user.followingCount) || 0"
@@ -86,7 +86,9 @@
             <hc-follow-button
               v-if="!myProfile"
               :follow-id="user.id"
-              @update="voted = true && fetchUser()"
+              :is-followed="user.followedByCurrentUser"
+              @optimistic="follow => user.followedByCurrentUser = follow"
+              @update="follow => fetchUser()"
             />
           </ds-space>
           <template v-if="user.about">
@@ -335,10 +337,6 @@ export default {
     },
     followedByCount() {
       let count = Number(this.user.followedByCount) || 0
-      if (this.voted) {
-        // NOTE: this is used for presentation
-        count += 1
-      }
       return count
     },
     user() {

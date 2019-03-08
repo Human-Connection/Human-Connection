@@ -2,12 +2,15 @@
   <ds-button
     :disabled="disabled || !followId"
     :loading="loading"
-    icon="plus"
-    primary
+    :icon="icon"
+    :primary="isFollowed && !hovered"
+    :danger="isFollowed && hovered"
     fullwidth
-    @click.prevent="follow"
+    @mouseenter.native="onHover"
+    @mouseleave.native="hovered = false"
+    @click.prevent="toggle"
   >
-    Folgen
+    {{ label }}
   </ds-button>
 </template>
 
@@ -18,37 +21,69 @@ export default {
   name: 'HcFollowButton',
 
   props: {
-    followId: { type: String, default: null }
+    followId: { type: String, default: null },
+    isFollowed: { type: Boolean, default: false }
   },
   data() {
     return {
       disabled: false,
-      loading: false
+      loading: false,
+      hovered: false
+    }
+  },
+  computed: {
+    icon() {
+      if (this.isFollowed && this.hovered) {
+        return 'close'
+      } else {
+        return this.isFollowed ? 'check' : 'plus'
+      }
+    },
+    label() {
+      if (this.isFollowed) {
+        return this.$t('followButton.following')
+      } else {
+        return this.$t('followButton.follow')
+      }
+    }
+  },
+  watch: {
+    isFollowed() {
+      this.loading = false
+      this.hovered = false
     }
   },
   methods: {
-    follow() {
-      this.loading = true
+    onHover() {
+      if (!this.disabled && !this.loading) {
+        this.hovered = true
+      }
+    },
+    toggle() {
+      const follow = !this.isFollowed
+      const mutation = follow ? 'follow' : 'unfollow'
+
+      this.hovered = false
+
+      this.$emit('optimistic', follow)
+
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($myId: ID!, $followId: ID!) {
-              AddUserFollowing(from: { id: $myId }, to: { id: $followId }) {
-                from {
-                  id
-                }
-              }
+            mutation($id: ID!) {
+              ${mutation}(id: $id, type: User)
             }
           `,
           variables: {
-            myId: this.$store.getters['auth/user'].id,
-            followId: this.followId
+            id: this.followId
           }
         })
-        .then(() => {
-          this.loading = false
-          this.disabled = true
-          this.$emit('update')
+        .then(res => {
+          // this.$emit('optimistic', follow ? res.data.follow : follow)
+          this.$emit('update', follow)
+        })
+        .catch(() => {
+          this.$emit('optimistic', !follow)
         })
     }
   }

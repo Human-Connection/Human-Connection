@@ -4,20 +4,25 @@
     style="text-align: center"
   >
     <ds-button
-      :disabled="disabled || loading"
-      danger
+      :loading="loading"
+      :disabled="disabled"
+      :ghost="!shouted"
+      :primary="shouted"
       size="x-large"
       icon="bullhorn"
-      @click="shout"
+      @click="toggle"
     />
     <ds-space margin-bottom="xx-small" />
-    <ds-text color="soft">
+    <ds-text
+      color="soft"
+      class="shout-button-text"
+    >
       <ds-heading
         style="display: inline"
         tag="h3"
       >
         {{ shoutedCount }}x
-      </ds-heading> Empfohlen
+      </ds-heading> {{ $t('shoutButton.shouted') }}
     </ds-text>
   </ds-space>
 </template>
@@ -28,41 +33,69 @@ import gql from 'graphql-tag'
 export default {
   props: {
     count: { type: Number, default: 0 },
-    postId: { type: String, default: null }
+    postId: { type: String, default: null },
+    isShouted: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false }
   },
   data() {
     return {
       loading: false,
-      disabled: false,
-      shoutedCount: this.count
+      shoutedCount: this.count,
+      shouted: false
+    }
+  },
+  watch: {
+    isShouted: {
+      immediate: true,
+      handler: function(shouted) {
+        this.shouted = shouted
+      }
     }
   },
   methods: {
-    shout() {
-      this.loading = true
+    toggle() {
+      const shout = !this.shouted
+      const mutation = shout ? 'shout' : 'unshout'
+      const count = shout ? this.shoutedCount + 1 : this.shoutedCount - 1
+
+      const backup = {
+        shoutedCount: this.shoutedCount,
+        shouted: this.shouted
+      }
+
+      this.shoutedCount = count
+      this.shouted = shout
+
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($myId: ID!, $postId: ID!) {
-              AddUserShouted(from: { id: $myId }, to: { id: $postId }) {
-                from {
-                  id
-                }
-              }
+            mutation($id: ID!) {
+              ${mutation}(id: $id, type: Post)
             }
           `,
           variables: {
-            myId: this.$store.getters['auth/user'].id,
-            postId: this.postId
+            id: this.postId
           }
         })
-        .then(() => {
+        .then(res => {
+          if (res && res.data) {
+            this.$emit('update', shout)
+          }
+        })
+        .catch(() => {
+          this.shoutedCount = backup.shoutedCount
+          this.shouted = backup.shouted
+        })
+        .finally(() => {
           this.loading = false
-          this.disabled = true
-          this.shoutedCount++
-          this.$emit('update')
         })
     }
   }
 }
 </script>
+
+<style lang="scss">
+.shout-button-text {
+  user-select: none;
+}
+</style>
