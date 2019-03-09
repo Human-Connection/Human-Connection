@@ -109,6 +109,29 @@
     "tag": "Tag ::: Tags",
     "name": "Nome",
     "loadMore": "carregar mais",
-    "loading": "carregando"
+    "loading": "carregando",
+    "reportContent": "Denunciar"
+  },
+  "report": {
+    "contribution": {
+      "title": "Denunciar Contribuição",
+      "type": "Contribuição"
+    },
+    "comment": {
+      "title": "Denunciar Comentário",
+      "type": "Comentário",
+      "message": "Realmente quer denunciar o comentário de \"<b>{nome}</b>\"?"
+    }
+  },
+  "actions": {
+    "cancel": "Cancelar"
+  },
+  "contribution": {
+    "edit": "Editar Contribuição",
+    "delete": "Apagar Contribuição"
+  },
+  "comment": {
+    "edit": "Editar Comentário",
+    "delete": "Apagar Comentário"
   }
 }
