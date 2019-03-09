@@ -66,25 +66,33 @@ describe('ReportModal.vue', () => {
         })
 
         describe('click confirm button', () => {
-          const clickAction = () => {
+          const clickAction = async () => {
             const confirmButton = wrapper.find('.ds-button-danger')
-            confirmButton.trigger('click')
+            await confirmButton.trigger('click')
           }
 
-          it('calls report mutation', () => {
-            clickAction()
+          it('calls report mutation', async () => {
+            await clickAction()
             expect($apollo.mutate).toHaveBeenCalled()
           })
 
-          it.todo('hides modal')
+          it('hides modal', async () => {
+            expect(wrapper.find('.ds-modal-wrapper').isEmpty()).toEqual(false)
+            await clickAction()
+            expect(wrapper.find('.ds-modal-wrapper').isEmpty()).toEqual(true)
+          })
 
-          it('disables buttons', () => {
+          it('disables buttons', async () => {
             const expected = { disabled: 'disabled' }
             let cancelButton = wrapper.findAll('footer button').at(0)
             let confirmButton = wrapper.findAll('footer button').at(1)
-            expect(cancelButton.attributes().disabled).toBeUndefined()
-            expect(confirmButton.attributes().disabled).toBeUndefined()
-            clickAction()
+            expect(cancelButton.attributes()).toEqual(
+              expect.not.objectContaining(expected)
+            )
+            expect(confirmButton.attributes()).toEqual(
+              expect.not.objectContaining(expected)
+            )
+            await clickAction()
             expect(cancelButton.attributes()).toEqual(
               expect.objectContaining(expected)
             )
