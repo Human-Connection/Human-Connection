@@ -1,17 +1,14 @@
 import { shallowMount, render, mount, createLocalVue } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
-import ModalTestbed from './ModalTestbed.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getters, mutations } from '../store/modal'
 import Styleguide from '@human-connection/styleguide'
-import portal from 'portal-vue'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
-localVue.use(portal)
 
 describe('ReportModal.vue', () => {
   let Wrapper
@@ -50,7 +47,7 @@ describe('ReportModal.vue', () => {
           'modal/SET_OPEN': mutations.SET_OPEN
         }
       })
-      return mount(ModalTestbed, { store, mocks, localVue })
+      return mount(ReportModal, { store, mocks, localVue })
     }
 
     beforeEach(() => {
@@ -77,8 +74,8 @@ describe('ReportModal.vue', () => {
         describe('by default', () => {
           it('buttons enabled', () => {
             const expected = { disabled: 'disabled' }
-            const cancelButton = wrapper.findAll('#portal footer button').at(0)
-            const confirmButton = wrapper.findAll('#portal footer button').at(1)
+            const cancelButton = wrapper.findAll('footer button').at(0)
+            const confirmButton = wrapper.findAll('footer button').at(1)
             expect(cancelButton.attributes().disabled).toBeUndefined()
             expect(confirmButton.attributes().disabled).toBeUndefined()
           })
@@ -105,8 +102,8 @@ describe('ReportModal.vue', () => {
             // problem here.  I made a workaround by checking the inital
             // in a separate test case above.
             clickAction()
-            const cancelButton = wrapper.findAll('#portal footer button').at(0)
-            const confirmButton = wrapper.findAll('#portal footer button').at(1)
+            const cancelButton = wrapper.findAll('footer button').at(0)
+            const confirmButton = wrapper.findAll('footer button').at(1)
             expect(cancelButton.attributes()).toEqual(
               expect.objectContaining(expected)
             )
