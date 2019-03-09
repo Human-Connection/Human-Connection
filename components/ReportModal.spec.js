@@ -50,12 +50,6 @@ describe('ReportModal.vue', () => {
       return mount(ReportModal, { store, mocks, localVue })
     }
 
-    beforeEach(() => {
-      // TODO find out why on earth do we have to call Wrapper() at least twice?
-      // TODO this is a nasty side effect and we have non-atomic tests here
-      Wrapper()
-    })
-
     it('renders', () => {
       expect(Wrapper().is('div')).toBe(true)
     })
@@ -69,16 +63,6 @@ describe('ReportModal.vue', () => {
             data: {}
           }
           wrapper = Wrapper()
-        })
-
-        describe('by default', () => {
-          it('buttons enabled', () => {
-            const expected = { disabled: 'disabled' }
-            const cancelButton = wrapper.findAll('footer button').at(0)
-            const confirmButton = wrapper.findAll('footer button').at(1)
-            expect(cancelButton.attributes().disabled).toBeUndefined()
-            expect(confirmButton.attributes().disabled).toBeUndefined()
-          })
         })
 
         describe('click confirm button', () => {
@@ -96,14 +80,11 @@ describe('ReportModal.vue', () => {
 
           it('disables buttons', () => {
             const expected = { disabled: 'disabled' }
-            // TODO: `wrapper.findAll` behaves in a very odd way
-            // if I call find or findAll first to check the initial attributes
-            // the attributes won't change anymore. Seems to be a caching
-            // problem here.  I made a workaround by checking the inital
-            // in a separate test case above.
+            let cancelButton = wrapper.findAll('footer button').at(0)
+            let confirmButton = wrapper.findAll('footer button').at(1)
+            expect(cancelButton.attributes().disabled).toBeUndefined()
+            expect(confirmButton.attributes().disabled).toBeUndefined()
             clickAction()
-            const cancelButton = wrapper.findAll('footer button').at(0)
-            const confirmButton = wrapper.findAll('footer button').at(1)
             expect(cancelButton.attributes()).toEqual(
               expect.objectContaining(expected)
             )
