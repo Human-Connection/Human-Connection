@@ -93,9 +93,6 @@
     </ds-container>
     <div id="overlay" />
     <no-ssr>
-      <portal-target name="modal" />
-    </no-ssr>
-    <no-ssr>
       <report-modal />
     </no-ssr>
   </div>

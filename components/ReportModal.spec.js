@@ -1,17 +1,14 @@
 import { shallowMount, render, mount, createLocalVue } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
-import ModalTestbed from './ModalTestbed.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getters, mutations } from '../store/modal'
 import Styleguide from '@human-connection/styleguide'
-import portal from 'portal-vue'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
-localVue.use(portal)
 
 describe('ReportModal.vue', () => {
   let Wrapper
@@ -50,14 +47,8 @@ describe('ReportModal.vue', () => {
           'modal/SET_OPEN': mutations.SET_OPEN
         }
       })
-      return mount(ModalTestbed, { store, mocks, localVue })
+      return mount(ReportModal, { store, mocks, localVue })
     }
-
-    beforeEach(() => {
-      // TODO find out why on earth do we have to call Wrapper() at least twice?
-      // TODO this is a nasty side effect and we have non-atomic tests here
-      Wrapper()
-    })
 
     it('renders', () => {
       expect(Wrapper().is('div')).toBe(true)
@@ -72,16 +63,6 @@ describe('ReportModal.vue', () => {
             data: {}
           }
           wrapper = Wrapper()
-        })
-
-        describe('by default', () => {
-          it('buttons enabled', () => {
-            const expected = { disabled: 'disabled' }
-            const cancelButton = wrapper.findAll('#portal footer button').at(0)
-            const confirmButton = wrapper.findAll('#portal footer button').at(1)
-            expect(cancelButton.attributes().disabled).toBeUndefined()
-            expect(confirmButton.attributes().disabled).toBeUndefined()
-          })
         })
 
         describe('click confirm button', () => {
@@ -99,14 +80,11 @@ describe('ReportModal.vue', () => {
 
           it('disables buttons', () => {
             const expected = { disabled: 'disabled' }
-            // TODO: `wrapper.findAll` behaves in a very odd way
-            // if I call find or findAll first to check the initial attributes
-            // the attributes won't change anymore. Seems to be a caching
-            // problem here.  I made a workaround by checking the inital
-            // in a separate test case above.
+            let cancelButton = wrapper.findAll('footer button').at(0)
+            let confirmButton = wrapper.findAll('footer button').at(1)
+            expect(cancelButton.attributes().disabled).toBeUndefined()
+            expect(confirmButton.attributes().disabled).toBeUndefined()
             clickAction()
-            const cancelButton = wrapper.findAll('#portal footer button').at(0)
-            const confirmButton = wrapper.findAll('#portal footer button').at(1)
             expect(cancelButton.attributes()).toEqual(
               expect.objectContaining(expected)
             )
