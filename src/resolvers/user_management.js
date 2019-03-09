@@ -30,22 +30,75 @@ export default {
       //   throw new Error('Already logged in.')
       // }
       const session = driver.session()
-      return session.run(
-        'MATCH (user:User {email: $userEmail}) ' +
-        'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1', {
-          userEmail: email
-        })
-        .then(async (result) => {
+      return session
+        .run(
+          'MATCH (user:User {email: $userEmail}) ' +
+            'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1',
+          {
+            userEmail: email
+          }
+        )
+        .then(async result => {
           session.close()
           const [currentUser] = await result.records.map(function (record) {
             return record.get('user')
           })
 
-          if (currentUser && await bcrypt.compareSync(password, currentUser.password)) {
+          if (
+            currentUser &&
+            (await bcrypt.compareSync(password, currentUser.password))
+          ) {
             delete currentUser.password
             return encode(currentUser)
-          } else throw new AuthenticationError('Incorrect email address or password.')
+          } else {
+            throw new AuthenticationError(
+              'Incorrect email address or password.'
+            )
+          }
         })
+    },
+    changePassword: async (
+      _,
+      { oldPassword, newPassword },
+      { driver, user }
+    ) => {
+      const session = driver.session()
+      let result = await session.run(
+        `MATCH (user:User {email: $userEmail}) 
+         RETURN user {.id, .email, .password}`,
+        {
+          userEmail: user.email
+        }
+      )
+
+      const [currentUser] = result.records.map(function (record) {
+        return record.get('user')
+      })
+
+      if (!(await bcrypt.compareSync(oldPassword, currentUser.password))) {
+        throw new AuthenticationError('Old password isn\'t valid')
+      }
+
+      if (await bcrypt.compareSync(newPassword, currentUser.password)) {
+        throw new AuthenticationError(
+          'Old password and New password should not be same'
+        )
+      } else {
+        const newHashedPassword = await bcrypt.hashSync(newPassword, 10)
+        session.run(
+          `MATCH (user:User {email: $userEmail})
+           SET user.password = $newHashedPassword
+           RETURN user
+        `,
+          {
+            userEmail: user.email,
+            newHashedPassword
+          }
+        )
+        session.close()
+
+        return encode(currentUser)
+      }
     }
   }
 }
