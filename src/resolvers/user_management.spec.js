@@ -28,6 +28,7 @@ const jennyRostocksHeaders = {
 
 beforeEach(async () => {
   await factory.create('User', {
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
     id: 'acb2d923-f3af-479e-9f00-61b12e864666',
     name: 'Matilde Hermiston',
     slug: 'matilde-hermiston',
@@ -126,8 +127,7 @@ describe('currentUser', () => {
       it('returns the whole user object', async () => {
         const expected = {
           currentUser: {
-            avatar:
-              'https://s3.amazonaws.com/uifaces/faces/twitter/seyedhossein1/128.jpg',
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
             email: 'test@example.org',
             id: 'acb2d923-f3af-479e-9f00-61b12e864666',
             name: 'Matilde Hermiston',
@@ -216,7 +216,7 @@ describe('change password', () => {
   }
 
   describe('should be authenticated before changing password', () => {
-    it('should throw not "Not Authorised!', async () => {
+    it('throws not "Not Authorised!', async () => {
       await expect(
         request(
           host,
@@ -230,7 +230,7 @@ describe('change password', () => {
   })
 
   describe('old and new password should not match', () => {
-    it('responds with "Old password and New password should not be same"', async () => {
+    it('responds with "Old password and new password should be different"', async () => {
       await expect(
         client.request(
           mutation({
@@ -238,7 +238,7 @@ describe('change password', () => {
             newPassword: '1234'
           })
         )
-      ).rejects.toThrow('Old password and New password should not be same')
+      ).rejects.toThrow('Old password and new password should be different')
     })
   })
 
@@ -251,7 +251,23 @@ describe('change password', () => {
             newPassword: '12345'
           })
         )
-      ).rejects.toThrow('Old password isn\'t valid')
+      ).rejects.toThrow('Old password is not correct')
+    })
+  })
+
+  describe('correct password', () => {
+    it('changes the password if given correct credentials "', async () => {
+      let response = await client.request(
+        mutation({
+          oldPassword: '1234',
+          newPassword: '12345'
+        })
+      )
+      await expect(
+        response
+      ).toEqual(expect.objectContaining({
+        changePassword: expect.any(String)
+      }))
     })
   })
 })

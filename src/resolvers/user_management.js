@@ -30,32 +30,28 @@ export default {
       //   throw new Error('Already logged in.')
       // }
       const session = driver.session()
-      return session
-        .run(
-          'MATCH (user:User {email: $userEmail}) ' +
-            'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1',
-          {
-            userEmail: email
-          }
-        )
-        .then(async result => {
-          session.close()
-          const [currentUser] = await result.records.map(function (record) {
-            return record.get('user')
-          })
+      const result = await session.run(
+        'MATCH (user:User {email: $userEmail}) ' +
+          'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1',
+        {
+          userEmail: email
+        }
+      )
 
-          if (
-            currentUser &&
-            (await bcrypt.compareSync(password, currentUser.password))
-          ) {
-            delete currentUser.password
-            return encode(currentUser)
-          } else {
-            throw new AuthenticationError(
-              'Incorrect email address or password.'
-            )
-          }
-        })
+      session.close()
+      const [currentUser] = await result.records.map(function (record) {
+        return record.get('user')
+      })
+
+      if (
+        currentUser &&
+        (await bcrypt.compareSync(password, currentUser.password))
+      ) {
+        delete currentUser.password
+        return encode(currentUser)
+      } else {
+        throw new AuthenticationError('Incorrect email address or password.')
+      }
     },
     changePassword: async (
       _,
@@ -76,12 +72,12 @@ export default {
       })
 
       if (!(await bcrypt.compareSync(oldPassword, currentUser.password))) {
-        throw new AuthenticationError('Old password isn\'t valid')
+        throw new AuthenticationError('Old password is not correct')
       }
 
       if (await bcrypt.compareSync(newPassword, currentUser.password)) {
         throw new AuthenticationError(
-          'Old password and New password should not be same'
+          'Old password and new password should be different'
         )
       } else {
         const newHashedPassword = await bcrypt.hashSync(newPassword, 10)
