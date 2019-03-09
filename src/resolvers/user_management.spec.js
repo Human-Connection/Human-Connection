@@ -28,8 +28,6 @@ const jennyRostocksHeaders = {
 
 beforeEach(async () => {
   await factory.create('User', {
-    avatar:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/seyedhossein1/128.jpg',
     id: 'acb2d923-f3af-479e-9f00-61b12e864666',
     name: 'Matilde Hermiston',
     slug: 'matilde-hermiston',
