@@ -40,11 +40,11 @@
     }
   },
   "admin": {
-    "name": "Administrator",
+    "name": "Administrador",
     "dashboard": {
       "name": "Painel de controle",
       "users": "Usuários",
-      "posts": "Pastagens",
+      "posts": "Postagens",
       "comments": "Comentários",
       "notifications": "Notificações",
       "organizations": "Organizações",
@@ -68,12 +68,12 @@
     "categories": {
       "name": "Categorias",
       "categoryName": "Nome",
-      "postCount": "Pastagens"
+      "postCount": "Postagens"
     },
     "tags": {
       "name": "Etiquetas",
       "tagCountUnique": "Usuários",
-      "tagCount": "Pastagens"
+      "tagCount": "Postagens"
     },
     "settings": {
       "name": "Configurações"
@@ -106,9 +106,9 @@
     "category": "Categoria ::: Categorias",
     "organization": "Organização ::: Organizações",
     "project": "Projeto ::: Projetos",
-    "tag": "Tag ::: Tags",
+    "tag": "Etiqueta ::: Etiquetas",
     "name": "Nome",
-    "loadMore": "carregar mais",
-    "loading": "carregando"
+    "loadMore": "Carregar mais",
+    "loading": "Carregando"
   }
 }
