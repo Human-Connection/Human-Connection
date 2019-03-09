@@ -9,7 +9,18 @@ Human-Connection is beeing build to provide better Communication Tools for every
 We want to do more than comments and sharing!
 
 **Features**
--
+- Post Builder/Editor
+- Voting
+- Best of Lists
+- Pro & Contra Discussions
+- Projects
+- Event Management
+- Organizations
+- Chats & Group Chats
+- Knowledge Sharing
+- Let's Talk
+- Versus Challenging
+- Modular UI
 
 **REPO States**
 
