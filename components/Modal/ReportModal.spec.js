@@ -49,10 +49,6 @@ describe('ReportModal.vue', () => {
       it('loading false', () => {
         expect(Wrapper().vm.loading).toBe(false)
       })
-
-      it('disabled true', () => {
-        expect(Wrapper().vm.disabled).toBe(true)
-      })
     })
 
     describe('given a user', () => {
@@ -94,14 +90,10 @@ describe('ReportModal.vue', () => {
         wrapper = Wrapper()
       })
 
-      it('is enabled', async () => {
-        expect(wrapper.vm.disabled).toBe(false)
-      })
-
       describe('click cancel button', () => {
-        beforeEach(async () => {
+        beforeEach(() => {
           wrapper = Wrapper()
-          await wrapper.find('button.cancel').trigger('click')
+          wrapper.find('button.cancel').trigger('click')
         })
 
         it('emits close', () => {
@@ -114,24 +106,20 @@ describe('ReportModal.vue', () => {
       })
 
       describe('click confirm button', () => {
-        beforeEach(async () => {
+        beforeEach(() => {
           jest.useFakeTimers()
-          await wrapper.find('button.confirm').trigger('click')
+          wrapper.find('button.confirm').trigger('click')
         })
 
-        it('calls report mutation', async () => {
+        it('calls report mutation', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalled()
         })
 
-        it('gets disabled', async () => {
-          expect(wrapper.vm.disabled).toBe(true)
-        })
-
-        it('sets success', async () => {
+        it('sets success', () => {
           expect(wrapper.vm.success).toBe(true)
         })
 
-        it('displays a success message', async () => {
+        it('displays a success message', () => {
           const calls = mocks.$t.mock.calls
           const expected = [['report.success']]
           expect(calls).toEqual(expect.arrayContaining(expected))

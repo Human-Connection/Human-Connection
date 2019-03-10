@@ -33,7 +33,6 @@
         class="confirm"
         icon="exclamation-circle"
         :loading="loading"
-        :disabled="disabled || loading"
         @click="confirm"
       >
         {{ $t('report.submit') }}
@@ -66,8 +65,7 @@ export default {
   data() {
     return {
       success: false,
-      loading: false,
-      disabled: !this.isOpen
+      loading: false
     }
   },
   computed: {
@@ -82,7 +80,6 @@ export default {
   methods: {
     async confirm() {
       this.loading = true
-      this.disabled = true
       try {
         await this.$apollo.mutate({
           mutation: gql`
@@ -101,7 +98,6 @@ export default {
         }, 1500)
       } catch (err) {
         this.$toast.error(err.message)
-        this.disabled = false
       } finally {
         this.loading = false
       }
