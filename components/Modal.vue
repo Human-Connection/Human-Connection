@@ -1,7 +1,6 @@
 <template>
   <div class="modal-wrapper">
     <disable-modal
-      v-if="open === 'disable'"
       :is-open="open === 'disable'"
       :resource="data"
       @close="close"

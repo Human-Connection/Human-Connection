@@ -54,9 +54,9 @@ describe('Modal.vue', () => {
   describe('shallowMount', () => {
     const Wrapper = createWrapper(shallowMount)
 
-    it('renders nothing', () => {
+    it('renders all modals as closed', () => {
       wrapper = Wrapper()
-      expect(wrapper.isEmpty()).toBe(true)
+      expect(wrapper.find(DisableModal).vm.isOpen).toBe(false)
     })
 
     describe('store/modal holds data to disable', () => {
@@ -84,10 +84,10 @@ describe('Modal.vue', () => {
         })
       })
 
-      describe('click cancel', () => {
-        it('empties wrapper', () => {
+      describe('child component emits close', () => {
+        it('close DisableModal', () => {
           wrapper.find(DisableModal).vm.$emit('close')
-          expect(wrapper.isEmpty()).toBe(true)
+          expect(wrapper.find(DisableModal).vm.isOpen).toBe(false)
         })
       })
     })
