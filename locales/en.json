@@ -105,7 +105,8 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "submitter": "reported by"
+      "submitter": "reported by",
+      "disabledBy": "reported by"
     }
   },
   "contribution": {

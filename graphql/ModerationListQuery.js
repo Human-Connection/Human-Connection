@@ -15,6 +15,10 @@ export default app => {
         user {
           name
           slug
+          disabledBy {
+            slug
+            name
+          }
         }
         comment {
           contentExcerpt
@@ -26,6 +30,10 @@ export default app => {
             title
             slug
           }
+          disabledBy {
+            slug
+            name
+          }
         }
         post {
           title
@@ -33,6 +41,10 @@ export default app => {
           author {
             name
             slug
+          }
+          disabledBy {
+            slug
+            name
           }
         }
       }
