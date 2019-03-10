@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import Modal from './Modal.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -12,23 +12,13 @@ localVue.use(Styleguide)
 
 describe('Modal.vue', () => {
   let Wrapper
+  let wrapper
   let store
   let state
   let mocks
 
-  beforeEach(() => {
-    mocks = {
-      $t: () => {}
-    }
-    state = {
-      open: null,
-      data: {}
-    }
-  })
-
-  describe('mount', () => {
-    let wrapper
-    const Wrapper = () => {
+  const createWrapper = mountMethod => {
+    return () => {
       store = new Vuex.Store({
         state,
         getters: {
@@ -39,25 +29,46 @@ describe('Modal.vue', () => {
           'modal/SET_OPEN': mutations.SET_OPEN
         }
       })
-      return mount(Modal, { store, mocks, localVue })
+      return mountMethod(Modal, { store, mocks, localVue })
     }
+  }
+
+  beforeEach(() => {
+    mocks = {
+      $filters: {
+        truncate: a => a
+      },
+      $toast: {
+        success: () => {},
+        error: () => {}
+      },
+      $t: () => {}
+    }
+    state = {
+      open: null,
+      data: {}
+    }
+  })
+
+  describe('shallowMount', () => {
+    const Wrapper = createWrapper(shallowMount)
 
     it('renders nothing', () => {
       wrapper = Wrapper()
       expect(wrapper.isEmpty()).toBe(true)
     })
 
-    describe('store opens a report', () => {
+    describe('store state.open === "disable"', () => {
       beforeEach(() => {
         state = {
-          open: 'report',
+          open: 'disable',
           data: {}
         }
         wrapper = Wrapper()
       })
 
       it('renders report modal', () => {
-        expect(wrapper.contains('#modal-report')).toBe(true)
+        expect(wrapper.contains('disable-modal-stub')).toBe(true)
       })
     })
   })

@@ -1,23 +1,23 @@
 <template>
-  <report-modal v-if="showReportModal" />
+  <div class="modal-wrapper">
+    <disable-modal
+      v-if="showDisableModal"
+      :is-open="showDisableModal"
+    />
+  </div>
 </template>
 
 <script>
-import ReportModal from '~/components/ReportModal'
+import DisableModal from '~/components/Modal/DisableModal'
 
 export default {
   name: 'Modal',
   components: {
-    ReportModal
+    DisableModal
   },
   computed: {
-    showReportModal() {
-      return this.$store.getters['modal/open'] === 'report'
-    }
-  },
-  methods: {
-    close() {
-      this.$store.commit('modal/SET_OPEN', {})
+    showDisableModal() {
+      return this.$store.getters['modal/open'] === 'disable'
     }
   }
 }
