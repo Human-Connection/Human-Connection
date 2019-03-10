@@ -131,6 +131,10 @@ describe('ReportModal.vue', () => {
           it('emits close', () => {
             expect(wrapper.emitted().close).toBeTruthy()
           })
+
+          it('resets success', () => {
+            expect(wrapper.vm.success).toBe(false)
+          })
         })
       })
     })

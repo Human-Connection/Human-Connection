@@ -94,9 +94,11 @@ export default {
         this.success = true
         this.$toast.success(this.$t('report.success'))
         setTimeout(() => {
+          this.success = false
           this.$emit('close')
         }, 1500)
       } catch (err) {
+        this.success = false
         this.$toast.error(err.message)
       } finally {
         this.loading = false
