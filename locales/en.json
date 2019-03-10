@@ -1,15 +1,4 @@
 {
-  "error": {
-    "header": {
-      "404": "Page not found"
-    },
-    "subHeader": {
-      "404": "Ups, not my fault"
-    },
-    "message": {
-      "404": "Sorry, the page you're looking for cannot be found."
-    }
-  },
   "actions": {
     "loading": "loading",
     "loadMore": "load more",
