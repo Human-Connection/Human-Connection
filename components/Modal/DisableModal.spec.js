@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import DisableModal from './DisableModal.vue'
 import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
@@ -8,23 +8,76 @@ const localVue = createLocalVue()
 localVue.use(Styleguide)
 
 describe('DisableModal.vue', () => {
-  let Wrapper
   let store
   let mocks
   let propsData
+  let wrapper
 
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: () => {},
+      $filters: {
+        truncate: a => a
+      },
+      $toast: {
+        success: () => {},
+        error: () => {}
+      },
+      $t: jest.fn(),
       $apollo: {
-        mutate: jest.fn().mockResolvedValue(null)
+        mutate: jest.fn().mockResolvedValue()
       }
     }
   })
 
+  describe('shallowMount', () => {
+    const Wrapper = () => {
+      return shallowMount(DisableModal, { propsData, mocks, localVue })
+    }
+
+    describe('given a user', () => {
+      beforeEach(() => {
+        propsData = {
+          resource: {
+            type: 'user',
+            name: 'Bob Ross'
+          }
+        }
+      })
+
+      it('mentions user name', () => {
+        Wrapper()
+        const calls = mocks.$t.mock.calls
+        const expected = [['disable.user.message', { name: 'Bob Ross' }]]
+        expect(calls).toEqual(expect.arrayContaining(expected))
+      })
+    })
+
+    describe('given a contribution', () => {
+      beforeEach(() => {
+        propsData = {
+          resource: {
+            type: 'contribution',
+            name: 'This is some post content.'
+          }
+        }
+      })
+
+      it('mentions contribution title', () => {
+        Wrapper()
+        const calls = mocks.$t.mock.calls
+        const expected = [
+          [
+            'disable.contribution.message',
+            { name: 'This is some post content.' }
+          ]
+        ]
+        expect(calls).toEqual(expect.arrayContaining(expected))
+      })
+    })
+  })
+
   describe('mount', () => {
-    let wrapper
     const Wrapper = () => {
       return mount(DisableModal, { propsData, mocks, localVue })
     }
