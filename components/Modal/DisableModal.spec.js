@@ -1,8 +1,7 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import DisableModal from './DisableModal.vue'
 import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
-
 
 const localVue = createLocalVue()
 
@@ -12,8 +11,10 @@ describe('DisableModal.vue', () => {
   let Wrapper
   let store
   let mocks
+  let propsData
 
   beforeEach(() => {
+    propsData = {}
     mocks = {
       $t: () => {},
       $apollo: {
@@ -22,36 +23,55 @@ describe('DisableModal.vue', () => {
     }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     let wrapper
     const Wrapper = () => {
-      return shallowMount(DisableModal, { mocks, localVue })
+      return mount(DisableModal, { propsData, mocks, localVue })
     }
 
-    describe('click cancel button', () => {
-      beforeEach(async () => {
-        wrapper = Wrapper()
-        await wrapper.find('button.cancel').trigger('click')
+    describe('given id and opened', () => {
+      beforeEach(() => {
+        propsData = {
+          isOpen: true,
+          id: 4711
+        }
       })
 
-      it('emits close', () => {
-        expect(wrapper.emitted().close).toBeTruthy()
+      describe('click cancel button', () => {
+        beforeEach(async () => {
+          wrapper = Wrapper()
+          await wrapper.find('button.cancel').trigger('click')
+        })
+
+        it('emits close', () => {
+          expect(wrapper.emitted().close).toBeTruthy()
+        })
+
+        it('does not call mutation', () => {
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
       })
 
-      it.todo('does not call mutation')
-    })
+      describe('click confirm button', () => {
+        beforeEach(async () => {
+          wrapper = Wrapper()
+          await wrapper.find('button.confirm').trigger('click')
+        })
 
-    describe('click confirm button', () => {
-      beforeEach(async () => {
-        wrapper = Wrapper()
-        await wrapper.find('button.confirm').trigger('click')
-      })
+        it('emits close', () => {
+          expect(wrapper.emitted().close).toBeTruthy()
+        })
 
-      it('emits close', () => {
-        expect(wrapper.emitted().close).toBeTruthy()
+        it('calls mutation', () => {
+          expect(mocks.$apollo.mutate).toHaveBeenCalled()
+        })
+
+        it('passes id to mutation', () => {
+          const calls = mocks.$apollo.mutate.mock.calls
+          const [[{ variables }]] = calls
+          expect(variables).toEqual({ id: 4711 })
+        })
       })
-      it.todo('calls disable mutation')
-      it.todo('passes id to mutation')
     })
   })
 })
