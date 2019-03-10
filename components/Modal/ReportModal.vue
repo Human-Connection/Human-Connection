@@ -2,11 +2,7 @@
   <ds-modal
     :title="title"
     :is-open="isOpen"
-    :confirm-label="$t('report.submit')"
-    :cancel-label="$t('report.cancel')"
     confirm-icon="warning"
-    @confirm="report"
-    @cancel="close"
   >
     <transition name="ds-transition-fade">
       <ds-flex
@@ -23,24 +19,25 @@
 
     <template
       slot="footer"
-      slot-scope="{ cancel, confirm, cancelLabel, confirmLabel }"
     >
       <ds-button
         ghost
+        class="cancel"
         icon="close"
-        :disabled="disabled || loading"
-        @click.prevent="cancel('cancel')"
+        @click="$emit('close')"
       >
-        {{ cancelLabel }}
+        {{ $t('report.cancel') }}
       </ds-button>
+
       <ds-button
         danger
+        class="confirm"
         icon="exclamation-circle"
         :loading="loading"
         :disabled="disabled || loading"
-        @click.prevent="confirm('confirm')"
+        @click="confirm"
       >
-        {{ confirmLabel }}
+        {{ $t('report.submit') }}
       </ds-button>
     </template>
   </ds-modal>
@@ -55,65 +52,54 @@ export default {
   components: {
     SweetalertIcon
   },
+  props: {
+    isOpen: {
+      type: Boolean,
+      default: false
+    },
+    resource: {
+      type: Object,
+      default() {
+        return { id: null, type: 'contribution', name: '' }
+      }
+    }
+  },
   data() {
     return {
       success: false,
       loading: false,
-      disabled: false
+      disabled: !this.isOpen
     }
   },
   computed: {
-    data() {
-      return this.$store.getters['modal/data'] || {}
-    },
     title() {
-      if (!this.data.context) return ''
-      return this.$t(`report.${this.data.context}.title`)
+      return this.$t(`report.${this.resource.type}.title`)
     },
     message() {
-      if (!this.data.context) return ''
-      return this.$t(`report.${this.data.context}.message`, { name: this.name })
-    },
-    name() {
-      return this.$filters.truncate(this.data.name, 30)
-    },
-    isOpen() {
-      return this.$store.getters['modal/open'] === 'report'
-    }
-  },
-  watch: {
-    isOpen(open) {
-      if (open) {
-        this.success = false
-        this.disabled = false
-        this.loading = false
-      }
+      const name = this.$filters.truncate(this.resource.name, 30)
+      return this.$t(`report.${this.resource.type}.message`, { name })
     }
   },
   methods: {
-    close() {
-      this.$store.commit('modal/SET_OPEN', {})
-    },
-    async report() {
+    async confirm() {
       this.loading = true
       this.disabled = true
       try {
         await this.$apollo.mutate({
           mutation: gql`
-            mutation($id: ID!, $description: String) {
-              report(id: $id, description: $description) {
+            mutation($id: ID!) {
+              report(id: $id) {
                 id
               }
             }
           `,
-          variables: {
-            id: this.data.id,
-            description: '-'
-          }
+          variables: { id: this.resource.id }
         })
         this.success = true
-        this.$toast.success('Thanks for reporting!')
-        setTimeout(this.close, 1500)
+        this.$toast.success(this.$t('report.success'))
+        setTimeout(() => {
+          this.$emit('close')
+        }, 1500)
       } catch (err) {
         this.$toast.error(err.message)
         this.disabled = false

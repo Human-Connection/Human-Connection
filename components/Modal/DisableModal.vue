@@ -9,7 +9,7 @@
     <template slot="footer">
       <ds-button
         class="cancel"
-        @click.prevent="$emit('close')"
+        @click="$emit('close')"
       >
         {{ $t('disable.cancel') }}
       </ds-button>

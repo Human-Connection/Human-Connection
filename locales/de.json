@@ -159,6 +159,7 @@
   "report": {
     "submit": "Meldung senden",
     "cancel": "Abbrechen",
+    "success": "Vielen Dank für das Melden!",
     "user": {
       "title": "Nutzer melden",
       "type": "Nutzer",

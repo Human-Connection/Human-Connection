@@ -159,6 +159,7 @@
   "report": {
     "submit": "Send Report",
     "cancel": "Cancel",
+    "success": "Thanks for reporting!",
     "user": {
       "title": "Report User",
       "type": "User",
