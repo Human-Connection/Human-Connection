@@ -3,17 +3,14 @@ import faker from 'faker'
 export default function create (params) {
   const {
     description = faker.lorem.sentence(),
-    resource: { id: resourceId, type }
+    id
   } = params
 
   return `
     mutation {
       report(
         description: "${description}",
-        resource: {
-          id: "${resourceId}",
-          type: ${type}
-        }
+        id: "${id}",
       ) {
         id,
         createdAt

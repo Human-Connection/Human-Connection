@@ -34,7 +34,7 @@ describe('authorization', () => {
         return graphQLClient.request('{User(name: "Owner") { email } }')
       }
 
-      describe('not logged in', async () => {
+      describe('not logged in', () => {
         it('rejects', async () => {
           await expect(action()).rejects.toThrow('Not Authorised!')
         })
