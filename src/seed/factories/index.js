@@ -90,6 +90,32 @@ export default function Factory (options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation, variables)
       return this
     },
+    async shout (properties) {
+      const { id, type } = properties
+      const mutation = `
+        mutation {
+          shout(
+            id: "${id}",
+            type: ${type}
+          )
+        }
+      `
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
+    async follow (properties) {
+      const { id, type } = properties
+      const mutation = `
+        mutation {
+          follow(
+            id: "${id}",
+            type: ${type}
+          )
+        }
+      `
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
     async cleanDatabase () {
       this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
