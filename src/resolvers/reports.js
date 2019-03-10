@@ -14,6 +14,7 @@ export default {
       const res = await session.run(`
         MATCH (submitter:User {id: $userId})
         MATCH (resource {id: $resourceId})
+        WHERE resource:User OR resource:Comment OR resource:Post
         CREATE (report:Report $reportData)
         MERGE (resource)<-[:REPORTED]-(report)
         MERGE (report)<-[:REPORTED]-(submitter)

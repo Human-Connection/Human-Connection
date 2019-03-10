@@ -11,6 +11,8 @@ describe('report', () => {
   let variables
 
   beforeEach(async () => {
+    returnedObject = '{ description }'
+    variables = { id: 'whatever' }
     headers = {}
     await factory.create('User', {
       id: 'u1',
@@ -36,10 +38,9 @@ describe('report', () => {
         report(
           id: $id,
           description: "Violates code of conduct"
-        ) ${returnedObject || '{ description }'}
+        ) ${returnedObject}
       }
     `
-    variables = variables || { id: 'whatever' }
     client = new GraphQLClient(host, { headers })
     return client.request(mutation, variables)
   }
@@ -144,6 +145,17 @@ describe('report', () => {
             await expect(action()).resolves.toEqual({
               report: { comment: { content: 'Robert getting tired.' } }
             })
+          })
+        })
+
+        describe('reported resource is a tag', () => {
+          beforeEach(async () => {
+            await factory.create('Tag', { id: 't23' })
+            variables = { id: 't23' }
+          })
+
+          it('returns null', async () => {
+            await expect(action()).resolves.toEqual({ report: null })
           })
         })
       })

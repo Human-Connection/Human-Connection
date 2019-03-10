@@ -17,7 +17,7 @@ export default {
       const [resource] = res.records.map((record) => {
         return record.get('resource')
       })
-      if(!resource) return null
+      if (!resource) return null
       return resource.id
     },
     enable: async (object, params, { user, driver }) => {
@@ -34,7 +34,7 @@ export default {
       const [resource] = res.records.map((record) => {
         return record.get('resource')
       })
-      if(!resource) return null
+      if (!resource) return null
       return resource.id
     }
   }

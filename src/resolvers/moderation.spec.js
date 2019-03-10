@@ -14,7 +14,6 @@ const setupAuthenticateClient = (params) => {
   return authenticateClient
 }
 
-
 let createResource
 let authenticateClient
 beforeEach(() => {
@@ -87,7 +86,7 @@ describe('disable', () => {
           }
           createResource = () => {
             return Promise.all([
-              factory.create('Tag', { id: 't23' }),
+              factory.create('Tag', { id: 't23' })
             ])
           }
         })
@@ -261,7 +260,7 @@ describe('enable', () => {
           createResource = () => {
             // we cannot create a :DISABLED relationship here
             return Promise.all([
-              factory.create('Tag', { id: 't23' }),
+              factory.create('Tag', { id: 't23' })
             ])
           }
         })
