@@ -13,7 +13,7 @@
       <no-ssr>
         <content-menu
           placement="bottom-end"
-          context="contribution"
+          resource-type="contribution"
           :item-id="post.id"
           :name="post.title"
           :is-owner="isAuthor(post.author.id)"
@@ -100,7 +100,7 @@
             <no-ssr>
               <content-menu
                 placement="bottom-end"
-                context="comment"
+                resource-type="comment"
                 style="float-right"
                 :item-id="comment.id"
                 :name="comment.author.name"

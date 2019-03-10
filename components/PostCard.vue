@@ -52,7 +52,7 @@
         </span>
         <no-ssr>
           <content-menu
-            context="contribution"
+            resource-type="contribution"
             :item-id="post.id"
             :name="post.title"
             :is-owner="isAuthor"

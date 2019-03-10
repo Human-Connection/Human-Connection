@@ -20,7 +20,7 @@
           <no-ssr>
             <content-menu
               placement="bottom-end"
-              context="user"
+              resource-type="user"
               :item-id="user.id"
               :name="user.name"
               :is-owner="myProfile"
