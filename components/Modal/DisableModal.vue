@@ -2,6 +2,7 @@
   <ds-modal
     :title="title"
     :is-open="isOpen"
+    @cancel="$emit('close')"
   >
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
@@ -15,7 +16,9 @@
       </ds-button>
 
       <ds-button
+        danger
         class="confirm"
+        icon="exclamation-circle"
         @click="confirm"
       >
         {{ $t('disable.submit') }}

@@ -2,7 +2,7 @@
   <ds-modal
     :title="title"
     :is-open="isOpen"
-    confirm-icon="warning"
+    @cancel="$emit('close')"
   >
     <transition name="ds-transition-fade">
       <ds-flex
@@ -21,7 +21,6 @@
       slot="footer"
     >
       <ds-button
-        ghost
         class="cancel"
         icon="close"
         @click="$emit('close')"
