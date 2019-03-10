@@ -14,21 +14,20 @@ const setupAuthenticateClient = (params) => {
   return authenticateClient
 }
 
-let setup
-const runSetup = async () => {
-  await setup.createResource()
-  await setup.authenticateClient()
-}
 
+let createResource
+let authenticateClient
 beforeEach(() => {
-  setup = {
-    createResource: () => {
-    },
-    authenticateClient: () => {
-      client = new GraphQLClient(host)
-    }
+  createResource = () => {}
+  authenticateClient = () => {
+    client = new GraphQLClient(host)
   }
 })
+
+const setup = async () => {
+  await createResource()
+  await authenticateClient()
+}
 
 afterEach(async () => {
   await factory.cleanDatabase()
@@ -54,26 +53,26 @@ describe('disable', () => {
   }
 
   it('throws authorization error', async () => {
-    await runSetup()
+    await setup()
     await expect(action()).rejects.toThrow('Not Authorised')
   })
 
   describe('authenticated', () => {
     beforeEach(() => {
-      setup.authenticateClient = setupAuthenticateClient({
+      authenticateClient = setupAuthenticateClient({
         email: 'user@example.org',
         password: '1234'
       })
     })
 
     it('throws authorization error', async () => {
-      await runSetup()
+      await setup()
       await expect(action()).rejects.toThrow('Not Authorised')
     })
 
     describe('as moderator', () => {
       beforeEach(() => {
-        setup.authenticateClient = setupAuthenticateClient({
+        authenticateClient = setupAuthenticateClient({
           id: 'u7',
           email: 'moderator@example.org',
           password: '1234',
@@ -87,7 +86,7 @@ describe('disable', () => {
             id: 'c47'
           }
 
-          setup.createResource = async () => {
+          createResource = async () => {
             await factory.create('User', { id: 'u45', email: 'commenter@example.org', password: '1234' })
             await factory.authenticateAs({ email: 'commenter@example.org', password: '1234' })
             await Promise.all([
@@ -103,7 +102,7 @@ describe('disable', () => {
 
         it('returns disabled resource id', async () => {
           const expected = { disable: 'c47' }
-          await runSetup()
+          await setup()
           await expect(action()).resolves.toEqual(expected)
         })
 
@@ -111,7 +110,7 @@ describe('disable', () => {
           const before = { Comment: [{ id: 'c47', disabledBy: null }] }
           const expected = { Comment: [{ id: 'c47', disabledBy: { id: 'u7' } }] }
 
-          await runSetup()
+          await setup()
           await expect(client.request(
             '{ Comment { id,  disabledBy { id } } }'
           )).resolves.toEqual(before)
@@ -125,7 +124,7 @@ describe('disable', () => {
           const before = { Comment: [ { id: 'c47', disabled: false } ] }
           const expected = { Comment: [ { id: 'c47', disabled: true } ] }
 
-          await runSetup()
+          await setup()
           await expect(client.request(
             '{ Comment { id disabled } }'
           )).resolves.toEqual(before)
@@ -142,7 +141,7 @@ describe('disable', () => {
             id: 'p9'
           }
 
-          setup.createResource = async () => {
+          createResource = async () => {
             await factory.create('User', { email: 'author@example.org', password: '1234' })
             await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
             await factory.create('Post', {
@@ -153,7 +152,7 @@ describe('disable', () => {
 
         it('returns disabled resource id', async () => {
           const expected = { disable: 'p9' }
-          await runSetup()
+          await setup()
           await expect(action()).resolves.toEqual(expected)
         })
 
@@ -161,7 +160,7 @@ describe('disable', () => {
           const before = { Post: [{ id: 'p9', disabledBy: null }] }
           const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
 
-          await runSetup()
+          await setup()
           await expect(client.request(
             '{ Post { id,  disabledBy { id } } }'
           )).resolves.toEqual(before)
@@ -175,7 +174,7 @@ describe('disable', () => {
           const before = { Post: [ { id: 'p9', disabled: false } ] }
           const expected = { Post: [ { id: 'p9', disabled: true } ] }
 
-          await runSetup()
+          await setup()
           await expect(client.request(
             '{ Post { id disabled } }'
           )).resolves.toEqual(before)
@@ -209,26 +208,26 @@ describe('enable', () => {
   })
 
   it('throws authorization error', async () => {
-    await runSetup()
+    await setup()
     await expect(action()).rejects.toThrow('Not Authorised')
   })
 
   describe('authenticated', () => {
     beforeEach(() => {
-      setup.authenticateClient = setupAuthenticateClient({
+      authenticateClient = setupAuthenticateClient({
         email: 'user@example.org',
         password: '1234'
       })
     })
 
     it('throws authorization error', async () => {
-      await runSetup()
+      await setup()
       await expect(action()).rejects.toThrow('Not Authorised')
     })
 
     describe('as moderator', () => {
       beforeEach(async () => {
-        setup.authenticateClient = setupAuthenticateClient({
+        authenticateClient = setupAuthenticateClient({
           role: 'moderator',
           email: 'someUser@example.org',
           password: '1234'
@@ -241,7 +240,7 @@ describe('enable', () => {
             id: 'c456'
           }
 
-          setup.createResource = async () => {
+          createResource = async () => {
             await factory.create('User', { id: 'u123', email: 'author@example.org', password: '1234' })
             await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
             await Promise.all([
@@ -264,7 +263,7 @@ describe('enable', () => {
 
         it('returns disabled resource id', async () => {
           const expected = { enable: 'c456' }
-          await runSetup()
+          await setup()
           await expect(action()).resolves.toEqual(expected)
         })
 
@@ -272,7 +271,7 @@ describe('enable', () => {
           const before = { Comment: [{ id: 'c456', disabledBy: { id: 'u123' } }] }
           const expected = { Comment: [{ id: 'c456', disabledBy: null }] }
 
-          await runSetup()
+          await setup()
           await expect(client.request(
             '{ Comment(disabled: true) { id,  disabledBy { id } } }'
           )).resolves.toEqual(before)
@@ -286,7 +285,7 @@ describe('enable', () => {
           const before = { Comment: [ { id: 'c456', disabled: true } ] }
           const expected = { Comment: [ { id: 'c456', disabled: false } ] }
 
-          await runSetup()
+          await setup()
           await expect(client.request(
             '{ Comment(disabled: true) { id disabled } }'
           )).resolves.toEqual(before)
@@ -303,7 +302,7 @@ describe('enable', () => {
             id: 'p9'
           }
 
-          setup.createResource = async () => {
+          createResource = async () => {
             await factory.create('User', { id: 'u123', email: 'author@example.org', password: '1234' })
             await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
             await factory.create('Post', {
@@ -321,7 +320,7 @@ describe('enable', () => {
 
         it('returns disabled resource id', async () => {
           const expected = { enable: 'p9' }
-          await runSetup()
+          await setup()
           await expect(action()).resolves.toEqual(expected)
         })
 
@@ -329,7 +328,7 @@ describe('enable', () => {
           const before = { Post: [{ id: 'p9', disabledBy: { id: 'u123' } }] }
           const expected = { Post: [{ id: 'p9', disabledBy: null }] }
 
-          await runSetup()
+          await setup()
           await expect(client.request(
             '{ Post(disabled: true) { id,  disabledBy { id } } }'
           )).resolves.toEqual(before)
@@ -343,7 +342,7 @@ describe('enable', () => {
           const before = { Post: [ { id: 'p9', disabled: true } ] }
           const expected = { Post: [ { id: 'p9', disabled: false } ] }
 
-          await runSetup()
+          await setup()
           await expect(client.request(
             '{ Post(disabled: true) { id disabled } }'
           )).resolves.toEqual(before)
