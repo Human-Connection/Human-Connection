@@ -58,7 +58,7 @@ describe('DisableModal.vue', () => {
         propsData = {
           resource: {
             type: 'contribution',
-            name: 'This is some post content.'
+            name: 'This is some post title.'
           }
         }
       })
@@ -67,10 +67,7 @@ describe('DisableModal.vue', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
         const expected = [
-          [
-            'disable.contribution.message',
-            { name: 'This is some post content.' }
-          ]
+          ['disable.contribution.message', { name: 'This is some post title.' }]
         ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })

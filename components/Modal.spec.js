@@ -1,5 +1,6 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import Modal from './Modal.vue'
+import DisableModal from './Modal/DisableModal.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getters, mutations } from '../store/modal'
@@ -58,17 +59,36 @@ describe('Modal.vue', () => {
       expect(wrapper.isEmpty()).toBe(true)
     })
 
-    describe('store state.open === "disable"', () => {
+    describe('store/modal holds data to disable', () => {
       beforeEach(() => {
         state = {
           open: 'disable',
-          data: {}
+          data: {
+            type: 'contribution',
+            name: 'some title',
+            id: 456
+          }
         }
         wrapper = Wrapper()
       })
 
-      it('renders report modal', () => {
-        expect(wrapper.contains('disable-modal-stub')).toBe(true)
+      it('renders disable modal', () => {
+        expect(wrapper.contains(DisableModal)).toBe(true)
+      })
+
+      it('passes data to disable modal', () => {
+        expect(wrapper.find(DisableModal).props().resource).toEqual({
+          type: 'contribution',
+          name: 'some title',
+          id: 456
+        })
+      })
+
+      describe('click cancel', () => {
+        it('empties wrapper', () => {
+          wrapper.find(DisableModal).vm.$emit('close')
+          expect(wrapper.isEmpty()).toBe(true)
+        })
       })
     })
   })
