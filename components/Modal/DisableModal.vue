@@ -33,14 +33,10 @@ export default {
       type: Boolean,
       default: false
     },
-    id: {
-      type: Number,
-      default: null
-    },
     resource: {
       type: Object,
       default() {
-        return { type: 'contribution', name: '' }
+        return { id: null, type: 'contribution', name: '' }
       }
     }
   },
@@ -62,7 +58,7 @@ export default {
               disable(id: $id)
             }
           `,
-          variables: { id: this.id }
+          variables: { id: this.resource.id }
         })
         this.$toast.success(this.$t('disable.success'))
       } catch (err) {

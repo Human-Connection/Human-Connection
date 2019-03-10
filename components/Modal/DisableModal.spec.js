@@ -86,7 +86,9 @@ describe('DisableModal.vue', () => {
       beforeEach(() => {
         propsData = {
           isOpen: true,
-          id: 4711
+          resource: {
+            id: 4711
+          }
         }
       })
 
