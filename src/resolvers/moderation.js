@@ -6,16 +6,18 @@ export default {
       const cypher = `
       MATCH (u:User {id: $userId})
       MATCH (resource {id: $id})
+      WHERE resource:User OR resource:Comment OR resource:Post
       SET resource.disabled = true
       MERGE (resource)<-[:DISABLED]-(u)
       RETURN resource {.id}
       `
       const session = driver.session()
       const res = await session.run(cypher, { id, userId })
+      session.close()
       const [resource] = res.records.map((record) => {
         return record.get('resource')
       })
-      session.close()
+      if(!resource) return null
       return resource.id
     },
     enable: async (object, params, { user, driver }) => {
@@ -28,10 +30,11 @@ export default {
       `
       const session = driver.session()
       const res = await session.run(cypher, { id })
+      session.close()
       const [resource] = res.records.map((record) => {
         return record.get('resource')
       })
-      session.close()
+      if(!resource) return null
       return resource.id
     }
   }

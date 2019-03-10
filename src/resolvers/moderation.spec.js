@@ -80,6 +80,25 @@ describe('disable', () => {
         })
       })
 
+      describe('on something that is not a (Comment|Post|User) ', () => {
+        beforeEach(async () => {
+          variables = {
+            id: 't23'
+          }
+          createResource = () => {
+            return Promise.all([
+              factory.create('Tag', { id: 't23' }),
+            ])
+          }
+        })
+
+        it('returns null', async () => {
+          const expected = { disable: null }
+          await setup()
+          await expect(action()).resolves.toEqual(expected)
+        })
+      })
+
       describe('on a comment', () => {
         beforeEach(async () => {
           variables = {
@@ -231,6 +250,26 @@ describe('enable', () => {
           role: 'moderator',
           email: 'someUser@example.org',
           password: '1234'
+        })
+      })
+
+      describe('on something that is not a (Comment|Post|User) ', () => {
+        beforeEach(async () => {
+          variables = {
+            id: 't23'
+          }
+          createResource = () => {
+            // we cannot create a :DISABLED relationship here
+            return Promise.all([
+              factory.create('Tag', { id: 't23' }),
+            ])
+          }
+        })
+
+        it('returns null', async () => {
+          const expected = { enable: null }
+          await setup()
+          await expect(action()).resolves.toEqual(expected)
         })
       })
 
