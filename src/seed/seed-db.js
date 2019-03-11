@@ -107,14 +107,7 @@ import Factory from './factories'
       asTick.create('Post',      { id: 'p15' })
     ])
 
-    const disableMutation = `
-      mutation {
-        disable(resource: {
-          id: "p11"
-          type: contribution
-        })
-      }
-    `
+    const disableMutation = 'mutation { disable( id: "p11") }'
     await asModerator.mutate(disableMutation)
 
     await Promise.all([
@@ -173,6 +166,26 @@ import Factory from './factories'
       asTrack
         .shout({ id: 'p10', type: 'Post' })
     ])
+    await Promise.all([
+      asAdmin
+        .shout({ id: 'p2', type: 'Post' }),
+      asAdmin
+        .shout({ id: 'p6', type: 'Post' }),
+      asModerator
+        .shout({ id: 'p0', type: 'Post' }),
+      asModerator
+        .shout({ id: 'p6', type: 'Post' }),
+      asUser
+        .shout({ id: 'p6', type: 'Post' }),
+      asUser
+        .shout({ id: 'p7', type: 'Post' }),
+      asTick
+        .shout({ id: 'p8', type: 'Post' }),
+      asTick
+        .shout({ id: 'p9', type: 'Post' }),
+      asTrack
+        .shout({ id: 'p10', type: 'Post' })
+    ])
 
     await Promise.all([
       f.create('Comment', { id: 'c1' }),
@@ -202,9 +215,9 @@ import Factory from './factories'
     ])
 
     await Promise.all([
-      asTick.create('Report',  { description: 'I don\'t like this comment', resource: { id: 'c1', type: 'comment' } }),
-      asTrick.create('Report', { description: 'I don\'t like this post',    resource: { id: 'p1', type: 'contribution' } }),
-      asTrack.create('Report', { description: 'I don\'t like this user',    resource: { id: 'u1', type: 'user' } })
+      asTick.create('Report',  { description: 'I don\'t like this comment', id: 'c1' }),
+      asTrick.create('Report', { description: 'I don\'t like this post',    id: 'p1' }),
+      asTrack.create('Report', { description: 'I don\'t like this user',    id: 'u1' })
     ])
 
     await Promise.all([
