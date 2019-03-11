@@ -1,5 +1,12 @@
 # Local Installation
 
+Make sure you have a recent version of node - we currently use 10.15.1
+
+```bash
+$ node -v
+v10.15.1
+```
+
 Make sure that you have a recent version of [yarn](https://yarnpkg.com/en/) or [npm](https://www.npmjs.com) installed before you proceed. E.g. we have the following versions:
 
 ```bash
