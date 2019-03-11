@@ -1,5 +1,9 @@
 Thanks so much for thinking of contributing to the Human Connection project, we really appreciate it! :-)
 
+### Getting Set Up
+
+Instructions for how to install all the necessary software can be found in our [documentation](https://docs.human-connection.org/documentation/)
+
 We recommend that new folks should ideally work together with an existing developer.  Please join our discord instance to chat with developers or just ask them in tickets in [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f/boards?repos=152252353):
 
 ![](https://dl.dropbox.com/s/vbmcihkduy9dhko/Screenshot%202019-01-03%2015.50.11.png?dl=0)
