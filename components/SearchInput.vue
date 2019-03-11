@@ -33,7 +33,7 @@
           :auto-reset-search="!searchValue"
           :placeholder="$t('search.placeholder')"
           :loading="pending"
-          @enter="onEnter"
+          @keyup.enter.native="onEnter"
           @focus.capture.native="onFocus"
           @blur.capture.native="onBlur"
           @keyup.delete.native="onDelete"

@@ -56,7 +56,6 @@ describe('SearchInput.vue', () => {
     it('accepts values as a string', () => {
       propsData = { value: 'abc' }
       const wrapper = Wrapper()
-      // expect(wrapper.vm._data.searchValue).toEqual('abc')
       expect(wrapper.vm.value).toEqual('abc')
     })
 
@@ -76,12 +75,28 @@ describe('SearchInput.vue', () => {
       const wrapper = Wrapper()
       const select = wrapper.find('.ds-select')
       select.trigger('focus')
-      const input = wrapper.find('input')
-      input.setValue('Volu')
-      input.trigger('keydown.esc')
-      // const clearIcon = wrapper.find('.search-clear-btn')
-      // clearIcon.trigger('click')
-      expect(input.element.value).toBe('')
+      select.element.value = 'abcd'
+      select.trigger('keyup.esc')
+      expect(wrapper.emitted().clear.length).toBe(1)
+    })
+
+    it('changes the unprocessedSearchInput as the value changes', () => {
+      const wrapper = Wrapper()
+      const select = wrapper.find('.ds-select')
+      select.trigger('focus')
+      select.element.value = 'abcd'
+      select.trigger('input')
+      expect(wrapper.vm.unprocessedSearchInput).toBe('abcd')
+    })
+
+    it('searches for the term when enter is pressed', async () => {
+      const wrapper = Wrapper()
+      const select = wrapper.find('.ds-select')
+      select.trigger('focus')
+      select.element.value = 'abcd'
+      select.trigger('input')
+      select.trigger('keyup.enter')
+      await expect(wrapper.emitted().search[0]).toEqual(['abcd'])
     })
   })
 })
