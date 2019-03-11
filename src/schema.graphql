@@ -11,6 +11,8 @@ type Mutation {
   signup(email: String!, password: String!): Boolean!
   changePassword(oldPassword:String!, newPassword: String!): String!
   report(resource: Resource!, description: String): Report
+  disable(id: ID!): ID
+  enable(id: ID!): ID
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
     MATCH (n {id: $id})<-[:WROTE]-(wu:User), (u:User {id: $cypherParams.currentUserId})
@@ -40,8 +42,6 @@ type Mutation {
     DELETE r
     RETURN COUNT(r) > 0
   """)
-  disable(resource: Resource!): Boolean!
-  enable(resource: Resource!): Boolean!
 }
 
 type Statistics {
@@ -59,17 +59,6 @@ type Statistics {
 scalar Date
 scalar Time
 scalar DateTime
-
-input Resource {
-  id: ID!,
-  type: ResourceEnum!
-}
-
-enum ResourceEnum {
-  contribution
-  comment
-  user
-}
 
 enum VisibilityEnum {
   public
@@ -216,12 +205,12 @@ type Comment {
 
 type Report {
   id: ID!
-  reporter: User @relation(name: "REPORTED", direction: "IN")
+  submitter: User @relation(name: "REPORTED", direction: "IN")
   description: String
-  type: ResourceEnum!
+  type: String! @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
   createdAt: String
   comment: Comment @relation(name: "REPORTED", direction: "OUT")
-  contribution: Post @relation(name: "REPORTED", direction: "OUT")
+  post: Post @relation(name: "REPORTED", direction: "OUT")
   user: User @relation(name: "REPORTED", direction: "OUT")
 }
 

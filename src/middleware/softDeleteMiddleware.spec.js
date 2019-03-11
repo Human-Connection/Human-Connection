@@ -22,10 +22,9 @@ beforeEach(async () => {
   await moderatorFactory.authenticateAs({ email: 'moderator@example.org', password: '1234' })
   const disableMutation = `
       mutation {
-        disable(resource: {
+        disable(
           id: "p2"
-          type: contribution
-        })
+        )
       }
     `
   await moderatorFactory.mutate(disableMutation)
