@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import SearchInput from './SearchInput.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 const localVue = createLocalVue()
@@ -71,32 +70,46 @@ describe('SearchInput.vue', () => {
       // )
     })
 
-    it('is clearable', () => {
-      const wrapper = Wrapper()
-      const select = wrapper.find('.ds-select')
-      select.trigger('focus')
-      select.element.value = 'abcd'
-      select.trigger('keyup.esc')
-      expect(wrapper.emitted().clear.length).toBe(1)
-    })
+    describe('testing custom functions', () => {
+      let select
+      let wrapper
 
-    it('changes the unprocessedSearchInput as the value changes', () => {
-      const wrapper = Wrapper()
-      const select = wrapper.find('.ds-select')
-      select.trigger('focus')
-      select.element.value = 'abcd'
-      select.trigger('input')
-      expect(wrapper.vm.unprocessedSearchInput).toBe('abcd')
-    })
+      beforeEach(() => {
+        wrapper = Wrapper()
+        select = wrapper.find('.ds-select')
+        select.trigger('focus')
+        select.element.value = 'abcd'
+      })
 
-    it('searches for the term when enter is pressed', async () => {
-      const wrapper = Wrapper()
-      const select = wrapper.find('.ds-select')
-      select.trigger('focus')
-      select.element.value = 'abcd'
-      select.trigger('input')
-      select.trigger('keyup.enter')
-      await expect(wrapper.emitted().search[0]).toEqual(['abcd'])
+      it('is clearable', () => {
+        select.trigger('keyup.esc')
+        expect(wrapper.emitted().clear.length).toBe(1)
+      })
+
+      it('changes the unprocessedSearchInput as the value changes', () => {
+        select.trigger('input')
+        expect(wrapper.vm.unprocessedSearchInput).toBe('abcd')
+      })
+
+      it('searches for the term when enter is pressed', async () => {
+        select.trigger('input')
+        select.trigger('keyup.enter')
+        await expect(wrapper.emitted().search[0]).toEqual(['abcd'])
+      })
+
+      it('calls onDelete when the delete key is pressed', () => {
+        const spy = jest.spyOn(wrapper.vm, 'onDelete')
+        select.trigger('input')
+        select.trigger('keyup.delete')
+        expect(spy).toHaveBeenCalledTimes(1)
+      })
+
+      it('calls query when a user starts a search by pressing enter', () => {
+        const spy = jest.spyOn(wrapper.vm, 'query')
+        select.trigger('input')
+        select.trigger('keyup.enter')
+        expect(spy).toHaveBeenCalledWith('abcd')
+      })
     })
   })
 })
