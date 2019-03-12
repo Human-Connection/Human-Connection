@@ -56,7 +56,7 @@
       "projects": "Projekty",
       "invites": "Zaproszenia",
       "follows": "Obserwowań",
-      "shouts": "   okrzyk"
+      "shouts": "Okrzyk"
     },
     "organizations": {
       "name": "Organizacje"
@@ -179,8 +179,8 @@
     "delete": "Usuń komentarz"
   },
   "followButton": {
-    "follow": "Obserwuj ",
-    "following": "Obserwowani "
+    "follow": "Obserwuj",
+    "following": "Obserwowani"
   },
   "shoutButton": {
     "shouted": "krzyczeć"
