@@ -1,7 +1,7 @@
 {
   "login": {
-    "copy": "Se você já tem uma conta no Human Connection, faça o login aqui.",
-    "login": "Login",
+    "copy": "Se você já tem uma conta no Human Connection, entre aqui.",
+    "login": "Entrar",
     "logout": "Sair",
     "email": "Seu email",
     "password": "Sua senha",
@@ -13,12 +13,17 @@
     "memberSince": "Membro desde",
     "follow": "Seguir",
     "followers": "Seguidores",
-    "following": "Seguindo"
+    "following": "Seguindo",
+    "shouted": "Aclamou",
+    "commented": "Comentou"
   },
   "settings": {
     "name": "Configurações",
     "data": {
-      "name": "Seus Dados"
+      "name": "Seus dados",
+      "labelName": "Seu nome",
+      "labelCity": "Sua cidade ou estado",
+      "labelBio": "Sobre você"
     },
     "security": {
       "name": "Segurança"
@@ -30,7 +35,7 @@
       "name": "Baixar dados"
     },
     "delete": {
-      "name": "Deletar conta"
+      "name": "Apagar conta"
     },
     "organizations": {
       "name": "Minhas Organizações"
@@ -40,7 +45,7 @@
     }
   },
   "admin": {
-    "name": "Administrador",
+    "name": "Administração",
     "dashboard": {
       "name": "Painel de controle",
       "users": "Usuários",
@@ -50,8 +55,8 @@
       "organizations": "Organizações",
       "projects": "Projetos",
       "invites": "Convites",
-      "follows": "Seguidores",
-      "shouts": "Gritos"
+      "follows": "Segue",
+      "shouts": "Aclamações"
     },
     "organizations": {
       "name": "Organizações"
@@ -90,18 +95,18 @@
   },
   "quotes": {
     "african": {
-      "quote": "Pequenos grupos de pessoas, em pequenos locais podem fazer várias coisas pequenas, mas que podem alterar o mundo ao nosso redor.",
-      "author": "Provérbio Africano"
+      "quote": "Muitas pessoas pequenas, em muitos lugares pequenos, fazem muitas coisas pequenas, que podem mudar a face do mundo.",
+      "author": "Provérbio africano"
     }
   },
   "common": {
-    "post": "Post ::: Postagens",
+    "post": "Postagem ::: Postagens",
     "comment": "Comentário ::: Comentários",
-    "letsTalk": "Vamos falar",
-    "versus": "Versus",
+    "letsTalk": "Vamos Conversar",
+    "versus": "Contra",
     "moreInfo": "Mais informações",
     "takeAction": "Tomar uma ação",
-    "shout": "Grito ::: Gritos",
+    "shout": "Aclamação ::: Aclamações",
     "user": "Usuário ::: Usuários",
     "category": "Categoria ::: Categorias",
     "organization": "Organização ::: Organizações",
@@ -112,19 +117,58 @@
     "loading": "Carregando",
     "reportContent": "Denunciar"
   },
+  "actions": {
+    "loading": "Carregando",
+    "loadMore": "Carregar mais",
+    "create": "Criar",
+    "save": "Salvar",
+    "edit": "Editar",
+    "delete": "Apagar",
+    "cancel": "Cancelar"
+  },
+  "moderation": {
+    "name": "Moderação",
+    "reports": {
+      "empty": "Parabéns, nada a moderar.",
+      "name": "Denúncias",
+      "reporter": "Denunciado por"
+    }
+  },
+  "disable": {
+    "user": {
+      "title": "Desativar usuário",
+      "type": "Usuário",
+      "message": "Você realmente deseja desativar o usuário \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Desativar Contribuição",
+      "type": "Contribuição",
+      "message": "Você realmente deseja desativar a contribuição \" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Desativar comentário",
+      "type": "Comentário",
+      "message": "Você realmente deseja desativar o comentário de \" <b> {name} </b> \"?"
+    }
+  },
   "report": {
+    "submit": "Enviar denúncia",
+    "cancel": "Cancelar",
+    "user": {
+      "title": "Denunciar usuário",
+      "type": "Usuário",
+      "message": "Você realmente deseja denunciar o usuário \" <b> {name} </b> \"?"
+    },
     "contribution": {
       "title": "Denunciar Contribuição",
-      "type": "Contribuição"
+      "type": "Contribuição",
+      "message": "Você realmente deseja denunciar a contribuição \" <b> {name} </b> \"?"
     },
     "comment": {
       "title": "Denunciar Comentário",
       "type": "Comentário",
-      "message": "Realmente quer denunciar o comentário de \"<b>{nome}</b>\"?"
+      "message": "Você realmente deseja denunciar o comentário de \"<b>{name}</b>\"?"
     }
-  },
-  "actions": {
-    "cancel": "Cancelar"
   },
   "contribution": {
     "edit": "Editar Contribuição",
@@ -133,5 +177,12 @@
   "comment": {
     "edit": "Editar Comentário",
     "delete": "Apagar Comentário"
+  },
+  "followButton": {
+    "follow": "Seguir",
+    "following": "Seguindo"
+  },
+  "shoutButton": {
+    "shouted": "Aclamou"
   }
 }
