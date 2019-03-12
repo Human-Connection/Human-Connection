@@ -1,13 +1,4 @@
 {
-  "actions": {
-    "loading": "lade",
-    "loadMore": "mehr laden",
-    "create": "Erstellen",
-    "save": "Speichern",
-    "edit": "Bearbeiten",
-    "delete": "Löschen",
-    "cancel": "Abbrechen"
-  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
@@ -16,13 +7,6 @@
     "password": "Dein Passwort",
     "moreInfo": "Was ist Human Connection?",
     "hello": "Hallo"
-  },
-  "followButton": {
-    "follow": "Folgen",
-    "following": "Folge Ich"
-  },
-  "shoutButton": {
-    "shouted": "empfohlen"
   },
   "profile": {
     "name": "Mein Profil",
@@ -105,6 +89,48 @@
       "name": "Einstellungen"
     }
   },
+  "post": {
+    "name": "Beitrag",
+    "moreInfo": {
+      "name": "Mehr Info"
+    },
+    "takeAction": {
+      "name": "Aktiv werden"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Viele kleine Leute an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
+      "author": "Afrikanisches Sprichwort"
+    }
+  },
+  "common": {
+    "post": "Beitrag ::: Beiträge",
+    "comment": "Kommentar ::: Kommentare",
+    "letsTalk": "Miteinander reden",
+    "versus": "Versus",
+    "moreInfo": "Mehr Info",
+    "takeAction": "Aktiv werden",
+    "shout": "Empfehlung ::: Empfehlungen",
+    "user": "Benutzer ::: Benutzer",
+    "category": "Kategorie ::: Kategorien",
+    "organization": "Organisation ::: Organisationen",
+    "project": "Projekt ::: Projekte",
+    "tag": "Tag ::: Tags",
+    "name": "Name",
+    "loadMore": "mehr laden",
+    "loading": "wird geladen",
+    "reportContent": "Melden"
+  },
+  "actions": {
+    "loading": "lade",
+    "loadMore": "mehr laden",
+    "create": "Erstellen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "cancel": "Abbrechen"
+  },
   "moderation": {
     "name": "Moderation",
     "reports": {
@@ -112,14 +138,6 @@
       "name": "Meldungen",
       "reporter": "gemeldet von"
     }
-  },
-  "contribution": {
-    "edit": "Beitrag bearbeiten",
-    "delete": "Beitrag löschen"
-  },
-  "comment": {
-    "edit": "Kommentar bearbeiten",
-    "delete": "Kommentar löschen"
   },
   "disable": {
     "user": {
@@ -136,15 +154,6 @@
       "title": "Kommentar sperren",
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" deaktivieren möchtest?"
-    }
-  },
-  "post": {
-    "name": "Beitrag",
-    "moreInfo": {
-      "name": "Mehr Info"
-    },
-    "takeAction": {
-      "name": "Aktiv werden"
     }
   },
   "report": {
@@ -166,28 +175,19 @@
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?"
     }
   },
-  "quotes": {
-    "african": {
-      "quote": "Viele kleine Leute, an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
-      "author": "Afrikanisches Sprichwort"
-    }
+  "contribution": {
+    "edit": "Beitrag bearbeiten",
+    "delete": "Beitrag löschen"
   },
-  "common": {
-    "reportContent": "Melden",
-    "post": "Beitrag ::: Beiträge",
-    "comment": "Kommentar ::: Kommentare",
-    "letsTalk": "Miteinander reden",
-    "versus": "Versus",
-    "moreInfo": "Mehr Info",
-    "takeAction": "Aktiv werden",
-    "shout": "Empfehlung ::: Empfehlungen",
-    "user": "Benutzer ::: Benutzer",
-    "category": "Kategorie ::: Kategorien",
-    "organization": "Organisation ::: Organisationen",
-    "project": "Projekt ::: Projekte",
-    "tag": "Tag ::: Tags",
-    "name": "Name",
-    "loadMore": "mehr laden",
-    "loading": "wird geladen"
+  "comment": {
+    "edit": "Kommentar bearbeiten",
+    "delete": "Kommentar löschen"
+  },
+  "followButton": {
+    "follow": "Folgen",
+    "following": "Folge Ich"
+  },
+  "shoutButton": {
+    "shouted": "empfohlen"
   }
 }
