@@ -2,7 +2,7 @@
   <ds-modal
     :title="title"
     :is-open="isOpen"
-    @cancel="$emit('close')"
+    @cancel="cancel"
   >
     <transition name="ds-transition-fade">
       <ds-flex
@@ -23,7 +23,7 @@
       <ds-button
         class="cancel"
         icon="close"
-        @click="$emit('close')"
+        @click="cancel"
       >
         {{ $t('report.cancel') }}
       </ds-button>
@@ -51,10 +51,6 @@ export default {
     SweetalertIcon
   },
   props: {
-    isOpen: {
-      type: Boolean,
-      default: false
-    },
     resource: {
       type: Object,
       default() {
@@ -64,6 +60,7 @@ export default {
   },
   data() {
     return {
+      isOpen: true,
       success: false,
       loading: false
     }
@@ -78,6 +75,13 @@ export default {
     }
   },
   methods: {
+    async cancel() {
+      console.log('cancel')
+      this.isOpen = false
+      setTimeout(() => {
+        this.$emit('close')
+      }, 1000)
+    },
     async confirm() {
       this.loading = true
       try {
@@ -94,8 +98,11 @@ export default {
         this.success = true
         this.$toast.success(this.$t('report.success'))
         setTimeout(() => {
-          this.success = false
-          this.$emit('close')
+          this.isOpen = false
+          setTimeout(() => {
+            this.success = false
+            this.$emit('close')
+          }, 500)
         }, 1500)
       } catch (err) {
         this.success = false

@@ -38,10 +38,6 @@ describe('ReportModal.vue', () => {
     }
 
     describe('defaults', () => {
-      it('isOpen false', () => {
-        expect(Wrapper().vm.isOpen).toBe(false)
-      })
-
       it('success false', () => {
         expect(Wrapper().vm.success).toBe(false)
       })
@@ -75,14 +71,15 @@ describe('ReportModal.vue', () => {
       return mount(ReportModal, { propsData, mocks, localVue })
     }
 
+    beforeEach(jest.useFakeTimers)
+
     it('renders', () => {
       expect(Wrapper().is('div')).toBe(true)
     })
 
-    describe('given id and opened', () => {
+    describe('given id', () => {
       beforeEach(() => {
         propsData = {
-          isOpen: true,
           resource: {
             id: 4711
           }
@@ -96,18 +93,25 @@ describe('ReportModal.vue', () => {
           wrapper.find('button.cancel').trigger('click')
         })
 
-        it('emits close', () => {
-          expect(wrapper.emitted().close).toBeTruthy()
-        })
+        describe('after timeout', () => {
+          beforeEach(jest.runAllTimers)
 
-        it('does not call mutation', () => {
-          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+          it('fades away', () => {
+            expect(wrapper.vm.isOpen).toBe(false)
+          })
+
+          it('emits "close"', () => {
+            expect(wrapper.emitted().close).toBeTruthy()
+          })
+
+          it('does not call mutation', () => {
+            expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+          })
         })
       })
 
       describe('click confirm button', () => {
         beforeEach(() => {
-          jest.useFakeTimers()
           wrapper.find('button.confirm').trigger('click')
         })
 
@@ -127,6 +131,10 @@ describe('ReportModal.vue', () => {
 
         describe('after timeout', () => {
           beforeEach(jest.runAllTimers)
+
+          it('fades away', () => {
+            expect(wrapper.vm.isOpen).toBe(false)
+          })
 
           it('emits close', () => {
             expect(wrapper.emitted().close).toBeTruthy()

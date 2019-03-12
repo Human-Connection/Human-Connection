@@ -2,7 +2,7 @@
   <ds-modal
     :title="title"
     :is-open="isOpen"
-    @cancel="$emit('close')"
+    @cancel="cancel"
   >
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
@@ -10,7 +10,7 @@
     <template slot="footer">
       <ds-button
         class="cancel"
-        @click="$emit('close')"
+        @click="cancel"
       >
         {{ $t('disable.cancel') }}
       </ds-button>
@@ -32,15 +32,18 @@ import gql from 'graphql-tag'
 
 export default {
   props: {
-    isOpen: {
-      type: Boolean,
-      default: false
-    },
     resource: {
       type: Object,
       default() {
         return { id: null, type: 'contribution', name: '' }
       }
+    }
+  },
+  data() {
+    return {
+      isOpen: true,
+      success: false,
+      loading: false
     }
   },
   computed: {
@@ -53,6 +56,12 @@ export default {
     }
   },
   methods: {
+    cancel() {
+      this.isOpen = false
+      setTimeout(() => {
+        this.$emit('close')
+      }, 1000)
+    },
     async confirm() {
       try {
         await this.$apollo.mutate({
@@ -64,10 +73,12 @@ export default {
           variables: { id: this.resource.id }
         })
         this.$toast.success(this.$t('disable.success'))
+        this.isOpen = false
+        setTimeout(() => {
+          this.$emit('close')
+        }, 1000)
       } catch (err) {
         this.$toast.error(err.message)
-      } finally {
-        this.$emit('close')
       }
     }
   }

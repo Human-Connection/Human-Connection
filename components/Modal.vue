@@ -1,12 +1,12 @@
 <template>
   <div class="modal-wrapper">
     <disable-modal
-      :is-open="open === 'disable'"
+      v-if="open === 'disable'"
       :resource="data"
       @close="close"
     />
     <report-modal
-      :is-open="open === 'report'"
+      v-if="open === 'report'"
       :resource="data"
       @close="close"
     />

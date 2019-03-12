@@ -78,11 +78,11 @@ describe('DisableModal.vue', () => {
     const Wrapper = () => {
       return mount(DisableModal, { propsData, mocks, localVue })
     }
+    beforeEach(jest.useFakeTimers)
 
-    describe('given id and opened', () => {
+    describe('given id', () => {
       beforeEach(() => {
         propsData = {
-          isOpen: true,
           resource: {
             id: 4711
           }
@@ -95,12 +95,24 @@ describe('DisableModal.vue', () => {
           await wrapper.find('button.cancel').trigger('click')
         })
 
-        it('emits close', () => {
-          expect(wrapper.emitted().close).toBeTruthy()
+        it('does not emit "close" yet', () => {
+          expect(wrapper.emitted().close).toBeFalsy()
         })
 
-        it('does not call mutation', () => {
-          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        it('fades away', () => {
+          expect(wrapper.vm.isOpen).toBe(false)
+        })
+
+        describe('after timeout', () => {
+          beforeEach(jest.runAllTimers)
+
+          it('does not call mutation', () => {
+            expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+          })
+
+          it('emits close', () => {
+            expect(wrapper.emitted().close).toBeTruthy()
+          })
         })
       })
 
@@ -108,10 +120,6 @@ describe('DisableModal.vue', () => {
         beforeEach(async () => {
           wrapper = Wrapper()
           await wrapper.find('button.confirm').trigger('click')
-        })
-
-        it('emits close', () => {
-          expect(wrapper.emitted().close).toBeTruthy()
         })
 
         it('calls mutation', () => {
@@ -122,6 +130,18 @@ describe('DisableModal.vue', () => {
           const calls = mocks.$apollo.mutate.mock.calls
           const [[{ variables }]] = calls
           expect(variables).toEqual({ id: 4711 })
+        })
+
+        it('fades away', () => {
+          expect(wrapper.vm.isOpen).toBe(false)
+        })
+
+        describe('after timeout', () => {
+          beforeEach(jest.runAllTimers)
+
+          it('emits close', () => {
+            expect(wrapper.emitted().close).toBeTruthy()
+          })
         })
       })
     })

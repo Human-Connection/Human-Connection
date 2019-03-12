@@ -1,6 +1,7 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import Modal from './Modal.vue'
 import DisableModal from './Modal/DisableModal.vue'
+import ReportModal from './Modal/ReportModal.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getters, mutations } from '../store/modal'
@@ -54,9 +55,10 @@ describe('Modal.vue', () => {
   describe('shallowMount', () => {
     const Wrapper = createWrapper(shallowMount)
 
-    it('renders all modals as closed', () => {
+    it('initially empty', () => {
       wrapper = Wrapper()
-      expect(wrapper.find(DisableModal).vm.isOpen).toBe(false)
+      expect(wrapper.contains(DisableModal)).toBe(false)
+      expect(wrapper.contains(ReportModal)).toBe(false)
     })
 
     describe('store/modal holds data to disable', () => {
@@ -85,9 +87,9 @@ describe('Modal.vue', () => {
       })
 
       describe('child component emits close', () => {
-        it('close DisableModal', () => {
+        it('turns empty', () => {
           wrapper.find(DisableModal).vm.$emit('close')
-          expect(wrapper.find(DisableModal).vm.isOpen).toBe(false)
+          expect(wrapper.contains(DisableModal)).toBe(false)
         })
       })
     })
