@@ -13,7 +13,9 @@
     "memberSince": "Miembro desde",
     "follow": "Seguir",
     "followers": "Seguidores",
-    "following": "Siguiendo"
+    "following": "Siguiendo",
+    "shouted": "Gritar",
+    "commented": "Comentado"
   },
   "settings": {
     "name": "Configuración",

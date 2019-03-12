@@ -29,6 +29,7 @@ export default app => {
           slug
           avatar
           followedByCount
+          followedByCurrentUser
           contributionsCount
           commentsCount
           badges {
@@ -41,12 +42,14 @@ export default app => {
           }
         }
         followedByCount
+        followedByCurrentUser
         followedBy(first: 7)  {
           id
           name
           slug
           avatar
           followedByCount
+          followedByCurrentUser
           contributionsCount
           commentsCount
           badges {

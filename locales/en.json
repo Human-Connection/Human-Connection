@@ -1,13 +1,4 @@
 {
-  "actions": {
-    "loading": "loading",
-    "loadMore": "load more",
-    "create": "Create",
-    "save": "Save",
-    "edit": "Edit",
-    "delete": "Delete",
-    "cancel": "Cancel"
-  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
@@ -93,6 +84,48 @@
       "name": "Settings"
     }
   },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "More info"
+    },
+    "takeAction": {
+      "name": "Take action"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Many small people in many small places do many small things, that can alter the face of the world.",
+      "author": "African proverb"
+    }
+  },
+  "common": {
+    "post": "Post ::: Posts",
+    "comment": "Comment ::: Comments",
+    "letsTalk": "Let`s Talk",
+    "versus": "Versus",
+    "moreInfo": "More Info",
+    "takeAction": "Take Action",
+    "shout": "Shout ::: Shouts",
+    "user": "User ::: Users",
+    "category": "Category ::: Categories",
+    "organization": "Organization ::: Organizations",
+    "project": "Project ::: Projects",
+    "tag": "Tag ::: Tags",
+    "name": "Name",
+    "loadMore": "load more",
+    "loading": "loading",
+    "reportContent": "Report"
+  },
+  "actions": {
+    "loading": "loading",
+    "loadMore": "load more",
+    "create": "Create",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
   "moderation": {
     "name": "Moderation",
     "reports": {
@@ -100,14 +133,6 @@
       "name": "Reports",
       "submitter": "reported by"
     }
-  },
-  "contribution": {
-    "edit": "Edit Contribution",
-    "delete": "Delete Contribution"
-  },
-  "comment": {
-    "edit": "Edit Comment",
-    "delete": "Delete Comment"
   },
   "disable": {
     "user": {
@@ -124,15 +149,6 @@
       "title": "Disable Comment",
       "type": "Comment",
       "message": "Do you really want to disable the comment from \"<b>{name}</b>\"?"
-    }
-  },
-  "post": {
-    "name": "Post",
-    "moreInfo": {
-      "name": "More info"
-    },
-    "takeAction": {
-      "name": "Take action"
     }
   },
   "report": {
@@ -154,28 +170,19 @@
       "message": "Do you really want to report the comment from \"<b>{name}</b>\"?"
     }
   },
-  "quotes": {
-    "african": {
-      "quote": "Many small people in many small places do many small things, that can alter the face of the world.",
-      "author": "African proverb"
-    }
+  "contribution": {
+    "edit": "Edit Contribution",
+    "delete": "Delete Contribution"
   },
-  "common": {
-    "reportContent": "Report",
-    "post": "Post ::: Posts",
-    "comment": "Comment ::: Comments",
-    "letsTalk": "Let`s Talk",
-    "versus": "Versus",
-    "moreInfo": "More Info",
-    "takeAction": "Take Action",
-    "shout": "Shout ::: Shouts",
-    "user": "User ::: Users",
-    "category": "Category ::: Categories",
-    "organization": "Organization ::: Organizations",
-    "project": "Project ::: Projects",
-    "tag": "Tag ::: Tags",
-    "name": "Name",
-    "loadMore": "load more",
-    "loading": "loading"
+  "comment": {
+    "edit": "Edit Comment",
+    "delete": "Delete Comment"
+  },
+  "followButton": {
+    "follow": "Follow",
+    "following": "Following"
+  },
+  "shoutButton": {
+    "shouted": "shouted"
   }
 }
