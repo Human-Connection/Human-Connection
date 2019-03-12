@@ -136,7 +136,7 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "reporter": "reported by"
+      "submitter": "reported by"
     }
   },
   "disable": {
@@ -165,7 +165,7 @@
       "message": "Do you really want to report the user \"<b>{name}</b>\"?"
     },
     "contribution": {
-      "title": "Report Contribution",
+      "title": "Report Post",
       "type": "Contribution",
       "message": "Do you really want to report the contribution \"<b>{name}</b>\"?"
     },

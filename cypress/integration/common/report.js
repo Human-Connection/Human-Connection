@@ -39,18 +39,15 @@ Given('I am logged in with a {string} role', role => {
   })
 })
 
-When(
-  'I click on "Report Contribution" from the triple dot menu of the post',
-  () => {
-    cy.contains('.ds-card', davidIrvingPostTitle)
-      .find('.content-menu-trigger')
-      .click()
+When('I click on "Report Post" from the triple dot menu of the post', () => {
+  cy.contains('.ds-card', davidIrvingPostTitle)
+    .find('.content-menu-trigger')
+    .click()
 
-    cy.get('.popover .ds-menu-item-link')
-      .contains('Report Contribution')
-      .click()
-  }
-)
+  cy.get('.popover .ds-menu-item-link')
+    .contains('Report Post')
+    .click()
+})
 
 When(
   'I click on "Report User" from the triple dot menu in the user info box',
@@ -122,16 +119,16 @@ When(/^I confirm the reporting dialog .*:$/, message => {
 
 Given('somebody reported the following posts:', table => {
   table.hashes().forEach(({ id }) => {
-    const reporter = {
-      email: `reporter${id}@example.org`,
+    const submitter = {
+      email: `submitter${id}@example.org`,
       password: '1234'
     }
     cy.factory()
-      .create('User', reporter)
-      .authenticateAs(reporter)
+      .create('User', submitter)
+      .authenticateAs(submitter)
       .create('Report', {
-        description: "I don't like this post",
-        resource: { id, type: 'contribution' }
+        id,
+        description: 'Offensive content'
       })
   })
 })
