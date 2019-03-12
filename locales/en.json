@@ -156,7 +156,7 @@
     }
   },
   "report": {
-    "submit": "Send Report",
+    "submit": "Report",
     "cancel": "Cancel",
     "success": "Thanks for reporting!",
     "user": {
