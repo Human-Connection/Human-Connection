@@ -13,12 +13,17 @@
     "memberSince": "Członek od",
     "follow": "Obserwuj",
     "followers": "Obserwujący",
-    "following": "Obserwowani"
+    "following": "Obserwowani",
+    "shouted": "Krzyknij",
+    "commented": "Skomentuj"
   },
   "settings": {
     "name": "Ustawienia",
     "data": {
-      "name": "Twoje dane"
+      "name": "Twoje dane",
+      "labelName": "Twoje dane",
+      "labelCity": "Twoje miasto lub region",
+      "labelBio": "O Tobie"
     },
     "security": {
       "name": "Bezpieczeństwo"
@@ -51,7 +56,7 @@
       "projects": "Projekty",
       "invites": "Zaproszenia",
       "follows": "Obserwowań",
-      "shouts": "   okrzyk"
+      "shouts": "Okrzyk"
     },
     "organizations": {
       "name": "Organizacje"
@@ -109,6 +114,75 @@
     "tag": "Tag ::: Tagi",
     "name": "imię",
     "loadMore": "załaduj więcej",
-    "loading": "ładowanie"
+    "loading": "ładowanie",
+    "reportContent": "Raport"
+  },
+  "actions": {
+    "loading": "ładowanie",
+    "loadMore": "załaduj więcej",
+    "create": "Stwórz",
+    "save": "Zapisz",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "cancel": "Anuluj"
+  },
+  "moderation": {
+    "name": "Moderacja",
+    "reports": {
+      "empty": "Gratulacje, moderacja nie jest potrzebna",
+      "name": "Raporty",
+      "reporter": "zgłoszone przez"
+    }
+  },
+  "disable": {
+    "user": {
+      "title": "Ukryj użytkownika",
+      "type": "Użytkownik",
+      "message": "Czy na pewno chcesz wyłączyć użytkownika \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Ukryj wpis",
+      "type": "Wpis / Post",
+      "message": "Czy na pewno chcesz ukryć wpis \" <b> tytuł} </b> \"?"
+    },
+    "comment": {
+      "title": "Ukryj wpis",
+      "type": "Komentarz",
+      "message": "Czy na pewno chcesz ukryć komentarz użytkownika\"<b>(Imie/Avatar</b>\"?"
+    }
+  },
+  "report": {
+    "submit": "Wyślij raport",
+    "cancel": "Anuluj",
+    "user": {
+      "title": "Zgłoś użytkownika",
+      "type": "Użytkownik",
+      "message": "Czy na pewno chcesz zgłosić użytkownika \" <b> {Imie} </b> \"?"
+    },
+    "contribution": {
+      "title": "Zgłoś wpis",
+      "type": "Wpis / Post",
+      "message": "Czy na pewno chcesz zgłosić ten wpis użytkownika \" <b> {Imie} </b> \"?"
+    },
+    "comment": {
+      "title": "Zgłoś komentarz",
+      "type": "Komentarz",
+      "message": "Czy na pewno chcesz zgłosić komentarz użytkownika\"<b>(Imie/Avatar</b>\"?"
+    }
+  },
+  "contribution": {
+    "edit": "Edytuj wpis",
+    "delete": "Usuń wpis"
+  },
+  "comment": {
+    "edit": "Edytuj komentarz",
+    "delete": "Usuń komentarz"
+  },
+  "followButton": {
+    "follow": "Obserwuj",
+    "following": "Obserwowani"
+  },
+  "shoutButton": {
+    "shouted": "krzyczeć"
   }
 }

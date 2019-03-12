@@ -109,6 +109,51 @@
     "tag": "Tag ::: Tags",
     "name": "Naam",
     "loadMore": "meer laden",
-    "loading": "inlading"
+    "loading": "inlading",
+    "reportContent": "Melden"
+  },
+  "disable": {
+    "comment": {
+      "title": "Commentaar uitschakelen",
+      "type": "Melding",
+      "message": "Wilt u de reactie van \" <b> {name} </b> \" echt uitschakelen ?"
+    }
+  },
+  "report": {
+    "submit": "Verzenden",
+    "cancel": "Annuleren",
+    "user": {
+      "title": "Gebruiker melden",
+      "type": "Gebruiker",
+      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?"
+    },
+    "contribution": {
+      "title": "Bijdrage melden",
+      "type": "Bijdrage",
+      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?"
+    },
+    "comment": {
+      "title": "Reactie melden",
+      "type": "Melding",
+      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?"
+    }
+  },
+  "actions": {
+    "cancel": "Annuleren"
+  },
+  "contribution": {
+    "edit": "Bijdrage bewerken",
+    "delete": "Bijdrage verwijderen"
+  },
+  "comment": {
+    "edit": "Commentaar bewerken",
+    "delete": "Commentaar verwijderen"
+  },
+  "followButton": {
+    "follow": "Volgen",
+    "following": "Volgt"
+  },
+  "shoutButton": {
+    "shouted": "uitgeroepen"
   }
 }
