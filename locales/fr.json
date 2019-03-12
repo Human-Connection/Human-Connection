@@ -3,7 +3,7 @@
     "copy": "Si vous avez déjà un compte human-connection, connectez-vous ici.",
     "login": "Connexion",
     "logout": "Déconnexion",
-    "email": "Votre Message électronique",
+    "email": "Votre courriel",
     "password": "Votre mot de passe",
     "moreInfo": "Qu'est-ce que Human Connection?",
     "hello": "Bonjour"
@@ -109,6 +109,61 @@
     "tag": "Tag ::: Tags",
     "name": "Nom",
     "loadMore": "charger plus",
-    "loading": "chargement"
+    "loading": "chargement",
+    "reportContent": "Signaler"
+  },
+  "moderation": {
+    "reports": {
+      "empty": "Félicitations, rien à modérer.",
+      "name": "Signalisations",
+      "reporter": "signalé par"
+    }
+  },
+  "disable": {
+    "user": {
+      "title": "Désactiver l'utilisateur",
+      "type": "Utilisateur",
+      "message": "Souhaitez-vous vraiment désactiver l'utilisateur \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Désactiver l'apport",
+      "type": "apport",
+      "message": "Souhaitez-vous vraiment signaler l'entrée\" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Désactiver le commentaire",
+      "type": "Commentaire",
+      "message": "Souhaitez-vous vraiment désactiver le commentaire de \"<b>{nom}</b>\" ?"
+    }
+  },
+  "report": {
+    "submit": "Envoyer le rapport",
+    "cancel": "Annuler",
+    "user": {
+      "title": "Signaler l'utilisateur",
+      "type": "Utilisateur",
+      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Signaler l'entrée",
+      "type": "Apport",
+      "message": "Souhaitez-vous vraiment signaler l'entrée\" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Signaler un commentaire",
+      "type": "Commentaire",
+      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?"
+    }
+  },
+  "actions": {
+    "cancel": "Annuler"
+  },
+  "contribution": {
+    "edit": "Rédiger l'apport",
+    "delete": "Supprimer l'entrée"
+  },
+  "comment": {
+    "edit": "Rédiger un commentaire",
+    "delete": "Supprimer le commentaire"
   }
 }

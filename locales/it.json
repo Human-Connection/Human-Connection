@@ -1,6 +1,6 @@
 {
   "login": {
-    "copy": "Se hai già un account di Human Connection, accedi qui.",
+    "copy": "Se sei gia registrato su Human Connection, accedi qui.",
     "login": "Accesso",
     "logout": "Logout",
     "email": "La tua email",
@@ -12,13 +12,18 @@
     "name": "Il mio profilo",
     "memberSince": "Membro dal",
     "follow": "Seguire",
-    "followers": "Seguaci",
-    "following": "Seguendo"
+    "followers": "Seguenti",
+    "following": "Seguendo",
+    "shouted": "Gridato",
+    "commented": "Commentato"
   },
   "settings": {
     "name": "Impostazioni",
     "data": {
-      "name": "I tuoi dati"
+      "name": "I tuoi dati",
+      "labelName": "Nome",
+      "labelCity": "La tua città o regione",
+      "labelBio": "Su di te"
     },
     "security": {
       "name": "Sicurezza"
@@ -27,7 +32,7 @@
       "name": "Inviti"
     },
     "download": {
-      "name": "Scaricare i dati"
+      "name": "Scaricamento dati"
     },
     "delete": {
       "name": "Elimina Account"
@@ -51,7 +56,7 @@
       "projects": "Progetti",
       "invites": "Inviti",
       "follows": "Segue",
-      "shouts": "Grida"
+      "shouts": "Gridi"
     },
     "organizations": {
       "name": "Organizzazioni"
@@ -90,25 +95,33 @@
   },
   "quotes": {
     "african": {
-      "quote": "Molte piccole persone in molti piccoli luoghi fanno molte piccole cose, che possono alterare la faccia del mondo.",
+      "quote": "Molte piccole persone in molti piccoli luoghi fanno molte piccole cose, che possono cambiare la faccia del mondo.",
       "author": "Proverbio africano"
     }
   },
   "common": {
     "post": "Messaggio ::: Messaggi",
     "comment": "Commento ::: Commenti",
-    "letsTalk": "Parliamo",
-    "versus": "Contro",
+    "letsTalk": "Discutiamo",
+    "versus": "Verso",
     "moreInfo": "Ulteriori informazioni",
     "takeAction": "Agire",
-    "shout": "Grida ::: Grida",
+    "shout": "Grido ::: Gridi",
     "user": "Utente ::: Utenti",
     "category": "Categoria ::: Categorie",
     "organization": "Organizzazione ::: Organizzazioni",
     "project": "Progetto ::: Progetti",
     "tag": "Tag ::: Tag",
     "name": "Nome",
-    "loadMore": "caricare di più",
-    "loading": "caricamento"
+    "loadMore": "Caricare di più",
+    "loading": "Caricamento in corso"
+  },
+  "actions": {
+    "loading": "Caricamento in corso",
+    "loadMore": "Carica di più",
+    "create": "Crea",
+    "save": "Salva",
+    "edit": "Modifica",
+    "delete": "Cancella"
   }
 }
