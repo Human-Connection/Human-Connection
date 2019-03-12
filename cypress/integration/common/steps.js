@@ -146,6 +146,10 @@ When(`I click on {string}`, linkOrButton => {
   cy.contains(linkOrButton).click()
 })
 
+When(`I click on the menu item {string}`, linkOrButton => {
+  cy.contains('.ds-menu-item', linkOrButton).click()
+})
+
 When('I press {string}', label => {
   cy.contains(label).click()
 })
