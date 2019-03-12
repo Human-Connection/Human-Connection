@@ -14,6 +14,7 @@ import NitroDataSource from './NitroDataSource'
 import router from './routes'
 import dotenv from 'dotenv'
 import Collections from './Collections'
+import uuid from 'uuid/v4'
 const debug = require('debug')('ea')
 
 let activityPub = null
@@ -27,6 +28,7 @@ export default class ActivityPub {
     this.dataSource = new NitroDataSource(uri)
     this.collections = new Collections(this.dataSource)
   }
+
   static init (server) {
     if (!activityPub) {
       dotenv.config()
@@ -179,30 +181,37 @@ export default class ActivityPub {
     })
   }
 
+  generateStatusId (slug) {
+    return `http://${this.domain}/activitypub/users/${slug}/status/${uuid()}`
+  }
+
   async sendActivity (activity) {
     delete activity.send
     const fromName = extractNameFromId(activity.actor)
     if (Array.isArray(activity.to) && isPublicAddressed(activity)) {
+      debug('is public addressed')
       const sharedInboxEndpoints = await this.dataSource.getSharedInboxEndpoints()
       // serve shared inbox endpoints
-      sharedInboxEndpoints.map((el) => {
-        return this.trySend(activity, fromName, new URL(el).host, el)
+      sharedInboxEndpoints.map((sharedInbox) => {
+        return this.trySend(activity, fromName, new URL(sharedInbox).host, sharedInbox)
       })
-      activity.to = activity.to.filter((el) => {
-        return !(isPublicAddressed({ to: el }))
+      activity.to = activity.to.filter((recipient) => {
+        return !(isPublicAddressed({ to: recipient }))
       })
       // serve the rest
-      activity.to.map(async (el) => {
-        const actorObject = await this.getActorObject(el)
-        return this.trySend(activity, fromName, new URL(el).host, actorObject.inbox)
+      activity.to.map(async (recipient) => {
+        debug('serve rest')
+        const actorObject = await this.getActorObject(recipient)
+        return this.trySend(activity, fromName, new URL(recipient).host, actorObject.inbox)
       })
     } else if (typeof activity.to === 'string') {
+      debug('is string')
       const actorObject = await this.getActorObject(activity.to)
       return this.trySend(activity, fromName, new URL(activity.to).host, actorObject.inbox)
     } else if (Array.isArray(activity.to)) {
-      activity.to.map(async (el) => {
-        const actorObject = await this.getActorObject(el)
-        return this.trySend(activity, fromName, new URL(el).host, actorObject.inbox)
+      activity.to.map(async (recipient) => {
+        const actorObject = await this.getActorObject(recipient)
+        return this.trySend(activity, fromName, new URL(recipient).host, actorObject.inbox)
       })
     }
   }

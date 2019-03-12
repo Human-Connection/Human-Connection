@@ -105,14 +105,17 @@ Then('the activity is added to the users inbox collection', async function () {
 })
 
 Then('the post with id {string} to be created', async function (id) {
-  const result = await client.request(`
+  setTimeout(async () => {
+    const result = await client.request(`
       query {
           Post(id: "${id}") {
               title
           }
       }
    `)
-  expect(result.data.Post).to.be.an('array').that.is.not.empty // eslint-disable-line
+
+    expect(result.data.Post).to.be.an('array').that.is.not.empty // eslint-disable-line
+  }, 2000)
 })
 
 Then('the object is removed from the outbox collection of {string}', async function (name, object) {
@@ -126,7 +129,8 @@ Then('I send a GET request to {string} and expect a ordered collection', () => {
 })
 
 Then('the post with id {string} has been liked by {string}', async function (id, slug) {
-  const result = await client.request(`
+  setTimeout(async () => {
+    const result = await client.request(`
     query {
       Post(id: "${id}") {
         shoutedBy {
@@ -135,6 +139,7 @@ Then('the post with id {string} has been liked by {string}', async function (id,
       }
     }
   `)
-  expect(result.data.Post[0].shoutedBy).to.be.an('array').that.is.not.empty // eslint-disable-line
-  expect(result.data.Post[0].shoutedBy[0].slug).to.equal(slug)
+    expect(result.data.Post[0].shoutedBy).to.be.an('array').that.is.not.empty // eslint-disable-line
+    expect(result.data.Post[0].shoutedBy[0].slug).to.equal(slug)
+  }, 2000)
 })

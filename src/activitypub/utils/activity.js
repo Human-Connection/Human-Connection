@@ -96,6 +96,12 @@ export function isPublicAddressed (postObject) {
   if (typeof postObject.to === 'string') {
     postObject.to = [postObject.to]
   }
+  if (typeof postObject === 'string') {
+    postObject.to = [postObject]
+  }
+  if (Array.isArray(postObject)) {
+    postObject.to = postObject
+  }
   return postObject.to.includes('Public') ||
     postObject.to.includes('as:Public') ||
     postObject.to.includes('https://www.w3.org/ns/activitystreams#Public')

@@ -1,22 +1,23 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import { activityPub } from '../activitypub/ActivityPub'
-import uuid from 'uuid/v4'
 import as from 'activitystrea.ms'
+import dotenv from 'dotenv'
 /*
 import as from 'activitystrea.ms'
 import request from 'request'
 */
 
 const debug = require('debug')('backend:schema')
+dotenv.config()
 
 export default {
   Mutation: {
     CreatePost: async (object, params, context, resolveInfo) => {
-      params.activityId = uuid()
+      params.activityId = activityPub.generateStatusId(context.user.slug)
+      params.objectId = activityPub.generateStatusId(context.user.slug)
       const result = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       const session = context.driver.session()
-
       const author = await session.run(
         'MATCH (author:User {id: $userId}), (post:Post {id: $postId}) ' +
         'MERGE (post)<-[:WROTE]-(author) ' +
@@ -25,6 +26,7 @@ export default {
           postId: result.id
         }
       )
+      session.close()
 
       debug(`actorId = ${author.records[0]._fields[0].properties.actorId}`)
       if (Array.isArray(author.records) && author.records.length > 0) {
@@ -54,10 +56,9 @@ export default {
         try {
           await activityPub.sendActivity(createActivity)
         } catch (e) {
-          debug(`error sending post activity = ${JSON.stringify(e, null, 2)}`)
+          debug(`error sending post activity\n${e}`)
         }
       }
-      session.close()
 
       return result
     }

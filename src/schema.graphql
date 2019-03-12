@@ -158,6 +158,7 @@ type User {
 type Post {
   id: ID!
   activityId: String
+  objectId: String
   author: User @relation(name: "WROTE", direction: "IN")
   title: String!
   slug: String

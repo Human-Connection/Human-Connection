@@ -13,36 +13,36 @@ router.post('/', async function (req, res, next) {
   debug(`Request headers = ${JSON.stringify(req.headers, null, 2)}`)
   switch (req.body.type) {
   case 'Create':
-    if (req.body.send) {
-      await activityPub.sendActivity(req.body).catch(next)
-      break
-    }
     await activityPub.handleCreateActivity(req.body).catch(next)
     break
   case 'Undo':
     await activityPub.handleUndoActivity(req.body).catch(next)
     break
   case 'Follow':
-    debug('handleFollow')
-    await activityPub.handleFollowActivity(req.body)
-    debug('handledFollow')
+    await activityPub.handleFollowActivity(req.body).catch(next)
     break
   case 'Delete':
     await activityPub.handleDeleteActivity(req.body).catch(next)
     break
-    /* eslint-disable */
+  /* eslint-disable */
   case 'Update':
-
+    await activityPub.handleUpdateActivity(req.body).catch(next)
+    break
   case 'Accept':
     await activityPub.handleAcceptActivity(req.body).catch(next)
   case 'Reject':
-
+    // Do nothing
+    break
   case 'Add':
-
+    break
   case 'Remove':
-
+    break
   case 'Like':
-
+    await activityPub.handleLikeActivity(req.body).catch(next)
+    break
+  case 'Dislike':
+    await activityPub.handleDislikeActivity(req.body).catch(next)
+    break
   case 'Announce':
     debug('else!!')
     debug(JSON.stringify(req.body, null, 2))

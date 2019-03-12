@@ -14,7 +14,7 @@ Feature: Delete an object
       "type": "Create",
       "actor": "https://aronda.org/users/bernd-das-brot",
       "object": {
-          "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf",
+          "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
           "type": "Article",
           "published": "2019-02-07T19:37:55.002Z",
           "attributedTo": "https://aronda.org/users/bernd-das-brot",
@@ -29,13 +29,13 @@ Feature: Delete an object
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/users/karl-heinz/status/a4DJ2afdg323v32641vna42lkj685kasd2",
+      "id": "https://localhost:4123/activitypub/users/karl-heinz/status/a4DJ2afdg323v32641vna42lkj685kasd2",
       "type": "Delete",
       "object": {
-        "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf",
+        "id": "https://aronda.org/activitypub/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
         "type": "Article",
         "published": "2019-02-07T19:37:55.002Z",
-        "attributedTo": "https://aronda.org/users/bernd-das-brot",
+        "attributedTo": "https://aronda.org/activitypub/users/bernd-das-brot",
         "content": "Hi Max, how are you?",
         "to": "https://localhost:4123/activitypub/users/moritz"
       }
@@ -45,10 +45,10 @@ Feature: Delete an object
     And the object is removed from the outbox collection of "bernd-das-brot"
     """
     {
-      "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf",
+      "id": "https://aronda.org/activitypub/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
       "type": "Article",
       "published": "2019-02-07T19:37:55.002Z",
-      "attributedTo": "https://aronda.org/users/bernd-das-brot",
+      "attributedTo": "https://aronda.org/activitypub/users/bernd-das-brot",
       "content": "Hi Max, how are you?",
       "to": "https://localhost:4123/activitypub/users/moritz"
     }

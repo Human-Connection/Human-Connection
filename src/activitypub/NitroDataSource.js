@@ -19,8 +19,6 @@ import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import fetch from 'node-fetch'
 import { ApolloClient } from 'apollo-client'
-import uuid from 'uuid'
-import encode from '../jwt/encode'
 import trunc from 'trunc-html'
 const debug = require('debug')('ea:nitro-datasource')
 
@@ -37,12 +35,12 @@ export default class NitroDataSource {
     const cache = new InMemoryCache()
     const authLink = setContext((_, { headers }) => {
       // generate the authentication token (maybe from env? Which user?)
-      const token = encode({ name: 'ActivityPub', id: uuid() })
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoiUGV0ZXIgTHVzdGlnIiwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9qb2huY2FmYXp6YS8xMjguanBnIiwiaWQiOiJ1MSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5vcmciLCJzbHVnIjoicGV0ZXItbHVzdGlnIiwiaWF0IjoxNTUyNDIwMTExLCJleHAiOjE2Mzg4MjAxMTEsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDAwMCIsInN1YiI6InUxIn0.G7An1yeQUViJs-0Qj-Tc-zm0WrLCMB3M02pfPnm6xzw'
       // return the headers to the context so httpLink can read them
       return {
         headers: {
           ...headers,
-          authorization: token ? `Bearer ${token}` : ''
+          Authorization: token ? `Bearer ${token}` : ''
         }
       }
     })
@@ -213,6 +211,7 @@ export default class NitroDataSource {
 
   async getOutboxCollectionPage (actorId) {
     const slug = extractNameFromId(actorId)
+    debug(`inside getting outbox collection page => ${slug}`)
     const result = await this.client.query({
       query: gql`
           query {
@@ -220,11 +219,16 @@ export default class NitroDataSource {
                   actorId
                   contributions {
                       id
+                      activityId
+                      objectId
                       title
                       slug
                       content
                       contentExcerpt
                       createdAt
+                      author {
+                          name
+                      }
                   }
               }
           }
@@ -240,7 +244,7 @@ export default class NitroDataSource {
       outboxCollection.totalItems = posts.length
       await Promise.all(
         posts.map(async (post) => {
-          outboxCollection.orderedItems.push(await createArticleObject(post.activityId, post.objectId, post.content, extractNameFromId(post.id), post.id, post.createdAt))
+          outboxCollection.orderedItems.push(await createArticleObject(post.activityId, post.objectId, post.content, post.author.name, post.id, post.createdAt))
         })
       )
 
@@ -332,6 +336,7 @@ export default class NitroDataSource {
     }
     const title = postObject.summary ? postObject.summary : postObject.content.split(' ').slice(0, 5).join(' ')
     const postId = extractIdFromActivityId(postObject.id)
+    debug('inside create post')
     let result = await this.client.mutate({
       mutation: gql`
           mutation {
@@ -346,10 +351,16 @@ export default class NitroDataSource {
 
     // ensure user and add author to post
     const userId = await this.ensureUser(postObject.attributedTo)
+    debug(`userId = ${userId}`)
+    debug(`postId = ${postId}`)
     result = await this.client.mutate({
       mutation: gql`
           mutation {
-              AddPostAuthor(from: {id: "${userId}"}, to: {id: "${postId}"})
+              AddPostAuthor(from: {id: "${userId}"}, to: {id: "${postId}"}) {
+                  from {
+                      name
+                  }
+              }
           }
       `
     })
@@ -523,10 +534,11 @@ export default class NitroDataSource {
       debug('ensureUser: user not exists.. createUser')
       // user does not exist.. create it
       const pw = crypto.randomBytes(16).toString('hex')
+      const slug = name.toLowerCase().split(' ').join('-')
       const result = await this.client.mutate({
         mutation: gql`
             mutation {
-                CreateUser(password: "${pw}", slug:"${name}", actorId: "${actorId}", name: "${name}") {
+                CreateUser(password: "${pw}", slug:"${slug}", actorId: "${actorId}", name: "${name}", email: "${slug}@test.org") {
                     id
                 }
             }
