@@ -42,7 +42,7 @@ script:
   - docker-compose exec -e NODE_ENV=test webapp yarn run lint
   - docker-compose exec -e NODE_ENV=test webapp yarn run test
   - wait-on http://localhost:7474 && docker-compose -f ../Nitro-Backend/docker-compose.yml exec neo4j migrate
-  - wait-on http://localhost:3000 && cypress run --parallel --browser chrome --record --key $CYPRESS_TOKEN
+  - wait-on http://localhost:3000 && cypress run --browser chrome --record --key $CYPRESS_TOKEN
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
