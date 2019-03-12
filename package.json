@@ -41,7 +41,7 @@
     "bcryptjs": "~2.4.3",
     "cheerio": "~1.0.0-rc.2",
     "cross-env": "~5.2.0",
-    "date-fns": "2.0.0-alpha.26",
+    "date-fns": "2.0.0-alpha.27",
     "dotenv": "~6.2.0",
     "faker": "~4.1.0",
     "graphql": "~14.1.1",
