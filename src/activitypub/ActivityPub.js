@@ -35,12 +35,13 @@ export default class ActivityPub {
       const url = new URL(process.env.GRAPHQL_URI)
       activityPub = new ActivityPub(url.hostname || 'localhost', url.port || 4000, url.origin)
 
-      // integrated into "server's" express framework
+      // integrate into running graphql express server
       server.express.set('ap', activityPub)
+      server.express.set('port', url.port)
       server.express.use(router)
-      debug('ActivityPub middleware added to the express service')
+      console.log('-> ActivityPub middleware added to the graphql express server')
     } else {
-      debug('ActivityPub middleware already added to the express service')
+      console.log('-> ActivityPub middleware already added to the graphql express server')
     }
   }
 
@@ -60,6 +61,7 @@ export default class ActivityPub {
         if (err) return reject(err)
         debug(`name = ${toActorName}@${this.domain}`)
         // save shared inbox
+        toActorObject = JSON.parse(toActorObject)
         await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
 
         let followersCollectionPage = await this.dataSource.getFollowersCollectionPage(activity.object)
@@ -159,7 +161,7 @@ export default class ActivityPub {
     switch (activity.object.type) {
     case 'Follow':
       const followObject = activity.object
-      const followingCollectionPage = await this.getFollowingCollectionPage(followObject.actor)
+      const followingCollectionPage = await this.collections.getFollowingCollectionPage(followObject.actor)
       followingCollectionPage.orderedItems.push(followObject.object)
       await this.dataSource.saveFollowingCollectionPage(followingCollectionPage)
     }

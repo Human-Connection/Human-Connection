@@ -22,14 +22,15 @@ function createUser (slug) {
 
 AfterAll('Clean up the test data', function () {
   debug('All the tests are done! Deleting test data')
+  return factory.cleanDatabase()
 })
 
 Given('our own server runs at {string}', function (string) {
   // just documenation
 })
 
-Given('we have the following users in our database:', async function (dataTable) {
-  await Promise.all(dataTable.hashes().map((user) => {
+Given('we have the following users in our database:', function (dataTable) {
+  return Promise.all(dataTable.hashes().map((user) => {
     return createUser(user.Slug)
   }))
 })
@@ -45,6 +46,20 @@ When('I send a GET request to {string}', async function (pathname) {
 When('I send a POST request with the following activity to {string}:', async function (inboxUrl, activity) {
   debug(`inboxUrl = ${inboxUrl}`)
   debug(`activity = ${activity}`)
+  const splitted = inboxUrl.split('/')
+  const slug = splitted[splitted.indexOf('users') + 1]
+  let result
+  do {
+    result = await client.request(`
+    query {
+      User(slug: "${slug}") {
+        id
+        slug
+        actorId
+      }
+    }
+    `)
+  } while (result.User.length === 0)
   this.lastInboxUrl = inboxUrl
   this.lastActivity = activity
   const response = await this.post(inboxUrl, activity)
@@ -100,22 +115,19 @@ Then('the follower is removed from the followers collection of {string}', async 
   expect(responseObject.orderedItems).to.not.include(follower)
 })
 
-Then('the activity is added to the users inbox collection', async function () {
-
-})
-
 Then('the post with id {string} to be created', async function (id) {
-  setTimeout(async () => {
-    const result = await client.request(`
+  let result
+  do {
+    result = await client.request(`
       query {
           Post(id: "${id}") {
               title
           }
       }
    `)
+  } while (result.Post.length === 0)
 
-    expect(result.data.Post).to.be.an('array').that.is.not.empty // eslint-disable-line
-  }, 2000)
+  expect(result.Post).to.be.an('array').that.is.not.empty // eslint-disable-line
 })
 
 Then('the object is removed from the outbox collection of {string}', async function (name, object) {
@@ -128,9 +140,14 @@ Then('I send a GET request to {string} and expect a ordered collection', () => {
 
 })
 
+Then('the activity is added to the users inbox collection', async function () {
+
+})
+
 Then('the post with id {string} has been liked by {string}', async function (id, slug) {
-  setTimeout(async () => {
-    const result = await client.request(`
+  let result
+  do {
+    result = await client.request(`
     query {
       Post(id: "${id}") {
         shoutedBy {
@@ -139,7 +156,8 @@ Then('the post with id {string} has been liked by {string}', async function (id,
       }
     }
   `)
-    expect(result.data.Post[0].shoutedBy).to.be.an('array').that.is.not.empty // eslint-disable-line
-    expect(result.data.Post[0].shoutedBy[0].slug).to.equal(slug)
-  }, 2000)
+  } while (result.Post.length === 0)
+
+  expect(result.Post[0].shoutedBy).to.be.an('array').that.is.not.empty // eslint-disable-line
+  expect(result.Post[0].shoutedBy[0].slug).to.equal(slug)
 })

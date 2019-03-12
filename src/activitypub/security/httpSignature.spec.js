@@ -60,7 +60,7 @@ describe('Signature creation and verification', () => {
       httpSignature = createSignature(user.privateKey, 'http://localhost:4001/activitypub/users/test-user#main-key', 'https://democracy-app.de/activitypub/users/max/inbox', headers)
     })
 
-    it('verifies a Signature by ', async () => {
+    it('verifies a Signature correct', async () => {
       headers['Signature'] = httpSignature
       const isVerified = await verifySignature('https://democracy-app.de/activitypub/users/max/inbox', headers)
       expect(isVerified).to.equal(true)

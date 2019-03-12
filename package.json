@@ -20,7 +20,7 @@
     "test:cucumber:cmd": "wait-on tcp:4001 tcp:4123 && cucumber-js --require-module @babel/register --exit test/",
     "test:jest:cmd:debug": "wait-on tcp:4001 tcp:4123 && node --inspect-brk ./node_modules/.bin/jest -i --forceExit --detectOpenHandles --runInBand",
     "test:jest": "run-p --race test:before:* 'test:jest:cmd {@}' --",
-    "test:cucumber": "ACTIVITYPUB_PORT=4123 run-p --race test:before:* 'test:cucumber:cmd {@}' --",
+    "test:cucumber": "run-p --race test:before:* 'test:cucumber:cmd {@}' --",
     "test:jest:debug": "run-p --race test:before:* 'test:jest:cmd:debug {@}' --",
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",

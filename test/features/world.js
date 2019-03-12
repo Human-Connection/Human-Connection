@@ -20,8 +20,8 @@ class CustomWorld {
           'Accept': 'application/activity+json'
         }}, function (error, response, body) {
         if (!error) {
-          debug(`get response = ${response.headers['content-type']}`)
-          debug(`body = ${body}`)
+          debug(`get content-type = ${response.headers['content-type']}`)
+          debug(`get body = ${JSON.stringify(typeof body === 'string' ? JSON.parse(body) : body, null, 2)}`)
           resolve({ lastResponse: body, lastContentType: response.headers['content-type'], statusCode: response.statusCode })
         } else {
           reject(error)

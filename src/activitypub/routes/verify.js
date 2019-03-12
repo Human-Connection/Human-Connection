@@ -4,7 +4,7 @@ const debug = require('debug')('ea:verify')
 export default async (req, res, next) => {
   debug(`actorId = ${req.body.actor}`)
   // TODO stop if signature validation fails
-  if (await verifySignature(`${req.protocol}://${req.hostname}:${req.port}${req.originalUrl}`, req.headers)) {
+  if (await verifySignature(`${req.protocol}://${req.hostname}:${req.app.get('port')}${req.originalUrl}`, req.headers)) {
     debug('verify = true')
     next()
   } else {
