@@ -10,7 +10,10 @@
       gutter="base"
     >
       <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
-        <ds-card style="position: relative; height: auto;">
+        <ds-card
+          :class="{'disabled-content': user.disabled}"
+          style="position: relative; height: auto;"
+        >
           <ds-avatar
             :image="user.avatar"
             :name="user.name || 'Anonymus'"

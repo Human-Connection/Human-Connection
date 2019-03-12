@@ -97,6 +97,7 @@ export default {
               title
               contentExcerpt
               createdAt
+              disabled
               slug
               image
               author {

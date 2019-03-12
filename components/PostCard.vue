@@ -2,7 +2,7 @@
   <ds-card
     :header="post.title"
     :image="post.image"
-    class="post-card"
+    :class="{'post-card': true, 'disabled-content': post.disabled}"
   >
     <a
       v-router-link
@@ -126,6 +126,7 @@ export default {
     z-index: 1;
   }
 }
+
 .post-link {
   display: block;
   position: absolute;

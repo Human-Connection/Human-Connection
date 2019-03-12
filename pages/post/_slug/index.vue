@@ -7,7 +7,7 @@
       v-if="post && ready"
       :image="post.image"
       :header="post.title"
-      class="post-card"
+      :class="{'post-card': true, 'disabled-content': post.disabled}"
     >
       <hc-author :post="post" />
       <no-ssr>
@@ -73,7 +73,7 @@
           <span>
             <ds-icon name="comments" />
             <ds-tag
-              v-if="post.commentsCount"
+              v-if="post.comments"
               style="margin-top: -4px; margin-left: -12px; position: absolute;"
               color="primary"
               size="small"
@@ -85,14 +85,14 @@
         </h3>
         <ds-space margin-bottom="large" />
         <div
-          v-if="post.commentsCount"
+          v-if="post.comments"
           id="comments"
           class="comments"
         >
           <div
             v-for="comment in post.comments"
             :key="comment.id"
-            class="comment"
+            :class="{comment: true, 'disabled-content': comment.disabled}"
           >
             <ds-space margin-bottom="x-small">
               <hc-author :post="comment" />
@@ -176,6 +176,7 @@ export default {
           title
           content
           createdAt
+          disabled
           slug
           image
           author {
@@ -205,6 +206,7 @@ export default {
             id
             contentExcerpt
             createdAt
+            disabled
             deleted
             author {
               id

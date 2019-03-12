@@ -4,6 +4,11 @@
 // Transition Easing
 $easeOut: cubic-bezier(0.19, 1, 0.22, 1);
 
+.disabled-content {
+  border-style: solid;
+  border-color: $color-warning;
+}
+
 .layout-enter-active {
   transition: opacity 80ms ease-out;
   transition-delay: 80ms;

@@ -14,6 +14,7 @@ export default app => {
           name: name${lang}
         }
         createdAt
+        disabled
         badges {
           id
           key
