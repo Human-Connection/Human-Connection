@@ -107,9 +107,6 @@ import Factory from './factories'
       asTick.create('Post',      { id: 'p15' })
     ])
 
-    const disableMutation = 'mutation { disable( id: "p11") }'
-    await asModerator.mutate(disableMutation)
-
     await Promise.all([
       f.relate('Post', 'Categories', { from: 'p0',  to: 'cat16' }),
       f.relate('Post', 'Categories', { from: 'p1',  to: 'cat1' }),
@@ -212,6 +209,12 @@ import Factory from './factories'
       f.relate('Comment', 'Post',   { from: 'c6', to: 'p4' }),
       f.relate('Comment', 'Author', { from: 'u2', to: 'c7' }),
       f.relate('Comment', 'Post',   { from: 'c7', to: 'p2' })
+    ])
+
+    const disableMutation = 'mutation($id: ID!) { disable(id: $id) }'
+    await Promise.all([
+      asModerator.mutate(disableMutation, { id: 'p11' }),
+      asModerator.mutate(disableMutation, { id: 'c5' })
     ])
 
     await Promise.all([
