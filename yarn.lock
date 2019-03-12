@@ -884,10 +884,10 @@
     fs-extra "7.0.0"
     watchify "3.11.0"
 
-"@human-connection/styleguide@0.5.14":
-  version "0.5.14"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.14.tgz#4a75647f02bbbbe91ce2833c3b82d0d71a0bed46"
-  integrity sha512-9nxx0bIexBMSHlXuwddtOOh1o7I6RBfFvI2VOCbLGXdt2rUYABybUMXrBkXoYXIrEZz5YB4R4EyFfCYjKBsRyw==
+"@human-connection/styleguide@0.5.15":
+  version "0.5.15"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.15.tgz#87142957b1ae03749e99db287adb6eafc5e2980a"
+  integrity sha512-BsYwXhPZutRVxyyvCWYkSsw8rEoUTimFeH4GdA9u9gohfS+opVl56KjiBPpepHsaVjbnuL8932BD/47QdM5cZg==
   dependencies:
     vue "^2.6.6"
 
