@@ -53,9 +53,7 @@ module.exports = {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
       {
-        src:
-          'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver',
-        body: true
+        src: '/js/polyfill.min.js' // polyfill IntersectionObserver
       }
     ]
   },
