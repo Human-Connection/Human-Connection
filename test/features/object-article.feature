@@ -2,7 +2,7 @@ Feature: Send and receive Articles
   I want to send and receive article's via ActivityPub
 
   Background:
-    Given our own server runs at "http://localhost:4100"
+    Given our own server runs at "http://localhost:4123"
     And we have the following users in our database:
       | Slug         |
       | marvin       |
@@ -22,7 +22,7 @@ Feature: Send and receive Articles
           "published": "2019-02-07T19:37:55.002Z",
           "attributedTo": "https://aronda.org/users/marvin",
           "content": "Hi Max, how are you?",
-          "to": "https://localhost:4100/activitypub/users/max"
+          "to": "https://localhost:4123/activitypub/users/max"
       }
     }
     """
