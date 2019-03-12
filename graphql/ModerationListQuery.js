@@ -8,7 +8,7 @@ export default app => {
         description
         type
         createdAt
-        reporter {
+        submitter {
           name
           slug
         }
@@ -27,7 +27,7 @@ export default app => {
             slug
           }
         }
-        contribution {
+        post {
           title
           slug
           author {
