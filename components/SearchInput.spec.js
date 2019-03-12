@@ -58,18 +58,6 @@ describe('SearchInput.vue', () => {
       expect(wrapper.vm.value).toEqual('abc')
     })
 
-    it('opens the select dropdown when focused on', () => {
-      const wrapper = Wrapper()
-      const select = wrapper.find('.ds-select')
-      select.trigger('focus')
-      expect(wrapper.vm.isOpen).toBe(true)
-      select.trigger('blur')
-      expect(wrapper.vm.isOpen).toBe(false)
-      // expect(wrapper.find('.ds-select-dropdown').text()).toContain(
-      //   ' What are you searching for?'
-      // )
-    })
-
     describe('testing custom functions', () => {
       let select
       let wrapper
@@ -81,7 +69,17 @@ describe('SearchInput.vue', () => {
         select.element.value = 'abcd'
       })
 
+      it('opens the select dropdown when focused on', () => {
+        expect(wrapper.vm.isOpen).toBe(true)
+      })
+  
+      it('opens the select dropdown and blurs after focused on', () => {
+        select.trigger('blur')
+        expect(wrapper.vm.isOpen).toBe(false)
+      })
+  
       it('is clearable', () => {
+        select.trigger('input')
         select.trigger('keyup.esc')
         expect(wrapper.emitted().clear.length).toBe(1)
       })
@@ -109,6 +107,15 @@ describe('SearchInput.vue', () => {
         select.trigger('input')
         select.trigger('keyup.enter')
         expect(spy).toHaveBeenCalledWith('abcd')
+      })
+
+      xit('calls onSelect when a user selects an item in the search dropdown menu', async () => {
+        propsData = { results: ['abcd'] }
+        wrapper = Wrapper()
+        select.trigger('input')
+        const results = wrapper.find('.ds-select-option')
+        results.trigger('select')
+        await expect(wrapper.emitted().select[0]).toEqual(['abcd'])
       })
     })
   })
