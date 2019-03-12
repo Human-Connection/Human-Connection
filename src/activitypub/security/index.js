@@ -24,7 +24,7 @@ export function generateRsaKeyPair () {
 
 // signing
 export function createSignature (privKey, keyId, url, headers = {}, algorithm = 'rsa-sha256') {
-  if (!SUPPORTED_HASH_ALGORITHMS.includes(algorithm)) { return throw Error(`SIGNING: Unsupported hashing algorithm = ${algorithm}`) }
+  if (!SUPPORTED_HASH_ALGORITHMS.includes(algorithm)) { throw Error(`SIGNING: Unsupported hashing algorithm = ${algorithm}`) }
   const signer = crypto.createSign(algorithm)
   const signingString = constructSigningString(url, headers)
   signer.update(signingString)

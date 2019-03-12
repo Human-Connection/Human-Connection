@@ -13,7 +13,6 @@ import as from 'activitystrea.ms'
 import NitroDataSource from './NitroDataSource'
 import router from './routes'
 import dotenv from 'dotenv'
-import { resolve } from 'path'
 import Collections from './Collections'
 const debug = require('debug')('ea')
 
@@ -22,19 +21,19 @@ let activityPub = null
 export { activityPub }
 
 export default class ActivityPub {
-  constructor (domain, port) {
+  constructor (domain, port, uri) {
     if (domain === 'localhost') { this.domain = `${domain}:${port}` } else { this.domain = domain }
     this.port = port
-    this.dataSource = new NitroDataSource(this.domain)
+    this.dataSource = new NitroDataSource(uri)
     this.collections = new Collections(this.dataSource)
   }
   static init (server) {
     if (!activityPub) {
-      dotenv.config({ path: resolve('src', 'activitypub', '.env') })
-      const port = process.env.ACTIVITYPUB_PORT
-      activityPub = new ActivityPub(process.env.ACTIVITYPUB_DOMAIN || 'localhost', port || 4100)
+      dotenv.config()
+      const url = new URL(process.env.GRAPHQL_URI)
+      activityPub = new ActivityPub(url.hostname || 'localhost', url.port || 4000, url.origin)
 
-      // integrated into "server" express framework
+      // integrated into "server's" express framework
       server.express.set('ap', activityPub)
       server.express.use(router)
       debug('ActivityPub middleware added to the express service')

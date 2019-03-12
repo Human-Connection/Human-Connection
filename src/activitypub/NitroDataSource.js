@@ -19,25 +19,21 @@ import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import fetch from 'node-fetch'
 import { ApolloClient } from 'apollo-client'
-import dotenv from 'dotenv'
 import uuid from 'uuid'
 import encode from '../jwt/encode'
-import { resolve } from 'path'
 import trunc from 'trunc-html'
 const debug = require('debug')('ea:nitro-datasource')
 
-dotenv.config({ path: resolve('src', 'activitypub', '.env') })
-
 export default class NitroDataSource {
-  constructor (domain) {
-    this.domain = domain
+  constructor (uri) {
+    this.uri = uri
     const defaultOptions = {
       query: {
         fetchPolicy: 'network-only',
         errorPolicy: 'all'
       }
     }
-    const link = createHttpLink({ uri: process.env.GRAPHQL_URI, fetch: fetch }) // eslint-disable-line
+    const link = createHttpLink({ uri: this.uri, fetch: fetch }) // eslint-disable-line
     const cache = new InMemoryCache()
     const authLink = setContext((_, { headers }) => {
       // generate the authentication token (maybe from env? Which user?)

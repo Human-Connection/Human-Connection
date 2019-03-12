@@ -7,7 +7,6 @@ import { expect } from 'chai'
 const factory = Factory()
 
 describe('Signature creation and verification', () => {
-  process.env.PRIVATE_KEY_PASSPHRASE = 'test-password'
   let user = null
   let client = null
   const headers = {
@@ -43,8 +42,7 @@ describe('Signature creation and verification', () => {
     beforeEach(() => {
       const signer = crypto.createSign('rsa-sha256')
       signer.update('(request-target): post /activitypub/users/max/inbox\ndate: 2019-03-08T14:35:45.759Z\nhost: democracy-app.de\ncontent-type: application/json')
-      console.log(JSON.stringify(user, null, 2))
-      signatureB64 = signer.sign({ key: user.privateKey, passphrase: 'test-password' }, 'base64')
+      signatureB64 = signer.sign({ key: user.privateKey, passphrase: 'a7dsf78sadg87ad87sfagsadg78' }, 'base64')
     })
     it('creates a Signature with given privateKey, keyId, url and headers (default algorithm: "rsa-sha256")', () => {
       const httpSignature = createSignature(user.privateKey, 'https://human-connection.org/activitypub/users/lea#main-key', 'https://democracy-app.de/activitypub/users/max/inbox', headers)
@@ -65,7 +63,6 @@ describe('Signature creation and verification', () => {
     it('verifies a Signature by ', async () => {
       headers['Signature'] = httpSignature
       const isVerified = await verifySignature('https://democracy-app.de/activitypub/users/max/inbox', headers)
-      console.log(JSON.stringify(isVerified, null, 2))
       expect(isVerified).to.equal(true)
     })
   })
