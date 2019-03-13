@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import ChangePassword from './ChangePassword.vue'
 import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
@@ -14,24 +14,25 @@ describe('ChangePassword.vue', () => {
 
   beforeEach(() => {
     mocks = {
+      $t: jest.fn(),
       $apollo: {
         mutate: jest.fn().mockResolvedValue()
       }
     }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     let wrapper
     const Wrapper = () => {
-      return shallowMount(ChangePassword, { mocks, localVue })
+      return mount(ChangePassword, { mocks, localVue })
     }
 
     beforeEach(() => {
       wrapper = Wrapper()
     })
 
-    it('renders', () => {
-      expect(wrapper.is('div')).toBe(true)
+    it('renders three input fields', () => {
+      expect(wrapper.findAll('input')).toHaveLength(3)
     })
 
     describe('validations', () => {
@@ -41,8 +42,22 @@ describe('ChangePassword.vue', () => {
 
       describe('old password and new password', () => {
         describe('match', () => {
-          it.todo('invalid')
-          it.todo('displays a warning')
+          beforeEach(() => {
+            wrapper.find('input#oldPassword').setValue('some secret')
+            wrapper.find('input#newPassword').setValue('some secret')
+          })
+
+          it('invalid', () => {
+            expect(wrapper.vm.disabled).toBe(true)
+          })
+
+          it.skip('displays a warning', () => {
+            const calls = mocks.$t.mock.calls
+            const expected = [
+              ['change-password.validations.old-and-new-password-match']
+            ]
+            expect(calls).toEqual(expect.arrayContaining(expected))
+          })
         })
       })
 
