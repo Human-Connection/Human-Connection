@@ -16,20 +16,18 @@ git@github.com:Human-Connection/Nitro-Web.git
 ## Install Dependencies
 
 {% hint style="info" %}
-Make sure you are running on Node 10: `node --version`
+Make sure you are running on LTS Node 10: `node --version`
 {% endhint %}
 
 {% tabs %}
 {% tab title="Yarn" %}
 ```bash
-cd styleguide && yarn install && cd ..
 yarn install
 ```
 {% endtab %}
 
 {% tab title="NPM" %}
 ```bash
-cd styleguide && npm install && cd ..
 npm install
 ```
 {% endtab %}
