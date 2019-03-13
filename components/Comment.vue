@@ -1,6 +1,11 @@
 <template>
   <div>
-  {{ comment.content }}
+    <div v-if="!disabled">
+      {{ comment.content }}
+    </div>
+    <div v-else>
+      {{ this.$t('comment.content.disabled-placeholder') }}
+    </div>
   </div>
 </template>
 
@@ -12,6 +17,11 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+  computed: {
+    disabled() {
+      return this.comment.disabled
     }
   }
 }

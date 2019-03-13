@@ -39,6 +39,24 @@ describe('Comment.vue', () => {
         const wrapper = Wrapper()
         expect(wrapper.text()).toMatch('Hello I am a comment content')
       })
+
+      describe('which is disabled', () => {
+        beforeEach(() => {
+          propsData.comment.disabled = true
+        })
+
+        it('renders no comment data', () => {
+          const wrapper = Wrapper()
+          expect(wrapper.text()).not.toMatch('comment content')
+        })
+
+        it('translates a placeholder', () => {
+          const wrapper = Wrapper()
+          const calls = mocks.$t.mock.calls
+          const expected = [['comment.content.disabled-placeholder']]
+          expect(calls).toEqual(expect.arrayContaining(expected))
+        })
+      })
     })
   })
 })
