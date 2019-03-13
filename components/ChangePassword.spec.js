@@ -21,14 +21,23 @@ describe('ChangePassword.vue', () => {
   })
 
   describe('shallowMount', () => {
+    let wrapper
     const Wrapper = () => {
       return shallowMount(ChangePassword, { mocks, localVue })
     }
 
-    it.todo('renders')
+    beforeEach(() => {
+      wrapper = Wrapper()
+    })
+
+    it('renders', () => {
+      expect(wrapper.is('div')).toBe(true)
+    })
 
     describe('validations', () => {
-      it.todo('is disabled')
+      it('invalid', () => {
+        expect(wrapper.vm.disabled).toBe(true)
+      })
 
       describe('old password and new password', () => {
         describe('match', () => {
