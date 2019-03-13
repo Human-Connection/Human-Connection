@@ -37,7 +37,7 @@
     }
   },
   "dependencies": {
-    "@human-connection/styleguide": "0.5.10",
+    "@human-connection/styleguide": "0.5.15",
     "@nuxtjs/apollo": "4.0.0-rc4",
     "@nuxtjs/axios": "~5.4.1",
     "@nuxtjs/dotenv": "~1.3.0",
@@ -56,9 +56,9 @@
     "nuxt": "~2.4.5",
     "nuxt-env": "~0.1.0",
     "portal-vue": "~1.5.1",
-    "string-hash": "^1.1.3",
-    "tiptap": "^1.14.0",
-    "tiptap-extensions": "^1.14.0",
+    "string-hash": "~1.1.3",
+    "tiptap": "~1.14.0",
+    "tiptap-extensions": "~1.14.0",
     "v-tooltip": "~2.0.0-rc.33",
     "vue-count-to": "~1.0.13",
     "vue-izitoast": "1.1.2",

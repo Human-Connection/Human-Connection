@@ -16,7 +16,7 @@ Then('I can see a list of categories ordered by post count:', table => {
   table.hashes().forEach(({ Name, Posts }, index) => {
     cy.get(`tbody > :nth-child(${index + 1}) > :nth-child(2)`).should(
       'contain',
-      Name
+      Name.trim()
     )
     cy.get(`tbody > :nth-child(${index + 1}) > :nth-child(3)`).should(
       'contain',
@@ -32,7 +32,7 @@ Then('I can see a list of tags ordered by user count:', table => {
   table.hashes().forEach(({ Name, Users, Posts }, index) => {
     cy.get(`tbody > :nth-child(${index + 1}) > :nth-child(2)`).should(
       'contain',
-      Name
+      Name.trim()
     )
     cy.get(`tbody > :nth-child(${index + 1}) > :nth-child(3)`).should(
       'contain',
