@@ -56,11 +56,12 @@ const permissions = shield({
     CreateBadge: isAdmin,
     UpdateBadge: isAdmin,
     DeleteBadge: isAdmin,
+    // addFruitToBasket: isAuthenticated
     follow: isAuthenticated,
     unfollow: isAuthenticated,
     shout: isAuthenticated,
     unshout: isAuthenticated,
-
+    changePassword: isAuthenticated,
     enable: isModerator,
     disable: isModerator
     // CreateUser: allow,

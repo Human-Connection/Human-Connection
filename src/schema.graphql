@@ -21,6 +21,7 @@ type Mutation {
   "Get a JWT Token for the given Email and password"
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
+  changePassword(oldPassword:String!, newPassword: String!): String!
   report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
