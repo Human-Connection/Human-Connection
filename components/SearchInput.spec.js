@@ -6,6 +6,8 @@ const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.filter('truncate', () => 'truncated string')
+localVue.filter('dateTime', () => Date.now)
 
 describe('SearchInput.vue', () => {
   let wrapper
@@ -72,12 +74,12 @@ describe('SearchInput.vue', () => {
       it('opens the select dropdown when focused on', () => {
         expect(wrapper.vm.isOpen).toBe(true)
       })
-  
+
       it('opens the select dropdown and blurs after focused on', () => {
         select.trigger('blur')
         expect(wrapper.vm.isOpen).toBe(false)
       })
-  
+
       it('is clearable', () => {
         select.trigger('input')
         select.trigger('keyup.esc')
@@ -109,13 +111,33 @@ describe('SearchInput.vue', () => {
         expect(spy).toHaveBeenCalledWith('abcd')
       })
 
-      xit('calls onSelect when a user selects an item in the search dropdown menu', async () => {
-        propsData = { results: ['abcd'] }
+      it('calls onSelect when a user selects an item in the search dropdown menu', async () => {
+        // searched for term in the browser, copied the results from Vuex in Vue dev tools
+        propsData = {
+          results: [
+            {
+              __typename: 'Post',
+              author: {
+                __typename: 'User',
+                id: 'u5',
+                name: 'Trick',
+                slug: 'trick'
+              },
+              commentsCount: 0,
+              createdAt: '2019-03-13T11:00:20.835Z',
+              id: 'p10',
+              label: 'Eos aut illo omnis quis eaque et iure aut.',
+              shoutedCount: 0,
+              slug: 'eos-aut-illo-omnis-quis-eaque-et-iure-aut',
+              value: 'Eos aut illo omnis quis eaque et iure aut.'
+            }
+          ]
+        }
         wrapper = Wrapper()
         select.trigger('input')
         const results = wrapper.find('.ds-select-option')
-        results.trigger('select')
-        await expect(wrapper.emitted().select[0]).toEqual(['abcd'])
+        results.trigger('click')
+        await expect(wrapper.emitted().select[0]).toEqual(propsData.results)
       })
     })
   })
