@@ -4,6 +4,7 @@ import { host, login } from '../jest/helpers'
 
 const factory = Factory()
 let clientUser1
+let headersUser1
 
 const mutationFollowUser = (id) => `
   mutation {
@@ -27,18 +28,25 @@ beforeEach(async () => {
     email: 'test2@example.org',
     password: '1234'
   })
+
+  headersUser1 = await login({ email: 'test@example.org', password: '1234' })
+  clientUser1 = new GraphQLClient(host, { headers: headersUser1 })
 })
 
 afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('follow ', () => {
-  describe('(un)follow user', () => {
-    let headersUser1
-    beforeEach(async () => {
-      headersUser1 = await login({ email: 'test@example.org', password: '1234' })
-      clientUser1 = new GraphQLClient(host, { headers: headersUser1 })
+describe('follow', () => {
+  describe('follow user', () => {
+    describe('unauthenticated follow', () => {
+      it('throws authorization error', async () => {
+        let client
+        client = new GraphQLClient(host)
+        await expect(
+          client.request(mutationFollowUser('u2'))
+        ).rejects.toThrow('Not Authorised')
+      })
     })
 
     it('I can follow another user', async () => {
@@ -65,31 +73,6 @@ describe('follow ', () => {
       expect(User[0]).toMatchObject(expected2)
     })
 
-    it('I can unfollow a user', async () => {
-      // follow
-      await clientUser1.request(
-        mutationFollowUser('u2')
-      )
-      const expected = {
-        unfollow: true
-      }
-      // unfollow
-      const res = await clientUser1.request(mutationUnfollowUser('u2'))
-      expect(res).toMatchObject(expected)
-
-      const { User } = await clientUser1.request(`{
-        User(id: "u2") {
-          followedBy { id }
-          followedByCurrentUser
-        }
-      }`)
-      const expected2 = {
-        followedBy: [],
-        followedByCurrentUser: false
-      }
-      expect(User[0]).toMatchObject(expected2)
-    })
-
     it('I can`t follow myself', async () => {
       const res = await clientUser1.request(
         mutationFollowUser('u1')
@@ -101,6 +84,47 @@ describe('follow ', () => {
 
       const { User } = await clientUser1.request(`{
         User(id: "u1") {
+          followedBy { id }
+          followedByCurrentUser
+        }
+      }`)
+      const expected2 = {
+        followedBy: [],
+        followedByCurrentUser: false
+      }
+      expect(User[0]).toMatchObject(expected2)
+    })
+  })
+  describe('unfollow user', () => {
+    describe('unauthenticated follow', () => {
+      it('throws authorization error', async () => {
+        // follow
+        await clientUser1.request(
+          mutationFollowUser('u2')
+        )
+        // unfollow
+        let client
+        client = new GraphQLClient(host)
+        await expect(
+          client.request(mutationUnfollowUser('u2'))
+        ).rejects.toThrow('Not Authorised')
+      })
+    })
+
+    it('I can unfollow a user', async () => {
+      // follow
+      await clientUser1.request(
+        mutationFollowUser('u2')
+      )
+      // unfollow
+      const expected = {
+        unfollow: true
+      }
+      const res = await clientUser1.request(mutationUnfollowUser('u2'))
+      expect(res).toMatchObject(expected)
+
+      const { User } = await clientUser1.request(`{
+        User(id: "u2") {
           followedBy { id }
           followedByCurrentUser
         }
