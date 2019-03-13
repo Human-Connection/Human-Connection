@@ -10,7 +10,7 @@ type Mutation {
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   changePassword(oldPassword:String!, newPassword: String!): String!
-  report(resource: Resource!, description: String): Report
+  report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
   "Shout the given Type and ID"
