@@ -8,7 +8,10 @@ const factory = Factory()
 
 beforeEach(async () => {
   await factory.create('User', { email: 'user@example.org', password: '1234' })
-  await factory.create('User', { email: 'someone@example.org', password: '1234' })
+  await factory.create('User', {
+    email: 'someone@example.org',
+    password: '1234'
+  })
   headers = await login({ email: 'user@example.org', password: '1234' })
   authenticatedClient = new GraphQLClient(host, { headers })
 })
@@ -26,7 +29,9 @@ describe('slugify', () => {
           content: "Some content"
         ) { slug }
       }`)
-      expect(response).toEqual({ CreatePost: { slug: 'i-am-a-brand-new-post' } })
+      expect(response).toEqual({
+        CreatePost: { slug: 'i-am-a-brand-new-post' }
+      })
     })
 
     describe('if slug exists', () => {
@@ -48,12 +53,15 @@ describe('slugify', () => {
             content: "Some content"
           ) { slug }
         }`)
-        expect(response).toEqual({ CreatePost: { slug: 'pre-existing-post-1' } })
+        expect(response).toEqual({
+          CreatePost: { slug: 'pre-existing-post-1' }
+        })
       })
 
       describe('but if the client specifies a slug', () => {
         it('rejects CreatePost', async () => {
-          await expect(authenticatedClient.request(`mutation {
+          await expect(
+            authenticatedClient.request(`mutation {
               CreatePost(
                 title: "Pre-existing post",
                 content: "Some content",
@@ -73,28 +81,33 @@ describe('slugify', () => {
       }`)
     }
     it('generates a slug based on name', async () => {
-      await expect(action('CreateUser', 'name: "I am a user"'))
-        .resolves.toEqual({ CreateUser: { slug: 'i-am-a-user' } })
+      await expect(
+        action('CreateUser', 'name: "I am a user"')
+      ).resolves.toEqual({ CreateUser: { slug: 'i-am-a-user' } })
     })
 
     describe('if slug exists', () => {
       beforeEach(async () => {
-        await action('CreateUser', 'name: "Pre-existing user", slug: "pre-existing-user"')
+        await action(
+          'CreateUser',
+          'name: "Pre-existing user", slug: "pre-existing-user"'
+        )
       })
 
       it('chooses another slug', async () => {
-        await expect(action(
-          'CreateUser',
-          'name: "pre-existing-user"'
-        )).resolves.toEqual({ CreateUser: { slug: 'pre-existing-user-1' } })
+        await expect(
+          action('CreateUser', 'name: "pre-existing-user"')
+        ).resolves.toEqual({ CreateUser: { slug: 'pre-existing-user-1' } })
       })
 
       describe('but if the client specifies a slug', () => {
         it('rejects CreateUser', async () => {
-          await expect(action(
-            'CreateUser',
-            'name: "Pre-existing user", slug: "pre-existing-user"'
-          )).rejects.toThrow('already exists')
+          await expect(
+            action(
+              'CreateUser',
+              'name: "Pre-existing user", slug: "pre-existing-user"'
+            )
+          ).rejects.toThrow('already exists')
         })
       })
     })

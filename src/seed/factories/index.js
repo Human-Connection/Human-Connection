@@ -1,6 +1,5 @@
 import { GraphQLClient, request } from 'graphql-request'
 import { getDriver } from '../../bootstrap/neo4j'
-
 import createBadge from './badges.js'
 import createUser from './users.js'
 import createOrganization from './organizations.js'
@@ -23,26 +22,24 @@ const authenticatedHeaders = async ({ email, password }, host) => {
   }
 }
 const factories = {
-  'Badge': createBadge,
-  'User': createUser,
-  'Organization': createOrganization,
-  'Post': createPost,
-  'Comment': createComment,
-  'Category': createCategory,
-  'Tag': createTag,
-  'Report': createReport
+  Badge: createBadge,
+  User: createUser,
+  Organization: createOrganization,
+  Post: createPost,
+  Comment: createComment,
+  Category: createCategory,
+  Tag: createTag,
+  Report: createReport
 }
 
 export const cleanDatabase = async (options = {}) => {
-  const {
-    driver = getDriver()
-  } = options
+  const { driver = getDriver() } = options
   const session = driver.session()
   const cypher = 'MATCH (n) DETACH DELETE n'
   try {
     return await session.run(cypher)
   } catch (error) {
-    throw (error)
+    throw error
   } finally {
     session.close()
   }
@@ -63,7 +60,10 @@ export default function Factory (options = {}) {
     factories,
     lastResponse: null,
     async authenticateAs ({ email, password }) {
-      const headers = await authenticatedHeaders({ email, password }, seedServerHost)
+      const headers = await authenticatedHeaders(
+        { email, password },
+        seedServerHost
+      )
       this.lastResponse = headers
       this.graphQLClient = new GraphQLClient(seedServerHost, { headers })
       return this

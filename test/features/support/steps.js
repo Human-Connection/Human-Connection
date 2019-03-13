@@ -20,11 +20,6 @@ function createUser (slug) {
   // await login({ email: 'example@test.org', password: '1234' })
 }
 
-AfterAll('Clean up the test data', function () {
-  debug('All the tests are done! Deleting test data')
-  return factory.cleanDatabase()
-})
-
 Given('our own server runs at {string}', function (string) {
   // just documenation
 })

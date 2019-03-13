@@ -161,6 +161,7 @@ yarn run test:cucumber
 npm run test:cucumber
 ```
 
+When some tests fail, try `yarn db:reset` and after that `yarn db:seed`. Then run the tests again
 ## Todo`s
 
 - [x] add jwt authentication
