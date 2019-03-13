@@ -1,6 +1,6 @@
 # Local Installation
 
-Make sure you have a recent version of node - we currently use 10.15.1
+Make sure you have a recent LTS (long term support) version of [node](https://nodejs.org/en/download/) - we currently use 10.15.1
 
 ```bash
 $ node -v
