@@ -56,7 +56,6 @@ describe('badges', () => {
     `
 
     describe('unauthenticated', () => {
-
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
         await expect(
@@ -118,7 +117,6 @@ describe('badges', () => {
     `
 
     describe('unauthenticated', () => {
-
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
         await expect(
@@ -175,7 +173,6 @@ describe('badges', () => {
     `
 
     describe('unauthenticated', () => {
-
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
         await expect(
