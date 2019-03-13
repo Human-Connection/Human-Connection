@@ -13,13 +13,14 @@ const setDefaultFilters = (resolve, root, args, context, info) => {
   return resolve(root, args, context, info)
 }
 
-const hideDisabledComments = async (resolve, root, args, context, info) => {
-  const { comments } = root
-  if (!Array.isArray(comments)) return resolve(root, args, context, info)
-  if (!isModerator(context)) {
-    root.comments = comments.filter((comment) => {
-      return !comment.disabled
-    })
+const obfuscateDisabled = async (resolve, root, args, context, info) => {
+  if (!isModerator(context) && root.disabled) {
+    root.content = 'DELETED'
+    root.contentExcerpt = 'DELETED'
+    root.title = 'DELETED'
+    root.image = 'DELETED'
+    root.avatar = 'DELETED'
+    root.about = 'DELETED'
   }
   return resolve(root, args, context, info)
 }
@@ -38,6 +39,7 @@ export default {
     }
     return resolve(root, args, context, info)
   },
-  Post: hideDisabledComments,
-  User: hideDisabledComments
+  Post: obfuscateDisabled,
+  User: obfuscateDisabled,
+  Comment: obfuscateDisabled
 }
