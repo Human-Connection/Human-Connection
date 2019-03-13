@@ -1,5 +1,5 @@
 import createServer from './server'
-import ActiviyPub from './activitypub/ActivityPub'
+import ActivityPub from './activitypub/ActivityPub'
 
 const serverConfig = {
   port: process.env.GRAPHQL_PORT || 4000
@@ -13,5 +13,5 @@ const server = createServer()
 server.start(serverConfig, options => {
   /* eslint-disable-next-line no-console */
   console.log(`Server ready at ${process.env.GRAPHQL_URI} 🚀`)
-  ActiviyPub.init(server)
+  ActivityPub.init(server)
 })
