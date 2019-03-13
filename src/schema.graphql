@@ -4,6 +4,18 @@ type Query {
   currentUser: User
   "Get the latest Network Statistics"
   statistics: Statistics!
+  findPosts(filter: String!, limit: Int = 10): [Post]! @cypher(
+    statement: """
+      CALL db.index.fulltext.queryNodes('full_text_search', $filter)
+      YIELD node as post, score
+      MATCH (post)<-[:WROTE]-(user:User)
+      WHERE score >= 0.2
+      AND NOT user.deleted = true AND NOT user.disabled = true
+      AND NOT post.deleted = true AND NOT post.disabled = true
+      RETURN post
+      LIMIT $limit
+    """
+  )
 }
 type Mutation {
   "Get a JWT Token for the given Email and password"
@@ -27,7 +39,6 @@ type Mutation {
     DELETE r
     RETURN COUNT(r) > 0
   """)
-
   "Follow the given Type and ID"
   follow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
     MATCH (n {id: $id}), (u:User {id: $cypherParams.currentUserId})
