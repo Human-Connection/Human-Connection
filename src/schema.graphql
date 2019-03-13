@@ -38,7 +38,6 @@ type Mutation {
     DELETE r
     RETURN COUNT(r) > 0
   """)
-
   "Follow the given Type and ID"
   follow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
     MATCH (n {id: $id}), (u:User {id: $cypherParams.currentUserId})
