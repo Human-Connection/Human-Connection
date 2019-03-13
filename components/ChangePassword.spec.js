@@ -14,7 +14,7 @@ describe('ChangePassword.vue', () => {
 
   beforeEach(() => {
     mocks = {
-      $t: jest.fn(),
+      validate: jest.fn(),
       $apollo: {
         mutate: jest.fn().mockResolvedValue()
       }
@@ -52,7 +52,7 @@ describe('ChangePassword.vue', () => {
           })
 
           it.skip('displays a warning', () => {
-            const calls = mocks.$t.mock.calls
+            const calls = mocks.validate.mock.calls
             const expected = [
               ['change-password.validations.old-and-new-password-match']
             ]

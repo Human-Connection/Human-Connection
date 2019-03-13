@@ -19,8 +19,8 @@
         label="Your new password"
       />
       <ds-input
-        id="passwordConfirmation"
-        model="passwordConfirmation"
+        id="confirmPassword"
+        model="confirmPassword"
         type="password"
         label="Confirm new password"
       />
@@ -41,12 +41,12 @@ export default {
       formData: {
         oldPassword: '',
         newPassword: '',
-        passwordConfirmation: ''
+        confirmPassword: ''
       },
       formSchema: {
         oldPassword: { required: true },
         newPassword: { required: true },
-        passwordConfirmation: { required: true }
+        confirmPassword: { required: true }
       },
       disabled: true
     }
