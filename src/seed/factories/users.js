@@ -9,6 +9,7 @@ export default function create (params) {
     password = '1234',
     role = 'user',
     avatar = faker.internet.avatar(),
+    about = faker.lorem.paragraph(),
     disabled = false,
     deleted = false
   } = params
@@ -21,6 +22,7 @@ export default function create (params) {
         password: "${password}",
         email: "${email}",
         avatar: "${avatar}",
+        about: "${about}",
         role: ${role},
         disabled: ${disabled},
         deleted: ${deleted}
