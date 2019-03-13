@@ -76,7 +76,6 @@ export default {
   },
   methods: {
     async cancel() {
-      console.log('cancel')
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')

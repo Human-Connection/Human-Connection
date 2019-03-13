@@ -1,4 +1,4 @@
-import { shallowMount, render, mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
