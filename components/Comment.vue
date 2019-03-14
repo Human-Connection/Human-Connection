@@ -30,7 +30,7 @@
       style="padding-left: 40px; font-weight: bold;"
       color="soft"
     >
-      <ds-icon name="ban" /> {{ this.$t('comment.content.disabled-placeholder') }}
+      <ds-icon name="ban" /> {{ this.$t('comment.content.deleted-placeholder') }}
     </ds-text>
   </div>
 </template>

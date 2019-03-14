@@ -181,7 +181,10 @@
   },
   "comment": {
     "edit": "Kommentar bearbeiten",
-    "delete": "Kommentar löschen"
+    "delete": "Kommentar löschen",
+    "content": {
+      "deleted-placeholder": "...gelöschter Kommentar"
+    }
   },
   "followButton": {
     "follow": "Folgen",
