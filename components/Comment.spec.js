@@ -62,6 +62,11 @@ describe('Comment.vue', () => {
           expect(wrapper.text()).not.toMatch('comment content')
         })
 
+        it('has no "disabled-content" css class', () => {
+          const wrapper = Wrapper()
+          expect(wrapper.classes()).not.toContain('disabled-content')
+        })
+
         it('translates a placeholder', () => {
           const wrapper = Wrapper()
           const calls = mocks.$t.mock.calls
@@ -79,7 +84,7 @@ describe('Comment.vue', () => {
             expect(wrapper.text()).toMatch('comment content')
           })
 
-          it('visually distinguishable', () => {
+          it('has a "disabled-content" css class', () => {
             const wrapper = Wrapper()
             expect(wrapper.classes()).toContain('disabled-content')
           })

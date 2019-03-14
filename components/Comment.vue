@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'comment': true, 'disabled-content': deleted}">
+  <div :class="{'comment': true, 'disabled-content': (deleted && isModerator)}">
     <div v-if="displaysComment">
       <ds-space
         margin-bottom="x-small"
