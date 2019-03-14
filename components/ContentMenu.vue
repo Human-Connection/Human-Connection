@@ -53,7 +53,6 @@ export default {
   props: {
     placement: { type: String, default: 'top-end' },
     itemId: { type: String, required: true },
-    name: { type: String, required: true },
     isOwner: { type: Boolean, default: false },
     resourceType: {
       type: String,

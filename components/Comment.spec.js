@@ -1,4 +1,4 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import Comment from './Comment.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -9,6 +9,7 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.use(Styleguide)
 
+config.stubs['no-ssr'] = '<span><slot /></span>'
 
 describe('Comment.vue', () => {
   let wrapper
@@ -20,9 +21,12 @@ describe('Comment.vue', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: jest.fn(),
+      $t: jest.fn()
     }
     getters = {
+      'auth/user': () => {
+        return {}
+      },
       'auth/isModerator': () => false
     }
   })
@@ -38,7 +42,7 @@ describe('Comment.vue', () => {
     describe('given a comment', () => {
       beforeEach(() => {
         propsData.comment = {
-          content: 'Hello I am a comment content'
+          contentExcerpt: 'Hello I am a comment content'
         }
       })
 

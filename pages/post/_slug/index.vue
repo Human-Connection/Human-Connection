@@ -89,41 +89,11 @@
           id="comments"
           class="comments"
         >
-          <div
+          <comment
             v-for="comment in post.comments"
             :key="comment.id"
-            :class="{comment: true, 'disabled-content': comment.disabled}"
-          >
-            <ds-space margin-bottom="x-small">
-              <hc-author :post="comment" />
-            </ds-space>
-            <no-ssr>
-              <content-menu
-                placement="bottom-end"
-                resource-type="comment"
-                style="float-right"
-                :item-id="comment.id"
-                :name="comment.author.name"
-                :is-owner="isAuthor(comment.author.id)"
-              />
-            </no-ssr>
-            <!-- eslint-disable vue/no-v-html -->
-            <!-- TODO: replace editor content with tiptap render view -->
-            <div
-              v-if="!comment.deleted"
-              style="padding-left: 40px;"
-              v-html="comment.contentExcerpt"
-            />
-            <!-- eslint-enable vue/no-v-html -->
-            <ds-text
-              v-else
-              style="padding-left: 40px; font-weight: bold;"
-              color="soft"
-            >
-              <ds-icon name="ban" /> Vom Benutzer gelöscht
-            </ds-text>
-          </div>
-          <ds-space margin-bottom="small" />
+            :comment="comment"
+          />
         </div>
         <hc-empty
           v-else
@@ -140,6 +110,7 @@ import ContentMenu from '~/components/ContentMenu'
 import HcAuthor from '~/components/Author.vue'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
+import Comment from '~/components/Comment.vue'
 
 export default {
   transition: {
@@ -150,6 +121,7 @@ export default {
     HcAuthor,
     HcShoutButton,
     HcEmpty,
+    Comment,
     ContentMenu
   },
   head() {
