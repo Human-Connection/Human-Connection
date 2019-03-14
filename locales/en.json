@@ -183,7 +183,7 @@
     "edit": "Edit Comment",
     "delete": "Delete Comment",
     "content": {
-      "deleted-placeholder": "...deleted comment"
+      "unavailable-placeholder": "...this comment is not available anymore"
     }
   },
   "followButton": {

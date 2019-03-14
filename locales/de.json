@@ -183,7 +183,7 @@
     "edit": "Kommentar bearbeiten",
     "delete": "Kommentar löschen",
     "content": {
-      "deleted-placeholder": "...gelöschter Kommentar"
+      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
     }
   },
   "followButton": {

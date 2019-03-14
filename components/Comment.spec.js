@@ -70,7 +70,7 @@ describe('Comment.vue', () => {
         it('translates a placeholder', () => {
           const wrapper = Wrapper()
           const calls = mocks.$t.mock.calls
-          const expected = [['comment.content.deleted-placeholder']]
+          const expected = [['comment.content.unavailable-placeholder']]
           expect(calls).toEqual(expect.arrayContaining(expected))
         })
 

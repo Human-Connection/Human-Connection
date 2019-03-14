@@ -29,7 +29,7 @@
       style="padding-left: 40px; font-weight: bold;"
       color="soft"
     >
-      <ds-icon name="ban" /> {{ this.$t('comment.content.deleted-placeholder') }}
+      <ds-icon name="ban" /> {{ this.$t('comment.content.unavailable-placeholder') }}
     </ds-text>
   </div>
 </template>
