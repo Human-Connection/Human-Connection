@@ -26,6 +26,14 @@ const jennyRostocksHeaders = {
     'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImxvY2F0aW9uTmFtZSI6bnVsbCwibmFtZSI6Ikplbm55IFJvc3RvY2siLCJhYm91dCI6bnVsbCwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9zYXNoYV9zaGVzdGFrb3YvMTI4LmpwZyIsImlkIjoidTMiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5vcmciLCJzbHVnIjoiamVubnktcm9zdG9jayIsImlhdCI6MTU1MDg0NjY4MCwiZXhwIjoxNjM3MjQ2NjgwLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQwMDAiLCJzdWIiOiJ1MyJ9.eZ_mVKas4Wzoc_JrQTEWXyRn7eY64cdIg4vqQ-F_7Jc'
 }
 
+const disable = async (id) => {
+  const moderatorParams = { email: 'moderator@example.org', role: 'moderator', password: '1234' }
+  const asModerator = Factory()
+  await asModerator.create('User', moderatorParams)
+  await asModerator.authenticateAs(moderatorParams)
+  await asModerator.mutate('mutation($id: ID!) { disable(id: $id) }', { id })
+}
+
 beforeEach(async () => {
   await factory.create('User', {
     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
@@ -85,12 +93,8 @@ describe('isLoggedIn', () => {
 
       describe('user is disabled', () => {
         beforeEach(async () => {
-          const moderatorParams = { email: 'moderator@example.org', role: 'moderator', password: '1234' }
-          const asModerator = Factory()
-          await asModerator.create('User', moderatorParams)
-          await asModerator.authenticateAs(moderatorParams)
           await factory.create('User', { id: 'u3' })
-          await asModerator.mutate('mutation($id: ID!) { disable(id: $id) }', { id: 'u3' })
+          await disable('u3')
         })
 
         it('returns false', async () => {
@@ -184,6 +188,21 @@ describe('login', () => {
           expect(data.email).toEqual('test@example.org')
           expect(err).toBeNull()
         })
+      })
+    })
+
+    describe('valid email/password but user is disabled', () => {
+      it('responds with "Your account has been disabled."', async () => {
+        await disable('acb2d923-f3af-479e-9f00-61b12e864666')
+        await expect(
+          request(
+            host,
+            mutation({
+              email: 'test@example.org',
+              password: '1234'
+            })
+          )
+        ).rejects.toThrow('Your account has been disabled.')
       })
     })
 
