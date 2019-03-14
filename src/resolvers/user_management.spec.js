@@ -73,11 +73,30 @@ describe('isLoggedIn', () => {
     })
 
     describe('and a corresponding user in the database', () => {
-      it('returns true', async () => {
-        // see the decoded token above
-        await factory.create('User', { id: 'u3' })
-        await expect(client.request(query)).resolves.toEqual({
-          isLoggedIn: true
+      describe('user is enabled', () => {
+        it('returns true', async () => {
+          // see the decoded token above
+          await factory.create('User', { id: 'u3' })
+          await expect(client.request(query)).resolves.toEqual({
+            isLoggedIn: true
+          })
+        })
+      })
+
+      describe('user is disabled', () => {
+        beforeEach(async () => {
+          const moderatorParams = { email: 'moderator@example.org', role: 'moderator', password: '1234' }
+          const asModerator = Factory()
+          await asModerator.create('User', moderatorParams)
+          await asModerator.authenticateAs(moderatorParams)
+          await factory.create('User', { id: 'u3' })
+          await asModerator.mutate('mutation($id: ID!) { disable(id: $id) }', { id: 'u3' })
+        })
+
+        it('returns false', async () => {
+          await expect(client.request(query)).resolves.toEqual({
+            isLoggedIn: false
+          })
         })
       })
     })
