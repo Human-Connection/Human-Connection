@@ -15,17 +15,24 @@ describe('Comment.vue', () => {
   let Wrapper
   let propsData
   let mocks
+  let getters
 
   beforeEach(() => {
     propsData = {}
     mocks = {
       $t: jest.fn(),
     }
+    getters = {
+      'auth/isModerator': () => false
+    }
   })
 
   describe('shallowMount', () => {
     const Wrapper = () => {
-      return shallowMount(Comment, { propsData, mocks, localVue })
+      const store = new Vuex.Store({
+        getters
+      })
+      return shallowMount(Comment, { store, propsData, mocks, localVue })
     }
 
     describe('given a comment', () => {
@@ -55,6 +62,17 @@ describe('Comment.vue', () => {
           const calls = mocks.$t.mock.calls
           const expected = [['comment.content.disabled-placeholder']]
           expect(calls).toEqual(expect.arrayContaining(expected))
+        })
+
+        describe('for a moderator', () => {
+          beforeEach(() => {
+            getters['auth/isModerator'] = () => true
+          })
+
+          it('renders comment data', () => {
+            const wrapper = Wrapper()
+            expect(wrapper.text()).toMatch('comment content')
+          })
         })
       })
     })

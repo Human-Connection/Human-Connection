@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     comment: {
@@ -20,8 +22,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      isModerator: 'auth/isModerator'
+    }),
+
     disabled() {
-      return this.comment.disabled
+      return this.comment.disabled && !this.isModerator
     }
   }
 }
