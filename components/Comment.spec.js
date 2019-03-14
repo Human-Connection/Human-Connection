@@ -42,6 +42,7 @@ describe('Comment.vue', () => {
     describe('given a comment', () => {
       beforeEach(() => {
         propsData.comment = {
+          id: '2',
           contentExcerpt: 'Hello I am a comment content'
         }
       })
@@ -76,6 +77,11 @@ describe('Comment.vue', () => {
           it('renders comment data', () => {
             const wrapper = Wrapper()
             expect(wrapper.text()).toMatch('comment content')
+          })
+
+          it('visually distinguishable', () => {
+            const wrapper = Wrapper()
+            expect(wrapper.classes()).toContain('disabled-content')
           })
         })
       })

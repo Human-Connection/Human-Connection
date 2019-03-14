@@ -1,6 +1,6 @@
 <template>
-  <div class="comment">
-    <div v-if="!deleted">
+  <div :class="{'comment': true, 'disabled-content': deleted}">
+    <div v-if="displaysComment">
       <ds-space
         margin-bottom="x-small"
       >
@@ -8,7 +8,6 @@
       </ds-space>
       <no-ssr>
         <content-menu
-          v-if="!deleted"
           placement="bottom-end"
           resource-type="comment"
           style="float-right"
@@ -49,7 +48,7 @@ export default {
     comment: {
       type: Object,
       default() {
-        return { id: '' }
+        return {}
       }
     }
   },
@@ -58,10 +57,12 @@ export default {
       user: 'auth/user',
       isModerator: 'auth/isModerator'
     }),
-
     deleted() {
       const { disabled, deleted } = this.comment
-      return (disabled || deleted) && !this.isModerator
+      return disabled || deleted
+    },
+    displaysComment() {
+      return !this.deleted || this.isModerator
     },
     author() {
       if (this.deleted) return {}
