@@ -46,17 +46,15 @@ export default {
       if (
         currentUser &&
         (await bcrypt.compareSync(password, currentUser.password)) &&
-        currentUser.disabled == false
+        !currentUser.disabled 
       ) {
         delete currentUser.password
         return encode(currentUser)
-      } 
-      else if (currentUser && 
+      } else if (currentUser && 
         currentUser.disabled
-      ){
+      ) {
         throw new AuthenticationError('Your account has been disabled.')
-      }
-      else {
+      } else {
         throw new AuthenticationError('Incorrect email address or password.')
       }
     },
