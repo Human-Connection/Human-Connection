@@ -79,6 +79,23 @@ describe('User.vue', () => {
           expect(wrapper.text()).not.toMatch('Tilda Swinton')
           expect(wrapper.text()).toMatch('Anonymus')
         })
+
+        describe('current user is a moderator', () => {
+          beforeEach(() => {
+            getters['auth/isModerator'] = () => true
+          })
+
+          it('renders user name', () => {
+            const wrapper = Wrapper()
+            expect(wrapper.text()).not.toMatch('Anonymous')
+            expect(wrapper.text()).toMatch('Tilda Swinton')
+          })
+
+          it('has "disabled-content" class', () => {
+            const wrapper = Wrapper()
+            expect(wrapper.classes()).toContain('disabled-content')
+          })
+        })
       })
     })
   })

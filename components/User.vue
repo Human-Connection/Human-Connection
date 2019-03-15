@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!user || user.disabled">
+  <div v-if="!user || (user.disabled && !isModerator)">
     <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
       <ds-avatar
         style="display: inline-block; vertical-align: middle;"
@@ -17,6 +17,7 @@
   </div>
   <dropdown
     v-else
+    :class="{'disabled-content': user.disabled}"
     :disabled="disabled || !showUserPopover"
     placement="top-start"
     offset="0"
@@ -133,6 +134,7 @@
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcBadges from '~/components/Badges.vue'
 import Dropdown from '~/components/Dropdown'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'HcUser',
@@ -147,6 +149,9 @@ export default {
     showUserPopover: { type: Boolean, default: true }
   },
   computed: {
+    ...mapGetters({
+      isModerator: 'auth/isModerator'
+    }),
     itsMe() {
       return this.user.slug === this.$store.getters['auth/user'].slug
     },
