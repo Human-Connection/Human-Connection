@@ -1,6 +1,6 @@
 <template>
   <dropdown
-    :disabled="!hasAuthor || !showAuthorPopover"
+    :disabled="disabled || !showUserPopover"
     placement="top-start"
     offset="0"
   >
@@ -8,62 +8,55 @@
       slot="default"
       slot-scope="{openMenu, closeMenu, isOpen}"
     >
-      <a
-        v-router-link
-        :href="author.slug ? $router.resolve({ name: 'profile-slug', params: { slug: author.slug } }).href : null"
-        :class="['author', isOpen && 'active']"
+      <div
         @mouseover="openMenu(true)"
         @mouseleave="closeMenu(true)"
       >
-        <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
-          <ds-avatar
-            :image="author.avatar"
-            :name="author.name"
-            style="display: inline-block; vertical-align: middle;"
-            size="32px"
-          />
-        </div>
-        <div style="display: inline-block; height: 100%; vertical-align: middle;">
-          <b
-            class="username"
-            style="vertical-align: middle;"
-          >
-            {{ author.name | truncate(trunc, 18) }}
-          </b>
-          <template v-if="post.createdAt">
-            <br>
-            <ds-text
-              size="small"
-              color="soft"
+        <nuxt-link
+          :to="userLink"
+          :class="['user', isOpen && 'active']"
+        >
+          <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
+            <ds-avatar
+              :image="user.avatar"
+              :name="user.name"
+              style="display: inline-block; vertical-align: middle;"
+              size="32px"
+            />
+          </div>
+          <div style="display: inline-block; height: 100%; vertical-align: middle;">
+            <b
+              class="username"
+              style="vertical-align: middle;"
             >
-              {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
-            </ds-text>
-          </template>
-        </div>
-      </a>
+              {{ user.name | truncate(trunc, 18) }}
+            </b>
+          </div>
+        </nuxt-link>
+      </div>
     </template>
     <template
       slot="popover"
     >
       <div style="min-width: 250px">
         <!--<ds-avatar
-          :image="author.avatar"
-          :name="author.name || 'Anonymus'"
+          :image="user.avatar"
+          :name="user.name || 'Anonymus'"
           class="profile-avatar"
           size="90px" />-->
         <hc-badges
-          v-if="author.badges && author.badges.length"
-          :badges="author.badges"
+          v-if="user.badges && user.badges.length"
+          :badges="user.badges"
         />
         <ds-text
-          v-if="author.location"
+          v-if="user.location"
           align="center"
           color="soft"
           size="small"
           style="margin-top: 5px"
           bold
         >
-          <ds-icon name="map-marker" /> {{ author.location.name }}
+          <ds-icon name="map-marker" /> {{ user.location.name }}
         </ds-text>
         <ds-flex
           style="margin-top: -10px"
@@ -80,16 +73,16 @@
           <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
             <ds-space margin="small">
               <ds-number
-                :count="author.contributionsCount"
-                :label="$t('common.post', null, author.contributionsCount)"
+                :count="user.contributionsCount"
+                :label="$t('common.post', null, user.contributionsCount)"
               />
             </ds-space>
           </ds-flex-item>
           <ds-flex-item class="ds-tab-nav-item">
             <ds-space margin="small">
               <ds-number
-                :count="author.commentsCount"
-                :label="$t('common.comment', null, author.commentsCount)"
+                :count="user.commentsCount"
+                :label="$t('common.comment', null, user.commentsCount)"
               />
             </ds-space>
           </ds-flex-item>
@@ -106,10 +99,10 @@
         >
           <ds-flex-item :width="{base: 3}">
             <hc-follow-button
-              :follow-id="author.id"
-              :is-followed="author.followedByCurrentUser"
-              @optimistic="follow => author.followedByCurrentUser = follow"
-              @update="follow => author.followedByCurrentUser = follow"
+              :follow-id="user.id"
+              :is-followed="user.followedByCurrentUser"
+              @optimistic="follow => user.followedByCurrentUser = follow"
+              @update="follow => user.followedByCurrentUser = follow"
             />
           </ds-flex-item>
           <ds-flex-item :width="{base: 1}">
@@ -130,34 +123,32 @@ import HcBadges from '~/components/Badges.vue'
 import Dropdown from '~/components/Dropdown'
 
 export default {
-  name: 'HcAuthor',
+  name: 'HcUser',
   components: {
     HcFollowButton,
     HcBadges,
     Dropdown
   },
   props: {
-    post: { type: Object, default: null },
+    user: { type: Object, default: null },
     trunc: { type: Number, default: null },
-    showAuthorPopover: { type: Boolean, default: true }
+    showUserPopover: { type: Boolean, default: true }
   },
   computed: {
     itsMe() {
-      return this.author.slug === this.$store.getters['auth/user'].slug
+      return this.user.slug === this.$store.getters['auth/user'].slug
     },
     fanCount() {
-      let count = Number(this.author.followedByCount) || 0
+      let count = Number(this.user.followedByCount) || 0
       return count
     },
-    author() {
-      return this.hasAuthor
-        ? this.post.author
-        : {
-            name: 'Anonymus'
-          }
+    disabled() {
+      return this.user && this.user.disabled
     },
-    hasAuthor() {
-      return Boolean(this.post && this.post.author)
+    userLink() {
+      const { slug } = this.user
+      if (!slug) return ''
+      return { name: 'profile-slug', params: { slug } }
     }
   }
 }
@@ -170,7 +161,7 @@ export default {
   margin-top: -45px;
   border: #fff 5px solid;
 }
-.author {
+.user {
   white-space: nowrap;
   position: relative;
   display: flex;

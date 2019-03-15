@@ -137,8 +137,8 @@
             >
               <!-- TODO: find better solution for rendering errors -->
               <no-ssr>
-                <hc-related-user
-                  :post="follow"
+                <user
+                  :user="follow"
                   :trunc="15"
                 />
               </no-ssr>
@@ -182,8 +182,8 @@
             >
               <!-- TODO: find better solution for rendering errors -->
               <no-ssr>
-                <hc-related-user
-                  :post="follow"
+                <user
+                  :user="follow"
                   :trunc="15"
                 />
               </no-ssr>
@@ -302,7 +302,7 @@
 <script>
 import uniqBy from 'lodash/uniqBy'
 
-import HcRelatedUser from '~/components/RelatedUser.vue'
+import User from '~/components/User.vue'
 import HcPostCard from '~/components/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
@@ -313,7 +313,7 @@ import ContentMenu from '~/components/ContentMenu'
 
 export default {
   components: {
-    HcRelatedUser,
+    User,
     HcPostCard,
     HcFollowButton,
     HcCountTo,

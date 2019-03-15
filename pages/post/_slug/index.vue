@@ -9,7 +9,7 @@
       :header="post.title"
       :class="{'post-card': true, 'disabled-content': post.disabled}"
     >
-      <hc-author :post="post" />
+      <hc-user :user="post.author" />
       <no-ssr>
         <content-menu
           placement="bottom-end"
@@ -107,7 +107,7 @@
 <script>
 import gql from 'graphql-tag'
 import ContentMenu from '~/components/ContentMenu'
-import HcAuthor from '~/components/Author.vue'
+import HcUser from '~/components/User.vue'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
 import Comment from '~/components/Comment.vue'
@@ -118,7 +118,7 @@ export default {
     mode: 'out-in'
   },
   components: {
-    HcAuthor,
+    HcUser,
     HcShoutButton,
     HcEmpty,
     Comment,

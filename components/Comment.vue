@@ -4,7 +4,7 @@
       <ds-space
         margin-bottom="x-small"
       >
-        <hc-author :post="comment" />
+        <hc-user :user="author" />
       </ds-space>
       <no-ssr>
         <content-menu
@@ -36,12 +36,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import HcAuthor from '~/components/Author.vue'
+import HcUser from '~/components/User.vue'
 import ContentMenu from '~/components/ContentMenu'
 
 export default {
   components: {
-    HcAuthor,
+    HcUser,
     ContentMenu
   },
   props: {

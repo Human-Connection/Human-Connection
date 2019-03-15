@@ -26,10 +26,10 @@
     >
       <!-- TODO: find better solution for rendering errors -->
       <no-ssr>
-        <hc-author
-          :post="post"
+        <hc-user
+          :user="post.author"
           :trunc="35"
-          :show-author-popover="showAuthorPopover"
+          :show-user-popover="showUserPopover"
         />
       </no-ssr>
     </ds-space>
@@ -64,14 +64,14 @@
 </template>
 
 <script>
-import HcAuthor from '~/components/Author.vue'
+import HcUser from '~/components/User.vue'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
 
 export default {
   name: 'HcPostCard',
   components: {
-    HcAuthor,
+    HcUser,
     ContentMenu
   },
   props: {
@@ -79,7 +79,7 @@ export default {
       type: Object,
       required: true
     },
-    showAuthorPopover: {
+    showUserPopover: {
       type: Boolean,
       default: true
     }
