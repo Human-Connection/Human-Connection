@@ -73,6 +73,12 @@ describe('User.vue', () => {
         beforeEach(() => {
           propsData.user.disabled = true
         })
+
+        it('renders anonymous user', () => {
+          const wrapper = Wrapper()
+          expect(wrapper.text()).not.toMatch('Tilda Swinton')
+          expect(wrapper.text()).toMatch('Anonymus')
+        })
       })
     })
   })
