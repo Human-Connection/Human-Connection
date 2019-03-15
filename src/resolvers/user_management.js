@@ -32,7 +32,7 @@ export default {
       const session = driver.session()
       const result = await session.run(
         'MATCH (user:User {email: $userEmail}) ' +
-          'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1',
+          'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role, .disabled} as user LIMIT 1',
         {
           userEmail: email
         }
@@ -45,11 +45,18 @@ export default {
 
       if (
         currentUser &&
-        (await bcrypt.compareSync(password, currentUser.password))
+        (await bcrypt.compareSync(password, currentUser.password)) &&
+        currentUser.disabled == false
       ) {
         delete currentUser.password
         return encode(currentUser)
-      } else {
+      } 
+      else if (currentUser && 
+        currentUser.disabled
+      ){
+        throw new AuthenticationError('Your account has been disabled.')
+      }
+      else {
         throw new AuthenticationError('Incorrect email address or password.')
       }
     },
