@@ -1,5 +1,22 @@
 <template>
+  <div v-if="!user">
+    <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
+      <ds-avatar
+        style="display: inline-block; vertical-align: middle;"
+        size="32px"
+      />
+    </div>
+    <div style="display: inline-block; height: 100%; vertical-align: middle;">
+      <b
+        class="username"
+        style="vertical-align: middle;"
+      >
+        Anonymus
+      </b>
+    </div>
+  </div>
   <dropdown
+    v-else
     :disabled="disabled || !showUserPopover"
     placement="top-start"
     offset="0"
@@ -87,11 +104,6 @@
             </ds-space>
           </ds-flex-item>
         </ds-flex>
-        <!--<ds-text
-          color="soft"
-          size="small">
-          <ds-icon name="map-marker" /> Hamburg, Deutschland
-        </ds-text>-->
         <ds-flex
           v-if="!itsMe"
           gutter="x-small"

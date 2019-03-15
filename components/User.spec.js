@@ -1,4 +1,4 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import User from './User.vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -30,7 +30,9 @@ describe('User.vue', () => {
     mocks = {
       $t: jest.fn()
     }
-    stubs = ['router-link', 'router-view']
+    stubs = {
+      NuxtLink: RouterLinkStub
+    }
     getters = {
       'auth/user': () => {
         return {}
@@ -71,7 +73,6 @@ describe('User.vue', () => {
         beforeEach(() => {
           propsData.user.disabled = true
         })
-
       })
     })
   })
