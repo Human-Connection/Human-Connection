@@ -52,7 +52,7 @@ export default {
   },
   props: {
     placement: { type: String, default: 'top-end' },
-    itemId: { type: String, required: true },
+    resource: { type: Object, required: true },
     isOwner: { type: Boolean, default: false },
     resourceType: {
       type: String,
@@ -72,7 +72,7 @@ export default {
           path: this.$router.resolve({
             name: 'post-edit-id',
             params: {
-              id: this.itemId
+              id: this.resource.id
             }
           }).href,
           icon: 'edit'
@@ -136,8 +136,7 @@ export default {
         name: dialog,
         data: {
           type: this.resourceType,
-          id: this.itemId,
-          name: this.name
+          resource: this.resource
         }
       })
     }

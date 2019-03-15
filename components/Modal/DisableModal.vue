@@ -32,12 +32,9 @@ import gql from 'graphql-tag'
 
 export default {
   props: {
-    resource: {
-      type: Object,
-      default() {
-        return { id: null, type: 'contribution', name: '' }
-      }
-    }
+    name: { type: String, default: '' },
+    type: { type: String, required: true },
+    id: { type: String, required: true }
   },
   data() {
     return {
@@ -48,11 +45,11 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(`disable.${this.resource.type}.title`)
+      return this.$t(`disable.${this.type}.title`)
     },
     message() {
-      const name = this.$filters.truncate(this.resource.name, 30)
-      return this.$t(`disable.${this.resource.type}.message`, { name })
+      const name = this.$filters.truncate(this.name, 30)
+      return this.$t(`disable.${this.type}.message`, { name })
     }
   },
   methods: {
@@ -70,7 +67,7 @@ export default {
               disable(id: $id)
             }
           `,
-          variables: { id: this.resource.id }
+          variables: { id: this.id }
         })
         this.$toast.success(this.$t('disable.success'))
         this.isOpen = false

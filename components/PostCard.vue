@@ -52,8 +52,7 @@
         <no-ssr>
           <content-menu
             resource-type="contribution"
-            :item-id="post.id"
-            :name="post.title"
+            :resource="post"
             :is-owner="isAuthor"
           />
         </no-ssr>

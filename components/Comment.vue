@@ -10,8 +10,8 @@
         <content-menu
           placement="bottom-end"
           resource-type="comment"
+          :resource="comment"
           style="float-right"
-          :item-id="comment.id"
           :is-owner="isAuthor(author.id)"
         />
       </no-ssr>

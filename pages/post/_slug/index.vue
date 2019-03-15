@@ -14,8 +14,7 @@
         <content-menu
           placement="bottom-end"
           resource-type="contribution"
-          :item-id="post.id"
-          :name="post.title"
+          :resource="post"
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>

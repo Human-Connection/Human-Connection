@@ -24,8 +24,7 @@
             <content-menu
               placement="bottom-end"
               resource-type="user"
-              :item-id="user.id"
-              :name="user.name"
+              :resource="user"
               :is-owner="myProfile"
             />
           </no-ssr>

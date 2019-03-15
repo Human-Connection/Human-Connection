@@ -51,12 +51,9 @@ export default {
     SweetalertIcon
   },
   props: {
-    resource: {
-      type: Object,
-      default() {
-        return { id: null, type: 'contribution', name: '' }
-      }
-    }
+    name: { type: String, default: '' },
+    type: { type: String, required: true },
+    id: { type: String, required: true }
   },
   data() {
     return {
@@ -67,11 +64,11 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(`report.${this.resource.type}.title`)
+      return this.$t(`report.${this.type}.title`)
     },
     message() {
-      const name = this.$filters.truncate(this.resource.name, 30)
-      return this.$t(`report.${this.resource.type}.message`, { name })
+      const name = this.$filters.truncate(this.name, 30)
+      return this.$t(`report.${this.type}.message`, { name })
     }
   },
   methods: {
@@ -92,7 +89,7 @@ export default {
               }
             }
           `,
-          variables: { id: this.resource.id }
+          variables: { id: this.id }
         })
         this.success = true
         this.$toast.success(this.$t('report.success'))

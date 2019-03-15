@@ -16,7 +16,10 @@ describe('ReportModal.vue', () => {
   let mocks
 
   beforeEach(() => {
-    propsData = {}
+    propsData = {
+      type: 'contribution',
+      id: 'c43'
+    }
     mocks = {
       $t: jest.fn(),
       $filters: {
@@ -50,10 +53,9 @@ describe('ReportModal.vue', () => {
     describe('given a user', () => {
       beforeEach(() => {
         propsData = {
-          resource: {
-            type: 'user',
-            name: 'Bob Ross'
-          }
+          type: 'user',
+          id: 'u4',
+          name: 'Bob Ross'
         }
       })
 
@@ -61,6 +63,23 @@ describe('ReportModal.vue', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
         const expected = [['report.user.message', { name: 'Bob Ross' }]]
+        expect(calls).toEqual(expect.arrayContaining(expected))
+      })
+    })
+
+    describe('given a post', () => {
+      beforeEach(() => {
+        propsData = {
+          id: 'p23',
+          type: 'post',
+          name: 'It is a post'
+        }
+      })
+
+      it('mentions post title', () => {
+        Wrapper()
+        const calls = mocks.$t.mock.calls
+        const expected = [['report.post.message', { name: 'It is a post' }]]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -80,9 +99,8 @@ describe('ReportModal.vue', () => {
     describe('given id', () => {
       beforeEach(() => {
         propsData = {
-          resource: {
-            id: 4711
-          }
+          type: 'user',
+          id: 'u4711'
         }
         wrapper = Wrapper()
       })

@@ -67,8 +67,10 @@ describe('Modal.vue', () => {
           open: 'disable',
           data: {
             type: 'contribution',
-            name: 'some title',
-            id: 456
+            resource: {
+              id: 'c456',
+              title: 'some title'
+            }
           }
         }
         wrapper = Wrapper()
@@ -79,10 +81,10 @@ describe('Modal.vue', () => {
       })
 
       it('passes data to disable modal', () => {
-        expect(wrapper.find(DisableModal).props().resource).toEqual({
+        expect(wrapper.find(DisableModal).props()).toEqual({
           type: 'contribution',
           name: 'some title',
-          id: 456
+          id: 'c456'
         })
       })
 
@@ -90,6 +92,31 @@ describe('Modal.vue', () => {
         it('turns empty', () => {
           wrapper.find(DisableModal).vm.$emit('close')
           expect(wrapper.contains(DisableModal)).toBe(false)
+        })
+      })
+
+      describe('store/modal data contains a comment', () => {
+        it('passes author name to disable modal', () => {
+          state.data = {
+            type: 'comment',
+            resource: { id: 'c456', author: { name: 'Author name' } }
+          }
+          wrapper = Wrapper()
+          expect(wrapper.find(DisableModal).props()).toEqual({
+            type: 'comment',
+            name: 'Author name',
+            id: 'c456'
+          })
+        })
+
+        it('does not crash if author is undefined', () => {
+          state.data = { type: 'comment', resource: { id: 'c456' } }
+          wrapper = Wrapper()
+          expect(wrapper.find(DisableModal).props()).toEqual({
+            type: 'comment',
+            name: '',
+            id: 'c456'
+          })
         })
       })
     })

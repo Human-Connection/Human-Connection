@@ -14,7 +14,11 @@ describe('DisableModal.vue', () => {
   let wrapper
 
   beforeEach(() => {
-    propsData = {}
+    propsData = {
+      type: 'contribution',
+      name: 'blah',
+      id: 'c42'
+    }
     mocks = {
       $filters: {
         truncate: a => a
@@ -38,10 +42,9 @@ describe('DisableModal.vue', () => {
     describe('given a user', () => {
       beforeEach(() => {
         propsData = {
-          resource: {
-            type: 'user',
-            name: 'Bob Ross'
-          }
+          type: 'user',
+          id: 'u2',
+          name: 'Bob Ross'
         }
       })
 
@@ -56,10 +59,9 @@ describe('DisableModal.vue', () => {
     describe('given a contribution', () => {
       beforeEach(() => {
         propsData = {
-          resource: {
-            type: 'contribution',
-            name: 'This is some post title.'
-          }
+          type: 'contribution',
+          id: 'c3',
+          name: 'This is some post title.'
         }
       })
 
@@ -83,9 +85,8 @@ describe('DisableModal.vue', () => {
     describe('given id', () => {
       beforeEach(() => {
         propsData = {
-          resource: {
-            id: 4711
-          }
+          type: 'user',
+          id: 'u4711'
         }
       })
 
@@ -129,7 +130,7 @@ describe('DisableModal.vue', () => {
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
           const [[{ variables }]] = calls
-          expect(variables).toEqual({ id: 4711 })
+          expect(variables).toEqual({ id: 'u4711' })
         })
 
         it('fades away', () => {
