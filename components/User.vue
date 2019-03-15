@@ -18,7 +18,6 @@
   <dropdown
     v-else
     :class="{'disabled-content': user.disabled}"
-    :disabled="disabled || !showUserPopover"
     placement="top-start"
     offset="0"
   >
@@ -57,11 +56,6 @@
       slot="popover"
     >
       <div style="min-width: 250px">
-        <!--<ds-avatar
-          :image="user.avatar"
-          :name="user.name || 'Anonymus'"
-          class="profile-avatar"
-          size="90px" />-->
         <hc-badges
           v-if="user.badges && user.badges.length"
           :badges="user.badges"
@@ -145,8 +139,7 @@ export default {
   },
   props: {
     user: { type: Object, default: null },
-    trunc: { type: Number, default: null },
-    showUserPopover: { type: Boolean, default: true }
+    trunc: { type: Number, default: null }
   },
   computed: {
     ...mapGetters({
@@ -158,9 +151,6 @@ export default {
     fanCount() {
       let count = Number(this.user.followedByCount) || 0
       return count
-    },
-    disabled() {
-      return this.user && this.user.disabled
     },
     userLink() {
       const { slug } = this.user

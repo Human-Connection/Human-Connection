@@ -29,7 +29,6 @@
         <hc-user
           :user="post.author"
           :trunc="35"
-          :show-user-popover="showUserPopover"
         />
       </no-ssr>
     </ds-space>
@@ -78,10 +77,6 @@ export default {
     post: {
       type: Object,
       required: true
-    },
-    showUserPopover: {
-      type: Boolean,
-      default: true
     }
   },
   computed: {

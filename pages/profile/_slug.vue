@@ -276,7 +276,6 @@
             >
               <hc-post-card
                 :post="post"
-                :show-author-popover="false"
               />
             </ds-flex-item>
           </template>
