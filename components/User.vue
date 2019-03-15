@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!user || (user.disabled && !isModerator)">
+  <div v-if="!user || ((user.disabled || user.deleted) && !isModerator)">
     <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
       <ds-avatar
         style="display: inline-block; vertical-align: middle;"
