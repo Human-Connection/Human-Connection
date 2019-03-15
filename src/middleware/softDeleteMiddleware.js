@@ -15,12 +15,13 @@ const setDefaultFilters = (resolve, root, args, context, info) => {
 
 const obfuscateDisabled = async (resolve, root, args, context, info) => {
   if (!isModerator(context) && root.disabled) {
-    root.content = 'DELETED'
-    root.contentExcerpt = 'DELETED'
-    root.title = 'DELETED'
-    root.image = 'DELETED'
-    root.avatar = 'DELETED'
-    root.about = 'DELETED'
+    root.content = 'UNAVAILABLE'
+    root.contentExcerpt = 'UNAVAILABLE'
+    root.title = 'UNAVAILABLE'
+    root.image = 'UNAVAILABLE'
+    root.avatar = 'UNAVAILABLE'
+    root.about = 'UNAVAILABLE'
+    root.name = 'UNAVAILABLE'
   }
   return resolve(root, args, context, info)
 }
