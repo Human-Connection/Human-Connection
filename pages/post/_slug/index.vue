@@ -148,6 +148,7 @@ export default {
           content
           createdAt
           disabled
+          deleted
           slug
           image
           author {
@@ -155,6 +156,8 @@ export default {
             slug
             name
             avatar
+            disabled
+            deleted
             shoutedCount
             contributionsCount
             commentsCount
@@ -184,6 +187,8 @@ export default {
               slug
               name
               avatar
+              disabled
+              deleted
               shoutedCount
               contributionsCount
               commentsCount
