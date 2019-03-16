@@ -26,6 +26,16 @@
         class="content hc-editor-content"
         v-html="post.content"
       />
+      <ds-space>
+        <ds-text
+          v-if="post.createdAt"
+          align="right"
+          size="small"
+          color="soft"
+        >
+          {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
+        </ds-text>
+      </ds-space>
       <!-- eslint-enable vue/no-v-html -->
       <!-- Shout Button -->
       <ds-space margin="xx-large" />
