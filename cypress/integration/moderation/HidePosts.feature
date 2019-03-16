@@ -5,10 +5,10 @@ Feature: Hide Posts
 
   Background:
     Given we have the following posts in our database:
-       | title                       | deleted | disabled |
-       | This post should be visible |         |          |
-       | This post is disabled       |         |    x     |
-       | This post is deleted        |    x    |          |
+      | id | title                       | deleted | disabled |
+      | p1 | This post should be visible |         |          |
+      | p2 | This post is disabled       |         |    x     |
+      | p3 | This post is deleted        |    x    |          |
 
   Scenario: Disabled posts don't show up on the landing page
     Given I am logged in with a "user" role

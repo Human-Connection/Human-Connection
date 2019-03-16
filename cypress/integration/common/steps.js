@@ -156,20 +156,30 @@ When('I press {string}', label => {
 
 Given('we have the following posts in our database:', table => {
   table.hashes().forEach(({ Author, ...postAttributes }) => {
-    postAttributes.deleted = Boolean(postAttributes.deleted)
-    postAttributes.disabled = Boolean(postAttributes.disabled)
-    cy.factory()
-      .create('User', {
+    const userAttributes = {
         name: Author,
         email: `${Author}@example.org`,
         password: '1234'
-      })
-      .authenticateAs({
-        email: `${Author}@example.org`,
-        password: '1234'
-      })
+    }
+    postAttributes.deleted = Boolean(postAttributes.deleted)
+    const disabled = Boolean(postAttributes.disabled)
+    cy.factory()
+      .create('User', userAttributes)
+      .authenticateAs(userAttributes)
       .create('Post', postAttributes)
+      if(disabled) {
+        const moderatorParams = {
+          email: 'moderator@example.org',
+          role: 'moderator',
+          password: '1234'
+        }
+        cy.factory()
+          .create('User', moderatorParams)
+          .authenticateAs(moderatorParams)
+          .mutate('mutation($id: ID!) { disable(id: $id) }', postAttributes)
+      }
   })
+
 })
 
 Then('I see a success message:', message => {
