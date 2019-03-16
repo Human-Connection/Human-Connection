@@ -13,7 +13,7 @@ export default async (driver, authorizationHeader) => {
   const session = driver.session()
   const query = `
     MATCH (user:User {id: {id} })
-    RETURN user {.id, .slug, .name, .avatar, .email, .role} as user
+    RETURN user {.id, .slug, .name, .avatar, .email, .role, .disabled}
     LIMIT 1
   `
   const result = await session.run(query, { id })
@@ -22,6 +22,7 @@ export default async (driver, authorizationHeader) => {
     return record.get('user')
   })
   if (!currentUser) return null
+  if (currentUser.disabled) return null
   return {
     token,
     ...currentUser
