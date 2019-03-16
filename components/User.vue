@@ -25,13 +25,13 @@
       slot="default"
       slot-scope="{openMenu, closeMenu, isOpen}"
     >
-      <div
-        @mouseover="openMenu(true)"
-        @mouseleave="closeMenu(true)"
+      <nuxt-link
+        :to="userLink"
+        :class="['user', isOpen && 'active']"
       >
-        <nuxt-link
-          :to="userLink"
-          :class="['user', isOpen && 'active']"
+        <div
+          @mouseover="openMenu(true)"
+          @mouseleave="closeMenu(true)"
         >
           <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
             <ds-avatar
@@ -49,8 +49,8 @@
               {{ user.name | truncate(trunc, 18) }}
             </b>
           </div>
-        </nuxt-link>
-      </div>
+        </div>
+      </nuxt-link>
     </template>
     <template
       slot="popover"

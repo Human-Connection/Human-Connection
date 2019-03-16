@@ -64,7 +64,7 @@ When(
 )
 
 When('I click on the author', () => {
-  cy.get('a.author')
+  cy.get('a.user')
     .first()
     .click()
     .wait(200)
