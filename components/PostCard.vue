@@ -20,6 +20,16 @@
       />
     </ds-space>
     <!-- eslint-enable vue/no-v-html -->
+    <ds-space>
+      <ds-text
+        v-if="post.createdAt"
+        align="right"
+        size="small"
+        color="soft"
+      >
+        {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
+      </ds-text>
+    </ds-space>
     <ds-space
       margin="small"
       style="position: absolute; bottom: 44px; z-index: 1;"
