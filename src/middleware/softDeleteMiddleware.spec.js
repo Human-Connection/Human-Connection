@@ -12,7 +12,7 @@ beforeAll(async () => {
   await Promise.all([
     factory.create('User', { id: 'u1', role: 'user', email: 'user@example.org', password: '1234' }),
     factory.create('User', { id: 'm1', role: 'moderator', email: 'moderator@example.org', password: '1234' }),
-    factory.create('User', { id: 'u2', role: 'user', avatar: '/some/offensive/avatar.jpg', about: 'This self description is very offensive', email: 'troll@example.org', password: '1234' })
+    factory.create('User', { id: 'u2', role: 'user', name: 'Offensive Name', avatar: '/some/offensive/avatar.jpg', about: 'This self description is very offensive', email: 'troll@example.org', password: '1234' })
   ])
 
   await factory.authenticateAs({ email: 'user@example.org', password: '1234' })
@@ -62,7 +62,7 @@ describe('softDeleteMiddleware', () => {
       comment = response.User[0].following[0].comments[0]
     }
     const beforeUser = async () => {
-      query = '{ User(id: "u1") { following { about avatar } } }'
+      query = '{ User(id: "u1") { following { name about avatar } } }'
       const response = await action()
       user = response.User[0].following[0]
     }
@@ -85,6 +85,7 @@ describe('softDeleteMiddleware', () => {
       describe('User', () => {
         beforeEach(beforeUser)
 
+        it('displays name', () => expect(user.name).toEqual('Offensive Name'))
         it('displays about', () => expect(user.about).toEqual('This self description is very offensive'))
         it('displays avatar', () => expect(user.avatar).toEqual('/some/offensive/avatar.jpg'))
       })
@@ -115,24 +116,25 @@ describe('softDeleteMiddleware', () => {
       describe('User', () => {
         beforeEach(beforeUser)
 
-        it('obfuscates about', () => expect(user.about).toEqual('DELETED'))
-        it('obfuscates avatar', () => expect(user.avatar).toEqual('DELETED'))
+        it('displays name', () => expect(user.name).toEqual('UNAVAILABLE'))
+        it('obfuscates about', () => expect(user.about).toEqual('UNAVAILABLE'))
+        it('obfuscates avatar', () => expect(user.avatar).toEqual('UNAVAILABLE'))
       })
 
       describe('Post', () => {
         beforeEach(beforePost)
 
-        it('obfuscates title', () => expect(post.title).toEqual('DELETED'))
-        it('obfuscates content', () => expect(post.content).toEqual('DELETED'))
-        it('obfuscates contentExcerpt', () => expect(post.contentExcerpt).toEqual('DELETED'))
-        it('obfuscates image', () => expect(post.image).toEqual('DELETED'))
+        it('obfuscates title', () => expect(post.title).toEqual('UNAVAILABLE'))
+        it('obfuscates content', () => expect(post.content).toEqual('UNAVAILABLE'))
+        it('obfuscates contentExcerpt', () => expect(post.contentExcerpt).toEqual('UNAVAILABLE'))
+        it('obfuscates image', () => expect(post.image).toEqual('UNAVAILABLE'))
       })
 
       describe('Comment', () => {
         beforeEach(beforeComment)
 
-        it('obfuscates content', () => expect(comment.content).toEqual('DELETED'))
-        it('obfuscates contentExcerpt', () => expect(comment.contentExcerpt).toEqual('DELETED'))
+        it('obfuscates content', () => expect(comment.content).toEqual('UNAVAILABLE'))
+        it('obfuscates contentExcerpt', () => expect(comment.contentExcerpt).toEqual('UNAVAILABLE'))
       })
     })
   })
@@ -185,7 +187,7 @@ describe('softDeleteMiddleware', () => {
           it('conceals disabled comments', async () => {
             const expected = [
               { content: 'Enabled comment on public post' },
-              { content: 'DELETED' }
+              { content: 'UNAVAILABLE' }
             ]
             const { Post: [{ comments }] } = await action()
             await expect(comments).toEqual(expect.arrayContaining(expected))
