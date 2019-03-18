@@ -1,4 +1,5 @@
 # Human-Connection Nitro | Deployment Configuration
+[![Build Status](https://travis-ci.com/Human-Connection/Nitro-Deployment.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Deployment)
 
 Todos:
 - [x] check labels and selectors if they all are correct
