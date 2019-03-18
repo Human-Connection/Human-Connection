@@ -2,7 +2,7 @@
   <ds-card
     :header="post.title"
     :image="post.image"
-    class="post-card"
+    :class="{'post-card': true, 'disabled-content': post.disabled}"
   >
     <a
       v-router-link
@@ -20,16 +20,25 @@
       />
     </ds-space>
     <!-- eslint-enable vue/no-v-html -->
+    <ds-space>
+      <ds-text
+        v-if="post.createdAt"
+        align="right"
+        size="small"
+        color="soft"
+      >
+        {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
+      </ds-text>
+    </ds-space>
     <ds-space
       margin="small"
       style="position: absolute; bottom: 44px; z-index: 1;"
     >
       <!-- TODO: find better solution for rendering errors -->
       <no-ssr>
-        <hc-author
-          :post="post"
+        <hc-user
+          :user="post.author"
           :trunc="35"
-          :show-author-popover="showAuthorPopover"
         />
       </no-ssr>
     </ds-space>
@@ -52,9 +61,8 @@
         </span>
         <no-ssr>
           <content-menu
-            context="contribution"
-            :item-id="post.id"
-            :name="post.title"
+            resource-type="contribution"
+            :resource="post"
             :is-owner="isAuthor"
           />
         </no-ssr>
@@ -64,24 +72,20 @@
 </template>
 
 <script>
-import HcAuthor from '~/components/Author.vue'
+import HcUser from '~/components/User.vue'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
 
 export default {
   name: 'HcPostCard',
   components: {
-    HcAuthor,
+    HcUser,
     ContentMenu
   },
   props: {
     post: {
       type: Object,
       required: true
-    },
-    showAuthorPopover: {
-      type: Boolean,
-      default: true
     }
   },
   computed: {
@@ -126,6 +130,7 @@ export default {
     z-index: 1;
   }
 }
+
 .post-link {
   display: block;
   position: absolute;

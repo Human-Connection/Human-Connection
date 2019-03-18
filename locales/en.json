@@ -131,10 +131,14 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "submitter": "reported by"
+      "submitter": "reported by",
+      "disabledBy": "disabled by"
     }
   },
   "disable": {
+    "submit": "Disable",
+    "cancel": "Cancel",
+    "success": "Disabled successfully",
     "user": {
       "title": "Disable User",
       "type": "User",
@@ -152,8 +156,9 @@
     }
   },
   "report": {
-    "submit": "Send Report",
+    "submit": "Report",
     "cancel": "Cancel",
+    "success": "Thanks for reporting!",
     "user": {
       "title": "Report User",
       "type": "User",
@@ -176,7 +181,10 @@
   },
   "comment": {
     "edit": "Edit Comment",
-    "delete": "Delete Comment"
+    "delete": "Delete Comment",
+    "content": {
+      "unavailable-placeholder": "...this comment is not available anymore"
+    }
   },
   "followButton": {
     "follow": "Follow",

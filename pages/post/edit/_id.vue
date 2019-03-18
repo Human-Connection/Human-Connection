@@ -48,10 +48,14 @@ export default {
               title
               content
               createdAt
+              disabled
+              deleted
               slug
               image
               author {
                 id
+                disabled
+                deleted
               }
               tags {
                 name

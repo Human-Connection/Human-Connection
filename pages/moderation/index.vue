@@ -73,6 +73,29 @@
           {{ scope.row.submitter.name }}
         </nuxt-link>
       </template>
+      <template
+        slot="disabledBy"
+        slot-scope="scope"
+      >
+        <nuxt-link
+          v-if="scope.row.type === 'Post' && scope.row.post.disabledBy"
+          :to="{ name: 'profile-slug', params: { slug: scope.row.post.disabledBy.slug } }"
+        >
+          <b>{{ scope.row.post.disabledBy.name | truncate(50) }}</b>
+        </nuxt-link>
+        <nuxt-link
+          v-else-if="scope.row.type === 'Comment' && scope.row.comment.disabledBy"
+          :to="{ name: 'profile-slug', params: { slug: scope.row.comment.disabledBy.slug } }"
+        >
+          <b>{{ scope.row.comment.disabledBy.name | truncate(50) }}</b>
+        </nuxt-link>
+        <nuxt-link
+          v-else-if="scope.row.type === 'User' && scope.row.user.disabledBy"
+          :to="{ name: 'profile-slug', params: { slug: scope.row.user.disabledBy.slug } }"
+        >
+          <b>{{ scope.row.user.disabledBy.name | truncate(50) }}</b>
+        </nuxt-link>
+      </template>
     </ds-table>
     <hc-empty
       v-else
@@ -101,7 +124,8 @@ export default {
       return {
         type: ' ',
         name: ' ',
-        submitter: this.$t('moderation.reports.submitter')
+        submitter: this.$t('moderation.reports.submitter'),
+        disabledBy: this.$t('moderation.reports.disabledBy')
         // actions: ' '
       }
     }

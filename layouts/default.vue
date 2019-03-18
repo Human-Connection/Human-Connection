@@ -93,10 +93,7 @@
     </ds-container>
     <div id="overlay" />
     <no-ssr>
-      <portal-target name="modal" />
-    </no-ssr>
-    <no-ssr>
-      <report-modal />
+      <modal />
     </no-ssr>
   </div>
 </template>
@@ -105,13 +102,13 @@
 import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
-import ReportModal from '~/components/ReportModal'
+import Modal from '~/components/Modal'
 import seo from '~/components/mixins/seo'
 
 export default {
   components: {
     Dropdown,
-    ReportModal,
+    Modal,
     LocaleSwitch
   },
   mixins: [seo],
