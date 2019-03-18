@@ -1,21 +1,33 @@
 <template>
   <div class="layout-default">
     <div class="main-navigation">
-      <ds-container style="padding: .5rem 2rem .2rem; display: flex;">
+      <ds-container class="main-navigation-container">
         <div class="main-navigation-left">
           <a
             v-router-link
+            style="display: inline-flex"
             href="/"
           >
             <ds-logo />
           </a>
+        </div>
+        <div class="main-navigation-center hc-navbar-search">
+          <search-input
+            id="nav-search"
+            :delay="300"
+            :pending="quickSearchPending"
+            :results="quickSearchResults"
+            @clear="quickSearchClear"
+            @search="value => quickSearch({ value })"
+            @select="goToPost"
+          />
         </div>
         <div class="main-navigation-right">
           <no-ssr>
             <locale-switch
               class="topbar-locale-switch"
               placement="bottom"
-              offset="12"
+              offset="23"
             />
           </no-ssr>
           <template v-if="isLoggedIn">
@@ -99,25 +111,35 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
+import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
 import seo from '~/components/mixins/seo'
 
 export default {
   components: {
     Dropdown,
+    LocaleSwitch,
+    SearchInput,
     Modal,
     LocaleSwitch
   },
   mixins: [seo],
+  data() {
+    return {
+      mobileSearchVisible: false
+    }
+  },
   computed: {
     ...mapGetters({
       user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',
       isModerator: 'auth/isModerator',
-      isAdmin: 'auth/isAdmin'
+      isAdmin: 'auth/isAdmin',
+      quickSearchResults: 'search/quickResults',
+      quickSearchPending: 'search/quickPending'
     }),
     routes() {
       if (!this.user.slug) {
@@ -153,6 +175,18 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      quickSearchClear: 'search/quickClear',
+      quickSearch: 'search/quickSearch'
+    }),
+    goToPost(item) {
+      this.$nextTick(() => {
+        this.$router.push({
+          name: 'post-slug',
+          params: { slug: item.slug }
+        })
+      })
+    },
     matcher(url, route) {
       if (url.indexOf('/profile') === 0) {
         // do only match own profile
@@ -168,6 +202,8 @@ export default {
 .topbar-locale-switch {
   display: flex;
   margin-right: $space-xx-small;
+  align-self: center;
+  display: inline-flex;
 }
 
 .main-navigation {
@@ -176,13 +212,31 @@ export default {
   }
 }
 
+.main-navigation-container {
+  padding: $space-x-small $space-large !important;
+  width: 100%;
+  align-items: center;
+  display: flex;
+}
+
 .main-navigation-left {
   display: flex;
-  margin-right: auto;
+  flex: 1;
+  width: 100%;
+  align-items: center;
 }
+
+.main-navigation-center {
+  display: flex;
+  flex: auto;
+  width: 100%;
+  padding-right: $space-large;
+  padding-left: $space-large;
+}
+
 .main-navigation-right {
   display: flex;
-  margin-left: auto;
+  flex: 1;
 }
 
 .avatar-menu-trigger {

@@ -19,6 +19,7 @@
         :options="cities"
         :label="$t('settings.data.labelCity')"
         :placeholder="$t('settings.data.labelCity')"
+        :loading="loading"
         @input.native="handleCityInput"
       />
       <!-- eslint-enable vue/use-v-on-exact -->
@@ -88,6 +89,7 @@ export default {
       axiosSource: null,
       cities: [],
       sending: false,
+      loading: false,
       formData: {}
     }
   },
@@ -179,6 +181,7 @@ export default {
         return
       }
 
+      this.loading = true
       this.axiosSource = CancelToken.source()
 
       const place = encodeURIComponent(value)
@@ -193,6 +196,9 @@ export default {
         )
         .then(res => {
           this.cities = this.processCityResults(res)
+        })
+        .finally(() => {
+          this.loading = false
         })
     }
   }

@@ -17,6 +17,11 @@
     "shouted": "Shouted",
     "commented": "Commented"
   },
+  "search": {
+    "placeholder": "Search",
+    "hint": "What are you searching for?",
+    "failed": "Nothing found"
+  },
   "settings": {
     "name": "Settings",
     "data": {

@@ -17,6 +17,11 @@
     "shouted": "Empfohlen",
     "commented": "Kommentiert"
   },
+  "search": {
+    "placeholder": "Suchen",
+    "hint": "Wonach suchst du?",
+    "failed": "Nichts gefunden"
+  },
   "settings": {
     "name": "Einstellungen",
     "data": {

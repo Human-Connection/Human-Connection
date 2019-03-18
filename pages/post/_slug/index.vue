@@ -140,7 +140,15 @@ export default {
   },
   data() {
     return {
-      ready: false
+      post: null,
+      ready: false,
+      title: 'loading'
+    }
+  },
+  watch: {
+    Post(post) {
+      this.post = post[0] || {}
+      this.title = this.post.title
     }
   },
   async asyncData(context) {

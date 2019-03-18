@@ -81,3 +81,6 @@ static/uploads
 cypress/videos
 cypress/screenshots/
 cypress.env.json
+
+# Apple macOS folder attribute file
+.DS_Store

@@ -12,7 +12,10 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue .",
     "test": "jest",
-    "precommit": "yarn lint"
+    "precommit": "yarn lint",
+    "e2e:local": "cypress run --headed",
+    "e2e:ci": "npm-run-all --parallel --race start:ci 'cypress:ci --config baseUrl=http://localhost:3000'",
+    "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
