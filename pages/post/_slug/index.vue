@@ -1,48 +1,61 @@
 <template>
-  <ds-card
-    v-if="post"
-    :image="post.image"
-    :header="post.title"
-    class="post-card"
+  <transition
+    name="fade"
+    appear
   >
-    <hc-author :post="post" />
-    <no-ssr>
-      <content-menu
-        placement="bottom-end"
-        context="contribution"
-        :item-id="post.id"
-        :name="post.title"
-        :is-owner="isAuthor(post.author.id)"
+    <ds-card
+      v-if="post && ready"
+      :image="post.image"
+      :header="post.title"
+      :class="{'post-card': true, 'disabled-content': post.disabled}"
+    >
+      <hc-user :user="post.author" />
+      <no-ssr>
+        <content-menu
+          placement="bottom-end"
+          resource-type="contribution"
+          :resource="post"
+          :is-owner="isAuthor(post.author.id)"
+        />
+      </no-ssr>
+      <ds-space margin-bottom="small" />
+      <!-- Content -->
+      <!-- eslint-disable vue/no-v-html -->
+      <!-- TODO: replace editor content with tiptap render view -->
+      <div
+        class="content hc-editor-content"
+        v-html="post.content"
       />
-    </no-ssr>
-    <ds-space margin-bottom="small" />
-    <!-- Content -->
-    <!-- eslint-disable vue/no-v-html -->
-    <!-- TODO: replace editor content with tiptap render view -->
-    <div
-      class="content hc-editor-content"
-      v-html="post.content"
-    />
-    <!-- eslint-enable vue/no-v-html -->
-    <!-- Shout Button -->
-    <ds-space margin="xx-large" />
-    <hc-shout-button
-      v-if="post.author"
-      :disabled="isAuthor(post.author.id)"
-      :count="post.shoutedCount"
-      :is-shouted="post.shoutedByCurrentUser"
-      :post-id="post.id"
-    />
-    <!-- Categories -->
-    <ds-icon
-      v-for="category in post.categories"
-      :key="category.id"
-      v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
-      :name="category.icon"
-      size="large"
-    />&nbsp;
-    <ds-space margin-bottom="small" />
-    <!--<div class="tags">
+      <ds-space>
+        <ds-text
+          v-if="post.createdAt"
+          align="right"
+          size="small"
+          color="soft"
+        >
+          {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
+        </ds-text>
+      </ds-space>
+      <!-- eslint-enable vue/no-v-html -->
+      <!-- Shout Button -->
+      <ds-space margin="xx-large" />
+      <hc-shout-button
+        v-if="post.author"
+        :disabled="isAuthor(post.author.id)"
+        :count="post.shoutedCount"
+        :is-shouted="post.shoutedByCurrentUser"
+        :post-id="post.id"
+      />
+      <!-- Categories -->
+      <ds-icon
+        v-for="category in post.categories"
+        :key="category.id"
+        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
+        :name="category.icon"
+        size="large"
+      />&nbsp;
+      <ds-space margin-bottom="small" />
+      <!--<div class="tags">
       <ds-icon name="compass" /> <ds-tag
         v-for="category in post.categories"
         :key="category.id"
@@ -50,91 +63,63 @@
         {{ category.name }}
       </ds-tag>
     </div>-->
-    <!-- Tags -->
-    <template v-if="post.tags && post.tags.length">
-      <ds-space margin="xx-small" />
-      <div class="tags">
-        <ds-icon name="tags" /> <ds-tag
-          v-for="tag in post.tags"
-          :key="tag.id"
-        >
-          <ds-icon name="tag" /> {{ tag.name }}
-        </ds-tag>
-      </div>
-    </template>
-    <ds-space margin="small" />
-    <!-- Comments -->
-    <ds-section slot="footer">
-      <h3 style="margin-top: 0;">
-        <span>
-          <ds-icon name="comments" />
-          <ds-tag
-            v-if="post.commentsCount"
-            style="margin-top: -4px; margin-left: -12px; position: absolute;"
-            color="primary"
-            size="small"
-            round
+      <!-- Tags -->
+      <template v-if="post.tags && post.tags.length">
+        <ds-space margin="xx-small" />
+        <div class="tags">
+          <ds-icon name="tags" /> <ds-tag
+            v-for="tag in post.tags"
+            :key="tag.id"
           >
-            {{ post.commentsCount }}
-          </ds-tag> &nbsp; Comments
-        </span>
-      </h3>
-      <ds-space margin-bottom="large" />
-      <div
-        v-if="post.commentsCount"
-        id="comments"
-        class="comments"
-      >
-        <div
-          v-for="comment in post.comments"
-          :key="comment.id"
-          class="comment"
-        >
-          <ds-space margin-bottom="x-small">
-            <hc-author :post="comment" />
-          </ds-space>
-          <no-ssr>
-            <content-menu
-              placement="bottom-end"
-              context="comment"
-              style="float-right"
-              :item-id="comment.id"
-              :name="comment.author.name"
-              :is-owner="isAuthor(comment.author.id)"
-            />
-          </no-ssr>
-          <!-- eslint-disable vue/no-v-html -->
-          <!-- TODO: replace editor content with tiptap render view -->
-          <div
-            v-if="!comment.deleted"
-            style="padding-left: 40px;"
-            v-html="comment.contentExcerpt"
-          />
-          <!-- eslint-enable vue/no-v-html -->
-          <ds-text
-            v-else
-            style="padding-left: 40px; font-weight: bold;"
-            color="soft"
-          >
-            <ds-icon name="ban" /> Vom Benutzer gelöscht
-          </ds-text>
+            <ds-icon name="tag" /> {{ tag.name }}
+          </ds-tag>
         </div>
-        <ds-space margin-bottom="small" />
-      </div>
-      <hc-empty
-        v-else
-        icon="messages"
-      />
-    </ds-section>
-  </ds-card>
+      </template>
+      <ds-space margin="small" />
+      <!-- Comments -->
+      <ds-section slot="footer">
+        <h3 style="margin-top: 0;">
+          <span>
+            <ds-icon name="comments" />
+            <ds-tag
+              v-if="post.comments"
+              style="margin-top: -4px; margin-left: -12px; position: absolute;"
+              color="primary"
+              size="small"
+              round
+            >
+              {{ post.commentsCount }}
+            </ds-tag> &nbsp; Comments
+          </span>
+        </h3>
+        <ds-space margin-bottom="large" />
+        <div
+          v-if="post.comments"
+          id="comments"
+          class="comments"
+        >
+          <comment
+            v-for="comment in post.comments"
+            :key="comment.id"
+            :comment="comment"
+          />
+        </div>
+        <hc-empty
+          v-else
+          icon="messages"
+        />
+      </ds-section>
+    </ds-card>
+  </transition>
 </template>
 
 <script>
 import gql from 'graphql-tag'
 import ContentMenu from '~/components/ContentMenu'
-import HcAuthor from '~/components/Author.vue'
+import HcUser from '~/components/User.vue'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
+import Comment from '~/components/Comment.vue'
 
 export default {
   transition: {
@@ -142,9 +127,10 @@ export default {
     mode: 'out-in'
   },
   components: {
-    HcAuthor,
+    HcUser,
     HcShoutButton,
     HcEmpty,
+    Comment,
     ContentMenu
   },
   head() {
@@ -155,6 +141,7 @@ export default {
   data() {
     return {
       post: null,
+      ready: false,
       title: 'loading'
     }
   },
@@ -164,89 +151,112 @@ export default {
       this.title = this.post.title
     }
   },
+  async asyncData(context) {
+    const {
+      params,
+      error,
+      app: { apolloProvider, $i18n }
+    } = context
+    const client = apolloProvider.defaultClient
+    const query = gql(`
+      query Post($slug: String!) {
+        Post(slug: $slug) {
+          id
+          title
+          content
+          createdAt
+          disabled
+          deleted
+          slug
+          image
+          author {
+            id
+            slug
+            name
+            avatar
+            disabled
+            deleted
+            shoutedCount
+            contributionsCount
+            commentsCount
+            followedByCount
+            followedByCurrentUser
+            location {
+              name: name${$i18n.locale().toUpperCase()}
+            }
+            badges {
+              id
+              key
+              icon
+            }
+          }
+          tags {
+            name
+          }
+          commentsCount
+          comments(orderBy: createdAt_desc) {
+            id
+            contentExcerpt
+            createdAt
+            disabled
+            deleted
+            author {
+              id
+              slug
+              name
+              avatar
+              disabled
+              deleted
+              shoutedCount
+              contributionsCount
+              commentsCount
+              followedByCount
+              followedByCurrentUser
+              location {
+                name: name${$i18n.locale().toUpperCase()}
+              }
+              badges {
+                id
+                key
+                icon
+              }
+            }
+          }
+          categories {
+            id
+            name
+            icon
+          }
+          shoutedCount
+          shoutedByCurrentUser
+        }
+      }
+    `)
+    const variables = { slug: params.slug }
+    const {
+      data: { Post }
+    } = await client.query({ query, variables })
+    if (Post.length <= 0) {
+      // TODO: custom 404 error page with translations
+      const message = 'This post could not be found'
+      return error({ statusCode: 404, message })
+    }
+    const [post] = Post
+    return {
+      post,
+      title: post.title
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      // NOTE: quick fix for jumping flexbox implementation
+      // will be fixed in a future update of the styleguide
+      this.ready = true
+    }, 50)
+  },
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
-    }
-  },
-  apollo: {
-    Post: {
-      query() {
-        return gql(`
-          query Post($slug: String!) {
-            Post(slug: $slug) {
-              id
-              title
-              content
-              createdAt
-              slug
-              image
-              author {
-                id
-                slug
-                name
-                avatar
-                shoutedCount
-                contributionsCount
-                commentsCount
-                followedByCount
-                followedByCurrentUser
-                location {
-                  name: name${this.$i18n.locale().toUpperCase()}
-                }
-                badges {
-                  id
-                  key
-                  icon
-                }
-              }
-              tags {
-                name
-              }
-              commentsCount
-              comments(first: 20, orderBy: createdAt_desc) {
-                id
-                contentExcerpt
-                createdAt
-                deleted
-                author {
-                  id
-                  slug
-                  name
-                  avatar
-                  shoutedCount
-                  contributionsCount
-                  commentsCount
-                  followedByCount
-                  followedByCurrentUser
-                  location {
-                    name: name${this.$i18n.locale().toUpperCase()}
-                  }
-                  badges {
-                    id
-                    key
-                    icon
-                  }
-                }
-              }
-              categories {
-                id
-                name
-                icon
-              }
-              shoutedCount
-              shoutedByCurrentUser
-            }
-          }
-        `)
-      },
-      variables() {
-        return {
-          slug: this.$route.params.slug
-        }
-      },
-      prefetch: true,
-      fetchPolicy: 'cache-and-network'
     }
   }
 }

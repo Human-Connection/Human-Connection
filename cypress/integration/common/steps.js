@@ -155,18 +155,29 @@ When('I press {string}', label => {
 })
 
 Given('we have the following posts in our database:', table => {
-  table.hashes().forEach(({ Author, id, title, content }) => {
+  table.hashes().forEach(({ Author, ...postAttributes }) => {
+    const userAttributes = {
+      name: Author,
+      email: `${Author}@example.org`,
+      password: '1234'
+    }
+    postAttributes.deleted = Boolean(postAttributes.deleted)
+    const disabled = Boolean(postAttributes.disabled)
     cy.factory()
-      .create('User', {
-        name: Author,
-        email: `${Author}@example.org`,
+      .create('User', userAttributes)
+      .authenticateAs(userAttributes)
+      .create('Post', postAttributes)
+    if (disabled) {
+      const moderatorParams = {
+        email: 'moderator@example.org',
+        role: 'moderator',
         password: '1234'
-      })
-      .authenticateAs({
-        email: `${Author}@example.org`,
-        password: '1234'
-      })
-      .create('Post', { id, title, content })
+      }
+      cy.factory()
+        .create('User', moderatorParams)
+        .authenticateAs(moderatorParams)
+        .mutate('mutation($id: ID!) { disable(id: $id) }', postAttributes)
+    }
   })
 })
 
@@ -216,3 +227,20 @@ Then('the post was saved successfully', () => {
   cy.get('.ds-card-header > .ds-heading').should('contain', lastPost.title)
   cy.get('.content').should('contain', lastPost.content)
 })
+
+Then(/^I should see only ([0-9]+) posts? on the landing page/, postCount => {
+  cy.get('.post-card').should('have.length', postCount)
+})
+
+Then('the first post on the landing page has the title:', title => {
+  cy.get('.post-card:first').should('contain', title)
+})
+
+Then(
+  'the page {string} returns a 404 error with a message:',
+  (route, message) => {
+    // TODO: how can we check HTTP codes with cypress?
+    cy.visit(route, { failOnStatusCode: false })
+    cy.get('.error').should('contain', message)
+  }
+)

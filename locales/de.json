@@ -136,10 +136,14 @@
     "reports": {
       "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
-      "submitter": "gemeldet von"
+      "submitter": "gemeldet von",
+      "disabledBy": "deaktiviert von"
     }
   },
   "disable": {
+    "submit": "Deaktivieren",
+    "cancel": "Abbrechen",
+    "success": "Erfolgreich deaktiviert",
     "user": {
       "title": "Nutzer sperren",
       "type": "Nutzer",
@@ -157,8 +161,9 @@
     }
   },
   "report": {
-    "submit": "Meldung senden",
+    "submit": "Melden",
     "cancel": "Abbrechen",
+    "success": "Vielen Dank für diese Meldung!",
     "user": {
       "title": "Nutzer melden",
       "type": "Nutzer",
@@ -181,7 +186,10 @@
   },
   "comment": {
     "edit": "Kommentar bearbeiten",
-    "delete": "Kommentar löschen"
+    "delete": "Kommentar löschen",
+    "content": {
+      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
+    }
   },
   "followButton": {
     "follow": "Folgen",

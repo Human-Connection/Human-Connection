@@ -109,8 +109,7 @@ module.exports = {
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
-    '@nuxtjs/style-resources',
-    'portal-vue/nuxt'
+    '@nuxtjs/style-resources'
   ],
 
   /*

@@ -10,7 +10,10 @@
       gutter="base"
     >
       <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
-        <ds-card style="position: relative; height: auto;">
+        <ds-card
+          :class="{'disabled-content': user.disabled}"
+          style="position: relative; height: auto;"
+        >
           <ds-avatar
             :image="user.avatar"
             :name="user.name || 'Anonymus'"
@@ -20,9 +23,8 @@
           <no-ssr>
             <content-menu
               placement="bottom-end"
-              context="user"
-              :item-id="user.id"
-              :name="user.name"
+              resource-type="user"
+              :resource="user"
               :is-owner="myProfile"
             />
           </no-ssr>
@@ -134,8 +136,8 @@
             >
               <!-- TODO: find better solution for rendering errors -->
               <no-ssr>
-                <hc-related-user
-                  :post="follow"
+                <user
+                  :user="follow"
                   :trunc="15"
                 />
               </no-ssr>
@@ -179,8 +181,8 @@
             >
               <!-- TODO: find better solution for rendering errors -->
               <no-ssr>
-                <hc-related-user
-                  :post="follow"
+                <user
+                  :user="follow"
                   :trunc="15"
                 />
               </no-ssr>
@@ -273,7 +275,6 @@
             >
               <hc-post-card
                 :post="post"
-                :show-author-popover="false"
               />
             </ds-flex-item>
           </template>
@@ -299,7 +300,7 @@
 <script>
 import uniqBy from 'lodash/uniqBy'
 
-import HcRelatedUser from '~/components/RelatedUser.vue'
+import User from '~/components/User.vue'
 import HcPostCard from '~/components/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
@@ -310,7 +311,7 @@ import ContentMenu from '~/components/ContentMenu'
 
 export default {
   components: {
-    HcRelatedUser,
+    User,
     HcPostCard,
     HcFollowButton,
     HcCountTo,

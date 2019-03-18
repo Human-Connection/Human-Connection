@@ -35,6 +35,14 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add(
+  'mutate',
+  { prevSubject: true },
+  (factory, mutation, variables) => {
+    return factory.mutate(mutation, variables)
+  }
+)
+
+Cypress.Commands.add(
   'authenticateAs',
   { prevSubject: true },
   (factory, loginCredentials) => {

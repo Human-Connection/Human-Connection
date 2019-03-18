@@ -9,6 +9,8 @@ export default app => {
         name
         avatar
         about
+        disabled
+        deleted
         locationName
         location {
           name: name${lang}
@@ -28,6 +30,8 @@ export default app => {
           name
           slug
           avatar
+          disabled
+          deleted
           followedByCount
           followedByCurrentUser
           contributionsCount
@@ -46,6 +50,8 @@ export default app => {
         followedBy(first: 7)  {
           id
           name
+          disabled
+          deleted
           slug
           avatar
           followedByCount
@@ -72,6 +78,8 @@ export default app => {
           deleted
           image
           createdAt
+          disabled
+          deleted
           categories {
             id
             name
@@ -81,6 +89,8 @@ export default app => {
             id
             avatar
             name
+            disabled
+            deleted
             location {
               name: name${lang}
             }

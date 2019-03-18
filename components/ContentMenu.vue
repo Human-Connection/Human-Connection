@@ -52,10 +52,9 @@ export default {
   },
   props: {
     placement: { type: String, default: 'top-end' },
-    itemId: { type: String, required: true },
-    name: { type: String, required: true },
+    resource: { type: Object, required: true },
     isOwner: { type: Boolean, default: false },
-    context: {
+    resourceType: {
       type: String,
       required: true,
       validator: value => {
@@ -67,19 +66,19 @@ export default {
     routes() {
       let routes = []
 
-      if (this.isOwner && this.context === 'contribution') {
+      if (this.isOwner && this.resourceType === 'contribution') {
         routes.push({
           name: this.$t(`contribution.edit`),
           path: this.$router.resolve({
             name: 'post-edit-id',
             params: {
-              id: this.itemId
+              id: this.resource.id
             }
           }).href,
           icon: 'edit'
         })
       }
-      if (this.isOwner && this.context === 'comment') {
+      if (this.isOwner && this.resourceType === 'comment') {
         routes.push({
           name: this.$t(`comment.edit`),
           callback: () => {
@@ -91,21 +90,25 @@ export default {
 
       if (!this.isOwner) {
         routes.push({
-          name: this.$t(`report.${this.context}.title`),
-          callback: this.openReportDialog,
+          name: this.$t(`report.${this.resourceType}.title`),
+          callback: () => {
+            this.openModal('report')
+          },
           icon: 'flag'
         })
       }
 
       if (!this.isOwner && this.isModerator) {
         routes.push({
-          name: this.$t(`disable.${this.context}.title`),
-          callback: () => {},
+          name: this.$t(`disable.${this.resourceType}.title`),
+          callback: () => {
+            this.openModal('disable')
+          },
           icon: 'eye-slash'
         })
       }
 
-      if (this.isOwner && this.context === 'user') {
+      if (this.isOwner && this.resourceType === 'user') {
         routes.push({
           name: this.$t(`settings.data.name`),
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -128,18 +131,14 @@ export default {
       }
       toggleMenu()
     },
-    openReportDialog() {
+    openModal(dialog) {
       this.$store.commit('modal/SET_OPEN', {
-        name: 'report',
+        name: dialog,
         data: {
-          context: this.context,
-          id: this.itemId,
-          name: this.name
+          type: this.resourceType,
+          resource: this.resource
         }
       })
-    },
-    openDisableDialog() {
-      this.$toast.error('NOT IMPLEMENTED!')
     }
   }
 }

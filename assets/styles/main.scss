@@ -4,6 +4,22 @@
 // Transition Easing
 $easeOut: cubic-bezier(0.19, 1, 0.22, 1);
 
+.disabled-content {
+  position: relative;
+
+  &::before {
+    @include border-radius($border-radius-x-large);
+    box-shadow: inset 0 0 0 5px $color-danger;
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+
 .layout-enter-active {
   transition: opacity 80ms ease-out;
   transition-delay: 80ms;
