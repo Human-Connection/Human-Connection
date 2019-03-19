@@ -1,5 +1,4 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
-import { activityPub } from '../activitypub/ActivityPub'
 import as from 'activitystrea.ms'
 import dotenv from 'dotenv'
 /*
@@ -13,8 +12,6 @@ dotenv.config()
 export default {
   Mutation: {
     CreatePost: async (object, params, context, resolveInfo) => {
-      params.activityId = activityPub.generateStatusId(context.user.slug)
-      params.objectId = activityPub.generateStatusId(context.user.slug)
       const result = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       const session = context.driver.session()
