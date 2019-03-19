@@ -3,6 +3,7 @@ import { GraphQLClient } from 'graphql-request'
 import { host, login } from '../jest/helpers'
 
 const factory = Factory()
+let client
 
 describe('badges', () => {
   beforeEach(async () => {
@@ -55,8 +56,6 @@ describe('badges', () => {
     `
 
     describe('unauthenticated', () => {
-      let client
-
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
         await expect(
@@ -66,7 +65,6 @@ describe('badges', () => {
     })
 
     describe('authenticated admin', () => {
-      let client
       beforeEach(async () => {
         const headers = await login({ email: 'admin@example.org', password: '1234' })
         client = new GraphQLClient(host, { headers })
@@ -86,7 +84,6 @@ describe('badges', () => {
     })
 
     describe('authenticated moderator', () => {
-      let client
       beforeEach(async () => {
         const headers = await login({ email: 'moderator@example.org', password: '1234' })
         client = new GraphQLClient(host, { headers })
@@ -120,8 +117,6 @@ describe('badges', () => {
     `
 
     describe('unauthenticated', () => {
-      let client
-
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
         await expect(
@@ -131,7 +126,6 @@ describe('badges', () => {
     })
 
     describe('authenticated moderator', () => {
-      let client
       beforeEach(async () => {
         const headers = await login({ email: 'moderator@example.org', password: '1234' })
         client = new GraphQLClient(host, { headers })
@@ -145,7 +139,6 @@ describe('badges', () => {
     })
 
     describe('authenticated admin', () => {
-      let client
       beforeEach(async () => {
         const headers = await login({ email: 'admin@example.org', password: '1234' })
         client = new GraphQLClient(host, { headers })
@@ -180,8 +173,6 @@ describe('badges', () => {
     `
 
     describe('unauthenticated', () => {
-      let client
-
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
         await expect(
@@ -191,7 +182,6 @@ describe('badges', () => {
     })
 
     describe('authenticated moderator', () => {
-      let client
       beforeEach(async () => {
         const headers = await login({ email: 'moderator@example.org', password: '1234' })
         client = new GraphQLClient(host, { headers })
@@ -205,7 +195,6 @@ describe('badges', () => {
     })
 
     describe('authenticated admin', () => {
-      let client
       beforeEach(async () => {
         const headers = await login({ email: 'admin@example.org', password: '1234' })
         client = new GraphQLClient(host, { headers })

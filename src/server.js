@@ -8,6 +8,7 @@ import middleware from './middleware'
 import applyDirectives from './bootstrap/directives'
 import applyScalars from './bootstrap/scalars'
 import { getDriver } from './bootstrap/neo4j'
+import helmet from 'helmet'
 import decode from './jwt/decode'
 
 dotenv.config()
@@ -59,6 +60,7 @@ const createServer = (options) => {
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 
+  server.express.use(helmet())
   server.express.use(express.static('public'))
   return server
 }

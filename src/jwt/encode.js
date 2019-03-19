@@ -10,7 +10,7 @@ export default function encode (user) {
     audience: process.env.CLIENT_URI,
     subject: user.id.toString()
   })
-  // jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+  // jwt.verifySignature(token, process.env.JWT_SECRET, (err, data) => {
   //   console.log('token verification:', err, data)
   // })
   return token

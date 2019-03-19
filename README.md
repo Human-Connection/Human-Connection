@@ -148,13 +148,20 @@ npm run db:reset
 
 **Beware**: We have no multiple database setup at the moment. We clean the database after each test, running the tests will wipe out all your data!
 
-Run the tests:
+Run the **_jest_** tests:
 ```bash
 yarn run test
 # -or-
 npm run test
 ```
+Run the **_cucumber_** features:
+```bash
+yarn run test:cucumber
+# -or-
+npm run test:cucumber
+```
 
+When some tests fail, try `yarn db:reset` and after that `yarn db:seed`. Then run the tests again
 ## Todo`s
 
 - [x] add jwt authentication
