@@ -6,7 +6,8 @@ const debug = require('debug')('ea:security')
 
 dotenv.config({ path: resolve('src', 'activitypub', '.env') })
 
-export function generateRsaKeyPair () {
+export function generateRsaKeyPair (options = {}) {
+  const { passphrase = process.env.PRIVATE_KEY_PASSPHRASE } = options
   return crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
     publicKeyEncoding: {
@@ -17,18 +18,24 @@ export function generateRsaKeyPair () {
       type: 'pkcs8',
       format: 'pem',
       cipher: 'aes-256-cbc',
-      passphrase: process.env.PRIVATE_KEY_PASSPHRASE
+      passphrase
     }
   })
 }
 
 // signing
-export function createSignature (privKey, keyId, url, headers = {}, algorithm = 'rsa-sha256') {
+export function createSignature (options) {
+  const {
+    privateKey, keyId, url,
+    headers = {},
+    algorithm = 'rsa-sha256',
+    passphrase = process.env.PRIVATE_KEY_PASSPHRASE
+  } = options
   if (!SUPPORTED_HASH_ALGORITHMS.includes(algorithm)) { throw Error(`SIGNING: Unsupported hashing algorithm = ${algorithm}`) }
   const signer = crypto.createSign(algorithm)
   const signingString = constructSigningString(url, headers)
   signer.update(signingString)
-  const signatureB64 = signer.sign({ key: privKey, passphrase: process.env.PRIVATE_KEY_PASSPHRASE }, 'base64')
+  const signatureB64 = signer.sign({ key: privateKey, passphrase }, 'base64')
   const headersString = Object.keys(headers).reduce((result, key) => { return result + ' ' + key.toLowerCase() }, '')
   return `keyId="${keyId}",algorithm="${algorithm}",headers="(request-target)${headersString}",signature="${signatureB64}"`
 }
