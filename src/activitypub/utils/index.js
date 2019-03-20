@@ -75,12 +75,15 @@ export function signAndSend (activity, fromName, targetDomain, url) {
         headers: {
           'Host': targetDomain,
           'Date': date,
-          'Signature': createSignature(privateKey, `http://${activityPub.domain}/activitypub/users/${fromName}#main-key`, url,
-            {
+          'Signature': createSignature({ privateKey,
+            keyId: `http://${activityPub.domain}/activitypub/users/${fromName}#main-key`,
+            url,
+            headers: {
               'Host': targetDomain,
               'Date': date,
               'Content-Type': 'application/activity+json'
-            }),
+            }
+          }),
           'Content-Type': 'application/activity+json'
         },
         method: 'POST',
