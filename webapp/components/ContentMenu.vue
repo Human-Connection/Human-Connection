@@ -82,6 +82,7 @@ export default {
         routes.push({
           name: this.$t(`comment.edit`),
           callback: () => {
+            /* eslint-disable-next-line no-console */
             console.log('EDIT COMMENT')
           },
           icon: 'edit'

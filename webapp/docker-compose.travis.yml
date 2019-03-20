@@ -7,3 +7,4 @@ services:
       target: build-and-test
     environment:
       - BACKEND_URL=http://backend:4123
+      - NODE_ENV=test

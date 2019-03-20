@@ -142,6 +142,7 @@ module.exports = {
     // includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
     // optional
     errorHandler(error) {
+      /* eslint-disable-next-line no-console */
       console.log(
         '%cError',
         'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;',

@@ -47,6 +47,7 @@ export default ({ app, req, cookie, store }) => {
   Vue.use(vuexI18n.plugin, store, {
     onTranslationNotFound: function(locale, key) {
       if (debug) {
+        /* eslint-disable-next-line no-console */
         console.warn(
           `vuex-i18n :: Key '${key}' not found for locale '${locale}'`
         )
