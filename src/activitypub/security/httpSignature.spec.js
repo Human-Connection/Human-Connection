@@ -1,16 +1,16 @@
 import { generateRsaKeyPair, createSignature, verifySignature } from '.'
 import crypto from 'crypto'
-jest.mock('request')
 import request from 'request'
+jest.mock('request')
 
 let privateKey
 let publicKey
 let headers
-const passphrase = "a7dsf78sadg87ad87sfagsadg78"
+const passphrase = 'a7dsf78sadg87ad87sfagsadg78'
 
 describe('activityPub/security', () => {
   beforeEach(() => {
-    const pair = generateRsaKeyPair({passphrase})
+    const pair = generateRsaKeyPair({ passphrase })
     privateKey = pair.privateKey
     publicKey = pair.publicKey
     headers = {
@@ -29,7 +29,7 @@ describe('activityPub/security', () => {
         const signer = crypto.createSign('rsa-sha256')
         signer.update('(request-target): post /activitypub/users/max/inbox\ndate: 2019-03-08T14:35:45.759Z\nhost: democracy-app.de\ncontent-type: application/json')
         signatureB64 = signer.sign({ key: privateKey, passphrase: 'a7dsf78sadg87ad87sfagsadg78' }, 'base64')
-        httpSignature = createSignature({privateKey, keyId: 'https://human-connection.org/activitypub/users/lea#main-key', url: 'https://democracy-app.de/activitypub/users/max/inbox', headers, passphrase})
+        httpSignature = createSignature({ privateKey, keyId: 'https://human-connection.org/activitypub/users/lea#main-key', url: 'https://democracy-app.de/activitypub/users/max/inbox', headers, passphrase })
       })
 
       it('contains keyId', () => {
@@ -54,12 +54,12 @@ describe('activityPub/security', () => {
     let httpSignature
 
     beforeEach(() => {
-      httpSignature = createSignature({privateKey, keyId: 'http://localhost:4001/activitypub/users/test-user#main-key', url: 'https://democracy-app.de/activitypub/users/max/inbox', headers, passphrase})
-      const body =  {
-        "publicKey":{
-          "id":"https://localhost:4001/activitypub/users/test-user#main-key",
-          "owner":"https://localhost:4001/activitypub/users/test-user",
-          "publicKeyPem": publicKey
+      httpSignature = createSignature({ privateKey, keyId: 'http://localhost:4001/activitypub/users/test-user#main-key', url: 'https://democracy-app.de/activitypub/users/max/inbox', headers, passphrase })
+      const body = {
+        'publicKey': {
+          'id': 'https://localhost:4001/activitypub/users/test-user#main-key',
+          'owner': 'https://localhost:4001/activitypub/users/test-user',
+          'publicKeyPem': publicKey
         }
       }
 
