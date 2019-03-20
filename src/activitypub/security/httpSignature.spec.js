@@ -28,7 +28,7 @@ describe('activityPub/security', () => {
       beforeEach(() => {
         const signer = crypto.createSign('rsa-sha256')
         signer.update('(request-target): post /activitypub/users/max/inbox\ndate: 2019-03-08T14:35:45.759Z\nhost: democracy-app.de\ncontent-type: application/json')
-        signatureB64 = signer.sign({ key: privateKey, passphrase: 'a7dsf78sadg87ad87sfagsadg78' }, 'base64')
+        signatureB64 = signer.sign({ key: privateKey, passphrase }, 'base64')
         httpSignature = createSignature({ privateKey, keyId: 'https://human-connection.org/activitypub/users/lea#main-key', url: 'https://democracy-app.de/activitypub/users/max/inbox', headers, passphrase })
       })
 
