@@ -1,7 +1,7 @@
 import find from 'lodash/find'
 
 const helpers = {
-  locales: require('../../locales'),
+  locales: require('../../webapp/locales'),
   getLangByName: name => {
     return find(helpers.locales, { name })
   }

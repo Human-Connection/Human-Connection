@@ -1,6 +1,5 @@
-// TODO: find a better way how to import the factories
-import Factory from '../../../Nitro-Backend/src/seed/factories'
-import { getDriver } from '../../../Nitro-Backend/src/bootstrap/neo4j'
+import Factory from '../../backend/src/seed/factories'
+import { getDriver } from '../../backend/src/bootstrap/neo4j'
 
 const neo4jDriver = getDriver({
   uri: Cypress.env('NEO4J_URI'),
