@@ -1,0 +1,59 @@
+<template>
+  <div class="modal-wrapper">
+    <disable-modal
+      v-if="open === 'disable'"
+      :id="data.resource.id"
+      :type="data.type"
+      :name="name"
+      @close="close"
+    />
+    <report-modal
+      v-if="open === 'report'"
+      :id="data.resource.id"
+      :type="data.type"
+      :name="name"
+      @close="close"
+    />
+  </div>
+</template>
+
+<script>
+import DisableModal from '~/components/Modal/DisableModal'
+import ReportModal from '~/components/Modal/ReportModal'
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'Modal',
+  components: {
+    DisableModal,
+    ReportModal
+  },
+  computed: {
+    ...mapGetters({
+      data: 'modal/data',
+      open: 'modal/open'
+    }),
+    name() {
+      if (!this.data || !this.data.resource) return ''
+      const {
+        resource: { name, title, author }
+      } = this.data
+      switch (this.data.type) {
+        case 'user':
+          return name
+        case 'contribution':
+          return title
+        case 'comment':
+          return author && author.name
+        default:
+          return null
+      }
+    }
+  },
+  methods: {
+    close() {
+      this.$store.commit('modal/SET_OPEN', {})
+    }
+  }
+}
+</script>
