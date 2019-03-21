@@ -1,0 +1,12 @@
+[submodule "Nitro-Web"]
+	path = Nitro-Web
+	url = https://github.com/Human-Connection/Nitro-Web.git
+[submodule "Nitro-Backend"]
+	path = Nitro-Backend
+	url = https://github.com/Human-Connection/Nitro-Backend.git
+[submodule "Nitro-Embed"]
+	path = Nitro-Embed
+	url = https://github.com/Human-Connection/Nitro-Embed.git
+[submodule "Nitro-Styleguide"]
+	path = Nitro-Styleguide
+	url = https://github.com/Human-Connection/Nitro-Styleguide.git
