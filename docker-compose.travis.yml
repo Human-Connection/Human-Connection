@@ -12,7 +12,7 @@ services:
       context: webapp
       target: build-and-test
     environment:
-      - BACKEND_URL=http://backend:4123
+      - GRAPHQL_URI=http://backend:4123
   backend:
     image: humanconnection/nitro-backend:builder
     build:

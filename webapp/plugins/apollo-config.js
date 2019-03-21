@@ -1,5 +1,5 @@
 export default ({ app }) => {
-  const backendUrl = process.env.BACKEND_URL || 'http://localhost:4000'
+  const backendUrl = process.env.GRAPHQL_URI || 'http://localhost:4000'
   return {
     httpEndpoint: process.server ? backendUrl : '/api',
     httpLinkOptions: {

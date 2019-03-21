@@ -6,7 +6,6 @@
     namespace: human-connection
   spec:
     replicas: 1
-    strategy: {}
     selector:
       matchLabels:
         human-connection.org/selector: deployment-human-connection-neo4j
@@ -21,16 +20,12 @@
           image: humanconnection/neo4j:latest
           imagePullPolicy: Always
           env:
-          - name: COMMIT
-            value: <BACKEND_COMMIT>
           - name: NEO4J_apoc_import_file_enabled
             value: "true"
           - name: NEO4J_dbms_memory_pagecache_size
             value: 1G
           - name: NEO4J_dbms_memory_heap_max__size
             value: 1G
-          - name: NEO4J_AUTH
-            value: none
           - name: NEO4J_URI
             valueFrom:
               configMapKeyRef:
