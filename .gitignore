@@ -7,6 +7,7 @@ yarn-debug.log*
 yarn-error.log*
 .yarn-integrity
 .eslintcache
+kubeconfig.yaml
 
 /.github
 
