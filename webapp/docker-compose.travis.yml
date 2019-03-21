@@ -6,5 +6,5 @@ services:
       context: .
       target: build-and-test
     environment:
-      - BACKEND_URL=http://backend:4123
+      - GRAPHQL_URI=http://backend:4123
       - NODE_ENV=test

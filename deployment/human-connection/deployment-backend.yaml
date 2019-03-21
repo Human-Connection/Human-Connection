@@ -4,10 +4,16 @@
   metadata:
     name: nitro-backend
     namespace: human-connection
+    labels:
+      commit: "COMMIT"
   spec:
     replicas: 1
     minReadySeconds: 15
     progressDeadlineSeconds: 60
+    strategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: "100%"
     selector:
       matchLabels:
         human-connection.org/selector: deployment-human-connection-backend
@@ -23,42 +29,11 @@
           imagePullPolicy: Always
           ports:
           - containerPort: 4000
-          env:
-          - name: COMMIT
-            value: <BACKEND_COMMIT>
-          - name: MOCK
-            value: "false"
-          - name: CLIENT_URI
-            valueFrom:
-              configMapKeyRef:
-                name: configmap
-                key: CLIENT_URI
-          - name: GRAPHQL_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: configmap
-                key: GRAPHQL_PORT
-          - name: GRAPHQL_URI
-            valueFrom:
-              configMapKeyRef:
-                name: configmap
-                key: GRAPHQL_URI
-          - name: MAPBOX_TOKEN
-            valueFrom:
-              configMapKeyRef:
-                name: configmap
-                key: MAPBOX_TOKEN
-          - name: JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: human-connection
-                key: JWT_SECRET
-                optional: false
-          - name: NEO4J_URI
-            valueFrom:
-              configMapKeyRef:
-                name: configmap
-                key: NEO4J_URI
+          envFrom:
+          - configMapRef:
+              name: configmap
+          - secretRef:
+              name: human-connection
           volumeMounts:
             - mountPath: /nitro-backend/public/uploads
               name: uploads

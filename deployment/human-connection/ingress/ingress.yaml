@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - nitro-master.human-connection.org
+    - nitro-staging.human-connection.org
     secretName: tls
   rules:
-  - host: nitro-master.human-connection.org
+  - host: nitro-staging.human-connection.org
     http:
       paths:
       - path: /

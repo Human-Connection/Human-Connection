@@ -13,7 +13,7 @@ services:
       - hc-network
     environment:
       - HOST=0.0.0.0
-      - BACKEND_URL=http://backend:4000
+      - GRAPHQL_URI=http://backend:4000
       - MAPBOX_TOKEN="pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.bZ8KK9l70omjXbEkkbHGsQ"
 
 networks:

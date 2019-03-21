@@ -123,7 +123,7 @@ module.exports = {
   proxy: {
     '/api': {
       // make this configurable (nuxt-dotenv)
-      target: process.env.BACKEND_URL || 'http://localhost:4000',
+      target: process.env.GRAPHQL_URI || 'http://localhost:4000',
       pathRewrite: { '^/api': '' },
       toProxy: true, // cloudflare needs that
       changeOrigin: true,

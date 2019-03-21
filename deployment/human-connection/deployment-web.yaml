@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: nitro-web
   namespace: human-connection
+  labels:
+    commit: "COMMIT"
 spec:
   replicas: 2
   minReadySeconds: 15
@@ -18,27 +20,14 @@ spec:
     spec:
       containers:
       - name: web
+        envFrom:
+        - configMapRef:
+            name: configmap
+        - secretRef:
+            name: human-connection
         env:
-        - name: COMMIT
-          value: <WEBAPP_COMMIT>
         - name: HOST
           value: 0.0.0.0
-        - name: BACKEND_URL
-          valueFrom:
-            configMapKeyRef:
-              name: configmap
-              key: GRAPHQL_URI
-        - name: MAPBOX_TOKEN
-          valueFrom:
-            configMapKeyRef:
-              name: configmap
-              key: MAPBOX_TOKEN
-        - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: human-connection
-              key: JWT_SECRET
-              optional: false
         image: humanconnection/nitro-web:latest
         ports:
         - containerPort: 3000
