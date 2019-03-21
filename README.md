@@ -22,11 +22,11 @@ Try out our deployed [staging environment](https://nitro-staging.human-connectio
 
 Logins:
 
-| email                 | password | role      |
-| ---                   | ---      | ---       |
-| user@example.org      | 1234     | user      |
-| moderator@example.org | 1234     | moderator |
-| admin@example.org     | 1234     | admin     |
+| email                   | password | role      |
+| ---                     | ---      | ---       |
+| `user@example.org`      | 1234     | user      |
+| `moderator@example.org` | 1234     | moderator |
+| `admin@example.org`     | 1234     | admin     |
 
 
 ## Documentation
