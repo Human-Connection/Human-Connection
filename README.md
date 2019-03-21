@@ -4,6 +4,10 @@
 
 # Human-Connection
 
+
+[![Build Status](https://travis-ci.com/Human-Connection/Human-Connection.svg?branch=master)](https://travis-ci.com/Human-Connection/Human-Connection)
+
+
 An Open Source Social Network for the positive change that we need in the World.
 Human-Connection is being built to provide better Communication Tools for everyone.
 We want to do more than comments and sharing!
@@ -22,20 +26,14 @@ We want to do more than comments and sharing!
 - Versus Challenging
 - Modular UI
 
-**Repositories**
-
-| Repo | Status |
-|---|---|
-| [Nitro Web](https://github.com/Human-Connection/Nitro-Web) | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Web.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Web) | [Nitro Web](https://github.com/Human-Connection/Nitro-Web) |
-| [Nitro Backend](https://github.com/Human-Connection/Nitro-Backend) | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Styleguide) | [Nitro Backend](https://github.com/Human-Connection/Nitro-Backend) |
-| [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Styleguide.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Styleguide) | [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) |
-| [Nitro Embed](https://github.com/Human-Connection/Nitro-Embed) | ![Todo: add build pipeline](https://img.shields.io/badge/TODO-add%20build%20pipeline-red.svg) |
 
 **Technology Stack**
-- vuejs
-- nuxtjs
-- neo4j
-- graphql
+- [VueJS](https://vuejs.org/)
+- [NuxtJS](https://nuxtjs.org/)
+- [GraphQL](https://graphql.org/)
+- [NodeJS](https://nodejs.org/en/)
+- [Neo4J](https://neo4j.com/)
+
 
 ## Documentation
 [Docs](https://docs.human-connection.org/nitro)
