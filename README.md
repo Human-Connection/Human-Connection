@@ -7,25 +7,7 @@
 
 [![Build Status](https://travis-ci.com/Human-Connection/Human-Connection.svg?branch=master)](https://travis-ci.com/Human-Connection/Human-Connection)
 
-
-An Open Source Social Network for the positive change that we need in the World.
-Human-Connection is being built to provide better Communication Tools for everyone.
-We want to do more than comments and sharing!
-
-**Features**
-- Post Builder/Editor
-- Voting
-- Best of Lists
-- Pro & Contra Discussions
-- Projects
-- Event Management
-- Organizations
-- Chats & Group Chats
-- Knowledge Sharing
-- Let's Talk
-- Versus Challenging
-- Modular UI
-
+Human Connection is a free and open-source social network for active citizenship.
 
 **Technology Stack**
 - [VueJS](https://vuejs.org/)
@@ -34,12 +16,24 @@ We want to do more than comments and sharing!
 - [NodeJS](https://nodejs.org/en/)
 - [Neo4J](https://neo4j.com/)
 
+## Live demo
+
+Try out our deployed [staging environment](https://nitro-staging.human-connection.org/).
+
+Logins:
+
+| email                 | password | role      |
+| ---                   | ---      | ---       |
+| user@example.org      | 1234     | user      |
+| moderator@example.org | 1234     | moderator |
+| admin@example.org     | 1234     | admin     |
+
 
 ## Documentation
-[Docs](https://docs.human-connection.org/nitro)
+Learn how to set up a local development environment in our [Docs](https://docs.human-connection.org/nitro).
 
 ## Translations
-You can help translating the interface by joining us on [lokalise.co](https://lokalise.co/public/556252725c18dd752dd546.13222042/).
+Contributre translations on [lokalise.co](https://lokalise.co/public/556252725c18dd752dd546.13222042/).
 
 ## Developer Chat
-[Discord](https://discord.gg/6ub73U3)
+Join the open-source community on [Discord](https://discord.gg/6ub73U3).
