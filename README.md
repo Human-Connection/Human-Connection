@@ -30,7 +30,7 @@ We want to do more than comments and sharing!
 | [Nitro Backend](https://github.com/Human-Connection/Nitro-Backend) | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Styleguide) | [Nitro Backend](https://github.com/Human-Connection/Nitro-Backend) |
 | [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) | [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Styleguide.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Styleguide) | [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) |
 | [Nitro Embed](https://github.com/Human-Connection/Nitro-Embed) | ![Todo: add build pipeline](https://img.shields.io/badge/TODO-add%20build%20pipeline-red.svg) |
-  
+
 **Technology Stack**
 - vuejs
 - nuxtjs

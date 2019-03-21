@@ -10,7 +10,7 @@ We recommend that new folks should ideally work together with an existing develo
 
 Here are some general notes on our development flow:
 
-### Development 
+### Development
 
 * Currently operating in two week sprints
 * We are using ZenHub to coordinate
@@ -30,10 +30,10 @@ Here are some general notes on our development flow:
     - Martin head of IT and previously data protection officer
     - Victor doing accounting and controlling
     - Nicolas is the community manager (reviews content in the network) reflects community opinion back to the core team
-    
+
 * when can folks pair with Robert
   - 10am UTC until 5pm UTC every working day
-  
+
 ### Philosophy
 
 We practise [collective code ownership](http://www.extremeprogramming.org/rules/collective.html) rather than strong code ownership, which means that:
@@ -52,7 +52,7 @@ But what do we do when waiting for merge into master (wanting to keep PRs small)
   - solutions
     - 1) put 2nd PR into branch that the first PR is hitting - but requires update after merging
     - 2) prefer to leave exiting PR until it can be reviewed, and instead go and work on some other part of the codebase that is not impacted by the first PR
-    
+
 ### Notes
 
 question: when you want to pick a task - (find out priority) - is it in discord? is it in AV slack? --> Robert says you can always ask in discord - group channels are the best

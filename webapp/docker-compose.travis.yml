@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  webapp:
+    build:
+      context: .
+      target: build-and-test
+    environment:
+      - BACKEND_URL=http://backend:4123
+      - NODE_ENV=test

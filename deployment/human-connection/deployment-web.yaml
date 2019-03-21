@@ -1,0 +1,49 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nitro-web
+  namespace: human-connection
+spec:
+  replicas: 2
+  minReadySeconds: 15
+  progressDeadlineSeconds: 60
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-human-connection-web
+  template:
+    metadata:
+      labels:
+        human-connection.org/selector: deployment-human-connection-web
+      name: nitro-web
+    spec:
+      containers:
+      - name: web
+        env:
+        - name: COMMIT
+          value: <WEBAPP_COMMIT>
+        - name: HOST
+          value: 0.0.0.0
+        - name: BACKEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: configmap
+              key: GRAPHQL_URI
+        - name: MAPBOX_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              name: configmap
+              key: MAPBOX_TOKEN
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: human-connection
+              key: JWT_SECRET
+              optional: false
+        image: humanconnection/nitro-web:latest
+        ports:
+        - containerPort: 3000
+        resources: {}
+        imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+status: {}

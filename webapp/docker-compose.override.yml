@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  webapp:
+    build:
+      context: .
+      target: build-and-test
+    volumes:
+      - .:/nitro-web
+      - node_modules:/nitro-web/node_modules
+      - nuxt:/nitro-web/.nuxt
+    command: yarn run dev
+
+volumes:
+  node_modules:
+  nuxt:
