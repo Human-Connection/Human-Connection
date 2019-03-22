@@ -61,32 +61,3 @@ Then(
   'I can see my new name {string} when I click on my profile picture in the top right',
   name => matchNameInUserMenu(name)
 )
-
-When('I click on the {string} link', link => {
-  cy.get('a')
-    .contains(link)
-    .click()
-})
-
-Then('I should be on the {string} settings page', page => {
-  const pathname = `/settings/${page.toLowerCase()}`
-  cy.location()
-    .should(loc => {
-      expect(loc.pathname).to.eq(pathname)
-    })
-    .get('h3')
-    .should('contain', page)
-})
-
-Then('I should be able to change my password', () => {
-  cy.get('input[id=oldPassword]')
-    .type('1234')
-    .get('input[id=newPassword]')
-    .type('12345')
-    .get('input[id=confirmPassword]')
-    .type('12345')
-    .get('button')
-    .contains('Submit')
-    .get('.iziToast-message')
-    .should('contain', 'Password updated successfully.')
-})
