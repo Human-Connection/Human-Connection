@@ -83,6 +83,7 @@ export const actions = {
             role
             about
             locationName
+            socialMedia
           }
         }`)
     })

@@ -54,6 +54,10 @@ export default {
         {
           name: this.$t('settings.languages.name'),
           path: `/settings/languages`
+        },
+        {
+          name: this.$t('settings.social-media.name'),
+          path: `/settings/my-social-media`
         }
       ]
     }

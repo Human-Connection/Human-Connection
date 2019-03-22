@@ -26,6 +26,7 @@ type Mutation {
   disable(id: ID!): ID
   enable(id: ID!): ID
   reward(fromBadgeId: ID!, toUserId: ID!): ID
+  addSocialMedia(url: String!): Boolean!
   unreward(fromBadgeId: ID!, toUserId: ID!): ID
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
@@ -120,6 +121,7 @@ type User {
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
   locationName: String
   about: String
+  socialMedia: [String]
 
   createdAt: String
   updatedAt: String
