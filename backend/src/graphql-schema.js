@@ -6,6 +6,7 @@ import statistics from './resolvers/statistics.js'
 import reports from './resolvers/reports.js'
 import posts from './resolvers/posts.js'
 import moderation from './resolvers/moderation.js'
+import rewards from './resolvers/rewards.js'
 
 export const typeDefs = fs
   .readFileSync(
@@ -21,7 +22,8 @@ export const resolvers = {
   Mutation: {
     ...userManagement.Mutation,
     ...reports.Mutation,
+    ...posts.Mutation,
     ...moderation.Mutation,
-    ...posts.Mutation
+    ...rewards.Mutation
   }
 }
