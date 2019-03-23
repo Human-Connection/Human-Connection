@@ -8,15 +8,25 @@ const localVue = createLocalVue()
 localVue.use(Styleguide)
 
 describe('ChangePassword.vue', () => {
-  let store
   let mocks
   let wrapper
 
   beforeEach(() => {
     mocks = {
       validate: jest.fn(),
+      $toast: {
+        error: jest.fn(),
+        success: jest.fn()
+      },
+      $t: jest.fn(),
+      $store: {
+        commit: jest.fn()
+      },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
+        mutate: jest
+          .fn()
+          .mockRejectedValue({ message: 'Ouch!' })
+          .mockResolvedValueOnce({ data: { changePassword: 'NEWTOKEN' } })
       }
     }
   })
@@ -80,15 +90,63 @@ describe('ChangePassword.vue', () => {
     })
 
     describe('given valid input', () => {
-      describe('click on submit button', () => {
-        it.todo('calls changePassword mutation')
+      beforeEach(() => {
+        wrapper.find('input#oldPassword').setValue('supersecret')
+        wrapper.find('input#newPassword').setValue('superdupersecret')
+        wrapper.find('input#confirmPassword').setValue('superdupersecret')
+      })
+
+      describe('submit form', () => {
+        beforeEach(() => {
+          wrapper.find('form').trigger('submit')
+        })
+
+        it('calls changePassword mutation', () => {
+          expect(mocks.$apollo.mutate).toHaveBeenCalled()
+        })
+
+        it('passes form data as variables', () => {
+          expect(mocks.$apollo.mutate.mock.calls[0][0]).toEqual(
+            expect.objectContaining({
+              variables: {
+                oldPassword: 'supersecret',
+                newPassword: 'superdupersecret',
+                confirmPassword: 'superdupersecret'
+              }
+            })
+          )
+        })
 
         describe('mutation resolves', () => {
-          it.todo('calls auth/SET_TOKEN with response')
+          beforeEach(() => {
+            mocks.$apollo.mutate = jest.fn().mockResolvedValue()
+            wrapper = Wrapper()
+          })
+
+          it('calls auth/SET_TOKEN with response', () => {
+            expect(mocks.$store.commit).toHaveBeenCalledWith(
+              'auth/SET_TOKEN',
+              'NEWTOKEN'
+            )
+          })
+
+          it('displays success message', () => {
+            expect(mocks.$t).toHaveBeenCalledWith(
+              'settings.security.change-password.success'
+            )
+            expect(mocks.$toast.success).toHaveBeenCalled()
+          })
         })
 
         describe('mutation rejects', () => {
-          it.todo('displays error message')
+          beforeEach(() => {
+            // second call will reject
+            wrapper.find('form').trigger('submit')
+          })
+
+          it('displays error message', () => {
+            expect(mocks.$toast.error).toHaveBeenCalledWith('Ouch!')
+          })
         })
       })
     })

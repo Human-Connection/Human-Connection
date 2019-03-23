@@ -3,7 +3,6 @@
     v-model="formData"
     :schema="formSchema"
     @submit="handleSubmit"
-    @input="validate"
   >
     <template>
       <ds-input
@@ -25,8 +24,11 @@
         label="Confirm new password"
       />
       <ds-space margin-top="base">
-        <ds-button primary>
-          Submit
+        <ds-button
+          :loading="loading"
+          primary
+        >
+          {{ $t('settings.security.change-password.button') }}
         </ds-button>
       </ds-space>
     </template>
@@ -34,6 +36,8 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
+
 export default {
   name: 'ChangePassword',
   data() {
@@ -48,17 +52,31 @@ export default {
         newPassword: { required: true },
         confirmPassword: { required: true }
       },
+      loading: false,
       disabled: true
     }
   },
   methods: {
-    validate(data) {
-      console.log('validate')
-      console.log(data)
-    },
-    handleSubmit(data) {
-      console.log('handleSubmit')
-      console.log(data)
+    async handleSubmit(data) {
+      this.loading = true
+      const mutation = gql`
+        mutation($oldPassword: String!, $newPassword: String!) {
+          changePassword(oldPassword: $oldPassword, newPassword: $newPassword)
+        }
+      `
+      const variables = this.formData
+
+      try {
+        const { data } = await this.$apollo.mutate({ mutation, variables })
+        this.$store.commit('auth/SET_TOKEN', data.changePassword)
+        this.$toast.success(
+          this.$t('settings.security.change-password.success')
+        )
+      } catch (err) {
+        this.$toast.error(err.message)
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
