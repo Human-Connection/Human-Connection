@@ -10,22 +10,22 @@ Feature: Change password
 
   Background:
     Given my user account has the following login credentials:
-      | email            | passsword |
-      | user@example.org | 1234      |
+      | email            | password |
+      | user@example.org | exposed  |
     And I am logged in
 
   Scenario: Change my password
     Given I am on the "settings" page
     And I click on "Security"
     When I fill the password form with:
-      | Your old password    | 1234  |
-      | Your new passsword   | 12345 |
-      | Confirm new password | 12345 |
+      | Your old password    | exposed |
+      | Your new passsword   | secure |
+      | Confirm new password | secure |
     And submit the form
     And I see a success message:
     """
-    Password updated successfully
+    Password successfully changed!
     """
     And I log out through the menu in the top right corner
-    Then I cannot login anymore with password "1234"
-    But I can login successfully with password "12345"
+    Then I cannot login anymore with password "exposed"
+    But I can login successfully with password "secure"

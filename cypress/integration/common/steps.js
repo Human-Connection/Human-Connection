@@ -246,13 +246,9 @@ Then(
 )
 
 Given('my user account has the following login credentials:', table => {
-  loginCredentials = {
-    ...loginCredentials,
-    ...table.hashes()[0]
-  }
-  cy.factory().create('User', {
-    ...loginCredentials
-  })
+  loginCredentials = table.hashes()[0]
+  cy.debug()
+  cy.factory().create('User', loginCredentials)
 })
 
 When('I fill the password form with:', table => {
@@ -270,14 +266,23 @@ When('submit the form', () => {
 })
 
 Then('I cannot login anymore with password {string}', password => {
-  cy.login({
-    ...loginCredentials,
-    ...{password}
-  })
-  cy.get('.iziToast-wrapper').should('contain', "Incorrect email or password")
+  cy.reload()
+  const { email } = loginCredentials
+  cy.visit(`/login`)
+  cy.get('input[name=email]')
+    .trigger('focus')
+    .type(email)
+  cy.get('input[name=password]')
+    .trigger('focus')
+    .type(password)
+  cy.get('button[name=submit]')
+    .as('submitButton')
+    .click()
+  cy.get('.iziToast-wrapper').should('contain', 'Incorrect email address or password.')
 })
 
 Then('I can login successfully with password {string}', password => {
+  cy.reload()
   cy.login({
     ...loginCredentials,
     ...{password}
