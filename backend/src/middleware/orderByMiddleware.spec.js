@@ -25,17 +25,37 @@ afterEach(async () => {
 
 describe('Query', () => {
   describe('Post', () => {
+    beforeEach(() => {
+      query = '{ Post { title } }'
+    })
+
     describe('orderBy', () => {
       it('createdAt descending is default', async () => {
-        query = '{ Post { title } }'
         const posts = [
           { title: 'last' },
           { title: 'third' },
           { title: 'second' },
           { title: 'first' }
         ]
-        const expected = { data: { Post: posts } }
+        const expected = { Post: posts }
         await expect(client.request(query)).resolves.toEqual(expected)
+      })
+
+      describe('(orderBy: createdAt_asc)', () => {
+        beforeEach(() => {
+          query = '{ Post(orderBy: createdAt_asc) { title } }'
+        })
+
+        it('orders by createdAt ascending', async () => {
+          const posts = [
+            { title: 'first' },
+            { title: 'second' },
+            { title: 'third' },
+            { title: 'last' }
+          ]
+          const expected = { Post: posts }
+          await expect(client.request(query)).resolves.toEqual(expected)
+        })
       })
     })
   })
