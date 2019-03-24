@@ -86,6 +86,10 @@ Given('my user account has the role {string}', role => {
 
 When('I log out', cy.logout)
 
+When('I visit {string}', page => {
+  cy.openPage(page)
+})
+
 When('I visit the {string} page', page => {
   cy.openPage(page)
 })
