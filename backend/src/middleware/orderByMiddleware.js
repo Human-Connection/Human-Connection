@@ -13,5 +13,7 @@ const defaultOrderBy = (resolve, root, args, context, resolveInfo) => {
 }
 
 export default {
-  Query: defaultOrderBy
+  Query: {
+    Post: defaultOrderBy
+  }
 }
