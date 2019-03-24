@@ -16,6 +16,6 @@ export default {
     UpdateUser: setUpdatedAt,
     UpdatePost: setUpdatedAt,
     UpdateComment: setUpdatedAt,
-    UpdateOrganization: setUpdatedAt,
+    UpdateOrganization: setUpdatedAt
   }
 }
