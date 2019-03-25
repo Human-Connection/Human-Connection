@@ -39,7 +39,7 @@
                 >
                   <a
                     class="avatar-menu-trigger"
-                    :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
+                    :href="$router.resolve({name: 'profile-id-slug', params: {id: user.id, slug: user.slug}}).href"
                     @click.prevent="toggleMenu"
                   >
                     <ds-avatar

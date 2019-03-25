@@ -36,7 +36,7 @@
           </ds-text>
         </div>
         <div v-else>
-          <nuxt-link :to="{ name: 'profile-slug', params: { slug: scope.row.user.slug } }">
+          <nuxt-link :to="{ name: 'profile-id-slug', params: { id: scope.row.user.id, slug: scope.row.user.slug } }">
             <b>{{ scope.row.user.name | truncate(50) }}</b>
           </nuxt-link>
         </div>
@@ -69,7 +69,7 @@
         slot="submitter"
         slot-scope="scope"
       >
-        <nuxt-link :to="{ name: 'profile-slug', params: { slug: scope.row.submitter.slug } }">
+        <nuxt-link :to="{ name: 'profile-id-slug', params: { id: scope.row.submitter.id, slug: scope.row.submitter.slug } }">
           {{ scope.row.submitter.name }}
         </nuxt-link>
       </template>
@@ -79,19 +79,19 @@
       >
         <nuxt-link
           v-if="scope.row.type === 'Post' && scope.row.post.disabledBy"
-          :to="{ name: 'profile-slug', params: { slug: scope.row.post.disabledBy.slug } }"
+          :to="{ name: 'profile-id-slug', params: { id: scope.row.post.disabledBy.id, slug: scope.row.post.disabledBy.slug } }"
         >
           <b>{{ scope.row.post.disabledBy.name | truncate(50) }}</b>
         </nuxt-link>
         <nuxt-link
           v-else-if="scope.row.type === 'Comment' && scope.row.comment.disabledBy"
-          :to="{ name: 'profile-slug', params: { slug: scope.row.comment.disabledBy.slug } }"
+          :to="{ name: 'profile-id-slug', params: { id: scope.row.comment.disabledBy.id, slug: scope.row.comment.disabledBy.slug } }"
         >
           <b>{{ scope.row.comment.disabledBy.name | truncate(50) }}</b>
         </nuxt-link>
         <nuxt-link
           v-else-if="scope.row.type === 'User' && scope.row.user.disabledBy"
-          :to="{ name: 'profile-slug', params: { slug: scope.row.user.disabledBy.slug } }"
+          :to="{ name: 'profile-id-slug', params: { id: scope.row.user.disabledBy.id, slug: scope.row.user.disabledBy.slug } }"
         >
           <b>{{ scope.row.user.disabledBy.name | truncate(50) }}</b>
         </nuxt-link>
