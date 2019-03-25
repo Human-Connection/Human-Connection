@@ -14,7 +14,7 @@
     "lint": "eslint src --config .eslintrc.js",
     "test": "nyc  --reporter=text-lcov yarn test:jest",
     "test:cypress": "run-p --race test:before:*",
-    "test:before:server": "cross-env GRAPHQL_URI=http://localhost:4123 GRAPHQL_PORT=4123 babel-node src/ 2> /dev/null",
+    "test:before:server": "cross-env CLIENT_URI=http://localhost:4123 GRAPHQL_URI=http://localhost:4123 GRAPHQL_PORT=4123 babel-node src/ 2> /dev/null",
     "test:before:seeder": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled babel-node src/ 2> /dev/null",
     "test:jest:cmd": "wait-on tcp:4001 tcp:4123 && jest --forceExit --detectOpenHandles --runInBand",
     "test:cucumber:cmd": "wait-on tcp:4001 tcp:4123 && cucumber-js --require-module @babel/register --exit test/",
