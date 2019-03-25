@@ -22,6 +22,7 @@ let activityPub = null
 export { activityPub }
 
 export default class ActivityPub {
+
   constructor (activityPubEndpointUri, internalGraphQlUri) {
     this.endpoint = activityPubEndpointUri
     this.dataSource = new NitroDataSource(internalGraphQlUri)
@@ -56,7 +57,6 @@ export default class ActivityPub {
         }
       }, async (err, response, toActorObject) => {
         if (err) return reject(err)
-        debug(`name = ${toActorName}@${this.host}`)
         // save shared inbox
         toActorObject = JSON.parse(toActorObject)
         await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
