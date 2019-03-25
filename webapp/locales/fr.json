@@ -133,7 +133,7 @@
     "comment": {
       "title": "Désactiver le commentaire",
       "type": "Commentaire",
-      "message": "Souhaitez-vous vraiment désactiver le commentaire de \"<b>{name}</b>\" ?"
+      "message": "Souhaitez-vous vraiment désactiver le commentaire de \"<b>{nom}</b>\" ?"
     }
   },
   "report": {
