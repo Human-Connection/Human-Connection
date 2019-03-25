@@ -1,0 +1,202 @@
+{
+  "login": {
+    "copy": "If you already have a human-connection account, login here.",
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Your Email",
+    "password": "Your Password",
+    "moreInfo": "What is Human Connection?",
+    "hello": "Hello"
+  },
+  "profile": {
+    "name": "My Profile",
+    "memberSince": "Member since",
+    "follow": "Follow",
+    "followers": "Followers",
+    "following": "Following",
+    "shouted": "Shouted",
+    "commented": "Commented"
+  },
+  "settings": {
+    "name": "Settings",
+    "data": {
+      "name": "Your data",
+      "labelName": "Your Name",
+      "labelCity": "Your City or Region",
+      "labelBio": "About You"
+    },
+    "security": {
+      "name": "Security"
+    },
+    "invites": {
+      "name": "Invites"
+    },
+    "download": {
+      "name": "Download Data"
+    },
+    "delete": {
+      "name": "Delete Account"
+    },
+    "organizations": {
+      "name": "My Organizations"
+    },
+    "languages": {
+      "name": "Languages"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Dashboard",
+      "users": "Users",
+      "posts": "Posts",
+      "comments": "Comments",
+      "notifications": "Notifications",
+      "organizations": "Organizations",
+      "projects": "Projects",
+      "invites": "Invites",
+      "follows": "Follows",
+      "shouts": "Shouts"
+    },
+    "organizations": {
+      "name": "Organizations"
+    },
+    "users": {
+      "name": "Users"
+    },
+    "pages": {
+      "name": "Pages"
+    },
+    "notifications": {
+      "name": "Notifications"
+    },
+    "categories": {
+      "name": "Categories",
+      "categoryName": "Name",
+      "postCount": "Posts"
+    },
+    "tags": {
+      "name": "Tags",
+      "tagCountUnique": "Users",
+      "tagCount": "Posts"
+    },
+    "settings": {
+      "name": "Settings"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "More info"
+    },
+    "takeAction": {
+      "name": "Take action"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Many small people in many small places do many small things, that can alter the face of the world.",
+      "author": "African proverb"
+    }
+  },
+  "common": {
+    "post": "Post ::: Posts",
+    "comment": "Comment ::: Comments",
+    "letsTalk": "Let`s Talk",
+    "versus": "Versus",
+    "moreInfo": "More Info",
+    "takeAction": "Take Action",
+    "shout": "Shout ::: Shouts",
+    "user": "User ::: Users",
+    "category": "Category ::: Categories",
+    "organization": "Organization ::: Organizations",
+    "project": "Project ::: Projects",
+    "tag": "Tag ::: Tags",
+    "name": "Name",
+    "loadMore": "load more",
+    "loading": "loading",
+    "reportContent": "Report"
+  },
+  "actions": {
+    "loading": "loading",
+    "loadMore": "load more",
+    "create": "Create",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "moderation": {
+    "name": "Moderation",
+    "reports": {
+      "empty": "Congratulations, nothing to moderate.",
+      "name": "Reports",
+      "reporter": "reported by",
+      "submitter": "reported by",
+      "disabledBy": "disabled by"
+    }
+  },
+  "disable": {
+    "user": {
+      "title": "Disable User",
+      "type": "User",
+      "message": "Do you really want to disable the user \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Disable Contribution",
+      "type": "Contribution",
+      "message": "Do you really want to disable the contribution \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Disable Comment",
+      "type": "Comment",
+      "message": "Do you really want to disable the comment from \"<b>{name}</b>\"?"
+    },
+    "submit": "Disable",
+    "cancel": "Cancel",
+    "success": "Disabled successfully"
+  },
+  "report": {
+    "submit": "Send Report",
+    "cancel": "Cancel",
+    "user": {
+      "title": "Report User",
+      "type": "User",
+      "message": "Do you really want to report the user \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Report Contribution",
+      "type": "Contribution",
+      "message": "Do you really want to report the contribution \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Report Comment",
+      "type": "Comment",
+      "message": "Do you really want to report the comment from \"<b>{name}</b>\"?"
+    },
+    "success": "Thanks for reporting!"
+  },
+  "contribution": {
+    "edit": "Edit Contribution",
+    "delete": "Delete Contribution"
+  },
+  "comment": {
+    "edit": "Edit Comment",
+    "delete": "Delete Comment",
+    "content": {
+      "unavailable-placeholder": "...this comment is not available anymore"
+    }
+  },
+  "followButton": {
+    "follow": "Follow",
+    "following": "Following"
+  },
+  "shoutButton": {
+    "shouted": "shouted"
+  },
+  "search": {
+    "placeholder": "Search",
+    "hint": "What are you searching for?",
+    "failed": "Nothing found"
+  }
+}
