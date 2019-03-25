@@ -17,11 +17,6 @@
     "shouted": "Shouted",
     "commented": "Commented"
   },
-  "search": {
-    "placeholder": "Search",
-    "hint": "What are you searching for?",
-    "failed": "Nothing found"
-  },
   "settings": {
     "name": "Settings",
     "data": {
@@ -136,14 +131,12 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
+      "reporter": "reported by",
       "submitter": "reported by",
       "disabledBy": "disabled by"
     }
   },
   "disable": {
-    "submit": "Disable",
-    "cancel": "Cancel",
-    "success": "Disabled successfully",
     "user": {
       "title": "Disable User",
       "type": "User",
@@ -158,19 +151,21 @@
       "title": "Disable Comment",
       "type": "Comment",
       "message": "Do you really want to disable the comment from \"<b>{name}</b>\"?"
-    }
+    },
+    "submit": "Disable",
+    "cancel": "Cancel",
+    "success": "Disabled successfully"
   },
   "report": {
-    "submit": "Report",
+    "submit": "Send Report",
     "cancel": "Cancel",
-    "success": "Thanks for reporting!",
     "user": {
       "title": "Report User",
       "type": "User",
       "message": "Do you really want to report the user \"<b>{name}</b>\"?"
     },
     "contribution": {
-      "title": "Report Post",
+      "title": "Report Contribution",
       "type": "Contribution",
       "message": "Do you really want to report the contribution \"<b>{name}</b>\"?"
     },
@@ -178,7 +173,8 @@
       "title": "Report Comment",
       "type": "Comment",
       "message": "Do you really want to report the comment from \"<b>{name}</b>\"?"
-    }
+    },
+    "success": "Thanks for reporting!"
   },
   "contribution": {
     "edit": "Edit Contribution",
@@ -197,5 +193,10 @@
   },
   "shoutButton": {
     "shouted": "shouted"
+  },
+  "search": {
+    "placeholder": "Search",
+    "hint": "What are you searching for?",
+    "failed": "Nothing found"
   }
 }
