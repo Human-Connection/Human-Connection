@@ -83,7 +83,7 @@ The following features will be implemented. This gets done in three steps:
 
 - Show Posts by Tiles
 - Show Posts as List
-- Filter by Category (Health and Wellbeing, Global Peace & Non-Violance, ...) 
+- Filter by Category (Health and Wellbeing, Global Peace & Non-Violence, ...) 
 - Filter by Mood (Funny, Happy, Surprised, Cry, Angry, ...)
 - Filter by Source (Connections, Following, Individuals, Non-Profits, ...)
 - Filter by Posts & Tools (Post, Events, CanDos, ...)
