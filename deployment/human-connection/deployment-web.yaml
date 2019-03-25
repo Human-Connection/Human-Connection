@@ -3,8 +3,6 @@ kind: Deployment
 metadata:
   name: nitro-web
   namespace: human-connection
-  labels:
-    commit: "COMMIT"
 spec:
   replicas: 2
   minReadySeconds: 15
@@ -15,6 +13,7 @@ spec:
   template:
     metadata:
       labels:
+        human-connection.org/commit: COMMIT
         human-connection.org/selector: deployment-human-connection-web
       name: nitro-web
     spec:

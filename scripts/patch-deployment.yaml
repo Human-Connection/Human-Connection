@@ -1,3 +1,5 @@
-metadata:
-  labels:
-    commit: <COMMIT>
+spec:
+  template:
+    metadata:
+      labels:
+        human-connection.org/commit: <COMMIT>
