@@ -1,0 +1,180 @@
+{
+  "login": {
+    "copy": "Dacă aveți deja un cont de Human Connection, conectați-vă aici.",
+    "login": "Intrar",
+    "logout": "Deconectare",
+    "email": "Email-ul dvs",
+    "password": "Parola Dvs",
+    "moreInfo": "Ce este Human Connection?",
+    "hello": "Ceau"
+  },
+  "profile": {
+    "name": "Profilul meu",
+    "memberSince": "Membru din",
+    "shouted": "recomandat",
+    "commented": "A comentat"
+  },
+  "settings": {
+    "name": "Setări",
+    "data": {
+      "name": "Datele dvs.",
+      "labelName": "Numele dumneavoastră",
+      "labelCity": "Orașul sau regiunea dvs.",
+      "labelBio": "Despre dvs."
+    },
+    "invites": {
+      "name": "Invitații"
+    },
+    "download": {
+      "name": "Descărcați date"
+    },
+    "delete": {
+      "name": "Ștergeți contul"
+    },
+    "organizations": {
+      "name": "Organizațiile mele"
+    },
+    "languages": {
+      "name": "Limbi"
+    }
+  },
+  "admin": {
+    "name": "Administrarea sistemului",
+    "dashboard": {
+      "users": "Utilizatori",
+      "posts": "Post-uri",
+      "comments": "Comentarii",
+      "notifications": "Notificări",
+      "organizations": "Organizaţii",
+      "projects": "Proiecte",
+      "invites": "Invitații"
+    },
+    "organizations": {
+      "name": "Organizaţii"
+    },
+    "users": {
+      "name": "Utilizatori"
+    },
+    "pages": {
+      "name": "Pagini"
+    },
+    "notifications": {
+      "name": "notificări"
+    },
+    "categories": {
+      "name": "Categorii",
+      "categoryName": "Nume",
+      "postCount": "postările"
+    },
+    "tags": {
+      "name": "Tag-uri",
+      "tagCountUnique": "Utilizatori",
+      "tagCount": "postările"
+    },
+    "settings": {
+      "name": "Setări"
+    }
+  },
+  "post": {
+    "name": "contribuție",
+    "moreInfo": {
+      "name": "Mai multe informatii"
+    },
+    "takeAction": {
+      "name": "implicați"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Mulți oameni mici din multe locuri mici, care fac multe lucruri mici, vor schimba fața lumii.",
+      "author": "Proverb african"
+    }
+  },
+  "common": {
+    "post": "Postarea ::: postările",
+    "comment": "Comentariu ::: Comentarii",
+    "letsTalk": "Să vorbim",
+    "versus": "versus",
+    "moreInfo": "Mai multe informatii",
+    "takeAction": "implicați",
+    "shout": "recomandarea ::: recomandările",
+    "user": "Utilizator ::: Utilizatori",
+    "category": "Categoria::: categorii",
+    "organization": "Organizația ::: Organizații",
+    "project": "Proiect::: proiecte",
+    "tag": "Tag-ul::: Tag-uri",
+    "name": "Nume",
+    "loadMore": "incarca mai mult",
+    "loading": "se incarca",
+    "reportContent": "Raport"
+  },
+  "actions": {
+    "loading": "se incarca",
+    "loadMore": "incarca mai mult",
+    "create": "creați",
+    "save": "Salvați",
+    "edit": "Editați | ×",
+    "delete": "Șterge",
+    "cancel": "Anulare"
+  },
+  "moderation": {
+    "name": "Moderare",
+    "reports": {
+      "empty": "Felicitări, nu este nimic de moderat.",
+      "name": "rapoarte",
+      "reporter": "raportat de",
+      "submitter": "raportat de"
+    }
+  },
+  "disable": {
+    "user": {
+      "title": "Dezactivați Utilizatorul",
+      "type": "Utilizator",
+      "message": "Chiar doriți să dezactivați utilizatorul \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Dezactivați contribuția",
+      "type": "Contribuţie",
+      "message": "Chiar doriți să dezactivați contribuția \" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Dezactivați comentariul",
+      "type": "cometariu",
+      "message": "Chiar doriți să dezactivați comentariul de la \" <b> {name} </b> \"?"
+    }
+  },
+  "report": {
+    "submit": "Trimiteți raportul",
+    "cancel": "Anulare",
+    "user": {
+      "title": "Raportați utilizatorul",
+      "type": "Utilizator",
+      "message": "Chiar doriți să raportați utilizatorul \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Raportați contribuția",
+      "type": "Contribuţie",
+      "message": "Chiar doriți să raportați contribuția lu \" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Raportați comentariul",
+      "type": "cometariu",
+      "message": "Chiar doriți să raportați comentariul de la \" <b> {name} </b> \"?"
+    }
+  },
+  "contribution": {
+    "edit": "Editați postarea",
+    "delete": "Ştergeţi postarea"
+  },
+  "comment": {
+    "edit": "Editați comentariu",
+    "delete": "Ștergeți comentariu"
+  },
+  "followButton": {
+    "follow": "Urmaţi",
+    "following": "Urmăresc"
+  },
+  "shoutButton": {
+    "shouted": "recomandat"
+  }
+}
