@@ -19,7 +19,7 @@ Feature: Webfinger discovery
         {
           "rel": "self",
           "type": "application/activity+json",
-          "href": "https://localhost:4123/users/peter-lustiger"
+          "href": "https://localhost:4123/activitypub/users/peter-lustiger"
         }
       ]
     }
