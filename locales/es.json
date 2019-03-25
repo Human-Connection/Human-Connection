@@ -1,0 +1,151 @@
+{
+  "login": {
+    "copy": "Si ya tiene una cuenta de Human Connection, inicie sesión aquí.",
+    "login": "Iniciar sesión",
+    "logout": "Cierre de sesión",
+    "email": "Tu correo electrónico",
+    "password": "Tu contraseña",
+    "moreInfo": "¿Qué es Human Connection?",
+    "hello": "Hola"
+  },
+  "profile": {
+    "name": "Mi perfil",
+    "memberSince": "Miembro desde",
+    "follow": "Seguir",
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "shouted": "Gritar",
+    "commented": "Comentado"
+  },
+  "settings": {
+    "name": "Configuración",
+    "data": {
+      "name": "Sus datos"
+    },
+    "security": {
+      "name": "Seguridad"
+    },
+    "invites": {
+      "name": "Invita"
+    },
+    "download": {
+      "name": "Descargar datos"
+    },
+    "delete": {
+      "name": "Borrar cuenta"
+    },
+    "organizations": {
+      "name": "Mis organizaciones"
+    },
+    "languages": {
+      "name": "Idiomas"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Tablero",
+      "users": "Usuarios",
+      "posts": "Mensajes",
+      "comments": "Comentarios",
+      "notifications": "Notificaciones",
+      "organizations": "Organizaciones",
+      "projects": "Proyectos",
+      "invites": "Invita",
+      "follows": "Sigue",
+      "shouts": "Gritos"
+    },
+    "organizations": {
+      "name": "Organizaciones"
+    },
+    "users": {
+      "name": "Usuarios"
+    },
+    "pages": {
+      "name": "Páginas"
+    },
+    "notifications": {
+      "name": "Notificaciones"
+    },
+    "categories": {
+      "name": "Categorías",
+      "categoryName": "Nombre",
+      "postCount": "Mensajes"
+    },
+    "tags": {
+      "name": "Etiquetas",
+      "tagCountUnique": "Usuarios",
+      "tagCount": "Mensajes"
+    },
+    "settings": {
+      "name": "Configuración"
+    }
+  },
+  "post": {
+    "name": "Mensaje",
+    "moreInfo": {
+      "name": "Más info"
+    },
+    "takeAction": {
+      "name": "Tomar acción"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Muchas personas pequeñas en muchos lugares pequeños hacen muchas cosas pequeñas, que pueden alterar la faz del mundo.",
+      "author": "Proverbio africano"
+    }
+  },
+  "common": {
+    "post": "Mensaje ::: Mensajes",
+    "comment": "Comentario ::: Comentarios",
+    "letsTalk": "Hablemos",
+    "versus": "Versus",
+    "moreInfo": "Más info",
+    "takeAction": "Tomar acción",
+    "shout": "Grito ::: Gritos",
+    "user": "Usuario ::: Usuarios",
+    "category": "Categoría ::: Categorías",
+    "organization": "Organización ::: Organizaciones",
+    "project": "Proyecto ::: Proyectos",
+    "tag": "Etiqueta ::: Etiquetas",
+    "name": "Nombre",
+    "loadMore": "cargar más",
+    "loading": "cargando"
+  },
+  "disable": {
+    "user": {
+      "type": "Usuario"
+    },
+    "contribution": {
+      "type": "Contribución"
+    },
+    "comment": {
+      "type": "Comentario"
+    }
+  },
+  "report": {
+    "user": {
+      "title": "Reportar usuario",
+      "type": "Usuario"
+    },
+    "contribution": {
+      "type": "Contribución"
+    },
+    "comment": {
+      "title": "Reportar comentario",
+      "type": "Comentario"
+    }
+  },
+  "actions": {
+    "cancel": "Cancelar"
+  },
+  "contribution": {
+    "edit": "Editar contribución",
+    "delete": "Eliminar contribución"
+  },
+  "comment": {
+    "edit": "Editar comentario",
+    "delete": "Eliminar comentario"
+  }
+}
