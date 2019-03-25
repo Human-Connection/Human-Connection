@@ -23,11 +23,17 @@
       margin-top="base"
       margin="x-small"
     >
-      <div>
-        <img
-          :src="currentUser.socialMedia[0] + '/favicon.ico'"
-          alt=""
-        >
+      <div
+        v-for="socialMediaIconUrl in socialMediaIconUrl"
+        :key="socialMediaIconUrl"
+      >
+        <a>
+          <img
+            :src="socialMediaIcon.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g)[0] + '/favicon.ico'"
+            :href="socialMediaIcon"
+            alt=""
+          >
+        </a>
       </div>
     </ds-space>
   </ds-card>
@@ -38,7 +44,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    socialMedia: {
+    socialMediaIconUrl: {
       type: Array,
       default: () => []
     }
@@ -66,9 +72,12 @@ export default {
             url: this.value
           }
         })
-        .then(() =>
-          this.$toast.success(this.$t('settings.social-media.success'))
+        .then(
+          response => (this.socialMediaIconUrl = response.data.addSocialMedia)
         )
+        .finally(() => {
+          this.$toast.success(this.$t('settings.social-media.success'))
+        })
     }
   }
 }
