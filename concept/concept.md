@@ -12,7 +12,7 @@ Human Connection is a nonprofit social, action and knowledge network that connec
 
 The following features will be implemented. This gets done in three steps: 
 
-1. First we will implement a basic feature set and provide an test system for to test the basic network functionality. 
+1. First we will implement a basic feature set and provide a test system to test the basic network functionality. 
 
 2. In a second step we will go live into the public with an advanced feature set which includes also all the functionality in code and organisation that will be needed to drive a bigger public social network.
 
