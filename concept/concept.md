@@ -16,7 +16,7 @@ The following features will be implemented. This gets done in three steps:
 
 2. In a second step we will go live into the public with an advanced feature set which includes also all the functionality in code and organisation that will be needed to drive a bigger public social network.
 
-3. In a third step all the remaining Features will be implemented to build the full product. 
+3. In a third step all the remaining features will be implemented to build the full product. 
 
 ### User Account
 
@@ -91,15 +91,15 @@ The following features will be implemented. This gets done in three steps:
 - Extended Filter (Continent, Country, Language, ...) 
 - Sort Posts by Date
 - Sort Posts by Shouts
-- Sort Posts by most discussed
-- Sort Posts by most Emojis
+- Sort Posts by most Comments
+- Sort Posts by Emoji-Count (all Types)
 
 ### Blacklist
 
 [Video](https://www.youtube.com/watch?v=-uDvvmN8hLQ)
 
 - Blacklist Users
-- Blacklist Subjects
+- Blacklist specific Terms
 - Blacklist Tags
 - Switch on/off Adult Content
 
@@ -127,7 +127,9 @@ The following features will be implemented. This gets done in three steps:
 
 ### Jobs
 
-- Create, edit and delete Jobs
+- Create, edit and delete Jobs by an User
+- Handle Jobs as Part of Projects
+- Handle Jobs done by Organizations
 
 ### Projects
 
@@ -148,10 +150,9 @@ The following features will be implemented. This gets done in three steps:
 
 ### Votes
 
-- Create Votes (Surveys)
+- Create Votes (Surveys with two or more Choices)
 - Add Title and Description
 - Let Users vote
-- Set Vote Type (Yes/No or Poll)
 - Add Tags
 
 ### Bestlist
@@ -167,6 +168,7 @@ The following features will be implemented. This gets done in three steps:
 
 - Create Events
 - Add Title and Description
+- Choose Date and Location
 - Add Tags
 
 ### More Info
@@ -177,7 +179,7 @@ Shows autmatically releated information for existing post.
 - Show Pros and Cons
 - Show Bestlist
 - Show Votes
-- Link to responding Chatroom 
+- Link to corresponding Chatroom 
 
 ### Take Action
 
