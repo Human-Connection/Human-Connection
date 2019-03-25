@@ -22,9 +22,8 @@ let activityPub = null
 export { activityPub }
 
 export default class ActivityPub {
-  constructor (hostname, port, uri) {
-    this.hostname = hostname
-    this.port = port
+  constructor (host, uri) {
+    this.host = host
     this.dataSource = new NitroDataSource(uri)
     this.collections = new Collections(this.dataSource)
   }
@@ -33,7 +32,7 @@ export default class ActivityPub {
     if (!activityPub) {
       dotenv.config()
       const url = new URL(process.env.GRAPHQL_URI)
-      activityPub = new ActivityPub(url.host || 'localhost', url.port || 4000, url.origin)
+      activityPub = new ActivityPub(url.host || 'localhost:4000', url.origin)
 
       // integrate into running graphql express server
       server.express.set('ap', activityPub)
@@ -59,7 +58,7 @@ export default class ActivityPub {
         }
       }, async (err, response, toActorObject) => {
         if (err) return reject(err)
-        debug(`name = ${toActorName}@${this.hostname}`)
+        debug(`name = ${toActorName}@${this.host}`)
         // save shared inbox
         toActorObject = JSON.parse(toActorObject)
         await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
@@ -184,7 +183,7 @@ export default class ActivityPub {
   }
 
   generateStatusId (slug) {
-    return `https://${this.hostname}/activitypub/users/${slug}/status/${uuid()}`
+    return `https://${this.host}/activitypub/users/${slug}/status/${uuid()}`
   }
 
   async sendActivity (activity) {
