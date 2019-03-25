@@ -1,0 +1,169 @@
+{
+  "login": {
+    "copy": "Si vous avez déjà un compte human-connection, connectez-vous ici.",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Votre courriel",
+    "password": "Votre mot de passe",
+    "moreInfo": "Qu'est-ce que Human Connection?",
+    "hello": "Bonjour"
+  },
+  "profile": {
+    "name": "Mon profil",
+    "memberSince": "Membre depuis",
+    "follow": "Suivre",
+    "followers": "Suiveurs",
+    "following": "Suivant"
+  },
+  "settings": {
+    "name": "Paramètres",
+    "data": {
+      "name": "Vos données"
+    },
+    "security": {
+      "name": "Sécurité"
+    },
+    "invites": {
+      "name": "Invite"
+    },
+    "download": {
+      "name": "Télécharger les données"
+    },
+    "delete": {
+      "name": "Supprimer un compte"
+    },
+    "organizations": {
+      "name": "Mes organisations"
+    },
+    "languages": {
+      "name": "Langues"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Tableau de bord",
+      "users": "Utilisateurs",
+      "posts": "Postes",
+      "comments": "Commentaires",
+      "notifications": "Notifications",
+      "organizations": "Organisations",
+      "projects": "Projets",
+      "invites": "Invite",
+      "follows": "Suit",
+      "shouts": "Cris"
+    },
+    "organizations": {
+      "name": "Organisations"
+    },
+    "users": {
+      "name": "Utilisateurs"
+    },
+    "pages": {
+      "name": "Pages"
+    },
+    "notifications": {
+      "name": "Notifications"
+    },
+    "categories": {
+      "name": "Catégories",
+      "categoryName": "Nom",
+      "postCount": "Postes"
+    },
+    "tags": {
+      "name": "Étiquettes",
+      "tagCountUnique": "Utilisateurs",
+      "tagCount": "Postes"
+    },
+    "settings": {
+      "name": "Paramètres"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "Plus d'infos"
+    },
+    "takeAction": {
+      "name": "Passez à l'action"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Beaucoup de petites personnes dans beaucoup de petits endroits font beaucoup de petites choses, qui peuvent changer la face du monde.",
+      "author": "Proverbe africain"
+    }
+  },
+  "common": {
+    "post": "Message ::: Messages",
+    "comment": "Commentaire ::: Commentaires",
+    "letsTalk": "Parlons-en",
+    "versus": "Versus",
+    "moreInfo": "Plus d'infos",
+    "takeAction": "Passer à l'action",
+    "shout": "Shout ::: Shouts",
+    "user": "Utilisateur ::: Utilisateurs",
+    "category": "Catégorie ::: Catégories",
+    "organization": "Organisation ::: Organisations",
+    "project": "Projet ::: Projets",
+    "tag": "Tag ::: Tags",
+    "name": "Nom",
+    "loadMore": "charger plus",
+    "loading": "chargement",
+    "reportContent": "Signaler"
+  },
+  "moderation": {
+    "reports": {
+      "empty": "Félicitations, rien à modérer.",
+      "name": "Signalisations",
+      "reporter": "signalé par"
+    }
+  },
+  "disable": {
+    "user": {
+      "title": "Désactiver l'utilisateur",
+      "type": "Utilisateur",
+      "message": "Souhaitez-vous vraiment désactiver l'utilisateur \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Désactiver l'apport",
+      "type": "apport",
+      "message": "Souhaitez-vous vraiment signaler l'entrée\" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Désactiver le commentaire",
+      "type": "Commentaire",
+      "message": "Souhaitez-vous vraiment désactiver le commentaire de \"<b>{nom}</b>\" ?"
+    }
+  },
+  "report": {
+    "submit": "Envoyer le rapport",
+    "cancel": "Annuler",
+    "user": {
+      "title": "Signaler l'utilisateur",
+      "type": "Utilisateur",
+      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Signaler l'entrée",
+      "type": "Apport",
+      "message": "Souhaitez-vous vraiment signaler l'entrée\" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Signaler un commentaire",
+      "type": "Commentaire",
+      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?"
+    }
+  },
+  "actions": {
+    "cancel": "Annuler"
+  },
+  "contribution": {
+    "edit": "Rédiger l'apport",
+    "delete": "Supprimer l'entrée"
+  },
+  "comment": {
+    "edit": "Rédiger un commentaire",
+    "delete": "Supprimer le commentaire"
+  }
+}
