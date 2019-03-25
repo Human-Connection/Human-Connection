@@ -23,7 +23,7 @@ export { activityPub }
 
 export default class ActivityPub {
   constructor (hostname, port, uri) {
-    if (hostname === 'localhost') { this.hostname = `${hostname}:${port}` } else { this.hostname = hostname }
+    this.hostname = hostname
     this.port = port
     this.dataSource = new NitroDataSource(uri)
     this.collections = new Collections(this.dataSource)
