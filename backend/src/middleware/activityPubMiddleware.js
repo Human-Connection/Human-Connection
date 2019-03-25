@@ -49,7 +49,7 @@ export default {
     CreateUser: async (resolve, root, args, context, info) => {
       const keys = generateRsaKeyPair()
       Object.assign(args, keys)
-      args.actorId = `${process.env.GRAPHQL_URI}/activitypub/users/${args.slug}`
+      args.actorId = `${activityPub.host}/activitypub/users/${args.slug}`
       return resolve(root, args, context, info)
     }
   }

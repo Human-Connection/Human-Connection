@@ -12,6 +12,6 @@ const serverConfig = {
 const server = createServer()
 server.start(serverConfig, options => {
   /* eslint-disable-next-line no-console */
-  console.log(`Server ready at ${process.env.GRAPHQL_URI} 🚀`)
+  console.log(`Server ready at ${process.env.CLIENT_URI} 🚀`)
   ActivityPub.init(server)
 })

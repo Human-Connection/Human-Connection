@@ -4,8 +4,6 @@
   metadata:
     name: nitro-backend
     namespace: human-connection
-    labels:
-      commit: "COMMIT"
   spec:
     replicas: 1
     minReadySeconds: 15
@@ -20,6 +18,7 @@
     template:
       metadata:
         labels:
+          human-connection.org/commit: COMMIT
           human-connection.org/selector: deployment-human-connection-backend
         name: "nitro-backend"
       spec:
