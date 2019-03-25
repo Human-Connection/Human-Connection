@@ -1,0 +1,127 @@
+{
+  "login": {
+    "copy": "Se sei gia registrato su Human Connection, accedi qui.",
+    "login": "Accesso",
+    "logout": "Logout",
+    "email": "La tua email",
+    "password": "La tua password",
+    "moreInfo": "Che cosa è Human Connection?",
+    "hello": "Ciao"
+  },
+  "profile": {
+    "name": "Il mio profilo",
+    "memberSince": "Membro dal",
+    "follow": "Seguire",
+    "followers": "Seguenti",
+    "following": "Seguendo",
+    "shouted": "Gridato",
+    "commented": "Commentato"
+  },
+  "settings": {
+    "name": "Impostazioni",
+    "data": {
+      "name": "I tuoi dati",
+      "labelName": "Nome",
+      "labelCity": "La tua città o regione",
+      "labelBio": "Su di te"
+    },
+    "security": {
+      "name": "Sicurezza"
+    },
+    "invites": {
+      "name": "Inviti"
+    },
+    "download": {
+      "name": "Scaricamento dati"
+    },
+    "delete": {
+      "name": "Elimina Account"
+    },
+    "organizations": {
+      "name": "Mie organizzazioni"
+    },
+    "languages": {
+      "name": "Lingue"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Cruscotto",
+      "users": "Utenti",
+      "posts": "Messaggi",
+      "comments": "Commenti",
+      "notifications": "Notifiche",
+      "organizations": "Organizzazioni",
+      "projects": "Progetti",
+      "invites": "Inviti",
+      "follows": "Segue",
+      "shouts": "Gridi"
+    },
+    "organizations": {
+      "name": "Organizzazioni"
+    },
+    "users": {
+      "name": "Utenti"
+    },
+    "pages": {
+      "name": "Pagine"
+    },
+    "notifications": {
+      "name": "Notifiche"
+    },
+    "categories": {
+      "name": "Categorie",
+      "categoryName": "Nome",
+      "postCount": "Messaggi"
+    },
+    "tags": {
+      "name": "Tag",
+      "tagCountUnique": "Utenti",
+      "tagCount": "Messaggi"
+    },
+    "settings": {
+      "name": "Impostazioni"
+    }
+  },
+  "post": {
+    "name": "Messaggio",
+    "moreInfo": {
+      "name": "Ulteriori informazioni"
+    },
+    "takeAction": {
+      "name": "Agire"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Molte piccole persone in molti piccoli luoghi fanno molte piccole cose, che possono cambiare la faccia del mondo.",
+      "author": "Proverbio africano"
+    }
+  },
+  "common": {
+    "post": "Messaggio ::: Messaggi",
+    "comment": "Commento ::: Commenti",
+    "letsTalk": "Discutiamo",
+    "versus": "Verso",
+    "moreInfo": "Ulteriori informazioni",
+    "takeAction": "Agire",
+    "shout": "Grido ::: Gridi",
+    "user": "Utente ::: Utenti",
+    "category": "Categoria ::: Categorie",
+    "organization": "Organizzazione ::: Organizzazioni",
+    "project": "Progetto ::: Progetti",
+    "tag": "Tag ::: Tag",
+    "name": "Nome",
+    "loadMore": "Caricare di più",
+    "loading": "Caricamento in corso"
+  },
+  "actions": {
+    "loading": "Caricamento in corso",
+    "loadMore": "Carica di più",
+    "create": "Crea",
+    "save": "Salva",
+    "edit": "Modifica",
+    "delete": "Cancella"
+  }
+}
