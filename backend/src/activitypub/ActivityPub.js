@@ -33,9 +33,7 @@ export default class ActivityPub {
     if (!activityPub) {
       dotenv.config()
       const url = new URL(process.env.GRAPHQL_URI)
-      // TODO Check why the hostname attribute in the prod env not containing the tld! Following line is a quick fix!!
-      const hostname = url.hostname.endsWith('.org') || url.hostname.indexOf('localhost') > -1 ? url.hostname : url.hostname.concat('.org')
-      activityPub = new ActivityPub(hostname || 'localhost', url.port || 4000, url.origin)
+      activityPub = new ActivityPub(url.host || 'localhost', url.port || 4000, url.origin)
 
       // integrate into running graphql express server
       server.express.set('ap', activityPub)
