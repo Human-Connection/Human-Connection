@@ -14,7 +14,7 @@ The following features will be implemented. This gets done in three steps:
 
 1. First we will implement a basic feature set and provide a test system to test the basic network functionality. 
 
-2. In a second step we will go live into the public with an advanced feature set which includes also all the functionality in code and organisation that will be needed to drive a bigger public social network.
+2. In a second step we will make our prototype publicly available with an advanced feature set including the technology and organizational structure to drive a bigger public social network.
 
 3. In a third step all the remaining features will be implemented to build the full product. 
 
@@ -83,7 +83,7 @@ The following features will be implemented. This gets done in three steps:
 
 - Show Posts by Tiles
 - Show Posts as List
-- Filter by Category (Health and Wellbeing, Global Peace & Non-Violance, ...) 
+- Filter by Category (Health and Wellbeing, Global Peace & Non-Violence, ...) 
 - Filter by Mood (Funny, Happy, Surprised, Cry, Angry, ...)
 - Filter by Source (Connections, Following, Individuals, Non-Profits, ...)
 - Filter by Posts & Tools (Post, Events, CanDos, ...)
