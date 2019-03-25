@@ -31,7 +31,7 @@ export default class ActivityPub {
   static init (server) {
     if (!activityPub) {
       dotenv.config()
-      const url = new URL(process.env.GRAPHQL_URI)
+      const url = new URL(process.env.CLIENT_URI)
       activityPub = new ActivityPub(url.host || 'localhost:4000', url.origin)
 
       // integrate into running graphql express server
