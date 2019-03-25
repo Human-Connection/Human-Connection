@@ -32,7 +32,7 @@ export default {
       const session = driver.session()
       const result = await session.run(
         'MATCH (user:User {email: $userEmail}) ' +
-          'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role, .disabled} as user LIMIT 1',
+        'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role, .disabled} as user LIMIT 1',
         {
           userEmail: email
         }
@@ -107,8 +107,9 @@ export default {
       const { email } = user
       const result = await session.run(
         `MATCH (user:User {email: $userEmail})
-         SET user.socialMedia = [$url]
-         RETURN user {.socialMedia}`,
+        SET user.socialMedia = user.socialMedia + $url
+        RETURN user {.socialMedia}
+        `,
         {
           userEmail: email,
           url
@@ -118,7 +119,7 @@ export default {
       const [currentUser] = result.records.map(record => {
         return record.get('user')
       })
-      return !!currentUser.socialMedia
+      return currentUser.socialMedia
     }
   }
 }

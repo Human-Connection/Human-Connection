@@ -25,7 +25,8 @@ export default function create (params) {
         about: "${about}",
         role: ${role},
         disabled: ${disabled},
-        deleted: ${deleted}
+        deleted: ${deleted},
+        socialMedia: []
       ) {
         id
         name
@@ -34,6 +35,7 @@ export default function create (params) {
         role
         deleted
         disabled
+        socialMedia
       }
     }
   `
