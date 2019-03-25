@@ -22,8 +22,8 @@ let activityPub = null
 export { activityPub }
 
 export default class ActivityPub {
-  constructor (domain, port, uri) {
-    if (domain === 'localhost') { this.domain = `${domain}:${port}` } else { this.domain = domain }
+  constructor (hostname, port, uri) {
+    if (hostname === 'localhost') { this.hostname = `${hostname}:${port}` } else { this.hostname = hostname }
     this.port = port
     this.dataSource = new NitroDataSource(uri)
     this.collections = new Collections(this.dataSource)
@@ -33,7 +33,9 @@ export default class ActivityPub {
     if (!activityPub) {
       dotenv.config()
       const url = new URL(process.env.GRAPHQL_URI)
-      activityPub = new ActivityPub(url.hostname || 'localhost', url.port || 4000, url.origin)
+      // TODO Check why the hostname attribute in the prod env not containing the tld! Following line is a quick fix!!
+      const hostname = url.hostname.endsWith('.org') ? url.hostname : url.hostname.concat('.org')
+      activityPub = new ActivityPub(hostname || 'localhost', url.port || 4000, url.origin)
 
       // integrate into running graphql express server
       server.express.set('ap', activityPub)
@@ -59,7 +61,7 @@ export default class ActivityPub {
         }
       }, async (err, response, toActorObject) => {
         if (err) return reject(err)
-        debug(`name = ${toActorName}@${this.domain}`)
+        debug(`name = ${toActorName}@${this.hostname}`)
         // save shared inbox
         toActorObject = JSON.parse(toActorObject)
         await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
@@ -184,7 +186,7 @@ export default class ActivityPub {
   }
 
   generateStatusId (slug) {
-    return `http://${this.domain}/activitypub/users/${slug}/status/${uuid()}`
+    return `https://${this.hostname}/activitypub/users/${slug}/status/${uuid()}`
   }
 
   async sendActivity (activity) {
