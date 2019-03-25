@@ -123,13 +123,23 @@ module.exports = {
   proxy: {
     '/.well-known/webfinger': {
       target: process.env.GRAPHQL_URI || 'http://localhost:4000',
-      toProxy: true // cloudflare needs that
+      toProxy: true, // cloudflare needs that
+      headers: {
+        Accept: 'application/json',
+        'X-UI-Request': true,
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
+      }
     },
-    '/activityPub': {
+    '/activitypub': {
       // make this configurable (nuxt-dotenv)
       target: process.env.GRAPHQL_URI || 'http://localhost:4000',
-      pathRewrite: { '^/activityPub': '' },
-      toProxy: true // cloudflare needs that
+      pathRewrite: { '^/activitypub': '' },
+      toProxy: true, // cloudflare needs that
+      headers: {
+        Accept: 'application/json',
+        'X-UI-Request': true,
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
+      }
     },
     '/api': {
       // make this configurable (nuxt-dotenv)
