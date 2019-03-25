@@ -12,8 +12,8 @@ Feature: Persistent Links
 
   Background:
     Given we have the following user accounts:
-      | id         | name           | slug    |
-      | MHNqce98y1 | Stepen Hawking | thehawk |
+      | id         | name            | slug    |
+      | MHNqce98y1 | Stephen Hawking | thehawk |
     And we have the following posts in our database:
       | id         | title                                         | slug       |
       | bWBjpkTKZp | 101 Essays that will change the way you think | 101-essays |
