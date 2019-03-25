@@ -1,18 +1,16 @@
 <template>
   <ds-card :header="$t('settings.security.name')">
-    <hc-empty
-      icon="tasks"
-      message="Coming Soon…"
-    />
+    <change-password />
   </ds-card>
 </template>
 
 <script>
 import HcEmpty from '~/components/Empty.vue'
+import ChangePassword from '~/components/ChangePassword.vue'
 
 export default {
   components: {
-    HcEmpty
+    ChangePassword
   }
 }
 </script>
