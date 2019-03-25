@@ -17,11 +17,6 @@
     "shouted": "Empfohlen",
     "commented": "Kommentiert"
   },
-  "search": {
-    "placeholder": "Suchen",
-    "hint": "Wonach suchst du?",
-    "failed": "Nichts gefunden"
-  },
   "settings": {
     "name": "Einstellungen",
     "data": {
@@ -136,14 +131,12 @@
     "reports": {
       "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
+      "reporter": "gemeldet von",
       "submitter": "gemeldet von",
       "disabledBy": "deaktiviert von"
     }
   },
   "disable": {
-    "submit": "Deaktivieren",
-    "cancel": "Abbrechen",
-    "success": "Erfolgreich deaktiviert",
     "user": {
       "title": "Nutzer sperren",
       "type": "Nutzer",
@@ -158,12 +151,14 @@
       "title": "Kommentar sperren",
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" deaktivieren möchtest?"
-    }
+    },
+    "submit": "Deaktivieren",
+    "cancel": "Abbrechen",
+    "success": "Erfolgreich deaktiviert"
   },
   "report": {
-    "submit": "Melden",
+    "submit": "Meldung senden",
     "cancel": "Abbrechen",
-    "success": "Vielen Dank für diese Meldung!",
     "user": {
       "title": "Nutzer melden",
       "type": "Nutzer",
@@ -178,7 +173,8 @@
       "title": "Kommentar melden",
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?"
-    }
+    },
+    "success": "Vielen Dank für diese Meldung!"
   },
   "contribution": {
     "edit": "Beitrag bearbeiten",
@@ -197,5 +193,10 @@
   },
   "shoutButton": {
     "shouted": "empfohlen"
+  },
+  "search": {
+    "placeholder": "Suchen",
+    "hint": "Wonach suchst du?",
+    "failed": "Nichts gefunden"
   }
 }
