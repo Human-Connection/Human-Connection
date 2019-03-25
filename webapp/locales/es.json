@@ -112,5 +112,40 @@
     "name": "Nombre",
     "loadMore": "cargar más",
     "loading": "cargando"
+  },
+  "disable": {
+    "user": {
+      "type": "Usuario"
+    },
+    "contribution": {
+      "type": "Contribución"
+    },
+    "comment": {
+      "type": "Comentario"
+    }
+  },
+  "report": {
+    "user": {
+      "title": "Reportar usuario",
+      "type": "Usuario"
+    },
+    "contribution": {
+      "type": "Contribución"
+    },
+    "comment": {
+      "title": "Reportar comentario",
+      "type": "Comentario"
+    }
+  },
+  "actions": {
+    "cancel": "Cancelar"
+  },
+  "contribution": {
+    "edit": "Editar contribución",
+    "delete": "Eliminar contribución"
+  },
+  "comment": {
+    "edit": "Editar comentario",
+    "delete": "Eliminar comentario"
   }
 }
