@@ -1,6 +1,7 @@
 # Table of contents
 
 * [Let's change the World](README.md)
+* [Network Concept](concept/concept.md)
 
 ## Backend
 
