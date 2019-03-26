@@ -77,7 +77,7 @@ export default {
       error,
       app: { apolloProvider }
     } = context
-    const idOrSlug = id
+    const idOrSlug = id || slug
 
     const variables = { idOrSlug }
     const client = apolloProvider.defaultClient
@@ -87,13 +87,16 @@ export default {
     response = await client.query({ query: queryId, variables })
     post = response.data.Post[0]
     if (post && post.slug === slug) return // all good
-    if (post && post.slug !== slug) redirect(`/post/${post.id}/${post.slug}`)
+    if (post && post.slug !== slug) {
+      return redirect(`/post/${post.id}/${post.slug}`)
+    }
 
     response = await client.query({ query: querySlug, variables })
     post = response.data.Post[0]
-    if (post) redirect(`/post/${post.id}/${post.slug}`)
+    if (post) return redirect(`/post/${post.id}/${post.slug}`)
 
-    return error({ statusCode: 404 })
+    const message = 'This post could not be found'
+    return error({ statusCode: 404, message })
   }
 }
 </script>

@@ -40,13 +40,16 @@ export default {
     response = await client.query({ query: queryId, variables })
     user = response.data.User[0]
     if (user && user.slug === slug) return // all good
-    if (user && user.slug !== slug) redirect(`/profile/${user.id}/${user.slug}`)
+    if (user && user.slug !== slug) {
+      return redirect(`/profile/${user.id}/${user.slug}`)
+    }
 
     response = await client.query({ query: querySlug, variables })
     user = response.data.User[0]
-    if (user) redirect(`/profile/${user.id}/${user.slug}`)
+    if (user) return redirect(`/profile/${user.id}/${user.slug}`)
 
-    return error({ statusCode: 404 })
+    const message = 'This user could not be found'
+    return error({ statusCode: 404, message })
   }
 }
 </script>
