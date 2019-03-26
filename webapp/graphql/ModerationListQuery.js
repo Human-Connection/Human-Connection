@@ -10,15 +10,15 @@ export default app => {
         createdAt
         submitter {
           id
+          slug
+          name
           disabled
           deleted
-          name
-          slug
         }
         user {
           id
-          name
           slug
+          name
           disabled
           deleted
           disabledBy {
@@ -33,44 +33,45 @@ export default app => {
           contentExcerpt
           author {
             id
-            name
             slug
+            name
             disabled
             deleted
           }
           post {
             id
+            slug
+            title
             disabled
             deleted
-            title
-            slug
           }
           disabledBy {
             id
             slug
+            name
             disabled
             deleted
-            name
           }
         }
         post {
           id
-          title
           slug
+          title
           disabled
           deleted
           author {
+            id
+            slug
+            name
             disabled
             deleted
-            name
-            slug
           }
           disabledBy {
             id
             slug
+            name
             disabled
             deleted
-            name
           }
         }
       }
