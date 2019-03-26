@@ -133,7 +133,6 @@ module.exports = {
     '/activitypub': {
       // make this configurable (nuxt-dotenv)
       target: process.env.GRAPHQL_URI || 'http://localhost:4000',
-      pathRewrite: { '^/activitypub': '' },
       toProxy: true, // cloudflare needs that
       headers: {
         Accept: 'application/json',

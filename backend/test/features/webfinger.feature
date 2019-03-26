@@ -4,7 +4,7 @@ Feature: Webfinger discovery
   In order to follow the actor
 
   Background:
-    Given our own server runs at "http://localhost:4100"
+    Given our own server runs at "http://localhost:4123"
     And we have the following users in our database:
       | Slug           |
       | peter-lustiger |

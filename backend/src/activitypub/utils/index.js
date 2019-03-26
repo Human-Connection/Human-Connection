@@ -20,8 +20,8 @@ export function extractIdFromActivityId (uri) {
   return splitted[splitted.indexOf('status') + 1]
 }
 
-export function constructIdFromName (name, fromDomain = activityPub.host) {
-  return `http://${fromDomain}/activitypub/users/${name}`
+export function constructIdFromName (name, fromDomain = activityPub.endpoint) {
+  return `${fromDomain}/activitypub/users/${name}`
 }
 
 export function extractDomainFromUrl (url) {
@@ -76,7 +76,7 @@ export function signAndSend (activity, fromName, targetDomain, url) {
           'Host': targetDomain,
           'Date': date,
           'Signature': createSignature({ privateKey,
-            keyId: `http://${activityPub.host}/activitypub/users/${fromName}#main-key`,
+            keyId: `${activityPub.endpoint}/activitypub/users/${fromName}#main-key`,
             url,
             headers: {
               'Host': targetDomain,
