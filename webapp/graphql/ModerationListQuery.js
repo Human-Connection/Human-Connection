@@ -9,43 +9,52 @@ export default app => {
         type
         createdAt
         submitter {
+          id
           disabled
           deleted
           name
           slug
         }
         user {
+          id
           name
           slug
           disabled
           deleted
           disabledBy {
+            id
             slug
             name
+            disabled
+            deleted
           }
         }
         comment {
           contentExcerpt
           author {
+            id
             name
             slug
             disabled
             deleted
           }
           post {
+            id
             disabled
             deleted
             title
             slug
           }
           disabledBy {
+            id
+            slug
             disabled
             deleted
-            slug
             name
           }
         }
         post {
+          id
           title
           slug
           disabled
@@ -57,9 +66,10 @@ export default app => {
             slug
           }
           disabledBy {
+            id
+            slug
             disabled
             deleted
-            slug
             name
           }
         }

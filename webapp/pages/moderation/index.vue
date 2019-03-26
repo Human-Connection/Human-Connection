@@ -14,7 +14,7 @@
         slot-scope="scope"
       >
         <div v-if="scope.row.type === 'Post'">
-          <nuxt-link :to="{ name: 'post-slug', params: { slug: scope.row.post.slug } }">
+          <nuxt-link :to="{ name: 'post-id-slug', params: { id: scope.row.post.id, slug: scope.row.post.slug } }">
             <b>{{ scope.row.post.title | truncate(50) }}</b>
           </nuxt-link><br>
           <ds-text
@@ -25,7 +25,7 @@
           </ds-text>
         </div>
         <div v-else-if="scope.row.type === 'Comment'">
-          <nuxt-link :to="{ name: 'post-slug', params: { slug: scope.row.comment.post.slug } }">
+          <nuxt-link :to="{ name: 'post-id-slug', params: { id: scope.row.comment.post.id, slug: scope.row.comment.post.slug } }">
             <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
           </nuxt-link><br>
           <ds-text

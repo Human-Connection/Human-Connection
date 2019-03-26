@@ -182,8 +182,8 @@ export default {
     goToPost(item) {
       this.$nextTick(() => {
         this.$router.push({
-          name: 'post-slug',
-          params: { slug: item.slug }
+          name: 'post-id-slug',
+          params: { id: item.id, slug: item.slug }
         })
       })
     },

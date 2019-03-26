@@ -263,7 +263,7 @@ export default {
 </script>
 
 <style lang="scss">
-.page-name-post-slug {
+.page-name-post-id-slug {
   .content-menu {
     float: right;
     margin-right: -$space-x-small;

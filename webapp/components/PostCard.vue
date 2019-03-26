@@ -106,8 +106,8 @@ export default {
   methods: {
     href(post) {
       return this.$router.resolve({
-        name: 'post-slug',
-        params: { slug: post.slug }
+        name: 'post-id-slug',
+        params: { id: post.id, slug: post.slug }
       }).href
     }
   }

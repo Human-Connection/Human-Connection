@@ -111,8 +111,8 @@ export default {
           const result = res.data[this.id ? 'UpdatePost' : 'CreatePost']
 
           this.$router.push({
-            name: 'post-slug',
-            params: { slug: result.slug }
+            name: 'post-id-slug',
+            params: { id: result.id, slug: result.slug }
           })
         })
         .catch(err => {
