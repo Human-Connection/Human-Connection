@@ -224,7 +224,7 @@ Then('the post shows up on the landing page at position {int}', index => {
 })
 
 Then('I get redirected to {string}', route => {
-  cy.location('pathname').should('contain', route)
+  cy.location('pathname').should('contain', route.replace('...', ''))
 })
 
 Then('the post was saved successfully', () => {
