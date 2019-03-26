@@ -23,7 +23,6 @@ const querySlug = gql`
 `
 
 export default {
-  layout: 'blank',
   async asyncData(context) {
     const {
       params: { id, slug },
