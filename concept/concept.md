@@ -1,4 +1,4 @@
-# Network Concept
+# Network Specification
 
 Human Connection is a nonprofit social, action and knowledge network that connects information to action and promotes positive local and global change in all areas of life. 
 
@@ -79,7 +79,7 @@ The following features will be implemented. This gets done in three steps:
 - Editing Comments
 - Upvote comments of others
 
-### Article List
+### Contribution List
 
 - Show Posts by Tiles
 - Show Posts as List
