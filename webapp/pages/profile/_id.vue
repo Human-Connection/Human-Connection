@@ -1,3 +1,7 @@
+<template>
+  <nuxt-child />
+</template>
+
 <script>
 import gql from 'graphql-tag'
 
@@ -22,23 +26,26 @@ export default {
   layout: 'blank',
   async asyncData(context) {
     const {
-      params: { id: idOrSlug },
+      params: { id, slug },
       redirect,
       error,
       app: { apolloProvider }
     } = context
+    const idOrSlug = id
 
     const variables = { idOrSlug }
     const client = apolloProvider.defaultClient
 
-    const tryToRedirect = async query => {
-      const idRes = await client.query({ query, variables })
-      const user = idRes.data.User[0]
-      if (user) redirect(`/profile/${user.id}/${user.slug}`)
-    }
+    let response
+    let user
+    response = await client.query({ query: queryId, variables })
+    user = response.data.User[0]
+    if (user && user.slug === slug) return // all good
+    if (user && user.slug !== slug) redirect(`/profile/${user.id}/${user.slug}`)
 
-    await tryToRedirect(queryId)
-    await tryToRedirect(querySlug)
+    response = await client.query({ query: querySlug, variables })
+    user = response.data.User[0]
+    if (user) redirect(`/profile/${user.id}/${user.slug}`)
 
     return error({ statusCode: 404 })
   }
