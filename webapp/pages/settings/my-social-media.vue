@@ -24,13 +24,13 @@
       margin="x-small"
     >
       <div
-        v-for="socialMediaIconUrl in socialMediaIconUrl"
+        v-for="socialMediaIconUrl in currentUser.socialMedia"
         :key="socialMediaIconUrl"
       >
         <a>
           <img
-            :src="socialMediaIcon.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g)[0] + '/favicon.ico'"
-            :href="socialMediaIcon"
+            :src="socialMediaIconUrl.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g)[0] + '/favicon.ico'"
+            :href="socialMediaIconUrl"
             alt=""
           >
         </a>
@@ -43,12 +43,6 @@ import gql from 'graphql-tag'
 import { mapGetters } from 'vuex'
 
 export default {
-  props: {
-    socialMediaIconUrl: {
-      type: Array,
-      default: () => []
-    }
-  },
   data() {
     return {
       value: ''
@@ -72,12 +66,7 @@ export default {
             url: this.value
           }
         })
-        .then(
-          response => (this.socialMediaIconUrl = response.data.addSocialMedia)
-        )
-        .finally(() => {
-          this.$toast.success(this.$t('settings.social-media.success'))
-        })
+        .then(this.$toast.success(this.$t('settings.social-media.success')))
     }
   }
 }
