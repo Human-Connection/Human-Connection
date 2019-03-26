@@ -22,9 +22,9 @@ let activityPub = null
 export { activityPub }
 
 export default class ActivityPub {
-  constructor (activity_pub_endpoint_uri, internal_graphql_uri) {
-    this.endpoint = activity_pub_endpoint_uri
-    this.dataSource = new NitroDataSource(internal_graphql_uri)
+  constructor (activityPubEndpointUri, internalGraphQlUri) {
+    this.endpoint = activityPubEndpointUri
+    this.dataSource = new NitroDataSource(internalGraphQlUri)
     this.collections = new Collections(this.dataSource)
   }
 
