@@ -47,8 +47,8 @@ Then("I should be on the post's page", () => {
     '/post/'
   )
   cy.location('pathname').should(
-    'contain',
-    '/101-essays-that-will-change-the-way-you-think'
+    'eq',
+    '/post/p1/101-essays-that-will-change-the-way-you-think'
   )
 })
 

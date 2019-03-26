@@ -18,25 +18,32 @@
 
 <script>
 import gql from 'graphql-tag'
+import PersistentLinks from '~/mixins/persistentLinks.js'
 
-const queryId = gql`
-  query($idOrSlug: ID) {
-    Post(id: $idOrSlug) {
-      id
-      slug
+const options = {
+  queryId: gql`
+    query($idOrSlug: ID) {
+      Post(id: $idOrSlug) {
+        id
+        slug
+      }
     }
-  }
-`
-const querySlug = gql`
-  query($idOrSlug: String) {
-    Post(slug: $idOrSlug) {
-      id
-      slug
+  `,
+  querySlug: gql`
+    query($idOrSlug: String) {
+      Post(slug: $idOrSlug) {
+        id
+        slug
+      }
     }
-  }
-`
+  `,
+  path: 'post',
+  message: 'This post could not be found'
+}
+const persistentLinks = PersistentLinks(options)
 
 export default {
+  mixins: [persistentLinks],
   computed: {
     routes() {
       const { slug, id } = this.$route.params
@@ -69,34 +76,6 @@ export default {
         }
       ]
     }
-  },
-  async asyncData(context) {
-    const {
-      params: { id, slug },
-      redirect,
-      error,
-      app: { apolloProvider }
-    } = context
-    const idOrSlug = id || slug
-
-    const variables = { idOrSlug }
-    const client = apolloProvider.defaultClient
-
-    let response
-    let post
-    response = await client.query({ query: queryId, variables })
-    post = response.data.Post[0]
-    if (post && post.slug === slug) return // all good
-    if (post && post.slug !== slug) {
-      return redirect(`/post/${post.id}/${post.slug}`)
-    }
-
-    response = await client.query({ query: querySlug, variables })
-    post = response.data.Post[0]
-    if (post) return redirect(`/post/${post.id}/${post.slug}`)
-
-    const message = 'This post could not be found'
-    return error({ statusCode: 404, message })
   }
 }
 </script>
