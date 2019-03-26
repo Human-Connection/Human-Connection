@@ -11,14 +11,14 @@ export function createNoteObject (text, name, id, published) {
 
   return {
     '@context': 'https://www.w3.org/ns/activitystreams',
-    'id': `https://${activityPub.host}/activitypub/users/${name}/status/${createUuid}`,
+    'id': `${activityPub.endpoint}/activitypub/users/${name}/status/${createUuid}`,
     'type': 'Create',
-    'actor': `https://${activityPub.host}/activitypub/users/${name}`,
+    'actor': `${activityPub.endpoint}/activitypub/users/${name}`,
     'object': {
-      'id': `https://${activityPub.host}/activitypub/users/${name}/status/${id}`,
+      'id': `${activityPub.endpoint}/activitypub/users/${name}/status/${id}`,
       'type': 'Note',
       'published': published,
-      'attributedTo': `https://${activityPub.host}/activitypub/users/${name}`,
+      'attributedTo': `${activityPub.endpoint}/activitypub/users/${name}`,
       'content': text,
       'to': 'https://www.w3.org/ns/activitystreams#Public'
     }
@@ -64,8 +64,8 @@ export async function getActorId (name) {
 
 export function sendAcceptActivity (theBody, name, targetDomain, url) {
   as.accept()
-    .id(`https://${activityPub.host}/activitypub/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
-    .actor(`https://${activityPub.host}/activitypub/users/${name}`)
+    .id(`${activityPub.endpoint}/activitypub/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
+    .actor(`${activityPub.endpoint}/activitypub/users/${name}`)
     .object(theBody)
     .prettyWrite((err, doc) => {
       if (!err) {
@@ -79,8 +79,8 @@ export function sendAcceptActivity (theBody, name, targetDomain, url) {
 
 export function sendRejectActivity (theBody, name, targetDomain, url) {
   as.reject()
-    .id(`https://${activityPub.host}/activitypub/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
-    .actor(`https://${activityPub.host}/activitypub/users/${name}`)
+    .id(`${activityPub.endpoint}/activitypub/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
+    .actor(`${activityPub.endpoint}/activitypub/users/${name}`)
     .object(theBody)
     .prettyWrite((err, doc) => {
       if (!err) {
