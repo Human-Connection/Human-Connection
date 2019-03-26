@@ -14,10 +14,10 @@ Feature: Receiving collections
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/renate-oberdorfer/outbox",
+      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/outbox",
       "summary": "renate-oberdorfers outbox collection",
       "type": "OrderedCollection",
-      "first": "https://localhost:4123/activitypub/users/renate-oberdorfer/outbox?page=true",
+      "first": "http://localhost:4123/activitypub/users/renate-oberdorfer/outbox?page=true",
       "totalItems": 0
     }
     """
@@ -29,10 +29,10 @@ Feature: Receiving collections
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/renate-oberdorfer/following",
+      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/following",
       "summary": "renate-oberdorfers following collection",
       "type": "OrderedCollection",
-      "first": "https://localhost:4123/activitypub/users/renate-oberdorfer/following?page=true",
+      "first": "http://localhost:4123/activitypub/users/renate-oberdorfer/following?page=true",
       "totalItems": 0
     }
     """
@@ -44,10 +44,10 @@ Feature: Receiving collections
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/renate-oberdorfer/followers",
+      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/followers",
       "summary": "renate-oberdorfers followers collection",
       "type": "OrderedCollection",
-      "first": "https://localhost:4123/activitypub/users/renate-oberdorfer/followers?page=true",
+      "first": "http://localhost:4123/activitypub/users/renate-oberdorfer/followers?page=true",
       "totalItems": 0
     }
     """
@@ -59,11 +59,11 @@ Feature: Receiving collections
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/renate-oberdorfer/outbox?page=true",
+      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/outbox?page=true",
       "summary": "renate-oberdorfers outbox collection",
       "type": "OrderedCollectionPage",
       "totalItems": 0,
-      "partOf": "https://localhost:4123/activitypub/users/renate-oberdorfer/outbox",
+      "partOf": "http://localhost:4123/activitypub/users/renate-oberdorfer/outbox",
       "orderedItems": []
     }
     """
@@ -75,11 +75,11 @@ Feature: Receiving collections
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/renate-oberdorfer/following?page=true",
+      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/following?page=true",
       "summary": "renate-oberdorfers following collection",
       "type": "OrderedCollectionPage",
       "totalItems": 0,
-      "partOf": "https://localhost:4123/activitypub/users/renate-oberdorfer/following",
+      "partOf": "http://localhost:4123/activitypub/users/renate-oberdorfer/following",
       "orderedItems": []
     }
     """
@@ -91,11 +91,11 @@ Feature: Receiving collections
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/renate-oberdorfer/followers?page=true",
+      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/followers?page=true",
       "summary": "renate-oberdorfers followers collection",
       "type": "OrderedCollectionPage",
       "totalItems": 0,
-      "partOf": "https://localhost:4123/activitypub/users/renate-oberdorfer/followers",
+      "partOf": "http://localhost:4123/activitypub/users/renate-oberdorfer/followers",
       "orderedItems": []
     }
     """

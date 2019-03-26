@@ -29,7 +29,7 @@ Feature: Delete an object
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/karl-heinz/status/a4DJ2afdg323v32641vna42lkj685kasd2",
+      "id": "http://localhost:4123/activitypub/users/karl-heinz/status/a4DJ2afdg323v32641vna42lkj685kasd2",
       "type": "Delete",
       "object": {
         "id": "https://aronda.org/activitypub/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
