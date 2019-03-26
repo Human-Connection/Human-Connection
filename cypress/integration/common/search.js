@@ -43,8 +43,12 @@ When('I select an entry', () => {
 
 Then("I should be on the post's page", () => {
   cy.location('pathname').should(
+    'contain',
+    '/post/'
+  )
+  cy.location('pathname').should(
     'eq',
-    '/post/101-essays-that-will-change-the-way-you-think/'
+    '/post/p1/101-essays-that-will-change-the-way-you-think'
   )
 })
 

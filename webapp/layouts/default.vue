@@ -39,7 +39,7 @@
                 >
                   <a
                     class="avatar-menu-trigger"
-                    :href="$router.resolve({name: 'profile-slug', params: {slug: user.slug}}).href"
+                    :href="$router.resolve({name: 'profile-id-slug', params: {id: user.id, slug: user.slug}}).href"
                     @click.prevent="toggleMenu"
                   >
                     <ds-avatar
@@ -182,8 +182,8 @@ export default {
     goToPost(item) {
       this.$nextTick(() => {
         this.$router.push({
-          name: 'post-slug',
-          params: { slug: item.slug }
+          name: 'post-id-slug',
+          params: { id: item.id, slug: item.slug }
         })
       })
     },

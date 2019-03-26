@@ -17,7 +17,7 @@ Feature: Create a post
     for active citizenship.
     """
     And I click on "Save"
-    Then I get redirected to "/post/my-first-post/"
+    Then I get redirected to ".../my-first-post"
     And the post was saved successfully
 
   Scenario: See a post on the landing page

@@ -423,7 +423,7 @@ export default {
   border: #fff 5px solid;
 }
 
-.page-name-profile-slug {
+.page-name-profile-id-slug {
   .ds-flex-item:first-child .content-menu {
     position: absolute;
     top: $space-x-small;
