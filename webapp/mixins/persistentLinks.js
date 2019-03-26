@@ -14,17 +14,17 @@ export default function(options = {}) {
       const client = apolloProvider.defaultClient
 
       let response
-      let thing
+      let resource
       response = await client.query({ query: queryId, variables })
-      thing = response.data[Object.keys(response.data)[0]][0]
-      if (thing && thing.slug === slug) return // all good
-      if (thing && thing.slug !== slug) {
-        return redirect(`/${path}/${thing.id}/${thing.slug}`)
+      resource = response.data[Object.keys(response.data)[0]][0]
+      if (resource && resource.slug === slug) return // all good
+      if (resource && resource.slug !== slug) {
+        return redirect(`/${path}/${resource.id}/${resource.slug}`)
       }
 
       response = await client.query({ query: querySlug, variables })
-      thing = response.data[Object.keys(response.data)[0]][0]
-      if (thing) return redirect(`/${path}/${thing.id}/${thing.slug}`)
+      resource = response.data[Object.keys(response.data)[0]][0]
+      if (resource) return redirect(`/${path}/${resource.id}/${resource.slug}`)
 
       return error({ statusCode: 404, message })
     }

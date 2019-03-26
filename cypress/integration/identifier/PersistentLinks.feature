@@ -1,7 +1,7 @@
 Feature: Persistent Links
   As a user
-  I want to click on a link with an 'href' having an unmodifiable id of a user
-  In order to have persistent links even if the user changes a his/her slug
+  I want all links to carry permanent information that identifies the linked resource
+  In order to have persistent links even if a part of the URL might change
 
   |      | Modifiable | Referenceable | Unique | Purpose                       |
   | --   | --         | --            | --     | --                            |
