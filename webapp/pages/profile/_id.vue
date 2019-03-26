@@ -30,7 +30,7 @@ export default {
       error,
       app: { apolloProvider }
     } = context
-    const idOrSlug = id
+    const idOrSlug = id || slug
 
     const variables = { idOrSlug }
     const client = apolloProvider.defaultClient

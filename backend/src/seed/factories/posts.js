@@ -4,6 +4,7 @@ import uuid from 'uuid/v4'
 export default function (params) {
   const {
     id = uuid(),
+    slug = '',
     title = faker.lorem.sentence(),
     content = [
       faker.lorem.sentence(),
@@ -21,6 +22,7 @@ export default function (params) {
     mutation {
       CreatePost(
         id: "${id}",
+        slug: "${slug}",
         title: "${title}",
         content: "${content}",
         image: "${image}",
