@@ -71,7 +71,7 @@ When('I click on the author', () => {
 })
 
 When('I report the author', () => {
-  cy.get('.page-name-profile-slug').then(() => {
+  cy.get('.page-name-profile-id-slug').then(() => {
     invokeReportOnElement('.ds-card').then(() => {
       cy.get('button')
         .contains('Send')

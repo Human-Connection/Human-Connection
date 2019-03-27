@@ -12,15 +12,20 @@ router.get('/', async function (req, res) {
     const nameAndDomain = resource.replace('acct:', '')
     const name = nameAndDomain.split('@')[0]
 
-    const result = await req.app.get('ap').dataSource.client.query({
-      query: gql`
+    let result
+    try {
+      result = await req.app.get('ap').dataSource.client.query({
+        query: gql`
         query {
           User(slug: "${name}") {
             slug
           }
         }
       `
-    })
+      })
+    } catch (error) {
+      return res.status(500).json({ error })
+    }
 
     if (result.data && result.data.User.length > 0) {
       const webFinger = createWebFinger(name)

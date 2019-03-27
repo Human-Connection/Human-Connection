@@ -5,6 +5,7 @@ export default function create (params) {
   const {
     id = uuid(),
     name = faker.name.findName(),
+    slug = '',
     email = faker.internet.email(),
     password = '1234',
     role = 'user',
@@ -19,6 +20,7 @@ export default function create (params) {
       CreateUser(
         id: "${id}",
         name: "${name}",
+        slug: "${slug}",
         password: "${password}",
         email: "${email}",
         avatar: "${avatar}",
@@ -30,6 +32,7 @@ export default function create (params) {
       ) {
         id
         name
+        slug
         email
         avatar
         role

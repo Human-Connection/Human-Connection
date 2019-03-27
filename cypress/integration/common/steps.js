@@ -86,6 +86,10 @@ Given('my user account has the role {string}', role => {
 
 When('I log out', cy.logout)
 
+When('I visit {string}', page => {
+  cy.openPage(page)
+})
+
 When('I visit the {string} page', page => {
   cy.openPage(page)
 })
@@ -220,7 +224,7 @@ Then('the post shows up on the landing page at position {int}', index => {
 })
 
 Then('I get redirected to {string}', route => {
-  cy.location('pathname').should('contain', route)
+  cy.location('pathname').should('contain', route.replace('...', ''))
 })
 
 Then('the post was saved successfully', () => {

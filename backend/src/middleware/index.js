@@ -9,6 +9,7 @@ import xssMiddleware from './xssMiddleware'
 import permissionsMiddleware from './permissionsMiddleware'
 import userMiddleware from './userMiddleware'
 import includedFieldsMiddleware from './includedFieldsMiddleware'
+import orderByMiddleware from './orderByMiddleware'
 
 export default schema => {
   let middleware = [
@@ -20,14 +21,17 @@ export default schema => {
     fixImageUrlsMiddleware,
     softDeleteMiddleware,
     userMiddleware,
-    includedFieldsMiddleware
+    includedFieldsMiddleware,
+    orderByMiddleware
   ]
 
   // add permisions middleware at the first position (unless we're seeding)
   // NOTE: DO NOT SET THE PERMISSION FLAT YOUR SELF
-  if (process.env.PERMISSIONS !== 'disabled' && process.env.NODE_ENV !== 'production') {
-    middleware.unshift(activityPubMiddleware)
-    middleware.unshift(permissionsMiddleware.generate(schema))
+  if (process.env.NODE_ENV !== 'production') {
+    const DISABLED_MIDDLEWARES = process.env.DISABLED_MIDDLEWARES || ''
+    const disabled = DISABLED_MIDDLEWARES.split(',')
+    if (!disabled.includes('activityPub')) middleware.unshift(activityPubMiddleware)
+    if (!disabled.includes('permissions')) middleware.unshift(permissionsMiddleware.generate(schema))
   }
   return middleware
 }
