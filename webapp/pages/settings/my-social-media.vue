@@ -1,5 +1,25 @@
 <template>
   <ds-card :header="$t('settings.social-media.name')">
+    <ds-space
+      v-if="socialMediaLinks"
+      margin-top="base"
+      margin="x-small"
+    >
+      <ds-list>
+        <ds-list-item
+          v-for="link in socialMediaLinks"
+          :key="link.url"
+        >
+          <a :href="link.url">
+            <img
+              :src="link.favicon"
+              alt=""
+            >
+            {{ link.url }}
+          </a>
+        </ds-list-item>
+      </ds-list>
+    </ds-space>
     <div>
       <ds-input
         v-model="value"
@@ -16,24 +36,6 @@
         >
           {{ $t('settings.social-media.submit') }}
         </ds-button>
-      </div>
-    </ds-space>
-    <ds-space
-      v-if="socialMediaLinks"
-      margin-top="base"
-      margin="x-small"
-    >
-      <div
-        v-for="link in socialMediaLinks"
-        :key="link.url"
-      >
-        <a>
-          <img
-            :src="link.favicon"
-            :href="link.url"
-            alt=""
-          >
-        </a>
       </div>
     </ds-space>
   </ds-card>
