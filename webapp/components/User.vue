@@ -153,9 +153,9 @@ export default {
       return count
     },
     userLink() {
-      const { slug } = this.user
-      if (!slug) return ''
-      return { name: 'profile-slug', params: { slug } }
+      const { id, slug } = this.user
+      if (!(id && slug)) return ''
+      return { name: 'profile-id-slug', params: { slug, id } }
     }
   }
 }

@@ -15,7 +15,7 @@ Feature: Follow a user
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/stuart-little/status/83J23549sda1k72fsa4567na42312455kad83",
+      "id": "http://localhost:4123/activitypub/users/stuart-little/status/83J23549sda1k72fsa4567na42312455kad83",
       "type": "Follow",
       "actor": "http://localhost:4123/activitypub/users/stuart-little",
       "object": "http://localhost:4123/activitypub/users/tero-vota"
@@ -32,11 +32,11 @@ Feature: Follow a user
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/tero-vota/status/a4DJ2afdg323v32641vna42lkj685kasd2",
+      "id": "http://localhost:4123/activitypub/users/tero-vota/status/a4DJ2afdg323v32641vna42lkj685kasd2",
       "type": "Undo",
       "actor": "http://localhost:4123/activitypub/users/tero-vota",
       "object": {
-        "id": "https://localhost:4123/activitypub/users/stuart-little/status/83J23549sda1k72fsa4567na42312455kad83",
+        "id": "http://localhost:4123/activitypub/users/stuart-little/status/83J23549sda1k72fsa4567na42312455kad83",
         "type": "Follow",
         "actor": "http://localhost:4123/activitypub/users/stuart-little",
         "object": "http://localhost:4123/activitypub/users/tero-vota"

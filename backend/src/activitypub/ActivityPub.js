@@ -22,21 +22,19 @@ let activityPub = null
 export { activityPub }
 
 export default class ActivityPub {
-  constructor (host, uri) {
-    this.host = host
-    this.dataSource = new NitroDataSource(uri)
+  constructor (activityPubEndpointUri, internalGraphQlUri) {
+    this.endpoint = activityPubEndpointUri
+    this.dataSource = new NitroDataSource(internalGraphQlUri)
     this.collections = new Collections(this.dataSource)
   }
 
   static init (server) {
     if (!activityPub) {
       dotenv.config()
-      const url = new URL(process.env.CLIENT_URI)
-      activityPub = new ActivityPub(url.host || 'localhost:4000', url.origin)
+      activityPub = new ActivityPub(process.env.CLIENT_URI || 'http://localhost:3000', process.env.GRAPHQL_URI || 'http://localhost:4000')
 
       // integrate into running graphql express server
       server.express.set('ap', activityPub)
-      server.express.set('port', url.port)
       server.express.use(router)
       console.log('-> ActivityPub middleware added to the graphql express server')
     } else {
