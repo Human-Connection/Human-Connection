@@ -18,19 +18,19 @@
         </ds-button>
       </div>
     </ds-space>
-    <ds-space 
-      v-if="currentUser.socialMedia && currentUser.socialMedia.length"
+    <ds-space
+      v-if="socialMediaLinks"
       margin-top="base"
       margin="x-small"
     >
       <div
-        v-for="socialMediaIconUrl in currentUser.socialMedia"
-        :key="socialMediaIconUrl"
+        v-for="link in socialMediaLinks"
+        :key="link.url"
       >
         <a>
           <img
-            :src="socialMediaIconUrl.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g)[0] + '/favicon.ico'"
-            :href="socialMediaIconUrl"
+            :src="link.favicon"
+            :href="link.url"
             alt=""
           >
         </a>
@@ -51,7 +51,18 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'auth/user'
-    })
+    }),
+    socialMediaLinks() {
+      const { socialMedia = [] } = this.currentUser
+      return socialMedia.map(url => {
+        const matches = url.match(
+          /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
+        )
+        const [domain] = matches || []
+        const favicon = domain ? `${domain}/favicon.ico` : null
+        return { url, favicon }
+      })
+    }
   },
   methods: {
     handleAddSocialMedia() {
