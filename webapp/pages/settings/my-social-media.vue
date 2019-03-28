@@ -13,7 +13,9 @@
           <a :href="link.url">
             <img
               :src="link.favicon"
-              alt=""
+              alt="Social Media link"
+              width="16"
+              height="16"
             >
             {{ link.url }}
           </a>
@@ -42,7 +44,7 @@
 </template>
 <script>
 import gql from 'graphql-tag'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   data() {
@@ -67,6 +69,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setCurrentUser: 'auth/SET_USER'
+    }),
     handleAddSocialMedia() {
       this.$apollo
         .mutate({
@@ -77,9 +82,19 @@ export default {
           `,
           variables: {
             url: this.value
+          },
+          update: (store, { data }) => {
+            const socialMedia = data.addSocialMedia
+            this.setCurrentUser({
+              ...this.currentUser,
+              socialMedia
+            })
           }
         })
-        .then(this.$toast.success(this.$t('settings.social-media.success')))
+        .then(
+          this.$toast.success(this.$t('settings.social-media.success')),
+          (this.value = '')
+        )
     }
   }
 }
