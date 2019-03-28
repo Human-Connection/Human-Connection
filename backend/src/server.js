@@ -13,7 +13,7 @@ import decode from './jwt/decode'
 
 dotenv.config()
 // check env and warn
-const requiredEnvVars = ['MAPBOX_TOKEN', 'JWT_SECRET']
+const requiredEnvVars = ['MAPBOX_TOKEN', 'JWT_SECRET', 'PRIVATE_KEY_PASSPHRASE']
 requiredEnvVars.forEach(env => {
   if (!process.env[env]) {
     throw new Error(`ERROR: "${env}" env variable is missing.`)

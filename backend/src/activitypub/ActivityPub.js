@@ -56,7 +56,6 @@ export default class ActivityPub {
         }
       }, async (err, response, toActorObject) => {
         if (err) return reject(err)
-        debug(`name = ${toActorName}@${this.host}`)
         // save shared inbox
         toActorObject = JSON.parse(toActorObject)
         await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)

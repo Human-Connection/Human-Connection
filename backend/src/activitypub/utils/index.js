@@ -19,7 +19,6 @@ export function extractIdFromActivityId (uri) {
 
   return splitted[splitted.indexOf('status') + 1]
 }
-
 export function constructIdFromName (name, fromDomain = activityPub.endpoint) {
   return `${fromDomain}/activitypub/users/${name}`
 }
