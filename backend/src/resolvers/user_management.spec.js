@@ -309,3 +309,30 @@ describe('change password', () => {
     })
   })
 })
+
+describe('addSocialMedia', () => {
+  let client
+  let headers
+  const mutation = `
+    mutation($url: String!) {
+      addSocialMedia(url: $url)
+    }
+  `
+
+  describe('authenticated', () => {
+    beforeEach(async () => {
+      headers = await login({ email: 'test@example.org', password: '1234' })
+      client = new GraphQLClient(host, { headers })
+    })
+
+    it('rejects empty string', async () => {
+      const variables = { url: '' }
+      await expect(client.request(mutation, variables)).rejects.toThrow('Input is not a URL')
+    })
+
+    it('validates URLs', async () => {
+      const variables = { url: 'not-a-url' }
+      await expect(client.request(mutation, variables)).rejects.toThrow('Input is not a URL')
+    })
+  })
+})

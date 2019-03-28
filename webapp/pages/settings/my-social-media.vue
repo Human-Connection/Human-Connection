@@ -1,5 +1,25 @@
 <template>
   <ds-card :header="$t('settings.social-media.name')">
+    <ds-space
+      v-if="socialMediaLinks"
+      margin-top="base"
+      margin="x-small"
+    >
+      <ds-list>
+        <ds-list-item
+          v-for="link in socialMediaLinks"
+          :key="link.url"
+        >
+          <a :href="link.url">
+            <img
+              :src="link.favicon"
+              alt=""
+            >
+            {{ link.url }}
+          </a>
+        </ds-list-item>
+      </ds-list>
+    </ds-space>
     <div>
       <ds-input
         v-model="value"
@@ -18,24 +38,6 @@
         </ds-button>
       </div>
     </ds-space>
-    <ds-space 
-      v-if="currentUser.socialMedia && currentUser.socialMedia.length"
-      margin-top="base"
-      margin="x-small"
-    >
-      <div
-        v-for="socialMediaIconUrl in currentUser.socialMedia"
-        :key="socialMediaIconUrl"
-      >
-        <a>
-          <img
-            :src="socialMediaIconUrl.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g)[0] + '/favicon.ico'"
-            :href="socialMediaIconUrl"
-            alt=""
-          >
-        </a>
-      </div>
-    </ds-space>
   </ds-card>
 </template>
 <script>
@@ -51,7 +53,18 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'auth/user'
-    })
+    }),
+    socialMediaLinks() {
+      const { socialMedia = [] } = this.currentUser
+      return socialMedia.map(url => {
+        const matches = url.match(
+          /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
+        )
+        const [domain] = matches || []
+        const favicon = domain ? `${domain}/favicon.ico` : null
+        return { url, favicon }
+      })
+    }
   },
   methods: {
     handleAddSocialMedia() {
