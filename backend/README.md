@@ -78,7 +78,7 @@ Start Neo4j
 ```
 neo4j\bin\neo4j start
 ```
-and confirm it's running [here](http://localhost:7687)
+and confirm it's running [here](http://localhost:7474)
 
 
 ```bash
