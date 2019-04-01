@@ -70,7 +70,7 @@ docker-compose down -v
 
 Install dependencies:
 
-Download [Neo4j Enterprise Edition](https://neo4j.com/download-center/#releases) and unpack the files.
+Download [Neo4j Community Edition](https://neo4j.com/download-center/#releases) and unpack the files.
 
 Download [Neo4j Apoc](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases) and drop the file into the `plugins` folder of the just extracted Neo4j-Server
 
