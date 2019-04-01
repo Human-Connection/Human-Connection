@@ -34,6 +34,13 @@ Connect with other developers over [Discord](https://discord.gg/6ub73U3)
 
 ## Quick Start
 
+### Requirements
+
+Node >= `v10.12.0`
+```
+  node --version
+```
+
 ### Forking the repository
 Before you start, fork the repository using the fork button above, then clone it to your local machine using `git clone https://github.com/your-username/Nitro-Backend.git`
 
@@ -62,6 +69,17 @@ docker-compose down -v
 ### Installation without Docker
 
 Install dependencies:
+
+Download [Neo4j Enterprise Edition](https://neo4j.com/download-center/#releases) and unpack the files.
+
+Download [Neo4j Apoc](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases) and drop the file into the `plugins` folder of the just extratced Neo4j-Server
+
+Start Neo4j
+```
+neo4j\bin\neo4j start
+```
+and confirm it's running [here](http://localhost:7687)
+
 
 ```bash
 yarn install
