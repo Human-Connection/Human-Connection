@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "GraphQL Backend for Human Connection",
   "main": "src/index.js",
-  "config": {
-    "no_auth": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DISABLED_MIDDLEWARES=permissions"
-  },
   "scripts": {
     "build": "babel src/ -d dist/ --copy-files",
     "start": "node dist/",
@@ -25,7 +22,7 @@
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
     "db:reset": "babel-node src/seed/reset-db.js",
-    "db:seed": "$npm_package_config_no_auth run-p --race dev db:script:seed"
+    "db:seed": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DISABLED_MIDDLEWARES=permissions run-p --race dev db:script:seed"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
