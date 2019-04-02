@@ -77,14 +77,20 @@ Then('I should be on the {string} page', page => {
     .should('contain', 'My social media')
 })
 
-Then('I should be able to add a social media link', () => {
+Then('I add a social media link', () => {
   cy.get("input[name='social-media']")
     .type('https://freeradical.zone/@mattwr18')
     .get('button')
     .contains('Add social media')
     .click()
-    .get('.iziToast-message')
+})
+
+Then('it gets saved successfully', () => {
+  cy.get('.iziToast-message')
     .should('contain', 'Updated user')
-    .get('a')
+})
+
+Then('the new social media link shows up on the page', () => {
+  cy.get('a')
     .contains("src='https://freeradical.zone/@mattwr18'")
 })

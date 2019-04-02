@@ -104,14 +104,14 @@ export default {
     addSocialMedia: async (_, { url }, { driver, user }) => {
       const session = driver.session()
 
-      const { email } = user
+      const { id } = user
       const result = await session.run(
-        `MATCH (user:User {email: $userEmail})
+        `MATCH (user:User {id: $userId})
         SET user.socialMedia = user.socialMedia + $url
         RETURN user {.socialMedia}
         `,
         {
-          userEmail: email,
+          userId: id,
           url
         }
       )
@@ -119,6 +119,7 @@ export default {
       const [currentUser] = result.records.map(record => {
         return record.get('user')
       })
+      console.log(currentUser)
       return currentUser.socialMedia
     }
   }
