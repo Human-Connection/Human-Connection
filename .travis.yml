@@ -1,6 +1,9 @@
 dist: xenial
 language: generic
 addons:
+  apt:
+    packages:
+      - libgconf-2-4
   snaps:
     - doctl
     - docker
