@@ -1,0 +1,29 @@
+version: "3.4"
+
+services:
+  neo4j:
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+      - 7687:7687
+      - 7474:7474
+  webapp:
+    build:
+      context: webapp
+      target: build-and-test
+    environment:
+      - GRAPHQL_URI=http://backend:4123
+  backend:
+    image: humanconnection/nitro-backend:builder
+    build:
+      context: backend
+      target: builder
+    ports:
+      - 4001:4001
+      - 4123:4123
+  neo4j:
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+      - 7687:7687
+      - 7474:7474

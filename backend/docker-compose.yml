@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  backend:
+    image: humanconnection/nitro-backend:latest
+    build:
+      context: .
+      target: production
+    networks:
+      - hc-network
+    depends_on:
+      - neo4j
+    ports:
+      - 4000:4000
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - GRAPHQL_PORT=4000
+      - GRAPHQL_URI=http://localhost:4000
+      - CLIENT_URI=http://localhost:3000
+      - JWT_SECRET=b/&&7b78BF&fv/Vd
+      - MOCK=false
+      - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
+      - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
+
+  neo4j:
+    image: humanconnection/neo4j:latest
+    build:
+      context: neo4j
+    networks:
+      - hc-network
+
+networks:
+  hc-network:
+    name: hc-network

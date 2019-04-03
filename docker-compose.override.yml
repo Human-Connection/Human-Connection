@@ -1,0 +1,34 @@
+version: "3.4"
+
+services:
+  webapp:
+    build:
+      context: webapp
+      target: build-and-test
+    volumes:
+      - ./webapp:/nitro-web
+      - webapp_node_modules:/nitro-web/node_modules
+    command: yarn run dev
+    user: root
+  backend:
+    image: humanconnection/nitro-backend:builder
+    build:
+      context: backend
+      target: builder
+    volumes:
+      - ./backend:/nitro-backend
+      - backend_node_modules:/nitro-backend/node_modules
+    command: yarn run dev
+  neo4j:
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+      - 7687:7687
+      - 7474:7474
+    volumes:
+      - neo4j-data:/data
+
+volumes:
+  webapp_node_modules:
+  backend_node_modules:
+  neo4j-data:

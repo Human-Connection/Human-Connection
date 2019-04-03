@@ -1,0 +1,205 @@
+{
+  "login": {
+    "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
+    "login": "Einloggen",
+    "logout": "Ausloggen",
+    "email": "Deine E-Mail",
+    "password": "Dein Passwort",
+    "moreInfo": "Was ist Human Connection?",
+    "hello": "Hallo"
+  },
+  "profile": {
+    "name": "Mein Profil",
+    "memberSince": "Mitglied seit",
+    "follow": "Folgen",
+    "followers": "Folgen",
+    "following": "Folgt",
+    "shouted": "Empfohlen",
+    "commented": "Kommentiert"
+  },
+  "search": {
+    "placeholder": "Suchen",
+    "hint": "Wonach suchst du?",
+    "failed": "Nichts gefunden"
+  },
+  "settings": {
+    "name": "Einstellungen",
+    "data": {
+      "name": "Deine Daten",
+      "labelName": "Dein Name",
+      "labelCity": "Deine Stadt oder Region",
+      "labelBio": "Über dich"
+    },
+    "security": {
+      "name": "Sicherheit",
+      "change-password": {
+        "button": "Passwort ändern",
+        "success": "Passwort erfolgreich geändert!"
+      }
+    },
+    "invites": {
+      "name": "Einladungen"
+    },
+    "download": {
+      "name": "Daten herunterladen"
+    },
+    "delete": {
+      "name": "Konto löschen"
+    },
+    "organizations": {
+      "name": "Meine Organisationen"
+    },
+    "languages": {
+      "name": "Sprachen"
+    }
+  },
+  "admin": {
+    "name": "Systemverwaltung",
+    "dashboard": {
+      "name": "Startzentrale",
+      "users": "Benutzer",
+      "posts": "Beiträge",
+      "comments": "Kommentare",
+      "notifications": "Benachrichtigungen",
+      "organizations": "Organisationen",
+      "projects": "Projekte",
+      "invites": "Einladungen",
+      "follows": "Folgen",
+      "shouts": "Shouts"
+    },
+    "organizations": {
+      "name": "Organisationen"
+    },
+    "users": {
+      "name": "Benutzer"
+    },
+    "pages": {
+      "name": "Seiten"
+    },
+    "notifications": {
+      "name": "Benachrichtigungen"
+    },
+    "categories": {
+      "name": "Kategorien",
+      "categoryName": "Name",
+      "postCount": "Beiträge"
+    },
+    "tags": {
+      "name": "Schlagworte",
+      "tagCountUnique": "Benutzer",
+      "tagCount": "Beiträge"
+    },
+    "settings": {
+      "name": "Einstellungen"
+    }
+  },
+  "post": {
+    "name": "Beitrag",
+    "moreInfo": {
+      "name": "Mehr Info"
+    },
+    "takeAction": {
+      "name": "Aktiv werden"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Viele kleine Leute an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
+      "author": "Afrikanisches Sprichwort"
+    }
+  },
+  "common": {
+    "post": "Beitrag ::: Beiträge",
+    "comment": "Kommentar ::: Kommentare",
+    "letsTalk": "Miteinander reden",
+    "versus": "Versus",
+    "moreInfo": "Mehr Info",
+    "takeAction": "Aktiv werden",
+    "shout": "Empfehlung ::: Empfehlungen",
+    "user": "Benutzer ::: Benutzer",
+    "category": "Kategorie ::: Kategorien",
+    "organization": "Organisation ::: Organisationen",
+    "project": "Projekt ::: Projekte",
+    "tag": "Tag ::: Tags",
+    "name": "Name",
+    "loadMore": "mehr laden",
+    "loading": "wird geladen",
+    "reportContent": "Melden"
+  },
+  "actions": {
+    "loading": "lade",
+    "loadMore": "mehr laden",
+    "create": "Erstellen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "cancel": "Abbrechen"
+  },
+  "moderation": {
+    "name": "Moderation",
+    "reports": {
+      "empty": "Glückwunsch, es gibt nichts zu moderieren.",
+      "name": "Meldungen",
+      "submitter": "gemeldet von",
+      "disabledBy": "deaktiviert von"
+    }
+  },
+  "disable": {
+    "submit": "Deaktivieren",
+    "cancel": "Abbrechen",
+    "success": "Erfolgreich deaktiviert",
+    "user": {
+      "title": "Nutzer sperren",
+      "type": "Nutzer",
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" deaktivieren möchtest?"
+    },
+    "contribution": {
+      "title": "Beitrag sperren",
+      "type": "Beitrag",
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" deaktivieren möchtest?"
+    },
+    "comment": {
+      "title": "Kommentar sperren",
+      "type": "Kommentar",
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" deaktivieren möchtest?"
+    }
+  },
+  "report": {
+    "submit": "Melden",
+    "cancel": "Abbrechen",
+    "success": "Vielen Dank für diese Meldung!",
+    "user": {
+      "title": "Nutzer melden",
+      "type": "Nutzer",
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" melden möchtest?"
+    },
+    "contribution": {
+      "title": "Beitrag melden",
+      "type": "Beitrag",
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" melden möchtest?"
+    },
+    "comment": {
+      "title": "Kommentar melden",
+      "type": "Kommentar",
+      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?"
+    }
+  },
+  "contribution": {
+    "edit": "Beitrag bearbeiten",
+    "delete": "Beitrag löschen"
+  },
+  "comment": {
+    "edit": "Kommentar bearbeiten",
+    "delete": "Kommentar löschen",
+    "content": {
+      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
+    }
+  },
+  "followButton": {
+    "follow": "Folgen",
+    "following": "Folge Ich"
+  },
+  "shoutButton": {
+    "shouted": "empfohlen"
+  }
+}
