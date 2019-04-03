@@ -8,6 +8,7 @@ addons:
     - doctl
     - docker
     - chromium
+    - 'kubectl --classic'
 
 before_install:
   - yarn global add wait-on
@@ -43,7 +44,6 @@ after_success:
     chmod +x tester.sh &&
     ./tester.sh staging $WEBHOOK_URL;
     fi
-  - ./scripts/install_kubernetes.sh
 
 after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
