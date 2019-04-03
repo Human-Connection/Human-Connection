@@ -19,7 +19,6 @@
     "test:cucumber": " cross-env CLIENT_URI=http://localhost:4123 run-p --race test:before:server test:cucumber:before:seeder 'test:cucumber:cmd {@}' --",
     "test:cucumber:before:seeder": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DISABLED_MIDDLEWARES=permissions yarn run dev",
     "test:jest:debug": "run-p --race test:before:* 'test:jest:cmd:debug {@}' --",
-    "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
     "db:reset": "babel-node src/seed/reset-db.js",
     "db:seed": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DISABLED_MIDDLEWARES=permissions run-p --race dev db:script:seed"
@@ -94,7 +93,6 @@
     "graphql-request": "~1.8.2",
     "jest": "~24.7.0",
     "nodemon": "~1.18.10",
-    "nyc": "~13.3.0",
     "supertest": "~4.0.2"
   }
 }
