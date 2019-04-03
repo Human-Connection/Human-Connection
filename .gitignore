@@ -10,8 +10,6 @@ yarn-error.log*
 .eslintcache
 kubeconfig.yaml
 
-/.github
-
 node_modules/
 cypress/videos
 cypress/screenshots/
