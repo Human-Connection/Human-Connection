@@ -1,0 +1,67 @@
+---
+  apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: nitro-neo4j
+    namespace: human-connection
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        human-connection.org/selector: deployment-human-connection-neo4j
+    template:
+      metadata:
+        labels:
+          human-connection.org/selector: deployment-human-connection-neo4j
+        name: nitro-neo4j
+      spec:
+        containers:
+        - name: nitro-neo4j
+          image: humanconnection/neo4j:latest
+          imagePullPolicy: Always
+          env:
+          - name: NEO4J_apoc_import_file_enabled
+            value: "true"
+          - name: NEO4J_dbms_memory_pagecache_size
+            value: 1G
+          - name: NEO4J_dbms_memory_heap_max__size
+            value: 1G
+          - name: NEO4J_URI
+            valueFrom:
+              configMapKeyRef:
+                name: configmap
+                key: NEO4J_URI
+          - name: NEO4J_USER
+            valueFrom:
+              configMapKeyRef:
+                name: configmap
+                key: NEO4J_USER
+          - name: NEO4J_AUTH
+            valueFrom:
+              configMapKeyRef:
+                name: configmap
+                key: NEO4J_AUTH
+          ports:
+          - containerPort: 7687
+          - containerPort: 7474
+          volumeMounts:
+            - mountPath: /data/
+              name: neo4j-data
+        volumes:
+        - name: neo4j-data
+          persistentVolumeClaim:
+            claimName: neo4j-data-claim
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
+---
+  kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: neo4j-data-claim
+    namespace: human-connection
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
