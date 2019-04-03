@@ -8,8 +8,8 @@
     "nonGlobalStepDefinitions": true
   },
   "scripts": {
-    "cypress:run": "cypress run --browser chrome",
-    "cypress:open": "cypress open --browser chrome"
+    "cypress:run": "cypress run --browser chromium",
+    "cypress:open": "cypress open --browser chromium"
   },
   "devDependencies": {
     "cypress": "^3.2.0",
