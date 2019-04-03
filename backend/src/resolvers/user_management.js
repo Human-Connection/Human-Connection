@@ -119,7 +119,7 @@ export default {
       const [currentUser] = result.records.map(record => {
         return record.get('user')
       })
-      console.log(currentUser)
+
       return currentUser.socialMedia
     }
   }

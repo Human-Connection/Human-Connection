@@ -10,6 +10,9 @@ import applyScalars from './bootstrap/scalars'
 import { getDriver } from './bootstrap/neo4j'
 import helmet from 'helmet'
 import decode from './jwt/decode'
+// import ConstraintDirective from 'graphql-constraint-directive'
+const ConstraintDirective = require('graphql-constraint-directive')
+
 
 dotenv.config()
 // check env and warn
@@ -25,6 +28,7 @@ const debug = process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'tr
 
 let schema = makeAugmentedSchema({
   typeDefs,
+  schemaDirectives: { constraint: ConstraintDirective },
   resolvers,
   config: {
     query: {

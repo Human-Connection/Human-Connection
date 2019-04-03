@@ -26,7 +26,7 @@ type Mutation {
   disable(id: ID!): ID
   enable(id: ID!): ID
   reward(fromBadgeId: ID!, toUserId: ID!): ID
-  addSocialMedia(url: String!): [String]!
+  addSocialMedia(url: urlInput): [String]!
   unreward(fromBadgeId: ID!, toUserId: ID!): ID
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
@@ -309,4 +309,13 @@ type Tag {
 type SharedInboxEndpoint {
   id: ID!
   uri: String
+}
+
+type SocialMedia {
+  id: ID!
+  uri: String
+}
+
+input urlInput {
+  url: String! @constraint(format: "uri")
 }
