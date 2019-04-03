@@ -29,7 +29,7 @@ script:
   - docker-compose exec backend yarn run db:seed
   - docker-compose exec webapp yarn run lint
   - docker-compose exec webapp yarn run test --ci --verbose=false
-  - docker-compose exec -d backend yarn run test:cypress
+  - docker-compose exec -d backend yarn run test:before:seeder
   - yarn run cypress:run --record --key $CYPRESS_TOKEN
 
 after_success:
