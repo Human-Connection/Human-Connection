@@ -34,6 +34,7 @@ script:
 
 after_success:
   - doctl auth init --access-token $DOCTL_ACCESS_TOKEN
+  - mkdir -p ~/.kube/
   - doctl kubernetes cluster kubeconfig show nitro-staging > ~/.kube/config.yaml
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
