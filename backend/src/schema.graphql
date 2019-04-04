@@ -69,6 +69,14 @@ type Statistics {
   countShouts: Int!
 }
 
+type Notification {
+  id: ID!
+  read: Boolean,
+  user: User @relation(name: "NOTIFIED", direction: "OUT")
+  post: Post @relation(name: "NOTIFIED", direction: "IN")
+  createdAt: String
+}
+
 scalar Date
 scalar Time
 scalar DateTime
