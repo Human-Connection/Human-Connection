@@ -12,8 +12,8 @@
     "cypress:backend:seeder": "cd backend && yarn run test:before:seeder",
     "cypress:webapp": "cd webapp && cross-env GRAPHQL_URI=http://localhost:4123 yarn run dev",
     "cypress:setup": "run-p cypress:backend:* cypress:webapp",
-    "cypress:run": "cypress run --browser chrome",
-    "cypress:open": "cypress open --browser chrome"
+    "cypress:run": "cypress run --browser chromium",
+    "cypress:open": "cypress open --browser chromium"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
