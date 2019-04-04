@@ -5,10 +5,8 @@ addons:
     packages:
       - libgconf-2-4
   snaps:
-    - 'doctl --classic'
     - docker
     - chromium
-    - 'kubectl --classic'
 
 before_install:
   - yarn global add wait-on
@@ -33,9 +31,6 @@ script:
   - yarn run cypress:run --record --key $CYPRESS_TOKEN
 
 after_success:
-  - doctl auth init --access-token $DOCTL_ACCESS_TOKEN
-  - mkdir -p ~/.kube/
-  - doctl kubernetes cluster kubeconfig show nitro-staging > ~/.kube/config.yaml
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh success $WEBHOOK_URL
@@ -49,6 +44,9 @@ after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh failure $WEBHOOK_URL
+
+before_deploy:
+  - ./scripts/setup_kubernetes.sh
 
 deploy:
   - provider: script
