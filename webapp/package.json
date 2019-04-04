@@ -47,7 +47,7 @@
     "graphql": "~14.2.1",
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.1.0",
-    "nuxt": "~2.4.5",
+    "nuxt": "~2.5.1",
     "nuxt-env": "~0.1.0",
     "string-hash": "^1.1.3",
     "tiptap": "^1.14.0",
