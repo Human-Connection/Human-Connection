@@ -5,7 +5,7 @@ addons:
     packages:
       - libgconf-2-4
   snaps:
-    - doctl
+    - 'doctl --classic'
     - docker
     - chromium
     - 'kubectl --classic'
