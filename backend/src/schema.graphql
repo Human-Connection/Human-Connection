@@ -318,9 +318,5 @@ type SocialMedia {
 }
 
 input SocialMediaInput {
-  url: String! @constraint(format: "uri")
+  url: String!
 }
-
-directive @constraint(
-  format: String
-) on INPUT_FIELD_DEFINITION
