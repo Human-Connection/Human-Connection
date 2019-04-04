@@ -1,7 +1,7 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
 
-export default function create (params) {
+export default function create(params) {
   const {
     id = uuid(),
     name = faker.name.findName(),
@@ -27,8 +27,7 @@ export default function create (params) {
         about: "${about}",
         role: ${role},
         disabled: ${disabled},
-        deleted: ${deleted},
-        socialMedia: []
+        deleted: ${deleted}
       ) {
         id
         name
@@ -38,7 +37,6 @@ export default function create (params) {
         role
         deleted
         disabled
-        socialMedia
       }
     }
   `

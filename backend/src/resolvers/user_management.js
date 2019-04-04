@@ -100,27 +100,6 @@ export default {
 
         return encode(currentUser)
       }
-    },
-    addSocialMedia: async (_, { url }, { driver, user }) => {
-      const session = driver.session()
-
-      const { id } = user
-      const result = await session.run(
-        `MATCH (user:User {id: $userId})
-        SET user.socialMedia = user.socialMedia + $url
-        RETURN user {.socialMedia}
-        `,
-        {
-          userId: id,
-          url
-        }
-      )
-      session.close()
-      const [currentUser] = result.records.map(record => {
-        return record.get('user')
-      })
-
-      return currentUser.socialMedia
     }
   }
 }

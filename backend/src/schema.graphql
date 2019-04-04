@@ -26,7 +26,7 @@ type Mutation {
   disable(id: ID!): ID
   enable(id: ID!): ID
   reward(fromBadgeId: ID!, toUserId: ID!): ID
-  addSocialMedia(url: urlInput): [String]!
+  createSocialMedia(input: SocialMediaInput): SocialMedia
   unreward(fromBadgeId: ID!, toUserId: ID!): ID
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
@@ -121,7 +121,7 @@ type User {
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
   locationName: String
   about: String
-  socialMedia: [String]
+  socialMedia: [SocialMedia]! @relation(name: "OWNED", direction: "OUT")
 
   createdAt: String
   updatedAt: String
@@ -313,9 +313,14 @@ type SharedInboxEndpoint {
 
 type SocialMedia {
   id: ID!
-  uri: String
+  url: String
+  ownedBy: [User]! @relation(name: "OWNED", direction: "IN")
 }
 
-input urlInput {
+input SocialMediaInput {
   url: String! @constraint(format: "uri")
 }
+
+directive @constraint(
+  format: String
+) on INPUT_FIELD_DEFINITION
