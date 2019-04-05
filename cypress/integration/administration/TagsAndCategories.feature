@@ -21,8 +21,8 @@ Feature: Tags and Categories
   Scenario: See an overview of categories
     When I navigate to the administration dashboard
     And I click on the menu item "Categories"
-    Then I can see a list of categories ordered by post count:
-      | Icon | Name               | Posts      |
+    Then I can see the following table:
+      |      | Name               | Posts      |
       |      | Just For Fun       | 2          |
       |      | Happyness & Values | 1          |
       |      | Health & Wellbeing | 0          |
@@ -30,11 +30,8 @@ Feature: Tags and Categories
   Scenario: See an overview of tags
     When I navigate to the administration dashboard
     And I click on the menu item "Tags"
-    Then I can see a list of tags ordered by user count:
-      | # | Name      | Users  | Posts    |
+    Then I can see the following table:
+      |   | Name      | Users  | Posts    |
       | 1 | Democracy | 2      | 3        |
       | 2 | Ecology   | 1      | 1        |
       | 3 | Nature    | 1      | 2        |
-
-
-

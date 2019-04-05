@@ -70,6 +70,14 @@ type Statistics {
   countShouts: Int!
 }
 
+type Notification {
+  id: ID!
+  read: Boolean,
+  user: User @relation(name: "NOTIFIED", direction: "OUT")
+  post: Post @relation(name: "NOTIFIED", direction: "IN")
+  createdAt: String
+}
+
 scalar Date
 scalar Time
 scalar DateTime
@@ -125,6 +133,8 @@ type User {
 
   createdAt: String
   updatedAt: String
+
+  notifications(read: Boolean): [Notification]! @relation(name: "NOTIFIED", direction: "IN")
 
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
   friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(DISTINCT r)")

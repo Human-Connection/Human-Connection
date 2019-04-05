@@ -39,10 +39,10 @@ Given('I am logged in with a {string} role', role => {
   })
 })
 
-When('I click on "Report Post" from the triple dot menu of the post', () => {
+When('I click on "Report Post" from the content menu of the post', () => {
   cy.contains('.ds-card', davidIrvingPostTitle)
     .find('.content-menu-trigger')
-    .click()
+    .click({force: true})
 
   cy.get('.popover .ds-menu-item-link')
     .contains('Report Post')
@@ -50,7 +50,7 @@ When('I click on "Report Post" from the triple dot menu of the post', () => {
 })
 
 When(
-  'I click on "Report User" from the triple dot menu in the user info box',
+  'I click on "Report User" from the content menu in the user info box',
   () => {
     cy.contains('.ds-card', davidIrvingName)
       .find('.content-menu-trigger')
