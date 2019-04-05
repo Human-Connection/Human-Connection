@@ -44,6 +44,7 @@ const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver
 // Permissions
 const permissions = shield({
   Query: {
+    Notification: isAdmin,
     statistics: allow,
     currentUser: allow,
     Post: or(onlyEnabledContent, isModerator)
@@ -56,6 +57,11 @@ const permissions = shield({
     CreateBadge: isAdmin,
     UpdateBadge: isAdmin,
     DeleteBadge: isAdmin,
+    AddUserBadges: isAdmin,
+    // AddBadgeRewarded: isAdmin,
+    // RemoveBadgeRewarded: isAdmin,
+    reward: isAdmin,
+    unreward: isAdmin,
     // addFruitToBasket: isAuthenticated
     follow: isAuthenticated,
     unfollow: isAuthenticated,

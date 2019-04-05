@@ -25,6 +25,8 @@ type Mutation {
   report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
+  reward(fromBadgeId: ID!, toUserId: ID!): ID
+  unreward(fromBadgeId: ID!, toUserId: ID!): ID
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
     MATCH (n {id: $id})<-[:WROTE]-(wu:User), (u:User {id: $cypherParams.currentUserId})
@@ -65,6 +67,14 @@ type Statistics {
   countInvites: Int!
   countFollows: Int!
   countShouts: Int!
+}
+
+type Notification {
+  id: ID!
+  read: Boolean,
+  user: User @relation(name: "NOTIFIED", direction: "OUT")
+  post: Post @relation(name: "NOTIFIED", direction: "IN")
+  createdAt: String
 }
 
 scalar Date
@@ -121,6 +131,8 @@ type User {
 
   createdAt: String
   updatedAt: String
+
+  notifications(read: Boolean): [Notification]! @relation(name: "NOTIFIED", direction: "IN")
 
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
   friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(DISTINCT r)")
@@ -267,6 +279,14 @@ enum FollowTypeEnum {
   User
   Organization
   Project
+}
+
+type Reward {
+  id: ID!
+  user: User @relation(name: "REWARDED", direction: "IN")
+  rewarderId: ID
+  createdAt: String
+  badge: Badge @relation(name: "REWARDED", direction: "OUT")
 }
 
 type Organization {

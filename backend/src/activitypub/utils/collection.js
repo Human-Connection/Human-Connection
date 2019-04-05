@@ -5,10 +5,10 @@ const debug = require('debug')('ea:utils:collections')
 export function createOrderedCollection (name, collectionName) {
   return {
     '@context': 'https://www.w3.org/ns/activitystreams',
-    'id': `https://${activityPub.domain}/activitypub/users/${name}/${collectionName}`,
+    'id': `${activityPub.endpoint}/activitypub/users/${name}/${collectionName}`,
     'summary': `${name}s ${collectionName} collection`,
     'type': 'OrderedCollection',
-    'first': `https://${activityPub.domain}/activitypub/users/${name}/${collectionName}?page=true`,
+    'first': `${activityPub.endpoint}/activitypub/users/${name}/${collectionName}?page=true`,
     'totalItems': 0
   }
 }
@@ -16,11 +16,11 @@ export function createOrderedCollection (name, collectionName) {
 export function createOrderedCollectionPage (name, collectionName) {
   return {
     '@context': 'https://www.w3.org/ns/activitystreams',
-    'id': `https://${activityPub.domain}/activitypub/users/${name}/${collectionName}?page=true`,
+    'id': `${activityPub.endpoint}/activitypub/users/${name}/${collectionName}?page=true`,
     'summary': `${name}s ${collectionName} collection`,
     'type': 'OrderedCollectionPage',
     'totalItems': 0,
-    'partOf': `https://${activityPub.domain}/activitypub/users/${name}/${collectionName}`,
+    'partOf': `${activityPub.endpoint}/activitypub/users/${name}/${collectionName}`,
     'orderedItems': []
   }
 }

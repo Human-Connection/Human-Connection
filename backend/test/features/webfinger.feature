@@ -4,7 +4,7 @@ Feature: Webfinger discovery
   In order to follow the actor
 
   Background:
-    Given our own server runs at "http://localhost:4100"
+    Given our own server runs at "http://localhost:4123"
     And we have the following users in our database:
       | Slug           |
       | peter-lustiger |
@@ -19,7 +19,7 @@ Feature: Webfinger discovery
         {
           "rel": "self",
           "type": "application/activity+json",
-          "href": "https://localhost:4123/users/peter-lustiger"
+          "href": "http://localhost:4123/activitypub/users/peter-lustiger"
         }
       ]
     }
@@ -44,21 +44,21 @@ Feature: Webfinger discovery
             "https://www.w3.org/ns/activitystreams",
             "https://w3id.org/security/v1"
         ],
-        "id": "https://localhost:4123/activitypub/users/peter-lustiger",
+        "id": "http://localhost:4123/activitypub/users/peter-lustiger",
         "type": "Person",
         "preferredUsername": "peter-lustiger",
         "name": "peter-lustiger",
-        "following": "https://localhost:4123/activitypub/users/peter-lustiger/following",
-        "followers": "https://localhost:4123/activitypub/users/peter-lustiger/followers",
-        "inbox": "https://localhost:4123/activitypub/users/peter-lustiger/inbox",
-        "outbox": "https://localhost:4123/activitypub/users/peter-lustiger/outbox",
-        "url": "https://localhost:4123/activitypub/@peter-lustiger",
+        "following": "http://localhost:4123/activitypub/users/peter-lustiger/following",
+        "followers": "http://localhost:4123/activitypub/users/peter-lustiger/followers",
+        "inbox": "http://localhost:4123/activitypub/users/peter-lustiger/inbox",
+        "outbox": "http://localhost:4123/activitypub/users/peter-lustiger/outbox",
+        "url": "http://localhost:4123/activitypub/@peter-lustiger",
         "endpoints": {
-            "sharedInbox": "https://localhost:4123/activitypub/inbox"
+            "sharedInbox": "http://localhost:4123/activitypub/inbox"
         },
         "publicKey": {
-            "id": "https://localhost:4123/activitypub/users/peter-lustiger#main-key",
-            "owner": "https://localhost:4123/activitypub/users/peter-lustiger",
+            "id": "http://localhost:4123/activitypub/users/peter-lustiger#main-key",
+            "owner": "http://localhost:4123/activitypub/users/peter-lustiger",
             "publicKeyPem": "adglkjlk89235kjn8obn2384f89z5bv9..."
         }
     }

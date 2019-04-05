@@ -31,7 +31,11 @@
       "labelBio": "Über dich"
     },
     "security": {
-      "name": "Sicherheit"
+      "name": "Sicherheit",
+      "change-password": {
+        "button": "Passwort ändern",
+        "success": "Passwort erfolgreich geändert!"
+      }
     },
     "invites": {
       "name": "Einladungen"

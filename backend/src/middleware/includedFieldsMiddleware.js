@@ -24,6 +24,6 @@ const includeFieldsRecursively = (includedFields) => {
 }
 
 export default {
-  Query: includeFieldsRecursively(['id', 'disabled', 'deleted']),
-  Mutation: includeFieldsRecursively(['id', 'disabled', 'deleted'])
+  Query: includeFieldsRecursively(['id', 'createdAt', 'disabled', 'deleted']),
+  Mutation: includeFieldsRecursively(['id', 'createdAt', 'disabled', 'deleted'])
 }

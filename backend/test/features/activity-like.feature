@@ -13,14 +13,14 @@ Feature: Like an object like an article or note
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/karl-heinz/status/faslkasa7dasfzkjn2398hsfd",
+      "id": "http://localhost:4123/activitypub/users/karl-heinz/status/faslkasa7dasfzkjn2398hsfd",
       "type": "Create",
-      "actor": "https://localhost:4123/activitypub/users/karl-heinz",
+      "actor": "http://localhost:4123/activitypub/users/karl-heinz",
       "object": {
-          "id": "https://localhost:4123/activitypub/users/karl-heinz/status/dkasfljsdfaafg9843jknsdf",
+          "id": "http://localhost:4123/activitypub/users/karl-heinz/status/dkasfljsdfaafg9843jknsdf",
           "type": "Article",
           "published": "2019-02-07T19:37:55.002Z",
-          "attributedTo": "https://localhost:4123/activitypub/users/karl-heinz",
+          "attributedTo": "http://localhost:4123/activitypub/users/karl-heinz",
           "content": "Hi Max, how are you?",
           "to": "https://www.w3.org/ns/activitystreams#Public"
       }
@@ -32,7 +32,7 @@ Feature: Like an object like an article or note
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://localhost:4123/activitypub/users/peter-lustiger/status/83J23549sda1k72fsa4567na42312455kad83",
+      "id": "http://localhost:4123/activitypub/users/peter-lustiger/status/83J23549sda1k72fsa4567na42312455kad83",
       "type": "Like",
       "actor": "http://localhost:4123/activitypub/users/peter-lustiger",
       "object": "http://localhost:4123/activitypub/users/karl-heinz/status/dkasfljsdfaafg9843jknsdf"

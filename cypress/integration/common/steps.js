@@ -5,7 +5,7 @@ import { getLangByName } from '../../support/helpers'
 
 let lastPost = {}
 
-const loginCredentials = {
+let loginCredentials = {
   email: 'peterpan@example.org',
   password: '1234'
 }
@@ -85,6 +85,10 @@ Given('my user account has the role {string}', role => {
 })
 
 When('I log out', cy.logout)
+
+When('I visit {string}', page => {
+  cy.openPage(page)
+})
 
 When('I visit the {string} page', page => {
   cy.openPage(page)
@@ -220,7 +224,7 @@ Then('the post shows up on the landing page at position {int}', index => {
 })
 
 Then('I get redirected to {string}', route => {
-  cy.location('pathname').should('contain', route)
+  cy.location('pathname').should('contain', route.replace('...', ''))
 })
 
 Then('the post was saved successfully', () => {
@@ -244,3 +248,48 @@ Then(
     cy.get('.error').should('contain', message)
   }
 )
+
+Given('my user account has the following login credentials:', table => {
+  loginCredentials = table.hashes()[0]
+  cy.debug()
+  cy.factory().create('User', loginCredentials)
+})
+
+When('I fill the password form with:', table => {
+  table = table.rowsHash()
+  cy.get('input[id=oldPassword]')
+    .type(table['Your old password'])
+    .get('input[id=newPassword]')
+    .type(table['Your new passsword'])
+    .get('input[id=confirmPassword]')
+    .type(table['Confirm new password'])
+})
+
+When('submit the form', () => {
+  cy.get('form').submit()
+})
+
+Then('I cannot login anymore with password {string}', password => {
+  cy.reload()
+  const { email } = loginCredentials
+  cy.visit(`/login`)
+  cy.get('input[name=email]')
+    .trigger('focus')
+    .type(email)
+  cy.get('input[name=password]')
+    .trigger('focus')
+    .type(password)
+  cy.get('button[name=submit]')
+    .as('submitButton')
+    .click()
+  cy.get('.iziToast-wrapper').should('contain', 'Incorrect email address or password.')
+})
+
+Then('I can login successfully with password {string}', password => {
+  cy.reload()
+  cy.login({
+    ...loginCredentials,
+    ...{password}
+  })
+  cy.get('.iziToast-wrapper').should('contain', "You are logged in!")
+})

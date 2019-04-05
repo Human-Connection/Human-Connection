@@ -31,7 +31,11 @@
       "labelBio": "About You"
     },
     "security": {
-      "name": "Security"
+      "name": "Security",
+      "change-password": {
+        "button": "Change password",
+        "success": "Password successfully changed!"
+      }
     },
     "invites": {
       "name": "Invites"

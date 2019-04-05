@@ -22,22 +22,19 @@ let activityPub = null
 export { activityPub }
 
 export default class ActivityPub {
-  constructor (domain, port, uri) {
-    if (domain === 'localhost') { this.domain = `${domain}:${port}` } else { this.domain = domain }
-    this.port = port
-    this.dataSource = new NitroDataSource(uri)
+  constructor (activityPubEndpointUri, internalGraphQlUri) {
+    this.endpoint = activityPubEndpointUri
+    this.dataSource = new NitroDataSource(internalGraphQlUri)
     this.collections = new Collections(this.dataSource)
   }
 
   static init (server) {
     if (!activityPub) {
       dotenv.config()
-      const url = new URL(process.env.GRAPHQL_URI)
-      activityPub = new ActivityPub(url.hostname || 'localhost', url.port || 4000, url.origin)
+      activityPub = new ActivityPub(process.env.CLIENT_URI || 'http://localhost:3000', process.env.GRAPHQL_URI || 'http://localhost:4000')
 
       // integrate into running graphql express server
       server.express.set('ap', activityPub)
-      server.express.set('port', url.port)
       server.express.use(router)
       console.log('-> ActivityPub middleware added to the graphql express server')
     } else {
@@ -59,7 +56,6 @@ export default class ActivityPub {
         }
       }, async (err, response, toActorObject) => {
         if (err) return reject(err)
-        debug(`name = ${toActorName}@${this.domain}`)
         // save shared inbox
         toActorObject = JSON.parse(toActorObject)
         await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
@@ -184,7 +180,7 @@ export default class ActivityPub {
   }
 
   generateStatusId (slug) {
-    return `http://${this.domain}/activitypub/users/${slug}/status/${uuid()}`
+    return `https://${this.host}/activitypub/users/${slug}/status/${uuid()}`
   }
 
   async sendActivity (activity) {

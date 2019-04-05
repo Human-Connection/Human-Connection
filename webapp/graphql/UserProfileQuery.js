@@ -6,6 +6,7 @@ export default app => {
     query User($slug: String!, $first: Int, $offset: Int) {
       User(slug: $slug) {
         id
+        slug
         name
         avatar
         about
@@ -27,8 +28,8 @@ export default app => {
         followingCount
         following(first: 7) {
           id
-          name
           slug
+          name
           avatar
           disabled
           deleted
@@ -49,10 +50,10 @@ export default app => {
         followedByCurrentUser
         followedBy(first: 7)  {
           id
+          slug
           name
           disabled
           deleted
-          slug
           avatar
           followedByCount
           followedByCurrentUser
@@ -87,6 +88,7 @@ export default app => {
           }
           author {
             id
+            slug
             avatar
             name
             disabled

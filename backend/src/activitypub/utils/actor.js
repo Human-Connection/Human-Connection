@@ -6,34 +6,35 @@ export function createActor (name, pubkey) {
       'https://www.w3.org/ns/activitystreams',
       'https://w3id.org/security/v1'
     ],
-    'id': `https://${activityPub.domain}/activitypub/users/${name}`,
+    'id': `${activityPub.endpoint}/activitypub/users/${name}`,
     'type': 'Person',
     'preferredUsername': `${name}`,
     'name': `${name}`,
-    'following': `https://${activityPub.domain}/activitypub/users/${name}/following`,
-    'followers': `https://${activityPub.domain}/activitypub/users/${name}/followers`,
-    'inbox': `https://${activityPub.domain}/activitypub/users/${name}/inbox`,
-    'outbox': `https://${activityPub.domain}/activitypub/users/${name}/outbox`,
-    'url': `https://${activityPub.domain}/activitypub/@${name}`,
+    'following': `${activityPub.endpoint}/activitypub/users/${name}/following`,
+    'followers': `${activityPub.endpoint}/activitypub/users/${name}/followers`,
+    'inbox': `${activityPub.endpoint}/activitypub/users/${name}/inbox`,
+    'outbox': `${activityPub.endpoint}/activitypub/users/${name}/outbox`,
+    'url': `${activityPub.endpoint}/activitypub/@${name}`,
     'endpoints': {
-      'sharedInbox': `https://${activityPub.domain}/activitypub/inbox`
+      'sharedInbox': `${activityPub.endpoint}/activitypub/inbox`
     },
     'publicKey': {
-      'id': `https://${activityPub.domain}/activitypub/users/${name}#main-key`,
-      'owner': `https://${activityPub.domain}/activitypub/users/${name}`,
+      'id': `${activityPub.endpoint}/activitypub/users/${name}#main-key`,
+      'owner': `${activityPub.endpoint}/activitypub/users/${name}`,
       'publicKeyPem': pubkey
     }
   }
 }
 
 export function createWebFinger (name) {
+  const { host } = new URL(activityPub.endpoint)
   return {
-    'subject': `acct:${name}@${activityPub.domain}`,
+    'subject': `acct:${name}@${host}`,
     'links': [
       {
         'rel': 'self',
         'type': 'application/activity+json',
-        'href': `https://${activityPub.domain}/users/${name}`
+        'href': `${activityPub.endpoint}/activitypub/users/${name}`
       }
     ]
   }
