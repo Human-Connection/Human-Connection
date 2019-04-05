@@ -26,7 +26,6 @@ type Mutation {
   disable(id: ID!): ID
   enable(id: ID!): ID
   reward(fromBadgeId: ID!, toUserId: ID!): ID
-  createSocialMedia(input: SocialMediaInput): SocialMedia
   unreward(fromBadgeId: ID!, toUserId: ID!): ID
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
@@ -327,6 +326,3 @@ type SocialMedia {
   ownedBy: [User]! @relation(name: "OWNED", direction: "IN")
 }
 
-input SocialMediaInput {
-  url: String!
-}

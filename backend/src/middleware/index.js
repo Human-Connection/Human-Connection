@@ -10,6 +10,7 @@ import permissionsMiddleware from './permissionsMiddleware'
 import userMiddleware from './userMiddleware'
 import includedFieldsMiddleware from './includedFieldsMiddleware'
 import orderByMiddleware from './orderByMiddleware'
+import validUrlMiddleware from './validUrlMiddleware'
 
 export default schema => {
   let middleware = [
@@ -22,7 +23,8 @@ export default schema => {
     softDeleteMiddleware,
     userMiddleware,
     includedFieldsMiddleware,
-    orderByMiddleware
+    orderByMiddleware,
+    validUrlMiddleware
   ]
 
   // add permisions middleware at the first position (unless we're seeding)
