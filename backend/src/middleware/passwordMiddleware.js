@@ -12,8 +12,9 @@ export default {
   },
   Query: async (resolve, root, args, context, info) => {
     const result = await resolve(root, args, context, info)
-    return walkRecursive(result, ['password'], () => {
-      // replace password with asterisk
+    // eslint-disable-next-line spaced-comment
+    return walkRecursive(result, ['password'/*, 'privateKey'*/], () => {
+      // replace "password" and "privatKey" with asterisk
       return '*****'
     })
   }

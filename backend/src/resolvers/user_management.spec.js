@@ -254,7 +254,7 @@ describe('change password', () => {
   }
 
   describe('should be authenticated before changing password', () => {
-    it('throws not "Not Authorised!', async () => {
+    it('throws not "Not Authorised!"', async () => {
       await expect(
         request(
           host,
@@ -308,4 +308,93 @@ describe('change password', () => {
       }))
     })
   })
+})
+
+describe('don\'t expose private RSA key', () => {
+  const queryUser = params => {
+    const { queriedUserSlug } = params
+    return `
+      {
+        User(slug:"${queriedUserSlug}") {
+          id
+          privateKey
+        }
+      }`
+  }
+
+  // describe('unauthenticated query of "privateKey"', () => {
+  //   it('throws "Not Authorised!"', async () => {
+  //     const host = 'http://127.0.0.1:4001' // To have a "privateKey" generated.
+  //     let client
+  //     client = new GraphQLClient(host)
+  //     await expect(
+  //       client.request(queryUser({ queriedUserSlug: 'matilde-hermiston' }))
+  //     ).rejects.toThrow('Not Authorised')
+  //   })
+  // })
+
+  describe('authenticated query of "privateKey"', () => {
+    it('gives "null" as return', async () => {
+      const hostPrivateKey = 'http://127.0.0.1:4001' // To have a "privateKey" generated.
+      // const hostPrivateKey = 'http://127.0.0.1:4123'
+      let client
+      const headers = await login({ email: 'test@example.org', password: '1234' }, hostPrivateKey)
+      client = new GraphQLClient(hostPrivateKey, { headers })
+
+      let response = await client.request(
+        queryUser({ queriedUserSlug: 'matilde-hermiston' })
+      )
+      await expect(
+        response
+      ).toEqual({
+        User: [{
+          id: 'acb2d923-f3af-479e-9f00-61b12e864666',
+          privateKey: 'XXX'
+          // privateKey: null
+        }]
+      })
+    })
+  })
+
+  // describe('old and new password should not match', () => {
+  //   it('responds with "Old password and new password should be different"', async () => {
+  //     await expect(
+  //       client.request(
+  //         mutation({
+  //           oldPassword: '1234',
+  //           newPassword: '1234'
+  //         })
+  //       )
+  //     ).rejects.toThrow('Old password and new password should be different')
+  //   })
+  // })
+
+  // describe('incorrect old password', () => {
+  //   it('responds with "Old password isn\'t valid"', async () => {
+  //     await expect(
+  //       client.request(
+  //         mutation({
+  //           oldPassword: 'notOldPassword',
+  //           newPassword: '12345'
+  //         })
+  //       )
+  //     ).rejects.toThrow('Old password is not correct')
+  //   })
+  // })
+
+  // describe('correct password', () => {
+  //   it('changes the password if given correct credentials "', async () => {
+  //     let response = await client.request(
+  //       mutation({
+  //         oldPassword: '1234',
+  //         newPassword: '12345'
+  //       })
+  //     )
+  //     await expect(
+  //       response
+  //     ).toEqual(expect.objectContaining({
+  //       changePassword: expect.any(String)
+  //     }))
+  //   })
+  // })
 })
