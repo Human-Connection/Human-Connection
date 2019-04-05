@@ -59,7 +59,7 @@
     "vuex-i18n": "~1.11.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.4.0",
+    "@babel/core": "~7.4.3",
     "@babel/preset-env": "~7.4.3",
     "@vue/cli-shared-utils": "~3.5.1",
     "@vue/eslint-config-prettier": "~4.0.1",
@@ -73,7 +73,7 @@
     "eslint-loader": "~2.1.2",
     "eslint-plugin-prettier": "~3.0.1",
     "eslint-plugin-vue": "~5.2.2",
-    "jest": "~24.7.0",
+    "jest": "~24.7.1",
     "node-sass": "~4.11.0",
     "nodemon": "~1.18.10",
     "prettier": "~1.14.3",
