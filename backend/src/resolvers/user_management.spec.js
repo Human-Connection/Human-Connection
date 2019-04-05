@@ -1,3 +1,4 @@
+import gql from 'graphql-tag'
 import Factory from '../seed/factories'
 import { GraphQLClient, request } from 'graphql-request'
 import jwt from 'jsonwebtoken'
@@ -313,7 +314,7 @@ describe('change password', () => {
 describe('don\'t expose private RSA key', () => {
   const queryUser = params => {
     const { queriedUserSlug } = params
-    return `
+    return gql`
       {
         User(slug:"${queriedUserSlug}") {
           id
@@ -338,17 +339,34 @@ describe('don\'t expose private RSA key', () => {
       const hostPrivateKey = 'http://127.0.0.1:4001' // To have a "privateKey" generated.
       // const hostPrivateKey = 'http://127.0.0.1:4123'
       let client
+
+      // logged out
+      client = new GraphQLClient(hostPrivateKey)
+      // Generate user with "privateKey".
+      const id = 'bcb2d923-f3af-479e-9f00-61b12e864667'
+      const name = 'Apfel Strudel'
+      const slug = 'apfel-strudel'
+      const password = 'xYz'
+      await client.request(gql`
+        mutation {
+          CreateUser(id: "${id}", password: "${password}", slug:"${slug}", name: "${name}", email: "${slug}@test.org") {
+            id
+          }
+        }`
+      )
+
+      // logged in
       const headers = await login({ email: 'test@example.org', password: '1234' }, hostPrivateKey)
       client = new GraphQLClient(hostPrivateKey, { headers })
 
       let response = await client.request(
-        queryUser({ queriedUserSlug: 'matilde-hermiston' })
+        queryUser({ queriedUserSlug: 'apfel-strudel' })
       )
       await expect(
         response
       ).toEqual({
         User: [{
-          id: 'acb2d923-f3af-479e-9f00-61b12e864666',
+          id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
           privateKey: 'XXX'
           // privateKey: null
         }]
