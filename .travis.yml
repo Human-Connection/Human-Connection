@@ -1,13 +1,12 @@
+dist: xenial
 language: generic
-services:
-  - docker
 addons:
-  chrome: stable
   apt:
-    sources:
-      - google-chrome
     packages:
-      - google-chrome-stable
+      - libgconf-2-4
+  snaps:
+    - docker
+    - chromium
 
 before_install:
   - yarn global add wait-on
@@ -20,16 +19,15 @@ install:
 
 script:
   - docker-compose exec backend yarn run lint
-  - docker-compose exec backend yarn run test --ci --verbose=false
+  - docker-compose exec backend yarn run test:jest --ci --verbose=false
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
   - docker-compose exec backend yarn run test:cucumber
-  - docker-compose exec backend yarn run test:coverage
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
   - docker-compose exec webapp yarn run lint
   - docker-compose exec webapp yarn run test --ci --verbose=false
-  - docker-compose exec -d backend yarn run test:cypress
+  - docker-compose exec -d backend yarn run test:before:seeder
   - yarn run cypress:run --record --key $CYPRESS_TOKEN
 
 after_success:
