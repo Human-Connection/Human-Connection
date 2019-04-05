@@ -36,7 +36,6 @@ describe('Notification', () => {
 describe('currentUser { notifications }', () => {
   let variables = {}
 
-
   describe('authenticated', () => {
     let headers
     beforeEach(async () => {
@@ -60,12 +59,12 @@ describe('currentUser { notifications }', () => {
         await factory.authenticateAs(neighborParams)
         await factory.create('Post', { id: 'p1' })
         await Promise.all([
-          factory.relate('Notification', 'User', { from: 'not-for-you',  to: 'neighbor'}),
-          factory.relate('Notification', 'Post', { from: 'p1',           to: 'not-for-you' }),
-          factory.relate('Notification', 'User', { from: 'unseen',       to: 'you'}),
-          factory.relate('Notification', 'Post', { from: 'p1',           to: 'unseen' }),
-          factory.relate('Notification', 'User', { from: 'already-seen', to: 'you'}),
-          factory.relate('Notification', 'Post', { from: 'p1',           to: 'already-seen' }),
+          factory.relate('Notification', 'User', { from: 'not-for-you', to: 'neighbor' }),
+          factory.relate('Notification', 'Post', { from: 'p1', to: 'not-for-you' }),
+          factory.relate('Notification', 'User', { from: 'unseen', to: 'you' }),
+          factory.relate('Notification', 'Post', { from: 'p1', to: 'unseen' }),
+          factory.relate('Notification', 'User', { from: 'already-seen', to: 'you' }),
+          factory.relate('Notification', 'Post', { from: 'p1', to: 'already-seen' })
         ])
       })
 
