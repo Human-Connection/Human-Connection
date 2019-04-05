@@ -24,8 +24,10 @@ describe('currentUser { notifications }', () => {
           currentUser {
             notifications(read: $read, orderBy: createdAt_desc) {
               id
+              read
               post {
                 id
+                content
               }
             }
           }
@@ -65,7 +67,7 @@ describe('currentUser { notifications }', () => {
             }
           }
           `
-          authorClient = new GraphQLClient(host, authorHeaders)
+          authorClient = new GraphQLClient(host, { headers: authorHeaders })
           await authorClient.request(createPostMutation, { title, content })
         })
 
