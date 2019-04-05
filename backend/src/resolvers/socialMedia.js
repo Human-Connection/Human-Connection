@@ -2,7 +2,7 @@ import { neo4jgraphql } from 'neo4j-graphql-js'
 
 export default {
   Mutation: {
-    createSocialMedia: async (object, params, context, resolveInfo) => {
+    CreateSocialMedia: async (object, params, context, resolveInfo) => {
       const result = await neo4jgraphql(object, params, context, resolveInfo, true)
 
       const session = context.driver.session()
