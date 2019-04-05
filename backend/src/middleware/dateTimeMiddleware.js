@@ -13,9 +13,11 @@ export default {
     CreatePost: setCreatedAt,
     CreateComment: setCreatedAt,
     CreateOrganization: setCreatedAt,
+    CreateNotification: setCreatedAt,
     UpdateUser: setUpdatedAt,
     UpdatePost: setUpdatedAt,
     UpdateComment: setUpdatedAt,
-    UpdateOrganization: setUpdatedAt
+    UpdateOrganization: setUpdatedAt,
+    UpdateNotification: setUpdatedAt
   }
 }

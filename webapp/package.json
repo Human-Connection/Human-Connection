@@ -11,10 +11,8 @@
     "start": "cross-env node server/index.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue .",
-    "test": "jest",
     "precommit": "yarn lint",
-    "e2e:local": "cypress run --headed",
-    "e2e:ci": "npm-run-all --parallel --race start:ci 'cypress:ci --config baseUrl=http://localhost:3000'",
+    "test": "jest",
     "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand"
   },
   "jest": {
@@ -61,7 +59,7 @@
     "vuex-i18n": "~1.11.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.4.0",
+    "@babel/core": "~7.4.3",
     "@babel/preset-env": "~7.4.3",
     "@vue/cli-shared-utils": "~3.5.1",
     "@vue/eslint-config-prettier": "~4.0.1",
@@ -69,13 +67,13 @@
     "@vue/test-utils": "~1.0.0-beta.29",
     "babel-core": "~7.0.0-bridge.0",
     "babel-eslint": "~10.0.1",
-    "babel-jest": "~24.6.0",
+    "babel-jest": "~24.7.1",
     "eslint": "~5.16.0",
     "eslint-config-prettier": "~4.1.0",
     "eslint-loader": "~2.1.2",
     "eslint-plugin-prettier": "~3.0.1",
     "eslint-plugin-vue": "~5.2.2",
-    "jest": "~24.7.0",
+    "jest": "~24.7.1",
     "node-sass": "~4.11.0",
     "nodemon": "~1.18.10",
     "prettier": "~1.14.3",

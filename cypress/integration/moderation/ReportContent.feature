@@ -15,7 +15,7 @@ Feature: Report and Moderate
   Scenario Outline: Report a post from various pages
     Given I am logged in with a "user" role
     When I see David Irving's post on the <Page>
-    And I click on "Report Post" from the triple dot menu of the post
+    And I click on "Report Post" from the content menu of the post
     And I confirm the reporting dialog because it is a criminal act under German law:
     """
     Do you really want to report the contribution "The Truth about the Holocaust"?
@@ -33,7 +33,7 @@ Feature: Report and Moderate
     Given I am logged in with a "user" role
     And I see David Irving's post on the post page
     When I click on the author
-    And I click on "Report User" from the triple dot menu in the user info box
+    And I click on "Report User" from the content menu in the user info box
     And I confirm the reporting dialog because he is a holocaust denier:
     """
     Do you really want to report the user "David Irving"?
