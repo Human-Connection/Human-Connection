@@ -44,6 +44,7 @@ const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver
 // Permissions
 const permissions = shield({
   Query: {
+    Notification: isAdmin,
     statistics: allow,
     currentUser: allow,
     Post: or(onlyEnabledContent, isModerator)
