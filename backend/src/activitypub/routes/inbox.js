@@ -5,8 +5,6 @@ const debug = require('debug')('ea:inbox')
 
 const router = express.Router()
 
-// Shared Inbox endpoint (federated Server)
-// For now its only able to handle Note Activities!!
 router.post('/', async function (req, res, next) {
   debug(`Content-Type = ${req.get('Content-Type')}`)
   debug(`body = ${JSON.stringify(req.body, null, 2)}`)

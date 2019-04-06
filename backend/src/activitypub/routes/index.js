@@ -7,7 +7,7 @@ import verify from './verify'
 
 const router = express.Router()
 
-router.use('/.well-known/webFinger',
+router.use('/.well-known/webfinger',
   cors(),
   express.urlencoded({ extended: true }),
   webFinger
