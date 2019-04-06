@@ -1,18 +1,4 @@
-import uniqueSlug from './slugify/uniqueSlug'
-
-const isUniqueFor = (context, type) => {
-  return async slug => {
-    const session = context.driver.session()
-    const response = await session.run(
-      `MATCH(p:${type} {slug: $slug }) return p.slug`,
-      {
-        slug
-      }
-    )
-    session.close()
-    return response.records.length === 0
-  }
-}
+import uniqueSlug, { isUniqueFor } from './slugify/uniqueSlug'
 
 export default {
   Mutation: {
