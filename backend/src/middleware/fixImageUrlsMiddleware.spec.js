@@ -20,11 +20,16 @@ describe('fixImageURLs', () => {
       const object = { some: 'thing' }
       expect(fixImageURLs(object)).toEqual(object)
     })
+    it('return untouched actorId', () => {
+      const object = { actorId: 'http://localhost:3000/users/tick'}
+      expect(fixImageURLs(object)).toEqual(object)
+    })
   })
 
   describe('some string', () => {
-    it('returns untouched', () => {})
-    const string = 'Yeah I\'m a String'
-    expect(fixImageURLs(string)).toEqual(string)
+    it('returns untouched', () => {
+      const string = 'Yeah I\'m a String'
+      expect(fixImageURLs(string)).toEqual(string)
+    })
   })
 })

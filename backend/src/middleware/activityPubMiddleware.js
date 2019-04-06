@@ -3,7 +3,7 @@ import { activityPub } from '../activitypub/ActivityPub'
 import as from 'activitystrea.ms'
 import dotenv from 'dotenv'
 
-const debug = require('debug')('backend:schema')
+const debug = require('debug')('ea:middleware')
 dotenv.config()
 
 export default {
@@ -49,7 +49,7 @@ export default {
     CreateUser: async (resolve, root, args, context, info) => {
       const keys = generateRsaKeyPair()
       Object.assign(args, keys)
-      args.actorId = `${activityPub.host}/activitypub/users/${args.slug}`
+      args.actorId = `${process.env['CLIENT_URI']}/users/${args.slug}`
       return resolve(root, args, context, info)
     }
   }

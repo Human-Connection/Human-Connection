@@ -27,7 +27,9 @@ export const fixImageURLs = (result, recursive) => {
     })
   } else if (result && typeof result === 'object') {
     Object.keys(result).forEach(key => {
-      result[key] = fixImageURLs(result[key], true)
+      if (key !== 'actorId') {
+        result[key] = fixImageURLs(result[key], true)
+      }
     })
   }
   return result

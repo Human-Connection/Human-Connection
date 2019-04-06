@@ -30,7 +30,7 @@ export default schema => {
   if (process.env.NODE_ENV !== 'production') {
     const DISABLED_MIDDLEWARES = process.env.DISABLED_MIDDLEWARES || ''
     const disabled = DISABLED_MIDDLEWARES.split(',')
-    if (!disabled.includes('activityPub')) middleware.unshift(activityPubMiddleware)
+    if (!disabled.includes('activityPub')) middleware.push(activityPubMiddleware)
     if (!disabled.includes('permissions')) middleware.unshift(permissionsMiddleware.generate(schema))
   }
   return middleware
