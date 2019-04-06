@@ -12,13 +12,13 @@ router.use('/.well-known/webfinger',
   express.urlencoded({ extended: true }),
   webFinger
 )
-router.use('/activitypub/users',
+router.use('/users',
   cors(),
   express.json({ type: ['application/activity+json', 'application/ld+json', 'application/json'] }),
   express.urlencoded({ extended: true }),
   user
 )
-router.use('/activitypub/inbox',
+router.use('/inbox',
   cors(),
   express.json({ type: ['application/activity+json', 'application/ld+json', 'application/json'] }),
   express.urlencoded({ extended: true }),

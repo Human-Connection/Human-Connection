@@ -1,10 +1,8 @@
 import { activityPub } from '../ActivityPub'
 import { signAndSend, throwErrorIfApolloErrorOccurred } from './index'
-
 import crypto from 'crypto'
 import as from 'activitystrea.ms'
 import gql from 'graphql-tag'
-const debug = require('debug')('ea:utils:activity')
 
 export function createNoteObject (text, name, id, published) {
   const createUuid = crypto.randomBytes(16).toString('hex')
@@ -71,7 +69,6 @@ export function sendAcceptActivity (theBody, name, targetDomain, url) {
       if (!err) {
         return signAndSend(doc, name, targetDomain, url)
       } else {
-        debug(`error serializing Accept object: ${err}`)
         throw new Error('error serializing Accept object')
       }
     })
@@ -86,7 +83,6 @@ export function sendRejectActivity (theBody, name, targetDomain, url) {
       if (!err) {
         return signAndSend(doc, name, targetDomain, url)
       } else {
-        debug(`error serializing Accept object: ${err}`)
         throw new Error('error serializing Accept object')
       }
     })

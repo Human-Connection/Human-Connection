@@ -1,14 +1,9 @@
 import express from 'express'
 import { activityPub } from '../ActivityPub'
 
-const debug = require('debug')('ea:inbox')
-
 const router = express.Router()
 
 router.post('/', async function (req, res, next) {
-  debug(`Content-Type = ${req.get('Content-Type')}`)
-  debug(`body = ${JSON.stringify(req.body, null, 2)}`)
-  debug(`Request headers = ${JSON.stringify(req.headers, null, 2)}`)
   switch (req.body.type) {
   case 'Create':
     await activityPub.handleCreateActivity(req.body).catch(next)
@@ -42,8 +37,6 @@ router.post('/', async function (req, res, next) {
     await activityPub.handleDislikeActivity(req.body).catch(next)
     break
   case 'Announce':
-    debug('else!!')
-    debug(JSON.stringify(req.body, null, 2))
   }
   /* eslint-enable */
   res.status(200).end()

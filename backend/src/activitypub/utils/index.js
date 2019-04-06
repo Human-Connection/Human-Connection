@@ -2,7 +2,6 @@ import { activityPub } from '../ActivityPub'
 import gql from 'graphql-tag'
 import { createSignature } from '../security'
 import request from 'request'
-const debug = require('debug')('ea:utils')
 
 export function extractNameFromId (uri) {
   const urlObject = new URL(uri)
@@ -36,10 +35,8 @@ export function throwErrorIfApolloErrorOccurred (result) {
 export function signAndSend (activity, fromName, targetDomain, url) {
   // fix for development: replace with http
   url = url.indexOf('localhost') > -1 ? url.replace('https', 'http') : url
-  debug(`passhprase = ${process.env.PRIVATE_KEY_PASSPHRASE}`)
   return new Promise(async (resolve, reject) => {
-    debug('inside signAndSend')
-    // get the private key
+    // get the private key (Maybe directly through a cypher query)
     const result = await activityPub.dataSource.client.query({
       query: gql`
           query {
@@ -68,7 +65,6 @@ export function signAndSend (activity, fromName, targetDomain, url) {
       const privateKey = result.data.User[0].privateKey
       const date = new Date().toUTCString()
 
-      debug(`url = ${url}`)
       request({
         url: url,
         headers: {
@@ -89,12 +85,9 @@ export function signAndSend (activity, fromName, targetDomain, url) {
         body: JSON.stringify(parsedActivity)
       }, (error, response) => {
         if (error) {
-          debug(`Error = ${JSON.stringify(error, null, 2)}`)
           reject(error)
         } else {
-          debug('Response Headers:', JSON.stringify(response.headers, null, 2))
-          debug('Response Body:', JSON.stringify(response.body, null, 2))
-          resolve()
+          resolve(response)
         }
       })
     }

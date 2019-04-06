@@ -14,9 +14,9 @@ export function createActor (name, pubkey) {
     'followers': `${activityPub.endpoint}/users/${name}/followers`,
     'inbox': `${activityPub.endpoint}/users/${name}/inbox`,
     'outbox': `${activityPub.endpoint}/users/${name}/outbox`,
-    'url': `${activityPub.endpoint}/activitypub/@${name}`,
+    'url': `${activityPub.endpoint}/@${name}`,
     'endpoints': {
-      'sharedInbox': `${activityPub.endpoint}/activitypub/inbox`
+      'sharedInbox': `${activityPub.endpoint}/inbox`
     },
     'publicKey': {
       'id': `${activityPub.endpoint}/users/${name}#main-key`,

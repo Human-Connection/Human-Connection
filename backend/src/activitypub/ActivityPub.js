@@ -12,10 +12,8 @@ import request from 'request'
 import as from 'activitystrea.ms'
 import NitroDataSource from './NitroDataSource'
 import router from './routes'
-import dotenv from 'dotenv'
 import Collections from './Collections'
 import uuid from 'uuid/v4'
-const debug = require('debug')('ea')
 
 let activityPub = null
 
@@ -30,7 +28,6 @@ export default class ActivityPub {
 
   static init (server) {
     if (!activityPub) {
-      dotenv.config()
       activityPub = new ActivityPub(process.env.CLIENT_URI || 'http://localhost:3000', process.env.GRAPHQL_URI || 'http://localhost:4000')
 
       // integrate into running graphql express server
@@ -43,7 +40,6 @@ export default class ActivityPub {
   }
 
   handleFollowActivity (activity) {
-    debug(`inside FOLLOW ${activity.actor}`)
     let toActorName = extractNameFromId(activity.object)
     let fromDomain = extractDomainFromUrl(activity.actor)
     const dataSource = this.dataSource
@@ -69,26 +65,17 @@ export default class ActivityPub {
 
         // add follower if not already in collection
         if (followersCollectionPage.orderedItems.includes(activity.actor)) {
-          debug('follower already in collection!')
-          debug(`inbox = ${toActorObject.inbox}`)
           resolve(sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox))
         } else {
           followersCollectionPage.orderedItems.push(activity.actor)
         }
-        debug(`toActorObject = ${toActorObject}`)
+
         toActorObject = typeof toActorObject !== 'object' ? JSON.parse(toActorObject) : toActorObject
-        debug(`followers = ${JSON.stringify(followersCollectionPage.orderedItems, null, 2)}`)
-        debug(`inbox = ${toActorObject.inbox}`)
-        debug(`outbox = ${toActorObject.outbox}`)
-        debug(`followers = ${toActorObject.followers}`)
-        debug(`following = ${toActorObject.following}`)
 
         try {
           await dataSource.saveFollowersCollectionPage(followersCollectionPage)
-          debug('follow activity saved')
           resolve(sendAcceptActivity(followActivity, toActorName, fromDomain, toActorObject.inbox))
         } catch (e) {
-          debug('followers update error!', e)
           resolve(sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox))
         }
       })
@@ -96,7 +83,6 @@ export default class ActivityPub {
   }
 
   handleUndoActivity (activity) {
-    debug('inside UNDO')
     switch (activity.object.type) {
     case 'Follow':
       const followActivity = activity.object
@@ -108,7 +94,6 @@ export default class ActivityPub {
   }
 
   handleCreateActivity (activity) {
-    debug('inside create')
     switch (activity.object.type) {
     case 'Article':
     case 'Note':
@@ -123,7 +108,6 @@ export default class ActivityPub {
   }
 
   handleDeleteActivity (activity) {
-    debug('inside delete')
     switch (activity.object.type) {
     case 'Article':
     case 'Note':
@@ -133,7 +117,6 @@ export default class ActivityPub {
   }
 
   handleUpdateActivity (activity) {
-    debug('inside update')
     switch (activity.object.type) {
     case 'Note':
     case 'Article':
@@ -153,7 +136,6 @@ export default class ActivityPub {
   }
 
   async handleAcceptActivity (activity) {
-    debug('inside accept')
     switch (activity.object.type) {
     case 'Follow':
       const followObject = activity.object
@@ -187,7 +169,6 @@ export default class ActivityPub {
     delete activity.send
     const fromName = extractNameFromId(activity.actor)
     if (Array.isArray(activity.to) && isPublicAddressed(activity)) {
-      debug('is public addressed')
       const sharedInboxEndpoints = await this.dataSource.getSharedInboxEndpoints()
       // serve shared inbox endpoints
       sharedInboxEndpoints.map((sharedInbox) => {
@@ -198,12 +179,10 @@ export default class ActivityPub {
       })
       // serve the rest
       activity.to.map(async (recipient) => {
-        debug('serve rest')
         const actorObject = await this.getActorObject(recipient)
         return this.trySend(activity, fromName, new URL(recipient).host, actorObject.inbox)
       })
     } else if (typeof activity.to === 'string') {
-      debug('is string')
       const actorObject = await this.getActorObject(activity.to)
       return this.trySend(activity, fromName, new URL(activity.to).host, actorObject.inbox)
     } else if (Array.isArray(activity.to)) {

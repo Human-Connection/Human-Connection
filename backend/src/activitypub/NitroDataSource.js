@@ -20,7 +20,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import fetch from 'node-fetch'
 import { ApolloClient } from 'apollo-client'
 import trunc from 'trunc-html'
-const debug = require('debug')('ea:nitro-datasource')
 
 export default class NitroDataSource {
   constructor (uri) {
@@ -53,7 +52,7 @@ export default class NitroDataSource {
 
   async getFollowersCollection (actorId) {
     const slug = extractNameFromId(actorId)
-    debug(`slug= ${slug}`)
+
     const result = await this.client.query({
       query: gql`
           query {
@@ -63,8 +62,7 @@ export default class NitroDataSource {
           }
       `
     })
-    debug('successfully fetched followers')
-    debug(result.data)
+
     if (result.data) {
       const actor = result.data.User[0]
       const followersCount = actor.followedByCount
@@ -80,7 +78,7 @@ export default class NitroDataSource {
 
   async getFollowersCollectionPage (actorId) {
     const slug = extractNameFromId(actorId)
-    debug(`getFollowersPage slug = ${slug}`)
+
     const result = await this.client.query({
       query: gql`
           query {
@@ -94,7 +92,6 @@ export default class NitroDataSource {
       `
     })
 
-    debug(result.data)
     if (result.data) {
       const actor = result.data.User[0]
       const followers = actor.followedBy
@@ -102,7 +99,7 @@ export default class NitroDataSource {
 
       const followersCollection = createOrderedCollectionPage(slug, 'followers')
       followersCollection.totalItems = followersCount
-      debug(`followers = ${JSON.stringify(followers, null, 2)}`)
+
       await Promise.all(
         followers.map(async (follower) => {
           followersCollection.orderedItems.push(constructIdFromName(follower.slug))
@@ -127,7 +124,6 @@ export default class NitroDataSource {
       `
     })
 
-    debug(result.data)
     if (result.data) {
       const actor = result.data.User[0]
       const followingCount = actor.followingCount
@@ -156,7 +152,6 @@ export default class NitroDataSource {
       `
     })
 
-    debug(result.data)
     if (result.data) {
       const actor = result.data.User[0]
       const following = actor.following
@@ -195,7 +190,6 @@ export default class NitroDataSource {
       `
     })
 
-    debug(result.data)
     if (result.data) {
       const actor = result.data.User[0]
       const posts = actor.contributions
@@ -211,7 +205,7 @@ export default class NitroDataSource {
 
   async getOutboxCollectionPage (actorId) {
     const slug = extractNameFromId(actorId)
-    debug(`inside getting outbox collection page => ${slug}`)
+
     const result = await this.client.query({
       query: gql`
           query {
@@ -235,7 +229,6 @@ export default class NitroDataSource {
       `
     })
 
-    debug(result.data)
     if (result.data) {
       const actor = result.data.User[0]
       const posts = actor.contributions
@@ -248,7 +241,6 @@ export default class NitroDataSource {
         })
       )
 
-      debug('after createNote')
       return outboxCollection
     } else {
       throwErrorIfApolloErrorOccurred(result)
@@ -267,12 +259,11 @@ export default class NitroDataSource {
           }
       `
     })
-    debug(`undoFollowActivity result = ${JSON.stringify(result, null, 2)}`)
+
     throwErrorIfApolloErrorOccurred(result)
   }
 
   async saveFollowersCollectionPage (followersCollection, onlyNewestItem = true) {
-    debug('inside saveFollowers')
     let orderedItems = followersCollection.orderedItems
     const toUserName = extractNameFromId(followersCollection.id)
     const toUserId = await this.ensureUser(constructIdFromName(toUserName))
@@ -280,10 +271,8 @@ export default class NitroDataSource {
 
     return Promise.all(
       orderedItems.map(async (follower) => {
-        debug(`follower = ${follower}`)
         const fromUserId = await this.ensureUser(follower)
-        debug(`fromUserId = ${fromUserId}`)
-        debug(`toUserId = ${toUserId}`)
+
         const result = await this.client.mutate({
           mutation: gql`
               mutation {
@@ -293,24 +282,20 @@ export default class NitroDataSource {
               }
           `
         })
-        debug(`addUserFollowedBy edge = ${JSON.stringify(result, null, 2)}`)
         throwErrorIfApolloErrorOccurred(result)
-        debug('saveFollowers: added follow edge successfully')
       })
     )
   }
+
   async saveFollowingCollectionPage (followingCollection, onlyNewestItem = true) {
-    debug('inside saveFollowers')
     let orderedItems = followingCollection.orderedItems
     const fromUserName = extractNameFromId(followingCollection.id)
     const fromUserId = await this.ensureUser(constructIdFromName(fromUserName))
     orderedItems = onlyNewestItem ? [orderedItems.pop()] : orderedItems
     return Promise.all(
       orderedItems.map(async (following) => {
-        debug(`follower = ${following}`)
         const toUserId = await this.ensureUser(following)
-        debug(`fromUserId = ${fromUserId}`)
-        debug(`toUserId = ${toUserId}`)
+
         const result = await this.client.mutate({
           mutation: gql`
               mutation {
@@ -320,9 +305,7 @@ export default class NitroDataSource {
               }
           `
         })
-        debug(`addUserFollowing edge = ${JSON.stringify(result, null, 2)}`)
         throwErrorIfApolloErrorOccurred(result)
-        debug('saveFollowing: added follow edge successfully')
       })
     )
   }
@@ -332,11 +315,11 @@ export default class NitroDataSource {
     // createPost
     const postObject = activity.object
     if (!isPublicAddressed(postObject)) {
-      return debug('createPost: not send to public (sending to specific persons is not implemented yet)')
+      return
     }
     const title = postObject.summary ? postObject.summary : postObject.content.split(' ').slice(0, 5).join(' ')
     const postId = extractIdFromActivityId(postObject.id)
-    debug('inside create post')
+
     let result = await this.client.mutate({
       mutation: gql`
           mutation {
@@ -346,13 +329,11 @@ export default class NitroDataSource {
           }
       `
     })
-
     throwErrorIfApolloErrorOccurred(result)
 
     // ensure user and add author to post
     const userId = await this.ensureUser(postObject.attributedTo)
-    debug(`userId = ${userId}`)
-    debug(`postId = ${postId}`)
+
     result = await this.client.mutate({
       mutation: gql`
           mutation {
@@ -413,7 +394,6 @@ export default class NitroDataSource {
     })
     throwErrorIfApolloErrorOccurred(result)
     if (!result.data.AddUserShouted) {
-      debug('something went wrong shouting post')
       throw Error('User or Post not exists')
     }
   }
@@ -434,7 +414,6 @@ export default class NitroDataSource {
     })
     throwErrorIfApolloErrorOccurred(result)
     if (!result.data.AddUserShouted) {
-      debug('something went wrong disliking a post')
       throw Error('User or Post not exists')
     }
   }
@@ -452,6 +431,7 @@ export default class NitroDataSource {
     throwErrorIfApolloErrorOccurred(result)
     return result.data.SharedInboxEnpoint
   }
+
   async addSharedInboxEndpoint (uri) {
     try {
       const result = await this.client.mutate({
@@ -514,7 +494,6 @@ export default class NitroDataSource {
    * @returns {Promise<*>}
    */
   async ensureUser (actorId) {
-    debug(`inside ensureUser = ${actorId}`)
     const name = extractNameFromId(actorId)
     const queryResult = await this.client.query({
       query: gql`
@@ -527,11 +506,9 @@ export default class NitroDataSource {
     })
 
     if (queryResult.data && Array.isArray(queryResult.data.User) && queryResult.data.User.length > 0) {
-      debug('ensureUser: user exists.. return id')
       // user already exists.. return the id
       return queryResult.data.User[0].id
     } else {
-      debug('ensureUser: user not exists.. createUser')
       // user does not exist.. create it
       const pw = crypto.randomBytes(16).toString('hex')
       const slug = name.toLowerCase().split(' ').join('-')

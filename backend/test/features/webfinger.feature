@@ -52,9 +52,9 @@ Feature: Webfinger discovery
         "followers": "http://localhost:4123/users/peter-lustiger/followers",
         "inbox": "http://localhost:4123/users/peter-lustiger/inbox",
         "outbox": "http://localhost:4123/users/peter-lustiger/outbox",
-        "url": "http://localhost:4123/activitypub/@peter-lustiger",
+        "url": "http://localhost:4123/@peter-lustiger",
         "endpoints": {
-            "sharedInbox": "http://localhost:4123/activitypub/inbox"
+            "sharedInbox": "http://localhost:4123/inbox"
         },
         "publicKey": {
             "id": "http://localhost:4123/users/peter-lustiger#main-key",

@@ -1,6 +1,5 @@
 import { activityPub } from '../ActivityPub'
 import { constructIdFromName } from './index'
-const debug = require('debug')('ea:utils:collections')
 
 export function createOrderedCollection (name, collectionName) {
   return {
@@ -63,8 +62,7 @@ function attachThenCatch (promise, res) {
     .then((collection) => {
       res.status(200).contentType('application/activity+json').send(collection)
     })
-    .catch((err) => {
-      debug(`error getting a Collection: = ${err}`)
+    .catch(() => {
       res.status(500).end()
     })
 }
