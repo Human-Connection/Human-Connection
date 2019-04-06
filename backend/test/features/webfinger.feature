@@ -19,7 +19,7 @@ Feature: Webfinger discovery
         {
           "rel": "self",
           "type": "application/activity+json",
-          "href": "http://localhost:4123/users/peter-lustiger"
+          "href": "http://localhost:4123/api/users/peter-lustiger"
         }
       ]
     }
@@ -44,21 +44,21 @@ Feature: Webfinger discovery
             "https://www.w3.org/ns/activitystreams",
             "https://w3id.org/security/v1"
         ],
-        "id": "http://localhost:4123/users/peter-lustiger",
+        "id": "http://localhost:4123/api/users/peter-lustiger",
         "type": "Person",
         "preferredUsername": "peter-lustiger",
         "name": "peter-lustiger",
-        "following": "http://localhost:4123/users/peter-lustiger/following",
-        "followers": "http://localhost:4123/users/peter-lustiger/followers",
-        "inbox": "http://localhost:4123/users/peter-lustiger/inbox",
-        "outbox": "http://localhost:4123/users/peter-lustiger/outbox",
-        "url": "http://localhost:4123/@peter-lustiger",
+        "following": "http://localhost:4123/api/users/peter-lustiger/following",
+        "followers": "http://localhost:4123/api/users/peter-lustiger/followers",
+        "inbox": "http://localhost:4123/api/users/peter-lustiger/inbox",
+        "outbox": "http://localhost:4123/api/users/peter-lustiger/outbox",
+        "url": "http://localhost:4123/api/@peter-lustiger",
         "endpoints": {
-            "sharedInbox": "http://localhost:4123/inbox"
+            "sharedInbox": "http://localhost:4123/api/inbox"
         },
         "publicKey": {
-            "id": "http://localhost:4123/users/peter-lustiger#main-key",
-            "owner": "http://localhost:4123/users/peter-lustiger",
+            "id": "http://localhost:4123/api/users/peter-lustiger#main-key",
+            "owner": "http://localhost:4123/api/users/peter-lustiger",
             "publicKeyPem": "adglkjlk89235kjn8obn2384f89z5bv9..."
         }
     }

@@ -1,7 +1,6 @@
 // features/support/world.js
 import { setWorldConstructor } from 'cucumber'
 import request from 'request'
-const debug = require('debug')('ea:test:world')
 
 class CustomWorld {
   constructor () {
@@ -20,8 +19,6 @@ class CustomWorld {
           'Accept': 'application/activity+json'
         }}, function (error, response, body) {
         if (!error) {
-          debug(`get content-type = ${response.headers['content-type']}`)
-          debug(`get body = ${JSON.stringify(typeof body === 'string' ? JSON.parse(body) : body, null, 2)}`)
           resolve({ lastResponse: body, lastContentType: response.headers['content-type'], statusCode: response.statusCode })
         } else {
           reject(error)
@@ -45,7 +42,6 @@ class CustomWorld {
         body: activity
       }, function (error, response, body) {
         if (!error) {
-          debug(`post response = ${response.headers['content-type']}`)
           resolve({ lastResponse: body, lastContentType: response.headers['content-type'], statusCode: response.statusCode })
         } else {
           reject(error)

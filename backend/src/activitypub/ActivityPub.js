@@ -162,7 +162,7 @@ export default class ActivityPub {
   }
 
   generateStatusId (slug) {
-    return `https://${this.host}/users/${slug}/status/${uuid()}`
+    return `https://${this.endpoint}/api/users/${slug}/status/${uuid()}`
   }
 
   async sendActivity (activity) {

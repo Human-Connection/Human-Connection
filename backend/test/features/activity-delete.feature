@@ -10,14 +10,14 @@ Feature: Delete an object
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://aronda.org/users/bernd-das-brot/status/lka7dfzkjn2398hsfd",
+      "id": "https://aronda.org/api/users/bernd-das-brot/status/lka7dfzkjn2398hsfd",
       "type": "Create",
-      "actor": "https://aronda.org/users/bernd-das-brot",
+      "actor": "https://aronda.org/api/users/bernd-das-brot",
       "object": {
-          "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
+          "id": "https://aronda.org/api/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
           "type": "Article",
           "published": "2019-02-07T19:37:55.002Z",
-          "attributedTo": "https://aronda.org/users/bernd-das-brot",
+          "attributedTo": "https://aronda.org/api/users/bernd-das-brot",
           "content": "Hi Max, how are you?",
           "to": "https://www.w3.org/ns/activitystreams#Public"
       }
@@ -29,13 +29,13 @@ Feature: Delete an object
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/users/karl-heinz/status/a4DJ2afdg323v32641vna42lkj685kasd2",
+      "id": "http://localhost:4123/api/users/karl-heinz/status/a4DJ2afdg323v32641vna42lkj685kasd2",
       "type": "Delete",
       "object": {
-        "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
+        "id": "https://aronda.org/api/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
         "type": "Article",
         "published": "2019-02-07T19:37:55.002Z",
-        "attributedTo": "https://aronda.org/users/bernd-das-brot",
+        "attributedTo": "https://aronda.org/api/users/bernd-das-brot",
         "content": "Hi Max, how are you?",
         "to": "https://www.w3.org/ns/activitystreams#Public"
       }
@@ -45,10 +45,10 @@ Feature: Delete an object
     And the object is removed from the outbox collection of "bernd-das-brot"
     """
     {
-      "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
+      "id": "https://aronda.org/api/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
       "type": "Article",
       "published": "2019-02-07T19:37:55.002Z",
-      "attributedTo": "https://aronda.org/users/bernd-das-brot",
+      "attributedTo": "https://aronda.org/api/users/bernd-das-brot",
       "content": "Hi Max, how are you?",
       "to": "https://www.w3.org/ns/activitystreams#Public"
     }

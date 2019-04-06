@@ -9,14 +9,14 @@ export function createNoteObject (text, name, id, published) {
 
   return {
     '@context': 'https://www.w3.org/ns/activitystreams',
-    'id': `${activityPub.endpoint}/users/${name}/status/${createUuid}`,
+    'id': `${activityPub.endpoint}/api/users/${name}/status/${createUuid}`,
     'type': 'Create',
-    'actor': `${activityPub.endpoint}/users/${name}`,
+    'actor': `${activityPub.endpoint}/api/users/${name}`,
     'object': {
-      'id': `${activityPub.endpoint}/users/${name}/status/${id}`,
+      'id': `${activityPub.endpoint}/api/users/${name}/status/${id}`,
       'type': 'Note',
       'published': published,
-      'attributedTo': `${activityPub.endpoint}/users/${name}`,
+      'attributedTo': `${activityPub.endpoint}/api/users/${name}`,
       'content': text,
       'to': 'https://www.w3.org/ns/activitystreams#Public'
     }
@@ -62,8 +62,8 @@ export async function getActorId (name) {
 
 export function sendAcceptActivity (theBody, name, targetDomain, url) {
   as.accept()
-    .id(`${activityPub.endpoint}/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
-    .actor(`${activityPub.endpoint}/users/${name}`)
+    .id(`${activityPub.endpoint}/api/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
+    .actor(`${activityPub.endpoint}/api/users/${name}`)
     .object(theBody)
     .prettyWrite((err, doc) => {
       if (!err) {
@@ -76,8 +76,8 @@ export function sendAcceptActivity (theBody, name, targetDomain, url) {
 
 export function sendRejectActivity (theBody, name, targetDomain, url) {
   as.reject()
-    .id(`${activityPub.endpoint}/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
-    .actor(`${activityPub.endpoint}/users/${name}`)
+    .id(`${activityPub.endpoint}/api/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
+    .actor(`${activityPub.endpoint}/api/users/${name}`)
     .object(theBody)
     .prettyWrite((err, doc) => {
       if (!err) {

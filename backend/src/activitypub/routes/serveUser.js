@@ -16,7 +16,7 @@ export async function serveUser (req, res, next) {
             }
         }
     `
-  }).catch(reason => { debug(`serveUser User fetch error: ${reason}`) })
+  })
 
   if (result.data && Array.isArray(result.data.User) && result.data.User.length > 0) {
     const publicKey = result.data.User[0].publicKey

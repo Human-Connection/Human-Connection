@@ -6,21 +6,21 @@ export function createActor (name, pubkey) {
       'https://www.w3.org/ns/activitystreams',
       'https://w3id.org/security/v1'
     ],
-    'id': `${activityPub.endpoint}/users/${name}`,
+    'id': `${activityPub.endpoint}/api/users/${name}`,
     'type': 'Person',
     'preferredUsername': `${name}`,
     'name': `${name}`,
-    'following': `${activityPub.endpoint}/users/${name}/following`,
-    'followers': `${activityPub.endpoint}/users/${name}/followers`,
-    'inbox': `${activityPub.endpoint}/users/${name}/inbox`,
-    'outbox': `${activityPub.endpoint}/users/${name}/outbox`,
-    'url': `${activityPub.endpoint}/@${name}`,
+    'following': `${activityPub.endpoint}/api/users/${name}/following`,
+    'followers': `${activityPub.endpoint}/api/users/${name}/followers`,
+    'inbox': `${activityPub.endpoint}/api/users/${name}/inbox`,
+    'outbox': `${activityPub.endpoint}/api/users/${name}/outbox`,
+    'url': `${activityPub.endpoint}/api/@${name}`,
     'endpoints': {
-      'sharedInbox': `${activityPub.endpoint}/inbox`
+      'sharedInbox': `${activityPub.endpoint}/api/inbox`
     },
     'publicKey': {
-      'id': `${activityPub.endpoint}/users/${name}#main-key`,
-      'owner': `${activityPub.endpoint}/users/${name}`,
+      'id': `${activityPub.endpoint}/api/users/${name}#main-key`,
+      'owner': `${activityPub.endpoint}/api/users/${name}`,
       'publicKeyPem': pubkey
     }
   }
@@ -34,7 +34,7 @@ export function createWebFinger (name) {
       {
         'rel': 'self',
         'type': 'application/activity+json',
-        'href': `${activityPub.endpoint}/users/${name}`
+        'href': `${activityPub.endpoint}/api/users/${name}`
       }
     ]
   }
