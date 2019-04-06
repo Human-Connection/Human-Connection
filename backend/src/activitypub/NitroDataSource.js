@@ -227,7 +227,7 @@ export default class NitroDataSource {
                       contentExcerpt
                       createdAt
                       author {
-                          name
+                          slug
                       }
                   }
               }
@@ -244,7 +244,7 @@ export default class NitroDataSource {
       outboxCollection.totalItems = posts.length
       await Promise.all(
         posts.map(async (post) => {
-          outboxCollection.orderedItems.push(await createArticleObject(post.activityId, post.objectId, post.content, post.author.name, post.id, post.createdAt))
+          outboxCollection.orderedItems.push(await createArticleObject(post.activityId, post.objectId, post.content, post.author.slug, post.id, post.createdAt))
         })
       )
 
