@@ -9,18 +9,18 @@ Feature: Like an object like an article or note
       | Slug           |
       | karl-heinz     |
       | peter-lustiger |
-    And I send a POST request with the following activity to "/activitypub/users/bernd-das-brot/inbox":
+    And I send a POST request with the following activity to "/users/bernd-das-brot/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/karl-heinz/status/faslkasa7dasfzkjn2398hsfd",
+      "id": "http://localhost:4123/users/karl-heinz/status/faslkasa7dasfzkjn2398hsfd",
       "type": "Create",
-      "actor": "http://localhost:4123/activitypub/users/karl-heinz",
+      "actor": "http://localhost:4123/users/karl-heinz",
       "object": {
-          "id": "http://localhost:4123/activitypub/users/karl-heinz/status/dkasfljsdfaafg9843jknsdf",
+          "id": "http://localhost:4123/users/karl-heinz/status/dkasfljsdfaafg9843jknsdf",
           "type": "Article",
           "published": "2019-02-07T19:37:55.002Z",
-          "attributedTo": "http://localhost:4123/activitypub/users/karl-heinz",
+          "attributedTo": "http://localhost:4123/users/karl-heinz",
           "content": "Hi Max, how are you?",
           "to": "https://www.w3.org/ns/activitystreams#Public"
       }
@@ -28,14 +28,14 @@ Feature: Like an object like an article or note
     """
 
   Scenario: Send a like of a person to an users inbox and make sure it's added to the likes collection
-    When I send a POST request with the following activity to "/activitypub/users/karl-heinz/inbox":
+    When I send a POST request with the following activity to "/users/karl-heinz/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/peter-lustiger/status/83J23549sda1k72fsa4567na42312455kad83",
+      "id": "http://localhost:4123/users/peter-lustiger/status/83J23549sda1k72fsa4567na42312455kad83",
       "type": "Like",
-      "actor": "http://localhost:4123/activitypub/users/peter-lustiger",
-      "object": "http://localhost:4123/activitypub/users/karl-heinz/status/dkasfljsdfaafg9843jknsdf"
+      "actor": "http://localhost:4123/users/peter-lustiger",
+      "object": "http://localhost:4123/users/karl-heinz/status/dkasfljsdfaafg9843jknsdf"
     }
     """
     Then I expect the status code to be 200

@@ -6,7 +6,7 @@ Feature: Delete an object
     And we have the following users in our database:
       | Slug          |
       | bernd-das-brot|
-    And I send a POST request with the following activity to "/activitypub/users/bernd-das-brot/inbox":
+    And I send a POST request with the following activity to "/users/bernd-das-brot/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
@@ -25,17 +25,17 @@ Feature: Delete an object
     """
 
   Scenario: Deleting a post (Article Object)
-    When I send a POST request with the following activity to "/activitypub/users/bernd-das-brot/inbox":
+    When I send a POST request with the following activity to "/users/bernd-das-brot/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/karl-heinz/status/a4DJ2afdg323v32641vna42lkj685kasd2",
+      "id": "http://localhost:4123/users/karl-heinz/status/a4DJ2afdg323v32641vna42lkj685kasd2",
       "type": "Delete",
       "object": {
-        "id": "https://aronda.org/activitypub/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
+        "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
         "type": "Article",
         "published": "2019-02-07T19:37:55.002Z",
-        "attributedTo": "https://aronda.org/activitypub/users/bernd-das-brot",
+        "attributedTo": "https://aronda.org/users/bernd-das-brot",
         "content": "Hi Max, how are you?",
         "to": "https://www.w3.org/ns/activitystreams#Public"
       }
@@ -45,10 +45,10 @@ Feature: Delete an object
     And the object is removed from the outbox collection of "bernd-das-brot"
     """
     {
-      "id": "https://aronda.org/activitypub/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
+      "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
       "type": "Article",
       "published": "2019-02-07T19:37:55.002Z",
-      "attributedTo": "https://aronda.org/activitypub/users/bernd-das-brot",
+      "attributedTo": "https://aronda.org/users/bernd-das-brot",
       "content": "Hi Max, how are you?",
       "to": "https://www.w3.org/ns/activitystreams#Public"
     }

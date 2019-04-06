@@ -9,7 +9,7 @@ Feature: Send and receive Articles
       | max          |
 
   Scenario: Send an article to a user inbox and make sure it's added to the inbox
-    When I send a POST request with the following activity to "/activitypub/users/max/inbox":
+    When I send a POST request with the following activity to "/users/max/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",

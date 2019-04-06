@@ -180,7 +180,7 @@ export default class ActivityPub {
   }
 
   generateStatusId (slug) {
-    return `https://${this.host}/activitypub/users/${slug}/status/${uuid()}`
+    return `https://${this.host}/users/${slug}/status/${uuid()}`
   }
 
   async sendActivity (activity) {

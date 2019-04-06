@@ -8,94 +8,94 @@ Feature: Receiving collections
       | renate-oberdorfer |
 
   Scenario: Send a request to the outbox URI of peter-lustig and expect a ordered collection
-    When I send a GET request to "/activitypub/users/renate-oberdorfer/outbox"
+    When I send a GET request to "/users/renate-oberdorfer/outbox"
     Then I expect the status code to be 200
     And I receive the following json:
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/outbox",
+      "id": "http://localhost:4123/users/renate-oberdorfer/outbox",
       "summary": "renate-oberdorfers outbox collection",
       "type": "OrderedCollection",
-      "first": "http://localhost:4123/activitypub/users/renate-oberdorfer/outbox?page=true",
+      "first": "http://localhost:4123/users/renate-oberdorfer/outbox?page=true",
       "totalItems": 0
     }
     """
 
   Scenario: Send a request to the following URI of peter-lustig and expect a ordered collection
-    When I send a GET request to "/activitypub/users/renate-oberdorfer/following"
+    When I send a GET request to "/users/renate-oberdorfer/following"
     Then I expect the status code to be 200
     And I receive the following json:
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/following",
+      "id": "http://localhost:4123/users/renate-oberdorfer/following",
       "summary": "renate-oberdorfers following collection",
       "type": "OrderedCollection",
-      "first": "http://localhost:4123/activitypub/users/renate-oberdorfer/following?page=true",
+      "first": "http://localhost:4123/users/renate-oberdorfer/following?page=true",
       "totalItems": 0
     }
     """
 
   Scenario: Send a request to the followers URI of peter-lustig and expect a ordered collection
-    When I send a GET request to "/activitypub/users/renate-oberdorfer/followers"
+    When I send a GET request to "/users/renate-oberdorfer/followers"
     Then I expect the status code to be 200
     And I receive the following json:
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/followers",
+      "id": "http://localhost:4123/users/renate-oberdorfer/followers",
       "summary": "renate-oberdorfers followers collection",
       "type": "OrderedCollection",
-      "first": "http://localhost:4123/activitypub/users/renate-oberdorfer/followers?page=true",
+      "first": "http://localhost:4123/users/renate-oberdorfer/followers?page=true",
       "totalItems": 0
     }
     """
 
   Scenario: Send a request to the outbox URI of peter-lustig and expect a paginated outbox collection
-    When I send a GET request to "/activitypub/users/renate-oberdorfer/outbox?page=true"
+    When I send a GET request to "/users/renate-oberdorfer/outbox?page=true"
     Then I expect the status code to be 200
     And I receive the following json:
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/outbox?page=true",
+      "id": "http://localhost:4123/users/renate-oberdorfer/outbox?page=true",
       "summary": "renate-oberdorfers outbox collection",
       "type": "OrderedCollectionPage",
       "totalItems": 0,
-      "partOf": "http://localhost:4123/activitypub/users/renate-oberdorfer/outbox",
+      "partOf": "http://localhost:4123/users/renate-oberdorfer/outbox",
       "orderedItems": []
     }
     """
 
   Scenario: Send a request to the following URI of peter-lustig and expect a paginated following collection
-    When I send a GET request to "/activitypub/users/renate-oberdorfer/following?page=true"
+    When I send a GET request to "/users/renate-oberdorfer/following?page=true"
     Then I expect the status code to be 200
     And I receive the following json:
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/following?page=true",
+      "id": "http://localhost:4123/users/renate-oberdorfer/following?page=true",
       "summary": "renate-oberdorfers following collection",
       "type": "OrderedCollectionPage",
       "totalItems": 0,
-      "partOf": "http://localhost:4123/activitypub/users/renate-oberdorfer/following",
+      "partOf": "http://localhost:4123/users/renate-oberdorfer/following",
       "orderedItems": []
     }
     """
 
   Scenario: Send a request to the followers URI of peter-lustig and expect a paginated followers collection
-    When I send a GET request to "/activitypub/users/renate-oberdorfer/followers?page=true"
+    When I send a GET request to "/users/renate-oberdorfer/followers?page=true"
     Then I expect the status code to be 200
     And I receive the following json:
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "http://localhost:4123/activitypub/users/renate-oberdorfer/followers?page=true",
+      "id": "http://localhost:4123/users/renate-oberdorfer/followers?page=true",
       "summary": "renate-oberdorfers followers collection",
       "type": "OrderedCollectionPage",
       "totalItems": 0,
-      "partOf": "http://localhost:4123/activitypub/users/renate-oberdorfer/followers",
+      "partOf": "http://localhost:4123/users/renate-oberdorfer/followers",
       "orderedItems": []
     }
     """

@@ -99,13 +99,13 @@ Then('the activity is added to the {string} collection', async function (collect
 })
 
 Then('the follower is added to the followers collection of {string}', async function (userName, follower) {
-  const response = await this.get(`/activitypub/users/${userName}/followers?page=true`)
+  const response = await this.get(`/users/${userName}/followers?page=true`)
   const responseObject = JSON.parse(response.lastResponse)
   expect(responseObject.orderedItems).to.include(follower)
 })
 
 Then('the follower is removed from the followers collection of {string}', async function (userName, follower) {
-  const response = await this.get(`/activitypub/users/${userName}/followers?page=true`)
+  const response = await this.get(`/users/${userName}/followers?page=true`)
   const responseObject = JSON.parse(response.lastResponse)
   expect(responseObject.orderedItems).to.not.include(follower)
 })
@@ -126,7 +126,7 @@ Then('the post with id {string} to be created', async function (id) {
 })
 
 Then('the object is removed from the outbox collection of {string}', async function (name, object) {
-  const response = await this.get(`/activitypub/users/${name}/outbox?page=true`)
+  const response = await this.get(`/users/${name}/outbox?page=true`)
   const parsedResponse = JSON.parse(response.lastResponse)
   expect(parsedResponse.orderedItems).to.not.include(object)
 })
