@@ -21,35 +21,37 @@ import fetch from 'node-fetch'
 import { ApolloClient } from 'apollo-client'
 import trunc from 'trunc-html'
 
-export default class NitroDataSource {
-  constructor (uri) {
-    this.uri = uri
-    const defaultOptions = {
-      query: {
-        fetchPolicy: 'network-only',
-        errorPolicy: 'all'
+export default NitroDataSource
+
+function NitroDataSource(uri) {
+  this.uri = uri
+  const defaultOptions = {
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all'
+    }
+  }
+  const link = createHttpLink({ uri: this.uri, fetch: fetch }) // eslint-disable-line
+  const cache = new InMemoryCache()
+  const authLink = setContext((_, { headers }) => {
+    // generate the authentication token (maybe from env? Which user?)
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoiUGV0ZXIgTHVzdGlnIiwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9qb2huY2FmYXp6YS8xMjguanBnIiwiaWQiOiJ1MSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5vcmciLCJzbHVnIjoicGV0ZXItbHVzdGlnIiwiaWF0IjoxNTUyNDIwMTExLCJleHAiOjE2Mzg4MjAxMTEsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDAwMCIsInN1YiI6InUxIn0.G7An1yeQUViJs-0Qj-Tc-zm0WrLCMB3M02pfPnm6xzw'
+    // return the headers to the context so httpLink can read them
+    return {
+      headers: {
+        ...headers,
+        Authorization: token ? `Bearer ${token}` : ''
       }
     }
-    const link = createHttpLink({ uri: this.uri, fetch: fetch }) // eslint-disable-line
-    const cache = new InMemoryCache()
-    const authLink = setContext((_, { headers }) => {
-      // generate the authentication token (maybe from env? Which user?)
-      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoiUGV0ZXIgTHVzdGlnIiwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9qb2huY2FmYXp6YS8xMjguanBnIiwiaWQiOiJ1MSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5vcmciLCJzbHVnIjoicGV0ZXItbHVzdGlnIiwiaWF0IjoxNTUyNDIwMTExLCJleHAiOjE2Mzg4MjAxMTEsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDAwMCIsInN1YiI6InUxIn0.G7An1yeQUViJs-0Qj-Tc-zm0WrLCMB3M02pfPnm6xzw'
-      // return the headers to the context so httpLink can read them
-      return {
-        headers: {
-          ...headers,
-          Authorization: token ? `Bearer ${token}` : ''
-        }
-      }
-    })
-    this.client = new ApolloClient({
-      link: authLink.concat(link),
-      cache: cache,
-      defaultOptions
-    })
-  }
+  })
+  this.client = new ApolloClient({
+    link: authLink.concat(link),
+    cache: cache,
+    defaultOptions
+  })
+}
 
+NitroDataSource.prototype = {
   async getFollowersCollection (actorId) {
     const slug = extractNameFromId(actorId)
 
@@ -74,7 +76,7 @@ export default class NitroDataSource {
     } else {
       throwErrorIfApolloErrorOccurred(result)
     }
-  }
+  },
 
   async getFollowersCollectionPage (actorId) {
     const slug = extractNameFromId(actorId)
@@ -110,7 +112,7 @@ export default class NitroDataSource {
     } else {
       throwErrorIfApolloErrorOccurred(result)
     }
-  }
+  },
 
   async getFollowingCollection (actorId) {
     const slug = extractNameFromId(actorId)
@@ -135,7 +137,7 @@ export default class NitroDataSource {
     } else {
       throwErrorIfApolloErrorOccurred(result)
     }
-  }
+  },
 
   async getFollowingCollectionPage (actorId) {
     const slug = extractNameFromId(actorId)
@@ -170,7 +172,7 @@ export default class NitroDataSource {
     } else {
       throwErrorIfApolloErrorOccurred(result)
     }
-  }
+  },
 
   async getOutboxCollection (actorId) {
     const slug = extractNameFromId(actorId)
@@ -201,7 +203,7 @@ export default class NitroDataSource {
     } else {
       throwErrorIfApolloErrorOccurred(result)
     }
-  }
+  },
 
   async getOutboxCollectionPage (actorId) {
     const slug = extractNameFromId(actorId)
@@ -245,7 +247,7 @@ export default class NitroDataSource {
     } else {
       throwErrorIfApolloErrorOccurred(result)
     }
-  }
+  },
 
   async undoFollowActivity (fromActorId, toActorId) {
     const fromUserId = await this.ensureUser(fromActorId)
@@ -261,7 +263,7 @@ export default class NitroDataSource {
     })
 
     throwErrorIfApolloErrorOccurred(result)
-  }
+  },
 
   async saveFollowersCollectionPage (followersCollection, onlyNewestItem = true) {
     let orderedItems = followersCollection.orderedItems
@@ -285,7 +287,7 @@ export default class NitroDataSource {
         throwErrorIfApolloErrorOccurred(result)
       })
     )
-  }
+  },
 
   async saveFollowingCollectionPage (followingCollection, onlyNewestItem = true) {
     let orderedItems = followingCollection.orderedItems
@@ -308,7 +310,7 @@ export default class NitroDataSource {
         throwErrorIfApolloErrorOccurred(result)
       })
     )
-  }
+  },
 
   async createPost (activity) {
     // TODO how to handle the to field? Now the post is just created, doesn't matter who is the recipient
@@ -347,20 +349,20 @@ export default class NitroDataSource {
     })
 
     throwErrorIfApolloErrorOccurred(result)
-  }
+  },
 
   async deletePost (activity) {
     const result = await this.client.mutate({
       mutation: gql`
-        mutation {
-            DeletePost(id: "${extractIdFromActivityId(activity.object.id)}") {
-                title
-            }
-        }
+          mutation {
+              DeletePost(id: "${extractIdFromActivityId(activity.object.id)}") {
+                  title
+              }
+          }
       `
     })
     throwErrorIfApolloErrorOccurred(result)
-  }
+  },
 
   async updatePost (activity) {
     const postObject = activity.object
@@ -368,15 +370,15 @@ export default class NitroDataSource {
     const date = postObject.updated ? postObject.updated : new Date().toISOString()
     const result = await this.client.mutate({
       mutation: gql`
-        mutation {
-            UpdatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120).html}", id: "${postId}", updatedAt: "${date}") {
-                title
-            }
-        }
+          mutation {
+              UpdatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120).html}", id: "${postId}", updatedAt: "${date}") {
+                  title
+              }
+          }
       `
     })
     throwErrorIfApolloErrorOccurred(result)
-  }
+  },
 
   async createShouted (activity) {
     const userId = await this.ensureUser(activity.actor)
@@ -396,7 +398,7 @@ export default class NitroDataSource {
     if (!result.data.AddUserShouted) {
       throw Error('User or Post not exists')
     }
-  }
+  },
 
   async deleteShouted (activity) {
     const userId = await this.ensureUser(activity.actor)
@@ -416,21 +418,21 @@ export default class NitroDataSource {
     if (!result.data.AddUserShouted) {
       throw Error('User or Post not exists')
     }
-  }
+  },
 
   async getSharedInboxEndpoints () {
     const result = await this.client.query({
       query: gql`
-        query {
-            SharedInboxEndpoint {
-                uri
-            }
-        }
+          query {
+              SharedInboxEndpoint {
+                  uri
+              }
+          }
       `
     })
     throwErrorIfApolloErrorOccurred(result)
     return result.data.SharedInboxEnpoint
-  }
+  },
 
   async addSharedInboxEndpoint (uri) {
     try {
@@ -446,7 +448,7 @@ export default class NitroDataSource {
     } catch (e) {
       return false
     }
-  }
+  },
 
   async createComment (activity) {
     const postObject = activity.object
@@ -485,7 +487,7 @@ export default class NitroDataSource {
     })
 
     throwErrorIfApolloErrorOccurred(result)
-  }
+  },
 
   /**
    * This function will search for user existence and will create a disabled user with a random 16 bytes password when no user is found.

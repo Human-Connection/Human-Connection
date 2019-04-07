@@ -14,31 +14,46 @@ import NitroDataSource from './NitroDataSource'
 import router from './routes'
 import Collections from './Collections'
 import uuid from 'uuid/v4'
+import express from 'express'
+import dotenv from 'dotenv'
 
 let activityPub = null
 
 export { activityPub }
 
-export default class ActivityPub {
-  constructor (activityPubEndpointUri, internalGraphQlUri) {
-    this.endpoint = activityPubEndpointUri
-    this.dataSource = new NitroDataSource(internalGraphQlUri)
-    this.collections = new Collections(this.dataSource)
-  }
+export default function init(server) {
+  if (!activityPub) {
+    activityPub = new ActivityPub()
 
-  static init (server) {
-    if (!activityPub) {
-      activityPub = new ActivityPub(process.env.CLIENT_URI || 'http://localhost:3000', process.env.GRAPHQL_URI || 'http://localhost:4000')
-
-      // integrate into running graphql express server
+    // integrate into running express server
+    if (server) {
       server.express.set('ap', activityPub)
       server.express.use(router)
-      console.log('-> ActivityPub middleware added to the graphql express server')
-    } else {
-      console.log('-> ActivityPub middleware already added to the graphql express server')
+      console.log('-> ActivityPub middleware added to the express server')
+      return
     }
-  }
 
+    // start standalone express server
+    dotenv.config()
+
+    const app = express()
+    app.set('ap', activityPub)
+    app.use(router)
+    app.listen(process.env.ACTIVITYPUB_PORT || 4010, () => {
+      console.log(`ActivityPub express service listening on port ${process.env.ACTIVITYPUB_PORT || 4010}`)
+    })
+  } else {
+    console.log('-> ActivityPub middleware already added to the express server')
+  }
+}
+
+function ActivityPub () {
+  this.endpoint = process.env.CLIENT_URI || 'http://localhost:3000'
+  this.dataSource = new NitroDataSource(process.env.GRAPHQL_URI || 'http://localhost:4000')
+  this.collections = new Collections(this.dataSource)
+}
+
+ActivityPub.prototype =  {
   handleFollowActivity (activity) {
     let toActorName = extractNameFromId(activity.object)
     let fromDomain = extractDomainFromUrl(activity.actor)
@@ -80,70 +95,70 @@ export default class ActivityPub {
         }
       })
     })
-  }
+  },
 
   handleUndoActivity (activity) {
     switch (activity.object.type) {
-    case 'Follow':
-      const followActivity = activity.object
-      return this.dataSource.undoFollowActivity(followActivity.actor, followActivity.object)
-    case 'Like':
-      return this.dataSource.deleteShouted(activity)
-    default:
+      case 'Follow':
+        const followActivity = activity.object
+        return this.dataSource.undoFollowActivity(followActivity.actor, followActivity.object)
+      case 'Like':
+        return this.dataSource.deleteShouted(activity)
+      default:
     }
-  }
+  },
 
   handleCreateActivity (activity) {
     switch (activity.object.type) {
-    case 'Article':
-    case 'Note':
-      const articleObject = activity.object
-      if (articleObject.inReplyTo) {
-        return this.dataSource.createComment(activity)
-      } else {
-        return this.dataSource.createPost(activity)
-      }
-    default:
+      case 'Article':
+      case 'Note':
+        const articleObject = activity.object
+        if (articleObject.inReplyTo) {
+          return this.dataSource.createComment(activity)
+        } else {
+          return this.dataSource.createPost(activity)
+        }
+      default:
     }
-  }
+  },
 
   handleDeleteActivity (activity) {
     switch (activity.object.type) {
-    case 'Article':
-    case 'Note':
-      return this.dataSource.deletePost(activity)
-    default:
+      case 'Article':
+      case 'Note':
+        return this.dataSource.deletePost(activity)
+      default:
     }
-  }
+  },
 
   handleUpdateActivity (activity) {
     switch (activity.object.type) {
-    case 'Note':
-    case 'Article':
-      return this.dataSource.updatePost(activity)
-    default:
+      case 'Note':
+      case 'Article':
+        return this.dataSource.updatePost(activity)
+      default:
     }
-  }
+  },
 
   handleLikeActivity (activity) {
     // TODO differ if activity is an Article/Note/etc.
     return this.dataSource.createShouted(activity)
-  }
+  },
 
   handleDislikeActivity (activity) {
     // TODO differ if activity is an Article/Note/etc.
     return this.dataSource.deleteShouted(activity)
-  }
+  },
 
   async handleAcceptActivity (activity) {
     switch (activity.object.type) {
-    case 'Follow':
-      const followObject = activity.object
-      const followingCollectionPage = await this.collections.getFollowingCollectionPage(followObject.actor)
-      followingCollectionPage.orderedItems.push(followObject.object)
-      await this.dataSource.saveFollowingCollectionPage(followingCollectionPage)
+      case 'Follow':
+        const followObject = activity.object
+        const followingCollectionPage = await this.collections.getFollowingCollectionPage(followObject.actor)
+        followingCollectionPage.orderedItems.push(followObject.object)
+        await this.dataSource.saveFollowingCollectionPage(followingCollectionPage)
     }
-  }
+  },
 
   getActorObject (url) {
     return new Promise((resolve, reject) => {
@@ -159,11 +174,11 @@ export default class ActivityPub {
         resolve(JSON.parse(body))
       })
     })
-  }
+  },
 
   generateStatusId (slug) {
-    return `https://${this.endpoint}/api/users/${slug}/status/${uuid()}`
-  }
+    return `${this.endpoint}/api/users/${slug}/status/${uuid()}`
+  },
 
   async sendActivity (activity) {
     delete activity.send
@@ -191,7 +206,8 @@ export default class ActivityPub {
         return this.trySend(activity, fromName, new URL(recipient).host, actorObject.inbox)
       })
     }
-  }
+  },
+
   async trySend (activity, fromName, host, url, tries = 5) {
     try {
       return await signAndSend(activity, fromName, host, url)
