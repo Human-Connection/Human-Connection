@@ -77,7 +77,7 @@ export default {
         .mutate({
           mutation: gql`
             mutation($url: String!) {
-              addSocialMedia(url: $url)
+              CreateSocialMedia(url: $url)
             }
           `,
           variables: {
