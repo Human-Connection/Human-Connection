@@ -4,20 +4,11 @@
     :image="post.image"
     :class="{'post-card': true, 'disabled-content': post.disabled}"
   >
-    <a
-      v-router-link
-      class="post-link"
-      :href="href(post)"
-    >
-      {{ post.title }}
-    </a>
+    <a v-router-link class="post-link" :href="href(post)">{{ post.title }}</a>
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="large">
-      <div
-        class="hc-editor-content"
-        v-html="excerpt"
-      />
+      <div class="hc-editor-content" v-html="excerpt"/>
     </ds-space>
     <!-- eslint-enable vue/no-v-html -->
     <ds-space>
@@ -26,20 +17,12 @@
         align="right"
         size="small"
         color="soft"
-      >
-        {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
-      </ds-text>
+      >{{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}</ds-text>
     </ds-space>
-    <ds-space
-      margin="small"
-      style="position: absolute; bottom: 44px; z-index: 1;"
-    >
+    <ds-space margin="small" style="position: absolute; bottom: 44px;">
       <!-- TODO: find better solution for rendering errors -->
       <no-ssr>
-        <hc-user
-          :user="post.author"
-          :trunc="35"
-        />
+        <hc-user :user="post.author" :trunc="35"/>
       </no-ssr>
     </ds-space>
     <template slot="footer">
@@ -53,18 +36,16 @@
       </div>
       <div style="display: inline-block; float: right">
         <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
-          <ds-icon name="bullhorn" /> <small>{{ post.shoutedCount }}</small>
+          <ds-icon name="bullhorn"/>
+          <small>{{ post.shoutedCount }}</small>
         </span>
         &nbsp;
         <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-          <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
+          <ds-icon name="comments"/>
+          <small>{{ post.commentsCount }}</small>
         </span>
         <no-ssr>
-          <content-menu
-            resource-type="contribution"
-            :resource="post"
-            :is-owner="isAuthor"
-          />
+          <content-menu resource-type="contribution" :resource="post" :is-owner="isAuthor"/>
         </no-ssr>
       </div>
     </template>
@@ -118,27 +99,25 @@ export default {
 .post-card {
   cursor: pointer;
   position: relative;
+  z-index: 1;
 
-  .ds-card-footer {
-    z-index: 1;
-  }
+  /*.ds-card-footer {
+  }*/
 
   .content-menu {
     display: inline-block;
     margin-left: $space-xx-small;
     margin-right: -$space-x-small;
-    z-index: 1;
   }
-}
 
-.post-link {
-  display: block;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  text-indent: -999999px;
+  .post-link {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-indent: -999999px;
+  }
 }
 </style>
