@@ -1,8 +1,9 @@
 <template>
   <nuxt-link
     :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
+    @click.native="$emit('read')"
   >
-  <hc-post-card :post="post" />
+    <hc-post-card :post="post" />
   </nuxt-link>
 </template>
 
@@ -10,7 +11,7 @@
 import HcPostCard from '~/components/PostCard.vue'
 
 export default {
-  name: 'HcNotification',
+  name: 'Notification',
   components: {
     HcPostCard
   },

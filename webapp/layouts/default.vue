@@ -49,11 +49,7 @@
                   slot="popover"
                 >
                   <div class="notifications-menu-popover">
-                    <notification
-                      v-for="notification in notifications"
-                      :key="notification.id"
-                      :notification="notification"
-                    />
+                    <notification-list />
                   </div>
                 </template>
               </dropdown>
@@ -143,7 +139,7 @@ import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
-import Notification from '~/components/Notification'
+import NotificationList from '~/components/notifications/NotificationList'
 import seo from '~/components/mixins/seo'
 
 export default {
@@ -153,7 +149,7 @@ export default {
     SearchInput,
     Modal,
     LocaleSwitch,
-    Notification
+    NotificationList
   },
   mixins: [seo],
   data() {
@@ -162,9 +158,6 @@ export default {
     }
   },
   computed: {
-    notifications() {
-      return this.user.notifications
-    },
     ...mapGetters({
       user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',

@@ -4,11 +4,12 @@
     :image="post.image"
     :class="{'post-card': true, 'disabled-content': post.disabled}"
   >
-    <a
-      v-router-link
+    <nuxt-link
       class="post-link"
-      :href="href(post)"
-    >{{ post.title }}</a>
+      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
+    >
+      {{ post.title }}
+    </nuxt-link>
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="large">
