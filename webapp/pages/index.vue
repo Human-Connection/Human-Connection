@@ -1,16 +1,12 @@
 <template>
   <div>
-    <ds-flex
-      v-if="Post && Post.length"
-      :width="{ base: '100%' }"
-      gutter="base"
-    >
+    <ds-flex v-if="Post && Post.length" :width="{ base: '100%' }" gutter="base">
       <ds-flex-item
         v-for="post in uniq(Post)"
         :key="post.id"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
       >
-        <hc-post-card :post="post" />
+        <hc-post-card :post="post"/>
       </ds-flex-item>
     </ds-flex>
     <no-ssr>
@@ -23,11 +19,7 @@
         primary
       />
     </no-ssr>
-    <hc-load-more
-      v-if="true"
-      :loading="$apollo.loading"
-      @click="showMoreContributions"
-    />
+    <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions"/>
   </div>
 </template>
 
@@ -149,8 +141,8 @@ export default {
 .post-add-button {
   z-index: 100;
   position: fixed;
-  top: 100vh;
-  left: 100vw;
+  top: 98vh;
+  left: 98vw;
   transform: translate(-120%, -120%);
   box-shadow: $box-shadow-x-large;
 }
