@@ -32,6 +32,27 @@
           </no-ssr>
           <template v-if="isLoggedIn">
             <no-ssr>
+              <dropdown class="notifications-menu">
+                <template
+                  slot="default"
+                  slot-scope="{toggleMenu}"
+                >
+                  <ds-button
+                    primary
+                    icon="bell"
+                    @click.prevent="toggleMenu"
+                  >
+                    7
+                  </ds-button>
+                </template>
+                <template
+                  slot="popover"
+                >
+                  <h1> I am a notification </h1>
+                </template>
+              </dropdown>
+            </no-ssr>
+            <no-ssr>
               <dropdown class="avatar-menu">
                 <template
                   slot="default"
@@ -237,6 +258,11 @@ export default {
 .main-navigation-right {
   display: flex;
   flex: 1;
+}
+
+.notifications-menu {
+  display: flex;
+  align-items: center;
 }
 
 .avatar-menu-trigger {
