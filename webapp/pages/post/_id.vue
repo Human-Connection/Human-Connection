@@ -2,15 +2,12 @@
   <div>
     <ds-flex gutter="small">
       <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
-        <transition
-          name="slide-up"
-          appear
-        >
-          <nuxt-child />
+        <transition name="slide-up" appear>
+          <nuxt-child/>
         </transition>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '200px' }">
-        <ds-menu :routes="routes" />
+        <ds-menu :routes="routes" class="post-side-navigation"/>
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -79,3 +76,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.post-side-navigation {
+  position: sticky;
+  top: 65px;
+  z-index: 2;
+}
+</style>
