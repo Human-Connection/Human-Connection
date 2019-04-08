@@ -23,10 +23,8 @@ describe('currentUser { notifications }', () => {
   const query = `query($read: Boolean) {
           currentUser {
             notifications(read: $read, orderBy: createdAt_desc) {
-              id
               read
               post {
-                id
                 content
               }
             }
