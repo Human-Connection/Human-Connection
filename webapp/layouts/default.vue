@@ -42,13 +42,21 @@
                     icon="bell"
                     @click.prevent="toggleMenu"
                   >
-                    7
+                    1
                   </ds-button>
                 </template>
                 <template
                   slot="popover"
                 >
-                  <h1> I am a notification </h1>
+                  <div class="notifications-menu-popover">
+                    <nuxt-link
+                      v-for="notification in notifications"
+                      :key="notification.id"
+                      :to="{ name: 'post-id-slug', params: { id: notification.post.id, slug: notification.post.slug } }"
+                    >
+                      {{ notification.post.contentExcerpt }}
+                    </nuxt-link>
+                  </div>
                 </template>
               </dropdown>
             </no-ssr>
@@ -154,6 +162,9 @@ export default {
     }
   },
   computed: {
+    notifications() {
+      return this.user.notifications
+    },
     ...mapGetters({
       user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',
