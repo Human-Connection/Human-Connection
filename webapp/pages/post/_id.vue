@@ -2,15 +2,12 @@
   <div>
     <ds-flex gutter="small">
       <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
-        <transition
-          name="slide-up"
-          appear
-        >
-          <nuxt-child />
+        <transition name="slide-up" appear>
+          <nuxt-child/>
         </transition>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '200px' }">
-        <ds-menu :routes="routes" />
+        <ds-menu :routes="routes"/>
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -55,25 +52,28 @@ export default {
             {
               name: this.$t('common.comment', null, 2),
               path: `/post/${id}/${slug}#comments`
-            },
-            {
+            }
+            // TODO implement
+            /* {
               name: this.$t('common.letsTalk'),
               path: `/post/${id}/${slug}#lets-talk`
-            },
-            {
+            }, */
+            // TODO implement
+            /* {
               name: this.$t('common.versus'),
               path: `/post/${id}/${slug}#versus`
-            }
+            } */
           ]
         },
         {
           name: this.$t('common.moreInfo'),
           path: `/post/${id}/${slug}/more-info`
-        },
-        {
+        }
+        // TODO implement
+        /* {
           name: this.$t('common.takeAction'),
           path: `/post/${id}/${slug}/take-action`
-        }
+        } */
       ]
     }
   }

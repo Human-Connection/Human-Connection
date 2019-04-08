@@ -1,15 +1,12 @@
 <template>
-  <transition
-    name="fade"
-    appear
-  >
+  <transition name="fade" appear>
     <ds-card
       v-if="post && ready"
       :image="post.image"
       :header="post.title"
       :class="{'post-card': true, 'disabled-content': post.disabled}"
     >
-      <hc-user :user="post.author" />
+      <hc-user :user="post.author"/>
       <no-ssr>
         <content-menu
           placement="bottom-end"
@@ -18,27 +15,22 @@
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>
-      <ds-space margin-bottom="small" />
+      <ds-space margin-bottom="small"/>
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
-      <div
-        class="content hc-editor-content"
-        v-html="post.content"
-      />
+      <div class="content hc-editor-content" v-html="post.content"/>
       <ds-space>
         <ds-text
           v-if="post.createdAt"
           align="right"
           size="small"
           color="soft"
-        >
-          {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
-        </ds-text>
+        >{{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}</ds-text>
       </ds-space>
       <!-- eslint-enable vue/no-v-html -->
       <!-- Shout Button -->
-      <ds-space margin="xx-large" />
+      <ds-space margin="xx-large"/>
       <hc-shout-button
         v-if="post.author"
         :disabled="isAuthor(post.author.id)"
@@ -54,7 +46,7 @@
         :name="category.icon"
         size="large"
       />&nbsp;
-      <ds-space margin-bottom="small" />
+      <ds-space margin-bottom="small"/>
       <!--<div class="tags">
       <ds-icon name="compass" /> <ds-tag
         v-for="category in post.categories"
@@ -62,52 +54,38 @@
       >
         {{ category.name }}
       </ds-tag>
-    </div>-->
+      </div>-->
       <!-- Tags -->
       <template v-if="post.tags && post.tags.length">
-        <ds-space margin="xx-small" />
+        <ds-space margin="xx-small"/>
         <div class="tags">
-          <ds-icon name="tags" /> <ds-tag
-            v-for="tag in post.tags"
-            :key="tag.id"
-          >
-            <ds-icon name="tag" /> {{ tag.name }}
+          <ds-icon name="tags"/>
+          <ds-tag v-for="tag in post.tags" :key="tag.id">
+            <ds-icon name="tag"/>
+            {{ tag.name }}
           </ds-tag>
         </div>
       </template>
-      <ds-space margin="small" />
+      <ds-space margin="small"/>
       <!-- Comments -->
       <ds-section slot="footer">
         <h3 style="margin-top: 0;">
           <span>
-            <ds-icon name="comments" />
+            <ds-icon name="comments"/>
             <ds-tag
               v-if="post.comments"
               style="margin-top: -4px; margin-left: -12px; position: absolute;"
               color="primary"
               size="small"
               round
-            >
-              {{ post.commentsCount }}
-            </ds-tag> &nbsp; Comments
+            >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
           </span>
         </h3>
-        <ds-space margin-bottom="large" />
-        <div
-          v-if="post.comments"
-          id="comments"
-          class="comments"
-        >
-          <comment
-            v-for="comment in post.comments"
-            :key="comment.id"
-            :comment="comment"
-          />
+        <ds-space margin-bottom="large"/>
+        <div v-if="post.comments" id="comments" class="comments">
+          <comment v-for="comment in post.comments" :key="comment.id" :comment="comment"/>
         </div>
-        <hc-empty
-          v-else
-          icon="messages"
-        />
+        <hc-empty v-else icon="messages"/>
       </ds-section>
     </ds-card>
   </transition>
