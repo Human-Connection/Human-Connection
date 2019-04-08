@@ -15,4 +15,4 @@ sudo mv ./doctl /usr/local/bin/doctl
 
 doctl auth init --access-token $DOCTL_ACCESS_TOKEN
 mkdir -p ~/.kube/
-doctl kubernetes cluster kubeconfig show nitro-staging > ~/.kube/config.yaml
+doctl kubernetes cluster kubeconfig show nitro-staging > ~/.kube/config
