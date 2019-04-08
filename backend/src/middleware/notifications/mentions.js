@@ -1,4 +1,4 @@
-const MENTION_REGEX = /\s@(\S+)/g
+const MENTION_REGEX = /\s@([\w_-]+)/g
 
 export function extractSlugs(content) {
   let slugs = []
