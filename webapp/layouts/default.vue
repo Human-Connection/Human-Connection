@@ -49,13 +49,11 @@
                   slot="popover"
                 >
                   <div class="notifications-menu-popover">
-                    <nuxt-link
+                    <notification
                       v-for="notification in notifications"
                       :key="notification.id"
-                      :to="{ name: 'post-id-slug', params: { id: notification.post.id, slug: notification.post.slug } }"
-                    >
-                      {{ notification.post.contentExcerpt }}
-                    </nuxt-link>
+                      :notification="notification"
+                    />
                   </div>
                 </template>
               </dropdown>
@@ -145,6 +143,7 @@ import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
+import Notification from '~/components/Notification'
 import seo from '~/components/mixins/seo'
 
 export default {
@@ -153,7 +152,8 @@ export default {
     LocaleSwitch,
     SearchInput,
     Modal,
-    LocaleSwitch
+    LocaleSwitch,
+    Notification
   },
   mixins: [seo],
   data() {

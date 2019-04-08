@@ -1,3 +1,4 @@
+import faker from 'faker'
 import Factory from './factories'
 
 /* eslint-disable no-multi-spaces */
@@ -96,7 +97,7 @@ import Factory from './factories'
       asTrick.create('Post',     { id: 'p4' }),
       asTrack.create('Post',     { id: 'p5' }),
       asAdmin.create('Post',     { id: 'p6' }),
-      asModerator.create('Post', { id: 'p7' }),
+      asModerator.create('Post', { id: 'p7', content: `Hey @jenny-rostock, what's up? ${faker.lorem.paragraph()}` }),
       asUser.create('Post',      { id: 'p8' }),
       asTick.create('Post',      { id: 'p9' }),
       asTrick.create('Post',     { id: 'p10' }),

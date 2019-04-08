@@ -89,7 +89,11 @@ export const actions = {
               createdAt
               post {
                 author {
+                  id
+                  slug
                   name
+                  disabled
+                  deleted
                 }
                 title
                 contentExcerpt
