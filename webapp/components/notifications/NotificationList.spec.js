@@ -24,68 +24,70 @@ config.stubs['v-popover'] = '<span><slot /></span>'
 describe('NotificationList.vue', () => {
   let wrapper
   let Wrapper
-  let propsData
   let mocks
   let stubs
-  let getters
-  let actions
   let user
+  let data
+  let store
+  let markAsRead
 
   beforeEach(() => {
+    store = new Vuex.Store({
+      getters: {
+        'auth/user': () => {
+          return {}
+        }
+      }
+    })
     mocks = {
       $t: jest.fn()
     }
     stubs = {
       NuxtLink: RouterLinkStub
     }
-    actions = {
-      'notifications/markAsRead': jest.fn()
-    }
-    getters = {
-      'auth/user': () => {
-        return {
-          notifications: [
-            {
-              id: 'notification-41',
-              read: false,
-              post: {
-                id: 'post-1',
-                title: 'some post title',
-                contentExcerpt: 'this is a post content',
-                author: {
-                  id: 'john-1',
-                  slug: 'john-doe',
-                  name: 'John Doe'
-                }
-              }
-            },
-            {
-              id: 'notification-42',
-              read: false,
-              post: {
-                id: 'post-2',
-                title: 'another post title',
-                contentExcerpt: 'this is yet another post content',
-                author: {
-                  id: 'john-1',
-                  slug: 'john-doe',
-                  name: 'John Doe'
-                }
+    markAsRead = jest.fn()
+    data = () => {
+      return {
+        notifications: [
+          {
+            id: 'notification-41',
+            read: false,
+            post: {
+              id: 'post-1',
+              title: 'some post title',
+              contentExcerpt: 'this is a post content',
+              author: {
+                id: 'john-1',
+                slug: 'john-doe',
+                name: 'John Doe'
               }
             }
-          ]
-        }
+          },
+          {
+            id: 'notification-42',
+            read: false,
+            post: {
+              id: 'post-2',
+              title: 'another post title',
+              contentExcerpt: 'this is yet another post content',
+              author: {
+                id: 'john-1',
+                slug: 'john-doe',
+                name: 'John Doe'
+              }
+            }
+          }
+        ]
       }
     }
   })
 
   describe('shallowMount', () => {
     const Wrapper = () => {
-      const store = new Vuex.Store({ getters, actions })
       return shallowMount(NotificationList, {
-        store,
-        propsData,
+        data,
         mocks,
+        store,
         localVue
       })
     }
@@ -101,12 +103,11 @@ describe('NotificationList.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      const store = new Vuex.Store({ getters, actions })
       return mount(NotificationList, {
-        store,
-        propsData,
+        data,
         mocks,
         stubs,
+        store,
         localVue
       })
     }
@@ -117,6 +118,7 @@ describe('NotificationList.vue', () => {
 
     describe('click on a notification', () => {
       beforeEach(() => {
+        wrapper.setMethods({ markAsRead })
         wrapper
           .findAll(Notification)
           .at(1)
@@ -124,9 +126,7 @@ describe('NotificationList.vue', () => {
       })
 
       it('marks notification as read', () => {
-        expect(actions['notifications/markAsRead'].mock.calls[0][1]).toEqual(
-          'notification-42'
-        )
+        expect(markAsRead).toBeCalledWith('notification-42')
       })
     })
   })
