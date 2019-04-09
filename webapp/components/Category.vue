@@ -1,16 +1,19 @@
 <template>
   <ds-tag>
-    <ds-icon size="large" :name="icon"/>
+    <ds-icon
+      size="large"
+      :name="icon"
+    />
     {{ name }}
   </ds-tag>
 </template>
 
 <script>
 export default {
-  name: 'hc-category',
+  name: 'HcCategory',
   props: {
-    icon: { type: String },
-    name: { type: String }
+    icon: { type: String, required: true },
+    name: { type: String, required: true }
   }
 }
 </script>

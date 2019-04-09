@@ -6,10 +6,11 @@
 import moment from 'moment'
 
 export default {
-  name: 'hc-relative-date-time',
+  name: 'HcRelativeDateTime',
   props: {
     dateTime: {
-      type: [Date, String]
+      type: [Date, String],
+      required: true
     }
   },
   data() {
@@ -32,6 +33,15 @@ export default {
     dateTime(dateTime) {
       this.calcRelativeDateTime()
     }
+  },
+  created() {
+    this.calcRelativeDateTime()
+  },
+  mounted() {
+    this.calcRelativeDateTime()
+  },
+  destroyed() {
+    clearTimeout(this.timeout)
   },
   methods: {
     calcRelativeDateTime() {
@@ -58,15 +68,6 @@ export default {
         this.calcRelativeDateTime()
       }, this.interval)
     }
-  },
-  created() {
-    this.calcRelativeDateTime()
-  },
-  mounted() {
-    this.calcRelativeDateTime()
-  },
-  destroyed() {
-    clearTimeout(this.timeout)
   }
 }
 </script>
