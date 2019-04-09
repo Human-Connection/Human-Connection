@@ -11,25 +11,57 @@
 
 <script>
 import Notification from './Notification'
-import { mapGetters, mapActions } from 'vuex'
+import gql from 'graphql-tag'
+
+const MARK_AS_READ = gql(`
+mutation($id: ID!, $read: Boolean!) {
+  UpdateNotification(id: $id, read: $read) {
+    id
+    read
+  }
+}`)
+
+const NOTIFICATIONS = gql(`{
+  currentUser {
+    id
+    notifications(read: false, orderBy: createdAt_desc) {
+      id read createdAt
+      post {
+        title contentExcerpt slug
+        author { id slug name disabled deleted }
+      }
+    }
+  }
+}`)
 
 export default {
   name: 'NotificationList',
   components: {
     Notification
   },
-  computed: {
-    ...mapGetters({
-      currentUser: 'auth/user'
-    }),
-    notifications() {
-      return this.currentUser.notifications
+  methods: {
+    async markAsRead(notificationId) {
+      const variables = { id: notificationId, read: true }
+      try {
+        await this.$apollo.mutate({
+          mutation: MARK_AS_READ,
+          variables
+        })
+      } catch (err) {
+        throw new Error(err)
+      }
     }
   },
-  methods: {
-    ...mapActions({
-      markAsRead: 'notifications/markAsRead'
-    })
+  apollo: {
+    notifications: {
+      query: NOTIFICATIONS,
+      update: data => {
+        const {
+          currentUser: { notifications }
+        } = data
+        return notifications
+      }
+    }
   }
 }
 </script>
