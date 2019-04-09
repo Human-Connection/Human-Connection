@@ -24,7 +24,7 @@ describe('extract', () => {
   })
 
   it('ignores email addresses', () => {
-      const content = 'Hello somebody@example.org'
-      expect(extractSlugs(content)).toEqual([])
+    const content = 'Hello somebody@example.org'
+    expect(extractSlugs(content)).toEqual([])
   })
 })
