@@ -9,7 +9,7 @@
         icon="bell"
         @click.prevent="toggleMenu"
       >
-        1
+        {{ totalNotifications }}
       </ds-button>
     </template>
     <template
@@ -56,6 +56,11 @@ export default {
   components: {
     NotificationList,
     Dropdown
+  },
+  computed: {
+    totalNotifications() {
+      return (this.notifications || []).length
+    }
   },
   methods: {
     async markAsRead(notificationId) {

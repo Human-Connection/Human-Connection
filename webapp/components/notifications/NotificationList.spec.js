@@ -26,7 +26,6 @@ describe('NotificationList.vue', () => {
   let Wrapper
   let mocks
   let stubs
-  let user
   let store
   let propsData
 
