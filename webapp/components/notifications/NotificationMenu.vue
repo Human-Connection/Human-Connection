@@ -1,5 +1,15 @@
 <template>
-  <dropdown class="notifications-menu">
+  <ds-button
+    v-if="totalNotifications <= 0"
+    disabled
+    icon="bell"
+  >
+    {{ totalNotifications }}
+  </ds-button>
+  <dropdown
+    v-else
+    class="notifications-menu"
+  >
     <template
       slot="default"
       slot-scope="{toggleMenu}"
