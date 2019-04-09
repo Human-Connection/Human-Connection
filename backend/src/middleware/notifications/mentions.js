@@ -1,6 +1,6 @@
 const MENTION_REGEX = /\s@([\w_-]+)/g
 
-export function extractSlugs(content) {
+export function extractSlugs (content) {
   let slugs = []
   let match
   while ((match = MENTION_REGEX.exec(content)) != null) {
