@@ -102,7 +102,7 @@ import Factory from './factories'
       asTick.create('Post',      { id: 'p9' }),
       asTrick.create('Post',     { id: 'p10' }),
       asTrack.create('Post',     { id: 'p11' }),
-      asAdmin.create('Post',     { id: 'p12' }),
+      asAdmin.create('Post',     { id: 'p12', content: `Hey @jenny-rostock, here is another notification for you! ${faker.lorem.paragraph()}` }),
       asModerator.create('Post', { id: 'p13' }),
       asUser.create('Post',      { id: 'p14' }),
       asTick.create('Post',      { id: 'p15' })
