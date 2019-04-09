@@ -32,27 +32,7 @@
           </no-ssr>
           <template v-if="isLoggedIn">
             <no-ssr>
-              <dropdown class="notifications-menu">
-                <template
-                  slot="default"
-                  slot-scope="{toggleMenu}"
-                >
-                  <ds-button
-                    primary
-                    icon="bell"
-                    @click.prevent="toggleMenu"
-                  >
-                    1
-                  </ds-button>
-                </template>
-                <template
-                  slot="popover"
-                >
-                  <div class="notifications-menu-popover">
-                    <notification-list />
-                  </div>
-                </template>
-              </dropdown>
+              <notification-menu />
             </no-ssr>
             <no-ssr>
               <dropdown class="avatar-menu">
@@ -136,10 +116,10 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
-import Dropdown from '~/components/Dropdown'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
-import NotificationList from '~/components/notifications/NotificationList'
+import NotificationMenu from '~/components/notifications/NotificationMenu'
+import Dropdown from '~/components/Dropdown'
 import seo from '~/components/mixins/seo'
 
 export default {
@@ -149,7 +129,7 @@ export default {
     SearchInput,
     Modal,
     LocaleSwitch,
-    NotificationList
+    NotificationMenu
   },
   mixins: [seo],
   data() {
@@ -262,11 +242,6 @@ export default {
 .main-navigation-right {
   display: flex;
   flex: 1;
-}
-
-.notifications-menu {
-  display: flex;
-  align-items: center;
 }
 
 .avatar-menu-trigger {

@@ -27,9 +27,8 @@ describe('NotificationList.vue', () => {
   let mocks
   let stubs
   let user
-  let data
   let store
-  let markAsRead
+  let propsData
 
   beforeEach(() => {
     store = new Vuex.Store({
@@ -45,47 +44,44 @@ describe('NotificationList.vue', () => {
     stubs = {
       NuxtLink: RouterLinkStub
     }
-    markAsRead = jest.fn()
-    data = () => {
-      return {
-        notifications: [
-          {
-            id: 'notification-41',
-            read: false,
-            post: {
-              id: 'post-1',
-              title: 'some post title',
-              contentExcerpt: 'this is a post content',
-              author: {
-                id: 'john-1',
-                slug: 'john-doe',
-                name: 'John Doe'
-              }
-            }
-          },
-          {
-            id: 'notification-42',
-            read: false,
-            post: {
-              id: 'post-2',
-              title: 'another post title',
-              contentExcerpt: 'this is yet another post content',
-              author: {
-                id: 'john-1',
-                slug: 'john-doe',
-                name: 'John Doe'
-              }
+    propsData = {
+      notifications: [
+        {
+          id: 'notification-41',
+          read: false,
+          post: {
+            id: 'post-1',
+            title: 'some post title',
+            contentExcerpt: 'this is a post content',
+            author: {
+              id: 'john-1',
+              slug: 'john-doe',
+              name: 'John Doe'
             }
           }
-        ]
-      }
+        },
+        {
+          id: 'notification-42',
+          read: false,
+          post: {
+            id: 'post-2',
+            title: 'another post title',
+            contentExcerpt: 'this is yet another post content',
+            author: {
+              id: 'john-1',
+              slug: 'john-doe',
+              name: 'John Doe'
+            }
+          }
+        }
+      ]
     }
   })
 
   describe('shallowMount', () => {
     const Wrapper = () => {
       return shallowMount(NotificationList, {
-        data,
+        propsData,
         mocks,
         store,
         localVue
@@ -104,7 +100,7 @@ describe('NotificationList.vue', () => {
   describe('mount', () => {
     const Wrapper = () => {
       return mount(NotificationList, {
-        data,
+        propsData,
         mocks,
         stubs,
         store,
@@ -118,15 +114,15 @@ describe('NotificationList.vue', () => {
 
     describe('click on a notification', () => {
       beforeEach(() => {
-        wrapper.setMethods({ markAsRead })
         wrapper
           .findAll(Notification)
           .at(1)
           .trigger('click')
       })
 
-      it('marks notification as read', () => {
-        expect(markAsRead).toBeCalledWith('notification-42')
+      it("emits 'markAsRead' with the notificationId", () => {
+        expect(wrapper.emitted('markAsRead')).toBeTruthy()
+        expect(wrapper.emitted('markAsRead')[0]).toEqual(['notification-42'])
       })
     })
   })
