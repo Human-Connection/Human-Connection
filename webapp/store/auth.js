@@ -83,23 +83,6 @@ export const actions = {
             role
             about
             locationName
-            notifications(read: false, orderBy: createdAt_desc) {
-              id
-              read
-              createdAt
-              post {
-                author {
-                  id
-                  slug
-                  name
-                  disabled
-                  deleted
-                }
-                title
-                contentExcerpt
-                slug
-              }
-            }
           }
         }`)
     })

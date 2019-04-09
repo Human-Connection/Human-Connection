@@ -118,21 +118,15 @@ describe('NotificationList.vue', () => {
     describe('click on a notification', () => {
       beforeEach(() => {
         wrapper
-          .findAll('a')
+          .findAll(Notification)
           .at(1)
           .trigger('click')
       })
 
       it('marks notification as read', () => {
-        expect(actions['notifications/markAsRead'].mock.calls[0][1]).toEqual(42)
-      })
-
-      describe('given mutation resolves', () => {
-        it.skip('updates currentUser.notifications', () => {})
-      })
-
-      describe('given mutation rejects', () => {
-        it.skip('displays error warning', () => {})
+        expect(actions['notifications/markAsRead'].mock.calls[0][1]).toEqual(
+          'notification-42'
+        )
       })
     })
   })
