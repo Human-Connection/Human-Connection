@@ -149,8 +149,8 @@ export default {
 .post-add-button {
   z-index: 100;
   position: fixed;
-  top: 100vh;
-  left: 100vw;
+  top: 98vh;
+  left: 98vw;
   transform: translate(-120%, -120%);
   box-shadow: $box-shadow-x-large;
 }
