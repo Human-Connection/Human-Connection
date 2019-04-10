@@ -58,7 +58,8 @@ export default {
     }),
     socialMediaLinks() {
       const { socialMedia = [] } = this.currentUser
-      return socialMedia.map(url => {
+      return socialMedia.map(socialMedia => {
+        const { url } = socialMedia
         const matches = url.match(
           /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
         )
@@ -77,14 +78,19 @@ export default {
         .mutate({
           mutation: gql`
             mutation($url: String!) {
-              CreateSocialMedia(url: $url)
+              CreateSocialMedia(url: $url) {
+                url
+              }
             }
           `,
           variables: {
             url: this.value
           },
           update: (store, { data }) => {
-            const socialMedia = data.addSocialMedia
+            const socialMedia = [
+              ...this.currentUser.socialMedia,
+              data.CreateSocialMedia
+            ]
             this.setCurrentUser({
               ...this.currentUser,
               socialMedia
