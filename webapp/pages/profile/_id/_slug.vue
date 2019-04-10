@@ -42,7 +42,8 @@
               color="soft"
               size="small"
             >
-              <ds-icon name="map-marker" /> {{ user.location.name }}
+              <ds-icon name="map-marker" />
+              {{ user.location.name }}
             </ds-text>
             <ds-text
               align="center"
@@ -56,9 +57,7 @@
             v-if="user.badges && user.badges.length"
             margin="x-small"
           >
-            <hc-badges
-              :badges="user.badges"
-            />
+            <hc-badges :badges="user.badges" />
           </ds-space>
           <ds-flex>
             <ds-flex-item>
@@ -82,9 +81,7 @@
               </no-ssr>
             </ds-flex-item>
           </ds-flex>
-          <ds-space
-            margin="small"
-          >
+          <ds-space margin="small">
             <hc-follow-button
               v-if="!myProfile"
               :follow-id="user.id"
@@ -227,32 +224,28 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <ds-flex-item class="ds-tab-nav-item">
-                  <ds-space margin="small">
-                    <!-- TODO: find better solution for rendering errors -->
+                <!--<ds-flex-item class="ds-tab-nav-item">
+                <ds-space margin="small">-->
+                <!-- TODO: find better solution for rendering errors -->
+                <!--
                     <no-ssr>
                       <ds-number :label="$t('profile.commented')">
-                        <hc-count-to
-                          slot="count"
-                          :end-val="user.commentsCount"
-                        />
+                        <hc-count-to slot="count" :end-val="user.commentsCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <ds-flex-item class="ds-tab-nav-item">
-                  <ds-space margin="small">
-                    <!-- TODO: find better solution for rendering errors -->
-                    <no-ssr>
+                -->
+                <!--<ds-flex-item class="ds-tab-nav-item">
+                <ds-space margin="small">-->
+                <!-- TODO: find better solution for rendering errors -->
+                <!--<no-ssr>
                       <ds-number :label="$t('profile.shouted')">
-                        <hc-count-to
-                          slot="count"
-                          :end-val="user.shoutedCount"
-                        />
+                        <hc-count-to slot="count" :end-val="user.shoutedCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>
+                </ds-flex-item>-->
               </ds-flex>
             </ds-card>
           </ds-flex-item>
@@ -273,9 +266,7 @@
               :key="post.id"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
             >
-              <hc-post-card
-                :post="post"
-              />
+              <hc-post-card :post="post" />
             </ds-flex-item>
           </template>
           <template v-else>
