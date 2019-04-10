@@ -9,7 +9,7 @@
         model="name"
         icon="user"
         :label="$t('settings.data.labelName')"
-        :placeholder="$t('settings.data.labelName')"
+        :placeholder="$t('settings.data.namePlaceholder')"
       />
       <!-- eslint-disable vue/use-v-on-exact -->
       <ds-select

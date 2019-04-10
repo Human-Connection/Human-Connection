@@ -3,23 +3,14 @@
     <ds-card v-if="user && user.image">
       <p>PROFILE IMAGE</p>
     </ds-card>
-    <ds-space />
-    <ds-flex
-      v-if="user"
-      :width="{ base: '100%' }"
-      gutter="base"
-    >
+    <ds-space/>
+    <ds-flex v-if="user" :width="{ base: '100%' }" gutter="base">
       <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
         <ds-card
           :class="{'disabled-content': user.disabled}"
           style="position: relative; height: auto;"
         >
-          <ds-avatar
-            :image="user.avatar"
-            :name="user.name || 'Anonymus'"
-            class="profile-avatar"
-            size="120px"
-          />
+          <ds-avatar :image="user.avatar" :name="userName()" class="profile-avatar" size="120px"/>
           <no-ssr>
             <content-menu
               placement="bottom-end"
@@ -29,62 +20,37 @@
             />
           </no-ssr>
           <ds-space margin="small">
-            <ds-heading
-              tag="h3"
-              align="center"
-              no-margin
-            >
-              {{ user.name }}
-            </ds-heading>
-            <ds-text
-              v-if="user.location"
-              align="center"
-              color="soft"
-              size="small"
-            >
-              <ds-icon name="map-marker" /> {{ user.location.name }}
+            <ds-heading tag="h3" align="center" no-margin>{{ userName() }}</ds-heading>
+            <ds-text v-if="user.location" align="center" color="soft" size="small">
+              <ds-icon name="map-marker"/>
+              {{ user.location.name }}
             </ds-text>
             <ds-text
               align="center"
               color="soft"
               size="small"
-            >
-              {{ $t('profile.memberSince') }} {{ user.createdAt | date('MMMM yyyy') }}
-            </ds-text>
+            >{{ $t('profile.memberSince') }} {{ user.createdAt | date('MMMM yyyy') }}</ds-text>
           </ds-space>
-          <ds-space
-            v-if="user.badges && user.badges.length"
-            margin="x-small"
-          >
-            <hc-badges
-              :badges="user.badges"
-            />
+          <ds-space v-if="user.badges && user.badges.length" margin="x-small">
+            <hc-badges :badges="user.badges"/>
           </ds-space>
           <ds-flex>
             <ds-flex-item>
               <no-ssr>
                 <ds-number :label="$t('profile.followers')">
-                  <hc-count-to
-                    slot="count"
-                    :end-val="followedByCount"
-                  />
+                  <hc-count-to slot="count" :end-val="followedByCount"/>
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item>
               <no-ssr>
                 <ds-number :label="$t('profile.following')">
-                  <hc-count-to
-                    slot="count"
-                    :end-val="Number(user.followingCount) || 0"
-                  />
+                  <hc-count-to slot="count" :end-val="Number(user.followingCount) || 0"/>
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
           </ds-flex>
-          <ds-space
-            margin="small"
-          >
+          <ds-space margin="small">
             <hc-follow-button
               v-if="!myProfile"
               :follow-id="user.id"
@@ -95,122 +61,61 @@
           </ds-space>
           <template v-if="user.about">
             <hr>
-            <ds-space
-              margin-top="small"
-              margin-bottom="small"
-            >
-              <ds-text
-                color="soft"
-                size="small"
-              >
-                {{ user.about }}
-              </ds-text>
+            <ds-space margin-top="small" margin-bottom="small">
+              <ds-text color="soft" size="small">{{ user.about }}</ds-text>
             </ds-space>
           </template>
         </ds-card>
-        <ds-space />
-        <ds-heading
-          tag="h3"
-          soft
-          style="text-align: center; margin-bottom: 10px;"
-        >
-          Netzwerk
-        </ds-heading>
+        <ds-space/>
+        <ds-heading tag="h3" soft style="text-align: center; margin-bottom: 10px;">Netzwerk</ds-heading>
         <ds-card style="position: relative; height: auto;">
-          <ds-space
-            v-if="user.following && user.following.length"
-            margin="x-small"
-          >
-            <ds-text
-              tag="h5"
-              color="soft"
-            >
-              Wem folgt {{ user.name | truncate(15) }}?
-            </ds-text>
+          <ds-space v-if="user.following && user.following.length" margin="x-small">
+            <ds-text tag="h5" color="soft">Wem folgt {{ userName(15) }}?</ds-text>
           </ds-space>
           <template v-if="user.following && user.following.length">
-            <ds-space
-              v-for="follow in uniq(user.following)"
-              :key="follow.id"
-              margin="x-small"
-            >
+            <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <no-ssr>
-                <user
-                  :user="follow"
-                  :trunc="15"
-                />
+                <user :user="follow" :trunc="15"/>
               </no-ssr>
             </ds-space>
-            <ds-space
-              v-if="user.followingCount - user.following.length"
-              margin="small"
-            >
+            <ds-space v-if="user.followingCount - user.following.length" margin="small">
               <ds-text
                 size="small"
                 color="softer"
-              >
-                und {{ user.followingCount - user.following.length }} weitere
-              </ds-text>
+              >und {{ user.followingCount - user.following.length }} weitere</ds-text>
             </ds-space>
           </template>
           <template v-else>
-            <p style="text-align: center; opacity: .5;">
-              {{ user.name }} folgt niemandem
-            </p>
+            <p style="text-align: center; opacity: .5;">{{ userName() }} folgt niemandem</p>
           </template>
         </ds-card>
-        <ds-space />
+        <ds-space/>
         <ds-card style="position: relative; height: auto;">
-          <ds-space
-            v-if="user.followedBy && user.followedBy.length"
-            margin="x-small"
-          >
-            <ds-text
-              tag="h5"
-              color="soft"
-            >
-              Wer folgt {{ user.name | truncate(15) }}?
-            </ds-text>
+          <ds-space v-if="user.followedBy && user.followedBy.length" margin="x-small">
+            <ds-text tag="h5" color="soft">Wer folgt {{ userName(15) }}?</ds-text>
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
-            <ds-space
-              v-for="follow in uniq(user.followedBy)"
-              :key="follow.id"
-              margin="x-small"
-            >
+            <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <no-ssr>
-                <user
-                  :user="follow"
-                  :trunc="15"
-                />
+                <user :user="follow" :trunc="15"/>
               </no-ssr>
             </ds-space>
-            <ds-space
-              v-if="user.followedByCount - user.followedBy.length"
-              margin="small"
-            >
+            <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
               <ds-text
                 size="small"
                 color="softer"
-              >
-                und {{ user.followedByCount - user.followedBy.length }} weitere
-              </ds-text>
+              >und {{ user.followedByCount - user.followedBy.length }} weitere</ds-text>
             </ds-space>
           </template>
           <template v-else>
-            <p style="text-align: center; opacity: .5;">
-              niemand folgt {{ user.name }}
-            </p>
+            <p style="text-align: center; opacity: .5;">niemand folgt {{ userName() }}</p>
           </template>
         </ds-card>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
-        <ds-flex
-          :width="{ base: '100%' }"
-          gutter="small"
-        >
+        <ds-flex :width="{ base: '100%' }" gutter="small">
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
@@ -219,10 +124,7 @@
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
                       <ds-number :label="$t('common.post', null, user.contributionsCount)">
-                        <hc-count-to
-                          slot="count"
-                          :end-val="user.contributionsCount"
-                        />
+                        <hc-count-to slot="count" :end-val="user.contributionsCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
@@ -232,10 +134,7 @@
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
                       <ds-number :label="$t('profile.commented')">
-                        <hc-count-to
-                          slot="count"
-                          :end-val="user.commentsCount"
-                        />
+                        <hc-count-to slot="count" :end-val="user.commentsCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
@@ -245,10 +144,7 @@
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
                       <ds-number :label="$t('profile.shouted')">
-                        <hc-count-to
-                          slot="count"
-                          :end-val="user.shoutedCount"
-                        />
+                        <hc-count-to slot="count" :end-val="user.shoutedCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
@@ -273,25 +169,16 @@
               :key="post.id"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
             >
-              <hc-post-card
-                :post="post"
-              />
+              <hc-post-card :post="post"/>
             </ds-flex-item>
           </template>
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
-              <hc-empty
-                margin="xx-large"
-                icon="file"
-              />
+              <hc-empty margin="xx-large" icon="file"/>
             </ds-flex-item>
           </template>
         </ds-flex>
-        <hc-load-more
-          v-if="hasMore"
-          :loading="$apollo.loading"
-          @click="showMoreContributions"
-        />
+        <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions"/>
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -395,6 +282,14 @@ export default {
         },
         fetchPolicy: 'cache-and-network'
       })
+    },
+    userName(maxLength) {
+      // Return Anonymous if no Username is given
+      if (!this.user.name) {
+        return this.$t('profile.userAnonym')
+      }
+      // Return full Username or truncated Username
+      return maxLength ? this.user.name.substring(0, maxLength) : this.user.name
     }
   },
   apollo: {

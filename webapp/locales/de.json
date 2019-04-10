@@ -15,7 +15,8 @@
     "followers": "Folgen",
     "following": "Folgt",
     "shouted": "Empfohlen",
-    "commented": "Kommentiert"
+    "commented": "Kommentiert",
+    "userAnonym": "Anonymus"
   },
   "search": {
     "placeholder": "Suchen",
@@ -27,6 +28,7 @@
     "data": {
       "name": "Deine Daten",
       "labelName": "Dein Name",
+      "namePlaceholder": "Anonymus",
       "labelCity": "Deine Stadt oder Region",
       "labelBio": "Über dich"
     },
