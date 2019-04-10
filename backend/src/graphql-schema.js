@@ -8,6 +8,7 @@ import posts from './resolvers/posts.js'
 import moderation from './resolvers/moderation.js'
 import follow from './resolvers/follow.js'
 import rewards from './resolvers/rewards.js'
+import notifications from './resolvers/notifications'
 
 export const typeDefs = fs
   .readFileSync(
@@ -18,7 +19,8 @@ export const typeDefs = fs
 export const resolvers = {
   Query: {
     ...statistics.Query,
-    ...userManagement.Query
+    ...userManagement.Query,
+    ...notifications.Query
   },
   Mutation: {
     ...userManagement.Mutation,
@@ -26,6 +28,7 @@ export const resolvers = {
     ...posts.Mutation,
     ...moderation.Mutation,
     ...follow.Mutation,
-    ...rewards.Mutation
+    ...rewards.Mutation,
+    ...notifications.Mutation
   }
 }

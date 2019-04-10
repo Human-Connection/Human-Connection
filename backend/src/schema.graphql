@@ -44,12 +44,7 @@ type Mutation {
   "Follow the given Type and ID"
   follow(id: ID!, type: FollowTypeEnum): Boolean!
   "Unfollow the given Type and ID"
-  unfollow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
-    MATCH (:User {id: $cypherParams.currentUserId})-[r:FOLLOWS]->(n {id: $id})
-    WHERE $type IN labels(n)
-    DELETE r
-    RETURN COUNT(r) > 0
-  """)
+  unfollow(id: ID!, type: FollowTypeEnum): Boolean!
 }
 
 type Statistics {
