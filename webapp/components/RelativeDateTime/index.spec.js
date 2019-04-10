@@ -7,6 +7,7 @@ describe('RelativeDateTime', () => {
   let wrapper
   let mocks
   let locale
+  let dateTime
 
   beforeEach(() => {
     mocks = {
@@ -21,32 +22,48 @@ describe('RelativeDateTime', () => {
       mocks,
       localVue,
       propsData: {
-        dateTime: new Date()
+        dateTime
       }
     })
   }
 
-  it('renders', () => {
-    expect(Wrapper().is('span')).toBe(true)
-  })
-
-  describe("locale == 'en'", () => {
+  describe('given a String as dateTime', () => {
     beforeEach(() => {
-      locale = 'en'
+      dateTime = '08.03.2017'
     })
 
     it('translates', () => {
-      expect(Wrapper().text()).toContain('today at')
+      expect(Wrapper().text()).toContain('08/03/2017')
     })
   })
 
-  describe("locale == 'de'", () => {
+  describe('given a Date object as dateTime', () => {
     beforeEach(() => {
-      locale = 'de'
+      dateTime = new Date()
     })
 
-    it('translates', () => {
-      expect(Wrapper().text()).toContain('heute um')
+    it('renders', () => {
+      expect(Wrapper().is('span')).toBe(true)
+    })
+
+    describe("locale == 'en'", () => {
+      beforeEach(() => {
+        locale = 'en'
+      })
+
+      it('translates', () => {
+        expect(Wrapper().text()).toContain('today at')
+      })
+    })
+
+    describe("locale == 'de'", () => {
+      beforeEach(() => {
+        locale = 'de'
+      })
+
+      it('translates', () => {
+        expect(Wrapper().text()).toContain('heute um')
+      })
     })
   })
 })
