@@ -34,27 +34,32 @@ export default {
         {
           name: this.$t('settings.security.name'),
           path: `/settings/security`
-        },
-        {
+        }
+        // TODO implement
+        /* {
           name: this.$t('settings.invites.name'),
           path: `/settings/invites`
-        },
-        {
+        }, */
+        // TODO implement
+        /* {
           name: this.$t('settings.download.name'),
           path: `/settings/data-download`
-        },
-        {
+        }, */
+        // TODO implement
+        /* {
           name: this.$t('settings.delete.name'),
           path: `/settings/delete-account`
-        },
-        {
+        }, */
+        // TODO implement
+        /* {
           name: this.$t('settings.organizations.name'),
           path: `/settings/my-organizations`
-        },
-        {
+        }, */
+        // TODO implement
+        /* {
           name: this.$t('settings.languages.name'),
           path: `/settings/languages`
-        }
+        } */
       ]
     }
   }
