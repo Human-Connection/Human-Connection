@@ -5,13 +5,14 @@ import { host, login } from '../jest/helpers'
 
 const factory = Factory()
 let client
+let userParams = {
+  id: 'you',
+  email: 'test@example.org',
+  password: '1234'
+}
 
 beforeEach(async () => {
-  await factory.create('User', {
-    id: 'you',
-    email: 'test@example.org',
-    password: '1234'
-  })
+  await factory.create('User', userParams)
 })
 
 afterEach(async () => {
@@ -113,6 +114,66 @@ describe('currentUser { notifications }', () => {
             }
           }
           await expect(client.request(query, variables)).resolves.toEqual(expected)
+        })
+      })
+    })
+  })
+})
+
+describe('UpdateNotification', () => {
+  const mutation = `mutation($id: ID!, $read: Boolean){
+    UpdateNotification(id: $id, read: $read) {
+      id read
+    }
+  }`
+  const variables = { id: 'to-be-updated', read: true }
+
+  describe('given a notifications', () => {
+    let headers
+
+    beforeEach(async () => {
+      const mentionedParams = {
+        id: 'mentioned-1',
+        email: 'mentioned@example.org',
+        password: '1234',
+        slug: 'mentioned'
+      }
+      await factory.create('User', mentionedParams)
+      await factory.create('Notification', { id: 'to-be-updated' })
+      await factory.authenticateAs(userParams)
+      await factory.create('Post', { id: 'p1' })
+      await Promise.all([
+        factory.relate('Notification', 'User', { from: 'to-be-updated', to: 'mentioned-1' }),
+        factory.relate('Notification', 'Post', { from: 'p1', to: 'to-be-updated' })
+      ])
+    })
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      })
+    })
+
+    describe('authenticated', () => {
+      beforeEach(async () => {
+        headers = await login({ email: 'test@example.org', password: '1234' })
+        client = new GraphQLClient(host, { headers })
+      })
+
+      it('throws authorization error', async () => {
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      })
+
+      describe('and owner', () => {
+        beforeEach(async () => {
+          headers = await login({ email: 'mentioned@example.org', password: '1234' })
+          client = new GraphQLClient(host, { headers })
+        })
+
+        it('updates notification', async () => {
+          const expected = { UpdateNotification: { id: 'to-be-updated', read: true } }
+          await expect(client.request(mutation, variables)).resolves.toEqual(expected)
         })
       })
     })
