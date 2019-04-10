@@ -60,7 +60,9 @@
               color="soft"
             >
               <ds-icon name="clock" />
-              <hc-relative-date-time :date-time="dateTime" />
+              <no-ssr>
+                <hc-relative-date-time :date-time="dateTime" />
+              </no-ssr>
             </ds-text>
           </div>
         </div>

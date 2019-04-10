@@ -44,10 +44,6 @@ export default {
       // Calculate Relative Date
       this.relativeDateTime = this.$filters.relativeDateTime(this.dateTime)
 
-      if (!process.browser) {
-        return
-      }
-
       // TODO It is unclear what exactly this does and how to archive it
       /*if (
         this.relativeDateTime ===
