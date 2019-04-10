@@ -11,20 +11,22 @@ import userMiddleware from './userMiddleware'
 import includedFieldsMiddleware from './includedFieldsMiddleware'
 import orderByMiddleware from './orderByMiddleware'
 import validUrlMiddleware from './validUrlMiddleware'
+import notificationsMiddleware from './notificationsMiddleware'
 
 export default schema => {
   let middleware = [
     passwordMiddleware,
     dateTimeMiddleware,
+    validUrlMiddleware,
     sluggifyMiddleware,
     excerptMiddleware,
     xssMiddleware,
     fixImageUrlsMiddleware,
+    notificationsMiddleware,
     softDeleteMiddleware,
     userMiddleware,
     includedFieldsMiddleware,
-    orderByMiddleware,
-    validUrlMiddleware
+    orderByMiddleware
   ]
 
   // add permisions middleware at the first position (unless we're seeding)

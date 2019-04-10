@@ -36,29 +36,35 @@ export default {
           path: `/settings/security`
         },
         {
-          name: this.$t('settings.invites.name'),
-          path: `/settings/invites`
-        },
-        {
-          name: this.$t('settings.download.name'),
-          path: `/settings/data-download`
-        },
-        {
-          name: this.$t('settings.delete.name'),
-          path: `/settings/delete-account`
-        },
-        {
-          name: this.$t('settings.organizations.name'),
-          path: `/settings/my-organizations`
-        },
-        {
-          name: this.$t('settings.languages.name'),
-          path: `/settings/languages`
-        },
-        {
           name: this.$t('settings.social-media.name'),
           path: `/settings/my-social-media`
         }
+        // TODO implement
+        /* {
+          name: this.$t('settings.invites.name'),
+          path: `/settings/invites`
+        }, */
+        // TODO implement
+        /* {
+          name: this.$t('settings.download.name'),
+          path: `/settings/data-download`
+        }, */
+        // TODO implement
+        /* {
+          name: this.$t('settings.delete.name'),
+          path: `/settings/delete-account`
+        }, */
+        // TODO implement
+        /* {
+          name: this.$t('settings.organizations.name'),
+          path: `/settings/my-organizations`
+        }, */
+        // TODO implement
+        /* {
+          name: this.$t('settings.languages.name'),
+          path: `/settings/languages`
+        },
+        } */
       ]
     }
   }
