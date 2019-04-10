@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   name: 'HcRelativeDateTime',
   props: {
@@ -19,11 +17,6 @@ export default {
       interval: 15000,
       timeout: null,
       absoluteTime: null
-    }
-  },
-  computed: {
-    locale() {
-      return this.$i18n.locale() || 'en'
     }
   },
   watch: {
@@ -45,17 +38,18 @@ export default {
   },
   methods: {
     calcRelativeDateTime() {
+      // Reset Timer
       clearTimeout(this.timeout)
-      let t = moment(this.dateTime).locale(this.locale)
-      this.absoluteTime = t.format('llll')
 
-      this.relativeDateTime = t.utc().fromNow()
+      // Calculate Relative Date
+      this.relativeDateTime = this.$filters.relativeDateTime(this.dateTime)
 
       if (!process.browser) {
         return
       }
 
-      if (
+      // TODO It is unclear what exactly this does and how to archive it
+      /*if (
         this.relativeDateTime ===
         t
           .add(this.interval, 'milliseconds')
@@ -63,7 +57,9 @@ export default {
           .fromNow()
       ) {
         this.interval += 15000
-      }
+      }*/
+
+      // Recalculate Timer
       this.timeout = setTimeout(() => {
         this.calcRelativeDateTime()
       }, this.interval)
