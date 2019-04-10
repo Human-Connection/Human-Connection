@@ -7,6 +7,7 @@ import reports from './resolvers/reports.js'
 import posts from './resolvers/posts.js'
 import moderation from './resolvers/moderation.js'
 import follow from './resolvers/follow.js'
+import shout from './resolvers/shout.js'
 import rewards from './resolvers/rewards.js'
 import notifications from './resolvers/notifications'
 
@@ -28,6 +29,7 @@ export const resolvers = {
     ...posts.Mutation,
     ...moderation.Mutation,
     ...follow.Mutation,
+    ...shout.Mutation,
     ...rewards.Mutation,
     ...notifications.Mutation
   }
