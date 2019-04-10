@@ -1,5 +1,5 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import RelativeDateTime from './index.vue'
+import RelativeDateTime from './RelativeDateTime.vue'
 
 const localVue = createLocalVue()
 
