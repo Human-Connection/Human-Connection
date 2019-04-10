@@ -42,12 +42,7 @@ type Mutation {
     RETURN COUNT(r) > 0
   """)
   "Follow the given Type and ID"
-  follow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
-    MATCH (n {id: $id}), (u:User {id: $cypherParams.currentUserId})
-    WHERE $type IN labels(n) AND NOT $id = $cypherParams.currentUserId
-    MERGE (u)-[r:FOLLOWS]->(n)
-    RETURN COUNT(r) > 0
-  """)
+  follow(id: ID!, type: FollowTypeEnum): Boolean!
   "Unfollow the given Type and ID"
   unfollow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
     MATCH (:User {id: $cypherParams.currentUserId})-[r:FOLLOWS]->(n {id: $id})
