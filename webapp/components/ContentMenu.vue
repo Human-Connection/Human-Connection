@@ -111,9 +111,8 @@ export default {
 
       if (this.isOwner && this.resourceType === 'user') {
         routes.push({
-          name: this.$t(`settings.data.name`),
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          callback: () => this.$router.push('/settings'),
+          name: this.$t(`settings.name`),
+          path: '/settings',
           icon: 'edit'
         })
       }
