@@ -6,6 +6,7 @@ import statistics from './resolvers/statistics.js'
 import reports from './resolvers/reports.js'
 import posts from './resolvers/posts.js'
 import moderation from './resolvers/moderation.js'
+import follow from './resolvers/follow.js'
 import rewards from './resolvers/rewards.js'
 
 export const typeDefs = fs
@@ -24,6 +25,7 @@ export const resolvers = {
     ...reports.Mutation,
     ...posts.Mutation,
     ...moderation.Mutation,
+    ...follow.Mutation,
     ...rewards.Mutation
   }
 }
