@@ -1,9 +1,10 @@
 import user from './user'
 import inbox from './inbox'
 import webFinger from './webFinger'
+import verify from './verify'
+
 import express from 'express'
 import cors from 'cors'
-import verify from './verify'
 
 const router = express.Router()
 
@@ -12,13 +13,13 @@ router.use('/.well-known/webfinger',
   express.urlencoded({ extended: true }),
   webFinger
 )
-router.use('/users',
+router.use('/activitypub/users',
   cors(),
   express.json({ type: ['application/activity+json', 'application/ld+json', 'application/json'] }),
   express.urlencoded({ extended: true }),
   user
 )
-router.use('/inbox',
+router.use('/activitypub/inbox',
   cors(),
   express.json({ type: ['application/activity+json', 'application/ld+json', 'application/json'] }),
   express.urlencoded({ extended: true }),

@@ -1,5 +1,10 @@
+import dotenv from 'dotenv'
+import { resolve } from 'path'
 import crypto from 'crypto'
 import request from 'request'
+const debug = require('debug')('ea:security')
+
+dotenv.config({ path: resolve('src', 'activitypub', '.env') })
 
 export function generateRsaKeyPair (options = {}) {
   const { passphrase = process.env.PRIVATE_KEY_PASSPHRASE } = options
@@ -40,14 +45,17 @@ export function verifySignature (url, headers) {
   return new Promise((resolve, reject) => {
     const signatureHeader = headers['signature'] ? headers['signature'] : headers['Signature']
     if (!signatureHeader) {
+      debug('No Signature header present!')
       resolve(false)
     }
+    debug(`Signature Header = ${signatureHeader}`)
     const signature = extractKeyValueFromSignatureHeader(signatureHeader, 'signature')
     const algorithm = extractKeyValueFromSignatureHeader(signatureHeader, 'algorithm')
     const headersString = extractKeyValueFromSignatureHeader(signatureHeader, 'headers')
     const keyId = extractKeyValueFromSignatureHeader(signatureHeader, 'keyId')
 
     if (!SUPPORTED_HASH_ALGORITHMS.includes(algorithm)) {
+      debug('Unsupported hash algorithm specified!')
       resolve(false)
     }
 
@@ -59,6 +67,7 @@ export function verifySignature (url, headers) {
       }
     })
     const signingString = constructSigningString(url, verifyHeaders)
+    debug(`keyId= ${keyId}`)
     request({
       url: keyId,
       headers: {
@@ -66,6 +75,7 @@ export function verifySignature (url, headers) {
       }
     }, (err, response, body) => {
       if (err) reject(err)
+      debug(`body = ${body}`)
       const actor = JSON.parse(body)
       const publicKeyPem = actor.publicKey.publicKeyPem
       resolve(httpVerify(publicKeyPem, signature, signingString, algorithm))
@@ -75,8 +85,8 @@ export function verifySignature (url, headers) {
 
 // private: signing
 function constructSigningString (url, headers) {
-  const urlObj = new URL(url)
-  let signingString = `(request-target): post ${urlObj.pathname}${urlObj.search !== '' ? urlObj.search : ''}`
+  const { pathname, search} = new URL(url)
+  let signingString = `(request-target): post ${pathname}${search !== '' ? search : ''}`
   return Object.keys(headers).reduce((result, key) => {
     return result + `\n${key.toLowerCase()}: ${headers[key]}`
   }, signingString)

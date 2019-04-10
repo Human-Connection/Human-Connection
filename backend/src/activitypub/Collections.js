@@ -2,30 +2,29 @@ export default Collections
 
 function Collections(dataSource) {
   this.dataSource = dataSource
-}
 
-Collections.prototype = {
-  getFollowersCollection (actorId) {
+  this.getFollowersCollection = (actorId) => {
     return this.dataSource.getFollowersCollection(actorId)
-  },
+  }
 
-  getFollowersCollectionPage (actorId) {
+  this.getFollowersCollectionPage = (actorId) => {
     return this.dataSource.getFollowersCollectionPage(actorId)
-  },
+  }
 
-  getFollowingCollection (actorId) {
+  this.getFollowingCollection = (actorId) => {
     return this.dataSource.getFollowingCollection(actorId)
-  },
+  }
 
-  getFollowingCollectionPage (actorId) {
+  this.getFollowingCollectionPage = (actorId) => {
     return this.dataSource.getFollowingCollectionPage(actorId)
-  },
+  }
 
-  getOutboxCollection (actorId) {
+  this.getOutboxCollection = (actorId) => {
     return this.dataSource.getOutboxCollection(actorId)
-  },
+  }
 
-  getOutboxCollectionPage (actorId) {
+  this.getOutboxCollectionPage = (actorId) => {
     return this.dataSource.getOutboxCollectionPage(actorId)
   }
 }
+
