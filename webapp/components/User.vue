@@ -1,6 +1,8 @@
 <template>
   <div v-if="!user || ((user.disabled || user.deleted) && !isModerator)">
-    <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
+    <div
+      style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
+    >
       <ds-avatar
         style="display: inline-block; vertical-align: middle;"
         size="32px"
@@ -10,9 +12,7 @@
       <b
         class="username"
         style="vertical-align: middle;"
-      >
-        Anonymus
-      </b>
+      >Anonymus</b>
     </div>
   </div>
   <dropdown
@@ -33,7 +33,9 @@
           @mouseover="openMenu(true)"
           @mouseleave="closeMenu(true)"
         >
-          <div style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;">
+          <div
+            style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
+          >
             <ds-avatar
               :image="user.avatar"
               :name="user.name"
@@ -45,16 +47,26 @@
             <b
               class="username"
               style="vertical-align: middle;"
+            >{{ user.name | truncate(trunc, 18) }}</b>
+          </div>
+          <!-- Time -->
+          <div
+            v-if="dateTime"
+            style="display: inline;"
+          >
+            <ds-text
+              align="right"
+              size="small"
+              color="soft"
             >
-              {{ user.name | truncate(trunc, 18) }}
-            </b>
+              <ds-icon name="clock" />
+              <hc-relative-date-time :date-time="dateTime" />
+            </ds-text>
           </div>
         </div>
       </nuxt-link>
     </template>
-    <template
-      slot="popover"
-    >
+    <template slot="popover">
       <div style="min-width: 250px">
         <hc-badges
           v-if="user.badges && user.badges.length"
@@ -68,11 +80,10 @@
           style="margin-top: 5px"
           bold
         >
-          <ds-icon name="map-marker" /> {{ user.location.name }}
+          <ds-icon name="map-marker" />
+          {{ user.location.name }}
         </ds-text>
-        <ds-flex
-          style="margin-top: -10px"
-        >
+        <ds-flex style="margin-top: -10px">
           <ds-flex-item class="ds-tab-nav-item">
             <ds-space margin="small">
               <ds-number
@@ -125,21 +136,25 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcBadges from '~/components/Badges.vue'
 import Dropdown from '~/components/Dropdown'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'HcUser',
   components: {
+    HcRelativeDateTime,
     HcFollowButton,
     HcBadges,
     Dropdown
   },
   props: {
     user: { type: Object, default: null },
-    trunc: { type: Number, default: null }
+    trunc: { type: Number, default: null },
+    dateTime: { type: [Date, String], default: null }
   },
   computed: {
     ...mapGetters({
