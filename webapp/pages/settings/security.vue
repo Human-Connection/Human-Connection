@@ -1,12 +1,12 @@
 <template>
   <ds-card :header="$t('settings.security.name')">
-    <change-password />
+    <change-password/>
   </ds-card>
 </template>
 
 <script>
 import HcEmpty from '~/components/Empty.vue'
-import ChangePassword from '~/components/ChangePassword.vue'
+import ChangePassword from '~/components/Password/Change'
 
 export default {
   components: {

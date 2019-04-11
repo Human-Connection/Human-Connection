@@ -56,7 +56,8 @@
     "vue-count-to": "~1.0.13",
     "vue-izitoast": "1.1.2",
     "vue-sweetalert-icons": "~3.2.0",
-    "vuex-i18n": "~1.11.0"
+    "vuex-i18n": "~1.11.0",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@babel/core": "~7.4.3",
