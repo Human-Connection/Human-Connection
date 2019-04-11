@@ -202,6 +202,35 @@
             </p>
           </template>
         </ds-card>
+        <ds-space />
+        <ds-card style="position: relative; height: auto;">
+          <ds-space
+            v-if="user.socialMedia && user.socialMedia.length"
+            margin="x-small"
+          >
+            <ds-text
+              tag="h5"
+              color="soft"
+            >
+              Where else can I find {{ user.name | truncate(15) }}?
+            </ds-text>
+            <template v-if="user.socialMedia && user.socialMedia.length">
+              <ds-space
+                v-for="link in socialMediaLinks"
+                :key="link.username"
+                margin="x-small"
+              >
+                <!-- TODO: find better solution for rendering errors -->
+                <ds-avatar
+                  :image="link.favicon"
+                />
+                <a :href="link.url">
+                  {{ link.username }}
+                </a>
+              </ds-space>
+            </template>
+          </ds-space>
+        </ds-card>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
@@ -348,6 +377,19 @@ export default {
         return []
       }
       return this.uniq(this.user.contributions.filter(post => !post.deleted))
+    },
+    socialMediaLinks() {
+      const { socialMedia = [] } = this.user
+      return socialMedia.map(socialMedia => {
+        const { url } = socialMedia
+        const matches = url.match(
+          /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
+        )
+        const [domain] = matches || []
+        const favicon = domain ? `${domain}/favicon.ico` : null
+        const username = url.split('/')[3]
+        return { url, username, favicon }
+      })
     }
   },
   watch: {
