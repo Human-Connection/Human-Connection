@@ -49,7 +49,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor/Editor.vue'
+import HcEditor from '~/components/Editor'
 
 export default {
   components: {
