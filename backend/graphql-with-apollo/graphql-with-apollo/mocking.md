@@ -1,6 +1,6 @@
 # Mocking
 
-### Mocking API Results
+## Mocking API Results
 
 Alternatively you can just mock all responses from the api which let you build a frontend application without running a neo4j instance.
 

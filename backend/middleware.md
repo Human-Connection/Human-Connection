@@ -1,6 +1,6 @@
 # Middleware
 
-![](../.gitbook/assets/grafik%20%284%29.png)
+![](../.gitbook/assets/grafik-4.png)
 
 ## Middleware keeps resolvers clean
 

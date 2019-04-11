@@ -52,8 +52,8 @@ XXX
 ```LANGUAGE (for text highlighting)
 XXX
 ```
-```
 
+```text
 #### Links
 
 ```text
@@ -100,7 +100,6 @@ Copy the URL and paste it were you need it.
 
 {% tabs %}
 {% tab title="macOS" %}
-
 #### In the Preview App
 
 Got to: **Menu** + **Tools** \(GER: Werkzeuge\) + **Annotate** \(GER: Anmerkungen\) + etc.
@@ -118,3 +117,4 @@ TODO: How to modify screenshots in Linux ...
 {% endhint %}
 {% endtab %}
 {% endtabs %}
+

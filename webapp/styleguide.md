@@ -4,8 +4,9 @@ For this Projoject we decided to use [Jörg Bayreuther's](https://github.com/vis
 
 ![Styleguide in action under https://localhost:8080](../.gitbook/assets/screenshot-styleguide.png)
 
-### Checkout the Styleguide
+## Checkout the Styleguide
 
 It's now an npm package. Want to help with it's development or maintenance?
 
 [Head over to the repo](https://github.com/Human-Connection/Nitro-Styleguide)
+
