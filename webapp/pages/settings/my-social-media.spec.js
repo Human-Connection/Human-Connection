@@ -45,7 +45,9 @@ describe('my-social-media.vue', () => {
         getters = {
           'auth/user': () => {
             return {
-              socialMedia: ['']
+              socialMedia: [
+                { id: 's1', url: 'https://freeradical.zone/@mattwr18' }
+              ]
             }
           }
         }

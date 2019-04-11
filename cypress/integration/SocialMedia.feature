@@ -6,11 +6,15 @@ Feature: List Social Media Accounts
   Background:
     Given I have a user account
     And I am logged in
-    And I am on the "settings" page
 
   Scenario: Adding Social Media
-    Given I click on the "My social media" link
+    Given I am on the "settings" page
+    And I click on the "My social media" link
     Then I should be on the "/settings/my-social-media" page
     When I add a social media link
     Then it gets saved successfully
     And the new social media link shows up on the page
+
+  Scenario: Other user's viewing my Social Media
+    Given people visit my profile page
+    Then they should be able to see my social media links

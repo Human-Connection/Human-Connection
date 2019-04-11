@@ -91,6 +91,11 @@ Then('it gets saved successfully', () => {
 })
 
 Then('the new social media link shows up on the page', () => {
-  cy.get('a')
-    .contains("src='https://freeradical.zone/@mattwr18'")
+  cy.get('a[href="https://freeradical.zone/@mattwr18"]')
+    .should('have.length', 1)
+})
+
+Then('they should be able to see my social media links', () => {
+  cy.get('.ds-card-content')
+    
 })
