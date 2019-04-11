@@ -62,16 +62,18 @@
       >
         {{ category.name }}
       </ds-tag>
-    </div>-->
+      </div>-->
       <!-- Tags -->
       <template v-if="post.tags && post.tags.length">
         <ds-space margin="xx-small" />
         <div class="tags">
-          <ds-icon name="tags" /> <ds-tag
+          <ds-icon name="tags" />
+          <ds-tag
             v-for="tag in post.tags"
             :key="tag.id"
           >
-            <ds-icon name="tag" /> {{ tag.name }}
+            <ds-icon name="tag" />
+            {{ tag.name }}
           </ds-tag>
         </div>
       </template>
@@ -87,9 +89,7 @@
               color="primary"
               size="small"
               round
-            >
-              {{ post.commentsCount }}
-            </ds-tag> &nbsp; Comments
+            >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
           </span>
         </h3>
         <ds-space margin-bottom="large" />

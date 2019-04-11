@@ -20,6 +20,21 @@ const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, context, info) 
   return context.user.id === parent.id
 })
 
+const belongsToMe = rule({ cache: 'no_cache' })(async (_, args, context) => {
+  const { driver, user: { id: userId } } = context
+  const { id: notificationId } = args
+  const session = driver.session()
+  const result = await session.run(`
+  MATCH (u:User {id: $userId})<-[:NOTIFIED]-(n:Notification {id: $notificationId})
+  RETURN n
+  `, { userId, notificationId })
+  const [notification] = result.records.map((record) => {
+    return record.get('n')
+  })
+  session.close()
+  return Boolean(notification)
+})
+
 const onlyEnabledContent = rule({ cache: 'strict' })(async (parent, args, ctx, info) => {
   const { disabled, deleted } = args
   return !(disabled || deleted)
@@ -50,6 +65,7 @@ const permissions = shield({
     Post: or(onlyEnabledContent, isModerator)
   },
   Mutation: {
+    UpdateNotification: belongsToMe,
     CreatePost: isAuthenticated,
     UpdatePost: isAuthor,
     DeletePost: isAuthor,
