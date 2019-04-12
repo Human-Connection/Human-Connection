@@ -26,7 +26,7 @@
   * [Frontend tests](webapp/testing.md)
   * [Backend tests](backend/testing.md)
 * [Deployment](deployment/README.md)
-* [CONTRIBUTING](CONTRIBUTING.md)
-* [CODE OF CONDUCT](CODE_OF_CONDUCT.md)
-* [LICENSE](LICENSE.md)
+* [Contributing](CONTRIBUTING.md)
+* [Code of conduct](CODE_OF_CONDUCT.md)
+* [License](LICENSE.md)
 
