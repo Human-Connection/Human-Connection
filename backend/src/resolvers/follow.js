@@ -4,7 +4,7 @@ export default {
       const { id, type } = params
 
       const session = context.driver.session()
-      let sessionRes = await session.run(
+      let transactionRes = await session.run(
         `MATCH (node {id: $id}), (user:User {id: $userId})
           WHERE $type IN labels(node) AND NOT $id = $userId
           MERGE (user)-[relation:FOLLOWS]->(node)
@@ -16,7 +16,7 @@ export default {
         }
       )
 
-      const [isFollowed] = sessionRes.records.map(record => {
+      const [isFollowed] = transactionRes.records.map(record => {
         return record.get('isFollowed')
       })
 
@@ -29,7 +29,7 @@ export default {
       const { id, type } = params
       const session = context.driver.session()
 
-      let sessionRes = await session.run(
+      let transactionRes = await session.run(
         `MATCH (user:User {id: $userId})-[relation:FOLLOWS]->(node {id: $id})
           WHERE $type IN labels(node)
           DELETE relation
@@ -40,7 +40,7 @@ export default {
           userId: context.user.id
         }
       )
-      const [isFollowed] = sessionRes.records.map(record => {
+      const [isFollowed] = transactionRes.records.map(record => {
         return record.get('isFollowed')
       })
       session.close()

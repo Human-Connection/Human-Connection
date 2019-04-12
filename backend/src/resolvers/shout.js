@@ -4,7 +4,7 @@ export default {
       const { id, type } = params
 
       const session = context.driver.session()
-      let sessionRes = await session.run(
+      let transactionRes = await session.run(
         `MATCH (node {id: $id})<-[:WROTE]-(userWritten:User), (user:User {id: $userId})
           WHERE $type IN labels(node) AND NOT userWritten.id = $userId
           MERGE (user)-[relation:SHOUTED]->(node)
@@ -16,7 +16,7 @@ export default {
         }
       )
 
-      const [isShouted] = sessionRes.records.map(record => {
+      const [isShouted] = transactionRes.records.map(record => {
         return record.get('isShouted')
       })
 
@@ -29,7 +29,7 @@ export default {
       const { id, type } = params
       const session = context.driver.session()
 
-      let sessionRes = await session.run(
+      let transactionRes = await session.run(
         `MATCH (user:User {id: $userId})-[relation:SHOUTED]->(node {id: $id})
           WHERE $type IN labels(node)
           DELETE relation
@@ -40,7 +40,7 @@ export default {
           userId: context.user.id
         }
       )
-      const [isShouted] = sessionRes.records.map(record => {
+      const [isShouted] = transactionRes.records.map(record => {
         return record.get('isShouted')
       })
       session.close()
