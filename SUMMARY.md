@@ -1,6 +1,6 @@
 # Table of contents
 
-* [README](README.md)
+* [Introduction](README.md)
 * [Edit this Documentation](edit-this-documentation.md)
 * [Features](features.md)
 * [Installation](installation.md)
