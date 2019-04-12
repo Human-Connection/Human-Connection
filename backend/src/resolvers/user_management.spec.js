@@ -312,19 +312,17 @@ describe('change password', () => {
 })
 
 describe('do not expose private RSA key', () => {
+  let headers
   let client
+  const queryUserPrivateKey = gql`
+    query($queriedUserSlug: String) {
+      User(slug: $queriedUserSlug) {
+        id
+        privateKey
+      }
+    }`
 
-  const queryUser = () => {
-    return gql`
-      query($queriedUserSlug: String) {
-        User(slug: $queriedUserSlug) {
-          id
-          privateKey
-        }
-      }`
-  }
-
-  const action = async () => {
+  const actionGenUserWithKeys = async () => {
     // Generate user with "privateKey" via 'CreateUser' mutation instead of using the factories "factory.create('User', {...})", see above.
     const variables = {
       id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
@@ -346,22 +344,47 @@ describe('do not expose private RSA key', () => {
     it('throws "Not Authorised!"', async () => {
       client = new GraphQLClient(host)
 
-      await action()
+      await actionGenUserWithKeys()
       await expect(
-        client.request(queryUser(), { queriedUserSlug: 'apfel-strudel' })
+        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
       ).rejects.toThrow('Not Authorised')
     })
   })
 
+  // authenticate
+  beforeEach(async () => {
+    headers = await login({ email: 'test@example.org', password: '1234' })
+    client = new GraphQLClient(host, { headers })
+  })
+
   describe('authenticated query of "privateKey"', () => {
     it('throws "Not Authorised!"', async () => {
-      const headers = await login({ email: 'test@example.org', password: '1234' })
-      client = new GraphQLClient(host, { headers })
-
-      await action()
+      await actionGenUserWithKeys()
       await expect(
-        client.request(queryUser(), { queriedUserSlug: 'apfel-strudel' })
+        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
       ).rejects.toThrow('Not Authorised')
+    })
+  })
+
+  describe('authenticated query of "publicKey". To asure generation of "privateKey" is garanteed', () => {
+    it('throws "Not Authorised!"', async () => {
+      const queryUserPuplicKey = gql`
+        query($queriedUserSlug: String) {
+          User(slug: $queriedUserSlug) {
+            id
+            publicKey
+          }
+        }`
+
+      await actionGenUserWithKeys()
+      await expect(
+        await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' })
+      ).toEqual(expect.objectContaining({
+        User: [{
+          id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
+          publicKey: expect.any(String)
+        }]
+      }))
     })
   })
 })
