@@ -15,7 +15,8 @@
     "followers": "Followers",
     "following": "Following",
     "shouted": "Shouted",
-    "commented": "Commented"
+    "commented": "Commented",
+    "socialMedia": "Where else can I find"
   },
   "search": {
     "placeholder": "Search",

@@ -203,6 +203,10 @@
           </template>
         </ds-card>
         <ds-space />
+        <ds-space 
+          v-if="user.socialMedia && user.socialMedia.length"
+          margin="x-small"
+        />
         <ds-card style="position: relative; height: auto;">
           <ds-space
             v-if="user.socialMedia && user.socialMedia.length"
@@ -212,7 +216,7 @@
               tag="h5"
               color="soft"
             >
-              Where else can I find {{ user.name | truncate(15) }}?
+              {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
             </ds-text>
             <template v-if="user.socialMedia && user.socialMedia.length">
               <ds-space
@@ -221,10 +225,10 @@
                 margin="x-small"
               >
                 <!-- TODO: find better solution for rendering errors -->
-                <ds-avatar
-                  :image="link.favicon"
-                />
                 <a :href="link.url">
+                  <ds-avatar
+                    :image="link.favicon"
+                  />
                   {{ link.username }}
                 </a>
               </ds-space>
