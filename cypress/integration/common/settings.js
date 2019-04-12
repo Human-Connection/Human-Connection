@@ -74,14 +74,14 @@ Then('I should be on the {string} page', page => {
       expect(loc.pathname).to.eq(page)
     })
     .get('h3')
-    .should('contain', 'My social media')
+    .should('contain', 'Social media')
 })
 
 Then('I add a social media link', () => {
   cy.get("input[name='social-media']")
     .type('https://freeradical.zone/peter-pan')
     .get('button')
-    .contains('Add social media')
+    .contains('Add link')
     .click()
 })
 
@@ -100,7 +100,7 @@ Given('I have added a social media link', () => {
     .get("input[name='social-media']")
     .type('https://freeradical.zone/peter-pan')
     .get('button')
-    .contains('Add social media')
+    .contains('Add link')
     .click()
 })
 

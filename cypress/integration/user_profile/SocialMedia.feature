@@ -9,7 +9,7 @@ Feature: List Social Media Accounts
 
   Scenario: Adding Social Media
     Given I am on the "settings" page
-    And I click on the "My social media" link
+    And I click on the "Social media" link
     Then I should be on the "/settings/my-social-media" page
     When I add a social media link
     Then it gets saved successfully
