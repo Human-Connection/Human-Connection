@@ -56,6 +56,16 @@ describe('RelativeDateTime', () => {
       })
     })
 
+    describe("locale == 'gibberish'", () => {
+      beforeEach(() => {
+        locale = 'gibberish'
+      })
+
+      it('translates', () => {
+        expect(Wrapper().text()).toContain('today at')
+      })
+    })
+
     describe("locale == 'de'", () => {
       beforeEach(() => {
         locale = 'de'
