@@ -6,6 +6,7 @@
     "email": "Your Email",
     "password": "Your Password",
     "moreInfo": "What is Human Connection?",
+    "moreInfoHint": "to the presentation page",
     "hello": "Hello"
   },
   "profile": {

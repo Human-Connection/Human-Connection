@@ -80,7 +80,7 @@
               <ds-space margin="x-small">
                 <a
                   href="https://human-connection.org"
-                  title="zur Präsentationsseite"
+                  :title="$t('login.moreInfoHint')"
                   target="_blank"
                 >
                   {{ $t('login.moreInfo') }}
