@@ -2,8 +2,7 @@
 
 * [README](README.md)
 * [Edit this Documentation](edit-this-documentation.md)
-* [concept](concept/README.md)
-  * [Network Specification](concept/specification.md)
+* [Features](features.md)
 * [Installation](installation.md)
 * [Webapp](webapp/README.md)
   * [COMPONENTS](webapp/components.md)
