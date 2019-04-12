@@ -2,7 +2,6 @@
 
 * [Introduction](README.md)
 * [Edit this Documentation](edit-this-documentation.md)
-* [Features](features.md)
 * [Installation](installation.md)
 * [Backend](backend/README.md)
   * [graphql-with-apollo](backend/graphql-with-apollo/README.md)
@@ -25,8 +24,9 @@
   * [End-to-end tests](cypress/README.md)
   * [Frontend tests](webapp/testing.md)
   * [Backend tests](backend/testing.md)
-* [Deployment](deployment/README.md)
 * [Contributing](CONTRIBUTING.md)
+* [Deployment](deployment/README.md)
+* [Feature Specification](cypress/integration/README.md)
 * [Code of conduct](CODE_OF_CONDUCT.md)
 * [License](LICENSE.md)
 
