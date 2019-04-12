@@ -16,6 +16,8 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Account
 
+[Cucumber Features](./user_account)
+
 * Sign-up
 * Agree to Data Privacy Statement
 * Agree to Terms of Service
@@ -28,8 +30,11 @@ The following features will be implemented. This gets done in three steps:
 * Download User's Content
 * GDPR-Information about stored Content
 * Choosing Interface Language \(e.g. German / English / French\)
+* Persistent Links
 
-### User  Profile
+### User Profile
+
+[Cucumber Features](./user_profile)
 
 * Upload and Change Avatar
 * Upload and Change Profile Picture
@@ -39,7 +44,7 @@ The following features will be implemented. This gets done in three steps:
 * Show Posts of a specific User
 * Show Comments of a specific User
 
-### Cockpit
+### Dashboard
 
 [Clickdummy](https://preview.uxpin.com/24a2ab8adcd84f9a763d87ed27251351225e0ecd#/pages/99768919/simulate/sitemap?mode=i)
 
@@ -54,7 +59,10 @@ The following features will be implemented. This gets done in three steps:
 
 ### Posts
 
+[Cucumber Features](./post/)
+
 * Creating Posts
+* Persistent Links
 * Upload Teaser Picture for Post
 * Upload additional Pictures
 * Editing Title and Content
@@ -100,6 +108,8 @@ The following features will be implemented. This gets done in three steps:
 * Switch on/off Adult Content
 
 ### Search
+
+[Cucumber Features](./search)
 
 * Search for Categories
 * Search for Tags
@@ -220,6 +230,8 @@ Shows automatically related actions for existing post.
 
 ### Moderation
 
+[Cucumber Features](./moderation)
+
 * Report Button for users for doubtful Content
 * Moderator Panel
 * List of reported Content \(later replaced by User-Moderation\)
@@ -240,6 +252,13 @@ Shows automatically related actions for existing post.
 * Allow Users to invite others by Email
 * Allow Users to register with Invite Code
 * Double-opt-in by Email
+
+### Internationalization
+
+[Cucumber Features](./internationalization)
+
+* Frontend UI
+* Backend Error Messages
 
 ### Federation
 
