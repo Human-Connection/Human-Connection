@@ -12,7 +12,7 @@ const locales = {
   fr,
   es,
   pt
-  //pl
+  // pl
 }
 
 export default {

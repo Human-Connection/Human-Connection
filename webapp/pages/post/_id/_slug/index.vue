@@ -79,14 +79,6 @@
         size="large"
       />&nbsp;
       <ds-space margin-bottom="small" />
-      <!--<div class="tags">
-      <ds-icon name="compass" /> <ds-tag
-        v-for="category in post.categories"
-        :key="category.id"
-      >
-        {{ category.name }}
-      </ds-tag>
-      </div>-->
       <!-- Tags -->
       <template v-if="post.tags && post.tags.length">
         <ds-space margin="xx-small" />
@@ -140,10 +132,10 @@
 <script>
 import gql from 'graphql-tag'
 
-import HcCategory from '~/components/Category.vue'
-import HcTag from '~/components/Tag.vue'
+import HcCategory from '~/components/Category'
+import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
-import HcUser from '~/components/User.vue'
+import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
 import Comment from '~/components/Comment.vue'
