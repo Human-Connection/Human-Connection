@@ -314,6 +314,13 @@ describe('change password', () => {
 describe('do not expose private RSA key', () => {
   let headers
   let client
+  const queryUserPuplicKey = gql`
+    query($queriedUserSlug: String) {
+      User(slug: $queriedUserSlug) {
+        id
+        publicKey
+      }
+    }`
   const queryUserPrivateKey = gql`
     query($queriedUserSlug: String) {
       User(slug: $queriedUserSlug) {
@@ -339,15 +346,28 @@ describe('do not expose private RSA key', () => {
       }`, variables
     )
   }
-describe('unauthenticated query of "publicKey"', () => {
-  it('returns publicKey', () => {
-    // check that an RSA key pair has been created at all
+
+  // not authenticate
+  beforeEach(async () => {
+    client = new GraphQLClient(host)
   })
-})
+
+  describe('unauthenticated query of "publicKey" (does the RSA key pair get generated at all?)', () => {
+    it('returns publicKey', async () => {
+      await actionGenUserWithKeys()
+      await expect(
+        await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' })
+      ).toEqual(expect.objectContaining({
+        User: [{
+          id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
+          publicKey: expect.any(String)
+        }]
+      }))
+    })
+  })
+
   describe('unauthenticated query of "privateKey"', () => {
     it('throws "Not Authorised!"', async () => {
-      client = new GraphQLClient(host)
-
       await actionGenUserWithKeys()
       await expect(
         client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
@@ -361,25 +381,8 @@ describe('unauthenticated query of "publicKey"', () => {
     client = new GraphQLClient(host, { headers })
   })
 
-  describe('authenticated query of "privateKey"', () => {
-    it('throws "Not Authorised!"', async () => {
-      await actionGenUserWithKeys()
-      await expect(
-        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
-      ).rejects.toThrow('Not Authorised')
-    })
-  })
-
-  describe('unauthenticated query of "publicKey" (does the RSA key pair get generated at all?)', () => {
+  describe('authenticated query of "publicKey"', () => {
     it('returns publicKey', async () => {
-      const queryUserPuplicKey = gql`
-        query($queriedUserSlug: String) {
-          User(slug: $queriedUserSlug) {
-            id
-            publicKey
-          }
-        }`
-
       await actionGenUserWithKeys()
       await expect(
         await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' })
@@ -389,6 +392,15 @@ describe('unauthenticated query of "publicKey"', () => {
           publicKey: expect.any(String)
         }]
       }))
+    })
+  })
+
+  describe('authenticated query of "privateKey"', () => {
+    it('throws "Not Authorised!"', async () => {
+      await actionGenUserWithKeys()
+      await expect(
+        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
+      ).rejects.toThrow('Not Authorised')
     })
   })
 })
