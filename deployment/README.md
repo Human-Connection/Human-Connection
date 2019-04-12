@@ -2,15 +2,6 @@
 
 [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Deployment.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Deployment)
 
-Todos:
-
-* [x] check labels and selectors if they all are correct
-* [x] configure NGINX from yml
-* [x] configure Let's Encrypt cert-manager from yml
-* [x] configure ingress from yml
-* [x] configure persistent & shared storage between nodes
-* [x] reproduce setup locally
-
 ## Minikube
 
 There are many Kubernetes distributions, but if you're just getting started, Minikube is a tool that you can use to get your feet wet.
