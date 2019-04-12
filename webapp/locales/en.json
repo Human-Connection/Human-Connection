@@ -54,9 +54,9 @@
       "name": "Languages"
     },
     "social-media": {
-      "name": "My social media",
-      "submit": "Add social media",
-      "success": "Updated user"
+      "name": "Social media",
+      "submit": "Add link",
+      "success": "Updated user profile"
     }
   },
   "admin": {
