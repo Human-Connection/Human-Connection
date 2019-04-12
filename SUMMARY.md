@@ -26,7 +26,7 @@
   * [Backend tests](backend/testing.md)
 * [Contributing](CONTRIBUTING.md)
 * [Deployment](deployment/README.md)
-* [Feature Specification](cypress/integration/README.md)
+* [Feature Specification](cypress/features.md)
 * [Code of conduct](CODE_OF_CONDUCT.md)
 * [License](LICENSE.md)
 

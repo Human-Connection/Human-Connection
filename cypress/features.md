@@ -16,7 +16,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Account
 
-[Cucumber Features](./user_account)
+[Cucumber Features](./integration/user_account)
 
 * Sign-up
 * Agree to Data Privacy Statement
@@ -34,7 +34,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Profile
 
-[Cucumber Features](./user_profile)
+[Cucumber Features](./integration/user_profile)
 
 * Upload and Change Avatar
 * Upload and Change Profile Picture
@@ -59,7 +59,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### Posts
 
-[Cucumber Features](./post/)
+[Cucumber Features](./integration/post/)
 
 * Creating Posts
 * Persistent Links
@@ -109,7 +109,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### Search
 
-[Cucumber Features](./search)
+[Cucumber Features](./integration/search)
 
 * Search for Categories
 * Search for Tags
@@ -230,7 +230,7 @@ Shows automatically related actions for existing post.
 
 ### Moderation
 
-[Cucumber Features](./moderation)
+[Cucumber Features](./integration/moderation)
 
 * Report Button for users for doubtful Content
 * Moderator Panel
@@ -255,7 +255,7 @@ Shows automatically related actions for existing post.
 
 ### Internationalization
 
-[Cucumber Features](./internationalization)
+[Cucumber Features](./integration/internationalization)
 
 * Frontend UI
 * Backend Error Messages
