@@ -197,6 +197,7 @@ export default {
     EditorMenuBubble
   },
   props: {
+    users: { type: Array, default: () => [] },
     value: { type: String, default: '' },
     doc: { type: Object, default: () => {} }
   },
@@ -227,12 +228,9 @@ export default {
           }),
           new History(),
           new Mention({
-            items: () => [
-              { id: 1, name: 'Philipp Kühn' },
-              { id: 2, name: 'Hans Pagel' },
-              { id: 3, name: 'Kris Siepert' },
-              { id: 4, name: 'Justin Schueler' }
-            ],
+            items: () => {
+              return this.users
+            },
             onEnter: ({ items, query, range, command, virtualNode }) => {
               this.query = query
               this.filteredUsers = items
