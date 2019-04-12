@@ -148,19 +148,19 @@ For further informations see also our [Kubernetes documentation](https://github.
 #### Install the dependencies
 
 ```bash
-$ yarn
-$ cd backend && yarn
-$ cd ../
-$ cd webapp && yarn
+$ yarn install
+$ cd backend && yarn install
+$ cd ../webapp && yarn install
+$ cd ..
 ```
 
 #### Copy Environment Variables
 
 ```bash
-$ cd ../
-$ cd backend
-$ cp .env.template .env
+$ cp cypress.env.template.json cypress.env.json
+$ cp backend/.env.template backend/.env
+$ cp webapp/.env.template webapp/.env
 ```
 
-Configure the file `.env` according to your needs and your local setup.
+Configure the new files according to your needs and your local setup.
 
