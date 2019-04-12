@@ -8,6 +8,8 @@
     "nonGlobalStepDefinitions": true
   },
   "scripts": {
+    "db:seed": "cd backend && yarn run db:seed",
+    "db:reset": "cd backend && yarn run db:reset",
     "cypress:backend:server": "cd backend && yarn run test:before:server",
     "cypress:backend:seeder": "cd backend && yarn run test:before:seeder",
     "cypress:webapp": "cd webapp && cross-env GRAPHQL_URI=http://localhost:4123 yarn run dev",
