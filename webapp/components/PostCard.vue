@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import HcUser from '~/components/User.vue'
+import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
 

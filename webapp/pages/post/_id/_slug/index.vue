@@ -6,10 +6,13 @@
     <ds-card
       v-if="post && ready"
       :image="post.image"
-      :header="post.title"
       :class="{'post-card': true, 'disabled-content': post.disabled}"
     >
-      <hc-user :user="post.author" />
+      <ds-space margin-bottom="small" />
+      <hc-user
+        :user="post.author"
+        :date-time="post.createdAt"
+      />
       <no-ssr>
         <content-menu
           placement="bottom-end"
@@ -19,6 +22,13 @@
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
+      <ds-heading
+        tag="h3"
+        no-margin
+      >
+        {{ post.title }}
+      </ds-heading>
+      <ds-space margin-bottom="small" />
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
@@ -26,19 +36,33 @@
         class="content hc-editor-content"
         v-html="post.content"
       />
-      <ds-space>
-        <ds-text
-          v-if="post.createdAt"
-          align="right"
-          size="small"
-          color="soft"
-        >
-          {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
-        </ds-text>
-      </ds-space>
       <!-- eslint-enable vue/no-v-html -->
-      <!-- Shout Button -->
       <ds-space margin="xx-large" />
+      <!-- Categories -->
+      <div class="categories">
+        <ds-space margin="xx-small" />
+        <hc-category
+          v-for="category in post.categories"
+          :key="category.id"
+          v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
+          :icon="category.icon"
+          :name="category.name"
+        />
+      </div>
+      <ds-space margin-bottom="small" />
+      <!-- Tags -->
+      <div
+        v-if="post.tags && post.tags.length"
+        class="tags"
+      >
+        <ds-space margin="xx-small" />
+        <hc-tag
+          v-for="tag in post.tags"
+          :key="tag.id"
+          :name="tag.name"
+        />
+      </div>
+      <!-- Shout Button -->
       <hc-shout-button
         v-if="post.author"
         :disabled="isAuthor(post.author.id)"
@@ -55,14 +79,6 @@
         size="large"
       />&nbsp;
       <ds-space margin-bottom="small" />
-      <!--<div class="tags">
-      <ds-icon name="compass" /> <ds-tag
-        v-for="category in post.categories"
-        :key="category.id"
-      >
-        {{ category.name }}
-      </ds-tag>
-      </div>-->
       <!-- Tags -->
       <template v-if="post.tags && post.tags.length">
         <ds-space margin="xx-small" />
@@ -115,8 +131,11 @@
 
 <script>
 import gql from 'graphql-tag'
+
+import HcCategory from '~/components/Category'
+import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
-import HcUser from '~/components/User.vue'
+import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
 import Comment from '~/components/Comment.vue'
@@ -127,6 +146,8 @@ export default {
     mode: 'out-in'
   },
   components: {
+    HcTag,
+    HcCategory,
     HcUser,
     HcShoutButton,
     HcEmpty,
