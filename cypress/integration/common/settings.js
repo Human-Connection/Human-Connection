@@ -79,7 +79,7 @@ Then('I should be on the {string} page', page => {
 
 Then('I add a social media link', () => {
   cy.get("input[name='social-media']")
-    .type('https://freeradical.zone/@mattwr18')
+    .type('https://freeradical.zone/peter-pan')
     .get('button')
     .contains('Add social media')
     .click()
@@ -91,11 +91,22 @@ Then('it gets saved successfully', () => {
 })
 
 Then('the new social media link shows up on the page', () => {
-  cy.get('a[href="https://freeradical.zone/@mattwr18"]')
+  cy.get('a[href="https://freeradical.zone/peter-pan"]')
     .should('have.length', 1)
+})
+
+Given('I have added a social media link', () => {
+  cy.openPage('/settings/my-social-media')
+    .get("input[name='social-media']")
+    .type('https://freeradical.zone/peter-pan')
+    .get('button')
+    .contains('Add social media')
+    .click()
 })
 
 Then('they should be able to see my social media links', () => {
   cy.get('.ds-card-content')
-    
+    .contains('Where else can I find Peter Pan?')
+    .get('a[href="https://freeradical.zone/peter-pan"]')
+    .should('have.length', 1)
 })

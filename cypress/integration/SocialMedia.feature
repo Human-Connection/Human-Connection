@@ -16,5 +16,6 @@ Feature: List Social Media Accounts
     And the new social media link shows up on the page
 
   Scenario: Other user's viewing my Social Media
-    Given people visit my profile page
+    Given I have added a social media link
+    When people visit my profile page
     Then they should be able to see my social media links
