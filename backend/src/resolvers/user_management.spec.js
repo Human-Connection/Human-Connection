@@ -255,7 +255,7 @@ describe('change password', () => {
   }
 
   describe('should be authenticated before changing password', () => {
-    it('throws not "Not Authorised!"', async () => {
+    it('throws "Not Authorised!"', async () => {
       await expect(
         request(
           host,
