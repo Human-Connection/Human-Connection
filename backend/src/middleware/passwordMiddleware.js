@@ -12,7 +12,7 @@ export default {
   },
   Query: async (resolve, root, args, context, info) => {
     let result = await resolve(root, args, context, info)
-    result = walkRecursive(result, ['password', 'privatKey'], () => {
+    result = walkRecursive(result, ['password', 'privateKey'], () => {
       // replace password with asterisk
       return '*****'
     })
