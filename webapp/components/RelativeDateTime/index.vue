@@ -4,15 +4,15 @@
 
 <script>
 import formatRelative from 'date-fns/formatRelative'
-import { enUS, de, nl, fr, pt, es, pl } from 'date-fns/locale'
+import { enUS, de, nl, fr, pt, es /*, pl*/ } from 'date-fns/locale'
 const locales = {
   en: enUS,
   de,
   nl,
   fr,
   es,
-  pt,
-  pl
+  pt
+  //pl
 }
 
 export default {
