@@ -148,10 +148,7 @@ For further informations see also our [Kubernetes documentation](https://github.
 #### Install the dependencies
 
 ```bash
-$ yarn
-$ cd backend && yarn
-$ cd ../
-$ cd webapp && yarn
+$ yarn install
 ```
 
 #### Copy Environment Variables

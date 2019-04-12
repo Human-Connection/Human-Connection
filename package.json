@@ -1,5 +1,6 @@
 {
   "name": "nitro-cypress",
+  "private": true,
   "version": "1.0.0",
   "description": "Fullstack tests with cypress for Human Connection",
   "author": "Human Connection gGmbh",
@@ -7,6 +8,7 @@
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
   },
+  "workspaces": ["backend", "webapp"],
   "scripts": {
     "cypress:backend:server": "cd backend && yarn run test:before:server",
     "cypress:backend:seeder": "cd backend && yarn run test:before:seeder",
