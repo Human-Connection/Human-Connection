@@ -35,7 +35,7 @@ Logins:
 
 ## Documentation
 
-Learn how to set up a local development environment in our [Docs](https://docs.human-connection.org/nitro) :mag_right:
+Learn how to set up a local development environment in our [Docs](https://docs.human-connection.org/human-connection/) :mag_right:
 
 ## Translations
 
