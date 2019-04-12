@@ -35,17 +35,18 @@ Logins:
 
 ## Documentation
 
-Learn how to set up a local development environment in our [Docs](https://docs.human-connection.org/nitro).
+Learn how to set up a local development environment in our [Docs](https://docs.human-connection.org/nitro) :mag_right:
 
 ## Translations
 
 You can help translating the interface by joining us on [lokalise.co](https://lokalise.co/public/556252725c18dd752dd546.13222042/).
-Thank you [lokalise.co](https://lokalise.co/) for providing us with a premium account.
+Thank you lokalise for providing us with a premium account :raised_hands:.
 
 ## Developer Chat
 
-Join the friendly open-source community on [Discord](https://discord.gg/6ub73U3).
-Quickly introduce yourself at `#user-presentation` and ask `@@Mentor` for help :simple_smile:.
+Join our friendly open-source community on [Discord](https://discord.gg/6ub73U3) :heart_eyes_cat:
+Just introduce yourself at `#user-presentation` and mention `@@Mentor` to get you onboard :neckbeard:
+Check out the [contribution guideline](./CONTRIBUTING.md), too!
 
 
 ## Attributions
