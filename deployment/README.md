@@ -1,10 +1,15 @@
 # Human-Connection Nitro \| Deployment Configuration
 
-[![Build Status](https://travis-ci.com/Human-Connection/Nitro-Deployment.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Deployment)
+We deploy with [kubernetes](https://kubernetes.io/). In order to deploy your own
+network you have to [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+and get a kubernetes cluster.
+
+We have tested two different kubernetes providers: [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+and [Digital Ocean](https://www.digitalocean.com/).
 
 ## Minikube
 
-There are many Kubernetes distributions, but if you're just getting started, Minikube is a tool that you can use to get your feet wet.
+There are many Kubernetes providers, but if you're just getting started, Minikube is a tool that you can use to get your feet wet.
 
 [Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 
