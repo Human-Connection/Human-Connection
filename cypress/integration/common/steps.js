@@ -228,7 +228,7 @@ Then('I get redirected to {string}', route => {
 })
 
 Then('the post was saved successfully', () => {
-  cy.get('.ds-card-header > .ds-heading').should('contain', lastPost.title)
+  cy.get('.ds-card-content > .ds-heading').should('contain', lastPost.title)
   cy.get('.content').should('contain', lastPost.content)
 })
 
