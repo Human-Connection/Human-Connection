@@ -370,7 +370,7 @@ describe('unauthenticated query of "publicKey"', () => {
     })
   })
 
-  describe('authenticated query of "publicKey". To asure generation of "privateKey" is garanteed', () => {
+  describe('unauthenticated query of "publicKey" (does the RSA key pair get generated at all?)', () => {
     it('returns publicKey', async () => {
       const queryUserPuplicKey = gql`
         query($queriedUserSlug: String) {
