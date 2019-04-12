@@ -339,7 +339,11 @@ describe('do not expose private RSA key', () => {
       }`, variables
     )
   }
-
+describe('unauthenticated query of "publicKey"', () => {
+  it('returns publicKey', () => {
+    // check that an RSA key pair has been created at all
+  })
+})
   describe('unauthenticated query of "privateKey"', () => {
     it('throws "Not Authorised!"', async () => {
       client = new GraphQLClient(host)
