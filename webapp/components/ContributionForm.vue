@@ -16,6 +16,7 @@
         />
         <no-ssr>
           <hc-editor
+            :users="users"
             :value="form.content"
             @input="updateEditorContent"
           />
@@ -124,6 +125,22 @@ export default {
     updateEditorContent(value) {
       // this.form.content = value
       this.$refs.contributionForm.update('content', value)
+    }
+  },
+  apollo: {
+    User: {
+      query() {
+        return gql(`{
+          User {
+            id
+            name
+            slug
+          }
+        }`)
+      },
+      result(result) {
+        this.users = result.data.User
+      }
     }
   }
 }
