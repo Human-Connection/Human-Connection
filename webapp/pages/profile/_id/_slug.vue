@@ -202,39 +202,37 @@
             </p>
           </template>
         </ds-card>
-        <ds-space />
         <ds-space 
           v-if="user.socialMedia && user.socialMedia.length"
-          margin="x-small"
-        />
-        <ds-card style="position: relative; height: auto;">
-          <ds-space
-            v-if="user.socialMedia && user.socialMedia.length"
-            margin="x-small"
-          >
-            <ds-text
-              tag="h5"
-              color="soft"
+          margin="large"
+        >
+          <ds-card style="position: relative; height: auto;">
+            <ds-space
+              margin="x-small"
             >
-              {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
-            </ds-text>
-            <template v-if="user.socialMedia && user.socialMedia.length">
-              <ds-space
-                v-for="link in socialMediaLinks"
-                :key="link.username"
-                margin="x-small"
+              <ds-text
+                tag="h5"
+                color="soft"
               >
-                <!-- TODO: find better solution for rendering errors -->
-                <a :href="link.url">
-                  <ds-avatar
-                    :image="link.favicon"
-                  />
-                  {{ link.username }}
-                </a>
-              </ds-space>
-            </template>
-          </ds-space>
-        </ds-card>
+                {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
+              </ds-text>
+              <template>
+                <ds-space
+                  v-for="link in socialMediaLinks"
+                  :key="link.username"
+                  margin="x-small"
+                >
+                  <a :href="link.url">
+                    <ds-avatar
+                      :image="link.favicon"
+                    />
+                    {{ link.username }}
+                  </a>
+                </ds-space>
+              </template>
+            </ds-space>
+          </ds-card>
+        </ds-space>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
@@ -391,7 +389,7 @@ export default {
         )
         const [domain] = matches || []
         const favicon = domain ? `${domain}/favicon.ico` : null
-        const username = url.split('/')[3]
+        const username = url.split('/').pop()
         return { url, username, favicon }
       })
     }

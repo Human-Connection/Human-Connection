@@ -68,8 +68,8 @@ describe('my-social-media.vue', () => {
 
       it("displays a link to the currentUser's social media", () => {
         wrapper = Wrapper()
-        const socialMediaLink = wrapper.find('a')
-        expect(socialMediaLink.attributes().href).toBe(socialMediaUrl)
+        const socialMediaLink = wrapper.find('a').attributes().href
+        expect(socialMediaLink).toBe(socialMediaUrl)
       })
     })
 
