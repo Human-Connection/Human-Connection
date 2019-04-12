@@ -11,7 +11,6 @@ import { getDriver } from './bootstrap/neo4j'
 import helmet from 'helmet'
 import decode from './jwt/decode'
 
-
 dotenv.config()
 // check env and warn
 const requiredEnvVars = ['MAPBOX_TOKEN', 'JWT_SECRET', 'PRIVATE_KEY_PASSPHRASE']

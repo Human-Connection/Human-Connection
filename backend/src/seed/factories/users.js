@@ -1,7 +1,7 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
 
-export default function create(params) {
+export default function create (params) {
   const {
     id = uuid(),
     name = faker.name.findName(),

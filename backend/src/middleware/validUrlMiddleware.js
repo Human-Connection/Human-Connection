@@ -1,5 +1,5 @@
 const validURL = str => {
-  const isValid = str.match(/^(?:https?:\/\/)(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g)
+  const isValid = str.match(/^(?:https?:\/\/)(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g)
   return !!isValid
 }
 

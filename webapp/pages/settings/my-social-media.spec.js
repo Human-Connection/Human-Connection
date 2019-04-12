@@ -26,7 +26,9 @@ describe('my-social-media.vue', () => {
         mutate: jest
           .fn()
           .mockRejectedValue({ message: 'Ouch!' })
-          .mockResolvedValueOnce({ data: { CreateSocialMeda: { id: 's1', url: socialMediaUrl } }})
+          .mockResolvedValueOnce({
+            data: { CreateSocialMeda: { id: 's1', url: socialMediaUrl } }
+          })
       },
       $toast: {
         error: jest.fn(),
@@ -58,9 +60,7 @@ describe('my-social-media.vue', () => {
         getters = {
           'auth/user': () => {
             return {
-              socialMedia: [
-                { id: 's1', url: socialMediaUrl }
-              ]
+              socialMedia: [{ id: 's1', url: socialMediaUrl }]
             }
           }
         }

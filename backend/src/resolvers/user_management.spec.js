@@ -309,4 +309,3 @@ describe('change password', () => {
     })
   })
 })
-

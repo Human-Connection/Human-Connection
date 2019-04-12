@@ -25,7 +25,7 @@ describe('CreateSocialMedia', () => {
       password: '1234'
     })
   })
-  
+
   afterEach(async () => {
     await factory.cleanDatabase()
   })
