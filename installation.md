@@ -1,17 +1,12 @@
 # Installation
 
-## General Install Instructions
-
 The repository can be found on GitHub. [https://github.com/Human-Connection/Human-Connection](https://github.com/Human-Connection/Human-Connection)
-
-{% hint style="info" %}
-TODO: Create documentation section for How to Start and Beginners.
-{% endhint %}
 
 We give write permissions to every developer who asks for it. Just text us on
 [Discord](https://discord.gg/6ub73U3).
 
-#### Clone the Repository
+## Clone the Repository
+
 
 Clone the repository, this will create a new folder called `Human-Connection`:
 
@@ -34,6 +29,18 @@ Change into the new folder.
 ```bash
 $ cd Human-Connection
 ```
+
+## Directory Layout
+
+There are four important directories:
+* [Backend](./backend) runs on the server and serves as a middleware to the database
+* [Frontend](./webapp) server-side and client-side rendered application
+* [Deployment](./deployment) contains configuration for kubernetes deployments
+* [Cypress](./cypress) end-to-end tests with cypress
+
+In order to setup the application you have to setup the frontend and backend
+either locally on your system or you can also use our provided docker
+installation.
 
 ## Docker Installation
 
