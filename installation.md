@@ -8,34 +8,23 @@ The repository can be found on GitHub. [https://github.com/Human-Connection/Huma
 TODO: Create documentation section for How to Start and Beginners.
 {% endhint %}
 
-Here are some general informations about our [GitHub Standard Fork & Pull Request Workflow](https://gist.github.com/Chaser324/ce0505fbed06b947d962).
+We give write permissions to every developer who asks for it. Just text us on
+[Discord](https://discord.gg/6ub73U3).
 
-#### Fork the Repository
+#### Clone the Repository
 
-Click on the fork button.
-
-![Fork screenshot](.gitbook/assets/screenshot-forking-nitro.png)
-
-#### Clone your new Repository
-
-Set the current working folder to the path in which the repository should be cloned \(copied\).
-
-```bash
-$ cd PATH-FOR-REPO
-```
-
-For cloning your new repository to your local machine modify the following command to add your GitHub user name.
+Clone the repository, this will create a new folder called `Human-Connection`:
 
 {% tabs %}
 {% tab title="HTTPS" %}
 ```bash
-$ git clone https://github.com/YOUR-GITHUB-USERNAME/Human-Connection.git
+$ git clone https://github.com/Human-Connection/Human-Connection.git
 ```
 {% endtab %}
 
 {% tab title="SSH" %}
 ```bash
-$ git clone git@github.com:YOUR-GITHUB-USERNAME/Human-Connection.git
+$ git clone git@github.com:Human-Connection/Human-Connection.git
 ```
 {% endtab %}
 {% endtabs %}
@@ -45,22 +34,6 @@ Change into the new folder.
 ```bash
 $ cd Human-Connection
 ```
-
-Add the original Human Connection repository as `upstream`. This prepares you to synchronize your local clone with a simple pull command in the future.
-
-{% tabs %}
-{% tab title="HTTPS" %}
-```bash
-$ git remote add upstream https://github.com/Human-Connection/Human-Connection.git
-```
-{% endtab %}
-
-{% tab title="SSH" %}
-```bash
-$ git remote add upstream git@github.com:Human-Connection/Human-Connection.git
-```
-{% endtab %}
-{% endtabs %}
 
 ## Docker Installation
 
@@ -95,7 +68,7 @@ $ docker-compose --version
 docker-compose version 1.23.2
 ```
 
-### Install Nitro with Docker
+### Installation with Docker
 
 Run the following command to install Nitro as a Docker container. This installation includes Neo4j.
 
@@ -108,7 +81,7 @@ $ docker-compose up
 $ docker-compose up --build
 ```
 
-#### Seed Neo4j in Docker
+#### Seed Database
 
 To seed the Neo4j database with default data, that GraphQL requests or playing with our GraphQL Playground returns anything else than an empty response, run the command.
 
@@ -138,10 +111,6 @@ $ docker-compose down -v
 {% hint style="info" %}
 TODO: Link to video
 {% endhint %}
-
-#### Development with Kubernetes
-
-For further informations see also our [Kubernetes documentation](https://github.com/Human-Connection/Human-Connection/tree/9bede1913b829a5c2916fc206c1fe4c83c49a4bc/kubernetes.md).
 
 ## Local Installation
 
