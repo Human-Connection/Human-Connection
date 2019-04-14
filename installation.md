@@ -33,14 +33,18 @@ $ cd Human-Connection
 ## Directory Layout
 
 There are four important directories:
-* [Backend](./backend) runs on the server and serves as a middleware to the database
-* [Frontend](./webapp) server-side and client-side rendered application
-* [Deployment](./deployment) contains configuration for kubernetes deployments
-* [Cypress](./cypress) end-to-end tests with cypress
+* [Backend](./backend) runs on the server and is a middleware between database and frontend
+* [Frontend](./webapp) is a server-side-rendered and client-side-rendered web frontend
+* [Deployment](./deployment) configuration for kubernetes
+* [Cypress](./cypress) contains end-to-end tests and executable feature specifications
 
-In order to setup the application you have to setup the frontend and backend
-either locally on your system or you can also use our provided docker
-installation.
+In order to setup the application and start to develop features you have to
+setup **frontend** and **backend**.
+
+There are two approaches:
+
+1. Local installation, which means you have to take care of dependencies yourself
+2. **Or** Install everything through docker which takes care of dependencies for you
 
 ## Docker Installation
 
@@ -75,68 +79,4 @@ $ docker-compose --version
 docker-compose version 1.23.2
 ```
 
-### Installation with Docker
-
-Run the following command to install Nitro as a Docker container. This installation includes Neo4j.
-
-The installation takes a bit longer on the first pass or on rebuild ...
-
-```bash
-$ docker-compose up
-
-# rebuild the containers for a cleanup
-$ docker-compose up --build
-```
-
-#### Seed Database
-
-To seed the Neo4j database with default data, that GraphQL requests or playing with our GraphQL Playground returns anything else than an empty response, run the command.
-
-Run the following command to seed the Neo4j database with default data requested by Nitro-Web through GraphQL or when you play with our GraphQL playground.
-
-```bash
-# open another terminal
-
-# create indices etc.
-$ docker-compose exec neo4j migrate
-
-# seed database
-$ docker-compose exec backend yarn run db:seed
-```
-
-**Wipe out Neo4j database in Docker**
-
-To wipe out your neo4j database and delete the volumes send command:
-
-```bash
-# open another terminal and run
-$ docker-compose down -v
-```
-
-**Video Tutorial**
-
-{% hint style="info" %}
-TODO: Link to video
-{% endhint %}
-
-## Local Installation
-
-#### Install the dependencies
-
-```bash
-$ yarn install
-$ cd backend && yarn install
-$ cd ../webapp && yarn install
-$ cd ..
-```
-
-#### Copy Environment Variables
-
-```bash
-$ cp cypress.env.template.json cypress.env.json
-$ cp backend/.env.template backend/.env
-$ cp webapp/.env.template webapp/.env
-```
-
-Configure the new files according to your needs and your local setup.
 
