@@ -71,7 +71,8 @@ export default {
       id: null,
       loading: false,
       disabled: false,
-      slug: null
+      slug: null,
+      users: []
     }
   },
   watch: {
