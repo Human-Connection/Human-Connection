@@ -3,17 +3,19 @@
     :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
     @click.native="$emit('read')"
   >
-    <hc-post-card :post="post" />
+    <ds-space margin-bottom="x-small">
+      <hc-notification-post-card :post="post" />
+    </ds-space>
   </nuxt-link>
 </template>
 
 <script>
-import HcPostCard from '~/components/PostCard.vue'
+import HcNotificationPostCard from './NotificationPostCard.vue'
 
 export default {
   name: 'Notification',
   components: {
-    HcPostCard
+    HcNotificationPostCard
   },
   props: {
     notification: {

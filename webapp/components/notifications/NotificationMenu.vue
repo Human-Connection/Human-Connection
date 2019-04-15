@@ -104,4 +104,8 @@ export default {
   display: flex;
   align-items: center;
 }
+
+.notifications-menu-popover {
+  max-width: 500px;
+}
 </style>

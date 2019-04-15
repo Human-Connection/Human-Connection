@@ -131,6 +131,7 @@ export default {
   }
 
   .post-link {
+    margin: 15px;
     display: block;
     position: absolute;
     top: 0;
