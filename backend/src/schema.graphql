@@ -128,6 +128,7 @@ type User {
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
   locationName: String
   about: String
+  socialMedia: [SocialMedia]! @relation(name: "OWNED", direction: "OUT")
 
   createdAt: String
   updatedAt: String
@@ -318,3 +319,10 @@ type SharedInboxEndpoint {
   id: ID!
   uri: String
 }
+
+type SocialMedia {
+  id: ID!
+  url: String
+  ownedBy: [User]! @relation(name: "OWNED", direction: "IN")
+}
+

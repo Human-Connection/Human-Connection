@@ -98,6 +98,10 @@ export default app => {
             }
           }
         }
+        socialMedia {
+          id
+          url
+        }
       }
     }
   `)
