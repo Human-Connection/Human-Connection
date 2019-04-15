@@ -202,6 +202,37 @@
             </p>
           </template>
         </ds-card>
+        <ds-space 
+          v-if="user.socialMedia && user.socialMedia.length"
+          margin="large"
+        >
+          <ds-card style="position: relative; height: auto;">
+            <ds-space
+              margin="x-small"
+            >
+              <ds-text
+                tag="h5"
+                color="soft"
+              >
+                {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
+              </ds-text>
+              <template>
+                <ds-space
+                  v-for="link in socialMediaLinks"
+                  :key="link.username"
+                  margin="x-small"
+                >
+                  <a :href="link.url">
+                    <ds-avatar
+                      :image="link.favicon"
+                    />
+                    {{ link.username }}
+                  </a>
+                </ds-space>
+              </template>
+            </ds-space>
+          </ds-card>
+        </ds-space>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
@@ -348,6 +379,19 @@ export default {
         return []
       }
       return this.uniq(this.user.contributions.filter(post => !post.deleted))
+    },
+    socialMediaLinks() {
+      const { socialMedia = [] } = this.user
+      return socialMedia.map(socialMedia => {
+        const { url } = socialMedia
+        const matches = url.match(
+          /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
+        )
+        const [domain] = matches || []
+        const favicon = domain ? `${domain}/favicon.ico` : null
+        const username = url.split('/').pop()
+        return { url, username, favicon }
+      })
     }
   },
   watch: {

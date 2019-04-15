@@ -34,6 +34,10 @@ export default {
         {
           name: this.$t('settings.security.name'),
           path: `/settings/security`
+        },
+        {
+          name: this.$t('settings.social-media.name'),
+          path: `/settings/my-social-media`
         }
         // TODO implement
         /* {
@@ -59,6 +63,7 @@ export default {
         /* {
           name: this.$t('settings.languages.name'),
           path: `/settings/languages`
+        },
         } */
       ]
     }

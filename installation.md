@@ -154,10 +154,10 @@ $ yarn install
 #### Copy Environment Variables
 
 ```bash
-$ cd ../
-$ cd backend
-$ cp .env.template .env
+$ cp cypress.env.template.json cypress.env.json
+$ cp backend/.env.template backend/.env
+$ cp webapp/.env.template webapp/.env
 ```
 
-Configure the file `.env` according to your needs and your local setup.
+Configure the new files according to your needs and your local setup.
 
