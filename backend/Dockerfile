@@ -7,7 +7,7 @@ ENV BUILD_COMMIT=$BUILD_COMMIT
 ARG WORKDIR=/nitro-backend
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
-COPY package.json yarn.lock ./
+COPY package.json ./
 COPY .env.template .env
 CMD ["yarn", "run", "start"]
 
