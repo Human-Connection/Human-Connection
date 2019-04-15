@@ -184,7 +184,7 @@ import {
   Strike,
   Underline,
   Link,
-  History,
+  History
 } from 'tiptap-extensions'
 import Mention from './nodes/Mention.js'
 
@@ -535,7 +535,7 @@ li > p {
 
 .editor {
   .mention-suggestion {
-    color: $color-primary
+    color: $color-primary;
   }
   &__floating-menu {
     position: absolute;
