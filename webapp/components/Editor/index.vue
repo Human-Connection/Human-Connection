@@ -185,8 +185,8 @@ import {
   Underline,
   Link,
   History,
-  Mention
 } from 'tiptap-extensions'
+import Mention from './nodes/Mention.js'
 
 let throttleInputEvent
 
@@ -358,7 +358,8 @@ export default {
       this.insertMention({
         range: this.suggestionRange,
         attrs: {
-          id: user.id,
+          // TODO: use router here
+          url: `/profile/${user.id}`,
           label: user.name
         }
       })
@@ -533,17 +534,8 @@ li > p {
 }
 
 .editor {
-  .mention {
-    background: rgba($color-neutral-0, 0.1);
-    color: rgba($color-neutral-0, 0.6);
-    font-size: 0.8rem;
-    font-weight: bold;
-    border-radius: 5px;
-    padding: 0.2rem 0.5rem;
-    white-space: nowrap;
-  }
   .mention-suggestion {
-    color: rgba($color-neutral-0, 0.6);
+    color: $color-primary
   }
   &__floating-menu {
     position: absolute;
