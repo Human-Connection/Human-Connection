@@ -28,10 +28,10 @@ let schema = makeAugmentedSchema({
   resolvers,
   config: {
     query: {
-      exclude: ['Statistics', 'LoggedInUser']
+      exclude: ['Notfication', 'Statistics', 'LoggedInUser']
     },
     mutation: {
-      exclude: ['Statistics', 'LoggedInUser']
+      exclude: ['Notfication', 'Statistics', 'LoggedInUser']
     },
     debug: debug
   }

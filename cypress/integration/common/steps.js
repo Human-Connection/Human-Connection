@@ -228,7 +228,7 @@ Then('I get redirected to {string}', route => {
 })
 
 Then('the post was saved successfully', () => {
-  cy.get('.ds-card-header > .ds-heading').should('contain', lastPost.title)
+  cy.get('.ds-card-content > .ds-heading').should('contain', lastPost.title)
   cy.get('.content').should('contain', lastPost.content)
 })
 
@@ -292,24 +292,4 @@ Then('I can login successfully with password {string}', password => {
     ...{password}
   })
   cy.get('.iziToast-wrapper').should('contain', "You are logged in!")
-})
-
-When('I log in with the following credentials:', table => {
-  const { email, password } = table.hashes()[0]
-  cy.login({ email, password })
-})
-
-When('open the notification menu and click on the first item', () => {
-  cy.get('.notifications-menu').click()
-  cy.get('.notifications-menu-popover a').first().click()
-})
-
-Then('see {int} unread notifications in the top menu', count => {
-  cy.get('.notifications-menu').should('contain', count)
-})
-
-Then('I get to the post page of {string}', path => {
-  path = path.replace('...', '')
-  cy.location('pathname').should('contain', '/post/')
-  cy.location('pathname').should('contain', path)
 })

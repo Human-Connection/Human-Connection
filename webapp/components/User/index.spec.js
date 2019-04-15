@@ -1,5 +1,5 @@
 import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import User from './User.vue'
+import User from './index'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VTooltip from 'v-tooltip'
@@ -15,7 +15,7 @@ localVue.use(Styleguide)
 
 localVue.filter('truncate', filter)
 
-describe('User.vue', () => {
+describe('User', () => {
   let wrapper
   let Wrapper
   let propsData

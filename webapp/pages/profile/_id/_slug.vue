@@ -42,7 +42,8 @@
               color="soft"
               size="small"
             >
-              <ds-icon name="map-marker" /> {{ user.location.name }}
+              <ds-icon name="map-marker" />
+              {{ user.location.name }}
             </ds-text>
             <ds-text
               align="center"
@@ -56,9 +57,7 @@
             v-if="user.badges && user.badges.length"
             margin="x-small"
           >
-            <hc-badges
-              :badges="user.badges"
-            />
+            <hc-badges :badges="user.badges" />
           </ds-space>
           <ds-flex>
             <ds-flex-item>
@@ -82,9 +81,7 @@
               </no-ssr>
             </ds-flex-item>
           </ds-flex>
-          <ds-space
-            margin="small"
-          >
+          <ds-space margin="small">
             <hc-follow-button
               v-if="!myProfile"
               :follow-id="user.id"
@@ -205,6 +202,37 @@
             </p>
           </template>
         </ds-card>
+        <ds-space 
+          v-if="user.socialMedia && user.socialMedia.length"
+          margin="large"
+        >
+          <ds-card style="position: relative; height: auto;">
+            <ds-space
+              margin="x-small"
+            >
+              <ds-text
+                tag="h5"
+                color="soft"
+              >
+                {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
+              </ds-text>
+              <template>
+                <ds-space
+                  v-for="link in socialMediaLinks"
+                  :key="link.username"
+                  margin="x-small"
+                >
+                  <a :href="link.url">
+                    <ds-avatar
+                      :image="link.favicon"
+                    />
+                    {{ link.username }}
+                  </a>
+                </ds-space>
+              </template>
+            </ds-space>
+          </ds-card>
+        </ds-space>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
@@ -227,32 +255,28 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <ds-flex-item class="ds-tab-nav-item">
-                  <ds-space margin="small">
-                    <!-- TODO: find better solution for rendering errors -->
+                <!--<ds-flex-item class="ds-tab-nav-item">
+                <ds-space margin="small">-->
+                <!-- TODO: find better solution for rendering errors -->
+                <!--
                     <no-ssr>
                       <ds-number :label="$t('profile.commented')">
-                        <hc-count-to
-                          slot="count"
-                          :end-val="user.commentsCount"
-                        />
+                        <hc-count-to slot="count" :end-val="user.commentsCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <ds-flex-item class="ds-tab-nav-item">
-                  <ds-space margin="small">
-                    <!-- TODO: find better solution for rendering errors -->
-                    <no-ssr>
+                -->
+                <!--<ds-flex-item class="ds-tab-nav-item">
+                <ds-space margin="small">-->
+                <!-- TODO: find better solution for rendering errors -->
+                <!--<no-ssr>
                       <ds-number :label="$t('profile.shouted')">
-                        <hc-count-to
-                          slot="count"
-                          :end-val="user.shoutedCount"
-                        />
+                        <hc-count-to slot="count" :end-val="user.shoutedCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>
+                </ds-flex-item>-->
               </ds-flex>
             </ds-card>
           </ds-flex-item>
@@ -273,9 +297,7 @@
               :key="post.id"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
             >
-              <hc-post-card
-                :post="post"
-              />
+              <hc-post-card :post="post" />
             </ds-flex-item>
           </template>
           <template v-else>
@@ -300,7 +322,7 @@
 <script>
 import uniqBy from 'lodash/uniqBy'
 
-import User from '~/components/User.vue'
+import User from '~/components/User'
 import HcPostCard from '~/components/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
@@ -357,6 +379,19 @@ export default {
         return []
       }
       return this.uniq(this.user.contributions.filter(post => !post.deleted))
+    },
+    socialMediaLinks() {
+      const { socialMedia = [] } = this.user
+      return socialMedia.map(socialMedia => {
+        const { url } = socialMedia
+        const matches = url.match(
+          /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
+        )
+        const [domain] = matches || []
+        const favicon = domain ? `${domain}/favicon.ico` : null
+        const username = url.split('/').pop()
+        return { url, username, favicon }
+      })
     }
   },
   watch: {

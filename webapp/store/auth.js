@@ -83,6 +83,7 @@ export const actions = {
             role
             about
             locationName
+<<<<<<< HEAD
             notifications(read: false, orderBy: createdAt_desc) {
               id
               read
@@ -99,6 +100,11 @@ export const actions = {
                 contentExcerpt
                 slug
               }
+=======
+            socialMedia {
+              id
+              url
+>>>>>>> f6eb5474d1d8ff180daa5f7f73e3375cff95b2de
             }
           }
         }`)

@@ -58,25 +58,28 @@ export default {
             {
               name: this.$t('common.comment', null, 2),
               path: `/post/${id}/${slug}#comments`
-            },
-            {
+            }
+            // TODO implement
+            /* {
               name: this.$t('common.letsTalk'),
               path: `/post/${id}/${slug}#lets-talk`
-            },
-            {
+            }, */
+            // TODO implement
+            /* {
               name: this.$t('common.versus'),
               path: `/post/${id}/${slug}#versus`
-            }
+            } */
           ]
         },
         {
           name: this.$t('common.moreInfo'),
           path: `/post/${id}/${slug}/more-info`
-        },
-        {
+        }
+        // TODO implement
+        /* {
           name: this.$t('common.takeAction'),
           path: `/post/${id}/${slug}/take-action`
-        }
+        } */
       ]
     }
   }
