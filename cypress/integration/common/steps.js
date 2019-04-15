@@ -293,3 +293,23 @@ Then('I can login successfully with password {string}', password => {
   })
   cy.get('.iziToast-wrapper').should('contain', "You are logged in!")
 })
+
+When('I log in with the following credentials:', table => {
+  const { email, password } = table.hashes()[0]
+  cy.login({ email, password })
+})
+
+When('open the notification menu and click on the first item', () => {
+  cy.get('.notifications-menu').click()
+  cy.get('.notifications-menu-popover a').first().click()
+})
+
+Then('see {int} unread notifications in the top menu', count => {
+  cy.get('.notifications-menu').should('contain', count)
+})
+
+Then('I get to the post page of {string}', path => {
+  path = path.replace('...', '')
+  cy.location('pathname').should('contain', '/post/')
+  cy.location('pathname').should('contain', path)
+})
