@@ -132,7 +132,7 @@ export default {
     User: {
       query() {
         return gql(`{
-          User {
+          User(orderBy: name_asc) {
             id
             name
             slug
