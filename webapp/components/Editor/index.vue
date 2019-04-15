@@ -13,7 +13,7 @@
           :class="{ 'is-selected': navigatedUserIndex === index }"
           @click="selectUser(user)"
         >
-          {{ user.name }}
+          @{{ user.slug }}
         </div>
       </template>
       <div
@@ -287,7 +287,7 @@ export default {
               }
               const fuse = new Fuse(items, {
                 threshold: 0.2,
-                keys: ['name']
+                keys: ['slug']
               })
               return fuse.search(query)
             }
@@ -360,7 +360,7 @@ export default {
         attrs: {
           // TODO: use router here
           url: `/profile/${user.id}`,
-          label: user.name
+          label: user.slug
         }
       })
       this.editor.focus()
