@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import HcUser from '~/components/User.vue'
+import HcUser from '~/components/User'
 
 export default {
   name: 'HcPostCard',
