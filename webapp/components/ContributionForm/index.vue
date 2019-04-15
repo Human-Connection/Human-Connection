@@ -132,9 +132,8 @@ export default {
     User: {
       query() {
         return gql(`{
-          User(orderBy: name_asc) {
+          User(orderBy: slug_asc) {
             id
-            name
             slug
           }
         }`)
