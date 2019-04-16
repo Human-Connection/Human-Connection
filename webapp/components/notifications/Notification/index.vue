@@ -2,11 +2,11 @@
   <ds-space margin-bottom="x-small">
     <no-ssr>
       <ds-space margin-bottom="x-small">
-      <hc-user
-        :user="post.author"
-        :date-time="post.createdAt"
-        :trunc="35"
-      />
+        <hc-user
+          :user="post.author"
+          :date-time="post.createdAt"
+          :trunc="35"
+        />
       </ds-space>
       <ds-text color="soft">
         {{ $t("notifications.menu.mentioned") }}
@@ -38,7 +38,6 @@
 
 <script>
 import HcUser from '~/components/User'
-import RemoveLinks from '~/mixins/removeLinks'
 
 export default {
   name: 'Notification',
@@ -53,7 +52,7 @@ export default {
   },
   computed: {
     excerpt() {
-      return RemoveLinks.methods.removeLinks(this.post.contentExcerpt)
+      return this.$filters.removeLinks(this.post.contentExcerpt)
     },
     post() {
       return this.notification.post || {}

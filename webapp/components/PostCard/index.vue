@@ -76,7 +76,6 @@
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
-import RemoveLinks from '~/mixins/removeLinks.js'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -96,7 +95,7 @@ export default {
       user: 'auth/user'
     }),
     excerpt() {
-      return RemoveLinks.methods.removeLinks(this.post.contentExcerpt)
+      return this.$filters.removeLinks(this.post.contentExcerpt)
     },
     isAuthor() {
       const { author } = this.post

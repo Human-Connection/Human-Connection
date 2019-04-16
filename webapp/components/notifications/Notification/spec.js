@@ -1,10 +1,12 @@
 import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import Notification from '.'
 import Styleguide from '@human-connection/styleguide'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
 

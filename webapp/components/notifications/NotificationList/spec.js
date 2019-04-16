@@ -9,6 +9,7 @@ import NotificationList from '.'
 import Notification from '../Notification'
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Filters from '~/plugins/vue-filters'
 
 import Styleguide from '@human-connection/styleguide'
 
@@ -16,6 +17,7 @@ const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'

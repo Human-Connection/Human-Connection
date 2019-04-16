@@ -2,11 +2,13 @@ import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import PostCard from '.'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
