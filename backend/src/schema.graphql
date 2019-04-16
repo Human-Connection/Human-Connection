@@ -27,6 +27,7 @@ type Mutation {
   enable(id: ID!): ID
   reward(fromBadgeId: ID!, toUserId: ID!): ID
   unreward(fromBadgeId: ID!, toUserId: ID!): ID
+  CreateComment(id: ID!, postId: ID!, content: String!) : Comment
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
     MATCH (n {id: $id})<-[:WROTE]-(wu:User), (u:User {id: $cypherParams.currentUserId})

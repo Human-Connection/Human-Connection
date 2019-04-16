@@ -9,6 +9,7 @@ import moderation from './resolvers/moderation.js'
 import rewards from './resolvers/rewards.js'
 import socialMedia from './resolvers/socialMedia.js'
 import notifications from './resolvers/notifications'
+import comments from './resolvers/comments'
 
 export const typeDefs = fs
   .readFileSync(
@@ -29,6 +30,7 @@ export const resolvers = {
     ...moderation.Mutation,
     ...rewards.Mutation,
     ...socialMedia.Mutation,
-    ...notifications.Mutation
+    ...notifications.Mutation,
+    ...comments.Mutation
   }
 }
