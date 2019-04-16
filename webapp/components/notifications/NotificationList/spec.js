@@ -5,8 +5,8 @@ import {
   createLocalVue,
   RouterLinkStub
 } from '@vue/test-utils'
-import NotificationList from './NotificationList.vue'
-import Notification from './Notification.vue'
+import NotificationList from '.'
+import Notification from '../Notification'
 import Vue from 'vue'
 import Vuex from 'vuex'
 

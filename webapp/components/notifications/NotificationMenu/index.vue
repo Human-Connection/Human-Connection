@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import NotificationList from './NotificationList'
+import NotificationList from '../NotificationList'
 import Dropdown from '~/components/Dropdown'
 import gql from 'graphql-tag'
 
