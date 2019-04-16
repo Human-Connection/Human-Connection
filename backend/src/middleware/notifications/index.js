@@ -1,4 +1,4 @@
-import { extractSlugs } from './notifications/mentions'
+import { extractSlugs } from './mentions'
 
 const notify = async (resolve, root, args, context, resolveInfo) => {
   const post = await resolve(root, args, context, resolveInfo)
