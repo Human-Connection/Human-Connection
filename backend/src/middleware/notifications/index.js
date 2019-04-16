@@ -1,11 +1,11 @@
-import { extractSlugs } from './mentions'
+import extractIds from './extractMentions'
 
 const notify = async (resolve, root, args, context, resolveInfo) => {
   const post = await resolve(root, args, context, resolveInfo)
 
   const session = context.driver.session()
   const { content, id: postId } = post
-  const slugs = extractSlugs(content)
+  const slugs = extractIds(content)
   const createdAt = (new Date()).toISOString()
   const cypher = `
     match(u:User) where u.slug in $slugs
