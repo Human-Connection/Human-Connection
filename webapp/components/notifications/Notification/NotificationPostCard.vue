@@ -20,10 +20,13 @@
       />
     </no-ssr>
     <ds-space margin-bottom="x-small" />
+    <!-- eslint-disable vue/no-v-html -->
+    <!-- TODO: replace editor content with tiptap render view -->
     <div
       class="hc-editor-content"
       v-html="excerpt"
     />
+    <!-- eslint-enable vue/no-v-html -->
   </ds-card>
 </template>
 
@@ -43,8 +46,10 @@ export default {
   },
   computed: {
     excerpt() {
+      const { contentExcerpt } = this.post
+      if (!contentExcerpt) return ''
       // remove all links from excerpt to prevent issues with the sorrounding link
-      let excerpt = this.post.contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '$1')
+      let excerpt = contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '$1')
       // do not display content that is only linebreaks
       if (excerpt.replace(/<br>/gim, '').trim() === '') {
         excerpt = ''
