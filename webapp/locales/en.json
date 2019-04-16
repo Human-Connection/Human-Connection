@@ -18,6 +18,11 @@
     "commented": "Commented",
     "socialMedia": "Where else can I find"
   },
+  "notifications": {
+    "menu": {
+      "mentioned": "has mentioned you in a post"
+    }
+  },
   "search": {
     "placeholder": "Search",
     "hint": "What are you searching for?",

@@ -1,21 +1,48 @@
 <template>
-  <nuxt-link
-    :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
-    @click.native="$emit('read')"
-  >
-    <ds-space margin-bottom="x-small">
-      <hc-notification-post-card :post="post" />
-    </ds-space>
-  </nuxt-link>
+  <ds-space margin-bottom="x-small">
+    <no-ssr>
+      <ds-space margin-bottom="x-small">
+      <hc-user
+        :user="post.author"
+        :trunc="35"
+      />
+      </ds-space>
+      <ds-text color="soft">
+        {{ $t("notifications.menu.mentioned") }}
+      </ds-text>
+    </no-ssr>
+    <ds-space margin-bottom="x-small" />
+    <nuxt-link
+      class="notification-mention-post"
+      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
+      @click.native="$emit('read')"
+    >
+      <ds-space margin-bottom="x-small">
+        <ds-card
+          :header="post.title"
+          :image="post.image"
+          :class="{'post-card': true, 'disabled-content': post.disabled}"
+          hover
+          space="x-small"
+        >
+          <ds-space margin-bottom="x-small" />
+          <!-- eslint-disable vue/no-v-html -->
+          <div v-html="excerpt" />
+        <!-- eslint-enable vue/no-v-html -->
+        </ds-card>
+      </ds-space>
+    </nuxt-link>
+  </ds-space>
 </template>
 
 <script>
-import HcNotificationPostCard from './NotificationPostCard.vue'
+import HcUser from '~/components/User'
+import RemoveLinks from '~/mixins/removeLinks'
 
 export default {
   name: 'Notification',
   components: {
-    HcNotificationPostCard
+    HcUser
   },
   props: {
     notification: {
@@ -24,8 +51,11 @@ export default {
     }
   },
   computed: {
+    excerpt() {
+      return RemoveLinks.methods.removeLinks(this.post.contentExcerpt)
+    },
     post() {
-      return this.notification.post
+      return this.notification.post || {}
     }
   }
 }

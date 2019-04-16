@@ -11,9 +11,13 @@ config.stubs['no-ssr'] = '<span><slot /></span>'
 describe('Notification', () => {
   let wrapper
   let stubs
+  let mocks
   let propsData
   beforeEach(() => {
     propsData = {}
+    mocks = {
+      $t: jest.fn()
+    }
     stubs = {
       NuxtLink: RouterLinkStub
     }
@@ -22,6 +26,7 @@ describe('Notification', () => {
   const Wrapper = () => {
     return mount(Notification, {
       stubs,
+      mocks,
       propsData,
       localVue
     })

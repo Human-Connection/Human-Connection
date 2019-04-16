@@ -114,7 +114,7 @@ describe('NotificationList.vue', () => {
     describe('click on a notification', () => {
       beforeEach(() => {
         wrapper
-          .findAll(Notification)
+          .findAll('.notification-mention-post')
           .at(1)
           .trigger('click')
       })
