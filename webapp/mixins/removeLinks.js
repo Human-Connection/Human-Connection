@@ -1,6 +1,6 @@
 export default {
   methods: {
-    removeLinks(content){
+    removeLinks(content) {
       if (!content) return ''
       // remove all links from excerpt to prevent issues with the surrounding link
       let excerpt = content.replace(/<a.*>(.+)<\/a>/gim, '$1')

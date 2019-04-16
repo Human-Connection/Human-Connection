@@ -120,7 +120,7 @@ import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
-import seo from '~/components/mixins/seo'
+import seo from '~/mixins/seo'
 
 export default {
   components: {

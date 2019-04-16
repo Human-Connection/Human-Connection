@@ -48,7 +48,7 @@ describe('PostCard', () => {
 
   describe('given a post', () => {
     beforeEach(() => {
-      propsData.post= {
+      propsData.post = {
         title: "It's a title"
       }
     })
