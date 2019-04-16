@@ -1,11 +1,13 @@
 import extractIds from './extractMentions'
 
 const notify = async (resolve, root, args, context, resolveInfo) => {
-  const ids = extractIds(args.content) // before mention class gets removed
+  // extract user ids before xss-middleware removes link classes
+  const ids = extractIds(args.content)
+
   const post = await resolve(root, args, context, resolveInfo)
 
   const session = context.driver.session()
-  const { content, id: postId } = post
+  const { id: postId } = post
   const createdAt = (new Date()).toISOString()
   const cypher = `
     match(u:User) where u.id in $ids
@@ -22,6 +24,7 @@ const notify = async (resolve, root, args, context, resolveInfo) => {
 
 export default {
   Mutation: {
-    CreatePost: notify
+    CreatePost: notify,
+    UpdatePost: notify
   }
 }
