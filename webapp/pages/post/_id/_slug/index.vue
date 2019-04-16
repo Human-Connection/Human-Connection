@@ -96,34 +96,67 @@
       <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
-        <h3 style="margin-top: 0;">
-          <span>
-            <ds-icon name="comments" />
-            <ds-tag
-              v-if="post.comments"
-              style="margin-top: -4px; margin-left: -12px; position: absolute;"
-              color="primary"
-              size="small"
-              round
-            >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
-          </span>
-        </h3>
-        <ds-space margin-bottom="large" />
-        <div
-          v-if="post.comments"
-          id="comments"
-          class="comments"
-        >
-          <comment
-            v-for="comment in post.comments"
-            :key="comment.id"
-            :comment="comment"
+        <ds-flex>
+          <ds-flex-item width="30%">
+            <h3 style="margin-top: 0;">
+              <span>
+                <ds-icon name="comments" />
+                <ds-tag
+                  v-if="post.comments"
+                  style="margin-top: -4px; margin-left: -12px; position: absolute;"
+                  color="primary"
+                  size="small"
+                  round
+                >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
+              </span>
+            </h3>
+          </ds-flex-item>
+          <ds-flex-item width="70%">
+            <no-ssr>
+              <hc-editor 
+                v-model="value"
+              />
+            </no-ssr>
+            <ds-flex>
+              <ds-flex-item>
+                <ds-button
+                  :disabled="loading || disabled"
+                  ghost
+                  @click.prevent="$router.back()"
+                >
+                  {{ $t('actions.cancel') }}
+                </ds-button>
+              </ds-flex-item>
+              <ds-flex-item>
+                <ds-button
+                  type="submit"
+                  :loading="loading"
+                  :disabled="disabled || errors"
+                  primary
+                  @click="handleSubmit"
+                >
+                  {{ $t('post.submitComment') }}
+                </ds-button>
+              </ds-flex-item>
+            </ds-flex>
+          </ds-flex-item>
+          <ds-space margin-bottom="large" />
+          <div
+            v-if="post.comments"
+            id="comments"
+            class="comments"
+          >
+            <comment
+              v-for="comment in post.comments"
+              :key="comment.id"
+              :comment="comment"
+            />
+          </div>
+          <hc-empty
+            v-else
+            icon="messages"
           />
-        </div>
-        <hc-empty
-          v-else
-          icon="messages"
-        />
+        </ds-flex>
       </ds-section>
     </ds-card>
   </transition>
@@ -139,6 +172,7 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
 import Comment from '~/components/Comment.vue'
+import HcEditor from '~/components/Editor/Editor.vue'
 
 export default {
   transition: {
@@ -152,7 +186,8 @@ export default {
     HcShoutButton,
     HcEmpty,
     Comment,
-    ContentMenu
+    ContentMenu,
+    HcEditor
   },
   head() {
     return {
@@ -278,6 +313,20 @@ export default {
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
+    },
+    handleSubmit() {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation($content: String!) {
+            CreateComment(content: $content) {
+              content
+            }
+          }
+        `,
+        variables: {
+          content: this.value
+        }
+      })
     }
   }
 }
