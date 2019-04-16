@@ -1,30 +1,18 @@
 import { extractSlugs } from './mentions'
 
 describe('extract', () => {
-  describe('finds mentions in the form of', () => {
-    it('@user', () => {
-      const content = 'Hello @user'
-      expect(extractSlugs(content)).toEqual(['user'])
+  describe('searches through links', () => {
+    it('ignores links without .mention class', () => {
+      const content = '<p>Something inspirational about <a href="/profile/u2" target="_blank">@bob-der-baumeister</a> and <a href="/profile/u3" target="_blank">@jenny-rostock</a>.</p>'
+      expect(extractSlugs(content)).toEqual([])
     })
 
-    it('@user-with-dash', () => {
-      const content = 'Hello @user-with-dash'
-      expect(extractSlugs(content)).toEqual(['user-with-dash'])
-    })
+    describe('given a link with .mention class', () => {
+      const content = '<p>Something inspirational about <a href="/profile/u2" class="mention" target="_blank">@bob-der-baumeister</a> and <a href="/profile/u3/jenny-rostock" class="mention" target="_blank">@jenny-rostock</a>.</p>'
 
-    it('@user.', () => {
-      const content = 'Hello @user.'
-      expect(extractSlugs(content)).toEqual(['user'])
+      it('extracts ID', () => {
+        expect(extractSlugs(content)).toEqual(['u2', 'u3'])
+      })
     })
-
-    it('@user-With-Capital-LETTERS', () => {
-      const content = 'Hello @user-With-Capital-LETTERS'
-      expect(extractSlugs(content)).toEqual(['user-With-Capital-LETTERS'])
-    })
-  })
-
-  it('ignores email addresses', () => {
-    const content = 'Hello somebody@example.org'
-    expect(extractSlugs(content)).toEqual([])
   })
 })
