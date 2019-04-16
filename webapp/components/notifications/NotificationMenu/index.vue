@@ -54,7 +54,7 @@ const NOTIFICATIONS = gql(`{
     notifications(read: false, orderBy: createdAt_desc) {
       id read createdAt
       post {
-        title contentExcerpt slug
+        id createdAt disabled deleted title contentExcerpt slug
         author { id slug name disabled deleted }
       }
     }

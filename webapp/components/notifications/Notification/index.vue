@@ -4,6 +4,7 @@
       <ds-space margin-bottom="x-small">
       <hc-user
         :user="post.author"
+        :date-time="post.createdAt"
         :trunc="35"
       />
       </ds-space>
