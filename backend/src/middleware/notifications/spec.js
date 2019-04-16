@@ -54,26 +54,31 @@ describe('currentUser { notifications }', () => {
       })
 
       describe('who mentions me in a post', () => {
+        let post
+        const title = 'Mentioning Al Capone'
+        const content = 'Hey <a class="mention" href="/profile/you/al-capone">@al-capone</a> how do you do?'
+
         beforeEach(async () => {
-          const content = 'Hey @al-capone how do you do?'
-          const title = 'Mentioning Al Capone'
           const createPostMutation = `
           mutation($title: String!, $content: String!) {
             CreatePost(title: $title, content: $content) {
+              id
               title
               content
             }
           }
           `
           authorClient = new GraphQLClient(host, { headers: authorHeaders })
-          await authorClient.request(createPostMutation, { title, content })
+          const { CreatePost } = await authorClient.request(createPostMutation, { title, content })
+          post = CreatePost
         })
 
         it('sends you a notification', async () => {
+          const newContent = 'Hey <a href="/profile/you/al-capone" target=\"_blank\">@al-capone</a> how do you do?'
           const expected = {
             currentUser: {
               notifications: [
-                { read: false, post: { content: 'Hey @al-capone how do you do?' } }
+                { read: false, post: { content: newContent } }
               ]
             }
           }
