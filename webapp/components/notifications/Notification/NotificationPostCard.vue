@@ -57,14 +57,6 @@ export default {
 
       return excerpt
     }
-  },
-  methods: {
-    href(post) {
-      return this.$router.resolve({
-        name: 'post-id-slug',
-        params: { id: post.id, slug: post.slug }
-      }).href
-    }
   }
 }
 </script>
