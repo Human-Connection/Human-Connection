@@ -37,19 +37,16 @@ Start Neo4J and confirm the database is running at [http://localhost:7474](http:
 
 Now install node dependencies with [yarn](https://yarnpkg.com/en/):
 ```bash
-# in 'Human-Connection/'
+$ cd backend
 $ yarn install
-$ cd backend && yarn install
-$ cd ../webapp && yarn install
-$ cd ..
 ```
 
 Copy Environment Variables:
 ```bash
-$ cp cypress.env.template.json cypress.env.json
-$ cp backend/.env.template backend/.env
-$ cp webapp/.env.template webapp/.env
+# in backend/
+$ cp .env.template .env
 ```
+
 Configure the new files according to your needs and your local setup.
 
 Create unique indices with:
