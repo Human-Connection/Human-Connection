@@ -15,7 +15,8 @@ export default class Mention extends TipTapMention {
         'a',
         {
           class: this.options.mentionClass,
-          href: node.attrs.url
+          href: node.attrs.url,
+          target: '_blank'
         },
         `${this.options.matcher.char}${node.attrs.label}`
       ]
