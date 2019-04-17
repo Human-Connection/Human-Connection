@@ -117,11 +117,11 @@
                 v-model="value"
               />
             </no-ssr>
+            <ds-space />
             <ds-flex>
-              <ds-flex-item>
+              <ds-flex-item width="50%">
                 <ds-button
                   :disabled="loading || disabled"
-                  ghost
                   @click.prevent="$router.back()"
                 >
                   {{ $t('actions.cancel') }}
@@ -140,23 +140,23 @@
               </ds-flex-item>
             </ds-flex>
           </ds-flex-item>
-          <ds-space margin-bottom="large" />
-          <div
-            v-if="post.comments"
-            id="comments"
-            class="comments"
-          >
-            <comment
-              v-for="comment in post.comments"
-              :key="comment.id"
-              :comment="comment"
-            />
-          </div>
-          <hc-empty
-            v-else
-            icon="messages"
-          />
         </ds-flex>
+        <ds-space margin-bottom="large" />
+        <div
+          v-if="post.comments"
+          id="comments"
+          class="comments"
+        >
+          <comment
+            v-for="comment in post.comments"
+            :key="comment.id"
+            :comment="comment"
+          />
+        </div>
+        <hc-empty
+          v-else
+          icon="messages"
+        />
       </ds-section>
     </ds-card>
   </transition>
@@ -198,7 +198,9 @@ export default {
     return {
       post: null,
       ready: false,
-      title: 'loading'
+      title: 'loading',
+      loading: false,
+      disabled: false
     }
   },
   watch: {
@@ -315,18 +317,48 @@ export default {
       return this.$store.getters['auth/user'].id === id
     },
     handleSubmit() {
-      this.$apollo.mutate({
-        mutation: gql`
-          mutation($content: String!) {
-            CreateComment(content: $content) {
-              content
+      this.loading = true
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($content: String!) {
+              CreateComment(content: $content) {
+                id
+                content
+              }
             }
+          `,
+          variables: {
+            content: this.value
           }
-        `,
-        variables: {
-          content: this.value
-        }
-      })
+        })
+        .then(res => {
+          this.disabled = true
+          this.loading = false
+          const { id } = res.data.CreateComment
+          const commentId = { id: id }
+          const postId = { id: this.post.id }
+          const AddPostComments = require('~/graphql/AddPostComments.js').default(
+            this
+          )
+
+          this.$apollo
+            .mutate({
+              mutation: AddPostComments.AddPostComments,
+              variables: {
+                from: commentId,
+                to: postId
+              }
+            })
+            .then(res => {
+              this.$toast.success('Saved!')
+            })
+        })
+        .catch(err => {
+          this.$toast.error(err.message)
+          this.loading = false
+          this.disabled = false
+        })
     }
   }
 }

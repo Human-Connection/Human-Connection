@@ -19,8 +19,8 @@ afterEach(async () => {
 
 describe('CreateComment', () => {
   const mutation = `
-    mutation($id: ID!, $postId: ID!, $content: String!) {
-      CreateComment(id: $id, postId: $postId, content: $content) {
+    mutation($id: ID!, $content: String!) {
+      CreateComment(id: $id, content: $content) {
         id
         content
       }
@@ -29,8 +29,7 @@ describe('CreateComment', () => {
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
       variables = { 
-        id: 'c1', 
-        postId: 'p1', 
+        id: 'c1',
         content: "I'm not authorised to comment"
       }
       client = new GraphQLClient(host)
@@ -46,9 +45,8 @@ describe('CreateComment', () => {
     })
 
     it('creates a post', async () => {
-      variables = { 
-        id: 'c1', 
-        postId: 'p1', 
+      variables = {
+        id: 'c1',
         content: "I'm authorised to comment" 
       }
       const expected = {
