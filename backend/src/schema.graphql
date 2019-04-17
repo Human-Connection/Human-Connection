@@ -210,6 +210,7 @@ type Post {
 type Comment {
   id: ID!
   activityId: String
+  postId: ID
   author: User @relation(name: "WROTE", direction: "IN")
   content: String!
   contentExcerpt: String
