@@ -321,38 +321,22 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($content: String!) {
-              CreateComment(content: $content) {
+            mutation($postId: ID, $content: String!) {
+              CreateComment(postId: $postId, content: $content) {
                 id
                 content
               }
             }
           `,
           variables: {
+            postId: this.post.id,
             content: this.value
           }
         })
         .then(res => {
           this.disabled = true
           this.loading = false
-          const { id } = res.data.CreateComment
-          const commentId = { id: id }
-          const postId = { id: this.post.id }
-          const AddPostComments = require('~/graphql/AddPostComments.js').default(
-            this
-          )
-
-          this.$apollo
-            .mutate({
-              mutation: AddPostComments.AddPostComments,
-              variables: {
-                from: commentId,
-                to: postId
-              }
-            })
-            .then(res => {
-              this.$toast.success('Saved!')
-            })
+          this.$toast.success('Saved!')
         })
         .catch(err => {
           this.$toast.error(err.message)
