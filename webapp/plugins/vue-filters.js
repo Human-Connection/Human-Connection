@@ -34,12 +34,6 @@ export default ({ app }) => {
         locale: getLocalizedFormat()
       })
     },
-    relativeDateTime: value => {
-      if (!value) return ''
-      return formatRelative(new Date(value), new Date(), {
-        locale: getLocalizedFormat()
-      })
-    },
     number: (
       value,
       precision = 2,

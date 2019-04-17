@@ -8,9 +8,7 @@
       v-router-link
       class="post-link"
       :href="href(post)"
-    >
-      {{ post.title }}
-    </a>
+    >{{ post.title }}</a>
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="large">
@@ -32,7 +30,7 @@
     </ds-space>
     <ds-space
       margin="small"
-      style="position: absolute; bottom: 44px; z-index: 1;"
+      style="position: absolute; bottom: 44px;"
     >
       <!-- TODO: find better solution for rendering errors -->
       <no-ssr>
@@ -53,11 +51,13 @@
       </div>
       <div style="display: inline-block; float: right">
         <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
-          <ds-icon name="bullhorn" /> <small>{{ post.shoutedCount }}</small>
+          <ds-icon name="bullhorn" />
+          <small>{{ post.shoutedCount }}</small>
         </span>
         &nbsp;
         <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-          <ds-icon name="comments" /> <small>{{ post.commentsCount }}</small>
+          <ds-icon name="comments" />
+          <small>{{ post.commentsCount }}</small>
         </span>
         <no-ssr>
           <content-menu
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import HcUser from '~/components/User.vue'
+import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
 
@@ -118,27 +118,25 @@ export default {
 .post-card {
   cursor: pointer;
   position: relative;
+  z-index: 1;
 
-  .ds-card-footer {
-    z-index: 1;
-  }
+  /*.ds-card-footer {
+  }*/
 
   .content-menu {
     display: inline-block;
     margin-left: $space-xx-small;
     margin-right: -$space-x-small;
-    z-index: 1;
   }
-}
 
-.post-link {
-  display: block;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  text-indent: -999999px;
+  .post-link {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-indent: -999999px;
+  }
 }
 </style>

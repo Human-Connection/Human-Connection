@@ -16,7 +16,8 @@
     "following": "Folgt",
     "shouted": "Empfohlen",
     "commented": "Kommentiert",
-    "userAnonym": "Anonymus"
+    "userAnonym": "Anonymus",
+    "socialMedia": "Wo sonst finde ich"
   },
   "search": {
     "placeholder": "Suchen",
@@ -53,6 +54,11 @@
     },
     "languages": {
       "name": "Sprachen"
+    },
+    "social-media": {
+      "name": "Soziale Medien",
+      "submit": "Link hinzufügen",
+      "success": "Profil aktualisiert"
     }
   },
   "admin": {

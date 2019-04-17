@@ -16,7 +16,8 @@
     "following": "Following",
     "shouted": "Shouted",
     "commented": "Commented",
-    "userAnonym": "Anonymous"
+    "userAnonym": "Anonymous",
+    "socialMedia": "Where else can I find"
   },
   "search": {
     "placeholder": "Search",
@@ -53,6 +54,11 @@
     },
     "languages": {
       "name": "Languages"
+    },
+    "social-media": {
+      "name": "Social media",
+      "submit": "Add link",
+      "success": "Updated user profile"
     }
   },
   "admin": {
