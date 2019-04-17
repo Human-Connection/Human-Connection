@@ -55,7 +55,7 @@ When(
     cy.contains('.ds-card', davidIrvingName)
       .find('.content-menu-trigger')
       .first()
-      .click()
+      .click({force: true})
 
     cy.get('.popover .ds-menu-item-link')
       .contains('Report User')
