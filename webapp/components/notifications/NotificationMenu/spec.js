@@ -1,11 +1,13 @@
 import { config, shallowMount, createLocalVue } from '@vue/test-utils'
-import NotificationMenu from './NotificationMenu.vue'
+import NotificationMenu from '.'
 
 import Styleguide from '@human-connection/styleguide'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
+localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
 config.stubs['dropdown'] = '<span class="dropdown"><slot /></span>'

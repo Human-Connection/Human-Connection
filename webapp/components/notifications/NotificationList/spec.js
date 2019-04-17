@@ -5,10 +5,11 @@ import {
   createLocalVue,
   RouterLinkStub
 } from '@vue/test-utils'
-import NotificationList from './NotificationList.vue'
-import Notification from './Notification.vue'
+import NotificationList from '.'
+import Notification from '../Notification'
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Filters from '~/plugins/vue-filters'
 
 import Styleguide from '@human-connection/styleguide'
 
@@ -16,6 +17,7 @@ const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
@@ -114,7 +116,7 @@ describe('NotificationList.vue', () => {
     describe('click on a notification', () => {
       beforeEach(() => {
         wrapper
-          .findAll(Notification)
+          .findAll('.notification-mention-post')
           .at(1)
           .trigger('click')
       })

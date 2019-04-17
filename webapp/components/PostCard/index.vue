@@ -76,6 +76,7 @@
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'HcPostCard',
@@ -90,26 +91,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      user: 'auth/user'
+    }),
     excerpt() {
-      // remove all links from excerpt to prevent issues with the serounding link
-      let excerpt = this.post.contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '$1')
-      // do not display content that is only linebreaks
-      if (excerpt.replace(/<br>/gim, '').trim() === '') {
-        excerpt = ''
-      }
-
-      return excerpt
+      return this.$filters.removeLinks(this.post.contentExcerpt)
     },
     isAuthor() {
-      return this.$store.getters['auth/user'].id === this.post.author.id
-    }
-  },
-  methods: {
-    href(post) {
-      return this.$router.resolve({
-        name: 'post-id-slug',
-        params: { id: post.id, slug: post.slug }
-      }).href
+      const { author } = this.post
+      if (!author) return false
+      return this.user.id === this.post.author.id
     }
   }
 }

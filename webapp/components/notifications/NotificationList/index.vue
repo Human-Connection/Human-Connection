@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Notification from './Notification'
+import Notification from '../Notification'
 
 export default {
   name: 'NotificationList',

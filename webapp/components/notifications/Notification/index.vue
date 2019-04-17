@@ -1,0 +1,62 @@
+<template>
+  <ds-space margin-bottom="x-small">
+    <no-ssr>
+      <ds-space margin-bottom="x-small">
+        <hc-user
+          :user="post.author"
+          :date-time="post.createdAt"
+          :trunc="35"
+        />
+      </ds-space>
+      <ds-text color="soft">
+        {{ $t("notifications.menu.mentioned") }}
+      </ds-text>
+    </no-ssr>
+    <ds-space margin-bottom="x-small" />
+    <nuxt-link
+      class="notification-mention-post"
+      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
+      @click.native="$emit('read')"
+    >
+      <ds-space margin-bottom="x-small">
+        <ds-card
+          :header="post.title"
+          :image="post.image"
+          :class="{'post-card': true, 'disabled-content': post.disabled}"
+          hover
+          space="x-small"
+        >
+          <ds-space margin-bottom="x-small" />
+          <!-- eslint-disable vue/no-v-html -->
+          <div v-html="excerpt" />
+        <!-- eslint-enable vue/no-v-html -->
+        </ds-card>
+      </ds-space>
+    </nuxt-link>
+  </ds-space>
+</template>
+
+<script>
+import HcUser from '~/components/User'
+
+export default {
+  name: 'Notification',
+  components: {
+    HcUser
+  },
+  props: {
+    notification: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    excerpt() {
+      return this.$filters.removeLinks(this.post.contentExcerpt)
+    },
+    post() {
+      return this.notification.post || {}
+    }
+  }
+}
+</script>

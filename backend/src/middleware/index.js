@@ -11,7 +11,7 @@ import userMiddleware from './userMiddleware'
 import includedFieldsMiddleware from './includedFieldsMiddleware'
 import orderByMiddleware from './orderByMiddleware'
 import validUrlMiddleware from './validUrlMiddleware'
-import notificationsMiddleware from './notificationsMiddleware'
+import notificationsMiddleware from './notifications'
 
 export default schema => {
   let middleware = [
@@ -20,9 +20,9 @@ export default schema => {
     validUrlMiddleware,
     sluggifyMiddleware,
     excerptMiddleware,
+    notificationsMiddleware,
     xssMiddleware,
     fixImageUrlsMiddleware,
-    notificationsMiddleware,
     softDeleteMiddleware,
     userMiddleware,
     includedFieldsMiddleware,
