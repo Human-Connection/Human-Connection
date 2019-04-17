@@ -28,9 +28,9 @@ describe('CreateComment', () => {
   `
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
-      variables = { 
+      variables = {
         id: 'c1',
-        content: "I'm not authorised to comment"
+        content: 'I\'m not authorised to comment'
       }
       client = new GraphQLClient(host)
       await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
@@ -47,15 +47,15 @@ describe('CreateComment', () => {
     it('creates a post', async () => {
       variables = {
         id: 'c1',
-        content: "I'm authorised to comment" 
+        content: 'I\'m authorised to comment'
       }
       const expected = {
         CreateComment: {
           id: 'c1',
-          content: "I'm authorised to comment"
+          content: 'I\'m authorised to comment'
         }
       }
-      
+
       await expect(client.request(mutation, variables)).resolves.toMatchObject(expected)
     })
   })
