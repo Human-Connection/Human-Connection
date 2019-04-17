@@ -310,6 +310,6 @@ Then('see {int} unread notifications in the top menu', count => {
 
 Then('I get to the post page of {string}', path => {
   path = path.replace('...', '')
-  cy.location('pathname').should('contain', '/post/')
-  cy.location('pathname').should('contain', path)
+  cy.url().should('contain', '/post/')
+  cy.url().should('contain', path)
 })
