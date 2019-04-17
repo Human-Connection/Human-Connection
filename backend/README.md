@@ -22,7 +22,7 @@ $ docker-compose exec neo4j migrate
 
 {% endtab %}
 
-{% tab title="Without Docker" %}
+{% tab title="Local" %}
 
 For the local installation you need a recent version of [node](https://nodejs.org/en/)
 (&gt;= `v10.12.0`) and [Neo4J](https://neo4j.com/) along with
@@ -98,7 +98,7 @@ $ docker-compose down -v
 ```
 {% endtab %}
 
-{% tab title="Without Docker" %}
+{% tab title="Local" %}
 Run:
 ```bash
 $ yarn run db:seed
@@ -134,7 +134,7 @@ $ docker-compose exec backend yarn run test:cucumber
 
 {% endtab %}
 
-{% tab title="Without Docker" %}
+{% tab title="Local" %}
 
 Run the _**jest**_ tests:
 
