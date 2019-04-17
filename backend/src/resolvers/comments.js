@@ -5,20 +5,20 @@ export default {
     CreateComment: async (object, params, context, resolveInfo) => {
       const { postId } = params
       delete params.postId
-      const comment = await neo4jgraphql(object, params, context, resolveInfo, true)
-      
+      const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
+
       const session = context.driver.session()
 
-      const transactionRes = await session.run(`
+      await session.run(`
           MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId})
           MERGE (post)<-[:COMMENTS]-(comment)
           RETURN comment {.id, .content}`, {
-          postId,
-          commentId: comment.id
-        }
+        postId,
+        commentId: comment.id
+      }
       )
-      session.close()  
-      
+      session.close()
+
       return comment
     }
   }
