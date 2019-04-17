@@ -301,7 +301,7 @@ When('I log in with the following credentials:', table => {
 
 When('open the notification menu and click on the first item', () => {
   cy.get('.notifications-menu').click()
-  cy.get('.notifications-menu-popover a').first().click()
+  cy.get('.notification-mention-post').first().click()
 })
 
 Then('see {int} unread notifications in the top menu', count => {
@@ -327,7 +327,9 @@ When('mention {string} in the text', (mention) => {
 })
 
 Then('the notification gets marked as read', () => {
+  cy.get('.notification').first().should('have.class', 'read')
 })
 
 Then('there are no notifications in the top menu', () => {
+  cy.get('.notifications-menu').should('contain', '0')
 })

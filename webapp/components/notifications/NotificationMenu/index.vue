@@ -1,6 +1,7 @@
 <template>
   <ds-button
     v-if="totalNotifications <= 0"
+    class="notifications-menu"
     disabled
     icon="bell"
   >

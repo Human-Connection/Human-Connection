@@ -1,5 +1,8 @@
 <template>
-  <ds-space margin-bottom="x-small">
+  <ds-space
+    :class='{"notification": true, "read": notification.read}'
+    margin-bottom="x-small"
+  >
     <no-ssr>
       <ds-space margin-bottom="x-small">
         <hc-user
@@ -22,7 +25,6 @@
         <ds-card
           :header="post.title"
           :image="post.image"
-          :class="{'post-card': true, 'disabled-content': post.disabled}"
           hover
           space="x-small"
         >
