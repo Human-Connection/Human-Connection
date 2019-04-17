@@ -3,16 +3,36 @@
     <div
       style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
     >
-      <ds-avatar style="display: inline-block; vertical-align: middle;" size="32px"/>
+      <ds-avatar
+        style="display: inline-block; vertical-align: middle;"
+        size="32px"
+      />
     </div>
     <div style="display: inline-block; height: 100%; vertical-align: middle;">
-      <b class="username" style="vertical-align: middle;">{{ $t('profile.userAnonym') }}</b>
+      <b
+        class="username"
+        style="vertical-align: middle;"
+      >{{ $t('profile.userAnonym') }}</b>
     </div>
   </div>
-  <dropdown v-else :class="{'disabled-content': user.disabled}" placement="top-start" offset="0">
-    <template slot="default" slot-scope="{openMenu, closeMenu, isOpen}">
-      <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
-        <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
+  <dropdown
+    v-else
+    :class="{'disabled-content': user.disabled}"
+    placement="top-start"
+    offset="0"
+  >
+    <template
+      slot="default"
+      slot-scope="{openMenu, closeMenu, isOpen}"
+    >
+      <nuxt-link
+        :to="userLink"
+        :class="['user', isOpen && 'active']"
+      >
+        <div
+          @mouseover="openMenu(true)"
+          @mouseleave="closeMenu(true)"
+        >
           <div
             style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
           >
@@ -24,14 +44,24 @@
             />
           </div>
           <div style="display: inline-block; height: 100%; vertical-align: middle;">
-            <b class="username" style="vertical-align: middle;">{{ userName(18) }}</b>
+            <b
+              class="username"
+              style="vertical-align: middle;"
+            >{{ userName(18) }}</b>
           </div>
           <!-- Time -->
-          <div v-if="dateTime" style="display: inline;">
-            <ds-text align="right" size="small" color="soft">
-              <ds-icon name="clock"/>
+          <div
+            v-if="dateTime"
+            style="display: inline;"
+          >
+            <ds-text
+              align="right"
+              size="small"
+              color="soft"
+            >
+              <ds-icon name="clock" />
               <no-ssr>
-                <hc-relative-date-time :date-time="dateTime"/>
+                <hc-relative-date-time :date-time="dateTime" />
               </no-ssr>
             </ds-text>
           </div>
@@ -40,7 +70,10 @@
     </template>
     <template slot="popover">
       <div style="min-width: 250px">
-        <hc-badges v-if="user.badges && user.badges.length" :badges="user.badges"/>
+        <hc-badges
+          v-if="user.badges && user.badges.length"
+          :badges="user.badges"
+        />
         <ds-text
           v-if="user.location"
           align="center"
@@ -49,13 +82,17 @@
           style="margin-top: 5px"
           bold
         >
-          <ds-icon name="map-marker"/>
+          <ds-icon name="map-marker" />
           {{ user.location.name }}
         </ds-text>
         <ds-flex style="margin-top: -10px">
           <ds-flex-item class="ds-tab-nav-item">
             <ds-space margin="small">
-              <ds-number :count="fanCount" :label="$t('profile.followers')" size="x-large"/>
+              <ds-number
+                :count="fanCount"
+                :label="$t('profile.followers')"
+                size="x-large"
+              />
             </ds-space>
           </ds-flex-item>
           <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
@@ -75,7 +112,11 @@
             </ds-space>
           </ds-flex-item>
         </ds-flex>
-        <ds-flex v-if="!itsMe" gutter="x-small" style="margin-bottom: 0;">
+        <ds-flex
+          v-if="!itsMe"
+          gutter="x-small"
+          style="margin-bottom: 0;"
+        >
           <ds-flex-item :width="{base: 3}">
             <hc-follow-button
               :follow-id="user.id"
@@ -86,7 +127,7 @@
           </ds-flex-item>
           <ds-flex-item :width="{base: 1}">
             <ds-button fullwidth>
-              <ds-icon name="user-times"/>
+              <ds-icon name="user-times" />
             </ds-button>
           </ds-flex-item>
         </ds-flex>
