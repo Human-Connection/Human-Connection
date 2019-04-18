@@ -1,6 +1,6 @@
 <template>
   <ds-space
-    :class='{"notification": true, "read": notification.read}'
+    :class="{'notification': true, 'read': notification.read}"
     margin-bottom="x-small"
   >
     <no-ssr>
@@ -62,3 +62,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.notification.read {
+  opacity: 0.6; /* Real browsers */
+  filter: alpha(opacity = 60); /* MSIE */
+}
+</style>

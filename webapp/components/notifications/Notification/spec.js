@@ -46,5 +46,19 @@ describe('Notification', () => {
     it('renders title', () => {
       expect(Wrapper().text()).toContain("It's a title")
     })
+
+    it('has no class "read"', () => {
+      expect(Wrapper().classes()).not.toContain('read')
+    })
+
+    describe('that is read', () => {
+      beforeEach(() => {
+        propsData.notification.read = true
+      })
+
+      it('has class "read"', () => {
+        expect(Wrapper().classes()).toContain('read')
+      })
+    })
   })
 })
