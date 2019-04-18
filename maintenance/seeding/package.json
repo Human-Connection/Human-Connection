@@ -1,0 +1,12 @@
+{
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/",
+    "db:script:seed": "wait-on tcp:4001 && node dist/seed/seed-db.js",
+    "db:reset": "node dist/seed/reset-db.js",
+    "db:seed": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DISABLED_MIDDLEWARES=permissions run-p --race start db:script:seed"
+  },
+  "dependencies": {
+    "graphql-request": "*"
+  }
+}

@@ -23,6 +23,13 @@ services:
     depends_on:
       - backend
     environment:
+      - GRAPHQL_PORT=4000
+      - GRAPHQL_URI=http://localhost:4000
+      - CLIENT_URI=http://localhost:3000
+      - JWT_SECRET=b/&&7b78BF&fv/Vd
+      - MOCK=false
+      - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
+      - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
       - NEO4J_URI=bolt://neo4j:7687
       - "SSH_USERNAME=${SSH_USERNAME}"
       - "SSH_HOST=${SSH_HOST}"

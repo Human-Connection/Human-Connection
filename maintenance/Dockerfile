@@ -1,13 +1,24 @@
-FROM mongo:4
+FROM humanconnection/neo4j:latest as base
 
-RUN apt-get update &&  apt-get -y install --no-install-recommends wget apt-transport-https \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
-RUN wget -O - https://debian.neo4j.org/neotechnology.gpg.key | apt-key add -
-RUN echo 'deb https://debian.neo4j.org/repo stable/' | tee /etc/apt/sources.list.d/neo4j.list
-RUN apt-get update && apt-get -y install --no-install-recommends openjdk-8-jre openssh-client neo4j rsync \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+RUN apk upgrade --update
+RUN apk add mongodb mongodb-tools openssh nodejs yarn
+
 COPY migration ./migration
 COPY migrate.sh /usr/local/bin/migrate
 COPY sync_uploads.sh /usr/local/bin/sync_uploads
+
+
+ENV NODE_ENV=maintenance
+FROM humanconnection/nitro-backend:latest as backend
+FROM base
+COPY --from=backend /nitro-backend /nitro-backend
+
+COPY seeding/package.json .
+# Install graphql-request manually, it's required for seeding and not included
+# in backend's preinstalled node_modules/
+RUN yarn install                                      && \
+  cp -r ./node_modules/* /nitro-backend/node_modules/ && \
+  rm -rf ./node_modules/ yarn.lock                    && \
+  mv package.json /nitro-backend/package.json
+# We have to do this odd copying to prevent cleaning `node_modules` folder which
+# would happen if we `yarn install|add` in the target directory
