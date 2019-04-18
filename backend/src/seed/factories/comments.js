@@ -7,19 +7,17 @@ export default function (params) {
     content = [
       faker.lorem.sentence(),
       faker.lorem.sentence()
-    ].join('. '),
-    disabled = false,
-    deleted = false
+    ].join('. ')
   } = params
 
-  return `
-    mutation {
-      CreateComment(
-        id: "${id}",
-        content: "${content}",
-        disabled: ${disabled},
-        deleted: ${deleted}
-      ) { id }
-    }
-  `
+  return {
+    mutation: `
+      mutation($id: ID!, $content: String!) {
+        CreateComment(id: $id, content: $content) {
+          id
+        }
+      }
+    `,
+    variables: { id, content }
+  }
 }

@@ -18,6 +18,11 @@
     "commented": "Kommentiert",
     "socialMedia": "Wo sonst finde ich"
   },
+  "notifications": {
+    "menu": {
+       "mentioned": "hat dich in einem Beitrag erwähnt"
+    }
+  },
   "search": {
     "placeholder": "Suchen",
     "hint": "Wonach suchst du?",
