@@ -5,20 +5,17 @@ export default function create (params) {
   const {
     id = uuid(),
     name = faker.company.companyName(),
-    description = faker.company.catchPhrase(),
-    disabled = false,
-    deleted = false
+    description = faker.company.catchPhrase()
   } = params
 
-  return `
-    mutation {
-      CreateOrganization(
-        id: "${id}",
-        name: "${name}",
-        description: "${description}",
-        disabled: ${disabled},
-        deleted: ${deleted}
-      ) { name }
-    }
-  `
+  return {
+    mutation: `
+      mutation($id: ID!, $name: String!, $description: String!) {
+        CreateOrganization(id: $id, name: $name, description: $description) {
+          name
+        }
+      }
+    `,
+    variables: { id, name, description }
+  }
 }
