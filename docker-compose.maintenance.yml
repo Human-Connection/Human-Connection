@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.4"
 
 services:
   backend:
@@ -9,14 +9,14 @@ services:
       - mongo-export:/mongo-export
     environment:
       - NEO4J_apoc_import_file_enabled=true
-  maintenance-worker:
+  maintenance:
     build:
-      context: maintenance-worker
+      context: backend/maintenance-worker
     volumes:
       - mongo-export:/mongo-export
       - uploads:/uploads
-      - ./maintenance-worker/migration/:/migration
-      - ./maintenance-worker/.ssh/:/root/.ssh/
+      - ./backend/maintenance-worker/migration/:/migration
+      - ./backend/maintenance-worker/.ssh/:/root/.ssh/
     networks:
       - hc-network
     depends_on:
