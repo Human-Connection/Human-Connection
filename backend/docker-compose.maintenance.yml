@@ -9,14 +9,14 @@ services:
       - mongo-export:/mongo-export
     environment:
       - NEO4J_apoc_import_file_enabled=true
-  db-migration-worker:
+  maintenance-worker:
     build:
-      context: db-migration-worker
+      context: maintenance-worker
     volumes:
       - mongo-export:/mongo-export
       - uploads:/uploads
-      - ./db-migration-worker/migration/:/migration
-      - ./db-migration-worker/.ssh/:/root/.ssh/
+      - ./maintenance-worker/migration/:/migration
+      - ./maintenance-worker/.ssh/:/root/.ssh/
     networks:
       - hc-network
     depends_on:

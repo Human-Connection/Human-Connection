@@ -2,7 +2,7 @@
   kind: Pod
   apiVersion: v1
   metadata:
-    name: nitro-db-migration-worker
+    name: nitro-maintenance-worker
     namespace: human-connection
   spec:
     volumes:
@@ -14,11 +14,11 @@
       persistentVolumeClaim:
         claimName: mongo-export-claim
     containers:
-    - name: nitro-db-migration-worker
-      image: humanconnection/db-migration-worker:latest
+    - name: nitro-maintenance-worker
+      image: humanconnection/maintenance-worker:latest
       envFrom:
       - configMapRef:
-          name: db-migration-worker
+          name: maintenance-worker
       volumeMounts:
       - name: secret-volume
         readOnly: false

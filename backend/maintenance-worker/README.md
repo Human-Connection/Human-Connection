@@ -29,7 +29,7 @@ SSH_USERNAME=username SSH_HOST=some.server.com MONGODB_USERNAME='hc-api' MONGODB
 Download the remote mongo database:
 
 ```bash
-docker-compose exec db-migration-worker ./import.sh
+docker-compose exec maintenance-worker ./import.sh
 ```
 
 Import the local download into Neo4J:

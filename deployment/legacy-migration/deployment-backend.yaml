@@ -8,12 +8,12 @@
     template:
       spec:
         containers:
-        - name: nitro-db-migration-worker
-          image: humanconnection/db-migration-worker:latest
+        - name: nitro-maintenance-worker
+          image: humanconnection/maintenance-worker:latest
           imagePullPolicy: Always
           envFrom:
           - configMapRef:
-              name: db-migration-worker
+              name: maintenance-worker
           volumeMounts:
           - name: secret-volume
             readOnly: false
