@@ -16,6 +16,7 @@
         />
         <no-ssr>
           <hc-editor
+            :users="users"
             :value="form.content"
             @input="updateEditorContent"
           />
@@ -48,7 +49,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor/Editor.vue'
+import HcEditor from '~/components/Editor'
 
 export default {
   components: {
@@ -70,7 +71,8 @@ export default {
       id: null,
       loading: false,
       disabled: false,
-      slug: null
+      slug: null,
+      users: []
     }
   },
   watch: {
@@ -124,6 +126,21 @@ export default {
     updateEditorContent(value) {
       // this.form.content = value
       this.$refs.contributionForm.update('content', value)
+    }
+  },
+  apollo: {
+    User: {
+      query() {
+        return gql(`{
+          User(orderBy: slug_asc) {
+            id
+            slug
+          }
+        }`)
+      },
+      result(result) {
+        this.users = result.data.User
+      }
     }
   }
 }

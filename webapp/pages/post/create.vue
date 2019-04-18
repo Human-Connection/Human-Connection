@@ -14,7 +14,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcContributionForm from '~/components/ContributionForm.vue'
+import HcContributionForm from '~/components/ContributionForm'
 
 export default {
   components: {
