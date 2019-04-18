@@ -52,10 +52,11 @@ When('I click on "Report Post" from the content menu of the post', () => {
 When(
   'I click on "Report User" from the content menu in the user info box',
   () => {
-    cy.contains('.ds-card', davidIrvingName)
-      .find('.content-menu-trigger')
-      .first()
-      .click({force: true})
+    // wait client-side-rendered content
+    cy.get('.ds-card-content .content-menu button').should('exist')
+
+    cy.contains('.ds-card-content', davidIrvingName)
+      .find('.content-menu button').click()
 
     cy.get('.popover .ds-menu-item-link')
       .contains('Report User')
