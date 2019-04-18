@@ -1,5 +1,29 @@
 <template>
   <div class="editor">
+    <div
+      v-show="showSuggestions"
+      ref="suggestions"
+      class="suggestion-list"
+    >
+      <template v-if="hasResults">
+        <div
+          v-for="(user, index) in filteredUsers"
+          :key="user.id"
+          class="suggestion-list__item"
+          :class="{ 'is-selected': navigatedUserIndex === index }"
+          @click="selectUser(user)"
+        >
+          @{{ user.slug }}
+        </div>
+      </template>
+      <div
+        v-else
+        class="suggestion-list__item is-empty"
+      >
+        No users found
+      </div>
+    </div>
+
     <editor-menu-bubble :editor="editor">
       <div
         ref="menu"
@@ -137,6 +161,8 @@
 <script>
 import linkify from 'linkify-it'
 import stringHash from 'string-hash'
+import Fuse from 'fuse.js'
+import tippy from 'tippy.js'
 import {
   Editor,
   EditorContent,
@@ -160,6 +186,7 @@ import {
   Link,
   History
 } from 'tiptap-extensions'
+import Mention from './nodes/Mention.js'
 
 let throttleInputEvent
 
@@ -170,6 +197,7 @@ export default {
     EditorMenuBubble
   },
   props: {
+    users: { type: Array, default: () => [] },
     value: { type: String, default: '' },
     doc: { type: Object, default: () => {} }
   },
@@ -198,7 +226,72 @@ export default {
             emptyNodeClass: 'is-empty',
             emptyNodeText: 'Schreib etwas inspirerendes…'
           }),
-          new History()
+          new History(),
+          new Mention({
+            items: () => {
+              return this.users
+            },
+            onEnter: ({ items, query, range, command, virtualNode }) => {
+              this.query = query
+              this.filteredUsers = items
+              this.suggestionRange = range
+              this.renderPopup(virtualNode)
+              // we save the command for inserting a selected mention
+              // this allows us to call it inside of our custom popup
+              // via keyboard navigation and on click
+              this.insertMention = command
+            },
+            // is called when a suggestion has changed
+            onChange: ({ items, query, range, virtualNode }) => {
+              this.query = query
+              this.filteredUsers = items
+              this.suggestionRange = range
+              this.navigatedUserIndex = 0
+              this.renderPopup(virtualNode)
+            },
+            // is called when a suggestion is cancelled
+            onExit: () => {
+              // reset all saved values
+              this.query = null
+              this.filteredUsers = []
+              this.suggestionRange = null
+              this.navigatedUserIndex = 0
+              this.destroyPopup()
+            },
+            // is called on every keyDown event while a suggestion is active
+            onKeyDown: ({ event }) => {
+              // pressing up arrow
+              if (event.keyCode === 38) {
+                this.upHandler()
+                return true
+              }
+              // pressing down arrow
+              if (event.keyCode === 40) {
+                this.downHandler()
+                return true
+              }
+              // pressing enter
+              if (event.keyCode === 13) {
+                this.enterHandler()
+                return true
+              }
+              return false
+            },
+            // is called when a suggestion has changed
+            // this function is optional because there is basic filtering built-in
+            // you can overwrite it if you prefer your own filtering
+            // in this example we use fuse.js with support for fuzzy search
+            onFilter: (items, query) => {
+              if (!query) {
+                return items
+              }
+              const fuse = new Fuse(items, {
+                threshold: 0.2,
+                keys: ['slug']
+              })
+              return fuse.search(query)
+            }
+          })
         ],
         onUpdate: e => {
           clearTimeout(throttleInputEvent)
@@ -206,7 +299,21 @@ export default {
         }
       }),
       linkUrl: null,
-      linkMenuIsActive: false
+      linkMenuIsActive: false,
+      query: null,
+      suggestionRange: null,
+      filteredUsers: [],
+      navigatedUserIndex: 0,
+      insertMention: () => {},
+      observer: null
+    }
+  },
+  computed: {
+    hasResults() {
+      return this.filteredUsers.length
+    },
+    showSuggestions() {
+      return this.query || this.hasResults
     }
   },
   watch: {
@@ -226,6 +333,77 @@ export default {
     this.editor.destroy()
   },
   methods: {
+    // navigate to the previous item
+    // if it's the first item, navigate to the last one
+    upHandler() {
+      this.navigatedUserIndex =
+        (this.navigatedUserIndex + this.filteredUsers.length - 1) %
+        this.filteredUsers.length
+    },
+    // navigate to the next item
+    // if it's the last item, navigate to the first one
+    downHandler() {
+      this.navigatedUserIndex =
+        (this.navigatedUserIndex + 1) % this.filteredUsers.length
+    },
+    enterHandler() {
+      const user = this.filteredUsers[this.navigatedUserIndex]
+      if (user) {
+        this.selectUser(user)
+      }
+    },
+    // we have to replace our suggestion text with a mention
+    // so it's important to pass also the position of your suggestion text
+    selectUser(user) {
+      this.insertMention({
+        range: this.suggestionRange,
+        attrs: {
+          // TODO: use router here
+          url: `/profile/${user.id}`,
+          label: user.slug
+        }
+      })
+      this.editor.focus()
+    },
+    // renders a popup with suggestions
+    // tiptap provides a virtualNode object for using popper.js (or tippy.js) for popups
+    renderPopup(node) {
+      if (this.popup) {
+        return
+      }
+      this.popup = tippy(node, {
+        content: this.$refs.suggestions,
+        trigger: 'mouseenter',
+        interactive: true,
+        theme: 'dark',
+        placement: 'top-start',
+        inertia: true,
+        duration: [400, 200],
+        showOnInit: true,
+        arrow: true,
+        arrowType: 'round'
+      })
+      // we have to update tippy whenever the DOM is updated
+      if (MutationObserver) {
+        this.observer = new MutationObserver(() => {
+          this.popup.popperInstance.scheduleUpdate()
+        })
+        this.observer.observe(this.$refs.suggestions, {
+          childList: true,
+          subtree: true,
+          characterData: true
+        })
+      }
+    },
+    destroyPopup() {
+      if (this.popup) {
+        this.popup.destroy()
+        this.popup = null
+      }
+      if (this.observer) {
+        this.observer.disconnect()
+      }
+    },
     onUpdate(e) {
       const content = e.getHTML()
       const contentHash = stringHash(content)
@@ -273,6 +451,60 @@ export default {
 </script>
 
 <style lang="scss">
+.suggestion-list {
+  padding: 0.2rem;
+  border: 2px solid rgba($color-neutral-0, 0.1);
+  font-size: 0.8rem;
+  font-weight: bold;
+  &__no-results {
+    padding: 0.2rem 0.5rem;
+  }
+  &__item {
+    border-radius: 5px;
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.2rem;
+    cursor: pointer;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    &.is-selected,
+    &:hover {
+      background-color: rgba($color-neutral-100, 0.2);
+    }
+    &.is-empty {
+      opacity: 0.5;
+    }
+  }
+}
+
+.tippy-tooltip.dark-theme {
+  background-color: $color-neutral-0;
+  padding: 0;
+  font-size: 1rem;
+  text-align: inherit;
+  color: $color-neutral-100;
+  border-radius: 5px;
+  .tippy-backdrop {
+    display: none;
+  }
+
+  .tippy-roundarrow {
+    fill: $color-neutral-0;
+  }
+  .tippy-popper[x-placement^='top'] & .tippy-arrow {
+    border-top-color: $color-neutral-0;
+  }
+  .tippy-popper[x-placement^='bottom'] & .tippy-arrow {
+    border-bottom-color: $color-neutral-0;
+  }
+  .tippy-popper[x-placement^='left'] & .tippy-arrow {
+    border-left-color: $color-neutral-0;
+  }
+  .tippy-popper[x-placement^='right'] & .tippy-arrow {
+    border-right-color: $color-neutral-0;
+  }
+}
+
 .ProseMirror {
   padding: $space-base;
   margin: -$space-base;
@@ -302,6 +534,9 @@ li > p {
 }
 
 .editor {
+  .mention-suggestion {
+    color: $color-primary;
+  }
   &__floating-menu {
     position: absolute;
     margin-top: -0.25rem;

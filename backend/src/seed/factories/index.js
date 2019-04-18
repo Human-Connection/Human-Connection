@@ -71,8 +71,8 @@ export default function Factory (options = {}) {
       return this
     },
     async create (node, properties) {
-      const mutation = this.factories[node](properties)
-      this.lastResponse = await this.graphQLClient.request(mutation)
+      const { mutation, variables } = this.factories[node](properties)
+      this.lastResponse = await this.graphQLClient.request(mutation, variables)
       return this
     },
     async relate (node, relationship, properties) {

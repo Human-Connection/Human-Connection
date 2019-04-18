@@ -4,11 +4,12 @@
     :image="post.image"
     :class="{'post-card': true, 'disabled-content': post.disabled}"
   >
-    <a
-      v-router-link
+    <nuxt-link
       class="post-link"
-      :href="href(post)"
-    >{{ post.title }}</a>
+      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
+    >
+      {{ post.title }}
+    </nuxt-link>
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="large">
@@ -75,6 +76,7 @@
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'HcPostCard',
@@ -89,26 +91,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      user: 'auth/user'
+    }),
     excerpt() {
-      // remove all links from excerpt to prevent issues with the serounding link
-      let excerpt = this.post.contentExcerpt.replace(/<a.*>(.+)<\/a>/gim, '$1')
-      // do not display content that is only linebreaks
-      if (excerpt.replace(/<br>/gim, '').trim() === '') {
-        excerpt = ''
-      }
-
-      return excerpt
+      return this.$filters.removeLinks(this.post.contentExcerpt)
     },
     isAuthor() {
-      return this.$store.getters['auth/user'].id === this.post.author.id
-    }
-  },
-  methods: {
-    href(post) {
-      return this.$router.resolve({
-        name: 'post-id-slug',
-        params: { id: post.id, slug: post.slug }
-      }).href
+      const { author } = this.post
+      if (!author) return false
+      return this.user.id === this.post.author.id
     }
   }
 }
@@ -130,6 +122,7 @@ export default {
   }
 
   .post-link {
+    margin: 15px;
     display: block;
     position: absolute;
     top: 0;

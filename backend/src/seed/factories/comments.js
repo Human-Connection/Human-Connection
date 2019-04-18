@@ -11,13 +11,14 @@ export default function (params) {
     ].join('. ')
   } = params
 
-  return `
-    mutation {
-      CreateComment(
-        id: "${id}"
-        postId: "${postId}",
-        content: "${content}"
-      ) { id, content }
-    }
-  `
+  return {
+    mutation: `
+      mutation($id: ID!, $postId: ID, $content: String!) {
+        CreateComment(id: $id, postId: $postId, content: $content) {
+          id
+        }
+      }
+    `,
+    variables: { id, content }
+  }
 }

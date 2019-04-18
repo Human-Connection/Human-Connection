@@ -6,12 +6,15 @@ export default function (params) {
     read = false
   } = params
 
-  return `
-    mutation {
-      CreateNotification(
-        id: "${id}",
-        read: ${read},
-      ) { id, read }
-    }
-  `
+  return {
+    mutation: `
+      mutation($id: ID, $read: Boolean) {
+        CreateNotification(id: $id, read: $read) {
+          id
+          read
+        }
+      }
+    `,
+    variables: { id, read }
+  }
 }
