@@ -61,3 +61,52 @@ Then(
   'I can see my new name {string} when I click on my profile picture in the top right',
   name => matchNameInUserMenu(name)
 )
+
+When('I click on the {string} link', link => {
+  cy.get('a')
+    .contains(link)
+    .click()
+})
+
+Then('I should be on the {string} page', page => {
+  cy.location()
+    .should(loc => {
+      expect(loc.pathname).to.eq(page)
+    })
+    .get('h3')
+    .should('contain', 'Social media')
+})
+
+Then('I add a social media link', () => {
+  cy.get("input[name='social-media']")
+    .type('https://freeradical.zone/peter-pan')
+    .get('button')
+    .contains('Add link')
+    .click()
+})
+
+Then('it gets saved successfully', () => {
+  cy.get('.iziToast-message')
+    .should('contain', 'Updated user')
+})
+
+Then('the new social media link shows up on the page', () => {
+  cy.get('a[href="https://freeradical.zone/peter-pan"]')
+    .should('have.length', 1)
+})
+
+Given('I have added a social media link', () => {
+  cy.openPage('/settings/my-social-media')
+    .get("input[name='social-media']")
+    .type('https://freeradical.zone/peter-pan')
+    .get('button')
+    .contains('Add link')
+    .click()
+})
+
+Then('they should be able to see my social media links', () => {
+  cy.get('.ds-card-content')
+    .contains('Where else can I find Peter Pan?')
+    .get('a[href="https://freeradical.zone/peter-pan"]')
+    .should('have.length', 1)
+})

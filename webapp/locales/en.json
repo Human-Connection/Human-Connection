@@ -15,7 +15,8 @@
     "followers": "Followers",
     "following": "Following",
     "shouted": "Shouted",
-    "commented": "Commented"
+    "commented": "Commented",
+    "socialMedia": "Where else can I find"
   },
   "search": {
     "placeholder": "Search",
@@ -51,6 +52,11 @@
     },
     "languages": {
       "name": "Languages"
+    },
+    "social-media": {
+      "name": "Social media",
+      "submit": "Add link",
+      "success": "Updated user profile"
     }
   },
   "admin": {

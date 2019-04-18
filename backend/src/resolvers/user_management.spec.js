@@ -1,3 +1,4 @@
+import gql from 'graphql-tag'
 import Factory from '../seed/factories'
 import { GraphQLClient, request } from 'graphql-request'
 import jwt from 'jsonwebtoken'
@@ -254,7 +255,7 @@ describe('change password', () => {
   }
 
   describe('should be authenticated before changing password', () => {
-    it('throws not "Not Authorised!', async () => {
+    it('throws "Not Authorised!"', async () => {
       await expect(
         request(
           host,
@@ -306,6 +307,100 @@ describe('change password', () => {
       ).toEqual(expect.objectContaining({
         changePassword: expect.any(String)
       }))
+    })
+  })
+})
+
+describe('do not expose private RSA key', () => {
+  let headers
+  let client
+  const queryUserPuplicKey = gql`
+    query($queriedUserSlug: String) {
+      User(slug: $queriedUserSlug) {
+        id
+        publicKey
+      }
+    }`
+  const queryUserPrivateKey = gql`
+    query($queriedUserSlug: String) {
+      User(slug: $queriedUserSlug) {
+        id
+        privateKey
+      }
+    }`
+
+  const actionGenUserWithKeys = async () => {
+    // Generate user with "privateKey" via 'CreateUser' mutation instead of using the factories "factory.create('User', {...})", see above.
+    const variables = {
+      id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
+      password: 'xYz',
+      slug: 'apfel-strudel',
+      name: 'Apfel Strudel',
+      email: 'apfel-strudel@test.org'
+    }
+    await client.request(gql`
+      mutation($id: ID, $password: String!, $slug: String, $name: String, $email: String) {
+        CreateUser(id: $id, password: $password, slug: $slug, name: $name, email: $email) {
+          id
+        }
+      }`, variables
+    )
+  }
+
+  // not authenticate
+  beforeEach(async () => {
+    client = new GraphQLClient(host)
+  })
+
+  describe('unauthenticated query of "publicKey" (does the RSA key pair get generated at all?)', () => {
+    it('returns publicKey', async () => {
+      await actionGenUserWithKeys()
+      await expect(
+        await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' })
+      ).toEqual(expect.objectContaining({
+        User: [{
+          id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
+          publicKey: expect.any(String)
+        }]
+      }))
+    })
+  })
+
+  describe('unauthenticated query of "privateKey"', () => {
+    it('throws "Not Authorised!"', async () => {
+      await actionGenUserWithKeys()
+      await expect(
+        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
+      ).rejects.toThrow('Not Authorised')
+    })
+  })
+
+  // authenticate
+  beforeEach(async () => {
+    headers = await login({ email: 'test@example.org', password: '1234' })
+    client = new GraphQLClient(host, { headers })
+  })
+
+  describe('authenticated query of "publicKey"', () => {
+    it('returns publicKey', async () => {
+      await actionGenUserWithKeys()
+      await expect(
+        await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' })
+      ).toEqual(expect.objectContaining({
+        User: [{
+          id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
+          publicKey: expect.any(String)
+        }]
+      }))
+    })
+  })
+
+  describe('authenticated query of "privateKey"', () => {
+    it('throws "Not Authorised!"', async () => {
+      await actionGenUserWithKeys()
+      await expect(
+        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
+      ).rejects.toThrow('Not Authorised')
     })
   })
 })

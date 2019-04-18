@@ -1,196 +1,152 @@
-<p align="center">
-  <a href="https://human-connection.org"><img align="center" src="humanconnection.png" height="200" alt="Human Connection" /></a>
-</p>
+# Backend
 
-# NITRO Backend
-[![Build Status](https://img.shields.io/travis/com/Human-Connection/Nitro-Backend/master.svg)](https://travis-ci.com/Human-Connection/Nitro-Backend)
-[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Human-Connection/Nitro-Backend/blob/backend/LICENSE.md)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend?ref=badge_shield)
-[![Discord Channel](https://img.shields.io/discord/489522408076738561.svg)](https://discord.gg/6ub73U3)
+## Installation
+{% tabs %}
+{% tab title="Docker" %}
 
-> This Prototype tries to resolve the biggest hurdle of connecting
-> our services together. This is not possible in a sane way using
-> our current approach.
->
-> With this Prototype we can explore using the combination of
-> GraphQL and the Neo4j Graph Database for achieving the connected
-> nature of a social graph with better development experience as we
-> do not need to connect data by our own any more through weird table
-> structures etc.
+Run the following command to install everything through docker.
 
->
-> #### Advantages:
-> - easer data structure
-> - better connected data
-> - easy to achieve "recommendations" based on actions (relations)
-> - more performant and better to understand API
-> - better API client that uses caching
->
-> We still need to evaluate the drawbacks and estimate the development
-> cost of such an approach
+The installation takes a bit longer on the first pass or on rebuild ...
 
-## How to get in touch
-Connect with other developers over [Discord](https://discord.gg/6ub73U3)
+```bash
+$ docker-compose up
 
-## Quick Start
-
-### Requirements
-
-Node >= `v10.12.0`
+# rebuild the containers for a cleanup
+$ docker-compose up --build
 ```
-  node --version
+Open another terminal and create unique indices with:
+
+```bash
+$ docker-compose exec neo4j migrate
 ```
 
-### Forking the repository
-Before you start, fork the repository using the fork button above, then clone it to your local machine using `git clone https://github.com/your-username/Nitro-Backend.git`
+{% endtab %}
 
-### Installation with Docker
+{% tab title="Without Docker" %}
 
-Run:
-```sh
-docker-compose up
-
-# create indices etc.
-docker-compose exec neo4j migrate
-
-# if you want seed data
-# open another terminal and run
-docker-compose exec backend yarn run db:seed
-```
-
-App is [running on port 4000](http://localhost:4000/)
-
-To wipe out your neo4j database run:
-```sh
-docker-compose down -v
-```
-
-
-### Installation without Docker
-
-Install dependencies:
+For the local installation you need a recent version of [node](https://nodejs.org/en/)
+(&gt;= `v10.12.0`) and [Neo4J](https://neo4j.com/) along with
+[Apoc](https://github.com/neo4j-contrib/neo4j-apoc-procedures) plugin installed
+on your system.
 
 Download [Neo4j Community Edition](https://neo4j.com/download-center/#releases) and unpack the files.
 
 Download [Neo4j Apoc](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases) and drop the file into the `plugins` folder of the just extracted Neo4j-Server
+Note that grand-stack-starter does not currently bundle a distribution of Neo4j. You can download [Neo4j Desktop](https://neo4j.com/download/) and run locally for development, spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download/), run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-cloud-deployment/), [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/) or on Debian-based systems install [Neo4j from the Debian Repository](http://debian.neo4j.org/). Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
+Start Neo4J and confirm the database is running at [http://localhost:7474](http://localhost:7474).
 
-Start Neo4j
+Now install node dependencies with [yarn](https://yarnpkg.com/en/):
+```bash
+$ cd backend
+$ yarn install
 ```
-neo4j\bin\neo4j start
-```
-and confirm it's running [here](http://localhost:7474)
 
+Copy Environment Variables:
+```bash
+# in backend/
+$ cp .env.template .env
+```
+
+Configure the new files according to your needs and your local setup.
+
+Create unique indices with:
 
 ```bash
-yarn install
-# -or-
-npm install
+$ ./neo4j/migrate.sh
 ```
 
-Copy:
-```
-cp .env.template .env
-```
-Configure the file `.env` according to your needs and your local setup.
-
-Start the GraphQL service:
-
+Start the backend for development with:
 ```bash
-yarn dev
-# -or-
-npm dev
+$ yarn run dev
 ```
 
-And on the production machine run following:
-
+or start the backend in production environment with:
 ```bash
-yarn start
-# -or-
-npm start
+yarn run start
 ```
 
-This will start the GraphQL service (by default on localhost:4000)
-where you can issue GraphQL requests or access GraphQL Playground in the browser:
+{% endtab %}
+{% endtabs %}
 
-![GraphQL Playground](graphql-playground.png)
+Your backend is up and running at [http://localhost:4000/](http://localhost:4000/)
+This will start the GraphQL service \(by default on localhost:4000\) where you can issue GraphQL requests or access GraphQL Playground in the browser. 
 
-## Configure
+![GraphQL Playground](../.gitbook/assets/graphql-playground.png)
 
-Set your Neo4j connection string and credentials in `.env`.
-For example:
+You can access Neo4J through [http://localhost:7474/](http://localhost:7474/)
+for an interactive `cypher` shell and a visualization of the graph.
 
-_.env_
 
-```yaml
-NEO4J_URI=bolt://localhost:7687
-NEO4J_USERNAME=neo4j
-NEO4J_PASSWORD=letmein
-```
+#### Seed Database
 
-> You need to install APOC as a plugin for the graph you create in the neo4j desktop app!
+If you want your backend to return anything else than an empty response, you
+need to seed your database:
 
-Note that grand-stack-starter does not currently bundle a distribution
-of Neo4j. You can download [Neo4j Desktop](https://neo4j.com/download/)
-and run locally for development, spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download/),
-run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-cloud-deployment/),
-[spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/) or on Debian-based systems install [Neo4j from the Debian Repository](http://debian.neo4j.org/).
-Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
+{% tabs %}
+{% tab title="Docker" %}
 
-## Mock API Results
-
-Alternatively you can just mock all responses from the api which let
-you build a frontend application without running a neo4j instance.
-
-Just set `MOCK=true` inside `.env` or pass it on application start.
-
-## Seed and Reset the Database
-
-Optionally you can seed the GraphQL service by executing mutations that
-will write sample data to the database:
-
+In another terminal run:
 ```bash
-yarn run db:seed
-# -or-
-npm run db:seed
+$ docker-compose exec backend yarn run db:seed
 ```
 
-For a reset you can use the reset script:
-
+To reset the database run:
 ```bash
-yarn db:reset
-# -or-
-npm run db:reset
+$ docker-compose exec backend yarn run db:reset
+# you could also wipe out your neo4j database and delete all volumes with:
+$ docker-compose down -v
+```
+{% endtab %}
+
+{% tab title="Without Docker" %}
+Run:
+```bash
+$ yarn run db:seed
 ```
 
-## Run Tests
+To reset the database run:
+```bash
+$ yarn run db:reset
+```
+{% endtab %}
+{% endtabs %}
+
+
+# Testing
 
 **Beware**: We have no multiple database setup at the moment. We clean the database after each test, running the tests will wipe out all your data!
 
-Run the **_jest_** tests:
+
+{% tabs %}
+{% tab title="Docker" %}
+
+Run the _**jest**_ tests:
+
 ```bash
-yarn run test
-# -or-
-npm run test
-```
-Run the **_cucumber_** features:
-```bash
-yarn run test:cucumber
-# -or-
-npm run test:cucumber
+$ docker-compose exec backend yarn run test:jest
 ```
 
-When some tests fail, try `yarn db:reset` and after that `yarn db:seed`. Then run the tests again
-## Todo`s
+Run the _**cucumber**_ features:
 
-- [x] add jwt authentication
-- [ ] get directives working correctly (@toLower, @auth, @role, etc.)
-- [x] check if search is working
-- [x] check if sorting is working
-- [x] check if pagination is working
-- [ ] check if upload is working (using graphql-yoga?)
-- [x] evaluate middleware
-- [ ] ignore Posts and Comments by blacklisted Users
+```bash
+$ docker-compose exec backend yarn run test:cucumber
+```
 
+{% endtab %}
 
-## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend?ref=badge_large)
+{% tab title="Without Docker" %}
+
+Run the _**jest**_ tests:
+
+```bash
+$ yarn run test:jest
+```
+
+Run the _**cucumber**_ features:
+
+```bash
+$ yarn run test:cucumber
+```
+
+{% endtab %}
+{% endtabs %}
