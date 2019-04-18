@@ -1,4 +1,4 @@
-# Network Specification
+# Feature Specification
 
 Human Connection is a nonprofit social, action and knowledge network that connects information to action and promotes positive local and global change in all areas of life.
 
@@ -16,7 +16,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Account
 
-[Cucumber Features](./integration/user_account)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/user_account/README.md)
 
 * Sign-up
 * Agree to Data Privacy Statement
@@ -34,7 +34,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Profile
 
-[Cucumber Features](./integration/user_profile)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/user_profile/README.md)
 
 * Upload and Change Avatar
 * Upload and Change Profile Picture
@@ -59,7 +59,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### Posts
 
-[Cucumber Features](./integration/post/)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/post/README.md)
 
 * Creating Posts
 * Persistent Links
@@ -109,7 +109,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### Search
 
-[Cucumber Features](./integration/search)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/search/README.md)
 
 * Search for Categories
 * Search for Tags
@@ -230,7 +230,7 @@ Shows automatically related actions for existing post.
 
 ### Moderation
 
-[Cucumber Features](./integration/moderation)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/moderation/README.md)
 
 * Report Button for users for doubtful Content
 * Moderator Panel
@@ -255,7 +255,7 @@ Shows automatically related actions for existing post.
 
 ### Internationalization
 
-[Cucumber Features](./integration/internationalization)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/internationalization/README.md)
 
 * Frontend UI
 * Backend Error Messages

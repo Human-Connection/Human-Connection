@@ -1,4 +1,4 @@
-# End-to-End Testing
+# End-to-end tests
 
 ## Run Tests
 
@@ -14,7 +14,7 @@ After verifying that there are no errors with the servers starting, open another
 $ yarn cypress:run
 ```
 
-![Console output after running cypress test](../.gitbook/assets/grafik%20%281%29.png)
+![Console output after running cypress test](../.gitbook/assets/grafik-1.png)
 
 After the test runs, you will also get some video footage of the test run which you can then analyse in more detail.
 
@@ -28,10 +28,9 @@ To use this feature, you will still run the `yarn cypress:setup` above, but inst
 $ yarn cypress:open
 ```
 
-![Interactive Cypress Environment](../.gitbook/assets/grafik-1%20%281%29.png)
+![Interactive Cypress Environment](../.gitbook/assets/grafik-1-1.png)
 
 ## Write some Tests
 
-Check out the Cypress documentation for further information on how to write tests:
-[https://docs.cypress.io/guides/getting-started/writing-your-first-test.html\#Write-a-simple-test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Write-a-simple-test)
+Check out the Cypress documentation for further information on how to write tests: [https://docs.cypress.io/guides/getting-started/writing-your-first-test.html\#Write-a-simple-test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Write-a-simple-test)
 

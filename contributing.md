@@ -1,4 +1,4 @@
-# CONTRIBUTING
+# Contributing
 
 Thanks so much for thinking of contributing to the Human Connection project, we really appreciate it! :-\)
 
@@ -17,7 +17,7 @@ Here are some general notes on our development flow:
 * Currently operating in two week sprints
 * We are using ZenHub to coordinate
   * estimating time per issue is the crucial feature of [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f) that Github does not have
-  * "up-for-grabs" links to [Github project](https://github.com/orgs/Human-Connection/projects/10?card_filter_query=label%3A"good+first+issue)
+  * "up-for-grabs" links to \[Github project\]\([https://github.com/orgs/Human-Connection/projects/10?card\_filter\_query=label%3A"good+first+issue](https://github.com/orgs/Human-Connection/projects/10?card_filter_query=label%3A"good+first+issue)\)
   * ordering on ZenHub not necessarily reflected on github projects
 * AgileVentures run open pairing sessions at 10:30am UTC each week on Tuesdays and Thursdays
 * Core team

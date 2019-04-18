@@ -1,11 +1,8 @@
-# Human-Connection Nitro \| Deployment Configuration
+# Deployment
 
-We deploy with [kubernetes](https://kubernetes.io/). In order to deploy your own
-network you have to [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-and get a kubernetes cluster.
+We deploy with [kubernetes](https://kubernetes.io/). In order to deploy your own network you have to [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and get a kubernetes cluster.
 
-We have tested two different kubernetes providers: [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
-and [Digital Ocean](https://www.digitalocean.com/).
+We have tested two different kubernetes providers: [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [Digital Ocean](https://www.digitalocean.com/).
 
 ## Minikube
 
@@ -21,7 +18,7 @@ $ minikube dashboard
 
 This will give you an overview. Some of the steps below need some timing to make ressources available to other dependent deployments. Keeping an eye on the dashboard is a great way to check that.
 
-Follow the [installation instruction](deployment.md#installation-with-kubernetes) below. If all the pods and services have settled and everything looks green in your minikube dashboard, expose the `nitro-web` service on your host system with:
+Follow the [installation instruction](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/deployment/deployment.md#installation-with-kubernetes) below. If all the pods and services have settled and everything looks green in your minikube dashboard, expose the `nitro-web` service on your host system with:
 
 ```text
 $ minikube service nitro-web --namespace=human-connection
