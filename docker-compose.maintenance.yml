@@ -11,12 +11,12 @@ services:
       - NEO4J_apoc_import_file_enabled=true
   maintenance:
     build:
-      context: backend/maintenance-worker
+      context: maintenance
     volumes:
       - mongo-export:/mongo-export
       - uploads:/uploads
-      - ./backend/maintenance-worker/migration/:/migration
-      - ./backend/maintenance-worker/.ssh/:/root/.ssh/
+      - ./maintenance/migration/:/migration
+      - ./maintenance/.ssh/:/root/.ssh/
     networks:
       - hc-network
     depends_on:
