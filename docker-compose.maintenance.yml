@@ -10,6 +10,7 @@ services:
     environment:
       - NEO4J_apoc_import_file_enabled=true
   maintenance:
+    image: humanconnection/maintenance-worker:latest
     build:
       context: maintenance
     volumes:
