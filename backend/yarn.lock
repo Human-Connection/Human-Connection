@@ -3829,7 +3829,7 @@ graphql-yoga@~1.17.4:
     graphql-tools "^4.0.0"
     subscriptions-transport-ws "^0.9.8"
 
-"graphql@^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0", graphql@^14.0.2, graphql@~14.2.1:
+"graphql@^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0", graphql@^14.2.1, graphql@~14.2.1:
   version "14.2.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.2.1.tgz#779529bf9a01e7207b977a54c20670b48ca6e95c"
   integrity sha512-2PL1UbvKeSjy/lUeJqHk+eR9CvuErXoCNwJI4jm3oNFEeY+9ELqHNKO1ZuSxAkasPkpWbmT/iMRMFxd3cEL3tQ==
@@ -5588,7 +5588,7 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
   integrity sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
 
-neo4j-driver@^1.7.2, neo4j-driver@~1.7.3:
+neo4j-driver@^1.7.3, neo4j-driver@~1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.3.tgz#1c1108ab26b7243975f1b20045daf31d8f685207"
   integrity sha512-UCNOFiQdouq14PvZGTr+psy657BJsBpO6O2cJpP+NprZnEF4APrDzAcydPZSFxE1nfooLNc50vfuZ0q54UyY2Q==
@@ -5597,15 +5597,15 @@ neo4j-driver@^1.7.2, neo4j-driver@~1.7.3:
     text-encoding "^0.6.4"
     uri-js "^4.2.1"
 
-neo4j-graphql-js@~2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.4.2.tgz#0acf1d0b3a8a1da516c29dbc6b7c90ef1d0c82bd"
-  integrity sha512-K1A61T6ZaEePXg2wZ4plYsQYxo7cxjHtZ6wZX7JXiX4y96c82J5VcD++FXcUys2jG4z4Bz40YS0Ce7ybMjsmUg==
+neo4j-graphql-js@~2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.5.0.tgz#3408617baa33f2e54e31b3d3bdbc5efdd74fba1e"
+  integrity sha512-fYxzr4FbQC3sMEjd8/+UWO/htX1WZAWOuSfvWirKTpBfs/ZhPmBfjlEgxbC4LYXOAlESsAQe4xD3uRfgnIuNmQ==
   dependencies:
-    graphql "^14.0.2"
+    graphql "^14.2.1"
     graphql-auth-directives "^2.1.0"
     lodash "^4.17.11"
-    neo4j-driver "^1.7.2"
+    neo4j-driver "^1.7.3"
 
 next-tick@^1.0.0:
   version "1.0.0"
