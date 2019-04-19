@@ -38,7 +38,7 @@
           >
             <ds-avatar
               :image="user.avatar"
-              :name="userName()"
+              :name="userName(user.name)"
               style="display: inline-block; vertical-align: middle;"
               size="32px"
             />
@@ -47,7 +47,7 @@
             <b
               class="username"
               style="vertical-align: middle;"
-            >{{ userName(18) }}</b>
+            >{{ userName(user.name,18) }}</b>
           </div>
           <!-- Time -->
           <div
@@ -141,9 +141,10 @@
 import { mapGetters } from 'vuex'
 
 import HcRelativeDateTime from '~/components/RelativeDateTime'
-import HcFollowButton from '~/components/FollowButton.vue'
-import HcBadges from '~/components/Badges.vue'
+import HcFollowButton from '~/components/FollowButton'
+import HcBadges from '~/components/Badges'
 import Dropdown from '~/components/Dropdown'
+import userName from '~/components/_mixins/userName'
 
 export default {
   name: 'HcUser',
@@ -153,6 +154,7 @@ export default {
     HcBadges,
     Dropdown
   },
+  mixins: [userName],
   props: {
     user: { type: Object, default: null },
     trunc: { type: Number, default: null },
@@ -173,18 +175,6 @@ export default {
       const { id, slug } = this.user
       if (!(id && slug)) return ''
       return { name: 'profile-id-slug', params: { slug, id } }
-    }
-  },
-  methods: {
-    // TODO method this is a duplicate from /pages/profile/_id/_slug.vue
-    // where to put this?
-    userName(maxLength) {
-      // Return Anonymous if no Username is given
-      if (!this.user.name) {
-        return this.$t('profile.userAnonym')
-      }
-      // Return full Username or truncated Username
-      return maxLength ? this.user.name.substring(0, maxLength) : this.user.name
     }
   }
 }

@@ -16,7 +16,7 @@
         >
           <ds-avatar
             :image="user.avatar"
-            :name="userName()"
+            :name="userName(user.name)"
             class="profile-avatar"
             size="120px"
           />
@@ -34,7 +34,7 @@
               align="center"
               no-margin
             >
-              {{ userName() }}
+              {{ userName(user.name) }}
             </ds-heading>
             <ds-text
               v-if="user.location"
@@ -122,7 +122,7 @@
               tag="h5"
               color="soft"
             >
-              Wem folgt {{ userName(15) }}?
+              Wem folgt {{ userName(user.name,15) }}?
             </ds-text>
           </ds-space>
           <template v-if="user.following && user.following.length">
@@ -153,7 +153,7 @@
           </template>
           <template v-else>
             <p style="text-align: center; opacity: .5;">
-              {{ userName() }} folgt niemandem
+              {{ userName(user.name) }} folgt niemandem
             </p>
           </template>
         </ds-card>
@@ -167,7 +167,7 @@
               tag="h5"
               color="soft"
             >
-              Wer folgt {{ userName(15) }}?
+              Wer folgt {{ userName(user.name,15) }}?
             </ds-text>
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
@@ -198,18 +198,16 @@
           </template>
           <template v-else>
             <p style="text-align: center; opacity: .5;">
-              niemand folgt {{ userName() }}
+              niemand folgt {{ userName(user.name) }}
             </p>
           </template>
         </ds-card>
-        <ds-space 
+        <ds-space
           v-if="user.socialMedia && user.socialMedia.length"
           margin="large"
         >
           <ds-card style="position: relative; height: auto;">
-            <ds-space
-              margin="x-small"
-            >
+            <ds-space margin="x-small">
               <ds-text
                 tag="h5"
                 color="soft"
@@ -223,9 +221,7 @@
                   margin="x-small"
                 >
                   <a :href="link.url">
-                    <ds-avatar
-                      :image="link.favicon"
-                    />
+                    <ds-avatar :image="link.favicon" />
                     {{ link.username }}
                   </a>
                 </ds-space>
@@ -330,6 +326,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
+import userName from '~/components/_mixins/userName'
 
 export default {
   components: {
@@ -342,6 +339,7 @@ export default {
     HcEmpty,
     ContentMenu
   },
+  mixins: [userName],
   transition: {
     name: 'slide-up',
     mode: 'out-in'
@@ -430,14 +428,6 @@ export default {
         },
         fetchPolicy: 'cache-and-network'
       })
-    },
-    userName(maxLength) {
-      // Return Anonymous if no Username is given
-      if (!this.user.name) {
-        return this.$t('profile.userAnonym')
-      }
-      // Return full Username or truncated Username
-      return maxLength ? this.user.name.substring(0, maxLength) : this.user.name
     }
   },
   apollo: {

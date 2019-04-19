@@ -59,7 +59,7 @@
                 >
                   <div class="avatar-menu-popover">
                     {{ $t('login.hello') }}
-                    <b>{{ userName() }}</b>
+                    <b>{{ userName(user.name) }}</b>
                     <template v-if="user.role !== 'user'">
                       <ds-text
                         color="softer"
@@ -119,7 +119,8 @@ import LocaleSwitch from '~/components/LocaleSwitch'
 import Dropdown from '~/components/Dropdown'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
-import seo from '~/components/mixins/seo'
+import seo from '~/components/_mixins/seo'
+import userName from '~/components/_mixins/userName'
 
 export default {
   components: {
@@ -129,7 +130,7 @@ export default {
     Modal,
     LocaleSwitch
   },
-  mixins: [seo],
+  mixins: [seo, userName],
   data() {
     return {
       mobileSearchVisible: false
@@ -196,16 +197,6 @@ export default {
         return this.$route.path === url
       }
       return this.$route.path.indexOf(url) === 0
-    },
-    // TODO method this is a duplicate from /pages/profile/_id/_slug.vue
-    // where to put this?
-    userName(maxLength) {
-      // Return Anonymous if no Username is given
-      if (!this.user.name) {
-        return this.$t('profile.userAnonym')
-      }
-      // Return full Username or truncated Username
-      return maxLength ? this.user.name.substring(0, maxLength) : this.user.name
     }
   }
 }

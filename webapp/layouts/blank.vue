@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import seo from '~/components/mixins/seo'
+import seo from '~/components/_mixins/seo'
 
 export default {
   mixins: [seo]
