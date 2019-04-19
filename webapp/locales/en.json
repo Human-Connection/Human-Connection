@@ -112,7 +112,8 @@
     "takeAction": {
       "name": "Take action"
     },
-    "submitComment": "Submit Comment"
+    "submitComment": "Submit Comment",
+    "commentSubmitted": "Comment Submitted"
   },
   "quotes": {
     "african": {

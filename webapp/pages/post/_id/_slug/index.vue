@@ -112,33 +112,46 @@
             </h3>
           </ds-flex-item>
           <ds-flex-item width="70%">
-            <no-ssr>
-              <hc-editor 
-                v-model="value"
-              />
-            </no-ssr>
-            <ds-space />
-            <ds-flex>
-              <ds-flex-item width="50%">
-                <ds-button
-                  :disabled="loading || disabled"
-                  @click.prevent="$router.back()"
-                >
-                  {{ $t('actions.cancel') }}
-                </ds-button>
-              </ds-flex-item>
-              <ds-flex-item>
-                <ds-button
-                  type="submit"
-                  :loading="loading"
-                  :disabled="disabled"
-                  primary
-                  @click="handleSubmit"
-                >
-                  {{ $t('post.submitComment') }}
-                </ds-button>
-              </ds-flex-item>
-            </ds-flex>
+            <ds-form
+              ref="contributionForm"
+              v-model="form"
+              :schema="formSchema"
+              @submit="handleSubmit"
+            >
+              <template slot-scope="{ errors }">
+                <ds-card>
+                  <no-ssr>
+                    <hc-editor 
+                      :value="form.content"
+                      @input="updateEditorContent"
+                    />
+                  </no-ssr>
+                  <ds-space />
+                  <ds-flex>
+                    <ds-flex-item width="50%" />
+                    <ds-flex-item width="20%">
+                      <ds-button
+                        :disabled="loading || disabled"
+                        ghost
+                        @click.prevent="$router.back()"
+                      >
+                        {{ $t('actions.cancel') }}
+                      </ds-button>
+                    </ds-flex-item>
+                    <ds-flex-item width="20%">
+                      <ds-button
+                        type="submit"
+                        :loading="loading"
+                        :disabled="disabled || errors"
+                        primary
+                      >
+                        {{ $t('post.submitComment') }}
+                      </ds-button>
+                    </ds-flex-item>
+                  </ds-flex>
+                </ds-card>
+              </template>
+            </ds-form>
           </ds-flex-item>
         </ds-flex>
         <ds-space margin-bottom="large" />
@@ -201,7 +214,13 @@ export default {
       ready: false,
       title: 'loading',
       loading: false,
-      disabled: false
+      disabled: false,
+      form: {
+        content: ''
+      },
+      formSchema: {
+        content: { required: true, min: 3 }
+      }
     }
   },
   watch: {
@@ -317,14 +336,17 @@ export default {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
+    updateEditorContent(value) {
+      // this.form.content = value
+      this.$refs.contributionForm.update('content', value)
+    },
     addComment(comment) {
       this.$apollo.queries.Post.refetch()
       // this.post = { ...this.post, comments: [...this.post.comments, comment] }
     },
     handleSubmit() {
-      const value = this.value
-      this.value = ''
-      this.loading = true
+      const content = this.form.content
+      this.form.content = ''
       this.$apollo
         .mutate({
           mutation: gql`
@@ -337,14 +359,14 @@ export default {
           `,
           variables: {
             postId: this.post.id,
-            content: value
+            content: content
           }
         })
         .then(res => {
           this.addComment(res.data.CreateComment)
-          this.disabled = true
           this.loading = false
-          this.$toast.success('Saved!')
+          this.disabled = false
+          this.$toast.success(this.$t('post.commentSubmitted'))
         })
         .catch(err => {
           this.$toast.error(err.message)
