@@ -8,9 +8,8 @@ services:
     volumes:
       - mongo-export:/mongo-export
       - uploads:/uploads
-      - ./maintenance/migration/:/migration
-      - ./maintenance/.ssh/:/root/.ssh/
       - neo4j-data:/data
+      - ./maintenance/migration/:/migration
     networks:
       - hc-network
     environment:
@@ -26,6 +25,7 @@ services:
       - NEO4J_AUTH=none
       - "SSH_USERNAME=${SSH_USERNAME}"
       - "SSH_HOST=${SSH_HOST}"
+      - "SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}"
       - "MONGODB_USERNAME=${MONGODB_USERNAME}"
       - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
       - "MONGODB_AUTH_DB=${MONGODB_AUTH_DB}"

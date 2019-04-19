@@ -9,6 +9,8 @@ echo "MONGODB_DATABASE         ${MONGODB_DATABASE}"
 echo "MONGODB_AUTH_DB          ${MONGODB_AUTH_DB}"
 echo "-------------------------------------------------"
 
+create_private_ssh_key_from_env
+
 rm -rf /mongo-export/*
 
 ssh -4 -M -S my-ctrl-socket -fnNT -L 27018:localhost:27017 -l ${SSH_USERNAME} ${SSH_HOST}
