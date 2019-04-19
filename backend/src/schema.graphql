@@ -176,10 +176,13 @@ type Post {
   image: String
   visibility: VisibilityEnum
   deleted: Boolean
-  disabled: Boolean
+#  disabled: Boolean
+  disabled: Boolean! @cypher(statement: "OPTIONAL MATCH (this)<-[d:DISABLED]-() RETURN d IS NOT NULL")
   disabledBy: User @relation(name: "DISABLED", direction: "IN")
   createdAt: String
   updatedAt: String
+
+  post(filter: _PostFilter): Post @relation(name: "DISABLED", direction: IN)
 
   relatedContributions: [Post]! @cypher(
     statement: """
@@ -205,6 +208,10 @@ type Post {
       RETURN COUNT(u) >= 1
     """
   )
+}
+
+input _PostFilter {
+  disabled: Boolean
 }
 
 type Comment {
