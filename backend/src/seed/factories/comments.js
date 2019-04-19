@@ -19,6 +19,6 @@ export default function (params) {
         }
       }
     `,
-    variables: { id, content }
+    variables: { id, postId, content }
   }
 }

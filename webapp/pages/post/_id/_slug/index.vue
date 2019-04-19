@@ -131,7 +131,7 @@
                 <ds-button
                   type="submit"
                   :loading="loading"
-                  :disabled="disabled || errors"
+                  :disabled="disabled"
                   primary
                   @click="handleSubmit"
                 >
@@ -172,7 +172,8 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
 import Comment from '~/components/Comment.vue'
-import HcEditor from '~/components/Editor/Editor.vue'
+import HcEditor from '~/components/Editor'
+import POST_INFO from '~/graphql/PostQuery.gql'
 
 export default {
   transition: {
@@ -316,7 +317,12 @@ export default {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
+    addComment(comment) {
+      this.post.comments.push(comment)
+    },
     handleSubmit() {
+      const value = this.value
+      this.value = ''
       this.loading = true
       this.$apollo
         .mutate({
@@ -330,10 +336,33 @@ export default {
           `,
           variables: {
             postId: this.post.id,
-            content: this.value
-          }
-        })
+            content: value
+          },
+          update: (store, { data: { CreateComment } }) => {
+            const data = store.readQuery({ query: POST_INFO })
+            // data.Post.push(CreateComment)
+            // store.writeQuery({ query: POST_INFO, data })
+            // // Add to Todo tasks list
+            // const todoQuery = {
+            // 	query: POST_INFO,
+            // 	variables: { filter: { done: false } },
+            // }
+            // const todoData = store.readQuery(todoQuery)
+            // todoData.allTasks.push(createTask)
+            // store.writeQuery({ ...todoQuery, data: todoData })
+						},
+						optimisticResponse: {
+							__typename: 'Mutation',
+							CreateComment: {
+								__typename: 'Comment',
+                id: null,
+                content: value
+							},
+						},
+					})
         .then(res => {
+          console.log(res.data.CreateComment)
+          this.addComment(res.data.CreateComment)
           this.disabled = true
           this.loading = false
           this.$toast.success('Saved!')
