@@ -46,7 +46,8 @@ Cypress.Commands.add('login', ({ email, password }) => {
   cy.get('button[name=submit]')
     .as('submitButton')
     .click()
-  cy.location('pathname').should('eq', '/') // we're in!
+  cy.get('.iziToast-message').should('contain', 'You are logged in!')
+  cy.get('.iziToast-close').click()
 })
 
 Cypress.Commands.add('logout', (email, password) => {

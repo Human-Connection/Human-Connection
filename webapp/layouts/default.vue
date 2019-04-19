@@ -32,6 +32,9 @@
           </no-ssr>
           <template v-if="isLoggedIn">
             <no-ssr>
+              <notification-menu />
+            </no-ssr>
+            <no-ssr>
               <dropdown class="avatar-menu">
                 <template
                   slot="default"
@@ -116,11 +119,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch'
-import Dropdown from '~/components/Dropdown'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
-import seo from '~/components/_mixins/seo'
-import userName from '~/components/_mixins/userName'
+import NotificationMenu from '~/components/notifications/NotificationMenu'
+import Dropdown from '~/components/Dropdown'
+import seo from '~/mixins/seo'
+import userName from '~/mixins/userName'
 
 export default {
   components: {
@@ -128,7 +132,8 @@ export default {
     LocaleSwitch,
     SearchInput,
     Modal,
-    LocaleSwitch
+    LocaleSwitch,
+    NotificationMenu
   },
   mixins: [seo, userName],
   data() {

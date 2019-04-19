@@ -6,15 +6,15 @@ export default function create (params) {
     id
   } = params
 
-  return `
-    mutation {
-      report(
-        description: "${description}",
-        id: "${id}",
-      ) {
-        id,
-        createdAt
+  return {
+    mutation: `
+      mutation($id: ID!, $description: String!) {
+        report(description: $description, id: $id) {
+          id
+          createdAt
+        }
       }
-    }
-  `
+    `,
+    variables: { id, description }
+  }
 }

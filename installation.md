@@ -1,41 +1,25 @@
 # Installation
 
-## General Install Instructions
-
 The repository can be found on GitHub. [https://github.com/Human-Connection/Human-Connection](https://github.com/Human-Connection/Human-Connection)
 
-{% hint style="info" %}
-TODO: Create documentation section for How to Start and Beginners.
-{% endhint %}
+We give write permissions to every developer who asks for it. Just text us on
+[Discord](https://discord.gg/6ub73U3).
 
-Here are some general informations about our [GitHub Standard Fork & Pull Request Workflow](https://gist.github.com/Chaser324/ce0505fbed06b947d962).
+## Clone the Repository
 
-#### Fork the Repository
 
-Click on the fork button.
-
-![Fork screenshot](.gitbook/assets/screenshot-forking-nitro.png)
-
-#### Clone your new Repository
-
-Set the current working folder to the path in which the repository should be cloned \(copied\).
-
-```bash
-$ cd PATH-FOR-REPO
-```
-
-For cloning your new repository to your local machine modify the following command to add your GitHub user name.
+Clone the repository, this will create a new folder called `Human-Connection`:
 
 {% tabs %}
 {% tab title="HTTPS" %}
 ```bash
-$ git clone https://github.com/YOUR-GITHUB-USERNAME/Human-Connection.git
+$ git clone https://github.com/Human-Connection/Human-Connection.git
 ```
 {% endtab %}
 
 {% tab title="SSH" %}
 ```bash
-$ git clone git@github.com:YOUR-GITHUB-USERNAME/Human-Connection.git
+$ git clone git@github.com:Human-Connection/Human-Connection.git
 ```
 {% endtab %}
 {% endtabs %}
@@ -46,21 +30,21 @@ Change into the new folder.
 $ cd Human-Connection
 ```
 
-Add the original Human Connection repository as `upstream`. This prepares you to synchronize your local clone with a simple pull command in the future.
+## Directory Layout
 
-{% tabs %}
-{% tab title="HTTPS" %}
-```bash
-$ git remote add upstream https://github.com/Human-Connection/Human-Connection.git
-```
-{% endtab %}
+There are four important directories:
+* [Backend](./backend) runs on the server and is a middleware between database and frontend
+* [Frontend](./webapp) is a server-side-rendered and client-side-rendered web frontend
+* [Deployment](./deployment) configuration for kubernetes
+* [Cypress](./cypress) contains end-to-end tests and executable feature specifications
 
-{% tab title="SSH" %}
-```bash
-$ git remote add upstream git@github.com:Human-Connection/Human-Connection.git
-```
-{% endtab %}
-{% endtabs %}
+In order to setup the application and start to develop features you have to
+setup **frontend** and **backend**.
+
+There are two approaches:
+
+1. Local installation, which means you have to take care of dependencies yourself
+2. **Or** Install everything through docker which takes care of dependencies for you
 
 ## Docker Installation
 
@@ -95,72 +79,4 @@ $ docker-compose --version
 docker-compose version 1.23.2
 ```
 
-### Install Nitro with Docker
-
-Run the following command to install Nitro as a Docker container. This installation includes Neo4j.
-
-The installation takes a bit longer on the first pass or on rebuild ...
-
-```bash
-$ docker-compose up
-
-# rebuild the containers for a cleanup
-$ docker-compose up --build
-```
-
-#### Seed Neo4j in Docker
-
-To seed the Neo4j database with default data, that GraphQL requests or playing with our GraphQL Playground returns anything else than an empty response, run the command.
-
-Run the following command to seed the Neo4j database with default data requested by Nitro-Web through GraphQL or when you play with our GraphQL playground.
-
-```bash
-# open another terminal
-
-# create indices etc.
-$ docker-compose exec neo4j migrate
-
-# seed database
-$ docker-compose exec backend yarn run db:seed
-```
-
-**Wipe out Neo4j database in Docker**
-
-To wipe out your neo4j database and delete the volumes send command:
-
-```bash
-# open another terminal and run
-$ docker-compose down -v
-```
-
-**Video Tutorial**
-
-{% hint style="info" %}
-TODO: Link to video
-{% endhint %}
-
-#### Development with Kubernetes
-
-For further informations see also our [Kubernetes documentation](https://github.com/Human-Connection/Human-Connection/tree/9bede1913b829a5c2916fc206c1fe4c83c49a4bc/kubernetes.md).
-
-## Local Installation
-
-#### Install the dependencies
-
-```bash
-$ yarn install
-$ cd backend && yarn install
-$ cd ../webapp && yarn install
-$ cd ..
-```
-
-#### Copy Environment Variables
-
-```bash
-$ cp cypress.env.template.json cypress.env.json
-$ cp backend/.env.template backend/.env
-$ cp webapp/.env.template webapp/.env
-```
-
-Configure the new files according to your needs and your local setup.
 

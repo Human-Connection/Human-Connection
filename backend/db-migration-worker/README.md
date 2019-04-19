@@ -1,6 +1,8 @@
-# Import
+# Legacy Migration
 
 This guide helps you to import data from our legacy servers, which are using FeathersJS and MongoDB.
+
+**You can skip this if you don't plan to migrate any legacy applications!**
 
 ## Prerequisites
 

@@ -34,7 +34,7 @@
 <script>
 import gql from 'graphql-tag'
 import uniqBy from 'lodash/uniqBy'
-import HcPostCard from '~/components/PostCard.vue'
+import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
 
 export default {

@@ -83,6 +83,13 @@ The following features will be implemented. This gets done in three steps:
 * Editing Comments
 * Upvote comments of others
 
+### Notifications
+[Cucumber features](./integration/notifications)
+
+* User @-mentionings
+* Notify authors for comments
+* Administrative notifications to all users
+
 ### Contribution List
 
 * Show Posts by Tiles

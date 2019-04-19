@@ -56,7 +56,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcPostCard from '~/components/PostCard.vue'
+import HcPostCard from '~/components/PostCard'
 import HcEmpty from '~/components/Empty.vue'
 
 export default {

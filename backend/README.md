@@ -1,137 +1,152 @@
 # Backend
 
+## Installation
+{% tabs %}
+{% tab title="Docker" %}
 
-## Installation with Docker
+Run the following command to install everything through docker.
 
-Make sure you are on a [node](https://nodejs.org/en/) version &gt;= `v10.12.0`:
-
-```text
-  node --version
-```
-
-Run:
+The installation takes a bit longer on the first pass or on rebuild ...
 
 ```bash
-docker-compose up
+$ docker-compose up
 
-# create indices etc.
-docker-compose exec neo4j migrate
-
-# if you want seed data
-# open another terminal and run
-docker-compose exec backend yarn run db:seed
+# rebuild the containers for a cleanup
+$ docker-compose up --build
 ```
-
-App is [running on port 4000](http://localhost:4000/)
-
-To wipe out your neo4j database run:
+Open another terminal and create unique indices with:
 
 ```bash
-docker-compose down -v
+$ docker-compose exec neo4j migrate
 ```
 
-## Installation without Docker
+{% endtab %}
 
-Install dependencies:
+{% tab title="Without Docker" %}
+
+For the local installation you need a recent version of [node](https://nodejs.org/en/)
+(&gt;= `v10.12.0`) and [Neo4J](https://neo4j.com/) along with
+[Apoc](https://github.com/neo4j-contrib/neo4j-apoc-procedures) plugin installed
+on your system.
 
 Download [Neo4j Community Edition](https://neo4j.com/download-center/#releases) and unpack the files.
 
 Download [Neo4j Apoc](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases) and drop the file into the `plugins` folder of the just extracted Neo4j-Server
+Note that grand-stack-starter does not currently bundle a distribution of Neo4j. You can download [Neo4j Desktop](https://neo4j.com/download/) and run locally for development, spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download/), run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-cloud-deployment/), [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/) or on Debian-based systems install [Neo4j from the Debian Repository](http://debian.neo4j.org/). Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
+Start Neo4J and confirm the database is running at [http://localhost:7474](http://localhost:7474).
 
-Start Neo4j
-
-```text
-neo4j\bin\neo4j start
+Now install node dependencies with [yarn](https://yarnpkg.com/en/):
+```bash
+$ cd backend
+$ yarn install
 ```
 
-and confirm it's running [here](http://localhost:7474)
+Copy Environment Variables:
+```bash
+# in backend/
+$ cp .env.template .env
+```
+
+Configure the new files according to your needs and your local setup.
+
+Create unique indices with:
 
 ```bash
-yarn install
-# -or-
-npm install
+$ ./neo4j/migrate.sh
 ```
 
-Copy:
-
-```text
-cp .env.template .env
-```
-
-Configure the file `.env` according to your needs and your local setup.
-
-Start the GraphQL service:
-
+Start the backend for development with:
 ```bash
-yarn dev
-# -or-
-npm dev
+$ yarn run dev
 ```
 
-And on the production machine run following:
-
+or start the backend in production environment with:
 ```bash
-yarn start
-# -or-
-npm start
+yarn run start
 ```
 
-This will start the GraphQL service \(by default on localhost:4000\) where you can issue GraphQL requests or access GraphQL Playground in the browser:
+{% endtab %}
+{% endtabs %}
+
+Your backend is up and running at [http://localhost:4000/](http://localhost:4000/)
+This will start the GraphQL service \(by default on localhost:4000\) where you can issue GraphQL requests or access GraphQL Playground in the browser. 
 
 ![GraphQL Playground](../.gitbook/assets/graphql-playground.png)
 
-## Configure
+You can access Neo4J through [http://localhost:7474/](http://localhost:7474/)
+for an interactive `cypher` shell and a visualization of the graph.
 
-Set your Neo4j connection string and credentials in `.env`. For example:
 
-_.env_
+#### Seed Database
 
-```yaml
-NEO4J_URI=bolt://localhost:7687
-NEO4J_USERNAME=neo4j
-NEO4J_PASSWORD=letmein
-```
+If you want your backend to return anything else than an empty response, you
+need to seed your database:
 
-> You need to install APOC as a plugin for the graph you create in the neo4j desktop app!
+{% tabs %}
+{% tab title="Docker" %}
 
-Note that grand-stack-starter does not currently bundle a distribution of Neo4j. You can download [Neo4j Desktop](https://neo4j.com/download/) and run locally for development, spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download/), run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-cloud-deployment/), [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/) or on Debian-based systems install [Neo4j from the Debian Repository](http://debian.neo4j.org/). Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
-
-# Seed and Reset the Database
-
-Optionally you can seed the GraphQL service by executing mutations that will write sample data to the database:
-
+In another terminal run:
 ```bash
-yarn run db:seed
-# -or-
-npm run db:seed
+$ docker-compose exec backend yarn run db:seed
 ```
 
-For a reset you can use the reset script:
-
+To reset the database run:
 ```bash
-yarn db:reset
-# -or-
-npm run db:reset
+$ docker-compose exec backend yarn run db:reset
+# you could also wipe out your neo4j database and delete all volumes with:
+$ docker-compose down -v
 ```
+{% endtab %}
+
+{% tab title="Without Docker" %}
+Run:
+```bash
+$ yarn run db:seed
+```
+
+To reset the database run:
+```bash
+$ yarn run db:reset
+```
+{% endtab %}
+{% endtabs %}
+
 
 # Testing
 
 **Beware**: We have no multiple database setup at the moment. We clean the database after each test, running the tests will wipe out all your data!
 
+
+{% tabs %}
+{% tab title="Docker" %}
+
 Run the _**jest**_ tests:
 
 ```bash
-yarn run test
-# -or-
-npm run test
+$ docker-compose exec backend yarn run test:jest
 ```
 
 Run the _**cucumber**_ features:
 
 ```bash
-yarn run test:cucumber
-# -or-
-npm run test:cucumber
+$ docker-compose exec backend yarn run test:cucumber
 ```
 
-When some tests fail, try `yarn db:reset` and after that `yarn db:seed`. Then run the tests again
+{% endtab %}
+
+{% tab title="Without Docker" %}
+
+Run the _**jest**_ tests:
+
+```bash
+$ yarn run test:jest
+```
+
+Run the _**cucumber**_ features:
+
+```bash
+$ yarn run test:cucumber
+```
+
+{% endtab %}
+{% endtabs %}
