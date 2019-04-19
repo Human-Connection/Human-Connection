@@ -5,7 +5,7 @@ EXPOSE 7687 7474
 VOLUME /mongo-export /uploads /data
 
 RUN apk upgrade --update
-RUN apk add --no-cache mongodb-tools openssh nodejs yarn
+RUN apk add --no-cache mongodb-tools openssh nodejs yarn rsync
 
 FROM humanconnection/nitro-backend:latest as backend
 
@@ -23,5 +23,4 @@ RUN yarn install                                      && \
 # would happen if we `yarn install|add` in the target directory
 
 COPY migration ./migration
-COPY ./binaries/migrate.sh      /usr/local/bin/migrate
-COPY ./binaries/sync_uploads.sh /usr/local/bin/sync_uploads
+COPY ./binaries/* /usr/local/bin/
