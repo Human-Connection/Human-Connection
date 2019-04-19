@@ -9,16 +9,14 @@ echo "MONGODB_DATABASE         ${MONGODB_DATABASE}"
 echo "MONGODB_AUTH_DB          ${MONGODB_AUTH_DB}"
 echo "-------------------------------------------------"
 
-mongo ${MONGODB_DATABASE} --eval "db.dropDatabase();"
 rm -rf /mongo-export/*
 
 ssh -4 -M -S my-ctrl-socket -fnNT -L 27018:localhost:27017 -l ${SSH_USERNAME} ${SSH_HOST}
-mongodump --host localhost -d ${MONGODB_DATABASE} --port 27018 --username ${MONGODB_USERNAME} --password ${MONGODB_PASSWORD} --authenticationDatabase ${MONGODB_AUTH_DB} --gzip --archive=/tmp/mongodump.archive
-mongorestore --gzip  --archive=/tmp/mongodump.archive
-ssh -S my-ctrl-socket -O check -l ${SSH_USERNAME} ${SSH_HOST}
-ssh -S my-ctrl-socket -O exit  -l ${SSH_USERNAME} ${SSH_HOST}
 
 for collection in "categories" "badges" "users" "contributions" "comments" "follows" "shouts"
 do
-  mongoexport --db ${MONGODB_DATABASE} --collection $collection --out "/mongo-export/$collection.json"
+  mongoexport --host localhost -d ${MONGODB_DATABASE} --port 27018 --username ${MONGODB_USERNAME} --password ${MONGODB_PASSWORD} --authenticationDatabase ${MONGODB_AUTH_DB} --db ${MONGODB_DATABASE} --collection $collection --out "/mongo-export/$collection.json"
 done
+
+ssh -S my-ctrl-socket -O check -l ${SSH_USERNAME} ${SSH_HOST}
+ssh -S my-ctrl-socket -O exit  -l ${SSH_USERNAME} ${SSH_HOST}
