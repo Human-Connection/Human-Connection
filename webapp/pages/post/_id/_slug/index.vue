@@ -318,7 +318,8 @@ export default {
       return this.$store.getters['auth/user'].id === id
     },
     addComment(comment) {
-      this.post.comments.push(comment)
+      this.$apollo.queries.Post.refetch()
+      // this.post = { ...this.post, comments: [...this.post.comments, comment] }
     },
     handleSubmit() {
       const value = this.value
@@ -337,31 +338,9 @@ export default {
           variables: {
             postId: this.post.id,
             content: value
-          },
-          update: (store, { data: { CreateComment } }) => {
-            const data = store.readQuery({ query: POST_INFO })
-            // data.Post.push(CreateComment)
-            // store.writeQuery({ query: POST_INFO, data })
-            // // Add to Todo tasks list
-            // const todoQuery = {
-            // 	query: POST_INFO,
-            // 	variables: { filter: { done: false } },
-            // }
-            // const todoData = store.readQuery(todoQuery)
-            // todoData.allTasks.push(createTask)
-            // store.writeQuery({ ...todoQuery, data: todoData })
-						},
-						optimisticResponse: {
-							__typename: 'Mutation',
-							CreateComment: {
-								__typename: 'Comment',
-                id: null,
-                content: value
-							},
-						},
-					})
+          }
+        })
         .then(res => {
-          console.log(res.data.CreateComment)
           this.addComment(res.data.CreateComment)
           this.disabled = true
           this.loading = false
@@ -372,6 +351,19 @@ export default {
           this.loading = false
           this.disabled = false
         })
+    }
+  },
+  apollo: {
+    Post: {
+      query() {
+        return require('~/graphql/PostQuery.gql')
+      },
+      variables() {
+        return {
+          slug: this.$route.params.slug
+        }
+      },
+      fetchPolicy: 'cache-and-network'
     }
   }
 }
