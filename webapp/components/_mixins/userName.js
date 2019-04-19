@@ -6,7 +6,7 @@ export default {
         return this.$t('profile.userAnonym')
       }
       // Return full Username or truncated Username
-      return maxLength ? userName.substring(0, maxLength) : userName
+      return maxLength ? this.$filters.truncate(userName, maxLength) : userName
     }
   }
 }
