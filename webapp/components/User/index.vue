@@ -144,7 +144,7 @@ import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcFollowButton from '~/components/FollowButton'
 import HcBadges from '~/components/Badges'
 import Dropdown from '~/components/Dropdown'
-import userName from '~/components/_mixins/userName'
+import userName from '~/mixins/userName'
 
 export default {
   name: 'HcUser',

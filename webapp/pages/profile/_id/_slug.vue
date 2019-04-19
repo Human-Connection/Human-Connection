@@ -326,7 +326,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
-import userName from '~/components/_mixins/userName'
+import userName from '~/mixins/userName'
 
 export default {
   components: {
