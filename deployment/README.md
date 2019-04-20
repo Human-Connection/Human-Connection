@@ -181,7 +181,7 @@ This setup is completely optional and only required if you have data on a server
 Create a configmap with the specific connection data of your legacy server:
 
 ```bash
-$ kubectl create configmap db-migration-worker          \
+$ kubectl create configmap maintenance-worker          \
   --namespace=human-connection                          \
   --from-literal=SSH_USERNAME=someuser                  \
   --from-literal=SSH_HOST=yourhost                      \
