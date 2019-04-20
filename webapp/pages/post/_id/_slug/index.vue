@@ -113,7 +113,7 @@
           </ds-flex-item>
           <ds-flex-item width="70%">
             <ds-form
-              ref="contributionForm"
+              ref="commentForm"
               v-model="form"
               :schema="formSchema"
               @submit="handleSubmit"
@@ -121,7 +121,8 @@
               <template slot-scope="{ errors }">
                 <ds-card>
                   <no-ssr>
-                    <hc-editor 
+                    <hc-editor
+                      :post="post" 
                       :value="form.content"
                       @input="updateEditorContent"
                     />
@@ -133,7 +134,7 @@
                       <ds-button
                         :disabled="loading || disabled"
                         ghost
-                        @click.prevent="$router.back()"
+                        @click="clearEditor"
                       >
                         {{ $t('actions.cancel') }}
                       </ds-button>
@@ -186,7 +187,6 @@ import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
 import Comment from '~/components/Comment.vue'
 import HcEditor from '~/components/Editor'
-import POST_INFO from '~/graphql/PostQuery.gql'
 
 export default {
   transition: {
@@ -229,102 +229,6 @@ export default {
       this.title = this.post.title
     }
   },
-  async asyncData(context) {
-    const {
-      params,
-      error,
-      app: { apolloProvider, $i18n }
-    } = context
-    const client = apolloProvider.defaultClient
-    const query = gql(`
-      query Post($slug: String!) {
-        Post(slug: $slug) {
-          id
-          title
-          content
-          createdAt
-          disabled
-          deleted
-          slug
-          image
-          author {
-            id
-            slug
-            name
-            avatar
-            disabled
-            deleted
-            shoutedCount
-            contributionsCount
-            commentsCount
-            followedByCount
-            followedByCurrentUser
-            location {
-              name: name${$i18n.locale().toUpperCase()}
-            }
-            badges {
-              id
-              key
-              icon
-            }
-          }
-          tags {
-            name
-          }
-          commentsCount
-          comments(orderBy: createdAt_desc) {
-            id
-            contentExcerpt
-            createdAt
-            disabled
-            deleted
-            author {
-              id
-              slug
-              name
-              avatar
-              disabled
-              deleted
-              shoutedCount
-              contributionsCount
-              commentsCount
-              followedByCount
-              followedByCurrentUser
-              location {
-                name: name${$i18n.locale().toUpperCase()}
-              }
-              badges {
-                id
-                key
-                icon
-              }
-            }
-          }
-          categories {
-            id
-            name
-            icon
-          }
-          shoutedCount
-          shoutedByCurrentUser
-        }
-      }
-    `)
-    const variables = { slug: params.slug }
-    const {
-      data: { Post }
-    } = await client.query({ query, variables })
-    if (Post.length <= 0) {
-      // TODO: custom 404 error page with translations
-      const message = 'This post could not be found'
-      return error({ statusCode: 404, message })
-    }
-    const [post] = Post
-    return {
-      post,
-      title: post.title
-    }
-  },
   mounted() {
     setTimeout(() => {
       // NOTE: quick fix for jumping flexbox implementation
@@ -337,8 +241,11 @@ export default {
       return this.$store.getters['auth/user'].id === id
     },
     updateEditorContent(value) {
-      // this.form.content = value
-      this.$refs.contributionForm.update('content', value)
+      this.$refs.commentForm.update('content', value)
+    },
+    clearEditor() {
+      this.$emit('clear')
+      this.$refs.commentForm.update('content', '')
     },
     addComment(comment) {
       this.$apollo.queries.Post.refetch()
@@ -378,7 +285,7 @@ export default {
   apollo: {
     Post: {
       query() {
-        return require('~/graphql/PostQuery.gql')
+        return require('~/graphql/PostQuery.js').default(this)
       },
       variables() {
         return {
