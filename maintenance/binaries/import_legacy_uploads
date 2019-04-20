@@ -9,5 +9,5 @@ do
   fi
 done
 
-create_private_ssh_key_from_env
+[ -z "$SSH_PRIVATE_KEY" ] || create_private_ssh_key_from_env
 rsync --archive --update --verbose ${SSH_USERNAME}@${SSH_HOST}:${UPLOADS_DIRECTORY}/* /uploads/

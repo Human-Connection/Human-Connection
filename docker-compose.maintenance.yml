@@ -6,7 +6,6 @@ services:
     build:
       context: maintenance
     volumes:
-      - mongo-export:/mongo-export
       - uploads:/uploads
       - neo4j-data:/data
       - ./maintenance/migration/:/migration
@@ -36,7 +35,6 @@ services:
       - 7474:7474
 
 volumes:
-  mongo-export:
   uploads:
   neo4j-data:
 
