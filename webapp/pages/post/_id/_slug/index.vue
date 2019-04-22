@@ -97,7 +97,7 @@
       <!-- Comments -->
       <ds-section slot="footer">
         <ds-flex>
-          <ds-flex-item width="30%">
+          <ds-flex-item width="20%">
             <h3 style="margin-top: 0;">
               <span>
                 <ds-icon name="comments" />
@@ -111,7 +111,7 @@
               </span>
             </h3>
           </ds-flex-item>
-          <ds-flex-item width="70%">
+          <ds-flex-item width="80%">
             <ds-form
               ref="commentForm"
               v-model="form"
@@ -122,19 +122,18 @@
                 <ds-card>
                   <no-ssr>
                     <hc-editor
-                      :post="post" 
                       :value="form.content"
                       @input="updateEditorContent"
                     />
                   </no-ssr>
                   <ds-space />
                   <ds-flex>
-                    <ds-flex-item width="50%" />
+                    <ds-flex-item width="50%"/>
                     <ds-flex-item width="20%">
                       <ds-button
                         :disabled="loading || disabled"
                         ghost
-                        @click="clearEditor"
+                        @click.prevent="clearEditor"
                       >
                         {{ $t('actions.cancel') }}
                       </ds-button>
@@ -244,8 +243,9 @@ export default {
       this.$refs.commentForm.update('content', value)
     },
     clearEditor() {
-      this.$emit('clear')
-      this.$refs.commentForm.update('content', '')
+      this.loading = false
+      this.disabled = false
+      this.form.content = ' '
     },
     addComment(comment) {
       this.$apollo.queries.Post.refetch()
@@ -253,7 +253,7 @@ export default {
     },
     handleSubmit() {
       const content = this.form.content
-      this.form.content = ''
+      this.form.content = ' '
       this.$apollo
         .mutate({
           mutation: gql`
@@ -266,7 +266,7 @@ export default {
           `,
           variables: {
             postId: this.post.id,
-            content: content
+            content
           }
         })
         .then(res => {
