@@ -102,7 +102,7 @@
               <span>
                 <ds-icon name="comments" />
                 <ds-tag
-                  v-if="post.comments"
+                  v-if="comments"
                   style="margin-top: -4px; margin-left: -12px; position: absolute;"
                   color="primary"
                   size="small"
@@ -128,7 +128,7 @@
                   </no-ssr>
                   <ds-space />
                   <ds-flex>
-                    <ds-flex-item width="50%"/>
+                    <ds-flex-item width="50%" />
                     <ds-flex-item width="20%">
                       <ds-button
                         :disabled="loading || disabled"
@@ -156,12 +156,12 @@
         </ds-flex>
         <ds-space margin-bottom="large" />
         <div
-          v-if="post.comments"
+          v-if="comments && comments.length"
           id="comments"
           class="comments"
         >
           <comment
-            v-for="comment in post.comments"
+            v-for="comment in comments"
             :key="comment.id"
             :comment="comment"
           />
@@ -210,6 +210,7 @@ export default {
   data() {
     return {
       post: null,
+      comments: null,
       ready: false,
       title: 'loading',
       loading: false,
@@ -226,6 +227,105 @@ export default {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
+    },
+    CommentByPost(comments) {
+      this.comments = comments || []
+    }
+  },
+  async asyncData(context) {
+    const {
+      params,
+      error,
+      app: { apolloProvider, $i18n }
+    } = context
+    const client = apolloProvider.defaultClient
+    const query = gql(`
+      query Post($slug: String!) {
+        Post(slug: $slug) {
+          id
+          title
+          content
+          createdAt
+          disabled
+          deleted
+          slug
+          image
+          author {
+            id
+            slug
+            name
+            avatar
+            disabled
+            deleted
+            shoutedCount
+            contributionsCount
+            commentsCount
+            followedByCount
+            followedByCurrentUser
+            location {
+              name: name${$i18n.locale().toUpperCase()}
+            }
+            badges {
+              id
+              key
+              icon
+            }
+          }
+          tags {
+            name
+          }
+          commentsCount
+          comments(orderBy: createdAt_desc) {
+            id
+            contentExcerpt
+            createdAt
+            disabled
+            deleted
+            author {
+              id
+              slug
+              name
+              avatar
+              disabled
+              deleted
+              shoutedCount
+              contributionsCount
+              commentsCount
+              followedByCount
+              followedByCurrentUser
+              location {
+                name: name${$i18n.locale().toUpperCase()}
+              }
+              badges {
+                id
+                key
+                icon
+              }
+            }
+          }
+          categories {
+            id
+            name
+            icon
+          }
+          shoutedCount
+          shoutedByCurrentUser
+        }
+      }
+    `)
+    const variables = { slug: params.slug }
+    const {
+      data: { Post }
+    } = await client.query({ query, variables })
+    if (Post.length <= 0) {
+      // TODO: custom 404 error page with translations
+      const message = 'This post could not be found'
+      return error({ statusCode: 404, message })
+    }
+    const [post] = Post
+    return {
+      post,
+      title: post.title
     }
   },
   mounted() {
@@ -248,7 +348,7 @@ export default {
       this.form.content = ' '
     },
     addComment(comment) {
-      this.$apollo.queries.Post.refetch()
+      this.$apollo.queries.CommentByPost.refetch()
       // this.post = { ...this.post, comments: [...this.post.comments, comment] }
     },
     handleSubmit() {
@@ -283,13 +383,13 @@ export default {
     }
   },
   apollo: {
-    Post: {
+    CommentByPost: {
       query() {
-        return require('~/graphql/PostQuery.js').default(this)
+        return require('~/graphql/CommentQuery.js').default(this)
       },
       variables() {
         return {
-          slug: this.$route.params.slug
+          postId: this.post.id
         }
       },
       fetchPolicy: 'cache-and-network'
