@@ -16,10 +16,10 @@ it.
 ## Stop and Restart Neo4J Database in Kubernetes
 
 [This tutorial](http://bigdatums.net/2017/11/07/how-to-keep-docker-containers-running/)
-explains how to keep a docker container running. For kubernetes, the way how to
+explains how to keep a docker container running. For kubernetes, the way to
 override the docker image `CMD` is explained [here](https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#define-a-command-and-arguments-when-you-create-a-pod).
 
-So, all we have to do is to edit the kubernetes deployment of our Neo4J database
+So, all we have to do is edit the kubernetes deployment of our Neo4J database
 and set a custom `command` every time we have to carry out tasks like backup,
 restore, seed etc.
 
