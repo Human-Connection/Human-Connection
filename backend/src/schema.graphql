@@ -16,6 +16,7 @@ type Query {
       LIMIT $limit
     """
   )
+  CommentByPost(postId: ID!): [Comment]!
 }
 type Mutation {
   # Get a JWT Token for the given Email and password

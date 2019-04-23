@@ -1,6 +1,26 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 
 export default {
+  Query: {
+    CommentByPost: async (object, params, context, resolveInfo) => {
+      const { postId } = params
+
+      const session = context.driver.session()
+      const transactionRes = await session.run(`
+          MATCH (comment:Comment)-[:COMMENTS]->(post:Post {id: $postId})
+          RETURN comment {.id, .contentExcerpt, .createdAt}`, {
+        postId
+      })
+
+      session.close()
+      let comments = []
+      transactionRes.records.map(record => {
+        comments.push(record.get('comment'))
+      })
+
+      return comments
+    }
+  },
   Mutation: {
     CreateComment: async (object, params, context, resolveInfo) => {
       const { postId } = params
