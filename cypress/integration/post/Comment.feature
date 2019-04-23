@@ -10,7 +10,8 @@ Feature: Post Comment
     And I have a user account
     And I am logged in
 
-  Scenario:
+  Scenario: Comment creation
     Given I visit "post/bWBjpkTKZp/101-essays"
     Then I should be able to post a comment
     And I should see my comment
+    And the editor should be cleared
