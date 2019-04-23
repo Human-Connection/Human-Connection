@@ -5,7 +5,7 @@ server which is running our legacy code and you want to import that data. It
 will import the uploads folder and migrate a dump of the legacy Mongo database
 into our new Neo4J graph database.
 
-**Prepare migration of Human Connection legacy server**
+## Configure Maintenance-Worker Pod
 
 Create a configmap with the specific connection data of your legacy server:
 
@@ -19,7 +19,6 @@ $ kubectl create configmap maintenance-worker          \
   --from-literal=MONGODB_AUTH_DB=hc_api                 \
   --from-literal=MONGODB_DATABASE=hc_api                \
   --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads \
-  --from-literal=NEO4J_URI=bolt://localhost:7687
 ```
 
 Create a secret with your public and private ssh keys. As the [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys) points out, you should be careful with your ssh keys. Anyone with access to your cluster will have access to your ssh keys. Better create a new pair with `ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`:
@@ -32,24 +31,44 @@ $ kubectl create secret generic ssh-keys          \
   --from-file=known_hosts=/path/to/.ssh/known_hosts
 ```
 
-**Migrate legacy database**
+## Deploy a Temporary Maintenance-Worker Pod
 
-Patch the existing deployments to use a multi-container setup:
+Bring the application into maintenance mode.
 
+{% hint style="info" %} TODO: implement maintenance mode {% endhint %}
+
+
+Then temporarily delete backend and database deployments
 ```bash
-cd legacy-migration
-kubectl apply -f volume-claim-mongo-export.yaml
-kubectl patch --namespace=human-connection deployment nitro-backend --patch "$(cat deployment-backend.yaml)"
-kubectl patch --namespace=human-connection deployment nitro-neo4j   --patch "$(cat deployment-neo4j.yaml)"
-cd ..
+$ kubectl --namespace=human-connection get deployments
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+nitro-backend   1/1     1            1           3d11h
+nitro-neo4j     1/1     1            1           3d11h
+nitro-web       2/2     2            2           73d
+$ kubectl --namespace=human-connection delete deployment nitro-neo4j
+deployment.extensions "nitro-neo4j" deleted
+$ kubectl --namespace=human-connection delete deployment nitro-backend
+deployment.extensions "nitro-backend" deleted
 ```
 
-Run the migration:
+Deploy one-time maintenance-worker pod:
+```
+# in deployment/legacy-migration/
+$ kubectl apply -f db-migration-worker.yaml
+pod/nitro-maintenance-worker created
+```
+
+Import legacy database and uploads:
 
 ```text
-$ kubectl --namespace=human-connection get pods
-# change <POD_IDs> below
-$ kubectl --namespace=human-connection exec -it nitro-neo4j-65bbdb597c-nc2lv migrate
-$ kubectl --namespace=human-connection exec -it nitro-backend-c6cc5ff69-8h96z sync_uploads
+$ kubectl --namespace=human-connection exec -it nitro-maintenance-worker bash
+$ import_legacy_db
+$ import_uploads
+$ exit
+```
+
+Delete the pod when you're done:
+```
+$ kubectl --namespace=human-connection delete pod nitro-maintenance-worker
 ```
 

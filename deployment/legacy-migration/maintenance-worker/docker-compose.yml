@@ -4,11 +4,11 @@ services:
   maintenance:
     image: humanconnection/maintenance-worker:latest
     build:
-      context: deployment/legacy-migration/maintenance-worker
+      context: .
     volumes:
       - uploads:/uploads
       - neo4j-data:/data
-      - ./deployment/legacy-migration/maintenance-worker/migration/:/migration
+      - ./migration/:/migration
     networks:
       - hc-network
     environment:
