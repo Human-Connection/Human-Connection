@@ -39,7 +39,12 @@ Add the following to `spec.template.spec.containers`:
 ```
 and write the file which will update the deployment.
 
-Then perform your tasks!
+The command `tail -f /dev/null` is the equivalent of *sleep forever*. It is a
+hack to keep the container busy and to prevent its shutdown. It will also
+override the default `neo4j` command and the kubernetes pod will not start the
+database.
+
+Now perform your tasks!
 
 When you're done, edit the deployment again and remove the `command`. Write the
 file and trigger an update of the deployment.
@@ -49,26 +54,30 @@ file and trigger an update of the deployment.
 First stop your Neo4J database, see above. Then:
 ```sh
 kubectl --namespace=human-connection get pods
-# copy the ID of the pod running Neo4J
+# Copy the ID of the pod running Neo4J.
 kubectl --namespace=human-connection exec -it <POD-ID> bash
-# once you're in the pod
+# Once you're in the pod, dump the db to a file e.g. `/root/neo4j-backup`.
 neo4j-admin dump --to=/root/neo4j-backup
 exit
-# download the file
+# Download the file from the pod to your computer.
  kubectl cp human-connection/<POD-ID>:/root/neo4j-backup ./neo4j-backup
 ```
-Restart your Neo4J database.
+Revert your changes to deployment `nitro-neo4j` which will restart the database.
 
 ## Restore a Backup in Kubernetes
 
 First stop your Neo4J database. Then:
 ```sh
 kubectl --namespace=human-connection get pods
-# copy the ID of the pod running Neo4J
+# Copy the ID of the pod running Neo4J.
+# Then upload your local backup to the pod. Note that once the pod gets deleted
+# e.g. if you change the deployment, the backup file is gone with it.
 kubectl cp ./neo4j-backup human-connection/<POD-ID>:/root/
 kubectl --namespace=human-connection exec -it <POD-ID> bash
-# once you're in the pod
+# Once you're in the pod restore the backup and overwrite the default database
+# called `graph.db` with `--force`.
+# This will delete all existing data in database `graph.db`!
 neo4j-admin load --from=/root/neo4j-backup --force
 exit
 ```
-Restart your Neo4J database.
+Revert your changes to deployment `nitro-neo4j` which will restart the database.
