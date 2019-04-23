@@ -23,6 +23,8 @@
 * [Kubernetes Deployment](deployment/README.md)
   * [Minikube](deployment/minikube/README.md)
   * [Digital Ocean](deployment/digital-ocean/README.md)
+    * [Kubernetes Dashboard](deployment/digital-ocean/dashboard/README.md)
+    * [HTTPS](deployment/digital-ocean/https/README.md)
   * [Neo4J DB Backup](deployment/backup.md)
 * [Maintenance](maintenance/README.md)
 * [Feature Specification](cypress/features.md)
