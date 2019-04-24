@@ -12,6 +12,11 @@ Feature: Post Comment
 
   Scenario: Comment creation
     Given I visit "post/bWBjpkTKZp/101-essays"
-    Then I should be able to post a comment
+    And I type in the following text:
+    """
+    Human Connection rocks
+    """
+    And I click on "Submit Comment"
+    Then my comment should be successfully created
     And I should see my comment
     And the editor should be cleared

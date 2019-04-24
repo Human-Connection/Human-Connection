@@ -1,20 +1,13 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 
-When('I should be able to post a comment', () => {
-  cy.get('[contenteditable]')
-    .type('This is a comment')
-    // .get('.ds-form')
-    // .submit()
-    .get('button')
-    .contains('Submit Comment')
-    .click()
-    .get('.iziToast-message')
+Then('my comment should be successfully created', () => {
+  cy.get('.iziToast-message')
     .contains('Comment Submitted')
-  })
-  
+})
+
 Then('I should see my comment', () => {
   cy.get('div.comment p')
-    .should('contain', 'This is a comment')
+    .should('contain', 'Human Connection rocks')
 })
 
 Then('the editor should be cleared', () => {
