@@ -109,11 +109,11 @@ describe('disable', () => {
             await factory.authenticateAs({ email: 'commenter@example.org', password: '1234' })
             await Promise.all([
               factory.create('Post', { id: 'p3' }),
-              factory.create('Comment', { id: 'c47' })
+              factory.create('Comment', { id: 'c47', postId: 'p3', content: 'this comment was created for this post' })
             ])
+
             await Promise.all([
-              factory.relate('Comment', 'Author', { from: 'u45', to: 'c47' }),
-              factory.relate('Comment', 'Post', { from: 'c47', to: 'p3' })
+              factory.relate('Comment', 'Author', { from: 'u45', to: 'c47' })
             ])
           }
         })
@@ -286,8 +286,7 @@ describe('enable', () => {
               factory.create('Comment', { id: 'c456' })
             ])
             await Promise.all([
-              factory.relate('Comment', 'Author', { from: 'u123', to: 'c456' }),
-              factory.relate('Comment', 'Post', { from: 'c456', to: 'p9' })
+              factory.relate('Comment', 'Author', { from: 'u123', to: 'c456' })
             ])
 
             const disableMutation = `

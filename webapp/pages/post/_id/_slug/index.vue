@@ -96,26 +96,72 @@
       <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
-        <h3 style="margin-top: 0;">
-          <span>
-            <ds-icon name="comments" />
-            <ds-tag
-              v-if="post.comments"
-              style="margin-top: -4px; margin-left: -12px; position: absolute;"
-              color="primary"
-              size="small"
-              round
-            >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
-          </span>
-        </h3>
+        <ds-flex>
+          <ds-flex-item width="20%">
+            <h3 style="margin-top: 0;">
+              <span>
+                <ds-icon name="comments" />
+                <ds-tag
+                  v-if="comments"
+                  style="margin-top: -4px; margin-left: -12px; position: absolute;"
+                  color="primary"
+                  size="small"
+                  round
+                >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
+              </span>
+            </h3>
+          </ds-flex-item>
+          <ds-flex-item width="80%">
+            <ds-form
+              ref="commentForm"
+              v-model="form"
+              :schema="formSchema"
+              @submit="handleSubmit"
+            >
+              <template slot-scope="{ errors }">
+                <ds-card>
+                  <no-ssr>
+                    <hc-editor
+                      :value="form.content"
+                      @input="updateEditorContent"
+                    />
+                  </no-ssr>
+                  <ds-space />
+                  <ds-flex>
+                    <ds-flex-item width="50%" />
+                    <ds-flex-item width="20%">
+                      <ds-button
+                        :disabled="loading || disabled"
+                        ghost
+                        @click.prevent="clearEditor"
+                      >
+                        {{ $t('actions.cancel') }}
+                      </ds-button>
+                    </ds-flex-item>
+                    <ds-flex-item width="20%">
+                      <ds-button
+                        type="submit"
+                        :loading="loading"
+                        :disabled="disabled || errors"
+                        primary
+                      >
+                        {{ $t('post.submitComment') }}
+                      </ds-button>
+                    </ds-flex-item>
+                  </ds-flex>
+                </ds-card>
+              </template>
+            </ds-form>
+          </ds-flex-item>
+        </ds-flex>
         <ds-space margin-bottom="large" />
         <div
-          v-if="post.comments"
+          v-if="comments && comments.length"
           id="comments"
           class="comments"
         >
           <comment
-            v-for="comment in post.comments"
+            v-for="comment in comments"
             :key="comment.id"
             :comment="comment"
           />
@@ -139,6 +185,7 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
 import Comment from '~/components/Comment.vue'
+import HcEditor from '~/components/Editor'
 
 export default {
   transition: {
@@ -152,7 +199,8 @@ export default {
     HcShoutButton,
     HcEmpty,
     Comment,
-    ContentMenu
+    ContentMenu,
+    HcEditor
   },
   head() {
     return {
@@ -162,14 +210,26 @@ export default {
   data() {
     return {
       post: null,
+      comments: null,
       ready: false,
-      title: 'loading'
+      title: 'loading',
+      loading: false,
+      disabled: false,
+      form: {
+        content: ''
+      },
+      formSchema: {
+        content: { required: true, min: 3 }
+      }
     }
   },
   watch: {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
+    },
+    CommentByPost(comments) {
+      this.comments = comments || []
     }
   },
   async asyncData(context) {
@@ -278,6 +338,61 @@ export default {
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
+    },
+    updateEditorContent(value) {
+      this.$refs.commentForm.update('content', value)
+    },
+    clearEditor() {
+      this.loading = false
+      this.disabled = false
+      this.form.content = ' '
+    },
+    addComment(comment) {
+      this.$apollo.queries.CommentByPost.refetch()
+      // this.post = { ...this.post, comments: [...this.post.comments, comment] }
+    },
+    handleSubmit() {
+      const content = this.form.content
+      this.form.content = ' '
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($postId: ID, $content: String!) {
+              CreateComment(postId: $postId, content: $content) {
+                id
+                content
+              }
+            }
+          `,
+          variables: {
+            postId: this.post.id,
+            content
+          }
+        })
+        .then(res => {
+          this.addComment(res.data.CreateComment)
+          this.loading = false
+          this.disabled = false
+          this.$toast.success(this.$t('post.commentSubmitted'))
+        })
+        .catch(err => {
+          this.$toast.error(err.message)
+          this.loading = false
+          this.disabled = false
+        })
+    }
+  },
+  apollo: {
+    CommentByPost: {
+      query() {
+        return require('~/graphql/CommentQuery.js').default(this)
+      },
+      variables() {
+        return {
+          postId: this.post.id
+        }
+      },
+      fetchPolicy: 'cache-and-network'
     }
   }
 }
