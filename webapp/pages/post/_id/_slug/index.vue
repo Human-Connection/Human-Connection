@@ -121,6 +121,7 @@
                 <ds-card>
                   <no-ssr>
                     <hc-editor
+                      :users="users"
                       :value="form.content"
                       @input="updateEditorContent"
                     />
@@ -216,7 +217,8 @@ export default {
       disabled: false,
       form: {
         content: ''
-      }
+      },
+      users: []
     }
   },
   watch: {
@@ -388,6 +390,19 @@ export default {
         }
       },
       fetchPolicy: 'cache-and-network'
+    },
+     User: {
+      query() {
+        return gql(`{
+          User(orderBy: slug_asc) {
+            id
+            slug
+          }
+        }`)
+      },
+      result(result) {
+        this.users = result.data.User
+      }
     }
   }
 }
