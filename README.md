@@ -32,19 +32,19 @@ Logins:
 
 ## Documentation
 
-Learn how to set up a local development environment in our [Docs](https://docs.human-connection.org/human-connection/) :mag\_right:
+Learn how to set up a local development environment in the following sections. 🔎
 
 ## Translations
 
-You can help translating the interface by joining us on [lokalise.co](https://lokalise.co/public/556252725c18dd752dd546.13222042/). Thank you lokalise for providing us with a premium account :raised\_hands:.
+You can help translating the interface by joining us on [lokalise.co](https://lokalise.co/public/556252725c18dd752dd546.13222042/). Thank you lokalise for providing us with a premium account. 🙌🏼
 
 ## Developer Chat
 
-Join our friendly open-source community on [Discord](https://discord.gg/6ub73U3) :heart\_eyes\_cat: Just introduce yourself at `#user-presentation` and mention `@@Mentor` to get you onboard :neckbeard: Check out the [contribution guideline](contributing.md), too!
+Join our friendly open-source community on [Discord](https://discord.gg/6ub73U3) 😻 Just introduce yourself at `#user-presentation` and mention `@@Mentor` to get you onboard. 🤓 Check out the [contribution guidelines](contributing.md), too!
 
 ## Attributions
 
-Locale Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
+Locale Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
 
 ## License
 

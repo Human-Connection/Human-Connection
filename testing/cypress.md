@@ -28,7 +28,7 @@ To use this feature, you will still run the `yarn cypress:setup` above, but inst
 $ yarn cypress:open
 ```
 
-![Interactive Cypress Environment](../.gitbook/assets/grafik-1-1.png)
+![Interactive Cypress Environment](../.gitbook/assets/grafik-1-1%20%281%29.png)
 
 ## Write some Tests
 

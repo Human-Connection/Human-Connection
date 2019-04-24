@@ -37,7 +37,7 @@ There are four important directories:
 * [Deployment](../deployment.md) configuration for kubernetes
 * [Cypress](../testing/cypress.md) contains end-to-end tests and executable feature specifications
 
-In order to setup the application and start to develop features you have to setup **frontend** and **backend**.
+In order to setup the application and start to develop features you have to setup the **Webapp** \(frontend\) and **Backend**.
 
 There are two approaches:
 

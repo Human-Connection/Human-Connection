@@ -8,22 +8,14 @@ There are [sevaral ways to install Docker CE](https://docs.docker.com/install/) 
 
 {% tabs %}
 {% tab title="Docker Desktop macOS" %}
-
-
-
-
 Follow these instructions to [install Docker Desktop on macOS](https://docs.docker.com/docker-for-mac/install/).
 {% endtab %}
 
 {% tab title="Docker Desktop Windows" %}
-
-
 Follow these instructions to [install Docker Desktop on Windows](https://docs.docker.com/docker-for-windows/install/).
 {% endtab %}
 
 {% tab title="Docker CE" %}
-
-
 Follow these instructions to [install Docker CE](https://docs.docker.com/install/).
 
 This is a great option for Linux users.
@@ -39,13 +31,15 @@ $ docker-compose --version
 docker-compose version 1.23.2
 ```
 
-## Install Human Connection Repository with Docker
+## Install with Docker
 
 Run the following command to install everything through docker.
 
 The installation takes a bit longer on the first pass or on rebuild ...
 
-```text
+```bash
+# in Human-Connection folder
+
 $ docker-compose up
 
 # rebuild the containers for a cleanup
