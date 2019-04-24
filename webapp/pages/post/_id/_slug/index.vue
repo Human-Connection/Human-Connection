@@ -115,7 +115,6 @@
             <ds-form
               ref="commentForm"
               v-model="form"
-              :schema="formSchema"
               @submit="handleSubmit"
             >
               <template slot-scope="{ errors }">
@@ -217,9 +216,6 @@ export default {
       disabled: false,
       form: {
         content: ''
-      },
-      formSchema: {
-        content: { required: true, min: 3 }
       }
     }
   },
@@ -349,7 +345,6 @@ export default {
     },
     addComment(comment) {
       this.$apollo.queries.CommentByPost.refetch()
-      // this.post = { ...this.post, comments: [...this.post.comments, comment] }
     },
     handleSubmit() {
       const content = this.form.content
