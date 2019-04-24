@@ -47,7 +47,7 @@
             <b
               class="username"
               style="vertical-align: middle;"
-            >{{ userName(user.name,18) }}</b>
+            >{{ userName(user.name) | truncate(18) }}</b>
           </div>
           <!-- Time -->
           <div

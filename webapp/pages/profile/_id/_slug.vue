@@ -122,7 +122,7 @@
               tag="h5"
               color="soft"
             >
-              Wem folgt {{ userName(user.name,15) }}?
+              Wem folgt {{ userName(user.name) | truncate(15) }}?
             </ds-text>
           </ds-space>
           <template v-if="user.following && user.following.length">
@@ -167,7 +167,7 @@
               tag="h5"
               color="soft"
             >
-              Wer folgt {{ userName(user.name,15) }}?
+              Wer folgt {{ userName(user.name) | truncate(15) }}?
             </ds-text>
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
