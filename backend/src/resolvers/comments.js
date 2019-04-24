@@ -1,5 +1,7 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
+import { UserInputError } from 'apollo-server'
 
+const COMMENT_MIN_LENGTH = 3
 export default {
   Query: {
     CommentByPost: async (object, params, context, resolveInfo) => {
@@ -23,6 +25,11 @@ export default {
   },
   Mutation: {
     CreateComment: async (object, params, context, resolveInfo) => {
+      const content = params.content.replace(/<(?:.|\n)*?>/gm, '').trim()
+
+      if (!params.content || content.length < COMMENT_MIN_LENGTH) {
+        throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} characters long!`)
+      }
       const { postId } = params
       delete params.postId
       const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
