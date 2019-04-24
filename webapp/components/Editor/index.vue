@@ -154,7 +154,10 @@
         </ds-button>
       </div>
     </editor-floating-menu>
-    <editor-content :editor="editor" />
+    <editor-content
+      ref="editor"
+      :editor="editor"
+    />
   </div>
 </template>
 
@@ -445,6 +448,9 @@ export default {
         // remove link
         command({ href: null })
       }
+    },
+    clear() {
+      this.editor.clearContent(true)
     }
   }
 }

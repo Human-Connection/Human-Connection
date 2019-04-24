@@ -107,7 +107,7 @@
                   color="primary"
                   size="small"
                   round
-                >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
+                >{{ comments.length }}</ds-tag>&nbsp; Comments
               </span>
             </h3>
           </ds-flex-item>
@@ -121,6 +121,7 @@
                 <ds-card>
                   <no-ssr>
                     <hc-editor
+                      ref="editor"
                       :users="users"
                       :value="form.content"
                       @input="updateEditorContent"
@@ -133,7 +134,7 @@
                       <ds-button
                         :disabled="loading || disabled"
                         ghost
-                        @click.prevent="clearEditor"
+                        @click.prevent="clear"
                       >
                         {{ $t('actions.cancel') }}
                       </ds-button>
@@ -346,15 +347,13 @@ export default {
       }
       this.$refs.commentForm.update('content', value)
     },
-    clearEditor() {
-      this.form.content = ' '
+    clear() {
+      this.$refs.editor.clear()
     },
     addComment(comment) {
       this.$apollo.queries.CommentByPost.refetch()
     },
     handleSubmit() {
-      const content = this.form.content
-      this.form.content = ' '
       this.$apollo
         .mutate({
           mutation: gql`
@@ -367,11 +366,12 @@ export default {
           `,
           variables: {
             postId: this.post.id,
-            content
+            content: this.form.content
           }
         })
         .then(res => {
           this.addComment(res.data.CreateComment)
+          this.$refs.editor.clear()
           this.loading = false
           this.disabled = false
           this.$toast.success(this.$t('post.comment.submitted'))
@@ -395,7 +395,7 @@ export default {
       },
       fetchPolicy: 'cache-and-network'
     },
-     User: {
+    User: {
       query() {
         return gql(`{
           User(orderBy: slug_asc) {
