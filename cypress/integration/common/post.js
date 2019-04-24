@@ -1,10 +1,10 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 
 When('I should be able to post a comment', () => {
-  cy.get('.ProseMirror')
+  cy.get('[contenteditable]')
     .type('This is a comment')
-    .get('.ds-form')
-    .submit()
+    // .get('.ds-form')
+    // .submit()
     .get('button')
     .contains('Submit Comment')
     .click()

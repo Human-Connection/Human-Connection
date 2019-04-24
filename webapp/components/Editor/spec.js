@@ -9,14 +9,19 @@ localVue.use(Styleguide)
 describe('Editor.vue', () => {
   let wrapper
   let propsData
+  let mocks
 
   beforeEach(() => {
     propsData = {}
+    mocks = {
+      $t: () => {}
+    }
   })
 
   describe('mount', () => {
     let Wrapper = () => {
       return (wrapper = mount(Editor, {
+        mocks,
         propsData,
         localVue,
         sync: false,
