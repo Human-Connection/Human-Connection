@@ -37,6 +37,14 @@ If you have a [kubernets dashboard](../digital-ocean/dashboard/README.md)
 deployed you should switch to namespace `human-connection` in order to
 monitor the state of your deployments.
 
+## Create persistent volumes
+
+While the deployments and services can easily be restored, simply by deleting
+and applying the kubernetes configurations again, certain data is not that
+easily recovered. Therefore we separated persistent volumes from deployments
+and services. There is a [dedicated section](../volumes/README.md). Create those
+persistent volumes once before you apply the configuration.
+
 ## Apply the configuration
 
 ```text
