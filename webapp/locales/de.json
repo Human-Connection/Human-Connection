@@ -114,6 +114,10 @@
     },
     "takeAction": {
       "name": "Aktiv werden"
+    },
+    "comment": {
+      "submit": "Commentar Senden",
+      "submitted": "Commentar Gesendet"
     }
   },
   "quotes": {

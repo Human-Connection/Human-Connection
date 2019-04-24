@@ -144,7 +144,7 @@
                         :disabled="disabled || errors"
                         primary
                       >
-                        {{ $t('post.submitComment') }}
+                        {{ $t('post.comment.submit') }}
                       </ds-button>
                     </ds-flex-item>
                   </ds-flex>
@@ -368,7 +368,7 @@ export default {
           this.addComment(res.data.CreateComment)
           this.loading = false
           this.disabled = false
-          this.$toast.success(this.$t('post.commentSubmitted'))
+          this.$toast.success(this.$t('post.comment.submitted'))
         })
         .catch(err => {
           this.$toast.error(err.message)
