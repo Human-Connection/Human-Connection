@@ -224,7 +224,7 @@ export default {
           new ListItem(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
-            emptyNodeText: 'Schreib etwas inspirerendes…'
+            emptyNodeText: this.$t('editor.placeholder')
           }),
           new History(),
           new Mention({

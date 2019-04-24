@@ -8,6 +8,9 @@
     "moreInfo": "Was ist Human Connection?",
     "hello": "Hallo"
   },
+  "editor": {
+    "placeholder": "Schreib etwas inspirerendes…"
+  },
   "profile": {
     "name": "Mein Profil",
     "memberSince": "Mitglied seit",

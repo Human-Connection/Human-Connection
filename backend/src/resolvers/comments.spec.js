@@ -44,7 +44,7 @@ describe('CreateComment', () => {
       client = new GraphQLClient(host, { headers })
     })
 
-    it('creates a post', async () => {
+    it('creates a comment', async () => {
       variables = {
         postId: 'p1',
         content: 'I\'m authorised to comment'
@@ -56,6 +56,26 @@ describe('CreateComment', () => {
       }
 
       await expect(client.request(mutation, variables)).resolves.toMatchObject(expected)
+    })
+
+    it('throw an error if an empty string is sent as content', async () => {
+      variables = {
+        postId: 'p1',
+        content: '<p></p>'
+      }
+
+      await expect(client.request(mutation, variables))
+        .rejects.toThrow('Comment must be at least 3 characters long!')
+    })
+
+    it('throws an error if a comment is less than 3 characters', async () => {
+      variables = {
+        postId: 'p1',
+        content: '<p>ab</p>'
+      }
+
+      await expect(client.request(mutation, variables))
+        .rejects.toThrow('Comment must be at least 3 characters long!')
     })
   })
 })
