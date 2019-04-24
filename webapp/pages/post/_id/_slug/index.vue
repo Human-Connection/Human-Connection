@@ -338,11 +338,15 @@ export default {
       return this.$store.getters['auth/user'].id === id
     },
     updateEditorContent(value) {
+      const content = value.replace(/<(?:.|\n)*?>/gm, '').trim().length
+      if (content < 3) {
+        this.disabled = true
+      } else {
+        this.disabled = false
+      }
       this.$refs.commentForm.update('content', value)
     },
     clearEditor() {
-      this.loading = false
-      this.disabled = false
       this.form.content = ' '
     },
     addComment(comment) {
