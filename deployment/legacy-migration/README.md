@@ -39,6 +39,7 @@ Bring the application into maintenance mode.
 
 
 Then temporarily delete backend and database deployments
+
 ```bash
 $ kubectl --namespace=human-connection get deployments
 NAME            READY   UP-TO-DATE   AVAILABLE   AGE
@@ -52,7 +53,8 @@ deployment.extensions "nitro-backend" deleted
 ```
 
 Deploy one-time maintenance-worker pod:
-```
+
+```bash
 # in deployment/legacy-migration/
 $ kubectl apply -f db-migration-worker.yaml
 pod/nitro-maintenance-worker created
@@ -60,7 +62,7 @@ pod/nitro-maintenance-worker created
 
 Import legacy database and uploads:
 
-```text
+```bash
 $ kubectl --namespace=human-connection exec -it nitro-maintenance-worker bash
 $ import_legacy_db
 $ import_uploads
@@ -68,7 +70,16 @@ $ exit
 ```
 
 Delete the pod when you're done:
-```
+
+```bash
 $ kubectl --namespace=human-connection delete pod nitro-maintenance-worker
+```
+
+Oh, and of course you have to get those deleted deployments back. One way of
+doing it would be:
+
+```bash
+# in folder deployment/
+$ kubectl apply -f human-connection/deployment-backend.yaml -f human-connection/deployment-neo4j.yaml
 ```
 

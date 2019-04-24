@@ -18,7 +18,7 @@ environment variables in your deployed kubernetes pods.
 
 If you want to edit secrets, you have to `base64` encode them. See [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually).
 
-```text
+```bash
 # example how to base64 a string:
 $ echo -n 'admin' | base64 --wrap 0
 YWRtaW4=
@@ -29,7 +29,7 @@ your deployed kubernetes pods.
 
 ## Create a namespace
 
-```text
+```bash
 $ kubectl apply -f namespace-human-connection.yaml
 ```
 
@@ -47,7 +47,7 @@ persistent volumes once before you apply the configuration.
 
 ## Apply the configuration
 
-```text
+```bash
 # in folder deployment/ 
 $ kubectl apply -f human-connection/
 ```
