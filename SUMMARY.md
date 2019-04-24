@@ -25,6 +25,7 @@
   * [Digital Ocean](deployment/digital-ocean/README.md)
     * [Kubernetes Dashboard](deployment/digital-ocean/dashboard/README.md)
     * [HTTPS](deployment/digital-ocean/https/README.md)
+  * [Human Connection](deployment/human-connection/README.md)
   * [Neo4J DB Backup](deployment/backup.md)
   * [Legacy Migration](deployment/legacy-migration/README.md)
 * [Feature Specification](cypress/features.md)
