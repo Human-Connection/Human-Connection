@@ -49,6 +49,7 @@ token:      eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZ
 Grab the token from above and paste it into the [login screen](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/)
 
 When you are logged in, you should see sth. like:
+
 ![Dashboard](./dashboard-screenshot.png)
 
 Feel free to save the login token from above in your password manager. Unlike the `kubeconfig` file, this token does not expire.
