@@ -5,7 +5,7 @@
   * [Docker Installation](installation/installation-docker.md)
   * [Local Installation](installation/installation-local.md)
 * [Backend](backend/README.md)
-  * [Neo4j Database](backend/neo4j-database.md)
+  * [Neo4j Database](neo4j/README.md)
   * [GraphQL](backend/graphql.md)
   * [Testing](backend/testing.md)
   * [Middleware](backend/middleware.md)
