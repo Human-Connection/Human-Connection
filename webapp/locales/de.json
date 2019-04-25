@@ -9,7 +9,7 @@
     "hello": "Hallo"
   },
   "editor": {
-    "placeholder": "Schreib etwas inspirerendes…"
+    "placeholder": "Schreib etwas Inspirierendes …"
   },
   "profile": {
     "name": "Mein Profil",
@@ -116,8 +116,8 @@
       "name": "Aktiv werden"
     },
     "comment": {
-      "submit": "Commentar Senden",
-      "submitted": "Commentar Gesendet"
+      "submit": "Kommentar Senden",
+      "submitted": "Kommentar Gesendet"
     }
   },
   "quotes": {

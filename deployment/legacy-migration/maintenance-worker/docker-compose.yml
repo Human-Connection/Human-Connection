@@ -1,0 +1,42 @@
+version: "3.4"
+
+services:
+  maintenance:
+    image: humanconnection/maintenance-worker:latest
+    build:
+      context: .
+    volumes:
+      - uploads:/uploads
+      - neo4j-data:/data
+      - ./migration/:/migration
+    networks:
+      - hc-network
+    environment:
+      - GRAPHQL_PORT=4000
+      - GRAPHQL_URI=http://localhost:4000
+      - CLIENT_URI=http://localhost:3000
+      - JWT_SECRET=b/&&7b78BF&fv/Vd
+      - MOCK=false
+      - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
+      - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
+      - NEO4J_URI=bolt://localhost:7687
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_AUTH=none
+      - "SSH_USERNAME=${SSH_USERNAME}"
+      - "SSH_HOST=${SSH_HOST}"
+      - "SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}"
+      - "MONGODB_USERNAME=${MONGODB_USERNAME}"
+      - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
+      - "MONGODB_AUTH_DB=${MONGODB_AUTH_DB}"
+      - "MONGODB_DATABASE=${MONGODB_DATABASE}"
+      - "UPLOADS_DIRECTORY=${UPLOADS_DIRECTORY}"
+    ports:
+      - 7687:7687
+      - 7474:7474
+
+volumes:
+  uploads:
+  neo4j-data:
+
+networks:
+  hc-network:

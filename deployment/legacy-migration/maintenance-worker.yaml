@@ -1,0 +1,34 @@
+---
+  kind: Pod
+  apiVersion: v1
+  metadata:
+    name: nitro-maintenance-worker
+    namespace: human-connection
+  spec:
+    containers:
+    - name: nitro-maintenance-worker
+      image: humanconnection/maintenance-worker:latest
+      envFrom:
+      - configMapRef:
+          name: maintenance-worker
+      - configMapRef:
+          name: configmap
+      volumeMounts:
+      - name: secret-volume
+        readOnly: false
+        mountPath: /root/.ssh
+      - name: uploads
+        mountPath: /nitro-backend/public/uploads
+      - name: neo4j-data
+        mountPath: /data/
+    volumes:
+    - name: secret-volume
+      secret:
+        secretName: ssh-keys
+        defaultMode: 0400
+    - name: uploads
+      persistentVolumeClaim:
+        claimName: uploads-claim
+    - name: neo4j-data
+      persistentVolumeClaim:
+        claimName: neo4j-data-claim
