@@ -19,7 +19,7 @@
             <ds-flex-item width="50%" />
             <ds-flex-item width="20%">
               <ds-button
-                :disabled="loading || disabled"
+                :disabled="disabled"
                 ghost
                 @click.prevent="clear"
               >
@@ -29,7 +29,6 @@
             <ds-flex-item width="20%">
               <ds-button
                 type="submit"
-                :loading="loading"
                 :disabled="disabled || errors"
                 primary
               >
@@ -57,7 +56,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
       disabled: true,
       form: {
         content: ''

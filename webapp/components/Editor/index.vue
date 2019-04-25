@@ -415,9 +415,6 @@ export default {
         this.$emit('input', content)
       }
     },
-    update(value) {
-      this.editor.setContent(value)
-    },
     showLinkMenu(attrs) {
       this.linkUrl = attrs.href
       this.linkMenuIsActive = true
