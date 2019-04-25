@@ -1,8 +1,6 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 
 Then('my comment should be successfully created', () => {
-  cy.get('.ds-form')
-    .submit()
   cy.get('.iziToast-message')
     .contains('Comment Submitted')
 })

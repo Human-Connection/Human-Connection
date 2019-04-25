@@ -111,49 +111,7 @@
               </span>
             </h3>
           </ds-flex-item>
-          <ds-flex-item width="80%">
-            <ds-form
-              ref="commentForm"
-              v-model="form"
-              @submit="handleSubmit"
-            >
-              <template slot-scope="{ errors }">
-                <ds-card>
-                  <no-ssr>
-                    <hc-editor
-                      ref="editor"
-                      :users="users"
-                      :value="form.content"
-                      @input="updateEditorContent"
-                    />
-                  </no-ssr>
-                  <ds-space />
-                  <ds-flex>
-                    <ds-flex-item width="50%" />
-                    <ds-flex-item width="20%">
-                      <ds-button
-                        :disabled="loading || disabled"
-                        ghost
-                        @click.prevent="clear"
-                      >
-                        {{ $t('actions.cancel') }}
-                      </ds-button>
-                    </ds-flex-item>
-                    <ds-flex-item width="20%">
-                      <ds-button
-                        type="submit"
-                        :loading="loading"
-                        :disabled="disabled || errors"
-                        primary
-                      >
-                        {{ $t('post.comment.submit') }}
-                      </ds-button>
-                    </ds-flex-item>
-                  </ds-flex>
-                </ds-card>
-              </template>
-            </ds-form>
-          </ds-flex-item>
+          <hc-comment-form :post="post" @addComment="addComment" />
         </ds-flex>
         <ds-space margin-bottom="large" />
         <div
@@ -185,8 +143,8 @@ import ContentMenu from '~/components/ContentMenu'
 import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
+import HcCommentForm from '~/components/CommentForm'
 import Comment from '~/components/Comment.vue'
-import HcEditor from '~/components/Editor'
 
 export default {
   transition: {
@@ -201,7 +159,7 @@ export default {
     HcEmpty,
     Comment,
     ContentMenu,
-    HcEditor
+    HcCommentForm
   },
   head() {
     return {
@@ -213,13 +171,7 @@ export default {
       post: null,
       comments: null,
       ready: false,
-      title: 'loading',
-      loading: false,
-      disabled: false,
-      form: {
-        content: ''
-      },
-      users: []
+      title: 'loading'
     }
   },
   watch: {
@@ -338,49 +290,8 @@ export default {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
-    updateEditorContent(value) {
-      const content = value.replace(/<(?:.|\n)*?>/gm, '').trim()
-      if (content.length < 3) {
-        this.disabled = true
-      } else {
-        this.disabled = false
-      }
-      console.log(value)
-      this.form.content = value
-      // this.$refs.commentForm.update('content', value)
-      // this.$refs.editor.update(value)
-    },
-    clear() {
-      this.$refs.editor.clear()
-    },
     addComment(comment) {
       this.$apollo.queries.CommentByPost.refetch()
-    },
-    handleSubmit() {
-      console.log('content', this.form.content)
-      this.$apollo
-        .mutate({
-          mutation: gql`
-            mutation($postId: ID, $content: String!) {
-              CreateComment(postId: $postId, content: $content) {
-                id
-                content
-              }
-            }
-          `,
-          variables: {
-            postId: this.post.id,
-            content: this.form.content
-          }
-        })
-        .then(res => {
-          this.addComment(res.data.CreateComment)
-          this.$refs.editor.clear()
-          this.$toast.success(this.$t('post.comment.submitted'))
-        })
-        .catch(err => {
-          this.$toast.error(err.message)
-        })
     }
   },
   apollo: {
@@ -394,19 +305,6 @@ export default {
         }
       },
       fetchPolicy: 'cache-and-network'
-    },
-    User: {
-      query() {
-        return gql(`{
-          User(orderBy: slug_asc) {
-            id
-            slug
-          }
-        }`)
-      },
-      result(result) {
-        this.users = result.data.User
-      }
     }
   }
 }
