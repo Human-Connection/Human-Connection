@@ -1,4 +1,4 @@
-CALL apoc.load.json('file:/mongo-export/comments.json') YIELD value as json
+CALL apoc.load.json('file:/tmp/mongo-export/comments.json') YIELD value as json
 MERGE (comment:Comment {id: json._id["$oid"]})
 ON CREATE SET
 comment.content        = json.content,

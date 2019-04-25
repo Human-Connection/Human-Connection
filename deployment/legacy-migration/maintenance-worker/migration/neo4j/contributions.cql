@@ -1,4 +1,4 @@
-CALL apoc.load.json('file:/mongo-export/contributions.json') YIELD value as post
+CALL apoc.load.json('file:/tmp/mongo-export/contributions.json') YIELD value as post
 MERGE (p:Post {id: post._id["$oid"]})
 ON CREATE SET
 p.title          = post.title,
