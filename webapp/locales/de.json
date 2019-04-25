@@ -215,5 +215,26 @@
   },
   "shoutButton": {
     "shouted": "empfohlen"
+  },
+ 
+  "release": {
+    "submit": "freigeben",
+    "cancel": "Abbrechen",
+    "success": "Erfolgreich freigeben",
+    "user": {
+      "title": "Nutzer freigeben",
+      "type": "Nutzer",
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" freigeben möchtest?"
+    },
+    "contribution": {
+      "title": "Beitrag freigeben",
+      "type": "Beitrag",
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" freigeben möchtest?"
+    },
+    "comment": {
+      "title": "Kommentar freigeben",
+      "type": "Kommentar",
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" freigeben möchtest?"
+    }
   }
 }

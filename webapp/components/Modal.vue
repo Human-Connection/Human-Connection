@@ -7,6 +7,13 @@
       :name="name"
       @close="close"
     />
+    <release-modal
+      v-if="open === 'release'"
+      :id="data.resource.id"
+      :type="data.type"
+      :name="name"
+      @close="close"
+    />
     <report-modal
       v-if="open === 'report'"
       :id="data.resource.id"
@@ -18,7 +25,10 @@
 </template>
 
 <script>
+
+
 import DisableModal from '~/components/Modal/DisableModal'
+import ReleaseModal from '~/components/Modal/ReleaseModal'
 import ReportModal from '~/components/Modal/ReportModal'
 import { mapGetters } from 'vuex'
 
@@ -26,6 +36,7 @@ export default {
   name: 'Modal',
   components: {
     DisableModal,
+    ReleaseModal,
     ReportModal
   },
   computed: {
@@ -56,4 +67,5 @@ export default {
     }
   }
 }
+
 </script>
