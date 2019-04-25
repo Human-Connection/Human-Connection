@@ -9,8 +9,6 @@
     NEO4J_USER: "neo4j"
     NEO4J_AUTH: "none"
     CLIENT_URI: "https://nitro-staging.human-connection.org"
-    MAPBOX_TOKEN: "pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ"
-    PRIVATE_KEY_PASSPHRASE: "a7dsf78sadg87ad87sfagsadg78"
   metadata:
     name: configmap
     namespace: human-connection
