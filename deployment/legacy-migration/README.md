@@ -18,7 +18,7 @@ $ kubectl create configmap maintenance-worker          \
   --from-literal=MONGODB_PASSWORD=secretpassword        \
   --from-literal=MONGODB_AUTH_DB=hc_api                 \
   --from-literal=MONGODB_DATABASE=hc_api                \
-  --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads \
+  --from-literal=UPLOADS_DIRECTORY=/var/www/api/uploads
 ```
 
 Create a secret with your public and private ssh keys. As the [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys) points out, you should be careful with your ssh keys. Anyone with access to your cluster will have access to your ssh keys. Better create a new pair with `ssh-keygen` and copy the public key to your legacy server with `ssh-copy-id`:
