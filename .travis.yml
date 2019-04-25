@@ -31,6 +31,7 @@ script:
   - yarn run cypress:run
 
 after_success:
+  - codecov --token=$CODECOV_TOKEN
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh success $WEBHOOK_URL
