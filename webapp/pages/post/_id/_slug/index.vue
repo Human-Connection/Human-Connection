@@ -339,13 +339,16 @@ export default {
       return this.$store.getters['auth/user'].id === id
     },
     updateEditorContent(value) {
-      const content = value.replace(/<(?:.|\n)*?>/gm, '').trim().length
-      if (content < 3) {
+      const content = value.replace(/<(?:.|\n)*?>/gm, '').trim()
+      if (content.length < 3) {
         this.disabled = true
       } else {
         this.disabled = false
       }
-      this.$refs.commentForm.update('content', value)
+      console.log(value)
+      this.form.content = value
+      // this.$refs.commentForm.update('content', value)
+      // this.$refs.editor.update(value)
     },
     clear() {
       this.$refs.editor.clear()
@@ -354,6 +357,7 @@ export default {
       this.$apollo.queries.CommentByPost.refetch()
     },
     handleSubmit() {
+      console.log('content', this.form.content)
       this.$apollo
         .mutate({
           mutation: gql`
@@ -372,14 +376,10 @@ export default {
         .then(res => {
           this.addComment(res.data.CreateComment)
           this.$refs.editor.clear()
-          this.loading = false
-          this.disabled = false
           this.$toast.success(this.$t('post.comment.submitted'))
         })
         .catch(err => {
           this.$toast.error(err.message)
-          this.loading = false
-          this.disabled = false
         })
     }
   },
