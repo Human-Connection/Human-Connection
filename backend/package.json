@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src/ -d dist/ --copy-files",
     "start": "node dist/",
-    "dev": "nodemon --exec babel-node src/ -e js,graphql",
+    "dev": "nodemon --exec cross-env DISABLED_MIDDLEWARES=permissions babel-node src/ -e js,graphql",
     "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js -e js,graphql",
     "lint": "eslint src --config .eslintrc.js",
     "test": "run-s test:jest test:cucumber",
