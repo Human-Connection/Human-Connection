@@ -18,17 +18,31 @@ export default function (params) {
     deleted = false
   } = params
 
-  return `
-    mutation {
-      CreatePost(
-        id: "${id}",
-        slug: "${slug}",
-        title: "${title}",
-        content: "${content}",
-        image: "${image}",
-        visibility: ${visibility},
-        deleted: ${deleted}
-      ) { title, content }
-    }
-  `
+  return {
+    mutation: `
+      mutation(
+        $id: ID!
+        $slug: String
+        $title: String!
+        $content: String!
+        $image: String
+        $visibility: VisibilityEnum
+        $deleted: Boolean
+      ) {
+        CreatePost(
+          id: $id
+          slug: $slug
+          title: $title
+          content: $content
+          image: $image
+          visibility: $visibility
+          deleted: $deleted
+        ) {
+          title
+          content
+        }
+      }
+    `,
+    variables: { id, slug, title, content, image, visibility, deleted }
+  }
 }

@@ -3,21 +3,26 @@ import uuid from 'uuid/v4'
 export default function (params) {
   const {
     id = uuid(),
-    key,
+    key = '',
     type = 'crowdfunding',
     status = 'permanent',
-    icon
+    icon = '/img/badges/indiegogo_en_panda.svg'
   } = params
 
-  return `
-  mutation {
-    CreateBadge(
-      id: "${id}",
-      key: "${key}",
-      type: ${type},
-      status: ${status},
-      icon: "${icon}"
-    ) { id }
+  return {
+    mutation: `
+      mutation(
+        $id: ID
+        $key: String!
+        $type: BadgeTypeEnum!
+        $status: BadgeStatusEnum!
+        $icon: String!
+      ) {
+        CreateBadge(id: $id, key: $key, type: $type, status: $status, icon: $icon) {
+          id
+        }
+      }
+    `,
+    variables: { id, key, type, status, icon }
   }
-  `
 }

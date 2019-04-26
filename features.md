@@ -1,4 +1,4 @@
-# Feature Specification
+# Network Specification
 
 Human Connection is a nonprofit social, action and knowledge network that connects information to action and promotes positive local and global change in all areas of life.
 
@@ -16,7 +16,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Account
 
-[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/user_account/README.md)
+[Cucumber Features](./integration/user_account)
 
 * Sign-up
 * Agree to Data Privacy Statement
@@ -34,7 +34,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Profile
 
-[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/user_profile/README.md)
+[Cucumber Features](./integration/user_profile)
 
 * Upload and Change Avatar
 * Upload and Change Profile Picture
@@ -59,7 +59,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### Posts
 
-[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/post/README.md)
+[Cucumber Features](./integration/post/)
 
 * Creating Posts
 * Persistent Links
@@ -82,6 +82,13 @@ The following features will be implemented. This gets done in three steps:
 * Deleting Comments
 * Editing Comments
 * Upvote comments of others
+
+### Notifications
+[Cucumber features](./integration/notifications)
+
+* User @-mentionings
+* Notify authors for comments
+* Administrative notifications to all users
 
 ### Contribution List
 
@@ -109,7 +116,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### Search
 
-[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/search/README.md)
+[Cucumber Features](./integration/search)
 
 * Search for Categories
 * Search for Tags
@@ -230,7 +237,7 @@ Shows automatically related actions for existing post.
 
 ### Moderation
 
-[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/moderation/README.md)
+[Cucumber Features](./integration/moderation)
 
 * Report Button for users for doubtful Content
 * Moderator Panel
@@ -255,7 +262,7 @@ Shows automatically related actions for existing post.
 
 ### Internationalization
 
-[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/4f6262cc2775812f3785a205b32cd8eecbb62497/cypress/integration/internationalization/README.md)
+[Cucumber Features](./integration/internationalization)
 
 * Frontend UI
 * Backend Error Messages
@@ -269,4 +276,3 @@ Shows automatically related actions for existing post.
 * Receiving Undo and Delete Activities for Articles and Notes
 * Serving Webfinger records and Actor Objects
 * Serving Followers, Following and Outbox collections
-
