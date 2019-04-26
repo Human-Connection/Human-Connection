@@ -14,9 +14,9 @@
           />
         </no-ssr>
         <ds-space />
-        <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }" >
-          <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%',  xs: '0%' }" />
-          <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }" >
+        <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
+          <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
+          <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }">
             <ds-button
               :disabled="disabled"
               ghost
@@ -25,7 +25,7 @@
               {{ $t('actions.cancel') }}
             </ds-button>
           </ds-flex-item>
-          <ds-flex-item :width="{ base: '40%', md: '20%', sm: '40%', xs: '40%' }" >
+          <ds-flex-item :width="{ base: '40%', md: '20%', sm: '40%', xs: '40%' }">
             <ds-button
               type="submit"
               :disabled="disabled || errors"

@@ -125,7 +125,10 @@
           icon="messages"
         />
         <ds-space margin-bottom="large" />
-        <hc-comment-form :post="post" @addComment="addComment" />
+        <hc-comment-form
+          :post="post"
+          @addComment="addComment"
+        />
       </ds-section>
     </ds-card>
   </transition>

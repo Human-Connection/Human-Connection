@@ -1,5 +1,9 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 
+Then('I click on the {string} button', text => {
+  cy.get('button').contains(text).click()
+})
+
 Then('my comment should be successfully created', () => {
   cy.get('.iziToast-message')
     .contains('Comment Submitted')
