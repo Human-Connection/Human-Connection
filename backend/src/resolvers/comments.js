@@ -10,7 +10,7 @@ export default {
       const session = context.driver.session()
       const transactionRes = await session.run(`
           MATCH (comment:Comment)-[:COMMENTS]->(post:Post {id: $postId})
-          RETURN comment {.id, .contentExcerpt, .createdAt}`, {
+          RETURN comment {.id, .contentExcerpt, .createdAt} ORDER BY comment.createdAt ASC`, {
         postId
       })
 

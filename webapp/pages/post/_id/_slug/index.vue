@@ -96,23 +96,18 @@
       <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
-        <ds-flex>
-          <ds-flex-item width="20%">
-            <h3 style="margin-top: 0;">
-              <span>
-                <ds-icon name="comments" />
-                <ds-tag
-                  v-if="comments"
-                  style="margin-top: -4px; margin-left: -12px; position: absolute;"
-                  color="primary"
-                  size="small"
-                  round
-                >{{ comments.length }}</ds-tag>&nbsp; Comments
-              </span>
-            </h3>
-          </ds-flex-item>
-          <hc-comment-form :post="post" @addComment="addComment" />
-        </ds-flex>
+        <h3 style="margin-top: -10px;">
+          <span>
+            <ds-icon name="comments" />
+            <ds-tag
+              v-if="comments"
+              style="margin-top: -4px; margin-left: -12px; position: absolute;"
+              color="primary"
+              size="small"
+              round
+            >{{ comments.length }}</ds-tag>&nbsp; Comments
+          </span>
+        </h3>
         <ds-space margin-bottom="large" />
         <div
           v-if="comments && comments.length"
@@ -129,6 +124,8 @@
           v-else
           icon="messages"
         />
+        <ds-space margin-bottom="large" />
+        <hc-comment-form :post="post" @addComment="addComment" />
       </ds-section>
     </ds-card>
   </transition>
