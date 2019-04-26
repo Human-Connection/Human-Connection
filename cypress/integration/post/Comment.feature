@@ -16,7 +16,7 @@ Feature: Post Comment
     """
     Human Connection rocks
     """
-    And I click on "Submit Comment"
+    And I click on "Comment"
     Then my comment should be successfully created
     And I should see my comment
     And the editor should be cleared
