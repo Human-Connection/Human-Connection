@@ -125,7 +125,7 @@ console.log(this);
            // name: "Beitrag freigeben",
             callback: () => {
               //alert("funktion starten zum freigeben des beitrages");
-              alert("BeitragsID=> " + this.resource.id);
+              //alert("BeitragsID=> " + this.resource.id);
               this.openModal('release',  this.resource.id )
             },
             icon: 'eye-slash'
