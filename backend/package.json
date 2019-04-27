@@ -57,6 +57,7 @@
     "jsonwebtoken": "~8.5.1",
     "linkifyjs": "~2.1.8",
     "lodash": "~4.17.11",
+    "mongodb": "^3.2.3",
     "ms": "~2.1.1",
     "neo4j-driver": "~1.7.3",
     "neo4j-graphql-js": "~2.4.2",

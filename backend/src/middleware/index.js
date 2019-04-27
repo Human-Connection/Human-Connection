@@ -12,6 +12,7 @@ import includedFieldsMiddleware from './includedFieldsMiddleware'
 import orderByMiddleware from './orderByMiddleware'
 import validUrlMiddleware from './validUrlMiddleware'
 import notificationsMiddleware from './notifications'
+import rocketChatMiddleware from './rocketChat'
 
 export default schema => {
   let middleware = [
@@ -26,7 +27,8 @@ export default schema => {
     softDeleteMiddleware,
     userMiddleware,
     includedFieldsMiddleware,
-    orderByMiddleware
+    orderByMiddleware,
+    rocketChatMiddleware
   ]
 
   // add permisions middleware at the first position (unless we're seeding)
