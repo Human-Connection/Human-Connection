@@ -10846,6 +10846,11 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
+uuid@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
+  integrity sha512-DIWtzUkw04M4k3bf1IcpS2tngXEL26YUD2M0tMDUpnUrz2hgzUBlD55a4FjdLGPvfHxS6uluGWvaVEqgBcVa+g==
+
 uuid@^3.1.0, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
@@ -10944,6 +10949,13 @@ vue-eslint-parser@^5.0.0:
     espree "^4.1.0"
     esquery "^1.0.1"
     lodash "^4.17.11"
+
+vue-friendly-iframe@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/vue-friendly-iframe/-/vue-friendly-iframe-0.12.0.tgz#782e2a5c0c9faad1a6a82683c76ab3e6dfec6332"
+  integrity sha512-kp4JHyAfF+AEYADaQosSnMPohq4G/qizib9KCvlKVztXoRj3mv/NCSmzTUQaMZNXztU9IDzNnay1mH/sFdg12Q==
+  dependencies:
+    uuid "3.1.0"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.2"
