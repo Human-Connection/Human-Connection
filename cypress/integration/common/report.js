@@ -49,26 +49,20 @@ When('I click on "Report Post" from the content menu of the post', () => {
     .click()
 })
 
-When(
-  'I click on "Report User" from the content menu in the user info box',
-  () => {
-    // wait client-side-rendered content
-    cy.get('.ds-card-content .content-menu button').should('exist')
+When('I click on "Report User" from the content menu in the user info box', () => {
+  cy.contains('.ds-card', davidIrvingPostTitle)
+    .get('.user-content-menu .content-menu-trigger')
+    .click({ force: true })
 
-    cy.contains('.ds-card-content', davidIrvingName)
-      .find('.content-menu button').click()
-
-    cy.get('.popover .ds-menu-item-link')
-      .contains('Report User')
-      .click()
-  }
-)
+  cy.get('.popover .ds-menu-item-link')
+    .contains('Report User')
+    .click()
+})
 
 When('I click on the author', () => {
-  cy.get('a.user')
-    .first()
+  cy.get('.username')
     .click()
-    .wait(200)
+    .url().should('include', '/profile/')
 })
 
 When('I report the author', () => {
