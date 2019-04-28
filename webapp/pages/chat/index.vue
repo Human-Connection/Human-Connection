@@ -31,7 +31,7 @@ export default {
       console.log(iframe)
       iframe.contentWindow.postMessage({
         externalCommand: 'login-with-token',
-        token: 'abcd' // this.token
+        token: this.token
       }, '*'); // rocket.chat's URL
     },
   }
