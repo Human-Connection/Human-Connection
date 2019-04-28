@@ -23,19 +23,15 @@ export default {
   methods: {
     onLoad() {
       console.log('onLoad')
-      const iframe = document.querySelector('iframe')
-      iframe.contentWindow.postMessage({
-        externalCommand: 'go',
-        path: '?layout=embedded'
-      }, '*'); // rocket.chat's URL
     },
     onDocumentLoad() {
       console.log('onDocumentLoad')
+      // console.log('token', this.token)
       const iframe = document.querySelector('iframe')
       console.log(iframe)
       iframe.contentWindow.postMessage({
         externalCommand: 'login-with-token',
-        token: 'abcd'
+        token: 'abcd' // this.token
       }, '*'); // rocket.chat's URL
     },
   }

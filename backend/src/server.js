@@ -70,14 +70,19 @@ const createServer = (options) => {
   server.express.use(cors())
 
   server.express.get('/rocket_chat_auth_get', cors(corsOptions), async (req, res) => {
+		console.log('/rocket_chat_auth_get')
 		console.log(req)
-    const loginToken = req.session.user && req.session.user.rocketchatAuthToken
-    const user = await decode(driver, loginToken)
-    if (user) {
-      res.send({ loginToken })
-    } else {
-      res.status(401).json({ message: 'User not logged in' })
-    }
+		res.json({ token: 'abcd' })
+		// const authorizationHeader = req.headers.authorization || ''
+		// const loginToken = authorizationHeader.replace('Bearer ', '')
+		// console.log('/rocket_chat_auth_get', loginToken)
+    // const user = await decode(driver, loginToken)
+    // if (user) {
+		// 	console.log('loginToken', loginToken)
+    //   res.send({ loginToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsIm5hbWUiOiJKZW5ueSBSb3N0b2NrIiwiZGlzYWJsZWQiOmZhbHNlLCJhdmF0YXIiOiJodHRwczovL3MzLmFtYXpvbmF3cy5jb20vdWlmYWNlcy9mYWNlcy90d2l0dGVyL2Nhc3BlcmdybC8xMjguanBnIiwiaWQiOiJ1MyIsImVtYWlsIjoidXNlckBleGFtcGxlLm9yZyIsInNsdWciOiJqZW5ueS1yb3N0b2NrIiwiaWF0IjoxNTU2NDQ0OTEyLCJleHAiOjE2NDI4NDQ5MTIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDAwMCIsInN1YiI6InUzIn0.rREoLrkaAd3OlDl9Ia4lhGIDwale8Or0Tgq-J5RWjkM' })
+    // } else {
+    //   res.status(401).json({ message: 'User not logged in' })
+    // }
   })
 
   server.express.use(helmet())
