@@ -1,7 +1,7 @@
 <template>
   <div>
   <no-ssr>
-    <vue-friendly-iframe src="http://localhost:5000?layout=embedded" @load="onLoad" @document-load="onDocumentLoad"></vue-friendly-iframe>
+    <vue-friendly-iframe src="http://localhost:5000/" @load="onLoad" @document-load="onDocumentLoad"></vue-friendly-iframe>
   </no-ssr>
   </div>
 </template>
@@ -23,15 +23,20 @@ export default {
   methods: {
     onLoad() {
       console.log('onLoad')
-      const iframe = document.getElementsByTagName('iframe')[0]
-      console.log(iframe)
+      const iframe = document.querySelector('iframe')
       iframe.contentWindow.postMessage({
-        event: 'login-with-token',
-        loginToken: this.token
-      }, 'http://localhost:5000'); // rocket.chat's URL
+        externalCommand: 'go',
+        path: '?layout=embedded'
+      }, '*'); // rocket.chat's URL
     },
     onDocumentLoad() {
       console.log('onDocumentLoad')
+      const iframe = document.querySelector('iframe')
+      console.log(iframe)
+      iframe.contentWindow.postMessage({
+        externalCommand: 'login-with-token',
+        token: 'abcd'
+      }, '*'); // rocket.chat's URL
     },
   }
 }

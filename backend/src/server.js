@@ -10,6 +10,7 @@ import applyScalars from './bootstrap/scalars'
 import { getDriver } from './bootstrap/neo4j'
 import helmet from 'helmet'
 import decode from './jwt/decode'
+import cors from 'cors'
 
 dotenv.config()
 // check env and warn
@@ -59,6 +60,25 @@ const createServer = (options) => {
     mocks: (process.env.MOCK === 'true') ? mocks : false
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
+
+  const corsOptions = {
+    credentials: true,
+    origin: 'http://localhost:5000',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
+
+  server.express.use(cors())
+
+  server.express.get('/rocket_chat_auth_get', cors(corsOptions), async (req, res) => {
+		console.log(req)
+    const loginToken = req.session.user && req.session.user.rocketchatAuthToken
+    const user = await decode(driver, loginToken)
+    if (user) {
+      res.send({ loginToken })
+    } else {
+      res.status(401).json({ message: 'User not logged in' })
+    }
+  })
 
   server.express.use(helmet())
   server.express.use(express.static('public'))
