@@ -64,7 +64,7 @@ export default {
   methods: {
     updateEditorContent(value) {
       const content = value.replace(/<(?:.|\n)*?>/gm, '').trim()
-      if (content.length < 3) {
+      if (content.length < 1) {
         this.disabled = true
       } else {
         this.disabled = false

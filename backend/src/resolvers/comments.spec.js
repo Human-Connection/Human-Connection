@@ -65,17 +65,17 @@ describe('CreateComment', () => {
       }
 
       await expect(client.request(mutation, variables))
-        .rejects.toThrow('Comment must be at least 3 characters long!')
+        .rejects.toThrow('Comment must be at least 1 character long!')
     })
 
-    it('throws an error if a comment is less than 3 characters', async () => {
+    it('throws an error if a comment does not contain a single character', async () => {
       variables = {
         postId: 'p1',
-        content: '<p>ab</p>'
+        content: '<p> </p>'
       }
 
       await expect(client.request(mutation, variables))
-        .rejects.toThrow('Comment must be at least 3 characters long!')
+        .rejects.toThrow('Comment must be at least 1 character long!')
     })
   })
 })
