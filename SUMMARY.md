@@ -1,14 +1,14 @@
 # Table of contents
 
 * [Introduction](README.md)
-* [Installation](INSTALLATION.md)
-  * [Docker Installation](INSTALLATION-DOCKER.md)
-  * [Local Installation](INSTALLATION-LOCAL.md)
+* [Installation](installation/INSTALLATION.md)
+  * [Docker Installation](installation/INSTALLATION-DOCKER.md)
+  * [Local Installation](installation/INSTALLATION-LOCAL.md)
 * [Backend](backend/README.md)
   * [Neo4j Database](neo4j/README.md)
   * [GraphQL](backend/graphql.md)
   * [Middleware](backend/middleware.md)
-  * [Legacy Migration](backend/db-migration-worker.md)
+  * [Legacy Migration](backend/db-migration-worker/README.md)
 * [Webapp](webapp/README.md)
   * [Styleguide](webapp/styleguide.md)
   * [COMPONENTS](webapp/components.md)
