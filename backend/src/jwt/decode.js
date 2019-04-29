@@ -7,7 +7,7 @@ export default async (driver, authorizationHeader) => {
   try {
     const decoded = await jwt.verify(token, process.env.JWT_SECRET)
     id = decoded.sub
-  } catch {
+  } catch (e) {
     return null
   }
   const session = driver.session()

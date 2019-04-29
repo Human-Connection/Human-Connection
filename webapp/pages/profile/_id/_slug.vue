@@ -233,7 +233,7 @@
             </ds-space>
           </ds-card>
         </ds-space>
-      </ds-flex-item>
+      </ds-flex-item> 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
           :width="{ base: '100%' }"
@@ -242,7 +242,8 @@
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
-                <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
+
+                <ds-flex-item  class="ds-tab-nav-item ds-tab-nav-item-active">
                   <ds-space margin="small">
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
@@ -255,10 +256,12 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
-                <!-- TODO: find better solution for rendering errors -->
-                <!--
+                
+
+
+                 <ds-flex-item  v-tooltip="{content: 'Deine Beiträge', placement: 'left', delay: { show: 500 }}" class="ds-tab-nav-item ">
+                <ds-space margin="small">
+                 <!--TODO: find better solution for rendering errors -->                
                     <no-ssr>
                       <ds-number :label="$t('profile.commented')">
                         <hc-count-to slot="count" :end-val="user.commentsCount"/>
@@ -266,20 +269,23 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                -->
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
+                
+
+ 
+                <ds-flex-item  class="ds-tab-nav-item ">
+                <ds-space margin="small">
                 <!-- TODO: find better solution for rendering errors -->
-                <!--<no-ssr>
+                <no-ssr>
                       <ds-number :label="$t('profile.shouted')">
                         <hc-count-to slot="count" :end-val="user.shoutedCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>-->
-              </ds-flex>
+                </ds-flex-item>
+                </ds-flex>
             </ds-card>
           </ds-flex-item>
+
           <ds-flex-item style="text-align: center">
             <ds-button
               v-if="myProfile"
@@ -291,6 +297,8 @@
               primary
             />
           </ds-flex-item>
+
+
           <template v-if="activePosts.length">
             <ds-flex-item
               v-for="post in activePosts"
@@ -300,6 +308,8 @@
               <hc-post-card :post="post" />
             </ds-flex-item>
           </template>
+
+
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
               <hc-empty
@@ -308,6 +318,8 @@
               />
             </ds-flex-item>
           </template>
+
+
         </ds-flex>
         <hc-load-more
           v-if="hasMore"
@@ -315,11 +327,23 @@
           @click="showMoreContributions"
         />
       </ds-flex-item>
+
+
+
+      
     </ds-flex>
   </div>
+
+
 </template>
 
+
+ 
+
+
 <script>
+
+
 import uniqBy from 'lodash/uniqBy'
 
 import User from '~/components/User'
@@ -430,7 +454,7 @@ export default {
         },
         fetchPolicy: 'cache-and-network'
       })
-    }
+    }    
   },
   apollo: {
     User: {
@@ -447,7 +471,13 @@ export default {
       fetchPolicy: 'cache-and-network'
     }
   }
+  
+
 }
+
+
+
+
 </script>
 
 <style lang="scss">
@@ -490,3 +520,7 @@ export default {
   }
 }
 </style>
+
+
+
+
