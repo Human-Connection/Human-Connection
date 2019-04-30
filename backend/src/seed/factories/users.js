@@ -4,6 +4,7 @@ import uuid from 'uuid/v4'
 export default function create (params) {
   const {
     id = uuid(),
+    actorId,
     name = faker.name.findName(),
     slug = '',
     email = faker.internet.email(),
@@ -19,6 +20,7 @@ export default function create (params) {
     mutation {
       CreateUser(
         id: "${id}",
+        actorId: "${actorId}",
         name: "${name}",
         slug: "${slug}",
         password: "${password}",

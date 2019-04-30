@@ -14,13 +14,13 @@ import Factory from './factories'
     ])
 
     await Promise.all([
-      f.create('User', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     email: 'admin@example.org' }),
-      f.create('User', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', email: 'moderator@example.org' }),
-      f.create('User', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      email: 'user@example.org' }),
-      f.create('User', { id: 'u4', name: 'Tick',               role: 'user',      email: 'tick@example.org' }),
-      f.create('User', { id: 'u5', name: 'Trick',              role: 'user',      email: 'trick@example.org' }),
-      f.create('User', { id: 'u6', name: 'Track',              role: 'user',      email: 'track@example.org' }),
-      f.create('User', { id: 'u7', name: 'Dagobert',           role: 'user',      email: 'dagobert@example.org' })
+      f.create('User', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     email: 'admin@example.org',     actorId: 'http://localhost:4000/api/users/peter-lustig' }),
+      f.create('User', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', email: 'moderator@example.org', actorId: 'http://localhost:4000/api/users/bob-der-baumeister' }),
+      f.create('User', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      email: 'user@example.org',      actorId: 'http://localhost:4000/api/users/jenny-rostock' }),
+      f.create('User', { id: 'u4', name: 'Tick',               role: 'user',      email: 'tick@example.org',      actorId: 'http://localhost:4000/api/users/tick' }),
+      f.create('User', { id: 'u5', name: 'Trick',              role: 'user',      email: 'trick@example.org',     actorId: 'http://localhost:4000/api/users/trick' }),
+      f.create('User', { id: 'u6', name: 'Track',              role: 'user',      email: 'track@example.org',     actorId: 'http://localhost:4000/api/users/track' }),
+      f.create('User', { id: 'u7', name: 'Dagobert',           role: 'user',      email: 'dagobert@example.org',  actorId: 'http://localhost:4000/api/users/dagobert' })
     ])
 
     const [ asAdmin, asModerator, asUser, asTick, asTrick, asTrack ] = await Promise.all([
