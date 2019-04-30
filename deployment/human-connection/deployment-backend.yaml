@@ -43,15 +43,3 @@
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
   status: {}
----
-  kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: uploads-claim
-    namespace: human-connection
-  spec:
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 2Gi

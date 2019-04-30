@@ -26,6 +26,7 @@
               resource-type="user"
               :resource="user"
               :is-owner="myProfile"
+              class="user-content-menu"
             />
           </no-ssr>
           <ds-space margin="small">
@@ -323,7 +324,7 @@
 import uniqBy from 'lodash/uniqBy'
 
 import User from '~/components/User'
-import HcPostCard from '~/components/PostCard.vue'
+import HcPostCard from '~/components/PostCard'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'

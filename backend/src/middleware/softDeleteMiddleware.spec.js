@@ -23,21 +23,19 @@ beforeAll(async () => {
   ])
 
   await Promise.all([
-    factory.create('Comment', { id: 'c2', content: 'Enabled comment on public post' })
+    factory.create('Comment', { id: 'c2', postId: 'p3', content: 'Enabled comment on public post' })
   ])
 
   await Promise.all([
-    factory.relate('Comment', 'Author', { from: 'u1', to: 'c2' }),
-    factory.relate('Comment', 'Post', { from: 'c2', to: 'p3' })
+    factory.relate('Comment', 'Author', { from: 'u1', to: 'c2' })
   ])
 
   const asTroll = Factory()
   await asTroll.authenticateAs({ email: 'troll@example.org', password: '1234' })
   await asTroll.create('Post', { id: 'p2', title: 'Disabled post', content: 'This is an offensive post content', image: '/some/offensive/image.jpg', deleted: false })
-  await asTroll.create('Comment', { id: 'c1', content: 'Disabled comment' })
+  await asTroll.create('Comment', { id: 'c1', postId: 'p3', content: 'Disabled comment' })
   await Promise.all([
-    asTroll.relate('Comment', 'Author', { from: 'u2', to: 'c1' }),
-    asTroll.relate('Comment', 'Post', { from: 'c1', to: 'p3' })
+    asTroll.relate('Comment', 'Author', { from: 'u2', to: 'c1' })
   ])
 
   const asModerator = Factory()

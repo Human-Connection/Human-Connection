@@ -8,6 +8,9 @@
     "moreInfo": "What is Human Connection?",
     "hello": "Hello"
   },
+  "editor": {
+    "placeholder": "Leave your inspirational thoughts..."
+  },
   "profile": {
     "name": "My Profile",
     "memberSince": "Member since",
@@ -17,6 +20,11 @@
     "shouted": "Shouted",
     "commented": "Commented",
     "socialMedia": "Where else can I find"
+  },
+  "notifications": {
+    "menu": {
+      "mentioned": "has mentioned you in a post"
+    }
   },
   "search": {
     "placeholder": "Search",
@@ -106,6 +114,10 @@
     },
     "takeAction": {
       "name": "Take action"
+    },
+    "comment": {
+      "submit": "Comment",
+      "submitted": "Comment Submitted"
     }
   },
   "quotes": {

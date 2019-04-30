@@ -4,22 +4,21 @@ import uuid from 'uuid/v4'
 export default function (params) {
   const {
     id = uuid(),
+    postId = 'p6',
     content = [
       faker.lorem.sentence(),
       faker.lorem.sentence()
-    ].join('. '),
-    disabled = false,
-    deleted = false
+    ].join('. ')
   } = params
 
-  return `
-    mutation {
-      CreateComment(
-        id: "${id}",
-        content: "${content}",
-        disabled: ${disabled},
-        deleted: ${deleted}
-      ) { id }
-    }
-  `
+  return {
+    mutation: `
+      mutation($id: ID!, $postId: ID, $content: String!) {
+        CreateComment(id: $id, postId: $postId, content: $content) {
+          id
+        }
+      }
+    `,
+    variables: { id, postId, content }
+  }
 }

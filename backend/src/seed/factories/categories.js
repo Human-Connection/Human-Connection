@@ -8,14 +8,15 @@ export default function (params) {
     icon
   } = params
 
-  return `
-    mutation {
-      CreateCategory(
-        id: "${id}",
-        name: "${name}",
-        slug: "${slug}",
-        icon: "${icon}"
-      ) { id, name }
+  return {
+    mutation: `
+    mutation($id: ID, $name: String!, $slug: String, $icon: String!) {
+      CreateCategory(id: $id, name: $name, slug: $slug, icon: $icon) {
+        id
+        name
+      }
     }
-  `
+    `,
+    variables: { id, name, slug, icon }
+  }
 }

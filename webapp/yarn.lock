@@ -21,18 +21,18 @@
   dependencies:
     "@babel/highlight" "^7.0.0"
 
-"@babel/core@^7.1.0", "@babel/core@^7.4.3", "@babel/core@~7.4.3":
-  version "7.4.3"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.4.3.tgz#198d6d3af4567be3989550d97e068de94503074f"
-  integrity sha512-oDpASqKFlbspQfzAE7yaeTmdljSH2ADIvBlb0RwbStltTuWa0+7CCI1fYVINNv9saHPa1W7oaKeuNuKj+RQCvA==
+"@babel/core@^7.1.0", "@babel/core@^7.4.3", "@babel/core@~7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.4.4.tgz#84055750b05fcd50f9915a826b44fa347a825250"
+  integrity sha512-lQgGX3FPRgbz2SKmhMtYgJvVzGZrmjaF4apZ2bLwofAKiSjxU0drPh4S/VasyYXwaTs+A1gvQ45BN8SQJzHsQQ==
   dependencies:
     "@babel/code-frame" "^7.0.0"
-    "@babel/generator" "^7.4.0"
-    "@babel/helpers" "^7.4.3"
-    "@babel/parser" "^7.4.3"
-    "@babel/template" "^7.4.0"
-    "@babel/traverse" "^7.4.3"
-    "@babel/types" "^7.4.0"
+    "@babel/generator" "^7.4.4"
+    "@babel/helpers" "^7.4.4"
+    "@babel/parser" "^7.4.4"
+    "@babel/template" "^7.4.4"
+    "@babel/traverse" "^7.4.4"
+    "@babel/types" "^7.4.4"
     convert-source-map "^1.1.0"
     debug "^4.1.0"
     json5 "^2.1.0"
@@ -41,12 +41,12 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/generator@^7.0.0", "@babel/generator@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.4.0.tgz#c230e79589ae7a729fd4631b9ded4dc220418196"
-  integrity sha512-/v5I+a1jhGSKLgZDcmAUZ4K/VePi43eRkUs3yePW1HB1iANOD5tqJXwGSG4BZhSksP8J9ejSlwGeTiiOFZOrXQ==
+"@babel/generator@^7.0.0", "@babel/generator@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.4.4.tgz#174a215eb843fc392c7edcaabeaa873de6e8f041"
+  integrity sha512-53UOLK6TVNqKxf7RUh8NE851EHRxOOeVXKbK2bivdb+iziMyk03Sr4eaE9OELCbyZAAafAKPDwF2TPUES5QbxQ==
   dependencies:
-    "@babel/types" "^7.4.0"
+    "@babel/types" "^7.4.4"
     jsesc "^2.5.1"
     lodash "^4.17.11"
     source-map "^0.5.0"
@@ -245,6 +245,13 @@
   dependencies:
     "@babel/types" "^7.4.0"
 
+"@babel/helper-split-export-declaration@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/helper-split-export-declaration/-/helper-split-export-declaration-7.4.4.tgz#ff94894a340be78f53f06af038b205c49d993677"
+  integrity sha512-Ro/XkzLf3JFITkW6b+hNxzZ1n5OQ80NvIUdmHspih1XAhtN3vPTuUFT4eQnela+2MaZ5ulH+iyP513KJrxbN7Q==
+  dependencies:
+    "@babel/types" "^7.4.4"
+
 "@babel/helper-wrap-function@^7.1.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@babel/helper-wrap-function/-/helper-wrap-function-7.2.0.tgz#c4e0012445769e2815b55296ead43a958549f6fa"
@@ -255,14 +262,14 @@
     "@babel/traverse" "^7.1.0"
     "@babel/types" "^7.2.0"
 
-"@babel/helpers@^7.4.3":
-  version "7.4.3"
-  resolved "https://registry.yarnpkg.com/@babel/helpers/-/helpers-7.4.3.tgz#7b1d354363494b31cb9a2417ae86af32b7853a3b"
-  integrity sha512-BMh7X0oZqb36CfyhvtbSmcWc3GXocfxv3yNsAEuM0l+fAqSO22rQrUpijr3oE/10jCTrB6/0b9kzmG4VetCj8Q==
+"@babel/helpers@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/helpers/-/helpers-7.4.4.tgz#868b0ef59c1dd4e78744562d5ce1b59c89f2f2a5"
+  integrity sha512-igczbR/0SeuPR8RFfC7tGrbdTbFL3QTvH6D+Z6zNxnTe//GyqmtHmDkzrqDmyZ3eSwPqB/LhyKoU5DXsp+Vp2A==
   dependencies:
-    "@babel/template" "^7.4.0"
-    "@babel/traverse" "^7.4.3"
-    "@babel/types" "^7.4.0"
+    "@babel/template" "^7.4.4"
+    "@babel/traverse" "^7.4.4"
+    "@babel/types" "^7.4.4"
 
 "@babel/highlight@^7.0.0":
   version "7.0.0"
@@ -273,10 +280,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.0.0", "@babel/parser@^7.1.0", "@babel/parser@^7.4.0", "@babel/parser@^7.4.3":
-  version "7.4.3"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.4.3.tgz#eb3ac80f64aa101c907d4ce5406360fe75b7895b"
-  integrity sha512-gxpEUhTS1sGA63EGQGuA+WESPR/6tz6ng7tSHFCmaTJK/cGK8y37cBTspX+U2xCAue2IQVvF6Z0oigmjwD8YGQ==
+"@babel/parser@^7.0.0", "@babel/parser@^7.1.0", "@babel/parser@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.4.4.tgz#5977129431b8fe33471730d255ce8654ae1250b6"
+  integrity sha512-5pCS4mOsL+ANsFZGdvNLybx4wtqAZJ0MJjMHxvzI3bvIsz6sQvzW8XX92EYIkiPtIvcfG3Aj+Ir5VNyjnZhP7w==
 
 "@babel/plugin-proposal-async-generator-functions@^7.2.0":
   version "7.2.0"
@@ -700,34 +707,34 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/template@^7.0.0", "@babel/template@^7.1.0", "@babel/template@^7.2.2", "@babel/template@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.0.tgz#12474e9c077bae585c5d835a95c0b0b790c25c8b"
-  integrity sha512-SOWwxxClTTh5NdbbYZ0BmaBVzxzTh2tO/TeLTbF6MO6EzVhHTnff8CdBXx3mEtazFBoysmEM6GU/wF+SuSx4Fw==
+"@babel/template@^7.0.0", "@babel/template@^7.1.0", "@babel/template@^7.2.2", "@babel/template@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
+  integrity sha512-CiGzLN9KgAvgZsnivND7rkA+AeJ9JB0ciPOD4U59GKbQP2iQl+olF1l76kJOupqidozfZ32ghwBEJDhnk9MEcw==
   dependencies:
     "@babel/code-frame" "^7.0.0"
-    "@babel/parser" "^7.4.0"
-    "@babel/types" "^7.4.0"
+    "@babel/parser" "^7.4.4"
+    "@babel/types" "^7.4.4"
 
-"@babel/traverse@^7.0.0", "@babel/traverse@^7.1.0", "@babel/traverse@^7.2.3", "@babel/traverse@^7.4.0", "@babel/traverse@^7.4.3":
-  version "7.4.3"
-  resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.4.3.tgz#1a01f078fc575d589ff30c0f71bf3c3d9ccbad84"
-  integrity sha512-HmA01qrtaCwwJWpSKpA948cBvU5BrmviAief/b3AVw936DtcdsTexlbyzNuDnthwhOQ37xshn7hvQaEQk7ISYQ==
+"@babel/traverse@^7.0.0", "@babel/traverse@^7.1.0", "@babel/traverse@^7.2.3", "@babel/traverse@^7.4.0", "@babel/traverse@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.4.4.tgz#0776f038f6d78361860b6823887d4f3937133fe8"
+  integrity sha512-Gw6qqkw/e6AGzlyj9KnkabJX7VcubqPtkUQVAwkc0wUMldr3A/hezNB3Rc5eIvId95iSGkGIOe5hh1kMKf951A==
   dependencies:
     "@babel/code-frame" "^7.0.0"
-    "@babel/generator" "^7.4.0"
+    "@babel/generator" "^7.4.4"
     "@babel/helper-function-name" "^7.1.0"
-    "@babel/helper-split-export-declaration" "^7.4.0"
-    "@babel/parser" "^7.4.3"
-    "@babel/types" "^7.4.0"
+    "@babel/helper-split-export-declaration" "^7.4.4"
+    "@babel/parser" "^7.4.4"
+    "@babel/types" "^7.4.4"
     debug "^4.1.0"
     globals "^11.1.0"
     lodash "^4.17.11"
 
-"@babel/types@^7.0.0", "@babel/types@^7.2.0", "@babel/types@^7.2.2", "@babel/types@^7.3.0", "@babel/types@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.4.0.tgz#670724f77d24cce6cc7d8cf64599d511d164894c"
-  integrity sha512-aPvkXyU2SPOnztlgo8n9cEiXW755mgyvueUPcpStqdzoSPm0fjO0vQBjLkt3JKJW7ufikfcnMTTPsN1xaTsBPA==
+"@babel/types@^7.0.0", "@babel/types@^7.2.0", "@babel/types@^7.2.2", "@babel/types@^7.3.0", "@babel/types@^7.4.0", "@babel/types@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.4.4.tgz#8db9e9a629bb7c29370009b4b779ed93fe57d5f0"
+  integrity sha512-dOllgYdnEFOebhkKCjzSVFqw/PmmB8pH6RGOWkY4GsboQNd47b1fBThBSwlHAq9alF9vc1M3+6oqR47R50L0tQ==
   dependencies:
     esutils "^2.0.2"
     lodash "^4.17.11"
@@ -4205,10 +4212,10 @@ eslint-config-prettier@^3.3.0:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-prettier@~4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-4.1.0.tgz#181364895899fff9fd3605fecb5c4f20e7d5f395"
-  integrity sha512-zILwX9/Ocz4SV2vX7ox85AsrAgXV3f2o2gpIicdMIOra48WYqgUnWNH/cR/iHtmD2Vb3dLSC3LiEJnS05Gkw7w==
+eslint-config-prettier@~4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-4.2.0.tgz#70b946b629cd0e3e98233fd9ecde4cb9778de96c"
+  integrity sha512-y0uWc/FRfrHhpPZCYflWC8aE0KRJRY04rdZVfl8cL3sEZmOYyaBdhdlQPjKZBnuRMyLVK+JUZr7HaZFClQiH4w==
   dependencies:
     get-stdin "^6.0.0"
 
@@ -8881,10 +8888,10 @@ prosemirror-utils@^0.7.6:
   resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.7.6.tgz#c462ddfbf2452e56e4b25d1f02b34caccddb0f33"
   integrity sha512-vzsCBTiJ56R3nRDpIJnKOJzsZP7KFO8BkXk7zvQgQiXpml2o/djPCRhuyaFc7VTqSHlLPQHVI1feTLAwHp+prQ==
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.8.8:
-  version "1.8.8"
-  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.8.8.tgz#e61f60ed716d4f943be2fbc3f3be765322ff891f"
-  integrity sha512-rBDmBKRPmWhF4R2k9vW7CkGo+bafjj278lFxEGVpCHlnLhhhYX1XHU59KgMCsDnNhxh8Oexup1yIPbfg99eynA==
+prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.8.9:
+  version "1.8.9"
+  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.8.9.tgz#9303def925eba0a8ce4589e64b4a011eaccfc1e0"
+  integrity sha512-K3/z7qDR6rEMH/gKXqu5pmjmtyhtuTWeQyselK6HMp3jbn1UANU4CfdU/awQT+zbRjv4ZJXGb9lxnuNmdUQS3Q==
   dependencies:
     prosemirror-model "^1.1.0"
     prosemirror-state "^1.0.0"
@@ -10355,17 +10362,17 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
-tippy.js@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-4.2.1.tgz#9e4939d976465f77229b05a3cb233b5dc28cf850"
-  integrity sha512-xEE7zYNgQxCDdPcuT6T04f0frPh0wO7CcIqJKMFazU/NqusyjCgYSkLRosIHoiRkZMRzSPOudC8wRN5GjvAyOQ==
+tippy.js@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-4.3.0.tgz#5f661fed7fa30c90609eb87f6657005dd041ede3"
+  integrity sha512-SjctzIfkx3+waue+Ew58MMTuzYD4SK9wJOnCEdrCmwZiKJ7chZSxOguFmBm11tmTlZuGbxncUC/5Qu6GqzD2qQ==
   dependencies:
     popper.js "^1.14.7"
 
-tiptap-commands@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.7.0.tgz#d15cec2cb09264b5c1f6f712dab8819bb9ab7e13"
-  integrity sha512-JhgvBPIhGnisEdxD6gmM3U76BUlKF9n1LW1X/dO1AUOsm3Xc9tQB5BIOV/DpZTvrjntLP3AUTfd+yJeRIz5CPA==
+tiptap-commands@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.7.1.tgz#88f615e623836c49f3c4ad1b1cdd95ebed7cf0e1"
+  integrity sha512-HQVFgfBeeOe9mJFYUDkYxiX1D+aYjyO9rO0SeYdumqv9rNHTF3GFfx7qJSk4/d2+GgXDRyoiO35B25EkxGjJJw==
   dependencies:
     prosemirror-commands "^1.0.7"
     prosemirror-inputrules "^1.0.1"
@@ -10373,19 +10380,19 @@ tiptap-commands@^1.7.0:
     prosemirror-state "^1.2.2"
     tiptap-utils "^1.3.0"
 
-tiptap-extensions@^1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/tiptap-extensions/-/tiptap-extensions-1.15.0.tgz#72768ba4c1d016ce752468466c91b33c87699e60"
-  integrity sha512-BqrHw5ZiF1WJVDw1r/9Xbta+ln1rITeQZHhA2p5ZaTi9ZRM7y9Bp44oSn2Pwzvb3bwCz+TO1Jv1MwASRKDMhug==
+tiptap-extensions@^1.16.2:
+  version "1.16.2"
+  resolved "https://registry.yarnpkg.com/tiptap-extensions/-/tiptap-extensions-1.16.2.tgz#deea16318b6f1d2b080d3d240ff9bfe4940f5261"
+  integrity sha512-b6/uv56eMTdmUPTobZpS2aJFmZd9h7FTi+LcVYfbytcw8iow/p6Rzf/gGny5c1L9x0Tvk93fvUQE+wuKg38DKw==
   dependencies:
     lowlight "^1.11.0"
     prosemirror-history "^1.0.4"
     prosemirror-state "^1.2.2"
     prosemirror-tables "^0.7.10"
     prosemirror-utils "^0.7.6"
-    prosemirror-view "^1.8.8"
-    tiptap "^1.15.0"
-    tiptap-commands "^1.7.0"
+    prosemirror-view "^1.8.9"
+    tiptap "^1.16.2"
+    tiptap-commands "^1.7.1"
 
 tiptap-utils@^1.3.0:
   version "1.3.0"
@@ -10397,10 +10404,10 @@ tiptap-utils@^1.3.0:
     prosemirror-tables "^0.7.9"
     prosemirror-utils "^0.7.6"
 
-tiptap@^1.14.0, tiptap@^1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.15.0.tgz#198b6a3b477a10a25de79674a4d8bb58dad56743"
-  integrity sha512-qQfcK9Vs0QzUgw1x9oKYXimX8+m1TckivTrD/0als095qrq+fFQpQWkce++8kBW+2lGkM6nXsogZvHoV6Dzl4Q==
+tiptap@^1.16.2:
+  version "1.16.2"
+  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.16.2.tgz#0a94ea8f58cccafd56439bcbd29fa9c6071ed90a"
+  integrity sha512-krMpbrQDvSwcp0FIUFjZgmlZUc65kvno+ASecp2G13DJUoAeYHTUW7AKng53xJP/rMm9ubc3q9XA6e6B5Bf+mA==
   dependencies:
     prosemirror-commands "^1.0.7"
     prosemirror-dropcursor "^1.1.1"
@@ -10409,8 +10416,8 @@ tiptap@^1.14.0, tiptap@^1.15.0:
     prosemirror-keymap "^1.0.1"
     prosemirror-model "^1.7.0"
     prosemirror-state "^1.2.1"
-    prosemirror-view "^1.8.8"
-    tiptap-commands "^1.7.0"
+    prosemirror-view "^1.8.9"
+    tiptap-commands "^1.7.1"
     tiptap-utils "^1.3.0"
 
 tmp@^0.0.33:
@@ -10851,10 +10858,10 @@ uuid@^3.1.0, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-v-tooltip@~2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/v-tooltip/-/v-tooltip-2.0.1.tgz#ba959552651dfa33210170ac9cfcce3525abe797"
-  integrity sha512-Ifby9zx34MtzZRSYlr+tFQjXxHd8NZG9YoEHdeSQb8qwFGRQZhc8JVnxKBKUDGFowLUEzfX4e3mVmqrLw7b5oQ==
+v-tooltip@~2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/v-tooltip/-/v-tooltip-2.0.2.tgz#8610d9eece2cc44fd66c12ef2f12eec6435cab9b"
+  integrity sha512-xQ+qzOFfywkLdjHknRPgMMupQNS8yJtf9Utd5Dxiu/0n4HtrxqsgDtN2MLZ0LKbburtSAQgyypuE/snM8bBZhw==
   dependencies:
     lodash "^4.17.11"
     popper.js "^1.15.0"

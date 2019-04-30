@@ -6,6 +6,10 @@
     namespace: human-connection
   spec:
     replicas: 1
+    strategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: "100%"
     selector:
       matchLabels:
         human-connection.org/selector: deployment-human-connection-neo4j
@@ -53,15 +57,3 @@
             claimName: neo4j-data-claim
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
----
-  kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: neo4j-data-claim
-    namespace: human-connection
-  spec:
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 1Gi
