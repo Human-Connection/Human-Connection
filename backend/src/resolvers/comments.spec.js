@@ -19,12 +19,12 @@ afterEach(async () => {
 
 describe('CreateComment', () => {
   const mutation = `
-    mutation($postId: ID, $content: String!) {
-      CreateComment(postId: $postId, content: $content) {
-        id
-        content
-      }
+  mutation($postId: ID, $content: String!) {
+    CreateComment(postId: $postId, content: $content) {
+      id
+      content
     }
+  }
   `
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
@@ -56,6 +56,24 @@ describe('CreateComment', () => {
       }
 
       await expect(client.request(mutation, variables)).resolves.toMatchObject(expected)
+    })
+
+    it('assigns the authenticated user as author', async () => {
+      variables = {
+        postId: 'p1',
+        content: 'I\'m authorised to comment'
+      }
+      await client.request(mutation, variables)
+
+      const { User } = await client.request(`{
+          User(email: "test@example.org") {
+            comments {
+              content
+            }
+          }
+        }`)
+
+      expect(User).toEqual([ { comments: [ { content: 'I\'m authorised to comment' } ] } ])
     })
 
     it('throw an error if an empty string is sent as content', async () => {

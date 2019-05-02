@@ -44,6 +44,16 @@ export default {
         commentId: comment.id
       }
       )
+
+      await session.run(`
+          MATCH (comment:Comment {id: $commentId}), (author:User {id: $userId})
+          MERGE (comment)<-[:WROTE]-(author)
+          RETURN comment {.id, .content}`, {
+        commentId: comment.id,
+        userId: context.user.id
+      }
+      )
+
       session.close()
 
       return comment
