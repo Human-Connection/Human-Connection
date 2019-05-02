@@ -10,7 +10,10 @@
           v-for="link in socialMediaLinks"
           :key="link.url"
         >
-          <a :href="link.url">
+          <a
+            :href="link.url"
+            target="_blank"
+          >
             <img
               :src="link.favicon"
               alt="Social Media link"
