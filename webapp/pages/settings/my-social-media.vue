@@ -28,7 +28,7 @@
             class="layout-leave-active"
           />
           <a
-            @click="onDelete(link)"
+            @click="handleDeleteSocialMedia(link)"
           >
             <ds-icon name="trash"/>
           </a>
@@ -117,7 +117,7 @@ export default {
           (this.value = '')
         )
     },
-    onDelete(link) {
+    handleDeleteSocialMedia(link) {
       console.log(link)
     }
   }
