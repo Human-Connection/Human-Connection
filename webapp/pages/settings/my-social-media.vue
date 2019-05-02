@@ -22,26 +22,38 @@
             >
             {{ link.url }}
           </a>
+          &nbsp;&nbsp; | &nbsp;&nbsp;
+          <ds-icon
+            name="edit"
+            class="layout-leave-active"
+          />
+          <a
+            @click="onDelete(link)"
+          >
+            <ds-icon name="trash"/>
+          </a>
         </ds-list-item>
       </ds-list>
     </ds-space>
-    <div>
-      <ds-input
-        v-model="value"
-        placeholder="Add social media url"
-        name="social-media"
-        :schema="{type: 'url'}"
-      />
-    </div>
     <ds-space margin-top="base">
       <div>
-        <ds-button
-          primary
-          @click="handleAddSocialMedia"
-        >
-          {{ $t('settings.social-media.submit') }}
-        </ds-button>
+        <ds-input
+          v-model="value"
+          placeholder="Add social media url"
+          name="social-media"
+          :schema="{type: 'url'}"
+        />
       </div>
+      <ds-space margin-top="base">
+        <div>
+          <ds-button
+            primary
+            @click="handleAddSocialMedia"
+          >
+            {{ $t('settings.social-media.submit') }}
+          </ds-button>
+        </div>
+      </ds-space>
     </ds-space>
   </ds-card>
 </template>
@@ -104,7 +116,16 @@ export default {
           this.$toast.success(this.$t('settings.social-media.success')),
           (this.value = '')
         )
+    },
+    onDelete(link) {
+      console.log(link)
     }
   }
 }
 </script>
+
+<style lang="scss">
+.layout-leave-active {
+  opacity: 0.4;
+}
+</style>
