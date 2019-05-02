@@ -43,7 +43,8 @@ describe('authorization', () => {
           try {
             await action()
           } catch (error) {
-            expect(error.response.data).toEqual({ User: [ { email: null } ] })
+            console.log(error.response.data)
+            expect(error.response.data).toEqual({ User: [ null ] })
           }
         })
       })
@@ -77,7 +78,7 @@ describe('authorization', () => {
           try {
             await action()
           } catch (error) {
-            expect(error.response.data).toEqual({ User: [ { email: null } ] })
+            expect(error.response.data).toEqual({ User: [ null ] })
           }
         })
       })

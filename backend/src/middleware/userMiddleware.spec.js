@@ -12,16 +12,18 @@ afterAll(async () => {
 describe('userMiddleware', () => {
   describe('create User', () => {
     const mutation = `
-      mutation($id: ID, $password: String!) {
-        CreateUser(id: $id, password: $password) {
+      mutation($id: ID, $password: String!, $email: String!) {
+        CreateUser(id: $id, password: $password, email: $email) {
           id
         }
       }
     `
     client = new GraphQLClient(host)
-    it('with password only', async () => {
+
+    it('with password and email', async () => {
       const variables = {
-        password: '123'
+        password: '123',
+        email: '123@123.de'
       }
       const expected = {
         CreateUser: {
@@ -31,10 +33,12 @@ describe('userMiddleware', () => {
       await expect(client.request(mutation, variables))
         .resolves.toEqual(expected)
     })
-    it('with ID and password', async () => {
+
+    it('with ID, email and password', async () => {
       const variables = {
         password: '123',
-        id: 'u1'
+        id: 'u1',
+        email: '123@123.de'
       }
       const expected = {
         CreateUser: {
@@ -43,6 +47,45 @@ describe('userMiddleware', () => {
       }
       await expect(client.request(mutation, variables))
         .resolves.toEqual(expected)
+    })
+  })
+  describe('update User', () => {
+    const mutation = `
+      mutation($name: String) {
+        UpdateUser(name: $name) {
+          name
+        }
+      }
+    `
+    client = new GraphQLClient(host)
+
+    it('name within specifications', async () => {
+      const variables = {
+        name: 'Peter Lustig'
+      }
+      const expected = {
+        UpdateUser: {
+          name: 'Peter Lustig'
+        }
+      }
+      await expect(client.request(mutation, variables))
+        .resolves.toEqual(expected)
+    })
+
+    it('with no name', async () => {
+      const variables = {
+      }
+      const expected = 'Username must be at least 3 characters long!'
+      await expect(client.request(mutation, variables))
+        .rejects.toThrow(expected)
+    })
+
+    it('with too short name', async () => {
+      const variables = {
+      }
+      const expected = 'Username must be at least 3 characters long!'
+      await expect(client.request(mutation, variables))
+        .rejects.toThrow(expected)
     })
   })
 })

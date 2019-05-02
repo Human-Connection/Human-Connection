@@ -1,8 +1,5 @@
 <template>
-  <ds-form
-    v-model="form"
-    @submit="submit"
-  >
+  <ds-form v-model="form" @submit="submit">
     <ds-card :header="$t('settings.data.name')">
       <ds-input
         id="name"
@@ -38,9 +35,7 @@
           type="submit"
           :loading="loadingData"
           primary
-        >
-          {{ $t('actions.save') }}
-        </ds-button>
+        >{{ $t('actions.save') }}</ds-button>
       </template>
     </ds-card>
   </ds-form>
