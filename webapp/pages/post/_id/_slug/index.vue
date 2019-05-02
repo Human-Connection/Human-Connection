@@ -179,7 +179,7 @@ export default {
       this.post = post[0] || {}
       this.title = this.post.title
     },
-    CommentByPost(comments) {
+    Comment(comments) {
       this.comments = comments || []
     }
   },
@@ -291,11 +291,11 @@ export default {
       return this.$store.getters['auth/user'].id === id
     },
     addComment(comment) {
-      this.$apollo.queries.CommentByPost.refetch()
+      this.$apollo.queries.Comment.refetch()
     }
   },
   apollo: {
-    CommentByPost: {
+    Comment: {
       query() {
         return require('~/graphql/CommentQuery.js').default(this)
       },
