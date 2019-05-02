@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
-import { host, login } from '../jest/helpers'
+import { host } from '../jest/helpers'
 import Factory from '../seed/factories'
 
 const factory = Factory()
@@ -51,8 +51,8 @@ describe('userMiddleware', () => {
   })
   describe('update User', () => {
     const mutation = `
-      mutation($name: String) {
-        UpdateUser(name: $name) {
+      mutation($id: ID!, $name: String) {
+        UpdateUser(id: $id, name: $name) {
           name
         }
       }
@@ -61,6 +61,7 @@ describe('userMiddleware', () => {
 
     it('name within specifications', async () => {
       const variables = {
+        id: 'u1',
         name: 'Peter Lustig'
       }
       const expected = {
@@ -74,6 +75,7 @@ describe('userMiddleware', () => {
 
     it('with no name', async () => {
       const variables = {
+        id: 'u1'
       }
       const expected = 'Username must be at least 3 characters long!'
       await expect(client.request(mutation, variables))
@@ -82,6 +84,7 @@ describe('userMiddleware', () => {
 
     it('with too short name', async () => {
       const variables = {
+        id: 'u1'
       }
       const expected = 'Username must be at least 3 characters long!'
       await expect(client.request(mutation, variables))
