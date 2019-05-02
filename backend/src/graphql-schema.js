@@ -24,7 +24,8 @@ export const resolvers = {
     ...statistics.Query,
     ...userManagement.Query,
     ...notifications.Query,
-    ...comments.Query
+    ...comments.Query,
+    ...posts.Query
   },
   Mutation: {
     ...userManagement.Mutation,
