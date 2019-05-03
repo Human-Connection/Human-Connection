@@ -2,6 +2,7 @@ version: "3.4"
 
 services:
   maintenance:
+    command: "idle" # remove this line to start neo4j automatically
     image: humanconnection/maintenance-worker:latest
     build:
       context: .
