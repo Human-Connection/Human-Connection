@@ -4,7 +4,8 @@ import { host, login } from '../jest/helpers'
 
 const factory = Factory()
 let client
-let variables
+let createCommentVariables
+let createPostVariables
 
 beforeEach(async () => {
   await factory.create('User', {
@@ -18,7 +19,7 @@ afterEach(async () => {
 })
 
 describe('CreateComment', () => {
-  const mutation = `
+  const createCommentMutation = `
   mutation($postId: ID, $content: String!) {
     CreateComment(postId: $postId, content: $content) {
       id
@@ -26,14 +27,21 @@ describe('CreateComment', () => {
     }
   }
   `
+  const createPostMutation = `
+  mutation($id: ID!, $title: String!, $content: String!) {
+    CreatePost(id: $id, title: $title, content: $content) {
+      id
+    }
+  }
+  `
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
-      variables = {
+      createCommentVariables = {
         postId: 'p1',
         content: 'I\'m not authorised to comment'
       }
       client = new GraphQLClient(host)
-      await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      await expect(client.request(createCommentMutation, createCommentVariables)).rejects.toThrow('Not Authorised')
     })
   })
 
@@ -42,28 +50,30 @@ describe('CreateComment', () => {
     beforeEach(async () => {
       headers = await login({ email: 'test@example.org', password: '1234' })
       client = new GraphQLClient(host, { headers })
-    })
-
-    it('creates a comment', async () => {
-      variables = {
+      createCommentVariables = {
         postId: 'p1',
         content: 'I\'m authorised to comment'
       }
+    })
+
+    it('creates a comment', async () => {
       const expected = {
         CreateComment: {
           content: 'I\'m authorised to comment'
         }
       }
 
-      await expect(client.request(mutation, variables)).resolves.toMatchObject(expected)
+      await expect(client.request(createCommentMutation, createCommentVariables)).resolves.toMatchObject(expected)
     })
 
     it('assigns the authenticated user as author', async () => {
-      variables = {
-        postId: 'p1',
-        content: 'I\'m authorised to comment'
+      createPostVariables = {
+        id: 'p1',
+        title: 'post to comment on',
+        content: 'please comment on me'
       }
-      await client.request(mutation, variables)
+      await client.request(createPostMutation, createPostVariables)
+      await client.request(createCommentMutation, createCommentVariables)
 
       const { User } = await client.request(`{
           User(email: "test@example.org") {
@@ -77,22 +87,22 @@ describe('CreateComment', () => {
     })
 
     it('throw an error if an empty string is sent as content', async () => {
-      variables = {
+      createCommentVariables = {
         postId: 'p1',
         content: '<p></p>'
       }
 
-      await expect(client.request(mutation, variables))
+      await expect(client.request(createCommentMutation, createCommentVariables))
         .rejects.toThrow('Comment must be at least 1 character long!')
     })
 
     it('throws an error if a comment does not contain a single character', async () => {
-      variables = {
+      createCommentVariables = {
         postId: 'p1',
         content: '<p> </p>'
       }
 
-      await expect(client.request(mutation, variables))
+      await expect(client.request(createCommentMutation, createCommentVariables))
         .rejects.toThrow('Comment must be at least 1 character long!')
     })
   })

@@ -16,17 +16,10 @@ export default {
       const session = context.driver.session()
 
       await session.run(`
-        MATCH (author:User {id: $userId}), (comment:Comment {id: $commentId})
-        MERGE (comment)<-[:WROTE]-(author)
-        RETURN author`, {
-        userId: context.user.id,
-        commentId: comment.id
-      }
-      )
-      await session.run(`
-        MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId})
-        MERGE (post)<-[:COMMENTS]-(comment)
+        MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId}), (author:User {id: $userId})
+        MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
         RETURN post`, {
+        userId: context.user.id,
         postId,
         commentId: comment.id
       }
