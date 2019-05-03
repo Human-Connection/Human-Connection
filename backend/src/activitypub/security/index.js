@@ -85,7 +85,7 @@ export function verifySignature (url, headers) {
 
 // private: signing
 function constructSigningString (url, headers) {
-  const { pathname, search} = new URL(url)
+  const { pathname, search } = new URL(url)
   let signingString = `(request-target): post ${pathname}${search !== '' ? search : ''}`
   return Object.keys(headers).reduce((result, key) => {
     return result + `\n${key.toLowerCase()}: ${headers[key]}`

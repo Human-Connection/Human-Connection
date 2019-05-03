@@ -21,7 +21,7 @@ describe('fixImageURLs', () => {
       expect(fixImageURLs(object)).toEqual(object)
     })
     it('return untouched actorId', () => {
-      const object = { actorId: 'http://localhost:3000/api/users/tick'}
+      const object = { actorId: 'http://localhost:3000/api/users/tick' }
       expect(fixImageURLs(object)).toEqual(object)
     })
   })

@@ -11,23 +11,23 @@ router.post('/', async function (req, res, next) {
   debug(`Request headers = ${JSON.stringify(req.headers, null, 2)}`)
   switch (req.body.type) {
   case 'Create':
-    await activityPub.handleCreateActivity(req.body).catch(next)
+    await attachCatchToPromise(activityPub.handleCreateActivity(req.body), res)
     break
   case 'Undo':
-    await activityPub.handleUndoActivity(req.body).catch(next)
+    await attachCatchToPromise(activityPub.handleUndoActivity(req.body), res)
     break
   case 'Follow':
-    await activityPub.handleFollowActivity(req.body).catch(next)
+    await attachCatchToPromise(activityPub.handleFollowActivity(req.body), res)
     break
   case 'Delete':
-    await activityPub.handleDeleteActivity(req.body).catch(next)
+    await attachCatchToPromise(activityPub.handleDeleteActivity(req.body), res)
     break
   /* eslint-disable */
   case 'Update':
-    await activityPub.handleUpdateActivity(req.body).catch(next)
+    await attachCatchToPromise(activityPub.handleUpdateActivity(req.body), res)
     break
   case 'Accept':
-    await activityPub.handleAcceptActivity(req.body).catch(next)
+    await attachCatchToPromise(activityPub.handleAcceptActivity(req.body), res)
   case 'Reject':
     // Do nothing
     break
@@ -36,10 +36,10 @@ router.post('/', async function (req, res, next) {
   case 'Remove':
     break
   case 'Like':
-    await activityPub.handleLikeActivity(req.body).catch(next)
+    await attachCatchToPromise(activityPub.handleLikeActivity(req.body), res)
     break
   case 'Dislike':
-    await activityPub.handleDislikeActivity(req.body).catch(next)
+    await attachCatchToPromise(activityPub.handleDislikeActivity(req.body), res)
     break
   case 'Announce':
     debug('else!!')
@@ -48,5 +48,11 @@ router.post('/', async function (req, res, next) {
   /* eslint-enable */
   res.status(200).end()
 })
+
+function attachCatchToPromise (promise, res) {
+  return promise.catch(() => {
+    res.status(500).end()
+  })
+}
 
 export default router

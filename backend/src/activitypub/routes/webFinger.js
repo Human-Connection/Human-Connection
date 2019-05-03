@@ -11,10 +11,10 @@ router.get('/', async function (req, res) {
     const nameAndDomain = resource.replace('acct:', '')
     const name = nameAndDomain.split('@')[0]
 
-    const exists = await req.app.get('ap').dataSource.userExists(name)
+    const exists = await req.app.get('ap').userExists(name)
 
     if (!exists) {
-      return res.status(404).json({error: `No record found for ${nameAndDomain}.`})
+      return res.status(404).json({ error: `No record found for ${nameAndDomain}.` })
     }
 
     const webFingerRecord = createWebFinger(name)

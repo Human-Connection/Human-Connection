@@ -4,10 +4,8 @@ import crypto from 'crypto'
 import as from 'activitystrea.ms'
 const debug = require('debug')('ea:utils:activity')
 
-export async function createNoteObject (activityId, objectId, text, name, id, published) {
-  const actorId = await activityPub.getActorId(name)
-
-  return {
+export async function createNoteObject (activityId, objectId, text, actorId, id, published, updated) {
+  const object = {
     '@context': 'https://www.w3.org/ns/activitystreams',
     'id': `${activityId}`,
     'type': 'Create',
@@ -21,12 +19,15 @@ export async function createNoteObject (activityId, objectId, text, name, id, pu
       'to': ['https://www.w3.org/ns/activitystreams#Public']
     }
   }
+  if (updated) {
+    object.type = 'Update'
+    object.updated = updated
+  }
+  return object
 }
 
-export async function createArticleObject (activityId, objectId, text, name, id, published) {
-  const actorId = await activityPub.getActorId(name)
-
-  return {
+export async function createArticleObject (activityId, objectId, text, actorId, id, published, updated) {
+  const object = {
     '@context': 'https://www.w3.org/ns/activitystreams',
     'id': `${activityId}`,
     'type': 'Create',
@@ -40,6 +41,11 @@ export async function createArticleObject (activityId, objectId, text, name, id,
       'to': 'https://www.w3.org/ns/activitystreams#Public'
     }
   }
+  if (updated) {
+    object.type = 'Update'
+    object.object.updated = updated
+  }
+  return object
 }
 
 export function sendAcceptActivity (theBody, name, targetDomain, url) {

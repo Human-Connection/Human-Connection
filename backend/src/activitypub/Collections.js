@@ -1,6 +1,6 @@
 export default Collections
 
-function Collections(dataSource) {
+function Collections (dataSource) {
   this.dataSource = dataSource
 
   this.getFollowersCollection = (actorId) => {
@@ -27,4 +27,3 @@ function Collections(dataSource) {
     return this.dataSource.getOutboxCollectionPage(actorId)
   }
 }
-

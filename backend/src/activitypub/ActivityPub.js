@@ -51,74 +51,60 @@ export default function (server) {
 function ActivityPub () {
   this.endpoint = process.env.CLIENT_URI || 'http://localhost:3000'
   this.dataSource = new NitroDataSource(process.env.GRAPHQL_URI || 'http://localhost:4000')
+  const dataSource = this.dataSource
   this.collections = new Collections(this.dataSource)
 
-  this.handleFollowActivity = (activity) => {
+  this.handleFollowActivity = async (activity) => {
     debug(`inside FOLLOW ${activity.actor}`)
     let toActorName = extractNameFromId(activity.object)
     let fromDomain = extractHostFromUrl(activity.actor)
-    const dataSource = this.dataSource
 
-    return new Promise((resolve, reject) => {
-      request({
-        url: activity.actor,
-        headers: {
-          'Accept': 'application/activity+json'
-        }
-      }, async (err, response, toActorObject) => {
-        if (err) return reject(err)
-        // save shared inbox
-        toActorObject = JSON.parse(toActorObject)
-        await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
+    const toActorObject = await this.getActorObject(activity.actor)
+    await saveSharedInboxEndpoint(activity.actor, toActorObject)
+    let followersCollectionPage = await this.dataSource.getFollowersCollectionPage(activity.object)
 
-        let followersCollectionPage = await this.dataSource.getFollowersCollectionPage(activity.object)
+    const followActivity = as.follow()
+      .id(activity.id)
+      .actor(activity.actor)
+      .object(activity.object)
 
-        const followActivity = as.follow()
-          .id(activity.id)
-          .actor(activity.actor)
-          .object(activity.object)
+    // add follower if not already in collection
+    if (followersCollectionPage.orderedItems.includes(activity.actor)) {
+      debug('follower already in collection!')
+      return sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox)
+    } else {
+      followersCollectionPage.orderedItems.push(activity.actor)
+    }
+    debug(`toActorObject = ${toActorObject}`)
+    debug(`followers = ${JSON.stringify(followersCollectionPage.orderedItems, null, 2)}`)
+    debug(`inbox = ${toActorObject.inbox}`)
+    debug(`outbox = ${toActorObject.outbox}`)
+    debug(`followers = ${toActorObject.followers}`)
+    debug(`following = ${toActorObject.following}`)
 
-        // add follower if not already in collection
-        if (followersCollectionPage.orderedItems.includes(activity.actor)) {
-          debug('follower already in collection!')
-          debug(`inbox = ${toActorObject.inbox}`)
-          resolve(sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox))
-        } else {
-          followersCollectionPage.orderedItems.push(activity.actor)
-        }
-        debug(`toActorObject = ${toActorObject}`)
-        toActorObject = typeof toActorObject !== 'object' ? JSON.parse(toActorObject) : toActorObject
-        debug(`followers = ${JSON.stringify(followersCollectionPage.orderedItems, null, 2)}`)
-        debug(`inbox = ${toActorObject.inbox}`)
-        debug(`outbox = ${toActorObject.outbox}`)
-        debug(`followers = ${toActorObject.followers}`)
-        debug(`following = ${toActorObject.following}`)
-
-        try {
-          await dataSource.saveFollowersCollectionPage(followersCollectionPage)
-          debug('follow activity saved')
-          resolve(sendAcceptActivity(followActivity, toActorName, fromDomain, toActorObject.inbox))
-        } catch (e) {
-          debug('followers update error!', e)
-          resolve(sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox))
-        }
-      })
-    })
+    try {
+      await this.dataSource.saveFollowersCollectionPage(followersCollectionPage)
+      debug('follow activity saved')
+      return sendAcceptActivity(followActivity, toActorName, fromDomain, toActorObject.inbox)
+    } catch (e) {
+      debug('followers update error!', e)
+      return sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox)
+    }
   }
 
-  this.handleUndoActivity = (activity) => {
+  this.handleUndoActivity = async (activity) => {
     debug('inside UNDO')
     switch (activity.object.type) {
     case 'Follow':
       const followActivity = activity.object
       return this.dataSource.undoFollowActivity(followActivity.actor, followActivity.object)
     case 'Like':
-      return this.dataSource.deleteShouted(activity)
+      return this.dataSource.deleteLike(activity)
     default:
     }
   }
 
-  this.handleCreateActivity = (activity) => {
+  this.handleCreateActivity = async (activity) => {
     debug('inside create')
     switch (activity.object.type) {
     case 'Article':
@@ -133,7 +119,7 @@ function ActivityPub () {
     }
   }
 
-  this.handleDeleteActivity = (activity) => {
+  this.handleDeleteActivity = async (activity) => {
     debug('inside delete')
     switch (activity.object.type) {
     case 'Article':
@@ -143,7 +129,7 @@ function ActivityPub () {
     }
   }
 
-  this.handleUpdateActivity = (activity) => {
+  this.handleUpdateActivity = async (activity) => {
     debug('inside update')
     switch (activity.object.type) {
     case 'Note':
@@ -153,14 +139,14 @@ function ActivityPub () {
     }
   }
 
-  this.handleLikeActivity = (activity) => {
+  this.handleLikeActivity = async (activity) => {
     // TODO differ if activity is an Article/Note/etc.
-    return this.dataSource.createShouted(activity)
+    return this.dataSource.createLike(activity)
   }
 
-  this.handleDislikeActivity = (activity) => {
+  this.handleDislikeActivity = async (activity) => {
     // TODO differ if activity is an Article/Note/etc.
-    return this.dataSource.deleteShouted(activity)
+    return this.dataSource.deleteLike(activity)
   }
 
   this.handleAcceptActivity = async (activity) => {
@@ -173,10 +159,10 @@ function ActivityPub () {
     }
   }
 
-  this.getActorObject = (url) => {
+  this.getActorObject = (actorId) => {
     return new Promise((resolve, reject) => {
       request({
-        url: url,
+        url: actorId,
         headers: {
           'Accept': 'application/json'
         }
@@ -189,16 +175,23 @@ function ActivityPub () {
     })
   }
 
-  this.getActorId = async (name) => {
-    return await this.dataSource.getActorId(name)
+  this.getActorId = (name) => {
+    return this.dataSource.getActorId(name)
   }
 
-  this.generateStatusId = (slug) => {
-    return `${this.endpoint}/api/users/${slug}/status/${uuid()}`
+  this.generateStatusId = (name) => {
+    return `${this.endpoint}/api/users/${name}/status/${uuid()}`
+  }
+
+  this.userExists = (name) => {
+    return this.dataSource.userExists(name)
+  }
+
+  this.getPublicKey = (name) => {
+    return this.dataSource.getPublicKey(name)
   }
 
   this.sendActivity = async (activity) => {
-    delete activity.send
     const fromName = extractNameFromId(activity.actor)
 
     if (Array.isArray(activity.to) && isPublicAddressed(activity)) {
@@ -206,7 +199,7 @@ function ActivityPub () {
       const sharedInboxEndpoints = await this.dataSource.getSharedInboxEndpoints()
       // serve shared inbox endpoints
       sharedInboxEndpoints.forEach((sharedInbox) => {
-        return trySend(activity, fromName, new URL(sharedInbox).host, sharedInbox)
+        return trySend(activity, fromName, new URL(sharedInbox).hostname, sharedInbox)
       })
       activity.to = activity.to.filter((recipient) => {
         return !(isPublicAddressed({ to: recipient }))
@@ -215,33 +208,40 @@ function ActivityPub () {
       activity.to.forEach(async (recipient) => {
         debug('serve rest')
         const actorObject = await this.getActorObject(recipient)
-        return trySend(activity, fromName, new URL(recipient).host, actorObject.inbox)
+        return trySend(activity, fromName, new URL(recipient).hostname, actorObject.inbox)
       })
-
     } else if (typeof activity.to === 'string') {
       debug('is string')
       const actorObject = await this.getActorObject(activity.to)
-      return trySend(activity, fromName, new URL(activity.to).host, actorObject.inbox)
-
+      return trySend(activity, fromName, new URL(activity.to).hostname, actorObject.inbox)
     } else if (Array.isArray(activity.to)) {
       activity.to.forEach(async (recipient) => {
         const actorObject = await this.getActorObject(recipient)
-        return trySend(activity, fromName, new URL(recipient).host, actorObject.inbox)
+        return trySend(activity, fromName, new URL(recipient).hostname, actorObject.inbox)
       })
     }
   }
 
-  async function trySend (activity, fromName, toHost, url, tries = 3) {
+  async function trySend (activity, fromName, toHostname, url, tries = 3) {
     if (tries === 0) {
       return
     }
 
     try {
-      return await signAndSend(activity, fromName, toHost, url)
+      return await signAndSend(activity, fromName, toHostname, url)
     } catch (e) {
       setTimeout(function () {
-        return trySend(activity, fromName, toHost, url, --tries)
+        return trySend(activity, fromName, toHostname, url, --tries)
       }, 20000)
+    }
+  }
+
+  async function saveSharedInboxEndpoint (actorId, actorObject = null) {
+    if (!actorObject) {
+      actorObject = await this.getActorObject(actorId)
+    }
+    if (actorObject.endpoints && actorObject.endpoints.sharedInbox) {
+      await dataSource.addSharedInboxEndpoint(actorObject.endpoints.sharedInbox)
     }
   }
 

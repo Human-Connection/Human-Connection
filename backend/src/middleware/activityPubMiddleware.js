@@ -5,8 +5,8 @@ import as from 'activitystrea.ms'
 export default {
   Mutation: {
     CreatePost: async (resolve, root, args, context, info) => {
-      args.activityId = activityPub.generateStatusId(context.user.slug)
-      args.objectId = activityPub.generateStatusId(context.user.slug)
+      args.activityId = args.activityId || activityPub.generateStatusId(context.user.slug)
+      args.objectId = args.objectId || activityPub.generateStatusId(context.user.slug)
 
       const post = await resolve(root, args, context, info)
 
@@ -29,7 +29,6 @@ export default {
               reject(err)
             } else {
               const parsedDoc = JSON.parse(doc)
-              parsedDoc.send = true
               resolve(JSON.stringify(parsedDoc))
             }
           })
@@ -44,7 +43,6 @@ export default {
     CreateUser: async (resolve, root, args, context, info) => {
       const keys = generateRsaKeyPair()
       Object.assign(args, keys)
-      args.actorId = `${process.env['CLIENT_URI']}/api/users/${args.slug}`
       return resolve(root, args, context, info)
     }
   }

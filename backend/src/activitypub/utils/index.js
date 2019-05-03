@@ -8,7 +8,7 @@ export function extractNameFromId (uri) {
 }
 
 export function extractIdFromActivityId (uri) {
-  return getPathSegmentFromUriAfter(uri, 'status');
+  return getPathSegmentFromUriAfter(uri, 'status')
 }
 
 function getPathSegmentFromUriAfter (uri, pathSegment) {
@@ -35,45 +35,40 @@ export function throwErrorIfApolloErrorOccurred (result) {
 export function signAndSend (activity, fromName, toHost, url) {
   // fix for development: replace with http
   url = url.indexOf('localhost') > -1 ? url.replace('https', 'http') : url
-  debug(`passhprase = ${process.env.PRIVATE_KEY_PASSPHRASE}`)
   return new Promise(async (resolve, reject) => {
     debug('inside signAndSend')
     const privateKey = await activityPub.dataSource.getEncryptedPrivateKey(fromName)
 
-    if (result.records.length === 0) {
-      reject('No user found!')
-    } else {
-      const date = new Date().toUTCString()
-      const signature = createSignature({ privateKey,
-        keyId: `${activityPub.endpoint}/api/users/${fromName}#main-key`,
-        url,
-        headers: {
-          'Host': toHost,
-          'Date': date,
-          'Content-Type': 'application/activity+json'
-        }
-      })
+    const date = new Date().toUTCString()
+    const signature = createSignature({ privateKey,
+      keyId: `${activityPub.endpoint}/api/users/${fromName}#main-key`,
+      url,
+      headers: {
+        'Host': toHost,
+        'Date': date,
+        'Content-Type': 'application/activity+json'
+      }
+    })
 
-      request({
-        url: url,
-        headers: {
-          'Host': toHost,
-          'Date': date,
-          'Signature': signature,
-          'Content-Type': 'application/activity+json'
-        },
-        method: 'POST',
-        body: typeof activity === 'string' ? activity : JSON.stringify(activity)
-      }, (error, response) => {
-        if (error) {
-          debug(`Error = ${JSON.stringify(error, null, 2)}`)
-          reject(error)
-        } else {
-          debug('Response Headers:', JSON.stringify(response.headers, null, 2))
-          debug('Response Body:', JSON.stringify(response.body, null, 2))
-          resolve()
-        }
-      })
-    }
+    request({
+      url: url,
+      headers: {
+        'Host': toHost,
+        'Date': date,
+        'Signature': signature,
+        'Content-Type': 'application/activity+json'
+      },
+      method: 'POST',
+      body: typeof activity === 'string' ? activity : JSON.stringify(activity)
+    }, (error, response) => {
+      if (error) {
+        debug(`Error = ${JSON.stringify(error, null, 2)}`)
+        reject(error)
+      } else {
+        debug('Response Headers:', JSON.stringify(response.headers, null, 2))
+        debug('Response Body:', JSON.stringify(response.body, null, 2))
+        resolve(response)
+      }
+    })
   })
 }

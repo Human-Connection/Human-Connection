@@ -24,33 +24,33 @@ export function createOrderedCollectionPage (name, collectionName) {
     'orderedItems': []
   }
 }
-export function sendCollection (collectionName, req, res) {
+export async function sendCollection (collectionName, req, res) {
   const name = req.params.name
   const id = constructIdFromName(name)
 
   switch (collectionName) {
   case 'followers':
-    attachThenCatch(activityPub.collections.getFollowersCollection(id), res)
+    await attachThenCatch(activityPub.collections.getFollowersCollection(id), res)
     break
 
   case 'followersPage':
-    attachThenCatch(activityPub.collections.getFollowersCollectionPage(id), res)
+    await attachThenCatch(activityPub.collections.getFollowersCollectionPage(id), res)
     break
 
   case 'following':
-    attachThenCatch(activityPub.collections.getFollowingCollection(id), res)
+    await attachThenCatch(activityPub.collections.getFollowingCollection(id), res)
     break
 
   case 'followingPage':
-    attachThenCatch(activityPub.collections.getFollowingCollectionPage(id), res)
+    await attachThenCatch(activityPub.collections.getFollowingCollectionPage(id), res)
     break
 
   case 'outbox':
-    attachThenCatch(activityPub.collections.getOutboxCollection(id), res)
+    await attachThenCatch(activityPub.collections.getOutboxCollection(id), res)
     break
 
   case 'outboxPage':
-    attachThenCatch(activityPub.collections.getOutboxCollectionPage(id), res)
+    await attachThenCatch(activityPub.collections.getOutboxCollectionPage(id), res)
     break
 
   default:
