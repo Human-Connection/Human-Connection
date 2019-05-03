@@ -16,7 +16,7 @@ export default {
   computed: {
     imageSrc() {
       const src = this.imageProps.src
-      return src.startsWith('/') ? src.replace('/','/api/') : src
+      return src.startsWith('/') ? src.replace('/', '/api/') : src
     }
   }
 }
