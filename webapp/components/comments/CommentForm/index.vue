@@ -21,6 +21,7 @@
               :disabled="disabled"
               ghost
               @click.prevent="clear"
+              class="cancelBtn"
             >
               {{ $t('actions.cancel') }}
             </ds-button>
@@ -91,6 +92,7 @@ export default {
           }
         })
         .then(res => {
+          // console.log(this.$toast.success.mockResolvedValue())
           this.$root.$emit('addComment', res.data.CreateComment)
           this.$refs.editor.clear()
           this.$toast.success(this.$t('post.comment.submitted'))

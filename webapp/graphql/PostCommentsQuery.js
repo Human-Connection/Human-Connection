@@ -5,7 +5,6 @@ export default app => {
   return gql(`
     query Post($slug: String!) {
       Post(slug: $slug) {
-        commentsCount
         comments(orderBy: createdAt_asc) {
           id
           contentExcerpt
