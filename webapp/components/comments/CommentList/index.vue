@@ -26,6 +26,7 @@
     </div>
     <hc-empty
       v-else
+      name="empty"
       icon="messages"
     />
   </div>
@@ -44,21 +45,21 @@ export default {
   },
   data() {
     return {
-      comments: null
+      comments: []
     }
   },
   watch: {
     Post(post) {
-      this.comments = post[0].comments || {}
+      this.comments = post[0].comments || []
     }
   },
   mounted() {
-    this.$root.$on('addComment', comment => {
-      this.addComment(comment)
+    this.$root.$on('refetchPostComments', comment => {
+      this.refetchPostComments(comment)
     })
   },
   methods: {
-    addComment(comment) {
+    refetchPostComments(comment) {
       this.$apollo.queries.Post.refetch()
     }
   },

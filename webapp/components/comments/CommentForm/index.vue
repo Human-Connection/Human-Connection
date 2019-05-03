@@ -92,7 +92,7 @@ export default {
           }
         })
         .then(res => {
-          this.$root.$emit('addComment', res.data.CreateComment)
+          this.$root.$emit('refetchPostComments', res.data.CreateComment)
           this.$refs.editor.clear()
           this.$toast.success(this.$t('post.comment.submitted'))
         })
