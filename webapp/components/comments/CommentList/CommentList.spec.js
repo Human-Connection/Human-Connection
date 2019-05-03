@@ -21,6 +21,7 @@ describe('CommentList.vue', () => {
   let store
   let wrapper
   let propsData
+  let data
 
   propsData = {
     post: { id: 1 }
@@ -35,10 +36,15 @@ describe('CommentList.vue', () => {
   mocks = {
     $t: jest.fn()
   }
+  data = () => {
+    return {
+      comments: []
+    }
+  }
 
   describe('shallowMount', () => {
     const Wrapper = () => {
-      return mount(CommentList, { store, mocks, localVue, propsData })
+      return mount(CommentList, { store, mocks, localVue, propsData, data })
     }
 
     beforeEach(() => {
@@ -48,17 +54,16 @@ describe('CommentList.vue', () => {
       })
     })
 
+    it('displays a message icon when there are no comments to display', () => {
+      expect(Wrapper().findAll(Empty)).toHaveLength(1)
+    })
+
     it('displays a comments counter', () => {
       expect(wrapper.find('span.ds-tag').text()).toEqual('1')
     })
 
     it('displays comments when there are comments to display', () => {
       expect(wrapper.find('div#comments').text()).toEqual('this is a comment')
-    })
-
-    it('displays a message icon when there are no comments to display', () => {
-      wrapper.setData({ comments: [] })
-      expect(wrapper.findAll(Empty)).toHaveLength(1)
     })
   })
 })
