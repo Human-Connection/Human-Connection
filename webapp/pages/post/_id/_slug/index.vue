@@ -96,39 +96,9 @@
       <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
-        <h3 style="margin-top: -10px;">
-          <span>
-            <ds-icon name="comments" />
-            <ds-tag
-              v-if="comments"
-              style="margin-top: -4px; margin-left: -12px; position: absolute;"
-              color="primary"
-              size="small"
-              round
-            >{{ comments.length }}</ds-tag>&nbsp; Comments
-          </span>
-        </h3>
+        <hc-comment-list :post="post" />
         <ds-space margin-bottom="large" />
-        <div
-          v-if="comments && comments.length"
-          id="comments"
-          class="comments"
-        >
-          <comment
-            v-for="comment in comments"
-            :key="comment.id"
-            :comment="comment"
-          />
-        </div>
-        <hc-empty
-          v-else
-          icon="messages"
-        />
-        <ds-space margin-bottom="large" />
-        <hc-comment-form
-          :post="post"
-          @addComment="addComment"
-        />
+        <hc-comment-form :post="post" />
       </ds-section>
     </ds-card>
   </transition>
@@ -142,9 +112,8 @@ import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
 import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcEmpty from '~/components/Empty.vue'
 import HcCommentForm from '~/components/CommentForm'
-import Comment from '~/components/Comment.vue'
+import HcCommentList from '~/components/CommentList'
 
 export default {
   transition: {
@@ -156,10 +125,9 @@ export default {
     HcCategory,
     HcUser,
     HcShoutButton,
-    HcEmpty,
-    Comment,
     ContentMenu,
-    HcCommentForm
+    HcCommentForm,
+    HcCommentList
   },
   head() {
     return {
@@ -169,7 +137,6 @@ export default {
   data() {
     return {
       post: null,
-      comments: null,
       ready: false,
       title: 'loading'
     }
@@ -178,9 +145,6 @@ export default {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
-    },
-    Comment(comments) {
-      this.comments = comments || []
     }
   },
   async asyncData(context) {
@@ -289,22 +253,6 @@ export default {
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
-    },
-    addComment(comment) {
-      this.$apollo.queries.Comment.refetch()
-    }
-  },
-  apollo: {
-    Comment: {
-      query() {
-        return require('~/graphql/CommentQuery.js').default(this)
-      },
-      variables() {
-        return {
-          postId: this.post.id
-        }
-      },
-      fetchPolicy: 'cache-and-network'
     }
   }
 }

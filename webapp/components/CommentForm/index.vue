@@ -91,7 +91,7 @@ export default {
           }
         })
         .then(res => {
-          this.$emit('addComment', res.data.CreateComment)
+          this.$root.$emit('addComment', res.data.CreateComment)
           this.$refs.editor.clear()
           this.$toast.success(this.$t('post.comment.submitted'))
         })
