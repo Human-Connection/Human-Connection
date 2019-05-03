@@ -7,19 +7,19 @@ Feature: Webfinger discovery
     Given our own server runs at "http://localhost:4123"
     And we have the following users in our database:
       | Slug           |
-      | peter-lustiger |
+      | hans           |
 
   Scenario: Search
-    When I send a GET request to "/.well-known/webfinger?resource=acct:peter-lustiger@localhost"
+    When I send a GET request to "/.well-known/webfinger?resource=acct:hans@localhost"
     Then I receive the following json:
     """
     {
-      "subject": "acct:peter-lustiger@localhost:4123",
+      "subject": "acct:hans@localhost:4123",
       "links": [
         {
           "rel": "self",
           "type": "application/activity+json",
-          "href": "http://localhost:4123/api/users/peter-lustiger"
+          "href": "http://localhost:4123/api/users/hans"
         }
       ]
     }
@@ -36,30 +36,35 @@ Feature: Webfinger discovery
     """
 
   Scenario: Receiving an actor object
-    When I send a GET request to "/users/peter-lustiger"
+    When I send a GET request to "/users/hans"
+    Then I expect the status code to be 200
     Then I receive the following json:
     """
     {
-        "@context": [
-            "https://www.w3.org/ns/activitystreams",
-            "https://w3id.org/security/v1"
-        ],
-        "id": "http://localhost:4123/api/users/peter-lustiger",
-        "type": "Person",
-        "preferredUsername": "peter-lustiger",
-        "name": "peter-lustiger",
-        "following": "http://localhost:4123/api/users/peter-lustiger/following",
-        "followers": "http://localhost:4123/api/users/peter-lustiger/followers",
-        "inbox": "http://localhost:4123/api/users/peter-lustiger/inbox",
-        "outbox": "http://localhost:4123/api/users/peter-lustiger/outbox",
-        "url": "http://localhost:4123/api/@peter-lustiger",
-        "endpoints": {
-            "sharedInbox": "http://localhost:4123/api/inbox"
-        },
-        "publicKey": {
-            "id": "http://localhost:4123/api/users/peter-lustiger#main-key",
-            "owner": "http://localhost:4123/api/users/peter-lustiger",
-            "publicKeyPem": "adglkjlk89235kjn8obn2384f89z5bv9..."
-        }
+      "@context": [
+        "https://www.w3.org/ns/activitystreams",
+        "https://w3id.org/security/v1"
+      ],
+      "id": "http://localhost:4123/api/users/hans",
+      "type": "Person",
+      "preferredUsername": "hans",
+      "name": "hans",
+      "following": "http://localhost:4123/api/users/hans/following",
+      "followers": "http://localhost:4123/api/users/hans/followers",
+      "inbox": "http://localhost:4123/api/users/hans/inbox",
+      "outbox": "http://localhost:4123/api/users/hans/outbox",
+      "url": "http://localhost:4123/api/@hans",
+      "endpoints": {
+        "sharedInbox": "http://localhost:4123/api/inbox"
+      },
+      "publicKey": {
+        "id": "http://localhost:4123/api/users/hans#main-key",
+        "owner": "http://localhost:4123/api/users/hans",
+        "publicKeyPem": "adglkjlk89235kjn8obn2384f89z5bv9..."
+      }
     }
     """
+
+  Scenario: Try receiving a non existing actor object
+    When I send a GET request to "/users/no-one"
+    Then I expect the status code to be 404
