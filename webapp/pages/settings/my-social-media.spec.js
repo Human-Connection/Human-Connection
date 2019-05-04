@@ -71,6 +71,12 @@ describe('my-social-media.vue', () => {
         const socialMediaLink = wrapper.find('a').attributes().href
         expect(socialMediaLink).toBe(socialMediaUrl)
       })
+
+      it('displays a trash sympol after a social media', () => {
+        wrapper = Wrapper()
+        iconName = wrapper.find('.ds-icon').attributes().name
+        expect(iconName).toBe('trash')
+      })
     })
 
     describe('currentUser does not have a social media account linked', () => {

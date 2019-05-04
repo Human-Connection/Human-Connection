@@ -28,6 +28,7 @@
             class="layout-leave-active"
           />
           <a
+            name="delete"
             @click="handleDeleteSocialMedia(link)"
           >
             <ds-icon name="trash"/>
@@ -74,13 +75,13 @@ export default {
     socialMediaLinks() {
       const { socialMedia = [] } = this.currentUser
       return socialMedia.map(socialMedia => {
-        const { url } = socialMedia
+        const { id, url } = socialMedia
         const matches = url.match(
           /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
         )
         const [domain] = matches || []
         const favicon = domain ? `${domain}/favicon.ico` : null
-        return { url, favicon }
+        return { id, url, favicon }
       })
     }
   },
