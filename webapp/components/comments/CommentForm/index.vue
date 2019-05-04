@@ -29,6 +29,7 @@
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '40%', xs: '40%' }">
             <ds-button
               type="submit"
+              :loading="loading"
               :disabled="disabled || errors"
               primary
             >
@@ -56,6 +57,7 @@ export default {
   data() {
     return {
       disabled: true,
+      loading: false,
       form: {
         content: ''
       },
@@ -76,6 +78,8 @@ export default {
       this.$refs.editor.clear()
     },
     handleSubmit() {
+      this.loading = true
+      this.loading = false
       this.$apollo
         .mutate({
           mutation: gql`
@@ -92,9 +96,11 @@ export default {
           }
         })
         .then(res => {
+          this.loading = false
           this.$root.$emit('refetchPostComments', res.data.CreateComment)
           this.$refs.editor.clear()
           this.$toast.success(this.$t('post.comment.submitted'))
+          this.disabled = false
         })
         .catch(err => {
           this.$toast.error(err.message)
