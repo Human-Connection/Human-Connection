@@ -79,7 +79,7 @@ export default {
     },
     handleSubmit() {
       this.loading = true
-      this.loading = false
+      this.disabled = true
       this.$apollo
         .mutate({
           mutation: gql`
