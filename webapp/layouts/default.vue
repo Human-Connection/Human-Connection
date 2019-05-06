@@ -62,7 +62,7 @@
                 >
                   <div class="avatar-menu-popover">
                     {{ $t('login.hello') }}
-                    <b>{{ userName(user.name) }}</b>
+                    <b>{{ userName }}</b>
                     <template v-if="user.role !== 'user'">
                       <ds-text
                         color="softer"
@@ -124,7 +124,6 @@ import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
 import seo from '~/mixins/seo'
-import userName from '~/mixins/userName'
 
 export default {
   components: {
@@ -135,7 +134,7 @@ export default {
     LocaleSwitch,
     NotificationMenu
   },
-  mixins: [seo, userName],
+  mixins: [seo],
   data() {
     return {
       mobileSearchVisible: false
@@ -150,6 +149,10 @@ export default {
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending'
     }),
+    userName() {
+      const { name } = this.user || {}
+      return name || this.$t('profile.userAnonym')
+    },
     routes() {
       if (!this.user.slug) {
         return []

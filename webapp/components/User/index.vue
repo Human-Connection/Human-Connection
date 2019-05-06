@@ -38,7 +38,7 @@
           >
             <ds-avatar
               :image="user.avatar"
-              :name="userName(user.name)"
+              :name="userName"
               style="display: inline-block; vertical-align: middle;"
               size="32px"
             />
@@ -47,7 +47,7 @@
             <b
               class="username"
               style="vertical-align: middle;"
-            >{{ userName(user.name) | truncate(18) }}</b>
+            >{{ userName | truncate(18) }}</b>
           </div>
           <!-- Time -->
           <div
@@ -144,7 +144,6 @@ import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcFollowButton from '~/components/FollowButton'
 import HcBadges from '~/components/Badges'
 import Dropdown from '~/components/Dropdown'
-import userName from '~/mixins/userName'
 
 export default {
   name: 'HcUser',
@@ -154,7 +153,6 @@ export default {
     HcBadges,
     Dropdown
   },
-  mixins: [userName],
   props: {
     user: { type: Object, default: null },
     trunc: { type: Number, default: null },
@@ -175,6 +173,10 @@ export default {
       const { id, slug } = this.user
       if (!(id && slug)) return ''
       return { name: 'profile-id-slug', params: { slug, id } }
+    },
+    userName() {
+      const { name } = this.user || {}
+      return name || this.$t('profile.userAnonym')
     }
   }
 }

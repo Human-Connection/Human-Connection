@@ -16,7 +16,7 @@
         >
           <ds-avatar
             :image="user.avatar"
-            :name="userName(user.name)"
+            :name="userName"
             class="profile-avatar"
             size="120px"
           />
@@ -34,7 +34,7 @@
               align="center"
               no-margin
             >
-              {{ userName(user.name) }}
+              {{ userName }}
             </ds-heading>
             <ds-text
               v-if="user.location"
@@ -122,7 +122,7 @@
               tag="h5"
               color="soft"
             >
-              Wem folgt {{ userName(user.name) | truncate(15) }}?
+              Wem folgt {{ userName | truncate(15) }}?
             </ds-text>
           </ds-space>
           <template v-if="user.following && user.following.length">
@@ -153,7 +153,7 @@
           </template>
           <template v-else>
             <p style="text-align: center; opacity: .5;">
-              {{ userName(user.name) }} folgt niemandem
+              {{ userName }} folgt niemandem
             </p>
           </template>
         </ds-card>
@@ -167,7 +167,7 @@
               tag="h5"
               color="soft"
             >
-              Wer folgt {{ userName(user.name) | truncate(15) }}?
+              Wer folgt {{ userName | truncate(15) }}?
             </ds-text>
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
@@ -198,7 +198,7 @@
           </template>
           <template v-else>
             <p style="text-align: center; opacity: .5;">
-              niemand folgt {{ userName(user.name) }}
+              niemand folgt {{ userName }}
             </p>
           </template>
         </ds-card>
@@ -326,7 +326,6 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
-import userName from '~/mixins/userName'
 
 export default {
   components: {
@@ -339,7 +338,6 @@ export default {
     HcEmpty,
     ContentMenu
   },
-  mixins: [userName],
   transition: {
     name: 'slide-up',
     mode: 'out-in'
@@ -390,6 +388,10 @@ export default {
         const username = url.split('/').pop()
         return { url, username, favicon }
       })
+    },
+    userName() {
+      const { name } = this.user || {}
+      return name || this.$t('profile.userAnonym')
     }
   },
   watch: {
