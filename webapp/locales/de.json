@@ -46,7 +46,10 @@
         "success": "Passwort erfolgreich geändert!",
         "label-old-password": "Dein altes Passwort",
         "label-new-password": "Dein neues Passwort",
-        "label-new-password-confirm": "Bestätige Dein neues Passwort"
+        "label-new-password-confirm": "Bestätige Dein neues Passwort",
+        "message-old-password-required": "Gebe dein altes Passwort ein",
+        "message-new-password-required": "Gebe ein neues Passwort ein",
+        "message-new-password-confirm-required": "Bestätige dein neues Passwort"
       }
     },
     "invites": {

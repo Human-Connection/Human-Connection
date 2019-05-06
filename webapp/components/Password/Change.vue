@@ -48,9 +48,24 @@ export default {
         confirmPassword: ''
       },
       formSchema: {
-        oldPassword: { required: true },
-        newPassword: { required: true },
-        confirmPassword: { required: true }
+        oldPassword: {
+          required: true,
+          message: this.$t(
+            'settings.security.change-password.message-old-password-required'
+          )
+        },
+        newPassword: {
+          required: true,
+          message: this.$t(
+            'settings.security.change-password.message-new-password-required'
+          )
+        },
+        confirmPassword: {
+          required: true,
+          message: this.$t(
+            'settings.security.change-password.message-new-password-confirm-required'
+          )
+        }
       },
       loading: false,
       disabled: true
