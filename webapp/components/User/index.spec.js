@@ -49,12 +49,11 @@ describe('User', () => {
       return mount(User, { store, propsData, mocks, stubs, localVue })
     }
 
-    // TODO this is not working - mixin missing?
-    /*it('renders anonymous user', () => {
+    it('renders anonymous user', () => {
       const wrapper = Wrapper()
-      expect(wrapper.text()).not.toMatch('Tilda Swinton')
-      expect(wrapper.text()).toMatch('Anonymus')
-    })*/
+      expect(wrapper.text()).toBe('')
+      expect(mocks.$t).toHaveBeenCalledWith('profile.userAnonym')
+    })
 
     describe('given an user', () => {
       beforeEach(() => {
@@ -66,7 +65,7 @@ describe('User', () => {
 
       it('renders user name', () => {
         const wrapper = Wrapper()
-        expect(wrapper.text()).not.toMatch('Anonymous')
+        expect(mocks.$t).not.toHaveBeenCalledWith('profile.userAnonym')
         expect(wrapper.text()).toMatch('Tilda Swinton')
       })
 
@@ -75,13 +74,11 @@ describe('User', () => {
           propsData.user.disabled = true
         })
 
-        // TODO recheck what we want to display if a user is disabled
-        // it seems not reasonable to diplay Anonymous
-        /*it('renders anonymous user', () => {
+        it('renders anonymous user', () => {
           const wrapper = Wrapper()
           expect(wrapper.text()).not.toMatch('Tilda Swinton')
-          expect(wrapper.text()).toMatch('Anonymus')
-        })*/
+          expect(mocks.$t).toHaveBeenCalledWith('profile.userAnonym')
+        })
 
         describe('current user is a moderator', () => {
           beforeEach(() => {
