@@ -1,6 +1,4 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
-// intermittent failing tests
-Cypress.env('RETRIES', 2)
 
 /* global cy  */
 
