@@ -23,7 +23,7 @@
   },
   "notifications": {
     "menu": {
-       "mentioned": "hat dich in einem Beitrag erwähnt"
+      "mentioned": "hat dich in einem Beitrag erwähnt"
     }
   },
   "search": {
@@ -43,7 +43,10 @@
       "name": "Sicherheit",
       "change-password": {
         "button": "Passwort ändern",
-        "success": "Passwort erfolgreich geändert!"
+        "success": "Passwort erfolgreich geändert!",
+        "label-old-password": "Dein altes Passwort",
+        "label-new-password": "Dein neues Passwort",
+        "label-new-password-confirm": "Bestätige Dein neues Passwort"
       }
     },
     "invites": {

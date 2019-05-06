@@ -64,19 +64,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// TODO export those definitions for reuse?
-// @import 'assets/styles/_variables';
-$grey-lighter: hsl(0, 0%, 86%);
-$red: hsl(12, 51%, 55%);
-$orange: hsl(14, 100%, 53%);
-$yellow: hsl(48, 100%, 67%);
-$green: #4aa41e;
-// @import 'assets/styles/_variables';
-
 .password-strength-meter {
   position: relative;
   height: 3px;
-  background: $grey-lighter;
+  background: $color-neutral-85;
   margin: 10px auto 6px;
   border-radius: 3px;
 
@@ -106,7 +97,7 @@ $green: #4aa41e;
 .help {
   .insecure {
     strong {
-      color: $red;
+      color: $color-danger;
     }
   }
 }
@@ -122,23 +113,23 @@ $green: #4aa41e;
 
 .password-strength-meter-inner {
   &.strength-0 {
-    background: darken($orange, 40%);
+    background: darken($color-warning, 40%);
     width: 20%;
   }
   &.strength-1 {
-    background: darken(mix($orange, $yellow, 50%), 30%);
+    background: darken(mix($color-warning, $color-yellow, 50%), 30%);
     width: 40%;
   }
   &.strength-2 {
-    background: darken($yellow, 20%);
+    background: darken($color-yellow, 20%);
     width: 60%;
   }
   &.strength-3 {
-    background: darken($green, 10%);
+    background: darken($color-success, 10%);
     width: 80%;
   }
   &.strength-4 {
-    background: $green;
+    background: $color-success;
     width: 100%;
   }
 }

@@ -43,7 +43,10 @@
       "name": "Security",
       "change-password": {
         "button": "Change password",
-        "success": "Password successfully changed!"
+        "success": "Password successfully changed!",
+        "label-old-password": "Your old password",
+        "label-new-password": "Your new password",
+        "label-new-password-confirm": "Confirm new password"
       }
     },
     "invites": {
