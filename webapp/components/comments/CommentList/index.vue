@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     refetchPostComments(comment) {
-      this.$apollo.queries.Post.refetch()
+      this.comments.push(comment)
     }
   },
   apollo: {

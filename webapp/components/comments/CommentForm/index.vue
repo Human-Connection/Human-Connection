@@ -80,13 +80,38 @@ export default {
     handleSubmit() {
       this.loading = true
       this.disabled = true
+      const lang = this.$i18n.locale().toUpperCase()
       this.$apollo
         .mutate({
           mutation: gql`
             mutation($postId: ID, $content: String!) {
               CreateComment(postId: $postId, content: $content) {
                 id
-                content
+                contentExcerpt
+                createdAt
+                disabled
+                deleted
+                author {
+                  id
+                  slug
+                  name
+                  avatar
+                  disabled
+                  deleted
+                  shoutedCount
+                  contributionsCount
+                  commentsCount
+                  followedByCount
+                  followedByCurrentUser
+                  location {
+                    name: name${lang}
+                  }
+                  badges {
+                    id
+                    key
+                    icon
+                  }
+                }
               }
             }
           `,
