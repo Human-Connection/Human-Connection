@@ -68,11 +68,11 @@ describe('CreateSocialMedia', () => {
     })
 
     it('deletes social media', async () => {
-      const variablesC = { url: 'http://nsosp.org' }
-      const { CreateSocialMedia } = await client.request(mutationC, variablesC)
+      const creationVariables = { url: 'http://nsosp.org' }
+      const { CreateSocialMedia } = await client.request(mutationC, creationVariables)
       const { id } = CreateSocialMedia
 
-      const variablesD = { id }
+      const deletionVariables = { id }
       const expected = {
         DeleteSocialMedia: {
           id: id,
@@ -80,7 +80,7 @@ describe('CreateSocialMedia', () => {
         }
       }
       await expect(
-        client.request(mutationD, variablesD)
+        client.request(mutationD, deletionVariables)
       ).resolves.toEqual(expected)
     })
 

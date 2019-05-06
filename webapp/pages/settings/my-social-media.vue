@@ -8,7 +8,7 @@
       <ds-list>
         <ds-list-item
           v-for="link in socialMediaLinks"
-          :key="link.url"
+          :key="link.id"
         >
           <a
             :href="link.url"
@@ -22,7 +22,7 @@
             >
             {{ link.url }}
           </a>
-          &nbsp;&nbsp; | &nbsp;&nbsp;
+          &nbsp;&nbsp; <span class="layout-leave-active">|</span> &nbsp;&nbsp;
           <ds-icon
             name="edit"
             class="layout-leave-active"
@@ -40,7 +40,7 @@
       <div>
         <ds-input
           v-model="value"
-          placeholder="Add social media url"
+          :placeholder="$t('settings.social-media.placeholder')"
           name="social-media"
           :schema="{type: 'url'}"
         />
@@ -95,6 +95,7 @@ export default {
           mutation: gql`
             mutation($url: String!) {
               CreateSocialMedia(url: $url) {
+                id
                 url
               }
             }
@@ -113,13 +114,42 @@ export default {
             })
           }
         })
-        .then(
-          this.$toast.success(this.$t('settings.social-media.success')),
+        .then(() => {
+          this.$toast.success(this.$t('settings.social-media.successAdd')),
           (this.value = '')
-        )
+        })
+        .catch(error => {
+          this.$toast.error(error.message)
+        })
     },
     handleDeleteSocialMedia(link) {
-      console.log(link)
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($id: ID!) {
+              DeleteSocialMedia(id: $id) {
+                id
+                url
+              }
+            }
+          `,
+          variables: {
+            id: link.id
+          },
+          update: (store, { data }) => {
+            const socialMedia = this.currentUser.socialMedia.filter(element => element.id !== link.id )
+            this.setCurrentUser({
+              ...this.currentUser,
+              socialMedia
+            })
+          }
+        })
+        .then(() => {
+          this.$toast.success(this.$t('settings.social-media.successDelete'))
+        })
+        .catch(error => {
+          this.$toast.error(error.message)
+        })
     }
   }
 }

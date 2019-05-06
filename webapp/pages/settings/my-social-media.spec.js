@@ -74,8 +74,8 @@ describe('my-social-media.vue', () => {
 
       it('displays a trash sympol after a social media', () => {
         wrapper = Wrapper()
-        iconName = wrapper.find('.ds-icon').attributes().name
-        expect(iconName).toBe('trash')
+        const deleteSelector = wrapper.find({ name: 'delete' })
+        expect(deleteSelector).toEqual({ selector: 'Component' })
       })
     })
 

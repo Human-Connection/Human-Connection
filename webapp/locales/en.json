@@ -63,8 +63,10 @@
     },
     "social-media": {
       "name": "Social media",
+      "placeholder": "Add social media url",
       "submit": "Add link",
-      "success": "Updated user profile"
+      "successAdd": "Added social media. Updated user profile!",
+      "successDelete": "Deleted social media. Updated user profile!"
     }
   },
   "admin": {

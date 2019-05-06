@@ -77,7 +77,7 @@ Then('I should be on the {string} page', page => {
     .should('contain', 'Social media')
 })
 
-Then('I add a social media link', () => {
+When('I add a social media link', () => {
   cy.get("input[name='social-media']")
     .type('https://freeradical.zone/peter-pan')
     .get('button')
@@ -87,7 +87,7 @@ Then('I add a social media link', () => {
 
 Then('it gets saved successfully', () => {
   cy.get('.iziToast-message')
-    .should('contain', 'Updated user')
+    .should('contain', 'Added social media')
 })
 
 Then('the new social media link shows up on the page', () => {
@@ -109,4 +109,19 @@ Then('they should be able to see my social media links', () => {
     .contains('Where else can I find Peter Pan?')
     .get('a[href="https://freeradical.zone/peter-pan"]')
     .should('have.length', 1)
+})
+
+When('I delete a social media link', () => {
+  cy.get("a[name='delete']")
+    .click()
+})
+
+// Then('Shows delete modal', () => {
+//   cy.get("a[name='delete']")
+//     .click()
+// })
+
+Then('it gets deleted successfully', () => {
+  cy.get('.iziToast-message')
+    .should('contain', 'Deleted social media')
 })
