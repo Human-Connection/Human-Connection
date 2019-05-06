@@ -18,6 +18,7 @@
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }">
             <ds-button
+              class="cancelBtn"
               :disabled="disabled"
               ghost
               @click.prevent="clear"
@@ -92,7 +93,7 @@ export default {
         })
         .then(res => {
           this.$emit('addComment', res.data.CreateComment)
-          this.$refs.editor.clear()
+          this.clear()
           this.$toast.success(this.$t('post.comment.submitted'))
         })
         .catch(err => {
