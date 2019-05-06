@@ -43,7 +43,6 @@ describe('authorization', () => {
           try {
             await action()
           } catch (error) {
-            console.log(error.response.data)
             expect(error.response.data).toEqual({ User: [ null ] })
           }
         })
