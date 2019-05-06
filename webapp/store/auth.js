@@ -74,17 +74,38 @@ export const actions = {
       data: { currentUser }
     } = await client.query({
       query: gql(`{
-          currentUser {
+        currentUser {
+          id
+          name
+          slug
+          email
+          avatar
+          role
+          about
+          locationName
+          socialMedia {
             id
-            name
-            slug
-            email
-            avatar
-            role
-            about
-            locationName
+            url
           }
-        }`)
+          notifications(read: false, orderBy: createdAt_desc) {
+            id
+            read
+            createdAt
+            post {
+              author {
+                id
+                slug
+                name
+                disabled
+                deleted
+              }
+              title
+              contentExcerpt
+              slug
+            }
+          }
+        }
+      }`)
     })
     if (!currentUser) return dispatch('logout')
     commit('SET_USER', currentUser)

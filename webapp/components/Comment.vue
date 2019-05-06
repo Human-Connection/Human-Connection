@@ -4,16 +4,15 @@
       style="padding-left: 40px; font-weight: bold;"
       color="soft"
     >
-      <ds-icon name="ban" /> {{ this.$t('comment.content.unavailable-placeholder') }}
+      <ds-icon name="ban" />
+      {{ this.$t('comment.content.unavailable-placeholder') }}
     </ds-text>
   </div>
   <div
     v-else
     :class="{'comment': true, 'disabled-content': (comment.deleted || comment.disabled)}"
   >
-    <ds-space
-      margin-bottom="x-small"
-    >
+    <ds-space margin-bottom="x-small">
       <hc-user :user="author" />
     </ds-space>
     <no-ssr>
@@ -32,13 +31,13 @@
       style="padding-left: 40px;"
       v-html="comment.contentExcerpt"
     />
-  <!-- eslint-enable vue/no-v-html -->
+    <!-- eslint-enable vue/no-v-html -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import HcUser from '~/components/User.vue'
+import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 
 export default {

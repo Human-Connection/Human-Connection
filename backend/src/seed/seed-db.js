@@ -1,3 +1,4 @@
+import faker from 'faker'
 import Factory from './factories'
 
 /* eslint-disable no-multi-spaces */
@@ -88,20 +89,23 @@ import Factory from './factories'
       f.create('Tag', { id: 't4', name: 'Freiheit' })
     ])
 
+    const mention1 = 'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
+    const mention2 = 'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
+
     await Promise.all([
       asAdmin.create('Post',     { id: 'p0' }),
       asModerator.create('Post', { id: 'p1' }),
-      asUser.create('Post',      { id: 'p2', deleted: true }),
+      asUser.create('Post',      { id: 'p2' }),
       asTick.create('Post',      { id: 'p3' }),
       asTrick.create('Post',     { id: 'p4' }),
       asTrack.create('Post',     { id: 'p5' }),
       asAdmin.create('Post',     { id: 'p6' }),
-      asModerator.create('Post', { id: 'p7' }),
+      asModerator.create('Post', { id: 'p7', content: `${mention1} ${faker.lorem.paragraph()}` }),
       asUser.create('Post',      { id: 'p8' }),
       asTick.create('Post',      { id: 'p9' }),
       asTrick.create('Post',     { id: 'p10' }),
       asTrack.create('Post',     { id: 'p11' }),
-      asAdmin.create('Post',     { id: 'p12' }),
+      asAdmin.create('Post',     { id: 'p12', content: `${mention2} ${faker.lorem.paragraph()}` }),
       asModerator.create('Post', { id: 'p13' }),
       asUser.create('Post',      { id: 'p14' }),
       asTick.create('Post',      { id: 'p15' })
@@ -185,45 +189,33 @@ import Factory from './factories'
     ])
 
     await Promise.all([
-      f.create('Comment', { id: 'c1' }),
-      f.create('Comment', { id: 'c2' }),
-      f.create('Comment', { id: 'c3' }),
-      f.create('Comment', { id: 'c4' }),
-      f.create('Comment', { id: 'c5' }),
-      f.create('Comment', { id: 'c6' }),
-      f.create('Comment', { id: 'c7' }),
-      f.create('Comment', { id: 'c8' }),
-      f.create('Comment', { id: 'c9' }),
-      f.create('Comment', { id: 'c10' }),
-      f.create('Comment', { id: 'c11' }),
-      f.create('Comment', { id: 'c12' })
+      f.create('Comment', { id: 'c1', postId: 'p1' }),
+      f.create('Comment', { id: 'c2', postId: 'p1' }),
+      f.create('Comment', { id: 'c3', postId: 'p3' }),
+      f.create('Comment', { id: 'c4', postId: 'p2' }),
+      f.create('Comment', { id: 'c5', postId: 'p3' }),
+      f.create('Comment', { id: 'c6', postId: 'p4' }),
+      f.create('Comment', { id: 'c7', postId: 'p2' }),
+      f.create('Comment', { id: 'c8', postId: 'p15' }),
+      f.create('Comment', { id: 'c9', postId: 'p15' }),
+      f.create('Comment', { id: 'c10', postId: 'p15' }),
+      f.create('Comment', { id: 'c11', postId: 'p15' }),
+      f.create('Comment', { id: 'c12', postId: 'p15' })
     ])
 
     await Promise.all([
       f.relate('Comment', 'Author', { from: 'u3', to: 'c1' }),
-      f.relate('Comment', 'Post',   { from: 'c1', to: 'p1' }),
       f.relate('Comment', 'Author', { from: 'u1', to: 'c2' }),
-      f.relate('Comment', 'Post',   { from: 'c2', to: 'p1' }),
       f.relate('Comment', 'Author', { from: 'u1', to: 'c3' }),
-      f.relate('Comment', 'Post',   { from: 'c3', to: 'p3' }),
       f.relate('Comment', 'Author', { from: 'u4', to: 'c4' }),
-      f.relate('Comment', 'Post',   { from: 'c4', to: 'p2' }),
       f.relate('Comment', 'Author', { from: 'u4', to: 'c5' }),
-      f.relate('Comment', 'Post',   { from: 'c5', to: 'p3' }),
       f.relate('Comment', 'Author', { from: 'u3', to: 'c6' }),
-      f.relate('Comment', 'Post',   { from: 'c6', to: 'p4' }),
       f.relate('Comment', 'Author', { from: 'u2', to: 'c7' }),
-      f.relate('Comment', 'Post',   { from: 'c7', to: 'p2' }),
       f.relate('Comment', 'Author', { from: 'u5', to: 'c8' }),
-      f.relate('Comment', 'Post',   { from: 'c8', to: 'p15' }),
       f.relate('Comment', 'Author', { from: 'u6', to: 'c9' }),
-      f.relate('Comment', 'Post',   { from: 'c9', to: 'p15' }),
       f.relate('Comment', 'Author', { from: 'u7', to: 'c10' }),
-      f.relate('Comment', 'Post',   { from: 'c10', to: 'p15' }),
       f.relate('Comment', 'Author', { from: 'u5', to: 'c11' }),
-      f.relate('Comment', 'Post',   { from: 'c11', to: 'p15' }),
-      f.relate('Comment', 'Author', { from: 'u6', to: 'c12' }),
-      f.relate('Comment', 'Post',   { from: 'c12', to: 'p15' })
+      f.relate('Comment', 'Author', { from: 'u6', to: 'c12' })
     ])
 
     const disableMutation = 'mutation($id: ID!) { disable(id: $id) }'

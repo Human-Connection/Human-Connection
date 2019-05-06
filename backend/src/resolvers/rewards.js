@@ -4,7 +4,7 @@ export default {
       const { fromBadgeId, toUserId } = params
       const session = context.driver.session()
 
-      let sessionRes = await session.run(
+      let transactionRes = await session.run(
         `MATCH (badge:Badge {id: $badgeId}), (rewardedUser:User {id: $rewardedUserId})
           MERGE (badge)-[:REWARDED]->(rewardedUser)
           RETURN rewardedUser {.id}`,
@@ -14,7 +14,7 @@ export default {
         }
       )
 
-      const [rewardedUser] = sessionRes.records.map(record => {
+      const [rewardedUser] = transactionRes.records.map(record => {
         return record.get('rewardedUser')
       })
 
@@ -27,7 +27,7 @@ export default {
       const { fromBadgeId, toUserId } = params
       const session = context.driver.session()
 
-      let sessionRes = await session.run(
+      let transactionRes = await session.run(
         `MATCH (badge:Badge {id: $badgeId})-[reward:REWARDED]->(rewardedUser:User {id: $rewardedUserId})
         DELETE reward
         RETURN rewardedUser {.id}`,
@@ -36,7 +36,7 @@ export default {
           rewardedUserId: toUserId
         }
       )
-      const [rewardedUser] = sessionRes.records.map(record => {
+      const [rewardedUser] = transactionRes.records.map(record => {
         return record.get('rewardedUser')
       })
       session.close()

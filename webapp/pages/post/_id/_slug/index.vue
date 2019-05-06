@@ -6,10 +6,13 @@
     <ds-card
       v-if="post && ready"
       :image="post.image"
-      :header="post.title"
       :class="{'post-card': true, 'disabled-content': post.disabled}"
     >
-      <hc-user :user="post.author" />
+      <ds-space margin-bottom="small" />
+      <hc-user
+        :user="post.author"
+        :date-time="post.createdAt"
+      />
       <no-ssr>
         <content-menu
           placement="bottom-end"
@@ -19,6 +22,13 @@
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
+      <ds-heading
+        tag="h3"
+        no-margin
+      >
+        {{ post.title }}
+      </ds-heading>
+      <ds-space margin-bottom="small" />
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
@@ -26,19 +36,33 @@
         class="content hc-editor-content"
         v-html="post.content"
       />
-      <ds-space>
-        <ds-text
-          v-if="post.createdAt"
-          align="right"
-          size="small"
-          color="soft"
-        >
-          {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
-        </ds-text>
-      </ds-space>
       <!-- eslint-enable vue/no-v-html -->
-      <!-- Shout Button -->
       <ds-space margin="xx-large" />
+      <!-- Categories -->
+      <div class="categories">
+        <ds-space margin="xx-small" />
+        <hc-category
+          v-for="category in post.categories"
+          :key="category.id"
+          v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
+          :icon="category.icon"
+          :name="category.name"
+        />
+      </div>
+      <ds-space margin-bottom="small" />
+      <!-- Tags -->
+      <div
+        v-if="post.tags && post.tags.length"
+        class="tags"
+      >
+        <ds-space margin="xx-small" />
+        <hc-tag
+          v-for="tag in post.tags"
+          :key="tag.id"
+          :name="tag.name"
+        />
+      </div>
+      <!-- Shout Button -->
       <hc-shout-button
         v-if="post.author"
         :disabled="isAuthor(post.author.id)"
@@ -55,14 +79,6 @@
         size="large"
       />&nbsp;
       <ds-space margin-bottom="small" />
-      <!--<div class="tags">
-      <ds-icon name="compass" /> <ds-tag
-        v-for="category in post.categories"
-        :key="category.id"
-      >
-        {{ category.name }}
-      </ds-tag>
-      </div>-->
       <!-- Tags -->
       <template v-if="post.tags && post.tags.length">
         <ds-space margin="xx-small" />
@@ -80,26 +96,26 @@
       <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
-        <h3 style="margin-top: 0;">
+        <h3 style="margin-top: -10px;">
           <span>
             <ds-icon name="comments" />
             <ds-tag
-              v-if="post.comments"
+              v-if="comments"
               style="margin-top: -4px; margin-left: -12px; position: absolute;"
               color="primary"
               size="small"
               round
-            >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
+            >{{ comments.length }}</ds-tag>&nbsp; Comments
           </span>
         </h3>
         <ds-space margin-bottom="large" />
         <div
-          v-if="post.comments"
+          v-if="comments && comments.length"
           id="comments"
           class="comments"
         >
           <comment
-            v-for="comment in post.comments"
+            v-for="comment in comments"
             :key="comment.id"
             :comment="comment"
           />
@@ -108,6 +124,11 @@
           v-else
           icon="messages"
         />
+        <ds-space margin-bottom="large" />
+        <hc-comment-form
+          :post="post"
+          @addComment="addComment"
+        />
       </ds-section>
     </ds-card>
   </transition>
@@ -115,10 +136,14 @@
 
 <script>
 import gql from 'graphql-tag'
+
+import HcCategory from '~/components/Category'
+import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
-import HcUser from '~/components/User.vue'
+import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcEmpty from '~/components/Empty.vue'
+import HcCommentForm from '~/components/CommentForm'
 import Comment from '~/components/Comment.vue'
 
 export default {
@@ -127,11 +152,14 @@ export default {
     mode: 'out-in'
   },
   components: {
+    HcTag,
+    HcCategory,
     HcUser,
     HcShoutButton,
     HcEmpty,
     Comment,
-    ContentMenu
+    ContentMenu,
+    HcCommentForm
   },
   head() {
     return {
@@ -141,6 +169,7 @@ export default {
   data() {
     return {
       post: null,
+      comments: null,
       ready: false,
       title: 'loading'
     }
@@ -149,6 +178,9 @@ export default {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
+    },
+    CommentByPost(comments) {
+      this.comments = comments || []
     }
   },
   async asyncData(context) {
@@ -257,6 +289,22 @@ export default {
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
+    },
+    addComment(comment) {
+      this.$apollo.queries.CommentByPost.refetch()
+    }
+  },
+  apollo: {
+    CommentByPost: {
+      query() {
+        return require('~/graphql/CommentQuery.js').default(this)
+      },
+      variables() {
+        return {
+          postId: this.post.id
+        }
+      },
+      fetchPolicy: 'cache-and-network'
     }
   }
 }

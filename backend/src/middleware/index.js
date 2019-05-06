@@ -10,17 +10,19 @@ import permissionsMiddleware from './permissionsMiddleware'
 import userMiddleware from './userMiddleware'
 import includedFieldsMiddleware from './includedFieldsMiddleware'
 import orderByMiddleware from './orderByMiddleware'
-import notificationsMiddleware from './notificationsMiddleware'
+import validUrlMiddleware from './validUrlMiddleware'
+import notificationsMiddleware from './notifications'
 
 export default schema => {
   let middleware = [
     passwordMiddleware,
     dateTimeMiddleware,
+    validUrlMiddleware,
     sluggifyMiddleware,
     excerptMiddleware,
+    notificationsMiddleware,
     xssMiddleware,
     fixImageUrlsMiddleware,
-    notificationsMiddleware,
     softDeleteMiddleware,
     userMiddleware,
     includedFieldsMiddleware,

@@ -6,7 +6,7 @@ import formatRelative from 'date-fns/formatRelative'
 import addSeconds from 'date-fns/addSeconds'
 import accounting from 'accounting'
 
-export default ({ app }) => {
+export default ({ app = {} }) => {
   const locales = {
     en: enUS,
     de: de,
@@ -31,12 +31,6 @@ export default ({ app }) => {
     dateTime: (value, fmt = 'dd. MMM yyyy HH:mm') => {
       if (!value) return ''
       return format(new Date(value), fmt, {
-        locale: getLocalizedFormat()
-      })
-    },
-    relativeDateTime: value => {
-      if (!value) return ''
-      return formatRelative(new Date(value), new Date(), {
         locale: getLocalizedFormat()
       })
     },
@@ -94,6 +88,17 @@ export default ({ app }) => {
           return index === 0 ? letter.toUpperCase() : letter.toLowerCase()
         })
         .replace(/\s+/g, '')
+    },
+    removeLinks: content => {
+      if (!content) return ''
+      // remove all links from excerpt to prevent issues with the surrounding link
+      let excerpt = content.replace(/<a.*>(.+)<\/a>/gim, '$1')
+      // do not display content that is only linebreaks
+      if (excerpt.replace(/<br>/gim, '').trim() === '') {
+        excerpt = ''
+      }
+
+      return excerpt
     }
   })
 

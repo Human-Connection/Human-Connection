@@ -8,6 +8,9 @@
     "moreInfo": "What is Human Connection?",
     "hello": "Hello"
   },
+  "editor": {
+    "placeholder": "Leave your inspirational thoughts..."
+  },
   "profile": {
     "name": "My Profile",
     "memberSince": "Member since",
@@ -15,7 +18,13 @@
     "followers": "Followers",
     "following": "Following",
     "shouted": "Shouted",
-    "commented": "Commented"
+    "commented": "Commented",
+    "socialMedia": "Where else can I find"
+  },
+  "notifications": {
+    "menu": {
+      "mentioned": "has mentioned you in a post"
+    }
   },
   "search": {
     "placeholder": "Search",
@@ -51,6 +60,11 @@
     },
     "languages": {
       "name": "Languages"
+    },
+    "social-media": {
+      "name": "Social media",
+      "submit": "Add link",
+      "success": "Updated user profile"
     }
   },
   "admin": {
@@ -100,6 +114,10 @@
     },
     "takeAction": {
       "name": "Take action"
+    },
+    "comment": {
+      "submit": "Comment",
+      "submitted": "Comment Submitted"
     }
   },
   "quotes": {

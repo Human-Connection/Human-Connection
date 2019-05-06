@@ -228,7 +228,7 @@ Then('I get redirected to {string}', route => {
 })
 
 Then('the post was saved successfully', () => {
-  cy.get('.ds-card-header > .ds-heading').should('contain', lastPost.title)
+  cy.get('.ds-card-content > .ds-heading').should('contain', lastPost.title)
   cy.get('.content').should('contain', lastPost.content)
 })
 
@@ -292,4 +292,44 @@ Then('I can login successfully with password {string}', password => {
     ...{password}
   })
   cy.get('.iziToast-wrapper').should('contain', "You are logged in!")
+})
+
+When('I log in with the following credentials:', table => {
+  const { email, password } = table.hashes()[0]
+  cy.login({ email, password })
+})
+
+When('open the notification menu and click on the first item', () => {
+  cy.get('.notifications-menu').click()
+  cy.get('.notification-mention-post').first().click()
+})
+
+Then('see {int} unread notifications in the top menu', count => {
+  cy.get('.notifications-menu').should('contain', count)
+})
+
+Then('I get to the post page of {string}', path => {
+  path = path.replace('...', '')
+  cy.url().should('contain', '/post/')
+  cy.url().should('contain', path)
+})
+
+When('I start to write a new post with the title {string} beginning with:', (title, intro) => {
+  cy.get('.post-add-button').click()
+  cy.get('input[name="title"]').type(title)
+  cy.get('.ProseMirror').type(intro)
+})
+
+When('mention {string} in the text', (mention) => {
+  cy.get('.ProseMirror').type(' @')
+  cy.get('.suggestion-list__item').contains(mention).click()
+  cy.debug()
+})
+
+Then('the notification gets marked as read', () => {
+  cy.get('.notification').first().should('have.class', 'read')
+})
+
+Then('there are no notifications in the top menu', () => {
+  cy.get('.notifications-menu').should('contain', '0')
 })
