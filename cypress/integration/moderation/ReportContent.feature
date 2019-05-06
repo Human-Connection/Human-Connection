@@ -1,6 +1,6 @@
 Feature: Report and Moderate
   As a user
-  I would like to report content that viloates the community guidlines
+  I would like to report content that violates the community guidlines
   So the moderators can take action on it
 
   As a moderator
@@ -12,18 +12,19 @@ Feature: Report and Moderate
       | Author       | id | title                         | content           |
       | David Irving | p1 | The Truth about the Holocaust | It never existed! |
 
+
   Scenario Outline: Report a post from various pages
     Given I am logged in with a "user" role
     When I see David Irving's post on the <Page>
     And I click on "Report Post" from the content menu of the post
     And I confirm the reporting dialog because it is a criminal act under German law:
-    """
-    Do you really want to report the contribution "The Truth about the Holocaust"?
-    """
+      """
+      Do you really want to report the contribution "The Truth about the Holocaust"?
+      """
     Then I see a success message:
-    """
-    Thanks for reporting!
-    """
+      """
+      Thanks for reporting!
+      """
     Examples:
       | Page         |
       | landing page |
@@ -35,13 +36,13 @@ Feature: Report and Moderate
     When I click on the author
     And I click on "Report User" from the content menu in the user info box
     And I confirm the reporting dialog because he is a holocaust denier:
-    """
-    Do you really want to report the user "David Irving"?
-    """
+      """
+      Do you really want to report the user "David Irving"?
+      """
     Then I see a success message:
-    """
-    Thanks for reporting!
-    """
+      """
+      Thanks for reporting!
+      """
 
   Scenario: Review reported content
     Given somebody reported the following posts:
