@@ -26,6 +26,8 @@
   "license": "MIT",
   "jest": {
     "verbose": true,
+    "collectCoverage": true,
+    "coverageReporters": ["text", "lcov"],
     "testMatch": [
       "**/src/**/?(*.)+(spec|test).js?(x)"
     ]

@@ -17,6 +17,8 @@
   },
   "jest": {
     "verbose": true,
+    "collectCoverage": true,
+    "coverageReporters": ["text", "lcov"],
     "moduleFileExtensions": [
       "js",
       "json",
