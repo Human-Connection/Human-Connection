@@ -43,7 +43,7 @@ export default {
      * @return {Number} Password Strength Score
      */
     passwordStrength() {
-      const score = !isEmpty(this.pass) ? zxcvbn(this.pass).score : 0
+      const score = !isEmpty(this.pass) ? zxcvbn(this.pass).score : 'empty'
       if (score !== this.lastScore) {
         this.lastScore = score
         this.$emit('change', {
