@@ -30,11 +30,11 @@
               margin-bottom="xxx-small"
               centered
             >
-              <img
+              <hc-image
                 class="login-image"
-                src="/img/sign-up/humanconnection.svg"
                 alt="Human Connection"
-              >
+                :imageProps="imageProps" 
+              />
             </ds-space>
           </ds-flex-item>
           <ds-flex-item
@@ -96,12 +96,14 @@
 
 <script>
 import LocaleSwitch from '~/components/LocaleSwitch'
+import HcImage from '~/components/Image'
 
 import gql from 'graphql-tag'
 
 export default {
   components: {
-    LocaleSwitch
+    LocaleSwitch,
+    HcImage
   },
   layout: 'blank',
   data() {
@@ -116,6 +118,9 @@ export default {
   computed: {
     pending() {
       return this.$store.getters['auth/pending']
+    },
+    imageProps() {
+      return {src:"/img/sign-up/humanconnection.svg"}
     }
   },
   asyncData({ store, redirect }) {

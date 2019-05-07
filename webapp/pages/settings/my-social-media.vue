@@ -11,12 +11,12 @@
           :key="link.url"
         >
           <a :href="link.url">
-            <img
-              :src="link.favicon"
+            <hc-image
+              :imageProps="imageProps(link.favicon)"
               alt="Social Media link"
               width="16"
               height="16"
-            >
+            />
             {{ link.url }}
           </a>
         </ds-list-item>
@@ -45,8 +45,12 @@
 <script>
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
+import HcImage from '~/components/Image'
 
 export default {
+  components: {
+    HcImage
+  },
   data() {
     return {
       value: ''
@@ -101,6 +105,9 @@ export default {
           this.$toast.success(this.$t('settings.social-media.success')),
           (this.value = '')
         )
+    },
+    imageProps(favicon) {
+      return { src: favicon}
     }
   }
 }

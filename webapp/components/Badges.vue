@@ -10,21 +10,30 @@
       :key="badge.key"
       class="hc-badge-container"
     >
-      <img
+      <hc-image
         :title="badge.key"
-        :src="badge.icon"
+        :imageProps="imageProps(badge.icon)"
         class="hc-badge"
-      >
+      />
     </div>
   </div>
 </template>
 
 <script>
+import HcImage from './Image'
 export default {
+  components: {
+    HcImage
+  },
   props: {
     badges: {
       type: Array,
       default: () => []
+    }
+  },
+  methods: {
+    imageProps(icon) {
+      return { src: icon}
     }
   }
 }
