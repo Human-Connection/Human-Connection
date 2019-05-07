@@ -45,7 +45,7 @@ export default {
      * @return {Number} Password Strength Score
      */
     passwordStrength() {
-      /*const score = !isEmpty(this.pass) ? zxcvbn(this.pass).score : 0
+      const score = !isEmpty(this.pass) ? zxcvbn(this.pass).score : 0
       if (score !== this.lastScore) {
         this.lastScore = score
         this.$emit('change', {
@@ -53,8 +53,7 @@ export default {
           isSecure: Boolean(score >= 3)
         })
       }
-      return score*/
-      return 0
+      return score
     },
     strengthClass() {
       return `strength-${this.passwordStrength}`

@@ -19,7 +19,7 @@
         type="password"
         :label="$t('settings.security.change-password.label-new-password-confirm')"
       />
-      <!--<password-strength :password="newPassword" @change="e => passwordSecure = e.isSecure"/>-->
+      <password-strength :password="formData.newPassword" @change="handlePasswordStrength"/>
       <ds-space margin-top="base">
         <ds-button
           :loading="loading"
@@ -73,13 +73,9 @@ export default {
   },
   methods: {
     async handleInput(data) {
-      //return 'abcabc1234567!' // this.formData.newPassword
       console.log('validation')
       console.log(data)
-      if (
-        this.formData.newPassword &&
-        this.formData.newPassword === this.formData.confirmPassword
-      ) {
+      if (data.newPassword && data.newPassword === data.confirmPassword) {
         this.disabled = false
       } else {
         this.disabled = true
@@ -105,6 +101,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    handlePasswordStrength(e) {
+      console.log(e.isSecure)
     }
   }
 }
