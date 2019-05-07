@@ -36,6 +36,7 @@ describe('userMiddleware', () => {
 
     // TODO rethink how and if the user can specify its id
     // are there rules for this?
+    // For more info see: https://github.com/Human-Connection/Human-Connection/pull/478#discussion_r280530171
     /* it('with ID, email and password', async () => {
       const variables = {
         password: '123',
