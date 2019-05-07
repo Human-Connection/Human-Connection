@@ -26,14 +26,17 @@ Then('the editor should be cleared', () => {
 
 Then('I rapidly double click on the {string} button', text => {
   cy.get('button').contains(text).click().click()
+  cy.wait(1000)
 })
-
+  
 Then('I should see my comment once', () => {
-  cy.get('div.comment p')
-    .should('contain', 'Human Connection rocks')
-    .and('have.length', 1)
+  cy.contains('.iziToast-message', 'Comment Submitted')
+    .should('have.length', 1)
+    .contains('div.comment div.p', 'Human Connection rocks')
+    .should('have.length', 1)
     .get('.ds-avatar img')
     .should('have.attr', 'src')
     .and('contain', narratorAvatar)
-    .and('have.length', 1)
+    .get('div.comment .ds-avatar img')
+    .should('have.length', 1)
 })
