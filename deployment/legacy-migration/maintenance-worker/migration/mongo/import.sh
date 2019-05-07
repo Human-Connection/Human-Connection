@@ -19,7 +19,7 @@ for collection in "categories" "badges" "users" "contributions" "comments" "foll
 do
   mongoexport --db ${MONGODB_DATABASE} --host localhost -d ${MONGODB_DATABASE} --port 27018 --username ${MONGODB_USERNAME} --password ${MONGODB_PASSWORD} --authenticationDatabase ${MONGODB_AUTH_DB} --collection $collection  --collection $collection --out "/tmp/mongo-export/$collection.json"
   mkdir -p /tmp/mongo-export/splits/$collection/
-  split -l 500 /tmp/mongo-export/$collection.json /tmp/mongo-export/splits/$collection/
+  split -l 1000 -a 3 /tmp/mongo-export/$collection.json /tmp/mongo-export/splits/$collection/
 done
 
 ssh -S my-ctrl-socket -O check -l ${SSH_USERNAME} ${SSH_HOST}
