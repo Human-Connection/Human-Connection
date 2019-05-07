@@ -6866,16 +6866,6 @@ lodash._reinterpolate@~3.0.0:
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
   integrity sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=
 
-lodash.assign@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
-  integrity sha1-DZnzzNem0mHRm9rrkkUAXShYCOc=
-
-lodash.clonedeep@^4.3.2:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
-  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
-
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -6915,11 +6905,6 @@ lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
-
-lodash.mergewith@^4.6.0:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
-  integrity sha512-eWw5r+PYICtEBgrBE5hhlT6aAa75f411bgDz/ZL2KZqYV03USvucsxcHUIlGTDTECs1eunpI7HOV7U+WLDvNdQ==
 
 lodash.once@^4.0.0:
   version "4.1.1"
@@ -7332,10 +7317,10 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
-nan@^2.10.0, nan@^2.9.2:
-  version "2.12.1"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.12.1.tgz#7b1aa193e9aa86057e3c7bbd0ac448e770925552"
-  integrity sha512-JY7V6lRkStKcKTvHO5NVSQRv+RV+FIL5pvDoLiAtSL9pKlC5x9PKQcZDsq7m4FO4d57mkhC6Z+QhAh3Jdk5JFw==
+nan@^2.13.2, nan@^2.9.2:
+  version "2.13.2"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"
+  integrity sha512-TghvYc72wlMGMVMluVo9WRJc0mB8KxxF/gZ4YYFy7V2ZQX9l7rgbPg7vjS9mt6U5HXODVFVI2bOduCzwOMv/lw==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -7516,10 +7501,10 @@ node-releases@^1.1.13:
   dependencies:
     semver "^5.3.0"
 
-node-sass@~4.11.0:
-  version "4.11.0"
-  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-4.11.0.tgz#183faec398e9cbe93ba43362e2768ca988a6369a"
-  integrity sha512-bHUdHTphgQJZaF1LASx0kAviPH7sGlcyNhWade4eVIpFp6tsn7SV8xNMTbsQFpEV9VXpnwTTnNYlfsZXgGgmkA==
+node-sass@~4.12.0:
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-4.12.0.tgz#0914f531932380114a30cc5fa4fa63233a25f017"
+  integrity sha512-A1Iv4oN+Iel6EPv77/HddXErL2a+gZ4uBeZUy+a8O35CFYTXhgA8MgLCWBtwpGZdCvTvQ9d+bQxX/QC36GDPpQ==
   dependencies:
     async-foreach "^0.1.3"
     chalk "^1.1.1"
@@ -7528,12 +7513,10 @@ node-sass@~4.11.0:
     get-stdin "^4.0.1"
     glob "^7.0.3"
     in-publish "^2.0.0"
-    lodash.assign "^4.2.0"
-    lodash.clonedeep "^4.3.2"
-    lodash.mergewith "^4.6.0"
+    lodash "^4.17.11"
     meow "^3.7.0"
     mkdirp "^0.5.1"
-    nan "^2.10.0"
+    nan "^2.13.2"
     node-gyp "^3.8.0"
     npmlog "^4.0.0"
     request "^2.88.0"
@@ -10490,10 +10473,10 @@ tippy.js@^4.3.0:
   dependencies:
     popper.js "^1.14.7"
 
-tiptap-commands@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.8.0.tgz#416942b60005fc23fc44ce7fdf4d2fe428b0d4c7"
-  integrity sha512-1/pOhQvCGDsoCFkOrAtoC7PBoXVEpRr8bYitPwZSNvxtqBdn+FaIfGJTHxYlxcY6skcHtlbeh9msb/W9lrz8eg==
+tiptap-commands@^1.8.0, tiptap-commands@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.9.0.tgz#f01d227635b1169c249af20f6705ed5135e7741b"
+  integrity sha512-bvcWZwlzF6/qadnA/mQXjHq4QljcXnPZpNL6++RK7f7oKshvUsId2XEombt81iAKUpVTELFyq/bzfmDCi5vA4A==
   dependencies:
     prosemirror-commands "^1.0.7"
     prosemirror-inputrules "^1.0.1"
@@ -10525,10 +10508,10 @@ tiptap-utils@^1.4.0:
     prosemirror-tables "^0.7.11"
     prosemirror-utils "^0.7.6"
 
-tiptap@^1.17.0:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.17.0.tgz#0dd7c8551378d43efbe1755504ba91d43ccb101d"
-  integrity sha512-8Qd/lkdgju2d7RdF5Ek6fzMpbPKGIt5YaFkRY0El2GMxt/4QcjX+6HWtcNl05fgIwF8uuPNy0CtSoeUi5KZGsQ==
+tiptap@^1.17.0, tiptap@^1.18.0:
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.18.0.tgz#3b3fff322324e6691f31281d8c51b60eeaf5bf9a"
+  integrity sha512-PVKp9HSz4sO+mSPLwyEGImkKH9oplPWg9zd8xg3b6yeUUbMHhJLObcaceyxs++4548cZcINMPK7oxmZVy+KFZw==
   dependencies:
     prosemirror-commands "^1.0.7"
     prosemirror-dropcursor "^1.1.1"
@@ -10538,7 +10521,7 @@ tiptap@^1.17.0:
     prosemirror-model "^1.7.0"
     prosemirror-state "^1.2.1"
     prosemirror-view "^1.8.9"
-    tiptap-commands "^1.8.0"
+    tiptap-commands "^1.9.0"
     tiptap-utils "^1.4.0"
 
 tmp@^0.0.33:
