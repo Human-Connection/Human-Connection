@@ -1,9 +1,13 @@
 {
   "name": "hc-webapp-next",
   "version": "1.0.0",
-  "description": "Human Connection GraphQL UI Prototype",
-  "author": "Grzegorz Leoniec",
-  "private": true,
+  "description": "Human Connection Frontend",
+  "authors": [
+    "Grzegorz Leoniec (appinteractive)",
+    "ulfgebhardt"
+  ],
+  "author": "",
+  "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "dev:styleguide": "cross-env STYLEGUIDE_DEV=true yarn dev",
@@ -32,7 +36,7 @@
     }
   },
   "dependencies": {
-    "@human-connection/styleguide": "0.5.16",
+    "@human-connection/styleguide": "0.5.17",
     "@nuxtjs/apollo": "4.0.0-rc4",
     "@nuxtjs/axios": "~5.4.1",
     "@nuxtjs/dotenv": "~1.3.0",

@@ -49,7 +49,14 @@
         "label-new-password-confirm": "Confirm new password",
         "message-old-password-required": "Enter your old password",
         "message-new-password-required": "Enter a new password",
-        "message-new-password-confirm-required": "Confirm your new password"
+        "message-new-password-confirm-required": "Confirm your new password",
+        "message-new-password-missmatch": "Type the same password again",
+        "passwordSecurity": "Password security",
+        "passwordStrength0": "Very insecure password",
+        "passwordStrength1": "Insecure password",
+        "passwordStrength2": "Mediocre password",
+        "passwordStrength3": "Strong password",
+        "passwordStrength4": "Very strong password"
       }
     },
     "invites": {

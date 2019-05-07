@@ -1,5 +1,11 @@
 <template>
-  <ds-form v-model="formData" :schema="formSchema" @submit="handleSubmit" @input="handleInput">
+  <ds-form
+    v-model="formData"
+    :schema="formSchema"
+    @submit="handleSubmit"
+    @input="handleInput"
+    @input-valid="handleInputValid"
+  >
     <template>
       <ds-input
         id="oldPassword"
@@ -19,7 +25,7 @@
         type="password"
         :label="$t('settings.security.change-password.label-new-password-confirm')"
       />
-      <password-strength :password="formData.newPassword" @change="handlePasswordStrength"/>
+      <password-strength :password="formData.newPassword"/>
       <ds-space margin-top="base">
         <ds-button
           :loading="loading"
@@ -49,23 +55,29 @@ export default {
       },
       formSchema: {
         oldPassword: {
+          type: 'string',
           required: true,
           message: this.$t(
             'settings.security.change-password.message-old-password-required'
           )
         },
         newPassword: {
+          type: 'string',
           required: true,
           message: this.$t(
             'settings.security.change-password.message-new-password-required'
           )
         },
-        confirmPassword: {
-          required: true,
-          message: this.$t(
-            'settings.security.change-password.message-new-password-confirm-required'
-          )
-        }
+        confirmPassword: [
+          { validator: this.matchPassword },
+          {
+            type: 'string',
+            required: true,
+            message: this.$t(
+              'settings.security.change-password.message-new-password-confirm-required'
+            )
+          }
+        ]
       },
       loading: false,
       disabled: true
@@ -73,13 +85,10 @@ export default {
   },
   methods: {
     async handleInput(data) {
-      console.log('validation')
-      console.log(data)
-      if (data.newPassword && data.newPassword === data.confirmPassword) {
-        this.disabled = false
-      } else {
-        this.disabled = true
-      }
+      this.disabled = true
+    },
+    async handleInputValid(data) {
+      this.disabled = false
     },
     async handleSubmit(data) {
       this.loading = true
@@ -102,8 +111,18 @@ export default {
         this.loading = false
       }
     },
-    handlePasswordStrength(e) {
-      console.log(e.isSecure)
+    matchPassword(rule, value, callback, source, options) {
+      var errors = []
+      if (this.formData.newPassword !== value) {
+        errors.push(
+          new Error(
+            this.$t(
+              'settings.security.change-password.message-new-password-missmatch'
+            )
+          )
+        )
+      }
+      callback(errors)
     }
   }
 }

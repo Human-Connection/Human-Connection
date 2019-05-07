@@ -49,7 +49,14 @@
         "label-new-password-confirm": "Bestätige Dein neues Passwort",
         "message-old-password-required": "Gebe dein altes Passwort ein",
         "message-new-password-required": "Gebe ein neues Passwort ein",
-        "message-new-password-confirm-required": "Bestätige dein neues Passwort"
+        "message-new-password-confirm-required": "Bestätige dein neues Passwort",
+        "message-new-password-missmatch": "Gebe das gleiche Passwort nochmals ein",
+        "passwordSecurity": "Passwortsicherheit",
+        "passwordStrength0": "Sehr unsicheres Passwort",
+        "passwordStrength1": "Unsicheres Passwort",
+        "passwordStrength2": "Mittelmäßiges Passwort",
+        "passwordStrength3": "Sicheres Passwort",
+        "passwordStrength4": "Sehr sicheres Passwort"
       }
     },
     "invites": {

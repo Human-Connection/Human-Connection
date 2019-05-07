@@ -3,12 +3,10 @@
     <div class="password-strength-meter">
       <div class="password-strength-meter-inner" :class="strengthClass"></div>
     </div>
-    {{ pass }}
-    {{ password }}
     <p class="help">
       <span v-if="this.pass" :class="{ insecure: (passwordStrength < 3) }">
-        {{ $t('auth.register.passwordSecurity') }}:
-        <strong>{{ $t(`auth.register.passwordStrength${passwordStrength}`) }}</strong>
+        {{ $t('settings.security.change-password.passwordSecurity') }}:
+        <strong>{{ $t(`settings.security.change-password.passwordStrength${passwordStrength}`) }}</strong>
       </span>
       <span v-else>&nbsp;</span>
     </p>
