@@ -33,25 +33,8 @@ describe('userMiddleware', () => {
       await expect(client.request(mutation, variables))
         .resolves.toEqual(expected)
     })
-
-    // TODO rethink how and if the user can specify its id
-    // are there rules for this?
-    // For more info see: https://github.com/Human-Connection/Human-Connection/pull/478#discussion_r280530171
-    /* it('with ID, email and password', async () => {
-      const variables = {
-        password: '123',
-        id: 'u1',
-        email: '123@123.de'
-      }
-      const expected = {
-        CreateUser: {
-          id: 'u1'
-        }
-      }
-      await expect(client.request(mutation, variables))
-        .resolves.toEqual(expected)
-    }) */
   })
+
   describe('update User', () => {
     const mutation = `
       mutation($id: ID!, $name: String) {
