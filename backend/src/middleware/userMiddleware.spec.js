@@ -34,7 +34,9 @@ describe('userMiddleware', () => {
         .resolves.toEqual(expected)
     })
 
-    it('with ID, email and password', async () => {
+    // TODO rethink how and if the user can specify its id
+    // are there rules for this?
+    /* it('with ID, email and password', async () => {
       const variables = {
         password: '123',
         id: 'u1',
@@ -47,7 +49,7 @@ describe('userMiddleware', () => {
       }
       await expect(client.request(mutation, variables))
         .resolves.toEqual(expected)
-    })
+    }) */
   })
   describe('update User', () => {
     const mutation = `
