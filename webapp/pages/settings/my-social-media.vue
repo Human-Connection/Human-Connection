@@ -12,7 +12,7 @@
         >
           <a :href="link.url">
             <hc-image
-              :imageProps="imageProps(link.favicon)"
+              :image-props="imageProps(link.favicon)"
               alt="Social Media link"
               width="16"
               height="16"
@@ -107,7 +107,7 @@ export default {
         )
     },
     imageProps(favicon) {
-      return { src: favicon}
+      return { src: favicon }
     }
   }
 }

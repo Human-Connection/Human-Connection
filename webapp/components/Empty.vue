@@ -6,7 +6,7 @@
   >
     <ds-text>
       <hc-image
-        :imageProps="imageProps"
+        :image-props="imageProps"
         width="80"
         class="hc-empty-icon"
         style="margin-bottom: 5px"
@@ -26,10 +26,10 @@
 <script>
 import HcImage from '~/components/Image'
 export default {
+  name: 'HcEmpty',
   components: {
     HcImage
   },
-  name: 'HcEmpty',
   props: {
     /**
      * Icon that should be shown

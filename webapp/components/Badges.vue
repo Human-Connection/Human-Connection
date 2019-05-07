@@ -12,7 +12,7 @@
     >
       <hc-image
         :title="badge.key"
-        :imageProps="imageProps(badge.icon)"
+        :image-props="imageProps(badge.icon)"
         class="hc-badge"
       />
     </div>
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     imageProps(icon) {
-      return { src: icon}
+      return { src: icon }
     }
   }
 }

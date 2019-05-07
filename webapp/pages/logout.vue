@@ -13,7 +13,7 @@
         >
           <hc-image
             style="width: 200px;"
-            :imageProps="imageProps"
+            :image-props="imageProps"
             alt="Human Connection"
           />
         </ds-space>
@@ -42,14 +42,14 @@ export default {
     HcImage
   },
   layout: 'blank',
+  computed: {
+    imageProps() {
+      return { src: '/img/sign-up/onourjourney.png' }
+    }
+  },
   async beforeCreate() {
     await this.$store.dispatch('auth/logout')
     this.$router.replace('/')
-  },
-  computed: {
-    imageProps(){
-      return { src: "/img/sign-up/onourjourney.png"}
-    }
   }
 }
 </script>
