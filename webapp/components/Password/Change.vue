@@ -105,6 +105,11 @@ export default {
         this.$toast.success(
           this.$t('settings.security.change-password.success')
         )
+        this.formData = {
+          oldPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        }
       } catch (err) {
         this.$toast.error(err.message)
       } finally {
