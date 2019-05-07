@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+SECONDS=0
 SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 echo "MATCH (n) DETACH DELETE n;" | cypher-shell
 
-SECONDS=0
 for collection in "badges" "categories" "users" "follows" "contributions" "shouts" "comments"
 do
   for chunk in /tmp/mongo-export/splits/$collection/*

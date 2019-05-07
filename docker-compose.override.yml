@@ -18,6 +18,7 @@ services:
     volumes:
       - ./backend:/nitro-backend
       - backend_node_modules:/nitro-backend/node_modules
+      - uploads:/nitro-backend/public/uploads
     command: yarn run dev
   neo4j:
     environment:
@@ -32,3 +33,4 @@ volumes:
   webapp_node_modules:
   backend_node_modules:
   neo4j-data:
+  uploads:
