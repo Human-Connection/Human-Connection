@@ -9,4 +9,4 @@ do
   fi
 done
 
-rsync --archive --update --verbose ${SSH_USERNAME}@${SSH_HOST}:${UPLOADS_DIRECTORY}/* /uploads/
+rsync --archive --update --verbose ${SSH_USERNAME}@${SSH_HOST}:${UPLOADS_DIRECTORY}/ /uploads/
