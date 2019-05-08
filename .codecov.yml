@@ -114,8 +114,8 @@ coverage:
         paths:
           - webapp/ # only include coverage in "webapp/" folder
 
-    #patch:
-    #  default:
+    patch:
+      default: false
     #    against: parent
     #    target: 80%
     #    branches: null
