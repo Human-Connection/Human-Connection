@@ -34,7 +34,7 @@ describe('authorization', () => {
         return graphQLClient.request('{User(name: "Owner") { email } }')
       }
 
-      /* describe('not logged in', () => {
+      describe('not logged in', () => {
         it('rejects', async () => {
           await expect(action()).rejects.toThrow('Not Authorised!')
         })
@@ -46,9 +46,9 @@ describe('authorization', () => {
             expect(error.response.data).toEqual({ User: [ { email: null } ] })
           }
         })
-      }) */
+      })
 
-      /* describe('as owner', () => {
+      describe('as owner', () => {
         beforeEach(() => {
           loginCredentials = {
             email: 'owner@example.org',
@@ -59,7 +59,7 @@ describe('authorization', () => {
         it('exposes the owner\'s email address', async () => {
           await expect(action()).resolves.toEqual({ User: [ { email: 'owner@example.org' } ] })
         })
-      }) */
+      })
 
       describe('authenticated as another user', () => {
         beforeEach(async () => {
