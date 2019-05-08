@@ -27,7 +27,17 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true,
-    "coverageReporters": ["text", "lcov"],
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/test/**",
+      "!**/dist/**",
+      "!**/src/**/?(*.)+(spec|test).js?(x)"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
     "testMatch": [
       "**/src/**/?(*.)+(spec|test).js?(x)"
     ]
