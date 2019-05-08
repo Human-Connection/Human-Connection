@@ -98,13 +98,13 @@ export default {
           setTimeout(() => {
             this.success = false
             this.$emit('close')
-            if (this.$router.history.current.name === 'post-id-slug'){
-                // redirect to index
-                this.$router.history.push('/')
+            if (this.$router.history.current.name === 'post-id-slug') {
+              // redirect to index
+              this.$router.history.push('/')
             } else {
-                // reload the page (when deleting from profile or index)
-                this.$router.history.go()
-            }   
+              // reload the page (when deleting from profile or index)
+              window.location.assign(window.location.href)
+            }
           }, 500)
         }, 1500)
       } catch (err) {
