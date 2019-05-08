@@ -61,7 +61,8 @@ You should see the persistent volumes at the end of the log:
 
 Restic Backups:
   Completed:
-    human-connection/nitro-neo4j-7f5cf458db-n92pg: neo4j-data
+    human-connection/nitro-backend-5b6dd96d6b-q77n6: uploads
+    human-connection/nitro-neo4j-686d768598-z2vhh: neo4j-data
 ```
 
 ## Simulate a Disaster
@@ -81,3 +82,27 @@ $ velero restore create --from-backup hc-backup
 Now, I keep my fingers crossed that everything comes back again. If not, I feel
 very sorry for you.
 
+
+## Schedule a Regular Backup
+
+Check out the [docs](https://heptio.github.io/velero/v0.11.0/get-started). You
+can create a regular schedule e.g. with:
+
+```sh
+$ velero schedule create hc-weekly-backup --schedule="@weekly" --include-namespaces=human-connection
+```
+
+Inspect the created backups:
+
+```sh
+$ velero schedule get
+NAME               STATUS    CREATED                          SCHEDULE   BACKUP TTL   LAST BACKUP   SELECTOR
+hc-weekly-backup   Enabled   2019-05-08 17:51:31 +0200 CEST   @weekly    720h0m0s     6s ago        <none> 
+
+$ velero backup get
+NAME                              STATUS      CREATED                          EXPIRES   STORAGE LOCATION   SELECTOR
+hc-weekly-backup-20190508155132   Completed   2019-05-08 17:51:32 +0200 CEST   29d       default            <none>
+
+$ velero backup describe hc-weekly-backup-20190508155132 --details
+# see if the persistent volumes are backed up
+```
