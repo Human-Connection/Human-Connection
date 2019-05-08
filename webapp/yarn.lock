@@ -763,10 +763,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@human-connection/styleguide@0.5.15":
-  version "0.5.15"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.15.tgz#87142957b1ae03749e99db287adb6eafc5e2980a"
-  integrity sha512-BsYwXhPZutRVxyyvCWYkSsw8rEoUTimFeH4GdA9u9gohfS+opVl56KjiBPpepHsaVjbnuL8932BD/47QdM5cZg==
+"@human-connection/styleguide@0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.17.tgz#99816579616c8d5be6c66ee86c39cb6c4e694878"
+  integrity sha512-Qlo29eOi97lHls40Ms1hbGC29Aoz/W6BLoX/no5TQgHlP4qm+OK7Ra75g0sbj3a2x1Q4mZthUDWcqtjTYf6brw==
   dependencies:
     vue "^2.6.6"
 
@@ -11050,15 +11050,10 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.8.2:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.8.2.tgz#dd73e80ba58bb65dd7a8aa2aeef6089cf6116f2a"
   integrity sha512-cliV19VHLJqFUYbz/XeWXe5CO6guzwd0yrrqqp0bmjlMP3ZZULY7fu8RTC4+3lmHwo6ESVDHFDsvjB15hcR5IA==
 
-vue@^2.6.10:
+vue@^2.6.10, vue@^2.6.6:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
-
-vue@^2.6.6:
-  version "2.6.8"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.8.tgz#f21cbc536bfc14f7d1d792a137bb12f69e60ea91"
-  integrity sha512-+vp9lEC2Kt3yom673pzg1J7T1NVGuGzO9j8Wxno+rQN2WYVBX2pyo/RGQ3fXCLh2Pk76Skw/laAPCuBuEQ4diw==
 
 vuex-i18n@~1.11.0:
   version "1.11.0"
