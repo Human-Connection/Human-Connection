@@ -166,4 +166,4 @@ comment:
   require_head: no        # [yes :: must have a head report to post]
   branches: null          # branch names that can post comment
   flags: null
-  paths: null
+  paths: null #
