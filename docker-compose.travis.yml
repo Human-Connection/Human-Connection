@@ -13,7 +13,7 @@ services:
       target: build-and-test
     volumes:
     #/nitro-web
-       - ./webapp/coverage:./coverage
+       - ./webapp/coverage:/nitro-web/coverage
     environment:
       - GRAPHQL_URI=http://backend:4000
   backend:
@@ -22,7 +22,7 @@ services:
       context: backend
       target: builder
     volumes:
-       - ./backend/coverage:./coverage
+       - ./backend/coverage:/nitro-backend/coverage
     ports:
       - 4001:4001
       - 4123:4123
