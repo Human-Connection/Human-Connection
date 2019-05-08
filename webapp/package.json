@@ -27,9 +27,6 @@
       "text",
       "lcov"
     ],
-    "moduleFileExtensions": [
-      "js"
-    ],
     "transform": {
       ".*\\.(vue)$": "vue-jest",
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
@@ -39,7 +36,7 @@
       "^~/(.*)$": "<rootDir>/$1"
     },
     "testMatch": [
-      "**/src/**/?(*.)+(spec|test).js?(x)"
+      "**/?(*.).spec.js"
     ]
   },
   "dependencies": {

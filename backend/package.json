@@ -28,7 +28,7 @@
     "verbose": true,
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "**/*.{js}",
+      "**/*.js",
       "!**/node_modules/**",
       "!**/test/**"
     ],
@@ -37,7 +37,7 @@
       "lcov"
     ],
     "testMatch": [
-      "**/src/**/?(*.)+(spec|test).js?(x)"
+      "**/src/**/?(*.).spec.js"
     ]
   },
   "dependencies": {
