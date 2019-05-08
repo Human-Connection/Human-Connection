@@ -6,7 +6,7 @@ import Styleguide from '@human-connection/styleguide'
 import VueRouter from 'vue-router'
 
 const routes = [{ path: '/' }]
-const router = new VueRouter({routes})
+const router = new VueRouter({ routes })
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
@@ -53,7 +53,7 @@ describe('DeleteModal.vue', () => {
         expect(Wrapper().vm.loading).toBe(false)
       })
     })
-    
+
     describe('given a post', () => {
       beforeEach(() => {
         propsData = {
@@ -74,7 +74,7 @@ describe('DeleteModal.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(DeleteModal, { propsData, mocks, localVue, router})
+      return mount(DeleteModal, { propsData, mocks, localVue, router })
     }
 
     beforeEach(jest.useFakeTimers)
