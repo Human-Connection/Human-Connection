@@ -37,7 +37,7 @@
       "lcov"
     ],
     "testMatch": [
-      "**/src/**/?(*.).spec.js"
+      "**/src/**/?(*.)+(spec|test).js?(x)"
     ]
   },
   "dependencies": {
