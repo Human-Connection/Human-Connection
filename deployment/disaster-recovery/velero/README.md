@@ -20,22 +20,18 @@ download and extract e.g. [velero-v0.11.0-linux-arm64.tar.gz](https://github.com
 ## Setup Velero Namespace
 
 Follow their [getting started](https://heptio.github.io/velero/v0.11.0/get-started)
-instructions to setup the Velero namespace:
+instructions to setup the Velero namespace. We use
+[Minio](https://docs.min.io/docs/deploy-minio-on-kubernetes) and
+[restic](https://github.com/restic/restic), so check out Velero's instructions
+how to setup [restic](https://heptio.github.io/velero/v0.11.0/restic):
 
 ```sh
+# run from the extracted folder of the tarball
 $ kubectl apply -f config/common/00-prereqs.yaml
 $ kubectl apply -f config/minio/
 ```
 
 Once completed, you should see the namespace in your kubernetes dashboard.
-
-We use [Minio](https://docs.min.io/docs/deploy-minio-on-kubernetes) and
-[restic](https://github.com/restic/restic), so check out Velero's instructions
-how to setup [restic](https://heptio.github.io/velero/v0.11.0/restic):
-
-```sh
-$ kubectl apply -f config/minio/30-restic-daemonset.yaml
-```
 
 ## Manually Create an On-Premise Backup
 
