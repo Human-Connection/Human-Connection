@@ -31,7 +31,7 @@
             name="delete"
             @click="handleDeleteSocialMedia(link)"
           >
-            <ds-icon name="trash"/>
+            <ds-icon name="trash" />
           </a>
         </ds-list-item>
       </ds-list>
@@ -116,7 +116,7 @@ export default {
         })
         .then(() => {
           this.$toast.success(this.$t('settings.social-media.successAdd')),
-          (this.value = '')
+            (this.value = '')
         })
         .catch(error => {
           this.$toast.error(error.message)
@@ -137,7 +137,9 @@ export default {
             id: link.id
           },
           update: (store, { data }) => {
-            const socialMedia = this.currentUser.socialMedia.filter(element => element.id !== link.id )
+            const socialMedia = this.currentUser.socialMedia.filter(
+              element => element.id !== link.id
+            )
             this.setCurrentUser({
               ...this.currentUser,
               socialMedia
