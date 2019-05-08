@@ -157,7 +157,7 @@ coverage:
 comment:
   layout: header, diff, trends, uncovered
   branches: *
-  behavior: default # default = posts once then update, posts new if delete
+  behavior: new # default = posts once then update, posts new if delete
                     # once = post once then updates
                     # new = delete old, post new
                     # spammy = post new
