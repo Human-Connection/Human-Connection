@@ -18,11 +18,17 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true,
-    "coverageReporters": ["text", "lcov"],
+    "collectCoverageFrom": [
+      "**/*.{js,vue}",
+      "!**/node_modules/**",
+      "!**/.nuxt/**"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
     "moduleFileExtensions": [
       "js",
-      "json",
-      "vue"
     ],
     "transform": {
       ".*\\.(vue)$": "vue-jest",
@@ -31,7 +37,10 @@
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
       "^~/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "testMatch": [
+      "**/src/**/?(*.)+(spec|test).js?(x)"
+    ]
   },
   "dependencies": {
     "@human-connection/styleguide": "0.5.15",
