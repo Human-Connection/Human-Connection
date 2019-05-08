@@ -21,7 +21,8 @@
     "collectCoverageFrom": [
       "**/*.{js,vue}",
       "!**/node_modules/**",
-      "!**/.nuxt/**"
+      "!**/.nuxt/**",
+      "!**/?(*.)+(spec|test).js?(x)"
     ],
     "coverageReporters": [
       "text",

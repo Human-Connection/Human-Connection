@@ -30,7 +30,8 @@
     "collectCoverageFrom": [
       "**/*.js",
       "!**/node_modules/**",
-      "!**/test/**"
+      "!**/test/**",
+      "!**/src/**/?(*.)+(spec|test).js?(x)"
     ],
     "coverageReporters": [
       "text",
