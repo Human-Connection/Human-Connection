@@ -16,3 +16,4 @@ cypress/screenshots/
 cypress.env.json
 
 !.gitkeep
+**/coverage
