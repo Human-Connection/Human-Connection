@@ -116,11 +116,6 @@ When('I delete a social media link', () => {
     .click()
 })
 
-// Then('Shows delete modal', () => {
-//   cy.get("a[name='delete']")
-//     .click()
-// })
-
 Then('it gets deleted successfully', () => {
   cy.get('.iziToast-message')
     .should('contain', 'Deleted social media')

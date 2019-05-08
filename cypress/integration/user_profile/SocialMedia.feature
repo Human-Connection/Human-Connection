@@ -27,4 +27,3 @@ Feature: List Social Media Accounts
     Given I have added a social media link
     When I delete a social media link
     Then it gets deleted successfully
-    # And the new social media link shows up on the page
