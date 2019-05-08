@@ -12,7 +12,7 @@
         >
           <a :href="link.url">
             <hc-image
-              :image-props="imageProps(link.favicon)"
+              :image-props="{ src: link.favicon }"
               alt="Social Media link"
               width="16"
               height="16"
@@ -105,9 +105,6 @@ export default {
           this.$toast.success(this.$t('settings.social-media.success')),
           (this.value = '')
         )
-    },
-    imageProps(favicon) {
-      return { src: favicon }
     }
   }
 }

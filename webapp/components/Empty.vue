@@ -58,11 +58,8 @@ export default {
     }
   },
   computed: {
-    iconPath() {
-      return `/img/empty/${this.icon}.svg`
-    },
-    imageProps: {
-      src: iconPath
+    imageProps() {
+      return { src: `/img/empty/${this.icon}.svg` }
     }
   }
 }
