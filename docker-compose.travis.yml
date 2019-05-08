@@ -11,6 +11,8 @@ services:
     build:
       context: webapp
       target: build-and-test
+    volumes:
+       - coverage:webapp/coverage
     environment:
       - GRAPHQL_URI=http://backend:4000
   backend:
@@ -18,6 +20,8 @@ services:
     build:
       context: backend
       target: builder
+    volumes:
+       - coverage:backend/coverage
     ports:
       - 4001:4001
       - 4123:4123
