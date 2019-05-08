@@ -155,7 +155,7 @@ coverage:
   #  - "old_path::new_path"
 
 comment:
-  layout: header, diff, trends, uncovered, reach, files, tree, changes, sunburst, flags #
+  layout: files, diff, reach, flags
   branches: *
   behavior: new # default = posts once then update, posts new if delete
                     # once = post once then updates
