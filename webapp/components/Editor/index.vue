@@ -154,7 +154,10 @@
         </ds-button>
       </div>
     </editor-floating-menu>
-    <editor-content :editor="editor" />
+    <editor-content
+      ref="editor"
+      :editor="editor"
+    />
   </div>
 </template>
 
@@ -224,7 +227,7 @@ export default {
           new ListItem(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
-            emptyNodeText: 'Schreib etwas inspirerendes…'
+            emptyNodeText: this.$t('editor.placeholder')
           }),
           new History(),
           new Mention({
@@ -445,6 +448,9 @@ export default {
         // remove link
         command({ href: null })
       }
+    },
+    clear() {
+      this.editor.clearContent(true)
     }
   }
 }

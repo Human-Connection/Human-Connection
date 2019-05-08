@@ -8,6 +8,9 @@
     "moreInfo": "What is Human Connection?",
     "hello": "Hello"
   },
+  "editor": {
+    "placeholder": "Leave your inspirational thoughts..."
+  },
   "profile": {
     "name": "My Profile",
     "memberSince": "Member since",
@@ -119,6 +122,10 @@
       "title": "Delete Post",
       "type": "Contribution",
       "message": "Do you really want to delete the post \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "submit": "Comment",
+      "submitted": "Comment Submitted"
     }
   },
   "quotes": {
