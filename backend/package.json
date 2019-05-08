@@ -31,6 +31,7 @@
       "**/*.js",
       "!**/node_modules/**",
       "!**/test/**",
+      "!**/dist/**",
       "!**/src/**/?(*.)+(spec|test).js?(x)"
     ],
     "coverageReporters": [
