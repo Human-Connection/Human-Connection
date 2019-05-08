@@ -28,7 +28,7 @@
       "lcov"
     ],
     "moduleFileExtensions": [
-      "js",
+      "js"
     ],
     "transform": {
       ".*\\.(vue)$": "vue-jest",
