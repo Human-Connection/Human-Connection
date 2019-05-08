@@ -46,7 +46,7 @@
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0-alpha.27",
     "express": "~4.16.4",
-    "graphql": "~14.2.1",
+    "graphql": "~14.3.0",
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.1.0",
     "nuxt": "~2.6.3",
