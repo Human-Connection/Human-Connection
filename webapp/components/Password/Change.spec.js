@@ -97,7 +97,7 @@ describe('ChangePassword.vue', () => {
       })
 
       describe('submit form', () => {
-        beforeEach(async (done) => {
+        beforeEach(async done => {
           await wrapper.find('form').trigger('submit')
           done()
         })
