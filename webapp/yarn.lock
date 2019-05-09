@@ -763,10 +763,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@human-connection/styleguide@0.5.15":
-  version "0.5.15"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.15.tgz#87142957b1ae03749e99db287adb6eafc5e2980a"
-  integrity sha512-BsYwXhPZutRVxyyvCWYkSsw8rEoUTimFeH4GdA9u9gohfS+opVl56KjiBPpepHsaVjbnuL8932BD/47QdM5cZg==
+"@human-connection/styleguide@0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.17.tgz#99816579616c8d5be6c66ee86c39cb6c4e694878"
+  integrity sha512-Qlo29eOi97lHls40Ms1hbGC29Aoz/W6BLoX/no5TQgHlP4qm+OK7Ra75g0sbj3a2x1Q4mZthUDWcqtjTYf6brw==
   dependencies:
     vue "^2.6.6"
 
@@ -11494,3 +11494,8 @@ zen-observable@^0.8.0:
   version "0.8.13"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.13.tgz#a9f1b9dbdfd2d60a08761ceac6a861427d44ae2e"
   integrity sha512-fa+6aDUVvavYsefZw0zaZ/v3ckEtMgCFi30sn91SEZea4y/6jQp05E3omjkX91zV6RVdn15fqnFZ6RKjRGbp2g==
+
+zxcvbn@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/zxcvbn/-/zxcvbn-4.4.2.tgz#28ec17cf09743edcab056ddd8b1b06262cc73c30"
+  integrity sha1-KOwXzwl0PtyrBW3dixsGJizHPDA=

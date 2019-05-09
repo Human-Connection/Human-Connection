@@ -1,6 +1,6 @@
 <template>
   <ds-card :header="$t('settings.security.name')">
-    <change-password/>
+    <change-password />
   </ds-card>
 </template>
 

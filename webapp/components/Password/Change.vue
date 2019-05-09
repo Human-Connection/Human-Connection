@@ -25,13 +25,15 @@
         type="password"
         :label="$t('settings.security.change-password.label-new-password-confirm')"
       />
-      <password-strength :password="formData.newPassword"/>
+      <password-strength :password="formData.newPassword" />
       <ds-space margin-top="base">
         <ds-button
           :loading="loading"
           :disabled="disabled"
           primary
-        >{{ $t('settings.security.change-password.button') }}</ds-button>
+        >
+          {{ $t('settings.security.change-password.button') }}
+        </ds-button>
       </ds-space>
     </template>
   </ds-form>

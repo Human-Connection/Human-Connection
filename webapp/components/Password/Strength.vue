@@ -1,10 +1,16 @@
 <template>
   <div class="field">
     <div class="password-strength-meter">
-      <div class="password-strength-meter-inner" :class="strengthClass"></div>
+      <div
+        class="password-strength-meter-inner"
+        :class="strengthClass"
+      />
     </div>
     <p class="help">
-      <span v-if="this.pass" :class="{ insecure: (passwordStrength < 3) }">
+      <span
+        v-if="pass"
+        :class="{ insecure: (passwordStrength < 3) }"
+      >
         {{ $t('settings.security.change-password.passwordSecurity') }}:
         <strong>{{ $t(`settings.security.change-password.passwordStrength${passwordStrength}`) }}</strong>
       </span>
@@ -18,26 +24,25 @@ import zxcvbn from 'zxcvbn'
 import { isEmpty } from 'lodash'
 
 export default {
+  name: 'PasswordMeter',
   props: {
     password: {
       type: String,
       required: true
     }
   },
-  name: 'password-meter',
   data() {
     return {
       lastScore: 0,
       pass: this.password || null
     }
   },
-  watch: {
-    password(pass) {
-      // update password when prop is changing
-      this.pass = pass || null
+  computed: {
+    strengthClass() {
+      return `strength-${this.passwordStrength}`
     }
   },
-  computed: {
+  watch: {
     /**
      * passwordStrength is the score calculated by zxcvbn
      * @return {Number} Password Strength Score
@@ -53,8 +58,9 @@ export default {
       }
       return score
     },
-    strengthClass() {
-      return `strength-${this.passwordStrength}`
+    password(pass) {
+      // update password when prop is changing
+      this.pass = pass || null
     }
   }
 }
