@@ -16,7 +16,7 @@
         >
           <ds-avatar
             :image="user.avatar"
-            :name="user.name || 'Anonymus'"
+            :name="userName"
             class="profile-avatar"
             size="120px"
           />
@@ -35,7 +35,7 @@
               align="center"
               no-margin
             >
-              {{ user.name }}
+              {{ userName }}
             </ds-heading>
             <ds-text
               v-if="user.location"
@@ -123,7 +123,7 @@
               tag="h5"
               color="soft"
             >
-              Wem folgt {{ user.name | truncate(15) }}?
+              Wem folgt {{ userName | truncate(15) }}?
             </ds-text>
           </ds-space>
           <template v-if="user.following && user.following.length">
@@ -154,7 +154,7 @@
           </template>
           <template v-else>
             <p style="text-align: center; opacity: .5;">
-              {{ user.name }} folgt niemandem
+              {{ userName }} folgt niemandem
             </p>
           </template>
         </ds-card>
@@ -168,7 +168,7 @@
               tag="h5"
               color="soft"
             >
-              Wer folgt {{ user.name | truncate(15) }}?
+              Wer folgt {{ userName | truncate(15) }}?
             </ds-text>
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
@@ -199,18 +199,16 @@
           </template>
           <template v-else>
             <p style="text-align: center; opacity: .5;">
-              niemand folgt {{ user.name }}
+              niemand folgt {{ userName }}
             </p>
           </template>
         </ds-card>
-        <ds-space 
+        <ds-space
           v-if="user.socialMedia && user.socialMedia.length"
           margin="large"
         >
           <ds-card style="position: relative; height: auto;">
-            <ds-space
-              margin="x-small"
-            >
+            <ds-space margin="x-small">
               <ds-text
                 tag="h5"
                 color="soft"
@@ -224,9 +222,7 @@
                   margin="x-small"
                 >
                   <a :href="link.url">
-                    <ds-avatar
-                      :image="link.favicon"
-                    />
+                    <ds-avatar :image="link.favicon" />
                     {{ link.username }}
                   </a>
                 </ds-space>
@@ -393,6 +389,10 @@ export default {
         const username = url.split('/').pop()
         return { url, username, favicon }
       })
+    },
+    userName() {
+      const { name } = this.user || {}
+      return name || this.$t('profile.userAnonym')
     }
   },
   watch: {

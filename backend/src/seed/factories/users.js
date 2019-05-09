@@ -20,7 +20,7 @@ export default function create (params) {
         $name: String
         $slug: String
         $password: String!
-        $email: String
+        $email: String!
         $avatar: String
         $about: String
         $role: UserGroupEnum

@@ -10,6 +10,8 @@ addons:
 
 before_install:
   - yarn global add wait-on
+  # Install Codecov
+  - yarn global add codecov
   - yarn install
   - cp cypress.env.template.json cypress.env.json
 
@@ -18,6 +20,7 @@ install:
   - wait-on http://localhost:7474 && docker-compose exec neo4j migrate
 
 script:
+  # Backend
   - docker-compose exec backend yarn run lint
   - docker-compose exec backend yarn run test:jest --ci --verbose=false
   - docker-compose exec backend yarn run db:reset
@@ -25,10 +28,14 @@ script:
   - docker-compose exec backend yarn run test:cucumber
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
+  # Frontend
   - docker-compose exec webapp yarn run lint
   - docker-compose exec webapp yarn run test --ci --verbose=false
   - docker-compose exec -d backend yarn run test:before:seeder
+  # Fullstack
   - CYPRESS_RETRIES=1 yarn run cypress:run
+  # Coverage
+  - codecov
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh

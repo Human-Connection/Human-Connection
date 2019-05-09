@@ -18,20 +18,32 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true,
-    "coverageReporters": ["text", "lcov"],
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "vue"
+    "collectCoverageFrom": [
+      "**/*.{js,vue}",
+      "!**/node_modules/**",
+      "!**/.nuxt/**",
+      "!**/?(*.)+(spec|test).js?(x)"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
     ],
     "transform": {
       ".*\\.(vue)$": "vue-jest",
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
       "^~/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "testMatch": [
+      "**/?(*.)+(spec|test).js?(x)"
+    ]
   },
   "dependencies": {
     "@human-connection/styleguide": "0.5.15",
@@ -53,8 +65,8 @@
     "nuxt-env": "~0.1.0",
     "stack-utils": "^1.0.2",
     "string-hash": "^1.1.3",
-    "tiptap": "^1.18.0",
-    "tiptap-extensions": "^1.18.1",
+    "tiptap": "1.17.0",
+    "tiptap-extensions": "1.17.0",
     "v-tooltip": "~2.0.2",
     "vue-count-to": "~1.0.13",
     "vue-izitoast": "1.1.2",
@@ -63,6 +75,7 @@
   },
   "devDependencies": {
     "@babel/core": "~7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "~7.4.4",
     "@vue/cli-shared-utils": "~3.7.0",
     "@vue/eslint-config-prettier": "~4.0.1",
