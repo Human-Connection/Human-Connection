@@ -5,7 +5,7 @@
     >
       <ds-avatar
         style="display: inline-block; vertical-align: middle;"
-        size="32px"
+        size="small"
       />
     </div>
     <div style="display: inline-block; height: 100%; vertical-align: middle;">
