@@ -189,45 +189,18 @@ import Factory from './factories'
     ])
 
     await Promise.all([
-      f.create('Comment', { id: 'c1' }),
-      f.create('Comment', { id: 'c2' }),
-      f.create('Comment', { id: 'c3' }),
-      f.create('Comment', { id: 'c4' }),
-      f.create('Comment', { id: 'c5' }),
-      f.create('Comment', { id: 'c6' }),
-      f.create('Comment', { id: 'c7' }),
-      f.create('Comment', { id: 'c8' }),
-      f.create('Comment', { id: 'c9' }),
-      f.create('Comment', { id: 'c10' }),
-      f.create('Comment', { id: 'c11' }),
-      f.create('Comment', { id: 'c12' })
-    ])
-
-    await Promise.all([
-      f.relate('Comment', 'Author', { from: 'u3', to: 'c1' }),
-      f.relate('Comment', 'Post',   { from: 'c1', to: 'p1' }),
-      f.relate('Comment', 'Author', { from: 'u1', to: 'c2' }),
-      f.relate('Comment', 'Post',   { from: 'c2', to: 'p1' }),
-      f.relate('Comment', 'Author', { from: 'u1', to: 'c3' }),
-      f.relate('Comment', 'Post',   { from: 'c3', to: 'p3' }),
-      f.relate('Comment', 'Author', { from: 'u4', to: 'c4' }),
-      f.relate('Comment', 'Post',   { from: 'c4', to: 'p2' }),
-      f.relate('Comment', 'Author', { from: 'u4', to: 'c5' }),
-      f.relate('Comment', 'Post',   { from: 'c5', to: 'p3' }),
-      f.relate('Comment', 'Author', { from: 'u3', to: 'c6' }),
-      f.relate('Comment', 'Post',   { from: 'c6', to: 'p4' }),
-      f.relate('Comment', 'Author', { from: 'u2', to: 'c7' }),
-      f.relate('Comment', 'Post',   { from: 'c7', to: 'p2' }),
-      f.relate('Comment', 'Author', { from: 'u5', to: 'c8' }),
-      f.relate('Comment', 'Post',   { from: 'c8', to: 'p15' }),
-      f.relate('Comment', 'Author', { from: 'u6', to: 'c9' }),
-      f.relate('Comment', 'Post',   { from: 'c9', to: 'p15' }),
-      f.relate('Comment', 'Author', { from: 'u7', to: 'c10' }),
-      f.relate('Comment', 'Post',   { from: 'c10', to: 'p15' }),
-      f.relate('Comment', 'Author', { from: 'u5', to: 'c11' }),
-      f.relate('Comment', 'Post',   { from: 'c11', to: 'p15' }),
-      f.relate('Comment', 'Author', { from: 'u6', to: 'c12' }),
-      f.relate('Comment', 'Post',   { from: 'c12', to: 'p15' })
+      asUser.create('Comment', { id: 'c1', postId: 'p1' }),
+      asTick.create('Comment', { id: 'c2', postId: 'p1' }),
+      asTrack.create('Comment', { id: 'c3', postId: 'p3' }),
+      asTrick.create('Comment', { id: 'c4', postId: 'p2' }),
+      asModerator.create('Comment', { id: 'c5', postId: 'p3' }),
+      asAdmin.create('Comment', { id: 'c6', postId: 'p4' }),
+      asUser.create('Comment', { id: 'c7', postId: 'p2' }),
+      asTick.create('Comment', { id: 'c8', postId: 'p15' }),
+      asTrick.create('Comment', { id: 'c9', postId: 'p15' }),
+      asTrack.create('Comment', { id: 'c10', postId: 'p15' }),
+      asUser.create('Comment', { id: 'c11', postId: 'p15' }),
+      asUser.create('Comment', { id: 'c12', postId: 'p15' })
     ])
 
     const disableMutation = 'mutation($id: ID!) { disable(id: $id) }'

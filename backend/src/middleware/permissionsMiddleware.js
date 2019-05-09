@@ -86,7 +86,8 @@ const permissions = shield({
     unshout: isAuthenticated,
     changePassword: isAuthenticated,
     enable: isModerator,
-    disable: isModerator
+    disable: isModerator,
+    CreateComment: isAuthenticated
     // CreateUser: allow,
   },
   User: {

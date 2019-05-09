@@ -79,8 +79,8 @@
               </ds-button>
               <ds-space margin="x-small">
                 <a
-                  href="https://human-connection.org"
-                  title="zur Präsentationsseite"
+                  :href="$t('login.moreInfoURL')"
+                  :title="$t('login.moreInfoHint')"
                   target="_blank"
                 >
                   {{ $t('login.moreInfo') }}
