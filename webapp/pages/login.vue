@@ -33,7 +33,7 @@
               <hc-image
                 class="login-image"
                 alt="Human Connection"
-                :image-props="imageProps" 
+                :image-props="{ src: '/img/sign-up/humanconnection.svg' }" 
               />
             </ds-space>
           </ds-flex-item>
@@ -118,9 +118,6 @@ export default {
   computed: {
     pending() {
       return this.$store.getters['auth/pending']
-    },
-    imageProps() {
-      return { src: '/img/sign-up/humanconnection.svg' }
     }
   },
   asyncData({ store, redirect }) {
