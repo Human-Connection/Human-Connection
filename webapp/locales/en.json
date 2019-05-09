@@ -21,6 +21,7 @@
     "following": "Following",
     "shouted": "Shouted",
     "commented": "Commented",
+    "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find"
   },
   "notifications": {
@@ -38,8 +39,10 @@
     "data": {
       "name": "Your data",
       "labelName": "Your Name",
+      "namePlaceholder": "Femanon Funny",
       "labelCity": "Your City or Region",
-      "labelBio": "About You"
+      "labelBio": "About You",
+      "success": "Your data was successfully updated!"
     },
     "security": {
       "name": "Security",
