@@ -9,7 +9,7 @@
         model="name"
         icon="user"
         :label="$t('settings.data.labelName')"
-        :placeholder="$t('settings.data.labelName')"
+        :placeholder="$t('settings.data.namePlaceholder')"
       />
       <!-- eslint-disable vue/use-v-on-exact -->
       <ds-select
@@ -19,7 +19,7 @@
         :options="cities"
         :label="$t('settings.data.labelCity')"
         :placeholder="$t('settings.data.labelCity')"
-        :loading="loading"
+        :loading="loadingGeo"
         @input.native="handleCityInput"
       />
       <!-- eslint-enable vue/use-v-on-exact -->
@@ -36,7 +36,7 @@
           style="float: right;"
           icon="check"
           type="submit"
-          :loading="sending"
+          :loading="loadingData"
           primary
         >
           {{ $t('actions.save') }}
@@ -88,8 +88,8 @@ export default {
     return {
       axiosSource: null,
       cities: [],
-      sending: false,
-      loading: false,
+      loadingData: false,
+      loadingGeo: false,
       formData: {}
     }
   },
@@ -111,13 +111,13 @@ export default {
     ...mapMutations({
       setCurrentUser: 'auth/SET_USER'
     }),
-    submit() {
-      this.sending = true
+    async submit() {
+      this.loadingData = true
       const { name, about } = this.formData
       let { locationName } = this.formData
       locationName = locationName && (locationName['label'] || locationName)
-      this.$apollo
-        .mutate({
+      try {
+        const { data } = await this.$apollo.mutate({
           mutation,
           variables: {
             id: this.currentUser.id,
@@ -135,15 +135,12 @@ export default {
             })
           }
         })
-        .then(data => {
-          this.$toast.success('Updated user')
-        })
-        .catch(err => {
-          this.$toast.error(err.message)
-        })
-        .finally(() => {
-          this.sending = false
-        })
+        this.$toast.success(this.$t('settings.data.success'))
+      } catch (err) {
+        this.$toast.error(err.message)
+      } finally {
+        this.loadingData = false
+      }
     },
     handleCityInput(value) {
       clearTimeout(timeout)
@@ -181,7 +178,7 @@ export default {
         return
       }
 
-      this.loading = true
+      this.loadingGeo = true
       this.axiosSource = CancelToken.source()
 
       const place = encodeURIComponent(value)
@@ -198,7 +195,7 @@ export default {
           this.cities = this.processCityResults(res)
         })
         .finally(() => {
-          this.loading = false
+          this.loadingGeo = false
         })
     }
   }

@@ -51,8 +51,8 @@ describe('User', () => {
 
     it('renders anonymous user', () => {
       const wrapper = Wrapper()
-      expect(wrapper.text()).not.toMatch('Tilda Swinton')
-      expect(wrapper.text()).toMatch('Anonymus')
+      expect(wrapper.text()).toBe('')
+      expect(mocks.$t).toHaveBeenCalledWith('profile.userAnonym')
     })
 
     describe('given an user', () => {
@@ -65,7 +65,7 @@ describe('User', () => {
 
       it('renders user name', () => {
         const wrapper = Wrapper()
-        expect(wrapper.text()).not.toMatch('Anonymous')
+        expect(mocks.$t).not.toHaveBeenCalledWith('profile.userAnonym')
         expect(wrapper.text()).toMatch('Tilda Swinton')
       })
 
@@ -77,7 +77,7 @@ describe('User', () => {
         it('renders anonymous user', () => {
           const wrapper = Wrapper()
           expect(wrapper.text()).not.toMatch('Tilda Swinton')
-          expect(wrapper.text()).toMatch('Anonymus')
+          expect(mocks.$t).toHaveBeenCalledWith('profile.userAnonym')
         })
 
         describe('current user is a moderator', () => {

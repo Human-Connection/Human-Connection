@@ -77,7 +77,7 @@ describe('slugify', () => {
   describe('CreateUser', () => {
     const action = async (mutation, params) => {
       return authenticatedClient.request(`mutation {
-        ${mutation}(password: "yo", ${params}) { slug }
+        ${mutation}(password: "yo", email: "123@123.de", ${params}) { slug }
       }`)
     }
     it('generates a slug based on name', async () => {

@@ -21,6 +21,7 @@
     "following": "Following",
     "shouted": "Shouted",
     "commented": "Commented",
+    "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find"
   },
   "notifications": {
@@ -38,8 +39,10 @@
     "data": {
       "name": "Your data",
       "labelName": "Your Name",
+      "namePlaceholder": "Femanon Funny",
       "labelCity": "Your City or Region",
-      "labelBio": "About You"
+      "labelBio": "About You",
+      "success": "Your data was successfully updated!"
     },
     "security": {
       "name": "Security",
@@ -65,8 +68,10 @@
     },
     "social-media": {
       "name": "Social media",
+      "placeholder": "Add social media url",
       "submit": "Add link",
-      "success": "Updated user profile"
+      "successAdd": "Added social media. Updated user profile!",
+      "successDelete": "Deleted social media. Updated user profile!"
     }
   },
   "admin": {
