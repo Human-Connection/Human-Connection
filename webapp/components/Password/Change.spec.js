@@ -97,8 +97,9 @@ describe('ChangePassword.vue', () => {
       })
 
       describe('submit form', () => {
-        beforeEach(async () => {
+        beforeEach(async (done) => {
           await wrapper.find('form').trigger('submit')
+          done()
         })
 
         it('calls changePassword mutation', () => {
@@ -122,14 +123,14 @@ describe('ChangePassword.vue', () => {
             wrapper.find('form').trigger('submit')
           })
 
-          it('calls auth/SET_TOKEN with response', async () => {
+          it('calls auth/SET_TOKEN with response', () => {
             expect(mocks.$store.commit).toHaveBeenCalledWith(
               'auth/SET_TOKEN',
               'NEWTOKEN'
             )
           })
 
-          it('displays success message', async () => {
+          it('displays success message', () => {
             expect(mocks.$t).toHaveBeenCalledWith(
               'settings.security.change-password.success'
             )
