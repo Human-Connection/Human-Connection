@@ -18,20 +18,32 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true,
-    "coverageReporters": ["text", "lcov"],
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "vue"
+    "collectCoverageFrom": [
+      "**/*.{js,vue}",
+      "!**/node_modules/**",
+      "!**/.nuxt/**",
+      "!**/?(*.)+(spec|test).js?(x)"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
     ],
     "transform": {
       ".*\\.(vue)$": "vue-jest",
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
       "^~/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "testMatch": [
+      "**/?(*.)+(spec|test).js?(x)"
+    ]
   },
   "dependencies": {
     "@human-connection/styleguide": "0.5.15",
@@ -46,7 +58,7 @@
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0-alpha.27",
     "express": "~4.16.4",
-    "graphql": "~14.2.1",
+    "graphql": "~14.3.0",
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.1.0",
     "nuxt": "~2.6.3",
@@ -63,6 +75,7 @@
   },
   "devDependencies": {
     "@babel/core": "~7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "~7.4.4",
     "@vue/cli-shared-utils": "~3.7.0",
     "@vue/eslint-config-prettier": "~4.0.1",

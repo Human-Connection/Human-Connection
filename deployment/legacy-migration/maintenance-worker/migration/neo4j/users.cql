@@ -1,4 +1,4 @@
-CALL apoc.load.json('file:/tmp/mongo-export/users.json') YIELD value as user
+CALL apoc.load.json('file:/tmp/mongo-export/splits/current-chunk.json') YIELD value as user
 MERGE(u:User {id: user._id["$oid"]})
 ON CREATE SET
 u.name       = user.name,
