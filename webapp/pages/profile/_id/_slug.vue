@@ -26,6 +26,7 @@
               resource-type="user"
               :resource="user"
               :is-owner="myProfile"
+              class="user-content-menu"
             />
           </no-ssr>
           <ds-space margin="small">

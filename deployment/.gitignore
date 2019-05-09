@@ -1,3 +1,4 @@
 secrets.yaml
-*/secrets.yaml
-kubeconfig.yaml
+configmap.yaml
+**/secrets.yaml
+**/configmap.yaml

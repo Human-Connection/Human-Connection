@@ -6,7 +6,12 @@
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
     "moreInfo": "Was ist Human Connection?",
+    "moreInfoURL": "https://human-connection.org",
+    "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo"
+  },
+  "editor": {
+    "placeholder": "Schreib etwas Inspirierendes..."
   },
   "profile": {
     "name": "Mein Profil",
@@ -111,6 +116,10 @@
     },
     "takeAction": {
       "name": "Aktiv werden"
+    },
+    "comment": {
+      "submit": "Kommentiere",
+      "submitted": "Kommentar Gesendet"
     }
   },
   "quotes": {

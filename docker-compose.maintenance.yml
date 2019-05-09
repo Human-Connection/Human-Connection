@@ -1,0 +1,44 @@
+version: "3.4"
+
+services:
+  maintenance:
+    image: humanconnection/maintenance-worker:latest
+    build:
+      context: deployment/legacy-migration/maintenance-worker
+    volumes:
+      - uploads:/uploads
+      - neo4j-data:/data
+      - ./deployment/legacy-migration/maintenance-worker/migration/:/migration
+      - ./deployment/legacy-migration/maintenance-worker/ssh/:/root/.ssh
+    networks:
+      - hc-network
+    environment:
+      - NEO4J_dbms_security_auth__enabled=false
+      - NEO4J_dbms_memory_heap_max__size=2G
+      - GRAPHQL_PORT=4000
+      - GRAPHQL_URI=http://localhost:4000
+      - CLIENT_URI=http://localhost:3000
+      - JWT_SECRET=b/&&7b78BF&fv/Vd
+      - MOCK=false
+      - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
+      - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
+      - NEO4J_apoc_import_file_enabled=true
+      - "SSH_USERNAME=${SSH_USERNAME}"
+      - "SSH_HOST=${SSH_HOST}"
+      - "MONGODB_USERNAME=${MONGODB_USERNAME}"
+      - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
+      - "MONGODB_AUTH_DB=${MONGODB_AUTH_DB}"
+      - "MONGODB_DATABASE=${MONGODB_DATABASE}"
+      - "UPLOADS_DIRECTORY=${UPLOADS_DIRECTORY}"
+    ports:
+      - 7687:7687
+      - 7474:7474
+
+networks:
+  hc-network:
+
+volumes:
+  webapp_node_modules:
+  backend_node_modules:
+  neo4j-data:
+  uploads:

@@ -16,6 +16,9 @@ const setupAuthenticateClient = (params) => {
 
 let createResource
 let authenticateClient
+let createPostVariables
+let createCommentVariables
+
 beforeEach(() => {
   createResource = () => {}
   authenticateClient = () => {
@@ -103,18 +106,21 @@ describe('disable', () => {
           variables = {
             id: 'c47'
           }
-
+          createPostVariables = {
+            id: 'p3',
+            title: 'post to comment on',
+            content: 'please comment on me'
+          }
+          createCommentVariables = {
+            id: 'c47',
+            postId: 'p3',
+            content: 'this comment was created for this post'
+          }
           createResource = async () => {
             await factory.create('User', { id: 'u45', email: 'commenter@example.org', password: '1234' })
-            await factory.authenticateAs({ email: 'commenter@example.org', password: '1234' })
-            await Promise.all([
-              factory.create('Post', { id: 'p3' }),
-              factory.create('Comment', { id: 'c47' })
-            ])
-            await Promise.all([
-              factory.relate('Comment', 'Author', { from: 'u45', to: 'c47' }),
-              factory.relate('Comment', 'Post', { from: 'c47', to: 'p3' })
-            ])
+            const asAuthenticatedUser = await factory.authenticateAs({ email: 'commenter@example.org', password: '1234' })
+            await asAuthenticatedUser.create('Post', createPostVariables)
+            await asAuthenticatedUser.create('Comment', createCommentVariables)
           }
         })
 
@@ -277,18 +283,21 @@ describe('enable', () => {
           variables = {
             id: 'c456'
           }
-
+          createPostVariables = {
+            id: 'p9',
+            title: 'post to comment on',
+            content: 'please comment on me'
+          }
+          createCommentVariables = {
+            id: 'c456',
+            postId: 'p9',
+            content: 'this comment was created for this post'
+          }
           createResource = async () => {
             await factory.create('User', { id: 'u123', email: 'author@example.org', password: '1234' })
-            await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
-            await Promise.all([
-              factory.create('Post', { id: 'p9' }),
-              factory.create('Comment', { id: 'c456' })
-            ])
-            await Promise.all([
-              factory.relate('Comment', 'Author', { from: 'u123', to: 'c456' }),
-              factory.relate('Comment', 'Post', { from: 'c456', to: 'p9' })
-            ])
+            const asAuthenticatedUser = await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
+            await asAuthenticatedUser.create('Post', createPostVariables)
+            await asAuthenticatedUser.create('Comment', createCommentVariables)
 
             const disableMutation = `
               mutation {
