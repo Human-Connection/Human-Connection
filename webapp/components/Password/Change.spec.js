@@ -10,7 +10,6 @@ localVue.use(Styleguide)
 describe('ChangePassword.vue', () => {
   let mocks
   let wrapper
-  let data
 
   beforeEach(() => {
     mocks = {
@@ -35,7 +34,7 @@ describe('ChangePassword.vue', () => {
   describe('mount', () => {
     let wrapper
     const Wrapper = () => {
-      return mount(ChangePassword, { mocks, localVue, data })
+      return mount(ChangePassword, { mocks, localVue })
     }
 
     beforeEach(() => {
@@ -121,8 +120,6 @@ describe('ChangePassword.vue', () => {
         describe('mutation resolves', () => {
           beforeEach(() => {
             wrapper.find('form').trigger('submit')
-            // mocks.$apollo.mutate = jest.fn().mockResolvedValue()
-            // wrapper = Wrapper()
           })
 
           it('calls auth/SET_TOKEN with response', async () => {

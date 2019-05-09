@@ -95,7 +95,7 @@ type User {
   id: ID!
   actorId: String
   name: String
-  email: String
+  email: String!
   slug: String
   password: String!
   avatar: String

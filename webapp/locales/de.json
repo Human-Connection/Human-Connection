@@ -21,6 +21,7 @@
     "following": "Folgt",
     "shouted": "Empfohlen",
     "commented": "Kommentiert",
+    "userAnonym": "Anonymus",
     "socialMedia": "Wo sonst finde ich"
   },
   "notifications": {
@@ -38,8 +39,10 @@
     "data": {
       "name": "Deine Daten",
       "labelName": "Dein Name",
+      "namePlaceholder": "Petra Lustig",
       "labelCity": "Deine Stadt oder Region",
-      "labelBio": "Über dich"
+      "labelBio": "Über dich",
+      "success": "Deine Daten wurden erfolgreich aktualisiert!"
     },
     "security": {
       "name": "Sicherheit",
@@ -78,8 +81,10 @@
     },
     "social-media": {
       "name": "Soziale Medien",
+      "placeholder": "Füge eine Social-Media URL hinzu",
       "submit": "Link hinzufügen",
-      "success": "Profil aktualisiert"
+      "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
+      "successDelete": "Social-Media gelöscht. Profil aktualisiert!"
     }
   },
   "admin": {
