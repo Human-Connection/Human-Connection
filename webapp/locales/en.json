@@ -6,6 +6,8 @@
     "email": "Your Email",
     "password": "Your Password",
     "moreInfo": "What is Human Connection?",
+    "moreInfoURL": "https://human-connection.org/en/",
+    "moreInfoHint": "to the presentation page",
     "hello": "Hello"
   },
   "editor": {
@@ -63,8 +65,10 @@
     },
     "social-media": {
       "name": "Social media",
+      "placeholder": "Add social media url",
       "submit": "Add link",
-      "success": "Updated user profile"
+      "successAdd": "Added social media. Updated user profile!",
+      "successDelete": "Deleted social media. Updated user profile!"
     }
   },
   "admin": {

@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 set -e
 
+SECONDS=0
 SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-echo "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;" | cypher-shell -a $NEO4J_URI
+
+echo "MATCH (n) DETACH DELETE n;" | cypher-shell
+
 for collection in "badges" "categories" "users" "follows" "contributions" "shouts" "comments"
 do
-  echo "Import ${collection}..." && cypher-shell -a $NEO4J_URI < $SCRIPT_DIRECTORY/$collection.cql
+  for chunk in /tmp/mongo-export/splits/$collection/*
+  do
+    mv $chunk /tmp/mongo-export/splits/current-chunk.json
+    echo "Import ${chunk}" && cypher-shell < $SCRIPT_DIRECTORY/$collection.cql
+  done
 done
+echo "Time elapsed: $SECONDS seconds"
