@@ -1,16 +1,10 @@
 <template>
   <div class="field">
     <div class="password-strength-meter">
-      <div
-        class="password-strength-meter-inner"
-        :class="strengthClass"
-      />
+      <div class="password-strength-meter-inner" :class="strengthClass"/>
     </div>
     <p class="help">
-      <span
-        v-if="pass"
-        :class="{ insecure: (passwordStrength < 3) }"
-      >
+      <span v-if="pass" :class="{ insecure: (passwordStrength < 3) }">
         {{ $t('settings.security.change-password.passwordSecurity') }}:
         <strong>{{ $t(`settings.security.change-password.passwordStrength${passwordStrength}`) }}</strong>
       </span>
@@ -40,9 +34,7 @@ export default {
   computed: {
     strengthClass() {
       return `strength-${this.passwordStrength}`
-    }
-  },
-  watch: {
+    },
     /**
      * passwordStrength is the score calculated by zxcvbn
      * @return {Number} Password Strength Score
@@ -57,7 +49,9 @@ export default {
         })
       }
       return score
-    },
+    }
+  },
+  watch: {
     password(pass) {
       // update password when prop is changing
       this.pass = pass || null
