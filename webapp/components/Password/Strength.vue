@@ -43,7 +43,7 @@ export default {
       // update password when prop is changing
       this.pass = pass || null
 
-      // passwordStrength is the score calculated by zxcvbn
+      // strength is the score calculated by zxcvbn
       const strength = !isEmpty(this.pass) ? zxcvbn(this.pass).score : null
       if (strength !== this.strength) {
         this.strength = strength
