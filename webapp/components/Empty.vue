@@ -6,7 +6,7 @@
   >
     <ds-text>
       <hc-image
-        :image-props="{ src: `/img/empty/${this.icon}.svg` }"
+        :image-props="{ src: imgSrc }"
         width="80"
         class="hc-empty-icon"
         style="margin-bottom: 5px"
@@ -55,6 +55,11 @@ export default {
     margin: {
       type: [String, Object],
       default: 'x-large'
+    }
+  },
+  computed: {
+    imgSrc() {
+      return `/img/empty/${this.icon}.svg`
     }
   }
 }

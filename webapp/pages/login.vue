@@ -34,7 +34,7 @@
                 class="login-image"
                 alt="Human Connection"
                 src="/img/sign-up/humanconnection.svg"
-              />
+              >
             </ds-space>
           </ds-flex-item>
           <ds-flex-item

@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Styleguide from '@human-connection/styleguide'
-import Tag from './index'
+import Tag from './'
 
 const localVue = createLocalVue()
 localVue.use(Styleguide)
