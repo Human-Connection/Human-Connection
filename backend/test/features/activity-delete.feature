@@ -6,7 +6,7 @@ Feature: Delete an object
     And we have the following users in our database:
       | Slug          |
       | spongebob     |
-    And I send a POST request with the following activity to "/inbox":
+    And we have the following post in our database:
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
