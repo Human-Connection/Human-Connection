@@ -9,6 +9,7 @@ describe('report', () => {
   let headers
   let returnedObject
   let variables
+  let createPostVariables
 
   beforeEach(async () => {
     returnedObject = '{ description }'
@@ -128,8 +129,14 @@ describe('report', () => {
 
         describe('reported resource is a comment', () => {
           beforeEach(async () => {
-            await factory.authenticateAs({ email: 'test@example.org', password: '1234' })
-            await factory.create('Comment', { id: 'c34', content: 'Robert getting tired.' })
+            createPostVariables = {
+              id: 'p1',
+              title: 'post to comment on',
+              content: 'please comment on me'
+            }
+            const asAuthenticatedUser = await factory.authenticateAs({ email: 'test@example.org', password: '1234' })
+            await asAuthenticatedUser.create('Post', createPostVariables)
+            await asAuthenticatedUser.create('Comment', { postId: 'p1', id: 'c34', content: 'Robert getting tired.' })
             variables = { id: 'c34' }
           })
 

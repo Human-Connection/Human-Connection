@@ -6,6 +6,8 @@
     "email": "Your Email",
     "password": "Your Password",
     "moreInfo": "What is Human Connection?",
+    "moreInfoURL": "https://human-connection.org/en/",
+    "moreInfoHint": "to the presentation page",
     "hello": "Hello"
   },
   "editor": {
@@ -19,6 +21,7 @@
     "following": "Following",
     "shouted": "Shouted",
     "commented": "Commented",
+    "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find"
   },
   "notifications": {
@@ -36,14 +39,29 @@
     "data": {
       "name": "Your data",
       "labelName": "Your Name",
+      "namePlaceholder": "Femanon Funny",
       "labelCity": "Your City or Region",
-      "labelBio": "About You"
+      "labelBio": "About You",
+      "success": "Your data was successfully updated!"
     },
     "security": {
       "name": "Security",
       "change-password": {
         "button": "Change password",
-        "success": "Password successfully changed!"
+        "success": "Password successfully changed!",
+        "label-old-password": "Your old password",
+        "label-new-password": "Your new password",
+        "label-new-password-confirm": "Confirm new password",
+        "message-old-password-required": "Enter your old password",
+        "message-new-password-required": "Enter a new password",
+        "message-new-password-confirm-required": "Confirm your new password",
+        "message-new-password-missmatch": "Type the same password again",
+        "passwordSecurity": "Password security",
+        "passwordStrength0": "Very insecure password",
+        "passwordStrength1": "Insecure password",
+        "passwordStrength2": "Mediocre password",
+        "passwordStrength3": "Strong password",
+        "passwordStrength4": "Very strong password"
       }
     },
     "invites": {
@@ -63,8 +81,10 @@
     },
     "social-media": {
       "name": "Social media",
+      "placeholder": "Add social media url",
       "submit": "Add link",
-      "success": "Updated user profile"
+      "successAdd": "Added social media. Updated user profile!",
+      "successDelete": "Deleted social media. Updated user profile!"
     }
   },
   "admin": {
@@ -114,6 +134,14 @@
     },
     "takeAction": {
       "name": "Take action"
+    },
+    "delete": {
+      "submit": "Delete",
+      "cancel": "Cancel",
+      "success": "Post deleted successfully",
+      "title": "Delete Post",
+      "type": "Contribution",
+      "message": "Do you really want to delete the post \"<b>{name}</b>\"?"
     },
     "comment": {
       "submit": "Comment",

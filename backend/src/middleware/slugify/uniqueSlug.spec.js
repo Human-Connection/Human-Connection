@@ -15,4 +15,11 @@ describe('uniqueSlug', () => {
       .mockResolvedValueOnce(true)
     expect(uniqueSlug(string, isUnique)).resolves.toEqual('hello-world-1')
   })
+
+  it('slugify null string', () => {
+    const string = null
+    const isUnique = jest.fn()
+      .mockResolvedValue(true)
+    expect(uniqueSlug(string, isUnique)).resolves.toEqual('anonymous')
+  })
 })

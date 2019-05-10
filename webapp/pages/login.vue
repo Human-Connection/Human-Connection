@@ -32,8 +32,8 @@
             >
               <img
                 class="login-image"
-                src="/img/sign-up/humanconnection.svg"
                 alt="Human Connection"
+                src="/img/sign-up/humanconnection.svg"
               >
             </ds-space>
           </ds-flex-item>
@@ -79,8 +79,8 @@
               </ds-button>
               <ds-space margin="x-small">
                 <a
-                  href="https://human-connection.org"
-                  title="zur Präsentationsseite"
+                  :href="$t('login.moreInfoURL')"
+                  :title="$t('login.moreInfoHint')"
                   target="_blank"
                 >
                   {{ $t('login.moreInfo') }}
