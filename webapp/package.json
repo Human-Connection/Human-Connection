@@ -1,9 +1,13 @@
 {
   "name": "hc-webapp-next",
   "version": "1.0.0",
-  "description": "Human Connection GraphQL UI Prototype",
-  "author": "Grzegorz Leoniec",
-  "private": true,
+  "description": "Human Connection Frontend",
+  "authors": [
+    "Grzegorz Leoniec (appinteractive)",
+    "ulfgebhardt"
+  ],
+  "author": "",
+  "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "dev:styleguide": "cross-env STYLEGUIDE_DEV=true yarn dev",
@@ -71,7 +75,8 @@
     "vue-count-to": "~1.0.13",
     "vue-izitoast": "1.1.2",
     "vue-sweetalert-icons": "~3.2.0",
-    "vuex-i18n": "~1.11.0"
+    "vuex-i18n": "~1.11.0",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@babel/core": "~7.4.4",
