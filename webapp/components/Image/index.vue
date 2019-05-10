@@ -15,8 +15,8 @@ export default {
   },
   computed: {
     imageSrc() {
-      // TODO implement
-      return 'this should be an image source attribute'
+      const src = this.imageProps.src
+      return src.startsWith('/') ? src.replace('/', '/api/') : src
     }
   }
 }

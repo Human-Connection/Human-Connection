@@ -5,13 +5,13 @@
     :margin="margin"
   >
     <ds-text>
-      <img
-        :src="iconPath"
+      <hc-image
+        :image-props="{ src: `/img/empty/${this.icon}.svg` }"
         width="80"
         class="hc-empty-icon"
         style="margin-bottom: 5px"
         alt="Empty"
-      ><br>
+      /><br>
       <ds-text
         v-show="message"
         class="hc-empty-message"
@@ -24,8 +24,12 @@
 </template>
 
 <script>
+import HcImage from '~/components/Image'
 export default {
   name: 'HcEmpty',
+  components: {
+    HcImage
+  },
   props: {
     /**
      * Icon that should be shown
@@ -51,11 +55,6 @@ export default {
     margin: {
       type: [String, Object],
       default: 'x-large'
-    }
-  },
-  computed: {
-    iconPath() {
-      return `/img/empty/${this.icon}.svg`
     }
   }
 }
