@@ -30,10 +30,10 @@
               margin-bottom="xxx-small"
               centered
             >
-              <hc-image
+              <img
                 class="login-image"
                 alt="Human Connection"
-                :image-props="{ src: '/img/sign-up/humanconnection.svg' }" 
+                src="/img/sign-up/humanconnection.svg"
               />
             </ds-space>
           </ds-flex-item>
@@ -96,14 +96,12 @@
 
 <script>
 import LocaleSwitch from '~/components/LocaleSwitch'
-import HcImage from '~/components/Image'
 
 import gql from 'graphql-tag'
 
 export default {
   components: {
-    LocaleSwitch,
-    HcImage
+    LocaleSwitch
   },
   layout: 'blank',
   data() {
