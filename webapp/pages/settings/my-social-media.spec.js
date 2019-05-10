@@ -71,6 +71,40 @@ describe('my-social-media.vue', () => {
         const socialMediaLink = wrapper.find('a').attributes().href
         expect(socialMediaLink).toBe(socialMediaUrl)
       })
+
+      beforeEach(() => {
+        mocks = {
+          $t: jest.fn(),
+          $apollo: {
+            mutate: jest
+              .fn()
+              .mockRejectedValue({ message: 'Ouch!' })
+              .mockResolvedValueOnce({
+                data: { DeleteSocialMeda: { id: 's1', url: socialMediaUrl } }
+              })
+          },
+          $toast: {
+            error: jest.fn(),
+            success: jest.fn()
+          }
+        }
+        getters = {
+          'auth/user': () => {
+            return {
+              socialMedia: [{ id: 's1', url: socialMediaUrl }]
+            }
+          }
+        }
+      })
+
+      it('displays a trash sympol after a social media and allows the user to delete it', () => {
+        wrapper = Wrapper()
+        const deleteSelector = wrapper.find({ name: 'delete' })
+        expect(deleteSelector).toEqual({ selector: 'Component' })
+        const icon = wrapper.find({ name: 'trash' })
+        icon.trigger('click')
+        expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
+      })
     })
 
     describe('currentUser does not have a social media account linked', () => {

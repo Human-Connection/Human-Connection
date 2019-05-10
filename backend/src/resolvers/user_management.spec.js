@@ -339,7 +339,7 @@ describe('do not expose private RSA key', () => {
       email: 'apfel-strudel@test.org'
     }
     await client.request(gql`
-      mutation($id: ID, $password: String!, $slug: String, $name: String, $email: String) {
+      mutation($id: ID, $password: String!, $slug: String, $name: String, $email: String!) {
         CreateUser(id: $id, password: $password, slug: $slug, name: $name, email: $email) {
           id
         }

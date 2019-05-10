@@ -15,7 +15,7 @@
     "test:jest:cmd": "wait-on tcp:4001 tcp:4123 && jest --forceExit --detectOpenHandles --runInBand",
     "test:cucumber:cmd": "wait-on tcp:4001 tcp:4123 && cucumber-js --require-module @babel/register --exit test/",
     "test:jest:cmd:debug": "wait-on tcp:4001 tcp:4123 && node --inspect-brk ./node_modules/.bin/jest -i --forceExit --detectOpenHandles --runInBand",
-    "test:jest": "run-p --race test:before:* 'test:jest:cmd {@}' --",
+    "test:jest": "run-p --race test:before:* \"test:jest:cmd {@}\" --",
     "test:cucumber": " cross-env CLIENT_URI=http://localhost:4123 run-p --race test:before:* 'test:cucumber:cmd {@}' --",
     "test:jest:debug": "run-p --race test:before:* 'test:jest:cmd:debug {@}' --",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
@@ -27,7 +27,17 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true,
-    "coverageReporters": ["text", "lcov"],
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/test/**",
+      "!**/dist/**",
+      "!**/src/**/?(*.)+(spec|test).js?(x)"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
     "testMatch": [
       "**/src/**/?(*.)+(spec|test).js?(x)"
     ]

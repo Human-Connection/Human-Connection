@@ -1,6 +1,6 @@
 import slugify from 'slug'
 export default async function uniqueSlug (string, isUnique) {
-  let slug = slugify(string, {
+  let slug = slugify(string || 'anonymous', {
     lower: true
   })
   if (await isUnique(slug)) return slug
