@@ -1,0 +1,169 @@
+codecov:
+  #token: uuid  # Your private repository token
+  #url: "http"  # for Codecov Enterprise customers
+  #slug: "owner/repo"  # for Codecov Enterprise customers
+  #branch: master  # override the default branch
+  #bot: username  # set user whom will be the consumer of oauth requests
+  #ci:  # Custom CI domains if Codecov does not identify them automatically
+  #  - ci.domain.com
+  #  - !provider  # ignore these providers when checking if CI passed
+  #               # ex. You may test on Travis, Circle, and AppVeyor, but only need
+  #               # to check if Travis passes. Therefore add: !circle and !appveyor
+  notify:
+    #after_n_builds: null      # number of expected builds to recieve before sending notifications
+    #                          # after: check ci status unless disabled via require_ci_to_pass
+    require_ci_to_pass: yes   # yes: will delay sending notifications until all ci is finished
+                              # no: will send notifications without checking ci status and wait till "after_n_builds" are uploaded
+    #countdown: null           # number of seconds to wait before first ci build check
+    #delay: null               # number of seconds to wait between ci build checks
+
+coverage:
+  precision: 2  # 2 = xx.xx%, 0 = xx%
+  round: nearest # down|up|nearest - default down
+  # range: 50...60 # default 70...90. red...green
+
+  #notify:
+  #  irc:
+  #    default:
+  #      server: "chat.freenode.net"|encrypted
+  #      branches: null  # all branches by default
+  #      threshold: 1%
+  #      message: "Coverage {{changed}} for {{owner}}/{{repo}}"  # customize the message
+  #      flags: null
+  #      paths: null
+  #
+  #  slack:
+  #    default:
+  #      url: "http"|encrypted
+  #      threshold: 1%
+  #      branches: null  # all branches by default
+  #      message: "Coverage {{changed}} for {{owner}}/{{repo}}"  # customize the message
+  #      attachments: "sunburst, diff"
+  #      only_pulls: false
+  #      flags: null
+  #      paths: null
+  #
+  #  email:
+  #    default:
+  #      to:
+  #        - example@domain.com
+  #        - &author
+  #      threshold: 1%
+  #      only_pulls: false
+  #      layout: header, diff, trends
+  #      flags: null
+  #      paths: null
+  #
+  #  hipchat:
+  #    default:
+  #      url: "http"|encrypted
+  #      room: name|id
+  #      threshold: 1%
+  #      token: encrypted
+  #      branches: null  # all branches by default
+  #      notify: false  # if the hipchat message is silent or loud (default false)
+  #      message: "Coverage {{changed}} for {{owner}}/{{repo}}"  # customize the message
+  #      flags: null
+  #      paths: null
+  #
+  #  gitter:
+  #    url: "http"|encrypted
+  #    threshold: 1%
+  #    branches: null  # all branches by default
+  #    message: "Coverage {{changed}} for {{owner}}/{{repo}}"  # customize the message
+  #
+  #  webhooks:
+  #    _name_:
+  #      url: "http"|encrypted
+  #      threshold: 1%
+  #      branches: null  # all branches by default
+
+  status:
+    project:
+      default: false  # disable the default status that measures entire project
+      backend:  # declare a new status context "backend"
+        against: parent
+        target: auto
+        threshold: null
+        #threshold: 1%
+        base: auto
+        if_no_uploads: error
+        if_not_found: success
+        if_ci_failed: error
+        only_pulls: false
+        #branches:
+        #  - master
+        #flags:
+        #  - integration
+        paths:
+          - backend/  # only include coverage in "backend/" folder
+      webapp:  # declare a new status context "frontend"
+        against: parent
+        target: auto
+        threshold: null
+        #threshold: 1%
+        base: auto
+        if_no_uploads: error
+        if_not_found: success
+        if_ci_failed: error
+        only_pulls: false
+        #branches:
+        #  - master
+        #flags:
+        #  - integration
+        paths:
+          - webapp/ # only include coverage in "webapp/" folder
+
+    patch:
+      default: false
+    #    against: parent
+    #    target: 80%
+    #    branches: null
+    #    if_no_uploads: success
+    #    if_not_found: success
+    #    if_ci_failed: error
+    #    only_pulls: false
+    #    flags:
+    #      - integration
+    #    paths:
+    #      - folder
+
+    #changes:
+    #  default:
+    #    against: parent
+    #    branches: null
+    #    if_no_uploads: error
+    #    if_not_found: success
+    #    if_ci_failed: error
+    #    only_pulls: false
+    #    flags:
+    #      - integration
+    #    paths:
+    #      - folder
+
+  #flags:
+  #  integration:
+  #    branches:
+  #      - master
+  #    ignore:
+  #      - app/ui
+
+  #ignore: # files and folders for processing
+  #  - tests/*
+
+  #fixes:
+  #  - "old_path::new_path"
+
+comment:
+  # layout options are quite limited in v4.x - there have been way more options in v1.0
+  layout: reach, diff, flags, files # mostly old options: header, diff, uncovered, reach, files, tree, changes, sunburst, flags
+  behavior: new # default = posts once then update, posts new if delete
+                # once = post once then updates
+                # new = delete old, post new
+                # spammy = post new
+  require_changes: false  # if true: only post the comment if coverage changes
+  require_base: no        # [yes :: must have a base report to post]
+  require_head: no        # [yes :: must have a head report to post]
+  branches: null          # branch names that can post comment
+  flags: null
+  paths: null

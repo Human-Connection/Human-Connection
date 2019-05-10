@@ -15,7 +15,7 @@
     "test:jest:cmd": "wait-on tcp:4001 tcp:4123 && jest --forceExit --detectOpenHandles --runInBand",
     "test:cucumber:cmd": "wait-on tcp:4001 tcp:4123 && cucumber-js --require-module @babel/register --exit test/",
     "test:jest:cmd:debug": "wait-on tcp:4001 tcp:4123 && node --inspect-brk ./node_modules/.bin/jest -i --forceExit --detectOpenHandles --runInBand",
-    "test:jest": "run-p --race test:before:* 'test:jest:cmd {@}' --",
+    "test:jest": "run-p --race test:before:* \"test:jest:cmd {@}\" --",
     "test:cucumber": " cross-env CLIENT_URI=http://localhost:4123 run-p --race test:before:* 'test:cucumber:cmd {@}' --",
     "test:jest:debug": "run-p --race test:before:* 'test:jest:cmd:debug {@}' --",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
@@ -27,7 +27,17 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true,
-    "coverageReporters": ["text", "lcov"],
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/test/**",
+      "!**/dist/**",
+      "!**/src/**/?(*.)+(spec|test).js?(x)"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
     "testMatch": [
       "**/src/**/?(*.)+(spec|test).js?(x)"
     ]
@@ -38,7 +48,7 @@
     "apollo-client": "~2.5.1",
     "apollo-link-context": "~1.0.14",
     "apollo-link-http": "~1.5.14",
-    "apollo-server": "~2.4.8",
+    "apollo-server": "~2.5.0",
     "bcryptjs": "~2.4.3",
     "cheerio": "~1.0.0-rc.3",
     "cors": "~2.8.5",
@@ -92,7 +102,7 @@
     "eslint-plugin-promise": "~4.1.1",
     "eslint-plugin-standard": "~4.0.0",
     "graphql-request": "~1.8.2",
-    "jest": "~24.7.1",
+    "jest": "~24.8.0",
     "nodemon": "~1.19.0",
     "supertest": "~4.0.2"
   }

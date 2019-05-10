@@ -80,8 +80,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       this.disabled = true
-      try {
-        const { data } = await this.$apollo
+      await this.$apollo
         .mutate({
           mutation: gql`
             mutation($postId: ID, $content: String!) {
@@ -96,16 +95,16 @@ export default {
             content: this.form.content
           }
         })
-        this.$root.$emit('refetchPostComments', data.CreateComment)
-        this.clear()
-        this.$toast.success(this.$t('post.comment.submitted'))
-      } catch (err) {
-        this.$toast.error(err.message)
-
-      } finally {
-        this.loading = false
-        this.disabled = false
-      }
+        .then(res => {
+          this.loading = false
+          this.$root.$emit('refetchPostComments')
+          this.clear()
+          this.$toast.success(this.$t('post.comment.submitted'))
+          this.disabled = false
+        })
+        .catch(err => {
+          this.$toast.error(err.message)
+        })
     }
   },
   apollo: {

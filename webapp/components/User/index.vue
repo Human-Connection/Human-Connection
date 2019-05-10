@@ -5,14 +5,14 @@
     >
       <ds-avatar
         style="display: inline-block; vertical-align: middle;"
-        size="32px"
+        size="small"
       />
     </div>
     <div style="display: inline-block; height: 100%; vertical-align: middle;">
       <b
         class="username"
         style="vertical-align: middle;"
-      >Anonymus</b>
+      >{{ $t('profile.userAnonym') }}</b>
     </div>
   </div>
   <dropdown
@@ -38,16 +38,16 @@
           >
             <ds-avatar
               :image="user.avatar"
-              :name="user.name"
+              :name="userName"
               style="display: inline-block; vertical-align: middle;"
-              size="32px"
+              size="small"
             />
           </div>
           <div style="display: inline-block; height: 100%; vertical-align: middle;">
             <b
               class="username"
               style="vertical-align: middle;"
-            >{{ user.name | truncate(trunc, 18) }}</b>
+            >{{ userName | truncate(18) }}</b>
           </div>
           <!-- Time -->
           <div
@@ -141,8 +141,8 @@
 import { mapGetters } from 'vuex'
 
 import HcRelativeDateTime from '~/components/RelativeDateTime'
-import HcFollowButton from '~/components/FollowButton.vue'
-import HcBadges from '~/components/Badges.vue'
+import HcFollowButton from '~/components/FollowButton'
+import HcBadges from '~/components/Badges'
 import Dropdown from '~/components/Dropdown'
 
 export default {
@@ -173,6 +173,10 @@ export default {
       const { id, slug } = this.user
       if (!(id && slug)) return ''
       return { name: 'profile-id-slug', params: { slug, id } }
+    },
+    userName() {
+      const { name } = this.user || {}
+      return name || this.$t('profile.userAnonym')
     }
   }
 }

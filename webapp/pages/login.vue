@@ -32,8 +32,8 @@
             >
               <img
                 class="login-image"
-                src="/img/sign-up/humanconnection.svg"
                 alt="Human Connection"
+                src="/img/sign-up/humanconnection.svg"
               >
             </ds-space>
           </ds-flex-item>
