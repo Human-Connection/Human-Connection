@@ -1,12 +1,18 @@
 <template>
   <div class="field">
     <div class="password-strength-meter">
-      <div class="password-strength-meter-inner" :class="strengthClass"/>
+      <div
+        class="password-strength-meter-inner"
+        :class="'strength-' + strength"
+      />
     </div>
     <p class="help">
-      <span v-if="pass" :class="{ insecure: (passwordStrength < 3) }">
+      <span
+        v-if="pass"
+        :class="{ insecure: !isSecure }"
+      >
         {{ $t('settings.security.change-password.passwordSecurity') }}:
-        <strong>{{ $t(`settings.security.change-password.passwordStrength${passwordStrength}`) }}</strong>
+        <strong>{{ $t(`settings.security.change-password.passwordStrength${strength}`) }}</strong>
       </span>
       <span v-else>&nbsp;</span>
     </p>
@@ -27,34 +33,26 @@ export default {
   },
   data() {
     return {
-      lastScore: 0,
+      strength: null,
+      isSecure: false,
       pass: this.password || null
-    }
-  },
-  computed: {
-    strengthClass() {
-      return `strength-${this.passwordStrength}`
-    },
-    /**
-     * passwordStrength is the score calculated by zxcvbn
-     * @return {Number} Password Strength Score
-     */
-    passwordStrength() {
-      const score = !isEmpty(this.pass) ? zxcvbn(this.pass).score : 'empty'
-      if (score !== this.lastScore) {
-        this.lastScore = score
-        this.$emit('change', {
-          score,
-          isSecure: Boolean(score >= 3)
-        })
-      }
-      return score
     }
   },
   watch: {
     password(pass) {
       // update password when prop is changing
       this.pass = pass || null
+
+      // passwordStrength is the score calculated by zxcvbn
+      const strength = !isEmpty(this.pass) ? zxcvbn(this.pass).score : null
+      if (strength !== this.strength) {
+        this.strength = strength
+        this.isSecure = Boolean(strength >= 3)
+        this.$emit('change', {
+          strength,
+          isSecure: this.isSecure
+        })
+      }
     }
   }
 }
