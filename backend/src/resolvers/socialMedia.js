@@ -3,7 +3,10 @@ import { neo4jgraphql } from 'neo4j-graphql-js'
 export default {
   Mutation: {
     CreateSocialMedia: async (object, params, context, resolveInfo) => {
-      const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, true)
+      /**
+       * TODO?: Creates double Nodes!
+      */
+      const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
       const session = context.driver.session()
       await session.run(
         `MATCH (owner:User {id: $userId}), (socialMedia:SocialMedia {id: $socialMediaId})
@@ -14,6 +17,11 @@ export default {
         }
       )
       session.close()
+
+      return socialMedia
+    },
+    DeleteSocialMedia: async (object, params, context, resolveInfo) => {
+      const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       return socialMedia
     }

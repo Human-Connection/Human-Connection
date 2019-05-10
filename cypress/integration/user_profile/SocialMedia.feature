@@ -19,3 +19,11 @@ Feature: List Social Media Accounts
     Given I have added a social media link
     When people visit my profile page
     Then they should be able to see my social media links
+
+  Scenario: Deleting Social Media
+    Given I am on the "settings" page
+    And I click on the "Social media" link
+    Then I should be on the "/settings/my-social-media" page
+    Given I have added a social media link
+    When I delete a social media link
+    Then it gets deleted successfully

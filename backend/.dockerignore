@@ -15,7 +15,7 @@ node_modules/
 scripts/
 dist/
 
-db-migration-worker/
+maintenance-worker/
 neo4j/
 
 public/uploads/*

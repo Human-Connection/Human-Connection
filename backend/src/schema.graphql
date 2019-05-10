@@ -16,6 +16,7 @@ type Query {
       LIMIT $limit
     """
   )
+  CommentByPost(postId: ID!): [Comment]!
 }
 type Mutation {
   # Get a JWT Token for the given Email and password
@@ -94,7 +95,7 @@ type User {
   id: ID!
   actorId: String
   name: String
-  email: String
+  email: String!
   slug: String
   password: String!
   avatar: String
@@ -210,6 +211,7 @@ type Post {
 type Comment {
   id: ID!
   activityId: String
+  postId: ID
   author: User @relation(name: "WROTE", direction: "IN")
   content: String!
   contentExcerpt: String

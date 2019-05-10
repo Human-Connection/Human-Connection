@@ -75,6 +75,7 @@ const permissions = shield({
     DeleteBadge: isAdmin,
     AddUserBadges: isAdmin,
     CreateSocialMedia: isAuthenticated,
+    DeleteSocialMedia: isAuthenticated,
     // AddBadgeRewarded: isAdmin,
     // RemoveBadgeRewarded: isAdmin,
     reward: isAdmin,
@@ -86,7 +87,8 @@ const permissions = shield({
     unshout: isAuthenticated,
     changePassword: isAuthenticated,
     enable: isModerator,
-    disable: isModerator
+    disable: isModerator,
+    CreateComment: isAuthenticated
     // CreateUser: allow,
   },
   User: {
