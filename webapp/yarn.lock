@@ -710,10 +710,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@human-connection/styleguide@0.5.15":
-  version "0.5.15"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.15.tgz#87142957b1ae03749e99db287adb6eafc5e2980a"
-  integrity sha512-BsYwXhPZutRVxyyvCWYkSsw8rEoUTimFeH4GdA9u9gohfS+opVl56KjiBPpepHsaVjbnuL8932BD/47QdM5cZg==
+"@human-connection/styleguide@0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.17.tgz#99816579616c8d5be6c66ee86c39cb6c4e694878"
+  integrity sha512-Qlo29eOi97lHls40Ms1hbGC29Aoz/W6BLoX/no5TQgHlP4qm+OK7Ra75g0sbj3a2x1Q4mZthUDWcqtjTYf6brw==
   dependencies:
     vue "^2.6.6"
 
