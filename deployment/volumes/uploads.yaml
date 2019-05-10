@@ -4,6 +4,8 @@
   metadata:
     name: uploads-claim
     namespace: human-connection
+    labels:
+      app: human-connection
   spec:
     accessModes:
       - ReadWriteOnce
