@@ -10,7 +10,10 @@
           v-for="link in socialMediaLinks"
           :key="link.id"
         >
-          <a :href="link.url">
+          <a
+            :href="link.url"
+            target="_blank"
+          >
             <hc-image
               :image-props="{ src: link.favicon }"
               alt="Social Media link"
