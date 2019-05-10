@@ -1,4 +1,4 @@
-# Frontend tests
+# Frontend Tests
 
 We are using `Jest` as our test runner, along with `vue-test-utils`.
 
