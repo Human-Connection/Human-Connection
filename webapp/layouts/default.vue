@@ -48,7 +48,7 @@
                     <ds-avatar
                       :image="user.avatar"
                       :name="user.name"
-                      size="42"
+                      size="small"
                     />
                     <ds-icon
                       size="xx-small"
@@ -61,7 +61,8 @@
                   slot-scope="{closeMenu}"
                 >
                   <div class="avatar-menu-popover">
-                    {{ $t('login.hello') }} <b>{{ user.name }}</b>
+                    {{ $t('login.hello') }}
+                    <b>{{ userName }}</b>
                     <template v-if="user.role !== 'user'">
                       <ds-text
                         color="softer"
@@ -83,7 +84,8 @@
                         :parents="item.parents"
                         @click.native="closeMenu(false)"
                       >
-                        <ds-icon :name="item.route.icon" /> {{ item.route.name }}
+                        <ds-icon :name="item.route.icon" />
+                        {{ item.route.name }}
                       </ds-menu-item>
                     </ds-menu>
                     <hr>
@@ -91,7 +93,8 @@
                       class="logout-link"
                       :to="{ name: 'logout'}"
                     >
-                      <ds-icon name="sign-out" /> {{ $t('login.logout') }}
+                      <ds-icon name="sign-out" />
+                      {{ $t('login.logout') }}
                     </nuxt-link>
                   </div>
                 </template>
@@ -146,6 +149,10 @@ export default {
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending'
     }),
+    userName() {
+      const { name } = this.user || {}
+      return name || this.$t('profile.userAnonym')
+    },
     routes() {
       if (!this.user.slug) {
         return []
