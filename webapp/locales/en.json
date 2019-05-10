@@ -135,6 +135,14 @@
     "takeAction": {
       "name": "Take action"
     },
+    "delete": {
+      "submit": "Delete",
+      "cancel": "Cancel",
+      "success": "Post deleted successfully",
+      "title": "Delete Post",
+      "type": "Contribution",
+      "message": "Do you really want to delete the post \"<b>{name}</b>\"?"
+    },
     "comment": {
       "submit": "Comment",
       "submitted": "Comment Submitted"

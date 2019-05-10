@@ -97,8 +97,8 @@ export default {
         })
         .then(res => {
           this.loading = false
-          this.$root.$emit('refetchPostComments', res.data.CreateComment)
-          this.$refs.editor.clear()
+          this.$root.$emit('refetchPostComments')
+          this.clear()
           this.$toast.success(this.$t('post.comment.submitted'))
           this.disabled = false
         })
