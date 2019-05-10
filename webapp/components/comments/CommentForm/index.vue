@@ -45,7 +45,7 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 
 export default {
   components: {
@@ -66,7 +66,7 @@ export default {
     }
   },
   created() {
-    this.handleSubmit = _.debounce(this.handleSubmit, 500)
+    this.handleSubmit = debounce(this.handleSubmit, 500)
   },
   methods: {
     updateEditorContent(value) {
@@ -99,16 +99,16 @@ export default {
             content: this.form.content
           }
         })
-      .then(res => {
-        this.loading = false
-        this.$root.$emit('refetchPostComments')
-        this.clear()
-        this.$toast.success(this.$t('post.comment.submitted'))
-        this.disabled = false
-      })
-      .catch(err => {
-        this.$toast.error(err.message)
-      })
+        .then(() => {
+          this.loading = false
+          this.$root.$emit('refetchPostComments')
+          this.clear()
+          this.$toast.success(this.$t('post.comment.submitted'))
+          this.disabled = false
+        })
+        .catch(err => {
+          this.$toast.error(err.message)
+        })
     }
   },
   apollo: {

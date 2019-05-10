@@ -2,8 +2,12 @@ import { config, mount, createLocalVue, createWrapper } from '@vue/test-utils'
 import CommentForm from './index.vue'
 import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
+import { debounce } from 'lodash'
 
 const localVue = createLocalVue()
+
+jest.unmock('lodash')
+const lodash = require.requireActual('lodash')
 
 localVue.use(Styleguide)
 
@@ -38,6 +42,7 @@ describe('CommentForm.vue', () => {
   })
 
   describe('mount', () => {
+    lodash.debounce = jest.fn(() => mocks.$apollo.mutate)
     const Wrapper = () => {
       return mount(CommentForm, { mocks, localVue, propsData })
     }
@@ -61,7 +66,7 @@ describe('CommentForm.vue', () => {
     })
 
     describe('mutation resolves', () => {
-      beforeEach(async () => {
+      beforeEach(() => {
         wrapper.vm.updateEditorContent('this is a comment')
         wrapper.find('form').trigger('submit')
       })
