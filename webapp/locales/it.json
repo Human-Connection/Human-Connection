@@ -15,13 +15,15 @@
     "followers": "Seguenti",
     "following": "Seguendo",
     "shouted": "Gridato",
-    "commented": "Commentato"
+    "commented": "Commentato",
+    "userAnonym": "Anonymous"
   },
   "settings": {
     "name": "Impostazioni",
     "data": {
       "name": "I tuoi dati",
       "labelName": "Nome",
+      "namePlaceholder": "Anonymous",
       "labelCity": "La tua città o regione",
       "labelBio": "Su di te"
     },
