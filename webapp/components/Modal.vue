@@ -14,19 +14,28 @@
       :name="name"
       @close="close"
     />
+    <delete-modal
+      v-if="open === 'delete'"
+      :id="data.resource.id"
+      :type="data.type"
+      :name="name"
+      @close="close"
+    />
   </div>
 </template>
 
 <script>
 import DisableModal from '~/components/Modal/DisableModal'
 import ReportModal from '~/components/Modal/ReportModal'
+import DeleteModal from '~/components/Modal/DeleteModal'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Modal',
   components: {
     DisableModal,
-    ReportModal
+    ReportModal,
+    DeleteModal
   },
   computed: {
     ...mapGetters({

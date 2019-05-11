@@ -88,6 +88,14 @@
     },
     "takeAction": {
       "name": "Tomar acción"
+    },
+    "delete": {
+      "submit": "Borrar",
+      "cancel": "Cancelar",
+      "success": "Mensaje borrado satisfactoriamente",
+      "title": "Borrar mensaje",
+      "type": "Mensaje",
+      "message": "¿Realmente quieres borrar el mensaje \"<b>{name}</b>\"?"
     }
   },
   "quotes": {

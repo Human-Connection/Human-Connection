@@ -48,7 +48,7 @@
                     <ds-avatar
                       :image="user.avatar"
                       :name="user.name"
-                      size="42"
+                      size="small"
                     />
                     <ds-icon
                       size="xx-small"

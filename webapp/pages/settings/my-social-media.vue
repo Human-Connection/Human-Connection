@@ -14,12 +14,12 @@
             :href="link.url"
             target="_blank"
           >
-            <img
-              :src="link.favicon"
+            <hc-image
+              :image-props="{ src: link.favicon }"
               alt="Social Media link"
               width="16"
               height="16"
-            >
+            />
             {{ link.url }}
           </a>
           &nbsp;&nbsp; <span class="layout-leave-active">|</span> &nbsp;&nbsp;
@@ -61,8 +61,12 @@
 <script>
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
+import HcImage from '~/components/Image'
 
 export default {
+  components: {
+    HcImage
+  },
   data() {
     return {
       value: ''
