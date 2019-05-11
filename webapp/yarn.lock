@@ -8661,6 +8661,13 @@ proper-lockfile@^4.1.1:
     retry "^0.12.0"
     signal-exit "^3.0.2"
 
+prosemirror-collab@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/prosemirror-collab/-/prosemirror-collab-1.1.1.tgz#c8f5d951abaeac8a80818b6bd960f5a392b35b3f"
+  integrity sha512-BpXIB3WBD7UvgxuiasKOxlAZ78TTOdW+SQN4bbJan995tVx/wM/OZXtRJebS+tSWWAbRisHaO3ciFo732vuvdA==
+  dependencies:
+    prosemirror-state "^1.0.0"
+
 prosemirror-commands@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/prosemirror-commands/-/prosemirror-commands-1.0.7.tgz#e5a2ba821e29ea7065c88277fe2c3d7f6b0b9d37"
@@ -8737,17 +8744,6 @@ prosemirror-state@^1.0.0, prosemirror-state@^1.2.2, prosemirror-state@^1.2.3:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
 
-prosemirror-tables@^0.7.11:
-  version "0.7.11"
-  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.7.11.tgz#400317df5898473f8c33eef8f8016451d0d1ceed"
-  integrity sha512-IOvz4sE4RgEeI8aKbis6ADqXEZlqnU1aZ/hdZLj6F74HeCGv5cC/hnOkhlip+4IaQvqn1u3oyBWKMzjGlUJuww==
-  dependencies:
-    prosemirror-keymap "^1.0.0"
-    prosemirror-model "^1.0.0"
-    prosemirror-state "^1.0.0"
-    prosemirror-transform "^1.0.0"
-    prosemirror-view "^1.0.0"
-
 prosemirror-tables@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.8.0.tgz#30d3adb388b3310b47605e615753521a2a4ca77c"
@@ -8759,7 +8755,7 @@ prosemirror-tables@^0.8.0:
     prosemirror-transform "^1.0.0"
     prosemirror-view "^1.0.0"
 
-prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0:
+prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transform@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/prosemirror-transform/-/prosemirror-transform-1.1.3.tgz#28cfdf1f9ee514edc40466be7b7db39eed545fdf"
   integrity sha512-1O6Di5lOL1mp4nuCnQNkHY7l2roIW5y8RH4ZG3hMYmkmDEWzTaFFnxxAAHsE5ipGLBSRcTlP7SsDhYBIdSuLpQ==
@@ -8771,7 +8767,12 @@ prosemirror-utils@^0.7.6:
   resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.7.7.tgz#a9bda2468113d34f3721ba15eaa2fd04b81d7dc8"
   integrity sha512-0cSWive9oCOr4nnTlEQ9scr8g8kj126glAigb6cKLB4sq/eSyumVu8Ogqus6KEoLInBy6WONXJbgm/2xJ8MShw==
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.8.9, prosemirror-view@^1.9.2:
+prosemirror-utils@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.8.0.tgz#fbec60512fd8a4544e1d8d95a9706c58699c505a"
+  integrity sha512-GRhxIYosyfDNivcxOzJw42O1gS6mq7zyCGUXKMdfOk/RAcimYRzL20Z0ll38mX+xU7xRH+0a8WoPb3+XDeiyxg==
+
+prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.9.2:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.9.2.tgz#4ccc0085fe49b1f400845d78837e4ab4bb321ce4"
   integrity sha512-UzeKJB+WNUZky/OgRdHymQE32XsRXPsE6WLFgvGVj7IKDAAQZRToydq85poYWCcCl07V8eEj30gqpaHI9YxJmA==
@@ -10266,31 +10267,34 @@ tippy.js@^4.3.1:
   dependencies:
     popper.js "^1.14.7"
 
-tiptap-commands@^1.10.0, tiptap-commands@^1.8.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.10.0.tgz#301d708896aed22ef6950cf9ab8970acfaa180fb"
-  integrity sha512-jvS2nrsTPNC++wwCwDNLMZ1vRnl8F3H8J9rLHas3hHFFkwSJqDvhhGSCmpJ1X3bSyEous5n21zs2H1Fd8Wi+RA==
+tiptap-commands@^1.10.0, tiptap-commands@^1.10.1:
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.10.1.tgz#d2dde3e0a70093f2e08b5ba1b7de5a1e827ea6aa"
+  integrity sha512-0+HNWkLx4TBJ170uN2jMQm88bRVHUR0qfeKrnspxR1xU24Wl3VgRX77QbRH9tpUZ1uk0CQnXVytiVouDd1taDQ==
   dependencies:
     prosemirror-commands "^1.0.7"
     prosemirror-inputrules "^1.0.2"
     prosemirror-model "^1.7.0"
     prosemirror-schema-list "^1.0.3"
     prosemirror-state "^1.2.3"
-    tiptap-utils "^1.5.0"
+    tiptap-utils "^1.5.1"
 
-tiptap-extensions@1.17.0:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/tiptap-extensions/-/tiptap-extensions-1.17.0.tgz#caa5ea47623f2c13b15b449001a061fbd96eeb32"
-  integrity sha512-ljlNG5rIpbggSO5FU27NAjfeDN3Kz18GqfNGoEOHHgvC5JDIj6x5QyiPOvCRNpuWN4t4XEMUkq+F8KjI5jceKw==
+tiptap-extensions@1.19.1:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/tiptap-extensions/-/tiptap-extensions-1.19.1.tgz#890220dae85f61a41629c2a43c1d33e1930b2b86"
+  integrity sha512-JlRwlhR3R6DP2ipW6Se9N5iR2BrW3BhxsrjqyLQHxq+RXRXcDLQmfdfQFLAlCFijJh9/KPapywAwHh37UjTnfw==
   dependencies:
     lowlight "^1.11.0"
+    prosemirror-collab "^1.1.1"
     prosemirror-history "^1.0.4"
-    prosemirror-state "^1.2.2"
-    prosemirror-tables "^0.7.11"
-    prosemirror-utils "^0.7.6"
-    prosemirror-view "^1.8.9"
-    tiptap "^1.17.0"
-    tiptap-commands "^1.8.0"
+    prosemirror-model "^1.7.0"
+    prosemirror-state "^1.2.3"
+    prosemirror-tables "^0.8.0"
+    prosemirror-transform "^1.1.3"
+    prosemirror-utils "^0.8.0"
+    prosemirror-view "^1.9.2"
+    tiptap "^1.19.1"
+    tiptap-commands "^1.10.1"
 
 tiptap-utils@^1.5.0:
   version "1.5.0"
@@ -10302,7 +10306,17 @@ tiptap-utils@^1.5.0:
     prosemirror-tables "^0.8.0"
     prosemirror-utils "^0.7.6"
 
-tiptap@1.19.0, tiptap@^1.17.0:
+tiptap-utils@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/tiptap-utils/-/tiptap-utils-1.5.1.tgz#0126cd4ebe35d2850c69d994de56b0436afd9bab"
+  integrity sha512-zKdjeXiOR4CL1JmLh3ivgTw5scAFSmpytqza9a7EJPcTqjCWuBn9chGJGZIKjsk7zDPgBWMg5/2ciGvu17Ywjg==
+  dependencies:
+    prosemirror-model "^1.7.0"
+    prosemirror-state "^1.2.3"
+    prosemirror-tables "^0.8.0"
+    prosemirror-utils "^0.8.0"
+
+tiptap@1.19.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.19.0.tgz#f4c362cb5c247b11a04bdea62b81d2faa59ef4f9"
   integrity sha512-2HXnbTvcLf2SajPA9RWeNvWrC/AvFiYe6YRydaasGZh5VD1B+BlDID9AlT5CoTNrhU3hs/kn1oPfJbiuQM0+Ew==
@@ -10317,6 +10331,22 @@ tiptap@1.19.0, tiptap@^1.17.0:
     prosemirror-view "^1.9.2"
     tiptap-commands "^1.10.0"
     tiptap-utils "^1.5.0"
+
+tiptap@^1.19.1:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.19.1.tgz#5db4591e5ac949f19bee00aaa1461c14167f012b"
+  integrity sha512-GCc+2Z5Iz4hfc2U7snwLaPToLAr4TLNkaBEEBuXU5sfCBTdgwCqVuPYqrwj55XJf0E9yJ55GLJmZpL+plTMCcw==
+  dependencies:
+    prosemirror-commands "^1.0.7"
+    prosemirror-dropcursor "^1.1.1"
+    prosemirror-gapcursor "^1.0.3"
+    prosemirror-inputrules "^1.0.2"
+    prosemirror-keymap "^1.0.1"
+    prosemirror-model "^1.7.0"
+    prosemirror-state "^1.2.3"
+    prosemirror-view "^1.9.2"
+    tiptap-commands "^1.10.1"
+    tiptap-utils "^1.5.1"
 
 tmp@^0.0.33:
   version "0.0.33"
