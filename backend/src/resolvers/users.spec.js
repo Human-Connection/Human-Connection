@@ -12,8 +12,8 @@ afterEach(async () => {
 describe('users', () => {
   describe('CreateUser', () => {
     const mutation = `
-      mutation($id: ID, $name: String, $password: String!, $email: String!) {
-        CreateUser(id: $id, name: $name, password: $password, email: $email) {
+      mutation($name: String, $password: String!, $email: String!) {
+        CreateUser(name: $name, password: $password, email: $email) {
           id
         }
       }
