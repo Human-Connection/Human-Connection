@@ -11,11 +11,11 @@
           margin-bottom="xxx-small"
           centered
         >
-          <hc-image
+          <img
             style="width: 200px;"
-            :image-props="imageProps"
+            src="/img/sign-up/onourjourney.png"
             alt="Human Connection"
-          />
+          >
         </ds-space>
         <ds-space
           style="text-align: center;"
@@ -36,17 +36,8 @@
 </template>
 
 <script>
-import HcImage from '~/components/Image'
 export default {
-  components: {
-    HcImage
-  },
   layout: 'blank',
-  computed: {
-    imageProps() {
-      return { src: '/img/sign-up/onourjourney.png' }
-    }
-  },
   async beforeCreate() {
     await this.$store.dispatch('auth/logout')
     this.$router.replace('/')
