@@ -65,6 +65,7 @@
     "graphql": "~14.3.0",
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.1.0",
+    "lodash": "^4.17.11",
     "nuxt": "~2.6.3",
     "nuxt-env": "~0.1.0",
     "stack-utils": "^1.0.2",

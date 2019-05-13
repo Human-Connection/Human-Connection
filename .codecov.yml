@@ -95,7 +95,7 @@ coverage:
         #  - master
         #flags:
         #  - integration
-        paths: 
+        paths:
           - backend/  # only include coverage in "backend/" folder
       webapp:  # declare a new status context "frontend"
         against: parent
@@ -127,7 +127,7 @@ coverage:
     #      - integration
     #    paths:
     #      - folder
-    
+
     #changes:
     #  default:
     #    against: parent
@@ -150,7 +150,7 @@ coverage:
 
   #ignore: # files and folders for processing
   #  - tests/*
-  
+
   #fixes:
   #  - "old_path::new_path"
 

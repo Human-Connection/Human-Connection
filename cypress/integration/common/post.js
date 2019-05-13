@@ -23,3 +23,20 @@ Then('the editor should be cleared', () => {
   cy.get('.ProseMirror p')
     .should('have.class', 'is-empty')
 })
+
+Then('I rapidly double click on the {string} button', text => {
+  cy.get('button').contains(text).click().click()
+})
+  
+Then('I should see my comment once', () => {
+  cy.contains('.iziToast-message', 'Comment Submitted')
+    .should('have.length', 1)
+    .get('div.comment p')
+    .contains('Human Connection rocks')
+    .should('have.length', 1)
+    .get('.ds-avatar img')
+    .should('have.attr', 'src')
+    .and('contain', narratorAvatar)
+    .get('div.comment .ds-avatar img')
+    .should('have.length', 1)
+})
