@@ -45,7 +45,6 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor'
-import { debounce } from 'lodash'
 
 export default {
   components: {
@@ -62,11 +61,10 @@ export default {
       form: {
         content: ''
       },
-      users: []
+      users: [],
+      handleSubmitDebounced: null,
+      millisecFirstSubmit: null
     }
-  },
-  created() {
-    this.handleSubmit = debounce(this.handleSubmit, 500)
   },
   methods: {
     updateEditorContent(value) {
@@ -82,6 +80,17 @@ export default {
       this.$refs.editor.clear()
     },
     handleSubmit() {
+      if (this.millisecFirstSubmit === null) {
+        this.millisecFirstSubmit = Date.now()
+        this.handleSubmitWithoutDebounce()
+      } else {
+        if (500 < Date.now() - this.millisecFirstSubmit) {
+          this.millisecFirstSubmit = Date.now()
+          this.handleSubmitWithoutDebounce()
+        }
+      }
+    },
+    handleSubmitWithoutDebounce() {
       this.loading = true
       this.disabled = true
       this.$apollo
