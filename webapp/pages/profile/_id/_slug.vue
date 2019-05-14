@@ -14,12 +14,13 @@
           :class="{'disabled-content': user.disabled}"
           style="position: relative; height: auto;"
         >
-          <ds-avatar
+          <hc-upload :user="user"/>
+          <!-- <ds-avatar
             :image="user.avatar"
             :name="userName"
             class="profile-avatar"
-            size="120px"
-          />
+            size="x-large"
+          /> -->
           <no-ssr>
             <content-menu
               placement="bottom-end"
@@ -327,6 +328,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
+import HcUpload from '~/components/Upload'
 
 export default {
   components: {
@@ -337,7 +339,8 @@ export default {
     HcBadges,
     HcLoadMore,
     HcEmpty,
-    ContentMenu
+    ContentMenu,
+    HcUpload
   },
   transition: {
     name: 'slide-up',
