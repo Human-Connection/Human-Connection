@@ -14,7 +14,7 @@
           :class="{'disabled-content': user.disabled}"
           style="position: relative; height: auto;"
         >
-          <hc-upload :user="user"/>
+          <hc-upload :user="user" />
           <!-- <ds-avatar
             :image="user.avatar"
             :name="userName"

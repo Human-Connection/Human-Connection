@@ -1,8 +1,8 @@
 <template>
   <div>
     <vue-dropzone
-      ref="el"
       id="dropzone"
+      ref="el"
       :include-styling="false"
       :options="dropzoneOptions"
     >
@@ -11,7 +11,6 @@
   </div>
 </template>
 <script>
-
 import vueDropzone from 'nuxt-dropzone'
 import 'nuxt-dropzone/dropzone.css'
 
@@ -28,7 +27,8 @@ export default {
         url: 'https://httpbin.org/post',
         thumbnailWidth: 150,
         maxFilesize: 0.5,
-        dictDefaultMessage: "<img src='https://s3.amazonaws.com/uifaces/faces/twitter/envex/128.jpg' />"
+        dictDefaultMessage:
+          "<img src='https://s3.amazonaws.com/uifaces/faces/twitter/envex/128.jpg' />"
       }
     }
   },
