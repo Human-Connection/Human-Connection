@@ -72,7 +72,7 @@ export default {
         this.$toast.success(this.$t('disable.success'))
         this.isOpen = false
         setTimeout(() => {
-          this.$emit('close')
+          this.$emit('close'),location.reload()        
         }, 1000)
       } catch (err) {
         this.$toast.error(err.message)
