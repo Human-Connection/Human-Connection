@@ -8,7 +8,6 @@
     containers:
     - name: nitro-maintenance-worker
       image: humanconnection/maintenance-worker:latest
-      command: ["idle"]
       envFrom:
       - configMapRef:
           name: maintenance-worker

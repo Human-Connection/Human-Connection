@@ -4,8 +4,6 @@
   metadata:
     name: neo4j-data-claim
     namespace: human-connection
-    labels:
-      app: human-connection
   spec:
     accessModes:
       - ReadWriteOnce

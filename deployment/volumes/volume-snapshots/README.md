@@ -4,6 +4,8 @@ It is possible to backup persistent volumes through volume snapshots. This is
 especially handy if you don't want to stop the database to create an [offline
 backup](../neo4j-offline-backup/README.md) thus having a downtime.
 
+Kubernetes announced this feature in a [blog post](https://kubernetes.io/blog/2018/10/09/introducing-volume-snapshot-alpha-for-kubernetes/). Please make yourself familiar with it before you continue.
+
 ## Create a Volume Snapshot
 
 There is an example in this folder how you can e.g. create a volume snapshot for
@@ -21,7 +23,7 @@ If you are on Digital Ocean the volume snapshot should show up in the Web UI:
 ## Provision a Volume based on a Snapshot
 
 Edit your persistent volume claim configuration and add a `dataSource` pointing
-to your volume snapshot. [This blog post](https://kubernetes.io/blog/2018/10/09/introducing-volume-snapshot-alpha-for-kubernetes/) has an example in section "Provision a new volume from a snapshot with
+to your volume snapshot. [The blog post](https://kubernetes.io/blog/2018/10/09/introducing-volume-snapshot-alpha-for-kubernetes/) has an example in section "Provision a new volume from a snapshot with
 Kubernetes".
 
 There is also an example in this folder how the configuration could look like.
@@ -36,7 +38,7 @@ kubectl apply -f neo4j-data.yaml
 ## Data Consistency Warning
 
 Note that volume snapshots do not guarantee data consistency. Quote from the
-blog post above:
+[blog post](https://kubernetes.io/blog/2018/10/09/introducing-volume-snapshot-alpha-for-kubernetes/):
 
 > Please note that the alpha release of Kubernetes Snapshot does not provide
 > any consistency guarantees. You have to prepare your application (pause

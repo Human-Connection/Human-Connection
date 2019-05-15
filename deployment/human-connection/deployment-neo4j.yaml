@@ -19,7 +19,6 @@
           backup.velero.io/backup-volumes: neo4j-data
         labels:
           human-connection.org/selector: deployment-human-connection-neo4j
-          app: human-connection
         name: nitro-neo4j
       spec:
         containers:

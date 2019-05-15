@@ -1,5 +1,14 @@
 # Velero
 
+{% hint style="danger" %}
+I tried Velero and it did not work reliably all the time. Sometimes the
+kubernetes cluster crashes during recovery or data is not fully recovered.
+
+Feel free to test it out and update this documentation once you feel that it's
+working reliably. It is very likely that Digital Ocean had some bugs when I
+tried out the steps below.
+{% endhint %}
+
 We use [velero](https://github.com/heptio/velero) for on premise backups, we
 tested on version `v0.11.0`, you can find their
 documentation [here](https://heptio.github.io/velero/v0.11.0/).
@@ -38,7 +47,6 @@ Once completed, you should see the namespace in your kubernetes dashboard.
 When you create your deployments for Human Connection the required annotations
 should already be in place. So when you create a backup of namespace
 `human-connection`:
-
 
 ```sh
 $ velero backup create hc-backup --include-namespaces=human-connection

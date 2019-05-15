@@ -31,7 +31,6 @@
     * [Volume Snapshots](deployment/volumes/volume-snapshots/README.md)
     * [Reclaim Policy](deployment/volumes/reclaim-policy/README.md)
     * [Velero](deployment/volumes/velero/README.md)
-  * [Neo4J DB Backup](deployment/backup.md)
   * [Legacy Migration](deployment/legacy-migration/README.md)
 * [Feature Specification](cypress/features.md)
 * [Code of conduct](CODE_OF_CONDUCT.md)
