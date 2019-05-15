@@ -5,15 +5,15 @@ import Factory from '../seed/factories'
 const factory = Factory()
 let client
 
-afterAll(async () => {
+afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('userMiddleware', () => {
-  describe('create User', () => {
+describe('users', () => {
+  describe('CreateUser', () => {
     const mutation = `
-      mutation($id: ID, $password: String!, $email: String!) {
-        CreateUser(id: $id, password: $password, email: $email) {
+      mutation($name: String, $password: String!, $email: String!) {
+        CreateUser(name: $name, password: $password, email: $email) {
           id
         }
       }
@@ -22,6 +22,7 @@ describe('userMiddleware', () => {
 
     it('with password and email', async () => {
       const variables = {
+        name: 'John Doe',
         password: '123',
         email: '123@123.de'
       }
@@ -35,34 +36,39 @@ describe('userMiddleware', () => {
     })
   })
 
-  describe('update User', () => {
+  describe('UpdateUser', () => {
+    beforeEach(async () => {
+      await factory.create('User', { id: 'u47', name: 'John Doe' })
+    })
+
     const mutation = `
       mutation($id: ID!, $name: String) {
         UpdateUser(id: $id, name: $name) {
+          id
           name
         }
       }
     `
     client = new GraphQLClient(host)
 
-    // TODO why is this failing - it returns { UpdateUser: null } - that should not be
-    /* it('name within specifications', async () => {
+    it('name within specifications', async () => {
       const variables = {
-        id: 'u1',
-        name: 'Peter Lustig'
+        id: 'u47',
+        name: 'James Doe'
       }
       const expected = {
         UpdateUser: {
-          name: 'Peter Lustig'
+          id: 'u47',
+          name: 'James Doe'
         }
       }
       await expect(client.request(mutation, variables))
         .resolves.toEqual(expected)
-    }) */
+    })
 
     it('with no name', async () => {
       const variables = {
-        id: 'u1'
+        id: 'u47'
       }
       const expected = 'Username must be at least 3 characters long!'
       await expect(client.request(mutation, variables))
@@ -71,7 +77,8 @@ describe('userMiddleware', () => {
 
     it('with too short name', async () => {
       const variables = {
-        id: 'u1'
+        id: 'u47',
+        name: '  '
       }
       const expected = 'Username must be at least 3 characters long!'
       await expect(client.request(mutation, variables))

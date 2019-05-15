@@ -1103,16 +1103,17 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^3.2.0"
 
-"@nuxtjs/apollo@4.0.0-rc4":
-  version "4.0.0-rc4"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc4.tgz#21e444f9b027bbb379f04feb04ee999aa94d2568"
-  integrity sha512-kdqjlUSpYZMKIF6InNZox3lqwWnJSyscj1hGNnHLVpspooLs4l+MlOtUGQeS7kSZAW0hrPG3yjQeVwx80rJR5g==
+"@nuxtjs/apollo@4.0.0-rc4.1":
+  version "4.0.0-rc4.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc4.1.tgz#c9d27d0ad95c36805efdfceceb6150ed0eded81e"
+  integrity sha512-FAWpGlq6vcD5IHX8yElO6p73vVK8OabQB/ddc5z0idm3lv8ZQnG+RHvzwQ7qrqQseGUzCbMu/haehmaWA78JzA==
   dependencies:
     cookie "^0.3.1"
     isomorphic-fetch "^2.2.1"
     js-cookie "^2.2.0"
-    vue-apollo "^3.0.0-beta.28"
-    vue-cli-plugin-apollo "^0.19.1"
+    vue-apollo "^3.0.0-beta.29"
+    vue-cli-plugin-apollo "^0.20.0"
+    webpack-node-externals "^1.7.2"
 
 "@nuxtjs/axios@~5.4.1":
   version "5.4.1"
@@ -4148,10 +4149,10 @@ eslint-loader@~2.1.2:
     object-hash "^1.1.4"
     rimraf "^2.6.1"
 
-eslint-plugin-prettier@^3.0.0, eslint-plugin-prettier@~3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.0.1.tgz#19d521e3981f69dd6d14f64aec8c6a6ac6eb0b0d"
-  integrity sha512-/PMttrarPAY78PLvV3xfWibMOdMDl57hmlQ2XqFeA37wd+CJ7WSxV7txqjVPHi/AAFKd2lX0ZqfsOc/i5yFCSQ==
+eslint-plugin-prettier@^3.0.0, eslint-plugin-prettier@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.0.tgz#8695188f95daa93b0dc54b249347ca3b79c4686d"
+  integrity sha512-XWX2yVuwVNLOUhQijAkXz+rMPPoCr7WFiAl8ig6I7Xn+pPVhDhzg4DxHpmbeb0iqjO9UronEA3Tb09ChnFVHHA==
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
@@ -8762,17 +8763,12 @@ prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transfor
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.8.0.tgz#fbec60512fd8a4544e1d8d95a9706c58699c505a"
-  integrity sha512-GRhxIYosyfDNivcxOzJw42O1gS6mq7zyCGUXKMdfOk/RAcimYRzL20Z0ll38mX+xU7xRH+0a8WoPb3+XDeiyxg==
-
 prosemirror-utils@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.8.1.tgz#a9cb9f5ce292dc20c21ec996af02879651395a65"
   integrity sha512-u1tCdkj4I5T7sBmL6IvBAnH8p0a//vJ2N3g7pVKbfxPVDQ7gcC9UibbPijpvhb6PALxX/oeccvo+PJXHm6j4vA==
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.9.2, prosemirror-view@^1.9.4:
+prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.9.4:
   version "1.9.4"
   resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.9.4.tgz#d0490846c9e8c88e1460e5f8ed5ee0c8d8f47298"
   integrity sha512-3l6pzxEjgSZawW0Y0iUeKSW4pCCfSNxCNZT3q0C6MOqE30dVpA+0acTFOEZz6Gf8D3Lo20FwwaCSH6ld1P+8Lw==
@@ -10267,7 +10263,7 @@ tippy.js@^4.3.1:
   dependencies:
     popper.js "^1.14.7"
 
-tiptap-commands@^1.10.1, tiptap-commands@^1.10.2:
+tiptap-commands@^1.10.2:
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.10.2.tgz#34a9534126331d65bd3bad7fcb3893ceef34d5ee"
   integrity sha512-OTNMBx1SVnUnZlnUOnx2HC/IFop2QpRJreuvEt/XzqE3eNLExLgQLVELkGkrrLnIDU61MOva010La+6RaoF5NQ==
@@ -10279,10 +10275,10 @@ tiptap-commands@^1.10.1, tiptap-commands@^1.10.2:
     prosemirror-state "^1.2.3"
     tiptap-utils "^1.5.2"
 
-tiptap-extensions@1.19.1:
-  version "1.19.1"
-  resolved "https://registry.yarnpkg.com/tiptap-extensions/-/tiptap-extensions-1.19.1.tgz#890220dae85f61a41629c2a43c1d33e1930b2b86"
-  integrity sha512-JlRwlhR3R6DP2ipW6Se9N5iR2BrW3BhxsrjqyLQHxq+RXRXcDLQmfdfQFLAlCFijJh9/KPapywAwHh37UjTnfw==
+tiptap-extensions@1.19.2:
+  version "1.19.2"
+  resolved "https://registry.yarnpkg.com/tiptap-extensions/-/tiptap-extensions-1.19.2.tgz#54313fa82cf5966ae3ee85f3acca819a1c215d90"
+  integrity sha512-0f/+3qOzAY71GO837puJSpe08gQdzNsQgSa3+RFVgY1HFo9+YHX/AGHZu6PhZTxDBlaUgCLJGtcPpdXW4OrTzw==
   dependencies:
     lowlight "^1.11.0"
     prosemirror-collab "^1.1.1"
@@ -10291,10 +10287,10 @@ tiptap-extensions@1.19.1:
     prosemirror-state "^1.2.3"
     prosemirror-tables "^0.8.0"
     prosemirror-transform "^1.1.3"
-    prosemirror-utils "^0.8.0"
-    prosemirror-view "^1.9.2"
-    tiptap "^1.19.1"
-    tiptap-commands "^1.10.1"
+    prosemirror-utils "^0.8.1"
+    prosemirror-view "^1.9.4"
+    tiptap "^1.19.2"
+    tiptap-commands "^1.10.2"
 
 tiptap-utils@^1.5.2:
   version "1.5.2"
@@ -10306,7 +10302,7 @@ tiptap-utils@^1.5.2:
     prosemirror-tables "^0.8.0"
     prosemirror-utils "^0.8.1"
 
-tiptap@1.19.2, tiptap@^1.19.1:
+tiptap@1.19.2, tiptap@^1.19.2:
   version "1.19.2"
   resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.19.2.tgz#6d349c32185b358d9f9326c461f4993a99c0374d"
   integrity sha512-RQxvHZznQYMaYe935ihueGbepWGASn8fM+BQG1LMQEvqjlPZ6+F95lJ5vBFahE/CV9w0A9ddN06RacbF4P+6EA==
@@ -10807,7 +10803,7 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-apollo@^3.0.0-beta.28:
+vue-apollo@^3.0.0-beta.29:
   version "3.0.0-beta.29"
   resolved "https://registry.yarnpkg.com/vue-apollo/-/vue-apollo-3.0.0-beta.29.tgz#a331b4a506e6ff0a5a13cb989441daaf8edef2e7"
   integrity sha512-iyyrE1xzTDZnSDN8XJkmBTs67m1pzR5QUJTdoz1VlLLQq/arvKV22AZUpR7zzU5anvfo/jc9tCyDKLxJsWkmTA==
@@ -10815,10 +10811,10 @@ vue-apollo@^3.0.0-beta.28:
     chalk "^2.4.2"
     throttle-debounce "^2.1.0"
 
-vue-cli-plugin-apollo@^0.19.1:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/vue-cli-plugin-apollo/-/vue-cli-plugin-apollo-0.19.2.tgz#ec6a6bdc98fcfa886a616e3a64eaaff71bbeb911"
-  integrity sha512-gWZsSbfHR2CmMLgpHxj6viwLczUdZ3zdwkXPoEUa7yn34Z8mZJW/fokwhPONgQNTrs3KNcq+zNQA7ED09+fP4A==
+vue-cli-plugin-apollo@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-apollo/-/vue-cli-plugin-apollo-0.20.0.tgz#0539ec96d8502cbe2fd9ab6a431f5b989145e396"
+  integrity sha512-Ey/luK5HtP4ZQhua5RKETR672pE7BPymaso//Ccl/wxQI1BqVTxg9o/wYeXuURBIw2Et9JaVLXmh0e9uKgk8Jw==
   dependencies:
     apollo-cache-inmemory "^1.5.1"
     apollo-client "^2.5.1"
