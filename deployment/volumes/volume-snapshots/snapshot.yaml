@@ -1,0 +1,10 @@
+---
+  apiVersion: snapshot.storage.k8s.io/v1alpha1
+  kind: VolumeSnapshot
+  metadata:
+    name: neo4j-data-snapshot
+    namespace: human-connection
+  spec:
+    source:
+      name: neo4j-data-claim
+      kind: PersistentVolumeClaim
