@@ -60,8 +60,6 @@ export default {
       }, 1000)
     },
     async confirm() {
-        console.log(">>>>>>>>>>>>> this " + this);
-        console.log(">>>>>>>>>>>>> id" + $id);
       try {
         await this.$apollo.mutate({
           mutation: gql`
@@ -74,8 +72,9 @@ export default {
         this.$toast.success(this.$t('release.success'))
         this.isOpen = true
         setTimeout(() => {
-          this.$emit('close')
-        }, 1000)
+          this.$emit('close'),
+          location.reload()
+        }, 1500)
       } catch (err) {
         this.$toast.error(err.message)
       }
