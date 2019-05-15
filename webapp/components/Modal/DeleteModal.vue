@@ -25,7 +25,7 @@
         icon="close"
         @click="cancel"
       >
-        {{ $t('post.delete.cancel') }}
+        {{ $t(`delete.cancel`) }}
       </ds-button>
 
       <ds-button
@@ -35,7 +35,7 @@
         :loading="loading"
         @click="confirm"
       >
-        {{ $t('post.delete.submit') }}
+        {{ $t(`delete.submit`) }}
       </ds-button>
     </template>
   </ds-modal>
@@ -64,11 +64,11 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(`post.delete.title`)
+      return this.$t(`delete.${this.type}.title`)
     },
     message() {
       const name = this.$filters.truncate(this.name, 30)
-      return this.$t(`post.delete.message`, { name })
+      return this.$t(`delete.${this.type}.message`, { name })
     }
   },
   methods: {
@@ -79,22 +79,40 @@ export default {
       }, 1000)
     },
     async confirm() {
+      var gqlMutation
+
       this.loading = true
       try {
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation($id: ID!) {
-              DeletePost(id: $id) {
-                id
+        switch (this.type) {
+          case 'contribution':
+            gqlMutation = gql`
+              mutation($id: ID!) {
+                DeletePost(id: $id) {
+                  id
+                }
               }
-            }
-          `,
+            `
+            break
+          case 'comment':
+            // XXX Make custom mutation and tests in the Backend !!!
+            gqlMutation = gql`
+              mutation($id: ID!) {
+                DeleteComment(id: $id) {
+                  id
+                }
+              }
+            `
+            break
+        }
+        await this.$apollo.mutate({
+          mutation: gqlMutation,
           variables: { id: this.id }
         })
         this.success = true
-        this.$toast.success(this.$t('post.delete.success'))
+        this.$toast.success(this.$t(`delete.${this.type}.success`))
         setTimeout(() => {
           this.isOpen = false
+          // XXX For comment just reload the page !!!
           setTimeout(() => {
             this.success = false
             this.$emit('close')

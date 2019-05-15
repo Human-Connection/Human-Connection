@@ -22,7 +22,7 @@ describe('DeleteModal.vue', () => {
   beforeEach(() => {
     propsData = {
       type: 'contribution',
-      id: 'c300'
+      id: 'p23'
     }
     mocks = {
       $t: jest.fn(),
@@ -40,7 +40,7 @@ describe('DeleteModal.vue', () => {
   })
 
   describe('shallowMount', () => {
-    const Wrapper = () => {
+    Wrapper = () => {
       return shallowMount(DeleteModal, { propsData, mocks, localVue, router })
     }
 
@@ -57,8 +57,8 @@ describe('DeleteModal.vue', () => {
     describe('given a post', () => {
       beforeEach(() => {
         propsData = {
+          type: 'contribution',
           id: 'p23',
-          type: 'post',
           name: 'It is a post'
         }
       })
@@ -66,14 +66,35 @@ describe('DeleteModal.vue', () => {
       it('mentions post title', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['post.delete.message', { name: 'It is a post' }]]
+        const expected = [
+          ['delete.contribution.message', { name: 'It is a post' }]
+        ]
+        expect(calls).toEqual(expect.arrayContaining(expected))
+      })
+    })
+
+    describe('given a comment', () => {
+      beforeEach(() => {
+        propsData = {
+          type: 'comment',
+          id: 'c3',
+          name: 'It is the user of the comment'
+        }
+      })
+
+      it('mentions comments user name', () => {
+        Wrapper()
+        const calls = mocks.$t.mock.calls
+        const expected = [
+          ['delete.comment.message', { name: 'It is the user of the comment' }]
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
   })
 
   describe('mount', () => {
-    const Wrapper = () => {
+    Wrapper = () => {
       return mount(DeleteModal, { propsData, mocks, localVue, router })
     }
 
@@ -83,16 +104,16 @@ describe('DeleteModal.vue', () => {
       expect(Wrapper().is('div')).toBe(true)
     })
 
-    describe('given id', () => {
+    describe('given post id', () => {
       beforeEach(() => {
         propsData = {
-          type: 'user',
-          id: 'u3'
+          type: 'contribution',
+          id: 'p23'
         }
         wrapper = Wrapper()
       })
 
-      describe('click cancel button', () => {
+      describe('click cancel button and do not delete the post', () => {
         beforeEach(() => {
           wrapper = Wrapper()
           wrapper.find('button.cancel').trigger('click')
@@ -115,7 +136,7 @@ describe('DeleteModal.vue', () => {
         })
       })
 
-      describe('click confirm button', () => {
+      describe('click confirm button and delete the post', () => {
         beforeEach(() => {
           wrapper.find('button.confirm').trigger('click')
         })
@@ -130,7 +151,7 @@ describe('DeleteModal.vue', () => {
 
         it('displays a success message', () => {
           const calls = mocks.$t.mock.calls
-          const expected = [['post.delete.success']]
+          const expected = [['delete.contribution.success']]
           expect(calls).toEqual(expect.arrayContaining(expected))
         })
 
@@ -148,6 +169,36 @@ describe('DeleteModal.vue', () => {
           it('resets success', () => {
             expect(wrapper.vm.success).toBe(false)
           })
+        })
+      })
+    })
+
+    describe('given comment id', () => {
+      beforeEach(() => {
+        propsData = {
+          type: 'comment',
+          id: 'c3'
+        }
+        wrapper = Wrapper()
+      })
+
+      describe('click confirm button and delete the comment', () => {
+        beforeEach(() => {
+          wrapper.find('button.confirm').trigger('click')
+        })
+
+        it('calls delete mutation', () => {
+          expect(mocks.$apollo.mutate).toHaveBeenCalled()
+        })
+
+        it('sets success', () => {
+          expect(wrapper.vm.success).toBe(true)
+        })
+
+        it('displays a success message', () => {
+          const calls = mocks.$t.mock.calls
+          const expected = [['delete.comment.success']]
+          expect(calls).toEqual(expect.arrayContaining(expected))
         })
       })
     })

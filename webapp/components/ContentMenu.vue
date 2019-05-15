@@ -68,7 +68,7 @@ export default {
 
       if (this.isOwner && this.resourceType === 'contribution') {
         routes.push({
-          name: this.$t(`contribution.edit`),
+          name: this.$t(`post.menu.edit`),
           path: this.$router.resolve({
             name: 'post-edit-id',
             params: {
@@ -78,21 +78,29 @@ export default {
           icon: 'edit'
         })
         routes.push({
-          name: this.$t(`post.delete.title`),
+          name: this.$t(`post.menu.delete`),
           callback: () => {
             this.openModal('delete')
           },
           icon: 'trash'
         })
       }
+
       if (this.isOwner && this.resourceType === 'comment') {
+        // routes.push({
+        //   name: this.$t(`comment.menu.edit`),
+        //   callback: () => {
+        //     /* eslint-disable-next-line no-console */
+        //     console.log('EDIT COMMENT')
+        //   },
+        //   icon: 'edit'
+        // })
         routes.push({
-          name: this.$t(`comment.edit`),
+          name: this.$t(`comment.menu.delete`),
           callback: () => {
-            /* eslint-disable-next-line no-console */
-            console.log('EDIT COMMENT')
+            this.openModal('delete')
           },
-          icon: 'edit'
+          icon: 'trash'
         })
       }
 

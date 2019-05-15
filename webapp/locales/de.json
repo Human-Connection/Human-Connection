@@ -135,9 +135,22 @@
     "takeAction": {
       "name": "Aktiv werden"
     },
+    "menu": {
+      "edit": "Beitrag bearbeiten",
+      "delete": "Beitrag löschen"
+    },
     "comment": {
       "submit": "Kommentiere",
       "submitted": "Kommentar Gesendet"
+    }
+  },
+  "comment": {
+    "content": {
+      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
+    },
+    "menu": {
+      "edit": "Kommentar bearbeiten",
+      "delete": "Kommentar löschen"
     }
   },
   "quotes": {
@@ -202,6 +215,22 @@
       "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" deaktivieren möchtest?"
     }
   },
+  "delete": {
+    "submit": "Löschen",
+    "cancel": "Abbrechen",
+    "contribution": {
+      "title": "Lösche Beitrag",
+      "type": "Contribution",
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" löschen möchtest?",
+      "success": "Beitrag erfolgreich gelöscht!"
+    },
+    "comment": {
+      "title": "Lösche Kommentar",
+      "type": "Comment",
+      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" löschen möchtest?",
+      "success": "Kommentar erfolgreich gelöscht!"
+    }
+  },
   "report": {
     "submit": "Melden",
     "cancel": "Abbrechen",
@@ -220,17 +249,6 @@
       "title": "Kommentar melden",
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?"
-    }
-  },
-  "contribution": {
-    "edit": "Beitrag bearbeiten",
-    "delete": "Beitrag löschen"
-  },
-  "comment": {
-    "edit": "Kommentar bearbeiten",
-    "delete": "Kommentar löschen",
-    "content": {
-      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
     }
   },
   "followButton": {
