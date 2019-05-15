@@ -1103,16 +1103,17 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^3.2.0"
 
-"@nuxtjs/apollo@4.0.0-rc4":
-  version "4.0.0-rc4"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc4.tgz#21e444f9b027bbb379f04feb04ee999aa94d2568"
-  integrity sha512-kdqjlUSpYZMKIF6InNZox3lqwWnJSyscj1hGNnHLVpspooLs4l+MlOtUGQeS7kSZAW0hrPG3yjQeVwx80rJR5g==
+"@nuxtjs/apollo@4.0.0-rc4.1":
+  version "4.0.0-rc4.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc4.1.tgz#c9d27d0ad95c36805efdfceceb6150ed0eded81e"
+  integrity sha512-FAWpGlq6vcD5IHX8yElO6p73vVK8OabQB/ddc5z0idm3lv8ZQnG+RHvzwQ7qrqQseGUzCbMu/haehmaWA78JzA==
   dependencies:
     cookie "^0.3.1"
     isomorphic-fetch "^2.2.1"
     js-cookie "^2.2.0"
-    vue-apollo "^3.0.0-beta.28"
-    vue-cli-plugin-apollo "^0.19.1"
+    vue-apollo "^3.0.0-beta.29"
+    vue-cli-plugin-apollo "^0.20.0"
+    webpack-node-externals "^1.7.2"
 
 "@nuxtjs/axios@~5.4.1":
   version "5.4.1"
@@ -10833,7 +10834,7 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-apollo@^3.0.0-beta.28:
+vue-apollo@^3.0.0-beta.29:
   version "3.0.0-beta.29"
   resolved "https://registry.yarnpkg.com/vue-apollo/-/vue-apollo-3.0.0-beta.29.tgz#a331b4a506e6ff0a5a13cb989441daaf8edef2e7"
   integrity sha512-iyyrE1xzTDZnSDN8XJkmBTs67m1pzR5QUJTdoz1VlLLQq/arvKV22AZUpR7zzU5anvfo/jc9tCyDKLxJsWkmTA==
@@ -10841,10 +10842,10 @@ vue-apollo@^3.0.0-beta.28:
     chalk "^2.4.2"
     throttle-debounce "^2.1.0"
 
-vue-cli-plugin-apollo@^0.19.1:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/vue-cli-plugin-apollo/-/vue-cli-plugin-apollo-0.19.2.tgz#ec6a6bdc98fcfa886a616e3a64eaaff71bbeb911"
-  integrity sha512-gWZsSbfHR2CmMLgpHxj6viwLczUdZ3zdwkXPoEUa7yn34Z8mZJW/fokwhPONgQNTrs3KNcq+zNQA7ED09+fP4A==
+vue-cli-plugin-apollo@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-apollo/-/vue-cli-plugin-apollo-0.20.0.tgz#0539ec96d8502cbe2fd9ab6a431f5b989145e396"
+  integrity sha512-Ey/luK5HtP4ZQhua5RKETR672pE7BPymaso//Ccl/wxQI1BqVTxg9o/wYeXuURBIw2Et9JaVLXmh0e9uKgk8Jw==
   dependencies:
     apollo-cache-inmemory "^1.5.1"
     apollo-client "^2.5.1"
