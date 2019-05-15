@@ -2,7 +2,7 @@
   apiVersion: snapshot.storage.k8s.io/v1alpha1
   kind: VolumeSnapshot
   metadata:
-    name: neo4j-data-snapshot-2
+    name: neo4j-data-snapshot
     namespace: human-connection
   spec:
     source:
