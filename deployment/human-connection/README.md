@@ -9,12 +9,20 @@ just apply our provided configuration files to your cluster.
 Copy our provided templates:
 
 ```bash
-$ cp secrets.template.yaml human-connection/secrets.yaml
-$ cp configmap.template.yaml human-connection/configmap.yaml
+# in folder deployment/human-connection/
+$ cp templates/secrets.template.yaml ./secrets.yaml
+$ cp templates/configmap.template.yaml ./configmap.yaml
 ```
 
 Change the `configmap.yaml` as needed, all variables will be available as
 environment variables in your deployed kubernetes pods.
+
+Probably you want to change this environment variable to your actual domain:
+
+```
+# in configmap.yaml
+CLIENT_URI: "https://nitro-staging.human-connection.org"
+```
 
 If you want to edit secrets, you have to `base64` encode them. See [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually).
 
@@ -30,7 +38,8 @@ your deployed kubernetes pods.
 ## Create a namespace
 
 ```bash
-$ kubectl apply -f namespace-human-connection.yaml
+# in folder deployment/human-connection/
+$ kubectl apply -f namespace.yaml
 ```
 
 If you have a [kubernets dashboard](../digital-ocean/dashboard/README.md)
@@ -48,7 +57,7 @@ persistent volumes once before you apply the configuration.
 ## Apply the configuration
 
 ```bash
-# in folder deployment/ 
+# in folder deployment/
 $ kubectl apply -f human-connection/
 ```
 
