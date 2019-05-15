@@ -12,19 +12,30 @@ $ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/relea
 $ helm install --name cert-manager --namespace cert-manager stable/cert-manager
 ```
 
-Create letsencrypt issuers. _Change the email address_ in these files before running this command.
+## Create Letsencrypt Issuers and Ingress Services
+
+Copy the configuration templates and change the file according to your needs.
 
 ```bash
 # in folder deployment/digital-ocean/https/
-$ kubectl apply -f issuer.yaml
+cp templates/issuer.template.yaml ./issuer.yaml
+cp templates/ingress.template.yaml ./ingress.yaml
 ```
 
-Create an ingress service in namespace `human-connection`. _Change the domain name_ according to your needs:
+At least, **change email addresses** in `issuer.yaml`. For sure you also want
+to _change the domain name_ in `ingress.yaml`.
+
+Once you are done, apply the configuration:
 
 ```bash
 # in folder deployment/digital-ocean/https/
-$ kubectl apply -f ingress.yaml
+$ kubectl apply -f .
 ```
+
+By now, your cluster should have an external IP address assigned. If you visit
+your dashboard, this is how it should look like:
+
+![Screenshot of the kubernetes dashboard showing the extrenal ip address](./ip-address.png)
 
 Check the ingress server is working correctly:
 
