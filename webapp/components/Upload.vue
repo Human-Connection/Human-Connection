@@ -3,16 +3,18 @@
     <vue-dropzone
       id="dropzone"
       ref="el"
-      :include-styling="false"
       :options="dropzoneOptions"
+      :include-styling="false"
+      :style="{ backgroundImage: `url(${user.avatar})`}"
+      class="vue-dropzone-div"
     >
-    <!-- <ds-icon name="image" size="xxx-large"/> -->
+      <!-- <slot></slot> -->
     </vue-dropzone>
   </div>
 </template>
 <script>
 import vueDropzone from 'nuxt-dropzone'
-import 'nuxt-dropzone/dropzone.css'
+// import 'nuxt-dropzone/dropzone.css'
 
 export default {
   components: {
@@ -26,9 +28,7 @@ export default {
       dropzoneOptions: {
         url: 'https://httpbin.org/post',
         thumbnailWidth: 150,
-        maxFilesize: 0.5,
-        dictDefaultMessage:
-          "<img src='https://s3.amazonaws.com/uifaces/faces/twitter/envex/128.jpg' />"
+        maxFilesize: 0.5
       }
     }
   },
@@ -39,7 +39,13 @@ export default {
 }
 </script>
 <style>
-img {
+.vue-dropzone-div {
+  /* position: relative; */
+  margin-left: 35px;
+  width: 122px;
+  min-height: 122px;
+  background-size: cover;
+  background-repeat: no-repeat;
   border-radius: 50%;
 }
 </style>

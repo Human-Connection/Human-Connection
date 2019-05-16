@@ -14,13 +14,14 @@
           :class="{'disabled-content': user.disabled}"
           style="position: relative; height: auto;"
         >
-          <hc-upload :user="user" />
-          <!-- <ds-avatar
-            :image="user.avatar"
-            :name="userName"
-            class="profile-avatar"
-            size="x-large"
-          /> -->
+          <hc-upload :user="user">
+            <ds-avatar
+              :image="user.avatar"
+              :name="userName"
+              class="profile-avatar"
+              size="x-large"
+            />
+          </hc-upload>
           <no-ssr>
             <content-menu
               placement="bottom-end"
