@@ -23,7 +23,10 @@ So, all we have to do is edit the kubernetes deployment of our Neo4J database
 and set a custom `command` every time we have to carry out tasks like backup,
 restore, seed etc.
 
-{% hint style="info" %} TODO: implement maintenance mode {% endhint %}
+{% hint style="info" %}
+TODO: implement maintenance mode
+{% endhint %}
+
 First bring the application into maintenance mode to ensure there are no
 database connections left and nobody can access the application.
 
