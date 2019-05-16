@@ -17,6 +17,8 @@
         human-connection.org/selector: deployment-human-connection-backend
     template:
       metadata:
+        annotations:
+          backup.velero.io/backup-volumes: uploads
         labels:
           human-connection.org/commit: COMMIT
           human-connection.org/selector: deployment-human-connection-backend
