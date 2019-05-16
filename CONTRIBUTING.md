@@ -51,7 +51,19 @@ But what do we do when waiting for merge into master \(wanting to keep PRs small
   * solutions
     * 1\) put 2nd PR into branch that the first PR is hitting - but requires update after merging
     * 2\) prefer to leave exiting PR until it can be reviewed, and instead go and work on some other part of the codebase that is not impacted by the first PR
+    
+### Code Review
+* Github setting in place - at least one review is required to merge 
+  - in principle anyone (who is not the PR owner) can review
+  - but often it will be the core developers (Robert, Ulf, Greg, Wolfgang?)
+  - once there is a review, and presuming no requested changes, PR opener can merge
 
+* CI/tests
+  - the CI needs to pass 
+    - linting  <-- autofix?
+    - tests (unit, feature) (backend, frontend)
+    - codecoverage
+    
 ## Notes
 
 question: when you want to pick a task - \(find out priority\) - is it in discord? is it in AV slack? --&gt; Robert says you can always ask in discord - group channels are the best
