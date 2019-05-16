@@ -83,7 +83,6 @@ export default {
           name: this.$t(`comment.edit`),
           callback: () => {
             /* eslint-disable-next-line no-console */
-            console.log('EDIT COMMENT')
           },
           icon: 'edit'
         })
@@ -98,34 +97,21 @@ export default {
           icon: 'flag'
         })
       }
-console.log(this);
+ 
       if (!this.isOwner && this.isModerator) {
-        //console.log(this.resource.disabled);
-
+       
         if (!this.resource.disabled) {
-
-          // Beitrag ist freigegeben
-
-          //$t(`disable.${this.resourceType}.title`)
           routes.push({
            name: this.$t(`disable.${this.resourceType}.title`),
-            //name: "Beitrag sperren",
             callback: () => {
               this.openModal('disable')
             },
             icon: 'eye-slash'
           })
         } else {
-
-          // Beitrag ist NICHT freigegeben
-
            routes.push({
            name: this.$t(`release.${this.resourceType}.title`),
-          //  name:  this.$t(`contribution.release`),
-           // name: "Beitrag freigeben",
             callback: () => {
-              //alert("funktion starten zum freigeben des beitrages");
-              //alert("BeitragsID=> " + this.resource.id);
               this.openModal('release',  this.resource.id )
             },
             icon: 'eye-slash'
@@ -156,8 +142,6 @@ console.log(this);
       toggleMenu()
     },
     openModal(dialog) {
-      console.log(dialog);
-      console.log(this.$store);
       this.$store.commit('modal/SET_OPEN', {
         name: dialog,
         data: {

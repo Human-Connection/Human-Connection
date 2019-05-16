@@ -256,32 +256,28 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                
-
-
-                 <ds-flex-item  v-tooltip="{content: 'Deine Beiträge', placement: 'left', delay: { show: 500 }}" class="ds-tab-nav-item ">
-                <ds-space margin="small">
+                 
+                <!-- <ds-flex-item  v-tooltip="{content: 'Deine Beiträge', placement: 'left', delay: { show: 500 }}" class="ds-tab-nav-item ">
+                <ds-space margin="small"> -->
                  <!--TODO: find better solution for rendering errors -->                
-                    <no-ssr>
+                   <!-- <no-ssr>
                       <ds-number :label="$t('profile.commented')">
                         <hc-count-to slot="count" :end-val="user.commentsCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>
-                
-
- 
-                <ds-flex-item  class="ds-tab-nav-item ">
-                <ds-space margin="small">
+                </ds-flex-item> -->
+                 
+               <!-- <ds-flex-item  class="ds-tab-nav-item ">
+                <ds-space margin="small"> -->
                 <!-- TODO: find better solution for rendering errors -->
-                <no-ssr>
+               <!-- <no-ssr>
                       <ds-number :label="$t('profile.shouted')">
                         <hc-count-to slot="count" :end-val="user.shoutedCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>
+                </ds-flex-item> -->
                 </ds-flex>
             </ds-card>
           </ds-flex-item>
@@ -327,20 +323,12 @@
           @click="showMoreContributions"
         />
       </ds-flex-item>
-
-
-
       
     </ds-flex>
   </div>
 
-
 </template>
-
-
- 
-
-
+  
 <script>
 
 
