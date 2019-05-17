@@ -61,7 +61,7 @@
     "cookie-universal-nuxt": "~2.0.14",
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0-alpha.27",
-    "express": "~4.16.4",
+    "express": "~4.17.0",
     "graphql": "~14.3.0",
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.1.0",
