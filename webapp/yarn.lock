@@ -1103,12 +1103,12 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^3.2.0"
 
-"@nuxtjs/apollo@4.0.0-rc4.1":
-  version "4.0.0-rc4.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc4.1.tgz#c9d27d0ad95c36805efdfceceb6150ed0eded81e"
-  integrity sha512-FAWpGlq6vcD5IHX8yElO6p73vVK8OabQB/ddc5z0idm3lv8ZQnG+RHvzwQ7qrqQseGUzCbMu/haehmaWA78JzA==
+"@nuxtjs/apollo@4.0.0-rc4.2":
+  version "4.0.0-rc4.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc4.2.tgz#2f3b9392e2d88b658fd63723a0999f298792166c"
+  integrity sha512-ORrx9fziOxCUHUOaveOsFaUDICHG04N8zQFOxnYfutwzoQIdu/5HBSm6UBxtGLrUI+BskaMKR0uw0vk3rRTXfA==
   dependencies:
-    cookie "^0.3.1"
+    cookie "^0.4.0"
     isomorphic-fetch "^2.2.1"
     js-cookie "^2.2.0"
     vue-apollo "^3.0.0-beta.29"
@@ -3291,6 +3291,11 @@ cookie@0.3.1, cookie@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
   integrity sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
+
+cookie@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
+  integrity sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
 
 copy-concurrently@^1.0.0:
   version "1.0.5"
