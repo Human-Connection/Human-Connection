@@ -18,6 +18,7 @@
       v-if="open === 'delete'"
       :id="data.resource.id"
       :type="data.type"
+      :deleteCallback="deleteCallback"
       :name="name"
       @close="close"
     />
@@ -36,6 +37,10 @@ export default {
     DisableModal,
     ReportModal,
     DeleteModal
+  },
+  props: {
+    deleteCallback: { type: Function, required: true },
+    cancelCallback: { type: Function, default: null }
   },
   computed: {
     ...mapGetters({

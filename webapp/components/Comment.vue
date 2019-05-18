@@ -19,6 +19,7 @@
       <content-menu
         placement="bottom-end"
         resource-type="comment"
+        :deleteCallback="deleteCallback"
         :resource="comment"
         style="float-right"
         :is-owner="isAuthor(author.id)"
@@ -69,6 +70,9 @@ export default {
   methods: {
     isAuthor(id) {
       return this.user.id === id
+    },
+    deleteCallback() {
+      console.log('"deleteCallback" was called !!!')
     }
   }
 }

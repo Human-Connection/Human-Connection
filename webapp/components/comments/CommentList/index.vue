@@ -19,10 +19,18 @@
       class="comments"
     >
       <comment
-        v-for="comment in comments"
+        v-for="(comment, index) in comments"
         :key="comment.id"
         :comment="comment"
+        @deleteComment="deleteComment(index)"
       />
+      <!-- <comment
+        is="comment-item"
+        v-for="(comment, index) in comments"
+        :key="comment.id"
+        :comment="comment"
+        v-on:remove="comments.splice(index, 1)"
+      /> -->
     </div>
     <hc-empty
       v-else
@@ -61,6 +69,10 @@ export default {
   methods: {
     refetchPostComments(comment) {
       this.$apollo.queries.Post.refetch()
+    },
+    deleteComment(index) {
+      console.log('Remove comment event !!!')
+      this.comments.splice(index, 1)
     }
   },
   apollo: {

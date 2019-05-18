@@ -53,6 +53,8 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
+    deleteCallback: { type: Function, required: true },
+    cancelCallback: { type: Function, default: null },
     id: { type: String, required: true }
   },
   data() {
@@ -116,12 +118,23 @@ export default {
           setTimeout(() => {
             this.success = false
             this.$emit('close')
-            if (this.$router.history.current.name === 'post-id-slug') {
-              // redirect to index
-              this.$router.history.push('/')
-            } else {
-              // reload the page (when deleting from profile or index)
-              window.location.assign(window.location.href)
+            switch (this.type) {
+              case 'contribution':
+                if (this.$router.history.current.name === 'post-id-slug') {
+                  // redirect to index
+                  this.$router.history.push('/')
+                } else {
+                  // reload the page (when deleting from profile or index)
+                  window.location.assign(window.location.href)
+                }
+                break
+              case 'comment':
+                // reload the page
+                // window.location.assign(window.location.href)
+                console.log('Remove comment emit !!!')
+                // this.$parent.$parent.$emit('deleteComment')
+                this.deleteCallback()
+                break
             }
           }, 500)
         }, 1500)
