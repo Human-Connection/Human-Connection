@@ -5,7 +5,7 @@
       ref="el"
       :options="dropzoneOptions"
       :include-styling="false"
-      :style="{ backgroundImage: backgroundImage(`${user.avatar}`)}"
+      :style="backgroundImage"
       @vdropzone-thumbnail="thumbnail"
     >
       <!-- <slot></slot> -->
@@ -35,8 +35,11 @@ export default {
     }
   },
   computed: {
-    backgroundImage: () => avatar => {
-      return `url(${avatar})`
+    backgroundImage() {
+      const { avatar } = this.user || {}
+      return {
+        backgroundImage: `url(${avatar})`
+      }
     }
   },
   methods: {
