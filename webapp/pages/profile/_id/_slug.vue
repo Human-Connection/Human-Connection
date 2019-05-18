@@ -290,13 +290,13 @@
             />
           </ds-flex-item>
           <template v-if="activePosts.length">
-            <ds-flex-item
-              v-for="post in activePosts"
+            <hc-post-card
+              v-for="(post, index) in activePosts"
               :key="post.id"
+              :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-            >
-              <hc-post-card :post="post" />
-            </ds-flex-item>
+              @delete="deletePost(index)"
+            />
           </template>
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
@@ -404,6 +404,9 @@ export default {
         throw new Error('User not found!')
       }
     }
+    // activePosts(activePosts) {
+    //   this.activePosts = activePosts || []
+    // }
   },
   methods: {
     uniq(items, field = 'id') {
@@ -434,6 +437,10 @@ export default {
         },
         fetchPolicy: 'cache-and-network'
       })
+    },
+    deletePost(index) {
+      this.user.contributions.splice(index, 1)
+      // this.$router.history.push('/')
     }
   },
   apollo: {

@@ -1,76 +1,80 @@
 <template>
-  <ds-card
-    :header="post.title"
-    :image="post.image"
-    :class="{'post-card': true, 'disabled-content': post.disabled}"
+  <ds-flex-item
+    :width="width"
   >
-    <nuxt-link
-      class="post-link"
-      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
+    <ds-card
+      :header="post.title"
+      :image="post.image"
+      :class="{'post-card': true, 'disabled-content': post.disabled}"
     >
-      {{ post.title }}
-    </nuxt-link>
-    <!-- eslint-disable vue/no-v-html -->
-    <!-- TODO: replace editor content with tiptap render view -->
-    <ds-space margin-bottom="large">
-      <div
-        class="hc-editor-content"
-        v-html="excerpt"
-      />
-    </ds-space>
-    <!-- eslint-enable vue/no-v-html -->
-    <ds-space>
-      <ds-text
-        v-if="post.createdAt"
-        align="right"
-        size="small"
-        color="soft"
+      <nuxt-link
+        class="post-link"
+        :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
       >
-        {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
-      </ds-text>
-    </ds-space>
-    <ds-space
-      margin="small"
-      style="position: absolute; bottom: 44px;"
-    >
-      <!-- TODO: find better solution for rendering errors -->
-      <no-ssr>
-        <hc-user
-          :user="post.author"
-          :trunc="35"
+        {{ post.title }}
+      </nuxt-link>
+      <!-- eslint-disable vue/no-v-html -->
+      <!-- TODO: replace editor content with tiptap render view -->
+      <ds-space margin-bottom="large">
+        <div
+          class="hc-editor-content"
+          v-html="excerpt"
         />
-      </no-ssr>
-    </ds-space>
-    <template slot="footer">
-      <div style="display: inline-block; opacity: .5;">
-        <ds-icon
-          v-for="category in post.categories"
-          :key="category.id"
-          v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
-          :name="category.icon"
-        />&nbsp;
-      </div>
-      <div style="display: inline-block; float: right">
-        <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
-          <ds-icon name="bullhorn" />
-          <small>{{ post.shoutedCount }}</small>
-        </span>
-        &nbsp;
-        <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-          <ds-icon name="comments" />
-          <small>{{ post.commentsCount }}</small>
-        </span>
+      </ds-space>
+      <!-- eslint-enable vue/no-v-html -->
+      <ds-space>
+        <ds-text
+          v-if="post.createdAt"
+          align="right"
+          size="small"
+          color="soft"
+        >
+          {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
+        </ds-text>
+      </ds-space>
+      <ds-space
+        margin="small"
+        style="position: absolute; bottom: 44px;"
+      >
+        <!-- TODO: find better solution for rendering errors -->
         <no-ssr>
-          <content-menu
-            resource-type="contribution"
-            :resource="post"
-            :callbacks="{ confirmCallback, cancelCallback: null }"
-            :is-owner="isAuthor"
+          <hc-user
+            :user="post.author"
+            :trunc="35"
           />
         </no-ssr>
-      </div>
-    </template>
-  </ds-card>
+      </ds-space>
+      <template slot="footer">
+        <div style="display: inline-block; opacity: .5;">
+          <ds-icon
+            v-for="category in post.categories"
+            :key="category.id"
+            v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
+            :name="category.icon"
+          />&nbsp;
+        </div>
+        <div style="display: inline-block; float: right">
+          <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
+            <ds-icon name="bullhorn" />
+            <small>{{ post.shoutedCount }}</small>
+          </span>
+          &nbsp;
+          <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
+            <ds-icon name="comments" />
+            <small>{{ post.commentsCount }}</small>
+          </span>
+          <no-ssr>
+            <content-menu
+              resource-type="contribution"
+              :resource="post"
+              :callbacks="{ confirmCallback, cancelCallback: null }"
+              :is-owner="isAuthor"
+            />
+          </no-ssr>
+        </div>
+      </template>
+    </ds-card>
+  </ds-flex-item>
 </template>
 
 <script>
@@ -89,6 +93,10 @@ export default {
   mixins: [Post],
   props: {
     post: {
+      type: Object,
+      required: true
+    },
+    width: {
       type: Object,
       required: true
     }

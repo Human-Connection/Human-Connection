@@ -35,13 +35,13 @@
         v-if="post.relatedContributions && post.relatedContributions.length"
         gutter="small"
       >
-        <ds-flex-item
-          v-for="relatedPost in post.relatedContributions"
+        <hc-post-card
+          v-for="(relatedPost, index) in post.relatedContributions"
           :key="relatedPost.id"
           :width="{ base: '100%', lg: 1 }"
-        >
-          <hc-post-card :post="relatedPost" />
-        </ds-flex-item>
+          :post="relatedPost"
+          @delete="deletePost(index)"
+        />
       </ds-flex>
       <hc-empty
         v-else
@@ -71,6 +71,12 @@ export default {
   computed: {
     post() {
       return this.Post ? this.Post[0] || {} : {}
+    }
+  },
+  methods: {
+    deletePost(index) {
+      console.log('Post/more-info.vue: Post item deleted !!!')
+      this.post.relatedContributions.splice(index, 1)
     }
   },
   apollo: {

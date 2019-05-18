@@ -5,13 +5,13 @@
       :width="{ base: '100%' }"
       gutter="base"
     >
-      <ds-flex-item
-        v-for="post in uniq(Post)"
+      <hc-post-card
+        v-for="(post, index) in uniq(Post)"
         :key="post.id"
+        :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-      >
-        <hc-post-card :post="post" />
-      </ds-flex-item>
+        @delete="deletePost(index, post.id)"
+      />
     </ds-flex>
     <no-ssr>
       <ds-button
@@ -85,6 +85,14 @@ export default {
         },
         fetchPolicy: 'cache-and-network'
       })
+    },
+    deletePost(_index, postId) {
+      console.log('Pages/index.vue: Post item deleted !!!')
+      this.Post = this.Post.filter((post) => {
+        return post.id !== postId
+      })
+      // Ideal sulution:
+      // this.Post.splice(index, 1)
     }
   },
   apollo: {
