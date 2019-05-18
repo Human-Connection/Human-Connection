@@ -25,6 +25,7 @@
               placement="bottom-end"
               resource-type="user"
               :resource="user"
+              :callbacks="{ confirmCallback, cancelCallback: null }"
               :is-owner="myProfile"
               class="user-content-menu"
             />
@@ -327,6 +328,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
+import Post from '~/mixins/Post'
 
 export default {
   components: {
@@ -339,6 +341,7 @@ export default {
     HcEmpty,
     ContentMenu
   },
+  mixins: [Post],
   transition: {
     name: 'slide-up',
     mode: 'out-in'

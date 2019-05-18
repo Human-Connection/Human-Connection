@@ -64,6 +64,7 @@
           <content-menu
             resource-type="contribution"
             :resource="post"
+            :callbacks="{ confirmCallback, cancelCallback: null }"
             :is-owner="isAuthor"
           />
         </no-ssr>
@@ -77,6 +78,7 @@ import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
 import { mapGetters } from 'vuex'
+import Post from '~/mixins/Post'
 
 export default {
   name: 'HcPostCard',
@@ -84,6 +86,7 @@ export default {
     HcUser,
     ContentMenu
   },
+  mixins: [Post],
   props: {
     post: {
       type: Object,

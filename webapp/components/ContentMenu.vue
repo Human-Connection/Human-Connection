@@ -60,7 +60,8 @@ export default {
       validator: value => {
         return value.match(/(contribution|comment|organization|user)/)
       }
-    }
+    },
+    callbacks: { type: Object, default: () => {} }
   },
   computed: {
     routes() {
@@ -151,7 +152,8 @@ export default {
         name: dialog,
         data: {
           type: this.resourceType,
-          resource: this.resource
+          resource: this.resource,
+          callbacks: this.callbacks
         }
       })
     }

@@ -19,8 +19,8 @@
       <content-menu
         placement="bottom-end"
         resource-type="comment"
-        :deleteCallback="deleteCallback"
         :resource="comment"
+        :callbacks="{ confirmCallback, cancelCallback: null }"
         style="float-right"
         :is-owner="isAuthor(author.id)"
       />
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import { mapGetters } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
@@ -71,8 +72,27 @@ export default {
     isAuthor(id) {
       return this.user.id === id
     },
-    deleteCallback() {
-      console.log('"deleteCallback" was called !!!')
+    async confirmCallback() {
+      console.log('"confirmCallback" was called !!! ', this.comment.id)
+
+      try {
+        // XXX Make custom mutation and tests in the Backend !!!
+        var gqlMutation = gql`
+          mutation($id: ID!) {
+            DeleteComment(id: $id) {
+              id
+            }
+          }
+        `
+        await this.$apollo.mutate({
+          mutation: gqlMutation,
+          variables: { id: this.comment.id }
+        })
+        this.$toast.success(this.$t(`delete.comment.success`))
+        this.$emit('deleteComment')
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     }
   }
 }

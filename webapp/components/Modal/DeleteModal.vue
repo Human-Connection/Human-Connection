@@ -53,7 +53,7 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
-    deleteCallback: { type: Function, required: true },
+    confirmCallback: { type: Function, required: true },
     cancelCallback: { type: Function, default: null },
     id: { type: String, required: true }
   },
@@ -78,6 +78,9 @@ export default {
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
+        if (!!this.cancelCallback) {
+          this.cancelCallback()
+        }
       }, 1000)
     },
     async confirm() {
@@ -87,34 +90,28 @@ export default {
       try {
         switch (this.type) {
           case 'contribution':
-            gqlMutation = gql`
-              mutation($id: ID!) {
-                DeletePost(id: $id) {
-                  id
-                }
-              }
-            `
+            // gqlMutation = gql`
+            //   mutation($id: ID!) {
+            //     DeletePost(id: $id) {
+            //       id
+            //     }
+            //   }
+            // `
+            // await this.$apollo.mutate({
+            //   mutation: gqlMutation,
+            //   variables: { id: this.id }
+            // })
+            // this.$toast.success(this.$t(`delete.${this.type}.success`))
+            await this.confirmCallback()
             break
           case 'comment':
             // XXX Make custom mutation and tests in the Backend !!!
-            gqlMutation = gql`
-              mutation($id: ID!) {
-                DeleteComment(id: $id) {
-                  id
-                }
-              }
-            `
+            await this.confirmCallback()
             break
         }
-        await this.$apollo.mutate({
-          mutation: gqlMutation,
-          variables: { id: this.id }
-        })
         this.success = true
-        this.$toast.success(this.$t(`delete.${this.type}.success`))
         setTimeout(() => {
           this.isOpen = false
-          // XXX For comment just reload the page !!!
           setTimeout(() => {
             this.success = false
             this.$emit('close')
@@ -122,25 +119,22 @@ export default {
               case 'contribution':
                 if (this.$router.history.current.name === 'post-id-slug') {
                   // redirect to index
-                  this.$router.history.push('/')
+                  // this.$router.history.push('/')
                 } else {
                   // reload the page (when deleting from profile or index)
-                  window.location.assign(window.location.href)
+                  // window.location.assign(window.location.href)
                 }
-                break
-              case 'comment':
-                // reload the page
-                // window.location.assign(window.location.href)
-                console.log('Remove comment emit !!!')
-                // this.$parent.$parent.$emit('deleteComment')
-                this.deleteCallback()
                 break
             }
           }, 500)
         }, 1500)
       } catch (err) {
         this.success = false
-        this.$toast.error(err.message)
+        // switch (this.type) {
+        //   case 'contribution':
+        //     this.$toast.error(err.message)
+        //     break
+        // }
       } finally {
         this.loading = false
       }

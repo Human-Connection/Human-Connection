@@ -18,6 +18,7 @@
           placement="bottom-end"
           resource-type="contribution"
           :resource="post"
+          :callbacks="{ confirmCallback, cancelCallback: null }"
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>
@@ -114,6 +115,7 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
+import Post from '~/mixins/Post'
 
 export default {
   transition: {
@@ -129,6 +131,7 @@ export default {
     HcCommentForm,
     HcCommentList
   },
+  mixins: [Post],
   head() {
     return {
       title: this.title
