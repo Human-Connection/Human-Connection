@@ -9,7 +9,6 @@ module.exports = {
   },
   extends: [
     'standard',
-    'plugin:vue/recommended',
     'plugin:prettier/recommended'
   ],
   plugins: [
