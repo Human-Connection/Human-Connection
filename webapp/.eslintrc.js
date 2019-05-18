@@ -8,6 +8,7 @@ module.exports = {
     parser: 'babel-eslint'
   },
   extends: [
+    'standard',
     'plugin:vue/recommended',
     'plugin:prettier/recommended'
   ],
@@ -18,7 +19,8 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    //'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': ['error'],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
     'prettier/prettier': ['error'],
