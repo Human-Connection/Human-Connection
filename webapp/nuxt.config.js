@@ -140,6 +140,12 @@ module.exports = {
         'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
       }
     },
+    '/uploads': {
+      // make this configurable (nuxt-dotenv)
+      target: process.env.UPLOADS_URI || 'http://localhost:8888',
+      pathRewrite: { '^/uploads': '' },
+      toProxy: true // cloudflare needs that
+    },
     '/api': {
       // make this configurable (nuxt-dotenv)
       target: process.env.GRAPHQL_URI || 'http://localhost:4000',

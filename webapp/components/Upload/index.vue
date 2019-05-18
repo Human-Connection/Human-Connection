@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       dropzoneOptions: {
-        url: 'https://httpbin.org/post',
+        paramName: 'media',
+        url: '/uploads/image',
         thumbnailWidth: 150,
         maxFilesize: 0.5,
         previewTemplate: this.template(),

@@ -14,6 +14,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - GRAPHQL_URI=http://backend:4000
+      - UPLOADS_URI=http://thumbor
       - MAPBOX_TOKEN="pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.bZ8KK9l70omjXbEkkbHGsQ"
   backend:
     image: humanconnection/nitro-backend:latest
@@ -41,6 +42,15 @@ services:
       context: neo4j
     networks:
       - hc-network
+  thumbor:
+    image: minimalcompact/thumbor
+    networks:
+      - hc-network
+    ports:
+      - 8888:80
+    environment:
+      - UPLOAD_ENABLED=1
+
 
 networks:
   hc-network:
