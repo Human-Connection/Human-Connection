@@ -14,7 +14,7 @@ module.exports = {
   ],
   plugins: [
     'jest'
-  ]
+  ],
   rules: {
     'indent': [ 'error', 2 ],
     'quotes': [ "error", "single"],
