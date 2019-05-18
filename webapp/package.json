@@ -6,7 +6,8 @@
     "Grzegorz Leoniec (appinteractive)",
     "ulfgebhardt"
   ],
-  "author": "",
+  "license": "MIT",
+  "author": "Human Connection gGmbH",
   "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
