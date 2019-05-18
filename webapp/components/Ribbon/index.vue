@@ -19,14 +19,16 @@ export default {
 <style scoped lang="scss">
 .ribbon {
   $card-shadow: 0px 12px 26px -4px rgba(0, 0, 0, 0.1);
-  position: absolute;
+  //position: absolute;
+  position: relative;
+  right: -31px;
+  top: -31px;
+
   font-size: 0.9em;
   font-weight: bold;
   padding: 6px 6px;
   color: #fff;
   background-color: $background-color-secondary-active;
-  right: -8px;
-  //top: -5px;
   float: right;
   border-radius: 2px 0 0 2px;
   box-shadow: $card-shadow;
