@@ -87,7 +87,7 @@ export default {
       })
     },
     deletePost(_index, postId) {
-      this.Post = this.Post.filter((post) => {
+      this.Post = this.Post.filter(post => {
         return post.id !== postId
       })
       // Ideal solution:

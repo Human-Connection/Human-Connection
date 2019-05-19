@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export default {
   methods: {
-    async deletePostCallback() {
+    async deletePostCallback(listPageType = true) {
       try {
         var gqlMutation = gql`
           mutation($id: ID!) {
@@ -16,7 +16,13 @@ export default {
           variables: { id: this.post.id }
         })
         this.$toast.success(this.$t(`delete.contribution.success`))
-        this.$emit('deletePost')
+        if (listPageType) {
+          console.log('Emit "deletePost" !!!')
+          this.$emit('deletePost')
+        } else {
+          console.log('Redirect to index !!!')
+          this.$router.history.push('/') // Single page type: redirect to index
+        }
       } catch (err) {
         this.$toast.error(err.message)
       }
