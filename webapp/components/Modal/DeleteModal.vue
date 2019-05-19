@@ -75,66 +75,28 @@ export default {
   },
   methods: {
     async cancel() {
+      if (!!this.cancelCallback) {
+        await this.cancelCallback()
+      }
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
-        if (!!this.cancelCallback) {
-          this.cancelCallback()
-        }
       }, 1000)
     },
     async confirm() {
-      var gqlMutation
-
       this.loading = true
       try {
-        switch (this.type) {
-          case 'contribution':
-            // gqlMutation = gql`
-            //   mutation($id: ID!) {
-            //     DeletePost(id: $id) {
-            //       id
-            //     }
-            //   }
-            // `
-            // await this.$apollo.mutate({
-            //   mutation: gqlMutation,
-            //   variables: { id: this.id }
-            // })
-            // this.$toast.success(this.$t(`delete.${this.type}.success`))
-            await this.confirmCallback()
-            break
-          case 'comment':
-            // XXX Make custom mutation and tests in the Backend !!!
-            await this.confirmCallback()
-            break
-        }
+        await this.confirmCallback()
         this.success = true
         setTimeout(() => {
           this.isOpen = false
           setTimeout(() => {
             this.success = false
             this.$emit('close')
-            switch (this.type) {
-              case 'contribution':
-                if (this.$router.history.current.name === 'post-id-slug') {
-                  // redirect to index
-                  // this.$router.history.push('/')
-                } else {
-                  // reload the page (when deleting from profile or index)
-                  // window.location.assign(window.location.href)
-                }
-                break
-            }
           }, 500)
         }, 1500)
       } catch (err) {
         this.success = false
-        // switch (this.type) {
-        //   case 'contribution':
-        //     this.$toast.error(err.message)
-        //     break
-        // }
       } finally {
         this.loading = false
       }

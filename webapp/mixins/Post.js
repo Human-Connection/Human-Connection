@@ -16,7 +16,7 @@ export default {
           variables: { id: this.post.id }
         })
         this.$toast.success(this.$t(`delete.contribution.success`))
-        this.$emit('delete')
+        this.$emit('deletePost')
       } catch (err) {
         this.$toast.error(err.message)
       }

@@ -295,7 +295,7 @@
               :key="post.id"
               :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-              @delete="deletePost(index)"
+              @deletePost="deletePost(index)"
             />
           </template>
           <template v-else>

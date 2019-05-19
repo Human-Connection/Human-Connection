@@ -40,7 +40,7 @@
           :key="relatedPost.id"
           :post="relatedPost"
           :width="{ base: '100%', lg: 1 }"
-          @delete="deletePost(index)"
+          @deletePost="deletePost(index)"
         />
       </ds-flex>
       <hc-empty

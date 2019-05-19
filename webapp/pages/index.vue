@@ -10,7 +10,7 @@
         :key="post.id"
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-        @delete="deletePost(index, post.id)"
+        @deletePost="deletePost(index, post.id)"
       />
     </ds-flex>
     <no-ssr>

@@ -71,7 +71,6 @@ export default {
       this.$apollo.queries.Post.refetch()
     },
     deleteComment(index) {
-      console.log('Remove comment event !!!')
       this.comments.splice(index, 1)
     }
   },

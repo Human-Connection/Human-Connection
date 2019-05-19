@@ -1,5 +1,6 @@
 <template>
   <div class="modal-wrapper">
+    <!-- Todo: Put all modals with 2 buttons and equal properties in one customiced 'danger-action-modal' -->
     <disable-modal
       v-if="open === 'disable'"
       :id="data.resource.id"
