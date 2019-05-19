@@ -67,7 +67,7 @@
             <content-menu
               resource-type="contribution"
               :resource="post"
-              :callbacks="{ confirmCallback, cancelCallback: null }"
+              :callbacks="{ confirm: deletePostCallback, cancel: null }"
               :is-owner="isAuthor"
             />
           </no-ssr>

@@ -25,7 +25,7 @@
               placement="bottom-end"
               resource-type="user"
               :resource="user"
-              :callbacks="{ confirmCallback, cancelCallback: null }"
+              :callbacks="{ confirm: deletePostCallback, cancel: null }"
               :is-owner="myProfile"
               class="user-content-menu"
             />
@@ -404,9 +404,6 @@ export default {
         throw new Error('User not found!')
       }
     }
-    // activePosts(activePosts) {
-    //   this.activePosts = activePosts || []
-    // }
   },
   methods: {
     uniq(items, field = 'id') {
@@ -440,7 +437,6 @@ export default {
     },
     deletePost(index) {
       this.user.contributions.splice(index, 1)
-      // this.$router.history.push('/')
     }
   },
   apollo: {

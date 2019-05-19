@@ -18,7 +18,7 @@
           placement="bottom-end"
           resource-type="contribution"
           :resource="post"
-          :callbacks="{ confirmCallback, cancelCallback: null }"
+          :callbacks="{ confirm: deletePostCallback, cancel: null }"
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>

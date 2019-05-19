@@ -38,8 +38,8 @@
         <hc-post-card
           v-for="(relatedPost, index) in post.relatedContributions"
           :key="relatedPost.id"
-          :width="{ base: '100%', lg: 1 }"
           :post="relatedPost"
+          :width="{ base: '100%', lg: 1 }"
           @delete="deletePost(index)"
         />
       </ds-flex>
@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     deletePost(index) {
-      console.log('Post/more-info.vue: Post item deleted !!!')
       this.post.relatedContributions.splice(index, 1)
     }
   },

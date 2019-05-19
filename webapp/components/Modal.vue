@@ -18,8 +18,8 @@
       v-if="open === 'delete'"
       :id="data.resource.id"
       :type="data.type"
-      :confirm-callback="data.callbacks.confirmCallback"
-      :cancel-callback="!!data.callbacks.cancelCallback ? data.callbacks.cancelCallback : null"
+      :confirmCallback="data.callbacks.confirm"
+      :cancelCallback="!!data.callbacks.cancel ? data.callbacks.cancel : null"
       :name="name"
       @close="close"
     />

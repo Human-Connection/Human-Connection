@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export default {
   methods: {
-    async confirmCallback() {
+    async deletePostCallback() {
       try {
         var gqlMutation = gql`
           mutation($id: ID!) {

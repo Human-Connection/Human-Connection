@@ -87,11 +87,10 @@ export default {
       })
     },
     deletePost(_index, postId) {
-      console.log('Pages/index.vue: Post item deleted !!!')
       this.Post = this.Post.filter((post) => {
         return post.id !== postId
       })
-      // Ideal sulution:
+      // Ideal solution:
       // this.Post.splice(index, 1)
     }
   },

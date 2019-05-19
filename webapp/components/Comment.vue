@@ -20,7 +20,7 @@
         placement="bottom-end"
         resource-type="comment"
         :resource="comment"
-        :callbacks="{ confirmCallback, cancelCallback: null }"
+        :callbacks="{ confirm: deleteCommentCallback, cancel: null }"
         style="float-right"
         :is-owner="isAuthor(author.id)"
       />
@@ -72,9 +72,7 @@ export default {
     isAuthor(id) {
       return this.user.id === id
     },
-    async confirmCallback() {
-      console.log('"confirmCallback" was called !!! ', this.comment.id)
-
+    async deleteCommentCallback() {
       try {
         // XXX Make custom mutation and tests in the Backend !!!
         var gqlMutation = gql`
