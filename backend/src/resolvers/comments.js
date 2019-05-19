@@ -16,18 +16,22 @@ export default {
       delete params.postId
 
       if (!params.content || content.length < COMMENT_MIN_LENGTH) {
-        throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
+        throw new UserInputError(
+          `Comment must be at least ${COMMENT_MIN_LENGTH} character long!`
+        )
       }
       if (!postId.trim()) {
         throw new UserInputError(NO_POST_ERR_MESSAGE)
       }
 
       const session = context.driver.session()
-      const postQueryRes = await session.run(`
+      const postQueryRes = await session.run(
+        `
         MATCH (post:Post {id: $postId})
-        RETURN post`, {
-        postId
-      }
+        RETURN post`,
+        {
+          postId
+        }
       )
       const [post] = postQueryRes.records.map(record => {
         return record.get('post')
@@ -36,20 +40,88 @@ export default {
       if (!post) {
         throw new UserInputError(NO_POST_ERR_MESSAGE)
       }
-      const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
+      const comment = await neo4jgraphql(
+        object,
+        params,
+        context,
+        resolveInfo,
+        false
+      )
 
-      await session.run(`
+      await session.run(
+        `
         MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId}), (author:User {id: $userId})
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN post`, {
-        userId: context.user.id,
-        postId,
-        commentId: comment.id
-      }
+        RETURN post`,
+        {
+          userId: context.user.id,
+          postId,
+          commentId: comment.id
+        }
       )
       session.close()
 
       return comment
+    },
+    UpdateComment: async (object, params, context, resolveInfo) => {
+      // Strip element tags and remove leading/trailing white spaces from content
+      const content = params.content.replace(/<(?:.|\n)*?>/gm, '').trim()
+      const { id } = params
+      console.log(id)
+      // Check length of content
+      if (!params.content || content.length < COMMENT_MIN_LENGTH) {
+        throw new UserInputError(
+          `Comment must be at least ${COMMENT_MIN_LENGTH} character long!`
+        )
+      }
+
+      // Check if comment exists
+      const session = context.driver.session()
+      const commentQueryRes = await session.run(
+        `
+        MATCH (comment: COMMENT) 
+        WHERE id(comment)=$id 
+        RETURN comment`,
+        {
+          id
+        }
+      )
+      console.log(id)
+      console.log(commentQueryRes)
+      // Destructure content from session results array
+      const [comment] = commentQueryRes.records.map(record => {
+        console.log(record.get('comment'))
+        return record.get('comment')
+      })
+
+      // Send error message if cannot find a matching comment.
+      // if (!comment) {
+      //   throw new UserInputError(NO_COMMENT_ERR_MESSAGE)
+      // }
+
+      // Update comment.
+      //   const commentRev = await neo4jgraphql(
+      //     object,
+      //     params,
+      //     context,
+      //     resolveInfo,
+      //     false
+      //   )
+
+      //   await session.run(
+      //     `
+      //     MATCH (comment:Comment)
+      //     WHERE id(comment)=$id,
+      //     SET comment.content = $content
+      //     `,
+      //     {
+      //      id,
+      //      content
+      //     }
+      //   )
+      session.close()
+
+      //   return commentRev
     }
   }
 }
