@@ -88,8 +88,6 @@ export default {
 
       // Destructure content from session results array
       const [comment] = commentQueryRes.records.map(record => {
-        const a = record.get('comment')
-        console.log(a)
         return record.get('comment')
       })
 
@@ -110,7 +108,7 @@ export default {
       await session.run(
         `
         MATCH (comment: Comment { id:$id}) 
-        SET comment.content = 'bbb'
+        SET comment.content = $content
         `,
         {
           id,
