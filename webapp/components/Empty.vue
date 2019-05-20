@@ -5,8 +5,8 @@
     :margin="margin"
   >
     <ds-text>
-      <hc-image
-        :image-props="{ src: imgSrc }"
+      <img
+        :src="iconPath"
         width="80"
         class="hc-empty-icon"
         style="margin-bottom: 5px"
@@ -24,12 +24,8 @@
 </template>
 
 <script>
-import HcImage from '~/components/Image'
 export default {
   name: 'HcEmpty',
-  components: {
-    HcImage
-  },
   props: {
     /**
      * Icon that should be shown
@@ -58,7 +54,7 @@ export default {
     }
   },
   computed: {
-    imgSrc() {
+    iconPath() {
       return `/img/empty/${this.icon}.svg`
     }
   }
