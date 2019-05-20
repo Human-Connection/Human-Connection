@@ -1,6 +1,12 @@
-import extractIds from './extractMentions'
+import extractIds from '.'
 
-describe('extract', () => {
+describe('extractIds', () => {
+  describe('content undefined', () => {
+    it('returns empty array', () => {
+      expect(extractIds()).toEqual([])
+    })
+  })
+
   describe('searches through links', () => {
     it('ignores links without .mention class', () => {
       const content = '<p>Something inspirational about <a href="/profile/u2" target="_blank">@bob-der-baumeister</a> and <a href="/profile/u3" target="_blank">@jenny-rostock</a>.</p>'

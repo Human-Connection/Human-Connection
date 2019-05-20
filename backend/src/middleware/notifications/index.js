@@ -1,4 +1,4 @@
-import extractIds from './extractMentions'
+import extractIds from './extractIds'
 
 const notify = async (resolve, root, args, context, resolveInfo) => {
   // extract user ids before xss-middleware removes link classes
