@@ -2,6 +2,7 @@
   <div>
     <vue-dropzone
       id="customdropzone"
+      :key="user.avatar"
       ref="el"
       :options="dropzoneOptions"
       :include-styling="false"
@@ -56,8 +57,8 @@ export default {
                 </div>
                 <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
                 <div class="dz-error-message"><span data-dz-errormessage></span></div>
-                <div class="dz-success-mark"><i class="fa fa-check"></i></div>
-                <div class="dz-error-mark"><i class="fa fa-close"></i></div>
+                <div class="dz-success-mark"><ds-icon name="check" /></div>
+                <div class="dz-error-mark"><ds-icon name="close" /></div>
                 </div>
               </div>
       `
@@ -90,6 +91,7 @@ export default {
             mutation($id: ID!, $avatarUpload: Upload) {
               UpdateUser(id: $id, avatarUpload: $avatarUpload) {
                 id
+                avatar
               }
             }
           `,
@@ -108,8 +110,7 @@ export default {
 </script>
 <style>
 #customdropzone {
-  /* background-color: orange; */
-  margin-left: 35px;
+  margin: -60px auto auto;
   width: 122px;
   min-height: 122px;
   background-size: cover;
@@ -126,18 +127,21 @@ export default {
   width: 160px;
   display: flex;
 }
+
 #customdropzone .dz-preview .dz-image {
   position: relative;
   width: 122px;
   height: 122px;
-  margin-left: -35px;
+  margin: -35px;
 }
+
 #customdropzone .dz-preview .dz-image > div {
   width: inherit;
   height: inherit;
   border-radius: 50%;
   background-size: cover;
 }
+
 #customdropzone .dz-preview .dz-image > img {
   width: 100%;
 }
@@ -147,6 +151,7 @@ export default {
   transition: opacity 0.2s linear;
   text-align: center;
 }
+
 #customdropzone .dz-success-mark,
 .dz-error-mark,
 .dz-remove {
