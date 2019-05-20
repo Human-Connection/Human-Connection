@@ -8,7 +8,6 @@
       :style="backgroundImage"
       @vdropzone-thumbnail="thumbnail"
       @vdropzone-drop="vddrop"
-      @vdropzone-success="vsuccess"
     />
   </div>
 </template>
@@ -37,7 +36,7 @@ export default {
     backgroundImage() {
       const { avatar } = this.user || {}
       return {
-        backgroundImage: `url(${avatar})`
+        backgroundImage: `url(/api/${avatar})`
       }
     }
   },
@@ -84,27 +83,25 @@ export default {
         )
       }
     },
-    vsuccess(file, response) {
-      console.log('file', file.upload.filename, 'response', response)
-    },
     vddrop([file]) {
-      this.dDrop = true
-      console.log('this is a file', file)
-      const uploadFileMutation = gql`
-        mutation($file: Upload!) {
-          uploadFile(file: $file)
-        }
-      `
       this.$apollo
-        .mutate({ mutation: uploadFileMutation, variables: { file } })
-        .then(reponse => {
-          console.log(response)
-          this.$toast.success('Upload successful')
+        .mutate({
+          mutation: gql`
+            mutation($id: ID!, $avatarUpload: Upload) {
+              UpdateUser(id: $id, avatarUpload: $avatarUpload) {
+                id
+              }
+            }
+          `,
+          variables: {
+            avatarUpload: file,
+            id: this.user.id
+          }
+        })
+        .then(response => {
+          this.$toast.success(this.$t('user.avatar.submitted'))
         })
         .catch(error => this.$toast.error(error.message))
-    },
-    verror(file) {
-      console.log(file)
     }
   }
 }
