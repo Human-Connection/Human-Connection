@@ -11,7 +11,7 @@
         class="hc-empty-icon"
         style="margin-bottom: 5px"
         alt="Empty"
-      /><br>
+      ><br>
       <ds-text
         v-show="message"
         class="hc-empty-message"

@@ -32,8 +32,6 @@
 </template>
 
 <script>
-
-
 import DisableModal from '~/components/Modal/DisableModal'
 import ReleaseModal from '~/components/Modal/ReleaseModal'
 import ReportModal from '~/components/Modal/ReportModal'
@@ -76,5 +74,4 @@ export default {
     }
   }
 }
-
 </script>
