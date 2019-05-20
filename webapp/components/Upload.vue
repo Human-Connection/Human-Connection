@@ -7,6 +7,7 @@
       :include-styling="false"
       :style="{ backgroundImage: backgroundImage(`${user.avatar}`)}"
       @vdropzone-thumbnail="thumbnail"
+      @vdropzone-success="vsuccess"
     >
       <!-- <slot></slot> -->
     </vue-dropzone>
@@ -27,7 +28,6 @@ export default {
     return {
       dropzoneOptions: {
         url: 'https://httpbin.org/post',
-        thumbnailWidth: 150,
         maxFilesize: 0.5,
         previewTemplate: this.template(),
         dictDefaultMessage: ""
@@ -61,7 +61,6 @@ export default {
       var j, len, ref, thumbnailElement;
       this.$refs.el.dropzone.element.style['background-image'] = ''
       if (file.previewElement) {
-        console.log(file)
           file.previewElement.classList.remove("dz-file-preview");
           ref = file.previewElement.querySelectorAll("[data-dz-thumbnail-bg]");
           for (j = 0, len = ref.length; j < len; j++) {
@@ -75,6 +74,9 @@ export default {
               };
           })(this)), 1);
       }
+    },
+    vsuccess(file, response) {
+      console.log('file', file.upload.filename, 'response', response)
     }
   },
   mounted() {
@@ -108,15 +110,12 @@ export default {
   width: 122px;
   height: 122px;
   margin-left: -35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 #customdropzone .dz-preview .dz-image > div {
   width: inherit;
   height: inherit;
   border-radius: 50%;
-  background-size: contain;
+  background-size: cover;
 }
 #customdropzone .dz-preview .dz-image > img {
   width: 100%;
