@@ -5,8 +5,7 @@
       ref="el"
       :options="dropzoneOptions"
       :include-styling="false"
-      :style="{ backgroundImage: backgroundImage(`${user.avatar}`)}"
-      @vdropzone-error="verror"
+      :style="backgroundImage"
       @vdropzone-thumbnail="thumbnail"
       @vdropzone-drop="vddrop"
       @vdropzone-success="vsuccess"
@@ -35,8 +34,11 @@ export default {
     }
   },
   computed: {
-    backgroundImage: () => avatar => {
-      return `url(${avatar})`
+    backgroundImage() {
+      const { avatar } = this.user || {}
+      return {
+        backgroundImage: `url(${avatar})`
+      }
     }
   },
   mounted() {
