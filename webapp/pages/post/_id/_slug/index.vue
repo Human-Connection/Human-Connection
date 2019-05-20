@@ -96,34 +96,9 @@
       <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
-        <h3 style="margin-top: 0;">
-          <span>
-            <ds-icon name="comments" />
-            <ds-tag
-              v-if="post.comments"
-              style="margin-top: -4px; margin-left: -12px; position: absolute;"
-              color="primary"
-              size="small"
-              round
-            >{{ post.commentsCount }}</ds-tag>&nbsp; Comments
-          </span>
-        </h3>
+        <hc-comment-list :post="post" />
         <ds-space margin-bottom="large" />
-        <div
-          v-if="post.comments"
-          id="comments"
-          class="comments"
-        >
-          <comment
-            v-for="comment in post.comments"
-            :key="comment.id"
-            :comment="comment"
-          />
-        </div>
-        <hc-empty
-          v-else
-          icon="messages"
-        />
+        <hc-comment-form :post="post" />
       </ds-section>
     </ds-card>
   </transition>
@@ -137,8 +112,8 @@ import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
 import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcEmpty from '~/components/Empty.vue'
-import Comment from '~/components/Comment.vue'
+import HcCommentForm from '~/components/comments/CommentForm'
+import HcCommentList from '~/components/comments/CommentList'
 
 export default {
   transition: {
@@ -150,9 +125,9 @@ export default {
     HcCategory,
     HcUser,
     HcShoutButton,
-    HcEmpty,
-    Comment,
-    ContentMenu
+    ContentMenu,
+    HcCommentForm,
+    HcCommentList
   },
   head() {
     return {

@@ -11,6 +11,7 @@ let loginCredentials = {
 }
 const narratorParams = {
   name: 'Peter Pan',
+  avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg',
   ...loginCredentials
 }
 
@@ -48,14 +49,23 @@ Given('we have a selection of tags and categories as well as posts', () => {
     email: 'author@example.org',
     password: '1234'
   }
+  const yetAnotherAuthor = {
+    id: 'yetAnotherAuthor',
+    email: 'yet-another-author@example.org',
+    password: '1234'
+  }
   cy.factory()
     .create('User', someAuthor)
     .authenticateAs(someAuthor)
     .create('Post', { id: 'p0' })
     .create('Post', { id: 'p1' })
   cy.factory()
-    .authenticateAs(loginCredentials)
+    .create('User', yetAnotherAuthor)
+    .authenticateAs(yetAnotherAuthor)
     .create('Post', { id: 'p2' })
+  cy.factory()
+    .authenticateAs(loginCredentials)
+    .create('Post', { id: 'p3' })
     .relate('Post', 'Categories', { from: 'p0', to: 'cat1' })
     .relate('Post', 'Categories', { from: 'p1', to: 'cat2' })
     .relate('Post', 'Categories', { from: 'p2', to: 'cat1' })
@@ -64,7 +74,9 @@ Given('we have a selection of tags and categories as well as posts', () => {
     .relate('Post', 'Tags', { from: 'p0', to: 't3' })
     .relate('Post', 'Tags', { from: 'p1', to: 't2' })
     .relate('Post', 'Tags', { from: 'p1', to: 't3' })
+    .relate('Post', 'Tags', { from: 'p2', to: 't2' })
     .relate('Post', 'Tags', { from: 'p2', to: 't3' })
+    .relate('Post', 'Tags', { from: 'p3', to: 't3' })
 })
 
 Given('we have the following user accounts:', table => {

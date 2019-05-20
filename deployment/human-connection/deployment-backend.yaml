@@ -17,6 +17,8 @@
         human-connection.org/selector: deployment-human-connection-backend
     template:
       metadata:
+        annotations:
+          backup.velero.io/backup-volumes: uploads
         labels:
           human-connection.org/commit: COMMIT
           human-connection.org/selector: deployment-human-connection-backend
@@ -43,15 +45,3 @@
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
   status: {}
----
-  kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: uploads-claim
-    namespace: human-connection
-  spec:
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 2Gi

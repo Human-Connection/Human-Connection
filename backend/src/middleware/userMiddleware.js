@@ -1,5 +1,6 @@
-import createOrUpdateLocations from './nodes/locations'
 import dotenv from 'dotenv'
+
+import createOrUpdateLocations from './nodes/locations'
 
 dotenv.config()
 

@@ -6,7 +6,12 @@
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
     "moreInfo": "Was ist Human Connection?",
+    "moreInfoURL": "https://human-connection.org",
+    "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo"
+  },
+  "editor": {
+    "placeholder": "Schreib etwas Inspirierendes..."
   },
   "profile": {
     "name": "Mein Profil",
@@ -16,11 +21,12 @@
     "following": "Folgt",
     "shouted": "Empfohlen",
     "commented": "Kommentiert",
+    "userAnonym": "Anonymus",
     "socialMedia": "Wo sonst finde ich"
   },
   "notifications": {
     "menu": {
-       "mentioned": "hat dich in einem Beitrag erwähnt"
+      "mentioned": "hat dich in einem Beitrag erwähnt"
     }
   },
   "search": {
@@ -33,14 +39,29 @@
     "data": {
       "name": "Deine Daten",
       "labelName": "Dein Name",
+      "namePlaceholder": "Petra Lustig",
       "labelCity": "Deine Stadt oder Region",
-      "labelBio": "Über dich"
+      "labelBio": "Über dich",
+      "success": "Deine Daten wurden erfolgreich aktualisiert!"
     },
     "security": {
       "name": "Sicherheit",
       "change-password": {
         "button": "Passwort ändern",
-        "success": "Passwort erfolgreich geändert!"
+        "success": "Passwort erfolgreich geändert!",
+        "label-old-password": "Dein altes Passwort",
+        "label-new-password": "Dein neues Passwort",
+        "label-new-password-confirm": "Bestätige Dein neues Passwort",
+        "message-old-password-required": "Gebe dein altes Passwort ein",
+        "message-new-password-required": "Gebe ein neues Passwort ein",
+        "message-new-password-confirm-required": "Bestätige dein neues Passwort",
+        "message-new-password-missmatch": "Gebe das gleiche Passwort nochmals ein",
+        "passwordSecurity": "Passwortsicherheit",
+        "passwordStrength0": "Sehr unsicheres Passwort",
+        "passwordStrength1": "Unsicheres Passwort",
+        "passwordStrength2": "Mittelmäßiges Passwort",
+        "passwordStrength3": "Sicheres Passwort",
+        "passwordStrength4": "Sehr sicheres Passwort"
       }
     },
     "invites": {
@@ -60,8 +81,10 @@
     },
     "social-media": {
       "name": "Soziale Medien",
+      "placeholder": "Füge eine Social-Media URL hinzu",
       "submit": "Link hinzufügen",
-      "success": "Profil aktualisiert"
+      "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
+      "successDelete": "Social-Media gelöscht. Profil aktualisiert!"
     }
   },
   "admin": {
@@ -111,6 +134,10 @@
     },
     "takeAction": {
       "name": "Aktiv werden"
+    },
+    "comment": {
+      "submit": "Kommentiere",
+      "submitted": "Kommentar Gesendet"
     }
   },
   "quotes": {

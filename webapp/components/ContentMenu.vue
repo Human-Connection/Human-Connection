@@ -77,6 +77,13 @@ export default {
           }).href,
           icon: 'edit'
         })
+        routes.push({
+          name: this.$t(`post.delete.title`),
+          callback: () => {
+            this.openModal('delete')
+          },
+          icon: 'trash'
+        })
       }
       if (this.isOwner && this.resourceType === 'comment') {
         routes.push({
