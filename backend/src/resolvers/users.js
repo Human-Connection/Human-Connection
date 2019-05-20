@@ -15,7 +15,8 @@ export default {
       const { avatarUpload } = params
 
       if (avatarUpload) {
-        const { stream, filename } = await avatarUpload
+        const { createReadStream, filename } = await avatarUpload
+        const stream = createReadStream()
         const fileLocation = `/uploads/${filename}`
         await storeUpload({ stream, fileLocation })
         delete params.avatarUpload
