@@ -18,7 +18,7 @@
           placement="bottom-end"
           resource-type="contribution"
           :resource="post"
-          :callbacks="{ confirm: deletePostOptionsCallback, cancel: null }"
+          :callbacks="{ confirm: () => deletePostCallback('page'), cancel: null }"
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>
@@ -256,9 +256,6 @@ export default {
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
-    },
-    async deletePostOptionsCallback() {
-      await deletePostCallback(true)
     }
   }
 }

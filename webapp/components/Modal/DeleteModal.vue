@@ -84,13 +84,9 @@ export default {
       }, 1000)
     },
     async confirm() {
-      console.log('"confirm" was reached !!!')
       this.loading = true
       try {
-        console.log('"confirmCallback" is: ', this.confirmCallback)
         await this.confirmCallback()
-        // this.confirmCallback()
-        console.log('"confirmCallback" was exec !!!')
         this.success = true
         setTimeout(() => {
           this.isOpen = false
