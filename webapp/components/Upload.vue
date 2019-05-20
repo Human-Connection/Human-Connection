@@ -6,16 +6,16 @@
       :options="dropzoneOptions"
       :include-styling="false"
       :style="{ backgroundImage: backgroundImage(`${user.avatar}`)}"
+      @vdropzone-error="verror"
       @vdropzone-thumbnail="thumbnail"
+      @vdropzone-drop="vddrop"
       @vdropzone-success="vsuccess"
-    >
-      <!-- <slot></slot> -->
-    </vue-dropzone>
+    />
   </div>
 </template>
 <script>
 import vueDropzone from 'nuxt-dropzone'
-// import 'nuxt-dropzone/dropzone.css'
+import gql from 'graphql-tag'
 
 export default {
   components: {
@@ -27,10 +27,10 @@ export default {
   data() {
     return {
       dropzoneOptions: {
-        url: 'https://httpbin.org/post',
+        url: this.vddrop,
         maxFilesize: 0.5,
         previewTemplate: this.template(),
-        dictDefaultMessage: ""
+        dictDefaultMessage: ''
       }
     }
   },
@@ -38,6 +38,10 @@ export default {
     backgroundImage: () => avatar => {
       return `url(${avatar})`
     }
+  },
+  mounted() {
+    // Everything is mounted and you can access the dropzone instance
+    const instance = this.$refs.el.dropzone
   },
   methods: {
     template() {
@@ -55,33 +59,51 @@ export default {
                 <div class="dz-error-mark"><i class="fa fa-close"></i></div>
                 </div>
               </div>
-      `;
+      `
     },
     thumbnail(file, dataUrl) {
-      var j, len, ref, thumbnailElement;
+      var j, len, ref, thumbnailElement
       this.$refs.el.dropzone.element.style['background-image'] = ''
       if (file.previewElement) {
-          file.previewElement.classList.remove("dz-file-preview");
-          ref = file.previewElement.querySelectorAll("[data-dz-thumbnail-bg]");
-          for (j = 0, len = ref.length; j < len; j++) {
-              thumbnailElement = ref[j];
-              thumbnailElement.alt = file.name;
-              thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")';
-          }
-          return setTimeout(((function(_this) {
+        file.previewElement.classList.remove('dz-file-preview')
+        ref = file.previewElement.querySelectorAll('[data-dz-thumbnail-bg]')
+        for (j = 0, len = ref.length; j < len; j++) {
+          thumbnailElement = ref[j]
+          thumbnailElement.alt = file.name
+          thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")'
+        }
+        return setTimeout(
+          (function(_this) {
             return function() {
-              return file.previewElement.classList.add("dz-image-preview");
-              };
-          })(this)), 1);
+              return file.previewElement.classList.add('dz-image-preview')
+            }
+          })(this),
+          1
+        )
       }
     },
     vsuccess(file, response) {
       console.log('file', file.upload.filename, 'response', response)
+    },
+    vddrop([file]) {
+      this.dDrop = true
+      console.log('this is a file', file)
+      const uploadFileMutation = gql`
+        mutation($file: Upload!) {
+          uploadFile(file: $file)
+        }
+      `
+      this.$apollo
+        .mutate({ mutation: uploadFileMutation, variables: { file } })
+        .then(reponse => {
+          console.log(response)
+          this.$toast.success('Upload successful')
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    verror(file) {
+      console.log(file)
     }
-  },
-  mounted() {
-    // Everything is mounted and you can access the dropzone instance
-    const instance = this.$refs.el.dropzone
   }
 }
 </script>
@@ -97,7 +119,7 @@ export default {
   font-family: 'Arial', sans-serif;
   letter-spacing: 0.2px;
   color: #777;
-  transition: background-color .2s linear;
+  transition: background-color 0.2s linear;
   padding: 40px;
 }
 
@@ -121,12 +143,14 @@ export default {
   width: 100%;
 }
 
-  #customdropzone .dz-preview .dz-details {
+#customdropzone .dz-preview .dz-details {
   color: white;
-  transition: opacity .2s linear;
+  transition: opacity 0.2s linear;
   text-align: center;
 }
-#customdropzone .dz-success-mark, .dz-error-mark, .dz-remove {
+#customdropzone .dz-success-mark,
+.dz-error-mark,
+.dz-remove {
   display: none;
 }
 </style>
