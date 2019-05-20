@@ -5564,10 +5564,9 @@ neo4j-driver@^1.7.3, neo4j-driver@~1.7.4:
     text-encoding "^0.6.4"
     uri-js "^4.2.1"
 
-neo4j-graphql-js@~2.6.0:
+"neo4j-graphql-js@git+https://github.com/roschaefer/neo4j-graphql-js.git#239-improve_order_by_performance-temporary-npm-package":
   version "2.6.0"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.6.0.tgz#1c418c5e4de384bd0992f99538d3d056d0602669"
-  integrity sha512-YStuqeBg6sjXQvQjICz+jpG4W58yHz3Fi1Gjw9HsVYeCSr97ARbGn4Sl02970IKpBeRYqKt1N1Xp3QIvO3OMIw==
+  resolved "git+https://github.com/roschaefer/neo4j-graphql-js.git#a4953a2ea20981de988daf0fb28c038e98cf92f7"
   dependencies:
     graphql "^14.2.1"
     graphql-auth-directives "^2.1.0"

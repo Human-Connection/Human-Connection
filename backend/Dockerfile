@@ -7,6 +7,9 @@ ENV BUILD_COMMIT=$BUILD_COMMIT
 ARG WORKDIR=/nitro-backend
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
+
+RUN apk --no-cache add git
+
 COPY package.json yarn.lock ./
 COPY .env.template .env
 CMD ["yarn", "run", "start"]
