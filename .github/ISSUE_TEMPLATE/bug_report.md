@@ -1,7 +1,9 @@
 ---
 name: 🐛 Bug report
 about: Create a report to help us improve
-
+labels: bug
+assignees: ulfgebhardt
+title: 🐛 [Bug] 
 ---
 
 ## :bug: Bugreport

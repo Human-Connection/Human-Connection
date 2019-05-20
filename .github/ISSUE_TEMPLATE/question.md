@@ -1,6 +1,9 @@
 ---
 name: 💬 Question
 about: If you need help understanding HumanConnection.
+labels: question
+assignees: ulfgebhardt
+title: 💬 [Question] 
 ---
 <!-- Chat with Team HumanConnection -->
 <!-- If you need an answer right away, visit the HumanConnection Discord:
