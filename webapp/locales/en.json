@@ -253,7 +253,7 @@
   "release": {
     "submit": "Release",
     "cancel": "Cancel",
-    "success": "Release successfully",
+    "success": "Released successfully!",
     "user": {
       "title": "Release User",
       "type": "User",

@@ -253,7 +253,7 @@
                   </ds-space>
                 </ds-flex-item>
                  
-                <!-- <ds-flex-item  v-tooltip="{content: 'Deine Beiträge', placement: 'left', delay: { show: 500 }}" class="ds-tab-nav-item ">
+                <!-- <ds-flex-item  v-tooltip="{content: 'Your Posts', placement: 'left', delay: { show: 500 }}" class="ds-tab-nav-item ">
                 <ds-space margin="small"> -->
                 <!--TODO: find better solution for rendering errors -->                
                 <!-- <no-ssr>

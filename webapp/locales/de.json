@@ -244,7 +244,7 @@
   "release": {
     "submit": "freigeben",
     "cancel": "Abbrechen",
-    "success": "Erfolgreich freigeben",
+    "success": "Erfolgreich freigegeben!",
     "user": {
       "title": "Nutzer freigeben",
       "type": "Nutzer",
