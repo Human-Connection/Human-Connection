@@ -41,10 +41,6 @@ export default {
       }
     }
   },
-  mounted() {
-    // Everything is mounted and you can access the dropzone instance
-    const instance = this.$refs.el.dropzone
-  },
   methods: {
     template() {
       return `<div class="dz-preview dz-file-preview">
