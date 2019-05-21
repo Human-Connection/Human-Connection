@@ -179,6 +179,7 @@ type Post {
   content: String!
   contentExcerpt: String
   image: String
+  imageUpload: Upload
   visibility: VisibilityEnum
   deleted: Boolean
   disabled: Boolean

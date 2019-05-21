@@ -37,7 +37,7 @@ export default {
     backgroundImage() {
       const { avatar } = this.user || {}
       return {
-        backgroundImage: `url(/api/${avatar})`
+        backgroundImage: `url(/api${avatar})`
       }
     }
   },
@@ -117,6 +117,10 @@ export default {
   color: #777;
   transition: background-color 0.2s linear;
   padding: 40px;
+}
+
+#customdropzone:hover {
+  cursor: pointer;
 }
 
 #customdropzone .dz-preview {
