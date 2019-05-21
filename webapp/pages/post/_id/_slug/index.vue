@@ -70,30 +70,6 @@
         :is-shouted="post.shoutedByCurrentUser"
         :post-id="post.id"
       />
-      <!-- Categories -->
-      <ds-icon
-        v-for="category in post.categories"
-        :key="category.id"
-        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
-        :name="category.icon"
-        size="large"
-      />&nbsp;
-      <ds-space margin-bottom="small" />
-      <!-- Tags -->
-      <template v-if="post.tags && post.tags.length">
-        <ds-space margin="xx-small" />
-        <div class="tags">
-          <ds-icon name="tags" />
-          <ds-tag
-            v-for="tag in post.tags"
-            :key="tag.id"
-          >
-            <ds-icon name="tag" />
-            {{ tag.name }}
-          </ds-tag>
-        </div>
-      </template>
-      <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list :post="post" />
