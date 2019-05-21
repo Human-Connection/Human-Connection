@@ -53,7 +53,12 @@ export default {
     }
   },
   methods: {
-    
+    cancel() {
+      this.isOpen = true
+      setTimeout(() => {
+        this.$emit('close')
+      }, 1000)
+    },
     async confirm() {
       try {
         await this.$apollo.mutate({
