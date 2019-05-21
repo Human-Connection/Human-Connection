@@ -4,12 +4,12 @@ import fileUpload from './fileUpload'
 export default {
   Mutation: {
     UpdatePost: async (object, params, context, resolveInfo) => {
-      params = await fileUpload(params, { file: 'imageUpload', url: 'image'})
+      params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       return neo4jgraphql(object, params, context, resolveInfo, false)
     },
 
     CreatePost: async (object, params, context, resolveInfo) => {
-      params = await fileUpload(params, { file: 'imageUpload', url: 'image'})
+      params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const result = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       const session = context.driver.session()
