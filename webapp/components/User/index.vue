@@ -55,7 +55,7 @@
             style="display: inline;"
           >
             <ds-text
-              align="right"
+              align="left"
               size="small"
               color="soft"
             >

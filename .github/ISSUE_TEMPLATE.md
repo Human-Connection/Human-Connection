@@ -5,7 +5,7 @@ before submitting a new issue. Following one of the issue templates will ensure 
 Thanks!
 -->
 
-## Issue
+## 💬 Issue
 <!-- Describe your Issue in detail. -->
 
 <!-- Attach screenshots and drawings if needed. -->
