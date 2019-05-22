@@ -1115,15 +1115,15 @@
     vue-cli-plugin-apollo "^0.20.0"
     webpack-node-externals "^1.7.2"
 
-"@nuxtjs/axios@~5.4.1":
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/axios/-/axios-5.4.1.tgz#8dbc841e939c082271f7053edc1180bf5a441ee3"
-  integrity sha512-SvN6Ixs9d2AHdaB8PF4ZXr9azg4r3ynaomtr71+wMox3EEFfZHBQmAFz6lOY/CqbLRlJqYVDPKPvfIcSnngktw==
+"@nuxtjs/axios@~5.4.2":
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/axios/-/axios-5.4.2.tgz#8242952c72f8579430248067c8fcef9715f0cf86"
+  integrity sha512-aIsZE0HLur0gGKbpZ/dZNrw5iWJEYUEkOjlc2xLLM3BaNMYUElwqREToP3jCSoFxcCon8r2f/dQau7JUVuwtTg==
   dependencies:
     "@nuxtjs/proxy" "^1.3.3"
     axios "^0.18.0"
     axios-retry "^3.1.2"
-    consola "^2.5.6"
+    consola "^2.6.2"
 
 "@nuxtjs/dotenv@~1.3.0":
   version "1.3.0"
@@ -3199,12 +3199,7 @@ connect@^3.6.6:
     parseurl "~1.3.2"
     utils-merge "1.0.1"
 
-consola@^2.0.0-1, consola@^2.3.0, consola@^2.4.0, consola@^2.5.6, consola@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/consola/-/consola-2.6.0.tgz#ddf4e2a4361f67c120aa8bb41a0bd3cdbb58636e"
-  integrity sha512-jge0Ip1NVoOafxZq1zxG1sLYVBtKV45BF39VV6YKSWb45nyLOHY51YP0+cBQ2DyOTKhCjtF0XrRJkjTvX4wzgQ==
-
-consola@^2.6.1:
+consola@^2.0.0-1, consola@^2.3.0, consola@^2.4.0, consola@^2.5.6, consola@^2.6.0, consola@^2.6.1, consola@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/consola/-/consola-2.6.2.tgz#4c1238814bb80688b19f0db97123508889577752"
   integrity sha512-GNJhwvF4bJ8eiAlyB8r4WNM8kBqkl+y4DvMehMbyywoJiv37N0M6/xrKqrrZw/5maZA+UagQV8UZ+XBeuGMzUg==
