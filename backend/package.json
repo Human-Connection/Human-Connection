@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "activitystrea.ms": "~2.1.3",
-    "apollo-cache-inmemory": "~1.5.1",
+    "apollo-cache-inmemory": "~1.6.0",
     "apollo-client": "~2.5.1",
     "apollo-link-context": "~1.0.14",
     "apollo-link-http": "~1.5.14",
