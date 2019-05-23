@@ -328,7 +328,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
-import Post from '~/mixins/Post'
+import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
   components: {
@@ -341,7 +341,7 @@ export default {
     HcEmpty,
     ContentMenu
   },
-  mixins: [Post],
+  mixins: [PostMutationHelpers],
   transition: {
     name: 'slide-up',
     mode: 'out-in'

@@ -18,7 +18,8 @@ describe('ReportModal.vue', () => {
   beforeEach(() => {
     propsData = {
       type: 'contribution',
-      id: 'c43'
+      id: 'c43',
+      callbacks: { confirm: null, cancel: null }
     }
     mocks = {
       $t: jest.fn(),
@@ -55,7 +56,8 @@ describe('ReportModal.vue', () => {
         propsData = {
           type: 'user',
           id: 'u4',
-          name: 'Bob Ross'
+          name: 'Bob Ross',
+          callbacks: { confirm: null, cancel: null }
         }
       })
 
@@ -72,7 +74,8 @@ describe('ReportModal.vue', () => {
         propsData = {
           id: 'p23',
           type: 'post',
-          name: 'It is a post'
+          name: 'It is a post',
+          callbacks: { confirm: null, cancel: null }
         }
       })
 
@@ -100,7 +103,8 @@ describe('ReportModal.vue', () => {
       beforeEach(() => {
         propsData = {
           type: 'user',
-          id: 'u4711'
+          id: 'u4711',
+          callbacks: { confirm: null, cancel: null }
         }
         wrapper = Wrapper()
       })

@@ -82,7 +82,7 @@ import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import { randomBytes } from 'crypto'
 import { mapGetters } from 'vuex'
-import Post from '~/mixins/Post'
+import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
   name: 'HcPostCard',
@@ -90,7 +90,7 @@ export default {
     HcUser,
     ContentMenu
   },
-  mixins: [Post],
+  mixins: [PostMutationHelpers],
   props: {
     post: {
       type: Object,
@@ -98,7 +98,7 @@ export default {
     },
     width: {
       type: Object,
-      required: true
+      default: () => {}
     }
   },
   computed: {

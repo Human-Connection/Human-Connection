@@ -17,6 +17,7 @@ describe('DisableModal.vue', () => {
     propsData = {
       type: 'contribution',
       name: 'blah',
+      callbacks: { confirm: null, cancel: null },
       id: 'c42'
     }
     mocks = {

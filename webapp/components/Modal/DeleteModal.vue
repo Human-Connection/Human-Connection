@@ -53,8 +53,7 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
-    confirmCallback: { type: Function, required: true },
-    cancelCallback: { type: Function, default: null },
+    callbacks: { type: Object, required: true },
     id: { type: String, required: true }
   },
   data() {
@@ -75,8 +74,8 @@ export default {
   },
   methods: {
     async cancel() {
-      if (!!this.cancelCallback) {
-        await this.cancelCallback()
+      if (!!this.callbacks.cancel) {
+        await this.callbacks.cancel()
       }
       this.isOpen = false
       setTimeout(() => {
@@ -86,7 +85,9 @@ export default {
     async confirm() {
       this.loading = true
       try {
-        await this.confirmCallback()
+        if (!!this.callbacks.confirm) {
+          await this.callbacks.confirm()
+        }
         this.success = true
         setTimeout(() => {
           this.isOpen = false

@@ -115,7 +115,7 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
-import Post from '~/mixins/Post'
+import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
   transition: {
@@ -131,7 +131,7 @@ export default {
     HcCommentForm,
     HcCommentList
   },
-  mixins: [Post],
+  mixins: [PostMutationHelpers],
   head() {
     return {
       title: this.title

@@ -6,6 +6,7 @@
       :id="data.resource.id"
       :type="data.type"
       :name="name"
+      :callbacks="data.callbacks"
       @close="close"
     />
     <report-modal
@@ -13,15 +14,15 @@
       :id="data.resource.id"
       :type="data.type"
       :name="name"
+      :callbacks="data.callbacks"
       @close="close"
     />
     <delete-modal
       v-if="open === 'delete'"
       :id="data.resource.id"
       :type="data.type"
-      :confirm-callback="data.callbacks.confirm"
-      :cancel-callback="!!data.callbacks.cancel ? data.callbacks.cancel : null"
       :name="name"
+      :callbacks="data.callbacks"
       @close="close"
     />
   </div>

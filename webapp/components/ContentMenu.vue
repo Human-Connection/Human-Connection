@@ -61,7 +61,7 @@ export default {
         return value.match(/(contribution|comment|organization|user)/)
       }
     },
-    callbacks: { type: Object, default: () => {} }
+    callbacks: { type: Object, required: true }
   },
   computed: {
     routes() {
