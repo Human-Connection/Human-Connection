@@ -10,17 +10,17 @@ describe('badges', () => {
     await factory.create('User', {
       email: 'user@example.org',
       role: 'user',
-      password: '1234'
+      password: '1234',
     })
     await factory.create('User', {
       id: 'u2',
       role: 'moderator',
-      email: 'moderator@example.org'
+      email: 'moderator@example.org',
     })
     await factory.create('User', {
       id: 'u3',
       role: 'admin',
-      email: 'admin@example.org'
+      email: 'admin@example.org',
     })
   })
 
@@ -34,7 +34,7 @@ describe('badges', () => {
       key: 'indiegogo_en_racoon',
       type: 'crowdfunding',
       status: 'permanent',
-      icon: '/img/badges/indiegogo_en_racoon.svg'
+      icon: '/img/badges/indiegogo_en_racoon.svg',
     }
 
     const mutation = `
@@ -58,9 +58,7 @@ describe('badges', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
@@ -76,8 +74,8 @@ describe('badges', () => {
             id: 'b1',
             key: 'indiegogo_en_racoon',
             status: 'permanent',
-            type: 'crowdfunding'
-          }
+            type: 'crowdfunding',
+          },
         }
         await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
@@ -90,9 +88,7 @@ describe('badges', () => {
       })
 
       it('throws authorization error', async () => {
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
   })
@@ -104,7 +100,7 @@ describe('badges', () => {
     })
     const variables = {
       id: 'b1',
-      key: 'whatever'
+      key: 'whatever',
     }
 
     const mutation = `
@@ -119,9 +115,7 @@ describe('badges', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
@@ -132,9 +126,7 @@ describe('badges', () => {
       })
 
       it('throws authorization error', async () => {
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
@@ -147,8 +139,8 @@ describe('badges', () => {
         const expected = {
           UpdateBadge: {
             id: 'b1',
-            key: 'whatever'
-          }
+            key: 'whatever',
+          },
         }
         await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
@@ -161,7 +153,7 @@ describe('badges', () => {
       await factory.create('Badge', { id: 'b1' })
     })
     const variables = {
-      id: 'b1'
+      id: 'b1',
     }
 
     const mutation = `
@@ -175,9 +167,7 @@ describe('badges', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
@@ -188,9 +178,7 @@ describe('badges', () => {
       })
 
       it('throws authorization error', async () => {
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
@@ -202,8 +190,8 @@ describe('badges', () => {
       it('deletes a badge', async () => {
         const expected = {
           DeleteBadge: {
-            id: 'b1'
-          }
+            id: 'b1',
+          },
         }
         await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })

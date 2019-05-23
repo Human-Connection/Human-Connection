@@ -1,28 +1,28 @@
 export default class Collections {
-  constructor (dataSource) {
+  constructor(dataSource) {
     this.dataSource = dataSource
   }
-  getFollowersCollection (actorId) {
+  getFollowersCollection(actorId) {
     return this.dataSource.getFollowersCollection(actorId)
   }
 
-  getFollowersCollectionPage (actorId) {
+  getFollowersCollectionPage(actorId) {
     return this.dataSource.getFollowersCollectionPage(actorId)
   }
 
-  getFollowingCollection (actorId) {
+  getFollowingCollection(actorId) {
     return this.dataSource.getFollowingCollection(actorId)
   }
 
-  getFollowingCollectionPage (actorId) {
+  getFollowingCollectionPage(actorId) {
     return this.dataSource.getFollowingCollectionPage(actorId)
   }
 
-  getOutboxCollection (actorId) {
+  getOutboxCollection(actorId) {
     return this.dataSource.getOutboxCollection(actorId)
   }
 
-  getOutboxCollectionPage (actorId) {
+  getOutboxCollectionPage(actorId) {
     return this.dataSource.getOutboxCollectionPage(actorId)
   }
 }

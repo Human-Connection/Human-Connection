@@ -19,7 +19,7 @@ const authenticatedHeaders = async ({ email, password }, host) => {
       }`
   const response = await request(host, mutation)
   return {
-    authorization: `Bearer ${response.login}`
+    authorization: `Bearer ${response.login}`,
   }
 }
 const factories = {
@@ -31,7 +31,7 @@ const factories = {
   Category: createCategory,
   Tag: createTag,
   Report: createReport,
-  Notification: createNotification
+  Notification: createNotification,
 }
 
 export const cleanDatabase = async (options = {}) => {
@@ -47,11 +47,8 @@ export const cleanDatabase = async (options = {}) => {
   }
 }
 
-export default function Factory (options = {}) {
-  const {
-    neo4jDriver = getDriver(),
-    seedServerHost = 'http://127.0.0.1:4001'
-  } = options
+export default function Factory(options = {}) {
+  const { neo4jDriver = getDriver(), seedServerHost = 'http://127.0.0.1:4001' } = options
 
   const graphQLClient = new GraphQLClient(seedServerHost)
 
@@ -61,21 +58,18 @@ export default function Factory (options = {}) {
     graphQLClient,
     factories,
     lastResponse: null,
-    async authenticateAs ({ email, password }) {
-      const headers = await authenticatedHeaders(
-        { email, password },
-        seedServerHost
-      )
+    async authenticateAs({ email, password }) {
+      const headers = await authenticatedHeaders({ email, password }, seedServerHost)
       this.lastResponse = headers
       this.graphQLClient = new GraphQLClient(seedServerHost, { headers })
       return this
     },
-    async create (node, properties) {
+    async create(node, properties) {
       const { mutation, variables } = this.factories[node](properties)
       this.lastResponse = await this.graphQLClient.request(mutation, variables)
       return this
     },
-    async relate (node, relationship, properties) {
+    async relate(node, relationship, properties) {
       const { from, to } = properties
       const mutation = `
         mutation {
@@ -88,11 +82,11 @@ export default function Factory (options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
-    async mutate (mutation, variables) {
+    async mutate(mutation, variables) {
       this.lastResponse = await this.graphQLClient.request(mutation, variables)
       return this
     },
-    async shout (properties) {
+    async shout(properties) {
       const { id, type } = properties
       const mutation = `
         mutation {
@@ -105,7 +99,7 @@ export default function Factory (options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
-    async follow (properties) {
+    async follow(properties) {
       const { id, type } = properties
       const mutation = `
         mutation {
@@ -118,10 +112,10 @@ export default function Factory (options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
-    async cleanDatabase () {
+    async cleanDatabase() {
       this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
-    }
+    },
   }
   result.authenticateAs.bind(result)
   result.create.bind(result)

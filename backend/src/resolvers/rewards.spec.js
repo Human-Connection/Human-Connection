@@ -10,24 +10,24 @@ describe('rewards', () => {
       id: 'u1',
       role: 'user',
       email: 'user@example.org',
-      password: '1234'
+      password: '1234',
     })
     await factory.create('User', {
       id: 'u2',
       role: 'moderator',
-      email: 'moderator@example.org'
+      email: 'moderator@example.org',
     })
     await factory.create('User', {
       id: 'u3',
       role: 'admin',
-      email: 'admin@example.org'
+      email: 'admin@example.org',
     })
     await factory.create('Badge', {
       id: 'b6',
       key: 'indiegogo_en_rhino',
       type: 'crowdfunding',
       status: 'permanent',
-      icon: '/img/badges/indiegogo_en_rhino.svg'
+      icon: '/img/badges/indiegogo_en_rhino.svg',
     })
   })
 
@@ -48,15 +48,13 @@ describe('rewards', () => {
     describe('unauthenticated', () => {
       const variables = {
         from: 'b6',
-        to: 'u1'
+        to: 'u1',
       }
       let client
 
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
@@ -70,14 +68,12 @@ describe('rewards', () => {
       it('rewards a badge to user', async () => {
         const variables = {
           from: 'b6',
-          to: 'u1'
+          to: 'u1',
         }
         const expected = {
-          reward: 'u1'
+          reward: 'u1',
         }
-        await expect(
-          client.request(mutation, variables)
-        ).resolves.toEqual(expected)
+        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
       it('rewards a second different badge to same user', async () => {
         await factory.create('Badge', {
@@ -85,41 +81,37 @@ describe('rewards', () => {
           key: 'indiegogo_en_racoon',
           type: 'crowdfunding',
           status: 'permanent',
-          icon: '/img/badges/indiegogo_en_racoon.svg'
+          icon: '/img/badges/indiegogo_en_racoon.svg',
         })
         const variables = {
           from: 'b1',
-          to: 'u1'
+          to: 'u1',
         }
         const expected = {
-          reward: 'u1'
+          reward: 'u1',
         }
-        await expect(
-          client.request(mutation, variables)
-        ).resolves.toEqual(expected)
+        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
       it('rewards the same badge as well to another user', async () => {
         const variables1 = {
           from: 'b6',
-          to: 'u1'
+          to: 'u1',
         }
         await client.request(mutation, variables1)
 
         const variables2 = {
           from: 'b6',
-          to: 'u2'
+          to: 'u2',
         }
         const expected = {
-          reward: 'u2'
+          reward: 'u2',
         }
-        await expect(
-          client.request(mutation, variables2)
-        ).resolves.toEqual(expected)
+        await expect(client.request(mutation, variables2)).resolves.toEqual(expected)
       })
       it('returns the original reward if a reward is attempted a second time', async () => {
         const variables = {
           from: 'b6',
-          to: 'u1'
+          to: 'u1',
         }
         await client.request(mutation, variables)
         await client.request(mutation, variables)
@@ -132,16 +124,14 @@ describe('rewards', () => {
         `
         const expected = { User: [{ badgesCount: 1 }] }
 
-        await expect(
-          client.request(query)
-        ).resolves.toEqual(expected)
+        await expect(client.request(query)).resolves.toEqual(expected)
       })
     })
 
     describe('authenticated moderator', () => {
       const variables = {
         from: 'b6',
-        to: 'u1'
+        to: 'u1',
       }
       let client
       beforeEach(async () => {
@@ -151,9 +141,7 @@ describe('rewards', () => {
 
       describe('rewards bage to user', () => {
         it('throws authorization error', async () => {
-          await expect(
-            client.request(mutation, variables)
-          ).rejects.toThrow('Not Authorised')
+          await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
         })
       })
     })
@@ -165,10 +153,10 @@ describe('rewards', () => {
     })
     const variables = {
       from: 'b6',
-      to: 'u1'
+      to: 'u1',
     }
     const expected = {
-      unreward: 'u1'
+      unreward: 'u1',
     }
 
     const mutation = `
@@ -185,9 +173,7 @@ describe('rewards', () => {
 
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
@@ -199,17 +185,15 @@ describe('rewards', () => {
       })
 
       it('removes a badge from user', async () => {
-        await expect(
-          client.request(mutation, variables)
-        ).resolves.toEqual(expected)
+        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
 
       it('fails to remove a not existing badge from user', async () => {
         await client.request(mutation, variables)
 
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Cannot read property \'id\' of undefined')
+        await expect(client.request(mutation, variables)).rejects.toThrow(
+          "Cannot read property 'id' of undefined",
+        )
       })
     })
 
@@ -222,9 +206,7 @@ describe('rewards', () => {
 
       describe('removes bage from user', () => {
         it('throws authorization error', async () => {
-          await expect(
-            client.request(mutation, variables)
-          ).rejects.toThrow('Not Authorised')
+          await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
         })
       })
     })

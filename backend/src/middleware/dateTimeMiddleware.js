@@ -1,9 +1,9 @@
 const setCreatedAt = (resolve, root, args, context, info) => {
-  args.createdAt = (new Date()).toISOString()
+  args.createdAt = new Date().toISOString()
   return resolve(root, args, context, info)
 }
 const setUpdatedAt = (resolve, root, args, context, info) => {
-  args.updatedAt = (new Date()).toISOString()
+  args.updatedAt = new Date().toISOString()
   return resolve(root, args, context, info)
 }
 
@@ -18,6 +18,6 @@ export default {
     UpdatePost: setUpdatedAt,
     UpdateComment: setUpdatedAt,
     UpdateOrganization: setUpdatedAt,
-    UpdateNotification: setUpdatedAt
-  }
+    UpdateNotification: setUpdatedAt,
+  },
 }

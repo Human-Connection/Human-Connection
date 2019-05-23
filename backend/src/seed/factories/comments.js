@@ -1,14 +1,11 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
 
-export default function (params) {
+export default function(params) {
   const {
     id = uuid(),
     postId = 'p6',
-    content = [
-      faker.lorem.sentence(),
-      faker.lorem.sentence()
-    ].join('. ')
+    content = [faker.lorem.sentence(), faker.lorem.sentence()].join('. '),
   } = params
 
   return {
@@ -19,6 +16,6 @@ export default function (params) {
         }
       }
     `,
-    variables: { id, postId, content }
+    variables: { id, postId, content },
   }
 }

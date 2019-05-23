@@ -8,15 +8,16 @@ export default {
       const session = context.driver.session()
       await session.run(
         'MATCH (author:User {id: $userId}), (post:Post {id: $postId}) ' +
-        'MERGE (post)<-[:WROTE]-(author) ' +
-        'RETURN author', {
+          'MERGE (post)<-[:WROTE]-(author) ' +
+          'RETURN author',
+        {
           userId: context.user.id,
-          postId: result.id
-        }
+          postId: result.id,
+        },
       )
       session.close()
 
       return result
-    }
-  }
+    },
+  },
 }

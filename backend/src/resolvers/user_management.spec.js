@@ -24,10 +24,10 @@ const factory = Factory()
 // }
 const jennyRostocksHeaders = {
   authorization:
-    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImxvY2F0aW9uTmFtZSI6bnVsbCwibmFtZSI6Ikplbm55IFJvc3RvY2siLCJhYm91dCI6bnVsbCwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9zYXNoYV9zaGVzdGFrb3YvMTI4LmpwZyIsImlkIjoidTMiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5vcmciLCJzbHVnIjoiamVubnktcm9zdG9jayIsImlhdCI6MTU1MDg0NjY4MCwiZXhwIjoxNjM3MjQ2NjgwLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQwMDAiLCJzdWIiOiJ1MyJ9.eZ_mVKas4Wzoc_JrQTEWXyRn7eY64cdIg4vqQ-F_7Jc'
+    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImxvY2F0aW9uTmFtZSI6bnVsbCwibmFtZSI6Ikplbm55IFJvc3RvY2siLCJhYm91dCI6bnVsbCwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9zYXNoYV9zaGVzdGFrb3YvMTI4LmpwZyIsImlkIjoidTMiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5vcmciLCJzbHVnIjoiamVubnktcm9zdG9jayIsImlhdCI6MTU1MDg0NjY4MCwiZXhwIjoxNjM3MjQ2NjgwLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQwMDAiLCJzdWIiOiJ1MyJ9.eZ_mVKas4Wzoc_JrQTEWXyRn7eY64cdIg4vqQ-F_7Jc',
 }
 
-const disable = async (id) => {
+const disable = async id => {
   const moderatorParams = { email: 'moderator@example.org', role: 'moderator', password: '1234' }
   const asModerator = Factory()
   await asModerator.create('User', moderatorParams)
@@ -43,7 +43,7 @@ beforeEach(async () => {
     slug: 'matilde-hermiston',
     role: 'user',
     email: 'test@example.org',
-    password: '1234'
+    password: '1234',
   })
 })
 
@@ -56,7 +56,7 @@ describe('isLoggedIn', () => {
   describe('unauthenticated', () => {
     it('returns false', async () => {
       await expect(request(host, query)).resolves.toEqual({
-        isLoggedIn: false
+        isLoggedIn: false,
       })
     })
   })
@@ -67,7 +67,7 @@ describe('isLoggedIn', () => {
 
     it('returns false', async () => {
       await expect(client.request(query)).resolves.toEqual({
-        isLoggedIn: false
+        isLoggedIn: false,
       })
     })
   })
@@ -77,7 +77,7 @@ describe('isLoggedIn', () => {
 
     it('returns false', async () => {
       await expect(client.request(query)).resolves.toEqual({
-        isLoggedIn: false
+        isLoggedIn: false,
       })
     })
 
@@ -87,7 +87,7 @@ describe('isLoggedIn', () => {
           // see the decoded token above
           await factory.create('User', { id: 'u3' })
           await expect(client.request(query)).resolves.toEqual({
-            isLoggedIn: true
+            isLoggedIn: true,
           })
         })
       })
@@ -100,7 +100,7 @@ describe('isLoggedIn', () => {
 
         it('returns false', async () => {
           await expect(client.request(query)).resolves.toEqual({
-            isLoggedIn: false
+            isLoggedIn: false,
           })
         })
       })
@@ -156,8 +156,8 @@ describe('currentUser', () => {
             id: 'acb2d923-f3af-479e-9f00-61b12e864666',
             name: 'Matilde Hermiston',
             slug: 'matilde-hermiston',
-            role: 'user'
-          }
+            role: 'user',
+          },
         }
         await expect(client.request(query)).resolves.toEqual(expected)
       })
@@ -181,8 +181,8 @@ describe('login', () => {
           host,
           mutation({
             email: 'test@example.org',
-            password: '1234'
-          })
+            password: '1234',
+          }),
         )
         const token = data.login
         jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
@@ -200,9 +200,9 @@ describe('login', () => {
             host,
             mutation({
               email: 'test@example.org',
-              password: '1234'
-            })
-          )
+              password: '1234',
+            }),
+          ),
         ).rejects.toThrow('Your account has been disabled.')
       })
     })
@@ -214,9 +214,9 @@ describe('login', () => {
             host,
             mutation({
               email: 'test@example.org',
-              password: 'wrong'
-            })
-          )
+              password: 'wrong',
+            }),
+          ),
         ).rejects.toThrow('Incorrect email address or password.')
       })
     })
@@ -228,9 +228,9 @@ describe('login', () => {
             host,
             mutation({
               email: 'non-existent@example.org',
-              password: 'wrong'
-            })
-          )
+              password: 'wrong',
+            }),
+          ),
         ).rejects.toThrow('Incorrect email address or password.')
       })
     })
@@ -261,9 +261,9 @@ describe('change password', () => {
           host,
           mutation({
             oldPassword: '1234',
-            newPassword: '1234'
-          })
-        )
+            newPassword: '1234',
+          }),
+        ),
       ).rejects.toThrow('Not Authorised!')
     })
   })
@@ -274,9 +274,9 @@ describe('change password', () => {
         client.request(
           mutation({
             oldPassword: '1234',
-            newPassword: '1234'
-          })
-        )
+            newPassword: '1234',
+          }),
+        ),
       ).rejects.toThrow('Old password and new password should be different')
     })
   })
@@ -287,9 +287,9 @@ describe('change password', () => {
         client.request(
           mutation({
             oldPassword: 'notOldPassword',
-            newPassword: '12345'
-          })
-        )
+            newPassword: '12345',
+          }),
+        ),
       ).rejects.toThrow('Old password is not correct')
     })
   })
@@ -299,14 +299,14 @@ describe('change password', () => {
       let response = await client.request(
         mutation({
           oldPassword: '1234',
-          newPassword: '12345'
-        })
+          newPassword: '12345',
+        }),
       )
-      await expect(
-        response
-      ).toEqual(expect.objectContaining({
-        changePassword: expect.any(String)
-      }))
+      await expect(response).toEqual(
+        expect.objectContaining({
+          changePassword: expect.any(String),
+        }),
+      )
     })
   })
 })
@@ -320,14 +320,16 @@ describe('do not expose private RSA key', () => {
         id
         publicKey
       }
-    }`
+    }
+  `
   const queryUserPrivateKey = gql`
     query($queriedUserSlug: String) {
       User(slug: $queriedUserSlug) {
         id
         privateKey
       }
-    }`
+    }
+  `
 
   const actionGenUserWithKeys = async () => {
     // Generate user with "privateKey" via 'CreateUser' mutation instead of using the factories "factory.create('User', {...})", see above.
@@ -336,14 +338,17 @@ describe('do not expose private RSA key', () => {
       password: 'xYz',
       slug: 'apfel-strudel',
       name: 'Apfel Strudel',
-      email: 'apfel-strudel@test.org'
+      email: 'apfel-strudel@test.org',
     }
-    await client.request(gql`
-      mutation($id: ID, $password: String!, $slug: String, $name: String, $email: String!) {
-        CreateUser(id: $id, password: $password, slug: $slug, name: $name, email: $email) {
-          id
+    await client.request(
+      gql`
+        mutation($id: ID, $password: String!, $slug: String, $name: String, $email: String!) {
+          CreateUser(id: $id, password: $password, slug: $slug, name: $name, email: $email) {
+            id
+          }
         }
-      }`, variables
+      `,
+      variables,
     )
   }
 
@@ -356,13 +361,17 @@ describe('do not expose private RSA key', () => {
     it('returns publicKey', async () => {
       await actionGenUserWithKeys()
       await expect(
-        await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' })
-      ).toEqual(expect.objectContaining({
-        User: [{
-          id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
-          publicKey: expect.any(String)
-        }]
-      }))
+        await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' }),
+      ).toEqual(
+        expect.objectContaining({
+          User: [
+            {
+              id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
+              publicKey: expect.any(String),
+            },
+          ],
+        }),
+      )
     })
   })
 
@@ -370,7 +379,7 @@ describe('do not expose private RSA key', () => {
     it('throws "Not Authorised!"', async () => {
       await actionGenUserWithKeys()
       await expect(
-        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
+        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' }),
       ).rejects.toThrow('Not Authorised')
     })
   })
@@ -385,13 +394,17 @@ describe('do not expose private RSA key', () => {
     it('returns publicKey', async () => {
       await actionGenUserWithKeys()
       await expect(
-        await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' })
-      ).toEqual(expect.objectContaining({
-        User: [{
-          id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
-          publicKey: expect.any(String)
-        }]
-      }))
+        await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' }),
+      ).toEqual(
+        expect.objectContaining({
+          User: [
+            {
+              id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
+              publicKey: expect.any(String),
+            },
+          ],
+        }),
+      )
     })
   })
 
@@ -399,7 +412,7 @@ describe('do not expose private RSA key', () => {
     it('throws "Not Authorised!"', async () => {
       await actionGenUserWithKeys()
       await expect(
-        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' })
+        client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' }),
       ).rejects.toThrow('Not Authorised')
     })
   })
