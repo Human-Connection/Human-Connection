@@ -14,7 +14,7 @@ describe('Editor.vue', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: () => {}
+      $t: () => {},
     }
   })
 
@@ -25,7 +25,7 @@ describe('Editor.vue', () => {
         propsData,
         localVue,
         sync: false,
-        stubs: { transition: false }
+        stubs: { transition: false },
       }))
     }
 
@@ -40,9 +40,7 @@ describe('Editor.vue', () => {
 
       it.skip('renders', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('.ProseMirror').text()).toContain(
-          'I am a piece of text'
-        )
+        expect(wrapper.find('.ProseMirror').text()).toContain('I am a piece of text')
       })
     })
   })

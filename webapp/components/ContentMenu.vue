@@ -48,7 +48,7 @@ import Dropdown from '~/components/Dropdown'
 
 export default {
   components: {
-    Dropdown
+    Dropdown,
   },
   props: {
     placement: { type: String, default: 'top-end' },
@@ -59,8 +59,8 @@ export default {
       required: true,
       validator: value => {
         return value.match(/(contribution|comment|organization|user)/)
-      }
-    }
+      },
+    },
   },
   computed: {
     routes() {
@@ -72,17 +72,17 @@ export default {
           path: this.$router.resolve({
             name: 'post-edit-id',
             params: {
-              id: this.resource.id
-            }
+              id: this.resource.id,
+            },
           }).href,
-          icon: 'edit'
+          icon: 'edit',
         })
         routes.push({
           name: this.$t(`post.delete.title`),
           callback: () => {
             this.openModal('delete')
           },
-          icon: 'trash'
+          icon: 'trash',
         })
       }
       if (this.isOwner && this.resourceType === 'comment') {
@@ -92,7 +92,7 @@ export default {
             /* eslint-disable-next-line no-console */
             console.log('EDIT COMMENT')
           },
-          icon: 'edit'
+          icon: 'edit',
         })
       }
 
@@ -102,7 +102,7 @@ export default {
           callback: () => {
             this.openModal('report')
           },
-          icon: 'flag'
+          icon: 'flag',
         })
       }
 
@@ -112,7 +112,7 @@ export default {
           callback: () => {
             this.openModal('disable')
           },
-          icon: 'eye-slash'
+          icon: 'eye-slash',
         })
       }
 
@@ -120,14 +120,14 @@ export default {
         routes.push({
           name: this.$t(`settings.name`),
           path: '/settings',
-          icon: 'edit'
+          icon: 'edit',
         })
       }
       return routes
     },
     isModerator() {
       return this.$store.getters['auth/isModerator']
-    }
+    },
   },
   methods: {
     openItem(route, toggleMenu) {
@@ -143,11 +143,11 @@ export default {
         name: dialog,
         data: {
           type: this.resourceType,
-          resource: this.resource
-        }
+          resource: this.resource,
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

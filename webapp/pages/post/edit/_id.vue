@@ -18,7 +18,7 @@ import HcContributionForm from '~/components/ContributionForm'
 
 export default {
   components: {
-    HcContributionForm
+    HcContributionForm,
   },
   computed: {
     user() {
@@ -29,14 +29,14 @@ export default {
     },
     contribution() {
       return this.Post ? this.Post[0] : {}
-    }
+    },
   },
   watch: {
     contribution() {
       if (this.author.id !== this.user.id) {
         throw new Error(`You can't edit that!`)
       }
-    }
+    },
   },
   apollo: {
     Post: {
@@ -71,11 +71,11 @@ export default {
       },
       variables() {
         return {
-          id: this.$route.params.id || 'p1'
+          id: this.$route.params.id || 'p1',
         }
       },
-      fetchPolicy: 'cache-and-network'
-    }
-  }
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>

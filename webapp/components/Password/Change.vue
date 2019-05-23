@@ -46,29 +46,25 @@ import PasswordStrength from './Strength'
 export default {
   name: 'ChangePassword',
   components: {
-    PasswordStrength
+    PasswordStrength,
   },
   data() {
     return {
       formData: {
         oldPassword: '',
         newPassword: '',
-        confirmPassword: ''
+        confirmPassword: '',
       },
       formSchema: {
         oldPassword: {
           type: 'string',
           required: true,
-          message: this.$t(
-            'settings.security.change-password.message-old-password-required'
-          )
+          message: this.$t('settings.security.change-password.message-old-password-required'),
         },
         newPassword: {
           type: 'string',
           required: true,
-          message: this.$t(
-            'settings.security.change-password.message-new-password-required'
-          )
+          message: this.$t('settings.security.change-password.message-new-password-required'),
         },
         confirmPassword: [
           { validator: this.matchPassword },
@@ -76,13 +72,13 @@ export default {
             type: 'string',
             required: true,
             message: this.$t(
-              'settings.security.change-password.message-new-password-confirm-required'
-            )
-          }
-        ]
+              'settings.security.change-password.message-new-password-confirm-required',
+            ),
+          },
+        ],
       },
       loading: false,
-      disabled: true
+      disabled: true,
     }
   },
   methods: {
@@ -104,13 +100,11 @@ export default {
       try {
         const { data } = await this.$apollo.mutate({ mutation, variables })
         this.$store.commit('auth/SET_TOKEN', data.changePassword)
-        this.$toast.success(
-          this.$t('settings.security.change-password.success')
-        )
+        this.$toast.success(this.$t('settings.security.change-password.success'))
         this.formData = {
           oldPassword: '',
           newPassword: '',
-          confirmPassword: ''
+          confirmPassword: '',
         }
       } catch (err) {
         this.$toast.error(err.message)
@@ -122,15 +116,11 @@ export default {
       var errors = []
       if (this.formData.newPassword !== value) {
         errors.push(
-          new Error(
-            this.$t(
-              'settings.security.change-password.message-new-password-missmatch'
-            )
-          )
+          new Error(this.$t('settings.security.change-password.message-new-password-missmatch')),
         )
       }
       callback(errors)
-    }
-  }
+    },
+  },
 }
 </script>

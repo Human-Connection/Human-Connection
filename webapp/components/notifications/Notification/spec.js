@@ -11,17 +11,16 @@ localVue.use(Filters)
 config.stubs['no-ssr'] = '<span><slot /></span>'
 
 describe('Notification', () => {
-  let wrapper
   let stubs
   let mocks
   let propsData
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: jest.fn()
+      $t: jest.fn(),
     }
     stubs = {
-      NuxtLink: RouterLinkStub
+      NuxtLink: RouterLinkStub,
     }
   })
 
@@ -30,7 +29,7 @@ describe('Notification', () => {
       stubs,
       mocks,
       propsData,
-      localVue
+      localVue,
     })
   }
 
@@ -38,8 +37,8 @@ describe('Notification', () => {
     beforeEach(() => {
       propsData.notification = {
         post: {
-          title: "It's a title"
-        }
+          title: "It's a title",
+        },
       }
     })
 

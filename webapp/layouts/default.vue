@@ -131,13 +131,12 @@ export default {
     LocaleSwitch,
     SearchInput,
     Modal,
-    LocaleSwitch,
-    NotificationMenu
+    NotificationMenu,
   },
   mixins: [seo],
   data() {
     return {
-      mobileSearchVisible: false
+      mobileSearchVisible: false,
     }
   },
   computed: {
@@ -147,7 +146,7 @@ export default {
       isModerator: 'auth/isModerator',
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
-      quickSearchPending: 'search/quickPending'
+      quickSearchPending: 'search/quickPending',
     }),
     userName() {
       const { name } = this.user || {}
@@ -161,41 +160,41 @@ export default {
         {
           name: this.$t('profile.name'),
           path: `/profile/${this.user.slug}`,
-          icon: 'user'
+          icon: 'user',
         },
         {
           name: this.$t('settings.name'),
           path: `/settings`,
-          icon: 'cogs'
-        }
+          icon: 'cogs',
+        },
       ]
       if (this.isModerator) {
         routes.push({
           name: this.$t('moderation.name'),
           path: `/moderation`,
-          icon: 'balance-scale'
+          icon: 'balance-scale',
         })
       }
       if (this.isAdmin) {
         routes.push({
           name: this.$t('admin.name'),
           path: `/admin`,
-          icon: 'shield'
+          icon: 'shield',
         })
       }
       return routes
-    }
+    },
   },
   methods: {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
-      quickSearch: 'search/quickSearch'
+      quickSearch: 'search/quickSearch',
     }),
     goToPost(item) {
       this.$nextTick(() => {
         this.$router.push({
           name: 'post-id-slug',
-          params: { id: item.id, slug: item.slug }
+          params: { id: item.id, slug: item.slug },
         })
       })
     },
@@ -205,8 +204,8 @@ export default {
         return this.$route.path === url
       }
       return this.$route.path.indexOf(url) === 0
-    }
-  }
+    },
+  },
 }
 </script>
 

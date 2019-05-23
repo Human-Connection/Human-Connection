@@ -22,9 +22,7 @@ describe('Image', () => {
     })
 
     it('adds a prefix to load the image from the backend', () => {
-      expect(Wrapper().attributes('src')).toBe(
-        '/api/img/badges/fundraisingbox_de_airship.svg'
-      )
+      expect(Wrapper().attributes('src')).toBe('/api/img/badges/fundraisingbox_de_airship.svg')
     })
   })
 
@@ -35,9 +33,7 @@ describe('Image', () => {
 
     it('keeps the URL as is', () => {
       // e.g. our seeds have absolute image URLs
-      expect(Wrapper().attributes('src')).toBe(
-        'http://lorempixel.com/640/480/animals'
-      )
+      expect(Wrapper().attributes('src')).toBe('http://lorempixel.com/640/480/animals')
     })
   })
 })

@@ -10,14 +10,14 @@ export default {
   props: {
     imageProps: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     imageSrc() {
       const src = this.imageProps.src
       return src.startsWith('/') ? src.replace('/', '/api/') : src
-    }
-  }
+    },
+  },
 }
 </script>

@@ -15,18 +15,18 @@ import Notification from '../Notification'
 export default {
   name: 'NotificationList',
   components: {
-    Notification
+    Notification,
   },
   props: {
     notifications: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     markAsRead(notificationId) {
       this.$emit('markAsRead', notificationId)
-    }
-  }
+    },
+  },
 }
 </script>
