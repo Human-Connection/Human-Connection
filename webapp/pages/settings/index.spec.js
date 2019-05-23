@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import index from './index.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 
@@ -10,7 +9,6 @@ localVue.use(Vuex)
 localVue.use(Styleguide)
 
 describe('index.vue', () => {
-  let Wrapper
   let store
   let mocks
   let getters
@@ -28,27 +26,27 @@ describe('index.vue', () => {
                 id: 'u1',
                 name: 'Peter',
                 locationName: 'Berlin',
-                about: 'Smth'
-              }
-            }
-          })
+                about: 'Smth',
+              },
+            },
+          }),
       },
       $toast: {
         error: jest.fn(),
-        success: jest.fn()
-      }
+        success: jest.fn(),
+      },
     }
     getters = {
       'auth/user': () => {
         return {}
-      }
+      },
     }
   })
 
   describe('mount', () => {
     const Wrapper = () => {
       store = new Vuex.Store({
-        getters
+        getters,
       })
       return mount(index, { store, mocks, localVue })
     }

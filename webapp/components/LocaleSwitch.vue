@@ -49,15 +49,15 @@ import orderBy from 'lodash/orderBy'
 
 export default {
   components: {
-    Dropdown
+    Dropdown,
   },
   props: {
     placement: { type: String, default: 'bottom-start' },
-    offset: { type: [String, Number], default: '16' }
+    offset: { type: [String, Number], default: '16' },
   },
   data() {
     return {
-      locales: orderBy(process.env.locales, 'name')
+      locales: orderBy(process.env.locales, 'name'),
     }
   },
   computed: {
@@ -68,11 +68,11 @@ export default {
       let routes = this.locales.map(locale => {
         return {
           name: locale.name,
-          path: locale.code
+          path: locale.code,
         }
       })
       return routes
-    }
+    },
   },
   methods: {
     changeLanguage(locale, toggleMenu) {
@@ -81,8 +81,8 @@ export default {
     },
     matcher(locale) {
       return locale === this.$i18n.locale()
-    }
-  }
+    },
+  },
 }
 </script>
 

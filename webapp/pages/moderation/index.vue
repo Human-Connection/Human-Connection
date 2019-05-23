@@ -14,9 +14,12 @@
         slot-scope="scope"
       >
         <div v-if="scope.row.type === 'Post'">
-          <nuxt-link :to="{ name: 'post-id-slug', params: { id: scope.row.post.id, slug: scope.row.post.slug } }">
+          <nuxt-link
+            :to="{ name: 'post-id-slug', params: { id: scope.row.post.id, slug: scope.row.post.slug } }"
+          >
             <b>{{ scope.row.post.title | truncate(50) }}</b>
-          </nuxt-link><br>
+          </nuxt-link>
+          <br>
           <ds-text
             size="small"
             color="soft"
@@ -25,9 +28,12 @@
           </ds-text>
         </div>
         <div v-else-if="scope.row.type === 'Comment'">
-          <nuxt-link :to="{ name: 'post-id-slug', params: { id: scope.row.comment.post.id, slug: scope.row.comment.post.slug } }">
+          <nuxt-link
+            :to="{ name: 'post-id-slug', params: { id: scope.row.comment.post.id, slug: scope.row.comment.post.slug } }"
+          >
             <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
-          </nuxt-link><br>
+          </nuxt-link>
+          <br>
           <ds-text
             size="small"
             color="soft"
@@ -36,7 +42,9 @@
           </ds-text>
         </div>
         <div v-else>
-          <nuxt-link :to="{ name: 'profile-id-slug', params: { id: scope.row.user.id, slug: scope.row.user.slug } }">
+          <nuxt-link
+            :to="{ name: 'profile-id-slug', params: { id: scope.row.user.id, slug: scope.row.user.slug } }"
+          >
             <b>{{ scope.row.user.name | truncate(50) }}</b>
           </nuxt-link>
         </div>
@@ -45,9 +53,7 @@
         slot="type"
         slot-scope="scope"
       >
-        <ds-text
-          color="soft"
-        >
+        <ds-text color="soft">
           <ds-icon
             v-if="scope.row.type === 'Post'"
             v-tooltip="{ content: $t('report.contribution.type'), placement: 'right' }"
@@ -69,7 +75,9 @@
         slot="submitter"
         slot-scope="scope"
       >
-        <nuxt-link :to="{ name: 'profile-id-slug', params: { id: scope.row.submitter.id, slug: scope.row.submitter.slug } }">
+        <nuxt-link
+          :to="{ name: 'profile-id-slug', params: { id: scope.row.submitter.id, slug: scope.row.submitter.slug } }"
+        >
           {{ scope.row.submitter.name }}
         </nuxt-link>
       </template>
@@ -106,17 +114,16 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import HcEmpty from '~/components/Empty.vue'
 import query from '~/graphql/ModerationListQuery.js'
 
 export default {
   components: {
-    HcEmpty
+    HcEmpty,
   },
   data() {
     return {
-      Report: []
+      Report: [],
     }
   },
   computed: {
@@ -125,16 +132,16 @@ export default {
         type: ' ',
         name: ' ',
         submitter: this.$t('moderation.reports.submitter'),
-        disabledBy: this.$t('moderation.reports.disabledBy')
+        disabledBy: this.$t('moderation.reports.disabledBy'),
         // actions: ' '
       }
-    }
+    },
   },
   apollo: {
     Report: {
       query,
-      fetchPolicy: 'cache-and-network'
-    }
-  }
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>

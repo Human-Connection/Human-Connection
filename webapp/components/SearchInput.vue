@@ -98,24 +98,24 @@ export default {
   props: {
     id: {
       type: String,
-      default: 'nav-search'
+      default: 'nav-search',
     },
     value: {
       type: String,
-      default: ''
+      default: '',
     },
     results: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     delay: {
       type: Number,
-      default: 300
+      default: 300,
     },
     pending: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -123,7 +123,7 @@ export default {
       isOpen: false,
       lastSearchTerm: '',
       unprocessedSearchInput: '',
-      searchValue: ''
+      searchValue: '',
     }
   },
   computed: {
@@ -132,10 +132,8 @@ export default {
       return !isEmpty(this.lastSearchTerm)
     },
     emptyText() {
-      return this.isActive && !this.pending
-        ? this.$t('search.failed')
-        : this.$t('search.hint')
-    }
+      return this.isActive && !this.pending ? this.$t('search.failed') : this.$t('search.hint')
+    },
   },
   methods: {
     async query(value) {
@@ -201,8 +199,8 @@ export default {
       this.unprocessedSearchInput = ''
       this.lastSearchTerm = ''
       this.searchValue = ''
-    }
-  }
+    },
+  },
 }
 </script>
 

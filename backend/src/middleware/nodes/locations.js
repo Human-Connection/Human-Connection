@@ -1,4 +1,3 @@
-
 import request from 'request'
 import { UserInputError } from 'apollo-server'
 import isEmpty from 'lodash/isEmpty'
@@ -6,7 +5,7 @@ import asyncForEach from '../../helpers/asyncForEach'
 
 const fetch = url => {
   return new Promise((resolve, reject) => {
-    request(url, function (error, response, body) {
+    request(url, function(error, response, body) {
       if (error) {
         reject(error)
       } else {
@@ -16,16 +15,7 @@ const fetch = url => {
   })
 }
 
-const locales = [
-  'en',
-  'de',
-  'fr',
-  'nl',
-  'it',
-  'es',
-  'pt',
-  'pl'
-]
+const locales = ['en', 'de', 'fr', 'nl', 'it', 'es', 'pt', 'pl']
 
 const createLocation = async (session, mapboxData) => {
   const data = {
@@ -39,21 +29,22 @@ const createLocation = async (session, mapboxData) => {
     namePT: mapboxData.text_pt,
     namePL: mapboxData.text_pl,
     type: mapboxData.id.split('.')[0].toLowerCase(),
-    lat: (mapboxData.center && mapboxData.center.length) ? mapboxData.center[0] : null,
-    lng: (mapboxData.center && mapboxData.center.length) ? mapboxData.center[1] : null
+    lat: mapboxData.center && mapboxData.center.length ? mapboxData.center[0] : null,
+    lng: mapboxData.center && mapboxData.center.length ? mapboxData.center[1] : null,
   }
 
-  let query = 'MERGE (l:Location {id: $id}) ' +
-              'SET l.name = $nameEN, ' +
-                  'l.nameEN = $nameEN, ' +
-                  'l.nameDE = $nameDE, ' +
-                  'l.nameFR = $nameFR, ' +
-                  'l.nameNL = $nameNL, ' +
-                  'l.nameIT = $nameIT, ' +
-                  'l.nameES = $nameES, ' +
-                  'l.namePT = $namePT, ' +
-                  'l.namePL = $namePL, ' +
-                  'l.type = $type'
+  let query =
+    'MERGE (l:Location {id: $id}) ' +
+    'SET l.name = $nameEN, ' +
+    'l.nameEN = $nameEN, ' +
+    'l.nameDE = $nameDE, ' +
+    'l.nameFR = $nameFR, ' +
+    'l.nameNL = $nameNL, ' +
+    'l.nameIT = $nameIT, ' +
+    'l.nameES = $nameES, ' +
+    'l.namePT = $namePT, ' +
+    'l.namePL = $namePL, ' +
+    'l.type = $type'
 
   if (data.lat && data.lng) {
     query += ', l.lat = $lat, l.lng = $lng'
@@ -68,7 +59,11 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
     return
   }
   const mapboxToken = process.env.MAPBOX_TOKEN
-  const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(locationName)}.json?access_token=${mapboxToken}&types=region,place,country&language=${locales.join(',')}`)
+  const res = await fetch(
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+      locationName,
+    )}.json?access_token=${mapboxToken}&types=region,place,country&language=${locales.join(',')}`,
+  )
 
   if (!res || !res.features || !res.features[0]) {
     throw new UserInputError('locationName is invalid')
@@ -100,24 +95,29 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
 
       await session.run(
         'MATCH (parent:Location {id: $parentId}), (child:Location {id: $childId}) ' +
-        'MERGE (child)<-[:IS_IN]-(parent) ' +
-        'RETURN child.id, parent.id', {
+          'MERGE (child)<-[:IS_IN]-(parent) ' +
+          'RETURN child.id, parent.id',
+        {
           parentId: parent.id,
-          childId: ctx.id
-        })
+          childId: ctx.id,
+        },
+      )
 
       parent = ctx
     })
   }
   // delete all current locations from user
   await session.run('MATCH (u:User {id: $userId})-[r:IS_IN]->(l:Location) DETACH DELETE r', {
-    userId: userId
+    userId: userId,
   })
   // connect user with location
-  await session.run('MATCH (u:User {id: $userId}), (l:Location {id: $locationId}) MERGE (u)-[:IS_IN]->(l) RETURN l.id, u.id', {
-    userId: userId,
-    locationId: data.id
-  })
+  await session.run(
+    'MATCH (u:User {id: $userId}), (l:Location {id: $locationId}) MERGE (u)-[:IS_IN]->(l) RETURN l.id, u.id',
+    {
+      userId: userId,
+      locationId: data.id,
+    },
+  )
   session.close()
 }
 

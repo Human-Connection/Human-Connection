@@ -22,13 +22,13 @@ export default {
 
   props: {
     followId: { type: String, default: null },
-    isFollowed: { type: Boolean, default: false }
+    isFollowed: { type: Boolean, default: false },
   },
   data() {
     return {
       disabled: false,
       loading: false,
-      hovered: false
+      hovered: false,
     }
   },
   computed: {
@@ -45,13 +45,13 @@ export default {
       } else {
         return this.$t('followButton.follow')
       }
-    }
+    },
   },
   watch: {
     isFollowed() {
       this.loading = false
       this.hovered = false
-    }
+    },
   },
   methods: {
     onHover() {
@@ -75,8 +75,8 @@ export default {
             }
           `,
           variables: {
-            id: this.followId
-          }
+            id: this.followId,
+          },
         })
         .then(res => {
           // this.$emit('optimistic', follow ? res.data.follow : follow)
@@ -85,7 +85,7 @@ export default {
         .catch(() => {
           this.$emit('optimistic', !follow)
         })
-    }
-  }
+    },
+  },
 }
 </script>

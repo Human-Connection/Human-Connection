@@ -14,7 +14,6 @@ config.stubs['no-ssr'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
 
 describe('PostCard', () => {
-  let wrapper
   let stubs
   let mocks
   let propsData
@@ -23,35 +22,35 @@ describe('PostCard', () => {
   beforeEach(() => {
     propsData = {}
     stubs = {
-      NuxtLink: RouterLinkStub
+      NuxtLink: RouterLinkStub,
     }
     mocks = {
-      $t: jest.fn()
+      $t: jest.fn(),
     }
     getters = {
       'auth/user': () => {
         return {}
-      }
+      },
     }
   })
 
   const Wrapper = () => {
     const store = new Vuex.Store({
-      getters
+      getters,
     })
     return mount(PostCard, {
       stubs,
       mocks,
       propsData,
       store,
-      localVue
+      localVue,
     })
   }
 
   describe('given a post', () => {
     beforeEach(() => {
       propsData.post = {
-        title: "It's a title"
+        title: "It's a title",
       }
     })
 

@@ -29,16 +29,16 @@ export default {
       return [
         {
           name: this.$t('settings.data.name'),
-          path: `/settings`
+          path: `/settings`,
         },
         {
           name: this.$t('settings.security.name'),
-          path: `/settings/security`
+          path: `/settings/security`,
         },
         {
           name: this.$t('settings.social-media.name'),
-          path: `/settings/my-social-media`
-        }
+          path: `/settings/my-social-media`,
+        },
         // TODO implement
         /* {
           name: this.$t('settings.invites.name'),
@@ -66,7 +66,7 @@ export default {
         },
         } */
       ]
-    }
-  }
+    },
+  },
 }
 </script>

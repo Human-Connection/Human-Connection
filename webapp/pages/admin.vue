@@ -30,7 +30,7 @@ export default {
       return [
         {
           name: this.$t('admin.dashboard.name'),
-          path: `/admin`
+          path: `/admin`,
         },
         // TODO implement
         /* {
@@ -54,19 +54,19 @@ export default {
         }, */
         {
           name: this.$t('admin.categories.name'),
-          path: `/admin/categories`
+          path: `/admin/categories`,
         },
         {
           name: this.$t('admin.tags.name'),
-          path: `/admin/tags`
-        }
+          path: `/admin/tags`,
+        },
         // TODO implement
         /* {
           name: this.$t('admin.settings.name'),
           path: `/admin/settings`
         } */
       ]
-    }
-  }
+    },
+  },
 }
 </script>

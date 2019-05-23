@@ -8,7 +8,7 @@ let client
 beforeEach(async () => {
   await factory.create('User', {
     email: 'test@example.org',
-    password: '1234'
+    password: '1234',
   })
 })
 
@@ -47,22 +47,25 @@ describe('CreatePost', () => {
       const expected = {
         CreatePost: {
           title: 'I am a title',
-          content: 'Some content'
-        }
+          content: 'Some content',
+        },
       }
       await expect(client.request(mutation)).resolves.toMatchObject(expected)
     })
 
     it('assigns the authenticated user as author', async () => {
       await client.request(mutation)
-      const { User } = await client.request(`{
+      const { User } = await client.request(
+        `{
           User(email:"test@example.org") {
             contributions {
               title
             }
           }
-        }`, { headers })
-      expect(User).toEqual([ { contributions: [ { title: 'I am a title' } ] } ])
+        }`,
+        { headers },
+      )
+      expect(User).toEqual([{ contributions: [{ title: 'I am a title' }] }])
     })
 
     describe('disabled and deleted', () => {
@@ -86,22 +89,22 @@ describe('UpdatePost', () => {
 
   let variables = {
     id: 'p1',
-    content: 'New content'
+    content: 'New content',
   }
 
   beforeEach(async () => {
     const asAuthor = Factory()
     await asAuthor.create('User', {
       email: 'author@example.org',
-      password: '1234'
+      password: '1234',
     })
     await asAuthor.authenticateAs({
       email: 'author@example.org',
-      password: '1234'
+      password: '1234',
     })
     await asAuthor.create('Post', {
       id: 'p1',
-      content: 'Old content'
+      content: 'Old content',
     })
   })
 
@@ -149,22 +152,22 @@ describe('DeletePost', () => {
   `
 
   let variables = {
-    id: 'p1'
+    id: 'p1',
   }
 
   beforeEach(async () => {
     const asAuthor = Factory()
     await asAuthor.create('User', {
       email: 'author@example.org',
-      password: '1234'
+      password: '1234',
     })
     await asAuthor.authenticateAs({
       email: 'author@example.org',
-      password: '1234'
+      password: '1234',
     })
     await asAuthor.create('Post', {
       id: 'p1',
-      content: 'To be deleted'
+      content: 'To be deleted',
     })
   })
 

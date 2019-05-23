@@ -48,20 +48,20 @@ import HcEditor from '~/components/Editor'
 
 export default {
   components: {
-    HcEditor
+    HcEditor,
   },
   props: {
     post: { type: Object, default: () => {} },
-    comments: { type: Array, default: () => [] }
+    comments: { type: Array, default: () => [] },
   },
   data() {
     return {
       disabled: true,
       loading: false,
       form: {
-        content: ''
+        content: '',
       },
-      users: []
+      users: [],
     }
   },
   methods: {
@@ -92,8 +92,8 @@ export default {
           `,
           variables: {
             postId: this.post.id,
-            content: this.form.content
-          }
+            content: this.form.content,
+          },
         })
         .then(res => {
           this.loading = false
@@ -105,7 +105,7 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
         })
-    }
+    },
   },
   apollo: {
     User: {
@@ -119,8 +119,8 @@ export default {
       },
       result(result) {
         this.users = result.data.User
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>

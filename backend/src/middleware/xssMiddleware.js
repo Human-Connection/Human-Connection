@@ -5,7 +5,7 @@ import sanitizeHtml from 'sanitize-html'
 import cheerio from 'cheerio'
 import linkifyHtml from 'linkifyjs/html'
 
-const embedToAnchor = (content) => {
+const embedToAnchor = content => {
   const $ = cheerio.load(content)
   $('div[data-url-embed]').each((i, el) => {
     let url = el.attribs['data-url-embed']
@@ -15,7 +15,7 @@ const embedToAnchor = (content) => {
   return $('body').html()
 }
 
-function clean (dirty) {
+function clean(dirty) {
   if (!dirty) {
     return dirty
   }
@@ -24,27 +24,48 @@ function clean (dirty) {
   dirty = embedToAnchor(dirty)
   dirty = linkifyHtml(dirty)
   dirty = sanitizeHtml(dirty, {
-    allowedTags: ['iframe', 'img', 'p', 'h3', 'h4', 'br', 'hr', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
+    allowedTags: [
+      'iframe',
+      'img',
+      'p',
+      'h3',
+      'h4',
+      'br',
+      'hr',
+      'b',
+      'i',
+      'em',
+      'strong',
+      'a',
+      'pre',
+      'ul',
+      'li',
+      'ol',
+      's',
+      'strike',
+      'span',
+      'blockquote',
+    ],
     allowedAttributes: {
       a: ['href', 'class', 'target', 'data-*', 'contenteditable'],
       span: ['contenteditable', 'class', 'data-*'],
       img: ['src'],
-      iframe: ['src', 'class', 'frameborder', 'allowfullscreen']
+      iframe: ['src', 'class', 'frameborder', 'allowfullscreen'],
     },
     allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com'],
     parser: {
-      lowerCaseTags: true
+      lowerCaseTags: true,
     },
     transformTags: {
-      iframe: function (tagName, attribs) {
+      iframe: function(tagName, attribs) {
         return {
           tagName: 'a',
           text: attribs.src,
           attribs: {
             href: attribs.src,
             target: '_blank',
-            'data-url-embed': ''
-          }
+            'data-url-embed': '',
+          },
         }
       },
       h1: 'h3',
@@ -53,19 +74,19 @@ function clean (dirty) {
       h4: 'h4',
       h5: 'strong',
       i: 'em',
-      a: function (tagName, attribs) {
+      a: function(tagName, attribs) {
         return {
           tagName: 'a',
           attribs: {
             href: attribs.href,
             target: '_blank',
-            rel: 'noopener noreferrer nofollow'
-          }
+            rel: 'noopener noreferrer nofollow',
+          },
         }
       },
       b: 'strong',
       s: 'strike',
-      img: function (tagName, attribs) {
+      img: function(tagName, attribs) {
         let src = attribs.src
 
         if (!src) {
@@ -88,11 +109,11 @@ function clean (dirty) {
           tagName: 'img',
           attribs: {
             // TODO: use environment variables
-            src: `http://localhost:3050/images?url=${src}`
-          }
+            src: `http://localhost:3050/images?url=${src}`,
+          },
         }
-      }
-    }
+      },
+    },
   })
 
   // remove empty html tags and duplicated linebreaks and returns
@@ -100,10 +121,7 @@ function clean (dirty) {
     // remove all tags with "space only"
     .replace(/<[a-z-]+>[\s]+<\/[a-z-]+>/gim, '')
     // remove all iframes
-    .replace(
-      /(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/gim,
-      ''
-    )
+    .replace(/(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/gim, '')
     .replace(/[\n]{3,}/gim, '\n\n')
     .replace(/(\r\n|\n\r|\r|\n)/g, '<br>$1')
 
@@ -111,15 +129,9 @@ function clean (dirty) {
     // limit linebreaks to max 2 (equivalent to html "br" linebreak)
     .replace(/(<br ?\/?>\s*){2,}/gim, '<br>')
     // remove additional linebreaks after p tags
-    .replace(
-      /<\/(p|div|th|tr)>\s*(<br ?\/?>\s*)+\s*<(p|div|th|tr)>/gim,
-      '</p><p>'
-    )
+    .replace(/<\/(p|div|th|tr)>\s*(<br ?\/?>\s*)+\s*<(p|div|th|tr)>/gim, '</p><p>')
     // remove additional linebreaks inside p tags
-    .replace(
-      /<[a-z-]+>(<[a-z-]+>)*\s*(<br ?\/?>\s*)+\s*(<\/[a-z-]+>)*<\/[a-z-]+>/gim,
-      ''
-    )
+    .replace(/<[a-z-]+>(<[a-z-]+>)*\s*(<br ?\/?>\s*)+\s*(<\/[a-z-]+>)*<\/[a-z-]+>/gim, '')
     // remove additional linebreaks when first child inside p tags
     .replace(/<p>(\s*<br ?\/?>\s*)+/gim, '<p>')
     // remove additional linebreaks when last child inside p tags
@@ -138,5 +150,5 @@ export default {
   Query: async (resolve, root, args, context, info) => {
     const result = await resolve(root, args, context, info)
     return walkRecursive(result, fields, clean)
-  }
+  },
 }

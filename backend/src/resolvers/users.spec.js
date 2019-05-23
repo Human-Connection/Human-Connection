@@ -24,15 +24,14 @@ describe('users', () => {
       const variables = {
         name: 'John Doe',
         password: '123',
-        email: '123@123.de'
+        email: '123@123.de',
       }
       const expected = {
         CreateUser: {
-          id: expect.any(String)
-        }
+          id: expect.any(String),
+        },
       }
-      await expect(client.request(mutation, variables))
-        .resolves.toEqual(expected)
+      await expect(client.request(mutation, variables)).resolves.toEqual(expected)
     })
   })
 
@@ -54,16 +53,15 @@ describe('users', () => {
     it('name within specifications', async () => {
       const variables = {
         id: 'u47',
-        name: 'James Doe'
+        name: 'James Doe',
       }
       const expected = {
         UpdateUser: {
           id: 'u47',
-          name: 'James Doe'
-        }
+          name: 'James Doe',
+        },
       }
-      await expect(client.request(mutation, variables))
-        .resolves.toEqual(expected)
+      await expect(client.request(mutation, variables)).resolves.toEqual(expected)
     })
 
     it('with no name', async () => {
@@ -72,18 +70,16 @@ describe('users', () => {
         name: null
       }
       const expected = 'Username must be at least 3 characters long!'
-      await expect(client.request(mutation, variables))
-        .rejects.toThrow(expected)
+      await expect(client.request(mutation, variables)).rejects.toThrow(expected)
     })
 
     it('with too short name', async () => {
       const variables = {
         id: 'u47',
-        name: '  '
+        name: '  ',
       }
       const expected = 'Username must be at least 3 characters long!'
-      await expect(client.request(mutation, variables))
-        .rejects.toThrow(expected)
+      await expect(client.request(mutation, variables)).rejects.toThrow(expected)
     })
   })
 })

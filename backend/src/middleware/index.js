@@ -26,7 +26,7 @@ export default schema => {
     softDeleteMiddleware,
     userMiddleware,
     includedFieldsMiddleware,
-    orderByMiddleware
+    orderByMiddleware,
   ]
 
   // add permisions middleware at the first position (unless we're seeding)
@@ -35,7 +35,8 @@ export default schema => {
     const DISABLED_MIDDLEWARES = process.env.DISABLED_MIDDLEWARES || ''
     const disabled = DISABLED_MIDDLEWARES.split(',')
     if (!disabled.includes('activityPub')) middleware.unshift(activityPubMiddleware)
-    if (!disabled.includes('permissions')) middleware.unshift(permissionsMiddleware.generate(schema))
+    if (!disabled.includes('permissions'))
+      middleware.unshift(permissionsMiddleware.generate(schema))
   }
   return middleware
 }

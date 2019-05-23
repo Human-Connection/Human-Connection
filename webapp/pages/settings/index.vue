@@ -51,11 +51,11 @@ import gql from 'graphql-tag'
 
 import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
-import find from 'lodash/find'
 
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
 
+/*
 const query = gql`
   query getUser($id: ID) {
     User(id: $id) {
@@ -66,15 +66,11 @@ const query = gql`
     }
   }
 `
+*/
 
 const mutation = gql`
   mutation($id: ID!, $name: String, $locationName: String, $about: String) {
-    UpdateUser(
-      id: $id
-      name: $name
-      locationName: $locationName
-      about: $about
-    ) {
+    UpdateUser(id: $id, name: $name, locationName: $locationName, about: $about) {
       id
       name
       locationName
@@ -90,12 +86,12 @@ export default {
       cities: [],
       loadingData: false,
       loadingGeo: false,
-      formData: {}
+      formData: {},
     }
   },
   computed: {
     ...mapGetters({
-      currentUser: 'auth/user'
+      currentUser: 'auth/user',
     }),
     form: {
       get: function() {
@@ -104,12 +100,12 @@ export default {
       },
       set: function(formData) {
         this.formData = formData
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations({
-      setCurrentUser: 'auth/SET_USER'
+      setCurrentUser: 'auth/SET_USER',
     }),
     async submit() {
       this.loadingData = true
@@ -117,13 +113,13 @@ export default {
       let { locationName } = this.formData
       locationName = locationName && (locationName['label'] || locationName)
       try {
-        const { data } = await this.$apollo.mutate({
+        await this.$apollo.mutate({
           mutation,
           variables: {
             id: this.currentUser.id,
             name,
             locationName,
-            about
+            about,
           },
           update: (store, { data: { UpdateUser } }) => {
             const { name, locationName, about } = UpdateUser
@@ -131,9 +127,9 @@ export default {
               ...this.currentUser,
               name,
               locationName,
-              about
+              about,
             })
-          }
+          },
         })
         this.$toast.success(this.$t('settings.data.success'))
       } catch (err) {
@@ -147,12 +143,7 @@ export default {
       timeout = setTimeout(() => this.requestGeoData(value), 500)
     },
     processCityResults(res) {
-      if (
-        !res ||
-        !res.data ||
-        !res.data.features ||
-        !res.data.features.length
-      ) {
+      if (!res || !res.data || !res.data.features || !res.data.features.length) {
         return []
       }
       let output = []
@@ -160,7 +151,7 @@ export default {
         output.push({
           label: item.place_name,
           value: item.place_name,
-          id: item.id
+          id: item.id,
         })
       })
 
@@ -188,8 +179,8 @@ export default {
         .get(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${place}.json?access_token=${mapboxToken}&types=region,place,country&language=${lang}`,
           {
-            cancelToken: this.axiosSource.token
-          }
+            cancelToken: this.axiosSource.token,
+          },
         )
         .then(res => {
           this.cities = this.processCityResults(res)
@@ -197,7 +188,7 @@ export default {
         .finally(() => {
           this.loadingGeo = false
         })
-    }
-  }
+    },
+  },
 }
 </script>

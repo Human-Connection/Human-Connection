@@ -8,7 +8,7 @@ export default {
       const result = await resolve(root, args, context, info)
       result.password = '*****'
       return result
-    }
+    },
   },
   Query: async (resolve, root, args, context, info) => {
     let result = await resolve(root, args, context, info)
@@ -17,5 +17,5 @@ export default {
       return '*****'
     })
     return result
-  }
+  },
 }

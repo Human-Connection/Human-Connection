@@ -5,16 +5,17 @@ export default {
     CreateSocialMedia: async (object, params, context, resolveInfo) => {
       /**
        * TODO?: Creates double Nodes!
-      */
+       */
       const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
       const session = context.driver.session()
       await session.run(
         `MATCH (owner:User {id: $userId}), (socialMedia:SocialMedia {id: $socialMediaId})
         MERGE (socialMedia)<-[:OWNED]-(owner) 
-        RETURN owner`, {
+        RETURN owner`,
+        {
           userId: context.user.id,
-          socialMediaId: socialMedia.id
-        }
+          socialMediaId: socialMedia.id,
+        },
       )
       session.close()
 
@@ -24,6 +25,6 @@ export default {
       const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       return socialMedia
-    }
-  }
+    },
+  },
 }

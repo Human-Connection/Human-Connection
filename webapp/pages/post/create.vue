@@ -13,12 +13,11 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import HcContributionForm from '~/components/ContributionForm'
 
 export default {
   components: {
-    HcContributionForm
-  }
+    HcContributionForm,
+  },
 }
 </script>

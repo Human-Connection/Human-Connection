@@ -13,7 +13,7 @@ export default {
   name: 'HcCategory',
   props: {
     icon: { type: String, required: true },
-    name: { type: String, required: true }
-  }
+    name: { type: String, default: '' },
+  },
 }
 </script>

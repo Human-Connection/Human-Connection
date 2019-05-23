@@ -7,7 +7,7 @@ import verify from './verify'
 const router = express.Router()
 const debug = require('debug')('ea:user')
 
-router.get('/:name', async function (req, res, next) {
+router.get('/:name', async function(req, res, next) {
   debug('inside user.js -> serveUser')
   await serveUser(req, res, next)
 })
@@ -45,24 +45,24 @@ router.get('/:name/outbox', (req, res) => {
   }
 })
 
-router.post('/:name/inbox', verify, async function (req, res, next) {
+router.post('/:name/inbox', verify, async function(req, res, next) {
   debug(`body = ${JSON.stringify(req.body, null, 2)}`)
   debug(`actorId = ${req.body.actor}`)
   // const result = await saveActorId(req.body.actor)
   switch (req.body.type) {
-  case 'Create':
-    await activityPub.handleCreateActivity(req.body).catch(next)
-    break
-  case 'Undo':
-    await activityPub.handleUndoActivity(req.body).catch(next)
-    break
-  case 'Follow':
-    await activityPub.handleFollowActivity(req.body).catch(next)
-    break
-  case 'Delete':
-    await activityPub.handleDeleteActivity(req.body).catch(next)
-    break
-  /* eslint-disable */
+    case 'Create':
+      await activityPub.handleCreateActivity(req.body).catch(next)
+      break
+    case 'Undo':
+      await activityPub.handleUndoActivity(req.body).catch(next)
+      break
+    case 'Follow':
+      await activityPub.handleFollowActivity(req.body).catch(next)
+      break
+    case 'Delete':
+      await activityPub.handleDeleteActivity(req.body).catch(next)
+      break
+    /* eslint-disable */
   case 'Update':
     await activityPub.handleUpdateActivity(req.body).catch(next)
     break

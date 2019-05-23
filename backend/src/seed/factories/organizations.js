@@ -1,11 +1,11 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
 
-export default function create (params) {
+export default function create(params) {
   const {
     id = uuid(),
     name = faker.company.companyName(),
-    description = faker.company.catchPhrase()
+    description = faker.company.catchPhrase(),
   } = params
 
   return {
@@ -16,6 +16,6 @@ export default function create (params) {
         }
       }
     `,
-    variables: { id, name, description }
+    variables: { id, name, description },
   }
 }

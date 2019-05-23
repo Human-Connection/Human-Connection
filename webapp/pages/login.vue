@@ -82,9 +82,7 @@
                   :href="$t('login.moreInfoURL')"
                   :title="$t('login.moreInfoHint')"
                   target="_blank"
-                >
-                  {{ $t('login.moreInfo') }}
-                </a>
+                >{{ $t('login.moreInfo') }}</a>
               </ds-space>
             </form>
           </ds-flex-item>
@@ -97,11 +95,9 @@
 <script>
 import LocaleSwitch from '~/components/LocaleSwitch'
 
-import gql from 'graphql-tag'
-
 export default {
   components: {
-    LocaleSwitch
+    LocaleSwitch,
   },
   layout: 'blank',
   data() {
@@ -109,14 +105,14 @@ export default {
       ready: false,
       form: {
         email: '',
-        password: ''
-      }
+        password: '',
+      },
     }
   },
   computed: {
     pending() {
       return this.$store.getters['auth/pending']
-    }
+    },
   },
   asyncData({ store, redirect }) {
     if (store.getters['auth/isLoggedIn']) {
@@ -139,8 +135,8 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

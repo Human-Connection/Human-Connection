@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 export const state = () => {
   return {
     notifications: null,
-    pending: false
+    pending: false,
   }
 }
 
@@ -19,13 +19,13 @@ export const mutations = {
     const toBeUpdated = notifications.find(n => {
       return n.id === notification.id
     })
-    toBeUpdated = { ...toBeUpdated, ...notification }
-  }
+    state.notifications = { ...toBeUpdated, ...notification }
+  },
 }
 export const getters = {
   notifications(state) {
     return !!state.notifications
-  }
+  },
 }
 
 export const actions = {
@@ -36,7 +36,7 @@ export const actions = {
     let notifications
     try {
       const {
-        data: { currentUser }
+        data: { currentUser },
       } = await client.query({
         query: gql(`{
           currentUser {
@@ -59,10 +59,9 @@ export const actions = {
               }
             }
           }
-        }`)
+        }`),
       })
       notifications = currentUser.notifications
-      console.log(notifications)
       commit('SET_NOTIFICATIONS', notifications)
     } finally {
       commit('SET_PENDING', false)
@@ -82,8 +81,8 @@ export const actions = {
     `)
     const variables = { id: notificationId, read: true }
     const {
-      data: { UpdateNotification }
+      data: { UpdateNotification },
     } = await client.mutate({ mutation, variables })
     commit('UPDATE_NOTIFICATIONS', UpdateNotification)
-  }
+  },
 }

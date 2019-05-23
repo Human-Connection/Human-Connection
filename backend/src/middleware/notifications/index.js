@@ -8,7 +8,7 @@ const notify = async (resolve, root, args, context, resolveInfo) => {
 
   const session = context.driver.session()
   const { id: postId } = post
-  const createdAt = (new Date()).toISOString()
+  const createdAt = new Date().toISOString()
   const cypher = `
     match(u:User) where u.id in $ids
     match(p:Post) where p.id = $postId
@@ -25,6 +25,6 @@ const notify = async (resolve, root, args, context, resolveInfo) => {
 export default {
   Mutation: {
     CreatePost: notify,
-    UpdatePost: notify
-  }
+    UpdatePost: notify,
+  },
 }
