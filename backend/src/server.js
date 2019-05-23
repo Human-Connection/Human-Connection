@@ -28,17 +28,17 @@ let schema = makeAugmentedSchema({
   resolvers,
   config: {
     query: {
-      exclude: ['Notfication', 'Statistics', 'LoggedInUser']
+      exclude: ['Notfication', 'Statistics', 'LoggedInUser'],
     },
     mutation: {
-      exclude: ['Notfication', 'Statistics', 'LoggedInUser']
+      exclude: ['Notfication', 'Statistics', 'LoggedInUser'],
     },
-    debug: debug
-  }
+    debug: debug,
+  },
 })
 schema = applyScalars(applyDirectives(schema))
 
-const createServer = (options) => {
+const createServer = options => {
   const defaults = {
     context: async ({ request }) => {
       const authorizationHeader = request.headers.authorization || ''
@@ -48,15 +48,15 @@ const createServer = (options) => {
         user,
         req: request,
         cypherParams: {
-          currentUserId: user ? user.id : null
-        }
+          currentUserId: user ? user.id : null,
+        },
       }
     },
     schema: schema,
     debug: debug,
     tracing: debug,
     middlewares: middleware(schema),
-    mocks: (process.env.MOCK === 'true') ? mocks : false
+    mocks: process.env.MOCK === 'true' ? mocks : false,
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 

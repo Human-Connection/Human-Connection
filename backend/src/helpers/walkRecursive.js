@@ -1,10 +1,10 @@
 /**
-  * iterate through all fields and replace it with the callback result
-  * @property data Array
-  * @property fields Array
-  * @property callback Function
-  */
-function walkRecursive (data, fields, callback, _key) {
+ * iterate through all fields and replace it with the callback result
+ * @property data Array
+ * @property fields Array
+ * @property callback Function
+ */
+function walkRecursive(data, fields, callback, _key) {
   if (!Array.isArray(fields)) {
     throw new Error('please provide an fields array for the walkRecursive helper')
   }

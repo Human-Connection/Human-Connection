@@ -23,14 +23,14 @@
 import HcImage from './Image'
 export default {
   components: {
-    HcImage
+    HcImage,
   },
   props: {
     badges: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 }
 </script>
 

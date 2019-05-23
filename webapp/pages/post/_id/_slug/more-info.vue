@@ -62,16 +62,16 @@ import HcEmpty from '~/components/Empty.vue'
 export default {
   transition: {
     name: 'slide-up',
-    mode: 'out-in'
+    mode: 'out-in',
   },
   components: {
     HcPostCard,
-    HcEmpty
+    HcEmpty,
   },
   computed: {
     post() {
       return this.Post ? this.Post[0] || {} : {}
-    }
+    },
   },
   apollo: {
     Post: {
@@ -128,11 +128,11 @@ export default {
       },
       variables() {
         return {
-          slug: this.$route.params.slug
+          slug: this.$route.params.slug,
         }
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 

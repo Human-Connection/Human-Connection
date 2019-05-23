@@ -31,7 +31,7 @@ describe('CreateSocialMedia', () => {
       slug: 'matilde-hermiston',
       role: 'user',
       email: 'test@example.org',
-      password: '1234'
+      password: '1234',
     })
   })
 
@@ -43,9 +43,7 @@ describe('CreateSocialMedia', () => {
     it('throws authorization error', async () => {
       client = new GraphQLClient(host)
       const variables = { url: 'http://nsosp.org' }
-      await expect(
-        client.request(mutationC, variables)
-      ).rejects.toThrow('Not Authorised')
+      await expect(client.request(mutationC, variables)).rejects.toThrow('Not Authorised')
     })
   })
 
@@ -57,14 +55,14 @@ describe('CreateSocialMedia', () => {
 
     it('creates social media with correct URL', async () => {
       const variables = { url: 'http://nsosp.org' }
-      await expect(
-        client.request(mutationC, variables)
-      ).resolves.toEqual(expect.objectContaining({
-        CreateSocialMedia: {
-          id: expect.any(String),
-          url: 'http://nsosp.org'
-        }
-      }))
+      await expect(client.request(mutationC, variables)).resolves.toEqual(
+        expect.objectContaining({
+          CreateSocialMedia: {
+            id: expect.any(String),
+            url: 'http://nsosp.org',
+          },
+        }),
+      )
     })
 
     it('deletes social media', async () => {
@@ -76,26 +74,20 @@ describe('CreateSocialMedia', () => {
       const expected = {
         DeleteSocialMedia: {
           id: id,
-          url: 'http://nsosp.org'
-        }
+          url: 'http://nsosp.org',
+        },
       }
-      await expect(
-        client.request(mutationD, deletionVariables)
-      ).resolves.toEqual(expected)
+      await expect(client.request(mutationD, deletionVariables)).resolves.toEqual(expected)
     })
 
     it('rejects empty string', async () => {
       const variables = { url: '' }
-      await expect(
-        client.request(mutationC, variables)
-      ).rejects.toThrow('Input is not a URL')
+      await expect(client.request(mutationC, variables)).rejects.toThrow('Input is not a URL')
     })
 
     it('validates URLs', async () => {
       const variables = { url: 'not-a-url' }
-      await expect(
-        client.request(mutationC, variables)
-      ).rejects.toThrow('Input is not a URL')
+      await expect(client.request(mutationC, variables)).rejects.toThrow('Input is not a URL')
     })
   })
 })

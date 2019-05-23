@@ -23,11 +23,13 @@ export default {
       }
 
       const session = context.driver.session()
-      const postQueryRes = await session.run(`
+      const postQueryRes = await session.run(
+        `
         MATCH (post:Post {id: $postId})
-        RETURN post`, {
-        postId
-      }
+        RETURN post`,
+        {
+          postId,
+        },
       )
       const [post] = postQueryRes.records.map(record => {
         return record.get('post')
@@ -38,18 +40,20 @@ export default {
       }
       const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
 
-      await session.run(`
+      await session.run(
+        `
         MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId}), (author:User {id: $userId})
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN post`, {
-        userId: context.user.id,
-        postId,
-        commentId: comment.id
-      }
+        RETURN post`,
+        {
+          userId: context.user.id,
+          postId,
+          commentId: comment.id,
+        },
       )
       session.close()
 
       return comment
-    }
-  }
+    },
+  },
 }

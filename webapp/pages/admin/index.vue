@@ -168,17 +168,17 @@ import HcCountTo from '~/components/CountTo.vue'
 
 export default {
   components: {
-    HcCountTo
+    HcCountTo,
   },
   data() {
     return {
-      statistics: {}
+      statistics: {},
     }
   },
   computed: {
     isClient() {
       return process.client
-    }
+    },
   },
   mounted() {
     this.$apollo.queries.statistics.startPolling(5000)
@@ -199,8 +199,8 @@ export default {
             countShouts
           }
         }
-      `)
-    }
-  }
+      `),
+    },
+  },
 }
 </script>

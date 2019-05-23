@@ -1,11 +1,10 @@
 import gql from 'graphql-tag'
-import jwt from 'jsonwebtoken'
 
 export const state = () => {
   return {
     user: null,
     token: null,
-    pending: false
+    pending: false,
   }
 }
 
@@ -18,7 +17,7 @@ export const mutations = {
   },
   SET_PENDING(state, pending) {
     state.pending = pending
-  }
+  },
 }
 
 export const getters = {
@@ -35,17 +34,14 @@ export const getters = {
     return !!state.user && state.user.role === 'admin'
   },
   isModerator(state) {
-    return (
-      !!state.user &&
-      (state.user.role === 'admin' || state.user.role === 'moderator')
-    )
+    return !!state.user && (state.user.role === 'admin' || state.user.role === 'moderator')
   },
   user(state) {
     return state.user || {}
   },
   token(state) {
     return state.token
-  }
+  },
 }
 
 export const actions = {
@@ -71,7 +67,7 @@ export const actions = {
   async fetchCurrentUser({ commit, dispatch }) {
     const client = this.app.apolloProvider.defaultClient
     const {
-      data: { currentUser }
+      data: { currentUser },
     } = await client.query({
       query: gql(`{
         currentUser {
@@ -105,7 +101,7 @@ export const actions = {
             }
           }
         }
-      }`)
+      }`),
     })
     if (!currentUser) return dispatch('logout')
     commit('SET_USER', currentUser)
@@ -117,14 +113,14 @@ export const actions = {
     try {
       const client = this.app.apolloProvider.defaultClient
       const {
-        data: { login }
+        data: { login },
       } = await client.mutate({
         mutation: gql(`
             mutation($email: String!, $password: String!) {
               login(email: $email, password: $password)
             }
           `),
-        variables: { email, password }
+        variables: { email, password },
       })
       await this.app.$apolloHelpers.onLogin(login)
       commit('SET_TOKEN', login)
@@ -142,12 +138,9 @@ export const actions = {
     return this.app.$apolloHelpers.onLogout()
   },
 
-  register(
-    { dispatch, commit },
-    { email, password, inviteCode, invitedByUserId }
-  ) {},
+  register({ dispatch, commit }, { email, password, inviteCode, invitedByUserId }) {},
   async patch({ state, commit, dispatch }, data) {},
   resendVerifySignup({ state, dispatch }) {},
   resetPassword({ state }, data) {},
-  setNewPassword({ state }, data) {}
+  setNewPassword({ state }, data) {},
 }

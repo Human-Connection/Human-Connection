@@ -22,7 +22,8 @@
             />
             {{ link.url }}
           </a>
-          &nbsp;&nbsp; <span class="layout-leave-active">|</span> &nbsp;&nbsp;
+          &nbsp;&nbsp;
+          <span class="layout-leave-active">|</span> &nbsp;&nbsp;
           <ds-icon
             name="edit"
             class="layout-leave-active"
@@ -65,33 +66,31 @@ import HcImage from '~/components/Image'
 
 export default {
   components: {
-    HcImage
+    HcImage,
   },
   data() {
     return {
-      value: ''
+      value: '',
     }
   },
   computed: {
     ...mapGetters({
-      currentUser: 'auth/user'
+      currentUser: 'auth/user',
     }),
     socialMediaLinks() {
       const { socialMedia = [] } = this.currentUser
       return socialMedia.map(socialMedia => {
         const { id, url } = socialMedia
-        const matches = url.match(
-          /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
-        )
+        const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g)
         const [domain] = matches || []
         const favicon = domain ? `${domain}/favicon.ico` : null
         return { id, url, favicon }
       })
-    }
+    },
   },
   methods: {
     ...mapMutations({
-      setCurrentUser: 'auth/SET_USER'
+      setCurrentUser: 'auth/SET_USER',
     }),
     handleAddSocialMedia() {
       this.$apollo
@@ -105,22 +104,19 @@ export default {
             }
           `,
           variables: {
-            url: this.value
+            url: this.value,
           },
           update: (store, { data }) => {
-            const socialMedia = [
-              ...this.currentUser.socialMedia,
-              data.CreateSocialMedia
-            ]
+            const socialMedia = [...this.currentUser.socialMedia, data.CreateSocialMedia]
             this.setCurrentUser({
               ...this.currentUser,
-              socialMedia
+              socialMedia,
             })
-          }
+          },
         })
         .then(() => {
-          this.$toast.success(this.$t('settings.social-media.successAdd')),
-            (this.value = '')
+          this.$toast.success(this.$t('settings.social-media.successAdd'))
+          this.value = ''
         })
         .catch(error => {
           this.$toast.error(error.message)
@@ -138,17 +134,17 @@ export default {
             }
           `,
           variables: {
-            id: link.id
+            id: link.id,
           },
           update: (store, { data }) => {
             const socialMedia = this.currentUser.socialMedia.filter(
-              element => element.id !== link.id
+              element => element.id !== link.id,
             )
             this.setCurrentUser({
               ...this.currentUser,
-              socialMedia
+              socialMedia,
             })
-          }
+          },
         })
         .then(() => {
           this.$toast.success(this.$t('settings.social-media.successDelete'))
@@ -156,8 +152,8 @@ export default {
         .catch(error => {
           this.$toast.error(error.message)
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

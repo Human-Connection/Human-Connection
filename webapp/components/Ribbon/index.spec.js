@@ -10,8 +10,8 @@ describe('Ribbon', () => {
     return shallowMount(Ribbon, {
       localVue,
       propsData: {
-        text
-      }
+        text,
+      },
     })
   }
 

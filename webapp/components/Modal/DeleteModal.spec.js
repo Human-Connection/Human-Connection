@@ -1,6 +1,5 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import DeleteModal from './DeleteModal.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import VueRouter from 'vue-router'
@@ -15,27 +14,26 @@ localVue.use(VueRouter)
 
 describe('DeleteModal.vue', () => {
   let wrapper
-  let Wrapper
   let propsData
   let mocks
 
   beforeEach(() => {
     propsData = {
       type: 'contribution',
-      id: 'c300'
+      id: 'c300',
     }
     mocks = {
       $t: jest.fn(),
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
-      }
+        mutate: jest.fn().mockResolvedValue(),
+      },
     }
   })
 
@@ -59,7 +57,7 @@ describe('DeleteModal.vue', () => {
         propsData = {
           id: 'p23',
           type: 'post',
-          name: 'It is a post'
+          name: 'It is a post',
         }
       })
 
@@ -87,7 +85,7 @@ describe('DeleteModal.vue', () => {
       beforeEach(() => {
         propsData = {
           type: 'user',
-          id: 'u3'
+          id: 'u3',
         }
         wrapper = Wrapper()
       })

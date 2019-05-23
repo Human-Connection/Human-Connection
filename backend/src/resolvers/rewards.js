@@ -10,8 +10,8 @@ export default {
           RETURN rewardedUser {.id}`,
         {
           badgeId: fromBadgeId,
-          rewardedUserId: toUserId
-        }
+          rewardedUserId: toUserId,
+        },
       )
 
       const [rewardedUser] = transactionRes.records.map(record => {
@@ -33,8 +33,8 @@ export default {
         RETURN rewardedUser {.id}`,
         {
           badgeId: fromBadgeId,
-          rewardedUserId: toUserId
-        }
+          rewardedUserId: toUserId,
+        },
       )
       const [rewardedUser] = transactionRes.records.map(record => {
         return record.get('rewardedUser')
@@ -42,6 +42,6 @@ export default {
       session.close()
 
       return rewardedUser.id
-    }
-  }
+    },
+  },
 }

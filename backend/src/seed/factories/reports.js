@@ -1,10 +1,7 @@
 import faker from 'faker'
 
-export default function create (params) {
-  const {
-    description = faker.lorem.sentence(),
-    id
-  } = params
+export default function create(params) {
+  const { description = faker.lorem.sentence(), id } = params
 
   return {
     mutation: `
@@ -15,6 +12,6 @@ export default function create (params) {
         }
       }
     `,
-    variables: { id, description }
+    variables: { id, description },
   }
 }
