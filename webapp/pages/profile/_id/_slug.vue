@@ -18,7 +18,7 @@
             :image="user.avatar"
             :name="userName"
             class="profile-avatar"
-            size="120px"
+            size="x-large"
           />
           <no-ssr>
             <content-menu
