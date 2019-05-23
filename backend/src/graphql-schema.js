@@ -36,6 +36,6 @@ export const resolvers = {
     ...socialMedia.Mutation,
     ...notifications.Mutation,
     ...comments.Mutation,
-    ...users.Mutation
-  }
+    ...users.Mutation,
+  },
 }

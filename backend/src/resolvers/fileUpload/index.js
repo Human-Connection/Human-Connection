@@ -7,10 +7,10 @@ const storeUpload = ({ createReadStream, fileLocation }) =>
     createReadStream()
       .pipe(createWriteStream(`public${fileLocation}`))
       .on('finish', resolve)
-      .on('error', reject)
+      .on('error', reject),
   )
 
-export default async function fileUpload (params, { file, url }, uploadCallback = storeUpload) {
+export default async function fileUpload(params, { file, url }, uploadCallback = storeUpload) {
   const upload = params[file]
 
   if (upload) {
