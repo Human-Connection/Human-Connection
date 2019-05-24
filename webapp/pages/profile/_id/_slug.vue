@@ -231,6 +231,8 @@
           </ds-card>
         </ds-space>
       </ds-flex-item> 
+
+
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
           :width="{ base: '100%' }"
@@ -239,16 +241,16 @@
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
-                <ds-flex-item
-                  v-tooltip="{content: 'Your Posts', placement: 'right', delay: { show: 500 }}"
 
-                  class="ds-tab-nav-item ds-tab-nav-item-active"
-                  @click="tabActivity('posts', $event)"
-                >
+                <ds-flex-item
+                    v-tooltip="{content: 'Your Posts', placement: 'right', delay: { show: 500 }}"
+                    class="ds-tab-nav-item ds-tab-nav-item-active "
+                    @click="tabActivity('posts', $event)"  >
                   <ds-space margin="small">
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
-                      <ds-number :label="$t('common.post', null, user.contributionsCount)">
+                      <ds-number :label="$t('common.post', null, user.contributionsCount)" 
+                        class="pointer">
                         <hc-count-to
                           slot="count"
                           :end-val="user.contributionsCount"
@@ -265,10 +267,12 @@
                   <ds-space margin="small">  
                     <!--TODO: find better solution for rendering errors -->                
                     <no-ssr>
-                      <ds-number :label="$t('profile.commented')">
+                    <ds-number :label="$t('common.comment', null, user.commentsCount)" 
+                      class="pointer">
                         <hc-count-to
                           slot="count"
                           :end-val="user.commentsCount"
+                           
                         />
                       </ds-number>
                     </no-ssr>
@@ -276,14 +280,13 @@
                 </ds-flex-item>  
                  
                 <ds-flex-item 
-                 v-tooltip="{content: 'Your Shouted', placement: 'left', delay: { show: 500 }}"
-                class="ds-tab-nav-item"
-                @click="tabActivity('shouted', $event)"
-                >
+                  v-tooltip="{content: 'Your Shouted', placement: 'left', delay: { show: 500 }}"
+                  class="ds-tab-nav-item" >
                   <ds-space margin="small">  
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
-                      <ds-number :label="$t('profile.shouted')">
+                      <ds-number :label="$t('common.shout', null, user.shoutedCount)" 
+                        class="pointer">
                         <hc-count-to
                           slot="count"
                           :end-val="user.shoutedCount"
@@ -292,15 +295,9 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>  
+
               </ds-flex>
             </ds-card>
-          </ds-flex-item>
-
-          <ds-flex-item class="profile-top-navigation">
-            <ds-space>
-              <ds-menu :routes="routes" navbar>
-              </ds-menu>
-            </ds-space>
           </ds-flex-item>
 
       
@@ -350,7 +347,6 @@
   
 <script>
 import uniqBy from 'lodash/uniqBy'
-
 import User from '~/components/User'
 import HcPostCard from '~/components/PostCard'
 import HcFollowButton from '~/components/FollowButton.vue'
@@ -381,35 +377,7 @@ export default {
       User: [],
       voted: false,
       page: 1,
-      pageSize: 6,
-        routes: [
-          {
-            name: common.post,
-            path: '/'
-          },
-          {
-            name: 'Navigation',
-            path: '/navigation' /*,
-            children: [
-              {
-                name: 'Menu',
-                path: '/navigation/dsmenu'
-              },
-              {
-                name: 'Breadcrumb',
-                path: '/navigation/dsbreadcrumb'
-              }
-            ] */
-          },
-          {
-            name: 'Typography',
-            path: '/typography'
-          },
-          {
-            name: 'Layout',
-            path: '/layout'
-          }
-        ]
+      pageSize: 6
     }
   },
   computed: {
@@ -523,11 +491,21 @@ export default {
 </script>
 
 <style lang="scss">
+
+.pointer { 
+  cursor: pointer;
+}
+ 
+
+.ds-tab-nav .ds-card-content .ds-tab-nav-item:hover {
+   border-bottom: 3px solid #c9c6ce;
+}
+
 .profile-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;
-  border: #fff 5px solid;
+  border: #c9c6ce 5px solid;
 }
 
 .page-name-profile-id-slug {
