@@ -1815,10 +1815,10 @@ cypress-cucumber-preprocessor@^1.11.2:
     glob "^7.1.2"
     through "^2.3.8"
 
-cypress-plugin-retries@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/cypress-plugin-retries/-/cypress-plugin-retries-1.2.1.tgz#0ae296e41c00c1aa1c2da83750e84c8a684e1c6b"
-  integrity sha512-iZ00NmeVfHleZ6fcDvzoUr2vPpCm+fzqzHpUF5ceY0PEJRs8BzdmIN/4AVUwLTDYdb3F1B8qK+s3GSoGe2WPQQ==
+cypress-plugin-retries@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/cypress-plugin-retries/-/cypress-plugin-retries-1.2.2.tgz#7235371ca575ad9e16f883169e7f1588379f80f2"
+  integrity sha512-+bVAqJAIwpFQbgM1mAdTgCXXhowEK0pF5DqhId2h0Wq+HQ+QQ2w3hspisVUPTY+HGvncMkddUQQGF5fATuaTvQ==
 
 cypress@^3.3.0:
   version "3.3.0"

@@ -23,7 +23,7 @@
     "cross-env": "^5.2.0",
     "cypress": "^3.3.0",
     "cypress-cucumber-preprocessor": "^1.11.2",
-    "cypress-plugin-retries": "^1.2.1",
+    "cypress-plugin-retries": "^1.2.2",
     "dotenv": "^8.0.0",
     "faker": "^4.1.0",
     "graphql-request": "^1.8.2",
