@@ -90,7 +90,7 @@ export default {
           name: this.$t(`comment.edit`),
           callback: () => {
             /* eslint-disable-next-line no-console */
-            console.log('EDIT COMMENT')
+            this.$emit('showEditCommentMenu', true)
           },
           icon: 'edit'
         })

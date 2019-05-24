@@ -22,15 +22,20 @@
         :resource="comment"
         style="float-right"
         :is-owner="isAuthor(author.id)"
+        v-on:showEditCommentMenu="editCommentMenu"
       />
     </no-ssr>
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
-    <ds-space margin-bottom="small" />
-    <div
-      style="padding-left: 40px;"
-      v-html="comment.contentExcerpt"
-    />
+    <ds-space margin-bottom="small"/>
+    <div v-if="openEditCommentMenu">
+      <hc-edit-comment-form
+        v-bind:comment="comment"
+        v-bind:post="post"
+        v-on:showEditCommentMenu="editCommentMenu"
+      />
+    </div>
+    <div v-else style="padding-left: 40px;" v-html="comment.contentExcerpt"/>
     <!-- eslint-enable vue/no-v-html -->
   </div>
 </template>
@@ -39,13 +44,22 @@
 import { mapGetters } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
+import HcEditCommentForm from '~/components/comments/EditCommentForm'
+import gql from 'graphql-tag'
 
 export default {
   components: {
     HcUser,
-    ContentMenu
+    ContentMenu,
+    HcEditCommentForm
+  },
+  data() {
+    return {
+      openEditCommentMenu: false
+    }
   },
   props: {
+    post: { type: Object, default: () => {} },
     comment: {
       type: Object,
       default() {
@@ -69,6 +83,9 @@ export default {
   methods: {
     isAuthor(id) {
       return this.user.id === id
+    },
+    editCommentMenu(showMenu) {
+      this.openEditCommentMenu = showMenu
     }
   }
 }
