@@ -53,16 +53,14 @@ export default {
                 </div>
                 <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
                 <div class="dz-error-message"><span data-dz-errormessage></span></div>
-                <div class="dz-success-mark"><ds-icon name="check" /></div>
-                <div class="dz-error-mark"><ds-icon name="close" /></div>
                 </div>
               </div>
       `
     },
     thumbnail(file, dataUrl) {
-      var j, len, ref, thumbnailElement
-      this.$refs.el.dropzone.element.style['background-image'] = ''
+      let j, len, ref, thumbnailElement
       if (file.previewElement) {
+        this.$refs.el.$el.style.backgroundImage = ''
         file.previewElement.classList.remove('dz-file-preview')
         ref = file.previewElement.querySelectorAll('[data-dz-thumbnail-bg]')
         for (j = 0, len = ref.length; j < len; j++) {
@@ -70,17 +68,11 @@ export default {
           thumbnailElement.alt = file.name
           thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")'
         }
-        return setTimeout(
-          (function(_this) {
-            return function() {
-              return file.previewElement.classList.add('dz-image-preview')
-            }
-          })(this),
-          1
-        )
+        file.previewElement.classList.add('dz-image-preview')
       }
     },
-    vddrop([file]) {
+    vddrop(file) {
+      const avatarUpload = file[0]
       this.$apollo
         .mutate({
           mutation: gql`
@@ -92,11 +84,11 @@ export default {
             }
           `,
           variables: {
-            avatarUpload: file,
+            avatarUpload,
             id: this.user.id
           }
         })
-        .then(response => {
+        .then(() => {
           this.$toast.success(this.$t('user.avatar.submitted'))
         })
         .catch(error => this.$toast.error(error.message))
