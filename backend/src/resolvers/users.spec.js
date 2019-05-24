@@ -67,7 +67,7 @@ describe('users', () => {
     it('with no name', async () => {
       const variables = {
         id: 'u47',
-        name: null
+        name: null,
       }
       const expected = 'Username must be at least 3 characters long!'
       await expect(client.request(mutation, variables)).rejects.toThrow(expected)

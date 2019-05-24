@@ -16,22 +16,22 @@ describe('Upload', () => {
       mutate: jest
         .fn()
         .mockResolvedValueOnce({
-          data: { UpdateUser: { id: 'upload1', avatar: '/upload/avatar.jpg' } }
+          data: { UpdateUser: { id: 'upload1', avatar: '/upload/avatar.jpg' } },
         })
         .mockRejectedValue({
-          message: 'File upload unsuccessful! Whatcha gonna do?'
-        })
+          message: 'File upload unsuccessful! Whatcha gonna do?',
+        }),
     },
     $toast: {
       success: jest.fn(),
-      error: jest.fn()
-    }
+      error: jest.fn(),
+    },
   }
 
   const propsData = {
     user: {
-      avatar: '/api/generic.jpg'
-    }
+      avatar: '/api/generic.jpg',
+    },
   }
 
   const file = {
@@ -39,17 +39,17 @@ describe('Upload', () => {
     previewElement: {
       classList: {
         remove: jest.fn(),
-        add: jest.fn()
+        add: jest.fn(),
       },
       querySelectorAll: jest.fn().mockReturnValue([
         {
           alt: '',
           style: {
-            'background-image': '/api/generic.jpg'
-          }
-        }
-      ])
-    }
+            'background-image': '/api/generic.jpg',
+          },
+        },
+      ]),
+    },
   }
 
   const dataUrl = 'avatar.jpg'

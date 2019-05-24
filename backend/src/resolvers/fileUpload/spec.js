@@ -10,8 +10,8 @@ describe('fileUpload', () => {
         filename: 'avatar.jpg',
         mimetype: 'image/jpeg',
         encoding: '7bit',
-        createReadStream: jest.fn()
-      }
+        createReadStream: jest.fn(),
+      },
     }
     uploadCallback = jest.fn()
   })
@@ -34,21 +34,30 @@ describe('fileUpload', () => {
     })
 
     it('creates a url safe name', async () => {
-      params.uploadAttribute.filename = '/path/to/awkward?/ file-location/?foo- bar-avatar.jpg?foo- bar'
+      params.uploadAttribute.filename =
+        '/path/to/awkward?/ file-location/?foo- bar-avatar.jpg?foo- bar'
       await fileUpload(params, { file: 'uploadAttribute', url: 'attribute' }, uploadCallback)
       expect(params.attribute).toMatch(/^\/uploads\/\d+-foo-bar-avatar$/)
     })
 
     describe('in case of duplicates', () => {
       it('creates unique names to avoid overwriting existing files', async () => {
-        const { attribute: first } = await fileUpload({
-          ...params
-        }, { file: 'uploadAttribute', url: 'attribute' }, uploadCallback)
+        const { attribute: first } = await fileUpload(
+          {
+            ...params,
+          },
+          { file: 'uploadAttribute', url: 'attribute' },
+          uploadCallback,
+        )
 
         await new Promise(resolve => setTimeout(resolve, 1000))
-        const { attribute: second } = await fileUpload({
-          ...params
-        }, { file: 'uploadAttribute', url: 'attribute' }, uploadCallback)
+        const { attribute: second } = await fileUpload(
+          {
+            ...params,
+          },
+          { file: 'uploadAttribute', url: 'attribute' },
+          uploadCallback,
+        )
         expect(first).not.toEqual(second)
       })
     })

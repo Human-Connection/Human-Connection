@@ -344,7 +344,7 @@ export default {
     HcLoadMore,
     HcEmpty,
     ContentMenu,
-    HcUpload
+    HcUpload,
   },
   transition: {
     name: 'slide-up',

@@ -18,10 +18,10 @@ import gql from 'graphql-tag'
 
 export default {
   components: {
-    vueDropzone
+    vueDropzone,
   },
   props: {
-    user: { type: Object, default: null }
+    user: { type: Object, default: null },
   },
   data() {
     return {
@@ -29,20 +29,18 @@ export default {
         url: this.vddrop,
         maxFilesize: 0.5,
         previewTemplate: this.template(),
-        dictDefaultMessage: ''
-      }
+        dictDefaultMessage: '',
+      },
     }
   },
   computed: {
     backgroundImage() {
       const { avatar } = this.user || {}
-      const userAvatar = avatar.startsWith('/')
-        ? avatar.replace('/', '/api/')
-        : avatar
+      const userAvatar = avatar.startsWith('/') ? avatar.replace('/', '/api/') : avatar
       return {
-        backgroundImage: `url(${userAvatar})`
+        backgroundImage: `url(${userAvatar})`,
       }
-    }
+    },
   },
   methods: {
     template() {
@@ -88,15 +86,15 @@ export default {
           `,
           variables: {
             avatarUpload,
-            id: this.user.id
-          }
+            id: this.user.id,
+          },
         })
         .then(() => {
           this.$toast.success(this.$t('user.avatar.submitted'))
         })
         .catch(error => this.$toast.error(error.message))
-    }
-  }
+    },
+  },
 }
 </script>
 <style>
