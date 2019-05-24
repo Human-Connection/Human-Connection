@@ -97,7 +97,6 @@ export default {
           this.disabled = false
           this.$emit('showEditCommentMenu', false)
         })
-        //@Todo close edit comment window
         .catch(err => {
           this.$toast.error(err.message)
         })
