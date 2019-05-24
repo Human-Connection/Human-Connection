@@ -31,6 +31,6 @@ export default {
       args.descriptionExcerpt = trunc(args.description, 120).html
       const result = await resolve(root, args, context, info)
       return result
-    }
-  }
+    },
+  },
 }

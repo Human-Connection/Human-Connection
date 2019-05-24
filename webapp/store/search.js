@@ -5,7 +5,7 @@ export const state = () => {
   return {
     quickResults: [],
     quickPending: false,
-    quickValue: ''
+    quickValue: '',
   }
 }
 
@@ -19,7 +19,7 @@ export const mutations = {
   },
   SET_QUICK_VALUE(state, value) {
     state.quickValue = value
-  }
+  },
 }
 
 export const getters = {
@@ -31,7 +31,7 @@ export const getters = {
   },
   quickValue(state) {
     return state.quickValue
-  }
+  },
 }
 
 export const actions = {
@@ -64,8 +64,8 @@ export const actions = {
           }
         `),
         variables: {
-          filter: value.replace(/\s/g, '~ ') + '~'
-        }
+          filter: value.replace(/\s/g, '~ ') + '~',
+        },
       })
       .then(res => {
         commit('SET_QUICK_RESULTS', res.data.findPosts || [])
@@ -82,5 +82,5 @@ export const actions = {
     commit('SET_QUICK_PENDING', false)
     commit('SET_QUICK_RESULTS', [])
     commit('SET_QUICK_VALUE', '')
-  }
+  },
 }

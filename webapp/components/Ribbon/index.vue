@@ -10,9 +10,9 @@ export default {
   props: {
     text: {
       type: String,
-      default: ''
-    }
-  }
+      default: '',
+    },
+  },
 }
 </script>
 
@@ -43,8 +43,7 @@ export default {
     bottom: -6px;
     border-width: 3px 4px 3px 3px;
     border-style: solid;
-    border-color: $background-color-secondary transparent transparent
-      $background-color-secondary;
+    border-color: $background-color-secondary transparent transparent $background-color-secondary;
   }
 }
 </style>

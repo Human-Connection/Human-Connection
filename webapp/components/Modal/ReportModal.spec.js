@@ -1,6 +1,5 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 
@@ -11,27 +10,26 @@ localVue.use(Styleguide)
 
 describe('ReportModal.vue', () => {
   let wrapper
-  let Wrapper
   let propsData
   let mocks
 
   beforeEach(() => {
     propsData = {
       type: 'contribution',
-      id: 'c43'
+      id: 'c43',
     }
     mocks = {
       $t: jest.fn(),
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
-      }
+        mutate: jest.fn().mockResolvedValue(),
+      },
     }
   })
 
@@ -55,7 +53,7 @@ describe('ReportModal.vue', () => {
         propsData = {
           type: 'user',
           id: 'u4',
-          name: 'Bob Ross'
+          name: 'Bob Ross',
         }
       })
 
@@ -72,7 +70,7 @@ describe('ReportModal.vue', () => {
         propsData = {
           id: 'p23',
           type: 'post',
-          name: 'It is a post'
+          name: 'It is a post',
         }
       })
 
@@ -100,7 +98,7 @@ describe('ReportModal.vue', () => {
       beforeEach(() => {
         propsData = {
           type: 'user',
-          id: 'u4711'
+          id: 'u4711',
         }
         wrapper = Wrapper()
       })

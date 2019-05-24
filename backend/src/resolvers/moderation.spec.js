@@ -5,7 +5,7 @@ import { host, login } from '../jest/helpers'
 const factory = Factory()
 let client
 
-const setupAuthenticateClient = (params) => {
+const setupAuthenticateClient = params => {
   const authenticateClient = async () => {
     await factory.create('User', params)
     const headers = await login(params)
@@ -46,7 +46,7 @@ describe('disable', () => {
   beforeEach(() => {
     // our defaul set of variables
     variables = {
-      id: 'blabla'
+      id: 'blabla',
     }
   })
 
@@ -63,7 +63,7 @@ describe('disable', () => {
     beforeEach(() => {
       authenticateClient = setupAuthenticateClient({
         email: 'user@example.org',
-        password: '1234'
+        password: '1234',
       })
     })
 
@@ -78,19 +78,17 @@ describe('disable', () => {
           id: 'u7',
           email: 'moderator@example.org',
           password: '1234',
-          role: 'moderator'
+          role: 'moderator',
         })
       })
 
       describe('on something that is not a (Comment|Post|User) ', () => {
         beforeEach(async () => {
           variables = {
-            id: 't23'
+            id: 't23',
           }
           createResource = () => {
-            return Promise.all([
-              factory.create('Tag', { id: 't23' })
-            ])
+            return Promise.all([factory.create('Tag', { id: 't23' })])
           }
         })
 
@@ -104,21 +102,28 @@ describe('disable', () => {
       describe('on a comment', () => {
         beforeEach(async () => {
           variables = {
-            id: 'c47'
+            id: 'c47',
           }
           createPostVariables = {
             id: 'p3',
             title: 'post to comment on',
-            content: 'please comment on me'
+            content: 'please comment on me',
           }
           createCommentVariables = {
             id: 'c47',
             postId: 'p3',
-            content: 'this comment was created for this post'
+            content: 'this comment was created for this post',
           }
           createResource = async () => {
-            await factory.create('User', { id: 'u45', email: 'commenter@example.org', password: '1234' })
-            const asAuthenticatedUser = await factory.authenticateAs({ email: 'commenter@example.org', password: '1234' })
+            await factory.create('User', {
+              id: 'u45',
+              email: 'commenter@example.org',
+              password: '1234',
+            })
+            const asAuthenticatedUser = await factory.authenticateAs({
+              email: 'commenter@example.org',
+              password: '1234',
+            })
             await asAuthenticatedUser.create('Post', createPostVariables)
             await asAuthenticatedUser.create('Comment', createCommentVariables)
           }
@@ -135,41 +140,39 @@ describe('disable', () => {
           const expected = { Comment: [{ id: 'c47', disabledBy: { id: 'u7' } }] }
 
           await setup()
-          await expect(client.request(
-            '{ Comment { id,  disabledBy { id } } }'
-          )).resolves.toEqual(before)
+          await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
+            before,
+          )
           await action()
-          await expect(client.request(
-            '{ Comment(disabled: true) { id,  disabledBy { id } } }'
-          )).resolves.toEqual(expected)
+          await expect(
+            client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
+          ).resolves.toEqual(expected)
         })
 
         it('updates .disabled on comment', async () => {
-          const before = { Comment: [ { id: 'c47', disabled: false } ] }
-          const expected = { Comment: [ { id: 'c47', disabled: true } ] }
+          const before = { Comment: [{ id: 'c47', disabled: false }] }
+          const expected = { Comment: [{ id: 'c47', disabled: true }] }
 
           await setup()
-          await expect(client.request(
-            '{ Comment { id disabled } }'
-          )).resolves.toEqual(before)
+          await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(before)
           await action()
-          await expect(client.request(
-            '{ Comment(disabled: true) { id disabled } }'
-          )).resolves.toEqual(expected)
+          await expect(
+            client.request('{ Comment(disabled: true) { id disabled } }'),
+          ).resolves.toEqual(expected)
         })
       })
 
       describe('on a post', () => {
         beforeEach(async () => {
           variables = {
-            id: 'p9'
+            id: 'p9',
           }
 
           createResource = async () => {
             await factory.create('User', { email: 'author@example.org', password: '1234' })
             await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
             await factory.create('Post', {
-              id: 'p9' // that's the ID we will look for
+              id: 'p9', // that's the ID we will look for
             })
           }
         })
@@ -185,27 +188,25 @@ describe('disable', () => {
           const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
 
           await setup()
-          await expect(client.request(
-            '{ Post { id,  disabledBy { id } } }'
-          )).resolves.toEqual(before)
+          await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
+            before,
+          )
           await action()
-          await expect(client.request(
-            '{ Post(disabled: true) { id,  disabledBy { id } } }'
-          )).resolves.toEqual(expected)
+          await expect(
+            client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
+          ).resolves.toEqual(expected)
         })
 
         it('updates .disabled on post', async () => {
-          const before = { Post: [ { id: 'p9', disabled: false } ] }
-          const expected = { Post: [ { id: 'p9', disabled: true } ] }
+          const before = { Post: [{ id: 'p9', disabled: false }] }
+          const expected = { Post: [{ id: 'p9', disabled: true }] }
 
           await setup()
-          await expect(client.request(
-            '{ Post { id disabled } }'
-          )).resolves.toEqual(before)
+          await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(before)
           await action()
-          await expect(client.request(
-            '{ Post(disabled: true) { id disabled } }'
-          )).resolves.toEqual(expected)
+          await expect(client.request('{ Post(disabled: true) { id disabled } }')).resolves.toEqual(
+            expected,
+          )
         })
       })
     })
@@ -227,7 +228,7 @@ describe('enable', () => {
   beforeEach(() => {
     // our defaul set of variables
     variables = {
-      id: 'blabla'
+      id: 'blabla',
     }
   })
 
@@ -240,7 +241,7 @@ describe('enable', () => {
     beforeEach(() => {
       authenticateClient = setupAuthenticateClient({
         email: 'user@example.org',
-        password: '1234'
+        password: '1234',
       })
     })
 
@@ -254,20 +255,18 @@ describe('enable', () => {
         authenticateClient = setupAuthenticateClient({
           role: 'moderator',
           email: 'someUser@example.org',
-          password: '1234'
+          password: '1234',
         })
       })
 
       describe('on something that is not a (Comment|Post|User) ', () => {
         beforeEach(async () => {
           variables = {
-            id: 't23'
+            id: 't23',
           }
           createResource = () => {
             // we cannot create a :DISABLED relationship here
-            return Promise.all([
-              factory.create('Tag', { id: 't23' })
-            ])
+            return Promise.all([factory.create('Tag', { id: 't23' })])
           }
         })
 
@@ -281,21 +280,28 @@ describe('enable', () => {
       describe('on a comment', () => {
         beforeEach(async () => {
           variables = {
-            id: 'c456'
+            id: 'c456',
           }
           createPostVariables = {
             id: 'p9',
             title: 'post to comment on',
-            content: 'please comment on me'
+            content: 'please comment on me',
           }
           createCommentVariables = {
             id: 'c456',
             postId: 'p9',
-            content: 'this comment was created for this post'
+            content: 'this comment was created for this post',
           }
           createResource = async () => {
-            await factory.create('User', { id: 'u123', email: 'author@example.org', password: '1234' })
-            const asAuthenticatedUser = await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
+            await factory.create('User', {
+              id: 'u123',
+              email: 'author@example.org',
+              password: '1234',
+            })
+            const asAuthenticatedUser = await factory.authenticateAs({
+              email: 'author@example.org',
+              password: '1234',
+            })
             await asAuthenticatedUser.create('Post', createPostVariables)
             await asAuthenticatedUser.create('Comment', createCommentVariables)
 
@@ -319,41 +325,43 @@ describe('enable', () => {
           const expected = { Comment: [{ id: 'c456', disabledBy: null }] }
 
           await setup()
-          await expect(client.request(
-            '{ Comment(disabled: true) { id,  disabledBy { id } } }'
-          )).resolves.toEqual(before)
+          await expect(
+            client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
+          ).resolves.toEqual(before)
           await action()
-          await expect(client.request(
-            '{ Comment { id,  disabledBy { id } } }'
-          )).resolves.toEqual(expected)
+          await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
+            expected,
+          )
         })
 
         it('updates .disabled on post', async () => {
-          const before = { Comment: [ { id: 'c456', disabled: true } ] }
-          const expected = { Comment: [ { id: 'c456', disabled: false } ] }
+          const before = { Comment: [{ id: 'c456', disabled: true }] }
+          const expected = { Comment: [{ id: 'c456', disabled: false }] }
 
           await setup()
-          await expect(client.request(
-            '{ Comment(disabled: true) { id disabled } }'
-          )).resolves.toEqual(before)
+          await expect(
+            client.request('{ Comment(disabled: true) { id disabled } }'),
+          ).resolves.toEqual(before)
           await action() // this updates .disabled
-          await expect(client.request(
-            '{ Comment { id disabled } }'
-          )).resolves.toEqual(expected)
+          await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(expected)
         })
       })
 
       describe('on a post', () => {
         beforeEach(async () => {
           variables = {
-            id: 'p9'
+            id: 'p9',
           }
 
           createResource = async () => {
-            await factory.create('User', { id: 'u123', email: 'author@example.org', password: '1234' })
+            await factory.create('User', {
+              id: 'u123',
+              email: 'author@example.org',
+              password: '1234',
+            })
             await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
             await factory.create('Post', {
-              id: 'p9' // that's the ID we will look for
+              id: 'p9', // that's the ID we will look for
             })
 
             const disableMutation = `
@@ -376,27 +384,25 @@ describe('enable', () => {
           const expected = { Post: [{ id: 'p9', disabledBy: null }] }
 
           await setup()
-          await expect(client.request(
-            '{ Post(disabled: true) { id,  disabledBy { id } } }'
-          )).resolves.toEqual(before)
+          await expect(
+            client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
+          ).resolves.toEqual(before)
           await action()
-          await expect(client.request(
-            '{ Post { id,  disabledBy { id } } }'
-          )).resolves.toEqual(expected)
+          await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
+            expected,
+          )
         })
 
         it('updates .disabled on post', async () => {
-          const before = { Post: [ { id: 'p9', disabled: true } ] }
-          const expected = { Post: [ { id: 'p9', disabled: false } ] }
+          const before = { Post: [{ id: 'p9', disabled: true }] }
+          const expected = { Post: [{ id: 'p9', disabled: false }] }
 
           await setup()
-          await expect(client.request(
-            '{ Post(disabled: true) { id disabled } }'
-          )).resolves.toEqual(before)
+          await expect(client.request('{ Post(disabled: true) { id disabled } }')).resolves.toEqual(
+            before,
+          )
           await action() // this updates .disabled
-          await expect(client.request(
-            '{ Post { id disabled } }'
-          )).resolves.toEqual(expected)
+          await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(expected)
         })
       })
     })

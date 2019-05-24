@@ -26,6 +26,6 @@ export default {
   Mutation: {
     CreateUser: validateUsername,
     UpdateUser: validateUsername,
-    CreateSocialMedia: validateUrl
-  }
+    CreateSocialMedia: validateUrl,
+  },
 }

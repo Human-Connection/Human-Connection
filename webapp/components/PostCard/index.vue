@@ -89,17 +89,17 @@ export default {
     HcUser,
     HcCategory,
     HcRibbon,
-    ContentMenu
+    ContentMenu,
   },
   props: {
     post: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
+      user: 'auth/user',
     }),
     excerpt() {
       return this.$filters.removeLinks(this.post.contentExcerpt)
@@ -108,8 +108,8 @@ export default {
       const { author } = this.post
       if (!author) return false
       return this.user.id === this.post.author.id
-    }
-  }
+    },
+  },
 }
 </script>
 

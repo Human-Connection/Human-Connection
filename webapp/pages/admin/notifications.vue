@@ -12,7 +12,7 @@ import HcEmpty from '~/components/Empty.vue'
 
 export default {
   components: {
-    HcEmpty
-  }
+    HcEmpty,
+  },
 }
 </script>

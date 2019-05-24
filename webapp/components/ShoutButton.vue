@@ -35,13 +35,13 @@ export default {
     count: { type: Number, default: 0 },
     postId: { type: String, default: null },
     isShouted: { type: Boolean, default: false },
-    disabled: { type: Boolean, default: false }
+    disabled: { type: Boolean, default: false },
   },
   data() {
     return {
       loading: false,
       shoutedCount: this.count,
-      shouted: false
+      shouted: false,
     }
   },
   watch: {
@@ -49,8 +49,8 @@ export default {
       immediate: true,
       handler: function(shouted) {
         this.shouted = shouted
-      }
-    }
+      },
+    },
   },
   methods: {
     toggle() {
@@ -60,7 +60,7 @@ export default {
 
       const backup = {
         shoutedCount: this.shoutedCount,
-        shouted: this.shouted
+        shouted: this.shouted,
       }
 
       this.shoutedCount = count
@@ -74,8 +74,8 @@ export default {
             }
           `,
           variables: {
-            id: this.postId
-          }
+            id: this.postId,
+          },
         })
         .then(res => {
           if (res && res.data) {
@@ -89,8 +89,8 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

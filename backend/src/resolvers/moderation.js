@@ -14,7 +14,7 @@ export default {
       const session = driver.session()
       const res = await session.run(cypher, { id, userId })
       session.close()
-      const [resource] = res.records.map((record) => {
+      const [resource] = res.records.map(record => {
         return record.get('resource')
       })
       if (!resource) return null
@@ -31,11 +31,11 @@ export default {
       const session = driver.session()
       const res = await session.run(cypher, { id })
       session.close()
-      const [resource] = res.records.map((record) => {
+      const [resource] = res.records.map(record => {
         return record.get('resource')
       })
       if (!resource) return null
       return resource.id
-    }
-  }
+    },
+  },
 }

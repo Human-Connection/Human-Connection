@@ -2,7 +2,6 @@ import Vue from 'vue'
 
 import { enUS, de, nl, fr, es } from 'date-fns/locale'
 import format from 'date-fns/format'
-import formatRelative from 'date-fns/formatRelative'
 import addSeconds from 'date-fns/addSeconds'
 import accounting from 'accounting'
 
@@ -14,7 +13,7 @@ export default ({ app = {} }) => {
     fr: fr,
     es: es,
     pt: es,
-    pl: de
+    pl: de,
   }
   const getLocalizedFormat = () => {
     let locale = app.$i18n.locale()
@@ -25,22 +24,16 @@ export default ({ app = {} }) => {
     date: (value, fmt = 'dd. MMM yyyy') => {
       if (!value) return ''
       return format(new Date(value), fmt, {
-        locale: getLocalizedFormat()
+        locale: getLocalizedFormat(),
       })
     },
     dateTime: (value, fmt = 'dd. MMM yyyy HH:mm') => {
       if (!value) return ''
       return format(new Date(value), fmt, {
-        locale: getLocalizedFormat()
+        locale: getLocalizedFormat(),
       })
     },
-    number: (
-      value,
-      precision = 2,
-      thousands = '.',
-      decimals = ',',
-      fallback = null
-    ) => {
+    number: (value, precision = 2, thousands = '.', decimals = ',', fallback = null) => {
       if (isNaN(value) && fallback) {
         return fallback
       }
@@ -99,7 +92,7 @@ export default ({ app = {} }) => {
       }
 
       return excerpt
-    }
+    },
   })
 
   // add all methods as filters on each vue component

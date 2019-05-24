@@ -21,7 +21,7 @@ import gql from 'graphql-tag'
 export default {
   data() {
     return {
-      Tag: []
+      Tag: [],
     }
   },
   computed: {
@@ -31,14 +31,14 @@ export default {
         name: 'Name',
         taggedCountUnique: {
           label: this.$t('admin.tags.tagCountUnique'),
-          align: 'right'
+          align: 'right',
         },
         taggedCount: {
           label: this.$t('admin.tags.tagCount'),
-          align: 'right'
-        }
+          align: 'right',
+        },
       }
-    }
+    },
   },
   apollo: {
     Tag: {
@@ -51,8 +51,8 @@ export default {
             taggedCountUnique
           }
         }
-      `)
-    }
-  }
+      `),
+    },
+  },
 }
 </script>

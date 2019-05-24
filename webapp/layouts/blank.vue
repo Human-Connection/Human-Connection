@@ -13,6 +13,6 @@
 import seo from '~/mixins/seo'
 
 export default {
-  mixins: [seo]
+  mixins: [seo],
 }
 </script>

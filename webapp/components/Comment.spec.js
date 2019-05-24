@@ -1,6 +1,5 @@
-import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount, createLocalVue } from '@vue/test-utils'
 import Comment from './Comment.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 
@@ -12,8 +11,6 @@ localVue.use(Styleguide)
 config.stubs['no-ssr'] = '<span><slot /></span>'
 
 describe('Comment.vue', () => {
-  let wrapper
-  let Wrapper
   let propsData
   let mocks
   let getters
@@ -21,20 +18,20 @@ describe('Comment.vue', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: jest.fn()
+      $t: jest.fn(),
     }
     getters = {
       'auth/user': () => {
         return {}
       },
-      'auth/isModerator': () => false
+      'auth/isModerator': () => false,
     }
   })
 
   describe('shallowMount', () => {
     const Wrapper = () => {
       const store = new Vuex.Store({
-        getters
+        getters,
       })
       return shallowMount(Comment, { store, propsData, mocks, localVue })
     }
@@ -43,7 +40,7 @@ describe('Comment.vue', () => {
       beforeEach(() => {
         propsData.comment = {
           id: '2',
-          contentExcerpt: 'Hello I am a comment content'
+          contentExcerpt: 'Hello I am a comment content',
         }
       })
 
@@ -68,7 +65,7 @@ describe('Comment.vue', () => {
         })
 
         it('translates a placeholder', () => {
-          const wrapper = Wrapper()
+          /* const wrapper = */ Wrapper()
           const calls = mocks.$t.mock.calls
           const expected = [['comment.content.unavailable-placeholder']]
           expect(calls).toEqual(expect.arrayContaining(expected))

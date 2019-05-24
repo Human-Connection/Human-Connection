@@ -15,9 +15,7 @@ import comments from './resolvers/comments'
 import users from './resolvers/users'
 
 export const typeDefs = fs
-  .readFileSync(
-    process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql')
-  )
+  .readFileSync(process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql'))
   .toString('utf-8')
 
 export const resolvers = {
@@ -25,7 +23,7 @@ export const resolvers = {
     ...statistics.Query,
     ...userManagement.Query,
     ...notifications.Query,
-    ...comments.Query
+    ...comments.Query,
   },
   Mutation: {
     ...userManagement.Mutation,

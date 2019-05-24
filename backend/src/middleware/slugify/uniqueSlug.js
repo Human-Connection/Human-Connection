@@ -1,7 +1,7 @@
 import slugify from 'slug'
-export default async function uniqueSlug (string, isUnique) {
+export default async function uniqueSlug(string, isUnique) {
   let slug = slugify(string || 'anonymous', {
-    lower: true
+    lower: true,
   })
   if (await isUnique(slug)) return slug
 
@@ -10,6 +10,6 @@ export default async function uniqueSlug (string, isUnique) {
   do {
     count += 1
     uniqueSlug = `${slug}-${count}`
-  } while (!await isUnique(uniqueSlug))
+  } while (!(await isUnique(uniqueSlug)))
   return uniqueSlug
 }

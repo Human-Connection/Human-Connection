@@ -1,4 +1,3 @@
-
 import Factory from '../seed/factories'
 import { GraphQLClient } from 'graphql-request'
 import { host, login } from '../jest/helpers'
@@ -8,7 +7,7 @@ let client
 let userParams = {
   id: 'you',
   email: 'test@example.org',
-  password: '1234'
+  password: '1234',
 }
 
 beforeEach(async () => {
@@ -49,12 +48,12 @@ describe('currentUser { notifications }', () => {
         const neighborParams = {
           email: 'neighbor@example.org',
           password: '1234',
-          id: 'neighbor'
+          id: 'neighbor',
         }
         await Promise.all([
           factory.create('User', neighborParams),
           factory.create('Notification', { id: 'not-for-you' }),
-          factory.create('Notification', { id: 'already-seen', read: true })
+          factory.create('Notification', { id: 'already-seen', read: true }),
         ])
         await factory.create('Notification', { id: 'unseen' })
         await factory.authenticateAs(neighborParams)
@@ -65,7 +64,7 @@ describe('currentUser { notifications }', () => {
           factory.relate('Notification', 'User', { from: 'unseen', to: 'you' }),
           factory.relate('Notification', 'Post', { from: 'p1', to: 'unseen' }),
           factory.relate('Notification', 'User', { from: 'already-seen', to: 'you' }),
-          factory.relate('Notification', 'Post', { from: 'p1', to: 'already-seen' })
+          factory.relate('Notification', 'Post', { from: 'p1', to: 'already-seen' }),
         ])
       })
 
@@ -84,10 +83,8 @@ describe('currentUser { notifications }', () => {
         it('returns only unread notifications of current user', async () => {
           const expected = {
             currentUser: {
-              notifications: [
-                { id: 'unseen', post: { id: 'p1' } }
-              ]
-            }
+              notifications: [{ id: 'unseen', post: { id: 'p1' } }],
+            },
           }
           await expect(client.request(query, variables)).resolves.toEqual(expected)
         })
@@ -109,9 +106,9 @@ describe('currentUser { notifications }', () => {
             currentUser: {
               notifications: [
                 { id: 'unseen', post: { id: 'p1' } },
-                { id: 'already-seen', post: { id: 'p1' } }
-              ]
-            }
+                { id: 'already-seen', post: { id: 'p1' } },
+              ],
+            },
           }
           await expect(client.request(query, variables)).resolves.toEqual(expected)
         })
@@ -136,7 +133,7 @@ describe('UpdateNotification', () => {
         id: 'mentioned-1',
         email: 'mentioned@example.org',
         password: '1234',
-        slug: 'mentioned'
+        slug: 'mentioned',
       }
       await factory.create('User', mentionedParams)
       await factory.create('Notification', { id: 'to-be-updated' })
@@ -144,7 +141,7 @@ describe('UpdateNotification', () => {
       await factory.create('Post', { id: 'p1' })
       await Promise.all([
         factory.relate('Notification', 'User', { from: 'to-be-updated', to: 'mentioned-1' }),
-        factory.relate('Notification', 'Post', { from: 'p1', to: 'to-be-updated' })
+        factory.relate('Notification', 'Post', { from: 'p1', to: 'to-be-updated' }),
       ])
     })
 

@@ -6,7 +6,7 @@ const styleguidePath = '../Nitro-Styleguide'
 const styleguideStyles = process.env.STYLEGUIDE_DEV
   ? [
       `${styleguidePath}/src/system/styles/main.scss`,
-      `${styleguidePath}/src/system/styles/shared.scss`
+      `${styleguidePath}/src/system/styles/shared.scss`,
     ]
   : '@human-connection/styleguide/dist/shared.scss'
 
@@ -20,24 +20,16 @@ module.exports = {
 
   transition: {
     name: 'slide-up',
-    mode: 'out-in'
+    mode: 'out-in',
   },
 
   env: {
     // pages which do NOT require a login
-    publicPages: [
-      'login',
-      'logout',
-      'register',
-      'signup',
-      'reset',
-      'reset-token',
-      'pages-slug'
-    ],
+    publicPages: ['login', 'logout', 'register', 'signup', 'reset', 'reset-token', 'pages-slug'],
     // pages to keep alive
     keepAlivePages: ['index'],
     // active locales
-    locales: require('./locales')
+    locales: require('./locales'),
   },
   /*
   ** Headers of the page
@@ -48,9 +40,9 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: pkg.description },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
   /*
@@ -59,7 +51,7 @@ module.exports = {
   loading: {
     color: '#86b31e',
     height: '2px',
-    duration: 20000
+    duration: 20000,
   },
 
   /*
@@ -71,7 +63,7 @@ module.exports = {
   ** Global processed styles
   */
   styleResources: {
-    scss: styleguideStyles
+    scss: styleguideStyles,
   },
 
   /*
@@ -80,7 +72,7 @@ module.exports = {
   plugins: [
     {
       src: `~/plugins/styleguide${process.env.STYLEGUIDE_DEV ? '-dev' : ''}.js`,
-      ssr: true
+      ssr: true,
     },
     { src: '~/plugins/i18n.js', ssr: true },
     { src: '~/plugins/axios.js', ssr: false },
@@ -88,7 +80,7 @@ module.exports = {
     { src: '~/plugins/vue-directives.js', ssr: false },
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
-    { src: '~/plugins/vue-filters.js' }
+    { src: '~/plugins/vue-filters.js' },
   ],
 
   router: {
@@ -97,7 +89,7 @@ module.exports = {
     linkExactActiveClass: 'router-link-exact-active',
     scrollBehavior: () => {
       return { x: 0, y: 0 }
-    }
+    },
   },
 
   /*
@@ -109,7 +101,7 @@ module.exports = {
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
   ],
 
   /*
@@ -118,7 +110,7 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     debug: dev,
-    proxy: true
+    proxy: true,
   },
   proxy: {
     '/.well-known/webfinger': {
@@ -127,8 +119,8 @@ module.exports = {
       headers: {
         Accept: 'application/json',
         'X-UI-Request': true,
-        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
-      }
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL',
+      },
     },
     '/activitypub': {
       // make this configurable (nuxt-dotenv)
@@ -137,8 +129,8 @@ module.exports = {
       headers: {
         Accept: 'application/json',
         'X-UI-Request': true,
-        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
-      }
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL',
+      },
     },
     '/api': {
       // make this configurable (nuxt-dotenv)
@@ -148,9 +140,9 @@ module.exports = {
       headers: {
         Accept: 'application/json',
         'X-UI-Request': true,
-        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
-      }
-    }
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL',
+      },
+    },
   },
 
   // Give apollo module options
@@ -164,7 +156,7 @@ module.exports = {
       console.log(
         '%cError',
         'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;',
-        error.message
+        error.message,
       )
     },
 
@@ -177,15 +169,15 @@ module.exports = {
     // },
     // required
     clientConfigs: {
-      default: '~/plugins/apollo-config.js'
-    }
+      default: '~/plugins/apollo-config.js',
+    },
   },
 
   manifest: {
     name: 'Human-Connection.org',
     description: 'Human-Connection.org',
     theme_color: '#ffffff',
-    lang: 'de'
+    lang: 'de',
   },
 
   /*
@@ -198,15 +190,10 @@ module.exports = {
     extend(config, ctx) {
       if (process.env.STYLEGUIDE_DEV) {
         const path = require('path')
-        config.resolve.alias['@@'] = path.resolve(
-          __dirname,
-          `${styleguidePath}/src/system`
-        )
+        config.resolve.alias['@@'] = path.resolve(__dirname, `${styleguidePath}/src/system`)
         config.module.rules.push({
           resourceQuery: /blockType=docs/,
-          loader: require.resolve(
-            `${styleguidePath}/src/loader/docs-trim-loader.js`
-          )
+          loader: require.resolve(`${styleguidePath}/src/loader/docs-trim-loader.js`),
         })
       }
 
@@ -219,15 +206,15 @@ module.exports = {
           svgo: {
             plugins: [
               {
-                removeViewBox: false
+                removeViewBox: false,
               },
               {
-                removeDimensions: true
-              }
-            ]
-          }
-        }
+                removeDimensions: true,
+              },
+            ],
+          },
+        },
       })
-    }
-  }
+    },
+  },
 }
