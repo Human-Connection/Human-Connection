@@ -230,7 +230,7 @@
             </ds-space>
           </ds-card>
         </ds-space>
-      </ds-flex-item>
+      </ds-flex-item> 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
           :width="{ base: '100%' }"
@@ -239,7 +239,12 @@
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
-                <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
+                <ds-flex-item
+                  v-tooltip="{content: 'Your Posts', placement: 'right', delay: { show: 500 }}"
+
+                  class="ds-tab-nav-item ds-tab-nav-item-active"
+                  @click="tabActivity('posts', $event)"
+                >
                   <ds-space margin="small">
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
@@ -252,35 +257,58 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
-                <!-- TODO: find better solution for rendering errors -->
-                <!--
+                 
+                <ds-flex-item
+                  v-tooltip="{content: 'Your Comments', placement: 'right', delay: { show: 500 }}"
+                  class="ds-tab-nav-item "
+                  @click.prevent="tabActivity" >
+                  <ds-space margin="small">  
+                    <!--TODO: find better solution for rendering errors -->                
                     <no-ssr>
                       <ds-number :label="$t('profile.commented')">
-                        <hc-count-to slot="count" :end-val="user.commentsCount"/>
+                        <hc-count-to
+                          slot="count"
+                          :end-val="user.commentsCount"
+                        />
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>
-                -->
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
-                <!-- TODO: find better solution for rendering errors -->
-                <!--<no-ssr>
+                </ds-flex-item>  
+                 
+                <ds-flex-item 
+                 v-tooltip="{content: 'Your Shouted', placement: 'left', delay: { show: 500 }}"
+                class="ds-tab-nav-item"
+                @click="tabActivity('shouted', $event)"
+                >
+                  <ds-space margin="small">  
+                    <!-- TODO: find better solution for rendering errors -->
+                    <no-ssr>
                       <ds-number :label="$t('profile.shouted')">
-                        <hc-count-to slot="count" :end-val="user.shoutedCount"/>
+                        <hc-count-to
+                          slot="count"
+                          :end-val="user.shoutedCount"
+                        />
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>-->
+                </ds-flex-item>  
               </ds-flex>
             </ds-card>
           </ds-flex-item>
+
+          <ds-flex-item class="profile-top-navigation">
+            <ds-space>
+              <ds-menu :routes="routes" navbar>
+              </ds-menu>
+            </ds-space>
+          </ds-flex-item>
+
+      
+
           <ds-flex-item style="text-align: center">
             <ds-button
               v-if="myProfile"
-              v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+              v-tooltip="{content: 'Create a new Post', placement: 'right', delay: { show: 500 }}"
               :path="{ name: 'post-create' }"
               class="profile-post-add-button"
               icon="plus"
@@ -288,6 +316,8 @@
               primary
             />
           </ds-flex-item>
+
+
           <template v-if="activePosts.length">
             <ds-flex-item
               v-for="post in activePosts"
@@ -297,6 +327,8 @@
               <hc-post-card :post="post" />
             </ds-flex-item>
           </template>
+
+
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
               <hc-empty
@@ -315,7 +347,7 @@
     </ds-flex>
   </div>
 </template>
-
+  
 <script>
 import uniqBy from 'lodash/uniqBy'
 
@@ -327,6 +359,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
+
 
 export default {
   components: {
@@ -348,7 +381,35 @@ export default {
       User: [],
       voted: false,
       page: 1,
-      pageSize: 6
+      pageSize: 6,
+        routes: [
+          {
+            name: common.post,
+            path: '/'
+          },
+          {
+            name: 'Navigation',
+            path: '/navigation' /*,
+            children: [
+              {
+                name: 'Menu',
+                path: '/navigation/dsmenu'
+              },
+              {
+                name: 'Breadcrumb',
+                path: '/navigation/dsbreadcrumb'
+              }
+            ] */
+          },
+          {
+            name: 'Typography',
+            path: '/typography'
+          },
+          {
+            name: 'Layout',
+            path: '/layout'
+          }
+        ]
     }
   },
   computed: {
@@ -393,6 +454,16 @@ export default {
     userName() {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
+    },
+     tabActivity(str, e) {
+      console.log("tabActivity");
+      console.log(str);
+      console.log(e);
+     // document.removeClass('ds-tab-nav-item-active');
+     // this.class('.ds-tab-nav-item-active')
+     // $$('.ds-tab-nav-item-active').removeClass('ds-tab-nav-item-active');
+     // $$(activTab).class("")
+     // $$(this).attr('class', 'ds-tab-nav-item-active');
     }
   },
   watch: {
@@ -431,7 +502,7 @@ export default {
         },
         fetchPolicy: 'cache-and-network'
       })
-    }
+    }   
   },
   apollo: {
     User: {
