@@ -14,7 +14,17 @@
           :class="{'disabled-content': user.disabled}"
           style="position: relative; height: auto;"
         >
-          <hc-upload :user="user" />
+          <hc-upload
+            v-if="myProfile"
+            :user="user"
+          />
+          <ds-avatar
+            v-else
+            :image="user.avatar"
+            :name="userName"
+            class="profile-avatar"
+            size="x-large"
+          />
           <no-ssr>
             <content-menu
               placement="bottom-end"
@@ -218,7 +228,7 @@
                 >
                   <a :href="link.url">
                     <ds-avatar :image="link.favicon" />
-                    {{ link.username }}
+                    {{ 'link.username' }}
                   </a>
                 </ds-space>
               </template>

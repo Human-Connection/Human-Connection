@@ -13,10 +13,14 @@ describe('Upload', () => {
 
   const mocks = {
     $apollo: {
-      mutate: jest.fn().mockResolvedValueOnce({
-        data: { UpdateUser: { id: 'upload1', avatar: '/upload/avatar.jpg' } }
-      })
-        .mockRejectedValue({ message: 'File upload unsuccessful! Whatcha gonna do?' })
+      mutate: jest
+        .fn()
+        .mockResolvedValueOnce({
+          data: { UpdateUser: { id: 'upload1', avatar: '/upload/avatar.jpg' } }
+        })
+        .mockRejectedValue({
+          message: 'File upload unsuccessful! Whatcha gonna do?'
+        })
     },
     $toast: {
       success: jest.fn(),
@@ -37,15 +41,14 @@ describe('Upload', () => {
         remove: jest.fn(),
         add: jest.fn()
       },
-      querySelectorAll: jest.fn().mockReturnValue(
-        [
-          {
-            alt: '',
-            style: {
-              'background-image': '/api/generic.jpg'
-            }
+      querySelectorAll: jest.fn().mockReturnValue([
+        {
+          alt: '',
+          style: {
+            'background-image': '/api/generic.jpg'
           }
-        ])
+        }
+      ])
     }
   }
 

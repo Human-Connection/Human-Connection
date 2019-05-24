@@ -36,8 +36,11 @@ export default {
   computed: {
     backgroundImage() {
       const { avatar } = this.user || {}
+      const userAvatar = avatar.startsWith('/')
+        ? avatar.replace('/', '/api/')
+        : avatar
       return {
-        backgroundImage: `url(/api${avatar})`
+        backgroundImage: `url(${userAvatar})`
       }
     }
   },
