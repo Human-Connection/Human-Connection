@@ -505,7 +505,7 @@ export default {
   display: block;
   margin: auto;
   margin-top: -60px;
-  border: #c9c6ce 5px solid;
+  border: #fff 5px solid;
 }
 
 .page-name-profile-id-slug {
