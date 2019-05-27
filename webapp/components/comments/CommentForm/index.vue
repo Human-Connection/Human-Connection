@@ -5,14 +5,12 @@
   >
     <template slot-scope="{ errors }">
       <ds-card>
-        <no-ssr>
-          <hc-editor
-            ref="editor"
-            :users="users"
-            :value="form.content"
-            @input="updateEditorContent"
-          />
-        </no-ssr>
+        <hc-editor
+          ref="editor"
+          :users="users"
+          :value="form.content"
+          @input="updateEditorContent"
+        />
         <ds-space />
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
