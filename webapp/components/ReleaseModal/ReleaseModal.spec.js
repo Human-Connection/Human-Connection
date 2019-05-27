@@ -1,5 +1,5 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
-import DisableModal from './ReleaseModal.vue'
+import ReleaseModal from './ReleaseModal.vue'
 import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
 
@@ -36,7 +36,11 @@ describe('ReleaseModal.vue', () => {
 
   describe('shallowMount', () => {
     const Wrapper = () => {
-      return shallowMount(ReleaseModal, { propsData, mocks, localVue })
+      return shallowMount(ReleaseModal, {
+        propsData,
+        mocks,
+        localVue
+      })
     }
 
     describe('given a user', () => {
@@ -51,7 +55,14 @@ describe('ReleaseModal.vue', () => {
       it('mentions user name', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['disable.user.message', { name: 'Bob Ross' }]]
+        const expected = [
+          [
+            'disable.user.message',
+            {
+              name: 'Bob Ross'
+            }
+          ]
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -69,7 +80,12 @@ describe('ReleaseModal.vue', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
         const expected = [
-          ['disable.contribution.message', { name: 'This is some post title.' }]
+          [
+            'disable.contribution.message',
+            {
+              name: 'This is some post title.'
+            }
+          ]
         ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
@@ -78,7 +94,11 @@ describe('ReleaseModal.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(DisableModal, { propsData, mocks, localVue })
+      return mount(ReleaseModal, {
+        propsData,
+        mocks,
+        localVue
+      })
     }
     beforeEach(jest.useFakeTimers)
 
@@ -130,7 +150,9 @@ describe('ReleaseModal.vue', () => {
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
           const [[{ variables }]] = calls
-          expect(variables).toEqual({ id: 'u4711' })
+          expect(variables).toEqual({
+            id: 'u4711'
+          })
         })
 
         it('fades away', () => {

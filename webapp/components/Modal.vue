@@ -33,7 +33,7 @@
 
 <script>
 import DisableModal from '~/components/Modal/DisableModal'
-import ReleaseModal from '~/components/Modal/ReleaseModal'
+import ReleaseModal from '~/components/ReleaseModal/ReleaseModal.vue'
 import ReportModal from '~/components/Modal/ReportModal'
 import DeleteModal from '~/components/Modal/DeleteModal'
 import { mapGetters } from 'vuex'
