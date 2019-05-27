@@ -17,9 +17,7 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
 
-    <template
-      slot="footer"
-    >
+    <template slot="footer">
       <ds-button
         class="cancel"
         icon="close"
@@ -42,7 +40,6 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {

@@ -5,8 +5,14 @@ import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import VueRouter from 'vue-router'
 
-const routes = [{ path: '/' }]
-const router = new VueRouter({ routes })
+const routes = [
+  {
+    path: '/',
+  },
+]
+const router = new VueRouter({
+  routes,
+})
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
@@ -44,7 +50,12 @@ describe('DeleteModal.vue', () => {
 
   describe('shallowMount', () => {
     Wrapper = () => {
-      return shallowMount(DeleteModal, { propsData, mocks, localVue, router })
+      return shallowMount(DeleteModal, {
+        propsData,
+        mocks,
+        localVue,
+        router,
+      })
     }
 
     describe('defaults', () => {
@@ -73,7 +84,14 @@ describe('DeleteModal.vue', () => {
       it('mentions post title', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['delete.contribution.message', { name: 'It is a post' }]]
+        const expected = [
+          [
+            'delete.contribution.message',
+            {
+              name: 'It is a post',
+            },
+          ],
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -94,7 +112,14 @@ describe('DeleteModal.vue', () => {
       it('mentions comments user name', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['delete.comment.message', { name: 'It is the user of the comment' }]]
+        const expected = [
+          [
+            'delete.comment.message',
+            {
+              name: 'It is the user of the comment',
+            },
+          ],
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -102,7 +127,12 @@ describe('DeleteModal.vue', () => {
 
   describe('mount', () => {
     Wrapper = () => {
-      return mount(DeleteModal, { propsData, mocks, localVue, router })
+      return mount(DeleteModal, {
+        propsData,
+        mocks,
+        localVue,
+        router,
+      })
     }
 
     beforeEach(jest.useFakeTimers)
