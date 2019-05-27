@@ -5599,10 +5599,9 @@ neo4j-driver@^1.7.3, neo4j-driver@~1.7.4:
     text-encoding "^0.6.4"
     uri-js "^4.2.1"
 
-neo4j-graphql-js@~2.6.1:
+"neo4j-graphql-js@git+https://github.com/Human-Connection/neo4j-graphql-js.git#temporary_fixes":
   version "2.6.1"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.6.1.tgz#fc25d44d875a73114b6df08259985b555704b9bb"
-  integrity sha512-bPqzKumlCoHtS2qfPoTcZXrTkdXky210Kdu6Ubh5GhT+84wf+mo4Dzj4nxgDP2UgB77uA/caesIUImrSTLM8yQ==
+  resolved "git+https://github.com/Human-Connection/neo4j-graphql-js.git#84d529b9ecbc5c284cce4f86238c6d19b192cf0f"
   dependencies:
     graphql "^14.2.1"
     graphql-auth-directives "^2.1.0"
