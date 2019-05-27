@@ -105,7 +105,7 @@
     "eslint-plugin-standard": "~4.0.0",
     "graphql-request": "~1.8.2",
     "jest": "~24.8.0",
-    "nodemon": "~1.19.0",
+    "nodemon": "~1.19.1",
     "prettier": "~1.14.3",
     "supertest": "~4.0.2"
   }
