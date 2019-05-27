@@ -76,7 +76,7 @@ export default {
   methods: {
     deletePost(index) {
       this.post.relatedContributions.splice(index, 1)
-    }
+    },
   },
   apollo: {
     Post: {

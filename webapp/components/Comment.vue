@@ -84,7 +84,7 @@ export default {
         `
         await this.$apollo.mutate({
           mutation: gqlMutation,
-          variables: { id: this.comment.id }
+          variables: { id: this.comment.id },
         })
         this.$toast.success(this.$t(`delete.comment.success`))
         this.$emit('deleteComment')
@@ -92,6 +92,6 @@ export default {
         this.$toast.error(err.message)
       }
     },
-  }
+  },
 }
 </script>

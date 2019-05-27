@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     async cancel() {
-      if (!!this.callbacks.cancel) {
+      if (this.callbacks.cancel) {
         await this.callbacks.cancel()
       }
       this.isOpen = false
@@ -85,7 +85,7 @@ export default {
     async confirm() {
       this.loading = true
       try {
-        if (!!this.callbacks.confirm) {
+        if (this.callbacks.confirm) {
           await this.callbacks.confirm()
         }
         await this.$apollo.mutate({

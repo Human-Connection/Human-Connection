@@ -14,7 +14,7 @@ export default {
         `
         await this.$apollo.mutate({
           mutation: gqlMutation,
-          variables: { id: this.post.id }
+          variables: { id: this.post.id },
         })
         this.$toast.success(this.$t(`delete.contribution.success`))
         switch (postDisplayType) {
@@ -30,6 +30,6 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
-    }
-  }
+    },
+  },
 }

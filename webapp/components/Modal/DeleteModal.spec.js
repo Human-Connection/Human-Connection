@@ -24,7 +24,7 @@ describe('DeleteModal.vue', () => {
       id: 'p23',
       callbacks: {
         confirm: () => Post.methods.deletePostCallback('list'),
-        cancel: null
+        cancel: null,
       },
     }
     mocks = {
@@ -65,7 +65,7 @@ describe('DeleteModal.vue', () => {
           name: 'It is a post',
           callbacks: {
             confirm: () => Post.methods.deletePostCallback('list'),
-            cancel: null
+            cancel: null,
           },
         }
       })
@@ -73,9 +73,7 @@ describe('DeleteModal.vue', () => {
       it('mentions post title', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [
-          ['delete.contribution.message', { name: 'It is a post' }]
-        ]
+        const expected = [['delete.contribution.message', { name: 'It is a post' }]]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -88,17 +86,15 @@ describe('DeleteModal.vue', () => {
           name: 'It is the user of the comment',
           callbacks: {
             confirm: () => Post.methods.deletePostCallback('list'),
-            cancel: null
-          }
+            cancel: null,
+          },
         }
       })
 
       it('mentions comments user name', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [
-          ['delete.comment.message', { name: 'It is the user of the comment' }]
-        ]
+        const expected = [['delete.comment.message', { name: 'It is the user of the comment' }]]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -122,7 +118,7 @@ describe('DeleteModal.vue', () => {
           id: 'p23',
           callbacks: {
             confirm: () => Post.methods.deletePostCallback('list'),
-            cancel: null
+            cancel: null,
           },
         }
         wrapper = Wrapper()
@@ -195,8 +191,8 @@ describe('DeleteModal.vue', () => {
           id: 'c3',
           callbacks: {
             confirm: () => Post.methods.deletePostCallback('list'),
-            cancel: null
-          }
+            cancel: null,
+          },
         }
         wrapper = Wrapper()
       })

@@ -1,16 +1,16 @@
 <template>
-    <ds-card
-      :header="post.title"
-      :image="post.image"
-      :class="{'post-card': true, 'disabled-content': post.disabled}"
+  <ds-card
+    :header="post.title"
+    :image="post.image"
+    :class="{'post-card': true, 'disabled-content': post.disabled}"
+  >
+    <!-- Post Link Target -->
+    <nuxt-link
+      class="post-link"
+      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
     >
-      <!-- Post Link Target -->
-      <nuxt-link
-        class="post-link"
-        :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
-      >
-        {{ post.title }}
-      </nuxt-link>
+      {{ post.title }}
+    </nuxt-link>
     <ds-space margin-bottom="small" />
     <!-- Username, Image & Date of Post -->
     <div>
@@ -74,7 +74,7 @@
         </div>
       </no-ssr>
     </template>
-    </ds-card>
+  </ds-card>
 </template>
 
 <script>
@@ -102,7 +102,7 @@ export default {
     },
     width: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
   },
   computed: {

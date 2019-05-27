@@ -59,7 +59,7 @@ export default {
       required: true,
       validator: value => {
         return value.match(/(contribution|comment|organization|user)/)
-      }
+      },
     },
     callbacks: { type: Object, required: true },
   },
@@ -101,7 +101,7 @@ export default {
           callback: () => {
             this.openModal('delete')
           },
-          icon: 'trash'
+          icon: 'trash',
         })
       }
 
@@ -153,8 +153,8 @@ export default {
         data: {
           type: this.resourceType,
           resource: this.resource,
-          callbacks: this.callbacks
-        }
+          callbacks: this.callbacks,
+        },
       })
     },
   },

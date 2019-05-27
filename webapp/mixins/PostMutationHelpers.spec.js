@@ -2,7 +2,7 @@ import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import Methods from '~/mixins/PostMutationHelpers'
 
 const {
-  methods: { deletePostCallback }
+  methods: { deletePostCallback },
 } = Methods
 // console.log(deletePostCallback())
 
@@ -12,26 +12,26 @@ describe('PostMutationHelpers.js', () => {
 
   beforeEach(() => {
     post = {
-      id: 'p23'
+      id: 'p23',
     }
     mocks = {
       $t: jest.fn(),
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $emit: jest.fn(),
       $router: {
         history: {
-          push: jest.fn()
-        }
+          push: jest.fn(),
+        },
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
-      }
+        mutate: jest.fn().mockResolvedValue(),
+      },
     }
   })
 
