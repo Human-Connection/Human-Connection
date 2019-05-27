@@ -41,7 +41,7 @@ const options = {
     }
   `,
   path: 'post',
-  message: 'This post could not be found'
+  message: 'This post could not be found',
 }
 const persistentLinks = PersistentLinks(options)
 
@@ -57,8 +57,8 @@ export default {
           children: [
             {
               name: this.$t('common.comment', null, 2),
-              path: `/post/${id}/${slug}#comments`
-            }
+              path: `/post/${id}/${slug}#comments`,
+            },
             // TODO implement
             /* {
               name: this.$t('common.letsTalk'),
@@ -69,20 +69,20 @@ export default {
               name: this.$t('common.versus'),
               path: `/post/${id}/${slug}#versus`
             } */
-          ]
+          ],
         },
         {
           name: this.$t('common.moreInfo'),
-          path: `/post/${id}/${slug}/more-info`
-        }
+          path: `/post/${id}/${slug}/more-info`,
+        },
         // TODO implement
         /* {
           name: this.$t('common.takeAction'),
           path: `/post/${id}/${slug}/take-action`
         } */
       ]
-    }
-  }
+    },
+  },
 }
 </script>
 

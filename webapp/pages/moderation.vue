@@ -27,10 +27,10 @@ export default {
       return [
         {
           name: this.$t('moderation.reports.name'),
-          path: `/moderation`
-        }
+          path: `/moderation`,
+        },
       ]
-    }
-  }
+    },
+  },
 }
 </script>

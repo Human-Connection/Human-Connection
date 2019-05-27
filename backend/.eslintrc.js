@@ -1,20 +1,25 @@
 module.exports = {
-  "extends": "standard",
-  "parser": "babel-eslint",
-  "env": {
-    "es6": true,
-    "node": true,
-    "jest/globals": true
+  env: {
+    es6: true,
+    node: true,
+    jest: true
   },
-  "rules": {
-    "indent": [
-      "error",
-      2
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ]
+  parserOptions: {
+    parser: 'babel-eslint'
   },
-  "plugins": ["jest"]
+  extends: [
+    'standard',
+    'plugin:prettier/recommended'
+  ],
+  plugins: [
+    'jest'
+  ],
+  rules: {
+    //'indent': [ 'error', 2 ],
+    //'quotes': [ "error", "single"],
+    // 'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': ['error'],
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'prettier/prettier': ['error'],
+  },
 };

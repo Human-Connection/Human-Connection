@@ -12,7 +12,7 @@ export default {
       const { user } = ctx
       if (!user) return null
       return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, false)
-    }
+    },
   },
   Mutation: {
     signup: async (parent, { email, password }, { req }) => {
@@ -34,12 +34,12 @@ export default {
         'MATCH (user:User {email: $userEmail}) ' +
           'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role, .disabled} as user LIMIT 1',
         {
-          userEmail: email
-        }
+          userEmail: email,
+        },
       )
 
       session.close()
-      const [currentUser] = await result.records.map(function (record) {
+      const [currentUser] = await result.records.map(function(record) {
         return record.get('user')
       })
 
@@ -50,29 +50,23 @@ export default {
       ) {
         delete currentUser.password
         return encode(currentUser)
-      } else if (currentUser &&
-        currentUser.disabled
-      ) {
+      } else if (currentUser && currentUser.disabled) {
         throw new AuthenticationError('Your account has been disabled.')
       } else {
         throw new AuthenticationError('Incorrect email address or password.')
       }
     },
-    changePassword: async (
-      _,
-      { oldPassword, newPassword },
-      { driver, user }
-    ) => {
+    changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {
       const session = driver.session()
       let result = await session.run(
         `MATCH (user:User {email: $userEmail}) 
          RETURN user {.id, .email, .password}`,
         {
-          userEmail: user.email
-        }
+          userEmail: user.email,
+        },
       )
 
-      const [currentUser] = result.records.map(function (record) {
+      const [currentUser] = result.records.map(function(record) {
         return record.get('user')
       })
 
@@ -81,9 +75,7 @@ export default {
       }
 
       if (await bcrypt.compareSync(newPassword, currentUser.password)) {
-        throw new AuthenticationError(
-          'Old password and new password should be different'
-        )
+        throw new AuthenticationError('Old password and new password should be different')
       } else {
         const newHashedPassword = await bcrypt.hashSync(newPassword, 10)
         session.run(
@@ -93,13 +85,13 @@ export default {
         `,
           {
             userEmail: user.email,
-            newHashedPassword
-          }
+            newHashedPassword,
+          },
         )
         session.close()
 
         return encode(currentUser)
       }
-    }
-  }
+    },
+  },
 }

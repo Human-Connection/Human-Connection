@@ -1,32 +1,13 @@
 <template>
-  <dropdown
-    class="content-menu"
-    :placement="placement"
-    offset="5"
-  >
-    <template
-      slot="default"
-      slot-scope="{toggleMenu}"
-    >
-      <slot
-        name="button"
-        :toggleMenu="toggleMenu"
-      >
-        <ds-button
-          class="content-menu-trigger"
-          size="small"
-          ghost
-          @click.prevent="toggleMenu"
-        >
-          <ds-icon name="ellipsis-v" />
+  <dropdown class="content-menu" :placement="placement" offset="5">
+    <template slot="default" slot-scope="{toggleMenu}">
+      <slot name="button" :toggleMenu="toggleMenu">
+        <ds-button class="content-menu-trigger" size="small" ghost @click.prevent="toggleMenu">
+          <ds-icon name="ellipsis-v"/>
         </ds-button>
       </slot>
     </template>
-    <div
-      slot="popover"
-      slot-scope="{toggleMenu}"
-      class="content-menu-popover"
-    >
+    <div slot="popover" slot-scope="{toggleMenu}" class="content-menu-popover">
       <ds-menu :routes="routes">
         <ds-menu-item
           slot="menuitem"
@@ -35,7 +16,7 @@
           :parents="item.parents"
           @click.stop.prevent="openItem(item.route, toggleMenu)"
         >
-          <ds-icon :name="item.route.icon" />
+          <ds-icon :name="item.route.icon"/>
           {{ item.route.name }}
         </ds-menu-item>
       </ds-menu>
@@ -48,7 +29,7 @@ import Dropdown from '~/components/Dropdown'
 
 export default {
   components: {
-    Dropdown
+    Dropdown,
   },
   props: {
     placement: { type: String, default: 'top-end' },
@@ -59,8 +40,8 @@ export default {
       required: true,
       validator: value => {
         return value.match(/(contribution|comment|organization|user)/)
-      }
-    }
+      },
+    },
   },
   computed: {
     routes() {
@@ -72,17 +53,17 @@ export default {
           path: this.$router.resolve({
             name: 'post-edit-id',
             params: {
-              id: this.resource.id
-            }
+              id: this.resource.id,
+            },
           }).href,
-          icon: 'edit'
+          icon: 'edit',
         })
         routes.push({
           name: this.$t(`post.delete.title`),
           callback: () => {
             this.openModal('delete')
           },
-          icon: 'trash'
+          icon: 'trash',
         })
       }
       if (this.isOwner && this.resourceType === 'comment') {
@@ -91,7 +72,7 @@ export default {
           callback: () => {
             /* eslint-disable-next-line no-console */
           },
-          icon: 'edit'
+          icon: 'edit',
         })
       }
 
@@ -101,7 +82,7 @@ export default {
           callback: () => {
             this.openModal('report')
           },
-          icon: 'flag'
+          icon: 'flag',
         })
       }
 
@@ -112,7 +93,7 @@ export default {
             callback: () => {
               this.openModal('disable')
             },
-            icon: 'eye-slash'
+            icon: 'eye-slash',
           })
         } else {
           routes.push({
@@ -120,7 +101,7 @@ export default {
             callback: () => {
               this.openModal('release', this.resource.id)
             },
-            icon: 'eye-slash'
+            icon: 'eye-slash',
           })
         }
       }
@@ -129,14 +110,14 @@ export default {
         routes.push({
           name: this.$t(`settings.name`),
           path: '/settings',
-          icon: 'edit'
+          icon: 'edit',
         })
       }
       return routes
     },
     isModerator() {
       return this.$store.getters['auth/isModerator']
-    }
+    },
   },
   methods: {
     openItem(route, toggleMenu) {
@@ -152,11 +133,11 @@ export default {
         name: dialog,
         data: {
           type: this.resourceType,
-          resource: this.resource
-        }
+          resource: this.resource,
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

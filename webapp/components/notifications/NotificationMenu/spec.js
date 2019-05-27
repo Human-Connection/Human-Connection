@@ -14,16 +14,15 @@ config.stubs['dropdown'] = '<span class="dropdown"><slot /></span>'
 
 describe('NotificationMenu.vue', () => {
   let wrapper
-  let Wrapper
   let mocks
   let data
   beforeEach(() => {
     mocks = {
-      $t: jest.fn()
+      $t: jest.fn(),
     }
     data = () => {
       return {
-        notifications: []
+        notifications: [],
       }
     }
   })
@@ -33,7 +32,7 @@ describe('NotificationMenu.vue', () => {
       return shallowMount(NotificationMenu, {
         data,
         mocks,
-        localVue
+        localVue,
       })
     }
 
@@ -62,9 +61,9 @@ describe('NotificationMenu.vue', () => {
                   author: {
                     id: 'john-1',
                     slug: 'john-doe',
-                    name: 'John Doe'
-                  }
-                }
+                    name: 'John Doe',
+                  },
+                },
               },
               {
                 id: 'notification-42',
@@ -76,11 +75,11 @@ describe('NotificationMenu.vue', () => {
                   author: {
                     id: 'john-1',
                     slug: 'john-doe',
-                    name: 'John Doe'
-                  }
-                }
-              }
-            ]
+                    name: 'John Doe',
+                  },
+                },
+              },
+            ],
           }
         }
       })

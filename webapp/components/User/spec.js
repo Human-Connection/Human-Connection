@@ -1,6 +1,5 @@
-import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
+import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import User from './index'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import VTooltip from 'v-tooltip'
 
@@ -16,35 +15,32 @@ localVue.use(Styleguide)
 localVue.filter('truncate', filter)
 
 describe('User', () => {
-  let wrapper
-  let Wrapper
   let propsData
   let mocks
   let stubs
   let getters
-  let user
 
   beforeEach(() => {
     propsData = {}
 
     mocks = {
-      $t: jest.fn()
+      $t: jest.fn(),
     }
     stubs = {
-      NuxtLink: RouterLinkStub
+      NuxtLink: RouterLinkStub,
     }
     getters = {
       'auth/user': () => {
         return {}
       },
-      'auth/isModerator': () => false
+      'auth/isModerator': () => false,
     }
   })
 
   describe('mount', () => {
     const Wrapper = () => {
       const store = new Vuex.Store({
-        getters
+        getters,
       })
       return mount(User, { store, propsData, mocks, stubs, localVue })
     }
@@ -59,7 +55,7 @@ describe('User', () => {
       beforeEach(() => {
         propsData.user = {
           name: 'Tilda Swinton',
-          slug: 'tilda-swinton'
+          slug: 'tilda-swinton',
         }
       })
 

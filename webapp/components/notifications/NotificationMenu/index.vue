@@ -66,12 +66,12 @@ export default {
   name: 'NotificationMenu',
   components: {
     NotificationList,
-    Dropdown
+    Dropdown,
   },
   computed: {
     totalNotifications() {
       return (this.notifications || []).length
-    }
+    },
   },
   methods: {
     async markAsRead(notificationId) {
@@ -79,24 +79,24 @@ export default {
       try {
         await this.$apollo.mutate({
           mutation: MARK_AS_READ,
-          variables
+          variables,
         })
       } catch (err) {
         throw new Error(err)
       }
-    }
+    },
   },
   apollo: {
     notifications: {
       query: NOTIFICATIONS,
       update: data => {
         const {
-          currentUser: { notifications }
+          currentUser: { notifications },
         } = data
         return notifications
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 

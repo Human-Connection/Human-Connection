@@ -45,6 +45,7 @@ When('people visit my profile page', url => {
   cy.openPage('/profile/peter-pan')
 })
 
+
 When('they can see the text in the info box below my avatar', () => {
   cy.contains(aboutMeText)
 })

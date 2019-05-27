@@ -3,7 +3,7 @@ import { UserInputError } from 'apollo-server'
 const USERNAME_MIN_LENGTH = 3
 
 const validateUsername = async (resolve, root, args, context, info) => {
-  if (args.name && args.name.length >= USERNAME_MIN_LENGTH) {
+  if (!('name' in args) || (args.name && args.name.length >= USERNAME_MIN_LENGTH)) {
     /* eslint-disable-next-line no-return-await */
     return await resolve(root, args, context, info)
   } else {
@@ -26,6 +26,6 @@ export default {
   Mutation: {
     CreateUser: validateUsername,
     UpdateUser: validateUsername,
-    CreateSocialMedia: validateUrl
-  }
+    CreateSocialMedia: validateUrl,
+  },
 }

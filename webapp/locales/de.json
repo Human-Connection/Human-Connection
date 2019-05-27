@@ -135,6 +135,14 @@
     "takeAction": {
       "name": "Aktiv werden"
     },
+    "delete": {
+      "submit": "Löschen",
+      "cancel": "Abbrechen",
+      "success": "Beitrag erfolgreich gelöscht",
+      "title": "Beitrag löschen",
+      "type": "Beitrag",
+      "message": "Möchtest Du wirklich den Beitrag \"<b>{name}</b>\" löschen?"
+    },
     "comment": {
       "submit": "Kommentiere",
       "submitted": "Kommentar Gesendet"

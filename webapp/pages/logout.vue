@@ -41,6 +41,6 @@ export default {
   async beforeCreate() {
     await this.$store.dispatch('auth/logout')
     this.$router.replace('/')
-  }
+  },
 }
 </script>

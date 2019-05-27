@@ -1,12 +1,12 @@
 import uuid from 'uuid/v4'
 
-export default function (params) {
+export default function(params) {
   const {
     id = uuid(),
     key = '',
     type = 'crowdfunding',
     status = 'permanent',
-    icon = '/img/badges/indiegogo_en_panda.svg'
+    icon = '/img/badges/indiegogo_en_panda.svg',
   } = params
 
   return {
@@ -23,6 +23,6 @@ export default function (params) {
         }
       }
     `,
-    variables: { id, key, type, status, icon }
+    variables: { id, key, type, status, icon },
   }
 }

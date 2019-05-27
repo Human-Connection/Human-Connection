@@ -268,5 +268,10 @@
       "type": "Comment",
       "message": "Do you really want to release the comment from \"<b>{name}</b>\"?"
     }
+  },
+  "user": {
+    "avatar": {
+      "submitted": "Upload successful"
+    }
   }
 }

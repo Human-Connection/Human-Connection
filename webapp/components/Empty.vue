@@ -36,28 +36,28 @@ export default {
       required: true,
       validator: value => {
         return value.match(/(messages|events|alert|tasks|docs|file)/)
-      }
+      },
     },
     /**
      * Message that appears under the icon
      */
     message: {
       type: String,
-      default: null
+      default: null,
     },
     /**
      * Vertical spacing
      */
     margin: {
       type: [String, Object],
-      default: 'x-large'
-    }
+      default: 'x-large',
+    },
   },
   computed: {
     iconPath() {
       return `/img/empty/${this.icon}.svg`
-    }
-  }
+    },
+  },
 }
 </script>
 

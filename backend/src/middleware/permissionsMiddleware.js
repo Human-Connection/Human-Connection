@@ -13,7 +13,7 @@ const isModerator = rule()(async (parent, args, { user }, info) => {
 })
 
 const isAdmin = rule()(async (parent, args, { user }, info) => {
-  return user && (user.role === 'admin')
+  return user && user.role === 'admin'
 })
 
 const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, context, info) => {
@@ -21,14 +21,20 @@ const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, context, info) 
 })
 
 const belongsToMe = rule({ cache: 'no_cache' })(async (_, args, context) => {
-  const { driver, user: { id: userId } } = context
+  const {
+    driver,
+    user: { id: userId },
+  } = context
   const { id: notificationId } = args
   const session = driver.session()
-  const result = await session.run(`
+  const result = await session.run(
+    `
   MATCH (u:User {id: $userId})<-[:NOTIFIED]-(n:Notification {id: $notificationId})
   RETURN n
-  `, { userId, notificationId })
-  const [notification] = result.records.map((record) => {
+  `,
+    { userId, notificationId },
+  )
+  const [notification] = result.records.map(record => {
     return record.get('n')
   })
   session.close()
@@ -44,14 +50,19 @@ const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver
   if (!user) return false
   const session = driver.session()
   const { id: postId } = args
-  const result = await session.run(`
+  const result = await session.run(
+    `
   MATCH (post:Post {id: $postId})<-[:WROTE]-(author)
   RETURN author
-  `, { postId })
-  const [author] = result.records.map((record) => {
+  `,
+    { postId },
+  )
+  const [author] = result.records.map(record => {
     return record.get('author')
   })
-  const { properties: { id: authorId } } = author
+  const {
+    properties: { id: authorId },
+  } = author
   session.close()
   return authorId === user.id
 })
@@ -62,7 +73,7 @@ const permissions = shield({
     Notification: isAdmin,
     statistics: allow,
     currentUser: allow,
-    Post: or(onlyEnabledContent, isModerator)
+    Post: or(onlyEnabledContent, isModerator),
   },
   Mutation: {
     UpdateNotification: belongsToMe,
@@ -88,14 +99,14 @@ const permissions = shield({
     changePassword: isAuthenticated,
     enable: isModerator,
     disable: isModerator,
-    CreateComment: isAuthenticated
+    CreateComment: isAuthenticated,
     // CreateUser: allow,
   },
   User: {
     email: isMyOwn,
     password: isMyOwn,
-    privateKey: isMyOwn
-  }
+    privateKey: isMyOwn,
+  },
 })
 
 export default permissions

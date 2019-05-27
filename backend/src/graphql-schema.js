@@ -12,11 +12,10 @@ import rewards from './resolvers/rewards.js'
 import socialMedia from './resolvers/socialMedia.js'
 import notifications from './resolvers/notifications'
 import comments from './resolvers/comments'
+import users from './resolvers/users'
 
 export const typeDefs = fs
-  .readFileSync(
-    process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql')
-  )
+  .readFileSync(process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql'))
   .toString('utf-8')
 
 export const resolvers = {
@@ -24,7 +23,7 @@ export const resolvers = {
     ...statistics.Query,
     ...userManagement.Query,
     ...notifications.Query,
-    ...comments.Query
+    ...comments.Query,
   },
   Mutation: {
     ...userManagement.Mutation,
@@ -36,6 +35,7 @@ export const resolvers = {
     ...rewards.Mutation,
     ...socialMedia.Mutation,
     ...notifications.Mutation,
-    ...comments.Mutation
-  }
+    ...comments.Mutation,
+    ...users.Mutation,
+  },
 }

@@ -8,6 +8,6 @@ export default ({ app }) => {
     position: 'bottomRight',
     transitionIn: 'bounceInLeft',
     layout: 2,
-    theme: 'dark'
+    theme: 'dark',
   })
 }

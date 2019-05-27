@@ -53,26 +53,26 @@ import HcEditor from '~/components/Editor'
 
 export default {
   components: {
-    HcEditor
+    HcEditor,
   },
   props: {
-    contribution: { type: Object, default: () => {} }
+    contribution: { type: Object, default: () => {} },
   },
   data() {
     return {
       form: {
         title: '',
-        content: ''
+        content: '',
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
-        content: { required: true, min: 3 }
+        content: { required: true, min: 3 },
       },
       id: null,
       loading: false,
       disabled: false,
       slug: null,
-      users: []
+      users: [],
     }
   },
   watch: {
@@ -86,8 +86,8 @@ export default {
         this.slug = contribution.slug
         this.form.content = contribution.content
         this.form.title = contribution.title
-      }
-    }
+      },
+    },
   },
   methods: {
     submit() {
@@ -96,14 +96,12 @@ export default {
 
       this.$apollo
         .mutate({
-          mutation: this.id
-            ? postMutations.UpdatePost
-            : postMutations.CreatePost,
+          mutation: this.id ? postMutations.UpdatePost : postMutations.CreatePost,
           variables: {
             id: this.id,
             title: this.form.title,
-            content: this.form.content
-          }
+            content: this.form.content,
+          },
         })
         .then(res => {
           this.loading = false
@@ -114,7 +112,7 @@ export default {
 
           this.$router.push({
             name: 'post-id-slug',
-            params: { id: result.id, slug: result.slug }
+            params: { id: result.id, slug: result.slug },
           })
         })
         .catch(err => {
@@ -126,7 +124,7 @@ export default {
     updateEditorContent(value) {
       // this.form.content = value
       this.$refs.contributionForm.update('content', value)
-    }
+    },
   },
   apollo: {
     User: {
@@ -140,9 +138,9 @@ export default {
       },
       result(result) {
         this.users = result.data.User
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 

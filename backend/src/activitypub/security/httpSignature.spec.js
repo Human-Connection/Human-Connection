@@ -14,9 +14,9 @@ describe('activityPub/security', () => {
     privateKey = pair.privateKey
     publicKey = pair.publicKey
     headers = {
-      'Date': '2019-03-08T14:35:45.759Z',
-      'Host': 'democracy-app.de',
-      'Content-Type': 'application/json'
+      Date: '2019-03-08T14:35:45.759Z',
+      Host: 'democracy-app.de',
+      'Content-Type': 'application/json',
     }
   })
 
@@ -27,13 +27,23 @@ describe('activityPub/security', () => {
 
       beforeEach(() => {
         const signer = crypto.createSign('rsa-sha256')
-        signer.update('(request-target): post /activitypub/users/max/inbox\ndate: 2019-03-08T14:35:45.759Z\nhost: democracy-app.de\ncontent-type: application/json')
+        signer.update(
+          '(request-target): post /activitypub/users/max/inbox\ndate: 2019-03-08T14:35:45.759Z\nhost: democracy-app.de\ncontent-type: application/json',
+        )
         signatureB64 = signer.sign({ key: privateKey, passphrase }, 'base64')
-        httpSignature = createSignature({ privateKey, keyId: 'https://human-connection.org/activitypub/users/lea#main-key', url: 'https://democracy-app.de/activitypub/users/max/inbox', headers, passphrase })
+        httpSignature = createSignature({
+          privateKey,
+          keyId: 'https://human-connection.org/activitypub/users/lea#main-key',
+          url: 'https://democracy-app.de/activitypub/users/max/inbox',
+          headers,
+          passphrase,
+        })
       })
 
       it('contains keyId', () => {
-        expect(httpSignature).toContain('keyId="https://human-connection.org/activitypub/users/lea#main-key"')
+        expect(httpSignature).toContain(
+          'keyId="https://human-connection.org/activitypub/users/lea#main-key"',
+        )
       })
 
       it('contains default algorithm "rsa-sha256"', () => {
@@ -54,13 +64,19 @@ describe('activityPub/security', () => {
     let httpSignature
 
     beforeEach(() => {
-      httpSignature = createSignature({ privateKey, keyId: 'http://localhost:4001/activitypub/users/test-user#main-key', url: 'https://democracy-app.de/activitypub/users/max/inbox', headers, passphrase })
+      httpSignature = createSignature({
+        privateKey,
+        keyId: 'http://localhost:4001/activitypub/users/test-user#main-key',
+        url: 'https://democracy-app.de/activitypub/users/max/inbox',
+        headers,
+        passphrase,
+      })
       const body = {
-        'publicKey': {
-          'id': 'https://localhost:4001/activitypub/users/test-user#main-key',
-          'owner': 'https://localhost:4001/activitypub/users/test-user',
-          'publicKeyPem': publicKey
-        }
+        publicKey: {
+          id: 'https://localhost:4001/activitypub/users/test-user#main-key',
+          owner: 'https://localhost:4001/activitypub/users/test-user',
+          publicKeyPem: publicKey,
+        },
       }
 
       const mockedRequest = jest.fn((_, callback) => callback(null, null, JSON.stringify(body)))
@@ -68,7 +84,9 @@ describe('activityPub/security', () => {
     })
 
     it('resolves false', async () => {
-      await expect(verifySignature('https://democracy-app.de/activitypub/users/max/inbox', headers)).resolves.toEqual(false)
+      await expect(
+        verifySignature('https://democracy-app.de/activitypub/users/max/inbox', headers),
+      ).resolves.toEqual(false)
     })
 
     describe('valid signature', () => {
@@ -77,7 +95,9 @@ describe('activityPub/security', () => {
       })
 
       it('resolves true', async () => {
-        await expect(verifySignature('https://democracy-app.de/activitypub/users/max/inbox', headers)).resolves.toEqual(true)
+        await expect(
+          verifySignature('https://democracy-app.de/activitypub/users/max/inbox', headers),
+        ).resolves.toEqual(true)
       })
     })
   })

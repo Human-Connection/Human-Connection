@@ -1,8 +1,7 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Modal from './Modal.vue'
 import DisableModal from './Modal/DisableModal.vue'
 import ReportModal from './Modal/ReportModal.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import { getters, mutations } from '../store/modal'
 import Styleguide from '@human-connection/styleguide'
@@ -13,7 +12,6 @@ localVue.use(Vuex)
 localVue.use(Styleguide)
 
 describe('Modal.vue', () => {
-  let Wrapper
   let wrapper
   let store
   let state
@@ -25,11 +23,11 @@ describe('Modal.vue', () => {
         state,
         getters: {
           'modal/open': getters.open,
-          'modal/data': getters.data
+          'modal/data': getters.data,
         },
         mutations: {
-          'modal/SET_OPEN': mutations.SET_OPEN
-        }
+          'modal/SET_OPEN': mutations.SET_OPEN,
+        },
       })
       return mountMethod(Modal, { store, mocks, localVue })
     }
@@ -38,17 +36,17 @@ describe('Modal.vue', () => {
   beforeEach(() => {
     mocks = {
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
-      $t: () => {}
+      $t: () => {},
     }
     state = {
       open: null,
-      data: {}
+      data: {},
     }
   })
 
@@ -69,9 +67,9 @@ describe('Modal.vue', () => {
             type: 'contribution',
             resource: {
               id: 'c456',
-              title: 'some title'
-            }
-          }
+              title: 'some title',
+            },
+          },
         }
         wrapper = Wrapper()
       })
@@ -84,7 +82,7 @@ describe('Modal.vue', () => {
         expect(wrapper.find(DisableModal).props()).toEqual({
           type: 'contribution',
           name: 'some title',
-          id: 'c456'
+          id: 'c456',
         })
       })
 
@@ -99,13 +97,13 @@ describe('Modal.vue', () => {
         it('passes author name to disable modal', () => {
           state.data = {
             type: 'comment',
-            resource: { id: 'c456', author: { name: 'Author name' } }
+            resource: { id: 'c456', author: { name: 'Author name' } },
           }
           wrapper = Wrapper()
           expect(wrapper.find(DisableModal).props()).toEqual({
             type: 'comment',
             name: 'Author name',
-            id: 'c456'
+            id: 'c456',
           })
         })
 
@@ -115,7 +113,7 @@ describe('Modal.vue', () => {
           expect(wrapper.find(DisableModal).props()).toEqual({
             type: 'comment',
             name: '',
-            id: 'c456'
+            id: 'c456',
           })
         })
       })

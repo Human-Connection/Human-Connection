@@ -18,13 +18,13 @@ export default async (driver, authorizationHeader) => {
   `
   const result = await session.run(query, { id })
   session.close()
-  const [currentUser] = await result.records.map((record) => {
+  const [currentUser] = await result.records.map(record => {
     return record.get('user')
   })
   if (!currentUser) return null
   if (currentUser.disabled) return null
   return {
     token,
-    ...currentUser
+    ...currentUser,
   }
 }
