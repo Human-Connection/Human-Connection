@@ -247,5 +247,10 @@
   },
   "shoutButton": {
     "shouted": "shouted"
+  },
+  "user": {
+    "avatar": {
+      "submitted": "Upload successful"
+    }
   }
 }

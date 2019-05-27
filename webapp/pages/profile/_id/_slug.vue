@@ -14,7 +14,12 @@
           :class="{'disabled-content': user.disabled}"
           style="position: relative; height: auto;"
         >
+          <hc-upload
+            v-if="myProfile"
+            :user="user"
+          />
           <ds-avatar
+            v-else
             :image="user.avatar"
             :name="userName"
             class="profile-avatar"
@@ -223,7 +228,7 @@
                 >
                   <a :href="link.url">
                     <ds-avatar :image="link.favicon" />
-                    {{ link.username }}
+                    {{ 'link.username' }}
                   </a>
                 </ds-space>
               </template>
@@ -327,6 +332,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
+import HcUpload from '~/components/Upload'
 
 export default {
   components: {
@@ -338,6 +344,7 @@ export default {
     HcLoadMore,
     HcEmpty,
     ContentMenu,
+    HcUpload,
   },
   transition: {
     name: 'slide-up',
