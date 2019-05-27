@@ -12,6 +12,7 @@ import rewards from './resolvers/rewards.js'
 import socialMedia from './resolvers/socialMedia.js'
 import notifications from './resolvers/notifications'
 import comments from './resolvers/comments'
+import users from './resolvers/users'
 
 export const typeDefs = fs
   .readFileSync(process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql'))
@@ -35,5 +36,6 @@ export const resolvers = {
     ...socialMedia.Mutation,
     ...notifications.Mutation,
     ...comments.Mutation,
+    ...users.Mutation,
   },
 }
