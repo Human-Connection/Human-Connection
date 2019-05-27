@@ -18,13 +18,13 @@ describe('report', () => {
     await factory.create('User', {
       id: 'u1',
       email: 'test@example.org',
-      password: '1234'
+      password: '1234',
     })
     await factory.create('User', {
       id: 'u2',
       name: 'abusive-user',
       role: 'user',
-      email: 'abusive-user@example.org'
+      email: 'abusive-user@example.org',
     })
   })
 
@@ -59,7 +59,7 @@ describe('report', () => {
       describe('invalid resource id', () => {
         it('returns null', async () => {
           await expect(action()).resolves.toEqual({
-            report: null
+            report: null,
           })
         })
       })
@@ -71,14 +71,14 @@ describe('report', () => {
 
         it('creates a report', async () => {
           await expect(action()).resolves.toEqual({
-            report: { description: 'Violates code of conduct' }
+            report: { description: 'Violates code of conduct' },
           })
         })
 
         it('returns the submitter', async () => {
           returnedObject = '{ submitter { email } }'
           await expect(action()).resolves.toEqual({
-            report: { submitter: { email: 'test@example.org' } }
+            report: { submitter: { email: 'test@example.org' } },
           })
         })
 
@@ -86,14 +86,14 @@ describe('report', () => {
           it('returns type "User"', async () => {
             returnedObject = '{ type }'
             await expect(action()).resolves.toEqual({
-              report: { type: 'User' }
+              report: { type: 'User' },
             })
           })
 
           it('returns resource in user attribute', async () => {
             returnedObject = '{ user { name } }'
             await expect(action()).resolves.toEqual({
-              report: { user: { name: 'abusive-user' } }
+              report: { user: { name: 'abusive-user' } },
             })
           })
         })
@@ -101,28 +101,31 @@ describe('report', () => {
         describe('reported resource is a post', () => {
           beforeEach(async () => {
             await factory.authenticateAs({ email: 'test@example.org', password: '1234' })
-            await factory.create('Post', { id: 'p23', title: 'Matt and Robert having a pair-programming' })
+            await factory.create('Post', {
+              id: 'p23',
+              title: 'Matt and Robert having a pair-programming',
+            })
             variables = { id: 'p23' }
           })
 
           it('returns type "Post"', async () => {
             returnedObject = '{ type }'
             await expect(action()).resolves.toEqual({
-              report: { type: 'Post' }
+              report: { type: 'Post' },
             })
           })
 
           it('returns resource in post attribute', async () => {
             returnedObject = '{ post { title } }'
             await expect(action()).resolves.toEqual({
-              report: { post: { title: 'Matt and Robert having a pair-programming' } }
+              report: { post: { title: 'Matt and Robert having a pair-programming' } },
             })
           })
 
           it('returns null in user attribute', async () => {
             returnedObject = '{ user { name } }'
             await expect(action()).resolves.toEqual({
-              report: { user: null }
+              report: { user: null },
             })
           })
         })
@@ -132,25 +135,32 @@ describe('report', () => {
             createPostVariables = {
               id: 'p1',
               title: 'post to comment on',
-              content: 'please comment on me'
+              content: 'please comment on me',
             }
-            const asAuthenticatedUser = await factory.authenticateAs({ email: 'test@example.org', password: '1234' })
+            const asAuthenticatedUser = await factory.authenticateAs({
+              email: 'test@example.org',
+              password: '1234',
+            })
             await asAuthenticatedUser.create('Post', createPostVariables)
-            await asAuthenticatedUser.create('Comment', { postId: 'p1', id: 'c34', content: 'Robert getting tired.' })
+            await asAuthenticatedUser.create('Comment', {
+              postId: 'p1',
+              id: 'c34',
+              content: 'Robert getting tired.',
+            })
             variables = { id: 'c34' }
           })
 
           it('returns type "Comment"', async () => {
             returnedObject = '{ type }'
             await expect(action()).resolves.toEqual({
-              report: { type: 'Comment' }
+              report: { type: 'Comment' },
             })
           })
 
           it('returns resource in comment attribute', async () => {
             returnedObject = '{ comment { content } }'
             await expect(action()).resolves.toEqual({
-              report: { comment: { content: 'Robert getting tired.' } }
+              report: { comment: { content: 'Robert getting tired.' } },
             })
           })
         })

@@ -21,7 +21,7 @@ import gql from 'graphql-tag'
 export default {
   data() {
     return {
-      Category: []
+      Category: [],
     }
   },
   computed: {
@@ -31,10 +31,10 @@ export default {
         name: this.$t('admin.categories.categoryName'),
         postCount: {
           label: this.$t('admin.categories.postCount'),
-          align: 'right'
-        }
+          align: 'right',
+        },
       }
-    }
+    },
   },
   apollo: {
     Category: {
@@ -48,8 +48,8 @@ export default {
             postCount
           }
         }
-      `)
-    }
-  }
+      `),
+    },
+  },
 }
 </script>

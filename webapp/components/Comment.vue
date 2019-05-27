@@ -45,20 +45,20 @@ import ContentMenu from '~/components/ContentMenu'
 export default {
   components: {
     HcUser,
-    ContentMenu
+    ContentMenu,
   },
   props: {
     comment: {
       type: Object,
       default() {
         return {}
-      }
-    }
+      },
+    },
   },
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      isModerator: 'auth/isModerator'
+      isModerator: 'auth/isModerator',
     }),
     displaysComment() {
       return !this.unavailable || this.isModerator
@@ -66,7 +66,7 @@ export default {
     author() {
       if (this.deleted) return {}
       return this.comment.author || {}
-    }
+    },
   },
   methods: {
     isAuthor(id) {
@@ -91,7 +91,7 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
-    }
+    },
   }
 }
 </script>

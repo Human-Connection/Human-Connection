@@ -55,7 +55,7 @@
             style="display: inline;"
           >
             <ds-text
-              align="right"
+              align="left"
               size="small"
               color="soft"
             >
@@ -151,16 +151,16 @@ export default {
     HcRelativeDateTime,
     HcFollowButton,
     HcBadges,
-    Dropdown
+    Dropdown,
   },
   props: {
     user: { type: Object, default: null },
     trunc: { type: Number, default: null },
-    dateTime: { type: [Date, String], default: null }
+    dateTime: { type: [Date, String], default: null },
   },
   computed: {
     ...mapGetters({
-      isModerator: 'auth/isModerator'
+      isModerator: 'auth/isModerator',
     }),
     itsMe() {
       return this.user.slug === this.$store.getters['auth/user'].slug
@@ -177,8 +177,8 @@ export default {
     userName() {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -7,11 +7,12 @@ export default {
       const session = driver.session()
       const reportData = {
         id: reportId,
-        createdAt: (new Date()).toISOString(),
-        description: description
+        createdAt: new Date().toISOString(),
+        description: description,
       }
 
-      const res = await session.run(`
+      const res = await session.run(
+        `
         MATCH (submitter:User {id: $userId})
         MATCH (resource {id: $resourceId})
         WHERE resource:User OR resource:Comment OR resource:Post
@@ -19,11 +20,12 @@ export default {
         MERGE (resource)<-[:REPORTED]-(report)
         MERGE (report)<-[:REPORTED]-(submitter)
         RETURN report, submitter, resource, labels(resource)[0] as type
-        `, {
-        resourceId: id,
-        userId: user.id,
-        reportData
-      }
+        `,
+        {
+          resourceId: id,
+          userId: user.id,
+          reportData,
+        },
       )
       session.close()
 
@@ -32,7 +34,7 @@ export default {
           report: r.get('report'),
           submitter: r.get('submitter'),
           resource: r.get('resource'),
-          type: r.get('type')
+          type: r.get('type'),
         }
       })
       if (!dbResponse) return null
@@ -44,20 +46,20 @@ export default {
         comment: null,
         user: null,
         submitter: submitter.properties,
-        type
+        type,
       }
       switch (type) {
-      case 'Post':
-        response.post = resource.properties
-        break
-      case 'Comment':
-        response.comment = resource.properties
-        break
-      case 'User':
-        response.user = resource.properties
-        break
+        case 'Post':
+          response.post = resource.properties
+          break
+        case 'Comment':
+          response.comment = resource.properties
+          break
+        case 'User':
+          response.user = resource.properties
+          break
       }
       return response
-    }
-  }
+    },
+  },
 }

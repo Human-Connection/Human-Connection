@@ -3,11 +3,11 @@ export default ({ app }) => {
   return {
     httpEndpoint: process.server ? backendUrl : '/api',
     httpLinkOptions: {
-      credentials: 'same-origin'
+      credentials: 'same-origin',
     },
     credentials: true,
     tokenName: 'human-connection-token',
     persisting: false,
-    websocketsOnly: false
+    websocketsOnly: false,
   }
 }

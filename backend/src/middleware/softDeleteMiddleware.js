@@ -30,7 +30,7 @@ export default {
   Query: {
     Post: setDefaultFilters,
     Comment: setDefaultFilters,
-    User: setDefaultFilters
+    User: setDefaultFilters,
   },
   Mutation: async (resolve, root, args, context, info) => {
     args.disabled = false
@@ -42,5 +42,5 @@ export default {
   },
   Post: obfuscateDisabled,
   User: obfuscateDisabled,
-  Comment: obfuscateDisabled
+  Comment: obfuscateDisabled,
 }

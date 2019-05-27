@@ -1,6 +1,5 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import DisableModal from './DisableModal.vue'
-import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
@@ -8,7 +7,6 @@ const localVue = createLocalVue()
 localVue.use(Styleguide)
 
 describe('DisableModal.vue', () => {
-  let store
   let mocks
   let propsData
   let wrapper
@@ -18,20 +16,20 @@ describe('DisableModal.vue', () => {
       type: 'contribution',
       name: 'blah',
       callbacks: { confirm: null, cancel: null },
-      id: 'c42'
+      id: 'c42',
     }
     mocks = {
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
       $t: jest.fn(),
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
-      }
+        mutate: jest.fn().mockResolvedValue(),
+      },
     }
   })
 
@@ -45,7 +43,7 @@ describe('DisableModal.vue', () => {
         propsData = {
           type: 'user',
           id: 'u2',
-          name: 'Bob Ross'
+          name: 'Bob Ross',
         }
       })
 
@@ -62,16 +60,14 @@ describe('DisableModal.vue', () => {
         propsData = {
           type: 'contribution',
           id: 'c3',
-          name: 'This is some post title.'
+          name: 'This is some post title.',
         }
       })
 
       it('mentions contribution title', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [
-          ['disable.contribution.message', { name: 'This is some post title.' }]
-        ]
+        const expected = [['disable.contribution.message', { name: 'This is some post title.' }]]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -87,7 +83,7 @@ describe('DisableModal.vue', () => {
       beforeEach(() => {
         propsData = {
           type: 'user',
-          id: 'u4711'
+          id: 'u4711',
         }
       })
 

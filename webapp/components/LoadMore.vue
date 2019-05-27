@@ -17,7 +17,7 @@
 <script>
 export default {
   props: {
-    loading: { type: Boolean, default: false }
-  }
+    loading: { type: Boolean, default: false },
+  },
 }
 </script>

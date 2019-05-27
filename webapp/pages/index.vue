@@ -40,14 +40,14 @@ import HcLoadMore from '~/components/LoadMore.vue'
 export default {
   components: {
     HcPostCard,
-    HcLoadMore
+    HcLoadMore,
   },
   data() {
     return {
       // Initialize your apollo data
       Post: [],
       page: 1,
-      pageSize: 10
+      pageSize: 10,
     }
   },
   computed: {
@@ -56,7 +56,7 @@ export default {
     },
     offset() {
       return (this.page - 1) * this.pageSize
-    }
+    },
   },
   methods: {
     uniq(items, field = 'id') {
@@ -65,7 +65,7 @@ export default {
     href(post) {
       return this.$router.resolve({
         name: 'post-id-slug',
-        params: { id: post.id, slug: post.slug }
+        params: { id: post.id, slug: post.slug },
       }).href
     },
     showMoreContributions() {
@@ -75,7 +75,7 @@ export default {
       this.$apollo.queries.Post.fetchMore({
         variables: {
           first: this.pageSize,
-          offset: this.offset
+          offset: this.offset,
         },
         // Transform the previous result with new data
         updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -83,7 +83,7 @@ export default {
           output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
           return output
         },
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
       })
     },
     deletePost(_index, postId) {
@@ -92,7 +92,7 @@ export default {
       })
       // Ideal solution:
       // this.Post.splice(index, 1)
-    }
+    },
   },
   apollo: {
     Post: {
@@ -143,12 +143,12 @@ export default {
       variables() {
         return {
           first: this.pageSize,
-          offset: 0
+          offset: 0,
         }
       },
-      fetchPolicy: 'cache-and-network'
-    }
-  }
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>
 

@@ -71,30 +71,6 @@
         :is-shouted="post.shoutedByCurrentUser"
         :post-id="post.id"
       />
-      <!-- Categories -->
-      <ds-icon
-        v-for="category in post.categories"
-        :key="category.id"
-        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
-        :name="category.icon"
-        size="large"
-      />&nbsp;
-      <ds-space margin-bottom="small" />
-      <!-- Tags -->
-      <template v-if="post.tags && post.tags.length">
-        <ds-space margin="xx-small" />
-        <div class="tags">
-          <ds-icon name="tags" />
-          <ds-tag
-            v-for="tag in post.tags"
-            :key="tag.id"
-          >
-            <ds-icon name="tag" />
-            {{ tag.name }}
-          </ds-tag>
-        </div>
-      </template>
-      <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list :post="post" />
@@ -120,7 +96,7 @@ import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 export default {
   transition: {
     name: 'slide-up',
-    mode: 'out-in'
+    mode: 'out-in',
   },
   components: {
     HcTag,
@@ -129,32 +105,32 @@ export default {
     HcShoutButton,
     ContentMenu,
     HcCommentForm,
-    HcCommentList
+    HcCommentList,
   },
   mixins: [PostMutationHelpers],
   head() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   data() {
     return {
       post: null,
       ready: false,
-      title: 'loading'
+      title: 'loading',
     }
   },
   watch: {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
-    }
+    },
   },
   async asyncData(context) {
     const {
       params,
       error,
-      app: { apolloProvider, $i18n }
+      app: { apolloProvider, $i18n },
     } = context
     const client = apolloProvider.defaultClient
     const query = gql(`
@@ -233,7 +209,7 @@ export default {
     `)
     const variables = { slug: params.slug }
     const {
-      data: { Post }
+      data: { Post },
     } = await client.query({ query, variables })
     if (Post.length <= 0) {
       // TODO: custom 404 error page with translations
@@ -243,7 +219,7 @@ export default {
     const [post] = Post
     return {
       post,
-      title: post.title
+      title: post.title,
     }
   },
   mounted() {
@@ -256,8 +232,8 @@ export default {
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
-    }
-  }
+    },
+  },
 }
 </script>
 

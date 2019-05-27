@@ -48,19 +48,19 @@ import { SweetalertIcon } from 'vue-sweetalert-icons'
 export default {
   name: 'DeleteModal',
   components: {
-    SweetalertIcon
+    SweetalertIcon,
   },
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
     callbacks: { type: Object, required: true },
-    id: { type: String, required: true }
+    id: { type: String, required: true },
   },
   data() {
     return {
       isOpen: true,
       success: false,
-      loading: false
+      loading: false,
     }
   },
   computed: {
@@ -70,7 +70,7 @@ export default {
     message() {
       const name = this.$filters.truncate(this.name, 30)
       return this.$t(`delete.${this.type}.message`, { name })
-    }
+    },
   },
   methods: {
     async cancel() {
@@ -101,8 +101,8 @@ export default {
       } finally {
         this.loading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

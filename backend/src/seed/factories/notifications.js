@@ -1,10 +1,7 @@
 import uuid from 'uuid/v4'
 
-export default function (params) {
-  const {
-    id = uuid(),
-    read = false
-  } = params
+export default function(params) {
+  const { id = uuid(), read = false } = params
 
   return {
     mutation: `
@@ -15,6 +12,6 @@ export default function (params) {
         }
       }
     `,
-    variables: { id, read }
+    variables: { id, read },
   }
 }

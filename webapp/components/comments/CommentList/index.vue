@@ -46,20 +46,20 @@ import HcEmpty from '~/components/Empty.vue'
 export default {
   components: {
     Comment,
-    HcEmpty
+    HcEmpty,
   },
   props: {
-    post: { type: Object, default: () => {} }
+    post: { type: Object, default: () => {} },
   },
   data() {
     return {
-      comments: []
+      comments: [],
     }
   },
   watch: {
     Post(post) {
       this.comments = post[0].comments || []
-    }
+    },
   },
   mounted() {
     this.$root.$on('refetchPostComments', comment => {
@@ -72,7 +72,7 @@ export default {
     },
     deleteComment(index) {
       this.comments.splice(index, 1)
-    }
+    },
   },
   apollo: {
     Post: {
@@ -81,11 +81,11 @@ export default {
       },
       variables() {
         return {
-          slug: this.post.slug
+          slug: this.post.slug,
         }
       },
-      fetchPolicy: 'cache-and-network'
-    }
-  }
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>

@@ -39,17 +39,17 @@ export default {
   components: {
     DisableModal,
     ReportModal,
-    DeleteModal
+    DeleteModal,
   },
   computed: {
     ...mapGetters({
       data: 'modal/data',
-      open: 'modal/open'
+      open: 'modal/open',
     }),
     name() {
       if (!this.data || !this.data.resource) return ''
       const {
-        resource: { name, title, author }
+        resource: { name, title, author },
       } = this.data
       switch (this.data.type) {
         case 'user':
@@ -61,12 +61,12 @@ export default {
         default:
           return null
       }
-    }
+    },
   },
   methods: {
     close() {
       this.$store.commit('modal/SET_OPEN', {})
-    }
-  }
+    },
+  },
 }
 </script>

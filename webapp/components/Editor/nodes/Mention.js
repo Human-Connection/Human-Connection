@@ -1,5 +1,3 @@
-import { Node } from 'tiptap'
-import { replaceText } from 'tiptap-commands'
 import { Mention as TipTapMention } from 'tiptap-extensions'
 
 export default class Mention extends TipTapMention {
@@ -8,7 +6,7 @@ export default class Mention extends TipTapMention {
 
     patchedSchema.attrs = {
       url: {},
-      label: {}
+      label: {},
     }
     patchedSchema.toDOM = node => {
       return [
@@ -16,9 +14,9 @@ export default class Mention extends TipTapMention {
         {
           class: this.options.mentionClass,
           href: node.attrs.url,
-          target: '_blank'
+          target: '_blank',
         },
-        `${this.options.matcher.char}${node.attrs.label}`
+        `${this.options.matcher.char}${node.attrs.label}`,
       ]
     }
     patchedSchema.parseDOM = [

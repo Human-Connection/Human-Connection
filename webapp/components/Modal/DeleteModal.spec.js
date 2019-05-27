@@ -1,7 +1,6 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 import DeleteModal from './DeleteModal.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import VueRouter from 'vue-router'
@@ -16,7 +15,6 @@ localVue.use(VueRouter)
 
 describe('DeleteModal.vue', () => {
   let wrapper
-  let Wrapper
   let propsData
   let mocks
 
@@ -27,20 +25,20 @@ describe('DeleteModal.vue', () => {
       callbacks: {
         confirm: () => Post.methods.deletePostCallback('list'),
         cancel: null
-      }
+      },
     }
     mocks = {
       $t: jest.fn(),
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
-      }
+        mutate: jest.fn().mockResolvedValue(),
+      },
     }
   })
 
@@ -68,7 +66,7 @@ describe('DeleteModal.vue', () => {
           callbacks: {
             confirm: () => Post.methods.deletePostCallback('list'),
             cancel: null
-          }
+          },
         }
       })
 
@@ -125,7 +123,7 @@ describe('DeleteModal.vue', () => {
           callbacks: {
             confirm: () => Post.methods.deletePostCallback('list'),
             cancel: null
-          }
+          },
         }
         wrapper = Wrapper()
       })

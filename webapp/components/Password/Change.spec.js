@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import ChangePassword from './Change.vue'
-import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
@@ -9,25 +8,24 @@ localVue.use(Styleguide)
 
 describe('ChangePassword.vue', () => {
   let mocks
-  let wrapper
 
   beforeEach(() => {
     mocks = {
       validate: jest.fn(),
       $toast: {
         error: jest.fn(),
-        success: jest.fn()
+        success: jest.fn(),
       },
       $t: jest.fn(),
       $store: {
-        commit: jest.fn()
+        commit: jest.fn(),
       },
       $apollo: {
         mutate: jest
           .fn()
           .mockRejectedValue({ message: 'Ouch!' })
-          .mockResolvedValueOnce({ data: { changePassword: 'NEWTOKEN' } })
-      }
+          .mockResolvedValueOnce({ data: { changePassword: 'NEWTOKEN' } }),
+      },
     }
   })
 
@@ -63,9 +61,7 @@ describe('ChangePassword.vue', () => {
 
           it.skip('displays a warning', () => {
             const calls = mocks.validate.mock.calls
-            const expected = [
-              ['change-password.validations.old-and-new-password-match']
-            ]
+            const expected = [['change-password.validations.old-and-new-password-match']]
             expect(calls).toEqual(expect.arrayContaining(expected))
           })
         })
@@ -112,9 +108,9 @@ describe('ChangePassword.vue', () => {
               variables: {
                 oldPassword: 'supersecret',
                 newPassword: 'superdupersecret',
-                confirmPassword: 'superdupersecret'
-              }
-            })
+                confirmPassword: 'superdupersecret',
+              },
+            }),
           )
         })
 
@@ -124,16 +120,11 @@ describe('ChangePassword.vue', () => {
           })
 
           it('calls auth/SET_TOKEN with response', () => {
-            expect(mocks.$store.commit).toHaveBeenCalledWith(
-              'auth/SET_TOKEN',
-              'NEWTOKEN'
-            )
+            expect(mocks.$store.commit).toHaveBeenCalledWith('auth/SET_TOKEN', 'NEWTOKEN')
           })
 
           it('displays success message', () => {
-            expect(mocks.$t).toHaveBeenCalledWith(
-              'settings.security.change-password.success'
-            )
+            expect(mocks.$t).toHaveBeenCalledWith('settings.security.change-password.success')
             expect(mocks.$toast.success).toHaveBeenCalled()
           })
         })

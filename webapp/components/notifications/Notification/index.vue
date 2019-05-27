@@ -44,13 +44,13 @@ import HcUser from '~/components/User'
 export default {
   name: 'Notification',
   components: {
-    HcUser
+    HcUser,
   },
   props: {
     notification: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     excerpt() {
@@ -58,8 +58,8 @@ export default {
     },
     post() {
       return this.notification.post || {}
-    }
-  }
+    },
+  },
 }
 </script>
 

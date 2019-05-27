@@ -1,13 +1,6 @@
-import {
-  config,
-  shallowMount,
-  mount,
-  createLocalVue,
-  RouterLinkStub
-} from '@vue/test-utils'
+import { config, shallowMount, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import NotificationList from '.'
 import Notification from '../Notification'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Filters from '~/plugins/vue-filters'
 
@@ -25,7 +18,6 @@ config.stubs['v-popover'] = '<span><slot /></span>'
 
 describe('NotificationList.vue', () => {
   let wrapper
-  let Wrapper
   let mocks
   let stubs
   let store
@@ -36,14 +28,14 @@ describe('NotificationList.vue', () => {
       getters: {
         'auth/user': () => {
           return {}
-        }
-      }
+        },
+      },
     })
     mocks = {
-      $t: jest.fn()
+      $t: jest.fn(),
     }
     stubs = {
-      NuxtLink: RouterLinkStub
+      NuxtLink: RouterLinkStub,
     }
     propsData = {
       notifications: [
@@ -57,9 +49,9 @@ describe('NotificationList.vue', () => {
             author: {
               id: 'john-1',
               slug: 'john-doe',
-              name: 'John Doe'
-            }
-          }
+              name: 'John Doe',
+            },
+          },
         },
         {
           id: 'notification-42',
@@ -71,11 +63,11 @@ describe('NotificationList.vue', () => {
             author: {
               id: 'john-1',
               slug: 'john-doe',
-              name: 'John Doe'
-            }
-          }
-        }
-      ]
+              name: 'John Doe',
+            },
+          },
+        },
+      ],
     }
   })
 
@@ -85,7 +77,7 @@ describe('NotificationList.vue', () => {
         propsData,
         mocks,
         store,
-        localVue
+        localVue,
       })
     }
 
@@ -105,7 +97,7 @@ describe('NotificationList.vue', () => {
         mocks,
         stubs,
         store,
-        localVue
+        localVue,
       })
     }
 

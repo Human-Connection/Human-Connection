@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import MySocialMedia from './my-social-media.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 
@@ -11,7 +10,6 @@ localVue.use(Styleguide)
 
 describe('my-social-media.vue', () => {
   let wrapper
-  let Wrapper
   let store
   let mocks
   let getters
@@ -27,25 +25,25 @@ describe('my-social-media.vue', () => {
           .fn()
           .mockRejectedValue({ message: 'Ouch!' })
           .mockResolvedValueOnce({
-            data: { CreateSocialMeda: { id: 's1', url: socialMediaUrl } }
-          })
+            data: { CreateSocialMeda: { id: 's1', url: socialMediaUrl } },
+          }),
       },
       $toast: {
         error: jest.fn(),
-        success: jest.fn()
-      }
+        success: jest.fn(),
+      },
     }
     getters = {
       'auth/user': () => {
         return {}
-      }
+      },
     }
   })
 
   describe('mount', () => {
     const Wrapper = () => {
       store = new Vuex.Store({
-        getters
+        getters,
       })
       return mount(MySocialMedia, { store, mocks, localVue })
     }
@@ -60,9 +58,9 @@ describe('my-social-media.vue', () => {
         getters = {
           'auth/user': () => {
             return {
-              socialMedia: [{ id: 's1', url: socialMediaUrl }]
+              socialMedia: [{ id: 's1', url: socialMediaUrl }],
             }
-          }
+          },
         }
       })
 
@@ -80,20 +78,20 @@ describe('my-social-media.vue', () => {
               .fn()
               .mockRejectedValue({ message: 'Ouch!' })
               .mockResolvedValueOnce({
-                data: { DeleteSocialMeda: { id: 's1', url: socialMediaUrl } }
-              })
+                data: { DeleteSocialMeda: { id: 's1', url: socialMediaUrl } },
+              }),
           },
           $toast: {
             error: jest.fn(),
-            success: jest.fn()
-          }
+            success: jest.fn(),
+          },
         }
         getters = {
           'auth/user': () => {
             return {
-              socialMedia: [{ id: 's1', url: socialMediaUrl }]
+              socialMedia: [{ id: 's1', url: socialMediaUrl }],
             }
-          }
+          },
         }
       })
 

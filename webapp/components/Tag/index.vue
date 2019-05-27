@@ -9,7 +9,7 @@
 export default {
   name: 'HcTag',
   props: {
-    name: { type: String, required: true }
-  }
+    name: { type: String, required: true },
+  },
 }
 </script>

@@ -30,8 +30,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 let mouseEnterTimer = null
 let mouseLeaveTimer = null
 
@@ -39,17 +37,17 @@ export default {
   props: {
     placement: { type: String, default: 'bottom-end' },
     disabled: { type: Boolean, default: false },
-    offset: { type: [String, Number], default: '16' }
+    offset: { type: [String, Number], default: '16' },
   },
   data() {
     return {
-      isPopoverOpen: false
+      isPopoverOpen: false,
     }
   },
   computed: {
     isOpen() {
       return this.isPopoverOpen
-    }
+    },
   },
   watch: {
     isPopoverOpen: {
@@ -59,19 +57,15 @@ export default {
           if (isOpen) {
             this.$nextTick(() => {
               setTimeout(() => {
-                document
-                  .getElementsByTagName('body')[0]
-                  .classList.add('dropdown-open')
+                document.getElementsByTagName('body')[0].classList.add('dropdown-open')
               }, 20)
             })
           } else {
-            document
-              .getElementsByTagName('body')[0]
-              .classList.remove('dropdown-open')
+            document.getElementsByTagName('body')[0].classList.remove('dropdown-open')
           }
         } catch (err) {}
-      }
-    }
+      },
+    },
   },
   beforeDestroy() {
     clearTimeout(mouseEnterTimer)
@@ -128,7 +122,7 @@ export default {
     clearTimeouts() {
       clearTimeout(mouseEnterTimer)
       clearTimeout(mouseLeaveTimer)
-    }
-  }
+    },
+  },
 }
 </script>

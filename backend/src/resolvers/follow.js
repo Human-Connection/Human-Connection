@@ -12,8 +12,8 @@ export default {
         {
           id,
           type,
-          userId: context.user.id
-        }
+          userId: context.user.id,
+        },
       )
 
       const [isFollowed] = transactionRes.records.map(record => {
@@ -37,8 +37,8 @@ export default {
         {
           id,
           type,
-          userId: context.user.id
-        }
+          userId: context.user.id,
+        },
       )
       const [isFollowed] = transactionRes.records.map(record => {
         return record.get('isFollowed')
@@ -46,6 +46,6 @@ export default {
       session.close()
 
       return isFollowed
-    }
-  }
+    },
+  },
 }

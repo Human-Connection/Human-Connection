@@ -1,6 +1,5 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 
@@ -11,7 +10,6 @@ localVue.use(Styleguide)
 
 describe('ReportModal.vue', () => {
   let wrapper
-  let Wrapper
   let propsData
   let mocks
 
@@ -19,20 +17,20 @@ describe('ReportModal.vue', () => {
     propsData = {
       type: 'contribution',
       id: 'c43',
-      callbacks: { confirm: null, cancel: null }
+      callbacks: { confirm: null, cancel: null },
     }
     mocks = {
       $t: jest.fn(),
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
-      }
+        mutate: jest.fn().mockResolvedValue(),
+      },
     }
   })
 
@@ -57,7 +55,7 @@ describe('ReportModal.vue', () => {
           type: 'user',
           id: 'u4',
           name: 'Bob Ross',
-          callbacks: { confirm: null, cancel: null }
+          callbacks: { confirm: null, cancel: null },
         }
       })
 
@@ -75,7 +73,7 @@ describe('ReportModal.vue', () => {
           id: 'p23',
           type: 'post',
           name: 'It is a post',
-          callbacks: { confirm: null, cancel: null }
+          callbacks: { confirm: null, cancel: null },
         }
       })
 
@@ -104,7 +102,7 @@ describe('ReportModal.vue', () => {
         propsData = {
           type: 'user',
           id: 'u4711',
-          callbacks: { confirm: null, cancel: null }
+          callbacks: { confirm: null, cancel: null },
         }
         wrapper = Wrapper()
       })

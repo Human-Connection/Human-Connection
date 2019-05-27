@@ -18,7 +18,7 @@
             :image="user.avatar"
             :name="userName"
             class="profile-avatar"
-            size="120px"
+            size="x-large"
           />
           <no-ssr>
             <content-menu
@@ -339,19 +339,19 @@ export default {
     HcBadges,
     HcLoadMore,
     HcEmpty,
-    ContentMenu
+    ContentMenu,
   },
   mixins: [PostMutationHelpers],
   transition: {
     name: 'slide-up',
-    mode: 'out-in'
+    mode: 'out-in',
   },
   data() {
     return {
       User: [],
       voted: false,
       page: 1,
-      pageSize: 6
+      pageSize: 6,
     }
   },
   computed: {
@@ -370,8 +370,7 @@ export default {
     },
     hasMore() {
       return (
-        this.user.contributions &&
-        this.user.contributions.length < this.user.contributionsCount
+        this.user.contributions && this.user.contributions.length < this.user.contributionsCount
       )
     },
     activePosts() {
@@ -384,9 +383,7 @@ export default {
       const { socialMedia = [] } = this.user
       return socialMedia.map(socialMedia => {
         const { url } = socialMedia
-        const matches = url.match(
-          /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
-        )
+        const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g)
         const [domain] = matches || []
         const favicon = domain ? `${domain}/favicon.ico` : null
         const username = url.split('/').pop()
@@ -396,14 +393,14 @@ export default {
     userName() {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
-    }
+    },
   },
   watch: {
     User(val) {
       if (!val || !val.length) {
         throw new Error('User not found!')
       }
-    }
+    },
   },
   methods: {
     uniq(items, field = 'id') {
@@ -421,23 +418,23 @@ export default {
         variables: {
           slug: this.$route.params.slug,
           first: this.pageSize,
-          offset: this.offset
+          offset: this.offset,
         },
         // Transform the previous result with new data
         updateQuery: (previousResult, { fetchMoreResult }) => {
           let output = { User: this.User }
           output.User[0].contributions = [
             ...previousResult.User[0].contributions,
-            ...fetchMoreResult.User[0].contributions
+            ...fetchMoreResult.User[0].contributions,
           ]
           return output
         },
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
       })
     },
     deletePost(index) {
       this.user.contributions.splice(index, 1)
-    }
+    },
   },
   apollo: {
     User: {
@@ -448,12 +445,12 @@ export default {
         return {
           slug: this.$route.params.slug,
           first: this.pageSize,
-          offset: 0
+          offset: 0,
         }
       },
-      fetchPolicy: 'cache-and-network'
-    }
-  }
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>
 

@@ -35,13 +35,13 @@ export default {
     name: { type: String, default: '' },
     type: { type: String, required: true },
     callbacks: { type: Object, required: true },
-    id: { type: String, required: true }
+    id: { type: String, required: true },
   },
   data() {
     return {
       isOpen: true,
       success: false,
-      loading: false
+      loading: false,
     }
   },
   computed: {
@@ -51,7 +51,7 @@ export default {
     message() {
       const name = this.$filters.truncate(this.name, 30)
       return this.$t(`disable.${this.type}.message`, { name })
-    }
+    },
   },
   methods: {
     async cancel() {
@@ -74,7 +74,7 @@ export default {
               disable(id: $id)
             }
           `,
-          variables: { id: this.id }
+          variables: { id: this.id },
         })
         this.$toast.success(this.$t('disable.success'))
         this.isOpen = false
@@ -84,7 +84,7 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
-    }
-  }
+    },
+  },
 }
 </script>
