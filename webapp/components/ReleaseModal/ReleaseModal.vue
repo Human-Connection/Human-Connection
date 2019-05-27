@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     cancel() {
-      this.isOpen = true
+      this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
       }, 1000)
@@ -70,7 +70,7 @@ export default {
           variables: { id: this.id }
         })
         this.$toast.success(this.$t('release.success'))
-        this.isOpen = true
+        this.isOpen = false
         setTimeout(() => {
           this.$emit('close')
           location.reload()

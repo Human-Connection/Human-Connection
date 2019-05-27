@@ -57,7 +57,7 @@ describe('ReleaseModal.vue', () => {
         const calls = mocks.$t.mock.calls
         const expected = [
           [
-            'disable.user.message',
+            'release.user.message',
             {
               name: 'Bob Ross'
             }
@@ -81,7 +81,7 @@ describe('ReleaseModal.vue', () => {
         const calls = mocks.$t.mock.calls
         const expected = [
           [
-            'disable.contribution.message',
+            'release.contribution.message',
             {
               name: 'This is some post title.'
             }
