@@ -19,6 +19,7 @@
           />
         </div>
         <div class="main-navigation-right">
+          <filter-menu />
           <no-ssr>
             <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
           </no-ssr>
@@ -98,6 +99,7 @@ import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
+import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import seo from '~/mixins/seo'
 
 export default {
@@ -108,6 +110,7 @@ export default {
     Modal,
     NotificationMenu,
     HcAvatar,
+    FilterMenu,
   },
   mixins: [seo],
   data() {
