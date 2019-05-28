@@ -22,7 +22,6 @@
   },
   "jest": {
     "verbose": true,
-    "collectCoverage": true,
     "collectCoverageFrom": [
       "**/*.{js,vue}",
       "!**/node_modules/**",
