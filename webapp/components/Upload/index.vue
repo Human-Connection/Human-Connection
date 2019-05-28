@@ -9,6 +9,7 @@
       :style="backgroundImage"
       @vdropzone-thumbnail="thumbnail"
       @vdropzone-drop="vddrop"
+      @vdropzone-error="verror"
     />
   </div>
 </template>
@@ -27,10 +28,11 @@ export default {
     return {
       dropzoneOptions: {
         url: this.vddrop,
-        maxFilesize: 0.5,
+        maxFilesize: 3.0,
         previewTemplate: this.template(),
         dictDefaultMessage: '',
       },
+      error: false,
     }
   },
   computed: {
@@ -42,18 +44,19 @@ export default {
       }
     },
   },
+  watch: {
+    error() {
+      let that = this
+      setTimeout(function() {
+        that.error = false
+      }, 2000)
+    },
+  },
   methods: {
     template() {
       return `<div class="dz-preview dz-file-preview">
                 <div class="dz-image">
                   <div data-dz-thumbnail-bg></div>
-                </div>
-                <div class="dz-details">
-                  <div class="dz-size"><span data-dz-size></span></div>
-                  <div class="dz-filename"><span data-dz-name></span></div>
-                </div>
-                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-                <div class="dz-error-message"><span data-dz-errormessage></span></div>
                 </div>
               </div>
       `
@@ -93,6 +96,12 @@ export default {
           this.$toast.success(this.$t('user.avatar.submitted'))
         })
         .catch(error => this.$toast.error(error.message))
+    },
+    verror(file, message) {
+      this.error = true
+      if (file.status === 'error') {
+        this.$toast.error(file.status, message)
+      }
     },
   },
 }
