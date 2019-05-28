@@ -1,4 +1,11 @@
 {
+  "filter-menu": {
+    "options": {
+      "friends": "Nur Freunde",
+      "friends-of-a-friend": "Freunde von Freunden",
+      "all": "Alle"
+    }
+  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",

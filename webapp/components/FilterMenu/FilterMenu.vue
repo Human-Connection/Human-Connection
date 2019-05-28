@@ -1,21 +1,38 @@
 <template>
   <ds-card>
-    <ds-form>
-    <ds-radio buttons v-model="filter" label="Filter" :options="['friends', 'friends-of-a-friend', 'all']" />
-    </ds-form>
+    <ds-radio
+      v-model="filter"
+      buttons
+      label="Filter"
+      label-prop="text"
+      @input="handleInput"
+      :options="options"
+    />
   </ds-card>
 </template>
 
 <script>
-import Dropdown from '~/components/Dropdown'
 export default {
-  components: {
-    Dropdown
-  },
   data() {
+    // We have to fix styleguide here. It uses .includes wich will always be
+    // false for arrays of objects.
     return {
-      filter: 'all'
+      filter: { value: 'all', text: this.$t('filter-menu.options.all') },
     }
-  }
+  },
+  computed: {
+    options() {
+      return [
+        { value: 'friends', text: this.$t('filter-menu.options.friends') },
+        { value: 'friends-of-a-friend', text: this.$t('filter-menu.options.friends-of-a-friend') },
+        { value: 'all', text: this.$t('filter-menu.options.all') },
+      ]
+    },
+  },
+  methods: {
+    handleInput(e) {
+      // console.log('handleInput', e)
+    },
+  },
 }
 </script>
