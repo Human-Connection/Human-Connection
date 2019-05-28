@@ -1,26 +1,21 @@
 <template>
-  <dropdown>
-    <a
-      slot="default"
-      class="filter-menu"
-      href="#"
-    >
-      <ds-icon
-        name="filter"
-      />
-      Filter
-    </a>
-  </dropdown>
+  <ds-card>
+    <ds-form>
+    <ds-radio buttons v-model="filter" label="Filter" :options="['friends', 'friends-of-a-friend', 'all']" />
+    </ds-form>
+  </ds-card>
 </template>
 
 <script>
-export default {}
-</script>
-
-<style>
-.filter-menu {
-  display: flex;
-  align-items: center;
-  height: 100%;
+import Dropdown from '~/components/Dropdown'
+export default {
+  components: {
+    Dropdown
+  },
+  data() {
+    return {
+      filter: 'all'
+    }
+  }
 }
-</style>
+</script>
