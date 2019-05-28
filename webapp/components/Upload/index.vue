@@ -48,13 +48,6 @@ export default {
                 <div class="dz-image">
                   <div data-dz-thumbnail-bg></div>
                 </div>
-                <div class="dz-details">
-                  <div class="dz-size"><span data-dz-size></span></div>
-                  <div class="dz-filename"><span data-dz-name></span></div>
-                </div>
-                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-                <div class="dz-error-message"><span data-dz-errormessage></span></div>
-                </div>
               </div>
       `
     },
@@ -117,15 +110,16 @@ export default {
 }
 
 #customdropzone .dz-preview {
+  transition: all 0.2s ease-out;
   width: 160px;
   display: flex;
 }
 
 #customdropzone .dz-preview .dz-image {
-  position: relative;
-  width: 122px;
-  height: 122px;
-  margin: -35px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: hidden;
 }
 
 #customdropzone .dz-preview .dz-image > div {
