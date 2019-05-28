@@ -18,10 +18,9 @@
             v-if="myProfile"
             :user="user"
           />
-          <ds-avatar
+          <hc-avatar
             v-else
-            :image="user.avatar"
-            :name="userName"
+            :user="user"
             class="profile-avatar"
             size="x-large"
           />
@@ -333,6 +332,7 @@ import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 
 export default {
   components: {
@@ -343,6 +343,7 @@ export default {
     HcBadges,
     HcLoadMore,
     HcEmpty,
+    HcAvatar,
     ContentMenu,
     HcUpload,
   },
@@ -456,7 +457,7 @@ export default {
 </script>
 
 <style lang="scss">
-.profile-avatar {
+.profile-avatar.ds-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;

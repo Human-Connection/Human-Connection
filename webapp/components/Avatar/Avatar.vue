@@ -2,8 +2,8 @@
   <ds-avatar
     :image="avatarUrl"
     :name="userName"
-    style="display: inline-block; vertical-align: middle;"
-    size="small"
+    class="avatar"
+    :size="size"
   />
 </template>
 
@@ -12,6 +12,7 @@ export default {
   name: 'HcAvatar',
   props: {
     user: { type: Object, default: null },
+    size: { type: String, default: 'small' },
   },
   computed: {
     avatarUrl() {
