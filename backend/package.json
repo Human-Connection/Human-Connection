@@ -26,7 +26,6 @@
   "license": "MIT",
   "jest": {
     "verbose": true,
-    "collectCoverage": true,
     "collectCoverageFrom": [
       "**/*.js",
       "!**/node_modules/**",
