@@ -73,7 +73,9 @@ export default {
         this.isOpen = false
         setTimeout(() => {
           this.$emit('close')
-          location.reload()
+          location: {
+            reload: jest.fn()
+          }
         }, 1500)
       } catch (err) {
         this.$toast.error(err.message)
