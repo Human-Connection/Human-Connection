@@ -1,4 +1,4 @@
-CALL apoc.load.json('file:/tmp/mongo-export/splits/current-chunk.json') YIELD value as post
+CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL}") YIELD value as post
 MERGE (p:Post {id: post._id["$oid"]})
 ON CREATE SET
 p.title          = post.title,
