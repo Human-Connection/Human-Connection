@@ -3,7 +3,7 @@
     <div
       style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
     >
-      <ds-avatar style="display: inline-block; vertical-align: middle;" size="small" />
+      <hc-avatar />
     </div>
     <div style="display: inline-block; height: 100%; vertical-align: middle;">
       <b class="username" style="vertical-align: middle;">{{ $t('profile.userAnonym') }}</b>
@@ -16,12 +16,7 @@
           <div
             style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
           >
-            <ds-avatar
-              :image="user.avatar"
-              :name="userName"
-              style="display: inline-block; vertical-align: middle;"
-              size="small"
-            />
+            <hc-avatar :user="user" />
           </div>
           <div style="display: inline-block; height: 100%; vertical-align: middle;">
             <b class="username" style="vertical-align: middle;">{{ userName | truncate(18) }}</b>
@@ -102,6 +97,7 @@ import { mapGetters } from 'vuex'
 import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcFollowButton from '~/components/FollowButton'
 import HcBadges from '~/components/Badges'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 import Dropdown from '~/components/Dropdown'
 
 export default {
@@ -109,6 +105,7 @@ export default {
   components: {
     HcRelativeDateTime,
     HcFollowButton,
+    HcAvatar,
     HcBadges,
     Dropdown,
   },
@@ -142,12 +139,6 @@ export default {
 </script>
 
 <style lang="scss">
-.profile-avatar {
-  display: block;
-  margin: auto;
-  margin-top: -45px;
-  border: #fff 5px solid;
-}
 .user {
   white-space: nowrap;
   position: relative;

@@ -68,6 +68,7 @@ export default {
     changeLanguage(locale, toggleMenu) {
       this.$i18n.set(locale)
       toggleMenu()
+      this.$root.$emit('changeLanguage')
     },
     matcher(locale) {
       return locale === this.$i18n.locale()

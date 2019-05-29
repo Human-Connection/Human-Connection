@@ -26,7 +26,6 @@
   "license": "MIT",
   "jest": {
     "verbose": true,
-    "collectCoverage": true,
     "collectCoverageFrom": [
       "**/*.js",
       "!**/node_modules/**",
@@ -106,7 +105,7 @@
     "graphql-request": "~1.8.2",
     "jest": "~24.8.0",
     "nodemon": "~1.19.1",
-    "prettier": "~1.14.3",
+    "prettier": "~1.17.1",
     "supertest": "~4.0.2"
   }
 }

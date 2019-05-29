@@ -11,13 +11,7 @@
           style="position: relative; height: auto;"
         >
           <hc-upload v-if="myProfile" :user="user" />
-          <ds-avatar
-            v-else
-            :image="user.avatar"
-            :name="userName"
-            class="profile-avatar"
-            size="x-large"
-          />
+          <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
           <no-ssr>
             <content-menu
               placement="bottom-end"
@@ -28,9 +22,7 @@
             />
           </no-ssr>
           <ds-space margin="small">
-            <ds-heading tag="h3" align="center" no-margin>
-              {{ userName }}
-            </ds-heading>
+            <ds-heading tag="h3" align="center" no-margin>{{ userName }}</ds-heading>
             <ds-text v-if="user.location" align="center" color="soft" size="small">
               <ds-icon name="map-marker" />
               {{ user.location.name }}
@@ -70,9 +62,7 @@
           <template v-if="user.about">
             <hr />
             <ds-space margin-top="small" margin-bottom="small">
-              <ds-text color="soft" size="small">
-                {{ user.about }}
-              </ds-text>
+              <ds-text color="soft" size="small">{{ user.about }}</ds-text>
             </ds-space>
           </template>
         </ds-card>
@@ -225,6 +215,7 @@ import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 
 export default {
   components: {
@@ -235,6 +226,7 @@ export default {
     HcBadges,
     HcLoadMore,
     HcEmpty,
+    HcAvatar,
     ContentMenu,
     HcUpload,
   },
@@ -348,7 +340,7 @@ export default {
 </script>
 
 <style lang="scss">
-.profile-avatar {
+.profile-avatar.ds-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;

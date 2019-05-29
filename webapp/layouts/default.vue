@@ -39,7 +39,7 @@
                     "
                     @click.prevent="toggleMenu"
                   >
-                    <ds-avatar :image="user.avatar" :name="user.name" size="small" />
+                    <hc-avatar :user="user" />
                     <ds-icon size="xx-small" name="angle-down" />
                   </a>
                 </template>
@@ -97,6 +97,7 @@ import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
 
 export default {
@@ -106,6 +107,7 @@ export default {
     SearchInput,
     Modal,
     NotificationMenu,
+    HcAvatar,
   },
   mixins: [seo],
   data() {

@@ -45,13 +45,15 @@ export default {
     },
   },
   mounted() {
-    this.$root.$on('refetchPostComments', comment => {
-      this.refetchPostComments(comment)
+    this.$root.$on('refetchPostComments', () => {
+      this.refetchPostComments()
     })
   },
   methods: {
-    refetchPostComments(comment) {
-      this.$apollo.queries.Post.refetch()
+    refetchPostComments() {
+      if (this.$apollo.queries.Post) {
+        this.$apollo.queries.Post.refetch()
+      }
     },
   },
   apollo: {
