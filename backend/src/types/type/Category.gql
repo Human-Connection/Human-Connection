@@ -1,7 +1,7 @@
 type Category {
   id: ID!
   name: String!
-  slug: String!
+  slug: String
   icon: String!
   #createdAt: DateTime
   #updatedAt: DateTime

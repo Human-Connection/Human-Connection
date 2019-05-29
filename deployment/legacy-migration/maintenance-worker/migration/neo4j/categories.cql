@@ -11,7 +11,7 @@
       },
 [?]   slug: {
 [X]     type: String,
-[X]     required: true,
+[ ]     required: true, // Not required in Nitro
 [ ]     unique: true // Unique value is not enforced in Nitro?
       },
 [?]   icon: { // Nitro adds required: true
