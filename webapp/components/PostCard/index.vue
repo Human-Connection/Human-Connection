@@ -10,29 +10,36 @@
         class="post-link"
         :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
       >
-{{ post.title }}
-</nuxt-link>
+        {{ post.title }}
+      </nuxt-link>
       <ds-space margin-bottom="small" />
       <!-- Username, Image & Date of Post -->
       <div>
         <no-ssr>
-          <hc-user :user="post.author"
-:trunc="35" :date-time="post.createdAt" />
+          <hc-user
+            :user="post.author"
+            :trunc="35"
+            :date-time="post.createdAt"
+          />
         </no-ssr>
         <hc-ribbon :text="$t('post.name')" />
       </div>
       <ds-space margin-bottom="small" />
       <!-- Post Title -->
-      <ds-heading tag="h3"
-no-margin>
-{{ post.title }}
-</ds-heading>
+      <ds-heading
+        tag="h3"
+        no-margin
+      >
+        {{ post.title }}
+      </ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Post Content Excerpt -->
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
-      <div class="hc-editor-content"
-v-html="excerpt" />
+      <div
+        class="hc-editor-content"
+        v-html="excerpt"
+      />
       <!-- eslint-enable vue/no-v-html -->
       <!-- Footer o the Post -->
       <template slot="footer">
