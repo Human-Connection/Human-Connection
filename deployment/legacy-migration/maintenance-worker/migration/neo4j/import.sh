@@ -41,7 +41,6 @@ function import_collection () {
       # add file to array and file
       IMPORT_INDEX+=("${CHUNK_FILE_NAME}")
       echo "${CHUNK_FILE_NAME}" >> ${INDEX_FILE}
-      echo "${IMPORT_INDEX[*]}"
     else
       echo "Skipping $1 ${CHUNK_FILE_NAME} (${chunk})"
     fi
