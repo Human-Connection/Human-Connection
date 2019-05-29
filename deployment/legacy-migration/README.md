@@ -56,7 +56,7 @@ Deploy one-time maintenance-worker pod:
 
 ```bash
 # in deployment/legacy-migration/
-$ kubectl apply -f db-migration-worker.yaml
+$ kubectl apply -f maintenance-worker.yaml
 pod/nitro-maintenance-worker created
 ```
 
