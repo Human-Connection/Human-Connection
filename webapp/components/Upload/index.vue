@@ -8,7 +8,6 @@
       :include-styling="false"
       :style="backgroundImage"
       @vdropzone-thumbnail="thumbnail"
-      @vdropzone-drop="vddrop"
       @vdropzone-error="verror"
     />
   </div>
@@ -28,7 +27,7 @@ export default {
     return {
       dropzoneOptions: {
         url: this.vddrop,
-        maxFilesize: 3.0,
+        maxFilesize: 5.0,
         previewTemplate: this.template(),
         dictDefaultMessage: '',
       },
@@ -98,8 +97,8 @@ export default {
         .catch(error => this.$toast.error(error.message))
     },
     verror(file, message) {
-      this.error = true
       if (file.status === 'error') {
+        this.error = true
         this.$toast.error(file.status, message)
       }
     },
