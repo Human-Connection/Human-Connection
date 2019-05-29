@@ -1,13 +1,20 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+// import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 // import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 import PostSlug from './_slug.vue'
-import Vue from 'vue'
+// import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import VueRouter from 'vue-router'
 
-const routes = [{ path: '/' }]
-const router = new VueRouter({ routes })
+const routes = [
+  {
+    path: '/',
+  },
+]
+const router = new VueRouter({
+  routes,
+})
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
@@ -30,6 +37,11 @@ describe('PostSlug', () => {
       // $filters: {
       //   truncate: a => a
       // },
+      // $router: {
+      //   history: {
+      //     push: jest.fn(),
+      //   },
+      // },
       $toast: {
         success: () => {},
         error: () => {},
@@ -40,72 +52,85 @@ describe('PostSlug', () => {
     }
   })
 
-  //   describe('shallowMount', () => {
-  //     Wrapper = () => {
-  //       return shallowMount(PostSlug, { propsData, mocks, localVue, router })
-  //     }
-
-  //     describe('defaults', () => {
-  //       it('success false', () => {
-  //         console.log(Wrapper().vm)
-  //         expect(Wrapper().vm.success).toBe(false)
-  //       })
-
-  //       it('loading false', () => {
-  //         expect(Wrapper().vm.loading).toBe(false)
-  //       })
+  // describe('shallowMount', () => {
+  //   Wrapper = () => {
+  //     return shallowMount(PostSlug, {
+  //       propsData,
+  //       mocks,
+  //       localVue,
+  //       router,
+  //     })
+  //   }
+  //   describe('given a post', () => {
+  //     beforeEach(() => {
+  //       // propsData = {
+  //       //   type: 'contribution',
+  //       //   id: 'p23',
+  //       //   name: 'It is a post',
+  //       //   // callbacks: {
+  //       //   //   confirm: () => Post.methods.deletePostCallback('list'),
+  //       //   //   cancel: null
+  //       //   // }
+  //       // }
+  //       mocks = {
+  //         ...mocks,
+  //         post: {
+  //           id: 'p23',
+  //           name: 'It is a post',
+  //         },
+  //       }
   //     })
 
-  // describe('given a post', () => {
-  //   beforeEach(() => {
-  //     propsData = {
-  //       type: 'contribution',
-  //       id: 'p23',
-  //       name: 'It is a post'
-  //     //   callbacks: {
-  //     //     confirm: () => Post.methods.deletePostCallback('list'),
-  //     //     cancel: null
-  //     //   }
-  //     }
+  //     it('mentions post title', () => {
+  //       wrapper = Wrapper()
+  //       wrapper.vm.deletePostCallback('list')
+
+  //       console.log('mocks.$t: ', mocks.$t)
+  //       const calls = mocks.$t.mock.calls
+  //       const expected = [
+  //         [
+  //           'delete.contribution.message',
+  //           {
+  //             name: 'It is a post',
+  //           },
+  //         ],
+  //       ]
+  //       expect(calls).toEqual(expect.arrayContaining(expected))
+  //     })
   //   })
 
-  //   it('mentions post title', () => {
-  //     Wrapper()
-  //     const calls = mocks.$t.mock.calls
-  //     const expected = [
-  //       ['delete.contribution.message', { name: 'It is a post' }]
-  //     ]
-  //     expect(calls).toEqual(expect.arrayContaining(expected))
-  //   })
+  //   // describe('given a comment', () => {
+  //   //   beforeEach(() => {
+  //   //     propsData = {
+  //   //       type: 'comment',
+  //   //       id: 'c3',
+  //   //       name: 'It is the user of the comment'
+  //   //     //   callbacks: {
+  //   //     //     confirm: () => Post.methods.deletePostCallback('list'),
+  //   //     //     cancel: null
+  //   //     //   }
+  //   //     }
+  //   //   })
+
+  //   //   it('mentions comments user name', () => {
+  //   //     Wrapper()
+  //   //     const calls = mocks.$t.mock.calls
+  //   //     const expected = [
+  //   //       ['delete.comment.message', { name: 'It is the user of the comment' }]
+  //   //     ]
+  //   //     expect(calls).toEqual(expect.arrayContaining(expected))
+  //   //   })
+  //   // })
   // })
-
-  // describe('given a comment', () => {
-  //   beforeEach(() => {
-  //     propsData = {
-  //       type: 'comment',
-  //       id: 'c3',
-  //       name: 'It is the user of the comment'
-  //     //   callbacks: {
-  //     //     confirm: () => Post.methods.deletePostCallback('list'),
-  //     //     cancel: null
-  //     //   }
-  //     }
-  //   })
-
-  //   it('mentions comments user name', () => {
-  //     Wrapper()
-  //     const calls = mocks.$t.mock.calls
-  //     const expected = [
-  //       ['delete.comment.message', { name: 'It is the user of the comment' }]
-  //     ]
-  //     expect(calls).toEqual(expect.arrayContaining(expected))
-  //   })
-  // })
-  //   })
 
   describe('mount', () => {
     Wrapper = () => {
-      return mount(PostSlug, { propsData, mocks, localVue, router })
+      return mount(PostSlug, {
+        propsData,
+        mocks,
+        localVue,
+        router,
+      })
     }
 
     beforeEach(jest.useFakeTimers)
@@ -115,18 +140,38 @@ describe('PostSlug', () => {
       expect(Wrapper().is('div')).toBe(true)
     })
 
-    describe('given post id', () => {
+    describe('test mixin "PostMutationHelpers"', () => {
       beforeEach(() => {
-        // post = {
-        //   id: 'p23'
-        // }
         wrapper = Wrapper()
       })
 
-      describe('confirm deletion of Post from List by invoking "deletePostCallback"', () => {
+      describe('deletion of Post from List by invoking "deletePostCallback(`list`)"', () => {
         beforeEach(() => {
-          wrapper = Wrapper()
           wrapper.vm.deletePostCallback('list')
+        })
+
+        describe('after timeout', () => {
+          beforeEach(jest.runAllTimers)
+
+          it('emits "deletePost"', () => {
+            expect(wrapper.emitted().deletePost).toBeTruthy()
+          })
+
+          it.todo('does not go to index (main) page')
+          // it('does not go to index (main) page', () => {
+          //   expect(mocks.$router.history.push).not.toHaveBeenCalled()
+          // })
+
+          it('does call mutation', () => {
+            expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
+            // expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
+          })
+        })
+      })
+
+      describe('deletion of Post from Page by invoking "deletePostCallback(`page`)"', () => {
+        beforeEach(() => {
+          wrapper.vm.deletePostCallback('page')
         })
 
         describe('after timeout', () => {
@@ -136,108 +181,21 @@ describe('PostSlug', () => {
           //   expect(wrapper.vm.isOpen).toBe(false)
           // })
 
-          it('emits "deletePost"', () => {
-            expect(wrapper.emitted().deletePost).toBeTruthy()
+          it('not emits "deletePost"', () => {
+            expect(wrapper.emitted().deletePost).toBeFalsy()
           })
+
+          it.todo('does go to index (main) page')
+          // it('does go to index (main) page', () => {
+          //   expect(mocks.$router.history.push).toHaveBeenCalled()
+          // })
 
           it('does call mutation', () => {
             expect(mocks.$apollo.mutate).toHaveBeenCalled()
+            // expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
           })
         })
       })
-
-      // describe('click cancel button and do not delete the post', () => {
-      //   beforeEach(() => {
-      //     wrapper = Wrapper()
-      //     wrapper.find('button.cancel').trigger('click')
-      //   })
-
-      //   describe('after timeout', () => {
-      //     beforeEach(jest.runAllTimers)
-
-      //     it('fades away', () => {
-      //       expect(wrapper.vm.isOpen).toBe(false)
-      //     })
-
-      //     it('emits "close"', () => {
-      //       expect(wrapper.emitted().close).toBeTruthy()
-      //     })
-
-      //     it('does not call mutation', () => {
-      //       expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
-      //     })
-      //   })
-      // })
-
-      //       describe('click confirm button and delete the post', () => {
-      //         beforeEach(() => {
-      //           wrapper.find('button.confirm').trigger('click')
-      //         })
-
-      //         it('calls delete mutation', () => {
-      //           expect(mocks.$apollo.mutate).toHaveBeenCalled()
-      //         })
-
-      //         it('sets success', () => {
-      //           expect(wrapper.vm.success).toBe(true)
-      //         })
-
-      //         it('displays a success message', () => {
-      //           const calls = mocks.$t.mock.calls
-      //           const expected = [['delete.contribution.success']]
-      //           expect(calls).toEqual(expect.arrayContaining(expected))
-      //         })
-
-      //         describe('after timeout', () => {
-      //           beforeEach(jest.runAllTimers)
-
-      //           it('fades away', () => {
-      //             expect(wrapper.vm.isOpen).toBe(false)
-      //           })
-
-      //           it('emits close', () => {
-      //             expect(wrapper.emitted().close).toBeTruthy()
-      //           })
-
-      //           it('resets success', () => {
-      //             expect(wrapper.vm.success).toBe(false)
-      //           })
-      //         })
-      //       })
     })
-
-    //     describe('given comment id', () => {
-    //       beforeEach(() => {
-    //         propsData = {
-    //           type: 'comment',
-    //           id: 'c3'
-    //         //   callbacks: {
-    //         //     confirm: () => Post.methods.deletePostCallback('list'),
-    //         //     cancel: null
-    //         //   }
-    //         }
-    //         wrapper = Wrapper()
-    //       })
-
-    //       describe('click confirm button and delete the comment', () => {
-    //         beforeEach(() => {
-    //           wrapper.find('button.confirm').trigger('click')
-    //         })
-
-    //         it('calls delete mutation', () => {
-    //           expect(mocks.$apollo.mutate).toHaveBeenCalled()
-    //         })
-
-    //         it('sets success', () => {
-    //           expect(wrapper.vm.success).toBe(true)
-    //         })
-
-    //         it('displays a success message', () => {
-    //           const calls = mocks.$t.mock.calls
-    //           const expected = [['delete.comment.success']]
-    //           expect(calls).toEqual(expect.arrayContaining(expected))
-    //         })
-    //       })
-    //     })
   })
 })

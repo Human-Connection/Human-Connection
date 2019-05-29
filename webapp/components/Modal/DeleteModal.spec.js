@@ -1,5 +1,5 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
-import PostMutationHelpers from '~/mixins/PostMutationHelpers'
+// import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 import DeleteModal from './DeleteModal.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
@@ -20,6 +20,7 @@ localVue.use(Styleguide)
 localVue.use(VueRouter)
 
 describe('DeleteModal.vue', () => {
+  let Wrapper
   let wrapper
   let propsData
   let mocks
@@ -28,10 +29,10 @@ describe('DeleteModal.vue', () => {
     propsData = {
       type: 'contribution',
       id: 'p23',
-      callbacks: {
-        confirm: () => Post.methods.deletePostCallback('list'),
-        cancel: null,
-      },
+      // callbacks: {
+      //   confirm: () => Post.methods.deletePostCallback('list'),
+      //   cancel: null,
+      // },
     }
     mocks = {
       $t: jest.fn(),
@@ -74,10 +75,10 @@ describe('DeleteModal.vue', () => {
           type: 'contribution',
           id: 'p23',
           name: 'It is a post',
-          callbacks: {
-            confirm: () => Post.methods.deletePostCallback('list'),
-            cancel: null,
-          },
+          // callbacks: {
+          //   confirm: () => Post.methods.deletePostCallback('list'),
+          //   cancel: null,
+          // },
         }
       })
 
@@ -102,10 +103,10 @@ describe('DeleteModal.vue', () => {
           type: 'comment',
           id: 'c3',
           name: 'It is the user of the comment',
-          callbacks: {
-            confirm: () => Post.methods.deletePostCallback('list'),
-            cancel: null,
-          },
+          // callbacks: {
+          //   confirm: () => Post.methods.deletePostCallback('list'),
+          //   cancel: null,
+          // },
         }
       })
 
@@ -146,10 +147,10 @@ describe('DeleteModal.vue', () => {
         propsData = {
           type: 'contribution',
           id: 'p23',
-          callbacks: {
-            confirm: () => Post.methods.deletePostCallback('list'),
-            cancel: null,
-          },
+          // callbacks: {
+          //   confirm: () => Post.methods.deletePostCallback('list'),
+          //   cancel: null,
+          // },
         }
         wrapper = Wrapper()
       })
@@ -219,10 +220,10 @@ describe('DeleteModal.vue', () => {
         propsData = {
           type: 'comment',
           id: 'c3',
-          callbacks: {
-            confirm: () => Post.methods.deletePostCallback('list'),
-            cancel: null,
-          },
+          // callbacks: {
+          //   confirm: () => Post.methods.deletePostCallback('list'),
+          //   cancel: null,
+          // },
         }
         wrapper = Wrapper()
       })

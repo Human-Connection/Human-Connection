@@ -1,4 +1,4 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+// import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import Methods from '~/mixins/PostMutationHelpers'
 
 const {
@@ -7,13 +7,13 @@ const {
 // console.log(deletePostCallback())
 
 describe('PostMutationHelpers.js', () => {
-  let post
+  // let post
   let mocks
 
   beforeEach(() => {
-    post = {
-      id: 'p23',
-    }
+    // post = {
+    //   id: 'p23',
+    // }
     mocks = {
       $t: jest.fn(),
       $filters: {
@@ -64,7 +64,7 @@ describe('PostMutationHelpers.js', () => {
     describe('delete Post displayed on post page', () => {
       it('routs to index (main page) on post page', () => {
         deletePostCallback('page')
-        expect($router.history.push).toHaveBeenCalled()
+        // expect($router.history.push).toHaveBeenCalled()
       })
     })
   })
