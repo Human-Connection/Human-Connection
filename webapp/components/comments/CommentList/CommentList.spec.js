@@ -33,6 +33,13 @@ describe('CommentList.vue', () => {
   })
   mocks = {
     $t: jest.fn(),
+    $apollo: {
+      queries: {
+        Post: {
+          refetch: jest.fn(),
+        },
+      },
+    },
   }
   data = () => {
     return {
@@ -62,6 +69,11 @@ describe('CommentList.vue', () => {
 
     it('displays comments when there are comments to display', () => {
       expect(wrapper.find('div#comments').text()).toEqual('this is a comment')
+    })
+
+    it("refetches a post's comments from the backend", () => {
+      wrapper.vm.refetchPostComments()
+      expect(mocks.$apollo.queries.Post.refetch).toHaveBeenCalledTimes(1)
     })
   })
 })

@@ -14,9 +14,13 @@
           :class="{'disabled-content': user.disabled}"
           style="position: relative; height: auto;"
         >
-          <ds-avatar
-            :image="user.avatar"
-            :name="userName"
+          <hc-upload
+            v-if="myProfile"
+            :user="user"
+          />
+          <hc-avatar
+            v-else
+            :user="user"
             class="profile-avatar"
             size="x-large"
           />
@@ -224,7 +228,7 @@
                 >
                   <a :href="link.url">
                     <ds-avatar :image="link.favicon" />
-                    {{ link.username }}
+                    {{ 'link.username' }}
                   </a>
                 </ds-space>
               </template>
@@ -328,6 +332,8 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
+import HcUpload from '~/components/Upload'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
@@ -339,7 +345,9 @@ export default {
     HcBadges,
     HcLoadMore,
     HcEmpty,
+    HcAvatar,
     ContentMenu,
+    HcUpload,
   },
   mixins: [PostMutationHelpers],
   transition: {
@@ -455,7 +463,7 @@ export default {
 </script>
 
 <style lang="scss">
-.profile-avatar {
+.profile-avatar.ds-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;

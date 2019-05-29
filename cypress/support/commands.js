@@ -13,7 +13,7 @@
 // Cypress.Commands.add('login', (email, password) => { ... })
 
 /* globals Cypress cy */
-
+import 'cypress-file-upload'
 import { getLangByName } from './helpers'
 import users from '../fixtures/users.json'
 

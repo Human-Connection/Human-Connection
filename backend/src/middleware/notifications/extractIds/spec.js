@@ -1,6 +1,12 @@
-import extractIds from './extractMentions'
+import extractIds from '.'
 
-describe('extract', () => {
+describe('extractIds', () => {
+  describe('content undefined', () => {
+    it('returns empty array', () => {
+      expect(extractIds()).toEqual([])
+    })
+  })
+
   describe('searches through links', () => {
     it('ignores links without .mention class', () => {
       const content =

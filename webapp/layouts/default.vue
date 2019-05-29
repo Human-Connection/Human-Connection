@@ -45,10 +45,8 @@
                     :href="$router.resolve({name: 'profile-id-slug', params: {id: user.id, slug: user.slug}}).href"
                     @click.prevent="toggleMenu"
                   >
-                    <ds-avatar
-                      :image="user.avatar"
-                      :name="user.name"
-                      size="small"
+                    <hc-avatar
+                      :user="user"
                     />
                     <ds-icon
                       size="xx-small"
@@ -123,6 +121,7 @@ import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
 
 export default {
@@ -132,6 +131,7 @@ export default {
     SearchInput,
     Modal,
     NotificationMenu,
+    HcAvatar,
   },
   mixins: [seo],
   data() {

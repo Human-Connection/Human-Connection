@@ -1,12 +1,10 @@
-import { config, mount, createLocalVue, createWrapper } from '@vue/test-utils'
+import { mount, createLocalVue, createWrapper } from '@vue/test-utils'
 import CommentForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
-
-config.stubs['no-ssr'] = '<span><slot /></span>'
 
 describe('CommentForm.vue', () => {
   let mocks
