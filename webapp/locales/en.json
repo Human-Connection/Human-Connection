@@ -234,6 +234,7 @@
     "edit": "Edit Contribution",
     "delete": "Delete Contribution"
   },
+
   "comment": {
     "edit": "Edit Comment",
     "delete": "Delete Comment",
@@ -247,6 +248,26 @@
   },
   "shoutButton": {
     "shouted": "shouted"
+  },
+  "release": {
+    "submit": "Release",
+    "cancel": "Cancel",
+    "success": "Released successfully!",
+    "user": {
+      "title": "Release User",
+      "type": "User",
+      "message": "Do you really want to release the user \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Release Contribution",
+      "type": "Contribution",
+      "message": "Do you really want to release the contribution \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Release Comment",
+      "type": "Comment",
+      "message": "Do you really want to release the comment from \"<b>{name}</b>\"?"
+    }
   },
   "user": {
     "avatar": {

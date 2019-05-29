@@ -12,7 +12,7 @@
         class="cancel"
         @click="cancel"
       >
-        {{ $t('disable.cancel') }}
+        {{ $t('release.cancel') }}
       </ds-button>
 
       <ds-button
@@ -21,7 +21,7 @@
         icon="exclamation-circle"
         @click="confirm"
       >
-        {{ $t('disable.submit') }}
+        {{ $t('release.submit') }}
       </ds-button>
     </template>
   </ds-modal>
@@ -34,23 +34,23 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
-    id: { type: String, required: true },
+    id: { type: String, required: true }
   },
   data() {
     return {
       isOpen: true,
       success: false,
-      loading: false,
+      loading: false
     }
   },
   computed: {
     title() {
-      return this.$t(`disable.${this.type}.title`)
+      return this.$t(`release.${this.type}.title`)
     },
     message() {
       const name = this.$filters.truncate(this.name, 30)
-      return this.$t(`disable.${this.type}.message`, { name })
-    },
+      return this.$t(`release.${this.type}.message`, { name })
+    }
   },
   methods: {
     cancel() {
@@ -64,15 +64,14 @@ export default {
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
-              disable(id: $id)
+              enable(id: $id)
             }
           `,
-          variables: { id: this.id },
+          variables: { id: this.id }
         })
-        this.$toast.success(this.$t('disable.success'))
+        this.$toast.success(this.$t('release.success'))
         this.isOpen = false
         setTimeout(() => {
-          this.$emit('close')
           location: {
             reload: jest.fn()
           }
@@ -80,7 +79,7 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
-    },
-  },
+    }
+  }
 }
 </script>

@@ -234,7 +234,7 @@
             </ds-space>
           </ds-card>
         </ds-space>
-      </ds-flex-item>
+      </ds-flex-item> 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex
           :width="{ base: '100%' }"
@@ -256,31 +256,32 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
-                <!-- TODO: find better solution for rendering errors -->
-                <!--
-                    <no-ssr>
+                 
+                <!-- <ds-flex-item  v-tooltip="{content: 'Your Posts', placement: 'left', delay: { show: 500 }}" class="ds-tab-nav-item ">
+                <ds-space margin="small"> -->
+                <!--TODO: find better solution for rendering errors -->                
+                <!-- <no-ssr>
                       <ds-number :label="$t('profile.commented')">
                         <hc-count-to slot="count" :end-val="user.commentsCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>
-                -->
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
+                </ds-flex-item> -->
+                 
+                <!-- <ds-flex-item  class="ds-tab-nav-item ">
+                <ds-space margin="small"> -->
                 <!-- TODO: find better solution for rendering errors -->
-                <!--<no-ssr>
+                <!-- <no-ssr>
                       <ds-number :label="$t('profile.shouted')">
                         <hc-count-to slot="count" :end-val="user.shoutedCount"/>
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>-->
+                </ds-flex-item> -->
               </ds-flex>
             </ds-card>
           </ds-flex-item>
+
           <ds-flex-item style="text-align: center">
             <ds-button
               v-if="myProfile"
@@ -292,6 +293,8 @@
               primary
             />
           </ds-flex-item>
+
+
           <template v-if="activePosts.length">
             <ds-flex-item
               v-for="post in activePosts"
@@ -301,6 +304,8 @@
               <hc-post-card :post="post" />
             </ds-flex-item>
           </template>
+
+
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
               <hc-empty
@@ -319,7 +324,7 @@
     </ds-flex>
   </div>
 </template>
-
+  
 <script>
 import uniqBy from 'lodash/uniqBy'
 

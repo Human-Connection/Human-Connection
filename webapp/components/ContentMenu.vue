@@ -1,32 +1,13 @@
 <template>
-  <dropdown
-    class="content-menu"
-    :placement="placement"
-    offset="5"
-  >
-    <template
-      slot="default"
-      slot-scope="{toggleMenu}"
-    >
-      <slot
-        name="button"
-        :toggleMenu="toggleMenu"
-      >
-        <ds-button
-          class="content-menu-trigger"
-          size="small"
-          ghost
-          @click.prevent="toggleMenu"
-        >
-          <ds-icon name="ellipsis-v" />
+  <dropdown class="content-menu" :placement="placement" offset="5">
+    <template slot="default" slot-scope="{toggleMenu}">
+      <slot name="button" :toggleMenu="toggleMenu">
+        <ds-button class="content-menu-trigger" size="small" ghost @click.prevent="toggleMenu">
+          <ds-icon name="ellipsis-v"/>
         </ds-button>
       </slot>
     </template>
-    <div
-      slot="popover"
-      slot-scope="{toggleMenu}"
-      class="content-menu-popover"
-    >
+    <div slot="popover" slot-scope="{toggleMenu}" class="content-menu-popover">
       <ds-menu :routes="routes">
         <ds-menu-item
           slot="menuitem"
@@ -35,7 +16,7 @@
           :parents="item.parents"
           @click.stop.prevent="openItem(item.route, toggleMenu)"
         >
-          <ds-icon :name="item.route.icon" />
+          <ds-icon :name="item.route.icon"/>
           {{ item.route.name }}
         </ds-menu-item>
       </ds-menu>
@@ -90,7 +71,6 @@ export default {
           name: this.$t(`comment.edit`),
           callback: () => {
             /* eslint-disable-next-line no-console */
-            console.log('EDIT COMMENT')
           },
           icon: 'edit',
         })
@@ -107,13 +87,23 @@ export default {
       }
 
       if (!this.isOwner && this.isModerator) {
-        routes.push({
-          name: this.$t(`disable.${this.resourceType}.title`),
-          callback: () => {
-            this.openModal('disable')
-          },
-          icon: 'eye-slash',
-        })
+        if (!this.resource.disabled) {
+          routes.push({
+            name: this.$t(`disable.${this.resourceType}.title`),
+            callback: () => {
+              this.openModal('disable')
+            },
+            icon: 'eye-slash',
+          })
+        } else {
+          routes.push({
+            name: this.$t(`release.${this.resourceType}.title`),
+            callback: () => {
+              this.openModal('release', this.resource.id)
+            },
+            icon: 'eye-slash',
+          })
+        }
       }
 
       if (this.isOwner && this.resourceType === 'user') {
