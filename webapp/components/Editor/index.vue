@@ -327,10 +327,18 @@ export default {
       },
     },
   },
+  mounted() {
+    this.$root.$on('changeLanguage', () => {
+      this.changePlaceHolderText()
+    })
+  },
   beforeDestroy() {
     this.editor.destroy()
   },
   methods: {
+    changePlaceHolderText() {
+      this.editor.extensions.options.placeholder.emptyNodeText = this.$t('editor.placeholder')
+    },
     // navigate to the previous item
     // if it's the first item, navigate to the last one
     upHandler() {
