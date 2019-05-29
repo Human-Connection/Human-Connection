@@ -65,7 +65,7 @@ Import legacy database and uploads:
 ```bash
 $ kubectl --namespace=human-connection exec -it nitro-maintenance-worker bash
 $ import_legacy_db
-$ import_uploads
+$ import_legacy_uploads
 $ exit
 ```
 
