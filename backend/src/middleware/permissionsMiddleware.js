@@ -1,9 +1,9 @@
 import { rule, shield, allow, or } from 'graphql-shield'
 
 /*
-* TODO: implement
-* See: https://github.com/Human-Connection/Nitro-Backend/pull/40#pullrequestreview-180898363
-*/
+ * TODO: implement
+ * See: https://github.com/Human-Connection/Nitro-Backend/pull/40#pullrequestreview-180898363
+ */
 const isAuthenticated = rule()(async (parent, args, ctx, info) => {
   return ctx.user !== null
 })
