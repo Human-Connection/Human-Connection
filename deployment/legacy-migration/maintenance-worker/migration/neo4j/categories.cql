@@ -1,4 +1,35 @@
-CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL}") YIELD value as category
+/*
+// Alpha Model
+// [ ] Not modeled in Nitro
+// [X] Modeled in Nitro
+// [-] Omitted in Nitro
+// [?] Unclear / has work to be done for Nitro
+    {
+[X]   title: {
+[X]     type: String,
+[X]     required: true
+      },
+[?]   slug: {
+[X]     type: String,
+[X]     required: true,
+[ ]     unique: true // Unique value is not enforced in Nitro?
+      },
+[?]   icon: { // Nitro adds required: true
+[X]     type: String,
+[ ]     unique: true // Unique value is not enforced in Nitro?
+      },
+[?]   createdAt: {
+[?]     type: Date, // Type is modeled as string in Nitro which is incorrect
+[ ]     default: Date.now // Default value is missing in Nitro
+      },
+[?]   updatedAt: {
+[?]     type: Date, // Type is modeled as string in Nitro which is incorrect
+[ ]     default: Date.now // Default value is missing in Nitro
+      }
+    }
+*/
+
+CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL_FILE}") YIELD value as category
 MERGE(c:Category {id: category._id["$oid"]})
 ON CREATE SET
 c.name      = category.title,
@@ -8,6 +39,7 @@ c.createdAt = category.createdAt.`$date`,
 c.updatedAt = category.updatedAt.`$date`
 ;
 
+// Transform icon names
 MATCH (c:Category)
 WHERE (c.icon = "categories-justforfun")
 SET c.icon = 'smile'

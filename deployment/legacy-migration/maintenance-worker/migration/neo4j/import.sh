@@ -10,10 +10,10 @@ set +o allexport
 function import_collection () {
   for chunk in ${IMPORT_PATH}splits/$1/*
   do
-    mv $chunk ${IMPORT_CHUNK_PATH}
-    NEO4J_COMMAND="$(envsubst '${IMPORT_CHUNK_PATH_CQL}' < $(dirname "$0")/$1.cql)"
+    export IMPORT_CHUNK_PATH_CQL_FILE="${IMPORT_CHUNK_PATH_CQL}$1/$(basename "${chunk}")"
+    NEO4J_COMMAND="$(envsubst '${IMPORT_CHUNK_PATH_CQL_FILE}' < $(dirname "$0")/$1.cql)"
     echo "Import ${chunk}"
-    echo "${NEO4J_COMMAND}" | "${IMPORT_CYPHERSHELL_BIN}" -u ${NEO4J_USERNAME} -p ${NEO4J_PASSWORD}
+    echo "${NEO4J_COMMAND}" | "${IMPORT_CYPHERSHELL_BIN}" -u ${NEO4J_USERNAME} -p ${NEO4J_PASSWORD} > /dev/null
   done
 }
 
@@ -22,7 +22,8 @@ SECONDS=0
 
 # Delete all Neo4J Database content
 echo "Deleting Database Contents"
-echo "MATCH (n) DETACH DELETE n;" | "${IMPORT_CYPHERSHELL_BIN}" -u ${NEO4J_USERNAME} -p ${NEO4J_PASSWORD}
+"${IMPORT_CYPHERSHELL_BIN}" -u ${NEO4J_USERNAME} -p ${NEO4J_PASSWORD} < $(dirname "$0")/_delete_all.cql > /dev/null
+echo "DONE"
 
 # Import Data
 echo "Start Importing Data"
@@ -44,5 +45,6 @@ import_collection "comments"
 #import_collection "systemnotifications"
 #import_collection "userscandos"
 #import_collection "usersettings"
+echo "DONE"
 
 echo "Time elapsed: $SECONDS seconds"

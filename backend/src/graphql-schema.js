@@ -1,6 +1,4 @@
-import fs from 'fs'
-import path from 'path'
-
+// resolvers
 import userManagement from './resolvers/user_management.js'
 import statistics from './resolvers/statistics.js'
 import reports from './resolvers/reports.js'
@@ -14,9 +12,10 @@ import notifications from './resolvers/notifications'
 import comments from './resolvers/comments'
 import users from './resolvers/users'
 
-export const typeDefs = fs
-  .readFileSync(process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql'))
-  .toString('utf-8')
+// types
+import types from './types'
+
+export const typeDefs = types
 
 export const resolvers = {
   Query: {

@@ -1,0 +1,13 @@
+type Category {
+  id: ID!
+  name: String!
+  slug: String!
+  icon: String!
+  #createdAt: DateTime
+  #updatedAt: DateTime
+  createdAt: String
+  updatedAt: String
+
+  posts: [Post]! @relation(name: "CATEGORIZED", direction: "IN")
+  postCount: Int! @cypher(statement: "MATCH (this)<-[:CATEGORIZED]-(r:Post) RETURN COUNT(r)")
+}
