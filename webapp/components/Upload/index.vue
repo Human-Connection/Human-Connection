@@ -126,15 +126,16 @@ export default {
 }
 
 #customdropzone .dz-preview {
+  transition: all 0.2s ease-out;
   width: 160px;
   display: flex;
 }
 
 #customdropzone .dz-preview .dz-image {
-  position: relative;
-  width: 122px;
-  height: 122px;
-  margin: -35px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: hidden;
 }
 
 #customdropzone .dz-preview .dz-image > div {

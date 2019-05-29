@@ -1,4 +1,4 @@
-CALL apoc.load.json('file:/tmp/mongo-export/splits/current-chunk.json') YIELD value as post
+CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL}") YIELD value as post
 MERGE (p:Post {id: post._id["$oid"]})
 ON CREATE SET
 p.title          = post.title,
@@ -20,6 +20,6 @@ MATCH (c:Category {id: categoryId})
 MERGE (p)-[:CATEGORIZED]->(c)
 WITH p, post.tags AS tags
 UNWIND tags AS tag
-MERGE (t:Tag {id: apoc.create.uuid(), name: tag})
+MERGE (t:Tag {id: tag, name: tag})
 MERGE (p)-[:TAGGED]->(t)
 ;
