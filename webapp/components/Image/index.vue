@@ -1,8 +1,5 @@
 <template>
-  <img
-    v-bind="imageProps"
-    :src="imageSrc"
-  >
+  <img v-bind="imageProps" :src="imageSrc" />
 </template>
 
 <script>

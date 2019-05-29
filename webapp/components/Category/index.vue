@@ -1,9 +1,6 @@
 <template>
   <ds-tag>
-    <ds-icon
-      size="large"
-      :name="icon"
-    />
+    <ds-icon size="large" :name="icon" />
     {{ name }}
   </ds-tag>
 </template>
