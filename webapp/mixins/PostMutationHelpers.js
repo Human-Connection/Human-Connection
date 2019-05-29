@@ -27,8 +27,8 @@ export default {
             break
           default:
             // case 'page'
-            console.log('called "this.$router.history.push" !!!')
-            this.$router.history.push('/') // Single page type: Redirect to index
+            // console.log('called "this.$router.history.push" !!!')
+            this.$router.history.push('/') // Single page type: Redirect to index (main) page
             break
         }
       } catch (err) {

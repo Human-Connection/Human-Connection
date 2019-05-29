@@ -1,5 +1,5 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import ProfileSlug from './_slug.vue'
+import { config, shallowMount, createLocalVue } from '@vue/test-utils'
+import PostSlug from './index.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 
@@ -8,18 +8,27 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.use(Styleguide)
 
-describe('ProfileSlug', () => {
+config.stubs['no-ssr'] = '<span><slot /></span>'
+
+describe('PostSlug', () => {
   let wrapper
   let Wrapper
+  let store
   let mocks
 
   beforeEach(() => {
-    mocks = {
-      post: {
-        id: 'p23',
-        name: 'It is a post',
+    store = new Vuex.Store({
+      getters: {
+        'auth/user': () => {
+          return {}
+        },
       },
+    })
+    mocks = {
       $t: jest.fn(),
+      $filters: {
+        truncate: a => a,
+      },
       // If you mocking router, than don't use VueRouter with lacalVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
       $router: {
         history: {
@@ -38,7 +47,8 @@ describe('ProfileSlug', () => {
 
   describe('shallowMount', () => {
     Wrapper = () => {
-      return shallowMount(ProfileSlug, {
+      return shallowMount(PostSlug, {
+        store,
         mocks,
         localVue,
       })
@@ -49,22 +59,31 @@ describe('ProfileSlug', () => {
     describe('test mixin "PostMutationHelpers"', () => {
       beforeEach(() => {
         wrapper = Wrapper()
+        wrapper.setData({
+          post: {
+            id: 'p23',
+            name: 'It is a post',
+            author: {
+              id: 'u1',
+            },
+          },
+        })
       })
 
-      describe('deletion of Post from List by invoking "deletePostCallback(`list`)"', () => {
+      describe('deletion of Post from Page by invoking "deletePostCallback(`page`)"', () => {
         beforeEach(() => {
-          wrapper.vm.deletePostCallback('list')
+          wrapper.vm.deletePostCallback('page')
         })
 
         describe('after timeout', () => {
           beforeEach(jest.runAllTimers)
 
-          it('emits "deletePost"', () => {
-            expect(wrapper.emitted().deletePost.length).toBe(1)
+          it('not emits "deletePost"', () => {
+            expect(wrapper.emitted().deletePost).toBeFalsy()
           })
 
-          it('does not go to index (main) page', () => {
-            expect(mocks.$router.history.push).not.toHaveBeenCalled()
+          it('does go to index (main) page', () => {
+            expect(mocks.$router.history.push).toHaveBeenCalledTimes(1)
           })
 
           it('does call mutation', () => {

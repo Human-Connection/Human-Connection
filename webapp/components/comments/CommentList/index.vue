@@ -24,13 +24,6 @@
         :comment="comment"
         @deleteComment="deleteComment(index)"
       />
-      <!-- <comment
-        is="comment-item"
-        v-for="(comment, index) in comments"
-        :key="comment.id"
-        :comment="comment"
-        v-on:remove="comments.splice(index, 1)"
-      /> -->
     </div>
     <hc-empty
       v-else

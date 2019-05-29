@@ -94,6 +94,7 @@ import HcCommentList from '~/components/comments/CommentList'
 import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
+  name: 'PostSlug',
   transition: {
     name: 'slide-up',
     mode: 'out-in',
