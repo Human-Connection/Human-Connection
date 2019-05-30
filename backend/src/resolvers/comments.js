@@ -1,6 +1,8 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import { UserInputError } from 'apollo-server'
 
+const NO_POST_ERR_MESSAGE = 'Comment cannot be created without a post!'
+
 export default {
   Mutation: {
     CreateComment: async (object, params, context, resolveInfo) => {
@@ -52,13 +54,7 @@ export default {
       return comment
     },
     UpdateComment: async (object, params, context, resolveInfo) => {
-      const commentRev = await neo4jgraphql(
-        object,
-        params,
-        context,
-        resolveInfo,
-        false
-      )
+      await neo4jgraphql(object, params, context, resolveInfo, false)
     }
   }
 }

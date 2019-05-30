@@ -7,7 +7,9 @@ const validateUsername = async (resolve, root, args, context, info) => {
     /* eslint-disable-next-line no-return-await */
     return await resolve(root, args, context, info)
   } else {
-    throw new UserInputError(`Username must be at least ${USERNAME_MIN_LENGTH} characters long!`)
+    throw new UserInputError(
+      `Username must be at least ${USERNAME_MIN_LENGTH} characters long!`
+    )
   }
 }
 
@@ -35,8 +37,7 @@ const validateComment = async (resolve, root, args, context, info) => {
   if (!postId) {
     throw new UserInputError(NO_POST_ERR_MESSAGE)
   }
-
-  return await resolve(root, args, context, info)
+  return resolve(root, args, context, info)
 }
 
 export default {
