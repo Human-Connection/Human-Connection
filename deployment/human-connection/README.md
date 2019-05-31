@@ -38,7 +38,7 @@ your deployed kubernetes pods.
 ## Create a namespace
 
 ```bash
-# in folder deployment/human-connection/
+# in folder deployment/
 $ kubectl apply -f namespace.yaml
 ```
 

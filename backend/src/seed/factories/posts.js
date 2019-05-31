@@ -26,7 +26,7 @@ export default function(params) {
         $title: String!
         $content: String!
         $image: String
-        $visibility: VisibilityEnum
+        $visibility: Visibility
         $deleted: Boolean
       ) {
         CreatePost(

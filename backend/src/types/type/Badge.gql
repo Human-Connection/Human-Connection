@@ -1,0 +1,13 @@
+type Badge {
+  id: ID!
+  key: String!
+  type: BadgeType!
+  status: BadgeStatus!
+  icon: String!
+  #createdAt: DateTime
+  #updatedAt: DateTime
+  createdAt: String
+  updatedAt: String
+
+  rewarded: [User]! @relation(name: "REWARDED", direction: "OUT")
+}
