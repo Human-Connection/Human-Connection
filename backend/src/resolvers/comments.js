@@ -56,7 +56,7 @@ export default {
       return comment
     },
     DeleteComment: async (object, params, context, resolveInfo) => {
-      const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
+      const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       return comment
     },

@@ -1,8 +1,8 @@
 <template>
   <ds-card>
     <h2 style="margin-bottom: .2em;">
-Mehr Informationen
-</h2>
+      Mehr Informationen
+    </h2>
     <p>Hier findest du weitere infos zum Thema.</p>
     <ds-space />
     <h3>
@@ -25,8 +25,10 @@ Mehr Informationen
         <ds-icon name="tags" />Schlagwörter
       </h3>
       <div class="tags">
-        <ds-tag v-for="tag in post.tags"
-:key="tag.id">
+        <ds-tag
+          v-for="tag in post.tags"
+          :key="tag.id"
+        >
           <ds-icon name="tag" />
           {{ tag.name }}
         </ds-tag>
@@ -34,8 +36,10 @@ Mehr Informationen
     </template>
     <h3>Verwandte Beiträge</h3>
     <ds-section style="margin: 0 -1.5rem; padding: 1.5rem;">
-      <ds-flex v-if="post.relatedContributions && post.relatedContributions.length"
-gutter="small">
+      <ds-flex
+        v-if="post.relatedContributions && post.relatedContributions.length"
+        gutter="small"
+      >
         <hc-post-card
           v-for="(relatedPost, index) in post.relatedContributions"
           :key="relatedPost.id"
@@ -44,8 +48,12 @@ gutter="small">
           @deletePost="post.relatedContributions.splice(index, 1)"
         />
       </ds-flex>
-      <hc-empty v-else
-margin="large" icon="file" message="No related Posts" />
+      <hc-empty
+        v-else
+        margin="large"
+        icon="file"
+        message="No related Posts"
+      />
     </ds-section>
     <ds-space margin-bottom="large" />
   </ds-card>

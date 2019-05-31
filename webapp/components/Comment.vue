@@ -74,7 +74,6 @@ export default {
     },
     async deleteCommentCallback() {
       try {
-        // XXX Make custom mutation and tests in the Backend !!!
         var gqlMutation = gql`
           mutation($id: ID!) {
             DeleteComment(id: $id) {
