@@ -10,7 +10,7 @@ set +o allexport
 function delete_collection () {
   # Delete from Database
   echo "Delete $1"
-  "${IMPORT_CYPHERSHELL_BIN}" -u ${NEO4J_USERNAME} -p ${NEO4J_PASSWORD} < $(dirname "$0")/$1_delete.cql > /dev/null
+  "${IMPORT_CYPHERSHELL_BIN}" < $(dirname "$0")/$1_delete.cql > /dev/null
   # Delete index file
   rm -f "${IMPORT_PATH}splits/$1.index"
 }
@@ -22,7 +22,7 @@ function import_collection () {
   # load index file
   if [ -f "$INDEX_FILE" ]; then
     readarray -t IMPORT_INDEX <$INDEX_FILE
-  else 
+  else
      declare -a IMPORT_INDEX
   fi
   # for each chunk import data
@@ -37,7 +37,7 @@ function import_collection () {
       NEO4J_COMMAND="$(envsubst '${IMPORT_CHUNK_PATH_CQL_FILE}' < $(dirname "$0")/$1.cql)"
       # run the import of the chunk
       echo "Import $1 ${CHUNK_FILE_NAME} (${chunk})"
-      echo "${NEO4J_COMMAND}" | "${IMPORT_CYPHERSHELL_BIN}" -u ${NEO4J_USERNAME} -p ${NEO4J_PASSWORD} > /dev/null
+      echo "${NEO4J_COMMAND}" | "${IMPORT_CYPHERSHELL_BIN}" > /dev/null
       # add file to array and file
       IMPORT_INDEX+=("${CHUNK_FILE_NAME}")
       echo "${CHUNK_FILE_NAME}" >> ${INDEX_FILE}
