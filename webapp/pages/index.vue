@@ -1,10 +1,7 @@
 <template>
   <div>
-    <ds-flex
-      v-if="Post && Post.length"
-      :width="{ base: '100%' }"
-      gutter="base"
-    >
+    <ds-flex v-if="Post && Post.length"
+:width="{ base: '100%' }" gutter="base">
       <hc-post-card
         v-for="(post, index) in uniq(Post)"
         :key="post.id"
@@ -23,11 +20,8 @@
         primary
       />
     </no-ssr>
-    <hc-load-more
-      v-if="true"
-      :loading="$apollo.loading"
-      @click="showMoreContributions"
-    />
+    <hc-load-more v-if="true"
+:loading="$apollo.loading" @click="showMoreContributions" />
   </div>
 </template>
 
@@ -90,7 +84,8 @@ export default {
       this.Post = this.Post.filter(post => {
         return post.id !== postId
       })
-      // Ideal solution:
+      // Why "uniq(Post)" is used in the array for list creation?
+      // Ideal solution here:
       // this.Post.splice(index, 1)
     },
   },

@@ -22,7 +22,7 @@
         v-for="(comment, index) in comments"
         :key="comment.id"
         :comment="comment"
-        @deleteComment="deleteComment(index)"
+        @deleteComment="comments.splice(index, 1)"
       />
     </div>
     <hc-empty
@@ -64,9 +64,6 @@ export default {
       if (this.$apollo.queries.Post) {
         this.$apollo.queries.Post.refetch()
       }
-    },
-    deleteComment(index) {
-      this.comments.splice(index, 1)
     },
   },
   apollo: {

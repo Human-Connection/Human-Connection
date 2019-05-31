@@ -1,8 +1,4 @@
-import {
-  config,
-  shallowMount,
-  createLocalVue
-} from '@vue/test-utils'
+import { config, shallowMount, createLocalVue } from '@vue/test-utils'
 import Comment from './Comment.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
@@ -25,6 +21,13 @@ describe('Comment.vue', () => {
     propsData = {}
     mocks = {
       $t: jest.fn(),
+      $toast: {
+        success: jest.fn(),
+        error: jest.fn(),
+      },
+      $apollo: {
+        mutate: jest.fn().mockResolvedValue(),
+      },
     }
     getters = {
       'auth/user': () => {
@@ -76,12 +79,9 @@ describe('Comment.vue', () => {
         })
 
         it('translates a placeholder', () => {
-          /* const wrapper = */
-          Wrapper()
+          wrapper = Wrapper()
           const calls = mocks.$t.mock.calls
-          const expected = [
-            ['comment.content.unavailable-placeholder']
-          ]
+          const expected = [['comment.content.unavailable-placeholder']]
           expect(calls).toEqual(expect.arrayContaining(expected))
         })
 
@@ -120,10 +120,6 @@ describe('Comment.vue', () => {
             it('emits "deleteComment"', () => {
               expect(wrapper.emitted().deleteComment.length).toBe(1)
             })
-
-            // it('does not go to index (main) page', () => {
-            //   expect(mocks.$router.history.push).not.toHaveBeenCalled()
-            // })
 
             it('does call mutation', () => {
               expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
