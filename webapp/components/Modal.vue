@@ -29,9 +29,9 @@
 </template>
 
 <script>
+import DeleteModal from '~/components/Modal/DeleteModal'
 import DisableModal from '~/components/Modal/DisableModal'
 import ReportModal from '~/components/Modal/ReportModal'
-import DeleteModal from '~/components/Modal/DeleteModal'
 import { mapGetters } from 'vuex'
 
 export default {

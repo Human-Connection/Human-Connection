@@ -17,7 +17,10 @@ describe('ReportModal.vue', () => {
     propsData = {
       type: 'contribution',
       id: 'c43',
-      callbacks: { confirm: null, cancel: null },
+      callbacks: {
+        confirm: jest.fn(),
+        cancel: jest.fn(),
+      },
     }
     mocks = {
       $t: jest.fn(),
@@ -36,7 +39,11 @@ describe('ReportModal.vue', () => {
 
   describe('shallowMount', () => {
     const Wrapper = () => {
-      return shallowMount(ReportModal, { propsData, mocks, localVue })
+      return shallowMount(ReportModal, {
+        propsData,
+        mocks,
+        localVue,
+      })
     }
 
     describe('defaults', () => {
@@ -52,17 +59,24 @@ describe('ReportModal.vue', () => {
     describe('given a user', () => {
       beforeEach(() => {
         propsData = {
+          ...propsData,
           type: 'user',
           id: 'u4',
           name: 'Bob Ross',
-          callbacks: { confirm: null, cancel: null },
         }
       })
 
       it('mentions user name', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['report.user.message', { name: 'Bob Ross' }]]
+        const expected = [
+          [
+            'report.user.message',
+            {
+              name: 'Bob Ross',
+            },
+          ],
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -70,17 +84,24 @@ describe('ReportModal.vue', () => {
     describe('given a post', () => {
       beforeEach(() => {
         propsData = {
-          id: 'p23',
+          ...propsData,
           type: 'post',
+          id: 'p23',
           name: 'It is a post',
-          callbacks: { confirm: null, cancel: null },
         }
       })
 
       it('mentions post title', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['report.post.message', { name: 'It is a post' }]]
+        const expected = [
+          [
+            'report.post.message',
+            {
+              name: 'It is a post',
+            },
+          ],
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -88,7 +109,11 @@ describe('ReportModal.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(ReportModal, { propsData, mocks, localVue })
+      return mount(ReportModal, {
+        propsData,
+        mocks,
+        localVue,
+      })
     }
 
     beforeEach(jest.useFakeTimers)
@@ -100,9 +125,9 @@ describe('ReportModal.vue', () => {
     describe('given id', () => {
       beforeEach(() => {
         propsData = {
+          ...propsData,
           type: 'user',
           id: 'u4711',
-          callbacks: { confirm: null, cancel: null },
         }
         wrapper = Wrapper()
       })

@@ -31,6 +31,7 @@
 import gql from 'graphql-tag'
 
 export default {
+  name: 'DisableModal',
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },

@@ -8,7 +8,7 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.use(Styleguide)
 
-describe('DeleteModal', () => {
+describe('DeleteModal.vue', () => {
   let Wrapper
   let wrapper
   let propsData
