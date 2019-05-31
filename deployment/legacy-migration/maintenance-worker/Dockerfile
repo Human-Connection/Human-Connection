@@ -17,5 +17,5 @@ RUN apk upgrade --update
 RUN apk add --no-cache mongodb-tools openssh nodejs yarn rsync
 
 COPY known_hosts /root/.ssh/known_hosts
-COPY migration ./migration
+COPY migration /migration
 COPY ./binaries/* /usr/local/bin/
