@@ -18,7 +18,7 @@ COPY . .
 
 FROM base as build-and-test
 RUN cp .env.template .env
-RUN yarn install --production=false --frozen-lockfile --non-interactive
+RUN yarn install --ignore-engines --production=false --frozen-lockfile --non-interactive
 RUN yarn run build
 
 FROM base as production
