@@ -1,12 +1,6 @@
 <template>
-  <transition
-    name="fade"
-    appear
-  >
-    <ds-container
-      v-if="ready"
-      width="small"
-    >
+  <transition name="fade" appear>
+    <ds-container v-if="ready" width="small">
       <ds-space margin="small">
         <blockquote>
           <p>{{ $t('quotes.african.quote') }}</p>
@@ -15,41 +9,25 @@
       </ds-space>
       <ds-card class="login-card">
         <ds-flex gutter="small">
-          <ds-flex-item
-            :width="{ base: '100%', sm: '50%' }"
-            centered
-          >
+          <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
             <no-ssr>
-              <locale-switch
-                class="login-locale-switch"
-                offset="5"
-              />
+              <locale-switch class="login-locale-switch" offset="5" />
             </no-ssr>
-            <ds-space
-              margin-top="small"
-              margin-bottom="xxx-small"
-              centered
-            >
+            <ds-space margin-top="small" margin-bottom="xxx-small" centered>
               <img
                 class="login-image"
                 alt="Human Connection"
                 src="/img/sign-up/humanconnection.svg"
-              >
+              />
             </ds-space>
           </ds-flex-item>
-          <ds-flex-item
-            :width="{ base: '100%', sm: '50%' }"
-            centered
-          >
+          <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
             <ds-space margin="small">
               <ds-text size="small">
                 {{ $t('login.copy') }}
               </ds-text>
             </ds-space>
-            <form
-              :disabled="pending"
-              @submit.prevent="onSubmit"
-            >
+            <form :disabled="pending" @submit.prevent="onSubmit">
               <ds-input
                 v-model="form.email"
                 :disabled="pending"
@@ -82,7 +60,9 @@
                   :href="$t('login.moreInfoURL')"
                   :title="$t('login.moreInfoHint')"
                   target="_blank"
-                >{{ $t('login.moreInfo') }}</a>
+                >
+                  {{ $t('login.moreInfo') }}
+                </a>
               </ds-space>
             </form>
           </ds-flex-item>
