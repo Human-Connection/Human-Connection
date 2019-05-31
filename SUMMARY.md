@@ -3,6 +3,7 @@
 * [Introduction](README.md)
 * [Edit this Documentation](edit-this-documentation.md)
 * [Installation](installation.md)
+* [Neo4J](neo4j/README.md)
 * [Backend](backend/README.md)
   * [GraphQL](backend/graphql.md)
 * [Webapp](webapp/README.md)
