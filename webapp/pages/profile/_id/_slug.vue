@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <ds-card v-if="user && user.image">
       <p>PROFILE IMAGE</p>
@@ -293,18 +294,16 @@
               primary
             />
           </ds-flex-item>
-
-
-          <template v-if="activePosts.length">
+          <template v-if="activePosts.length">          
             <ds-flex-item
               v-for="post in activePosts"
               :key="post.id"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
             >
               <hc-post-card :post="post" />
+               <component-to-re-render :key="componentKey" />
             </ds-flex-item>
           </template>
-
 
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
@@ -324,7 +323,7 @@
     </ds-flex>
   </div>
 </template>
-  
+ 
 <script>
 import uniqBy from 'lodash/uniqBy'
 
@@ -361,7 +360,7 @@ export default {
       User: [],
       voted: false,
       page: 1,
-      pageSize: 6,
+      pageSize: 6
     }
   },
   computed: {
@@ -413,6 +412,9 @@ export default {
     },
   },
   methods: {
+    forceRerender() {
+      this.componentKey += 1;  
+    },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },

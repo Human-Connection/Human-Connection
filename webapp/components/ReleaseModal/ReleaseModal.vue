@@ -28,7 +28,9 @@
 </template>
 
 <script>
+
 import gql from 'graphql-tag'
+
 
 export default {
   props: {
@@ -70,11 +72,9 @@ export default {
           variables: { id: this.id }
         })
         this.$toast.success(this.$t('release.success'))
-        this.isOpen = false
+        this.isOpen = false         
         setTimeout(() => {
-          location: {
-            reload: jest.fn()
-          }
+              location.reload();         
         }, 1500)
       } catch (err) {
         this.$toast.error(err.message)

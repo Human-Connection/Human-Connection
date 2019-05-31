@@ -2,6 +2,7 @@
   <ds-card
     :image="post.image"
     :class="{'post-card': true, 'disabled-content': post.disabled}"
+    :key="componentKey" 
   >
     <!-- Post Link Target -->
     <nuxt-link
@@ -69,7 +70,7 @@
             :resource="post"
             :is-owner="isAuthor"
           />
-        </div>
+        </div> 
       </no-ssr>
     </template>
   </ds-card>
@@ -84,13 +85,18 @@ import HcRibbon from '~/components/Ribbon'
 import { mapGetters } from 'vuex'
 
 export default {
+  data() {
+    return {
+      componentKey: 0
+    }
+  },
   name: 'HcPostCard',
   components: {
     HcUser,
     HcCategory,
     HcRibbon,
     ContentMenu,
-  },
+  },  
   props: {
     post: {
       type: Object,
@@ -109,7 +115,12 @@ export default {
       if (!author) return false
       return this.user.id === this.post.author.id
     },
-  },
+  },  
+  methods: {
+    forceRerender() {
+      this.componentKey += 1
+    }
+  }
 }
 </script>
 

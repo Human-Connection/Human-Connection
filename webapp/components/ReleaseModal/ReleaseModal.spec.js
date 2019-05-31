@@ -1,4 +1,8 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import {
+  shallowMount,
+  mount,
+  createLocalVue
+} from '@vue/test-utils'
 import ReleaseModal from './ReleaseModal.vue'
 import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
@@ -30,7 +34,10 @@ describe('ReleaseModal.vue', () => {
       $t: jest.fn(),
       $apollo: {
         mutate: jest.fn().mockResolvedValue()
-      }
+      },
+      location: {
+        reload: jest.fn()
+      },
     }
   })
 
@@ -149,7 +156,11 @@ describe('ReleaseModal.vue', () => {
 
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
-          const [[{ variables }]] = calls
+          const [
+            [{
+              variables
+            }]
+          ] = calls
           expect(variables).toEqual({
             id: 'u4711'
           })

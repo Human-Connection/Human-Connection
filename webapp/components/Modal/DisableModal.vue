@@ -74,7 +74,7 @@ export default {
         setTimeout(() => {
           this.$emit('close')
           location: {
-            reload: jest.fn()
+             location.reload();  
           }
         }, 1500)
       } catch (err) {

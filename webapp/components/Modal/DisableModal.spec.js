@@ -1,4 +1,8 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import {
+  shallowMount,
+  mount,
+  createLocalVue
+} from '@vue/test-utils'
 import DisableModal from './DisableModal.vue'
 import Styleguide from '@human-connection/styleguide'
 
@@ -29,12 +33,19 @@ describe('DisableModal.vue', () => {
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
       },
+      location: {
+        reload: jest.fn()
+      },
     }
   })
 
   describe('shallowMount', () => {
     const Wrapper = () => {
-      return shallowMount(DisableModal, { propsData, mocks, localVue })
+      return shallowMount(DisableModal, {
+        propsData,
+        mocks,
+        localVue
+      })
     }
 
     describe('given a user', () => {
@@ -49,7 +60,11 @@ describe('DisableModal.vue', () => {
       it('mentions user name', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['disable.user.message', { name: 'Bob Ross' }]]
+        const expected = [
+          ['disable.user.message', {
+            name: 'Bob Ross'
+          }]
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -66,7 +81,11 @@ describe('DisableModal.vue', () => {
       it('mentions contribution title', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['disable.contribution.message', { name: 'This is some post title.' }]]
+        const expected = [
+          ['disable.contribution.message', {
+            name: 'This is some post title.'
+          }]
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -74,7 +93,11 @@ describe('DisableModal.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(DisableModal, { propsData, mocks, localVue })
+      return mount(DisableModal, {
+        propsData,
+        mocks,
+        localVue
+      })
     }
     beforeEach(jest.useFakeTimers)
 
@@ -125,8 +148,14 @@ describe('DisableModal.vue', () => {
 
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
-          const [[{ variables }]] = calls
-          expect(variables).toEqual({ id: 'u4711' })
+          const [
+            [{
+              variables
+            }]
+          ] = calls
+          expect(variables).toEqual({
+            id: 'u4711'
+          })
         })
 
         it('fades away', () => {
