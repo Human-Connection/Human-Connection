@@ -12,7 +12,7 @@ const findGqlFiles = dir => {
       // Recurse into a subdirectory
       results = results.concat(findGqlFiles(file))
     } else {
-      if (file.split('.').pop() === 'gql') {
+      if (path.extname(file) === '.gql') {
         // Is a gql file
         results.push(file)
       }
