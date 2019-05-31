@@ -37,6 +37,8 @@ services:
       - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
   neo4j:
     image: humanconnection/neo4j:latest
+    # override the default command to run `neo4j-admin dump/load`
+    # command: "tail -f /dev/null"
     build:
       context: neo4j
     networks:
