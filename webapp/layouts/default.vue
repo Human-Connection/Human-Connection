@@ -3,11 +3,7 @@
     <div class="main-navigation">
       <ds-container class="main-navigation-container">
         <div class="main-navigation-left">
-          <a
-            v-router-link
-            style="display: inline-flex"
-            href="/"
-          >
+          <a v-router-link style="display: inline-flex" href="/">
             <ds-logo />
           </a>
         </div>
@@ -24,11 +20,7 @@
         </div>
         <div class="main-navigation-right">
           <no-ssr>
-            <locale-switch
-              class="topbar-locale-switch"
-              placement="bottom"
-              offset="23"
-            />
+            <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
           </no-ssr>
           <template v-if="isLoggedIn">
             <no-ssr>
@@ -36,45 +28,32 @@
             </no-ssr>
             <no-ssr>
               <dropdown class="avatar-menu">
-                <template
-                  slot="default"
-                  slot-scope="{toggleMenu}"
-                >
+                <template slot="default" slot-scope="{ toggleMenu }">
                   <a
                     class="avatar-menu-trigger"
-                    :href="$router.resolve({name: 'profile-id-slug', params: {id: user.id, slug: user.slug}}).href"
+                    :href="
+                      $router.resolve({
+                        name: 'profile-id-slug',
+                        params: { id: user.id, slug: user.slug },
+                      }).href
+                    "
                     @click.prevent="toggleMenu"
                   >
-                    <hc-avatar
-                      :user="user"
-                    />
-                    <ds-icon
-                      size="xx-small"
-                      name="angle-down"
-                    />
+                    <hc-avatar :user="user" />
+                    <ds-icon size="xx-small" name="angle-down" />
                   </a>
                 </template>
-                <template
-                  slot="popover"
-                  slot-scope="{closeMenu}"
-                >
+                <template slot="popover" slot-scope="{ closeMenu }">
                   <div class="avatar-menu-popover">
                     {{ $t('login.hello') }}
                     <b>{{ userName }}</b>
                     <template v-if="user.role !== 'user'">
-                      <ds-text
-                        color="softer"
-                        size="small"
-                        style="margin-bottom: 0"
-                      >
+                      <ds-text color="softer" size="small" style="margin-bottom: 0">
                         {{ user.role | camelCase }}
                       </ds-text>
                     </template>
-                    <hr>
-                    <ds-menu
-                      :routes="routes"
-                      :matcher="matcher"
-                    >
+                    <hr />
+                    <ds-menu :routes="routes" :matcher="matcher">
                       <ds-menu-item
                         slot="menuitem"
                         slot-scope="item"
@@ -86,11 +65,8 @@
                         {{ item.route.name }}
                       </ds-menu-item>
                     </ds-menu>
-                    <hr>
-                    <nuxt-link
-                      class="logout-link"
-                      :to="{ name: 'logout'}"
-                    >
+                    <hr />
+                    <nuxt-link class="logout-link" :to="{ name: 'logout' }">
                       <ds-icon name="sign-out" />
                       {{ $t('login.logout') }}
                     </nuxt-link>

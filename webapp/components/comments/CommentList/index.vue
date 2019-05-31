@@ -9,26 +9,17 @@
           color="primary"
           size="small"
           round
-        >{{ comments.length }}</ds-tag>&nbsp; Comments
+        >
+          {{ comments.length }}
+        </ds-tag>
+        &nbsp; Comments
       </span>
     </h3>
     <ds-space margin-bottom="large" />
-    <div
-      v-if="comments && comments.length"
-      id="comments"
-      class="comments"
-    >
-      <comment
-        v-for="comment in comments"
-        :key="comment.id"
-        :comment="comment"
-      />
+    <div v-if="comments && comments.length" id="comments" class="comments">
+      <comment v-for="comment in comments" :key="comment.id" :comment="comment" />
     </div>
-    <hc-empty
-      v-else
-      name="empty"
-      icon="messages"
-    />
+    <hc-empty v-else name="empty" icon="messages" />
   </div>
 </template>
 <script>

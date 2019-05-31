@@ -1,8 +1,5 @@
 <template>
-  <ds-card
-    :image="post.image"
-    :class="{'post-card': true, 'disabled-content': post.disabled}"
-  >
+  <ds-card :image="post.image" :class="{ 'post-card': true, 'disabled-content': post.disabled }">
     <!-- Post Link Target -->
     <nuxt-link
       class="post-link"
@@ -14,30 +11,20 @@
     <!-- Username, Image & Date of Post -->
     <div>
       <no-ssr>
-        <hc-user
-          :user="post.author"
-          :trunc="35"
-          :date-time="post.createdAt"
-        />
+        <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
       </no-ssr>
       <hc-ribbon :text="$t('post.name')" />
     </div>
     <ds-space margin-bottom="small" />
     <!-- Post Title -->
-    <ds-heading
-      tag="h3"
-      no-margin
-    >
+    <ds-heading tag="h3" no-margin>
       {{ post.title }}
     </ds-heading>
     <ds-space margin-bottom="small" />
     <!-- Post Content Excerpt -->
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
-    <div
-      class="hc-editor-content"
-      v-html="excerpt"
-    />
+    <div class="hc-editor-content" v-html="excerpt" />
     <!-- eslint-enable vue/no-v-html -->
     <!-- Footer o the Post -->
     <template slot="footer">
@@ -46,29 +33,25 @@
         <hc-category
           v-for="category in post.categories"
           :key="category.id"
-          v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
+          v-tooltip="{ content: category.name, placement: 'bottom-start', delay: { show: 500 } }"
           :icon="category.icon"
         />
       </div>
       <no-ssr>
         <div style="display: inline-block; float: right">
           <!-- Shouts Count -->
-          <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
+          <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
             <ds-icon name="bullhorn" />
             <small>{{ post.shoutedCount }}</small>
           </span>
           &nbsp;
           <!-- Comments Count -->
-          <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
+          <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
             <ds-icon name="comments" />
             <small>{{ post.commentsCount }}</small>
           </span>
           <!-- Menu -->
-          <content-menu
-            resource-type="contribution"
-            :resource="post"
-            :is-owner="isAuthor"
-          />
+          <content-menu resource-type="contribution" :resource="post" :is-owner="isAuthor" />
         </div>
       </no-ssr>
     </template>

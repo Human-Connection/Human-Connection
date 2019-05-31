@@ -1,10 +1,5 @@
 <template>
-  <ds-avatar
-    :image="avatarUrl"
-    :name="userName"
-    class="avatar"
-    :size="size"
-  />
+  <ds-avatar :image="avatarUrl" :name="userName" class="avatar" :size="size" />
 </template>
 
 <script>
