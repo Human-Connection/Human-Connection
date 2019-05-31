@@ -1,0 +1,1 @@
+MATCH (n:User) DETACH DELETE n;

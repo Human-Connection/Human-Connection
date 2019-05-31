@@ -41,8 +41,8 @@ describe('badges', () => {
       mutation(
         $id: ID
         $key: String!
-        $type: BadgeTypeEnum!
-        $status: BadgeStatusEnum!
+        $type: BadgeType!
+        $status: BadgeStatus!
         $icon: String!
       ) {
         CreateBadge(id: $id, key: $key, type: $type, status: $status, icon: $icon) {
