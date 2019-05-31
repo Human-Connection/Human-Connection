@@ -35,7 +35,9 @@ export default {
   },
   computed: {
     backgroundImage() {
-      const { avatar } = this.user || {}
+      const avatar =
+        this.user.avatar ||
+        'https://human-connection.org/wp-content/uploads/2019/03/human-connection-logo.svg'
       const userAvatar = avatar.startsWith('/') ? avatar.replace('/', '/api/') : avatar
       return {
         backgroundImage: `url(${userAvatar})`,
