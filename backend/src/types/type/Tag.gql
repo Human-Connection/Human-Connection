@@ -1,0 +1,10 @@
+type Tag {
+  id: ID!
+  name: String!
+  taggedPosts: [Post]! @relation(name: "TAGGED", direction: "IN")
+  taggedOrganizations: [Organization]! @relation(name: "TAGGED", direction: "IN")
+  taggedCount: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p) RETURN COUNT(DISTINCT p)")
+  taggedCountUnique: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p)<-[:WROTE]-(u:User) RETURN COUNT(DISTINCT u)")
+  deleted: Boolean
+  disabled: Boolean
+}

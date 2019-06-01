@@ -23,7 +23,7 @@ export default function create(params) {
         $email: String!
         $avatar: String
         $about: String
-        $role: UserGroupEnum
+        $role: UserGroup
       ) {
         CreateUser(
           id: $id

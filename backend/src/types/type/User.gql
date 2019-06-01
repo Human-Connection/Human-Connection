@@ -1,0 +1,80 @@
+type User {
+  id: ID!
+  actorId: String
+  name: String
+  email: String!
+  slug: String
+  password: String!
+  avatar: String
+  coverImg: String
+  avatarUpload: Upload
+  deleted: Boolean
+  disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
+  role: UserGroup
+  publicKey: String
+  privateKey: String
+  
+  wasInvited: Boolean
+  wasSeeded: Boolean
+
+  location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+  locationName: String
+  about: String
+  socialMedia: [SocialMedia]! @relation(name: "OWNED", direction: "OUT")
+
+  #createdAt: DateTime
+  #updatedAt: DateTime
+  createdAt: String
+  updatedAt: String
+
+  notifications(read: Boolean): [Notification]! @relation(name: "NOTIFIED", direction: "IN")
+
+  friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
+  friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(DISTINCT r)")
+
+  following: [User]! @relation(name: "FOLLOWS", direction: "OUT")
+  followingCount: Int! @cypher(statement: "MATCH (this)-[:FOLLOWS]->(r:User) RETURN COUNT(DISTINCT r)")
+
+  followedBy: [User]! @relation(name: "FOLLOWS", direction: "IN")
+  followedByCount: Int! @cypher(statement: "MATCH (this)<-[:FOLLOWS]-(r:User) RETURN COUNT(DISTINCT r)")
+
+  # Is the currently logged in user following that user?
+  followedByCurrentUser: Boolean! @cypher(
+    statement: """
+      MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId})
+      RETURN COUNT(u) >= 1
+    """
+  )
+
+  #contributions: [WrittenPost]!
+  #contributions2(first: Int = 10, offset: Int = 0): [WrittenPost2]!
+  #  @cypher(
+  #    statement: "MATCH (this)-[w:WROTE]->(p:Post) RETURN p as Post, w.timestamp as timestamp"
+  #  )
+  contributions: [Post]! @relation(name: "WROTE", direction: "OUT")
+  contributionsCount: Int! @cypher(
+    statement: """
+      MATCH (this)-[:WROTE]->(r:Post)
+      WHERE (NOT exists(r.deleted) OR r.deleted = false)
+      AND (NOT exists(r.disabled) OR r.disabled = false)
+      RETURN COUNT(r)
+    """
+  )
+
+  comments: [Comment]! @relation(name: "WROTE", direction: "OUT")
+  commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
+
+  shouted: [Post]! @relation(name: "SHOUTED", direction: "OUT")
+  shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
+
+  organizationsCreated: [Organization] @relation(name: "CREATED_ORGA", direction: "OUT")
+  organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
+
+  blacklisted: [User]! @relation(name: "BLACKLISTED", direction: "OUT")
+
+  categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
+
+  badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
+  badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
+}

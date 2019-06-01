@@ -1,0 +1,1 @@
+MATCH (n:Comment) DETACH DELETE n;
