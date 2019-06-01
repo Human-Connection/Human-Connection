@@ -72,10 +72,8 @@ export default {
         this.$toast.success(this.$t('release.success'))
         this.isOpen = false
         setTimeout(() => {
-          location: {
-            reload: jest.fn()
-          }
-        }, 1500)
+          location.reload()         
+        }, 1500);
       } catch (err) {
         this.$toast.error(err.message)
       }

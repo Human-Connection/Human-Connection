@@ -2,6 +2,7 @@
   <ds-card
     :image="post.image"
     :class="{'post-card': true, 'disabled-content': post.disabled}"
+    :key="componentKey"
   >
     <!-- Post Link Target -->
     <nuxt-link
@@ -109,6 +110,16 @@ export default {
       if (!author) return false
       return this.user.id === this.post.author.id
     },
+  },
+   data() {
+    return {
+      componentKey: 0,
+    };
+  },
+  methods: {
+    forceRerender() {
+      this.componentKey += 1;  
+    }
   },
 }
 </script>
