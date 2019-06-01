@@ -248,7 +248,7 @@
   "shoutButton": {
     "shouted": "empfohlen"
   },
- 
+
   "release": {
     "submit": "freigeben",
     "cancel": "Abbrechen",
@@ -267,6 +267,11 @@
       "title": "Kommentar freigeben",
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" freigeben möchtest?"
+    }
+  },
+  "user": {
+    "avatar": {
+      "submitted": "Upload erfolgreich"
     }
   }
 }
