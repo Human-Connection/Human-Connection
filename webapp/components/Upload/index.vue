@@ -8,7 +8,7 @@
       :include-styling="false"
       :style="backgroundImage"
       @vdropzone-thumbnail="thumbnail"
-      @vdropzone-drop="vddrop"
+      @vdropzone-error="verror"
     />
   </div>
 </template>
@@ -27,10 +27,11 @@ export default {
     return {
       dropzoneOptions: {
         url: this.vddrop,
-        maxFilesize: 0.5,
+        maxFilesize: 5.0,
         previewTemplate: this.template(),
         dictDefaultMessage: '',
       },
+      error: false,
     }
   },
   computed: {
@@ -42,6 +43,14 @@ export default {
       return {
         backgroundImage: `url(${userAvatar})`,
       }
+    },
+  },
+  watch: {
+    error() {
+      let that = this
+      setTimeout(function() {
+        that.error = false
+      }, 2000)
     },
   },
   methods: {
@@ -88,6 +97,12 @@ export default {
           this.$toast.success(this.$t('user.avatar.submitted'))
         })
         .catch(error => this.$toast.error(error.message))
+    },
+    verror(file, message) {
+      if (file.status === 'error') {
+        this.error = true
+        this.$toast.error(file.status, message)
+      }
     },
   },
 }
