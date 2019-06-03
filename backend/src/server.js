@@ -1,7 +1,7 @@
 import express from 'express'
 import helmet from 'helmet'
 import { GraphQLServer } from 'graphql-yoga'
-import { default as CONFIG, requiredConfigs } from './config'
+import CONFIG, { requiredConfigs } from './config'
 import mocks from './mocks'
 import middleware from './middleware'
 import { getDriver } from './bootstrap/neo4j'
