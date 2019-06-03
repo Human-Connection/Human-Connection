@@ -3,7 +3,6 @@ import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login } from '../../jest/helpers'
 
-
 const factory = Factory()
 
 describe('SocialMedia', () => {
