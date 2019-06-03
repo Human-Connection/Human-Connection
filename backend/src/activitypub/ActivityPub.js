@@ -23,7 +23,6 @@ export default class ActivityPub {
 
   static init(server) {
     if (!activityPub) {
-      dotenv.config()
       activityPub = new ActivityPub(CONFIG.CLIENT_URI, CONFIG.GRAPHQL_URI)
 
       // integrate into running graphql express server

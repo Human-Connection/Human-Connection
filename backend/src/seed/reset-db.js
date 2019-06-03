@@ -1,8 +1,5 @@
 import { cleanDatabase } from './factories'
-import dotenv from 'dotenv'
 import CONFIG from './config'
-
-dotenv.config()
 
 if (!CONFIG.DEBUG) {
   throw new Error(`YOU CAN'T CLEAN THE DATABASE WITH DEBUG=${CONFIG.DEBUG}`)

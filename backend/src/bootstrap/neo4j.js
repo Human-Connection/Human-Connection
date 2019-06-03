@@ -1,8 +1,5 @@
 import { v1 as neo4j } from 'neo4j-driver'
-import dotenv from 'dotenv'
 import CONFIG from './../config'
-
-dotenv.config()
 
 let driver
 
