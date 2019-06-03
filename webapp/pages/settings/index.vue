@@ -1,8 +1,6 @@
 <template>
-  <ds-form
-    v-model="form"
-    @submit="submit"
-  >
+  <ds-form v-model="form"
+@submit="submit">
     <ds-card :header="$t('settings.data.name')">
       <ds-input
         id="name"
@@ -32,13 +30,8 @@
         :placeholder="$t('settings.data.labelBio')"
       />
       <template slot="footer">
-        <ds-button
-          style="float: right;"
-          icon="check"
-          type="submit"
-          :loading="loadingData"
-          primary
-        >
+        <ds-button style="float: right;"
+icon="check" type="submit" :loading="loadingData" primary>
           {{ $t('actions.save') }}
         </ds-button>
       </template>

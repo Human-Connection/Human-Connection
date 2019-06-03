@@ -1,19 +1,12 @@
 <template>
   <ds-card :header="$t('settings.social-media.name')">
-    <ds-space
-      v-if="socialMediaLinks"
-      margin-top="base"
-      margin="x-small"
-    >
+    <ds-space v-if="socialMediaLinks"
+margin-top="base" margin="x-small">
       <ds-list>
-        <ds-list-item
-          v-for="link in socialMediaLinks"
-          :key="link.id"
-        >
-          <a
-            :href="link.url"
-            target="_blank"
-          >
+        <ds-list-item v-for="link in socialMediaLinks"
+:key="link.id">
+          <a :href="link.url"
+target="_blank">
             <hc-image
               :image-props="{ src: link.favicon }"
               alt="Social Media link"
@@ -24,14 +17,10 @@
           </a>
           &nbsp;&nbsp;
           <span class="layout-leave-active">|</span> &nbsp;&nbsp;
-          <ds-icon
-            name="edit"
-            class="layout-leave-active"
-          />
-          <a
-            name="delete"
-            @click="handleDeleteSocialMedia(link)"
-          >
+          <ds-icon name="edit"
+class="layout-leave-active" />
+          <a name="delete"
+@click="handleDeleteSocialMedia(link)">
             <ds-icon name="trash" />
           </a>
         </ds-list-item>
@@ -43,15 +32,13 @@
           v-model="value"
           :placeholder="$t('settings.social-media.placeholder')"
           name="social-media"
-          :schema="{type: 'url'}"
+          :schema="{ type: 'url' }"
         />
       </div>
       <ds-space margin-top="base">
         <div>
-          <ds-button
-            primary
-            @click="handleAddSocialMedia"
-          >
+          <ds-button primary
+@click="handleAddSocialMedia">
             {{ $t('settings.social-media.submit') }}
           </ds-button>
         </div>

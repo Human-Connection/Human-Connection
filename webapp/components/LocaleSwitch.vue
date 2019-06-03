@@ -1,29 +1,21 @@
 <template>
-  <dropdown
-    ref="menu"
-    :placement="placement"
-    :offset="offset"
-  >
+  <dropdown ref="menu"
+:placement="placement" :offset="offset">
     <a
       slot="default"
-      slot-scope="{toggleMenu}"
+      slot-scope="{ toggleMenu }"
       class="locale-menu"
       href="#"
       @click.prevent="toggleMenu()"
     >
-      <ds-icon
-        style="margin-right: 2px;"
-        name="globe"
-      /> {{ current.code.toUpperCase() }}
-      <ds-icon
-        style="margin-left: 2px"
-        size="xx-small"
-        name="angle-down"
-      />
+      <ds-icon style="margin-right: 2px;"
+name="globe" /> {{ current.code.toUpperCase() }}
+      <ds-icon style="margin-left: 2px"
+size="xx-small" name="angle-down" />
     </a>
     <ds-menu
       slot="popover"
-      slot-scope="{toggleMenu}"
+      slot-scope="{ toggleMenu }"
       class="locale-menu-popover"
       :matcher="matcher"
       :routes="routes"

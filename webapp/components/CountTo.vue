@@ -1,9 +1,7 @@
 <template>
   <span>
-    <no-ssr
-      placeholder="0"
-      tag="span"
-    >
+    <no-ssr placeholder="0"
+tag="span">
       <count-to
         :start-val="lastEndVal || startVal"
         :end-val="endVal"

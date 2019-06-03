@@ -8,10 +8,8 @@
         <ds-menu :routes="routes" />
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', md: 1 }">
-        <transition
-          name="slide-up"
-          appear
-        >
+        <transition name="slide-up"
+appear>
           <nuxt-child />
         </transition>
       </ds-flex-item>

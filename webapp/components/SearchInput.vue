@@ -5,16 +5,13 @@
     role="search"
     :class="{
       'is-active': isActive,
-      'is-open': isOpen
+      'is-open': isOpen,
     }"
   >
     <div class="field">
       <div class="control">
-        <a
-          v-if="isActive"
-          class="search-clear-btn"
-          @click="clear"
-        >
+        <a v-if="isActive"
+class="search-clear-btn" @click="clear">
           &nbsp;
         </a>
         <ds-select
@@ -42,27 +39,20 @@
           @input.native="handleInput"
           @click.capture.native="isOpen = true"
         >
-          <template
-            slot="option"
-            slot-scope="{option}"
-          >
+          <template slot="option"
+slot-scope="{ option }">
             <ds-flex>
               <ds-flex-item class="search-option-label">
                 <ds-text>
                   {{ option.label | truncate(70) }}
                 </ds-text>
               </ds-flex-item>
-              <ds-flex-item
-                class="search-option-meta"
-                width="280px"
-              >
+              <ds-flex-item class="search-option-meta"
+width="280px">
                 <ds-flex>
                   <ds-flex-item>
-                    <ds-text
-                      size="small"
-                      color="softer"
-                      class="search-meta"
-                    >
+                    <ds-text size="small"
+color="softer" class="search-meta">
                       <span style="text-align: right;">
                         <b>{{ option.commentsCount }}</b> <ds-icon name="comments" />
                       </span>
@@ -72,12 +62,10 @@
                     </ds-text>
                   </ds-flex-item>
                   <ds-flex-item>
-                    <ds-text
-                      size="small"
-                      color="softer"
-                      align="right"
-                    >
-                      {{ option.author.name | truncate(32) }} - {{ option.createdAt | dateTime('dd.MM.yyyy') }}
+                    <ds-text size="small"
+color="softer" align="right">
+                      {{ option.author.name | truncate(32) }} -
+                      {{ option.createdAt | dateTime('dd.MM.yyyy') }}
                     </ds-text>
                   </ds-flex-item>
                 </ds-flex>

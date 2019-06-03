@@ -1,8 +1,4 @@
-import {
-  shallowMount,
-  mount,
-  createLocalVue
-} from '@vue/test-utils'
+import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import DisableModal from './DisableModal.vue'
 import Styleguide from '@human-connection/styleguide'
 
@@ -34,7 +30,7 @@ describe('DisableModal.vue', () => {
         mutate: jest.fn().mockResolvedValue(),
       },
       location: {
-        reload: jest.fn()
+        reload: jest.fn(),
       },
     }
   })
@@ -44,7 +40,7 @@ describe('DisableModal.vue', () => {
       return shallowMount(DisableModal, {
         propsData,
         mocks,
-        localVue
+        localVue,
       })
     }
 
@@ -61,9 +57,12 @@ describe('DisableModal.vue', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
         const expected = [
-          ['disable.user.message', {
-            name: 'Bob Ross'
-          }]
+          [
+            'disable.user.message',
+            {
+              name: 'Bob Ross',
+            },
+          ],
         ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
@@ -82,9 +81,12 @@ describe('DisableModal.vue', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
         const expected = [
-          ['disable.contribution.message', {
-            name: 'This is some post title.'
-          }]
+          [
+            'disable.contribution.message',
+            {
+              name: 'This is some post title.',
+            },
+          ],
         ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
@@ -96,7 +98,7 @@ describe('DisableModal.vue', () => {
       return mount(DisableModal, {
         propsData,
         mocks,
-        localVue
+        localVue,
       })
     }
     beforeEach(jest.useFakeTimers)
@@ -148,13 +150,9 @@ describe('DisableModal.vue', () => {
 
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
-          const [
-            [{
-              variables
-            }]
-          ] = calls
+          const [[{ variables }]] = calls
           expect(variables).toEqual({
-            id: 'u4711'
+            id: 'u4711',
           })
         })
 

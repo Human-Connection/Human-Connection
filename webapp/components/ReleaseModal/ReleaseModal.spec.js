@@ -1,8 +1,4 @@
-import {
-  shallowMount,
-  mount,
-  createLocalVue
-} from '@vue/test-utils'
+import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import ReleaseModal from './ReleaseModal.vue'
 import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
@@ -21,22 +17,22 @@ describe('ReleaseModal.vue', () => {
     propsData = {
       type: 'contribution',
       name: 'blah',
-      id: 'c42'
+      id: 'c42',
     }
     mocks = {
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
       $t: jest.fn(),
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
+        mutate: jest.fn().mockResolvedValue(),
       },
       location: {
-        reload: jest.fn()
+        reload: jest.fn(),
       },
     }
   })
@@ -46,7 +42,7 @@ describe('ReleaseModal.vue', () => {
       return shallowMount(ReleaseModal, {
         propsData,
         mocks,
-        localVue
+        localVue,
       })
     }
 
@@ -55,7 +51,7 @@ describe('ReleaseModal.vue', () => {
         propsData = {
           type: 'user',
           id: 'u2',
-          name: 'Bob Ross'
+          name: 'Bob Ross',
         }
       })
 
@@ -66,9 +62,9 @@ describe('ReleaseModal.vue', () => {
           [
             'release.user.message',
             {
-              name: 'Bob Ross'
-            }
-          ]
+              name: 'Bob Ross',
+            },
+          ],
         ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
@@ -79,7 +75,7 @@ describe('ReleaseModal.vue', () => {
         propsData = {
           type: 'contribution',
           id: 'c3',
-          name: 'This is some post title.'
+          name: 'This is some post title.',
         }
       })
 
@@ -90,9 +86,9 @@ describe('ReleaseModal.vue', () => {
           [
             'release.contribution.message',
             {
-              name: 'This is some post title.'
-            }
-          ]
+              name: 'This is some post title.',
+            },
+          ],
         ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
@@ -104,7 +100,7 @@ describe('ReleaseModal.vue', () => {
       return mount(ReleaseModal, {
         propsData,
         mocks,
-        localVue
+        localVue,
       })
     }
     beforeEach(jest.useFakeTimers)
@@ -113,7 +109,7 @@ describe('ReleaseModal.vue', () => {
       beforeEach(() => {
         propsData = {
           type: 'user',
-          id: 'u4711'
+          id: 'u4711',
         }
       })
 
@@ -156,13 +152,9 @@ describe('ReleaseModal.vue', () => {
 
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
-          const [
-            [{
-              variables
-            }]
-          ] = calls
+          const [[{ variables }]] = calls
           expect(variables).toEqual({
-            id: 'u4711'
+            id: 'u4711',
           })
         })
 

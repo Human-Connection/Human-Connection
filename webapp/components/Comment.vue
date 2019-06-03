@@ -1,17 +1,13 @@
 <template>
   <div v-if="(comment.deleted || comment.disabled) && !isModerator">
-    <ds-text
-      style="padding-left: 40px; font-weight: bold;"
-      color="soft"
-    >
+    <ds-text style="padding-left: 40px; font-weight: bold;"
+color="soft">
       <ds-icon name="ban" />
       {{ this.$t('comment.content.unavailable-placeholder') }}
     </ds-text>
   </div>
-  <div
-    v-else
-    :class="{'comment': true, 'disabled-content': (comment.deleted || comment.disabled)}"
-  >
+  <div v-else
+:class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-space margin-bottom="x-small">
       <hc-user :user="author" />
     </ds-space>
@@ -27,10 +23,8 @@
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="small" />
-    <div
-      style="padding-left: 40px;"
-      v-html="comment.contentExcerpt"
-    />
+    <div style="padding-left: 40px;"
+v-html="comment.contentExcerpt" />
     <!-- eslint-enable vue/no-v-html -->
   </div>
 </template>

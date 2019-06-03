@@ -1,26 +1,17 @@
 <template>
-  <ds-modal
-    :title="title"
-    :is-open="isOpen"
-    @cancel="cancel"
-  >
+  <ds-modal :title="title"
+:is-open="isOpen" @cancel="cancel">
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button
-        class="cancel"
-        @click="cancel"
-      >
+      <ds-button class="cancel"
+@click="cancel">
         {{ $t('release.cancel') }}
       </ds-button>
 
-      <ds-button
-        danger
-        class="confirm"
-        icon="exclamation-circle"
-        @click="confirm"
-      >
+      <ds-button danger
+class="confirm" icon="exclamation-circle" @click="confirm">
         {{ $t('release.submit') }}
       </ds-button>
     </template>
@@ -34,13 +25,13 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
-    id: { type: String, required: true }
+    id: { type: String, required: true },
   },
   data() {
     return {
       isOpen: true,
       success: false,
-      loading: false
+      loading: false,
     }
   },
   computed: {
@@ -50,7 +41,7 @@ export default {
     message() {
       const name = this.$filters.truncate(this.name, 30)
       return this.$t(`release.${this.type}.message`, { name })
-    }
+    },
   },
   methods: {
     cancel() {
@@ -67,17 +58,17 @@ export default {
               enable(id: $id)
             }
           `,
-          variables: { id: this.id }
+          variables: { id: this.id },
         })
         this.$toast.success(this.$t('release.success'))
         this.isOpen = false
         setTimeout(() => {
-          location.reload()         
-        }, 1500);
+          location.reload()
+        }, 1500)
       } catch (err) {
         this.$toast.error(err.message)
       }
-    }
-  }
+    },
+  },
 }
 </script>

@@ -32,8 +32,8 @@ module.exports = {
     locales: require('./locales'),
   },
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     title: 'Human Connection',
     titleTemplate: '%s - Human Connection',
@@ -46,8 +46,8 @@ module.exports = {
   },
 
   /*
-  ** Customize the progress-bar color
-  */
+   ** Customize the progress-bar color
+   */
   loading: {
     color: '#86b31e',
     height: '2px',
@@ -55,20 +55,20 @@ module.exports = {
   },
 
   /*
-  ** Global CSS
-  */
+   ** Global CSS
+   */
   css: ['~assets/styles/main.scss'],
 
   /*
-  ** Global processed styles
-  */
+   ** Global processed styles
+   */
   styleResources: {
     scss: styleguideStyles,
   },
 
   /*
-  ** Plugins to load before mounting the App
-  */
+   ** Plugins to load before mounting the App
+   */
   plugins: [
     {
       src: `~/plugins/styleguide${process.env.STYLEGUIDE_DEV ? '-dev' : ''}.js`,
@@ -93,8 +93,8 @@ module.exports = {
   },
 
   /*
-  ** Nuxt.js modules
-  */
+   ** Nuxt.js modules
+   */
   modules: [
     ['@nuxtjs/dotenv', { only: envWhitelist }],
     ['nuxt-env', { keys: envWhitelist }],
@@ -105,8 +105,8 @@ module.exports = {
   ],
 
   /*
-  ** Axios module configuration
-  */
+   ** Axios module configuration
+   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     debug: dev,
@@ -181,12 +181,12 @@ module.exports = {
   },
 
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     /*
-    ** You can extend webpack config here
-    */
+     ** You can extend webpack config here
+     */
     extend(config, ctx) {
       if (process.env.STYLEGUIDE_DEV) {
         const path = require('path')

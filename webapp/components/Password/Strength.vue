@@ -1,16 +1,12 @@
 <template>
   <div class="field">
     <div class="password-strength-meter">
-      <div
-        class="password-strength-meter-inner"
-        :class="'strength-' + strength"
-      />
+      <div class="password-strength-meter-inner"
+:class="'strength-' + strength" />
     </div>
     <p class="help">
-      <span
-        v-if="pass"
-        :class="{ insecure: !isSecure }"
-      >
+      <span v-if="pass"
+:class="{ insecure: !isSecure }">
         {{ $t('settings.security.change-password.passwordSecurity') }}:
         <strong>{{ $t(`settings.security.change-password.passwordStrength${strength}`) }}</strong>
       </span>

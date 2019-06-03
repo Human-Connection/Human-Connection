@@ -1,35 +1,18 @@
 <template>
-  <ds-form
-    ref="contributionForm"
-    v-model="form"
-    :schema="formSchema"
-    @submit="submit"
-  >
+  <ds-form ref="contributionForm"
+v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
       <ds-card>
-        <ds-input
-          model="title"
-          class="post-title"
-          placeholder="Title"
-          name="title"
-          autofocus
-        />
+        <ds-input model="title"
+class="post-title" placeholder="Title" name="title" autofocus />
         <no-ssr>
-          <hc-editor
-            :users="users"
-            :value="form.content"
-            @input="updateEditorContent"
-          />
+          <hc-editor :users="users"
+:value="form.content" @input="updateEditorContent" />
         </no-ssr>
-        <div
-          slot="footer"
-          style="text-align: right"
-        >
-          <ds-button
-            :disabled="loading || disabled"
-            ghost
-            @click.prevent="$router.back()"
-          >
+        <div slot="footer"
+style="text-align: right">
+          <ds-button :disabled="loading || disabled"
+ghost @click.prevent="$router.back()">
             {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button

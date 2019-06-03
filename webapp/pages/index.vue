@@ -1,10 +1,7 @@
 <template>
   <div>
-    <ds-flex
-      v-if="Post && Post.length"
-      :width="{ base: '100%' }"
-      gutter="base"
-    >
+    <ds-flex v-if="Post && Post.length"
+:width="{ base: '100%' }" gutter="base">
       <ds-flex-item
         v-for="post in uniq(Post)"
         :key="post.id"
@@ -15,7 +12,7 @@
     </ds-flex>
     <no-ssr>
       <ds-button
-        v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+        v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
         :path="{ name: 'post-create' }"
         class="post-add-button"
         icon="plus"
@@ -23,11 +20,8 @@
         primary
       />
     </no-ssr>
-    <hc-load-more
-      v-if="true"
-      :loading="$apollo.loading"
-      @click="showMoreContributions"
-    />
+    <hc-load-more v-if="true"
+:loading="$apollo.loading" @click="showMoreContributions" />
   </div>
 </template>
 
