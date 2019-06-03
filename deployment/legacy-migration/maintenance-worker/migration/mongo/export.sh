@@ -10,7 +10,7 @@ set +o allexport
 function export_collection () {
   "${EXPORT_MONGOEXPORT_BIN}" --db ${MONGODB_DATABASE} --host localhost -d ${MONGODB_DATABASE} --port 27018 --username ${MONGODB_USERNAME} --password ${MONGODB_PASSWORD} --authenticationDatabase ${MONGODB_AUTH_DB} --collection $1  --collection $1 --out "${EXPORT_PATH}$1.json"
   mkdir -p ${EXPORT_PATH}splits/$1/
-  split -l 100 -a 3 ${EXPORT_PATH}$1.json ${EXPORT_PATH}splits/$1/
+  split -l ${MONGO_EXPORT_SPLIT_SIZE} -a 3 ${EXPORT_PATH}$1.json ${EXPORT_PATH}splits/$1/
 }
 
 # Delete old export & ensure directory
