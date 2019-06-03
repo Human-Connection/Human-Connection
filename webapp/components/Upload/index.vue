@@ -1,24 +1,26 @@
 <template>
-  <div>
-    <vue-dropzone
-      id="customdropzone"
-      :key="user.avatar"
-      ref="el"
-      :options="dropzoneOptions"
-      :include-styling="false"
-      :style="backgroundImage"
-      @vdropzone-thumbnail="thumbnail"
-      @vdropzone-error="verror"
-    />
-  </div>
+  <vue-dropzone
+    id="customdropzone"
+    :key="user.avatar"
+    ref="el"
+    :use-custom-slot="true"
+    :options="dropzoneOptions"
+    @vdropzone-error="verror"
+  >
+    <div class="dz-message">
+      <hc-avatar :user="user" class="profile-avatar" size="x-large"/>
+    </div>
+  </vue-dropzone>
 </template>
 <script>
 import vueDropzone from 'nuxt-dropzone'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 import gql from 'graphql-tag'
 
 export default {
   components: {
     vueDropzone,
+    HcAvatar,
   },
   props: {
     user: { type: Object, default: null },
@@ -28,22 +30,10 @@ export default {
       dropzoneOptions: {
         url: this.vddrop,
         maxFilesize: 5.0,
-        previewTemplate: this.template(),
         dictDefaultMessage: '',
       },
       error: false,
     }
-  },
-  computed: {
-    backgroundImage() {
-      const avatar =
-        this.user.avatar ||
-        'https://human-connection.org/wp-content/uploads/2019/03/human-connection-logo.svg'
-      const userAvatar = avatar.startsWith('/') ? avatar.replace('/', '/api/') : avatar
-      return {
-        backgroundImage: `url(${userAvatar})`,
-      }
-    },
   },
   watch: {
     error() {
@@ -54,28 +44,6 @@ export default {
     },
   },
   methods: {
-    template() {
-      return `<div class="dz-preview dz-file-preview">
-                <div class="dz-image">
-                  <div data-dz-thumbnail-bg></div>
-                </div>
-              </div>
-      `
-    },
-    thumbnail(file, dataUrl) {
-      let j, len, ref, thumbnailElement
-      if (file.previewElement) {
-        this.$refs.el.$el.style.backgroundImage = ''
-        file.previewElement.classList.remove('dz-file-preview')
-        ref = file.previewElement.querySelectorAll('[data-dz-thumbnail-bg]')
-        for (j = 0, len = ref.length; j < len; j++) {
-          thumbnailElement = ref[j]
-          thumbnailElement.alt = file.name
-          thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")'
-        }
-        file.previewElement.classList.add('dz-image-preview')
-      }
-    },
     vddrop(file) {
       const avatarUpload = file[0]
       this.$apollo
@@ -107,21 +75,7 @@ export default {
   },
 }
 </script>
-<style>
-#customdropzone {
-  margin: -60px auto auto;
-  width: 122px;
-  min-height: 122px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  border-radius: 50%;
-  font-family: 'Arial', sans-serif;
-  letter-spacing: 0.2px;
-  color: #777;
-  transition: background-color 0.2s linear;
-  padding: 40px;
-}
-
+<style lang="scss">
 #customdropzone:hover {
   cursor: pointer;
 }
@@ -154,11 +108,5 @@ export default {
   color: white;
   transition: opacity 0.2s linear;
   text-align: center;
-}
-
-#customdropzone .dz-success-mark,
-.dz-error-mark,
-.dz-remove {
-  display: none;
 }
 </style>
