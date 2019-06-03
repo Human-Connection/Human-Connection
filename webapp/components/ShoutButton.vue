@@ -1,8 +1,5 @@
 <template>
-  <ds-space
-    margin="large"
-    style="text-align: center"
-  >
+  <ds-space margin="large" style="text-align: center">
     <ds-button
       :loading="loading"
       :disabled="disabled"
@@ -13,16 +10,9 @@
       @click="toggle"
     />
     <ds-space margin-bottom="xx-small" />
-    <ds-text
-      color="soft"
-      class="shout-button-text"
-    >
-      <ds-heading
-        style="display: inline"
-        tag="h3"
-      >
-        {{ shoutedCount }}x
-      </ds-heading> {{ $t('shoutButton.shouted') }}
+    <ds-text color="soft" class="shout-button-text">
+      <ds-heading style="display: inline" tag="h3">{{ shoutedCount }}x</ds-heading>
+      {{ $t('shoutButton.shouted') }}
     </ds-text>
   </ds-space>
 </template>

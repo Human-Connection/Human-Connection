@@ -1,4 +1,4 @@
-FROM node:10-alpine as base
+FROM node:12.3.1-alpine as base
 LABEL Description="Web Frontend of the Social Network Human-Connection.org" Vendor="Human-Connection gGmbH" Version="0.0.1" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
 
 EXPOSE 3000
@@ -18,7 +18,7 @@ COPY . .
 
 FROM base as build-and-test
 RUN cp .env.template .env
-RUN yarn install --production=false --frozen-lockfile --non-interactive
+RUN yarn install --ignore-engines --production=false --frozen-lockfile --non-interactive
 RUN yarn run build
 
 FROM base as production

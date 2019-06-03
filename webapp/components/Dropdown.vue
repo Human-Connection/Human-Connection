@@ -7,17 +7,8 @@
     trigger="manual"
     :offset="offset"
   >
-    <slot
-      :toggleMenu="toggleMenu"
-      :openMenu="openMenu"
-      :closeMenu="closeMenu"
-      :isOpen="isOpen"
-    />
-    <div
-      slot="popover"
-      @mouseover="popoverMouseEnter"
-      @mouseleave="popoveMouseLeave"
-    >
+    <slot :toggleMenu="toggleMenu" :openMenu="openMenu" :closeMenu="closeMenu" :isOpen="isOpen" />
+    <div slot="popover" @mouseover="popoverMouseEnter" @mouseleave="popoveMouseLeave">
       <slot
         name="popover"
         :toggleMenu="toggleMenu"

@@ -1,9 +1,6 @@
 <template>
   <ds-card :header="$t('admin.users.name')">
-    <hc-empty
-      icon="tasks"
-      message="Coming Soon…"
-    />
+    <hc-empty icon="tasks" message="Coming Soon…" />
   </ds-card>
 </template>
 

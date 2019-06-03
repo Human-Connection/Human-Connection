@@ -105,7 +105,7 @@
     "jest": "~24.8.0",
     "node-sass": "~4.12.0",
     "nodemon": "~1.19.1",
-    "prettier": "~1.14.3",
+    "prettier": "~1.17.1",
     "sass-loader": "~7.1.0",
     "tippy.js": "^4.3.1",
     "vue-jest": "~3.0.4",
