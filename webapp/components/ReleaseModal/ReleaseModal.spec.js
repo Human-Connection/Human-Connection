@@ -1,6 +1,5 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import ReleaseModal from './ReleaseModal.vue'
-import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
@@ -8,7 +7,6 @@ const localVue = createLocalVue()
 localVue.use(Styleguide)
 
 describe('ReleaseModal.vue', () => {
-  let store
   let mocks
   let propsData
   let wrapper
