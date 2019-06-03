@@ -118,7 +118,7 @@ describe('ReleaseModal.vue', () => {
         })
 
         it('does not emit "close" yet', () => {
-          expect(wrapper.emitted().close).toBe(false)
+          expect(wrapper.emitted().close).toBeFalsy()
         })
 
         it('fades away', () => {
@@ -133,7 +133,7 @@ describe('ReleaseModal.vue', () => {
           })
 
           it('emits close', () => {
-            expect(wrapper.emitted().close).toBe(true)
+            expect(wrapper.emitted().close).toBeTruthy()
           })
         })
       })
@@ -164,7 +164,7 @@ describe('ReleaseModal.vue', () => {
           beforeEach(jest.runAllTimers)
 
           it('emits close', () => {
-            expect(wrapper.emitted().close).toBe(true)
+            expect(wrapper.emitted().close).toBeTruthy()
           })
         })
       })
