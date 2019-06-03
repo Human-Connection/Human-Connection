@@ -55,5 +55,10 @@ export default {
 
       return comment
     },
+    DeleteComment: async (object, params, context, resolveInfo) => {
+      const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
+
+      return comment
+    },
   },
 }

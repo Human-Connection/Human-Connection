@@ -16,11 +16,15 @@ const isAdmin = rule()(async (parent, args, { user }, info) => {
   return user && user.role === 'admin'
 })
 
-const isMyOwn = rule({ cache: 'no_cache' })(async (parent, args, context, info) => {
+const isMyOwn = rule({
+  cache: 'no_cache',
+})(async (parent, args, context, info) => {
   return context.user.id === parent.id
 })
 
-const belongsToMe = rule({ cache: 'no_cache' })(async (_, args, context) => {
+const belongsToMe = rule({
+  cache: 'no_cache',
+})(async (_, args, context) => {
   const {
     driver,
     user: { id: userId },
@@ -32,7 +36,10 @@ const belongsToMe = rule({ cache: 'no_cache' })(async (_, args, context) => {
   MATCH (u:User {id: $userId})<-[:NOTIFIED]-(n:Notification {id: $notificationId})
   RETURN n
   `,
-    { userId, notificationId },
+    {
+      userId,
+      notificationId,
+    },
   )
   const [notification] = result.records.map(record => {
     return record.get('n')
@@ -41,21 +48,27 @@ const belongsToMe = rule({ cache: 'no_cache' })(async (_, args, context) => {
   return Boolean(notification)
 })
 
-const onlyEnabledContent = rule({ cache: 'strict' })(async (parent, args, ctx, info) => {
+const onlyEnabledContent = rule({
+  cache: 'strict',
+})(async (parent, args, ctx, info) => {
   const { disabled, deleted } = args
   return !(disabled || deleted)
 })
 
-const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver }) => {
+const isAuthor = rule({
+  cache: 'no_cache',
+})(async (parent, args, { user, driver }) => {
   if (!user) return false
   const session = driver.session()
-  const { id: postId } = args
+  const { id: resourceId } = args
   const result = await session.run(
     `
-  MATCH (post:Post {id: $postId})<-[:WROTE]-(author)
+  MATCH (resource {id: $resourceId})<-[:WROTE]-(author)
   RETURN author
   `,
-    { postId },
+    {
+      resourceId,
+    },
   )
   const [author] = result.records.map(record => {
     return record.get('author')
@@ -100,6 +113,7 @@ const permissions = shield({
     enable: isModerator,
     disable: isModerator,
     CreateComment: isAuthenticated,
+    DeleteComment: isAuthor,
     // CreateUser: allow,
   },
   User: {

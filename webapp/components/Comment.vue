@@ -14,6 +14,7 @@
         placement="bottom-end"
         resource-type="comment"
         :resource="comment"
+        :callbacks="{ confirm: deleteCommentCallback, cancel: null }"
         style="float-right"
         :is-owner="isAuthor(author.id)"
       />
@@ -27,6 +28,7 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import { mapGetters } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
@@ -60,6 +62,25 @@ export default {
   methods: {
     isAuthor(id) {
       return this.user.id === id
+    },
+    async deleteCommentCallback() {
+      try {
+        var gqlMutation = gql`
+          mutation($id: ID!) {
+            DeleteComment(id: $id) {
+              id
+            }
+          }
+        `
+        await this.$apollo.mutate({
+          mutation: gqlMutation,
+          variables: { id: this.comment.id },
+        })
+        this.$toast.success(this.$t(`delete.comment.success`))
+        this.$emit('deleteComment')
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }

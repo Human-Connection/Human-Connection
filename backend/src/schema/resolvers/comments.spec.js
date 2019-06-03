@@ -1,6 +1,7 @@
-import Factory from '../seed/factories'
+import gql from 'graphql-tag'
 import { GraphQLClient } from 'graphql-request'
-import { host, login } from '../jest/helpers'
+import Factory from '../../seed/factories'
+import { host, login } from '../../jest/helpers'
 
 const factory = Factory()
 let client
@@ -21,22 +22,22 @@ afterEach(async () => {
 })
 
 describe('CreateComment', () => {
-  const createCommentMutation = `
-  mutation($postId: ID, $content: String!) {
-    CreateComment(postId: $postId, content: $content) {
-      id
-      content
+  const createCommentMutation = gql`
+    mutation($postId: ID, $content: String!) {
+      CreateComment(postId: $postId, content: $content) {
+        id
+        content
+      }
     }
-  }
   `
-  const createPostMutation = `
-  mutation($id: ID!, $title: String!, $content: String!) {
-    CreatePost(id: $id, title: $title, content: $content) {
-      id
+  const createPostMutation = gql`
+    mutation($id: ID!, $title: String!, $content: String!) {
+      CreatePost(id: $id, title: $title, content: $content) {
+        id
+      }
     }
-  }
   `
-  const commentQueryForPostId = `
+  const commentQueryForPostId = gql`
     query($content: String) {
       Comment(content: $content) {
         postId
@@ -59,8 +60,13 @@ describe('CreateComment', () => {
   describe('authenticated', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
-      client = new GraphQLClient(host, { headers })
+      headers = await login({
+        email: 'test@example.org',
+        password: '1234',
+      })
+      client = new GraphQLClient(host, {
+        headers,
+      })
       createCommentVariables = {
         postId: 'p1',
         content: "I'm authorised to comment",
@@ -88,15 +94,25 @@ describe('CreateComment', () => {
     it('assigns the authenticated user as author', async () => {
       await client.request(createCommentMutation, createCommentVariables)
 
-      const { User } = await client.request(`{
+      const { User } = await client.request(gql`
+        {
           User(email: "test@example.org") {
             comments {
               content
             }
           }
-        }`)
+        }
+      `)
 
-      expect(User).toEqual([{ comments: [{ content: "I'm authorised to comment" }] }])
+      expect(User).toEqual([
+        {
+          comments: [
+            {
+              content: "I'm authorised to comment",
+            },
+          ],
+        },
+      ])
     })
 
     it('throw an error if an empty string is sent from the editor as content', async () => {
@@ -186,7 +202,98 @@ describe('CreateComment', () => {
         commentQueryForPostId,
         commentQueryVariablesByContent,
       )
-      expect(Comment).toEqual([{ postId: null }])
+      expect(Comment).toEqual([
+        {
+          postId: null,
+        },
+      ])
+    })
+  })
+})
+
+describe('DeleteComment', () => {
+  const deleteCommentMutation = gql`
+    mutation($id: ID!) {
+      DeleteComment(id: $id) {
+        id
+      }
+    }
+  `
+
+  let deleteCommentVariables = {
+    id: 'c1',
+  }
+
+  beforeEach(async () => {
+    const asAuthor = Factory()
+    await asAuthor.create('User', {
+      email: 'author@example.org',
+      password: '1234',
+    })
+    await asAuthor.authenticateAs({
+      email: 'author@example.org',
+      password: '1234',
+    })
+    await asAuthor.create('Post', {
+      id: 'p1',
+      content: 'Post to be commented',
+    })
+    await asAuthor.create('Comment', {
+      id: 'c1',
+      postId: 'p1',
+      content: 'Comment to be deleted',
+    })
+  })
+
+  describe('unauthenticated', () => {
+    it('throws authorization error', async () => {
+      client = new GraphQLClient(host)
+      await expect(client.request(deleteCommentMutation, deleteCommentVariables)).rejects.toThrow(
+        'Not Authorised',
+      )
+    })
+  })
+
+  describe('authenticated but not the author', () => {
+    beforeEach(async () => {
+      let headers
+      headers = await login({
+        email: 'test@example.org',
+        password: '1234',
+      })
+      client = new GraphQLClient(host, {
+        headers,
+      })
+    })
+
+    it('throws authorization error', async () => {
+      await expect(client.request(deleteCommentMutation, deleteCommentVariables)).rejects.toThrow(
+        'Not Authorised',
+      )
+    })
+  })
+
+  describe('authenticated as author', () => {
+    beforeEach(async () => {
+      let headers
+      headers = await login({
+        email: 'author@example.org',
+        password: '1234',
+      })
+      client = new GraphQLClient(host, {
+        headers,
+      })
+    })
+
+    it('deletes the comment', async () => {
+      const expected = {
+        DeleteComment: {
+          id: 'c1',
+        },
+      }
+      await expect(client.request(deleteCommentMutation, deleteCommentVariables)).resolves.toEqual(
+        expected,
+      )
     })
   })
 })

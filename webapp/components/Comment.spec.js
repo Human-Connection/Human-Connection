@@ -14,11 +14,20 @@ describe('Comment.vue', () => {
   let propsData
   let mocks
   let getters
+  let wrapper
+  let Wrapper
 
   beforeEach(() => {
     propsData = {}
     mocks = {
       $t: jest.fn(),
+      $toast: {
+        success: jest.fn(),
+        error: jest.fn(),
+      },
+      $apollo: {
+        mutate: jest.fn().mockResolvedValue(),
+      },
     }
     getters = {
       'auth/user': () => {
@@ -29,11 +38,16 @@ describe('Comment.vue', () => {
   })
 
   describe('shallowMount', () => {
-    const Wrapper = () => {
+    Wrapper = () => {
       const store = new Vuex.Store({
         getters,
       })
-      return shallowMount(Comment, { store, propsData, mocks, localVue })
+      return shallowMount(Comment, {
+        store,
+        propsData,
+        mocks,
+        localVue,
+      })
     }
 
     describe('given a comment', () => {
@@ -45,7 +59,7 @@ describe('Comment.vue', () => {
       })
 
       it('renders content', () => {
-        const wrapper = Wrapper()
+        wrapper = Wrapper()
         expect(wrapper.text()).toMatch('Hello I am a comment content')
       })
 
@@ -55,17 +69,17 @@ describe('Comment.vue', () => {
         })
 
         it('renders no comment data', () => {
-          const wrapper = Wrapper()
+          wrapper = Wrapper()
           expect(wrapper.text()).not.toMatch('comment content')
         })
 
         it('has no "disabled-content" css class', () => {
-          const wrapper = Wrapper()
+          wrapper = Wrapper()
           expect(wrapper.classes()).not.toContain('disabled-content')
         })
 
         it('translates a placeholder', () => {
-          /* const wrapper = */ Wrapper()
+          wrapper = Wrapper()
           const calls = mocks.$t.mock.calls
           const expected = [['comment.content.unavailable-placeholder']]
           expect(calls).toEqual(expect.arrayContaining(expected))
@@ -77,13 +91,43 @@ describe('Comment.vue', () => {
           })
 
           it('renders comment data', () => {
-            const wrapper = Wrapper()
+            wrapper = Wrapper()
             expect(wrapper.text()).toMatch('comment content')
           })
 
           it('has a "disabled-content" css class', () => {
-            const wrapper = Wrapper()
+            wrapper = Wrapper()
             expect(wrapper.classes()).toContain('disabled-content')
+          })
+        })
+      })
+
+      beforeEach(jest.useFakeTimers)
+
+      describe('test callbacks', () => {
+        beforeEach(() => {
+          wrapper = Wrapper()
+        })
+
+        describe('deletion of Comment from List by invoking "deleteCommentCallback()"', () => {
+          beforeEach(() => {
+            wrapper.vm.deleteCommentCallback()
+          })
+
+          describe('after timeout', () => {
+            beforeEach(jest.runAllTimers)
+
+            it('emits "deleteComment"', () => {
+              expect(wrapper.emitted().deleteComment.length).toBe(1)
+            })
+
+            it('does call mutation', () => {
+              expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
+            })
+
+            it('mutation is successful', () => {
+              expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
+            })
           })
         })
       })
