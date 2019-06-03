@@ -213,14 +213,6 @@ describe('CreateComment', () => {
 })
 
 describe('DeleteComment', () => {
-  // const createCommentMutation = gql`
-  //   mutation($postId: ID, $content: String!) {
-  //     CreateComment(postId: $postId, content: $content) {
-  //       id
-  //       content
-  //     }
-  //   }
-  // `
   const deleteCommentMutation = gql`
     mutation($id: ID!) {
       DeleteComment(id: $id) {
@@ -228,13 +220,6 @@ describe('DeleteComment', () => {
       }
     }
   `
-  // const createPostMutation = gql`
-  //   mutation($id: ID!, $title: String!, $content: String!) {
-  //     CreatePost(id: $id, title: $title, content: $content) {
-  //       id
-  //     }
-  //   }
-  // `
 
   let deleteCommentVariables = {
     id: 'c1',
@@ -313,84 +298,3 @@ describe('DeleteComment', () => {
     })
   })
 })
-
-// describe('DeleteComment', () => {
-//   const createCommentMutation = gql`
-//     mutation($postId: ID, $content: String!) {
-//       CreateComment(postId: $postId, content: $content) {
-//         id
-//         content
-//       }
-//     }
-//   `
-//   const deleteCommentMutation = gql`
-//     mutation($id: ID!) {
-//       DeleteComment(id: $id) {
-//         id
-//       }
-//     }
-//   `
-//   const createPostMutation = gql`
-//     mutation($id: ID!, $title: String!, $content: String!) {
-//       CreatePost(id: $id, title: $title, content: $content) {
-//         id
-//       }
-//     }
-//   `
-//   describe('unauthenticated', () => {
-//     it('throws authorization error', async () => {
-//       deleteCommentVariables = {
-//         id: 'c1',
-//       }
-//       client = new GraphQLClient(host)
-//       await expect(client.request(deleteCommentMutation, deleteCommentVariables)).rejects.toThrow(
-//         'Not Authorised',
-//       )
-//     })
-//   })
-
-//   describe('authenticated', () => {
-//     let headers
-//     beforeEach(async () => {
-//       headers = await login({
-//         email: 'test@example.org',
-//         password: '1234',
-//       })
-//       client = new GraphQLClient(host, {
-//         headers,
-//       })
-//       createCommentVariables = {
-//         id: 'c1',
-//         postId: 'p1',
-//         content: "I'm authorised to comment",
-//       }
-//       deleteCommentVariables = {
-//         id: 'c1',
-//       }
-//       createPostVariables = {
-//         id: 'p1',
-//         title: 'post to comment on',
-//         content: 'please comment on me',
-//       }
-//       await client.request(createPostMutation, createPostVariables)
-//     })
-
-//     it('deletes the authors comment', async () => {
-//       const { CreateComment } = await client.request(createCommentMutation, createCommentVariables)
-
-//       deleteCommentVariables = {
-//         id: CreateComment.id,
-//       }
-//       const expected = {
-//         DeleteComment: {
-//           id: CreateComment.id,
-//         },
-//       }
-//       await expect(
-//         client.request(deleteCommentMutation, deleteCommentVariables),
-//       ).resolves.toMatchObject(expected)
-//     })
-
-//     it.todo('throws an error if it tries to delete a comment not from this author')
-//   })
-// })
