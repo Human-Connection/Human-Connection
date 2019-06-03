@@ -1,5 +1,5 @@
 import { cleanDatabase } from './factories'
-import CONFIG from './config'
+import CONFIG from './../config'
 
 if (!CONFIG.DEBUG) {
   throw new Error(`YOU CAN'T CLEAN THE DATABASE WITH DEBUG=${CONFIG.DEBUG}`)
