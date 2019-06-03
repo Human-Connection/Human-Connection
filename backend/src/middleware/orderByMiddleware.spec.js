@@ -1,5 +1,5 @@
-import Factory from '../seed/factories'
-import { host } from '../jest/helpers'
+import Factory from '../../seed/factories'
+import { host } from '../../jest/helpers'
 import { GraphQLClient } from 'graphql-request'
 
 let client

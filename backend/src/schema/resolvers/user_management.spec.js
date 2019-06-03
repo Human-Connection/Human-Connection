@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
-import Factory from '../seed/factories'
 import { GraphQLClient, request } from 'graphql-request'
 import jwt from 'jsonwebtoken'
-import { host, login } from '../jest/helpers'
-import CONFIG from './config'
+import CONFIG from './../../config'
+import Factory from '../../seed/factories'
+import { host, login } from '../../jest/helpers'
 
 const factory = Factory()
 
