@@ -1,3 +1,18 @@
+enum FilterBubbleAuthorEnum {
+  followed
+  all
+}
+
+input FilterBubble {
+  author: FilterBubbleAuthorEnum
+}
+
+type Query {
+  Post(
+    filterBubble: FilterBubble
+  ): [Post]
+}
+
 type Post {
   id: ID!
   activityId: String

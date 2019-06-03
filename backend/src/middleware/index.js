@@ -13,6 +13,7 @@ import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation'
 import notifications from './notifications'
+import filterBubble from './filterBubble/filterBubble'
 
 export default schema => {
   const middlewares = {
@@ -30,11 +31,13 @@ export default schema => {
     user: user,
     includedFields: includedFields,
     orderBy: orderBy,
+    filterBubble: filterBubble,
   }
 
   let order = [
     'permissions',
     'activityPub',
+    'filterBubble',
     'password',
     'dateTime',
     'validation',
