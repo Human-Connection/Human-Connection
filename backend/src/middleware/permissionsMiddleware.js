@@ -60,14 +60,14 @@ const isAuthor = rule({
 })(async (parent, args, { user, driver }) => {
   if (!user) return false
   const session = driver.session()
-  const { id: postId } = args
+  const { id: resourceId } = args
   const result = await session.run(
     `
-  MATCH (post:Post {id: $postId})<-[:WROTE]-(author)
+  MATCH (resource {id: $resourceId})<-[:WROTE]-(author)
   RETURN author
   `,
     {
-      postId,
+      resourceId,
     },
   )
   const [author] = result.records.map(record => {
@@ -113,7 +113,7 @@ const permissions = shield({
     enable: isModerator,
     disable: isModerator,
     CreateComment: isAuthenticated,
-    DeleteComment: isAuthenticated,
+    DeleteComment: isAuthor,
     // CreateUser: allow,
   },
   User: {
