@@ -6,7 +6,6 @@ import { host, login } from '../jest/helpers'
 const factory = Factory()
 let client
 let createCommentVariables
-let deleteCommentVariables
 let createPostVariables
 let createCommentVariablesSansPostId
 let createCommentVariablesWithNonExistentPost
