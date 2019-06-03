@@ -1,7 +1,7 @@
 import express from 'express'
 import helmet from 'helmet'
 import { GraphQLServer } from 'graphql-yoga'
-import CONFIG from './config'
+import { default as CONFIG, requiredConfigs } from './config'
 import mocks from './mocks'
 import middleware from './middleware'
 import { getDriver } from './bootstrap/neo4j'
@@ -9,7 +9,8 @@ import decode from './jwt/decode'
 import schema from './schema'
 
 // check required configs and throw error
-Object.entries(CONFIG.requiredConfigs).map(entry => {
+// TODO check this directly in config file - currently not possible due to testsetup
+Object.entries(requiredConfigs).map(entry => {
   if (!entry[1]) {
     throw new Error(`ERROR: "${entry[0]}" env variable is missing.`)
   }
