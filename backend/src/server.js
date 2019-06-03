@@ -8,6 +8,13 @@ import { getDriver } from './bootstrap/neo4j'
 import decode from './jwt/decode'
 import schema from './schema'
 
+// check required configs and throw error
+Object.entries(CONFIG.requiredConfigs).map(entry => {
+  if (!entry[1]) {
+    throw new Error(`ERROR: "${entry[0]}" env variable is missing.`)
+  }
+})
+
 const driver = getDriver()
 
 const createServer = options => {
