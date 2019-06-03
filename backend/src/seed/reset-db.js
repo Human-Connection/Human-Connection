@@ -1,10 +1,11 @@
 import { cleanDatabase } from './factories'
 import dotenv from 'dotenv'
+import CONFIG from './config'
 
 dotenv.config()
 
-if (process.env.NODE_ENV === 'production') {
-  throw new Error(`YOU CAN'T CLEAN THE DATABASE WITH NODE_ENV=${process.env.NODE_ENV}`)
+if (!CONFIG.DEBUG) {
+  throw new Error(`YOU CAN'T CLEAN THE DATABASE WITH DEBUG=${CONFIG.DEBUG}`)
 }
 
 ;(async function() {

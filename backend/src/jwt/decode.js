@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken'
+import CONFIG from './../config'
 
 export default async (driver, authorizationHeader) => {
   if (!authorizationHeader) return null
   const token = authorizationHeader.replace('Bearer ', '')
   let id = null
   try {
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+    const decoded = await jwt.verify(token, CONFIG.JWT_SECRET)
     id = decoded.sub
   } catch (err) {
     return null

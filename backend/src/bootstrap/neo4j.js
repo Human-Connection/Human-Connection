@@ -1,5 +1,6 @@
 import { v1 as neo4j } from 'neo4j-driver'
 import dotenv from 'dotenv'
+import CONFIG from './../config'
 
 dotenv.config()
 
@@ -7,9 +8,9 @@ let driver
 
 export function getDriver(options = {}) {
   const {
-    uri = process.env.NEO4J_URI || 'bolt://localhost:7687',
-    username = process.env.NEO4J_USERNAME || 'neo4j',
-    password = process.env.NEO4J_PASSWORD || 'neo4j',
+    uri = CONFIG.NEO4J_URI,
+    username = CONFIG.NEO4J_USERNAME,
+    password = CONFIG.NEO4J_PASSWORD,
   } = options
   if (!driver) {
     driver = neo4j.driver(uri, neo4j.auth.basic(username, password))

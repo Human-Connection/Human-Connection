@@ -12,6 +12,7 @@ import includedFieldsMiddleware from './includedFieldsMiddleware'
 import orderByMiddleware from './orderByMiddleware'
 import validationMiddleware from './validation'
 import notificationsMiddleware from './notifications'
+import CONFIG from './../config'
 
 export default schema => {
   let middleware = [
@@ -31,9 +32,8 @@ export default schema => {
 
   // add permisions middleware at the first position (unless we're seeding)
   // NOTE: DO NOT SET THE PERMISSION FLAT YOUR SELF
-  if (process.env.NODE_ENV !== 'production') {
-    const DISABLED_MIDDLEWARES = process.env.DISABLED_MIDDLEWARES || ''
-    const disabled = DISABLED_MIDDLEWARES.split(',')
+  if (CONFIG.DEBUG) {
+    const disabled = CONFIG.DISABLED_MIDDLEWARES.split(',')
     if (!disabled.includes('activityPub')) middleware.unshift(activityPubMiddleware)
     if (!disabled.includes('permissions'))
       middleware.unshift(permissionsMiddleware.generate(schema))

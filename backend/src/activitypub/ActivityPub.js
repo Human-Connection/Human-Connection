@@ -7,6 +7,7 @@ import router from './routes'
 import dotenv from 'dotenv'
 import Collections from './Collections'
 import uuid from 'uuid/v4'
+import CONFIG from '../config'
 const debug = require('debug')('ea')
 
 let activityPub = null
@@ -23,10 +24,7 @@ export default class ActivityPub {
   static init(server) {
     if (!activityPub) {
       dotenv.config()
-      activityPub = new ActivityPub(
-        process.env.CLIENT_URI || 'http://localhost:3000',
-        process.env.GRAPHQL_URI || 'http://localhost:4000',
-      )
+      activityPub = new ActivityPub(CONFIG.CLIENT_URI, CONFIG.GRAPHQL_URI)
 
       // integrate into running graphql express server
       server.express.set('ap', activityPub)

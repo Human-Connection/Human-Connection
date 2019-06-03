@@ -2,6 +2,7 @@ import request from 'request'
 import { UserInputError } from 'apollo-server'
 import isEmpty from 'lodash/isEmpty'
 import asyncForEach from '../../helpers/asyncForEach'
+import CONFIG from './../../config'
 
 const fetch = url => {
   return new Promise((resolve, reject) => {
@@ -58,11 +59,12 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
   if (isEmpty(locationName)) {
     return
   }
-  const mapboxToken = process.env.MAPBOX_TOKEN
   const res = await fetch(
     `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
       locationName,
-    )}.json?access_token=${mapboxToken}&types=region,place,country&language=${locales.join(',')}`,
+    )}.json?access_token=${CONFIG.MAPBOX_TOKEN}&types=region,place,country&language=${locales.join(
+      ',',
+    )}`,
   )
 
   if (!res || !res.features || !res.features[0]) {
