@@ -1,7 +1,9 @@
 <template>
   <div class="editor">
-    <div v-show="showSuggestions"
-ref="suggestions" class="suggestion-list">
+    <div
+v-show="showSuggestions" ref="suggestions"
+class="suggestion-list"
+>
       <template v-if="hasResults">
         <div
           v-for="(user, index) in filteredUsers"
@@ -13,8 +15,9 @@ ref="suggestions" class="suggestion-list">
           @{{ user.slug }}
         </div>
       </template>
-      <div v-else
-class="suggestion-list__item is-empty">
+      <div
+v-else class="suggestion-list__item is-empty"
+>
         No users found
       </div>
     </div>
@@ -149,8 +152,9 @@ class="suggestion-list__item is-empty">
         </ds-button>
       </div>
     </editor-floating-menu>
-    <editor-content ref="editor"
-:editor="editor" />
+    <editor-content
+ref="editor" :editor="editor"
+/>
   </div>
 </template>
 

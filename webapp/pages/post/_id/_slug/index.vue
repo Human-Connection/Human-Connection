@@ -1,14 +1,16 @@
 <template>
-  <transition name="fade"
-appear>
+  <transition
+name="fade" appear
+>
     <ds-card
       v-if="post && ready"
       :image="post.image"
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
     >
       <ds-space margin-bottom="small" />
-      <hc-user :user="post.author"
-:date-time="post.createdAt" />
+      <hc-user
+:user="post.author" :date-time="post.createdAt"
+/>
       <no-ssr>
         <content-menu
           placement="bottom-end"
@@ -18,16 +20,18 @@ appear>
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
-      <ds-heading tag="h3"
-no-margin>
+      <ds-heading
+tag="h3" no-margin
+>
         {{ post.title }}
       </ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
-      <div class="content hc-editor-content"
-v-html="post.content" />
+      <div
+class="content hc-editor-content" v-html="post.content"
+/>
       <!-- eslint-enable vue/no-v-html -->
       <ds-space margin="xx-large" />
       <!-- Categories -->
@@ -43,11 +47,14 @@ v-html="post.content" />
       </div>
       <ds-space margin-bottom="small" />
       <!-- Tags -->
-      <div v-if="post.tags && post.tags.length"
-class="tags">
+      <div
+v-if="post.tags && post.tags.length" class="tags"
+>
         <ds-space margin="xx-small" />
-        <hc-tag v-for="tag in post.tags"
-:key="tag.id" :name="tag.name" />
+        <hc-tag
+v-for="tag in post.tags" :key="tag.id"
+:name="tag.name"
+/>
       </div>
       <!-- Shout Button -->
       <hc-shout-button

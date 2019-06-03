@@ -3,10 +3,13 @@
     <ds-heading tag="h3">
       {{ $t('moderation.reports.name') }}
     </ds-heading>
-    <ds-table v-if="Report && Report.length"
-:data="Report" :fields="fields" condensed>
-      <template slot="name"
-slot-scope="scope">
+    <ds-table
+v-if="Report && Report.length" :data="Report"
+:fields="fields" condensed
+>
+      <template
+slot="name" slot-scope="scope"
+>
         <div v-if="scope.row.type === 'Post'">
           <nuxt-link
             :to="{
@@ -16,9 +19,10 @@ slot-scope="scope">
           >
             <b>{{ scope.row.post.title | truncate(50) }}</b>
           </nuxt-link>
-          <br >
-          <ds-text size="small"
-color="soft">
+          <br>
+          <ds-text
+size="small" color="soft"
+>
             {{ scope.row.post.author.name }}
           </ds-text>
         </div>
@@ -31,9 +35,10 @@ color="soft">
           >
             <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
           </nuxt-link>
-          <br >
-          <ds-text size="small"
-color="soft">
+          <br>
+          <ds-text
+size="small" color="soft"
+>
             {{ scope.row.comment.author.name }}
           </ds-text>
         </div>
@@ -48,8 +53,9 @@ color="soft">
           </nuxt-link>
         </div>
       </template>
-      <template slot="type"
-slot-scope="scope">
+      <template
+slot="type" slot-scope="scope"
+>
         <ds-text color="soft">
           <ds-icon
             v-if="scope.row.type === 'Post'"
@@ -68,8 +74,9 @@ slot-scope="scope">
           />
         </ds-text>
       </template>
-      <template slot="submitter"
-slot-scope="scope">
+      <template
+slot="submitter" slot-scope="scope"
+>
         <nuxt-link
           :to="{
             name: 'profile-id-slug',
@@ -79,8 +86,9 @@ slot-scope="scope">
           {{ scope.row.submitter.name }}
         </nuxt-link>
       </template>
-      <template slot="disabledBy"
-slot-scope="scope">
+      <template
+slot="disabledBy" slot-scope="scope"
+>
         <nuxt-link
           v-if="scope.row.type === 'Post' && scope.row.post.disabledBy"
           :to="{
@@ -113,8 +121,10 @@ slot-scope="scope">
         </nuxt-link>
       </template>
     </ds-table>
-    <hc-empty v-else
-icon="alert" :message="$t('moderation.reports.empty')" />
+    <hc-empty
+v-else icon="alert"
+:message="$t('moderation.reports.empty')"
+/>
   </ds-card>
 </template>
 

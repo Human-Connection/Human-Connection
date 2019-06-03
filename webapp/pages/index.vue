@@ -1,7 +1,9 @@
 <template>
   <div>
-    <ds-flex v-if="Post && Post.length"
-:width="{ base: '100%' }" gutter="base">
+    <ds-flex
+v-if="Post && Post.length" :width="{ base: '100%' }"
+gutter="base"
+>
       <ds-flex-item
         v-for="post in uniq(Post)"
         :key="post.id"
@@ -20,8 +22,10 @@
         primary
       />
     </no-ssr>
-    <hc-load-more v-if="true"
-:loading="$apollo.loading" @click="showMoreContributions" />
+    <hc-load-more
+v-if="true" :loading="$apollo.loading"
+@click="showMoreContributions"
+/>
   </div>
 </template>
 

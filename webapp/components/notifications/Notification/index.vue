@@ -1,10 +1,13 @@
 <template>
-  <ds-space :class="{ notification: true, read: notification.read }"
-margin-bottom="x-small">
+  <ds-space
+:class="{ notification: true, read: notification.read }" margin-bottom="x-small"
+>
     <no-ssr>
       <ds-space margin-bottom="x-small">
-        <hc-user :user="post.author"
-:date-time="post.createdAt" :trunc="35" />
+        <hc-user
+:user="post.author" :date-time="post.createdAt"
+:trunc="35"
+/>
       </ds-space>
       <ds-text color="soft">
         {{ $t('notifications.menu.mentioned') }}
@@ -17,8 +20,10 @@ margin-bottom="x-small">
       @click.native="$emit('read')"
     >
       <ds-space margin-bottom="x-small">
-        <ds-card :header="post.title"
-:image="post.image" hover space="x-small">
+        <ds-card
+:header="post.title" :image="post.image"
+hover space="x-small"
+>
           <ds-space margin-bottom="x-small" />
           <!-- eslint-disable vue/no-v-html -->
           <div v-html="excerpt" />

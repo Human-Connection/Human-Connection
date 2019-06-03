@@ -1,6 +1,7 @@
 <template>
-  <ds-space margin="large"
-style="text-align: center">
+  <ds-space
+margin="large" style="text-align: center"
+>
     <ds-button
       :loading="loading"
       :disabled="disabled"
@@ -11,8 +12,9 @@ style="text-align: center">
       @click="toggle"
     />
     <ds-space margin-bottom="xx-small" />
-    <ds-text color="soft"
-class="shout-button-text">
+    <ds-text
+color="soft" class="shout-button-text"
+>
       <ds-heading style="display: inline"
 tag="h3"
 >
