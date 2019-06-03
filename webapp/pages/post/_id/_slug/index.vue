@@ -12,6 +12,7 @@
           placement="bottom-end"
           resource-type="contribution"
           :resource="post"
+          :callbacks="{ confirm: () => deletePostCallback('page'), cancel: null }"
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>
@@ -71,8 +72,10 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
+import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
+  name: 'PostSlug',
   transition: {
     name: 'slide-up',
     mode: 'out-in',
@@ -86,6 +89,7 @@ export default {
     HcCommentForm,
     HcCommentList,
   },
+  mixins: [PostMutationHelpers],
   head() {
     return {
       title: this.title,

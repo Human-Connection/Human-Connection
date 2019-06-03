@@ -17,6 +17,7 @@
               placement="bottom-end"
               resource-type="user"
               :resource="user"
+              :callbacks="{ confirm: deletePostCallback, cancel: null }"
               :is-owner="myProfile"
               class="user-content-menu"
             />
@@ -183,13 +184,13 @@
             />
           </ds-flex-item>
           <template v-if="activePosts.length">
-            <ds-flex-item
-              v-for="post in activePosts"
+            <hc-post-card
+              v-for="(post, index) in activePosts"
               :key="post.id"
+              :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-            >
-              <hc-post-card :post="post" />
-            </ds-flex-item>
+              @deletePost="user.contributions.splice(index, 1)"
+            />
           </template>
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
@@ -216,6 +217,7 @@ import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
+import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
   components: {
@@ -230,6 +232,7 @@ export default {
     ContentMenu,
     HcUpload,
   },
+  mixins: [PostMutationHelpers],
   transition: {
     name: 'slide-up',
     mode: 'out-in',
