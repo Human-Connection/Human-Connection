@@ -12,7 +12,7 @@
         <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
         <div class="hc-attachments-upload-area">
           <div class="hc-drag-marker">
-            <ds-icon v-if="hover" name="image" size="xxx-large"/>
+            <ds-icon v-if="hover" name="image" size="xxx-large" />
           </div>
         </div>
       </div>
@@ -46,9 +46,10 @@ export default {
     }
   },
   watch: {
-    error: () => {
+    error() {
+      let that = this
       setTimeout(function() {
-        this.error = false
+        that.error = false
       }, 2000)
     },
   },

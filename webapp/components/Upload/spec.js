@@ -35,26 +35,6 @@ describe('Upload', () => {
     },
   }
 
-  const fileSuccess = {
-    filename: 'avatar.jpg',
-    previewElement: {
-      classList: {
-        remove: jest.fn(),
-        add: jest.fn(),
-      },
-      querySelectorAll: jest.fn().mockReturnValue([
-        {
-          alt: '',
-          style: {
-            'background-image': '/api/generic.jpg',
-          },
-        },
-      ]),
-    },
-  }
-
-  const dataUrl = 'avatar.jpg'
-
   beforeEach(() => {
     jest.useFakeTimers()
     wrapper = shallowMount(Upload, { localVue, propsData, mocks })
@@ -67,11 +47,6 @@ describe('Upload', () => {
   it('sends a the UpdateUser mutation when vddrop is called', () => {
     wrapper.vm.vddrop([{ filename: 'avatar.jpg' }])
     expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
-  })
-
-  it('thumbnail', () => {
-    wrapper.vm.thumbnail(fileSuccess, dataUrl)
-    expect(fileSuccess.previewElement.classList.add).toHaveBeenCalledTimes(1)
   })
 
   describe('error handling', () => {
