@@ -1,8 +1,5 @@
 <template>
-  <ds-flex
-    :width="{ base: '100%' }"
-    gutter="base"
-  >
+  <ds-flex :width="{ base: '100%' }" gutter="base">
     <ds-flex-item :width="{ base: '100%', md: 3 }">
       <hc-contribution-form :contribution="contribution" />
     </ds-flex-item>

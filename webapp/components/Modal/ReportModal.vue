@@ -1,15 +1,7 @@
 <template>
-  <ds-modal
-    :title="title"
-    :is-open="isOpen"
-    @cancel="cancel"
-  >
+  <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
     <transition name="ds-transition-fade">
-      <ds-flex
-        v-if="success"
-        class="hc-modal-success"
-        centered
-      >
+      <ds-flex v-if="success" class="hc-modal-success" centered>
         <sweetalert-icon icon="success" />
       </ds-flex>
     </transition>
@@ -17,14 +9,8 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
 
-    <template
-      slot="footer"
-    >
-      <ds-button
-        class="cancel"
-        icon="close"
-        @click="cancel"
-      >
+    <template slot="footer">
+      <ds-button class="cancel" icon="close" @click="cancel">
         {{ $t('report.cancel') }}
       </ds-button>
 
@@ -53,6 +39,7 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
+    callbacks: { type: Object, required: true },
     id: { type: String, required: true },
   },
   data() {
@@ -73,6 +60,9 @@ export default {
   },
   methods: {
     async cancel() {
+      if (this.callbacks.cancel) {
+        await this.callbacks.cancel()
+      }
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
@@ -81,6 +71,9 @@ export default {
     async confirm() {
       this.loading = true
       try {
+        if (this.callbacks.confirm) {
+          await this.callbacks.confirm()
+        }
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {

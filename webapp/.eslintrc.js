@@ -10,7 +10,7 @@ module.exports = {
   },
   extends: [
     'standard',
-    'plugin:vue/recommended',
+    'plugin:vue/essential',
     'plugin:prettier/recommended'
   ],
   // required to lint *.vue files
@@ -25,7 +25,9 @@ module.exports = {
     'no-console': ['error'],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
-    'prettier/prettier': ['error'],
+    'prettier/prettier': ['error', {
+      htmlWhitespaceSensitivity: 'ignore'
+    }],
     // 'newline-per-chained-call': [2]
   }
 }

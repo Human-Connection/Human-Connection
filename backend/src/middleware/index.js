@@ -1,42 +1,63 @@
-import activityPubMiddleware from './activityPubMiddleware'
-import passwordMiddleware from './passwordMiddleware'
-import softDeleteMiddleware from './softDeleteMiddleware'
-import sluggifyMiddleware from './sluggifyMiddleware'
-import fixImageUrlsMiddleware from './fixImageUrlsMiddleware'
-import excerptMiddleware from './excerptMiddleware'
-import dateTimeMiddleware from './dateTimeMiddleware'
-import xssMiddleware from './xssMiddleware'
-import permissionsMiddleware from './permissionsMiddleware'
-import userMiddleware from './userMiddleware'
-import includedFieldsMiddleware from './includedFieldsMiddleware'
-import orderByMiddleware from './orderByMiddleware'
-import validationMiddleware from './validation'
-import notificationsMiddleware from './notifications'
 import CONFIG from './../config'
+import activityPub from './activityPubMiddleware'
+import password from './passwordMiddleware'
+import softDelete from './softDeleteMiddleware'
+import sluggify from './sluggifyMiddleware'
+import fixImageUrls from './fixImageUrlsMiddleware'
+import excerpt from './excerptMiddleware'
+import dateTime from './dateTimeMiddleware'
+import xss from './xssMiddleware'
+import permissions from './permissionsMiddleware'
+import user from './userMiddleware'
+import includedFields from './includedFieldsMiddleware'
+import orderBy from './orderByMiddleware'
+import validation from './validation'
+import notifications from './notifications'
 
 export default schema => {
-  let middleware = [
-    passwordMiddleware,
-    dateTimeMiddleware,
-    validationMiddleware,
-    sluggifyMiddleware,
-    excerptMiddleware,
-    notificationsMiddleware,
-    xssMiddleware,
-    fixImageUrlsMiddleware,
-    softDeleteMiddleware,
-    userMiddleware,
-    includedFieldsMiddleware,
-    orderByMiddleware,
+  const middlewares = {
+    permissions: permissions,
+    activityPub: activityPub,
+    password: password,
+    dateTime: dateTime,
+    validation: validation,
+    sluggify: sluggify,
+    excerpt: excerpt,
+    notifications: notifications,
+    xss: xss,
+    fixImageUrls: fixImageUrls,
+    softDelete: softDelete,
+    user: user,
+    includedFields: includedFields,
+    orderBy: orderBy,
+  }
+
+  let order = [
+    'permissions',
+    'activityPub',
+    'password',
+    'dateTime',
+    'validation',
+    'sluggify',
+    'excerpt',
+    'notifications',
+    'xss',
+    'fixImageUrls',
+    'softDelete',
+    'user',
+    'includedFields',
+    'orderBy',
   ]
 
   // add permisions middleware at the first position (unless we're seeding)
-  // NOTE: DO NOT SET THE PERMISSION FLAT YOUR SELF
   if (CONFIG.DEBUG) {
-    const disabled = CONFIG.DISABLED_MIDDLEWARES.split(',')
-    if (!disabled.includes('activityPub')) middleware.unshift(activityPubMiddleware)
-    if (!disabled.includes('permissions'))
-      middleware.unshift(permissionsMiddleware.generate(schema))
+    const disabledMiddlewares = CONFIG.DISABLED_MIDDLEWARES.split(',')
+    order = order.filter(key => {
+      return !disabledMiddlewares.includes(key)
+    })
+    /* eslint-disable-next-line no-console */
+    console.log(`Warning: "${disabledMiddlewares}" middlewares have been disabled.`)
   }
-  return middleware
+
+  return order.map(key => middlewares[key])
 }

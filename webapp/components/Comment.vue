@@ -1,17 +1,11 @@
 <template>
   <div v-if="(comment.deleted || comment.disabled) && !isModerator">
-    <ds-text
-      style="padding-left: 40px; font-weight: bold;"
-      color="soft"
-    >
+    <ds-text style="padding-left: 40px; font-weight: bold;" color="soft">
       <ds-icon name="ban" />
       {{ this.$t('comment.content.unavailable-placeholder') }}
     </ds-text>
   </div>
-  <div
-    v-else
-    :class="{'comment': true, 'disabled-content': (comment.deleted || comment.disabled)}"
-  >
+  <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-space margin-bottom="x-small">
       <hc-user :user="author" />
     </ds-space>
@@ -20,6 +14,7 @@
         placement="bottom-end"
         resource-type="comment"
         :resource="comment"
+        :callbacks="{ confirm: deleteCommentCallback, cancel: null }"
         style="float-right"
         :is-owner="isAuthor(author.id)"
       />
@@ -27,15 +22,13 @@
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="small" />
-    <div
-      style="padding-left: 40px;"
-      v-html="comment.contentExcerpt"
-    />
+    <div style="padding-left: 40px;" v-html="comment.contentExcerpt" />
     <!-- eslint-enable vue/no-v-html -->
   </div>
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import { mapGetters } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
@@ -69,6 +62,25 @@ export default {
   methods: {
     isAuthor(id) {
       return this.user.id === id
+    },
+    async deleteCommentCallback() {
+      try {
+        var gqlMutation = gql`
+          mutation($id: ID!) {
+            DeleteComment(id: $id) {
+              id
+            }
+          }
+        `
+        await this.$apollo.mutate({
+          mutation: gqlMutation,
+          variables: { id: this.comment.id },
+        })
+        this.$toast.success(this.$t(`delete.comment.success`))
+        this.$emit('deleteComment')
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }

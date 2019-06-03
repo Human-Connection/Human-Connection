@@ -1,26 +1,14 @@
 <template>
-  <ds-modal
-    :title="title"
-    :is-open="isOpen"
-    @cancel="cancel"
-  >
+  <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button
-        class="cancel"
-        @click="cancel"
-      >
+      <ds-button class="cancel" @click="cancel">
         {{ $t('disable.cancel') }}
       </ds-button>
 
-      <ds-button
-        danger
-        class="confirm"
-        icon="exclamation-circle"
-        @click="confirm"
-      >
+      <ds-button danger class="confirm" icon="exclamation-circle" @click="confirm">
         {{ $t('disable.submit') }}
       </ds-button>
     </template>
@@ -31,9 +19,11 @@
 import gql from 'graphql-tag'
 
 export default {
+  name: 'DisableModal',
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
+    callbacks: { type: Object, required: true },
     id: { type: String, required: true },
   },
   data() {
@@ -53,7 +43,10 @@ export default {
     },
   },
   methods: {
-    cancel() {
+    async cancel() {
+      if (this.callbacks.cancel) {
+        await this.callbacks.cancel()
+      }
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
@@ -61,6 +54,9 @@ export default {
     },
     async confirm() {
       try {
+        if (this.callbacks.confirm) {
+          await this.callbacks.confirm()
+        }
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {

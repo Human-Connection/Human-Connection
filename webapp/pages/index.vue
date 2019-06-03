@@ -1,21 +1,17 @@
 <template>
   <div>
-    <ds-flex
-      v-if="Post && Post.length"
-      :width="{ base: '100%' }"
-      gutter="base"
-    >
-      <ds-flex-item
-        v-for="post in uniq(Post)"
+    <ds-flex v-if="Post && Post.length" :width="{ base: '100%' }" gutter="base">
+      <hc-post-card
+        v-for="(post, index) in uniq(Post)"
         :key="post.id"
+        :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-      >
-        <hc-post-card :post="post" />
-      </ds-flex-item>
+        @deletePost="deletePost(index, post.id)"
+      />
     </ds-flex>
     <no-ssr>
       <ds-button
-        v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+        v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
         :path="{ name: 'post-create' }"
         class="post-add-button"
         icon="plus"
@@ -23,11 +19,7 @@
         primary
       />
     </no-ssr>
-    <hc-load-more
-      v-if="true"
-      :loading="$apollo.loading"
-      @click="showMoreContributions"
-    />
+    <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
   </div>
 </template>
 
@@ -85,6 +77,14 @@ export default {
         },
         fetchPolicy: 'cache-and-network',
       })
+    },
+    deletePost(_index, postId) {
+      this.Post = this.Post.filter(post => {
+        return post.id !== postId
+      })
+      // Why "uniq(Post)" is used in the array for list creation?
+      // Ideal solution here:
+      // this.Post.splice(index, 1)
     },
   },
   apollo: {
