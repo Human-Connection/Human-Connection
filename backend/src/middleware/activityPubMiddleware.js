@@ -1,10 +1,8 @@
 import { generateRsaKeyPair } from '../activitypub/security'
 import { activityPub } from '../activitypub/ActivityPub'
 import as from 'activitystrea.ms'
-import dotenv from 'dotenv'
 
 const debug = require('debug')('backend:schema')
-dotenv.config()
 
 export default {
   Mutation: {

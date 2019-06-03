@@ -1,4 +1,4 @@
-import encode from '../jwt/encode'
+import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
 import { neo4jgraphql } from 'neo4j-graphql-js'
