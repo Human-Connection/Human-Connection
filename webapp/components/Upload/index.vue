@@ -1,5 +1,5 @@
 <template>
-  <div :key="error">
+  <div>
     <vue-dropzone
       id="customdropzone"
       :key="user.avatar"
@@ -7,6 +7,7 @@
       :use-custom-slot="true"
       :options="dropzoneOptions"
       @vdropzone-error="verror"
+      @vdropzone-thumbnail="thumbnail"
     >
       <div class="dz-message" @mouseover="hover = true" @mouseleave="hover = false">
         <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
@@ -37,6 +38,7 @@ export default {
       dropzoneOptions: {
         url: this.vddrop,
         maxFilesize: 5.0,
+        previewTemplate: this.template(),
       },
       error: false,
       hover: false,
@@ -51,6 +53,14 @@ export default {
     },
   },
   methods: {
+    template() {
+      return `<div class="dz-preview dz-file-preview">
+                <div class="dz-image">
+                  <div data-dz-thumbnail-bg></div>
+                </div>
+              </div>
+      `
+    },
     vddrop(file) {
       const avatarUpload = file[0]
       this.$apollo
