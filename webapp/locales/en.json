@@ -1,10 +1,6 @@
 {
   "filter-menu": {
-    "options": {
-      "friends": "Only friends",
-      "friends-of-a-friend": "Friends of a friend",
-      "all": "All"
-    }
+    "title": "Your filter bubble"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",

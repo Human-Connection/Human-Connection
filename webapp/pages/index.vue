@@ -1,16 +1,16 @@
 <template>
   <div>
+    <ds-flex :width="{ base: '100%' }" gutter="base">
     <ds-flex-item>
       <filter-menu />
     </ds-flex-item>
-    <ds-flex v-if="Post && Post.length" :width="{ base: '100%' }" gutter="base">
-      <hc-post-card
-        v-for="(post, index) in uniq(Post)"
-        :key="post.id"
-        :post="post"
-        :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-        @deletePost="deletePost(index, post.id)"
-      />
+    <hc-post-card
+      v-for="(post, index) in uniq(Post)"
+      :key="post.id"
+      :post="post"
+      :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
+      @deletePost="deletePost(index, post.id)"
+    />
     </ds-flex>
     <no-ssr>
       <ds-button

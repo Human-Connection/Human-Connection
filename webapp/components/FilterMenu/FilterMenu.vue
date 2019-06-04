@@ -1,11 +1,22 @@
 <template>
   <ds-card>
-    <ds-button
-      name="filter-by-followed-authors-only"
-      icon="plus"
-      :primary="onlyFollowed"
-      @click="toggleOnlyFollowed"
-    />
+    <ds-flex>
+      <ds-flex-item class="filter-menu-title">
+        <ds-heading size="h3">
+          {{ $t('filter-menu.title') }}
+        </ds-heading>
+      </ds-flex-item>
+      <ds-flex-item>
+        <div class="filter-menu-buttons">
+        <ds-button
+          name="filter-by-followed-authors-only"
+          icon="user-plus"
+          :primary="onlyFollowed"
+          @click="toggleOnlyFollowed"
+          />
+        </div>
+      </ds-flex-item>
+    </ds-flex>
   </ds-card>
 </template>
 
@@ -33,3 +44,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.filter-menu-title {
+  display: flex;
+  align-items: center;
+}
+
+.filter-menu-buttons {
+  float: right;
+}
+</style>
