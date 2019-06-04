@@ -1,8 +1,9 @@
 import gql from 'graphql-tag'
-import Factory from '../seed/factories'
 import { GraphQLClient, request } from 'graphql-request'
 import jwt from 'jsonwebtoken'
-import { host, login } from '../jest/helpers'
+import CONFIG from './../../config'
+import Factory from '../../seed/factories'
+import { host, login } from '../../jest/helpers'
 
 const factory = Factory()
 
@@ -185,7 +186,7 @@ describe('login', () => {
           }),
         )
         const token = data.login
-        jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+        jwt.verify(token, CONFIG.JWT_SECRET, (err, data) => {
           expect(data.email).toEqual('test@example.org')
           expect(err).toBeNull()
         })

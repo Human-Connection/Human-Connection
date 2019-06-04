@@ -1,13 +1,14 @@
-import Factory from '../seed/factories'
+import gql from 'graphql-tag'
 import { GraphQLClient } from 'graphql-request'
-import { host, login } from '../jest/helpers'
+import Factory from '../../seed/factories'
+import { host, login } from '../../jest/helpers'
 
 const factory = Factory()
 
-describe('CreateSocialMedia', () => {
+describe('SocialMedia', () => {
   let client
   let headers
-  const mutationC = `
+  const mutationC = gql`
     mutation($url: String!) {
       CreateSocialMedia(url: $url) {
         id
@@ -15,7 +16,7 @@ describe('CreateSocialMedia', () => {
       }
     }
   `
-  const mutationD = `
+  const mutationD = gql`
     mutation($id: ID!) {
       DeleteSocialMedia(id: $id) {
         id
@@ -42,19 +43,28 @@ describe('CreateSocialMedia', () => {
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
       client = new GraphQLClient(host)
-      const variables = { url: 'http://nsosp.org' }
+      const variables = {
+        url: 'http://nsosp.org',
+      }
       await expect(client.request(mutationC, variables)).rejects.toThrow('Not Authorised')
     })
   })
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
-      client = new GraphQLClient(host, { headers })
+      headers = await login({
+        email: 'test@example.org',
+        password: '1234',
+      })
+      client = new GraphQLClient(host, {
+        headers,
+      })
     })
 
     it('creates social media with correct URL', async () => {
-      const variables = { url: 'http://nsosp.org' }
+      const variables = {
+        url: 'http://nsosp.org',
+      }
       await expect(client.request(mutationC, variables)).resolves.toEqual(
         expect.objectContaining({
           CreateSocialMedia: {
@@ -66,11 +76,15 @@ describe('CreateSocialMedia', () => {
     })
 
     it('deletes social media', async () => {
-      const creationVariables = { url: 'http://nsosp.org' }
+      const creationVariables = {
+        url: 'http://nsosp.org',
+      }
       const { CreateSocialMedia } = await client.request(mutationC, creationVariables)
       const { id } = CreateSocialMedia
 
-      const deletionVariables = { id }
+      const deletionVariables = {
+        id,
+      }
       const expected = {
         DeleteSocialMedia: {
           id: id,
@@ -81,12 +95,16 @@ describe('CreateSocialMedia', () => {
     })
 
     it('rejects empty string', async () => {
-      const variables = { url: '' }
+      const variables = {
+        url: '',
+      }
       await expect(client.request(mutationC, variables)).rejects.toThrow('Input is not a URL')
     })
 
     it('validates URLs', async () => {
-      const variables = { url: 'not-a-url' }
+      const variables = {
+        url: 'not-a-url',
+      }
       await expect(client.request(mutationC, variables)).rejects.toThrow('Input is not a URL')
     })
   })

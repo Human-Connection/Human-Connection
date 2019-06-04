@@ -2,6 +2,7 @@ import { activityPub } from '../ActivityPub'
 import gql from 'graphql-tag'
 import { createSignature } from '../security'
 import request from 'request'
+import CONFIG from './../../config'
 const debug = require('debug')('ea:utils')
 
 export function extractNameFromId(uri) {
@@ -38,7 +39,7 @@ export function throwErrorIfApolloErrorOccurred(result) {
 export function signAndSend(activity, fromName, targetDomain, url) {
   // fix for development: replace with http
   url = url.indexOf('localhost') > -1 ? url.replace('https', 'http') : url
-  debug(`passhprase = ${process.env.PRIVATE_KEY_PASSPHRASE}`)
+  debug(`passhprase = ${CONFIG.PRIVATE_KEY_PASSPHRASE}`)
   return new Promise(async (resolve, reject) => {
     debug('inside signAndSend')
     // get the private key

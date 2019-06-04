@@ -20,7 +20,7 @@
       &nbsp;
       <!--<ds-tag
         v-for="category in post.categories"
-        :key="category.id"><ds-icon :name="category.icon" /> {{ category.name }}</ds-tag>-->
+      :key="category.id"><ds-icon :name="category.icon" /> {{ category.name }}</ds-tag>-->
     </div>
     <template v-if="post.tags && post.tags.length">
       <h3>
@@ -37,13 +37,13 @@
     <h3>Verwandte Beiträge</h3>
     <ds-section style="margin: 0 -1.5rem; padding: 1.5rem;">
       <ds-flex v-if="post.relatedContributions && post.relatedContributions.length" gutter="small">
-        <ds-flex-item
-          v-for="relatedPost in post.relatedContributions"
+        <hc-post-card
+          v-for="(relatedPost, index) in post.relatedContributions"
           :key="relatedPost.id"
+          :post="relatedPost"
           :width="{ base: '100%', lg: 1 }"
-        >
-          <hc-post-card :post="relatedPost" />
-        </ds-flex-item>
+          @deletePost="post.relatedContributions.splice(index, 1)"
+        />
       </ds-flex>
       <hc-empty v-else margin="large" icon="file" message="No related Posts" />
     </ds-section>

@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Modal from './Modal.vue'
+import DeleteModal from './Modal/DeleteModal.vue'
 import DisableModal from './Modal/DisableModal.vue'
 import ReportModal from './Modal/ReportModal.vue'
 import Vuex from 'vuex'
@@ -29,7 +30,11 @@ describe('Modal.vue', () => {
           'modal/SET_OPEN': mutations.SET_OPEN,
         },
       })
-      return mountMethod(Modal, { store, mocks, localVue })
+      return mountMethod(Modal, {
+        store,
+        mocks,
+        localVue,
+      })
     }
   }
 
@@ -55,6 +60,7 @@ describe('Modal.vue', () => {
 
     it('initially empty', () => {
       wrapper = Wrapper()
+      expect(wrapper.contains(DeleteModal)).toBe(false)
       expect(wrapper.contains(DisableModal)).toBe(false)
       expect(wrapper.contains(ReportModal)).toBe(false)
     })
@@ -68,6 +74,10 @@ describe('Modal.vue', () => {
             resource: {
               id: 'c456',
               title: 'some title',
+            },
+            callbacks: {
+              confirm: null,
+              cancel: null,
             },
           },
         }
@@ -83,6 +93,10 @@ describe('Modal.vue', () => {
           type: 'contribution',
           name: 'some title',
           id: 'c456',
+          callbacks: {
+            confirm: null,
+            cancel: null,
+          },
         })
       })
 
@@ -97,23 +111,49 @@ describe('Modal.vue', () => {
         it('passes author name to disable modal', () => {
           state.data = {
             type: 'comment',
-            resource: { id: 'c456', author: { name: 'Author name' } },
+            resource: {
+              id: 'c456',
+              author: {
+                name: 'Author name',
+              },
+            },
+            callbacks: {
+              confirm: null,
+              cancel: null,
+            },
           }
           wrapper = Wrapper()
           expect(wrapper.find(DisableModal).props()).toEqual({
             type: 'comment',
             name: 'Author name',
             id: 'c456',
+            callbacks: {
+              confirm: null,
+              cancel: null,
+            },
           })
         })
 
         it('does not crash if author is undefined', () => {
-          state.data = { type: 'comment', resource: { id: 'c456' } }
+          state.data = {
+            type: 'comment',
+            resource: {
+              id: 'c456',
+            },
+            callbacks: {
+              confirm: null,
+              cancel: null,
+            },
+          }
           wrapper = Wrapper()
           expect(wrapper.find(DisableModal).props()).toEqual({
             type: 'comment',
             name: '',
             id: 'c456',
+            callbacks: {
+              confirm: null,
+              cancel: null,
+            },
           })
         })
       })
