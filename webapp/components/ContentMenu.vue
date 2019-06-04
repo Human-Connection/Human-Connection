@@ -112,7 +112,7 @@ export default {
             callback: () => {
               this.openModal('release', this.resource.id)
             },
-            icon: 'eye-slash',
+            icon: 'eye',
           })
         }
       }
