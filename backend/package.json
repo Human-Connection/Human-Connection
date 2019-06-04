@@ -11,7 +11,7 @@
     "lint": "eslint src --config .eslintrc.js",
     "test": "run-s test:jest test:cucumber",
     "test:before:server": "cross-env GRAPHQL_URI=http://localhost:4123 GRAPHQL_PORT=4123 yarn run dev 2> /dev/null",
-    "test:before:seeder": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DEBUG=true DISABLED_MIDDLEWARES=permissions,activityPub yarn run dev 2> /dev/null",
+    "test:before:seeder": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DISABLED_MIDDLEWARES=permissions,activityPub yarn run dev 2> /dev/null",
     "test:jest:cmd": "wait-on tcp:4001 tcp:4123 && jest --forceExit --detectOpenHandles --runInBand",
     "test:cucumber:cmd": "wait-on tcp:4001 tcp:4123 && cucumber-js --require-module @babel/register --exit test/",
     "test:jest:cmd:debug": "wait-on tcp:4001 tcp:4123 && node --inspect-brk ./node_modules/.bin/jest -i --forceExit --detectOpenHandles --runInBand",
@@ -19,8 +19,8 @@
     "test:cucumber": " cross-env CLIENT_URI=http://localhost:4123 run-p --race test:before:* 'test:cucumber:cmd {@}' --",
     "test:jest:debug": "run-p --race test:before:* 'test:jest:cmd:debug {@}' --",
     "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
-    "db:reset": "cross-env DEBUG=true babel-node src/seed/reset-db.js",
-    "db:seed": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DEBUG=true DISABLED_MIDDLEWARES=permissions run-p --race dev db:script:seed"
+    "db:reset": "cross-env babel-node src/seed/reset-db.js",
+    "db:seed": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 DISABLED_MIDDLEWARES=permissions run-p --race dev db:script:seed"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
