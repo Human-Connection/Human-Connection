@@ -1,15 +1,8 @@
 export default {
   Mutation: {
-    disable: async (object, params, {
-      user,
-      driver
-    }) => {
-      const {
-        id
-      } = params
-      const {
-        id: userId
-      } = user
+    disable: async (object, params, { user, driver }) => {
+      const { id } = params
+      const { id: userId } = user
       const cypher = `
       MATCH (u:User {id: $userId})
       MATCH (resource {id: $id})
@@ -19,10 +12,7 @@ export default {
       RETURN resource {.id}
       `
       const session = driver.session()
-      const res = await session.run(cypher, {
-        id,
-        userId
-      })
+      const res = await session.run(cypher, { id, userId })
       session.close()
       const [resource] = res.records.map(record => {
         return record.get('resource')
@@ -30,13 +20,8 @@ export default {
       if (!resource) return null
       return resource.id
     },
-    enable: async (object, params, {
-      user,
-      driver
-    }) => {
-      const {
-        id
-      } = params
+    enable: async (object, params, { user, driver }) => {
+      const { id } = params
       const cypher = `
       MATCH (resource {id: $id})<-[d:DISABLED]-()
       SET resource.disabled = false
@@ -44,9 +29,7 @@ export default {
       RETURN resource {.id}
       `
       const session = driver.session()
-      const res = await session.run(cypher, {
-        id
-      })
+      const res = await session.run(cypher, { id })
       session.close()
       const [resource] = res.records.map(record => {
         return record.get('resource')
