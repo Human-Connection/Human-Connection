@@ -8,11 +8,11 @@
       </ds-flex-item>
       <ds-flex-item>
         <div class="filter-menu-buttons">
-        <ds-button
-          name="filter-by-followed-authors-only"
-          icon="user-plus"
-          :primary="onlyFollowed"
-          @click="toggleOnlyFollowed"
+          <ds-button
+            name="filter-by-followed-authors-only"
+            icon="user-plus"
+            :primary="onlyFollowed"
+            @click="toggleOnlyFollowed"
           />
         </div>
       </ds-flex-item>
