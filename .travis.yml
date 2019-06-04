@@ -9,6 +9,7 @@ addons:
     - chromium
 
 before_install:
+  - yarn global add wait-on
   # Install Codecov
   - yarn global add codecov
   - yarn install
@@ -16,6 +17,8 @@ before_install:
 
 install:
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --build -d
+    # avoid "Database constraints have changed after this transaction started"
+  - wait-on http://localhost:7474
 
 script:
   # Backend
