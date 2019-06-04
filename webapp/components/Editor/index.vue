@@ -147,7 +147,13 @@
         </ds-button>
       </div>
     </editor-floating-menu>
+<<<<<<< HEAD
     <editor-content ref="editor" :editor="editor" />
+=======
+    <editor-content
+ref="editor" :editor="editor"
+/>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
   </div>
 </template>
 

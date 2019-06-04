@@ -98,13 +98,23 @@ export default {
       }
 
       if (!this.isOwner && this.isModerator) {
-        routes.push({
-          name: this.$t(`disable.${this.resourceType}.title`),
-          callback: () => {
-            this.openModal('disable')
-          },
-          icon: 'eye-slash',
-        })
+        if (!this.resource.disabled) {
+          routes.push({
+            name: this.$t(`disable.${this.resourceType}.title`),
+            callback: () => {
+              this.openModal('disable')
+            },
+            icon: 'eye-slash',
+          })
+        } else {
+          routes.push({
+            name: this.$t(`release.${this.resourceType}.title`),
+            callback: () => {
+              this.openModal('release', this.resource.id)
+            },
+            icon: 'eye-slash',
+          })
+        }
       }
 
       if (this.isOwner && this.resourceType === 'user') {

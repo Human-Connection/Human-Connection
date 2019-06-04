@@ -3,8 +3,18 @@
     <ds-heading tag="h3">
       {{ $t('moderation.reports.name') }}
     </ds-heading>
+<<<<<<< HEAD
     <ds-table v-if="Report && Report.length" :data="Report" :fields="fields" condensed>
       <template slot="name" slot-scope="scope">
+=======
+    <ds-table
+v-if="Report && Report.length" :data="Report"
+:fields="fields" condensed
+>
+      <template
+slot="name" slot-scope="scope"
+>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         <div v-if="scope.row.type === 'Post'">
           <nuxt-link
             :to="{
@@ -14,8 +24,15 @@
           >
             <b>{{ scope.row.post.title | truncate(50) }}</b>
           </nuxt-link>
+<<<<<<< HEAD
           <br />
           <ds-text size="small" color="soft">
+=======
+          <br>
+          <ds-text
+size="small" color="soft"
+>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
             {{ scope.row.post.author.name }}
           </ds-text>
         </div>
@@ -28,8 +45,15 @@
           >
             <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
           </nuxt-link>
+<<<<<<< HEAD
           <br />
           <ds-text size="small" color="soft">
+=======
+          <br>
+          <ds-text
+size="small" color="soft"
+>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
             {{ scope.row.comment.author.name }}
           </ds-text>
         </div>
@@ -44,7 +68,13 @@
           </nuxt-link>
         </div>
       </template>
+<<<<<<< HEAD
       <template slot="type" slot-scope="scope">
+=======
+      <template
+slot="type" slot-scope="scope"
+>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         <ds-text color="soft">
           <ds-icon
             v-if="scope.row.type === 'Post'"
@@ -63,7 +93,13 @@
           />
         </ds-text>
       </template>
+<<<<<<< HEAD
       <template slot="submitter" slot-scope="scope">
+=======
+      <template
+slot="submitter" slot-scope="scope"
+>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         <nuxt-link
           :to="{
             name: 'profile-id-slug',
@@ -73,7 +109,13 @@
           {{ scope.row.submitter.name }}
         </nuxt-link>
       </template>
+<<<<<<< HEAD
       <template slot="disabledBy" slot-scope="scope">
+=======
+      <template
+slot="disabledBy" slot-scope="scope"
+>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         <nuxt-link
           v-if="scope.row.type === 'Post' && scope.row.post.disabledBy"
           :to="{
@@ -106,7 +148,14 @@
         </nuxt-link>
       </template>
     </ds-table>
+<<<<<<< HEAD
     <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
+=======
+    <hc-empty
+v-else icon="alert"
+:message="$t('moderation.reports.empty')"
+/>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
   </ds-card>
 </template>
 

@@ -1,7 +1,17 @@
 <template>
   <ds-card :header="$t('admin.tags.name')">
+<<<<<<< HEAD
     <ds-table :data="Tag" :fields="fields" condensed>
       <template slot="id" slot-scope="scope">
+=======
+    <ds-table
+:data="Tag" :fields="fields"
+condensed
+>
+      <template
+slot="id" slot-scope="scope"
+>
+>>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         {{ scope.index + 1 }}
       </template>
     </ds-table>

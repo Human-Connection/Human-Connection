@@ -1,15 +1,23 @@
 <template>
-  <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
+  <ds-modal
+:title="title" :is-open="isOpen"
+@cancel="cancel"
+>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button class="cancel" @click="cancel">
-        {{ $t('disable.cancel') }}
+      <ds-button
+class="cancel" @click="cancel"
+>
+        {{ $t('release.cancel') }}
       </ds-button>
 
-      <ds-button danger class="confirm" icon="exclamation-circle" @click="confirm">
-        {{ $t('disable.submit') }}
+      <ds-button
+danger class="confirm"
+icon="exclamation-circle" @click="confirm"
+>
+        {{ $t('release.submit') }}
       </ds-button>
     </template>
   </ds-modal>
@@ -19,11 +27,9 @@
 import gql from 'graphql-tag'
 
 export default {
-  name: 'DisableModal',
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
-    callbacks: { type: Object, required: true },
     id: { type: String, required: true },
   },
   data() {
@@ -35,18 +41,15 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(`disable.${this.type}.title`)
+      return this.$t(`release.${this.type}.title`)
     },
     message() {
       const name = this.$filters.truncate(this.name, 30)
-      return this.$t(`disable.${this.type}.message`, { name })
+      return this.$t(`release.${this.type}.message`, { name })
     },
   },
   methods: {
-    async cancel() {
-      if (this.callbacks.cancel) {
-        await this.callbacks.cancel()
-      }
+    cancel() {
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
@@ -54,18 +57,15 @@ export default {
     },
     async confirm() {
       try {
-        if (this.callbacks.confirm) {
-          await this.callbacks.confirm()
-        }
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
-              disable(id: $id)
+              enable(id: $id)
             }
           `,
           variables: { id: this.id },
         })
-        this.$toast.success(this.$t('disable.success'))
+        this.$toast.success(this.$t('release.success'))
         this.isOpen = false
         setTimeout(() => {
           location.reload()
