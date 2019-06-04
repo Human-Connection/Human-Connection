@@ -16,9 +16,6 @@
           </div>
         </div>
       </div>
-      <div class="dz-preview dz-error dz-complete dz-image-preview">
-        <span></span>
-      </div>
     </vue-dropzone>
   </div>
 </template>
