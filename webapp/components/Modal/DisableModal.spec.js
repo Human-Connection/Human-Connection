@@ -37,25 +37,10 @@ describe('DisableModal.vue', () => {
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
       },
-      /*
       location: {
         reload: jest.fn(),
       },
-      */
     }
-    it('mocks window.location.reload', () => {
-      Object.defineProperty(window.location, 'reload', {
-        configurable: true,
-      })
-      window.location.reload = jest.fn();
-      // delete window.location;
-      // window.location = { reload: jest.fn() };
-
-      expect(window.location.reload).not.toHaveBeenCalled();
-      window.location.reload();
-      expect(window.location.reload).toHaveBeenCalled();
-      window.location.reload.mockRestore();
-    })
   })
 
   describe('shallowMount', () => {
