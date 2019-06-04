@@ -50,7 +50,7 @@ export default schema => {
   ]
 
   // add permisions middleware at the first position (unless we're seeding)
-  if (CONFIG.DEBUG) {
+  if (CONFIG.DISABLED_MIDDLEWARES) {
     const disabledMiddlewares = CONFIG.DISABLED_MIDDLEWARES.split(',')
     order = order.filter(key => {
       return !disabledMiddlewares.includes(key)
