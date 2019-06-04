@@ -1,12 +1,10 @@
 <template>
   <ds-card>
-    <ds-radio
-      v-model="filter"
-      buttons
-      label="Filter"
-      label-prop="text"
-      @input="handleInput"
-      :options="options"
+    <ds-button
+      name="filter-by-followed-authors-only"
+      icon="plus"
+      :primary="onlyFollowed"
+      @click="toggleOnlyFollowed"
     />
   </ds-card>
 </template>
@@ -17,21 +15,20 @@ export default {
     // We have to fix styleguide here. It uses .includes wich will always be
     // false for arrays of objects.
     return {
-      filter: { value: 'all', text: this.$t('filter-menu.options.all') },
+      filterBubble: {
+        author: 'all',
+      },
     }
   },
   computed: {
-    options() {
-      return [
-        { value: 'friends', text: this.$t('filter-menu.options.friends') },
-        { value: 'friends-of-a-friend', text: this.$t('filter-menu.options.friends-of-a-friend') },
-        { value: 'all', text: this.$t('filter-menu.options.all') },
-      ]
+    onlyFollowed() {
+      return this.filterBubble.author === 'followed'
     },
   },
   methods: {
-    handleInput(e) {
-      // console.log('handleInput', e)
+    toggleOnlyFollowed() {
+      this.filterBubble.author = this.onlyFollowed ? 'all' : 'followed'
+      this.$emit('changeFilterBubble', this.filterBubble)
     },
   },
 }
