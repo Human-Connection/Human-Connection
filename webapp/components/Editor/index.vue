@@ -12,9 +12,7 @@
           @{{ user.slug }}
         </div>
       </template>
-      <div v-else class="suggestion-list__item is-empty">
-        No users found
-      </div>
+      <div v-else class="suggestion-list__item is-empty">No users found</div>
     </div>
 
     <editor-menu-bubble :editor="editor">
@@ -147,13 +145,7 @@
         </ds-button>
       </div>
     </editor-floating-menu>
-<<<<<<< HEAD
     <editor-content ref="editor" :editor="editor" />
-=======
-    <editor-content
-ref="editor" :editor="editor"
-/>
->>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
   </div>
 </template>
 

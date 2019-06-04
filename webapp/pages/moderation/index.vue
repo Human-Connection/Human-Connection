@@ -1,20 +1,8 @@
 <template>
   <ds-card space="small">
-    <ds-heading tag="h3">
-      {{ $t('moderation.reports.name') }}
-    </ds-heading>
-<<<<<<< HEAD
+    <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
     <ds-table v-if="Report && Report.length" :data="Report" :fields="fields" condensed>
       <template slot="name" slot-scope="scope">
-=======
-    <ds-table
-v-if="Report && Report.length" :data="Report"
-:fields="fields" condensed
->
-      <template
-slot="name" slot-scope="scope"
->
->>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         <div v-if="scope.row.type === 'Post'">
           <nuxt-link
             :to="{
@@ -24,17 +12,8 @@ slot="name" slot-scope="scope"
           >
             <b>{{ scope.row.post.title | truncate(50) }}</b>
           </nuxt-link>
-<<<<<<< HEAD
-          <br />
-          <ds-text size="small" color="soft">
-=======
           <br>
-          <ds-text
-size="small" color="soft"
->
->>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
-            {{ scope.row.post.author.name }}
-          </ds-text>
+          <ds-text size="small" color="soft">{{ scope.row.post.author.name }}</ds-text>
         </div>
         <div v-else-if="scope.row.type === 'Comment'">
           <nuxt-link
@@ -45,17 +24,8 @@ size="small" color="soft"
           >
             <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
           </nuxt-link>
-<<<<<<< HEAD
-          <br />
-          <ds-text size="small" color="soft">
-=======
           <br>
-          <ds-text
-size="small" color="soft"
->
->>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
-            {{ scope.row.comment.author.name }}
-          </ds-text>
+          <ds-text size="small" color="soft">{{ scope.row.comment.author.name }}</ds-text>
         </div>
         <div v-else>
           <nuxt-link
@@ -68,13 +38,7 @@ size="small" color="soft"
           </nuxt-link>
         </div>
       </template>
-<<<<<<< HEAD
       <template slot="type" slot-scope="scope">
-=======
-      <template
-slot="type" slot-scope="scope"
->
->>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         <ds-text color="soft">
           <ds-icon
             v-if="scope.row.type === 'Post'"
@@ -93,29 +57,15 @@ slot="type" slot-scope="scope"
           />
         </ds-text>
       </template>
-<<<<<<< HEAD
       <template slot="submitter" slot-scope="scope">
-=======
-      <template
-slot="submitter" slot-scope="scope"
->
->>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         <nuxt-link
           :to="{
             name: 'profile-id-slug',
             params: { id: scope.row.submitter.id, slug: scope.row.submitter.slug },
           }"
-        >
-          {{ scope.row.submitter.name }}
-        </nuxt-link>
+        >{{ scope.row.submitter.name }}</nuxt-link>
       </template>
-<<<<<<< HEAD
       <template slot="disabledBy" slot-scope="scope">
-=======
-      <template
-slot="disabledBy" slot-scope="scope"
->
->>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
         <nuxt-link
           v-if="scope.row.type === 'Post' && scope.row.post.disabledBy"
           :to="{
@@ -148,14 +98,7 @@ slot="disabledBy" slot-scope="scope"
         </nuxt-link>
       </template>
     </ds-table>
-<<<<<<< HEAD
-    <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
-=======
-    <hc-empty
-v-else icon="alert"
-:message="$t('moderation.reports.empty')"
-/>
->>>>>>> d239c95e322d741088fecea46a3902fa50f720ab
+    <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')"/>
   </ds-card>
 </template>
 
