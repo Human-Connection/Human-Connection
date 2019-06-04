@@ -41,6 +41,11 @@ describe('PostSlug', () => {
       },
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
+        queries: {
+          Post: {
+            refetch: jest.fn(),
+          },
+        },
       },
     }
   })
@@ -94,6 +99,14 @@ describe('PostSlug', () => {
             expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
           })
         })
+      })
+    })
+
+    describe('toggleDisable', () => {
+      it('refetches Post when a toggleDisable event occurs', () => {
+        wrapper = Wrapper()
+        wrapper.vm.$root.$emit('toggleDisable')
+        expect(mocks.$apollo.queries.Post.refetch).toHaveBeenCalledTimes(1)
       })
     })
   })

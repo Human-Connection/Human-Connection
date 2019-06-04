@@ -1,8 +1,6 @@
 <template>
   <ds-card>
-    <h2 style="margin-bottom: .2em;">
-      Mehr Informationen
-    </h2>
+    <h2 style="margin-bottom: .2em;">Mehr Informationen</h2>
     <p>Hier findest du weitere infos zum Thema.</p>
     <ds-space />
     <h3>

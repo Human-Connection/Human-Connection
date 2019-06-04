@@ -17,9 +17,7 @@
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
-      <ds-heading tag="h3" no-margin>
-        {{ post.title }}
-      </ds-heading>
+      <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
@@ -205,6 +203,9 @@ export default {
     }
   },
   mounted() {
+    this.$root.$on('toggleDisable', () => {
+      this.toggleDisable()
+    })
     setTimeout(() => {
       // NOTE: quick fix for jumping flexbox implementation
       // will be fixed in a future update of the styleguide
@@ -212,8 +213,26 @@ export default {
     }, 50)
   },
   methods: {
+    toggleDisable() {
+      if (this.$apollo.queries.Post) {
+        this.$apollo.queries.Post.refetch()
+      }
+    },
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
+    },
+  },
+  apollo: {
+    Post: {
+      query() {
+        return require('~/graphql/PostQuery.js').default(this)
+      },
+      variables() {
+        return {
+          slug: this.post.slug,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
     },
   },
 }

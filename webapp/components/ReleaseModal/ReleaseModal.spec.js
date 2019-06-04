@@ -28,10 +28,11 @@ describe('ReleaseModal.vue', () => {
       },
       $t: jest.fn(),
       $apollo: {
-        mutate: jest.fn()
-                    .mockResolvedValueOnce({ enable: 'u4711' })
-                    .mockRejectedValue({ message: 'Not Authorised!' })
-      },            
+        mutate: jest
+          .fn()
+          .mockResolvedValueOnce({ enable: 'u4711' })
+          .mockRejectedValue({ message: 'Not Authorised!' }),
+      },
     }
   })
 
@@ -144,7 +145,7 @@ describe('ReleaseModal.vue', () => {
           wrapper = Wrapper()
           wrapper.find('button.confirm').trigger('click')
         })
-        
+
         afterEach(() => {
           jest.clearAllMocks()
         })

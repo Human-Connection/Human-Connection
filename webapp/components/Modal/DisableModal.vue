@@ -65,6 +65,7 @@ export default {
         })
         this.$toast.success(this.$t('disable.success'))
         this.isOpen = false
+        this.$root.$emit('toggleDisable')
         setTimeout(() => {
           this.$emit('close')
         }, 1000)
