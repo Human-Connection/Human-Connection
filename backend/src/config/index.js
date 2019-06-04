@@ -23,7 +23,9 @@ export const serverConfigs = {
 export const developmentConfigs = {
   DEBUG: process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true',
   MOCKS: process.env.MOCKS === 'true',
-  DISABLED_MIDDLEWARES: process.env.DISABLED_MIDDLEWARES || '',
+  DISABLED_MIDDLEWARES: process.env.DISABLED_MIDDLEWARES.split(',') || [],
+  NODE_ENV: process.env.NODE_ENV,
+  IS_DEVELOPMENT: process.env.NODE_ENV !== 'production',
 }
 
 export default {

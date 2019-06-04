@@ -49,14 +49,15 @@ export default schema => {
     'orderBy',
   ]
 
-  // add permisions middleware at the first position (unless we're seeding)
-  if (CONFIG.DEBUG) {
-    const disabledMiddlewares = CONFIG.DISABLED_MIDDLEWARES.split(',')
+  // Disable Middlewares only in Development Mode
+  if (CONFIG.IS_DEVELOPMENT) {
     order = order.filter(key => {
-      return !disabledMiddlewares.includes(key)
+      if (CONFIG.DISABLED_MIDDLEWARES.includes(key)) {
+        console.log(`Warning: "${key}" middleware have been disabled.`) // eslint-disable-line no-console
+        return false
+      }
+      return true
     })
-    /* eslint-disable-next-line no-console */
-    console.log(`Warning: "${disabledMiddlewares}" middlewares have been disabled.`)
   }
 
   return order.map(key => middlewares[key])
