@@ -9,6 +9,13 @@
       :callbacks="data.callbacks"
       @close="close"
     />
+    <release-modal
+      v-if="open === 'release'"
+      :id="data.resource.id"
+      :type="data.type"
+      :name="name"
+      @close="close"
+    />
     <report-modal
       v-if="open === 'report'"
       :id="data.resource.id"
@@ -31,6 +38,7 @@
 <script>
 import DeleteModal from '~/components/Modal/DeleteModal'
 import DisableModal from '~/components/Modal/DisableModal'
+import ReleaseModal from '~/components/ReleaseModal/ReleaseModal.vue'
 import ReportModal from '~/components/Modal/ReportModal'
 import { mapGetters } from 'vuex'
 
@@ -38,6 +46,7 @@ export default {
   name: 'Modal',
   components: {
     DisableModal,
+    ReleaseModal,
     ReportModal,
     DeleteModal,
   },
