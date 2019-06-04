@@ -12,7 +12,7 @@
           >
             <b>{{ scope.row.post.title | truncate(50) }}</b>
           </nuxt-link>
-          <br>
+          <br />
           <ds-text size="small" color="soft">{{ scope.row.post.author.name }}</ds-text>
         </div>
         <div v-else-if="scope.row.type === 'Comment'">
@@ -24,7 +24,7 @@
           >
             <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
           </nuxt-link>
-          <br>
+          <br />
           <ds-text size="small" color="soft">{{ scope.row.comment.author.name }}</ds-text>
         </div>
         <div v-else>
@@ -63,7 +63,9 @@
             name: 'profile-id-slug',
             params: { id: scope.row.submitter.id, slug: scope.row.submitter.slug },
           }"
-        >{{ scope.row.submitter.name }}</nuxt-link>
+        >
+          {{ scope.row.submitter.name }}
+        </nuxt-link>
       </template>
       <template slot="disabledBy" slot-scope="scope">
         <nuxt-link
@@ -98,7 +100,7 @@
         </nuxt-link>
       </template>
     </ds-table>
-    <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')"/>
+    <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
   </ds-card>
 </template>
 

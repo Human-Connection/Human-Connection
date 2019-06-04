@@ -1,4 +1,8 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import {
+  shallowMount,
+  mount,
+  createLocalVue
+} from '@vue/test-utils'
 import DeleteModal from './DeleteModal.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
@@ -25,9 +29,19 @@ describe('DeleteModal.vue', () => {
       },
     }
     mocks = {
-      $t: jest.fn(),
       $filters: {
         truncate: a => a,
+      },
+      $toast: {
+        success: jest.fn(),
+        error: jest.fn(),
+      },
+      $t: jest.fn(),
+      $apollo: {
+        mutate: jest.fn().mockResolvedValue(),
+      },
+      location: {
+        reload: jest.fn(),
       },
     }
   })
