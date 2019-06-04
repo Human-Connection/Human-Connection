@@ -1,4 +1,8 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import {
+  shallowMount,
+  mount,
+  createLocalVue
+} from '@vue/test-utils'
 import DisableModal from './DisableModal.vue'
 import Styleguide from '@human-connection/styleguide'
 
@@ -33,10 +37,25 @@ describe('DisableModal.vue', () => {
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
       },
+      /*
       location: {
         reload: jest.fn(),
       },
+      */
     }
+    it('mocks window.location.reload', () => {
+      Object.defineProperty(window.location, 'reload', {
+        configurable: true,
+      })
+      window.location.reload = jest.fn();
+      // delete window.location;
+      // window.location = { reload: jest.fn() };
+
+      expect(window.location.reload).not.toHaveBeenCalled();
+      window.location.reload();
+      expect(window.location.reload).toHaveBeenCalled();
+      window.location.reload.mockRestore();
+    })
   })
 
   describe('shallowMount', () => {
@@ -157,7 +176,11 @@ describe('DisableModal.vue', () => {
 
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
-          const [[{ variables }]] = calls
+          const [
+            [{
+              variables
+            }]
+          ] = calls
           expect(variables).toEqual({
             id: 'u4711',
           })
