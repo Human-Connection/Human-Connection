@@ -1,25 +1,22 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
-import DisableModal from './DisableModal.vue'
+import ReleaseModal from './ReleaseModal.vue'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 
-describe('DisableModal.vue', () => {
+describe('ReleaseModal.vue', () => {
   let mocks
   let propsData
   let wrapper
+  let Wrapper
 
   beforeEach(() => {
     propsData = {
       type: 'contribution',
-      id: 'c42',
       name: 'blah',
-      callbacks: {
-        confirm: jest.fn(),
-        cancel: jest.fn(),
-      },
+      id: 'c42',
     }
     mocks = {
       $filters: {
@@ -40,8 +37,8 @@ describe('DisableModal.vue', () => {
   })
 
   describe('shallowMount', () => {
-    const Wrapper = () => {
-      return shallowMount(DisableModal, {
+    Wrapper = () => {
+      return shallowMount(ReleaseModal, {
         propsData,
         mocks,
         localVue,
@@ -51,10 +48,9 @@ describe('DisableModal.vue', () => {
     describe('given a user', () => {
       beforeEach(() => {
         propsData = {
-          ...propsData,
           type: 'user',
-          name: 'Bob Ross',
           id: 'u2',
+          name: 'Bob Ross',
         }
       })
 
@@ -63,7 +59,7 @@ describe('DisableModal.vue', () => {
         const calls = mocks.$t.mock.calls
         const expected = [
           [
-            'disable.user.message',
+            'release.user.message',
             {
               name: 'Bob Ross',
             },
@@ -76,10 +72,9 @@ describe('DisableModal.vue', () => {
     describe('given a contribution', () => {
       beforeEach(() => {
         propsData = {
-          ...propsData,
           type: 'contribution',
-          name: 'This is some post title.',
           id: 'c3',
+          name: 'This is some post title.',
         }
       })
 
@@ -88,7 +83,7 @@ describe('DisableModal.vue', () => {
         const calls = mocks.$t.mock.calls
         const expected = [
           [
-            'disable.contribution.message',
+            'release.contribution.message',
             {
               name: 'This is some post title.',
             },
@@ -100,28 +95,28 @@ describe('DisableModal.vue', () => {
   })
 
   describe('mount', () => {
-    const Wrapper = () => {
-      return mount(DisableModal, {
+    Wrapper = () => {
+      return mount(ReleaseModal, {
         propsData,
         mocks,
         localVue,
       })
     }
+
     beforeEach(jest.useFakeTimers)
 
     describe('given id', () => {
       beforeEach(() => {
         propsData = {
-          ...propsData,
           type: 'user',
           id: 'u4711',
         }
       })
 
       describe('click cancel button', () => {
-        beforeEach(async () => {
+        beforeEach(() => {
           wrapper = Wrapper()
-          await wrapper.find('button.cancel').trigger('click')
+          wrapper.find('button.cancel').trigger('click')
         })
 
         it('does not emit "close" yet', () => {
@@ -146,9 +141,9 @@ describe('DisableModal.vue', () => {
       })
 
       describe('click confirm button', () => {
-        beforeEach(async () => {
+        beforeEach(() => {
           wrapper = Wrapper()
-          await wrapper.find('button.confirm').trigger('click')
+          wrapper.find('button.confirm').trigger('click')
         })
 
         it('calls mutation', () => {
