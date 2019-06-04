@@ -7,7 +7,6 @@
       :use-custom-slot="true"
       :options="dropzoneOptions"
       @vdropzone-error="verror"
-      @vdropzone-thumbnail="thumbnail"
     >
       <div class="dz-message" @mouseover="hover = true" @mouseleave="hover = false">
         <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>

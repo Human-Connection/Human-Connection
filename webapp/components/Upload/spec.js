@@ -68,5 +68,15 @@ describe('Upload', () => {
       jest.runAllTimers()
       expect(wrapper.vm.error).toEqual(false)
     })
+
+    it('shows an error toaster when the apollo mutation rejects', async () => {
+      // calls vddrop twice because of how mockResolvedValueOnce works in jest
+      // the first time the mock function is called it will resolve, calling it a
+      // second time will cause it to fail(with this implementation)
+      // https://jestjs.io/docs/en/mock-function-api.html#mockfnmockresolvedvalueoncevalue
+      await wrapper.vm.vddrop([{ filename: 'avatar.jpg' }])
+      await wrapper.vm.vddrop([{ filename: 'avatar.jpg' }])
+      expect(mocks.$toast.error).toHaveBeenCalledTimes(1)
+    })
   })
 })
