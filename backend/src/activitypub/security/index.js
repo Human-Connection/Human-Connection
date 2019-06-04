@@ -1,13 +1,15 @@
-import dotenv from 'dotenv'
-import { resolve } from 'path'
+// import dotenv from 'dotenv'
+// import { resolve } from 'path'
 import crypto from 'crypto'
 import request from 'request'
+import CONFIG from './../../config'
 const debug = require('debug')('ea:security')
 
-dotenv.config({ path: resolve('src', 'activitypub', '.env') })
+// TODO Does this reference a local config? Why?
+// dotenv.config({ path: resolve('src', 'activitypub', '.env') })
 
 export function generateRsaKeyPair(options = {}) {
-  const { passphrase = process.env.PRIVATE_KEY_PASSPHRASE } = options
+  const { passphrase = CONFIG.PRIVATE_KEY_PASSPHRASE } = options
   return crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
     publicKeyEncoding: {
@@ -31,7 +33,7 @@ export function createSignature(options) {
     url,
     headers = {},
     algorithm = 'rsa-sha256',
-    passphrase = process.env.PRIVATE_KEY_PASSPHRASE,
+    passphrase = CONFIG.PRIVATE_KEY_PASSPHRASE,
   } = options
   if (!SUPPORTED_HASH_ALGORITHMS.includes(algorithm)) {
     throw Error(`SIGNING: Unsupported hashing algorithm = ${algorithm}`)

@@ -1,3 +1,4 @@
+import CONFIG from './../config'
 import activityPub from './activityPubMiddleware'
 import password from './passwordMiddleware'
 import softDelete from './softDeleteMiddleware'
@@ -49,9 +50,8 @@ export default schema => {
   ]
 
   // add permisions middleware at the first position (unless we're seeding)
-  if (process.env.NODE_ENV !== 'production') {
-    let disabledMiddlewares = process.env.DISABLED_MIDDLEWARES || ''
-    disabledMiddlewares = disabledMiddlewares.split(',')
+  if (CONFIG.DEBUG) {
+    const disabledMiddlewares = CONFIG.DISABLED_MIDDLEWARES.split(',')
     order = order.filter(key => {
       return !disabledMiddlewares.includes(key)
     })
