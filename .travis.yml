@@ -17,7 +17,8 @@ before_install:
 
 install:
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --build -d
-  - wait-on http://localhost:7474 && docker-compose exec neo4j migrate
+    # avoid "Database constraints have changed after this transaction started"
+  - wait-on http://localhost:7474
 
 script:
   # Backend
