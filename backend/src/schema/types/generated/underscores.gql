@@ -1,0 +1,1746 @@
+input _BadgeFilter {
+  AND: [_BadgeFilter!]
+  OR: [_BadgeFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  key: String
+  key_not: String
+  key_in: [String!]
+  key_not_in: [String!]
+  key_contains: String
+  key_not_contains: String
+  key_starts_with: String
+  key_not_starts_with: String
+  key_ends_with: String
+  key_not_ends_with: String
+  type: BadgeType
+  type_not: BadgeType
+  type_in: [BadgeType!]
+  type_not_in: [BadgeType!]
+  status: BadgeStatus
+  status_not: BadgeStatus
+  status_in: [BadgeStatus!]
+  status_not_in: [BadgeStatus!]
+  icon: String
+  icon_not: String
+  icon_in: [String!]
+  icon_not_in: [String!]
+  icon_contains: String
+  icon_not_contains: String
+  icon_starts_with: String
+  icon_not_starts_with: String
+  icon_ends_with: String
+  icon_not_ends_with: String
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+  updatedAt: String
+  updatedAt_not: String
+  updatedAt_in: [String!]
+  updatedAt_not_in: [String!]
+  updatedAt_contains: String
+  updatedAt_not_contains: String
+  updatedAt_starts_with: String
+  updatedAt_not_starts_with: String
+  updatedAt_ends_with: String
+  updatedAt_not_ends_with: String
+  rewarded: _UserFilter
+  rewarded_not: _UserFilter
+  rewarded_in: [_UserFilter!]
+  rewarded_not_in: [_UserFilter!]
+  rewarded_some: _UserFilter
+  rewarded_none: _UserFilter
+  rewarded_single: _UserFilter
+  rewarded_every: _UserFilter
+}
+
+input _BadgeInput {
+  id: ID!
+}
+
+enum _BadgeOrdering {
+  id_asc
+  id_desc
+  key_asc
+  key_desc
+  type_asc
+  type_desc
+  status_asc
+  status_desc
+  icon_asc
+  icon_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+  _id_asc
+  _id_desc
+}
+
+input _CategoryFilter {
+  AND: [_CategoryFilter!]
+  OR: [_CategoryFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  slug: String
+  slug_not: String
+  slug_in: [String!]
+  slug_not_in: [String!]
+  slug_contains: String
+  slug_not_contains: String
+  slug_starts_with: String
+  slug_not_starts_with: String
+  slug_ends_with: String
+  slug_not_ends_with: String
+  icon: String
+  icon_not: String
+  icon_in: [String!]
+  icon_not_in: [String!]
+  icon_contains: String
+  icon_not_contains: String
+  icon_starts_with: String
+  icon_not_starts_with: String
+  icon_ends_with: String
+  icon_not_ends_with: String
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+  updatedAt: String
+  updatedAt_not: String
+  updatedAt_in: [String!]
+  updatedAt_not_in: [String!]
+  updatedAt_contains: String
+  updatedAt_not_contains: String
+  updatedAt_starts_with: String
+  updatedAt_not_starts_with: String
+  updatedAt_ends_with: String
+  updatedAt_not_ends_with: String
+  posts: _PostFilter
+  posts_not: _PostFilter
+  posts_in: [_PostFilter!]
+  posts_not_in: [_PostFilter!]
+  posts_some: _PostFilter
+  posts_none: _PostFilter
+  posts_single: _PostFilter
+  posts_every: _PostFilter
+}
+
+input _CategoryInput {
+  id: ID!
+}
+
+enum _CategoryOrdering {
+  id_asc
+  id_desc
+  name_asc
+  name_desc
+  slug_asc
+  slug_desc
+  icon_asc
+  icon_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+  postCount_asc
+  postCount_desc
+  _id_asc
+  _id_desc
+}
+
+input _CommentFilter {
+  AND: [_CommentFilter!]
+  OR: [_CommentFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  activityId: String
+  activityId_not: String
+  activityId_in: [String!]
+  activityId_not_in: [String!]
+  activityId_contains: String
+  activityId_not_contains: String
+  activityId_starts_with: String
+  activityId_not_starts_with: String
+  activityId_ends_with: String
+  activityId_not_ends_with: String
+  postId: ID
+  postId_not: ID
+  postId_in: [ID!]
+  postId_not_in: [ID!]
+  postId_contains: ID
+  postId_not_contains: ID
+  postId_starts_with: ID
+  postId_not_starts_with: ID
+  postId_ends_with: ID
+  postId_not_ends_with: ID
+  author: _UserFilter
+  author_not: _UserFilter
+  author_in: [_UserFilter!]
+  author_not_in: [_UserFilter!]
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  contentExcerpt: String
+  contentExcerpt_not: String
+  contentExcerpt_in: [String!]
+  contentExcerpt_not_in: [String!]
+  contentExcerpt_contains: String
+  contentExcerpt_not_contains: String
+  contentExcerpt_starts_with: String
+  contentExcerpt_not_starts_with: String
+  contentExcerpt_ends_with: String
+  contentExcerpt_not_ends_with: String
+  post: _PostFilter
+  post_not: _PostFilter
+  post_in: [_PostFilter!]
+  post_not_in: [_PostFilter!]
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+  updatedAt: String
+  updatedAt_not: String
+  updatedAt_in: [String!]
+  updatedAt_not_in: [String!]
+  updatedAt_contains: String
+  updatedAt_not_contains: String
+  updatedAt_starts_with: String
+  updatedAt_not_starts_with: String
+  updatedAt_ends_with: String
+  updatedAt_not_ends_with: String
+  deleted: Boolean
+  deleted_not: Boolean
+  disabled: Boolean
+  disabled_not: Boolean
+  disabledBy: _UserFilter
+  disabledBy_not: _UserFilter
+  disabledBy_in: [_UserFilter!]
+  disabledBy_not_in: [_UserFilter!]
+}
+
+input _CommentInput {
+  id: ID!
+}
+
+enum _CommentOrdering {
+  id_asc
+  id_desc
+  activityId_asc
+  activityId_desc
+  postId_asc
+  postId_desc
+  content_asc
+  content_desc
+  contentExcerpt_asc
+  contentExcerpt_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+  deleted_asc
+  deleted_desc
+  disabled_asc
+  disabled_desc
+  _id_asc
+  _id_desc
+}
+
+input _LocationFilter {
+  AND: [_LocationFilter!]
+  OR: [_LocationFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  nameEN: String
+  nameEN_not: String
+  nameEN_in: [String!]
+  nameEN_not_in: [String!]
+  nameEN_contains: String
+  nameEN_not_contains: String
+  nameEN_starts_with: String
+  nameEN_not_starts_with: String
+  nameEN_ends_with: String
+  nameEN_not_ends_with: String
+  nameDE: String
+  nameDE_not: String
+  nameDE_in: [String!]
+  nameDE_not_in: [String!]
+  nameDE_contains: String
+  nameDE_not_contains: String
+  nameDE_starts_with: String
+  nameDE_not_starts_with: String
+  nameDE_ends_with: String
+  nameDE_not_ends_with: String
+  nameFR: String
+  nameFR_not: String
+  nameFR_in: [String!]
+  nameFR_not_in: [String!]
+  nameFR_contains: String
+  nameFR_not_contains: String
+  nameFR_starts_with: String
+  nameFR_not_starts_with: String
+  nameFR_ends_with: String
+  nameFR_not_ends_with: String
+  nameNL: String
+  nameNL_not: String
+  nameNL_in: [String!]
+  nameNL_not_in: [String!]
+  nameNL_contains: String
+  nameNL_not_contains: String
+  nameNL_starts_with: String
+  nameNL_not_starts_with: String
+  nameNL_ends_with: String
+  nameNL_not_ends_with: String
+  nameIT: String
+  nameIT_not: String
+  nameIT_in: [String!]
+  nameIT_not_in: [String!]
+  nameIT_contains: String
+  nameIT_not_contains: String
+  nameIT_starts_with: String
+  nameIT_not_starts_with: String
+  nameIT_ends_with: String
+  nameIT_not_ends_with: String
+  nameES: String
+  nameES_not: String
+  nameES_in: [String!]
+  nameES_not_in: [String!]
+  nameES_contains: String
+  nameES_not_contains: String
+  nameES_starts_with: String
+  nameES_not_starts_with: String
+  nameES_ends_with: String
+  nameES_not_ends_with: String
+  namePT: String
+  namePT_not: String
+  namePT_in: [String!]
+  namePT_not_in: [String!]
+  namePT_contains: String
+  namePT_not_contains: String
+  namePT_starts_with: String
+  namePT_not_starts_with: String
+  namePT_ends_with: String
+  namePT_not_ends_with: String
+  namePL: String
+  namePL_not: String
+  namePL_in: [String!]
+  namePL_not_in: [String!]
+  namePL_contains: String
+  namePL_not_contains: String
+  namePL_starts_with: String
+  namePL_not_starts_with: String
+  namePL_ends_with: String
+  namePL_not_ends_with: String
+  type: String
+  type_not: String
+  type_in: [String!]
+  type_not_in: [String!]
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_not_starts_with: String
+  type_ends_with: String
+  type_not_ends_with: String
+  lat: Float
+  lat_not: Float
+  lat_in: [Float!]
+  lat_not_in: [Float!]
+  lat_lt: Float
+  lat_lte: Float
+  lat_gt: Float
+  lat_gte: Float
+  lng: Float
+  lng_not: Float
+  lng_in: [Float!]
+  lng_not_in: [Float!]
+  lng_lt: Float
+  lng_lte: Float
+  lng_gt: Float
+  lng_gte: Float
+}
+
+input _LocationInput {
+  id: ID!
+}
+
+enum _LocationOrdering {
+  id_asc
+  id_desc
+  name_asc
+  name_desc
+  nameEN_asc
+  nameEN_desc
+  nameDE_asc
+  nameDE_desc
+  nameFR_asc
+  nameFR_desc
+  nameNL_asc
+  nameNL_desc
+  nameIT_asc
+  nameIT_desc
+  nameES_asc
+  nameES_desc
+  namePT_asc
+  namePT_desc
+  namePL_asc
+  namePL_desc
+  type_asc
+  type_desc
+  lat_asc
+  lat_desc
+  lng_asc
+  lng_desc
+  _id_asc
+  _id_desc
+}
+
+type _Neo4jDate {
+  year: Int
+  month: Int
+  day: Int
+  formatted: String
+}
+
+input _Neo4jDateInput {
+  year: Int
+  month: Int
+  day: Int
+  formatted: String
+}
+
+type _Neo4jDateTime {
+  year: Int
+  month: Int
+  day: Int
+  hour: Int
+  minute: Int
+  second: Int
+  millisecond: Int
+  microsecond: Int
+  nanosecond: Int
+  timezone: String
+  formatted: String
+}
+
+input _Neo4jDateTimeInput {
+  year: Int
+  month: Int
+  day: Int
+  hour: Int
+  minute: Int
+  second: Int
+  millisecond: Int
+  microsecond: Int
+  nanosecond: Int
+  timezone: String
+  formatted: String
+}
+
+type _Neo4jLocalDateTime {
+  year: Int
+  month: Int
+  day: Int
+  hour: Int
+  minute: Int
+  second: Int
+  millisecond: Int
+  microsecond: Int
+  nanosecond: Int
+  formatted: String
+}
+
+input _Neo4jLocalDateTimeInput {
+  year: Int
+  month: Int
+  day: Int
+  hour: Int
+  minute: Int
+  second: Int
+  millisecond: Int
+  microsecond: Int
+  nanosecond: Int
+  formatted: String
+}
+
+type _Neo4jLocalTime {
+  hour: Int
+  minute: Int
+  second: Int
+  millisecond: Int
+  microsecond: Int
+  nanosecond: Int
+  formatted: String
+}
+
+input _Neo4jLocalTimeInput {
+  hour: Int
+  minute: Int
+  second: Int
+  millisecond: Int
+  microsecond: Int
+  nanosecond: Int
+  formatted: String
+}
+
+type _Neo4jTime {
+  hour: Int
+  minute: Int
+  second: Int
+  millisecond: Int
+  microsecond: Int
+  nanosecond: Int
+  timezone: String
+  formatted: String
+}
+
+input _Neo4jTimeInput {
+  hour: Int
+  minute: Int
+  second: Int
+  nanosecond: Int
+  millisecond: Int
+  microsecond: Int
+  timezone: String
+  formatted: String
+}
+
+input _NotificationFilter {
+  AND: [_NotificationFilter!]
+  OR: [_NotificationFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  read: Boolean
+  read_not: Boolean
+  user: _UserFilter
+  user_not: _UserFilter
+  user_in: [_UserFilter!]
+  user_not_in: [_UserFilter!]
+  post: _PostFilter
+  post_not: _PostFilter
+  post_in: [_PostFilter!]
+  post_not_in: [_PostFilter!]
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+}
+
+input _NotificationInput {
+  id: ID!
+}
+
+enum _NotificationOrdering {
+  id_asc
+  id_desc
+  read_asc
+  read_desc
+  createdAt_asc
+  createdAt_desc
+  _id_asc
+  _id_desc
+}
+
+input _OrganizationFilter {
+  AND: [_OrganizationFilter!]
+  OR: [_OrganizationFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdBy: _UserFilter
+  createdBy_not: _UserFilter
+  createdBy_in: [_UserFilter!]
+  createdBy_not_in: [_UserFilter!]
+  ownedBy: _UserFilter
+  ownedBy_not: _UserFilter
+  ownedBy_in: [_UserFilter!]
+  ownedBy_not_in: [_UserFilter!]
+  ownedBy_some: _UserFilter
+  ownedBy_none: _UserFilter
+  ownedBy_single: _UserFilter
+  ownedBy_every: _UserFilter
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  slug: String
+  slug_not: String
+  slug_in: [String!]
+  slug_not_in: [String!]
+  slug_contains: String
+  slug_not_contains: String
+  slug_starts_with: String
+  slug_not_starts_with: String
+  slug_ends_with: String
+  slug_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  descriptionExcerpt: String
+  descriptionExcerpt_not: String
+  descriptionExcerpt_in: [String!]
+  descriptionExcerpt_not_in: [String!]
+  descriptionExcerpt_contains: String
+  descriptionExcerpt_not_contains: String
+  descriptionExcerpt_starts_with: String
+  descriptionExcerpt_not_starts_with: String
+  descriptionExcerpt_ends_with: String
+  descriptionExcerpt_not_ends_with: String
+  deleted: Boolean
+  deleted_not: Boolean
+  disabled: Boolean
+  disabled_not: Boolean
+  tags: _TagFilter
+  tags_not: _TagFilter
+  tags_in: [_TagFilter!]
+  tags_not_in: [_TagFilter!]
+  tags_some: _TagFilter
+  tags_none: _TagFilter
+  tags_single: _TagFilter
+  tags_every: _TagFilter
+  categories: _CategoryFilter
+  categories_not: _CategoryFilter
+  categories_in: [_CategoryFilter!]
+  categories_not_in: [_CategoryFilter!]
+  categories_some: _CategoryFilter
+  categories_none: _CategoryFilter
+  categories_single: _CategoryFilter
+  categories_every: _CategoryFilter
+}
+
+input _OrganizationInput {
+  id: ID!
+}
+
+enum _OrganizationOrdering {
+  id_asc
+  id_desc
+  name_asc
+  name_desc
+  slug_asc
+  slug_desc
+  description_asc
+  description_desc
+  descriptionExcerpt_asc
+  descriptionExcerpt_desc
+  deleted_asc
+  deleted_desc
+  disabled_asc
+  disabled_desc
+  _id_asc
+  _id_desc
+}
+
+input _PostFilter {
+  AND: [_PostFilter!]
+  OR: [_PostFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  activityId: String
+  activityId_not: String
+  activityId_in: [String!]
+  activityId_not_in: [String!]
+  activityId_contains: String
+  activityId_not_contains: String
+  activityId_starts_with: String
+  activityId_not_starts_with: String
+  activityId_ends_with: String
+  activityId_not_ends_with: String
+  objectId: String
+  objectId_not: String
+  objectId_in: [String!]
+  objectId_not_in: [String!]
+  objectId_contains: String
+  objectId_not_contains: String
+  objectId_starts_with: String
+  objectId_not_starts_with: String
+  objectId_ends_with: String
+  objectId_not_ends_with: String
+  author: _UserFilter
+  author_not: _UserFilter
+  author_in: [_UserFilter!]
+  author_not_in: [_UserFilter!]
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  slug: String
+  slug_not: String
+  slug_in: [String!]
+  slug_not_in: [String!]
+  slug_contains: String
+  slug_not_contains: String
+  slug_starts_with: String
+  slug_not_starts_with: String
+  slug_ends_with: String
+  slug_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  contentExcerpt: String
+  contentExcerpt_not: String
+  contentExcerpt_in: [String!]
+  contentExcerpt_not_in: [String!]
+  contentExcerpt_contains: String
+  contentExcerpt_not_contains: String
+  contentExcerpt_starts_with: String
+  contentExcerpt_not_starts_with: String
+  contentExcerpt_ends_with: String
+  contentExcerpt_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  deleted: Boolean
+  deleted_not: Boolean
+  disabled: Boolean
+  disabled_not: Boolean
+  disabledBy: _UserFilter
+  disabledBy_not: _UserFilter
+  disabledBy_in: [_UserFilter!]
+  disabledBy_not_in: [_UserFilter!]
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+  updatedAt: String
+  updatedAt_not: String
+  updatedAt_in: [String!]
+  updatedAt_not_in: [String!]
+  updatedAt_contains: String
+  updatedAt_not_contains: String
+  updatedAt_starts_with: String
+  updatedAt_not_starts_with: String
+  updatedAt_ends_with: String
+  updatedAt_not_ends_with: String
+  tags: _TagFilter
+  tags_not: _TagFilter
+  tags_in: [_TagFilter!]
+  tags_not_in: [_TagFilter!]
+  tags_some: _TagFilter
+  tags_none: _TagFilter
+  tags_single: _TagFilter
+  tags_every: _TagFilter
+  categories: _CategoryFilter
+  categories_not: _CategoryFilter
+  categories_in: [_CategoryFilter!]
+  categories_not_in: [_CategoryFilter!]
+  categories_some: _CategoryFilter
+  categories_none: _CategoryFilter
+  categories_single: _CategoryFilter
+  categories_every: _CategoryFilter
+  comments: _CommentFilter
+  comments_not: _CommentFilter
+  comments_in: [_CommentFilter!]
+  comments_not_in: [_CommentFilter!]
+  comments_some: _CommentFilter
+  comments_none: _CommentFilter
+  comments_single: _CommentFilter
+  comments_every: _CommentFilter
+  shoutedBy: _UserFilter
+  shoutedBy_not: _UserFilter
+  shoutedBy_in: [_UserFilter!]
+  shoutedBy_not_in: [_UserFilter!]
+  shoutedBy_some: _UserFilter
+  shoutedBy_none: _UserFilter
+  shoutedBy_single: _UserFilter
+  shoutedBy_every: _UserFilter
+}
+
+input _PostInput {
+  id: ID!
+}
+
+enum _PostOrdering {
+  id_asc
+  id_desc
+  activityId_asc
+  activityId_desc
+  objectId_asc
+  objectId_desc
+  title_asc
+  title_desc
+  slug_asc
+  slug_desc
+  content_asc
+  content_desc
+  contentExcerpt_asc
+  contentExcerpt_desc
+  image_asc
+  image_desc
+  visibility_asc
+  visibility_desc
+  deleted_asc
+  deleted_desc
+  disabled_asc
+  disabled_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+  commentsCount_asc
+  commentsCount_desc
+  shoutedCount_asc
+  shoutedCount_desc
+  shoutedByCurrentUser_asc
+  shoutedByCurrentUser_desc
+  _id_asc
+  _id_desc
+}
+
+enum _RelationDirections {
+  IN
+  OUT
+}
+
+type _RemoveBadgeRewardedPayload {
+  from: Badge
+  to: User
+}
+
+type _RemoveCategoryPostsPayload {
+  from: Post
+  to: Category
+}
+
+type _RemoveCommentAuthorPayload {
+  from: User
+  to: Comment
+}
+
+type _RemoveCommentDisabledByPayload {
+  from: User
+  to: Comment
+}
+
+type _RemoveCommentPostPayload {
+  from: Comment
+  to: Post
+}
+
+type _RemoveNotificationPostPayload {
+  from: Post
+  to: Notification
+}
+
+type _RemoveNotificationUserPayload {
+  from: Notification
+  to: User
+}
+
+type _RemoveOrganizationCategoriesPayload {
+  from: Organization
+  to: Category
+}
+
+type _RemoveOrganizationCreatedByPayload {
+  from: User
+  to: Organization
+}
+
+type _RemoveOrganizationOwnedByPayload {
+  from: User
+  to: Organization
+}
+
+type _RemoveOrganizationTagsPayload {
+  from: Organization
+  to: Tag
+}
+
+type _RemovePostAuthorPayload {
+  from: User
+  to: Post
+}
+
+type _RemovePostCategoriesPayload {
+  from: Post
+  to: Category
+}
+
+type _RemovePostCommentsPayload {
+  from: Comment
+  to: Post
+}
+
+type _RemovePostDisabledByPayload {
+  from: User
+  to: Post
+}
+
+type _RemovePostShoutedByPayload {
+  from: User
+  to: Post
+}
+
+type _RemovePostTagsPayload {
+  from: Post
+  to: Tag
+}
+
+type _RemoveReportCommentPayload {
+  from: Report
+  to: Comment
+}
+
+type _RemoveReportPostPayload {
+  from: Report
+  to: Post
+}
+
+type _RemoveReportSubmitterPayload {
+  from: User
+  to: Report
+}
+
+type _RemoveReportUserPayload {
+  from: Report
+  to: User
+}
+
+type _RemoveRewardBadgePayload {
+  from: Reward
+  to: Badge
+}
+
+type _RemoveRewardUserPayload {
+  from: User
+  to: Reward
+}
+
+type _RemoveSocialMediaOwnedByPayload {
+  from: User
+  to: SocialMedia
+}
+
+type _RemoveTagTaggedOrganizationsPayload {
+  from: Organization
+  to: Tag
+}
+
+type _RemoveTagTaggedPostsPayload {
+  from: Post
+  to: Tag
+}
+
+type _RemoveUserBadgesPayload {
+  from: Badge
+  to: User
+}
+
+type _RemoveUserBlacklistedPayload {
+  from: User
+  to: User
+}
+
+type _RemoveUserCategoriesPayload {
+  from: User
+  to: Category
+}
+
+type _RemoveUserCommentsPayload {
+  from: User
+  to: Comment
+}
+
+type _RemoveUserContributionsPayload {
+  from: User
+  to: Post
+}
+
+type _RemoveUserDisabledByPayload {
+  from: User
+  to: User
+}
+
+type _RemoveUserFollowedByPayload {
+  from: User
+  to: User
+}
+
+type _RemoveUserFollowingPayload {
+  from: User
+  to: User
+}
+
+type _RemoveUserFriendsPayload {
+  from: User
+  to: User
+}
+
+type _RemoveUserNotificationsPayload {
+  from: Notification
+  to: User
+}
+
+type _RemoveUserOrganizationsCreatedPayload {
+  from: User
+  to: Organization
+}
+
+type _RemoveUserOrganizationsOwnedPayload {
+  from: User
+  to: Organization
+}
+
+type _RemoveUserShoutedPayload {
+  from: User
+  to: Post
+}
+
+type _RemoveUserSocialMediaPayload {
+  from: User
+  to: SocialMedia
+}
+
+input _ReportFilter {
+  AND: [_ReportFilter!]
+  OR: [_ReportFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  submitter: _UserFilter
+  submitter_not: _UserFilter
+  submitter_in: [_UserFilter!]
+  submitter_not_in: [_UserFilter!]
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+  comment: _CommentFilter
+  comment_not: _CommentFilter
+  comment_in: [_CommentFilter!]
+  comment_not_in: [_CommentFilter!]
+  post: _PostFilter
+  post_not: _PostFilter
+  post_in: [_PostFilter!]
+  post_not_in: [_PostFilter!]
+  user: _UserFilter
+  user_not: _UserFilter
+  user_in: [_UserFilter!]
+  user_not_in: [_UserFilter!]
+}
+
+input _ReportInput {
+  id: ID!
+}
+
+enum _ReportOrdering {
+  id_asc
+  id_desc
+  description_asc
+  description_desc
+  type_asc
+  type_desc
+  createdAt_asc
+  createdAt_desc
+  _id_asc
+  _id_desc
+}
+
+input _RewardFilter {
+  AND: [_RewardFilter!]
+  OR: [_RewardFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: _UserFilter
+  user_not: _UserFilter
+  user_in: [_UserFilter!]
+  user_not_in: [_UserFilter!]
+  rewarderId: ID
+  rewarderId_not: ID
+  rewarderId_in: [ID!]
+  rewarderId_not_in: [ID!]
+  rewarderId_contains: ID
+  rewarderId_not_contains: ID
+  rewarderId_starts_with: ID
+  rewarderId_not_starts_with: ID
+  rewarderId_ends_with: ID
+  rewarderId_not_ends_with: ID
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+  badge: _BadgeFilter
+  badge_not: _BadgeFilter
+  badge_in: [_BadgeFilter!]
+  badge_not_in: [_BadgeFilter!]
+}
+
+input _RewardInput {
+  id: ID!
+}
+
+enum _RewardOrdering {
+  id_asc
+  id_desc
+  rewarderId_asc
+  rewarderId_desc
+  createdAt_asc
+  createdAt_desc
+  _id_asc
+  _id_desc
+}
+
+input _SharedInboxEndpointFilter {
+  AND: [_SharedInboxEndpointFilter!]
+  OR: [_SharedInboxEndpointFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  uri: String
+  uri_not: String
+  uri_in: [String!]
+  uri_not_in: [String!]
+  uri_contains: String
+  uri_not_contains: String
+  uri_starts_with: String
+  uri_not_starts_with: String
+  uri_ends_with: String
+  uri_not_ends_with: String
+}
+
+input _SharedInboxEndpointInput {
+  id: ID!
+}
+
+enum _SharedInboxEndpointOrdering {
+  id_asc
+  id_desc
+  uri_asc
+  uri_desc
+  _id_asc
+  _id_desc
+}
+
+input _SocialMediaFilter {
+  AND: [_SocialMediaFilter!]
+  OR: [_SocialMediaFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  ownedBy: _UserFilter
+  ownedBy_not: _UserFilter
+  ownedBy_in: [_UserFilter!]
+  ownedBy_not_in: [_UserFilter!]
+  ownedBy_some: _UserFilter
+  ownedBy_none: _UserFilter
+  ownedBy_single: _UserFilter
+  ownedBy_every: _UserFilter
+}
+
+input _SocialMediaInput {
+  id: ID!
+}
+
+enum _SocialMediaOrdering {
+  id_asc
+  id_desc
+  url_asc
+  url_desc
+  _id_asc
+  _id_desc
+}
+
+input _TagFilter {
+  AND: [_TagFilter!]
+  OR: [_TagFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  taggedPosts: _PostFilter
+  taggedPosts_not: _PostFilter
+  taggedPosts_in: [_PostFilter!]
+  taggedPosts_not_in: [_PostFilter!]
+  taggedPosts_some: _PostFilter
+  taggedPosts_none: _PostFilter
+  taggedPosts_single: _PostFilter
+  taggedPosts_every: _PostFilter
+  taggedOrganizations: _OrganizationFilter
+  taggedOrganizations_not: _OrganizationFilter
+  taggedOrganizations_in: [_OrganizationFilter!]
+  taggedOrganizations_not_in: [_OrganizationFilter!]
+  taggedOrganizations_some: _OrganizationFilter
+  taggedOrganizations_none: _OrganizationFilter
+  taggedOrganizations_single: _OrganizationFilter
+  taggedOrganizations_every: _OrganizationFilter
+  deleted: Boolean
+  deleted_not: Boolean
+  disabled: Boolean
+  disabled_not: Boolean
+}
+
+input _TagInput {
+  id: ID!
+}
+
+enum _TagOrdering {
+  id_asc
+  id_desc
+  name_asc
+  name_desc
+  taggedCount_asc
+  taggedCount_desc
+  taggedCountUnique_asc
+  taggedCountUnique_desc
+  deleted_asc
+  deleted_desc
+  disabled_asc
+  disabled_desc
+  _id_asc
+  _id_desc
+}
+
+input _UserFilter {
+  AND: [_UserFilter!]
+  OR: [_UserFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  actorId: String
+  actorId_not: String
+  actorId_in: [String!]
+  actorId_not_in: [String!]
+  actorId_contains: String
+  actorId_not_contains: String
+  actorId_starts_with: String
+  actorId_not_starts_with: String
+  actorId_ends_with: String
+  actorId_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  slug: String
+  slug_not: String
+  slug_in: [String!]
+  slug_not_in: [String!]
+  slug_contains: String
+  slug_not_contains: String
+  slug_starts_with: String
+  slug_not_starts_with: String
+  slug_ends_with: String
+  slug_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  avatar: String
+  avatar_not: String
+  avatar_in: [String!]
+  avatar_not_in: [String!]
+  avatar_contains: String
+  avatar_not_contains: String
+  avatar_starts_with: String
+  avatar_not_starts_with: String
+  avatar_ends_with: String
+  avatar_not_ends_with: String
+  coverImg: String
+  coverImg_not: String
+  coverImg_in: [String!]
+  coverImg_not_in: [String!]
+  coverImg_contains: String
+  coverImg_not_contains: String
+  coverImg_starts_with: String
+  coverImg_not_starts_with: String
+  coverImg_ends_with: String
+  coverImg_not_ends_with: String
+  deleted: Boolean
+  deleted_not: Boolean
+  disabled: Boolean
+  disabled_not: Boolean
+  disabledBy: _UserFilter
+  disabledBy_not: _UserFilter
+  disabledBy_in: [_UserFilter!]
+  disabledBy_not_in: [_UserFilter!]
+  role: UserGroup
+  role_not: UserGroup
+  role_in: [UserGroup!]
+  role_not_in: [UserGroup!]
+  publicKey: String
+  publicKey_not: String
+  publicKey_in: [String!]
+  publicKey_not_in: [String!]
+  publicKey_contains: String
+  publicKey_not_contains: String
+  publicKey_starts_with: String
+  publicKey_not_starts_with: String
+  publicKey_ends_with: String
+  publicKey_not_ends_with: String
+  privateKey: String
+  privateKey_not: String
+  privateKey_in: [String!]
+  privateKey_not_in: [String!]
+  privateKey_contains: String
+  privateKey_not_contains: String
+  privateKey_starts_with: String
+  privateKey_not_starts_with: String
+  privateKey_ends_with: String
+  privateKey_not_ends_with: String
+  wasInvited: Boolean
+  wasInvited_not: Boolean
+  wasSeeded: Boolean
+  wasSeeded_not: Boolean
+  locationName: String
+  locationName_not: String
+  locationName_in: [String!]
+  locationName_not_in: [String!]
+  locationName_contains: String
+  locationName_not_contains: String
+  locationName_starts_with: String
+  locationName_not_starts_with: String
+  locationName_ends_with: String
+  locationName_not_ends_with: String
+  about: String
+  about_not: String
+  about_in: [String!]
+  about_not_in: [String!]
+  about_contains: String
+  about_not_contains: String
+  about_starts_with: String
+  about_not_starts_with: String
+  about_ends_with: String
+  about_not_ends_with: String
+  socialMedia: _SocialMediaFilter
+  socialMedia_not: _SocialMediaFilter
+  socialMedia_in: [_SocialMediaFilter!]
+  socialMedia_not_in: [_SocialMediaFilter!]
+  socialMedia_some: _SocialMediaFilter
+  socialMedia_none: _SocialMediaFilter
+  socialMedia_single: _SocialMediaFilter
+  socialMedia_every: _SocialMediaFilter
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+  updatedAt: String
+  updatedAt_not: String
+  updatedAt_in: [String!]
+  updatedAt_not_in: [String!]
+  updatedAt_contains: String
+  updatedAt_not_contains: String
+  updatedAt_starts_with: String
+  updatedAt_not_starts_with: String
+  updatedAt_ends_with: String
+  updatedAt_not_ends_with: String
+  notifications: _NotificationFilter
+  notifications_not: _NotificationFilter
+  notifications_in: [_NotificationFilter!]
+  notifications_not_in: [_NotificationFilter!]
+  notifications_some: _NotificationFilter
+  notifications_none: _NotificationFilter
+  notifications_single: _NotificationFilter
+  notifications_every: _NotificationFilter
+  friends: _UserFilter
+  friends_not: _UserFilter
+  friends_in: [_UserFilter!]
+  friends_not_in: [_UserFilter!]
+  friends_some: _UserFilter
+  friends_none: _UserFilter
+  friends_single: _UserFilter
+  friends_every: _UserFilter
+  following: _UserFilter
+  following_not: _UserFilter
+  following_in: [_UserFilter!]
+  following_not_in: [_UserFilter!]
+  following_some: _UserFilter
+  following_none: _UserFilter
+  following_single: _UserFilter
+  following_every: _UserFilter
+  followedBy: _UserFilter
+  followedBy_not: _UserFilter
+  followedBy_in: [_UserFilter!]
+  followedBy_not_in: [_UserFilter!]
+  followedBy_some: _UserFilter
+  followedBy_none: _UserFilter
+  followedBy_single: _UserFilter
+  followedBy_every: _UserFilter
+  contributions: _PostFilter
+  contributions_not: _PostFilter
+  contributions_in: [_PostFilter!]
+  contributions_not_in: [_PostFilter!]
+  contributions_some: _PostFilter
+  contributions_none: _PostFilter
+  contributions_single: _PostFilter
+  contributions_every: _PostFilter
+  comments: _CommentFilter
+  comments_not: _CommentFilter
+  comments_in: [_CommentFilter!]
+  comments_not_in: [_CommentFilter!]
+  comments_some: _CommentFilter
+  comments_none: _CommentFilter
+  comments_single: _CommentFilter
+  comments_every: _CommentFilter
+  shouted: _PostFilter
+  shouted_not: _PostFilter
+  shouted_in: [_PostFilter!]
+  shouted_not_in: [_PostFilter!]
+  shouted_some: _PostFilter
+  shouted_none: _PostFilter
+  shouted_single: _PostFilter
+  shouted_every: _PostFilter
+  organizationsCreated: _OrganizationFilter
+  organizationsCreated_not: _OrganizationFilter
+  organizationsCreated_in: [_OrganizationFilter!]
+  organizationsCreated_not_in: [_OrganizationFilter!]
+  organizationsCreated_some: _OrganizationFilter
+  organizationsCreated_none: _OrganizationFilter
+  organizationsCreated_single: _OrganizationFilter
+  organizationsCreated_every: _OrganizationFilter
+  organizationsOwned: _OrganizationFilter
+  organizationsOwned_not: _OrganizationFilter
+  organizationsOwned_in: [_OrganizationFilter!]
+  organizationsOwned_not_in: [_OrganizationFilter!]
+  organizationsOwned_some: _OrganizationFilter
+  organizationsOwned_none: _OrganizationFilter
+  organizationsOwned_single: _OrganizationFilter
+  organizationsOwned_every: _OrganizationFilter
+  blacklisted: _UserFilter
+  blacklisted_not: _UserFilter
+  blacklisted_in: [_UserFilter!]
+  blacklisted_not_in: [_UserFilter!]
+  blacklisted_some: _UserFilter
+  blacklisted_none: _UserFilter
+  blacklisted_single: _UserFilter
+  blacklisted_every: _UserFilter
+  categories: _CategoryFilter
+  categories_not: _CategoryFilter
+  categories_in: [_CategoryFilter!]
+  categories_not_in: [_CategoryFilter!]
+  categories_some: _CategoryFilter
+  categories_none: _CategoryFilter
+  categories_single: _CategoryFilter
+  categories_every: _CategoryFilter
+  badges: _BadgeFilter
+  badges_not: _BadgeFilter
+  badges_in: [_BadgeFilter!]
+  badges_not_in: [_BadgeFilter!]
+  badges_some: _BadgeFilter
+  badges_none: _BadgeFilter
+  badges_single: _BadgeFilter
+  badges_every: _BadgeFilter
+}
+
+input _UserInput {
+  id: ID!
+}
+
+enum _UserOrdering {
+  id_asc
+  id_desc
+  actorId_asc
+  actorId_desc
+  name_asc
+  name_desc
+  email_asc
+  email_desc
+  slug_asc
+  slug_desc
+  password_asc
+  password_desc
+  avatar_asc
+  avatar_desc
+  coverImg_asc
+  coverImg_desc
+  deleted_asc
+  deleted_desc
+  disabled_asc
+  disabled_desc
+  role_asc
+  role_desc
+  publicKey_asc
+  publicKey_desc
+  privateKey_asc
+  privateKey_desc
+  wasInvited_asc
+  wasInvited_desc
+  wasSeeded_asc
+  wasSeeded_desc
+  locationName_asc
+  locationName_desc
+  about_asc
+  about_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+  friendsCount_asc
+  friendsCount_desc
+  followingCount_asc
+  followingCount_desc
+  followedByCount_asc
+  followedByCount_desc
+  followedByCurrentUser_asc
+  followedByCurrentUser_desc
+  contributionsCount_asc
+  contributionsCount_desc
+  commentsCount_asc
+  commentsCount_desc
+  shoutedCount_asc
+  shoutedCount_desc
+  badgesCount_asc
+  badgesCount_desc
+  _id_asc
+  _id_desc
+}

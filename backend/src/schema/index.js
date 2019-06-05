@@ -11,9 +11,7 @@ export default applyScalars(
       typeDefs,
       resolvers,
       config: {
-        query: {
-          exclude: ['Notfication', 'Statistics', 'LoggedInUser'],
-        },
+        query: false,
         mutation: {
           exclude: ['Notfication', 'Statistics', 'LoggedInUser'],
         },
