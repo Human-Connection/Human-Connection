@@ -137,7 +137,15 @@
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
-                <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
+                <ds-flex-item
+                  v-tooltip="{
+                    content: $t('common.your.post', null, user.contributionsCount),
+                    placement: 'right',
+                    delay: { show: 500 },
+                  }"
+                  class="ds-tab-nav-item pointer ds-tab-nav-item-active"
+                  @click="tabActivity('posts', $event)"
+                >
                   <ds-space margin="small">
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
@@ -147,28 +155,43 @@
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
-                <!-- TODO: find better solution for rendering errors -->
-                <!--
+                <ds-flex-item
+                  v-tooltip="{
+                    content: $t('common.your.comment', null, user.commentsCount),
+                    placement: 'right',
+                    delay: { show: 500 },
+                  }"
+                  class="ds-tab-nav-item pointer"
+                  @click="tabActivity('commented', $event)"
+                >
+                  <ds-space margin="small">
+                    <!-- TODO: find better solution for rendering errors -->
+
                     <no-ssr>
                       <ds-number :label="$t('profile.commented')">
-                        <hc-count-to slot="count" :end-val="user.commentsCount"/>
+                        <hc-count-to slot="count" :end-val="user.commentsCount" />
                       </ds-number>
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                -->
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
-                <!-- TODO: find better solution for rendering errors -->
-                <!--<no-ssr>
+
+                <ds-flex-item
+                  v-tooltip="{
+                    content: $t('common.your.shouted', null, user.shoutedCount),
+                    placement: 'right',
+                    delay: { show: 500 },
+                  }"
+                  class="ds-tab-nav-item pointer"
+                >
+                  <ds-space margin="small">
+                    <!-- TODO: find better solution for rendering errors -->
+                    <no-ssr>
                       <ds-number :label="$t('profile.shouted')">
-                        <hc-count-to slot="count" :end-val="user.shoutedCount"/>
+                        <hc-count-to slot="count" :end-val="user.shoutedCount" />
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>-->
+                </ds-flex-item>
               </ds-flex>
             </ds-card>
           </ds-flex-item>
@@ -343,6 +366,14 @@ export default {
 </script>
 
 <style lang="scss">
+.pointer {
+  cursor: pointer;
+}
+
+.ds-tab-nav .ds-card-content .ds-tab-nav-item:hover {
+  border-bottom: 3px solid #c9c6ce;
+}
+
 .profile-avatar.ds-avatar {
   display: block;
   margin: auto;
