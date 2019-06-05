@@ -4,9 +4,9 @@ export default async function replaceParams(args, context) {
   const { author = 'all' } = args.filterBubble || {}
   const { user } = context
 
-  if (author === 'followed') {
+  if (author === 'following') {
     if (!user)
-      throw new UserInputError("You are unauthenticated - I don't know your followed users")
+      throw new UserInputError("You are unauthenticated - I don't know any users you are following.")
 
     const session = context.driver.session()
     let { records } = await session.run(

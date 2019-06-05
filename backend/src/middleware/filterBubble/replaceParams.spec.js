@@ -38,9 +38,9 @@ describe('replaceParams', () => {
         context.user = null
       })
 
-      describe('{ filterBubble: { author: followed } }', () => {
+      describe('{ filterBubble: { author: following } }', () => {
         it('throws error', async () => {
-          args = { filterBubble: { author: 'followed' } }
+          args = { filterBubble: { author: 'following' } }
           await expect(action()).rejects.toThrow('You are unauthenticated')
         })
       })
@@ -63,9 +63,9 @@ describe('replaceParams', () => {
         context.user = { id: 'u4711' }
       })
 
-      describe('{ filterBubble: { author: followed } }', () => {
+      describe('{ filterBubble: { author: following } }', () => {
         beforeEach(() => {
-          args = { filterBubble: { author: 'followed' } }
+          args = { filterBubble: { author: 'following' } }
         })
 
         it('returns args object with resolved ids of followed users', async () => {

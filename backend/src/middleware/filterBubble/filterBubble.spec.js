@@ -65,7 +65,7 @@ describe('FilterBubble middleware', () => {
 
     describe('filtering for posts of followed users only', () => {
       it('returns only posts authored by followed users', async () => {
-        const query = '{ Post( filterBubble: { author: followed }) { title } }'
+        const query = '{ Post( filterBubble: { author: following }) { title } }'
         const expected = {
           Post: [{ title: 'This is the post of a followed user' }],
         }
