@@ -1,15 +1,13 @@
 <template>
-  <ds-card :header="$t('settings.delete.name')">
-    <hc-empty icon="tasks" message="Coming Soon…" />
-  </ds-card>
+  <delete-account />
 </template>
 
 <script>
-import HcEmpty from '~/components/Empty.vue'
+import DeleteAccount from '~/components/DeleteAccount/DeleteAccount.vue'
 
 export default {
   components: {
-    HcEmpty,
+    DeleteAccount,
   },
 }
 </script>
