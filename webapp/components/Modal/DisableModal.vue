@@ -1,14 +1,17 @@
 <template>
   <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="message" />
+    <p v-html="message"/>
 
     <template slot="footer">
       <ds-button class="cancel" @click="cancel">{{ $t('disable.cancel') }}</ds-button>
 
-      <ds-button danger class="confirm" icon="exclamation-circle" @click="confirm">
-        {{ $t('disable.submit') }}
-      </ds-button>
+      <ds-button
+        danger
+        class="confirm"
+        icon="exclamation-circle"
+        @click="confirm"
+      >{{ $t('disable.submit') }}</ds-button>
     </template>
   </ds-modal>
 </template>
@@ -70,7 +73,7 @@ export default {
         setTimeout(() => {
           this.$emit('close')
         }, 1000)
-        this.toggleDisabledState({ disabled: true })
+        this.toggleDisabledState({ disabled: true, id: this.id })
       } catch (err) {
         this.$toast.error(err.message)
       }

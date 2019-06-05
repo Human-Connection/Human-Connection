@@ -8,7 +8,7 @@
       </slot>
     </template>
     <div slot="popover" slot-scope="{ toggleMenu }" class="content-menu-popover">
-      <ds-menu :routes="routes" :key="disabled">
+      <ds-menu :routes="routes" :key="id || disabled">
         <ds-menu-item
           slot="menuitem"
           slot-scope="item"
@@ -49,6 +49,7 @@ export default {
   computed: {
     ...mapGetters({
       disabled: 'post/disabled',
+      id: 'post/id',
     }),
     routes() {
       let routes = []
@@ -102,21 +103,22 @@ export default {
       }
 
       if (!this.isOwner && this.isModerator) {
-        if (!this.resource.disabled && !this.disabled) {
-          routes.push({
-            name: this.$t(`disable.${this.resourceType}.title`),
-            callback: () => {
-              this.openModal('disable')
-            },
-            icon: 'eye-slash',
-          })
-        } else {
+        console.log(this.resource.disabled, '....', this.resource.disabled && this.disabled)
+        if (this.resource.disabled && this.disabled) {
           routes.push({
             name: this.$t(`release.${this.resourceType}.title`),
             callback: () => {
               this.openModal('release', this.resource.id)
             },
             icon: 'eye',
+          })
+        } else {
+          routes.push({
+            name: this.$t(`disable.${this.resourceType}.title`),
+            callback: () => {
+              this.openModal('disable')
+            },
+            icon: 'eye-slash',
           })
         }
       }

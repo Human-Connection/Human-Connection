@@ -5,8 +5,8 @@
       :image="post.image"
       :class="{ 'post-card': true, 'disabled-content': disabledState }"
     >
-      <ds-space margin-bottom="small" />
-      <hc-user :user="post.author" :date-time="post.createdAt" />
+      <ds-space margin-bottom="small"/>
+      <hc-user :user="post.author" :date-time="post.createdAt"/>
       <no-ssr>
         <content-menu
           placement="bottom-end"
@@ -16,18 +16,18 @@
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>
-      <ds-space margin-bottom="small" />
+      <ds-space margin-bottom="small"/>
       <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
-      <ds-space margin-bottom="small" />
+      <ds-space margin-bottom="small"/>
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
-      <div class="content hc-editor-content" v-html="post.content" />
+      <div class="content hc-editor-content" v-html="post.content"/>
       <!-- eslint-enable vue/no-v-html -->
-      <ds-space margin="xx-large" />
+      <ds-space margin="xx-large"/>
       <!-- Categories -->
       <div class="categories">
-        <ds-space margin="xx-small" />
+        <ds-space margin="xx-small"/>
         <hc-category
           v-for="category in post.categories"
           :key="category.id"
@@ -36,11 +36,11 @@
           :name="category.name"
         />
       </div>
-      <ds-space margin-bottom="small" />
+      <ds-space margin-bottom="small"/>
       <!-- Tags -->
       <div v-if="post.tags && post.tags.length" class="tags">
-        <ds-space margin="xx-small" />
-        <hc-tag v-for="tag in post.tags" :key="tag.id" :name="tag.name" />
+        <ds-space margin="xx-small"/>
+        <hc-tag v-for="tag in post.tags" :key="tag.id" :name="tag.name"/>
       </div>
       <!-- Shout Button -->
       <hc-shout-button
@@ -52,9 +52,9 @@
       />
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list :post="post" />
-        <ds-space margin-bottom="large" />
-        <hc-comment-form :post="post" />
+        <hc-comment-list :post="post"/>
+        <ds-space margin-bottom="large"/>
+        <hc-comment-form :post="post"/>
       </ds-section>
     </ds-card>
   </transition>
@@ -104,9 +104,10 @@ export default {
   computed: {
     ...mapGetters({
       disabled: 'post/disabled',
+      id: 'post/id',
     }),
     disabledState() {
-      if (this.disabled) {
+      if (this.post.id === this.id) {
         return this.disabled
       } else {
         return this.post.disabled
