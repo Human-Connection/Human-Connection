@@ -75,7 +75,7 @@ describe('replaceParams', () => {
 
         it('makes database calls', async () => {
           await action()
-          expect(run).toHaveBeenCalled()
+          expect(run).toHaveBeenCalledTimes(1)
         })
 
         describe('given any additional filter args', () => {
