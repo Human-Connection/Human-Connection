@@ -36,9 +36,9 @@ describe('FilterMenu.vue', () => {
         expect(wrapper.emitted('changeFilterBubble')).toBeTruthy()
       })
 
-      it('toggles filterBubble.author.followed property', () => {
+      it('toggles filterBubble.author property', () => {
         wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
-        expect(wrapper.emitted('changeFilterBubble')[0]).toEqual([{ author: 'followed' }])
+        expect(wrapper.emitted('changeFilterBubble')[0]).toEqual([{ author: 'following' }])
         wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
         expect(wrapper.emitted('changeFilterBubble')[1]).toEqual([{ author: 'all' }])
       })

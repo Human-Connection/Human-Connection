@@ -33,12 +33,12 @@ export default {
   },
   computed: {
     onlyFollowed() {
-      return this.filterBubble.author === 'followed'
+      return this.filterBubble.author === 'following'
     },
   },
   methods: {
     toggleOnlyFollowed() {
-      this.filterBubble.author = this.onlyFollowed ? 'all' : 'followed'
+      this.filterBubble.author = this.onlyFollowed ? 'all' : 'following'
       this.$emit('changeFilterBubble', this.filterBubble)
     },
   },
