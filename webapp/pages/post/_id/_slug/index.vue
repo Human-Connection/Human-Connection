@@ -3,7 +3,7 @@
     <ds-card
       v-if="post && ready"
       :image="post.image"
-      :class="{ 'post-card': true, 'disabled-content': post.disabled }"
+      :class="{ 'post-card': true, 'disabled-content': disabledState }"
     >
       <ds-space margin-bottom="small" />
       <hc-user :user="post.author" :date-time="post.createdAt" />
@@ -17,9 +17,7 @@
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
-      <ds-heading tag="h3" no-margin>
-        {{ post.title }}
-      </ds-heading>
+      <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
@@ -64,6 +62,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { mapGetters } from 'vuex'
 
 import HcCategory from '~/components/Category'
 import HcTag from '~/components/Tag'
@@ -101,6 +100,18 @@ export default {
       ready: false,
       title: 'loading',
     }
+  },
+  computed: {
+    ...mapGetters({
+      disabled: 'post/disabled',
+    }),
+    disabledState() {
+      if (this.disabled) {
+        return this.disabled
+      } else {
+        return this.post.disabled
+      }
+    },
   },
   watch: {
     Post(post) {

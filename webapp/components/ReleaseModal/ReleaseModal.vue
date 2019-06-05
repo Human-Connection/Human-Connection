@@ -15,6 +15,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -39,6 +40,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions({ toggleDisabledState: 'post/toggleDisabledState' }),
     cancel() {
       this.isOpen = false
       setTimeout(() => {
@@ -57,17 +59,10 @@ export default {
         })
         this.$toast.success(this.$t('release.success'))
         this.isOpen = false
-        /*
-        setTimeout(() => {
-          location.reload()
-        }, 1500)
-        */
         setTimeout(() => {
           this.$emit('close')
         }, 1000)
-        setTimeout(() => {
-          location.reload()
-        }, 250)
+        this.toggleDisabledState({ disabled: false })
       } catch (err) {
         this.$toast.error(err.message)
       }

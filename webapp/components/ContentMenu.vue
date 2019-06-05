@@ -3,12 +3,12 @@
     <template slot="default" slot-scope="{ toggleMenu }">
       <slot name="button" :toggleMenu="toggleMenu">
         <ds-button class="content-menu-trigger" size="small" ghost @click.prevent="toggleMenu">
-          <ds-icon name="ellipsis-v" />
+          <ds-icon name="ellipsis-v"/>
         </ds-button>
       </slot>
     </template>
     <div slot="popover" slot-scope="{ toggleMenu }" class="content-menu-popover">
-      <ds-menu :routes="routes">
+      <ds-menu :routes="routes" :key="disabled">
         <ds-menu-item
           slot="menuitem"
           slot-scope="item"
@@ -16,7 +16,7 @@
           :parents="item.parents"
           @click.stop.prevent="openItem(item.route, toggleMenu)"
         >
-          <ds-icon :name="item.route.icon" />
+          <ds-icon :name="item.route.icon"/>
           {{ item.route.name }}
         </ds-menu-item>
       </ds-menu>
@@ -26,6 +26,7 @@
 
 <script>
 import Dropdown from '~/components/Dropdown'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ContentMenu',
@@ -46,6 +47,9 @@ export default {
     callbacks: { type: Object, required: true },
   },
   computed: {
+    ...mapGetters({
+      disabled: 'post/disabled',
+    }),
     routes() {
       let routes = []
 
@@ -98,7 +102,7 @@ export default {
       }
 
       if (!this.isOwner && this.isModerator) {
-        if (!this.resource.disabled) {
+        if (!this.resource.disabled && !this.disabled) {
           routes.push({
             name: this.$t(`disable.${this.resourceType}.title`),
             callback: () => {

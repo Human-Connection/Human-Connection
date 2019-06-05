@@ -23,9 +23,7 @@
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
             <ds-space margin="small">
-              <ds-text size="small">
-                {{ $t('login.copy') }}
-              </ds-text>
+              <ds-text size="small">{{ $t('login.copy') }}</ds-text>
             </ds-space>
             <form :disabled="pending" @submit.prevent="onSubmit">
               <ds-input

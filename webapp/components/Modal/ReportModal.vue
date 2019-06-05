@@ -10,9 +10,7 @@
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button class="cancel" icon="close" @click="cancel">
-        {{ $t('report.cancel') }}
-      </ds-button>
+      <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
 
       <ds-button
         danger

@@ -32,7 +32,7 @@ export default {
             break
         }
       } catch (err) {
-        this.$toast.error(err.message)
+        // this.$toast.error(err.message)
       }
     },
   },

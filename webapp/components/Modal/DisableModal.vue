@@ -15,6 +15,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'DisableModal',
@@ -41,6 +42,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions({ toggleDisabledState: 'post/toggleDisabledState' }),
     async cancel() {
       if (this.callbacks.cancel) {
         await this.callbacks.cancel()
@@ -68,9 +70,7 @@ export default {
         setTimeout(() => {
           this.$emit('close')
         }, 1000)
-        setTimeout(() => {
-          location.reload()
-        }, 250)
+        this.toggleDisabledState({ disabled: true })
       } catch (err) {
         this.$toast.error(err.message)
       }
