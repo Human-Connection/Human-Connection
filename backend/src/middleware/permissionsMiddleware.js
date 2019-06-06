@@ -80,6 +80,12 @@ const isAuthor = rule({
   return authorId === user.id
 })
 
+const isDeletingOwnAccount = rule({
+  cache: 'no_cache',
+})(async (parent, args, context, info) => {
+  return context.user.id === args.id
+})
+
 // Permissions
 const permissions = shield({
   Query: {
@@ -115,6 +121,7 @@ const permissions = shield({
     CreateComment: isAuthenticated,
     DeleteComment: isAuthor,
     // CreateUser: allow,
+    DeleteUser: isDeletingOwnAccount,
   },
   User: {
     email: isMyOwn,
