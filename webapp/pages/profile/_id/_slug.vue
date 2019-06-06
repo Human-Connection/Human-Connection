@@ -321,7 +321,11 @@ export default {
     },
   },
   methods: {
-    handleTab(tab) {
+    handleShoutedTab() {},
+    handleCommentedTab() {},
+    handlePostTab() {}
+
+
       switch (tab) {
         case 'posts':
           this.$toast.info('!load posts here!')
