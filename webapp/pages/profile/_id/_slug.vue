@@ -132,69 +132,50 @@
           </ds-card>
         </ds-space>
       </ds-flex-item>
+
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex :width="{ base: '100%' }" gutter="small">
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
-              <ds-flex>
-                <ds-flex-item
-                  v-tooltip="{
-                    content: $t('common.your.post', null, user.contributionsCount),
-                    placement: 'right',
-                    delay: { show: 500 },
-                  }"
-                  class="ds-tab-nav-item pointer ds-tab-nav-item-active"
-                  @click="tabActivity('posts', $event)"
-                >
-                  <ds-space margin="small">
-                    <!-- TODO: find better solution for rendering errors -->
-                    <no-ssr>
-                      <ds-number :label="$t('common.post', null, user.contributionsCount)">
-                        <hc-count-to slot="count" :end-val="user.contributionsCount" />
-                      </ds-number>
-                    </no-ssr>
-                  </ds-space>
-                </ds-flex-item>
-                <ds-flex-item
-                  v-tooltip="{
-                    content: $t('common.your.comment', null, user.commentsCount),
-                    placement: 'right',
-                    delay: { show: 500 },
-                  }"
-                  class="ds-tab-nav-item pointer"
-                  @click="tabActivity('commented', $event)"
-                >
-                  <ds-space margin="small">
-                    <!-- TODO: find better solution for rendering errors -->
-
-                    <no-ssr>
-                      <ds-number :label="$t('profile.commented')">
-                        <hc-count-to slot="count" :end-val="user.commentsCount" />
-                      </ds-number>
-                    </no-ssr>
-                  </ds-space>
-                </ds-flex-item>
-
-                <ds-flex-item
-                  v-tooltip="{
-                    content: $t('common.your.shouted', null, user.shoutedCount),
-                    placement: 'right',
-                    delay: { show: 500 },
-                  }"
-                  class="ds-tab-nav-item pointer"
-                >
-                  <ds-space margin="small">
-                    <!-- TODO: find better solution for rendering errors -->
-                    <no-ssr>
-                      <ds-number :label="$t('profile.shouted')">
-                        <hc-count-to slot="count" :end-val="user.shoutedCount" />
-                      </ds-number>
-                    </no-ssr>
-                  </ds-space>
-                </ds-flex-item>
-              </ds-flex>
+              <ul class="Tabs">
+                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'post' }">
+                  <a @click="handleTab('post')">
+                    <ds-space margin="small">
+                      <no-ssr placeholder="Loading...">
+                        <ds-number :label="$t('common.post', null, user.contributionsCount)">
+                          <hc-count-to slot="count" :end-val="user.contributionsCount" />
+                        </ds-number>
+                      </no-ssr>
+                    </ds-space>
+                  </a>
+                </li>
+                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'comment' }">
+                  <a @click="handleTab('comment')">
+                    <ds-space margin="small">
+                      <no-ssr placeholder="Loading...">
+                        <ds-number :label="$t('profile.commented')">
+                          <hc-count-to slot="count" :end-val="user.commentsCount" />
+                        </ds-number>
+                      </no-ssr>
+                    </ds-space>
+                  </a>
+                </li>
+                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'shout' }">
+                  <a @click="handleTab('shout')">
+                    <ds-space margin="small">
+                      <no-ssr placeholder="Loading...">
+                        <ds-number :label="$t('profile.shouted')">
+                          <hc-count-to slot="count" :end-val="user.shoutedCount" />
+                        </ds-number>
+                      </no-ssr>
+                    </ds-space>
+                  </a>
+                </li>
+                <li class="Tabs__presentation-slider" role="presentation"></li>
+              </ul>
             </ds-card>
           </ds-flex-item>
+
           <ds-flex-item style="text-align: center">
             <ds-button
               v-if="myProfile"
@@ -266,6 +247,7 @@ export default {
       voted: false,
       page: 1,
       pageSize: 6,
+      tabActive: 'post',
     }
   },
   computed: {
@@ -317,6 +299,10 @@ export default {
     },
   },
   methods: {
+    handleTab(str) {
+      this.$toast.info('!load posts here! =>' + str)
+      this.tabActive = str
+    },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
@@ -370,8 +356,48 @@ export default {
   cursor: pointer;
 }
 
-.ds-tab-nav .ds-card-content .ds-tab-nav-item:hover {
-  border-bottom: 3px solid #c9c6ce;
+.Tab {
+  border-collapse: collapse;
+  padding-bottom: 5px;
+}
+.Tab:hover {
+  border-bottom: 2px solid #c9c6ce;
+}
+
+.Tabs {
+  position: relative;
+  background-color: #fff;
+  &:after {
+    content: ' ';
+    display: table;
+    clear: both;
+  }
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  &__tab {
+    float: left;
+    width: 33.333%;
+    text-align: center;
+    &:first-child.active ~ .Tabs__presentation-slider {
+      left: 0;
+    }
+    &:nth-child(2).active ~ .Tabs__presentation-slider {
+      left: 33.333%;
+    }
+    &:nth-child(3).active ~ .Tabs__presentation-slider {
+      left: calc(33.333% * 2);
+    }
+  }
+  &__presentation-slider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 33.333%;
+    height: 2px;
+    background-color: #17b53f;
+    transition: left 0.25s;
+  }
 }
 
 .profile-avatar.ds-avatar {
