@@ -193,7 +193,7 @@
               :key="post.id"
               :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-              @deletePost="user.contributions.splice(index, 1)"
+              @deletePost="Post.splice(index, 1)"
             />
           </template>
           <template v-else>
@@ -244,6 +244,7 @@ export default {
   data() {
     return {
       User: [],
+      Post: [],
       voted: false,
       page: 1,
       pageSize: 6,
@@ -252,7 +253,7 @@ export default {
   },
   computed: {
     myProfile() {
-      return this.$route.params.slug === this.$store.getters['auth/user'].slug
+      return this.$route.params.id === this.$store.getters['auth/user'].id
     },
     followedByCount() {
       let count = Number(this.user.followedByCount) || 0
@@ -266,14 +267,14 @@ export default {
     },
     hasMore() {
       return (
-        this.user.contributions && this.user.contributions.length < this.user.contributionsCount
+        this.Post && this.Post.length < this.user.contributionsCount
       )
     },
     activePosts() {
-      if (!this.user.contributions) {
+      if (!this.Post) {
         return []
       }
-      return this.uniq(this.user.contributions.filter(post => !post.deleted))
+      return this.uniq(this.Post.filter(post => !post.deleted))
     },
     socialMediaLinks() {
       const { socialMedia = [] } = this.user
@@ -314,18 +315,18 @@ export default {
       // this.page++
       // Fetch more data and transform the original result
       this.page++
-      this.$apollo.queries.User.fetchMore({
+      this.$apollo.queries.Post.fetchMore({
         variables: {
-          slug: this.$route.params.slug,
+          filter: { author: { id: this.$route.params.id } },
           first: this.pageSize,
           offset: this.offset,
         },
         // Transform the previous result with new data
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          let output = { User: this.User }
-          output.User[0].contributions = [
-            ...previousResult.User[0].contributions,
-            ...fetchMoreResult.User[0].contributions,
+          let output = { Post: this.Post}
+          output.Post = [
+            ...previousResult.Post,
+            ...fetchMoreResult.Post,
           ]
           return output
         },
@@ -334,16 +335,25 @@ export default {
     },
   },
   apollo: {
-    User: {
+    Post: {
       query() {
-        return require('~/graphql/UserProfileQuery.js').default(this)
+        return require('~/graphql/UserProfile/Post.js').default(this)
       },
       variables() {
         return {
-          slug: this.$route.params.slug,
+          filter: { author: { id: this.$route.params.id } },
           first: this.pageSize,
           offset: 0,
         }
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+    User: {
+      query() {
+        return require('~/graphql/UserProfile/User.js').default(this)
+      },
+      variables() {
+        return { id: this.$route.params.id }
       },
       fetchPolicy: 'cache-and-network',
     },
