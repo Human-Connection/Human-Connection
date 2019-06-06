@@ -132,19 +132,13 @@
           </ds-card>
         </ds-space>
       </ds-flex-item>
+
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <ds-flex :width="{ base: '100%' }" gutter="small">
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
-              <ds-flex>
-                <ds-flex-item
-                  v-tooltip="{
-                    content: $t('common.your.post', null, user.contributionsCount),
-                    placement: 'right',
-                    delay: { show: 500 },
-                  }"
-                  class="ds-tab-nav-item pointer ds-tab-nav-item-active"
-                >
+              <ul class="Tabs">
+                <li class="Tabs__tab active Tab" @click="setActiveClass">
                   <a @click="handlePostTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -154,15 +148,8 @@
                       </no-ssr>
                     </ds-space>
                   </a>
-                </ds-flex-item>
-                <ds-flex-item
-                  v-tooltip="{
-                    content: $t('common.your.comment', null, user.commentsCount),
-                    placement: 'right',
-                    delay: { show: 500 },
-                  }"
-                  class="ds-tab-nav-item pointer"
-                >
+                </li>
+                <li class="Tabs__tab Tab" @click="setActiveClass">
                   <a @click="handleCommentedTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -172,16 +159,8 @@
                       </no-ssr>
                     </ds-space>
                   </a>
-                </ds-flex-item>
-
-                <ds-flex-item
-                  v-tooltip="{
-                    content: $t('common.your.shouted', null, user.shoutedCount),
-                    placement: 'right',
-                    delay: { show: 500 },
-                  }"
-                  class="ds-tab-nav-item pointer"
-                >
+                </li>
+                <li class="Tabs__tab Tab" @click="setActiveClass">
                   <a @click="handleShoutedTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -191,10 +170,12 @@
                       </no-ssr>
                     </ds-space>
                   </a>
-                </ds-flex-item>
-              </ds-flex>
+                </li>
+                <li class="Tabs__presentation-slider" role="presentation"></li>
+              </ul>
             </ds-card>
           </ds-flex-item>
+
           <ds-flex-item style="text-align: center">
             <ds-button
               v-if="myProfile"
@@ -266,6 +247,7 @@ export default {
       voted: false,
       page: 1,
       pageSize: 6,
+      tabs: document.getElementsByClassName('Tab'),
     }
   },
   computed: {
@@ -327,7 +309,13 @@ export default {
     handleShoutedTab() {
       this.$toast.info('!load shouted here!')
     },
+    setActiveClass(evt) {
+      Array.prototype.forEach.call(this.tabs, function(tab) {
+        tab.classList.remove('active')
+      })
 
+      evt.currentTarget.classList.add('active')
+    },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
@@ -383,6 +371,63 @@ export default {
 
 .ds-tab-nav .ds-card-content .ds-tab-nav-item:hover {
   border-bottom: 3px solid #c9c6ce;
+}
+
+.Tabs {
+  position: relative;
+  background-color: #fff;
+  &:after {
+    content: ' ';
+    display: table;
+    clear: both;
+  }
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  &__tab {
+    float: left;
+    width: 33.333%;
+    text-align: center;
+    &:first-child.active ~ .Tabs__presentation-slider {
+      left: 0;
+    }
+    &:nth-child(2).active ~ .Tabs__presentation-slider {
+      left: 33.333%;
+    }
+    &:nth-child(3).active ~ .Tabs__presentation-slider {
+      left: calc(33.333% * 2);
+    }
+  }
+  &__presentation-slider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 33.333%;
+    height: 2px;
+    background-color: #17b53f;
+    transition: left 0.25s;
+  }
+}
+
+.Tab {
+  font-family: 'Roboto Slab';
+  > a {
+    display: block;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: #666;
+    transition: color 0.15s;
+  }
+  &.active {
+    > a {
+      color: #222;
+    }
+  }
+  &:hover {
+    > a {
+      color: #222;
+    }
+  }
 }
 
 .profile-avatar.ds-avatar {
