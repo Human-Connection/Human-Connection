@@ -107,7 +107,7 @@
     "nodemon": "~1.19.1",
     "prettier": "~1.17.1",
     "sass-loader": "~7.1.0",
-    "tippy.js": "^4.3.2",
+    "tippy.js": "^4.3.3",
     "vue-jest": "~3.0.4",
     "vue-svg-loader": "~0.12.0"
   }
