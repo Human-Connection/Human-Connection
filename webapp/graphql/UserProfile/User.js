@@ -24,7 +24,7 @@ export default i18n => {
         }
         badgesCount
         shoutedCount
-        commentsCount
+        commentedCount
         followingCount
         following(first: 7) {
           id

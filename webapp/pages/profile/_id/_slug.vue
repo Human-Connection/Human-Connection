@@ -154,7 +154,7 @@
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
                         <ds-number :label="$t('profile.commented')">
-                          <hc-count-to slot="count" :end-val="user.commentsCount" />
+                          <hc-count-to slot="count" :end-val="user.commentedCount" />
                         </ds-number>
                       </no-ssr>
                     </ds-space>
@@ -273,10 +273,18 @@ export default {
       page: 1,
       pageSize: 6,
       tabActive: 'post',
-      filter
+      filter,
     }
   },
   computed: {
+    hasMore() {
+      const total = {
+        post: this.user.contributionsCount,
+        shout: this.user.shoutedCount,
+        comment: this.user.commentedCount,
+      }[this.tabActive]
+      return this.Post && this.Post.length < total
+    },
     myProfile() {
       return this.$route.params.id === this.$store.getters['auth/user'].id
     },
@@ -289,11 +297,6 @@ export default {
     },
     offset() {
       return (this.page - 1) * this.pageSize
-    },
-    hasMore() {
-      return (
-        this.Post && this.Post.length < this.user.contributionsCount
-      )
     },
     activePosts() {
       if (!this.Post) {
