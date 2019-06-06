@@ -12,12 +12,13 @@
         >
           <hc-upload v-if="myProfile" :user="user" />
           <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
+          <!-- Content Menu (can open Modals) -->
           <no-ssr>
             <content-menu
               placement="bottom-end"
               resource-type="user"
               :resource="user"
-              :callbacks="{ confirm: deletePostCallback, cancel: null }"
+              :modalsData="modalsData"
               :is-owner="myProfile"
               class="user-content-menu"
             />
@@ -266,6 +267,35 @@ export default {
       voted: false,
       page: 1,
       pageSize: 6,
+      modalsData: {
+        delete: {
+          titel: () => {
+            this.$t('delete.contribution.title')
+          },
+          message: () => {
+            const name = this.$filters.truncate(this.name, 30)
+            return this.$t(`delete.contribution.message`, { name })
+          },
+          buttons: {
+            confirm: {
+              icon: 'trash',
+              text: () => {
+                this.$t('delete.submit')
+              },
+              callback: this.deletePostCallback,
+            },
+            cancel: {
+              icon: 'close',
+              text: () => {
+                this.$t('delete.cancel')
+              },
+              callback: () => {},
+            },
+          },
+        },
+        disableCallbacks: { confirmCallback: () => {}, cancelCallback: () => {} },
+        reportCallbacks: { confirmCallback: () => {}, cancelCallback: () => {} },
+      },
     }
   },
   computed: {
