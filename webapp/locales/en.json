@@ -145,7 +145,8 @@
     },
     "comment": {
       "submit": "Comment",
-      "submitted": "Comment Submitted"
+      "submitted": "Comment Submitted",
+      "updated": "Comment Updated"
     }
   },
   "quotes": {

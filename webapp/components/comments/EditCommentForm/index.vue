@@ -93,7 +93,7 @@ export default {
         .then(res => {
           this.loading = false
           this.$root.$emit('refetchPostComments')
-          this.$toast.success(this.$t('post.comment.submitted'))
+          this.$toast.success(this.$t('post.comment.updated'))
           this.disabled = false
           this.$emit('showEditCommentMenu', false)
         })
