@@ -145,10 +145,8 @@
                   }"
                   class="ds-tab-nav-item pointer ds-tab-nav-item-active"
                 >
-                  <a @click="handleTab('posts', $event)">
+                  <a @click="handlePostTab">
                     <ds-space margin="small">
-                      <!-- TODO: find better solution for rendering errors -->
-
                       <ds-number :label="$t('common.post', null, user.contributionsCount)">
                         <hc-count-to slot="count" :end-val="user.contributionsCount" />
                       </ds-number>
@@ -163,15 +161,11 @@
                   }"
                   class="ds-tab-nav-item pointer"
                 >
-                  <a @click="handleTab('commented', $event)">
+                  <a @click="handleCommentedTab">
                     <ds-space margin="small">
-                      <!-- TODO: find better solution for rendering errors -->
-
-                      <no-ssr>
-                        <ds-number :label="$t('profile.commented')">
-                          <hc-count-to slot="count" :end-val="user.commentsCount" />
-                        </ds-number>
-                      </no-ssr>
+                      <ds-number :label="$t('profile.commented')">
+                        <hc-count-to slot="count" :end-val="user.commentsCount" />
+                      </ds-number>
                     </ds-space>
                   </a>
                 </ds-flex-item>
@@ -186,12 +180,9 @@
                 >
                   <a @click="handleShoutedTab">
                     <ds-space margin="small">
-                      <!-- TODO: find better solution for rendering errors -->
-                      <no-ssr>
-                        <ds-number :label="$t('profile.shouted')">
-                          <hc-count-to slot="count" :end-val="user.shoutedCount" />
-                        </ds-number>
-                      </no-ssr>
+                      <ds-number :label="$t('profile.shouted')">
+                        <hc-count-to slot="count" :end-val="user.shoutedCount" />
+                      </ds-number>
                     </ds-space>
                   </a>
                 </ds-flex-item>
@@ -320,23 +311,17 @@ export default {
     },
   },
   methods: {
-    handleShoutedTab() {},
-    handleCommentedTab() {},
-    handlePostTab() {}
-
-
-      switch (tab) {
-        case 'posts':
-          this.$toast.info('!load posts here!')
-          break
-        case 'commented':
-          this.$toast.info('!load commented here!')
-          break
-        case 'shouted':
-          this.$toast.info('!load shouted here!')
-          break
-      }
+    handlePostTab() {
+      this.$toast.info('!load posts here!')
     },
+
+    handleCommentedTab() {
+      this.$toast.info('!load commented here!')
+    },
+    handleShoutedTab() {
+      this.$toast.info('!load shouted here!')
+    },
+
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
