@@ -187,6 +187,7 @@
               primary
             />
           </ds-flex-item>
+
           <template v-if="activePosts.length">
             <hc-post-card
               v-for="(post, index) in activePosts"
@@ -196,13 +197,24 @@
               @deletePost="Post.splice(index, 1)"
             />
           </template>
+          <template v-else-if="$apollo.loading">
+            <ds-flex-item>
+              <ds-section centered>
+                <ds-spinner size="base"></ds-spinner>
+              </ds-section>
+            </ds-flex-item>
+          </template>
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
               <hc-empty margin="xx-large" icon="file" />
             </ds-flex-item>
           </template>
         </ds-flex>
-        <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
+        <hc-load-more
+          v-if="Post && hasMore"
+          :loading="$apollo.loading"
+          @click="showMoreContributions"
+        />
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -315,6 +327,7 @@ export default {
   methods: {
     handleTab(tab) {
       this.tabActive = tab
+      this.Post = null
       this.filter = tabToFilterMapping({ tab, id: this.$route.params.id })
     },
     uniq(items, field = 'id') {
