@@ -20,7 +20,7 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('CreateComment', () => {
+describe('Comment Functionality', () => {
   const createCommentMutation = `
   mutation($postId: ID, $content: String!) {
     CreateComment(postId: $postId, content: $content) {
@@ -78,7 +78,37 @@ describe('CreateComment', () => {
         }
       }
 
-      await expect(client.request(createCommentMutation, createCommentVariables)).resolves.toMatchObject(expected)
+      await expect(
+        client.request(createCommentMutation, createCommentVariables)
+      ).resolves.toMatchObject(expected)
+    })
+
+    it('updates a comment', async () => {
+      await client.request(createCommentMutation, createCommentVariables)
+
+      const updateCommentMutation = `
+      mutation($postId: ID, $content: String!, $id: ID!) {
+        UpdateComment(postId: $postId, content: $content, id: $id) {
+          id
+          content
+        }
+      }
+      `
+      let updateCommentVariables = {
+        postId: 'p1',
+        content: 'Comment is updated',
+        id: 'c8'
+      }
+
+      const expected = {
+        UpdateComment: {
+          content: 'Comment is updated'
+        }
+      }
+
+      await expect(
+        client.request(updateCommentMutation, updateCommentVariables)
+      ).resolves.toMatchObject(expected)
     })
 
     it('assigns the authenticated user as author', async () => {
@@ -171,28 +201,11 @@ describe('CreateComment', () => {
       }
 
       await client.request(createCommentMutation, createCommentVariables)
-      const { Comment } = await client.request(commentQueryForPostId, commentQueryVariablesByContent)
+      const { Comment } = await client.request(
+        commentQueryForPostId,
+        commentQueryVariablesByContent
+      )
       expect(Comment).toEqual([{ postId: null }])
     })
   })
-
-describe('UpdateComment', () => {
-  const updateCommentMutation = `
-  mutation($postId: ID, $content: String!, $id: ID!) {
-    UpdateComment(postId: $postId, content: $content, id: $id) {
-      id
-      content
-    }
-  }
-  `
-  updateCommentVariables = {
-    postId: 'p1',
-    content: 'Comment is updated',
-    id: 'c8'
-  }
-
-  it('updates a comment', async () = {
-
-  })
-})
 })
