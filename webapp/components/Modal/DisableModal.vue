@@ -68,9 +68,6 @@ export default {
         setTimeout(() => {
           this.$emit('close')
         }, 1000)
-        setTimeout(() => {
-          location.reload()
-        }, 250)
       } catch (err) {
         this.$toast.error(err.message)
       }
