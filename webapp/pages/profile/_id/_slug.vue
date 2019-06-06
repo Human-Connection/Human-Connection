@@ -147,9 +147,11 @@
                 >
                   <a @click="handlePostTab">
                     <ds-space margin="small">
-                      <ds-number :label="$t('common.post', null, user.contributionsCount)">
-                        <hc-count-to slot="count" :end-val="user.contributionsCount" />
-                      </ds-number>
+                      <no-ssr placeholder="Loading...">
+                        <ds-number :label="$t('common.post', null, user.contributionsCount)">
+                          <hc-count-to slot="count" :end-val="user.contributionsCount" />
+                        </ds-number>
+                      </no-ssr>
                     </ds-space>
                   </a>
                 </ds-flex-item>
@@ -163,9 +165,11 @@
                 >
                   <a @click="handleCommentedTab">
                     <ds-space margin="small">
-                      <ds-number :label="$t('profile.commented')">
-                        <hc-count-to slot="count" :end-val="user.commentsCount" />
-                      </ds-number>
+                      <no-ssr placeholder="Loading...">
+                        <ds-number :label="$t('profile.commented')">
+                          <hc-count-to slot="count" :end-val="user.commentsCount" />
+                        </ds-number>
+                      </no-ssr>
                     </ds-space>
                   </a>
                 </ds-flex-item>
@@ -180,9 +184,11 @@
                 >
                   <a @click="handleShoutedTab">
                     <ds-space margin="small">
-                      <ds-number :label="$t('profile.shouted')">
-                        <hc-count-to slot="count" :end-val="user.shoutedCount" />
-                      </ds-number>
+                      <no-ssr placeholder="Loading...">
+                        <ds-number :label="$t('profile.shouted')">
+                          <hc-count-to slot="count" :end-val="user.shoutedCount" />
+                        </ds-number>
+                      </no-ssr>
                     </ds-space>
                   </a>
                 </ds-flex-item>
