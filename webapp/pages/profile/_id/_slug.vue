@@ -138,7 +138,7 @@
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
-                <li class="Tabs__tab active Tab pointer" @click="setActiveClass">
+                <li class="Tabs__tab Tab pointer active" :class="{ active: postsIsActive }">
                   <a @click="handlePostTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -149,7 +149,7 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" @click="setActiveClass">
+                <li class="Tabs__tab Tab pointer" :class="{ active: commentedIsActive }">
                   <a @click="handleCommentedTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -160,7 +160,7 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" @click="setActiveClass">
+                <li class="Tabs__tab Tab pointer" :class="{ active: shoutedIsActive }">
                   <a @click="handleShoutedTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -247,7 +247,9 @@ export default {
       voted: false,
       page: 1,
       pageSize: 6,
-      tabs: document.getElementsByClassName('Tab'),
+      postsIsActive: true,
+      commentedIsActive: false,
+      shoutedIsActive: false,
     }
   },
   computed: {
@@ -301,21 +303,30 @@ export default {
   methods: {
     handlePostTab() {
       this.$toast.info('!load posts here!')
+      this.postsIsActive = true
+      this.commentedIsActive = false
+      this.shoutedIsActive = false
     },
 
     handleCommentedTab() {
       this.$toast.info('!load commented here!')
+      this.postsIsActive = false
+      this.commentedIsActive = true
+      this.shoutedIsActive = false
     },
     handleShoutedTab() {
       this.$toast.info('!load shouted here!')
-    },
+      this.postsIsActive = false
+      this.commentedIsActive = false
+      this.shoutedIsActive = true
+    } /*
     setActiveClass(evt) {
       Array.prototype.forEach.call(this.tabs, function(tab) {
         tab.classList.remove('active')
       })
 
       evt.currentTarget.classList.add('active')
-    },
+    }, */,
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
