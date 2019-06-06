@@ -37,7 +37,8 @@ const validateComment = async (resolve, root, args, context, info) => {
   if (!postId) {
     throw new UserInputError(NO_POST_ERR_MESSAGE)
   }
-  return resolve(root, args, context, info)
+  /* eslint-disable-next-line no-return-await */
+  return await resolve(root, args, context, info)
 }
 
 export default {

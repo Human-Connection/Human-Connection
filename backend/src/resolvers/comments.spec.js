@@ -175,4 +175,24 @@ describe('CreateComment', () => {
       expect(Comment).toEqual([{ postId: null }])
     })
   })
+
+describe('UpdateComment', () => {
+  const updateCommentMutation = `
+  mutation($postId: ID, $content: String!, $id: ID!) {
+    UpdateComment(postId: $postId, content: $content, id: $id) {
+      id
+      content
+    }
+  }
+  `
+  updateCommentVariables = {
+    postId: 'p1',
+    content: 'Comment is updated',
+    id: 'c8'
+  }
+
+  it('updates a comment', async () = {
+
+  })
+})
 })
