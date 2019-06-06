@@ -33,9 +33,6 @@ describe('DisableModal.vue', () => {
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
       },
-      location: {
-        reload: jest.fn(),
-      },
     }
   })
 
@@ -107,6 +104,7 @@ describe('DisableModal.vue', () => {
         localVue,
       })
     }
+
     beforeEach(jest.useFakeTimers)
 
     describe('given id', () => {

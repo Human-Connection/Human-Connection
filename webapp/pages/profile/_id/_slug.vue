@@ -138,8 +138,8 @@
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
-                <li class="Tabs__tab Tab pointer active" :class="{ active: postsIsActive }">
-                  <a @click="handlePostTab">
+                <li class="Tabs__tab Tab pointer active" :class="{ active: tabActive === 'post' }">
+                  <a @click="handleTab('post')">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
                         <ds-number :label="$t('common.post', null, user.contributionsCount)">
@@ -149,8 +149,8 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" :class="{ active: commentedIsActive }">
-                  <a @click="handleCommentedTab">
+                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'comment' }">
+                  <a @click="handleTab('comment')">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
                         <ds-number :label="$t('profile.commented')">
@@ -160,8 +160,8 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" :class="{ active: shoutedIsActive }">
-                  <a @click="handleShoutedTab">
+                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'shout' }">
+                  <a @click="handleTab('shout')">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
                         <ds-number :label="$t('profile.shouted')">
@@ -247,9 +247,7 @@ export default {
       voted: false,
       page: 1,
       pageSize: 6,
-      postsIsActive: true,
-      commentedIsActive: false,
-      shoutedIsActive: false,
+      tabActive: 'post',
     }
   },
   computed: {
@@ -301,32 +299,26 @@ export default {
     },
   },
   methods: {
-    handlePostTab() {
-      this.$toast.info('!load posts here!')
-      this.postsIsActive = true
-      this.commentedIsActive = false
-      this.shoutedIsActive = false
+    handleTab(str) {
+      this.$toast.info('!load posts here! =>' + str)
+      this.tabActive = str
     },
-
+    /*
     handleCommentedTab() {
       this.$toast.info('!load commented here!')
-      this.postsIsActive = false
-      this.commentedIsActive = true
-      this.shoutedIsActive = false
+      this.tabActive = 'comment'
     },
     handleShoutedTab() {
       this.$toast.info('!load shouted here!')
-      this.postsIsActive = false
-      this.commentedIsActive = false
-      this.shoutedIsActive = true
-    } /*
+      this.tabActive = 'shout'
+    }  
     setActiveClass(evt) {
       Array.prototype.forEach.call(this.tabs, function(tab) {
         tab.classList.remove('active')
       })
 
       evt.currentTarget.classList.add('active')
-    }, */,
+    }, */
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
