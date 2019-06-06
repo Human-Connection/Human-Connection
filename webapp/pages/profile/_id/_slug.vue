@@ -316,7 +316,6 @@ export default {
     handleTab(tab) {
       this.tabActive = tab
       this.filter = tabToFilterMapping({ tab, id: this.$route.params.id })
-      this.showMoreContributions()
     },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
