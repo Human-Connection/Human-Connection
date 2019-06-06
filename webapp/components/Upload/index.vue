@@ -4,21 +4,30 @@
       id="customdropzone"
       :key="user.avatar"
       ref="el"
+      :use-custom-slot="true"
       :options="dropzoneOptions"
-      :include-styling="false"
-      :style="backgroundImage"
-      @vdropzone-thumbnail="thumbnail"
       @vdropzone-error="verror"
-    />
+    >
+      <div class="dz-message" @mouseover="hover = true" @mouseleave="hover = false">
+        <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
+        <div class="hc-attachments-upload-area">
+          <div class="hc-drag-marker">
+            <ds-icon v-if="hover" name="image" size="xxx-large" />
+          </div>
+        </div>
+      </div>
+    </vue-dropzone>
   </div>
 </template>
 <script>
 import vueDropzone from 'nuxt-dropzone'
 import gql from 'graphql-tag'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 
 export default {
   components: {
     vueDropzone,
+    HcAvatar,
   },
   props: {
     user: { type: Object, default: null },
@@ -29,21 +38,10 @@ export default {
         url: this.vddrop,
         maxFilesize: 5.0,
         previewTemplate: this.template(),
-        dictDefaultMessage: '',
       },
       error: false,
+      hover: false,
     }
-  },
-  computed: {
-    backgroundImage() {
-      const avatar =
-        this.user.avatar ||
-        'https://human-connection.org/wp-content/uploads/2019/03/human-connection-logo.svg'
-      const userAvatar = avatar.startsWith('/') ? avatar.replace('/', '/api/') : avatar
-      return {
-        backgroundImage: `url(${userAvatar})`,
-      }
-    },
   },
   watch: {
     error() {
@@ -61,20 +59,6 @@ export default {
                 </div>
               </div>
       `
-    },
-    thumbnail(file, dataUrl) {
-      let j, len, ref, thumbnailElement
-      if (file.previewElement) {
-        this.$refs.el.$el.style.backgroundImage = ''
-        file.previewElement.classList.remove('dz-file-preview')
-        ref = file.previewElement.querySelectorAll('[data-dz-thumbnail-bg]')
-        for (j = 0, len = ref.length; j < len; j++) {
-          thumbnailElement = ref[j]
-          thumbnailElement.alt = file.name
-          thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")'
-        }
-        file.previewElement.classList.add('dz-image-preview')
-      }
     },
     vddrop(file) {
       const avatarUpload = file[0]
@@ -107,25 +91,7 @@ export default {
   },
 }
 </script>
-<style>
-#customdropzone {
-  margin: -60px auto auto;
-  width: 122px;
-  min-height: 122px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  border-radius: 50%;
-  font-family: 'Arial', sans-serif;
-  letter-spacing: 0.2px;
-  color: #777;
-  transition: background-color 0.2s linear;
-  padding: 40px;
-}
-
-#customdropzone:hover {
-  cursor: pointer;
-}
-
+<style lang="scss">
 #customdropzone .dz-preview {
   transition: all 0.2s ease-out;
   width: 160px;
@@ -150,15 +116,59 @@ export default {
   width: 100%;
 }
 
-#customdropzone .dz-preview .dz-details {
-  color: white;
-  transition: opacity 0.2s linear;
-  text-align: center;
+.hc-attachments-upload-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-#customdropzone .dz-success-mark,
-.dz-error-mark,
-.dz-remove {
-  display: none;
+.hc-attachments-upload-button {
+  pointer-events: none;
+}
+
+.hc-drag-marker {
+  position: relative;
+  width: 122px;
+  height: 122px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(0, 0%, 25%);
+  transition: all 0.2s ease-out;
+  font-size: 60px;
+  margin: -120px auto 5px;
+
+  background-color: rgba(255, 255, 255, 0.3);
+  opacity: 0.1;
+
+  &:before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 100%;
+    border: 20px solid rgba(255, 255, 255, 0.4);
+    visibility: hidden;
+  }
+
+  &:after {
+    position: absolute;
+    content: '';
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 100%;
+    border: 1px dashed hsl(0, 0%, 25%);
+  }
+
+  .hc-attachments-upload-area:hover & {
+    opacity: 1;
+  }
 }
 </style>

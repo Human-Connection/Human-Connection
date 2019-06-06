@@ -1296,18 +1296,18 @@ apollo-cache-control@^0.1.0:
   dependencies:
     graphql-extensions "^0.0.x"
 
-apollo-cache-inmemory@~1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.6.0.tgz#a106cdc520f0a043be2575372d5dbb7e4790254c"
-  integrity sha512-Mr86ucMsXnRH9YRvcuuy6kc3dtyRBuVSo8gdxp2sJVuUAtvQ6r/8E+ok2qX84em9ZBAYxoyvPnKeShhvcKiiDw==
+apollo-cache-inmemory@~1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.6.1.tgz#536b6f366461f6264250041f9146363e2faa1d4c"
+  integrity sha512-c/WJjh9MTWcdussCTjLKufpPjTx3qOFkBPHIDOOpQ+U0B7K1PczPl9N0LaC4ir3wAWL7s4A0t2EKtoR+6UP92g==
   dependencies:
-    apollo-cache "^1.3.0"
-    apollo-utilities "^1.3.0"
+    apollo-cache "^1.3.1"
+    apollo-utilities "^1.3.1"
     optimism "^0.9.0"
     ts-invariant "^0.4.0"
     tslib "^1.9.3"
 
-apollo-cache@1.3.1, apollo-cache@^1.3.0:
+apollo-cache@1.3.1, apollo-cache@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.3.1.tgz#c015f93a9a7f32b3eeea0c471addd6e854da754c"
   integrity sha512-BJ/Mehr3u6XCaHYSmgZ6DM71Fh30OkW6aEr828WjHvs+7i0RUuP51/PM7K6T0jPXtuw7UbArFFPZZsNgXnyyJA==
@@ -1559,7 +1559,7 @@ apollo-upload-server@^7.0.0:
     http-errors "^1.7.0"
     object-path "^0.11.4"
 
-apollo-utilities@1.3.1, apollo-utilities@^1.0.1, apollo-utilities@^1.2.1, apollo-utilities@^1.3.0, apollo-utilities@^1.3.1:
+apollo-utilities@1.3.1, apollo-utilities@^1.0.1, apollo-utilities@^1.2.1, apollo-utilities@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.3.1.tgz#4c45f9b52783c324e2beef822700bdea374f82d1"
   integrity sha512-P5cJ75rvhm9hcx9V/xCW0vlHhRd0S2icEcYPoRYNTc5djbynpuO+mQuJ4zMHgjNDpvvDxDfZxXTJ6ZUuJZodiQ==
@@ -2579,10 +2579,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@2.0.0-alpha.27:
-  version "2.0.0-alpha.27"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.27.tgz#5ecd4204ef0e7064264039570f6e8afbc014481c"
-  integrity sha512-cqfVLS+346P/Mpj2RpDrBv0P4p2zZhWWvfY5fuWrXNR/K38HaAGEkeOwb47hIpQP9Jr/TIxjZ2/sNMQwdXuGMg==
+date-fns@2.0.0-alpha.29:
+  version "2.0.0-alpha.29"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.29.tgz#9d4a36e3ebba63d009e957fea8fdfef7921bc6cb"
+  integrity sha512-AIFZ0hG/1fdb7HZHTDyiEJdNiaFyZxXcx/kF8z3I9wxbhkN678KrrLSneKcsb0Xy5KqCA4wCIxmGpdVWSNZnpA==
 
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"

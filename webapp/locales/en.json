@@ -1,4 +1,7 @@
 {
+  "filter-menu": {
+    "title": "Your filter bubble"
+  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
