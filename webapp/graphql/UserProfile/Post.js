@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default (i18n) => {
+export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql(`
     query Post($filter: _PostFilter, $first: Int, $offset: Int) {
