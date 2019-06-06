@@ -5,6 +5,7 @@ import Factory from '../../seed/factories'
 const factory = Factory()
 
 const currentUserParams = {
+  id: 'u1',
   email: 'you@example.org',
   name: 'This is you',
   password: '1234',
@@ -41,7 +42,7 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('FilterBubble middleware', () => {
+describe('Filter posts by author is followed by sb.', () => {
   describe('given an authenticated user', () => {
     let authenticatedClient
 
@@ -52,7 +53,7 @@ describe('FilterBubble middleware', () => {
 
     describe('no filter bubble', () => {
       it('returns all posts', async () => {
-        const query = '{ Post( filterBubble: {}) { title } }'
+        const query = '{ Post(filter: { }) { title } }'
         const expected = {
           Post: [
             { title: 'This is some random post' },
@@ -65,7 +66,7 @@ describe('FilterBubble middleware', () => {
 
     describe('filtering for posts of followed users only', () => {
       it('returns only posts authored by followed users', async () => {
-        const query = '{ Post( filterBubble: { author: following }) { title } }'
+        const query = '{ Post( filter: { author: { followedBy_some: { id: "u1" } } }) { title } }'
         const expected = {
           Post: [{ title: 'This is the post of a followed user' }],
         }
