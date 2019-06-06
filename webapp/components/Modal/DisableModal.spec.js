@@ -1,8 +1,4 @@
-import {
-  shallowMount,
-  mount,
-  createLocalVue
-} from '@vue/test-utils'
+import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import DisableModal from './DisableModal.vue'
 import Styleguide from '@human-connection/styleguide'
 
@@ -159,11 +155,7 @@ describe('DisableModal.vue', () => {
 
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
-          const [
-            [{
-              variables
-            }]
-          ] = calls
+          const [[{ variables }]] = calls
           expect(variables).toEqual({
             id: 'u4711',
           })
