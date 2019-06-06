@@ -1,4 +1,8 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import {
+  shallowMount,
+  mount,
+  createLocalVue
+} from '@vue/test-utils'
 import ReleaseModal from './ReleaseModal.vue'
 import Styleguide from '@human-connection/styleguide'
 
@@ -10,13 +14,16 @@ describe('ReleaseModal.vue', () => {
   let mocks
   let propsData
   let wrapper
-  let Wrapper
 
   beforeEach(() => {
     propsData = {
       type: 'contribution',
       name: 'blah',
       id: 'c42',
+      callbacks: {
+        confirm: jest.fn(),
+        cancel: jest.fn(),
+      },
     }
     mocks = {
       $filters: {
@@ -30,14 +37,11 @@ describe('ReleaseModal.vue', () => {
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
       },
-      location: {
-        reload: jest.fn(),
-      },
     }
   })
 
   describe('shallowMount', () => {
-    Wrapper = () => {
+    const Wrapper = () => {
       return shallowMount(ReleaseModal, {
         propsData,
         mocks,
@@ -48,6 +52,7 @@ describe('ReleaseModal.vue', () => {
     describe('given a user', () => {
       beforeEach(() => {
         propsData = {
+          ...propsData,
           type: 'user',
           id: 'u2',
           name: 'Bob Ross',
@@ -72,6 +77,7 @@ describe('ReleaseModal.vue', () => {
     describe('given a contribution', () => {
       beforeEach(() => {
         propsData = {
+          ...propsData,
           type: 'contribution',
           id: 'c3',
           name: 'This is some post title.',
@@ -95,7 +101,7 @@ describe('ReleaseModal.vue', () => {
   })
 
   describe('mount', () => {
-    Wrapper = () => {
+    const Wrapper = () => {
       return mount(ReleaseModal, {
         propsData,
         mocks,
@@ -108,15 +114,16 @@ describe('ReleaseModal.vue', () => {
     describe('given id', () => {
       beforeEach(() => {
         propsData = {
+          ...propsData,
           type: 'user',
           id: 'u4711',
         }
       })
 
       describe('click cancel button', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           wrapper = Wrapper()
-          wrapper.find('button.cancel').trigger('click')
+          await wrapper.find('button.cancel').trigger('click')
         })
 
         it('does not emit "close" yet', () => {
@@ -141,9 +148,9 @@ describe('ReleaseModal.vue', () => {
       })
 
       describe('click confirm button', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           wrapper = Wrapper()
-          wrapper.find('button.confirm').trigger('click')
+          await wrapper.find('button.confirm').trigger('click')
         })
 
         it('calls mutation', () => {
@@ -152,7 +159,11 @@ describe('ReleaseModal.vue', () => {
 
         it('passes id to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
-          const [[{ variables }]] = calls
+          const [
+            [{
+              variables
+            }]
+          ] = calls
           expect(variables).toEqual({
             id: 'u4711',
           })
