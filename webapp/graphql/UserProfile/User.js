@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export default app => {
-  const lang = app.$i18n.locale().toUpperCase()
+export default (i18n) => {
+  const lang = i18n.locale().toUpperCase()
   return gql(`
     query User($id: ID!) {
       User(id: $id) {

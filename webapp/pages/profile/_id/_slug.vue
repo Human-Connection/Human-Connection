@@ -223,6 +223,17 @@ import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
+import PostQuery from '~/graphql/UserProfile/Post.js'
+import UserQuery from '~/graphql/UserProfile/User.js'
+
+const tabToFilterMapping = ({ tab, id }) => {
+  return {
+    post: { author: { id } },
+    comment: { comments_some: { author: { id } } },
+    shout: { shoutedBy_some: { id } },
+  }[tab]
+}
+
 export default {
   components: {
     User,
@@ -242,6 +253,7 @@ export default {
     mode: 'out-in',
   },
   data() {
+    const filter = tabToFilterMapping({ tab: 'post', id: this.$route.params.id })
     return {
       User: [],
       Post: [],
@@ -249,6 +261,7 @@ export default {
       page: 1,
       pageSize: 6,
       tabActive: 'post',
+      filter
     }
   },
   computed: {
@@ -300,9 +313,10 @@ export default {
     },
   },
   methods: {
-    handleTab(str) {
-      this.$toast.info('!load posts here! =>' + str)
-      this.tabActive = str
+    handleTab(tab) {
+      this.tabActive = tab
+      this.filter = tabToFilterMapping({ tab, id: this.$route.params.id })
+      this.showMoreContributions()
     },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
@@ -317,17 +331,14 @@ export default {
       this.page++
       this.$apollo.queries.Post.fetchMore({
         variables: {
-          filter: { author: { id: this.$route.params.id } },
+          filter: this.filter,
           first: this.pageSize,
           offset: this.offset,
         },
         // Transform the previous result with new data
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          let output = { Post: this.Post}
-          output.Post = [
-            ...previousResult.Post,
-            ...fetchMoreResult.Post,
-          ]
+          let output = { Post: this.Post }
+          output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
           return output
         },
         fetchPolicy: 'cache-and-network',
@@ -337,11 +348,11 @@ export default {
   apollo: {
     Post: {
       query() {
-        return require('~/graphql/UserProfile/Post.js').default(this)
+        return PostQuery(this.$i18n)
       },
       variables() {
         return {
-          filter: { author: { id: this.$route.params.id } },
+          filter: this.filter,
           first: this.pageSize,
           offset: 0,
         }
@@ -350,7 +361,7 @@ export default {
     },
     User: {
       query() {
-        return require('~/graphql/UserProfile/User.js').default(this)
+        return UserQuery(this.$i18n)
       },
       variables() {
         return { id: this.$route.params.id }
