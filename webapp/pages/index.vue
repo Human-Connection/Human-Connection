@@ -1,6 +1,9 @@
 <template>
   <div>
-    <ds-flex v-if="Post && Post.length" :width="{ base: '100%' }" gutter="base">
+    <ds-flex :width="{ base: '100%' }" gutter="base">
+      <ds-flex-item>
+        <filter-menu @changeFilterBubble="changeFilterBubble" />
+      </ds-flex-item>
       <hc-post-card
         v-for="(post, index) in uniq(Post)"
         :key="post.id"
@@ -24,6 +27,7 @@
 </template>
 
 <script>
+import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import gql from 'graphql-tag'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
@@ -31,6 +35,7 @@ import HcLoadMore from '~/components/LoadMore.vue'
 
 export default {
   components: {
+    FilterMenu,
     HcPostCard,
     HcLoadMore,
   },
@@ -40,6 +45,7 @@ export default {
       Post: [],
       page: 1,
       pageSize: 10,
+      filterBubble: { author: 'all' },
     }
   },
   computed: {
@@ -51,6 +57,10 @@ export default {
     },
   },
   methods: {
+    changeFilterBubble(filterBubble) {
+      this.filterBubble = filterBubble
+      this.$apollo.queries.Post.refresh()
+    },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
@@ -66,6 +76,7 @@ export default {
       this.page++
       this.$apollo.queries.Post.fetchMore({
         variables: {
+          filterBubble: this.filterBubble,
           first: this.pageSize,
           offset: this.offset,
         },
@@ -91,8 +102,8 @@ export default {
     Post: {
       query() {
         return gql(`
-          query Post($first: Int, $offset: Int) {
-            Post(first: $first, offset: $offset) {
+          query Post($filterBubble: FilterBubble, $first: Int, $offset: Int) {
+            Post(filterBubble: $filterBubble, first: $first, offset: $offset) {
               id
               title
               contentExcerpt
@@ -135,6 +146,7 @@ export default {
       },
       variables() {
         return {
+          filterBubble: this.filterBubble,
           first: this.pageSize,
           offset: 0,
         }

@@ -1,4 +1,7 @@
 {
+  "filter-menu": {
+    "title": "Deine Filterblase"
+  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
