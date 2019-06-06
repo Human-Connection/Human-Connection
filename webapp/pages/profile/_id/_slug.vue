@@ -138,7 +138,7 @@
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
-                <li class="Tabs__tab Tab pointer active" :class="{ active: tabActive === 'post' }">
+                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'post' }">
                   <a @click="handleTab('post')">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -303,22 +303,6 @@ export default {
       this.$toast.info('!load posts here! =>' + str)
       this.tabActive = str
     },
-    /*
-    handleCommentedTab() {
-      this.$toast.info('!load commented here!')
-      this.tabActive = 'comment'
-    },
-    handleShoutedTab() {
-      this.$toast.info('!load shouted here!')
-      this.tabActive = 'shout'
-    }  
-    setActiveClass(evt) {
-      Array.prototype.forEach.call(this.tabs, function(tab) {
-        tab.classList.remove('active')
-      })
-
-      evt.currentTarget.classList.add('active')
-    }, */
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
@@ -372,8 +356,12 @@ export default {
   cursor: pointer;
 }
 
+.Tab {
+  border-collapse: collapse;
+  padding-bottom: 5px;
+}
 .Tab:hover {
-  border-bottom: 3px solid #c9c6ce;
+  border-bottom: 2px solid #c9c6ce;
 }
 
 .Tabs {
