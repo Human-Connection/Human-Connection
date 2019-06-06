@@ -400,27 +400,6 @@ export default {
   }
 }
 
-.Tab {
-  font-family: 'Roboto Slab';
-  > a {
-    display: block;
-    padding: 10px 12px;
-    text-decoration: none;
-    color: #666;
-    transition: color 0.15s;
-  }
-  &.active {
-    > a {
-      color: #222;
-    }
-  }
-  &:hover {
-    > a {
-      color: #222;
-    }
-  }
-}
-
 .profile-avatar.ds-avatar {
   display: block;
   margin: auto;
