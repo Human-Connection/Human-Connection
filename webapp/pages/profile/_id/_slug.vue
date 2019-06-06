@@ -138,7 +138,7 @@
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
-                <li class="Tabs__tab active Tab" @click="setActiveClass">
+                <li class="Tabs__tab active Tab pointer" @click="setActiveClass">
                   <a @click="handlePostTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -149,7 +149,7 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab" @click="setActiveClass">
+                <li class="Tabs__tab Tab pointer" @click="setActiveClass">
                   <a @click="handleCommentedTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -160,7 +160,7 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab" @click="setActiveClass">
+                <li class="Tabs__tab Tab pointer" @click="setActiveClass">
                   <a @click="handleShoutedTab">
                     <ds-space margin="small">
                       <no-ssr placeholder="Loading...">
@@ -369,7 +369,7 @@ export default {
   cursor: pointer;
 }
 
-.ds-tab-nav .ds-card-content .ds-tab-nav-item:hover {
+.Tab:hover {
   border-bottom: 3px solid #c9c6ce;
 }
 
