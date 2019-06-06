@@ -12,14 +12,16 @@ Then('I should be able to change my profile picture', () => {
   cy.fixture(avatarUpload, 'base64').then(fileContent => {
     cy.get('#customdropzone').upload(
       { fileContent, fileName: avatarUpload, mimeType: 'image/png' },
-      { subjectType: 'drag-n-drop' },
+      { subjectType: 'drag-n-drop' }
     )
   })
-  cy.get('#customdropzone')
-    .should('have.attr', 'style')
+  cy.get('.profile-avatar img')
+    .should('have.attr', 'src')
     .and('contains', 'onourjourney')
-  cy.contains('.iziToast-message', 'Upload successful')
-    .should('have.length', 1)
+  cy.contains('.iziToast-message', 'Upload successful').should(
+    'have.length',
+    1
+  )
 })
 
 When("I visit another user's profile page", () => {

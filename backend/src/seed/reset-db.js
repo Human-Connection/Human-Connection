@@ -1,8 +1,7 @@
 import { cleanDatabase } from './factories'
-import CONFIG from './../config'
 
-if (!CONFIG.DEBUG) {
-  throw new Error(`YOU CAN'T CLEAN THE DATABASE WITH DEBUG=${CONFIG.DEBUG}`)
+if (process.env.NODE_ENV === 'production') {
+  throw new Error(`You cannot clean the database in production environment!`)
 }
 
 ;(async function() {

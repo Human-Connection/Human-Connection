@@ -35,26 +35,6 @@ describe('Upload', () => {
     },
   }
 
-  const fileSuccess = {
-    filename: 'avatar.jpg',
-    previewElement: {
-      classList: {
-        remove: jest.fn(),
-        add: jest.fn(),
-      },
-      querySelectorAll: jest.fn().mockReturnValue([
-        {
-          alt: '',
-          style: {
-            'background-image': '/api/generic.jpg',
-          },
-        },
-      ]),
-    },
-  }
-
-  const dataUrl = 'avatar.jpg'
-
   beforeEach(() => {
     jest.useFakeTimers()
     wrapper = shallowMount(Upload, { localVue, propsData, mocks })
@@ -67,11 +47,6 @@ describe('Upload', () => {
   it('sends a the UpdateUser mutation when vddrop is called', () => {
     wrapper.vm.vddrop([{ filename: 'avatar.jpg' }])
     expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
-  })
-
-  it('thumbnail', () => {
-    wrapper.vm.thumbnail(fileSuccess, dataUrl)
-    expect(fileSuccess.previewElement.classList.add).toHaveBeenCalledTimes(1)
   })
 
   describe('error handling', () => {
@@ -92,6 +67,16 @@ describe('Upload', () => {
       expect(wrapper.vm.error).toEqual(true)
       jest.runAllTimers()
       expect(wrapper.vm.error).toEqual(false)
+    })
+
+    it('shows an error toaster when the apollo mutation rejects', async () => {
+      // calls vddrop twice because of how mockResolvedValueOnce works in jest
+      // the first time the mock function is called it will resolve, calling it a
+      // second time will cause it to fail(with this implementation)
+      // https://jestjs.io/docs/en/mock-function-api.html#mockfnmockresolvedvalueoncevalue
+      await wrapper.vm.vddrop([{ filename: 'avatar.jpg' }])
+      await wrapper.vm.vddrop([{ filename: 'avatar.jpg' }])
+      expect(mocks.$toast.error).toHaveBeenCalledTimes(1)
     })
   })
 })

@@ -7,7 +7,7 @@
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-space margin-bottom="x-small">
-      <hc-user :user="author" />
+      <hc-user :user="author" :date-time="comment.createdAt" />
     </ds-space>
     <no-ssr>
       <content-menu
@@ -45,6 +45,7 @@ export default {
         return {}
       },
     },
+    dateTime: { type: [Date, String], default: null },
   },
   computed: {
     ...mapGetters({
