@@ -185,7 +185,7 @@
                   }"
                   class="ds-tab-nav-item pointer"
                 >
-                  <a @click="handleTab('shouted', $event)">
+                  <a @click="handleShoutedTab">
                     <ds-space margin="small">
                       <!-- TODO: find better solution for rendering errors -->
                       <no-ssr>
