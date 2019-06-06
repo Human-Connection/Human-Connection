@@ -56,8 +56,7 @@ type User {
   contributionsCount: Int! @cypher(
     statement: """
       MATCH (this)-[:WROTE]->(r:Post)
-      WHERE (NOT exists(r.deleted) OR r.deleted = false)
-      AND (NOT exists(r.disabled) OR r.disabled = false)
+      WHERE NOT r.deleted = true AND NOT r.disabled = true
       RETURN COUNT(r)
     """
   )
