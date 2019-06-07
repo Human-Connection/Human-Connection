@@ -4,10 +4,10 @@
       <ds-space />
       <ds-container>
         <ds-flex>
-          <ds-flex-item width="8%">
+          <ds-flex-item :width="{ base: '100%', sm: 0.75, md: 0.5, lg: 0.5 }">
             <ds-icon name="warning" size="xxx-large" class="delete-warning-icon" />
           </ds-flex-item>
-          <ds-flex-item width="80%">
+          <ds-flex-item :width="{ base: '100%', sm: 5.25, md: 2.75, lg: 5.5 }">
             <ds-heading>{{ $t('settings.delete.name') }}</ds-heading>
           </ds-flex-item>
           <ds-space />
@@ -49,15 +49,14 @@
       <template slot="footer">
         <ds-container>
           <ds-flex>
-            <ds-flex-item width="40%">
+            <ds-flex-item :width="{ base: '60%', sm: 1.25, md: 1.25, lg: 1.75 }">
               <div class="columns is-mobile">
                 <div class="column">
                   <b-switch type="is-danger" v-model="deleteEnabled"></b-switch>
                 </div>
               </div>
             </ds-flex-item>
-            <ds-flex-item width="20%" />
-            <ds-flex-item>
+            <ds-flex-item :width="{ base: '60%', sm: 2.75, md: 2.75, lg: 1 }">
               <ds-button
                 icon="trash"
                 danger
