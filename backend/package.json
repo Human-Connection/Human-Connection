@@ -69,7 +69,6 @@
     "linkifyjs": "~2.1.8",
     "lodash": "~4.17.11",
     "merge-graphql-schemas": "^1.5.8",
-    "ms": "~2.1.1",
     "neo4j-driver": "~1.7.4",
     "neo4j-graphql-js": "git+https://github.com/Human-Connection/neo4j-graphql-js.git#temporary_fixes",
     "node-fetch": "~2.6.0",
