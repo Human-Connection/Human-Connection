@@ -204,6 +204,10 @@ describe('users', () => {
         })
 
         describe("deletes a user's", () => {
+          beforeEach(async () => {
+            deleteUserVariables = { id: 'u343', resource: [] }
+          })
+
           it('posts on request', async () => {
             deleteUserVariables = { id: 'u343', resource: ['Post'] }
             await client.request(deleteUserMutation, deleteUserVariables)
