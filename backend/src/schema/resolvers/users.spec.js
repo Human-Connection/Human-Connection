@@ -143,7 +143,7 @@ describe('users', () => {
       })
 
       describe('attempting to delete my own account', () => {
-        let expected
+        let expectedResponse
         beforeEach(async () => {
           await asAuthor.authenticateAs({
             email: 'test@example.org',
@@ -173,10 +173,6 @@ describe('users', () => {
         })
 
         describe("deletes a user's", () => {
-          beforeEach(async () => {
-            deleteUserVariables = { id: 'u343', resource: [] }
-          })
-
           it('posts on request', async () => {
             deleteUserVariables = { id: 'u343', resource: ['Post'] }
             expectedResponse = {
