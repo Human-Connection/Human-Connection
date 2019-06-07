@@ -25,7 +25,16 @@
     "shouted": "Empfohlen",
     "commented": "Kommentiert",
     "userAnonym": "Anonymus",
-    "socialMedia": "Wo sonst finde ich"
+    "socialMedia": "Wo sonst finde ich",
+    "network": {
+      "title": "Netzwerk",
+      "following": "folgt:",
+      "followingNobody": "folgt niemandem.",
+      "followedBy": "wird gefolgt von:",
+      "followedByNobody": "wird von niemandem gefolgt.",
+      "and": "und",
+      "more": "weitere"
+    }
   },
   "notifications": {
     "menu": {
