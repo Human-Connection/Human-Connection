@@ -105,11 +105,7 @@ describe('users', () => {
         password: '1234',
         id: 'u565',
       })
-      deleteUserVariables = { id: 'u343' }
-    })
-
-    afterEach(async () => {
-      await factory.cleanDatabase()
+      deleteUserVariables = { id: 'u343', resource: [] }
     })
 
     describe('unauthenticated', () => {
@@ -173,7 +169,6 @@ describe('users', () => {
             postId: 'p139',
             content: 'Comment by user u343',
           })
-          deleteUserVariables = { id: 'u343' }
         })
         it('deletes my account', async () => {
           const expected = {
