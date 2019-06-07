@@ -88,8 +88,8 @@ describe('users', () => {
     let deleteUserVariables
     let asAuthor
     const deleteUserMutation = gql`
-      mutation($id: ID!, $comments: Boolean, $posts: Boolean) {
-        DeleteUser(id: $id, comments: $comments, posts: $posts) {
+      mutation($id: ID!, $resource: [String]) {
+        DeleteUser(id: $id, resource: $resource) {
           id
         }
       }
@@ -209,8 +209,18 @@ describe('users', () => {
         })
 
         describe("deletes a user's", () => {
+          it('posts on request', async () => {
+            deleteUserVariables = { id: 'u343', resource: ['Post'] }
+            await client.request(deleteUserMutation, deleteUserVariables)
+            const postQueryVariablesByContent = {
+              content: 'Post by user u343',
+            }
+            const { Post } = await client.request(postQuery, postQueryVariablesByContent)
+            expect(Post).toEqual([])
+          })
+
           it('comments on request', async () => {
-            deleteUserVariables = { id: 'u343', comments: true }
+            deleteUserVariables = { id: 'u343', resource: ['Comment'] }
             await client.request(deleteUserMutation, deleteUserVariables)
             const commentQueryVariablesByContent = {
               content: 'Comment by user u343',
@@ -219,14 +229,19 @@ describe('users', () => {
             expect(Comment).toEqual([])
           })
 
-          it('posts on request', async () => {
-            deleteUserVariables = { id: 'u343', posts: true }
+          it('posts and comments on request', async () => {
+            deleteUserVariables = { id: 'u343', resource: ['Post', 'Comment'] }
             await client.request(deleteUserMutation, deleteUserVariables)
             const postQueryVariablesByContent = {
               content: 'Post by user u343',
             }
+            const commentQueryVariablesByContent = {
+              content: 'Comment by user u343',
+            }
             const { Post } = await client.request(postQuery, postQueryVariablesByContent)
+            const { Comment } = await client.request(commentQuery, commentQueryVariablesByContent)
             expect(Post).toEqual([])
+            expect(Comment).toEqual([])
           })
         })
       })
