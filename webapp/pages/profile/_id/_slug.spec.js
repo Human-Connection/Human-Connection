@@ -66,7 +66,7 @@ describe('ProfileSlug', () => {
           beforeEach(jest.runAllTimers)
 
           it('emits "deletePost"', () => {
-            expect(wrapper.emitted().deletePost.length).toBe(1)
+            expect(wrapper.emitted().deletePost).toHaveLength(1)
           })
 
           it('does not go to index (main) page', () => {
