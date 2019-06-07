@@ -177,7 +177,7 @@
 
                 <ds-flex-item
                   v-tooltip="{
-                    content: $t('common.your.shouted', null, user.shoutedCount),
+                    content: $t('common.your.shout', null, user.shoutedCount),
                     placement: 'right',
                     delay: { show: 500 },
                   }"
