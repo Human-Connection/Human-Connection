@@ -59,7 +59,12 @@
             </ds-flex-item>
             <ds-flex-item width="20%" />
             <ds-flex-item>
-              <ds-button icon="trash" danger :disabled="isLoading || !deleteEnabled">
+              <ds-button
+                icon="trash"
+                danger
+                :disabled="isLoading || !deleteEnabled"
+                @click="handleSubmit"
+              >
                 {{ $t('settings.delete.name') }}
               </ds-button>
             </ds-flex-item>
@@ -71,6 +76,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import gql from 'graphql-tag'
 
 export default {
   name: 'DeleteAccount',
@@ -82,8 +88,6 @@ export default {
       },
       deleteEnabled: false,
       isLoading: false,
-      countPosts: 0,
-      countComments: 0,
     }
   },
   computed: {
@@ -92,12 +96,33 @@ export default {
     }),
   },
   methods: {
-    enableDeletion() {
-      if (this.accept === 'I really want to delete my account') {
-        this.disabled = false
-      } else {
-        this.disabled = true
+    handleSubmit() {
+      let resourceArgs = []
+      if (this.formData.deleteContributions) {
+        resourceArgs.push('Post')
       }
+      if (this.formData.deleteComments) {
+        resourceArgs.push('Comment')
+      }
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($id: ID!, $resource: [String]) {
+              DeleteUser(id: $id, resource: $resource) {
+                id
+              }
+            }
+          `,
+          variables: { id: this.currentUser.id, resource: resourceArgs },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('settings.delete.success'))
+          this.$store.dispatch('auth/logout')
+          this.$router.replace('/')
+        })
+        .catch(error => {
+          this.$toast.error(error.message)
+        })
     },
   },
 }

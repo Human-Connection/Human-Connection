@@ -78,7 +78,8 @@
       "countPosts": "Delete my {count} posts",
       "countComments": "Delete my {count} comments",
       "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete those you have to mark them below.",
-      "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts... after deleting your account!"
+      "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts... after deleting your account!",
+      "success": "Account successfully deleted"
     },
     "organizations": {
       "name": "My Organizations"
