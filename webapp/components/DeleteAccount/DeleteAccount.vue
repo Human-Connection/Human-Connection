@@ -1,20 +1,20 @@
 <template>
   <div>
     <ds-card hover>
-      <ds-space/>
+      <ds-space />
       <ds-container>
         <ds-flex>
           <ds-flex-item width="8%">
-            <ds-icon name="warning" size="xxx-large" class="delete-warning-icon"/>
+            <ds-icon name="warning" size="xxx-large" class="delete-warning-icon" />
           </ds-flex-item>
           <ds-flex-item width="80%">
             <ds-heading>{{ $t('settings.delete.name') }}</ds-heading>
           </ds-flex-item>
-          <ds-space/>
+          <ds-space />
           <ds-heading tag="h4">{{ $t('settings.delete.accountDescription') }}</ds-heading>
         </ds-flex>
       </ds-container>
-      <ds-space/>
+      <ds-space />
       <ds-container>
         <transition name="slide-up">
           <div v-if="deleteEnabled">
@@ -24,7 +24,9 @@
                   type="is-danger"
                   :disabled="!currentUser.contributionsCount"
                   v-model="deleteContributions"
-                >{{ $t('settings.delete.countPosts', { count: currentUser.contributionsCount }) }}</b-checkbox>
+                >
+                  {{ $t('settings.delete.countPosts', { count: currentUser.contributionsCount }) }}
+                </b-checkbox>
               </div>
             </div>
             <div class="field">
@@ -33,7 +35,9 @@
                   type="is-danger"
                   :disabled="!currentUser.commentsCount"
                   v-model="deleteComments"
-                >{{ $t('settings.delete.countComments', { count: currentUser.commentsCount }) }}</b-checkbox>
+                >
+                  {{ $t('settings.delete.countComments', { count: currentUser.commentsCount }) }}
+                </b-checkbox>
               </div>
             </div>
             <div class="message is-danger">
@@ -52,14 +56,16 @@
                 </div>
               </div>
             </ds-flex-item>
-            <ds-flex-item width="20%"/>
+            <ds-flex-item width="20%" />
             <ds-flex-item>
               <ds-button
                 icon="trash"
                 danger
                 :disabled="isLoading || !deleteEnabled"
                 @click="handleSubmit"
-              >{{ $t('settings.delete.name') }}</ds-button>
+              >
+                {{ $t('settings.delete.name') }}
+              </ds-button>
             </ds-flex-item>
           </ds-flex>
         </ds-container>
