@@ -57,17 +57,9 @@ export default {
         })
         this.$toast.success(this.$t('release.success'))
         this.isOpen = false
-        /*
-        setTimeout(() => {
-          location.reload()
-        }, 1500)
-        */
         setTimeout(() => {
           this.$emit('close')
         }, 1000)
-        setTimeout(() => {
-          location.reload()
-        }, 250)
       } catch (err) {
         this.$toast.error(err.message)
       }
