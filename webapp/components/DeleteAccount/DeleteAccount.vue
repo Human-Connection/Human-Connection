@@ -1,21 +1,20 @@
 <template>
   <div>
     <ds-card hover>
-      <ds-space />
-      <ds-flex>
-        <ds-flex-item width="5%" />
-        <ds-flex-item>
-          <ds-icon name="warning" size="xxx-large" class="delete-warning-icon" />
-        </ds-flex-item>
-        <ds-flex-item width="80%">
-          <ds-heading>{{ $t('settings.delete.name') }}</ds-heading>
-        </ds-flex-item>
-        <ds-container>
-          <ds-space />
+      <ds-space/>
+      <ds-container>
+        <ds-flex>
+          <ds-flex-item width="8%">
+            <ds-icon name="warning" size="xxx-large" class="delete-warning-icon"/>
+          </ds-flex-item>
+          <ds-flex-item width="80%">
+            <ds-heading>{{ $t('settings.delete.name') }}</ds-heading>
+          </ds-flex-item>
+          <ds-space/>
           <ds-heading tag="h4">{{ $t('settings.delete.accountDescription') }}</ds-heading>
-        </ds-container>
-      </ds-flex>
-      <ds-space />
+        </ds-flex>
+      </ds-container>
+      <ds-space/>
       <ds-container>
         <transition name="slide-up">
           <div v-if="deleteEnabled">
@@ -24,10 +23,8 @@
                 <b-checkbox
                   type="is-danger"
                   :disabled="!currentUser.contributionsCount"
-                  v-model="formData.deleteContributions"
-                >
-                  {{ $t('settings.delete.countPosts', { count: currentUser.contributionsCount }) }}
-                </b-checkbox>
+                  v-model="deleteContributions"
+                >{{ $t('settings.delete.countPosts', { count: currentUser.contributionsCount }) }}</b-checkbox>
               </div>
             </div>
             <div class="field">
@@ -35,10 +32,8 @@
                 <b-checkbox
                   type="is-danger"
                   :disabled="!currentUser.commentsCount"
-                  v-model="formData.deleteComments"
-                >
-                  {{ $t('settings.delete.countComments', { count: currentUser.commentsCount }) }}
-                </b-checkbox>
+                  v-model="deleteComments"
+                >{{ $t('settings.delete.countComments', { count: currentUser.commentsCount }) }}</b-checkbox>
               </div>
             </div>
             <div class="message is-danger">
@@ -57,16 +52,14 @@
                 </div>
               </div>
             </ds-flex-item>
-            <ds-flex-item width="20%" />
+            <ds-flex-item width="20%"/>
             <ds-flex-item>
               <ds-button
                 icon="trash"
                 danger
                 :disabled="isLoading || !deleteEnabled"
                 @click="handleSubmit"
-              >
-                {{ $t('settings.delete.name') }}
-              </ds-button>
+              >{{ $t('settings.delete.name') }}</ds-button>
             </ds-flex-item>
           </ds-flex>
         </ds-container>
@@ -75,17 +68,15 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import gql from 'graphql-tag'
 
 export default {
   name: 'DeleteAccount',
   data() {
     return {
-      formData: {
-        deleteContributions: false,
-        deleteComments: false,
-      },
+      deleteContributions: false,
+      deleteComments: false,
       deleteEnabled: false,
       isLoading: false,
     }
@@ -96,12 +87,15 @@ export default {
     }),
   },
   methods: {
+    ...mapActions({
+      logout: 'auth/logout',
+    }),
     handleSubmit() {
       let resourceArgs = []
-      if (this.formData.deleteContributions) {
+      if (this.deleteContributions) {
         resourceArgs.push('Post')
       }
-      if (this.formData.deleteComments) {
+      if (this.deleteComments) {
         resourceArgs.push('Comment')
       }
       this.$apollo
@@ -117,8 +111,8 @@ export default {
         })
         .then(() => {
           this.$toast.success(this.$t('settings.delete.success'))
-          this.$store.dispatch('auth/logout')
-          this.$router.replace('/')
+          this.logout()
+          this.$router.history.push('/')
         })
         .catch(error => {
           this.$toast.error(error.message)
