@@ -31,7 +31,7 @@
       "following": "is following:",
       "followingNobody": "follows nobody.",
       "followedBy": "is followed by:",
-      "followedByNobody": "is followed by nobody.",
+      "followedByNobody": "is not followed by anyone.",
       "and": "and",
       "more": "more"
     }
