@@ -6,7 +6,6 @@
       :id="data.resource.id"
       :type="data.type"
       :name="name"
-      :callbacks="data.callbacks"
       @close="close"
     />
     <release-modal
@@ -21,7 +20,6 @@
       :id="data.resource.id"
       :type="data.type"
       :name="name"
-      :callbacks="data.callbacks"
       @close="close"
     />
     <delete-modal
@@ -29,7 +27,7 @@
       :id="data.resource.id"
       :type="data.type"
       :name="name"
-      :callbacks="data.callbacks"
+      :modalData="data.modalsData.delete"
       @close="close"
     />
   </div>
@@ -63,7 +61,7 @@ export default {
       switch (this.data.type) {
         case 'user':
           return name
-        case 'contribution':
+        case 'contribution': // REFACTORING: In DeleteModal – Already replaced  "title" by "this.menuModalsData.delete.messageParams".
           return title
         case 'comment':
           return author && author.name

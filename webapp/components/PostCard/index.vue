@@ -18,9 +18,7 @@
       </div>
       <ds-space margin-bottom="small" />
       <!-- Post Title -->
-      <ds-heading tag="h3" no-margin>
-        {{ post.title }}
-      </ds-heading>
+      <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Post Content Excerpt -->
       <!-- eslint-disable vue/no-v-html -->
@@ -55,7 +53,7 @@
             <content-menu
               resource-type="contribution"
               :resource="post"
-              :callbacks="{ confirm: deletePostCallback, cancel: null }"
+              :modalsData="menuModalsData"
               :is-owner="isAuthor"
             />
           </div>

@@ -7,19 +7,18 @@
     >
       <ds-space margin-bottom="small" />
       <hc-user :user="post.author" :date-time="post.createdAt" />
+      <!-- Content Menu (can open Modals) -->
       <no-ssr>
         <content-menu
           placement="bottom-end"
           resource-type="contribution"
           :resource="post"
-          :callbacks="{ confirm: () => deletePostCallback('page'), cancel: null }"
+          :modalsData="menuModalsDataPage()"
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
-      <ds-heading tag="h3" no-margin>
-        {{ post.title }}
-      </ds-heading>
+      <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
@@ -214,6 +213,11 @@ export default {
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
+    },
+    menuModalsDataPage() {
+      const locMenuModalsData = this.menuModalsData
+      locMenuModalsData.delete.buttons.confirm.callback = () => this.deletePostCallback('page')
+      return locMenuModalsData
     },
   },
 }

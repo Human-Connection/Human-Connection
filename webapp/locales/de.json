@@ -235,7 +235,7 @@
     "comment": {
       "title": "Lösche Kommentar",
       "type": "Comment",
-      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" löschen möchtest?",
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" löschen möchtest?",
       "success": "Kommentar erfolgreich gelöscht!"
     }
   },

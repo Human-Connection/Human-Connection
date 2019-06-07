@@ -1,9 +1,34 @@
 import gql from 'graphql-tag'
 
 export default {
+  data() {
+    return {
+      menuModalsData: {
+        delete: {
+          titleIdent: 'delete.contribution.title',
+          messageIdent: 'delete.contribution.message',
+          messageParams: {
+            // "this.post" is not defined at the beginning …
+            name: this.post ? this.$filters.truncate(this.post.title, 30) : '',
+          },
+          buttons: {
+            confirm: {
+              icon: 'trash',
+              textIdent: 'delete.submit',
+              callback: this.deletePostCallback,
+            },
+            cancel: {
+              icon: 'close',
+              textIdent: 'delete.cancel',
+              callback: () => {},
+            },
+          },
+        },
+      },
+    }
+  },
   methods: {
     async deletePostCallback(postDisplayType = 'list') {
-      // console.log('inside "deletePostCallback" !!! ', this.post)
       try {
         var gqlMutation = gql`
           mutation($id: ID!) {
@@ -19,15 +44,12 @@ export default {
           },
         })
         this.$toast.success(this.$t('delete.contribution.success'))
-        // console.log('called "this.$t" !!!')
         switch (postDisplayType) {
           case 'list':
             this.$emit('deletePost')
-            // console.log('emitted "deletePost" !!!')
             break
           default:
-            // case 'page'
-            // console.log('called "this.$router.history.push" !!!')
+            // case 'page':
             this.$router.history.push('/') // Single page type: Redirect to index (main) page
             break
         }

@@ -10,9 +10,7 @@
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button class="cancel" icon="close" @click="cancel">
-        {{ $t('report.cancel') }}
-      </ds-button>
+      <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
 
       <ds-button
         danger
@@ -39,7 +37,6 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
-    callbacks: { type: Object, required: true },
     id: { type: String, required: true },
   },
   data() {
@@ -60,9 +57,8 @@ export default {
   },
   methods: {
     async cancel() {
-      if (this.callbacks.cancel) {
-        await this.callbacks.cancel()
-      }
+      // TODO: Use the "modalData" structure introduced in "DeleteModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+      // await this.modalData.buttons.cancel.callback()
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
@@ -70,10 +66,9 @@ export default {
     },
     async confirm() {
       this.loading = true
+      // TODO: Use the "modalData" structure introduced in "DeleteModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+      // await this.modalData.buttons.confirm.callback()
       try {
-        if (this.callbacks.confirm) {
-          await this.callbacks.confirm()
-        }
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
