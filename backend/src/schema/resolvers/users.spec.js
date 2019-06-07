@@ -91,6 +91,12 @@ describe('users', () => {
       mutation($id: ID!, $resource: [String]) {
         DeleteUser(id: $id, resource: $resource) {
           id
+          contributions {
+            id
+          }
+          comments {
+            id
+          }
         }
       }
     `
@@ -137,24 +143,7 @@ describe('users', () => {
       })
 
       describe('attempting to delete my own account', () => {
-        const commentQueryVariables = { id: 'c155' }
-        const postQueryVariables = { id: 'p139' }
-        const commentQuery = gql`
-          query($id: ID) {
-            Comment(id: $id) {
-              id
-            }
-          }
-        `
-
-        const postQuery = gql`
-          query($id: ID) {
-            Post(id: $id) {
-              id
-            }
-          }
-        `
-
+        let expected
         beforeEach(async () => {
           await asAuthor.authenticateAs({
             email: 'test@example.org',
@@ -169,38 +158,18 @@ describe('users', () => {
             postId: 'p139',
             content: 'Comment by user u343',
           })
-        })
-        it('deletes my account', async () => {
-          const expected = {
+          expectedResponse = {
             DeleteUser: {
               id: 'u343',
+              contributions: [{ id: 'p139' }],
+              comments: [{ id: 'c155' }],
             },
           }
-          await expect(client.request(deleteUserMutation, deleteUserVariables)).resolves.toEqual(
-            expected,
-          )
         })
-
-        describe("doesn't delete a user's", () => {
-          it('comments by default', async () => {
-            await client.request(deleteUserMutation, deleteUserVariables)
-            const { Comment } = await client.request(commentQuery, commentQueryVariables)
-            expect(Comment).toEqual([
-              {
-                id: 'c155',
-              },
-            ])
-          })
-
-          it('posts by default', async () => {
-            await client.request(deleteUserMutation, deleteUserVariables)
-            const { Post } = await client.request(postQuery, postQueryVariables)
-            expect(Post).toEqual([
-              {
-                id: 'p139',
-              },
-            ])
-          })
+        it("deletes my account, but doesn't delete posts or comments by default", async () => {
+          await expect(client.request(deleteUserMutation, deleteUserVariables)).resolves.toEqual(
+            expectedResponse,
+          )
         })
 
         describe("deletes a user's", () => {
@@ -210,25 +179,44 @@ describe('users', () => {
 
           it('posts on request', async () => {
             deleteUserVariables = { id: 'u343', resource: ['Post'] }
-            await client.request(deleteUserMutation, deleteUserVariables)
-            const { Post } = await client.request(postQuery, postQueryVariables)
-            expect(Post).toEqual([])
+            expectedResponse = {
+              DeleteUser: {
+                id: 'u343',
+                contributions: [],
+                comments: [{ id: 'c155' }],
+              },
+            }
+            await expect(client.request(deleteUserMutation, deleteUserVariables)).resolves.toEqual(
+              expectedResponse,
+            )
           })
 
           it('comments on request', async () => {
             deleteUserVariables = { id: 'u343', resource: ['Comment'] }
-            await client.request(deleteUserMutation, deleteUserVariables)
-            const { Comment } = await client.request(commentQuery, commentQueryVariables)
-            expect(Comment).toEqual([])
+            expectedResponse = {
+              DeleteUser: {
+                id: 'u343',
+                contributions: [{ id: 'p139' }],
+                comments: [],
+              },
+            }
+            await expect(client.request(deleteUserMutation, deleteUserVariables)).resolves.toEqual(
+              expectedResponse,
+            )
           })
 
           it('posts and comments on request', async () => {
             deleteUserVariables = { id: 'u343', resource: ['Post', 'Comment'] }
-            await client.request(deleteUserMutation, deleteUserVariables)
-            const { Post } = await client.request(postQuery, postQueryVariables)
-            const { Comment } = await client.request(commentQuery, commentQueryVariables)
-            expect(Post).toEqual([])
-            expect(Comment).toEqual([])
+            expectedResponse = {
+              DeleteUser: {
+                id: 'u343',
+                contributions: [],
+                comments: [],
+              },
+            }
+            await expect(client.request(deleteUserMutation, deleteUserVariables)).resolves.toEqual(
+              expectedResponse,
+            )
           })
         })
       })

@@ -14,20 +14,23 @@ export default {
     DeleteUser: async (object, params, context, resolveInfo) => {
       const { resource } = params
       const session = context.driver.session()
+
       if (resource && resource.length) {
-        resource.forEach(async node => {
-          await session.run(
-            `
+        await Promise.all(
+          resource.map(async node => {
+            await session.run(
+              `
             MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
             DETACH DELETE resource
             RETURN author`,
-            {
-              userId: context.user.id,
-            },
-          )
-        })
+              {
+                userId: context.user.id,
+              },
+            )
+          }),
+        )
+        session.close()
       }
-      session.close()
       return neo4jgraphql(object, params, context, resolveInfo, false)
     },
   },
