@@ -1,4 +1,7 @@
 {
+  "filter-menu": {
+    "title": "Su burbuja de filtro"
+  },
   "login": {
     "copy": "Si ya tiene una cuenta de Human Connection, inicie sesión aquí.",
     "login": "Iniciar sesión",
@@ -6,39 +9,85 @@
     "email": "Tu correo electrónico",
     "password": "Tu contraseña",
     "moreInfo": "¿Qué es Human Connection?",
+    "moreInfoURL": "https://human-connection.org/es/",
+    "moreInfoHint": "a la página de presentación",
     "hello": "Hola"
   },
+  "editor": {
+    "placeholder": "Write something inspiring..."
+  },
   "profile": {
-    "name": "Mi perfil",
+    "name": "Mi Perfil",
     "memberSince": "Miembro desde",
     "follow": "Seguir",
     "followers": "Seguidores",
     "following": "Siguiendo",
-    "shouted": "Gritar",
-    "commented": "Comentado"
+    "shouted": "Recomendado",
+    "commented": "Comentado",
+    "userAnonym": "Anónimo",
+    "socialMedia": "¿Dónde más puedo encontrar"
+  },
+  "notifications": {
+    "menu": {
+      "mentioned": "te ha mencionado en un post"
+    }
+  },
+  "search": {
+    "placeholder": "Buscar",
+    "hint": "¿Qué estás buscando?",
+    "failed": "no encontró nada"
   },
   "settings": {
-    "name": "Configuración",
+    "name": "Ajustes",
     "data": {
-      "name": "Sus datos"
+      "name": "Sus datos",
+      "labelName": "Su nombre",
+      "namePlaceholder": "Femanon Funny",
+      "labelCity": "Your City or Region",
+      "labelBio": "Acerca de usted",
+      "success": "Sus datos han sido actualizados con éxito!"
     },
     "security": {
-      "name": "Seguridad"
+      "name": "Seguridad",
+      "change-password": {
+        "button": "Cambiar contraseña",
+        "success": "Contraseña cambiada con éxito!",
+        "label-old-password": "Su contraseña antigua",
+        "label-new-password": "Su nueva contraseña",
+        "label-new-password-confirm": "Confirm new password",
+        "message-old-password-required": "Ingrese su contraseña anterior",
+        "message-new-password-required": "Introduzca una nueva contraseña",
+        "message-new-password-confirm-required": "Confirme su nueva contraseña",
+        "message-new-password-missmatch": "Vuelva a escribir la misma contraseña",
+        "passwordSecurity": "Seguridad de la contraseña",
+        "passwordStrength0": "Contraseña muy insegura",
+        "passwordStrength1": "Contraseña insegura",
+        "passwordStrength2": "Contraseña mediocre",
+        "passwordStrength3": "Contraseña segura",
+        "passwordStrength4": "Contraseña muy sólida"
+      }
     },
     "invites": {
-      "name": "Invita"
+      "name": "invitaciones"
     },
     "download": {
       "name": "Descargar datos"
     },
     "delete": {
-      "name": "Borrar cuenta"
+      "name": "Eliminar cuenta"
     },
     "organizations": {
       "name": "Mis organizaciones"
     },
     "languages": {
-      "name": "Idiomas"
+      "name": "idiomas"
+    },
+    "social-media": {
+      "name": "Medios de comunicación social",
+      "placeholder": "Agregar una URL de Social-Media",
+      "submit": "Añadir enlace",
+      "successAdd": "Social-Media agregó. Perfil actualizado!",
+      "successDelete": "Social-Media borrado. Perfil actualizado!"
     }
   },
   "admin": {
@@ -53,7 +102,7 @@
       "projects": "Proyectos",
       "invites": "Invita",
       "follows": "Sigue",
-      "shouts": "Gritos"
+      "shouts": "Recomendado"
     },
     "organizations": {
       "name": "Organizaciones"
@@ -105,6 +154,11 @@
     }
   },
   "common": {
+    "your": {
+      "post": "Your Post ::: Your Posts",
+      "comment": "Your Comment ::: Your Comments",
+      "shout": "Your Shout ::: Your Shouts"
+    },
     "post": "Mensaje ::: Mensajes",
     "comment": "Comentario ::: Comentarios",
     "letsTalk": "Hablemos",
@@ -119,6 +173,113 @@
     "tag": "Etiqueta ::: Etiquetas",
     "name": "Nombre",
     "loadMore": "cargar más",
-    "loading": "cargando"
+    "loading": "cargando",
+    "reportContent": "Report"
+  },
+  "actions": {
+    "loading": "cargamento",
+    "loadMore": "cargar más",
+    "create": "Crear",
+    "save": "Guardar",
+    "edit": "Edite",
+    "delete": "Delete",
+    "cancel": "Cancelar"
+  },
+  "moderation": {
+    "name": "Moderación",
+    "reports": {
+      "empty": "Felicitaciones, nada que moderar.",
+      "name": "Informes",
+      "submitter": "comunicado por",
+      "disabledBy": "desactivado por"
+    }
+  },
+  "disable": {
+    "submit": "Desactivar",
+    "cancel": "Cancelar",
+    "success": "Discapacitado con éxito",
+    "user": {
+      "title": "Desactivar usuario",
+      "type": "Usuario",
+      "message": "¿Realmente quieres deshabilitar el usuario \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Deshabilitar contribución",
+      "type": "Contribución",
+      "message": "¿Realmente quieres deshabilitar la contribución \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Desactivar comentario",
+      "type": "Comentario",
+      "message": "¿Realmente quieres deshabilitar el comentario de \"<b>{name}</b>\"?"
+    }
+  },
+  "delete": {
+    "submit": "Borrar",
+    "cancel": "Cancelar",
+    "contribution": {
+      "title": "Borrar contribución",
+      "type": "Contribución",
+      "message": "¿Realmente desea eliminar la Contribución \"<b>{name}</b>\" ?",
+      "success": "Contribución eliminada con éxito!"
+    },
+    "comment": {
+      "title": "Eliminar comentario",
+      "type": "Comentario",
+      "message": "¿Realmente quieres borrar el comentario de \"<b>{name}</b>\" ?",
+      "success": "Comentario eliminado con éxito!"
+    }
+  },
+  "report": {
+    "submit": "Informe",
+    "cancel": "Cancelar",
+    "success": "Gracias por informarnos!",
+    "user": {
+      "title": "Usuario de informe",
+      "type": "Usuario",
+      "message": "¿Realmente quieres reportar al usuario \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Informe Contribución",
+      "type": "Contribución",
+      "message": "¿Realmente quieres informar al usuario de la contribución  \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Informe Comentario",
+      "type": "Comentario",
+      "message": "¿Realmente quieres reportar el comentario de \"<b>{name}</b>\"?"
+    }
+  },
+  "followButton": {
+    "follow": "Folgen",
+    "following": "Folge Ich"
+  },
+  "shoutButton": {
+    "shouted": "empfohlen"
+  },
+  "release": {
+    "submit": "Liberación",
+    "cancel": "Cancelar",
+    "success": "Liberar con éxito!",
+    "user": {
+      "title": "Usuario de la versión  ",
+      "type": "Usuario",
+      "message": "¿Realmente quieres liberar al usuario \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Contribución de la versión ",
+      "type": "Contribución",
+      "message": "¿Realmente quieres liberar la contribución \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Comentario de la versión",
+      "type": "Comentario",
+      "message": "¿Realmente quieres liberar el comentario de \"<b>{name}</b>\"?"
+    }
+  },
+  "user": {
+    "avatar": {
+      "submitted": "Carga con éxito"
+    }
   }
 }

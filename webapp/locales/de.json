@@ -19,9 +19,9 @@
   "profile": {
     "name": "Mein Profil",
     "memberSince": "Mitglied seit",
-    "follow": "Folgen",
-    "followers": "Folgen",
-    "following": "Folgt",
+    "follow": "abonnieren",
+    "followers": "Abonnenten",
+    "following": "abonniert",
     "shouted": "Empfohlen",
     "commented": "Kommentiert",
     "userAnonym": "Anonymus",
@@ -91,9 +91,9 @@
     }
   },
   "admin": {
-    "name": "Systemverwaltung",
+    "name": "Admin",
     "dashboard": {
-      "name": "Startzentrale",
+      "name": "Dashboard",
       "users": "Benutzer",
       "posts": "Beiträge",
       "comments": "Kommentare",
@@ -102,7 +102,7 @@
       "projects": "Projekte",
       "invites": "Einladungen",
       "follows": "Folgen",
-      "shouts": "Shouts"
+      "shouts": "Empfehlungen"
     },
     "organizations": {
       "name": "Organisationen"
@@ -261,7 +261,7 @@
   },
   "followButton": {
     "follow": "Folgen",
-    "following": "Folge Ich"
+    "following": "Folge ich"
   },
   "shoutButton": {
     "shouted": "empfohlen"
