@@ -108,6 +108,10 @@ describe('users', () => {
       deleteUserVariables = { id: 'u343' }
     })
 
+    afterEach(async () => {
+      await factory.cleanDatabase()
+    })
+
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
