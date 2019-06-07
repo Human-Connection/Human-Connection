@@ -73,7 +73,9 @@
         </ds-heading>
         <ds-card style="position: relative; height: auto;">
           <ds-space v-if="user.following && user.following.length" margin="x-small">
-            <ds-text tag="h5" color="soft"> {{ userName | truncate(15) }} {{ $t('profile.network.following')}} </ds-text>
+            <ds-text tag="h5" color="soft">
+              {{ userName | truncate(15) }} {{ $t('profile.network.following') }}
+            </ds-text>
           </ds-space>
           <template v-if="user.following && user.following.length">
             <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
@@ -84,18 +86,23 @@
             </ds-space>
             <ds-space v-if="user.followingCount - user.following.length" margin="small">
               <ds-text size="small" color="softer">
-                {{ $t('profile.network.and') }} {{ user.followingCount - user.following.length }} {{ $t('profile.network.more') }}
+                {{ $t('profile.network.and') }} {{ user.followingCount - user.following.length }}
+                {{ $t('profile.network.more') }}
               </ds-text>
             </ds-space>
           </template>
           <template v-else>
-            <p style="text-align: center; opacity: .5;">{{ userName }} {{$t('profile.network.followingNobody')}}</p>
+            <p style="text-align: center; opacity: .5;">
+              {{ userName }} {{ $t('profile.network.followingNobody') }}
+            </p>
           </template>
         </ds-card>
         <ds-space />
         <ds-card style="position: relative; height: auto;">
           <ds-space v-if="user.followedBy && user.followedBy.length" margin="x-small">
-            <ds-text tag="h5" color="soft">{{ userName | truncate(15) }} {{ $t('profile.network.followedBy')}}</ds-text>
+            <ds-text tag="h5" color="soft">
+              {{ userName | truncate(15) }} {{ $t('profile.network.followedBy') }}
+            </ds-text>
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
             <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
@@ -106,12 +113,15 @@
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
               <ds-text size="small" color="softer">
-                {{ $t('profile.network.and') }} {{ user.followedByCount - user.followedBy.length }} {{ $t('profile.network.more') }}
+                {{ $t('profile.network.and') }} {{ user.followedByCount - user.followedBy.length }}
+                {{ $t('profile.network.more') }}
               </ds-text>
             </ds-space>
           </template>
           <template v-else>
-            <p style="text-align: center; opacity: .5;">{{ userName }} {{$t('profile.network.followedByNobody')}}</p>
+            <p style="text-align: center; opacity: .5;">
+              {{ userName }} {{ $t('profile.network.followedByNobody') }}
+            </p>
           </template>
         </ds-card>
         <ds-space v-if="user.socialMedia && user.socialMedia.length" margin="large">
