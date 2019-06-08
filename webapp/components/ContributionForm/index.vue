@@ -2,6 +2,21 @@
   <ds-form ref="contributionForm" v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
       <ds-card>
+        <vue-dropzone
+          :options="dropzoneOptions"
+          ref="el"
+          id="postdropzone"
+          :use-custom-slot="true"
+          @vdropzone-error="verror"
+        >
+          <div class="dz-message" @mouseover="hover = true" @mouseleave="hover = false">
+            <div class="hc-attachments-upload-area">
+              <div class="hc-drag-marker">
+                <ds-icon v-if="hover" name="image" size="xxx-large" />
+              </div>
+            </div>
+          </div>
+        </vue-dropzone>
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
         <no-ssr>
           <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
@@ -20,6 +35,7 @@
             {{ $t('actions.save') }}
           </ds-button>
         </div>
+        <ds-space margin-bottom="large" />
       </ds-card>
     </template>
   </ds-form>
@@ -27,11 +43,13 @@
 
 <script>
 import gql from 'graphql-tag'
+import vueDropzone from 'nuxt-dropzone'
 import HcEditor from '~/components/Editor'
 
 export default {
   components: {
     HcEditor,
+    vueDropzone,
   },
   props: {
     contribution: { type: Object, default: () => {} },
@@ -41,6 +59,7 @@ export default {
       form: {
         title: '',
         content: '',
+        teaserImage: '',
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -51,6 +70,12 @@ export default {
       disabled: false,
       slug: null,
       users: [],
+      dropzoneOptions: {
+        url: this.vddrop,
+        maxFilesize: 5.0,
+        previewTemplate: this.template(),
+      },
+      hover: false,
     }
   },
   watch: {
@@ -103,6 +128,18 @@ export default {
       // this.form.content = value
       this.$refs.contributionForm.update('content', value)
     },
+    template() {
+      return `<div class="dz-preview dz-file-preview">
+                <div class="dz-image">
+                  <div data-dz-thumbnail-bg></div>
+                </div>
+              </div>
+      `
+    },
+    vddrop(file) {
+      this.form.teaserImage = file[0]
+    },
+    verror(file, message) {},
   },
   apollo: {
     User: {
@@ -133,6 +170,63 @@ export default {
     font-weight: bold;
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+#postdropzone {
+  height: 160px;
+  background-color: $background-color-softest;
+}
+
+.hc-attachments-upload-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.hc-drag-marker {
+  position: relative;
+  width: 122px;
+  height: 122px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(0, 0%, 25%);
+  transition: all 0.2s ease-out;
+  font-size: 60px;
+  margin: 20px auto 5px;
+
+  background-color: rgba(255, 255, 255, 0.3);
+  opacity: 0.65;
+
+  &:before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 100%;
+    border: 20px solid rgba(255, 255, 255, 0.4);
+    visibility: hidden;
+  }
+
+  &:after {
+    position: absolute;
+    content: '';
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 100%;
+    border: 1px dashed hsl(0, 0%, 25%);
+  }
+
+  .hc-attachments-upload-area:hover & {
+    opacity: 1;
   }
 }
 </style>
