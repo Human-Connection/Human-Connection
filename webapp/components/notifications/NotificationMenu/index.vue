@@ -1,36 +1,16 @@
 <template>
-  <ds-button
-    v-if="totalNotifications <= 0"
-    class="notifications-menu"
-    disabled
-    icon="bell"
-  >
+  <ds-button v-if="totalNotifications <= 0" class="notifications-menu" disabled icon="bell">
     {{ totalNotifications }}
   </ds-button>
-  <dropdown
-    v-else
-    class="notifications-menu"
-  >
-    <template
-      slot="default"
-      slot-scope="{toggleMenu}"
-    >
-      <ds-button
-        primary
-        icon="bell"
-        @click.prevent="toggleMenu"
-      >
+  <dropdown v-else class="notifications-menu">
+    <template slot="default" slot-scope="{ toggleMenu }">
+      <ds-button primary icon="bell" @click.prevent="toggleMenu">
         {{ totalNotifications }}
       </ds-button>
     </template>
-    <template
-      slot="popover"
-    >
+    <template slot="popover">
       <div class="notifications-menu-popover">
-        <notification-list
-          :notifications="notifications"
-          @markAsRead="markAsRead"
-        />
+        <notification-list :notifications="notifications" @markAsRead="markAsRead" />
       </div>
     </template>
   </dropdown>
@@ -66,12 +46,12 @@ export default {
   name: 'NotificationMenu',
   components: {
     NotificationList,
-    Dropdown
+    Dropdown,
   },
   computed: {
     totalNotifications() {
       return (this.notifications || []).length
-    }
+    },
   },
   methods: {
     async markAsRead(notificationId) {
@@ -79,24 +59,24 @@ export default {
       try {
         await this.$apollo.mutate({
           mutation: MARK_AS_READ,
-          variables
+          variables,
         })
       } catch (err) {
         throw new Error(err)
       }
-    }
+    },
   },
   apollo: {
     notifications: {
       query: NOTIFICATIONS,
       update: data => {
         const {
-          currentUser: { notifications }
+          currentUser: { notifications },
         } = data
         return notifications
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 

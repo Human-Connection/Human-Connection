@@ -17,12 +17,13 @@ before_install:
 
 install:
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --build -d
-  - wait-on http://localhost:7474 && docker-compose exec neo4j migrate
+    # avoid "Database constraints have changed after this transaction started"
+  - wait-on http://localhost:7474
 
 script:
   # Backend
   - docker-compose exec backend yarn run lint
-  - docker-compose exec backend yarn run test:jest --ci --verbose=false
+  - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
   - docker-compose exec backend yarn run test:cucumber
@@ -30,7 +31,7 @@ script:
   - docker-compose exec backend yarn run db:seed
   # Frontend
   - docker-compose exec webapp yarn run lint
-  - docker-compose exec webapp yarn run test --ci --verbose=false
+  - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
   - docker-compose exec -d backend yarn run test:before:seeder
   # Fullstack
   - CYPRESS_RETRIES=1 yarn run cypress:run

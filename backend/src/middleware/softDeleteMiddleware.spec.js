@@ -1,6 +1,6 @@
+import { GraphQLClient } from 'graphql-request'
 import Factory from '../seed/factories'
 import { host, login } from '../jest/helpers'
-import { GraphQLClient } from 'graphql-request'
 
 const factory = Factory()
 let client
@@ -11,32 +11,51 @@ beforeAll(async () => {
   // For performance reasons we do this only once
   await Promise.all([
     factory.create('User', { id: 'u1', role: 'user', email: 'user@example.org', password: '1234' }),
-    factory.create('User', { id: 'm1', role: 'moderator', email: 'moderator@example.org', password: '1234' }),
-    factory.create('User', { id: 'u2', role: 'user', name: 'Offensive Name', avatar: '/some/offensive/avatar.jpg', about: 'This self description is very offensive', email: 'troll@example.org', password: '1234' })
+    factory.create('User', {
+      id: 'm1',
+      role: 'moderator',
+      email: 'moderator@example.org',
+      password: '1234',
+    }),
+    factory.create('User', {
+      id: 'u2',
+      role: 'user',
+      name: 'Offensive Name',
+      avatar: '/some/offensive/avatar.jpg',
+      about: 'This self description is very offensive',
+      email: 'troll@example.org',
+      password: '1234',
+    }),
   ])
 
   await factory.authenticateAs({ email: 'user@example.org', password: '1234' })
   await Promise.all([
     factory.follow({ id: 'u2', type: 'User' }),
     factory.create('Post', { id: 'p1', title: 'Deleted post', deleted: true }),
-    factory.create('Post', { id: 'p3', title: 'Publicly visible post', deleted: false })
+    factory.create('Post', { id: 'p3', title: 'Publicly visible post', deleted: false }),
   ])
 
   await Promise.all([
-    factory.create('Comment', { id: 'c2', postId: 'p3', content: 'Enabled comment on public post' })
+    factory.create('Comment', {
+      id: 'c2',
+      postId: 'p3',
+      content: 'Enabled comment on public post',
+    }),
   ])
 
-  await Promise.all([
-    factory.relate('Comment', 'Author', { from: 'u1', to: 'c2' })
-  ])
+  await Promise.all([factory.relate('Comment', 'Author', { from: 'u1', to: 'c2' })])
 
   const asTroll = Factory()
   await asTroll.authenticateAs({ email: 'troll@example.org', password: '1234' })
-  await asTroll.create('Post', { id: 'p2', title: 'Disabled post', content: 'This is an offensive post content', image: '/some/offensive/image.jpg', deleted: false })
+  await asTroll.create('Post', {
+    id: 'p2',
+    title: 'Disabled post',
+    content: 'This is an offensive post content',
+    image: '/some/offensive/image.jpg',
+    deleted: false,
+  })
   await asTroll.create('Comment', { id: 'c1', postId: 'p3', content: 'Disabled comment' })
-  await Promise.all([
-    asTroll.relate('Comment', 'Author', { from: 'u2', to: 'c1' })
-  ])
+  await Promise.all([asTroll.relate('Comment', 'Author', { from: 'u2', to: 'c1' })])
 
   const asModerator = Factory()
   await asModerator.authenticateAs({ email: 'moderator@example.org', password: '1234' })
@@ -65,7 +84,8 @@ describe('softDeleteMiddleware', () => {
       user = response.User[0].following[0]
     }
     const beforePost = async () => {
-      query = '{ User(id: "u1") { following { contributions { title image content contentExcerpt }  } } }'
+      query =
+        '{ User(id: "u1") { following { contributions { title image content contentExcerpt }  } } }'
       const response = await action()
       post = response.User[0].following[0].contributions[0]
     }
@@ -84,7 +104,8 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforeUser)
 
         it('displays name', () => expect(user.name).toEqual('Offensive Name'))
-        it('displays about', () => expect(user.about).toEqual('This self description is very offensive'))
+        it('displays about', () =>
+          expect(user.about).toEqual('This self description is very offensive'))
         it('displays avatar', () => expect(user.avatar).toEqual('/some/offensive/avatar.jpg'))
       })
 
@@ -92,8 +113,10 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforePost)
 
         it('displays title', () => expect(post.title).toEqual('Disabled post'))
-        it('displays content', () => expect(post.content).toEqual('This is an offensive post content'))
-        it('displays contentExcerpt', () => expect(post.contentExcerpt).toEqual('This is an offensive post content'))
+        it('displays content', () =>
+          expect(post.content).toEqual('This is an offensive post content'))
+        it('displays contentExcerpt', () =>
+          expect(post.contentExcerpt).toEqual('This is an offensive post content'))
         it('displays image', () => expect(post.image).toEqual('/some/offensive/image.jpg'))
       })
 
@@ -101,7 +124,8 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforeComment)
 
         it('displays content', () => expect(comment.content).toEqual('Disabled comment'))
-        it('displays contentExcerpt', () => expect(comment.contentExcerpt).toEqual('Disabled comment'))
+        it('displays contentExcerpt', () =>
+          expect(comment.contentExcerpt).toEqual('Disabled comment'))
       })
     })
 
@@ -162,10 +186,7 @@ describe('softDeleteMiddleware', () => {
         })
 
         it('shows disabled but hides deleted posts', async () => {
-          const expected = [
-            { title: 'Disabled post' },
-            { title: 'Publicly visible post' }
-          ]
+          const expected = [{ title: 'Disabled post' }, { title: 'Publicly visible post' }]
           const { Post } = await action()
           await expect(Post).toEqual(expect.arrayContaining(expected))
         })
@@ -185,9 +206,11 @@ describe('softDeleteMiddleware', () => {
           it('conceals disabled comments', async () => {
             const expected = [
               { content: 'Enabled comment on public post' },
-              { content: 'UNAVAILABLE' }
+              { content: 'UNAVAILABLE' },
             ]
-            const { Post: [{ comments }] } = await action()
+            const {
+              Post: [{ comments }],
+            } = await action()
             await expect(comments).toEqual(expect.arrayContaining(expected))
           })
         })
@@ -201,9 +224,11 @@ describe('softDeleteMiddleware', () => {
           it('shows disabled comments', async () => {
             const expected = [
               { content: 'Enabled comment on public post' },
-              { content: 'Disabled comment' }
+              { content: 'Disabled comment' },
             ]
-            const { Post: [{ comments }] } = await action()
+            const {
+              Post: [{ comments }],
+            } = await action()
             await expect(comments).toEqual(expect.arrayContaining(expected))
           })
         })

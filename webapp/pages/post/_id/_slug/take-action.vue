@@ -1,9 +1,6 @@
 <template>
   <ds-card header="Werde aktiv!">
-    <hc-empty
-      icon="tasks"
-      message="Coming Soon…"
-    />
+    <hc-empty icon="tasks" message="Coming Soon…" />
   </ds-card>
 </template>
 
@@ -12,7 +9,7 @@ import HcEmpty from '~/components/Empty.vue'
 
 export default {
   components: {
-    HcEmpty
-  }
+    HcEmpty,
+  },
 }
 </script>

@@ -1,62 +1,41 @@
-import { GraphQLServer } from 'graphql-yoga'
-import { makeAugmentedSchema } from 'neo4j-graphql-js'
-import { typeDefs, resolvers } from './graphql-schema'
 import express from 'express'
-import dotenv from 'dotenv'
+import helmet from 'helmet'
+import { GraphQLServer } from 'graphql-yoga'
+import CONFIG, { requiredConfigs } from './config'
 import mocks from './mocks'
 import middleware from './middleware'
-import applyDirectives from './bootstrap/directives'
-import applyScalars from './bootstrap/scalars'
 import { getDriver } from './bootstrap/neo4j'
-import helmet from 'helmet'
 import decode from './jwt/decode'
+import schema from './schema'
 
-dotenv.config()
-// check env and warn
-const requiredEnvVars = ['MAPBOX_TOKEN', 'JWT_SECRET', 'PRIVATE_KEY_PASSPHRASE']
-requiredEnvVars.forEach(env => {
-  if (!process.env[env]) {
-    throw new Error(`ERROR: "${env}" env variable is missing.`)
+// check required configs and throw error
+// TODO check this directly in config file - currently not possible due to testsetup
+Object.entries(requiredConfigs).map(entry => {
+  if (!entry[1]) {
+    throw new Error(`ERROR: "${entry[0]}" env variable is missing.`)
   }
 })
 
 const driver = getDriver()
-const debug = process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true'
 
-let schema = makeAugmentedSchema({
-  typeDefs,
-  resolvers,
-  config: {
-    query: {
-      exclude: ['Notfication', 'Statistics', 'LoggedInUser']
-    },
-    mutation: {
-      exclude: ['Notfication', 'Statistics', 'LoggedInUser']
-    },
-    debug: debug
-  }
-})
-schema = applyScalars(applyDirectives(schema))
-
-const createServer = (options) => {
+const createServer = options => {
   const defaults = {
     context: async ({ request }) => {
-      const authorizationHeader = request.headers.authorization || ''
-      const user = await decode(driver, authorizationHeader)
+      const user = await decode(driver, request.headers.authorization)
       return {
         driver,
         user,
         req: request,
         cypherParams: {
-          currentUserId: user ? user.id : null
-        }
+          currentUserId: user ? user.id : null,
+        },
       }
     },
-    schema: schema,
-    debug: debug,
-    tracing: debug,
+    schema,
+    debug: CONFIG.DEBUG,
+    tracing: CONFIG.DEBUG,
     middlewares: middleware(schema),
-    mocks: (process.env.MOCK === 'true') ? mocks : false
+    mocks: CONFIG.MOCKS ? mocks : false,
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 

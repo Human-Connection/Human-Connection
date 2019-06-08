@@ -1,4 +1,4 @@
-import { getters, mutations, actions } from './auth.js'
+import { getters, actions } from './auth.js'
 
 let state
 let commit
@@ -12,14 +12,15 @@ const currentUser = {
   slug: 'jenny-rostock',
   email: 'user@example.org',
   avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
-  role: 'user'
+  role: 'user',
 }
 const successfulLoginResponse = { data: { login: token } }
 const successfulCurrentUserResponse = { data: { currentUser } }
 
+/*
 const incorrectPasswordResponse = {
   data: {
-    login: null
+    login: null,
   },
   errors: [
     {
@@ -27,13 +28,14 @@ const incorrectPasswordResponse = {
       locations: [
         {
           line: 2,
-          column: 3
-        }
+          column: 3,
+        },
       ],
-      path: ['login']
-    }
-  ]
+      path: ['login'],
+    },
+  ],
 }
+*/
 
 beforeEach(() => {
   commit = jest.fn()
@@ -59,9 +61,9 @@ describe('actions', () => {
       const module = {
         app: {
           $apolloHelpers: {
-            getToken: () => token
-          }
-        }
+            getToken: () => token,
+          },
+        },
       }
       action = actions.init.bind(module)
       return action({ commit, dispatch })
@@ -91,9 +93,7 @@ describe('actions', () => {
 
       it('saves the JWT Bearer token', async () => {
         await theAction()
-        expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([['SET_TOKEN', token]])
-        )
+        expect(commit.mock.calls).toEqual(expect.arrayContaining([['SET_TOKEN', token]]))
       })
     })
   })
@@ -105,12 +105,10 @@ describe('actions', () => {
           app: {
             apolloProvider: {
               defaultClient: {
-                query: jest.fn(() =>
-                  Promise.resolve(successfulCurrentUserResponse)
-                )
-              }
-            }
-          }
+                query: jest.fn(() => Promise.resolve(successfulCurrentUserResponse)),
+              },
+            },
+          },
         }
         action = actions.fetchCurrentUser.bind(module)
         await action({ commit })
@@ -126,12 +124,11 @@ describe('actions', () => {
                 name: 'Jenny Rostock',
                 slug: 'jenny-rostock',
                 email: 'user@example.org',
-                avatar:
-                  'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
-                role: 'user'
-              }
-            ]
-          ])
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
+                role: 'user',
+              },
+            ],
+          ]),
         )
       })
     })
@@ -144,19 +141,16 @@ describe('actions', () => {
           app: {
             apolloProvider: {
               defaultClient: {
-                mutate: jest.fn(() => Promise.resolve(successfulLoginResponse))
-              }
+                mutate: jest.fn(() => Promise.resolve(successfulLoginResponse)),
+              },
             },
             $apolloHelpers: {
-              onLogin: jest.fn(() => Promise.resolve())
-            }
-          }
+              onLogin: jest.fn(() => Promise.resolve()),
+            },
+          },
         }
         action = actions.login.bind(module)
-        await action(
-          { commit, dispatch },
-          { email: 'user@example.org', password: '1234' }
-        )
+        await action({ commit, dispatch }, { email: 'user@example.org', password: '1234' })
       })
 
       afterEach(() => {
@@ -164,9 +158,7 @@ describe('actions', () => {
       })
 
       it('saves the JWT Bearer token', () => {
-        expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([['SET_TOKEN', token]])
-        )
+        expect(commit.mock.calls).toEqual(expect.arrayContaining([['SET_TOKEN', token]]))
       })
 
       it('fetches the user', () => {
@@ -175,10 +167,7 @@ describe('actions', () => {
 
       it('saves pending flags in order', () => {
         expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([
-            ['SET_PENDING', true],
-            ['SET_PENDING', false]
-          ])
+          expect.arrayContaining([['SET_PENDING', true], ['SET_PENDING', false]]),
         )
       })
     })
@@ -188,13 +177,13 @@ describe('actions', () => {
       let mutate
 
       beforeEach(() => {
-        mutate = jest.fn(() => Promise.reject('This error is expected.'))
+        mutate = jest.fn(() => Promise.reject('This error is expected.')) // eslint-disable-line prefer-promise-reject-errors
         onLogin = jest.fn(() => Promise.resolve())
         const module = {
           app: {
             apolloProvider: { defaultClient: { mutate } },
-            $apolloHelpers: { onLogin }
-          }
+            $apolloHelpers: { onLogin },
+          },
         }
         action = actions.login.bind(module)
       })
@@ -205,7 +194,7 @@ describe('actions', () => {
 
       it('populates error messages', async () => {
         expect(
-          action({ commit }, { email: 'user@example.org', password: 'wrong' })
+          action({ commit }, { email: 'user@example.org', password: 'wrong' }),
         ).rejects.toThrowError('This error is expected.')
         expect(mutate).toHaveBeenCalled()
         expect(onLogin).not.toHaveBeenCalled()
@@ -213,16 +202,10 @@ describe('actions', () => {
 
       it('saves pending flags in order', async () => {
         try {
-          await action(
-            { commit },
-            { email: 'user@example.org', password: 'wrong' }
-          )
+          await action({ commit }, { email: 'user@example.org', password: 'wrong' })
         } catch (err) {} // ignore
         expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([
-            ['SET_PENDING', true],
-            ['SET_PENDING', false]
-          ])
+          expect.arrayContaining([['SET_PENDING', true], ['SET_PENDING', false]]),
         )
       })
     })

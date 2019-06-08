@@ -1,4 +1,4 @@
-FROM node:10-alpine as base
+FROM node:12.4-alpine as base
 LABEL Description="Backend of the Social Network Human-Connection.org" Vendor="Human Connection gGmbH" Version="0.0.1" Maintainer="Human Connection gGmbH (developer@human-connection.org)"
 
 EXPOSE 4000
@@ -7,6 +7,9 @@ ENV BUILD_COMMIT=$BUILD_COMMIT
 ARG WORKDIR=/nitro-backend
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
+
+RUN apk --no-cache add git
+
 COPY package.json yarn.lock ./
 COPY .env.template .env
 CMD ["yarn", "run", "start"]

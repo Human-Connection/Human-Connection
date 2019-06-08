@@ -1,7 +1,7 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
 
-export default function create (params) {
+export default function create(params) {
   const {
     id = uuid(),
     name = faker.name.findName(),
@@ -10,7 +10,7 @@ export default function create (params) {
     password = '1234',
     role = 'user',
     avatar = faker.internet.avatar(),
-    about = faker.lorem.paragraph()
+    about = faker.lorem.paragraph(),
   } = params
 
   return {
@@ -23,7 +23,7 @@ export default function create (params) {
         $email: String!
         $avatar: String
         $about: String
-        $role: UserGroupEnum
+        $role: UserGroup
       ) {
         CreateUser(
           id: $id
@@ -46,6 +46,6 @@ export default function create (params) {
         }
       }
     `,
-    variables: { id, name, slug, password, email, avatar, about, role }
+    variables: { id, name, slug, password, email, avatar, about, role },
   }
 }

@@ -1,7 +1,7 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
 
-export default function (params) {
+export default function(params) {
   const {
     id = uuid(),
     slug = '',
@@ -11,11 +11,11 @@ export default function (params) {
       faker.lorem.sentence(),
       faker.lorem.sentence(),
       faker.lorem.sentence(),
-      faker.lorem.sentence()
+      faker.lorem.sentence(),
     ].join('. '),
     image = faker.image.image(),
     visibility = 'public',
-    deleted = false
+    deleted = false,
   } = params
 
   return {
@@ -26,7 +26,7 @@ export default function (params) {
         $title: String!
         $content: String!
         $image: String
-        $visibility: VisibilityEnum
+        $visibility: Visibility
         $deleted: Boolean
       ) {
         CreatePost(
@@ -43,6 +43,6 @@ export default function (params) {
         }
       }
     `,
-    variables: { id, slug, title, content, image, visibility, deleted }
+    variables: { id, slug, title, content, image, visibility, deleted },
   }
 }

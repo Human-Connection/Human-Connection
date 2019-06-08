@@ -1,4 +1,7 @@
 {
+  "filter-menu": {
+    "title": "Deine Filterblase"
+  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
@@ -22,7 +25,16 @@
     "shouted": "Empfohlen",
     "commented": "Kommentiert",
     "userAnonym": "Anonymus",
-    "socialMedia": "Wo sonst finde ich"
+    "socialMedia": "Wo sonst finde ich",
+    "network": {
+      "title": "Netzwerk",
+      "following": "folgt:",
+      "followingNobody": "folgt niemandem.",
+      "followedBy": "wird gefolgt von:",
+      "followedByNobody": "wird von niemandem gefolgt.",
+      "and": "und",
+      "more": "weitere"
+    }
   },
   "notifications": {
     "menu": {
@@ -135,9 +147,22 @@
     "takeAction": {
       "name": "Aktiv werden"
     },
+    "menu": {
+      "edit": "Beitrag bearbeiten",
+      "delete": "Beitrag löschen"
+    },
     "comment": {
       "submit": "Kommentiere",
       "submitted": "Kommentar Gesendet"
+    }
+  },
+  "comment": {
+    "content": {
+      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
+    },
+    "menu": {
+      "edit": "Kommentar bearbeiten",
+      "delete": "Kommentar löschen"
     }
   },
   "quotes": {
@@ -147,6 +172,11 @@
     }
   },
   "common": {
+    "your": {
+      "post": "Dein Beitrag ::: Deine Beiträge",
+      "comment": "Dein Kommentar ::: Deine Kommentare",
+      "shout": "Deine Empfehlung ::: Deine Empfehlungen"
+    },
     "post": "Beitrag ::: Beiträge",
     "comment": "Kommentar ::: Kommentare",
     "letsTalk": "Miteinander reden",
@@ -202,6 +232,22 @@
       "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" deaktivieren möchtest?"
     }
   },
+  "delete": {
+    "submit": "Löschen",
+    "cancel": "Abbrechen",
+    "contribution": {
+      "title": "Lösche Beitrag",
+      "type": "Contribution",
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" löschen möchtest?",
+      "success": "Beitrag erfolgreich gelöscht!"
+    },
+    "comment": {
+      "title": "Lösche Kommentar",
+      "type": "Comment",
+      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" löschen möchtest?",
+      "success": "Kommentar erfolgreich gelöscht!"
+    }
+  },
   "report": {
     "submit": "Melden",
     "cancel": "Abbrechen",
@@ -222,22 +268,37 @@
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?"
     }
   },
-  "contribution": {
-    "edit": "Beitrag bearbeiten",
-    "delete": "Beitrag löschen"
-  },
-  "comment": {
-    "edit": "Kommentar bearbeiten",
-    "delete": "Kommentar löschen",
-    "content": {
-      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
-    }
-  },
   "followButton": {
     "follow": "Folgen",
     "following": "Folge Ich"
   },
   "shoutButton": {
     "shouted": "empfohlen"
+  },
+
+  "release": {
+    "submit": "freigeben",
+    "cancel": "Abbrechen",
+    "success": "Erfolgreich freigegeben!",
+    "user": {
+      "title": "Nutzer freigeben",
+      "type": "Nutzer",
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" freigeben möchtest?"
+    },
+    "contribution": {
+      "title": "Beitrag freigeben",
+      "type": "Beitrag",
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" freigeben möchtest?"
+    },
+    "comment": {
+      "title": "Kommentar freigeben",
+      "type": "Kommentar",
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" freigeben möchtest?"
+    }
+  },
+  "user": {
+    "avatar": {
+      "submitted": "Upload erfolgreich"
+    }
   }
 }

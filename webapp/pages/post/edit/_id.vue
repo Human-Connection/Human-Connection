@@ -1,8 +1,5 @@
 <template>
-  <ds-flex
-    :width="{ base: '100%' }"
-    gutter="base"
-  >
+  <ds-flex :width="{ base: '100%' }" gutter="base">
     <ds-flex-item :width="{ base: '100%', md: 3 }">
       <hc-contribution-form :contribution="contribution" />
     </ds-flex-item>
@@ -18,7 +15,7 @@ import HcContributionForm from '~/components/ContributionForm'
 
 export default {
   components: {
-    HcContributionForm
+    HcContributionForm,
   },
   computed: {
     user() {
@@ -29,14 +26,14 @@ export default {
     },
     contribution() {
       return this.Post ? this.Post[0] : {}
-    }
+    },
   },
   watch: {
     contribution() {
       if (this.author.id !== this.user.id) {
         throw new Error(`You can't edit that!`)
       }
-    }
+    },
   },
   apollo: {
     Post: {
@@ -71,11 +68,11 @@ export default {
       },
       variables() {
         return {
-          id: this.$route.params.id || 'p1'
+          id: this.$route.params.id || 'p1',
         }
       },
-      fetchPolicy: 'cache-and-network'
-    }
-  }
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>

@@ -1,8 +1,5 @@
 <template>
-  <ds-space
-    margin="large"
-    style="text-align: center"
-  >
+  <ds-space margin="large" style="text-align: center">
     <ds-button
       :loading="loading"
       :disabled="disabled"
@@ -13,16 +10,9 @@
       @click="toggle"
     />
     <ds-space margin-bottom="xx-small" />
-    <ds-text
-      color="soft"
-      class="shout-button-text"
-    >
-      <ds-heading
-        style="display: inline"
-        tag="h3"
-      >
-        {{ shoutedCount }}x
-      </ds-heading> {{ $t('shoutButton.shouted') }}
+    <ds-text color="soft" class="shout-button-text">
+      <ds-heading style="display: inline" tag="h3">{{ shoutedCount }}x</ds-heading>
+      {{ $t('shoutButton.shouted') }}
     </ds-text>
   </ds-space>
 </template>
@@ -35,13 +25,13 @@ export default {
     count: { type: Number, default: 0 },
     postId: { type: String, default: null },
     isShouted: { type: Boolean, default: false },
-    disabled: { type: Boolean, default: false }
+    disabled: { type: Boolean, default: false },
   },
   data() {
     return {
       loading: false,
       shoutedCount: this.count,
-      shouted: false
+      shouted: false,
     }
   },
   watch: {
@@ -49,8 +39,8 @@ export default {
       immediate: true,
       handler: function(shouted) {
         this.shouted = shouted
-      }
-    }
+      },
+    },
   },
   methods: {
     toggle() {
@@ -60,7 +50,7 @@ export default {
 
       const backup = {
         shoutedCount: this.shoutedCount,
-        shouted: this.shouted
+        shouted: this.shouted,
       }
 
       this.shoutedCount = count
@@ -74,8 +64,8 @@ export default {
             }
           `,
           variables: {
-            id: this.postId
-          }
+            id: this.postId,
+          },
         })
         .then(res => {
           if (res && res.data) {
@@ -89,8 +79,8 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -1,10 +1,8 @@
 import { generateRsaKeyPair } from '../activitypub/security'
 import { activityPub } from '../activitypub/ActivityPub'
 import as from 'activitystrea.ms'
-import dotenv from 'dotenv'
 
 const debug = require('debug')('backend:schema')
-dotenv.config()
 
 export default {
   Mutation: {
@@ -22,13 +20,15 @@ export default {
           .id(`${actorId}/status/${args.activityId}`)
           .actor(`${actorId}`)
           .object(
-            as.article()
+            as
+              .article()
               .id(`${actorId}/status/${post.id}`)
               .content(post.content)
               .to('https://www.w3.org/ns/activitystreams#Public')
               .publishedNow()
-              .attributedTo(`${actorId}`)
-          ).prettyWrite((err, doc) => {
+              .attributedTo(`${actorId}`),
+          )
+          .prettyWrite((err, doc) => {
             if (err) {
               reject(err)
             } else {
@@ -51,6 +51,6 @@ export default {
       Object.assign(args, keys)
       args.actorId = `${activityPub.host}/activitypub/users/${args.slug}`
       return resolve(root, args, context, info)
-    }
-  }
+    },
+  },
 }

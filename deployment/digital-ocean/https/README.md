@@ -32,10 +32,10 @@ Once you are done, apply the configuration:
 $ kubectl apply -f .
 ```
 
-By now, your cluster should have an external IP address assigned. If you visit
-your dashboard, this is how it should look like:
+By now, your cluster should have a load balancer assigned with an external IP
+address. On Digital Ocean, this is how it should look like: 
 
-![Screenshot of the kubernetes dashboard showing the extrenal ip address](./ip-address.png)
+![Screenshot of Digital Ocean dashboard showing external ip address](./ip-address.png)
 
 Check the ingress server is working correctly:
 

@@ -230,7 +230,7 @@ When('I type in the following text:', text => {
 
 Then('the post shows up on the landing page at position {int}', index => {
   cy.openPage('landing')
-  const selector = `:nth-child(${index}) > .ds-card > .ds-card-content`
+  const selector = `.post-card:nth-child(${index}) > .ds-card-content`
   cy.get(selector).should('contain', lastPost.title)
   cy.get(selector).should('contain', lastPost.content)
 })

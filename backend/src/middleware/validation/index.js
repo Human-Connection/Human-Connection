@@ -3,13 +3,11 @@ import { UserInputError } from 'apollo-server'
 const USERNAME_MIN_LENGTH = 3
 
 const validateUsername = async (resolve, root, args, context, info) => {
-  if (args.name && args.name.length >= USERNAME_MIN_LENGTH) {
+  if (!('name' in args) || (args.name && args.name.length >= USERNAME_MIN_LENGTH)) {
     /* eslint-disable-next-line no-return-await */
     return await resolve(root, args, context, info)
   } else {
-    throw new UserInputError(
-      `Username must be at least ${USERNAME_MIN_LENGTH} characters long!`
-    )
+    throw new UserInputError(`Username must be at least ${USERNAME_MIN_LENGTH} characters long!`)
   }
 }
 
@@ -28,9 +26,7 @@ const validateComment = async (resolve, root, args, context, info) => {
   const COMMENT_MIN_LENGTH = 1
   const content = args.content.replace(/<(?:.|\n)*?>/gm, '').trim()
   if (!args.content || content.length < COMMENT_MIN_LENGTH) {
-    throw new UserInputError(
-      `Comment must be at least ${COMMENT_MIN_LENGTH} character long!`
-    )
+    throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
   }
   const NO_POST_ERR_MESSAGE = 'Comment cannot be created without a post!'
   const { postId } = args
@@ -47,6 +43,6 @@ export default {
     UpdateUser: validateUsername,
     CreateSocialMedia: validateUrl,
     CreateComment: validateComment,
-    UpdateComment: validateComment
-  }
+    UpdateComment: validateComment,
+  },
 }

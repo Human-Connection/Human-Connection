@@ -1,32 +1,13 @@
 <template>
-  <dropdown
-    class="content-menu"
-    :placement="placement"
-    offset="5"
-  >
-    <template
-      slot="default"
-      slot-scope="{toggleMenu}"
-    >
-      <slot
-        name="button"
-        :toggleMenu="toggleMenu"
-      >
-        <ds-button
-          class="content-menu-trigger"
-          size="small"
-          ghost
-          @click.prevent="toggleMenu"
-        >
-          <ds-icon name="ellipsis-v" />
+  <dropdown class="content-menu" :placement="placement" offset="5">
+    <template slot="default" slot-scope="{ toggleMenu }">
+      <slot name="button" :toggleMenu="toggleMenu">
+        <ds-button class="content-menu-trigger" size="small" ghost @click.prevent="toggleMenu">
+          <ds-icon name="ellipsis-v"/>
         </ds-button>
       </slot>
     </template>
-    <div
-      slot="popover"
-      slot-scope="{toggleMenu}"
-      class="content-menu-popover"
-    >
+    <div slot="popover" slot-scope="{ toggleMenu }" class="content-menu-popover">
       <ds-menu :routes="routes">
         <ds-menu-item
           slot="menuitem"
@@ -35,7 +16,7 @@
           :parents="item.parents"
           @click.stop.prevent="openItem(item.route, toggleMenu)"
         >
-          <ds-icon :name="item.route.icon" />
+          <ds-icon :name="item.route.icon"/>
           {{ item.route.name }}
         </ds-menu-item>
       </ds-menu>
@@ -47,8 +28,9 @@
 import Dropdown from '~/components/Dropdown'
 
 export default {
+  name: 'ContentMenu',
   components: {
-    Dropdown
+    Dropdown,
   },
   props: {
     placement: { type: String, default: 'top-end' },
@@ -59,8 +41,9 @@ export default {
       required: true,
       validator: value => {
         return value.match(/(contribution|comment|organization|user)/)
-      }
-    }
+      },
+    },
+    callbacks: { type: Object, required: true },
   },
   computed: {
     routes() {
@@ -68,31 +51,40 @@ export default {
 
       if (this.isOwner && this.resourceType === 'contribution') {
         routes.push({
-          name: this.$t(`contribution.edit`),
+          name: this.$t(`post.menu.edit`),
           path: this.$router.resolve({
             name: 'post-edit-id',
             params: {
-              id: this.resource.id
-            }
+              id: this.resource.id,
+            },
           }).href,
-          icon: 'edit'
+          icon: 'edit',
         })
         routes.push({
-          name: this.$t(`post.delete.title`),
+          name: this.$t(`post.menu.delete`),
           callback: () => {
             this.openModal('delete')
           },
-          icon: 'trash'
+          icon: 'trash',
         })
       }
+
       if (this.isOwner && this.resourceType === 'comment') {
         routes.push({
-          name: this.$t(`comment.edit`),
+          name: this.$t(`comment.menu.edit`),
           callback: () => {
             /* eslint-disable-next-line no-console */
+            console.log('EDIT COMMENT')
             this.$emit('showEditCommentMenu', true)
           },
-          icon: 'edit'
+          icon: 'edit',
+        })
+        routes.push({
+          name: this.$t(`comment.menu.delete`),
+          callback: () => {
+            this.openModal('delete')
+          },
+          icon: 'trash',
         })
       }
 
@@ -102,32 +94,42 @@ export default {
           callback: () => {
             this.openModal('report')
           },
-          icon: 'flag'
+          icon: 'flag',
         })
       }
 
       if (!this.isOwner && this.isModerator) {
-        routes.push({
-          name: this.$t(`disable.${this.resourceType}.title`),
-          callback: () => {
-            this.openModal('disable')
-          },
-          icon: 'eye-slash'
-        })
+        if (!this.resource.disabled) {
+          routes.push({
+            name: this.$t(`disable.${this.resourceType}.title`),
+            callback: () => {
+              this.openModal('disable')
+            },
+            icon: 'eye-slash',
+          })
+        } else {
+          routes.push({
+            name: this.$t(`release.${this.resourceType}.title`),
+            callback: () => {
+              this.openModal('release', this.resource.id)
+            },
+            icon: 'eye',
+          })
+        }
       }
 
       if (this.isOwner && this.resourceType === 'user') {
         routes.push({
           name: this.$t(`settings.name`),
           path: '/settings',
-          icon: 'edit'
+          icon: 'edit',
         })
       }
       return routes
     },
     isModerator() {
       return this.$store.getters['auth/isModerator']
-    }
+    },
   },
   methods: {
     openItem(route, toggleMenu) {
@@ -143,11 +145,12 @@ export default {
         name: dialog,
         data: {
           type: this.resourceType,
-          resource: this.resource
-        }
+          resource: this.resource,
+          callbacks: this.callbacks,
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

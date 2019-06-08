@@ -5,16 +5,10 @@
     </ds-heading>
     <ds-flex gutter="small">
       <ds-flex-item :width="{ base: '100%', md: '200px' }">
-        <ds-menu
-          :routes="routes"
-          :is-exact="() => true"
-        />
+        <ds-menu :routes="routes" :is-exact="() => true" />
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', md: 1 }">
-        <transition
-          name="slide-up"
-          appear
-        >
+        <transition name="slide-up" appear>
           <nuxt-child />
         </transition>
       </ds-flex-item>
@@ -29,16 +23,16 @@ export default {
       return [
         {
           name: this.$t('settings.data.name'),
-          path: `/settings`
+          path: `/settings`,
         },
         {
           name: this.$t('settings.security.name'),
-          path: `/settings/security`
+          path: `/settings/security`,
         },
         {
           name: this.$t('settings.social-media.name'),
-          path: `/settings/my-social-media`
-        }
+          path: `/settings/my-social-media`,
+        },
         // TODO implement
         /* {
           name: this.$t('settings.invites.name'),
@@ -66,7 +60,7 @@ export default {
         },
         } */
       ]
-    }
-  }
+    },
+  },
 }
 </script>

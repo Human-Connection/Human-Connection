@@ -4,7 +4,6 @@ import RelativeDateTime from './'
 const localVue = createLocalVue()
 
 describe('RelativeDateTime', () => {
-  let wrapper
   let mocks
   let locale
   let dateTime
@@ -12,8 +11,8 @@ describe('RelativeDateTime', () => {
   beforeEach(() => {
     mocks = {
       $i18n: {
-        locale: () => locale
-      }
+        locale: () => locale,
+      },
     }
   })
 
@@ -22,8 +21,8 @@ describe('RelativeDateTime', () => {
       mocks,
       localVue,
       propsData: {
-        dateTime
-      }
+        dateTime,
+      },
     })
   }
 

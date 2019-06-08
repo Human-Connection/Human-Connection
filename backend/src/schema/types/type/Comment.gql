@@ -1,0 +1,14 @@
+type Comment {
+  id: ID!
+  activityId: String
+  postId: ID
+  author: User @relation(name: "WROTE", direction: "IN")
+  content: String!
+  contentExcerpt: String
+  post: Post @relation(name: "COMMENTS", direction: "OUT")
+  createdAt: String
+  updatedAt: String
+  deleted: Boolean
+  disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
+}

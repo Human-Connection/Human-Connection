@@ -19,7 +19,7 @@ services:
       - GRAPHQL_URI=http://localhost:4000
       - CLIENT_URI=http://localhost:3000
       - JWT_SECRET=b/&&7b78BF&fv/Vd
-      - MOCK=false
+      - MOCKS=false
       - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
       - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
       - NEO4J_apoc_import_file_enabled=true
@@ -30,6 +30,7 @@ services:
       - "MONGODB_AUTH_DB=${MONGODB_AUTH_DB}"
       - "MONGODB_DATABASE=${MONGODB_DATABASE}"
       - "UPLOADS_DIRECTORY=${UPLOADS_DIRECTORY}"
+      - "MONGO_EXPORT_SPLIT_SIZE=${MONGO_EXPORT_SPLIT_SIZE}"
     ports:
       - 7687:7687
       - 7474:7474

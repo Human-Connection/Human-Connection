@@ -1,8 +1,4 @@
-import dotenv from 'dotenv'
-
 import createOrUpdateLocations from './nodes/locations'
-
-dotenv.config()
 
 export default {
   Mutation: {
@@ -15,6 +11,6 @@ export default {
       const result = await resolve(root, args, context, info)
       await createOrUpdateLocations(args.id, args.locationName, context.driver)
       return result
-    }
-  }
+    },
+  },
 }

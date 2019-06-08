@@ -4,80 +4,49 @@
       <p>PROFILE IMAGE</p>
     </ds-card>
     <ds-space />
-    <ds-flex
-      v-if="user"
-      :width="{ base: '100%' }"
-      gutter="base"
-    >
+    <ds-flex v-if="user" :width="{ base: '100%' }" gutter="base">
       <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
         <ds-card
-          :class="{'disabled-content': user.disabled}"
+          :class="{ 'disabled-content': user.disabled }"
           style="position: relative; height: auto;"
         >
-          <ds-avatar
-            :image="user.avatar"
-            :name="userName"
-            class="profile-avatar"
-            size="120px"
-          />
+          <hc-upload v-if="myProfile" :user="user" />
+          <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
           <no-ssr>
             <content-menu
               placement="bottom-end"
               resource-type="user"
               :resource="user"
+              :callbacks="{ confirm: deletePostCallback, cancel: null }"
               :is-owner="myProfile"
               class="user-content-menu"
             />
           </no-ssr>
           <ds-space margin="small">
-            <ds-heading
-              tag="h3"
-              align="center"
-              no-margin
-            >
-              {{ userName }}
-            </ds-heading>
-            <ds-text
-              v-if="user.location"
-              align="center"
-              color="soft"
-              size="small"
-            >
+            <ds-heading tag="h3" align="center" no-margin>{{ userName }}</ds-heading>
+            <ds-text v-if="user.location" align="center" color="soft" size="small">
               <ds-icon name="map-marker" />
               {{ user.location.name }}
             </ds-text>
-            <ds-text
-              align="center"
-              color="soft"
-              size="small"
-            >
+            <ds-text align="center" color="soft" size="small">
               {{ $t('profile.memberSince') }} {{ user.createdAt | date('MMMM yyyy') }}
             </ds-text>
           </ds-space>
-          <ds-space
-            v-if="user.badges && user.badges.length"
-            margin="x-small"
-          >
+          <ds-space v-if="user.badges && user.badges.length" margin="x-small">
             <hc-badges :badges="user.badges" />
           </ds-space>
           <ds-flex>
             <ds-flex-item>
               <no-ssr>
                 <ds-number :label="$t('profile.followers')">
-                  <hc-count-to
-                    slot="count"
-                    :end-val="followedByCount"
-                  />
+                  <hc-count-to slot="count" :end-val="followedByCount" />
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item>
               <no-ssr>
                 <ds-number :label="$t('profile.following')">
-                  <hc-count-to
-                    slot="count"
-                    :end-val="Number(user.followingCount) || 0"
-                  />
+                  <hc-count-to slot="count" :end-val="Number(user.followingCount) || 0" />
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
@@ -87,143 +56,85 @@
               v-if="!myProfile"
               :follow-id="user.id"
               :is-followed="user.followedByCurrentUser"
-              @optimistic="follow => user.followedByCurrentUser = follow"
+              @optimistic="follow => (user.followedByCurrentUser = follow)"
               @update="follow => fetchUser()"
             />
           </ds-space>
           <template v-if="user.about">
-            <hr>
-            <ds-space
-              margin-top="small"
-              margin-bottom="small"
-            >
-              <ds-text
-                color="soft"
-                size="small"
-              >
-                {{ user.about }}
-              </ds-text>
+            <hr />
+            <ds-space margin-top="small" margin-bottom="small">
+              <ds-text color="soft" size="small">{{ user.about }}</ds-text>
             </ds-space>
           </template>
         </ds-card>
         <ds-space />
-        <ds-heading
-          tag="h3"
-          soft
-          style="text-align: center; margin-bottom: 10px;"
-        >
-          Netzwerk
+        <ds-heading tag="h3" soft style="text-align: center; margin-bottom: 10px;">
+          {{ $t('profile.network.title') }}
         </ds-heading>
         <ds-card style="position: relative; height: auto;">
-          <ds-space
-            v-if="user.following && user.following.length"
-            margin="x-small"
-          >
-            <ds-text
-              tag="h5"
-              color="soft"
-            >
-              Wem folgt {{ userName | truncate(15) }}?
+          <ds-space v-if="user.following && user.following.length" margin="x-small">
+            <ds-text tag="h5" color="soft">
+              {{ userName | truncate(15) }} {{ $t('profile.network.following') }}
             </ds-text>
           </ds-space>
           <template v-if="user.following && user.following.length">
-            <ds-space
-              v-for="follow in uniq(user.following)"
-              :key="follow.id"
-              margin="x-small"
-            >
+            <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <no-ssr>
-                <user
-                  :user="follow"
-                  :trunc="15"
-                />
+                <user :user="follow" :trunc="15" />
               </no-ssr>
             </ds-space>
-            <ds-space
-              v-if="user.followingCount - user.following.length"
-              margin="small"
-            >
-              <ds-text
-                size="small"
-                color="softer"
-              >
-                und {{ user.followingCount - user.following.length }} weitere
+            <ds-space v-if="user.followingCount - user.following.length" margin="small">
+              <ds-text size="small" color="softer">
+                {{ $t('profile.network.and') }} {{ user.followingCount - user.following.length }}
+                {{ $t('profile.network.more') }}
               </ds-text>
             </ds-space>
           </template>
           <template v-else>
             <p style="text-align: center; opacity: .5;">
-              {{ userName }} folgt niemandem
+              {{ userName }} {{ $t('profile.network.followingNobody') }}
             </p>
           </template>
         </ds-card>
         <ds-space />
         <ds-card style="position: relative; height: auto;">
-          <ds-space
-            v-if="user.followedBy && user.followedBy.length"
-            margin="x-small"
-          >
-            <ds-text
-              tag="h5"
-              color="soft"
-            >
-              Wer folgt {{ userName | truncate(15) }}?
+          <ds-space v-if="user.followedBy && user.followedBy.length" margin="x-small">
+            <ds-text tag="h5" color="soft">
+              {{ userName | truncate(15) }} {{ $t('profile.network.followedBy') }}
             </ds-text>
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
-            <ds-space
-              v-for="follow in uniq(user.followedBy)"
-              :key="follow.id"
-              margin="x-small"
-            >
+            <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <no-ssr>
-                <user
-                  :user="follow"
-                  :trunc="15"
-                />
+                <user :user="follow" :trunc="15" />
               </no-ssr>
             </ds-space>
-            <ds-space
-              v-if="user.followedByCount - user.followedBy.length"
-              margin="small"
-            >
-              <ds-text
-                size="small"
-                color="softer"
-              >
-                und {{ user.followedByCount - user.followedBy.length }} weitere
+            <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
+              <ds-text size="small" color="softer">
+                {{ $t('profile.network.and') }} {{ user.followedByCount - user.followedBy.length }}
+                {{ $t('profile.network.more') }}
               </ds-text>
             </ds-space>
           </template>
           <template v-else>
             <p style="text-align: center; opacity: .5;">
-              niemand folgt {{ userName }}
+              {{ userName }} {{ $t('profile.network.followedByNobody') }}
             </p>
           </template>
         </ds-card>
-        <ds-space
-          v-if="user.socialMedia && user.socialMedia.length"
-          margin="large"
-        >
+        <ds-space v-if="user.socialMedia && user.socialMedia.length" margin="large">
           <ds-card style="position: relative; height: auto;">
             <ds-space margin="x-small">
-              <ds-text
-                tag="h5"
-                color="soft"
-              >
+              <ds-text tag="h5" color="soft">
                 {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
               </ds-text>
               <template>
-                <ds-space
-                  v-for="link in socialMediaLinks"
-                  :key="link.username"
-                  margin="x-small"
-                >
+                <ds-space v-for="link in socialMediaLinks" :key="link.username" margin="x-small">
                   <a :href="link.url">
                     <ds-avatar :image="link.favicon" />
-                    {{ link.username }}
+                    {{ 'link.username' }}
                   </a>
                 </ds-space>
               </template>
@@ -232,55 +143,72 @@
         </ds-space>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
-        <ds-flex
-          :width="{ base: '100%' }"
-          gutter="small"
-        >
+        <ds-flex :width="{ base: '100%' }" gutter="small">
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ds-flex>
-                <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
+                <ds-flex-item
+                  v-tooltip="{
+                    content: $t('common.your.post', null, user.contributionsCount),
+                    placement: 'right',
+                    delay: { show: 500 },
+                  }"
+                  class="ds-tab-nav-item pointer ds-tab-nav-item-active"
+                  @click="tabActivity('posts', $event)"
+                >
                   <ds-space margin="small">
                     <!-- TODO: find better solution for rendering errors -->
                     <no-ssr>
                       <ds-number :label="$t('common.post', null, user.contributionsCount)">
-                        <hc-count-to
-                          slot="count"
-                          :end-val="user.contributionsCount"
-                        />
+                        <hc-count-to slot="count" :end-val="user.contributionsCount" />
                       </ds-number>
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
-                <!-- TODO: find better solution for rendering errors -->
-                <!--
+                <ds-flex-item
+                  v-tooltip="{
+                    content: $t('common.your.comment', null, user.commentsCount),
+                    placement: 'right',
+                    delay: { show: 500 },
+                  }"
+                  class="ds-tab-nav-item pointer"
+                  @click="tabActivity('commented', $event)"
+                >
+                  <ds-space margin="small">
+                    <!-- TODO: find better solution for rendering errors -->
+
                     <no-ssr>
                       <ds-number :label="$t('profile.commented')">
-                        <hc-count-to slot="count" :end-val="user.commentsCount"/>
+                        <hc-count-to slot="count" :end-val="user.commentsCount" />
                       </ds-number>
                     </no-ssr>
                   </ds-space>
                 </ds-flex-item>
-                -->
-                <!--<ds-flex-item class="ds-tab-nav-item">
-                <ds-space margin="small">-->
-                <!-- TODO: find better solution for rendering errors -->
-                <!--<no-ssr>
+
+                <ds-flex-item
+                  v-tooltip="{
+                    content: $t('common.your.shout', null, user.shoutedCount),
+                    placement: 'right',
+                    delay: { show: 500 },
+                  }"
+                  class="ds-tab-nav-item pointer"
+                >
+                  <ds-space margin="small">
+                    <!-- TODO: find better solution for rendering errors -->
+                    <no-ssr>
                       <ds-number :label="$t('profile.shouted')">
-                        <hc-count-to slot="count" :end-val="user.shoutedCount"/>
+                        <hc-count-to slot="count" :end-val="user.shoutedCount" />
                       </ds-number>
                     </no-ssr>
                   </ds-space>
-                </ds-flex-item>-->
+                </ds-flex-item>
               </ds-flex>
             </ds-card>
           </ds-flex-item>
           <ds-flex-item style="text-align: center">
             <ds-button
               v-if="myProfile"
-              v-tooltip="{content: 'Create a new Post', placement: 'left', delay: { show: 500 }}"
+              v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
               :path="{ name: 'post-create' }"
               class="profile-post-add-button"
               icon="plus"
@@ -289,28 +217,21 @@
             />
           </ds-flex-item>
           <template v-if="activePosts.length">
-            <ds-flex-item
-              v-for="post in activePosts"
+            <hc-post-card
+              v-for="(post, index) in activePosts"
               :key="post.id"
+              :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-            >
-              <hc-post-card :post="post" />
-            </ds-flex-item>
+              @deletePost="user.contributions.splice(index, 1)"
+            />
           </template>
           <template v-else>
             <ds-flex-item :width="{ base: '100%' }">
-              <hc-empty
-                margin="xx-large"
-                icon="file"
-              />
+              <hc-empty margin="xx-large" icon="file" />
             </ds-flex-item>
           </template>
         </ds-flex>
-        <hc-load-more
-          v-if="hasMore"
-          :loading="$apollo.loading"
-          @click="showMoreContributions"
-        />
+        <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -327,6 +248,9 @@ import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
+import HcUpload from '~/components/Upload'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
+import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
   components: {
@@ -337,18 +261,21 @@ export default {
     HcBadges,
     HcLoadMore,
     HcEmpty,
-    ContentMenu
+    HcAvatar,
+    ContentMenu,
+    HcUpload,
   },
+  mixins: [PostMutationHelpers],
   transition: {
     name: 'slide-up',
-    mode: 'out-in'
+    mode: 'out-in',
   },
   data() {
     return {
       User: [],
       voted: false,
       page: 1,
-      pageSize: 6
+      pageSize: 6,
     }
   },
   computed: {
@@ -367,8 +294,7 @@ export default {
     },
     hasMore() {
       return (
-        this.user.contributions &&
-        this.user.contributions.length < this.user.contributionsCount
+        this.user.contributions && this.user.contributions.length < this.user.contributionsCount
       )
     },
     activePosts() {
@@ -381,9 +307,7 @@ export default {
       const { socialMedia = [] } = this.user
       return socialMedia.map(socialMedia => {
         const { url } = socialMedia
-        const matches = url.match(
-          /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:\/\n?]+)/g
-        )
+        const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g)
         const [domain] = matches || []
         const favicon = domain ? `${domain}/favicon.ico` : null
         const username = url.split('/').pop()
@@ -393,14 +317,14 @@ export default {
     userName() {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
-    }
+    },
   },
   watch: {
     User(val) {
       if (!val || !val.length) {
         throw new Error('User not found!')
       }
-    }
+    },
   },
   methods: {
     uniq(items, field = 'id') {
@@ -418,20 +342,20 @@ export default {
         variables: {
           slug: this.$route.params.slug,
           first: this.pageSize,
-          offset: this.offset
+          offset: this.offset,
         },
         // Transform the previous result with new data
         updateQuery: (previousResult, { fetchMoreResult }) => {
           let output = { User: this.User }
           output.User[0].contributions = [
             ...previousResult.User[0].contributions,
-            ...fetchMoreResult.User[0].contributions
+            ...fetchMoreResult.User[0].contributions,
           ]
           return output
         },
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
       })
-    }
+    },
   },
   apollo: {
     User: {
@@ -442,17 +366,25 @@ export default {
         return {
           slug: this.$route.params.slug,
           first: this.pageSize,
-          offset: 0
+          offset: 0,
         }
       },
-      fetchPolicy: 'cache-and-network'
-    }
-  }
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>
 
 <style lang="scss">
-.profile-avatar {
+.pointer {
+  cursor: pointer;
+}
+
+.ds-tab-nav .ds-card-content .ds-tab-nav-item:hover {
+  border-bottom: 3px solid #c9c6ce;
+}
+
+.profile-avatar.ds-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;

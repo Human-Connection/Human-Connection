@@ -1,41 +1,30 @@
 <template>
-  <transition
-    name="fade"
-    appear
-  >
+  <transition name="fade" appear>
     <ds-card
       v-if="post && ready"
       :image="post.image"
-      :class="{'post-card': true, 'disabled-content': post.disabled}"
+      :class="{ 'post-card': true, 'disabled-content': post.disabled }"
     >
       <ds-space margin-bottom="small" />
-      <hc-user
-        :user="post.author"
-        :date-time="post.createdAt"
-      />
+      <hc-user :user="post.author" :date-time="post.createdAt" />
       <no-ssr>
         <content-menu
           placement="bottom-end"
           resource-type="contribution"
           :resource="post"
+          :callbacks="{ confirm: () => deletePostCallback('page'), cancel: null }"
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
-      <ds-heading
-        tag="h3"
-        no-margin
-      >
+      <ds-heading tag="h3" no-margin>
         {{ post.title }}
       </ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
-      <div
-        class="content hc-editor-content"
-        v-html="post.content"
-      />
+      <div class="content hc-editor-content" v-html="post.content" />
       <!-- eslint-enable vue/no-v-html -->
       <ds-space margin="xx-large" />
       <!-- Categories -->
@@ -44,23 +33,16 @@
         <hc-category
           v-for="category in post.categories"
           :key="category.id"
-          v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
+          v-tooltip="{ content: category.name, placement: 'top-start', delay: { show: 300 } }"
           :icon="category.icon"
           :name="category.name"
         />
       </div>
       <ds-space margin-bottom="small" />
       <!-- Tags -->
-      <div
-        v-if="post.tags && post.tags.length"
-        class="tags"
-      >
+      <div v-if="post.tags && post.tags.length" class="tags">
         <ds-space margin="xx-small" />
-        <hc-tag
-          v-for="tag in post.tags"
-          :key="tag.id"
-          :name="tag.name"
-        />
+        <hc-tag v-for="tag in post.tags" :key="tag.id" :name="tag.name" />
       </div>
       <!-- Shout Button -->
       <hc-shout-button
@@ -70,30 +52,6 @@
         :is-shouted="post.shoutedByCurrentUser"
         :post-id="post.id"
       />
-      <!-- Categories -->
-      <ds-icon
-        v-for="category in post.categories"
-        :key="category.id"
-        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
-        :name="category.icon"
-        size="large"
-      />&nbsp;
-      <ds-space margin-bottom="small" />
-      <!-- Tags -->
-      <template v-if="post.tags && post.tags.length">
-        <ds-space margin="xx-small" />
-        <div class="tags">
-          <ds-icon name="tags" />
-          <ds-tag
-            v-for="tag in post.tags"
-            :key="tag.id"
-          >
-            <ds-icon name="tag" />
-            {{ tag.name }}
-          </ds-tag>
-        </div>
-      </template>
-      <ds-space margin="small" />
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list :post="post" />
@@ -114,11 +72,13 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
+import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
+  name: 'PostSlug',
   transition: {
     name: 'slide-up',
-    mode: 'out-in'
+    mode: 'out-in',
   },
   components: {
     HcTag,
@@ -127,31 +87,32 @@ export default {
     HcShoutButton,
     ContentMenu,
     HcCommentForm,
-    HcCommentList
+    HcCommentList,
   },
+  mixins: [PostMutationHelpers],
   head() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   data() {
     return {
       post: null,
       ready: false,
-      title: 'loading'
+      title: 'loading',
     }
   },
   watch: {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
-    }
+    },
   },
   async asyncData(context) {
     const {
       params,
       error,
-      app: { apolloProvider, $i18n }
+      app: { apolloProvider, $i18n },
     } = context
     const client = apolloProvider.defaultClient
     const query = gql(`
@@ -230,7 +191,7 @@ export default {
     `)
     const variables = { slug: params.slug }
     const {
-      data: { Post }
+      data: { Post },
     } = await client.query({ query, variables })
     if (Post.length <= 0) {
       // TODO: custom 404 error page with translations
@@ -240,7 +201,7 @@ export default {
     const [post] = Post
     return {
       post,
-      title: post.title
+      title: post.title,
     }
   },
   mounted() {
@@ -253,8 +214,8 @@ export default {
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
-    }
-  }
+    },
+  },
 }
 </script>
 

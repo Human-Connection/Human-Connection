@@ -1,98 +1,101 @@
 <template>
-  <ds-card
-    :header="post.title"
-    :image="post.image"
-    :class="{'post-card': true, 'disabled-content': post.disabled}"
-  >
-    <nuxt-link
-      class="post-link"
-      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
-    >
-      {{ post.title }}
-    </nuxt-link>
-    <!-- eslint-disable vue/no-v-html -->
-    <!-- TODO: replace editor content with tiptap render view -->
-    <ds-space margin-bottom="large">
-      <div
-        class="hc-editor-content"
-        v-html="excerpt"
-      />
-    </ds-space>
-    <!-- eslint-enable vue/no-v-html -->
-    <ds-space>
-      <ds-text
-        v-if="post.createdAt"
-        align="right"
-        size="small"
-        color="soft"
+  <ds-flex-item :width="width">
+    <ds-card :image="post.image" :class="{ 'post-card': true, 'disabled-content': post.disabled }">
+      <!-- Post Link Target -->
+      <nuxt-link
+        class="post-link"
+        :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
       >
-        {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
-      </ds-text>
-    </ds-space>
-    <ds-space
-      margin="small"
-      style="position: absolute; bottom: 44px;"
-    >
-      <!-- TODO: find better solution for rendering errors -->
-      <no-ssr>
-        <hc-user
-          :user="post.author"
-          :trunc="35"
-        />
-      </no-ssr>
-    </ds-space>
-    <template slot="footer">
-      <div style="display: inline-block; opacity: .5;">
-        <ds-icon
-          v-for="category in post.categories"
-          :key="category.id"
-          v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
-          :name="category.icon"
-        />&nbsp;
-      </div>
-      <div style="display: inline-block; float: right">
-        <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
-          <ds-icon name="bullhorn" />
-          <small>{{ post.shoutedCount }}</small>
-        </span>
-        &nbsp;
-        <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-          <ds-icon name="comments" />
-          <small>{{ post.commentsCount }}</small>
-        </span>
+        {{ post.title }}
+      </nuxt-link>
+      <ds-space margin-bottom="small" />
+      <!-- Username, Image & Date of Post -->
+      <div>
         <no-ssr>
-          <content-menu
-            resource-type="contribution"
-            :resource="post"
-            :is-owner="isAuthor"
-          />
+          <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
         </no-ssr>
+        <hc-ribbon :text="$t('post.name')" />
       </div>
-    </template>
-  </ds-card>
+      <ds-space margin-bottom="small" />
+      <!-- Post Title -->
+      <ds-heading tag="h3" no-margin>
+        {{ post.title }}
+      </ds-heading>
+      <ds-space margin-bottom="small" />
+      <!-- Post Content Excerpt -->
+      <!-- eslint-disable vue/no-v-html -->
+      <!-- TODO: replace editor content with tiptap render view -->
+      <div class="hc-editor-content" v-html="excerpt" />
+      <!-- eslint-enable vue/no-v-html -->
+      <!-- Footer o the Post -->
+      <template slot="footer">
+        <div style="display: inline-block; opacity: .5;">
+          <!-- Categories -->
+          <hc-category
+            v-for="category in post.categories"
+            :key="category.id"
+            v-tooltip="{ content: category.name, placement: 'bottom-start', delay: { show: 500 } }"
+            :icon="category.icon"
+          />
+        </div>
+        <no-ssr>
+          <div style="display: inline-block; float: right">
+            <!-- Shouts Count -->
+            <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
+              <ds-icon name="bullhorn" />
+              <small>{{ post.shoutedCount }}</small>
+            </span>
+            &nbsp;
+            <!-- Comments Count -->
+            <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
+              <ds-icon name="comments" />
+              <small>{{ post.commentsCount }}</small>
+            </span>
+            <!-- Menu -->
+            <content-menu
+              resource-type="contribution"
+              :resource="post"
+              :callbacks="{ confirm: deletePostCallback, cancel: null }"
+              :is-owner="isAuthor"
+            />
+          </div>
+        </no-ssr>
+      </template>
+    </ds-card>
+  </ds-flex-item>
 </template>
 
 <script>
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
-import { randomBytes } from 'crypto'
+import HcCategory from '~/components/Category'
+import HcRibbon from '~/components/Ribbon'
+// import { randomBytes } from 'crypto'
 import { mapGetters } from 'vuex'
+import PostMutationHelpers from '~/mixins/PostMutationHelpers'
 
 export default {
   name: 'HcPostCard',
   components: {
     HcUser,
-    ContentMenu
+    HcCategory,
+    HcRibbon,
+    ContentMenu,
   },
+  mixins: [PostMutationHelpers],
   props: {
     post: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
+    width: {
+      type: Object,
+      default: () => {},
+    },
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
+      user: 'auth/user',
     }),
     excerpt() {
       return this.$filters.removeLinks(this.post.contentExcerpt)
@@ -101,8 +104,8 @@ export default {
       const { author } = this.post
       if (!author) return false
       return this.user.id === this.post.author.id
-    }
-  }
+    },
+  },
 }
 </script>
 

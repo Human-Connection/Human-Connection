@@ -1,22 +1,15 @@
 <template>
-  <ds-space
-    class="hc-empty"
-    centered
-    :margin="margin"
-  >
+  <ds-space class="hc-empty" centered :margin="margin">
     <ds-text>
-      <hc-image
-        :image-props="{ src: imgSrc }"
+      <img
+        :src="iconPath"
         width="80"
         class="hc-empty-icon"
         style="margin-bottom: 5px"
         alt="Empty"
-      /><br>
-      <ds-text
-        v-show="message"
-        class="hc-empty-message"
-        color="softer"
-      >
+      />
+      <br />
+      <ds-text v-show="message" class="hc-empty-message" color="softer">
         {{ message }}
       </ds-text>
     </ds-text>
@@ -24,12 +17,8 @@
 </template>
 
 <script>
-import HcImage from '~/components/Image'
 export default {
   name: 'HcEmpty',
-  components: {
-    HcImage
-  },
   props: {
     /**
      * Icon that should be shown
@@ -40,28 +29,28 @@ export default {
       required: true,
       validator: value => {
         return value.match(/(messages|events|alert|tasks|docs|file)/)
-      }
+      },
     },
     /**
      * Message that appears under the icon
      */
     message: {
       type: String,
-      default: null
+      default: null,
     },
     /**
      * Vertical spacing
      */
     margin: {
       type: [String, Object],
-      default: 'x-large'
-    }
+      default: 'x-large',
+    },
   },
   computed: {
-    imgSrc() {
+    iconPath() {
       return `/img/empty/${this.icon}.svg`
-    }
-  }
+    },
+  },
 }
 </script>
 

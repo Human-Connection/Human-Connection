@@ -6,7 +6,7 @@ just apply our provided configuration files to your cluster.
 
 ## Configuration
 
-Copy our provided templates:
+Change into the `./deployment` directory and copy our provided templates:
 
 ```bash
 # in folder deployment/human-connection/
@@ -14,7 +14,7 @@ $ cp templates/secrets.template.yaml ./secrets.yaml
 $ cp templates/configmap.template.yaml ./configmap.yaml
 ```
 
-Change the `configmap.yaml` as needed, all variables will be available as
+Change the `configmap.yaml` in the `./deployment/human-connection` directory as needed, all variables will be available as
 environment variables in your deployed kubernetes pods.
 
 Probably you want to change this environment variable to your actual domain:
@@ -28,7 +28,7 @@ If you want to edit secrets, you have to `base64` encode them. See [kubernetes d
 
 ```bash
 # example how to base64 a string:
-$ echo -n 'admin' | base64 --wrap 0
+$ echo -n 'admin' | base64
 YWRtaW4=
 ```
 
@@ -38,7 +38,7 @@ your deployed kubernetes pods.
 ## Create a namespace
 
 ```bash
-# in folder deployment/human-connection/
+# in folder deployment/
 $ kubectl apply -f namespace.yaml
 ```
 

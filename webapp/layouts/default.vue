@@ -3,11 +3,7 @@
     <div class="main-navigation">
       <ds-container class="main-navigation-container">
         <div class="main-navigation-left">
-          <a
-            v-router-link
-            style="display: inline-flex"
-            href="/"
-          >
+          <a v-router-link style="display: inline-flex" href="/">
             <ds-logo />
           </a>
         </div>
@@ -24,11 +20,7 @@
         </div>
         <div class="main-navigation-right">
           <no-ssr>
-            <locale-switch
-              class="topbar-locale-switch"
-              placement="bottom"
-              offset="23"
-            />
+            <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
           </no-ssr>
           <template v-if="isLoggedIn">
             <no-ssr>
@@ -36,47 +28,32 @@
             </no-ssr>
             <no-ssr>
               <dropdown class="avatar-menu">
-                <template
-                  slot="default"
-                  slot-scope="{toggleMenu}"
-                >
+                <template slot="default" slot-scope="{ toggleMenu }">
                   <a
                     class="avatar-menu-trigger"
-                    :href="$router.resolve({name: 'profile-id-slug', params: {id: user.id, slug: user.slug}}).href"
+                    :href="
+                      $router.resolve({
+                        name: 'profile-id-slug',
+                        params: { id: user.id, slug: user.slug },
+                      }).href
+                    "
                     @click.prevent="toggleMenu"
                   >
-                    <ds-avatar
-                      :image="user.avatar"
-                      :name="user.name"
-                      size="small"
-                    />
-                    <ds-icon
-                      size="xx-small"
-                      name="angle-down"
-                    />
+                    <hc-avatar :user="user" />
+                    <ds-icon size="xx-small" name="angle-down" />
                   </a>
                 </template>
-                <template
-                  slot="popover"
-                  slot-scope="{closeMenu}"
-                >
+                <template slot="popover" slot-scope="{ closeMenu }">
                   <div class="avatar-menu-popover">
                     {{ $t('login.hello') }}
                     <b>{{ userName }}</b>
                     <template v-if="user.role !== 'user'">
-                      <ds-text
-                        color="softer"
-                        size="small"
-                        style="margin-bottom: 0"
-                      >
+                      <ds-text color="softer" size="small" style="margin-bottom: 0">
                         {{ user.role | camelCase }}
                       </ds-text>
                     </template>
-                    <hr>
-                    <ds-menu
-                      :routes="routes"
-                      :matcher="matcher"
-                    >
+                    <hr />
+                    <ds-menu :routes="routes" :matcher="matcher">
                       <ds-menu-item
                         slot="menuitem"
                         slot-scope="item"
@@ -88,11 +65,8 @@
                         {{ item.route.name }}
                       </ds-menu-item>
                     </ds-menu>
-                    <hr>
-                    <nuxt-link
-                      class="logout-link"
-                      :to="{ name: 'logout'}"
-                    >
+                    <hr />
+                    <nuxt-link class="logout-link" :to="{ name: 'logout' }">
                       <ds-icon name="sign-out" />
                       {{ $t('login.logout') }}
                     </nuxt-link>
@@ -123,6 +97,7 @@ import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
+import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
 
 export default {
@@ -131,13 +106,13 @@ export default {
     LocaleSwitch,
     SearchInput,
     Modal,
-    LocaleSwitch,
-    NotificationMenu
+    NotificationMenu,
+    HcAvatar,
   },
   mixins: [seo],
   data() {
     return {
-      mobileSearchVisible: false
+      mobileSearchVisible: false,
     }
   },
   computed: {
@@ -147,7 +122,7 @@ export default {
       isModerator: 'auth/isModerator',
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
-      quickSearchPending: 'search/quickPending'
+      quickSearchPending: 'search/quickPending',
     }),
     userName() {
       const { name } = this.user || {}
@@ -161,41 +136,41 @@ export default {
         {
           name: this.$t('profile.name'),
           path: `/profile/${this.user.slug}`,
-          icon: 'user'
+          icon: 'user',
         },
         {
           name: this.$t('settings.name'),
           path: `/settings`,
-          icon: 'cogs'
-        }
+          icon: 'cogs',
+        },
       ]
       if (this.isModerator) {
         routes.push({
           name: this.$t('moderation.name'),
           path: `/moderation`,
-          icon: 'balance-scale'
+          icon: 'balance-scale',
         })
       }
       if (this.isAdmin) {
         routes.push({
           name: this.$t('admin.name'),
           path: `/admin`,
-          icon: 'shield'
+          icon: 'shield',
         })
       }
       return routes
-    }
+    },
   },
   methods: {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
-      quickSearch: 'search/quickSearch'
+      quickSearch: 'search/quickSearch',
     }),
     goToPost(item) {
       this.$nextTick(() => {
         this.$router.push({
           name: 'post-id-slug',
-          params: { id: item.id, slug: item.slug }
+          params: { id: item.id, slug: item.slug },
         })
       })
     },
@@ -205,8 +180,8 @@ export default {
         return this.$route.path === url
       }
       return this.$route.path.indexOf(url) === 0
-    }
-  }
+    },
+  },
 }
 </script>
 

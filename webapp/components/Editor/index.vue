@@ -1,10 +1,6 @@
 <template>
   <div class="editor">
-    <div
-      v-show="showSuggestions"
-      ref="suggestions"
-      class="suggestion-list"
-    >
+    <div v-show="showSuggestions" ref="suggestions" class="suggestion-list">
       <template v-if="hasResults">
         <div
           v-for="(user, index) in filteredUsers"
@@ -16,10 +12,7 @@
           @{{ user.slug }}
         </div>
       </template>
-      <div
-        v-else
-        class="suggestion-list__item is-empty"
-      >
+      <div v-else class="suggestion-list__item is-empty">
         No users found
       </div>
     </div>
@@ -154,10 +147,7 @@
         </ds-button>
       </div>
     </editor-floating-menu>
-    <editor-content
-      ref="editor"
-      :editor="editor"
-    />
+    <editor-content ref="editor" :editor="editor" />
   </div>
 </template>
 
@@ -166,12 +156,7 @@ import linkify from 'linkify-it'
 import stringHash from 'string-hash'
 import Fuse from 'fuse.js'
 import tippy from 'tippy.js'
-import {
-  Editor,
-  EditorContent,
-  EditorFloatingMenu,
-  EditorMenuBubble
-} from 'tiptap'
+import { Editor, EditorContent, EditorFloatingMenu, EditorMenuBubble } from 'tiptap'
 import EventHandler from './plugins/eventHandler.js'
 import {
   Heading,
@@ -187,7 +172,7 @@ import {
   Strike,
   Underline,
   Link,
-  History
+  History,
 } from 'tiptap-extensions'
 import Mention from './nodes/Mention.js'
 
@@ -197,12 +182,12 @@ export default {
   components: {
     EditorContent,
     EditorFloatingMenu,
-    EditorMenuBubble
+    EditorMenuBubble,
   },
   props: {
     users: { type: Array, default: () => [] },
     value: { type: String, default: '' },
-    doc: { type: Object, default: () => {} }
+    doc: { type: Object, default: () => {} },
   },
   data() {
     return {
@@ -227,7 +212,7 @@ export default {
           new ListItem(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
-            emptyNodeText: this.$t('editor.placeholder')
+            emptyNodeText: this.$t('editor.placeholder'),
           }),
           new History(),
           new Mention({
@@ -290,16 +275,16 @@ export default {
               }
               const fuse = new Fuse(items, {
                 threshold: 0.2,
-                keys: ['slug']
+                keys: ['slug'],
               })
               return fuse.search(query)
-            }
-          })
+            },
+          }),
         ],
         onUpdate: e => {
           clearTimeout(throttleInputEvent)
           throttleInputEvent = setTimeout(() => this.onUpdate(e), 300)
-        }
+        },
       }),
       linkUrl: null,
       linkMenuIsActive: false,
@@ -308,7 +293,7 @@ export default {
       filteredUsers: [],
       navigatedUserIndex: 0,
       insertMention: () => {},
-      observer: null
+      observer: null,
     }
   },
   computed: {
@@ -317,7 +302,7 @@ export default {
     },
     showSuggestions() {
       return this.query || this.hasResults
-    }
+    },
   },
   watch: {
     value: {
@@ -329,25 +314,31 @@ export default {
         }
         this.lastValueHash = contentHash
         this.editor.setContent(content)
-      }
-    }
+      },
+    },
+  },
+  mounted() {
+    this.$root.$on('changeLanguage', () => {
+      this.changePlaceHolderText()
+    })
   },
   beforeDestroy() {
     this.editor.destroy()
   },
   methods: {
+    changePlaceHolderText() {
+      this.editor.extensions.options.placeholder.emptyNodeText = this.$t('editor.placeholder')
+    },
     // navigate to the previous item
     // if it's the first item, navigate to the last one
     upHandler() {
       this.navigatedUserIndex =
-        (this.navigatedUserIndex + this.filteredUsers.length - 1) %
-        this.filteredUsers.length
+        (this.navigatedUserIndex + this.filteredUsers.length - 1) % this.filteredUsers.length
     },
     // navigate to the next item
     // if it's the last item, navigate to the first one
     downHandler() {
-      this.navigatedUserIndex =
-        (this.navigatedUserIndex + 1) % this.filteredUsers.length
+      this.navigatedUserIndex = (this.navigatedUserIndex + 1) % this.filteredUsers.length
     },
     enterHandler() {
       const user = this.filteredUsers[this.navigatedUserIndex]
@@ -363,8 +354,8 @@ export default {
         attrs: {
           // TODO: use router here
           url: `/profile/${user.id}`,
-          label: user.slug
-        }
+          label: user.slug,
+        },
       })
       this.editor.focus()
     },
@@ -384,7 +375,7 @@ export default {
         duration: [400, 200],
         showOnInit: true,
         arrow: true,
-        arrowType: 'round'
+        arrowType: 'round',
       })
       // we have to update tippy whenever the DOM is updated
       if (MutationObserver) {
@@ -394,7 +385,7 @@ export default {
         this.observer.observe(this.$refs.suggestions, {
           childList: true,
           subtree: true,
-          characterData: true
+          characterData: true,
         })
       }
     },
@@ -440,7 +431,7 @@ export default {
       if (links) {
         // add valid link
         command({
-          href: links.pop().url
+          href: links.pop().url,
         })
         this.hideLinkMenu()
         this.editor.focus()
@@ -451,8 +442,8 @@ export default {
     },
     clear() {
       this.editor.clearContent(true)
-    }
-  }
+    },
+  },
 }
 </script>
 

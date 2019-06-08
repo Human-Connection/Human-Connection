@@ -1,13 +1,10 @@
-import { config, mount, createLocalVue, createWrapper } from '@vue/test-utils'
+import { mount, createLocalVue, createWrapper } from '@vue/test-utils'
 import CommentForm from './index.vue'
-import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
-
-config.stubs['no-ssr'] = '<span><slot /></span>'
 
 describe('CommentForm.vue', () => {
   let mocks
@@ -17,24 +14,24 @@ describe('CommentForm.vue', () => {
   let cancelMethodSpy
 
   beforeEach(() => {
-    ;(mocks = {
+    mocks = {
       $t: jest.fn(),
       $apollo: {
         mutate: jest
           .fn()
           .mockResolvedValueOnce({
-            data: { CreateComment: { contentExcerpt: 'this is a comment' } }
+            data: { CreateComment: { contentExcerpt: 'this is a comment' } },
           })
-          .mockRejectedValue({ message: 'Ouch!' })
+          .mockRejectedValue({ message: 'Ouch!' }),
       },
       $toast: {
         error: jest.fn(),
-        success: jest.fn()
-      }
-    }),
-      (propsData = {
-        post: { id: 1 }
-      })
+        success: jest.fn(),
+      },
+    }
+    propsData = {
+      post: { id: 1 },
+    }
   })
 
   describe('mount', () => {

@@ -1,20 +1,7 @@
 <template>
-  <div
-    :class="[
-      (badges.length === 2) && 'hc-badges-dual'
-    ]"
-    class="hc-badges"
-  >
-    <div
-      v-for="badge in badges"
-      :key="badge.key"
-      class="hc-badge-container"
-    >
-      <hc-image
-        :title="badge.key"
-        :image-props="{ src: badge.icon}"
-        class="hc-badge"
-      />
+  <div :class="[badges.length === 2 && 'hc-badges-dual']" class="hc-badges">
+    <div v-for="badge in badges" :key="badge.key" class="hc-badge-container">
+      <hc-image :title="badge.key" :image-props="{ src: badge.icon }" class="hc-badge" />
     </div>
   </div>
 </template>
@@ -23,14 +10,14 @@
 import HcImage from './Image'
 export default {
   components: {
-    HcImage
+    HcImage,
   },
   props: {
     badges: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 }
 </script>
 

@@ -12,8 +12,8 @@ describe('Tag', () => {
     return shallowMount(Tag, {
       localVue,
       propsData: {
-        name
-      }
+        name,
+      },
     })
   }
 

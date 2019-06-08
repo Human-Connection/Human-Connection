@@ -1,13 +1,14 @@
 import jwt from 'jsonwebtoken'
+import CONFIG from './../config'
 
 export default async (driver, authorizationHeader) => {
   if (!authorizationHeader) return null
   const token = authorizationHeader.replace('Bearer ', '')
   let id = null
   try {
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+    const decoded = await jwt.verify(token, CONFIG.JWT_SECRET)
     id = decoded.sub
-  } catch {
+  } catch (err) {
     return null
   }
   const session = driver.session()
@@ -18,13 +19,13 @@ export default async (driver, authorizationHeader) => {
   `
   const result = await session.run(query, { id })
   session.close()
-  const [currentUser] = await result.records.map((record) => {
+  const [currentUser] = await result.records.map(record => {
     return record.get('user')
   })
   if (!currentUser) return null
   if (currentUser.disabled) return null
   return {
     token,
-    ...currentUser
+    ...currentUser,
   }
 }

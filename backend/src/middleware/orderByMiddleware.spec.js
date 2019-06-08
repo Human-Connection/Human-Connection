@@ -1,6 +1,6 @@
+import { GraphQLClient } from 'graphql-request'
 import Factory from '../seed/factories'
 import { host } from '../jest/helpers'
-import { GraphQLClient } from 'graphql-request'
 
 let client
 let headers
@@ -35,7 +35,7 @@ describe('Query', () => {
           { title: 'last' },
           { title: 'third' },
           { title: 'second' },
-          { title: 'first' }
+          { title: 'first' },
         ]
         const expected = { Post: posts }
         await expect(client.request(query)).resolves.toEqual(expected)
@@ -51,7 +51,7 @@ describe('Query', () => {
             { title: 'first' },
             { title: 'second' },
             { title: 'third' },
-            { title: 'last' }
+            { title: 'last' },
           ]
           const expected = { Post: posts }
           await expect(client.request(query)).resolves.toEqual(expected)

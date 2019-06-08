@@ -1,9 +1,7 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
 import CommentList from '.'
 import Empty from '~/components/Empty'
-import Vue from 'vue'
 import Vuex from 'vuex'
-import Filters from '~/plugins/vue-filters'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
@@ -24,21 +22,28 @@ describe('CommentList.vue', () => {
   let data
 
   propsData = {
-    post: { id: 1 }
+    post: { id: 1 },
   }
   store = new Vuex.Store({
     getters: {
       'auth/user': () => {
         return {}
-      }
-    }
+      },
+    },
   })
   mocks = {
-    $t: jest.fn()
+    $t: jest.fn(),
+    $apollo: {
+      queries: {
+        Post: {
+          refetch: jest.fn(),
+        },
+      },
+    },
   }
   data = () => {
     return {
-      comments: []
+      comments: [],
     }
   }
 
@@ -50,7 +55,7 @@ describe('CommentList.vue', () => {
     beforeEach(() => {
       wrapper = Wrapper()
       wrapper.setData({
-        comments: [{ id: 'c1', contentExcerpt: 'this is a comment' }]
+        comments: [{ id: 'c1', contentExcerpt: 'this is a comment' }],
       })
     })
 
@@ -64,6 +69,11 @@ describe('CommentList.vue', () => {
 
     it('displays comments when there are comments to display', () => {
       expect(wrapper.find('div#comments').text()).toEqual('this is a comment')
+    })
+
+    it("refetches a post's comments from the backend", () => {
+      wrapper.vm.refetchPostComments()
+      expect(mocks.$apollo.queries.Post.refetch).toHaveBeenCalledTimes(1)
     })
   })
 })

@@ -1,6 +1,6 @@
+import { GraphQLClient } from 'graphql-request'
 import Factory from '../seed/factories'
 import { host, login } from '../jest/helpers'
-import { GraphQLClient } from 'graphql-request'
 
 const factory = Factory()
 
@@ -10,12 +10,12 @@ describe('authorization', () => {
       await factory.create('User', {
         email: 'owner@example.org',
         name: 'Owner',
-        password: 'iamtheowner'
+        password: 'iamtheowner',
       })
       await factory.create('User', {
         email: 'someone@example.org',
         name: 'Someone else',
-        password: 'else'
+        password: 'else',
       })
     })
 
@@ -39,14 +39,14 @@ describe('authorization', () => {
           await expect(action()).rejects.toThrow('Not Authorised!')
         })
 
-        it('does not expose the owner\'s email address', async () => {
+        it("does not expose the owner's email address", async () => {
           let response = {}
           try {
             await action()
           } catch (error) {
             response = error.response.data
           } finally {
-            expect(response).toEqual({ User: [ null ] })
+            expect(response).toEqual({ User: [null] })
           }
         })
       })
@@ -55,12 +55,12 @@ describe('authorization', () => {
         beforeEach(() => {
           loginCredentials = {
             email: 'owner@example.org',
-            password: 'iamtheowner'
+            password: 'iamtheowner',
           }
         })
 
-        it('exposes the owner\'s email address', async () => {
-          await expect(action()).resolves.toEqual({ User: [ { email: 'owner@example.org' } ] })
+        it("exposes the owner's email address", async () => {
+          await expect(action()).resolves.toEqual({ User: [{ email: 'owner@example.org' }] })
         })
       })
 
@@ -68,7 +68,7 @@ describe('authorization', () => {
         beforeEach(async () => {
           loginCredentials = {
             email: 'someone@example.org',
-            password: 'else'
+            password: 'else',
           }
         })
 
@@ -76,14 +76,14 @@ describe('authorization', () => {
           await expect(action()).rejects.toThrow('Not Authorised!')
         })
 
-        it('does not expose the owner\'s email address', async () => {
+        it("does not expose the owner's email address", async () => {
           let response
           try {
             await action()
           } catch (error) {
             response = error.response.data
           }
-          expect(response).toEqual({ User: [ null ] })
+          expect(response).toEqual({ User: [null] })
         })
       })
     })

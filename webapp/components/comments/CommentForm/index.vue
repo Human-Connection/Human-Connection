@@ -1,38 +1,18 @@
 <template>
-  <ds-form
-    v-model="form"
-    @submit="handleSubmit"
-  >
+  <ds-form v-model="form" @submit="handleSubmit">
     <template slot-scope="{ errors }">
       <ds-card>
-        <no-ssr>
-          <hc-editor
-            ref="editor"
-            :users="users"
-            :value="form.content"
-            @input="updateEditorContent"
-          />
-        </no-ssr>
+        <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
         <ds-space />
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }">
-            <ds-button
-              :disabled="disabled"
-              ghost
-              class="cancelBtn"
-              @click.prevent="clear"
-            >
+            <ds-button :disabled="disabled" ghost class="cancelBtn" @click.prevent="clear">
               {{ $t('actions.cancel') }}
             </ds-button>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '40%', xs: '40%' }">
-            <ds-button
-              type="submit"
-              :loading="loading"
-              :disabled="disabled || errors"
-              primary
-            >
+            <ds-button type="submit" :loading="loading" :disabled="disabled || errors" primary>
               {{ $t('post.comment.submit') }}
             </ds-button>
           </ds-flex-item>
@@ -48,20 +28,20 @@ import HcEditor from '~/components/Editor'
 
 export default {
   components: {
-    HcEditor
+    HcEditor,
   },
   props: {
     post: { type: Object, default: () => {} },
-    comments: { type: Array, default: () => [] }
+    comments: { type: Array, default: () => [] },
   },
   data() {
     return {
       disabled: true,
       loading: false,
       form: {
-        content: ''
+        content: '',
       },
-      users: []
+      users: [],
     }
   },
   methods: {
@@ -92,8 +72,8 @@ export default {
           `,
           variables: {
             postId: this.post.id,
-            content: this.form.content
-          }
+            content: this.form.content,
+          },
         })
         .then(res => {
           this.loading = false
@@ -105,7 +85,7 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
         })
-    }
+    },
   },
   apollo: {
     User: {
@@ -119,8 +99,8 @@ export default {
       },
       result(result) {
         this.users = result.data.User
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>

@@ -1,29 +1,19 @@
 <template>
-  <dropdown
-    ref="menu"
-    :placement="placement"
-    :offset="offset"
-  >
+  <dropdown ref="menu" :placement="placement" :offset="offset">
     <a
       slot="default"
-      slot-scope="{toggleMenu}"
+      slot-scope="{ toggleMenu }"
       class="locale-menu"
       href="#"
       @click.prevent="toggleMenu()"
     >
-      <ds-icon
-        style="margin-right: 2px;"
-        name="globe"
-      /> {{ current.code.toUpperCase() }}
-      <ds-icon
-        style="margin-left: 2px"
-        size="xx-small"
-        name="angle-down"
-      />
+      <ds-icon style="margin-right: 2px;" name="globe" />
+      {{ current.code.toUpperCase() }}
+      <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
     </a>
     <ds-menu
       slot="popover"
-      slot-scope="{toggleMenu}"
+      slot-scope="{ toggleMenu }"
       class="locale-menu-popover"
       :matcher="matcher"
       :routes="routes"
@@ -49,15 +39,15 @@ import orderBy from 'lodash/orderBy'
 
 export default {
   components: {
-    Dropdown
+    Dropdown,
   },
   props: {
     placement: { type: String, default: 'bottom-start' },
-    offset: { type: [String, Number], default: '16' }
+    offset: { type: [String, Number], default: '16' },
   },
   data() {
     return {
-      locales: orderBy(process.env.locales, 'name')
+      locales: orderBy(process.env.locales, 'name'),
     }
   },
   computed: {
@@ -68,21 +58,22 @@ export default {
       let routes = this.locales.map(locale => {
         return {
           name: locale.name,
-          path: locale.code
+          path: locale.code,
         }
       })
       return routes
-    }
+    },
   },
   methods: {
     changeLanguage(locale, toggleMenu) {
       this.$i18n.set(locale)
       toggleMenu()
+      this.$root.$emit('changeLanguage')
     },
     matcher(locale) {
       return locale === this.$i18n.locale()
-    }
-  }
+    },
+  },
 }
 </script>
 

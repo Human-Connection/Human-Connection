@@ -1,15 +1,65 @@
-CALL apoc.load.json('file:/tmp/mongo-export/splits/current-chunk.json') YIELD value as json
+/*
+// Alpha Model
+// [ ] Not modeled in Nitro
+// [X] Modeled in Nitro
+// [-] Omitted in Nitro
+// [?] Unclear / has work to be done for Nitro
+    {
+[?]   userId: {
+[X]     type: String,
+[ ]     required: true, // Not required in Nitro
+[-]     index: true
+      },
+[?]   contributionId: {
+[X]     type: String,
+[ ]     required: true, // Not required in Nitro
+[-]     index: true
+      },
+[X]   content: {
+[X]     type: String,
+[X]     required: true
+      },
+[?]   contentExcerpt: { // Generated from content
+[X]     type: String,
+[ ]     required: true // Not required in Nitro
+      },
+[ ]   hasMore: { type: Boolean },
+[ ]   upvotes: {
+[ ]     type: Array,
+[ ]     default: []
+      },
+[ ]   upvoteCount: {
+[ ]     type: Number,
+[ ]     default: 0
+      },
+[?]   deleted: {
+[X]     type: Boolean,
+[ ]     default: false, // Default value is missing in Nitro
+[-]     index: true
+      },
+[ ]   createdAt: {
+[ ]     type: Date,
+[ ]     default: Date.now
+      },
+[ ]   updatedAt: {
+[ ]     type: Date,
+[ ]     default: Date.now
+      },
+[ ]   wasSeeded: { type: Boolean }
+    }
+*/
 
-MERGE (comment:Comment {id: json._id["$oid"]})
+CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL_FILE}") YIELD value as comment
+MERGE (c:Comment {id: comment._id["$oid"]})
 ON CREATE SET
-comment.content        = json.content,
-comment.contentExcerpt = json.contentExcerpt,
-comment.deleted        = json.deleted,
-comment.disabled       = false
-WITH comment, json, json.contributionId as postId
+c.content        = comment.content,
+c.contentExcerpt = comment.contentExcerpt,
+c.deleted        = comment.deleted,
+c.disabled       = false
+WITH c, comment, comment.contributionId as postId
 MATCH (post:Post {id: postId})
-WITH comment, post, json.userId as userId
+WITH c, post, comment.userId as userId
 MATCH (author:User {id: userId})
-MERGE (comment)-[:COMMENTS]->(post)
-MERGE (author)-[:WROTE]->(comment)
+MERGE (c)-[:COMMENTS]->(post)
+MERGE (author)-[:WROTE]->(c)
 ;
