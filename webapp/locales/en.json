@@ -73,13 +73,14 @@
     "download": {
       "name": "Download Data"
     },
-    "delete": {
+    "deleteUserAccount": {
       "name": "Delete my User Account",
-      "countPosts": "Delete my {count} posts",
-      "countComments": "Delete my {count} comments",
-      "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete those you have to mark them below.",
+      "contributionsCount": "Delete my {count} posts",
+      "commentsCount": "Delete my {count} comments",
+      "accountDescription": "Be aware that your Post and Comments are important to our community. If you still want to delete them, you have to choose so below.",
       "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts... after deleting your account!",
-      "success": "Account successfully deleted"
+      "success": "Account successfully deleted",
+      "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
     },
     "organizations": {
       "name": "My Organizations"

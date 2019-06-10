@@ -3,11 +3,11 @@
     <ds-heading tag="h1">{{ $t('settings.name') }}</ds-heading>
     <ds-flex gutter="small">
       <ds-flex-item :width="{ base: '100%', md: '200px' }">
-        <ds-menu :routes="routes" :is-exact="() => true" />
+        <ds-menu :routes="routes" :is-exact="() => true"/>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', md: 1 }">
         <transition name="slide-up" appear>
-          <nuxt-child />
+          <nuxt-child/>
         </transition>
       </ds-flex-item>
     </ds-flex>
@@ -32,7 +32,7 @@ export default {
           path: `/settings/my-social-media`,
         },
         {
-          name: this.$t('settings.delete.name'),
+          name: this.$t('settings.deleteUserAccount.name'),
           path: `/settings/delete-account`,
         },
         // TODO implement

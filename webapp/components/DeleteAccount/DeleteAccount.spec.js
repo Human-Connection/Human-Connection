@@ -16,6 +16,12 @@ describe('DeleteAccount.vue', () => {
   let getters
   let actions
   let deleteAccountBtn
+  let enableDeletionInput
+  let enablePostDeletionInput
+  let enableCommentDeletionInput
+  const deleteAccountName = 'Delete MyAccount'
+  const deletePostsMessage = 'Delete my 2 posts'
+  const deleteCommentsMessage = 'Delete my 3 comments'
 
   beforeEach(() => {
     mocks = {
@@ -44,7 +50,7 @@ describe('DeleteAccount.vue', () => {
     }
     getters = {
       'auth/user': () => {
-        return { id: 'u343' }
+        return { id: 'u343', name: deleteAccountName, contributionsCount: 2, commentsCount: 3 }
       },
     }
     actions = { 'auth/logout': jest.fn() }
@@ -87,7 +93,8 @@ describe('DeleteAccount.vue', () => {
 
     describe('calls the delete user mutation', () => {
       beforeEach(() => {
-        wrapper.setData({ deleteEnabled: true })
+        enableDeletionInput = wrapper.find('.enable-deletion-input input')
+        enableDeletionInput.setValue(deleteAccountName)
         deleteAccountBtn = wrapper.find('.ds-button-danger')
       })
 
@@ -104,7 +111,9 @@ describe('DeleteAccount.vue', () => {
       })
 
       it("deletes a user's posts if requested", () => {
-        wrapper.setData({ deleteContributions: true })
+        mocks.$t.mockImplementation(() => deletePostsMessage)
+        enablePostDeletionInput = wrapper.find('.enable-post-deletion-input input')
+        enablePostDeletionInput.setValue(deletePostsMessage)
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -117,7 +126,9 @@ describe('DeleteAccount.vue', () => {
       })
 
       it("deletes a user's comments if requested", () => {
-        wrapper.setData({ deleteComments: true })
+        mocks.$t.mockImplementation(() => deleteCommentsMessage)
+        enableCommentDeletionInput = wrapper.find('.enable-comment-deletion-input input')
+        enableCommentDeletionInput.setValue(deleteCommentsMessage)
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -130,7 +141,12 @@ describe('DeleteAccount.vue', () => {
       })
 
       it("deletes a user's posts and comments if requested", () => {
-        wrapper.setData({ deleteContributions: true, deleteComments: true })
+        mocks.$t.mockImplementation(() => deletePostsMessage)
+        enablePostDeletionInput = wrapper.find('.enable-post-deletion-input input')
+        enablePostDeletionInput.setValue(deletePostsMessage)
+        mocks.$t.mockImplementation(() => deleteCommentsMessage)
+        enableCommentDeletionInput = wrapper.find('.enable-comment-deletion-input input')
+        enableCommentDeletionInput.setValue(deleteCommentsMessage)
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -155,7 +171,8 @@ describe('DeleteAccount.vue', () => {
 
     describe('error handling', () => {
       it('shows an error toaster when the mutation rejects', async () => {
-        wrapper.setData({ deleteEnabled: true })
+        enableDeletionInput = wrapper.find('.enable-deletion-input input')
+        enableDeletionInput.setValue(deleteAccountName)
         deleteAccountBtn = wrapper.find('.ds-button-danger')
         await deleteAccountBtn.trigger('click')
         // second submission causes mutation to reject

@@ -1,70 +1,95 @@
 <template>
   <div>
     <ds-card hover>
-      <ds-space />
+      <ds-space/>
       <ds-container>
         <ds-flex>
           <ds-flex-item :width="{ base: '100%', sm: 0.75, md: 0.5, lg: 0.5 }">
-            <ds-icon name="warning" size="xxx-large" class="delete-warning-icon" />
+            <ds-icon name="warning" size="xxx-large" class="delete-warning-icon"/>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: 5.25, md: 2.75, lg: 5.5 }">
-            <ds-heading>{{ $t('settings.delete.name') }}</ds-heading>
+            <ds-heading>{{ $t('settings.deleteUserAccount.name') }}</ds-heading>
           </ds-flex-item>
-          <ds-space />
-          <ds-heading tag="h4">{{ $t('settings.delete.accountDescription') }}</ds-heading>
+          <ds-space/>
+          <ds-heading tag="h4">{{ $t('settings.deleteUserAccount.accountDescription') }}</ds-heading>
         </ds-flex>
       </ds-container>
-      <ds-space />
+      <ds-space/>
       <ds-container>
         <transition name="slide-up">
           <div v-if="deleteEnabled">
-            <div class="field">
-              <div class="control">
-                <b-checkbox
-                  type="is-danger"
-                  :disabled="!currentUser.contributionsCount"
-                  v-model="deleteContributions"
-                >
-                  {{ $t('settings.delete.countPosts', { count: currentUser.contributionsCount }) }}
-                </b-checkbox>
-              </div>
-            </div>
-            <div class="field">
-              <div class="control">
-                <b-checkbox
-                  type="is-danger"
-                  :disabled="!currentUser.commentsCount"
-                  v-model="deleteComments"
-                >
-                  {{ $t('settings.delete.countComments', { count: currentUser.commentsCount }) }}
-                </b-checkbox>
-              </div>
-            </div>
+            <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
+              <ds-flex-item
+                v-if="currentUser.contributionsCount"
+                :width="{ base: '100%', sm: '100%', md: '100%', lg: '100%' }"
+              >
+                <div
+                  class="delete-input-label"
+                  v-html="
+                    $t('settings.deleteUserAccount.pleaseConfirm', {
+                      confirm: $t('settings.deleteUserAccount.contributionsCount', {
+                        count: currentUser.contributionsCount,
+                      }),
+                    })
+                  "
+                ></div>
+                <ds-input
+                  v-model="deleteContributionsValue"
+                  @input="enableDeletion"
+                  class="enable-post-deletion-input"
+                />
+              </ds-flex-item>
+            </ds-flex>
+            <ds-space margin-top="xx-small"/>
+            <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
+              <ds-flex-item
+                v-if="currentUser.commentsCount"
+                :width="{ base: '100%', sm: '100%', md: '100%', lg: '100%' }"
+              >
+                <div
+                  class="delete-input-label"
+                  v-html="
+                    $t('settings.deleteUserAccount.pleaseConfirm', {
+                      confirm: $t('settings.deleteUserAccount.commentsCount', {
+                        count: currentUser.commentsCount,
+                      }),
+                    })
+                  "
+                ></div>
+                <ds-input
+                  v-model="deleteCommentsValue"
+                  @input="enableDeletion"
+                  class="enable-comment-deletion-input"
+                />
+              </ds-flex-item>
+            </ds-flex>
             <div class="message is-danger">
-              <div class="message-body" v-html="$t('settings.delete.accountWarning')"></div>
+              <div class="message-body" v-html="$t('settings.deleteUserAccount.accountWarning')"></div>
             </div>
           </div>
         </transition>
       </ds-container>
       <template slot="footer">
         <ds-container>
-          <ds-flex>
-            <ds-flex-item :width="{ base: '60%', sm: 1.25, md: 1.25, lg: 1.75 }">
-              <div class="columns is-mobile">
-                <div class="column">
-                  <b-switch type="is-danger" v-model="deleteEnabled"></b-switch>
-                </div>
-              </div>
+          <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
+            <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1.75 }">
+              <div
+                class="delete-input-label"
+                v-html="$t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name })"
+              ></div>
+              <ds-input
+                v-model="enableDeletionValue"
+                @input="enableDeletion"
+                class="enable-deletion-input"
+              />
             </ds-flex-item>
-            <ds-flex-item :width="{ base: '60%', sm: 2.75, md: 2.75, lg: 1 }">
+            <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1 }">
               <ds-button
                 icon="trash"
                 danger
                 :disabled="isLoading || !deleteEnabled"
                 @click="handleSubmit"
-              >
-                {{ $t('settings.delete.name') }}
-              </ds-button>
+              >{{ $t('settings.deleteUserAccount.name') }}</ds-button>
             </ds-flex-item>
           </ds-flex>
         </ds-container>
@@ -84,6 +109,9 @@ export default {
       deleteComments: false,
       deleteEnabled: false,
       isLoading: false,
+      enableDeletionValue: '',
+      deleteContributionsValue: '',
+      deleteCommentsValue: '',
     }
   },
   computed: {
@@ -95,6 +123,28 @@ export default {
     ...mapActions({
       logout: 'auth/logout',
     }),
+    enableDeletion() {
+      if (this.enableDeletionValue === this.currentUser.name) {
+        this.deleteEnabled = true
+        this.focused = false
+      }
+      if (
+        this.deleteContributionsValue ===
+        this.$t('settings.deleteUserAccount.contributionsCount', {
+          count: this.currentUser.contributionsCount,
+        })
+      ) {
+        this.deleteContributions = true
+      }
+      if (
+        this.deleteCommentsValue ===
+        this.$t('settings.deleteUserAccount.commentsCount', {
+          count: this.currentUser.commentsCount,
+        })
+      ) {
+        this.deleteComments = true
+      }
+    },
     handleSubmit() {
       let resourceArgs = []
       if (this.deleteContributions) {
@@ -115,7 +165,7 @@ export default {
           variables: { id: this.currentUser.id, resource: resourceArgs },
         })
         .then(() => {
-          this.$toast.success(this.$t('settings.delete.success'))
+          this.$toast.success(this.$t('settings.deleteUserAccount.success'))
           this.logout()
           this.$router.history.push('/')
         })
@@ -129,5 +179,28 @@ export default {
 <style lang="scss">
 .delete-warning-icon {
   color: $color-danger;
+}
+
+.enable-deletion-input input:focus,
+.enable-post-deletion-input input:focus,
+.enable-comment-deletion-input input:focus {
+  border-color: $border-color-danger;
+}
+
+.ds-button-danger {
+  margin-top: 1.55rem;
+}
+
+.delete-input-label {
+  font-size: $font-size-base;
+}
+
+b.is-danger {
+  color: $text-color-danger;
+}
+
+.ds-card-footer {
+  border-top: $border-size-base solid $border-color-softest;
+  background-color: $background-color-warning-inverse;
 }
 </style>
