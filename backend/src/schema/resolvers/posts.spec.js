@@ -19,7 +19,7 @@ afterEach(async () => {
 describe('CreatePost', () => {
   const mutation = `
     mutation {
-      CreatePost(title: "I am a title", content: "Some content") {
+      CreatePost(title: "I am a title", content: "Some content", language: "en") {
         title
         content
         slug
@@ -72,6 +72,22 @@ describe('CreatePost', () => {
       it('initially false', async () => {
         const expected = { CreatePost: { disabled: false, deleted: false } }
         await expect(client.request(mutation)).resolves.toMatchObject(expected)
+      })
+    })
+
+    describe('language', () => {
+      it('allows a user to set the language of the post', async () => {
+        const createPostWithLanguageMutation = `
+          mutation {
+            CreatePost(title: "I am a title", content: "Some content", language: "en") {
+              language
+            }
+          }
+        `
+        const expected = { CreatePost: { language: 'en' } }
+        await expect(client.request(createPostWithLanguageMutation)).resolves.toEqual(
+          expect.objectContaining(expected),
+        )
       })
     })
   })

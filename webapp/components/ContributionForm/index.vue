@@ -6,6 +6,12 @@
         <no-ssr>
           <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
         </no-ssr>
+        <ds-select
+          model="language"
+          :options="form.languageOptions"
+          icon="globe"
+          :placeholder="locale"
+        />
         <div slot="footer" style="text-align: right">
           <ds-button :disabled="loading || disabled" ghost @click.prevent="$router.back()">
             {{ $t('actions.cancel') }}
@@ -28,6 +34,7 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor'
+import orderBy from 'lodash/orderBy'
 
 export default {
   components: {
@@ -41,6 +48,18 @@ export default {
       form: {
         title: '',
         content: '',
+        language: null,
+        locales: orderBy(process.env.locales, 'name'),
+        languageOptions: [
+          {
+            label: 'Deutsch',
+            value: 'de',
+          },
+          {
+            label: 'English',
+            value: 'en',
+          },
+        ],
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -67,11 +86,17 @@ export default {
       },
     },
   },
+  computed: {
+    locale() {
+      let locale
+      locale = this.form.locales.find(this.returnLocaleName)
+      return locale.name
+    },
+  },
   methods: {
     submit() {
       const postMutations = require('~/graphql/PostMutations.js').default(this)
       this.loading = true
-
       this.$apollo
         .mutate({
           mutation: this.id ? postMutations.UpdatePost : postMutations.CreatePost,
@@ -79,6 +104,7 @@ export default {
             id: this.id,
             title: this.form.title,
             content: this.form.content,
+            language: this.form.language ? this.form.language.value : this.$i18n.locale(),
           },
         })
         .then(res => {
@@ -102,6 +128,11 @@ export default {
     updateEditorContent(value) {
       // this.form.content = value
       this.$refs.contributionForm.update('content', value)
+    },
+    returnLocaleName(locale) {
+      if (this.$i18n.locale() === locale.code) {
+        return locale
+      }
     },
   },
   apollo: {
