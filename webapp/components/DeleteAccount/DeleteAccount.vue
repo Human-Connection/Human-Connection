@@ -20,21 +20,22 @@
       <ds-container>
         <transition name="slide-up">
           <div v-if="deleteEnabled">
+            <div
+              class="delete-input-label"
+              v-html="
+                $t('settings.deleteUserAccount.pleaseConfirm', {
+                  confirm: $t('settings.deleteUserAccount.contributionsCount', {
+                    count: currentUser.contributionsCount,
+                  }),
+                })
+              "
+            ></div>
+            <ds-space margin-bottom="xx-small" />
             <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
               <ds-flex-item
                 v-if="currentUser.contributionsCount"
                 :width="{ base: '100%', sm: '100%', md: '100%', lg: '100%' }"
               >
-                <div
-                  class="delete-input-label"
-                  v-html="
-                    $t('settings.deleteUserAccount.pleaseConfirm', {
-                      confirm: $t('settings.deleteUserAccount.contributionsCount', {
-                        count: currentUser.contributionsCount,
-                      }),
-                    })
-                  "
-                ></div>
                 <ds-input
                   v-model="deleteContributionsValue"
                   @input="enableDeletion"
@@ -42,22 +43,23 @@
                 />
               </ds-flex-item>
             </ds-flex>
-            <ds-space margin-top="xx-small" />
+            <ds-space margin-bottom="xx-small" />
+            <div
+              class="delete-input-label"
+              v-html="
+                $t('settings.deleteUserAccount.pleaseConfirm', {
+                  confirm: $t('settings.deleteUserAccount.commentsCount', {
+                    count: currentUser.commentsCount,
+                  }),
+                })
+              "
+            ></div>
+            <ds-space margin-bottom="xx-small" />
             <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
               <ds-flex-item
                 v-if="currentUser.commentsCount"
                 :width="{ base: '100%', sm: '100%', md: '100%', lg: '100%' }"
               >
-                <div
-                  class="delete-input-label"
-                  v-html="
-                    $t('settings.deleteUserAccount.pleaseConfirm', {
-                      confirm: $t('settings.deleteUserAccount.commentsCount', {
-                        count: currentUser.commentsCount,
-                      }),
-                    })
-                  "
-                ></div>
                 <ds-input
                   v-model="deleteCommentsValue"
                   @input="enableDeletion"
@@ -75,14 +77,13 @@
       </ds-container>
       <template slot="footer">
         <ds-container>
+          <div
+            class="delete-input-label"
+            v-html="$t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name })"
+          ></div>
+          <ds-space margin-bottom="xx-small" />
           <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1.75 }">
-              <div
-                class="delete-input-label"
-                v-html="
-                  $t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name })
-                "
-              ></div>
               <ds-input
                 v-model="enableDeletionValue"
                 @input="enableDeletion"
@@ -193,10 +194,6 @@ export default {
 .enable-post-deletion-input input:focus,
 .enable-comment-deletion-input input:focus {
   border-color: $border-color-danger;
-}
-
-.ds-button-danger {
-  margin-top: 1.55rem;
 }
 
 .delete-input-label {
