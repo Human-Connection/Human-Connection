@@ -1,20 +1,22 @@
 <template>
   <div>
     <ds-card hover>
-      <ds-space/>
+      <ds-space />
       <ds-container>
         <ds-flex>
           <ds-flex-item :width="{ base: '100%', sm: 0.75, md: 0.5, lg: 0.5 }">
-            <ds-icon name="warning" size="xxx-large" class="delete-warning-icon"/>
+            <ds-icon name="warning" size="xxx-large" class="delete-warning-icon" />
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: 5.25, md: 2.75, lg: 5.5 }">
             <ds-heading>{{ $t('settings.deleteUserAccount.name') }}</ds-heading>
           </ds-flex-item>
-          <ds-space/>
-          <ds-heading tag="h4">{{ $t('settings.deleteUserAccount.accountDescription') }}</ds-heading>
+          <ds-space />
+          <ds-heading tag="h4">
+            {{ $t('settings.deleteUserAccount.accountDescription') }}
+          </ds-heading>
         </ds-flex>
       </ds-container>
-      <ds-space/>
+      <ds-space />
       <ds-container>
         <transition name="slide-up">
           <div v-if="deleteEnabled">
@@ -40,7 +42,7 @@
                 />
               </ds-flex-item>
             </ds-flex>
-            <ds-space margin-top="xx-small"/>
+            <ds-space margin-top="xx-small" />
             <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
               <ds-flex-item
                 v-if="currentUser.commentsCount"
@@ -62,10 +64,12 @@
                   class="enable-comment-deletion-input"
                 />
               </ds-flex-item>
+              <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: '100%' }">
+                <ds-section id="delete-user-account-warning">
+                  <div v-html="$t('settings.deleteUserAccount.accountWarning')"></div>
+                </ds-section>
+              </ds-flex-item>
             </ds-flex>
-            <div class="message is-danger">
-              <div class="message-body" v-html="$t('settings.deleteUserAccount.accountWarning')"></div>
-            </div>
           </div>
         </transition>
       </ds-container>
@@ -75,7 +79,9 @@
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1.75 }">
               <div
                 class="delete-input-label"
-                v-html="$t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name })"
+                v-html="
+                  $t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name })
+                "
               ></div>
               <ds-input
                 v-model="enableDeletionValue"
@@ -89,7 +95,9 @@
                 danger
                 :disabled="isLoading || !deleteEnabled"
                 @click="handleSubmit"
-              >{{ $t('settings.deleteUserAccount.name') }}</ds-button>
+              >
+                {{ $t('settings.deleteUserAccount.name') }}
+              </ds-button>
             </ds-flex-item>
           </ds-flex>
         </ds-container>
@@ -201,6 +209,15 @@ b.is-danger {
 
 .ds-card-footer {
   border-top: $border-size-base solid $border-color-softest;
-  background-color: $background-color-warning-inverse;
+  background-color: $background-color-danger-inverse;
+}
+
+#delete-user-account-warning {
+  background-color: $background-color-danger-inverse;
+  border-left: $border-size-x-large solid $background-color-danger-active;
+  color: $text-color-danger;
+  margin-left: 0px;
+  margin-right: 0px;
+  border-radius: $border-radius-x-large;
 }
 </style>
