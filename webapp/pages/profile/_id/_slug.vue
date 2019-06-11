@@ -144,7 +144,7 @@
       </ds-flex-item>
 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
-        <ds-flex :width="{ base: '100%' }" gutter="small">
+        <ds-flex class="user-profile-posts-list" :width="{ base: '100%' }" gutter="small">
           <ds-flex-item class="profile-top-navigation">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
@@ -220,11 +220,7 @@
             </ds-flex-item>
           </template>
         </ds-flex>
-        <hc-load-more
-          v-if="Post && hasMore"
-          :loading="$apollo.loading"
-          @click="showMoreContributions"
-        />
+        <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
       </ds-flex-item>
     </ds-flex>
   </div>

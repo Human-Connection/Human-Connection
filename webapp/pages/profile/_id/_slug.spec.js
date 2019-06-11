@@ -42,6 +42,7 @@ describe('ProfileSlug', () => {
         error: jest.fn(),
       },
       $apollo: {
+        loading: false,
         mutate: jest.fn().mockResolvedValue(),
       },
     }
@@ -138,6 +139,32 @@ describe('ProfileSlug', () => {
             contentExcerpt: 'This is my content',
           }
 
+          describe('currently no posts available (e.g. after tab switching)', () => {
+            beforeEach(() => {
+              wrapper.setData({
+                Post: null,
+              })
+            })
+
+            it('displays no "load more" button', () => {
+              expect(wrapper.find('.load-more').exists()).toBe(false)
+            })
+
+            describe('apollo client in `loading` state', () => {
+              beforeEach(() => {
+                wrapper.vm.$apollo.loading = true
+              })
+
+              it('never displays more than one loading spinner', () => {
+                expect(wrapper.findAll('.ds-spinner')).toHaveLength(1)
+              })
+
+              it('displays a loading spinner below the posts list', () => {
+                expect(wrapper.find('.user-profile-posts-list .ds-spinner').exists()).toBe(true)
+              })
+            })
+          })
+
           describe('pagination returned less posts than available', () => {
             beforeEach(() => {
               const posts = [1, 2, 3, 4, 5].map(id => {
@@ -151,6 +178,20 @@ describe('ProfileSlug', () => {
 
             it('displays a "load more" button', () => {
               expect(wrapper.find('.load-more').exists()).toBe(true)
+            })
+
+            describe('apollo client in `loading` state', () => {
+              beforeEach(() => {
+                wrapper.vm.$apollo.loading = true
+              })
+
+              it('never displays more than one loading spinner', () => {
+                expect(wrapper.findAll('.ds-spinner')).toHaveLength(1)
+              })
+
+              it('displays a loading spinner below the posts list', () => {
+                expect(wrapper.find('.load-more .ds-spinner').exists()).toBe(true)
+              })
             })
           })
 
