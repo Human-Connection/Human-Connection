@@ -13,7 +13,12 @@
           :placeholder="locale"
         />
         <div slot="footer" style="text-align: right">
-          <ds-button :disabled="loading || disabled" ghost @click.prevent="$router.back()">
+          <ds-button
+            :disabled="loading || disabled"
+            ghost
+            class="cancel-button"
+            @click="$router.back()"
+          >
             {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button
@@ -109,7 +114,7 @@ export default {
         })
         .then(res => {
           this.loading = false
-          this.$toast.success('Saved!')
+          this.$toast.success(this.$t('contribution.success'))
           this.disabled = true
 
           const result = res.data[this.id ? 'UpdatePost' : 'CreatePost']

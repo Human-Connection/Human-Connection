@@ -19,7 +19,7 @@ afterEach(async () => {
 describe('CreatePost', () => {
   const mutation = `
     mutation {
-      CreatePost(title: "I am a title", content: "Some content", language: "en") {
+      CreatePost(title: "I am a title", content: "Some content") {
         title
         content
         slug
