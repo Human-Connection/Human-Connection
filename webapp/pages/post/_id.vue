@@ -79,7 +79,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to.hash == '#comments') {
+      if (to.hash === '#comments') {
         window.scroll({
           top: document.getElementById('comments').offsetTop,
           left: 0,
