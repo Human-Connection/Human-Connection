@@ -1,16 +1,17 @@
 import gql from 'graphql-tag'
 
 export default {
-  postMenuModalsData(postNameShort, confirmCallback) {
+  postMenuModalsData(truncatedPostName, confirmCallback, cancelCallback = () => {}) {
     return {
       delete: {
         titleIdent: 'delete.contribution.title',
         messageIdent: 'delete.contribution.message',
         messageParams: {
-          name: postNameShort,
+          name: truncatedPostName,
         },
         buttons: {
           confirm: {
+            danger: true,
             icon: 'trash',
             textIdent: 'delete.submit',
             callback: confirmCallback,
@@ -18,7 +19,7 @@ export default {
           cancel: {
             icon: 'close',
             textIdent: 'delete.cancel',
-            callback: () => {},
+            callback: cancelCallback,
           },
         },
       },

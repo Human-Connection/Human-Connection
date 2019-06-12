@@ -28,6 +28,9 @@ describe('Comment.vue', () => {
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
       },
+      $filters: {
+        truncate: a => a,
+      },
     }
     getters = {
       'auth/user': () => {

@@ -60,6 +60,7 @@ export default {
           },
           buttons: {
             confirm: {
+              danger: true,
               icon: 'trash',
               textIdent: 'delete.submit',
               callback: this.deleteCommentCallback,

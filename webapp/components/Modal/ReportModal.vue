@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     async cancel() {
-      // TODO: Use the "modalData" structure introduced in "DeleteModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+      // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
       // await this.modalData.buttons.cancel.callback()
       this.isOpen = false
       setTimeout(() => {
@@ -66,7 +66,7 @@ export default {
     },
     async confirm() {
       this.loading = true
-      // TODO: Use the "modalData" structure introduced in "DeleteModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+      // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
       // await this.modalData.buttons.confirm.callback()
       try {
         await this.$apollo.mutate({
