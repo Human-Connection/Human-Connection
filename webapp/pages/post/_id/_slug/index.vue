@@ -210,9 +210,9 @@ export default {
     }, 50)
   },
   computed: {
-    // "this.post" may not always be defined at the beginning …
     menuModalsData() {
       return PostHelpers.postMenuModalsData(
+        // "this.post" may not always be defined at the beginning …
         this.post ? this.$filters.truncate(this.post.title, 30) : '',
         this.deletePostCallback,
       )

@@ -103,8 +103,8 @@ export default {
       return this.user.id === this.post.author.id
     },
     menuModalsData() {
-      // "this.post" may not always be defined at the beginning …
       return PostHelpers.postMenuModalsData(
+        // "this.post" may not always be defined at the beginning …
         this.post ? this.$filters.truncate(this.post.title, 30) : '',
         this.deletePostCallback,
       )
@@ -115,7 +115,7 @@ export default {
       try {
         await this.$apollo.mutate(PostHelpers.deletePostMutationData(this.post.id))
         this.$toast.success(this.$t('delete.contribution.success'))
-        this.$emit('deletePost')
+        this.$emit('removePostFromList')
       } catch (err) {
         this.$toast.error(err.message)
       }

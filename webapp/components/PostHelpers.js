@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export default {
-  postMenuModalsData: (postNameShort, confirmCallback) => {
+  postMenuModalsData(postNameShort, confirmCallback) {
     return {
       delete: {
         titleIdent: 'delete.contribution.title',

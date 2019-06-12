@@ -164,7 +164,7 @@ describe('DeleteModal.vue', () => {
             expect(propsData.callbacks.confirm).toHaveBeenCalledTimes(1)
           })
           it('emits close', () => {
-            expect(wrapper.emitted().close).toBeTruthy()
+            expect(wrapper.emitted().close).toHaveLength(1)
           })
 
           it('resets success', () => {
