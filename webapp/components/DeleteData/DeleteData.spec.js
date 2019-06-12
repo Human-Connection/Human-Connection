@@ -1,5 +1,5 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
-import DeleteAccount from './DeleteAccount.vue'
+import { mount, createLocalVue } from '@vue/test-utils'
+import DeleteData from './DeleteData.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 
@@ -7,20 +7,18 @@ const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
-config.stubs['b-switch'] = '<span><slot /></span>'
-config.stubs['b-checkbox'] = '<span><slot /></span>'
 
-describe('DeleteAccount.vue', () => {
+describe('DeleteData.vue', () => {
   let mocks
   let wrapper
   let getters
   let actions
   let deleteAccountBtn
   let enableDeletionInput
-  let enablePostDeletionInput
-  let enableCommentDeletionInput
+  let enableContributionDeletionCheckbox
+  let enableCommentDeletionCheckbox
   const deleteAccountName = 'Delete MyAccount'
-  const deletePostsMessage = 'Delete my 2 posts'
+  const deleteContributionsMessage = 'Delete my 2 posts'
   const deleteCommentsMessage = 'Delete my 3 comments'
 
   beforeEach(() => {
@@ -31,7 +29,7 @@ describe('DeleteAccount.vue', () => {
           .fn()
           .mockResolvedValueOnce({
             data: {
-              DeleteAccount: {
+              DeleteData: {
                 id: 'u343',
               },
             },
@@ -62,7 +60,7 @@ describe('DeleteAccount.vue', () => {
         getters,
         actions,
       })
-      return mount(DeleteAccount, { mocks, localVue, store })
+      return mount(DeleteData, { mocks, localVue, store })
     }
 
     beforeEach(() => {
@@ -111,9 +109,9 @@ describe('DeleteAccount.vue', () => {
       })
 
       it("deletes a user's posts if requested", () => {
-        mocks.$t.mockImplementation(() => deletePostsMessage)
-        enablePostDeletionInput = wrapper.find('.enable-post-deletion-input input')
-        enablePostDeletionInput.setValue(deletePostsMessage)
+        mocks.$t.mockImplementation(() => deleteContributionsMessage)
+        enableContributionDeletionCheckbox = wrapper.findAll('.checkbox-container input').at(0)
+        enableContributionDeletionCheckbox.trigger('click')
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -127,8 +125,8 @@ describe('DeleteAccount.vue', () => {
 
       it("deletes a user's comments if requested", () => {
         mocks.$t.mockImplementation(() => deleteCommentsMessage)
-        enableCommentDeletionInput = wrapper.find('.enable-comment-deletion-input input')
-        enableCommentDeletionInput.setValue(deleteCommentsMessage)
+        enableCommentDeletionCheckbox = wrapper.findAll('.checkbox-container input').at(1)
+        enableCommentDeletionCheckbox.trigger('click')
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -141,12 +139,12 @@ describe('DeleteAccount.vue', () => {
       })
 
       it("deletes a user's posts and comments if requested", () => {
-        mocks.$t.mockImplementation(() => deletePostsMessage)
-        enablePostDeletionInput = wrapper.find('.enable-post-deletion-input input')
-        enablePostDeletionInput.setValue(deletePostsMessage)
+        mocks.$t.mockImplementation(() => deleteContributionsMessage)
+        enableContributionDeletionCheckbox = wrapper.findAll('.checkbox-container input').at(0)
+        enableContributionDeletionCheckbox.trigger('click')
         mocks.$t.mockImplementation(() => deleteCommentsMessage)
-        enableCommentDeletionInput = wrapper.find('.enable-comment-deletion-input input')
-        enableCommentDeletionInput.setValue(deleteCommentsMessage)
+        enableCommentDeletionCheckbox = wrapper.findAll('.checkbox-container input').at(1)
+        enableCommentDeletionCheckbox.trigger('click')
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -163,7 +161,7 @@ describe('DeleteAccount.vue', () => {
         expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
       })
 
-      it('updates the user in the store', async () => {
+      it('redirect the user to the homepage', async () => {
         await deleteAccountBtn.trigger('click')
         expect(mocks.$router.history.push).toHaveBeenCalledWith('/')
       })

@@ -74,13 +74,13 @@
       "name": "Daten herunterladen"
     },
     "deleteUserAccount": {
-      "name": "Mein Benutzerkonto löschen",
+      "name": "Daten löschen",
       "contributionsCount": "Meine {count} Beiträge löschen",
       "commentsCount": "Meine {count} Kommentare löschen",
-      "accountDescription": "Seien Sie sich bewusst, dass Ihre Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du dies unten auswählen.",
-      "accountWarning": "Dein Benutzerkonto, die Beiträge, etc. kannst Du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
+      "accountDescription": "Sie dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
+      "accountWarning": "Dein Konto, Beiträge oder Kommentare kannst Du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
       "success": "Konto erfolgreich gelöscht",
-      "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Geben Sie <b>{confirm}</b> ein, um zu bestätigen."
+      "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen."
     },
     "organizations": {
       "name": "Meine Organisationen"

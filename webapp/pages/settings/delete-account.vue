@@ -1,13 +1,13 @@
 <template>
-  <delete-account />
+  <delete-data />
 </template>
 
 <script>
-import DeleteAccount from '~/components/DeleteAccount/DeleteAccount.vue'
+import DeleteData from '~/components/DeleteData/DeleteData.vue'
 
 export default {
   components: {
-    DeleteAccount,
+    DeleteData,
   },
 }
 </script>

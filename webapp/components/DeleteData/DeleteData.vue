@@ -4,10 +4,10 @@
       <ds-space />
       <ds-container>
         <ds-flex>
-          <ds-flex-item :width="{ base: '100%', sm: 0.75, md: 0.5, lg: 0.5 }">
+          <ds-flex-item :width="{ base: '22%', sm: '12%', md: '12%', lg: '8%' }">
             <ds-icon name="warning" size="xxx-large" class="delete-warning-icon" />
           </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: 5.25, md: 2.75, lg: 5.5 }">
+          <ds-flex-item :width="{ base: '78%', sm: '88%', md: '88%', lg: '92%' }">
             <ds-heading>{{ $t('settings.deleteUserAccount.name') }}</ds-heading>
           </ds-flex-item>
           <ds-space />
@@ -20,62 +20,33 @@
       <ds-container>
         <transition name="slide-up">
           <div v-if="deleteEnabled">
-            <div
-              class="delete-input-label"
-              v-html="
-                $t('settings.deleteUserAccount.pleaseConfirm', {
-                  confirm: $t('settings.deleteUserAccount.contributionsCount', {
-                    count: currentUser.contributionsCount,
-                  }),
+            <label v-if="currentUser.contributionsCount" class="checkbox-container">
+              <input type="checkbox" v-model="deleteContributions" />
+              <span class="checkmark"></span>
+              {{
+                $t('settings.deleteUserAccount.contributionsCount', {
+                  count: currentUser.contributionsCount,
                 })
-              "
-            ></div>
-            <ds-space margin-bottom="xx-small" />
-            <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
-              <ds-flex-item
-                v-if="currentUser.contributionsCount"
-                :width="{ base: '100%', sm: '100%', md: '100%', lg: '100%' }"
-              >
-                <ds-input
-                  v-model="deleteContributionsValue"
-                  @input="enableDeletion"
-                  class="enable-post-deletion-input"
-                />
-              </ds-flex-item>
-            </ds-flex>
-            <ds-space margin-bottom="xx-small" />
-            <div
-              class="delete-input-label"
-              v-html="
-                $t('settings.deleteUserAccount.pleaseConfirm', {
-                  confirm: $t('settings.deleteUserAccount.commentsCount', {
-                    count: currentUser.commentsCount,
-                  }),
+              }}
+            </label>
+            <ds-space margin-bottom="small" />
+            <label v-if="currentUser.commentsCount" class="checkbox-container">
+              <input type="checkbox" v-model="deleteComments" />
+              <span class="checkmark"></span>
+              {{
+                $t('settings.deleteUserAccount.commentsCount', {
+                  count: currentUser.commentsCount,
                 })
-              "
-            ></div>
-            <ds-space margin-bottom="xx-small" />
-            <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
-              <ds-flex-item
-                v-if="currentUser.commentsCount"
-                :width="{ base: '100%', sm: '100%', md: '100%', lg: '100%' }"
-              >
-                <ds-input
-                  v-model="deleteCommentsValue"
-                  @input="enableDeletion"
-                  class="enable-comment-deletion-input"
-                />
-              </ds-flex-item>
-              <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: '100%' }">
-                <ds-section id="delete-user-account-warning">
-                  <div v-html="$t('settings.deleteUserAccount.accountWarning')"></div>
-                </ds-section>
-              </ds-flex-item>
-            </ds-flex>
+              }}
+            </label>
+            <ds-space margin-bottom="small" />
+            <ds-section id="delete-user-account-warning">
+              <div v-html="$t('settings.deleteUserAccount.accountWarning')"></div>
+            </ds-section>
           </div>
         </transition>
       </ds-container>
-      <template slot="footer">
+      <template slot="footer" class="delete-data-footer">
         <ds-container>
           <div
             class="delete-input-label"
@@ -91,12 +62,7 @@
               />
             </ds-flex-item>
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1 }">
-              <ds-button
-                icon="trash"
-                danger
-                :disabled="isLoading || !deleteEnabled"
-                @click="handleSubmit"
-              >
+              <ds-button icon="trash" danger :disabled="!deleteEnabled" @click="handleSubmit">
                 {{ $t('settings.deleteUserAccount.name') }}
               </ds-button>
             </ds-flex-item>
@@ -111,16 +77,12 @@ import { mapGetters, mapActions } from 'vuex'
 import gql from 'graphql-tag'
 
 export default {
-  name: 'DeleteAccount',
+  name: 'DeleteData',
   data() {
     return {
       deleteContributions: false,
       deleteComments: false,
       deleteEnabled: false,
-      isLoading: false,
-      enableDeletionValue: '',
-      deleteContributionsValue: '',
-      deleteCommentsValue: '',
     }
   },
   computed: {
@@ -135,23 +97,6 @@ export default {
     enableDeletion() {
       if (this.enableDeletionValue === this.currentUser.name) {
         this.deleteEnabled = true
-        this.focused = false
-      }
-      if (
-        this.deleteContributionsValue ===
-        this.$t('settings.deleteUserAccount.contributionsCount', {
-          count: this.currentUser.contributionsCount,
-        })
-      ) {
-        this.deleteContributions = true
-      }
-      if (
-        this.deleteCommentsValue ===
-        this.$t('settings.deleteUserAccount.commentsCount', {
-          count: this.currentUser.commentsCount,
-        })
-      ) {
-        this.deleteComments = true
       }
     },
     handleSubmit() {
@@ -190,9 +135,72 @@ export default {
   color: $color-danger;
 }
 
-.enable-deletion-input input:focus,
-.enable-post-deletion-input input:focus,
-.enable-comment-deletion-input input:focus {
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  font-size: $font-size-large;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: 2px solid $background-color-inverse-softer;
+  background-color: $background-color-base;
+  border-radius: $border-radius-x-large;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: $background-color-softest;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: $background-color-danger-active;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid $background-color-base;
+  border-width: 0 $border-size-large $border-size-large 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.enable-deletion-input input:focus {
   border-color: $border-color-danger;
 }
 
@@ -204,7 +212,7 @@ b.is-danger {
   color: $text-color-danger;
 }
 
-.ds-card-footer {
+.delete-data-footer {
   border-top: $border-size-base solid $border-color-softest;
   background-color: $background-color-danger-inverse;
 }
