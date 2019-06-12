@@ -164,30 +164,22 @@ describe('ReportModal.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalled()
         })
 
-        it('sets success', () => {
-          expect(wrapper.vm.success).toBe(true)
-        })
-
         it('displays a success message', () => {
           const calls = mocks.$t.mock.calls
           const expected = [['report.success']]
           expect(calls).toEqual(expect.arrayContaining(expected))
         })
 
-        describe('after timeout', () => {
-          beforeEach(jest.runAllTimers)
+        it('emits close', () => {
+          expect(wrapper.emitted().close).toBeTruthy()
+        })
 
-          it('fades away', () => {
-            expect(wrapper.vm.isOpen).toBe(false)
-          })
+        it('fades away', () => {
+          expect(wrapper.vm.isOpen).toBe(false)
+        })
 
-          it('emits close', () => {
-            expect(wrapper.emitted().close).toBeTruthy()
-          })
-
-          it('resets success', () => {
-            expect(wrapper.vm.success).toBe(false)
-          })
+        it('resets success', () => {
+          expect(wrapper.vm.success).toBe(false)
         })
       })
     })
