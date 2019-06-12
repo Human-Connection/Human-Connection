@@ -46,7 +46,7 @@ describe('ProfileSlug', () => {
 
     beforeEach(jest.useFakeTimers)
 
-    describe('test mixin "PostMutationHelpers"', () => {
+    describe('test "PostHelpers"', () => {
       beforeEach(() => {
         wrapper = Wrapper()
       })
@@ -60,7 +60,7 @@ describe('ProfileSlug', () => {
           beforeEach(jest.runAllTimers)
 
           it('emits "deletePost"', () => {
-            expect(wrapper.emitted().deletePost.length).toBe(1)
+            expect(wrapper.emitted().deletePost).toHaveLength(1)
           })
 
           it('does not go to index (main) page', () => {

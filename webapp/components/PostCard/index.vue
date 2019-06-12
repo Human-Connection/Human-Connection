@@ -70,7 +70,7 @@ import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
 // import { randomBytes } from 'crypto'
 import { mapGetters } from 'vuex'
-import PostMutationHelpers from '~/mixins/PostMutationHelpers'
+import PostHelpers from '~/components/PostHelpers'
 
 export default {
   name: 'HcPostCard',
@@ -80,7 +80,6 @@ export default {
     HcRibbon,
     ContentMenu,
   },
-  mixins: [PostMutationHelpers],
   props: {
     post: {
       type: Object,
@@ -102,6 +101,24 @@ export default {
       const { author } = this.post
       if (!author) return false
       return this.user.id === this.post.author.id
+    },
+    menuModalsData() {
+      // "this.post" may not always be defined at the beginning …
+      return PostHelpers.postMenuModalsData(
+        this.post ? this.$filters.truncate(this.post.title, 30) : '',
+        this.deletePostCallback,
+      )
+    },
+  },
+  methods: {
+    async deletePostCallback() {
+      try {
+        await this.$apollo.mutate(PostHelpers.deletePostMutationData(this.post.id))
+        this.$toast.success(this.$t('delete.contribution.success'))
+        this.$emit('deletePost')
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }

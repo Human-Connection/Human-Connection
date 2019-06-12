@@ -13,7 +13,7 @@
           placement="bottom-end"
           resource-type="contribution"
           :resource="post"
-          :modalsData="menuModalsDataPage()"
+          :modalsData="menuModalsData"
           :is-owner="isAuthor(post.author.id)"
         />
       </no-ssr>
@@ -71,7 +71,7 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
-import PostMutationHelpers from '~/mixins/PostMutationHelpers'
+import PostHelpers from '~/components/PostHelpers'
 
 export default {
   name: 'PostSlug',
@@ -88,7 +88,6 @@ export default {
     HcCommentForm,
     HcCommentList,
   },
-  mixins: [PostMutationHelpers],
   head() {
     return {
       title: this.title,
@@ -210,14 +209,27 @@ export default {
       this.ready = true
     }, 50)
   },
+  computed: {
+    // "this.post" may not always be defined at the beginning …
+    menuModalsData() {
+      return PostHelpers.postMenuModalsData(
+        this.post ? this.$filters.truncate(this.post.title, 30) : '',
+        this.deletePostCallback,
+      )
+    },
+  },
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
-    menuModalsDataPage() {
-      const locMenuModalsData = this.menuModalsData
-      locMenuModalsData.delete.buttons.confirm.callback = () => this.deletePostCallback('page')
-      return locMenuModalsData
+    async deletePostCallback() {
+      try {
+        await this.$apollo.mutate(PostHelpers.deletePostMutationData(this.post.id))
+        this.$toast.success(this.$t('delete.contribution.success'))
+        this.$router.history.push('/') // Redirect to index (main) page
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }

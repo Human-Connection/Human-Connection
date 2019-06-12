@@ -56,7 +56,7 @@ describe('PostSlug', () => {
 
     beforeEach(jest.useFakeTimers)
 
-    describe('test mixin "PostMutationHelpers"', () => {
+    describe('test "PostHelpers"', () => {
       beforeEach(() => {
         wrapper = Wrapper()
         wrapper.setData({
