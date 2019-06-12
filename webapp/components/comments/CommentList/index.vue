@@ -61,6 +61,7 @@ export default {
       }
     },
   },
+
   apollo: {
     Post: {
       query() {

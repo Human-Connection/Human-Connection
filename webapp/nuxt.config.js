@@ -38,11 +38,26 @@ module.exports = {
     title: 'Human Connection',
     titleTemplate: '%s - Human Connection',
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description },
+      {
+        charset: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        hid: 'description',
+        name: 'description',
+        content: pkg.description,
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.ico',
+      },
+    ],
   },
 
   /*
@@ -74,13 +89,33 @@ module.exports = {
       src: `~/plugins/styleguide${process.env.STYLEGUIDE_DEV ? '-dev' : ''}.js`,
       ssr: true,
     },
-    { src: '~/plugins/i18n.js', ssr: true },
-    { src: '~/plugins/axios.js', ssr: false },
-    { src: '~/plugins/keep-alive.js', ssr: false },
-    { src: '~/plugins/vue-directives.js', ssr: false },
-    { src: '~/plugins/v-tooltip.js', ssr: false },
-    { src: '~/plugins/izi-toast.js', ssr: false },
-    { src: '~/plugins/vue-filters.js' },
+    {
+      src: '~/plugins/i18n.js',
+      ssr: true,
+    },
+    {
+      src: '~/plugins/axios.js',
+      ssr: false,
+    },
+    {
+      src: '~/plugins/keep-alive.js',
+      ssr: false,
+    },
+    {
+      src: '~/plugins/vue-directives.js',
+      ssr: false,
+    },
+    {
+      src: '~/plugins/v-tooltip.js',
+      ssr: false,
+    },
+    {
+      src: '~/plugins/izi-toast.js',
+      ssr: false,
+    },
+    {
+      src: '~/plugins/vue-filters.js',
+    },
   ],
 
   router: {
@@ -88,7 +123,10 @@ module.exports = {
     linkActiveClass: 'router-link-active',
     linkExactActiveClass: 'router-link-exact-active',
     scrollBehavior: () => {
-      return { x: 0, y: 0 }
+      return {
+        x: 0,
+        y: 0,
+      }
     },
   },
 
@@ -96,8 +134,18 @@ module.exports = {
    ** Nuxt.js modules
    */
   modules: [
-    ['@nuxtjs/dotenv', { only: envWhitelist }],
-    ['nuxt-env', { keys: envWhitelist }],
+    [
+      '@nuxtjs/dotenv',
+      {
+        only: envWhitelist,
+      },
+    ],
+    [
+      'nuxt-env',
+      {
+        keys: envWhitelist,
+      },
+    ],
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
@@ -135,7 +183,9 @@ module.exports = {
     '/api': {
       // make this configurable (nuxt-dotenv)
       target: process.env.GRAPHQL_URI || 'http://localhost:4000',
-      pathRewrite: { '^/api': '' },
+      pathRewrite: {
+        '^/api': '',
+      },
       toProxy: true, // cloudflare needs that
       headers: {
         Accept: 'application/json',
