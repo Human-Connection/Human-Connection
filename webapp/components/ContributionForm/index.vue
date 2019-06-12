@@ -6,12 +6,20 @@
         <no-ssr>
           <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
         </no-ssr>
-        <ds-select
-          model="language"
-          :options="form.languageOptions"
-          icon="globe"
-          :placeholder="locale"
-        />
+        <ds-space margin-bottom="xxx-large" />
+        <ds-flex class="contribution-form-footer">
+          <ds-flex-item :width="{ base: '0%', sm: '10%', md: '10%', lg: '15%' }" />
+          <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
+            <ds-space margin-bottom="small" />
+            <ds-select
+              model="language"
+              :options="form.languageOptions"
+              icon="globe"
+              :placeholder="locale"
+              :label="$t('contribution.languageSelectLabel')"
+            />
+          </ds-flex-item>
+        </ds-flex>
         <div slot="footer" style="text-align: right">
           <ds-button
             :disabled="loading || disabled"
@@ -54,17 +62,7 @@ export default {
         title: '',
         content: '',
         language: null,
-        locales: orderBy(process.env.locales, 'name'),
-        languageOptions: [
-          {
-            label: 'Deutsch',
-            value: 'de',
-          },
-          {
-            label: 'English',
-            value: 'en',
-          },
-        ],
+        languageOptions: [],
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -94,9 +92,12 @@ export default {
   computed: {
     locale() {
       let locale
-      locale = this.form.locales.find(this.returnLocaleName)
+      locale = process.env.locales.find(this.returnLocaleName)
       return locale.name
     },
+  },
+  mounted() {
+    this.availableLocales()
   },
   methods: {
     submit() {
@@ -139,6 +140,11 @@ export default {
         return locale
       }
     },
+    availableLocales() {
+      orderBy(process.env.locales, 'name').map(locale => {
+        this.form.languageOptions.push({ label: locale.name, value: locale.code })
+      })
+    },
   },
   apollo: {
     User: {
@@ -170,5 +176,9 @@ export default {
     padding-left: 0;
     padding-right: 0;
   }
+}
+
+.contribution-form-footer {
+  border-top: $border-size-base solid $border-color-softest;
 }
 </style>

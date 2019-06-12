@@ -297,6 +297,7 @@
     }
   },
   "contribution": {
-    "success": "Gespeichert!"
+    "success": "Gespeichert!",
+    "languageSelectLabel": "Sprache"
   }
 }
