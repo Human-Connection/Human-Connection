@@ -8,7 +8,7 @@
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
         <ds-flex class="contribution-form-footer">
-          <ds-flex-item :width="{ base: '0%', sm: '10%', md: '10%', lg: '15%' }" />
+          <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
           <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
             <ds-space margin-bottom="small" />
             <ds-select
