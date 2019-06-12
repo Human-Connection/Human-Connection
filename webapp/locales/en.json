@@ -169,11 +169,6 @@
     }
   },
   "common": {
-    "your": {
-      "post": "Your Post ::: Your Posts",
-      "comment": "Your Comment ::: Your Comments",
-      "shout": "Your Shout ::: Your Shouts"
-    },
     "post": "Post ::: Posts",
     "comment": "Comment ::: Comments",
     "letsTalk": "Let`s Talk",
