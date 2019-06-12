@@ -48,6 +48,7 @@
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor'
 import orderBy from 'lodash/orderBy'
+import locales from '~/locales'
 
 export default {
   components: {
@@ -92,7 +93,7 @@ export default {
   computed: {
     locale() {
       let locale
-      locale = process.env.locales.find(this.returnLocaleName)
+      locale = locales.find(this.returnLocaleName)
       return locale.name
     },
   },
@@ -141,7 +142,7 @@ export default {
       }
     },
     availableLocales() {
-      orderBy(process.env.locales, 'name').map(locale => {
+      orderBy(locales, 'name').map(locale => {
         this.form.languageOptions.push({ label: locale.name, value: locale.code })
       })
     },

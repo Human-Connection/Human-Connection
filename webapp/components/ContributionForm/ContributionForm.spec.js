@@ -14,39 +14,43 @@ describe('ContributionForm.vue', () => {
   let expectedParams
   let deutschOption
   let cancelBtn
+  let mocks
   const postTitle = 'this is a title for a post'
   const postContent = 'this is a post'
   const computed = { locale: () => 'English' }
-  const mocks = {
-    $t: jest.fn(),
-    $apollo: {
-      mutate: jest
-        .fn()
-        .mockResolvedValueOnce({
-          data: {
-            CreatePost: {
-              title: postTitle,
-              slug: 'this-is-a-title-for-a-post',
-              content: postContent,
-              contentExcerpt: postContent,
-              language: 'en',
+
+  beforeEach(() => {
+    mocks = {
+      $t: jest.fn(),
+      $apollo: {
+        mutate: jest
+          .fn()
+          .mockResolvedValueOnce({
+            data: {
+              CreatePost: {
+                title: postTitle,
+                slug: 'this-is-a-title-for-a-post',
+                content: postContent,
+                contentExcerpt: postContent,
+                language: 'en',
+              },
             },
-          },
-        })
-        .mockRejectedValue({ message: 'Not Authorised!' }),
-    },
-    $toast: {
-      error: jest.fn(),
-      success: jest.fn(),
-    },
-    $i18n: {
-      locale: () => 'en',
-    },
-    $router: {
-      back: jest.fn(),
-      push: jest.fn(),
-    },
-  }
+          })
+          .mockRejectedValue({ message: 'Not Authorised!' }),
+      },
+      $toast: {
+        error: jest.fn(),
+        success: jest.fn(),
+      },
+      $i18n: {
+        locale: () => 'en',
+      },
+      $router: {
+        back: jest.fn(),
+        push: jest.fn(),
+      },
+    }
+  })
 
   describe('mount', () => {
     const Wrapper = () => {
@@ -55,6 +59,7 @@ describe('ContributionForm.vue', () => {
 
     beforeEach(() => {
       wrapper = Wrapper()
+      wrapper.setData({ form: { languageOptions: [{ label: 'Deutsch', value: 'de' }] } })
     })
 
     describe('CreatePost', () => {
