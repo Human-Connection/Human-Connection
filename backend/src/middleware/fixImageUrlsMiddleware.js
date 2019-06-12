@@ -6,8 +6,11 @@ const legacyUrls = [
 
 export const fixUrl = url => {
   legacyUrls.forEach(legacyUrl => {
-    url = url.replace(legacyUrl, '/')
+    url = url.replace(legacyUrl, '')
   })
+  if (!url.startsWith('/')) {
+    url = `/${url}`
+  }
   return url
 }
 
