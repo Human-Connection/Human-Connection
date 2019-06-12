@@ -21,6 +21,9 @@ install:
   - wait-on http://localhost:7474
 
 script:
+  - export CYPRESS_RETRIES=1
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
   # Backend
   - docker-compose exec backend yarn run lint
   - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
@@ -34,7 +37,9 @@ script:
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
   - docker-compose exec -d backend yarn run test:before:seeder
   # Fullstack
-  - CYPRESS_RETRIES=1 yarn run cypress:run
+  # Disable recording cypress tests if we just update dependencies. This is to
+  # avoid running out of quota.
+  - if [[ $BRANCH == *"dependabot"* ]]; then yarn run cypress:run; else yarn run cypress:run --record; fi
   # Coverage
   - codecov
 
