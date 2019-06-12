@@ -87,9 +87,7 @@ describe('currentUser { notifications }', () => {
 
         describe('who mentions me again', () => {
           beforeEach(async () => {
-            const updatedContent = `${
-              post.content
-            } One more mention to <a href="/profile/you" class="mention">@al-capone</a>`
+            const updatedContent = `${post.content} One more mention to <a href="/profile/you" class="mention">@al-capone</a>`
             // The response `post.content` contains a link but the XSSmiddleware
             // should have the `mention` CSS class removed. I discovered this
             // during development and thought: A feature not a bug! This way we
