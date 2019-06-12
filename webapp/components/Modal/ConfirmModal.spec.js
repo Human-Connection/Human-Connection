@@ -1,28 +1,29 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
-import DeleteModal from './DeleteModal.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
+import ConfirmModal from './ConfirmModal.vue'
+import PostHelpers from '~/components/PostHelpers'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
 
-describe('DeleteModal.vue', () => {
+describe('ConfirmModal.vue', () => {
   let Wrapper
   let wrapper
   let propsData
   let mocks
+  const postName = 'It is a post'
+  const confirmCallback = jest.fn()
+  const cancelCallback = jest.fn()
 
   beforeEach(() => {
     propsData = {
       type: 'contribution',
       id: 'p23',
-      name: 'It is a post',
-      callbacks: {
-        confirm: jest.fn(),
-        cancel: jest.fn(),
-      },
+      name: postName,
+      modalData: PostHelpers.postMenuModalsData(postName, confirmCallback, cancelCallback).delete,
     }
     mocks = {
       $t: jest.fn(),
@@ -32,9 +33,13 @@ describe('DeleteModal.vue', () => {
     }
   })
 
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   describe('shallowMount', () => {
     Wrapper = () => {
-      return shallowMount(DeleteModal, {
+      return shallowMount(ConfirmModal, {
         propsData,
         mocks,
         localVue,
@@ -61,7 +66,7 @@ describe('DeleteModal.vue', () => {
           ...propsData,
           type: 'contribution',
           id: 'p23',
-          name: 'It is a post',
+          name: postName,
         }
         wrapper = Wrapper()
       })
@@ -72,32 +77,7 @@ describe('DeleteModal.vue', () => {
           [
             'delete.contribution.message',
             {
-              name: 'It is a post',
-            },
-          ],
-        ]
-        expect(calls).toEqual(expect.arrayContaining(expected))
-      })
-    })
-
-    describe('given a comment', () => {
-      beforeEach(() => {
-        propsData = {
-          ...propsData,
-          type: 'comment',
-          id: 'c4',
-          name: 'It is the user of the comment',
-        }
-        wrapper = Wrapper()
-      })
-
-      it('mentions comments user name', () => {
-        const calls = mocks.$t.mock.calls
-        const expected = [
-          [
-            'delete.comment.message',
-            {
-              name: 'It is the user of the comment',
+              name: postName,
             },
           ],
         ]
@@ -108,7 +88,7 @@ describe('DeleteModal.vue', () => {
 
   describe('mount', () => {
     Wrapper = () => {
-      return mount(DeleteModal, {
+      return mount(ConfirmModal, {
         propsData,
         mocks,
         localVue,
@@ -135,7 +115,7 @@ describe('DeleteModal.vue', () => {
           })
 
           it('does call the cancel callback', () => {
-            expect(propsData.callbacks.cancel).toHaveBeenCalledTimes(1)
+            expect(cancelCallback).toHaveBeenCalledTimes(1)
           })
 
           it('emits "close"', () => {
@@ -161,7 +141,7 @@ describe('DeleteModal.vue', () => {
           })
 
           it('does call the confirm callback', () => {
-            expect(propsData.callbacks.confirm).toHaveBeenCalledTimes(1)
+            expect(confirmCallback).toHaveBeenCalledTimes(1)
           })
           it('emits close', () => {
             expect(wrapper.emitted().close).toHaveLength(1)

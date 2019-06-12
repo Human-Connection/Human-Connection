@@ -15,7 +15,7 @@
       </ds-button>
 
       <ds-button
-        danger
+        :danger="modalData.buttons.confirm.danger"
         class="confirm"
         :icon="modalData.buttons.confirm.icon"
         :loading="loading"
@@ -31,7 +31,7 @@
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {
-  name: 'DeleteModal',
+  name: 'ConfirmModal',
   components: {
     SweetalertIcon,
   },
