@@ -172,11 +172,6 @@
     }
   },
   "common": {
-    "your": {
-      "post": "Dein Beitrag ::: Deine Beiträge",
-      "comment": "Dein Kommentar ::: Deine Kommentare",
-      "shout": "Deine Empfehlung ::: Deine Empfehlungen"
-    },
     "post": "Beitrag ::: Beiträge",
     "comment": "Kommentar ::: Kommentare",
     "letsTalk": "Miteinander reden",
