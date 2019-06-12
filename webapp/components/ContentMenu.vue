@@ -91,7 +91,7 @@ export default {
         routes.push({
           name: this.$t(`report.${this.resourceType}.title`),
           callback: () => {
-            this.openModal('report')
+            this.openModal('report', this.resource.id)
           },
           icon: 'flag',
         })

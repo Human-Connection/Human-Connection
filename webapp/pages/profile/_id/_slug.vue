@@ -17,7 +17,7 @@
               placement="bottom-end"
               resource-type="user"
               :resource="user"
-              :callbacks="{ confirm: deletePostCallback, cancel: null }"
+              :callbacks="{ confirm: null, cancel: null }"
               :is-owner="myProfile"
               class="user-content-menu"
             />

@@ -10,9 +10,7 @@
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button class="cancel" icon="close" @click="cancel">
-        {{ $t('report.cancel') }}
-      </ds-button>
+      <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
 
       <ds-button
         danger
@@ -64,9 +62,8 @@ export default {
         await this.callbacks.cancel()
       }
       this.isOpen = false
-      setTimeout(() => {
-        this.$emit('close')
-      }, 1000)
+
+      this.$emit('close')
     },
     async confirm() {
       this.loading = true
@@ -74,6 +71,7 @@ export default {
         if (this.callbacks.confirm) {
           await this.callbacks.confirm()
         }
+
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
@@ -84,16 +82,13 @@ export default {
           `,
           variables: { id: this.id },
         })
-        this.success = true
+        // this.success = true
         this.$toast.success(this.$t('report.success'))
-        setTimeout(() => {
-          this.isOpen = false
-          setTimeout(() => {
-            this.success = false
-            this.$emit('close')
-          }, 500)
-        }, 1500)
+        this.$emit('close')
+        this.isOpen = false
+        this.success = false
       } catch (err) {
+        this.$emit('close')
         this.success = false
         this.$toast.error(err.message)
       } finally {
