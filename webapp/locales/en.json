@@ -25,7 +25,16 @@
     "shouted": "Shouted",
     "commented": "Commented",
     "userAnonym": "Anonymous",
-    "socialMedia": "Where else can I find"
+    "socialMedia": "Where else can I find",
+    "network": {
+      "title": "Network",
+      "following": "is following:",
+      "followingNobody": "follows nobody.",
+      "followedBy": "is followed by:",
+      "followedByNobody": "is not followed by anyone.",
+      "and": "and",
+      "more": "more"
+    }
   },
   "notifications": {
     "menu": {
@@ -163,11 +172,6 @@
     }
   },
   "common": {
-    "your": {
-      "post": "Your Post ::: Your Posts",
-      "comment": "Your Comment ::: Your Comments",
-      "shout": "Your Shout ::: Your Shouts"
-    },
     "post": "Post ::: Posts",
     "comment": "Comment ::: Comments",
     "letsTalk": "Let`s Talk",

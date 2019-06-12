@@ -23,12 +23,15 @@ describe('ReleaseModal.vue', () => {
         truncate: a => a,
       },
       $toast: {
-        success: () => {},
-        error: () => {},
+        success: jest.fn(),
+        error: jest.fn(),
       },
       $t: jest.fn(),
       $apollo: {
-        mutate: jest.fn().mockResolvedValue(),
+        mutate: jest
+          .fn()
+          .mockResolvedValueOnce({ enable: 'u4711' })
+          .mockRejectedValue({ message: 'Not Authorised!' }),
       },
       location: {
         reload: jest.fn(),
@@ -146,6 +149,10 @@ describe('ReleaseModal.vue', () => {
           wrapper.find('button.confirm').trigger('click')
         })
 
+        afterEach(() => {
+          jest.clearAllMocks()
+        })
+
         it('calls mutation', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalled()
         })
@@ -167,6 +174,18 @@ describe('ReleaseModal.vue', () => {
 
           it('emits close', () => {
             expect(wrapper.emitted().close).toBeTruthy()
+          })
+        })
+
+        describe('handles errors', () => {
+          beforeEach(() => {
+            wrapper = Wrapper()
+            // second submission causes mutation to reject
+            wrapper.find('button.confirm').trigger('click')
+          })
+
+          it('shows an error toaster when mutation rejects', async () => {
+            await expect(mocks.$toast.error).toHaveBeenCalledWith('Not Authorised!')
           })
         })
       })
