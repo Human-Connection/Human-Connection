@@ -21,7 +21,7 @@ export default {
             await session.run(
               `
             MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
-            DETACH DELETE resource
+            SET resource.deleted = true
             RETURN author`,
               {
                 userId: context.user.id,

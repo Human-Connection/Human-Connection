@@ -93,9 +93,11 @@ describe('users', () => {
           id
           contributions {
             id
+            deleted
           }
           comments {
             id
+            deleted
           }
         }
       }
@@ -161,8 +163,8 @@ describe('users', () => {
           expectedResponse = {
             DeleteUser: {
               id: 'u343',
-              contributions: [{ id: 'p139' }],
-              comments: [{ id: 'c155' }],
+              contributions: [{ id: 'p139', deleted: false }],
+              comments: [{ id: 'c155', deleted: false }],
             },
           }
         })
@@ -178,8 +180,8 @@ describe('users', () => {
             expectedResponse = {
               DeleteUser: {
                 id: 'u343',
-                contributions: [],
-                comments: [{ id: 'c155' }],
+                contributions: [{ id: 'p139', deleted: true }],
+                comments: [{ id: 'c155', deleted: false }],
               },
             }
             await expect(client.request(deleteUserMutation, deleteUserVariables)).resolves.toEqual(
@@ -192,8 +194,8 @@ describe('users', () => {
             expectedResponse = {
               DeleteUser: {
                 id: 'u343',
-                contributions: [{ id: 'p139' }],
-                comments: [],
+                contributions: [{ id: 'p139', deleted: false }],
+                comments: [{ id: 'c155', deleted: true }],
               },
             }
             await expect(client.request(deleteUserMutation, deleteUserVariables)).resolves.toEqual(
@@ -206,8 +208,8 @@ describe('users', () => {
             expectedResponse = {
               DeleteUser: {
                 id: 'u343',
-                contributions: [],
-                comments: [],
+                contributions: [{ id: 'p139', deleted: true }],
+                comments: [{ id: 'c155', deleted: true }],
               },
             }
             await expect(client.request(deleteUserMutation, deleteUserVariables)).resolves.toEqual(
