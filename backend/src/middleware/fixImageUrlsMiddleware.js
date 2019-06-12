@@ -6,7 +6,7 @@ const legacyUrls = [
 
 export const fixUrl = url => {
   legacyUrls.forEach(legacyUrl => {
-    url = url.replace(legacyUrl, '/api')
+    url = url.replace(legacyUrl, '/')
   })
   return url
 }
