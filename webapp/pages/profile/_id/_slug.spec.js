@@ -1,17 +1,17 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import ProfileSlug from './_slug.vue'
+import { config, mount } from '@vue/test-utils'
+import HcUserProfile from './_slug.vue'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
+import Vue from 'vue'
 
-const localVue = createLocalVue()
+config.stubs['ds-space'] = '<span><div>Hello, Wolle</div></span>'
 
-localVue.use(Vuex)
-localVue.use(Styleguide)
+Vue.use(Vuex)
 
 describe('ProfileSlug', () => {
   let wrapper
   let Wrapper
   let mocks
+  let getters
 
   beforeEach(() => {
     mocks = {
@@ -21,6 +21,12 @@ describe('ProfileSlug', () => {
       },
       $t: jest.fn(),
       // If you mocking router, than don't use VueRouter with lacalVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
+      $route: {
+        params: {
+          id: '4711',
+          slug: 'john-doe',
+        },
+      },
       $router: {
         history: {
           push: jest.fn(),
@@ -34,13 +40,24 @@ describe('ProfileSlug', () => {
         mutate: jest.fn().mockResolvedValue(),
       },
     }
+    getters = {
+      'auth/user': () => {
+        return {
+          slug: 'john-doe',
+          id: '4711',
+        }
+      },
+    }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     Wrapper = () => {
-      return shallowMount(ProfileSlug, {
+      const store = new Vuex.Store({
+        getters,
+      })
+      return mount(HcUserProfile, {
+        store,
         mocks,
-        localVue,
       })
     }
 
@@ -52,27 +69,13 @@ describe('ProfileSlug', () => {
       })
 
       describe('deletion of Post from List by invoking "deletePostCallback(`list`)"', () => {
-        beforeEach(() => {
-          wrapper.vm.deletePostCallback('list')
-        })
+        beforeEach(() => {})
 
         describe('after timeout', () => {
           beforeEach(jest.runAllTimers)
 
-          it.skip('emits "deletePost"', () => {
-            expect(wrapper.emitted().deletePost).toHaveLength(1)
-          })
-
-          it.skip('does not go to index (main) page', () => {
-            expect(mocks.$router.history.push).not.toHaveBeenCalled()
-          })
-
-          it.skip('does call mutation', () => {
-            expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
-          })
-
-          it.skip('mutation is successful', () => {
-            expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
+          it('fetches the user', () => {
+            expect(wrapper.is('div')).toBe(true)
           })
         })
       })

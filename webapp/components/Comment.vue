@@ -15,7 +15,6 @@
         placement="bottom-end"
         resource-type="comment"
         :resource="comment"
-        :callbacks="{ confirm: deleteCommentCallback, cancel: null }"
         :modalsData="menuModalsData"
         style="float-right"
         :is-owner="isAuthor(author.id)"
@@ -49,9 +48,20 @@ export default {
     },
     dateTime: { type: [Date, String], default: null },
   },
-  data() {
-    return {
-      menuModalsData: {
+  computed: {
+    ...mapGetters({
+      user: 'auth/user',
+      isModerator: 'auth/isModerator',
+    }),
+    displaysComment() {
+      return !this.unavailable || this.isModerator
+    },
+    author() {
+      if (this.deleted) return {}
+      return this.comment.author || {}
+    },
+    menuModalsData() {
+      return {
         delete: {
           titleIdent: 'delete.comment.title',
           messageIdent: 'delete.comment.message',
@@ -72,20 +82,7 @@ export default {
             },
           },
         },
-      },
-    }
-  },
-  computed: {
-    ...mapGetters({
-      user: 'auth/user',
-      isModerator: 'auth/isModerator',
-    }),
-    displaysComment() {
-      return !this.unavailable || this.isModerator
-    },
-    author() {
-      if (this.deleted) return {}
-      return this.comment.author || {}
+      }
     },
   },
   methods: {

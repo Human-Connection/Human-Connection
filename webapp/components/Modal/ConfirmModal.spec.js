@@ -2,7 +2,7 @@ import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import ConfirmModal from './ConfirmModal.vue'
-import PostHelpers from '~/components/PostHelpers'
+import { postMenuModalsData } from '~/components/utils/PostHelpers'
 
 const localVue = createLocalVue()
 
@@ -23,7 +23,7 @@ describe('ConfirmModal.vue', () => {
       type: 'contribution',
       id: 'p23',
       name: postName,
-      modalData: PostHelpers.postMenuModalsData(postName, confirmCallback, cancelCallback).delete,
+      modalData: postMenuModalsData(postName, confirmCallback, cancelCallback).delete,
     }
     mocks = {
       $t: jest.fn(),
@@ -143,7 +143,8 @@ describe('ConfirmModal.vue', () => {
           it('does call the confirm callback', () => {
             expect(confirmCallback).toHaveBeenCalledTimes(1)
           })
-          it('emits close', () => {
+
+          it('emits "close"', () => {
             expect(wrapper.emitted().close).toHaveLength(1)
           })
 

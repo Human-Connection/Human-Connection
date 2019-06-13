@@ -204,7 +204,7 @@
               :key="post.id"
               :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-              @removePostFromList="user.contributions.splice(index, 1)"
+              @removePostFromList="activePosts.splice(index, 1)"
             />
           </template>
           <template v-else-if="$apollo.loading">
@@ -252,6 +252,7 @@ const tabToFilterMapping = ({ tab, id }) => {
 }
 
 export default {
+  name: 'HcUserProfile',
   components: {
     User,
     HcPostCard,
@@ -273,6 +274,7 @@ export default {
     return {
       User: [],
       Post: [],
+      activePosts: [],
       voted: false,
       page: 1,
       pageSize: 6,
@@ -302,12 +304,6 @@ export default {
     offset() {
       return (this.page - 1) * this.pageSize
     },
-    activePosts() {
-      if (!this.Post) {
-        return []
-      }
-      return this.uniq(this.Post.filter(post => !post.deleted))
-    },
     socialMediaLinks() {
       const { socialMedia = [] } = this.user
       return socialMedia.map(socialMedia => {
@@ -329,6 +325,9 @@ export default {
       if (!val || !val.length) {
         throw new Error('User not found!')
       }
+    },
+    Post(val) {
+      this.activePosts = this.setActivePosts()
     },
   },
   methods: {
@@ -362,6 +361,12 @@ export default {
         },
         fetchPolicy: 'cache-and-network',
       })
+    },
+    setActivePosts() {
+      if (!this.Post) {
+        return []
+      }
+      return this.uniq(this.Post.filter(post => !post.deleted))
     },
   },
   apollo: {

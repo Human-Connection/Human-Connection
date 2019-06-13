@@ -25,11 +25,11 @@ describe('Comment.vue', () => {
         success: jest.fn(),
         error: jest.fn(),
       },
-      $apollo: {
-        mutate: jest.fn().mockResolvedValue(),
-      },
       $filters: {
         truncate: a => a,
+      },
+      $apollo: {
+        mutate: jest.fn().mockResolvedValue(),
       },
     }
     getters = {
