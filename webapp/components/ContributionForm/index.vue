@@ -139,8 +139,8 @@ export default {
     },
     returnLocaleName(locale) {
       if (
-        this.contribution.language === locale.code ||
-        (!this.contribution.language && this.$i18n.locale() === locale.code)
+        (this.contribution && this.contribution.language === locale.code) ||
+        (!this.contribution && this.$i18n.locale() === locale.code)
       ) {
         return locale
       }
