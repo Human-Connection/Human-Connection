@@ -9,9 +9,10 @@ let createCommentVariables
 let createPostVariables
 let createCommentVariablesSansPostId
 let createCommentVariablesWithNonExistentPost
+let asAuthor
 
 beforeEach(async () => {
-  await factory.create('User', {
+  asAuthor = await factory.create('User', {
     email: 'test@example.org',
     password: '1234',
   })
@@ -211,22 +212,9 @@ describe('CreateComment', () => {
   })
 })
 
-describe('DeleteComment', () => {
-  const deleteCommentMutation = gql`
-    mutation($id: ID!) {
-      DeleteComment(id: $id) {
-        id
-      }
-    }
-  `
-
-  let deleteCommentVariables = {
-    id: 'c1',
-  }
-
+describe('ManageComments', () => {
   beforeEach(async () => {
-    const asAuthor = Factory()
-    await asAuthor.create('User', {
+    asAuthor = await factory.create('User', {
       email: 'author@example.org',
       password: '1234',
     })
@@ -245,55 +233,138 @@ describe('DeleteComment', () => {
     })
   })
 
-  describe('unauthenticated', () => {
-    it('throws authorization error', async () => {
-      client = new GraphQLClient(host)
-      await expect(client.request(deleteCommentMutation, deleteCommentVariables)).rejects.toThrow(
-        'Not Authorised',
-      )
-    })
-  })
-
-  describe('authenticated but not the author', () => {
-    beforeEach(async () => {
-      let headers
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
-    })
-
-    it('throws authorization error', async () => {
-      await expect(client.request(deleteCommentMutation, deleteCommentVariables)).rejects.toThrow(
-        'Not Authorised',
-      )
-    })
-  })
-
-  describe('authenticated as author', () => {
-    beforeEach(async () => {
-      let headers
-      headers = await login({
-        email: 'author@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
-    })
-
-    it('deletes the comment', async () => {
-      const expected = {
-        DeleteComment: {
-          id: 'c1',
-        },
+  describe('UpdateComment', () => {
+    const updateCommentMutation = gql`
+      mutation($content: String!, $id: ID!) {
+        UpdateComment(content: $content, id: $id) {
+          id
+          content
+        }
       }
-      await expect(client.request(deleteCommentMutation, deleteCommentVariables)).resolves.toEqual(
-        expected,
-      )
+    `
+
+    let updateCommentVariables = {
+      id: 'c1',
+      content: 'The comment is updated',
+    }
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+        await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
+          'Not Authorised',
+        )
+      })
+    })
+
+    describe('authenticated but not the author', () => {
+      beforeEach(async () => {
+        let headers
+        headers = await login({
+          email: 'test@example.org',
+          password: '1234',
+        })
+        client = new GraphQLClient(host, {
+          headers,
+        })
+      })
+
+      it('throws authorization error', async () => {
+        await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
+          'Not Authorised',
+        )
+      })
+    })
+
+    describe('authenticated as author', () => {
+      beforeEach(async () => {
+        let headers
+        headers = await login({
+          email: 'author@example.org',
+          password: '1234',
+        })
+        client = new GraphQLClient(host, {
+          headers,
+        })
+      })
+
+      it('updates the comment', async () => {
+        const expected = {
+          UpdateComment: {
+            id: 'c1',
+            content: 'The comment is updated',
+          },
+        }
+        await expect(
+          client.request(updateCommentMutation, updateCommentVariables),
+        ).resolves.toEqual(expected)
+      })
+    })
+  })
+
+  describe('DeleteComment', () => {
+    const deleteCommentMutation = gql`
+      mutation($id: ID!) {
+        DeleteComment(id: $id) {
+          id
+        }
+      }
+    `
+
+    let deleteCommentVariables = {
+      id: 'c1',
+    }
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+        await expect(client.request(deleteCommentMutation, deleteCommentVariables)).rejects.toThrow(
+          'Not Authorised',
+        )
+      })
+    })
+
+    describe('authenticated but not the author', () => {
+      beforeEach(async () => {
+        let headers
+        headers = await login({
+          email: 'test@example.org',
+          password: '1234',
+        })
+        client = new GraphQLClient(host, {
+          headers,
+        })
+      })
+
+      it('throws authorization error', async () => {
+        await expect(client.request(deleteCommentMutation, deleteCommentVariables)).rejects.toThrow(
+          'Not Authorised',
+        )
+      })
+    })
+
+    describe('authenticated as author', () => {
+      beforeEach(async () => {
+        let headers
+        headers = await login({
+          email: 'author@example.org',
+          password: '1234',
+        })
+        client = new GraphQLClient(host, {
+          headers,
+        })
+      })
+
+      it('deletes the comment', async () => {
+        const expected = {
+          DeleteComment: {
+            id: 'c1',
+          },
+        }
+        await expect(
+          client.request(deleteCommentMutation, deleteCommentVariables),
+        ).resolves.toEqual(expected)
+      })
     })
   })
 })

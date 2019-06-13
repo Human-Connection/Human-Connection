@@ -22,16 +22,11 @@ const validateUrl = async (resolve, root, args, context, info) => {
   }
 }
 
-const validateComment = async (resolve, root, args, context, info) => {
+const validateUpdateComment = async (resolve, root, args, context, info) => {
   const COMMENT_MIN_LENGTH = 1
   const content = args.content.replace(/<(?:.|\n)*?>/gm, '').trim()
   if (!args.content || content.length < COMMENT_MIN_LENGTH) {
     throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
-  }
-  const NO_POST_ERR_MESSAGE = 'Comment cannot be created without a post!'
-  const { postId } = args
-  if (!postId) {
-    throw new UserInputError(NO_POST_ERR_MESSAGE)
   }
   /* eslint-disable-next-line no-return-await */
   return await resolve(root, args, context, info)
@@ -42,7 +37,6 @@ export default {
     CreateUser: validateUsername,
     UpdateUser: validateUsername,
     CreateSocialMedia: validateUrl,
-    CreateComment: validateComment,
-    UpdateComment: validateComment,
+    UpdateComment: validateUpdateComment,
   },
 }
