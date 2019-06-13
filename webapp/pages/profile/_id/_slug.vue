@@ -69,7 +69,7 @@
         </ds-card>
         <ds-space />
         <ds-heading tag="h3" soft style="text-align: center; margin-bottom: 10px;">
-          Netzwerk
+          {{ $t('profile.network.title') }}
         </ds-heading>
         <ds-card style="position: relative; height: auto;">
           <ds-space v-if="user.following && user.following.length" margin="x-small">
