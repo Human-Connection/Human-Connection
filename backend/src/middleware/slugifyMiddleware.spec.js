@@ -7,12 +7,14 @@ let headers
 const factory = Factory()
 
 beforeEach(async () => {
-  await factory.create('User', { email: 'user@example.org', password: '1234' })
+  const adminParams = { role: 'admin', email: 'admin@example.org', password: '1234' }
+  await factory.create('User', adminParams)
   await factory.create('User', {
     email: 'someone@example.org',
     password: '1234',
   })
-  headers = await login({ email: 'user@example.org', password: '1234' })
+  // we need to be an admin, otherwise we're not authorized to create a user
+  headers = await login(adminParams)
   authenticatedClient = new GraphQLClient(host, { headers })
 })
 
