@@ -24,4 +24,5 @@ RUN yarn run build
 FROM base as production
 ENV NODE_ENV=production
 COPY --from=builder /nitro-backend/dist ./dist
+COPY ./public/img/ ./public/img/
 RUN yarn install --frozen-lockfile --non-interactive
