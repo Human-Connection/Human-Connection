@@ -87,6 +87,7 @@ export default {
         this.slug = contribution.slug
         this.form.content = contribution.content
         this.form.title = contribution.title
+        this.form.language = this.locale
       },
     },
   },
@@ -137,7 +138,10 @@ export default {
       this.$refs.contributionForm.update('content', value)
     },
     returnLocaleName(locale) {
-      if (this.$i18n.locale() === locale.code) {
+      if (
+        this.contribution.language === locale.code ||
+        (!this.contribution.language && this.$i18n.locale() === locale.code)
+      ) {
         return locale
       }
     },
