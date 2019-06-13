@@ -73,7 +73,9 @@
         </ds-heading>
         <ds-card style="position: relative; height: auto;">
           <ds-space v-if="user.following && user.following.length" margin="x-small">
-            <ds-text tag="h5" color="soft">Wem folgt {{ userName | truncate(15) }}?</ds-text>
+            <ds-text tag="h5" color="soft">
+              {{ userName | truncate(15) }} {{ $t('profile.network.following') }}
+            </ds-text>
           </ds-space>
           <template v-if="user.following && user.following.length">
             <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
@@ -84,18 +86,23 @@
             </ds-space>
             <ds-space v-if="user.followingCount - user.following.length" margin="small">
               <ds-text size="small" color="softer">
-                und {{ user.followingCount - user.following.length }} weitere
+                {{ $t('profile.network.and') }} {{ user.followingCount - user.following.length }}
+                {{ $t('profile.network.more') }}
               </ds-text>
             </ds-space>
           </template>
           <template v-else>
-            <p style="text-align: center; opacity: .5;">{{ userName }} folgt niemandem</p>
+            <p style="text-align: center; opacity: .5;">
+              {{ userName }} {{ $t('profile.network.followingNobody') }}
+            </p>
           </template>
         </ds-card>
         <ds-space />
         <ds-card style="position: relative; height: auto;">
           <ds-space v-if="user.followedBy && user.followedBy.length" margin="x-small">
-            <ds-text tag="h5" color="soft">Wer folgt {{ userName | truncate(15) }}?</ds-text>
+            <ds-text tag="h5" color="soft">
+              {{ userName | truncate(15) }} {{ $t('profile.network.followedBy') }}
+            </ds-text>
           </ds-space>
           <template v-if="user.followedBy && user.followedBy.length">
             <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
@@ -106,12 +113,15 @@
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
               <ds-text size="small" color="softer">
-                und {{ user.followedByCount - user.followedBy.length }} weitere
+                {{ $t('profile.network.and') }} {{ user.followedByCount - user.followedBy.length }}
+                {{ $t('profile.network.more') }}
               </ds-text>
             </ds-space>
           </template>
           <template v-else>
-            <p style="text-align: center; opacity: .5;">niemand folgt {{ userName }}</p>
+            <p style="text-align: center; opacity: .5;">
+              {{ userName }} {{ $t('profile.network.followedByNobody') }}
+            </p>
           </template>
         </ds-card>
         <ds-space v-if="user.socialMedia && user.socialMedia.length" margin="large">
@@ -218,7 +228,6 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-
 import User from '~/components/User'
 import HcPostCard from '~/components/PostCard'
 import HcFollowButton from '~/components/FollowButton.vue'
@@ -230,10 +239,8 @@ import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import PostMutationHelpers from '~/mixins/PostMutationHelpers'
-
 import PostQuery from '~/graphql/UserProfile/Post.js'
 import UserQuery from '~/graphql/UserProfile/User.js'
-
 const tabToFilterMapping = ({ tab, id }) => {
   return {
     post: { author: { id } },
@@ -241,7 +248,6 @@ const tabToFilterMapping = ({ tab, id }) => {
     shout: { shoutedBy_some: { id } },
   }[tab]
 }
-
 export default {
   components: {
     User,
@@ -387,7 +393,6 @@ export default {
 .pointer {
   cursor: pointer;
 }
-
 .Tab {
   border-collapse: collapse;
   padding-bottom: 5px;
@@ -395,7 +400,6 @@ export default {
 .Tab:hover {
   border-bottom: 2px solid #c9c6ce;
 }
-
 .Tabs {
   position: relative;
   background-color: #fff;
@@ -431,14 +435,12 @@ export default {
     transition: left 0.25s;
   }
 }
-
 .profile-avatar.ds-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;
   border: #fff 5px solid;
 }
-
 .page-name-profile-id-slug {
   .ds-flex-item:first-child .content-menu {
     position: absolute;
@@ -446,17 +448,14 @@ export default {
     right: $space-x-small;
   }
 }
-
 .profile-top-navigation {
   position: sticky;
   top: 53px;
   z-index: 2;
 }
-
 .ds-tab-nav {
   .ds-card-content {
     padding: 0 !important;
-
     .ds-tab-nav-item {
       &.ds-tab-nav-item-active {
         border-bottom: 3px solid #17b53f;
