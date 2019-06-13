@@ -4,12 +4,7 @@
       <ds-list>
         <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
           <a :href="link.url" target="_blank">
-            <hc-image
-              :image-props="{ src: link.favicon }"
-              alt="Social Media link"
-              width="16"
-              height="16"
-            />
+            <img :src="link.favicon | proxyApiUrl" alt="Social Media link" width="16" height="16" />
             {{ link.url }}
           </a>
           &nbsp;&nbsp;
@@ -44,12 +39,8 @@
 <script>
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
-import HcImage from '~/components/Image'
 
 export default {
-  components: {
-    HcImage,
-  },
   data() {
     return {
       value: '',
