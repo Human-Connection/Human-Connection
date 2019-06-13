@@ -61,7 +61,7 @@
     "graphql-custom-directives": "~0.2.14",
     "graphql-iso-date": "~3.6.1",
     "graphql-middleware": "~3.0.2",
-    "graphql-shield": "~5.3.6",
+    "graphql-shield": "~5.3.8",
     "graphql-tag": "~2.10.1",
     "graphql-yoga": "~1.17.4",
     "helmet": "~3.18.0",
@@ -105,7 +105,7 @@
     "graphql-request": "~1.8.2",
     "jest": "~24.8.0",
     "nodemon": "~1.19.1",
-    "prettier": "~1.17.1",
+    "prettier": "~1.18.2",
     "supertest": "~4.0.2"
   }
 }

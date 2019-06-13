@@ -505,9 +505,7 @@ export default class NitroDataSource {
     const result2 = await this.client.mutate({
       mutation: gql`
           mutation {
-              AddCommentAuthor(from: {id: "${
-                result.data.CreateComment.id
-              }"}, to: {id: "${toUserId}"}) {
+              AddCommentAuthor(from: {id: "${result.data.CreateComment.id}"}, to: {id: "${toUserId}"}) {
                   id
               }
           }
@@ -519,9 +517,7 @@ export default class NitroDataSource {
     result = await this.client.mutate({
       mutation: gql`
           mutation {
-              AddCommentPost(from: { id: "${
-                result.data.CreateComment.id
-              }", to: { id: "${postId}" }}) {
+              AddCommentPost(from: { id: "${result.data.CreateComment.id}", to: { id: "${postId}" }}) {
                   id
               }
           }
