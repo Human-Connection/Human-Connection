@@ -15,7 +15,7 @@
               model="language"
               :options="form.languageOptions"
               icon="globe"
-              :placeholder="form.placeholder"
+              :placeholder="locale"
               :label="$t('contribution.languageSelectLabel')"
             />
           </ds-flex-item>
@@ -64,7 +64,6 @@ export default {
         content: '',
         language: null,
         languageOptions: [],
-        placeholder: '',
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -89,15 +88,15 @@ export default {
         this.form.content = contribution.content
         this.form.title = contribution.title
         this.form.language = this.locale
-        this.form.placeholder = this.locale
       },
     },
   },
   computed: {
     locale() {
-      const locale = this.contribution.language
-        ? locales.find(loc => this.contribution.language === loc.code)
-        : locales.find(loc => this.$i18n.locale() === loc.code)
+      const locale =
+        this.contribution && this.contribution.language
+          ? locales.find(loc => this.contribution.language === loc.code)
+          : locales.find(loc => this.$i18n.locale() === loc.code)
       return locale.name
     },
   },
