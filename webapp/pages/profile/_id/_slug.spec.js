@@ -26,8 +26,8 @@ describe('ProfileSlug', () => {
         id: 'p23',
         name: 'It is a post',
       },
-      $t: jest.fn(t => t),
-      // If you mocking router, than don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
+      $t: jest.fn(),
+      // If you're mocking router, then don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
       $route: {
         params: {
           id: '4711',

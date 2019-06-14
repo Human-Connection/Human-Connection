@@ -301,5 +301,9 @@
     "avatar": {
       "submitted": "Upload erfolgreich"
     }
+  },
+  "contribution": {
+    "success": "Gespeichert!",
+    "languageSelectLabel": "Sprache"
   }
 }
