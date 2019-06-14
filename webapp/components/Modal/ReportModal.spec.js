@@ -17,10 +17,6 @@ describe('ReportModal.vue', () => {
     propsData = {
       type: 'contribution',
       id: 'c43',
-      callbacks: {
-        confirm: jest.fn(),
-        cancel: jest.fn(),
-      },
     }
     mocks = {
       $t: jest.fn(),

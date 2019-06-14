@@ -1,4 +1,4 @@
-import { config, mount, shallowMount, createLocalVue } from '@vue/test-utils'
+import { config, mount, createLocalVue } from '@vue/test-utils'
 import ProfileSlug from './_slug.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
@@ -50,48 +50,6 @@ describe('ProfileSlug', () => {
     }
   })
 
-  describe('shallowMount', () => {
-    Wrapper = () => {
-      return shallowMount(ProfileSlug, {
-        mocks,
-        localVue,
-      })
-    }
-
-    beforeEach(jest.useFakeTimers)
-
-    describe('test mixin "PostMutationHelpers"', () => {
-      beforeEach(() => {
-        wrapper = Wrapper()
-      })
-
-      describe('deletion of Post from List by invoking "deletePostCallback(`list`)"', () => {
-        beforeEach(() => {
-          wrapper.vm.deletePostCallback('list')
-        })
-
-        describe('after timeout', () => {
-          beforeEach(jest.runAllTimers)
-
-          it('emits "deletePost"', () => {
-            expect(wrapper.emitted().deletePost).toHaveLength(1)
-          })
-
-          it('does not go to index (main) page', () => {
-            expect(mocks.$router.history.push).not.toHaveBeenCalled()
-          })
-
-          it('does call mutation', () => {
-            expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
-          })
-
-          it('mutation is successful', () => {
-            expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
-          })
-        })
-      })
-    })
-  })
   describe('mount', () => {
     Wrapper = () => {
       return mount(ProfileSlug, {
@@ -104,6 +62,7 @@ describe('ProfileSlug', () => {
       beforeEach(() => {
         mocks.$filters = {
           removeLinks: c => c,
+          truncate: a => a,
         }
         mocks.$store = {
           getters: {
@@ -170,7 +129,10 @@ describe('ProfileSlug', () => {
           describe('pagination returned less posts than available', () => {
             beforeEach(() => {
               const posts = [1, 2, 3, 4, 5].map(id => {
-                return { ...aPost, id }
+                return {
+                  ...aPost,
+                  id,
+                }
               })
 
               wrapper.setData({
@@ -200,7 +162,10 @@ describe('ProfileSlug', () => {
           describe('pagination returned as many posts as available', () => {
             beforeEach(() => {
               const posts = [1, 2, 3, 4, 5, 6].map(id => {
-                return { ...aPost, id }
+                return {
+                  ...aPost,
+                  id,
+                }
               })
 
               wrapper.setData({

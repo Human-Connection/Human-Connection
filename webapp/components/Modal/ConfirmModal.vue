@@ -10,10 +10,18 @@
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button class="cancel" icon="close" @click="cancel">{{ $t('delete.cancel') }}</ds-button>
+      <ds-button class="cancel" :icon="modalData.buttons.cancel.icon" @click="cancel">
+        {{ $t(modalData.buttons.cancel.textIdent) }}
+      </ds-button>
 
-      <ds-button danger class="confirm" icon="trash" :loading="loading" @click="confirm">
-        {{ $t('delete.submit') }}
+      <ds-button
+        :danger="modalData.buttons.confirm.danger"
+        class="confirm"
+        :icon="modalData.buttons.confirm.icon"
+        :loading="loading"
+        @click="confirm"
+      >
+        {{ $t(modalData.buttons.confirm.textIdent) }}
       </ds-button>
     </template>
   </ds-modal>
@@ -23,14 +31,14 @@
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {
-  name: 'DeleteModal',
+  name: 'ConfirmModal',
   components: {
     SweetalertIcon,
   },
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
-    callbacks: { type: Object, required: true },
+    modalData: { type: Object, required: true },
     id: { type: String, required: true },
   },
   data() {
@@ -42,18 +50,15 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(`delete.${this.type}.title`)
+      return this.$t(this.modalData.titleIdent)
     },
     message() {
-      const name = this.$filters.truncate(this.name, 30)
-      return this.$t(`delete.${this.type}.message`, { name })
+      return this.$t(this.modalData.messageIdent, this.modalData.messageParams)
     },
   },
   methods: {
     async cancel() {
-      if (this.callbacks.cancel) {
-        await this.callbacks.cancel()
-      }
+      await this.modalData.buttons.cancel.callback()
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
@@ -62,9 +67,7 @@ export default {
     async confirm() {
       this.loading = true
       try {
-        if (this.callbacks.confirm) {
-          await this.callbacks.confirm()
-        }
+        await this.modalData.buttons.confirm.callback()
         this.success = true
         setTimeout(() => {
           this.isOpen = false
