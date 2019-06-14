@@ -14,7 +14,7 @@
           resource-type="contribution"
           :resource="post"
           :modalsData="menuModalsData"
-          :is-owner="isAuthor(post.author.id)"
+          :is-owner="isAuthor(post.author ? post.author.id : null)"
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
