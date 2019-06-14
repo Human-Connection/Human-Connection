@@ -13,13 +13,11 @@
           resource-type="contribution"
           :resource="post"
           :callbacks="{ confirm: () => deletePostCallback('page'), cancel: null }"
-          :is-owner="isAuthor(post.author.id)"
+          :is-owner="isAuthor(post.author ? post.author.id : null)"
         />
       </no-ssr>
       <ds-space margin-bottom="small" />
-      <ds-heading tag="h3" no-margin>
-        {{ post.title }}
-      </ds-heading>
+      <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Content -->
       <!-- eslint-disable vue/no-v-html -->

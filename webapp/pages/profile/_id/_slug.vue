@@ -228,7 +228,6 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-
 import User from '~/components/User'
 import HcPostCard from '~/components/PostCard'
 import HcFollowButton from '~/components/FollowButton.vue'
@@ -240,10 +239,8 @@ import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import PostMutationHelpers from '~/mixins/PostMutationHelpers'
-
 import PostQuery from '~/graphql/UserProfile/Post.js'
 import UserQuery from '~/graphql/UserProfile/User.js'
-
 const tabToFilterMapping = ({ tab, id }) => {
   return {
     post: { author: { id } },
@@ -251,7 +248,6 @@ const tabToFilterMapping = ({ tab, id }) => {
     shout: { shoutedBy_some: { id } },
   }[tab]
 }
-
 export default {
   components: {
     User,
@@ -397,7 +393,6 @@ export default {
 .pointer {
   cursor: pointer;
 }
-
 .Tab {
   border-collapse: collapse;
   padding-bottom: 5px;
@@ -405,7 +400,6 @@ export default {
 .Tab:hover {
   border-bottom: 2px solid #c9c6ce;
 }
-
 .Tabs {
   position: relative;
   background-color: #fff;
@@ -441,14 +435,12 @@ export default {
     transition: left 0.25s;
   }
 }
-
 .profile-avatar.ds-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;
   border: #fff 5px solid;
 }
-
 .page-name-profile-id-slug {
   .ds-flex-item:first-child .content-menu {
     position: absolute;
@@ -456,17 +448,14 @@ export default {
     right: $space-x-small;
   }
 }
-
 .profile-top-navigation {
   position: sticky;
   top: 53px;
   z-index: 2;
 }
-
 .ds-tab-nav {
   .ds-card-content {
     padding: 0 !important;
-
     .ds-tab-nav-item {
       &.ds-tab-nav-item-active {
         border-bottom: 3px solid #17b53f;
