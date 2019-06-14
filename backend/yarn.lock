@@ -1561,12 +1561,12 @@ apollo-server-plugin-base@0.5.2:
   resolved "https://registry.yarnpkg.com/apollo-server-plugin-base/-/apollo-server-plugin-base-0.5.2.tgz#f97ba983f1e825fec49cba8ff6a23d00e1901819"
   integrity sha512-j81CpadRLhxikBYHMh91X4aTxfzFnmmebEiIR9rruS6dywWCxV2aLW87l9ocD1MiueNam0ysdwZkX4F3D4csNw==
 
-apollo-server-testing@~2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/apollo-server-testing/-/apollo-server-testing-2.6.2.tgz#e0ecddd565fce1c38a346f9fbe6118f543ccf6a6"
-  integrity sha512-I9QLFk4I/z9oOIXfnLc8RPBYAKih6Olrg3RDeRvWhDjLQ8gfALXVhCO+7WuvM35wNZcZVn7aXBeZ8Y3mlgkj8w==
+apollo-server-testing@~2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/apollo-server-testing/-/apollo-server-testing-2.6.3.tgz#a0199a5d42000e60ecf0dea44b851f5f581e280e"
+  integrity sha512-LTkegcGVSkM+pA0FINDSYVl3TiFYKZyfjlKrEr/LN6wLiL6gbRgy6LMtk2j+qli/bnTDqqQREX8OEqmV8FKUoQ==
   dependencies:
-    apollo-server-core "2.6.2"
+    apollo-server-core "2.6.3"
 
 apollo-server@~2.6.3:
   version "2.6.3"
