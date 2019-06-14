@@ -28,6 +28,7 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor'
+import PostMutations from '~/graphql/PostMutations.js'
 
 export default {
   components: {
@@ -69,12 +70,11 @@ export default {
   },
   methods: {
     submit() {
-      const postMutations = require('~/graphql/PostMutations.js').default(this)
       this.loading = true
 
       this.$apollo
         .mutate({
-          mutation: this.id ? postMutations.UpdatePost : postMutations.CreatePost,
+          mutation: this.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
             id: this.id,
             title: this.form.title,

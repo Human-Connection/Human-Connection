@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default app => {
+export default () => {
   return {
     CreatePost: gql`
       mutation($title: String!, $content: String!) {

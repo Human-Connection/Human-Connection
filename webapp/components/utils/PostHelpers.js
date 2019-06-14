@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import PostMutations from '~/graphql/PostMutations.js'
 
 export function postMenuModalsData(truncatedPostName, confirmCallback, cancelCallback = () => {}) {
   return {
@@ -26,16 +26,8 @@ export function postMenuModalsData(truncatedPostName, confirmCallback, cancelCal
 }
 
 export function deletePostMutation(postId) {
-  // TODO: Replace "gqlMutation" with "DeletePost" from '~/graphql/PostMutations.js', has not worked for me.
-  var gqlMutation = gql`
-    mutation($id: ID!) {
-      DeletePost(id: $id) {
-        id
-      }
-    }
-  `
   return {
-    mutation: gqlMutation,
+    mutation: PostMutations().DeletePost,
     variables: {
       id: postId,
     },
