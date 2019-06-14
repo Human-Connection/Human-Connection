@@ -1,17 +1,13 @@
 <template>
   <div :class="[badges.length === 2 && 'hc-badges-dual']" class="hc-badges">
     <div v-for="badge in badges" :key="badge.key" class="hc-badge-container">
-      <hc-image :title="badge.key" :image-props="{ src: badge.icon }" class="hc-badge" />
+      <img :title="badge.key" :src="badge.icon | proxyApiUrl" class="hc-badge" />
     </div>
   </div>
 </template>
 
 <script>
-import HcImage from './Image'
 export default {
-  components: {
-    HcImage,
-  },
   props: {
     badges: {
       type: Array,

@@ -3,11 +3,13 @@ import CommentList from '.'
 import Empty from '~/components/Empty'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 localVue.use(Vuex)
+localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
 config.stubs['v-popover'] = '<span><slot /></span>'
