@@ -70,7 +70,7 @@ import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
 // import { randomBytes } from 'crypto'
 import { mapGetters } from 'vuex'
-import { postMenuModalsData, deletePostMutationData } from '~/components/utils/PostHelpers'
+import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 
 export default {
   name: 'HcPostCard',
@@ -113,7 +113,7 @@ export default {
   methods: {
     async deletePostCallback() {
       try {
-        await this.$apollo.mutate(deletePostMutationData(this.post.id))
+        await this.$apollo.mutate(deletePostMutation(this.post.id))
         this.$toast.success(this.$t('delete.contribution.success'))
         this.$emit('removePostFromList')
       } catch (err) {

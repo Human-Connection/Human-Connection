@@ -71,7 +71,7 @@ import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
-import { postMenuModalsData, deletePostMutationData } from '~/components/utils/PostHelpers'
+import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 
 export default {
   name: 'PostSlug',
@@ -224,7 +224,7 @@ export default {
     },
     async deletePostCallback() {
       try {
-        await this.$apollo.mutate(deletePostMutationData(this.post.id))
+        await this.$apollo.mutate(deletePostMutation(this.post.id))
         this.$toast.success(this.$t('delete.contribution.success'))
         this.$router.history.push('/') // Redirect to index (main) page
       } catch (err) {

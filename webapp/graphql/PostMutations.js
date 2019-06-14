@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export default app => {
   return {
-    CreatePost: gql(`
+    CreatePost: gql`
       mutation($title: String!, $content: String!) {
         CreatePost(title: $title, content: $content) {
           id
@@ -12,8 +12,8 @@ export default app => {
           contentExcerpt
         }
       }
-    `),
-    UpdatePost: gql(`
+    `,
+    UpdatePost: gql`
       mutation($id: ID!, $title: String!, $content: String!) {
         UpdatePost(id: $id, title: $title, content: $content) {
           id
@@ -23,6 +23,13 @@ export default app => {
           contentExcerpt
         }
       }
-    `),
+    `,
+    DeletePost: gql`
+      mutation($id: ID!) {
+        DeletePost(id: $id) {
+          id
+        }
+      }
+    `,
   }
 }
