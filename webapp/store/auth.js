@@ -79,6 +79,8 @@ export const actions = {
           role
           about
           locationName
+          contributionsCount
+          commentsCount
           socialMedia {
             id
             url

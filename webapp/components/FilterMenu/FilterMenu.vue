@@ -11,7 +11,7 @@
           <ds-button
             name="filter-by-followed-authors-only"
             icon="user-plus"
-            :primary="onlyFollowed"
+            :primary="!!filterAuthorIsFollowedById"
             @click="toggleOnlyFollowed"
           />
         </div>
@@ -22,24 +22,30 @@
 
 <script>
 export default {
+  props: {
+    user: { type: Object, required: true },
+  },
   data() {
-    // We have to fix styleguide here. It uses .includes wich will always be
-    // false for arrays of objects.
     return {
-      filterBubble: {
-        author: 'all',
-      },
+      filter: {},
     }
   },
   computed: {
-    onlyFollowed() {
-      return this.filterBubble.author === 'following'
+    filterAuthorIsFollowedById() {
+      const { author = {} } = this.filter
+      /* eslint-disable camelcase */
+      const { followedBy_some = {} } = author
+      const { id } = followedBy_some
+      /* eslint-enable */
+      return id
     },
   },
   methods: {
     toggleOnlyFollowed() {
-      this.filterBubble.author = this.onlyFollowed ? 'all' : 'following'
-      this.$emit('changeFilterBubble', this.filterBubble)
+      this.filter = this.filterAuthorIsFollowedById
+        ? {}
+        : { author: { followedBy_some: { id: this.user.id } } }
+      this.$emit('changeFilterBubble', this.filter)
     },
   },
 }

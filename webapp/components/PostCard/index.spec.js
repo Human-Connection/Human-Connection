@@ -1,22 +1,38 @@
-import { config, shallowMount, createLocalVue } from '@vue/test-utils'
-import PostSlug from './index.vue'
-import Vuex from 'vuex'
+import { config, shallowMount, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import Styleguide from '@human-connection/styleguide'
+import Vuex from 'vuex'
+import Filters from '~/plugins/vue-filters'
+import PostCard from '.'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['v-popover'] = '<span><slot /></span>'
 
-describe('PostSlug', () => {
-  let wrapper
-  let Wrapper
+describe('PostCard', () => {
   let store
+  let stubs
   let mocks
+  let propsData
+  let getters
+  let Wrapper
+  let wrapper
 
   beforeEach(() => {
+    propsData = {
+      post: {
+        id: 'p23',
+        name: 'It is a post',
+        author: {
+          id: 'u1',
+        },
+        disabled: false,
+      },
+    }
     store = new Vuex.Store({
       getters: {
         'auth/user': () => {
@@ -24,17 +40,11 @@ describe('PostSlug', () => {
         },
       },
     })
+    stubs = {
+      NuxtLink: RouterLinkStub,
+    }
     mocks = {
       $t: jest.fn(),
-      $filters: {
-        truncate: a => a,
-      },
-      // If you mocking router, than don't use VueRouter with lacalVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
-      $router: {
-        history: {
-          push: jest.fn(),
-        },
-      },
       $toast: {
         success: jest.fn(),
         error: jest.fn(),
@@ -43,12 +53,18 @@ describe('PostSlug', () => {
         mutate: jest.fn().mockResolvedValue(),
       },
     }
+    getters = {
+      'auth/user': () => {
+        return {}
+      },
+    }
   })
 
   describe('shallowMount', () => {
     Wrapper = () => {
-      return shallowMount(PostSlug, {
+      return shallowMount(PostCard, {
         store,
+        propsData,
         mocks,
         localVue,
       })
@@ -59,15 +75,6 @@ describe('PostSlug', () => {
     describe('test Post callbacks', () => {
       beforeEach(() => {
         wrapper = Wrapper()
-        wrapper.setData({
-          post: {
-            id: 'p23',
-            name: 'It is a post',
-            author: {
-              id: 'u1',
-            },
-          },
-        })
       })
 
       describe('deletion of Post from Page by invoking "deletePostCallback()"', () => {
@@ -86,10 +93,37 @@ describe('PostSlug', () => {
             expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
           })
 
-          it('does go to index (main) page', () => {
-            expect(mocks.$router.history.push).toHaveBeenCalledTimes(1)
+          it('emits "removePostFromList"', () => {
+            expect(wrapper.emitted().removePostFromList).toHaveLength(1)
           })
         })
+      })
+    })
+  })
+
+  describe('mount', () => {
+    Wrapper = () => {
+      const store = new Vuex.Store({
+        getters,
+      })
+      return mount(PostCard, {
+        stubs,
+        mocks,
+        propsData,
+        store,
+        localVue,
+      })
+    }
+
+    describe('given a post', () => {
+      beforeEach(() => {
+        propsData.post = {
+          title: "It's a title",
+        }
+      })
+
+      it('renders title', () => {
+        expect(Wrapper().text()).toContain("It's a title")
       })
     })
   })

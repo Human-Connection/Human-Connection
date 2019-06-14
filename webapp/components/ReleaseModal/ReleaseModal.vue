@@ -40,6 +40,8 @@ export default {
   },
   methods: {
     cancel() {
+      // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+      // await this.modalData.buttons.cancel.callback()
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
@@ -47,6 +49,8 @@ export default {
     },
     async confirm() {
       try {
+        // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+        // await this.modalData.buttons.confirm.callback()
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
@@ -57,17 +61,9 @@ export default {
         })
         this.$toast.success(this.$t('release.success'))
         this.isOpen = false
-        /*
-        setTimeout(() => {
-          location.reload()
-        }, 1500)
-        */
         setTimeout(() => {
           this.$emit('close')
         }, 1000)
-        setTimeout(() => {
-          location.reload()
-        }, 250)
       } catch (err) {
         this.$toast.error(err.message)
       }

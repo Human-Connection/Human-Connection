@@ -2,14 +2,14 @@
   <div>
     <ds-flex :width="{ base: '100%' }" gutter="base">
       <ds-flex-item>
-        <filter-menu @changeFilterBubble="changeFilterBubble" />
+        <filter-menu :user="currentUser" @changeFilterBubble="changeFilterBubble" />
       </ds-flex-item>
       <hc-post-card
         v-for="(post, index) in uniq(Post)"
         :key="post.id"
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-        @deletePost="deletePost(index, post.id)"
+        @removePostFromList="deletePost(index, post.id)"
       />
     </ds-flex>
     <no-ssr>
@@ -32,6 +32,7 @@ import gql from 'graphql-tag'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -45,10 +46,13 @@ export default {
       Post: [],
       page: 1,
       pageSize: 10,
-      filterBubble: { author: 'all' },
+      filter: {},
     }
   },
   computed: {
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
     tags() {
       return this.Post ? this.Post[0].tags.map(tag => tag.name) : '-'
     },
@@ -57,8 +61,8 @@ export default {
     },
   },
   methods: {
-    changeFilterBubble(filterBubble) {
-      this.filterBubble = filterBubble
+    changeFilterBubble(filter) {
+      this.filter = filter
       this.$apollo.queries.Post.refresh()
     },
     uniq(items, field = 'id') {
@@ -76,7 +80,7 @@ export default {
       this.page++
       this.$apollo.queries.Post.fetchMore({
         variables: {
-          filterBubble: this.filterBubble,
+          filter: this.filter,
           first: this.pageSize,
           offset: this.offset,
         },
@@ -102,8 +106,8 @@ export default {
     Post: {
       query() {
         return gql(`
-          query Post($filterBubble: FilterBubble, $first: Int, $offset: Int) {
-            Post(filterBubble: $filterBubble, first: $first, offset: $offset) {
+          query Post($filter: _PostFilter, $first: Int, $offset: Int) {
+            Post(filter: $filter, first: $first, offset: $offset) {
               id
               title
               contentExcerpt
@@ -146,7 +150,7 @@ export default {
       },
       variables() {
         return {
-          filterBubble: this.filterBubble,
+          filter: this.filter,
           first: this.pageSize,
           offset: 0,
         }

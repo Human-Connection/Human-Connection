@@ -10,6 +10,7 @@ Feature: Follow a user
       | stuart-little      |
       | tero-vota          |
 
+  @wip
   Scenario: Send a follow to a user inbox and make sure it's added to the right followers collection
     When I send a POST request with the following activity to "/activitypub/users/tero-vota/inbox":
     """
