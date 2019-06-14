@@ -323,6 +323,7 @@ export default {
     })
   },
   beforeDestroy() {
+    this.$root.$off('changeLanguage')
     this.editor.destroy()
   },
   methods: {
