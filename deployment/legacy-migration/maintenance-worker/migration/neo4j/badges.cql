@@ -45,7 +45,7 @@ MERGE(b:Badge {id: badge._id["$oid"]})
 ON CREATE SET
 b.key       = badge.key,
 b.type      = badge.type,
-b.icon      = badge.image.path,
+b.icon      = substring(badge.image.path, 38),
 b.status    = badge.status,
 b.createdAt = badge.createdAt.`$date`,
 b.updatedAt = badge.updatedAt.`$date`

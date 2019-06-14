@@ -49,8 +49,8 @@
         }
       },
 [ ]   timezone: { type: String },
-[?]   avatar: { type: String }, // Path is incorrect in Nitro
-[?]   coverImg: { type: String }, // Path is incorrect in Nitro, was not modeled in latest Nitro - do we want this?
+[X]   avatar: { type: String },
+[X]   coverImg: { type: String },
 [ ]   doiToken: { type: String },
 [ ]   confirmedAt: { type: Date },
 [?]   badgeIds: [], // Verify this is working properly
@@ -102,8 +102,8 @@ u.name       = user.name,
 u.slug       = user.slug,
 u.email      = user.email,
 u.password   = user.password,
-u.avatar     = user.avatar,
-u.coverImg   = user.coverImg,
+u.avatar     = substring(user.avatar, 38),
+u.coverImg   = substring(user.coverImg, 38),
 u.wasInvited = user.wasInvited,
 u.wasSeeded  = user.wasSeeded,
 u.role       = toLower(user.role),

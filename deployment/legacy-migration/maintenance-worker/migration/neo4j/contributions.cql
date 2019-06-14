@@ -28,7 +28,7 @@
 [?]     unique: true, // Unique value is not enforced in Nitro?
 [-]     index: true
       },
-[ ]   type: {
+[ ]   type: { // db.getCollection('contributions').distinct('type') -> 'DELETED', 'cando', 'post'
 [ ]     type: String,
 [ ]     required: true,
 [-]     index: true
@@ -50,7 +50,7 @@
 [?]     required: true // Not required in Nitro
       },
 [ ]   hasMore: { type: Boolean },
-[?]   teaserImg: { type: String }, // Path is incorrect in Nitro
+[X]   teaserImg: { type: String },
 [ ]   language: {
 [ ]     type: String,
 [ ]     required: true,
@@ -131,7 +131,7 @@ MERGE (p:Post {id: post._id["$oid"]})
 ON CREATE SET
 p.title          = post.title,
 p.slug           = post.slug,
-p.image          = post.teaserImg,
+p.image          = substring(post.teaserImg, 38),
 p.content        = post.content,
 p.contentExcerpt = post.contentExcerpt,
 p.visibility     = toLower(post.visibility),
