@@ -2,11 +2,13 @@ import { mount, createLocalVue } from '@vue/test-utils'
 import MySocialMedia from './my-social-media.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 describe('my-social-media.vue', () => {
   let wrapper

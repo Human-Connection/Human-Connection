@@ -2,6 +2,7 @@ import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import User from './index'
 import Vuex from 'vuex'
 import VTooltip from 'v-tooltip'
+import Filters from '~/plugins/vue-filters'
 
 import Styleguide from '@human-connection/styleguide'
 
@@ -11,6 +12,7 @@ const filter = jest.fn(str => str)
 localVue.use(Vuex)
 localVue.use(VTooltip)
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 localVue.filter('truncate', filter)
 
