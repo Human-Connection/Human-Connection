@@ -315,6 +315,8 @@ describe('change password', () => {
 describe('do not expose private RSA key', () => {
   let headers
   let client
+  let authenticatedClient
+
   const queryUserPuplicKey = gql`
     query($queriedUserSlug: String) {
       User(slug: $queriedUserSlug) {
@@ -332,7 +334,7 @@ describe('do not expose private RSA key', () => {
     }
   `
 
-  const actionGenUserWithKeys = async () => {
+  const generateUserWithKeys = async authenticatedClient => {
     // Generate user with "privateKey" via 'CreateUser' mutation instead of using the factories "factory.create('User', {...})", see above.
     const variables = {
       id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
@@ -341,7 +343,7 @@ describe('do not expose private RSA key', () => {
       name: 'Apfel Strudel',
       email: 'apfel-strudel@test.org',
     }
-    await client.request(
+    await authenticatedClient.request(
       gql`
         mutation($id: ID, $password: String!, $slug: String, $name: String, $email: String!) {
           CreateUser(id: $id, password: $password, slug: $slug, name: $name, email: $email) {
@@ -353,14 +355,23 @@ describe('do not expose private RSA key', () => {
     )
   }
 
-  // not authenticate
   beforeEach(async () => {
+    const adminParams = {
+      role: 'admin',
+      email: 'admin@example.org',
+      password: '1234',
+    }
+    // create an admin user who has enough permissions to create other users
+    await factory.create('User', adminParams)
+    const headers = await login(adminParams)
+    authenticatedClient = new GraphQLClient(host, { headers })
+    // but also create an unauthenticated client to issue the `User` query
     client = new GraphQLClient(host)
   })
 
   describe('unauthenticated query of "publicKey" (does the RSA key pair get generated at all?)', () => {
     it('returns publicKey', async () => {
-      await actionGenUserWithKeys()
+      await generateUserWithKeys(authenticatedClient)
       await expect(
         await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' }),
       ).toEqual(
@@ -378,7 +389,7 @@ describe('do not expose private RSA key', () => {
 
   describe('unauthenticated query of "privateKey"', () => {
     it('throws "Not Authorised!"', async () => {
-      await actionGenUserWithKeys()
+      await generateUserWithKeys(authenticatedClient)
       await expect(
         client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' }),
       ).rejects.toThrow('Not Authorised')
@@ -393,7 +404,7 @@ describe('do not expose private RSA key', () => {
 
   describe('authenticated query of "publicKey"', () => {
     it('returns publicKey', async () => {
-      await actionGenUserWithKeys()
+      await generateUserWithKeys(authenticatedClient)
       await expect(
         await client.request(queryUserPuplicKey, { queriedUserSlug: 'apfel-strudel' }),
       ).toEqual(
@@ -411,7 +422,7 @@ describe('do not expose private RSA key', () => {
 
   describe('authenticated query of "privateKey"', () => {
     it('throws "Not Authorised!"', async () => {
-      await actionGenUserWithKeys()
+      await generateUserWithKeys(authenticatedClient)
       await expect(
         client.request(queryUserPrivateKey, { queriedUserSlug: 'apfel-strudel' }),
       ).rejects.toThrow('Not Authorised')
