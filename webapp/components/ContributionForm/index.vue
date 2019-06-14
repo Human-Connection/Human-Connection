@@ -15,7 +15,7 @@
               model="language"
               :options="form.languageOptions"
               icon="globe"
-              :placeholder="locale"
+              :placeholder="form.placeholder"
               :label="$t('contribution.languageSelectLabel')"
             />
           </ds-flex-item>
@@ -64,6 +64,7 @@ export default {
         content: '',
         language: null,
         languageOptions: [],
+        placeholder: '',
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -88,13 +89,15 @@ export default {
         this.form.content = contribution.content
         this.form.title = contribution.title
         this.form.language = this.locale
+        this.form.placeholder = this.locale
       },
     },
   },
   computed: {
     locale() {
-      let locale
-      locale = locales.find(this.returnLocaleName)
+      const locale = this.contribution.language
+        ? locales.find(loc => this.contribution.language === loc.code)
+        : locales.find(loc => this.$i18n.locale() === loc.code)
       return locale.name
     },
   },
@@ -136,14 +139,6 @@ export default {
     updateEditorContent(value) {
       // this.form.content = value
       this.$refs.contributionForm.update('content', value)
-    },
-    returnLocaleName(locale) {
-      if (
-        (this.contribution && this.contribution.language === locale.code) ||
-        (!this.contribution && this.$i18n.locale() === locale.code)
-      ) {
-        return locale
-      }
     },
     availableLocales() {
       orderBy(locales, 'name').map(locale => {
