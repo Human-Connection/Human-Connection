@@ -1,6 +1,9 @@
 <template>
   <ds-flex-item :width="width">
-    <ds-card :image="post.image" :class="{ 'post-card': true, 'disabled-content': post.disabled }">
+    <ds-card
+      :image="post.image | proxyApiUrl"
+      :class="{ 'post-card': true, 'disabled-content': post.disabled }"
+    >
       <!-- Post Link Target -->
       <nuxt-link
         class="post-link"
