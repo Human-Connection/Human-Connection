@@ -93,6 +93,10 @@ export default ({ app = {} }) => {
 
       return excerpt
     },
+    proxyApiUrl: url => {
+      if (!url) return url
+      return url.startsWith('/') ? url.replace('/', '/api/') : url
+    },
   })
 
   // add all methods as filters on each vue component

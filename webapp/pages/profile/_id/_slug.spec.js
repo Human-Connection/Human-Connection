@@ -2,11 +2,13 @@ import { config, mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import ProfileSlug from './_slug.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
 localVue.filter('date', d => d)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
