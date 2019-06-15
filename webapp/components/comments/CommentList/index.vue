@@ -54,6 +54,9 @@ export default {
       this.refetchPostComments()
     })
   },
+  beforeDestroy() {
+    this.$root.$off('refetchPostComments')
+  },
   methods: {
     refetchPostComments() {
       if (this.$apollo.queries.Post) {
