@@ -25,6 +25,8 @@ type Mutation {
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   changePassword(oldPassword: String!, newPassword: String!): String!
+  requestPasswordReset(email: String!): Boolean!
+  resetPassword(email: String!, resetToken: String!, newPassword: String!): String!
   report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
