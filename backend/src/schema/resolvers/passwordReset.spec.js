@@ -34,13 +34,30 @@ describe('passwordReset', () => {
     const mutation = `mutation($email: String!) { requestPasswordReset(email: $email) }`
 
     it('resolves', async () => {
-      await expect(client.request(mutation, variables)).resolves.toEqual(true)
+      await expect(client.request(mutation, variables)).resolves.toEqual({"requestPasswordReset": true})
     })
 
     it('creates node with label `PasswordReset`', async () => {
       await client.request(mutation, variables)
       const resets = await getAllPasswordResets()
       expect(resets).toHaveLength(1)
+    })
+
+    it('creates an id used as a reset token', async () => {
+      await client.request(mutation, variables)
+      const [reset] = await getAllPasswordResets()
+      const { id: token } = reset.properties
+      expect(token).toMatch(/^........-....-....-....-............$/)
+    })
+
+    it('created PasswordReset is valid for less than 4 minutes', async () => {
+      await client.request(mutation, variables)
+      const [reset] = await getAllPasswordResets()
+      let { validUntil } = reset.properties
+      validUntil = Date.parse(validUntil)
+      const now = (new Date()).getTime()
+      expect(validUntil).toBeGreaterThan(now - 60*1000)
+      expect(validUntil).toBeLessThan(now + 4*60*1000)
     })
   })
 })
