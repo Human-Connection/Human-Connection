@@ -8,10 +8,14 @@
     "logout": "Ausloggen",
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
+    "forgotPassword": "Passwort vergessen?",
     "moreInfo": "Was ist Human Connection?",
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo"
+  },
+  "password-reset": {
+    "title": "Passwort zurücksetzen"
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes..."

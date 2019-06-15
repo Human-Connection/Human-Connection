@@ -45,6 +45,11 @@
                 name="password"
                 type="password"
               />
+              <ds-space class="password-reset-link" margin-bottom="large">
+                <nuxt-link to="/password-reset">
+                  {{ $t('login.forgotPassword') }}
+                </nuxt-link>
+              </ds-space>
               <ds-button
                 :loading="pending"
                 primary

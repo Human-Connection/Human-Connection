@@ -25,7 +25,16 @@ module.exports = {
 
   env: {
     // pages which do NOT require a login
-    publicPages: ['login', 'logout', 'register', 'signup', 'reset', 'reset-token', 'pages-slug'],
+    publicPages: [
+      'login',
+      'logout',
+      'password-reset',
+      'register',
+      'signup',
+      'reset',
+      'reset-token',
+      'pages-slug',
+    ],
     // pages to keep alive
     keepAlivePages: ['index'],
     // active locales
