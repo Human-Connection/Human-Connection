@@ -1,6 +1,10 @@
 version: "3.4"
 
 services:
+  mailserver:
+    image: djfarrelly/maildev
+    ports:
+      - 1080:80
   webapp:
     build:
       context: webapp
