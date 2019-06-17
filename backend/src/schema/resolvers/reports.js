@@ -15,9 +15,7 @@ export default {
         createdAt: new Date().toISOString(),
         description: description,
       }
-      console.log('-----------------------------------')
-      console.log(id)
-      const isType = id[0]
+
       const reportQueryRes = await session.run(
         `
         match (u:User {id:$submitterId}) -[:REPORTED]->(report)-[:REPORTED]-> (resource {id: $resourceId}) 
@@ -36,18 +34,16 @@ export default {
       })
 
       if (rep) {
-        console.log(rep.type)
         switch (rep.type) {
           case 'User':
             throw new UserInputError(REPORT_USER_ERR_MESSAGE)
-            // throw new Error(REPORT_USER_ERR_MESSAGE)
-            break
+          // throw new Error(REPORT_USER_ERR_MESSAGE)
+
           case 'Post':
             throw new UserInputError(REPORT_CONTRIBUTION_MESSAGE)
-            break
+
           case 'Comment':
             throw new UserInputError(REPORT_COMMENT_MESSAGE)
-            break
         }
 
         session.close()
