@@ -131,7 +131,7 @@ MERGE (p:Post {id: post._id["$oid"]})
 ON CREATE SET
 p.title          = post.title,
 p.slug           = post.slug,
-p.image          = substring(post.teaserImg, 38),
+p.image          = replace(post.teaserImg, 'https://api-alpha.human-connection.org', ''),
 p.content        = post.content,
 p.contentExcerpt = post.contentExcerpt,
 p.visibility     = toLower(post.visibility),
