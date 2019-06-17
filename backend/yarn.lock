@@ -1388,12 +1388,12 @@ apollo-graphql@^0.3.0:
     apollo-env "0.5.1"
     lodash.sortby "^4.7.0"
 
-apollo-link-context@~1.0.14:
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/apollo-link-context/-/apollo-link-context-1.0.17.tgz#439272cfb43ec1891506dd175ed907845b7de36c"
-  integrity sha512-W5UUfHcrrlP5uqJs5X1zbf84AMXhPZGAqX/7AQDgR6wY/7//sMGfJvm36KDkpIeSOElztGtM9z6zdPN1NbT41Q==
+apollo-link-context@~1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/apollo-link-context/-/apollo-link-context-1.0.18.tgz#9e700e3314da8ded50057fee0a18af2bfcedbfc3"
+  integrity sha512-aG5cbUp1zqOHHQjAJXG7n/izeMQ6LApd/whEF5z6qZp5ATvcyfSNkCfy3KRJMMZZ3iNfVTs6jF+IUA8Zvf+zeg==
   dependencies:
-    apollo-link "^1.2.11"
+    apollo-link "^1.2.12"
     tslib "^1.9.3"
 
 apollo-link-http-common@^0.2.14:
@@ -1414,7 +1414,7 @@ apollo-link-http@~1.5.15:
     apollo-link-http-common "^0.2.14"
     tslib "^1.9.3"
 
-apollo-link@^1.0.0, apollo-link@^1.2.11, apollo-link@^1.2.12, apollo-link@^1.2.3:
+apollo-link@^1.0.0, apollo-link@^1.2.12, apollo-link@^1.2.3:
   version "1.2.12"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.12.tgz#014b514fba95f1945c38ad4c216f31bcfee68429"
   integrity sha512-fsgIAXPKThyMVEMWQsUN22AoQI+J/pVXcjRGAShtk97h7D8O+SPskFinCGEkxPeQpE83uKaqafB2IyWdjN+J3Q==
@@ -2586,10 +2586,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@2.0.0-alpha.33:
-  version "2.0.0-alpha.33"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.33.tgz#c2f73c3cc50ac301c9217eb93603c9bc40e891bf"
-  integrity sha512-tqUVEk3oxnJuNIvwAMKHAMo4uFRG0zXvjxZQll+BonoPt+m4NMcUgO14NDxbHuy7uYcrVErd2GdSsw02EDZQ7w==
+date-fns@2.0.0-alpha.34:
+  version "2.0.0-alpha.34"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.34.tgz#5d3ae7ca0d08915ccfc87a20545250af4e9c3cae"
+  integrity sha512-yjSYUHASHvzOZl++cEms+Tw7oQOFA+7Z6/lL7L3lRO9j6pMfT48N6oEyvCGo/MVlH08XWmydgf8X9Y1eedf9sQ==
 
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
@@ -2995,10 +2995,10 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-prettier@~4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-4.3.0.tgz#c55c1fcac8ce4518aeb77906984e134d9eb5a4f0"
-  integrity sha512-sZwhSTHVVz78+kYD3t5pCWSYEdVSBR0PXnwjDRsUs8ytIrK8PLXw+6FKp8r3Z7rx4ZszdetWlXYKOHoUrrwPlA==
+eslint-config-prettier@~5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-5.0.0.tgz#f7a94b2b8ae7cbf25842c36fa96c6d32cd0a697c"
+  integrity sha512-c17Aqiz5e8LEqoc/QPmYnaxQFAHTx2KlCZBPxXXjEMmNchOLnV/7j0HoPZuC+rL/tDC9bazUYOKJW9bOhftI/w==
   dependencies:
     get-stdin "^6.0.0"
 
