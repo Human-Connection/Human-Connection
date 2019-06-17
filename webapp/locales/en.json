@@ -82,8 +82,14 @@
     "download": {
       "name": "Download Data"
     },
-    "delete": {
-      "name": "Delete Account"
+    "deleteUserAccount": {
+      "name": "Delete Data",
+      "contributionsCount": "Delete my {count} posts",
+      "commentsCount": "Delete my {count} comments",
+      "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
+      "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
+      "success": "Account successfully deleted",
+      "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
     },
     "organizations": {
       "name": "My Organizations"
@@ -239,7 +245,7 @@
     "comment": {
       "title": "Delete Comment",
       "type": "Comment",
-      "message": "Do you really want to delete the comment from \"<b>{name}</b>\"?",
+      "message": "Do you really want to delete the comment \"<b>{name}</b>\"?",
       "success": "Comment successfully deleted!"
     }
   },
@@ -294,5 +300,9 @@
     "avatar": {
       "submitted": "Upload successful"
     }
+  },
+  "contribution": {
+    "success": "Saved!",
+    "languageSelectLabel": "Language"
   }
 }

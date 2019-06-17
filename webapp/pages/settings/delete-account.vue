@@ -1,15 +1,13 @@
 <template>
-  <ds-card :header="$t('settings.delete.name')">
-    <hc-empty icon="tasks" message="Coming Soon…" />
-  </ds-card>
+  <delete-data />
 </template>
 
 <script>
-import HcEmpty from '~/components/Empty.vue'
+import DeleteData from '~/components/DeleteData/DeleteData.vue'
 
 export default {
   components: {
-    HcEmpty,
+    DeleteData,
   },
 }
 </script>

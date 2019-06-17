@@ -82,8 +82,14 @@
     "download": {
       "name": "Daten herunterladen"
     },
-    "delete": {
-      "name": "Konto löschen"
+    "deleteUserAccount": {
+      "name": "Daten löschen",
+      "contributionsCount": "Meine {count} Beiträge löschen",
+      "commentsCount": "Meine {count} Kommentare löschen",
+      "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
+      "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
+      "success": "Konto erfolgreich gelöscht",
+      "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen."
     },
     "organizations": {
       "name": "Meine Organisationen"
@@ -239,7 +245,7 @@
     "comment": {
       "title": "Lösche Kommentar",
       "type": "Comment",
-      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" löschen möchtest?",
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" löschen möchtest?",
       "success": "Kommentar erfolgreich gelöscht!"
     }
   },
@@ -295,5 +301,9 @@
     "avatar": {
       "submitted": "Upload erfolgreich"
     }
+  },
+  "contribution": {
+    "success": "Gespeichert!",
+    "languageSelectLabel": "Sprache"
   }
 }
