@@ -26,7 +26,10 @@
     "form": {
       "input": "Enter your code",
       "description": "Open your inbox and enter the code that we've sent to you.",
-      "submit": "Check security code"
+      "submit": "Check security code",
+      "validations": {
+        "code": "must be 6 characters long"
+      }
     }
   },
   "editor": {

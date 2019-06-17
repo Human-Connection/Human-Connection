@@ -4,8 +4,8 @@
       <ds-form v-model="formData" :schema="formSchema" @submit="handleSubmit">
         <ds-input
           :placeholder="$t('verify-code.form.input')"
-          model="token"
-          name="token"
+          model="code"
+          name="code"
           icon="question-circle"
         />
         <ds-space margin-botton="large">
@@ -27,3 +27,24 @@
     </ds-space>
   </ds-card>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      formData: {
+        code: '',
+      },
+      formSchema: {
+        code: {
+          type: 'string',
+          min: 6,
+          max: 6,
+          required: true,
+          message: this.$t('verify-code.form.validations.code'),
+        },
+      },
+    }
+  },
+}
+</script>

@@ -63,7 +63,7 @@ export default {
         email: {
           type: 'email',
           required: true,
-          message: this.$t('common.validations.email'),
+          message: this.$t('password-reset.form.validations.email'),
         },
       },
       disabled: true,

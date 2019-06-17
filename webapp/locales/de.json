@@ -24,8 +24,12 @@
   },
   "verify-code": {
     "form": {
+      "input": "Code eingeben",
       "description": "Öffne Deine E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
-      "submit": "Sicherheitscode überprüfen"
+      "submit": "Sicherheitscode überprüfen",
+      "validations": {
+        "code": "muss genau 6 Buchstaben lang sein"
+      }
     }
   },
   "editor": {
