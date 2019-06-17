@@ -18,7 +18,8 @@
     "title": "Passwort zurücksetzen",
     "form": {
       "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
-      "submit": "Email anfordern"
+      "submit": "Email anfordern",
+      "submitted": "Eine E-Mail zum Zurücksetzen wurde angefordert"
     }
   },
   "editor": {
@@ -201,7 +202,10 @@
     "name": "Name",
     "loadMore": "mehr laden",
     "loading": "wird geladen",
-    "reportContent": "Melden"
+    "reportContent": "Melden",
+    "validations": {
+      "email": "muss eine gültige E-Mail Adresse sein"
+    }
   },
   "actions": {
     "loading": "lade",

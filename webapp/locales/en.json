@@ -18,7 +18,8 @@
     "title": "Reset your password",
     "form": {
       "description": "A password reset email will be sent to the given email address.",
-      "submit": "Request email"
+      "submit": "Request email",
+      "submitted": "Reset email was requested"
     }
   },
   "editor": {
@@ -201,7 +202,10 @@
     "name": "Name",
     "loadMore": "load more",
     "loading": "loading",
-    "reportContent": "Report"
+    "reportContent": "Report",
+    "validations": {
+      "email": "must be a valid email address"
+    }
   },
   "actions": {
     "loading": "loading",
