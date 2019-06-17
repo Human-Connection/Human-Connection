@@ -37,7 +37,6 @@ export default {
         switch (rep.type) {
           case 'User':
             throw new UserInputError(REPORT_USER_ERR_MESSAGE)
-          // throw new Error(REPORT_USER_ERR_MESSAGE)
 
           case 'Post':
             throw new UserInputError(REPORT_CONTRIBUTION_MESSAGE)
