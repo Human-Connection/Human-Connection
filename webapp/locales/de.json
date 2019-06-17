@@ -22,6 +22,11 @@
       "submitted": "E-Mail verschickt an <b>{email}</b>"
     }
   },
+  "verify-code": {
+    "form": {
+      "description": "Öffne Deine E-Mail Postfach und gib den Code ein, den wir geschickt haben."
+    }
+  },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes..."
   },

@@ -1,5 +1,5 @@
 <template>
-  <ds-card class="password-reset-card">
+  <ds-card class="password-reset">
     <ds-space margin="large">
       <ds-form
         v-if="!submitted"
@@ -94,6 +94,10 @@ export default {
       try {
         await this.$apollo.mutate({ mutation, variables })
         this.submitted = true
+
+        setTimeout(() => {
+          this.$emit('submitted')
+        }, 1000)
       } catch (err) {
         this.$toast.error(err.message)
       }

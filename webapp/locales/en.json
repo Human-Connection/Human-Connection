@@ -22,6 +22,11 @@
       "submitted": "Email sent to <b>{email}</b>"
     }
   },
+  "verify-code": {
+    "form": {
+      "description": "Open your inbox and enter the code that we've sent to you."
+    }
+  },
   "editor": {
     "placeholder": "Leave your inspirational thoughts..."
   },

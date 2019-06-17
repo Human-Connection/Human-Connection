@@ -6,7 +6,7 @@ const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 
-describe('ProfileSlug', () => {
+describe('PasswordReset', () => {
   let wrapper
   let Wrapper
   let mocks
@@ -26,6 +26,8 @@ describe('ProfileSlug', () => {
   })
 
   describe('mount', () => {
+    beforeEach(jest.useFakeTimers)
+
     Wrapper = () => {
       return mount(PasswordReset, {
         mocks,
@@ -35,7 +37,7 @@ describe('ProfileSlug', () => {
 
     it('renders a password reset form', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.password-reset-card').exists()).toBe(true)
+      expect(wrapper.find('.password-reset').exists()).toBe(true)
     })
 
     describe('submit', () => {
@@ -62,14 +64,13 @@ describe('ProfileSlug', () => {
         const expected = ['password-reset.form.submitted', { email: 'mail@example.org' }]
         expect(mocks.$t).toHaveBeenCalledWith(...expected)
       })
-    })
 
-    describe('given password reset token as URL param', () => {
-      it.todo('displays a form to update your password')
-      describe('submitting new password', () => {
-        it.todo('calls resetPassword graphql mutation')
-        it.todo('delivers new password to backend')
-        it.todo('displays success message')
+      describe('after animation', () => {
+        beforeEach(jest.runAllTimers)
+
+        it('emits `submitted`', () => {
+          expect(wrapper.emitted('submitted')).toBeTruthy()
+        })
       })
     })
   })
