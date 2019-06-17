@@ -1,5 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import PasswordResetPage from './password-reset.vue'
+import PasswordReset from './PasswordReset'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
@@ -27,7 +27,7 @@ describe('ProfileSlug', () => {
 
   describe('mount', () => {
     Wrapper = () => {
-      return mount(PasswordResetPage, {
+      return mount(PasswordReset, {
         mocks,
         localVue,
       })
