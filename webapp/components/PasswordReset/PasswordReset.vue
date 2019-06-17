@@ -8,7 +8,7 @@
         v-model="formData"
         :schema="formSchema"
         @submit="handleSubmit"
-        >
+      >
         <ds-input
           :placeholder="$t('login.email')"
           type="email"
@@ -16,29 +16,29 @@
           model="email"
           name="email"
           icon="envelope"
-          />
-          <ds-space margin-botton="large">
-            <ds-text>
-              {{ $t('password-reset.form.description') }}
-            </ds-text>
-          </ds-space>
-          <ds-button
-            :disabled="disabled"
-            :loading="$apollo.loading"
-            primary
-            fullwidth
-            name="submit"
-            type="submit"
-            icon="envelope"
-            >
-            {{ $t('password-reset.form.submit') }}
-          </ds-button>
+        />
+        <ds-space margin-botton="large">
+          <ds-text>
+            {{ $t('password-reset.form.description') }}
+          </ds-text>
+        </ds-space>
+        <ds-button
+          :disabled="disabled"
+          :loading="$apollo.loading"
+          primary
+          fullwidth
+          name="submit"
+          type="submit"
+          icon="envelope"
+        >
+          {{ $t('password-reset.form.submit') }}
+        </ds-button>
       </ds-form>
       <div v-else>
         <transition name="ds-transition-fade">
-        <ds-flex centered>
-          <sweetalert-icon icon="success" />
-        </ds-flex>
+          <ds-flex centered>
+            <sweetalert-icon icon="success" />
+          </ds-flex>
         </transition>
         <ds-text v-html="submitMessage" />
       </div>
@@ -96,8 +96,8 @@ export default {
         this.submitted = true
 
         setTimeout(() => {
-          this.$emit('submitted')
-        }, 1000)
+          this.$emit('handleSubmitted')
+        }, 3000)
       } catch (err) {
         this.$toast.error(err.message)
       }

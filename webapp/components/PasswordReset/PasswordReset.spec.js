@@ -68,8 +68,8 @@ describe('PasswordReset', () => {
       describe('after animation', () => {
         beforeEach(jest.runAllTimers)
 
-        it('emits `submitted`', () => {
-          expect(wrapper.emitted('submitted')).toBeTruthy()
+        it('emits `handleSubmitted`', () => {
+          expect(wrapper.emitted('handleSubmitted')).toBeTruthy()
         })
       })
     })
