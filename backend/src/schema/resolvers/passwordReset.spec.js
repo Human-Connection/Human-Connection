@@ -123,15 +123,6 @@ describe('passwordReset', () => {
         })
       })
 
-      describe('but invalid token', () => {
-        it('resolves to false', async () => {
-          variables = { newPassword, email: 'user@example.org', token: 'lksjdflksjdflksjdlkfjsf' }
-          await expect(client.request(mutation, variables)).resolves.toEqual({
-            resetPassword: false,
-          })
-        })
-      })
-
       describe('and valid token', () => {
         beforeEach(() => {
           variables = {
