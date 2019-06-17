@@ -15,6 +15,8 @@ describe('ContributionForm.vue', () => {
   let deutschOption
   let cancelBtn
   let mocks
+  let tagsInput
+  let chipText
   const postTitle = 'this is a title for a post'
   const postContent = 'this is a post'
   const computed = { locale: () => 'English' }
@@ -79,10 +81,16 @@ describe('ContributionForm.vue', () => {
       })
 
       describe('valid form submission', () => {
-        expectedParams = {
-          variables: { title: postTitle, content: postContent, language: 'en', id: null },
-        }
         beforeEach(async () => {
+          expectedParams = {
+            variables: {
+              title: postTitle,
+              content: postContent,
+              language: 'en',
+              id: null,
+              tags: [],
+            },
+          }
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue('this is a title for a post')
           wrapper.vm.updateEditorContent('this is a post')
@@ -103,6 +111,27 @@ describe('ContributionForm.vue', () => {
           deutschOption.trigger('click')
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports adding tags', async () => {
+          expectedParams.variables.tags = ['Frieden']
+          tagsInput = wrapper.findAll('input').at(1)
+          tagsInput.setValue('Frieden')
+          tagsInput.trigger('keyup.enter')
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('displays tags if they exist', () => {
+          expectedParams.variables.tags = ['Frieden']
+          tagsInput = wrapper.findAll('input').at(1)
+          tagsInput.setValue('Frieden')
+          tagsInput.trigger('keyup.enter')
+          chipText = wrapper
+            .findAll('span.ds-chip')
+            .at(0)
+            .text()
+          expect(chipText).toEqual('Frieden')
         })
 
         it("pushes the user to the post's page", async () => {

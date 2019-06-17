@@ -303,6 +303,8 @@
   },
   "contribution": {
     "success": "Saved!",
-    "languageSelectLabel": "Language"
+    "languageSelectLabel": "Language",
+    "tagsInputLabel": "Tags",
+    "tagsInputPlaceholder": "Add a tag"
   }
 }

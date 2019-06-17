@@ -304,6 +304,8 @@
   },
   "contribution": {
     "success": "Gespeichert!",
-    "languageSelectLabel": "Sprache"
+    "languageSelectLabel": "Sprache",
+    "tagsInputLabel": "Tags",
+    "tagsInputPlaceholder": "Hinzufügen ein Tag"
   }
 }
