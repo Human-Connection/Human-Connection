@@ -19,7 +19,7 @@
     "form": {
       "description": "A password reset email will be sent to the given email address.",
       "submit": "Request email",
-      "submitted": "Reset email was requested"
+      "submitted": "Email sent to <b>{email}</b>"
     }
   },
   "editor": {

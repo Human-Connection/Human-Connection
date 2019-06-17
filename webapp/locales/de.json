@@ -19,7 +19,7 @@
     "form": {
       "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
       "submit": "Email anfordern",
-      "submitted": "Eine E-Mail zum Zurücksetzen wurde angefordert"
+      "submitted": "E-Mail verschickt an <b>{email}</b>"
     }
   },
   "editor": {

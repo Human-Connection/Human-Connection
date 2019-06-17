@@ -6,11 +6,13 @@
           <ds-card class="password-reset-card">
             <ds-space margin="large">
               <ds-form
+                v-if="!submitted"
                 @input="handleInput"
                 @input-valid="handleInputValid"
                 v-model="formData"
                 :schema="formSchema"
-                @submit="handleSubmit">
+                @submit="handleSubmit"
+              >
                 <ds-input
                   :placeholder="$t('login.email')"
                   type="email"
@@ -26,10 +28,24 @@
                 </ds-space>
                 <ds-button
                   :disabled="disabled"
-                  :loading="$apollo.loading" primary fullwidth name="submit" type="submit" icon="envelope">
+                  :loading="$apollo.loading"
+                  primary
+                  fullwidth
+                  name="submit"
+                  type="submit"
+                  icon="envelope"
+                >
                   {{ $t('password-reset.form.submit') }}
                 </ds-button>
               </ds-form>
+              <div v-else>
+                <transition name="ds-transition-fade">
+                  <ds-flex centered>
+                    <sweetalert-icon icon="success" />
+                  </ds-flex>
+                </transition>
+                <ds-text v-html="submitMessage" />
+              </div>
             </ds-space>
           </ds-card>
         </ds-space>
@@ -40,33 +56,43 @@
 
 <script>
 import gql from 'graphql-tag'
+import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {
   layout: 'default',
+  components: {
+    SweetalertIcon,
+  },
   data() {
     return {
       formData: {
-        email: ''
+        email: '',
       },
       formSchema: {
         email: {
           type: 'email',
           required: true,
           message: this.$t('common.validations.email'),
-        }
+        },
       },
       disabled: true,
+      submitted: false,
     }
   },
+  computed: {
+    submitMessage() {
+      const { email } = this.formData
+      return this.$t('password-reset.form.submitted', { email })
+    },
+  },
   methods: {
-    handleInput(data) {
+    handleInput() {
       this.disabled = true
     },
-    handleInputValid(data) {
+    handleInputValid() {
       this.disabled = false
     },
     async handleSubmit() {
-      console.log('handleSubmit')
       const mutation = gql`
         mutation($email: String!) {
           requestPasswordReset(email: $email)
@@ -75,15 +101,12 @@ export default {
       const variables = this.formData
 
       try {
-        const { data } = await this.$apollo.mutate({ mutation, variables })
-        this.$toast.success(this.$t('password-reset.form.submitted'))
-        this.formData = {
-          email: '',
-        }
+        await this.$apollo.mutate({ mutation, variables })
+        this.submitted = true
       } catch (err) {
         this.$toast.error(err.message)
       }
-    }
+    },
   },
 }
 </script>

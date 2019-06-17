@@ -20,7 +20,7 @@ describe('ProfileSlug', () => {
       $t: jest.fn(),
       $apollo: {
         loading: false,
-        mutate: jest.fn().mockResolvedValue(),
+        mutate: jest.fn().mockResolvedValue({ data: { reqestPasswordReset: true } }),
       },
     }
   })
@@ -49,9 +49,19 @@ describe('ProfileSlug', () => {
         expect(mocks.$apollo.mutate).toHaveBeenCalled()
       })
 
-      it.todo('delivers email to backend')
-      it.todo('disables form to avoid re-submission')
-      it.todo('displays a message that a password email was requested')
+      it('delivers email to backend', () => {
+        const expected = expect.objectContaining({ variables: { email: 'mail@example.org' } })
+        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
+      })
+
+      it('hides form to avoid re-submission', () => {
+        expect(wrapper.find('form').exists()).not.toBeTruthy()
+      })
+
+      it('displays a message that a password email was requested', () => {
+        const expected = ['password-reset.form.submitted', { email: 'mail@example.org' }]
+        expect(mocks.$t).toHaveBeenCalledWith(...expected)
+      })
     })
 
     describe('given password reset token as URL param', () => {
