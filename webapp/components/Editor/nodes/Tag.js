@@ -1,6 +1,18 @@
 import { Mention as TipTapMention } from 'tiptap-extensions'
 
-export default class Mention extends TipTapMention {
+export default class Tag extends TipTapMention {
+  get defaultOptions() {
+    return {
+      matcher: {
+        char: '#',
+        allowSpaces: false,
+        startOfLine: false,
+      },
+      mentionClass: 'tag',
+      suggestionClass: 'tag-suggestion',
+    }
+  }
+
   get schema() {
     const patchedSchema = super.schema
 
