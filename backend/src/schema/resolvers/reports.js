@@ -1,4 +1,9 @@
 import uuid from 'uuid/v4'
+import { UserInputError } from 'apollo-server'
+
+const REPORT_USER_ERR_MESSAGE = 'User is already reported by you!'
+const REPORT_CONTRIBUTION_MESSAGE = 'Contribution is already reported by you!'
+const REPORT_COMMENT_MESSAGE = 'Comment is already reported by you!'
 
 export default {
   Mutation: {
@@ -11,12 +16,43 @@ export default {
         description: description,
       }
 
+      const isType = id[0]
+      const reportQueryRes = await session.run(
+        `
+        match (u:User {id:$submitterId}) -[:REPORTED]->(report)-[:REPORTED]-> (resource {id: $resourceId}) 
+        return  report
+        `,
+        {
+          resourceId: id,
+          submitterId: user.id,
+        },
+      )
+      const [rep] = reportQueryRes.records.map(record => {
+        return record.get('report')
+      })
+
+      if (rep) {
+        switch (isType) {
+          case 'u':
+            throw new UserInputError(REPORT_USER_ERR_MESSAGE)
+            break
+          case 'p':
+            throw new UserInputError(REPORT_CONTRIBUTION_MESSAGE)
+            break
+          case 'c':
+            throw new UserInputError(REPORT_COMMENT_MESSAGE)
+            break
+        }
+
+        session.close()
+        return rep
+      }
       const res = await session.run(
         `
         MATCH (submitter:User {id: $userId})
         MATCH (resource {id: $resourceId})
         WHERE resource:User OR resource:Comment OR resource:Post
-        CREATE (report:Report $reportData)
+        MERGE (report:Report  {id: {reportData}.id })
         MERGE (resource)<-[:REPORTED]-(report)
         MERGE (report)<-[:REPORTED]-(submitter)
         RETURN report, submitter, resource, labels(resource)[0] as type
@@ -27,6 +63,7 @@ export default {
           reportData,
         },
       )
+
       session.close()
 
       const [dbResponse] = res.records.map(r => {
@@ -59,6 +96,7 @@ export default {
           response.user = resource.properties
           break
       }
+
       return response
     },
   },
