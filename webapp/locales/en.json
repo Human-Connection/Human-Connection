@@ -15,7 +15,11 @@
     "hello": "Hello"
   },
   "password-reset": {
-    "title": "Reset your password"
+    "title": "Reset your password",
+    "form": {
+      "description": "A password reset email will be sent to the given email address.",
+      "submit": "Request email"
+    }
   },
   "editor": {
     "placeholder": "Leave your inspirational thoughts..."

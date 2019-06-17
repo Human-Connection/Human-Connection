@@ -15,7 +15,11 @@
     "hello": "Hallo"
   },
   "password-reset": {
-    "title": "Passwort zurücksetzen"
+    "title": "Passwort zurücksetzen",
+    "form": {
+      "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
+      "submit": "Email anfordern"
+    }
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes..."
