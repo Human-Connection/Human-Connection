@@ -24,7 +24,8 @@
   },
   "verify-code": {
     "form": {
-      "description": "Öffne Deine E-Mail Postfach und gib den Code ein, den wir geschickt haben."
+      "description": "Öffne Deine E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
+      "submit": "Sicherheitscode überprüfen"
     }
   },
   "editor": {

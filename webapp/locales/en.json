@@ -24,7 +24,9 @@
   },
   "verify-code": {
     "form": {
-      "description": "Open your inbox and enter the code that we've sent to you."
+      "input": "Enter your code",
+      "description": "Open your inbox and enter the code that we've sent to you.",
+      "submit": "Check security code"
     }
   },
   "editor": {
