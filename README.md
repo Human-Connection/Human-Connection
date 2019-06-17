@@ -10,7 +10,8 @@ API Service for fetching URL Information like images, icons, descriptions etc. t
 ## Todo`s
 - [x] Metascraper
 - [x] oEmbed
-- [ ] API Cache
+- [ ] Temporary API Cache in some DB?
+- [ ] Scrape for meta tags
 - [ ] Image Caching
 
 ---
