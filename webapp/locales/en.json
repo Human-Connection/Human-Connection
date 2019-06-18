@@ -26,7 +26,11 @@
     "form": {
       "input": "Enter your code",
       "description": "Open your inbox and enter the code that we've sent to you.",
-      "submit": "Check security code"
+      "submit": "Check security code",
+      "change-password": {
+        "success": "Changing your password was successful",
+        "failure": "Changing your password failed. Probably the security code was not correct"
+      }
     }
   },
   "editor": {

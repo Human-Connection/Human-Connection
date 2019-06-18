@@ -20,7 +20,7 @@ describe('VerifyCode ', () => {
       $t: jest.fn(),
       $apollo: {
         loading: false,
-        mutate: jest.fn().mockResolvedValue({ data: { resetPassword: false } }),
+        mutate: jest.fn().mockResolvedValue({ data: { resetPassword: true } }),
       },
     }
   })
@@ -50,9 +50,27 @@ describe('VerifyCode ', () => {
       })
 
       describe('submitting new password', () => {
-        it.todo('calls resetPassword graphql mutation')
-        it.todo('delivers new password to backend')
-        it.todo('displays success message')
+        beforeEach(() => {
+          wrapper.find('input#newPassword').setValue('supersecret')
+          wrapper.find('input#confirmPassword').setValue('supersecret')
+          wrapper.find('form').trigger('submit')
+        })
+
+        it('calls resetPassword graphql mutation', () => {
+          expect(mocks.$apollo.mutate).toHaveBeenCalled()
+        })
+
+        it('delivers new password to backend', () => {
+          const expected = expect.objectContaining({ variables: { newPassword: 'supersecret' } })
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
+        })
+
+        describe('password reset successful', () => {
+          it('displays success message', () => {
+            const expected = 'verify-code.change-password.sucess'
+            expect(mocks.$t).toHaveBeenCalledWith(expected)
+          })
+        })
       })
     })
   })
