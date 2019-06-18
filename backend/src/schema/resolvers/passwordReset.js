@@ -1,5 +1,21 @@
 import uuid from 'uuid/v4'
 import bcrypt from 'bcryptjs'
+import CONFIG from '../../config'
+import nodemailer from 'nodemailer'
+
+const transporter = () => {
+  const { SMTP_HOST: host, SMTP_PORT: port, SMTP_USERNAME: user, SMTP_PASSWORD: pass } = CONFIG
+  const configs = {
+    host,
+    port,
+    ignoreTLS: true,
+    secure: false, // true for 465, false for other ports
+  }
+  if (user && pass) {
+    configs.auth = { user, pass }
+  }
+  return nodemailer.createTransport(configs)
+}
 
 export async function createPasswordReset(options) {
   const { driver, code, email, issuedAt = new Date() } = options
@@ -10,7 +26,11 @@ export async function createPasswordReset(options) {
       MERGE (u)-[:REQUESTED]->(pr)
       RETURN pr
       `
-  const transactionRes = await session.run(cypher, { issuedAt: issuedAt.toISOString(), code, email })
+  const transactionRes = await session.run(cypher, {
+    issuedAt: issuedAt.toISOString(),
+    code,
+    email,
+  })
   const resets = transactionRes.records.map(record => record.get('pr'))
   session.close()
   return resets
@@ -19,8 +39,16 @@ export async function createPasswordReset(options) {
 export default {
   Mutation: {
     requestPasswordReset: async (_, { email }, { driver }) => {
-      const code = uuid().substring(0,6)
+      const code = uuid().substring(0, 6)
       await createPasswordReset({ driver, code, email })
+      await transporter().sendMail({
+        from: '"Human Connection" <info@human-connection.org>', // sender address
+        to: email, // list of receivers
+        subject: 'Password Reset', // Subject line
+        text: `Code is ${code}`, // plain text body
+        html: `Code is <b>${code}</b>`, // plain text body
+      })
+
       return true
     },
     resetPassword: async (_, { email, code, newPassword }, { driver }) => {

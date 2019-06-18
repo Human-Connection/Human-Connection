@@ -76,11 +76,7 @@ describe('passwordReset', () => {
 
   describe('resetPassword', () => {
     const setup = async (options = {}) => {
-      const {
-        email = 'user@example.org',
-        issuedAt = new Date(),
-        code = 'abcdef',
-      } = options
+      const { email = 'user@example.org', issuedAt = new Date(), code = 'abcdef' } = options
 
       const session = driver.session()
       await createPasswordReset({ driver, email, issuedAt, code })

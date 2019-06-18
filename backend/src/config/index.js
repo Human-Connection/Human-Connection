@@ -8,6 +8,13 @@ export const requiredConfigs = {
   PRIVATE_KEY_PASSPHRASE: process.env.PRIVATE_KEY_PASSPHRASE,
 }
 
+export const smtpConfigs = {
+  SMTP_HOST: process.env.SMTP_HOST || 'localhost',
+  SMTP_PORT: process.env.SMTP_PORT || 1025,
+  SMTP_USERNAME: process.env.SMTP_USERNAME,
+  SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+}
+
 export const neo4jConfigs = {
   NEO4J_URI: process.env.NEO4J_URI || 'bolt://localhost:7687',
   NEO4J_USERNAME: process.env.NEO4J_USERNAME || 'neo4j',
@@ -29,6 +36,7 @@ export const developmentConfigs = {
 
 export default {
   ...requiredConfigs,
+  ...smtpConfigs,
   ...neo4jConfigs,
   ...serverConfigs,
   ...developmentConfigs,
