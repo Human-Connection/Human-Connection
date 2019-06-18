@@ -64,23 +64,12 @@ describe('passwordReset', () => {
         expect(resets).toHaveLength(1)
       })
 
-      it('creates a reset token', async () => {
+      it('creates a reset code', async () => {
         await client.request(mutation, variables)
         const resets = await getAllPasswordResets()
         const [reset] = resets
-        const { token } = reset.properties
-        expect(token).toMatch(/^........-....-....-....-............$/)
-      })
-
-      it('created PasswordReset is valid for less than 4 minutes', async () => {
-        await client.request(mutation, variables)
-        const resets = await getAllPasswordResets()
-        const [reset] = resets
-        let { validUntil } = reset.properties
-        validUntil = Date.parse(validUntil)
-        const now = new Date().getTime()
-        expect(validUntil).toBeGreaterThan(now - 60 * 1000)
-        expect(validUntil).toBeLessThan(now + 4 * 60 * 1000)
+        const { code } = reset.properties
+        expect(code).toHaveLength(6)
       })
     })
   })
@@ -89,50 +78,50 @@ describe('passwordReset', () => {
     const setup = async (options = {}) => {
       const {
         email = 'user@example.org',
-        validUntil = new Date().getTime() + 3 * 60 * 1000,
-        token = 'abcdefgh-ijkl-mnop-qrst-uvwxyz123456',
+        issuedAt = new Date(),
+        code = 'abcdef',
       } = options
 
       const session = driver.session()
-      await createPasswordReset({ driver, email, validUntil, token })
+      await createPasswordReset({ driver, email, issuedAt, code })
       session.close()
     }
 
-    const mutation = `mutation($token: String!, $email: String!, $newPassword: String!) { resetPassword(token: $token, email: $email, newPassword: $newPassword) }`
+    const mutation = `mutation($code: String!, $email: String!, $newPassword: String!) { resetPassword(code: $code, email: $email, newPassword: $newPassword) }`
     let email = 'user@example.org'
-    let token = 'abcdefgh-ijkl-mnop-qrst-uvwxyz123456'
+    let code = 'abcdef'
     let newPassword = 'supersecret'
     let variables
 
     describe('invalid email', () => {
       it('resolves to false', async () => {
         await setup()
-        variables = { newPassword, email: 'non-existent@example.org', token }
+        variables = { newPassword, email: 'non-existent@example.org', code }
         await expect(client.request(mutation, variables)).resolves.toEqual({ resetPassword: false })
       })
     })
 
     describe('valid email', () => {
-      describe('but invalid token', () => {
+      describe('but invalid code', () => {
         it('resolves to false', async () => {
           await setup()
-          variables = { newPassword, email, token: 'slkdjfldsjflsdjfsjdfl' }
+          variables = { newPassword, email, code: 'slkdjf' }
           await expect(client.request(mutation, variables)).resolves.toEqual({
             resetPassword: false,
           })
         })
       })
 
-      describe('and valid token', () => {
+      describe('and valid code', () => {
         beforeEach(() => {
           variables = {
             newPassword,
             email: 'user@example.org',
-            token: 'abcdefgh-ijkl-mnop-qrst-uvwxyz123456',
+            code: 'abcdef',
           }
         })
 
-        describe('and token not expired', () => {
+        describe('and code not expired', () => {
           beforeEach(async () => {
             await setup()
           })
@@ -143,12 +132,12 @@ describe('passwordReset', () => {
             })
           })
 
-          it('updates PasswordReset `redeemedAt` property', async () => {
+          it('updates PasswordReset `usedAt` property', async () => {
             await client.request(mutation, variables)
             const requests = await getAllPasswordResets()
             const [request] = requests
-            const { redeemedAt } = request.properties
-            expect(redeemedAt).not.toBeNull()
+            const { usedAt } = request.properties
+            expect(usedAt).not.toBeFalsy()
           })
 
           it('updates password of the user', async () => {
@@ -168,10 +157,11 @@ describe('passwordReset', () => {
           })
         })
 
-        describe('but expired token', () => {
+        describe('but expired code', () => {
           beforeEach(async () => {
-            const validUntil = new Date().getTime() - 1000
-            await setup({ validUntil })
+            const issuedAt = new Date()
+            issuedAt.setDate(issuedAt.getDate() - 1)
+            await setup({ issuedAt })
           })
 
           it('resolves to false', async () => {
@@ -180,12 +170,12 @@ describe('passwordReset', () => {
             })
           })
 
-          it('does not update PasswordReset `redeemedAt` property', async () => {
+          it('does not update PasswordReset `usedAt` property', async () => {
             await client.request(mutation, variables)
             const requests = await getAllPasswordResets()
             const [request] = requests
-            const { redeemedAt } = request.properties
-            expect(redeemedAt).toBeUndefined()
+            const { usedAt } = request.properties
+            expect(usedAt).toBeUndefined()
           })
         })
       })

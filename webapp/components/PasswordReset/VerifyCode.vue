@@ -150,18 +150,18 @@ export default {
     },
     async handleSubmitPassword() {
       const mutation = gql`
-        mutation($token: String!, $email: String!, $newPassword: String!) {
-          resetPassword(token: $token, email: $email, newPassword: $newPassword)
+        mutation($code: String!, $email: String!, $newPassword: String!) {
+          resetPassword(code: $code, email: $email, newPassword: $newPassword)
         }
       `
       const { newPassword } = this.password.formData
-      const { email, code: token } = this.verification.formData
-      const variables = { newPassword, email, token }
+      const { email, code } = this.verification.formData
+      const variables = { newPassword, email, code }
       try {
         const {
           data: { resetPassword },
         } = await this.$apollo.mutate({ mutation, variables })
-        const changePasswordResult = resetPassword ? 'success' : 'failure'
+        const changePasswordResult = resetPassword ? 'success' : 'error'
         this.changePasswordResult = changePasswordResult
         this.$emit('change-password-result', changePasswordResult)
         this.verification.formData = {
