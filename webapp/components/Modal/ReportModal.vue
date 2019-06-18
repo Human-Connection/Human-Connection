@@ -2,12 +2,12 @@
   <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
     <transition name="ds-transition-fade">
       <ds-flex v-if="success" class="hc-modal-success" centered>
-        <sweetalert-icon icon="success"/>
+        <sweetalert-icon icon="success" />
       </ds-flex>
     </transition>
 
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="message"/>
+    <p v-html="message" />
 
     <template slot="footer">
       <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
@@ -18,7 +18,9 @@
         icon="exclamation-circle"
         :loading="loading"
         @click="confirm"
-      >{{ $t('report.submit') }}</ds-button>
+      >
+        {{ $t('report.submit') }}
+      </ds-button>
     </template>
   </ds-modal>
 </template>

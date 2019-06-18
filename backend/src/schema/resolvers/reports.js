@@ -31,8 +31,6 @@ export default {
 
       if (rep) {
         throw new UserInputError(rep.type)
-        session.close()
-        return rep
       }
       const res = await session.run(
         `
