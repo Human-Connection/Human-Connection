@@ -3,7 +3,10 @@
     <ds-flex>
       <ds-flex-item :width="{ base: '100%' }" centered>
         <ds-space style="text-align: center;" margin-top="small" margin-bottom="xxx-small" centered>
-          <password-reset @handleSubmitted="handlePasswordResetRequested" v-if="!passwordResetRequested" />
+          <password-reset
+            @handleSubmitted="handlePasswordResetRequested"
+            v-if="!passwordResetRequested"
+          />
           <verify-code v-else @passwordResetResponse="handlePasswordResetResponse" />
         </ds-space>
       </ds-flex-item>
@@ -19,7 +22,7 @@ export default {
   layout: 'default',
   data() {
     return {
-      passwordResetRequested: false
+      passwordResetRequested: false,
     }
   },
   components: {
@@ -31,7 +34,7 @@ export default {
       this.passwordResetRequested = true
     },
     handlePasswordResetResponse(response) {
-      if (response === 'success'){
+      if (response === 'success') {
         this.$router.push('login')
       }
     },
