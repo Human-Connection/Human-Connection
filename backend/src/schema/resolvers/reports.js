@@ -1,10 +1,6 @@
 import uuid from 'uuid/v4'
 import { UserInputError } from 'apollo-server'
 
-const REPORT_USER_ERR_MESSAGE = 'User is already reported by you!'
-const REPORT_CONTRIBUTION_MESSAGE = 'Contribution is already reported by you!'
-const REPORT_COMMENT_MESSAGE = 'Comment is already reported by you!'
-
 export default {
   Mutation: {
     report: async (parent, { id, description }, { driver, req, user }, resolveInfo) => {
@@ -34,17 +30,7 @@ export default {
       })
 
       if (rep) {
-        switch (rep.type) {
-          case 'User':
-            throw new UserInputError(REPORT_USER_ERR_MESSAGE)
-
-          case 'Post':
-            throw new UserInputError(REPORT_CONTRIBUTION_MESSAGE)
-
-          case 'Comment':
-            throw new UserInputError(REPORT_COMMENT_MESSAGE)
-        }
-
+        throw new UserInputError(rep.type)
         session.close()
         return rep
       }

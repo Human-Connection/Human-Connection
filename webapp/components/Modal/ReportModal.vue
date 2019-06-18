@@ -2,12 +2,12 @@
   <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
     <transition name="ds-transition-fade">
       <ds-flex v-if="success" class="hc-modal-success" centered>
-        <sweetalert-icon icon="success" />
+        <sweetalert-icon icon="success"/>
       </ds-flex>
     </transition>
 
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="message" />
+    <p v-html="message"/>
 
     <template slot="footer">
       <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
@@ -18,9 +18,7 @@
         icon="exclamation-circle"
         :loading="loading"
         @click="confirm"
-      >
-        {{ $t('report.submit') }}
-      </ds-button>
+      >{{ $t('report.submit') }}</ds-button>
     </template>
   </ds-modal>
 </template>
@@ -90,7 +88,17 @@ export default {
       } catch (err) {
         this.$emit('close')
         this.success = false
-        this.$toast.error(err.message)
+        switch (err.message) {
+          case 'User':
+            this.$toast.error(this.$t('report.user.error'))
+            break
+          case 'Post':
+            this.$toast.error(this.$t('report.contribution.error'))
+            break
+          case 'Comment':
+            this.$toast.error(this.$t('report.comment.error'))
+            break
+        }
       } finally {
         this.loading = false
       }

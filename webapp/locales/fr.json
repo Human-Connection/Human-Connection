@@ -142,17 +142,20 @@
     "user": {
       "title": "Signaler l'utilisateur",
       "type": "Utilisateur",
-      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?"
+      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?",
+      "error": "Vous avez déjà rapporté  \" <b> {name} </b> \"!"
     },
     "contribution": {
       "title": "Signaler l'entrée",
       "type": "Apport",
-      "message": "Souhaitez-vous vraiment signaler l'entrée\" <b> {name} </b> \"?"
+      "message": "Souhaitez-vous vraiment signaler l'entrée\" <b> {name} </b> \"?",
+      "error": "Vous avez déjà rapporté la contribution !"
     },
     "comment": {
       "title": "Signaler un commentaire",
       "type": "Commentaire",
-      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?"
+      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?",
+      "error": "Vous avez déjà rapporté le commentaire !"
     }
   },
   "actions": {
