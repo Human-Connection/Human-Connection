@@ -89,7 +89,7 @@
     "@babel/register": "~7.4.4",
     "apollo-server-testing": "~2.6.3",
     "babel-core": "~7.0.0-0",
-    "babel-eslint": "~10.0.1",
+    "babel-eslint": "~10.0.2",
     "babel-jest": "~24.8.0",
     "chai": "~4.2.0",
     "cucumber": "~5.1.0",
