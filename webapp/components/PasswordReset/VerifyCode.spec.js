@@ -26,6 +26,8 @@ describe('VerifyCode ', () => {
   })
 
   describe('mount', () => {
+    beforeEach(jest.useFakeTimers)
+
     Wrapper = () => {
       return mount(VerifyCode, {
         mocks,
@@ -62,14 +64,24 @@ describe('VerifyCode ', () => {
         })
 
         it('delivers new password to backend', () => {
-          const expected = expect.objectContaining({ variables: { newPassword: 'supersecret' } })
+          const expected = expect.objectContaining({
+            variables: { token: '123456', email: 'mail@example.org', newPassword: 'supersecret' },
+          })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
 
         describe('password reset successful', () => {
           it('displays success message', () => {
-            const expected = 'verify-code.change-password.sucess'
+            const expected = 'verify-code.form.change-password.success'
             expect(mocks.$t).toHaveBeenCalledWith(expected)
+          })
+
+          describe('after animation', () => {
+            beforeEach(jest.runAllTimers)
+
+            it('emits `change-password-sucess`', () => {
+              expect(wrapper.emitted('change-password-result')).toEqual([['success']])
+            })
           })
         })
       })
