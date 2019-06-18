@@ -40,7 +40,7 @@ describe('report', () => {
       mutation($id: ID!) {
         report(
           id: $id,
-          type: "Violates code of conduct"
+          type: "User"
         ) ${returnedObject}
       }
     `
