@@ -12,7 +12,7 @@ describe('report', () => {
   let createPostVariables
 
   beforeEach(async () => {
-    returnedObject = '{ description }'
+    returnedObject = '{ type }'
     variables = {
       id: 'whatever',
     }
@@ -39,7 +39,8 @@ describe('report', () => {
     mutation = `
       mutation($id: ID!) {
         report(
-          id: $id
+          id: $id,
+          type: "Violates code of conduct"
         ) ${returnedObject}
       }
     `
@@ -80,7 +81,7 @@ describe('report', () => {
         it('creates a report', async () => {
           await expect(action()).resolves.toEqual({
             report: {
-              id: '3453534',
+              type: 'Violates code of conduct',
             },
           })
         })
