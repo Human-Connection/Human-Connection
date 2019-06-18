@@ -90,8 +90,6 @@ export default {
       } catch (err) {
         this.$emit('close')
         this.success = false
-        // console.log(err)
-        console.log('==>' + err.message)
         switch (err.message) {
           case 'GraphQL error: User':
             this.$toast.error(this.$t('report.user.error'))
