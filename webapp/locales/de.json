@@ -303,7 +303,11 @@
     }
   },
   "contribution": {
+    "newPost": "Erstelle einen neuen Beitrag",
+    "filterFollow": "Beiträge filtern von Usern denen ich folge",
+    "filterALL": "Alle Beiträge anzeigen",
     "success": "Gespeichert!",
     "languageSelectLabel": "Sprache"
   }
+
 }

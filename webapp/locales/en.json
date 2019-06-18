@@ -302,6 +302,9 @@
     }
   },
   "contribution": {
+    "newPost": "Create a new Post",
+    "filterFollow": "Filter contributions from users I follow",
+    "filterALL": "View all contributions",
     "success": "Saved!",
     "languageSelectLabel": "Language"
   }
