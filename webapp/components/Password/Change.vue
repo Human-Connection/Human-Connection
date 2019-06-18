@@ -11,18 +11,21 @@
         id="oldPassword"
         model="oldPassword"
         type="password"
+        autocomplete="off"
         :label="$t('settings.security.change-password.label-old-password')"
       />
       <ds-input
         id="newPassword"
         model="newPassword"
         type="password"
+        autocomplete="off"
         :label="$t('settings.security.change-password.label-new-password')"
       />
       <ds-input
         id="confirmPassword"
         model="confirmPassword"
         type="password"
+        autocomplete="off"
         :label="$t('settings.security.change-password.label-new-password-confirm')"
       />
       <password-strength :password="formData.newPassword" />
