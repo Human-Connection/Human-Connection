@@ -39,7 +39,16 @@ describe('VerifyCode ', () => {
     })
 
     describe('after verification code given', () => {
-      it.todo('displays a form to update your password')
+      beforeEach(() => {
+        wrapper = Wrapper()
+        wrapper.find('input').setValue('123456')
+        wrapper.find('form').trigger('submit')
+      })
+
+      it('displays a form to update your password', () => {
+        expect(wrapper.find('.change-password').exists()).toBe(true)
+      })
+
       describe('submitting new password', () => {
         it.todo('calls resetPassword graphql mutation')
         it.todo('delivers new password to backend')

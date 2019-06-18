@@ -1,7 +1,7 @@
 <template>
   <ds-card class="verify-code">
     <ds-space margin="large">
-      <ds-form v-model="formData" :schema="formSchema" @submit="handleSubmit">
+      <ds-form v-if="!codeSubmitted" v-model="formData" :schema="formSchema" @submit="handleSubmit">
         <ds-input
           :placeholder="$t('verify-code.form.input')"
           model="code"
@@ -24,11 +24,13 @@
           {{ $t('verify-code.form.submit') }}
         </ds-button>
       </ds-form>
+      <div v-else class="change-password" />
     </ds-space>
   </ds-card>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -44,7 +46,13 @@ export default {
           message: this.$t('common.validations.verification-code'),
         },
       },
+      codeSubmitted: false
     }
   },
+  methods: {
+    handleSubmit(){
+      this.codeSubmitted = true
+    }
+  }
 }
 </script>
