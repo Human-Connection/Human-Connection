@@ -65,7 +65,7 @@ describe('VerifyCode ', () => {
 
         it('delivers new password to backend', () => {
           const expected = expect.objectContaining({
-            variables: { token: '123456', email: 'mail@example.org', newPassword: 'supersecret' },
+            variables: { code: '123456', email: 'mail@example.org', newPassword: 'supersecret' },
           })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
