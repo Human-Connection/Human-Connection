@@ -64,6 +64,7 @@
           </ds-space>
         </ds-form>
         <ds-text v-else>
+          <sweetalert-icon :icon="changePasswordResult" />
           {{ changePasswordResultMessage }}
         </ds-text>
       </template>
@@ -74,9 +75,11 @@
 <script>
 import PasswordStrength from '../Password/Strength'
 import gql from 'graphql-tag'
+import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {
   components: {
+    SweetalertIcon,
     PasswordStrength,
   },
   data() {

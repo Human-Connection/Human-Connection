@@ -37,7 +37,7 @@
       <div v-else>
         <transition name="ds-transition-fade">
           <ds-flex centered>
-            <sweetalert-icon icon="success" />
+            <sweetalert-icon icon="info" />
           </ds-flex>
         </transition>
         <ds-text v-html="submitMessage" />

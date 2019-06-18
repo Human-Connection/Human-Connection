@@ -29,7 +29,7 @@
       "submit": "Sicherheitscode überprüfen",
       "change-password":{
         "success": "Änderung des Passworts war erfolgreich",
-        "failure": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?"
+        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?"
       }
     }
   },

@@ -29,7 +29,7 @@
       "submit": "Check security code",
       "change-password": {
         "success": "Changing your password was successful",
-        "failure": "Changing your password failed. Maybe the security code was not correct?"
+        "error": "Changing your password failed. Maybe the security code was not correct?"
       }
     }
   },
