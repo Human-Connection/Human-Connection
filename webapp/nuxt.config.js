@@ -28,7 +28,9 @@ module.exports = {
     publicPages: [
       'login',
       'logout',
-      'password-reset',
+      'password-reset-request',
+      'password-reset-verify-code',
+      'password-reset-change-password',
       'register',
       'signup',
       'reset',
