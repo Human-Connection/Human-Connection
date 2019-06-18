@@ -39,8 +39,7 @@ describe('report', () => {
     mutation = `
       mutation($id: ID!) {
         report(
-          id: $id,
-          description: "Violates code of conduct"
+          id: $id
         ) ${returnedObject}
       }
     `
@@ -81,7 +80,7 @@ describe('report', () => {
         it('creates a report', async () => {
           await expect(action()).resolves.toEqual({
             report: {
-              description: 'Violates code of conduct',
+              id: '3453534',
             },
           })
         })
