@@ -29,8 +29,6 @@ export default {
       })
 
       if (rep) {
-        console.log('----------------------')
-        console.log(rep)
         throw new Error(rep.type)
       }
       const res = await session.run(
