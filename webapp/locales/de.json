@@ -19,14 +19,14 @@
     "form": {
       "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
       "submit": "Email anfordern",
-      "submitted": "E-Mail verschickt an <b>{email}</b>"
+      "submitted": "Eine E-Mail mit weiteren Instruktionen wurde verschickt an <b>{email}</b>"
     }
   },
   "verify-code": {
     "form": {
       "code": "Code eingeben",
       "description": "Öffne Deine E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
-      "submit": "Sicherheitscode überprüfen",
+      "next": "Weiter",
       "change-password":{
         "success": "Änderung des Passworts war erfolgreich",
         "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?"

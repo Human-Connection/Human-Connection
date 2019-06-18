@@ -29,7 +29,7 @@
           </ds-text>
         </ds-space>
         <ds-button :disabled="disabled" primary fullwidth name="submit" type="submit">
-          {{ $t('verify-code.form.submit') }}
+          {{ $t('verify-code.form.next') }}
         </ds-button>
       </ds-form>
       <template v-else>

@@ -19,14 +19,14 @@
     "form": {
       "description": "A password reset email will be sent to the given email address.",
       "submit": "Request email",
-      "submitted": "Email sent to <b>{email}</b>"
+      "submitted": "A mail with further instruction has been sent to <b>{email}</b>"
     }
   },
   "verify-code": {
     "form": {
       "code": "Enter your code",
       "description": "Open your inbox and enter the code that we've sent to you.",
-      "submit": "Check security code",
+      "next": "Continue",
       "change-password": {
         "success": "Changing your password was successful",
         "error": "Changing your password failed. Maybe the security code was not correct?"
