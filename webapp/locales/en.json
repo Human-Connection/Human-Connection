@@ -26,10 +26,7 @@
     "form": {
       "input": "Enter your code",
       "description": "Open your inbox and enter the code that we've sent to you.",
-      "submit": "Check security code",
-      "validations": {
-        "code": "must be 6 characters long"
-      }
+      "submit": "Check security code"
     }
   },
   "editor": {
@@ -214,7 +211,8 @@
     "loading": "loading",
     "reportContent": "Report",
     "validations": {
-      "email": "must be a valid email address"
+      "email": "must be a valid email address",
+      "verification-code": "must be 6 characters long"
     }
   },
   "actions": {

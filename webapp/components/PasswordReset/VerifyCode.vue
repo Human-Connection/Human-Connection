@@ -41,7 +41,7 @@ export default {
           min: 6,
           max: 6,
           required: true,
-          message: this.$t('verify-code.form.validations.code'),
+          message: this.$t('common.validations.verification-code'),
         },
       },
     }

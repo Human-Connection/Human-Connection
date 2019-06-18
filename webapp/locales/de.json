@@ -26,10 +26,7 @@
     "form": {
       "input": "Code eingeben",
       "description": "Öffne Deine E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
-      "submit": "Sicherheitscode überprüfen",
-      "validations": {
-        "code": "muss genau 6 Buchstaben lang sein"
-      }
+      "submit": "Sicherheitscode überprüfen"
     }
   },
   "editor": {
@@ -214,7 +211,8 @@
     "loading": "wird geladen",
     "reportContent": "Melden",
     "validations": {
-      "email": "muss eine gültige E-Mail Adresse sein"
+      "email": "muss eine gültige E-Mail Adresse sein",
+      "verification-code": "muss genau 6 Buchstaben lang sein"
     }
   },
   "actions": {
