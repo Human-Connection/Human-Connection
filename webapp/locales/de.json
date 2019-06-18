@@ -29,7 +29,8 @@
       "next": "Weiter",
       "change-password":{
         "success": "Änderung des Passworts war erfolgreich",
-        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?"
+        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
+        "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
       }
     }
   },

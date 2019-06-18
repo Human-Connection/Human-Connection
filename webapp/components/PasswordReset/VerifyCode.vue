@@ -64,8 +64,20 @@
           </ds-space>
         </ds-form>
         <ds-text v-else>
-          <sweetalert-icon :icon="changePasswordResult" />
-          {{ changePasswordResultMessage }}
+          <template v-if="changePasswordResult === 'success'">
+            <sweetalert-icon icon="success" />
+            <ds-text>
+              {{ $t(`verify-code.form.change-password.success`) }}
+            </ds-text>
+          </template>
+          <template v-else>
+            <sweetalert-icon icon="error" />
+            <ds-text align="left">
+              {{ $t(`verify-code.form.change-password.error`) }}
+              {{ $t('verify-code.form.change-password.help') }}
+            </ds-text>
+            <a href="mailto:support@human-connection.org">support@human-connection.org</a>
+          </template>
         </ds-text>
       </template>
     </ds-space>
@@ -132,12 +144,6 @@ export default {
       changePasswordResult: null,
     }
   },
-  computed: {
-    changePasswordResultMessage() {
-      if (!this.changePasswordResult) return ''
-      return this.$t(`verify-code.form.change-password.${this.changePasswordResult}`)
-    },
-  },
   methods: {
     async handleInput() {
       this.disabled = true
@@ -161,9 +167,8 @@ export default {
         const {
           data: { resetPassword },
         } = await this.$apollo.mutate({ mutation, variables })
-        const changePasswordResult = resetPassword ? 'success' : 'error'
-        this.changePasswordResult = changePasswordResult
-        this.$emit('change-password-result', changePasswordResult)
+        this.changePasswordResult = resetPassword ? 'success' : 'error'
+        this.$emit('change-password-result', this.changePasswordResult)
         this.verification.formData = {
           code: '',
           email: '',
