@@ -1,5 +1,4 @@
 import uuid from 'uuid/v4'
-import { UserInputError } from 'apollo-server'
 
 export default {
   Mutation: {
@@ -30,7 +29,9 @@ export default {
       })
 
       if (rep) {
-        throw new UserInputError(rep.type)
+        console.log('----------------------')
+        console.log(rep)
+        throw new Error(rep.type)
       }
       const res = await session.run(
         `

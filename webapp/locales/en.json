@@ -251,7 +251,7 @@
       "title": "Report User",
       "type": "User",
       "message": "Do you really want to report the user \"<b>{name}</b>\"?",
-      "error": "You've already reported \"<b>{name}</b>\"!"
+      "error": "You already reported the user!!"
     },
     "contribution": {
       "title": "Report Post",

@@ -251,7 +251,7 @@
       "title": "Nutzer melden",
       "type": "Nutzer",
       "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" melden möchtest?",
-      "error": " \"<b>{name}</b>\" hast du schon gemeldet!"
+      "error": "Den User hast du schon gemeldet!"
     },
     "contribution": {
       "title": "Beitrag melden",

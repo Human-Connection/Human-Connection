@@ -90,14 +90,16 @@ export default {
       } catch (err) {
         this.$emit('close')
         this.success = false
+        // console.log(err)
+        console.log('==>' + err.message)
         switch (err.message) {
-          case 'User':
+          case 'GraphQL error: User':
             this.$toast.error(this.$t('report.user.error'))
             break
-          case 'Post':
+          case 'GraphQL error: Post':
             this.$toast.error(this.$t('report.contribution.error'))
             break
-          case 'Comment':
+          case 'GraphQL error: Comment':
             this.$toast.error(this.$t('report.comment.error'))
             break
         }

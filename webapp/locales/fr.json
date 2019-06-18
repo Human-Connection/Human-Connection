@@ -143,7 +143,7 @@
       "title": "Signaler l'utilisateur",
       "type": "Utilisateur",
       "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?",
-      "error": "Vous avez déjà rapporté  \" <b> {name} </b> \"!"
+      "error": "Vous avez déjà signalé l'utilisateur !"
     },
     "contribution": {
       "title": "Signaler l'entrée",
