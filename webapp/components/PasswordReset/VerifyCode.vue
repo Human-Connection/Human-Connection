@@ -168,7 +168,9 @@ export default {
           data: { resetPassword },
         } = await this.$apollo.mutate({ mutation, variables })
         this.changePasswordResult = resetPassword ? 'success' : 'error'
-        this.$emit('change-password-result', this.changePasswordResult)
+        setTimeout(() => {
+          this.$emit('passwordResetResponse', this.changePasswordResult)
+        }, 3000)
         this.verification.formData = {
           code: '',
           email: '',

@@ -80,7 +80,7 @@ describe('VerifyCode ', () => {
             beforeEach(jest.runAllTimers)
 
             it('emits `change-password-sucess`', () => {
-              expect(wrapper.emitted('change-password-result')).toEqual([['success']])
+              expect(wrapper.emitted('passwordResetResponse')).toEqual([['success']])
             })
           })
         })
