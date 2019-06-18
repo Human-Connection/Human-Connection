@@ -2,7 +2,7 @@
   <ds-card class="verify-code">
     <ds-space margin="large">
       <ds-form
-        v-if="!codeSubmitted"
+        v-if="!verificationSubmitted"
         v-model="verification.formData"
         :schema="verification.formSchema"
         @submit="handleSubmitVerify"
@@ -10,9 +10,17 @@
         @input-valid="handleInputValid"
       >
         <ds-input
-          :placeholder="$t('verify-code.form.input')"
+          :placeholder="$t('login.email')"
+          model="email"
+          id="email"
+          name="email"
+          icon="envelope"
+        />
+        <ds-input
+          :placeholder="$t('verify-code.form.code')"
           model="code"
           name="code"
+          id="code"
           icon="question-circle"
         />
         <ds-space margin-botton="large">
@@ -68,9 +76,15 @@ export default {
     return {
       verification: {
         formData: {
+          email: '',
           code: '',
         },
         formSchema: {
+          email: {
+            type: 'email',
+            required: true,
+            message: this.$t('common.validations.email'),
+          },
           code: {
             type: 'string',
             min: 6,
@@ -103,7 +117,7 @@ export default {
           ],
         },
       },
-      codeSubmitted: false,
+      verificationSubmitted: false,
       disabled: true,
     }
   },
@@ -115,7 +129,7 @@ export default {
       this.disabled = false
     },
     handleSubmitVerify() {
-      this.codeSubmitted = true
+      this.verificationSubmitted = true
     },
     handleSubmitPassword() {},
     matchPassword(rule, value, callback, source, options) {

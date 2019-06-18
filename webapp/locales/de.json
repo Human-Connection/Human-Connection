@@ -24,7 +24,7 @@
   },
   "verify-code": {
     "form": {
-      "input": "Code eingeben",
+      "code": "Code eingeben",
       "description": "Öffne Deine E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
       "submit": "Sicherheitscode überprüfen",
       "change-password":{

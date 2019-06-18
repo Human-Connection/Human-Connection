@@ -41,7 +41,8 @@ describe('VerifyCode ', () => {
     describe('after verification code given', () => {
       beforeEach(() => {
         wrapper = Wrapper()
-        wrapper.find('input').setValue('123456')
+        wrapper.find('input#email').setValue('mail@example.org')
+        wrapper.find('input#code').setValue('123456')
         wrapper.find('form').trigger('submit')
       })
 
