@@ -40,7 +40,6 @@ export default schema => {
     'excerpt',
     'notifications',
     'xss',
-    'fixImageUrls',
     'softDelete',
     'user',
     'includedFields',
