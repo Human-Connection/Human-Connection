@@ -1,6 +1,10 @@
 import { Mention as TipTapMention } from 'tiptap-extensions'
 
 export default class Mention extends TipTapMention {
+  get name() {
+    return 'mention'
+  }
+
   get schema() {
     const patchedSchema = super.schema
 
@@ -19,9 +23,9 @@ export default class Mention extends TipTapMention {
         `${this.options.matcher.char}${node.attrs.label}`,
       ]
     }
-    // patchedSchema.parseDOM = [
-    //   // this is not implemented
-    // ]
+    patchedSchema.parseDOM = [
+      // this is not implemented
+    ]
     return patchedSchema
   }
 }

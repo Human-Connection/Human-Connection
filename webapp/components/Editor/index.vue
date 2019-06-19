@@ -625,6 +625,9 @@ li > p {
   .mention-suggestion {
     color: $color-primary;
   }
+  .tag-suggestion {
+    color: $color-primary;
+  }
   &__floating-menu {
     position: absolute;
     margin-top: -0.25rem;
