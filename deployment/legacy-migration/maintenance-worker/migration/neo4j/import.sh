@@ -91,12 +91,16 @@ import_collection "comments" "comments/comments.cql"
 # import_collection "notifications"
 # import_collection "organizations"
 # import_collection "pages"
-# import_collection "projects"
-# import_collection "settings"
-# import_collection "status"
 # import_collection "systemnotifications"
 # import_collection "userscandos"
 # import_collection "usersettings"
+
+# does only contain dummy data
+# import_collection "projects"
+
+# does only contain alpha specifc data
+# import_collection "status
+# import_collection "settings""
 
 echo "DONE"
 
