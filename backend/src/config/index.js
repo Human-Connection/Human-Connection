@@ -28,6 +28,7 @@ export const serverConfigs = {
 }
 
 export const developmentConfigs = {
+  SEND_MAILS: process.env.SEND_MAILS || false,
   DEBUG: process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true',
   MOCKS: process.env.MOCKS === 'true',
   DISABLED_MIDDLEWARES:

@@ -41,13 +41,15 @@ export default {
     requestPasswordReset: async (_, { email }, { driver }) => {
       const code = uuid().substring(0, 6)
       await createPasswordReset({ driver, code, email })
-      await transporter().sendMail({
-        from: '"Human Connection" <info@human-connection.org>', // sender address
-        to: email, // list of receivers
-        subject: 'Password Reset', // Subject line
-        text: `Code is ${code}`, // plain text body
-        html: `Code is <b>${code}</b>`, // plain text body
-      })
+      if (CONFIG.SEND_MAILS) {
+        await transporter().sendMail({
+          from: '"Human Connection" <info@human-connection.org>', // sender address
+          to: email, // list of receivers
+          subject: 'Password Reset', // Subject line
+          text: `Code is ${code}`, // plain text body
+          html: `Code is <b>${code}</b>`, // plain text body
+        })
+      }
 
       return true
     },
