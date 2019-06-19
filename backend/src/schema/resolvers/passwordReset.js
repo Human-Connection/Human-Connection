@@ -41,7 +41,7 @@ export default {
     requestPasswordReset: async (_, { email }, { driver }) => {
       const code = uuid().substring(0, 6)
       await createPasswordReset({ driver, code, email })
-      if (CONFIG.SEND_MAILS) {
+      if (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT) {
         await transporter().sendMail({
           from: '"Human Connection" <info@human-connection.org>', // sender address
           to: email, // list of receivers
