@@ -169,7 +169,12 @@
     "menu": {
       "edit": "Edit Comment",
       "delete": "Delete Comment"
+    },
+    "show": {
+      "more": "show more",
+      "less": "show less"
     }
+
   },
   "quotes": {
     "african": {

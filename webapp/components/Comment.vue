@@ -23,10 +23,27 @@
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="small" />
-    <div style="padding-left: 40px;" v-html="comment.contentExcerpt" />
-    <!-- eslint-enable vue/no-v-html -->
+    <div v-if="!isActive" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
+    <div v-show="comment.content.length !== comment.contentExcerpt.length">
+      <span
+        v-if="!isActive"
+        style="padding-left: 40px; color: #17b53f; cursor:pointer"
+        @click="isActive = !isActive"
+      >
+        {{ $t('comment.show.more') }}
+      </span>
+    </div>
+    <div v-if="isActive" v-html="comment.content" style="padding-left: 40px;" />
+    <span
+      v-if="isActive"
+      @click="isActive = !isActive"
+      style="padding-left: 40px; color: #17b53f; cursor:pointer"
+    >
+      {{ $t('comment.show.less') }}
+    </span>
   </div>
 </template>
+<!-- eslint-enable vue/no-v-html -->
 
 <script>
 import gql from 'graphql-tag'
@@ -35,6 +52,11 @@ import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 
 export default {
+  data: function() {
+    return {
+      isActive: false,
+    }
+  },
   components: {
     HcUser,
     ContentMenu,

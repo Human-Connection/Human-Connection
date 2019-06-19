@@ -8,6 +8,7 @@ export default app => {
         comments(orderBy: createdAt_asc) {
           id
           contentExcerpt
+          content
           createdAt
           disabled
           deleted
