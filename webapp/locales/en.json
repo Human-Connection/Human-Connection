@@ -43,7 +43,7 @@
     "follow": "Follow",
     "followers": "Followers",
     "following": "Following",
-    "shouted": "Shouted",
+    "shouted": "Recommended",
     "commented": "Commented",
     "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find",
@@ -59,7 +59,7 @@
   },
   "notifications": {
     "menu": {
-      "mentioned": "has mentioned you in a post"
+      "mentioned": "mentioned you in a post"
     }
   },
   "search": {
@@ -73,7 +73,7 @@
       "name": "Your data",
       "labelName": "Your Name",
       "namePlaceholder": "Femanon Funny",
-      "labelCity": "Your City or Region",
+      "labelCity": "Su ciudad o región",
       "labelBio": "About You",
       "success": "Your data was successfully updated!"
     },
@@ -138,7 +138,7 @@
       "projects": "Projects",
       "invites": "Invites",
       "follows": "Follows",
-      "shouts": "Shouts"
+      "shouts": "Recommended"
     },
     "organizations": {
       "name": "Organizations"
@@ -327,6 +327,9 @@
     }
   },
   "contribution": {
+    "newPost": "Create a new Post",
+    "filterFollow": "Filter contributions from users I follow",
+    "filterALL": "View all contributions",
     "success": "Saved!",
     "languageSelectLabel": "Language"
   }

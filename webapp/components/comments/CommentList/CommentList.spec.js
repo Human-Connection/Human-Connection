@@ -86,7 +86,7 @@ describe('CommentList.vue', () => {
     })
 
     it('displays comments when there are comments to display', () => {
-      expect(wrapper.find('div#comments').text()).toEqual('this is a comment')
+      expect(wrapper.find('div.comments').text()).toEqual('this is a comment')
     })
 
     it("refetches a post's comments from the backend", () => {
