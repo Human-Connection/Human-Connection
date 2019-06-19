@@ -1,13 +1,13 @@
 <template>
-  <password-reset @handleSubmitted="handlePasswordResetRequested" />
+  <request @handleSubmitted="handlePasswordResetRequested" />
 </template>
 
 <script>
-import PasswordReset from '~/components/PasswordReset/PasswordReset'
+import Request from '~/components/PasswordReset/Request'
 
 export default {
   components: {
-    PasswordReset,
+    Request,
   },
   methods: {
     handlePasswordResetRequested() {

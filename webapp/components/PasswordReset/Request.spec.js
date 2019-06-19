@@ -1,12 +1,12 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import PasswordReset from './PasswordReset'
+import Request from './Request'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 
-describe('PasswordReset', () => {
+describe('Request', () => {
   let wrapper
   let Wrapper
   let mocks
@@ -29,7 +29,7 @@ describe('PasswordReset', () => {
     beforeEach(jest.useFakeTimers)
 
     Wrapper = () => {
-      return mount(PasswordReset, {
+      return mount(Request, {
         mocks,
         localVue,
       })

@@ -13,15 +13,7 @@ describe('VerifyCode ', () => {
 
   beforeEach(() => {
     mocks = {
-      $toast: {
-        success: jest.fn(),
-        error: jest.fn(),
-      },
       $t: jest.fn(),
-      $apollo: {
-        loading: false,
-        mutate: jest.fn().mockResolvedValue({ data: { resetPassword: true } }),
-      },
     }
   })
 
@@ -48,42 +40,9 @@ describe('VerifyCode ', () => {
         wrapper.find('form').trigger('submit')
       })
 
-      it('displays a form to update your password', () => {
-        expect(wrapper.find('.change-password').exists()).toBe(true)
-      })
-
-      describe('submitting new password', () => {
-        beforeEach(() => {
-          wrapper.find('input#newPassword').setValue('supersecret')
-          wrapper.find('input#confirmPassword').setValue('supersecret')
-          wrapper.find('form').trigger('submit')
-        })
-
-        it('calls resetPassword graphql mutation', () => {
-          expect(mocks.$apollo.mutate).toHaveBeenCalled()
-        })
-
-        it('delivers new password to backend', () => {
-          const expected = expect.objectContaining({
-            variables: { code: '123456', email: 'mail@example.org', newPassword: 'supersecret' },
-          })
-          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
-        })
-
-        describe('password reset successful', () => {
-          it('displays success message', () => {
-            const expected = 'verify-code.form.change-password.success'
-            expect(mocks.$t).toHaveBeenCalledWith(expected)
-          })
-
-          describe('after animation', () => {
-            beforeEach(jest.runAllTimers)
-
-            it('emits `change-password-sucess`', () => {
-              expect(wrapper.emitted('passwordResetResponse')).toEqual([['success']])
-            })
-          })
-        })
+      it('emits `verifyCode`', () => {
+        const expected = [[{ code: '123456', email: 'mail@example.org' }]]
+        expect(wrapper.emitted('verification')).toEqual(expected)
       })
     })
   })

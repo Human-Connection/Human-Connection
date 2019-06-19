@@ -1,5 +1,5 @@
 <template>
-  <verify-code @passwordResetResponse="handlePasswordResetResponse" />
+  <verify-code @verification="handleVerification" />
 </template>
 
 <script>
@@ -10,10 +10,8 @@ export default {
     VerifyCode,
   },
   methods: {
-    handlePasswordResetResponse(response) {
-      if (response === 'success') {
-        this.$router.push('login')
-      }
+    handleVerification({ email, code }) {
+      this.$router.push({ path: 'change-password', query: { email, code } })
     },
   },
 }
