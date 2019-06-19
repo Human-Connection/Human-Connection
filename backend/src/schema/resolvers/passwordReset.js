@@ -2,6 +2,7 @@ import uuid from 'uuid/v4'
 import bcrypt from 'bcryptjs'
 import CONFIG from '../../config'
 import nodemailer from 'nodemailer'
+import { resetPasswordMail, wrongAccountMail } from './passwordReset/emailTemplates'
 
 const transporter = () => {
   const { SMTP_HOST: host, SMTP_PORT: port, SMTP_USERNAME: user, SMTP_PASSWORD: pass } = CONFIG
@@ -24,33 +25,28 @@ export async function createPasswordReset(options) {
       MATCH (u:User) WHERE u.email = $email
       CREATE(pr:PasswordReset {code: $code, issuedAt: datetime($issuedAt), usedAt: NULL})
       MERGE (u)-[:REQUESTED]->(pr)
-      RETURN pr
+      RETURN u
       `
   const transactionRes = await session.run(cypher, {
     issuedAt: issuedAt.toISOString(),
     code,
     email,
   })
-  const resets = transactionRes.records.map(record => record.get('pr'))
+  const users = transactionRes.records.map(record => record.get('u'))
   session.close()
-  return resets
+  return users
 }
 
 export default {
   Mutation: {
     requestPasswordReset: async (_, { email }, { driver }) => {
       const code = uuid().substring(0, 6)
-      await createPasswordReset({ driver, code, email })
+      const [user] = await createPasswordReset({ driver, code, email })
       if (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT) {
-        await transporter().sendMail({
-          from: '"Human Connection" <info@human-connection.org>', // sender address
-          to: email, // list of receivers
-          subject: 'Password Reset', // Subject line
-          text: `Code is ${code}`, // plain text body
-          html: `Code is <b>${code}</b>`, // plain text body
-        })
+        const name = (user && user.name) || ''
+        const mailTemplate = user ? resetPasswordMail : wrongAccountMail
+        await transporter().sendMail(mailTemplate({ email, code, name }))
       }
-
       return true
     },
     resetPassword: async (_, { email, code, newPassword }, { driver }) => {
