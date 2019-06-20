@@ -28,7 +28,7 @@
       "description": "Open your inbox and enter the code that we've sent to you.",
       "next": "Continue",
       "change-password": {
-        "success": "Changing your password was successful",
+        "success": "Changing your password was successful!",
         "error": "Changing your password failed. Maybe the security code was not correct?",
         "help": "In case of problems, feel free to ask for help by sending us a mail to:"
       }

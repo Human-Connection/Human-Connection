@@ -25,10 +25,10 @@
   "verify-code": {
     "form": {
       "code": "Code eingeben",
-      "description": "Öffne Deine E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
+      "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
       "next": "Weiter",
       "change-password":{
-        "success": "Änderung des Passworts war erfolgreich",
+        "success": "Änderung des Passworts war erfolgreich!",
         "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
         "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
       }

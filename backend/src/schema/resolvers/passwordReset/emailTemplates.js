@@ -21,7 +21,7 @@ export const resetPasswordMail = options => {
 Hi ${name}!
 
 You recently requested to reset your password for your Human Connection account.
-Use the button below to reset it. This password reset is only valid for the next
+Use the link below to reset it. This password reset is only valid for the next
 24 hours.
 
 ${actionUrl}
@@ -34,7 +34,7 @@ ${supportUrl}
 Thanks,
 The Human Connection Team
 
-If you’re having trouble with the link above, you can manually copy and
+If you're having trouble with the link above, you can manually copy and
 paste the following code into your browser window:
 
 ${code}
