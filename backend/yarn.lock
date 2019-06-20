@@ -3782,10 +3782,10 @@ graphql-request@~1.8.2:
   dependencies:
     cross-fetch "2.2.2"
 
-graphql-shield@~5.3.8:
-  version "5.3.8"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-5.3.8.tgz#f9e7ad2285f6cfbe20a8a49154ce6c1b184e3893"
-  integrity sha512-33rQ8U5jMurHIapctHk7hBcUg3nxC7fmMIMtyWiomJXhBmztFq/SG7jNaapnL5M7Q/0BmoaSQd3FLSpelP9KPw==
+graphql-shield@~5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-5.7.0.tgz#d8f331834f4ecc90b00640d0af58d7f2b1903c18"
+  integrity sha512-lUFQ65a4AlYOSwOZJN6z+suys19p3QfPBz0z9B3RQRU2UlAwFXICP3ARnrK3YzNhgaoKelDyUKAWFN2WXPohWA==
   dependencies:
     "@types/yup" "0.26.16"
     lightercollective "^0.3.0"
