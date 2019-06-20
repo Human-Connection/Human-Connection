@@ -10,10 +10,14 @@ describe('VerifyCode ', () => {
   let wrapper
   let Wrapper
   let mocks
+  let propsData
 
   beforeEach(() => {
     mocks = {
       $t: jest.fn(),
+    }
+    propsData = {
+      email: 'mail@example.org',
     }
   })
 
@@ -24,6 +28,7 @@ describe('VerifyCode ', () => {
       return mount(VerifyCode, {
         mocks,
         localVue,
+        propsData,
       })
     }
 
@@ -35,7 +40,6 @@ describe('VerifyCode ', () => {
     describe('after verification code given', () => {
       beforeEach(() => {
         wrapper = Wrapper()
-        wrapper.find('input#email').setValue('mail@example.org')
         wrapper.find('input#code').setValue('123456')
         wrapper.find('form').trigger('submit')
       })
