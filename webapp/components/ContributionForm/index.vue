@@ -88,7 +88,7 @@ export default {
       form: {
         title: '',
         content: '',
-        teaserImage: '',
+        teaserImage: null,
         language: null,
         languageOptions: [],
       },
@@ -123,6 +123,7 @@ export default {
         this.form.content = contribution.content
         this.form.title = contribution.title
         this.form.language = this.locale
+        this.form.teaserImage = contribution.imageUpload
       },
     },
     error() {
@@ -146,16 +147,17 @@ export default {
   },
   methods: {
     submit() {
+      const { title, content, language, teaserImage } = this.form
       this.loading = true
       this.$apollo
         .mutate({
           mutation: this.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
             id: this.id,
-            title: this.form.title,
-            content: this.form.content,
-            language: this.form.language ? this.form.language.value : this.$i18n.locale(),
-            imageUpload: this.form.teaserImage,
+            title,
+            content,
+            language: language ? language.value : this.$i18n.locale(),
+            imageUpload: teaserImage,
           },
         })
         .then(res => {

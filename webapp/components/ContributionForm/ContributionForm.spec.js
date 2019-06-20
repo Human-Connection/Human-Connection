@@ -89,10 +89,16 @@ describe('ContributionForm.vue', () => {
       })
 
       describe('valid form submission', () => {
-        expectedParams = {
-          variables: { title: postTitle, content: postContent, language: 'en', id: null },
-        }
         beforeEach(async () => {
+          expectedParams = {
+            variables: {
+              title: postTitle,
+              content: postContent,
+              language: 'en',
+              id: null,
+              imageUpload: null,
+            },
+          }
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue('this is a title for a post')
           wrapper.vm.updateEditorContent('this is a post')
