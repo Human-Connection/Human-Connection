@@ -55,15 +55,15 @@ export default {
       stillValid.setDate(stillValid.getDate() - 1)
       const newHashedPassword = await bcrypt.hashSync(newPassword, 10)
       const cypher = `
-      MATCH (r:PasswordReset {code: $code})
-      MATCH (u:User {email: $email})-[:REQUESTED]->(r)
-      WHERE duration.between(r.issuedAt, datetime()).days <= 0 AND r.usedAt IS NULL
-      SET r.usedAt = datetime()
+      MATCH (pr:PasswordReset {code: $code})
+      MATCH (u:User {email: $email})-[:REQUESTED]->(pr)
+      WHERE duration.between(pr.issuedAt, datetime()).days <= 0 AND pr.usedAt IS NULL
+      SET pr.usedAt = datetime()
       SET u.password = $newHashedPassword
-      RETURN r
+      RETURN pr
       `
       let transactionRes = await session.run(cypher, { stillValid, email, code, newHashedPassword })
-      const [reset] = transactionRes.records.map(record => record.get('r'))
+      const [reset] = transactionRes.records.map(record => record.get('pr'))
       const result = !!(reset && reset.properties.usedAt)
       session.close()
       return result
