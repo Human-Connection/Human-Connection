@@ -9,13 +9,6 @@
         @input-valid="handleInputValid"
       >
         <ds-input
-          :placeholder="$t('login.email')"
-          model="email"
-          id="email"
-          name="email"
-          icon="envelope"
-        />
-        <ds-input
           :placeholder="$t('verify-code.form.code')"
           model="code"
           name="code"
@@ -37,18 +30,15 @@
 
 <script>
 export default {
+  props: {
+    email: { type: String, required: true },
+  },
   data() {
     return {
       formData: {
-        email: '',
         code: '',
       },
       formSchema: {
-        email: {
-          type: 'email',
-          required: true,
-          message: this.$t('common.validations.email'),
-        },
         code: {
           type: 'string',
           min: 6,
@@ -68,7 +58,8 @@ export default {
       this.disabled = false
     },
     handleSubmitVerify() {
-      const { email, code } = this.formData
+      const { code } = this.formData
+      const email = this.email
       this.$emit('verification', { email, code })
     },
   },

@@ -10,8 +10,8 @@ export default {
     Request,
   },
   methods: {
-    handlePasswordResetRequested() {
-      this.$router.push('verify-code')
+    handlePasswordResetRequested({ email }) {
+      this.$router.push({ path: 'verify-code', query: { email } })
     },
   },
 }

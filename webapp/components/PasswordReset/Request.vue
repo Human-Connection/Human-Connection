@@ -89,14 +89,14 @@ export default {
           requestPasswordReset(email: $email)
         }
       `
-      const variables = this.formData
+      const { email } = this.formData
 
       try {
-        await this.$apollo.mutate({ mutation, variables })
+        await this.$apollo.mutate({ mutation, variables: { email } })
         this.submitted = true
 
         setTimeout(() => {
-          this.$emit('handleSubmitted')
+          this.$emit('handleSubmitted', { email })
         }, 3000)
       } catch (err) {
         this.$toast.error(err.message)

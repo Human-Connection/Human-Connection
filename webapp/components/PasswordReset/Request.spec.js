@@ -69,7 +69,7 @@ describe('Request', () => {
         beforeEach(jest.runAllTimers)
 
         it('emits `handleSubmitted`', () => {
-          expect(wrapper.emitted('handleSubmitted')).toBeTruthy()
+          expect(wrapper.emitted('handleSubmitted')).toEqual([[{ email: 'mail@example.org' }]])
         })
       })
     })
