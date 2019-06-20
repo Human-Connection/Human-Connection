@@ -7,9 +7,16 @@
           ref="el"
           id="postdropzone"
           :use-custom-slot="true"
+          @vdropzone-thumbnail="thumbnail"
+          @vdropzone-success="vsuccess"
           @vdropzone-error="verror"
         >
-          <div class="dz-message" @mouseover="hover = true" @mouseleave="hover = false">
+          <div
+            v-if="!teaser"
+            class="dz-message"
+            @mouseover="hover = true"
+            @mouseleave="hover = false"
+          >
             <div class="hc-attachments-upload-area">
               <div class="hc-drag-marker">
                 <ds-icon v-if="hover" name="image" size="xxx-large" />
@@ -95,11 +102,13 @@ export default {
       slug: null,
       users: [],
       dropzoneOptions: {
-        url: this.vddrop,
+        url: 'https://httpbin.org/post',
         maxFilesize: 5.0,
         previewTemplate: this.template(),
       },
       hover: false,
+      error: false,
+      teaser: false,
     }
   },
   watch: {
@@ -115,6 +124,12 @@ export default {
         this.form.title = contribution.title
         this.form.language = this.locale
       },
+    },
+    error() {
+      let that = this
+      setTimeout(function() {
+        that.error = false
+      }, 2000)
     },
   },
   computed: {
@@ -140,6 +155,7 @@ export default {
             title: this.form.title,
             content: this.form.content,
             language: this.form.language ? this.form.language.value : this.$i18n.locale(),
+            imageUpload: this.form.teaserImage,
           },
         })
         .then(res => {
@@ -172,14 +188,30 @@ export default {
               </div>
       `
     },
-    vddrop(file) {
-      this.form.teaserImage = file[0]
+    verror(file, message) {
+      this.error = true
+      this.$toast.error(file.status, message)
     },
-    verror(file, message) {},
     availableLocales() {
       orderBy(locales, 'name').map(locale => {
         this.form.languageOptions.push({ label: locale.name, value: locale.code })
       })
+    },
+    vsuccess(file, response) {
+      this.form.teaserImage = file
+    },
+    thumbnail: function(file, dataUrl) {
+      this.teaser = true
+      var j, len, ref, thumbnailElement
+      if (file.previewElement) {
+        ref = document.querySelectorAll('#postdropzone')
+        for (j = 0, len = ref.length; j < len; j++) {
+          thumbnailElement = ref[j]
+          thumbnailElement.classList.add('image-preview')
+          thumbnailElement.alt = file.name
+          thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")'
+        }
+      }
     },
   },
   apollo: {
@@ -215,8 +247,29 @@ export default {
 }
 
 #postdropzone {
-  height: 160px;
+  min-height: 160px;
   background-color: $background-color-softest;
+}
+
+#postdropzone.image-preview {
+  background-repeat: no-repeat;
+  background-size: 100%;
+  height: 600px;
+  transition: all 0.2s ease-out;
+
+  width: 100%;
+}
+
+@media only screen and (max-width: 400px) {
+  #postdropzone.image-preview {
+    height: 200px;
+  }
+}
+
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+  #postdropzone.image-preview {
+    height: 400px;
+  }
 }
 
 .hc-attachments-upload-area {
@@ -269,6 +322,7 @@ export default {
   .hc-attachments-upload-area:hover & {
     opacity: 1;
   }
+}
 .contribution-form-footer {
   border-top: $border-size-base solid $border-color-softest;
 }
