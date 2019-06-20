@@ -1,4 +1,4 @@
-import { rule, shield, allow, or } from 'graphql-shield'
+import { rule, shield, deny, allow, or } from 'graphql-shield'
 
 /*
  * TODO: implement
@@ -14,6 +14,12 @@ const isModerator = rule()(async (parent, args, { user }, info) => {
 
 const isAdmin = rule()(async (parent, args, { user }, info) => {
   return user && user.role === 'admin'
+})
+
+const onlyYourself = rule({
+  cache: 'no_cache',
+})(async (parent, args, context, info) => {
+  return context.user.id === args.id
 })
 
 const isMyOwn = rule({
@@ -48,6 +54,13 @@ const belongsToMe = rule({
   return Boolean(notification)
 })
 
+/* TODO: decide if we want to remove this check: the check
+ * `onlyEnabledContent` throws authorization errors only if you have
+ * arguments for `disabled` or `deleted` assuming these are filter
+ * parameters. Soft-delete middleware obfuscates data on its way out
+ * anyways. Furthermore, `neo4j-graphql-js` offers many ways to filter for
+ * data so I believe, this is not a good check anyways.
+ */
 const onlyEnabledContent = rule({
   cache: 'strict',
 })(async (parent, args, ctx, info) => {
@@ -80,47 +93,70 @@ const isAuthor = rule({
   return authorId === user.id
 })
 
-// Permissions
-const permissions = shield({
-  Query: {
-    Notification: isAdmin,
-    statistics: allow,
-    currentUser: allow,
-    Post: or(onlyEnabledContent, isModerator),
-  },
-  Mutation: {
-    UpdateNotification: belongsToMe,
-    CreatePost: isAuthenticated,
-    UpdatePost: isAuthor,
-    DeletePost: isAuthor,
-    report: isAuthenticated,
-    CreateBadge: isAdmin,
-    UpdateBadge: isAdmin,
-    DeleteBadge: isAdmin,
-    AddUserBadges: isAdmin,
-    CreateSocialMedia: isAuthenticated,
-    DeleteSocialMedia: isAuthenticated,
-    // AddBadgeRewarded: isAdmin,
-    // RemoveBadgeRewarded: isAdmin,
-    reward: isAdmin,
-    unreward: isAdmin,
-    // addFruitToBasket: isAuthenticated
-    follow: isAuthenticated,
-    unfollow: isAuthenticated,
-    shout: isAuthenticated,
-    unshout: isAuthenticated,
-    changePassword: isAuthenticated,
-    enable: isModerator,
-    disable: isModerator,
-    CreateComment: isAuthenticated,
-    DeleteComment: isAuthor,
-    // CreateUser: allow,
-  },
-  User: {
-    email: isMyOwn,
-    password: isMyOwn,
-    privateKey: isMyOwn,
-  },
+const isDeletingOwnAccount = rule({
+  cache: 'no_cache',
+})(async (parent, args, context, info) => {
+  return context.user.id === args.id
 })
+
+// Permissions
+const permissions = shield(
+  {
+    Query: {
+      '*': deny,
+      findPosts: allow,
+      Category: isAdmin,
+      Tag: isAdmin,
+      Report: isModerator,
+      Notification: isAdmin,
+      statistics: allow,
+      currentUser: allow,
+      Post: or(onlyEnabledContent, isModerator),
+      Comment: allow,
+      User: allow,
+      isLoggedIn: allow,
+    },
+    Mutation: {
+      '*': deny,
+      login: allow,
+      UpdateNotification: belongsToMe,
+      CreateUser: isAdmin,
+      UpdateUser: onlyYourself,
+      CreatePost: isAuthenticated,
+      UpdatePost: isAuthor,
+      DeletePost: isAuthor,
+      report: isAuthenticated,
+      CreateBadge: isAdmin,
+      UpdateBadge: isAdmin,
+      DeleteBadge: isAdmin,
+      AddUserBadges: isAdmin,
+      CreateSocialMedia: isAuthenticated,
+      DeleteSocialMedia: isAuthenticated,
+      // AddBadgeRewarded: isAdmin,
+      // RemoveBadgeRewarded: isAdmin,
+      reward: isAdmin,
+      unreward: isAdmin,
+      // addFruitToBasket: isAuthenticated
+      follow: isAuthenticated,
+      unfollow: isAuthenticated,
+      shout: isAuthenticated,
+      unshout: isAuthenticated,
+      changePassword: isAuthenticated,
+      enable: isModerator,
+      disable: isModerator,
+      CreateComment: isAuthenticated,
+      DeleteComment: isAuthor,
+      DeleteUser: isDeletingOwnAccount,
+    },
+    User: {
+      email: isMyOwn,
+      password: isMyOwn,
+      privateKey: isMyOwn,
+    },
+  },
+  {
+    fallbackRule: allow,
+  },
+)
 
 export default permissions

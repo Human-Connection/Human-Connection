@@ -19,9 +19,9 @@
   "profile": {
     "name": "Mein Profil",
     "memberSince": "Mitglied seit",
-    "follow": "Folgen",
-    "followers": "Folgen",
-    "following": "Folgt",
+    "follow": "abonnieren",
+    "followers": "Abonnenten",
+    "following": "abonniert",
     "shouted": "Empfohlen",
     "commented": "Kommentiert",
     "userAnonym": "Anonymus",
@@ -82,8 +82,14 @@
     "download": {
       "name": "Daten herunterladen"
     },
-    "delete": {
-      "name": "Konto löschen"
+    "deleteUserAccount": {
+      "name": "Daten löschen",
+      "contributionsCount": "Meine {count} Beiträge löschen",
+      "commentsCount": "Meine {count} Kommentare löschen",
+      "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
+      "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
+      "success": "Konto erfolgreich gelöscht",
+      "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen."
     },
     "organizations": {
       "name": "Meine Organisationen"
@@ -100,9 +106,9 @@
     }
   },
   "admin": {
-    "name": "Systemverwaltung",
+    "name": "Admin",
     "dashboard": {
-      "name": "Startzentrale",
+      "name": "Dashboard",
       "users": "Benutzer",
       "posts": "Beiträge",
       "comments": "Kommentare",
@@ -111,7 +117,7 @@
       "projects": "Projekte",
       "invites": "Einladungen",
       "follows": "Folgen",
-      "shouts": "Shouts"
+      "shouts": "Empfehlungen"
     },
     "organizations": {
       "name": "Organisationen"
@@ -172,11 +178,6 @@
     }
   },
   "common": {
-    "your": {
-      "post": "Dein Beitrag ::: Deine Beiträge",
-      "comment": "Dein Kommentar ::: Deine Kommentare",
-      "shout": "Deine Empfehlung ::: Deine Empfehlungen"
-    },
     "post": "Beitrag ::: Beiträge",
     "comment": "Kommentar ::: Kommentare",
     "letsTalk": "Miteinander reden",
@@ -244,7 +245,7 @@
     "comment": {
       "title": "Lösche Kommentar",
       "type": "Comment",
-      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" löschen möchtest?",
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" löschen möchtest?",
       "success": "Kommentar erfolgreich gelöscht!"
     }
   },
@@ -270,7 +271,7 @@
   },
   "followButton": {
     "follow": "Folgen",
-    "following": "Folge Ich"
+    "following": "Folge ich"
   },
   "shoutButton": {
     "shouted": "empfohlen"
@@ -300,5 +301,13 @@
     "avatar": {
       "submitted": "Upload erfolgreich"
     }
+  },
+  "contribution": {
+    "newPost": "Erstelle einen neuen Beitrag",
+    "filterFollow": "Beiträge filtern von Usern denen ich folge",
+    "filterALL": "Alle Beiträge anzeigen",
+    "success": "Gespeichert!",
+    "languageSelectLabel": "Sprache"
   }
+
 }

@@ -1,10 +1,10 @@
 import gql from 'graphql-tag'
 
-export default app => {
-  const lang = app.$i18n.locale().toUpperCase()
+export default i18n => {
+  const lang = i18n.locale().toUpperCase()
   return gql(`
-    query User($slug: String!, $first: Int, $offset: Int) {
-      User(slug: $slug) {
+    query User($id: ID!) {
+      User(id: $id) {
         id
         slug
         name
@@ -24,7 +24,7 @@ export default app => {
         }
         badgesCount
         shoutedCount
-        commentsCount
+        commentedCount
         followingCount
         following(first: 7) {
           id
@@ -69,35 +69,6 @@ export default app => {
           }
         }
         contributionsCount
-        contributions(first: $first, offset: $offset, orderBy: createdAt_desc) {
-          id
-          slug
-          title
-          contentExcerpt
-          shoutedCount
-          commentsCount
-          deleted
-          image
-          createdAt
-          disabled
-          deleted
-          categories {
-            id
-            name
-            icon
-          }
-          author {
-            id
-            slug
-            avatar
-            name
-            disabled
-            deleted
-            location {
-              name: name${lang}
-            }
-          }
-        }
         socialMedia {
           id
           url

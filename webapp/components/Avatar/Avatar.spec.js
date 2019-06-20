@@ -1,9 +1,11 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Styleguide from '@human-connection/styleguide'
 import Avatar from './Avatar.vue'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 describe('Avatar.vue', () => {
   let propsData = {}

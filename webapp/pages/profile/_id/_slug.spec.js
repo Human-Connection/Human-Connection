@@ -1,12 +1,19 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { config, mount, createLocalVue } from '@vue/test-utils'
 import ProfileSlug from './_slug.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
+localVue.filter('date', d => d)
+
+config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['v-popover'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('ProfileSlug', () => {
   let wrapper
@@ -20,7 +27,13 @@ describe('ProfileSlug', () => {
         name: 'It is a post',
       },
       $t: jest.fn(),
-      // If you mocking router, than don't use VueRouter with lacalVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
+      // If you're mocking router, then don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
+      $route: {
+        params: {
+          id: '4711',
+          slug: 'john-doe',
+        },
+      },
       $router: {
         history: {
           push: jest.fn(),
@@ -31,48 +44,138 @@ describe('ProfileSlug', () => {
         error: jest.fn(),
       },
       $apollo: {
+        loading: false,
         mutate: jest.fn().mockResolvedValue(),
       },
     }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     Wrapper = () => {
-      return shallowMount(ProfileSlug, {
+      return mount(ProfileSlug, {
         mocks,
         localVue,
       })
     }
 
-    beforeEach(jest.useFakeTimers)
-
-    describe('test mixin "PostMutationHelpers"', () => {
+    describe('given an authenticated user', () => {
       beforeEach(() => {
-        wrapper = Wrapper()
+        mocks.$filters = {
+          removeLinks: c => c,
+          truncate: a => a,
+        }
+        mocks.$store = {
+          getters: {
+            'auth/user': {
+              id: 'u23',
+            },
+          },
+        }
       })
 
-      describe('deletion of Post from List by invoking "deletePostCallback(`list`)"', () => {
+      describe('given a user for the profile', () => {
         beforeEach(() => {
-          wrapper.vm.deletePostCallback('list')
+          wrapper = Wrapper()
+          wrapper.setData({
+            User: [
+              {
+                id: 'u3',
+                name: 'Bob the builder',
+                contributionsCount: 6,
+                shoutedCount: 7,
+                commentedCount: 8,
+              },
+            ],
+          })
         })
 
-        describe('after timeout', () => {
-          beforeEach(jest.runAllTimers)
+        it('displays name of the user', () => {
+          expect(wrapper.text()).toContain('Bob the builder')
+        })
 
-          it('emits "deletePost"', () => {
-            expect(wrapper.emitted().deletePost.length).toBe(1)
+        describe('load more button', () => {
+          const aPost = {
+            title: 'I am a post',
+            content: 'This is my content',
+            contentExcerpt: 'This is my content',
+          }
+
+          describe('currently no posts available (e.g. after tab switching)', () => {
+            beforeEach(() => {
+              wrapper.setData({
+                Post: null,
+              })
+            })
+
+            it('displays no "load more" button', () => {
+              expect(wrapper.find('.load-more').exists()).toBe(false)
+            })
+
+            describe('apollo client in `loading` state', () => {
+              beforeEach(() => {
+                wrapper.vm.$apollo.loading = true
+              })
+
+              it('never displays more than one loading spinner', () => {
+                expect(wrapper.findAll('.ds-spinner')).toHaveLength(1)
+              })
+
+              it('displays a loading spinner below the posts list', () => {
+                expect(wrapper.find('.user-profile-posts-list .ds-spinner').exists()).toBe(true)
+              })
+            })
           })
 
-          it('does not go to index (main) page', () => {
-            expect(mocks.$router.history.push).not.toHaveBeenCalled()
+          describe('pagination returned less posts than available', () => {
+            beforeEach(() => {
+              const posts = [1, 2, 3, 4, 5].map(id => {
+                return {
+                  ...aPost,
+                  id,
+                }
+              })
+
+              wrapper.setData({
+                Post: posts,
+              })
+            })
+
+            it('displays a "load more" button', () => {
+              expect(wrapper.find('.load-more').exists()).toBe(true)
+            })
+
+            describe('apollo client in `loading` state', () => {
+              beforeEach(() => {
+                wrapper.vm.$apollo.loading = true
+              })
+
+              it('never displays more than one loading spinner', () => {
+                expect(wrapper.findAll('.ds-spinner')).toHaveLength(1)
+              })
+
+              it('displays a loading spinner below the posts list', () => {
+                expect(wrapper.find('.load-more .ds-spinner').exists()).toBe(true)
+              })
+            })
           })
 
-          it('does call mutation', () => {
-            expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
-          })
+          describe('pagination returned as many posts as available', () => {
+            beforeEach(() => {
+              const posts = [1, 2, 3, 4, 5, 6].map(id => {
+                return {
+                  ...aPost,
+                  id,
+                }
+              })
 
-          it('mutation is successful', () => {
-            expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
+              wrapper.setData({
+                Post: posts,
+              })
+            })
+
+            it('displays no "load more" button', () => {
+              expect(wrapper.find('.load-more').exists()).toBe(false)
+            })
           })
         })
       })

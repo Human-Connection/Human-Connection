@@ -1,8 +1,6 @@
 <template>
   <ds-card>
-    <h2 style="margin-bottom: .2em;">
-      Mehr Informationen
-    </h2>
+    <h2 style="margin-bottom: .2em;">Mehr Informationen</h2>
     <p>Hier findest du weitere infos zum Thema.</p>
     <ds-space />
     <h3>
@@ -42,7 +40,7 @@
           :key="relatedPost.id"
           :post="relatedPost"
           :width="{ base: '100%', lg: 1 }"
-          @deletePost="post.relatedContributions.splice(index, 1)"
+          @removePostFromList="post.relatedContributions.splice(index, 1)"
         />
       </ds-flex>
       <hc-empty v-else margin="large" icon="file" message="No related Posts" />

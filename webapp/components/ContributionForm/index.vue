@@ -21,8 +21,27 @@
         <no-ssr>
           <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
         </no-ssr>
+        <ds-space margin-bottom="xxx-large" />
+        <ds-flex class="contribution-form-footer">
+          <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
+          <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
+            <ds-space margin-bottom="small" />
+            <ds-select
+              model="language"
+              :options="form.languageOptions"
+              icon="globe"
+              :placeholder="locale"
+              :label="$t('contribution.languageSelectLabel')"
+            />
+          </ds-flex-item>
+        </ds-flex>
         <div slot="footer" style="text-align: right">
-          <ds-button :disabled="loading || disabled" ghost @click.prevent="$router.back()">
+          <ds-button
+            :disabled="loading || disabled"
+            ghost
+            class="cancel-button"
+            @click="$router.back()"
+          >
             {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button
@@ -45,6 +64,9 @@
 import gql from 'graphql-tag'
 import vueDropzone from 'nuxt-dropzone'
 import HcEditor from '~/components/Editor'
+import orderBy from 'lodash/orderBy'
+import locales from '~/locales'
+import PostMutations from '~/graphql/PostMutations.js'
 
 export default {
   components: {
@@ -60,6 +82,8 @@ export default {
         title: '',
         content: '',
         teaserImage: '',
+        language: null,
+        languageOptions: [],
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -89,26 +113,38 @@ export default {
         this.slug = contribution.slug
         this.form.content = contribution.content
         this.form.title = contribution.title
+        this.form.language = this.locale
       },
     },
   },
+  computed: {
+    locale() {
+      const locale =
+        this.contribution && this.contribution.language
+          ? locales.find(loc => this.contribution.language === loc.code)
+          : locales.find(loc => this.$i18n.locale() === loc.code)
+      return locale.name
+    },
+  },
+  mounted() {
+    this.availableLocales()
+  },
   methods: {
     submit() {
-      const postMutations = require('~/graphql/PostMutations.js').default(this)
       this.loading = true
-
       this.$apollo
         .mutate({
-          mutation: this.id ? postMutations.UpdatePost : postMutations.CreatePost,
+          mutation: this.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
             id: this.id,
             title: this.form.title,
             content: this.form.content,
+            language: this.form.language ? this.form.language.value : this.$i18n.locale(),
           },
         })
         .then(res => {
           this.loading = false
-          this.$toast.success('Saved!')
+          this.$toast.success(this.$t('contribution.success'))
           this.disabled = true
 
           const result = res.data[this.id ? 'UpdatePost' : 'CreatePost']
@@ -140,6 +176,11 @@ export default {
       this.form.teaserImage = file[0]
     },
     verror(file, message) {},
+    availableLocales() {
+      orderBy(locales, 'name').map(locale => {
+        this.form.languageOptions.push({ label: locale.name, value: locale.code })
+      })
+    },
   },
   apollo: {
     User: {
@@ -228,5 +269,7 @@ export default {
   .hc-attachments-upload-area:hover & {
     opacity: 1;
   }
+.contribution-form-footer {
+  border-top: $border-size-base solid $border-color-softest;
 }
 </style>

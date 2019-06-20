@@ -15,29 +15,37 @@ type Post {
   disabledBy: User @relation(name: "DISABLED", direction: "IN")
   createdAt: String
   updatedAt: String
-
-  relatedContributions: [Post]! @cypher(
-    statement: """
+  language: String
+  relatedContributions: [Post]!
+    @cypher(
+      statement: """
       MATCH (this)-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
       RETURN DISTINCT post
       LIMIT 10
-    """
-  )
+      """
+    )
 
   tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
   comments: [Comment]! @relation(name: "COMMENTS", direction: "IN")
-  commentsCount: Int! @cypher(statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) WHERE NOT r.deleted = true AND NOT r.disabled = true  RETURN COUNT(r)")
+  commentsCount: Int!
+    @cypher(
+      statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) WHERE NOT r.deleted = true AND NOT r.disabled = true  RETURN COUNT(r)"
+    )
 
   shoutedBy: [User]! @relation(name: "SHOUTED", direction: "IN")
-  shoutedCount: Int! @cypher(statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
+  shoutedCount: Int!
+    @cypher(
+      statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)"
+    )
 
   # Has the currently logged in user shouted that post?
-  shoutedByCurrentUser: Boolean! @cypher(
-    statement: """
+  shoutedByCurrentUser: Boolean!
+    @cypher(
+      statement: """
       MATCH (this)<-[:SHOUTED]-(u:User {id: $cypherParams.currentUserId})
       RETURN COUNT(u) >= 1
-    """
-  )
+      """
+    )
 }
