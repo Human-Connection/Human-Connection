@@ -14,7 +14,13 @@
     "hello": "Hello"
   },
   "editor": {
-    "placeholder": "Leave your inspirational thoughts..."
+    "placeholder": "Leave your inspirational thoughts...",
+    "mention": {
+      "noUsersFound": "No users found"
+    },
+    "tag": {
+      "noTagsFound": "No hashtags found"
+    }
   },
   "profile": {
     "name": "My Profile",

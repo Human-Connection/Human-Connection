@@ -6,25 +6,27 @@
           v-for="(user, index) in filteredUsers"
           :key="user.id"
           class="suggestion-list__item"
-          :class="{ 'is-selected': navigatedUserIndex === index }"
+          :class="{ 'is-selected': navigatedItemIndex === index }"
           @click="selectItem(user, 'mention')"
         >
           @{{ user.slug }}
         </div>
       </template>
-      <div v-else class="suggestion-list__item is-empty">No users found</div>
+      <div v-else class="suggestion-list__item is-empty">
+        {{ $t('editor.mention.noUsersFound') }}
+      </div>
       <template v-if="tagsFilterHasResults">
         <div
           v-for="(tag, index) in filteredTags"
           :key="tag.id"
           class="suggestion-list__item"
-          :class="{ 'is-selected': navigatedUserIndex === index }"
+          :class="{ 'is-selected': navigatedItemIndex === index }"
           @click="selectItem(tag, 'tag')"
         >
           #{{ tag.name }}
         </div>
       </template>
-      <div v-else class="suggestion-list__item is-empty">No users found</div>
+      <div v-else class="suggestion-list__item is-empty">{{ $t('editor.tag.noTagsFound') }}</div>
     </div>
 
     <editor-menu-bubble :editor="editor">
@@ -246,7 +248,7 @@ export default {
               this.query = query
               this.filteredUsers = items
               this.suggestionRange = range
-              this.navigatedUserIndex = 0
+              this.navigatedItemIndex = 0
               this.renderPopup(virtualNode)
             },
             // is called when a suggestion is cancelled
@@ -255,7 +257,7 @@ export default {
               this.query = null
               this.filteredUsers = []
               this.suggestionRange = null
-              this.navigatedUserIndex = 0
+              this.navigatedItemIndex = 0
               this.destroyPopup()
             },
             // is called on every keyDown event while a suggestion is active
@@ -311,7 +313,7 @@ export default {
               this.query = query
               this.filteredTags = items
               this.suggestionRange = range
-              this.navigatedUserIndex = 0
+              this.navigatedItemIndex = 0
               this.renderPopup(virtualNode)
             },
             // is called when a suggestion is cancelled
@@ -320,7 +322,7 @@ export default {
               this.query = null
               this.filteredTags = []
               this.suggestionRange = null
-              this.navigatedUserIndex = 0
+              this.navigatedItemIndex = 0
               this.destroyPopup()
             },
             // is called on every keyDown event while a suggestion is active
@@ -338,6 +340,11 @@ export default {
               // pressing enter
               if (event.keyCode === 13) {
                 this.enterHandler(this.filteredTags, 'tag')
+                return true
+              }
+              // pressing space
+              if (event.keyCode === 32) {
+                // this.enterHandler(this.filteredTags, 'tag')
                 return true
               }
               return false
@@ -369,17 +376,17 @@ export default {
       suggestionRange: null,
       filteredUsers: [],
       filteredTags: [],
-      navigatedUserIndex: 0,
+      navigatedItemIndex: 0,
       insertMention: () => {},
       observer: null,
     }
   },
   computed: {
     usersFilterHasResults() {
-      return this.filteredUsers.length
+      return this.filteredUsers.length > 0
     },
     tagsFilterHasResults() {
-      return this.filteredTags.length
+      return this.filteredTags.length > 0
     },
     showSuggestions() {
       return this.query || this.usersFilterHasResults || this.tagsFilterHasResults
@@ -414,16 +421,16 @@ export default {
     // navigate to the previous item
     // if it's the first item, navigate to the last one
     upHandler(filteredArray) {
-      this.navigatedUserIndex =
-        (this.navigatedUserIndex + this.filteredArray.length - 1) % this.filteredArray.length
+      this.navigatedItemIndex =
+        (this.navigatedItemIndex + this.filteredArray.length - 1) % this.filteredArray.length
     },
     // navigate to the next item
     // if it's the last item, navigate to the first one
     downHandler(filteredArray) {
-      this.navigatedUserIndex = (this.navigatedUserIndex + 1) % this.filteredArray.length
+      this.navigatedItemIndex = (this.navigatedItemIndex + 1) % this.filteredArray.length
     },
     enterHandler(filteredArray, type) {
-      const item = this.filteredArray[this.navigatedUserIndex]
+      const item = this.filteredArray[this.navigatedItemIndex]
       if (item) {
         this.selectItem(item, type)
       }
@@ -439,8 +446,7 @@ export default {
         },
         tag: {
           // TODO: Fill up with input tag in search field
-          url: ``,
-          // callBack: () => {},
+          url: `/search/hashtag:${item.name}`,
           label: item.name,
         },
       }
@@ -623,6 +629,9 @@ li > p {
 
 .editor {
   .mention-suggestion {
+    color: $color-primary;
+  }
+  .tag {
     color: $color-primary;
   }
   .tag-suggestion {

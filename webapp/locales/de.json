@@ -14,7 +14,13 @@
     "hello": "Hallo"
   },
   "editor": {
-    "placeholder": "Schreib etwas Inspirierendes..."
+    "placeholder": "Schreib etwas Inspirierendes...",
+    "mention": {
+      "noUsersFound": "Keine Benutzer gefunden"
+    },
+    "tag": {
+      "noTagsFound": "Keine Hashtags gefunden"
+    }
   },
   "profile": {
     "name": "Mein Profil",
