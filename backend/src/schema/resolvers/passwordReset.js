@@ -5,13 +5,13 @@ import nodemailer from 'nodemailer'
 import { resetPasswordMail, wrongAccountMail } from './passwordReset/emailTemplates'
 
 const transporter = () => {
-  const { SMTP_HOST: host, SMTP_PORT: port, SMTP_USERNAME: user, SMTP_PASSWORD: pass } = CONFIG
   const configs = {
-    host,
-    port,
-    ignoreTLS: true,
+    host: CONFIG.SMTP_HOST,
+    port: CONFIG.SMTP_PORT,
+    ignoreTLS: CONFIG.SMTP_IGNORE_TLS,
     secure: false, // true for 465, false for other ports
   }
+  const { SMTP_USERNAME: user, SMTP_PASSWORD: pass } = CONFIG
   if (user && pass) {
     configs.auth = { user, pass }
   }

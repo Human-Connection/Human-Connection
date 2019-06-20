@@ -27,9 +27,9 @@ services:
       - uploads:/nitro-backend/public/uploads
     command: yarn run dev
     environment:
-      - SEND_MAILS=true
       - SMTP_HOST=mailserver
       - SMTP_PORT=25
+      - SMTP_IGNORE_TLS=true
   neo4j:
     environment:
       - NEO4J_AUTH=none
