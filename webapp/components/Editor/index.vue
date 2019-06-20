@@ -187,7 +187,11 @@ import {
   History,
 } from 'tiptap-extensions'
 import Mention from './nodes/Mention.js'
+<<<<<<< HEAD
 import Tag from './nodes/Tag.js'
+=======
+import { mapGetters } from 'vuex'
+>>>>>>> origin/master
 
 let throttleInputEvent
 
@@ -226,7 +230,7 @@ export default {
           new ListItem(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
-            emptyNodeText: this.$t('editor.placeholder'),
+            emptyNodeText: this.placeholder || this.$t('editor.placeholder'),
           }),
           new History(),
           new Mention({
@@ -382,11 +386,17 @@ export default {
     }
   },
   computed: {
+<<<<<<< HEAD
     usersFilterHasResults() {
       return this.filteredUsers.length > 0
     },
     tagsFilterHasResults() {
       return this.filteredTags.length > 0
+=======
+    ...mapGetters({ placeholder: 'editor/placeholder' }),
+    hasResults() {
+      return this.filteredUsers.length
+>>>>>>> origin/master
     },
     showSuggestions() {
       return this.query || this.usersFilterHasResults || this.tagsFilterHasResults
@@ -404,20 +414,20 @@ export default {
         this.editor.setContent(content)
       },
     },
-  },
-  mounted() {
-    this.$root.$on('changeLanguage', () => {
-      this.changePlaceHolderText()
-    })
+    placeholder: {
+      immediate: true,
+      handler: function(val) {
+        if (!val) {
+          return
+        }
+        this.editor.extensions.options.placeholder.emptyNodeText = val
+      },
+    },
   },
   beforeDestroy() {
-    this.$root.$off('changeLanguage')
     this.editor.destroy()
   },
   methods: {
-    changePlaceHolderText() {
-      this.editor.extensions.options.placeholder.emptyNodeText = this.$t('editor.placeholder')
-    },
     // navigate to the previous item
     // if it's the first item, navigate to the last one
     upHandler(filteredArray) {
