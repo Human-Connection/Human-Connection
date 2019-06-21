@@ -11,15 +11,11 @@
           @vdropzone-success="vsuccess"
           @vdropzone-error="verror"
         >
-          <div
-            v-if="!teaser"
-            class="dz-message"
-            @mouseover="hover = true"
-            @mouseleave="hover = false"
-          >
+          <div v-if="!teaser" class="dz-message">
             <div class="hc-attachments-upload-area">
-              <div class="hc-drag-marker">
-                <ds-icon v-if="hover" name="image" size="xxx-large" />
+              <slot></slot>
+              <div class="hc-drag-marker-post" v-if="!contribution">
+                <ds-icon name="image" size="xxx-large" />
               </div>
             </div>
           </div>
@@ -106,7 +102,6 @@ export default {
         maxFilesize: 5.0,
         previewTemplate: this.template(),
       },
-      hover: false,
       error: false,
       teaser: false,
     }
@@ -249,14 +244,15 @@ export default {
 }
 
 #postdropzone {
-  min-height: 160px;
+  width: 100%;
+  height: auto;
   background-color: $background-color-softest;
 }
 
 #postdropzone.image-preview {
   background-repeat: no-repeat;
-  background-size: 100%;
-  height: 600px;
+  background-size: cover;
+  height: 300px;
   transition: all 0.2s ease-out;
 
   width: 100%;
@@ -270,7 +266,7 @@ export default {
 
 @media only screen and (min-width: 401px) and (max-width: 960px) {
   #postdropzone.image-preview {
-    height: 400px;
+    height: 300px;
   }
 }
 
@@ -282,7 +278,7 @@ export default {
   cursor: pointer;
 }
 
-.hc-drag-marker {
+.hc-drag-marker-post {
   position: relative;
   width: 122px;
   height: 122px;
@@ -293,7 +289,7 @@ export default {
   color: hsl(0, 0%, 25%);
   transition: all 0.2s ease-out;
   font-size: 60px;
-  margin: 20px auto 5px;
+  margin: 30px 5px;
 
   background-color: rgba(255, 255, 255, 0.3);
   opacity: 0.65;
