@@ -1,8 +1,14 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import {
+  shallowMount,
+  mount,
+  createLocalVue
+} from '@vue/test-utils'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import ConfirmModal from './ConfirmModal.vue'
-import { postMenuModalsData } from '~/components/utils/PostHelpers'
+import {
+  postMenuModalsData
+} from '~/components/utils/PostHelpers'
 
 const localVue = createLocalVue()
 
@@ -50,7 +56,9 @@ describe('ConfirmModal.vue', () => {
       beforeEach(() => {
         wrapper = Wrapper()
       })
-
+      it('isOpen true', () => {
+        expect(wrapper.vm.isOpen).toBe(true)
+      })
       it('success false', () => {
         expect(wrapper.vm.success).toBe(false)
       })
