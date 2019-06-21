@@ -147,6 +147,8 @@ const permissions = shield(
       CreateComment: isAuthenticated,
       DeleteComment: isAuthor,
       DeleteUser: isDeletingOwnAccount,
+      requestPasswordReset: allow,
+      resetPassword: allow,
     },
     User: {
       email: isMyOwn,
