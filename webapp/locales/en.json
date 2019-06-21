@@ -18,8 +18,8 @@
     "mention": {
       "noUsersFound": "No users found"
     },
-    "tag": {
-      "noTagsFound": "No hashtags found"
+    "hashtag": {
+      "noHashtagsFound": "No hashtags found"
     }
   },
   "profile": {

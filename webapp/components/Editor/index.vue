@@ -15,18 +15,20 @@
       <div v-else class="suggestion-list__item is-empty">
         {{ $t('editor.mention.noUsersFound') }}
       </div>
-      <template v-if="tagsFilterHasResults">
+      <template v-if="hashtagsFilterHasResults">
         <div
-          v-for="(tag, index) in filteredTags"
-          :key="tag.id"
+          v-for="(hashtag, index) in filteredHashtags"
+          :key="hashtag.id"
           class="suggestion-list__item"
           :class="{ 'is-selected': navigatedItemIndex === index }"
-          @click="selectItem(tag, 'tag')"
+          @click="selectItem(hashtag, 'hashtag')"
         >
-          #{{ tag.name }}
+          #{{ hashtag.name }}
         </div>
       </template>
-      <div v-else class="suggestion-list__item is-empty">{{ $t('editor.tag.noTagsFound') }}</div>
+      <div v-else class="suggestion-list__item is-empty">
+        {{ $t('editor.hashtag.noHashtagsFound') }}
+      </div>
     </div>
 
     <editor-menu-bubble :editor="editor">
@@ -187,7 +189,7 @@ import {
   History,
 } from 'tiptap-extensions'
 import Mention from './nodes/Mention.js'
-import Tag from './nodes/Tag.js'
+import Hashtag from './nodes/Hashtag.js'
 import { mapGetters } from 'vuex'
 
 let throttleInputEvent
@@ -200,7 +202,7 @@ export default {
   },
   props: {
     users: { type: Array, default: () => [] },
-    tags: { type: Array, default: () => [] },
+    hashtags: { type: Array, default: () => [] },
     value: { type: String, default: '' },
     doc: { type: Object, default: () => {} },
   },
@@ -295,13 +297,13 @@ export default {
               return fuse.search(query)
             },
           }),
-          new Tag({
+          new Hashtag({
             items: () => {
-              return this.tags
+              return this.hashtags
             },
             onEnter: ({ items, query, range, command, virtualNode }) => {
               this.query = query
-              this.filteredTags = items
+              this.filteredHashtags = items
               this.suggestionRange = range
               this.renderPopup(virtualNode)
               // we save the command for inserting a selected mention
@@ -312,7 +314,7 @@ export default {
             // is called when a suggestion has changed
             onChange: ({ items, query, range, virtualNode }) => {
               this.query = query
-              this.filteredTags = items
+              this.filteredHashtags = items
               this.suggestionRange = range
               this.navigatedItemIndex = 0
               this.renderPopup(virtualNode)
@@ -321,7 +323,7 @@ export default {
             onExit: () => {
               // reset all saved values
               this.query = null
-              this.filteredTags = []
+              this.filteredHashtags = []
               this.suggestionRange = null
               this.navigatedItemIndex = 0
               this.destroyPopup()
@@ -330,24 +332,24 @@ export default {
             onKeyDown: ({ event }) => {
               // pressing up arrow
               if (event.keyCode === 38) {
-                this.upHandler(this.filteredTags)
+                this.upHandler(this.filteredHashtags)
                 return true
               }
               // pressing down arrow
               if (event.keyCode === 40) {
-                this.downHandler(this.filteredTags)
+                this.downHandler(this.filteredHashtags)
                 return true
               }
               // pressing enter
               if (event.keyCode === 13) {
-                this.enterHandler(this.filteredTags, 'tag')
+                this.enterHandler(this.filteredHashtags, 'hashtag')
                 return true
               }
               // pressing space
-              if (event.keyCode === 32) {
-                // this.enterHandler(this.filteredTags, 'tag')
-                return true
-              }
+              // if (event.keyCode === 32) {
+              //   // this.enterHandler(this.filteredHashtags, 'hashtag')
+              //   return true
+              // }
               return false
             },
             // is called when a suggestion has changed
@@ -376,7 +378,7 @@ export default {
       query: null,
       suggestionRange: null,
       filteredUsers: [],
-      filteredTags: [],
+      filteredHashtags: [],
       navigatedItemIndex: 0,
       insertMention: () => {},
       observer: null,
@@ -387,11 +389,11 @@ export default {
     usersFilterHasResults() {
       return this.filteredUsers.length > 0
     },
-    tagsFilterHasResults() {
-      return this.filteredTags.length > 0
+    hashtagsFilterHasResults() {
+      return this.filteredHashtags.length > 0
     },
     showSuggestions() {
-      return this.query || this.usersFilterHasResults || this.tagsFilterHasResults
+      return this.query || this.usersFilterHasResults || this.hashtagsFilterHasResults
     },
   },
   watch: {
@@ -446,8 +448,8 @@ export default {
           url: `/profile/${item.id}`,
           label: item.slug,
         },
-        tag: {
-          // TODO: Fill up with input tag in search field
+        hashtag: {
+          // TODO: Fill up with input hashtag in search field
           url: `/search/hashtag:${item.name}`,
           label: item.name,
         },
@@ -633,10 +635,10 @@ li > p {
   .mention-suggestion {
     color: $color-primary;
   }
-  .tag {
+  .hashtag {
     color: $color-primary;
   }
-  .tag-suggestion {
+  .hashtag-suggestion {
     color: $color-primary;
   }
   &__floating-menu {

@@ -1,8 +1,8 @@
 import { Mention as TipTapMention } from 'tiptap-extensions'
 
-export default class Tag extends TipTapMention {
+export default class Hashtag extends TipTapMention {
   get name() {
-    return 'tag'
+    return 'hashtag'
   }
 
   get defaultOptions() {
@@ -12,8 +12,8 @@ export default class Tag extends TipTapMention {
         allowSpaces: false,
         startOfLine: false,
       },
-      mentionClass: 'tag',
-      suggestionClass: 'tag-suggestion',
+      mentionClass: 'hashtag',
+      suggestionClass: 'hashtag-suggestion',
     }
   }
 

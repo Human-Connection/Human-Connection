@@ -6,7 +6,7 @@
         <no-ssr>
           <hc-editor
             :users="users"
-            :tags="tags"
+            :hashtags="hashtags"
             :value="form.content"
             @input="updateEditorContent"
           />
@@ -80,7 +80,7 @@ export default {
       disabled: false,
       slug: null,
       users: [],
-      tags: [],
+      hashtags: [],
     }
   },
   watch: {
@@ -179,7 +179,7 @@ export default {
         `
       },
       result(result) {
-        this.tags = result.data.Tag
+        this.hashtags = result.data.Tag
       },
     },
   },
