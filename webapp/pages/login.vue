@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import LocaleSwitch from '~/components/LocaleSwitch'
+import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   components: {

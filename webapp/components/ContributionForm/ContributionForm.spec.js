@@ -1,9 +1,11 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
 import ContributionForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 
+localVue.use(Vuex)
 localVue.use(Styleguide)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
@@ -53,8 +55,16 @@ describe('ContributionForm.vue', () => {
   })
 
   describe('mount', () => {
+    const getters = {
+      'editor/placeholder': () => {
+        return 'some cool placeholder'
+      },
+    }
+    const store = new Vuex.Store({
+      getters,
+    })
     const Wrapper = () => {
-      return mount(ContributionForm, { mocks, localVue, computed })
+      return mount(ContributionForm, { mocks, localVue, computed, store })
     }
 
     beforeEach(() => {
