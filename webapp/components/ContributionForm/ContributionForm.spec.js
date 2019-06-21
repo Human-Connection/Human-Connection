@@ -89,6 +89,10 @@ describe('ContributionForm.vue', () => {
       })
 
       describe('valid form submission', () => {
+        const imageUpload = {
+          file: { filename: 'avataar.svg', previewElement: '' },
+          url: 'someUrlToImage',
+        }
         beforeEach(async () => {
           expectedParams = {
             variables: {
@@ -117,6 +121,13 @@ describe('ContributionForm.vue', () => {
           expectedParams.variables.language = 'de'
           deutschOption = wrapper.findAll('li').at(0)
           deutschOption.trigger('click')
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports adding a teaser image', async () => {
+          expectedParams.variables.imageUpload = imageUpload
+          wrapper.vm.vsuccess(imageUpload)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })

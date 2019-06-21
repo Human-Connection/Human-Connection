@@ -11,10 +11,20 @@
           @vdropzone-success="vsuccess"
           @vdropzone-error="verror"
         >
-          <div v-if="!teaser" class="dz-message">
-            <div class="hc-attachments-upload-area">
+          <div class="dz-message">
+            <div
+              :class="{
+                'hc-attachments-upload-area-post': createOrUpdate,
+                'hc-attachments-upload-area-update-post': contribution,
+              }"
+            >
               <slot></slot>
-              <div class="hc-drag-marker-post" v-if="!contribution">
+              <div
+                :class="{
+                  'hc-drag-marker-post': createOrUpdate,
+                  'hc-drag-marker-update-post': contribution,
+                }"
+              >
                 <ds-icon name="image" size="xxx-large" />
               </div>
             </div>
@@ -103,7 +113,7 @@ export default {
         previewTemplate: this.template(),
       },
       error: false,
-      teaser: false,
+      createOrUpdate: true,
     }
   },
   watch: {
@@ -197,17 +207,19 @@ export default {
     vsuccess(file, response) {
       this.form.teaserImage = file
     },
-    thumbnail: function(file, dataUrl) {
-      this.teaser = true
-      var j, len, ref, thumbnailElement
+    thumbnail: (file, dataUrl) => {
+      let thumbnailElement, contributionImage, uploadArea
       if (file.previewElement) {
-        ref = document.querySelectorAll('#postdropzone')
-        for (j = 0, len = ref.length; j < len; j++) {
-          thumbnailElement = ref[j]
-          thumbnailElement.classList.add('image-preview')
-          thumbnailElement.alt = file.name
-          thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")'
+        thumbnailElement = document.querySelectorAll('#postdropzone')[0]
+        contributionImage = document.querySelectorAll('.contribution-image')[0]
+        if (contributionImage) {
+          uploadArea = document.querySelectorAll('.hc-attachments-upload-area-update-post')[0]
+          uploadArea.removeChild(contributionImage)
+          uploadArea.classList.remove('hc-attachments-upload-area-update-post')
         }
+        thumbnailElement.classList.add('image-preview')
+        thumbnailElement.alt = file.name
+        thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")'
       }
     },
   },
@@ -245,14 +257,15 @@ export default {
 
 #postdropzone {
   width: 100%;
-  height: auto;
+  min-height: 300px;
   background-color: $background-color-softest;
 }
 
 #postdropzone.image-preview {
   background-repeat: no-repeat;
   background-size: cover;
-  height: 300px;
+  background-position: center;
+  height: auto;
   transition: all 0.2s ease-out;
 
   width: 100%;
@@ -270,16 +283,23 @@ export default {
   }
 }
 
-.hc-attachments-upload-area {
+.hc-attachments-upload-area-post {
   position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
+.hc-attachments-upload-area-update-post {
+  align-items: center;
+}
+
+.hc-attachments-upload-area-update-post:hover {
+  opacity: 0.7;
+}
+
 .hc-drag-marker-post {
-  position: relative;
+  position: absolute;
   width: 122px;
   height: 122px;
   border-radius: 100%;
@@ -289,9 +309,9 @@ export default {
   color: hsl(0, 0%, 25%);
   transition: all 0.2s ease-out;
   font-size: 60px;
-  margin: 30px 5px;
+  margin: 80px 5px;
 
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: $background-color-softest;
   opacity: 0.65;
 
   &:before {
@@ -302,7 +322,7 @@ export default {
     bottom: 0;
     right: 0;
     border-radius: 100%;
-    border: 20px solid rgba(255, 255, 255, 0.4);
+    border: 20px solid $text-color-base;
     visibility: hidden;
   }
 
@@ -314,13 +334,18 @@ export default {
     bottom: 10px;
     right: 10px;
     border-radius: 100%;
-    border: 1px dashed hsl(0, 0%, 25%);
+    border: $border-size-base dashed $text-color-base;
   }
 
-  .hc-attachments-upload-area:hover & {
+  .hc-attachments-upload-area-post:hover & {
     opacity: 1;
   }
 }
+
+.hc-drag-marker-update-post {
+  opacity: 0;
+}
+
 .contribution-form-footer {
   border-top: $border-size-base solid $border-color-softest;
 }
