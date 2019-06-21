@@ -6,7 +6,6 @@
       :id="data.resource.id"
       :type="data.type"
       :name="name"
-      :callbacks="data.callbacks"
       @close="close"
     />
     <release-modal
@@ -21,22 +20,21 @@
       :id="data.resource.id"
       :type="data.type"
       :name="name"
-      :callbacks="data.callbacks"
       @close="close"
     />
-    <delete-modal
+    <confirm-modal
       v-if="open === 'delete'"
       :id="data.resource.id"
       :type="data.type"
       :name="name"
-      :callbacks="data.callbacks"
+      :modalData="data.modalsData.delete"
       @close="close"
     />
   </div>
 </template>
 
 <script>
-import DeleteModal from '~/components/Modal/DeleteModal'
+import ConfirmModal from '~/components/Modal/ConfirmModal'
 import DisableModal from '~/components/Modal/DisableModal'
 import ReleaseModal from '~/components/ReleaseModal/ReleaseModal.vue'
 import ReportModal from '~/components/Modal/ReportModal'
@@ -48,7 +46,7 @@ export default {
     DisableModal,
     ReleaseModal,
     ReportModal,
-    DeleteModal,
+    ConfirmModal,
   },
   computed: {
     ...mapGetters({
@@ -63,7 +61,7 @@ export default {
       switch (this.data.type) {
         case 'user':
           return name
-        case 'contribution':
+        case 'contribution': // REFACTORING: In ConfirmModal – Already replaced  "title" by "this.menuModalsData.delete.messageParams".
           return title
         case 'comment':
           return author && author.name

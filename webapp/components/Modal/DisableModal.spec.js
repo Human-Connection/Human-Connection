@@ -16,10 +16,6 @@ describe('DisableModal.vue', () => {
       type: 'contribution',
       id: 'c42',
       name: 'blah',
-      callbacks: {
-        confirm: jest.fn(),
-        cancel: jest.fn(),
-      },
     }
     mocks = {
       $filters: {
@@ -33,8 +29,12 @@ describe('DisableModal.vue', () => {
       $apollo: {
         mutate: jest
           .fn()
-          .mockResolvedValueOnce({ enable: 'u4711' })
-          .mockRejectedValue({ message: 'Not Authorised!' }),
+          .mockResolvedValueOnce({
+            enable: 'u4711',
+          })
+          .mockRejectedValue({
+            message: 'Not Authorised!',
+          }),
       },
       location: {
         reload: jest.fn(),

@@ -25,6 +25,9 @@ describe('Comment.vue', () => {
         success: jest.fn(),
         error: jest.fn(),
       },
+      $filters: {
+        truncate: a => a,
+      },
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
       },

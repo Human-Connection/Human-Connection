@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="comments">
     <h3 style="margin-top: -10px;">
       <span>
         <ds-icon name="comments" />
@@ -16,7 +16,7 @@
       </span>
     </h3>
     <ds-space margin-bottom="large" />
-    <div v-if="comments && comments.length" id="comments" class="comments">
+    <div v-if="comments && comments.length" class="comments">
       <comment
         v-for="(comment, index) in comments"
         :key="comment.id"
@@ -53,6 +53,9 @@ export default {
     this.$root.$on('refetchPostComments', () => {
       this.refetchPostComments()
     })
+  },
+  beforeDestroy() {
+    this.$root.$off('refetchPostComments')
   },
   methods: {
     refetchPostComments() {

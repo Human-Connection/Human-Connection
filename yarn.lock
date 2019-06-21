@@ -1805,10 +1805,10 @@ cucumber@^4.2.1:
     util-arity "^1.0.2"
     verror "^1.9.0"
 
-cypress-cucumber-preprocessor@^1.11.2:
-  version "1.11.2"
-  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.11.2.tgz#daa86805e25a39cea1cf2278f3b7cee204478853"
-  integrity sha512-Cret/EmqGdC6QLUQrszDdzDt+y4aL0ViaOWfZ1PgM4GpAay4gHQ+j0mtTIBvRg8Y86w6NOfzaflcHKGk54v2XQ==
+cypress-cucumber-preprocessor@^1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.12.0.tgz#092428ba267331e3d2cc6e1309c331d17632b8b1"
+  integrity sha512-uKrWbs51hGeHiLgcSZcjFvvVEW9UdStsLVpD1snuPuik9WE61kbZv7xumlPjRmkMF81zTUGnNLwZuAk3CV9dEw==
   dependencies:
     "@cypress/browserify-preprocessor" "^1.1.2"
     chai "^4.1.2"
@@ -1822,10 +1822,10 @@ cypress-cucumber-preprocessor@^1.11.2:
     glob "^7.1.2"
     through "^2.3.8"
 
-cypress-file-upload@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.1.2.tgz#4a0024f99ca157565bf2b20c110e6e6874da28cb"
-  integrity sha512-gZE2G7ZTD2Y8APrcgs+ATRMKs/IgH2rafCmi+8o99q5sDoNRLR+XKxOcoyWLehj9raGnO98YDYO8DY7k1VMGBw==
+cypress-file-upload@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.1.4.tgz#cc208cb937a3abb136b52309eaf4637d5676c5bd"
+  integrity sha512-4aZeJOYFhYiP+nk9Mo5YHWqComsT24J9OBQVJzvkEzw7g1v2ogGe7nLT/U7Fsm/Xjl1Tyxsc0xxECa254WfQqg==
 
 cypress-plugin-retries@^1.2.2:
   version "1.2.2"

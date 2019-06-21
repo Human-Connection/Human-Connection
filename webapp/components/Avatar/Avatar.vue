@@ -1,5 +1,10 @@
 <template>
-  <ds-avatar :image="avatarUrl" :name="userName" class="avatar" :size="size" />
+  <ds-avatar
+    :image="user && user.avatar | proxyApiUrl"
+    :name="userName"
+    class="avatar"
+    :size="size"
+  />
 </template>
 
 <script>
@@ -10,11 +15,6 @@ export default {
     size: { type: String, default: 'small' },
   },
   computed: {
-    avatarUrl() {
-      const { avatar: imageSrc } = this.user || {}
-      if (!imageSrc) return imageSrc
-      return imageSrc.startsWith('/') ? imageSrc.replace('/', '/api/') : imageSrc
-    },
     userName() {
       const { name } = this.user || {}
       // The name is used to display the initials in case

@@ -12,9 +12,7 @@
           @{{ user.slug }}
         </div>
       </template>
-      <div v-else class="suggestion-list__item is-empty">
-        No users found
-      </div>
+      <div v-else class="suggestion-list__item is-empty">No users found</div>
     </div>
 
     <editor-menu-bubble :editor="editor">
@@ -175,6 +173,7 @@ import {
   History,
 } from 'tiptap-extensions'
 import Mention from './nodes/Mention.js'
+import { mapGetters } from 'vuex'
 
 let throttleInputEvent
 
@@ -212,7 +211,7 @@ export default {
           new ListItem(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
-            emptyNodeText: this.$t('editor.placeholder'),
+            emptyNodeText: this.placeholder || this.$t('editor.placeholder'),
           }),
           new History(),
           new Mention({
@@ -297,6 +296,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({ placeholder: 'editor/placeholder' }),
     hasResults() {
       return this.filteredUsers.length
     },
@@ -316,19 +316,20 @@ export default {
         this.editor.setContent(content)
       },
     },
-  },
-  mounted() {
-    this.$root.$on('changeLanguage', () => {
-      this.changePlaceHolderText()
-    })
+    placeholder: {
+      immediate: true,
+      handler: function(val) {
+        if (!val) {
+          return
+        }
+        this.editor.extensions.options.placeholder.emptyNodeText = val
+      },
+    },
   },
   beforeDestroy() {
     this.editor.destroy()
   },
   methods: {
-    changePlaceHolderText() {
-      this.editor.extensions.options.placeholder.emptyNodeText = this.$t('editor.placeholder')
-    },
     // navigate to the previous item
     // if it's the first item, navigate to the last one
     upHandler() {

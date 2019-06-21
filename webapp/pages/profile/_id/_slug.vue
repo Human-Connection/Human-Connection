@@ -12,12 +12,12 @@
         >
           <hc-upload v-if="myProfile" :user="user" />
           <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
+          <!-- Menu -->
           <no-ssr>
             <content-menu
               placement="bottom-end"
               resource-type="user"
               :resource="user"
-              :callbacks="{ confirm: null, cancel: null }"
               :is-owner="myProfile"
               class="user-content-menu"
             />
@@ -204,7 +204,7 @@
               :key="post.id"
               :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-              @deletePost="Post.splice(index, 1)"
+              @removePostFromList="activePosts.splice(index, 1)"
             />
           </template>
           <template v-else-if="$apollo.loading">
@@ -228,7 +228,6 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-
 import User from '~/components/User'
 import HcPostCard from '~/components/PostCard'
 import HcFollowButton from '~/components/FollowButton.vue'
@@ -239,8 +238,6 @@ import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
-import PostMutationHelpers from '~/mixins/PostMutationHelpers'
-
 import PostQuery from '~/graphql/UserProfile/Post.js'
 import UserQuery from '~/graphql/UserProfile/User.js'
 
@@ -253,6 +250,7 @@ const tabToFilterMapping = ({ tab, id }) => {
 }
 
 export default {
+  name: 'HcUserProfile',
   components: {
     User,
     HcPostCard,
@@ -265,7 +263,6 @@ export default {
     ContentMenu,
     HcUpload,
   },
-  mixins: [PostMutationHelpers],
   transition: {
     name: 'slide-up',
     mode: 'out-in',
@@ -275,6 +272,7 @@ export default {
     return {
       User: [],
       Post: [],
+      activePosts: [],
       voted: false,
       page: 1,
       pageSize: 6,
@@ -304,12 +302,6 @@ export default {
     offset() {
       return (this.page - 1) * this.pageSize
     },
-    activePosts() {
-      if (!this.Post) {
-        return []
-      }
-      return this.uniq(this.Post.filter(post => !post.deleted))
-    },
     socialMediaLinks() {
       const { socialMedia = [] } = this.user
       return socialMedia.map(socialMedia => {
@@ -331,6 +323,9 @@ export default {
       if (!val || !val.length) {
         throw new Error('User not found!')
       }
+    },
+    Post(val) {
+      this.activePosts = this.setActivePosts()
     },
   },
   methods: {
@@ -365,6 +360,12 @@ export default {
         fetchPolicy: 'cache-and-network',
       })
     },
+    setActivePosts() {
+      if (!this.Post) {
+        return []
+      }
+      return this.uniq(this.Post.filter(post => !post.deleted))
+    },
   },
   apollo: {
     Post: {
@@ -397,7 +398,6 @@ export default {
 .pointer {
   cursor: pointer;
 }
-
 .Tab {
   border-collapse: collapse;
   padding-bottom: 5px;
@@ -405,7 +405,6 @@ export default {
 .Tab:hover {
   border-bottom: 2px solid #c9c6ce;
 }
-
 .Tabs {
   position: relative;
   background-color: #fff;
@@ -441,14 +440,12 @@ export default {
     transition: left 0.25s;
   }
 }
-
 .profile-avatar.ds-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;
   border: #fff 5px solid;
 }
-
 .page-name-profile-id-slug {
   .ds-flex-item:first-child .content-menu {
     position: absolute;
@@ -456,17 +453,14 @@ export default {
     right: $space-x-small;
   }
 }
-
 .profile-top-navigation {
   position: sticky;
   top: 53px;
   z-index: 2;
 }
-
 .ds-tab-nav {
   .ds-card-content {
     padding: 0 !important;
-
     .ds-tab-nav-item {
       &.ds-tab-nav-item-active {
         border-bottom: 3px solid #17b53f;
