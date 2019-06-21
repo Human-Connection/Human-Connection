@@ -37,7 +37,6 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
-    callbacks: { type: Object, required: true },
     id: { type: String, required: true },
   },
   data() {
@@ -58,9 +57,6 @@ export default {
   },
   methods: {
     async cancel() {
-      if (this.callbacks.cancel) {
-        await this.callbacks.cancel()
-      }
       this.isOpen = false
 
       this.$emit('close')
@@ -68,10 +64,6 @@ export default {
     async confirm() {
       this.loading = true
       try {
-        if (this.callbacks.confirm) {
-          await this.callbacks.confirm()
-        }
-
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
