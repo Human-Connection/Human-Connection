@@ -24,7 +24,7 @@
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="small" />
     <div v-if="!isActive" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
-    <div v-show="comment.content.length !== comment.contentExcerpt.length">
+    <div v-show="comment.content !== comment.contentExcerpt">
       <span
         v-if="!isActive"
         style="padding-left: 40px; color: #17b53f; cursor:pointer"
