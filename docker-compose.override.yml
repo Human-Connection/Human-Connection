@@ -1,6 +1,12 @@
 version: "3.4"
 
 services:
+  mailserver:
+    image: djfarrelly/maildev
+    ports:
+      - 1080:80
+    networks:
+      - hc-network
   webapp:
     build:
       context: webapp
@@ -20,6 +26,10 @@ services:
       - backend_node_modules:/nitro-backend/node_modules
       - uploads:/nitro-backend/public/uploads
     command: yarn run dev
+    environment:
+      - SMTP_HOST=mailserver
+      - SMTP_PORT=25
+      - SMTP_IGNORE_TLS=true
   neo4j:
     environment:
       - NEO4J_AUTH=none
