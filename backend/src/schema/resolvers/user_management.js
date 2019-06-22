@@ -15,7 +15,10 @@ export default {
     },
   },
   Mutation: {
-    signup: async (parent, { email, password }, { req }) => {
+    invite: async (parent, { email }, { req }) => {
+      return true
+    },
+    signup: async (parent, { email }, { req }) => {
       // if (data[email]) {
       //   throw new Error('Another User with same email exists.')
       // }

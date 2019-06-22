@@ -23,7 +23,8 @@ type Query {
 type Mutation {
   # Get a JWT Token for the given Email and password
   login(email: String!, password: String!): String!
-  signup(email: String!, password: String!): Boolean!
+  signup(email: String!): Boolean!
+  invite(email: String!): Boolean!
   changePassword(oldPassword: String!, newPassword: String!): String!
   requestPasswordReset(email: String!): Boolean!
   resetPassword(email: String!, code: String!, newPassword: String!): Boolean!

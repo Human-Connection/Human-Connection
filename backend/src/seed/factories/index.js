@@ -64,7 +64,7 @@ export default function Factory(options = {}) {
       this.graphQLClient = new GraphQLClient(seedServerHost, { headers })
       return this
     },
-    async create(node, properties) {
+    async create(node, properties = {}) {
       const { mutation, variables } = this.factories[node](properties)
       this.lastResponse = await this.graphQLClient.request(mutation, variables)
       return this
@@ -112,6 +112,12 @@ export default function Factory(options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
+    async invite(properties) {
+      const { email = '' } = properties
+      const mutation = ` mutation($email: String!) { invite( email: $email) } `
+      this.lastResponse = await this.graphQLClient.request(mutation, { email })
+      return this
+    },
     async cleanDatabase() {
       this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
@@ -121,6 +127,9 @@ export default function Factory(options = {}) {
   result.create.bind(result)
   result.relate.bind(result)
   result.mutate.bind(result)
+  result.shout.bind(result)
+  result.follow.bind(result)
+  result.invite.bind(result)
   result.cleanDatabase.bind(result)
   return result
 }

@@ -119,6 +119,8 @@ const permissions = shield(
     Mutation: {
       '*': deny,
       login: allow,
+      signup: allow,
+      invite: isAuthenticated,
       UpdateNotification: belongsToMe,
       CreateUser: isAdmin,
       UpdateUser: onlyYourself,

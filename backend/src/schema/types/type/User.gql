@@ -14,7 +14,8 @@ type User {
   role: UserGroup
   publicKey: String
   privateKey: String
-  
+
+  invitedBy: User @relation(name: "INVITED", direction: "IN")
   wasInvited: Boolean
   wasSeeded: Boolean
 
