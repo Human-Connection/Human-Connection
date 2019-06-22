@@ -13,7 +13,7 @@ export default function(params) {
       faker.lorem.sentence(),
       faker.lorem.sentence(),
     ].join('. '),
-    image = faker.image.image(),
+    image = faker.image.unsplash.image(),
     visibility = 'public',
     deleted = false,
   } = params

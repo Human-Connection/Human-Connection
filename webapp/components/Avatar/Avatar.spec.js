@@ -53,7 +53,7 @@ describe('Avatar.vue', () => {
       beforeEach(() => {
         propsData = {
           user: {
-            avatar: 'http://lorempixel.com/640/480/animals',
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg',
           },
         }
       })
@@ -64,7 +64,7 @@ describe('Avatar.vue', () => {
           Wrapper()
             .find('img')
             .attributes('src'),
-        ).toBe('http://lorempixel.com/640/480/animals')
+        ).toBe('https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg')
       })
     })
   })
