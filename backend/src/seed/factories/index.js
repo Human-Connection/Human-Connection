@@ -112,8 +112,7 @@ export default function Factory(options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
-    async invite(properties) {
-      const { email = '' } = properties
+    async invite({ email }) {
       const mutation = ` mutation($email: String!) { invite( email: $email) } `
       this.lastResponse = await this.graphQLClient.request(mutation, { email })
       return this
