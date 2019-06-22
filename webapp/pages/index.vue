@@ -45,7 +45,7 @@ export default {
       // Initialize your apollo data
       Post: [],
       page: 1,
-      pageSize: 10,
+      pageSize: 12,
       filter: {},
     }
   },
