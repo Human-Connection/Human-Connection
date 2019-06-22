@@ -3375,12 +3375,7 @@ extsprintf@^1.2.0:
 
 faker@Marak/faker.js#master:
   version "4.1.0"
-  uid "10bfb9f467b0ac2b8912ffc15690b50ef3244f09"
   resolved "https://codeload.github.com/Marak/faker.js/tar.gz/10bfb9f467b0ac2b8912ffc15690b50ef3244f09"
-
-"faker@git+https://github.com/Marak/faker.js.git#master":
-  version "4.1.0"
-  resolved "git+https://github.com/Marak/faker.js.git#10bfb9f467b0ac2b8912ffc15690b50ef3244f09"
 
 fast-deep-equal@^2.0.1:
   version "2.0.1"
@@ -5618,9 +5613,10 @@ neo4j-driver@^1.7.3, neo4j-driver@~1.7.4:
     text-encoding "^0.6.4"
     uri-js "^4.2.1"
 
-"neo4j-graphql-js@git+https://github.com/Human-Connection/neo4j-graphql-js.git#temporary_fixes":
-  version "2.6.1"
-  resolved "git+https://github.com/Human-Connection/neo4j-graphql-js.git#84d529b9ecbc5c284cce4f86238c6d19b192cf0f"
+neo4j-graphql-js@^2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.6.3.tgz#8f28c2479adda08c90abcc32a784587ef49b8b95"
+  integrity sha512-WZdEqQ8EL9GOIB1ZccbLk1BZz5Dqdbk9i8BDXqxhp1SOI07P9y2cZ244f2Uz4zyES9AVXGmv+861N5xLhrSL2A==
   dependencies:
     graphql "^14.2.1"
     graphql-auth-directives "^2.1.0"
