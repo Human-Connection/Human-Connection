@@ -61,7 +61,7 @@
     "graphql-custom-directives": "~0.2.14",
     "graphql-iso-date": "~3.6.1",
     "graphql-middleware": "~3.0.2",
-    "graphql-shield": "~5.7.1",
+    "graphql-shield": "~5.6.1",
     "graphql-tag": "~2.10.1",
     "graphql-yoga": "~1.18.0",
     "helmet": "~3.18.0",
