@@ -10,7 +10,7 @@ import permissions from './permissionsMiddleware'
 import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
-import validation from './validation'
+import validation from './validation/validationMiddleware'
 import notifications from './notifications'
 
 export default schema => {
