@@ -21,7 +21,6 @@ install:
   - wait-on http://localhost:7474
 
 script:
-  - export CYPRESS_RETRIES=1
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
   # Backend
@@ -37,7 +36,7 @@ script:
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
   - docker-compose exec -d backend yarn run test:before:seeder
   # Fullstack
-  - yarn run cypress:run
+  - CYPRESS_RETRIES=1 yarn run cypress:run
   # Coverage
   - codecov
 
