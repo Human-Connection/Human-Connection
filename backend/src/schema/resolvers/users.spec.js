@@ -124,7 +124,7 @@ describe('users', () => {
           id: 'u47',
           name: null,
         }
-        const expected = 'Username must be at least 3 characters long!'
+        const expected = 'name is required'
         await expect(client.request(mutation, variables)).rejects.toThrow(expected)
       })
 
@@ -133,7 +133,7 @@ describe('users', () => {
           id: 'u47',
           name: '  ',
         }
-        const expected = 'Username must be at least 3 characters long!'
+        const expected = 'name must be at least 3 characters'
         await expect(client.request(mutation, variables)).rejects.toThrow(expected)
       })
     })
