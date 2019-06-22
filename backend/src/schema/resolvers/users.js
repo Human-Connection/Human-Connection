@@ -5,11 +5,11 @@ export default {
   Mutation: {
     UpdateUser: async (object, params, context, resolveInfo) => {
       params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+      return neo4jgraphql(object, params, context, resolveInfo)
     },
     CreateUser: async (object, params, context, resolveInfo) => {
       params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+      return neo4jgraphql(object, params, context, resolveInfo)
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
       const { resource } = params

@@ -61,7 +61,17 @@ describe('signup', () => {
         User: [user],
       } = await client.request(userQuery)
       expect(user.createdAt).toBeTruthy()
-      expect(user.createdAt).toBe(expect.any(String))
+      expect(user.createdAt).toEqual(expect.any(String))
+    })
+
+    it('creates a user account which is not yet verified', async () => {
+      await action()
+      const userQuery = `{ User { isVerified } }`
+      const {
+        User: [user],
+      } = await client.request(userQuery)
+      expect(user.createdAt).toBeTruthy()
+      expect(user.createdAt).toEqual(expect.any(String))
     })
   })
 })

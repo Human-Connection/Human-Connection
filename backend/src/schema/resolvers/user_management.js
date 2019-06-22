@@ -1,7 +1,10 @@
 import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
-import { neo4jgraphql } from 'neo4j-graphql-js'
+import { cypherMutation, neo4jgraphql } from 'neo4j-graphql-js'
+
+const initialize = () => {
+}
 
 export default {
   Query: {
@@ -18,7 +21,31 @@ export default {
     invite: async (parent, { email }, { req }) => {
       return true
     },
-    signup: async (parent, { email }, { req }) => {
+    signup: async (parent, args, { driver }) => {
+      const createdAt = new Date().toISOString()
+      const updatedAt = new Date().toISOString()
+      const isVerified = false
+      const params = { ...args, createdAt, updatedAt, isVerified }
+      const session = driver.session()
+      try {
+      const result = await session.run(`
+        CREATE (user:User {
+          id: apoc.create.uuid(),
+          name: NULL,
+          email:$params.email,
+          password: NULL,
+          actorId:$params.actorId,
+          createdAt:$params.createdAt,
+          slug:$params.slug,
+          disabled:$params.disabled,
+          deleted:$params.deleted
+          })
+        `, { params })
+      } catch(error) {
+        console.log(error)
+        return false
+      }
+
       // if (data[email]) {
       //   throw new Error('Another User with same email exists.')
       // }

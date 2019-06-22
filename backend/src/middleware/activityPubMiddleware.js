@@ -4,6 +4,15 @@ import as from 'activitystrea.ms'
 
 const debug = require('debug')('backend:schema')
 
+const initialize = async (resolve, root, args, context, info) => {
+  const { host } = activityPub
+  const { slug } = args
+  const keys = generateRsaKeyPair()
+  const actorId = `${host}/activitypub/users/${slug}`
+  args = {...args, keys, actorId }
+  return resolve(root, args, context, info)
+}
+
 export default {
   Mutation: {
     CreatePost: async (resolve, root, args, context, info) => {
@@ -46,11 +55,8 @@ export default {
       }
       return post
     },
-    CreateUser: async (resolve, root, args, context, info) => {
-      const keys = generateRsaKeyPair()
-      Object.assign(args, keys)
-      args.actorId = `${activityPub.host}/activitypub/users/${args.slug}`
-      return resolve(root, args, context, info)
-    },
+    CreateUser: initialize,
+    signup: initialize,
+    invite: initialize
   },
 }
