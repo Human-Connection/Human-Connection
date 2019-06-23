@@ -77,24 +77,29 @@ describe('slugify', () => {
   })
 
   describe('CreateUser', () => {
-    const action = async (mutation, params) => {
-      return authenticatedClient.request(`mutation {
-        ${mutation}(password: "yo", email: "123@123.de", ${params}) { slug }
-      }`)
+    const mutation = `mutation($password: String!, $email: String!, $name: String, $slug: String) {
+      CreateUser(email: $email, password: $password, name: $name, slug: $slug) { slug }
     }
+    `
+    const defaultVariables = { password: 'yo', email: '123@example.org' }
+
+    const action = async variables => {
+      return authenticatedClient.request(mutation, { ...defaultVariables, ...variables })
+    }
+
     it('generates a slug based on name', async () => {
-      await expect(action('CreateUser', 'name: "I am a user"')).resolves.toEqual({
+      await expect(action({ name: 'I am a user' })).resolves.toEqual({
         CreateUser: { slug: 'i-am-a-user' },
       })
     })
 
     describe('if slug exists', () => {
       beforeEach(async () => {
-        await action('CreateUser', 'name: "Pre-existing user", slug: "pre-existing-user"')
+        await factory.create('User', { name: 'pre-existing user', slug: 'pre-existing-user' })
       })
 
       it('chooses another slug', async () => {
-        await expect(action('CreateUser', 'name: "pre-existing-user"')).resolves.toEqual({
+        await expect(action({ name: 'pre-existing-user' })).resolves.toEqual({
           CreateUser: { slug: 'pre-existing-user-1' },
         })
       })
@@ -102,7 +107,7 @@ describe('slugify', () => {
       describe('but if the client specifies a slug', () => {
         it('rejects CreateUser', async () => {
           await expect(
-            action('CreateUser', 'name: "Pre-existing user", slug: "pre-existing-user"'),
+            action({ name: 'Pre-existing user', slug: 'pre-existing-user' }),
           ).rejects.toThrow('already exists')
         })
       })
