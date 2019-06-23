@@ -16,6 +16,7 @@ type User {
   privateKey: String
   isVerified: Boolean
   invitedBy: User @relation(name: "INVITED", direction: "IN")
+  invited: [User] @relation(name: "INVITED", direction: "OUT")
   wasInvited: Boolean
   wasSeeded: Boolean
 

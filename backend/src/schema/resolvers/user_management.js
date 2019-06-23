@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 
-const registration = async ({args, driver, inviter}) => {
+const registration = async ({ args, driver }) => {
   const createdAt = new Date().toISOString()
   const updatedAt = new Date().toISOString()
   const { email } = args
@@ -31,23 +31,10 @@ const registration = async ({args, driver, inviter}) => {
     } else {
       throw e
     }
+  } finally {
+    session.close()
   }
-  if (result && inviter) {
-    const {
-      records: [record],
-    } = result
-    const { id: userId } = record.get('user').properties
-    await session.run(
-      `
-      MATCH (inviter:User {id:$inviterId})
-      MATCH (user:User {id:$userId})
-      MERGE (inviter)-[:INVITED]->(user)
-    `,
-      { inviterId: inviter.id, userId },
-    )
-  }
-  session.close()
-  return true
+  return result
 }
 
 export default {
@@ -62,11 +49,33 @@ export default {
     },
   },
   Mutation: {
-    invite: async (_, args, { user, driver }) => {
-      return registration({args, driver, inviter: user})
+    invite: async (_, args, { user: inviter, driver }) => {
+      const result = await registration({ args, driver })
+
+      const session = driver.session()
+      try {
+        const {
+          records: [record],
+        } = result
+        const { id: userId } = record.get('user').properties
+        await session.run(
+          `
+            MATCH (inviter:User {id:$inviterId})
+            MATCH (user:User {id:$userId})
+            MERGE (inviter)-[:INVITED]->(user)
+          `,
+          { inviterId: inviter.id, userId },
+        )
+      } catch (e) {
+        throw e
+      } finally {
+        session.close()
+      }
+      return true
     },
     signup: async (_, args, { driver }) => {
-      return registration({args, driver})
+      const result = await registration({ args, driver })
+      return !!result
     },
     login: async (_, { email, password }, { driver, req, user }) => {
       // if (user && user.id) {

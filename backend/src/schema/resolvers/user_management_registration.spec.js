@@ -99,7 +99,7 @@ describe('invite', () => {
   })
 
   describe('authenticated', () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       userParams = {
         name: 'Inviter',
         email: 'inviter@example.org',
@@ -156,20 +156,22 @@ describe('invite', () => {
       })
 
       describe('who has invited a lot of users already', () => {
-        beforeEach(async () => {
-          const emails = ['u1@example.org', 'u2@example.org', 'u3@example.org']
-          await Promise.all(
-            emails.map(email => {
-              return factory.create('User', { email })
-            }),
-          )
-          let asUser = Factory()
-          asUser = await asUser.authenticateAs(userParams)
-          await Promise.all(
-            emails.map(email => {
-              return asUser.invite(email)
-            }),
-          )
+        beforeEach(() => {
+          action = async () => {
+            const factory = Factory()
+            await factory.create('User', userParams)
+            const emails = ['u1@example.org', 'u2@example.org', 'u3@example.org']
+            let asUser = Factory()
+            asUser = await asUser.authenticateAs(userParams)
+            await Promise.all(
+              emails.map(email => {
+                return asUser.invite({ email })
+              }),
+            )
+            const headers = await login(userParams)
+            client = new GraphQLClient(host, { headers })
+            return client.request(mutation, variables)
+          }
         })
 
         describe('as ordinary `user`', () => {
@@ -177,8 +179,8 @@ describe('invite', () => {
             userParams.role = 'user'
           })
 
-          it('throws `Maximum number of invitations reached`', async () => {
-            await expect(action()).rejects.toThrow('Maximum number of invitations reached')
+          it('throws `Not Authorised` because of maximum number of invitations', async () => {
+            await expect(action()).rejects.toThrow('Not Authorised')
           })
 
           it('creates no additional user accounts', async done => {
