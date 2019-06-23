@@ -3,32 +3,13 @@ import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
 import { cypherMutation, neo4jgraphql } from 'neo4j-graphql-js'
 
-const initialize = () => {
-}
-
-export default {
-  Query: {
-    isLoggedIn: (parent, args, { driver, user }) => {
-      return Boolean(user && user.id)
-    },
-    currentUser: async (object, params, ctx, resolveInfo) => {
-      const { user } = ctx
-      if (!user) return null
-      return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, false)
-    },
-  },
-  Mutation: {
-    invite: async (parent, { email }, { req }) => {
-      return true
-    },
-    signup: async (parent, args, { driver }) => {
-      const createdAt = new Date().toISOString()
-      const updatedAt = new Date().toISOString()
-      const isVerified = false
-      const params = { ...args, createdAt, updatedAt, isVerified }
-      const session = driver.session()
-      try {
-      const result = await session.run(`
+const registration = async (args, driver) => {
+  const createdAt = new Date().toISOString()
+  const updatedAt = new Date().toISOString()
+  const params = { ...args, createdAt, updatedAt }
+  const session = driver.session()
+  try {
+    const result = await session.run(`
         CREATE (user:User {
           id: apoc.create.uuid(),
           name: NULL,
@@ -38,24 +19,35 @@ export default {
           createdAt:$params.createdAt,
           slug:$params.slug,
           disabled:$params.disabled,
-          deleted:$params.deleted
+          deleted:$params.deleted,
+          isVerified: false
           })
         `, { params })
-      } catch(error) {
-        console.log(error)
-        return false
-      }
+  } catch(error) {
+    return false
+  }
+  return true
+}
 
-      // if (data[email]) {
-      //   throw new Error('Another User with same email exists.')
-      // }
-      // data[email] = {
-      //   password: await bcrypt.hashSync(password, 10),
-      // }
-
-      return true
+export default {
+  Query: {
+    isLoggedIn: (_, args, { driver, user }) => {
+      return Boolean(user && user.id)
     },
-    login: async (parent, { email, password }, { driver, req, user }) => {
+    currentUser: async (object, params, ctx, resolveInfo) => {
+      const { user } = ctx
+      if (!user) return null
+      return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, false)
+    },
+  },
+  Mutation: {
+    invite: async (_, args, { driver }) => {
+      return registration(args, driver)
+    },
+    signup: async (_, args, { driver }) => {
+      return registration(args, driver)
+    },
+    login: async (_, { email, password }, { driver, req, user }) => {
       // if (user && user.id) {
       //   throw new Error('Already logged in.')
       // }

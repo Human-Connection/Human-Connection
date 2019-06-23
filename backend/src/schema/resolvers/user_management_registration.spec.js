@@ -54,24 +54,25 @@ describe('signup', () => {
       await expect(action()).resolves.toEqual({ signup: true })
     })
 
-    it('creates a user account with a `createdAt` attribute', async () => {
-      await action()
-      const userQuery = `{ User { createdAt } }`
-      const {
-        User: [user],
-      } = await client.request(userQuery)
-      expect(user.createdAt).toBeTruthy()
-      expect(user.createdAt).toEqual(expect.any(String))
-    })
+    describe('creates a user account', () => {
+      it('with a `createdAt` attribute', async () => {
+        await action()
+        const userQuery = `{ User { createdAt } }`
+        const {
+          User: [user],
+        } = await client.request(userQuery)
+        expect(user.createdAt).toBeTruthy()
+        expect(Date.parse(user.createdAt)).toEqual(expect.any(Number))
+      })
 
-    it('creates a user account which is not yet verified', async () => {
-      await action()
-      const userQuery = `{ User { isVerified } }`
-      const {
-        User: [user],
-      } = await client.request(userQuery)
-      expect(user.createdAt).toBeTruthy()
-      expect(user.createdAt).toEqual(expect.any(String))
+      it('which is not yet verified', async () => {
+        await action()
+        const userQuery = `{ User { isVerified } }`
+        const {
+          User: [user],
+        } = await client.request(userQuery)
+        expect(user.isVerified).toBe(false)
+      })
     })
   })
 })
@@ -129,9 +130,9 @@ describe('invite', () => {
           User: [ownUser, user],
         } = await client.request(userQuery)
         expect(ownUser.createdAt).toBeTruthy()
-        expect(ownUser.createdAt).toEqual(expect.any(String))
         expect(user.createdAt).toBeTruthy()
-        expect(user.createdAt).toEqual(expect.any(String))
+        expect(Date.parse(ownUser.createdAt)).toEqual(expect.any(Number))
+        expect(Date.parse(user.createdAt)).toEqual(expect.any(Number))
       })
 
       describe('who has invited a lot of users already', () => {

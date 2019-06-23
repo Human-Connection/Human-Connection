@@ -11,6 +11,7 @@ export default function create(params) {
     role = 'user',
     avatar = faker.internet.avatar(),
     about = faker.lorem.paragraph(),
+    isVerified = true
   } = params
 
   return {
@@ -24,6 +25,7 @@ export default function create(params) {
         $avatar: String
         $about: String
         $role: UserGroup
+        $isVerified: Boolean
       ) {
         CreateUser(
           id: $id
@@ -34,6 +36,7 @@ export default function create(params) {
           avatar: $avatar
           about: $about
           role: $role
+          isVerified: $isVerified
         ) {
           id
           name
@@ -43,9 +46,10 @@ export default function create(params) {
           role
           deleted
           disabled
+          isVerified
         }
       }
     `,
-    variables: { id, name, slug, password, email, avatar, about, role },
+    variables: { id, name, slug, password, email, avatar, about, role, isVerified },
   }
 }
