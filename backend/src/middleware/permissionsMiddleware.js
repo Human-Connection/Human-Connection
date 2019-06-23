@@ -99,6 +99,12 @@ const isDeletingOwnAccount = rule({
   return context.user.id === args.id
 })
 
+const noEmailFilter = rule({
+  cache: 'no_cache',
+})(async (_, args) => {
+  return !('email' in args)
+})
+
 // Permissions
 const permissions = shield(
   {
@@ -113,7 +119,7 @@ const permissions = shield(
       currentUser: allow,
       Post: or(onlyEnabledContent, isModerator),
       Comment: allow,
-      User: allow,
+      User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
     },
     Mutation: {
