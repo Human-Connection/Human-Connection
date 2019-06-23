@@ -34,10 +34,10 @@ describe('signup', () => {
       await expect(action()).rejects.toThrow('email is not a valid email')
     })
 
-    it('creates no user account', async (done) => {
+    it('creates no user account', async done => {
       try {
         await action()
-      } catch {
+      } catch (e) {
         const userQuery = `{ User { createdAt } }`
         await expect(client.request(userQuery)).resolves.toEqual({ User: [] })
         done()
@@ -73,6 +73,16 @@ describe('signup', () => {
         } = await client.request(userQuery)
         expect(user.isVerified).toBe(false)
       })
+
+      describe('if a user account with the given email already exists', () => {
+        beforeEach(async () => {
+          await factory.create('User', { email: 'someUser@example.org' })
+        })
+
+        it('throws unique violation error', async () => {
+          await expect(action()).rejects.toThrow('User account with this email already exists.')
+        })
+      })
     })
   })
 })
@@ -89,18 +99,18 @@ describe('invite', () => {
   })
 
   describe('authenticated', () => {
-
-    beforeEach(() => {
+    beforeEach(async() => {
       userParams = {
-        email: 'normalUser@example.org',
+        name: 'Inviter',
+        email: 'inviter@example.org',
         password: '1234',
       }
       action = async () => {
         const factory = Factory()
         await factory.create('User', userParams)
         const headers = await login(userParams)
-        const authenticatedClient = new GraphQLClient(host, { headers })
-        return authenticatedClient.request(mutation, variables)
+        client = new GraphQLClient(host, { headers })
+        return client.request(mutation, variables)
       }
     })
 
@@ -135,6 +145,16 @@ describe('invite', () => {
         expect(Date.parse(user.createdAt)).toEqual(expect.any(Number))
       })
 
+      it('connects the inviting user with the new account', async () => {
+        await action()
+        const userQuery = `{ User(isVerified: false) { invitedBy { name } } }`
+        const {
+          User: [user],
+        } = await client.request(userQuery)
+        const expected = { invitedBy: { name: 'Inviter' } }
+        expect(user).toEqual(expected)
+      })
+
       describe('who has invited a lot of users already', () => {
         beforeEach(async () => {
           const emails = ['u1@example.org', 'u2@example.org', 'u3@example.org']
@@ -161,13 +181,13 @@ describe('invite', () => {
             await expect(action()).rejects.toThrow('Maximum number of invitations reached')
           })
 
-          it('creates no additional user accounts', async (done) => {
+          it('creates no additional user accounts', async done => {
             try {
               await action()
-            } catch {
+            } catch (e) {
               const userQuery = `{ User { createdAt } }`
               const { User: users } = await client.request(userQuery)
-              expect(users).toHaveLength(3+1)
+              expect(users).toHaveLength(3 + 1)
               done()
             }
           })
@@ -182,7 +202,7 @@ describe('invite', () => {
             await action()
             const userQuery = `{ User { createdAt } }`
             const { User: users } = await client.request(userQuery)
-            expect(users).toHaveLength(3+1+1)
+            expect(users).toHaveLength(3 + 1 + 1)
           })
         })
       })

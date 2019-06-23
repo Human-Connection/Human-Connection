@@ -9,7 +9,7 @@ const initialize = async (resolve, root, args, context, info) => {
   const { slug } = args
   const keys = generateRsaKeyPair()
   const actorId = `${host}/activitypub/users/${slug}`
-  args = {...args, keys, actorId }
+  args = { ...args, keys, actorId }
   return resolve(root, args, context, info)
 }
 
@@ -57,6 +57,6 @@ export default {
     },
     CreateUser: initialize,
     signup: initialize,
-    invite: initialize
+    invite: initialize,
   },
 }

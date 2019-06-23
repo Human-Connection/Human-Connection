@@ -1,31 +1,52 @@
 import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
-import { AuthenticationError } from 'apollo-server'
-import { cypherMutation, neo4jgraphql } from 'neo4j-graphql-js'
+import { AuthenticationError, UserInputError } from 'apollo-server'
+import { neo4jgraphql } from 'neo4j-graphql-js'
 
-const registration = async (args, driver) => {
+const registration = async ({args, driver, inviter}) => {
   const createdAt = new Date().toISOString()
   const updatedAt = new Date().toISOString()
-  const params = { ...args, createdAt, updatedAt }
+  const { email } = args
   const session = driver.session()
+  let result
   try {
-    const result = await session.run(`
-        CREATE (user:User {
-          id: apoc.create.uuid(),
-          name: NULL,
-          email:$params.email,
-          password: NULL,
-          actorId:$params.actorId,
-          createdAt:$params.createdAt,
-          slug:$params.slug,
-          disabled:$params.disabled,
-          deleted:$params.deleted,
-          isVerified: false
-          })
-        `, { params })
-  } catch(error) {
-    return false
+    result = await session.run(
+      `
+      CREATE (user:User {
+        id: apoc.create.uuid(),
+        email:$email,
+        createdAt:$createdAt,
+        updatedAt:$updatedAt,
+        deleted: false,
+        disabled: false,
+        isVerified: false
+        })
+      RETURN user
+      `,
+      { email, createdAt, updatedAt },
+    )
+  } catch (e) {
+    if (e.message.match(/already exists/g)) {
+      throw new UserInputError('User account with this email already exists.')
+    } else {
+      throw e
+    }
   }
+  if (result && inviter) {
+    const {
+      records: [record],
+    } = result
+    const { id: userId } = record.get('user').properties
+    await session.run(
+      `
+      MATCH (inviter:User {id:$inviterId})
+      MATCH (user:User {id:$userId})
+      MERGE (inviter)-[:INVITED]->(user)
+    `,
+      { inviterId: inviter.id, userId },
+    )
+  }
+  session.close()
   return true
 }
 
@@ -41,11 +62,11 @@ export default {
     },
   },
   Mutation: {
-    invite: async (_, args, { driver }) => {
-      return registration(args, driver)
+    invite: async (_, args, { user, driver }) => {
+      return registration({args, driver, inviter: user})
     },
     signup: async (_, args, { driver }) => {
-      return registration(args, driver)
+      return registration({args, driver})
     },
     login: async (_, { email, password }, { driver, req, user }) => {
       // if (user && user.id) {
@@ -59,9 +80,8 @@ export default {
           userEmail: email,
         },
       )
-
       session.close()
-      const [currentUser] = await result.records.map(function(record) {
+      const [currentUser] = await result.records.map(record => {
         return record.get('user')
       })
 

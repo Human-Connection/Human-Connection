@@ -36,7 +36,7 @@ describe('users', () => {
       })
 
       it('is permitted', async () => {
-        await expect(client.request(query, variables)).resolves.toEqual({User: []})
+        await expect(client.request(query, variables)).resolves.toEqual({ User: [] })
       })
     })
   })

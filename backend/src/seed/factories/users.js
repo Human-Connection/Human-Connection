@@ -11,7 +11,7 @@ export default function create(params) {
     role = 'user',
     avatar = faker.internet.avatar(),
     about = faker.lorem.paragraph(),
-    isVerified = true
+    isVerified = true,
   } = params
 
   return {

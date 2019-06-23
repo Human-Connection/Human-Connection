@@ -34,6 +34,8 @@ CREATE CONSTRAINT ON (p:Post)          ASSERT p.slug IS UNIQUE;
 CREATE CONSTRAINT ON (c:Category)      ASSERT c.slug IS UNIQUE;
 CREATE CONSTRAINT ON (u:User)          ASSERT u.slug IS UNIQUE;
 CREATE CONSTRAINT ON (o:Organization)  ASSERT o.slug IS UNIQUE;
+
+CREATE CONSTRAINT ON (u:User)          ASSERT u.email IS UNIQUE;
 ' | cypher-shell
 
 echo '
