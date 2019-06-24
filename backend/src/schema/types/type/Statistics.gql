@@ -1,0 +1,11 @@
+type Statistics {
+  countUsers: Int!
+  countPosts: Int!
+  countComments: Int!
+  countNotifications: Int!
+  countOrganizations: Int!
+  countProjects: Int!
+  countInvites: Int!
+  countFollows: Int!
+  countShouts: Int!
+}

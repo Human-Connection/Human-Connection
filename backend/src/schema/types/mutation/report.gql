@@ -1,0 +1,3 @@
+type Mutation {
+  report(id: ID!, description: String): Report
+}

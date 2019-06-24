@@ -1,0 +1,7 @@
+type Reward {
+  id: ID!
+  user: User @relation(name: "REWARDED", direction: "IN")
+  rewarderId: ID
+  createdAt: String
+  badge: Badge @relation(name: "REWARDED", direction: "OUT")
+}

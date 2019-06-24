@@ -1,0 +1,4 @@
+type Query {
+  # Get the latest Network Statistics
+  statistics: Statistics!
+}

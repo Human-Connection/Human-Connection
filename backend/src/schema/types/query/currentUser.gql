@@ -1,0 +1,4 @@
+type Query {
+  # Get the currently logged in User based on the given JWT Token
+  currentUser: User
+}

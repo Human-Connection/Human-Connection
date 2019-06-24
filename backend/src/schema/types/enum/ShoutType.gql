@@ -1,0 +1,5 @@
+enum ShoutType {
+  Post
+  Organization
+  Project
+}

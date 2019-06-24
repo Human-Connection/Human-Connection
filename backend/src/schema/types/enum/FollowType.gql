@@ -1,0 +1,5 @@
+enum FollowType {
+  User
+  Organization
+  Project
+}

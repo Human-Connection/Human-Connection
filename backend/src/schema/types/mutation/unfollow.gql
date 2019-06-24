@@ -1,0 +1,4 @@
+type Mutation {
+  # Unfollow the given Type and ID
+  unfollow(id: ID!, type: FollowType): Boolean!
+}

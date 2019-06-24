@@ -1,0 +1,11 @@
+type Report {
+  id: ID!
+  submitter: User @relation(name: "REPORTED", direction: "IN")
+  description: String
+  type: String!
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
+  createdAt: String
+  comment: Comment @relation(name: "REPORTED", direction: "OUT")
+  post: Post @relation(name: "REPORTED", direction: "OUT")
+  user: User @relation(name: "REPORTED", direction: "OUT")
+}

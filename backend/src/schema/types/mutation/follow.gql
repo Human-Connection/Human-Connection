@@ -1,0 +1,4 @@
+type Mutation {
+  # Follow the given Type and ID
+  follow(id: ID!, type: FollowType): Boolean!
+}
