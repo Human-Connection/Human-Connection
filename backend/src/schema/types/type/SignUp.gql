@@ -1,0 +1,14 @@
+type SignUp {
+  id: ID!
+  email: String!
+  invitedBy: User @relation(name: "INVITED", direction: "IN")
+
+  #createdAt: DateTime
+  #updatedAt: DateTime
+  createdAt: String
+  updatedAt: String
+}
+
+type Mutation {
+  CreateSignUp(email: String!, invitationCode: String): SignUp
+}

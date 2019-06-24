@@ -75,8 +75,8 @@ const invitationLimitReached = rule({
   try {
     const result = await session.run(
       `
-      MATCH (user:User {id:$id})-[:INVITED]->(u:User)
-      RETURN COUNT(u) as count
+      MATCH (user:User {id:$id})-[:CREATED]->(i:InvitationCode)
+      RETURN COUNT(i) as count
       `,
       { id: user.id },
     )
@@ -148,8 +148,8 @@ const permissions = shield(
     Mutation: {
       '*': deny,
       login: allow,
-      signup: allow,
-      invite: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
+      CreateSignUp: allow,
+      CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
       UpdateNotification: belongsToMe,
       CreateUser: isAdmin,
       UpdateUser: onlyYourself,

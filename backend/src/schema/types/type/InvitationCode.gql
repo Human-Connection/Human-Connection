@@ -1,0 +1,14 @@
+type InvitationCode {
+  id: ID!
+  code: String!
+  generatedBy: User @relation(name: "GENERATED", direction: "IN")
+
+  #createdAt: DateTime
+  #usedAt: DateTime
+  createdAt: String
+  usedAt: String
+}
+
+type Mutation {
+  CreateInvitationCode(code: String): InvitationCode
+}

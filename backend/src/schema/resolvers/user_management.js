@@ -73,10 +73,6 @@ export default {
       }
       return true
     },
-    signup: async (_, args, { driver }) => {
-      const result = await registration({ args, driver })
-      return !!result
-    },
     login: async (_, { email, password }, { driver, req, user }) => {
       // if (user && user.id) {
       //   throw new Error('Already logged in.')
