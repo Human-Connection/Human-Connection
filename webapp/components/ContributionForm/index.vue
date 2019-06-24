@@ -14,14 +14,14 @@
           <div class="dz-message">
             <div
               :class="{
-                'hc-attachments-upload-area-post': createOrUpdate,
+                'hc-attachments-upload-area-post': createAndUpdate,
                 'hc-attachments-upload-area-update-post': contribution,
               }"
             >
               <slot></slot>
               <div
                 :class="{
-                  'hc-drag-marker-post': createOrUpdate,
+                  'hc-drag-marker-post': createAndUpdate,
                   'hc-drag-marker-update-post': contribution,
                 }"
               >
@@ -113,7 +113,7 @@ export default {
         previewTemplate: this.template(),
       },
       error: false,
-      createOrUpdate: true,
+      createAndUpdate: true,
     }
   },
   watch: {

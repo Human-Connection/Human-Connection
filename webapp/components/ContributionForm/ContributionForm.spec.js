@@ -151,6 +151,7 @@ describe('ContributionForm.vue', () => {
 
       describe('handles errors', () => {
         beforeEach(async () => {
+          jest.useFakeTimers()
           wrapper = Wrapper()
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue('this is a title for a post')
@@ -158,10 +159,30 @@ describe('ContributionForm.vue', () => {
           // second submission causes mutation to reject
           await wrapper.find('form').trigger('submit')
         })
+
         it('shows an error toaster when apollo mutation rejects', async () => {
           await wrapper.find('form').trigger('submit')
           await mocks.$apollo.mutate
           expect(mocks.$toast.error).toHaveBeenCalledWith('Not Authorised!')
+        })
+
+        const message = 'File upload failed'
+        const fileError = { status: 'error' }
+
+        it('defaults to error false', () => {
+          expect(wrapper.vm.error).toEqual(false)
+        })
+
+        it('shows an error toaster when verror is called', () => {
+          wrapper.vm.verror(fileError, message)
+          expect(mocks.$toast.error).toHaveBeenCalledWith(fileError.status, message)
+        })
+
+        it('changes error status from false to true to false', () => {
+          wrapper.vm.verror(fileError, message)
+          expect(wrapper.vm.error).toEqual(true)
+          jest.runAllTimers()
+          expect(wrapper.vm.error).toEqual(false)
         })
       })
     })
