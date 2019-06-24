@@ -1,33 +1,37 @@
 <template>
   <div class="editor">
     <div v-show="showSuggestions" ref="suggestions" class="suggestion-list">
-      <template v-if="usersFilterHasResults">
-        <div
-          v-for="(user, index) in filteredUsers"
-          :key="user.id"
-          class="suggestion-list__item"
-          :class="{ 'is-selected': navigatedItemIndex === index }"
-          @click="selectItem(user, 'mention')"
-        >
-          @{{ user.slug }}
+      <div v-if="isMention">
+        <template v-if="usersFilterHasResults">
+          <div
+            v-for="(user, index) in filteredUsers"
+            :key="user.id"
+            class="suggestion-list__item"
+            :class="{ 'is-selected': navigatedItemIndex === index }"
+            @click="selectItem(user, mentionSuggestionType)"
+          >
+            @{{ user.slug }}
+          </div>
+        </template>
+        <div v-else class="suggestion-list__item is-empty">
+          {{ $t('editor.mention.noUsersFound') }}
         </div>
-      </template>
-      <div v-else class="suggestion-list__item is-empty">
-        {{ $t('editor.mention.noUsersFound') }}
       </div>
-      <template v-if="hashtagsFilterHasResults">
-        <div
-          v-for="(hashtag, index) in filteredHashtags"
-          :key="hashtag.id"
-          class="suggestion-list__item"
-          :class="{ 'is-selected': navigatedItemIndex === index }"
-          @click="selectItem(hashtag, 'hashtag')"
-        >
-          #{{ hashtag.name }}
+      <div v-if="isHashtag">
+        <template v-if="hashtagsFilterHasResults">
+          <div
+            v-for="(hashtag, index) in filteredHashtags"
+            :key="hashtag.id"
+            class="suggestion-list__item"
+            :class="{ 'is-selected': navigatedItemIndex === index }"
+            @click="selectItem(hashtag, hashtagSuggestionType)"
+          >
+            #{{ hashtag.name }}
+          </div>
+        </template>
+        <div v-else class="suggestion-list__item is-empty">
+          {{ $t('editor.hashtag.noHashtagsFound') }}
         </div>
-      </template>
-      <div v-else class="suggestion-list__item is-empty">
-        {{ $t('editor.hashtag.noHashtagsFound') }}
       </div>
     </div>
 
@@ -234,6 +238,7 @@ export default {
           new History(),
           new Mention({
             items: () => {
+              this.suggestionType = this.mentionSuggestionType
               return this.users
             },
             onEnter: ({ items, query, range, command, virtualNode }) => {
@@ -257,6 +262,7 @@ export default {
             // is called when a suggestion is cancelled
             onExit: () => {
               // reset all saved values
+              this.suggestionType = ''
               this.query = null
               this.filteredUsers = []
               this.suggestionRange = null
@@ -277,7 +283,7 @@ export default {
               }
               // pressing enter
               if (event.keyCode === 13) {
-                this.enterHandler(this.filteredUsers, 'mention')
+                this.enterHandler(this.filteredUsers, this.mentionSuggestionType)
                 return true
               }
               return false
@@ -299,6 +305,7 @@ export default {
           }),
           new Hashtag({
             items: () => {
+              this.suggestionType = this.hashtagSuggestionType
               return this.hashtags
             },
             onEnter: ({ items, query, range, command, virtualNode }) => {
@@ -322,6 +329,7 @@ export default {
             // is called when a suggestion is cancelled
             onExit: () => {
               // reset all saved values
+              this.suggestionType = ''
               this.query = null
               this.filteredHashtags = []
               this.suggestionRange = null
@@ -340,16 +348,11 @@ export default {
                 this.downHandler(this.filteredHashtags)
                 return true
               }
-              // pressing enter
-              if (event.keyCode === 13) {
-                this.enterHandler(this.filteredHashtags, 'hashtag')
+              // pressing enter or pressing space
+              if (event.keyCode === 13 || event.keyCode === 32) {
+                this.enterHandler(this.filteredHashtags, this.hashtagSuggestionType)
                 return true
               }
-              // pressing space
-              // if (event.keyCode === 32) {
-              //   // this.enterHandler(this.filteredHashtags, 'hashtag')
-              //   return true
-              // }
               return false
             },
             // is called when a suggestion has changed
@@ -375,6 +378,9 @@ export default {
       }),
       linkUrl: null,
       linkMenuIsActive: false,
+      mentionSuggestionType: 'mention',
+      hashtagSuggestionType: 'hashtag',
+      suggestionType: '',
       query: null,
       suggestionRange: null,
       filteredUsers: [],
@@ -394,6 +400,12 @@ export default {
     },
     showSuggestions() {
       return this.query || this.usersFilterHasResults || this.hashtagsFilterHasResults
+    },
+    isMention() {
+      return this.suggestionType === this.mentionSuggestionType
+    },
+    isHashtag() {
+      return this.suggestionType === this.hashtagSuggestionType
     },
   },
   watch: {
@@ -426,22 +438,25 @@ export default {
     // if it's the first item, navigate to the last one
     upHandler(filteredArray) {
       this.navigatedItemIndex =
-        (this.navigatedItemIndex + this.filteredArray.length - 1) % this.filteredArray.length
+        (this.navigatedItemIndex + filteredArray.length - 1) % filteredArray.length
     },
     // navigate to the next item
     // if it's the last item, navigate to the first one
     downHandler(filteredArray) {
-      this.navigatedItemIndex = (this.navigatedItemIndex + 1) % this.filteredArray.length
+      this.navigatedItemIndex = (this.navigatedItemIndex + 1) % filteredArray.length
     },
-    enterHandler(filteredArray, type) {
-      const item = this.filteredArray[this.navigatedItemIndex]
+    // For hashtags handles pressing of space as enter.
+    enterHandler(filteredArray, suggestionType) {
+      const item = filteredArray[this.navigatedItemIndex]
       if (item) {
-        this.selectItem(item, type)
+        this.selectItem(item, suggestionType)
+      } else if (suggestionType === this.hashtagSuggestionType && this.query !== '') {
+        this.selectItem({ name: this.query }, this.hashtagSuggestionType)
       }
     },
     // we have to replace our suggestion text with a mention
     // so it's important to pass also the position of your suggestion text
-    selectItem(item, type) {
+    selectItem(item, suggestionType) {
       const typeAttrs = {
         mention: {
           // TODO: use router here
@@ -456,7 +471,7 @@ export default {
       }
       this.insertMention({
         range: this.suggestionRange,
-        attrs: typeAttrs[type],
+        attrs: typeAttrs[suggestionType],
       })
       this.editor.focus()
     },
