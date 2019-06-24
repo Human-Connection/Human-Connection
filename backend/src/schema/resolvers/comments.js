@@ -38,22 +38,41 @@ export default {
       if (!post) {
         throw new UserInputError(NO_POST_ERR_MESSAGE)
       }
-      const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
+      const commentWithoutRelationships = await neo4jgraphql(
+        object,
+        params,
+        context,
+        resolveInfo,
+        false,
+      )
 
-      await session.run(
+      let transactionRes = await session.run(
         `
         MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId}), (author:User {id: $userId})
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN post`,
+        RETURN comment, author`,
         {
           userId: context.user.id,
           postId,
-          commentId: comment.id,
+          commentId: commentWithoutRelationships.id,
         },
       )
-      session.close()
 
-      return comment
+      const [commentWithAuthor] = transactionRes.records.map(record => {
+        return {
+          comment: record.get('comment'),
+          author: record.get('author'),
+        }
+      })
+
+      const { comment, author } = commentWithAuthor
+
+      const commentReturnedWithAuthor = {
+        ...comment.properties,
+        author: author.properties,
+      }
+      session.close()
+      return commentReturnedWithAuthor
     },
     DeleteComment: async (object, params, context, resolveInfo) => {
       const comment = await neo4jgraphql(object, params, context, resolveInfo, false)

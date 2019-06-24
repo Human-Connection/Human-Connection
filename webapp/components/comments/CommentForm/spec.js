@@ -81,11 +81,6 @@ describe('CommentForm.vue', () => {
         expect(cancelMethodSpy).toHaveBeenCalledTimes(1)
       })
 
-      it('emits a method call with the returned comment', () => {
-        const rootWrapper = createWrapper(wrapper.vm.$root)
-        expect(rootWrapper.emitted().refetchPostComments.length).toEqual(1)
-      })
-
       describe('mutation fails', () => {
         it('shows the error toaster', async () => {
           await wrapper.find('form').trigger('submit')
