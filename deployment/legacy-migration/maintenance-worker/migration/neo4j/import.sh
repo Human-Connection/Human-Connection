@@ -9,10 +9,10 @@ set +o allexport
 # Delete collection function defintion
 function delete_collection () {
   # Delete from Database
-  echo "Delete $1"
+  echo "Delete $2"
   "${IMPORT_CYPHERSHELL_BIN}" < $(dirname "$0")/$1/delete.cql > /dev/null
   # Delete index file
-  rm -f "${IMPORT_PATH}splits/$1.index"
+  rm -f "${IMPORT_PATH}splits/$2.index"
 }
 
 # Import collection function defintion
@@ -52,13 +52,14 @@ SECONDS=0
 
 # Delete all Neo4J Database content
 echo "Deleting Database Contents"
-delete_collection "badges"
-delete_collection "categories"
-delete_collection "users"
-delete_collection "follows"
-delete_collection "contributions"
-delete_collection "shouts"
-delete_collection "comments"
+delete_collection "badges" "badges"
+delete_collection "categories" "categories"
+delete_collection "users" "users"
+delete_collection "follows" "follows_users"
+delete_collection "contributions" "contributions_post"
+delete_collection "contributions" "contributions_cando"
+delete_collection "shouts" "shouts"
+delete_collection "comments" "comments"
 
 #delete_collection "emotions"
 #delete_collection "invites"
