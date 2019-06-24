@@ -2,7 +2,7 @@
   apiVersion: v1
   kind: ConfigMap
   data:
-    SMTP_HOST: "http://mailserver.human-connection"
+    SMTP_HOST: "mailserver.human-connection"
     SMTP_PORT: "25"
     SMTP_USERNAME: ""
     SMTP_PASSWORD: ""
