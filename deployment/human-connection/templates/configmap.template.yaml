@@ -2,6 +2,10 @@
   apiVersion: v1
   kind: ConfigMap
   data:
+    SMTP_HOST: "http://mailserver.human-connection"
+    SMTP_PORT: "25"
+    SMTP_USERNAME: ""
+    SMTP_PASSWORD: ""
     GRAPHQL_PORT: "4000"
     GRAPHQL_URI: "http://nitro-backend.human-connection:4000"
     MOCKS: "false"
