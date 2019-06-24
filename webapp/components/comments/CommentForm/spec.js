@@ -1,4 +1,4 @@
-import { mount, createLocalVue, createWrapper } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import CommentForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
