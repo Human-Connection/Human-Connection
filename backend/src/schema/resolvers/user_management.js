@@ -59,7 +59,7 @@ export default {
     changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {
       const session = driver.session()
       let result = await session.run(
-        `MATCH (user:User {email: $userEmail}) 
+        `MATCH (user:User {email: $userEmail})
          RETURN user {.id, .email, .password}`,
         {
           userEmail: user.email,
