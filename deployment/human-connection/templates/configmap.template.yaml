@@ -7,7 +7,7 @@
     SMTP_USERNAME: ""
     SMTP_PASSWORD: ""
     GRAPHQL_PORT: "4000"
-    GRAPHQL_URI: "http://backend.human-connection:4000"
+    GRAPHQL_URI: "http://nitro-backend.human-connection:4000"
     MOCKS: "false"
     NEO4J_URI: "bolt://nitro-neo4j.human-connection:7687"
     NEO4J_USER: "neo4j"
