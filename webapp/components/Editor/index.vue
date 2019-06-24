@@ -1,37 +1,21 @@
 <template>
   <div class="editor">
     <div v-show="showSuggestions" ref="suggestions" class="suggestion-list">
-      <div v-if="isMention">
-        <template v-if="usersFilterHasResults">
-          <div
-            v-for="(user, index) in filteredUsers"
-            :key="user.id"
-            class="suggestion-list__item"
-            :class="{ 'is-selected': navigatedItemIndex === index }"
-            @click="selectItem(user, mentionSuggestionType)"
-          >
-            @{{ user.slug }}
-          </div>
-        </template>
-        <div v-else class="suggestion-list__item is-empty">
-          {{ $t('editor.mention.noUsersFound') }}
+      <template v-if="hasResults">
+        <div
+          v-for="(item, index) in filteredItems"
+          :key="item.id"
+          class="suggestion-list__item"
+          :class="{ 'is-selected': navigatedItemIndex === index }"
+          @click="selectItem(item)"
+        >
+          <div v-if="isMention">@{{ item.slug }}</div>
+          <div v-if="isHashtag">#{{ item.name }}</div>
         </div>
-      </div>
-      <div v-if="isHashtag">
-        <template v-if="hashtagsFilterHasResults">
-          <div
-            v-for="(hashtag, index) in filteredHashtags"
-            :key="hashtag.id"
-            class="suggestion-list__item"
-            :class="{ 'is-selected': navigatedItemIndex === index }"
-            @click="selectItem(hashtag, hashtagSuggestionType)"
-          >
-            #{{ hashtag.name }}
-          </div>
-        </template>
-        <div v-else class="suggestion-list__item is-empty">
-          {{ $t('editor.hashtag.noHashtagsFound') }}
-        </div>
+      </template>
+      <div v-else class="suggestion-list__item is-empty">
+        <div v-if="isMention">{{ $t('editor.mention.noUsersFound') }}</div>
+        <div v-if="isHashtag">{{ $t('editor.hashtag.noHashtagsFound') }}</div>
       </div>
     </div>
 
@@ -243,18 +227,18 @@ export default {
             },
             onEnter: ({ items, query, range, command, virtualNode }) => {
               this.query = query
-              this.filteredUsers = items
+              this.filteredItems = items
               this.suggestionRange = range
               this.renderPopup(virtualNode)
               // we save the command for inserting a selected mention
               // this allows us to call it inside of our custom popup
               // via keyboard navigation and on click
-              this.insertMention = command
+              this.insertMentionOrHashtag = command
             },
             // is called when a suggestion has changed
             onChange: ({ items, query, range, virtualNode }) => {
               this.query = query
-              this.filteredUsers = items
+              this.filteredItems = items
               this.suggestionRange = range
               this.navigatedItemIndex = 0
               this.renderPopup(virtualNode)
@@ -262,9 +246,9 @@ export default {
             // is called when a suggestion is cancelled
             onExit: () => {
               // reset all saved values
-              this.suggestionType = ''
+              this.suggestionType = this.nullSuggestionType
               this.query = null
-              this.filteredUsers = []
+              this.filteredItems = []
               this.suggestionRange = null
               this.navigatedItemIndex = 0
               this.destroyPopup()
@@ -273,17 +257,17 @@ export default {
             onKeyDown: ({ event }) => {
               // pressing up arrow
               if (event.keyCode === 38) {
-                this.upHandler(this.filteredUsers)
+                this.upHandler()
                 return true
               }
               // pressing down arrow
               if (event.keyCode === 40) {
-                this.downHandler(this.filteredUsers)
+                this.downHandler()
                 return true
               }
               // pressing enter
               if (event.keyCode === 13) {
-                this.enterHandler(this.filteredUsers, this.mentionSuggestionType)
+                this.enterHandler(this.mentionSuggestionType)
                 return true
               }
               return false
@@ -310,18 +294,18 @@ export default {
             },
             onEnter: ({ items, query, range, command, virtualNode }) => {
               this.query = query
-              this.filteredHashtags = items
+              this.filteredItems = items
               this.suggestionRange = range
               this.renderPopup(virtualNode)
               // we save the command for inserting a selected mention
               // this allows us to call it inside of our custom popup
               // via keyboard navigation and on click
-              this.insertMention = command
+              this.insertMentionOrHashtag = command
             },
             // is called when a suggestion has changed
             onChange: ({ items, query, range, virtualNode }) => {
               this.query = query
-              this.filteredHashtags = items
+              this.filteredItems = items
               this.suggestionRange = range
               this.navigatedItemIndex = 0
               this.renderPopup(virtualNode)
@@ -329,9 +313,9 @@ export default {
             // is called when a suggestion is cancelled
             onExit: () => {
               // reset all saved values
-              this.suggestionType = ''
+              this.suggestionType = this.nullSuggestionType
               this.query = null
-              this.filteredHashtags = []
+              this.filteredItems = []
               this.suggestionRange = null
               this.navigatedItemIndex = 0
               this.destroyPopup()
@@ -340,17 +324,17 @@ export default {
             onKeyDown: ({ event }) => {
               // pressing up arrow
               if (event.keyCode === 38) {
-                this.upHandler(this.filteredHashtags)
+                this.upHandler()
                 return true
               }
               // pressing down arrow
               if (event.keyCode === 40) {
-                this.downHandler(this.filteredHashtags)
+                this.downHandler()
                 return true
               }
               // pressing enter or pressing space
               if (event.keyCode === 13 || event.keyCode === 32) {
-                this.enterHandler(this.filteredHashtags, this.hashtagSuggestionType)
+                this.enterHandler(this.hashtagSuggestionType)
                 return true
               }
               return false
@@ -378,28 +362,25 @@ export default {
       }),
       linkUrl: null,
       linkMenuIsActive: false,
+      nullSuggestionType: '',
       mentionSuggestionType: 'mention',
       hashtagSuggestionType: 'hashtag',
-      suggestionType: '',
+      suggestionType: this.nullSuggestionType,
       query: null,
       suggestionRange: null,
-      filteredUsers: [],
-      filteredHashtags: [],
+      filteredItems: [],
       navigatedItemIndex: 0,
-      insertMention: () => {},
+      insertMentionOrHashtag: () => {},
       observer: null,
     }
   },
   computed: {
     ...mapGetters({ placeholder: 'editor/placeholder' }),
-    usersFilterHasResults() {
-      return this.filteredUsers.length > 0
-    },
-    hashtagsFilterHasResults() {
-      return this.filteredHashtags.length > 0
+    hasResults() {
+      return this.filteredItems.length
     },
     showSuggestions() {
-      return this.query || this.usersFilterHasResults || this.hashtagsFilterHasResults
+      return this.query || this.hasResults
     },
     isMention() {
       return this.suggestionType === this.mentionSuggestionType
@@ -436,27 +417,27 @@ export default {
   methods: {
     // navigate to the previous item
     // if it's the first item, navigate to the last one
-    upHandler(filteredArray) {
+    upHandler() {
       this.navigatedItemIndex =
-        (this.navigatedItemIndex + filteredArray.length - 1) % filteredArray.length
+        (this.navigatedItemIndex + this.filteredItems.length - 1) % this.filteredItems.length
     },
     // navigate to the next item
     // if it's the last item, navigate to the first one
-    downHandler(filteredArray) {
-      this.navigatedItemIndex = (this.navigatedItemIndex + 1) % filteredArray.length
+    downHandler() {
+      this.navigatedItemIndex = (this.navigatedItemIndex + 1) % this.filteredItems.length
     },
     // For hashtags handles pressing of space as enter.
-    enterHandler(filteredArray, suggestionType) {
-      const item = filteredArray[this.navigatedItemIndex]
+    enterHandler() {
+      const item = this.filteredItems[this.navigatedItemIndex]
       if (item) {
-        this.selectItem(item, suggestionType)
-      } else if (suggestionType === this.hashtagSuggestionType && this.query !== '') {
+        this.selectItem(item)
+      } else if (this.suggestionType === this.hashtagSuggestionType && this.query !== '') {
         this.selectItem({ name: this.query }, this.hashtagSuggestionType)
       }
     },
     // we have to replace our suggestion text with a mention
     // so it's important to pass also the position of your suggestion text
-    selectItem(item, suggestionType) {
+    selectItem(item) {
       const typeAttrs = {
         mention: {
           // TODO: use router here
@@ -469,9 +450,9 @@ export default {
           label: item.name,
         },
       }
-      this.insertMention({
+      this.insertMentionOrHashtag({
         range: this.suggestionRange,
-        attrs: typeAttrs[suggestionType],
+        attrs: typeAttrs[this.suggestionType],
       })
       this.editor.focus()
     },
