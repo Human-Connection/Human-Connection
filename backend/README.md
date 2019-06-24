@@ -44,6 +44,9 @@ or start the backend in production environment with:
 yarn run start
 ```
 
+For e-mail delivery, please configure at least `SMTP_HOST` and `SMTP_PORT` in
+your `.env` configuration file.
+
 Your backend is up and running at [http://localhost:4000/](http://localhost:4000/)
 This will start the GraphQL service \(by default on localhost:4000\) where you
 can issue GraphQL requests or access GraphQL Playground in the browser.
