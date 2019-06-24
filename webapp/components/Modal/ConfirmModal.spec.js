@@ -50,7 +50,9 @@ describe('ConfirmModal.vue', () => {
       beforeEach(() => {
         wrapper = Wrapper()
       })
-
+      it('isOpen true', () => {
+        expect(wrapper.vm.isOpen).toBe(true)
+      })
       it('success false', () => {
         expect(wrapper.vm.success).toBe(false)
       })

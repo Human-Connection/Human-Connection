@@ -58,17 +58,14 @@ export default {
   methods: {
     async cancel() {
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
-      // await this.modalData.buttons.cancel.callback()
       this.isOpen = false
-      setTimeout(() => {
-        this.$emit('close')
-      }, 1000)
+
+      this.$emit('close')
     },
     async confirm() {
       this.loading = true
       try {
         // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
-        // await this.modalData.buttons.confirm.callback()
         await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
@@ -79,18 +76,24 @@ export default {
           `,
           variables: { id: this.id },
         })
-        this.success = true
         this.$toast.success(this.$t('report.success'))
-        setTimeout(() => {
-          this.isOpen = false
-          setTimeout(() => {
-            this.success = false
-            this.$emit('close')
-          }, 500)
-        }, 1500)
-      } catch (err) {
+        this.$emit('close')
+        this.isOpen = false
         this.success = false
-        this.$toast.error(err.message)
+      } catch (err) {
+        this.$emit('close')
+        this.success = false
+        switch (err.message) {
+          case 'GraphQL error: User':
+            this.$toast.error(this.$t('report.user.error'))
+            break
+          case 'GraphQL error: Post':
+            this.$toast.error(this.$t('report.contribution.error'))
+            break
+          case 'GraphQL error: Comment':
+            this.$toast.error(this.$t('report.comment.error'))
+            break
+        }
       } finally {
         this.loading = false
       }

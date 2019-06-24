@@ -46,9 +46,9 @@ export default {
     modalsData: {
       type: Object,
       required: false,
-      // default: () => {
-      //   return {}
-      // },
+      default: () => {
+        return {}
+      },
     },
   },
   computed: {
@@ -76,14 +76,6 @@ export default {
       }
 
       if (this.isOwner && this.resourceType === 'comment') {
-        // routes.push({
-        //   name: this.$t(`comment.menu.edit`),
-        //   callback: () => {
-        //     /* eslint-disable-next-line no-console */
-        //     console.log('EDIT COMMENT')
-        //   },
-        //   icon: 'edit'
-        // })
         routes.push({
           name: this.$t(`comment.menu.delete`),
           callback: () => {
@@ -97,7 +89,7 @@ export default {
         routes.push({
           name: this.$t(`report.${this.resourceType}.title`),
           callback: () => {
-            this.openModal('report')
+            this.openModal('report', this.resource.id)
           },
           icon: 'flag',
         })
