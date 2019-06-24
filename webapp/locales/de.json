@@ -8,10 +8,31 @@
     "logout": "Ausloggen",
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
+    "forgotPassword": "Passwort vergessen?",
     "moreInfo": "Was ist Human Connection?",
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo"
+  },
+  "password-reset": {
+    "title": "Passwort zurücksetzen",
+    "form": {
+      "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
+      "submit": "Email anfordern",
+      "submitted": "Eine E-Mail mit weiteren Instruktionen wurde verschickt an <b>{email}</b>"
+    }
+  },
+  "verify-code": {
+    "form": {
+      "code": "Code eingeben",
+      "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
+      "next": "Weiter",
+      "change-password":{
+        "success": "Änderung des Passworts war erfolgreich!",
+        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
+        "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
+      }
+    }
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes...",
@@ -199,7 +220,11 @@
     "name": "Name",
     "loadMore": "mehr laden",
     "loading": "wird geladen",
-    "reportContent": "Melden"
+    "reportContent": "Melden",
+    "validations": {
+      "email": "muss eine gültige E-Mail Adresse sein",
+      "verification-code": "muss genau 6 Buchstaben lang sein"
+    }
   },
   "actions": {
     "loading": "lade",

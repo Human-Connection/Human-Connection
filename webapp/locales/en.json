@@ -8,10 +8,31 @@
     "logout": "Logout",
     "email": "Your Email",
     "password": "Your Password",
+    "forgotPassword": "Forgot Password?",
     "moreInfo": "What is Human Connection?",
     "moreInfoURL": "https://human-connection.org/en/",
     "moreInfoHint": "to the presentation page",
     "hello": "Hello"
+  },
+  "password-reset": {
+    "title": "Reset your password",
+    "form": {
+      "description": "A password reset email will be sent to the given email address.",
+      "submit": "Request email",
+      "submitted": "A mail with further instruction has been sent to <b>{email}</b>"
+    }
+  },
+  "verify-code": {
+    "form": {
+      "code": "Enter your code",
+      "description": "Open your inbox and enter the code that we've sent to you.",
+      "next": "Continue",
+      "change-password": {
+        "success": "Changing your password was successful!",
+        "error": "Changing your password failed. Maybe the security code was not correct?",
+        "help": "In case of problems, feel free to ask for help by sending us a mail to:"
+      }
+    }
   },
   "editor": {
     "placeholder": "Leave your inspirational thoughts...",
@@ -199,7 +220,11 @@
     "name": "Name",
     "loadMore": "load more",
     "loading": "loading",
-    "reportContent": "Report"
+    "reportContent": "Report",
+    "validations": {
+      "email": "must be a valid email address",
+      "verification-code": "must be 6 characters long"
+    }
   },
   "actions": {
     "loading": "loading",
