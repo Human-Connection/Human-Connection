@@ -60,7 +60,7 @@
     "apollo-client": "~2.6.3",
     "cookie-universal-nuxt": "~2.0.16",
     "cross-env": "~5.2.0",
-    "date-fns": "2.0.0-alpha.35",
+    "date-fns": "2.0.0-alpha.36",
     "express": "~4.17.1",
     "graphql": "~14.3.1",
     "jsonwebtoken": "~8.5.1",
