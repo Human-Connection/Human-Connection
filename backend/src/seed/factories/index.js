@@ -86,6 +86,10 @@ export default function Factory(options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation, variables)
       return this
     },
+    async request(mutationOrQuery, variables) {
+      this.lastResponse = await this.graphQLClient.request(mutationOrQuery, variables)
+      return this.lastResponse
+    },
     async shout(properties) {
       const { id, type } = properties
       const mutation = `

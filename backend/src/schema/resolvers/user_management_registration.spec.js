@@ -51,11 +51,9 @@ describe('CreateSignUp', () => {
       let asUser = Factory()
       asUser = await asUser.authenticateAs(inviterParams)
       const invitationMutation = `mutation { CreateInvitationCode { code } }`
-      await asUser.mutate(invitationMutation)
-      const data = asUser.lastResponse
       const {
         CreateInvitationCode: { code },
-      } = data
+      } = await asUser.request(invitationMutation)
       variables.invitationCode = code
     })
 
@@ -68,12 +66,12 @@ describe('CreateSignUp', () => {
         await expect(action()).rejects.toThrow('email is not a valid email')
       })
 
-      it('creates no user account', async done => {
+      it('creates no SignUp node', async done => {
         try {
           await action()
         } catch (e) {
-          const userQuery = `{ User { createdAt } }`
-          await expect(client.request(userQuery)).resolves.toEqual({ User: [] })
+          const signUpQuery = `{ SignUp { email } }`
+          await expect(factory.request(signUpQuery)).resolves.toEqual({ SignUp: [] })
           done()
         }
       })
@@ -91,10 +89,10 @@ describe('CreateSignUp', () => {
       describe('creates a SignUp node', () => {
         it('with a `createdAt` attribute', async () => {
           await action()
-          const userQuery = `{ SignUp { createdAt } }`
+          const signUpQuery = `{ SignUp { createdAt } }`
           const {
             SignUp: [signup],
-          } = await client.request(userQuery)
+          } = await factory.request(signUpQuery)
           expect(signup.createdAt).toBeTruthy()
           expect(Date.parse(signup.createdAt)).toEqual(expect.any(Number))
         })
@@ -104,7 +102,7 @@ describe('CreateSignUp', () => {
           const userQuery = `{ SignUp { invitedBy { name } } }`
           const {
             SignUp: [signup],
-          } = await client.request(userQuery)
+          } = await factory.request(userQuery)
           expect(signup).toEqual({ invitedBy: { name: 'Inviter' } })
         })
 
@@ -180,7 +178,7 @@ describe('CreateInvitationCode', () => {
       const invitationQuery = `{ InvitationCode { createdAt } }`
       const {
         InvitationCode: [invitation],
-      } = await factory.mutate(invitationQuery)
+      } = await factory.request(invitationQuery)
       expect(invitation.createdAt).toBeTruthy()
       expect(Date.parse(invitation.createdAt)).toEqual(expect.any(Number))
     })
@@ -205,7 +203,7 @@ describe('CreateInvitationCode', () => {
           asUser = await asUser.authenticateAs(userParams)
           await Promise.all(
             times.map(() => {
-              return asUser.mutate(mutation)
+              return asUser.request(mutation)
             }),
           )
           const headers = await login(userParams)

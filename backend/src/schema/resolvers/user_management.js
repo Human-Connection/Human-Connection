@@ -49,6 +49,47 @@ export default {
     },
   },
   Mutation: {
+    CreateSignUp: async (parents, args, context, resolveInfo) => {
+      const { invitationCode } = args
+      let inviter
+      if (invitationCode) {
+        const session = context.driver.session()
+        try {
+          const result = await session.run(
+            `
+            MATCH (inviter:User)-[:GENERATED]->(code:InvitationCode {id:$invitationCode})
+            RETURN inviter
+          `,
+            { invitationCode },
+          )
+          const inviters = result.records.map(record => {
+            return record.get('inviter')
+          })
+          inviter = inviters[0]
+        } catch (e) {
+          throw e
+        } finally {
+          session.close()
+        }
+      }
+      const signup = await neo4jgraphql(parents, args, context, resolveInfo, false)
+      if (inviter) {
+        const session = context.driver.session()
+        try {
+          await session.run(
+            `
+              MERGE (inviter:User {id:$inviterid})-[:INVITED]->(signup:SignUp {id:$signUpId})
+            `,
+            { signUpId: signup.id, inviterId: inviter.id },
+          )
+        } catch (e) {
+          throw e
+        } finally {
+          session.close()
+        }
+      }
+      return signup
+    },
     invite: async (_, args, { user: inviter, driver }) => {
       const result = await registration({ args, driver })
 
