@@ -8,7 +8,6 @@
           id="postdropzone"
           :use-custom-slot="true"
           @vdropzone-thumbnail="thumbnail"
-          @vdropzone-success="vsuccess"
           @vdropzone-error="verror"
         >
           <div class="dz-message">
@@ -108,7 +107,7 @@ export default {
       slug: null,
       users: [],
       dropzoneOptions: {
-        url: 'https://httpbin.org/post',
+        url: this.addTeaserImage,
         maxFilesize: 5.0,
         previewTemplate: this.template(),
       },
@@ -204,8 +203,9 @@ export default {
         this.form.languageOptions.push({ label: locale.name, value: locale.code })
       })
     },
-    vsuccess(file, response) {
-      this.form.teaserImage = file
+    addTeaserImage(file) {
+      this.form.teaserImage = file[0]
+      return ''
     },
     thumbnail: (file, dataUrl) => {
       let thumbnailElement, contributionImage, uploadArea

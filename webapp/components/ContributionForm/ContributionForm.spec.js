@@ -97,10 +97,9 @@ describe('ContributionForm.vue', () => {
       })
 
       describe('valid form submission', () => {
-        const imageUpload = {
-          file: { filename: 'avataar.svg', previewElement: '' },
-          url: 'someUrlToImage',
-        }
+        const imageUpload = [
+          { file: { filename: 'avataar.svg', previewElement: '' }, url: 'someUrlToImage' },
+        ]
         beforeEach(async () => {
           expectedParams = {
             mutation: PostMutations().CreatePost,
@@ -135,8 +134,8 @@ describe('ContributionForm.vue', () => {
         })
 
         it('supports adding a teaser image', async () => {
-          expectedParams.variables.imageUpload = imageUpload
-          wrapper.vm.vsuccess(imageUpload)
+          expectedParams.variables.imageUpload = imageUpload[0]
+          wrapper.vm.addTeaserImage(imageUpload)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
