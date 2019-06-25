@@ -46,11 +46,27 @@ const post = {
 storiesOf('Post Card', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
-  .add('Simple', () => ({
+  .add('without image', () => ({
     components: { HcPostCard },
     store: helpers.store,
     data: () => ({
       post,
+    }),
+    template: `
+      <hc-post-card
+        :post="post"
+        :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
+      />
+    `,
+  }))
+  .add('with image', () => ({
+    components: { HcPostCard },
+    store: helpers.store,
+    data: () => ({
+      post: {
+        ...post,
+        image: 'https://unsplash.com/photos/R4y_E5ZQDPg/download',
+      },
     }),
     template: `
       <hc-post-card
