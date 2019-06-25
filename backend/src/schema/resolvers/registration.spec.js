@@ -16,6 +16,110 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
+describe('CreateInvitationCode', () => {
+  const mutation = `mutation { CreateInvitationCode { nonce } }`
+
+  it('throws Authorization error', async () => {
+    const client = new GraphQLClient(host)
+    await expect(client.request(mutation)).rejects.toThrow('Not Authorised!')
+  })
+
+  describe('authenticated', () => {
+    beforeEach(async () => {
+      userParams = {
+        name: 'Inviter',
+        email: 'inviter@example.org',
+        password: '1234',
+      }
+      action = async () => {
+        const factory = Factory()
+        await factory.create('User', userParams)
+        const headers = await login(userParams)
+        client = new GraphQLClient(host, { headers })
+        return client.request(mutation)
+      }
+    })
+
+    it('resolves', async () => {
+      await expect(action()).resolves.toEqual({
+        CreateInvitationCode: { nonce: expect.any(String) },
+      })
+    })
+
+    it('creates an InvitationCode with a `createdAt` attribute', async () => {
+      await action()
+      const invitationQuery = `{ InvitationCode { createdAt } }`
+      const {
+        InvitationCode: [invitation],
+      } = await factory.request(invitationQuery)
+      expect(invitation.createdAt).toBeTruthy()
+      expect(Date.parse(invitation.createdAt)).toEqual(expect.any(Number))
+    })
+
+    it('relates inviting User to InvitationCode', async () => {
+      await action()
+      const invitationQuery = `{ InvitationCode { generatedBy { name } } }`
+      const {
+        InvitationCode: [user],
+      } = await factory.request(invitationQuery)
+      const expected = { generatedBy: { name: 'Inviter' } }
+      expect(user).toEqual(expected)
+    })
+
+    describe('who has invited a lot of users already', () => {
+      beforeEach(() => {
+        action = async () => {
+          const factory = Factory()
+          await factory.create('User', userParams)
+          const times = [1, 2, 3]
+          let asUser = Factory()
+          asUser = await asUser.authenticateAs(userParams)
+          await Promise.all(
+            times.map(() => {
+              return asUser.request(mutation)
+            }),
+          )
+          const headers = await login(userParams)
+          client = new GraphQLClient(host, { headers })
+          return client.request(mutation, variables)
+        }
+      })
+
+      describe('as ordinary `user`', () => {
+        it('throws `Not Authorised` because of maximum number of invitations', async () => {
+          await expect(action()).rejects.toThrow('Not Authorised')
+        })
+
+        it('creates no additional user accounts', async done => {
+          try {
+            await action()
+          } catch (e) {
+            const invitationQuery = `{ InvitationCode { createdAt } }`
+            const { InvitationCode: codes } = await factory.request(invitationQuery)
+            expect(codes).toHaveLength(3)
+            done()
+          }
+        })
+      })
+
+      describe('as a strong donator', () => {
+        beforeEach(() => {
+          // What is the setup?
+        })
+
+        it.todo('can invite more people')
+        // it('can invite more people', async () => {
+        // await action()
+        // const invitationQuery = `{ User { createdAt } }`
+        // const { User: users } = await client.request(invitationQuery )
+        // expect(users).toHaveLength(3 + 1 + 1)
+        // })
+      })
+    })
+  })
+})
+
+/*
 describe('CreateSignUp', () => {
   const mutation = `mutation($email: String!, $invitationCode: String) {
     CreateSignUp(email: $email, invitationCode: $invitationCode) { email }
@@ -50,11 +154,11 @@ describe('CreateSignUp', () => {
       await factory.create('User', inviterParams)
       let asUser = Factory()
       asUser = await asUser.authenticateAs(inviterParams)
-      const invitationMutation = `mutation { CreateInvitationCode { code } }`
+      const invitationMutation = `mutation { CreateInvitationCode { nonce } }`
       const {
-        CreateInvitationCode: { code },
+        CreateInvitationCode: { nonce },
       } = await asUser.request(invitationMutation)
-      variables.invitationCode = code
+      variables.invitationCode = nonce
     })
 
     describe('given an invalid email', () => {
@@ -142,106 +246,4 @@ describe('CreateSignUp', () => {
     })
   })
 })
-
-describe('CreateInvitationCode', () => {
-  const mutation = `mutation { CreateInvitationCode { code } }`
-
-  it('throws Authorization error', async () => {
-    const client = new GraphQLClient(host)
-    await expect(client.request(mutation)).rejects.toThrow('Not Authorised!')
-  })
-
-  describe('authenticated', () => {
-    beforeEach(async () => {
-      userParams = {
-        name: 'Inviter',
-        email: 'inviter@example.org',
-        password: '1234',
-      }
-      action = async () => {
-        const factory = Factory()
-        await factory.create('User', userParams)
-        const headers = await login(userParams)
-        client = new GraphQLClient(host, { headers })
-        return client.request(mutation)
-      }
-    })
-
-    it('resolves', async () => {
-      await expect(action()).resolves.toEqual({
-        CreateInvitationCode: { code: expect.any(String) },
-      })
-    })
-
-    it('creates an InvitationCode with a `createdAt` attribute', async () => {
-      await action()
-      const invitationQuery = `{ InvitationCode { createdAt } }`
-      const {
-        InvitationCode: [invitation],
-      } = await factory.request(invitationQuery)
-      expect(invitation.createdAt).toBeTruthy()
-      expect(Date.parse(invitation.createdAt)).toEqual(expect.any(Number))
-    })
-
-    it('relates inviting User to InvitationCode', async () => {
-      await action()
-      const invitationQuery = `{ InvitationCode { generatedBy { name } } }`
-      const {
-        InvitationCode: [user],
-      } = await client.request(invitationQuery)
-      const expected = { generatedBy: { name: 'Inviter' } }
-      expect(user).toEqual(expected)
-    })
-
-    describe('who has invited a lot of users already', () => {
-      beforeEach(() => {
-        action = async () => {
-          const factory = Factory()
-          await factory.create('User', userParams)
-          const times = [1, 2, 3]
-          let asUser = Factory()
-          asUser = await asUser.authenticateAs(userParams)
-          await Promise.all(
-            times.map(() => {
-              return asUser.request(mutation)
-            }),
-          )
-          const headers = await login(userParams)
-          client = new GraphQLClient(host, { headers })
-          return client.request(mutation, variables)
-        }
-      })
-
-      describe('as ordinary `user`', () => {
-        it('throws `Not Authorised` because of maximum number of invitations', async () => {
-          await expect(action()).rejects.toThrow('Not Authorised')
-        })
-
-        it('creates no additional user accounts', async done => {
-          try {
-            await action()
-          } catch (e) {
-            const invitationQuery = `{ User { createdAt } }`
-            const { User: users } = await client.request(invitationQuery)
-            expect(users).toHaveLength(3 + 1)
-            done()
-          }
-        })
-      })
-
-      describe('as a strong donator', () => {
-        beforeEach(() => {
-          // What is the setup?
-        })
-
-        it.todo('can invite more people')
-        // it('can invite more people', async () => {
-        // await action()
-        // const invitationQuery = `{ User { createdAt } }`
-        // const { User: users } = await client.request(invitationQuery )
-        // expect(users).toHaveLength(3 + 1 + 1)
-        // })
-      })
-    })
-  })
-})
+*/

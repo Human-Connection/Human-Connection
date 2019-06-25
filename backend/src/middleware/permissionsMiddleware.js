@@ -75,7 +75,7 @@ const invitationLimitReached = rule({
   try {
     const result = await session.run(
       `
-      MATCH (user:User {id:$id})-[:CREATED]->(i:InvitationCode)
+      MATCH (user:User {id:$id})-[:GENERATED]->(i:InvitationCode)
       RETURN COUNT(i) as count
       `,
       { id: user.id },

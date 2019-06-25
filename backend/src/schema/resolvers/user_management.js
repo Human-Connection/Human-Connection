@@ -3,40 +3,6 @@ import bcrypt from 'bcryptjs'
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 
-const registration = async ({ args, driver }) => {
-  const createdAt = new Date().toISOString()
-  const updatedAt = new Date().toISOString()
-  const { email } = args
-  const session = driver.session()
-  let result
-  try {
-    result = await session.run(
-      `
-      CREATE (user:User {
-        id: apoc.create.uuid(),
-        email:$email,
-        createdAt:$createdAt,
-        updatedAt:$updatedAt,
-        deleted: false,
-        disabled: false,
-        isVerified: false
-        })
-      RETURN user
-      `,
-      { email, createdAt, updatedAt },
-    )
-  } catch (e) {
-    if (e.message.match(/already exists/g)) {
-      throw new UserInputError('User account with this email already exists.')
-    } else {
-      throw e
-    }
-  } finally {
-    session.close()
-  }
-  return result
-}
-
 export default {
   Query: {
     isLoggedIn: (_, args, { driver, user }) => {
@@ -49,71 +15,6 @@ export default {
     },
   },
   Mutation: {
-    CreateSignUp: async (parents, args, context, resolveInfo) => {
-      const { invitationCode } = args
-      let inviter
-      if (invitationCode) {
-        const session = context.driver.session()
-        try {
-          const result = await session.run(
-            `
-            MATCH (inviter:User)-[:GENERATED]->(code:InvitationCode {id:$invitationCode})
-            RETURN inviter
-          `,
-            { invitationCode },
-          )
-          const inviters = result.records.map(record => {
-            return record.get('inviter')
-          })
-          inviter = inviters[0]
-        } catch (e) {
-          throw e
-        } finally {
-          session.close()
-        }
-      }
-      const signup = await neo4jgraphql(parents, args, context, resolveInfo, false)
-      if (inviter) {
-        const session = context.driver.session()
-        try {
-          await session.run(
-            `
-              MERGE (inviter:User {id:$inviterid})-[:INVITED]->(signup:SignUp {id:$signUpId})
-            `,
-            { signUpId: signup.id, inviterId: inviter.id },
-          )
-        } catch (e) {
-          throw e
-        } finally {
-          session.close()
-        }
-      }
-      return signup
-    },
-    invite: async (_, args, { user: inviter, driver }) => {
-      const result = await registration({ args, driver })
-
-      const session = driver.session()
-      try {
-        const {
-          records: [record],
-        } = result
-        const { id: userId } = record.get('user').properties
-        await session.run(
-          `
-            MATCH (inviter:User {id:$inviterId})
-            MATCH (user:User {id:$userId})
-            MERGE (inviter)-[:INVITED]->(user)
-          `,
-          { inviterId: inviter.id, userId },
-        )
-      } catch (e) {
-        throw e
-      } finally {
-        session.close()
-      }
-      return true
-    },
     login: async (_, { email, password }, { driver, req, user }) => {
       // if (user && user.id) {
       //   throw new Error('Already logged in.')
