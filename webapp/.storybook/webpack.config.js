@@ -13,9 +13,9 @@ module.exports = async ({ config, mode }) => {
   config.module.rules.push({
     test: /\.scss$/,
     use: [
-      'style-loader',
-      'css-loader',
-      'sass-loader',
+      { loader: 'style-loader' },
+      { loader: 'css-loader', options: { sourceMap: true } },
+      { loader: 'sass-loader', options: { sourceMap: true } },
       {
         loader: 'style-resources-loader',
         options: {
@@ -24,6 +24,7 @@ module.exports = async ({ config, mode }) => {
               __dirname,
               '../node_modules/@human-connection/styleguide/dist/shared.scss',
             ),
+            path.resolve(__dirname, '../assets/styles/main.scss'),
           ],
           injector: 'prepend',
         },
@@ -34,7 +35,6 @@ module.exports = async ({ config, mode }) => {
 
   config.resolve.alias = {
     ...config.resolve.alias,
-    '@': path.dirname(path.resolve(__dirname)),
     '~~': path.resolve(__dirname, rootDir),
     '~': path.resolve(__dirname, srcDir),
   }
