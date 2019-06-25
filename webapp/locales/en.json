@@ -281,17 +281,20 @@
     "user": {
       "title": "Report User",
       "type": "User",
-      "message": "Do you really want to report the user \"<b>{name}</b>\"?"
+      "message": "Do you really want to report the user \"<b>{name}</b>\"?",
+      "error": "You already reported the user!"
     },
     "contribution": {
       "title": "Report Post",
       "type": "Contribution",
-      "message": "Do you really want to report the contribution \"<b>{name}</b>\"?"
+      "message": "Do you really want to report the contribution \"<b>{name}</b>\"?",
+      "error": "You have already reported the contribution!"
     },
     "comment": {
       "title": "Report Comment",
       "type": "Comment",
-      "message": "Do you really want to report the comment from \"<b>{name}</b>\"?"
+      "message": "Do you really want to report the comment from \"<b>{name}</b>\"?",
+      "error": "You have already reported the comment!"
     }
   },
   "followButton": {
