@@ -291,6 +291,7 @@ export default {
 }
 
 .hc-attachments-upload-area-update-post {
+  background-color: $background-color-base;
   align-items: center;
 }
 
@@ -348,5 +349,9 @@ export default {
 
 .contribution-form-footer {
   border-top: $border-size-base solid $border-color-softest;
+}
+
+.contribution-image {
+  max-height: 300px;
 }
 </style>
