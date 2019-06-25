@@ -23,20 +23,20 @@
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
     <ds-space margin-bottom="small" />
-    <div v-if="!isActive" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
+    <div v-if="!collapsible" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
     <div v-show="comment.content !== comment.contentExcerpt">
       <span
-        v-if="!isActive"
+        v-if="!collapsible"
         style="padding-left: 40px; color: #17b53f; cursor:pointer"
-        @click="isActive = !isActive"
+        @click="collapsible = !collapsible"
       >
         {{ $t('comment.show.more') }}
       </span>
     </div>
-    <div v-if="isActive" v-html="comment.content" style="padding-left: 40px;" />
+    <div v-if="collapsible" v-html="comment.content" style="padding-left: 40px;" />
     <span
-      v-if="isActive"
-      @click="isActive = !isActive"
+      v-if="collapsible"
+      @click="collapsible = !collapsible"
       style="padding-left: 40px; color: #17b53f; cursor:pointer"
     >
       {{ $t('comment.show.less') }}
@@ -54,7 +54,7 @@ import ContentMenu from '~/components/ContentMenu'
 export default {
   data: function() {
     return {
-      isActive: false,
+      collapsible: false,
     }
   },
   components: {
