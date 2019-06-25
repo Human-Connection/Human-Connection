@@ -16,7 +16,8 @@ const post = {
   image: null,
   author: {
     id: 'u3',
-    avatar: '/uploads/1561386235196-Fleckenzwerg-Sabberlatzchen',
+    avatar:
+      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
     slug: 'jenny-rostock',
     name: 'Rainer Unsinn',
     disabled: false,

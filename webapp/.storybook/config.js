@@ -17,7 +17,7 @@ Vue.component('no-ssr', {
   template: '<div><slot>No SSR</slot></div>',
 })
 Vue.component('v-popover', {
-  template: '<div style="display: none">Popover Content</div>',
+  template: '<div><slot>Popover Content</slot></div>',
 })
 
 // Automatically import all files ending in *.stories.js
