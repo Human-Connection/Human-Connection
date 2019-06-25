@@ -100,7 +100,7 @@
     "eslint-plugin-prettier": "~3.1.0",
     "eslint-plugin-promise": "~4.1.1",
     "eslint-plugin-standard": "~4.0.0",
-    "eslint-plugin-vue": "~5.2.2",
+    "eslint-plugin-vue": "~5.2.3",
     "fuse.js": "^3.4.5",
     "jest": "~24.8.0",
     "node-sass": "~4.12.0",
