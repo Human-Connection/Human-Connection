@@ -14,7 +14,9 @@ Vue.component('nuxt-link', {
   template: '<a href="#" @click.prevent="log()"><slot>NuxtLink</slot></a>',
 })
 Vue.component('no-ssr', {
-  template: '<div><slot>No SSR</slot></div>',
+  render() {
+    return this.$slots.default
+  },
 })
 Vue.component('v-popover', {
   template: '<div><slot>Popover Content</slot></div>',
