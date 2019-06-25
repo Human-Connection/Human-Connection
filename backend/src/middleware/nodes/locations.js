@@ -87,6 +87,9 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
   }
 
   const session = driver.session()
+  if (data.place_type.length > 1) {
+    data.id = 'region.' + data.id.split('.')[1]
+  }
   await createLocation(session, data)
 
   let parent = data
