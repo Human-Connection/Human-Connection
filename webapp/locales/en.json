@@ -8,13 +8,40 @@
     "logout": "Logout",
     "email": "Your Email",
     "password": "Your Password",
+    "forgotPassword": "Forgot Password?",
     "moreInfo": "What is Human Connection?",
     "moreInfoURL": "https://human-connection.org/en/",
     "moreInfoHint": "to the presentation page",
     "hello": "Hello"
   },
+  "password-reset": {
+    "title": "Reset your password",
+    "form": {
+      "description": "A password reset email will be sent to the given email address.",
+      "submit": "Request email",
+      "submitted": "A mail with further instruction has been sent to <b>{email}</b>"
+    }
+  },
+  "verify-code": {
+    "form": {
+      "code": "Enter your code",
+      "description": "Open your inbox and enter the code that we've sent to you.",
+      "next": "Continue",
+      "change-password": {
+        "success": "Changing your password was successful!",
+        "error": "Changing your password failed. Maybe the security code was not correct?",
+        "help": "In case of problems, feel free to ask for help by sending us a mail to:"
+      }
+    }
+  },
   "editor": {
-    "placeholder": "Leave your inspirational thoughts..."
+    "placeholder": "Leave your inspirational thoughts...",
+    "mention": {
+      "noUsersFound": "No users found"
+    },
+    "hashtag": {
+      "noHashtagsFound": "No hashtags found"
+    }
   },
   "profile": {
     "name": "My Profile",
@@ -22,7 +49,7 @@
     "follow": "Follow",
     "followers": "Followers",
     "following": "Following",
-    "shouted": "Shouted",
+    "shouted": "Recommended",
     "commented": "Commented",
     "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find",
@@ -38,7 +65,7 @@
   },
   "notifications": {
     "menu": {
-      "mentioned": "has mentioned you in a post"
+      "mentioned": "mentioned you in a post"
     }
   },
   "search": {
@@ -52,7 +79,7 @@
       "name": "Your data",
       "labelName": "Your Name",
       "namePlaceholder": "Femanon Funny",
-      "labelCity": "Your City or Region",
+      "labelCity": "Su ciudad o región",
       "labelBio": "About You",
       "success": "Your data was successfully updated!"
     },
@@ -117,7 +144,7 @@
       "projects": "Projects",
       "invites": "Invites",
       "follows": "Follows",
-      "shouts": "Shouts"
+      "shouts": "Recommended"
     },
     "organizations": {
       "name": "Organizations"
@@ -193,7 +220,11 @@
     "name": "Name",
     "loadMore": "load more",
     "loading": "loading",
-    "reportContent": "Report"
+    "reportContent": "Report",
+    "validations": {
+      "email": "must be a valid email address",
+      "verification-code": "must be 6 characters long"
+    }
   },
   "actions": {
     "loading": "loading",
@@ -302,6 +333,9 @@
     }
   },
   "contribution": {
+    "newPost": "Create a new Post",
+    "filterFollow": "Filter contributions from users I follow",
+    "filterALL": "View all contributions",
     "success": "Saved!",
     "languageSelectLabel": "Language",
     "tagsInputLabel": "Tags",

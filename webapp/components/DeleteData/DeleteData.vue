@@ -83,6 +83,7 @@ export default {
       deleteContributions: false,
       deleteComments: false,
       deleteEnabled: false,
+      enableDeletionValue: null,
     }
   },
   computed: {

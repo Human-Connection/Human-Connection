@@ -105,8 +105,8 @@ const permissions = shield(
     Query: {
       '*': deny,
       findPosts: allow,
-      Category: isAdmin,
-      Tag: isAdmin,
+      Category: allow,
+      Tag: allow,
       Report: isModerator,
       Notification: isAdmin,
       statistics: allow,
@@ -147,6 +147,8 @@ const permissions = shield(
       CreateComment: isAuthenticated,
       DeleteComment: isAuthor,
       DeleteUser: isDeletingOwnAccount,
+      requestPasswordReset: allow,
+      resetPassword: allow,
     },
     User: {
       email: isMyOwn,

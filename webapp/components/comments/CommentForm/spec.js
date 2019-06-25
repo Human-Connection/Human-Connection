@@ -1,9 +1,10 @@
 import { mount, createLocalVue, createWrapper } from '@vue/test-utils'
 import CommentForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
-
+localVue.use(Vuex)
 localVue.use(Styleguide)
 
 describe('CommentForm.vue', () => {
@@ -35,8 +36,16 @@ describe('CommentForm.vue', () => {
   })
 
   describe('mount', () => {
+    const getters = {
+      'editor/placeholder': () => {
+        return 'some cool placeholder'
+      },
+    }
+    const store = new Vuex.Store({
+      getters,
+    })
     const Wrapper = () => {
-      return mount(CommentForm, { mocks, localVue, propsData })
+      return mount(CommentForm, { mocks, localVue, propsData, store })
     }
 
     beforeEach(() => {

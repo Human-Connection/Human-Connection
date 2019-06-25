@@ -1,8 +1,20 @@
 import { Mention as TipTapMention } from 'tiptap-extensions'
 
-export default class Mention extends TipTapMention {
+export default class Hashtag extends TipTapMention {
   get name() {
-    return 'mention'
+    return 'hashtag'
+  }
+
+  get defaultOptions() {
+    return {
+      matcher: {
+        char: '#',
+        allowSpaces: false,
+        startOfLine: false,
+      },
+      mentionClass: 'hashtag',
+      suggestionClass: 'hashtag-suggestion',
+    }
   }
 
   get schema() {
@@ -19,6 +31,7 @@ export default class Mention extends TipTapMention {
           class: this.options.mentionClass,
           href: node.attrs.url,
           target: '_blank',
+          // contenteditable: 'true',
         },
         `${this.options.matcher.char}${node.attrs.label}`,
       ]

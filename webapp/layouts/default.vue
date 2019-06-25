@@ -92,7 +92,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import LocaleSwitch from '~/components/LocaleSwitch'
+import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/notifications/NotificationMenu'

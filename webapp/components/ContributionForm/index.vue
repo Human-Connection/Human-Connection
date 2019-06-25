@@ -4,7 +4,12 @@
       <ds-card>
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
         <no-ssr>
-          <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
+          <hc-editor
+            :users="users"
+            :hashtags="hashtags"
+            :value="form.content"
+            @input="updateEditorContent"
+          />
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
         <ds-input
@@ -89,6 +94,7 @@ export default {
       disabled: false,
       slug: null,
       users: [],
+      hashtags: [],
     }
   },
   watch: {
@@ -173,15 +179,32 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql(`{
-          User(orderBy: slug_asc) {
-            id
-            slug
+        return gql`
+          {
+            User(orderBy: slug_asc) {
+              id
+              slug
+            }
           }
-        }`)
+        `
       },
       result(result) {
         this.users = result.data.User
+      },
+    },
+    Tag: {
+      query() {
+        return gql`
+          {
+            Tag(orderBy: name_asc) {
+              id
+              name
+            }
+          }
+        `
+      },
+      result(result) {
+        this.hashtags = result.data.Tag
       },
     },
   },
