@@ -25,6 +25,8 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor'
+import PostCommentsQuery from '~/graphql/PostCommentsQuery.js'
+import CommentMutations from '~/graphql/CommentMutations.js'
 
 export default {
   components: {
@@ -62,22 +64,22 @@ export default {
       this.disabled = true
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation($postId: ID, $content: String!) {
-              CreateComment(postId: $postId, content: $content) {
-                id
-                content
-              }
-            }
-          `,
+          mutation: CommentMutations().CreateComment,
           variables: {
             postId: this.post.id,
             content: this.form.content,
           },
+          update: (store, { data: { CreateComment } }) => {
+            const data = store.readQuery({
+              query: PostCommentsQuery(this.$i18n),
+              variables: { slug: this.post.slug },
+            })
+            data.Post[0].comments.push(CreateComment)
+            store.writeQuery({ query: PostCommentsQuery(this.$i18n), data })
+          },
         })
         .then(res => {
           this.loading = false
-          this.$root.$emit('refetchPostComments')
           this.clear()
           this.$toast.success(this.$t('post.comment.submitted'))
           this.disabled = false
@@ -94,6 +96,8 @@ export default {
           User(orderBy: slug_asc) {
             id
             slug
+            name
+            avatar
           }
         }`)
       },

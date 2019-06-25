@@ -127,8 +127,8 @@ export default {
         this.slug = contribution.slug
         this.form.content = contribution.content
         this.form.title = contribution.title
-        this.form.language = this.locale
         this.form.teaserImage = contribution.imageUpload
+        this.form.language = { value: contribution.language }
       },
     },
     error() {
