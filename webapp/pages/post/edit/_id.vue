@@ -1,9 +1,7 @@
 <template>
   <ds-flex :width="{ base: '100%' }" gutter="base">
     <ds-flex-item :width="{ base: '100%', md: 3 }">
-      <hc-contribution-form :contribution="contribution">
-        <img class="contribution-image" :src="contribution.image | proxyApiUrl" />
-      </hc-contribution-form>
+      <hc-contribution-form :contribution="contribution" />
     </ds-flex-item>
     <ds-flex-item :width="{ base: '100%', md: 1 }">&nbsp;</ds-flex-item>
   </ds-flex>

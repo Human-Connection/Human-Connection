@@ -3,11 +3,14 @@ import ContributionForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
+import Filters from '~/plugins/vue-filters'
+import TeaserImage from '~/components/TeaserImage/TeaserImage'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
 
@@ -21,6 +24,10 @@ describe('ContributionForm.vue', () => {
   let propsData
   const postTitle = 'this is a title for a post'
   const postContent = 'this is a post'
+  const imageUpload = {
+    file: { filename: 'avataar.svg', previewElement: '' },
+    url: 'someUrlToImage',
+  }
 
   beforeEach(() => {
     mocks = {
@@ -97,9 +104,6 @@ describe('ContributionForm.vue', () => {
       })
 
       describe('valid form submission', () => {
-        const imageUpload = [
-          { file: { filename: 'avataar.svg', previewElement: '' }, url: 'someUrlToImage' },
-        ]
         beforeEach(async () => {
           expectedParams = {
             mutation: PostMutations().CreatePost,
@@ -134,8 +138,8 @@ describe('ContributionForm.vue', () => {
         })
 
         it('supports adding a teaser image', async () => {
-          expectedParams.variables.imageUpload = imageUpload[0]
-          wrapper.vm.addTeaserImage(imageUpload)
+          expectedParams.variables.imageUpload = imageUpload
+          wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -173,25 +177,6 @@ describe('ContributionForm.vue', () => {
           await mocks.$apollo.mutate
           expect(mocks.$toast.error).toHaveBeenCalledWith('Not Authorised!')
         })
-
-        const message = 'File upload failed'
-        const fileError = { status: 'error' }
-
-        it('defaults to error false', () => {
-          expect(wrapper.vm.error).toEqual(false)
-        })
-
-        it('shows an error toaster when verror is called', () => {
-          wrapper.vm.verror(fileError, message)
-          expect(mocks.$toast.error).toHaveBeenCalledWith(fileError.status, message)
-        })
-
-        it('changes error status from false to true to false', () => {
-          wrapper.vm.verror(fileError, message)
-          expect(wrapper.vm.error).toEqual(true)
-          jest.runAllTimers()
-          expect(wrapper.vm.error).toEqual(false)
-        })
       })
     })
 
@@ -204,6 +189,7 @@ describe('ContributionForm.vue', () => {
             title: 'dies ist ein Post',
             content: 'auf Deutsch geschrieben',
             language: 'de',
+            imageUpload,
           },
         }
         wrapper = Wrapper()
@@ -225,10 +211,6 @@ describe('ContributionForm.vue', () => {
         expect(wrapper.vm.form.content).toEqual(propsData.contribution.content)
       })
 
-      it('sets language equal to contribution language', () => {
-        expect(wrapper.vm.form.language).toEqual({ value: propsData.contribution.language })
-      })
-
       it('calls the UpdatePost apollo mutation', async () => {
         expectedParams = {
           mutation: PostMutations().UpdatePost,
@@ -237,6 +219,7 @@ describe('ContributionForm.vue', () => {
             content: postContent,
             language: propsData.contribution.language,
             id: propsData.contribution.id,
+            imageUpload,
           },
         }
         postTitleInput = wrapper.find('.ds-input')
