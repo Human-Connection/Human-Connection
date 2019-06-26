@@ -7,6 +7,7 @@
           <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
+        <hc-categories-select model="categories" @updateCategories="updateCategories" />
         <ds-flex class="contribution-form-footer">
           <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
           <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
@@ -50,10 +51,12 @@ import HcEditor from '~/components/Editor'
 import orderBy from 'lodash/orderBy'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
+import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 
 export default {
   components: {
     HcEditor,
+    HcCategoriesSelect,
   },
   props: {
     contribution: { type: Object, default: () => {} },
@@ -65,6 +68,7 @@ export default {
         content: '',
         language: null,
         languageOptions: [],
+        categories: null,
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -106,22 +110,23 @@ export default {
   },
   methods: {
     submit() {
+      const { title, content, language, categories } = this.form
       this.loading = true
       this.$apollo
         .mutate({
           mutation: this.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
             id: this.id,
-            title: this.form.title,
-            content: this.form.content,
-            language: this.form.language ? this.form.language.value : this.$i18n.locale(),
+            title,
+            content,
+            language: language ? language.value : this.$i18n.locale(),
+            categories,
           },
         })
         .then(res => {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
           this.disabled = true
-
           const result = res.data[this.id ? 'UpdatePost' : 'CreatePost']
 
           this.$router.push({
@@ -143,6 +148,9 @@ export default {
       orderBy(locales, 'name').map(locale => {
         this.form.languageOptions.push({ label: locale.name, value: locale.code })
       })
+    },
+    updateCategories(ids) {
+      this.form.categories = ids
     },
   },
   apollo: {

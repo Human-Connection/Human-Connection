@@ -62,7 +62,6 @@ export default {
         }
       }
       session.close()
-
       return post
     },
   },

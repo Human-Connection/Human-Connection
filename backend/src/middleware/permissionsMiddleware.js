@@ -105,7 +105,7 @@ const permissions = shield(
     Query: {
       '*': deny,
       findPosts: allow,
-      Category: isAdmin,
+      Category: allow,
       Tag: isAdmin,
       Report: isModerator,
       Notification: isAdmin,
