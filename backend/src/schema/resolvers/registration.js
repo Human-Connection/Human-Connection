@@ -31,12 +31,15 @@ export default {
       return response
     },
     CreateSignUp: async (parent, args, context, resolveInfo) => {
-      args.nonce = uuid().substring(0, 6)
-      return neo4jgraphql(parent, args, context, resolveInfo, false)
+      const nonce = uuid().substring(0, 6)
+      args.nonce = nonce
+      const response = await neo4jgraphql(parent, args, context, resolveInfo, false)
+      return { nonce, response }
     },
     CreateSignUpByInvitationCode: async (parent, args, context, resolveInfo) => {
       const { token } = args
-      args.nonce = uuid().substring(0, 6)
+      const nonce = uuid().substring(0, 6)
+      args.nonce = nonce
       const session = context.driver.session()
       let response
       try {
@@ -67,7 +70,7 @@ export default {
       } finally {
         session.close()
       }
-      return response
+      return { nonce, response }
     },
   },
 }
