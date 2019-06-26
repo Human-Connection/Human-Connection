@@ -1,5 +1,6 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 import { getLangByName } from "../../support/helpers";
+import slugify from 'slug'
 
 /* global cy  */
 
@@ -171,10 +172,11 @@ When("I press {string}", label => {
 });
 
 Given("we have the following posts in our database:", table => {
-  table.hashes().forEach(({ Author, ...postAttributes }) => {
+  table.hashes().forEach(({ Author, ...postAttributes }, i) => {
+    Author = Author || `author-${i}`
     const userAttributes = {
       name: Author,
-      email: `${Author}@example.org`,
+      email: `${slugify(Author, {lower: true})}@example.org`,
       password: "1234"
     };
     postAttributes.deleted = Boolean(postAttributes.deleted);
