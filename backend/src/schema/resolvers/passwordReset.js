@@ -26,7 +26,7 @@ export default {
       const code = uuid().substring(0, 6)
       const [user] = await createPasswordReset({ driver, code, email })
       const name = (user && user.name) || ''
-      return { user, code, name }
+      return { user, code, name, response: true }
     },
     resetPassword: async (_, { email, code, newPassword }, { driver }) => {
       const session = driver.session()

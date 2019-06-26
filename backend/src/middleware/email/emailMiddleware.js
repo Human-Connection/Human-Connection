@@ -17,27 +17,27 @@ const transporter = () => {
   return nodemailer.createTransport(configs)
 }
 
-const awaitAndReturnTrue = async (resolve, root, args, context, resolveInfo) => {
-  await resolve(root, args, context, resolveInfo)
-  return true
+const returnResponse = async (resolve, root, args, context, resolveInfo) => {
+  const { response } = await resolve(root, args, context, resolveInfo)
+  delete response.nonce
+  return response
 }
 
 const sendSignupMail = async (resolve, root, args, context, resolveInfo) => {
   const { email } = args
-  const resolved = await resolve(root, args, context, resolveInfo)
-  const { response, nonce } = resolved
-  delete resolved.nonce
+  const { response, nonce } = await resolve(root, args, context, resolveInfo)
+  delete response.nonce
   await transporter().sendMail(signupTemplate({ email, nonce }))
   return response
 }
 
-export default function(isEnabled) {
+export default function({ isEnabled }) {
   if (!isEnabled)
     return {
       Mutation: {
-        requestPasswordReset: awaitAndReturnTrue,
-        CreateSignUp: awaitAndReturnTrue,
-        CreateSignUpByInvitationCode: awaitAndReturnTrue,
+        requestPasswordReset: returnResponse,
+        CreateSignUp: returnResponse,
+        CreateSignUpByInvitationCode: returnResponse,
       },
     }
 
@@ -45,11 +45,10 @@ export default function(isEnabled) {
     Mutation: {
       requestPasswordReset: async (resolve, root, args, context, resolveInfo) => {
         const { email } = args
-        const resolved = await resolve(root, args, context, resolveInfo)
-        const { user, code, name } = resolved
+        const { response, user, code, name } = await resolve(root, args, context, resolveInfo)
         const mailTemplate = user ? resetPasswordMail : wrongAccountMail
         await transporter().sendMail(mailTemplate({ email, code, name }))
-        return true
+        return response
       },
       CreateSignUp: sendSignupMail,
       CreateSignUpByInvitationCode: sendSignupMail,
