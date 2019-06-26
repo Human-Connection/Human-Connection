@@ -1,22 +1,5 @@
 import uuid from 'uuid/v4'
 import bcrypt from 'bcryptjs'
-import CONFIG from '../../config'
-import nodemailer from 'nodemailer'
-import { resetPasswordMail, wrongAccountMail } from './passwordReset/emailTemplates'
-
-const transporter = () => {
-  const configs = {
-    host: CONFIG.SMTP_HOST,
-    port: CONFIG.SMTP_PORT,
-    ignoreTLS: CONFIG.SMTP_IGNORE_TLS,
-    secure: false, // true for 465, false for other ports
-  }
-  const { SMTP_USERNAME: user, SMTP_PASSWORD: pass } = CONFIG
-  if (user && pass) {
-    configs.auth = { user, pass }
-  }
-  return nodemailer.createTransport(configs)
-}
 
 export async function createPasswordReset(options) {
   const { driver, code, email, issuedAt = new Date() } = options
@@ -42,12 +25,8 @@ export default {
     requestPasswordReset: async (_, { email }, { driver }) => {
       const code = uuid().substring(0, 6)
       const [user] = await createPasswordReset({ driver, code, email })
-      if (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT) {
-        const name = (user && user.name) || ''
-        const mailTemplate = user ? resetPasswordMail : wrongAccountMail
-        await transporter().sendMail(mailTemplate({ email, code, name }))
-      }
-      return true
+      const name = (user && user.name) || ''
+      return { user, code, name }
     },
     resetPassword: async (_, { email, code, newPassword }, { driver }) => {
       const session = driver.session()

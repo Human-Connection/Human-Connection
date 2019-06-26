@@ -13,6 +13,7 @@ import orderBy from './orderByMiddleware'
 import normalization from './normalization/normalizationMiddleware'
 import validation from './validation/validationMiddleware'
 import notifications from './notifications'
+import email from './email/emailMiddleware'
 
 export default schema => {
   const middlewares = {
@@ -30,6 +31,7 @@ export default schema => {
     user: user,
     includedFields: includedFields,
     orderBy: orderBy,
+    email: email({isEnabled: (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT)}),
   }
 
   let order = [
@@ -41,6 +43,7 @@ export default schema => {
     'validation',
     'sluggify',
     'excerpt',
+    'email',
     'notifications',
     'xss',
     'softDelete',
