@@ -56,7 +56,7 @@ export default {
         MERGE (i)-[a:ACTIVATED]->(s)
         MERGE (u)-[:INVITED]->(s)
         RETURN u,i,a,s`
-        result = await session.run(cypher, { args, token})
+        result = await session.run(cypher, { args, token })
         const [record] = result.records
         if (!record) throw new UserInputError('Invitation code already used or does not exist.')
         const [inviter, signup] = [record.get('u'), record.get('s')]

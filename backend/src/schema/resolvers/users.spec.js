@@ -45,8 +45,8 @@ describe('users', () => {
 
   describe('CreateUser', () => {
     const mutation = `
-      mutation($name: String, $password: String!, $email: String!) {
-        CreateUser(name: $name, password: $password, email: $email) {
+      mutation($name: String, $password: String!, $email: String!, $nonce: String) {
+        CreateUser(name: $name, password: $password, email: $email, nonce: $nonce) {
           id
         }
       }
@@ -68,25 +68,44 @@ describe('users', () => {
         })
 
         describe('given a SignUp node', () => {
-          let nonce
+          const userParams = {
+            email: 'user@example.org',
+            password: '1234',
+            name: 'John Doe',
+            slug: 'john',
+          }
 
           beforeEach(async () => {
             const session = driver.session()
             const args = {
-              id: apoc.create.uuid(),
+              id: '123',
               createdAt: new Date().toISOString(),
               email: 'someuser@example.org',
-              nonce: '123456'
+              nonce: '123456',
             }
-            await session.run('CREATE (s:SignUp {$args})', args)
+            await session.run('CREATE (s:SignUp {args})', { args })
             session.close()
           })
 
           describe('sending a valid nonce', () => {
+            const variables = { ...userParams, nonce: '123456' }
 
+            it('creates a user account', async () => {
+              const expected = {
+                CreateUser: {
+                  id: expect.any(String),
+                },
+              }
+              await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+            })
           })
 
           describe('sending invalid nonce', () => {
+            const variables = { ...userParams, nonce: 'wut?' }
+
+            it('rejects', async () => {
+              await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+            })
           })
         })
       })
