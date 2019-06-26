@@ -211,6 +211,18 @@ describe('CreateSignUpByInvitationCode', () => {
           expect(signup).toEqual({ invitedBy: { name: 'Inviter' } })
         })
 
+        describe('using the same InvitationCode twice', () => {
+          it('rejects because codes can be used only once', async done => {
+            await action()
+            try {
+              await action()
+            } catch (e) {
+              expect(e.message).toMatch(/Invitation code already used/)
+              done()
+            }
+          })
+        })
+
         describe('if a user account with the given email already exists', () => {
           beforeEach(async () => {
             await factory.create('User', { email: 'someUser@example.org' })

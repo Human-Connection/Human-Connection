@@ -9,14 +9,15 @@ export default {
       const { user } = context
       let response
       try {
-        const cypher = `MATCH(u:User {id:$user.id})
-                        CREATE (ic:InvitationCode {
-                          id: apoc.create.uuid(),
-                          createdAt:$args.createdAt,
-                          nonce:$args.nonce
-                        })
-                        MERGE (u)-[g:GENERATED]->(ic)
-                        RETURN u,g,ic`
+        const cypher = `
+        MATCH(u:User {id:$user.id})
+        CREATE (ic:InvitationCode {
+          id: apoc.create.uuid(),
+          createdAt:$args.createdAt,
+          nonce:$args.nonce
+        })
+        MERGE (u)-[g:GENERATED]->(ic)
+        RETURN u,g,ic`
         const result = await session.run(cypher, { args, user })
         let [[ic, u]] = result.records.map(r => [r.get('ic'), r.get('u')])
         response = ic.properties
@@ -37,21 +38,21 @@ export default {
         let result = await session.run(cypher, { args })
         const [existingUser] = result.records.map(r => r.get('u'))
         if (existingUser) throw new UserInputError('User account with this email already exists.')
-
         cypher = `
-          MATCH (u:User)-[:GENERATED]->(i:InvitationCode {nonce:$nonce})
-          WHERE NOT (i)-[:ACTIVATED]->()
-          CREATE (s:SignUp {
-            id: apoc.create.uuid(),
-            createdAt:$args.createdAt,
-            email: $args.email
-          })
-          MERGE (i)-[a:ACTIVATED]->(s)
-          MERGE (u)-[:INVITED]->(s)
-          RETURN u,i,a,s
-        `
+        MATCH (u:User)-[:GENERATED]->(i:InvitationCode {nonce:$nonce})
+        WHERE NOT (i)-[:ACTIVATED]->()
+        CREATE (s:SignUp {
+          id: apoc.create.uuid(),
+          createdAt:$args.createdAt,
+          email: $args.email
+        })
+        MERGE (i)-[a:ACTIVATED]->(s)
+        MERGE (u)-[:INVITED]->(s)
+        RETURN u,i,a,s`
         result = await session.run(cypher, { args, nonce })
-        const [[inviter, signup]] = result.records.map(r => [r.get('u'), r.get('s')])
+        const [record] = result.records
+        if (!record) throw new UserInputError('Invitation code already used or does not exist.')
+        const [inviter, signup] = [record.get('u'), record.get('s')]
         response = signup.properties
         response.invitedBy = inviter.properties
       } catch (e) {
