@@ -3,6 +3,7 @@ import ContributionForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
+import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 
 const localVue = createLocalVue()
 
@@ -100,7 +101,13 @@ describe('ContributionForm.vue', () => {
         beforeEach(async () => {
           expectedParams = {
             mutation: PostMutations().CreatePost,
-            variables: { title: postTitle, content: postContent, language: 'en', id: null },
+            variables: {
+              title: postTitle,
+              content: postContent,
+              language: 'en',
+              id: null,
+              categories: null,
+            },
           }
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
@@ -120,6 +127,14 @@ describe('ContributionForm.vue', () => {
           expectedParams.variables.language = 'de'
           deutschOption = wrapper.findAll('li').at(0)
           deutschOption.trigger('click')
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports adding categories', async () => {
+          const categories = ['cat12', 'cat15', 'cat37']
+          expectedParams.variables.categories = categories
+          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categories)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -200,6 +215,7 @@ describe('ContributionForm.vue', () => {
             content: postContent,
             language: propsData.contribution.language,
             id: propsData.contribution.id,
+            categories: null,
           },
         }
         postTitleInput = wrapper.find('.ds-input')
