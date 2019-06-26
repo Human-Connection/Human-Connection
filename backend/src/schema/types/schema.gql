@@ -41,6 +41,23 @@ type Mutation {
   # Unfollow the given Type and ID
   unfollow(id: ID!, type: FollowTypeEnum): Boolean!
   DeleteUser(id: ID!, resource: [String]): User
+  CreatePost(
+    id: ID
+    activityId: String
+    objectId: String
+    title: String!
+    slug: String
+    content: String!
+    image: String
+    imageUpload: Upload
+    visibility: Visibility
+    deleted: Boolean
+    disabled: Boolean
+    createdAt: String
+    updatedAt: String
+    language: String
+    categories: [ID]
+  ): Post
 }
 
 type Statistics {

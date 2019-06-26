@@ -4,7 +4,9 @@ import { host, login } from '../../jest/helpers'
 
 const factory = Factory()
 let client
-
+const postTitle = 'I am a title'
+const postContent = 'Some content'
+const createPostVariables = { title: postTitle, content: postContent }
 beforeEach(async () => {
   await factory.create('User', {
     email: 'test@example.org',
@@ -18,8 +20,8 @@ afterEach(async () => {
 
 describe('CreatePost', () => {
   const mutation = `
-    mutation {
-      CreatePost(title: "I am a title", content: "Some content") {
+    mutation($title: String!, $content: String!) {
+      CreatePost(title: $title, content: $content) {
         title
         content
         slug
@@ -32,7 +34,7 @@ describe('CreatePost', () => {
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
       client = new GraphQLClient(host)
-      await expect(client.request(mutation)).rejects.toThrow('Not Authorised')
+      await expect(client.request(mutation, createPostVariables)).rejects.toThrow('Not Authorised')
     })
   })
 
@@ -46,15 +48,15 @@ describe('CreatePost', () => {
     it('creates a post', async () => {
       const expected = {
         CreatePost: {
-          title: 'I am a title',
-          content: 'Some content',
+          title: postTitle,
+          content: postContent,
         },
       }
-      await expect(client.request(mutation)).resolves.toMatchObject(expected)
+      await expect(client.request(mutation, createPostVariables)).resolves.toMatchObject(expected)
     })
 
     it('assigns the authenticated user as author', async () => {
-      await client.request(mutation)
+      await client.request(mutation, createPostVariables)
       const { User } = await client.request(
         `{
           User(email:"test@example.org") {
@@ -65,29 +67,79 @@ describe('CreatePost', () => {
         }`,
         { headers },
       )
-      expect(User).toEqual([{ contributions: [{ title: 'I am a title' }] }])
+      expect(User).toEqual([{ contributions: [{ title: postTitle }] }])
     })
 
     describe('disabled and deleted', () => {
       it('initially false', async () => {
         const expected = { CreatePost: { disabled: false, deleted: false } }
-        await expect(client.request(mutation)).resolves.toMatchObject(expected)
+        await expect(client.request(mutation, createPostVariables)).resolves.toMatchObject(expected)
       })
     })
 
     describe('language', () => {
       it('allows a user to set the language of the post', async () => {
         const createPostWithLanguageMutation = `
-          mutation {
-            CreatePost(title: "I am a title", content: "Some content", language: "en") {
+          mutation($title: String!, $content: String!, $language: String) {
+            CreatePost(title: $title, content: $content, language: $language) {
               language
             }
           }
         `
+        const createPostWithLanguageVariables = {
+          title: postTitle,
+          content: postContent,
+          language: 'en',
+        }
         const expected = { CreatePost: { language: 'en' } }
-        await expect(client.request(createPostWithLanguageMutation)).resolves.toEqual(
-          expect.objectContaining(expected),
-        )
+        await expect(
+          client.request(createPostWithLanguageMutation, createPostWithLanguageVariables),
+        ).resolves.toEqual(expect.objectContaining(expected))
+      })
+    })
+
+    describe('categories', () => {
+      it('allows a user to set the categories of the post', async () => {
+        await Promise.all([
+          factory.create('Category', {
+            id: 'cat9',
+            name: 'Democracy & Politics',
+            icon: 'university',
+          }),
+          factory.create('Category', {
+            id: 'cat4',
+            name: 'Environment & Nature',
+            icon: 'tree',
+          }),
+          factory.create('Category', {
+            id: 'cat15',
+            name: 'Consumption & Sustainability',
+            icon: 'shopping-cart',
+          }),
+        ])
+        const createPostWithCategoriesMutation = `
+          mutation($title: String!, $content: String!, $categories: [ID]) {
+            CreatePost(title: $title, content: $content, categories: $categories) {
+              categories {
+                id
+              }
+            }
+          }
+        `
+        const postCategories = ['cat9', 'cat4', 'cat15']
+        const creatPostWithCategoriesVariables = {
+          title: postTitle,
+          content: postContent,
+          categories: postCategories,
+        }
+        const expected = {
+          CreatePost: {
+            categories: [{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }],
+          },
+        }
+        await expect(
+          client.request(createPostWithCategoriesMutation, creatPostWithCategoriesVariables),
+        ).resolves.toEqual(expect.objectContaining(expected))
       })
     })
   })
