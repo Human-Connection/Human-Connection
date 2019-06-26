@@ -162,7 +162,7 @@ describe('CreateSignUpByInvitationCode', () => {
 
     describe('given an invalid email', () => {
       beforeEach(() => {
-        variables.email = 'someUser'
+        variables.email = 'someuser'
       })
 
       it('throws `email is not a valid email`', async () => {
@@ -182,7 +182,7 @@ describe('CreateSignUpByInvitationCode', () => {
 
     describe('given a valid email', () => {
       beforeEach(() => {
-        variables.email = 'someUser@example.org'
+        variables.email = 'someuser@example.org'
       })
 
       it('resolves', async () => {
@@ -255,7 +255,7 @@ describe('CreateSignUp', () => {
         email: 'admin@example.org',
         password: '1234',
       }
-      variables.email = 'someUser@example.org'
+      variables.email = 'someuser@example.org'
       const factory = Factory()
       await factory.create('User', userParams)
       const headers = await login(userParams)

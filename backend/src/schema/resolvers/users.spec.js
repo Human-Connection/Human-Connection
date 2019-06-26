@@ -118,7 +118,7 @@ describe('users', () => {
     describe('as another user', () => {
       beforeEach(async () => {
         const someoneElseParams = {
-          email: 'someoneElse@example.org',
+          email: 'someone-else@example.org',
           password: '1234',
           name: 'James Doe',
         }
@@ -194,7 +194,7 @@ describe('users', () => {
         id: 'u343',
       })
       await factory.create('User', {
-        email: 'friendsAccount@example.org',
+        email: 'friends-account@example.org',
         password: '1234',
         id: 'u565',
       })
