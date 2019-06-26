@@ -80,3 +80,26 @@ type User {
   badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
   badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
 }
+
+type Mutation {
+  CreateUser(
+    nonce: String
+    id: ID
+    actorId: String
+    name: String
+    email: String!
+    slug: String
+    password: String!
+    avatar: String
+    coverImg: String
+    avatarUpload: Upload
+    deleted: Boolean
+    disabled: Boolean
+    role: UserGroup
+    publicKey: String
+    privateKey: String
+    isVerified: Boolean
+    locationName: String
+    about: String
+  ): User
+}

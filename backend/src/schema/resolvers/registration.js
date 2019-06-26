@@ -1,10 +1,11 @@
 import { UserInputError } from 'apollo-server'
 import uuid from 'uuid/v4'
+import { neo4jgraphql } from 'neo4j-graphql-js'
 
 export default {
   Mutation: {
     CreateInvitationCode: async (parent, args, context, resolveInfo) => {
-      args.nonce = uuid().substring(0, 6)
+      args.token = uuid().substring(0, 6)
       const session = context.driver.session()
       const { user } = context
       let response
@@ -14,7 +15,7 @@ export default {
         CREATE (ic:InvitationCode {
           id: apoc.create.uuid(),
           createdAt:$args.createdAt,
-          nonce:$args.nonce
+          token: $args.token
         })
         MERGE (u)-[g:GENERATED]->(ic)
         RETURN u,g,ic`
@@ -29,8 +30,13 @@ export default {
       }
       return response
     },
+    CreateSignUp: async (parent, args, context, resolveInfo) => {
+      args.nonce = uuid().substring(0, 6)
+      return neo4jgraphql(parent, args, context, resolveInfo, false)
+    },
     CreateSignUpByInvitationCode: async (parent, args, context, resolveInfo) => {
-      const { nonce } = args
+      const { token } = args
+      args.nonce = uuid().substring(0, 6)
       const session = context.driver.session()
       let response
       try {
@@ -39,17 +45,18 @@ export default {
         const [existingUser] = result.records.map(r => r.get('u'))
         if (existingUser) throw new UserInputError('User account with this email already exists.')
         cypher = `
-        MATCH (u:User)-[:GENERATED]->(i:InvitationCode {nonce:$nonce})
+        MATCH (u:User)-[:GENERATED]->(i:InvitationCode {token:$token})
         WHERE NOT (i)-[:ACTIVATED]->()
         CREATE (s:SignUp {
           id: apoc.create.uuid(),
           createdAt:$args.createdAt,
+          nonce: $args.nonce,
           email: $args.email
         })
         MERGE (i)-[a:ACTIVATED]->(s)
         MERGE (u)-[:INVITED]->(s)
         RETURN u,i,a,s`
-        result = await session.run(cypher, { args, nonce })
+        result = await session.run(cypher, { args, token})
         const [record] = result.records
         if (!record) throw new UserInputError('Invitation code already used or does not exist.')
         const [inviter, signup] = [record.get('u'), record.get('s')]

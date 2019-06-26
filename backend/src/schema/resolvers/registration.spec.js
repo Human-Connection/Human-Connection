@@ -1,12 +1,14 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login } from '../../jest/helpers'
+import { getDriver } from '../../bootstrap/neo4j'
 
 let factory
 let client
 let variables
 let action
 let userParams
+const driver = getDriver()
 
 beforeEach(async () => {
   variables = {}
@@ -17,8 +19,16 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
+const getAllSignups = async () => {
+  const session = driver.session()
+  let transactionRes = await session.run('MATCH (s:SignUp) RETURN s')
+  const signups = transactionRes.records.map(record => record.get('s'))
+  session.close()
+  return signups
+}
+
 describe('CreateInvitationCode', () => {
-  const mutation = `mutation { CreateInvitationCode { nonce } }`
+  const mutation = `mutation { CreateInvitationCode { token } }`
 
   it('throws Authorization error', async () => {
     const client = new GraphQLClient(host)
@@ -43,7 +53,7 @@ describe('CreateInvitationCode', () => {
 
     it('resolves', async () => {
       await expect(action()).resolves.toEqual({
-        CreateInvitationCode: { nonce: expect.any(String) },
+        CreateInvitationCode: { token: expect.any(String) },
       })
     })
 
@@ -121,8 +131,8 @@ describe('CreateInvitationCode', () => {
 })
 
 describe('CreateSignUpByInvitationCode', () => {
-  const mutation = `mutation($email: String!, $nonce: String!) {
-    CreateSignUpByInvitationCode(email: $email, nonce: $nonce) { email }
+  const mutation = `mutation($email: String!, $token: String!) {
+    CreateSignUpByInvitationCode(email: $email, token: $token) { email }
   }`
 
   beforeEach(() => {
@@ -136,7 +146,7 @@ describe('CreateSignUpByInvitationCode', () => {
 
   describe('with invalid InvitationCode', () => {
     beforeEach(() => {
-      variables.nonce = 'wut?'
+      variables.token = 'wut?'
     })
 
     it.todo('throws UserInputError')
@@ -153,11 +163,11 @@ describe('CreateSignUpByInvitationCode', () => {
       await factory.create('User', inviterParams)
       let asUser = Factory()
       asUser = await asUser.authenticateAs(inviterParams)
-      const invitationMutation = `mutation { CreateInvitationCode { nonce } }`
+      const invitationMutation = `mutation { CreateInvitationCode { token } }`
       const {
-        CreateInvitationCode: { nonce },
+        CreateInvitationCode: { token },
       } = await asUser.request(invitationMutation)
-      variables.nonce = nonce
+      variables.token = token
     })
 
     describe('given an invalid email', () => {
@@ -200,6 +210,12 @@ describe('CreateSignUpByInvitationCode', () => {
           } = await factory.request(signUpQuery)
           expect(signup.createdAt).toBeTruthy()
           expect(Date.parse(signup.createdAt)).toEqual(expect.any(Number))
+        })
+
+        it('with a cryptographic `nonce`', async () => {
+          await action()
+          const [signup] = await getAllSignups()
+          expect(signup.properties.nonce).toEqual(expect.any(String))
         })
 
         it('connects inviting user', async () => {
@@ -267,6 +283,12 @@ describe('CreateSignUp', () => {
 
     it('is allowed so signup users by email', async () => {
       await expect(action()).resolves.toEqual({ CreateSignUp: { email: 'someuser@example.org' } })
+    })
+
+    it('creates a Signup with a cryptographic `nonce`', async () => {
+      await action()
+      const [signup] = await getAllSignups()
+      expect(signup.properties.nonce).toEqual(expect.any(String))
     })
   })
 })

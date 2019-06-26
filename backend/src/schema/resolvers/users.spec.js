@@ -2,9 +2,11 @@ import { GraphQLClient } from 'graphql-request'
 import { login, host } from '../../jest/helpers'
 import Factory from '../../seed/factories'
 import gql from 'graphql-tag'
+import { getDriver } from '../../bootstrap/neo4j'
 
 const factory = Factory()
 let client
+const driver = getDriver()
 
 afterEach(async () => {
   await factory.cleanDatabase()
@@ -63,6 +65,29 @@ describe('users', () => {
 
         it('is not allowed to create users', async () => {
           await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+        })
+
+        describe('given a SignUp node', () => {
+          let nonce
+
+          beforeEach(async () => {
+            const session = driver.session()
+            const args = {
+              id: apoc.create.uuid(),
+              createdAt: new Date().toISOString(),
+              email: 'someuser@example.org',
+              nonce: '123456'
+            }
+            await session.run('CREATE (s:SignUp {$args})', args)
+            session.close()
+          })
+
+          describe('sending a valid nonce', () => {
+
+          })
+
+          describe('sending invalid nonce', () => {
+          })
         })
       })
 

@@ -1,6 +1,6 @@
 type InvitationCode {
   id: ID!
-  nonce: String
+  token: String
   generatedBy: User @relation(name: "GENERATED", direction: "IN")
 
   #createdAt: DateTime
@@ -10,5 +10,5 @@ type InvitationCode {
 }
 
 type Mutation {
-  CreateInvitationCode(id: ID, nonce: String, createdAt: String): InvitationCode
+  CreateInvitationCode: InvitationCode
 }
