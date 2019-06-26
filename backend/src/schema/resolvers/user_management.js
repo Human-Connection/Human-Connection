@@ -1,6 +1,6 @@
 import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
-import { AuthenticationError, UserInputError } from 'apollo-server'
+import { AuthenticationError } from 'apollo-server'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 
 export default {

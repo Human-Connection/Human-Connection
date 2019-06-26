@@ -20,6 +20,7 @@ const registrationSchema = { email: { type: 'email', required: true } }
 export default {
   Mutation: {
     CreateSignUp: validate(registrationSchema),
+    CreateSignUpByInvitationCode: validate(registrationSchema),
     CreateUser: validate(userSchema),
     UpdateUser: validate(userSchema),
     CreateSocialMedia: validate(socialMediaSchema),

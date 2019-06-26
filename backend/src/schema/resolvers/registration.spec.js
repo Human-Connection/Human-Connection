@@ -9,6 +9,7 @@ let action
 let userParams
 
 beforeEach(async () => {
+  variables = {}
   factory = Factory()
 })
 
@@ -119,10 +120,9 @@ describe('CreateInvitationCode', () => {
   })
 })
 
-/*
-describe('CreateSignUp', () => {
-  const mutation = `mutation($email: String!, $invitationCode: String) {
-    CreateSignUp(email: $email, invitationCode: $invitationCode) { email }
+describe('CreateSignUpByInvitationCode', () => {
+  const mutation = `mutation($email: String!, $nonce: String!) {
+    CreateSignUpByInvitationCode(email: $email, nonce: $nonce) { email }
   }`
 
   beforeEach(() => {
@@ -130,14 +130,13 @@ describe('CreateSignUp', () => {
     action = async () => {
       return client.request(mutation, variables)
     }
-    variables = {}
   })
 
   it.todo('throws Authorization error')
 
   describe('with invalid InvitationCode', () => {
     beforeEach(() => {
-      variables.invitationCode = 'wut?'
+      variables.nonce = 'wut?'
     })
 
     it.todo('throws UserInputError')
@@ -158,7 +157,7 @@ describe('CreateSignUp', () => {
       const {
         CreateInvitationCode: { nonce },
       } = await asUser.request(invitationMutation)
-      variables.invitationCode = nonce
+      variables.nonce = nonce
     })
 
     describe('given an invalid email', () => {
@@ -187,7 +186,9 @@ describe('CreateSignUp', () => {
       })
 
       it('resolves', async () => {
-        await expect(action()).resolves.toEqual({ CreateSignUp: { email: 'someUser@example.org' } })
+        await expect(action()).resolves.toEqual({
+          CreateSignUpByInvitationCode: { email: 'someuser@example.org' },
+        })
       })
 
       describe('creates a SignUp node', () => {
@@ -226,6 +227,14 @@ describe('CreateSignUp', () => {
       })
     })
   })
+})
+
+describe('CreateSignUp', () => {
+  const mutation = `mutation($email: String!) {
+    CreateSignUp(email: $email) { email }
+  }`
+
+  it.todo('throws AuthorizationError')
 
   describe('as admin', () => {
     beforeEach(async () => {
@@ -234,16 +243,18 @@ describe('CreateSignUp', () => {
         email: 'admin@example.org',
         password: '1234',
       }
-      variables = { email: 'someUser@example.org' }
+      variables.email = 'someUser@example.org'
       const factory = Factory()
       await factory.create('User', userParams)
       const headers = await login(userParams)
       client = new GraphQLClient(host, { headers })
+      action = async () => {
+        return client.request(mutation, variables)
+      }
     })
 
     it('is allowed so signup users by email', async () => {
-      await expect(action()).resolves.toEqual({ CreateSignUp: { email: 'someUser@example.org' } })
+      await expect(action()).resolves.toEqual({ CreateSignUp: { email: 'someuser@example.org' } })
     })
   })
 })
-*/

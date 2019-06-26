@@ -10,5 +10,6 @@ type SignUp {
 }
 
 type Mutation {
-  CreateSignUp(email: String!, invitationCode: String, createdAt: String): SignUp
+  CreateSignUp(email: String!): SignUp
+  CreateSignUpByInvitationCode(email: String!, nonce: String!): SignUp
 }

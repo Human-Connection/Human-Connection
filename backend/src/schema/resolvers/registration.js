@@ -1,4 +1,4 @@
-import { cypherMutation } from 'neo4j-graphql-js'
+import { UserInputError } from 'apollo-server'
 import uuid from 'uuid/v4'
 
 export default {
@@ -28,28 +28,38 @@ export default {
       }
       return response
     },
-    CreateSignUp: async (parent, args, context, resolveInfo) => {
+    CreateSignUpByInvitationCode: async (parent, args, context, resolveInfo) => {
       const { nonce } = args
       const session = context.driver.session()
       let response
       try {
-        const mutation = `
-          MATCH(i:InvitationCode {nonce:$nonce}) WHERE NOT (i)-[:ACTIVATED]->()
+        let cypher = `MATCH(u:User {email:$args.email}) RETURN u`
+        let result = await session.run(cypher, { args })
+        const [existingUser] = result.records.map(r => r.get('u'))
+        if (existingUser) throw new UserInputError('User account with this email already exists.')
+
+        cypher = `
+          MATCH (u:User)-[:GENERATED]->(i:InvitationCode {nonce:$nonce})
+          WHERE NOT (i)-[:ACTIVATED]->()
           CREATE (s:SignUp {
             id: apoc.create.uuid(),
             createdAt:$args.createdAt,
+            email: $args.email
           })
           MERGE (i)-[a:ACTIVATED]->(s)
-          RETURN i,a,s
+          MERGE (u)-[:INVITED]->(s)
+          RETURN u,i,a,s
         `
-        const [invitation] = await tx.run(cypher, args).records.map(r => r.get('i'))
-        if (!invitation) tx.rollback()
+        result = await session.run(cypher, { args, nonce })
+        const [[inviter, signup]] = result.records.map(r => [r.get('u'), r.get('s')])
+        response = signup.properties
+        response.invitedBy = inviter.properties
       } catch (e) {
         throw e
       } finally {
         session.close()
       }
-      return signup
+      return response
     },
   },
 }

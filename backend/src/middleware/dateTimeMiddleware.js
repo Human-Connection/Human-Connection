@@ -11,6 +11,7 @@ export default {
   Mutation: {
     CreateInvitationCode: setCreatedAt,
     CreateSignUp: setCreatedAt,
+    CreateSignUpByInvitationCode: setCreatedAt,
     CreateUser: setCreatedAt,
     CreatePost: setCreatedAt,
     CreateComment: setCreatedAt,

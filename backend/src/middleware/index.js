@@ -10,6 +10,7 @@ import permissions from './permissionsMiddleware'
 import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
+import normalization from './normalization/normalizationMiddleware'
 import validation from './validation/validationMiddleware'
 import notifications from './notifications'
 
@@ -19,6 +20,7 @@ export default schema => {
     activityPub: activityPub,
     password: password,
     dateTime: dateTime,
+    normalization: normalization,
     validation: validation,
     sluggify: sluggify,
     excerpt: excerpt,
@@ -35,6 +37,7 @@ export default schema => {
     'activityPub',
     'password',
     'dateTime',
+    'normalization',
     'validation',
     'sluggify',
     'excerpt',
