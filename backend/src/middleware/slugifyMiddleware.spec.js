@@ -77,7 +77,7 @@ describe('slugify', () => {
   })
 
   describe('CreateUser', () => {
-    const mutation = `mutation($password: String!, $email: String!, $name: String, $slug: String) {
+    const mutation = `mutation($password: String!, $email: String!, $name: String!, $slug: String) {
       CreateUser(email: $email, password: $password, name: $name, slug: $slug) { slug }
     }
     `

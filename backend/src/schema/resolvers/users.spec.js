@@ -45,7 +45,7 @@ describe('users', () => {
 
   describe('CreateUser', () => {
     const mutation = `
-      mutation($name: String, $password: String!, $email: String!, $nonce: String) {
+      mutation($name: String!, $password: String!, $email: String!, $nonce: String) {
         CreateUser(name: $name, password: $password, email: $email, nonce: $nonce) {
           id
         }

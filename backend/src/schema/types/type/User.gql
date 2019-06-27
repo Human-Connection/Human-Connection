@@ -84,7 +84,7 @@ type User {
 type Mutation {
   CreateUser(
     nonce: String
-    name: String
+    name: String!
     email: String!
     slug: String
     password: String!
