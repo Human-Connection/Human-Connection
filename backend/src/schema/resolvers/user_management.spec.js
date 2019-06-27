@@ -372,7 +372,7 @@ describe('do not expose private RSA key', () => {
           User: [
             {
               id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
-              publicKey: 'this-is-the-public-key'
+              publicKey: 'this-is-the-public-key',
             },
           ],
         }),
@@ -405,7 +405,7 @@ describe('do not expose private RSA key', () => {
           User: [
             {
               id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
-              publicKey: 'this-is-the-public-key'
+              publicKey: 'this-is-the-public-key',
             },
           ],
         }),

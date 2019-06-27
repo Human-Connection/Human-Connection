@@ -3,7 +3,7 @@ import uuid from 'uuid/v4'
 import fileUpload from './fileUpload'
 import bcrypt from 'bcryptjs'
 
-export const createUser = async ({args, driver}) => {
+export const createUser = async ({ args, driver }) => {
   args.id = args.id || uuid()
   args.password = await bcrypt.hashSync(args.password, 10)
   args.deleted = args.deleted || false
@@ -15,8 +15,8 @@ export const createUser = async ({args, driver}) => {
     const result = await session.run(cypher, { args })
     const [user] = result.records.map(r => r.get('user'))
     response = user.properties
-  } catch(e) {
-    throw(e)
+  } catch (e) {
+    throw e
   } finally {
     session.close()
   }
@@ -31,7 +31,7 @@ export default {
     },
     CreateUser: async (object, params, context, resolveInfo) => {
       params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
-      return createUser({args: params, driver: context.driver})
+      return createUser({ args: params, driver: context.driver })
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
       const { resource } = params
@@ -67,13 +67,12 @@ export default {
         const result = await session.run(cypher, { id })
         const followers = result.records.map(r => r.get('follower'))
         response = followers.map(f => f.properties)
-        console.log('response', response)
-      } catch(e) {
-        throw(e)
+      } catch (e) {
+        throw e
       } finally {
         session.close()
       }
       return response
     },
-  }
+  },
 }

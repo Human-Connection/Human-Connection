@@ -5,7 +5,7 @@ import slugify from 'slug'
 
 export default function create(params) {
   return {
-    factory: async ({args, driver}) => {
+    factory: async ({ args, driver }) => {
       const defaults = {
         id: uuid(),
         name: faker.name.findName(),
@@ -19,9 +19,9 @@ export default function create(params) {
       defaults.slug = slugify(defaults.name, { lower: true })
       args = {
         ...defaults,
-        ...args
+        ...args,
       }
-      return createUser({args, driver})
-    }
+      return createUser({ args, driver })
+    },
   }
 }
