@@ -74,9 +74,6 @@ export default {
       session.close()
       return commentReturnedWithAuthor
     },
-    UpdateComment: async (object, params, context, resolveInfo) => {
-      await neo4jgraphql(object, params, context, resolveInfo, false)
-    },
     DeleteComment: async (object, params, context, resolveInfo) => {
       const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
 

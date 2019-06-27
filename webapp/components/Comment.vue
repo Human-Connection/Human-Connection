@@ -1,13 +1,13 @@
 <template>
   <div v-if="(comment.deleted || comment.disabled) && !isModerator">
     <ds-text style="padding-left: 40px; font-weight: bold;" color="soft">
-      <ds-icon name="ban"/>
+      <ds-icon name="ban" />
       {{ this.$t('comment.content.unavailable-placeholder') }}
     </ds-text>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-space margin-bottom="x-small">
-      <hc-user :user="author" :date-time="comment.createdAt"/>
+      <hc-user :user="author" :date-time="comment.createdAt" />
     </ds-space>
     <!-- Content Menu (can open Modals) -->
     <no-ssr>
@@ -23,7 +23,7 @@
     </no-ssr>
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
-    <ds-space margin-bottom="small"/>
+    <ds-space margin-bottom="small" />
     <div v-if="openEditCommentMenu">
       <hc-edit-comment-form
         v-bind:comment="comment"
@@ -31,7 +31,7 @@
         v-on:showEditCommentMenu="editCommentMenu"
       />
     </div>
-    <div v-else style="padding-left: 40px;" v-html="comment.contentExcerpt"/>
+    <div v-else style="padding-left: 40px;" v-html="comment.contentExcerpt" />
     <!-- eslint-enable vue/no-v-html -->
   </div>
 </template>

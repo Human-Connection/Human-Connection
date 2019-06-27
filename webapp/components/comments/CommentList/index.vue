@@ -2,17 +2,20 @@
   <div id="comments">
     <h3 style="margin-top: -10px;">
       <span>
-        <ds-icon name="comments"/>
+        <ds-icon name="comments" />
         <ds-tag
           v-if="comments"
           style="margin-top: -4px; margin-left: -12px; position: absolute;"
           color="primary"
           size="small"
           round
-        >{{ comments.length }}</ds-tag>&nbsp; Comments
+        >
+          {{ comments.length }}
+        </ds-tag>
+        &nbsp; Comments
       </span>
     </h3>
-    <ds-space margin-bottom="large"/>
+    <ds-space margin-bottom="large" />
     <div v-if="comments && comments.length" id="comments" class="comments">
       <comment
         v-for="(comment, index) in comments"
@@ -22,7 +25,7 @@
         @deleteComment="comments.splice(index, 1)"
       />
     </div>
-    <hc-empty v-else name="empty" icon="messages"/>
+    <hc-empty v-else name="empty" icon="messages" />
   </div>
 </template>
 <script>
