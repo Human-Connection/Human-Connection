@@ -84,8 +84,6 @@ type User {
 type Mutation {
   CreateUser(
     nonce: String
-    id: ID
-    actorId: String
     name: String
     email: String!
     slug: String
@@ -93,12 +91,6 @@ type Mutation {
     avatar: String
     coverImg: String
     avatarUpload: Upload
-    deleted: Boolean
-    disabled: Boolean
-    role: UserGroup
-    publicKey: String
-    privateKey: String
-    isVerified: Boolean
     locationName: String
     about: String
   ): User

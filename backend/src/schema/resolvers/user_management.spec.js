@@ -336,23 +336,16 @@ describe('do not expose private RSA key', () => {
 
   const generateUserWithKeys = async authenticatedClient => {
     // Generate user with "privateKey" via 'CreateUser' mutation instead of using the factories "factory.create('User', {...})", see above.
-    const variables = {
+    const args = {
       id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
       password: 'xYz',
       slug: 'apfel-strudel',
       name: 'Apfel Strudel',
       email: 'apfel-strudel@test.org',
+      privateKey: 'this-is-the-private-key',
+      publicKey: 'this-is-the-public-key',
     }
-    await authenticatedClient.request(
-      gql`
-        mutation($id: ID, $password: String!, $slug: String, $name: String, $email: String!) {
-          CreateUser(id: $id, password: $password, slug: $slug, name: $name, email: $email) {
-            id
-          }
-        }
-      `,
-      variables,
-    )
+    await factory.create('User', args)
   }
 
   beforeEach(async () => {
@@ -379,7 +372,7 @@ describe('do not expose private RSA key', () => {
           User: [
             {
               id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
-              publicKey: expect.any(String),
+              publicKey: 'this-is-the-public-key'
             },
           ],
         }),
@@ -412,7 +405,7 @@ describe('do not expose private RSA key', () => {
           User: [
             {
               id: 'bcb2d923-f3af-479e-9f00-61b12e864667',
-              publicKey: expect.any(String),
+              publicKey: 'this-is-the-public-key'
             },
           ],
         }),
