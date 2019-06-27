@@ -12,6 +12,7 @@ let loginCredentials = {
 };
 const narratorParams = {
   name: "Peter Pan",
+  slug: 'peter-pan',
   avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
   ...loginCredentials
 };

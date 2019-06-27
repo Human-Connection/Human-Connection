@@ -1,6 +1,7 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
 import { createUser } from '../../schema/resolvers/users'
+import slugify from 'slug'
 
 export default function create(params) {
   return {
@@ -15,6 +16,7 @@ export default function create(params) {
         about: faker.lorem.paragraph(),
         isVerified: true,
       }
+      defaults.slug = slugify(defaults.name, { lower: true })
       args = {
         ...defaults,
         ...args
