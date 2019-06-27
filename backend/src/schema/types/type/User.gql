@@ -81,6 +81,37 @@ type User {
   badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
 }
 
+type Query {
+  User(
+    id: ID
+    email: String
+    actorId: String
+    name: String
+    slug: String
+    avatar: String
+    coverImg: String
+    avatarUpload: Upload
+    role: UserGroup
+    locationName: String
+    about: String
+    createdAt: String
+    updatedAt: String
+    friendsCount: Int
+    followingCount: Int
+    followedByCount: Int
+    followedByCurrentUser: Boolean
+    contributionsCount: Int
+    commentsCount: Int
+    commentedCount: Int
+    shoutedCount: Int
+    badgesCount: Int
+    first: Int
+    offset: Int
+    # orderBy: [_UserOrdering]
+    # filter: _UserFilter
+  ): [User]
+}
+
 type Mutation {
   CreateUser(
     nonce: String
