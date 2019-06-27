@@ -192,7 +192,7 @@ describe('CreateSignUpByInvitationCode', () => {
 
     describe('given a valid email', () => {
       beforeEach(() => {
-        variables.email = 'someuser@example.org'
+        variables.email = 'someUser@example.org'
       })
 
       it('resolves', async () => {
@@ -241,7 +241,7 @@ describe('CreateSignUpByInvitationCode', () => {
 
         describe('if a user account with the given email already exists', () => {
           beforeEach(async () => {
-            await factory.create('User', { email: 'someUser@example.org' })
+            await factory.create('User', { email: 'someuser@example.org' })
           })
 
           it('throws unique violation error', async () => {

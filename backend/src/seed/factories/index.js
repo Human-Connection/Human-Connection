@@ -65,8 +65,12 @@ export default function Factory(options = {}) {
       return this
     },
     async create(node, properties = {}) {
-      const { mutation, variables } = this.factories[node](properties)
-      this.lastResponse = await this.graphQLClient.request(mutation, variables)
+      const { factory, mutation, variables } = this.factories[node](properties)
+      if (factory) {
+        this.lastResponse = await factory({ args: properties, driver: neo4jDriver})
+      } else {
+        this.lastResponse = await this.graphQLClient.request(mutation, variables)
+      }
       return this
     },
     async relate(node, relationship, properties) {
