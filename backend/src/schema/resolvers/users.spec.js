@@ -193,12 +193,12 @@ describe('users', () => {
         await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
 
-      it('with no name', async () => {
+      it('with `null` as name', async () => {
         const variables = {
           id: 'u47',
           name: null,
         }
-        const expected = 'name is required'
+        const expected = '"name" must be a string'
         await expect(client.request(mutation, variables)).rejects.toThrow(expected)
       })
 
@@ -207,7 +207,7 @@ describe('users', () => {
           id: 'u47',
           name: '  ',
         }
-        const expected = 'name must be at least 3 characters'
+        const expected = '"name" length must be at least 3 characters long'
         await expect(client.request(mutation, variables)).rejects.toThrow(expected)
       })
     })

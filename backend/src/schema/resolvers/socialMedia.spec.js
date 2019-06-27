@@ -98,14 +98,19 @@ describe('SocialMedia', () => {
       const variables = {
         url: '',
       }
-      await expect(client.request(mutationC, variables)).rejects.toThrow('url is required')
+      await expect(client.request(mutationC, variables)).rejects.toThrow(
+        '"url" is not allowed to be empty',
+      )
     })
 
     it('validates URLs', async () => {
       const variables = {
         url: 'not-a-url',
       }
-      await expect(client.request(mutationC, variables)).rejects.toThrow('url is not a valid url')
+
+      await expect(client.request(mutationC, variables)).rejects.toThrow(
+        '"url" must be a valid uri',
+      )
     })
   })
 })

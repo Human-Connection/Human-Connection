@@ -1,6 +1,12 @@
 import { UserInputError } from 'apollo-server'
 import uuid from 'uuid/v4'
-import { neo4jgraphql } from 'neo4j-graphql-js'
+
+const checkEmailDoesNotExist = async ({ args, session }) => {
+  let cypher = `MATCH(u:User {email:$args.email}) RETURN u`
+  let result = await session.run(cypher, { args })
+  const [existingUser] = result.records.map(r => r.get('u'))
+  if (existingUser) throw new UserInputError('User account with this email already exists.')
+}
 
 export default {
   Mutation: {
@@ -33,7 +39,27 @@ export default {
     CreateSignUp: async (parent, args, context, resolveInfo) => {
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
-      const response = await neo4jgraphql(parent, args, context, resolveInfo, false)
+      const session = context.driver.session()
+      let response
+      try {
+        await checkEmailDoesNotExist({ args, session })
+        let cypher = `
+        CREATE (s:SignUp {
+          id: apoc.create.uuid(),
+          createdAt:$args.createdAt,
+          nonce: $args.nonce,
+          email: $args.email
+        })
+        RETURN s`
+        const result = await session.run(cypher, { args })
+        const [record] = result.records
+        const signup = record.get('s')
+        response = signup.properties
+      } catch (e) {
+        throw e
+      } finally {
+        session.close()
+      }
       return { nonce, response }
     },
     CreateSignUpByInvitationCode: async (parent, args, context, resolveInfo) => {
@@ -43,11 +69,8 @@ export default {
       const session = context.driver.session()
       let response
       try {
-        let cypher = `MATCH(u:User {email:$args.email}) RETURN u`
-        let result = await session.run(cypher, { args })
-        const [existingUser] = result.records.map(r => r.get('u'))
-        if (existingUser) throw new UserInputError('User account with this email already exists.')
-        cypher = `
+        await checkEmailDoesNotExist({ args, session })
+        let cypher = `
         MATCH (u:User)-[:GENERATED]->(i:InvitationCode {token:$token})
         WHERE NOT (i)-[:ACTIVATED]->()
         CREATE (s:SignUp {
@@ -59,7 +82,7 @@ export default {
         MERGE (i)-[a:ACTIVATED]->(s)
         MERGE (u)-[:INVITED]->(s)
         RETURN u,i,a,s`
-        result = await session.run(cypher, { args, token })
+        const result = await session.run(cypher, { args, token })
         const [record] = result.records
         if (!record) throw new UserInputError('Invitation code already used or does not exist.')
         const [inviter, signup] = [record.get('u'), record.get('s')]

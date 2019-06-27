@@ -176,7 +176,7 @@ describe('CreateSignUpByInvitationCode', () => {
       })
 
       it('throws `email is not a valid email`', async () => {
-        await expect(action()).rejects.toThrow('email is not a valid email')
+        await expect(action()).rejects.toThrow('"email" must be a valid email')
       })
 
       it('creates no SignUp node', async done => {
