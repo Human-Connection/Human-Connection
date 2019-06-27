@@ -9,10 +9,10 @@ set +o allexport
 # Delete collection function defintion
 function delete_collection () {
   # Delete from Database
-  echo "Delete $1"
-  "${IMPORT_CYPHERSHELL_BIN}" < $(dirname "$0")/$1_delete.cql > /dev/null
+  echo "Delete $2"
+  "${IMPORT_CYPHERSHELL_BIN}" < $(dirname "$0")/$1/delete.cql > /dev/null
   # Delete index file
-  rm -f "${IMPORT_PATH}splits/$1.index"
+  rm -f "${IMPORT_PATH}splits/$2.index"
 }
 
 # Import collection function defintion
@@ -34,7 +34,7 @@ function import_collection () {
       # calculate the path of the chunk
       export IMPORT_CHUNK_PATH_CQL_FILE="${IMPORT_CHUNK_PATH_CQL}$1/${CHUNK_FILE_NAME}"
       # load the neo4j command and replace file variable with actual path
-      NEO4J_COMMAND="$(envsubst '${IMPORT_CHUNK_PATH_CQL_FILE}' < $(dirname "$0")/$1.cql)"
+      NEO4J_COMMAND="$(envsubst '${IMPORT_CHUNK_PATH_CQL_FILE}' < $(dirname "$0")/$2)"
       # run the import of the chunk
       echo "Import $1 ${CHUNK_FILE_NAME} (${chunk})"
       echo "${NEO4J_COMMAND}" | "${IMPORT_CYPHERSHELL_BIN}" > /dev/null
@@ -52,13 +52,14 @@ SECONDS=0
 
 # Delete all Neo4J Database content
 echo "Deleting Database Contents"
-delete_collection "badges"
-delete_collection "categories"
-delete_collection "users"
-delete_collection "follows"
-delete_collection "contributions"
-delete_collection "shouts"
-delete_collection "comments"
+delete_collection "badges" "badges"
+delete_collection "categories" "categories"
+delete_collection "users" "users"
+delete_collection "follows" "follows_users"
+delete_collection "contributions" "contributions_post"
+delete_collection "contributions" "contributions_cando"
+delete_collection "shouts" "shouts"
+delete_collection "comments" "comments"
 
 #delete_collection "emotions"
 #delete_collection "invites"
@@ -75,25 +76,32 @@ echo "DONE"
 
 # Import Data
 echo "Start Importing Data"
-import_collection "badges"
-import_collection "categories"
-import_collection "users"
-import_collection "follows"
-import_collection "contributions"
-import_collection "shouts"
-import_collection "comments"
+import_collection "badges" "badges/badges.cql"
+import_collection "categories" "categories/categories.cql"
+import_collection "users" "users/users.cql"
+import_collection "follows_users" "follows/follows.cql"
+#import_collection "follows_organizations" "follows/follows.cql"
+import_collection "contributions_post" "contributions/contributions.cql"
+import_collection "contributions_cando" "contributions/contributions.cql"
+#import_collection "contributions_DELETED" "contributions/contributions.cql"
+import_collection "shouts" "shouts/shouts.cql"
+import_collection "comments" "comments/comments.cql"
 
 # import_collection "emotions"
 # import_collection "invites"
 # import_collection "notifications"
 # import_collection "organizations"
 # import_collection "pages"
-# import_collection "projects"
-# import_collection "settings"
-# import_collection "status"
 # import_collection "systemnotifications"
 # import_collection "userscandos"
 # import_collection "usersettings"
+
+# does only contain dummy data
+# import_collection "projects"
+
+# does only contain alpha specifc data
+# import_collection "status
+# import_collection "settings""
 
 echo "DONE"
 
