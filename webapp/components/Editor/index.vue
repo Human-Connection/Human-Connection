@@ -221,11 +221,14 @@ export default {
           }),
           new History(),
           new Mention({
+            // a list of all suggested items
             items: () => {
-              this.suggestionType = this.mentionSuggestionType
               return this.users
             },
+            // is called when a suggestion starts
             onEnter: ({ items, query, range, command, virtualNode }) => {
+              this.suggestionType = this.mentionSuggestionType
+
               this.query = query
               this.filteredItems = items
               this.suggestionRange = range
@@ -245,8 +248,9 @@ export default {
             },
             // is called when a suggestion is cancelled
             onExit: () => {
-              // reset all saved values
               this.suggestionType = this.nullSuggestionType
+
+              // reset all saved values
               this.query = null
               this.filteredItems = []
               this.suggestionRange = null
@@ -288,11 +292,14 @@ export default {
             },
           }),
           new Hashtag({
+            // a list of all suggested items
             items: () => {
-              this.suggestionType = this.hashtagSuggestionType
               return this.hashtags
             },
+            // is called when a suggestion starts
             onEnter: ({ items, query, range, command, virtualNode }) => {
+              this.suggestionType = this.hashtagSuggestionType
+
               this.query = query
               this.filteredItems = items
               this.suggestionRange = range
@@ -312,8 +319,9 @@ export default {
             },
             // is called when a suggestion is cancelled
             onExit: () => {
-              // reset all saved values
               this.suggestionType = this.nullSuggestionType
+
+              // reset all saved values
               this.query = null
               this.filteredItems = []
               this.suggestionRange = null
