@@ -10,8 +10,9 @@ export default {
 
     CreatePost: async (object, params, context, resolveInfo) => {
       const { categories } = params
+      let post
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
-      let post = await neo4jgraphql(object, params, context, resolveInfo, false)
+      post = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       const session = context.driver.session()
       await session.run(
@@ -24,42 +25,17 @@ export default {
         },
       )
       if (categories && categories.length) {
-        let postsCategoriesArray = []
-        await Promise.all(
-          categories.map(async categoryId => {
-            let postsCategoriesTransaction = await session.run(
-              `MATCH (category:Category { id: $categoryId}), (post:Post {id: $postId})
-              MERGE (post)-[:CATEGORIZED]->(category)
-              RETURN category
-              `,
-              {
-                categoryId,
-                postId: post.id,
-              },
-            )
-            postsCategoriesArray.push(postsCategoriesTransaction)
-          }),
+        await session.run(
+          `MATCH (post:Post {id: $postId})
+          UNWIND $categories AS categoryId
+          MATCH (category:Category {id: categoryId})
+          MERGE (post)-[:CATEGORIZED]->(category)
+          RETURN category`,
+          {
+            categories,
+            postId: post.id,
+          },
         )
-        let categoryArray = []
-        postsCategoriesArray.map(categoryRecord => {
-          let [category] = categoryRecord.records.map(record => {
-            return {
-              category: record.get('category'),
-            }
-          })
-          categoryArray.push(category)
-        })
-        let categoriesPropertiesArray = []
-        categoryArray.map(node => {
-          let { category } = node
-          let categories = { ...category.properties }
-          categoriesPropertiesArray.push(categories)
-        })
-
-        post = {
-          ...post,
-          categories: categoriesPropertiesArray,
-        }
       }
       session.close()
       return post

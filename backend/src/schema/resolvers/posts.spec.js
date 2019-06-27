@@ -120,25 +120,47 @@ describe('CreatePost', () => {
         const createPostWithCategoriesMutation = `
           mutation($title: String!, $content: String!, $categories: [ID]) {
             CreatePost(title: $title, content: $content, categories: $categories) {
+              id
               categories {
                 id
               }
             }
           }
         `
-        const postCategories = ['cat9', 'cat4', 'cat15']
         const creatPostWithCategoriesVariables = {
           title: postTitle,
           content: postContent,
-          categories: postCategories,
+          categories: ['cat9', 'cat4', 'cat15'],
         }
+        const postQueryWithCategories = `
+          query($id: ID) {
+            Post(id: $id) {
+              categories {
+                id
+              }
+            }
+          }
+        `
         const expected = {
-          CreatePost: {
-            categories: [{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }],
-          },
+          Post: [
+            {
+              categories: [
+                { id: expect.any(String) },
+                { id: expect.any(String) },
+                { id: expect.any(String) },
+              ],
+            },
+          ],
+        }
+        const postWithCategories = await client.request(
+          createPostWithCategoriesMutation,
+          creatPostWithCategoriesVariables,
+        )
+        const postQueryWithCategoriesVariables = {
+          id: postWithCategories.CreatePost.id,
         }
         await expect(
-          client.request(createPostWithCategoriesMutation, creatPostWithCategoriesVariables),
+          client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
         ).resolves.toEqual(expect.objectContaining(expected))
       })
     })
