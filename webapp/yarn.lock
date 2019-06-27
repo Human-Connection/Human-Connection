@@ -1893,10 +1893,10 @@ apollo-cache@1.3.2, apollo-cache@^1.2.1:
     apollo-utilities "^1.3.2"
     tslib "^1.9.3"
 
-apollo-client@^2.5.1, apollo-client@~2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.6.2.tgz#03b6af651e09b6e413e486ddc87464c85bd6e514"
-  integrity sha512-oks1MaT5x7gHcPeC8vPC1UzzsKaEIC0tye+jg72eMDt5OKc7BobStTeS/o2Ib3e0ii40nKxGBnMdl/Xa/p56Yg==
+apollo-client@^2.5.1, apollo-client@~2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.6.3.tgz#9bb2d42fb59f1572e51417f341c5f743798d22db"
+  integrity sha512-DS8pmF5CGiiJ658dG+mDn8pmCMMQIljKJSTeMNHnFuDLV0uAPZoeaAwVFiAmB408Ujqt92oIZ/8yJJAwSIhd4A==
   dependencies:
     "@types/zen-observable" "^0.8.0"
     apollo-cache "1.3.2"
@@ -2310,10 +2310,10 @@ babel-core@~7.0.0-bridge.0:
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-7.0.0-bridge.0.tgz#95a492ddd90f9b4e9a4a1da14eb335b87b634ece"
   integrity sha512-poPX9mZH/5CSanm50Q+1toVci6pv5KSRv/5TWCwtzQS5XEwn40BcCrgIeMFWP9CKKIniKXNxoIOnOq4VVlGXhg==
 
-babel-eslint@~10.0.1:
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-10.0.1.tgz#919681dc099614cd7d31d45c8908695092a1faed"
-  integrity sha512-z7OT1iNV+TjOwHNLLyJk+HN+YVWX+CLE6fPD2SymJZOZQBs+QIexFjhm4keGTm8MW9xr4EC9Q0PbaLB24V5GoQ==
+babel-eslint@~10.0.2:
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-10.0.2.tgz#182d5ac204579ff0881684b040560fdcc1558456"
+  integrity sha512-UdsurWPtgiPgpJ06ryUnuaSXC2s0WoSZnQmEpbAH65XZSdwowgN5MvyP7e88nW07FYXv72erVtpBkxyDVKhH1Q==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     "@babel/parser" "^7.0.0"
@@ -3754,10 +3754,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@2.0.0-alpha.31:
-  version "2.0.0-alpha.31"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.31.tgz#51bcfdca25dfc9bea334a556ab33dfc0bb00421c"
-  integrity sha512-S19PwMqnbYsqcbCg02Yj9gv4veVNZ0OX7v2+zcd+Mq0RI7LoDKJipJjnMrTZ3Cc6blDuTce5G/pHXcVIGRwJWQ==
+date-fns@2.0.0-alpha.37:
+  version "2.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.37.tgz#c58b3e827da4f860ec8dc123e54019efb4a610e0"
+  integrity sha512-fyIv/h6fkFd1u2NHXni5LPRPoa9FFh3hY67JSjNfa+k/u4EKvfrpGtoTM16Y/BJOqTb4W05UjcmwBna1ElyxDA==
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -4236,10 +4236,10 @@ eslint-config-prettier@^3.3.0:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-prettier@~4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-4.3.0.tgz#c55c1fcac8ce4518aeb77906984e134d9eb5a4f0"
-  integrity sha512-sZwhSTHVVz78+kYD3t5pCWSYEdVSBR0PXnwjDRsUs8ytIrK8PLXw+6FKp8r3Z7rx4ZszdetWlXYKOHoUrrwPlA==
+eslint-config-prettier@~6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.0.0.tgz#f429a53bde9fc7660e6353910fd996d6284d3c25"
+  integrity sha512-vDrcCFE3+2ixNT5H83g28bO/uYAwibJxerXPj+E7op4qzBCsAV36QfvdAyVOoNxKAH2Os/e01T/2x++V0LPukA==
   dependencies:
     get-stdin "^6.0.0"
 
@@ -4283,10 +4283,10 @@ eslint-plugin-es@^1.4.0:
     eslint-utils "^1.3.0"
     regexpp "^2.0.1"
 
-eslint-plugin-import@~2.17.3:
-  version "2.17.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.17.3.tgz#00548b4434c18faebaba04b24ae6198f280de189"
-  integrity sha512-qeVf/UwXFJbeyLbxuY8RgqDyEKCkqV7YC+E5S5uOjAp4tOc8zj01JP3ucoBM8JcEqd1qRasJSg6LLlisirfy0Q==
+eslint-plugin-import@~2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.18.0.tgz#7a5ba8d32622fb35eb9c8db195c2090bd18a3678"
+  integrity sha512-PZpAEC4gj/6DEMMoU2Df01C5c50r7zdGIN52Yfi7CvvWaYssG7Jt5R9nFG5gmqodxNOz9vQS87xk6Izdtpdrig==
   dependencies:
     array-includes "^3.0.3"
     contains-path "^0.1.0"
@@ -4300,10 +4300,10 @@ eslint-plugin-import@~2.17.3:
     read-pkg-up "^2.0.0"
     resolve "^1.11.0"
 
-eslint-plugin-jest@~22.6.4:
-  version "22.6.4"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-22.6.4.tgz#2895b047dd82f90f43a58a25cf136220a21c9104"
-  integrity sha512-36OqnZR/uMCDxXGmTsqU4RwllR0IiB/XF8GW3ODmhsjiITKuI0GpgultWFt193ipN3HARkaIcKowpE6HBvRHNg==
+eslint-plugin-jest@~22.7.1:
+  version "22.7.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-22.7.1.tgz#5dcdf8f7a285f98040378220d6beca581f0ab2a1"
+  integrity sha512-CrT3AzA738neimv8G8iK2HCkrCwHnAJeeo7k5TEHK86VMItKl6zdJT/tHBDImfnVVAYsVs4Y6BUdBZQCCgfiyw==
 
 eslint-plugin-node@~9.1.0:
   version "9.1.0"
@@ -4324,20 +4324,20 @@ eslint-plugin-prettier@^3.0.0, eslint-plugin-prettier@~3.1.0:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-promise@~4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-4.1.1.tgz#1e08cb68b5b2cd8839f8d5864c796f56d82746db"
-  integrity sha512-faAHw7uzlNPy7b45J1guyjazw28M+7gJokKUjC5JSFoYfUEyy6Gw/i7YQvmv2Yk00sUjWcmzXQLpU1Ki/C2IZQ==
+eslint-plugin-promise@~4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-4.2.1.tgz#845fd8b2260ad8f82564c1222fce44ad71d9418a"
+  integrity sha512-VoM09vT7bfA7D+upt+FjeBO5eHIJQBUWki1aPvB+vbNiHS3+oGIJGIeyBtKQTME6UPXXy3vV07OL1tHd3ANuDw==
 
 eslint-plugin-standard@~4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-standard/-/eslint-plugin-standard-4.0.0.tgz#f845b45109c99cd90e77796940a344546c8f6b5c"
   integrity sha512-OwxJkR6TQiYMmt1EsNRMe5qG3GsbjlcOhbGUBY4LtavF9DsLaTcoR+j2Tdjqi23oUwKNUqX7qcn5fPStafMdlA==
 
-eslint-plugin-vue@~5.2.2:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-5.2.2.tgz#86601823b7721b70bc92d54f1728cfc03b36283c"
-  integrity sha512-CtGWH7IB0DA6BZOwcV9w9q3Ri6Yuo8qMjx05SmOGJ6X6E0Yo3y9E/gQ5tuNxg2dEt30tRnBoFTbvtmW9iEoyHA==
+eslint-plugin-vue@~5.2.3:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-5.2.3.tgz#3ee7597d823b5478804b2feba9863b1b74273961"
+  integrity sha512-mGwMqbbJf0+VvpGR5Lllq0PMxvTdrZ/ZPjmhkacrCHbubJeJOt+T6E3HUzAifa2Mxi7RSdJfC9HFpOeSYVMMIw==
   dependencies:
     vue-eslint-parser "^5.0.0"
 
@@ -9017,7 +9017,7 @@ prosemirror-state@^1.0.0, prosemirror-state@^1.2.2, prosemirror-state@^1.2.3:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
 
-prosemirror-tables@^0.8.0, prosemirror-tables@^0.8.1:
+prosemirror-tables@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.8.1.tgz#ea99ad4effec99dd4e2fdb0b33cce4d2547eed83"
   integrity sha512-6eY8I+NkyrXAQ1gmYkKo7XDLZaj0iGutdc/zT0+VMY15IzgBINwcRP62+miaCTuneLTKufMYzfUB37NjGJaetw==
@@ -9035,17 +9035,12 @@ prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transfor
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.8.2.tgz#e0e4a47cd45b1cff3d84464446d9f92adf4a558b"
-  integrity sha512-jNIj3/eREx4x2FU6pFEUDmdVmtoRBuLA6JTjgNum/84Nf+Ns+Y9l0Q//R8EL/Qm/5J5xTg5/s+hmQkXaHY+ilA==
-
 prosemirror-utils@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.9.0.tgz#3ab616c94ccd61fcb18968f0d5aa273a9f1f28e4"
   integrity sha512-YcvmHcq7phbn+OagJSvmne92qZG9dOVfb3zfuA1HuyWUif3hUDt2Yfu299BHqVkEkUCF6FN7Gi9folDQntMhxA==
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.9.6, prosemirror-view@^1.9.8:
+prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.9.8:
   version "1.9.8"
   resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.9.8.tgz#47b961204a0b2e8ff87370c270d4f82598e81273"
   integrity sha512-yS4yrqxydvi7ddz9VFLeJgbfVd5g3/bMcRxb1PbWtG0i9OrPSsiHaEBJHLVeTbraGqRlAu+tbNLakO7RhUhp1w==
@@ -10565,7 +10560,7 @@ tippy.js@^4.3.4:
   dependencies:
     popper.js "^1.14.7"
 
-tiptap-commands@^1.10.5, tiptap-commands@^1.10.7:
+tiptap-commands@^1.10.6, tiptap-commands@^1.10.7:
   version "1.10.7"
   resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.10.7.tgz#c177f875e8a90e05171fdd441190b4b7a769bd27"
   integrity sha512-Ij62dHkYvOFUcaj+xlbahhoqcY8bFIEho6fXKrxcjjtGzS2DyJnvXmWN6Ow65uZWXkf5Zf8ae6XnYNaKqP3Pyg==
@@ -10596,17 +10591,7 @@ tiptap-extensions@1.22.2:
     tiptap "^1.22.2"
     tiptap-commands "^1.10.7"
 
-tiptap-utils@^1.5.3:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/tiptap-utils/-/tiptap-utils-1.5.3.tgz#7d4518a84eb6bfb10c98b19c901ca59123865f61"
-  integrity sha512-025uF1acJ7jLuA9dnKIxp8TQelyQ0uJqtT1jlziT8UslwZT5pKzwDsNkadFbnEBp6O9wfLZH0TuUtAUDmuq0VA==
-  dependencies:
-    prosemirror-model "^1.7.0"
-    prosemirror-state "^1.2.3"
-    prosemirror-tables "^0.8.0"
-    prosemirror-utils "^0.8.2"
-
-tiptap-utils@^1.5.5:
+tiptap-utils@^1.5.4, tiptap-utils@^1.5.5:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/tiptap-utils/-/tiptap-utils-1.5.5.tgz#f06c70f0319d9215433b3466b6ece369a078de0f"
   integrity sha512-lnaCmIIkyK050qfsPeMDjoTW0sTqBHxfw1h2GXaX5Nr6JF4VQe0izgf2MI6LCd3PKecJBoW4ce5lNkDpV99+WA==
@@ -10616,10 +10601,10 @@ tiptap-utils@^1.5.5:
     prosemirror-tables "^0.8.1"
     prosemirror-utils "^0.9.0"
 
-tiptap@1.20.1:
-  version "1.20.1"
-  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.20.1.tgz#d10fd0cd73a96bbb1f2d581da02ceda38fa8695b"
-  integrity sha512-uVGxPknq+cQH0G8yyCHvo8p3jPMLZMnkLeFjcrTyiY9PXl6XsSJwOjtIg4GXnIyCcfz2jWI5mhJGzCD26cdJGA==
+tiptap@1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.21.0.tgz#4d8c1365c611e41c8d4f3d7aa195ddaf891e605b"
+  integrity sha512-MoOj/8OPMlmoAotIZjAIlUZ59yMMR83xReOw2rGjqbFOooncoY1rLEBp0xz5oe5FLYqoe8dKb+kzOoFERqckVQ==
   dependencies:
     prosemirror-commands "^1.0.8"
     prosemirror-dropcursor "^1.1.1"
@@ -10628,9 +10613,9 @@ tiptap@1.20.1:
     prosemirror-keymap "^1.0.1"
     prosemirror-model "^1.7.0"
     prosemirror-state "^1.2.3"
-    prosemirror-view "^1.9.6"
-    tiptap-commands "^1.10.5"
-    tiptap-utils "^1.5.3"
+    prosemirror-view "^1.9.8"
+    tiptap-commands "^1.10.6"
+    tiptap-utils "^1.5.4"
 
 tiptap@^1.22.2:
   version "1.22.2"

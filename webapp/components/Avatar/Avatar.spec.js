@@ -1,9 +1,11 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Styleguide from '@human-connection/styleguide'
 import Avatar from './Avatar.vue'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 describe('Avatar.vue', () => {
   let propsData = {}
@@ -51,7 +53,7 @@ describe('Avatar.vue', () => {
       beforeEach(() => {
         propsData = {
           user: {
-            avatar: 'http://lorempixel.com/640/480/animals',
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg',
           },
         }
       })
@@ -62,7 +64,7 @@ describe('Avatar.vue', () => {
           Wrapper()
             .find('img')
             .attributes('src'),
-        ).toBe('http://lorempixel.com/640/480/animals')
+        ).toBe('https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg')
       })
     })
   })

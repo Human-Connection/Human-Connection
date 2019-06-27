@@ -56,7 +56,7 @@ describe('PostSlug', () => {
 
     beforeEach(jest.useFakeTimers)
 
-    describe('test mixin "PostMutationHelpers"', () => {
+    describe('test Post callbacks', () => {
       beforeEach(() => {
         wrapper = Wrapper()
         wrapper.setData({
@@ -70,21 +70,13 @@ describe('PostSlug', () => {
         })
       })
 
-      describe('deletion of Post from Page by invoking "deletePostCallback(`page`)"', () => {
+      describe('deletion of Post from Page by invoking "deletePostCallback()"', () => {
         beforeEach(() => {
-          wrapper.vm.deletePostCallback('page')
+          wrapper.vm.deletePostCallback()
         })
 
         describe('after timeout', () => {
           beforeEach(jest.runAllTimers)
-
-          it('not emits "deletePost"', () => {
-            expect(wrapper.emitted().deletePost).toBeFalsy()
-          })
-
-          it('does go to index (main) page', () => {
-            expect(mocks.$router.history.push).toHaveBeenCalledTimes(1)
-          })
 
           it('does call mutation', () => {
             expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
@@ -92,6 +84,10 @@ describe('PostSlug', () => {
 
           it('mutation is successful', () => {
             expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
+          })
+
+          it('does go to index (main) page', () => {
+            expect(mocks.$router.history.push).toHaveBeenCalledTimes(1)
           })
         })
       })

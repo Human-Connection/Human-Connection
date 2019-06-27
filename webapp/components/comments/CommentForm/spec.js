@@ -1,9 +1,10 @@
-import { mount, createLocalVue, createWrapper } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import CommentForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
-
+localVue.use(Vuex)
 localVue.use(Styleguide)
 
 describe('CommentForm.vue', () => {
@@ -35,8 +36,16 @@ describe('CommentForm.vue', () => {
   })
 
   describe('mount', () => {
+    const getters = {
+      'editor/placeholder': () => {
+        return 'some cool placeholder'
+      },
+    }
+    const store = new Vuex.Store({
+      getters,
+    })
     const Wrapper = () => {
-      return mount(CommentForm, { mocks, localVue, propsData })
+      return mount(CommentForm, { mocks, localVue, propsData, store })
     }
 
     beforeEach(() => {
@@ -70,11 +79,6 @@ describe('CommentForm.vue', () => {
 
       it('clears the editor', () => {
         expect(cancelMethodSpy).toHaveBeenCalledTimes(1)
-      })
-
-      it('emits a method call with the returned comment', () => {
-        const rootWrapper = createWrapper(wrapper.vm.$root)
-        expect(rootWrapper.emitted().refetchPostComments.length).toEqual(1)
       })
 
       describe('mutation fails', () => {

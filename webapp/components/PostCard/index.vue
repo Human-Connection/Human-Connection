@@ -1,6 +1,9 @@
 <template>
   <ds-flex-item :width="width">
-    <ds-card :image="post.image" :class="{ 'post-card': true, 'disabled-content': post.disabled }">
+    <ds-card
+      :image="post.image | proxyApiUrl"
+      :class="{ 'post-card': true, 'disabled-content': post.disabled }"
+    >
       <!-- Post Link Target -->
       <nuxt-link
         class="post-link"
@@ -18,9 +21,7 @@
       </div>
       <ds-space margin-bottom="small" />
       <!-- Post Title -->
-      <ds-heading tag="h3" no-margin>
-        {{ post.title }}
-      </ds-heading>
+      <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
       <!-- Post Content Excerpt -->
       <!-- eslint-disable vue/no-v-html -->
@@ -55,7 +56,7 @@
             <content-menu
               resource-type="contribution"
               :resource="post"
-              :callbacks="{ confirm: deletePostCallback, cancel: null }"
+              :modalsData="menuModalsData"
               :is-owner="isAuthor"
             />
           </div>
@@ -72,7 +73,7 @@ import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
 // import { randomBytes } from 'crypto'
 import { mapGetters } from 'vuex'
-import PostMutationHelpers from '~/mixins/PostMutationHelpers'
+import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 
 export default {
   name: 'HcPostCard',
@@ -82,7 +83,6 @@ export default {
     HcRibbon,
     ContentMenu,
   },
-  mixins: [PostMutationHelpers],
   props: {
     post: {
       type: Object,
@@ -104,6 +104,24 @@ export default {
       const { author } = this.post
       if (!author) return false
       return this.user.id === this.post.author.id
+    },
+    menuModalsData() {
+      return postMenuModalsData(
+        // "this.post" may not always be defined at the beginning …
+        this.post ? this.$filters.truncate(this.post.title, 30) : '',
+        this.deletePostCallback,
+      )
+    },
+  },
+  methods: {
+    async deletePostCallback() {
+      try {
+        await this.$apollo.mutate(deletePostMutation(this.post.id))
+        this.$toast.success(this.$t('delete.contribution.success'))
+        this.$emit('removePostFromList')
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }

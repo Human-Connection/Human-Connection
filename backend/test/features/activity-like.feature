@@ -27,6 +27,7 @@ Feature: Like an object like an article or note
     }
     """
 
+  @wip
   Scenario: Send a like of a person to an users inbox and make sure it's added to the likes collection
     When I send a POST request with the following activity to "/activitypub/users/karl-heinz/inbox":
     """

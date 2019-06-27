@@ -28,7 +28,7 @@
 [?]     unique: true, // Unique value is not enforced in Nitro?
 [-]     index: true
       },
-[ ]   type: {
+[ ]   type: { // db.getCollection('contributions').distinct('type') -> 'DELETED', 'cando', 'post'
 [ ]     type: String,
 [ ]     required: true,
 [-]     index: true
@@ -50,7 +50,7 @@
 [?]     required: true // Not required in Nitro
       },
 [ ]   hasMore: { type: Boolean },
-[?]   teaserImg: { type: String }, // Path is incorrect in Nitro
+[X]   teaserImg: { type: String },
 [ ]   language: {
 [ ]     type: String,
 [ ]     required: true,
@@ -109,8 +109,8 @@
           }
         }
       },
-[?]   deleted: {
-[X]     type: Boolean,
+[?]   deleted: { // THis field is not always present in the alpha-data
+[?]     type: Boolean,
 [ ]     default: false, // Default value is missing in Nitro
 [-]     index: true
       },
@@ -131,13 +131,13 @@ MERGE (p:Post {id: post._id["$oid"]})
 ON CREATE SET
 p.title          = post.title,
 p.slug           = post.slug,
-p.image          = post.teaserImg,
+p.image          = replace(post.teaserImg, 'https://api-alpha.human-connection.org', ''),
 p.content        = post.content,
 p.contentExcerpt = post.contentExcerpt,
 p.visibility     = toLower(post.visibility),
 p.createdAt      = post.createdAt.`$date`,
 p.updatedAt      = post.updatedAt.`$date`,
-p.deleted        = post.deleted,
+p.deleted        = COALESCE(post.deleted,false),
 p.disabled       = NOT post.isEnabled
 WITH p, post
 MATCH (u:User {id: post.userId})

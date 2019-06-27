@@ -9,7 +9,7 @@
         :key="post.id"
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-        @deletePost="deletePost(index, post.id)"
+        @removePostFromList="deletePost(index, post.id)"
       />
     </ds-flex>
     <no-ssr>
@@ -45,7 +45,7 @@ export default {
       // Initialize your apollo data
       Post: [],
       page: 1,
-      pageSize: 10,
+      pageSize: 12,
       filter: {},
     }
   },

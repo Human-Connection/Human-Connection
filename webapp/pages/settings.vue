@@ -1,8 +1,6 @@
 <template>
   <div>
-    <ds-heading tag="h1">
-      {{ $t('settings.name') }}
-    </ds-heading>
+    <ds-heading tag="h1">{{ $t('settings.name') }}</ds-heading>
     <ds-flex gutter="small">
       <ds-flex-item :width="{ base: '100%', md: '200px' }">
         <ds-menu :routes="routes" :is-exact="() => true" />
@@ -33,6 +31,10 @@ export default {
           name: this.$t('settings.social-media.name'),
           path: `/settings/my-social-media`,
         },
+        {
+          name: this.$t('settings.deleteUserAccount.name'),
+          path: `/settings/delete-account`,
+        },
         // TODO implement
         /* {
           name: this.$t('settings.invites.name'),
@@ -44,10 +46,6 @@ export default {
           path: `/settings/data-download`
         }, */
         // TODO implement
-        /* {
-          name: this.$t('settings.delete.name'),
-          path: `/settings/delete-account`
-        }, */
         // TODO implement
         /* {
           name: this.$t('settings.organizations.name'),

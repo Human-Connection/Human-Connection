@@ -45,6 +45,11 @@
                 name="password"
                 type="password"
               />
+              <ds-space class="password-reset-link" margin-bottom="large">
+                <nuxt-link to="/password-reset/request">
+                  {{ $t('login.forgotPassword') }}
+                </nuxt-link>
+              </ds-space>
               <ds-button
                 :loading="pending"
                 primary
@@ -73,7 +78,7 @@
 </template>
 
 <script>
-import LocaleSwitch from '~/components/LocaleSwitch'
+import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   components: {

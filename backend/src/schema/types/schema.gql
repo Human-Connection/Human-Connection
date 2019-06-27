@@ -4,8 +4,9 @@ type Query {
   currentUser: User
   # Get the latest Network Statistics
   statistics: Statistics!
-  findPosts(filter: String!, limit: Int = 10): [Post]! @cypher(
-    statement: """
+  findPosts(filter: String!, limit: Int = 10): [Post]!
+    @cypher(
+      statement: """
       CALL db.index.fulltext.queryNodes('full_text_search', $filter)
       YIELD node as post, score
       MATCH (post)<-[:WROTE]-(user:User)
@@ -14,8 +15,8 @@ type Query {
       AND NOT post.deleted = true AND NOT post.disabled = true
       RETURN post
       LIMIT $limit
-    """
-  )
+      """
+    )
   CommentByPost(postId: ID!): [Comment]!
 }
 
@@ -23,7 +24,9 @@ type Mutation {
   # Get a JWT Token for the given Email and password
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
-  changePassword(oldPassword:String!, newPassword: String!): String!
+  changePassword(oldPassword: String!, newPassword: String!): String!
+  requestPasswordReset(email: String!): Boolean!
+  resetPassword(email: String!, code: String!, newPassword: String!): Boolean!
   report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
@@ -37,6 +40,7 @@ type Mutation {
   follow(id: ID!, type: FollowTypeEnum): Boolean!
   # Unfollow the given Type and ID
   unfollow(id: ID!, type: FollowTypeEnum): Boolean!
+  DeleteUser(id: ID!, resource: [String]): User
 }
 
 type Statistics {
@@ -53,7 +57,7 @@ type Statistics {
 
 type Notification {
   id: ID!
-  read: Boolean,
+  read: Boolean
   user: User @relation(name: "NOTIFIED", direction: "OUT")
   post: Post @relation(name: "NOTIFIED", direction: "IN")
   createdAt: String
@@ -80,7 +84,8 @@ type Report {
   id: ID!
   submitter: User @relation(name: "REPORTED", direction: "IN")
   description: String
-  type: String! @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
+  type: String!
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
   createdAt: String
   comment: Comment @relation(name: "REPORTED", direction: "OUT")
   post: Post @relation(name: "REPORTED", direction: "OUT")
@@ -131,4 +136,3 @@ type SocialMedia {
   url: String
   ownedBy: [User]! @relation(name: "OWNED", direction: "IN")
 }
-

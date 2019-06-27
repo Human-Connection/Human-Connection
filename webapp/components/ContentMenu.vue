@@ -43,7 +43,13 @@ export default {
         return value.match(/(contribution|comment|organization|user)/)
       },
     },
-    callbacks: { type: Object, required: true },
+    modalsData: {
+      type: Object,
+      required: false,
+      // default: () => {
+      //   return {}
+      // },
+    },
   },
   computed: {
     routes() {
@@ -146,7 +152,7 @@ export default {
         data: {
           type: this.resourceType,
           resource: this.resource,
-          callbacks: this.callbacks,
+          modalsData: this.modalsData,
         },
       })
     },

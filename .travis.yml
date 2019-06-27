@@ -29,7 +29,7 @@ script:
   - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
-  - docker-compose exec backend yarn run test:cucumber
+  - docker-compose exec backend yarn run test:cucumber --tags "not @wip"
   - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
   # Frontend
@@ -37,9 +37,7 @@ script:
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
   - docker-compose exec -d backend yarn run test:before:seeder
   # Fullstack
-  # Disable recording cypress tests if we just update dependencies. This is to
-  # avoid running out of quota.
-  - if [[ $BRANCH == *"dependabot"* ]]; then yarn run cypress:run; else yarn run cypress:run --record; fi
+  - yarn run cypress:run
   # Coverage
   - codecov
 

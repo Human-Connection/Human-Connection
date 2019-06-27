@@ -8,10 +8,31 @@
     "logout": "Ausloggen",
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
+    "forgotPassword": "Passwort vergessen?",
     "moreInfo": "Was ist Human Connection?",
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo"
+  },
+  "password-reset": {
+    "title": "Passwort zurücksetzen",
+    "form": {
+      "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
+      "submit": "Email anfordern",
+      "submitted": "Eine E-Mail mit weiteren Instruktionen wurde verschickt an <b>{email}</b>"
+    }
+  },
+  "verify-code": {
+    "form": {
+      "code": "Code eingeben",
+      "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
+      "next": "Weiter",
+      "change-password":{
+        "success": "Änderung des Passworts war erfolgreich!",
+        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
+        "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
+      }
+    }
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes..."
@@ -19,9 +40,9 @@
   "profile": {
     "name": "Mein Profil",
     "memberSince": "Mitglied seit",
-    "follow": "Folgen",
-    "followers": "Folgen",
-    "following": "Folgt",
+    "follow": "abonnieren",
+    "followers": "Abonnenten",
+    "following": "abonniert",
     "shouted": "Empfohlen",
     "commented": "Kommentiert",
     "userAnonym": "Anonymus",
@@ -82,8 +103,14 @@
     "download": {
       "name": "Daten herunterladen"
     },
-    "delete": {
-      "name": "Konto löschen"
+    "deleteUserAccount": {
+      "name": "Daten löschen",
+      "contributionsCount": "Meine {count} Beiträge löschen",
+      "commentsCount": "Meine {count} Kommentare löschen",
+      "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
+      "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
+      "success": "Konto erfolgreich gelöscht",
+      "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen."
     },
     "organizations": {
       "name": "Meine Organisationen"
@@ -100,9 +127,9 @@
     }
   },
   "admin": {
-    "name": "Systemverwaltung",
+    "name": "Admin",
     "dashboard": {
-      "name": "Startzentrale",
+      "name": "Dashboard",
       "users": "Benutzer",
       "posts": "Beiträge",
       "comments": "Kommentare",
@@ -111,7 +138,7 @@
       "projects": "Projekte",
       "invites": "Einladungen",
       "follows": "Folgen",
-      "shouts": "Shouts"
+      "shouts": "Empfehlungen"
     },
     "organizations": {
       "name": "Organisationen"
@@ -187,7 +214,11 @@
     "name": "Name",
     "loadMore": "mehr laden",
     "loading": "wird geladen",
-    "reportContent": "Melden"
+    "reportContent": "Melden",
+    "validations": {
+      "email": "muss eine gültige E-Mail Adresse sein",
+      "verification-code": "muss genau 6 Buchstaben lang sein"
+    }
   },
   "actions": {
     "loading": "lade",
@@ -239,7 +270,7 @@
     "comment": {
       "title": "Lösche Kommentar",
       "type": "Comment",
-      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" löschen möchtest?",
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" löschen möchtest?",
       "success": "Kommentar erfolgreich gelöscht!"
     }
   },
@@ -265,7 +296,7 @@
   },
   "followButton": {
     "follow": "Folgen",
-    "following": "Folge Ich"
+    "following": "Folge ich"
   },
   "shoutButton": {
     "shouted": "empfohlen"
@@ -295,5 +326,13 @@
     "avatar": {
       "submitted": "Upload erfolgreich"
     }
+  },
+  "contribution": {
+    "newPost": "Erstelle einen neuen Beitrag",
+    "filterFollow": "Beiträge filtern von Usern denen ich folge",
+    "filterALL": "Alle Beiträge anzeigen",
+    "success": "Gespeichert!",
+    "languageSelectLabel": "Sprache"
   }
+
 }

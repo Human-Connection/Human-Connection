@@ -3,7 +3,6 @@ import activityPub from './activityPubMiddleware'
 import password from './passwordMiddleware'
 import softDelete from './softDeleteMiddleware'
 import sluggify from './sluggifyMiddleware'
-import fixImageUrls from './fixImageUrlsMiddleware'
 import excerpt from './excerptMiddleware'
 import dateTime from './dateTimeMiddleware'
 import xss from './xssMiddleware'
@@ -25,7 +24,6 @@ export default schema => {
     excerpt: excerpt,
     notifications: notifications,
     xss: xss,
-    fixImageUrls: fixImageUrls,
     softDelete: softDelete,
     user: user,
     includedFields: includedFields,
@@ -42,7 +40,6 @@ export default schema => {
     'excerpt',
     'notifications',
     'xss',
-    'fixImageUrls',
     'softDelete',
     'user',
     'includedFields',

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="comments">
     <h3 style="margin-top: -10px;">
       <span>
         <ds-icon name="comments"/>
@@ -28,6 +28,7 @@
 <script>
 import Comment from '~/components/Comment.vue'
 import HcEmpty from '~/components/Empty.vue'
+import PostCommentsQuery from '~/graphql/PostCommentsQuery.js'
 
 export default {
   components: {
@@ -47,22 +48,10 @@ export default {
       this.comments = post[0].comments || []
     },
   },
-  mounted() {
-    this.$root.$on('refetchPostComments', () => {
-      this.refetchPostComments()
-    })
-  },
-  methods: {
-    refetchPostComments() {
-      if (this.$apollo.queries.Post) {
-        this.$apollo.queries.Post.refetch()
-      }
-    },
-  },
   apollo: {
     Post: {
       query() {
-        return require('~/graphql/PostCommentsQuery.js').default(this)
+        return PostCommentsQuery(this.$i18n)
       },
       variables() {
         return {

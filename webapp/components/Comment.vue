@@ -9,12 +9,13 @@
     <ds-space margin-bottom="x-small">
       <hc-user :user="author" :date-time="comment.createdAt"/>
     </ds-space>
+    <!-- Content Menu (can open Modals) -->
     <no-ssr>
       <content-menu
         placement="bottom-end"
         resource-type="comment"
         :resource="comment"
-        :callbacks="{ confirm: deleteCommentCallback, cancel: null }"
+        :modalsData="menuModalsData"
         style="float-right"
         :is-owner="isAuthor(author.id)"
         v-on:showEditCommentMenu="editCommentMenu"
@@ -74,6 +75,30 @@ export default {
     author() {
       if (this.deleted) return {}
       return this.comment.author || {}
+    },
+    menuModalsData() {
+      return {
+        delete: {
+          titleIdent: 'delete.comment.title',
+          messageIdent: 'delete.comment.message',
+          messageParams: {
+            name: this.$filters.truncate(this.comment.contentExcerpt, 30),
+          },
+          buttons: {
+            confirm: {
+              danger: true,
+              icon: 'trash',
+              textIdent: 'delete.submit',
+              callback: this.deleteCommentCallback,
+            },
+            cancel: {
+              icon: 'close',
+              textIdent: 'delete.cancel',
+              callback: () => {},
+            },
+          },
+        },
+      }
     },
   },
   methods: {
