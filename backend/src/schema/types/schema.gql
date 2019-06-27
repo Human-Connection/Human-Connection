@@ -41,7 +41,6 @@ type Mutation {
   follow(id: ID!, type: FollowTypeEnum): Boolean!
   # Unfollow the given Type and ID
   unfollow(id: ID!, type: FollowTypeEnum): Boolean!
-  DeleteUser(id: ID!, resource: [String]): User
 }
 
 type Statistics {

@@ -94,4 +94,16 @@ type Mutation {
     locationName: String
     about: String
   ): User
+  UpdateUser (
+    id: ID!
+    name: String
+    email: String
+    slug: String
+    avatar: String
+    coverImg: String
+    avatarUpload: Upload
+    locationName: String
+    about: String
+  ): User
+  DeleteUser(id: ID!, resource: [String]): User
 }
