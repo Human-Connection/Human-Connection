@@ -14,7 +14,7 @@ const notify = async (postId, idsOfMentionedUsers, context) => {
   await session.run(cypher, {
     idsOfMentionedUsers,
     createdAt,
-    postId
+    postId,
   })
   session.close()
 }
@@ -32,7 +32,7 @@ const updateHashtagsOfPost = async (postId, hashtags, context) => {
     `
   await session.run(cypher, {
     postId,
-    hashtags
+    hashtags,
   })
   session.close()
 }

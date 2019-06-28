@@ -1,7 +1,7 @@
 import cheerio from 'cheerio'
 const ID_REGEX = /\/profile\/([\w\-.!~*'"(),]+)/g
 
-export default function (content) {
+export default function(content) {
   if (!content) return []
   const $ = cheerio.load(content)
   const urls = $('.mention')
