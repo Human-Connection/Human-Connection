@@ -1,6 +1,7 @@
 import { v1 as neo4j } from 'neo4j-driver'
 import CONFIG from './../config'
 import Neode from 'neode'
+import uuid from 'uuid/v4'
 
 let driver
 
@@ -22,16 +23,16 @@ export function neode() {
     const { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD } = CONFIG
     neodeInstance = new Neode(NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD)
     neodeInstance.model('User', {
-      id: { type: 'string', primary: true },
+      id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
       actorId: 'string',
-      name: 'string',
-      email: 'string',
+      name: { type: 'string', min: 3 },
+      email: { type: 'string', email: true },
       slug: 'string',
       password: 'string',
       avatar: 'string',
       coverImg: 'string',
-      deleted: 'boolean',
-      disabled: 'boolean',
+      deleted: { type: 'boolean', default: false },
+      disabled: { type: 'boolean', default: false },
       role: 'string',
       publicKey: 'string',
       privateKey: 'string',
@@ -42,8 +43,8 @@ export function neode() {
       about: 'string',
       disabledBy: { type: 'relationship', relationship: 'DISABLED', target: 'User', direction: 'in' },
       invitedBy: { type: 'relationship', relationship: 'INVITED', target: 'User', direction: 'in' },
-      createdAt: 'string',
-      updatedAt: 'string',
+      createdAt: { type: 'string', isoDate: true },
+      updatedAt: { type: 'string', isoDate: true },
     })
   }
   return neodeInstance

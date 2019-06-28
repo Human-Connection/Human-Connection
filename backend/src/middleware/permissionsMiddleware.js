@@ -32,6 +32,7 @@ const validSignupNonce = rule({
   cache: 'no_cache',
 })(async (parent, args, context, info) => {
   const { nonce } = args
+  delete args.nonce
   const { driver } = context
   const session = driver.session()
   let response
