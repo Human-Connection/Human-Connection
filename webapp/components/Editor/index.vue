@@ -454,7 +454,7 @@ export default {
         },
         hashtag: {
           // TODO: Fill up with input hashtag in search field
-          url: `/search/hashtag:${item.name}`,
+          url: `/search/hashtag/${item.name}`,
           label: item.name,
         },
       }

@@ -11,7 +11,7 @@ import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation'
-import notifications from './notifications'
+import handleContentData from './handleHtmlContent/handleContentData'
 
 export default schema => {
   const middlewares = {
@@ -22,7 +22,7 @@ export default schema => {
     validation: validation,
     sluggify: sluggify,
     excerpt: excerpt,
-    notifications: notifications,
+    handleContentData: handleContentData,
     xss: xss,
     softDelete: softDelete,
     user: user,
@@ -38,7 +38,7 @@ export default schema => {
     'validation',
     'sluggify',
     'excerpt',
-    'notifications',
+    'handleContentData',
     'xss',
     'softDelete',
     'user',

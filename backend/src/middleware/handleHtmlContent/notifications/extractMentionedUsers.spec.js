@@ -1,4 +1,4 @@
-import extractIds from '.'
+import extractIds from './extractMentionedUsers'
 
 describe('extractIds', () => {
   describe('content undefined', () => {
