@@ -1,16 +1,17 @@
 <template>
   <div class="layout-default">
     <div class="main-navigation">
-      <ds-container class="main-navigation-container">
+      {{ this.window.height }}
+      <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
           <ds-flex>
-            <ds-flex-item :width="{ base: '50px', md: '150px' }">
+            <ds-flex-item :width="{ base: '49px', md: '150px' }">
               <a v-router-link style="display: inline-flex" href="/">
                 <ds-logo />
               </a>
             </ds-flex-item>
             <ds-flex-item>
-              <div id="nav-search-box" v-on:click="unfolded" v-click-outside="foldedup">
+              <div id="nav-search-box" v-on:click="unfolded" @blur.capture="foldedup">
                 <search-input
                   id="nav-search"
                   :delay="300"
@@ -22,7 +23,7 @@
                 />
               </div>
             </ds-flex-item>
-            <ds-flex-item width="200px">
+            <ds-flex-item width="200px" style="background-color:white">
               <div class="main-navigation-right" style="float:right">
                 <no-ssr>
                   <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
@@ -198,48 +199,9 @@ export default {
       document.getElementById('nav-search-box').classList.remove('unfolded')
     },
   },
-  directives: {
-    'click-outside': {
-      bind: function(el, binding, vNode) {
-        // Provided expression must evaluate to a function.
-        if (typeof binding.value !== 'function') {
-          const compName = vNode.context.name
-          let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`
-          if (compName) {
-            warn += `Found in component '${compName}'`
-          }
-
-          console.warn(warn)
-        }
-        // Define Handler and cache it on the element
-        const bubble = binding.modifiers.bubble
-        const handler = e => {
-          if (bubble || (!el.contains(e.target) && el !== e.target)) {
-            binding.value(e)
-          }
-        }
-        el.__vueClickOutside__ = handler
-
-        // add Event Listeners
-        document.addEventListener('click', handler)
-      },
-
-      unbind: function(el, binding) {
-        // Remove Event Listeners
-        document.removeEventListener('click', el.__vueClickOutside__)
-        el.__vueClickOutside__ = null
-      },
-    },
-  },
 }
 </script>
 <style>
-.foldedup {
-  position: '';
-  right: ;
-  left: ;
-  z-index: 1;
-}
 .unfolded {
   position: absolute;
   right: 0px;
