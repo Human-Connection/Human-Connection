@@ -4,7 +4,6 @@ export default {
   Mutation: {
     CreateUser: async (resolve, root, args, context, info) => {
       const result = await resolve(root, args, context, info)
-      result.password = '*****'
       return result
     },
   },

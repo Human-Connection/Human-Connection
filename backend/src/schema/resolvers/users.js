@@ -1,26 +1,19 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
-import uuid from 'uuid/v4'
 import fileUpload from './fileUpload'
 import bcrypt from 'bcryptjs'
+import { neode } from '../../bootstrap/neo4j'
+import { UserInputError } from 'apollo-server'
 
-export const createUser = async ({ args, driver }) => {
-  args.id = args.id || uuid()
+
+export const createUser = async ({ args }) => {
   args.password = await bcrypt.hashSync(args.password, 10)
-  args.deleted = args.deleted || false
-  args.disabled = args.disabled || false
-  const cypher = 'CREATE (user:User {args}) RETURN user'
-  const session = driver.session()
-  let response
+  const instance = neode()
   try {
-    const result = await session.run(cypher, { args })
-    const [user] = result.records.map(r => r.get('user'))
-    response = user.properties
-  } catch (e) {
-    throw e
-  } finally {
-    session.close()
+    const user = await instance.create('User', args)
+    return user.properties()
+  } catch(e) {
+    throw new UserInputError(e.message)
   }
-  return response
 }
 
 export default {
@@ -31,7 +24,7 @@ export default {
     },
     CreateUser: async (object, params, context, resolveInfo) => {
       params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
-      return createUser({ args: params, driver: context.driver })
+      return createUser({ args: params })
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
       const { resource } = params

@@ -704,6 +704,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.4.4":
+  version "7.4.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.5.tgz#582bb531f5f9dc67d2fcb682979894f75e253f12"
+  integrity sha512-TuI4qpWZP6lGOGIuGWtp9sPluqYICmbk8T/1vpSysqJxRPkudh/ofFWyqdcMsDf2s7KvDL4/YHgKyvcS3g9CJQ==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.0.0", "@babel/template@^7.1.0", "@babel/template@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
@@ -2853,6 +2860,11 @@ dotenv@^0.4.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-0.4.0.tgz#f6fb351363c2d92207245c737802c9ab5ae1495a"
   integrity sha1-9vs1E2PC2SIHJFxzeALJq1rhSVo=
 
+dotenv@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
+  integrity sha1-hk7xN5rO1Vzm+V3r7NzhefegzR0=
+
 dotenv@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.0.0.tgz#ed310c165b4e8a97bb745b0a9d99c31bda566440"
@@ -4953,7 +4965,7 @@ jmespath@0.15.0:
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
   integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
 
-joi@^13.0.0:
+joi@^13.0.0, joi@^13.7.0:
   version "13.7.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-13.7.0.tgz#cfd85ebfe67e8a1900432400b4d03bbd93fb879f"
   integrity sha512-xuY5VkHfeOYK3Hdi91ulocfuFopwgbSORmIwzcwHKESQhC7w1kD5jaVSPnqDxS2I8t3RZ9omCKAxNwXN5zG1/Q==
@@ -5641,6 +5653,15 @@ negotiator@0.6.2:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
 
+neo4j-driver@^1.6.3:
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.5.tgz#c3fe3677f69c12f26944563d45e7e7d818a685e4"
+  integrity sha512-xCD2F5+tp/SD9r5avX5bSoY8u8RH2o793xJ9Ikjz1s5qQy7cFxFbbj2c52uz3BVGhRAx/NmB57VjOquYmmxGtw==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    text-encoding-utf-8 "^1.0.2"
+    uri-js "^4.2.2"
+
 neo4j-driver@^1.7.3, neo4j-driver@~1.7.4:
   version "1.7.4"
   resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.4.tgz#9661cf643b63818bff85e82c4691918e75098c1e"
@@ -5659,6 +5680,16 @@ neo4j-graphql-js@^2.6.3:
     graphql-auth-directives "^2.1.0"
     lodash "^4.17.11"
     neo4j-driver "^1.7.3"
+
+neode@^0.2.16:
+  version "0.2.16"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.2.16.tgz#20532cc67604fd00cc88de841d422f5238ae5bd3"
+  integrity sha512-L9p55IDKGzAZsQgHdXrfd2xasDuB46RipcrPw6NP7ESgkmfJMaMWRZ1F3Kv+f4V4U1WnhZ1IILvwVFhYPnpXEg==
+  dependencies:
+    dotenv "^4.0.0"
+    joi "^13.7.0"
+    neo4j-driver "^1.6.3"
+    uuid "^3.3.2"
 
 next-tick@^1.0.0:
   version "1.0.0"
@@ -7447,6 +7478,11 @@ test-exclude@^5.0.0:
     minimatch "^3.0.4"
     read-pkg-up "^4.0.0"
     require-main-filename "^1.0.1"
+
+text-encoding-utf-8@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/text-encoding-utf-8/-/text-encoding-utf-8-1.0.2.tgz#585b62197b0ae437e3c7b5d0af27ac1021e10d13"
+  integrity sha512-8bw4MY9WjdsD2aMtO0OzOCY3pXGYNx2d2FfHRVUKkiCPDWjKuOlhLVASS+pD7VkLTVjW268LYJHwsnPFlBpbAg==
 
 text-encoding@^0.6.4:
   version "0.6.4"
