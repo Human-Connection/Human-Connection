@@ -27,7 +27,7 @@
       "code": "Code eingeben",
       "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
       "next": "Weiter",
-      "change-password":{
+      "change-password": {
         "success": "Änderung des Passworts war erfolgreich!",
         "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
         "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
@@ -40,7 +40,8 @@
       "noUsersFound": "Keine Benutzer gefunden"
     },
     "hashtag": {
-      "noHashtagsFound": "Keine Hashtags gefunden"
+      "noHashtagsFound": "Keine Hashtags gefunden",
+      "addHashtag": "Neuer Hashtag"
     }
   },
   "profile": {
@@ -338,9 +339,7 @@
     "filterFollow": "Beiträge filtern von Usern denen ich folge",
     "filterALL": "Alle Beiträge anzeigen",
     "success": "Gespeichert!",
-    "languageSelectLabel": "Sprache",
-    "tagsInputLabel": "Tags",
-    "tagsInputPlaceholder": "Hinzufügen ein Tag"
+    "languageSelectLabel": "Sprache"
   }
 
 }

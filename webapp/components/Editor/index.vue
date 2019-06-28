@@ -12,10 +12,19 @@
           <div v-if="isMention">@{{ item.slug }}</div>
           <div v-if="isHashtag">#{{ item.name }}</div>
         </div>
+        <div
+          v-if="isHashtag && query && !filteredItems.find(el => el.name === query)"
+          class="suggestion-list__item is-empty"
+        >
+          {{ $t('editor.hashtag.addHashtag') }}
+        </div>
       </template>
       <div v-else class="suggestion-list__item is-empty">
         <div v-if="isMention">{{ $t('editor.mention.noUsersFound') }}</div>
-        <div v-if="isHashtag">{{ $t('editor.hashtag.noHashtagsFound') }}</div>
+        <div v-if="isHashtag">
+          <div v-if="query === ''">{{ $t('editor.hashtag.noHashtagsFound') }}</div>
+          <div v-else>{{ $t('editor.hashtag.addHashtag') }}</div>
+        </div>
       </div>
     </div>
 
@@ -271,7 +280,7 @@ export default {
               }
               // pressing enter
               if (event.keyCode === 13) {
-                this.enterHandler(this.mentionSuggestionType)
+                this.enterHandler()
                 return true
               }
               return false
@@ -340,9 +349,14 @@ export default {
                 this.downHandler()
                 return true
               }
-              // pressing enter or pressing space
-              if (event.keyCode === 13 || event.keyCode === 32) {
-                this.enterHandler(this.hashtagSuggestionType)
+              // pressing enter
+              if (event.keyCode === 13) {
+                this.enterHandler()
+                return true
+              }
+              // pressing space
+              if (event.keyCode === 32) {
+                this.spaceHandler()
                 return true
               }
               return false
@@ -357,7 +371,7 @@ export default {
               }
               const fuse = new Fuse(items, {
                 threshold: 0.2,
-                keys: ['slug'],
+                keys: ['name'],
               })
               return fuse.search(query)
             },
@@ -434,13 +448,17 @@ export default {
     downHandler() {
       this.navigatedItemIndex = (this.navigatedItemIndex + 1) % this.filteredItems.length
     },
-    // For hashtags handles pressing of space as enter.
+    // Handles pressing of enter.
     enterHandler() {
       const item = this.filteredItems[this.navigatedItemIndex]
       if (item) {
         this.selectItem(item)
-      } else if (this.suggestionType === this.hashtagSuggestionType && this.query !== '') {
-        this.selectItem({ name: this.query }, this.hashtagSuggestionType)
+      }
+    },
+    // For hashtags handles pressing of space.
+    spaceHandler() {
+      if (this.suggestionType === this.hashtagSuggestionType && this.query !== '') {
+        this.selectItem({ name: this.query })
       }
     },
     // we have to replace our suggestion text with a mention

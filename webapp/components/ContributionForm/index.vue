@@ -12,17 +12,6 @@
           />
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
-        <ds-input
-          model="tagValue"
-          :label="$t('contribution.tagsInputLabel')"
-          :placeholder="$t('contribution.tagsInputPlaceholder')"
-          @input.native="handleInput"
-          @keyup.enter.native="addTag(form.tagValue)"
-          :disabled="form.tags.length >= 5"
-        ></ds-input>
-        <ds-chip v-for="(tag, index) in form.tags" @remove="removeTag(index)" removable :key="tag">
-          {{ tag }}
-        </ds-chip>
         <ds-flex class="contribution-form-footer">
           <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
           <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
@@ -82,8 +71,6 @@ export default {
         content: '',
         language: null,
         languageOptions: [],
-        tagValue: null,
-        tags: [],
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -135,7 +122,6 @@ export default {
             title: this.form.title,
             content: this.form.content,
             language: this.form.language ? this.form.language.value : this.$i18n.locale(),
-            tags: this.form.tags,
           },
         })
         .then(res => {
@@ -164,16 +150,6 @@ export default {
       orderBy(locales, 'name').map(locale => {
         this.form.languageOptions.push({ label: locale.name, value: locale.code })
       })
-    },
-    removeTag(index) {
-      this.form.tags.splice(index, 1)
-    },
-    handleInput(e) {
-      this.form.tagValue = e.target ? e.target.value.trim() : ''
-    },
-    addTag(tag) {
-      this.form.tags.push(tag)
-      this.form.tagValue = ''
     },
   },
   apollo: {

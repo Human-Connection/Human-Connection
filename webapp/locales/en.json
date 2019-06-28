@@ -40,7 +40,8 @@
       "noUsersFound": "No users found"
     },
     "hashtag": {
-      "noHashtagsFound": "No hashtags found"
+      "noHashtagsFound": "No hashtags found",
+      "addHashtag": "New hashtag"
     }
   },
   "profile": {
@@ -337,8 +338,6 @@
     "filterFollow": "Filter contributions from users I follow",
     "filterALL": "View all contributions",
     "success": "Saved!",
-    "languageSelectLabel": "Language",
-    "tagsInputLabel": "Tags",
-    "tagsInputPlaceholder": "Add a tag"
+    "languageSelectLabel": "Language"
   }
 }

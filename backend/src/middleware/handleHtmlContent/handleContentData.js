@@ -1,57 +1,34 @@
 import extractMentionedUsers from './notifications/extractMentionedUsers'
 import extractHashtags from './hashtags/extractHashtags'
 
-const notify = async (resolve, root, args, context, resolveInfo) => {
-  // extract user ids before xss-middleware removes link classes
-  const ids = extractMentionedUsers(args.content)
-
-  console.log('ids: ', ids)
-
-  const post = await resolve(root, args, context, resolveInfo)
-
+const notify = async (postId, idsOfMentionedUsers, context) => {
   const session = context.driver.session()
-  const {
-    id: postId
-  } = post
   const createdAt = new Date().toISOString()
   const cypher = `
-    match(u:User) where u.id in $ids
+    match(u:User) where u.id in $idsOfMentionedUsers
     match(p:Post) where p.id = $postId
     create(n:Notification{id: apoc.create.uuid(), read: false, createdAt: $createdAt})
     merge (n)-[:NOTIFIED]->(u)
     merge (p)-[:NOTIFIED]->(n)
     `
   await session.run(cypher, {
-    ids,
+    idsOfMentionedUsers,
     createdAt,
     postId
   })
   session.close()
-
-  return post
 }
 
-const updateHashtagsOfPost = async (postId, resolve, root, args, context, resolveInfo) => {
-  // extract tag (hashtag) ids before xss-middleware removes link classes
-  const hashtags = extractHashtags(args.content)
-
-  console.log('hashtags: ', hashtags)
-
-  // const post = await resolve(root, args, context, resolveInfo)
-
+const updateHashtagsOfPost = async (postId, hashtags, context) => {
   const session = context.driver.session()
-  // const {
-  //   id: postId
-  // } = post
-  // const createdAt = new Date().toISOString()
   const cypher = `
-    MATCH (p:Post { id: $postId })-[oldRelations: TAGGED]->(oldTags: Tag)
+    MATCH (p:Post { id: $postId })-[oldRelations:TAGGED]->(oldTags:Tag)
     DELETE oldRelations
     WITH p
     UNWIND $hashtags AS tagName
-    MERGE (t: Tag { id: tagName, name: tagName })
+    MERGE (t:Tag { id: tagName, name: tagName, disabled: false, deleted: false })
     MERGE (p)-[:TAGGED]->(t)
-    RETURN t
+    RETURN p, t
     `
   await session.run(cypher, {
     postId,
@@ -61,10 +38,20 @@ const updateHashtagsOfPost = async (postId, resolve, root, args, context, resolv
 }
 
 const handleContentData = async (resolve, root, args, context, resolveInfo) => {
-  // extract user ids before xss-middleware removes link classes
+  console.log('args.content: ', args.content)
+  // extract user ids before xss-middleware removes classes via the following "resolve" call
+  const idsOfMentionedUsers = extractMentionedUsers(args.content)
+  console.log('idsOfMentionedUsers: ', idsOfMentionedUsers)
+  // extract tag (hashtag) ids before xss-middleware removes classes via the following "resolve" call
+  const hashtags = extractHashtags(args.content)
+  console.log('hashtags: ', hashtags)
 
-  const post = await notify(resolve, root, args, context, resolveInfo)
-  await updateHashtagsOfPost(post.id, resolve, root, args, context, resolveInfo)
+  // removes classes from the content
+  const post = await resolve(root, args, context, resolveInfo)
+
+  console.log('post.id: ', post.id)
+  await notify(post.id, idsOfMentionedUsers, context)
+  await updateHashtagsOfPost(post.id, hashtags, context)
 
   return post
 }
