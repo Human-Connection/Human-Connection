@@ -1,7 +1,6 @@
 <template>
   <div class="layout-default">
     <div class="main-navigation">
-      {{ this.window.height }}
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
           <ds-flex>
