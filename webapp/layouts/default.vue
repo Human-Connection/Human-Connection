@@ -2,87 +2,97 @@
   <div class="layout-default">
     <div class="main-navigation">
       <ds-container class="main-navigation-container">
-        <div class="main-navigation-left">
-          <a v-router-link style="display: inline-flex" href="/">
-            <ds-logo />
-          </a>
-        </div>
-        <div class="main-navigation-center hc-navbar-search">
-          <search-input
-            id="nav-search"
-            :delay="300"
-            :pending="quickSearchPending"
-            :results="quickSearchResults"
-            @clear="quickSearchClear"
-            @search="value => quickSearch({ value })"
-            @select="goToPost"
-          />
-        </div>
-        <div class="main-navigation-right">
-          <no-ssr>
-            <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
-          </no-ssr>
-          <template v-if="isLoggedIn">
-            <no-ssr>
-              <notification-menu />
-            </no-ssr>
-            <no-ssr>
-              <dropdown class="avatar-menu">
-                <template slot="default" slot-scope="{ toggleMenu }">
-                  <a
-                    class="avatar-menu-trigger"
-                    :href="
-                      $router.resolve({
-                        name: 'profile-id-slug',
-                        params: { id: user.id, slug: user.slug },
-                      }).href
-                    "
-                    @click.prevent="toggleMenu"
-                  >
-                    <hc-avatar :user="user" />
-                    <ds-icon size="xx-small" name="angle-down" />
-                  </a>
+        <div>
+          <ds-flex>
+            <ds-flex-item :width="{ base: '50px', md: '150px' }">
+              <a v-router-link style="display: inline-flex" href="/">
+                <ds-logo />
+              </a>
+            </ds-flex-item>
+            <ds-flex-item>
+              <div id="nav-search-box" v-on:click="unfolded" v-click-outside="foldedup">
+                <search-input
+                  id="nav-search"
+                  :delay="300"
+                  :pending="quickSearchPending"
+                  :results="quickSearchResults"
+                  @clear="quickSearchClear"
+                  @search="value => quickSearch({ value })"
+                  @select="goToPost"
+                />
+              </div>
+            </ds-flex-item>
+            <ds-flex-item width="200px">
+              <div class="main-navigation-right" style="float:right">
+                <no-ssr>
+                  <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
+                </no-ssr>
+                <template v-if="isLoggedIn">
+                  <no-ssr>
+                    <notification-menu />
+                  </no-ssr>
+                  <no-ssr>
+                    <dropdown class="avatar-menu">
+                      <template slot="default" slot-scope="{ toggleMenu }">
+                        <a
+                          class="avatar-menu-trigger"
+                          :href="
+                            $router.resolve({
+                              name: 'profile-id-slug',
+                              params: { id: user.id, slug: user.slug },
+                            }).href
+                          "
+                          @click.prevent="toggleMenu"
+                        >
+                          <hc-avatar :user="user" />
+                          <ds-icon size="xx-small" name="angle-down" />
+                        </a>
+                      </template>
+                      <template slot="popover" slot-scope="{ closeMenu }">
+                        <div class="avatar-menu-popover">
+                          {{ $t('login.hello') }}
+                          <b>{{ userName }}</b>
+                          <template v-if="user.role !== 'user'">
+                            <ds-text color="softer" size="small" style="margin-bottom: 0">
+                              {{ user.role | camelCase }}
+                            </ds-text>
+                          </template>
+                          <hr />
+                          <ds-menu :routes="routes" :matcher="matcher">
+                            <ds-menu-item
+                              slot="menuitem"
+                              slot-scope="item"
+                              :route="item.route"
+                              :parents="item.parents"
+                              @click.native="closeMenu(false)"
+                            >
+                              <ds-icon :name="item.route.icon" />
+                              {{ item.route.name }}
+                            </ds-menu-item>
+                          </ds-menu>
+                          <hr />
+                          <nuxt-link class="logout-link" :to="{ name: 'logout' }">
+                            <ds-icon name="sign-out" />
+                            {{ $t('login.logout') }}
+                          </nuxt-link>
+                        </div>
+                      </template>
+                    </dropdown>
+                  </no-ssr>
                 </template>
-                <template slot="popover" slot-scope="{ closeMenu }">
-                  <div class="avatar-menu-popover">
-                    {{ $t('login.hello') }}
-                    <b>{{ userName }}</b>
-                    <template v-if="user.role !== 'user'">
-                      <ds-text color="softer" size="small" style="margin-bottom: 0">
-                        {{ user.role | camelCase }}
-                      </ds-text>
-                    </template>
-                    <hr />
-                    <ds-menu :routes="routes" :matcher="matcher">
-                      <ds-menu-item
-                        slot="menuitem"
-                        slot-scope="item"
-                        :route="item.route"
-                        :parents="item.parents"
-                        @click.native="closeMenu(false)"
-                      >
-                        <ds-icon :name="item.route.icon" />
-                        {{ item.route.name }}
-                      </ds-menu-item>
-                    </ds-menu>
-                    <hr />
-                    <nuxt-link class="logout-link" :to="{ name: 'logout' }">
-                      <ds-icon name="sign-out" />
-                      {{ $t('login.logout') }}
-                    </nuxt-link>
-                  </div>
-                </template>
-              </dropdown>
-            </no-ssr>
-          </template>
+              </div>
+            </ds-flex-item>
+          </ds-flex>
         </div>
       </ds-container>
     </div>
+
     <ds-container>
       <div style="padding: 6rem 2rem 5rem;">
         <nuxt />
       </div>
     </ds-container>
+
     <div id="overlay" />
     <no-ssr>
       <modal />
@@ -181,9 +191,62 @@ export default {
       }
       return this.$route.path.indexOf(url) === 0
     },
+    unfolded: function() {
+      document.getElementById('nav-search-box').classList.add('unfolded')
+    },
+    foldedup: function() {
+      document.getElementById('nav-search-box').classList.remove('unfolded')
+    },
+  },
+  directives: {
+    'click-outside': {
+      bind: function(el, binding, vNode) {
+        // Provided expression must evaluate to a function.
+        if (typeof binding.value !== 'function') {
+          const compName = vNode.context.name
+          let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`
+          if (compName) {
+            warn += `Found in component '${compName}'`
+          }
+
+          console.warn(warn)
+        }
+        // Define Handler and cache it on the element
+        const bubble = binding.modifiers.bubble
+        const handler = e => {
+          if (bubble || (!el.contains(e.target) && el !== e.target)) {
+            binding.value(e)
+          }
+        }
+        el.__vueClickOutside__ = handler
+
+        // add Event Listeners
+        document.addEventListener('click', handler)
+      },
+
+      unbind: function(el, binding) {
+        // Remove Event Listeners
+        document.removeEventListener('click', el.__vueClickOutside__)
+        el.__vueClickOutside__ = null
+      },
+    },
   },
 }
 </script>
+<style>
+.foldedup {
+  position: '';
+  right: ;
+  left: ;
+  z-index: 1;
+}
+.unfolded {
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  z-index: 1;
+}
+</style>
 
 <style lang="scss">
 .topbar-locale-switch {
@@ -197,28 +260,6 @@ export default {
   a {
     color: $text-color-soft;
   }
-}
-
-.main-navigation-container {
-  padding: $space-x-small $space-large !important;
-  width: 100%;
-  align-items: center;
-  display: flex;
-}
-
-.main-navigation-left {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  align-items: center;
-}
-
-.main-navigation-center {
-  display: flex;
-  flex: auto;
-  width: 100%;
-  padding-right: $space-large;
-  padding-left: $space-large;
 }
 
 .main-navigation-right {
