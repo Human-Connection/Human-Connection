@@ -106,7 +106,7 @@ describe('ContributionForm.vue', () => {
               content: postContent,
               language: 'en',
               id: null,
-              categories: null,
+              categoryIds: null,
             },
           }
           postTitleInput = wrapper.find('.ds-input')
@@ -132,9 +132,9 @@ describe('ContributionForm.vue', () => {
         })
 
         it('supports adding categories', async () => {
-          const categories = ['cat12', 'cat15', 'cat37']
-          expectedParams.variables.categories = categories
-          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categories)
+          const categoryIds = ['cat12', 'cat15', 'cat37']
+          expectedParams.variables.categoryIds = categoryIds
+          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -215,7 +215,7 @@ describe('ContributionForm.vue', () => {
             content: postContent,
             language: propsData.contribution.language,
             id: propsData.contribution.id,
-            categories: null,
+            categoryIds: null,
           },
         }
         postTitleInput = wrapper.find('.ds-input')

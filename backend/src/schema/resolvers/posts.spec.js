@@ -118,19 +118,16 @@ describe('CreatePost', () => {
           }),
         ])
         const createPostWithCategoriesMutation = `
-          mutation($title: String!, $content: String!, $categories: [ID]) {
-            CreatePost(title: $title, content: $content, categories: $categories) {
+          mutation($title: String!, $content: String!, $categoryIds: [ID]) {
+            CreatePost(title: $title, content: $content, categoryIds: $categoryIds) {
               id
-              categories {
-                id
-              }
             }
           }
         `
         const creatPostWithCategoriesVariables = {
           title: postTitle,
           content: postContent,
-          categories: ['cat9', 'cat4', 'cat15'],
+          categoryIds: ['cat9', 'cat4', 'cat15'],
         }
         const postQueryWithCategories = `
           query($id: ID) {

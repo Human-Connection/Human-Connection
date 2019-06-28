@@ -56,7 +56,7 @@ type Mutation {
     createdAt: String
     updatedAt: String
     language: String
-    categories: [ID]
+    categoryIds: [ID]
     contentExcerpt: String
   ): Post
 }

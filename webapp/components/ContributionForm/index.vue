@@ -68,7 +68,7 @@ export default {
         content: '',
         language: null,
         languageOptions: [],
-        categories: null,
+        categoryIds: null,
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     submit() {
-      const { title, content, language, categories } = this.form
+      const { title, content, language, categoryIds } = this.form
       this.loading = true
       this.$apollo
         .mutate({
@@ -120,7 +120,7 @@ export default {
             title,
             content,
             language: language ? language.value : this.$i18n.locale(),
-            categories,
+            categoryIds,
           },
         })
         .then(res => {
@@ -150,7 +150,7 @@ export default {
       })
     },
     updateCategories(ids) {
-      this.form.categories = ids
+      this.form.categoryIds = ids
     },
   },
   apollo: {

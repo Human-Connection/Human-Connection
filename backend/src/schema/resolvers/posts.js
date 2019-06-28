@@ -1,4 +1,5 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
+import uuid from 'uuid/v4'
 import fileUpload from './fileUpload'
 
 export default {
@@ -9,36 +10,35 @@ export default {
     },
 
     CreatePost: async (object, params, context, resolveInfo) => {
-      const { categories } = params
-      let post
+      const { categoryIds } = params
+      delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
-      post = await neo4jgraphql(object, params, context, resolveInfo, false)
+      params.id = params.id || uuid()
+      let cypher = `CREATE (post:Post {params})
+      WITH post
+      MATCH (author:User {id: $userId})
+      MERGE (post)<-[:WROTE]-(author)
+      `
+      if (categoryIds) {
+        cypher += `WITH post
+        UNWIND $categoryIds AS categoryId
+        MATCH (category:Category {id: categoryId})
+        MERGE (post)-[:CATEGORIZED]->(category)
+        `
+      }
+      cypher += `RETURN post`
+      const variables = { userId: context.user.id, categoryIds, params }
 
       const session = context.driver.session()
-      await session.run(
-        'MATCH (author:User {id: $userId}), (post:Post {id: $postId}) ' +
-          'MERGE (post)<-[:WROTE]-(author) ' +
-          'RETURN author',
-        {
-          userId: context.user.id,
-          postId: post.id,
-        },
-      )
-      if (categories && categories.length) {
-        await session.run(
-          `MATCH (post:Post {id: $postId})
-          UNWIND $categories AS categoryId
-          MATCH (category:Category {id: categoryId})
-          MERGE (post)-[:CATEGORIZED]->(category)
-          RETURN category`,
-          {
-            categories,
-            postId: post.id,
-          },
-        )
-      }
+      const transactionRes = await session.run(cypher, variables)
+
+      const [post] = transactionRes.records.map(record => {
+        return record.get('post')
+      })
+
       session.close()
-      return post
+
+      return post.properties
     },
   },
 }
