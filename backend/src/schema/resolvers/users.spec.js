@@ -217,7 +217,7 @@ describe('users', () => {
     let deleteUserVariables
     let asAuthor
     const deleteUserMutation = gql`
-      mutation($id: ID!, $resource: [String]) {
+      mutation($id: ID!, $resource: [Deletable]) {
         DeleteUser(id: $id, resource: $resource) {
           id
           contributions {

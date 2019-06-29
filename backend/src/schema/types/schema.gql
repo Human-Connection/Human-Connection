@@ -92,6 +92,11 @@ type Report {
   user: User @relation(name: "REPORTED", direction: "OUT")
 }
 
+enum Deletable {
+  Post
+  Comment
+}
+
 enum ShoutTypeEnum {
   Post
   Organization
