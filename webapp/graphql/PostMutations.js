@@ -16,9 +16,6 @@ export default () => {
           content
           contentExcerpt
           language
-          categories {
-            name
-          }
         }
       }
     `,
