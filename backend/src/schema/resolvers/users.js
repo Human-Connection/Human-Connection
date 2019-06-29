@@ -1,13 +1,13 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
-import bcrypt from 'bcryptjs'
+import { hashSync } from 'bcryptjs'
 import { neode } from '../../bootstrap/neo4j'
 import { UserInputError } from 'apollo-server'
 
 const instance = neode()
 
-export const encryptPassword = async args => {
-  args.encryptedPassword = await bcrypt.hashSync(args.password, 10)
+export const encryptPassword = args => {
+  args.encryptedPassword = hashSync(args.password, 10)
   delete args.password
   return args
 }
