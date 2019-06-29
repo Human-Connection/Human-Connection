@@ -15,7 +15,7 @@ export default applyScalars(
           exclude: ['Notfication', 'Statistics', 'LoggedInUser'],
         },
         mutation: {
-          exclude: ['Notfication', 'Statistics', 'LoggedInUser'],
+          exclude: ['EmailAddress', 'Notfication', 'Statistics', 'LoggedInUser'],
         },
         debug: CONFIG.DEBUG,
       },

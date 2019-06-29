@@ -6,7 +6,6 @@ type InvitationCode {
   #createdAt: DateTime
   #usedAt: DateTime
   createdAt: String
-  usedAt: String
 }
 
 type Mutation {

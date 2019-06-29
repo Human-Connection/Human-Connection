@@ -9,6 +9,7 @@ let variables
 let action
 let userParams
 const driver = getDriver()
+const instance = neode()
 
 beforeEach(async () => {
   variables = {}
@@ -18,14 +19,6 @@ beforeEach(async () => {
 afterEach(async () => {
   await factory.cleanDatabase()
 })
-
-const getAllSignups = async () => {
-  const session = driver.session()
-  let transactionRes = await session.run('MATCH (s:SignUp) RETURN s')
-  const signups = transactionRes.records.map(record => record.get('s'))
-  session.close()
-  return signups
-}
 
 describe('CreateInvitationCode', () => {
   const mutation = `mutation { CreateInvitationCode { token } }`
@@ -38,6 +31,7 @@ describe('CreateInvitationCode', () => {
   describe('authenticated', () => {
     beforeEach(async () => {
       userParams = {
+        id: 'i123',
         name: 'Inviter',
         email: 'inviter@example.org',
         password: '1234',
@@ -130,9 +124,9 @@ describe('CreateInvitationCode', () => {
   })
 })
 
-describe('CreateSignUpByInvitationCode', () => {
+describe('SignupByInvitation', () => {
   const mutation = `mutation($email: String!, $token: String!) {
-    CreateSignUpByInvitationCode(email: $email, token: $token) { email }
+    SignupByInvitation(email: $email, token: $token) { email }
   }`
 
   beforeEach(() => {
@@ -179,12 +173,11 @@ describe('CreateSignUpByInvitationCode', () => {
         await expect(action()).rejects.toThrow('"email" must be a valid email')
       })
 
-      it('creates no SignUp node', async done => {
+      it('creates no EmailAddress node', async done => {
         try {
           await action()
         } catch (e) {
-          const signUpQuery = `{ SignUp { email } }`
-          await expect(factory.request(signUpQuery)).resolves.toEqual({ SignUp: [] })
+          await expect(instance.model('EmailAddress').all()).resolves.toEqual({ EmailAddress: [] })
           done()
         }
       })
@@ -197,34 +190,29 @@ describe('CreateSignUpByInvitationCode', () => {
 
       it('resolves', async () => {
         await expect(action()).resolves.toEqual({
-          CreateSignUpByInvitationCode: { email: 'someuser@example.org' },
+          SignupByInvitation: { email: 'someuser@example.org' },
         })
       })
 
-      describe('creates a SignUp node', () => {
+      describe('creates a EmailAddress node', () => {
         it('with a `createdAt` attribute', async () => {
           await action()
-          const signUpQuery = `{ SignUp { createdAt } }`
-          const {
-            SignUp: [signup],
-          } = await factory.request(signUpQuery)
-          expect(signup.createdAt).toBeTruthy()
-          expect(Date.parse(signup.createdAt)).toEqual(expect.any(Number))
+          const [emailAddress] = await instance.model('EmailAddress').all()
+          expect(emailAddress.toJson().createdAt).toBeTruthy()
+          expect(Date.parse(emailAddress.createdAt)).toEqual(expect.any(Number))
         })
 
         it('with a cryptographic `nonce`', async () => {
           await action()
-          const [signup] = await getAllSignups()
-          expect(signup.properties.nonce).toEqual(expect.any(String))
+          const [emailAddress] = await instance.model('EmailAddress').all()
+          expect(emailAddress.toJson().nonce).toEqual(expect.any(String))
         })
 
         it('connects inviting user', async () => {
           await action()
-          const userQuery = `{ SignUp { invitedBy { name } } }`
-          const {
-            SignUp: [signup],
-          } = await factory.request(userQuery)
-          expect(signup).toEqual({ invitedBy: { name: 'Inviter' } })
+          const users = await instance.cypher('MATCH(inviter:User)-[:INVITED]->(user:User {id: {id}}) RETURN inviter', { id: 'i123' })
+          const [user: { email }] = users.records.map(r => r.get('inviter'))
+          expect(emailAddress).toEqual({ invitedBy: { name: 'Inviter' } })
         })
 
         describe('using the same InvitationCode twice', () => {
@@ -249,7 +237,7 @@ describe('CreateSignUpByInvitationCode', () => {
           })
         })
 
-        describe('if a Signup with the given email already exists', () => {
+        describe('if the EmailAddress already exists but without user account', () => {
           it.todo('decide what to do')
         })
       })
@@ -257,9 +245,9 @@ describe('CreateSignUpByInvitationCode', () => {
   })
 })
 
-describe('CreateSignUp', () => {
+describe('signup', () => {
   const mutation = `mutation($email: String!) {
-    CreateSignUp(email: $email) { email }
+    Signup(email: $email) { email }
   }`
 
   it.todo('throws AuthorizationError')
@@ -282,13 +270,13 @@ describe('CreateSignUp', () => {
     })
 
     it('is allowed so signup users by email', async () => {
-      await expect(action()).resolves.toEqual({ CreateSignUp: { email: 'someuser@example.org' } })
+      await expect(action()).resolves.toEqual({ Signup: { email: 'someuser@example.org' } })
     })
 
     it('creates a Signup with a cryptographic `nonce`', async () => {
       await action()
-      const [signup] = await getAllSignups()
-      expect(signup.properties.nonce).toEqual(expect.any(String))
+      const [emailAddress] = await instance.model('EmailAddress').all()
+      expect(emailAddress.toJson().nonce).toEqual(expect.any(String))
     })
   })
 })

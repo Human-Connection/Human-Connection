@@ -36,8 +36,8 @@ export default function({ isEnabled }) {
     return {
       Mutation: {
         requestPasswordReset: returnResponse,
-        CreateSignUp: returnResponse,
-        CreateSignUpByInvitationCode: returnResponse,
+        Signup: returnResponse,
+        SignupByInvitation: returnResponse,
       },
     }
 
@@ -50,8 +50,8 @@ export default function({ isEnabled }) {
         await transporter().sendMail(mailTemplate({ email, code, name }))
         return response
       },
-      CreateSignUp: sendSignupMail,
-      CreateSignUpByInvitationCode: sendSignupMail,
+      Signup: sendSignupMail,
+      SignupByInvitation: sendSignupMail,
     },
   }
 }

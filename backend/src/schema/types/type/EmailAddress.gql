@@ -1,0 +1,12 @@
+type EmailAddress {
+  id: ID!
+  email: String!
+  nonce: String
+  verifiedAt: String
+  createdAt: String
+}
+
+type Mutation {
+  Signup(email: String!): EmailAddress
+  SignupByInvitation(email: String!, token: String!): EmailAddress
+}

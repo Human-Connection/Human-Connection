@@ -67,7 +67,7 @@ describe('users', () => {
           await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
         })
 
-        describe('given a SignUp node', () => {
+        describe('disconnected EmailAddress exists', () => {
           const userParams = {
             email: 'user@example.org',
             password: '1234',
@@ -76,15 +76,11 @@ describe('users', () => {
           }
 
           beforeEach(async () => {
-            const session = driver.session()
             const args = {
-              id: '123',
-              createdAt: new Date().toISOString(),
               email: 'someuser@example.org',
               nonce: '123456',
             }
-            await session.run('CREATE (s:SignUp {args})', { args })
-            session.close()
+            await instance.model('EmailAddress').create(args)
           })
 
           describe('sending a valid nonce', () => {

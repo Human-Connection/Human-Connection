@@ -28,20 +28,20 @@ export default {
       }
       return response
     },
-    CreateSignUp: async (parent, args, context, resolveInfo) => {
+    Signup: async (parent, args, context, resolveInfo) => {
       console.log('args', args)
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
       try {
         const session = context.driver.session()
         await checkEmailDoesNotExist({ args, session })
-        const signup = await instance.create('SignUp', args)
-        return { response: signup.toJson(), nonce }
+        const emailAddress = await instance.create('EmailAddress', args)
+        return { response: emailAddress.toJson(), nonce }
       } catch (e) {
         throw new UserInputError(e.message)
       }
     },
-    CreateSignUpByInvitationCode: async (parent, args, context, resolveInfo) => {
+    SignupByInvitation: async (parent, args, context, resolveInfo) => {
       const { token } = args
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
@@ -59,11 +59,11 @@ export default {
         const [inviterId, invitationCodeId] = [firstRecord.get('inviterId'), firstRecord.get('invitationCodeId')]
         const inviter = await instance.find('User', inviterId)
         const validInvitationCode = await instance.find('InvitationCode', invitationCodeId)
-        const signup = await instance.create('SignUp', args)
-        await validInvitationCode.relateTo(signup, 'activated')
-        // await signup.relateTo(inviter, 'invitedBy')
-        return { response: signup.toJson(), nonce }
-        response = signup.toJson()
+        const emailAddress = await instance.create('EmailAddress', args)
+        await validInvitationCode.relateTo(emailAddress, 'activated')
+        // await emailAddress.relateTo(inviter, 'invitedBy')
+        return { response: emailAddress.toJson(), nonce }
+        response = emailAddress.toJson()
         response.invitedBy = inviter.toJson()
       } catch (e) {
         throw new UserInputError(e)

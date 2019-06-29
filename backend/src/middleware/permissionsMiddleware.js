@@ -28,24 +28,10 @@ const isMyOwn = rule({
   return context.user.id === parent.id
 })
 
-const validSignupNonce = rule({
+const finishSignup = rule({
   cache: 'no_cache',
-})(async (parent, args, context, info) => {
-  const { nonce } = args
-  delete args.nonce
-  const { driver } = context
-  const session = driver.session()
-  let response
-  try {
-    const result = await session.run('MATCH (s:SignUp {nonce:$nonce}) RETURN s', { nonce })
-    const [signup] = result.records.map(record => record.get('s'))
-    response = signup.properties
-  } catch (e) {
-    throw e
-  } finally {
-    session.close()
-  }
-  return Boolean(response)
+})(async (parent, args) => {
+  return Boolean(args.email && args.nonce)
 })
 
 const belongsToMe = rule({
@@ -168,11 +154,11 @@ const permissions = shield(
     Mutation: {
       '*': deny,
       login: allow,
-      CreateSignUpByInvitationCode: allow,
-      CreateSignUp: isAdmin,
+      SignupByInvitation: allow,
+      Signup: isAdmin,
       CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
       UpdateNotification: belongsToMe,
-      CreateUser: or(isAdmin, validSignupNonce),
+      CreateUser: or(isAdmin, finishSignup),
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,

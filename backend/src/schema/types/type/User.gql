@@ -111,7 +111,7 @@ type Query {
 }
 
 type Mutation {
-  CreateUser(
+ CreateUser(
     nonce: String
     name: String!
     email: String!

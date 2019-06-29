@@ -38,7 +38,7 @@ CREATE CONSTRAINT ON (u:User)          ASSERT u.slug IS UNIQUE;
 CREATE CONSTRAINT ON (o:Organization)  ASSERT o.slug IS UNIQUE;
 
 CREATE CONSTRAINT ON (u:User)          ASSERT u.email IS UNIQUE;
-CREATE CONSTRAINT ON (s:SignUp)        ASSERT s.email IS UNIQUE;
+CREATE CONSTRAINT ON (s:EmailAddress)  ASSERT s.email IS UNIQUE;
 ' | cypher-shell
 
 echo '

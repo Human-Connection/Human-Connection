@@ -35,13 +35,14 @@ export function neode() {
       activated: {
         type: 'relationship',
         relationship: 'ACTIVATED',
-        target: 'SignUp',
+        target: 'EmailAddress',
         direction: 'out',
       },
     })
-    neodeInstance.model('SignUp', {
+    neodeInstance.model('EmailAddress', {
       id: { type: 'uuid', primary: true, default: uuid },
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+      verifiedAt: { type: 'string', isoDate: true },
       nonce: { type: 'string', token: true },
       email: { type: 'string', lowercase: true, email: true },
     })
