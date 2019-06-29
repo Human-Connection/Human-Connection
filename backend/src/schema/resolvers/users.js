@@ -50,6 +50,7 @@ export default {
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
         let user = await instance.find('User', args.id)
+        if(!user) return null
         await user.update(args)
         return user.toJson()
       } catch(e) {
