@@ -1,66 +1,45 @@
 import { UserInputError } from 'apollo-server'
 import uuid from 'uuid/v4'
+import { neode } from '../../bootstrap/neo4j'
 
-const checkEmailDoesNotExist = async ({ args, session }) => {
-  let cypher = `MATCH(u:User {email:$args.email}) RETURN u`
-  let result = await session.run(cypher, { args })
-  const [existingUser] = result.records.map(r => r.get('u'))
-  if (existingUser) throw new UserInputError('User account with this email already exists.')
+const instance = neode()
+
+const checkEmailDoesNotExist = async ({ args: { email }, session }) => {
+  const users = await instance.all('User', { email })
+  if (users.length > 0) throw new UserInputError('User account with this email already exists.')
 }
 
 export default {
   Mutation: {
     CreateInvitationCode: async (parent, args, context, resolveInfo) => {
       args.token = uuid().substring(0, 6)
-      const session = context.driver.session()
-      const { user } = context
+      const { user: { id: userId } } = context
       let response
       try {
-        const cypher = `
-        MATCH(u:User {id:$user.id})
-        CREATE (ic:InvitationCode {
-          id: apoc.create.uuid(),
-          createdAt:$args.createdAt,
-          token: $args.token
-        })
-        MERGE (u)-[g:GENERATED]->(ic)
-        RETURN u,g,ic`
-        const result = await session.run(cypher, { args, user })
-        let [[ic, u]] = result.records.map(r => [r.get('ic'), r.get('u')])
-        response = ic.properties
-        response.generatedBy = u.properties
+        const [user, invitationCode] = await Promise.all([
+          instance.find('User', userId),
+          instance.create('InvitationCode', args)
+        ])
+        await invitationCode.relateTo(user, 'generatedBy')
+        response = invitationCode.toJson()
+        response.generatedBy = user.toJson()
       } catch (e) {
-        throw e
-      } finally {
-        session.close()
+        throw new UserInputError(e)
       }
       return response
     },
     CreateSignUp: async (parent, args, context, resolveInfo) => {
+      console.log('args', args)
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
-      const session = context.driver.session()
-      let response
       try {
+        const session = context.driver.session()
         await checkEmailDoesNotExist({ args, session })
-        let cypher = `
-        CREATE (s:SignUp {
-          id: apoc.create.uuid(),
-          createdAt:$args.createdAt,
-          nonce: $args.nonce,
-          email: $args.email
-        })
-        RETURN s`
-        const result = await session.run(cypher, { args })
-        const [record] = result.records
-        const signup = record.get('s')
-        response = signup.properties
+        const signup = await instance.create('SignUp', args)
+        return { response: signup.toJson(), nonce }
       } catch (e) {
-        throw e
-      } finally {
-        session.close()
+        throw new UserInputError(e.message)
       }
-      return { nonce, response }
     },
     CreateSignUpByInvitationCode: async (parent, args, context, resolveInfo) => {
       const { token } = args
@@ -70,28 +49,24 @@ export default {
       let response
       try {
         await checkEmailDoesNotExist({ args, session })
-        let cypher = `
-        MATCH (u:User)-[:GENERATED]->(i:InvitationCode {token:$token})
+        const result = await instance.cypher(`
+        MATCH (u:User)-[:GENERATED]->(i:InvitationCode {token:{token}})
         WHERE NOT (i)-[:ACTIVATED]->()
-        CREATE (s:SignUp {
-          id: apoc.create.uuid(),
-          createdAt:$args.createdAt,
-          nonce: $args.nonce,
-          email: $args.email
-        })
-        MERGE (i)-[a:ACTIVATED]->(s)
-        MERGE (u)-[:INVITED]->(s)
-        RETURN u,i,a,s`
-        const result = await session.run(cypher, { args, token })
-        const [record] = result.records
-        if (!record) throw new UserInputError('Invitation code already used or does not exist.')
-        const [inviter, signup] = [record.get('u'), record.get('s')]
-        response = signup.properties
-        response.invitedBy = inviter.properties
+        RETURN u.id as inviterId, i.id as invitationCodeId
+        `, { token })
+        const [firstRecord] = result.records
+        if (!firstRecord) throw new UserInputError('Invitation code already used or does not exist.')
+        const [inviterId, invitationCodeId] = [firstRecord.get('inviterId'), firstRecord.get('invitationCodeId')]
+        const inviter = await instance.find('User', inviterId)
+        const validInvitationCode = await instance.find('InvitationCode', invitationCodeId)
+        const signup = await instance.create('SignUp', args)
+        await validInvitationCode.relateTo(signup, 'activated')
+        // await signup.relateTo(inviter, 'invitedBy')
+        return { response: signup.toJson(), nonce }
+        response = signup.toJson()
+        response.invitedBy = inviter.toJson()
       } catch (e) {
-        throw e
-      } finally {
-        session.close()
+        throw new UserInputError(e)
       }
       return { nonce, response }
     },

@@ -22,11 +22,34 @@ export function neode() {
   if (!neodeInstance) {
     const { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD } = CONFIG
     neodeInstance = new Neode(NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD)
+    neodeInstance.model('InvitationCode', {
+      id: { type: 'uuid', primary: true, default: uuid },
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+      token: { type: 'string', token: true },
+      generatedBy: {
+        type: 'relationship',
+        relationship: 'GENERATED',
+        target: 'User',
+        direction: 'in',
+      },
+      activated: {
+        type: 'relationship',
+        relationship: 'ACTIVATED',
+        target: 'SignUp',
+        direction: 'out',
+      },
+    })
+    neodeInstance.model('SignUp', {
+      id: { type: 'uuid', primary: true, default: uuid },
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+      nonce: { type: 'string', token: true },
+      email: { type: 'string', lowercase: true, email: true },
+    })
     neodeInstance.model('User', {
       id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
       actorId: 'string',
       name: { type: 'string', min: 3 },
-      email: { type: 'string', email: true },
+      email: { type: 'string', lowercase: true, email: true },
       slug: 'string',
       encryptedPassword: 'string',
       avatar: 'string',
@@ -61,8 +84,8 @@ export function neode() {
         direction: 'in',
       },
       invitedBy: { type: 'relationship', relationship: 'INVITED', target: 'User', direction: 'in' },
-      createdAt: { type: 'string', isoDate: true },
-      updatedAt: { type: 'string', isoDate: true },
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+      updatedAt: { type: 'string', isoDate: true, required: true, default: () => new Date().toISOString()},
     })
   }
   return neodeInstance

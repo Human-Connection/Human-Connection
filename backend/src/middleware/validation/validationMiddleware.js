@@ -24,22 +24,6 @@ const registrationSchema = Joi.object().keys({
 
 export default {
   Mutation: {
-    CreateSignUp: validate(registrationSchema),
-    CreateSignUpByInvitationCode: validate(registrationSchema),
-    CreateUser: validate(
-      Joi.object({
-        name: Joi.string()
-          .required()
-          .min(3),
-      }).unknown(),
-    ),
-    UpdateUser: validate(
-      Joi.object({
-        name: Joi.string()
-          .optional()
-          .min(3),
-      }).unknown(),
-    ),
     CreateSocialMedia: validate(socialMediaSchema),
   },
 }
