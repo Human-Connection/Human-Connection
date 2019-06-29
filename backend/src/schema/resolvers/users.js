@@ -4,27 +4,61 @@ import bcrypt from 'bcryptjs'
 import { neode } from '../../bootstrap/neo4j'
 import { UserInputError } from 'apollo-server'
 
+const instance = neode()
 
 export const createUser = async ({ args }) => {
   args.password = await bcrypt.hashSync(args.password, 10)
-  const instance = neode()
   try {
     const user = await instance.create('User', args)
-    return user.properties()
+    return user.toJson()
   } catch(e) {
     throw new UserInputError(e.message)
   }
 }
 
+const _has = (resolvers, {key, connection}, { returnType }) => {
+  return async (parent, params, context, resolveInfo) => {
+    if (typeof parent[key] !== 'undefined') return parent[key]
+    const { id } = parent
+    const statement = `MATCH(u:User {id: {id}})${connection} RETURN related`
+    const result = await instance.cypher(statement, { id })
+    let response = result.records.map(r => r.get('related').properties)
+    if (returnType === 'object') response = response[0] || null
+    return response
+  }
+}
+
+export const hasMany = (obj) => {
+  const resolvers = {}
+  for (const [key, connection] of Object.entries(obj)) {
+    resolvers[key] = _has(resolvers, {key, connection}, { returnType: 'iterable' })
+  }
+  return resolvers
+}
+
+export const hasOne = (obj) => {
+  const resolvers = {}
+  for (const [key, connection] of Object.entries(obj)) {
+    resolvers[key] = _has(resolvers, {key, connection}, { returnType: 'object' })
+  }
+  return resolvers
+}
+
 export default {
   Mutation: {
-    UpdateUser: async (object, params, context, resolveInfo) => {
-      params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+    UpdateUser: async (object, args, context, resolveInfo) => {
+      args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
+      try {
+        let user = await instance.find('User', args.id)
+        await user.update(args)
+        return user.toJson()
+      } catch(e) {
+        throw new UserInputError(e.message)
+      }
     },
-    CreateUser: async (object, params, context, resolveInfo) => {
-      params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
-      return createUser({ args: params })
+    CreateUser: async (object, args, context, resolveInfo) => {
+      args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
+      return createUser({ args })
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
       const { resource } = params
@@ -50,22 +84,23 @@ export default {
     },
   },
   User: {
-    followedBy: async (parent, params, context, resolveInfo) => {
-      if (parent.followedBy) return parent.followedBy
-      const { id } = parent
-      const cypher = 'MATCH (user:User {id: $id})<-[:FOLLOWS]-(follower:User) RETURN follower'
-      const session = context.driver.session()
-      let response
-      try {
-        const result = await session.run(cypher, { id })
-        const followers = result.records.map(r => r.get('follower'))
-        response = followers.map(f => f.properties)
-      } catch (e) {
-        throw e
-      } finally {
-        session.close()
-      }
-      return response
-    },
-  },
+    ...hasOne({
+      invitedBy:            '<-[:INVITED]-(related:User)',
+      disabledBy:           '<-[:DISABLED]-(related:User)',
+    }),
+    ...hasMany({
+      followedBy:           '<-[:FOLLOWS]-(related:User)',
+      following:            '-[:FOLLOWS]->(related:User)',
+      friends:              '-[:FRIENDS]-(related:User)',
+      blacklisted:          '-[:BLACKLISTED]->(related:User)',
+      socialMedia:          '-[:OWNED]->(related:SocialMedia)',
+      contributions:        '-[:WROTE]->(related:Post)',
+      comments:             '-[:WROTE]->(related:Comment)',
+      shouted:              '-[:SHOUTED]->(related:Post)',
+      organizationsCreated: '-[:CREATED_ORGA]->(related:Organization)',
+      organizationsOwned:   '-[:OWNING_ORGA]->(related:Organization)',
+      categories:           '-[:CATEGORIZED]->(related:Category)',
+      badges:               '-[:REWARDED]->(related:Badge)'
+    })
+  }
 }
