@@ -6,17 +6,13 @@ import { UserInputError } from 'apollo-server'
 
 const instance = neode()
 
-export const createUser = async ({ args }) => {
-  args.password = await bcrypt.hashSync(args.password, 10)
-  try {
-    const user = await instance.create('User', args)
-    return user.toJson()
-  } catch(e) {
-    throw new UserInputError(e.message)
-  }
+export const encryptPassword = async args => {
+  args.encryptedPassword = await bcrypt.hashSync(args.password, 10)
+  delete args.password
+  return args
 }
 
-const _has = (resolvers, {key, connection}, { returnType }) => {
+const _has = (resolvers, { key, connection }, { returnType }) => {
   return async (parent, params, context, resolveInfo) => {
     if (typeof parent[key] !== 'undefined') return parent[key]
     const { id } = parent
@@ -28,18 +24,18 @@ const _has = (resolvers, {key, connection}, { returnType }) => {
   }
 }
 
-export const hasMany = (obj) => {
+export const hasMany = obj => {
   const resolvers = {}
   for (const [key, connection] of Object.entries(obj)) {
-    resolvers[key] = _has(resolvers, {key, connection}, { returnType: 'iterable' })
+    resolvers[key] = _has(resolvers, { key, connection }, { returnType: 'iterable' })
   }
   return resolvers
 }
 
-export const hasOne = (obj) => {
+export const hasOne = obj => {
   const resolvers = {}
   for (const [key, connection] of Object.entries(obj)) {
-    resolvers[key] = _has(resolvers, {key, connection}, { returnType: 'object' })
+    resolvers[key] = _has(resolvers, { key, connection }, { returnType: 'object' })
   }
   return resolvers
 }
@@ -50,16 +46,22 @@ export default {
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
         let user = await instance.find('User', args.id)
-        if(!user) return null
+        if (!user) return null
         await user.update(args)
         return user.toJson()
-      } catch(e) {
+      } catch (e) {
         throw new UserInputError(e.message)
       }
     },
     CreateUser: async (object, args, context, resolveInfo) => {
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
-      return createUser({ args })
+      args = await encryptPassword(args)
+      try {
+        const user = await instance.create('User', args)
+        return user.toJson()
+      } catch (e) {
+        throw new UserInputError(e.message)
+      }
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
       const { resource } = params
@@ -86,22 +88,22 @@ export default {
   },
   User: {
     ...hasOne({
-      invitedBy:            '<-[:INVITED]-(related:User)',
-      disabledBy:           '<-[:DISABLED]-(related:User)',
+      invitedBy: '<-[:INVITED]-(related:User)',
+      disabledBy: '<-[:DISABLED]-(related:User)',
     }),
     ...hasMany({
-      followedBy:           '<-[:FOLLOWS]-(related:User)',
-      following:            '-[:FOLLOWS]->(related:User)',
-      friends:              '-[:FRIENDS]-(related:User)',
-      blacklisted:          '-[:BLACKLISTED]->(related:User)',
-      socialMedia:          '-[:OWNED]->(related:SocialMedia)',
-      contributions:        '-[:WROTE]->(related:Post)',
-      comments:             '-[:WROTE]->(related:Comment)',
-      shouted:              '-[:SHOUTED]->(related:Post)',
+      followedBy: '<-[:FOLLOWS]-(related:User)',
+      following: '-[:FOLLOWS]->(related:User)',
+      friends: '-[:FRIENDS]-(related:User)',
+      blacklisted: '-[:BLACKLISTED]->(related:User)',
+      socialMedia: '-[:OWNED]->(related:SocialMedia)',
+      contributions: '-[:WROTE]->(related:Post)',
+      comments: '-[:WROTE]->(related:Comment)',
+      shouted: '-[:SHOUTED]->(related:Post)',
       organizationsCreated: '-[:CREATED_ORGA]->(related:Organization)',
-      organizationsOwned:   '-[:OWNING_ORGA]->(related:Organization)',
-      categories:           '-[:CATEGORIZED]->(related:Category)',
-      badges:               '-[:REWARDED]->(related:Badge)'
-    })
-  }
+      organizationsOwned: '-[:OWNING_ORGA]->(related:Organization)',
+      categories: '-[:CATEGORIZED]->(related:Category)',
+      badges: '-[:REWARDED]->(related:Badge)',
+    }),
+  },
 }

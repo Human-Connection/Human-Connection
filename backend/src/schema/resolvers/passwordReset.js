@@ -32,16 +32,21 @@ export default {
       const session = driver.session()
       const stillValid = new Date()
       stillValid.setDate(stillValid.getDate() - 1)
-      const newHashedPassword = await bcrypt.hashSync(newPassword, 10)
+      const encryptedNewPassword = await bcrypt.hashSync(newPassword, 10)
       const cypher = `
       MATCH (pr:PasswordReset {code: $code})
       MATCH (u:User {email: $email})-[:REQUESTED]->(pr)
       WHERE duration.between(pr.issuedAt, datetime()).days <= 0 AND pr.usedAt IS NULL
       SET pr.usedAt = datetime()
-      SET u.password = $newHashedPassword
+      SET u.encryptedPassword = $encryptedNewPassword
       RETURN pr
       `
-      let transactionRes = await session.run(cypher, { stillValid, email, code, newHashedPassword })
+      let transactionRes = await session.run(cypher, {
+        stillValid,
+        email,
+        code,
+        encryptedNewPassword,
+      })
       const [reset] = transactionRes.records.map(record => record.get('pr'))
       const result = !!(reset && reset.properties.usedAt)
       session.close()

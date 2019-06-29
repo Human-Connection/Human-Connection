@@ -22,7 +22,7 @@ export default {
       const session = driver.session()
       const result = await session.run(
         'MATCH (user:User {email: $userEmail}) ' +
-          'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role, .disabled} as user LIMIT 1',
+          'RETURN user {.id, .slug, .name, .avatar, .email, .encryptedPassword, .role, .disabled} as user LIMIT 1',
         {
           userEmail: email,
         },
@@ -34,10 +34,10 @@ export default {
 
       if (
         currentUser &&
-        (await bcrypt.compareSync(password, currentUser.password)) &&
+        (await bcrypt.compareSync(password, currentUser.encryptedPassword)) &&
         !currentUser.disabled
       ) {
-        delete currentUser.password
+        delete currentUser.encryptedPassword
         return encode(currentUser)
       } else if (currentUser && currentUser.disabled) {
         throw new AuthenticationError('Your account has been disabled.')
@@ -49,7 +49,7 @@ export default {
       const session = driver.session()
       let result = await session.run(
         `MATCH (user:User {email: $userEmail})
-         RETURN user {.id, .email, .password}`,
+         RETURN user {.id, .email, .encryptedPassword}`,
         {
           userEmail: user.email,
         },
@@ -59,22 +59,22 @@ export default {
         return record.get('user')
       })
 
-      if (!(await bcrypt.compareSync(oldPassword, currentUser.password))) {
+      if (!(await bcrypt.compareSync(oldPassword, currentUser.encryptedPassword))) {
         throw new AuthenticationError('Old password is not correct')
       }
 
-      if (await bcrypt.compareSync(newPassword, currentUser.password)) {
+      if (await bcrypt.compareSync(newPassword, currentUser.encryptedPassword)) {
         throw new AuthenticationError('Old password and new password should be different')
       } else {
-        const newHashedPassword = await bcrypt.hashSync(newPassword, 10)
+        const newEncryptedPassword = await bcrypt.hashSync(newPassword, 10)
         session.run(
           `MATCH (user:User {email: $userEmail})
-           SET user.password = $newHashedPassword
+           SET user.encryptedPassword = $newEncryptedPassword
            RETURN user
         `,
           {
             userEmail: user.email,
-            newHashedPassword,
+            newEncryptedPassword,
           },
         )
         session.close()

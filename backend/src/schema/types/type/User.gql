@@ -4,7 +4,6 @@ type User {
   name: String
   email: String!
   slug: String
-  password: String!
   avatar: String
   coverImg: String
   avatarUpload: Upload
@@ -13,7 +12,6 @@ type User {
   disabledBy: User @relation(name: "DISABLED", direction: "IN")
   role: UserGroup
   publicKey: String
-  privateKey: String
   isVerified: Boolean
   invitedBy: User @relation(name: "INVITED", direction: "IN")
   invited: [User] @relation(name: "INVITED", direction: "OUT")

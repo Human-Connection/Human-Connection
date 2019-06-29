@@ -1,6 +1,5 @@
 import CONFIG from './../config'
 import activityPub from './activityPubMiddleware'
-import password from './passwordMiddleware'
 import softDelete from './softDeleteMiddleware'
 import sluggify from './sluggifyMiddleware'
 import excerpt from './excerptMiddleware'
@@ -19,7 +18,6 @@ export default schema => {
   const middlewares = {
     permissions: permissions,
     activityPub: activityPub,
-    password: password,
     dateTime: dateTime,
     normalization: normalization,
     validation: validation,
@@ -36,8 +34,7 @@ export default schema => {
 
   let order = [
     'permissions',
-    'activityPub',
-    'password',
+    // 'activityPub', disabled temporarily
     'dateTime',
     'normalization',
     'validation',

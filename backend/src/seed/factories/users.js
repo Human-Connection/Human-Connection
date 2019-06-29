@@ -1,7 +1,10 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
-import { createUser } from '../../schema/resolvers/users'
+import { encryptPassword } from '../../schema/resolvers/users'
+import { neode } from '../../bootstrap/neo4j'
 import slugify from 'slug'
+
+const instance = neode()
 
 export default function create(params) {
   return {
@@ -21,7 +24,9 @@ export default function create(params) {
         ...defaults,
         ...args,
       }
-      return createUser({ args, driver })
+      args = await encryptPassword(args)
+      const user = await instance.create('User', args)
+      return user.toJson()
     },
   }
 }

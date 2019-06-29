@@ -204,8 +204,6 @@ const permissions = shield(
     },
     User: {
       email: isMyOwn,
-      password: isMyOwn,
-      privateKey: isMyOwn,
     },
   },
   {
