@@ -248,7 +248,7 @@ describe('SignupByInvitation', () => {
   })
 })
 
-describe('signup', () => {
+describe('Signup', () => {
   const mutation = `mutation($email: String!) {
     Signup(email: $email) { email }
   }`
@@ -272,7 +272,7 @@ describe('signup', () => {
       }
     })
 
-    it('is allowed so signup users by email', async () => {
+    it('is allowed to signup users by email', async () => {
       await expect(action()).resolves.toEqual({ Signup: { email: 'someuser@example.org' } })
     })
 
@@ -281,6 +281,118 @@ describe('signup', () => {
       const emailAddresses = await instance.all('EmailAddress')
       const emailAddress = await emailAddresses.first().toJson()
       expect(emailAddress.nonce).toEqual(expect.any(String))
+    })
+  })
+})
+
+describe('SignupVerification', () => {
+  const mutation = `
+      mutation($name: String!, $password: String!, $email: String!, $nonce: String!) {
+        SignupVerification(name: $name, password: $password, email: $email, nonce: $nonce) {
+          id
+        }
+      }
+    `
+  describe('given valid password and email', () => {
+    let variables = {
+      nonce: '123456',
+      name: 'John Doe',
+      password: '123',
+      email: 'john@example.org',
+    }
+
+    describe('unauthenticated', () => {
+      beforeEach(async () => {
+        client = new GraphQLClient(host)
+      })
+
+      describe('EmailAddress exists, but is already related to a user account', () => {
+        beforeEach(async () => {
+          const { email, nonce } = variables
+          const [emailAddress, user] = await Promise.all([
+            instance.model('EmailAddress').create({ email, nonce }),
+            instance
+              .model('User')
+              .create({ name: 'Somebody', password: '1234', email: 'john@example.org' }),
+          ])
+          await emailAddress.relateTo(user, 'belongsTo')
+        })
+
+        describe('sending a valid nonce', () => {
+          beforeEach(() => {
+            variables.nonce = '123456'
+          })
+
+          it('rejects', async () => {
+            await expect(client.request(mutation, variables)).rejects.toThrow(
+              'Invalid email or nonce',
+            )
+          })
+        })
+      })
+
+      describe('disconnected EmailAddress exists', () => {
+        beforeEach(async () => {
+          const args = {
+            email: 'john@example.org',
+            nonce: '123456',
+          }
+          await instance.model('EmailAddress').create(args)
+        })
+
+        describe('sending a valid nonce', () => {
+          it('creates a user account', async () => {
+            const expected = {
+              SignupVerification: {
+                id: expect.any(String),
+              },
+            }
+            await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+          })
+
+          it('sets `verifiedAt` attribute of EmailAddress', async () => {
+            await client.request(mutation, variables)
+            const email = await instance.first('EmailAddress', { email: 'john@example.org' })
+            await expect(email.toJson()).resolves.toEqual(
+              expect.objectContaining({
+                verifiedAt: expect.any(String),
+              }),
+            )
+          })
+
+          it('connects User with EmailAddress', async () => {
+            const cypher = `
+                MATCH(email:EmailAddress)-[:BELONGS_TO]->(u:User {name: {name}})
+                RETURN email
+              `
+            await client.request(mutation, variables)
+            const { records: emails } = await instance.cypher(cypher, { name: 'John Doe' })
+            expect(emails).toHaveLength(1)
+          })
+
+          it('marks the EmailAddress as primary', async () => {
+            const cypher = `
+                MATCH(email:EmailAddress)<-[:PRIMARY_EMAIL]-(u:User {name: {name}})
+                RETURN email
+              `
+            await client.request(mutation, variables)
+            const { records: emails } = await instance.cypher(cypher, { name: 'John Doe' })
+            expect(emails).toHaveLength(1)
+          })
+        })
+
+        describe('sending invalid nonce', () => {
+          beforeEach(() => {
+            variables.nonce = 'wut2'
+          })
+
+          it('rejects', async () => {
+            await expect(client.request(mutation, variables)).rejects.toThrow(
+              'Invalid email or nonce',
+            )
+          })
+        })
+      })
     })
   })
 })

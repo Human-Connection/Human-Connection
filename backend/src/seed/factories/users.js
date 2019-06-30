@@ -1,6 +1,6 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
-import { encryptPassword } from '../../schema/resolvers/users'
+import { encryptPassword } from '../../schema/resolvers/registration'
 import { neode } from '../../bootstrap/neo4j'
 import slugify from 'slug'
 

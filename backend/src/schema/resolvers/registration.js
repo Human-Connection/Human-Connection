@@ -1,8 +1,16 @@
 import { UserInputError } from 'apollo-server'
 import uuid from 'uuid/v4'
 import { neode } from '../../bootstrap/neo4j'
+import { hashSync } from 'bcryptjs'
+import fileUpload from './fileUpload'
 
 const instance = neode()
+
+export const encryptPassword = args => {
+  args.encryptedPassword = hashSync(args.password, 10)
+  delete args.password
+  return args
+}
 
 /*
  * TODO: remove this function as soon type `User` has no `email` property
@@ -72,6 +80,33 @@ export default {
         return { response: emailAddress.toJson(), nonce }
       } catch (e) {
         throw new UserInputError(e)
+      }
+    },
+    SignupVerification: async (object, args, context, resolveInfo) => {
+      let { nonce, email } = args
+      email = email.toLowerCase()
+      const result = await instance.cypher(
+        `
+      MATCH(email:EmailAddress {nonce: {nonce}, email: {email}})
+      WHERE NOT (email)-[:BELONGS_TO]->()
+      RETURN email
+      `,
+        { nonce, email },
+      )
+      const emailAddress = await instance.hydrateFirst(result, 'email', instance.model('Email'))
+      if (!emailAddress) throw new UserInputError('Invalid email or nonce')
+      args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
+      args = await encryptPassword(args)
+      try {
+        const user = await instance.create('User', args)
+        await Promise.all([
+          user.relateTo(emailAddress, 'primaryEmail'),
+          emailAddress.relateTo(user, 'belongsTo'),
+          emailAddress.update({ verifiedAt: new Date().toISOString() }),
+        ])
+        return user.toJson()
+      } catch (e) {
+        throw new UserInputError(e.message)
       }
     },
   },

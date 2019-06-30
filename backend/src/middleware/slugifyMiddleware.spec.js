@@ -1,10 +1,12 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../seed/factories'
 import { host, login } from '../jest/helpers'
+import { neode } from '../bootstrap/neo4j'
 
 let authenticatedClient
 let headers
 const factory = Factory()
+const instance = neode()
 
 beforeEach(async () => {
   const adminParams = { role: 'admin', email: 'admin@example.org', password: '1234' }
@@ -76,20 +78,23 @@ describe('slugify', () => {
     })
   })
 
-  describe('CreateUser', () => {
-    const mutation = `mutation($password: String!, $email: String!, $name: String!, $slug: String) {
-      CreateUser(email: $email, password: $password, name: $name, slug: $slug) { slug }
+  describe('SignupVerification', () => {
+    const mutation = `mutation($password: String!, $email: String!, $name: String!, $slug: String, $nonce: String!) {
+      SignupVerification(email: $email, password: $password, name: $name, slug: $slug, nonce: $nonce) { slug }
     }
     `
-    const defaultVariables = { password: 'yo', email: '123@example.org' }
 
     const action = async variables => {
+      // required for SignupVerification
+      await instance.create('EmailAddress', { email: '123@example.org', nonce: '123456' })
+
+      const defaultVariables = { nonce: '123456', password: 'yo', email: '123@example.org' }
       return authenticatedClient.request(mutation, { ...defaultVariables, ...variables })
     }
 
     it('generates a slug based on name', async () => {
       await expect(action({ name: 'I am a user' })).resolves.toEqual({
-        CreateUser: { slug: 'i-am-a-user' },
+        SignupVerification: { slug: 'i-am-a-user' },
       })
     })
 
@@ -100,12 +105,12 @@ describe('slugify', () => {
 
       it('chooses another slug', async () => {
         await expect(action({ name: 'pre-existing-user' })).resolves.toEqual({
-          CreateUser: { slug: 'pre-existing-user-1' },
+          SignupVerification: { slug: 'pre-existing-user-1' },
         })
       })
 
       describe('but if the client specifies a slug', () => {
-        it('rejects CreateUser', async () => {
+        it('rejects SignupVerification', async () => {
           await expect(
             action({ name: 'Pre-existing user', slug: 'pre-existing-user' }),
           ).rejects.toThrow('already exists')

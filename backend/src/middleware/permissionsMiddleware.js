@@ -28,12 +28,6 @@ const isMyOwn = rule({
   return context.user.id === parent.id
 })
 
-const finishSignup = rule({
-  cache: 'no_cache',
-})(async (parent, args) => {
-  return Boolean(args.email && args.nonce)
-})
-
 const belongsToMe = rule({
   cache: 'no_cache',
 })(async (_, args, context) => {
@@ -156,9 +150,9 @@ const permissions = shield(
       login: allow,
       SignupByInvitation: allow,
       Signup: isAdmin,
+      SignupVerification: allow,
       CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
       UpdateNotification: belongsToMe,
-      CreateUser: or(isAdmin, finishSignup),
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,

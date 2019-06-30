@@ -8,4 +8,16 @@ type EmailAddress {
 type Mutation {
   Signup(email: String!): EmailAddress
   SignupByInvitation(email: String!, token: String!): EmailAddress
+  SignupVerification(
+    nonce: String!
+    name: String!
+    email: String!
+    password: String!
+    slug: String
+    avatar: String
+    coverImg: String
+    avatarUpload: Upload
+    locationName: String
+    about: String
+  ): User
 }

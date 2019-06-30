@@ -1,16 +1,9 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
-import { hashSync } from 'bcryptjs'
 import { neode } from '../../bootstrap/neo4j'
 import { UserInputError } from 'apollo-server'
 
 const instance = neode()
-
-export const encryptPassword = args => {
-  args.encryptedPassword = hashSync(args.password, 10)
-  delete args.password
-  return args
-}
 
 const _has = (resolvers, { key, connection }, { returnType }) => {
   return async (parent, params, context, resolveInfo) => {
@@ -48,16 +41,6 @@ export default {
         let user = await instance.find('User', args.id)
         if (!user) return null
         await user.update(args)
-        return user.toJson()
-      } catch (e) {
-        throw new UserInputError(e.message)
-      }
-    },
-    CreateUser: async (object, args, context, resolveInfo) => {
-      args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
-      args = await encryptPassword(args)
-      try {
-        const user = await instance.create('User', args)
         return user.toJson()
       } catch (e) {
         throw new UserInputError(e.message)

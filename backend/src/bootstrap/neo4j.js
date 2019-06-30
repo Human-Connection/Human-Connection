@@ -45,6 +45,12 @@ export function neode() {
       verifiedAt: { type: 'string', isoDate: true },
       nonce: { type: 'string', token: true },
       email: { type: 'string', lowercase: true, email: true },
+      belongsTo: {
+        type: 'relationship',
+        relationship: 'BELONGS_TO',
+        target: 'User',
+        direction: 'out',
+      },
     })
     neodeInstance.model('User', {
       id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
@@ -65,6 +71,12 @@ export function neode() {
       isVerified: 'boolean',
       locationName: 'string',
       about: 'string',
+      primaryEmail: {
+        type: 'relationship',
+        relationship: 'PRIMARY_EMAIL',
+        target: 'EmailAddress',
+        direction: 'out',
+      },
       following: {
         type: 'relationship',
         relationship: 'FOLLOWS',

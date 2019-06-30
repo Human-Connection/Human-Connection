@@ -111,18 +111,6 @@ type Query {
 }
 
 type Mutation {
- CreateUser(
-    nonce: String
-    name: String!
-    email: String!
-    slug: String
-    password: String!
-    avatar: String
-    coverImg: String
-    avatarUpload: Upload
-    locationName: String
-    about: String
-  ): User
   UpdateUser (
     id: ID!
     name: String
