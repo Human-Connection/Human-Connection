@@ -86,7 +86,12 @@ export function neode() {
       },
       invitedBy: { type: 'relationship', relationship: 'INVITED', target: 'User', direction: 'in' },
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
-      updatedAt: { type: 'string', isoDate: true, required: true, default: () => new Date().toISOString()},
+      updatedAt: {
+        type: 'string',
+        isoDate: true,
+        required: true,
+        default: () => new Date().toISOString(),
+      },
     })
   }
   return neodeInstance

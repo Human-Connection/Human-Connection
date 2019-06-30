@@ -14,13 +14,6 @@ const socialMediaSchema = Joi.object().keys({
     .uri()
     .required(),
 })
-const registrationSchema = Joi.object().keys({
-  token: Joi.string().optional(),
-  createdAt: Joi.string().required(),
-  email: Joi.string()
-    .email()
-    .required(),
-})
 
 export default {
   Mutation: {

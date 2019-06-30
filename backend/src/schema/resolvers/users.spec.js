@@ -2,11 +2,11 @@ import { GraphQLClient } from 'graphql-request'
 import { login, host } from '../../jest/helpers'
 import Factory from '../../seed/factories'
 import gql from 'graphql-tag'
-import { getDriver } from '../../bootstrap/neo4j'
+import { neode } from '../../bootstrap/neo4j'
 
 const factory = Factory()
 let client
-const driver = getDriver()
+const instance = neode()
 
 afterEach(async () => {
   await factory.cleanDatabase()

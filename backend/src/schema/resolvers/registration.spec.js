@@ -1,7 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login } from '../../jest/helpers'
-import { getDriver } from '../../bootstrap/neo4j'
 import { neode } from '../../bootstrap/neo4j'
 
 let factory
@@ -9,7 +8,6 @@ let client
 let variables
 let action
 let userParams
-const driver = getDriver()
 const instance = neode()
 
 beforeEach(async () => {
@@ -62,9 +60,11 @@ describe('CreateInvitationCode', () => {
 
     it('relates inviting User to InvitationCode', async () => {
       await action()
-      const result = await instance.cypher('MATCH(code:InvitationCode)<-[:GENERATED]-(user:User) RETURN user')
+      const result = await instance.cypher(
+        'MATCH(code:InvitationCode)<-[:GENERATED]-(user:User) RETURN user',
+      )
       const inviter = instance.hydrateFirst(result, 'user', instance.model('User'))
-      await expect(inviter.toJson()).resolves.toEqual(expect.objectContaining({ name: 'Inviter'}))
+      await expect(inviter.toJson()).resolves.toEqual(expect.objectContaining({ name: 'Inviter' }))
     })
 
     describe('who has invited a lot of users already', () => {
@@ -208,9 +208,14 @@ describe('SignupByInvitation', () => {
 
         it('connects inviter through invitation code', async () => {
           await action()
-          const result = await instance.cypher('MATCH(inviter:User)-[:GENERATED]->(:InvitationCode)-[:ACTIVATED]->(email:EmailAddress {email: {email}}) RETURN inviter', { email: 'someuser@example.org' })
+          const result = await instance.cypher(
+            'MATCH(inviter:User)-[:GENERATED]->(:InvitationCode)-[:ACTIVATED]->(email:EmailAddress {email: {email}}) RETURN inviter',
+            { email: 'someuser@example.org' },
+          )
           const inviter = instance.hydrateFirst(result, 'inviter', instance.model('User'))
-          await expect(inviter.toJson()).resolves.toEqual(expect.objectContaining({ name: 'Inviter' }))
+          await expect(inviter.toJson()).resolves.toEqual(
+            expect.objectContaining({ name: 'Inviter' }),
+          )
         })
 
         describe('using the same InvitationCode twice', () => {
