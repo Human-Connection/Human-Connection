@@ -1,7 +1,6 @@
 type EmailAddress {
   id: ID!
   email: String!
-  nonce: String
   verifiedAt: String
   createdAt: String
 }

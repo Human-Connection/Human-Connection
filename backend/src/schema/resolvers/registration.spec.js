@@ -2,6 +2,7 @@ import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login } from '../../jest/helpers'
 import { getDriver } from '../../bootstrap/neo4j'
+import { neode } from '../../bootstrap/neo4j'
 
 let factory
 let client
@@ -53,22 +54,17 @@ describe('CreateInvitationCode', () => {
 
     it('creates an InvitationCode with a `createdAt` attribute', async () => {
       await action()
-      const invitationQuery = `{ InvitationCode { createdAt } }`
-      const {
-        InvitationCode: [invitation],
-      } = await factory.request(invitationQuery)
+      const codes = await instance.all('InvitationCode')
+      const invitation = await codes.first().toJson()
       expect(invitation.createdAt).toBeTruthy()
       expect(Date.parse(invitation.createdAt)).toEqual(expect.any(Number))
     })
 
     it('relates inviting User to InvitationCode', async () => {
       await action()
-      const invitationQuery = `{ InvitationCode { generatedBy { name } } }`
-      const {
-        InvitationCode: [user],
-      } = await factory.request(invitationQuery)
-      const expected = { generatedBy: { name: 'Inviter' } }
-      expect(user).toEqual(expected)
+      const result = await instance.cypher('MATCH(code:InvitationCode)<-[:GENERATED]-(user:User) RETURN user')
+      const inviter = instance.hydrateFirst(result, 'user', instance.model('User'))
+      await expect(inviter.toJson()).resolves.toEqual(expect.objectContaining({ name: 'Inviter'}))
     })
 
     describe('who has invited a lot of users already', () => {
@@ -95,13 +91,12 @@ describe('CreateInvitationCode', () => {
           await expect(action()).rejects.toThrow('Not Authorised')
         })
 
-        it('creates no additional user accounts', async done => {
+        it('creates no additional invitation codes', async done => {
           try {
             await action()
           } catch (e) {
-            const invitationQuery = `{ InvitationCode { createdAt } }`
-            const { InvitationCode: codes } = await factory.request(invitationQuery)
-            expect(codes).toHaveLength(3)
+            const invitationCodes = await instance.all('InvitationCode')
+            await expect(invitationCodes.toJson()).resolves.toHaveLength(3)
             done()
           }
         })
@@ -177,7 +172,8 @@ describe('SignupByInvitation', () => {
         try {
           await action()
         } catch (e) {
-          await expect(instance.model('EmailAddress').all()).resolves.toEqual({ EmailAddress: [] })
+          const emailAddresses = await instance.all('EmailAddress')
+          expect(emailAddresses).toHaveLength(0)
           done()
         }
       })
@@ -197,22 +193,24 @@ describe('SignupByInvitation', () => {
       describe('creates a EmailAddress node', () => {
         it('with a `createdAt` attribute', async () => {
           await action()
-          const [emailAddress] = await instance.model('EmailAddress').all()
-          expect(emailAddress.toJson().createdAt).toBeTruthy()
+          const emailAddresses = await instance.all('EmailAddress')
+          const emailAddress = await emailAddresses.first().toJson()
+          expect(emailAddress.createdAt).toBeTruthy()
           expect(Date.parse(emailAddress.createdAt)).toEqual(expect.any(Number))
         })
 
         it('with a cryptographic `nonce`', async () => {
           await action()
-          const [emailAddress] = await instance.model('EmailAddress').all()
-          expect(emailAddress.toJson().nonce).toEqual(expect.any(String))
+          const emailAddresses = await instance.all('EmailAddress')
+          const emailAddress = await emailAddresses.first().toJson()
+          expect(emailAddress.nonce).toEqual(expect.any(String))
         })
 
-        it('connects inviting user', async () => {
+        it('connects inviter through invitation code', async () => {
           await action()
-          const users = await instance.cypher('MATCH(inviter:User)-[:INVITED]->(user:User {id: {id}}) RETURN inviter', { id: 'i123' })
-          const [user: { email }] = users.records.map(r => r.get('inviter'))
-          expect(emailAddress).toEqual({ invitedBy: { name: 'Inviter' } })
+          const result = await instance.cypher('MATCH(inviter:User)-[:GENERATED]->(:InvitationCode)-[:ACTIVATED]->(email:EmailAddress {email: {email}}) RETURN inviter', { email: 'someuser@example.org' })
+          const inviter = instance.hydrateFirst(result, 'inviter', instance.model('User'))
+          await expect(inviter.toJson()).resolves.toEqual(expect.objectContaining({ name: 'Inviter' }))
         })
 
         describe('using the same InvitationCode twice', () => {
@@ -275,8 +273,9 @@ describe('signup', () => {
 
     it('creates a Signup with a cryptographic `nonce`', async () => {
       await action()
-      const [emailAddress] = await instance.model('EmailAddress').all()
-      expect(emailAddress.toJson().nonce).toEqual(expect.any(String))
+      const emailAddresses = await instance.all('EmailAddress')
+      const emailAddress = await emailAddresses.first().toJson()
+      expect(emailAddress.nonce).toEqual(expect.any(String))
     })
   })
 })

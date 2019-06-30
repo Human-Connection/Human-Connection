@@ -50,21 +50,19 @@ export default {
       try {
         await checkEmailDoesNotExist({ args, session })
         const result = await instance.cypher(`
-        MATCH (u:User)-[:GENERATED]->(i:InvitationCode {token:{token}})
-        WHERE NOT (i)-[:ACTIVATED]->()
-        RETURN u.id as inviterId, i.id as invitationCodeId
+        MATCH (inviter:User)-[:GENERATED]->(invitationCode:InvitationCode {token:{token}})
+        WHERE NOT (invitationCode)-[:ACTIVATED]->()
+        RETURN inviter, invitationCode
         `, { token })
-        const [firstRecord] = result.records
-        if (!firstRecord) throw new UserInputError('Invitation code already used or does not exist.')
-        const [inviterId, invitationCodeId] = [firstRecord.get('inviterId'), firstRecord.get('invitationCodeId')]
-        const inviter = await instance.find('User', inviterId)
-        const validInvitationCode = await instance.find('InvitationCode', invitationCodeId)
+        const [inviter, validInvitationCode] = [
+          instance.hydrateFirst(result, 'inviter', instance.model('User')),
+          instance.hydrateFirst(result, 'invitationCode', instance.model('InvitationCode'))
+        ]
+        if (!validInvitationCode) throw new UserInputError('Invitation code already used or does not exist.')
         const emailAddress = await instance.create('EmailAddress', args)
         await validInvitationCode.relateTo(emailAddress, 'activated')
-        // await emailAddress.relateTo(inviter, 'invitedBy')
         return { response: emailAddress.toJson(), nonce }
         response = emailAddress.toJson()
-        response.invitedBy = inviter.toJson()
       } catch (e) {
         throw new UserInputError(e)
       }
