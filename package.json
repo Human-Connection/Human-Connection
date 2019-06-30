@@ -19,6 +19,7 @@
     "test:jest": "cd webapp && yarn test && cd ../backend && yarn test:jest && codecov"
   },
   "devDependencies": {
+    "apollo-server": "^2.6.7",
     "codecov": "^3.5.0",
     "cross-env": "^5.2.0",
     "cypress": "^3.3.1",
