@@ -40,11 +40,10 @@ export function neode() {
       },
     })
     neodeInstance.model('EmailAddress', {
-      id: { type: 'uuid', primary: true, default: uuid },
+      email: { type: 'string', primary: true, lowercase: true, email: true },
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
       verifiedAt: { type: 'string', isoDate: true },
       nonce: { type: 'string', token: true },
-      email: { type: 'string', lowercase: true, email: true },
       belongsTo: {
         type: 'relationship',
         relationship: 'BELONGS_TO',
