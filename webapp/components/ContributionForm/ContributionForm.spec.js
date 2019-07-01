@@ -2,6 +2,7 @@ import { config, mount, createLocalVue } from '@vue/test-utils'
 import ContributionForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
+import PostMutations from '~/graphql/PostMutations.js'
 
 const localVue = createLocalVue()
 
@@ -17,9 +18,9 @@ describe('ContributionForm.vue', () => {
   let deutschOption
   let cancelBtn
   let mocks
+  let propsData
   const postTitle = 'this is a title for a post'
   const postContent = 'this is a post'
-  const computed = { locale: () => 'English' }
 
   beforeEach(() => {
     mocks = {
@@ -52,6 +53,7 @@ describe('ContributionForm.vue', () => {
         push: jest.fn(),
       },
     }
+    propsData = {}
   })
 
   describe('mount', () => {
@@ -64,7 +66,7 @@ describe('ContributionForm.vue', () => {
       getters,
     })
     const Wrapper = () => {
-      return mount(ContributionForm, { mocks, localVue, computed, store })
+      return mount(ContributionForm, { mocks, localVue, store, propsData })
     }
 
     beforeEach(() => {
@@ -73,29 +75,36 @@ describe('ContributionForm.vue', () => {
     })
 
     describe('CreatePost', () => {
+      describe('language placeholder', () => {
+        it("displays the name that corresponds with the user's location code", () => {
+          expect(wrapper.find('.ds-select-placeholder').text()).toEqual('English')
+        })
+      })
+
       describe('invalid form submission', () => {
         it('title required for form submission', async () => {
           postTitleInput = wrapper.find('.ds-input')
-          postTitleInput.setValue('this is a title for a post')
+          postTitleInput.setValue(postTitle)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
 
         it('content required for form submission', async () => {
-          wrapper.vm.updateEditorContent('this is a post')
+          wrapper.vm.updateEditorContent(postContent)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
       })
 
       describe('valid form submission', () => {
-        expectedParams = {
-          variables: { title: postTitle, content: postContent, language: 'en', id: null },
-        }
         beforeEach(async () => {
+          expectedParams = {
+            mutation: PostMutations().CreatePost,
+            variables: { title: postTitle, content: postContent, language: 'en', id: null },
+          }
           postTitleInput = wrapper.find('.ds-input')
-          postTitleInput.setValue('this is a title for a post')
-          wrapper.vm.updateEditorContent('this is a post')
+          postTitleInput.setValue(postTitle)
+          wrapper.vm.updateEditorContent(postContent)
           await wrapper.find('form').trigger('submit')
         })
 
@@ -136,8 +145,8 @@ describe('ContributionForm.vue', () => {
         beforeEach(async () => {
           wrapper = Wrapper()
           postTitleInput = wrapper.find('.ds-input')
-          postTitleInput.setValue('this is a title for a post')
-          wrapper.vm.updateEditorContent('this is a post')
+          postTitleInput.setValue(postTitle)
+          wrapper.vm.updateEditorContent(postContent)
           // second submission causes mutation to reject
           await wrapper.find('form').trigger('submit')
         })
@@ -146,6 +155,58 @@ describe('ContributionForm.vue', () => {
           await mocks.$apollo.mutate
           expect(mocks.$toast.error).toHaveBeenCalledWith('Not Authorised!')
         })
+      })
+    })
+
+    describe('UpdatePost', () => {
+      beforeEach(() => {
+        propsData = {
+          contribution: {
+            id: 'p1456',
+            slug: 'dies-ist-ein-post',
+            title: 'dies ist ein Post',
+            content: 'auf Deutsch geschrieben',
+            language: 'de',
+          },
+        }
+        wrapper = Wrapper()
+      })
+
+      it('sets id equal to contribution id', () => {
+        expect(wrapper.vm.id).toEqual(propsData.contribution.id)
+      })
+
+      it('sets slug equal to contribution slug', () => {
+        expect(wrapper.vm.slug).toEqual(propsData.contribution.slug)
+      })
+
+      it('sets title equal to contribution title', () => {
+        expect(wrapper.vm.form.title).toEqual(propsData.contribution.title)
+      })
+
+      it('sets content equal to contribution content', () => {
+        expect(wrapper.vm.form.content).toEqual(propsData.contribution.content)
+      })
+
+      it('sets language equal to contribution language', () => {
+        expect(wrapper.vm.form.language).toEqual({ value: propsData.contribution.language })
+      })
+
+      it('calls the UpdatePost apollo mutation', async () => {
+        expectedParams = {
+          mutation: PostMutations().UpdatePost,
+          variables: {
+            title: postTitle,
+            content: postContent,
+            language: propsData.contribution.language,
+            id: propsData.contribution.id,
+          },
+        }
+        postTitleInput = wrapper.find('.ds-input')
+        postTitleInput.setValue(postTitle)
+        wrapper.vm.updateEditorContent(postContent)
+        await wrapper.find('form').trigger('submit')
+        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
       })
     })
   })

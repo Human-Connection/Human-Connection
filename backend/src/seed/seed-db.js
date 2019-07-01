@@ -214,21 +214,21 @@ import Factory from './factories'
       'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
 
     await Promise.all([
-      asAdmin.create('Post', { id: 'p0' }),
-      asModerator.create('Post', { id: 'p1' }),
+      asAdmin.create('Post', { id: 'p0', image: faker.image.unsplash.food() }),
+      asModerator.create('Post', { id: 'p1', image: faker.image.unsplash.technology() }),
       asUser.create('Post', { id: 'p2' }),
       asTick.create('Post', { id: 'p3' }),
       asTrick.create('Post', { id: 'p4' }),
       asTrack.create('Post', { id: 'p5' }),
-      asAdmin.create('Post', { id: 'p6' }),
+      asAdmin.create('Post', { id: 'p6', image: faker.image.unsplash.buildings() }),
       asModerator.create('Post', { id: 'p7', content: `${mention1} ${faker.lorem.paragraph()}` }),
-      asUser.create('Post', { id: 'p8' }),
+      asUser.create('Post', { id: 'p8', image: faker.image.unsplash.nature() }),
       asTick.create('Post', { id: 'p9' }),
       asTrick.create('Post', { id: 'p10' }),
-      asTrack.create('Post', { id: 'p11' }),
+      asTrack.create('Post', { id: 'p11', image: faker.image.unsplash.people() }),
       asAdmin.create('Post', { id: 'p12', content: `${mention2} ${faker.lorem.paragraph()}` }),
       asModerator.create('Post', { id: 'p13' }),
-      asUser.create('Post', { id: 'p14' }),
+      asUser.create('Post', { id: 'p14', image: faker.image.unsplash.objects() }),
       asTick.create('Post', { id: 'p15' }),
     ])
 
