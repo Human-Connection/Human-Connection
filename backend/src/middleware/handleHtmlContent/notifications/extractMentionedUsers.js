@@ -1,7 +1,7 @@
 import cheerio from 'cheerio'
 const ID_REGEX = /\/profile\/([\w\-.!~*'"(),]+)/g
 
-export default function(content) {
+export default function (content) {
   if (!content) return []
   const $ = cheerio.load(content)
   const urls = $('.mention')
@@ -11,7 +11,6 @@ export default function(content) {
     .get()
   const ids = []
   urls.forEach(url => {
-    console.log('url: ', url)
     let match
     while ((match = ID_REGEX.exec(url)) != null) {
       ids.push(match[1])

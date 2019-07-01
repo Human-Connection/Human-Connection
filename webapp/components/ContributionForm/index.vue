@@ -28,16 +28,16 @@
         <ds-space />
         <div slot="footer" style="text-align: right">
           <ds-button
+            class="cancel-button"
             :disabled="loading || disabled"
             ghost
-            class="cancel-button"
-            @click="$router.back()"
+            @click.prevent="$router.back()"
           >
             {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button
-            icon="check"
             type="submit"
+            icon="check"
             :loading="loading"
             :disabled="disabled || errors"
             primary
@@ -52,7 +52,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor'
+import HcEditor from '~/components/Editor/Editor'
 import orderBy from 'lodash/orderBy'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'

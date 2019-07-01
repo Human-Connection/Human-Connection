@@ -21,16 +21,25 @@ const notify = async (postId, idsOfMentionedUsers, context) => {
 
 const updateHashtagsOfPost = async (postId, hashtags, context) => {
   const session = context.driver.session()
-  const cypher = `
-    MATCH (p:Post { id: $postId })-[oldRelations:TAGGED]->(oldTags:Tag)
-    DELETE oldRelations
-    WITH p
+  // We need two Cypher statements, because the 'MATCH' in the 'cypherDeletePreviousRelations' statement
+  //  functions as an 'if'. In case there is no previous relation, the rest of the commands are omitted
+  //  and no new Hashtags and relations will be created.
+  const cypherDeletePreviousRelations = `
+    MATCH (p:Post { id: $postId })-[previousRelations:TAGGED]->(t:Tag)
+    DELETE previousRelations
+    RETURN p, t
+    `
+  const cypherCreateNewTagsAndRelations = `
+    MATCH (p:Post { id: $postId})
     UNWIND $hashtags AS tagName
     MERGE (t:Tag { id: tagName, name: tagName, disabled: false, deleted: false })
     MERGE (p)-[:TAGGED]->(t)
     RETURN p, t
     `
-  await session.run(cypher, {
+  await session.run(cypherDeletePreviousRelations, {
+    postId,
+  })
+  await session.run(cypherCreateNewTagsAndRelations, {
     postId,
     hashtags,
   })
@@ -38,18 +47,14 @@ const updateHashtagsOfPost = async (postId, hashtags, context) => {
 }
 
 const handleContentData = async (resolve, root, args, context, resolveInfo) => {
-  console.log('args.content: ', args.content)
   // extract user ids before xss-middleware removes classes via the following "resolve" call
   const idsOfMentionedUsers = extractMentionedUsers(args.content)
-  console.log('idsOfMentionedUsers: ', idsOfMentionedUsers)
   // extract tag (hashtag) ids before xss-middleware removes classes via the following "resolve" call
   const hashtags = extractHashtags(args.content)
-  console.log('hashtags: ', hashtags)
 
   // removes classes from the content
   const post = await resolve(root, args, context, resolveInfo)
 
-  console.log('post.id: ', post.id)
   await notify(post.id, idsOfMentionedUsers, context)
   await updateHashtagsOfPost(post.id, hashtags, context)
 
