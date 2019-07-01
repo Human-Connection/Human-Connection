@@ -1,11 +1,6 @@
-import {
-  GraphQLClient
-} from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 import gql from 'graphql-tag'
-import {
-  host,
-  login
-} from '../../jest/helpers'
+import { host, login } from '../../jest/helpers'
 import Factory from '../../seed/factories'
 
 const factory = Factory()
@@ -26,7 +21,7 @@ afterEach(async () => {
 })
 
 describe('currentUser { notifications }', () => {
-  const query = gql `
+  const query = gql`
     query($read: Boolean) {
       currentUser {
         notifications(read: $read, orderBy: createdAt_desc) {
@@ -73,7 +68,7 @@ describe('currentUser { notifications }', () => {
           'Hey <a class="mention" href="/profile/you/al-capone">@al-capone</a> how do you do?'
 
         beforeEach(async () => {
-          const createPostMutation = gql `
+          const createPostMutation = gql`
             mutation($title: String!, $content: String!) {
               CreatePost(title: $title, content: $content) {
                 id
@@ -85,9 +80,7 @@ describe('currentUser { notifications }', () => {
           authorClient = new GraphQLClient(host, {
             headers: authorHeaders,
           })
-          const {
-            CreatePost
-          } = await authorClient.request(createPostMutation, {
+          const { CreatePost } = await authorClient.request(createPostMutation, {
             title,
             content,
           })
@@ -99,12 +92,14 @@ describe('currentUser { notifications }', () => {
             'Hey <a href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
           const expected = {
             currentUser: {
-              notifications: [{
-                read: false,
-                post: {
-                  content: expectedContent,
+              notifications: [
+                {
+                  read: false,
+                  post: {
+                    content: expectedContent,
+                  },
                 },
-              }, ],
+              ],
             },
           }
           await expect(
@@ -122,7 +117,7 @@ describe('currentUser { notifications }', () => {
             // during development and thought: A feature not a bug! This way we
             // can encode a re-mentioning of users when you edit your post or
             // comment.
-            const createPostMutation = gql `
+            const createPostMutation = gql`
               mutation($id: ID!, $content: String!) {
                 UpdatePost(id: $id, content: $content) {
                   title
@@ -144,7 +139,8 @@ describe('currentUser { notifications }', () => {
               'Hey <a href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do? One more mention to <a href="/profile/you" target="_blank">@al-capone</a>'
             const expected = {
               currentUser: {
-                notifications: [{
+                notifications: [
+                  {
                     read: false,
                     post: {
                       content: expectedContent,
@@ -176,7 +172,7 @@ describe('Hashtags', () => {
   const postTitle = 'Two Hashtags'
   const postContent =
     '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Democracy">#Democracy</a> should work equal for everybody!? That seems to be the only way to have equal <a class="hashtag" href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
-  const postWithHastagsQuery = gql `
+  const postWithHastagsQuery = gql`
     query($id: ID) {
       Post(id: $id) {
         tags {
@@ -188,7 +184,7 @@ describe('Hashtags', () => {
   const postWithHastagsVariables = {
     id: postId,
   }
-  const createPostMutation = gql `
+  const createPostMutation = gql`
     mutation($postId: ID, $postTitle: String!, $postContent: String!) {
       CreatePost(id: $postId, title: $postTitle, content: $postContent) {
         id
@@ -220,7 +216,8 @@ describe('Hashtags', () => {
       })
 
       it('both Hashtags are created', async () => {
-        const expected = [{
+        const expected = [
+          {
             name: 'Democracy',
           },
           {
@@ -230,9 +227,11 @@ describe('Hashtags', () => {
         await expect(
           client.request(postWithHastagsQuery, postWithHastagsVariables),
         ).resolves.toEqual({
-          Post: [{
-            tags: expect.arrayContaining(expected),
-          }, ],
+          Post: [
+            {
+              tags: expect.arrayContaining(expected),
+            },
+          ],
         })
       })
 
@@ -240,7 +239,7 @@ describe('Hashtags', () => {
         // The already existing Hashtag has no class at this point.
         const updatedPostContent =
           '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Elections">#Elections</a> should work equal for everybody!? That seems to be the only way to have equal <a href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
-        const updatePostMutation = gql `
+        const updatePostMutation = gql`
           mutation($postId: ID!, $postTitle: String, $updatedPostContent: String) {
             UpdatePost(id: $postId, title: $postTitle, content: $updatedPostContent) {
               id
@@ -257,7 +256,8 @@ describe('Hashtags', () => {
             updatedPostContent,
           })
 
-          const expected = [{
+          const expected = [
+            {
               name: 'Elections',
             },
             {
@@ -267,9 +267,11 @@ describe('Hashtags', () => {
           await expect(
             client.request(postWithHastagsQuery, postWithHastagsVariables),
           ).resolves.toEqual({
-            Post: [{
-              tags: expect.arrayContaining(expected),
-            }, ],
+            Post: [
+              {
+                tags: expect.arrayContaining(expected),
+              },
+            ],
           })
         })
       })
