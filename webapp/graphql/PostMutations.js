@@ -22,7 +22,6 @@ export default () => {
           content
           contentExcerpt
           language
-          image
         }
       }
     `,

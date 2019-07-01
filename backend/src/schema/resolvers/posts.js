@@ -4,23 +4,22 @@ import fileUpload from './fileUpload'
 export default {
   Mutation: {
     UpdatePost: async (object, params, context, resolveInfo) => {
-      const { id: postId, categoryIds } = params
+      const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
-
       const session = context.driver.session()
       const cypherDeletePreviousRelations = `
-        MATCH (post:Post { id: $postId })-[previousRelations:CATEGORIZED]->(category:Category)
+        MATCH (post:Post { id: $params.id })-[previousRelations:CATEGORIZED]->(category:Category)
         DELETE previousRelations
         RETURN post, category
       `
 
-      await session.run(cypherDeletePreviousRelations, { postId })
+      await session.run(cypherDeletePreviousRelations, { params })
 
-      let updatePostCypher = `MATCH (post:Post {id: $postId})
+      let updatePostCypher = `MATCH (post:Post {id: $params.id})
       SET post = $params
       `
-      if (categoryIds) {
+      if (categoryIds && categoryIds.length) {
         updatePostCypher += `WITH post
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
@@ -28,7 +27,7 @@ export default {
         `
       }
       updatePostCypher += `RETURN post`
-      const updatePostVariables = { postId, categoryIds, params }
+      const updatePostVariables = { categoryIds, params }
 
       const transactionRes = await session.run(updatePostCypher, updatePostVariables)
       const [post] = transactionRes.records.map(record => {
