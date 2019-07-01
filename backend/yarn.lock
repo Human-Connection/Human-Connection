@@ -1110,10 +1110,10 @@
   resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-12.0.9.tgz#693e76a52f61a2f1e7fb48c0eef167b95ea4ffd0"
   integrity sha512-sCZy4SxP9rN2w30Hlmg5dtdRwgYQfYRiLo9usw8X9cxlf+H4FqM1xX7+sNH7NNKVdbXMJWqva7iyy+fxh/V7fA==
 
-"@types/yup@0.26.16":
-  version "0.26.16"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.16.tgz#75c428236207c48d9f8062dd1495cda8c5485a15"
-  integrity sha512-E2RNc7DSeQ+2EIJ1H3+yFjYu6YiyQBUJ7yNpIxomrYJ3oFizLZ5yDS3T1JTUNBC2OCRkgnhLS0smob5UuCHfNA==
+"@types/yup@0.26.18":
+  version "0.26.18"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.18.tgz#7f76ad65b385577fb89936ce26a7f830a9560a9c"
+  integrity sha512-bKGlHqe+SrvdZONwB+H7hihsvl4yAaOIhN6Sgnnuo6NQOJ0bBNc53Ztfe8ORZHBcPC/OVxhFrxnJIjsGsDbR8w==
 
 "@types/zen-observable@^0.5.3":
   version "0.5.4"
@@ -3788,12 +3788,12 @@ graphql-request@~1.8.2:
   dependencies:
     cross-fetch "2.2.2"
 
-graphql-shield@~5.6.1:
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-5.6.2.tgz#27eaad2ce2591ed81b1203e8915df99b28fb5ad5"
-  integrity sha512-DlS6r39s7AaP07yMM6i7GI87UkfL65O1tUPW4kNqp67fD1BU71Ekl7Kt/1L3rxS/gcQdGufuKka5oKUa5GKo2A==
+graphql-shield@~6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-6.0.0.tgz#93d0836ab4496f3f99a06831aa06aa52db9af8e1"
+  integrity sha512-aYnFGtZLBrGWhKgjUqrskdDbEpvOWYgLE47WUf58/T8f3ebRnkCQryAEVQOrBrqnAMt8PxvmJRgUkpF++UOSFw==
   dependencies:
-    "@types/yup" "0.26.16"
+    "@types/yup" "0.26.18"
     lightercollective "^0.3.0"
     object-hash "^1.3.1"
     yup "^0.27.0"
