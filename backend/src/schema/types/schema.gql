@@ -40,7 +40,7 @@ type Mutation {
   follow(id: ID!, type: FollowTypeEnum): Boolean!
   # Unfollow the given Type and ID
   unfollow(id: ID!, type: FollowTypeEnum): Boolean!
-  DeleteUser(id: ID!, resource: [String]): User
+  DeleteUser(id: ID!, resource: [Deletable]): User
 }
 
 type Statistics {
@@ -90,6 +90,11 @@ type Report {
   comment: Comment @relation(name: "REPORTED", direction: "OUT")
   post: Post @relation(name: "REPORTED", direction: "OUT")
   user: User @relation(name: "REPORTED", direction: "OUT")
+}
+
+enum Deletable {
+  Post
+  Comment
 }
 
 enum ShoutTypeEnum {
