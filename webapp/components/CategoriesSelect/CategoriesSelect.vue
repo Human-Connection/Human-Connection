@@ -30,6 +30,9 @@
 import gql from 'graphql-tag'
 
 export default {
+  props: {
+    existingCategoryIds: { type: Array, default: () => [] },
+  },
   data() {
     return {
       categories: null,
@@ -49,19 +52,28 @@ export default {
     selectedCategoryIds(categoryIds) {
       this.$emit('updateCategories', categoryIds)
     },
+    existingCategoryIds: {
+      immediate: true,
+      handler: function(existingCategoryIds) {
+        if (!existingCategoryIds || !existingCategoryIds.length) {
+          return
+        }
+        this.selectedCategoryIds = existingCategoryIds
+      },
+    },
   },
   methods: {
     toggleCategory(id) {
       const index = this.selectedCategoryIds.indexOf(id)
       if (index > -1) {
-        this.selectedCategoryIds.splice(index)
+        this.selectedCategoryIds.splice(index, 1)
       } else {
         this.selectedCategoryIds.push(id)
       }
     },
     isActive(id) {
-      const activeCategory = this.selectedCategoryIds.find(categoryId => categoryId === id)
-      if (activeCategory) {
+      const index = this.selectedCategoryIds.indexOf(id)
+      if (index > -1) {
         return true
       }
       return false

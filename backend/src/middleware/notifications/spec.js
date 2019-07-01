@@ -88,21 +88,26 @@ describe('currentUser { notifications }', () => {
         describe('who mentions me again', () => {
           beforeEach(async () => {
             const updatedContent = `${post.content} One more mention to <a href="/profile/you" class="mention">@al-capone</a>`
+            const updatedTitle = 'this post has been updated'
             // The response `post.content` contains a link but the XSSmiddleware
             // should have the `mention` CSS class removed. I discovered this
             // during development and thought: A feature not a bug! This way we
             // can encode a re-mentioning of users when you edit your post or
             // comment.
-            const createPostMutation = `
-            mutation($id: ID!, $content: String!) {
-              UpdatePost(id: $id, content: $content) {
+            const updatePostMutation = `
+            mutation($id: ID!, $title: String!, $content: String!) {
+              UpdatePost(id: $id, title: $title, content: $content) {
                 title
                 content
               }
             }
             `
             authorClient = new GraphQLClient(host, { headers: authorHeaders })
-            await authorClient.request(createPostMutation, { id: post.id, content: updatedContent })
+            await authorClient.request(updatePostMutation, {
+              id: post.id,
+              content: updatedContent,
+              title: updatedTitle,
+            })
           })
 
           it('creates exactly one more notification', async () => {

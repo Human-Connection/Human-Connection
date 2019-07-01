@@ -6,7 +6,32 @@ const factory = Factory()
 let client
 const postTitle = 'I am a title'
 const postContent = 'Some content'
+const oldTitle = 'Old title'
+const oldContent = 'Old content'
+const newTitle = 'New title'
+const newContent = 'New content'
 const createPostVariables = { title: postTitle, content: postContent }
+const createPostWithCategoriesMutation = `
+  mutation($title: String!, $content: String!, $categoryIds: [ID]) {
+    CreatePost(title: $title, content: $content, categoryIds: $categoryIds) {
+      id
+    }
+  }
+`
+const creatPostWithCategoriesVariables = {
+  title: postTitle,
+  content: postContent,
+  categoryIds: ['cat9', 'cat4', 'cat15'],
+}
+const postQueryWithCategories = `
+  query($id: ID) {
+    Post(id: $id) {
+      categories {
+        id
+      }
+    }
+  }
+`
 beforeEach(async () => {
   await factory.create('User', {
     email: 'test@example.org',
@@ -117,38 +142,7 @@ describe('CreatePost', () => {
             icon: 'shopping-cart',
           }),
         ])
-        const createPostWithCategoriesMutation = `
-          mutation($title: String!, $content: String!, $categoryIds: [ID]) {
-            CreatePost(title: $title, content: $content, categoryIds: $categoryIds) {
-              id
-            }
-          }
-        `
-        const creatPostWithCategoriesVariables = {
-          title: postTitle,
-          content: postContent,
-          categoryIds: ['cat9', 'cat4', 'cat15'],
-        }
-        const postQueryWithCategories = `
-          query($id: ID) {
-            Post(id: $id) {
-              categories {
-                id
-              }
-            }
-          }
-        `
-        const expected = {
-          Post: [
-            {
-              categories: [
-                { id: expect.any(String) },
-                { id: expect.any(String) },
-                { id: expect.any(String) },
-              ],
-            },
-          ],
-        }
+        const expected = [{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }]
         const postWithCategories = await client.request(
           createPostWithCategoriesMutation,
           creatPostWithCategoriesVariables,
@@ -158,27 +152,15 @@ describe('CreatePost', () => {
         }
         await expect(
           client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
-        ).resolves.toEqual(expect.objectContaining(expected))
+        ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
       })
     })
   })
 })
 
 describe('UpdatePost', () => {
-  const mutation = `
-    mutation($id: ID!, $content: String) {
-      UpdatePost(id: $id, content: $content) {
-        id
-        content
-      }
-    }
-  `
-
-  let variables = {
-    id: 'p1',
-    content: 'New content',
-  }
-
+  let updatePostMutation
+  let updatePostVariables
   beforeEach(async () => {
     const asAuthor = Factory()
     await asAuthor.create('User', {
@@ -191,14 +173,32 @@ describe('UpdatePost', () => {
     })
     await asAuthor.create('Post', {
       id: 'p1',
-      content: 'Old content',
+      title: oldTitle,
+      content: oldContent,
     })
+    updatePostMutation = `
+      mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
+        UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+          id
+          content
+        }
+      }
+    `
+
+    updatePostVariables = {
+      id: 'p1',
+      title: newTitle,
+      content: newContent,
+      categoryIds: null,
+    }
   })
 
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
       client = new GraphQLClient(host)
-      await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
+        'Not Authorised',
+      )
     })
   })
 
@@ -210,7 +210,9 @@ describe('UpdatePost', () => {
     })
 
     it('throws authorization error', async () => {
-      await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
+        'Not Authorised',
+      )
     })
   })
 
@@ -222,8 +224,59 @@ describe('UpdatePost', () => {
     })
 
     it('updates a post', async () => {
-      const expected = { UpdatePost: { id: 'p1', content: 'New content' } }
-      await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+      const expected = { UpdatePost: { id: 'p1', content: newContent } }
+      await expect(client.request(updatePostMutation, updatePostVariables)).resolves.toEqual(
+        expected,
+      )
+    })
+
+    describe('categories', () => {
+      let postWithCategories
+      beforeEach(async () => {
+        await Promise.all([
+          factory.create('Category', {
+            id: 'cat9',
+            name: 'Democracy & Politics',
+            icon: 'university',
+          }),
+          factory.create('Category', {
+            id: 'cat4',
+            name: 'Environment & Nature',
+            icon: 'tree',
+          }),
+          factory.create('Category', {
+            id: 'cat15',
+            name: 'Consumption & Sustainability',
+            icon: 'shopping-cart',
+          }),
+          factory.create('Category', {
+            id: 'cat27',
+            name: 'Animal Protection',
+            icon: 'paw',
+          }),
+        ])
+        postWithCategories = await client.request(
+          createPostWithCategoriesMutation,
+          creatPostWithCategoriesVariables,
+        )
+        updatePostVariables = {
+          id: postWithCategories.CreatePost.id,
+          title: newTitle,
+          content: newContent,
+          categoryIds: ['cat27'],
+        }
+      })
+
+      it('allows a user to update the categories of a post', async () => {
+        await client.request(updatePostMutation, updatePostVariables)
+        const expected = [{ id: 'cat27' }]
+        const postQueryWithCategoriesVariables = {
+          id: postWithCategories.CreatePost.id,
+        }
+        await expect(
+          client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
+        ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
+      })
     })
   })
 })

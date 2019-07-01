@@ -18,10 +18,11 @@ export default () => {
           imageUpload: $imageUpload
         ) {
           title
+          slug
           content
           contentExcerpt
           language
-          imageUpload
+          image
         }
       }
     `,
@@ -32,6 +33,8 @@ export default () => {
         $content: String!
         $language: String
         $imageUpload: Upload
+        $categoryIds: [ID]
+        $image: String
       ) {
         UpdatePost(
           id: $id
@@ -39,6 +42,8 @@ export default () => {
           content: $content
           language: $language
           imageUpload: $imageUpload
+          categoryIds: $categoryIds
+          image: $image
         ) {
           id
           title
@@ -46,7 +51,7 @@ export default () => {
           content
           contentExcerpt
           language
-          imageUpload
+          image
         }
       }
     `,

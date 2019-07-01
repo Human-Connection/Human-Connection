@@ -58,6 +58,24 @@ type Mutation {
     categoryIds: [ID]
     contentExcerpt: String
   ): Post
+  UpdatePost(
+    id: ID!
+    activityId: String
+    objectId: String
+    title: String!
+    slug: String
+    content: String!
+    contentExcerpt: String
+    image: String
+    imageUpload: Upload
+    visibility: Visibility
+    deleted: Boolean
+    disabled: Boolean
+    createdAt: String
+    updatedAt: String
+    language: String
+    categoryIds: [ID]
+  ): Post
   DeleteUser(id: ID!, resource: [Deletable]): User
 }
 

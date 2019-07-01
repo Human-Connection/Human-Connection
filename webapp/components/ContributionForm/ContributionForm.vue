@@ -14,7 +14,11 @@
           <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
-        <hc-categories-select model="categories" @updateCategories="updateCategories" />
+        <hc-categories-select
+          model="categoryIds"
+          @updateCategories="updateCategories"
+          :existingCategoryIds="form.categoryIds"
+        />
         <ds-flex class="contribution-form-footer">
           <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
           <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
@@ -33,7 +37,7 @@
             :disabled="loading || disabled"
             ghost
             class="cancel-button"
-            @click="$router.back()"
+            @click.prevent="$router.back()"
           >
             {{ $t('actions.cancel') }}
           </ds-button>
@@ -77,6 +81,7 @@ export default {
         title: '',
         content: '',
         teaserImage: null,
+        image: null,
         language: null,
         languageOptions: [],
         categoryIds: null,
@@ -103,7 +108,8 @@ export default {
         this.slug = contribution.slug
         this.form.content = contribution.content
         this.form.title = contribution.title
-        this.form.teaserImage = contribution.imageUpload
+        this.form.image = contribution.image
+        this.form.categoryIds = this.categoryIds(contribution.categories)
       },
     },
   },
@@ -121,7 +127,7 @@ export default {
   },
   methods: {
     submit() {
-      const { title, content, teaserImage, categoryIds } = this.form
+      const { title, content, image, teaserImage, categoryIds } = this.form
       let language
       if (this.form.language) {
         language = this.form.language.value
@@ -140,6 +146,7 @@ export default {
             content,
             categoryIds,
             language,
+            image,
             imageUpload: teaserImage,
           },
         })
@@ -174,6 +181,13 @@ export default {
     },
     addTeaserImage(file) {
       this.form.teaserImage = file
+    },
+    categoryIds(categories) {
+      let categoryIds = []
+      categories.map(categoryId => {
+        categoryIds.push(categoryId.id)
+      })
+      return categoryIds
     },
   },
   apollo: {
