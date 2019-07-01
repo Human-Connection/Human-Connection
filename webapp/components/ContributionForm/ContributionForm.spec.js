@@ -144,10 +144,6 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
-        it('sets language equal to contribution language', () => {
-          expect(wrapper.vm.form.language).toEqual({ value: propsData.contribution.language })
-        })
-
         it("pushes the user to the post's page", async () => {
           expect(mocks.$router.push).toHaveBeenCalledTimes(1)
         })
