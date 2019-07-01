@@ -22,25 +22,30 @@
     </no-ssr>
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
-    <ds-space margin-bottom="small" />
-    <div v-if="!collapsible" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
-    <div v-show="comment.content !== comment.contentExcerpt">
+
+    <div v-if="isCollapsed" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
+    <div
+      v-show="comment.content !== comment.contentExcerpt"
+      style="text-align: right;  margin-right: 20px; margin-top: -12px;"
+    >
       <span
-        v-if="!collapsible"
+        v-if="isCollapsed"
         style="padding-left: 40px; color: #17b53f; cursor:pointer"
-        @click="collapsible = !collapsible"
+        @click="isCollapsed = !isCollapsed"
       >
         {{ $t('comment.show.more') }}
       </span>
     </div>
-    <div v-if="collapsible" v-html="comment.content" style="padding-left: 40px;" />
-    <span
-      v-if="collapsible"
-      @click="collapsible = !collapsible"
-      style="padding-left: 40px; color: #17b53f; cursor:pointer"
-    >
-      {{ $t('comment.show.less') }}
-    </span>
+    <div v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
+    <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
+      <span
+        v-if="!isCollapsed"
+        @click="isCollapsed = !isCollapsed"
+        style="padding-left: 40px; color: #17b53f; cursor:pointer"
+      >
+        {{ $t('comment.show.less') }}
+      </span>
+    </div>
   </div>
 </template>
 <!-- eslint-enable vue/no-v-html -->
@@ -54,7 +59,7 @@ import ContentMenu from '~/components/ContentMenu'
 export default {
   data: function() {
     return {
-      collapsible: false,
+      isCollapsed: true,
     }
   },
   components: {
