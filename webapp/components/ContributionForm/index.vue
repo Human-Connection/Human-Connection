@@ -2,6 +2,13 @@
   <ds-form ref="contributionForm" v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
       <ds-card>
+        <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
+          <img
+            v-if="contribution"
+            class="contribution-image"
+            :src="contribution.image | proxyApiUrl"
+          />
+        </hc-teaser-image>
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
         <no-ssr>
           <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
@@ -40,6 +47,7 @@
             {{ $t('actions.save') }}
           </ds-button>
         </div>
+        <ds-space margin-bottom="large" />
       </ds-card>
     </template>
   </ds-form>
@@ -52,11 +60,13 @@ import orderBy from 'lodash/orderBy'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
+import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
 
 export default {
   components: {
     HcEditor,
     HcCategoriesSelect,
+    HcTeaserImage,
   },
   props: {
     contribution: { type: Object, default: () => {} },
@@ -66,6 +76,7 @@ export default {
       form: {
         title: '',
         content: '',
+        teaserImage: null,
         language: null,
         languageOptions: [],
         categoryIds: null,
@@ -92,7 +103,7 @@ export default {
         this.slug = contribution.slug
         this.form.content = contribution.content
         this.form.title = contribution.title
-        this.form.language = { value: contribution.language }
+        this.form.teaserImage = contribution.imageUpload
       },
     },
   },
@@ -110,7 +121,15 @@ export default {
   },
   methods: {
     submit() {
-      const { title, content, language, categoryIds } = this.form
+      const { title, content, teaserImage, categoryIds } = this.form
+      let language
+      if (this.form.language) {
+        language = this.form.language.value
+      } else if (this.contribution && this.contribution.language) {
+        language = this.contribution.language
+      } else {
+        language = this.$i18n.locale()
+      }
       this.loading = true
       this.$apollo
         .mutate({
@@ -119,8 +138,9 @@ export default {
             id: this.id,
             title,
             content,
-            language: language ? language.value : this.$i18n.locale(),
             categoryIds,
+            language,
+            imageUpload: teaserImage,
           },
         })
         .then(res => {
@@ -151,6 +171,9 @@ export default {
     },
     updateCategories(ids) {
       this.form.categoryIds = ids
+    },
+    addTeaserImage(file) {
+      this.form.teaserImage = file
     },
   },
   apollo: {
@@ -183,9 +206,5 @@ export default {
     padding-left: 0;
     padding-right: 0;
   }
-}
-
-.contribution-form-footer {
-  border-top: $border-size-base solid $border-color-softest;
 }
 </style>

@@ -3,12 +3,42 @@ import gql from 'graphql-tag'
 export default () => {
   return {
     CreatePost: gql`
-      mutation($title: String!, $content: String!, $language: String, $categoryIds: [ID]) {
+      mutation(
+        $title: String!
+        $content: String!
+        $language: String
+        $categoryIds: [ID]
+        $imageUpload: Upload
+      ) {
         CreatePost(
           title: $title
           content: $content
           language: $language
           categoryIds: $categoryIds
+          imageUpload: $imageUpload
+        ) {
+          title
+          content
+          contentExcerpt
+          language
+          imageUpload
+        }
+      }
+    `,
+    UpdatePost: gql`
+      mutation(
+        $id: ID!
+        $title: String!
+        $content: String!
+        $language: String
+        $imageUpload: Upload
+      ) {
+        UpdatePost(
+          id: $id
+          title: $title
+          content: $content
+          language: $language
+          imageUpload: $imageUpload
         ) {
           id
           title
@@ -16,18 +46,7 @@ export default () => {
           content
           contentExcerpt
           language
-        }
-      }
-    `,
-    UpdatePost: gql`
-      mutation($id: ID!, $title: String!, $content: String!, $language: String) {
-        UpdatePost(id: $id, title: $title, content: $content, language: $language) {
-          id
-          title
-          slug
-          content
-          contentExcerpt
-          language
+          imageUpload
         }
       }
     `,

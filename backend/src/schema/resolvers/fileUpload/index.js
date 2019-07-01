@@ -12,7 +12,6 @@ const storeUpload = ({ createReadStream, fileLocation }) =>
 
 export default async function fileUpload(params, { file, url }, uploadCallback = storeUpload) {
   const upload = params[file]
-
   if (upload) {
     const { createReadStream, filename } = await upload
     const { name } = path.parse(filename)
