@@ -9,7 +9,7 @@
       @vdropzone-error="verror"
     >
       <div class="dz-message" @mouseover="hover = true" @mouseleave="hover = false">
-        <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
+        <slot></slot>
         <div class="hc-attachments-upload-area">
           <div class="hc-drag-marker">
             <ds-icon v-if="hover" name="image" size="xxx-large" />
@@ -22,12 +22,10 @@
 <script>
 import vueDropzone from 'nuxt-dropzone'
 import gql from 'graphql-tag'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
 
 export default {
   components: {
     vueDropzone,
-    HcAvatar,
   },
   props: {
     user: { type: Object, default: null },

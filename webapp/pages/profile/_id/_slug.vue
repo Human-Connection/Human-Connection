@@ -10,7 +10,9 @@
           :class="{ 'disabled-content': user.disabled }"
           style="position: relative; height: auto;"
         >
-          <hc-upload v-if="myProfile" :user="user" />
+          <hc-upload v-if="myProfile" :user="user">
+            <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
+          </hc-upload>
           <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
           <!-- Menu -->
           <no-ssr>

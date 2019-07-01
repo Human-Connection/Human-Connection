@@ -2,6 +2,13 @@
   <ds-form ref="contributionForm" v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
       <ds-card>
+        <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
+          <img
+            v-if="contribution"
+            class="contribution-image"
+            :src="contribution.image | proxyApiUrl"
+          />
+        </hc-teaser-image>
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
         <no-ssr>
           <hc-editor :users="users" :value="form.content" @input="updateEditorContent" />
@@ -39,6 +46,7 @@
             {{ $t('actions.save') }}
           </ds-button>
         </div>
+        <ds-space margin-bottom="large" />
       </ds-card>
     </template>
   </ds-form>
@@ -50,10 +58,12 @@ import HcEditor from '~/components/Editor'
 import orderBy from 'lodash/orderBy'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
+import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
 
 export default {
   components: {
     HcEditor,
+    HcTeaserImage,
   },
   props: {
     contribution: { type: Object, default: () => {} },
@@ -63,6 +73,7 @@ export default {
       form: {
         title: '',
         content: '',
+        teaserImage: null,
         language: null,
         languageOptions: [],
       },
@@ -88,7 +99,7 @@ export default {
         this.slug = contribution.slug
         this.form.content = contribution.content
         this.form.title = contribution.title
-        this.form.language = { value: contribution.language }
+        this.form.teaserImage = contribution.imageUpload
       },
     },
   },
@@ -106,15 +117,25 @@ export default {
   },
   methods: {
     submit() {
+      const { title, content, teaserImage } = this.form
+      let language
+      if (this.form.language) {
+        language = this.form.language.value
+      } else if (this.contribution && this.contribution.language) {
+        language = this.contribution.language
+      } else {
+        language = this.$i18n.locale()
+      }
       this.loading = true
       this.$apollo
         .mutate({
           mutation: this.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
             id: this.id,
-            title: this.form.title,
-            content: this.form.content,
-            language: this.form.language ? this.form.language.value : this.$i18n.locale(),
+            title,
+            content,
+            language,
+            imageUpload: teaserImage,
           },
         })
         .then(res => {
@@ -143,6 +164,9 @@ export default {
       orderBy(locales, 'name').map(locale => {
         this.form.languageOptions.push({ label: locale.name, value: locale.code })
       })
+    },
+    addTeaserImage(file) {
+      this.form.teaserImage = file
     },
   },
   apollo: {
@@ -175,9 +199,5 @@ export default {
     padding-left: 0;
     padding-right: 0;
   }
-}
-
-.contribution-form-footer {
-  border-top: $border-size-base solid $border-color-softest;
 }
 </style>

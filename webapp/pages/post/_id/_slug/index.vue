@@ -2,7 +2,7 @@
   <transition name="fade" appear>
     <ds-card
       v-if="post && ready"
-      :image="post.image"
+      :image="post.image | proxyApiUrl"
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
     >
       <ds-space margin-bottom="small" />
