@@ -48,4 +48,6 @@ type Post {
       RETURN COUNT(u) >= 1
       """
     )
+
+  emotions: [EMOTED]
 }
