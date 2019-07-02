@@ -60,18 +60,23 @@ delete_collection "contributions" "contributions_post"
 delete_collection "contributions" "contributions_cando"
 delete_collection "shouts" "shouts"
 delete_collection "comments" "comments"
+delete_collection "organizations" "organizations"
 
 #delete_collection "emotions"
 #delete_collection "invites"
 #delete_collection "notifications"
-#delete_collection "organizations"
 #delete_collection "pages"
-#delete_collection "projects"
-#delete_collection "settings"
-#delete_collection "status"
 #delete_collection "systemnotifications"
 #delete_collection "userscandos"
 #delete_collection "usersettings"
+
+# does only contain dummy data
+#delete_collection "projects"
+
+# does only contain alpha specifc data
+#delete_collection "status"
+#delete_collection "settings"
+
 echo "DONE"
 
 # Import Data
@@ -82,15 +87,15 @@ import_collection "users" "users/users.cql"
 import_collection "follows_users" "follows/follows.cql"
 #import_collection "follows_organizations" "follows/follows.cql"
 import_collection "contributions_post" "contributions/contributions.cql"
-import_collection "contributions_cando" "contributions/contributions.cql"
+#import_collection "contributions_cando" "contributions/contributions.cql"
 #import_collection "contributions_DELETED" "contributions/contributions.cql"
 import_collection "shouts" "shouts/shouts.cql"
 import_collection "comments" "comments/comments.cql"
+import_collection "organizations" "organizations/organizations.cql"
 
 # import_collection "emotions"
 # import_collection "invites"
 # import_collection "notifications"
-# import_collection "organizations"
 # import_collection "pages"
 # import_collection "systemnotifications"
 # import_collection "userscandos"
@@ -100,8 +105,8 @@ import_collection "comments" "comments/comments.cql"
 # import_collection "projects"
 
 # does only contain alpha specifc data
-# import_collection "status
-# import_collection "settings""
+# import_collection "status"
+# import_collection "settings"
 
 echo "DONE"
 

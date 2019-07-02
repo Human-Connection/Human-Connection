@@ -1,0 +1,1 @@
+MATCH (o:Organization) DETACH DELETE o;
