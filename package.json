@@ -24,7 +24,7 @@
   "homepage": "https://github.com/Human-Connection/Nitro-Embed#readme",
   "dependencies": {
     "@metascraper/helpers": "^4.8.5",
-    "apollo-server": "^2.3.1",
+    "apollo-server": "^2.6.7",
     "got": "^9.6.0",
     "graphql": "^14.0.2",
     "lodash": "^4.17.11",
