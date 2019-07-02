@@ -2371,19 +2371,19 @@ metascraper-title@^4.8.5:
     "@metascraper/helpers" "^4.8.5"
     lodash "~4.17.10"
 
-metascraper-url@^4.8.5:
-  version "4.8.5"
-  resolved "https://registry.yarnpkg.com/metascraper-url/-/metascraper-url-4.8.5.tgz#37fe18af596da0e0b999a85dce1b30b6d8adb4fb"
-  integrity sha512-hmAzyQnRTjYrgb9UI6eEbPoiTqbEl0tUOHDKBNy27lMUxcozvJo16SEUUJKdgyMD2QNXGbmnnze8YyK+nVgaBA==
-  dependencies:
-    "@metascraper/helpers" "^4.8.5"
-
-metascraper-video@^5.5.0:
+metascraper-url@^5.5.0:
   version "5.5.0"
-  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.5.0.tgz#b12995c4d235cb9dd92cb87e43ba3bdbc945b56d"
-  integrity sha512-FOqnOCRB7Y2xfSu9Apag2kdL4kjbN2J68UQd9+E65pFtel4xHbPfJ16/+CTJyX7svzIc90zr9+1n4hHGiI1dkg==
+  resolved "https://registry.yarnpkg.com/metascraper-url/-/metascraper-url-5.5.0.tgz#c2d98cfa3512121c7c662e35a859d8d4dda06c79"
+  integrity sha512-niQQENVT6J6HpLZjgjqY7AHwnyGAKiDUbHUiFTVgXRXxXxRNEBSF9QEk4y0dylM48aNdrlKrjn5P/1HLWzs2NA==
   dependencies:
     "@metascraper/helpers" "^5.5.0"
+
+metascraper-video@^4.8.5:
+  version "4.10.2"
+  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-4.10.2.tgz#6378f3ac6bf0a2e11a27096545464cf6a19e1e74"
+  integrity sha512-cM8Tq9j6sKUMJxomd0TP619khJrn89zh0A1T7HC9tjGvaF+RGdpjpBq8xbpPDrXbeqDl4BVTX9VQ4MDU3+UuQA==
+  dependencies:
+    "@metascraper/helpers" "^4.10.2"
     lodash "~4.17.11"
 
 metascraper-youtube@^4.8.5:
