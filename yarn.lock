@@ -1489,7 +1489,7 @@ got@^6.7.1:
     unzip-response "^2.0.1"
     url-parse-lax "^1.0.0"
 
-got@^9.3.2, got@^9.6.0:
+got@^9.3.2, got@^9.6.0, got@~9.6.0:
   version "9.6.0"
   resolved "https://registry.yarnpkg.com/got/-/got-9.6.0.tgz#edf45e7d67f99545705de1f7bbeeeb121765ed85"
   integrity sha512-R7eWptXuGYxwijs0eV+v3o6+XH1IqVK8dJOEecQfTmkncw9AV4dcw/Dhxi8MdlqPthxxpZyizMzyg8RTmEsG+Q==
@@ -2221,13 +2221,12 @@ metascraper-author@^4.8.5:
     "@metascraper/helpers" "^4.8.5"
     lodash "~4.17.10"
 
-metascraper-clearbit-logo@^4.8.5:
-  version "4.8.5"
-  resolved "https://registry.yarnpkg.com/metascraper-clearbit-logo/-/metascraper-clearbit-logo-4.8.5.tgz#d1e672f1804f7edce507317eb6aeb94a88f29529"
-  integrity sha512-D53DO9gQFwDqgq6r0qbV92YFpLZTW3Zck17WmlkmPbl9wDLH8EOP5AC0S4h9hu40qwqR2gSqIaH298iQJ+gYvA==
+metascraper-clearbit-logo@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/metascraper-clearbit-logo/-/metascraper-clearbit-logo-5.3.0.tgz#e4596dbaf35503635d585a705f4119c7eddc6773"
+  integrity sha512-Vg9m8cj2yEIUDrRjvCORvf8vgq2HLsWLVqNnIactNUPJ+Lcly5Xcxh5TcmHYp5Qx5DtNUCoKlakomYHn8mOjqg==
   dependencies:
-    got "~9.5.0"
-    qsm "~2.1.0"
+    got "~9.6.0"
 
 metascraper-date@^4.8.5:
   version "4.8.5"
@@ -2917,11 +2916,6 @@ qs@6.5.2, qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
-
-qsm@~2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/qsm/-/qsm-2.1.0.tgz#53c5d28424e2900e1b83d8e958bc916552322516"
-  integrity sha512-v+5GHA5DkXpqHGXnrZMqft2I2esvq7BJTm+EKN3L+BFzKcx/JwmazJzrebOjuOzYrJreT+JS13K78TReKkI17Q==
 
 querystringify@^2.0.0:
   version "2.1.0"
