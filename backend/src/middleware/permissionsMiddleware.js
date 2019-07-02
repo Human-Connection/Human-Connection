@@ -4,7 +4,9 @@ import { rule, shield, deny, allow, or } from 'graphql-shield'
  * TODO: implement
  * See: https://github.com/Human-Connection/Nitro-Backend/pull/40#pullrequestreview-180898363
  */
-const isAuthenticated = rule()(async (parent, args, ctx, info) => {
+const isAuthenticated = rule({
+  cache: 'contextual',
+})(async (_parent, _args, ctx, _info) => {
   return ctx.user !== null
 })
 
