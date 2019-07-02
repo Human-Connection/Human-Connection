@@ -29,7 +29,7 @@
     "graphql": "^14.0.2",
     "lodash": "^4.17.11",
     "metascraper": "^4.10.3",
-    "metascraper-audio": "^4.8.5",
+    "metascraper-audio": "^5.5.0",
     "metascraper-author": "^4.8.5",
     "metascraper-clearbit-logo": "^4.8.5",
     "metascraper-date": "^4.8.5",
