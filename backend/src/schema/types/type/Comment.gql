@@ -1,7 +1,6 @@
 type Comment {
   id: ID!
   activityId: String
-  postId: ID
   author: User @relation(name: "WROTE", direction: "IN")
   content: String!
   contentExcerpt: String
@@ -11,4 +10,25 @@ type Comment {
   deleted: Boolean
   disabled: Boolean
   disabledBy: User @relation(name: "DISABLED", direction: "IN")
+}
+
+type Mutation {
+  CreateComment(
+    id: ID
+    postId: ID!
+    content: String!
+    contentExcerpt: String
+    deleted: Boolean
+    disabled: Boolean
+  ): Comment
+  UpdateComment(
+    id: ID!
+    content: String
+    contentExcerpt: String
+    deleted: Boolean
+    disabled: Boolean
+  ): Comment
+  DeleteComment(
+    id: ID!
+  ): Comment
 }
