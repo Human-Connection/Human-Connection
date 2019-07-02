@@ -43,7 +43,7 @@
     "metascraper-soundcloud": "^4.8.5",
     "metascraper-title": "^4.8.5",
     "metascraper-url": "^4.8.5",
-    "metascraper-video": "^4.8.5",
+    "metascraper-video": "^5.5.0",
     "metascraper-youtube": "^4.8.5",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
