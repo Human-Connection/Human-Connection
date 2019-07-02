@@ -7,6 +7,7 @@ export default () => {
         CreateComment(postId: $postId, content: $content) {
           id
           contentExcerpt
+          content
           author {
             id
             slug
