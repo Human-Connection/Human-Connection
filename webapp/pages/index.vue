@@ -50,6 +50,9 @@ export default {
       hasMore: true
     }
   },
+  mounted() {
+    this.checkScroll();
+  },
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
@@ -61,7 +64,23 @@ export default {
       return (this.page - 1) * this.pageSize
     },
   },
+  watch: {
+    bottom(bottom) {
+      if (bottom) {
+        this.showMoreContributions();
+      }
+    }
+  },
   methods: {
+    checkScroll() {
+      window.onscroll = () => {
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight;
+
+        if (bottomOfWindow) {
+          this.showMoreContributions();
+        }
+      };
+    },
     changeFilterBubble(filter) {
       this.filter = filter
       this.$apollo.queries.Post.refresh()
@@ -76,7 +95,6 @@ export default {
       }).href
     },
     showMoreContributions() {
-      // this.page++
       // Fetch more data and transform the original result
       this.page++
       this.$apollo.queries.Post.fetchMore({
