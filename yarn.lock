@@ -2274,12 +2274,12 @@ merge-descriptors@1.0.1:
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
   integrity sha1-sAqqVW3YtEVoFQ7J0blT8/kMu2E=
 
-metascraper-audio@^4.8.5:
-  version "4.8.5"
-  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-4.8.5.tgz#1738fdac2f5731f5172edca233834b087c9f4c29"
-  integrity sha512-GuoYuE/+fEkKYOsd658iYlRo2XOWqxKKZM6yMPKnpSOXWJSySZWhfmPoFkz40tadwfBWx01nKnIwwopmiZFXEQ==
+metascraper-audio@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.5.0.tgz#e8515b25964555271270049356795f1d5f48aeef"
+  integrity sha512-gsSwLbHUzqZNPro+ld2fr9xzUKn5cp1pG428paacnrUnEPlisLiyWBFUkEwgSQR91vKSYsdn9ZUPwTS2GWDTcA==
   dependencies:
-    "@metascraper/helpers" "^4.8.5"
+    "@metascraper/helpers" "^5.5.0"
 
 metascraper-author@^4.8.5:
   version "4.8.5"
