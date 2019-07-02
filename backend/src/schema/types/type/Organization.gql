@@ -1,0 +1,22 @@
+type Organization {
+  id: ID!
+  createdBy: User @relation(name: "CREATED_ORGA", direction: "IN")
+  ownedBy: [User] @relation(name: "OWNING_ORGA", direction: "IN")
+  reviewedBy: User @relation(name: "REVIEWED_ORGA", direction: "IN")
+  name: String!
+  slug: String!
+  description: String!
+  descriptionExcerpt: String
+  avatar: String
+  coverImg: String
+  type: String # 'ngo', 'npo', 'goodpurpose', 'ev', 'eva'
+  language: String!
+  deleted: Boolean
+  disabled: Boolean
+
+  createdAt: String
+  updatedAt: String
+
+  tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
+  categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
+}
