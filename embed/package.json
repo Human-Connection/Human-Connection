@@ -1,0 +1,54 @@
+{
+  "name": "nitro-embed",
+  "version": "0.0.1",
+  "description": "API Service for fetching URL Information like images, icons, descriptions etc. thourgh OpenGraph, oEmbed and other standards.",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/",
+    "start": "node src/",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Human-Connection/Nitro-Embed.git"
+  },
+  "keywords": [
+    "pengraph",
+    "oembed"
+  ],
+  "author": "Grzegorz Leoniec <greg@app-interactive.de> (http://app-interactive.de)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Human-Connection/Nitro-Embed/issues"
+  },
+  "homepage": "https://github.com/Human-Connection/Nitro-Embed#readme",
+  "dependencies": {
+    "@metascraper/helpers": "^4.8.5",
+    "apollo-server": "^2.6.7",
+    "got": "^9.6.0",
+    "graphql": "^14.0.2",
+    "lodash": "^4.17.11",
+    "metascraper": "^4.10.3",
+    "metascraper-audio": "^5.5.0",
+    "metascraper-author": "^4.8.5",
+    "metascraper-clearbit-logo": "^5.3.0",
+    "metascraper-date": "^4.8.5",
+    "metascraper-description": "^5.5.0",
+    "metascraper-image": "^4.8.5",
+    "metascraper-lang": "^4.8.5",
+    "metascraper-lang-detector": "^4.8.5",
+    "metascraper-logo": "^5.5.0",
+    "metascraper-logo-favicon": "^4.8.5",
+    "metascraper-publisher": "^4.8.5",
+    "metascraper-soundcloud": "^5.5.3",
+    "metascraper-title": "^4.8.5",
+    "metascraper-url": "^5.5.0",
+    "metascraper-video": "^4.8.5",
+    "metascraper-youtube": "^4.8.5",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}

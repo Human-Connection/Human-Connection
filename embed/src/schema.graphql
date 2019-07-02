@@ -1,0 +1,20 @@
+type Embed {
+  type: String
+  title: String
+  author: String
+  publisher: String
+  date: String
+  description: String
+  url: String
+  image: String
+  audio: String
+  video: String
+  lang: String
+  logo: String
+  embed: String
+  sources: [String]
+}
+
+type Query {
+  embed(url: String!): Embed
+}
