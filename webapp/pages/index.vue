@@ -75,7 +75,6 @@ export default {
     checkScroll() {
       window.onscroll = () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight;
-
         if (bottomOfWindow) {
           this.showMoreContributions();
         }
@@ -95,6 +94,7 @@ export default {
       }).href
     },
     showMoreContributions() {
+      if(!this.hasMore) return;
       // Fetch more data and transform the original result
       this.page++
       this.$apollo.queries.Post.fetchMore({
