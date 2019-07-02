@@ -282,6 +282,9 @@ export default {
       filter,
     }
   },
+  mounted() {
+    this.checkScroll();
+  },
   computed: {
     hasMore() {
       const total = {
@@ -331,6 +334,14 @@ export default {
     },
   },
   methods: {
+    checkScroll() {
+      window.onscroll = () => {
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight;
+        if (bottomOfWindow) {
+          this.showMoreContributions();
+        }
+      };
+    },
     handleTab(tab) {
       this.tabActive = tab
       this.Post = null
@@ -344,6 +355,7 @@ export default {
       this.$apollo.queries.User.refetch()
     },
     showMoreContributions() {
+      if(!this.hasMore) return;
       // this.page++
       // Fetch more data and transform the original result
       this.page++
