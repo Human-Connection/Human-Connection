@@ -62,8 +62,6 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-
 import HcCategory from '~/components/Category'
 import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
@@ -72,6 +70,7 @@ import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
+import PostQuery from '~/graphql/PostQuery.js'
 
 export default {
   name: 'PostSlug',
@@ -113,80 +112,7 @@ export default {
       app: { apolloProvider, $i18n },
     } = context
     const client = apolloProvider.defaultClient
-    const query = gql(`
-      query Post($slug: String!) {
-        Post(slug: $slug) {
-          id
-          title
-          content
-          createdAt
-          disabled
-          deleted
-          slug
-          image
-          author {
-            id
-            slug
-            name
-            avatar
-            disabled
-            deleted
-            shoutedCount
-            contributionsCount
-            commentsCount
-            followedByCount
-            followedByCurrentUser
-            location {
-              name: name${$i18n.locale().toUpperCase()}
-            }
-            badges {
-              id
-              key
-              icon
-            }
-          }
-          tags {
-            name
-          }
-          commentsCount
-          comments(orderBy: createdAt_desc) {
-            id
-            contentExcerpt
-            createdAt
-            disabled
-            deleted
-            author {
-              id
-              slug
-              name
-              avatar
-              disabled
-              deleted
-              shoutedCount
-              contributionsCount
-              commentsCount
-              followedByCount
-              followedByCurrentUser
-              location {
-                name: name${$i18n.locale().toUpperCase()}
-              }
-              badges {
-                id
-                key
-                icon
-              }
-            }
-          }
-          categories {
-            id
-            name
-            icon
-          }
-          shoutedCount
-          shoutedByCurrentUser
-        }
-      }
-    `)
+    const query = PostQuery($i18n)
     const variables = { slug: params.slug }
     const {
       data: { Post },
