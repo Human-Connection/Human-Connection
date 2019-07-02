@@ -28,7 +28,7 @@
     "got": "^9.6.0",
     "graphql": "^14.0.2",
     "lodash": "^4.17.11",
-    "metascraper": "^4.8.5",
+    "metascraper": "^4.10.3",
     "metascraper-audio": "^4.8.5",
     "metascraper-author": "^4.8.5",
     "metascraper-clearbit-logo": "^4.8.5",
