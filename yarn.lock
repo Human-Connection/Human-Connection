@@ -2269,6 +2269,11 @@ mem@~5.1.0:
     mimic-fn "^2.1.0"
     p-is-promise "^2.1.0"
 
+memoize-one@~5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.0.4.tgz#005928aced5c43d890a4dfab18ca908b0ec92cbc"
+  integrity sha512-P0z5IeAH6qHHGkJIXWw0xC2HNEgkx/9uWWBQw64FJj3/ol14VYdfVGWWr0fXfjhhv3TKVIqUq65os6O4GUNksA==
+
 merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
@@ -2356,12 +2361,14 @@ metascraper-publisher@^4.8.5:
   dependencies:
     "@metascraper/helpers" "^4.8.5"
 
-metascraper-soundcloud@^4.8.5:
-  version "4.8.5"
-  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-4.8.5.tgz#6593ba8a26fedbb4a3bebc6d2803e22b38278621"
-  integrity sha512-fChxmwqCLyans9RKKg1jaL7dh/6twIBgaQm/NjvlKcp4+V39J85wQlZPHBgoXl+K/uMwy94wMftKWWQ1Hxxgkw==
+metascraper-soundcloud@^5.5.3:
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.5.3.tgz#6f54d5da12b617cff49eb7730ff4ff59f910e60e"
+  integrity sha512-e7rhediMbulUlLYwEsVmsWqoiy2EqYBrjHt9V6ASTnUeA/0o9/RjPQx7FYMp5p/RnSO0jTqj29TN8c94amPzqA==
   dependencies:
-    "@metascraper/helpers" "^4.8.5"
+    "@metascraper/helpers" "^5.5.0"
+    memoize-one "~5.0.4"
+    tldts "~5.2.0"
 
 metascraper-title@^4.8.5:
   version "4.8.5"
@@ -3557,6 +3564,11 @@ tlds@^1.187.0, tlds@^1.203.0:
   version "1.203.1"
   resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.203.1.tgz#4dc9b02f53de3315bc98b80665e13de3edfc1dfc"
   integrity sha512-7MUlYyGJ6rSitEZ3r1Q1QNV8uSIzapS8SmmhSusBuIc7uIxPPwsKllEP0GRp1NS6Ik6F+fRZvnjDWm3ecv2hDw==
+
+tldts@~5.2.0:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/tldts/-/tldts-5.2.1.tgz#8fe745feb8b822deda8d3677cf836a77028056db"
+  integrity sha512-/K8BtLl2ZQUmd3E5ecwlf73+7fPIBKBQpGg/6cQtclobqyDy6bQ8shgXwHiw9SDUmaBAQvJe832o4MFNeWk29g==
 
 to-object-path@^0.3.0:
   version "0.3.0"
