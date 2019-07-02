@@ -331,6 +331,9 @@
     "filterFollow": "Filter contributions from users I follow",
     "filterALL": "View all contributions",
     "success": "Saved!",
-    "languageSelectLabel": "Language"
+    "languageSelectLabel": "Language",
+    "categories": {
+      "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
+    }
   }
 }

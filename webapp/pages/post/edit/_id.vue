@@ -9,7 +9,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcContributionForm from '~/components/ContributionForm'
+import HcContributionForm from '~/components/ContributionForm/ContributionForm'
 
 export default {
   components: {

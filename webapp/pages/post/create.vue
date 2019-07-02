@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import HcContributionForm from '~/components/ContributionForm'
+import HcContributionForm from '~/components/ContributionForm/ContributionForm'
 
 export default {
   components: {
