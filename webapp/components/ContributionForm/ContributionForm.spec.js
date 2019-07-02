@@ -243,7 +243,7 @@ describe('ContributionForm.vue', () => {
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
       })
 
-      it('supports updateing categories', async () => {
+      it('supports updating categories', async () => {
         const categoryIds = ['cat3', 'cat51', 'cat37']
         postTitleInput = wrapper.find('.ds-input')
         postTitleInput.setValue(postTitle)
