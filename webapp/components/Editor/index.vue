@@ -169,10 +169,11 @@ import {
   Italic,
   Strike,
   Underline,
-  Link,
   History,
 } from 'tiptap-extensions'
 import Mention from './nodes/Mention.js'
+import Embed from './nodes/Embed.js'
+import Link from './nodes/Link.js'
 import { mapGetters } from 'vuex'
 
 let throttleInputEvent
@@ -206,6 +207,7 @@ export default {
           new Italic(),
           new Strike(),
           new Underline(),
+          new Embed(),
           new Link(),
           new Heading({ levels: [3, 4] }),
           new ListItem(),
