@@ -22,7 +22,7 @@
         primary
       />
     </no-ssr>
-    <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
+    <hc-load-more v-if="this.hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
   </div>
 </template>
 
@@ -47,6 +47,7 @@ export default {
       page: 1,
       pageSize: 12,
       filter: {},
+      hasMore: true
     }
   },
   computed: {
@@ -86,6 +87,7 @@ export default {
         },
         // Transform the previous result with new data
         updateQuery: (previousResult, { fetchMoreResult }) => {
+          this.hasMore = fetchMoreResult.Post && fetchMoreResult.Post.length > 0
           let output = { Post: this.Post }
           output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
           return output
