@@ -52,7 +52,7 @@ export default class Embed extends Node {
         },
       },
       template: `
-        <a class="embed"><h4>{{ title }}</h4><p>{{ description }}</p><em>{{ href }}</em></a>
+        <a class="embed" :href="href"><h4>{{ title }}</h4><p>{{ description }}</p><em>{{ href }}</em></a>
       `,
     }
   }
