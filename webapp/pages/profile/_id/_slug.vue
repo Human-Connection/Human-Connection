@@ -277,7 +277,7 @@ export default {
       activePosts: [],
       voted: false,
       page: 1,
-      pageSize: 2,
+      pageSize: 6,
       tabActive: 'post',
       filter,
     }
