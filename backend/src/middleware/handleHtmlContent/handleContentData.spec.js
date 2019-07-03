@@ -117,9 +117,9 @@ describe('currentUser { notifications }', () => {
             // during development and thought: A feature not a bug! This way we
             // can encode a re-mentioning of users when you edit your post or
             // comment.
-            const createPostMutation = gql`
-              mutation($id: ID!, $content: String!) {
-                UpdatePost(id: $id, content: $content) {
+            const updatePostMutation = gql`
+              mutation($id: ID!, $title: String!, $content: String!) {
+                UpdatePost(id: $id, content: $content, title: $title) {
                   title
                   content
                 }
@@ -128,8 +128,9 @@ describe('currentUser { notifications }', () => {
             authorClient = new GraphQLClient(host, {
               headers: authorHeaders,
             })
-            await authorClient.request(createPostMutation, {
+            await authorClient.request(updatePostMutation, {
               id: post.id,
+              title: post.title,
               content: updatedContent,
             })
           })
@@ -240,7 +241,7 @@ describe('Hashtags', () => {
         const updatedPostContent =
           '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Elections">#Elections</a> should work equal for everybody!? That seems to be the only way to have equal <a href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
         const updatePostMutation = gql`
-          mutation($postId: ID!, $postTitle: String, $updatedPostContent: String) {
+          mutation($postId: ID!, $postTitle: String!, $updatedPostContent: String!) {
             UpdatePost(id: $postId, title: $postTitle, content: $updatedPostContent) {
               id
               title
