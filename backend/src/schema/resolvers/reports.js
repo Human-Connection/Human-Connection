@@ -11,12 +11,31 @@ export default {
         description: description,
       }
 
+      const reportQueryRes = await session.run(
+        `
+        match (u:User {id:$submitterId}) -[:REPORTED]->(report)-[:REPORTED]-> (resource {id: $resourceId}) 
+        return  labels(resource)[0] as label
+        `,
+        {
+          resourceId: id,
+          submitterId: user.id,
+        },
+      )
+      const [rep] = reportQueryRes.records.map(record => {
+        return {
+          label: record.get('label'),
+        }
+      })
+
+      if (rep) {
+        throw new Error(rep.label)
+      }
       const res = await session.run(
         `
         MATCH (submitter:User {id: $userId})
         MATCH (resource {id: $resourceId})
         WHERE resource:User OR resource:Comment OR resource:Post
-        CREATE (report:Report $reportData)
+        MERGE (report:Report  {id: {reportData}.id })
         MERGE (resource)<-[:REPORTED]-(report)
         MERGE (report)<-[:REPORTED]-(submitter)
         RETURN report, submitter, resource, labels(resource)[0] as type
@@ -27,6 +46,7 @@ export default {
           reportData,
         },
       )
+
       session.close()
 
       const [dbResponse] = res.records.map(r => {
@@ -59,6 +79,7 @@ export default {
           response.user = resource.properties
           break
       }
+
       return response
     },
   },
