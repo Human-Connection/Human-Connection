@@ -190,6 +190,10 @@
     "menu": {
       "edit": "Kommentar bearbeiten",
       "delete": "Kommentar löschen"
+    },
+    "show": {
+      "more": "mehr anzeigen",
+      "less": "weniger anzeigen"
     }
   },
   "quotes": {

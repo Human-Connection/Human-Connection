@@ -11,7 +11,6 @@
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card>
-      <ds-space margin-bottom="small" />
       <ds-space margin-bottom="small">
         <hc-user :user="author" :date-time="comment.createdAt" />
       </ds-space>
@@ -28,13 +27,27 @@
       </no-ssr>
       <!-- eslint-disable vue/no-v-html -->
       <!-- TODO: replace editor content with tiptap render view -->
+
+      <div v-if="isCollapsed" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
+      <div
+        v-show="comment.content !== comment.contentExcerpt"
+        style="text-align: right;  margin-right: 20px; margin-top: -12px;"
+      >
+        <a v-if="isCollapsed" style="padding-left: 40px;" @click="isCollapsed = !isCollapsed">
+          {{ $t('comment.show.more') }}
+        </a>
+      </div>
+      <div v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
+      <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
+        <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" style="padding-left: 40px; ">
+          {{ $t('comment.show.less') }}
+        </a>
+      </div>
       <ds-space margin-bottom="small" />
-      <div style="padding-left: 40px;" v-html="comment.contentExcerpt" />
-      <!-- eslint-enable vue/no-v-html -->
-      <ds-space margin-bottom="x-small" />
     </ds-card>
   </div>
 </template>
+<!-- eslint-enable vue/no-v-html -->
 
 <script>
 import gql from 'graphql-tag'
@@ -43,6 +56,11 @@ import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 
 export default {
+  data: function() {
+    return {
+      isCollapsed: true,
+    }
+  },
   components: {
     HcUser,
     ContentMenu,
