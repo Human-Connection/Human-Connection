@@ -277,10 +277,13 @@ export default {
       activePosts: [],
       voted: false,
       page: 1,
-      pageSize: 6,
+      pageSize: 2,
       tabActive: 'post',
       filter,
     }
+  },
+  mounted() {
+    this.checkScroll();
   },
   computed: {
     hasMore() {
@@ -331,6 +334,14 @@ export default {
     },
   },
   methods: {
+    checkScroll() {
+      window.onscroll = () => {
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight;
+        if (bottomOfWindow) {
+          this.showMoreContributions();
+        }
+      };
+    },
     handleTab(tab) {
       this.tabActive = tab
       this.Post = null
