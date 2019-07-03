@@ -4,17 +4,17 @@ metadata:
   name: maintenance
   namespace: human-connection
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 15
   progressDeadlineSeconds: 60
   selector:
     matchLabels:
-      human-connection.org/selector: deployment-human-connection-nginx
+      human-connection.org/selector: deployment-human-connection-maintenance
   template:
     metadata:
       labels:
         human-connection.org/commit: COMMIT
-        human-connection.org/selector: deployment-human-connection-nginx
+        human-connection.org/selector: deployment-human-connection-maintenance
       name: maintenance
     spec:
       containers:

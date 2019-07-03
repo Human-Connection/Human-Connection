@@ -4,11 +4,11 @@ metadata:
   name: maintenance
   namespace: human-connection
   labels:
-    human-connection.org/selector: deployment-human-connection-nginx
+    human-connection.org/selector: deployment-human-connection-maintenance
 spec:
   ports:
     - name: web
       port: 80
       targetPort: 80
   selector:
-    human-connection.org/selector: deployment-human-connection-nginx
+    human-connection.org/selector: deployment-human-connection-maintenance
