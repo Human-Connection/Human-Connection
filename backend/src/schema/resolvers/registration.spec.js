@@ -128,14 +128,15 @@ describe('SignupByInvitation', () => {
     }
   })
 
-  it.todo('throws Authorization error')
-
-  describe('with invalid InvitationCode', () => {
+  describe('with valid email but invalid InvitationCode', () => {
     beforeEach(() => {
+      variables.email = 'any-email@example.org'
       variables.token = 'wut?'
     })
 
-    it.todo('throws UserInputError')
+    it('throws UserInputError', async () => {
+      await expect(action()).rejects.toThrow('Invitation code already used or does not exist.')
+    })
   })
 
   describe('with valid InvitationCode', () => {
@@ -238,6 +239,7 @@ describe('SignupByInvitation', () => {
         })
 
         describe('if the EmailAddress already exists but without user account', () => {
+          // shall we re-send the registration email?
           it.todo('decide what to do')
         })
       })
@@ -250,7 +252,12 @@ describe('Signup', () => {
     Signup(email: $email) { email }
   }`
 
-  it.todo('throws AuthorizationError')
+  it('throws AuthorizationError', async () => {
+    client = new GraphQLClient(host)
+    await expect(
+      client.request(mutation, { email: 'get-me-a-user-account@example.org' }),
+    ).rejects.toThrow('Not Authorised')
+  })
 
   describe('as admin', () => {
     beforeEach(async () => {

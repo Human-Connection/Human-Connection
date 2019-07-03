@@ -78,14 +78,14 @@ const invitationLimitReached = rule({
     const result = await session.run(
       `
       MATCH (user:User {id:$id})-[:GENERATED]->(i:InvitationCode)
-      RETURN COUNT(i) as count
+      RETURN COUNT(i) >= 3 as limitReached
       `,
       { id: user.id },
     )
-    const [count] = result.records.map(record => {
-      return record.get('count').toNumber()
+    const [limitReached] = result.records.map(record => {
+      return record.get('limitReached')
     })
-    return count >= 3
+    return limitReached
   } catch (e) {
     throw e
   } finally {
