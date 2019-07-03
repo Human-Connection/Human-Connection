@@ -88,7 +88,7 @@
     </div>
 
     <ds-container>
-      <div style="padding: 6rem 2rem 5rem;">
+      <div :width="{ base: '100%', md: '95%' }">
         <nuxt />
       </div>
     </ds-container>
