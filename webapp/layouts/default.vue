@@ -4,12 +4,12 @@
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
           <ds-flex>
-            <ds-flex-item :width="{ base: '49px', md: '150px' }">
+            <ds-flex-item :width="{ base: '49px', md: '150px', lg: '15%' }">
               <a v-router-link style="display: inline-flex" href="/">
                 <ds-logo />
               </a>
             </ds-flex-item>
-            <ds-flex-item>
+            <ds-flex-item :width="{ lg: '50%' }">
               <div id="nav-search-box" v-on:click="unfolded" @blur.capture="foldedup">
                 <search-input
                   id="nav-search"
@@ -21,6 +21,16 @@
                   @select="goToPost"
                 />
               </div>
+            </ds-flex-item>
+            <ds-flex-item :width="{ lg: '10%' }">
+              <no-ssr>
+                <filter-posts
+                  class="topbar-locale-switch"
+                  placement="bottom"
+                  offset="23"
+                  :categories="categories"
+                />
+              </no-ssr>
             </ds-flex-item>
             <ds-flex-item width="200px" style="background-color:white">
               <div class="main-navigation-right" style="float:right">
@@ -109,6 +119,7 @@ import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
+import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
 
 export default {
   components: {
@@ -118,6 +129,7 @@ export default {
     Modal,
     NotificationMenu,
     HcAvatar,
+    FilterPosts,
   },
   mixins: [seo],
   data() {
@@ -133,6 +145,7 @@ export default {
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
+      categories: 'categories/categories',
     }),
     userName() {
       const { name } = this.user || {}
@@ -171,10 +184,14 @@ export default {
       return routes
     },
   },
+  mounted() {
+    this.fetchCategories()
+  },
   methods: {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
+      fetchCategories: 'categories/fetchCategories',
     }),
     goToPost(item) {
       this.$nextTick(() => {
