@@ -41,6 +41,15 @@ services:
       context: neo4j
     networks:
       - hc-network
-
+  embed:
+    image: humanconnection/embed:latest
+    build:
+      context: embed
+    networks:
+      - hc-network
+    depends_on:
+      - neo4j
+    ports:
+      - 3050:3050
 networks:
   hc-network:
