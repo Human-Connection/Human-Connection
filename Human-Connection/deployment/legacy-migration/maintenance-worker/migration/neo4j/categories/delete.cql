@@ -1,0 +1,1 @@
+MATCH (n:Category) DETACH DELETE n;

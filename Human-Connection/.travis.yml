@@ -1,0 +1,70 @@
+dist: xenial
+language: generic
+addons:
+  apt:
+    packages:
+      - libgconf-2-4
+  snaps:
+    - docker
+    - chromium
+
+before_install:
+  - yarn global add wait-on
+  # Install Codecov
+  - yarn global add codecov
+  - yarn install
+  - cp cypress.env.template.json cypress.env.json
+
+install:
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --build -d
+    # avoid "Database constraints have changed after this transaction started"
+  - wait-on http://localhost:7474
+
+script:
+  - export CYPRESS_RETRIES=1
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+  # Backend
+  - docker-compose exec backend yarn run lint
+  - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
+  - docker-compose exec backend yarn run db:reset
+  - docker-compose exec backend yarn run db:seed
+  - docker-compose exec backend yarn run test:cucumber --tags "not @wip"
+  - docker-compose exec backend yarn run db:reset
+  - docker-compose exec backend yarn run db:seed
+  # Frontend
+  - docker-compose exec webapp yarn run lint
+  - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
+  - docker-compose exec -d backend yarn run test:before:seeder
+  # Fullstack
+  - yarn run cypress:run
+  # Coverage
+  - codecov
+
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    wget https://raw.githubusercontent.com/Human-Connection/Discord-Bot/develop/tester.sh &&
+    chmod +x tester.sh &&
+    ./tester.sh staging $WEBHOOK_URL;
+    fi
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
+
+before_deploy:
+  - ./scripts/setup_kubernetes.sh
+
+deploy:
+  - provider: script
+    script: scripts/docker_push.sh
+    on:
+      branch: master
+  - provider: script
+    script: scripts/deploy.sh
+    on:
+      branch: master

@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nitro-web
+  namespace: human-connection
+spec:
+  replicas: 2
+  minReadySeconds: 15
+  progressDeadlineSeconds: 60
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-human-connection-web
+  template:
+    metadata:
+      labels:
+        human-connection.org/commit: COMMIT
+        human-connection.org/selector: deployment-human-connection-web
+      name: nitro-web
+    spec:
+      containers:
+      - name: web
+        envFrom:
+        - configMapRef:
+            name: configmap
+        - secretRef:
+            name: human-connection
+        env:
+        - name: HOST
+          value: 0.0.0.0
+        image: humanconnection/nitro-web:latest
+        ports:
+        - containerPort: 3000
+        resources: {}
+        imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+status: {}

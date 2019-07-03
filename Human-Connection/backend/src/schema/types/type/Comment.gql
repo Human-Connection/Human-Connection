@@ -1,0 +1,33 @@
+type Comment {
+  id: ID!
+  activityId: String
+  author: User @relation(name: "WROTE", direction: "IN")
+  content: String!
+  contentExcerpt: String
+  post: Post @relation(name: "COMMENTS", direction: "OUT")
+  createdAt: String
+  updatedAt: String
+  deleted: Boolean
+  disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
+}
+
+type Mutation {
+  CreateComment(
+    id: ID
+    postId: ID!
+    content: String!
+    contentExcerpt: String
+    deleted: Boolean
+    disabled: Boolean
+    createdAt: String
+  ): Comment
+  UpdateComment(
+    id: ID!
+    content: String
+    contentExcerpt: String
+    deleted: Boolean
+    disabled: Boolean
+  ): Comment
+  DeleteComment(id: ID!): Comment
+}

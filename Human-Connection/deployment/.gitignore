@@ -1,0 +1,4 @@
+secrets.yaml
+configmap.yaml
+**/secrets.yaml
+**/configmap.yaml

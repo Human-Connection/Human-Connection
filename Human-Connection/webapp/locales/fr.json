@@ -1,0 +1,280 @@
+{
+  "filter-menu": {
+    "title": "Votre bulle de filtre"
+  },
+  "login": {
+    "copy": "Si vous avez déjà un compte human-connection, connectez-vous ici.",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Votre courriel",
+    "password": "Votre mot de passe",
+    "moreInfo": "Qu'est-ce que Human Connection?",
+    "moreInfoURL": "https://human-connection.org/fr/",
+    "moreInfoHint": "à la page de présentation",
+    "hello": "Bonjour"
+  },
+  "editor": {
+    "placeholder": "Écrivez quelque chose d'inspirant..."
+  },
+  "profile": {
+    "name": "Mon profil",
+    "memberSince": "Membre depuis",
+    "follow": "Suivre",
+    "followers": "Suiveurs",
+    "following": "Suivant",
+    "shouted": "Recommandé",
+    "commented": "Comentado",
+    "userAnonym": "Anónimo",
+    "socialMedia": "Où d'autre puis-je trouver"
+  },
+  "notifications": {
+    "menu": {
+      "mentioned": "a parlé de vous dans un article"
+    }
+  },
+  "search": {
+    "placeholder": "Rechercher",
+    "hint": "Qu'est-ce que vous cherchez ?",
+    "failed": "Rien trouvé"
+  },
+  "settings": {
+    "name": "Configurations",
+    "data": {
+      "name": "Vos données",
+      "labelName": "Votre nom",
+      "namePlaceholder": "Fémanon Funny",
+      "labelCity": "Votre ville ou région",
+      "labelBio": "À propos de vous",
+      "success": "Vos données ont été mises à jour avec succès !"
+    },
+    "security": {
+      "name": "Sécurité",
+      "change-password": {
+        "button": "Modifier le mot de passe",
+        "success": "Mot de passe modifié avec succès !",
+        "label-old-password": "Votre ancien mot de passe",
+        "label-new-password": "Votre nouveau mot de passe",
+        "label-new-password-confirm": "Confirmez votre nouveau mot de passe",
+        "message-old-password-required": "Entrez votre ancien mot de passe",
+        "message-new-password-required": "Entrez un nouveau mot de passe",
+        "message-new-password-confirm-required": "Confirmez votre nouveau mot de passe",
+        "message-new-password-missmatch": "Tapez à nouveau le même mot de passe",
+        "passwordSecurity": "Sécurité par mot de passe",
+        "passwordStrength0": "Mot de passe très peu sûr",
+        "passwordStrength1": "Mot de passe non sécurisé",
+        "passwordStrength2": "Mot de passe médiocre",
+        "passwordStrength3": "Mot de passe fort",
+        "passwordStrength4": "Mot de passe très fort"
+      }
+    },
+    "invites": {
+      "name": "invitations"
+    },
+    "download": {
+      "name": "Télécharger les données"
+    },
+    "delete": {
+      "name": "Supprimer un compte"
+    },
+    "organizations": {
+      "name": "Mes organisations"
+    },
+    "languages": {
+      "name": "langues"
+    },
+    "social-media": {
+      "name": "Médias sociaux",
+      "placeholder": "Ajouter une URL pour les médias sociaux",
+      "submit": "Ajouter un lien",
+      "successAdd": "Les médias sociaux ont été ajoutés. Profil mis à jour !",
+      "successDelete": "Médias sociaux supprimé. Profil mis à jour !"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Tableau de bord",
+      "users": "Utilisateurs",
+      "posts": "Postes",
+      "comments": "Commentaires",
+      "notifications": "Notifications",
+      "organizations": "Organisations",
+      "projects": "Projets",
+      "invites": "Invite",
+      "follows": "Suit",
+      "shouts": "Recommandé"
+    },
+    "organizations": {
+      "name": "Organisations"
+    },
+    "users": {
+      "name": "Utilisateurs"
+    },
+    "pages": {
+      "name": "Pages"
+    },
+    "notifications": {
+      "name": "Notifications"
+    },
+    "categories": {
+      "name": "Catégories",
+      "categoryName": "Nom",
+      "postCount": "Postes"
+    },
+    "tags": {
+      "name": "Étiquettes",
+      "tagCountUnique": "Utilisateurs",
+      "tagCount": "Postes"
+    },
+    "settings": {
+      "name": "Paramètres"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "Plus d'infos"
+    },
+    "takeAction": {
+      "name": "Passez à l'action"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Beaucoup de petites personnes dans beaucoup de petits endroits font beaucoup de petites choses, qui peuvent changer la face du monde.",
+      "author": "Proverbe africain"
+    }
+  },
+  "common": {
+    "your": {
+      "post": "Votre message  ::: Votre messages",
+      "comment": "Votre Commentaire ::: Votre Commentaires ",
+      "shout": "Votre Recommandation ::: Votre Recommandations"
+    },
+    "post": "Message ::: Messages",
+    "comment": "Commentaire ::: Commentaires",
+    "letsTalk": "Parlons-en",
+    "versus": "Versus",
+    "moreInfo": "Plus d'infos",
+    "takeAction": "Passer à l'action",
+    "shout": "Recommandation ::: Recommandations",
+    "user": "Utilisateur ::: Utilisateurs",
+    "category": "Catégorie ::: Catégories",
+    "organization": "Organisation ::: Organisations",
+    "project": "Projet ::: Projets",
+    "tag": "Tag ::: Tags",
+    "name": "Nom",
+    "loadMore": "charger plus",
+    "loading": "chargement",
+    "reportContent": "Signaler"
+  },
+  "actions": {
+    "loading": "chargement",
+    "loadMore": "charger plus",
+    "create": "Créer",
+    "save": "sauvegarde",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "cancel": "Annuler"
+  },
+  "moderation": {
+    "name": "Modération",
+    "reports": {
+      "empty": "Félicitations, rien à modérer.",
+      "name": "Rapports",
+      "submitter": "signalé par",
+      "disabledBy": "ddésactivé par"
+    }
+  },
+  "disable": {
+    "submit": "Désactiver",
+    "cancel": "Annuler",
+    "success": "Désactivé avec succès",
+    "user": {
+      "title": "Désactiver l'utilisateur",
+      "type": "Utilisateur",
+      "message": "Voulez-vous vraiment désactiver l'utilisateur  \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Cotisation d'invalidité",
+      "type": "Contribution",
+      "message": "Voulez-vous vraiment désactiver la contribution \"<b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Désactiver commentaire",
+      "type": "Commentaire",
+      "message": "Voulez-vous vraiment désactiver le commentaire de \"<b>{name}</b>\" ?"
+    }
+  },
+  "delete": {
+    "submit": "Supprimer",
+    "cancel": "Annuler",
+    "contribution": {
+      "title": "Supprimer la contribution",
+      "type": "Contribution",
+      "message": "Voulez-vous vraiment supprimer la contribution  \"<b>{name}</b>\" löschen möchtest?",
+      "success": "Contribution supprimée avec succès !"
+    },
+    "comment": {
+      "title": "Supprimer un commentaire",
+      "type": "Commentaire",
+      "message": "Voulez-vous vraiment supprimer le commentaire de \"<b>{name}</b>\" löschen möchtest?",
+      "success": "Commentaire supprimé avec succès !"
+    }
+  },
+  "report": {
+    "submit": "Rapport",
+    "cancel": "Annuler",
+    "success": "Merci de nous avoir fait part de vos commentaires!",
+    "user": {
+      "title": "Signaler l'utilisateur",
+      "type": "Utilisateur",
+      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?",
+      "error": "Vous avez déjà signalé l'utilisateur!"
+    },
+    "contribution": {
+      "title": "Signaler l'entrée",
+      "type": "Apport",
+      "message": "Souhaitez-vous vraiment signaler l'entrée\" <b> {name} </b> \"?",
+      "error": "Vous avez déjà rapporté la contribution!"
+    },
+    "comment": {
+      "title": "Signaler un commentaire",
+      "type": "Commentaire",
+      "message": "Souhaitez-vous vraiment signaler l'utilisateur \" <b> {name} </b> \"?",
+      "error": "Vous avez déjà rapporté le commentaire!"
+    }
+  },
+  "followButton": {
+    "follow": "découler",
+    "following": "Je suis les"
+  },
+  "shoutButton": {
+    "shouted": "recommandé"
+  },
+  "release": {
+    "submit": "Relâchez",
+    "cancel": "Annuler",
+    "success": "Relâchez avec succès!",
+    "user": {
+      "title": "Validation par l'utilisateur",
+      "type": "Utilisateur",
+      "message": "Voulez-vous vraiment libérer l'utilisateur \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Versement de la contribution",
+      "type": "Contribution",
+      "message": "Voulez-vous vraiment débloquer la contribution \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Publication des commentaires",
+      "type": "Commentaire",
+      "message": "Voulez-vous vraiment publier le commentaire de \"<b>{name}</b>\"?"
+    }
+  },
+  "user": {
+    "avatar": {
+      "submitted": "Téléchargement réussi"
+    }
+  }
+}

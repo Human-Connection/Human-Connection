@@ -1,0 +1,190 @@
+{
+  "login": {
+    "copy": "Se você já tem uma conta no Human Connection, entre aqui.",
+    "login": "Entrar",
+    "logout": "Sair",
+    "email": "Seu email",
+    "password": "Sua senha",
+    "moreInfo": "O que é o Human Connection?",
+    "hello": "Olá"
+  },
+  "profile": {
+    "name": "Meu perfil",
+    "memberSince": "Membro desde",
+    "follow": "Seguir",
+    "followers": "Seguidores",
+    "following": "Seguindo",
+    "shouted": "Aclamou",
+    "commented": "Comentou",
+    "userAnonym": "Anonymous"
+  },
+  "settings": {
+    "name": "Configurações",
+    "data": {
+      "name": "Seus dados",
+      "labelName": "Seu nome",
+      "namePlaceholder": "Anonymous",
+      "labelCity": "Sua cidade ou estado",
+      "labelBio": "Sobre você"
+    },
+    "security": {
+      "name": "Segurança"
+    },
+    "invites": {
+      "name": "Convites"
+    },
+    "download": {
+      "name": "Baixar dados"
+    },
+    "delete": {
+      "name": "Apagar conta"
+    },
+    "organizations": {
+      "name": "Minhas Organizações"
+    },
+    "languages": {
+      "name": "Linguagens"
+    }
+  },
+  "admin": {
+    "name": "Administração",
+    "dashboard": {
+      "name": "Painel de controle",
+      "users": "Usuários",
+      "posts": "Postagens",
+      "comments": "Comentários",
+      "notifications": "Notificações",
+      "organizations": "Organizações",
+      "projects": "Projetos",
+      "invites": "Convites",
+      "follows": "Segue",
+      "shouts": "Aclamações"
+    },
+    "organizations": {
+      "name": "Organizações"
+    },
+    "users": {
+      "name": "Usuários"
+    },
+    "pages": {
+      "name": "Páginas"
+    },
+    "notifications": {
+      "name": "Notificações"
+    },
+    "categories": {
+      "name": "Categorias",
+      "categoryName": "Nome",
+      "postCount": "Postagens"
+    },
+    "tags": {
+      "name": "Etiquetas",
+      "tagCountUnique": "Usuários",
+      "tagCount": "Postagens"
+    },
+    "settings": {
+      "name": "Configurações"
+    }
+  },
+  "post": {
+    "name": "Postar",
+    "moreInfo": {
+      "name": "Mais informações"
+    },
+    "takeAction": {
+      "name": "Tomar uma ação"
+    }
+  },
+  "quotes": {
+    "african": {
+      "quote": "Muitas pessoas pequenas, em muitos lugares pequenos, fazem muitas coisas pequenas, que podem mudar a face do mundo.",
+      "author": "Provérbio africano"
+    }
+  },
+  "common": {
+    "post": "Postagem ::: Postagens",
+    "comment": "Comentário ::: Comentários",
+    "letsTalk": "Vamos Conversar",
+    "versus": "Contra",
+    "moreInfo": "Mais informações",
+    "takeAction": "Tomar uma ação",
+    "shout": "Aclamação ::: Aclamações",
+    "user": "Usuário ::: Usuários",
+    "category": "Categoria ::: Categorias",
+    "organization": "Organização ::: Organizações",
+    "project": "Projeto ::: Projetos",
+    "tag": "Etiqueta ::: Etiquetas",
+    "name": "Nome",
+    "loadMore": "Carregar mais",
+    "loading": "Carregando",
+    "reportContent": "Denunciar"
+  },
+  "actions": {
+    "loading": "Carregando",
+    "loadMore": "Carregar mais",
+    "create": "Criar",
+    "save": "Salvar",
+    "edit": "Editar",
+    "delete": "Apagar",
+    "cancel": "Cancelar"
+  },
+  "moderation": {
+    "name": "Moderação",
+    "reports": {
+      "empty": "Parabéns, nada a moderar.",
+      "name": "Denúncias",
+      "reporter": "Denunciado por"
+    }
+  },
+  "disable": {
+    "user": {
+      "title": "Desativar usuário",
+      "type": "Usuário",
+      "message": "Você realmente deseja desativar o usuário \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Desativar Contribuição",
+      "type": "Contribuição",
+      "message": "Você realmente deseja desativar a contribuição \" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Desativar comentário",
+      "type": "Comentário",
+      "message": "Você realmente deseja desativar o comentário de \" <b> {name} </b> \"?"
+    }
+  },
+  "report": {
+    "submit": "Enviar denúncia",
+    "cancel": "Cancelar",
+    "user": {
+      "title": "Denunciar usuário",
+      "type": "Usuário",
+      "message": "Você realmente deseja denunciar o usuário \" <b> {name} </b> \"?"
+    },
+    "contribution": {
+      "title": "Denunciar Contribuição",
+      "type": "Contribuição",
+      "message": "Você realmente deseja denunciar a contribuição \" <b> {name} </b> \"?"
+    },
+    "comment": {
+      "title": "Denunciar Comentário",
+      "type": "Comentário",
+      "message": "Você realmente deseja denunciar o comentário de \"<b>{name}</b>\"?"
+    }
+  },
+  "contribution": {
+    "edit": "Editar Contribuição",
+    "delete": "Apagar Contribuição"
+  },
+  "comment": {
+    "edit": "Editar Comentário",
+    "delete": "Apagar Comentário"
+  },
+  "followButton": {
+    "follow": "Seguir",
+    "following": "Seguindo"
+  },
+  "shoutButton": {
+    "shouted": "Aclamou"
+  }
+}

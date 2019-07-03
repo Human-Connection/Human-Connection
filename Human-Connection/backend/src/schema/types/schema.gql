@@ -1,0 +1,143 @@
+type Query {
+  isLoggedIn: Boolean!
+  # Get the currently logged in User based on the given JWT Token
+  currentUser: User
+  # Get the latest Network Statistics
+  statistics: Statistics!
+  findPosts(filter: String!, limit: Int = 10): [Post]!
+    @cypher(
+      statement: """
+      CALL db.index.fulltext.queryNodes('full_text_search', $filter)
+      YIELD node as post, score
+      MATCH (post)<-[:WROTE]-(user:User)
+      WHERE score >= 0.2
+      AND NOT user.deleted = true AND NOT user.disabled = true
+      AND NOT post.deleted = true AND NOT post.disabled = true
+      RETURN post
+      LIMIT $limit
+      """
+    )
+  CommentByPost(postId: ID!): [Comment]!
+}
+
+type Mutation {
+  # Get a JWT Token for the given Email and password
+  login(email: String!, password: String!): String!
+  signup(email: String!, password: String!): Boolean!
+  changePassword(oldPassword: String!, newPassword: String!): String!
+  requestPasswordReset(email: String!): Boolean!
+  resetPassword(email: String!, code: String!, newPassword: String!): Boolean!
+  report(id: ID!, description: String): Report
+  disable(id: ID!): ID
+  enable(id: ID!): ID
+  reward(fromBadgeId: ID!, toUserId: ID!): ID
+  unreward(fromBadgeId: ID!, toUserId: ID!): ID
+  # Shout the given Type and ID
+  shout(id: ID!, type: ShoutTypeEnum): Boolean!
+  # Unshout the given Type and ID
+  unshout(id: ID!, type: ShoutTypeEnum): Boolean!
+  # Follow the given Type and ID
+  follow(id: ID!, type: FollowTypeEnum): Boolean!
+  # Unfollow the given Type and ID
+  unfollow(id: ID!, type: FollowTypeEnum): Boolean!
+  DeleteUser(id: ID!, resource: [Deletable]): User
+}
+
+type Statistics {
+  countUsers: Int!
+  countPosts: Int!
+  countComments: Int!
+  countNotifications: Int!
+  countOrganizations: Int!
+  countProjects: Int!
+  countInvites: Int!
+  countFollows: Int!
+  countShouts: Int!
+}
+
+type Notification {
+  id: ID!
+  read: Boolean
+  user: User @relation(name: "NOTIFIED", direction: "OUT")
+  post: Post @relation(name: "NOTIFIED", direction: "IN")
+  createdAt: String
+}
+
+type Location {
+  id: ID!
+  name: String!
+  nameEN: String
+  nameDE: String
+  nameFR: String
+  nameNL: String
+  nameIT: String
+  nameES: String
+  namePT: String
+  namePL: String
+  type: String!
+  lat: Float
+  lng: Float
+  parent: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+}
+
+type Report {
+  id: ID!
+  submitter: User @relation(name: "REPORTED", direction: "IN")
+  description: String
+  type: String!
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
+  createdAt: String
+  comment: Comment @relation(name: "REPORTED", direction: "OUT")
+  post: Post @relation(name: "REPORTED", direction: "OUT")
+  user: User @relation(name: "REPORTED", direction: "OUT")
+}
+
+enum Deletable {
+  Post
+  Comment
+}
+
+enum ShoutTypeEnum {
+  Post
+  Organization
+  Project
+}
+enum FollowTypeEnum {
+  User
+  Organization
+  Project
+}
+
+type Reward {
+  id: ID!
+  user: User @relation(name: "REWARDED", direction: "IN")
+  rewarderId: ID
+  createdAt: String
+  badge: Badge @relation(name: "REWARDED", direction: "OUT")
+}
+
+type Organization {
+  id: ID!
+  createdBy: User @relation(name: "CREATED_ORGA", direction: "IN")
+  ownedBy: [User] @relation(name: "OWNING_ORGA", direction: "IN")
+  name: String!
+  slug: String
+  description: String!
+  descriptionExcerpt: String
+  deleted: Boolean
+  disabled: Boolean
+
+  tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
+  categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
+}
+
+type SharedInboxEndpoint {
+  id: ID!
+  uri: String
+}
+
+type SocialMedia {
+  id: ID!
+  url: String
+  ownedBy: [User]! @relation(name: "OWNED", direction: "IN")
+}

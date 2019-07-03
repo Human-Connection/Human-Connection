@@ -1,0 +1,347 @@
+{
+  "filter-menu": {
+    "title": "Your filter bubble"
+  },
+  "login": {
+    "copy": "If you already have a human-connection account, login here.",
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Your Email",
+    "password": "Your Password",
+    "forgotPassword": "Forgot Password?",
+    "moreInfo": "What is Human Connection?",
+    "moreInfoURL": "https://human-connection.org/en/",
+    "moreInfoHint": "to the presentation page",
+    "hello": "Hello"
+  },
+  "password-reset": {
+    "title": "Reset your password",
+    "form": {
+      "description": "A password reset email will be sent to the given email address.",
+      "submit": "Request email",
+      "submitted": "A mail with further instruction has been sent to <b>{email}</b>"
+    }
+  },
+  "verify-code": {
+    "form": {
+      "code": "Enter your code",
+      "description": "Open your inbox and enter the code that we've sent to you.",
+      "next": "Continue",
+      "change-password": {
+        "success": "Changing your password was successful!",
+        "error": "Changing your password failed. Maybe the security code was not correct?",
+        "help": "In case of problems, feel free to ask for help by sending us a mail to:"
+      }
+    }
+  },
+  "editor": {
+    "placeholder": "Leave your inspirational thoughts..."
+  },
+  "profile": {
+    "name": "My Profile",
+    "memberSince": "Member since",
+    "follow": "Follow",
+    "followers": "Followers",
+    "following": "Following",
+    "shouted": "Recommended",
+    "commented": "Commented",
+    "userAnonym": "Anonymous",
+    "socialMedia": "Where else can I find",
+    "network": {
+      "title": "Network",
+      "following": "is following:",
+      "followingNobody": "follows nobody.",
+      "followedBy": "is followed by:",
+      "followedByNobody": "is not followed by anyone.",
+      "and": "and",
+      "more": "more"
+    }
+  },
+  "notifications": {
+    "menu": {
+      "mentioned": "mentioned you in a post"
+    }
+  },
+  "search": {
+    "placeholder": "Search",
+    "hint": "What are you searching for?",
+    "failed": "Nothing found"
+  },
+  "settings": {
+    "name": "Settings",
+    "data": {
+      "name": "Your data",
+      "labelName": "Your Name",
+      "namePlaceholder": "Femanon Funny",
+      "labelCity": "Su ciudad o región",
+      "labelBio": "About You",
+      "success": "Your data was successfully updated!"
+    },
+    "security": {
+      "name": "Security",
+      "change-password": {
+        "button": "Change password",
+        "success": "Password successfully changed!",
+        "label-old-password": "Your old password",
+        "label-new-password": "Your new password",
+        "label-new-password-confirm": "Confirm new password",
+        "message-old-password-required": "Enter your old password",
+        "message-new-password-required": "Enter a new password",
+        "message-new-password-confirm-required": "Confirm your new password",
+        "message-new-password-missmatch": "Type the same password again",
+        "passwordSecurity": "Password security",
+        "passwordStrength0": "Very insecure password",
+        "passwordStrength1": "Insecure password",
+        "passwordStrength2": "Mediocre password",
+        "passwordStrength3": "Strong password",
+        "passwordStrength4": "Very strong password"
+      }
+    },
+    "invites": {
+      "name": "Invites"
+    },
+    "download": {
+      "name": "Download Data"
+    },
+    "deleteUserAccount": {
+      "name": "Delete Data",
+      "contributionsCount": "Delete my {count} posts",
+      "commentsCount": "Delete my {count} comments",
+      "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
+      "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
+      "success": "Account successfully deleted",
+      "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
+    },
+    "organizations": {
+      "name": "My Organizations"
+    },
+    "languages": {
+      "name": "Languages"
+    },
+    "social-media": {
+      "name": "Social media",
+      "placeholder": "Add social media url",
+      "submit": "Add link",
+      "successAdd": "Added social media. Updated user profile!",
+      "successDelete": "Deleted social media. Updated user profile!"
+    }
+  },
+  "admin": {
+    "name": "Admin",
+    "dashboard": {
+      "name": "Dashboard",
+      "users": "Users",
+      "posts": "Posts",
+      "comments": "Comments",
+      "notifications": "Notifications",
+      "organizations": "Organizations",
+      "projects": "Projects",
+      "invites": "Invites",
+      "follows": "Follows",
+      "shouts": "Recommended"
+    },
+    "organizations": {
+      "name": "Organizations"
+    },
+    "users": {
+      "name": "Users"
+    },
+    "pages": {
+      "name": "Pages"
+    },
+    "notifications": {
+      "name": "Notifications"
+    },
+    "categories": {
+      "name": "Categories",
+      "categoryName": "Name",
+      "postCount": "Posts"
+    },
+    "tags": {
+      "name": "Tags",
+      "tagCountUnique": "Users",
+      "tagCount": "Posts"
+    },
+    "settings": {
+      "name": "Settings"
+    }
+  },
+  "post": {
+    "name": "Post",
+    "moreInfo": {
+      "name": "More info"
+    },
+    "takeAction": {
+      "name": "Take action"
+    },
+    "menu": {
+      "edit": "Edit Post",
+      "delete": "Delete Post"
+    },
+    "comment": {
+      "submit": "Comment",
+      "submitted": "Comment Submitted"
+    }
+  },
+  "comment": {
+    "content": {
+      "unavailable-placeholder": "...this comment is not available anymore"
+    },
+    "menu": {
+      "edit": "Edit Comment",
+      "delete": "Delete Comment"
+    },
+    "show": {
+      "more": "show more",
+      "less": "show less"
+    }
+
+  },
+  "quotes": {
+    "african": {
+      "quote": "Many small people in many small places do many small things, that can alter the face of the world.",
+      "author": "African proverb"
+    }
+  },
+  "common": {
+    "post": "Post ::: Posts",
+    "comment": "Comment ::: Comments",
+    "letsTalk": "Let`s Talk",
+    "versus": "Versus",
+    "moreInfo": "More Info",
+    "takeAction": "Take Action",
+    "shout": "Shout ::: Shouts",
+    "user": "User ::: Users",
+    "category": "Category ::: Categories",
+    "organization": "Organization ::: Organizations",
+    "project": "Project ::: Projects",
+    "tag": "Tag ::: Tags",
+    "name": "Name",
+    "loadMore": "load more",
+    "loading": "loading",
+    "reportContent": "Report",
+    "validations": {
+      "email": "must be a valid email address",
+      "verification-code": "must be 6 characters long"
+    }
+  },
+  "actions": {
+    "loading": "loading",
+    "loadMore": "load more",
+    "create": "Create",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "moderation": {
+    "name": "Moderation",
+    "reports": {
+      "empty": "Congratulations, nothing to moderate.",
+      "name": "Reports",
+      "submitter": "reported by",
+      "disabledBy": "disabled by"
+    }
+  },
+  "disable": {
+    "submit": "Disable",
+    "cancel": "Cancel",
+    "success": "Disabled successfully",
+    "user": {
+      "title": "Disable User",
+      "type": "User",
+      "message": "Do you really want to disable the user \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Disable Contribution",
+      "type": "Contribution",
+      "message": "Do you really want to disable the contribution \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Disable Comment",
+      "type": "Comment",
+      "message": "Do you really want to disable the comment from \"<b>{name}</b>\"?"
+    }
+  },
+  "delete": {
+    "submit": "Delete",
+    "cancel": "Cancel",
+    "contribution": {
+      "title": "Delete Post",
+      "type": "Contribution",
+      "message": "Do you really want to delete the post \"<b>{name}</b>\"?",
+      "success": "Post successfully deleted!"
+    },
+    "comment": {
+      "title": "Delete Comment",
+      "type": "Comment",
+      "message": "Do you really want to delete the comment \"<b>{name}</b>\"?",
+      "success": "Comment successfully deleted!"
+    }
+  },
+  "report": {
+    "submit": "Report",
+    "cancel": "Cancel",
+    "success": "Thanks for reporting!",
+    "user": {
+      "title": "Report User",
+      "type": "User",
+      "message": "Do you really want to report the user \"<b>{name}</b>\"?",
+      "error": "You already reported the user!"
+    },
+    "contribution": {
+      "title": "Report Post",
+      "type": "Contribution",
+      "message": "Do you really want to report the contribution \"<b>{name}</b>\"?",
+      "error": "You have already reported the contribution!"
+    },
+    "comment": {
+      "title": "Report Comment",
+      "type": "Comment",
+      "message": "Do you really want to report the comment from \"<b>{name}</b>\"?",
+      "error": "You have already reported the comment!"
+    }
+  },
+  "followButton": {
+    "follow": "Follow",
+    "following": "Following"
+  },
+  "shoutButton": {
+    "shouted": "shouted"
+  },
+  "release": {
+    "submit": "Release",
+    "cancel": "Cancel",
+    "success": "Released successfully!",
+    "user": {
+      "title": "Release User",
+      "type": "User",
+      "message": "Do you really want to release the user \"<b>{name}</b>\"?"
+    },
+    "contribution": {
+      "title": "Release Contribution",
+      "type": "Contribution",
+      "message": "Do you really want to release the contribution \"<b>{name}</b>\"?"
+    },
+    "comment": {
+      "title": "Release Comment",
+      "type": "Comment",
+      "message": "Do you really want to release the comment from \"<b>{name}</b>\"?"
+    }
+  },
+  "user": {
+    "avatar": {
+      "submitted": "Upload successful"
+    }
+  },
+  "contribution": {
+    "newPost": "Create a new Post",
+    "filterFollow": "Filter contributions from users I follow",
+    "filterALL": "View all contributions",
+    "success": "Saved!",
+    "languageSelectLabel": "Language",
+    "categories": {
+      "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
+    }
+  }
+}
