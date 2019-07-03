@@ -86,9 +86,12 @@
         </div>
       </ds-container>
     </div>
-
+    <br />
+    <br />
+    <br />
+    <br />
     <ds-container>
-      <div :width="{ base: '100%', md: '95%' }">
+      <div :width="{ base: '100%', md: '96%' }">
         <nuxt />
       </div>
     </ds-container>
