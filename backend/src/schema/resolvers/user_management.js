@@ -11,7 +11,7 @@ export default {
     currentUser: async (object, params, ctx, resolveInfo) => {
       const { user } = ctx
       if (!user) return null
-      return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, true)
+      return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, false)
     },
   },
   Mutation: {
