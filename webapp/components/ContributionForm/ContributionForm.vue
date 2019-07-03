@@ -19,6 +19,11 @@
           />
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
+        <hc-categories-select
+          model="categoryIds"
+          @updateCategories="updateCategories"
+          :existingCategoryIds="form.categoryIds"
+        />
         <ds-flex class="contribution-form-footer">
           <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
           <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
@@ -64,11 +69,13 @@ import HcEditor from '~/components/Editor/Editor'
 import orderBy from 'lodash/orderBy'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
+import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
 
 export default {
   components: {
     HcEditor,
+    HcCategoriesSelect,
     HcTeaserImage,
   },
   props: {
@@ -80,8 +87,10 @@ export default {
         title: '',
         content: '',
         teaserImage: null,
+        image: null,
         language: null,
         languageOptions: [],
+        categoryIds: null,
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -106,7 +115,8 @@ export default {
         this.slug = contribution.slug
         this.form.content = contribution.content
         this.form.title = contribution.title
-        this.form.teaserImage = contribution.imageUpload
+        this.form.image = contribution.image
+        this.form.categoryIds = this.categoryIds(contribution.categories)
       },
     },
   },
@@ -124,7 +134,7 @@ export default {
   },
   methods: {
     submit() {
-      const { title, content, teaserImage } = this.form
+      const { title, content, image, teaserImage, categoryIds } = this.form
       let language
       if (this.form.language) {
         language = this.form.language.value
@@ -141,7 +151,9 @@ export default {
             id: this.id,
             title,
             content,
+            categoryIds,
             language,
+            image,
             imageUpload: teaserImage,
           },
         })
@@ -149,7 +161,6 @@ export default {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
           this.disabled = true
-
           const result = res.data[this.id ? 'UpdatePost' : 'CreatePost']
 
           this.$router.push({
@@ -172,8 +183,18 @@ export default {
         this.form.languageOptions.push({ label: locale.name, value: locale.code })
       })
     },
+    updateCategories(ids) {
+      this.form.categoryIds = ids
+    },
     addTeaserImage(file) {
       this.form.teaserImage = file
+    },
+    categoryIds(categories) {
+      let categoryIds = []
+      categories.map(categoryId => {
+        categoryIds.push(categoryId.id)
+      })
+      return categoryIds
     },
   },
   apollo: {

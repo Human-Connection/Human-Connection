@@ -18,9 +18,6 @@ export default {
       if (!params.content || content.length < COMMENT_MIN_LENGTH) {
         throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
       }
-      if (!postId.trim()) {
-        throw new UserInputError(NO_POST_ERR_MESSAGE)
-      }
 
       const session = context.driver.session()
       const postQueryRes = await session.run(

@@ -1,8 +1,9 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
-import ContributionForm from './index.vue'
+import ContributionForm from './ContributionForm.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
+import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import Filters from '~/plugins/vue-filters'
 import TeaserImage from '~/components/TeaserImage/TeaserImage'
 
@@ -28,7 +29,7 @@ describe('ContributionForm.vue', () => {
     file: { filename: 'avataar.svg', previewElement: '' },
     url: 'someUrlToImage',
   }
-
+  const image = '/uploads/1562010976466-avataaars'
   beforeEach(() => {
     mocks = {
       $t: jest.fn(),
@@ -128,7 +129,9 @@ describe('ContributionForm.vue', () => {
               content: postContent,
               language: 'en',
               id: null,
+              categoryIds: null,
               imageUpload: null,
+              image: null,
             },
           }
           postTitleInput = wrapper.find('.ds-input')
@@ -149,6 +152,14 @@ describe('ContributionForm.vue', () => {
           expectedParams.variables.language = 'de'
           deutschOption = wrapper.findAll('li').at(0)
           deutschOption.trigger('click')
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports adding categories', async () => {
+          const categoryIds = ['cat12', 'cat15', 'cat37']
+          expectedParams.variables.categoryIds = categoryIds
+          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -205,7 +216,8 @@ describe('ContributionForm.vue', () => {
             title: 'dies ist ein Post',
             content: 'auf Deutsch geschrieben',
             language: 'de',
-            imageUpload,
+            image,
+            categories: [{ id: 'cat12', name: 'Democracy & Politics' }],
           },
         }
         wrapper = Wrapper()
@@ -235,12 +247,25 @@ describe('ContributionForm.vue', () => {
             content: postContent,
             language: propsData.contribution.language,
             id: propsData.contribution.id,
-            imageUpload,
+            categoryIds: ['cat12'],
+            image,
+            imageUpload: null,
           },
         }
         postTitleInput = wrapper.find('.ds-input')
         postTitleInput.setValue(postTitle)
         wrapper.vm.updateEditorContent(postContent)
+        await wrapper.find('form').trigger('submit')
+        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+      })
+
+      it('supports updating categories', async () => {
+        const categoryIds = ['cat3', 'cat51', 'cat37']
+        postTitleInput = wrapper.find('.ds-input')
+        postTitleInput.setValue(postTitle)
+        wrapper.vm.updateEditorContent(postContent)
+        expectedParams.variables.categoryIds = categoryIds
+        wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
         await wrapper.find('form').trigger('submit')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
       })

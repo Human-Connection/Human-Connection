@@ -10,9 +10,7 @@
   >
     <div class="field">
       <div class="control">
-        <a v-if="isActive" class="search-clear-btn" @click="clear">
-          &nbsp;
-        </a>
+        <a v-if="isActive" class="search-clear-btn" @click="clear">&nbsp;</a>
         <ds-select
           :id="id"
           ref="input"
@@ -41,9 +39,7 @@
           <template slot="option" slot-scope="{ option }">
             <ds-flex>
               <ds-flex-item class="search-option-label">
-                <ds-text>
-                  {{ option.label | truncate(70) }}
-                </ds-text>
+                <ds-text>{{ option.label | truncate(70) }}</ds-text>
               </ds-flex-item>
               <ds-flex-item class="search-option-meta" width="280px">
                 <ds-flex>

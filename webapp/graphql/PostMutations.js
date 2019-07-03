@@ -3,20 +3,25 @@ import gql from 'graphql-tag'
 export default () => {
   return {
     CreatePost: gql`
-      mutation($title: String!, $content: String!, $language: String, $imageUpload: Upload) {
+      mutation(
+        $title: String!
+        $content: String!
+        $language: String
+        $categoryIds: [ID]
+        $imageUpload: Upload
+      ) {
         CreatePost(
           title: $title
           content: $content
           language: $language
+          categoryIds: $categoryIds
           imageUpload: $imageUpload
         ) {
-          id
           title
           slug
           content
           contentExcerpt
           language
-          imageUpload
         }
       }
     `,
@@ -27,6 +32,8 @@ export default () => {
         $content: String!
         $language: String
         $imageUpload: Upload
+        $categoryIds: [ID]
+        $image: String
       ) {
         UpdatePost(
           id: $id
@@ -34,6 +41,8 @@ export default () => {
           content: $content
           language: $language
           imageUpload: $imageUpload
+          categoryIds: $categoryIds
+          image: $image
         ) {
           id
           title
@@ -41,7 +50,7 @@ export default () => {
           content
           contentExcerpt
           language
-          imageUpload
+          image
         }
       }
     `,

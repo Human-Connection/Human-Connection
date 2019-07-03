@@ -8,10 +8,12 @@ export default function create(params) {
       mutation($id: ID!, $description: String!) {
         report(description: $description, id: $id) {
           id
-          createdAt
         }
       }
     `,
-    variables: { id, description },
+    variables: {
+      id,
+      description,
+    },
   }
 }

@@ -23,7 +23,7 @@ afterEach(async () => {
 
 describe('CreateComment', () => {
   const createCommentMutation = gql`
-    mutation($postId: ID, $content: String!) {
+    mutation($postId: ID!, $content: String!) {
       CreateComment(postId: $postId, content: $content) {
         id
         content
@@ -34,13 +34,6 @@ describe('CreateComment', () => {
     mutation($id: ID!, $title: String!, $content: String!) {
       CreatePost(id: $id, title: $title, content: $content) {
         id
-      }
-    }
-  `
-  const commentQueryForPostId = gql`
-    query($content: String) {
-      Comment(content: $content) {
-        postId
       }
     }
   `
@@ -190,23 +183,6 @@ describe('CreateComment', () => {
       await expect(
         client.request(createCommentMutation, createCommentVariablesWithNonExistentPost),
       ).rejects.toThrow('Comment cannot be created without a post!')
-    })
-
-    it('does not create the comment with the postId as an attribute', async () => {
-      const commentQueryVariablesByContent = {
-        content: "I'm authorised to comment",
-      }
-
-      await client.request(createCommentMutation, createCommentVariables)
-      const { Comment } = await client.request(
-        commentQueryForPostId,
-        commentQueryVariablesByContent,
-      )
-      expect(Comment).toEqual([
-        {
-          postId: null,
-        },
-      ])
     })
   })
 })

@@ -3,10 +3,11 @@ import gql from 'graphql-tag'
 export default () => {
   return {
     CreateComment: gql`
-      mutation($postId: ID, $content: String!) {
+      mutation($postId: ID!, $content: String!) {
         CreateComment(postId: $postId, content: $content) {
           id
           contentExcerpt
+          content
           author {
             id
             slug
