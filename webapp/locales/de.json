@@ -27,7 +27,7 @@
       "code": "Code eingeben",
       "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
       "next": "Weiter",
-      "change-password":{
+      "change-password": {
         "success": "Änderung des Passworts war erfolgreich!",
         "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
         "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
@@ -313,17 +313,20 @@
     "user": {
       "title": "Nutzer freigeben",
       "type": "Nutzer",
-      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" freigeben möchtest?"
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" freigeben möchtest?",
+      "error": "Den User hast du schon gemeldet!"
     },
     "contribution": {
       "title": "Beitrag freigeben",
       "type": "Beitrag",
-      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" freigeben möchtest?"
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" freigeben möchtest?",
+      "error": " Den Beitrag hast du schon gemeldet!"
     },
     "comment": {
       "title": "Kommentar freigeben",
       "type": "Kommentar",
-      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" freigeben möchtest?"
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" freigeben möchtest?",
+      "error": "Den Kommentar hast du schon gemeldet!"
     }
   },
   "user": {
@@ -336,7 +339,10 @@
     "filterFollow": "Beiträge filtern von Usern denen ich folge",
     "filterALL": "Alle Beiträge anzeigen",
     "success": "Gespeichert!",
-    "languageSelectLabel": "Sprache"
+    "languageSelectLabel": "Sprache",
+    "categories": {
+      "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
+    }
   }
 
 }

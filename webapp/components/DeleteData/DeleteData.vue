@@ -111,7 +111,7 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($id: ID!, $resource: [String]) {
+            mutation($id: ID!, $resource: [Deletable]) {
               DeleteUser(id: $id, resource: $resource) {
                 id
               }

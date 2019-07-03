@@ -23,7 +23,7 @@
     "cross-env": "^5.2.0",
     "cypress": "^3.3.2",
     "cypress-cucumber-preprocessor": "^1.12.0",
-    "cypress-file-upload": "^3.1.4",
+    "cypress-file-upload": "^3.2.0",
     "cypress-plugin-retries": "^1.2.2",
     "dotenv": "^8.0.0",
     "faker": "Marak/faker.js#master",

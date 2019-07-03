@@ -1,13 +1,17 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
-import ContributionForm from './index.vue'
+import ContributionForm from './ContributionForm.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
+import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
+import Filters from '~/plugins/vue-filters'
+import TeaserImage from '~/components/TeaserImage/TeaserImage'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
 
@@ -21,7 +25,11 @@ describe('ContributionForm.vue', () => {
   let propsData
   const postTitle = 'this is a title for a post'
   const postContent = 'this is a post'
-
+  const imageUpload = {
+    file: { filename: 'avataar.svg', previewElement: '' },
+    url: 'someUrlToImage',
+  }
+  const image = '/uploads/1562010976466-avataaars'
   beforeEach(() => {
     mocks = {
       $t: jest.fn(),
@@ -100,7 +108,15 @@ describe('ContributionForm.vue', () => {
         beforeEach(async () => {
           expectedParams = {
             mutation: PostMutations().CreatePost,
-            variables: { title: postTitle, content: postContent, language: 'en', id: null },
+            variables: {
+              title: postTitle,
+              content: postContent,
+              language: 'en',
+              id: null,
+              categoryIds: null,
+              imageUpload: null,
+              image: null,
+            },
           }
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
@@ -124,6 +140,21 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
+        it('supports adding categories', async () => {
+          const categoryIds = ['cat12', 'cat15', 'cat37']
+          expectedParams.variables.categoryIds = categoryIds
+          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports adding a teaser image', async () => {
+          expectedParams.variables.imageUpload = imageUpload
+          wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
         it("pushes the user to the post's page", async () => {
           expect(mocks.$router.push).toHaveBeenCalledTimes(1)
         })
@@ -143,6 +174,7 @@ describe('ContributionForm.vue', () => {
 
       describe('handles errors', () => {
         beforeEach(async () => {
+          jest.useFakeTimers()
           wrapper = Wrapper()
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
@@ -150,6 +182,7 @@ describe('ContributionForm.vue', () => {
           // second submission causes mutation to reject
           await wrapper.find('form').trigger('submit')
         })
+
         it('shows an error toaster when apollo mutation rejects', async () => {
           await wrapper.find('form').trigger('submit')
           await mocks.$apollo.mutate
@@ -167,6 +200,8 @@ describe('ContributionForm.vue', () => {
             title: 'dies ist ein Post',
             content: 'auf Deutsch geschrieben',
             language: 'de',
+            image,
+            categories: [{ id: 'cat12', name: 'Democracy & Politics' }],
           },
         }
         wrapper = Wrapper()
@@ -188,10 +223,6 @@ describe('ContributionForm.vue', () => {
         expect(wrapper.vm.form.content).toEqual(propsData.contribution.content)
       })
 
-      it('sets language equal to contribution language', () => {
-        expect(wrapper.vm.form.language).toEqual({ value: propsData.contribution.language })
-      })
-
       it('calls the UpdatePost apollo mutation', async () => {
         expectedParams = {
           mutation: PostMutations().UpdatePost,
@@ -200,11 +231,25 @@ describe('ContributionForm.vue', () => {
             content: postContent,
             language: propsData.contribution.language,
             id: propsData.contribution.id,
+            categoryIds: ['cat12'],
+            image,
+            imageUpload: null,
           },
         }
         postTitleInput = wrapper.find('.ds-input')
         postTitleInput.setValue(postTitle)
         wrapper.vm.updateEditorContent(postContent)
+        await wrapper.find('form').trigger('submit')
+        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+      })
+
+      it('supports updating categories', async () => {
+        const categoryIds = ['cat3', 'cat51', 'cat37']
+        postTitleInput = wrapper.find('.ds-input')
+        postTitleInput.setValue(postTitle)
+        wrapper.vm.updateEditorContent(postContent)
+        expectedParams.variables.categoryIds = categoryIds
+        wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
         await wrapper.find('form').trigger('submit')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
       })
