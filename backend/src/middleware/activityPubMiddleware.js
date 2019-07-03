@@ -46,7 +46,7 @@ export default {
       }
       return post
     },
-    CreateUser: async (resolve, root, args, context, info) => {
+    SignupVerification: async (resolve, root, args, context, info) => {
       const keys = generateRsaKeyPair()
       Object.assign(args, keys)
       args.actorId = `${activityPub.host}/activitypub/users/${args.slug}`

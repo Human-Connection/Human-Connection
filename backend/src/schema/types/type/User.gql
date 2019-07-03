@@ -3,20 +3,16 @@ type User {
   actorId: String
   name: String
   email: String!
-  slug: String
-  password: String!
+  slug: String!
   avatar: String
   coverImg: String
-  avatarUpload: Upload
   deleted: Boolean
   disabled: Boolean
   disabledBy: User @relation(name: "DISABLED", direction: "IN")
   role: UserGroup
   publicKey: String
-  privateKey: String
-  
-  wasInvited: Boolean
-  wasSeeded: Boolean
+  invitedBy: User @relation(name: "INVITED", direction: "IN")
+  invited: [User] @relation(name: "INVITED", direction: "OUT")
 
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
   locationName: String
@@ -77,4 +73,90 @@ type User {
 
   badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
   badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
+}
+
+
+input _UserFilter {
+  AND: [_UserFilter!]
+  OR: [_UserFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  friends: _UserFilter
+  friends_not: _UserFilter
+  friends_in: [_UserFilter!]
+  friends_not_in: [_UserFilter!]
+  friends_some: _UserFilter
+  friends_none: _UserFilter
+  friends_single: _UserFilter
+  friends_every: _UserFilter
+  following: _UserFilter
+  following_not: _UserFilter
+  following_in: [_UserFilter!]
+  following_not_in: [_UserFilter!]
+  following_some: _UserFilter
+  following_none: _UserFilter
+  following_single: _UserFilter
+  following_every: _UserFilter
+  followedBy: _UserFilter
+  followedBy_not: _UserFilter
+  followedBy_in: [_UserFilter!]
+  followedBy_not_in: [_UserFilter!]
+  followedBy_some: _UserFilter
+  followedBy_none: _UserFilter
+  followedBy_single: _UserFilter
+  followedBy_every: _UserFilter
+}
+
+type Query {
+  User(
+    id: ID
+    email: String
+    actorId: String
+    name: String
+    slug: String
+    avatar: String
+    coverImg: String
+    role: UserGroup
+    locationName: String
+    about: String
+    createdAt: String
+    updatedAt: String
+    friendsCount: Int
+    followingCount: Int
+    followedByCount: Int
+    followedByCurrentUser: Boolean
+    contributionsCount: Int
+    commentsCount: Int
+    commentedCount: Int
+    shoutedCount: Int
+    badgesCount: Int
+    first: Int
+    offset: Int
+    orderBy: [_UserOrdering]
+    filter: _UserFilter # adding this would expose email
+  ): [User]
+}
+
+type Mutation {
+  UpdateUser (
+    id: ID!
+    name: String
+    email: String
+    slug: String
+    avatar: String
+    coverImg: String
+    avatarUpload: Upload
+    locationName: String
+    about: String
+  ): User
+
+  DeleteUser(id: ID!, resource: [Deletable]): User
 }

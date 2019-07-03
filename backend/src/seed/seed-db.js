@@ -349,6 +349,7 @@ import Factory from './factories'
     ])
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
+    process.exit(0)
   } catch (err) {
     /* eslint-disable-next-line no-console */
     console.error(err)
