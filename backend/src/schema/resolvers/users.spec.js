@@ -12,31 +12,39 @@ afterEach(async () => {
 
 describe('users', () => {
   describe('User', () => {
-    const query = `query($email: String) { User(email: $email) { id } }`
-    const variables = { email: 'any-email-address@example.org' }
-    beforeEach(() => {
-      client = new GraphQLClient(host)
-    })
-
-    it('is forbidden', async () => {
-      await expect(client.request(query, variables)).rejects.toThrow('Not Authorised')
-    })
-
-    describe('as admin', () => {
+    describe('query by email address', () => {
       beforeEach(async () => {
-        const userParams = {
-          role: 'admin',
-          email: 'admin@example.org',
-          password: '1234',
-        }
-        const factory = Factory()
-        await factory.create('User', userParams)
-        const headers = await login(userParams)
-        client = new GraphQLClient(host, { headers })
+        await factory.create('User', { name: 'Johnny', email: 'any-email-address@example.org' })
       })
 
-      it('is permitted', async () => {
-        await expect(client.request(query, variables)).resolves.toEqual({ User: [] })
+      const query = `query($email: String) { User(email: $email) { name } }`
+      const variables = { email: 'any-email-address@example.org' }
+      beforeEach(() => {
+        client = new GraphQLClient(host)
+      })
+
+      it('is forbidden', async () => {
+        await expect(client.request(query, variables)).rejects.toThrow('Not Authorised')
+      })
+
+      describe('as admin', () => {
+        beforeEach(async () => {
+          const userParams = {
+            role: 'admin',
+            email: 'admin@example.org',
+            password: '1234',
+          }
+          const factory = Factory()
+          await factory.create('User', userParams)
+          const headers = await login(userParams)
+          client = new GraphQLClient(host, { headers })
+        })
+
+        it('is permitted', async () => {
+          await expect(client.request(query, variables)).resolves.toEqual({
+            User: [{ name: 'Johnny' }],
+          })
+        })
       })
     })
   })

@@ -141,7 +141,7 @@ type Query {
     first: Int
     offset: Int
     orderBy: [_UserOrdering]
-    filter: _UserFilter # adding this would expose email
+    filter: _UserFilter
   ): [User]
 }
 
