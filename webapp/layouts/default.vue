@@ -53,9 +53,11 @@
                           {{ $t('login.hello') }}
                           <b>{{ userName }}</b>
                           <template v-if="user.role !== 'user'">
-                            <ds-text color="softer" size="small" style="margin-bottom: 0">
-                              {{ user.role | camelCase }}
-                            </ds-text>
+                            <ds-text
+                              color="softer"
+                              size="small"
+                              style="margin-bottom: 0"
+                            >{{ user.role | camelCase }}</ds-text>
                           </template>
                           <hr />
                           <ds-menu :routes="routes" :matcher="matcher">
@@ -192,7 +194,9 @@ export default {
       return this.$route.path.indexOf(url) === 0
     },
     unfolded: function() {
-      document.getElementById('nav-search-box').classList.add('unfolded')
+      if (window.innerWidth < 765) {
+        document.getElementById('nav-search-box').classList.add('unfolded')
+      }
     },
     foldedup: function() {
       document.getElementById('nav-search-box').classList.remove('unfolded')
@@ -203,8 +207,9 @@ export default {
 <style>
 .unfolded {
   position: absolute;
-  right: 0px;
-  left: 0px;
+  right: 10px;
+  left: 10px;
+  top: 0px;
   z-index: 1;
 }
 </style>
