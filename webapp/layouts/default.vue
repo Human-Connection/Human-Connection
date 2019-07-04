@@ -97,7 +97,7 @@
       </ds-container>
     </div>
 
-    <ds-container>
+    <ds-container style="word-break: break-all">
       <div style="padding: 6rem 2rem 5rem;">
         <nuxt />
       </div>

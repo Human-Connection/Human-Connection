@@ -4,6 +4,9 @@ import { host, login } from '../../jest/helpers'
 
 const factory = Factory()
 let client
+let userParams
+let authorParams
+
 const postTitle = 'I am a title'
 const postContent = 'Some content'
 const oldTitle = 'Old title'
@@ -53,10 +56,16 @@ const postQueryFilteredByCategoryVariables = {
   name: postCategoriesFilterParam,
 }
 beforeEach(async () => {
-  await factory.create('User', {
+  userParams = {
+    name: 'TestUser',
     email: 'test@example.org',
     password: '1234',
-  })
+  }
+  authorParams = {
+    email: 'author@example.org',
+    password: '1234',
+  }
+  await factory.create('User', userParams)
 })
 
 afterEach(async () => {
@@ -86,7 +95,7 @@ describe('CreatePost', () => {
   describe('authenticated', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
+      headers = await login(userParams)
       client = new GraphQLClient(host, { headers })
     })
 
@@ -104,7 +113,7 @@ describe('CreatePost', () => {
       await client.request(mutation, createPostVariables)
       const { User } = await client.request(
         `{
-          User(email:"test@example.org") {
+          User(name: "TestUser") {
             contributions {
               title
             }
@@ -209,14 +218,8 @@ describe('UpdatePost', () => {
   let updatePostVariables
   beforeEach(async () => {
     const asAuthor = Factory()
-    await asAuthor.create('User', {
-      email: 'author@example.org',
-      password: '1234',
-    })
-    await asAuthor.authenticateAs({
-      email: 'author@example.org',
-      password: '1234',
-    })
+    await asAuthor.create('User', authorParams)
+    await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
       id: 'p1',
       title: oldTitle,
@@ -251,7 +254,7 @@ describe('UpdatePost', () => {
   describe('authenticated but not the author', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
+      headers = await login(userParams)
       client = new GraphQLClient(host, { headers })
     })
 
@@ -265,7 +268,7 @@ describe('UpdatePost', () => {
   describe('authenticated as author', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'author@example.org', password: '1234' })
+      headers = await login(authorParams)
       client = new GraphQLClient(host, { headers })
     })
 
@@ -343,14 +346,8 @@ describe('DeletePost', () => {
 
   beforeEach(async () => {
     const asAuthor = Factory()
-    await asAuthor.create('User', {
-      email: 'author@example.org',
-      password: '1234',
-    })
-    await asAuthor.authenticateAs({
-      email: 'author@example.org',
-      password: '1234',
-    })
+    await asAuthor.create('User', authorParams)
+    await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
       id: 'p1',
       content: 'To be deleted',
@@ -367,7 +364,7 @@ describe('DeletePost', () => {
   describe('authenticated but not the author', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
+      headers = await login(userParams)
       client = new GraphQLClient(host, { headers })
     })
 
@@ -379,7 +376,7 @@ describe('DeletePost', () => {
   describe('authenticated as author', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'author@example.org', password: '1234' })
+      headers = await login(authorParams)
       client = new GraphQLClient(host, { headers })
     })
 
