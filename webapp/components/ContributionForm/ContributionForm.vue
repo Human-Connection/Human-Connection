@@ -177,7 +177,12 @@ export default {
     updateEditorContent(value) {
       // this.form.content = value
       this.disabled = true
-      if (value.replace(/<p>|<\/p>|<h3>|<\/h3>|<h4>|<\/h4>/gm, '').length > 3) {
+      if (
+        value.replace(
+          /<p>|<\/p>|<h3>|<\/h3>|<h4>|<\/h4>|<ul>|<\/ul>|<ol>|<\/ol>|<li>|<\/li>|<blockquote>|<\/blockquote>|<strong>|<\/strong>|<em>|<\/em>|<a.*>|<\/a>/gm,
+          '',
+        ).length > 3
+      ) {
         this.disabled = false
       }
 
