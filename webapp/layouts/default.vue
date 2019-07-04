@@ -53,11 +53,9 @@
                           {{ $t('login.hello') }}
                           <b>{{ userName }}</b>
                           <template v-if="user.role !== 'user'">
-                            <ds-text
-                              color="softer"
-                              size="small"
-                              style="margin-bottom: 0"
-                            >{{ user.role | camelCase }}</ds-text>
+                            <ds-text color="softer" size="small" style="margin-bottom: 0">
+                              {{ user.role | camelCase }}
+                            </ds-text>
                           </template>
                           <hr />
                           <ds-menu :routes="routes" :matcher="matcher">
@@ -208,7 +206,7 @@ export default {
 .unfolded {
   position: absolute;
   right: 10px;
-  left: 10px;
+  left: 60px;
   top: 0px;
   z-index: 1;
 }
