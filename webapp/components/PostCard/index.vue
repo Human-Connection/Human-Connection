@@ -8,9 +8,7 @@
       <nuxt-link
         class="post-link"
         :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
-      >
-        {{ post.title }}
-      </nuxt-link>
+      >{{ post.title }}</nuxt-link>
       <ds-space margin-bottom="small" />
       <!-- Username, Image & Date of Post -->
       <div>
@@ -128,6 +126,15 @@ export default {
 </script>
 
 <style lang="scss">
+.ds-card-image img {
+  width: 100%;
+  max-height: 300px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: center;
+  object-position: center;
+}
+
 .post-card {
   cursor: pointer;
   position: relative;
