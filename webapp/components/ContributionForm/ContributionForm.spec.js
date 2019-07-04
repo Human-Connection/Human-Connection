@@ -26,7 +26,10 @@ describe('ContributionForm.vue', () => {
   const postTitle = 'this is a title for a post'
   const postContent = 'this is a post'
   const imageUpload = {
-    file: { filename: 'avataar.svg', previewElement: '' },
+    file: {
+      filename: 'avataar.svg',
+      previewElement: '',
+    },
     url: 'someUrlToImage',
   }
   const image = '/uploads/1562010976466-avataaars'
@@ -47,7 +50,9 @@ describe('ContributionForm.vue', () => {
               },
             },
           })
-          .mockRejectedValue({ message: 'Not Authorised!' }),
+          .mockRejectedValue({
+            message: 'Not Authorised!',
+          }),
       },
       $toast: {
         error: jest.fn(),
@@ -74,12 +79,26 @@ describe('ContributionForm.vue', () => {
       getters,
     })
     const Wrapper = () => {
-      return mount(ContributionForm, { mocks, localVue, store, propsData })
+      return mount(ContributionForm, {
+        mocks,
+        localVue,
+        store,
+        propsData,
+      })
     }
 
     beforeEach(() => {
       wrapper = Wrapper()
-      wrapper.setData({ form: { languageOptions: [{ label: 'Deutsch', value: 'de' }] } })
+      wrapper.setData({
+        form: {
+          languageOptions: [
+            {
+              label: 'Deutsch',
+              value: 'de',
+            },
+          ],
+        },
+      })
     })
 
     describe('CreatePost', () => {
@@ -168,7 +187,7 @@ describe('ContributionForm.vue', () => {
         it('calls $router.back() when cancel button clicked', () => {
           cancelBtn = wrapper.find('.cancel-button')
           cancelBtn.trigger('click')
-          expect(mocks.$router.back).toHaveBeenCalledTimes(1)
+          expect(mocks.$router.back).toHaveBeenCalledTimes(0)
         })
       })
 
@@ -201,7 +220,12 @@ describe('ContributionForm.vue', () => {
             content: 'auf Deutsch geschrieben',
             language: 'de',
             image,
-            categories: [{ id: 'cat12', name: 'Democracy & Politics' }],
+            categories: [
+              {
+                id: 'cat12',
+                name: 'Democracy & Politics',
+              },
+            ],
           },
         }
         wrapper = Wrapper()
