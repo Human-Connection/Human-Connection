@@ -17,7 +17,6 @@ type Query {
       LIMIT $limit
       """
     )
-  CommentByPost(postId: ID!): [Comment]!
 }
 
 type Mutation {
