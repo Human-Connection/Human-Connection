@@ -13,7 +13,10 @@ const transporter = () => {
   }
   const { SMTP_USERNAME: user, SMTP_PASSWORD: pass } = CONFIG
   if (user && pass) {
-    configs.auth = { user, pass }
+    configs.auth = {
+      user,
+      pass,
+    }
   }
   return nodemailer.createTransport(configs)
 }
@@ -41,11 +44,21 @@ export default {
   Mutation: {
     requestPasswordReset: async (_, { email }, { driver }) => {
       const code = uuid().substring(0, 6)
-      const [user] = await createPasswordReset({ driver, code, email })
+      const [user] = await createPasswordReset({
+        driver,
+        code,
+        email,
+      })
       if (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT) {
         const name = (user && user.name) || ''
         const mailTemplate = user ? resetPasswordMail : wrongAccountMail
-        await transporter().sendMail(mailTemplate({ email, code, name }))
+        await transporter().sendMail(
+          mailTemplate({
+            email,
+            code,
+            name,
+          }),
+        )
       }
       return true
     },
@@ -62,7 +75,12 @@ export default {
       SET u.password = $newHashedPassword
       RETURN pr
       `
-      let transactionRes = await session.run(cypher, { stillValid, email, code, newHashedPassword })
+      let transactionRes = await session.run(cypher, {
+        stillValid,
+        email,
+        code,
+        newHashedPassword,
+      })
       const [reset] = transactionRes.records.map(record => record.get('pr'))
       const result = !!(reset && reset.properties.usedAt)
       session.close()

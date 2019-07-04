@@ -1,6 +1,8 @@
 {
   "filter-menu": {
-    "title": "Your filter bubble"
+    "title": "Your filter bubble",
+    "hashtag-search": "Searching for #{hashtag}",
+    "clearSearch": "Clear search"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
