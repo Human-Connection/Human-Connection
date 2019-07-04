@@ -8,7 +8,9 @@
       <nuxt-link
         class="post-link"
         :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
-      >{{ post.title }}</nuxt-link>
+      >
+        {{ post.title }}
+      </nuxt-link>
       <ds-space margin-bottom="small" />
       <!-- Username, Image & Date of Post -->
       <div>
