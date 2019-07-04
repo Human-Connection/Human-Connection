@@ -98,7 +98,7 @@ export default {
       },
       id: null,
       loading: false,
-      disabled: false,
+      disabled: true,
       slug: null,
       users: [],
       hashtags: [],
@@ -176,6 +176,11 @@ export default {
     },
     updateEditorContent(value) {
       // this.form.content = value
+      this.disabled = true
+      if (value.replace(/<p>|<\/p>|<h3>|<\/h3>|<h4>|<\/h4>/gm, '').length > 3) {
+        this.disabled = false
+      }
+
       this.$refs.contributionForm.update('content', value)
     },
     availableLocales() {
