@@ -22,8 +22,7 @@
           slot-scope="item"
           class="locale-menu-item"
           :route="item.route"
-          :parents="item.parents"
-          @click.stop.prevent="filterPostsByCategory(item.route.name, toggleMenu)"
+          @click.stop.prevent="filterPosts(item.route.name, toggleMenu)"
         >
           <ds-icon :name="item.route.icon" />
           {{ item.route.name }}
@@ -33,8 +32,8 @@
   </dropdown>
 </template>
 <script>
-import gql from 'graphql-tag'
 import Dropdown from '~/components/Dropdown'
+import { filterPosts } from '~/graphql/PostQuery.js'
 
 export default {
   components: {
@@ -44,6 +43,12 @@ export default {
     placement: { type: String, default: 'bottom-start' },
     offset: { type: [String, Number], default: '16' },
     categories: { type: Array, default: () => [] },
+  },
+  data() {
+    return {
+      filter: {},
+      pageSize: 12,
+    }
   },
   computed: {
     routes() {
@@ -58,28 +63,33 @@ export default {
     },
   },
   methods: {
-    filterPostsByCategory(name) {
-      const filterPostsByCategoryMutation = gql`
-        query($name: String) {
-          Post(filter: { categories_some: { name: $name } }) {
-            title
-            id
-            categories {
-              name
-            }
+    filterPosts(name) {
+      this.filter = { categories_some: { name } }
+      this.$apollo.mutate({
+        mutation: filterPosts(this.$i18n),
+        variables: {
+          filter: this.filter,
+          first: this.pageSize,
+          offset: 0,
+        },
+        update: (store, { data: { Post } }) => {
+          const data = store.readQuery({
+            query: filterPosts(this.$i18n),
+            variables: {
+              filter: {},
+              first: this.pageSize,
+              offset: 0,
+            },
+          })
+          data.Post = Post
+          data.Post.push(Post)
+          const index = data.Post.findIndex(old => old.id === Post.id)
+          if (index !== -1) {
+            data.Post.splice(index, 1)
           }
-        }
-      `
-      setTimeout(() => {
-        this.$apollo
-          .mutate({
-            mutation: filterPostsByCategoryMutation,
-            variables: { name },
-          })
-          .then(res => {
-            // update the Post query
-          })
-      }, 500)
+          store.writeQuery({ query: filterPosts(this.$i18n), data })
+        },
+      })
     },
   },
 }

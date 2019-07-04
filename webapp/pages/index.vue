@@ -28,11 +28,11 @@
 
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
-import gql from 'graphql-tag'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
 import { mapGetters } from 'vuex'
+import { filterPosts } from '~/graphql/PostQuery.js'
 
 export default {
   components: {
@@ -105,48 +105,7 @@ export default {
   apollo: {
     Post: {
       query() {
-        return gql(`
-          query Post($filter: _PostFilter, $first: Int, $offset: Int) {
-            Post(filter: $filter, first: $first, offset: $offset) {
-              id
-              title
-              contentExcerpt
-              createdAt
-              disabled
-              deleted
-              slug
-              image
-              author {
-                id
-                avatar
-                slug
-                name
-                disabled
-                deleted
-                contributionsCount
-                shoutedCount
-                commentsCount
-                followedByCount
-                followedByCurrentUser
-                location {
-                  name: name${this.$i18n.locale().toUpperCase()}
-                }
-                badges {
-                  id
-                  key
-                  icon
-                }
-              }
-              commentsCount
-              categories {
-                id
-                name
-                icon
-              }
-              shoutedCount
-            }
-          }
-        `)
+        return filterPosts(this.$i18n)
       },
       variables() {
         return {
