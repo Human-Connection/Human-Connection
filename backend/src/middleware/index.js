@@ -1,6 +1,5 @@
 import CONFIG from './../config'
 import activityPub from './activityPubMiddleware'
-import password from './passwordMiddleware'
 import softDelete from './softDeleteMiddleware'
 import sluggify from './sluggifyMiddleware'
 import excerpt from './excerptMiddleware'
@@ -10,14 +9,14 @@ import permissions from './permissionsMiddleware'
 import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
-import validation from './validation'
+import validation from './validation/validationMiddleware'
 import handleContentData from './handleHtmlContent/handleContentData'
+import email from './email/emailMiddleware'
 
 export default schema => {
   const middlewares = {
     permissions: permissions,
     activityPub: activityPub,
-    password: password,
     dateTime: dateTime,
     validation: validation,
     sluggify: sluggify,
@@ -28,16 +27,17 @@ export default schema => {
     user: user,
     includedFields: includedFields,
     orderBy: orderBy,
+    email: email({ isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT }),
   }
 
   let order = [
     'permissions',
-    'activityPub',
-    'password',
+    // 'activityPub', disabled temporarily
     'dateTime',
     'validation',
     'sluggify',
     'excerpt',
+    'email',
     'handleContentData',
     'xss',
     'softDelete',

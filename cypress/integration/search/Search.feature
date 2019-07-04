@@ -6,9 +6,9 @@ Feature: Search
   Background:
     Given I have a user account
     And we have the following posts in our database:
-      | Author        | id | title                                         | content                                 |
-      | Brianna Wiest | p1 | 101 Essays that will change the way you think | 101 Essays, of course!                  |
-      | Brianna Wiest | p2 | No searched for content                       | will be found in this post, I guarantee |
+      | id | title                                         | content                                 |
+      | p1 | 101 Essays that will change the way you think | 101 Essays, of course!                  |
+      | p2 | No searched for content                       | will be found in this post, I guarantee |
     Given I am logged in
 
   Scenario: Search for specific words

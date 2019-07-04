@@ -11,50 +11,39 @@ afterEach(async () => {
 })
 
 describe('users', () => {
-  describe('CreateUser', () => {
-    const mutation = `
-      mutation($name: String, $password: String!, $email: String!) {
-        CreateUser(name: $name, password: $password, email: $email) {
-          id
-        }
-      }
-    `
-    describe('given valid password and email', () => {
-      const variables = {
-        name: 'John Doe',
-        password: '123',
-        email: '123@123.de',
-      }
-
-      describe('unauthenticated', () => {
-        beforeEach(async () => {
-          client = new GraphQLClient(host)
-        })
-
-        it('is not allowed to create users', async () => {
-          await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
-        })
+  describe('User', () => {
+    describe('query by email address', () => {
+      beforeEach(async () => {
+        await factory.create('User', { name: 'Johnny', email: 'any-email-address@example.org' })
       })
 
-      describe('authenticated admin', () => {
+      const query = `query($email: String) { User(email: $email) { name } }`
+      const variables = { email: 'any-email-address@example.org' }
+      beforeEach(() => {
+        client = new GraphQLClient(host)
+      })
+
+      it('is forbidden', async () => {
+        await expect(client.request(query, variables)).rejects.toThrow('Not Authorised')
+      })
+
+      describe('as admin', () => {
         beforeEach(async () => {
-          const adminParams = {
+          const userParams = {
             role: 'admin',
             email: 'admin@example.org',
             password: '1234',
           }
-          await factory.create('User', adminParams)
-          const headers = await login(adminParams)
+          const factory = Factory()
+          await factory.create('User', userParams)
+          const headers = await login(userParams)
           client = new GraphQLClient(host, { headers })
         })
 
-        it('is allowed to create new users', async () => {
-          const expected = {
-            CreateUser: {
-              id: expect.any(String),
-            },
-          }
-          await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+        it('is permitted', async () => {
+          await expect(client.request(query, variables)).resolves.toEqual({
+            User: [{ name: 'Johnny' }],
+          })
         })
       })
     })
@@ -88,7 +77,7 @@ describe('users', () => {
     describe('as another user', () => {
       beforeEach(async () => {
         const someoneElseParams = {
-          email: 'someoneElse@example.org',
+          email: 'someone-else@example.org',
           password: '1234',
           name: 'James Doe',
         }
@@ -119,12 +108,12 @@ describe('users', () => {
         await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
 
-      it('with no name', async () => {
+      it('with `null` as name', async () => {
         const variables = {
           id: 'u47',
           name: null,
         }
-        const expected = 'Username must be at least 3 characters long!'
+        const expected = '"name" must be a string'
         await expect(client.request(mutation, variables)).rejects.toThrow(expected)
       })
 
@@ -133,7 +122,7 @@ describe('users', () => {
           id: 'u47',
           name: '  ',
         }
-        const expected = 'Username must be at least 3 characters long!'
+        const expected = '"name" length must be at least 3 characters long'
         await expect(client.request(mutation, variables)).rejects.toThrow(expected)
       })
     })
@@ -164,7 +153,7 @@ describe('users', () => {
         id: 'u343',
       })
       await factory.create('User', {
-        email: 'friendsAccount@example.org',
+        email: 'friends-account@example.org',
         password: '1234',
         id: 'u565',
       })
