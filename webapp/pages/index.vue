@@ -2,10 +2,14 @@
   <div>
     <ds-flex :width="{ base: '100%' }" gutter="base">
       <ds-flex-item>
-        <filter-menu :user="currentUser" @changeFilterBubble="changeFilterBubble" />
+        <filter-menu
+          :user="currentUser"
+          @changeFilterBubble="changeFilterBubble"
+          :categories="categories"
+        />
       </ds-flex-item>
       <hc-post-card
-        v-for="(post, index) in uniq(Post)"
+        v-for="(post, index) in posts"
         :key="post.id"
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
@@ -31,7 +35,7 @@ import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 
 export default {
@@ -43,24 +47,36 @@ export default {
   data() {
     return {
       // Initialize your apollo data
-      Post: [],
       page: 1,
       pageSize: 12,
       filter: {},
     }
   },
+  watch: {
+    Post(post) {
+      this.setPosts(this.Post)
+    },
+  },
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
+      categories: 'categories/categories',
+      posts: 'posts/posts',
     }),
     tags() {
-      return this.Post ? this.Post[0].tags.map(tag => tag.name) : '-'
+      return this.posts ? this.posts.tags.map(tag => tag.name) : '-'
     },
     offset() {
       return (this.page - 1) * this.pageSize
     },
   },
   methods: {
+    ...mapActions({
+      fetchCategories: 'categories/fetchCategories',
+    }),
+    ...mapMutations({
+      setPosts: 'posts/SET_POSTS',
+    }),
     changeFilterBubble(filter) {
       this.filter = filter
       this.$apollo.queries.Post.refresh()

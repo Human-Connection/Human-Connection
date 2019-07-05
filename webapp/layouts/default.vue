@@ -3,13 +3,23 @@
     <div class="main-navigation">
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
-          <ds-flex>
-            <ds-flex-item :width="{ base: '49px', md: '150px', lg: '15%' }">
-              <a v-router-link style="display: inline-flex" href="/">
+          <ds-flex class="main-navigation-flex">
+            <ds-flex-item :width="{ lg: '5%' }" />
+            <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
+              <a @click="$router.go('/')">
                 <ds-logo />
               </a>
             </ds-flex-item>
-            <ds-flex-item :width="{ lg: '50%' }">
+            <ds-flex-item
+              :width="{ base: '20%', sm: '20%', md: '20%', lg: '0%' }"
+              class="mobile-hamburger-menu"
+            >
+              <ds-button icon="bars" @click="toggleMobileMenuView" right />
+            </ds-flex-item>
+            <ds-flex-item
+              :width="{ base: '100%', sm: '100%', md: '50%', lg: '45%' }"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
               <div id="nav-search-box" v-on:click="unfolded" @blur.capture="foldedup">
                 <search-input
                   id="nav-search"
@@ -22,18 +32,26 @@
                 />
               </div>
             </ds-flex-item>
-            <ds-flex-item :width="{ lg: '10%' }">
+            <ds-flex-item
+              :width="{ base: '100%', sm: '100%', md: '10%', lg: '10%' }"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
               <no-ssr>
-                <filter-posts
-                  class="topbar-locale-switch"
-                  placement="bottom"
-                  offset="23"
-                  :categories="categories"
-                />
+                <filter-posts placement="bottom" offset="23" :categories="categories" />
               </no-ssr>
             </ds-flex-item>
-            <ds-flex-item width="200px" style="background-color:white">
-              <div class="main-navigation-right" style="float:right">
+            <ds-flex-item
+              :width="{ base: '100%', sm: '100%', md: '100%', lg: '20%' }"
+              style="background-color:white"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
+              <div
+                class="main-navigation-right"
+                :class="{
+                  'desktop-view': !toggleMobileMenu,
+                  'hide-mobile-menu': !toggleMobileMenu,
+                }"
+              >
                 <no-ssr>
                   <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
                 </no-ssr>
@@ -135,6 +153,7 @@ export default {
   data() {
     return {
       mobileSearchVisible: false,
+      toggleMobileMenu: false,
     }
   },
   computed: {
@@ -214,6 +233,9 @@ export default {
     foldedup: function() {
       document.getElementById('nav-search-box').classList.remove('unfolded')
     },
+    toggleMobileMenuView() {
+      this.toggleMobileMenu = !this.toggleMobileMenu
+    },
   },
 }
 </script>
@@ -243,6 +265,10 @@ export default {
 .main-navigation-right {
   display: flex;
   flex: 1;
+}
+
+.main-navigation-right .desktop-view {
+  float: right;
 }
 
 .avatar-menu-trigger {
@@ -286,6 +312,23 @@ export default {
     a {
       padding-left: 12px;
     }
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .mobile-hamburger-menu {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  #nav-search-box,
+  .main-navigation-right {
+    margin: 10px 0px;
+  }
+
+  .hide-mobile-menu {
+    display: none;
   }
 }
 </style>

@@ -34,6 +34,7 @@
 <script>
 import Dropdown from '~/components/Dropdown'
 import { filterPosts } from '~/graphql/PostQuery.js'
+import { mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -46,7 +47,6 @@ export default {
   },
   data() {
     return {
-      filter: {},
       pageSize: 12,
     }
   },
@@ -63,33 +63,24 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setPosts: 'posts/SET_POSTS',
+    }),
     filterPosts(name) {
       this.filter = { categories_some: { name } }
-      this.$apollo.mutate({
-        mutation: filterPosts(this.$i18n),
-        variables: {
-          filter: this.filter,
-          first: this.pageSize,
-          offset: 0,
-        },
-        update: (store, { data: { Post } }) => {
-          const data = store.readQuery({
-            query: filterPosts(this.$i18n),
-            variables: {
-              filter: {},
-              first: this.pageSize,
-              offset: 0,
-            },
-          })
-          data.Post = Post
-          data.Post.push(Post)
-          const index = data.Post.findIndex(old => old.id === Post.id)
-          if (index !== -1) {
-            data.Post.splice(index, 1)
-          }
-          store.writeQuery({ query: filterPosts(this.$i18n), data })
-        },
-      })
+      this.$apollo
+        .query({
+          query: filterPosts(this.$i18n),
+          variables: {
+            filter: this.filter,
+            first: this.pageSize,
+            offset: 0,
+          },
+        })
+        .then(({ data: { Post } }) => {
+          this.setPosts(Post)
+        })
+        .catch(error => this.$toast.error(error.message))
     },
   },
 }
