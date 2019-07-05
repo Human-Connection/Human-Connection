@@ -1,34 +1,27 @@
 <template>
-  <dropdown class="avatar-menu">
-    <dropdown ref="menu" :placement="placement" :offset="offset">
-      <a
-        slot="default"
-        slot-scope="{ toggleMenu }"
-        class="locale-menu"
-        href="#"
-        @click.prevent="toggleMenu()"
+  <dropdown ref="menu" :placement="placement" :offset="offset">
+    <a slot="default" slot-scope="{ toggleMenu }" href="#" @click.prevent="toggleMenu()">
+      <ds-icon style="margin: 5px 0px 0px 10px;" name="filter" size="large" />
+      <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
+    </a>
+    <ds-menu slot="popover" slot-scope="{ toggleMenu }" :routes="routes">
+      <ds-menu-item
+        slot="menuitem"
+        slot-scope="item"
+        :route="item.route"
+        @click.stop.prevent="filterPosts(item.route.name, toggleMenu)"
+        class="categories-menu"
       >
-        <ds-icon style="margin: 5px 0px 0px 10px;" name="filter" size="large" />
-        <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
-      </a>
-      <ds-menu
-        slot="popover"
-        slot-scope="{ toggleMenu }"
-        class="locale-menu-popover"
-        :routes="routes"
-      >
-        <ds-menu-item
-          slot="menuitem"
-          slot-scope="item"
-          class="locale-menu-item"
-          :route="item.route"
-          @click.stop.prevent="filterPosts(item.route.name, toggleMenu)"
-        >
-          <ds-icon :name="item.route.icon" />
-          {{ item.route.name }}
-        </ds-menu-item>
-      </ds-menu>
-    </dropdown>
+        <ds-flex class="categories-list">
+          <ds-flex-item width="20%">
+            <ds-button :icon="item.route.icon" primary />
+          </ds-flex-item>
+          <ds-flex-item width="80%">
+            <ds-flex>{{ item.route.name }}</ds-flex>
+          </ds-flex-item>
+        </ds-flex>
+      </ds-menu-item>
+    </ds-menu>
   </dropdown>
 </template>
 <script>
@@ -85,3 +78,17 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.categories-menu {
+  width: 300px;
+}
+.category-menu-item {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.categories-list {
+  display: flex;
+  align-items: baseline;
+}
+</style>
