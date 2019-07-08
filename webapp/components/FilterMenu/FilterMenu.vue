@@ -49,7 +49,7 @@
 export default {
   props: {
     user: { type: Object, required: true },
-    hashtag: { type: Object, default: null },
+    hashtag: { type: String, default: null },
   },
   data() {
     return {
