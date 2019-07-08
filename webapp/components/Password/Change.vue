@@ -3,10 +3,8 @@
     v-model="formData"
     :schema="formSchema"
     @submit="handleSubmit"
-    @input="handleInput"
-    @input-valid="handleInputValid"
   >
-    <template>
+    <template slot-scope="{ errors }">
       <ds-input
         id="oldPassword"
         model="oldPassword"
@@ -30,7 +28,7 @@
       />
       <password-strength :password="formData.newPassword" />
       <ds-space margin-top="base">
-        <ds-button :loading="loading" :disabled="disabled" primary>
+        <ds-button :loading="loading" :disabled="errors" primary>
           {{ $t('settings.security.change-password.button') }}
         </ds-button>
       </ds-space>
@@ -81,12 +79,6 @@ export default {
     }
   },
   methods: {
-    async handleInput(data) {
-      this.disabled = true
-    },
-    async handleInputValid(data) {
-      this.disabled = false
-    },
     async handleSubmit(data) {
       this.loading = true
       const mutation = gql`

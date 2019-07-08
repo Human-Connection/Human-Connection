@@ -1,16 +1,14 @@
 <template>
   <ds-card class="verify-code">
     <ds-space margin="large">
-      <template>
-        <ds-form
-          v-if="!changePasswordResult"
-          v-model="formData"
-          :schema="formSchema"
-          @submit="handleSubmitPassword"
-          @input="handleInput"
-          @input-valid="handleInputValid"
-          class="change-password"
-        >
+      <ds-form
+        v-if="!changePasswordResult"
+        v-model="formData"
+        :schema="formSchema"
+        @submit="handleSubmitPassword"
+        class="change-password"
+      >
+        <template slot-scope="{ errors }">
           <ds-input
             id="newPassword"
             model="newPassword"
@@ -27,28 +25,28 @@
           />
           <password-strength :password="formData.newPassword" />
           <ds-space margin-top="base">
-            <ds-button :loading="$apollo.loading" :disabled="disabled" primary>
+            <ds-button :loading="$apollo.loading" :disabled="errors" primary>
               {{ $t('settings.security.change-password.button') }}
             </ds-button>
           </ds-space>
-        </ds-form>
-        <ds-text v-else>
-          <template v-if="changePasswordResult === 'success'">
-            <sweetalert-icon icon="success" />
-            <ds-text>
-              {{ $t(`verify-code.form.change-password.success`) }}
-            </ds-text>
-          </template>
-          <template v-else>
-            <sweetalert-icon icon="error" />
-            <ds-text align="left">
-              {{ $t(`verify-code.form.change-password.error`) }}
-              {{ $t('verify-code.form.change-password.help') }}
-            </ds-text>
-            <a href="mailto:support@human-connection.org">support@human-connection.org</a>
-          </template>
-        </ds-text>
-      </template>
+        </template>
+      </ds-form>
+      <ds-text v-else>
+        <template v-if="changePasswordResult === 'success'">
+          <sweetalert-icon icon="success" />
+          <ds-text>
+            {{ $t(`verify-code.form.change-password.success`) }}
+          </ds-text>
+        </template>
+        <template v-else>
+          <sweetalert-icon icon="error" />
+          <ds-text align="left">
+            {{ $t(`verify-code.form.change-password.error`) }}
+            {{ $t('verify-code.form.change-password.help') }}
+          </ds-text>
+          <a href="mailto:support@human-connection.org">support@human-connection.org</a>
+        </template>
+      </ds-text>
     </ds-space>
   </ds-card>
 </template>
@@ -95,12 +93,6 @@ export default {
     }
   },
   methods: {
-    async handleInput() {
-      this.disabled = true
-    },
-    async handleInputValid() {
-      this.disabled = false
-    },
     async handleSubmitPassword() {
       const mutation = gql`
         mutation($code: String!, $email: String!, $newPassword: String!) {

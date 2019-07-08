@@ -10,61 +10,61 @@
   <ds-form
     v-else
     class="create-user-account"
-    @input="handleInput"
-    @input-valid="handleInputValid"
     v-model="formData"
     :schema="formSchema"
     @submit="submit"
   >
-    <ds-card :header="$t('registration.create-user-account.title')">
-      <ds-input
-        id="name"
-        model="name"
-        icon="user"
-        :label="$t('settings.data.labelName')"
-        :placeholder="$t('settings.data.namePlaceholder')"
-      />
-      <ds-input
-        id="bio"
-        model="about"
-        type="textarea"
-        rows="3"
-        :label="$t('settings.data.labelBio')"
-        :placeholder="$t('settings.data.labelBio')"
-      />
-      <ds-input
-        id="password"
-        model="password"
-        type="password"
-        autocomplete="off"
-        :label="$t('settings.security.change-password.label-new-password')"
-      />
-      <ds-input
-        id="confirmPassword"
-        model="confirmPassword"
-        type="password"
-        autocomplete="off"
-        :label="$t('settings.security.change-password.label-new-password-confirm')"
-      />
-      <password-strength :password="formData.password" />
-      <template slot="footer">
-        <ds-space class="errors" v-if="errors">
-          <ds-text align="center" bold color="danger">
-            {{ errors.message }}
-          </ds-text>
-        </ds-space>
-        <ds-button
-          style="float: right;"
-          icon="check"
-          type="submit"
-          :loading="$apollo.loading"
-          :disabled="disabled"
-          primary
-        >
-          {{ $t('actions.save') }}
-        </ds-button>
-      </template>
-    </ds-card>
+    <template slot-scope="{ errors }">
+      <ds-card :header="$t('registration.create-user-account.title')">
+        <ds-input
+          id="name"
+          model="name"
+          icon="user"
+          :label="$t('settings.data.labelName')"
+          :placeholder="$t('settings.data.namePlaceholder')"
+        />
+        <ds-input
+          id="bio"
+          model="about"
+          type="textarea"
+          rows="3"
+          :label="$t('settings.data.labelBio')"
+          :placeholder="$t('settings.data.labelBio')"
+        />
+        <ds-input
+          id="password"
+          model="password"
+          type="password"
+          autocomplete="off"
+          :label="$t('settings.security.change-password.label-new-password')"
+        />
+        <ds-input
+          id="confirmPassword"
+          model="confirmPassword"
+          type="password"
+          autocomplete="off"
+          :label="$t('settings.security.change-password.label-new-password-confirm')"
+        />
+        <password-strength :password="formData.password" />
+        <template slot="footer">
+          <ds-space class="errors" v-if="errors">
+            <ds-text align="center" bold color="danger">
+              {{ errors.message }}
+            </ds-text>
+          </ds-space>
+          <ds-button
+            style="float: right;"
+            icon="check"
+            type="submit"
+            :loading="$apollo.loading"
+            :disabled="errors"
+            primary
+          >
+            {{ $t('actions.save') }}
+          </ds-button>
+        </template>
+      </ds-card>
+    </template>
   </ds-form>
 </template>
 
@@ -131,12 +131,6 @@ export default {
     email: { type: String, required: true },
   },
   methods: {
-    async handleInput() {
-      this.disabled = true
-    },
-    async handleInputValid() {
-      this.disabled = false
-    },
     async submit() {
       const { name, password, about } = this.formData
       const { email, nonce } = this
