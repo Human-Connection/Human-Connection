@@ -40,7 +40,7 @@
       </ds-form>
       <div v-else>
         <template v-if="!error">
-          <sweetalert-icon icon="success" />
+          <sweetalert-icon icon="info" />
           <ds-text align="center" v-html="submitMessage" />
         </template>
         <template v-else>
