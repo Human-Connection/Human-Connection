@@ -54,7 +54,7 @@ describe('CreateUserAccount', () => {
             wrapper = Wrapper()
             wrapper.find('input#name').setValue('John Doe')
             wrapper.find('input#password').setValue('hellopassword')
-            wrapper.find('input#confirmPassword').setValue('hellopassword')
+            wrapper.find('input#passwordConfirmation').setValue('hellopassword')
             await wrapper.find('form').trigger('submit')
             await wrapper.html()
           }
@@ -123,7 +123,7 @@ describe('CreateUserAccount', () => {
 
           it('displays form errors', async () => {
             await action()
-            expect(wrapper.find('.errors').text()).toContain('Invalid nonce')
+            expect(wrapper.find('.backendErrors').text()).toContain('Invalid nonce')
           })
         })
       })

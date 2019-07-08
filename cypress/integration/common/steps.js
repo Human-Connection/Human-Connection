@@ -278,7 +278,7 @@ When("I fill the password form with:", table => {
     .type(table["Your old password"])
     .get("input[id=newPassword]")
     .type(table["Your new passsword"])
-    .get("input[id=confirmPassword]")
+    .get("input[id=passwordConfirmation]")
     .type(table["Confirm new password"]);
 });
 

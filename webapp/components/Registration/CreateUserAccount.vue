@@ -39,17 +39,17 @@
           :label="$t('settings.security.change-password.label-new-password')"
         />
         <ds-input
-          id="confirmPassword"
-          model="confirmPassword"
+          id="passwordConfirmation"
+          model="passwordConfirmation"
           type="password"
           autocomplete="off"
           :label="$t('settings.security.change-password.label-new-password-confirm')"
         />
         <password-strength :password="formData.password" />
         <template slot="footer">
-          <ds-space class="errors" v-if="errors">
+          <ds-space class="backendErrors" v-if="backendErrors">
             <ds-text align="center" bold color="danger">
-              {{ errors.message }}
+              {{ backendErrors.message }}
             </ds-text>
           </ds-space>
           <ds-button
@@ -72,6 +72,7 @@
 import gql from 'graphql-tag'
 import PasswordStrength from '../Password/Strength'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
+import PasswordForm from '~/components/utils/PasswordFormHelper'
 
 export const SignupVerificationMutation = gql`
   mutation($nonce: String!, $name: String!, $email: String!, $password: String!) {
@@ -88,12 +89,12 @@ export default {
     SweetalertIcon,
   },
   data() {
+    const passwordForm = PasswordForm({ translate: this.$t })
     return {
       formData: {
         name: '',
         about: '',
-        password: '',
-        confirmPassword: '',
+        ...passwordForm.formData,
       },
       formSchema: {
         name: {
@@ -105,25 +106,11 @@ export default {
           type: 'string',
           required: false,
         },
-        password: {
-          type: 'string',
-          required: true,
-          message: this.$t('settings.security.change-password.message-new-password-required'),
-        },
-        confirmPassword: [
-          { validator: this.matchPassword },
-          {
-            type: 'string',
-            required: true,
-            message: this.$t(
-              'settings.security.change-password.message-new-password-confirm-required',
-            ),
-          },
-        ],
+        ...passwordForm.formSchema,
       },
       disabled: true,
       success: null,
-      errors: null,
+      backendErrors: null,
     }
   },
   props: {
@@ -147,17 +134,8 @@ export default {
           })
         }, 3000)
       } catch (err) {
-        this.errors = err
+        this.backendErrors = err
       }
-    },
-    matchPassword(rule, value, callback, source, options) {
-      var errors = []
-      if (this.formData.password !== value) {
-        errors.push(
-          new Error(this.$t('settings.security.change-password.message-new-password-missmatch')),
-        )
-      }
-      callback(errors)
     },
   },
 }

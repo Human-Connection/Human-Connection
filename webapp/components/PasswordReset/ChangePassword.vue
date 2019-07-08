@@ -10,20 +10,20 @@
       >
         <template slot-scope="{ errors }">
           <ds-input
-            id="newPassword"
-            model="newPassword"
+            id="password"
+            model="password"
             type="password"
             autocomplete="off"
             :label="$t('settings.security.change-password.label-new-password')"
           />
           <ds-input
-            id="confirmPassword"
-            model="confirmPassword"
+            id="passwordConfirmation"
+            model="passwordConfirmation"
             type="password"
             autocomplete="off"
             :label="$t('settings.security.change-password.label-new-password-confirm')"
           />
-          <password-strength :password="formData.newPassword" />
+          <password-strength :password="formData.password" />
           <ds-space margin-top="base">
             <ds-button :loading="$apollo.loading" :disabled="errors" primary>
               {{ $t('settings.security.change-password.button') }}
@@ -55,6 +55,7 @@
 import PasswordStrength from '../Password/Strength'
 import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
+import PasswordForm from '~/components/utils/PasswordFormHelper'
 
 export default {
   components: {
@@ -66,27 +67,13 @@ export default {
     code: { type: String, required: true },
   },
   data() {
+    const passwordForm = PasswordForm({ translate: this.$t })
     return {
       formData: {
-        newPassword: '',
-        confirmPassword: '',
+        ...passwordForm.formData,
       },
       formSchema: {
-        newPassword: {
-          type: 'string',
-          required: true,
-          message: this.$t('settings.security.change-password.message-new-password-required'),
-        },
-        confirmPassword: [
-          { validator: this.matchPassword },
-          {
-            type: 'string',
-            required: true,
-            message: this.$t(
-              'settings.security.change-password.message-new-password-confirm-required',
-            ),
-          },
-        ],
+        ...passwordForm.formSchema,
       },
       disabled: true,
       changePasswordResult: null,
@@ -95,13 +82,13 @@ export default {
   methods: {
     async handleSubmitPassword() {
       const mutation = gql`
-        mutation($code: String!, $email: String!, $newPassword: String!) {
-          resetPassword(code: $code, email: $email, newPassword: $newPassword)
+        mutation($code: String!, $email: String!, $password: String!) {
+          resetPassword(code: $code, email: $email, newPassword: $password)
         }
       `
-      const { newPassword } = this.formData
+      const { password } = this.formData
       const { email, code } = this
-      const variables = { newPassword, email, code }
+      const variables = { password, email, code }
       try {
         const {
           data: { resetPassword },
@@ -111,21 +98,12 @@ export default {
           this.$emit('passwordResetResponse', this.changePasswordResult)
         }, 3000)
         this.formData = {
-          newPassword: '',
-          confirmPassword: '',
+          password: '',
+          passwordConfirmation: '',
         }
       } catch (err) {
         this.$toast.error(err.message)
       }
-    },
-    matchPassword(rule, value, callback, source, options) {
-      var errors = []
-      if (this.formData.newPassword !== value) {
-        errors.push(
-          new Error(this.$t('settings.security.change-password.message-new-password-missmatch')),
-        )
-      }
-      callback(errors)
     },
   },
 }
