@@ -90,6 +90,7 @@ describe('Signup', () => {
           wrapper = Wrapper()
           wrapper.find('input#email').setValue('mail@example.org')
           await wrapper.find('form').trigger('submit')
+          await wrapper.html()
         }
       })
 
@@ -117,7 +118,7 @@ describe('Signup', () => {
               )
           })
 
-          it.skip('explains the error', async () => {
+          it('explains the error', async () => {
             await action()
             expect(mocks.$t).toHaveBeenCalledWith('registration.signup.form.errors.email-exists')
           })
@@ -132,7 +133,7 @@ describe('Signup', () => {
               )
           })
 
-          it.skip('explains the error', async () => {
+          it('explains the error', async () => {
             await action()
             expect(mocks.$t).toHaveBeenCalledWith(
               'registration.signup.form.errors.invalid-invitation-token',

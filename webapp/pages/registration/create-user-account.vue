@@ -13,7 +13,7 @@ export default {
     CreateUserAccount,
   },
   methods: {
-    async handleUserCreated({email, password}) {
+    async handleUserCreated({ email, password }) {
       try {
         await this.$store.dispatch('auth/login', { email, password })
         this.$toast.success('You are logged in!')

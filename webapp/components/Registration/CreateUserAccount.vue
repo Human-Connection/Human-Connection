@@ -143,12 +143,13 @@ export default {
       try {
         await this.$apollo.mutate({
           mutation: SignupVerificationMutation,
-          variables: { name, password, about, email, nonce }
+          variables: { name, password, about, email, nonce },
         })
         this.success = true
         setTimeout(() => {
           this.$emit('userCreated', {
-            email, password
+            email,
+            password,
           })
         }, 3000)
       } catch (err) {

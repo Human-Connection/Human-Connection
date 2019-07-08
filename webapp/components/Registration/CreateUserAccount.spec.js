@@ -56,6 +56,7 @@ describe('CreateUserAccount', () => {
             wrapper.find('input#password').setValue('hellopassword')
             wrapper.find('input#confirmPassword').setValue('hellopassword')
             await wrapper.find('form').trigger('submit')
+            await wrapper.html()
           }
         })
 
@@ -100,22 +101,28 @@ describe('CreateUserAccount', () => {
           describe('after timeout', () => {
             beforeEach(jest.useFakeTimers)
 
-            it('emits `userCreated` with user', async () => {
+            it('emits `userCreated` with { password, email }', async () => {
               await action()
               jest.runAllTimers()
-              expect(wrapper.emitted('userCreated')).toBeTruthy()
+              expect(wrapper.emitted('userCreated')).toEqual([
+                [
+                  {
+                    email: 'sixseven@example.org',
+                    password: 'hellopassword',
+                  },
+                ],
+              ])
             })
           })
         })
 
         describe('in case mutation rejects', () => {
           beforeEach(() => {
-            mocks.$apollo.mutate.mockRejectedValue(new Error('Invalid nonce'))
+            mocks.$apollo.mutate = jest.fn().mockRejectedValue(new Error('Invalid nonce'))
           })
 
           it('displays form errors', async () => {
             await action()
-            jest.runAllTimers()
             expect(wrapper.find('.errors').text()).toContain('Invalid nonce')
           })
         })
