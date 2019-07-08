@@ -21,16 +21,16 @@ describe('extractHashtags', () => {
     })
 
     describe('handles links', () => {
-      it('with domains', () => {
+      it('ignores links with domains', () => {
         const content =
-          '<p><a class="hashtag" href="http://localhost:3000/search/hashtag/Elections">#Elections</a><a href="http://localhost:3000/search/hashtag/Democracy">#Democracy</a></p>'
-        expect(extractHashtags(content)).toEqual(['Elections', 'Democracy'])
+          '<p><a class="hashtag" href="http://localhost:3000/search/hashtag/Elections">#Elections</a><a href="/search/hashtag/Democracy">#Democracy</a></p>'
+        expect(extractHashtags(content)).toEqual(['Democracy'])
       })
 
-      it('special characters', () => {
+      it('ignores Hashtag links with not allowed character combinations', () => {
         const content =
-          '<p>Something inspirational about <a href="/search/hashtag/u!*(),2" class="hashtag" target="_blank">#u!*(),2</a> and <a href="/search/hashtag/u.~-3" target="_blank">#u.~-3</a>.</p>'
-        expect(extractHashtags(content)).toEqual(['u!*(),2', 'u.~-3'])
+          '<p>Something inspirational about <a href="/search/hashtag/AbcDefXyz0123456789!*(),2" class="hashtag" target="_blank">#AbcDefXyz0123456789!*(),2</a>, <a href="/search/hashtag/0123456789" class="hashtag" target="_blank">#0123456789</a>, <a href="/search/hashtag/0123456789a" class="hashtag" target="_blank">#0123456789a</a> and <a href="/search/hashtag/AbcDefXyz0123456789" target="_blank">#AbcDefXyz0123456789</a>.</p>'
+        expect(extractHashtags(content)).toEqual(['0123456789a', 'AbcDefXyz0123456789'])
       })
     })
 
@@ -38,6 +38,12 @@ describe('extractHashtags', () => {
       it('`href` contains no Hashtag name', () => {
         const content =
           '<p>Something inspirational about <a href="/search/hashtag/" target="_blank">#Democracy</a> and <a href="/search/hashtag" target="_blank">#liberty</a>.</p>'
+        expect(extractHashtags(content)).toEqual([])
+      })
+
+      it('`href` contains Hashtag as page anchor', () => {
+        const content =
+          '<p>Something inspirational about <a href="https://www.example.org/#anchor" target="_blank">#anchor</a>.</p>'
         expect(extractHashtags(content)).toEqual([])
       })
 

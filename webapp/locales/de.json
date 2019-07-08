@@ -43,7 +43,8 @@
     },
     "hashtag": {
       "noHashtagsFound": "Keine Hashtags gefunden",
-      "addHashtag": "Neuer Hashtag"
+      "addHashtag": "Neuer Hashtag",
+      "addLetter": "Tippe einen Buchstaben"
     }
   },
   "profile": {

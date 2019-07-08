@@ -5,7 +5,7 @@
         <div>
           <ds-flex>
             <ds-flex-item :width="{ base: '49px', md: '150px' }">
-              <a v-router-link style="display: inline-flex" href="/">
+              <a @click="$router.push('/').go('/')">
                 <ds-logo />
               </a>
             </ds-flex-item>

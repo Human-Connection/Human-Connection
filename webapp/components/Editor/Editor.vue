@@ -1,6 +1,8 @@
 <template>
   <div class="editor">
+    <!-- Mention and Hashtag Suggestions Menu -->
     <div v-show="showSuggestions" ref="suggestions" class="suggestion-list">
+      <!-- "filteredItems" array is not empty -->
       <template v-if="hasResults">
         <div
           v-for="(item, index) in filteredItems"
@@ -12,18 +14,36 @@
           <div v-if="isMention">@{{ item.slug }}</div>
           <div v-if="isHashtag">#{{ item.name }}</div>
         </div>
-        <div
-          v-if="isHashtag && query && !filteredItems.find(el => el.name === query)"
-          class="suggestion-list__item is-empty"
-        >
-          {{ $t('editor.hashtag.addHashtag') }}
+        <div v-if="isHashtag">
+          <!-- if query is not empty and is find fully in the suggestions array ... -->
+          <div v-if="query && !filteredItems.find(el => el.name === query)">
+            <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
+            <div class="suggestion-list__item" @click="selectItem({ name: query })">
+              #{{ query }}
+            </div>
+          </div>
+          <!-- otherwise if sanitized query is empty advice the user to add a char -->
+          <div v-else-if="!query">
+            <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addLetter') }}</div>
+          </div>
         </div>
       </template>
-      <div v-else class="suggestion-list__item is-empty">
-        <div v-if="isMention">{{ $t('editor.mention.noUsersFound') }}</div>
+      <!-- if "!hasResults" -->
+      <div v-else>
+        <div v-if="isMention" class="suggestion-list__item is-empty">
+          {{ $t('editor.mention.noUsersFound') }}
+        </div>
         <div v-if="isHashtag">
-          <div v-if="query === ''">{{ $t('editor.hashtag.noHashtagsFound') }}</div>
-          <div v-else>{{ $t('editor.hashtag.addHashtag') }}</div>
+          <div v-if="query === ''" class="suggestion-list__item is-empty">
+            {{ $t('editor.hashtag.noHashtagsFound') }}
+          </div>
+          <!-- if "query" is not empty -->
+          <div v-else>
+            <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
+            <div class="suggestion-list__item" @click="selectItem({ name: query })">
+              #{{ query }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -309,7 +329,7 @@ export default {
             onEnter: ({ items, query, range, command, virtualNode }) => {
               this.suggestionType = this.hashtagSuggestionType
 
-              this.query = query
+              this.query = this.sanitizedQuery(query)
               this.filteredItems = items
               this.suggestionRange = range
               this.renderPopup(virtualNode)
@@ -320,7 +340,7 @@ export default {
             },
             // is called when a suggestion has changed
             onChange: ({ items, query, range, virtualNode }) => {
-              this.query = query
+              this.query = this.sanitizedQuery(query)
               this.filteredItems = items
               this.suggestionRange = range
               this.navigatedItemIndex = 0
@@ -366,14 +386,15 @@ export default {
             // you can overwrite it if you prefer your own filtering
             // in this example we use fuse.js with support for fuzzy search
             onFilter: (items, query) => {
+              query = this.sanitizedQuery(query)
               if (!query) {
                 return items
               }
-              const fuse = new Fuse(items, {
-                threshold: 0.2,
-                keys: ['name'],
-              })
-              return fuse.search(query)
+              return items.filter(item =>
+                JSON.stringify(item)
+                  .toLowerCase()
+                  .includes(query.toLowerCase()),
+              )
             },
           }),
         ],
@@ -437,6 +458,12 @@ export default {
     this.editor.destroy()
   },
   methods: {
+    sanitizedQuery(query) {
+      // remove all not allowed chars
+      query = query.replace(/[^a-zA-Z0-9]/gm, '')
+      // if the query is only made of digits, make it empty
+      return query.replace(/[0-9]/gm, '') === '' ? '' : query
+    },
     // navigate to the previous item
     // if it's the first item, navigate to the last one
     upHandler() {
