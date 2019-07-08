@@ -1,13 +1,7 @@
-import fs from 'fs'
-import path from 'path'
-
-const models = {}
-fs.readdirSync(__dirname).forEach(file => {
-  file = path.join(__dirname, file).toString('utf-8')
-  const name = path.basename(file, '.js')
-  if (!/\.spec/.test(name) && path.extname(file) === '.js') {
-    // Is a gql file
-    models[name] = require(file)
-  }
-})
-export default models
+// NOTE: We cannot use `fs` here to clean up the code. Cypress breaks on any npm
+// module that is not browser-compatible. Node's `fs` module is server-side only
+export default {
+  User: require('./User.js'),
+  InvitationCode: require('./InvitationCode.js'),
+  EmailAddress: require('./EmailAddress.js'),
+}
