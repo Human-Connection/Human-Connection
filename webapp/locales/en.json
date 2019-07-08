@@ -14,7 +14,8 @@
     "moreInfo": "What is Human Connection?",
     "moreInfoURL": "https://human-connection.org/en/",
     "moreInfoHint": "to the presentation page",
-    "hello": "Hello"
+    "hello": "Hello",
+    "success": "You are logged in!"
   },
   "password-reset": {
     "title": "Reset your password",
@@ -22,6 +23,25 @@
       "description": "A password reset email will be sent to the given email address.",
       "submit": "Request email",
       "submitted": "A mail with further instruction has been sent to <b>{email}</b>"
+    }
+  },
+  "registration": {
+    "signup": {
+      "title": "Join Human Connection!",
+      "form": {
+        "description": "To get started, enter your email address:",
+        "invitation-code": "Your invitation code is: <b>{code}</b>",
+        "errors": {
+          "email-exists": "There is already a user account with this email address!",
+          "invalid-invitation-token": "It looks like as if the invitation has been used already. Invitation links can only be used once."
+        },
+      "submit": "Create an account",
+      "success": "A mail with a link to complete your registration has been sent to <b>{email}</b>"
+      }
+    },
+    "create-user-account": {
+      "title": "Create user account",
+      "success": "Your account has been created!"
     }
   },
   "verify-code": {
@@ -174,6 +194,11 @@
     },
     "settings": {
       "name": "Settings"
+    },
+    "invites": {
+      "name": "Invite users",
+      "title": "Signup users as admin",
+      "description": "This registration form will be visible as soon as the registration is open to the public."
     }
   },
   "post": {
