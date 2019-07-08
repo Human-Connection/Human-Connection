@@ -11,7 +11,7 @@ module.exports = {
   coverImg: { type: 'string', allow: [null] },
   deleted: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },
-  role: { type: 'string', required: true, default: 'user' },
+  role: { type: 'string', default: 'user' },
   publicKey: 'string',
   privateKey: 'string',
   wasInvited: 'boolean',
