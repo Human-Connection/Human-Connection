@@ -1,5 +1,5 @@
-import Factory from '../../seed/factories'
-import { neode } from '../../bootstrap/neo4j'
+import Factory from '../seed/factories'
+import { neode } from '../bootstrap/neo4j'
 
 const factory = Factory()
 const instance = neode()
