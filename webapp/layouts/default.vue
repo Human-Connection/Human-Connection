@@ -6,7 +6,7 @@
           <ds-flex class="main-navigation-flex">
             <ds-flex-item :width="{ lg: '5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
-              <a @click="$router.go('/')">
+              <a @click="$router.push('/').then(() => $router.go())">
                 <ds-logo />
               </a>
             </ds-flex-item>
