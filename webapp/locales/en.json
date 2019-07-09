@@ -2,6 +2,20 @@
   "filter-menu": {
     "title": "Your filter bubble"
   },
+  "site": {
+    "made": "With &#10084; made",
+    "imprint": "Imprint",
+    "termsAc": "terms and conditions",
+    "privacy": "data protection",
+    "changelog": "Changes & History",
+    "contact": "Contact",
+    "tribunal": "register court",
+    "register": "register number",
+    "director": "Managing Director",
+    "taxident": "Value added tax identification number according to § 27 a Value Added Tax Act (Germany)",
+    "responsible": "Responsible according to § 55 Abs. 2 RStV (Germany) ",
+    "bank": "bank account"
+  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",

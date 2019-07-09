@@ -92,7 +92,17 @@
         <nuxt />
       </div>
     </ds-container>
-
+    <div id="footer" class="ds-footer">
+      <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
+      &nbsp;⏐&nbsp;
+      <a href="/imprint">{{ $t('site.imprint') }}</a>
+      &nbsp;‑&nbsp;
+      <a href="/terms-and-conditions">{{ $t('site.termsAc') }}</a>
+      &nbsp;‑&nbsp;
+      <a href="/privacy">{{ $t('site.privacy') }}</a>
+      &nbsp;‑&nbsp;
+      <a href="/changelog">{{ $t('site.changelog') }}</a>
+    </div>
     <div id="overlay" />
     <no-ssr>
       <modal />
@@ -123,6 +133,7 @@ export default {
   data() {
     return {
       mobileSearchVisible: false,
+      footerOpen: false,
     }
   },
   computed: {
@@ -270,5 +281,14 @@ export default {
       padding-left: 12px;
     }
   }
+}
+.ds-footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0px;
+  z-index: 10;
+  background-color: white;
+  width: 100%;
+  padding: 10px 10px;
 }
 </style>

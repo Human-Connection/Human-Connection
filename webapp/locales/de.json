@@ -2,6 +2,21 @@
   "filter-menu": {
     "title": "Deine Filterblase"
   },
+  "site": {
+    "made": "Mit &#10084; gemacht",
+    "imprint": "Impressum",
+    "termsAc": "Nutzungsbedingungen",
+    "privacy": "Datenschutz",
+    "changelog": "Änderungen & Verlauf",
+    "contact": "Kontakt",
+    "tribunal": "Registergericht",
+    "register": "Registernummer",
+    "director": "Geschäftsführer",
+    "taxident": "Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz (Deutschland)",
+    "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
+    "bank": "Bankverbindung",
+    "germany": "Deutschland"
+  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
