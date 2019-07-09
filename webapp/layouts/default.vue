@@ -248,8 +248,8 @@ export default {
           }
         }`)
       },
-      result(result) {
-        this.setCategories(result.data.Category)
+      result({ data: Category }) {
+        this.setCategories(Category)
       },
       fetchPolicy: 'cache-and-network',
     },
