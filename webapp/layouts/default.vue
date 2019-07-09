@@ -5,9 +5,9 @@
         <div>
           <ds-flex>
             <ds-flex-item :width="{ base: '49px', md: '150px' }">
-              <a v-router-link style="display: inline-flex" href="/">
+              <nuxt-link to="/">
                 <ds-logo />
-              </a>
+              </nuxt-link>
             </ds-flex-item>
             <ds-flex-item>
               <div id="nav-search-box" v-on:click="unfolded" @blur.capture="foldedup">

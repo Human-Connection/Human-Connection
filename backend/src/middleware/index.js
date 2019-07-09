@@ -10,7 +10,7 @@ import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation/validationMiddleware'
-import notifications from './notifications'
+import handleContentData from './handleHtmlContent/handleContentData'
 import email from './email/emailMiddleware'
 
 export default schema => {
@@ -21,7 +21,7 @@ export default schema => {
     validation: validation,
     sluggify: sluggify,
     excerpt: excerpt,
-    notifications: notifications,
+    handleContentData: handleContentData,
     xss: xss,
     softDelete: softDelete,
     user: user,
@@ -38,7 +38,7 @@ export default schema => {
     'sluggify',
     'excerpt',
     'email',
-    'notifications',
+    'handleContentData',
     'xss',
     'softDelete',
     'user',

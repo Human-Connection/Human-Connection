@@ -1,6 +1,8 @@
 {
   "filter-menu": {
-    "title": "Deine Filterblase"
+    "title": "Deine Filterblase",
+    "hashtag-search": "Suche nach #{hashtag}",
+    "clearSearch": "Suche löschen"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
@@ -35,7 +37,15 @@
     }
   },
   "editor": {
-    "placeholder": "Schreib etwas Inspirierendes..."
+    "placeholder": "Schreib etwas Inspirierendes...",
+    "mention": {
+      "noUsersFound": "Keine Benutzer gefunden"
+    },
+    "hashtag": {
+      "noHashtagsFound": "Keine Hashtags gefunden",
+      "addHashtag": "Neuer Hashtag",
+      "addLetter": "Tippe einen Buchstaben"
+    }
   },
   "profile": {
     "name": "Mein Profil",

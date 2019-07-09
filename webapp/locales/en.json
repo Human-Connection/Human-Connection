@@ -1,6 +1,8 @@
 {
   "filter-menu": {
-    "title": "Your filter bubble"
+    "title": "Your filter bubble",
+    "hashtag-search": "Searching for #{hashtag}",
+    "clearSearch": "Clear search"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
@@ -35,7 +37,15 @@
     }
   },
   "editor": {
-    "placeholder": "Leave your inspirational thoughts..."
+    "placeholder": "Leave your inspirational thoughts...",
+    "mention": {
+      "noUsersFound": "No users found"
+    },
+    "hashtag": {
+      "noHashtagsFound": "No hashtags found",
+      "addHashtag": "New hashtag",
+      "addLetter": "Type a letter"
+    }
   },
   "profile": {
     "name": "My Profile",
