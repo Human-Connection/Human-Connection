@@ -137,7 +137,7 @@ const permissions = shield(
       '*': deny,
       findPosts: allow,
       Category: allow,
-      Tag: isAdmin,
+      Tag: allow,
       Report: isModerator,
       Notification: isAdmin,
       statistics: allow,

@@ -1,5 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import Editor from './'
+import Editor from './Editor'
 import Vuex from 'vuex'
 
 import Styleguide from '@human-connection/styleguide'
@@ -36,7 +36,9 @@ describe('Editor.vue', () => {
         propsData,
         localVue,
         sync: false,
-        stubs: { transition: false },
+        stubs: {
+          transition: false,
+        },
         store,
       }))
     }
