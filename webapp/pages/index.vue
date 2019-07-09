@@ -2,11 +2,7 @@
   <div>
     <ds-flex :width="{ base: '100%' }" gutter="base">
       <ds-flex-item>
-        <filter-menu
-          :user="currentUser"
-          @changeFilterBubble="changeFilterBubble"
-          :categories="categories"
-        />
+        <filter-menu :user="currentUser" @changeFilterBubble="changeFilterBubble" />
       </ds-flex-item>
       <hc-post-card
         v-for="(post, index) in posts"
@@ -35,7 +31,7 @@ import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 
 export default {
@@ -60,7 +56,6 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
-      categories: 'categories/categories',
       posts: 'posts/posts',
     }),
     tags() {
@@ -71,9 +66,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      fetchCategories: 'categories/fetchCategories',
-    }),
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
     }),

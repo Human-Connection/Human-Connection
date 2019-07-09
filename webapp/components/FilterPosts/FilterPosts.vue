@@ -7,13 +7,16 @@
     <template slot="popover">
       <ds-container>
         <ds-space />
-        <ds-flex>
-          <ds-flex-item width="20%">
+        <ds-flex :groupedCategories="chunk">
+          <ds-flex-item
+            :width="{ base: '100%', sm: '100%', md: '100%', lg: '20%' }"
+            class="categories-list"
+          >
             <ds-space margin-bottom="x-small" />
-            <ds-flex>
+            <ds-flex id="filter-posts-header">
               <ds-heading tag="h4">{{ $t('filter-posts.header') }}</ds-heading>
               <ds-flex-item width="10%" />
-              <ds-flex-item width="100%" style="text-align:center;">
+              <ds-flex-item width="100%">
                 <ds-button
                   icon="check"
                   @click.stop.prevent="toggleCategory()"
@@ -26,8 +29,8 @@
               </ds-flex-item>
             </ds-flex>
           </ds-flex-item>
-          <ds-flex-item width="10%">
-            <ds-flex v-for="category in firstGroup" :key="category.id" class="categories-list">
+          <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
+            <ds-flex v-for="category in chunk[0]" :key="category.id" class="categories-list">
               <ds-flex>
                 <ds-flex-item width="100%">
                   <ds-button
@@ -46,8 +49,8 @@
               </ds-flex>
             </ds-flex>
           </ds-flex-item>
-          <ds-flex-item width="10%">
-            <ds-flex v-for="category in secondGroup" :key="category.id" class="categories-list">
+          <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
+            <ds-flex v-for="category in chunk[1]" :key="category.id" class="categories-list">
               <ds-flex>
                 <ds-flex-item width="100%">
                   <ds-button
@@ -66,8 +69,8 @@
               </ds-flex>
             </ds-flex>
           </ds-flex-item>
-          <ds-flex-item width="10%">
-            <ds-flex v-for="category in thirdGroup" :key="category.id" class="categories-list">
+          <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
+            <ds-flex v-for="category in chunk[2]" :key="category.id" class="categories-list">
               <ds-flex>
                 <ds-flex-item width="100%">
                   <ds-button
@@ -86,8 +89,8 @@
               </ds-flex>
             </ds-flex>
           </ds-flex-item>
-          <ds-flex-item width="10%">
-            <ds-flex v-for="category in fourthGroup" :key="category.id" class="categories-list">
+          <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
+            <ds-flex v-for="category in chunk[3]" :key="category.id" class="categories-list">
               <ds-flex>
                 <ds-flex-item width="100%">
                   <ds-button
@@ -106,8 +109,8 @@
               </ds-flex>
             </ds-flex>
           </ds-flex-item>
-          <ds-flex-item width="10%">
-            <ds-flex v-for="category in fifthGroup" :key="category.id" class="categories-list">
+          <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
+            <ds-flex v-for="category in chunk[4]" :key="category.id" class="categories-list">
               <ds-flex>
                 <ds-flex-item width="100%">
                   <ds-button
@@ -126,8 +129,8 @@
               </ds-flex>
             </ds-flex>
           </ds-flex-item>
-          <ds-flex-item width="10%">
-            <ds-flex v-for="category in sixthGroup" :key="category.id" class="categories-list">
+          <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
+            <ds-flex v-for="category in chunk[5]" :key="category.id" class="categories-list">
               <ds-flex>
                 <ds-flex-item width="100%">
                   <ds-button
@@ -146,8 +149,8 @@
               </ds-flex>
             </ds-flex>
           </ds-flex-item>
-          <ds-flex-item width="10%">
-            <ds-flex v-for="category in seventhGroup" :key="category.id" class="categories-list">
+          <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
+            <ds-flex v-for="category in chunk[6]" :key="category.id" class="categories-list">
               <ds-flex>
                 <ds-flex-item width="100%">
                   <ds-button
@@ -166,8 +169,8 @@
               </ds-flex>
             </ds-flex>
           </ds-flex-item>
-          <ds-flex-item width="10%">
-            <ds-flex v-for="category in eigthGroup" :key="category.id" class="categories-list">
+          <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
+            <ds-flex v-for="category in chunk[7]" :key="category.id" class="categories-list">
               <ds-flex>
                 <ds-flex-item width="100%">
                   <ds-button
@@ -208,14 +211,6 @@ export default {
   data() {
     return {
       pageSize: 12,
-      firstGroup: [],
-      secondGroup: [],
-      thirdGroup: [],
-      fourthGroup: [],
-      fifthGroup: [],
-      sixthGroup: [],
-      seventhGroup: [],
-      eigthGroup: [],
       selectedCategoryIds: [],
       allCategories: true,
     }
@@ -234,24 +229,10 @@ export default {
       return groupedCategories
     },
   },
-  mounted() {
-    this.groupCategories()
-  },
   methods: {
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
     }),
-    groupCategories() {
-      const groupedCategories = this.chunk
-      this.firstGroup = groupedCategories[0]
-      this.secondGroup = groupedCategories[1]
-      this.thirdGroup = groupedCategories[2]
-      this.fourthGroup = groupedCategories[3]
-      this.fifthGroup = groupedCategories[4]
-      this.sixthGroup = groupedCategories[5]
-      this.seventhGroup = groupedCategories[6]
-      this.eigthGroup = groupedCategories[7]
-    },
     filterPosts(categoryIds) {
       const filter = categoryIds.length
         ? { categories_in: { id_in: this.selectedCategoryIds } }
@@ -292,6 +273,9 @@ export default {
 }
 </script>
 <style lang="scss">
+#filter-posts-header {
+  display: block;
+}
 .categories-list {
   text-align: center;
 }

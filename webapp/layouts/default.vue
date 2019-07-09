@@ -6,7 +6,7 @@
           <ds-flex class="main-navigation-flex">
             <ds-flex-item :width="{ lg: '5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
-              <a @click="$router.push('/').go('/')">
+              <a @click="$router.go('/')">
                 <ds-logo />
               </a>
             </ds-flex-item>
@@ -37,7 +37,7 @@
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <no-ssr>
-                <filter-posts placement="bottom-end" offset="23" :categories="getCategories" />
+                <filter-posts placement="bottom-end" offset="23" :categories="categories" />
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item
@@ -129,8 +129,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
@@ -139,6 +138,7 @@ import Dropdown from '~/components/Dropdown'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
 import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
+import CategoryQuery from '~/graphql/CategoryQuery.js'
 
 export default {
   components: {
@@ -155,6 +155,7 @@ export default {
     return {
       mobileSearchVisible: false,
       toggleMobileMenu: false,
+      categories: [],
     }
   },
   computed: {
@@ -165,7 +166,6 @@ export default {
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
-      getCategories: 'categories/categories',
     }),
     userName() {
       const { name } = this.user || {}
@@ -204,13 +204,15 @@ export default {
       return routes
     },
   },
+  watch: {
+    Category(category) {
+      this.categories = category || []
+    },
+  },
   methods: {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
-    }),
-    ...mapMutations({
-      setCategories: 'categories/SET_CATEGORIES',
     }),
     goToPost(item) {
       this.$nextTick(() => {
@@ -240,16 +242,7 @@ export default {
   apollo: {
     Category: {
       query() {
-        return gql(`{
-          Category {
-            id
-            name
-            icon
-          }
-        }`)
-      },
-      result({ data: Category }) {
-        this.setCategories(Category)
+        return CategoryQuery()
       },
       fetchPolicy: 'cache-and-network',
     },
