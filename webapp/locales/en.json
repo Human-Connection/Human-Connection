@@ -2,6 +2,10 @@
   "filter-menu": {
     "title": "Your filter bubble"
   },
+  "filter-posts": {
+    "header": "Categories of Content",
+    "all": "All"
+  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
@@ -195,7 +199,6 @@
       "more": "show more",
       "less": "show less"
     }
-
   },
   "quotes": {
     "african": {

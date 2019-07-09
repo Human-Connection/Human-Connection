@@ -1,6 +1,10 @@
 {
   "filter-menu": {
-    "title": "Deine Filterblase"
+    "title": "Deine Filterblase",
+    "all": "Alle"
+  },
+  "filter-posts": {
+    "header": "Themenkategorien"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
@@ -344,5 +348,4 @@
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
     }
   }
-
 }

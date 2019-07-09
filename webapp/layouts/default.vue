@@ -6,7 +6,7 @@
           <ds-flex class="main-navigation-flex">
             <ds-flex-item :width="{ lg: '5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
-              <a @click="$router.go('/')">
+              <a @click="$router.push('/').go('/')">
                 <ds-logo />
               </a>
             </ds-flex-item>
@@ -37,7 +37,7 @@
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <no-ssr>
-                <filter-posts placement="bottom" offset="23" :categories="categories" />
+                <filter-posts placement="bottom-end" offset="23" :categories="getCategories" />
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item
@@ -129,7 +129,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import gql from 'graphql-tag'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
@@ -164,7 +165,7 @@ export default {
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
-      categories: 'categories/categories',
+      getCategories: 'categories/categories',
     }),
     userName() {
       const { name } = this.user || {}
@@ -203,14 +204,13 @@ export default {
       return routes
     },
   },
-  mounted() {
-    this.fetchCategories()
-  },
   methods: {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
-      fetchCategories: 'categories/fetchCategories',
+    }),
+    ...mapMutations({
+      setCategories: 'categories/SET_CATEGORIES',
     }),
     goToPost(item) {
       this.$nextTick(() => {
@@ -235,6 +235,23 @@ export default {
     },
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
+    },
+  },
+  apollo: {
+    Category: {
+      query() {
+        return gql(`{
+          Category {
+            id
+            name
+            icon
+          }
+        }`)
+      },
+      result(result) {
+        this.setCategories(result.data.Category)
+      },
+      fetchPolicy: 'cache-and-network',
     },
   },
 }
