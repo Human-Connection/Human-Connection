@@ -18,10 +18,11 @@ const createPostWithCategoriesMutation = `
   mutation($title: String!, $content: String!, $categoryIds: [ID]) {
     CreatePost(title: $title, content: $content, categoryIds: $categoryIds) {
       id
+      title
     }
   }
 `
-const creatPostWithCategoriesVariables = {
+const createPostWithCategoriesVariables = {
   title: postTitle,
   content: postContent,
   categoryIds: ['cat9', 'cat4', 'cat15'],
@@ -41,19 +42,19 @@ const createPostWithoutCategoriesVariables = {
   categoryIds: null,
 }
 const postQueryFilteredByCategory = `
-  query($name: String) {
-    Post(filter: { categories_some: { name: $name } }) {
+query Post($filter: _PostFilter) {
+  Post(filter: $filter) {
       title
       id
       categories {
-        name
+        id
       }
     }
   }
 `
-const postCategoriesFilterParam = 'Environment & Nature'
+const postCategoriesFilterParam = { categories_some: { id_in: ['cat4'] } }
 const postQueryFilteredByCategoryVariables = {
-  name: postCategoriesFilterParam,
+  filter: postCategoriesFilterParam,
 }
 beforeEach(async () => {
   userParams = {
@@ -174,7 +175,7 @@ describe('CreatePost', () => {
         ])
         postWithCategories = await client.request(
           createPostWithCategoriesMutation,
-          creatPostWithCategoriesVariables,
+          createPostWithCategoriesVariables,
         )
       })
 
@@ -183,6 +184,7 @@ describe('CreatePost', () => {
         const postQueryWithCategoriesVariables = {
           id: postWithCategories.CreatePost.id,
         }
+
         await expect(
           client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
         ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
@@ -190,21 +192,16 @@ describe('CreatePost', () => {
 
       it('allows a user to filter for posts by category', async () => {
         await client.request(createPostWithCategoriesMutation, createPostWithoutCategoriesVariables)
-        const categoryNames = [
-          { name: 'Democracy & Politics' },
-          { name: 'Environment & Nature' },
-          { name: 'Consumption & Sustainability' },
-        ]
+        const categoryIds = [{ id: 'cat4' }, { id: 'cat15' }, { id: 'cat9' }]
         const expected = {
           Post: [
             {
               title: postTitle,
               id: postWithCategories.CreatePost.id,
-              categories: expect.arrayContaining(categoryNames),
+              categories: expect.arrayContaining(categoryIds),
             },
           ],
         }
-
         await expect(
           client.request(postQueryFilteredByCategory, postQueryFilteredByCategoryVariables),
         ).resolves.toEqual(expected)
@@ -306,7 +303,7 @@ describe('UpdatePost', () => {
         ])
         postWithCategories = await client.request(
           createPostWithCategoriesMutation,
-          creatPostWithCategoriesVariables,
+          createPostWithCategoriesVariables,
         )
         updatePostVariables = {
           id: postWithCategories.CreatePost.id,

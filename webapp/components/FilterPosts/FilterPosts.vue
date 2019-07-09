@@ -235,9 +235,9 @@ export default {
     }),
     filterPosts(categoryIds) {
       const filter = categoryIds.length
-        ? { categories_in: { id_in: this.selectedCategoryIds } }
+        ? { categories_some: { id_in: this.selectedCategoryIds } }
         : {}
-      filter.categories_in ? (this.allCategories = false) : (this.allCategories = true)
+      filter.categories_some ? (this.allCategories = false) : (this.allCategories = true)
       this.$apollo
         .query({
           query: filterPosts(this.$i18n),
