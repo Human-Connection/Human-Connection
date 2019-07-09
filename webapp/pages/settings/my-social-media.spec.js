@@ -110,11 +110,7 @@ describe('my-social-media.vue', () => {
     describe('currentUser does not have a social media account linked', () => {
       it('allows a user to add a social media link', () => {
         wrapper = Wrapper()
-        input = wrapper.find({ name: 'social-media' })
-        input.element.value = socialMediaUrl
-        input.trigger('input')
-        submitBtn = wrapper.find('.ds-button')
-        submitBtn.trigger('click')
+        wrapper.find('form').trigger('submit')
         expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
       })
     })

@@ -26,24 +26,34 @@
       </ds-list>
     </ds-space>
     <ds-space margin-top="base">
-      <div>
-        <ds-input
-          v-model="value"
-          :placeholder="$t('settings.social-media.placeholder')"
-          name="social-media"
-          :schema="{ type: 'url' }"
-        />
-      </div>
-      <ds-space margin-top="base">
-        <div>
-          <ds-button primary @click="handleAddSocialMedia">
-            {{ $t('settings.social-media.submit') }}
-          </ds-button>
-        </div>
-      </ds-space>
+      <ds-form
+        v-model="formData"
+        :schema="formSchema"
+        @submit="handleAddSocialMedia"
+        @input="handleInput"
+        @input-valid="handleInputValid"
+      >
+        <template>
+          <ds-input
+            id="socialMediaLink"
+            name="social-media"
+            model="socialMediaLink"
+            type="text"
+            :placeholder="$t('settings.social-media.placeholder')"
+          />
+          <ds-space margin-top="base">
+            <div>
+              <ds-button primary :disabled="disabled">
+                {{ $t('settings.social-media.submit') }}
+              </ds-button>
+            </div>
+          </ds-space>
+        </template>
+      </ds-form>
     </ds-space>
   </ds-card>
 </template>
+
 <script>
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
@@ -51,7 +61,16 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      value: '',
+      formData: {
+        socialMediaLink: '',
+      },
+      formSchema: {
+        socialMediaLink: {
+          type: 'url',
+          message: this.$t('common.validations.url'),
+        },
+      },
+      disabled: true,
     }
   },
   computed: {
@@ -73,20 +92,31 @@ export default {
     ...mapMutations({
       setCurrentUser: 'auth/SET_USER',
     }),
-    handleAddSocialMedia() {
+    async handleInput(data) {
+      this.disabled = true
+    },
+    async handleInputValid(data) {
+      if (data.socialMediaLink.length < 1) {
+        this.disabled = true
+      } else {
+        this.disabled = false
+      }
+    },
+    async handleAddSocialMedia() {
+      const mutation = gql`
+        mutation($url: String!) {
+          CreateSocialMedia(url: $url) {
+            id
+            url
+          }
+        }
+      `
+      const variables = { url: this.formData.socialMediaLink }
+
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation($url: String!) {
-              CreateSocialMedia(url: $url) {
-                id
-                url
-              }
-            }
-          `,
-          variables: {
-            url: this.value,
-          },
+          mutation,
+          variables,
           update: (store, { data }) => {
             const socialMedia = [...this.currentUser.socialMedia, data.CreateSocialMedia]
             this.setCurrentUser({
@@ -97,7 +127,8 @@ export default {
         })
         .then(() => {
           this.$toast.success(this.$t('settings.social-media.successAdd'))
-          this.value = ''
+          this.formData.socialMediaLink = ''
+          this.disabled = true
         })
         .catch(error => {
           this.$toast.error(error.message)

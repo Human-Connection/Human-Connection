@@ -222,6 +222,7 @@
     "reportContent": "Report",
     "validations": {
       "email": "must be a valid email address",
+      "url": "must be a valid URL",
       "verification-code": "must be 6 characters long"
     }
   },

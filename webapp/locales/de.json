@@ -221,6 +221,7 @@
     "reportContent": "Melden",
     "validations": {
       "email": "muss eine gültige E-Mail Adresse sein",
+      "url": "muss eine gültige URL sein",
       "verification-code": "muss genau 6 Buchstaben lang sein"
     }
   },
