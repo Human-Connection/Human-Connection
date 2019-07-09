@@ -10,9 +10,18 @@
           &nbsp;&nbsp;
           <span class="layout-leave-active">|</span>
           &nbsp;&nbsp;
-          <ds-icon name="edit" class="layout-leave-active" />
+          <ds-icon
+            :aria-label="$t('actions.edit')"
+            class="layout-leave-active"
+            name="edit"
+            :title="$t('actions.edit')"
+          />
           <a name="delete" @click="handleDeleteSocialMedia(link)">
-            <ds-icon name="trash" />
+            <ds-icon
+              :aria-label="$t('actions.delete')"
+              name="trash"
+              :title="$t('actions.delete')"
+            />
           </a>
         </ds-list-item>
       </ds-list>
