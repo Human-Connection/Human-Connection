@@ -7,9 +7,7 @@
             <img :src="link.favicon | proxyApiUrl" alt="Social Media link" width="16" height="16" />
             {{ link.url }}
           </a>
-          &nbsp;&nbsp;
-          <span class="layout-leave-active">|</span>
-          &nbsp;&nbsp;
+          <span class="layout-leave-active divider">|</span>
           <ds-icon
             :aria-label="$t('actions.edit')"
             class="layout-leave-active icon-button"
@@ -141,6 +139,10 @@ export default {
 </script>
 
 <style lang="scss">
+.divider {
+  padding: 0 $space-small;
+}
+
 .icon-button {
   cursor: pointer;
 }
