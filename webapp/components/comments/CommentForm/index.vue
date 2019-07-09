@@ -24,7 +24,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor'
+import HcEditor from '~/components/Editor/Editor'
 import PostCommentsQuery from '~/graphql/PostCommentsQuery.js'
 import CommentMutations from '~/graphql/CommentMutations.js'
 

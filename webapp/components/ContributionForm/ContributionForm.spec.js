@@ -47,7 +47,9 @@ describe('ContributionForm.vue', () => {
               },
             },
           })
-          .mockRejectedValue({ message: 'Not Authorised!' }),
+          .mockRejectedValue({
+            message: 'Not Authorised!',
+          }),
       },
       $toast: {
         error: jest.fn(),
@@ -74,12 +76,26 @@ describe('ContributionForm.vue', () => {
       getters,
     })
     const Wrapper = () => {
-      return mount(ContributionForm, { mocks, localVue, store, propsData })
+      return mount(ContributionForm, {
+        mocks,
+        localVue,
+        store,
+        propsData,
+      })
     }
 
     beforeEach(() => {
       wrapper = Wrapper()
-      wrapper.setData({ form: { languageOptions: [{ label: 'Deutsch', value: 'de' }] } })
+      wrapper.setData({
+        form: {
+          languageOptions: [
+            {
+              label: 'Deutsch',
+              value: 'de',
+            },
+          ],
+        },
+      })
     })
 
     describe('CreatePost', () => {

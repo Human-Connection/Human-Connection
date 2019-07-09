@@ -24,11 +24,9 @@ $easeOut: cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 80ms ease-out;
   transition-delay: 80ms;
 }
-
 .layout-leave-active {
   transition: opacity 80ms ease-in;
 }
-
 .layout-enter,
 .layout-leave-active {
   opacity: 0;
@@ -41,7 +39,6 @@ $easeOut: cubic-bezier(0.19, 1, 0.22, 1);
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
-
 .slide-up-enter,
 .slide-up-leave-active {
   opacity: 0;
@@ -87,7 +84,6 @@ blockquote {
     margin-top: 0;
   }
 }
-
 .main-navigation {
   box-shadow: $box-shadow-base;
   position: fixed;
@@ -110,7 +106,6 @@ hr {
 [class$='menu-trigger'] {
   user-select: none;
 }
-
 [class$='menu-popover'] {
   display: inline-block;
 

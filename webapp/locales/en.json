@@ -1,6 +1,8 @@
 {
   "filter-menu": {
-    "title": "Your filter bubble"
+    "title": "Your filter bubble",
+    "hashtag-search": "Searching for #{hashtag}",
+    "clearSearch": "Clear search"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
@@ -35,7 +37,15 @@
     }
   },
   "editor": {
-    "placeholder": "Leave your inspirational thoughts..."
+    "placeholder": "Leave your inspirational thoughts...",
+    "mention": {
+      "noUsersFound": "No users found"
+    },
+    "hashtag": {
+      "noHashtagsFound": "No hashtags found",
+      "addHashtag": "New hashtag",
+      "addLetter": "Type a letter"
+    }
   },
   "profile": {
     "name": "My Profile",
@@ -73,7 +83,7 @@
       "name": "Your data",
       "labelName": "Your Name",
       "namePlaceholder": "Femanon Funny",
-      "labelCity": "Su ciudad o región",
+      "labelCity": "Your City or Region",
       "labelBio": "About You",
       "success": "Your data was successfully updated!"
     },
@@ -190,7 +200,12 @@
     "menu": {
       "edit": "Edit Comment",
       "delete": "Delete Comment"
+    },
+    "show": {
+      "more": "show more",
+      "less": "show less"
     }
+
   },
   "quotes": {
     "african": {
@@ -281,17 +296,20 @@
     "user": {
       "title": "Report User",
       "type": "User",
-      "message": "Do you really want to report the user \"<b>{name}</b>\"?"
+      "message": "Do you really want to report the user \"<b>{name}</b>\"?",
+      "error": "You already reported the user!"
     },
     "contribution": {
       "title": "Report Post",
       "type": "Contribution",
-      "message": "Do you really want to report the contribution \"<b>{name}</b>\"?"
+      "message": "Do you really want to report the contribution \"<b>{name}</b>\"?",
+      "error": "You have already reported the contribution!"
     },
     "comment": {
       "title": "Report Comment",
       "type": "Comment",
-      "message": "Do you really want to report the comment from \"<b>{name}</b>\"?"
+      "message": "Do you really want to report the comment from \"<b>{name}</b>\"?",
+      "error": "You have already reported the comment!"
     }
   },
   "followButton": {
