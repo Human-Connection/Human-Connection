@@ -491,8 +491,6 @@ export default {
     // we have to replace our suggestion text with a mention
     // so it's important to pass also the position of your suggestion text
     selectItem(item) {
-      const searchUrl = new URL('/')
-      searchUrl.searchParams.set('hashtag', item.name)
       const typeAttrs = {
         mention: {
           // TODO: use router here
@@ -501,7 +499,7 @@ export default {
         },
         hashtag: {
           // TODO: Fill up with input hashtag in search field
-          url: searchUrl.href,
+          url: `/search/hashtag/${item.name}`,
           label: item.name,
         },
       }
