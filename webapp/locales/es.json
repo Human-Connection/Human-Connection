@@ -14,7 +14,8 @@
     "director": "Director General",
     "taxident": "Número de identificación del impuesto sobre el valor añadido según el § 27 a de la Ley del Impuesto sobre el Valor Añadido (Alemania)",
     "responsible": "Responsable según § 55 Abs. 2 RStV (Alemania)",
-    "bank": "cuenta"
+    "bank": "cuenta",
+    "germany": "Alemania"
   },
   "login": {
     "copy": "Si ya tiene una cuenta de Human Connection, inicie sesión aquí.",

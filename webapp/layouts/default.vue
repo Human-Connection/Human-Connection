@@ -133,7 +133,6 @@ export default {
   data() {
     return {
       mobileSearchVisible: false,
-      footerOpen: false,
     }
   },
   computed: {

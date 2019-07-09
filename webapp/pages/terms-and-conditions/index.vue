@@ -6,7 +6,7 @@
     <ds-container>
       <ds-space margin-top="large">
         <ds-text>{{ $t('site.termsAc') }}</ds-text>
-        <ds-text>...</ds-text>
+        <ds-text v-html="$t('terms.text')"></ds-text>
       </ds-space>
     </ds-container>
   </div>

@@ -14,7 +14,8 @@
     "director": "Directeur Général",
     "taxident": "Numéro d'identification à la taxe sur la valeur ajoutée selon § 27 a de la loi sur la taxe sur la valeur ajoutée (Allemagne)",
     "responsible": "Responsable selon § 55 Abs. 2 RStV (Allemagne)",
-    "bank": "Bankverbindung"
+    "bank": "Bankverbindung",
+    "germany": "Allemagne"
   },
   "login": {
     "copy": "Si vous avez déjà un compte human-connection, connectez-vous ici.",
