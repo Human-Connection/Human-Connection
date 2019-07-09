@@ -12,13 +12,14 @@
           &nbsp;&nbsp;
           <ds-icon
             :aria-label="$t('actions.edit')"
-            class="layout-leave-active"
+            class="layout-leave-active icon-button"
             name="edit"
             :title="$t('actions.edit')"
           />
           <a name="delete" @click="handleDeleteSocialMedia(link)">
             <ds-icon
               :aria-label="$t('actions.delete')"
+              class="icon-button"
               name="trash"
               :title="$t('actions.delete')"
             />
@@ -140,6 +141,10 @@ export default {
 </script>
 
 <style lang="scss">
+.icon-button {
+  cursor: pointer;
+}
+
 .layout-leave-active {
   opacity: 0.4;
 }
