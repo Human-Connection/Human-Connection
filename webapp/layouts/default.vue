@@ -94,14 +94,14 @@
     </ds-container>
     <div id="footer" class="ds-footer">
       <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
-      &nbsp;⏐&nbsp;
-      <a href="/imprint">{{ $t('site.imprint') }}</a>
+      &nbsp;-&nbsp;
+      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
       &nbsp;‑&nbsp;
-      <a href="/terms-and-conditions">{{ $t('site.termsAc') }}</a>
+      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>
       &nbsp;‑&nbsp;
-      <a href="/privacy">{{ $t('site.privacy') }}</a>
+      <nuxt-link to="/privacy">{{ $t('site.privacy') }}</nuxt-link>
       &nbsp;‑&nbsp;
-      <a href="/changelog">{{ $t('site.changelog') }}</a>
+      <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
     </div>
     <div id="overlay" />
     <no-ssr>
