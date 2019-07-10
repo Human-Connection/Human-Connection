@@ -24,13 +24,13 @@ describe('ContributionForm.vue', () => {
   let mocks
   let propsData
   const postTitle = 'this is a title for a post'
-  const postTitleTooShort = '12'
+  const postTitleTooShort = 'xx'
   let postTitleTooLong = ''
   for (let i = 0; i < 100; i++) {
     postTitleTooLong += 'x'
   }
   const postContent = 'this is a post'
-  const postContentTooShort = '12'
+  const postContentTooShort = 'xx'
   let postContentTooLong = ''
   for (let i = 0; i < 2001; i++) {
     postContentTooLong += 'x'
