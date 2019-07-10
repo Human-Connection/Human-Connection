@@ -146,6 +146,7 @@ const permissions = shield(
       Comment: allow,
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
+      Badge: allow,
     },
     Mutation: {
       '*': deny,
