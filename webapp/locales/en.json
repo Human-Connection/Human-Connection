@@ -189,7 +189,14 @@
       "name": "Organizations"
     },
     "users": {
-      "name": "Users"
+      "name": "Users",
+      "table": {
+        "columns": {
+          "name": "Name",
+          "slug": "Username",
+          "role": "Role"
+        }
+      }
     },
     "pages": {
       "name": "Pages"

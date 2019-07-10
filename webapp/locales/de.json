@@ -188,7 +188,14 @@
       "name": "Organisationen"
     },
     "users": {
-      "name": "Benutzer"
+      "name": "Benutzer",
+      "table": {
+        "columns": {
+          "name": "Name",
+          "slug": "Username",
+          "role": "Rolle"
+        }
+      }
     },
     "pages": {
       "name": "Seiten"
