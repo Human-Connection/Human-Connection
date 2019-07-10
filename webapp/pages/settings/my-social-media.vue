@@ -54,6 +54,9 @@
           <ds-button primary :disabled="disabled">
             {{ editingLink === '' ? $t('settings.social-media.submit') : $t('actions.save') }}
           </ds-button>
+          <ds-button v-if="editingLink !== ''" ghost @click="handleCancel()">
+            {{ $t('actions.cancel') }}
+          </ds-button>
         </ds-space>
       </ds-space>
     </ds-card>
@@ -99,6 +102,11 @@ export default {
     ...mapMutations({
       setCurrentUser: 'auth/SET_USER',
     }),
+    handleCancel() {
+      this.editingLink = ''
+      this.formData.socialMediaLink = ''
+      this.disabled = true
+    },
     async handleInput(data) {
       this.disabled = true
     },
