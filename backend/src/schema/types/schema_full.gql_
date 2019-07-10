@@ -29,8 +29,8 @@ type Mutation {
   report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
-  reward(fromBadgeId: ID!, toUserId: ID!): ID
-  unreward(fromBadgeId: ID!, toUserId: ID!): ID
+  reward(fromBadgeKey: ID!, toUserId: ID!): ID
+  unreward(fromBadgeKey: ID!, toUserId: ID!): ID
   # Shout the given Type and ID
   shout(id: ID!, type: ShoutTypeEnum): Boolean!
   # Unshout the given Type and ID

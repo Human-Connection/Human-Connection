@@ -28,7 +28,6 @@ export default i18n => {
               name: name${lang}
             }
             badges {
-              id
               key
               icon
             }

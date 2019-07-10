@@ -5,52 +5,42 @@ import Factory from './factories'
 ;(async function() {
   try {
     const f = Factory()
-    await Promise.all([
+    const [racoon, rabbit, wolf, bear, turtle, rhino] = await Promise.all([
       f.create('Badge', {
-        id: 'b1',
         key: 'indiegogo_en_racoon',
-        type: 'crowdfunding',
-        status: 'permanent',
         icon: '/img/badges/indiegogo_en_racoon.svg',
       }),
       f.create('Badge', {
-        id: 'b2',
         key: 'indiegogo_en_rabbit',
-        type: 'crowdfunding',
-        status: 'permanent',
         icon: '/img/badges/indiegogo_en_rabbit.svg',
       }),
       f.create('Badge', {
-        id: 'b3',
         key: 'indiegogo_en_wolf',
-        type: 'crowdfunding',
-        status: 'permanent',
         icon: '/img/badges/indiegogo_en_wolf.svg',
       }),
       f.create('Badge', {
-        id: 'b4',
         key: 'indiegogo_en_bear',
-        type: 'crowdfunding',
-        status: 'permanent',
         icon: '/img/badges/indiegogo_en_bear.svg',
       }),
       f.create('Badge', {
-        id: 'b5',
         key: 'indiegogo_en_turtle',
-        type: 'crowdfunding',
-        status: 'permanent',
         icon: '/img/badges/indiegogo_en_turtle.svg',
       }),
       f.create('Badge', {
-        id: 'b6',
         key: 'indiegogo_en_rhino',
-        type: 'crowdfunding',
-        status: 'permanent',
         icon: '/img/badges/indiegogo_en_rhino.svg',
       }),
     ])
 
-    await Promise.all([
+    const [
+      peterLustig,
+      bobDerBaumeister,
+      jennyRostock,
+      tick, // eslint-disable-line no-unused-vars
+      trick, // eslint-disable-line no-unused-vars
+      track, // eslint-disable-line no-unused-vars
+      dagobert,
+    ] = await Promise.all([
       f.create('User', {
         id: 'u1',
         name: 'Peter Lustig',
@@ -123,30 +113,16 @@ import Factory from './factories'
     ])
 
     await Promise.all([
-      f.relate('User', 'Badges', {
-        from: 'b6',
-        to: 'u1',
-      }),
-      f.relate('User', 'Badges', {
-        from: 'b5',
-        to: 'u2',
-      }),
-      f.relate('User', 'Badges', {
-        from: 'b4',
-        to: 'u3',
-      }),
-      f.relate('User', 'Badges', {
-        from: 'b3',
-        to: 'u4',
-      }),
-      f.relate('User', 'Badges', {
-        from: 'b2',
-        to: 'u5',
-      }),
-      f.relate('User', 'Badges', {
-        from: 'b1',
-        to: 'u6',
-      }),
+      peterLustig.relateTo(racoon, 'rewarded'),
+      peterLustig.relateTo(rhino, 'rewarded'),
+      peterLustig.relateTo(wolf, 'rewarded'),
+      bobDerBaumeister.relateTo(racoon, 'rewarded'),
+      bobDerBaumeister.relateTo(turtle, 'rewarded'),
+      jennyRostock.relateTo(bear, 'rewarded'),
+      dagobert.relateTo(rabbit, 'rewarded'),
+    ])
+
+    await Promise.all([
       f.relate('User', 'Friends', {
         from: 'u1',
         to: 'u2',

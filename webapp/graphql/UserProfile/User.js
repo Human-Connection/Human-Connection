@@ -18,7 +18,6 @@ export default i18n => {
         }
         createdAt
         badges {
-          id
           key
           icon
         }
@@ -38,7 +37,6 @@ export default i18n => {
           contributionsCount
           commentsCount
           badges {
-            id
             key
             icon
           }
@@ -60,7 +58,6 @@ export default i18n => {
           contributionsCount
           commentsCount
           badges {
-            id
             key
             icon
           }

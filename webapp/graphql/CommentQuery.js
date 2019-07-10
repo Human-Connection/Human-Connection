@@ -24,7 +24,6 @@ export default app => {
             name: name${lang}
           }
           badges {
-            id
             key
             icon
           }
