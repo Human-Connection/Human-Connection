@@ -12,10 +12,12 @@ export default applyScalars(
       resolvers,
       config: {
         query: {
-          exclude: ['Notfication', 'Statistics', 'LoggedInUser'],
+          exclude: ['InvitationCode', 'EmailAddress', 'Notfication', 'Statistics', 'LoggedInUser'],
+          // add 'User' here as soon as possible
         },
         mutation: {
-          exclude: ['Notfication', 'Statistics', 'LoggedInUser'],
+          exclude: ['InvitationCode', 'EmailAddress', 'Notfication', 'Statistics', 'LoggedInUser'],
+          // add 'User' here as soon as possible
         },
         debug: CONFIG.DEBUG,
       },

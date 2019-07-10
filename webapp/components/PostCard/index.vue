@@ -128,6 +128,15 @@ export default {
 </script>
 
 <style lang="scss">
+.ds-card-image img {
+  width: 100%;
+  max-height: 300px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: center;
+  object-position: center;
+}
+
 .post-card {
   cursor: pointer;
   position: relative;

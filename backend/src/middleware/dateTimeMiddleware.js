@@ -9,7 +9,6 @@ const setUpdatedAt = (resolve, root, args, context, info) => {
 
 export default {
   Mutation: {
-    CreateUser: setCreatedAt,
     CreatePost: setCreatedAt,
     CreateComment: setCreatedAt,
     CreateOrganization: setCreatedAt,
