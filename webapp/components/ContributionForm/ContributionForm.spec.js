@@ -24,7 +24,17 @@ describe('ContributionForm.vue', () => {
   let mocks
   let propsData
   const postTitle = 'this is a title for a post'
+  const postTitleTooShort = '12'
+  let postTitleTooLong = ''
+  for (let i = 0; i < 100; i++) {
+    postTitleTooLong += 'x'
+  }
   const postContent = 'this is a post'
+  const postContentTooShort = '12'
+  let postContentTooLong = ''
+  for (let i = 0; i < 2001; i++) {
+    postContentTooLong += 'x'
+  }
   const imageUpload = {
     file: {
       filename: 'avataar.svg',
@@ -109,15 +119,52 @@ describe('ContributionForm.vue', () => {
       })
 
       describe('invalid form submission', () => {
-        it('title required for form submission', async () => {
+        it('title and content should not be empty ', async () => {
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
+
+        it('title should not be empty', async () => {
+          wrapper.vm.updateEditorContent(postContent)
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
+
+        it('title should not be too long', async () => {
+          postTitleInput = wrapper.find('.ds-input')
+          postTitleInput.setValue(postTitleTooLong)
+          wrapper.vm.updateEditorContent(postContent)
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
+
+        it('title should not be too short', async () => {
+          postTitleInput = wrapper.find('.ds-input')
+          postTitleInput.setValue(postTitleTooShort)
+          wrapper.vm.updateEditorContent(postContent)
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
+
+        it('content should not be empty', async () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
 
-        it('content required for form submission', async () => {
-          wrapper.vm.updateEditorContent(postContent)
+        it('content should not be too long', async () => {
+          postTitleInput = wrapper.find('.ds-input')
+          postTitleInput.setValue(postTitle)
+          wrapper.vm.updateEditorContent(postContentTooLong)
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
+
+        it('content should not be too short', async () => {
+          postTitleInput = wrapper.find('.ds-input')
+          postTitleInput.setValue(postTitle)
+          wrapper.vm.updateEditorContent(postContentTooShort)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
@@ -187,7 +234,7 @@ describe('ContributionForm.vue', () => {
         it('calls $router.back() when cancel button clicked', () => {
           cancelBtn = wrapper.find('.cancel-button')
           cancelBtn.trigger('click')
-          expect(mocks.$router.back).toHaveBeenCalledTimes(0)
+          expect(mocks.$router.back).toHaveBeenCalledTimes(1)
         })
       })
 
