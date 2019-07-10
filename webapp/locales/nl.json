@@ -1,4 +1,19 @@
 {
+  "site": {
+    "made": "Met &#10084; gemaakt",
+    "imprint": "Afdruk",
+    "termsAc": "Gebruiksvoorwaarden",
+    "privacy": "gegevensbescherming",
+    "changelog": "Veranderingen & Geschiedenis",
+    "contact": "contact",
+    "tribunal": "registerrechtbank",
+    "register": "inschrijfnummer",
+    "director": "Directeur",
+    "taxident": "Identificatienummer voor de belasting over de toegevoegde waarde overeenkomstig § 27 a Wet op de belasting over de toegevoegde waarde (Duitsland).",
+    "responsible": "Verantwoordelijk volgens § 55 Abs. 2 RStV (Duitsland).",
+    "bank": "bankrekening",
+    "germany": "Duitsland"
+  },
   "login": {
     "copy": "Als u al een mini-aansluiting account heeft, log dan hier in.",
     "login": "Inloggen",

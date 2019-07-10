@@ -34,18 +34,19 @@
             />
           </ds-flex-item>
         </ds-flex>
+        <ds-space />
         <div slot="footer" style="text-align: right">
           <ds-button
+            class="cancel-button"
             :disabled="loading || disabled"
             ghost
-            class="cancel-button"
             @click.prevent="$router.back()"
           >
             {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button
-            icon="check"
             type="submit"
+            icon="check"
             :loading="loading"
             :disabled="disabled || errors"
             primary
@@ -61,7 +62,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor'
+import HcEditor from '~/components/Editor/Editor'
 import orderBy from 'lodash/orderBy'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
@@ -99,6 +100,7 @@ export default {
       slug: null,
       users: [],
       n: 0,
+      hashtags: [],
     }
   },
   watch: {
@@ -205,15 +207,32 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql(`{
-          User(orderBy: slug_asc) {
-            id
-            slug
+        return gql`
+          {
+            User(orderBy: slug_asc) {
+              id
+              slug
+            }
           }
-        }`)
+        `
       },
       result(result) {
         this.users = result.data.User
+      },
+    },
+    Tag: {
+      query() {
+        return gql`
+          {
+            Tag(orderBy: name_asc) {
+              id
+              name
+            }
+          }
+        `
+      },
+      result(result) {
+        this.hashtags = result.data.Tag
       },
     },
   },

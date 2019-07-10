@@ -2,6 +2,21 @@
   "filter-menu": {
     "title": "Votre bulle de filtre"
   },
+  "site": {
+    "made": "Avec &#10084; fait",
+    "imprint": "Mentions légales",
+    "termsAc": "modalités et conditions",
+    "privacy": "protection des données",
+    "changelog": "Changements et historique",
+    "contact": "Contacter",
+    "tribunal": "tribunal de registre",
+    "register": "numéro de registre",
+    "director": "Directeur Général",
+    "taxident": "Numéro d'identification à la taxe sur la valeur ajoutée selon § 27 a de la loi sur la taxe sur la valeur ajoutée (Allemagne)",
+    "responsible": "Responsable selon § 55 Abs. 2 RStV (Allemagne)",
+    "bank": "Bankverbindung",
+    "germany": "Allemagne"
+  },
   "login": {
     "copy": "Si vous avez déjà un compte human-connection, connectez-vous ici.",
     "login": "Connexion",

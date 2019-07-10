@@ -5,9 +5,9 @@
         <div>
           <ds-flex>
             <ds-flex-item :width="{ base: '49px', md: '150px' }">
-              <a v-router-link style="display: inline-flex" href="/">
+              <nuxt-link to="/">
                 <ds-logo />
-              </a>
+              </nuxt-link>
             </ds-flex-item>
             <ds-flex-item>
               <div id="nav-search-box" v-on:click="unfolded" @blur.capture="foldedup">
@@ -86,13 +86,22 @@
         </div>
       </ds-container>
     </div>
-
     <ds-container style="word-break: break-all">
-      <div style="padding: 6rem 2rem 5rem;">
+      <div style="padding: 6rem 2rem 5rem;" :width="{ base: '100%', md: '96%' }">
         <nuxt />
       </div>
     </ds-container>
-
+    <div id="footer" class="ds-footer">
+      <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
+      &nbsp;-&nbsp;
+      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/privacy">{{ $t('site.privacy') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
+    </div>
     <div id="overlay" />
     <no-ssr>
       <modal />
@@ -270,5 +279,14 @@ export default {
       padding-left: 12px;
     }
   }
+}
+.ds-footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0px;
+  z-index: 10;
+  background-color: white;
+  width: 100%;
+  padding: 10px 10px;
 }
 </style>

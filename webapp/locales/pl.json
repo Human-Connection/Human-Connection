@@ -1,4 +1,19 @@
 {
+  "site": {
+    "made": "Z &#10084; zrobiony",
+    "imprint": "Nadruk",
+    "termsAc": "Warunki użytkowania",
+    "privacy": "ochrona danych",
+    "changelog": "Zmiany i historia",
+    "contact": "Kontakt",
+    "tribunal": "sąd rejestrowy",
+    "register": "numer rejestracyjny",
+    "director": "Dyrektor zarządzający",
+    "taxident": "Numer identyfikacyjny podatku od wartości dodanej zgodnie z § 27 a Ustawa o podatku od wartości dodanej (Niemcy)",
+    "responsible": "Odpowiedzialny zgodnie z § 55 Abs. 2 RStV (Niemcy)",
+    "bank": "rachunek bankowy",
+    "germany": "Niemcy"
+  },
   "login": {
     "copy": "Jeśli masz już konto Human Connection, zaloguj się tutaj.",
     "login": "logowanie",
