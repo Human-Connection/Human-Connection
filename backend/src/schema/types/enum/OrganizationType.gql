@@ -1,0 +1,8 @@
+
+enum OrganizationType {
+  ngo
+  npo
+  goodpurpose
+  ev
+  eva
+}

@@ -9,7 +9,7 @@ type Organization {
   descriptionExcerpt: String
   avatar: String
   coverImg: String
-  type: String # 'ngo', 'npo', 'goodpurpose', 'ev', 'eva'
+  type: OrganizationType
   language: String
   deleted: Boolean
   disabled: Boolean
