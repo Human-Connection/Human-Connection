@@ -26,7 +26,10 @@ describe('ContributionForm.vue', () => {
   const postTitle = 'this is a title for a post'
   const postContent = 'this is a post'
   const imageUpload = {
-    file: { filename: 'avataar.svg', previewElement: '' },
+    file: {
+      filename: 'avataar.svg',
+      previewElement: '',
+    },
     url: 'someUrlToImage',
   }
   const image = '/uploads/1562010976466-avataaars'
@@ -217,7 +220,12 @@ describe('ContributionForm.vue', () => {
             content: 'auf Deutsch geschrieben',
             language: 'de',
             image,
-            categories: [{ id: 'cat12', name: 'Democracy & Politics' }],
+            categories: [
+              {
+                id: 'cat12',
+                name: 'Democracy & Politics',
+              },
+            ],
           },
         }
         wrapper = Wrapper()

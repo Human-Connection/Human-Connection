@@ -1,5 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import CommentForm from './index.vue'
+import CommentForm from './CommentForm.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 
@@ -21,9 +21,15 @@ describe('CommentForm.vue', () => {
         mutate: jest
           .fn()
           .mockResolvedValueOnce({
-            data: { CreateComment: { contentExcerpt: 'this is a comment' } },
+            data: {
+              CreateComment: {
+                contentExcerpt: 'this is a comment',
+              },
+            },
           })
-          .mockRejectedValue({ message: 'Ouch!' }),
+          .mockRejectedValue({
+            message: 'Ouch!',
+          }),
       },
       $toast: {
         error: jest.fn(),
@@ -31,7 +37,9 @@ describe('CommentForm.vue', () => {
       },
     }
     propsData = {
-      post: { id: 1 },
+      post: {
+        id: 1,
+      },
     }
   })
 
@@ -45,7 +53,12 @@ describe('CommentForm.vue', () => {
       getters,
     })
     const Wrapper = () => {
-      return mount(CommentForm, { mocks, localVue, propsData, store })
+      return mount(CommentForm, {
+        mocks,
+        localVue,
+        propsData,
+        store,
+      })
     }
 
     beforeEach(() => {

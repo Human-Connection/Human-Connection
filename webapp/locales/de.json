@@ -49,8 +49,8 @@
           "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
           "invalid-invitation-token": "Es sieht so aus, als ob der Einladungscode schon eingelöst wurde. Jeder Code kann nur einmalig benutzt werden."
         },
-      "submit": "Konto erstellen",
-      "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}</b> geschickt"
+        "submit": "Konto erstellen",
+        "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}</b> geschickt"
       }
     },
     "create-user-account": {
@@ -229,7 +229,7 @@
     },
     "comment": {
       "submit": "Kommentiere",
-      "submitted": "Kommentar Gesendet"
+      "submitted": "Kommentar gesendet"
     }
   },
   "comment": {
