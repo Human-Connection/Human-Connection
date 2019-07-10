@@ -120,7 +120,7 @@
     },
     "social-media": {
       "name": "Soziale Medien",
-      "placeholder": "Füge eine Social-Media URL hinzu",
+      "placeholder": "Deine Social-Media URL",
       "submit": "Link hinzufügen",
       "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
       "successDelete": "Social-Media gelöscht. Profil aktualisiert!"

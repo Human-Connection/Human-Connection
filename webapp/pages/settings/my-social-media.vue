@@ -1,57 +1,63 @@
 <template>
-  <ds-card :header="$t('settings.social-media.name')">
-    <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
-      <ds-list>
-        <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
-          <a :href="link.url" target="_blank">
-            <img :src="link.favicon | proxyApiUrl" alt="Social Media link" width="16" height="16" />
-            {{ link.url }}
-          </a>
-          <span class="layout-leave-active divider">|</span>
-          <ds-icon
-            :aria-label="$t('actions.edit')"
-            class="layout-leave-active icon-button"
-            name="edit"
-            :title="$t('actions.edit')"
-          />
-          <a name="delete" @click="handleDeleteSocialMedia(link)">
-            <ds-icon
-              :aria-label="$t('actions.delete')"
-              class="icon-button"
-              name="trash"
-              :title="$t('actions.delete')"
+  <ds-form
+    v-model="formData"
+    :schema="formSchema"
+    @input="handleInput"
+    @input-valid="handleInputValid"
+    @submit="handleAddSocialMedia"
+  >
+    <ds-card :header="$t('settings.social-media.name')">
+      <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
+        <ds-list>
+          <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
+            <ds-input v-if="editingLink === link.id"
+              model="socialMediaLink"
+              type="text"
+              :placeholder="$t('settings.social-media.placeholder')"
             />
-          </a>
-        </ds-list-item>
-      </ds-list>
-    </ds-space>
-    <ds-space margin-top="base">
-      <ds-form
-        v-model="formData"
-        :schema="formSchema"
-        @submit="handleAddSocialMedia"
-        @input="handleInput"
-        @input-valid="handleInputValid"
-      >
-        <template>
-          <ds-input
-            id="socialMediaLink"
-            name="social-media"
-            model="socialMediaLink"
-            type="text"
-            :placeholder="$t('settings.social-media.placeholder')"
-          />
-          <ds-space margin-top="base">
-            <div>
-              <ds-button primary :disabled="disabled">
-                {{ $t('settings.social-media.submit') }}
-              </ds-button>
-            </div>
-          </ds-space>
-        </template>
-      </ds-form>
-    </ds-space>
-  </ds-card>
+
+            <template v-else>
+              <a :href="link.url" target="_blank">
+                <img :src="link.favicon | proxyApiUrl" alt="Link:" width="16" height="16" />
+                {{ link.url }}
+              </a>
+              <span class="layout-leave-active divider">|</span>
+              <a name='edit' @click="handleEditSocialMedia(link)">
+                <ds-icon
+                  :aria-label="$t('actions.edit')"
+                  class="layout-leave-active icon-button"
+                  name="edit"
+                  :title="$t('actions.edit')"
+                />
+              </a>
+              <a name="delete" @click="handleDeleteSocialMedia(link)">
+                <ds-icon
+                  :aria-label="$t('actions.delete')"
+                  class="icon-button"
+                  name="trash"
+                  :title="$t('actions.delete')"
+                />
+              </a>
+            </template>
+          </ds-list-item>
+        </ds-list>
+      </ds-space>
+
+      <ds-space margin-top="base">
+        <ds-input
+          v-if="editingLink === ''"
+          model="socialMediaLink"
+          type="text"
+          :placeholder="$t('settings.social-media.placeholder')"
+        />
+        <ds-space margin-top="base">
+          <ds-button primary :disabled="disabled">
+            {{ editingLink === '' ? $t('settings.social-media.submit') : $t('actions.save') }}
+          </ds-button>
+        </ds-space>
+      </ds-space>
+    </ds-card>
+  </ds-form>
 </template>
 
 <script>
@@ -71,6 +77,7 @@ export default {
         },
       },
       disabled: true,
+      editingLink: '',
     }
   },
   computed: {
@@ -164,6 +171,11 @@ export default {
         .catch(error => {
           this.$toast.error(error.message)
         })
+    },
+    handleEditSocialMedia(link) {
+      this.editingLink = link.id
+      this.formData.socialMediaLink = link.url
+      this.disabled = false
     },
   },
 }
