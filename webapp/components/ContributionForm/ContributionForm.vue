@@ -36,7 +36,7 @@
         </ds-flex>
         <div slot="footer" style="text-align: right">
           <ds-button
-            :disabled="loading || disabled"
+            :disabled="loading"
             ghost
             class="cancel-button"
             @click.prevent="$router.back()"
@@ -179,7 +179,7 @@ export default {
       this.n = value.replace(/<\/?[^>]+(>|$)/gm, '').length
       this.form.contentLength = this.n
 
-      if (this.n > 3 && this.n < 2000) {
+      if (this.n > this.formSchema.content.min && this.n < this.formSchema.content.max) {
         this.disabled = false
       }
     },
