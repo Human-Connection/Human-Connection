@@ -1,0 +1,7 @@
+enum Emotion {
+  surprised
+  cry
+  happy
+  angry
+  funny
+}

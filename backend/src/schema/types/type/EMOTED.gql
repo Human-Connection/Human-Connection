@@ -2,7 +2,7 @@ type EMOTED @relation(name: "EMOTED") {
   from: User
   to: Post
 
-  emotion: String
+  emotion: Emotion
   #createdAt: DateTime
   #updatedAt: DateTime
   createdAt: String
