@@ -115,7 +115,7 @@ export default {
     async onSubmit() {
       try {
         await this.$store.dispatch('auth/login', { ...this.form })
-        this.$toast.success('You are logged in!')
+        this.$toast.success(this.$t('login.success'))
         this.$router.replace(this.$route.query.path || '/')
       } catch (err) {
         this.$toast.error(err.message)

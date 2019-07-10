@@ -114,13 +114,22 @@
         </div>
       </ds-container>
     </div>
-
     <ds-container style="word-break: break-all">
-      <div style="padding: 6rem 2rem 5rem;">
+      <div class="main-container" :width="{ base: '100%', md: '96%' }">
         <nuxt />
       </div>
     </ds-container>
-
+    <div id="footer" class="ds-footer">
+      <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
+      &nbsp;-&nbsp;
+      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/privacy">{{ $t('site.privacy') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
+    </div>
     <div id="overlay" />
     <no-ssr>
       <modal />
@@ -266,6 +275,11 @@ export default {
   display: inline-flex;
 }
 
+.main-container {
+  padding-top: 6rem;
+  padding-botton: 5rem;
+}
+
 .main-navigation {
   a {
     color: $text-color-soft;
@@ -340,5 +354,15 @@ export default {
   .hide-mobile-menu {
     display: none;
   }
+}
+
+.ds-footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0px;
+  z-index: 10;
+  background-color: white;
+  width: 100%;
+  padding: 10px 10px;
 }
 </style>

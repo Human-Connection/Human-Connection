@@ -47,8 +47,8 @@ describe('ChangePassword ', () => {
       describe('submitting new password', () => {
         beforeEach(() => {
           wrapper = Wrapper()
-          wrapper.find('input#newPassword').setValue('supersecret')
-          wrapper.find('input#confirmPassword').setValue('supersecret')
+          wrapper.find('input#password').setValue('supersecret')
+          wrapper.find('input#passwordConfirmation').setValue('supersecret')
           wrapper.find('form').trigger('submit')
         })
 
@@ -58,7 +58,7 @@ describe('ChangePassword ', () => {
 
         it('delivers new password to backend', () => {
           const expected = expect.objectContaining({
-            variables: { code: '123456', email: 'mail@example.org', newPassword: 'supersecret' },
+            variables: { code: '123456', email: 'mail@example.org', password: 'supersecret' },
           })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
