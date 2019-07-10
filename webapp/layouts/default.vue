@@ -87,7 +87,7 @@
       </ds-container>
     </div>
     <ds-container style="word-break: break-all">
-      <div style="padding: 6rem 2rem 5rem;" :width="{ base: '100%', md: '96%' }">
+      <div class="main-container" :width="{ base: '100%', md: '96%' }">
         <nuxt />
       </div>
     </ds-container>
@@ -214,6 +214,11 @@ export default {
   margin-right: $space-xx-small;
   align-self: center;
   display: inline-flex;
+}
+
+.main-container {
+  padding-top: 6rem;
+  padding-botton: 5rem;
 }
 
 .main-navigation {
