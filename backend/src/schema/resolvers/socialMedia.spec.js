@@ -16,6 +16,14 @@ describe('SocialMedia', () => {
       }
     }
   `
+  const mutationU = gql`
+    mutation($id: ID!, $url: String!) {
+      UpdateSocialMedia(id: $id, url: $url) {
+        id
+        url
+      }
+    }
+  `
   const mutationD = gql`
     mutation($id: ID!) {
       DeleteSocialMedia(id: $id) {
@@ -72,6 +80,27 @@ describe('SocialMedia', () => {
             url: 'http://nsosp.org',
           },
         }),
+      )
+    })
+
+    it('updates social media', async () => {
+      const creationVariables = {
+        url: 'http://nsosp.org',
+      }
+      const { CreateSocialMedia } = await client.request(mutationC, creationVariables)
+      const { id } = CreateSocialMedia
+      const variables = {
+        id,
+        url: 'https://newurl.org',
+      }
+      const expected = {
+        UpdateSocialMedia: {
+          id: id,
+          url: 'https://newurl.org',
+        },
+      }
+      await expect(client.request(mutationU, variables)).resolves.toEqual(
+        expect.objectContaining(expected),
       )
     })
 

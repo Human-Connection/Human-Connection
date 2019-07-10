@@ -40,6 +40,8 @@ export default {
         },
       )
       session.close()
+
+      return params
     },
   },
 }
