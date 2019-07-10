@@ -21,11 +21,11 @@
                 <img :src="link.favicon | proxyApiUrl" alt="Link:" width="16" height="16" />
                 {{ link.url }}
               </a>
-              <span class="layout-leave-active divider">|</span>
+              <span class="divider">|</span>
               <a name='edit' @click="handleEditSocialMedia(link)">
                 <ds-icon
                   :aria-label="$t('actions.edit')"
-                  class="layout-leave-active icon-button"
+                  class="icon-button"
                   name="edit"
                   :title="$t('actions.edit')"
                 />
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import cloneDeep from 'lodash/cloneDeep'
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 
@@ -164,7 +165,17 @@ export default {
           .mutate({
             mutation,
             variables,
-            //update
+            update: (store, { data }) => {
+              const newLink = data.UpdateSocialMedia
+              const socialMedia = cloneDeep(this.currentUser.socialMedia)
+              const index = socialMedia.findIndex(link => link.id === newLink.id)
+              socialMedia.splice(index, 1, newLink)
+
+              this.setCurrentUser({
+                ...this.currentUser,
+                socialMedia,
+              })
+            },
           })
           .then(() => {
             this.$toast.success('updated!')
@@ -220,6 +231,7 @@ export default {
 
 <style lang="scss">
 .divider {
+  opacity: 0.4;
   padding: 0 $space-small;
 }
 
@@ -227,7 +239,4 @@ export default {
   cursor: pointer;
 }
 
-.layout-leave-active {
-  opacity: 0.4;
-}
 </style>
