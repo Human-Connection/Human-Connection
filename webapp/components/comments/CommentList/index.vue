@@ -47,7 +47,8 @@ export default {
   },
   watch: {
     Post(post) {
-      this.comments = post[0].comments || []
+      const [first] = post
+      this.comments = first && first.comments || []
     },
   },
   apollo: {
