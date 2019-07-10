@@ -1,12 +1,16 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import FilterPosts from './FilterPosts.vue'
-import Styleguide from '@human-connection/styleguide'
 import VTooltip from 'v-tooltip'
+import Styleguide from '@human-connection/styleguide'
+import Vuex from 'vuex'
+import FilterPosts from './FilterPosts.vue'
+import FilterPostsMenuItem from './FilterPostsMenuItems.vue'
+import { mutations } from '~/store/posts'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 localVue.use(VTooltip)
+localVue.use(Vuex)
 
 describe('FilterPosts.vue', () => {
   let wrapper
@@ -23,7 +27,9 @@ describe('FilterPosts.vue', () => {
       $apollo: {
         query: jest
           .fn()
-          .mockResolvedValueOnce()
+          .mockResolvedValueOnce({
+            data: { Post: { title: 'Post with Category', category: [{ id: 'cat4' }] } },
+          })
           .mockRejectedValue({ message: 'We were unable to filter' }),
       },
       $t: jest.fn(),
@@ -44,8 +50,13 @@ describe('FilterPosts.vue', () => {
   })
 
   describe('mount', () => {
+    const store = new Vuex.Store({
+      mutations: {
+        'posts/SET_POSTS': mutations.SET_POSTS,
+      },
+    })
     const Wrapper = () => {
-      return mount(FilterPosts, { mocks, localVue, propsData })
+      return mount(FilterPosts, { mocks, localVue, propsData, store })
     }
 
     beforeEach(() => {
@@ -72,7 +83,8 @@ describe('FilterPosts.vue', () => {
     it('adds a categories id to selectedCategoryIds when clicked', () => {
       environmentAndNatureButton = wrapper.findAll('button').at(1)
       environmentAndNatureButton.trigger('click')
-      expect(wrapper.vm.selectedCategoryIds).toEqual(['cat4'])
+      const filterPostsMenuItem = wrapper.find(FilterPostsMenuItem)
+      expect(filterPostsMenuItem.vm.selectedCategoryIds).toEqual(['cat4'])
     })
 
     it('sets primary to true when the button is clicked', () => {
@@ -109,6 +121,14 @@ describe('FilterPosts.vue', () => {
           },
         }),
       )
+    })
+
+    it('toggles the categoryIds when clicked more than once', () => {
+      environmentAndNatureButton = wrapper.findAll('button').at(1)
+      environmentAndNatureButton.trigger('click')
+      environmentAndNatureButton.trigger('click')
+      const filterPostsMenuItem = wrapper.find(FilterPostsMenuItem)
+      expect(filterPostsMenuItem.vm.selectedCategoryIds).toEqual([])
     })
   })
 })
