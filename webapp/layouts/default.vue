@@ -6,7 +6,7 @@
           <ds-flex class="main-navigation-flex">
             <ds-flex-item :width="{ lg: '5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
-              <a @click="$router.push('/').then(() => $router.go())">
+              <a @click="redirectToRoot">
                 <ds-logo />
               </a>
             </ds-flex-item>
@@ -222,6 +222,7 @@ export default {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
+      fetchPosts: 'posts/fetchPosts',
     }),
     goToPost(item) {
       this.$nextTick(() => {
@@ -246,6 +247,10 @@ export default {
     },
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
+    },
+    redirectToRoot() {
+      this.$router.replace('/')
+      this.fetchPosts({ i18n: this.$i18n, filter: {} })
     },
   },
   apollo: {
