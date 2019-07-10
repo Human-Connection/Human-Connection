@@ -102,6 +102,7 @@ export default {
       users: [],
       hashtags: [],
       n: 0,
+      hashtags: [],
     }
   },
   watch: {
