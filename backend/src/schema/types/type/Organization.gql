@@ -4,7 +4,7 @@ type Organization {
   ownedBy: [User] @relation(name: "OWNING_ORGA", direction: "IN")
   reviewedBy: User @relation(name: "REVIEWED_ORGA", direction: "IN")
   name: String!
-  slug: String!
+  slug: String
   description: String!
   descriptionExcerpt: String
   avatar: String
