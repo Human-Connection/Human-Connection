@@ -10,6 +10,7 @@
           />
         </hc-teaser-image>
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
+        <small style="width:100%;position:relative;left:90%">{{ form.title.length }}/64</small>
         <no-ssr>
           <hc-editor
             :users="users"
@@ -17,6 +18,7 @@
             :value="form.content"
             @input="updateEditorContent"
           />
+          <small style="width:100%;position:relative;left:90%">{{ form.contentLength }}/2000</small>
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
         <hc-categories-select
@@ -44,18 +46,14 @@
             :disabled="loading || disabled"
             ghost
             @click.prevent="$router.back()"
-          >
-            {{ $t('actions.cancel') }}
-          </ds-button>
+          >{{ $t('actions.cancel') }}</ds-button>
           <ds-button
             type="submit"
             icon="check"
             :loading="loading"
             :disabled="disabled || errors"
             primary
-          >
-            {{ $t('actions.save') }}
-          </ds-button>
+          >{{ $t('actions.save') }}</ds-button>
         </div>
         <ds-space margin-bottom="large" />
       </ds-card>
@@ -86,6 +84,7 @@ export default {
       form: {
         title: '',
         content: '',
+        contentLength: 0,
         teaserImage: null,
         image: null,
         language: null,
@@ -94,14 +93,18 @@ export default {
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
-        content: { required: true, min: 3 },
+        content: { required: true, min: 3, max: 2000 },
       },
       id: null,
       loading: false,
       disabled: true,
       slug: null,
       users: [],
+<<<<<<< HEAD
       hashtags: [],
+=======
+      n: 0,
+>>>>>>> maximum number of characters in content without html tags is 2000, characters are counted and number is displayed. regex is strongly shortened.
     }
   },
   watch: {
@@ -176,17 +179,15 @@ export default {
     },
     updateEditorContent(value) {
       // this.form.content = value
+      this.$refs.contributionForm.update('content', value)
+
       this.disabled = true
-      if (
-        value.replace(
-          /<p>|<\/p>|<h3>|<\/h3>|<h4>|<\/h4>|<ul>|<\/ul>|<ol>|<\/ol>|<li>|<\/li>|<blockquote>|<\/blockquote>|<strong>|<\/strong>|<em>|<\/em>|<a.*>|<\/a>/gm,
-          '',
-        ).length > 3
-      ) {
+      this.n = value.replace(/<\/?[^>]+(>|$)/gm, '').length
+      this.form.contentLength = this.n
+
+      if (this.n > 3 && this.n < 2000) {
         this.disabled = false
       }
-
-      this.$refs.contributionForm.update('content', value)
     },
     availableLocales() {
       orderBy(locales, 'name').map(locale => {
