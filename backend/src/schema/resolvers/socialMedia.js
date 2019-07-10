@@ -10,7 +10,7 @@ export default {
       const session = context.driver.session()
       await session.run(
         `MATCH (owner:User {id: $userId}), (socialMedia:SocialMedia {id: $socialMediaId})
-        MERGE (socialMedia)<-[:OWNED]-(owner) 
+        MERGE (socialMedia)<-[:OWNED]-(owner)
         RETURN owner`,
         {
           userId: context.user.id,
@@ -25,6 +25,21 @@ export default {
       const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
 
       return socialMedia
+    },
+    UpdateSocialMedia: async (object, params, context, resolveInfo) => {
+      const session = context.driver.session()
+      await session.run(
+        `MATCH (owner:User {id: $userId}), (socialMedia:SocialMedia {id: $socialMediaId})
+        WHERE (socialMedia)<-[:OWNED]-(owner)
+        SET socialMedia.url = $socialMediaUrl
+        RETURN owner`,
+        {
+          userId: context.user.id,
+          socialMediaId: params.id,
+          socialMediaUrl: params.url,
+        },
+      )
+      session.close()
     },
   },
 }

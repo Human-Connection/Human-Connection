@@ -164,6 +164,7 @@ const permissions = shield(
       UpdateBadge: isAdmin,
       DeleteBadge: isAdmin,
       CreateSocialMedia: isAuthenticated,
+      UpdateSocialMedia: isAuthenticated,
       DeleteSocialMedia: isAuthenticated,
       // AddBadgeRewarded: isAdmin,
       // RemoveBadgeRewarded: isAdmin,

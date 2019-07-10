@@ -4,13 +4,13 @@
     :schema="formSchema"
     @input="handleInput"
     @input-valid="handleInputValid"
-    @submit="handleAddSocialMedia"
+    @submit="handleSubmitSocialMedia"
   >
     <ds-card :header="$t('settings.social-media.name')">
       <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
         <ds-list>
           <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
-            <ds-input v-if="editingLink === link.id"
+            <ds-input v-if="editingLink.id === link.id"
               model="socialMediaLink"
               type="text"
               :placeholder="$t('settings.social-media.placeholder')"
@@ -45,16 +45,16 @@
 
       <ds-space margin-top="base">
         <ds-input
-          v-if="editingLink === ''"
+          v-if="!editingLink.id"
           model="socialMediaLink"
           type="text"
           :placeholder="$t('settings.social-media.placeholder')"
         />
         <ds-space margin-top="base">
           <ds-button primary :disabled="disabled">
-            {{ editingLink === '' ? $t('settings.social-media.submit') : $t('actions.save') }}
+            {{ editingLink.id ? $t('actions.save') : $t('settings.social-media.submit') }}
           </ds-button>
-          <ds-button v-if="editingLink !== ''" ghost @click="handleCancel()">
+          <ds-button v-if="editingLink.id" ghost @click="handleCancel()">
             {{ $t('actions.cancel') }}
           </ds-button>
         </ds-space>
@@ -80,7 +80,7 @@ export default {
         },
       },
       disabled: true,
-      editingLink: '',
+      editingLink: {},
     }
   },
   computed: {
@@ -103,7 +103,7 @@ export default {
       setCurrentUser: 'auth/SET_USER',
     }),
     handleCancel() {
-      this.editingLink = ''
+      this.editingLink = {}
       this.formData.socialMediaLink = ''
       this.disabled = true
     },
@@ -117,37 +117,66 @@ export default {
         this.disabled = false
       }
     },
-    async handleAddSocialMedia() {
-      const mutation = gql`
-        mutation($url: String!) {
-          CreateSocialMedia(url: $url) {
-            id
-            url
+    async handleSubmitSocialMedia() {
+      if (!this.editingLink.id) {
+        const mutation = gql`
+          mutation($url: String!) {
+            CreateSocialMedia(url: $url) {
+              id
+              url
+            }
           }
-        }
-      `
-      const variables = { url: this.formData.socialMediaLink }
+        `
+        const variables = { url: this.formData.socialMediaLink }
 
-      this.$apollo
-        .mutate({
-          mutation,
-          variables,
-          update: (store, { data }) => {
-            const socialMedia = [...this.currentUser.socialMedia, data.CreateSocialMedia]
-            this.setCurrentUser({
-              ...this.currentUser,
-              socialMedia,
-            })
-          },
-        })
-        .then(() => {
-          this.$toast.success(this.$t('settings.social-media.successAdd'))
-          this.formData.socialMediaLink = ''
-          this.disabled = true
-        })
-        .catch(error => {
-          this.$toast.error(error.message)
-        })
+        this.$apollo
+          .mutate({
+            mutation,
+            variables,
+            update: (store, { data }) => {
+              const socialMedia = [...this.currentUser.socialMedia, data.CreateSocialMedia]
+              this.setCurrentUser({
+                ...this.currentUser,
+                socialMedia,
+              })
+            },
+          })
+          .then(() => {
+            this.$toast.success(this.$t('settings.social-media.successAdd'))
+            this.formData.socialMediaLink = ''
+            this.disabled = true
+          })
+          .catch(error => {
+            this.$toast.error(error.message)
+          })
+      } else {
+        const mutation = gql`
+          mutation($id: ID!, $url: String!) {
+            UpdateSocialMedia(id: $id, url: $url) {
+              id
+              url
+            }
+          }
+        `
+        const variables = { id: this.editingLink.id, url: this.formData.socialMediaLink }
+
+        this.$apollo
+          .mutate({
+            mutation,
+            variables,
+            //update
+          })
+          .then(() => {
+            this.$toast.success('updated!')
+            this.formData.socialMediaLink = ''
+            this.editingLink = {}
+            this.disabled = true
+          })
+          .catch(error => {
+            this.$toast.error(error.message)
+          })
+      }
+
     },
     handleDeleteSocialMedia(link) {
       this.$apollo
@@ -181,7 +210,7 @@ export default {
         })
     },
     handleEditSocialMedia(link) {
-      this.editingLink = link.id
+      this.editingLink = link
       this.formData.socialMediaLink = link.url
       this.disabled = false
     },
