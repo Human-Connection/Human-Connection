@@ -10,7 +10,7 @@ type Organization {
   avatar: String
   coverImg: String
   type: String # 'ngo', 'npo', 'goodpurpose', 'ev', 'eva'
-  language: String!
+  language: String
   deleted: Boolean
   disabled: Boolean
 
