@@ -19,6 +19,11 @@
     "bank": "bank account",
     "germany": "Germany"
   },
+  "sorting": {
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "poular": "Most Popular"
+  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
@@ -50,8 +55,8 @@
           "email-exists": "There is already a user account with this email address!",
           "invalid-invitation-token": "It looks like as if the invitation has been used already. Invitation links can only be used once."
         },
-      "submit": "Create an account",
-      "success": "A mail with a link to complete your registration has been sent to <b>{email}</b>"
+        "submit": "Create an account",
+        "success": "A mail with a link to complete your registration has been sent to <b>{email}</b>"
       }
     },
     "create-user-account": {
