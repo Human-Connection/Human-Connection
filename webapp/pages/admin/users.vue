@@ -46,7 +46,6 @@ export default {
     },
     fields() {
       return {
-        id: 'ID',
         name: this.$t('admin.users.table.columns.name'),
         slug: this.$t('admin.users.table.columns.slug'),
         role: this.$t('admin.users.table.columns.role'),
