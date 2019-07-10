@@ -254,7 +254,7 @@ describe('enable', () => {
       beforeEach(async () => {
         authenticateClient = setupAuthenticateClient({
           role: 'moderator',
-          email: 'someUser@example.org',
+          email: 'someuser@example.org',
           password: '1234',
         })
       })

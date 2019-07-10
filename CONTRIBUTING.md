@@ -4,9 +4,9 @@ Thanks so much for thinking of contributing to the Human Connection project, we 
 
 ## Getting Set Up
 
-Instructions for how to install all the necessary software can be found in our [documentation](https://docs.human-connection.org/human-connection/)
+Instructions for how to install all the necessary software can be found in our [documentation](https://docs.human-connection.org/human-connection/).
 
-We recommend that new folks should ideally work together with an existing developer. Please join our discord instance to chat with developers or just ask them in tickets in [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f/boards?repos=152252353):
+We recommend that new folks should ideally work together with an existing developer. Please join our [discord](https://discord.gg/6ub73U3) instance to chat with developers or just ask them in tickets in [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f/boards?repos=152252353):
 
 ![](https://dl.dropbox.com/s/vbmcihkduy9dhko/Screenshot%202019-01-03%2015.50.11.png?dl=0)
 
@@ -17,7 +17,7 @@ Here are some general notes on our development flow:
 * Currently operating in two week sprints
 * We are using ZenHub to coordinate
   * estimating time per issue is the crucial feature of [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f) that Github does not have
-  * "up-for-grabs" links to [Github project](https://github.com/orgs/Human-Connection/projects/10?card_filter_query=label%3A"good+first+issue)
+  * "up-for-grabs" links to [Github project](https://github.com/Human-Connection/Human-Connection/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
   * ordering on ZenHub not necessarily reflected on github projects
 * AgileVentures run open pairing sessions at 10:30am UTC each week on Tuesdays and Thursdays
 * Core team
@@ -51,19 +51,19 @@ But what do we do when waiting for merge into master \(wanting to keep PRs small
   * solutions
     * 1\) put 2nd PR into branch that the first PR is hitting - but requires update after merging
     * 2\) prefer to leave exiting PR until it can be reviewed, and instead go and work on some other part of the codebase that is not impacted by the first PR
-    
+
 ### Code Review
-* Github setting in place - at least one review is required to merge 
+* Github setting in place - at least one review is required to merge
   - in principle anyone (who is not the PR owner) can review
   - but often it will be the core developers (Robert, Ulf, Greg, Wolfgang?)
   - once there is a review, and presuming no requested changes, PR opener can merge
 
 * CI/tests
-  - the CI needs to pass 
+  - the CI needs to pass
     - linting  <-- autofix?
     - tests (unit, feature) (backend, frontend)
     - codecoverage
-    
+
 ## Notes
 
 question: when you want to pick a task - \(find out priority\) - is it in discord? is it in AV slack? --&gt; Robert says you can always ask in discord - group channels are the best
@@ -77,4 +77,3 @@ Matt makes point that new stories will have to be taken off the "New Issues" and
 Robert notes that everyone is invited to join the kickoff meetings
 
 Robert - difference between "important" \(creates a lot of value\) and "beginner friendly" \(easy to implement\)
-
