@@ -4,19 +4,32 @@
       <ds-flex-item class="filter-menu-title">
         <ds-heading size="h3">{{ $t('filter-menu.title') }}</ds-heading>
       </ds-flex-item>
+
       <ds-flex-item>
         <div class="filter-menu-buttons">
           <ds-button
             v-tooltip="{
               content: this.$t('contribution.filterFollow'),
-              placement: 'left',
+
               delay: { show: 500 },
             }"
             name="filter-by-followed-authors-only"
-            icon="user-plus"
+            icon="filter"
             :primary="!!filterAuthorIsFollowedById"
             @click="toggleOnlyFollowed"
           />
+        </div>
+      </ds-flex-item>
+      <ds-flex-item style="padding-left: 30px;">
+        <div>
+          <ds-select
+            v-model="selected"
+            :options="sortingOptions"
+            placeholder="Newest"
+            size="large"
+            v-bind:icon="sortingIcon"
+            @input="toggleOnlySorting(selected)"
+          ></ds-select>
         </div>
       </ds-flex-item>
     </ds-flex>
@@ -54,6 +67,26 @@ export default {
   data() {
     return {
       filter: {},
+      selected: 'Newest',
+      sortingIcon: 'sort-amount-desc',
+      sorting: [],
+      sortingOptions: [
+        {
+          label: 'Newest',
+          value: 'Newest',
+          icons: 'sort-amount-desc',
+        },
+        {
+          label: 'Oldest',
+          value: 'Oldest',
+          icons: 'sort-amount-asc',
+        },
+        {
+          label: 'Hottest',
+          value: 'Hottest',
+          icons: 'fire',
+        },
+      ],
     }
   },
   computed: {
@@ -67,6 +100,15 @@ export default {
     },
   },
   methods: {
+    toggleOnlySorting(sorting) {
+      this.sortingIcon = sorting.icons
+      if (sorting.value === 'Newest') {
+      }
+      if (sorting.value === 'Oldest') {
+      }
+      if (sorting.value === 'Hottest') {
+      }
+    },
     toggleOnlyFollowed() {
       this.filter = this.filterAuthorIsFollowedById
         ? {}

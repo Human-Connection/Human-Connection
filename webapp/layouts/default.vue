@@ -228,7 +228,7 @@ export default {
 
 .main-container {
   padding-top: 6rem;
-  padding-botton: 5rem;
+  padding-bottom: 5rem;
 }
 
 .main-navigation {
