@@ -86,9 +86,8 @@
         </div>
       </ds-container>
     </div>
-
     <ds-container style="word-break: break-all">
-      <div style="padding: 6rem 2rem 5rem;">
+      <div style="padding: 6rem 2rem 5rem;" :width="{ base: '100%', md: '96%' }">
         <nuxt />
       </div>
     </ds-container>
