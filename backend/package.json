@@ -68,7 +68,7 @@
     "helmet": "~3.18.0",
     "jsonwebtoken": "~8.5.1",
     "linkifyjs": "~2.1.8",
-    "lodash": "~4.17.13",
+    "lodash": "~4.17.14",
     "merge-graphql-schemas": "^1.5.8",
     "neo4j-driver": "~1.7.4",
     "neo4j-graphql-js": "^2.6.3",
