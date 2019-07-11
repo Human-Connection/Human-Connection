@@ -1,6 +1,9 @@
 <template>
   <ds-card :header="$t('admin.users.name')">
     <ds-table v-if="User && User.length" :data="User" :fields="fields" condensed>
+      <template slot="index" slot-scope="scope">
+        {{ scope.row.index }}.
+      </template>
       <template slot="name" slot-scope="scope">
         <nuxt-link
           :to="{
@@ -34,18 +37,16 @@ export default {
       pageSize,
       first: pageSize,
       User: [],
+      hasNext: false,
     }
   },
   computed: {
-    hasNext() {
-      const { countUsers } = this.statistics
-      return this.offset < countUsers - this.pageSize
-    },
     hasPrevious() {
       return this.offset > 0
     },
     fields() {
       return {
+        index: '#',
         name: this.$t('admin.users.table.columns.name'),
         slug: this.$t('admin.users.table.columns.slug'),
         role: this.$t('admin.users.table.columns.role'),
@@ -53,11 +54,6 @@ export default {
     },
   },
   apollo: {
-    statistics: {
-      query() {
-        return gql('query { statistics { countUsers } }')
-      },
-    },
     User: {
       query() {
         return gql(`
@@ -75,17 +71,19 @@ export default {
         const { offset, first } = this
         return { first, offset }
       },
+      update({ User }) {
+        this.hasNext = User && User.length >= this.pageSize
+        if (User.length <= 0) return this.User // edge case, avoid a blank page
+        return User.map((u, i) => Object.assign({}, u, { index: this.offset + i }))
+      },
     },
   },
   methods: {
     back() {
-      this.offset -= this.pageSize
-      this.offset = Math.max(this.offset, 0)
+      this.offset = Math.max(this.offset - this.pageSize, 0)
     },
     next() {
       this.offset += this.pageSize
-      const { countUsers } = this.statistics
-      this.offset = Math.min(this.offset, countUsers - this.pageSize)
     },
   },
 }
