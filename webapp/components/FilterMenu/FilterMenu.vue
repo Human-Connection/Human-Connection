@@ -10,7 +10,6 @@
           <ds-button
             v-tooltip="{
               content: this.$t('contribution.filterFollow'),
-
               delay: { show: 500 },
             }"
             name="filter-by-followed-authors-only"
@@ -18,17 +17,6 @@
             :primary="!!filterAuthorIsFollowedById"
             @click="toggleOnlyFollowed"
           />
-        </div>
-      </ds-flex-item>
-      <ds-flex-item style="padding-left: 30px;">
-        <div>
-          <ds-select
-            v-model="selected"
-            :options="sortingOptions"
-            size="large"
-            v-bind:icon-right="sortingIcon"
-            @input="toggleOnlySorting(selected)"
-          ></ds-select>
         </div>
       </ds-flex-item>
     </ds-flex>
@@ -62,37 +50,10 @@ export default {
   props: {
     user: { type: Object, required: true },
     hashtag: { type: Object, default: null },
-    sorting: [],
   },
   data() {
     return {
       filter: {},
-      placeholder: this.$t('sorting.newest'),
-      selected: this.$t('sorting.newest'),
-      sortingIcon: 'sort-amount-desc',
-
-      sortingOptions: [
-        {
-          label: this.$t('sorting.newest'),
-          value: 'Newest',
-          icons: 'sort-amount-desc',
-        },
-        {
-          label: this.$t('sorting.oldest'),
-          value: 'Oldest',
-          icons: 'sort-amount-asc',
-        },
-        {
-          label: this.$t('sorting.poular'),
-          value: 'Popular',
-          icons: 'fire',
-        },
-        {
-          label: this.$t('sorting.commented'),
-          value: 'Commented',
-          icons: 'comment',
-        },
-      ],
     }
   },
   computed: {
@@ -106,18 +67,6 @@ export default {
     },
   },
   methods: {
-    toggleOnlySorting(sorting) {
-      // console.log(sorting.value)
-      this.sortingIcon = sorting.icons
-      if (sorting.value === 'Newest') {
-      }
-      if (sorting.value === 'Oldest') {
-      }
-      if (sorting.value === 'Popular') {
-      }
-      if (sorting.value === 'Commented') {
-      }
-    },
     toggleOnlyFollowed() {
       this.filter = this.filterAuthorIsFollowedById
         ? {}
