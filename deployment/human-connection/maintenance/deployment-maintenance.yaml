@@ -4,9 +4,6 @@ metadata:
   name: maintenance
   namespace: human-connection
 spec:
-  replicas: 1
-  minReadySeconds: 15
-  progressDeadlineSeconds: 60
   selector:
     matchLabels:
       human-connection.org/selector: deployment-human-connection-maintenance
@@ -19,19 +16,12 @@ spec:
     spec:
       containers:
         - name: web
-          envFrom:
-            - configMapRef:
-                name: configmap
-            - secretRef:
-                name: human-connection
           env:
             - name: HOST
               value: 0.0.0.0
           image: humanconnection/maintenance:latest
           ports:
             - containerPort: 80
-          resources: {}
           imagePullPolicy: Always
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
-status: {}
