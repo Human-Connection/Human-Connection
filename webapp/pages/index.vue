@@ -54,6 +54,7 @@ export default {
       pageSize: 12,
       filter: {},
       hashtag,
+      sorting: [],
     }
   },
   mounted() {

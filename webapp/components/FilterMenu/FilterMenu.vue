@@ -25,9 +25,8 @@
           <ds-select
             v-model="selected"
             :options="sortingOptions"
-            placeholder="Newest"
             size="large"
-            v-bind:icon="sortingIcon"
+            v-bind:icon-right="sortingIcon"
             @input="toggleOnlySorting(selected)"
           ></ds-select>
         </div>
@@ -63,28 +62,35 @@ export default {
   props: {
     user: { type: Object, required: true },
     hashtag: { type: Object, default: null },
+    sorting: [],
   },
   data() {
     return {
       filter: {},
-      selected: 'Newest',
+      placeholder: this.$t('sorting.newest'),
+      selected: this.$t('sorting.newest'),
       sortingIcon: 'sort-amount-desc',
-      sorting: [],
+
       sortingOptions: [
         {
-          label: 'Newest',
+          label: this.$t('sorting.newest'),
           value: 'Newest',
           icons: 'sort-amount-desc',
         },
         {
-          label: 'Oldest',
+          label: this.$t('sorting.oldest'),
           value: 'Oldest',
           icons: 'sort-amount-asc',
         },
         {
-          label: 'Hottest',
-          value: 'Hottest',
+          label: this.$t('sorting.poular'),
+          value: 'Popular',
           icons: 'fire',
+        },
+        {
+          label: this.$t('sorting.commented'),
+          value: 'Commented',
+          icons: 'comment',
         },
       ],
     }
@@ -101,12 +107,15 @@ export default {
   },
   methods: {
     toggleOnlySorting(sorting) {
+      // console.log(sorting.value)
       this.sortingIcon = sorting.icons
       if (sorting.value === 'Newest') {
       }
       if (sorting.value === 'Oldest') {
       }
-      if (sorting.value === 'Hottest') {
+      if (sorting.value === 'Popular') {
+      }
+      if (sorting.value === 'Commented') {
       }
     },
     toggleOnlyFollowed() {

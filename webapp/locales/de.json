@@ -22,7 +22,8 @@
   "sorting": {
     "newest": "Neuste",
     "oldest": "Älteste",
-    "poular": "Beliebt"
+    "poular": "Beliebt",
+    "commented": "meist Kommentiert"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
