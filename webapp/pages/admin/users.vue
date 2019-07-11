@@ -11,16 +11,26 @@
             params: { id: scope.row.id, slug: scope.row.slug },
           }"
         >
-          <b>{{ scope.row.name | truncate(50) }}</b>
+          <b>{{ scope.row.name | truncate(20) }}</b>
+        </nuxt-link>
+      </template>
+      <template slot="slug" slot-scope="scope">
+        <nuxt-link
+          :to="{
+            name: 'profile-id-slug',
+            params: { id: scope.row.id, slug: scope.row.slug },
+          }"
+        >
+          <b>{{ scope.row.slug | truncate(20) }}</b>
         </nuxt-link>
       </template>
     </ds-table>
     <ds-flex direction="row-reverse">
       <ds-flex-item width="50px">
-        <ds-button @click="next" :disabled="!hasNext" icon="arrow-right" primary />
+        <ds-button @click="next" :loading="$apollo.loading" :disabled="!hasNext" icon="arrow-right" primary />
       </ds-flex-item>
       <ds-flex-item width="50px">
-        <ds-button @click="back" :disabled="!hasPrevious" icon="arrow-left" primary />
+        <ds-button @click="back" :loading="$apollo.loading" :disabled="!hasPrevious" icon="arrow-left" primary />
       </ds-flex-item>
     </ds-flex>
   </ds-card>
@@ -49,7 +59,22 @@ export default {
         index: '#',
         name: this.$t('admin.users.table.columns.name'),
         slug: this.$t('admin.users.table.columns.slug'),
-        role: this.$t('admin.users.table.columns.role'),
+        contributionsCount: {
+          label: '🖉',
+          align: 'right'
+        },
+        commentedCount: {
+          label: '🗨',
+          align: 'right'
+        },
+        shoutedCount: {
+          label: '❤',
+          align: 'right'
+        },
+        role: {
+          label: this.$t('admin.users.table.columns.role'),
+          align: 'right'
+        }
       }
     },
   },
@@ -63,6 +88,9 @@ export default {
             name
             slug
             role
+            contributionsCount
+            commentedCount
+            shoutedCount
           }
         }
       `)
@@ -72,7 +100,8 @@ export default {
         return { first, offset }
       },
       update({ User }) {
-        this.hasNext = User && User.length >= this.pageSize
+        if (!User) return []
+        this.hasNext = User.length >= this.pageSize
         if (User.length <= 0) return this.User // edge case, avoid a blank page
         return User.map((u, i) => Object.assign({}, u, { index: this.offset + i }))
       },

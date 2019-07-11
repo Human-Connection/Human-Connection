@@ -193,7 +193,7 @@
       "table": {
         "columns": {
           "name": "Name",
-          "slug": "Username",
+          "slug": "Slug",
           "role": "Role"
         }
       }
