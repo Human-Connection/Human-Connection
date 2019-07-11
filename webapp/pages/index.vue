@@ -49,7 +49,6 @@ import uniqBy from 'lodash/uniqBy'
 import { mapGetters } from 'vuex'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
-import { sortPosts } from '~/graphql/PostQuery.js'
 
 export default {
   components: {
