@@ -3,7 +3,7 @@
     <ds-space />
     <ds-flex>
       <ds-flex-item
-        :width="{ base: '100%', sm: '100%', md: '100%', lg: '20%' }"
+        :width="{ base: '100%', sm: '100%', md: '100%', lg: '13%' }"
         class="categories-list"
       >
         <ds-space margin-bottom="x-small" />
@@ -23,148 +23,13 @@
           </ds-flex-item>
         </ds-flex>
       </ds-flex-item>
-      <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
-        <ds-flex v-for="category in chunk[0]" :key="category.id" class="categories-list">
-          <ds-flex>
-            <ds-flex-item width="100%">
-              <ds-button
-                :icon="category.icon"
-                :primary="isActive(category.id)"
-                @click.stop.prevent="toggleCategory(category.id)"
-              />
-              <ds-space margin-bottom="small" />
-            </ds-flex-item>
-            <ds-flex>
-              <ds-flex-item>
-                <label>{{ category.name }}</label>
-              </ds-flex-item>
-              <ds-space margin-bottom="xx-large" />
-            </ds-flex>
-          </ds-flex>
-        </ds-flex>
-      </ds-flex-item>
-      <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
-        <ds-flex v-for="category in chunk[1]" :key="category.id" class="categories-list">
-          <ds-flex>
-            <ds-flex-item width="100%">
-              <ds-button
-                :icon="category.icon"
-                :primary="isActive(category.id)"
-                @click.stop.prevent="toggleCategory(category.id)"
-              />
-              <ds-space margin-bottom="small" />
-            </ds-flex-item>
-            <ds-flex class="categories-list">
-              <ds-flex-item>
-                <label>{{ category.name }}</label>
-              </ds-flex-item>
-              <ds-space margin-bottom="xx-large" />
-            </ds-flex>
-          </ds-flex>
-        </ds-flex>
-      </ds-flex-item>
-      <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
-        <ds-flex v-for="category in chunk[2]" :key="category.id" class="categories-list">
-          <ds-flex>
-            <ds-flex-item width="100%">
-              <ds-button
-                :icon="category.icon"
-                :primary="isActive(category.id)"
-                @click.stop.prevent="toggleCategory(category.id)"
-              />
-              <ds-space margin-bottom="small" />
-            </ds-flex-item>
-            <ds-flex>
-              <ds-flex-item>
-                <label>{{ category.name }}</label>
-              </ds-flex-item>
-              <ds-space margin-bottom="xx-large" />
-            </ds-flex>
-          </ds-flex>
-        </ds-flex>
-      </ds-flex-item>
-      <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
-        <ds-flex v-for="category in chunk[3]" :key="category.id" class="categories-list">
-          <ds-flex>
-            <ds-flex-item width="100%">
-              <ds-button
-                :icon="category.icon"
-                :primary="isActive(category.id)"
-                @click.stop.prevent="toggleCategory(category.id)"
-              />
-              <ds-space margin-bottom="small" />
-            </ds-flex-item>
-            <ds-flex>
-              <ds-flex-item>
-                <label>{{ category.name }}</label>
-              </ds-flex-item>
-              <ds-space margin-bottom="xx-large" />
-            </ds-flex>
-          </ds-flex>
-        </ds-flex>
-      </ds-flex-item>
-      <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
-        <ds-flex v-for="category in chunk[4]" :key="category.id" class="categories-list">
-          <ds-flex>
-            <ds-flex-item width="100%">
-              <ds-button
-                :icon="category.icon"
-                :primary="isActive(category.id)"
-                @click.stop.prevent="toggleCategory(category.id)"
-              />
-              <ds-space margin-bottom="small" />
-            </ds-flex-item>
-            <ds-flex>
-              <ds-flex-item>
-                <label>{{ category.name }}</label>
-              </ds-flex-item>
-              <ds-space margin-bottom="xx-large" />
-            </ds-flex>
-          </ds-flex>
-        </ds-flex>
-      </ds-flex-item>
-      <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
-        <ds-flex v-for="category in chunk[5]" :key="category.id" class="categories-list">
-          <ds-flex>
-            <ds-flex-item width="100%">
-              <ds-button
-                :icon="category.icon"
-                :primary="isActive(category.id)"
-                @click.stop.prevent="toggleCategory(category.id)"
-              />
-              <ds-space margin-bottom="small" />
-            </ds-flex-item>
-            <ds-flex>
-              <ds-flex-item>
-                <label>{{ category.name }}</label>
-              </ds-flex-item>
-              <ds-space margin-bottom="xx-large" />
-            </ds-flex>
-          </ds-flex>
-        </ds-flex>
-      </ds-flex-item>
-      <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
-        <ds-flex v-for="category in chunk[6]" :key="category.id" class="categories-list">
-          <ds-flex>
-            <ds-flex-item width="100%">
-              <ds-button
-                :icon="category.icon"
-                :primary="isActive(category.id)"
-                @click.stop.prevent="toggleCategory(category.id)"
-              />
-              <ds-space margin-bottom="small" />
-            </ds-flex-item>
-            <ds-flex>
-              <ds-flex-item>
-                <label>{{ category.name }}</label>
-              </ds-flex-item>
-              <ds-space margin-bottom="xx-large" />
-            </ds-flex>
-          </ds-flex>
-        </ds-flex>
-      </ds-flex-item>
-      <ds-flex-item :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }">
-        <ds-flex v-for="category in chunk[7]" :key="category.id" class="categories-list">
+      <ds-flex-item :width="{ base: '0%', sm: '0%', md: '0%', lg: '7%' }" />
+      <ds-flex-item
+        :width="{ base: '50%', sm: '0%', md: '50%', lg: '10%' }"
+        v-for="index in chunk.length"
+        :key="index"
+      >
+        <ds-flex v-for="category in chunk[index - 1]" :key="category.id" class="categories-list">
           <ds-flex>
             <ds-flex-item width="100%">
               <ds-button
