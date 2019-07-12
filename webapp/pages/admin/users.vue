@@ -18,8 +18,8 @@
         </ds-form>
       </ds-card>
     </ds-space>
-    <ds-card>
-      <ds-table v-if="User && User.length" :data="User" :fields="fields" condensed>
+    <ds-card v-if="User && User.length">
+      <ds-table :data="User" :fields="fields" condensed>
         <template slot="index" slot-scope="scope">
           {{ scope.row.index }}.
         </template>
@@ -52,6 +52,11 @@
           <ds-button @click="back" :disabled="!hasPrevious" icon="arrow-left" primary />
         </ds-flex-item>
       </ds-flex>
+    </ds-card>
+    <ds-card v-else>
+      <ds-placeholder>
+        {{ $t('admin.users.empty') }}
+      </ds-placeholder>
     </ds-card>
   </div>
 </template>

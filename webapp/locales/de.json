@@ -198,7 +198,8 @@
           "slug": "Slug",
           "role": "Rolle"
         }
-      }
+      },
+      "empty": "Keine Benutzer gefunden"
     },
     "pages": {
       "name": "Seiten"

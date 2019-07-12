@@ -199,7 +199,8 @@
           "slug": "Slug",
           "role": "Role"
         }
-      }
+      },
+      "empty": "No users found"
     },
     "pages": {
       "name": "Pages"
