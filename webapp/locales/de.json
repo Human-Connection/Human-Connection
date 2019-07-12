@@ -189,6 +189,9 @@
     },
     "users": {
       "name": "Benutzer",
+      "form": {
+        "placeholder": "E-Mail, Name oder Beschreibung"
+      },
       "table": {
         "columns": {
           "name": "Name",

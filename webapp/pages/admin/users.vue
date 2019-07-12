@@ -2,7 +2,7 @@
   <div>
     <ds-space>
       <ds-card :header="$t('admin.users.name')">
-        <ds-input placeholder="..." icon="search" />
+        <ds-input :placeholder="$t('admin.users.form.placeholder')" icon="search" />
       </ds-card>
     </ds-space>
     <ds-card>

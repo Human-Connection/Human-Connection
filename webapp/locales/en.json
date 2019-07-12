@@ -190,6 +190,9 @@
     },
     "users": {
       "name": "Users",
+      "form": {
+        "placeholder": "E-Mail, name or description"
+      },
       "table": {
         "columns": {
           "name": "Name",
