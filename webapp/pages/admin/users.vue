@@ -2,7 +2,20 @@
   <div>
     <ds-space>
       <ds-card :header="$t('admin.users.name')">
-        <ds-input :placeholder="$t('admin.users.form.placeholder')" icon="search" />
+        <ds-form v-model="form" @submit="submit">
+          <ds-flex gutter="small">
+            <ds-flex-item width="90%">
+              <ds-input
+                model="query"
+                :placeholder="$t('admin.users.form.placeholder')"
+                icon="search"
+              />
+            </ds-flex-item>
+            <ds-flex-item width="30px">
+              <ds-button primary type="submit" icon="search" :loading="$apollo.loading" />
+            </ds-flex-item>
+          </ds-flex>
+        </ds-form>
       </ds-card>
     </ds-space>
     <ds-card>
@@ -55,6 +68,12 @@ export default {
       first: pageSize,
       User: [],
       hasNext: false,
+      email: null,
+      form: {
+        formData: {
+          query: '',
+        },
+      },
     }
   },
   computed: {
@@ -89,8 +108,8 @@ export default {
     User: {
       query() {
         return gql(`
-        query($filter: _UserFilter, $first: Int, $offset: Int) {
-          User(filter: $filter, first: $first, offset: $offset, orderBy: createdAt_desc) {
+        query($filter: _UserFilter, $first: Int, $offset: Int, $email: String) {
+          User(email: $email, filter: $filter, first: $first, offset: $offset, orderBy: createdAt_desc) {
             id
             name
             slug
@@ -103,13 +122,15 @@ export default {
       `)
       },
       variables() {
-        const { offset, first } = this
-        return { first, offset }
+        const { offset, first, email } = this
+        const variables = { first, offset }
+        if (email) variables.email = email
+        return variables
       },
       update({ User }) {
         if (!User) return []
         this.hasNext = User.length >= this.pageSize
-        if (User.length <= 0) return this.User // edge case, avoid a blank page
+        if (User.length <= 0 && this.offset > 0) return this.User // edge case, avoid a blank page
         return User.map((u, i) => Object.assign({}, u, { index: this.offset + i }))
       },
     },
@@ -120,6 +141,11 @@ export default {
     },
     next() {
       this.offset += this.pageSize
+    },
+    submit(formData) {
+      this.offset = 0
+      const { query } = formData
+      this.email = query
     },
   },
 }
