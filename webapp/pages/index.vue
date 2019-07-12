@@ -22,7 +22,7 @@
         primary
       />
     </no-ssr>
-    <infinite-loading @infinite="bottomPageHandler"></infinite-loading>
+    <infinite-loading v-if="hasMore" @infinite="bottomPageHandler"></infinite-loading>
   </div>
 </template>
 
@@ -66,11 +66,7 @@ export default {
       if (this.$apollo.loading) return
       this.showMoreContributions(() => {
         setTimeout(() => {
-          if (this.hasMore) {
-            $state.loaded()
-          } else {
-            $state.complete()
-          }
+          $state.loaded()
         }, 1000)
       })
     },
@@ -100,7 +96,7 @@ export default {
         },
         // Transform the previous result with new data
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          this.hasMore = fetchMoreResult.Post && fetchMoreResult.Post.length > 0
+          this.hasMore = fetchMoreResult.Post && fetchMoreResult.Post.length >= this.pageSize
           let output = { Post: this.Post }
           output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
           reachedBottomHandler()

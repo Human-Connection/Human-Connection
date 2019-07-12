@@ -222,7 +222,7 @@
             </ds-flex-item>
           </template>
         </ds-flex>
-        <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
+        <infinite-loading v-if="hasMore" @infinite="bottomPageHandler"></infinite-loading>
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -235,13 +235,13 @@ import HcPostCard from '~/components/PostCard'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
-import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import PostQuery from '~/graphql/UserProfile/Post.js'
 import UserQuery from '~/graphql/UserProfile/User.js'
+import InfiniteLoading from 'vue-infinite-loading'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -259,7 +259,7 @@ export default {
     HcFollowButton,
     HcCountTo,
     HcBadges,
-    HcLoadMore,
+    InfiniteLoading,
     HcEmpty,
     HcAvatar,
     ContentMenu,
@@ -281,9 +281,6 @@ export default {
       tabActive: 'post',
       filter,
     }
-  },
-  mounted() {
-    this.checkScroll();
   },
   computed: {
     hasMore() {
@@ -334,13 +331,13 @@ export default {
     },
   },
   methods: {
-    checkScroll() {
-      window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight;
-        if (bottomOfWindow) {
-          this.showMoreContributions();
-        }
-      };
+    bottomPageHandler($state) {
+      if (this.$apollo.loading) return
+      this.showMoreContributions(() => {
+        setTimeout(() => {
+          $state.loaded()
+        }, 1000)
+      })
     },
     handleTab(tab) {
       this.tabActive = tab
@@ -354,7 +351,7 @@ export default {
       // TODO: we should use subscriptions instead of fetching the whole user again
       this.$apollo.queries.User.refetch()
     },
-    showMoreContributions() {
+    showMoreContributions(finishedLoadingHandler = () => {}) {
       // this.page++
       // Fetch more data and transform the original result
       this.page++
@@ -368,6 +365,7 @@ export default {
         updateQuery: (previousResult, { fetchMoreResult }) => {
           let output = { Post: this.Post }
           output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
+          finishedLoadingHandler()
           return output
         },
         fetchPolicy: 'cache-and-network',
