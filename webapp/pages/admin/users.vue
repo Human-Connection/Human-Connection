@@ -1,39 +1,46 @@
 <template>
-  <ds-card :header="$t('admin.users.name')">
-    <ds-table v-if="User && User.length" :data="User" :fields="fields" condensed>
-      <template slot="index" slot-scope="scope">
-        {{ scope.row.index }}.
-      </template>
-      <template slot="name" slot-scope="scope">
-        <nuxt-link
-          :to="{
-            name: 'profile-id-slug',
-            params: { id: scope.row.id, slug: scope.row.slug },
-          }"
-        >
-          <b>{{ scope.row.name | truncate(20) }}</b>
-        </nuxt-link>
-      </template>
-      <template slot="slug" slot-scope="scope">
-        <nuxt-link
-          :to="{
-            name: 'profile-id-slug',
-            params: { id: scope.row.id, slug: scope.row.slug },
-          }"
-        >
-          <b>{{ scope.row.slug | truncate(20) }}</b>
-        </nuxt-link>
-      </template>
-    </ds-table>
-    <ds-flex direction="row-reverse">
-      <ds-flex-item width="50px">
-        <ds-button @click="next" :loading="$apollo.loading" :disabled="!hasNext" icon="arrow-right" primary />
-      </ds-flex-item>
-      <ds-flex-item width="50px">
-        <ds-button @click="back" :loading="$apollo.loading" :disabled="!hasPrevious" icon="arrow-left" primary />
-      </ds-flex-item>
-    </ds-flex>
-  </ds-card>
+  <div>
+    <ds-space>
+      <ds-card :header="$t('admin.users.name')">
+        <ds-input placeholder="..." icon="search" />
+      </ds-card>
+    </ds-space>
+    <ds-card>
+      <ds-table v-if="User && User.length" :data="User" :fields="fields" condensed>
+        <template slot="index" slot-scope="scope">
+          {{ scope.row.index }}.
+        </template>
+        <template slot="name" slot-scope="scope">
+          <nuxt-link
+            :to="{
+              name: 'profile-id-slug',
+              params: { id: scope.row.id, slug: scope.row.slug },
+            }"
+          >
+            <b>{{ scope.row.name | truncate(20) }}</b>
+          </nuxt-link>
+        </template>
+        <template slot="slug" slot-scope="scope">
+          <nuxt-link
+            :to="{
+              name: 'profile-id-slug',
+              params: { id: scope.row.id, slug: scope.row.slug },
+            }"
+          >
+            <b>{{ scope.row.slug | truncate(20) }}</b>
+          </nuxt-link>
+        </template>
+      </ds-table>
+      <ds-flex direction="row-reverse">
+        <ds-flex-item width="50px">
+          <ds-button @click="next" :disabled="!hasNext" icon="arrow-right" primary />
+        </ds-flex-item>
+        <ds-flex-item width="50px">
+          <ds-button @click="back" :disabled="!hasPrevious" icon="arrow-left" primary />
+        </ds-flex-item>
+      </ds-flex>
+    </ds-card>
+  </div>
 </template>
 
 <script>
@@ -61,20 +68,20 @@ export default {
         slug: this.$t('admin.users.table.columns.slug'),
         contributionsCount: {
           label: '🖉',
-          align: 'right'
+          align: 'right',
         },
         commentedCount: {
           label: '🗨',
-          align: 'right'
+          align: 'right',
         },
         shoutedCount: {
           label: '❤',
-          align: 'right'
+          align: 'right',
         },
         role: {
           label: this.$t('admin.users.table.columns.role'),
-          align: 'right'
-        }
+          align: 'right',
+        },
       }
     },
   },
