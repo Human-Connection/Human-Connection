@@ -91,6 +91,7 @@ module.exports = {
     { src: '~/plugins/vue-directives.js', ssr: false },
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
+    { src: '~/plugins/infinite-loader.js', ssr: false },
     { src: '~/plugins/vue-filters.js' },
   ],
 

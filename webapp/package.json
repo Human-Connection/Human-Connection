@@ -74,6 +74,8 @@
     "tiptap-extensions": "1.22.2",
     "v-tooltip": "~2.0.2",
     "vue-count-to": "~1.0.13",
+    "vue-infinite-loading": "^2.4.4",
+    "vue-infinite-scroll": "^2.0.2",
     "vue-izitoast": "1.1.2",
     "vue-sweetalert-icons": "~3.2.0",
     "vuex-i18n": "~1.11.0",

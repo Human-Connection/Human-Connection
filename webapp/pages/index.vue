@@ -22,7 +22,7 @@
         primary
       />
     </no-ssr>
-    <hc-load-more v-if="this.hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
+    <infinite-loading @infinite="bottomPageHandler"></infinite-loading>
   </div>
 </template>
 
@@ -31,23 +31,23 @@ import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import gql from 'graphql-tag'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
-import HcLoadMore from '~/components/LoadMore.vue'
+import InfiniteLoading from 'vue-infinite-loading'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     FilterMenu,
     HcPostCard,
-    HcLoadMore,
+    InfiniteLoading,
   },
   data() {
     return {
       // Initialize your apollo data
       Post: [],
       page: 1,
-      pageSize: 12,
+      pageSize: 6,
       filter: {},
-      hasMore: true
+      hasMore: true,
     }
   },
   computed: {
@@ -61,17 +61,18 @@ export default {
       return (this.page - 1) * this.pageSize
     },
   },
-  mounted() {
-    this.checkScroll();
-  },
   methods: {
-    checkScroll() {
-      window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight;
-        if (bottomOfWindow) {
-          this.showMoreContributions();
-        }
-      };
+    bottomPageHandler($state) {
+      if (this.$apollo.loading) return
+      this.showMoreContributions(() => {
+        setTimeout(() => {
+          if (this.hasMore) {
+            $state.loaded()
+          } else {
+            $state.complete()
+          }
+        }, 1000)
+      })
     },
     changeFilterBubble(filter) {
       this.filter = filter
@@ -86,8 +87,8 @@ export default {
         params: { id: post.id, slug: post.slug },
       }).href
     },
-    showMoreContributions() {
-      if(!this.hasMore) return;
+    showMoreContributions(reachedBottomHandler = () => {}) {
+      if (!this.hasMore) return
       // this.page++
       // Fetch more data and transform the original result
       this.page++
@@ -102,6 +103,7 @@ export default {
           this.hasMore = fetchMoreResult.Post && fetchMoreResult.Post.length > 0
           let output = { Post: this.Post }
           output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
+          reachedBottomHandler()
           return output
         },
         fetchPolicy: 'cache-and-network',
