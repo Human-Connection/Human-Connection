@@ -81,7 +81,7 @@
     "slug": "~1.1.0",
     "trunc-html": "~1.1.2",
     "uuid": "~3.3.2",
-    "wait-on": "~3.2.0"
+    "wait-on": "~3.3.0"
   },
   "devDependencies": {
     "@babel/cli": "~7.5.0",
@@ -90,7 +90,7 @@
     "@babel/plugin-proposal-throw-expressions": "^7.2.0",
     "@babel/preset-env": "~7.5.4",
     "@babel/register": "~7.4.4",
-    "apollo-server-testing": "~2.6.8",
+    "apollo-server-testing": "~2.6.9",
     "babel-core": "~7.0.0-0",
     "babel-eslint": "~10.0.2",
     "babel-jest": "~24.8.0",
