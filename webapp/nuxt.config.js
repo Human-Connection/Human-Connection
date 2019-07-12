@@ -31,10 +31,10 @@ module.exports = {
       'password-reset-request',
       'password-reset-verify-code',
       'password-reset-change-password',
-      'register',
-      'signup',
-      'reset',
-      'reset-token',
+      // 'registration-signup', TODO: uncomment to open public registration
+      'registration-signup-by-invitation-code',
+      'registration-verify-code',
+      'registration-create-user-account',
       'pages-slug',
     ],
     // pages to keep alive

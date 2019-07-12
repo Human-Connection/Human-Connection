@@ -1,1 +1,1 @@
-// this is just a relation between users(?) - no need to delete
+MATCH (u1:User)-[f:FOLLOWS]->(u2:User) DETACH DELETE f;

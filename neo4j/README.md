@@ -20,7 +20,7 @@ for an interactive cypher shell and a visualization of the graph.
 
 ## Installation without Docker
 
-Install community edition of [Neo4J]() along with the plugin
+Install the community edition of [Neo4j](https://neo4j.com/) along with the plugin
 [Apoc](https://github.com/neo4j-contrib/neo4j-apoc-procedures) on your system.
 
 To do so, go to [releases](https://neo4j.com/download-center/#releases), choose
@@ -28,7 +28,13 @@ To do so, go to [releases](https://neo4j.com/download-center/#releases), choose
 and unpack the files.
 
 Download [Neo4j Apoc](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases)
-and drop the file into the `plugins` folder of the just extracted Neo4j-Server.
+and drop the `.jar` file into the `plugins` folder of the just extracted Neo4j-Server.
+
+Then make sure to allow Apoc procedures by adding the following line to your Neo4j configuration \(`conf/neo4j.conf`\):
+
+```
+dbms.security.procedures.unrestricted=apoc.*
+```
 
 ### Alternatives
 
@@ -59,6 +65,6 @@ $ cp .env.template .env
 $ ./db_setup.sh
 ```
 
-Otherwise if you don't have `cypher-shell` available, simply copy the cypher
-statements [from the script](./neo4j/db_setup.sh) and paste the scripts into your
-database [browser frontend](http://localhost:7474).
+Otherwise, if you don't have `cypher-shell` available, copy the cypher
+statements [from the `db_setup.sh` script](https://github.com/Human-Connection/Human-Connection/blob/master/neo4j/db_setup.sh) and paste the scripts into your
+[database browser frontend](http://localhost:7474).

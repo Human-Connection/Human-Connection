@@ -46,7 +46,7 @@ Thank you lokalise for providing us with a premium account :raised_hands:.
 ## Developer Chat
 
 Join our friendly open-source community on [Discord](https://discord.gg/6ub73U3) :heart_eyes_cat:
-Just introduce yourself at `#user-presentation` and mention `@@Mentor` to get you onboard :neckbeard:
+Just introduce yourself at `#introduce-yourself` and mention `@@Mentor` to get you onboard :neckbeard:
 Check out the [contribution guideline](./CONTRIBUTING.md), too!
 
 

@@ -1,6 +1,23 @@
 {
   "filter-menu": {
-    "title": "Deine Filterblase"
+    "title": "Deine Filterblase",
+    "hashtag-search": "Suche nach #{hashtag}",
+    "clearSearch": "Suche löschen"
+  },
+  "site": {
+    "made": "Mit &#10084; gemacht",
+    "imprint": "Impressum",
+    "termsAc": "Nutzungsbedingungen",
+    "privacy": "Datenschutz",
+    "changelog": "Änderungen & Verlauf",
+    "contact": "Kontakt",
+    "tribunal": "Registergericht",
+    "register": "Registernummer",
+    "director": "Geschäftsführer",
+    "taxident": "Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz (Deutschland)",
+    "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
+    "bank": "Bankverbindung",
+    "germany": "Deutschland"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
@@ -12,7 +29,8 @@
     "moreInfo": "Was ist Human Connection?",
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
-    "hello": "Hallo"
+    "hello": "Hallo",
+    "success": "Du bist eingeloggt!"
   },
   "password-reset": {
     "title": "Passwort zurücksetzen",
@@ -22,12 +40,30 @@
       "submitted": "Eine E-Mail mit weiteren Instruktionen wurde verschickt an <b>{email}</b>"
     }
   },
+  "registration": {
+    "signup": {
+      "title": "Mach mit bei Human Connection!",
+      "form": {
+        "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
+        "errors": {
+          "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
+          "invalid-invitation-token": "Es sieht so aus, als ob der Einladungscode schon eingelöst wurde. Jeder Code kann nur einmalig benutzt werden."
+        },
+      "submit": "Konto erstellen",
+      "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}</b> geschickt"
+      }
+    },
+    "create-user-account": {
+      "title": "Benutzerkonto anlegen",
+      "success": "Dein Benutzerkonto wurde erstellt!"
+    }
+  },
   "verify-code": {
     "form": {
       "code": "Code eingeben",
       "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
       "next": "Weiter",
-      "change-password":{
+      "change-password": {
         "success": "Änderung des Passworts war erfolgreich!",
         "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
         "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
@@ -35,7 +71,15 @@
     }
   },
   "editor": {
-    "placeholder": "Schreib etwas Inspirierendes..."
+    "placeholder": "Schreib etwas Inspirierendes...",
+    "mention": {
+      "noUsersFound": "Keine Benutzer gefunden"
+    },
+    "hashtag": {
+      "noHashtagsFound": "Keine Hashtags gefunden",
+      "addHashtag": "Neuer Hashtag",
+      "addLetter": "Tippe einen Buchstaben"
+    }
   },
   "profile": {
     "name": "Mein Profil",
@@ -164,6 +208,11 @@
     },
     "settings": {
       "name": "Einstellungen"
+    },
+    "invites": {
+      "name": "Benutzer einladen",
+      "title": "Benutzer als Admin anmelden",
+      "description": "Dieses Anmeldeformular ist zu sehen sobald die Anmeldung öffentlich zugänglich ist."
     }
   },
   "post": {
@@ -190,6 +239,10 @@
     "menu": {
       "edit": "Kommentar bearbeiten",
       "delete": "Kommentar löschen"
+    },
+    "show": {
+      "more": "mehr anzeigen",
+      "less": "weniger anzeigen"
     }
   },
   "quotes": {
@@ -309,17 +362,20 @@
     "user": {
       "title": "Nutzer freigeben",
       "type": "Nutzer",
-      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" freigeben möchtest?"
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" freigeben möchtest?",
+      "error": "Den User hast du schon gemeldet!"
     },
     "contribution": {
       "title": "Beitrag freigeben",
       "type": "Beitrag",
-      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" freigeben möchtest?"
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" freigeben möchtest?",
+      "error": " Den Beitrag hast du schon gemeldet!"
     },
     "comment": {
       "title": "Kommentar freigeben",
       "type": "Kommentar",
-      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" freigeben möchtest?"
+      "message": "Bist du sicher, dass du den Kommentar \"<b>{name}</b>\" freigeben möchtest?",
+      "error": "Den Kommentar hast du schon gemeldet!"
     }
   },
   "user": {
@@ -336,6 +392,9 @@
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
     }
+  },
+  "terms": {
+    "text": "<div ><ol><li><strong>UNFALLGEFAHR: </strong>Das ist eine Testversion! Alle Daten, Dein Profil und die Server können jederzeit komplett vernichtet, verloren, verbrannt und vielleicht auch in der Nähe von Alpha Centauri synchronisiert werden. Die Benutzung läuft auf eigene Gefahr. Mit kommerziellen Nebenwirkungen ist jedoch nicht zu rechnen.</li><br><li><strong>DU UND DEINE DATEN: </strong>Bitte beachte, dass wir die Inhalte der Alphaversion zu Werbezwecken, Webpräsentationen usw. verwenden, aber wir glauben, dass das auch in Deinem Interesse ist. Am besten keinen Nachnamen eingeben und bei noch mehr Datensparsamkeit ein Profilfoto ohne Identität verwenden. Mehr in unserer <a  href='/pages/privacy' target='_blank'>Datenschutzerklärung</a>.</li><br><li><strong>BAUSTELLEN: </strong>Das ist immer noch eine Testversion. Wenn etwas nicht funktioniert, blockiert, irritiert, falsch angezeigt, verbogen oder nicht anklickbar ist, bitten wir dies zu entschuldigen. Fehler, Käfer und Bugs bitte melden! <a href='http://localhost:3000/%22https://human-connection.org/alpha/#bugreport%5C%22' target='_blank'>https://human-connection.org/support</a></li><br><li><strong>VERHALTENSCODEX</strong>: Die Verhaltensregeln dienen als Leitsätze für den persönlichen Auftritt und den Umgang untereinander. Wer als Nutzer im Human Connection Netzwerk aktiv ist, Beiträge verfasst, kommentiert oder mit anderen Nutzern, auch außerhalb des Netzwerkes, Kontakt aufnimmt, erkennt diese Verhaltensregeln als verbindlich an: <a  href='https://alpha.human-connection.org/pages/code-of-conduct' target='_blank'>https://alpha.human-connection.org/pages/code-of-conduct</a></li><br><li><strong>MODERATION: </strong>Solange kein Community-Moderationssystem lauffähig ist, entscheidet ein Regenbogen-Einhorn darüber, ob Du körperlich und psychisch stabil genug bist, unsere Testversion zu bedienen. Das Einhorn kann Dich jederzeit von der Alpha entfernen. Also sei nett und lass Regenbogenfutter da!</li><br><li><strong>FAIRNESS: </strong>Sollte Dir die Alphaversion unseres Netzwerks wider Erwarten, egal aus welchen Gründen, nicht gefallen, überweisen wir Dir Deine gespendeten Monatsbeiträge innerhalb der ersten 2 Monate gerne zurück. Einfach Mail an: <a href='mailto:info@human-connection.org' target='_blank'>info@human-connection.org </a><strong>Achtung: Viele Funktionen werden erst nach und nach eingebaut. </strong></li><br><li><strong>FRAGEN?</strong> Die Termine und Links zu den Zoom-Räumen findest Du hier: <a href='http://localhost:3000/%22https://human-connection.org/events-und-news//%22' target='_blank'>https://human-connection.org/veranstaltungen/</a></li><br><li><strong>VON MENSCHEN FÜR MENSCHEN: </strong>Bitte hilf uns weitere monatlichen Spender für Human Connection zu bekommen, damit das Netzwerk so schnell wie möglich offiziell an den Start gehen kann. <a href='http://localhost:3000/%22https://human-connection.org/alpha/#bugreport%5C%22' target='_blank'>https://human-connection.org</a></li></ol><p>Jetzt aber viel Spaß mit der Alpha von Human Connection! Für den ersten Weltfrieden. ♥︎</p><br><p><strong>Herzlichst,</strong></p><p><strong>Euer Human Connection Team</strong></p></div>"
   }
 
 }

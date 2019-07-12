@@ -8,6 +8,7 @@ export default i18n => {
         comments(orderBy: createdAt_asc) {
           id
           contentExcerpt
+          content
           createdAt
           disabled
           deleted
