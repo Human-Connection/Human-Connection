@@ -59,11 +59,3 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-#filter-posts-header {
-  display: block;
-}
-.categories-list {
-  text-align: center;
-}
-</style>
