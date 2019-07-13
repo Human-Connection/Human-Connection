@@ -43,6 +43,9 @@
             <b>{{ scope.row.slug | truncate(20) }}</b>
           </nuxt-link>
         </template>
+        <template slot="createdAt" slot-scope="scope">
+          {{ scope.row.createdAt | dateTime }}
+        </template>
       </ds-table>
       <ds-flex direction="row-reverse">
         <ds-flex-item width="50px">
@@ -92,6 +95,7 @@ export default {
         index: '#',
         name: this.$t('admin.users.table.columns.name'),
         slug: this.$t('admin.users.table.columns.slug'),
+        createdAt: this.$t('admin.users.table.columns.createdAt'),
         contributionsCount: {
           label: '🖉',
           align: 'right',
@@ -121,6 +125,7 @@ export default {
             name
             slug
             role
+            createdAt
             contributionsCount
             commentedCount
             shoutedCount

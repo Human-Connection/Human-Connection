@@ -197,7 +197,8 @@
         "columns": {
           "name": "Name",
           "slug": "Slug",
-          "role": "Role"
+          "role": "Role",
+          "createdAt": "Created at"
         }
       },
       "empty": "No users found"
