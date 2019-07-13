@@ -1,5 +1,4 @@
 import { GraphQLClient } from 'graphql-request'
-import gql from 'graphql-tag'
 import { host, login } from '../../jest/helpers'
 import Factory from '../../seed/factories'
 
@@ -21,7 +20,7 @@ afterEach(async () => {
 })
 
 describe('currentUser { notifications }', () => {
-  const query = gql`
+  const query = `
     query($read: Boolean) {
       currentUser {
         notifications(read: $read, orderBy: createdAt_desc) {
@@ -68,7 +67,7 @@ describe('currentUser { notifications }', () => {
           'Hey <a class="mention" href="/profile/you/al-capone">@al-capone</a> how do you do?'
 
         beforeEach(async () => {
-          const createPostMutation = gql`
+          const createPostMutation = `
             mutation($title: String!, $content: String!) {
               CreatePost(title: $title, content: $content) {
                 id
@@ -117,7 +116,7 @@ describe('currentUser { notifications }', () => {
             // during development and thought: A feature not a bug! This way we
             // can encode a re-mentioning of users when you edit your post or
             // comment.
-            const updatePostMutation = gql`
+            const updatePostMutation = `
               mutation($id: ID!, $title: String!, $content: String!) {
                 UpdatePost(id: $id, content: $content, title: $title) {
                   title
@@ -173,7 +172,7 @@ describe('Hashtags', () => {
   const postTitle = 'Two Hashtags'
   const postContent =
     '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Democracy">#Democracy</a> should work equal for everybody!? That seems to be the only way to have equal <a class="hashtag" href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
-  const postWithHastagsQuery = gql`
+  const postWithHastagsQuery = `
     query($id: ID) {
       Post(id: $id) {
         tags {
@@ -186,7 +185,7 @@ describe('Hashtags', () => {
   const postWithHastagsVariables = {
     id: postId,
   }
-  const createPostMutation = gql`
+  const createPostMutation = `
     mutation($postId: ID, $postTitle: String!, $postContent: String!) {
       CreatePost(id: $postId, title: $postTitle, content: $postContent) {
         id
@@ -243,7 +242,7 @@ describe('Hashtags', () => {
         // The already existing Hashtag has no class at this point.
         const updatedPostContent =
           '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Elections">#Elections</a> should work equal for everybody!? That seems to be the only way to have equal <a href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
-        const updatePostMutation = gql`
+        const updatePostMutation = `
           mutation($postId: ID!, $postTitle: String!, $updatedPostContent: String!) {
             UpdatePost(id: $postId, title: $postTitle, content: $updatedPostContent) {
               id
