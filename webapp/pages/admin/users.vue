@@ -63,6 +63,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import isemail from 'isemail'
 
 export default {
   data() {
@@ -74,6 +75,7 @@ export default {
       User: [],
       hasNext: false,
       email: null,
+      filter: null,
       form: {
         formData: {
           query: '',
@@ -127,9 +129,10 @@ export default {
       `)
       },
       variables() {
-        const { offset, first, email } = this
+        const { offset, first, email, filter } = this
         const variables = { first, offset }
         if (email) variables.email = email
+        if (filter) variables.filter = filter
         return variables
       },
       update({ User }) {
@@ -150,7 +153,15 @@ export default {
     submit(formData) {
       this.offset = 0
       const { query } = formData
-      this.email = query
+      if (isemail.validate(query)) {
+        this.email = query
+        this.filter = null
+      } else {
+        this.email = null
+        this.filter = {
+          OR: [{ name_contains: query }, { slug_contains: query }, { about_contains: query }],
+        }
+      }
     },
   },
 }
