@@ -7,27 +7,27 @@ import Factory from './factories'
     const f = Factory()
     const [racoon, rabbit, wolf, bear, turtle, rhino] = await Promise.all([
       f.create('Badge', {
-        key: 'indiegogo_en_racoon',
+        id: 'indiegogo_en_racoon',
         icon: '/img/badges/indiegogo_en_racoon.svg',
       }),
       f.create('Badge', {
-        key: 'indiegogo_en_rabbit',
+        id: 'indiegogo_en_rabbit',
         icon: '/img/badges/indiegogo_en_rabbit.svg',
       }),
       f.create('Badge', {
-        key: 'indiegogo_en_wolf',
+        id: 'indiegogo_en_wolf',
         icon: '/img/badges/indiegogo_en_wolf.svg',
       }),
       f.create('Badge', {
-        key: 'indiegogo_en_bear',
+        id: 'indiegogo_en_bear',
         icon: '/img/badges/indiegogo_en_bear.svg',
       }),
       f.create('Badge', {
-        key: 'indiegogo_en_turtle',
+        id: 'indiegogo_en_turtle',
         icon: '/img/badges/indiegogo_en_turtle.svg',
       }),
       f.create('Badge', {
-        key: 'indiegogo_en_rhino',
+        id: 'indiegogo_en_rhino',
         icon: '/img/badges/indiegogo_en_rhino.svg',
       }),
     ])

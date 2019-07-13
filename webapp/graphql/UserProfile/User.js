@@ -18,7 +18,7 @@ export default i18n => {
         }
         createdAt
         badges {
-          key
+          id
           icon
         }
         badgesCount
@@ -37,7 +37,7 @@ export default i18n => {
           contributionsCount
           commentsCount
           badges {
-            key
+            id
             icon
           }
           location {
@@ -58,7 +58,7 @@ export default i18n => {
           contributionsCount
           commentsCount
           badges {
-            key
+            id
             icon
           }
           location {

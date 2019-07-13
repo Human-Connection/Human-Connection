@@ -25,7 +25,7 @@
 [?]     type: String, // in nitro this is a defined enum - seems good for now
 [X]     required: true
       },
-[X]   key: {
+[X]   id: {
 [X]     type: String,
 [X]     required: true
       },
@@ -43,7 +43,7 @@
 CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL_FILE}") YIELD value as badge
 MERGE(b:Badge {id: badge._id["$oid"]})
 ON CREATE SET
-b.key       = badge.key,
+b.id        = badge.key,
 b.type      = badge.type,
 b.icon      = replace(badge.image.path, 'https://api-alpha.human-connection.org', ''),
 b.status    = badge.status,

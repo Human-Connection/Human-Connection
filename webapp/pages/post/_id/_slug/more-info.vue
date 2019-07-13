@@ -110,7 +110,7 @@ export default {
                     name: name${this.$i18n.locale().toUpperCase()}
                   }
                   badges {
-                    key
+                    id
                     icon
                   }
                 }

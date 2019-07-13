@@ -31,7 +31,7 @@ describe('rewards', () => {
       email: 'admin@example.org',
     })
     badge = await factory.create('Badge', {
-      key: 'indiegogo_en_rhino',
+      id: 'indiegogo_en_rhino',
       type: 'crowdfunding',
       status: 'permanent',
       icon: '/img/badges/indiegogo_en_rhino.svg',
@@ -48,7 +48,7 @@ describe('rewards', () => {
         reward(badgeKey: $from, userId: $to) {
           id
           badges {
-            key
+            id
           }
         }
       }
@@ -70,14 +70,14 @@ describe('rewards', () => {
         client = new GraphQLClient(host, { headers })
       })
 
-      describe('badge for key does not exist', () => {
+      describe('badge for id does not exist', () => {
         it('rejects with a telling error message', async () => {
           await expect(
             client.request(mutation, {
               ...variables,
               from: 'bullshit',
             }),
-          ).rejects.toThrow("Couldn't find a badge with that key")
+          ).rejects.toThrow("Couldn't find a badge with that id")
         })
       })
 
@@ -96,7 +96,7 @@ describe('rewards', () => {
         const expected = {
           reward: {
             id: 'u1',
-            badges: [{ key: 'indiegogo_en_rhino' }],
+            badges: [{ id: 'indiegogo_en_rhino' }],
           },
         }
         await expect(client.request(mutation, variables)).resolves.toEqual(expected)
@@ -104,13 +104,13 @@ describe('rewards', () => {
 
       it('rewards a second different badge to same user', async () => {
         await factory.create('Badge', {
-          key: 'indiegogo_en_racoon',
+          id: 'indiegogo_en_racoon',
           icon: '/img/badges/indiegogo_en_racoon.svg',
         })
         const expected = {
           reward: {
             id: 'u1',
-            badges: [{ key: 'indiegogo_en_racoon' }, { key: 'indiegogo_en_rhino' }],
+            badges: [{ id: 'indiegogo_en_racoon' }, { id: 'indiegogo_en_rhino' }],
           },
         }
         await client.request(mutation, variables)
@@ -126,7 +126,7 @@ describe('rewards', () => {
         const expected = {
           reward: {
             id: 'u2',
-            badges: [{ key: 'indiegogo_en_rhino' }],
+            badges: [{ id: 'indiegogo_en_rhino' }],
           },
         }
         await expect(
@@ -146,12 +146,12 @@ describe('rewards', () => {
             User(id: "u1") {
               badgesCount
               badges {
-                key
+                id
               }
             }
           }
         `
-        const expected = { User: [{ badgesCount: 1, badges: [{ key: 'indiegogo_en_rhino' }] }] }
+        const expected = { User: [{ badgesCount: 1, badges: [{ id: 'indiegogo_en_rhino' }] }] }
 
         await expect(client.request(query)).resolves.toEqual(expected)
       })
@@ -183,7 +183,7 @@ describe('rewards', () => {
         unreward(badgeKey: $from, userId: $to) {
           id
           badges {
-            key
+            id
           }
         }
       }
@@ -196,12 +196,12 @@ describe('rewards', () => {
             User(id: "u1") {
               badgesCount
               badges {
-                key
+                id
               }
             }
           }
         `
-        const expected = { User: [{ badgesCount: 1, badges: [{ key: 'indiegogo_en_rhino' }] }] }
+        const expected = { User: [{ badgesCount: 1, badges: [{ id: 'indiegogo_en_rhino' }] }] }
         const client = new GraphQLClient(host)
         await expect(client.request(query)).resolves.toEqual(expected)
       })

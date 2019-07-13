@@ -1,5 +1,5 @@
 type Badge {
-  key: ID!
+  id: ID!
   type: BadgeType!
   status: BadgeStatus!
   icon: String!
