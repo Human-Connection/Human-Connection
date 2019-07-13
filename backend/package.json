@@ -34,7 +34,6 @@
       "!**/src/**/?(*.)+(spec|test).js?(x)"
     ],
     "coverageReporters": [
-      "text",
       "lcov"
     ],
     "testMatch": [
