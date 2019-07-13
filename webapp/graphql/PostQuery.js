@@ -30,7 +30,6 @@ export default i18n => {
             }
             badges {
               id
-              key
               icon
             }
           }
@@ -61,7 +60,6 @@ export default i18n => {
               }
               badges {
                 id
-                key
                 icon
               }
             }
