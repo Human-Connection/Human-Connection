@@ -166,11 +166,12 @@ describe('SignupByInvitation', () => {
         await expect(action()).rejects.toThrow('"email" must be a valid email')
       })
 
-      it('creates no EmailAddress node', async done => {
+      it('creates no additional EmailAddress node', async done => {
         try {
           await action()
         } catch (e) {
-          const emailAddresses = await instance.all('EmailAddress')
+          let emailAddresses = await instance.all('EmailAddress')
+          emailAddresses = await emailAddresses.toJson
           expect(emailAddresses).toHaveLength(0)
           done()
         }

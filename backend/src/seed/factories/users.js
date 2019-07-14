@@ -25,10 +25,7 @@ export default function create() {
         neodeInstance.create('User', args),
         neodeInstance.create('EmailAddress', { email: args.email }),
       ])
-      await Promise.all([
-        user.relateTo(email, 'primaryEmail'),
-        email.relateTo(user, 'belongsTo')
-      ])
+      await Promise.all([user.relateTo(email, 'primaryEmail'), email.relateTo(user, 'belongsTo')])
       return user
     },
   }

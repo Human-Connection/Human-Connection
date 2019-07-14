@@ -47,17 +47,9 @@ export default {
     },
     changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {
       const session = driver.session()
-      let result = await session.run(
-        `MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
-         RETURN user {.id, .email, .encryptedPassword}`,
-        {
-          userEmail: user.email,
-        },
-      )
+      let result = await session.run('MATCH (user:User {id:$id}) RETURN user', { id: user.id })
 
-      const [currentUser] = result.records.map(function(record) {
-        return record.get('user')
-      })
+      const [currentUser] = result.records.map(record => record.get('user').properties)
 
       if (!(await bcrypt.compareSync(oldPassword, currentUser.encryptedPassword))) {
         throw new AuthenticationError('Old password is not correct')

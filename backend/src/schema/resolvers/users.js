@@ -109,7 +109,7 @@ export default {
       const { id } = parent
       const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
       const result = await instance.cypher(statement, { id })
-      let [{email}]= result.records.map(r => r.get('e').properties)
+      let [{ email }] = result.records.map(r => r.get('e').properties)
       return email
     },
     ...undefinedToNull([
