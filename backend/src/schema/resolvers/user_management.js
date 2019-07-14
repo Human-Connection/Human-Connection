@@ -21,8 +21,8 @@ export default {
       // }
       const session = driver.session()
       const result = await session.run(
-        'MATCH (user:User {email: $userEmail}) ' +
-          'RETURN user {.id, .slug, .name, .avatar, .email, .encryptedPassword, .role, .disabled} as user LIMIT 1',
+        'MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})' +
+          'RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled} as user LIMIT 1',
         {
           userEmail: email,
         },
@@ -48,7 +48,7 @@ export default {
     changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {
       const session = driver.session()
       let result = await session.run(
-        `MATCH (user:User {email: $userEmail})
+        `MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
          RETURN user {.id, .email, .encryptedPassword}`,
         {
           userEmail: user.email,
@@ -68,7 +68,7 @@ export default {
       } else {
         const newEncryptedPassword = await bcrypt.hashSync(newPassword, 10)
         session.run(
-          `MATCH (user:User {email: $userEmail})
+          `MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
            SET user.encryptedPassword = $newEncryptedPassword
            RETURN user
         `,
