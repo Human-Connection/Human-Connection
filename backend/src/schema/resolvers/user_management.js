@@ -22,7 +22,7 @@ export default {
       const session = driver.session()
       const result = await session.run(
         'MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})' +
-          'RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled} as user LIMIT 1',
+          'RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1',
         {
           userEmail: email,
         },
