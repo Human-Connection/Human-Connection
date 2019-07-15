@@ -121,6 +121,7 @@
     "social-media": {
       "name": "Social media",
       "placeholder": "Your social media url",
+      "requireUnique": "You added this url already",
       "submit": "Add link",
       "successAdd": "Added social media. Updated user profile!",
       "successDelete": "Deleted social media. Updated user profile!"

@@ -121,6 +121,7 @@
     "social-media": {
       "name": "Soziale Medien",
       "placeholder": "Deine Social-Media URL",
+      "requireUnique": "Dieser Link existiert bereits",
       "submit": "Link hinzufügen",
       "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
       "successDelete": "Social-Media gelöscht. Profil aktualisiert!"

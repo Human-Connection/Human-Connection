@@ -160,6 +160,12 @@ export default {
     },
     async handleSubmitSocialMedia() {
       const isEditing = !!this.editingLink.id
+      const url = this.formData.socialMediaLink
+
+      const duplicateUrl = this.socialMediaLinks.find(link => link.url === url);
+      if (duplicateUrl && duplicateUrl.id !== this.editingLink.id) {
+        return this.$toast.error(this.$t('settings.social-media.requireUnique'))
+      }
 
       let mutation = gql`
         mutation($url: String!) {
@@ -169,7 +175,7 @@ export default {
           }
         }
       `
-      let variables = { url: this.formData.socialMediaLink }
+      let variables = { url }
       let successMessage = this.$t('settings.social-media.successAdd')
 
       if (isEditing) {
