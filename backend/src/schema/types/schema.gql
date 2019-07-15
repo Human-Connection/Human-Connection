@@ -55,7 +55,7 @@ type Notification {
   read: Boolean
   user: User @relation(name: "NOTIFIED", direction: "OUT")
   post: Post @relation(name: "NOTIFIED", direction: "IN")
-  comment: Post @relation(name: "NOTIFIED", direction: "IN")
+  comment: Comment @relation(name: "NOTIFIED", direction: "IN")
   createdAt: String
 }
 

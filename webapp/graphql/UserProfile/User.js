@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
-  return gql(`
+  return gql`
     query User($id: ID!) {
       User(id: $id) {
         id
@@ -72,5 +72,5 @@ export default i18n => {
         }
       }
     }
-  `)
+  `
 }

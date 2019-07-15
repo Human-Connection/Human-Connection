@@ -7,7 +7,7 @@ const notifyMentionOfPost = async (postId, idsOfMentionedUsers, context) => {
   const session = context.driver.session()
   const createdAt = new Date().toISOString()
   const cypher = `
-    MATCH (u: User) WHERE u.id in $idsOfMentionedUsers
+    MATCH (u: User) WHERE u.id IN $idsOfMentionedUsers
     MATCH (p: Post) WHERE p.id = $postId
     CREATE (n: Notification { id: apoc.create.uuid(), read: false, createdAt: $createdAt })
     MERGE (n)-[:NOTIFIED]->(u)

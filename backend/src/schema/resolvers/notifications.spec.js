@@ -1,6 +1,11 @@
-import { GraphQLClient } from 'graphql-request'
+import {
+  GraphQLClient
+} from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import {
+  host,
+  login
+} from '../../jest/helpers'
 
 const factory = Factory()
 let client
@@ -39,8 +44,13 @@ describe('currentUser { notifications }', () => {
   describe('authenticated', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
-      client = new GraphQLClient(host, { headers })
+      headers = await login({
+        email: 'test@example.org',
+        password: '1234'
+      })
+      client = new GraphQLClient(host, {
+        headers
+      })
     })
 
     describe('given some notifications', () => {
@@ -52,19 +62,46 @@ describe('currentUser { notifications }', () => {
         }
         await Promise.all([
           factory.create('User', neighborParams),
-          factory.create('Notification', { id: 'not-for-you' }),
-          factory.create('Notification', { id: 'already-seen', read: true }),
+          factory.create('Notification', {
+            id: 'not-for-you'
+          }),
+          factory.create('Notification', {
+            id: 'already-seen',
+            read: true
+          }),
         ])
-        await factory.create('Notification', { id: 'unseen' })
+        await factory.create('Notification', {
+          id: 'unseen'
+        })
         await factory.authenticateAs(neighborParams)
-        await factory.create('Post', { id: 'p1' })
+        await factory.create('Post', {
+          id: 'p1'
+        })
         await Promise.all([
-          factory.relate('Notification', 'User', { from: 'not-for-you', to: 'neighbor' }),
-          factory.relate('Notification', 'Post', { from: 'p1', to: 'not-for-you' }),
-          factory.relate('Notification', 'User', { from: 'unseen', to: 'you' }),
-          factory.relate('Notification', 'Post', { from: 'p1', to: 'unseen' }),
-          factory.relate('Notification', 'User', { from: 'already-seen', to: 'you' }),
-          factory.relate('Notification', 'Post', { from: 'p1', to: 'already-seen' }),
+          factory.relate('Notification', 'User', {
+            from: 'not-for-you',
+            to: 'neighbor'
+          }),
+          factory.relate('Notification', 'Post', {
+            from: 'p1',
+            to: 'not-for-you'
+          }),
+          factory.relate('Notification', 'User', {
+            from: 'unseen',
+            to: 'you'
+          }),
+          factory.relate('Notification', 'Post', {
+            from: 'p1',
+            to: 'unseen'
+          }),
+          factory.relate('Notification', 'User', {
+            from: 'already-seen',
+            to: 'you'
+          }),
+          factory.relate('Notification', 'Post', {
+            from: 'p1',
+            to: 'already-seen'
+          }),
         ])
       })
 
@@ -79,11 +116,18 @@ describe('currentUser { notifications }', () => {
             }
           }
         }`
-        let variables = { read: false }
+        let variables = {
+          read: false
+        }
         it('returns only unread notifications of current user', async () => {
           const expected = {
             currentUser: {
-              notifications: [{ id: 'unseen', post: { id: 'p1' } }],
+              notifications: [{
+                id: 'unseen',
+                post: {
+                  id: 'p1'
+                }
+              }],
             },
           }
           await expect(client.request(query, variables)).resolves.toEqual(expected)
@@ -104,9 +148,18 @@ describe('currentUser { notifications }', () => {
         it('returns all notifications of current user', async () => {
           const expected = {
             currentUser: {
-              notifications: [
-                { id: 'unseen', post: { id: 'p1' } },
-                { id: 'already-seen', post: { id: 'p1' } },
+              notifications: [{
+                  id: 'unseen',
+                  post: {
+                    id: 'p1'
+                  }
+                },
+                {
+                  id: 'already-seen',
+                  post: {
+                    id: 'p1'
+                  }
+                },
               ],
             },
           }
@@ -123,7 +176,10 @@ describe('UpdateNotification', () => {
       id read
     }
   }`
-  const variables = { id: 'to-be-updated', read: true }
+  const variables = {
+    id: 'to-be-updated',
+    read: true
+  }
 
   describe('given a notifications', () => {
     let headers
@@ -136,12 +192,22 @@ describe('UpdateNotification', () => {
         slug: 'mentioned',
       }
       await factory.create('User', mentionedParams)
-      await factory.create('Notification', { id: 'to-be-updated' })
+      await factory.create('Notification', {
+        id: 'to-be-updated'
+      })
       await factory.authenticateAs(userParams)
-      await factory.create('Post', { id: 'p1' })
+      await factory.create('Post', {
+        id: 'p1'
+      })
       await Promise.all([
-        factory.relate('Notification', 'User', { from: 'to-be-updated', to: 'mentioned-1' }),
-        factory.relate('Notification', 'Post', { from: 'p1', to: 'to-be-updated' }),
+        factory.relate('Notification', 'User', {
+          from: 'to-be-updated',
+          to: 'mentioned-1'
+        }),
+        factory.relate('Notification', 'Post', {
+          from: 'p1',
+          to: 'to-be-updated'
+        }),
       ])
     })
 
@@ -154,8 +220,13 @@ describe('UpdateNotification', () => {
 
     describe('authenticated', () => {
       beforeEach(async () => {
-        headers = await login({ email: 'test@example.org', password: '1234' })
-        client = new GraphQLClient(host, { headers })
+        headers = await login({
+          email: 'test@example.org',
+          password: '1234'
+        })
+        client = new GraphQLClient(host, {
+          headers
+        })
       })
 
       it('throws authorization error', async () => {
@@ -164,12 +235,22 @@ describe('UpdateNotification', () => {
 
       describe('and owner', () => {
         beforeEach(async () => {
-          headers = await login({ email: 'mentioned@example.org', password: '1234' })
-          client = new GraphQLClient(host, { headers })
+          headers = await login({
+            email: 'mentioned@example.org',
+            password: '1234'
+          })
+          client = new GraphQLClient(host, {
+            headers
+          })
         })
 
         it('updates notification', async () => {
-          const expected = { UpdateNotification: { id: 'to-be-updated', read: true } }
+          const expected = {
+            UpdateNotification: {
+              id: 'to-be-updated',
+              read: true
+            }
+          }
           await expect(client.request(mutation, variables)).resolves.toEqual(expected)
         })
       })

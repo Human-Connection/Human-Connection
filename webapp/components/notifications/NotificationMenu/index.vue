@@ -21,26 +21,73 @@ import NotificationList from '../NotificationList'
 import Dropdown from '~/components/Dropdown'
 import gql from 'graphql-tag'
 
-const MARK_AS_READ = gql(`
-mutation($id: ID!, $read: Boolean!) {
-  UpdateNotification(id: $id, read: $read) {
-    id
-    read
+const MARK_AS_READ = gql`
+  mutation($id: ID!, $read: Boolean!) {
+    UpdateNotification(id: $id, read: $read) {
+      id
+      read
+    }
   }
-}`)
+`
 
-const NOTIFICATIONS = gql(`{
-  currentUser {
-    id
-    notifications(read: false, orderBy: createdAt_desc) {
-      id read createdAt
-      post {
-        id createdAt disabled deleted title contentExcerpt slug
-        author { id slug name disabled deleted }
+const NOTIFICATIONS = gql`
+  {
+    currentUser {
+      id
+      notifications(read: false, orderBy: createdAt_desc) {
+        id
+        read
+        createdAt
+        post {
+          id
+          createdAt
+          disabled
+          deleted
+          title
+          contentExcerpt
+          slug
+          author {
+            id
+            slug
+            name
+            disabled
+            deleted
+          }
+        }
+        comment {
+          id
+          createdAt
+          disabled
+          deleted
+          contentExcerpt
+          author {
+            id
+            slug
+            name
+            disabled
+            deleted
+          }
+          post {
+            id
+            createdAt
+            disabled
+            deleted
+            title
+            contentExcerpt
+            slug
+            author {
+              id
+              slug
+              name
+              disabled
+              deleted
+            }
+          }
+        }
       }
     }
   }
-}`)
+`
 
 export default {
   name: 'NotificationMenu',

@@ -2,11 +2,9 @@
   <ds-space :class="{ notification: true, read: notification.read }" margin-bottom="x-small">
     <no-ssr>
       <ds-space margin-bottom="x-small">
-        <hc-user :user="post.author" :date-time="post.createdAt" :trunc="35" />
+        <hc-user :user="post.author || comment.author" :date-time="post.createdAt" :trunc="35" />
       </ds-space>
-      <ds-text color="soft">
-        {{ $t('notifications.menu.mentioned') }}
-      </ds-text>
+      <ds-text color="soft">{{ $t('notifications.menu.mentioned') }}</ds-text>
     </no-ssr>
     <ds-space margin-bottom="x-small" />
     <nuxt-link
@@ -46,6 +44,9 @@ export default {
     },
     post() {
       return this.notification.post || {}
+    },
+    comment() {
+      return this.notification.comment || {}
     },
   },
 }
