@@ -154,11 +154,11 @@ o.createdAt             = datetime(organization.createdAt.`$date`),
 o.updatedAt             = datetime(organization.updatedAt.`$date`)
 WITH o, organization
 MATCH (u:User {id: organization.userId})
-MERGE (u)-[:CREATED_ORGA]->(o)
-MERGE (u)-[:OWNING_ORGA]->(o)
+MERGE (u)-[:CREATED]->(o)
+MERGE (u)-[:OWNS]->(o)
 WITH o, organization
 MATCH (u:User {id: organization.reviewedBy})
-MERGE (u)-[:REVIEWED_ORGA]->(o)
+MERGE (u)-[:REVIEWED]->(o)
 WITH o, organization, organization.categoryIds as categoryIds
 UNWIND categoryIds AS categoryId
 MATCH (c:Category {id: categoryId})

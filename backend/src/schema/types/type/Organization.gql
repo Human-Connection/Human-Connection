@@ -1,8 +1,8 @@
 type Organization {
   id: ID!
-  createdBy: User @relation(name: "CREATED_ORGA", direction: "IN")
-  ownedBy: [User] @relation(name: "OWNING_ORGA", direction: "IN")
-  reviewedBy: User @relation(name: "REVIEWED_ORGA", direction: "IN")
+  createdBy: User @relation(name: "CREATED", direction: "IN")
+  ownedBy: [User] @relation(name: "OWNS", direction: "IN")
+  reviewedBy: User @relation(name: "REVIEWED", direction: "IN")
   name: String!
   slug: String
   description: String!
