@@ -4,7 +4,7 @@
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
           <ds-flex class="main-navigation-flex">
-            <ds-flex-item :width="{ lg: '5%' }" />
+            <ds-flex-item :width="{ lg: '3.5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
               <a @click="redirectToRoot">
                 <ds-logo />
@@ -17,7 +17,7 @@
               <ds-button icon="bars" @click="toggleMobileMenuView" right />
             </ds-flex-item>
             <ds-flex-item
-              :width="{ base: '100%', sm: '100%', md: '50%', lg: '45%' }"
+              :width="{ base: '100%', sm: '100%', md: '50%', lg: '50%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <div id="nav-search-box" v-on:click="unfolded" @blur.capture="foldedup">
@@ -37,11 +37,12 @@
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <no-ssr>
-                <filter-posts placement="bottom-end" offset="23" :categories="categories" />
+                <filter-posts placement="top-start" offset="8" :categories="categories" />
               </no-ssr>
             </ds-flex-item>
+            <ds-flex-item :width="{ base: '100%', sm: '100%', md: '10%', lg: '2%' }" />
             <ds-flex-item
-              :width="{ base: '100%', sm: '100%', md: '100%', lg: '20%' }"
+              :width="{ base: '100%', sm: '100%', md: '100%', lg: '13%' }"
               style="background-color:white"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
@@ -53,14 +54,14 @@
                 }"
               >
                 <no-ssr>
-                  <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
+                  <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
                 </no-ssr>
                 <template v-if="isLoggedIn">
                   <no-ssr>
                     <notification-menu />
                   </no-ssr>
                   <no-ssr>
-                    <dropdown class="avatar-menu">
+                    <dropdown class="avatar-menu" offset="8">
                       <template slot="default" slot-scope="{ toggleMenu }">
                         <a
                           class="avatar-menu-trigger"
@@ -298,6 +299,10 @@ export default {
 
 .main-navigation-right .desktop-view {
   float: right;
+}
+
+.avatar-menu {
+  margin: 2px 0px 0px 5px;
 }
 
 .avatar-menu-trigger {

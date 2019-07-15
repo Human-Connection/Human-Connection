@@ -1,8 +1,8 @@
 <template>
   <dropdown ref="menu" :placement="placement" :offset="offset">
     <a slot="default" slot-scope="{ toggleMenu }" href="#" @click.prevent="toggleMenu()">
-      <ds-icon style="margin: 5px 0px 0px 10px;" name="filter" size="large" />
-      <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
+      <ds-icon style="margin: 12px 0px 0px 10px;" name="filter" size="large" />
+      <ds-icon style="margin: 7px 0px 0px 2px" size="xx-small" name="angle-down" />
     </a>
     <template slot="popover">
       <filter-posts-menu-items :chunk="chunk" @filterPosts="filterPosts" />

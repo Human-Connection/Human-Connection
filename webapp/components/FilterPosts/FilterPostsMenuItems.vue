@@ -117,4 +117,10 @@ export default {
     margin: 9px 0px 40px 0px;
   }
 }
+
+@media only screen and (max-width: 960px) {
+  #filter-posts-header {
+    text-align: center;
+  }
+}
 </style>
