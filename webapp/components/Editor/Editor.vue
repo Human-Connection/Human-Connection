@@ -218,12 +218,13 @@ export default {
     EditorMenuBubble,
   },
   props: {
-    users: { type: Array, default: () => [] },
-    hashtags: { type: Array, default: () => [] },
+    users: { type: Array, default: () => [] }, // If 'null', than the Mention extention is not assigned.
+    hashtags: { type: Array, default: () => [] }, // If 'null', than the Hashtag extention is not assigned.
     value: { type: String, default: '' },
     doc: { type: Object, default: () => {} },
   },
   data() {
+    // Set array of optional extensions by analysing the props.
     let optionalExtensions = []
     if (this.users) {
       optionalExtensions.push(
