@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 let user
@@ -42,7 +42,7 @@ describe('rewards', () => {
   })
 
   describe('reward', () => {
-    const mutation = `
+    const mutation = gql`
       mutation($from: ID!, $to: ID!) {
         reward(badgeKey: $from, userId: $to) {
           id
@@ -141,7 +141,7 @@ describe('rewards', () => {
         await client.request(mutation, variables)
         await client.request(mutation, variables)
 
-        const query = `
+        const query = gql`
           {
             User(id: "u1") {
               badgesCount
@@ -178,7 +178,7 @@ describe('rewards', () => {
     })
     const expected = { unreward: { id: 'u1', badges: [] } }
 
-    const mutation = `
+    const mutation = gql`
       mutation($from: ID!, $to: ID!) {
         unreward(badgeKey: $from, userId: $to) {
           id
@@ -191,7 +191,7 @@ describe('rewards', () => {
 
     describe('check test setup', () => {
       it('user has one badge', async () => {
-        const query = `
+        const query = gql`
           {
             User(id: "u1") {
               badgesCount

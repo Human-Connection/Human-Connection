@@ -1,13 +1,13 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 
 describe('SocialMedia', () => {
   let client
   let headers
-  const mutationC = `
+  const mutationC = gql`
     mutation($url: String!) {
       CreateSocialMedia(url: $url) {
         id
@@ -15,7 +15,7 @@ describe('SocialMedia', () => {
       }
     }
   `
-  const mutationD = `
+  const mutationD = gql`
     mutation($id: ID!) {
       DeleteSocialMedia(id: $id) {
         id

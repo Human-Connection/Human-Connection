@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
-import { login, host } from '../../jest/helpers'
 import Factory from '../../seed/factories'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 let client
@@ -130,7 +130,7 @@ describe('users', () => {
   describe('DeleteUser', () => {
     let deleteUserVariables
     let asAuthor
-    const deleteUserMutation = `
+    const deleteUserMutation = gql`
       mutation($id: ID!, $resource: [Deletable]) {
         DeleteUser(id: $id, resource: $resource) {
           id

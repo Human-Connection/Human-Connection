@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 let client
@@ -25,7 +25,7 @@ afterEach(async () => {
 })
 
 describe('CreateComment', () => {
-  const createCommentMutation = `
+  const createCommentMutation = gql`
     mutation($postId: ID!, $content: String!) {
       CreateComment(postId: $postId, content: $content) {
         id
@@ -33,7 +33,7 @@ describe('CreateComment', () => {
       }
     }
   `
-  const createPostMutation = `
+  const createPostMutation = gql`
     mutation($id: ID!, $title: String!, $content: String!) {
       CreatePost(id: $id, title: $title, content: $content) {
         id
@@ -87,7 +87,7 @@ describe('CreateComment', () => {
     it('assigns the authenticated user as author', async () => {
       await client.request(createCommentMutation, createCommentVariables)
 
-      const { User } = await client.request(`
+      const { User } = await client.request(gql`
         {
           User(name: "TestUser") {
             comments {
@@ -188,7 +188,7 @@ describe('CreateComment', () => {
 })
 
 describe('DeleteComment', () => {
-  const deleteCommentMutation = `
+  const deleteCommentMutation = gql`
     mutation($id: ID!) {
       DeleteComment(id: $id) {
         id
