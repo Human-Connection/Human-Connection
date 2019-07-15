@@ -52,7 +52,6 @@ export const actions = {
               }
               badges {
                 id
-                key
                 icon
               }
             }

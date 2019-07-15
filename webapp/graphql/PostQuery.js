@@ -106,7 +106,6 @@ export const filterPosts = i18n => {
         }
         badges {
           id
-          key
           icon
         }
       }
