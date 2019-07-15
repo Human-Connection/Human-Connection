@@ -2,7 +2,8 @@ import faker from 'faker'
 import Factory from './factories'
 
 /* eslint-disable no-multi-spaces */
-;(async function() {
+;
+(async function () {
   try {
     const f = Factory()
     const [racoon, rabbit, wolf, bear, turtle, rhino] = await Promise.all([
@@ -297,6 +298,8 @@ import Factory from './factories'
     const mention1 = 'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
     const mention2 =
       'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
+    const hashtag1 = 'See <a class="hashtag" href="/search/hashtag/NaturphilosophieYoga">#NaturphilosophieYoga</a> can really help you!'
+    const hashtagAndMention1 = 'The new physics of <a class="hashtag" href="/search/hashtag/QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" href="/search/hashtag/QuantumGravity">#QuantumGravity</a>! <a class="mention" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
 
     await Promise.all([
       asAdmin.create('Post', {
@@ -309,6 +312,8 @@ import Factory from './factories'
       }),
       asUser.create('Post', {
         id: 'p2',
+        title: `Nature Philosophy Yoga`,
+        content: `${hashtag1}`,
       }),
       asTick.create('Post', {
         id: 'p3',
@@ -330,6 +335,8 @@ import Factory from './factories'
       asUser.create('Post', {
         id: 'p8',
         image: faker.image.unsplash.nature(),
+        title: `Quantum Flow Theory explains Quantum Gravity`,
+        content: `${hashtagAndMention1}`,
       }),
       asTick.create('Post', {
         id: 'p9',
@@ -566,6 +573,9 @@ import Factory from './factories'
       }),
     ])
 
+    const mentionInComment1 = 'I heard <a class="mention" href="/profile/u3">@jenny-rostock</a>, practice it since 3 years now.'
+    const mentionInComment2 = 'Did <a class="mention" href="/profile/u1">@peter-lustig</a> told you?'
+
     await Promise.all([
       asUser.create('Comment', {
         id: 'c1',
@@ -582,6 +592,12 @@ import Factory from './factories'
       asTrick.create('Comment', {
         id: 'c4',
         postId: 'p2',
+        content: `${mentionInComment1}`,
+      }),
+      asUser.create('Comment', {
+        id: 'c4-1',
+        postId: 'p2',
+        content: `${mentionInComment2}`,
       }),
       asModerator.create('Comment', {
         id: 'c5',
