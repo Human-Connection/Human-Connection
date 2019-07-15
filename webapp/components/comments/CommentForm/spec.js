@@ -40,6 +40,7 @@ describe('CommentForm.vue', () => {
       'editor/placeholder': () => {
         return 'some cool placeholder'
       },
+      'editor/editPending': () => false,
     }
     const store = new Vuex.Store({
       getters,

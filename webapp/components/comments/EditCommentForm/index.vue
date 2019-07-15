@@ -32,6 +32,7 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor/Editor'
+import { mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -56,6 +57,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setEditPending: 'editor/SET_EDIT_PENDING',
+    }),
     updateEditorContent(value) {
       const content = value.replace(/<(?:.|\n)*?>/gm, '').trim()
       if (content.length < 1) {
@@ -92,6 +96,7 @@ export default {
           this.$toast.success(this.$t('post.comment.updated'))
           this.disabled = false
           this.$emit('showEditCommentMenu', false)
+          this.setEditPending(false)
         })
         .catch(err => {
           this.$toast.error(err.message)

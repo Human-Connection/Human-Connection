@@ -35,24 +35,22 @@
           @showEditCommentMenu="editCommentMenu"
         />
       </div>
-      <div
-        v-if="isCollapsed && !openEditCommentMenu"
-        v-html="comment.contentExcerpt"
-        style="padding-left: 40px;"
-      />
-      <div
-        v-show="comment.content !== comment.contentExcerpt"
-        style="text-align: right;  margin-right: 20px; margin-top: -12px;"
-      >
-        <a v-if="isCollapsed" style="padding-left: 40px;" @click="isCollapsed = !isCollapsed">
-          {{ $t('comment.show.more') }}
-        </a>
-      </div>
-      <div v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
-      <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
-        <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" style="padding-left: 40px; ">
-          {{ $t('comment.show.less') }}
-        </a>
+      <div v-show="!openEditCommentMenu">
+        <div v-if="isCollapsed" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
+        <div
+          v-show="comment.content !== comment.contentExcerpt"
+          style="text-align: right;  margin-right: 20px; margin-top: -12px;"
+        >
+          <a v-if="isCollapsed" style="padding-left: 40px;" @click="isCollapsed = !isCollapsed">
+            {{ $t('comment.show.more') }}
+          </a>
+        </div>
+        <div v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
+        <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
+          <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" style="padding-left: 40px; ">
+            {{ $t('comment.show.less') }}
+          </a>
+        </div>
       </div>
       <ds-space margin-bottom="small" />
     </ds-card>
@@ -61,7 +59,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import HcEditCommentForm from '~/components/comments/EditCommentForm'
@@ -126,11 +124,15 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setEditPending: 'editor/SET_EDIT_PENDING',
+    }),
     isAuthor(id) {
       return this.user.id === id
     },
     editCommentMenu(showMenu) {
       this.openEditCommentMenu = showMenu
+      this.setEditPending(showMenu)
     },
     async deleteCommentCallback() {
       try {
