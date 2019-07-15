@@ -22,8 +22,8 @@ export default {
     FilterPostsMenuItems,
   },
   props: {
-    placement: { type: String, default: 'bottom-start' },
-    offset: { type: [String, Number], default: '16' },
+    placement: { type: String },
+    offset: { type: [String, Number] },
     categories: { type: Array, default: () => [] },
   },
   data() {

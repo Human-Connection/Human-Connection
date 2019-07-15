@@ -17,10 +17,10 @@
               <ds-button icon="bars" @click="toggleMobileMenuView" right />
             </ds-flex-item>
             <ds-flex-item
-              :width="{ base: '100%', sm: '100%', md: '50%', lg: '50%' }"
+              :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
-              <div id="nav-search-box" v-on:click="unfolded" @blur.capture="foldedup">
+              <div id="nav-search-box">
                 <search-input
                   id="nav-search"
                   :delay="300"
@@ -33,7 +33,7 @@
               </div>
             </ds-flex-item>
             <ds-flex-item
-              :width="{ base: '100%', sm: '100%', md: '10%', lg: '10%' }"
+              :width="{ base: '15%', sm: '15%', md: '10%', lg: '10%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <no-ssr>
@@ -58,7 +58,7 @@
                 </no-ssr>
                 <template v-if="isLoggedIn">
                   <no-ssr>
-                    <notification-menu />
+                    <notification-menu placement="top" />
                   </no-ssr>
                   <no-ssr>
                     <dropdown class="avatar-menu" offset="8">
@@ -240,12 +240,6 @@ export default {
       }
       return this.$route.path.indexOf(url) === 0
     },
-    unfolded: function() {
-      document.getElementById('nav-search-box').classList.add('unfolded')
-    },
-    foldedup: function() {
-      document.getElementById('nav-search-box').classList.remove('unfolded')
-    },
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
     },
@@ -264,14 +258,6 @@ export default {
   },
 }
 </script>
-<style>
-.unfolded {
-  position: absolute;
-  right: 0px;
-  left: 0px;
-  z-index: 1;
-}
-</style>
 
 <style lang="scss">
 .topbar-locale-switch {
@@ -283,7 +269,7 @@ export default {
 
 .main-container {
   padding-top: 6rem;
-  padding-botton: 5rem;
+  padding-bottom: 5rem;
 }
 
 .main-navigation {
