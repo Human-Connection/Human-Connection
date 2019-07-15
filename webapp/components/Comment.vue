@@ -1,38 +1,61 @@
 <template>
-  <div v-if="(comment.deleted || comment.disabled) && !isModerator">
-    <ds-text style="padding-left: 40px; font-weight: bold;" color="soft">
-      <ds-icon name="ban" />
-      {{ this.$t('comment.content.unavailable-placeholder') }}
-    </ds-text>
+  <div v-if="(comment.deleted || comment.disabled) && !isModerator" :class="{ comment: true }">
+    <ds-card>
+      <ds-space margin-bottom="base" />
+      <ds-text style="padding-left: 40px; font-weight: bold;" color="soft">
+        <ds-icon name="ban" />
+        {{ this.$t('comment.content.unavailable-placeholder') }}
+      </ds-text>
+      <ds-space margin-bottom="base" />
+    </ds-card>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
-    <ds-space margin-bottom="x-small">
-      <hc-user :user="author" :date-time="comment.createdAt" />
-    </ds-space>
-    <!-- Content Menu (can open Modals) -->
-    <no-ssr>
-      <content-menu
-        placement="bottom-end"
-        resource-type="comment"
-        :resource="comment"
-        :modalsData="menuModalsData"
-        style="float-right"
-        :is-owner="isAuthor(author.id)"
-        v-on:showEditCommentMenu="editCommentMenu"
+    <ds-card>
+      <ds-space margin-bottom="x-small">
+        <hc-user :user="author" :date-time="comment.createdAt" />
+      </ds-space>
+      <!-- Content Menu (can open Modals) -->
+      <no-ssr>
+        <content-menu
+          placement="bottom-end"
+          resource-type="comment"
+          :resource="comment"
+          :modalsData="menuModalsData"
+          style="float-right"
+          :is-owner="isAuthor(author.id)"
+          @showEditCommentMenu="editCommentMenu"
+        />
+      </no-ssr>
+
+      <ds-space margin-bottom="small" />
+      <div v-if="openEditCommentMenu">
+        <hc-edit-comment-form
+          :comment="comment"
+          :post="post"
+          @showEditCommentMenu="editCommentMenu"
+        />
+      </div>
+      <div
+        v-if="isCollapsed && !openEditCommentMenu"
+        v-html="comment.contentExcerpt"
+        style="padding-left: 40px;"
       />
-    </no-ssr>
-    <!-- eslint-disable vue/no-v-html -->
-    <!-- TODO: replace editor content with tiptap render view -->
-    <ds-space margin-bottom="small" />
-    <div v-if="openEditCommentMenu">
-      <hc-edit-comment-form
-        v-bind:comment="comment"
-        v-bind:post="post"
-        v-on:showEditCommentMenu="editCommentMenu"
-      />
-    </div>
-    <div v-else style="padding-left: 40px;" v-html="comment.contentExcerpt" />
-    <!-- eslint-enable vue/no-v-html -->
+      <div
+        v-show="comment.content !== comment.contentExcerpt"
+        style="text-align: right;  margin-right: 20px; margin-top: -12px;"
+      >
+        <a v-if="isCollapsed" style="padding-left: 40px;" @click="isCollapsed = !isCollapsed">
+          {{ $t('comment.show.more') }}
+        </a>
+      </div>
+      <div v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
+      <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
+        <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" style="padding-left: 40px; ">
+          {{ $t('comment.show.less') }}
+        </a>
+      </div>
+      <ds-space margin-bottom="small" />
+    </ds-card>
   </div>
 </template>
 
@@ -44,15 +67,16 @@ import ContentMenu from '~/components/ContentMenu'
 import HcEditCommentForm from '~/components/comments/EditCommentForm'
 
 export default {
+  data: function() {
+    return {
+      isCollapsed: true,
+      openEditCommentMenu: false,
+    }
+  },
   components: {
     HcUser,
     ContentMenu,
     HcEditCommentForm,
-  },
-  data() {
-    return {
-      openEditCommentMenu: false,
-    }
   },
   props: {
     post: { type: Object, default: () => {} },

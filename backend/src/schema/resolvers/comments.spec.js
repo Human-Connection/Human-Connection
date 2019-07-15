@@ -9,13 +9,37 @@ let createCommentVariables
 let createPostVariables
 let createCommentVariablesSansPostId
 let createCommentVariablesWithNonExistentPost
-let asAuthor
+let userParams
+let headers
+
+const createPostMutation = gql`
+  mutation($id: ID!, $title: String!, $content: String!) {
+    CreatePost(id: $id, title: $title, content: $content) {
+      id
+    }
+  }
+`
+const createCommentMutation = gql`
+  mutation($id: ID, $postId: ID!, $content: String!) {
+    CreateComment(id: $id, postId: $postId, content: $content) {
+      id
+      content
+    }
+  }
+`
+createPostVariables = {
+  id: 'p1',
+  title: 'post to comment on',
+  content: 'please comment on me',
+}
 
 beforeEach(async () => {
-  asAuthor = await factory.create('User', {
+  userParams = {
+    name: 'TestUser',
     email: 'test@example.org',
     password: '1234',
-  })
+  }
+  await factory.create('User', userParams)
 })
 
 afterEach(async () => {
@@ -23,28 +47,6 @@ afterEach(async () => {
 })
 
 describe('CreateComment', () => {
-  const createCommentMutation = gql`
-    mutation($postId: ID, $content: String!) {
-      CreateComment(postId: $postId, content: $content) {
-        id
-        content
-      }
-    }
-  `
-  const createPostMutation = gql`
-    mutation($id: ID!, $title: String!, $content: String!) {
-      CreatePost(id: $id, title: $title, content: $content) {
-        id
-      }
-    }
-  `
-  const commentQueryForPostId = gql`
-    query($content: String) {
-      Comment(content: $content) {
-        postId
-      }
-    }
-  `
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
       createCommentVariables = {
@@ -59,23 +61,14 @@ describe('CreateComment', () => {
   })
 
   describe('authenticated', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
+      headers = await login(userParams)
       client = new GraphQLClient(host, {
         headers,
       })
       createCommentVariables = {
         postId: 'p1',
         content: "I'm authorised to comment",
-      }
-      createPostVariables = {
-        id: 'p1',
-        title: 'post to comment on',
-        content: 'please comment on me',
       }
       await client.request(createPostMutation, createPostVariables)
     })
@@ -97,7 +90,7 @@ describe('CreateComment', () => {
 
       const { User } = await client.request(gql`
         {
-          User(email: "test@example.org") {
+          User(name: "TestUser") {
             comments {
               content
             }
@@ -192,45 +185,26 @@ describe('CreateComment', () => {
         client.request(createCommentMutation, createCommentVariablesWithNonExistentPost),
       ).rejects.toThrow('Comment cannot be created without a post!')
     })
-
-    it('does not create the comment with the postId as an attribute', async () => {
-      const commentQueryVariablesByContent = {
-        content: "I'm authorised to comment",
-      }
-
-      await client.request(createCommentMutation, createCommentVariables)
-      const { Comment } = await client.request(
-        commentQueryForPostId,
-        commentQueryVariablesByContent,
-      )
-      expect(Comment).toEqual([
-        {
-          postId: null,
-        },
-      ])
-    })
   })
 })
 
 describe('ManageComments', () => {
+  let manageCommentsUserParams
   beforeEach(async () => {
-    asAuthor = await factory.create('User', {
+    manageCommentsUserParams = {
       email: 'author@example.org',
       password: '1234',
-    })
-    await asAuthor.authenticateAs({
-      email: 'author@example.org',
-      password: '1234',
-    })
-    await asAuthor.create('Post', {
-      id: 'p1',
-      content: 'Post to be commented',
-    })
-    await asAuthor.create('Comment', {
-      id: 'c1',
+    }
+    createCommentVariables = {
+      id: 'c456',
       postId: 'p1',
-      content: 'Comment to be deleted',
-    })
+      content: "I'm authorised to comment",
+    }
+    await factory.create('User', manageCommentsUserParams)
+    headers = await login(manageCommentsUserParams)
+    client = new GraphQLClient(host, { headers })
+    await client.request(createPostMutation, createPostVariables)
+    await client.request(createCommentMutation, createCommentVariables)
   })
 
   describe('UpdateComment', () => {
@@ -244,7 +218,7 @@ describe('ManageComments', () => {
     `
 
     let updateCommentVariables = {
-      id: 'c1',
+      id: 'c456',
       content: 'The comment is updated',
     }
 
@@ -259,7 +233,6 @@ describe('ManageComments', () => {
 
     describe('authenticated but not the author', () => {
       beforeEach(async () => {
-        let headers
         headers = await login({
           email: 'test@example.org',
           password: '1234',
@@ -277,21 +250,10 @@ describe('ManageComments', () => {
     })
 
     describe('authenticated as author', () => {
-      beforeEach(async () => {
-        let headers
-        headers = await login({
-          email: 'author@example.org',
-          password: '1234',
-        })
-        client = new GraphQLClient(host, {
-          headers,
-        })
-      })
-
       it('updates the comment', async () => {
         const expected = {
           UpdateComment: {
-            id: 'c1',
+            id: 'c456',
             content: 'The comment is updated',
           },
         }
@@ -312,7 +274,7 @@ describe('ManageComments', () => {
     `
 
     let deleteCommentVariables = {
-      id: 'c1',
+      id: 'c456',
     }
 
     describe('unauthenticated', () => {
@@ -326,7 +288,6 @@ describe('ManageComments', () => {
 
     describe('authenticated but not the author', () => {
       beforeEach(async () => {
-        let headers
         headers = await login({
           email: 'test@example.org',
           password: '1234',
@@ -344,21 +305,10 @@ describe('ManageComments', () => {
     })
 
     describe('authenticated as author', () => {
-      beforeEach(async () => {
-        let headers
-        headers = await login({
-          email: 'author@example.org',
-          password: '1234',
-        })
-        client = new GraphQLClient(host, {
-          headers,
-        })
-      })
-
       it('deletes the comment', async () => {
         const expected = {
           DeleteComment: {
-            id: 'c1',
+            id: 'c456',
           },
         }
         await expect(

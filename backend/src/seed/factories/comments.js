@@ -10,7 +10,7 @@ export default function(params) {
 
   return {
     mutation: `
-      mutation($id: ID!, $postId: ID, $content: String!) {
+      mutation($id: ID!, $postId: ID!, $content: String!) {
         CreateComment(id: $id, postId: $postId, content: $content) {
           id
         }

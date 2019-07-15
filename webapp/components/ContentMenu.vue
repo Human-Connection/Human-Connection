@@ -46,9 +46,9 @@ export default {
     modalsData: {
       type: Object,
       required: false,
-      // default: () => {
-      //   return {}
-      // },
+      default: () => {
+        return {}
+      },
     },
   },
   computed: {

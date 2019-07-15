@@ -1,12 +1,20 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login } from '../../jest/helpers'
+import gql from 'graphql-tag'
 
 const factory = Factory()
+let user
+let badge
 
 describe('rewards', () => {
+  const variables = {
+    from: 'indiegogo_en_rhino',
+    to: 'u1',
+  }
+
   beforeEach(async () => {
-    await factory.create('User', {
+    user = await factory.create('User', {
       id: 'u1',
       role: 'user',
       email: 'user@example.org',
@@ -22,9 +30,8 @@ describe('rewards', () => {
       role: 'admin',
       email: 'admin@example.org',
     })
-    await factory.create('Badge', {
-      id: 'b6',
-      key: 'indiegogo_en_rhino',
+    badge = await factory.create('Badge', {
+      id: 'indiegogo_en_rhino',
       type: 'crowdfunding',
       status: 'permanent',
       icon: '/img/badges/indiegogo_en_rhino.svg',
@@ -35,21 +42,19 @@ describe('rewards', () => {
     await factory.cleanDatabase()
   })
 
-  describe('RewardBadge', () => {
-    const mutation = `
-      mutation(
-        $from: ID!
-        $to: ID!
-      ) {
-        reward(fromBadgeId: $from, toUserId: $to)
+  describe('reward', () => {
+    const mutation = gql`
+      mutation($from: ID!, $to: ID!) {
+        reward(badgeKey: $from, userId: $to) {
+          id
+          badges {
+            id
+          }
+        }
       }
     `
 
     describe('unauthenticated', () => {
-      const variables = {
-        from: 'b6',
-        to: 'u1',
-      }
       let client
 
       it('throws authorization error', async () => {
@@ -65,74 +70,94 @@ describe('rewards', () => {
         client = new GraphQLClient(host, { headers })
       })
 
+      describe('badge for id does not exist', () => {
+        it('rejects with a telling error message', async () => {
+          await expect(
+            client.request(mutation, {
+              ...variables,
+              from: 'bullshit',
+            }),
+          ).rejects.toThrow("Couldn't find a badge with that id")
+        })
+      })
+
+      describe('user for id does not exist', () => {
+        it('rejects with a telling error message', async () => {
+          await expect(
+            client.request(mutation, {
+              ...variables,
+              to: 'bullshit',
+            }),
+          ).rejects.toThrow("Couldn't find a user with that id")
+        })
+      })
+
       it('rewards a badge to user', async () => {
-        const variables = {
-          from: 'b6',
-          to: 'u1',
-        }
         const expected = {
-          reward: 'u1',
+          reward: {
+            id: 'u1',
+            badges: [{ id: 'indiegogo_en_rhino' }],
+          },
         }
         await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
+
       it('rewards a second different badge to same user', async () => {
         await factory.create('Badge', {
-          id: 'b1',
-          key: 'indiegogo_en_racoon',
-          type: 'crowdfunding',
-          status: 'permanent',
+          id: 'indiegogo_en_racoon',
           icon: '/img/badges/indiegogo_en_racoon.svg',
         })
-        const variables = {
-          from: 'b1',
-          to: 'u1',
-        }
         const expected = {
-          reward: 'u1',
+          reward: {
+            id: 'u1',
+            badges: [{ id: 'indiegogo_en_racoon' }, { id: 'indiegogo_en_rhino' }],
+          },
         }
-        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+        await client.request(mutation, variables)
+        await expect(
+          client.request(mutation, {
+            ...variables,
+            from: 'indiegogo_en_racoon',
+          }),
+        ).resolves.toEqual(expected)
       })
+
       it('rewards the same badge as well to another user', async () => {
-        const variables1 = {
-          from: 'b6',
-          to: 'u1',
-        }
-        await client.request(mutation, variables1)
-
-        const variables2 = {
-          from: 'b6',
-          to: 'u2',
-        }
         const expected = {
-          reward: 'u2',
+          reward: {
+            id: 'u2',
+            badges: [{ id: 'indiegogo_en_rhino' }],
+          },
         }
-        await expect(client.request(mutation, variables2)).resolves.toEqual(expected)
+        await expect(
+          client.request(mutation, {
+            ...variables,
+            to: 'u2',
+          }),
+        ).resolves.toEqual(expected)
       })
-      it('returns the original reward if a reward is attempted a second time', async () => {
-        const variables = {
-          from: 'b6',
-          to: 'u1',
-        }
+
+      it('creates no duplicate reward relationships', async () => {
         await client.request(mutation, variables)
         await client.request(mutation, variables)
 
-        const query = `{
-          User( id: "u1" ) {
-            badgesCount
+        const query = gql`
+          {
+            User(id: "u1") {
+              badgesCount
+              badges {
+                id
+              }
+            }
           }
-        }
         `
-        const expected = { User: [{ badgesCount: 1 }] }
+        const expected = { User: [{ badgesCount: 1, badges: [{ id: 'indiegogo_en_rhino' }] }] }
 
         await expect(client.request(query)).resolves.toEqual(expected)
       })
     })
 
     describe('authenticated moderator', () => {
-      const variables = {
-        from: 'b6',
-        to: 'u1',
-      }
       let client
       beforeEach(async () => {
         const headers = await login({ email: 'moderator@example.org', password: '1234' })
@@ -147,26 +172,40 @@ describe('rewards', () => {
     })
   })
 
-  describe('RemoveReward', () => {
+  describe('unreward', () => {
     beforeEach(async () => {
-      await factory.relate('User', 'Badges', { from: 'b6', to: 'u1' })
+      await user.relateTo(badge, 'rewarded')
     })
-    const variables = {
-      from: 'b6',
-      to: 'u1',
-    }
-    const expected = {
-      unreward: 'u1',
-    }
+    const expected = { unreward: { id: 'u1', badges: [] } }
 
-    const mutation = `
-      mutation(
-        $from: ID!
-        $to: ID!
-      ) {
-        unreward(fromBadgeId: $from, toUserId: $to)
+    const mutation = gql`
+      mutation($from: ID!, $to: ID!) {
+        unreward(badgeKey: $from, userId: $to) {
+          id
+          badges {
+            id
+          }
+        }
       }
     `
+
+    describe('check test setup', () => {
+      it('user has one badge', async () => {
+        const query = gql`
+          {
+            User(id: "u1") {
+              badgesCount
+              badges {
+                id
+              }
+            }
+          }
+        `
+        const expected = { User: [{ badgesCount: 1, badges: [{ id: 'indiegogo_en_rhino' }] }] }
+        const client = new GraphQLClient(host)
+        await expect(client.request(query)).resolves.toEqual(expected)
+      })
+    })
 
     describe('unauthenticated', () => {
       let client
@@ -188,12 +227,9 @@ describe('rewards', () => {
         await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
 
-      it('fails to remove a not existing badge from user', async () => {
+      it('does not crash when unrewarding multiple times', async () => {
         await client.request(mutation, variables)
-
-        await expect(client.request(mutation, variables)).rejects.toThrow(
-          "Cannot read property 'id' of undefined",
-        )
+        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
       })
     })
 

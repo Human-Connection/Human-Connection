@@ -2,7 +2,12 @@
   <div>
     <ds-flex :width="{ base: '100%' }" gutter="base">
       <ds-flex-item>
-        <filter-menu :user="currentUser" @changeFilterBubble="changeFilterBubble" />
+        <filter-menu
+          :user="currentUser"
+          @changeFilterBubble="changeFilterBubble"
+          :hashtag="hashtag"
+          @clearSearch="clearSearch"
+        />
       </ds-flex-item>
       <hc-post-card
         v-for="(post, index) in uniq(Post)"
@@ -41,12 +46,19 @@ export default {
     HcLoadMore,
   },
   data() {
+    const { hashtag = null } = this.$route.query
     return {
       // Initialize your apollo data
       Post: [],
       page: 1,
       pageSize: 12,
       filter: {},
+      hashtag,
+    }
+  },
+  mounted() {
+    if (this.hashtag) {
+      this.changeFilterBubble({ tags_some: { name: this.hashtag } })
     }
   },
   computed: {
@@ -62,8 +74,20 @@ export default {
   },
   methods: {
     changeFilterBubble(filter) {
+      if (this.hashtag) {
+        filter = {
+          ...filter,
+          tags_some: { name: this.hashtag },
+        }
+      }
       this.filter = filter
       this.$apollo.queries.Post.refresh()
+    },
+    clearSearch() {
+      this.$router.push({ path: '/' })
+      this.hashtag = null
+      delete this.filter.tags_some
+      this.changeFilterBubble(this.filter)
     },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
@@ -133,7 +157,6 @@ export default {
                 }
                 badges {
                   id
-                  key
                   icon
                 }
               }

@@ -31,7 +31,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor'
+import HcEditor from '~/components/Editor/Editor'
 
 export default {
   components: {

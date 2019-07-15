@@ -1,4 +1,4 @@
-FROM node:12.4-alpine as base
+FROM node:12.6-alpine as base
 LABEL Description="Backend of the Social Network Human-Connection.org" Vendor="Human Connection gGmbH" Version="0.0.1" Maintainer="Human Connection gGmbH (developer@human-connection.org)"
 
 EXPOSE 4000

@@ -1,5 +1,5 @@
 import { GraphQLClient, request } from 'graphql-request'
-import { getDriver } from '../../bootstrap/neo4j'
+import { getDriver, neode } from '../../bootstrap/neo4j'
 import createBadge from './badges.js'
 import createUser from './users.js'
 import createOrganization from './organizations.js'
@@ -48,7 +48,11 @@ export const cleanDatabase = async (options = {}) => {
 }
 
 export default function Factory(options = {}) {
-  const { neo4jDriver = getDriver(), seedServerHost = 'http://127.0.0.1:4001' } = options
+  let {
+    seedServerHost = 'http://127.0.0.1:4001',
+    neo4jDriver = getDriver(),
+    neodeInstance = neode(),
+  } = options
 
   const graphQLClient = new GraphQLClient(seedServerHost)
 
@@ -58,19 +62,24 @@ export default function Factory(options = {}) {
     graphQLClient,
     factories,
     lastResponse: null,
+    neodeInstance,
     async authenticateAs({ email, password }) {
       const headers = await authenticatedHeaders({ email, password }, seedServerHost)
       this.lastResponse = headers
       this.graphQLClient = new GraphQLClient(seedServerHost, { headers })
       return this
     },
-    async create(node, properties) {
-      const { mutation, variables } = this.factories[node](properties)
-      this.lastResponse = await this.graphQLClient.request(mutation, variables)
+    async create(node, args = {}) {
+      const { factory, mutation, variables } = this.factories[node](args)
+      if (factory) {
+        this.lastResponse = await factory({ args, neodeInstance })
+        return this.lastResponse
+      } else {
+        this.lastResponse = await this.graphQLClient.request(mutation, variables)
+      }
       return this
     },
-    async relate(node, relationship, properties) {
-      const { from, to } = properties
+    async relate(node, relationship, { from, to }) {
       const mutation = `
         mutation {
           Add${node}${relationship}(
@@ -112,6 +121,11 @@ export default function Factory(options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
+    async invite({ email }) {
+      const mutation = ` mutation($email: String!) { invite( email: $email) } `
+      this.lastResponse = await this.graphQLClient.request(mutation, { email })
+      return this
+    },
     async cleanDatabase() {
       this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
@@ -121,6 +135,9 @@ export default function Factory(options = {}) {
   result.create.bind(result)
   result.relate.bind(result)
   result.mutate.bind(result)
+  result.shout.bind(result)
+  result.follow.bind(result)
+  result.invite.bind(result)
   result.cleanDatabase.bind(result)
   return result
 }
