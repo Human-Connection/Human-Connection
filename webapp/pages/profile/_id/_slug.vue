@@ -202,11 +202,11 @@
 
           <template v-if="activePosts.length">
             <hc-post-card
-              v-for="post in activePosts"
+              v-for="(post, index) in activePosts"
               :key="post.id"
               :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-              @removePostFromList="removePostFromList"
+              @removePostFromList="removePostFromList(index)"
             />
           </template>
           <template v-else-if="$apollo.loading">
