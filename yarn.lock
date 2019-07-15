@@ -1827,10 +1827,10 @@ cypress-cucumber-preprocessor@^1.12.0:
     glob "^7.1.2"
     through "^2.3.8"
 
-cypress-file-upload@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.2.1.tgz#12befbd5f685883b2ce39133d675173f60caae5b"
-  integrity sha512-Wx9+DVon1Sc8HhiNpWaCYvjn5q8izYg9+Es0MhwlRj2APRToaihtM0EJgS/om9gA9HeKbU0ReTpv+xk/0VCUjw==
+cypress-file-upload@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.3.1.tgz#19bb6c296ffc492dbfae8a7511c94d6b4d0ad4d5"
+  integrity sha512-iUtq/a30i73JXx9sUj5HhmuEV9pHMV2/7C06H8/zFDSgFweFSwKL0SSprQu8Ewf7cAEsExBKigwlLQYFdTW8PA==
 
 cypress-plugin-retries@^1.2.2:
   version "1.2.2"
