@@ -7,10 +7,15 @@
     @submit="handleSubmitSocialMedia"
   >
     <ds-card :header="$t('settings.social-media.name')">
-      <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
+      <ds-space
+        v-if="socialMediaLinks"
+        margin-top="base"
+        margin="x-small"
+      >
         <ds-list>
           <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
-            <ds-input v-if="editingLink.id === link.id"
+            <ds-input
+              v-if="editingLink.id === link.id"
               model="socialMediaLink"
               type="text"
               :placeholder="$t('settings.social-media.placeholder')"
@@ -64,7 +69,7 @@
 </template>
 
 <script>
-import cloneDeep from 'lodash/cloneDeep'
+import unionBy from 'lodash/unionBy'
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 
@@ -92,8 +97,7 @@ export default {
       const { socialMedia = [] } = this.currentUser
       return socialMedia.map(socialMedia => {
         const { id, url } = socialMedia
-        const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g)
-        const [domain] = matches || []
+        const [domain] = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g) || []
         const favicon = domain ? `${domain}/favicon.ico` : null
         return { id, url, favicon }
       })
@@ -108,90 +112,24 @@ export default {
       this.formData.socialMediaLink = ''
       this.disabled = true
     },
-    async handleInput(data) {
+    handleEditSocialMedia(link) {
+      this.editingLink = link
+      this.formData.socialMediaLink = link.url
+      this.disabled = false
+    },
+    handleInput(data) {
       this.disabled = true
     },
-    async handleInputValid(data) {
+    handleInputValid(data) {
       if (data.socialMediaLink.length < 1) {
         this.disabled = true
       } else {
         this.disabled = false
       }
     },
-    async handleSubmitSocialMedia() {
-      if (!this.editingLink.id) {
-        const mutation = gql`
-          mutation($url: String!) {
-            CreateSocialMedia(url: $url) {
-              id
-              url
-            }
-          }
-        `
-        const variables = { url: this.formData.socialMediaLink }
-
-        this.$apollo
-          .mutate({
-            mutation,
-            variables,
-            update: (store, { data }) => {
-              const socialMedia = [...this.currentUser.socialMedia, data.CreateSocialMedia]
-              this.setCurrentUser({
-                ...this.currentUser,
-                socialMedia,
-              })
-            },
-          })
-          .then(() => {
-            this.$toast.success(this.$t('settings.social-media.successAdd'))
-            this.formData.socialMediaLink = ''
-            this.disabled = true
-          })
-          .catch(error => {
-            this.$toast.error(error.message)
-          })
-      } else {
-        const mutation = gql`
-          mutation($id: ID!, $url: String!) {
-            UpdateSocialMedia(id: $id, url: $url) {
-              id
-              url
-            }
-          }
-        `
-        const variables = { id: this.editingLink.id, url: this.formData.socialMediaLink }
-
-        this.$apollo
-          .mutate({
-            mutation,
-            variables,
-            update: (store, { data }) => {
-              const newLink = data.UpdateSocialMedia
-              const socialMedia = cloneDeep(this.currentUser.socialMedia)
-              const index = socialMedia.findIndex(link => link.id === newLink.id)
-              socialMedia.splice(index, 1, newLink)
-
-              this.setCurrentUser({
-                ...this.currentUser,
-                socialMedia,
-              })
-            },
-          })
-          .then(() => {
-            this.$toast.success('updated!')
-            this.formData.socialMediaLink = ''
-            this.editingLink = {}
-            this.disabled = true
-          })
-          .catch(error => {
-            this.$toast.error(error.message)
-          })
-      }
-
-    },
-    handleDeleteSocialMedia(link) {
-      this.$apollo
-        .mutate({
+    async handleDeleteSocialMedia(link) {
+      try {
+        await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
               DeleteSocialMedia(id: $id) {
@@ -213,17 +151,61 @@ export default {
             })
           },
         })
-        .then(() => {
-          this.$toast.success(this.$t('settings.social-media.successDelete'))
-        })
-        .catch(error => {
-          this.$toast.error(error.message)
-        })
+
+        this.$toast.success(this.$t('settings.social-media.successDelete'))
+
+      } catch(err) {
+        this.$toast.error(err.message)
+      }
     },
-    handleEditSocialMedia(link) {
-      this.editingLink = link
-      this.formData.socialMediaLink = link.url
-      this.disabled = false
+    async handleSubmitSocialMedia() {
+      const isEditing = !!this.editingLink.id
+
+      let mutation = gql`
+        mutation($url: String!) {
+          CreateSocialMedia(url: $url) {
+            id
+            url
+          }
+        }
+      `
+      let variables = { url: this.formData.socialMediaLink }
+      let successMessage = this.$t('settings.social-media.successAdd')
+
+      if (isEditing) {
+        mutation = gql`
+          mutation($id: ID!, $url: String!) {
+            UpdateSocialMedia(id: $id, url: $url) {
+              id
+              url
+            }
+          }
+        `
+        variables.id = this.editingLink.id
+        successMessage = this.$t('settings.data.success')
+      }
+
+      try {
+        await this.$apollo.mutate({
+          mutation,
+          variables,
+          update: (store, { data }) => {
+            const newSocialMedia = isEditing ? data.UpdateSocialMedia : data.CreateSocialMedia
+            this.setCurrentUser({
+              ...this.currentUser,
+              socialMedia: unionBy([newSocialMedia], this.currentUser.socialMedia, 'id')
+            })
+          },
+        })
+
+        this.$toast.success(successMessage)
+        this.formData.socialMediaLink = ''
+        this.disabled = true
+        this.editingLink = {}
+
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }
@@ -238,5 +220,4 @@ export default {
 .icon-button {
   cursor: pointer;
 }
-
 </style>
