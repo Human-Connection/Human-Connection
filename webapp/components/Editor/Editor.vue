@@ -224,11 +224,9 @@ export default {
     doc: { type: Object, default: () => {} },
   },
   data() {
-    let mentionExtension
-    if (!this.users) {
-      mentionExtension = []
-    } else {
-      mentionExtension = [
+    let optionalExtensions = []
+    if (this.users) {
+      optionalExtensions.push(
         new Mention({
           // a list of all suggested items
           items: () => {
@@ -300,14 +298,10 @@ export default {
             return fuse.search(query)
           },
         }),
-      ]
+      )
     }
-
-    let hashtagExtension
-    if (!this.hashtags) {
-      hashtagExtension = []
-    } else {
-      hashtagExtension = [
+    if (this.hashtags) {
+      optionalExtensions.push(
         new Hashtag({
           // a list of all suggested items
           items: () => {
@@ -385,7 +379,7 @@ export default {
             )
           },
         }),
-      ]
+      )
     }
 
     return {
@@ -413,8 +407,7 @@ export default {
             emptyNodeText: this.placeholder || this.$t('editor.placeholder'),
           }),
           new History(),
-          ...mentionExtension,
-          ...hashtagExtension,
+          ...optionalExtensions,
         ],
         onUpdate: e => {
           clearTimeout(throttleInputEvent)
