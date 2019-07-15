@@ -25,7 +25,6 @@ export default app => {
           }
           badges {
             id
-            key
             icon
           }
         }

@@ -43,6 +43,12 @@ module.exports = {
     target: 'User',
     direction: 'in',
   },
+  rewarded: {
+    type: 'relationship',
+    relationship: 'REWARDED',
+    target: 'Badge',
+    direction: 'in',
+  },
   invitedBy: { type: 'relationship', relationship: 'INVITED', target: 'User', direction: 'in' },
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   updatedAt: {

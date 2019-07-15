@@ -3,7 +3,7 @@ import uuid from 'uuid/v4'
 import encryptPassword from '../../helpers/encryptPassword'
 import slugify from 'slug'
 
-export default function create(params) {
+export default function create() {
   return {
     factory: async ({ args, neodeInstance }) => {
       const defaults = {
@@ -21,8 +21,7 @@ export default function create(params) {
         ...args,
       }
       args = await encryptPassword(args)
-      const user = await neodeInstance.create('User', args)
-      return user.toJson()
+      return neodeInstance.create('User', args)
     },
   }
 }
