@@ -10,7 +10,6 @@
         :width="{ base: '100%', sm: '100%', md: '100%', lg: '5%' }"
         class="categories-menu-item"
       >
-        <ds-space margin-bottom="x-small" />
         <ds-flex>
           <ds-flex-item width="10%" />
           <ds-flex-item width="100%">
@@ -26,7 +25,11 @@
           </ds-flex-item>
         </ds-flex>
       </ds-flex-item>
-      <ds-flex-item :width="{ base: '0%', sm: '0%', md: '0%', lg: '7%' }" />
+      <ds-flex-item :width="{ base: '0%', sm: '0%', md: '0%', lg: '4%' }" />
+      <ds-flex-item
+        :width="{ base: '0%', sm: '0%', md: '0%', lg: '3%' }"
+        id="categories-menu-divider"
+      />
       <ds-flex-item
         :width="{ base: '50%', sm: '50%', md: '50%', lg: '11%' }"
         v-for="index in chunk.length"
@@ -94,16 +97,24 @@ export default {
 <style lang="scss">
 #filter-posts-header {
   display: block;
-  text-align: center;
 }
+
 .categories-menu-item {
   text-align: center;
 }
+
 .categories-menu {
   justify-content: center;
 }
 
 .category-labels {
   font-size: $font-size-small;
+}
+
+@media only screen and (min-width: 960px) {
+  #categories-menu-divider {
+    border-left: 1px solid $border-color-soft;
+    margin: 9px 0px 40px 0px;
+  }
 }
 </style>
