@@ -65,6 +65,13 @@ export const hasOne = obj => {
 export default {
   Query: {
     User: async (object, args, context, resolveInfo) => {
+      const { email } = args
+      if (email) {
+        const e = await instance.first('EmailAddress', { email })
+        let user = e.get('belongsTo')
+        user = await user.toJson()
+        return [user.node]
+      }
       return neo4jgraphql(object, args, context, resolveInfo, false)
     },
   },
