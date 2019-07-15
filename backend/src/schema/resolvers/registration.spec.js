@@ -192,16 +192,16 @@ describe('SignupByInvitation', () => {
       describe('creates a EmailAddress node', () => {
         it('with a `createdAt` attribute', async () => {
           await action()
-          const emailAddresses = await instance.all('EmailAddress')
-          const emailAddress = await emailAddresses.first().toJson()
+          let emailAddress = await instance.first('EmailAddress', { email: 'someuser@example.org' })
+          emailAddress = await emailAddress.toJson()
           expect(emailAddress.createdAt).toBeTruthy()
           expect(Date.parse(emailAddress.createdAt)).toEqual(expect.any(Number))
         })
 
         it('with a cryptographic `nonce`', async () => {
           await action()
-          const emailAddresses = await instance.all('EmailAddress')
-          const emailAddress = await emailAddresses.first().toJson()
+          let emailAddress = await instance.first('EmailAddress', { email: 'someuser@example.org' })
+          emailAddress = await emailAddress.toJson()
           expect(emailAddress.nonce).toEqual(expect.any(String))
         })
 
@@ -221,6 +221,7 @@ describe('SignupByInvitation', () => {
           it('rejects because codes can be used only once', async done => {
             await action()
             try {
+              variables.email = 'yetanotheremail@example.org'
               await action()
             } catch (e) {
               expect(e.message).toMatch(/Invitation code already used/)
@@ -283,8 +284,8 @@ describe('Signup', () => {
 
     it('creates a Signup with a cryptographic `nonce`', async () => {
       await action()
-      const emailAddresses = await instance.all('EmailAddress')
-      const emailAddress = await emailAddresses.first().toJson()
+      let emailAddress = await instance.first('EmailAddress', { email: 'someuser@example.org' })
+      emailAddress = await emailAddress.toJson()
       expect(emailAddress.nonce).toEqual(expect.any(String))
     })
   })
