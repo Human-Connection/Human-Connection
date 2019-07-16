@@ -7,11 +7,7 @@
     @submit="handleSubmitSocialMedia"
   >
     <ds-card :header="$t('settings.social-media.name')">
-      <ds-space
-        v-if="socialMediaLinks"
-        margin-top="base"
-        margin="x-small"
-      >
+      <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
         <ds-list>
           <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
             <ds-input
@@ -24,16 +20,11 @@
 
             <template v-else>
               <a :href="link.url" target="_blank">
-                <img
-                  :src="link.favicon"
-                  alt="Link:"
-                  height="16"
-                  width="16"
-                />
+                <img :src="link.favicon" alt="Link:" height="16" width="16" />
                 {{ link.url }}
               </a>
               <span class="divider">|</span>
-              <a name='edit' @click="handleEditSocialMedia(link)">
+              <a name="edit" @click="handleEditSocialMedia(link)">
                 <ds-icon
                   :aria-label="$t('actions.edit')"
                   class="icon-button"
@@ -66,12 +57,7 @@
           <ds-button primary :disabled="disabled">
             {{ editingLink.id ? $t('actions.save') : $t('settings.social-media.submit') }}
           </ds-button>
-          <ds-button
-            v-if="editingLink.id"
-            id="cancel"
-            ghost
-            @click="handleCancel()"
-          >
+          <ds-button v-if="editingLink.id" id="cancel" ghost @click="handleCancel()">
             {{ $t('actions.cancel') }}
           </ds-button>
         </ds-space>
@@ -165,8 +151,7 @@ export default {
         })
 
         this.$toast.success(this.$t('settings.social-media.successDelete'))
-
-      } catch(err) {
+      } catch (err) {
         this.$toast.error(err.message)
       }
     },
@@ -174,7 +159,7 @@ export default {
       const isEditing = !!this.editingLink.id
       const url = this.formData.socialMediaUrl
 
-      const duplicateUrl = this.socialMediaLinks.find(link => link.url === url);
+      const duplicateUrl = this.socialMediaLinks.find(link => link.url === url)
       if (duplicateUrl && duplicateUrl.id !== this.editingLink.id) {
         return this.$toast.error(this.$t('settings.social-media.requireUnique'))
       }
@@ -211,7 +196,7 @@ export default {
             const newSocialMedia = isEditing ? data.UpdateSocialMedia : data.CreateSocialMedia
             this.setCurrentUser({
               ...this.currentUser,
-              socialMedia: unionBy([newSocialMedia], this.currentUser.socialMedia, 'id')
+              socialMedia: unionBy([newSocialMedia], this.currentUser.socialMedia, 'id'),
             })
           },
         })
@@ -220,7 +205,6 @@ export default {
         this.formData.socialMediaUrl = ''
         this.disabled = true
         this.editingLink = {}
-
       } catch (err) {
         this.$toast.error(err.message)
       }
