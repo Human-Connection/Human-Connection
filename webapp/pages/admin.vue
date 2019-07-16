@@ -24,11 +24,10 @@ export default {
           name: this.$t('admin.dashboard.name'),
           path: `/admin`,
         },
-        // TODO implement
-        /* {
+        {
           name: this.$t('admin.users.name'),
-          path: `/admin/users`
-        }, */
+          path: `/admin/users`,
+        },
         // TODO implement
         /* {
           name: this.$t('admin.organizations.name'),
