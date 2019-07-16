@@ -16,14 +16,20 @@
           <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
             <ds-input
               v-if="editingLink.id === link.id"
-              model="socialMediaLink"
+              id="editSocialMedia"
+              model="socialMediaUrl"
               type="text"
               :placeholder="$t('settings.social-media.placeholder')"
             />
 
             <template v-else>
               <a :href="link.url" target="_blank">
-                <img :src="link.favicon | proxyApiUrl" alt="Link:" width="16" height="16" />
+                <img
+                  :src="link.favicon"
+                  alt="Link:"
+                  height="16"
+                  width="16"
+                />
                 {{ link.url }}
               </a>
               <span class="divider">|</span>
@@ -51,7 +57,8 @@
       <ds-space margin-top="base">
         <ds-input
           v-if="!editingLink.id"
-          model="socialMediaLink"
+          id="addSocialMedia"
+          model="socialMediaUrl"
           type="text"
           :placeholder="$t('settings.social-media.placeholder')"
         />
@@ -59,7 +66,12 @@
           <ds-button primary :disabled="disabled">
             {{ editingLink.id ? $t('actions.save') : $t('settings.social-media.submit') }}
           </ds-button>
-          <ds-button v-if="editingLink.id" ghost @click="handleCancel()">
+          <ds-button
+            v-if="editingLink.id"
+            id="cancel"
+            ghost
+            @click="handleCancel()"
+          >
             {{ $t('actions.cancel') }}
           </ds-button>
         </ds-space>
@@ -77,10 +89,10 @@ export default {
   data() {
     return {
       formData: {
-        socialMediaLink: '',
+        socialMediaUrl: '',
       },
       formSchema: {
-        socialMediaLink: {
+        socialMediaUrl: {
           type: 'url',
           message: this.$t('common.validations.url'),
         },
@@ -94,10 +106,10 @@ export default {
       currentUser: 'auth/user',
     }),
     socialMediaLinks() {
+      const domainRegex = /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g
       const { socialMedia = [] } = this.currentUser
-      return socialMedia.map(socialMedia => {
-        const { id, url } = socialMedia
-        const [domain] = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g) || []
+      return socialMedia.map(({ id, url }) => {
+        const [domain] = url.match(domainRegex) || []
         const favicon = domain ? `${domain}/favicon.ico` : null
         return { id, url, favicon }
       })
@@ -109,19 +121,19 @@ export default {
     }),
     handleCancel() {
       this.editingLink = {}
-      this.formData.socialMediaLink = ''
+      this.formData.socialMediaUrl = ''
       this.disabled = true
     },
     handleEditSocialMedia(link) {
       this.editingLink = link
-      this.formData.socialMediaLink = link.url
+      this.formData.socialMediaUrl = link.url
       this.disabled = false
     },
     handleInput(data) {
       this.disabled = true
     },
     handleInputValid(data) {
-      if (data.socialMediaLink.length < 1) {
+      if (data.socialMediaUrl.length < 1) {
         this.disabled = true
       } else {
         this.disabled = false
@@ -160,7 +172,7 @@ export default {
     },
     async handleSubmitSocialMedia() {
       const isEditing = !!this.editingLink.id
-      const url = this.formData.socialMediaLink
+      const url = this.formData.socialMediaUrl
 
       const duplicateUrl = this.socialMediaLinks.find(link => link.url === url);
       if (duplicateUrl && duplicateUrl.id !== this.editingLink.id) {
@@ -175,7 +187,7 @@ export default {
           }
         }
       `
-      let variables = { url }
+      const variables = { url }
       let successMessage = this.$t('settings.social-media.successAdd')
 
       if (isEditing) {
@@ -205,7 +217,7 @@ export default {
         })
 
         this.$toast.success(successMessage)
-        this.formData.socialMediaLink = ''
+        this.formData.socialMediaUrl = ''
         this.disabled = true
         this.editingLink = {}
 
