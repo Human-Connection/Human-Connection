@@ -1,4 +1,20 @@
 {
+  "site": {
+    "made": "Com &#10084; feito",
+    "imprint": "Impressão",
+    "termsAc": "termos e condições",
+    "privacy": "protecção de dados",
+    "changelog": "Mudanças e Histórico",
+    "contact": "Contato",
+    "tribunal": "tribunal",
+    "tribunal": "tribunal de registo",
+    "register": "número de registo",
+    "director": "Diretor Administrativo",
+    "taxident": "Número de identificação do imposto sobre o valor acrescentado de acordo com o § 27 da Lei do Imposto sobre o Valor Acrescentado (Alemanha)",
+    "responsible": "Responsável segundo § 55 Abs. 2 RStV (Alemanha) ",
+    "bank": "conta bancária",
+    "germany": "Alemanha"
+  },
   "login": {
     "copy": "Se você já tem uma conta no Human Connection, entre aqui.",
     "login": "Entrar",

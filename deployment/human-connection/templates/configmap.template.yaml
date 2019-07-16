@@ -4,13 +4,10 @@
   data:
     SMTP_HOST: "mailserver.human-connection"
     SMTP_PORT: "25"
-    SMTP_USERNAME: ""
-    SMTP_PASSWORD: ""
     GRAPHQL_PORT: "4000"
     GRAPHQL_URI: "http://nitro-backend.human-connection:4000"
     MOCKS: "false"
     NEO4J_URI: "bolt://nitro-neo4j.human-connection:7687"
-    NEO4J_USER: "neo4j"
     NEO4J_AUTH: "none"
     CLIENT_URI: "https://nitro-staging.human-connection.org"
   metadata:

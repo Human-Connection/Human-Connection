@@ -54,7 +54,7 @@ describe('ChangePassword.vue', () => {
         describe('match', () => {
           beforeEach(() => {
             wrapper.find('input#oldPassword').setValue('some secret')
-            wrapper.find('input#newPassword').setValue('some secret')
+            wrapper.find('input#password').setValue('some secret')
           })
 
           it('invalid', () => {
@@ -90,8 +90,8 @@ describe('ChangePassword.vue', () => {
     describe('given valid input', () => {
       beforeEach(() => {
         wrapper.find('input#oldPassword').setValue('supersecret')
-        wrapper.find('input#newPassword').setValue('superdupersecret')
-        wrapper.find('input#confirmPassword').setValue('superdupersecret')
+        wrapper.find('input#password').setValue('superdupersecret')
+        wrapper.find('input#passwordConfirmation').setValue('superdupersecret')
       })
 
       describe('submit form', () => {
@@ -109,8 +109,8 @@ describe('ChangePassword.vue', () => {
             expect.objectContaining({
               variables: {
                 oldPassword: 'supersecret',
-                newPassword: 'superdupersecret',
-                confirmPassword: 'superdupersecret',
+                password: 'superdupersecret',
+                passwordConfirmation: 'superdupersecret',
               },
             }),
           )
@@ -135,8 +135,8 @@ describe('ChangePassword.vue', () => {
         /* describe('mutation rejects', () => {
           beforeEach(async () => {
             await wrapper.find('input#oldPassword').setValue('supersecret')
-            await wrapper.find('input#newPassword').setValue('supersecret')
-            await wrapper.find('input#confirmPassword').setValue('supersecret')
+            await wrapper.find('input#password').setValue('supersecret')
+            await wrapper.find('input#passwordConfirmation').setValue('supersecret')
           })
 
           it('displays error message', async () => {

@@ -4,6 +4,9 @@ import { host, login } from '../../jest/helpers'
 
 const factory = Factory()
 let client
+let userParams
+let authorParams
+
 const postTitle = 'I am a title'
 const postContent = 'Some content'
 const oldTitle = 'Old title'
@@ -15,10 +18,11 @@ const createPostWithCategoriesMutation = `
   mutation($title: String!, $content: String!, $categoryIds: [ID]) {
     CreatePost(title: $title, content: $content, categoryIds: $categoryIds) {
       id
+      title
     }
   }
 `
-const creatPostWithCategoriesVariables = {
+const createPostWithCategoriesVariables = {
   title: postTitle,
   content: postContent,
   categoryIds: ['cat9', 'cat4', 'cat15'],
@@ -32,11 +36,37 @@ const postQueryWithCategories = `
     }
   }
 `
+const createPostWithoutCategoriesVariables = {
+  title: 'This is a post without categories',
+  content: 'I should be able to filter it out',
+  categoryIds: null,
+}
+const postQueryFilteredByCategory = `
+query Post($filter: _PostFilter) {
+  Post(filter: $filter) {
+      title
+      id
+      categories {
+        id
+      }
+    }
+  }
+`
+const postCategoriesFilterParam = { categories_some: { id_in: ['cat4'] } }
+const postQueryFilteredByCategoryVariables = {
+  filter: postCategoriesFilterParam,
+}
 beforeEach(async () => {
-  await factory.create('User', {
+  userParams = {
+    name: 'TestUser',
     email: 'test@example.org',
     password: '1234',
-  })
+  }
+  authorParams = {
+    email: 'author@example.org',
+    password: '1234',
+  }
+  await factory.create('User', userParams)
 })
 
 afterEach(async () => {
@@ -66,7 +96,7 @@ describe('CreatePost', () => {
   describe('authenticated', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
+      headers = await login(userParams)
       client = new GraphQLClient(host, { headers })
     })
 
@@ -84,7 +114,7 @@ describe('CreatePost', () => {
       await client.request(mutation, createPostVariables)
       const { User } = await client.request(
         `{
-          User(email:"test@example.org") {
+          User(name: "TestUser") {
             contributions {
               title
             }
@@ -124,7 +154,8 @@ describe('CreatePost', () => {
     })
 
     describe('categories', () => {
-      it('allows a user to set the categories of the post', async () => {
+      let postWithCategories
+      beforeEach(async () => {
         await Promise.all([
           factory.create('Category', {
             id: 'cat9',
@@ -142,17 +173,38 @@ describe('CreatePost', () => {
             icon: 'shopping-cart',
           }),
         ])
-        const expected = [{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }]
-        const postWithCategories = await client.request(
+        postWithCategories = await client.request(
           createPostWithCategoriesMutation,
-          creatPostWithCategoriesVariables,
+          createPostWithCategoriesVariables,
         )
+      })
+
+      it('allows a user to set the categories of the post', async () => {
+        const expected = [{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }]
         const postQueryWithCategoriesVariables = {
           id: postWithCategories.CreatePost.id,
         }
+
         await expect(
           client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
         ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
+      })
+
+      it('allows a user to filter for posts by category', async () => {
+        await client.request(createPostWithCategoriesMutation, createPostWithoutCategoriesVariables)
+        const categoryIds = [{ id: 'cat4' }, { id: 'cat15' }, { id: 'cat9' }]
+        const expected = {
+          Post: [
+            {
+              title: postTitle,
+              id: postWithCategories.CreatePost.id,
+              categories: expect.arrayContaining(categoryIds),
+            },
+          ],
+        }
+        await expect(
+          client.request(postQueryFilteredByCategory, postQueryFilteredByCategoryVariables),
+        ).resolves.toEqual(expected)
       })
     })
   })
@@ -163,14 +215,8 @@ describe('UpdatePost', () => {
   let updatePostVariables
   beforeEach(async () => {
     const asAuthor = Factory()
-    await asAuthor.create('User', {
-      email: 'author@example.org',
-      password: '1234',
-    })
-    await asAuthor.authenticateAs({
-      email: 'author@example.org',
-      password: '1234',
-    })
+    await asAuthor.create('User', authorParams)
+    await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
       id: 'p1',
       title: oldTitle,
@@ -205,7 +251,7 @@ describe('UpdatePost', () => {
   describe('authenticated but not the author', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
+      headers = await login(userParams)
       client = new GraphQLClient(host, { headers })
     })
 
@@ -219,7 +265,7 @@ describe('UpdatePost', () => {
   describe('authenticated as author', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'author@example.org', password: '1234' })
+      headers = await login(authorParams)
       client = new GraphQLClient(host, { headers })
     })
 
@@ -257,7 +303,7 @@ describe('UpdatePost', () => {
         ])
         postWithCategories = await client.request(
           createPostWithCategoriesMutation,
-          creatPostWithCategoriesVariables,
+          createPostWithCategoriesVariables,
         )
         updatePostVariables = {
           id: postWithCategories.CreatePost.id,
@@ -297,14 +343,8 @@ describe('DeletePost', () => {
 
   beforeEach(async () => {
     const asAuthor = Factory()
-    await asAuthor.create('User', {
-      email: 'author@example.org',
-      password: '1234',
-    })
-    await asAuthor.authenticateAs({
-      email: 'author@example.org',
-      password: '1234',
-    })
+    await asAuthor.create('User', authorParams)
+    await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
       id: 'p1',
       content: 'To be deleted',
@@ -321,7 +361,7 @@ describe('DeletePost', () => {
   describe('authenticated but not the author', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'test@example.org', password: '1234' })
+      headers = await login(userParams)
       client = new GraphQLClient(host, { headers })
     })
 
@@ -333,7 +373,7 @@ describe('DeletePost', () => {
   describe('authenticated as author', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({ email: 'author@example.org', password: '1234' })
+      headers = await login(authorParams)
       client = new GraphQLClient(host, { headers })
     })
 

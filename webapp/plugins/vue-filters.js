@@ -2,7 +2,6 @@ import Vue from 'vue'
 
 import { enUS, de, nl, fr, es } from 'date-fns/locale'
 import format from 'date-fns/format'
-import addSeconds from 'date-fns/addSeconds'
 import accounting from 'accounting'
 
 export default ({ app = {} }) => {
@@ -38,15 +37,6 @@ export default ({ app = {} }) => {
         return fallback
       }
       return accounting.formatNumber(value || 0, precision, thousands, decimals)
-    },
-    // format seconds or milliseconds to durations HH:mm:ss
-    duration: (value, unit = 's') => {
-      if (unit === 'ms') {
-        value = value / 1000
-      }
-      return value
-        ? format(addSeconds(new Date('2000-01-01 00:00'), value), 'HH:mm:ss')
-        : '00:00:00'
     },
     truncate: (value = '', length = -1) => {
       if (!value || typeof value !== 'string' || value.length <= 0) {

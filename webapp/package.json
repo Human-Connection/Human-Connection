@@ -29,7 +29,6 @@
       "!**/?(*.)+(spec|test).js?(x)"
     ],
     "coverageReporters": [
-      "text",
       "lcov"
     ],
     "transform": {
@@ -62,9 +61,10 @@
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0-beta.2",
     "express": "~4.17.1",
-    "graphql": "~14.4.0",
+    "graphql": "~14.4.2",
+    "isemail": "^3.2.0",
     "jsonwebtoken": "~8.5.1",
-    "linkify-it": "~2.1.0",
+    "linkify-it": "~2.2.0",
     "nuxt": "~2.8.1",
     "nuxt-dropzone": "^1.0.2",
     "nuxt-env": "~0.1.0",
@@ -80,10 +80,10 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "~7.4.5",
+    "@babel/core": "~7.5.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "~7.4.5",
-    "@vue/cli-shared-utils": "~3.8.0",
+    "@babel/preset-env": "~7.5.4",
+    "@vue/cli-shared-utils": "~3.9.0",
     "@vue/eslint-config-prettier": "~4.0.1",
     "@vue/server-test-utils": "~1.0.0-beta.29",
     "@vue/test-utils": "~1.0.0-beta.29",
@@ -93,9 +93,9 @@
     "eslint": "~5.16.0",
     "eslint-config-prettier": "~6.0.0",
     "eslint-config-standard": "~12.0.0",
-    "eslint-loader": "~2.1.2",
+    "eslint-loader": "~2.2.1",
     "eslint-plugin-import": "~2.18.0",
-    "eslint-plugin-jest": "~22.7.1",
+    "eslint-plugin-jest": "~22.8.0",
     "eslint-plugin-node": "~9.1.0",
     "eslint-plugin-prettier": "~3.1.0",
     "eslint-plugin-promise": "~4.2.1",

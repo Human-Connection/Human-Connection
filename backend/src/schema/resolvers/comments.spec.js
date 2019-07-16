@@ -1,7 +1,6 @@
-import gql from 'graphql-tag'
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 let client
@@ -9,12 +8,16 @@ let createCommentVariables
 let createPostVariables
 let createCommentVariablesSansPostId
 let createCommentVariablesWithNonExistentPost
+let userParams
+let authorParams
 
 beforeEach(async () => {
-  await factory.create('User', {
+  userParams = {
+    name: 'TestUser',
     email: 'test@example.org',
     password: '1234',
-  })
+  }
+  await factory.create('User', userParams)
 })
 
 afterEach(async () => {
@@ -53,10 +56,7 @@ describe('CreateComment', () => {
   describe('authenticated', () => {
     let headers
     beforeEach(async () => {
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
+      headers = await login(userParams)
       client = new GraphQLClient(host, {
         headers,
       })
@@ -89,7 +89,7 @@ describe('CreateComment', () => {
 
       const { User } = await client.request(gql`
         {
-          User(email: "test@example.org") {
+          User(name: "TestUser") {
             comments {
               content
             }
@@ -201,15 +201,13 @@ describe('DeleteComment', () => {
   }
 
   beforeEach(async () => {
+    authorParams = {
+      email: 'author@example.org',
+      password: '1234',
+    }
     const asAuthor = Factory()
-    await asAuthor.create('User', {
-      email: 'author@example.org',
-      password: '1234',
-    })
-    await asAuthor.authenticateAs({
-      email: 'author@example.org',
-      password: '1234',
-    })
+    await asAuthor.create('User', authorParams)
+    await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
       id: 'p1',
       content: 'Post to be commented',
@@ -233,13 +231,8 @@ describe('DeleteComment', () => {
   describe('authenticated but not the author', () => {
     beforeEach(async () => {
       let headers
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
+      headers = await login(userParams)
+      client = new GraphQLClient(host, { headers })
     })
 
     it('throws authorization error', async () => {
@@ -252,13 +245,8 @@ describe('DeleteComment', () => {
   describe('authenticated as author', () => {
     beforeEach(async () => {
       let headers
-      headers = await login({
-        email: 'author@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
+      headers = await login(authorParams)
+      client = new GraphQLClient(host, { headers })
     })
 
     it('deletes the comment', async () => {

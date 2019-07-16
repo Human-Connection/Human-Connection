@@ -1,51 +1,31 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
+import encryptPassword from '../../helpers/encryptPassword'
+import slugify from 'slug'
 
-export default function create(params) {
-  const {
-    id = uuid(),
-    name = faker.name.findName(),
-    slug = '',
-    email = faker.internet.email(),
-    password = '1234',
-    role = 'user',
-    avatar = faker.internet.avatar(),
-    about = faker.lorem.paragraph(),
-  } = params
-
+export default function create() {
   return {
-    mutation: `
-      mutation(
-        $id: ID!
-        $name: String
-        $slug: String
-        $password: String!
-        $email: String!
-        $avatar: String
-        $about: String
-        $role: UserGroup
-      ) {
-        CreateUser(
-          id: $id
-          name: $name
-          slug: $slug
-          password: $password
-          email: $email
-          avatar: $avatar
-          about: $about
-          role: $role
-        ) {
-          id
-          name
-          slug
-          email
-          avatar
-          role
-          deleted
-          disabled
-        }
+    factory: async ({ args, neodeInstance }) => {
+      const defaults = {
+        id: uuid(),
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        password: '1234',
+        role: 'user',
+        avatar: faker.internet.avatar(),
+        about: faker.lorem.paragraph(),
       }
-    `,
-    variables: { id, name, slug, password, email, avatar, about, role },
+      defaults.slug = slugify(defaults.name, { lower: true })
+      args = {
+        ...defaults,
+        ...args,
+      }
+      args = await encryptPassword(args)
+      const user = await neodeInstance.create('User', args)
+      const email = await neodeInstance.create('EmailAddress', { email: args.email })
+      await user.relateTo(email, 'primaryEmail')
+      await email.relateTo(user, 'belongsTo')
+      return user
+    },
   }
 }
