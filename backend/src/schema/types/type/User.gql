@@ -2,7 +2,7 @@ type User {
   id: ID!
   actorId: String
   name: String
-  email: String!
+  email: String! @cypher(statement: "MATCH (this)-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e.email")
   slug: String!
   avatar: String
   coverImg: String

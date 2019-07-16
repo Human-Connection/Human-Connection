@@ -21,7 +21,11 @@ export default function create() {
         ...args,
       }
       args = await encryptPassword(args)
-      return neodeInstance.create('User', args)
+      const user = await neodeInstance.create('User', args)
+      const email = await neodeInstance.create('EmailAddress', { email: args.email })
+      await user.relateTo(email, 'primaryEmail')
+      await email.relateTo(user, 'belongsTo')
+      return user
     },
   }
 }

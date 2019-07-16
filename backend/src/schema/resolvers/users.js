@@ -65,6 +65,13 @@ export const hasOne = obj => {
 export default {
   Query: {
     User: async (object, args, context, resolveInfo) => {
+      const { email } = args
+      if (email) {
+        const e = await instance.first('EmailAddress', { email })
+        let user = e.get('belongsTo')
+        user = await user.toJson()
+        return [user.node]
+      }
       return neo4jgraphql(object, args, context, resolveInfo, false)
     },
   },
@@ -104,6 +111,14 @@ export default {
     },
   },
   User: {
+    email: async (parent, params, context, resolveInfo) => {
+      if (typeof parent.email !== 'undefined') return parent.email
+      const { id } = parent
+      const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
+      const result = await instance.cypher(statement, { id })
+      let [{ email }] = result.records.map(r => r.get('e').properties)
+      return email
+    },
     ...undefinedToNull([
       'actorId',
       'avatar',

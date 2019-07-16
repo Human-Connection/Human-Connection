@@ -2,6 +2,9 @@ import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
 import { neo4jgraphql } from 'neo4j-graphql-js'
+import { neode } from '../../bootstrap/neo4j'
+
+const instance = neode()
 
 export default {
   Query: {
@@ -21,8 +24,8 @@ export default {
       // }
       const session = driver.session()
       const result = await session.run(
-        'MATCH (user:User {email: $userEmail}) ' +
-          'RETURN user {.id, .slug, .name, .avatar, .email, .encryptedPassword, .role, .disabled} as user LIMIT 1',
+        'MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})' +
+          'RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1',
         {
           userEmail: email,
         },
@@ -46,41 +49,24 @@ export default {
       }
     },
     changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {
-      const session = driver.session()
-      let result = await session.run(
-        `MATCH (user:User {email: $userEmail})
-         RETURN user {.id, .email, .encryptedPassword}`,
-        {
-          userEmail: user.email,
-        },
-      )
+      let currentUser = await instance.find('User', user.id)
 
-      const [currentUser] = result.records.map(function(record) {
-        return record.get('user')
-      })
-
-      if (!(await bcrypt.compareSync(oldPassword, currentUser.encryptedPassword))) {
+      const encryptedPassword = currentUser.get('encryptedPassword')
+      if (!(await bcrypt.compareSync(oldPassword, encryptedPassword))) {
         throw new AuthenticationError('Old password is not correct')
       }
 
-      if (await bcrypt.compareSync(newPassword, currentUser.encryptedPassword)) {
+      if (await bcrypt.compareSync(newPassword, encryptedPassword)) {
         throw new AuthenticationError('Old password and new password should be different')
-      } else {
-        const newEncryptedPassword = await bcrypt.hashSync(newPassword, 10)
-        session.run(
-          `MATCH (user:User {email: $userEmail})
-           SET user.encryptedPassword = $newEncryptedPassword
-           RETURN user
-        `,
-          {
-            userEmail: user.email,
-            newEncryptedPassword,
-          },
-        )
-        session.close()
-
-        return encode(currentUser)
       }
+
+      const newEncryptedPassword = await bcrypt.hashSync(newPassword, 10)
+      await currentUser.update({
+        encryptedPassword: newEncryptedPassword,
+        updatedAt: new Date().toISOString(),
+      })
+
+      return encode(await currentUser.toJson())
     },
   },
 }
