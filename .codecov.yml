@@ -95,7 +95,7 @@ coverage:
         #  - master
         #flags:
         #  - integration
-        paths: 
+        paths:
           - backend/  # only include coverage in "backend/" folder
       webapp:  # declare a new status context "frontend"
         against: parent
@@ -127,7 +127,7 @@ coverage:
     #      - integration
     #    paths:
     #      - folder
-    
+
     #changes:
     #  default:
     #    against: parent
@@ -150,20 +150,8 @@ coverage:
 
   #ignore: # files and folders for processing
   #  - tests/*
-  
+
   #fixes:
   #  - "old_path::new_path"
 
-comment:
-  # layout options are quite limited in v4.x - there have been way more options in v1.0
-  layout: reach, diff, flags, files # mostly old options: header, diff, uncovered, reach, files, tree, changes, sunburst, flags
-  behavior: new # default = posts once then update, posts new if delete
-                # once = post once then updates
-                # new = delete old, post new
-                # spammy = post new
-  require_changes: false  # if true: only post the comment if coverage changes
-  require_base: no        # [yes :: must have a base report to post]
-  require_head: no        # [yes :: must have a head report to post]
-  branches: null          # branch names that can post comment
-  flags: null
-  paths: null
+comment: off

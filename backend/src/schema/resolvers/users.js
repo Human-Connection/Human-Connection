@@ -139,7 +139,7 @@ export default {
       organizationsCreated: '-[:CREATED_ORGA]->(related:Organization)',
       organizationsOwned: '-[:OWNING_ORGA]->(related:Organization)',
       categories: '-[:CATEGORIZED]->(related:Category)',
-      badges: '-[:REWARDED]->(related:Badge)',
+      badges: '<-[:REWARDED]-(related:Badge)',
     }),
   },
 }

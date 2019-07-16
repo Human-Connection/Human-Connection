@@ -101,7 +101,7 @@ ON CREATE SET
 u.name       = user.name,
 u.slug       = user.slug,
 u.email      = user.email,
-u.password   = user.password,
+u.encryptedPassword   = user.password,
 u.avatar     = replace(user.avatar, 'https://api-alpha.human-connection.org', ''),
 u.coverImg   = replace(user.coverImg, 'https://api-alpha.human-connection.org', ''),
 u.wasInvited = user.wasInvited,

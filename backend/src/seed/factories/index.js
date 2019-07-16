@@ -73,6 +73,7 @@ export default function Factory(options = {}) {
       const { factory, mutation, variables } = this.factories[node](args)
       if (factory) {
         this.lastResponse = await factory({ args, neodeInstance })
+        return this.lastResponse
       } else {
         this.lastResponse = await this.graphQLClient.request(mutation, variables)
       }
