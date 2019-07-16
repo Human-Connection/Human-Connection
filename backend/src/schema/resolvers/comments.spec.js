@@ -267,6 +267,50 @@ describe('ManageComments', () => {
           client.request(updateCommentMutation, updateCommentVariables),
         ).resolves.toEqual(expected)
       })
+
+      it('throw an error if an empty string is sent from the editor as content', async () => {
+        updateCommentVariables = {
+          id: 'c456',
+          content: '<p></p>',
+        }
+
+        await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
+          'Comment must be at least 1 character long!',
+        )
+      })
+
+      it('throws an error if a comment sent from the editor does not contain a single character', async () => {
+        updateCommentVariables = {
+          id: 'c456',
+          content: '<p></p>',
+        }
+
+        await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
+          'Comment must be at least 1 character long!',
+        )
+      })
+
+      it('throws an error if postId is sent as an empty string', async () => {
+        updateCommentVariables = {
+          id: 'c456',
+          content: '<p></p>',
+        }
+
+        await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
+          'Comment must be at least 1 character long!',
+        )
+      })
+
+      it('throws an error if content is sent as an string of empty characters', async () => {
+        updateCommentVariables = {
+          id: 'c456',
+          content: '<p></p>',
+        }
+
+        await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
+          'Comment must be at least 1 character long!',
+        )
+      })
     })
   })
 

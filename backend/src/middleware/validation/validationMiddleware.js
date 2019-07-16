@@ -45,9 +45,20 @@ const validateCommentCreation = async (resolve, root, args, context, info) => {
   }
 }
 
+const validateUpdateComment = async (resolve, root, args, context, info) => {
+  const COMMENT_MIN_LENGTH = 1
+  const content = args.content.replace(/<(?:.|\n)*?>/gm, '').trim()
+  if (!args.content || content.length < COMMENT_MIN_LENGTH) {
+    throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
+  }
+
+  return resolve(root, args, context, info)
+}
+
 export default {
   Mutation: {
     CreateSocialMedia: validate(socialMediaSchema),
     CreateComment: validateCommentCreation,
+    UpdateComment: validateUpdateComment,
   },
 }
