@@ -63,7 +63,7 @@ export default {
       const newEncryptedPassword = await bcrypt.hashSync(newPassword, 10)
       await currentUser.update({
         encryptedPassword: newEncryptedPassword,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       })
 
       return encode(await currentUser.toJson())
