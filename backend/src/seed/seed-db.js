@@ -683,6 +683,13 @@ import Factory from './factories'
         to: 'o3',
       }),
     ])
+
+    await Promise.all(
+      [...Array(30).keys()].map(i => {
+        return f.create('User')
+      }),
+    )
+
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
     process.exit(0)

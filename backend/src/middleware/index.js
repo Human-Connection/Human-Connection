@@ -1,4 +1,6 @@
+import { applyMiddleware } from 'graphql-middleware'
 import CONFIG from './../config'
+
 import activityPub from './activityPubMiddleware'
 import softDelete from './softDeleteMiddleware'
 import sluggify from './sluggifyMiddleware'
@@ -56,5 +58,6 @@ export default schema => {
     console.log(`Warning: "${disabledMiddlewares}" middlewares have been disabled.`)
   }
 
-  return order.map(key => middlewares[key])
+  const appliedMiddlewares = order.map(key => middlewares[key])
+  return applyMiddleware(schema, ...appliedMiddlewares)
 }
