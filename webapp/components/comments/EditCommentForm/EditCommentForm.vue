@@ -27,6 +27,7 @@
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor/Editor'
 import { mapMutations } from 'vuex'
+import CommentMutations from '~/graphql/CommentMutations.js'
 
 export default {
   components: {
@@ -67,14 +68,7 @@ export default {
       this.disabled = true
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation($content: String!, $id: ID!) {
-              UpdateComment(content: $content, id: $id) {
-                id
-                content
-              }
-            }
-          `,
+          mutation: CommentMutations().UpdateComment,
           variables: {
             content: this.form.content,
             id: this.comment.id,
@@ -96,12 +90,14 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql(`{
-          User(orderBy: slug_asc) {
-            id
-            slug
+        return gql`
+          {
+            User(orderBy: slug_asc) {
+              id
+              slug
+            }
           }
-        }`)
+        `
       },
       result({ data: { User } }) {
         this.users = User
