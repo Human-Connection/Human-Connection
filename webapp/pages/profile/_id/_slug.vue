@@ -206,7 +206,7 @@
               :key="post.id"
               :post="post"
               :width="{ base: '100%', md: '100%', xl: '50%' }"
-              @removePostFromList="activePosts.splice(index, 1)"
+              @removePostFromList="removePostFromList(index)"
             />
           </template>
           <template v-else-if="$apollo.loading">
@@ -331,6 +331,10 @@ export default {
     },
   },
   methods: {
+    removePostFromList(index) {
+      this.activePosts.splice(index, 1)
+      this.$apollo.queries.User.refetch()
+    },
     handleTab(tab) {
       this.tabActive = tab
       this.Post = null

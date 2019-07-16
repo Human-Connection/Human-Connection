@@ -1,6 +1,6 @@
 import express from 'express'
 import helmet from 'helmet'
-import { GraphQLServer } from 'graphql-yoga'
+import { ApolloServer } from 'apollo-server-express'
 import CONFIG, { requiredConfigs } from './config'
 import mocks from './mocks'
 import middleware from './middleware'
@@ -20,28 +20,30 @@ const driver = getDriver()
 
 const createServer = options => {
   const defaults = {
-    context: async ({ request }) => {
-      const user = await decode(driver, request.headers.authorization)
+    context: async ({ req }) => {
+      const user = await decode(driver, req.headers.authorization)
       return {
         driver,
         user,
-        req: request,
+        req,
         cypherParams: {
           currentUserId: user ? user.id : null,
         },
       }
     },
-    schema,
+    schema: middleware(schema),
     debug: CONFIG.DEBUG,
     tracing: CONFIG.DEBUG,
-    middlewares: middleware(schema),
     mocks: CONFIG.MOCKS ? mocks : false,
   }
-  const server = new GraphQLServer(Object.assign({}, defaults, options))
+  const server = new ApolloServer(Object.assign({}, defaults, options))
 
-  server.express.use(helmet())
-  server.express.use(express.static('public'))
-  return server
+  const app = express()
+  app.use(helmet())
+  app.use(express.static('public'))
+  server.applyMiddleware({ app, path: '/' })
+
+  return { server, app }
 }
 
 export default createServer

@@ -1,7 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
-import gql from 'graphql-tag'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 let user
@@ -107,10 +106,11 @@ describe('rewards', () => {
           id: 'indiegogo_en_racoon',
           icon: '/img/badges/indiegogo_en_racoon.svg',
         })
+        const badges = [{ id: 'indiegogo_en_racoon' }, { id: 'indiegogo_en_rhino' }]
         const expected = {
           reward: {
             id: 'u1',
-            badges: [{ id: 'indiegogo_en_racoon' }, { id: 'indiegogo_en_rhino' }],
+            badges: expect.arrayContaining(badges),
           },
         }
         await client.request(mutation, variables)

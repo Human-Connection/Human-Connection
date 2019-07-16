@@ -1,6 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
-import gql from 'graphql-tag'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 import Factory from '../../seed/factories'
 
 const factory = Factory()

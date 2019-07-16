@@ -3,14 +3,24 @@
     <div class="main-navigation">
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
-          <ds-flex>
-            <ds-flex-item :width="{ base: '49px', md: '150px' }">
-              <nuxt-link to="/">
+          <ds-flex class="main-navigation-flex">
+            <ds-flex-item :width="{ lg: '3.5%' }" />
+            <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
+              <a @click="redirectToRoot">
                 <ds-logo />
-              </nuxt-link>
+              </a>
             </ds-flex-item>
-            <ds-flex-item>
-              <div id="nav-search-box" v-on:click="unfolded" @blur.capture="foldedup">
+            <ds-flex-item
+              :width="{ base: '20%', sm: '20%', md: '20%', lg: '0%' }"
+              class="mobile-hamburger-menu"
+            >
+              <ds-button icon="bars" @click="toggleMobileMenuView" right />
+            </ds-flex-item>
+            <ds-flex-item
+              :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
+              <div id="nav-search-box">
                 <search-input
                   id="nav-search"
                   :delay="300"
@@ -22,17 +32,36 @@
                 />
               </div>
             </ds-flex-item>
-            <ds-flex-item width="200px" style="background-color:white">
-              <div class="main-navigation-right" style="float:right">
+            <ds-flex-item
+              :width="{ base: '15%', sm: '15%', md: '10%', lg: '10%' }"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
+              <no-ssr>
+                <filter-posts placement="top-start" offset="8" :categories="categories" />
+              </no-ssr>
+            </ds-flex-item>
+            <ds-flex-item :width="{ base: '100%', sm: '100%', md: '10%', lg: '2%' }" />
+            <ds-flex-item
+              :width="{ base: '100%', sm: '100%', md: '100%', lg: '13%' }"
+              style="background-color:white"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
+              <div
+                class="main-navigation-right"
+                :class="{
+                  'desktop-view': !toggleMobileMenu,
+                  'hide-mobile-menu': !toggleMobileMenu,
+                }"
+              >
                 <no-ssr>
-                  <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
+                  <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
                 </no-ssr>
                 <template v-if="isLoggedIn">
                   <no-ssr>
-                    <notification-menu />
+                    <notification-menu placement="top" />
                   </no-ssr>
                   <no-ssr>
-                    <dropdown class="avatar-menu">
+                    <dropdown class="avatar-menu" offset="8">
                       <template slot="default" slot-scope="{ toggleMenu }">
                         <a
                           class="avatar-menu-trigger"
@@ -118,6 +147,8 @@ import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
+import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
+import CategoryQuery from '~/graphql/CategoryQuery.js'
 
 export default {
   components: {
@@ -127,11 +158,14 @@ export default {
     Modal,
     NotificationMenu,
     HcAvatar,
+    FilterPosts,
   },
   mixins: [seo],
   data() {
     return {
       mobileSearchVisible: false,
+      toggleMobileMenu: false,
+      categories: [],
     }
   },
   computed: {
@@ -180,10 +214,16 @@ export default {
       return routes
     },
   },
+  watch: {
+    Category(category) {
+      this.categories = category || []
+    },
+  },
   methods: {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
+      fetchPosts: 'posts/fetchPosts',
     }),
     goToPost(item) {
       this.$nextTick(() => {
@@ -200,23 +240,24 @@ export default {
       }
       return this.$route.path.indexOf(url) === 0
     },
-    unfolded: function() {
-      document.getElementById('nav-search-box').classList.add('unfolded')
+    toggleMobileMenuView() {
+      this.toggleMobileMenu = !this.toggleMobileMenu
     },
-    foldedup: function() {
-      document.getElementById('nav-search-box').classList.remove('unfolded')
+    redirectToRoot() {
+      this.$router.replace('/')
+      this.fetchPosts({ i18n: this.$i18n, filter: {} })
+    },
+  },
+  apollo: {
+    Category: {
+      query() {
+        return CategoryQuery()
+      },
+      fetchPolicy: 'cache-and-network',
     },
   },
 }
 </script>
-<style>
-.unfolded {
-  position: absolute;
-  right: 0px;
-  left: 0px;
-  z-index: 1;
-}
-</style>
 
 <style lang="scss">
 .topbar-locale-switch {
@@ -228,7 +269,7 @@ export default {
 
 .main-container {
   padding-top: 6rem;
-  padding-botton: 5rem;
+  padding-bottom: 5rem;
 }
 
 .main-navigation {
@@ -240,6 +281,14 @@ export default {
 .main-navigation-right {
   display: flex;
   flex: 1;
+}
+
+.main-navigation-right .desktop-view {
+  float: right;
+}
+
+.avatar-menu {
+  margin: 2px 0px 0px 5px;
 }
 
 .avatar-menu-trigger {
@@ -285,6 +334,24 @@ export default {
     }
   }
 }
+
+@media only screen and (min-width: 960px) {
+  .mobile-hamburger-menu {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  #nav-search-box,
+  .main-navigation-right {
+    margin: 10px 0px;
+  }
+
+  .hide-mobile-menu {
+    display: none;
+  }
+}
+
 .ds-footer {
   text-align: center;
   position: fixed;
