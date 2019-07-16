@@ -188,22 +188,24 @@ describe('CreateComment', () => {
 })
 
 describe('ManageComments', () => {
-  let manageCommentsUserParams
+  let authorParams
   beforeEach(async () => {
-    manageCommentsUserParams = {
+    authorParams = {
       email: 'author@example.org',
       password: '1234',
     }
-    createCommentVariables = {
+    const asAuthor = Factory()
+    await asAuthor.create('User', authorParams)
+    await asAuthor.authenticateAs(authorParams)
+    await asAuthor.create('Post', {
+      id: 'p1',
+      content: 'Post to be commented',
+    })
+    await asAuthor.create('Comment', {
       id: 'c456',
       postId: 'p1',
-      content: "I'm authorised to comment",
-    }
-    await factory.create('User', manageCommentsUserParams)
-    headers = await login(manageCommentsUserParams)
-    client = new GraphQLClient(host, { headers })
-    await client.request(createPostMutation, createPostVariables)
-    await client.request(createCommentMutation, createCommentVariables)
+      content: 'Comment to be deleted',
+    })
   })
 
   describe('UpdateComment', () => {
@@ -249,6 +251,11 @@ describe('ManageComments', () => {
     })
 
     describe('authenticated as author', () => {
+      beforeEach(async () => {
+        headers = await login(authorParams)
+        client = new GraphQLClient(host, { headers })
+      })
+
       it('updates the comment', async () => {
         const expected = {
           UpdateComment: {
@@ -304,6 +311,11 @@ describe('ManageComments', () => {
     })
 
     describe('authenticated as author', () => {
+      beforeEach(async () => {
+        headers = await login(authorParams)
+        client = new GraphQLClient(host, { headers })
+      })
+
       it('deletes the comment', async () => {
         const expected = {
           DeleteComment: {

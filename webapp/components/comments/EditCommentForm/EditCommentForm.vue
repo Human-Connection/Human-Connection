@@ -2,9 +2,8 @@
   <ds-form v-model="form" @submit="handleSubmit">
     <template slot-scope="{ errors }">
       <ds-card>
-        <!-- <no-ssr> -->
+        <!-- with no-ssr the content is not shown -->
         <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
-        <!-- </no-ssr> -->
         <ds-space />
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
@@ -51,7 +50,7 @@ export default {
       disabled: false,
       loading: false,
       form: {
-        content: this.comment.contentExcerpt,
+        content: this.comment.content,
       },
       users: [],
     }
@@ -90,7 +89,7 @@ export default {
             id: this.comment.id,
           },
         })
-        .then(res => {
+        .then(() => {
           this.loading = false
 
           this.$toast.success(this.$t('post.comment.updated'))
@@ -113,8 +112,8 @@ export default {
           }
         }`)
       },
-      result(result) {
-        this.users = result.data.User
+      result({ data: { User } }) {
+        this.users = User
       },
     },
   },

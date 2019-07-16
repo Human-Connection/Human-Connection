@@ -11,7 +11,7 @@
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card>
-      <ds-space margin-bottom="x-small">
+      <ds-space margin-bottom="small">
         <hc-user :user="author" :date-time="comment.createdAt" />
       </ds-space>
       <!-- Content Menu (can open Modals) -->
@@ -62,7 +62,7 @@ import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
-import HcEditCommentForm from '~/components/comments/EditCommentForm'
+import HcEditCommentForm from '~/components/comments/EditCommentForm/EditCommentForm'
 
 export default {
   data: function() {

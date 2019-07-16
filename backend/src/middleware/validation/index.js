@@ -17,8 +17,8 @@ const validateUpdateComment = async (resolve, root, args, context, info) => {
   if (!args.content || content.length < COMMENT_MIN_LENGTH) {
     throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
   }
-  /* eslint-disable-next-line no-return-await */
-  return await resolve(root, args, context, info)
+
+  return resolve(root, args, context, info)
 }
 
 export default {
