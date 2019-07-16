@@ -44,6 +44,7 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
+
       let createPostCypher = `CREATE (post:Post {params})
       WITH post
       MATCH (author:User {id: $userId})

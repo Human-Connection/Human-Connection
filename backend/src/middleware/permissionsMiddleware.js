@@ -167,6 +167,7 @@ const permissions = shield(
       // RemoveBadgeRewarded: isAdmin,
       reward: isAdmin,
       unreward: isAdmin,
+      // why is this here? will we support buying/selling fruit??
       // addFruitToBasket: isAuthenticated
       follow: isAuthenticated,
       unfollow: isAuthenticated,
@@ -180,6 +181,7 @@ const permissions = shield(
       DeleteUser: isDeletingOwnAccount,
       requestPasswordReset: allow,
       resetPassword: allow,
+      AddPostEmotions: isAuthenticated,
     },
     User: {
       email: isMyOwn,

@@ -383,3 +383,77 @@ describe('DeletePost', () => {
     })
   })
 })
+
+describe('AddPostEmotions', () => {
+  let addPostEmotionsVariables
+  const addPostEmotionsMutation = `
+    mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
+      AddPostEmotions(from: $from, to: $to, data: $data) {
+        from {
+          id
+        }
+        to {
+          id
+        }
+        emotion
+      }
+    }
+  `
+  describe('emotions', () => {
+    beforeEach(async () => {
+      const asAuthor = Factory()
+      authorParams = {
+        id: 'u25',
+        email: 'wanna-add-emotions@example.org',
+        password: '1234',
+      }
+      await asAuthor.create('User', authorParams)
+      await asAuthor.authenticateAs(authorParams)
+      await asAuthor.create('Post', {
+        id: 'p1376',
+        title: postTitle,
+        content: postContent,
+      })
+      addPostEmotionsVariables = {
+        from: { id: authorParams.id },
+        to: { id: 'p1376' },
+        data: { emotion: 'happy' },
+      }
+    })
+    // it('supports setting emotions for a post', () => {})
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+        await expect(
+          client.request(addPostEmotionsMutation, {
+            from: { id: 'u25' },
+            to: { id: 'p1376' },
+            data: { emotion: 'happy' },
+          }),
+        ).rejects.toThrow('Not Authorised')
+      })
+    })
+
+    describe('authenticated as author', () => {
+      let headers
+      beforeEach(async () => {
+        headers = await login(authorParams)
+        client = new GraphQLClient(host, { headers })
+      })
+
+      it('adds an emotion to the post', async () => {
+        const expected = {
+          AddPostEmotions: {
+            from: addPostEmotionsVariables.from,
+            to: addPostEmotionsVariables.to,
+            emotion: 'happy',
+          },
+        }
+        await expect(
+          client.request(addPostEmotionsMutation, addPostEmotionsVariables),
+        ).resolves.toEqual(expected)
+      })
+    })
+  })
+})

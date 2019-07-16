@@ -50,6 +50,10 @@ type Post {
     )
 
   emotions: [EMOTED]
+  emotionsCount: Int!
+    @cypher(
+      statement: "MATCH (this)<-[emoted:EMOTED]-(:User) RETURN COUNT(DISTINCT emoted)"
+    )
 }
 
 type Mutation {
