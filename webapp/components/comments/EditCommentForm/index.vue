@@ -9,12 +9,7 @@
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }">
-            <ds-button
-              :disabled="disabled"
-              ghost
-              class="cancelBtn"
-              @click.prevent="closeEditWindow"
-            >
+            <ds-button ghost class="cancelBtn" @click.prevent="closeEditWindow">
               {{ $t('actions.cancel') }}
             </ds-button>
           </ds-flex-item>
@@ -48,10 +43,10 @@ export default {
   },
   data() {
     return {
-      disabled: false,
+      disabled: true,
       loading: false,
       form: {
-        content: this.comment.contentExcerpt,
+        content: this.comment.content,
       },
       users: [],
     }
@@ -61,12 +56,8 @@ export default {
       setEditPending: 'editor/SET_EDIT_PENDING',
     }),
     updateEditorContent(value) {
-      const content = value.replace(/<(?:.|\n)*?>/gm, '').trim()
-      if (content.length < 1) {
-        this.disabled = true
-      } else {
-        this.disabled = false
-      }
+      const sanitizedContent = value.replace(/<(?:.|\n)*?>/gm, '').trim()
+      this.disabled = value === this.comment.content || sanitizedContent.length < 1
       this.form.content = value
     },
     closeEditWindow() {
