@@ -108,7 +108,7 @@
   },
   "notifications": {
     "menu": {
-      "mentioned": "mentioned you in a post"
+      "mentioned": "mentioned you in a {resource}"
     }
   },
   "search": {

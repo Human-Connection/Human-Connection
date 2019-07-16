@@ -107,7 +107,7 @@
   },
   "notifications": {
     "menu": {
-      "mentioned": "hat dich in einem Beitrag erwähnt"
+      "mentioned": "hat dich in einem {resource} erwähnt"
     }
   },
   "search": {

@@ -10,7 +10,7 @@
     </ds-card>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
-    <ds-card>
+    <ds-card :id="comment.id">
       <ds-space margin-bottom="small">
         <hc-user :user="author" :date-time="comment.createdAt" />
       </ds-space>
@@ -33,15 +33,19 @@
         v-show="comment.content !== comment.contentExcerpt"
         style="text-align: right;  margin-right: 20px; margin-top: -12px;"
       >
-        <a v-if="isCollapsed" style="padding-left: 40px;" @click="isCollapsed = !isCollapsed">
-          {{ $t('comment.show.more') }}
-        </a>
+        <a
+          v-if="isCollapsed"
+          style="padding-left: 40px;"
+          @click="isCollapsed = !isCollapsed"
+        >{{ $t('comment.show.more') }}</a>
       </div>
       <div v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
       <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
-        <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" style="padding-left: 40px; ">
-          {{ $t('comment.show.less') }}
-        </a>
+        <a
+          v-if="!isCollapsed"
+          @click="isCollapsed = !isCollapsed"
+          style="padding-left: 40px; "
+        >{{ $t('comment.show.less') }}</a>
       </div>
       <ds-space margin-bottom="small" />
     </ds-card>

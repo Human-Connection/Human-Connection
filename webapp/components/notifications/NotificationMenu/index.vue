@@ -1,12 +1,13 @@
 <template>
-  <ds-button v-if="totalNotifications <= 0" class="notifications-menu" disabled icon="bell">
-    {{ totalNotifications }}
-  </ds-button>
+  <ds-button
+    v-if="totalNotifications <= 0"
+    class="notifications-menu"
+    disabled
+    icon="bell"
+  >{{ totalNotifications }}</ds-button>
   <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
-      <ds-button primary icon="bell" @click.prevent="toggleMenu">
-        {{ totalNotifications }}
-      </ds-button>
+      <ds-button primary icon="bell" @click.prevent="toggleMenu">{{ totalNotifications }}</ds-button>
     </template>
     <template slot="popover">
       <div class="notifications-menu-popover">
@@ -52,6 +53,7 @@ const NOTIFICATIONS = gql`
             name
             disabled
             deleted
+            avatar
           }
         }
         comment {
@@ -66,6 +68,7 @@ const NOTIFICATIONS = gql`
             name
             disabled
             deleted
+            avatar
           }
           post {
             id
@@ -81,6 +84,7 @@ const NOTIFICATIONS = gql`
               name
               disabled
               deleted
+              avatar
             }
           }
         }
