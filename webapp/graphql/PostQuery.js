@@ -75,3 +75,48 @@ export default i18n => {
       }
     `)
 }
+
+export const filterPosts = i18n => {
+  const lang = i18n.locale().toUpperCase()
+  return gql(`
+  query Post($filter: _PostFilter, $first: Int, $offset: Int) {
+    Post(filter: $filter, first: $first, offset: $offset) {
+      id
+      title
+      contentExcerpt
+      createdAt
+      disabled
+      deleted
+      slug
+      image
+      author {
+        id
+        avatar
+        slug
+        name
+        disabled
+        deleted
+        contributionsCount
+        shoutedCount
+        commentsCount
+        followedByCount
+        followedByCurrentUser
+        location {
+          name: name${lang}
+        }
+        badges {
+          id
+          icon
+        }
+      }
+      commentsCount
+      categories {
+        id
+        name
+        icon
+      }
+      shoutedCount
+    }
+  }
+`)
+}

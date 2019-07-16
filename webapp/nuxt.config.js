@@ -10,7 +10,10 @@ const styleguideStyles = process.env.STYLEGUIDE_DEV
     ]
   : '@human-connection/styleguide/dist/shared.scss'
 
+const buildDir = process.env.NUXT_BUILD || '.nuxt'
+
 module.exports = {
+  buildDir,
   mode: 'universal',
 
   dev: dev,

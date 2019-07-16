@@ -22,16 +22,16 @@ Feature: Tags and Categories
     When I navigate to the administration dashboard
     And I click on the menu item "Categories"
     Then I can see the following table:
-      |      | Name               | Posts      |
-      |      | Just For Fun       | 2          |
-      |      | Happyness & Values | 1          |
-      |      | Health & Wellbeing | 0          |
+      |  | Name               | Posts |
+      |  | Just For Fun       | 2     |
+      |  | Happyness & Values | 1     |
+      |  | Health & Wellbeing | 0     |
 
   Scenario: See an overview of tags
     When I navigate to the administration dashboard
     And I click on the menu item "Tags"
     Then I can see the following table:
-      |   | Name      | Users  | Posts    |
-      | 1 | Democracy | 3      | 4        |
-      | 2 | Nature    | 2      | 3        |
-      | 3 | Ecology   | 1      | 1        |
+      |   | Name      | Users | Posts |
+      | 1 | Democracy | 3     | 4     |
+      | 2 | Nature    | 2     | 3     |
+      | 3 | Ecology   | 1     | 1     |
