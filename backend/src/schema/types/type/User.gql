@@ -2,14 +2,14 @@ type User {
   id: ID!
   actorId: String
   name: String
-  email: String!
+  email: String! @cypher(statement: "MATCH (this)-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e.email")
   slug: String!
   avatar: String
   coverImg: String
   deleted: Boolean
   disabled: Boolean
   disabledBy: User @relation(name: "DISABLED", direction: "IN")
-  role: UserGroup
+  role: UserGroup!
   publicKey: String
   invitedBy: User @relation(name: "INVITED", direction: "IN")
   invited: [User] @relation(name: "INVITED", direction: "OUT")
@@ -73,12 +73,17 @@ type User {
 
   badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
   badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
+
+  emotions: [EMOTED]
 }
 
 
 input _UserFilter {
   AND: [_UserFilter!]
   OR: [_UserFilter!]
+  name_contains: String
+  about_contains: String
+  slug_contains: String
   id: ID
   id_not: ID
   id_in: [ID!]

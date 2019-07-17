@@ -1,7 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
-import { login, host } from '../../jest/helpers'
 import Factory from '../../seed/factories'
-import gql from 'graphql-tag'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 let client
@@ -147,7 +146,7 @@ describe('users', () => {
       }
     `
     beforeEach(async () => {
-      asAuthor = await factory.create('User', {
+      await factory.create('User', {
         email: 'test@example.org',
         password: '1234',
         id: 'u343',
@@ -191,6 +190,7 @@ describe('users', () => {
       describe('attempting to delete my own account', () => {
         let expectedResponse
         beforeEach(async () => {
+          asAuthor = Factory()
           await asAuthor.authenticateAs({
             email: 'test@example.org',
             password: '1234',

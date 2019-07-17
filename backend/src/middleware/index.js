@@ -1,4 +1,6 @@
+import { applyMiddleware } from 'graphql-middleware'
 import CONFIG from './../config'
+
 import activityPub from './activityPubMiddleware'
 import softDelete from './softDeleteMiddleware'
 import sluggify from './sluggifyMiddleware'
@@ -10,7 +12,7 @@ import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation/validationMiddleware'
-import notifications from './notifications'
+import handleContentData from './handleHtmlContent/handleContentData'
 import email from './email/emailMiddleware'
 
 export default schema => {
@@ -21,7 +23,7 @@ export default schema => {
     validation: validation,
     sluggify: sluggify,
     excerpt: excerpt,
-    notifications: notifications,
+    handleContentData: handleContentData,
     xss: xss,
     softDelete: softDelete,
     user: user,
@@ -38,7 +40,7 @@ export default schema => {
     'sluggify',
     'excerpt',
     'email',
-    'notifications',
+    'handleContentData',
     'xss',
     'softDelete',
     'user',
@@ -56,5 +58,6 @@ export default schema => {
     console.log(`Warning: "${disabledMiddlewares}" middlewares have been disabled.`)
   }
 
-  return order.map(key => middlewares[key])
+  const appliedMiddlewares = order.map(key => middlewares[key])
+  return applyMiddleware(schema, ...appliedMiddlewares)
 }

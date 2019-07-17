@@ -1,8 +1,6 @@
 <template>
   <div>
-    <ds-heading tag="h1">
-      {{ $t('admin.name') }}
-    </ds-heading>
+    <ds-heading tag="h1">{{ $t('admin.name') }}</ds-heading>
     <ds-flex gutter="small">
       <ds-flex-item :width="{ base: '100%', md: '200px' }">
         <ds-menu :routes="routes" :is-exact="() => true" />
@@ -26,11 +24,10 @@ export default {
           name: this.$t('admin.dashboard.name'),
           path: `/admin`,
         },
-        // TODO implement
-        /* {
+        {
           name: this.$t('admin.users.name'),
-          path: `/admin/users`
-        }, */
+          path: `/admin/users`,
+        },
         // TODO implement
         /* {
           name: this.$t('admin.organizations.name'),
@@ -53,6 +50,10 @@ export default {
         {
           name: this.$t('admin.tags.name'),
           path: `/admin/tags`,
+        },
+        {
+          name: this.$t('admin.invites.name'),
+          path: `/admin/invite`,
         },
         // TODO implement
         /* {

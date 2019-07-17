@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import CategoryQuery from '~/graphql/CategoryQuery.js'
 
 export default {
   props: {
@@ -85,13 +85,7 @@ export default {
   apollo: {
     Category: {
       query() {
-        return gql(`{
-          Category {
-            id
-            name
-            icon
-          }
-        }`)
+        return CategoryQuery()
       },
       result(result) {
         this.categories = result.data.Category

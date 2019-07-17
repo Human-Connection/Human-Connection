@@ -23,24 +23,27 @@ Cypress.Commands.add('factory', () => {
 Cypress.Commands.add(
   'create',
   { prevSubject: true },
-  (factory, node, properties) => {
-    return factory.create(node, properties)
+  async (factory, node, properties) => {
+    await factory.create(node, properties)
+    return factory
   }
 )
 
 Cypress.Commands.add(
   'relate',
   { prevSubject: true },
-  (factory, node, relationship, properties) => {
-    return factory.relate(node, relationship, properties)
+  async (factory, node, relationship, properties) => {
+    await factory.relate(node, relationship, properties)
+    return factory
   }
 )
 
 Cypress.Commands.add(
   'mutate',
   { prevSubject: true },
-  (factory, mutation, variables) => {
-    return factory.mutate(mutation, variables)
+  async (factory, mutation, variables) => {
+    await factory.mutate(mutation, variables)
+    return factory
   }
 )
 

@@ -276,9 +276,9 @@ When("I fill the password form with:", table => {
   table = table.rowsHash();
   cy.get("input[id=oldPassword]")
     .type(table["Your old password"])
-    .get("input[id=newPassword]")
+    .get("input[id=password]")
     .type(table["Your new passsword"])
-    .get("input[id=confirmPassword]")
+    .get("input[id=passwordConfirmation]")
     .type(table["Confirm new password"]);
 });
 

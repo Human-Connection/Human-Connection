@@ -12,8 +12,8 @@ const instance = neode()
  */
 const checkEmailDoesNotExist = async ({ email }) => {
   email = email.toLowerCase()
-  const users = await instance.all('User', { email })
-  if (users.length > 0) throw new UserInputError('User account with this email already exists.')
+  const emails = await instance.all('EmailAddress', { email })
+  if (emails.length > 0) throw new UserInputError('User account with this email already exists.')
 }
 
 export default {

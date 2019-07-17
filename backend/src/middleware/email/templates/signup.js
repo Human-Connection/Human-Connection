@@ -11,6 +11,7 @@ export const signupTemplate = options => {
   } = options
   const actionUrl = new URL('/registration/create-user-account', CONFIG.CLIENT_URI)
   actionUrl.searchParams.set('nonce', nonce)
+  actionUrl.searchParams.set('email', email)
 
   return {
     to: email,
