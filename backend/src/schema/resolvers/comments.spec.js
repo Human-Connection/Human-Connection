@@ -253,7 +253,9 @@ describe('ManageComments', () => {
     describe('authenticated as author', () => {
       beforeEach(async () => {
         headers = await login(authorParams)
-        client = new GraphQLClient(host, { headers })
+        client = new GraphQLClient(host, {
+          headers,
+        })
       })
 
       it('updates the comment', async () => {
@@ -279,10 +281,10 @@ describe('ManageComments', () => {
         )
       })
 
-      it('throws an error if a comment sent from the editor does not contain a single character', async () => {
+      it('throws an error if a comment sent from the editor does not contain a single letter character', async () => {
         updateCommentVariables = {
           id: 'c456',
-          content: '<p></p>',
+          content: '<p> </p>',
         }
 
         await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
@@ -290,25 +292,25 @@ describe('ManageComments', () => {
         )
       })
 
-      it('throws an error if postId is sent as an empty string', async () => {
+      it('throws an error if commentId is sent as an empty string', async () => {
         updateCommentVariables = {
-          id: 'c456',
-          content: '<p></p>',
+          id: '',
+          content: '<p>Hello</p>',
         }
 
         await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
-          'Comment must be at least 1 character long!',
+          'Not Authorised!',
         )
       })
 
-      it('throws an error if content is sent as an string of empty characters', async () => {
+      it('throws an error if the comment does not exist in the database', async () => {
         updateCommentVariables = {
-          id: 'c456',
-          content: '<p></p>',
+          id: 'c1000',
+          content: '<p>Hello</p>',
         }
 
         await expect(client.request(updateCommentMutation, updateCommentVariables)).rejects.toThrow(
-          'Comment must be at least 1 character long!',
+          'Not Authorised!',
         )
       })
     })
@@ -357,7 +359,9 @@ describe('ManageComments', () => {
     describe('authenticated as author', () => {
       beforeEach(async () => {
         headers = await login(authorParams)
-        client = new GraphQLClient(host, { headers })
+        client = new GraphQLClient(host, {
+          headers,
+        })
       })
 
       it('deletes the comment', async () => {
