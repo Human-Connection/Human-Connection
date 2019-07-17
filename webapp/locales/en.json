@@ -246,7 +246,8 @@
     },
     "comment": {
       "submit": "Comment",
-      "submitted": "Comment Submitted"
+      "submitted": "Comment Submitted",
+      "updated": "Changes Saved"
     }
   },
   "comment": {

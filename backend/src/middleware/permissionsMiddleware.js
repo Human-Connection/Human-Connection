@@ -176,6 +176,7 @@ const permissions = shield(
       enable: isModerator,
       disable: isModerator,
       CreateComment: isAuthenticated,
+      UpdateComment: isAuthor,
       DeleteComment: isAuthor,
       DeleteUser: isDeletingOwnAccount,
       requestPasswordReset: allow,

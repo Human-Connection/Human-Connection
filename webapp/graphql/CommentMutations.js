@@ -20,5 +20,14 @@ export default () => {
         }
       }
     `,
+    UpdateComment: gql`
+      mutation($content: String!, $id: ID!) {
+        UpdateComment(content: $content, id: $id) {
+          id
+          content
+          contentExcerpt
+        }
+      }
+    `,
   }
 }
