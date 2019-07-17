@@ -9,6 +9,17 @@
           @clearSearch="clearSearch"
         />
       </ds-flex-item>
+      <ds-flex-item>
+        <div style="width: 250px; position: relative; float: right; padding: 0 18px;">
+          <ds-select
+            v-model="selected"
+            :options="sortingOptions"
+            size="large"
+            v-bind:icon-right="sortingIcon"
+            @input="toggleOnlySorting"
+          ></ds-select>
+        </div>
+      </ds-flex-item>
       <hc-post-card
         v-for="(post, index) in posts"
         :key="post.id"
@@ -53,6 +64,36 @@ export default {
       pageSize: 12,
       filter: {},
       hashtag,
+      placeholder: this.$t('sorting.newest'),
+      selected: this.$t('sorting.newest'),
+      sortingIcon: 'sort-amount-desc',
+      sorting: 'createdAt_desc',
+      sortingOptions: [
+        {
+          label: this.$t('sorting.newest'),
+          value: 'Newest',
+          icons: 'sort-amount-desc',
+          order: 'createdAt_desc',
+        },
+        {
+          label: this.$t('sorting.oldest'),
+          value: 'Oldest',
+          icons: 'sort-amount-asc',
+          order: 'createdAt_asc',
+        },
+        {
+          label: this.$t('sorting.poular'),
+          value: 'Popular',
+          icons: 'fire',
+          order: 'shoutedCount_desc',
+        },
+        {
+          label: this.$t('sorting.commented'),
+          value: 'Commented',
+          icons: 'comment',
+          order: 'commentsCount_desc',
+        },
+      ],
     }
   },
   mounted() {
@@ -90,6 +131,11 @@ export default {
       }
       this.filter = filter
       this.$apollo.queries.Post.refresh()
+    },
+    toggleOnlySorting(x) {
+      this.sortingIcon = x.icons
+      this.sorting = x.order
+      this.$apollo.queries.Post.refetch()
     },
     clearSearch() {
       this.$router.push({ path: '/' })
@@ -144,6 +190,7 @@ export default {
           filter: this.filter,
           first: this.pageSize,
           offset: 0,
+          orderBy: this.sorting,
         }
       },
       fetchPolicy: 'cache-and-network',
