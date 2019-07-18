@@ -79,19 +79,14 @@ export default {
   },
   watch: {
     $route(to, from) {
+      console.log('to: ', to)
       if (to.hash === '#comments') {
-        console.log('to: ', to, 'from: ', from)
         window.scroll({
           top: document.getElementById('comments').offsetTop,
           left: 0,
           behavior: 'smooth',
         })
       }
-    },
-  },
-  methods: {
-    scrollBehavior(to, from, savedPosition) {
-      console.log('to: ', to, 'from: ', from)
     },
   },
 }

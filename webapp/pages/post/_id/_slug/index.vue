@@ -131,7 +131,6 @@ export default {
     }
   },
   mounted() {
-    console.log('this.$router: ', this.$router)
     setTimeout(() => {
       // NOTE: quick fix for jumping flexbox implementation
       // will be fixed in a future update of the styleguide

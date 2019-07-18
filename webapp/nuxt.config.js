@@ -3,11 +3,12 @@ const envWhitelist = ['NODE_ENV', 'MAINTENANCE', 'MAPBOX_TOKEN']
 const dev = process.env.NODE_ENV !== 'production'
 
 const styleguidePath = '../Nitro-Styleguide'
-const styleguideStyles = process.env.STYLEGUIDE_DEV ? [
-    `${styleguidePath}/src/system/styles/main.scss`,
-    `${styleguidePath}/src/system/styles/shared.scss`,
-  ] :
-  '@human-connection/styleguide/dist/shared.scss'
+const styleguideStyles = process.env.STYLEGUIDE_DEV
+  ? [
+      `${styleguidePath}/src/system/styles/main.scss`,
+      `${styleguidePath}/src/system/styles/shared.scss`,
+    ]
+  : '@human-connection/styleguide/dist/shared.scss'
 
 const buildDir = process.env.NUXT_BUILD || '.nuxt'
 
@@ -50,24 +51,27 @@ module.exports = {
   head: {
     title: 'Human Connection',
     titleTemplate: '%s - Human Connection',
-    meta: [{
-        charset: 'utf-8'
+    meta: [
+      {
+        charset: 'utf-8',
       },
       {
         name: 'viewport',
-        content: 'width=device-width, initial-scale=1'
+        content: 'width=device-width, initial-scale=1',
       },
       {
         hid: 'description',
         name: 'description',
-        content: pkg.description
+        content: pkg.description,
       },
     ],
-    link: [{
-      rel: 'icon',
-      type: 'image/x-icon',
-      href: '/favicon.ico'
-    }],
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.ico',
+      },
+    ],
   },
 
   /*
@@ -94,36 +98,37 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{
+  plugins: [
+    {
       src: `~/plugins/styleguide${process.env.STYLEGUIDE_DEV ? '-dev' : ''}.js`,
       ssr: true,
     },
     {
       src: '~/plugins/i18n.js',
-      ssr: true
+      ssr: true,
     },
     {
       src: '~/plugins/axios.js',
-      ssr: false
+      ssr: false,
     },
     {
       src: '~/plugins/keep-alive.js',
-      ssr: false
+      ssr: false,
     },
     {
       src: '~/plugins/vue-directives.js',
-      ssr: false
+      ssr: false,
     },
     {
       src: '~/plugins/v-tooltip.js',
-      ssr: false
+      ssr: false,
     },
     {
       src: '~/plugins/izi-toast.js',
-      ssr: false
+      ssr: false,
     },
     {
-      src: '~/plugins/vue-filters.js'
+      src: '~/plugins/vue-filters.js',
     },
   ],
 
@@ -131,11 +136,115 @@ module.exports = {
     middleware: ['authenticated'],
     linkActiveClass: 'router-link-active',
     linkExactActiveClass: 'router-link-exact-active',
-    scrollBehavior: () => {
-      return {
-        x: 0,
-        y: 0
+    scrollBehavior: (to, _from, savedPosition) => {
+      let position = false
+      console.log('to: ', to)
+      // if no children detected and scrollToTop is not explicitly disabled
+      if (
+        to.matched.length < 2 &&
+        to.matched.every(r => r.components.default.options.scrollToTop !== false)
+      ) {
+        // scroll to the top of the page
+        console.log('to.matched.length --- scrolling to top')
+        position = {
+          x: 0,
+          y: 0,
+        }
+      } else if (to.matched.some(r => r.components.default.options.scrollToTop)) {
+        // if one of the children has scrollToTop option set to true
+        console.log('to.match.some ---- scrolling to top')
+        position = {
+          x: 0,
+          y: 0,
+        }
       }
+
+      // savedPosition is only available for popstate navigations (back button)
+      if (savedPosition) {
+        console.log('savedPosition', savedPosition)
+        position = savedPosition
+      }
+
+      return new Promise(resolve => {
+        // wait for the out transition to complete (if necessary)
+        console.log('resolve', resolve)
+        window.$nuxt.$once('triggerScroll', () => {
+          // function sleep(ms) {
+          //   // return new Promise(resolve => setTimeout(resolve, ms))
+          //   console.log('sleep init: ')
+          //   var waitTill = new Date(new Date().getTime() + ms)
+          //   console.log('sleep start: ', new Date().getTime())
+          //   while (waitTill.getTime() > new Date().getTime()) {}
+          //   console.log('sleep stop: ', waitTill.getTime())
+          // }
+
+          let processInterval = null
+          let processTime = 0
+
+          // coords will be used if no selector is provided,
+          // or if the selector didn't match any element.
+          console.log('inside window.$nuxt.$once')
+          if (to.hash) {
+            let hash = to.hash
+            console.log('hash', hash)
+            // CSS.escape() is not supported with IE and Edge.
+            if (typeof window.CSS !== 'undefined' && typeof window.CSS.escape !== 'undefined') {
+              console.log('window.CSS', window.CSS)
+              hash = '#' + window.CSS.escape(hash.substr(1))
+              console.log('hash after: ', hash)
+            }
+            try {
+              console.log('document', document)
+              console.log('document.querySelector(#comments)', document.querySelector('#comments'))
+              console.log('why wont you work?', document.querySelector(hash))
+
+              // sleep(2000)
+              console.log('after sleep()')
+
+              processInterval = setInterval(() => {
+                console.log('process tick !!!')
+                const queryIs = document.querySelector(hash)
+
+                if (queryIs) {
+                  position = {
+                    selector: hash,
+                  }
+                  console.log('found hash position: ', position)
+                }
+                processTime += 100
+                if (queryIs || processTime >= 2000) {
+                  console.log('clearInterval of process !!!')
+                  clearInterval(processInterval)
+                  processInterval = null
+                }
+              }, 100)
+
+              // if (document.querySelector(hash)) {
+              //   // scroll to anchor by returning the selector
+              //   console.log('document.querySelector(hash)', document.querySelector(hash))
+              //   position = {
+              //     selector: hash,
+              //   }
+              // }
+            } catch (e) {
+              console.warn(
+                'Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).',
+              )
+            }
+          }
+
+          let resolveInterval = setInterval(() => {
+            console.log('resolve tick !!!')
+            if (!processInterval) {
+              clearInterval(resolveInterval)
+              console.log('position', position)
+              resolve(position)
+            }
+          }, 100)
+          // console.log('position', position)
+          // resolve(position)
+        })
+      })
     },
   },
 
@@ -143,12 +252,18 @@ module.exports = {
    ** Nuxt.js modules
    */
   modules: [
-    ['@nuxtjs/dotenv', {
-      only: envWhitelist
-    }],
-    ['nuxt-env', {
-      keys: envWhitelist
-    }],
+    [
+      '@nuxtjs/dotenv',
+      {
+        only: envWhitelist,
+      },
+    ],
+    [
+      'nuxt-env',
+      {
+        keys: envWhitelist,
+      },
+    ],
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
@@ -187,7 +302,7 @@ module.exports = {
       // make this configurable (nuxt-dotenv)
       target: process.env.GRAPHQL_URI || 'http://localhost:4000',
       pathRewrite: {
-        '^/api': ''
+        '^/api': '',
       },
       toProxy: true, // cloudflare needs that
       headers: {
@@ -257,7 +372,8 @@ module.exports = {
         loader: 'vue-svg-loader',
         options: {
           svgo: {
-            plugins: [{
+            plugins: [
+              {
                 removeViewBox: false,
               },
               {

@@ -8,14 +8,14 @@
           :trunc="35"
         />
       </ds-space>
-      <ds-text
-        color="soft"
-      >{{ $t('notifications.menu.mentioned', { resource: post.id ? 'post' : 'comment' }) }}</ds-text>
+      <ds-text color="soft">
+        {{ $t('notifications.menu.mentioned', { resource: post.id ? 'post' : 'comment' }) }}
+      </ds-text>
     </no-ssr>
     <ds-space margin-bottom="x-small" />
     <nuxt-link
       class="notification-mention-post"
-      :to="{ name: 'post-id', params: postParams, ...queryParams }"
+      :to="{ name: 'post-id-slug', params: postParams, hash: `#commentId-${comment.id}` }"
       @click.native="$emit('read')"
     >
       <ds-space margin-bottom="x-small">
@@ -65,14 +65,12 @@ export default {
     postParams() {
       return {
         id: this.post.id || this.comment.post.id,
+        slug: this.post.slug || this.comment.post.slug,
       }
     },
     queryParams() {
-      return this.post.id
-        ? {}
-        : {
-            query: { commentId: this.comment.id },
-          }
+      console.log('this.post.id: ', this.post.id, 'this.comment.id: ', this.comment.id)
+      return this.post.id ? {} : { commentId: `id-${this.comment.id}` }
     },
   },
 }
