@@ -2,7 +2,7 @@
   <ds-button v-if="totalNotifications <= 0" class="notifications-menu" disabled icon="bell">
     {{ totalNotifications }}
   </ds-button>
-  <dropdown v-else class="notifications-menu">
+  <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
       <ds-button primary icon="bell" @click.prevent="toggleMenu">
         {{ totalNotifications }}
@@ -47,6 +47,9 @@ export default {
   components: {
     NotificationList,
     Dropdown,
+  },
+  props: {
+    placement: { type: String },
   },
   computed: {
     totalNotifications() {

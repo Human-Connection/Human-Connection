@@ -1,28 +1,15 @@
-import uuid from 'uuid/v4'
-
-export default function(params) {
-  const {
-    id = uuid(),
-    key = '',
-    type = 'crowdfunding',
-    status = 'permanent',
-    icon = '/img/badges/indiegogo_en_panda.svg',
-  } = params
-
+export default function create() {
   return {
-    mutation: `
-      mutation(
-        $id: ID
-        $key: String!
-        $type: BadgeType!
-        $status: BadgeStatus!
-        $icon: String!
-      ) {
-        CreateBadge(id: $id, key: $key, type: $type, status: $status, icon: $icon) {
-          id
-        }
+    factory: async ({ args, neodeInstance }) => {
+      const defaults = {
+        type: 'crowdfunding',
+        status: 'permanent',
       }
-    `,
-    variables: { id, key, type, status, icon },
+      args = {
+        ...defaults,
+        ...args,
+      }
+      return neodeInstance.create('Badge', args)
+    },
   }
 }

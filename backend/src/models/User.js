@@ -4,7 +4,6 @@ module.exports = {
   id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
   actorId: { type: 'string', allow: [null] },
   name: { type: 'string', min: 3 },
-  email: { type: 'string', lowercase: true, email: true },
   slug: 'string',
   encryptedPassword: 'string',
   avatar: { type: 'string', allow: [null] },
@@ -41,6 +40,12 @@ module.exports = {
     type: 'relationship',
     relationship: 'DISABLED',
     target: 'User',
+    direction: 'in',
+  },
+  rewarded: {
+    type: 'relationship',
+    relationship: 'REWARDED',
+    target: 'Badge',
     direction: 'in',
   },
   invitedBy: { type: 'relationship', relationship: 'INVITED', target: 'User', direction: 'in' },

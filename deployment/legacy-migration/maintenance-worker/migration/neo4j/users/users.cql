@@ -101,7 +101,7 @@ ON CREATE SET
 u.name       = user.name,
 u.slug       = user.slug,
 u.email      = user.email,
-u.password   = user.password,
+u.encryptedPassword   = user.password,
 u.avatar     = replace(user.avatar, 'https://api-alpha.human-connection.org', ''),
 u.coverImg   = replace(user.coverImg, 'https://api-alpha.human-connection.org', ''),
 u.wasInvited = user.wasInvited,
@@ -111,6 +111,13 @@ u.createdAt  = user.createdAt.`$date`,
 u.updatedAt  = user.updatedAt.`$date`,
 u.deleted    = user.deletedAt IS NOT NULL,
 u.disabled   = false
+MERGE (e:EmailAddress {
+  email: user.email,
+  createdAt: toString(datetime()),
+  verifiedAt: toString(datetime())
+})
+MERGE (e)-[:BELONGS_TO]->(u)
+MERGE (u)<-[:PRIMARY_EMAIL]-(e)
 WITH u, user, user.badgeIds AS badgeIds
 UNWIND badgeIds AS badgeId
 MATCH (b:Badge {id: badgeId})

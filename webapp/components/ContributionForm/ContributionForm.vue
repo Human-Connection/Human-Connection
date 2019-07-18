@@ -10,7 +10,7 @@
           />
         </hc-teaser-image>
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
-        <small style="width:100%;position:relative;left:90%">{{ form.title.length }}/64</small>
+        <small class="smallTag">{{ form.title.length }}/64</small>
         <no-ssr>
           <hc-editor
             :users="users"
@@ -18,7 +18,7 @@
             :value="form.content"
             @input="updateEditorContent"
           />
-          <small style="width:100%;position:relative;left:90%">{{ form.contentLength }}/2000</small>
+          <small class="smallTag">{{ form.contentLength }}/2000</small>
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
         <hc-categories-select
@@ -97,14 +97,14 @@ export default {
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
-        content: { required: true, min: 3, max: 2000 },
+        content: { required: true, min: 3, max: 2007 },
       },
       id: null,
       loading: false,
       disabled: true,
       slug: null,
       users: [],
-      n: 0,
+
       hashtags: [],
     }
   },
@@ -179,14 +179,15 @@ export default {
         })
     },
     updateEditorContent(value) {
+      var n = 0
       // this.form.content = value
       this.$refs.contributionForm.update('content', value)
 
       this.disabled = true
-      this.n = value.replace(/<\/?[^>]+(>|$)/gm, '').length
-      this.form.contentLength = this.n
+      n = value.replace(/<\/?[^>]+(>|$)/gm, '').length
+      this.form.contentLength = n
 
-      if (this.n > this.formSchema.content.min && this.n < this.formSchema.content.max) {
+      if (n > this.formSchema.content.min && this.formSchema.content.max > n) {
         this.disabled = false
       }
     },
@@ -245,6 +246,11 @@ export default {
 </script>
 
 <style lang="scss">
+.smallTag {
+  width: 100%;
+  position: relative;
+  left: 90%;
+}
 .post-title {
   margin-top: $space-x-small;
   margin-bottom: $space-xx-small;

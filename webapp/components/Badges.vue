@@ -1,6 +1,6 @@
 <template>
   <div :class="[badges.length === 2 && 'hc-badges-dual']" class="hc-badges">
-    <div v-for="badge in badges" :key="badge.key" class="hc-badge-container">
+    <div v-for="badge in badges" :key="badge.id" class="hc-badge-container">
       <img :title="badge.key" :src="badge.icon | proxyApiUrl" class="hc-badge" />
     </div>
   </div>

@@ -32,7 +32,7 @@ describe('ContributionForm.vue', () => {
   const postContent = 'this is a post'
   const postContentTooShort = 'xx'
   let postContentTooLong = ''
-  for (let i = 0; i < 2001; i++) {
+  for (let i = 0; i < 2008; i++) {
     postContentTooLong += 'x'
   }
   const imageUpload = {
