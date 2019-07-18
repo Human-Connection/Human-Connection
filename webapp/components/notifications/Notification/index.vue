@@ -15,7 +15,7 @@
     <ds-space margin-bottom="x-small" />
     <nuxt-link
       class="notification-mention-post"
-      :to="{ name: 'post-id-slug', params: postParams, hash: `#commentId-${comment.id}` }"
+      :to="{ name: 'post-id-slug', params: postParams, ...hashParam }"
       @click.native="$emit('read')"
     >
       <ds-space margin-bottom="x-small">
@@ -68,9 +68,9 @@ export default {
         slug: this.post.slug || this.comment.post.slug,
       }
     },
-    queryParams() {
-      console.log('this.post.id: ', this.post.id, 'this.comment.id: ', this.comment.id)
-      return this.post.id ? {} : { commentId: `id-${this.comment.id}` }
+    hashParam() {
+      // Wolle: console.log('this.post.id: ', this.post.id, 'this.comment.id: ', this.comment.id)
+      return this.post.id ? {} : { hash: `#commentId-${this.comment.id}` }
     },
   },
 }

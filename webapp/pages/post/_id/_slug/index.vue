@@ -93,12 +93,12 @@ export default {
     }
   },
   data() {
-    const { commentId = null } = this.$route.query
+    // Wolle: const { commentId = null } = this.$route.query
     return {
       post: null,
       ready: false,
       title: 'loading',
-      commentId,
+      // Wolle: commentId,
     }
   },
   watch: {
