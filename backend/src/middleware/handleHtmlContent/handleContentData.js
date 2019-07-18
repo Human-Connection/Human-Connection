@@ -1,42 +1,23 @@
 import extractMentionedUsers from './notifications/extractMentionedUsers'
 import extractHashtags from './hashtags/extractHashtags'
 
-const notifyMentionOfPost = async (postId, idsOfMentionedUsers, context) => {
-  if (!idsOfMentionedUsers.length) return
-
-  const session = context.driver.session()
-  const createdAt = new Date().toISOString()
-  const cypher = `
-    MATCH (u: User) WHERE u.id IN $idsOfMentionedUsers
-    MATCH (p: Post) WHERE p.id = $postId
-    CREATE (n: Notification { id: apoc.create.uuid(), read: false, createdAt: $createdAt })
-    MERGE (n)-[:NOTIFIED]->(u)
-    MERGE (p)-[:NOTIFIED]->(n)
-    `
-  await session.run(cypher, {
-    idsOfMentionedUsers,
-    createdAt,
-    postId,
-  })
-  session.close()
-}
-
-const notifyMentionOfComment = async (commentId, idsOfMentionedUsers, context) => {
+const notifyMentions = async (label, id, idsOfMentionedUsers, context) => {
   if (!idsOfMentionedUsers.length) return
 
   const session = context.driver.session()
   const createdAt = new Date().toISOString()
   const cypher = `
     MATCH (u: User) WHERE u.id in $idsOfMentionedUsers
-    MATCH (c: Comment) WHERE c.id = $commentId
+    MATCH (source) WHERE source.id = $id AND $label IN LABELS(source)
     CREATE (n: Notification { id: apoc.create.uuid(), read: false, createdAt: $createdAt })
     MERGE (n)-[:NOTIFIED]->(u)
-    MERGE (c)-[:NOTIFIED]->(n)
+    MERGE (source)-[:NOTIFIED]->(n)
     `
   await session.run(cypher, {
     idsOfMentionedUsers,
+    label,
     createdAt,
-    commentId,
+    id,
   })
   session.close()
 }
@@ -79,7 +60,7 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
   // removes classes from the content
   const post = await resolve(root, args, context, resolveInfo)
 
-  await notifyMentionOfPost(post.id, idsOfMentionedUsers, context)
+  await notifyMentions('Post', post.id, idsOfMentionedUsers, context)
   await updateHashtagsOfPost(post.id, hashtags, context)
 
   return post
@@ -92,7 +73,7 @@ const handleContentDataOfComment = async (resolve, root, args, context, resolveI
   // removes classes from the content
   const comment = await resolve(root, args, context, resolveInfo)
 
-  await notifyMentionOfComment(comment.id, idsOfMentionedUsers, context)
+  await notifyMentions('Comment', comment.id, idsOfMentionedUsers, context)
 
   return comment
 }
