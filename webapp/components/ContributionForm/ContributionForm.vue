@@ -46,18 +46,14 @@
             :disabled="loading"
             ghost
             @click.prevent="$router.back()"
-          >
-            {{ $t('actions.cancel') }}
-          </ds-button>
+          >{{ $t('actions.cancel') }}</ds-button>
           <ds-button
             type="submit"
             icon="check"
             :loading="loading"
             :disabled="disabled || errors"
             primary
-          >
-            {{ $t('actions.save') }}
-          </ds-button>
+          >{{ $t('actions.save') }}</ds-button>
         </div>
         <ds-space margin-bottom="large" />
       </ds-card>
@@ -180,13 +176,10 @@ export default {
     },
     updateEditorContent(value) {
       var n = 0
-      // this.form.content = value
       this.$refs.contributionForm.update('content', value)
-
       this.disabled = true
       n = value.replace(/<\/?[^>]+(>|$)/gm, '').length
       this.form.contentLength = n
-
       if (n > this.formSchema.content.min && this.formSchema.content.max > n) {
         this.disabled = false
       }
