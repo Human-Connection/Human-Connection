@@ -1,5 +1,5 @@
 import Metascraper from 'metascraper'
-import * as nodeFetch from 'node-fetch'
+import fetch from 'node-fetch'
 
 import { ApolloError } from 'apollo-server'
 import parseUrl from 'url'
@@ -56,8 +56,51 @@ const removeEmptyAttrs = obj => {
   return output
 }
 
-const scraper = {
-  async fetch(targetUrl) {
+const fetchEmbed = async (targetUrl) => {
+  const url = urlParser.parse(targetUrl)
+  const embedMeta = find(oEmbedProviders, provider => {
+    return provider.provider_url.indexOf(url.hostname) >= 0
+  })
+  if (!embedMeta) {
+    return {}
+  }
+  const embedUrl = embedMeta.endpoints[0].url.replace('{format}', 'json')
+
+  let data
+  try {
+    data = await request(`${embedUrl}?url=${targetUrl}`)
+    data = JSON.parse(data)
+  } catch (err) {
+    data = await request(`${embedUrl}?url=${targetUrl}&format=json`)
+    data = JSON.parse(data)
+  }
+  if (data) {
+    let output = {
+      type: data.type || 'link',
+      embed: data.html,
+      author: data.author_name,
+      date: data.upload_date ? new Date(data.upload_date).toISOString() : null
+    }
+
+    output.sources = ['oembed']
+
+    return output
+  }
+  return {}
+}
+const fetchMeta = async (targetUrl) => {
+
+  const response = await fetch(targetUrl)
+  const html = await response.text()
+  const metadata = await metascraper({ html, url: targetUrl })
+
+  metadata.sources = ['resource']
+  metadata.type = 'link'
+
+  return metadata
+}
+
+export default async function scrape(targetUrl) {
     if (targetUrl.indexOf('//youtu.be/')) {
       // replace youtu.be to get proper results
       targetUrl = targetUrl.replace('//youtu.be/', '//youtube.com/')
@@ -76,7 +119,7 @@ const scraper = {
     await Promise.all([
       new Promise(async (resolve, reject) => {
         try {
-          meta = await scraper.fetchMeta(targetUrl)
+          meta = await fetchMeta(targetUrl)
           resolve()
         } catch(err) {
           if (process.env.DEBUG) {
@@ -87,7 +130,7 @@ const scraper = {
       }),
       new Promise(async (resolve, reject) => {
         try {
-          embed = await scraper.fetchEmbed(targetUrl)
+          embed = await fetchEmbed(targetUrl)
           resolve()
         } catch(err) {
           if (process.env.DEBUG) {
@@ -123,50 +166,4 @@ const scraper = {
     cache[targetUrl] = output
 
     return output
-  },
-  async fetchEmbed(targetUrl) {
-    const url = urlParser.parse(targetUrl)
-    const embedMeta = find(oEmbedProviders, provider => {
-      return provider.provider_url.indexOf(url.hostname) >= 0
-    })
-    if (!embedMeta) {
-      return {}
-    }
-    const embedUrl = embedMeta.endpoints[0].url.replace('{format}', 'json')
-
-    let data
-    try {
-      data = await request(`${embedUrl}?url=${targetUrl}`)
-      data = JSON.parse(data)
-    } catch (err) {
-      data = await request(`${embedUrl}?url=${targetUrl}&format=json`)
-      data = JSON.parse(data)
-    }
-    if (data) {
-      let output = {
-        type: data.type || 'link',
-        embed: data.html,
-        author: data.author_name,
-        date: data.upload_date ? new Date(data.upload_date).toISOString() : null
-      }
-
-      output.sources = ['oembed']
-
-      return output
-    }
-    return {}
-  },
-  async fetchMeta(targetUrl) {
-
-    const response = await nodeFetch(targetUrl)
-    const html = await response.text()
-    const metadata = await metascraper({ html, url: targetUrl })
-
-    metadata.sources = ['resource']
-    metadata.type = 'link'
-
-    return metadata
-  }
 }
-
-module.exports = scraper

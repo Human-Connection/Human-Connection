@@ -1,9 +1,9 @@
-import scraper from './embeds/scraper.js'
+import scrape from './embeds/scraper.js'
 
 export default {
   Query: {
     embed: async (object, {url} , context, resolveInfo) => {
-      return await scraper.fetch(url)
+      return await scrape(url)
     }
   }
 }
