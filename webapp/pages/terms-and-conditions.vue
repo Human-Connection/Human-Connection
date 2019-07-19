@@ -3,7 +3,7 @@
     <ds-space>
       <ds-heading tag="h2">{{ $t('site.termsAc') }} ( vom: {{ latestDate_TaC }})</ds-heading>
     </ds-space>
-    <div>
+    <div v-if="confirmed === true">
       <ds-section class="hasConfirm" primary>
         <ds-flex>
           <ds-flex-item>
@@ -14,13 +14,14 @@
             <ds-text>
               You have confirmed the current Terms and Conditions on
               {{ latestDate_TaC_UserConfirmed }}.
-              <br />You will be informed if there is a change in the Terms and Conditions.
+              <br />
+              You will be informed if there is a change in the Terms and Conditions.
             </ds-text>
           </ds-flex-item>
         </ds-flex>
       </ds-section>
     </div>
-    <div>
+    <div v-else>
       <ds-section class="hasNoConfirm" secondary>
         <ds-flex>
           <ds-flex-item>
@@ -46,6 +47,26 @@
         <ds-text v-html="$t('terms.text')"></ds-text>
       </ds-space>
     </ds-container>
+    <div v-if="confirmed === false">
+      <ds-section class="hasNoConfirm" secondary>
+        <ds-flex>
+          <ds-flex-item>
+            <ds-logo inverse></ds-logo>
+          </ds-flex-item>
+          <ds-flex-item width="4">
+            <ds-heading>Our terms and conditions have changed.</ds-heading>
+            <ds-text>
+              Please confirm the AGB. The AGB have changed on {{ latestDate_TaC_update }}!
+              <br />
+              Your last confirmation was on {{ latestDate_TaC_UserConfirmed }}.
+            </ds-text>
+          </ds-flex-item>
+          <ds-flex-item width="1">
+            <ds-button primary>confirm</ds-button>
+          </ds-flex-item>
+        </ds-flex>
+      </ds-section>
+    </div>
   </div>
 </template>
 
@@ -58,6 +79,7 @@ export default {
   },
   data() {
     return {
+      confirmed: false,
       latestDate_TaC: '17.10.2008',
       latestDate_TaC_update: '23.10.2008',
       latestDate_TaC_UserConfirmed: '18.10.2008',
