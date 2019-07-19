@@ -1,8 +1,8 @@
 import Metascraper from 'metascraper'
+import * as nodeFetch from 'node-fetch'
 
 import { ApolloError } from 'apollo-server'
 import parseUrl from 'url'
-import got from 'got'
 import request from 'request-promise-native'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
@@ -158,13 +158,9 @@ const scraper = {
   },
   async fetchMeta(targetUrl) {
 
-    // const parsedURL = urlParser.parse(targetUrl)
-    // console.log(parsedURL)
-
-    // get from cach
-
-    const { body: html, url } = await got(targetUrl)
-    const metadata = await metascraper({ html, url })
+    const response = await nodeFetch(targetUrl)
+    const html = await response.text()
+    const metadata = await metascraper({ html, url: targetUrl })
 
     metadata.sources = ['resource']
     metadata.type = 'link'
