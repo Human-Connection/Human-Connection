@@ -46,14 +46,18 @@
             :disabled="loading"
             ghost
             @click.prevent="$router.back()"
-          >{{ $t('actions.cancel') }}</ds-button>
+          >
+            {{ $t('actions.cancel') }}
+          </ds-button>
           <ds-button
             type="submit"
             icon="check"
             :loading="loading"
             :disabled="disabled || errors"
             primary
-          >{{ $t('actions.save') }}</ds-button>
+          >
+            {{ $t('actions.save') }}
+          </ds-button>
         </div>
         <ds-space margin-bottom="large" />
       </ds-card>
