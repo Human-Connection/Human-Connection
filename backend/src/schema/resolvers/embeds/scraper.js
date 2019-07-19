@@ -1,4 +1,18 @@
-const metascraper = require('metascraper')([
+import Metascraper from 'metascraper'
+
+import { ApolloError } from 'apollo-server'
+import parseUrl from 'url'
+import got from 'got'
+import request from 'request-promise-native'
+import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
+import each from 'lodash/each'
+import isArray from 'lodash/isArray'
+import mergeWith from 'lodash/mergeWith'
+import urlParser from 'url'
+
+
+const metascraper = Metascraper ([
   require('metascraper-author')(),
   require('metascraper-date')(),
   require('metascraper-description')(),
@@ -18,17 +32,7 @@ const metascraper = require('metascraper')([
 
   // require('./rules/metascraper-embed')()
 ])
-const { ApolloError } = require('apollo-server')
-const parseUrl = require('url')
 
-const got = require('got')
-const request = require('request-promise-native')
-const find = require('lodash/find')
-const isEmpty = require('lodash/isEmpty')
-const each = require('lodash/each')
-const isArray = require('lodash/isArray')
-const mergeWith = require('lodash/mergeWith')
-const urlParser = require('url')
 
 // quick in memory cache
 let cache = {}
