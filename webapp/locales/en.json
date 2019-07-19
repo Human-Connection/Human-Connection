@@ -18,8 +18,8 @@
     "tribunal": "Registry court",
     "register": "Registry number",
     "director": "Managing Director",
-    "taxident": "Value added tax identification number according to § 27 a Value Added Tax Act (Germany)",
-    "responsible": "Responsible according to § 55 Abs. 2 RStV (Germany) ",
+    "taxident": "USt-ID. according to §27a of the German Sales Tax Law:",
+    "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
     "germany": "Germany"
   },
