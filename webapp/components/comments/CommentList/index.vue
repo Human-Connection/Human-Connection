@@ -16,11 +16,12 @@
       </span>
     </h3>
     <ds-space margin-bottom="large" />
-    <div v-if="comments && comments.length" class="comments">
+    <div v-if="comments && comments.length" id="comments" class="comments">
       <comment
         v-for="(comment, index) in comments"
         :key="comment.id"
         :comment="comment"
+        :post="post"
         @deleteComment="comments.splice(index, 1)"
       />
     </div>
