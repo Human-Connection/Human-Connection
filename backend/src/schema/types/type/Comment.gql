@@ -24,7 +24,7 @@ type Mutation {
   ): Comment
   UpdateComment(
     id: ID!
-    content: String
+    content: String!
     contentExcerpt: String
     deleted: Boolean
     disabled: Boolean
