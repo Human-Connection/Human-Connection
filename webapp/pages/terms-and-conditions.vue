@@ -4,7 +4,7 @@
       <ds-heading tag="h2">{{ $t('site.termsAc') }} ( vom: {{ latestDate_TaC }})</ds-heading>
     </ds-space>
     <div v-if="confirmed">
-      <ds-section class="hasConfirm" primary>
+      <ds-section primary>
         <ds-flex>
           <ds-flex-item>
             <ds-logo inverse></ds-logo>
