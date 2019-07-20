@@ -11,7 +11,7 @@
           </ds-flex-item>
           <ds-flex-item width="4">
             <ds-heading>you have confirmed</ds-heading>
-            <ds-text>
+            <ds-text v-if="confirmed">
               You have confirmed the current Terms and Conditions on
               {{ latestDate_TaC_UserConfirmed }}.
               <br />
