@@ -81,7 +81,6 @@ export default {
     return {
       confirmed: false,
       termsAndConditionsVersion: '1.0.0',
-      latestDate_TaC_UserConfirmed: '18.10.2008',
     }
   },
 }
