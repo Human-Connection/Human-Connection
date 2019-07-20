@@ -80,7 +80,6 @@ export default {
   data() {
     return {
       confirmed: false,
-      latestDate_TaC: '17.10.2008',
       termsAndConditionsVersion: '1.0.0',
       latestDate_TaC_UserConfirmed: '18.10.2008',
     }
