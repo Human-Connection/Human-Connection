@@ -81,7 +81,7 @@ export default {
     return {
       confirmed: false,
       latestDate_TaC: '17.10.2008',
-      latestDate_TaC_update: '23.10.2008',
+      termsAndConditionsVersion: '1.0.0',
       latestDate_TaC_UserConfirmed: '18.10.2008',
     }
   },
