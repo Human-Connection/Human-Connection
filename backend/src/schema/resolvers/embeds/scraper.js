@@ -1,14 +1,12 @@
 import Metascraper from 'metascraper'
 import fetch from 'node-fetch'
+import fs from 'fs'
+import path from 'path'
 
 import { ApolloError } from 'apollo-server'
-import request from 'request-promise-native'
-import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import isArray from 'lodash/isArray'
 import mergeWith from 'lodash/mergeWith'
-
-const error = require('debug')('embed:error')
 
 const metascraper = Metascraper([
   require('metascraper-author')(),
@@ -31,47 +29,36 @@ const metascraper = Metascraper([
   // require('./rules/metascraper-embed')()
 ])
 
-let oEmbedProviders = []
-const getEmbedProviders = async () => {
-  let providers = await request('https://oembed.com/providers.json')
-  providers = JSON.parse(providers)
-  oEmbedProviders = providers
-  return providers
-}
-getEmbedProviders()
+let oEmbedProvidersFile = fs.readFileSync(path.join(__dirname, './providers.json'), 'utf8')
+
+// some providers allow a format parameter
+// we need JSON
+oEmbedProvidersFile = oEmbedProvidersFile.replace('{format}', 'json')
+
+const oEmbedProviders = JSON.parse(oEmbedProvidersFile)
 
 const fetchEmbed = async targetUrl => {
   const url = new URL(targetUrl)
-  const embedMeta = find(oEmbedProviders, provider => {
-    return provider.provider_url.indexOf(url.hostname) >= 0
+  const {
+    endpoints: [endpoint],
+  } = oEmbedProviders.find(provider => {
+    return provider.provider_url.includes(url.hostname)
   })
-  if (!embedMeta) {
-    return {}
-  }
-  const embedUrl = embedMeta.endpoints[0].url.replace('{format}', 'json')
+  const endpointUrl = new URL(endpoint.url)
+  endpointUrl.searchParams.append('url', targetUrl)
+  endpointUrl.searchParams.append('format', 'json')
+  const response = await fetch(endpointUrl)
+  const {
+    type = 'link',
+    html,
+    author_name, // eslint-disable-line camelcase
+    upload_date, // eslint-disable-line camelcase
+    sources = ['oembed'],
+  } = await response.json()
 
-  let data
-  try {
-    data = await request(`${embedUrl}?url=${targetUrl}`)
-    data = JSON.parse(data)
-  } catch (err) {
-    data = await request(`${embedUrl}?url=${targetUrl}&format=json`)
-    data = JSON.parse(data)
-  }
-  if (data) {
-    let output = {
-      type: data.type || 'link',
-      embed: data.html,
-      author: data.author_name,
-      date: data.upload_date ? new Date(data.upload_date).toISOString() : null,
-    }
-
-    output.sources = ['oembed']
-
-    return output
-  }
-  return {}
+  return { type, html, author: author_name, date: upload_date, sources }
 }
+
 const fetchMeta = async targetUrl => {
   const response = await fetch(targetUrl)
   const html = await response.text()
@@ -89,34 +76,7 @@ export default async function scrape(targetUrl) {
     targetUrl.hostname = 'youtube.com'
   }
 
-  let meta = {}
-  let embed = {}
-
-  // only get data from requested services
-  await Promise.all([
-    new Promise(async (resolve, reject) => {
-      try {
-        meta = await fetchMeta(targetUrl)
-        resolve()
-      } catch (err) {
-        if (process.env.DEBUG) {
-          error(`ERROR at fetchMeta | ${err.message}`)
-        }
-        resolve()
-      }
-    }),
-    new Promise(async (resolve, reject) => {
-      try {
-        embed = await fetchEmbed(targetUrl)
-        resolve()
-      } catch (err) {
-        if (process.env.DEBUG) {
-          error(`ERROR at fetchEmbed | ${err.message}`)
-        }
-        resolve()
-      }
-    }),
-  ])
+  const [meta, embed] = await Promise.all([fetchMeta(targetUrl), fetchEmbed(targetUrl)])
 
   const output = mergeWith(meta, embed, (objValue, srcValue) => {
     if (isArray(objValue)) {
