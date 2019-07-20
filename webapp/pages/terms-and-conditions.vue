@@ -22,7 +22,7 @@
       </ds-section>
     </div>
     <div v-else>
-      <ds-section class="hasNoConfirm" secondary>
+      <ds-section secondary>
         <ds-flex>
           <ds-flex-item>
             <ds-logo inverse></ds-logo>
