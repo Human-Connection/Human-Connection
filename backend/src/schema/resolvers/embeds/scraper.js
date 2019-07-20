@@ -31,9 +31,6 @@ const metascraper = Metascraper([
   // require('./rules/metascraper-embed')()
 ])
 
-// quick in memory cache
-let cache = {}
-
 let oEmbedProviders = []
 const getEmbedProviders = async () => {
   let providers = await request('https://oembed.com/providers.json')
@@ -92,12 +89,6 @@ export default async function scrape(targetUrl) {
     targetUrl.hostname = 'youtube.com'
   }
 
-  if (cache[targetUrl]) {
-    return cache[targetUrl]
-  }
-
-  const url = new URL(targetUrl)
-
   let meta = {}
   let embed = {}
 
@@ -136,19 +127,6 @@ export default async function scrape(targetUrl) {
   if (isEmpty(output)) {
     throw new ApolloError('Not found', 'NOT_FOUND')
   }
-
-  // fix youtube start parameter
-  const YouTubeStartParam = url.searchParams.t || url.searchParams.start
-  if (output.publisher === 'YouTube' && YouTubeStartParam) {
-    output.embed = output.embed.replace(
-      '?feature=oembed',
-      `?feature=oembed&start=${YouTubeStartParam}`,
-    )
-    output.url += `&start=${YouTubeStartParam}`
-  }
-
-  // write to cache
-  cache[targetUrl] = output
 
   return output
 }
