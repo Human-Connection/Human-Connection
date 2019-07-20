@@ -1,7 +1,8 @@
 <template>
   <div>
     <ds-space>
-      <ds-heading tag="h2">{{ $t('site.termsAc') }} ( vom: {{ latestDate_TaC }})</ds-heading>
+      <ds-heading tag="h2">{{ $t('site.termsAc') }}</ds-heading>
+      <small>Version: {{ termsAndConditionsVersion }} vom: {{ latestDate_TaC }}</small>
     </ds-space>
     <div v-if="confirmed">
       <ds-section primary>
@@ -12,7 +13,7 @@
           <ds-flex-item width="4">
             <ds-heading>you have confirmed</ds-heading>
             <ds-text v-if="confirmed">
-  {{ $t('terms-and-conditions.confirmed') }}
+              {{ $t('terms-and-conditions.confirmed') }}
               {{ latestDate_TaC_UserConfirmed }}.
               <br />
               You will be informed if there is a change in the Terms and Conditions.
