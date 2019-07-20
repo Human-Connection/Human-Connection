@@ -39,11 +39,13 @@ const oEmbedProviders = JSON.parse(oEmbedProvidersFile)
 
 const fetchEmbed = async targetUrl => {
   const url = new URL(targetUrl)
-  const {
-    endpoints: [endpoint],
-  } = oEmbedProviders.find(provider => {
+	const provider = oEmbedProviders.find(provider => {
     return provider.provider_url.includes(url.hostname)
   })
+  if (!provider) return {}
+  const {
+    endpoints: [endpoint],
+  } = provider
   const endpointUrl = new URL(endpoint.url)
   endpointUrl.searchParams.append('url', targetUrl)
   endpointUrl.searchParams.append('format', 'json')

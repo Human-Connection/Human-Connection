@@ -11,6 +11,7 @@ type Embed {
   video: String
   lang: String
   logo: String
+  html: String
   sources: [String]
 }
 
