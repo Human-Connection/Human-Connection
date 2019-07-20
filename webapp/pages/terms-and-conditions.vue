@@ -12,7 +12,7 @@
           <ds-flex-item width="4">
             <ds-heading>you have confirmed</ds-heading>
             <ds-text v-if="confirmed">
-              You have confirmed the current Terms and Conditions on
+  {{ $t('terms-and-conditions.confirmed') }}
               {{ latestDate_TaC_UserConfirmed }}.
               <br />
               You will be informed if there is a change in the Terms and Conditions.
