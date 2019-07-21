@@ -58,7 +58,6 @@ describe('Query', () => {
               audio
               video
               lang
-              logo
               sources
               html
             }
@@ -92,7 +91,6 @@ describe('Query', () => {
               audio: null,
               video: null,
               lang: 'de',
-              logo: 'https://www.youtube.com/favicon.ico',
               sources: ['resource', 'oembed'],
               html:
                 '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?start=18&feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',

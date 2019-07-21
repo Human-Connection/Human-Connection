@@ -5691,15 +5691,6 @@ metascraper-lang@^4.8.5:
   dependencies:
     "@metascraper/helpers" "^4.10.2"
 
-metascraper-logo-favicon@^4.8.5:
-  version "4.10.2"
-  resolved "https://registry.yarnpkg.com/metascraper-logo-favicon/-/metascraper-logo-favicon-4.10.2.tgz#b85176ee72b6d066a398661cc418140b7935deb7"
-  integrity sha512-CKdeaeIChTqRKQmd9pXSax9Us3bqWGdhKGkU2drgKptrcigsudjEp2rTyv5lDGDeMHLLD21xx7KuYr/R0Ysxtw==
-  dependencies:
-    "@metascraper/helpers" "^4.10.2"
-    got "~9.6.0"
-    lodash "~4.17.11"
-
 metascraper-logo@^5.5.0:
   version "5.6.2"
   resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.6.2.tgz#2677d3d00dc716cf8a62741e0b1770e93c201439"

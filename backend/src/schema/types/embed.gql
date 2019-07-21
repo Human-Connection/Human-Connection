@@ -10,7 +10,6 @@ type Embed {
   audio: String
   video: String
   lang: String
-  logo: String
   html: String
   sources: [String]
 }

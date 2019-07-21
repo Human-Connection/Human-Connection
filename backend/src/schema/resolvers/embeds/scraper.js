@@ -16,7 +16,6 @@ const metascraper = Metascraper([
   require('metascraper-lang')(),
   require('metascraper-lang-detector')(),
   require('metascraper-logo')(),
-  require('metascraper-logo-favicon')(),
   // require('metascraper-clearbit-logo')(),
   require('metascraper-publisher')(),
   require('metascraper-title')(),
@@ -37,16 +36,16 @@ oEmbedProvidersFile = oEmbedProvidersFile.replace('{format}', 'json')
 
 const oEmbedProviders = JSON.parse(oEmbedProvidersFile)
 
-const fetchEmbed = async targetUrl => {
+const fetchEmbed = async url => {
   const provider = oEmbedProviders.find(provider => {
-    return provider.provider_url.includes(targetUrl.hostname)
+    return provider.provider_url.includes(url.hostname)
   })
   if (!provider) return {}
   const {
     endpoints: [endpoint],
   } = provider
   const endpointUrl = new URL(endpoint.url)
-  endpointUrl.searchParams.append('url', targetUrl)
+  endpointUrl.searchParams.append('url', url)
   endpointUrl.searchParams.append('format', 'json')
   const response = await fetch(endpointUrl)
   const json = await response.json()
@@ -61,26 +60,26 @@ const fetchEmbed = async targetUrl => {
   return { type, html, author: author_name, date: upload_date, sources }
 }
 
-const fetchMeta = async targetUrl => {
-  const response = await fetch(targetUrl)
+const fetchMeta = async url => {
+  const response = await fetch(url)
   const html = await response.text()
-  const metadata = await metascraper({ html, url: targetUrl })
+  const metadata = await metascraper({ html, url })
 
   return {
-    sources: ['resource'],
     type: 'link',
+    sources: ['resource'],
     ...metadata,
   }
 }
 
-export default async function scrape(targetUrl) {
-  targetUrl = new URL(targetUrl)
-  if (targetUrl.hostname === 'youtu.be') {
+export default async function scrape(url) {
+  url = new URL(url)
+  if (url.hostname === 'youtu.be') {
     // replace youtu.be to get proper results
-    targetUrl.hostname = 'youtube.com'
+    url.hostname = 'youtube.com'
   }
 
-  const [meta, embed] = await Promise.all([fetchMeta(targetUrl), fetchEmbed(targetUrl)])
+  const [meta, embed] = await Promise.all([fetchMeta(url), fetchEmbed(url)])
 
   const output = mergeWith(meta, embed, (objValue, srcValue) => {
     if (isArray(objValue)) {
