@@ -49,26 +49,23 @@ const fetchEmbed = async url => {
   endpointUrl.searchParams.append('format', 'json')
   const response = await fetch(endpointUrl)
   const json = await response.json()
-  const {
-    type = 'link',
-    html,
-    author_name, // eslint-disable-line camelcase
-    upload_date, // eslint-disable-line camelcase
-    sources = ['oembed'],
-  } = json
-
-  return { type, html, author: author_name, date: upload_date, sources }
-}
-
-const fetchMeta = async url => {
-  const response = await fetch(url)
-  const html = await response.text()
-  const metadata = await metascraper({ html, url })
 
   return {
-    type: 'link',
+    type: json.type,
+    html: json.html,
+    author: json.author_name,
+    date: json.upload_date,
+    sources: ['oembed'],
+  }
+}
+
+const fetchResource = async url => {
+  const response = await fetch(url)
+  const html = await response.text()
+  const resource = await metascraper({ html, url })
+  return {
     sources: ['resource'],
-    ...metadata,
+    ...resource
   }
 }
 
@@ -79,8 +76,7 @@ export default async function scrape(url) {
     url.hostname = 'youtube.com'
   }
 
-  const [meta, embed] = await Promise.all([fetchMeta(url), fetchEmbed(url)])
-
+  const [meta, embed] = await Promise.all([fetchResource(url), fetchEmbed(url)])
   const output = mergeWith(meta, embed, (objValue, srcValue) => {
     if (isArray(objValue)) {
       return objValue.concat(srcValue)
@@ -91,5 +87,23 @@ export default async function scrape(url) {
     throw new ApolloError('Not found', 'NOT_FOUND')
   }
 
-  return output
+  const defaults = {
+    type: 'link',
+    title: null,
+    author: null,
+    publisher: null,
+    date: null,
+    description: null,
+    url: null,
+    image: null,
+    audio: null,
+    video: null,
+    lang: null,
+    html: null,
+  }
+
+  return {
+    ...defaults,
+    ...output
+  }
 }
