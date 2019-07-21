@@ -38,9 +38,8 @@ oEmbedProvidersFile = oEmbedProvidersFile.replace('{format}', 'json')
 const oEmbedProviders = JSON.parse(oEmbedProvidersFile)
 
 const fetchEmbed = async targetUrl => {
-  const url = new URL(targetUrl)
-	const provider = oEmbedProviders.find(provider => {
-    return provider.provider_url.includes(url.hostname)
+  const provider = oEmbedProviders.find(provider => {
+    return provider.provider_url.includes(targetUrl.hostname)
   })
   if (!provider) return {}
   const {
@@ -50,13 +49,14 @@ const fetchEmbed = async targetUrl => {
   endpointUrl.searchParams.append('url', targetUrl)
   endpointUrl.searchParams.append('format', 'json')
   const response = await fetch(endpointUrl)
+  const json = await response.json()
   const {
     type = 'link',
     html,
     author_name, // eslint-disable-line camelcase
     upload_date, // eslint-disable-line camelcase
     sources = ['oembed'],
-  } = await response.json()
+  } = json
 
   return { type, html, author: author_name, date: upload_date, sources }
 }
@@ -66,13 +66,15 @@ const fetchMeta = async targetUrl => {
   const html = await response.text()
   const metadata = await metascraper({ html, url: targetUrl })
 
-  metadata.sources = ['resource']
-  metadata.type = 'link'
-
-  return metadata
+  return {
+    sources: ['resource'],
+    type: 'link',
+    ...metadata,
+  }
 }
 
 export default async function scrape(targetUrl) {
+  targetUrl = new URL(targetUrl)
   if (targetUrl.hostname === 'youtu.be') {
     // replace youtu.be to get proper results
     targetUrl.hostname = 'youtube.com'
