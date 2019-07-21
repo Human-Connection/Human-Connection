@@ -8,6 +8,8 @@ import isEmpty from 'lodash/isEmpty'
 import isArray from 'lodash/isArray'
 import mergeWith from 'lodash/mergeWith'
 
+const error = require('debug')('embed:error')
+
 const metascraper = Metascraper([
   require('metascraper-author')(),
   require('metascraper-date')(),
@@ -45,10 +47,16 @@ const fetchEmbed = async url => {
     endpoints: [endpoint],
   } = provider
   const endpointUrl = new URL(endpoint.url)
-  endpointUrl.searchParams.append('url', url)
+  endpointUrl.searchParams.append('url', url.href)
   endpointUrl.searchParams.append('format', 'json')
-  const response = await fetch(endpointUrl)
-  const json = await response.json()
+  let json
+  try {
+    const response = await fetch(endpointUrl)
+    json = await response.json()
+  } catch (err) {
+    error(`Error fetching embed data: ${err.message}`)
+    return {}
+  }
 
   return {
     type: json.type,
@@ -62,10 +70,10 @@ const fetchEmbed = async url => {
 const fetchResource = async url => {
   const response = await fetch(url)
   const html = await response.text()
-  const resource = await metascraper({ html, url })
+  const resource = await metascraper({ html, url: url.href })
   return {
     sources: ['resource'],
-    ...resource
+    ...resource,
   }
 }
 
@@ -104,6 +112,6 @@ export default async function scrape(url) {
 
   return {
     ...defaults,
-    ...output
+    ...output,
   }
 }
