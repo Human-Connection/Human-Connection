@@ -95,23 +95,8 @@ export default async function scrape(url) {
     throw new ApolloError('Not found', 'NOT_FOUND')
   }
 
-  const defaults = {
-    type: 'link',
-    title: null,
-    author: null,
-    publisher: null,
-    date: null,
-    description: null,
-    url: null,
-    image: null,
-    audio: null,
-    video: null,
-    lang: null,
-    html: null,
-  }
-
   return {
-    ...defaults,
+    type: 'link',
     ...output,
   }
 }
