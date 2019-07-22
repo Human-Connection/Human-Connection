@@ -78,7 +78,7 @@ export default i18n => {
 
 export const filterPosts = i18n => {
   const lang = i18n.locale().toUpperCase()
-  return gql(`
+  return gql`
   query Post($filter: _PostFilter, $first: Int, $offset: Int, $orderBy: [_PostOrdering]) {
     Post(filter: $filter, first: $first, offset: $offset, orderBy: $orderBy) {
       id
