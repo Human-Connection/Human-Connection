@@ -111,7 +111,6 @@ export default {
                   }
                   badges {
                     id
-                    key
                     icon
                   }
                 }

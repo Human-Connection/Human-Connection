@@ -12,10 +12,10 @@ Feature: Create a post
     When I click on the big plus icon in the bottom right corner to create post
     And I choose "My first post" as the title of the post
     And I type in the following text:
-    """
-    Human Connection is a free and open-source social network
-    for active citizenship.
-    """
+      """
+      Human Connection is a free and open-source social network
+      for active citizenship.
+      """
     And I click on "Save"
     Then I get redirected to ".../my-first-post"
     And the post was saved successfully

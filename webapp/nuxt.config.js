@@ -10,7 +10,10 @@ const styleguideStyles = process.env.STYLEGUIDE_DEV
     ]
   : '@human-connection/styleguide/dist/shared.scss'
 
+const buildDir = process.env.NUXT_BUILD || '.nuxt'
+
 module.exports = {
+  buildDir,
   mode: 'universal',
 
   dev: dev,
@@ -31,10 +34,10 @@ module.exports = {
       'password-reset-request',
       'password-reset-verify-code',
       'password-reset-change-password',
-      'register',
-      'signup',
-      'reset',
-      'reset-token',
+      // 'registration-signup', TODO: uncomment to open public registration
+      'registration-signup-by-invitation-code',
+      'registration-verify-code',
+      'registration-create-user-account',
       'pages-slug',
     ],
     // pages to keep alive

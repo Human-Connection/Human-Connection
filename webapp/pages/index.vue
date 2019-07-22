@@ -2,10 +2,15 @@
   <div>
     <ds-flex :width="{ base: '100%' }" gutter="base">
       <ds-flex-item>
-        <filter-menu :user="currentUser" @changeFilterBubble="changeFilterBubble" />
+        <filter-menu
+          :user="currentUser"
+          @changeFilterBubble="changeFilterBubble"
+          :hashtag="hashtag"
+          @clearSearch="clearSearch"
+        />
       </ds-flex-item>
       <hc-post-card
-        v-for="(post, index) in uniq(Post)"
+        v-for="(post, index) in posts"
         :key="post.id"
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
@@ -28,11 +33,11 @@
 
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
-import gql from 'graphql-tag'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+import { filterPosts } from '~/graphql/PostQuery.js'
 
 export default {
   components: {
@@ -41,29 +46,56 @@ export default {
     HcLoadMore,
   },
   data() {
+    const { hashtag = null } = this.$route.query
     return {
       // Initialize your apollo data
-      Post: [],
       page: 1,
-      pageSize: 10,
+      pageSize: 12,
       filter: {},
+      hashtag,
     }
+  },
+  mounted() {
+    if (this.hashtag) {
+      this.changeFilterBubble({ tags_some: { name: this.hashtag } })
+    }
+  },
+  watch: {
+    Post(post) {
+      this.setPosts(this.Post)
+    },
   },
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
+      posts: 'posts/posts',
     }),
     tags() {
-      return this.Post ? this.Post[0].tags.map(tag => tag.name) : '-'
+      return this.posts ? this.posts.tags.map(tag => tag.name) : '-'
     },
     offset() {
       return (this.page - 1) * this.pageSize
     },
   },
   methods: {
+    ...mapMutations({
+      setPosts: 'posts/SET_POSTS',
+    }),
     changeFilterBubble(filter) {
+      if (this.hashtag) {
+        filter = {
+          ...filter,
+          tags_some: { name: this.hashtag },
+        }
+      }
       this.filter = filter
       this.$apollo.queries.Post.refresh()
+    },
+    clearSearch() {
+      this.$router.push({ path: '/' })
+      this.hashtag = null
+      delete this.filter.tags_some
+      this.changeFilterBubble(this.filter)
     },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
@@ -105,48 +137,7 @@ export default {
   apollo: {
     Post: {
       query() {
-        return gql(`
-          query Post($filter: _PostFilter, $first: Int, $offset: Int) {
-            Post(filter: $filter, first: $first, offset: $offset) {
-              id
-              title
-              contentExcerpt
-              createdAt
-              disabled
-              deleted
-              slug
-              image
-              author {
-                id
-                avatar
-                slug
-                name
-                disabled
-                deleted
-                contributionsCount
-                shoutedCount
-                commentsCount
-                followedByCount
-                followedByCurrentUser
-                location {
-                  name: name${this.$i18n.locale().toUpperCase()}
-                }
-                badges {
-                  id
-                  key
-                  icon
-                }
-              }
-              commentsCount
-              categories {
-                id
-                name
-                icon
-              }
-              shoutedCount
-            }
-          }
-        `)
+        return filterPosts(this.$i18n)
       },
       variables() {
         return {

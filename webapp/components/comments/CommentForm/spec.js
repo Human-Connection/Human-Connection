@@ -1,4 +1,4 @@
-import { mount, createLocalVue, createWrapper } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import CommentForm from './index.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
@@ -40,6 +40,7 @@ describe('CommentForm.vue', () => {
       'editor/placeholder': () => {
         return 'some cool placeholder'
       },
+      'editor/editPending': () => false,
     }
     const store = new Vuex.Store({
       getters,
@@ -79,11 +80,6 @@ describe('CommentForm.vue', () => {
 
       it('clears the editor', () => {
         expect(cancelMethodSpy).toHaveBeenCalledTimes(1)
-      })
-
-      it('emits a method call with the returned comment', () => {
-        const rootWrapper = createWrapper(wrapper.vm.$root)
-        expect(rootWrapper.emitted().refetchPostComments.length).toEqual(1)
       })
 
       describe('mutation fails', () => {

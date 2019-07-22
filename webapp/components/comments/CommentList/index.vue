@@ -16,11 +16,12 @@
       </span>
     </h3>
     <ds-space margin-bottom="large" />
-    <div v-if="comments && comments.length" class="comments">
+    <div v-if="comments && comments.length" id="comments" class="comments">
       <comment
         v-for="(comment, index) in comments"
         :key="comment.id"
         :comment="comment"
+        :post="post"
         @deleteComment="comments.splice(index, 1)"
       />
     </div>
@@ -30,6 +31,7 @@
 <script>
 import Comment from '~/components/Comment.vue'
 import HcEmpty from '~/components/Empty.vue'
+import PostCommentsQuery from '~/graphql/PostCommentsQuery.js'
 
 export default {
   components: {
@@ -46,28 +48,14 @@ export default {
   },
   watch: {
     Post(post) {
-      this.comments = post[0].comments || []
-    },
-  },
-  mounted() {
-    this.$root.$on('refetchPostComments', () => {
-      this.refetchPostComments()
-    })
-  },
-  beforeDestroy() {
-    this.$root.$off('refetchPostComments')
-  },
-  methods: {
-    refetchPostComments() {
-      if (this.$apollo.queries.Post) {
-        this.$apollo.queries.Post.refetch()
-      }
+      const [first] = post
+      this.comments = (first && first.comments) || []
     },
   },
   apollo: {
     Post: {
       query() {
-        return require('~/graphql/PostCommentsQuery.js').default(this)
+        return PostCommentsQuery(this.$i18n)
       },
       variables() {
         return {

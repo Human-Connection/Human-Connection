@@ -89,8 +89,19 @@ export default {
           }, 500)
         }, 1500)
       } catch (err) {
+        this.$emit('close')
         this.success = false
-        this.$toast.error(err.message)
+        switch (err.message) {
+          case 'GraphQL error: User':
+            this.$toast.error(this.$t('report.user.error'))
+            break
+          case 'GraphQL error: Post':
+            this.$toast.error(this.$t('report.contribution.error'))
+            break
+          case 'GraphQL error: Comment':
+            this.$toast.error(this.$t('report.comment.error'))
+            break
+        }
       } finally {
         this.loading = false
       }

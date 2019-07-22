@@ -1,7 +1,6 @@
-import gql from 'graphql-tag'
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 
@@ -98,14 +97,19 @@ describe('SocialMedia', () => {
       const variables = {
         url: '',
       }
-      await expect(client.request(mutationC, variables)).rejects.toThrow('Input is not a URL')
+      await expect(client.request(mutationC, variables)).rejects.toThrow(
+        '"url" is not allowed to be empty',
+      )
     })
 
     it('validates URLs', async () => {
       const variables = {
         url: 'not-a-url',
       }
-      await expect(client.request(mutationC, variables)).rejects.toThrow('Input is not a URL')
+
+      await expect(client.request(mutationC, variables)).rejects.toThrow(
+        '"url" must be a valid uri',
+      )
     })
   })
 })

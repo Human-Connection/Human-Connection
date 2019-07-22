@@ -1,13 +1,14 @@
 import gql from 'graphql-tag'
 
-export default app => {
-  const lang = app.$i18n.locale().toUpperCase()
+export default i18n => {
+  const lang = i18n.locale().toUpperCase()
   return gql(`
     query Post($slug: String!) {
       Post(slug: $slug) {
         comments(orderBy: createdAt_asc) {
           id
           contentExcerpt
+          content
           createdAt
           disabled
           deleted
@@ -28,7 +29,6 @@ export default app => {
             }
             badges {
               id
-              key
               icon
             }
           }

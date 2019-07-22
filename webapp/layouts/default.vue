@@ -1,88 +1,136 @@
 <template>
   <div class="layout-default">
     <div class="main-navigation">
-      <ds-container class="main-navigation-container">
-        <div class="main-navigation-left">
-          <a v-router-link style="display: inline-flex" href="/">
-            <ds-logo />
-          </a>
-        </div>
-        <div class="main-navigation-center hc-navbar-search">
-          <search-input
-            id="nav-search"
-            :delay="300"
-            :pending="quickSearchPending"
-            :results="quickSearchResults"
-            @clear="quickSearchClear"
-            @search="value => quickSearch({ value })"
-            @select="goToPost"
-          />
-        </div>
-        <div class="main-navigation-right">
-          <no-ssr>
-            <locale-switch class="topbar-locale-switch" placement="bottom" offset="23" />
-          </no-ssr>
-          <template v-if="isLoggedIn">
-            <no-ssr>
-              <notification-menu />
-            </no-ssr>
-            <no-ssr>
-              <dropdown class="avatar-menu">
-                <template slot="default" slot-scope="{ toggleMenu }">
-                  <a
-                    class="avatar-menu-trigger"
-                    :href="
-                      $router.resolve({
-                        name: 'profile-id-slug',
-                        params: { id: user.id, slug: user.slug },
-                      }).href
-                    "
-                    @click.prevent="toggleMenu"
-                  >
-                    <hc-avatar :user="user" />
-                    <ds-icon size="xx-small" name="angle-down" />
-                  </a>
+      <ds-container class="main-navigation-container" style="padding: 10px 10px;">
+        <div>
+          <ds-flex class="main-navigation-flex">
+            <ds-flex-item :width="{ lg: '3.5%' }" />
+            <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
+              <a @click="redirectToRoot">
+                <ds-logo />
+              </a>
+            </ds-flex-item>
+            <ds-flex-item
+              :width="{ base: '20%', sm: '20%', md: '20%', lg: '0%' }"
+              class="mobile-hamburger-menu"
+            >
+              <ds-button icon="bars" @click="toggleMobileMenuView" right />
+            </ds-flex-item>
+            <ds-flex-item
+              :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
+              <div id="nav-search-box">
+                <search-input
+                  id="nav-search"
+                  :delay="300"
+                  :pending="quickSearchPending"
+                  :results="quickSearchResults"
+                  @clear="quickSearchClear"
+                  @search="value => quickSearch({ value })"
+                  @select="goToPost"
+                />
+              </div>
+            </ds-flex-item>
+            <ds-flex-item
+              :width="{ base: '15%', sm: '15%', md: '10%', lg: '10%' }"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
+              <no-ssr>
+                <filter-posts placement="top-start" offset="8" :categories="categories" />
+              </no-ssr>
+            </ds-flex-item>
+            <ds-flex-item :width="{ base: '100%', sm: '100%', md: '10%', lg: '2%' }" />
+            <ds-flex-item
+              :width="{ base: '100%', sm: '100%', md: '100%', lg: '13%' }"
+              style="background-color:white"
+              :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+            >
+              <div
+                class="main-navigation-right"
+                :class="{
+                  'desktop-view': !toggleMobileMenu,
+                  'hide-mobile-menu': !toggleMobileMenu,
+                }"
+              >
+                <no-ssr>
+                  <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
+                </no-ssr>
+                <template v-if="isLoggedIn">
+                  <no-ssr>
+                    <notification-menu placement="top" />
+                  </no-ssr>
+                  <no-ssr>
+                    <dropdown class="avatar-menu" offset="8">
+                      <template slot="default" slot-scope="{ toggleMenu }">
+                        <a
+                          class="avatar-menu-trigger"
+                          :href="
+                            $router.resolve({
+                              name: 'profile-id-slug',
+                              params: { id: user.id, slug: user.slug },
+                            }).href
+                          "
+                          @click.prevent="toggleMenu"
+                        >
+                          <hc-avatar :user="user" />
+                          <ds-icon size="xx-small" name="angle-down" />
+                        </a>
+                      </template>
+                      <template slot="popover" slot-scope="{ closeMenu }">
+                        <div class="avatar-menu-popover">
+                          {{ $t('login.hello') }}
+                          <b>{{ userName }}</b>
+                          <template v-if="user.role !== 'user'">
+                            <ds-text color="softer" size="small" style="margin-bottom: 0">
+                              {{ user.role | camelCase }}
+                            </ds-text>
+                          </template>
+                          <hr />
+                          <ds-menu :routes="routes" :matcher="matcher">
+                            <ds-menu-item
+                              slot="menuitem"
+                              slot-scope="item"
+                              :route="item.route"
+                              :parents="item.parents"
+                              @click.native="closeMenu(false)"
+                            >
+                              <ds-icon :name="item.route.icon" />
+                              {{ item.route.name }}
+                            </ds-menu-item>
+                          </ds-menu>
+                          <hr />
+                          <nuxt-link class="logout-link" :to="{ name: 'logout' }">
+                            <ds-icon name="sign-out" />
+                            {{ $t('login.logout') }}
+                          </nuxt-link>
+                        </div>
+                      </template>
+                    </dropdown>
+                  </no-ssr>
                 </template>
-                <template slot="popover" slot-scope="{ closeMenu }">
-                  <div class="avatar-menu-popover">
-                    {{ $t('login.hello') }}
-                    <b>{{ userName }}</b>
-                    <template v-if="user.role !== 'user'">
-                      <ds-text color="softer" size="small" style="margin-bottom: 0">
-                        {{ user.role | camelCase }}
-                      </ds-text>
-                    </template>
-                    <hr />
-                    <ds-menu :routes="routes" :matcher="matcher">
-                      <ds-menu-item
-                        slot="menuitem"
-                        slot-scope="item"
-                        :route="item.route"
-                        :parents="item.parents"
-                        @click.native="closeMenu(false)"
-                      >
-                        <ds-icon :name="item.route.icon" />
-                        {{ item.route.name }}
-                      </ds-menu-item>
-                    </ds-menu>
-                    <hr />
-                    <nuxt-link class="logout-link" :to="{ name: 'logout' }">
-                      <ds-icon name="sign-out" />
-                      {{ $t('login.logout') }}
-                    </nuxt-link>
-                  </div>
-                </template>
-              </dropdown>
-            </no-ssr>
-          </template>
+              </div>
+            </ds-flex-item>
+          </ds-flex>
         </div>
       </ds-container>
     </div>
-    <ds-container>
-      <div style="padding: 6rem 2rem 5rem;">
+    <ds-container style="word-break: break-all">
+      <div class="main-container" :width="{ base: '100%', md: '96%' }">
         <nuxt />
       </div>
     </ds-container>
+    <div id="footer" class="ds-footer">
+      <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
+      &nbsp;-&nbsp;
+      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/privacy">{{ $t('site.privacy') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
+    </div>
     <div id="overlay" />
     <no-ssr>
       <modal />
@@ -99,6 +147,8 @@ import NotificationMenu from '~/components/notifications/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
+import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
+import CategoryQuery from '~/graphql/CategoryQuery.js'
 
 export default {
   components: {
@@ -108,11 +158,14 @@ export default {
     Modal,
     NotificationMenu,
     HcAvatar,
+    FilterPosts,
   },
   mixins: [seo],
   data() {
     return {
       mobileSearchVisible: false,
+      toggleMobileMenu: false,
+      categories: [],
     }
   },
   computed: {
@@ -161,10 +214,16 @@ export default {
       return routes
     },
   },
+  watch: {
+    Category(category) {
+      this.categories = category || []
+    },
+  },
   methods: {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
+      fetchPosts: 'posts/fetchPosts',
     }),
     goToPost(item) {
       this.$nextTick(() => {
@@ -181,6 +240,21 @@ export default {
       }
       return this.$route.path.indexOf(url) === 0
     },
+    toggleMobileMenuView() {
+      this.toggleMobileMenu = !this.toggleMobileMenu
+    },
+    redirectToRoot() {
+      this.$router.replace('/')
+      this.fetchPosts({ i18n: this.$i18n, filter: {} })
+    },
+  },
+  apollo: {
+    Category: {
+      query() {
+        return CategoryQuery()
+      },
+      fetchPolicy: 'cache-and-network',
+    },
   },
 }
 </script>
@@ -193,37 +267,28 @@ export default {
   display: inline-flex;
 }
 
+.main-container {
+  padding-top: 6rem;
+  padding-bottom: 5rem;
+}
+
 .main-navigation {
   a {
     color: $text-color-soft;
   }
 }
 
-.main-navigation-container {
-  padding: $space-x-small $space-large !important;
-  width: 100%;
-  align-items: center;
-  display: flex;
-}
-
-.main-navigation-left {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  align-items: center;
-}
-
-.main-navigation-center {
-  display: flex;
-  flex: auto;
-  width: 100%;
-  padding-right: $space-large;
-  padding-left: $space-large;
-}
-
 .main-navigation-right {
   display: flex;
   flex: 1;
+}
+
+.main-navigation-right .desktop-view {
+  float: right;
+}
+
+.avatar-menu {
+  margin: 2px 0px 0px 5px;
 }
 
 .avatar-menu-trigger {
@@ -268,5 +333,32 @@ export default {
       padding-left: 12px;
     }
   }
+}
+
+@media only screen and (min-width: 960px) {
+  .mobile-hamburger-menu {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  #nav-search-box,
+  .main-navigation-right {
+    margin: 10px 0px;
+  }
+
+  .hide-mobile-menu {
+    display: none;
+  }
+}
+
+.ds-footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0px;
+  z-index: 10;
+  background-color: white;
+  width: 100%;
+  padding: 10px 10px;
 }
 </style>

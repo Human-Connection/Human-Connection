@@ -1,5 +1,5 @@
 <template>
-  <ds-form v-model="form" @submit="handleSubmit">
+  <ds-form v-show="!editPending" v-model="form" @submit="handleSubmit">
     <template slot-scope="{ errors }">
       <ds-card>
         <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
@@ -24,7 +24,10 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor'
+import HcEditor from '~/components/Editor/Editor'
+import PostCommentsQuery from '~/graphql/PostCommentsQuery.js'
+import CommentMutations from '~/graphql/CommentMutations.js'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -44,6 +47,11 @@ export default {
       users: [],
     }
   },
+  computed: {
+    ...mapGetters({
+      editPending: 'editor/editPending',
+    }),
+  },
   methods: {
     updateEditorContent(value) {
       const content = value.replace(/<(?:.|\n)*?>/gm, '').trim()
@@ -62,22 +70,22 @@ export default {
       this.disabled = true
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation($postId: ID, $content: String!) {
-              CreateComment(postId: $postId, content: $content) {
-                id
-                content
-              }
-            }
-          `,
+          mutation: CommentMutations().CreateComment,
           variables: {
             postId: this.post.id,
             content: this.form.content,
           },
+          update: (store, { data: { CreateComment } }) => {
+            const data = store.readQuery({
+              query: PostCommentsQuery(this.$i18n),
+              variables: { slug: this.post.slug },
+            })
+            data.Post[0].comments.push(CreateComment)
+            store.writeQuery({ query: PostCommentsQuery(this.$i18n), data })
+          },
         })
         .then(res => {
           this.loading = false
-          this.$root.$emit('refetchPostComments')
           this.clear()
           this.$toast.success(this.$t('post.comment.submitted'))
           this.disabled = false
@@ -94,6 +102,8 @@ export default {
           User(orderBy: slug_asc) {
             id
             slug
+            name
+            avatar
           }
         }`)
       },
