@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import HcEditor from '~/components/Editor'
+import HcEditor from '~/components/Editor/Editor.vue'
 import helpers from './helpers'
 
 helpers.init()
