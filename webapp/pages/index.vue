@@ -10,7 +10,7 @@
         />
       </ds-flex-item>
       <ds-flex-item>
-        <div style="width: 250px; position: relative; float: right; padding: 0 18px;">
+        <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
             :options="sortingOptions"
@@ -207,5 +207,12 @@ export default {
   left: 98vw;
   transform: translate(-120%, -120%);
   box-shadow: $box-shadow-x-large;
+}
+
+.sorting-dropdown {
+  width: 250px;
+  position: relative;
+  float: right;
+  padding: 0 18px;
 }
 </style>
