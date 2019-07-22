@@ -42,6 +42,5 @@ services:
       context: neo4j
     networks:
       - hc-network
-
 networks:
   hc-network:
