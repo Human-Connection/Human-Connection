@@ -68,7 +68,7 @@
     "helmet": "~3.19.0",
     "jsonwebtoken": "~8.5.1",
     "linkifyjs": "~2.1.8",
-    "lodash": "~4.17.14",
+    "lodash": "~4.17.15",
     "merge-graphql-schemas": "^1.6.1",
     "metascraper": "^4.10.3",
     "metascraper-audio": "^5.5.0",
