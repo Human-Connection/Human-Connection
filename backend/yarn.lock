@@ -5770,12 +5770,12 @@ metascraper-logo@^5.5.0:
   dependencies:
     "@metascraper/helpers" "^5.6.3"
 
-metascraper-publisher@^4.8.5:
-  version "4.10.2"
-  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-4.10.2.tgz#f65f44f14b9f6b00467b26a242c1f58177c713e0"
-  integrity sha512-mKHcMJBPvtCGGdNtE7+InQ/4ntTzoWfMMpa0O2JKH4Odd5tZ9wtJF/Y59n261qgML5d3MtloN7eSfsLZNcmaQA==
+metascraper-publisher@^5.6.3:
+  version "5.6.3"
+  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.6.3.tgz#3729cd7dac117c94f92020ff3a8397a1b965a27e"
+  integrity sha512-1Z+bwrTn6j4Tf85DatYL0zDmqBfoJCfYa0nNlZ9HWfjM+QWDxBeIu1v/85N3AYGYPwk5G38IdvEYBb4MpMEQvQ==
   dependencies:
-    "@metascraper/helpers" "^4.10.2"
+    "@metascraper/helpers" "^5.6.3"
 
 metascraper-soundcloud@^5.5.3:
   version "5.6.3"
