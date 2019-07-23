@@ -113,7 +113,6 @@ export default {
     handleEditSocialMedia(link) {
       this.editingLink = link
       this.formData.socialMediaUrl = link.url
-      this.disabled = false
     },
     handleInput(data) {
       this.disabled = true
