@@ -5,8 +5,25 @@ import { host, login, gql } from '../../jest/helpers'
 const factory = Factory()
 
 describe('SocialMedia', () => {
-  let client
-  let headers
+  let client, headers, variables, mutation
+
+  const ownerParams = {
+    email: 'owner@example.com',
+    password: '1234',
+    id: '1234',
+    name: 'Pippi Langstrumpf',
+  }
+
+  const userParams = {
+    email: 'someuser@example.com',
+    password: 'abcd',
+    id: 'abcd',
+    name: 'Kalle Blomqvist',
+  }
+
+  const url = 'https://twitter.com/pippi-langstrumpf'
+  const newUrl = 'https://twitter.com/bullerby'
+
   const createSocialMediaMutation = gql`
     mutation($url: String!) {
       CreateSocialMedia(url: $url) {
@@ -32,113 +49,152 @@ describe('SocialMedia', () => {
     }
   `
   beforeEach(async () => {
-    await factory.create('User', {
-      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
-      id: 'acb2d923-f3af-479e-9f00-61b12e864666',
-      name: 'Matilde Hermiston',
-      slug: 'matilde-hermiston',
-      role: 'user',
-      email: 'test@example.org',
-      password: '1234',
-    })
+    await factory.create('User', userParams)
+    await factory.create('User', ownerParams)
   })
 
   afterEach(async () => {
     await factory.cleanDatabase()
   })
 
-  describe('unauthenticated', () => {
-    it('throws authorization error', async () => {
-      client = new GraphQLClient(host)
-      const variables = {
-        url: 'http://nsosp.org',
-      }
-      await expect(client.request(createSocialMediaMutation, variables)).rejects.toThrow('Not Authorised')
+  describe('create social media', () => {
+    beforeEach(() => {
+      variables = { url }
+      mutation = createSocialMediaMutation
+    })
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      })
+    })
+
+    describe('authenticated', () => {
+      beforeEach(async () => {
+        headers = await login(userParams)
+        client = new GraphQLClient(host, { headers })
+      })
+
+      it('creates social media with correct URL', async () => {
+        await expect(client.request(mutation, variables)).resolves.toEqual(
+          expect.objectContaining({
+            CreateSocialMedia: {
+              id: expect.any(String),
+              url: url,
+            },
+          }),
+        )
+      })
+
+      it('rejects empty string', async () => {
+        variables = { url: '' }
+
+        await expect(client.request(mutation, variables)).rejects.toThrow(
+          '"url" is not allowed to be empty',
+        )
+      })
+
+      it('rejects invalid URLs', async () => {
+        variables = { url: 'not-a-url' }
+
+        await expect(client.request(createSocialMediaMutation, variables)).rejects.toThrow(
+          '"url" must be a valid uri',
+        )
+      })
     })
   })
 
-  describe('authenticated', () => {
+  describe('update social media', () => {
     beforeEach(async () => {
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
+      headers = await login(ownerParams)
+      client = new GraphQLClient(host, { headers })
+
+      const { CreateSocialMedia } = await client.request(createSocialMediaMutation, { url })
+      const { id } = CreateSocialMedia
+
+      variables = { url: newUrl, id }
+      mutation = updateSocialMediaMutation
+    })
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
-    it('creates social media with correct URL', async () => {
-      const variables = {
-        url: 'http://nsosp.org',
-      }
-      await expect(client.request(createSocialMediaMutation, variables)).resolves.toEqual(
-        expect.objectContaining({
-          CreateSocialMedia: {
-            id: expect.any(String),
-            url: 'http://nsosp.org',
+    describe('authenticated as other user', () => {
+      it('throws authorization error', async () => {
+        headers = await login(userParams)
+        client = new GraphQLClient(host, { headers })
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      })
+    })
+
+    describe('authenticated as owner', () => {
+      it('updates social media', async () => {
+        const expected = { UpdateSocialMedia: { ...variables } }
+
+        await expect(client.request(mutation, variables)).resolves.toEqual(
+          expect.objectContaining(expected),
+        )
+      })
+
+      describe('given a non-existent id', () => {
+        it('does not update', async () => {
+          variables.id = 'some-id'
+
+          await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+        })
+      })
+    })
+  })
+
+  describe('delete social media', () => {
+    beforeEach(async () => {
+      headers = await login(ownerParams)
+      client = new GraphQLClient(host, { headers })
+
+      const { CreateSocialMedia } = await client.request(createSocialMediaMutation, { url })
+      const { id } = CreateSocialMedia
+
+      variables = { id }
+      mutation = deleteSocialMediaMutation
+    })
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      })
+    })
+
+    describe('authenticated as other user', () => {
+      it('throws authorization error', async () => {
+        headers = await login(userParams)
+        client = new GraphQLClient(host, { headers })
+
+        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      })
+    })
+
+    describe('authenticated as owner', () => {
+      beforeEach(async () => {
+        headers = await login(ownerParams)
+        client = new GraphQLClient(host, { headers })
+      })
+
+      it('deletes social media', async () => {
+        const expected = {
+          DeleteSocialMedia: {
+            id: variables.id,
+            url: url,
           },
-        }),
-      )
-    })
-
-    it('updates social media', async () => {
-      const creationVariables = {
-        url: 'http://nsosp.org',
-      }
-      const { CreateSocialMedia } = await client.request(createSocialMediaMutation, creationVariables)
-      const { id } = CreateSocialMedia
-      const variables = {
-        id,
-        url: 'https://newurl.org',
-      }
-      const expected = {
-        UpdateSocialMedia: {
-          id: id,
-          url: 'https://newurl.org',
-        },
-      }
-      await expect(client.request(updateSocialMediaMutation, variables)).resolves.toEqual(
-        expect.objectContaining(expected),
-      )
-    })
-
-    it('deletes social media', async () => {
-      const creationVariables = {
-        url: 'http://nsosp.org',
-      }
-      const { CreateSocialMedia } = await client.request(createSocialMediaMutation, creationVariables)
-      const { id } = CreateSocialMedia
-
-      const deletionVariables = {
-        id,
-      }
-      const expected = {
-        DeleteSocialMedia: {
-          id: id,
-          url: 'http://nsosp.org',
-        },
-      }
-      await expect(client.request(deleteSocialMediaMutation, deletionVariables)).resolves.toEqual(expected)
-    })
-
-    it('rejects empty string', async () => {
-      const variables = {
-        url: '',
-      }
-      await expect(client.request(createSocialMediaMutation, variables)).rejects.toThrow(
-        '"url" is not allowed to be empty',
-      )
-    })
-
-    it('validates URLs', async () => {
-      const variables = {
-        url: 'not-a-url',
-      }
-
-      await expect(client.request(createSocialMediaMutation, variables)).rejects.toThrow(
-        '"url" must be a valid uri',
-      )
+        }
+        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+      })
     })
   })
 })

@@ -26,8 +26,7 @@ export default {
     UpdateSocialMedia: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
       await session.run(
-        `MATCH (owner:User {id: $userId}), (socialMedia:SocialMedia {id: $socialMediaId})
-        WHERE (socialMedia)<-[:OWNED]-(owner)
+        `MATCH (owner: User { id: $userId })-[:OWNED]->(socialMedia: SocialMedia { id: $socialMediaId })
         SET socialMedia.url = $socialMediaUrl
         RETURN owner`,
         {
