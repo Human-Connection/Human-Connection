@@ -7,7 +7,7 @@ const factory = Factory()
 describe('SocialMedia', () => {
   let client
   let headers
-  const mutationC = gql`
+  const createSocialMediaMutation = gql`
     mutation($url: String!) {
       CreateSocialMedia(url: $url) {
         id
@@ -15,7 +15,7 @@ describe('SocialMedia', () => {
       }
     }
   `
-  const mutationU = gql`
+  const updateSocialMediaMutation = gql`
     mutation($id: ID!, $url: String!) {
       UpdateSocialMedia(id: $id, url: $url) {
         id
@@ -23,7 +23,7 @@ describe('SocialMedia', () => {
       }
     }
   `
-  const mutationD = gql`
+  const deleteSocialMediaMutation = gql`
     mutation($id: ID!) {
       DeleteSocialMedia(id: $id) {
         id
@@ -53,7 +53,7 @@ describe('SocialMedia', () => {
       const variables = {
         url: 'http://nsosp.org',
       }
-      await expect(client.request(mutationC, variables)).rejects.toThrow('Not Authorised')
+      await expect(client.request(createSocialMediaMutation, variables)).rejects.toThrow('Not Authorised')
     })
   })
 
@@ -72,7 +72,7 @@ describe('SocialMedia', () => {
       const variables = {
         url: 'http://nsosp.org',
       }
-      await expect(client.request(mutationC, variables)).resolves.toEqual(
+      await expect(client.request(createSocialMediaMutation, variables)).resolves.toEqual(
         expect.objectContaining({
           CreateSocialMedia: {
             id: expect.any(String),
@@ -86,7 +86,7 @@ describe('SocialMedia', () => {
       const creationVariables = {
         url: 'http://nsosp.org',
       }
-      const { CreateSocialMedia } = await client.request(mutationC, creationVariables)
+      const { CreateSocialMedia } = await client.request(createSocialMediaMutation, creationVariables)
       const { id } = CreateSocialMedia
       const variables = {
         id,
@@ -98,7 +98,7 @@ describe('SocialMedia', () => {
           url: 'https://newurl.org',
         },
       }
-      await expect(client.request(mutationU, variables)).resolves.toEqual(
+      await expect(client.request(updateSocialMediaMutation, variables)).resolves.toEqual(
         expect.objectContaining(expected),
       )
     })
@@ -107,7 +107,7 @@ describe('SocialMedia', () => {
       const creationVariables = {
         url: 'http://nsosp.org',
       }
-      const { CreateSocialMedia } = await client.request(mutationC, creationVariables)
+      const { CreateSocialMedia } = await client.request(createSocialMediaMutation, creationVariables)
       const { id } = CreateSocialMedia
 
       const deletionVariables = {
@@ -119,14 +119,14 @@ describe('SocialMedia', () => {
           url: 'http://nsosp.org',
         },
       }
-      await expect(client.request(mutationD, deletionVariables)).resolves.toEqual(expected)
+      await expect(client.request(deleteSocialMediaMutation, deletionVariables)).resolves.toEqual(expected)
     })
 
     it('rejects empty string', async () => {
       const variables = {
         url: '',
       }
-      await expect(client.request(mutationC, variables)).rejects.toThrow(
+      await expect(client.request(createSocialMediaMutation, variables)).rejects.toThrow(
         '"url" is not allowed to be empty',
       )
     })
@@ -136,7 +136,7 @@ describe('SocialMedia', () => {
         url: 'not-a-url',
       }
 
-      await expect(client.request(mutationC, variables)).rejects.toThrow(
+      await expect(client.request(createSocialMediaMutation, variables)).rejects.toThrow(
         '"url" must be a valid uri',
       )
     })
