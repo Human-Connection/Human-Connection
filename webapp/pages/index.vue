@@ -82,7 +82,7 @@ export default {
           order: 'createdAt_asc',
         },
         {
-          label: this.$t('sorting.poular'),
+          label: this.$t('sorting.popular'),
           value: 'Popular',
           icons: 'fire',
           order: 'shoutedCount_desc',
@@ -130,7 +130,7 @@ export default {
         }
       }
       this.filter = filter
-      this.$apollo.queries.Post.refresh()
+      this.$apollo.queries.Post.refetch()
     },
     toggleOnlySorting(x) {
       this.sortingIcon = x.icons
