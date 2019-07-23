@@ -74,7 +74,7 @@ describe('my-social-media.vue', () => {
       describe('success', () => {
         beforeEach(() => {
           mocks.$apollo.mutate.mockResolvedValue({
-            data: { CreateSocialMeda: { id: 's2', url: newSocialMediaUrl } },
+            data: { CreateSocialMedia: { id: 's2', url: newSocialMediaUrl } },
           })
           input.setValue(newSocialMediaUrl)
           form.trigger('submit')
@@ -85,7 +85,6 @@ describe('my-social-media.vue', () => {
             variables: { url: newSocialMediaUrl },
           })
 
-          expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
 
@@ -116,11 +115,22 @@ describe('my-social-media.vue', () => {
         form = wrapper.find('form')
       })
 
-      it('displays the links', () => {
-        expect(wrapper.find(`img[src="${faviconUrl}"]`).exists()).toBe(true)
-        expect(wrapper.find(`a[href="${socialMediaUrl}"]`).exists()).toBe(true)
-        expect(wrapper.find('a[name="edit"]').exists()).toBe(true)
-        expect(wrapper.find('a[name="delete"]').exists()).toBe(true)
+      describe('for each link it', () => {
+        it('displays the favicon', () => {
+          expect(wrapper.find(`img[src="${faviconUrl}"]`).exists()).toBe(true)
+        })
+
+        it('displays the url', () => {
+          expect(wrapper.find(`a[href="${socialMediaUrl}"]`).exists()).toBe(true)
+        })
+
+        it('displays the edit button', () => {
+          expect(wrapper.find('a[name="edit"]').exists()).toBe(true)
+        })
+
+        it('displays the delete button', () => {
+          expect(wrapper.find('a[name="delete"]').exists()).toBe(true)
+        })
       })
 
       it('does not accept a duplicate url', () => {
@@ -152,7 +162,6 @@ describe('my-social-media.vue', () => {
           input.setValue(newSocialMediaUrl)
           form.trigger('submit')
 
-          expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
 
