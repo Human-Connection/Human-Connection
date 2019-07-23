@@ -9,7 +9,7 @@
     <ds-card :header="$t('settings.social-media.name')">
       <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
         <ds-list>
-          <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
+          <ds-list-item v-for="link in socialMediaLinks" :key="link.id" class="list-item--high">
             <ds-input
               v-if="editingLink.id === link.id"
               id="editSocialMedia"
@@ -221,5 +221,11 @@ export default {
 
 .icon-button {
   cursor: pointer;
+}
+
+.list-item--high {
+  .ds-list-item-prefix {
+    align-self: center;
+  }
 }
 </style>
