@@ -10,7 +10,7 @@
           />
         </hc-teaser-image>
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
-        <small class="smallTag">{{ form.title.length }}/{{formSchema.title.max }}</small>
+        <small class="smallTag">{{ form.title.length }}/{{ formSchema.title.max }}</small>
         <no-ssr>
           <hc-editor
             :users="users"
@@ -18,7 +18,7 @@
             :value="form.content"
             @input="updateEditorContent"
           />
-          <small class="smallTag">{{ form.contentLength }}/{{content_max }}</small>
+          <small class="smallTag">{{ form.contentLength }}/{{ content_max }}</small>
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
         <hc-categories-select
@@ -98,7 +98,7 @@ export default {
       formSchema: {
         title: { required: true, min: 3, max: 64 },
         content: [
-          /*{
+          /* {
             validator(rule, value, callback, source, options) {
               var errors = []
               if (source.password !== value) {
@@ -106,8 +106,8 @@ export default {
               }
               callback(errors)
             },
-          },*/
-          { required: true, }
+          }, */
+          { required: true },
         ],
       },
       id: null,
@@ -197,13 +197,11 @@ export default {
       // TODO: Do smth????? what is happening
       this.$refs.contributionForm.update('content', value)
       // filter HTML out of content value
-      const str = value.replace(/<\/?[^>]+(>|$)/gm, '')  
+      const str = value.replace(/<\/?[^>]+(>|$)/gm, '')
       // Set counter length of text
       this.form.contentLength = str.length
-      //Enable save button if requirements are met
-      if (  str.length >= this.content_min &&
-            str.length <= this.content_max)
-      {
+      // Enable save button if requirements are met
+      if (str.length >= this.content_min && str.length <= this.content_max) {
         this.disabled = false
       }
     },
