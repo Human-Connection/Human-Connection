@@ -147,7 +147,6 @@ export default {
       following: '-[:FOLLOWS]->(related:User)',
       friends: '-[:FRIENDS]-(related:User)',
       blacklisted: '-[:BLACKLISTED]->(related:User)',
-      socialMedia: '-[:OWNED]->(related:SocialMedia)',
       contributions: '-[:WROTE]->(related:Post)',
       comments: '-[:WROTE]->(related:Comment)',
       shouted: '-[:SHOUTED]->(related:Post)',
