@@ -1,56 +1,59 @@
-import { GraphQLClient } from 'graphql-request'
+import { createTestClient } from 'apollo-server-testing'
+import createServer from '../../server'
 import Factory from '../../seed/factories'
-import { host, login, gql } from '../../jest/helpers'
+import { gql } from '../../jest/helpers'
+import { neode, getDriver } from '../../bootstrap/neo4j'
 
+const driver = getDriver()
 const factory = Factory()
+const instance = neode()
 
 describe('SocialMedia', () => {
-  let client, headers, variables, mutation
+  let socialMediaAction, someUser, ownerNode, owner
 
   const ownerParams = {
-    email: 'owner@example.com',
+    email: 'pippi@example.com',
     password: '1234',
-    id: '1234',
     name: 'Pippi Langstrumpf',
   }
 
   const userParams = {
-    email: 'someuser@example.com',
+    email: 'kalle@example.com',
     password: 'abcd',
-    id: 'abcd',
     name: 'Kalle Blomqvist',
   }
 
   const url = 'https://twitter.com/pippi-langstrumpf'
   const newUrl = 'https://twitter.com/bullerby'
 
-  const createSocialMediaMutation = gql`
-    mutation($url: String!) {
-      CreateSocialMedia(url: $url) {
-        id
-        url
-      }
-    }
-  `
-  const updateSocialMediaMutation = gql`
-    mutation($id: ID!, $url: String!) {
-      UpdateSocialMedia(id: $id, url: $url) {
-        id
-        url
-      }
-    }
-  `
-  const deleteSocialMediaMutation = gql`
-    mutation($id: ID!) {
-      DeleteSocialMedia(id: $id) {
-        id
-        url
-      }
-    }
-  `
+  const setUpSocialMedia = async () => {
+    const socialMediaNode = await instance.create('SocialMedia', { url })
+    await socialMediaNode.relateTo(ownerNode, 'ownedBy')
+    return socialMediaNode.toJson()
+  }
+
   beforeEach(async () => {
-    await factory.create('User', userParams)
-    await factory.create('User', ownerParams)
+    const someUserNode = await instance.create('User', userParams)
+    someUser = await someUserNode.toJson()
+    ownerNode = await instance.create('User', ownerParams)
+    owner = await ownerNode.toJson()
+
+    socialMediaAction = async (user, mutation, variables) => {
+      const { server } = createServer({
+        context: () => {
+          return {
+            user,
+            driver,
+          }
+        },
+      })
+      const { mutate } = createTestClient(server)
+
+      return mutate({
+        mutation,
+        variables,
+      })
+    }
   })
 
   afterEach(async () => {
@@ -58,129 +61,187 @@ describe('SocialMedia', () => {
   })
 
   describe('create social media', () => {
+    let mutation, variables
+
     beforeEach(() => {
+      mutation = gql`
+        mutation($url: String!) {
+          CreateSocialMedia(url: $url) {
+            id
+            url
+          }
+        }
+      `
       variables = { url }
-      mutation = createSocialMediaMutation
     })
 
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        client = new GraphQLClient(host)
-        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+        const user = null
+        const result = await socialMediaAction(user, mutation, variables)
+
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated', () => {
-      beforeEach(async () => {
-        headers = await login(userParams)
-        client = new GraphQLClient(host, { headers })
+      let user
+
+      beforeEach(() => {
+        user = owner
       })
 
-      it('creates social media with correct URL', async () => {
-        await expect(client.request(mutation, variables)).resolves.toEqual(
+      it('creates social media with the given url', async () => {
+        await expect(socialMediaAction(user, mutation, variables)).resolves.toEqual(
           expect.objectContaining({
-            CreateSocialMedia: {
-              id: expect.any(String),
-              url: url,
+            data: {
+              CreateSocialMedia: {
+                id: expect.any(String),
+                url,
+              },
             },
           }),
         )
       })
 
-      it('rejects empty string', async () => {
+      it('rejects an empty string as url', async () => {
         variables = { url: '' }
+        const result = await socialMediaAction(user, mutation, variables)
 
-        await expect(client.request(mutation, variables)).rejects.toThrow(
-          '"url" is not allowed to be empty',
+        expect(result.errors[0].message).toEqual(
+          expect.stringContaining('"url" is not allowed to be empty'),
         )
       })
 
-      it('rejects invalid URLs', async () => {
+      it('rejects invalid urls', async () => {
         variables = { url: 'not-a-url' }
+        const result = await socialMediaAction(user, mutation, variables)
 
-        await expect(client.request(createSocialMediaMutation, variables)).rejects.toThrow(
-          '"url" must be a valid uri',
+        expect(result.errors[0].message).toEqual(
+          expect.stringContaining('"url" must be a valid uri'),
         )
       })
     })
   })
 
   describe('update social media', () => {
+    let mutation, variables
+
     beforeEach(async () => {
-      headers = await login(ownerParams)
-      client = new GraphQLClient(host, { headers })
+      const socialMedia = await setUpSocialMedia()
 
-      const { CreateSocialMedia } = await client.request(createSocialMediaMutation, { url })
-      const { id } = CreateSocialMedia
-
-      variables = { url: newUrl, id }
-      mutation = updateSocialMediaMutation
+      mutation = gql`
+        mutation($id: ID!, $url: String!) {
+          UpdateSocialMedia(id: $id, url: $url) {
+            id
+            url
+          }
+        }
+      `
+      variables = { url: newUrl, id: socialMedia.id }
     })
 
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        client = new GraphQLClient(host)
-        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+        const user = null
+        const result = await socialMediaAction(user, mutation, variables)
+
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated as other user', () => {
-      // TODO: make sure it throws an authorization error
+      it('throws authorization error', async () => {
+        const user = someUser
+        const result = await socialMediaAction(user, mutation, variables)
+
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+      })
     })
 
     describe('authenticated as owner', () => {
-      it('updates social media', async () => {
-        const expected = { UpdateSocialMedia: { ...variables } }
+      let user
 
-        await expect(client.request(mutation, variables)).resolves.toEqual(
+      beforeEach(() => {
+        user = owner
+      })
+
+      it('updates social media with the given id', async () => {
+        const expected = {
+          data: {
+            UpdateSocialMedia: { ...variables },
+          },
+        }
+
+        await expect(socialMediaAction(user, mutation, variables)).resolves.toEqual(
           expect.objectContaining(expected),
         )
       })
 
-      describe('given a non-existent id', () => {
-        // TODO: make sure it throws an error
+      it('does not update if the the given id does not exist', async () => {
+        variables.id = 'some-id'
+        const result = await socialMediaAction(user, mutation, variables)
+
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
   })
 
   describe('delete social media', () => {
+    let mutation, variables
+
     beforeEach(async () => {
-      headers = await login(ownerParams)
-      client = new GraphQLClient(host, { headers })
+      const socialMedia = await setUpSocialMedia()
 
-      const { CreateSocialMedia } = await client.request(createSocialMediaMutation, { url })
-      const { id } = CreateSocialMedia
-
-      variables = { id }
-      mutation = deleteSocialMediaMutation
+      mutation = gql`
+        mutation($id: ID!) {
+          DeleteSocialMedia(id: $id) {
+            id
+            url
+          }
+        }
+      `
+      variables = { url: newUrl, id: socialMedia.id }
     })
 
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        client = new GraphQLClient(host)
+        const user = null
+        const result = await socialMediaAction(user, mutation, variables)
 
-        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated as other user', () => {
-      // TODO: make sure it throws an authorization error
+      it('throws authorization error', async () => {
+        const user = someUser
+        const result = await socialMediaAction(user, mutation, variables)
+
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+      })
     })
 
     describe('authenticated as owner', () => {
+      let user
+
       beforeEach(async () => {
-        headers = await login(ownerParams)
-        client = new GraphQLClient(host, { headers })
+        user = owner
       })
 
-      it('deletes social media', async () => {
+      it('deletes social media with the given id', async () => {
         const expected = {
-          DeleteSocialMedia: {
-            id: variables.id,
-            url: url,
+          data: {
+            DeleteSocialMedia: {
+              id: variables.id,
+              url,
+            },
           },
         }
-        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+
+        await expect(socialMediaAction(user, mutation, variables)).resolves.toEqual(
+          expect.objectContaining(expected),
+        )
       })
     })
   })
