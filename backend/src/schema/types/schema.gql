@@ -134,5 +134,5 @@ type SharedInboxEndpoint {
 type SocialMedia {
   id: ID!
   url: String
-  ownedBy: [User]! @relation(name: "OWNED", direction: "IN")
+  ownedBy: [User]! @relation(name: "OWNED_BY", direction: "IN")
 }
