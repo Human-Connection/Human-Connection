@@ -18,7 +18,7 @@
             :value="form.content"
             @input="updateEditorContent"
           />
-          <small class="smallTag">{{ form.contentLength }}/{{ content_max }}</small>
+          <small class="smallTag">{{ form.contentLength }}/{{ contentMax }}</small>
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
         <hc-categories-select
@@ -50,10 +50,11 @@
             {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button
+            class="submit-button-for-test"
             type="submit"
             icon="check"
             :loading="loading"
-            :disabled="disabled || errors"
+            :disabled="disabledByContent || errors"
             primary
           >
             {{ $t('actions.save') }}
@@ -112,11 +113,11 @@ export default {
       },
       id: null,
       loading: false,
-      disabled: true,
+      disabledByContent: true,
       slug: null,
       users: [],
-      content_min: 3,
-      content_max: 2000,
+      contentMin: 3,
+      contentMax: 2000,
 
       hashtags: [],
     }
@@ -130,8 +131,9 @@ export default {
         }
         this.id = contribution.id
         this.slug = contribution.slug
-        this.form.content = contribution.content
         this.form.title = contribution.title
+        this.form.content = contribution.content
+        this.manageContent(this.form.content)
         this.form.image = contribution.image
         this.form.categoryIds = this.categoryIds(contribution.categories)
       },
@@ -177,7 +179,7 @@ export default {
         .then(res => {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
-          this.disabled = true
+          this.disabledByContent = true
           const result = res.data[this.id ? 'UpdatePost' : 'CreatePost']
 
           this.$router.push({
@@ -188,22 +190,23 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
           this.loading = false
-          this.disabled = false
+          this.disabledByContent = false
         })
     },
     updateEditorContent(value) {
-      // disable form
-      this.disabled = true
       // TODO: Do smth????? what is happening
       this.$refs.contributionForm.update('content', value)
+      this.manageContent(value)
+    },
+    manageContent(content) {
       // filter HTML out of content value
-      const str = value.replace(/<\/?[^>]+(>|$)/gm, '')
+      const str = content.replace(/<\/?[^>]+(>|$)/gm, '')
       // Set counter length of text
       this.form.contentLength = str.length
+      console.log('this.disabledByContent: ', this.disabledByContent)
       // Enable save button if requirements are met
-      if (str.length >= this.content_min && str.length <= this.content_max) {
-        this.disabled = false
-      }
+      this.disabledByContent = !(this.contentMin <= str.length && str.length <= this.contentMax)
+      console.log('this.disabledByContent: ', this.disabledByContent)
     },
     availableLocales() {
       orderBy(locales, 'name').map(locale => {

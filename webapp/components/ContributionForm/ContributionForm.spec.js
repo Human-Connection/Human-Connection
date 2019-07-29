@@ -26,13 +26,13 @@ describe('ContributionForm.vue', () => {
   const postTitle = 'this is a title for a post'
   const postTitleTooShort = 'xx'
   let postTitleTooLong = ''
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 65; i++) {
     postTitleTooLong += 'x'
   }
   const postContent = 'this is a post'
-  const postContentTooShort = 'xx'
+  const postContentTooShort = 'xxx'
   let postContentTooLong = ''
-  for (let i = 0; i < 2008; i++) {
+  for (let i = 0; i < 2000; i++) {
     postContentTooLong += 'x'
   }
   const imageUpload = {
@@ -157,7 +157,11 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           wrapper.vm.updateEditorContent(postContentTooLong)
+          // console.log('this.form.content: ', wrapper.vm.form.content)
+          console.log('wrapper.vm.contentMin: ', wrapper.vm.contentMin)
+          console.log('wrapper.vm.contentMax: ', wrapper.vm.contentMax)
           await wrapper.find('form').trigger('submit')
+          // await wrapper.find('.submit-button-for-test').trigger('click')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
 
@@ -165,7 +169,9 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           wrapper.vm.updateEditorContent(postContentTooShort)
+          // console.log('this.form.content: ', wrapper.vm.form.content)
           await wrapper.find('form').trigger('submit')
+          // await wrapper.find('.submit-button-for-test').trigger('click')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
       })
