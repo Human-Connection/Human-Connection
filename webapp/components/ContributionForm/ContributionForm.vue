@@ -9,6 +9,9 @@
             :src="contribution.image | proxyApiUrl"
           />
         </hc-teaser-image>
+        <ds-space />
+        <hc-user :user="currentUser" :trunc="35" />
+        <ds-space />
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
         <no-ssr>
           <hc-editor
@@ -65,18 +68,21 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor/Editor'
 import orderBy from 'lodash/orderBy'
+import { mapGetters } from 'vuex'
+import HcEditor from '~/components/Editor/Editor'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
+import HcUser from '~/components/User'
 
 export default {
   components: {
     HcEditor,
     HcCategoriesSelect,
     HcTeaserImage,
+    HcUser,
   },
   props: {
     contribution: { type: Object, default: () => {} },
@@ -128,6 +134,9 @@ export default {
           : locales.find(loc => this.$i18n.locale() === loc.code)
       return locale.name
     },
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
   },
   mounted() {
     this.availableLocales()
