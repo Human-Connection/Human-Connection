@@ -57,7 +57,7 @@
     "accounting": "~0.4.1",
     "apollo-cache-inmemory": "~1.5.1",
     "apollo-client": "~2.6.3",
-    "cookie-universal-nuxt": "~2.0.16",
+    "cookie-universal-nuxt": "~2.0.17",
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0-beta.3",
     "express": "~4.17.1",
