@@ -169,7 +169,8 @@
     },
     "social-media": {
       "name": "Social media",
-      "placeholder": "Add social media url",
+      "placeholder": "Your social media url",
+      "requireUnique": "You added this url already",
       "submit": "Add link",
       "successAdd": "Added social media. Updated user profile!",
       "successDelete": "Deleted social media. Updated user profile!"
@@ -288,6 +289,7 @@
     "reportContent": "Report",
     "validations": {
       "email": "must be a valid email address",
+      "url": "must be a valid URL",
       "verification-code": "must be 6 characters long"
     }
   },
