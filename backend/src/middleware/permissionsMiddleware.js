@@ -1,4 +1,7 @@
 import { rule, shield, deny, allow, and, or, not } from 'graphql-shield'
+import { neode } from '../bootstrap/neo4j'
+
+const instance = neode()
 
 /*
  * TODO: implement
@@ -7,7 +10,7 @@ import { rule, shield, deny, allow, and, or, not } from 'graphql-shield'
 const isAuthenticated = rule({
   cache: 'contextual',
 })(async (_parent, _args, ctx, _info) => {
-  return ctx.user !== null
+  return ctx.user != null
 })
 
 const isModerator = rule()(async (parent, args, { user }, info) => {
@@ -28,6 +31,14 @@ const isMyOwn = rule({
   cache: 'no_cache',
 })(async (parent, args, context, info) => {
   return context.user.id === parent.id
+})
+
+const isMySocialMedia = rule({
+  cache: 'no_cache',
+})(async (_, args, { user }) => {
+  let socialMedia = await instance.find('SocialMedia', args.id)
+  socialMedia = await socialMedia.toJson()
+  return socialMedia.ownedBy.node.id === user.id
 })
 
 const belongsToMe = rule({
@@ -162,8 +173,8 @@ const permissions = shield(
       DeletePost: isAuthor,
       report: isAuthenticated,
       CreateSocialMedia: isAuthenticated,
-      UpdateSocialMedia: isAuthenticated,
-      DeleteSocialMedia: isAuthenticated,
+      UpdateSocialMedia: isMySocialMedia,
+      DeleteSocialMedia: isMySocialMedia,
       // AddBadgeRewarded: isAdmin,
       // RemoveBadgeRewarded: isAdmin,
       reward: isAdmin,
