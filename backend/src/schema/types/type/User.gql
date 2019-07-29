@@ -17,6 +17,7 @@ type User {
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
   locationName: String
   about: String
+  socialMedia: [SocialMedia]! @relation(name: "OWNED_BY", direction: "OUT")
 
   #createdAt: DateTime
   #updatedAt: DateTime
