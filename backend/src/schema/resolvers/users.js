@@ -2,6 +2,7 @@ import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
 import { neode } from '../../bootstrap/neo4j'
 import { UserInputError } from 'apollo-server'
+import { undefinedToNull } from '../helpers'
 
 const instance = neode()
 
@@ -36,16 +37,6 @@ const count = obj => {
   return resolvers
 }
 
-const undefinedToNull = list => {
-  const resolvers = {}
-  list.forEach(key => {
-    resolvers[key] = async (parent, params, context, resolveInfo) => {
-      return typeof parent[key] === 'undefined' ? null : parent[key]
-    }
-  })
-  return resolvers
-}
-
 export const hasMany = obj => {
   const resolvers = {}
   for (const [key, connection] of Object.entries(obj)) {
@@ -65,6 +56,13 @@ export const hasOne = obj => {
 export default {
   Query: {
     User: async (object, args, context, resolveInfo) => {
+      const { email } = args
+      if (email) {
+        const e = await instance.first('EmailAddress', { email })
+        let user = e.get('belongsTo')
+        user = await user.toJson()
+        return [user.node]
+      }
       return neo4jgraphql(object, args, context, resolveInfo, false)
     },
   },
@@ -104,6 +102,14 @@ export default {
     },
   },
   User: {
+    email: async (parent, params, context, resolveInfo) => {
+      if (typeof parent.email !== 'undefined') return parent.email
+      const { id } = parent
+      const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
+      const result = await instance.cypher(statement, { id })
+      let [{ email }] = result.records.map(r => r.get('e').properties)
+      return email
+    },
     ...undefinedToNull([
       'actorId',
       'avatar',

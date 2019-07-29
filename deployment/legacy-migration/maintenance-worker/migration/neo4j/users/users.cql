@@ -111,6 +111,13 @@ u.createdAt  = user.createdAt.`$date`,
 u.updatedAt  = user.updatedAt.`$date`,
 u.deleted    = user.deletedAt IS NOT NULL,
 u.disabled   = false
+MERGE (e:EmailAddress {
+  email: user.email,
+  createdAt: toString(datetime()),
+  verifiedAt: toString(datetime())
+})
+MERGE (e)-[:BELONGS_TO]->(u)
+MERGE (u)<-[:PRIMARY_EMAIL]-(e)
 WITH u, user, user.badgeIds AS badgeIds
 UNWIND badgeIds AS badgeId
 MATCH (b:Badge {id: badgeId})

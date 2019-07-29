@@ -1,13 +1,14 @@
 <template>
-  <ds-form v-show="!editPending" v-model="form" @submit="handleSubmit">
+  <ds-form v-model="form" @submit="handleSubmit">
     <template slot-scope="{ errors }">
       <ds-card>
+        <!-- with no-ssr the content is not shown -->
         <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
         <ds-space />
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }">
-            <ds-button :disabled="disabled" ghost class="cancelBtn" @click.prevent="clear">
+            <ds-button ghost class="cancelBtn" @click.prevent="closeEditWindow">
               {{ $t('actions.cancel') }}
             </ds-button>
           </ds-flex-item>
@@ -25,70 +26,61 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor/Editor'
-import PostCommentsQuery from '~/graphql/PostCommentsQuery.js'
+import { mapMutations } from 'vuex'
 import CommentMutations from '~/graphql/CommentMutations.js'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
     HcEditor,
   },
   props: {
-    post: { type: Object, default: () => {} },
-    comments: { type: Array, default: () => [] },
+    comment: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
   },
   data() {
     return {
       disabled: true,
       loading: false,
       form: {
-        content: '',
+        content: this.comment.content,
       },
       users: [],
     }
   },
-  computed: {
-    ...mapGetters({
-      editPending: 'editor/editPending',
-    }),
-  },
   methods: {
+    ...mapMutations({
+      setEditPending: 'editor/SET_EDIT_PENDING',
+    }),
     updateEditorContent(value) {
-      const content = value.replace(/<(?:.|\n)*?>/gm, '').trim()
-      if (content.length < 1) {
-        this.disabled = true
-      } else {
-        this.disabled = false
-      }
+      const sanitizedContent = value.replace(/<(?:.|\n)*?>/gm, '').trim()
+      this.disabled = value === this.comment.content || sanitizedContent.length < 1
       this.form.content = value
     },
-    clear() {
-      this.$refs.editor.clear()
+    closeEditWindow() {
+      this.$emit('showEditCommentMenu', false)
     },
     handleSubmit() {
       this.loading = true
       this.disabled = true
       this.$apollo
         .mutate({
-          mutation: CommentMutations().CreateComment,
+          mutation: CommentMutations().UpdateComment,
           variables: {
-            postId: this.post.id,
             content: this.form.content,
-          },
-          update: (store, { data: { CreateComment } }) => {
-            const data = store.readQuery({
-              query: PostCommentsQuery(this.$i18n),
-              variables: { slug: this.post.slug },
-            })
-            data.Post[0].comments.push(CreateComment)
-            store.writeQuery({ query: PostCommentsQuery(this.$i18n), data })
+            id: this.comment.id,
           },
         })
-        .then(res => {
+        .then(() => {
           this.loading = false
-          this.clear()
-          this.$toast.success(this.$t('post.comment.submitted'))
+
+          this.$toast.success(this.$t('post.comment.updated'))
           this.disabled = false
+          this.$emit('showEditCommentMenu', false)
+          this.setEditPending(false)
         })
         .catch(err => {
           this.$toast.error(err.message)
@@ -98,17 +90,17 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql(`{
-          User(orderBy: slug_asc) {
-            id
-            slug
-            name
-            avatar
+        return gql`
+          {
+            User(orderBy: slug_asc) {
+              id
+              slug
+            }
           }
-        }`)
+        `
       },
-      result(result) {
-        this.users = result.data.User
+      result({ data: { User } }) {
+        this.users = User
       },
     },
   },
