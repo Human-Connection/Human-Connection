@@ -1,43 +1,32 @@
-import { neo4jgraphql } from 'neo4j-graphql-js'
+import { neode } from '../../bootstrap/neo4j'
+
+const instance = neode()
 
 export default {
   Mutation: {
     CreateSocialMedia: async (object, params, context, resolveInfo) => {
-      const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
-      const session = context.driver.session()
-      await session.run(
-        `MATCH (owner:User {id: $userId}), (socialMedia:SocialMedia {id: $socialMediaId})
-        MERGE (socialMedia)<-[:OWNED]-(owner)
-        RETURN owner`,
-        {
-          userId: context.user.id,
-          socialMediaId: socialMedia.id,
-        },
-      )
-      session.close()
+      const [user, socialMedia] = await Promise.all([
+        instance.find('User', context.user.id),
+        instance.create('SocialMedia', params),
+      ])
+      await socialMedia.relateTo(user, 'ownedBy')
+      const response = await socialMedia.toJson()
 
-      return socialMedia
+      return response
     },
     DeleteSocialMedia: async (object, params, context, resolveInfo) => {
-      const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
+      const socialMedia = await instance.find('SocialMedia', params.id)
+      const response = await socialMedia.toJson()
+      await socialMedia.delete()
 
-      return socialMedia
+      return response
     },
     UpdateSocialMedia: async (object, params, context, resolveInfo) => {
-      const session = context.driver.session()
-      await session.run(
-        `MATCH (owner: User { id: $userId })-[:OWNED]->(socialMedia: SocialMedia { id: $socialMediaId })
-        SET socialMedia.url = $socialMediaUrl
-        RETURN owner`,
-        {
-          userId: context.user.id,
-          socialMediaId: params.id,
-          socialMediaUrl: params.url,
-        },
-      )
-      session.close()
+      const socialMedia = await instance.find('SocialMedia', params.id)
+      await socialMedia.update({ url: params.url })
+      const response = await socialMedia.toJson()
 
-      return params
+      return response
     },
   },
 }
