@@ -49,7 +49,7 @@
     "apollo-link-context": "~1.0.18",
     "apollo-link-http": "~1.5.15",
     "apollo-server": "~2.7.0",
-    "apollo-server-express": "^2.6.9",
+    "apollo-server-express": "^2.7.2",
     "bcryptjs": "~2.4.3",
     "cheerio": "~1.0.0-rc.3",
     "cors": "~2.8.5",
