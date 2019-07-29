@@ -71,5 +71,39 @@ export default {
 
       return post.properties
     },
+    AddPostEmotions: async (object, params, context, resolveInfo) => {
+      const session = context.driver.session()
+      const { from, to, data } = params
+      const transactionRes = await session.run(
+        `MATCH (userFrom:User {id: $from.id}), (postTo:Post {id: $to.id})
+        MERGE (userFrom)-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo)
+        RETURN userFrom, postTo, emotedRelation`,
+        { from, to, data },
+      )
+      session.close()
+      const [emoted] = transactionRes.records.map(record => {
+        return {
+          from: { id: record.get('userFrom').properties.id },
+          to: { id: record.get('postTo').properties.id },
+          emotion: record.get('emotedRelation').properties.emotion,
+        }
+      })
+      return emoted
+    },
+    RemovePostEmotions: async (object, params, context, resolveInfo) => {
+      const session = context.driver.session()
+      const { from, to, data } = params
+      const transactionRes = await session.run(
+        `MATCH (userFrom:User {id: $from.id})-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo:Post {id: $to.id})
+        DELETE emotedRelation
+        RETURN emotedRelation`,
+        { from, to, data },
+      )
+      session.close()
+      const [removed] = transactionRes.records.map(record => {
+        return record.get('emotedRelation')
+      })
+      return !!removed
+    },
   },
 }

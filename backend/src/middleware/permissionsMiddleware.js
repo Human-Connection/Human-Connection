@@ -184,6 +184,7 @@ const permissions = shield(
       requestPasswordReset: allow,
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,
+      RemovePostEmotions: isAuthenticated,
     },
     User: {
       email: isMyOwn,

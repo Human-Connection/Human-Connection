@@ -58,6 +58,7 @@ const postQueryFilteredByCategoryVariables = {
 }
 beforeEach(async () => {
   userParams = {
+    id: 'u198',
     name: 'TestUser',
     email: 'test@example.org',
     password: '1234',
@@ -384,43 +385,59 @@ describe('DeletePost', () => {
   })
 })
 
-describe('AddPostEmotions', () => {
+describe('emotions', () => {
   let addPostEmotionsVariables
-  const addPostEmotionsMutation = `
-    mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
-      AddPostEmotions(from: $from, to: $to, data: $data) {
-        from {
-          id
-        }
-        to {
-          id
-        }
-        emotion
-      }
+  let postEmotionsVariables
+  beforeEach(async () => {
+    const asAuthor = Factory()
+    authorParams = {
+      id: 'u25',
+      email: 'wanna-add-emotions@example.org',
+      password: '1234',
     }
-  `
-  describe('emotions', () => {
-    beforeEach(async () => {
-      const asAuthor = Factory()
-      authorParams = {
-        id: 'u25',
-        email: 'wanna-add-emotions@example.org',
-        password: '1234',
-      }
-      await asAuthor.create('User', authorParams)
-      await asAuthor.authenticateAs(authorParams)
-      await asAuthor.create('Post', {
-        id: 'p1376',
-        title: postTitle,
-        content: postContent,
-      })
-      addPostEmotionsVariables = {
-        from: { id: authorParams.id },
-        to: { id: 'p1376' },
-        data: { emotion: 'happy' },
-      }
+    await asAuthor.create('User', authorParams)
+    await asAuthor.authenticateAs(authorParams)
+    await asAuthor.create('Post', {
+      id: 'p1376',
+      title: postTitle,
+      content: postContent,
     })
-    // it('supports setting emotions for a post', () => {})
+    addPostEmotionsVariables = {
+      from: { id: authorParams.id },
+      to: { id: 'p1376' },
+      data: { emotion: 'happy' },
+    }
+    postEmotionsVariables = {
+      id: 'p1376',
+    }
+  })
+
+  describe('AddPostEmotions', () => {
+    const addPostEmotionsMutation = `
+      mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
+        AddPostEmotions(from: $from, to: $to, data: $data) {
+          from { id }
+          to { id }
+          emotion
+        }
+      }
+    `
+    const postEmotionsCountQuery = `
+      query($id: ID!) {
+        Post(id: $id) {
+          emotionsCount
+        }
+      }
+    `
+    const postEmotionsQuery = `
+      query($id: ID!) {
+        Post(id: $id) {
+          emotions {
+            emotion
+          }
+        }
+      }
+    `
 
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
@@ -432,6 +449,52 @@ describe('AddPostEmotions', () => {
             data: { emotion: 'happy' },
           }),
         ).rejects.toThrow('Not Authorised')
+      })
+    })
+
+    describe('authenticated and not the author', () => {
+      let headers
+      beforeEach(async () => {
+        headers = await login(userParams)
+        client = new GraphQLClient(host, { headers })
+      })
+
+      it('adds an emotion to the post', async () => {
+        addPostEmotionsVariables.from.id = userParams.id
+        const expected = {
+          AddPostEmotions: {
+            from: addPostEmotionsVariables.from,
+            to: addPostEmotionsVariables.to,
+            emotion: 'happy',
+          },
+        }
+        await expect(
+          client.request(addPostEmotionsMutation, addPostEmotionsVariables),
+        ).resolves.toEqual(expected)
+      })
+      it('limits the addition of the same emotion to 1', async () => {
+        const expected = {
+          Post: [
+            {
+              emotionsCount: 1,
+            },
+          ],
+        }
+        await client.request(addPostEmotionsMutation, addPostEmotionsVariables)
+        await client.request(addPostEmotionsMutation, addPostEmotionsVariables)
+        await expect(
+          client.request(postEmotionsCountQuery, postEmotionsVariables),
+        ).resolves.toEqual(expected)
+      })
+
+      it('allows a user to add more than one emotion', async () => {
+        const expected = [{ emotion: 'happy' }, { emotion: 'surprised' }]
+        await client.request(addPostEmotionsMutation, addPostEmotionsVariables)
+        addPostEmotionsVariables.data.emotion = 'surprised'
+        await client.request(addPostEmotionsMutation, addPostEmotionsVariables)
+        await expect(client.request(postEmotionsQuery, postEmotionsVariables)).resolves.toEqual({
+          Post: [{ emotions: expect.arrayContaining(expected) }],
+        })
       })
     })
 
@@ -453,6 +516,26 @@ describe('AddPostEmotions', () => {
         await expect(
           client.request(addPostEmotionsMutation, addPostEmotionsVariables),
         ).resolves.toEqual(expected)
+      })
+    })
+  })
+
+  describe('RemovePostEmotions', () => {
+    const removePostEmotionsMutation = `
+      mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
+        RemovePostEmotions(from: $from, to: $to, data: $data)
+      }
+    `
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        client = new GraphQLClient(host)
+        await expect(
+          client.request(removePostEmotionsMutation, {
+            from: { id: 'u25' },
+            to: { id: 'p1376' },
+            data: { emotion: 'happy' },
+          }),
+        ).rejects.toThrow('Not Authorised')
       })
     })
   })

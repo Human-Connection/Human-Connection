@@ -51,9 +51,7 @@ type Post {
 
   emotions: [EMOTED]
   emotionsCount: Int!
-    @cypher(
-      statement: "MATCH (this)<-[emoted:EMOTED]-(:User) RETURN COUNT(DISTINCT emoted)"
-    )
+    @cypher(statement: "MATCH (this)<-[emoted:EMOTED]-(:User) RETURN COUNT(DISTINCT emoted)")
 }
 
 type Mutation {
@@ -93,4 +91,5 @@ type Mutation {
     language: String
     categoryIds: [ID]
   ): Post
+  RemovePostEmotions(from: _UserInput!, to: _PostInput!, data: _EMOTEDInput!): Boolean!
 }
