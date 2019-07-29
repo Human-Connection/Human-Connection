@@ -4,6 +4,10 @@
     "hashtag-search": "Searching for #{hashtag}",
     "clearSearch": "Clear search"
   },
+  "filter-posts": {
+    "header": "Categories of Content",
+    "all": "All"
+  },
   "site": {
     "made": "Made with &#10084;",
     "imprint": "Imprint",
@@ -14,8 +18,8 @@
     "tribunal": "Registry court",
     "register": "Registry number",
     "director": "Managing Director",
-    "taxident": "Value added tax identification number according to § 27 a Value Added Tax Act (Germany)",
-    "responsible": "Responsible according to § 55 Abs. 2 RStV (Germany) ",
+    "taxident": "USt-ID. according to §27a of the German Sales Tax Law:",
+    "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
     "germany": "Germany"
   },
@@ -50,8 +54,8 @@
           "email-exists": "There is already a user account with this email address!",
           "invalid-invitation-token": "It looks like as if the invitation has been used already. Invitation links can only be used once."
         },
-      "submit": "Create an account",
-      "success": "A mail with a link to complete your registration has been sent to <b>{email}</b>"
+        "submit": "Create an account",
+        "success": "A mail with a link to complete your registration has been sent to <b>{email}</b>"
       }
     },
     "create-user-account": {
@@ -189,7 +193,19 @@
       "name": "Organizations"
     },
     "users": {
-      "name": "Users"
+      "name": "Users",
+      "form": {
+        "placeholder": "E-Mail, name or description"
+      },
+      "table": {
+        "columns": {
+          "name": "Name",
+          "slug": "Slug",
+          "role": "Role",
+          "createdAt": "Created at"
+        }
+      },
+      "empty": "No users found"
     },
     "pages": {
       "name": "Pages"
@@ -230,7 +246,8 @@
     },
     "comment": {
       "submit": "Comment",
-      "submitted": "Comment Submitted"
+      "submitted": "Comment Submitted",
+      "updated": "Changes Saved"
     }
   },
   "comment": {
@@ -245,7 +262,6 @@
       "more": "show more",
       "less": "show less"
     }
-
   },
   "quotes": {
     "african": {

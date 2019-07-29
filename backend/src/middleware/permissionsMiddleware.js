@@ -136,6 +136,7 @@ const permissions = shield(
     Query: {
       '*': deny,
       findPosts: allow,
+      embed: allow,
       Category: allow,
       Tag: allow,
       Report: isModerator,
@@ -146,6 +147,7 @@ const permissions = shield(
       Comment: allow,
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
+      Badge: allow,
     },
     Mutation: {
       '*': deny,
@@ -160,9 +162,6 @@ const permissions = shield(
       UpdatePost: isAuthor,
       DeletePost: isAuthor,
       report: isAuthenticated,
-      CreateBadge: isAdmin,
-      UpdateBadge: isAdmin,
-      DeleteBadge: isAdmin,
       CreateSocialMedia: isAuthenticated,
       DeleteSocialMedia: isAuthenticated,
       // AddBadgeRewarded: isAdmin,
@@ -178,6 +177,7 @@ const permissions = shield(
       enable: isModerator,
       disable: isModerator,
       CreateComment: isAuthenticated,
+      UpdateComment: isAuthor,
       DeleteComment: isAuthor,
       DeleteUser: isDeletingOwnAccount,
       requestPasswordReset: allow,

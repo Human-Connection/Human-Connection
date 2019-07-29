@@ -1,4 +1,0 @@
-enum BadgeStatus {
-  permanent
-  temporary
-}

@@ -1810,10 +1810,10 @@ cucumber@^4.2.1:
     util-arity "^1.0.2"
     verror "^1.9.0"
 
-cypress-cucumber-preprocessor@^1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.12.0.tgz#092428ba267331e3d2cc6e1309c331d17632b8b1"
-  integrity sha512-uKrWbs51hGeHiLgcSZcjFvvVEW9UdStsLVpD1snuPuik9WE61kbZv7xumlPjRmkMF81zTUGnNLwZuAk3CV9dEw==
+cypress-cucumber-preprocessor@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.13.0.tgz#efacd70ce21c7d0adc60e25af166f5fb2e990fb8"
+  integrity sha512-Y3B4El3oYqKUvEhfn7k7NrX/hMJvOCJIO+sgMbvvPXsUngzLWUdiS2LOAaSxpV4t2BCyFuvfzGH0j+C3tu4UvA==
   dependencies:
     "@cypress/browserify-preprocessor" "^1.1.2"
     chai "^4.1.2"
@@ -1827,10 +1827,10 @@ cypress-cucumber-preprocessor@^1.12.0:
     glob "^7.1.2"
     through "^2.3.8"
 
-cypress-file-upload@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.2.0.tgz#a48282e1fea385ba6aef9ec3296a934026f5fd67"
-  integrity sha512-C1nFgURTgvtz9MpP7sYKjhKSdgQvDhUs3f4w6hvEH33wDDQUkmXwrozKDvxXSdccc07M7wH4O5JF61sTkvY8lA==
+cypress-file-upload@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.3.2.tgz#d9bb00cac756fd4b5f68079f19745fe40d97fdd4"
+  integrity sha512-39CW6/rTmn7AGa+ZrD37R+ANnnWAesbUj2RpBfbpRzV+KTAlF+m9Djbd2f325w0JGY0A2eO0w6TYYo+NvBTnoA==
 
 cypress-plugin-retries@^1.2.2:
   version "1.2.2"
@@ -3569,10 +3569,10 @@ neo4j-driver@^1.6.3, neo4j-driver@^1.7.5:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neode@^0.2.16:
-  version "0.2.16"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.2.16.tgz#20532cc67604fd00cc88de841d422f5238ae5bd3"
-  integrity sha512-L9p55IDKGzAZsQgHdXrfd2xasDuB46RipcrPw6NP7ESgkmfJMaMWRZ1F3Kv+f4V4U1WnhZ1IILvwVFhYPnpXEg==
+neode@^0.2.18:
+  version "0.2.18"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.2.18.tgz#b7cc26e69df46dbfc3ea2e97334db8691f52d9e7"
+  integrity sha512-oUWYMao6tM8DdsqeyaVUmFKhwEbjqIfwW2KKL9HQE4ffWK531cnslWqzu2B/xoQj+d1Q3Ebhe3to1U5Z1Y+pfQ==
   dependencies:
     dotenv "^4.0.0"
     joi "^13.7.0"

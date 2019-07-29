@@ -5,7 +5,7 @@ export async function createPasswordReset(options) {
   const { driver, code, email, issuedAt = new Date() } = options
   const session = driver.session()
   const cypher = `
-      MATCH (u:User) WHERE u.email = $email
+      MATCH (u:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email:$email})
       CREATE(pr:PasswordReset {code: $code, issuedAt: datetime($issuedAt), usedAt: NULL})
       MERGE (u)-[:REQUESTED]->(pr)
       RETURN u
@@ -35,7 +35,7 @@ export default {
       const encryptedNewPassword = await bcrypt.hashSync(newPassword, 10)
       const cypher = `
       MATCH (pr:PasswordReset {code: $code})
-      MATCH (u:User {email: $email})-[:REQUESTED]->(pr)
+      MATCH (e:EmailAddress {email: $email})<-[:PRIMARY_EMAIL]-(u:User)-[:REQUESTED]->(pr)
       WHERE duration.between(pr.issuedAt, datetime()).days <= 0 AND pr.usedAt IS NULL
       SET pr.usedAt = datetime()
       SET u.encryptedPassword = $encryptedNewPassword

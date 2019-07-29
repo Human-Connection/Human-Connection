@@ -11,7 +11,6 @@ addons:
 before_install:
   - yarn global add wait-on
   # Install Codecov
-  - yarn global add codecov
   - yarn install
   - cp cypress.env.template.json cypress.env.json
 
@@ -40,7 +39,7 @@ script:
   # Fullstack
   - yarn run cypress:run
   # Coverage
-  - codecov
+  - yarn run codecov
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
