@@ -42,5 +42,14 @@ services:
       context: neo4j
     networks:
       - hc-network
+  maintenance:
+    image: humanconnection/maintenance:latest
+    build:
+      context: deployment/human-connection/maintenance
+    networks:
+      - hc-network
+    ports:
+      - 80:80
+
 networks:
   hc-network:
