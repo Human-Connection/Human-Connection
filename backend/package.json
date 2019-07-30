@@ -62,7 +62,7 @@
     "graphql": "~14.4.2",
     "graphql-custom-directives": "~0.2.14",
     "graphql-iso-date": "~3.6.1",
-    "graphql-middleware": "~3.0.2",
+    "graphql-middleware": "~3.0.3",
     "graphql-shield": "~6.0.4",
     "graphql-tag": "~2.10.1",
     "helmet": "~3.20.0",
