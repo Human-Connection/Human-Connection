@@ -96,14 +96,15 @@ export default {
       const transactionRes = await session.run(
         `MATCH (userFrom:User {id: $from.id})-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo:Post {id: $to.id})
         DELETE emotedRelation
-        RETURN emotedRelation`,
+        `,
         { from, to, data },
       )
       session.close()
-      const [removed] = transactionRes.records.map(record => {
-        return record.get('emotedRelation')
+      const [emoted] = transactionRes.records.map(record => {
+        return record.get('emotedRelation').properties.emotion
       })
-      return !!removed
+
+      return !emoted
     },
   },
 }

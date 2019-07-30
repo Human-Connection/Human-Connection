@@ -24,6 +24,12 @@ const onlyYourself = rule({
   return context.user.id === args.id
 })
 
+const isMyEmotion = rule({
+  cache: 'no_cache',
+})(async (parent, args, context, info) => {
+  return context.user.id === args.from.id
+})
+
 const isMyOwn = rule({
   cache: 'no_cache',
 })(async (parent, args, context, info) => {
@@ -184,7 +190,7 @@ const permissions = shield(
       requestPasswordReset: allow,
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,
-      RemovePostEmotions: isAuthenticated,
+      RemovePostEmotions: isMyEmotion,
     },
     User: {
       email: isMyOwn,

@@ -487,6 +487,86 @@ import Factory from './factories'
         from: 'p15',
         to: 'Demokratie',
       }),
+      f.emote({
+        from: 'u1',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u2',
+        to: 'p14',
+        data: 'cry',
+      }),
+      f.emote({
+        from: 'u3',
+        to: 'p13',
+        data: 'angry',
+      }),
+      f.emote({
+        from: 'u4',
+        to: 'p12',
+        data: 'funny',
+      }),
+      f.emote({
+        from: 'u5',
+        to: 'p11',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u6',
+        to: 'p10',
+        data: 'cry',
+      }),
+      f.emote({
+        from: 'u5',
+        to: 'p9',
+        data: 'happy',
+      }),
+      f.emote({
+        from: 'u4',
+        to: 'p8',
+        data: 'angry',
+      }),
+      f.emote({
+        from: 'u3',
+        to: 'p7',
+        data: 'funny',
+      }),
+      f.emote({
+        from: 'u2',
+        to: 'p6',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u1',
+        to: 'p5',
+        data: 'cry',
+      }),
+      f.emote({
+        from: 'u2',
+        to: 'p4',
+        data: 'happy',
+      }),
+      f.emote({
+        from: 'u3',
+        to: 'p3',
+        data: 'angry',
+      }),
+      f.emote({
+        from: 'u4',
+        to: 'p2',
+        data: 'funny',
+      }),
+      f.emote({
+        from: 'u5',
+        to: 'p1',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u6',
+        to: 'p0',
+        data: 'cry',
+      }),
     ])
 
     await Promise.all([
