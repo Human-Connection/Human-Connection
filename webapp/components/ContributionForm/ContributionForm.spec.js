@@ -14,6 +14,8 @@ localVue.use(Styleguide)
 localVue.use(Filters)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
+config.stubs['v-popover'] = '<span><slot /></span>'
 
 describe('ContributionForm.vue', () => {
   let wrapper
@@ -70,6 +72,13 @@ describe('ContributionForm.vue', () => {
     const getters = {
       'editor/placeholder': () => {
         return 'some cool placeholder'
+      },
+      'auth/user': () => {
+        return {
+          id: '4711',
+          name: 'You yourself',
+          slug: 'you-yourself',
+        }
       },
     }
     const store = new Vuex.Store({
