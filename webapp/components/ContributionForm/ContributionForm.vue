@@ -1,5 +1,5 @@
 <template>
-  <ds-form ref="contributionForm" v-model="form" :schema="formSchema" @submit="submit">
+  <ds-form ref="contributionForm" v-model="form" :schema="formSchema">
     <template slot-scope="{ errors }">
       <ds-card>
         <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
@@ -13,6 +13,7 @@
         <hc-user :user="currentUser" :trunc="35" />
         <ds-space />
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
+        <small class="smallTag">{{ form.title.length }}/{{ formSchema.title.max }}</small>
         <no-ssr>
           <hc-editor
             :users="users"
@@ -20,6 +21,7 @@
             :value="form.content"
             @input="updateEditorContent"
           />
+          <small class="smallTag">{{ form.contentLength }}/{{ contentMax }}</small>
         </no-ssr>
         <ds-space margin-bottom="xxx-large" />
         <hc-categories-select
@@ -44,18 +46,20 @@
         <div slot="footer" style="text-align: right">
           <ds-button
             class="cancel-button"
-            :disabled="loading || disabled"
+            :disabled="loading"
             ghost
             @click.prevent="$router.back()"
           >
             {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button
+            class="submit-button-for-test"
             type="submit"
             icon="check"
             :loading="loading"
-            :disabled="disabled || errors"
+            :disabled="disabledByContent || errors"
             primary
+            @click.prevent="submit"
           >
             {{ $t('actions.save') }}
           </ds-button>
@@ -92,6 +96,7 @@ export default {
       form: {
         title: '',
         content: '',
+        contentLength: 0,
         teaserImage: null,
         image: null,
         language: null,
@@ -100,13 +105,16 @@ export default {
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
-        content: { required: true, min: 3 },
+        content: [{ required: true }],
       },
       id: null,
       loading: false,
-      disabled: false,
+      disabledByContent: true,
       slug: null,
       users: [],
+      contentMin: 3,
+      contentMax: 2000,
+
       hashtags: [],
     }
   },
@@ -119,8 +127,9 @@ export default {
         }
         this.id = contribution.id
         this.slug = contribution.slug
-        this.form.content = contribution.content
         this.form.title = contribution.title
+        this.form.content = contribution.content
+        this.manageContent(this.form.content)
         this.form.image = contribution.image
         this.form.categoryIds = this.categoryIds(contribution.categories)
       },
@@ -169,7 +178,7 @@ export default {
         .then(res => {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
-          this.disabled = true
+          this.disabledByContent = true
           const result = res.data[this.id ? 'UpdatePost' : 'CreatePost']
 
           this.$router.push({
@@ -180,12 +189,21 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
           this.loading = false
-          this.disabled = false
+          this.disabledByContent = false
         })
     },
     updateEditorContent(value) {
-      // this.form.content = value
+      // TODO: Do smth????? what is happening
       this.$refs.contributionForm.update('content', value)
+      this.manageContent(value)
+    },
+    manageContent(content) {
+      // filter HTML out of content value
+      const str = content.replace(/<\/?[^>]+(>|$)/gm, '')
+      // Set counter length of text
+      this.form.contentLength = str.length
+      // Enable save button if requirements are met
+      this.disabledByContent = !(this.contentMin <= str.length && str.length <= this.contentMax)
     },
     availableLocales() {
       orderBy(locales, 'name').map(locale => {
@@ -242,6 +260,11 @@ export default {
 </script>
 
 <style lang="scss">
+.smallTag {
+  width: 100%;
+  position: relative;
+  left: 90%;
+}
 .post-title {
   margin-top: $space-x-small;
   margin-bottom: $space-xx-small;
