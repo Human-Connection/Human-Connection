@@ -23,6 +23,12 @@
     "bank": "bank account",
     "germany": "Germany"
   },
+  "sorting": {
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "popular": "Popular",
+    "commented": "most Commented"
+  },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
     "login": "Login",
