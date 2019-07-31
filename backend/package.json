@@ -86,6 +86,7 @@
     "metascraper-url": "^5.5.0",
     "metascraper-video": "^5.6.3",
     "metascraper-youtube": "^4.8.5",
+    "minimatch": "^3.0.4",
     "neo4j-driver": "~1.7.4",
     "neo4j-graphql-js": "^2.6.3",
     "neode": "^0.2.16",

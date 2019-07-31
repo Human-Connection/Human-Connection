@@ -183,32 +183,16 @@
 </template>
 
 <script>
+import defaultExtensions from './defaultExtensions.js'
 import linkify from 'linkify-it'
 import stringHash from 'string-hash'
 import Fuse from 'fuse.js'
 import tippy from 'tippy.js'
 import { Editor, EditorContent, EditorFloatingMenu, EditorMenuBubble } from 'tiptap'
 import EventHandler from './plugins/eventHandler.js'
-import {
-  Heading,
-  HardBreak,
-  Blockquote,
-  ListItem,
-  BulletList,
-  OrderedList,
-  HorizontalRule,
-  Placeholder,
-  Bold,
-  Italic,
-  Strike,
-  Underline,
-  // Link,
-  History,
-} from 'tiptap-extensions'
-import Mention from './nodes/Mention.js'
-import Embed from './nodes/Embed.js'
-import Link from './nodes/Link.js'
+import { History } from 'tiptap-extensions'
 import Hashtag from './nodes/Hashtag.js'
+import Mention from './nodes/Mention.js'
 import { mapGetters } from 'vuex'
 
 let throttleInputEvent
@@ -232,25 +216,8 @@ export default {
         content: this.value || '',
         doc: this.doc,
         extensions: [
+          ...defaultExtensions(this),
           new EventHandler(),
-          new Heading(),
-          new HardBreak(),
-          new Blockquote(),
-          new BulletList(),
-          new OrderedList(),
-          new HorizontalRule(),
-          new Bold(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new Embed(),
-          new Link(),
-          new Heading({ levels: [3, 4] }),
-          new ListItem(),
-          new Placeholder({
-            emptyNodeClass: 'is-empty',
-            emptyNodeText: this.placeholder || this.$t('editor.placeholder'),
-          }),
           new History(),
           new Mention({
             // a list of all suggested items
@@ -496,13 +463,11 @@ export default {
     selectItem(item) {
       const typeAttrs = {
         mention: {
-          // TODO: use router here
-          url: `/profile/${item.id}`,
+          id: item.id,
           label: item.slug,
         },
         hashtag: {
-          // TODO: Fill up with input hashtag in search field
-          url: `/search/hashtag/${item.name}`,
+          id: item.name,
           label: item.name,
         },
       }

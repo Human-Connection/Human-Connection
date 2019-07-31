@@ -23,7 +23,7 @@ Vue.component('v-popover', {
 })
 
 // Automatically import all files ending in *.stories.js
-const req = require.context('../stories', true, /.story.js$/)
+const req = require.context('../components', true, /.story.js$/)
 
 function loadStories() {
   req.keys().forEach(req)

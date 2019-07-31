@@ -1,6 +1,10 @@
 import { Link as TipTapLink } from 'tiptap-extensions'
 
 export default class Link extends TipTapLink {
+  pasteRules({ type }) {
+    return []
+  }
+
   get schema() {
     return {
       attrs: {

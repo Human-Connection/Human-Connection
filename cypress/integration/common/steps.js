@@ -230,7 +230,7 @@ When("I choose {string} as the title of the post", title => {
 
 When("I type in the following text:", text => {
   lastPost.content = text.replace("\n", " ");
-  cy.get(".ProseMirror").type(lastPost.content);
+  cy.get(".editor .ProseMirror").type(lastPost.content);
 });
 
 Then("the post shows up on the landing page at position {int}", index => {

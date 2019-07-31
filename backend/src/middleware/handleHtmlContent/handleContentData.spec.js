@@ -64,7 +64,7 @@ describe('currentUser { notifications }', () => {
         let post
         const title = 'Mentioning Al Capone'
         const content =
-          'Hey <a class="mention" href="/profile/you/al-capone">@al-capone</a> how do you do?'
+          'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
 
         beforeEach(async () => {
           const createPostMutation = gql`
@@ -88,7 +88,7 @@ describe('currentUser { notifications }', () => {
 
         it('sends you a notification', async () => {
           const expectedContent =
-            'Hey <a href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
+            'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
           const expected = {
             currentUser: {
               notifications: [
@@ -108,14 +108,22 @@ describe('currentUser { notifications }', () => {
           ).resolves.toEqual(expected)
         })
 
-        describe('who mentions me again', () => {
+        describe('who mentions me many times', () => {
           beforeEach(async () => {
-            const updatedContent = `${post.content} One more mention to <a href="/profile/you" class="mention">@al-capone</a>`
-            // The response `post.content` contains a link but the XSSmiddleware
-            // should have the `mention` CSS class removed. I discovered this
-            // during development and thought: A feature not a bug! This way we
-            // can encode a re-mentioning of users when you edit your post or
-            // comment.
+            const updatedContent = `
+              One more mention to
+              <a data-mention-id="you" class="mention" href="/profile/you">
+                @al-capone
+              </a>
+              and again:
+              <a data-mention-id="you" class="mention" href="/profile/you">
+                @al-capone
+              </a>
+              and again
+              <a data-mention-id="you" class="mention" href="/profile/you">
+                @al-capone
+              </a>
+            `
             const updatePostMutation = gql`
               mutation($id: ID!, $title: String!, $content: String!) {
                 UpdatePost(id: $id, content: $content, title: $title) {
@@ -136,7 +144,7 @@ describe('currentUser { notifications }', () => {
 
           it('creates exactly one more notification', async () => {
             const expectedContent =
-              'Hey <a href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do? One more mention to <a href="/profile/you" target="_blank">@al-capone</a>'
+              '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
             const expected = {
               currentUser: {
                 notifications: [

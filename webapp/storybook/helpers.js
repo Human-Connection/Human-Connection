@@ -6,7 +6,7 @@ import Filters from '~/plugins/vue-filters'
 import layout from './layout.vue'
 
 const helpers = {
-  init() {
+  init(options = {}) {
     Vue.use(Vuex)
     Vue.use(Styleguide)
     Vue.use(Filters)
@@ -16,6 +16,9 @@ const helpers = {
     Vue.i18n.add('de', require('~/locales/de.json'))
     Vue.i18n.set('en')
     Vue.i18n.fallback('en')
+
+    const { plugins = [] } = options
+    plugins.forEach(plugin => Vue.use(plugin))
   },
   store: new Vuex.Store({
     modules: {

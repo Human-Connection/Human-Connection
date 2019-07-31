@@ -116,7 +116,7 @@
       </ds-container>
     </div>
     <ds-container style="word-break: break-all">
-      <div class="main-container" :width="{ base: '100%', md: '96%' }">
+      <div class="main-container">
         <nuxt />
       </div>
     </ds-container>

@@ -1,9 +1,27 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
 import HcEditor from '~/components/Editor/Editor.vue'
-import helpers from './helpers'
+import helpers from '~/storybook/helpers'
+import Vue from 'vue'
 
-helpers.init()
+const embed = {
+  html:
+    '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+}
+
+const plugins = [
+  (app = {}) => {
+    app.$apollo = {
+      mutate: () => {},
+      query: () => {
+        return { data: { embed } }
+      },
+    }
+    Vue.prototype.$apollo = app.$apollo
+    return app
+  },
+]
+helpers.init({ plugins })
 
 const users = [{ id: 1, slug: 'peter' }, { id: 1, slug: 'sandra' }, { id: 1, slug: 'jane' }]
 
@@ -47,7 +65,7 @@ storiesOf('Editor', module)
         <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
         <h5>Heading 5</h5>
         <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
-        
+
         <h3>Unordered List</h3>
         <ul>
           <li><p>Also some list</p></li>
@@ -55,7 +73,7 @@ storiesOf('Editor', module)
           <li><p>several</p></li>
           <li><p>points</p></li>
         </ul>
-        
+
         <h3>Ordered List</h3>
         <ol>
           <li><p>justo</p></li>
@@ -74,7 +92,7 @@ storiesOf('Editor', module)
       users,
       content: `
         <p>
-          Here you can mention people like 
+          Here you can mention people like
           <a class="mention" href="/profile/1" target="_blank" contenteditable="false">@sandra</a> and others.
           Try it out!
         </p>
@@ -102,9 +120,12 @@ storiesOf('Editor', module)
     data: () => ({
       users,
       content: `
-        <p>The following link should be rendered with metainformation for its destination such as: Title, Description, Image, Pagename and Favicon.</p>
-        <a class="embed" href="https://human-connection.org">Human Connection</a>
-        <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+        <p>
+          The following link should render a youtube video in addition to the link.
+        </p>
+        <a class="embed" href="https://www.youtube.com/watch?v=qkdXAtO40Fo">
+          <em>https://www.youtube.com/watch?v=qkdXAtO40Fo</em>
+        </a>
       `,
     }),
     template: `<hc-editor :users="users" :value="content" />`,
