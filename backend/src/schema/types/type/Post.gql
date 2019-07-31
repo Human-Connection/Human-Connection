@@ -93,3 +93,7 @@ type Mutation {
   ): Post
   RemovePostEmotions(from: _UserInput!, to: _PostInput!, data: _EMOTEDInput!): Boolean!
 }
+
+type Query {
+  postsEmotionsCountByEmotion(id: ID!, data: _EMOTEDInput!): Int!
+}

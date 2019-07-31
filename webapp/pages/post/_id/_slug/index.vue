@@ -43,14 +43,22 @@
         <ds-space margin="xx-small" />
         <hc-tag v-for="tag in post.tags" :key="tag.id" :name="tag.name" />
       </div>
-      <!-- Shout Button -->
-      <hc-shout-button
-        v-if="post.author"
-        :disabled="isAuthor(post.author.id)"
-        :count="post.shoutedCount"
-        :is-shouted="post.shoutedByCurrentUser"
-        :post-id="post.id"
-      />
+      <ds-flex :gutter="{ lg: 'small' }">
+        <ds-flex-item :width="{ lg: '75%' }">
+          <hc-emotions-buttons :post="post" />
+        </ds-flex-item>
+        <ds-flex-item :width="{ lg: '10%' }" />
+        <!-- Shout Button -->
+        <ds-flex-item :width="{ lg: '15%' }">
+          <hc-shout-button
+            v-if="post.author"
+            :disabled="isAuthor(post.author.id)"
+            :count="post.shoutedCount"
+            :is-shouted="post.shoutedByCurrentUser"
+            :post-id="post.id"
+          />
+        </ds-flex-item>
+      </ds-flex>
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list :post="post" />
@@ -71,6 +79,7 @@ import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery.js'
+import HcEmotionsButtons from '~/components/EmotionsButtons/EmotionsButtons'
 
 export default {
   name: 'PostSlug',
@@ -86,6 +95,7 @@ export default {
     ContentMenu,
     HcCommentForm,
     HcCommentList,
+    HcEmotionsButtons,
   },
   head() {
     return {

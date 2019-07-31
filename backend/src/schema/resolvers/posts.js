@@ -107,4 +107,22 @@ export default {
       return !emoted
     },
   },
+  Query: {
+    postsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
+      const session = context.driver.session()
+      const { id, data } = params
+      const transactionRes = await session.run(
+        `MATCH (post:Post {id: $id})<-[emoted:EMOTED {emotion: $data.emotion}]-() 
+        RETURN COUNT(DISTINCT emoted) as emotionsCount
+        `,
+        { id, data },
+      )
+      session.close()
+
+      const [emotionsCount] = transactionRes.records.map(record => {
+        return record.get('emotionsCount').low
+      })
+      return emotionsCount
+    },
+  },
 }

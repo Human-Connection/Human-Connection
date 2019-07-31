@@ -71,6 +71,7 @@ export default i18n => {
           }
           shoutedCount
           shoutedByCurrentUser
+          emotionsCount
         }
       }
     `

@@ -154,6 +154,7 @@ const permissions = shield(
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
       Badge: allow,
+      postsEmotionsCountByEmotion: allow,
     },
     Mutation: {
       '*': deny,
