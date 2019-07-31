@@ -46,9 +46,7 @@
             :disabled="loading"
             ghost
             @click.prevent="$router.back()"
-          >
-            {{ $t('actions.cancel') }}
-          </ds-button>
+          >{{ $t('actions.cancel') }}</ds-button>
           <ds-button
             class="submit-button-for-test"
             type="submit"
@@ -56,9 +54,8 @@
             :loading="loading"
             :disabled="disabledByContent || errors"
             primary
-          >
-            {{ $t('actions.save') }}
-          </ds-button>
+            @click.prevent="submit"
+          >{{ $t('actions.save') }}</ds-button>
         </div>
         <ds-space margin-bottom="large" />
       </ds-card>
@@ -203,10 +200,8 @@ export default {
       const str = content.replace(/<\/?[^>]+(>|$)/gm, '')
       // Set counter length of text
       this.form.contentLength = str.length
-      console.log('this.disabledByContent: ', this.disabledByContent)
       // Enable save button if requirements are met
       this.disabledByContent = !(this.contentMin <= str.length && str.length <= this.contentMax)
-      console.log('this.disabledByContent: ', this.disabledByContent)
     },
     availableLocales() {
       orderBy(locales, 'name').map(locale => {
