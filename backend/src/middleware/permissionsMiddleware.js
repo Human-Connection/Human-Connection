@@ -147,6 +147,7 @@ const permissions = shield(
     Query: {
       '*': deny,
       findPosts: allow,
+      embed: allow,
       Category: allow,
       Tag: allow,
       Report: isModerator,

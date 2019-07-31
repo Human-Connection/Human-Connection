@@ -28,6 +28,7 @@
     * [HTTPS](deployment/digital-ocean/https/README.md)
   * [Human Connection](deployment/human-connection/README.md)
     * [Mailserver](deployment/human-connection/mailserver/README.md)
+    * [Maintenance](deployment/human-connection/maintenance/README.md)
   * [Volumes](deployment/volumes/README.md)
     * [Neo4J Offline-Backups](deployment/volumes/neo4j-offline-backup/README.md)
     * [Volume Snapshots](deployment/volumes/volume-snapshots/README.md)
