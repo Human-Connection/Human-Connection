@@ -2,56 +2,9 @@ import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
 import { neode } from '../../bootstrap/neo4j'
 import { UserInputError } from 'apollo-server'
-import { undefinedToNull } from '../helpers'
+import Resolver from './helpers/Resolver'
 
 const instance = neode()
-
-const _has = (resolvers, { key, connection }, { returnType }) => {
-  return async (parent, params, context, resolveInfo) => {
-    if (typeof parent[key] !== 'undefined') return parent[key]
-    const { id } = parent
-    const statement = `MATCH(u:User {id: {id}})${connection} RETURN related`
-    const result = await instance.cypher(statement, { id })
-    let response = result.records.map(r => r.get('related').properties)
-    if (returnType === 'object') response = response[0] || null
-    return response
-  }
-}
-
-const count = obj => {
-  const resolvers = {}
-  for (const [key, connection] of Object.entries(obj)) {
-    resolvers[key] = async (parent, params, context, resolveInfo) => {
-      if (typeof parent[key] !== 'undefined') return parent[key]
-      const { id } = parent
-      const statement = `
-      MATCH(u:User {id: {id}})${connection}
-      WHERE NOT related.deleted = true AND NOT related.disabled = true
-      RETURN COUNT(DISTINCT(related)) as count
-    `
-      const result = await instance.cypher(statement, { id })
-      const [response] = result.records.map(r => r.get('count').toNumber())
-      return response
-    }
-  }
-  return resolvers
-}
-
-export const hasMany = obj => {
-  const resolvers = {}
-  for (const [key, connection] of Object.entries(obj)) {
-    resolvers[key] = _has(resolvers, { key, connection }, { returnType: 'iterable' })
-  }
-  return resolvers
-}
-
-export const hasOne = obj => {
-  const resolvers = {}
-  for (const [key, connection] of Object.entries(obj)) {
-    resolvers[key] = _has(resolvers, { key, connection }, { returnType: 'object' })
-  }
-  return resolvers
-}
 
 export default {
   Query: {
@@ -110,42 +63,44 @@ export default {
       let [{ email }] = result.records.map(r => r.get('e').properties)
       return email
     },
-    ...undefinedToNull([
-      'actorId',
-      'avatar',
-      'coverImg',
-      'deleted',
-      'disabled',
-      'locationName',
-      'about',
-    ]),
-    ...count({
-      contributionsCount: '-[:WROTE]->(related:Post)',
-      friendsCount: '<-[:FRIENDS]->(related:User)',
-      followingCount: '-[:FOLLOWS]->(related:User)',
-      followedByCount: '<-[:FOLLOWS]-(related:User)',
-      commentsCount: '-[:WROTE]->(r:Comment)',
-      commentedCount: '-[:WROTE]->(:Comment)-[:COMMENTS]->(related:Post)',
-      shoutedCount: '-[:SHOUTED]->(related:Post)',
-      badgesCount: '<-[:REWARDED]-(related:Badge)',
-    }),
-    ...hasOne({
-      invitedBy: '<-[:INVITED]-(related:User)',
-      disabledBy: '<-[:DISABLED]-(related:User)',
-    }),
-    ...hasMany({
-      followedBy: '<-[:FOLLOWS]-(related:User)',
-      following: '-[:FOLLOWS]->(related:User)',
-      friends: '-[:FRIENDS]-(related:User)',
-      blacklisted: '-[:BLACKLISTED]->(related:User)',
-      socialMedia: '-[:OWNED_BY]->(related:SocialMedia',
-      contributions: '-[:WROTE]->(related:Post)',
-      comments: '-[:WROTE]->(related:Comment)',
-      shouted: '-[:SHOUTED]->(related:Post)',
-      organizationsCreated: '-[:CREATED_ORGA]->(related:Organization)',
-      organizationsOwned: '-[:OWNING_ORGA]->(related:Organization)',
-      categories: '-[:CATEGORIZED]->(related:Category)',
-      badges: '<-[:REWARDED]-(related:Badge)',
+    ...Resolver('User', {
+      undefinedToNull: [
+        'actorId',
+        'avatar',
+        'coverImg',
+        'deleted',
+        'disabled',
+        'locationName',
+        'about',
+      ],
+      count: {
+        contributionsCount: '-[:WROTE]->(related:Post)',
+        friendsCount: '<-[:FRIENDS]->(related:User)',
+        followingCount: '-[:FOLLOWS]->(related:User)',
+        followedByCount: '<-[:FOLLOWS]-(related:User)',
+        commentsCount: '-[:WROTE]->(r:Comment)',
+        commentedCount: '-[:WROTE]->(:Comment)-[:COMMENTS]->(related:Post)',
+        shoutedCount: '-[:SHOUTED]->(related:Post)',
+        badgesCount: '<-[:REWARDED]-(related:Badge)',
+      },
+      hasOne: {
+        invitedBy: '<-[:INVITED]-(related:User)',
+        disabledBy: '<-[:DISABLED]-(related:User)',
+      },
+      hasMany: {
+        followedBy: '<-[:FOLLOWS]-(related:User)',
+        following: '-[:FOLLOWS]->(related:User)',
+        friends: '-[:FRIENDS]-(related:User)',
+        blacklisted: '-[:BLACKLISTED]->(related:User)',
+        socialMedia: '-[:OWNED_BY]->(related:SocialMedia',
+        contributions: '-[:WROTE]->(related:Post)',
+        comments: '-[:WROTE]->(related:Comment)',
+        shouted: '-[:SHOUTED]->(related:Post)',
+        organizationsCreated: '-[:CREATED_ORGA]->(related:Organization)',
+        organizationsOwned: '-[:OWNING_ORGA]->(related:Organization)',
+        categories: '-[:CATEGORIZED]->(related:Category)',
+        badges: '<-[:REWARDED]-(related:Badge)',
+      },
     }),
   },
 }

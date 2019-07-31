@@ -1,4 +1,5 @@
 import { neode } from '../../bootstrap/neo4j'
+import Resolver from './helpers/Resolver'
 
 const instance = neode()
 
@@ -14,13 +15,6 @@ export default {
 
       return response
     },
-    DeleteSocialMedia: async (object, params, context, resolveInfo) => {
-      const socialMedia = await instance.find('SocialMedia', params.id)
-      const response = await socialMedia.toJson()
-      await socialMedia.delete()
-
-      return response
-    },
     UpdateSocialMedia: async (object, params, context, resolveInfo) => {
       const socialMedia = await instance.find('SocialMedia', params.id)
       await socialMedia.update({ url: params.url })
@@ -28,5 +22,17 @@ export default {
 
       return response
     },
+    DeleteSocialMedia: async (object, { id }, context, resolveInfo) => {
+      const socialMedia = await instance.find('SocialMedia', id)
+      if (!socialMedia) return null
+      await socialMedia.delete()
+      return socialMedia.toJson()
+    },
   },
+  SocialMedia: Resolver('SocialMedia', {
+    idAttribute: 'url',
+    hasOne: {
+      ownedBy: '<-[:OWNED_BY]-(related:User)',
+    },
+  }),
 }

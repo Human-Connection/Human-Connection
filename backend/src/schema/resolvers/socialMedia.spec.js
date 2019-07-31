@@ -122,6 +122,32 @@ describe('SocialMedia', () => {
         )
       })
     })
+
+    describe('ownedBy', () => {
+      beforeEach(() => {
+        mutation = gql`
+          mutation($url: String!) {
+            CreateSocialMedia(url: $url) {
+              url
+              ownedBy {
+                name
+              }
+            }
+          }
+        `
+      })
+
+      it('resolves', async () => {
+        const user = someUser
+        await expect(socialMediaAction(user, mutation, variables)).resolves.toEqual(
+          expect.objectContaining({
+            data: {
+              CreateSocialMedia: { url, ownedBy: { name: 'Kalle Blomqvist' } },
+            },
+          }),
+        )
+      })
+    })
   })
 
   describe('update social media', () => {

@@ -1,0 +1,11 @@
+type SocialMedia {
+  id: ID!
+  url: String
+  ownedBy: User! @relation(name: "OWNED_BY", direction: "IN")
+}
+
+type Mutation {
+  CreateSocialMedia(id: ID, url: String!): SocialMedia
+  UpdateSocialMedia(id: ID!, url: String!): SocialMedia
+  DeleteSocialMedia(id: ID!): SocialMedia
+}
