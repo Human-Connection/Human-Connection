@@ -1,5 +1,5 @@
 <template>
-  <ds-form ref="contributionForm" v-model="form" :schema="formSchema" @submit="submit">
+  <ds-form ref="contributionForm" v-model="form" :schema="formSchema">
     <template slot-scope="{ errors }">
       <ds-card>
         <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
