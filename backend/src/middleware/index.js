@@ -52,10 +52,12 @@ export default schema => {
   if (CONFIG.DISABLED_MIDDLEWARES) {
     const disabledMiddlewares = CONFIG.DISABLED_MIDDLEWARES.split(',')
     order = order.filter(key => {
+      if (disabledMiddlewares.includes(key)) {
+        /* eslint-disable-next-line no-console */
+        console.log(`Warning: Disabled "${disabledMiddlewares}" middleware.`)
+      }
       return !disabledMiddlewares.includes(key)
     })
-    /* eslint-disable-next-line no-console */
-    console.log(`Warning: "${disabledMiddlewares}" middlewares have been disabled.`)
   }
 
   const appliedMiddlewares = order.map(key => middlewares[key])

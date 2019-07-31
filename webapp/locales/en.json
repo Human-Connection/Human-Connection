@@ -18,8 +18,8 @@
     "tribunal": "Registry court",
     "register": "Registry number",
     "director": "Managing Director",
-    "taxident": "Value added tax identification number according to § 27 a Value Added Tax Act (Germany)",
-    "responsible": "Responsible according to § 55 Abs. 2 RStV (Germany) ",
+    "taxident": "USt-ID. according to §27a of the German Sales Tax Law:",
+    "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
     "germany": "Germany"
   },
@@ -169,7 +169,8 @@
     },
     "social-media": {
       "name": "Social media",
-      "placeholder": "Add social media url",
+      "placeholder": "Your social media url",
+      "requireUnique": "You added this url already",
       "submit": "Add link",
       "successAdd": "Added social media. Updated user profile!",
       "successDelete": "Deleted social media. Updated user profile!"
@@ -288,6 +289,7 @@
     "reportContent": "Report",
     "validations": {
       "email": "must be a valid email address",
+      "url": "must be a valid URL",
       "verification-code": "must be 6 characters long"
     }
   },
