@@ -46,7 +46,9 @@
             :disabled="loading"
             ghost
             @click.prevent="$router.back()"
-          >{{ $t('actions.cancel') }}</ds-button>
+          >
+            {{ $t('actions.cancel') }}
+          </ds-button>
           <ds-button
             class="submit-button-for-test"
             type="submit"
@@ -55,7 +57,9 @@
             :disabled="disabledByContent || errors"
             primary
             @click.prevent="submit"
-          >{{ $t('actions.save') }}</ds-button>
+          >
+            {{ $t('actions.save') }}
+          </ds-button>
         </div>
         <ds-space margin-bottom="large" />
       </ds-card>
@@ -95,18 +99,7 @@ export default {
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
-        content: [
-          /* {
-            validator(rule, value, callback, source, options) {
-              var errors = []
-              if (source.password !== value) {
-                errors.push(new Error(passwordMismatchMessage))
-              }
-              callback(errors)
-            },
-          }, */
-          { required: true },
-        ],
+        content: [{ required: true }],
       },
       id: null,
       loading: false,
