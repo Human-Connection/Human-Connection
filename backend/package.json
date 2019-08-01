@@ -114,7 +114,7 @@
     "cucumber": "~5.1.0",
     "eslint": "~6.1.0",
     "eslint-config-prettier": "~6.0.0",
-    "eslint-config-standard": "~12.0.0",
+    "eslint-config-standard": "~13.0.1",
     "eslint-plugin-import": "~2.18.2",
     "eslint-plugin-jest": "~22.14.1",
     "eslint-plugin-node": "~9.1.0",
