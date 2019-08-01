@@ -7,7 +7,8 @@
     <ds-container>
       <ds-space margin-top="large">
         <ds-text>{{ $t('site.changelog') }}</ds-text>
-        <ds-text>...</ds-text>
+
+        <ds-text v-html="$t('changelog.text')"></ds-text>
       </ds-space>
     </ds-container>
   </div>
