@@ -25,9 +25,7 @@
                 class="hc-editor-link-blot"
                 href="mailto:info@human-connection.org"
                 target="_blank"
-              >
-                info@human-connection.org
-              </a>
+              >info@human-connection.org</a>
             </p>
             <br />
             <p>
@@ -73,6 +71,7 @@
 
 <script>
 export default {
+  layout: 'blank',
   head() {
     return {
       title: this.$t('site.imprint'),

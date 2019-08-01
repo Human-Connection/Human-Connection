@@ -10,9 +10,6 @@
       <ds-card class="login-card">
         <ds-flex gutter="small">
           <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-            <no-ssr>
-              <locale-switch class="login-locale-switch" offset="5" />
-            </no-ssr>
             <ds-space margin-top="small" margin-bottom="xxx-small" centered>
               <img
                 class="login-image"
@@ -23,9 +20,7 @@
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
             <ds-space margin="small">
-              <ds-text size="small">
-                {{ $t('login.copy') }}
-              </ds-text>
+              <ds-text size="small">{{ $t('login.copy') }}</ds-text>
             </ds-space>
             <form :disabled="pending" @submit.prevent="onSubmit">
               <ds-input
@@ -46,9 +41,7 @@
                 type="password"
               />
               <ds-space class="password-reset-link" margin-bottom="large">
-                <nuxt-link to="/password-reset/request">
-                  {{ $t('login.forgotPassword') }}
-                </nuxt-link>
+                <nuxt-link to="/password-reset/request">{{ $t('login.forgotPassword') }}</nuxt-link>
               </ds-space>
               <ds-button
                 :loading="pending"
@@ -78,12 +71,7 @@
 </template>
 
 <script>
-import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
-
 export default {
-  components: {
-    LocaleSwitch,
-  },
   layout: 'blank',
   data() {
     return {
@@ -132,10 +120,5 @@ export default {
 }
 .login-card {
   position: relative;
-}
-.login-locale-switch {
-  position: absolute;
-  top: 1em;
-  left: 1em;
 }
 </style>

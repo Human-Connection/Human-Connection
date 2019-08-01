@@ -82,9 +82,11 @@
                           {{ $t('login.hello') }}
                           <b>{{ userName }}</b>
                           <template v-if="user.role !== 'user'">
-                            <ds-text color="softer" size="small" style="margin-bottom: 0">
-                              {{ user.role | camelCase }}
-                            </ds-text>
+                            <ds-text
+                              color="softer"
+                              size="small"
+                              style="margin-bottom: 0"
+                            >{{ user.role | camelCase }}</ds-text>
                           </template>
                           <hr />
                           <ds-menu :routes="routes" :matcher="matcher">
@@ -123,12 +125,9 @@
     <div id="footer" class="ds-footer">
       <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
       &nbsp;-&nbsp;
-      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/privacy">{{ $t('site.privacy') }}</nuxt-link>
-      &nbsp;‑&nbsp;
+      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>&nbsp;‑&nbsp;
+      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>&nbsp;‑&nbsp;
+      <nuxt-link to="/data-privacy">{{ $t('site.privacy') }}</nuxt-link>&nbsp;‑&nbsp;
       <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
     </div>
     <div id="overlay" />
