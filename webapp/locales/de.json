@@ -23,6 +23,12 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland"
   },
+  "sorting": {
+    "newest": "Neuste",
+    "oldest": "Älteste",
+    "popular": "Beliebt",
+    "commented": "meist Kommentiert"
+  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
