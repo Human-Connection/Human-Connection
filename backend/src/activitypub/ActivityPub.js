@@ -35,8 +35,8 @@ export default class ActivityPub {
 
   handleFollowActivity(activity) {
     debug(`inside FOLLOW ${activity.actor}`)
-    let toActorName = extractNameFromId(activity.object)
-    let fromDomain = extractDomainFromUrl(activity.actor)
+    const toActorName = extractNameFromId(activity.object)
+    const fromDomain = extractDomainFromUrl(activity.actor)
     const dataSource = this.dataSource
 
     return new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ export default class ActivityPub {
           toActorObject = JSON.parse(toActorObject)
           await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
 
-          let followersCollectionPage = await this.dataSource.getFollowersCollectionPage(
+          const followersCollectionPage = await this.dataSource.getFollowersCollectionPage(
             activity.object,
           )
 
@@ -222,6 +222,7 @@ export default class ActivityPub {
       })
     }
   }
+
   async trySend(activity, fromName, host, url, tries = 5) {
     try {
       return await signAndSend(activity, fromName, host, url)

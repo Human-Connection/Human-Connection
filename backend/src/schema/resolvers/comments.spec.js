@@ -5,7 +5,6 @@ import { host, login, gql } from '../../jest/helpers'
 const factory = Factory()
 let client
 let createCommentVariables
-let createPostVariables
 let createCommentVariablesSansPostId
 let createCommentVariablesWithNonExistentPost
 let userParams
@@ -26,7 +25,7 @@ const createCommentMutation = gql`
     }
   }
 `
-createPostVariables = {
+const createPostVariables = {
   id: 'p1',
   title: 'post to comment on',
   content: 'please comment on me',
@@ -325,7 +324,7 @@ describe('ManageComments', () => {
       }
     `
 
-    let deleteCommentVariables = {
+    const deleteCommentVariables = {
       id: 'c456',
     }
 

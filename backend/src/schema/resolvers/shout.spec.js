@@ -60,8 +60,7 @@ describe('shout', () => {
   describe('shout foreign post', () => {
     describe('unauthenticated shout', () => {
       it('throws authorization error', async () => {
-        let client
-        client = new GraphQLClient(host)
+        const client = new GraphQLClient(host)
         await expect(client.request(mutationShoutPost('p1'))).rejects.toThrow('Not Authorised')
       })
     })
@@ -109,8 +108,7 @@ describe('shout', () => {
         // shout
         await clientUser1.request(mutationShoutPost('p2'))
         // unshout
-        let client
-        client = new GraphQLClient(host)
+        const client = new GraphQLClient(host)
         await expect(client.request(mutationUnshoutPost('p2'))).rejects.toThrow('Not Authorised')
       })
     })

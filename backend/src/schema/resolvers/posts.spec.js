@@ -337,7 +337,7 @@ describe('DeletePost', () => {
     }
   `
 
-  let variables = {
+  const variables = {
     id: 'p1',
   }
 

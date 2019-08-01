@@ -8,8 +8,8 @@ import linkifyHtml from 'linkifyjs/html'
 const embedToAnchor = content => {
   const $ = cheerio.load(content)
   $('div[data-url-embed]').each((i, el) => {
-    let url = el.attribs['data-url-embed']
-    let aTag = $(`<a href="${url}" target="_blank" data-url-embed="">${url}</a>`)
+    const url = el.attribs['data-url-embed']
+    const aTag = $(`<a href="${url}" target="_blank" data-url-embed="">${url}</a>`)
     $(el).replaceWith(aTag)
   })
   return $('body').html()
@@ -87,7 +87,7 @@ function clean(dirty) {
       b: 'strong',
       s: 'strike',
       img: function(tagName, attribs) {
-        let src = attribs.src
+        const src = attribs.src
 
         if (!src) {
           // remove broken images

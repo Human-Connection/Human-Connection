@@ -4,7 +4,7 @@ import { UserInputError } from 'apollo-server'
 const instance = neode()
 
 const getUserAndBadge = async ({ badgeKey, userId }) => {
-  let user = await instance.first('User', 'id', userId)
+  const user = await instance.first('User', 'id', userId)
   const badge = await instance.first('Badge', 'id', badgeKey)
   if (!user) throw new UserInputError("Couldn't find a user with that id")
   if (!badge) throw new UserInputError("Couldn't find a badge with that id")
@@ -36,8 +36,6 @@ export default {
             userId,
           },
         )
-      } catch (err) {
-        throw err
       } finally {
         session.close()
       }

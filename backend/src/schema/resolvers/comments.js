@@ -18,7 +18,7 @@ export default {
         false,
       )
 
-      let transactionRes = await session.run(
+      const transactionRes = await session.run(
         `
         MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId}), (author:User {id: $userId})
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
