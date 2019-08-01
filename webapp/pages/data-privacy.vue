@@ -1,12 +1,12 @@
 <template>
   <div>
     <ds-space>
-      <ds-heading tag="h2">{{ $t('site.privacy') }}</ds-heading>
+      <ds-heading tag="h2">{{ $t('site.dataPrivacy') }}</ds-heading>
     </ds-space>
     <ds-container>
       <ds-space margin-top="large">
-        <ds-text>{{ $t('site.privacy') }}</ds-text>
-        <ds-text>...</ds-text>
+        <ds-text>{{ $t('site.dataPrivacy') }}</ds-text>
+        <ds-text v-html="$t('dataPrivacy.text')">...</ds-text>
       </ds-space>
     </ds-container>
   </div>
@@ -16,7 +16,7 @@
 export default {
   head() {
     return {
-      title: this.$t('site.privacy'),
+      title: this.$t('site.dataPrivacy'),
     }
   },
 }
