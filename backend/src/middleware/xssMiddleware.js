@@ -9,7 +9,6 @@ function clean(dirty) {
     return dirty
   }
 
-  // Convert embeds to a-tags
   dirty = linkifyHtml(dirty)
   dirty = sanitizeHtml(dirty, {
     allowedTags: [

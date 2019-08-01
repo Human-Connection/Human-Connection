@@ -23,7 +23,7 @@ const plugins = [
 ]
 helpers.init({ plugins })
 
-const users = [{ id: 1, slug: 'peter' }, { id: 1, slug: 'sandra' }, { id: 1, slug: 'jane' }]
+const users = [{ id: 1, slug: 'peter' }, { id: 2, slug: 'sandra' }, { id: 3, slug: 'jane' }]
 
 storiesOf('Editor', module)
   .addDecorator(withA11y)
@@ -93,7 +93,7 @@ storiesOf('Editor', module)
       content: `
         <p>
           Here you can mention people like
-          <a class="mention" href="/profile/1" target="_blank" contenteditable="false">@sandra</a> and others.
+          <a class="mention" data-mention-id="2" href="/profile/1" target="_blank" contenteditable="false">@sandra</a> and others.
           Try it out!
         </p>
       `,

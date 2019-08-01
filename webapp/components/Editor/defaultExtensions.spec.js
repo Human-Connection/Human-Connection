@@ -29,7 +29,7 @@ describe('defaultExtensions', () => {
   describe('`content` contains a mentioning', () => {
     beforeEach(() => {
       content =
-        '<p>This is a post content mentioning <a class="mention" href="/profile/f0628376-e692-4167-bdb4-d521de5a014f" target="_blank">@alicia-luettgen</a>.</p>'
+        '<p>This is a post content mentioning <a class="mention" data-mention-id="alicias-id" href="/profile/f0628376-e692-4167-bdb4-d521de5a014f" target="_blank">@alicia-luettgen</a>.</p>'
     })
 
     it('renders mentioning as link', () => {
