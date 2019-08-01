@@ -1,5 +1,5 @@
 import scrape from './embeds/scraper.js'
-import { undefinedToNull } from '../helpers'
+import { undefinedToNullResolver } from './helpers/Resolver'
 
 export default {
   Query: {
@@ -8,7 +8,7 @@ export default {
     },
   },
   Embed: {
-    ...undefinedToNull([
+    ...undefinedToNullResolver([
       'type',
       'title',
       'author',
