@@ -1,49 +1,90 @@
 <template>
-  <ds-card :header="$t('settings.social-media.name')">
-    <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
-      <ds-list>
-        <ds-list-item v-for="link in socialMediaLinks" :key="link.id">
-          <a :href="link.url" target="_blank">
-            <img :src="link.favicon | proxyApiUrl" alt="Social Media link" width="16" height="16" />
-            {{ link.url }}
-          </a>
-          &nbsp;&nbsp;
-          <span class="layout-leave-active">|</span>
-          &nbsp;&nbsp;
-          <ds-icon name="edit" class="layout-leave-active" />
-          <a name="delete" @click="handleDeleteSocialMedia(link)">
-            <ds-icon name="trash" />
-          </a>
-        </ds-list-item>
-      </ds-list>
-    </ds-space>
-    <ds-space margin-top="base">
-      <div>
-        <ds-input
-          v-model="value"
-          :placeholder="$t('settings.social-media.placeholder')"
-          name="social-media"
-          :schema="{ type: 'url' }"
-        />
-      </div>
-      <ds-space margin-top="base">
-        <div>
-          <ds-button primary @click="handleAddSocialMedia">
-            {{ $t('settings.social-media.submit') }}
-          </ds-button>
-        </div>
+  <ds-form
+    v-model="formData"
+    :schema="formSchema"
+    @input="handleInput"
+    @input-valid="handleInputValid"
+    @submit="handleSubmitSocialMedia"
+  >
+    <ds-card :header="$t('settings.social-media.name')">
+      <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
+        <ds-list>
+          <ds-list-item v-for="link in socialMediaLinks" :key="link.id" class="list-item--high">
+            <ds-input
+              v-if="editingLink.id === link.id"
+              id="editSocialMedia"
+              model="socialMediaUrl"
+              type="text"
+              :placeholder="$t('settings.social-media.placeholder')"
+            />
+
+            <template v-else>
+              <a :href="link.url" target="_blank">
+                <img :src="link.favicon" alt="Link:" height="16" width="16" />
+                {{ link.url }}
+              </a>
+              <span class="divider">|</span>
+              <a name="edit" @click="handleEditSocialMedia(link)">
+                <ds-icon
+                  :aria-label="$t('actions.edit')"
+                  class="icon-button"
+                  name="edit"
+                  :title="$t('actions.edit')"
+                />
+              </a>
+              <a name="delete" @click="handleDeleteSocialMedia(link)">
+                <ds-icon
+                  :aria-label="$t('actions.delete')"
+                  class="icon-button"
+                  name="trash"
+                  :title="$t('actions.delete')"
+                />
+              </a>
+            </template>
+          </ds-list-item>
+        </ds-list>
       </ds-space>
-    </ds-space>
-  </ds-card>
+
+      <ds-space margin-top="base">
+        <ds-input
+          v-if="!editingLink.id"
+          id="addSocialMedia"
+          model="socialMediaUrl"
+          type="text"
+          :placeholder="$t('settings.social-media.placeholder')"
+        />
+        <ds-space margin-top="base">
+          <ds-button primary :disabled="disabled">
+            {{ editingLink.id ? $t('actions.save') : $t('settings.social-media.submit') }}
+          </ds-button>
+          <ds-button v-if="editingLink.id" id="cancel" ghost @click="handleCancel()">
+            {{ $t('actions.cancel') }}
+          </ds-button>
+        </ds-space>
+      </ds-space>
+    </ds-card>
+  </ds-form>
 </template>
+
 <script>
+import unionBy from 'lodash/unionBy'
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   data() {
     return {
-      value: '',
+      formData: {
+        socialMediaUrl: '',
+      },
+      formSchema: {
+        socialMediaUrl: {
+          type: 'url',
+          message: this.$t('common.validations.url'),
+        },
+      },
+      disabled: true,
+      editingLink: {},
     }
   },
   computed: {
@@ -51,11 +92,10 @@ export default {
       currentUser: 'auth/user',
     }),
     socialMediaLinks() {
+      const domainRegex = /^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g
       const { socialMedia = [] } = this.currentUser
-      return socialMedia.map(socialMedia => {
-        const { id, url } = socialMedia
-        const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g)
-        const [domain] = matches || []
+      return socialMedia.map(({ id, url }) => {
+        const [domain] = url.match(domainRegex) || []
         const favicon = domain ? `${domain}/favicon.ico` : null
         return { id, url, favicon }
       })
@@ -65,39 +105,28 @@ export default {
     ...mapMutations({
       setCurrentUser: 'auth/SET_USER',
     }),
-    handleAddSocialMedia() {
-      this.$apollo
-        .mutate({
-          mutation: gql`
-            mutation($url: String!) {
-              CreateSocialMedia(url: $url) {
-                id
-                url
-              }
-            }
-          `,
-          variables: {
-            url: this.value,
-          },
-          update: (store, { data }) => {
-            const socialMedia = [...this.currentUser.socialMedia, data.CreateSocialMedia]
-            this.setCurrentUser({
-              ...this.currentUser,
-              socialMedia,
-            })
-          },
-        })
-        .then(() => {
-          this.$toast.success(this.$t('settings.social-media.successAdd'))
-          this.value = ''
-        })
-        .catch(error => {
-          this.$toast.error(error.message)
-        })
+    handleCancel() {
+      this.editingLink = {}
+      this.formData.socialMediaUrl = ''
+      this.disabled = true
     },
-    handleDeleteSocialMedia(link) {
-      this.$apollo
-        .mutate({
+    handleEditSocialMedia(link) {
+      this.editingLink = link
+      this.formData.socialMediaUrl = link.url
+    },
+    handleInput(data) {
+      this.disabled = true
+    },
+    handleInputValid(data) {
+      if (data.socialMediaUrl.length < 1) {
+        this.disabled = true
+      } else {
+        this.disabled = false
+      }
+    },
+    async handleDeleteSocialMedia(link) {
+      try {
+        await this.$apollo.mutate({
           mutation: gql`
             mutation($id: ID!) {
               DeleteSocialMedia(id: $id) {
@@ -119,19 +148,83 @@ export default {
             })
           },
         })
-        .then(() => {
-          this.$toast.success(this.$t('settings.social-media.successDelete'))
+
+        this.$toast.success(this.$t('settings.social-media.successDelete'))
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+    async handleSubmitSocialMedia() {
+      const isEditing = !!this.editingLink.id
+      const url = this.formData.socialMediaUrl
+
+      const duplicateUrl = this.socialMediaLinks.find(link => link.url === url)
+      if (duplicateUrl && duplicateUrl.id !== this.editingLink.id) {
+        return this.$toast.error(this.$t('settings.social-media.requireUnique'))
+      }
+
+      let mutation = gql`
+        mutation($url: String!) {
+          CreateSocialMedia(url: $url) {
+            id
+            url
+          }
+        }
+      `
+      const variables = { url }
+      let successMessage = this.$t('settings.social-media.successAdd')
+
+      if (isEditing) {
+        mutation = gql`
+          mutation($id: ID!, $url: String!) {
+            UpdateSocialMedia(id: $id, url: $url) {
+              id
+              url
+            }
+          }
+        `
+        variables.id = this.editingLink.id
+        successMessage = this.$t('settings.data.success')
+      }
+
+      try {
+        await this.$apollo.mutate({
+          mutation,
+          variables,
+          update: (store, { data }) => {
+            const newSocialMedia = isEditing ? data.UpdateSocialMedia : data.CreateSocialMedia
+            this.setCurrentUser({
+              ...this.currentUser,
+              socialMedia: unionBy([newSocialMedia], this.currentUser.socialMedia, 'id'),
+            })
+          },
         })
-        .catch(error => {
-          this.$toast.error(error.message)
-        })
+
+        this.$toast.success(successMessage)
+        this.formData.socialMediaUrl = ''
+        this.disabled = true
+        this.editingLink = {}
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }
 </script>
 
 <style lang="scss">
-.layout-leave-active {
+.divider {
   opacity: 0.4;
+  padding: 0 $space-small;
+}
+
+.icon-button {
+  cursor: pointer;
+}
+
+.list-item--high {
+  .ds-list-item-prefix {
+    align-self: center;
+  }
 }
 </style>

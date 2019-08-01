@@ -23,6 +23,12 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland"
   },
+  "sorting": {
+    "newest": "Neuste",
+    "oldest": "Älteste",
+    "popular": "Beliebt",
+    "commented": "meist Kommentiert"
+  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
@@ -168,7 +174,8 @@
     },
     "social-media": {
       "name": "Soziale Medien",
-      "placeholder": "Füge eine Social-Media URL hinzu",
+      "placeholder": "Deine Social-Media URL",
+      "requireUnique": "Dieser Link existiert bereits",
       "submit": "Link hinzufügen",
       "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
       "successDelete": "Social-Media gelöscht. Profil aktualisiert!"
@@ -286,6 +293,7 @@
     "reportContent": "Melden",
     "validations": {
       "email": "muss eine gültige E-Mail Adresse sein",
+      "url": "muss eine gültige URL sein",
       "verification-code": "muss genau 6 Buchstaben lang sein"
     }
   },

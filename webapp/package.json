@@ -76,7 +76,7 @@
     "vue-count-to": "~1.0.13",
     "vue-izitoast": "1.1.2",
     "vue-sweetalert-icons": "~3.2.0",
-    "vuex-i18n": "~1.11.0",
+    "vuex-i18n": "~1.13.0",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
@@ -101,6 +101,7 @@
     "eslint-plugin-promise": "~4.2.1",
     "eslint-plugin-standard": "~4.0.0",
     "eslint-plugin-vue": "~5.2.3",
+    "flush-promises": "^1.0.2",
     "fuse.js": "^3.4.5",
     "jest": "~24.8.0",
     "node-sass": "~4.12.0",

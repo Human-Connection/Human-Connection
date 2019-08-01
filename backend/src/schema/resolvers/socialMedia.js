@@ -1,30 +1,38 @@
-import { neo4jgraphql } from 'neo4j-graphql-js'
+import { neode } from '../../bootstrap/neo4j'
+import Resolver from './helpers/Resolver'
+
+const instance = neode()
 
 export default {
   Mutation: {
     CreateSocialMedia: async (object, params, context, resolveInfo) => {
-      /**
-       * TODO?: Creates double Nodes!
-       */
-      const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
-      const session = context.driver.session()
-      await session.run(
-        `MATCH (owner:User {id: $userId}), (socialMedia:SocialMedia {id: $socialMediaId})
-        MERGE (socialMedia)<-[:OWNED]-(owner) 
-        RETURN owner`,
-        {
-          userId: context.user.id,
-          socialMediaId: socialMedia.id,
-        },
-      )
-      session.close()
+      const [user, socialMedia] = await Promise.all([
+        instance.find('User', context.user.id),
+        instance.create('SocialMedia', params),
+      ])
+      await socialMedia.relateTo(user, 'ownedBy')
+      const response = await socialMedia.toJson()
 
-      return socialMedia
+      return response
     },
-    DeleteSocialMedia: async (object, params, context, resolveInfo) => {
-      const socialMedia = await neo4jgraphql(object, params, context, resolveInfo, false)
+    UpdateSocialMedia: async (object, params, context, resolveInfo) => {
+      const socialMedia = await instance.find('SocialMedia', params.id)
+      await socialMedia.update({ url: params.url })
+      const response = await socialMedia.toJson()
 
-      return socialMedia
+      return response
+    },
+    DeleteSocialMedia: async (object, { id }, context, resolveInfo) => {
+      const socialMedia = await instance.find('SocialMedia', id)
+      if (!socialMedia) return null
+      await socialMedia.delete()
+      return socialMedia.toJson()
     },
   },
+  SocialMedia: Resolver('SocialMedia', {
+    idAttribute: 'url',
+    hasOne: {
+      ownedBy: '<-[:OWNED_BY]-(related:User)',
+    },
+  }),
 }
