@@ -166,6 +166,7 @@ const permissions = shield(
       isLoggedIn: allow,
       Badge: allow,
       postsEmotionsCountByEmotion: allow,
+      postsEmotionsCountByCurrentUser: allow,
     },
     Mutation: {
       '*': deny,

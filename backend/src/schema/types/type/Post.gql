@@ -95,5 +95,6 @@ type Mutation {
 }
 
 type Query {
-  postsEmotionsCountByEmotion(id: ID!, data: _EMOTEDInput!): Int!
+  postsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
+  postsEmotionsCountByCurrentUser(postId: ID!): [String]
 }

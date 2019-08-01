@@ -415,6 +415,14 @@
     "languageSelectLabel": "Sprache",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
+    },
+    "emotions-label": {
+      "funny": "Lustig",
+      "happy": "Glücklich",
+      "surprised": "Erstaunt",
+      "cry": "Zum Weinen",
+      "angry": "Verärgert",
+      "emoted": "emotiert"
     }
   },
   "terms": {
