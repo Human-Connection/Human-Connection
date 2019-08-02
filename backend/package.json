@@ -85,7 +85,7 @@
     "metascraper-soundcloud": "^5.6.5",
     "metascraper-title": "^5.6.3",
     "metascraper-url": "^5.6.5",
-    "metascraper-video": "^5.6.3",
+    "metascraper-video": "^5.6.5",
     "metascraper-youtube": "^5.6.3",
     "neo4j-driver": "~1.7.5",
     "neo4j-graphql-js": "^2.6.3",
