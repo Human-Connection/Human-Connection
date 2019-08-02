@@ -324,17 +324,17 @@
     "user": {
       "title": "Disable User",
       "type": "User",
-      "message": "Do you really want to disable the user '<b>{name}</b>'?"
+      "message": "Do you really want to disable the user \"<b>{name}</b>\"?"
     },
     "contribution": {
       "title": "Disable Contribution",
       "type": "Contribution",
-      "message": "Do you really want to disable the contribution '<b>{name}</b>'?"
+      "message": "Do you really want to disable the contribution \"<b>{name}</b>\"?"
     },
     "comment": {
       "title": "Disable Comment",
       "type": "Comment",
-      "message": "Do you really want to disable the comment from '<b>{name}</b>'?"
+      "message": "Do you really want to disable the comment from \"<b>{name}</b>\"?"
     }
   },
   "delete": {
@@ -343,13 +343,13 @@
     "contribution": {
       "title": "Delete Post",
       "type": "Contribution",
-      "message": "Do you really want to delete the post '<b>{name}</b>'?",
+      "message": "Do you really want to delete the post \"<b>{name}</b>\"?",
       "success": "Post successfully deleted!"
     },
     "comment": {
       "title": "Delete Comment",
       "type": "Comment",
-      "message": "Do you really want to delete the comment '<b>{name}</b>'?",
+      "message": "Do you really want to delete the comment \"<b>{name}</b>\"?",
       "success": "Comment successfully deleted!"
     }
   },
@@ -360,19 +360,19 @@
     "user": {
       "title": "Report User",
       "type": "User",
-      "message": "Do you really want to report the user '<b>{name}</b>'?",
+      "message": "Do you really want to report the user \"<b>{name}</b>\"?",
       "error": "You already reported the user!"
     },
     "contribution": {
       "title": "Report Post",
       "type": "Contribution",
-      "message": "Do you really want to report the contribution '<b>{name}</b>'?",
+      "message": "Do you really want to report the contribution \"<b>{name}</b>\"?",
       "error": "You have already reported the contribution!"
     },
     "comment": {
       "title": "Report Comment",
       "type": "Comment",
-      "message": "Do you really want to report the comment from '<b>{name}</b>'?",
+      "message": "Do you really want to report the comment from \"<b>{name}</b>\"?",
       "error": "You have already reported the comment!"
     }
   },
@@ -390,17 +390,17 @@
     "user": {
       "title": "Release User",
       "type": "User",
-      "message": "Do you really want to release the user '<b>{name}</b>'?"
+      "message": "Do you really want to release the user \"<b>{name}</b>\"?"
     },
     "contribution": {
       "title": "Release Contribution",
       "type": "Contribution",
-      "message": "Do you really want to release the contribution '<b>{name}</b>'?"
+      "message": "Do you really want to release the contribution \"<b>{name}</b>\"?"
     },
     "comment": {
       "title": "Release Comment",
       "type": "Comment",
-      "message": "Do you really want to release the comment from '<b>{name}</b>'?"
+      "message": "Do you really want to release the comment from \"<b>{name}</b>\"?"
     }
   },
   "user": {
