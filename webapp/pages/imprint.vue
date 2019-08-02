@@ -74,12 +74,6 @@
 <script>
 export default {
   layout: 'default',
-
-  asyncData({ store, redirect }) {
-    if (store.getters['auth/isLoggedIn']) {
-      layout: 'default'
-    }
-  },
   head() {
     return {
       title: this.$t('site.imprint'),
