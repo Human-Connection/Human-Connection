@@ -97,8 +97,6 @@ const invitationLimitReached = rule({
       return record.get('limitReached')
     })
     return limitReached
-  } catch (e) {
-    throw e
   } finally {
     session.close()
   }

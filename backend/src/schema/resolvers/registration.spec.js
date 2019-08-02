@@ -300,7 +300,7 @@ describe('SignupVerification', () => {
       }
     `
   describe('given valid password and email', () => {
-    let variables = {
+    const variables = {
       nonce: '123456',
       name: 'John Doe',
       password: '123',

@@ -1,9 +1,9 @@
 export const query = (cypher, session) => {
   return new Promise((resolve, reject) => {
-    let data = []
+    const data = []
     session.run(cypher).subscribe({
       onNext: function(record) {
-        let item = {}
+        const item = {}
         record.keys.forEach(key => {
           item[key] = record.get(key)
         })
@@ -34,7 +34,7 @@ const queryOne = (cypher, session) => {
 export default {
   Query: {
     statistics: async (parent, args, { driver, user }) => {
-      return new Promise(async resolve => {
+      return new Promise(resolve => {
         const session = driver.session()
         const queries = {
           countUsers:
@@ -54,18 +54,24 @@ export default {
           countFollows: 'MATCH (:User)-[r:FOLLOWS]->(:User) RETURN COUNT(r) AS countFollows',
           countShouts: 'MATCH (:User)-[r:SHOUTED]->(:Post) RETURN COUNT(r) AS countShouts',
         }
-        let data = {
-          countUsers: (await queryOne(queries.countUsers, session)).countUsers.low,
-          countPosts: (await queryOne(queries.countPosts, session)).countPosts.low,
-          countComments: (await queryOne(queries.countComments, session)).countComments.low,
-          countNotifications: (await queryOne(queries.countNotifications, session))
-            .countNotifications.low,
-          countOrganizations: (await queryOne(queries.countOrganizations, session))
-            .countOrganizations.low,
-          countProjects: (await queryOne(queries.countProjects, session)).countProjects.low,
-          countInvites: (await queryOne(queries.countInvites, session)).countInvites.low,
-          countFollows: (await queryOne(queries.countFollows, session)).countFollows.low,
-          countShouts: (await queryOne(queries.countShouts, session)).countShouts.low,
+        const data = {
+          countUsers: queryOne(queries.countUsers, session).then(res => res.countUsers.low),
+          countPosts: queryOne(queries.countPosts, session).then(res => res.countPosts.low),
+          countComments: queryOne(queries.countComments, session).then(
+            res => res.countComments.low,
+          ),
+          countNotifications: queryOne(queries.countNotifications, session).then(
+            res => res.countNotifications.low,
+          ),
+          countOrganizations: queryOne(queries.countOrganizations, session).then(
+            res => res.countOrganizations.low,
+          ),
+          countProjects: queryOne(queries.countProjects, session).then(
+            res => res.countProjects.low,
+          ),
+          countInvites: queryOne(queries.countInvites, session).then(res => res.countInvites.low),
+          countFollows: queryOne(queries.countFollows, session).then(res => res.countFollows.low),
+          countShouts: queryOne(queries.countShouts, session).then(res => res.countShouts.low),
         }
         resolve(data)
       })
