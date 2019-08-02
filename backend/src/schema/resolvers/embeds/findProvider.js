@@ -9,8 +9,8 @@ oEmbedProvidersFile = oEmbedProvidersFile.replace(/\{format\}/g, 'json')
 const oEmbedProviders = JSON.parse(oEmbedProvidersFile)
 
 export default function(embedUrl) {
-  for (let provider of oEmbedProviders) {
-    for (let endpoint of provider.endpoints) {
+  for (const provider of oEmbedProviders) {
+    for (const endpoint of provider.endpoints) {
       const { schemes = [], url } = endpoint
       if (schemes.some(scheme => minimatch(embedUrl, scheme))) return url
     }
