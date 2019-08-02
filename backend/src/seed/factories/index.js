@@ -40,15 +40,13 @@ export const cleanDatabase = async (options = {}) => {
   const cypher = 'MATCH (n) DETACH DELETE n'
   try {
     return await session.run(cypher)
-  } catch (error) {
-    throw error
   } finally {
     session.close()
   }
 }
 
 export default function Factory(options = {}) {
-  let {
+  const {
     seedServerHost = 'http://127.0.0.1:4001',
     neo4jDriver = getDriver(),
     neodeInstance = neode(),

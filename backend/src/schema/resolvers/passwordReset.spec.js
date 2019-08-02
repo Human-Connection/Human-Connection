@@ -10,7 +10,7 @@ const driver = getDriver()
 
 const getAllPasswordResets = async () => {
   const session = driver.session()
-  let transactionRes = await session.run('MATCH (r:PasswordReset) RETURN r')
+  const transactionRes = await session.run('MATCH (r:PasswordReset) RETURN r')
   const resets = transactionRes.records.map(record => record.get('r'))
   session.close()
   return resets
@@ -84,9 +84,9 @@ describe('passwordReset', () => {
     }
 
     const mutation = `mutation($code: String!, $email: String!, $newPassword: String!) { resetPassword(code: $code, email: $email, newPassword: $newPassword) }`
-    let email = 'user@example.org'
-    let code = 'abcdef'
-    let newPassword = 'supersecret'
+    const email = 'user@example.org'
+    const code = 'abcdef'
+    const newPassword = 'supersecret'
     let variables
 
     describe('invalid email', () => {

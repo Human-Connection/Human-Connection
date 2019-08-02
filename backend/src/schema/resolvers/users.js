@@ -23,7 +23,7 @@ export default {
     UpdateUser: async (object, args, context, resolveInfo) => {
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
-        let user = await instance.find('User', args.id)
+        const user = await instance.find('User', args.id)
         if (!user) return null
         await user.update(args)
         return user.toJson()
@@ -60,7 +60,7 @@ export default {
       const { id } = parent
       const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
       const result = await instance.cypher(statement, { id })
-      let [{ email }] = result.records.map(r => r.get('e').properties)
+      const [{ email }] = result.records.map(r => r.get('e').properties)
       return email
     },
     ...Resolver('User', {

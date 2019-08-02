@@ -303,6 +303,7 @@ export default class NitroDataSource {
       }),
     )
   }
+
   async saveFollowingCollectionPage(followingCollection, onlyNewestItem = true) {
     debug('inside saveFollowers')
     let orderedItems = followingCollection.orderedItems
@@ -470,6 +471,7 @@ export default class NitroDataSource {
     throwErrorIfApolloErrorOccurred(result)
     return result.data.SharedInboxEnpoint
   }
+
   async addSharedInboxEndpoint(uri) {
     try {
       const result = await this.client.mutate({

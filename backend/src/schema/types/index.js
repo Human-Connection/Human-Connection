@@ -21,7 +21,7 @@ const findGqlFiles = dir => {
   return results
 }
 
-let typeDefs = []
+const typeDefs = []
 
 findGqlFiles(__dirname).forEach(file => {
   typeDefs.push(fs.readFileSync(file).toString('utf-8'))
