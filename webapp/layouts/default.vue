@@ -57,6 +57,13 @@
                 <no-ssr>
                   <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
                 </no-ssr>
+                <template v-if="!isLoggedIn">
+                  <div class="avatar-menu-popover" style="margin-left:20px">
+                    <nuxt-link class="login-link" :to="{ name: 'login' }">
+                      {{ $t('login.login') }}
+                    </nuxt-link>
+                  </div>
+                </template>
                 <template v-if="isLoggedIn">
                   <no-ssr>
                     <notification-menu placement="top" />
