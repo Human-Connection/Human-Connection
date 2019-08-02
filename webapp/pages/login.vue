@@ -72,7 +72,7 @@
 
 <script>
 export default {
-  layout: 'blank',
+  layout: 'default',
   data() {
     return {
       ready: false,

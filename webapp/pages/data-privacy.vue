@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  layout: 'blank',
+  layout: 'default',
   head() {
     return {
       title: this.$t('site.dataPrivacy'),

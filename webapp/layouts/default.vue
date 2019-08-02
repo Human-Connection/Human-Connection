@@ -20,7 +20,7 @@
               :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
-              <div id="nav-search-box">
+              <div id="nav-search-box" v-if="isLoggedIn">
                 <search-input
                   id="nav-search"
                   :delay="300"
@@ -33,6 +33,7 @@
               </div>
             </ds-flex-item>
             <ds-flex-item
+              v-if="isLoggedIn"
               :width="{ base: '15%', sm: '15%', md: '10%', lg: '10%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
