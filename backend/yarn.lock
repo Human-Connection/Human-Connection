@@ -972,33 +972,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.6.3":
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.6.3.tgz#88d3d3a174f94ccb617145cb9f60c999b57d9b60"
-  integrity sha512-FWqQmh+sZI5JRxJHVPPzBjilgZCqKWDFSo/eqRIgLLW/5kB79uuX4aseSTep1JpXUAcD5F/Z0KZYQl4JTbTopA==
-  dependencies:
-    audio-extensions "0.0.0"
-    chrono-node "~1.3.11"
-    condense-whitespace "~2.0.0"
-    entities "~2.0.0"
-    file-extension "~4.0.5"
-    has-values "~2.0.1"
-    image-extensions "~1.1.0"
-    is-relative-url "~3.0.0"
-    is-uri "~1.2.0"
-    iso-639-3 "~1.2.0"
-    isostring "0.0.1"
-    lodash "~4.17.15"
-    mem "~5.1.1"
-    mime-types "~2.1.24"
-    normalize-url "~4.3.0"
-    smartquotes "~2.3.1"
-    title "~3.4.1"
-    truncate "~2.1.0"
-    url-regex "~5.0.0"
-    video-extensions "~1.1.0"
-
-"@metascraper/helpers@^5.6.5":
+"@metascraper/helpers@^5.6.3", "@metascraper/helpers@^5.6.5":
   version "5.6.5"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.6.5.tgz#6f42bd1a8e3243e051e7bb067145125cd6b37e09"
   integrity sha512-j9qxXqZ9k/uNkABlsVjNN2Z5pVtukDmZMZ0ACsob+m5o8/yo87GvRf/UJfTPtog9vZ/QwkLav5Hhl+10NC7QLw==
@@ -5857,12 +5831,12 @@ metascraper-date@^5.6.3:
   dependencies:
     "@metascraper/helpers" "^5.6.3"
 
-metascraper-description@^5.5.0:
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.6.3.tgz#1abfde848e8002c606e5741b9523b61ca592bb34"
-  integrity sha512-ATfsUS6t912hSYKEOyVUX+GrwRMcUltOcvEXtD/5ER26z3h1ab83w4UvQ7imo9F6yueQX2dB6QfqTkWF92X6Vw==
+metascraper-description@^5.6.5:
+  version "5.6.5"
+  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.6.5.tgz#b0e47bedf9aed151e085ff3a8a499be5f4779dc3"
+  integrity sha512-rYHMRrLnYPdt1ZCiObRtl7MP8i+2q9MfgeeiwACd65ElC+wgnfyQBIgxBp/gEnKuUsehWgpDXCZKFkjv+W4zNQ==
   dependencies:
-    "@metascraper/helpers" "^5.6.3"
+    "@metascraper/helpers" "^5.6.5"
 
 metascraper-image@^5.6.3:
   version "5.6.3"
