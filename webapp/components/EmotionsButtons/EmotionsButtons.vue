@@ -1,27 +1,21 @@
 <template>
-  <ds-space margin="large" style="text-align: center">
-    <ds-flex :gutter="{ lg: 'large' }" class="emotions-flex">
-      <div v-for="emotion in Object.keys(postsEmotionsCountByEmotion)" :key="emotion">
-        <ds-flex-item :width="{ lg: '100%' }">
-          <ds-button size="large" ghost @click="toggleEmotion(emotion)" class="emotions-buttons">
-            <img :src="iconPath(emotion)" width="53" />
-          </ds-button>
-          <ds-space margin-bottom="xx-small" />
-          <div>
-            <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>
-            <ds-heading
-              style="display: inline"
-              tag="h3"
-              :key="postsEmotionsCountByEmotion[emotion]"
-            >
-              {{ postsEmotionsCountByEmotion[emotion] }}x
-            </ds-heading>
-            {{ $t('contribution.emotions-label.emoted') }}
-          </div>
-        </ds-flex-item>
-      </div>
-    </ds-flex>
-  </ds-space>
+  <ds-flex :gutter="{ lg: 'large' }" class="emotions-flex">
+    <div v-for="emotion in Object.keys(postsEmotionsCountByEmotion)" :key="emotion">
+      <ds-flex-item :width="{ lg: '100%' }">
+        <ds-button size="large" ghost @click="toggleEmotion(emotion)" class="emotions-buttons">
+          <img :src="iconPath(emotion)" width="53" />
+        </ds-button>
+        <ds-space margin-bottom="xx-small" />
+        <div class="emotions-mobile-space">
+          <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>
+          <ds-heading style="display: inline" tag="h3" :key="postsEmotionsCountByEmotion[emotion]">
+            {{ postsEmotionsCountByEmotion[emotion] }}x
+          </ds-heading>
+          {{ $t('contribution.emotions-label.emoted') }}
+        </div>
+      </ds-flex-item>
+    </div>
+  </ds-flex>
 </template>
 <script>
 import gql from 'graphql-tag'
@@ -122,6 +116,7 @@ export default {
 <style lang="scss">
 .emotions-flex {
   justify-content: space-evenly;
+  text-align: center;
 }
 
 .emotions-label {
@@ -131,6 +126,11 @@ export default {
 .emotions-buttons {
   &:hover {
     background-color: $background-color-base;
+  }
+}
+@media only screen and (max-width: 960px) {
+  .emotions-mobile-space {
+    margin-bottom: 32px;
   }
 }
 </style>

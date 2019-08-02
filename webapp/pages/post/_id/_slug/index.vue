@@ -43,22 +43,30 @@
         <ds-space margin="xx-small" />
         <hc-tag v-for="tag in post.tags" :key="tag.id" :name="tag.name" />
       </div>
-      <ds-flex :gutter="{ lg: 'small' }">
-        <ds-flex-item :width="{ lg: '75%' }">
-          <hc-emotions-buttons :post="post" />
-        </ds-flex-item>
-        <ds-flex-item :width="{ lg: '10%' }" />
-        <!-- Shout Button -->
-        <ds-flex-item :width="{ lg: '15%' }">
-          <hc-shout-button
-            v-if="post.author"
-            :disabled="isAuthor(post.author.id)"
-            :count="post.shoutedCount"
-            :is-shouted="post.shoutedByCurrentUser"
-            :post-id="post.id"
-          />
-        </ds-flex-item>
-      </ds-flex>
+      <ds-space margin-top="x-large">
+        <ds-flex :gutter="{ lg: 'small' }">
+          <ds-flex-item
+            :width="{ lg: '75%', md: '75%', sm: '75%' }"
+            class="emotions-buttons-mobile"
+          >
+            <hc-emotions-buttons :post="post" />
+          </ds-flex-item>
+          <ds-flex-item :width="{ lg: '10%', md: '5%', sm: '5%' }" />
+          <!-- Shout Button -->
+          <ds-flex-item
+            :width="{ lg: '15%', md: '20%', sm: '20%', base: '100%' }"
+            class="shout-button"
+          >
+            <hc-shout-button
+              v-if="post.author"
+              :disabled="isAuthor(post.author.id)"
+              :count="post.shoutedCount"
+              :is-shouted="post.shoutedByCurrentUser"
+              :post-id="post.id"
+            />
+          </ds-flex-item>
+        </ds-flex>
+      </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list :post="post" />
@@ -208,5 +216,13 @@ export default {
       }
     }
   }
+}
+@media only screen and (max-width: 960px) {
+  .shout-button {
+    float: left;
+  }
+  // .emotions-buttons-mobile {
+  //   margin-top: -80px;
+  // }
 }
 </style>
