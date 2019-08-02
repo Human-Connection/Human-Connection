@@ -3,13 +3,7 @@
     <ds-flex :gutter="{ lg: 'large' }" class="emotions-flex">
       <div v-for="emotion in Object.keys(postsEmotionsCountByEmotion)" :key="emotion">
         <ds-flex-item :width="{ lg: '100%' }">
-          <ds-button
-            :loading="loading"
-            size="large"
-            ghost
-            @click="toggleEmotion(emotion)"
-            class="emotions-buttons"
-          >
+          <ds-button size="large" ghost @click="toggleEmotion(emotion)" class="emotions-buttons">
             <img :src="iconPath(emotion)" width="53" />
           </ds-button>
           <ds-space margin-bottom="xx-small" />
@@ -32,6 +26,8 @@
 <script>
 import gql from 'graphql-tag'
 import { mapGetters } from 'vuex'
+import { postsEmotionsCountByCurrentUser } from '~/graphql/PostQuery.js'
+import PostMutations from '~/graphql/PostMutations.js'
 
 export default {
   props: {
@@ -39,7 +35,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
       selectedEmotions: [],
       postsEmotionsCountByEmotion: { funny: 0, happy: 0, surprised: 0, cry: 0, angry: 0 },
     }
@@ -50,7 +45,6 @@ export default {
     }),
   },
   mounted() {
-    this.myEmotions()
     Object.keys(this.postsEmotionsCountByEmotion).map(emotion => {
       this.emotionsCount(emotion)
     })
@@ -63,28 +57,18 @@ export default {
       return `/img/svg/emoji/${emotion}.svg`
     },
     toggleEmotion(emotion) {
-      const addPostEmotionsMutation = gql`
-        mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
-          AddPostEmotions(from: $from, to: $to, data: $data) {
-            emotion
-          }
-        }
-      `
-      const removePostEmotionsMutation = gql`
-        mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
-          RemovePostEmotions(from: $from, to: $to, data: $data)
-        }
-      `
       this.$apollo
         .mutate({
-          mutation: this.isActive(emotion) ? removePostEmotionsMutation : addPostEmotionsMutation,
+          mutation: this.isActive(emotion)
+            ? PostMutations().removePostEmotionsMutation
+            : PostMutations().addPostEmotionsMutation,
           variables: {
             from: { id: this.currentUser.id },
             to: { id: this.post.id },
             data: { emotion },
           },
         })
-        .then(response => {
+        .then(() => {
           this.isActive(emotion)
             ? this.postsEmotionsCountByEmotion[emotion]--
             : this.postsEmotionsCountByEmotion[emotion]++
@@ -117,19 +101,20 @@ export default {
           this.postsEmotionsCountByEmotion[emotion] = postsEmotionsCountByEmotion
         })
     },
-    myEmotions() {
-      this.$apollo
-        .query({
-          query: gql`
-            query($postId: ID!) {
-              postsEmotionsCountByCurrentUser(postId: $postId)
-            }
-          `,
-          variables: { postId: this.post.id },
-        })
-        .then(({ data: { postsEmotionsCountByCurrentUser } }) => {
-          this.selectedEmotions = postsEmotionsCountByCurrentUser
-        })
+  },
+  apollo: {
+    postsEmotionsCountByCurrentUser: {
+      query() {
+        return postsEmotionsCountByCurrentUser()
+      },
+      variables() {
+        return {
+          postId: this.post.id,
+        }
+      },
+      result({ data: { postsEmotionsCountByCurrentUser } }) {
+        this.selectedEmotions = postsEmotionsCountByCurrentUser
+      },
     },
   },
 }

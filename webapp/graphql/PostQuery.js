@@ -121,3 +121,11 @@ export const filterPosts = i18n => {
   }
 `
 }
+
+export const postsEmotionsCountByCurrentUser = () => {
+  return gql`
+    query postsEmotionsCountByCurrentUser($postId: ID!) {
+      postsEmotionsCountByCurrentUser(postId: $postId)
+    }
+  `
+}
