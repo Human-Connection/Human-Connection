@@ -2,6 +2,7 @@ export default class Collections {
   constructor(dataSource) {
     this.dataSource = dataSource
   }
+
   getFollowersCollection(actorId) {
     return this.dataSource.getFollowersCollection(actorId)
   }

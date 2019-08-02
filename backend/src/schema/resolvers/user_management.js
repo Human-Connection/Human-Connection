@@ -49,7 +49,7 @@ export default {
       }
     },
     changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {
-      let currentUser = await instance.find('User', user.id)
+      const currentUser = await instance.find('User', user.id)
 
       const encryptedPassword = currentUser.get('encryptedPassword')
       if (!(await bcrypt.compareSync(oldPassword, encryptedPassword))) {

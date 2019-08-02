@@ -296,7 +296,7 @@ describe('change password', () => {
 
   describe('correct password', () => {
     it('changes the password if given correct credentials "', async () => {
-      let response = await client.request(
+      const response = await client.request(
         mutation({
           oldPassword: '1234',
           newPassword: '12345',

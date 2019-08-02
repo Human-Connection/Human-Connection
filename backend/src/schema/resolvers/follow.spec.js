@@ -41,8 +41,7 @@ describe('follow', () => {
   describe('follow user', () => {
     describe('unauthenticated follow', () => {
       it('throws authorization error', async () => {
-        let client
-        client = new GraphQLClient(host)
+        const client = new GraphQLClient(host)
         await expect(client.request(mutationFollowUser('u2'))).rejects.toThrow('Not Authorised')
       })
     })
@@ -93,8 +92,7 @@ describe('follow', () => {
         // follow
         await clientUser1.request(mutationFollowUser('u2'))
         // unfollow
-        let client
-        client = new GraphQLClient(host)
+        const client = new GraphQLClient(host)
         await expect(client.request(mutationUnfollowUser('u2'))).rejects.toThrow('Not Authorised')
       })
     })

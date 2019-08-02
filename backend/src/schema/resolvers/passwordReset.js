@@ -41,7 +41,7 @@ export default {
       SET u.encryptedPassword = $encryptedNewPassword
       RETURN pr
       `
-      let transactionRes = await session.run(cypher, {
+      const transactionRes = await session.run(cypher, {
         stillValid,
         email,
         code,

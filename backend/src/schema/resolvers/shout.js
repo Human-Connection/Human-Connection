@@ -4,7 +4,7 @@ export default {
       const { id, type } = params
 
       const session = context.driver.session()
-      let transactionRes = await session.run(
+      const transactionRes = await session.run(
         `MATCH (node {id: $id})<-[:WROTE]-(userWritten:User), (user:User {id: $userId})
           WHERE $type IN labels(node) AND NOT userWritten.id = $userId
           MERGE (user)-[relation:SHOUTED]->(node)
@@ -29,7 +29,7 @@ export default {
       const { id, type } = params
       const session = context.driver.session()
 
-      let transactionRes = await session.run(
+      const transactionRes = await session.run(
         `MATCH (user:User {id: $userId})-[relation:SHOUTED]->(node {id: $id})
           WHERE $type IN labels(node)
           DELETE relation
