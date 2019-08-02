@@ -98,7 +98,7 @@ describe('Query', () => {
               html: null,
               image: null,
               lang: null,
-              publisher: null,
+              publisher: 'YouTube',
               sources: ['resource'],
               title: null,
               type: 'link',
