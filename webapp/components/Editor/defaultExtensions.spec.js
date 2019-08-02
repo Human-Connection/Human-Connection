@@ -74,10 +74,15 @@ describe('defaultExtensions', () => {
             type: 'paragraph',
           },
           {
-            attrs: {
-              dataEmbedUrl: 'https://www.youtube.com/watch?v=qkdXAtO40Fo',
-            },
-            type: 'embed',
+            content: [
+              {
+                attrs: {
+                  dataEmbedUrl: 'https://www.youtube.com/watch?v=qkdXAtO40Fo',
+                },
+                type: 'embed',
+              },
+            ],
+            type: 'paragraph',
           },
         ],
         type: 'doc',

@@ -3,7 +3,7 @@ import pasteRule from '../commands/pasteRule'
 import { compileToFunctions } from 'vue-template-compiler'
 
 const template = `
-  <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow">
+  <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">
     <div v-if="embedHtml" v-html="embedHtml" />
     <em> {{ dataEmbedUrl }} </em>
   </a>
@@ -38,8 +38,8 @@ export default class Embed extends Node {
           default: null,
         },
       },
-      group: 'block',
-      selectable: false,
+      group: 'inline',
+      inline: true,
       parseDOM: [
         {
           tag: 'a[href].embed',
@@ -53,6 +53,7 @@ export default class Embed extends Node {
         {
           href: node.attrs.dataEmbedUrl,
           class: 'embed',
+          target: '_blank',
         },
       ],
     }
