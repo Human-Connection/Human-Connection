@@ -2,12 +2,7 @@
   <div>
     <ds-flex :width="{ base: '100%' }" gutter="base">
       <ds-flex-item>
-        <filter-menu
-          :user="currentUser"
-          @changeFilterBubble="changeFilterBubble"
-          :hashtag="hashtag"
-          @clearSearch="clearSearch"
-        />
+        <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-flex-item>
       <ds-flex-item>
         <div class="sorting-dropdown">
@@ -97,9 +92,13 @@ export default {
     }
   },
   mounted() {
+    this.toggleShowFilterPostsDropdown(true)
     if (this.hashtag) {
       this.changeFilterBubble({ tags_some: { name: this.hashtag } })
     }
+  },
+  beforeDestroy() {
+    this.toggleShowFilterPostsDropdown(false)
   },
   watch: {
     Post(post) {
@@ -121,6 +120,7 @@ export default {
   methods: {
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
+      toggleShowFilterPostsDropdown: 'default/SET_SHOW_FILTER_POSTS_DROPDOWN',
     }),
     changeFilterBubble(filter) {
       if (this.hashtag) {

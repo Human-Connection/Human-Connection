@@ -37,7 +37,12 @@
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <no-ssr>
-                <filter-posts placement="top-start" offset="8" :categories="categories" />
+                <filter-posts
+                  v-show="showFilterPostsDropdown"
+                  placement="top-start"
+                  offset="8"
+                  :categories="categories"
+                />
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '10%', lg: '2%' }" />
@@ -176,6 +181,7 @@ export default {
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
+      showFilterPostsDropdown: 'default/showFilterPostsDropdown',
     }),
     userName() {
       const { name } = this.user || {}

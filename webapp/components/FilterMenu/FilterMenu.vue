@@ -14,7 +14,7 @@
                 placement: 'left',
                 delay: { show: 500 },
               }"
-              name="filter-by-followed-authors-only"
+              name="clear-search-button"
               icon="close"
               @click="clearSearch"
             />
@@ -28,13 +28,7 @@
 <script>
 export default {
   props: {
-    user: { type: Object, required: true },
     hashtag: { type: Object, default: null },
-  },
-  data() {
-    return {
-      filter: {},
-    }
   },
   methods: {
     clearSearch() {

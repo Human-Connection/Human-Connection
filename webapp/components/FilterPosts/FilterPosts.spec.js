@@ -54,6 +54,11 @@ describe('FilterPosts.vue', () => {
       mutations: {
         'posts/SET_POSTS': mutations.SET_POSTS,
       },
+      getters: {
+        'auth/user': () => {
+          return { id: 'u34' }
+        },
+      },
     })
     const Wrapper = () => {
       return mount(FilterPosts, { mocks, localVue, propsData, store })
@@ -129,6 +134,42 @@ describe('FilterPosts.vue', () => {
       environmentAndNatureButton.trigger('click')
       const filterPostsMenuItem = wrapper.find(FilterPostsMenuItem)
       expect(filterPostsMenuItem.vm.selectedCategoryIds).toEqual([])
+    })
+
+    describe('click "filter-by-followed-authors-only" button', () => {
+      it('calls the filterPost query', () => {
+        wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+        expect(mocks.$apollo.query).toHaveBeenCalledWith(
+          expect.objectContaining({
+            variables: {
+              filter: { author: { followedBy_some: { id: 'u34' } } },
+              first: expect.any(Number),
+              offset: expect.any(Number),
+            },
+          }),
+        )
+      })
+
+      it('toggles filterBubble.author property', async () => {
+        await wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+        await wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+        expect(mocks.$apollo.query).toHaveBeenCalledWith(
+          expect.objectContaining({
+            variables: {
+              filter: {},
+              first: expect.any(Number),
+              offset: expect.any(Number),
+            },
+          }),
+        )
+      })
+
+      it("sets the button's class to primary when clicked", async () => {
+        await wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+        expect(
+          wrapper.find({ name: 'filter-by-followed-authors-only' }).classes('ds-button-primary'),
+        ).toBe(true)
+      })
     })
   })
 })

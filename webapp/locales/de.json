@@ -9,11 +9,11 @@
       "header": "Themenkategorien",
       "all": "Alle"
     },
-    "all": {
-      "header": "Alle Beiträge des Benutzers"
+    "general": {
+      "header": "Filtern nach..."
     },
     "followers": {
-      "header": "Die Beiträge meiner Anhänger"
+      "label": "Benutzern, denen ich folge"
     }
   },
   "site": {

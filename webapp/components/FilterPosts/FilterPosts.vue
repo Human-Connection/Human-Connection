@@ -44,7 +44,6 @@ export default {
       setPosts: 'posts/SET_POSTS',
     }),
     filterPosts(filter) {
-      // const filter = categoryIds.length ? { categories_some: { id_in: categoryIds } } : {}
       this.$apollo
         .query({
           query: filterPosts(this.$i18n),

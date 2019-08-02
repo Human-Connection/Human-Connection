@@ -57,22 +57,18 @@
     </ds-flex>
     <ds-space />
     <ds-flex id="filter-posts-by-followers-header">
-      <ds-heading tag="h4">
-        {{
-          filteredByFollowers ? $t('filter-posts.followers.header') : $t('filter-posts.all.header')
-        }}
-      </ds-heading>
+      <ds-heading tag="h4">{{ $t('filter-posts.general.header') }}</ds-heading>
       <ds-space margin-bottom="large" />
     </ds-flex>
     <ds-flex>
       <ds-flex-item
-        :width="{ base: '100%', sm: '100%', md: '100%', lg: '5%' }"
+        :width="{ base: '100%', sm: '100%', md: '100%', lg: '10%' }"
         class="categories-menu-item"
       >
         <ds-flex>
           <ds-flex-item width="10%" />
           <ds-flex-item width="100%">
-            <div class="filter-menu-buttons">
+            <div class="follow-button">
               <ds-button
                 v-tooltip="{
                   content: this.$t('contribution.filterFollow'),
@@ -81,14 +77,18 @@
                 }"
                 name="filter-by-followed-authors-only"
                 icon="user-plus"
-                :primary="!filteredByFollowers"
+                :primary="filteredByFollowers"
                 @click="toggleOnlyFollowed"
               />
+              <ds-flex-item>
+                <label class="follow-label">{{ $t('filter-posts.followers.label') }}</label>
+              </ds-flex-item>
+              <ds-space />
             </div>
-            <ds-space margin-bottom="large" />
           </ds-flex-item>
         </ds-flex>
       </ds-flex-item>
+      <ds-space margin-bottom="large" />
     </ds-flex>
   </ds-container>
 </template>
@@ -132,7 +132,7 @@ export default {
       } else if (this.filter.author) {
         this.filter.categories_some = { id_in: this.selectedCategoryIds }
       } else {
-        this.filter = { categories_some: { followedBy_some: { id: this.user.id } } }
+        this.filter = { categories_some: { id_in: this.selectedCategoryIds } }
       }
       this.$emit('filterPosts', this.filter)
     },
@@ -167,7 +167,8 @@ export default {
   justify-content: center;
 }
 
-.category-labels {
+.category-labels,
+.follow-label {
   font-size: $font-size-small;
 }
 
@@ -181,6 +182,9 @@ export default {
 @media only screen and (max-width: 960px) {
   #filter-posts-header {
     text-align: center;
+  }
+  .follow-button {
+    float: left;
   }
 }
 </style>

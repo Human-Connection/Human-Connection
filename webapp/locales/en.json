@@ -9,11 +9,11 @@
       "header": "Categories of Content",
       "all": "All"
     },
-    "all": {
-      "header": "All user's contributions"
+    "general": {
+      "header": "Filter by..."
     },
     "followers": {
-      "header": "My followers contributions"
+      "label": "Users I follow"
     }
   },
   "site": {
