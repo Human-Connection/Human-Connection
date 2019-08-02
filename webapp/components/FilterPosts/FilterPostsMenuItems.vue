@@ -2,7 +2,7 @@
   <ds-container>
     <ds-space />
     <ds-flex id="filter-posts-header">
-      <ds-heading tag="h4">{{ $t('filter-posts.header') }}</ds-heading>
+      <ds-heading tag="h4">{{ $t('filter-posts.categories.header') }}</ds-heading>
       <ds-space margin-bottom="large" />
     </ds-flex>
     <ds-flex>
@@ -19,7 +19,7 @@
               :primary="allCategories"
             />
             <ds-flex-item>
-              <label class="category-labels">{{ $t('filter-posts.all') }}</label>
+              <label class="category-labels">{{ $t('filter-posts.categories.all') }}</label>
             </ds-flex-item>
             <ds-space />
           </ds-flex-item>
@@ -55,17 +55,55 @@
         </ds-flex>
       </ds-flex-item>
     </ds-flex>
+    <ds-space />
+    <ds-flex id="filter-posts-by-followers-header">
+      <ds-heading tag="h4">
+        {{
+          filteredByFollowers ? $t('filter-posts.followers.header') : $t('filter-posts.all.header')
+        }}
+      </ds-heading>
+      <ds-space margin-bottom="large" />
+    </ds-flex>
+    <ds-flex>
+      <ds-flex-item
+        :width="{ base: '100%', sm: '100%', md: '100%', lg: '5%' }"
+        class="categories-menu-item"
+      >
+        <ds-flex>
+          <ds-flex-item width="10%" />
+          <ds-flex-item width="100%">
+            <div class="filter-menu-buttons">
+              <ds-button
+                v-tooltip="{
+                  content: this.$t('contribution.filterFollow'),
+                  placement: 'left',
+                  delay: { show: 500 },
+                }"
+                name="filter-by-followed-authors-only"
+                icon="user-plus"
+                :primary="!filteredByFollowers"
+                @click="toggleOnlyFollowed"
+              />
+            </div>
+            <ds-space margin-bottom="large" />
+          </ds-flex-item>
+        </ds-flex>
+      </ds-flex-item>
+    </ds-flex>
   </ds-container>
 </template>
 <script>
 export default {
   props: {
+    user: { type: Object, required: true },
     chunk: { type: Array, default: () => [] },
   },
   data() {
     return {
       selectedCategoryIds: [],
       allCategories: true,
+      filter: {},
+      filteredByFollowers: false,
     }
   },
   methods: {
@@ -89,13 +127,35 @@ export default {
         }
         this.allCategories = false
       }
-      this.$emit('filterPosts', this.selectedCategoryIds)
+      if (!this.selectedCategoryIds.length && this.filteredByFollowers) {
+        delete this.filter.categories_some
+      } else if (this.filter.author) {
+        this.filter.categories_some = { id_in: this.selectedCategoryIds }
+      } else {
+        this.filter = { categories_some: { followedBy_some: { id: this.user.id } } }
+      }
+      this.$emit('filterPosts', this.filter)
+    },
+    toggleOnlyFollowed() {
+      this.filteredByFollowers = !this.filteredByFollowers
+      if (!this.selectedCategoryIds.length && !this.filteredByFollowers) {
+        this.filter = {}
+      } else if (this.filter.categories_some) {
+        this.filter.author = { followedBy_some: { id: this.user.id } }
+      } else {
+        this.filter = { author: { followedBy_some: { id: this.user.id } } }
+      }
+      this.$emit('filterPosts', this.filter)
     },
   },
 }
 </script>
 <style lang="scss">
 #filter-posts-header {
+  display: block;
+}
+
+#filter-posts-by-followers-header {
   display: block;
 }
 

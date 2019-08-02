@@ -5,8 +5,16 @@
     "clearSearch": "Clear search"
   },
   "filter-posts": {
-    "header": "Categories of Content",
-    "all": "All"
+    "categories": {
+      "header": "Categories of Content",
+      "all": "All"
+    },
+    "all": {
+      "header": "All user's contributions"
+    },
+    "followers": {
+      "header": "My followers contributions"
+    }
   },
   "site": {
     "made": "Made with &#10084;",
