@@ -26,8 +26,8 @@ script:
   # Backend
   - docker-compose exec backend yarn run lint
   - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
-  - docker-compose exec backend yarn run db:reset
   - docker-compose exec backend yarn run db:seed
+  - docker-compose exec backend yarn run db:reset
   # ActivityPub cucumber testing temporarily disabled because it's too buggy
   # - docker-compose exec backend yarn run test:cucumber --tags "not @wip"
   # - docker-compose exec backend yarn run db:reset
