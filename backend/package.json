@@ -72,7 +72,7 @@
     "lodash": "~4.17.14",
     "merge-graphql-schemas": "^1.7.0",
     "metascraper": "^4.10.3",
-    "metascraper-audio": "^5.5.0",
+    "metascraper-audio": "^5.6.5",
     "metascraper-author": "^5.6.3",
     "metascraper-clearbit-logo": "^5.3.0",
     "metascraper-date": "^5.6.3",
