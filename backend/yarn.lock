@@ -5802,12 +5802,12 @@ merge-stream@^1.0.1:
   dependencies:
     readable-stream "^2.0.1"
 
-metascraper-audio@^5.5.0:
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.6.3.tgz#f84f4e19960c698df2e14cd98212b004bac66bb9"
-  integrity sha512-XxO9iHVQzGa+Z7wzmnHl3dmFdBdmYfO/ozeMWH0fp/4YbU1GU3l+OlYzPaVhCEfArqzzuwf1iq8uGKdU/DOZnw==
+metascraper-audio@^5.6.5:
+  version "5.6.5"
+  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.6.5.tgz#8937d369f37d43f8668eb87013ea4fe8309a9451"
+  integrity sha512-EF9IMscv9HLy3Mks8Vhv0ftzwjV36tvNpSwPnmibDGDy25ssf6nB7ldeP5YPij4TNjLeUsrdh6v10aYrh8Z5fQ==
   dependencies:
-    "@metascraper/helpers" "^5.6.3"
+    "@metascraper/helpers" "^5.6.5"
 
 metascraper-author@^5.6.3:
   version "5.6.3"
