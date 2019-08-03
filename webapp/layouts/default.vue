@@ -133,9 +133,9 @@
       &nbsp;-&nbsp;
       <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
       &nbsp;‑&nbsp;
-      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>
+      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAndConditions') }}</nuxt-link>
       &nbsp;‑&nbsp;
-      <nuxt-link to="/data-privacy">{{ $t('site.dataPrivacy') }}</nuxt-link>
+      <nuxt-link to="/data-privacy">{{ $t('site.data-privacy') }}</nuxt-link>
       &nbsp;‑&nbsp;
       <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
     </div>
