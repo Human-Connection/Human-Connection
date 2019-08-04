@@ -33,7 +33,14 @@
         primary
       />
     </no-ssr>
-    <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
+    <div
+      v-if="hasMore"
+      v-infinite-scroll="showMoreContributions"
+      infinite-scroll-disabled="$apollo.loading"
+      infinite-scroll-distance="10"
+    >
+      <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
+    </div>
   </div>
 </template>
 
