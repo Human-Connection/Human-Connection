@@ -9,7 +9,7 @@ import {
 
 const factory = Factory()
 let client
-let userParams = {
+const userParams = {
   id: 'you',
   email: 'test@example.org',
   password: '1234',
@@ -39,7 +39,7 @@ describe('Notification', () => {
 })
 
 describe('currentUser { notifications }', () => {
-  let variables = {}
+  const variables = {}
 
   describe('authenticated', () => {
     let headers
@@ -116,9 +116,7 @@ describe('currentUser { notifications }', () => {
             }
           }
         }`
-        let variables = {
-          read: false
-        }
+        const variables = { read: false }
         it('returns only unread notifications of current user', async () => {
           const expected = {
             currentUser: {

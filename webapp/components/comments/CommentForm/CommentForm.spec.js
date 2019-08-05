@@ -2,6 +2,9 @@ import { mount, createLocalVue } from '@vue/test-utils'
 import CommentForm from './CommentForm.vue'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
+import MutationObserver from 'mutation-observer'
+
+global.MutationObserver = MutationObserver
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -48,6 +51,7 @@ describe('CommentForm.vue', () => {
       'editor/placeholder': () => {
         return 'some cool placeholder'
       },
+      'editor/editPending': () => false,
     }
     const store = new Vuex.Store({
       getters,

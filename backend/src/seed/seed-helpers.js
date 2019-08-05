@@ -37,17 +37,17 @@ const difficulties = ['easy', 'medium', 'hard']
 
 export default {
   randomItem: (items, filter) => {
-    let ids = filter
+    const ids = filter
       ? Object.keys(items).filter(id => {
           return filter(items[id])
         })
       : _.keys(items)
-    let randomIds = _.shuffle(ids)
+    const randomIds = _.shuffle(ids)
     return items[randomIds.pop()]
   },
   randomItems: (items, key = 'id', min = 1, max = 1) => {
-    let randomIds = _.shuffle(_.keys(items))
-    let res = []
+    const randomIds = _.shuffle(_.keys(items))
+    const res = []
 
     const count = _.random(min, max)
 
@@ -86,8 +86,8 @@ export default {
     if (allowEmpty === false && count === 0) {
       count = 1
     }
-    let categorieIds = _.shuffle(_.keys(seederstore.categories))
-    let ids = []
+    const categorieIds = _.shuffle(_.keys(seederstore.categories))
+    const ids = []
     for (let i = 0; i < count; i++) {
       ids.push(categorieIds.pop())
     }
@@ -95,7 +95,7 @@ export default {
   },
   randomAddresses: () => {
     const count = Math.round(Math.random() * 3)
-    let addresses = []
+    const addresses = []
     for (let i = 0; i < count; i++) {
       addresses.push({
         city: faker.address.city(),
@@ -116,7 +116,7 @@ export default {
    * @param key    the field key that is represented in the values (slug, name, etc.)
    */
   mapIdsByKey: (items, values, key) => {
-    let res = []
+    const res = []
     values.forEach(value => {
       res.push(_.find(items, [key, value]).id.toString())
     })

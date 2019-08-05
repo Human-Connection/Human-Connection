@@ -60,7 +60,7 @@ export default {
       if (!dbResponse) return null
       const { report, submitter, resource, type } = dbResponse
 
-      let response = {
+      const response = {
         ...report.properties,
         post: null,
         comment: null,

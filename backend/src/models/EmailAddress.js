@@ -8,5 +8,6 @@ module.exports = {
     relationship: 'BELONGS_TO',
     target: 'User',
     direction: 'out',
+    eager: true,
   },
 }
