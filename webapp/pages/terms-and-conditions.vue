@@ -17,7 +17,7 @@
             <li>
               <strong>{{ $t('termsAndConditions.text2') }}</strong>
               {{ $t('termsAndConditions.text3') }}
-              <a href="/pages/privacy" target="_blank">{{ $t('termsAndConditions.text4') }}</a>
+              <a href="/data-privacy" target="_blank">{{ $t('termsAndConditions.text4') }}</a>
               .
             </li>
             <br />
@@ -25,7 +25,7 @@
               <strong>{{ $t('termsAndConditions.text5') }}</strong>
               {{ $t('termsAndConditions.text6') }}
               <a
-                href="http://localhost:3000/%22https://human-connection.org/alpha/#bugreport%5C%22"
+                href="https://human-connection.org/alpha/#bugreport"
                 target="_blank"
               >
                 https://human-connection.org/support
@@ -35,7 +35,7 @@
             <li>
               <strong>{{ $t('termsAndConditions.text7') }}</strong>
               {{ $t('termsAndConditions.text8') }}
-              <a href="https://alpha.human-connection.org/pages/code-of-conduct" target="_blank">
+              <a href="/code-of-conduct" target="_blank">
                 https://alpha.human-connection.org/pages/code-of-conduct
               </a>
             </li>
@@ -58,7 +58,7 @@
               <strong>{{ $t('termsAndConditions.text14') }}</strong>
               {{ $t('termsAndConditions.text15') }}
               <a
-                href="http://localhost:3000/%22https://human-connection.org/events-und-news//%22"
+                href="https://human-connection.org/events-und-news/"
                 target="_blank"
               >
                 https://human-connection.org/veranstaltungen/
@@ -69,7 +69,7 @@
               <strong>{{ $t('termsAndConditions.text16') }}</strong>
               {{ $t('termsAndConditions.text17') }}
               <a
-                href="http://localhost:3000/%22https://human-connection.org/alpha/#bugreport%5C%22"
+                href="https://human-connection.org/alpha/#bugreport"
                 target="_blank"
               >
                 https://human-connection.org
