@@ -49,7 +49,7 @@
         <li>{{ $t('code-of-conduct.text18') }}</li>
         <li>{{ $t('code-of-conduct.text19') }}</li>
         <li>{{ $t('code-of-conduct.text20') }}</li>
-        <li>{{ $t('code-of-conduct.text21') }}</li>
+        <li v-html="$t('code-of-conduct.text21')"></li>
         <li>{{ $t('code-of-conduct.text22') }}</li>
       </ul>
       <p>
