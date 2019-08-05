@@ -418,7 +418,40 @@
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
     }
   },
-  "terms": {
-    "text": "<div><ol><li><strong>RISK OF ACCIDENT:</strong> This is a test version! All data, your profile and the server can be completely destroyed, wiped out, lost, burnt and eventually synchronised near Alpha Centauri at any time. Use on your own risk. Commercial effects are not likely though.</li><br><li><strong>YOU AND YOUR DATA:</strong> Please notice, that the content of the alpha version will be used for publicity and web presentations etc. but we are sure, this is to your interest. If you like use no surnames and if you want to disclose less data use a profile picture without identity. You can find more information in our <a   href='/pages/privacy' target='_blank'>privacy policy</a>.</li><br><li><strong>SITE:</strong> This is still a test version. Please excuse if some applications are not working, blocking, irritating, displayed falsely or not able to be clicked on. Please report faults and bugs! <a   href='https://human-connection.org/support' target='_blank'>https://human-connection.org/support</a></li><br><li><strong>CODE OF CONDUCT</strong>: The code of conduct serves as guiding principles for our personal appearance and interaction with one another. Anyone who is active as a user in the Human Connection Network, writes articles, comments or contacts other users, including those outside the network, acknowledges these rules of conduct as binding: <a  href='https://alpha.human-connection.org/pages/code-of-conduct' target='_blank'>https://alpha.human-connection.org/pages/code-of-conduct</a></li><br><li><strong>MODERATION:</strong> As long as there is no community moderation-system in operation, a rainbow colored unicorn decides, if you are physically and mentally stable enough to operate our test version. The unicorn can delete you from the alpha version at any time. So be so kind and leave rainbow food!</li><br><li><strong>FAIRNESS:</strong> If, against all expectations, our alpha version is not to your liking, we return your monthly payment within the first two months. Please send a mail to: <a   href='mailto:info@human-connection.org' target='_blank'>info@human-connection.org</a>. <strong>Attention: Pleace note that more features are build in on regular basis.</strong></li><br><li><strong>QUESTIONS?</strong> You can find the dates and links to our zoom-rooms here: <a href='https://human-connection.org/events-und-news/' target='_blank'>https://human-connection.org/events-und-news/</a></li><br><li><strong>FROM HUMAN BEING TO HUMAN BEING: </strong>Please help us to get new donators for Human Connection, so the network can take off as soon as possible. <a  href='https://human-connection.org/' target='_blank'>https://human-connection.org</a></li></ol><br><p>Now have fun with the alpha version of Human Connection! For the first universal peace.<strong> ♥︎</strong></p><p><strong> </strong></p><br><p><strong>Thank you very much, </strong></p><p><strong>your Human Connection Team</strong></p></div>"
+  "changelog": {
+    "text33": "All referenced changes refer to the new development version 'Nitro', not the version running here, which is in freeze.",
+    "text32": "März 2018",
+    "text31": "Dialog for password change has been added.",
+    "text30": "An editor for writing posts has been added.",
+    "text29": "A dialogue for blocking content which violates the terms of service had been added for the moderators.",
+    "text28": "The 'Shout' button has been added to the article view.",
+    "text27": "All software repositories on Github have been merged into a big one so that we don't suffer from independent version information and incompatible interfaces anymore.",
+    "text26": "Alle Software-Repositories wurden in ein großes vereinigt, damit alle gegenseitigen Abhängigkeiten klar sind und durch einen übergreifenden Versionsstand aneinander gekoppelt sind.",
+    "text25": "February 2019",
+    "text24": "The automated import of data from the Alpha-version to the Nitro had been tested with test data",
+    "text23": "The web interface of the Nitro had been testet for correct display on mobile devices.",
+    "text22": "January 2019",
+    "text21": "A Button for reporting critical content has been added",
+    "text20": "An moderation backend for reported content has been implemented",
+    "text19": "A Bug with the user authentication has been fixed",
+    "text18": "User can input country, region or city and it is her / his decision how accurate it should be.",
+    "text17": "User settings field for setting the interface and preferred content languag",
+    "text16": "Integration of Nuxt-i18n toolkit for support of serverside rendered pages of webapps",
+    "text15": "Integration of Lokalise.co pipeline for translations + Updated used toolkits and frameworks to newest versions",
+    "text14": "December 2018",
+    "text13": "[in progress] Add icons to categories and tagging (how many users are using this tag, not how often the tag is used generelly)",
+    "text12": "Updated to actual eslint version for source code quality",
+    "text11": "[in progress] Coding a blacklist for the Nitro for hiding unwanted user's content",
+    "text10": "November 2018",
+    "text9": "Coding a functionality, so that users, which had not donated yet, later get a chance to do so",
+    "text8": "Coding a database query to identify users, which had not completed the registration dialog",
+    "text7": "Introdution of a versioning scheme to identify the running social network code version",
+    "text6": "Login for the new Nitro version with a nice login dialogue.",
+    "text5": "Moved project planning to Zenhub",
+    "text4": "Decided to use srum for project management",
+    "text3": "October 2018",
+    "text2": "Started work on 'Nitro'. The Nitro-version replaces the old Database by a",
+    "text1": "new graph database Neo4j",
+    "text0": "(external link to youtube) called neo4j. That means that our future development is much easier, than before."
   }
 }
