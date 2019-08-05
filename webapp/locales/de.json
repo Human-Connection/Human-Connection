@@ -445,40 +445,55 @@
     "0": "Start der Arbeit an der \"Nitro\". Dabei wird die Datenbank und die Serverschnittstelle ausgetauscht:"
   },
   "code-of-conduct": {
-    "text0": "für das Soziale Netzwerk der Human Connection gGmbH",
-    "text1": "Präambel",
-    "text2": "Human Connection ist ein gemeinnütziges soziales Wissens- und Aktionsnetzwerk der nächsten Generation. Von Menschen – für Menschen. Open Source, fair und transparent. Für positiven lokalen und globalen Wandel in allen Lebensbereichen.",
-    "text3": "Wir gestalten den öffentlichen Austausch von Wissen, Ideen und Projekten völlig neu. Die Funktionen von Human Connection bringen die Menschen zusammen – offline und online – so dass wir die Welt zu einem besseren Ort machen können.",
-    "text4": "Zweck",
-    "text5": "Mit diesen Verhaltensregeln regeln wir die wesentlichen Grundsätze für das Verhalten in unserem Sozialen Netzwerk. Dabei ist die Menschenrechtscharta der Vereinten Nationen unsere Orientierung und bildet das Herz unseres Werteverständnisses.",
-    "text6": "Die Verhaltensregeln dienen als Leitsätze für den persönlichen Auftritt und den Umgang untereinander. Wer als Nutzer im Human Connection Netzwerk aktiv ist, Beiträge verfasst, kommentiert oder mit anderen Nutzern, auch außerhalb des Netzwerkes, Kontakt aufnimmt, erkennt diese Verhaltensregeln als verbindlich an.",
-    "text7": "Erwartetes Verhalten",
-    "text8": "Die folgenden Verhaltensweisen werden von allen Community-Mitgliedern erwartet und gefordert:",
-    "text9": "Sei rücksichtsvoll und respektvoll bei dem was Du schreibst und tust.",
-    "text10": "Versuche auf andere zuzugehen, bevor ein Konflikt entsteht.",
-    "text11": "Vermeide erniedrigende, diskriminierende oder belästigende Verhaltensweisen und Ausdrücke.",
-    "text12": "Gehe achtsam mit Deiner Umgebung um. Informiere den Support bei gefährlichen Situationen, wenn eine Person in Not ist oder bei Verstößen gegen diesen Verhaltenskodex, auch wenn sie unbedeutend erscheinen.",
-    "text13": "Nichtakzeptables Verhalten",
-    "text14": "Die folgenden Verhaltensweisen sind in unserer Community inakzeptabel:",
-    "text15": "Diskriminierende Beiträge, Kommentare, Äußerungen oder Beleidigungen, insbesondere solche, die sich auf Geschlecht, sexuelle Orientierung, Rasse, Religion, politische oder weltanschauliche Ausrichtung oder Behinderung beziehen.",
-    "text16": "Das Posten oder Verlinken eindeutig pornografischen Materials.",
-    "text17": "Verherrlichung oder Verharmlosung grausamer oder unmenschlicher Gewalttätigkeiten.",
-    "text18": "Das Veröffentlichen von personenbezogenen Daten anderer ohne deren Einverständnis oder das Androhen dessen (\"Doxing\").",
-    "text19": "Absichtliche Einschüchterung, Stalking oder Verfolgung.",
-    "text20": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
-    "text21": " <a class=\"hc-editor-link-blot\" href=\"https://alpha.human-connection.org/pages/violation-of-law\" target=\"_blank\" > Strafbares Verhalten bzw. Verstoß gegen deutsches Recht </a>.",
-    "text22": "Befürwortung oder Ermutigung zu diesen Verhaltensweisen.",
-    "text23": "Konsequenzen inakzeptablen Verhaltens",
-    "text24": "Wenn ein Gemeinschaftsmitglied inakzeptables Verhalten an den Tag legt, können die verantwortlichen Betreiber, Moderatoren und Administratoren des Netzwerks angemessene Maßnahmen ergreifen, u.a.:",
-    "text25": "Aufforderung zum sofortigen Abstellen des inakzeptablen Verhaltens",
-    "text26": "Sperren oder Löschen von Kommentaren",
-    "text27": "Temporärer Ausschluss aus dem jeweiligen Beitrag",
-    "text28": "Sperren bzw. Löschen von Inhalten",
-    "text29": "Temporärer Entzug von Schreibrechten",
-    "text30": "Vorübergehender Ausschluss aus dem Netzwerk",
-    "text31": "Endgültiger Ausschluss aus dem Netzwerk",
-    "text32": "Verstöße gegen deutsches Recht können zur Anzeige gebracht werden.",
-    "text33": "Meldung von Vorkommnissen",
-    "text34": "Wenn Sie einem inakzeptablen Verhalten ausgesetzt sind, es miterleben oder andere Bedenken  haben, benachrichtigen Sie bitte so schnell wie möglich einen Organisator der Gemeinschaft:"
+    "subheader": "für das Soziale Netzwerk der Human Connection gGmbH",
+    "preamble": {
+      "title": "Präambel",
+      "description": "Human Connection ist ein gemeinnütziges soziales Wissens- und Aktionsnetzwerk der nächsten Generation. Von Menschen – für Menschen. Open Source, fair und transparent. Für positiven lokalen und globalen Wandel in allen Lebensbereichen. Wir gestalten den öffentlichen Austausch von Wissen, Ideen und Projekten völlig neu. Die Funktionen von Human Connection bringen die Menschen zusammen – offline und online – so dass wir die Welt zu einem besseren Ort machen können."
+    },
+    "purpose": {
+      "title": "Zweck",
+      "description": "Mit diesen Verhaltensregeln regeln wir die wesentlichen Grundsätze für das Verhalten in unserem Sozialen Netzwerk. Dabei ist die Menschenrechtscharta der Vereinten Nationen unsere Orientierung und bildet das Herz unseres Werteverständnisses. Die Verhaltensregeln dienen als Leitsätze für den persönlichen Auftritt und den Umgang untereinander. Wer als Nutzer im Human Connection Netzwerk aktiv ist, Beiträge verfasst, kommentiert oder mit anderen Nutzern, auch außerhalb des Netzwerkes, Kontakt aufnimmt, erkennt diese Verhaltensregeln als verbindlich an."
+    },
+
+    "expected-behaviour": {
+      "title": "Erwartetes Verhalten",
+      "description": "Die folgenden Verhaltensweisen werden von allen Community-Mitgliedern erwartet und gefordert:",
+      "list": {
+        "0": "Sei rücksichtsvoll und respektvoll bei dem was Du schreibst und tust.",
+        "1": "Versuche auf andere zuzugehen, bevor ein Konflikt entsteht.",
+        "2": "Vermeide erniedrigende, diskriminierende oder belästigende Verhaltensweisen und Ausdrücke.",
+        "3": "Gehe achtsam mit Deiner Umgebung um. Informiere den Support bei gefährlichen Situationen, wenn eine Person in Not ist oder bei Verstößen gegen diesen Verhaltenskodex, auch wenn sie unbedeutend erscheinen."
+      }
+    },
+    "unacceptable-behaviour": {
+      "title": "Nichtakzeptables Verhalten",
+      "description": "Die folgenden Verhaltensweisen sind in unserer Community inakzeptabel:",
+      "list": {
+        "0": "Diskriminierende Beiträge, Kommentare, Äußerungen oder Beleidigungen, insbesondere solche, die sich auf Geschlecht, sexuelle Orientierung, Rasse, Religion, politische oder weltanschauliche Ausrichtung oder Behinderung beziehen.",
+        "1": "Das Posten oder Verlinken eindeutig pornografischen Materials.",
+        "2": "Verherrlichung oder Verharmlosung grausamer oder unmenschlicher Gewalttätigkeiten.",
+        "3": "Das Veröffentlichen von personenbezogenen Daten anderer ohne deren Einverständnis oder das Androhen dessen (\"Doxing\").",
+        "4": "Absichtliche Einschüchterung, Stalking oder Verfolgung.",
+        "5": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
+        "6": " Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
+        "7": "Befürwortung oder Ermutigung zu diesen Verhaltensweisen."
+      }
+    },
+    "consequences": {
+      "title": "Konsequenzen inakzeptablen Verhaltens",
+      "description": "Wenn ein Gemeinschaftsmitglied inakzeptables Verhalten an den Tag legt, können die verantwortlichen Betreiber, Moderatoren und Administratoren des Netzwerks angemessene Maßnahmen ergreifen, u.a.:",
+      "list": {
+        "0": "Aufforderung zum sofortigen Abstellen des inakzeptablen Verhaltens",
+        "1": "Sperren oder Löschen von Kommentaren",
+        "2": "Temporärer Ausschluss aus dem jeweiligen Beitrag",
+        "3": "Sperren bzw. Löschen von Inhalten",
+        "4": "Temporärer Entzug von Schreibrechten",
+        "5": "Vorübergehender Ausschluss aus dem Netzwerk",
+        "6": "Endgültiger Ausschluss aus dem Netzwerk",
+        "7": "Verstöße gegen deutsches Recht können zur Anzeige gebracht werden.",
+        "8": "Meldung von Vorkommnissen"
+      }
+    },
+    "get-help": "Wenn Sie einem inakzeptablen Verhalten ausgesetzt sind, es miterleben oder andere Bedenken  haben, benachrichtigen Sie bitte so schnell wie möglich einen Organisator der Gemeinschaft:"
   }
 }
