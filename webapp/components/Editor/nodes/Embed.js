@@ -24,7 +24,8 @@ export default class Embed extends Node {
   pasteRules({ type, schema }) {
     return [
       pasteRule(
-        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
+        // source: https://stackoverflow.com/a/3809435
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g,
         type,
         url => ({ dataEmbedUrl: url }),
       ),
