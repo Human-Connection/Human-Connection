@@ -11,8 +11,8 @@
   "site": {
     "made": "Made with &#10084;",
     "imprint": "Imprint",
-    "termsAc": "Terms and conditions",
-    "privacy": "Data privacy",
+    "termsAndConditions": "Terms and conditions",
+    "data-privacy": "Data privacy",
     "changelog": "Changes & History",
     "contact": "Contact",
     "tribunal": "Registry court",

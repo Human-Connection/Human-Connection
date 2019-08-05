@@ -1,11 +1,11 @@
 <template>
   <div>
     <ds-space>
-      <ds-heading tag="h2">{{ $t('site.privacy') }}</ds-heading>
+      <ds-heading tag="h2">{{ $t('site.data-privacy') }}</ds-heading>
     </ds-space>
     <ds-container>
       <ds-space margin-top="large">
-        <ds-text>{{ $t('site.privacy') }}</ds-text>
+        <ds-text>{{ $t('site.data-privacy') }}</ds-text>
         <ds-text>...</ds-text>
       </ds-space>
     </ds-container>
@@ -16,7 +16,7 @@
 export default {
   head() {
     return {
-      title: this.$t('site.privacy'),
+      title: this.$t('site.data-privacy'),
     }
   },
 }

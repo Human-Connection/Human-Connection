@@ -39,6 +39,11 @@ module.exports = {
       'registration-verify-code',
       'registration-create-user-account',
       'pages-slug',
+      'imprint',
+      'terms-and-conditions',
+      'code-of-conduct',
+      'data-privacy',
+      'changelog',
     ],
     // pages to keep alive
     keepAlivePages: ['index'],
