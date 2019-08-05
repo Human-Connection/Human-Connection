@@ -123,8 +123,8 @@ export default {
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
       toggleShowFilterPostsDropdown: 'default/SET_SHOW_FILTER_POSTS_DROPDOWN',
-      setFilteredByUserFollowed: 'default/SET_FILTERED_BY_FOLLOWERS',
-      setFilteredByCategories: 'default/SET_FILTERED_BY_CATEGORIES',
+      setFilteredByUserFollowed: 'posts/SET_FILTERED_BY_FOLLOWERS',
+      setFilteredByCategories: 'posts/SET_FILTERED_BY_CATEGORIES',
     }),
     changeFilterBubble(filter) {
       if (this.hashtag) {

@@ -232,7 +232,7 @@ export default {
       fetchPosts: 'posts/fetchPosts',
     }),
     ...mapMutations({
-      setFilteredByFollowers: 'default/SET_FILTERED_BY_FOLLOWERS',
+      setFilteredByFollowers: 'posts/SET_FILTERED_BY_FOLLOWERS',
     }),
     goToPost(item) {
       this.$nextTick(() => {

@@ -109,14 +109,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filteredByUsersFollowed: 'default/filteredByUsersFollowed',
-      filteredByCategories: 'default/filteredByCategories',
+      filteredByUsersFollowed: 'posts/filteredByUsersFollowed',
+      filteredByCategories: 'posts/filteredByCategories',
     }),
   },
   methods: {
     ...mapMutations({
-      setFilteredByFollowers: 'default/SET_FILTERED_BY_FOLLOWERS',
-      setFilteredByCategories: 'default/SET_FILTERED_BY_CATEGORIES',
+      setFilteredByFollowers: 'posts/SET_FILTERED_BY_FOLLOWERS',
+      setFilteredByCategories: 'posts/SET_FILTERED_BY_CATEGORIES',
     }),
     isActive(id) {
       const index = this.selectedCategoryIds.indexOf(id)
@@ -136,7 +136,7 @@ export default {
           this.selectedCategoryIds.push(id)
         }
       }
-      this.setFilteredByCategories(this.selectedCategoryIds.length)
+      this.setFilteredByCategories(!!this.selectedCategoryIds.length)
       this.toggleFilter()
     },
     toggleOnlyFollowed() {
@@ -155,8 +155,6 @@ export default {
               categories_some: { id_in: this.selectedCategoryIds },
             }
           : { author: this.usersFollowedFilter }
-      } else {
-        this.filter = {}
       }
       this.$emit('filterPosts', this.filter)
     },

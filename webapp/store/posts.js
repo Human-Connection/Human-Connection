@@ -3,6 +3,8 @@ import gql from 'graphql-tag'
 export const state = () => {
   return {
     posts: [],
+    filteredByUsersFollowed: false,
+    filteredByCategories: false,
   }
 }
 
@@ -10,11 +12,23 @@ export const mutations = {
   SET_POSTS(state, posts) {
     state.posts = posts || null
   },
+  SET_FILTERED_BY_FOLLOWERS(state, boolean) {
+    state.filteredByUsersFollowed = boolean || null
+  },
+  SET_FILTERED_BY_CATEGORIES(state, boolean) {
+    state.filteredByCategories = boolean || null
+  },
 }
 
 export const getters = {
   posts(state) {
     return state.posts || []
+  },
+  filteredByUsersFollowed(state) {
+    return state.filteredByUsersFollowed || false
+  },
+  filteredByCategories(state) {
+    return state.filteredByCategories || false
   },
 }
 

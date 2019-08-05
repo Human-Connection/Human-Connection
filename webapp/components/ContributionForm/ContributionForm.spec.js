@@ -6,6 +6,9 @@ import PostMutations from '~/graphql/PostMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import Filters from '~/plugins/vue-filters'
 import TeaserImage from '~/components/TeaserImage/TeaserImage'
+import MutationObserver from 'mutation-observer'
+
+global.MutationObserver = MutationObserver
 
 const localVue = createLocalVue()
 

@@ -4,8 +4,7 @@ import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import FilterPosts from './FilterPosts.vue'
 import FilterPostsMenuItem from './FilterPostsMenuItems.vue'
-import { mutations } from '~/store/posts'
-
+import { mutations, getters } from '~/store/posts'
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
@@ -51,13 +50,21 @@ describe('FilterPosts.vue', () => {
 
   describe('mount', () => {
     const store = new Vuex.Store({
+      state: {
+        filteredByCategories: false,
+        filteredByUsersFollowed: false,
+      },
       mutations: {
         'posts/SET_POSTS': mutations.SET_POSTS,
+        'posts/SET_FILTERED_BY_CATEGORIES': mutations.SET_FILTERED_BY_CATEGORIES,
+        'posts/SET_FILTERED_BY_FOLLOWERS': mutations.SET_FILTERED_BY_FOLLOWERS,
       },
       getters: {
         'auth/user': () => {
           return { id: 'u34' }
         },
+        'posts/filteredByCategories': getters.filteredByCategories,
+        'posts/filteredByUsersFollowed': getters.filteredByUsersFollowed,
       },
     })
     const Wrapper = () => {
@@ -65,6 +72,7 @@ describe('FilterPosts.vue', () => {
     }
 
     beforeEach(() => {
+      store.state.filteredByUsersFollowed = false
       wrapper = Wrapper()
       menuToggle = wrapper.findAll('a').at(0)
       menuToggle.trigger('click')
@@ -137,8 +145,11 @@ describe('FilterPosts.vue', () => {
     })
 
     describe('click "filter-by-followed-authors-only" button', () => {
-      it('calls the filterPost query', () => {
+      beforeEach(() => {
         wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+      })
+
+      it('calls the filterPost query', () => {
         expect(mocks.$apollo.query).toHaveBeenCalledWith(
           expect.objectContaining({
             variables: {
@@ -150,9 +161,8 @@ describe('FilterPosts.vue', () => {
         )
       })
 
-      it('toggles filterBubble.author property', async () => {
-        await wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
-        await wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+      it('toggles filterBubble.author property', () => {
+        wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
         expect(mocks.$apollo.query).toHaveBeenCalledWith(
           expect.objectContaining({
             variables: {
@@ -165,7 +175,6 @@ describe('FilterPosts.vue', () => {
       })
 
       it("sets the button's class to primary when clicked", async () => {
-        await wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
         expect(
           wrapper.find({ name: 'filter-by-followed-authors-only' }).classes('ds-button-primary'),
         ).toBe(true)
