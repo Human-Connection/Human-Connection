@@ -48,7 +48,7 @@ export default {
         .query({
           query: filterPosts(this.$i18n),
           variables: {
-            filter: filter,
+            filter,
             first: this.pageSize,
             offset: 0,
           },

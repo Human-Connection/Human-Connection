@@ -99,6 +99,8 @@ export default {
   },
   beforeDestroy() {
     this.toggleShowFilterPostsDropdown(false)
+    this.setFilteredByUserFollowed(false)
+    this.setFilteredByCategories(false)
   },
   watch: {
     Post(post) {
@@ -121,6 +123,8 @@ export default {
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
       toggleShowFilterPostsDropdown: 'default/SET_SHOW_FILTER_POSTS_DROPDOWN',
+      setFilteredByUserFollowed: 'default/SET_FILTERED_BY_FOLLOWERS',
+      setFilteredByCategories: 'default/SET_FILTERED_BY_CATEGORIES',
     }),
     changeFilterBubble(filter) {
       if (this.hashtag) {

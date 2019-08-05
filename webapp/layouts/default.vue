@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
@@ -231,6 +231,9 @@ export default {
       quickSearch: 'search/quickSearch',
       fetchPosts: 'posts/fetchPosts',
     }),
+    ...mapMutations({
+      setFilteredByFollowers: 'default/SET_FILTERED_BY_FOLLOWERS',
+    }),
     goToPost(item) {
       this.$nextTick(() => {
         this.$router.push({
@@ -251,6 +254,7 @@ export default {
     },
     redirectToRoot() {
       this.$router.replace('/')
+      this.setFilteredByFollowers(false)
       this.fetchPosts({ i18n: this.$i18n, filter: {} })
     },
   },

@@ -16,7 +16,7 @@
             <ds-button
               icon="check"
               @click.stop.prevent="toggleCategory()"
-              :primary="allCategories"
+              :primary="!filteredByCategories"
             />
             <ds-flex-item>
               <label class="category-labels">{{ $t('filter-posts.categories.all') }}</label>
@@ -77,7 +77,7 @@
                 }"
                 name="filter-by-followed-authors-only"
                 icon="user-plus"
-                :primary="filteredByFollowers"
+                :primary="filteredByUsersFollowed"
                 @click="toggleOnlyFollowed"
               />
               <ds-flex-item>
@@ -93,6 +93,8 @@
   </ds-container>
 </template>
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
   props: {
     user: { type: Object, required: true },
@@ -101,15 +103,24 @@ export default {
   data() {
     return {
       selectedCategoryIds: [],
-      allCategories: true,
       filter: {},
-      filteredByFollowers: false,
+      usersFollowedFilter: { followedBy_some: { id: this.user.id } },
     }
   },
+  computed: {
+    ...mapGetters({
+      filteredByUsersFollowed: 'default/filteredByUsersFollowed',
+      filteredByCategories: 'default/filteredByCategories',
+    }),
+  },
   methods: {
+    ...mapMutations({
+      setFilteredByFollowers: 'default/SET_FILTERED_BY_FOLLOWERS',
+      setFilteredByCategories: 'default/SET_FILTERED_BY_CATEGORIES',
+    }),
     isActive(id) {
       const index = this.selectedCategoryIds.indexOf(id)
-      if (index > -1) {
+      if (index > -1 && this.setFilteredByCategories) {
         return true
       }
       return false
@@ -117,7 +128,6 @@ export default {
     toggleCategory(id) {
       if (!id) {
         this.selectedCategoryIds = []
-        this.allCategories = true
       } else {
         const index = this.selectedCategoryIds.indexOf(id)
         if (index > -1) {
@@ -125,25 +135,28 @@ export default {
         } else {
           this.selectedCategoryIds.push(id)
         }
-        this.allCategories = false
       }
-      if (!this.selectedCategoryIds.length && this.filteredByFollowers) {
-        delete this.filter.categories_some
-      } else if (this.filter.author) {
-        this.filter.categories_some = { id_in: this.selectedCategoryIds }
-      } else {
-        this.filter = { categories_some: { id_in: this.selectedCategoryIds } }
-      }
-      this.$emit('filterPosts', this.filter)
+      this.setFilteredByCategories(this.selectedCategoryIds.length)
+      this.toggleFilter()
     },
     toggleOnlyFollowed() {
-      this.filteredByFollowers = !this.filteredByFollowers
-      if (!this.selectedCategoryIds.length && !this.filteredByFollowers) {
-        this.filter = {}
-      } else if (this.filter.categories_some) {
-        this.filter.author = { followedBy_some: { id: this.user.id } }
+      this.setFilteredByFollowers(!this.filteredByUsersFollowed)
+      this.toggleFilter()
+    },
+    toggleFilter() {
+      if (!this.filteredByUsersFollowed) {
+        this.filter = this.filteredByCategories
+          ? { categories_some: { id_in: this.selectedCategoryIds } }
+          : {}
+      } else if (this.filteredByUsersFollowed) {
+        this.filter = this.filteredByCategories
+          ? {
+              author: this.usersFollowedFilter,
+              categories_some: { id_in: this.selectedCategoryIds },
+            }
+          : { author: this.usersFollowedFilter }
       } else {
-        this.filter = { author: { followedBy_some: { id: this.user.id } } }
+        this.filter = {}
       }
       this.$emit('filterPosts', this.filter)
     },
