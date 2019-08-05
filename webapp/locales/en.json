@@ -391,17 +391,20 @@
     "user": {
       "title": "Release User",
       "type": "User",
-      "message": "Do you really want to release the user \"<b>{name}</b>\"?"
+      "message": "Do you really want to release the user \"<b>{name}</b>\"?",
+      "error": "You already reported the user!"
     },
     "contribution": {
       "title": "Release Contribution",
       "type": "Contribution",
-      "message": "Do you really want to release the contribution \"<b>{name}</b>\"?"
+      "message": "Do you really want to release the contribution \"<b>{name}</b>\"?",
+      "error": "You have already reported the contribution!!"
     },
     "comment": {
       "title": "Release Comment",
       "type": "Comment",
-      "message": "Do you really want to release the comment from \"<b>{name}</b>\"?"
+      "message": "Do you really want to release the comment from \"<b>{name}</b>\"?",
+      "error": "You have already reported the comment!"
     }
   },
   "user": {
@@ -496,5 +499,41 @@
       }
     },
     "get-help": "If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible and link or refer to the corresponding content:"
+  },
+  "termsAndConditions": {
+    "risk": {
+      "title": "Risk of accident",
+      "description": "This is a test version! All data, your profile and the server can be completely destroyed, wiped out, lost, burnt and eventually synchronised near Alpha Centauri at any time. Use on your own risk. Commercial effects are not likely though."
+    },
+    "data-privacy": {
+      "title": "You and your data",
+      "description": "Please note that the content of the alpha version will be used for public web presentations etc. but we are sure, this is in your interest. Avoid real names and use anonymous profile pictures without your face. You can find more information in our <a href=\"/data-privacy\">data privacy policy</a>"
+    },
+    "work-in-progress": {
+      "title": "Work in progress",
+      "description": "This is still a test version. Please excuse if some applications are not working, blocking, irritating, displayed falsely or not able to be clicked on. Please report faults and bugs! <a href=\"mailto:support@human-connection.org\" target=\"_blank\">mailto:support@human-connection.org</a>"
+    },
+    "code-of-conduct": {
+      "title": "Code of conduct",
+      "description": "The <a href=\"/code-of-conduct\">code of conduct</a> serves as guiding principles for our personal appearance and interaction with one another. Anyone who is active as a user in the Human Connection Network, writes articles, comments or contacts other users, including those outside the network, acknowledges these rules of conduct as binding."
+    },
+    "moderation": {
+      "title": "Moderation",
+      "description": "As long as there is no community moderation-system in operation, a rainbow colored unicorn decides, if you are physically and mentally stable enough to operate our test version. The unicorn can delete you from the alpha version at any time. So be so kind and leave rainbow food!"
+    },
+    "fairness": {
+      "title": "Fairness",
+      "description": "If, against all expectations, our alpha version is not to your liking, we return your monthly payment within the first two months. Please send a mail to: <a href=\"mailto:info@human-connection.org\" target=\"_blank\"> info@human-connection.org </a> Note that more features are added on a regular basis."
+    },
+    "questions": {
+      "title": "Questions",
+      "description": "You can find the dates and links to our zoom-rooms here: <a href=\"https://human-connection.org/en/events/\" target=\"_blank\" >https://human-connection.org/en/events/ </a>"
+    },
+    "human-connection": {
+      "title": "By humans for humans",
+      "description": "Please help us to get new donators for Human Connection, so the network can take off as soon as possible. <a href=\"https://human-connection.org/\" target=\"_blank\"> https://human-connection.org </a>"
+    },
+    "have-fun": "Now have fun with the alpha version of Human Connection! For the first universal peace. ♥︎",
+    "closing": "Thank you very much <br> <br> your Human Connection Team"
   }
 }

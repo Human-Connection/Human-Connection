@@ -11,8 +11,8 @@
   "site": {
     "made": "Mit &#10084; gemacht",
     "imprint": "Impressum",
-    "termsAc": "Nutzungsbedingungen",
     "data-privacy": "Datenschutz",
+    "termsAndConditions": "Nutzungsbedingungen",
     "changelog": "Änderungen & Verlauf",
     "contact": "Kontakt",
     "tribunal": "Registergericht",
@@ -56,6 +56,7 @@
       "title": "Mach mit bei Human Connection!",
       "form": {
         "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
+        "invitation-code": "Dein Einladungscode lautet: <b>{code}</b>",
         "errors": {
           "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
           "invalid-invitation-token": "Es sieht so aus, als ob der Einladungscode schon eingelöst wurde. Jeder Code kann nur einmalig benutzt werden."
@@ -253,7 +254,8 @@
     },
     "comment": {
       "submit": "Kommentiere",
-      "submitted": "Kommentar Gesendet"
+      "submitted": "Kommentar Gesendet",
+      "updated": "Änderungen gespeichert"
     }
   },
   "comment": {
@@ -359,17 +361,20 @@
     "user": {
       "title": "Nutzer melden",
       "type": "Nutzer",
-      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" melden möchtest?"
+      "message": "Bist du sicher, dass du den Nutzer \"<b>{name}</b>\" melden möchtest?",
+      "error": "Du hast den Benutzer bereits gemeldet!"
     },
     "contribution": {
       "title": "Beitrag melden",
       "type": "Beitrag",
-      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" melden möchtest?"
+      "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" melden möchtest?",
+      "error": "Du hast den Beitrag bereits gemeldet!"
     },
     "comment": {
       "title": "Kommentar melden",
       "type": "Kommentar",
-      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?"
+      "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?",
+      "error": "Du hast den Kommentar bereits gemeldet!"
     }
   },
   "followButton": {
@@ -393,7 +398,7 @@
       "title": "Beitrag freigeben",
       "type": "Beitrag",
       "message": "Bist du sicher, dass du den Beitrag \"<b>{name}</b>\" freigeben möchtest?",
-      "error": " Den Beitrag hast du schon gemeldet!"
+      "error": "Den Beitrag hast du schon gemeldet!"
     },
     "comment": {
       "title": "Kommentar freigeben",
@@ -495,5 +500,41 @@
       }
     },
     "get-help": "Wenn du einem inakzeptablen Verhalten ausgesetzt bist, es miterlebst oder andere Bedenken hast, benachrichtige bitte so schnell wie möglich einen Organisator der Gemeinschaft und verlinke oder verweise auf den entsprechenden Inhalt:"
+  },
+  "termsAndConditions": {
+    "risk": {
+      "title": "Unfallgefahr",
+      "description": "Das ist eine Testversion! Alle Daten, Dein Profil und die Server können jederzeit komplett vernichtet, verloren, verbrannt und vielleicht auch in der Nähe von Alpha Centauri synchronisiert werden. Die Benutzung läuft auf eigene Gefahr. Mit kommerziellen Nebenwirkungen ist jedoch nicht zu rechnen."
+    },
+    "data-privacy": {
+      "title": "Du und deine Daten",
+      "description": "Bitte beachte, dass wir die Inhalte der Alphaversion zu Werbezwecken, Webpräsentationen usw. verwenden, aber wir glauben, dass das auch in Deinem Interesse ist. Am besten keinen Nachnamen eingeben und bei noch mehr Datensparsamkeit ein Profilfoto ohne Identität verwenden. Mehr in unserer <a href=\"/data-privacy\">Datenschutzerklärung</a>"
+    },
+    "work-in-progress": {
+      "title": "Baustellen",
+      "description": "Das ist immer noch eine Testversion. Wenn etwas nicht funktioniert, blockiert, irritiert, falsch angezeigt, verbogen oder nicht anklickbar ist, bitten wir dies zu entschuldigen. Fehler, Käfer und Bugs bitte melden! <a href=\"mailto:support@human-connection.org\" target=\"_blank\">support@human-connection.org</a>"
+    },
+    "code-of-conduct": {
+      "title": "Verhaltenscodex",
+      "description": "<a href=\"/code-of-conduct\">Die Verhaltensregeln </a> dienen als Leitsätze für den persönlichen Auftritt und den Umgang untereinander. Wer als Nutzer im Human Connection Netzwerk aktiv ist, Beiträge verfasst, kommentiert oder mit anderen Nutzern, auch außerhalb des Netzwerkes, Kontakt aufnimmt, erkennt diese Verhaltensregeln als verbindlich an"
+    },
+    "moderation": {
+      "title": "Moderation",
+      "description": "Solange kein Community-Moderationssystem lauffähig ist, entscheidet ein Regenbogen-Einhorn darüber, ob Du körperlich und psychisch stabil genug bist, unsere Testversion zu bedienen. Das Einhorn kann Dich jederzeit von der Alpha entfernen. Also sei nett und lass Regenbogenfutter da!"
+    },
+    "fairness": {
+      "title": "Fairness",
+      "description": "Sollte Dir die Alphaversion unseres Netzwerks wider Erwarten, egal aus welchen Gründen, nicht gefallen, überweisen wir Dir Deine gespendeten Monatsbeiträge innerhalb der ersten 2 Monate gerne zurück. Einfach Mail an:  <a href=\"mailto:info@human-connection.org\" target=\"_blank\" s> info@human-connection.org </a> Achtung: Viele Funktionen werden erst nach und nach eingebaut."
+    },
+    "questions": {
+    "title": "Fragen",
+    "description": "Die Termine und Links zu den Zoom-Räumen findest Du hier: <a href=\"https://human-connection.org/events-und-news/\" target=\"_blank\" >https://human-connection.org/veranstaltungen/ </a>"
+    },
+    "human-connection": {
+    "title": "Von Menschen für Menschen:",
+    "description": "Bitte hilf uns weitere monatlichen Spender für Human Connection zu bekommen, damit das Netzwerk so schnell wie möglich offiziell an den Start gehen kann. <a href=\"https://human-connection.org/\" target=\"_blank\"> https://human-connection.org </a>"
+    },
+    "have-fun": "Jetzt aber viel Spaß mit der Alpha von Human Connection! Für den ersten Weltfrieden. ♥︎",
+    "closing": "Herzlichst <br><br> Euer Human Connection Team"
   }
 }
