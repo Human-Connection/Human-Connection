@@ -127,6 +127,8 @@
       &nbsp;‑&nbsp;
       <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>
       &nbsp;‑&nbsp;
+      <nuxt-link to="/code-of-conduct">{{ $t('site.code-of-conduct') }}</nuxt-link>
+      &nbsp;‑&nbsp;
       <nuxt-link to="/privacy">{{ $t('site.privacy') }}</nuxt-link>
       &nbsp;‑&nbsp;
       <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>

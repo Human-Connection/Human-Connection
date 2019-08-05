@@ -4,12 +4,11 @@
       <ds-heading tag="h2">{{ $t('site.code-of-conduct') }}</ds-heading>
       <p>{{ $t('code-of-conduct.subheader') }}</p>
     </ds-space>
-    <ds-container>
 
-      <br />
+    <ds-container>
       <div v-for="section in sections" :key="section">
-      <strong>{{ $t(`code-of-conduct.${section}.title`) }}</strong>
-      <p>{{ $t(`code-of-conduct.${section}.description`) }}</p>
+        <strong>{{ $t(`code-of-conduct.${section}.title`) }}</strong>
+        <p>{{ $t(`code-of-conduct.${section}.description`) }}</p>
       </div>
 
       <br />
@@ -18,7 +17,7 @@
         <strong>{{ $t(`code-of-conduct.${section.key}.title`) }}</strong>
         <p>{{ $t(`code-of-conduct.${section.key}.description`) }}</p>
         <ul>
-          <li v-for="i in section.items">
+          <li v-for="i in section.items" :key="i">
             {{ $t(`code-of-conduct.${section.key}.list.${i}`) }}
           </li>
         </ul>
@@ -31,7 +30,6 @@
         </a>
       </p>
       <br />
-
     </ds-container>
   </div>
 </template>
@@ -45,20 +43,22 @@ export default {
   },
   data() {
     return {
-      sections: ['preamble', 'purpose', ],
+      sections: ['preamble', 'purpose'],
       listSections: [
         {
           key: 'expected-behaviour',
-          items: [...Array(4).keys()]
-        },{
+          items: [...Array(4).keys()],
+        },
+        {
           key: 'unacceptable-behaviour',
-          items: [...Array(8).keys()]
-        },{
+          items: [...Array(8).keys()],
+        },
+        {
           key: 'consequences',
-          items: [...Array(9).keys()]
-        }
-      ]
+          items: [...Array(9).keys()],
+        },
+      ],
     }
-  }
+  },
 }
 </script>
