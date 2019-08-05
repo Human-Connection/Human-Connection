@@ -1,5 +1,8 @@
 import Embed from '~/components/Editor/nodes/Embed.js'
 import Link from '~/components/Editor/nodes/Link.js'
+import Strike from '~/components/Editor/marks/Strike'
+import Italic from '~/components/Editor/marks/Italic'
+import Bold from '~/components/Editor/marks/Bold'
 import EmbedQuery from '~/graphql/EmbedQuery.js'
 import {
   Heading,
@@ -10,9 +13,6 @@ import {
   OrderedList,
   HorizontalRule,
   Placeholder,
-  Bold,
-  Italic,
-  Strike,
   Underline,
 } from 'tiptap-extensions'
 
