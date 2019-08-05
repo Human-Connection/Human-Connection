@@ -134,7 +134,7 @@ export default {
       )
 
       session.close()
-      let emotionsArray = []
+      const emotionsArray = []
       transactionRes.records.map(record => {
         emotionsArray.push(record.get('emotion'))
       })
