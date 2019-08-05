@@ -1,8 +1,10 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Editor from './Editor'
 import Vuex from 'vuex'
-
 import Styleguide from '@human-connection/styleguide'
+import MutationObserver from 'mutation-observer'
+
+global.MutationObserver = MutationObserver
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
