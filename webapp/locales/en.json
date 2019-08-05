@@ -21,7 +21,8 @@
     "taxident": "USt-ID. according to §27a of the German Sales Tax Law:",
     "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
-    "germany": "Germany"
+    "germany": "Germany",
+    "code-of-conduct": "Code of Conduct"
   },
   "sorting": {
     "newest": "Newest",
@@ -444,5 +445,56 @@
     "2": "Moved project planning to Zenhub",
     "1": "Decided to use Scrum for project management",
     "0": "Started work on \"Nitro\". The database and the server interface are replaced:"
+  },
+  "code-of-conduct": {
+    "subheader": "for the social network of the Human Connection gGmbH",
+    "preamble": {
+      "title": "Preamble",
+      "description": "Human Connection is a non-profit social knowledge and action network of the next generation. By people - for people. Open Source, fair and transparent. For positive local and global change in all areas of life. We completely redesign the public exchange of knowledge, ideas and projects. The functions of Human Connection bring people together - offline and online - so that we can make the  world a better place."
+    },
+    "purpose": {
+      "title": "Purpose",
+      "description": "With these code of conduct we regulate the essential principles for behavior in our social network. The United Nations Charter of Human Rights is our orientation and forms the heart of our understanding of values. The code of conduct serves as guiding principles for our personal appearance and interaction with one another. Anyone who is active as a user in the Human Connection Network, writes articles, comments or contacts other users, including those outside the network,acknowledges these rules of conduct as binding."
+    },
+    "expected-behaviour": {
+      "title": "Expected Behaviour",
+      "description": "The following behaviors are expected and requested of all community members:",
+      "list": {
+        "0": "Exercise consideration and respect in your speech and actions.",
+        "1": "Attempt collaboration before conflict.",
+        "2": "Refrain from demeaning, discriminatory, or harassing behavior and speech.",
+        "3": "Be mindful of your surroundings and of your fellow participants. Alert community leaders if you notice a dangerous situation, someone in distress, or violations of this Code of Conduct, even if they seem inconsequential."
+      }
+    },
+    "unacceptable-behaviour": {
+      "title": "Unacceptable Behavior",
+      "description": "The following behaviors are unacceptable within our community:",
+      "list": {
+        "0": "Discriminatory posts, comments, utterances or insults, particularly those relating to gender, sexual orientation, race, religion, political or philosophical orientation or disability.",
+        "1": "Posting or linking of clearly pornographic material.",
+        "2": "Glorification or trivialization of cruel or inhuman acts of violence.",
+        "3": "The disclosure of others' personal information without their consent or threat there of (\"doxing\").",
+        "4": "Intentional intimidation, stalking or persecution.",
+        "5": "Advertising products and services with commercial intent.",
+        "6": "Criminal behavior or violation of German law.",
+        "7": "Endorse or encourage such conduct."
+      }
+    },
+    "consequences": {
+      "title": "Consequences of Unacceptable Behavior",
+      "description": "If a community member exhibits unacceptable behaviour, the responsible operators, moderators and administrators of the network may take appropriate measures, including but not limited to:",
+      "list": {
+        "0": "Request for immediate cessation of unacceptable conduct",
+        "1": "Locking or deleting comments",
+        "2": "Temporary exclusion from the respective post or contribution",
+        "3": "Blocking or deleting of content",
+        "4": "Temporary withdrawal of write permissions",
+        "5": "Temporary exclusion from the network",
+        "6": "Final exclusion from the network",
+        "7": "Violations of German law can be reported.",
+        "8": "Advocacy or encouragement to these behaviors."
+      }
+    },
+    "get-help": "If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible and link or refer to the corresponding content:"
   }
 }
