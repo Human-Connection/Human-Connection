@@ -21,7 +21,8 @@
     "taxident": "USt-ID. according to §27a of the German Sales Tax Law:",
     "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
-    "germany": "Germany"
+    "germany": "Germany",
+    "code-of-conduct": "Code of Conduct"
   },
   "sorting": {
     "newest": "Newest",
@@ -444,5 +445,43 @@
     "2": "Moved project planning to Zenhub",
     "1": "Decided to use Scrum for project management",
     "0": "Started work on \"Nitro\". The database and the server interface are replaced:"
+  },
+  "code-of-conduct": {
+    "text0": "for the social network of the Human Connection gGmbH",
+    "text1": "Preamble",
+    "text2": "Human Connection is a non-profit social knowledge and action network of the next generation. By people - for people. Open Source, fair and transparent. For positive local and global change in all areas of life.",
+    "text3": "We completely redesign the public exchange of knowledge, ideas and projects. The functions of Human Connection bring people together - offline and online - so that we can make the  world a better place.",
+    "text4": "Purpose",
+    "text5": "With these code of conduct we regulate the essential principles for behavior in our social network. The United Nations Charter of Human Rights is our orientation and forms the heart of our understanding of values.",
+    "text6": "The code of conduct serves as guiding principles for our personal appearance and interaction with one another. Anyone who is active as a user in the Human Connection Network, writes articles, comments or contacts other users, including those outside the network,acknowledges these rules of conduct as binding.",
+    "text7": "Expected Behaviour",
+    "text8": "The following behaviors are expected and requested of all community members:",
+    "text9": "Exercise consideration and respect in your speech and actions.",
+    "text10": "Attempt collaboration before conflict.",
+    "text11": "Refrain from demeaning, discriminatory, or harassing behavior and speech.",
+    "text12": "Be mindful of your surroundings and of your fellow participants. Alert community leaders if you notice a dangerous situation, someone in distress, or violations of this Code of Conduct, even if they seem inconsequential.",
+    "text13": "Inacceptable Behavior",
+    "text14": "The following behaviors are unacceptable within our community:",
+    "text15": "Discriminatory posts, comments, utterances or insults, particularly those relating to gender, sexual orientation, race, religion, political or philosophical orientation or disability.",
+    "text16": "Posting or linking of clearly pornographic material.",
+    "text17": "Glorification or trivialization of cruel or inhuman acts of violence.",
+    "text18": "The disclosure of others' personal information without their consent or threat there of (\"doxing\").",
+    "text19": "Intentional intimidation, stalking or persecution.",
+    "text20": "Advertising products and services with commercial intent.",
+    "text21": " <a class=\"hc-editor-link-blot\" href=\"https://alpha.human-connection.org/pages/violation-of-law\" target=\"_blank\" > Criminal behavior or violation of German law </a>.",
+    "text22": "Endorse or encourage such conduct.",
+    "text23": "Consequences of Unacceptable Behavior",
+    "text24": "If a community member exhibits unacceptable behaviour, the responsible operators, moderators and administrators of the network may take appropriate measures, including but not limited to:",
+    "text25": "Request for immediate cessation of unacceptable conduct",
+    "text26": "Locking or deleting comments",
+    "text27": "Temporary exclusion from the respective post or contribution",
+    "text28": "Blocking or deleting of content",
+    "text29": "Temporary withdrawal of write permissions",
+    "text30": "Temporary exclusion from the network",
+    "text31": "Final exclusion from the network",
+    "text32": "Violations of German law can be reported.",
+    "text33": "Reporting Guidelines",
+    "text34": "If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible:",
+    "text35": "Please link or refer to corresponding content."
   }
 }
