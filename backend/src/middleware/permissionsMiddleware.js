@@ -186,8 +186,6 @@ const permissions = shield(
       // RemoveBadgeRewarded: isAdmin,
       reward: isAdmin,
       unreward: isAdmin,
-      // why is this here? will we support buying/selling fruit??
-      // addFruitToBasket: isAuthenticated
       follow: isAuthenticated,
       unfollow: isAuthenticated,
       shout: isAuthenticated,

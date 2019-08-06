@@ -1,8 +1,14 @@
 import { GraphQLClient } from 'graphql-request'
+import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
 import { host, login } from '../../jest/helpers'
+import { neode, getDriver } from '../../bootstrap/neo4j'
+import createServer from '../../server'
 
+const driver = getDriver()
 const factory = Factory()
+const instance = neode()
+
 let client
 let userParams
 let authorParams
@@ -56,6 +62,19 @@ const postCategoriesFilterParam = { categories_some: { id_in: ['cat4'] } }
 const postQueryFilteredByCategoryVariables = {
   filter: postCategoriesFilterParam,
 }
+
+const createPostMutation = `
+  mutation($title: String!, $content: String!) {
+    CreatePost(title: $title, content: $content) {
+      id
+      title
+      content
+      slug
+      disabled
+      deleted
+    }
+  }
+`
 beforeEach(async () => {
   userParams = {
     id: 'u198',
@@ -76,22 +95,12 @@ afterEach(async () => {
 })
 
 describe('CreatePost', () => {
-  const mutation = `
-    mutation($title: String!, $content: String!) {
-      CreatePost(title: $title, content: $content) {
-        title
-        content
-        slug
-        disabled
-        deleted
-      }
-    }
-  `
-
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
       client = new GraphQLClient(host)
-      await expect(client.request(mutation, createPostVariables)).rejects.toThrow('Not Authorised')
+      await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
+        'Not Authorised',
+      )
     })
   })
 
@@ -109,11 +118,13 @@ describe('CreatePost', () => {
           content: postContent,
         },
       }
-      await expect(client.request(mutation, createPostVariables)).resolves.toMatchObject(expected)
+      await expect(client.request(createPostMutation, createPostVariables)).resolves.toMatchObject(
+        expected,
+      )
     })
 
     it('assigns the authenticated user as author', async () => {
-      await client.request(mutation, createPostVariables)
+      await client.request(createPostMutation, createPostVariables)
       const { User } = await client.request(
         `{
           User(name: "TestUser") {
@@ -130,7 +141,9 @@ describe('CreatePost', () => {
     describe('disabled and deleted', () => {
       it('initially false', async () => {
         const expected = { CreatePost: { disabled: false, deleted: false } }
-        await expect(client.request(mutation, createPostVariables)).resolves.toMatchObject(expected)
+        await expect(
+          client.request(createPostMutation, createPostVariables),
+        ).resolves.toMatchObject(expected)
       })
     })
 
@@ -387,44 +400,81 @@ describe('DeletePost', () => {
 })
 
 describe('emotions', () => {
-  let addPostEmotionsVariables
-  let postEmotionsQueryVariables
-  const postEmotionsQuery = `
+  let addPostEmotionsVariables,
+    someUser,
+    ownerNode,
+    owner,
+    postMutationAction,
+    user,
+    postQueryAction
+  const postEmotionsCountQuery = `
     query($id: ID!) {
       Post(id: $id) {
-        emotions {
-          emotion
-          User {
-            id
-          }
-        }
+        emotionsCount
       }
     }
   `
-  beforeEach(async () => {
-    const asAuthor = Factory()
-    authorParams = {
-      id: authorParams.id,
-      email: 'wanna-add-emotions@example.org',
-      password: '1234',
+  const postEmotionsQuery = `
+  query($id: ID!) {
+    Post(id: $id) {
+      emotions {
+        emotion
+        User {
+          id
+        }
+      }
     }
-    await asAuthor.create('User', authorParams)
-    await asAuthor.authenticateAs(authorParams)
-    await asAuthor.create('Post', {
-      id: 'p1376',
-      title: postTitle,
-      content: postContent,
-    })
-    postEmotionsQueryVariables = { id: 'p1376' }
+  }
+`
+  beforeEach(async () => {
+    const someUserNode = await instance.create('User', userParams)
+    someUser = await someUserNode.toJson()
+    ownerNode = await instance.create('User', authorParams)
+    owner = await ownerNode.toJson()
+
+    postMutationAction = async (user, mutation, variables) => {
+      const { server } = createServer({
+        context: () => {
+          return {
+            user,
+            driver,
+          }
+        },
+      })
+      const { mutate } = createTestClient(server)
+
+      return mutate({
+        mutation,
+        variables,
+      })
+    }
+    postQueryAction = async (postQuery, variables) => {
+      const { server } = createServer({
+        context: () => {
+          return {
+            user,
+            driver,
+          }
+        },
+      })
+      const { query } = createTestClient(server)
+      return query({ query: postQuery, variables })
+    }
   })
 
   describe('AddPostEmotions', () => {
-    beforeEach(() => {
+    let postEmotionsQueryVariables
+    beforeEach(async () => {
+      user = owner
+      const {
+        data: { CreatePost },
+      } = await postMutationAction(user, createPostMutation, createPostVariables)
       addPostEmotionsVariables = {
         from: { id: authorParams.id },
-        to: { id: 'p1376' },
+        to: { id: CreatePost.id },
         data: { emotion: 'happy' },
       }
+      postEmotionsQueryVariables = { id: CreatePost.id }
     })
 
     const addPostEmotionsMutation = `
@@ -436,102 +486,98 @@ describe('emotions', () => {
         }
       }
     `
-    const postEmotionsCountQuery = `
-      query($id: ID!) {
-        Post(id: $id) {
-          emotionsCount
-        }
-      }
-    `
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        client = new GraphQLClient(host)
-        await expect(
-          client.request(addPostEmotionsMutation, {
-            from: { id: authorParams.id },
-            to: { id: 'p1376' },
-            data: { emotion: 'happy' },
-          }),
-        ).rejects.toThrow('Not Authorised')
+        user = null
+        const result = await postMutationAction(
+          user,
+          addPostEmotionsMutation,
+          addPostEmotionsVariables,
+        )
+
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated and not the author', () => {
-      let headers
-      beforeEach(async () => {
-        headers = await login(userParams)
-        client = new GraphQLClient(host, { headers })
+      beforeEach(() => {
+        user = someUser
       })
 
       it('adds an emotion to the post', async () => {
         addPostEmotionsVariables.from.id = userParams.id
         const expected = {
-          AddPostEmotions: {
-            from: addPostEmotionsVariables.from,
-            to: addPostEmotionsVariables.to,
-            emotion: 'happy',
+          data: {
+            AddPostEmotions: {
+              from: addPostEmotionsVariables.from,
+              to: addPostEmotionsVariables.to,
+              emotion: 'happy',
+            },
           },
         }
         await expect(
-          client.request(addPostEmotionsMutation, addPostEmotionsVariables),
-        ).resolves.toEqual(expected)
+          postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables),
+        ).resolves.toEqual(expect.objectContaining(expected))
       })
 
       it('limits the addition of the same emotion to 1', async () => {
         const expected = {
-          Post: [
-            {
-              emotionsCount: 1,
-            },
-          ],
+          data: {
+            Post: [
+              {
+                emotionsCount: 1,
+              },
+            ],
+          },
         }
-        await client.request(addPostEmotionsMutation, addPostEmotionsVariables)
-        await client.request(addPostEmotionsMutation, addPostEmotionsVariables)
+        await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
+        await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
         await expect(
-          client.request(postEmotionsCountQuery, postEmotionsQueryVariables),
-        ).resolves.toEqual(expected)
+          postQueryAction(postEmotionsCountQuery, postEmotionsQueryVariables),
+        ).resolves.toEqual(expect.objectContaining(expected))
       })
 
       it('allows a user to add more than one emotion', async () => {
-        const expected = [
+        const expectedEmotions = [
           { emotion: 'happy', User: { id: authorParams.id } },
           { emotion: 'surprised', User: { id: authorParams.id } },
         ]
-        await client.request(addPostEmotionsMutation, addPostEmotionsVariables)
+        const expectedResponse = {
+          data: { Post: [{ emotions: expect.arrayContaining(expectedEmotions) }] },
+        }
+        await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
         addPostEmotionsVariables.data.emotion = 'surprised'
-        await client.request(addPostEmotionsMutation, addPostEmotionsVariables)
+        await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
         await expect(
-          client.request(postEmotionsQuery, postEmotionsQueryVariables),
-        ).resolves.toEqual({
-          Post: [{ emotions: expect.arrayContaining(expected) }],
-        })
+          postQueryAction(postEmotionsQuery, postEmotionsQueryVariables),
+        ).resolves.toEqual(expect.objectContaining(expectedResponse))
       })
     })
 
     describe('authenticated as author', () => {
-      let headers
-      beforeEach(async () => {
-        headers = await login(authorParams)
-        client = new GraphQLClient(host, { headers })
+      beforeEach(() => {
+        user = owner
       })
 
       it('adds an emotion to the post', async () => {
         const expected = {
-          AddPostEmotions: {
-            from: addPostEmotionsVariables.from,
-            to: addPostEmotionsVariables.to,
-            emotion: 'happy',
+          data: {
+            AddPostEmotions: {
+              from: addPostEmotionsVariables.from,
+              to: addPostEmotionsVariables.to,
+              emotion: 'happy',
+            },
           },
         }
         await expect(
-          client.request(addPostEmotionsMutation, addPostEmotionsVariables),
-        ).resolves.toEqual(expected)
+          postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables),
+        ).resolves.toEqual(expect.objectContaining(expected))
       })
     })
   })
 
   describe('RemovePostEmotions', () => {
-    let removePostEmotionsVariables
+    let removePostEmotionsVariables, postEmotionsQueryVariables
     const removePostEmotionsMutation = `
       mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
         RemovePostEmotions(from: $from, to: $to, data: $data)
@@ -547,62 +593,73 @@ describe('emotions', () => {
 
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        client = new GraphQLClient(host)
-        await expect(
-          client.request(removePostEmotionsMutation, removePostEmotionsVariables),
-        ).rejects.toThrow('Not Authorised')
+        user = null
+        const result = await postMutationAction(
+          user,
+          removePostEmotionsMutation,
+          removePostEmotionsVariables,
+        )
+
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated', () => {
-      let headers
       beforeEach(async () => {
-        headers = await login(authorParams)
-        client = new GraphQLClient(host, { headers })
+        user = owner
+        const {
+          data: { CreatePost },
+        } = await postMutationAction(user, createPostMutation, createPostVariables)
         await factory.emote({
           from: authorParams.id,
-          to: 'p1376',
+          to: CreatePost.id,
           data: 'cry',
         })
         await factory.emote({
           from: authorParams.id,
-          to: 'p1376',
+          to: CreatePost.id,
           data: 'happy',
         })
+        postEmotionsQueryVariables = { id: CreatePost.id }
       })
 
       describe('but not the emoter', () => {
         it('throws an authorization error', async () => {
-          removePostEmotionsVariables.from.id = userParams.id
-          await expect(
-            client.request(removePostEmotionsMutation, removePostEmotionsVariables),
-          ).rejects.toThrow('Not Authorised')
+          user = someUser
+          const result = await postMutationAction(
+            user,
+            removePostEmotionsMutation,
+            removePostEmotionsVariables,
+          )
+
+          expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
         })
       })
 
       describe('as the emoter', () => {
         it('removes an emotion from a post', async () => {
-          const expected = { RemovePostEmotions: true }
+          user = owner
+          const expected = { data: { RemovePostEmotions: true } }
           await expect(
-            client.request(removePostEmotionsMutation, removePostEmotionsVariables),
-          ).resolves.toEqual(expected)
+            postMutationAction(user, removePostEmotionsMutation, removePostEmotionsVariables),
+          ).resolves.toEqual(expect.objectContaining(expected))
         })
 
         it('removes only the requested emotion, not all emotions', async () => {
-          const expected = [{ emotion: 'happy', User: { id: authorParams.id } }]
-          await client.request(removePostEmotionsMutation, removePostEmotionsVariables)
+          const expectedEmotions = [{ emotion: 'happy', User: { id: authorParams.id } }]
+          const expectedResponse = {
+            data: { Post: [{ emotions: expect.arrayContaining(expectedEmotions) }] },
+          }
+          await postMutationAction(user, removePostEmotionsMutation, removePostEmotionsVariables)
           await expect(
-            client.request(postEmotionsQuery, postEmotionsQueryVariables),
-          ).resolves.toEqual({
-            Post: [{ emotions: expect.arrayContaining(expected) }],
-          })
+            postQueryAction(postEmotionsQuery, postEmotionsQueryVariables),
+          ).resolves.toEqual(expect.objectContaining(expectedResponse))
         })
       })
     })
   })
 
   describe('posts emotions count', () => {
-    let headers
     let postsEmotionsCountByEmotionVariables
     let postsEmotionsCountByCurrentUserVariables
 
@@ -618,36 +675,40 @@ describe('emotions', () => {
       }
     `
     beforeEach(async () => {
-      headers = await login(authorParams)
-      client = new GraphQLClient(host, { headers })
+      user = owner
+      const {
+        data: { CreatePost },
+      } = await postMutationAction(user, createPostMutation, createPostVariables)
       await factory.emote({
         from: authorParams.id,
-        to: 'p1376',
+        to: CreatePost.id,
         data: 'cry',
       })
       postsEmotionsCountByEmotionVariables = {
-        postId: 'p1376',
+        postId: CreatePost.id,
         data: { emotion: 'cry' },
       }
-      postsEmotionsCountByCurrentUserVariables = { postId: 'p1376' }
+      postsEmotionsCountByCurrentUserVariables = { postId: CreatePost.id }
     })
 
     describe('postsEmotionsCountByEmotion', () => {
       it("returns a post's emotions count", async () => {
+        const expectedResponse = { data: { postsEmotionsCountByEmotion: 1 } }
         await expect(
-          client.request(postsEmotionsCountByEmotionQuery, postsEmotionsCountByEmotionVariables),
-        ).resolves.toEqual({ postsEmotionsCountByEmotion: 1 })
+          postQueryAction(postsEmotionsCountByEmotionQuery, postsEmotionsCountByEmotionVariables),
+        ).resolves.toEqual(expect.objectContaining(expectedResponse))
       })
     })
 
     describe('postsEmotionsCountByEmotion', () => {
       it("returns a currentUser's emotions on a post", async () => {
+        const expectedResponse = { data: { postsEmotionsCountByCurrentUser: ['cry'] } }
         await expect(
-          client.request(
+          postQueryAction(
             postsEmotionsCountByCurrentUserQuery,
             postsEmotionsCountByCurrentUserVariables,
           ),
-        ).resolves.toEqual({ postsEmotionsCountByCurrentUser: ['cry'] })
+        ).resolves.toEqual(expect.objectContaining(expectedResponse))
       })
     })
   })
