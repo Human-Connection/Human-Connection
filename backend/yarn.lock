@@ -972,7 +972,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.6.3", "@metascraper/helpers@^5.6.5":
+"@metascraper/helpers@^5.6.5":
   version "5.6.5"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.6.5.tgz#6f42bd1a8e3243e051e7bb067145125cd6b37e09"
   integrity sha512-j9qxXqZ9k/uNkABlsVjNN2Z5pVtukDmZMZ0ACsob+m5o8/yo87GvRf/UJfTPtog9vZ/QwkLav5Hhl+10NC7QLw==
@@ -6143,10 +6143,10 @@ neo4j-graphql-js@^2.6.3:
     lodash "^4.17.11"
     neo4j-driver "^1.7.3"
 
-neode@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.0.tgz#a4a41234fac23236db6b589ec2b505ad6e5fd832"
-  integrity sha512-V6uQhap7FDwbeC+mH6JEI352QSou4Ukj7vs/bGZSrVlMZKVS8vs/mbQYXoFdCkmQJuUtJWqO9wmtWg5GjCaNDQ==
+neode@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.1.tgz#d40147bf20d6951b69c9d392fbdd322aeca07816"
+  integrity sha512-SdaJmdjQ3PWOH6W1H8Xgd2CLyJs+BPPXPt0jOVNs7naeQH8nWPP6ixDqI6NWDCxwecTdNl//fpAicB9I6hCwEw==
   dependencies:
     "@hapi/joi" "^15.1.0"
     dotenv "^4.0.0"
