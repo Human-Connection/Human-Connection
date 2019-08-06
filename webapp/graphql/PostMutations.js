@@ -64,6 +64,12 @@ export default () => {
       mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
         AddPostEmotions(from: $from, to: $to, data: $data) {
           emotion
+          from {
+            id
+          }
+          to {
+            id
+          }
         }
       }
     `,

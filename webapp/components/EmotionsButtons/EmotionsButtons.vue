@@ -38,7 +38,7 @@ export default {
       currentUser: 'auth/user',
     }),
   },
-  mounted() {
+  created() {
     Object.keys(this.postsEmotionsCountByEmotion).map(emotion => {
       this.emotionsCount(emotion)
     })
@@ -66,6 +66,7 @@ export default {
           this.isActive(emotion)
             ? this.postsEmotionsCountByEmotion[emotion]--
             : this.postsEmotionsCountByEmotion[emotion]++
+
           const index = this.selectedEmotions.indexOf(emotion)
           if (index > -1) {
             this.selectedEmotions.splice(index, 1)
@@ -90,6 +91,7 @@ export default {
             }
           `,
           variables: { postId: this.post.id, data: { emotion } },
+          fetchPolicy: 'no-cache',
         })
         .then(({ data: { postsEmotionsCountByEmotion } }) => {
           this.postsEmotionsCountByEmotion[emotion] = postsEmotionsCountByEmotion

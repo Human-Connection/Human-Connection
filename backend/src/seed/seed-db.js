@@ -494,6 +494,36 @@ import Factory from './factories'
       }),
       f.emote({
         from: 'u2',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u3',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u4',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u5',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u6',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u7',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u2',
         to: 'p14',
         data: 'cry',
       }),

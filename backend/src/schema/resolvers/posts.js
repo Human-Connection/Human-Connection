@@ -122,6 +122,7 @@ export default {
       const [emotionsCount] = transactionRes.records.map(record => {
         return record.get('emotionsCount').low
       })
+
       return emotionsCount
     },
     postsEmotionsCountByCurrentUser: async (object, params, context, resolveInfo) => {

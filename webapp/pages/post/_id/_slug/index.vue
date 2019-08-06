@@ -221,8 +221,5 @@ export default {
   .shout-button {
     float: left;
   }
-  // .emotions-buttons-mobile {
-  //   margin-top: -80px;
-  // }
 }
 </style>
