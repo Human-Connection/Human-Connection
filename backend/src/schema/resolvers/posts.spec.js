@@ -427,6 +427,8 @@ describe('emotions', () => {
   }
 `
   beforeEach(async () => {
+    userParams.id = 'u1987'
+    authorParams.id = 'u257'
     const someUserNode = await instance.create('User', userParams)
     someUser = await someUserNode.toJson()
     ownerNode = await instance.create('User', authorParams)
