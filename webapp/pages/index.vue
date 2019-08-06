@@ -101,6 +101,8 @@ export default {
     this.toggleShowFilterPostsDropdown(false)
     this.setFilteredByUserFollowed(false)
     this.setFilteredByCategories(false)
+    this.setFilteredByUserFollowed(false)
+    this.setSelectedCategoryIds([])
   },
   watch: {
     Post(post) {
@@ -111,6 +113,8 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
       posts: 'posts/posts',
+      usersFollowedFilter: 'posts/usersFollowedFilter',
+      categoriesFilter: 'posts/categoriesFilter',
     }),
     tags() {
       return this.posts ? this.posts.tags.map(tag => tag.name) : '-'
@@ -125,6 +129,7 @@ export default {
       toggleShowFilterPostsDropdown: 'default/SET_SHOW_FILTER_POSTS_DROPDOWN',
       setFilteredByUserFollowed: 'posts/SET_FILTERED_BY_FOLLOWERS',
       setFilteredByCategories: 'posts/SET_FILTERED_BY_CATEGORIES',
+      setSelectedCategoryIds: 'posts/SET_SELECTED_CATEGORY_IDS',
     }),
     changeFilterBubble(filter) {
       if (this.hashtag) {
@@ -137,6 +142,11 @@ export default {
       this.$apollo.queries.Post.refetch()
     },
     toggleOnlySorting(x) {
+      this.filter = {
+        ...this.usersFollowedFilter,
+        ...this.categoriesFilter,
+      }
+
       this.sortingIcon = x.icons
       this.sorting = x.order
       this.$apollo.queries.Post.refetch()

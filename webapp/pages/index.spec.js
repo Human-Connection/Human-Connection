@@ -41,6 +41,8 @@ describe('PostIndex', () => {
         'auth/user': () => {
           return { id: 'u23' }
         },
+        'posts/usersFollowedFilter': () => {},
+        'posts/categoriesFilter': () => {},
       },
       mutations: {
         'default/SET_SHOW_FILTER_POSTS_DROPDOWN': mutations.SET_SHOW_FILTER_POSTS_DROPDOWN,

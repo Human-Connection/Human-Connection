@@ -50,14 +50,13 @@ describe('FilterPosts.vue', () => {
 
   describe('mount', () => {
     const store = new Vuex.Store({
-      state: {
-        filteredByCategories: false,
-        filteredByUsersFollowed: false,
-      },
       mutations: {
         'posts/SET_POSTS': mutations.SET_POSTS,
         'posts/SET_FILTERED_BY_CATEGORIES': mutations.SET_FILTERED_BY_CATEGORIES,
         'posts/SET_FILTERED_BY_FOLLOWERS': mutations.SET_FILTERED_BY_FOLLOWERS,
+        'posts/SET_USERS_FOLLOWED_FILTER': mutations.SET_USERS_FOLLOWED_FILTER,
+        'posts/SET_CATEGORIES_FILTER': mutations.SET_CATEGORIES_FILTER,
+        'posts/SET_SELECTED_CATEGORY_IDS': mutations.SET_SELECTED_CATEGORY_IDS,
       },
       getters: {
         'auth/user': () => {
@@ -65,6 +64,9 @@ describe('FilterPosts.vue', () => {
         },
         'posts/filteredByCategories': getters.filteredByCategories,
         'posts/filteredByUsersFollowed': getters.filteredByUsersFollowed,
+        'posts/usersFollowedFilter': getters.usersFollowedFilter,
+        'posts/categoriesFilter': getters.categoriesFilter,
+        'posts/selectedCategoryIds': getters.selectedCategoryIds,
       },
     })
     const Wrapper = () => {
@@ -72,7 +74,13 @@ describe('FilterPosts.vue', () => {
     }
 
     beforeEach(() => {
-      store.state.filteredByUsersFollowed = false
+      store.replaceState({
+        filteredByCategories: false,
+        filteredByUsersFollowed: false,
+        usersFollowedFilter: {},
+        categoriesFilter: {},
+        selectedCategoryIds: [],
+      })
       wrapper = Wrapper()
       menuToggle = wrapper.findAll('a').at(0)
       menuToggle.trigger('click')

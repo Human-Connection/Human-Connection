@@ -102,21 +102,25 @@ export default {
   },
   data() {
     return {
-      selectedCategoryIds: [],
       filter: {},
-      usersFollowedFilter: { followedBy_some: { id: this.user.id } },
     }
   },
   computed: {
     ...mapGetters({
       filteredByUsersFollowed: 'posts/filteredByUsersFollowed',
       filteredByCategories: 'posts/filteredByCategories',
+      usersFollowedFilter: 'posts/usersFollowedFilter',
+      categoriesFilter: 'posts/categoriesFilter',
+      selectedCategoryIds: 'posts/selectedCategoryIds',
     }),
   },
   methods: {
     ...mapMutations({
       setFilteredByFollowers: 'posts/SET_FILTERED_BY_FOLLOWERS',
       setFilteredByCategories: 'posts/SET_FILTERED_BY_CATEGORIES',
+      setUsersFollowedFilter: 'posts/SET_USERS_FOLLOWED_FILTER',
+      setCategoriesFilter: 'posts/SET_CATEGORIES_FILTER',
+      setSelectedCategoryIds: 'posts/SET_SELECTED_CATEGORY_IDS',
     }),
     isActive(id) {
       const index = this.selectedCategoryIds.indexOf(id)
@@ -125,36 +129,31 @@ export default {
       }
       return false
     },
-    toggleCategory(id) {
-      if (!id) {
-        this.selectedCategoryIds = []
+    toggleCategory(categoryId) {
+      if (!categoryId) {
+        this.setSelectedCategoryIds([])
       } else {
-        const index = this.selectedCategoryIds.indexOf(id)
-        if (index > -1) {
-          this.selectedCategoryIds.splice(index, 1)
-        } else {
-          this.selectedCategoryIds.push(id)
-        }
+        this.setSelectedCategoryIds(categoryId)
       }
       this.setFilteredByCategories(!!this.selectedCategoryIds.length)
+      this.setCategoriesFilter({ categories_some: { id_in: this.selectedCategoryIds } })
       this.toggleFilter()
     },
     toggleOnlyFollowed() {
       this.setFilteredByFollowers(!this.filteredByUsersFollowed)
+      this.setUsersFollowedFilter({ author: { followedBy_some: { id: this.user.id } } })
       this.toggleFilter()
     },
     toggleFilter() {
-      if (!this.filteredByUsersFollowed) {
-        this.filter = this.filteredByCategories
-          ? { categories_some: { id_in: this.selectedCategoryIds } }
-          : {}
-      } else if (this.filteredByUsersFollowed) {
+      if (this.filteredByUsersFollowed) {
         this.filter = this.filteredByCategories
           ? {
-              author: this.usersFollowedFilter,
-              categories_some: { id_in: this.selectedCategoryIds },
+              ...this.usersFollowedFilter,
+              ...this.categoriesFilter,
             }
-          : { author: this.usersFollowedFilter }
+          : { ...this.usersFollowedFilter }
+      } else {
+        this.filter = this.filteredByCategories ? { ...this.categoriesFilter } : {}
       }
       this.$emit('filterPosts', this.filter)
     },
