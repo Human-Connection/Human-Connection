@@ -20,10 +20,7 @@
       <ds-space margin-bottom="small" />
       <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
-      <!-- Content -->
-      <!-- eslint-disable vue/no-v-html -->
-      <!-- TODO: replace editor content with tiptap render view -->
-      <div class="content hc-editor-content" v-html="post.content" />
+      <content-viewer class="content" :content="post.content" />
       <!-- eslint-enable vue/no-v-html -->
       <ds-space margin="xx-large" />
       <!-- Categories -->
@@ -78,6 +75,7 @@
 </template>
 
 <script>
+import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
@@ -104,6 +102,7 @@ export default {
     HcCommentForm,
     HcCommentList,
     HcEmotionsButtons,
+    ContentViewer,
   },
   head() {
     return {

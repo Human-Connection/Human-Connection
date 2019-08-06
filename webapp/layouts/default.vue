@@ -20,7 +20,7 @@
               :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
-              <div id="nav-search-box">
+              <div id="nav-search-box" v-if="isLoggedIn">
                 <search-input
                   id="nav-search"
                   :delay="300"
@@ -33,6 +33,7 @@
               </div>
             </ds-flex-item>
             <ds-flex-item
+              v-if="isLoggedIn"
               :width="{ base: '15%', sm: '15%', md: '10%', lg: '10%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
@@ -116,7 +117,7 @@
       </ds-container>
     </div>
     <ds-container style="word-break: break-all">
-      <div class="main-container" :width="{ base: '100%', md: '96%' }">
+      <div class="main-container">
         <nuxt />
       </div>
     </ds-container>
@@ -125,9 +126,11 @@
       &nbsp;-&nbsp;
       <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
       &nbsp;‑&nbsp;
-      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAc') }}</nuxt-link>
+      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAndConditions') }}</nuxt-link>
       &nbsp;‑&nbsp;
-      <nuxt-link to="/privacy">{{ $t('site.privacy') }}</nuxt-link>
+      <nuxt-link to="/code-of-conduct">{{ $t('site.code-of-conduct') }}</nuxt-link>
+      &nbsp;‑&nbsp;
+      <nuxt-link to="/data-privacy">{{ $t('site.data-privacy') }}</nuxt-link>
       &nbsp;‑&nbsp;
       <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
     </div>
@@ -149,7 +152,6 @@ import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
 import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
 import CategoryQuery from '~/graphql/CategoryQuery.js'
-
 export default {
   components: {
     Dropdown,
@@ -266,47 +268,38 @@ export default {
   align-self: center;
   display: inline-flex;
 }
-
 .main-container {
   padding-top: 6rem;
   padding-bottom: 5rem;
 }
-
 .main-navigation {
   a {
     color: $text-color-soft;
   }
 }
-
 .main-navigation-right {
   display: flex;
   flex: 1;
 }
-
 .main-navigation-right .desktop-view {
   float: right;
 }
-
 .avatar-menu {
   margin: 2px 0px 0px 5px;
 }
-
 .avatar-menu-trigger {
   user-select: none;
   display: flex;
   align-items: center;
   padding-left: $space-xx-small;
 }
-
 .avatar-menu-popover {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-
   hr {
     color: $color-neutral-90;
     background-color: $color-neutral-90;
   }
-
   .logout-link {
     margin-left: -$space-small;
     margin-right: -$space-small;
@@ -315,43 +308,35 @@ export default {
     padding: $space-x-small $space-small;
     // subtract menu border with from padding
     padding-left: $space-small - 2;
-
     color: $text-color-base;
-
     &:hover {
       color: $text-color-link-active;
     }
   }
-
   nav {
     margin-left: -$space-small;
     margin-right: -$space-small;
     margin-top: -$space-xx-small;
     margin-bottom: -$space-xx-small;
-
     a {
       padding-left: 12px;
     }
   }
 }
-
 @media only screen and (min-width: 960px) {
   .mobile-hamburger-menu {
     display: none;
   }
 }
-
 @media only screen and (max-width: 960px) {
   #nav-search-box,
   .main-navigation-right {
     margin: 10px 0px;
   }
-
   .hide-mobile-menu {
     display: none;
   }
 }
-
 .ds-footer {
   text-align: center;
   position: fixed;
