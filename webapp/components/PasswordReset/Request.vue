@@ -48,12 +48,8 @@
 
 <script>
 import gql from 'graphql-tag'
-import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {
-  components: {
-    SweetalertIcon,
-  },
   data() {
     return {
       formData: {
