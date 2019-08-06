@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "dev:styleguide": "cross-env STYLEGUIDE_DEV=true yarn dev",
+    "storybook": "start-storybook -p 3002 -c storybook/",
     "build": "nuxt build",
     "start": "cross-env node server/index.js",
     "generate": "nuxt generate",
@@ -83,6 +84,9 @@
     "@babel/core": "~7.5.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "~7.5.5",
+    "@storybook/addon-a11y": "^5.1.9",
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/vue": "~5.1.9",
     "@vue/cli-shared-utils": "~3.10.0",
     "@vue/eslint-config-prettier": "~5.0.0",
     "@vue/server-test-utils": "~1.0.0-beta.29",
@@ -90,6 +94,10 @@
     "babel-core": "~7.0.0-bridge.0",
     "babel-eslint": "~10.0.2",
     "babel-jest": "~24.8.0",
+    "babel-loader": "~8.0.6",
+    "babel-preset-vue": "~2.0.2",
+    "css-loader": "~2.1.1",
+    "core-js": "~2.6.9",
     "eslint": "~5.16.0",
     "eslint-config-prettier": "~6.0.0",
     "eslint-config-standard": "~12.0.0",
@@ -109,8 +117,12 @@
     "nodemon": "~1.19.1",
     "prettier": "~1.18.2",
     "sass-loader": "~7.1.0",
+    "style-loader": "~0.23.1",
+    "style-resources-loader": "~1.2.1",
     "tippy.js": "^4.3.5",
     "vue-jest": "~3.0.4",
-    "vue-svg-loader": "~0.12.0"
+    "vue-loader": "~15.7.0",
+    "vue-svg-loader": "~0.12.0",
+    "vue-template-compiler": "^2.6.10"
   }
 }
