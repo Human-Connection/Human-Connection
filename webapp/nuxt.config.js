@@ -21,10 +21,10 @@ module.exports = {
 
   modern: !dev ? 'server' : false,
 
-  // transition: {
-  //  name: 'slide-up',
-  //  mode: 'out-in',
-  // },
+  pageTransition: {
+    name: 'slide-up',
+    mode: 'out-in',
+  },
 
   env: {
     // pages which do NOT require a login
