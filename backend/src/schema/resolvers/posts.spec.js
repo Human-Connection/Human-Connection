@@ -443,7 +443,6 @@ describe('emotions', () => {
         }
       }
     `
-
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         client = new GraphQLClient(host)
@@ -598,6 +597,57 @@ describe('emotions', () => {
             Post: [{ emotions: expect.arrayContaining(expected) }],
           })
         })
+      })
+    })
+  })
+
+  describe('posts emotions count', () => {
+    let headers
+    let postsEmotionsCountByEmotionVariables
+    let postsEmotionsCountByCurrentUserVariables
+
+    const postsEmotionsCountByEmotionQuery = `
+      query($postId: ID!, $data: _EMOTEDInput!) {
+        postsEmotionsCountByEmotion(postId: $postId, data: $data) 
+      }
+      `
+
+    const postsEmotionsCountByCurrentUserQuery = `
+      query($postId: ID!) {
+        postsEmotionsCountByCurrentUser(postId: $postId)
+      }
+    `
+    beforeEach(async () => {
+      headers = await login(authorParams)
+      client = new GraphQLClient(host, { headers })
+      await factory.emote({
+        from: authorParams.id,
+        to: 'p1376',
+        data: 'cry',
+      })
+      postsEmotionsCountByEmotionVariables = {
+        postId: 'p1376',
+        data: { emotion: 'cry' },
+      }
+      postsEmotionsCountByCurrentUserVariables = { postId: 'p1376' }
+    })
+
+    describe('postsEmotionsCountByEmotion', () => {
+      it("returns a post's emotions count", async () => {
+        await expect(
+          client.request(postsEmotionsCountByEmotionQuery, postsEmotionsCountByEmotionVariables),
+        ).resolves.toEqual({ postsEmotionsCountByEmotion: 1 })
+      })
+    })
+
+    describe('postsEmotionsCountByEmotion', () => {
+      it("returns a currentUser's emotions on a post", async () => {
+        await expect(
+          client.request(
+            postsEmotionsCountByCurrentUserQuery,
+            postsEmotionsCountByCurrentUserVariables,
+          ),
+        ).resolves.toEqual({ postsEmotionsCountByCurrentUser: ['cry'] })
       })
     })
   })
