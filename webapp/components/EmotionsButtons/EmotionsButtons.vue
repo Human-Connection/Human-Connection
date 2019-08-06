@@ -3,14 +3,14 @@
     <div v-for="emotion in Object.keys(postsEmotionsCountByEmotion)" :key="emotion">
       <ds-flex-item :width="{ lg: '100%' }">
         <ds-button size="large" ghost @click="toggleEmotion(emotion)" class="emotions-buttons">
-          <img :src="iconPath(emotion)" width="53" />
+          <img :src="iconPath(emotion)" width="40" />
         </ds-button>
         <ds-space margin-bottom="xx-small" />
         <div class="emotions-mobile-space">
           <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>
-          <ds-heading style="display: inline" tag="h3" :key="postsEmotionsCountByEmotion[emotion]">
+          <ds-text style="display: inline" size="medium" :key="postsEmotionsCountByEmotion[emotion]">
             {{ postsEmotionsCountByEmotion[emotion] }}x
-          </ds-heading>
+          </ds-text>
           {{ $t('contribution.emotions-label.emoted') }}
         </div>
       </ds-flex-item>
