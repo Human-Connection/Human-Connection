@@ -76,8 +76,8 @@
     "v-tooltip": "~2.0.2",
     "vue-count-to": "~1.0.13",
     "vue-izitoast": "1.1.2",
-    "vue-sweetalert-icons": "~3.2.0",
     "vuex-i18n": "~1.13.1",
+    "vue-sweetalert-icons": "~4.0.0",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
