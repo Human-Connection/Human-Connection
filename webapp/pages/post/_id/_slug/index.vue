@@ -48,10 +48,10 @@
           >
             <hc-emotions-buttons :post="post" />
           </ds-flex-item>
-          <ds-flex-item :width="{ lg: '10%', md: '5%', sm: '5%' }" />
+          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
           <!-- Shout Button -->
           <ds-flex-item
-            :width="{ lg: '15%', md: '20%', sm: '20%', base: '100%' }"
+            :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
             class="shout-button"
           >
             <hc-shout-button
