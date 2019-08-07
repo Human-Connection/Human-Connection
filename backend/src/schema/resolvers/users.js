@@ -91,7 +91,6 @@ export default {
         followedBy: '<-[:FOLLOWS]-(related:User)',
         following: '-[:FOLLOWS]->(related:User)',
         friends: '-[:FRIENDS]-(related:User)',
-        blacklisted: '-[:BLACKLISTED]->(related:User)',
         socialMedia: '-[:OWNED_BY]->(related:SocialMedia',
         contributions: '-[:WROTE]->(related:Post)',
         comments: '-[:WROTE]->(related:Comment)',

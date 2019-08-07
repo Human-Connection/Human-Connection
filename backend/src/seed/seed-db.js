@@ -135,18 +135,6 @@ import Factory from './factories'
         from: 'u2',
         to: 'u3',
       }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u4',
-      }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u5',
-      }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u6',
-      }),
     ])
 
     await Promise.all([

@@ -73,8 +73,6 @@ type User {
   organizationsCreated: [Organization] @relation(name: "CREATED_ORGA", direction: "OUT")
   organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
 
-  blacklisted: [User]! @relation(name: "BLACKLISTED", direction: "OUT")
-
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
   badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
