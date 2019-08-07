@@ -197,6 +197,7 @@ const permissions = shield(
       AddPostEmotions: isAuthenticated,
       RemovePostEmotions: isAuthenticated,
       block: isAuthenticated,
+      unblock: isAuthenticated,
     },
     User: {
       email: isMyOwn,

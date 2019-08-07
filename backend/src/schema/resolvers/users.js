@@ -38,12 +38,25 @@ export default {
   },
   Mutation: {
     block: async (object, args, context, resolveInfo) => {
-      if(context.user.id === args.id) return null
+      if (context.user.id === args.id) return null
       const [user, blockedUser] = await Promise.all([
         instance.find('User', context.user.id),
-        instance.find('User', args.id)
+        instance.find('User', args.id),
       ])
       await user.relateTo(blockedUser, 'blocked')
+      return blockedUser.toJson()
+    },
+    unblock: async (object, args, context, resolveInfo) => {
+      const { user: currentUser } = context
+      if (currentUser.id === args.id) return null
+      await instance.cypher(
+        `
+      MATCH(u:User {id: $currentUser.id})-[r:BLOCKED]->(b:User {id: $args.id})
+      DELETE r
+      `,
+        { currentUser, args },
+      )
+      const blockedUser = await instance.find('User', args.id)
       return blockedUser.toJson()
     },
     UpdateUser: async (object, args, context, resolveInfo) => {
