@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import BlockedUsers from '~/graphql/settings/BlockedUsers'
+import { BlockedUsers } from '~/graphql/settings/BlockedUsers'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 
 export default {

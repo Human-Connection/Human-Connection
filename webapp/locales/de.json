@@ -202,7 +202,9 @@
         "name": "Name",
         "slug": "Alias"
       },
-      "empty": "Bislang hast du niemanden blockiert."
+      "empty": "Bislang hast du niemanden blockiert.",
+      "block": "Nutzer blockieren",
+      "unblock": "Nutzer entblocken"
     }
   },
   "admin": {

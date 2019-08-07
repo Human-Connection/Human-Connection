@@ -203,7 +203,9 @@
         "name": "Name",
         "slug": "Slug"
       },
-      "empty": "So far, you did not block anybody."
+      "empty": "So far, you did not block anybody.",
+      "block": "Block user",
+      "unblock": "Unblock user"
     }
   },
   "admin": {

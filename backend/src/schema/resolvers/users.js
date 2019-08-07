@@ -110,18 +110,6 @@ export default {
       const [{ email }] = result.records.map(r => r.get('e').properties)
       return email
     },
-    isBlocked: async (parent, params, context, resolveInfo) => {
-      if (typeof parent.isBlocked !== 'undefined') return parent.isBlocked
-      const result = await instance.cypher(
-        `
-      MATCH (u:User { id: $currentUser.id })-[:BLOCKED]->(b:User {id: $parent.id})
-      RETURN COUNT(u) >= 1 as isBlocked
-      `,
-        { parent, currentUser: context.user },
-      )
-      const [record] = result.records
-      return record.get('isBlocked')
-    },
     ...Resolver('User', {
       undefinedToNull: [
         'actorId',
@@ -132,6 +120,12 @@ export default {
         'locationName',
         'about',
       ],
+      boolean: {
+        followedByCurrentUser:
+          'MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+        isBlocked:
+          'MATCH (this)<-[:BLOCKED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+      },
       count: {
         contributionsCount: '-[:WROTE]->(related:Post)',
         friendsCount: '<-[:FRIENDS]->(related:User)',
