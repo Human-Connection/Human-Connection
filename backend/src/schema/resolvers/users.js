@@ -18,6 +18,23 @@ export default {
       }
       return neo4jgraphql(object, args, context, resolveInfo, false)
     },
+    blockedUsers: async (object, args, context, resolveInfo) => {
+      try {
+        const userModel = instance.model('User')
+        let blockedUsers = instance
+          .query()
+          .match('user', userModel)
+          .where('user.id', context.user.id)
+          .relationship(userModel.relationships().get('blocked'))
+          .to('blocked', userModel)
+          .return('blocked')
+        blockedUsers = await blockedUsers.execute()
+        blockedUsers = blockedUsers.records.map(r => r.get('blocked').properties)
+        return blockedUsers
+      } catch (e) {
+        throw new UserInputError(e.message)
+      }
+    },
   },
   Mutation: {
     UpdateUser: async (object, args, context, resolveInfo) => {
@@ -62,6 +79,18 @@ export default {
       const result = await instance.cypher(statement, { id })
       const [{ email }] = result.records.map(r => r.get('e').properties)
       return email
+    },
+    isBlocked: async (parent, params, context, resolveInfo) => {
+      if (typeof parent.isBlocked !== 'undefined') return parent.isBlocked
+      const result = await instance.cypher(
+        `
+      MATCH (u:User { id: $currentUser.id })-[:BLOCKED]->(b:User {id: $parent.id})
+      RETURN COUNT(u) >= 1 as isBlocked
+      `,
+        { parent, currentUser: context.user },
+      )
+      const [record] = result.records
+      return record.get('isBlocked')
     },
     ...Resolver('User', {
       undefinedToNull: [

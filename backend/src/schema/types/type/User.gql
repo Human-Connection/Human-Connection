@@ -152,6 +152,8 @@ type Query {
     orderBy: [_UserOrdering]
     filter: _UserFilter
   ): [User]
+
+  blockedUsers: [User]
 }
 
 type Mutation {
@@ -172,5 +174,4 @@ type Mutation {
 
   block(id: ID!): User
   unblock(id: ID!): User
-  blockedUsers: [User]
 }

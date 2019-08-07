@@ -159,6 +159,7 @@ const permissions = shield(
       Badge: allow,
       PostsEmotionsCountByEmotion: allow,
       PostsEmotionsByCurrentUser: allow,
+      blockedUsers: isAuthenticated,
     },
     Mutation: {
       '*': deny,
