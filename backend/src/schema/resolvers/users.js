@@ -38,9 +38,17 @@ export default {
   },
   Mutation: {
     block: async (object, args, context, resolveInfo) => {
-      if (context.user.id === args.id) return null
+      const { user: currentUser } = context
+      if (currentUser.id === args.id) return null
+      await instance.cypher(
+        `
+      MATCH(u:User {id: $currentUser.id})-[r:FOLLOWS]->(b:User {id: $args.id})
+      DELETE r
+      `,
+        { currentUser, args },
+      )
       const [user, blockedUser] = await Promise.all([
-        instance.find('User', context.user.id),
+        instance.find('User', currentUser.id),
         instance.find('User', args.id),
       ])
       await user.relateTo(blockedUser, 'blocked')
