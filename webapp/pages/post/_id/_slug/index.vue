@@ -46,7 +46,7 @@
             :width="{ lg: '75%', md: '75%', sm: '75%' }"
             class="emotions-buttons-mobile"
           >
-            <hc-emotions-buttons :post="post" />
+            <hc-emotions :post="post" />
           </ds-flex-item>
           <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
           <!-- Shout Button -->
@@ -85,7 +85,7 @@ import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery.js'
-import HcEmotionsButtons from '~/components/EmotionsButtons/EmotionsButtons'
+import HcEmotions from '~/components/Emotions/Emotions'
 
 export default {
   name: 'PostSlug',
@@ -101,7 +101,7 @@ export default {
     ContentMenu,
     HcCommentForm,
     HcCommentList,
-    HcEmotionsButtons,
+    HcEmotions,
     ContentViewer,
   },
   head() {

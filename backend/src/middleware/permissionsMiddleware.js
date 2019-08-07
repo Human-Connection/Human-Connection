@@ -27,12 +27,6 @@ const onlyYourself = rule({
   return context.user.id === args.id
 })
 
-const isMyEmotion = rule({
-  cache: 'no_cache',
-})(async (parent, args, context, info) => {
-  return context.user.id === args.from.id
-})
-
 const isMyOwn = rule({
   cache: 'no_cache',
 })(async (parent, args, context, info) => {
@@ -163,8 +157,8 @@ const permissions = shield(
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
       Badge: allow,
-      postsEmotionsCountByEmotion: allow,
-      postsEmotionsCountByCurrentUser: allow,
+      PostsEmotionsCountByEmotion: allow,
+      PostsEmotionsByCurrentUser: allow,
     },
     Mutation: {
       '*': deny,
@@ -200,7 +194,7 @@ const permissions = shield(
       requestPasswordReset: allow,
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,
-      RemovePostEmotions: isMyEmotion,
+      RemovePostEmotions: isAuthenticated,
     },
     User: {
       email: isMyOwn,

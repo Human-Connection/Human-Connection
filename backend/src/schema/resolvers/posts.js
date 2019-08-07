@@ -92,23 +92,25 @@ export default {
     },
     RemovePostEmotions: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
-      const { from, to, data } = params
+      const { to, data } = params
+      const { id: from } = context.user
       const transactionRes = await session.run(
-        `MATCH (userFrom:User {id: $from.id})-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo:Post {id: $to.id})
+        `MATCH (userFrom:User {id: $from})-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo:Post {id: $to.id})
         DELETE emotedRelation
+        RETURN userFrom
         `,
         { from, to, data },
       )
       session.close()
-      const [emoted] = transactionRes.records.map(record => {
-        return record.get('emotedRelation').properties.emotion
+      const [userFrom] = transactionRes.records.map(record => {
+        return record.get('userFrom')
       })
-
-      return !emoted
+      if (!userFrom) throw new Error('Not Authorised!')
+      return Boolean(userFrom)
     },
   },
   Query: {
-    postsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
+    PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
       const { postId, data } = params
       const transactionRes = await session.run(
@@ -125,22 +127,21 @@ export default {
 
       return emotionsCount
     },
-    postsEmotionsCountByCurrentUser: async (object, params, context, resolveInfo) => {
+    PostsEmotionsByCurrentUser: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
       const { postId } = params
       const transactionRes = await session.run(
         `MATCH (user:User {id: $userId})-[emoted:EMOTED]->(post:Post {id: $postId})
-        RETURN emoted.emotion as emotion`,
+        RETURN collect(emoted.emotion) as emotion`,
         { userId: context.user.id, postId },
       )
 
       session.close()
-      const emotionsArray = []
-      transactionRes.records.map(record => {
-        emotionsArray.push(record.get('emotion'))
-      })
 
-      return emotionsArray
+      const [emotions] = transactionRes.records.map(record => {
+        return record.get('emotion')
+      })
+      return emotions
     },
   },
 }

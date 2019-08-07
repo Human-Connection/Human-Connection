@@ -1,18 +1,13 @@
 <template>
   <ds-flex :gutter="{ lg: 'large' }" class="emotions-flex">
-    <div v-for="emotion in Object.keys(postsEmotionsCountByEmotion)" :key="emotion">
+    <div v-for="emotion in Object.keys(PostsEmotionsCountByEmotion)" :key="emotion">
       <ds-flex-item :width="{ lg: '100%' }">
-        <ds-button size="large" ghost @click="toggleEmotion(emotion)" class="emotions-buttons">
-          <img :src="iconPath(emotion)" width="40" />
-        </ds-button>
-        <ds-space margin-bottom="xx-small" />
-        <div class="emotions-mobile-space">
-          <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>
-          <ds-text style="display: inline" size="medium" :key="postsEmotionsCountByEmotion[emotion]">
-            {{ postsEmotionsCountByEmotion[emotion] }}x
-          </ds-text>
-          {{ $t('contribution.emotions-label.emoted') }}
-        </div>
+        <hc-emotions-button
+          @toggleEmotion="toggleEmotion"
+          :PostsEmotionsCountByEmotion="PostsEmotionsCountByEmotion"
+          :iconPath="iconPath(emotion)"
+          :emotion="emotion"
+        />
       </ds-flex-item>
     </div>
   </ds-flex>
@@ -20,17 +15,21 @@
 <script>
 import gql from 'graphql-tag'
 import { mapGetters } from 'vuex'
-import { postsEmotionsCountByCurrentUser } from '~/graphql/PostQuery.js'
+import HcEmotionsButton from '~/components/EmotionsButton/EmotionsButton'
+import { PostsEmotionsByCurrentUser } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations.js'
 
 export default {
+  components: {
+    HcEmotionsButton,
+  },
   props: {
     post: { type: Object, default: () => {} },
   },
   data() {
     return {
       selectedEmotions: [],
-      postsEmotionsCountByEmotion: { funny: 0, happy: 0, surprised: 0, cry: 0, angry: 0 },
+      PostsEmotionsCountByEmotion: { funny: 0, happy: 0, surprised: 0, cry: 0, angry: 0 },
     }
   },
   computed: {
@@ -39,7 +38,7 @@ export default {
     }),
   },
   created() {
-    Object.keys(this.postsEmotionsCountByEmotion).map(emotion => {
+    Object.keys(this.PostsEmotionsCountByEmotion).map(emotion => {
       this.emotionsCount(emotion)
     })
   },
@@ -54,8 +53,8 @@ export default {
       this.$apollo
         .mutate({
           mutation: this.isActive(emotion)
-            ? PostMutations().removePostEmotionsMutation
-            : PostMutations().addPostEmotionsMutation,
+            ? PostMutations().RemovePostEmotionsMutation
+            : PostMutations().AddPostEmotionsMutation,
           variables: {
             from: { id: this.currentUser.id },
             to: { id: this.post.id },
@@ -64,8 +63,8 @@ export default {
         })
         .then(() => {
           this.isActive(emotion)
-            ? this.postsEmotionsCountByEmotion[emotion]--
-            : this.postsEmotionsCountByEmotion[emotion]++
+            ? this.PostsEmotionsCountByEmotion[emotion]--
+            : this.PostsEmotionsCountByEmotion[emotion]++
 
           const index = this.selectedEmotions.indexOf(emotion)
           if (index > -1) {
@@ -87,52 +86,31 @@ export default {
         .query({
           query: gql`
             query($postId: ID!, $data: _EMOTEDInput!) {
-              postsEmotionsCountByEmotion(postId: $postId, data: $data)
+              PostsEmotionsCountByEmotion(postId: $postId, data: $data)
             }
           `,
           variables: { postId: this.post.id, data: { emotion } },
           fetchPolicy: 'no-cache',
         })
-        .then(({ data: { postsEmotionsCountByEmotion } }) => {
-          this.postsEmotionsCountByEmotion[emotion] = postsEmotionsCountByEmotion
+        .then(({ data: { PostsEmotionsCountByEmotion } }) => {
+          this.PostsEmotionsCountByEmotion[emotion] = PostsEmotionsCountByEmotion
         })
     },
   },
   apollo: {
-    postsEmotionsCountByCurrentUser: {
+    PostsEmotionsByCurrentUser: {
       query() {
-        return postsEmotionsCountByCurrentUser()
+        return PostsEmotionsByCurrentUser()
       },
       variables() {
         return {
           postId: this.post.id,
         }
       },
-      result({ data: { postsEmotionsCountByCurrentUser } }) {
-        this.selectedEmotions = postsEmotionsCountByCurrentUser
+      result({ data: { PostsEmotionsByCurrentUser } }) {
+        this.selectedEmotions = PostsEmotionsByCurrentUser
       },
     },
   },
 }
 </script>
-<style lang="scss">
-.emotions-flex {
-  justify-content: space-evenly;
-  text-align: center;
-}
-
-.emotions-label {
-  font-size: $font-size-small;
-}
-
-.emotions-buttons {
-  &:hover {
-    background-color: $background-color-base;
-  }
-}
-@media only screen and (max-width: 960px) {
-  .emotions-mobile-space {
-    margin-bottom: 32px;
-  }
-}
-</style>

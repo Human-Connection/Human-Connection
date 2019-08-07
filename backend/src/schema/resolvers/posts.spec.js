@@ -406,15 +406,17 @@ describe('emotions', () => {
     owner,
     postMutationAction,
     user,
-    postQueryAction
-  const postEmotionsCountQuery = `
+    postQueryAction,
+    postToEmote,
+    postToEmoteNode
+  const PostsEmotionsCountQuery = `
     query($id: ID!) {
       Post(id: $id) {
         emotionsCount
       }
     }
   `
-  const postEmotionsQuery = `
+  const PostsEmotionsQuery = `
   query($id: ID!) {
     Post(id: $id) {
       emotions {
@@ -426,13 +428,26 @@ describe('emotions', () => {
     }
   }
 `
+  const addPostEmotionsMutation = `
+  mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
+    AddPostEmotions(from: $from, to: $to, data: $data) {
+      from { id }
+      to { id }
+      emotion
+    }
+  }
+`
   beforeEach(async () => {
     userParams.id = 'u1987'
     authorParams.id = 'u257'
+    createPostVariables.id = 'p1376'
     const someUserNode = await instance.create('User', userParams)
     someUser = await someUserNode.toJson()
     ownerNode = await instance.create('User', authorParams)
     owner = await ownerNode.toJson()
+    postToEmoteNode = await instance.create('Post', createPostVariables)
+    postToEmote = await postToEmoteNode.toJson()
+    await postToEmoteNode.relateTo(ownerNode, 'author')
 
     postMutationAction = async (user, mutation, variables) => {
       const { server } = createServer({
@@ -462,42 +477,29 @@ describe('emotions', () => {
       const { query } = createTestClient(server)
       return query({ query: postQuery, variables })
     }
+    addPostEmotionsVariables = {
+      from: { id: authorParams.id },
+      to: { id: postToEmote.id },
+      data: { emotion: 'happy' },
+    }
   })
 
   describe('AddPostEmotions', () => {
-    let postEmotionsQueryVariables
+    let postsEmotionsQueryVariables
     beforeEach(async () => {
-      user = owner
-      const {
-        data: { CreatePost },
-      } = await postMutationAction(user, createPostMutation, createPostVariables)
-      addPostEmotionsVariables = {
-        from: { id: authorParams.id },
-        to: { id: CreatePost.id },
-        data: { emotion: 'happy' },
-      }
-      postEmotionsQueryVariables = { id: CreatePost.id }
+      postsEmotionsQueryVariables = { id: postToEmote.id }
     })
 
-    const addPostEmotionsMutation = `
-      mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
-        AddPostEmotions(from: $from, to: $to, data: $data) {
-          from { id }
-          to { id }
-          emotion
-        }
-      }
-    `
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         user = null
-        const result = await postMutationAction(
+        const addPostEmotions = await postMutationAction(
           user,
           addPostEmotionsMutation,
           addPostEmotionsVariables,
         )
 
-        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+        expect(addPostEmotions.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
@@ -535,7 +537,7 @@ describe('emotions', () => {
         await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
         await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
         await expect(
-          postQueryAction(postEmotionsCountQuery, postEmotionsQueryVariables),
+          postQueryAction(PostsEmotionsCountQuery, postsEmotionsQueryVariables),
         ).resolves.toEqual(expect.objectContaining(expected))
       })
 
@@ -551,7 +553,7 @@ describe('emotions', () => {
         addPostEmotionsVariables.data.emotion = 'surprised'
         await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
         await expect(
-          postQueryAction(postEmotionsQuery, postEmotionsQueryVariables),
+          postQueryAction(PostsEmotionsQuery, postsEmotionsQueryVariables),
         ).resolves.toEqual(expect.objectContaining(expectedResponse))
       })
     })
@@ -579,16 +581,19 @@ describe('emotions', () => {
   })
 
   describe('RemovePostEmotions', () => {
-    let removePostEmotionsVariables, postEmotionsQueryVariables
+    let removePostEmotionsVariables, postsEmotionsQueryVariables
     const removePostEmotionsMutation = `
-      mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
-        RemovePostEmotions(from: $from, to: $to, data: $data)
+      mutation($to: _PostInput!, $data: _EMOTEDInput!) {
+        RemovePostEmotions(to: $to, data: $data)
       }
     `
-    beforeEach(() => {
+    beforeEach(async () => {
+      await ownerNode.relateTo(postToEmoteNode, 'emoted', { emotion: 'cry' })
+      await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
+
+      postsEmotionsQueryVariables = { id: postToEmote.id }
       removePostEmotionsVariables = {
-        from: { id: authorParams.id },
-        to: { id: 'p1376' },
+        to: { id: postToEmote.id },
         data: { emotion: 'cry' },
       }
     })
@@ -596,45 +601,25 @@ describe('emotions', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         user = null
-        const result = await postMutationAction(
+        const removePostEmotions = await postMutationAction(
           user,
           removePostEmotionsMutation,
           removePostEmotionsVariables,
         )
-
-        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+        expect(removePostEmotions.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated', () => {
-      beforeEach(async () => {
-        user = owner
-        const {
-          data: { CreatePost },
-        } = await postMutationAction(user, createPostMutation, createPostVariables)
-        await factory.emote({
-          from: authorParams.id,
-          to: CreatePost.id,
-          data: 'cry',
-        })
-        await factory.emote({
-          from: authorParams.id,
-          to: CreatePost.id,
-          data: 'happy',
-        })
-        postEmotionsQueryVariables = { id: CreatePost.id }
-      })
-
       describe('but not the emoter', () => {
         it('throws an authorization error', async () => {
           user = someUser
-          const result = await postMutationAction(
+          const removePostEmotions = await postMutationAction(
             user,
             removePostEmotionsMutation,
             removePostEmotionsVariables,
           )
-
-          expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+          expect(removePostEmotions.errors[0]).toHaveProperty('message', 'Not Authorised!')
         })
       })
 
@@ -654,7 +639,7 @@ describe('emotions', () => {
           }
           await postMutationAction(user, removePostEmotionsMutation, removePostEmotionsVariables)
           await expect(
-            postQueryAction(postEmotionsQuery, postEmotionsQueryVariables),
+            postQueryAction(PostsEmotionsQuery, postsEmotionsQueryVariables),
           ).resolves.toEqual(expect.objectContaining(expectedResponse))
         })
       })
@@ -662,54 +647,44 @@ describe('emotions', () => {
   })
 
   describe('posts emotions count', () => {
-    let postsEmotionsCountByEmotionVariables
-    let postsEmotionsCountByCurrentUserVariables
+    let PostsEmotionsCountByEmotionVariables
+    let PostsEmotionsByCurrentUserVariables
 
-    const postsEmotionsCountByEmotionQuery = `
+    const PostsEmotionsCountByEmotionQuery = `
       query($postId: ID!, $data: _EMOTEDInput!) {
-        postsEmotionsCountByEmotion(postId: $postId, data: $data) 
+        PostsEmotionsCountByEmotion(postId: $postId, data: $data) 
       }
       `
 
-    const postsEmotionsCountByCurrentUserQuery = `
+    const PostsEmotionsByCurrentUserQuery = `
       query($postId: ID!) {
-        postsEmotionsCountByCurrentUser(postId: $postId)
+        PostsEmotionsByCurrentUser(postId: $postId)
       }
     `
     beforeEach(async () => {
-      user = owner
-      const {
-        data: { CreatePost },
-      } = await postMutationAction(user, createPostMutation, createPostVariables)
-      await factory.emote({
-        from: authorParams.id,
-        to: CreatePost.id,
-        data: 'cry',
-      })
-      postsEmotionsCountByEmotionVariables = {
-        postId: CreatePost.id,
+      await ownerNode.relateTo(postToEmoteNode, 'emoted', { emotion: 'cry' })
+
+      PostsEmotionsCountByEmotionVariables = {
+        postId: postToEmote.id,
         data: { emotion: 'cry' },
       }
-      postsEmotionsCountByCurrentUserVariables = { postId: CreatePost.id }
+      PostsEmotionsByCurrentUserVariables = { postId: postToEmote.id }
     })
 
-    describe('postsEmotionsCountByEmotion', () => {
+    describe('PostsEmotionsCountByEmotion', () => {
       it("returns a post's emotions count", async () => {
-        const expectedResponse = { data: { postsEmotionsCountByEmotion: 1 } }
+        const expectedResponse = { data: { PostsEmotionsCountByEmotion: 1 } }
         await expect(
-          postQueryAction(postsEmotionsCountByEmotionQuery, postsEmotionsCountByEmotionVariables),
+          postQueryAction(PostsEmotionsCountByEmotionQuery, PostsEmotionsCountByEmotionVariables),
         ).resolves.toEqual(expect.objectContaining(expectedResponse))
       })
     })
 
-    describe('postsEmotionsCountByEmotion', () => {
+    describe('PostsEmotionsCountByEmotion', () => {
       it("returns a currentUser's emotions on a post", async () => {
-        const expectedResponse = { data: { postsEmotionsCountByCurrentUser: ['cry'] } }
+        const expectedResponse = { data: { PostsEmotionsByCurrentUser: ['cry'] } }
         await expect(
-          postQueryAction(
-            postsEmotionsCountByCurrentUserQuery,
-            postsEmotionsCountByCurrentUserVariables,
-          ),
+          postQueryAction(PostsEmotionsByCurrentUserQuery, PostsEmotionsByCurrentUserVariables),
         ).resolves.toEqual(expect.objectContaining(expectedResponse))
       })
     })

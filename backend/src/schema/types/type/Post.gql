@@ -91,10 +91,11 @@ type Mutation {
     language: String
     categoryIds: [ID]
   ): Post
-  RemovePostEmotions(from: _UserInput!, to: _PostInput!, data: _EMOTEDInput!): Boolean!
+  AddPostEmotions(from: _UserInput!, to: _PostInput!, data: _EMOTEDInput!): EMOTED
+  RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): Boolean!
 }
 
 type Query {
-  postsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
-  postsEmotionsCountByCurrentUser(postId: ID!): [String]
+  PostsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
+  PostsEmotionsByCurrentUser(postId: ID!): [String]
 }

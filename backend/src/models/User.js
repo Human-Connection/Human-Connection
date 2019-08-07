@@ -56,4 +56,19 @@ module.exports = {
     required: true,
     default: () => new Date().toISOString(),
   },
+  emoted: {
+    type: 'relationships',
+    relationship: 'EMOTED',
+    target: 'Post',
+    direction: 'out',
+    properties: {
+      emotion: {
+        type: 'string',
+        valid: ['happy', 'cry', 'surprised', 'angry', 'funny'],
+        invalid: [null],
+      },
+    },
+    eager: true,
+    cascade: true,
+  },
 }
