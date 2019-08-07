@@ -189,6 +189,20 @@
       "submit": "Link hinzufügen",
       "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
       "successDelete": "Social-Media gelöscht. Profil aktualisiert!"
+    },
+    "blocked-users": {
+      "name": "Blockierte Benutzer",
+      "explanation": {
+        "intro": "Wenn ein anderer Benutzer von dir blockiert wurde, dann passiert folgendes:",
+        "your-perspective": "In deiner Beitragsübersicht tauchen keine Beiträge der blockierten Person mehr auf.",
+        "their-perspective": "Umgekehrt das gleiche: Die blockierte Person sieht deine Beiträge auch nicht mehr in ihrer Übersicht.",
+        "closing": "Das sollte fürs Erste genügen, damit blockierte Benutzer dich nicht mehr länger belästigen können."
+      },
+      "columns": {
+        "name": "Name",
+        "slug": "Alias"
+      },
+      "empty": "Bislang hast du niemanden blockiert."
     }
   },
   "admin": {
