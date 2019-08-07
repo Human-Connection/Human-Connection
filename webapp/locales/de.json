@@ -203,6 +203,7 @@
         "slug": "Alias"
       },
       "empty": "Bislang hast du niemanden blockiert.",
+      "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
       "block": "Nutzer blockieren",
       "unblock": "Nutzer entblocken"
     }

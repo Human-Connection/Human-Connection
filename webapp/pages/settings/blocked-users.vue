@@ -53,9 +53,16 @@
       </ds-table>
     </ds-card>
     <ds-card v-else>
-      <ds-placeholder>
-        {{ $t('settings.blocked-users.empty') }}
-      </ds-placeholder>
+      <ds-space>
+        <ds-placeholder>
+          {{ $t('settings.blocked-users.empty') }}
+        </ds-placeholder>
+      </ds-space>
+      <ds-space>
+        <ds-text align="center">
+          {{ $t('settings.blocked-users.how-to') }}
+        </ds-text>
+      </ds-space>
     </ds-card>
   </div>
 </template>

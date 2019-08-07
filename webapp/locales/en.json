@@ -204,8 +204,9 @@
         "slug": "Slug"
       },
       "empty": "So far, you did not block anybody.",
-      "block": "Block user",
-      "unblock": "Unblock user"
+      "how-to": "You can block other users on their profile page via the content menu.",
+      "block": "Block User",
+      "unblock": "Unblock User"
     }
   },
   "admin": {
