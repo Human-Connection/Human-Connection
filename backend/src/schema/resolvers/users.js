@@ -8,16 +8,6 @@ const instance = neode()
 
 export default {
   Query: {
-    User: async (object, args, context, resolveInfo) => {
-      const { email } = args
-      if (email) {
-        const e = await instance.first('EmailAddress', { email })
-        let user = e.get('belongsTo')
-        user = await user.toJson()
-        return [user.node]
-      }
-      return neo4jgraphql(object, args, context, resolveInfo, false)
-    },
     blockedUsers: async (object, args, context, resolveInfo) => {
       try {
         const userModel = instance.model('User')
@@ -35,8 +25,27 @@ export default {
         throw new UserInputError(e.message)
       }
     },
+    User: async (object, args, context, resolveInfo) => {
+      const { email } = args
+      if (email) {
+        const e = await instance.first('EmailAddress', { email })
+        let user = e.get('belongsTo')
+        user = await user.toJson()
+        return [user.node]
+      }
+      return neo4jgraphql(object, args, context, resolveInfo, false)
+    },
   },
   Mutation: {
+    block: async (object, args, context, resolveInfo) => {
+      if(context.user.id === args.id) return null
+      const [user, blockedUser] = await Promise.all([
+        instance.find('User', context.user.id),
+        instance.find('User', args.id)
+      ])
+      await user.relateTo(blockedUser, 'blocked')
+      return blockedUser.toJson()
+    },
     UpdateUser: async (object, args, context, resolveInfo) => {
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {

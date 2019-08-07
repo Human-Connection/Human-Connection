@@ -10,7 +10,7 @@ const instance = neode()
 const isAuthenticated = rule({
   cache: 'contextual',
 })(async (_parent, _args, ctx, _info) => {
-  return ctx.user != null
+  return !!(ctx && ctx.user && ctx.user.id)
 })
 
 const isModerator = rule()(async (parent, args, { user }, info) => {
@@ -196,6 +196,7 @@ const permissions = shield(
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,
       RemovePostEmotions: isAuthenticated,
+      block: isAuthenticated,
     },
     User: {
       email: isMyOwn,
