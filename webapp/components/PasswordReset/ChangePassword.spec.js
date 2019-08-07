@@ -1,10 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { config, mount, createLocalVue } from '@vue/test-utils'
 import ChangePassword from './ChangePassword'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
+config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 
 describe('ChangePassword ', () => {
   let wrapper
