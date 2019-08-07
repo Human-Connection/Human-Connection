@@ -16,18 +16,17 @@
     "responsible": "Odpowiedzialny zgodnie z § 55 Abs. 2 RStV (Niemcy)",
     "bank": "rachunek bankowy",
     "germany": "Niemcy"
-
   },
   "login": {
     "copy": "Jeśli masz już konto Human Connection, zaloguj się tutaj.",
-    "login": "logowanie",
+    "login": "Logowanie",
     "logout": "Wyloguj się",
     "email": "Twój adres e-mail",
     "password": "Twoje hasło",
     "forgotPassword": "Zapomniałeś hasła?",
     "moreInfo": "Co to jest Human Connection?",
-    "moreInfoURL": "https://human-connection.org/pl/",
-    "moreInfoHint": "na stronę prezentacji",
+    "moreInfoURL": "https://human-connection.org/en/",
+    "moreInfoHint": "idź po więcej szczegółów",
     "hello": "Cześć"
   },
   "password-reset": {
@@ -51,7 +50,7 @@
     }
   },
   "editor": {
-    "placeholder": "Zostaw swoje inspirujące myśli...."
+    "placeholder": "Napisz coś inspirującego..."
   },
   "profile": {
     "name": "Mój profil",
@@ -61,27 +60,27 @@
     "following": "Obserwowani",
     "shouted": "Krzyknij",
     "commented": "Skomentuj",
-    "userAnonym": "Anonimowy",
-    "socialMedia": "Gdzie indziej mogę znaleźć",
+    "userAnonym": "Anonymous",
+    "socialMedia": "Gdzie jeszcze mogę znaleźć",
     "network": {
       "title": "Sieć",
-      "following": "jest następująca:",
-      "followingNobody": "nie podąża za nikim.",
-      "followedBy": "po którym następuje:",
-      "followedByNobody": "nie jest śledzona przez nikogo.",
+      "following": "obserwuje:",
+      "followingNobody": "nikogo nie obserwuje.",
+      "followedBy": "jest obserwowany:",
+      "followedByNobody": "nikt go nie obserwuje.",
       "and": "i",
       "more": "więcej"
     }
   },
   "notifications": {
     "menu": {
-      "mentioned": "wspomniała o tobie na posterunku."
+      "mentioned": "wspomiał o Tobie we wpisie"
     }
   },
   "search": {
-    "placeholder": "Wyszukiwanie",
+    "placeholder": "Szukaj",
     "hint": "Czego szukasz?",
-    "failed": "Nic nie znaleziono"
+    "failed": "Niczego nie znaleziono"
   },
   "settings": {
     "name": "Ustawienia",
@@ -97,20 +96,20 @@
       "name": "Bezpieczeństwo",
       "change-password": {
         "button": "Zmień hasło",
-        "success": "Hasło zostało pomyślnie zmienione!",
-        "label-old-password": "Twoje stare hasło",
-        "label-new-password": "Twoje nowe hasło",
+        "success": "Hasło zostało zmienione!",
+        "label-old-password": "Stare hasło",
+        "label-new-password": "Nowe hasło",
         "label-new-password-confirm": "Potwierdź nowe hasło",
-        "message-old-password-required": "Wprowadź swoje stare hasło",
+        "message-old-password-required": "Podaj stare hasło",
         "message-new-password-required": "Wprowadź nowe hasło",
-        "message-new-password-confirm-required": "Potwierdź nowe hasło.",
-        "message-new-password-missmatch": "Wpisz ponownie to samo hasło.",
-        "passwordSecurity": "Zabezpieczenie hasłem",
-        "passwordStrength0": "Bardzo niepewne hasło",
-        "passwordStrength1": "Niepewne hasło",
-        "passwordStrength2": "Hasło pośredniczące",
-        "passwordStrength3": "Silne hasło",
-        "passwordStrength4": "Bardzo mocne hasło"
+        "message-new-password-confirm-required": "Potwierdź nowe hasło",
+        "message-new-password-missmatch": "Wpisz to samo hasło ponownie",
+        "passwordSecurity": "Siła hasła",
+        "passwordStrength0": "Hasło bardzo słabe",
+        "passwordStrength1": "Hasło słabe",
+        "passwordStrength2": "Hasło średnie",
+        "passwordStrength3": "Hasło silne",
+        "passwordStrength4": "Hasło bardzo silne"
       }
     },
     "invites": {
@@ -120,26 +119,26 @@
       "name": "Pobierz dane"
     },
     "deleteUserAccount": {
-      "name": "Usuwanie danych",
-      "contributionsCount": "Usuń moje stanowiska.",
-      "commentsCount": "Usuń moje komentarze {liczba}.",
-      "accountDescription": "Bądź świadomy, że Twój post i komentarze są ważne dla naszej społeczności. Jeśli nadal chcesz je usunąć, musisz zaznaczyć je poniżej.",
-      "accountWarning": "<b>Nie możesz zarządzać</b> i <b>Nie możesz REKOVER</b> swoje konto, posty lub komentarze po usunięciu konta!",
-      "success": "Konto zostało pomyślnie usunięte",
-      "pleaseConfirm": "<b class='is-danger'>Niszczycielskie działanie!</b> Typ <b>{potwierdź}</b> aby potwierdzić"
+      "name": "Usuń dane",
+      "contributionsCount": "Usuń {count} moich postów",
+      "commentsCount": "Usuń {count} moich komentarzy",
+      "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
+      "accountWarning": "Po usunięcie Twojego konta, nie możesz <b>ZARZĄDZAĆ</b> ani <b>ODZYSKAĆ</b> danych, wpisów oraz komentarzy!",
+      "success": "Konto zostało usunięte",
+      "pleaseConfirm": "<b class='is-danger'>Uwaga, niebezpieczeństwo!</b> Wpisz <b>{confirm}</b>, aby potwierdzić"
     },
     "organizations": {
       "name": "My Organizations"
     },
     "languages": {
-      "name": "Languages"
+      "name": "Języki"
     },
     "social-media": {
-      "name": "Social media",
-      "placeholder": "Add social media url",
-      "submit": "Add link",
-      "successAdd": "Added social media. Updated user profile!",
-      "successDelete": "Deleted social media. Updated user profile!"
+      "name": "Media społecznościowe",
+      "placeholder": "Dodaj link do mediów społecznościowych",
+      "submit": "Dodaj link",
+      "successAdd": "Dodano społeczność. Profil zaktualizowany!",
+      "successDelete": "Usunięto społeczność. Profil zaktualizowany!"
     }
   },
   "admin": {
@@ -188,15 +187,15 @@
       "name": "Więcej informacji"
     },
     "takeAction": {
-      "name": "Podejmij działania"
+      "name": "Podejmij działanie"
     },
     "menu": {
-      "edit": "Edytuj Post",
+      "edit": "Edytuj wpis",
       "delete": "Usuń wpis"
     },
     "comment": {
       "submit": "Komentarz",
-      "submitted": "Przedłożony komentarz"
+      "submitted": "Komentarz dodany"
     }
   },
   "comment": {
@@ -253,16 +252,16 @@
   "moderation": {
     "name": "Umiarkowanie",
     "reports": {
-      "empty": "Gratulacje, nic do umiarkowanego.",
-      "name": "Sprawozdania",
-      "submitter": "zgłaszane przez",
-      "disabledBy": "niepełnosprawni przez"
+      "empty": "Gratulacje, moderacja nie jest potrzebna",
+      "name": "Raporty",
+      "submitter": "zgłoszone przez",
+      "disabledBy": "deaktywowane przez"
     }
   },
   "disable": {
-    "submit": "Niepełnosprawność",
-    "cancel": "Odwołaj",
-    "success": "Niepełnosprawni skutecznie",
+    "submit": "Deaktywuj",
+    "cancel": "Anuluj",
+    "success": "Zdeaktywowano",
     "user": {
       "title": "Wyłączenie użytkownika",
       "type": "Użytkownik",
@@ -283,38 +282,37 @@
     "submit": "Usuń",
     "cancel": "Odwołaj",
     "contribution": {
-      "title": "Usuń Post",
-      "type": "Wkład",
-      "message": "Naprawdę chcesz usunąć post \"<b>{name}</b>\"?",
+      "title": "Ukryj wpis",
+      "type": "Wpis / Post",
+      "message": "Czy na pewno chcesz ukryć wpis \" <b> {name} </b> \"?",
       "success": "Wyślij pomyślnie usunięty!"
     },
     "comment": {
       "title": "Usuń komentarz",
       "type": "Komentarz",
-      "message": "Czy naprawdę chcesz usunąć komentarz  \"<b>{name}</b>\"?",
-      "success": "Komentarz został pomyślnie usunięty!"
+      "message": "Czy na pewno chcesz ukryć komentarz użytkownika \" <b> {name} </b> \"?"
     }
   },
   "report": {
-    "submit": "Sprawozdanie",
-    "cancel": "Odwołaj",
-    "success": "Dzięki za zgłoszenie!",
+    "submit": "Wyślij raport",
+    "cancel": "Anuluj",
+    "success": "Dziękujemy za Twoje zgłoszenie!",
     "user": {
       "title": "Raport Użytkownik",
       "type": "Użytkownik",
-      "message": "Naprawdę chcesz zgłosić użytkownika \"<b>{name}</b>\"?",
+      "message": "Czy na pewno chcesz zgłosić użytkownika \" <b> {name} </b> \"?",
       "error": "Zgłosiłeś już użytkownika!"
     },
     "contribution": {
-      "title": "Wkład w raport",
-      "type": "Wkład",
-      "message": "Naprawdę chcesz zgłosić wkład, jaki wniosłaś do programu \"<b>{name}</b>\"?",
+      "title": "Zgłoś wpis",
+      "type": "Wpis / Post",
+      "message": "Czy na pewno chcesz zgłosić ten wpis użytkownika \" <b> {name} </b> \"?",
       "error": "Zgłosiłeś już ten wkład!"
     },
     "comment": {
       "title": "Sprawozdanie Komentarz",
       "type": "Komentarz",
-      "message": "Naprawdę chcesz zgłosić komentarz od \"<b>{name}</b>\"?",
+      "message": "Czy na pewno chcesz zgłosić komentarz użytkownika\" <b> {name} </b> \"?",
       "error": "Zgłosiłeś już komentarz!"
     }
   },
@@ -323,38 +321,38 @@
     "following": "w skutek"
   },
   "shoutButton": {
-    "shouted": "wykrzyczany"
+    "shouted": "krzyczeć"
   },
   "release": {
-    "submit": "Zwolnienie",
-    "cancel": "Odwołaj",
-    "success": "Wydany z powodzeniem!",
+    "submit": "Zgłoś",
+    "cancel": "Anuluj",
+    "success": "Zgłoszono pomyślnie!",
     "user": {
-      "title": "Zwolnienie użytkownika",
+      "title": "Zgłoś użytkownika",
       "type": "Użytkownik",
-      "message": "Naprawdę chcesz uwolnić użytkownika \"<b>{name}</b>\"?"
+      "message": "Czy na pewno chcesz zgłosić użytkownika \"<b> {name} </b>\"?"
     },
     "contribution": {
-      "title": "Zwolnienie Wkład",
-      "type": "Wkład",
-      "message": "Naprawdę chcesz uwolnić swój wkład \"<b>{name}</b>\"?"
+      "title": "Zgłoś wpis",
+      "type": "Wpis",
+      "message": "Czy na pewno chcesz zgłosić wpis użytkownika \"<b> {name} </b>\"?"
     },
     "comment": {
-      "title": "Zwolnienie komentarz",
-      "type": "komentarz",
-      "message": "Czy naprawdę chcesz opublikować komentarz od \"<b>{name}</b>\"?"
+      "title": "Zgłoś komentarz",
+      "type": "Komentarz",
+      "message": "Czy na pewno chcesz zgłosić komentarz użytkownika \"<b> {name} </b>\"?"
     }
   },
   "user": {
     "avatar": {
-      "submitted": "Przesłanie udane"
+      "submitted": "Przesłano pomyślnie"
     }
   },
   "contribution": {
-    "newPost": "Utwórz nowy post",
-    "filterFollow": "Filtrowanie wkładu użytkowników, za którymi podążam",
-    "filterALL": "Wyświetl wszystkie wkłady",
-    "success": "Zachowany!",
+    "newPost": "Utwórz nowy wpis",
+    "filterFollow": "Pokaż wpisy użytkowników, których śledzę",
+    "filterALL": "Pokaż wszystkie wpisy",
+    "success": "Zapisano!",
     "languageSelectLabel": "Język",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} z {max} wybrane kategorie"
