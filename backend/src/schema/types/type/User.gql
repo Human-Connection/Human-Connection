@@ -23,6 +23,7 @@ type User {
   #updatedAt: DateTime
   createdAt: String
   updatedAt: String
+  termsAndConditionsConfirmed: String
 
   notifications(read: Boolean): [Notification]! @relation(name: "NOTIFIED", direction: "IN")
 
