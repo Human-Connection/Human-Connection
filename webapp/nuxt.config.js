@@ -3,12 +3,12 @@ const envWhitelist = ['NODE_ENV', 'MAINTENANCE', 'MAPBOX_TOKEN']
 const dev = process.env.NODE_ENV !== 'production'
 
 const styleguidePath = '../Nitro-Styleguide'
-const styleguideStyles = process.env.STYLEGUIDE_DEV ?
-  [
-    `${styleguidePath}/src/system/styles/main.scss`,
-    `${styleguidePath}/src/system/styles/shared.scss`,
-  ] :
-  '@human-connection/styleguide/dist/shared.scss'
+const styleguideStyles = process.env.STYLEGUIDE_DEV
+  ? [
+      `${styleguidePath}/src/system/styles/main.scss`,
+      `${styleguidePath}/src/system/styles/shared.scss`,
+    ]
+  : '@human-connection/styleguide/dist/shared.scss'
 
 const buildDir = process.env.NUXT_BUILD || '.nuxt'
 
@@ -21,7 +21,7 @@ module.exports = {
 
   modern: !dev ? 'server' : false,
 
-  transition: {
+  pageTransition: {
     name: 'slide-up',
     mode: 'out-in',
   },
@@ -39,6 +39,11 @@ module.exports = {
       'registration-verify-code',
       'registration-create-user-account',
       'pages-slug',
+      'imprint',
+      'terms-and-conditions',
+      'code-of-conduct',
+      'data-privacy',
+      'changelog',
     ],
     // pages to keep alive
     keepAlivePages: ['index'],
@@ -51,7 +56,8 @@ module.exports = {
   head: {
     title: 'Human Connection',
     titleTemplate: '%s - Human Connection',
-    meta: [{
+    meta: [
+      {
         charset: 'utf-8',
       },
       {
@@ -64,11 +70,13 @@ module.exports = {
         content: pkg.description,
       },
     ],
-    link: [{
-      rel: 'icon',
-      type: 'image/x-icon',
-      href: '/favicon.ico',
-    }, ],
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.ico',
+      },
+    ],
   },
 
   /*
@@ -95,37 +103,19 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{
+  plugins: [
+    {
       src: `~/plugins/styleguide${process.env.STYLEGUIDE_DEV ? '-dev' : ''}.js`,
       ssr: true,
     },
-    {
-      src: '~/plugins/i18n.js',
-      ssr: true,
-    },
-    {
-      src: '~/plugins/axios.js',
-      ssr: false,
-    },
-    {
-      src: '~/plugins/keep-alive.js',
-      ssr: false,
-    },
-    {
-      src: '~/plugins/vue-directives.js',
-      ssr: false,
-    },
-    {
-      src: '~/plugins/v-tooltip.js',
-      ssr: false,
-    },
-    {
-      src: '~/plugins/izi-toast.js',
-      ssr: false,
-    },
-    {
-      src: '~/plugins/vue-filters.js',
-    },
+    { src: '~/plugins/i18n.js', ssr: true },
+    { src: '~/plugins/axios.js', ssr: false },
+    { src: '~/plugins/keep-alive.js', ssr: false },
+    { src: '~/plugins/vue-directives.js', ssr: false },
+    { src: '~/plugins/v-tooltip.js', ssr: false },
+    { src: '~/plugins/izi-toast.js', ssr: false },
+    { src: '~/plugins/vue-filters.js' },
+    { src: '~/plugins/vue-sweetalert-icons.js' },
   ],
 
   router: {
@@ -303,7 +293,9 @@ module.exports = {
   // Give apollo module options
   apollo: {
     tokenName: 'human-connection-token', // optional, default: apollo-token
-    tokenExpires: 3, // optional, default: 7 (days)
+    cookieAttributes: {
+      expires: 3, // optional, default: 7 (days)
+    },
     // includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
 
     // Watch loading state for all queries
@@ -350,7 +342,8 @@ module.exports = {
         loader: 'vue-svg-loader',
         options: {
           svgo: {
-            plugins: [{
+            plugins: [
+              {
                 removeViewBox: false,
               },
               {
