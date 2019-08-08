@@ -203,7 +203,7 @@
         "name": "Name",
         "slug": "Slug"
       },
-      "empty": "So far, you did not block anybody.",
+      "empty": "So far, you have not blocked anybody.",
       "how-to": "You can block other users on their profile page via the content menu.",
       "block": "Block User",
       "unblock": "Unblock User"

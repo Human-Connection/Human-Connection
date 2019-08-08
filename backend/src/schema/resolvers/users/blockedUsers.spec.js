@@ -10,17 +10,18 @@ const instance = neode()
 
 let currentUser
 let blockedUser
+let authenticatedUser
 let server
 
 beforeEach(() => {
-  currentUser = undefined
+  authenticatedUser = undefined
   ;({ server } = createServer({
     context: () => {
       return {
-        user: currentUser,
+        user: authenticatedUser,
         driver,
         cypherParams: {
-          currentUserId: currentUser ? currentUser.id : null,
+          currentUserId: authenticatedUser ? authenticatedUser.id : null,
         },
       }
     },
@@ -62,7 +63,7 @@ describe('blockedUsers', () => {
         id: 'u2',
       })
       await currentUser.relateTo(blockedUser, 'blocked')
-      currentUser = await currentUser.toJson()
+      authenticatedUser = await currentUser.toJson()
     })
 
     it('returns a list of blocked users', async () => {
@@ -115,7 +116,7 @@ describe('block', () => {
         name: 'Current User',
         id: 'u1',
       })
-      currentUser = await currentUser.toJson()
+      authenticatedUser = await currentUser.toJson()
     })
 
     describe('block yourself', () => {
@@ -151,17 +152,8 @@ describe('block', () => {
       })
 
       it('unfollows the user', async () => {
-        const user = await instance.find('User', currentUser.id)
-        await user.relateTo(blockedUser, 'following')
-        const queryUser = gql`
-          query {
-            User(id: "u2") {
-              id
-              isBlocked
-              followedByCurrentUser
-            }
-          }
-        `
+        await currentUser.relateTo(blockedUser, 'following')
+        const queryUser = gql` query { User(id: "u2") { id isBlocked followedByCurrentUser } }`
         const { query } = createTestClient(server)
         await expect(query({ query: queryUser })).resolves.toEqual(
           expect.objectContaining({
@@ -176,12 +168,69 @@ describe('block', () => {
         )
       })
 
-      describe('blocked user writes a post', () => {
-        it.todo('disappears in the newsfeed of the current user')
-      })
+      describe('given both the current user and the to-be-blocked user write a post', () => {
+        let postQuery
 
-      describe('current user writes a post', () => {
-        it.todo('disappears in the newsfeed of the blocked user')
+        beforeEach(async () => {
+          const post1 = await instance.create('Post', {
+            id: 'p12',
+            title: 'A post written by the current user',
+          })
+          const post2 = await instance.create('Post', {
+            id: 'p23',
+            title: 'A post written by the blocked user',
+          })
+          await Promise.all([
+            post1.relateTo(currentUser, 'author'),
+            post2.relateTo(blockedUser, 'author')
+          ])
+          postQuery = gql`query { Post(orderBy: createdAt_asc) { id title author { id name } } }`
+        })
+
+        const bothPostsAreInTheNewsfeed = async () => {
+            const { query } = createTestClient(server)
+            await expect(query({ query: postQuery })).resolves.toEqual(
+              expect.objectContaining({
+                data: {
+                  Post: [
+                    {
+                      id: 'p12',
+                      title: 'A post written by the current user',
+                      author: {
+                        name: 'Current User',
+                        id: 'u1',
+                      }
+                    },
+                    {
+                      id: 'p23',
+                      title: 'A post written by the blocked user',
+                      author: {
+                        name: 'Blocked User',
+                        id: 'u2',
+                      }
+                    },
+                  ],
+                },
+              }),
+            )
+          }
+
+        describe('from the perspective of the current user', () => {
+          it('both posts are in the newsfeed', bothPostsAreInTheNewsfeed)
+
+          describe('but if the current user blocks the other user', () => {
+            beforeEach(async () => { })
+
+            it.todo("the blocked user's post won't show up in the newsfeed of the current user")
+          })
+        })
+
+        describe('from the perspective of the blocked user', () => {
+          it('both posts are in the newsfeed', bothPostsAreInTheNewsfeed)
+          describe('but if the current user blocks the other user', () => {
+            it.todo("the current user's post won't show up in the newsfeed of the blocked user")
+          })
+        })
       })
     })
   })
@@ -218,7 +267,7 @@ describe('unblock', () => {
         name: 'Current User',
         id: 'u1',
       })
-      currentUser = await currentUser.toJson()
+      authenticatedUser = await currentUser.toJson()
     })
 
     describe('unblock yourself', () => {
@@ -238,16 +287,11 @@ describe('unblock', () => {
     })
 
     describe('given another user', () => {
-      let user, blockedUser
-
       beforeEach(async () => {
-        ;[user, blockedUser] = await Promise.all([
-          instance.find('User', 'u1'),
-          instance.create('User', {
-            name: 'Blocked User',
-            id: 'u2',
-          }),
-        ])
+        blockedUser = await instance.create('User', {
+          name: 'Blocked User',
+          id: 'u2',
+        })
       })
 
       describe('unblocking a not yet blocked user', () => {
@@ -262,7 +306,7 @@ describe('unblock', () => {
 
       describe('given a blocked user', () => {
         beforeEach(async () => {
-          await user.relateTo(blockedUser, 'blocked')
+          await currentUser.relateTo(blockedUser, 'blocked')
         })
 
         it('unblocks a user', async () => {
