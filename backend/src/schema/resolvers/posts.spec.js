@@ -588,7 +588,15 @@ describe('emotions', () => {
     let removePostEmotionsVariables, postsEmotionsQueryVariables
     const removePostEmotionsMutation = gql`
       mutation($to: _PostInput!, $data: _EMOTEDInput!) {
-        RemovePostEmotions(to: $to, data: $data)
+        RemovePostEmotions(to: $to, data: $data) {
+          from {
+            id
+          }
+          to {
+            id
+          }
+          emotion
+        }
       }
     `
     beforeEach(async () => {
@@ -616,21 +624,31 @@ describe('emotions', () => {
 
     describe('authenticated', () => {
       describe('but not the emoter', () => {
-        it('throws an authorization error', async () => {
+        it('returns null if the emotion could not be found', async () => {
           user = someUser
           const removePostEmotions = await postMutationAction(
             user,
             removePostEmotionsMutation,
             removePostEmotionsVariables,
           )
-          expect(removePostEmotions.errors[0]).toHaveProperty('message', 'Not Authorised!')
+          expect(removePostEmotions).toEqual(
+            expect.objectContaining({ data: { RemovePostEmotions: null } }),
+          )
         })
       })
 
       describe('as the emoter', () => {
         it('removes an emotion from a post', async () => {
           user = owner
-          const expected = { data: { RemovePostEmotions: true } }
+          const expected = {
+            data: {
+              RemovePostEmotions: {
+                to: { id: postToEmote.id },
+                from: { id: user.id },
+                emotion: 'cry',
+              },
+            },
+          }
           await expect(
             postMutationAction(user, removePostEmotionsMutation, removePostEmotionsVariables),
           ).resolves.toEqual(expect.objectContaining(expected))

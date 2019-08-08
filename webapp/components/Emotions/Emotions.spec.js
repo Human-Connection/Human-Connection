@@ -26,7 +26,6 @@ describe('Emotions.vue', () => {
           .mockResolvedValueOnce({
             data: {
               AddPostEmotions: {
-                from: { id: 'u176' },
                 to: { id: 'p143' },
                 data: { emotion: 'happy' },
               },
@@ -34,7 +33,11 @@ describe('Emotions.vue', () => {
           })
           .mockResolvedValueOnce({
             data: {
-              RemovePostEmotions: true,
+              RemovePostEmotions: {
+                from: { id: 'u176' },
+                to: { id: 'p143' },
+                data: { emotion: 'happy' },
+              },
             },
           }),
         query: jest.fn().mockResolvedValue({
@@ -85,7 +88,7 @@ describe('Emotions.vue', () => {
       it('sends the AddPostEmotionsMutation for an emotion when clicked', () => {
         expectedParams = {
           mutation: PostMutations().AddPostEmotionsMutation,
-          variables: { from: { id: 'u176' }, to: { id: 'p143' }, data: { emotion: 'funny' } },
+          variables: { to: { id: 'p143' }, data: { emotion: 'funny' } },
         }
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
       })
@@ -106,7 +109,7 @@ describe('Emotions.vue', () => {
         it('sends the RemovePostEmotionsMutation when a user clicks on an active emotion', () => {
           expectedParams = {
             mutation: PostMutations().RemovePostEmotionsMutation,
-            variables: { from: { id: 'u176' }, to: { id: 'p143' }, data: { emotion: 'funny' } },
+            variables: { to: { id: 'p143' }, data: { emotion: 'funny' } },
           }
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })

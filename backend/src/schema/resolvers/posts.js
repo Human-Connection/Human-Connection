@@ -84,9 +84,9 @@ export default {
       session.close()
       const [emoted] = transactionRes.records.map(record => {
         return {
-          from: { id: record.get('userFrom').properties.id },
-          to: { id: record.get('postTo').properties.id },
-          emotion: record.get('emotedRelation').properties.emotion,
+          from: { ...record.get('userFrom').properties },
+          to: { ...record.get('postTo').properties },
+          ...record.get('emotedRelation').properties,
         }
       })
       return emoted
@@ -98,16 +98,18 @@ export default {
       const transactionRes = await session.run(
         `MATCH (userFrom:User {id: $from})-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo:Post {id: $to.id})
         DELETE emotedRelation
-        RETURN userFrom
-        `,
+        RETURN userFrom, postTo`,
         { from, to, data },
       )
       session.close()
-      const [userFrom] = transactionRes.records.map(record => {
-        return record.get('userFrom')
+      const [emoted] = transactionRes.records.map(record => {
+        return {
+          from: { ...record.get('userFrom').properties },
+          to: { ...record.get('postTo').properties },
+          emotion: data.emotion,
+        }
       })
-      if (!userFrom) throw new Error('Not Authorised!')
-      return Boolean(userFrom)
+      return emoted
     },
   },
   Query: {

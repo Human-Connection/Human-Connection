@@ -56,7 +56,6 @@ export default {
             ? PostMutations().RemovePostEmotionsMutation
             : PostMutations().AddPostEmotionsMutation,
           variables: {
-            from: { id: this.currentUser.id },
             to: { id: this.post.id },
             data: { emotion },
           },
