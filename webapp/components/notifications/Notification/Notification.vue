@@ -69,7 +69,6 @@ export default {
       }
     },
     hashParam() {
-      // Wolle: console.log('this.post.id: ', this.post.id, 'this.comment.id: ', this.comment.id)
       return this.post.id ? {} : { hash: `#commentId-${this.comment.id}` }
     },
   },

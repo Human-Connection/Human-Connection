@@ -1,13 +1,12 @@
 <template>
-  <ds-button
-    v-if="totalNotifications <= 0"
-    class="notifications-menu"
-    disabled
-    icon="bell"
-  >{{ totalNotifications }}</ds-button>
+  <ds-button v-if="totalNotifications <= 0" class="notifications-menu" disabled icon="bell">
+    {{ totalNotifications }}
+  </ds-button>
   <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
-      <ds-button primary icon="bell" @click.prevent="toggleMenu">{{ totalNotifications }}</ds-button>
+      <ds-button primary icon="bell" @click.prevent="toggleMenu">
+        {{ totalNotifications }}
+      </ds-button>
     </template>
     <template slot="popover">
       <div class="notifications-menu-popover">
@@ -18,7 +17,7 @@
 </template>
 
 <script>
-import NotificationList from '../NotificationList'
+import NotificationList from '../NotificationList/NotificationList'
 import Dropdown from '~/components/Dropdown'
 import gql from 'graphql-tag'
 

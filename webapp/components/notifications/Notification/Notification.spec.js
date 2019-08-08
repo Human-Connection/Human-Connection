@@ -1,5 +1,5 @@
 import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import Notification from '.'
+import Notification from './Notification'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
 
@@ -47,6 +47,10 @@ describe('Notification', () => {
 
     it('renders title', () => {
       expect(Wrapper().text()).toContain("It's a title")
+    })
+
+    it('renders the contentExcerpt', () => {
+      expect(Wrapper().text()).toContain('@jenny-rostock is the best')
     })
 
     it('has no class "read"', () => {

@@ -1,6 +1,6 @@
 import { config, shallowMount, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import NotificationList from '.'
-import Notification from '../Notification'
+import NotificationList from './NotificationList'
+import Notification from '../Notification/Notification'
 import Vuex from 'vuex'
 import Filters from '~/plugins/vue-filters'
 
