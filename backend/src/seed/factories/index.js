@@ -128,11 +128,10 @@ export default function Factory(options = {}) {
       this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
     },
-    async emote({ from, to, data }) {
+    async emote({ to, data }) {
       const mutation = `
         mutation {
           AddPostEmotions(
-            from: { id: "${from}" },
             to: { id: "${to}" },
             data: { emotion: ${data} }
           ) {

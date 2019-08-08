@@ -73,12 +73,13 @@ export default {
     },
     AddPostEmotions: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
-      const { from, to, data } = params
+      const { to, data } = params
+      const { user } = context
       const transactionRes = await session.run(
-        `MATCH (userFrom:User {id: $from.id}), (postTo:Post {id: $to.id})
+        `MATCH (userFrom:User {id: $user.id}), (postTo:Post {id: $to.id})
         MERGE (userFrom)-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo)
         RETURN userFrom, postTo, emotedRelation`,
-        { from, to, data },
+        { user, to, data },
       )
       session.close()
       const [emoted] = transactionRes.records.map(record => {

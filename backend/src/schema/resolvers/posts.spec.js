@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request'
 import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 import { neode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
@@ -20,7 +20,7 @@ const oldContent = 'Old content'
 const newTitle = 'New title'
 const newContent = 'New content'
 const createPostVariables = { title: postTitle, content: postContent }
-const createPostWithCategoriesMutation = `
+const createPostWithCategoriesMutation = gql`
   mutation($title: String!, $content: String!, $categoryIds: [ID]) {
     CreatePost(title: $title, content: $content, categoryIds: $categoryIds) {
       id
@@ -33,7 +33,7 @@ const createPostWithCategoriesVariables = {
   content: postContent,
   categoryIds: ['cat9', 'cat4', 'cat15'],
 }
-const postQueryWithCategories = `
+const postQueryWithCategories = gql`
   query($id: ID) {
     Post(id: $id) {
       categories {
@@ -47,9 +47,9 @@ const createPostWithoutCategoriesVariables = {
   content: 'I should be able to filter it out',
   categoryIds: null,
 }
-const postQueryFilteredByCategory = `
-query Post($filter: _PostFilter) {
-  Post(filter: $filter) {
+const postQueryFilteredByCategory = gql`
+  query Post($filter: _PostFilter) {
+    Post(filter: $filter) {
       title
       id
       categories {
@@ -63,7 +63,7 @@ const postQueryFilteredByCategoryVariables = {
   filter: postCategoriesFilterParam,
 }
 
-const createPostMutation = `
+const createPostMutation = gql`
   mutation($title: String!, $content: String!) {
     CreatePost(title: $title, content: $content) {
       id
@@ -126,13 +126,15 @@ describe('CreatePost', () => {
     it('assigns the authenticated user as author', async () => {
       await client.request(createPostMutation, createPostVariables)
       const { User } = await client.request(
-        `{
-          User(name: "TestUser") {
-            contributions {
-              title
+        gql`
+          {
+            User(name: "TestUser") {
+              contributions {
+                title
+              }
             }
           }
-        }`,
+        `,
         { headers },
       )
       expect(User).toEqual([{ contributions: [{ title: postTitle }] }])
@@ -149,7 +151,7 @@ describe('CreatePost', () => {
 
     describe('language', () => {
       it('allows a user to set the language of the post', async () => {
-        const createPostWithLanguageMutation = `
+        const createPostWithLanguageMutation = gql`
           mutation($title: String!, $content: String!, $language: String) {
             CreatePost(title: $title, content: $content, language: $language) {
               language
@@ -237,7 +239,7 @@ describe('UpdatePost', () => {
       title: oldTitle,
       content: oldContent,
     })
-    updatePostMutation = `
+    updatePostMutation = gql`
       mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
         UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
           id
@@ -343,7 +345,7 @@ describe('UpdatePost', () => {
 })
 
 describe('DeletePost', () => {
-  const mutation = `
+  const mutation = gql`
     mutation($id: ID!) {
       DeletePost(id: $id) {
         id
@@ -416,27 +418,31 @@ describe('emotions', () => {
       }
     }
   `
-  const PostsEmotionsQuery = `
-  query($id: ID!) {
-    Post(id: $id) {
-      emotions {
-        emotion
-        User {
-          id
+  const PostsEmotionsQuery = gql`
+    query($id: ID!) {
+      Post(id: $id) {
+        emotions {
+          emotion
+          User {
+            id
+          }
         }
       }
     }
-  }
-`
-  const addPostEmotionsMutation = `
-  mutation($from: _UserInput!, $to: _PostInput!, $data: _EMOTEDInput!) {
-    AddPostEmotions(from: $from, to: $to, data: $data) {
-      from { id }
-      to { id }
-      emotion
+  `
+  const addPostEmotionsMutation = gql`
+    mutation($to: _PostInput!, $data: _EMOTEDInput!) {
+      AddPostEmotions(to: $to, data: $data) {
+        from {
+          id
+        }
+        to {
+          id
+        }
+        emotion
+      }
     }
-  }
-`
+  `
   beforeEach(async () => {
     userParams.id = 'u1987'
     authorParams.id = 'u257'
@@ -478,7 +484,6 @@ describe('emotions', () => {
       return query({ query: postQuery, variables })
     }
     addPostEmotionsVariables = {
-      from: { id: authorParams.id },
       to: { id: postToEmote.id },
       data: { emotion: 'happy' },
     }
@@ -509,11 +514,10 @@ describe('emotions', () => {
       })
 
       it('adds an emotion to the post', async () => {
-        addPostEmotionsVariables.from.id = userParams.id
         const expected = {
           data: {
             AddPostEmotions: {
-              from: addPostEmotionsVariables.from,
+              from: { id: user.id },
               to: addPostEmotionsVariables.to,
               emotion: 'happy',
             },
@@ -543,8 +547,8 @@ describe('emotions', () => {
 
       it('allows a user to add more than one emotion', async () => {
         const expectedEmotions = [
-          { emotion: 'happy', User: { id: authorParams.id } },
-          { emotion: 'surprised', User: { id: authorParams.id } },
+          { emotion: 'happy', User: { id: user.id } },
+          { emotion: 'surprised', User: { id: user.id } },
         ]
         const expectedResponse = {
           data: { Post: [{ emotions: expect.arrayContaining(expectedEmotions) }] },
@@ -567,7 +571,7 @@ describe('emotions', () => {
         const expected = {
           data: {
             AddPostEmotions: {
-              from: addPostEmotionsVariables.from,
+              from: { id: owner.id },
               to: addPostEmotionsVariables.to,
               emotion: 'happy',
             },
@@ -582,7 +586,7 @@ describe('emotions', () => {
 
   describe('RemovePostEmotions', () => {
     let removePostEmotionsVariables, postsEmotionsQueryVariables
-    const removePostEmotionsMutation = `
+    const removePostEmotionsMutation = gql`
       mutation($to: _PostInput!, $data: _EMOTEDInput!) {
         RemovePostEmotions(to: $to, data: $data)
       }
@@ -650,13 +654,13 @@ describe('emotions', () => {
     let PostsEmotionsCountByEmotionVariables
     let PostsEmotionsByCurrentUserVariables
 
-    const PostsEmotionsCountByEmotionQuery = `
+    const PostsEmotionsCountByEmotionQuery = gql`
       query($postId: ID!, $data: _EMOTEDInput!) {
-        PostsEmotionsCountByEmotion(postId: $postId, data: $data) 
+        PostsEmotionsCountByEmotion(postId: $postId, data: $data)
       }
-      `
+    `
 
-    const PostsEmotionsByCurrentUserQuery = `
+    const PostsEmotionsByCurrentUserQuery = gql`
       query($postId: ID!) {
         PostsEmotionsByCurrentUser(postId: $postId)
       }

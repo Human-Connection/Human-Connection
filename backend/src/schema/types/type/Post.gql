@@ -91,7 +91,7 @@ type Mutation {
     language: String
     categoryIds: [ID]
   ): Post
-  AddPostEmotions(from: _UserInput!, to: _PostInput!, data: _EMOTEDInput!): EMOTED
+  AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
   RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): Boolean!
 }
 
