@@ -1,4 +1,4 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import ConfirmModal from './ConfirmModal.vue'
@@ -8,6 +8,7 @@ const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 
 describe('ConfirmModal.vue', () => {
   let Wrapper
