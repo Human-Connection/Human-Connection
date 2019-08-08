@@ -420,6 +420,14 @@
     "languageSelectLabel": "Language",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
+    },
+    "emotions-label": {
+      "funny": "Funny",
+      "happy": "Happy",
+      "surprised": "Surprised",
+      "cry": "Cry",
+      "angry": "Angry",
+      "emoted": "emoted"
     }
   },
   "changelog": {

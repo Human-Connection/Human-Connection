@@ -1,5 +1,5 @@
 <template>
-  <ds-space margin="large" style="text-align: center">
+  <ds-space margin="xx-small" class="text-align-center">
     <ds-button
       :loading="loading"
       :disabled="disabled"
@@ -87,5 +87,8 @@ export default {
 <style lang="scss">
 .shout-button-text {
   user-select: none;
+}
+.text-align-center {
+  text-align: center;
 }
 </style>

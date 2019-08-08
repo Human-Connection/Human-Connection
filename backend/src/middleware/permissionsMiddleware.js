@@ -157,6 +157,8 @@ const permissions = shield(
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
       Badge: allow,
+      PostsEmotionsCountByEmotion: allow,
+      PostsEmotionsByCurrentUser: allow,
     },
     Mutation: {
       '*': deny,
@@ -178,7 +180,6 @@ const permissions = shield(
       // RemoveBadgeRewarded: isAdmin,
       reward: isAdmin,
       unreward: isAdmin,
-      // addFruitToBasket: isAuthenticated
       follow: isAuthenticated,
       unfollow: isAuthenticated,
       shout: isAuthenticated,
@@ -192,6 +193,8 @@ const permissions = shield(
       DeleteUser: isDeletingOwnAccount,
       requestPasswordReset: allow,
       resetPassword: allow,
+      AddPostEmotions: isAuthenticated,
+      RemovePostEmotions: isAuthenticated,
     },
     User: {
       email: isMyOwn,
