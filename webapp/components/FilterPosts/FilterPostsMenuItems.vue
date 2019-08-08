@@ -131,29 +131,29 @@ export default {
     },
     toggleCategory(categoryId) {
       if (!categoryId) {
-        this.setSelectedCategoryIds([])
+        this.setSelectedCategoryIds()
       } else {
         this.setSelectedCategoryIds(categoryId)
       }
       this.setFilteredByCategories(!!this.selectedCategoryIds.length)
-      this.setCategoriesFilter({ categories_some: { id_in: this.selectedCategoryIds } })
+      this.setCategoriesFilter(
+        this.selectedCategoryIds.length
+          ? { categories_some: { id_in: this.selectedCategoryIds } }
+          : {},
+      )
       this.toggleFilter()
     },
     toggleOnlyFollowed() {
       this.setFilteredByFollowers(!this.filteredByUsersFollowed)
-      this.setUsersFollowedFilter({ author: { followedBy_some: { id: this.user.id } } })
+      this.setUsersFollowedFilter(
+        this.filteredByUsersFollowed ? { author: { followedBy_some: { id: this.user.id } } } : {},
+      )
       this.toggleFilter()
     },
     toggleFilter() {
-      if (this.filteredByUsersFollowed) {
-        this.filter = this.filteredByCategories
-          ? {
-              ...this.usersFollowedFilter,
-              ...this.categoriesFilter,
-            }
-          : { ...this.usersFollowedFilter }
-      } else {
-        this.filter = this.filteredByCategories ? { ...this.categoriesFilter } : {}
+      this.filter = {
+        ...this.usersFollowedFilter,
+        ...this.categoriesFilter,
       }
       this.$emit('filterPosts', this.filter)
     },

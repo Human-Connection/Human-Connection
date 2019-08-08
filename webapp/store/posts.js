@@ -28,7 +28,7 @@ export const mutations = {
     state.categoriesFilter = filter || null
   },
   SET_SELECTED_CATEGORY_IDS(state, categoryId) {
-    if (!categoryId.length) {
+    if (!categoryId) {
       state.selectedCategoryIds = []
     } else {
       const index = state.selectedCategoryIds.indexOf(categoryId)
@@ -68,7 +68,7 @@ export const actions = {
     const {
       data: { Post },
     } = await client.query({
-      query: gql(`
+      query: gql`
         query Post($filter: _PostFilter, $first: Int, $offset: Int) {
           Post(filter: $filter, first: $first, offset: $offset) {
             id
@@ -107,7 +107,7 @@ export const actions = {
             }
             shoutedCount
           }
-      }`),
+      }`,
       variables: {
         filter,
         first: 12,

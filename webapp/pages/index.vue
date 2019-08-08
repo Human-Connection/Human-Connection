@@ -99,10 +99,6 @@ export default {
   },
   beforeDestroy() {
     this.toggleShowFilterPostsDropdown(false)
-    this.setFilteredByUserFollowed(false)
-    this.setFilteredByCategories(false)
-    this.setFilteredByUserFollowed(false)
-    this.setSelectedCategoryIds([])
   },
   watch: {
     Post(post) {
@@ -127,9 +123,6 @@ export default {
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
       toggleShowFilterPostsDropdown: 'default/SET_SHOW_FILTER_POSTS_DROPDOWN',
-      setFilteredByUserFollowed: 'posts/SET_FILTERED_BY_FOLLOWERS',
-      setFilteredByCategories: 'posts/SET_FILTERED_BY_CATEGORIES',
-      setSelectedCategoryIds: 'posts/SET_SELECTED_CATEGORY_IDS',
     }),
     changeFilterBubble(filter) {
       if (this.hashtag) {
@@ -201,7 +194,11 @@ export default {
       },
       variables() {
         return {
-          filter: this.filter,
+          filter: {
+            ...this.usersFollowedFilter,
+            ...this.categoriesFilter,
+            ...this.filter,
+          },
           first: this.pageSize,
           offset: 0,
           orderBy: this.sorting,

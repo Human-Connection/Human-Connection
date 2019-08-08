@@ -184,6 +184,8 @@ export default {
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
       showFilterPostsDropdown: 'default/showFilterPostsDropdown',
+      usersFollowedFilter: 'posts/usersFollowedFilter',
+      categoriesFilter: 'posts/categoriesFilter',
     }),
     userName() {
       const { name } = this.user || {}
@@ -256,8 +258,14 @@ export default {
     },
     redirectToRoot() {
       this.$router.replace('/')
-      this.setFilteredByFollowers(false)
-      this.fetchPosts({ i18n: this.$i18n, filter: {} })
+      this.fetchPosts({
+        i18n: this.$i18n,
+        filter: {
+          ...this.usersFollowedFilter,
+          ...this.categoriesFilter,
+          ...this.filter,
+        },
+      })
     },
   },
   apollo: {
