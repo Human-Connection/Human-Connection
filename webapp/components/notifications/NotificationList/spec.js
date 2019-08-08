@@ -45,6 +45,7 @@ describe('NotificationList.vue', () => {
           post: {
             id: 'post-1',
             title: 'some post title',
+            slug: 'some-post-title',
             contentExcerpt: 'this is a post content',
             author: {
               id: 'john-1',
@@ -59,6 +60,7 @@ describe('NotificationList.vue', () => {
           post: {
             id: 'post-2',
             title: 'another post title',
+            slug: 'another-post-title',
             contentExcerpt: 'this is yet another post content',
             author: {
               id: 'john-1',

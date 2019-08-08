@@ -124,21 +124,18 @@ module.exports = {
     linkExactActiveClass: 'router-link-exact-active',
     scrollBehavior: (to, _from, savedPosition) => {
       let position = false
-      // Wolle: console.log('to: ', to)
       // if no children detected and scrollToTop is not explicitly disabled
       if (
         to.matched.length < 2 &&
         to.matched.every(r => r.components.default.options.scrollToTop !== false)
       ) {
         // scroll to the top of the page
-        // Wolle: console.log('to.matched.length --- scrolling to top')
         position = {
           x: 0,
           y: 0,
         }
       } else if (to.matched.some(r => r.components.default.options.scrollToTop)) {
         // if one of the children has scrollToTop option set to true
-        // Wolle: console.log('to.match.some ---- scrolling to top')
         position = {
           x: 0,
           y: 0,
@@ -147,61 +144,41 @@ module.exports = {
 
       // savedPosition is only available for popstate navigations (back button)
       if (savedPosition) {
-        // Wolle: console.log('savedPosition', savedPosition)
         position = savedPosition
       }
 
       return new Promise(resolve => {
         // wait for the out transition to complete (if necessary)
-        // Wolle: console.log('resolve', resolve)
         window.$nuxt.$once('triggerScroll', () => {
           let processInterval = null
           let processTime = 0
+          const callInterval = 100
+          const callIntervalLimit = 2000
 
           // coords will be used if no selector is provided,
           // or if the selector didn't match any element.
-          // Wolle: console.log('inside window.$nuxt.$once')
           if (to.hash) {
             let hash = to.hash
-            // Wolle: console.log('hash', hash)
             // CSS.escape() is not supported with IE and Edge.
             if (typeof window.CSS !== 'undefined' && typeof window.CSS.escape !== 'undefined') {
-              // Wolle: console.log('window.CSS', window.CSS)
               hash = '#' + window.CSS.escape(hash.substr(1))
-              // Wolle: console.log('hash after: ', hash)
             }
             try {
-              // Wolle: console.log('document', document)
-              // Wolle: console.log('document.querySelector(#comments)', document.querySelector('#comments'))
-              // Wolle: console.log('why wont you work?', document.querySelector(hash))
-
-              // Wolle: console.log('after sleep()')
-
               processInterval = setInterval(() => {
-                // Wolle: console.log('process tick !!!')
-                const queryIs = document.querySelector(hash)
+                const hashIsFound = document.querySelector(hash)
 
-                if (queryIs) {
+                if (hashIsFound) {
                   position = {
                     selector: hash,
+                    offset: { x: 0, y: -500 },
                   }
-                  // Wolle: console.log('found hash position: ', position)
                 }
-                processTime += 100
-                if (queryIs || processTime >= 2000) {
-                  // Wolle: console.log('clearInterval of process !!!')
+                processTime += callInterval
+                if (hashIsFound || processTime >= callIntervalLimit) {
                   clearInterval(processInterval)
                   processInterval = null
                 }
-              }, 100)
-
-              // Wolle: if (document.querySelector(hash)) {
-              //   // scroll to anchor by returning the selector
-              //   console.log('document.querySelector(hash)', document.querySelector(hash))
-              //   position = {
-              //     selector: hash,
-              //   }
-              // }
+              }, callInterval)
             } catch (e) {
               /* eslint-disable-next-line no-console */
               console.warn(
@@ -211,15 +188,11 @@ module.exports = {
           }
 
           let resolveInterval = setInterval(() => {
-            // Wolle: console.log('resolve tick !!!')
             if (!processInterval) {
               clearInterval(resolveInterval)
-              // Wolle: console.log('position', position)
               resolve(position)
             }
-          }, 100)
-          // Wolle: console.log('position', position)
-          // resolve(position)
+          }, callInterval)
         })
       })
     },

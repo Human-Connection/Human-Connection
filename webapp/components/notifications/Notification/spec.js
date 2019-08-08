@@ -38,6 +38,9 @@ describe('Notification', () => {
       propsData.notification = {
         post: {
           title: "It's a title",
+          id: 'post-1',
+          slug: 'its-a-title',
+          contentExcerpt: '<a href="/profile/u3" target="_blank">@jenny-rostock</a> is the best',
         },
       }
     })
