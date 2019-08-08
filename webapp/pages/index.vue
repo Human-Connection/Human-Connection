@@ -1,10 +1,10 @@
 <template>
   <div>
-    <ds-flex :width="{ base: '100%' }" gutter="base">
-      <ds-flex-item>
+    <div class="masonry-grid">
+      <div class="grid-item grid-item--full-width">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
-      </ds-flex-item>
-      <ds-flex-item>
+      </div>
+      <div class="grid-item grid-item--full-width">
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -14,7 +14,7 @@
             @input="toggleOnlySorting"
           ></ds-select>
         </div>
-      </ds-flex-item>
+      </div>
       <hc-post-card
         v-for="post in posts"
         :key="post.id"
@@ -22,7 +22,7 @@
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
         @removePostFromList="deletePost(index, post.id)"
       />
-    </ds-flex>
+    </div>
     <no-ssr>
       <ds-button
         v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
@@ -168,6 +168,21 @@ export default {
 </script>
 
 <style lang="scss">
+.masonry-grid {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 20px;
+}
+
+.grid-item {
+  grid-row-end: span 2;
+
+  &--full-width {
+    grid-column: 1 / -1;
+  }
+}
+
 .post-add-button {
   z-index: 100;
   position: fixed;
@@ -182,5 +197,6 @@ export default {
   position: relative;
   float: right;
   padding: 0 18px;
+  margin: 4px 0;
 }
 </style>

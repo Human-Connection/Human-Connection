@@ -1,5 +1,5 @@
 <template>
-  <ds-flex-item :width="width">
+  <div ref="postCard" class="grid-item" v-bind:style="{ gridRowEnd: 'span ' + rowSpan }">
     <ds-card
       :image="post.image | proxyApiUrl"
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
@@ -35,7 +35,11 @@
           <hc-category
             v-for="category in post.categories"
             :key="category.id"
-            v-tooltip="{ content: category.name, placement: 'bottom-start', delay: { show: 500 } }"
+            v-tooltip="{
+              content: category.name,
+              placement: 'bottom-start',
+              delay: { show: 500 },
+            }"
             :icon="category.icon"
           />
         </div>
@@ -63,7 +67,7 @@
         </no-ssr>
       </template>
     </ds-card>
-  </ds-flex-item>
+  </div>
 </template>
 
 <script>
@@ -92,6 +96,11 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  data() {
+    return {
+      rowSpan: 10,
+    }
   },
   computed: {
     ...mapGetters({
@@ -123,6 +132,25 @@ export default {
         this.$toast.error(err.message)
       }
     },
+    calculateItemHeight() {
+      const grid = document.querySelector('.masonry-grid')
+      const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'))
+      const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'))
+      grid.style.gridAutoRows = 'auto'
+      grid.style.alignItems = 'self-start'
+      const itemHeight = this.$refs.postCard.clientHeight
+      this.rowSpan = Math.ceil((itemHeight + rowGap) / (rowHeight + rowGap))
+      grid.removeAttribute('style')
+    },
+  },
+  mounted() {
+    const image = this.$refs.postCard.querySelector('img')
+    if (image) {
+      image.onload = this.calculateItemHeight
+    } else {
+      // use timeout to make sure layout is set up before executing
+      setTimeout(this.calculateItemHeight, 0)
+    }
   },
 }
 </script>
