@@ -46,11 +46,15 @@
           :label="$t('settings.security.change-password.label-new-password-confirm')"
         />
         <password-strength :password="formData.password" />
+        <ds-section>
+          <ds-text>
+            <input id="checkbox" type="checkbox" v-model="checkedDefault" @change="checked" />
+            <label for="checkbox" v-html="$t('site.termsAndConditionsCeckbox')"></label>
+          </ds-text>
+        </ds-section>
         <template slot="footer">
           <ds-space class="backendErrors" v-if="backendErrors">
-            <ds-text align="center" bold color="danger">
-              {{ backendErrors.message }}
-            </ds-text>
+            <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
           </ds-space>
           <ds-button
             style="float: right;"
@@ -72,7 +76,6 @@
 import gql from 'graphql-tag'
 import PasswordStrength from '../Password/Strength'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
-
 export const SignupVerificationMutation = gql`
   mutation($nonce: String!, $name: String!, $email: String!, $password: String!) {
     SignupVerification(nonce: $nonce, email: $email, name: $name, password: $password) {
@@ -109,6 +112,7 @@ export default {
       disabled: true,
       success: null,
       backendErrors: null,
+      checkedDefault: false,
     }
   },
   props: {
@@ -116,23 +120,30 @@ export default {
     email: { type: String, required: true },
   },
   methods: {
+    checked: function() {
+      this.backendErrors = { message: '' }
+    },
     async submit() {
-      const { name, password, about } = this.formData
-      const { email, nonce } = this
-      try {
-        await this.$apollo.mutate({
-          mutation: SignupVerificationMutation,
-          variables: { name, password, about, email, nonce },
-        })
-        this.success = true
-        setTimeout(() => {
-          this.$emit('userCreated', {
-            email,
-            password,
+      if (this.checkedDefault) {
+        const { name, password, about } = this.formData
+        const { email, nonce } = this
+        try {
+          await this.$apollo.mutate({
+            mutation: SignupVerificationMutation,
+            variables: { name, password, about, email, nonce },
           })
-        }, 3000)
-      } catch (err) {
-        this.backendErrors = err
+          this.success = true
+          setTimeout(() => {
+            this.$emit('userCreated', {
+              email,
+              password,
+            })
+          }, 3000)
+        } catch (err) {
+          this.backendErrors = err
+        }
+      } else {
+        this.backendErrors = { message: this.$t(`site.termsAndConditionsNoChecked`) }
       }
     },
   },

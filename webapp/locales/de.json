@@ -22,7 +22,9 @@
     "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
     "bank": "Bankverbindung",
     "germany": "Deutschland",
-    "code-of-conduct": "Verhaltenscodex"
+    "code-of-conduct": "Verhaltenscodex",
+    "termsAndConditionsCeckbox": "<a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> gelesen und verstanden",
+    "termsAndConditionsNoChecked": "Bitte lies und bestätige die Nutzungsbednigungen!"
   },
   "sorting": {
     "newest": "Neuste",
@@ -459,7 +461,6 @@
       "title": "Zweck",
       "description": "Mit diesen Verhaltensregeln regeln wir die wesentlichen Grundsätze für das Verhalten in unserem Sozialen Netzwerk. Dabei ist die Menschenrechtscharta der Vereinten Nationen unsere Orientierung und bildet das Herz unseres Werteverständnisses. Die Verhaltensregeln dienen als Leitsätze für den persönlichen Auftritt und den Umgang untereinander. Wer als Nutzer im Human Connection Netzwerk aktiv ist, Beiträge verfasst, kommentiert oder mit anderen Nutzern, auch außerhalb des Netzwerkes, Kontakt aufnimmt, erkennt diese Verhaltensregeln als verbindlich an."
     },
-
     "expected-behaviour": {
       "title": "Erwartetes Verhalten",
       "description": "Die folgenden Verhaltensweisen werden von allen Community-Mitgliedern erwartet und gefordert:",
@@ -527,12 +528,12 @@
       "description": "Sollte Dir die Alphaversion unseres Netzwerks wider Erwarten, egal aus welchen Gründen, nicht gefallen, überweisen wir Dir Deine gespendeten Monatsbeiträge innerhalb der ersten 2 Monate gerne zurück. Einfach Mail an:  <a href=\"mailto:info@human-connection.org\" target=\"_blank\" s> info@human-connection.org </a> Achtung: Viele Funktionen werden erst nach und nach eingebaut."
     },
     "questions": {
-    "title": "Fragen",
-    "description": "Die Termine und Links zu den Zoom-Räumen findest Du hier: <a href=\"https://human-connection.org/events-und-news/\" target=\"_blank\" >https://human-connection.org/veranstaltungen/ </a>"
+      "title": "Fragen",
+      "description": "Die Termine und Links zu den Zoom-Räumen findest Du hier: <a href=\"https://human-connection.org/events-und-news/\" target=\"_blank\" >https://human-connection.org/veranstaltungen/ </a>"
     },
     "human-connection": {
-    "title": "Von Menschen für Menschen:",
-    "description": "Bitte hilf uns weitere monatlichen Spender für Human Connection zu bekommen, damit das Netzwerk so schnell wie möglich offiziell an den Start gehen kann. <a href=\"https://human-connection.org/\" target=\"_blank\"> https://human-connection.org </a>"
+      "title": "Von Menschen für Menschen:",
+      "description": "Bitte hilf uns weitere monatlichen Spender für Human Connection zu bekommen, damit das Netzwerk so schnell wie möglich offiziell an den Start gehen kann. <a href=\"https://human-connection.org/\" target=\"_blank\"> https://human-connection.org </a>"
     },
     "have-fun": "Jetzt aber viel Spaß mit der Alpha von Human Connection! Für den ersten Weltfrieden. ♥︎",
     "closing": "Herzlichst <br><br> Euer Human Connection Team"
