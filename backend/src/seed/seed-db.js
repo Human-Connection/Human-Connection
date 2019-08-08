@@ -2,8 +2,7 @@ import faker from 'faker'
 import Factory from './factories'
 
 /* eslint-disable no-multi-spaces */
-;
-(async function () {
+;(async function() {
   try {
     const f = Factory()
     const [racoon, rabbit, wolf, bear, turtle, rhino] = await Promise.all([
@@ -302,11 +301,14 @@ import Factory from './factories'
       }),
     ])
 
-    const mention1 = 'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
+    const mention1 =
+      'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
     const mention2 =
-      'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
-    const hashtag1 = 'See <a class="hashtag" href="/search/hashtag/NaturphilosophieYoga">#NaturphilosophieYoga</a> can really help you!'
-    const hashtagAndMention1 = 'The new physics of <a class="hashtag" href="/search/hashtag/QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" href="/search/hashtag/QuantumGravity">#QuantumGravity</a>! <a class="mention" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
+      'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
+    const hashtag1 =
+      'See <a class="hashtag" href="/search/hashtag/NaturphilosophieYoga">#NaturphilosophieYoga</a> can really help you!'
+    const hashtagAndMention1 =
+      'The new physics of <a class="hashtag" href="/search/hashtag/QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" href="/search/hashtag/QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u3" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
 
     await Promise.all([
       asAdmin.create('Post', {
@@ -580,8 +582,10 @@ import Factory from './factories'
       }),
     ])
 
-    const mentionInComment1 = 'I heard <a class="mention" href="/profile/u3">@jenny-rostock</a>, practice it since 3 years now.'
-    const mentionInComment2 = 'Did <a class="mention" href="/profile/u1">@peter-lustig</a> told you?'
+    const mentionInComment1 =
+      'I heard <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, practice it since 3 years now.'
+    const mentionInComment2 =
+      'Did <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> told you?'
 
     await Promise.all([
       asUser.create('Comment', {
