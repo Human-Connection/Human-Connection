@@ -21,7 +21,7 @@ module.exports = {
 
   modern: !dev ? 'server' : false,
 
-  transition: {
+  pageTransition: {
     name: 'slide-up',
     mode: 'out-in',
   },
@@ -100,6 +100,7 @@ module.exports = {
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
     { src: '~/plugins/vue-filters.js' },
+    { src: '~/plugins/vue-sweetalert-icons.js' },
   ],
 
   router: {
@@ -167,7 +168,9 @@ module.exports = {
   // Give apollo module options
   apollo: {
     tokenName: 'human-connection-token', // optional, default: apollo-token
-    tokenExpires: 3, // optional, default: 7 (days)
+    cookieAttributes: {
+      expires: 3, // optional, default: 7 (days)
+    },
     // includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
 
     // Watch loading state for all queries

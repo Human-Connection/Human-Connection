@@ -2814,10 +2814,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@2.0.0-beta.3:
-  version "2.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-beta.3.tgz#2e28f5af945930f774ddd778e184d68227101d55"
-  integrity sha512-z5O262BvHPhwUvA1weXH+AZodygnZUcORERw8hjwBUrRPGrAo2e/rjXfC8Ykf1OGJZGDuLnK/WXbEZBIc0exGQ==
+date-fns@2.0.0-beta.4:
+  version "2.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-beta.4.tgz#3e1bf33a15da69481f81972c4a50aad762a81f2c"
+  integrity sha512-xekjYm7ZDBuzePM/GBodhi3hW3P8dd2RbuIOLBjet2E6EGFR82wHTTXCSGuDEoapqlDvsx88ymRsq85lbM7dDw==
 
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
@@ -6143,10 +6143,10 @@ neo4j-graphql-js@^2.6.3:
     lodash "^4.17.11"
     neo4j-driver "^1.7.3"
 
-neode@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.0.tgz#a4a41234fac23236db6b589ec2b505ad6e5fd832"
-  integrity sha512-V6uQhap7FDwbeC+mH6JEI352QSou4Ukj7vs/bGZSrVlMZKVS8vs/mbQYXoFdCkmQJuUtJWqO9wmtWg5GjCaNDQ==
+neode@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.1.tgz#d40147bf20d6951b69c9d392fbdd322aeca07816"
+  integrity sha512-SdaJmdjQ3PWOH6W1H8Xgd2CLyJs+BPPXPt0jOVNs7naeQH8nWPP6ixDqI6NWDCxwecTdNl//fpAicB9I6hCwEw==
   dependencies:
     "@hapi/joi" "^15.1.0"
     dotenv "^4.0.0"
