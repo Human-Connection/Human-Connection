@@ -2,19 +2,36 @@ import uuid from 'uuid/v4'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
 import { getBlockedUsers, getBlockedByUsers } from './users.js'
+import { mergeWith, isArray } from 'lodash'
+
+const filterForBlockedUsers = async (params, context) => {
+  const [blockedUsers, blockedByUsers] = await Promise.all([
+    getBlockedUsers(context),
+    getBlockedByUsers(context),
+  ])
+  const badIds = [...blockedByUsers.map(b => b.id), ...blockedUsers.map(b => b.id)]
+  params.filter = mergeWith(
+    params.filter,
+    {
+      author_not: { id_in: badIds },
+    },
+    (objValue, srcValue) => {
+      if (isArray(objValue)) {
+        return objValue.concat(srcValue)
+      }
+    },
+  )
+  return params
+}
 
 export default {
   Query: {
     Post: async (object, params, context, resolveInfo) => {
-      const blockedUsers = await getBlockedUsers(context)
-      const blockedByUsers = await getBlockedByUsers(context)
-      params.filter = {
-        author_not: { id_in: [
-          ...blockedByUsers.map(b => b.id),
-          ...blockedUsers.map(b => b.id),
-        ] }
-      }
-
+      params = await filterForBlockedUsers(params, context)
+      return neo4jgraphql(object, params, context, resolveInfo, false)
+    },
+    findPosts: async (object, params, context, resolveInfo) => {
+      params = await filterForBlockedUsers(params, context)
       return neo4jgraphql(object, params, context, resolveInfo, false)
     },
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
