@@ -20,6 +20,7 @@ beforeEach(() => {
       return {
         user: authenticatedUser,
         driver,
+        neode: instance,
         cypherParams: {
           currentUserId: authenticatedUser ? authenticatedUser.id : null,
         },
@@ -153,7 +154,15 @@ describe('block', () => {
 
       it('unfollows the user', async () => {
         await currentUser.relateTo(blockedUser, 'following')
-        const queryUser = gql` query { User(id: "u2") { id isBlocked followedByCurrentUser } }`
+        const queryUser = gql`
+          query {
+            User(id: "u2") {
+              id
+              isBlocked
+              followedByCurrentUser
+            }
+          }
+        `
         const { query } = createTestClient(server)
         await expect(query({ query: queryUser })).resolves.toEqual(
           expect.objectContaining({
@@ -182,53 +191,104 @@ describe('block', () => {
           })
           await Promise.all([
             post1.relateTo(currentUser, 'author'),
-            post2.relateTo(blockedUser, 'author')
+            post2.relateTo(blockedUser, 'author'),
           ])
-          postQuery = gql`query { Post(orderBy: createdAt_asc) { id title author { id name } } }`
+          postQuery = gql`
+            query {
+              Post(orderBy: createdAt_asc) {
+                id
+                title
+                author {
+                  id
+                  name
+                }
+              }
+            }
+          `
         })
 
         const bothPostsAreInTheNewsfeed = async () => {
-            const { query } = createTestClient(server)
-            await expect(query({ query: postQuery })).resolves.toEqual(
-              expect.objectContaining({
-                data: {
-                  Post: [
-                    {
-                      id: 'p12',
-                      title: 'A post written by the current user',
-                      author: {
-                        name: 'Current User',
-                        id: 'u1',
-                      }
+          const { query } = createTestClient(server)
+          await expect(query({ query: postQuery })).resolves.toEqual(
+            expect.objectContaining({
+              data: {
+                Post: [
+                  {
+                    id: 'p12',
+                    title: 'A post written by the current user',
+                    author: {
+                      name: 'Current User',
+                      id: 'u1',
                     },
-                    {
-                      id: 'p23',
-                      title: 'A post written by the blocked user',
-                      author: {
-                        name: 'Blocked User',
-                        id: 'u2',
-                      }
+                  },
+                  {
+                    id: 'p23',
+                    title: 'A post written by the blocked user',
+                    author: {
+                      name: 'Blocked User',
+                      id: 'u2',
                     },
-                  ],
-                },
-              }),
-            )
-          }
+                  },
+                ],
+              },
+            }),
+          )
+        }
 
         describe('from the perspective of the current user', () => {
           it('both posts are in the newsfeed', bothPostsAreInTheNewsfeed)
 
           describe('but if the current user blocks the other user', () => {
-            beforeEach(async () => { })
+            beforeEach(async () => {
+              await currentUser.relateTo(blockedUser, 'blocked')
+            })
 
-            it.todo("the blocked user's post won't show up in the newsfeed of the current user")
+            it("the blocked user's post won't show up in the newsfeed of the current user", async () => {
+              const { query } = createTestClient(server)
+              await expect(query({ query: postQuery })).resolves.toEqual(
+                expect.objectContaining({
+                  data: {
+                    Post: [
+                      {
+                        id: 'p12',
+                        title: 'A post written by the current user',
+                        author: { name: 'Current User', id: 'u1' },
+                      },
+                    ],
+                  },
+                }),
+              )
+            })
           })
         })
 
         describe('from the perspective of the blocked user', () => {
+          beforeEach(async () => {
+            authenticatedUser = await blockedUser.toJson()
+          })
+
           it('both posts are in the newsfeed', bothPostsAreInTheNewsfeed)
           describe('but if the current user blocks the other user', () => {
-            it.todo("the current user's post won't show up in the newsfeed of the blocked user")
+            beforeEach(async () => {
+              await currentUser.relateTo(blockedUser, 'blocked')
+            })
+
+            it("the current user's post won't show up in the newsfeed of the blocked user", async () => {
+              const { query } = createTestClient(server)
+              await expect(query({ query: postQuery })).resolves.toEqual(
+                expect.objectContaining({
+                  data: {
+                    Post: [
+                      {
+                        id: 'p23',
+                        title: 'A post written by the blocked user',
+                        author: { name: 'Blocked User', id: 'u2' },
+                      },
+                    ],
+                  },
+                }),
+              )
+            })
           })
         })
       })

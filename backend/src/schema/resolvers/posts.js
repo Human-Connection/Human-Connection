@@ -1,7 +1,56 @@
 import uuid from 'uuid/v4'
+import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
+import { getBlockedUsers, getBlockedByUsers } from './users.js'
 
 export default {
+  Query: {
+    Post: async (object, params, context, resolveInfo) => {
+      const blockedUsers = await getBlockedUsers(context)
+      const blockedByUsers = await getBlockedByUsers(context)
+      params.filter = {
+        author_not: { id_in: [
+          ...blockedByUsers.map(b => b.id),
+          ...blockedUsers.map(b => b.id),
+        ] }
+      }
+
+      return neo4jgraphql(object, params, context, resolveInfo, false)
+    },
+    PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
+      const session = context.driver.session()
+      const { postId, data } = params
+      const transactionRes = await session.run(
+        `MATCH (post:Post {id: $postId})<-[emoted:EMOTED {emotion: $data.emotion}]-()
+        RETURN COUNT(DISTINCT emoted) as emotionsCount
+        `,
+        { postId, data },
+      )
+      session.close()
+
+      const [emotionsCount] = transactionRes.records.map(record => {
+        return record.get('emotionsCount').low
+      })
+
+      return emotionsCount
+    },
+    PostsEmotionsByCurrentUser: async (object, params, context, resolveInfo) => {
+      const session = context.driver.session()
+      const { postId } = params
+      const transactionRes = await session.run(
+        `MATCH (user:User {id: $userId})-[emoted:EMOTED]->(post:Post {id: $postId})
+        RETURN collect(emoted.emotion) as emotion`,
+        { userId: context.user.id, postId },
+      )
+
+      session.close()
+
+      const [emotions] = transactionRes.records.map(record => {
+        return record.get('emotion')
+      })
+      return emotions
+    },
+  },
   Mutation: {
     UpdatePost: async (object, params, context, resolveInfo) => {
       const { categoryIds } = params
@@ -110,41 +159,6 @@ export default {
         }
       })
       return emoted
-    },
-  },
-  Query: {
-    PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
-      const session = context.driver.session()
-      const { postId, data } = params
-      const transactionRes = await session.run(
-        `MATCH (post:Post {id: $postId})<-[emoted:EMOTED {emotion: $data.emotion}]-() 
-        RETURN COUNT(DISTINCT emoted) as emotionsCount
-        `,
-        { postId, data },
-      )
-      session.close()
-
-      const [emotionsCount] = transactionRes.records.map(record => {
-        return record.get('emotionsCount').low
-      })
-
-      return emotionsCount
-    },
-    PostsEmotionsByCurrentUser: async (object, params, context, resolveInfo) => {
-      const session = context.driver.session()
-      const { postId } = params
-      const transactionRes = await session.run(
-        `MATCH (user:User {id: $userId})-[emoted:EMOTED]->(post:Post {id: $postId})
-        RETURN collect(emoted.emotion) as emotion`,
-        { userId: context.user.id, postId },
-      )
-
-      session.close()
-
-      const [emotions] = transactionRes.records.map(record => {
-        return record.get('emotion')
-      })
-      return emotions
     },
   },
 }

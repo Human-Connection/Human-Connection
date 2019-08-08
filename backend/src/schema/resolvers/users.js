@@ -6,21 +6,41 @@ import Resolver from './helpers/Resolver'
 
 const instance = neode()
 
+export const getBlockedUsers = async context => {
+  const { neode } = context
+  const userModel = neode.model('User')
+  let blockedUsers = neode
+    .query()
+    .match('user', userModel)
+    .where('user.id', context.user.id)
+    .relationship(userModel.relationships().get('blocked'))
+    .to('blocked', userModel)
+    .return('blocked')
+  blockedUsers = await blockedUsers.execute()
+  blockedUsers = blockedUsers.records.map(r => r.get('blocked').properties)
+  return blockedUsers
+}
+
+export const getBlockedByUsers = async context => {
+  const { neode } = context
+  const userModel = neode.model('User')
+  let blockedByUsers = neode
+    .query()
+    .match('user', userModel)
+    .relationship(userModel.relationships().get('blocked'))
+    .to('blocked', userModel)
+    .where('blocked.id', context.user.id)
+    .return('user')
+  blockedByUsers = await blockedByUsers.execute()
+  blockedByUsers = blockedByUsers.records.map(r => r.get('user').properties)
+  return blockedByUsers
+}
+
 export default {
   Query: {
     blockedUsers: async (object, args, context, resolveInfo) => {
       try {
-        const userModel = instance.model('User')
-        let blockedUsers = instance
-          .query()
-          .match('user', userModel)
-          .where('user.id', context.user.id)
-          .relationship(userModel.relationships().get('blocked'))
-          .to('blocked', userModel)
-          .return('blocked')
-        blockedUsers = await blockedUsers.execute()
-        blockedUsers = blockedUsers.records.map(r => r.get('blocked').properties)
-        return blockedUsers
+        return getBlockedUsers(context)
       } catch (e) {
         throw new UserInputError(e.message)
       }
