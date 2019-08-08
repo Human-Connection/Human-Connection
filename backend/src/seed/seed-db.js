@@ -294,9 +294,10 @@ import Factory from './factories'
       }),
     ])
 
-    const mention1 = 'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
+    const mention1 =
+      'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
     const mention2 =
-      'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
+      'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
 
     await Promise.all([
       asAdmin.create('Post', {
