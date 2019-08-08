@@ -192,6 +192,7 @@ const permissions = shield(
       DeleteUser: isDeletingOwnAccount,
       requestPasswordReset: allow,
       resetPassword: allow,
+      acceptTermsAndCondition: allow,
     },
     User: {
       email: isMyOwn,

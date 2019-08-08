@@ -55,11 +55,5 @@ module.exports = {
     isoDate: true,
     required: true,
     default: () => new Date().toISOString(),
-  },
-  termsAndConditionsConfirmed: {
-    type: 'string',
-    isoDate: true,
-    required: true,
-    default: () => new Date().toISOString(),
-  },
+  }
 }

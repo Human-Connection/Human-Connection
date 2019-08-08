@@ -23,7 +23,7 @@ type User {
   #updatedAt: DateTime
   createdAt: String
   updatedAt: String
-  termsAndConditionsConfirmed: String
+  termsAndConditionsConfirmedAt: String
 
   notifications(read: Boolean): [Notification]! @relation(name: "NOTIFIED", direction: "IN")
 
@@ -152,6 +152,7 @@ type Query {
 }
 
 type Mutation {
+  acceptTermsAndCondition(version: String!): Boolean
   UpdateUser (
     id: ID!
     name: String
