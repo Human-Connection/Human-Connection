@@ -71,6 +71,7 @@
 <script>
 import gql from 'graphql-tag'
 import PasswordStrength from '../Password/Strength'
+import { SweetalertIcon } from 'vue-sweetalert-icons'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
 
 export const SignupVerificationMutation = gql`
@@ -85,6 +86,7 @@ export const SignupVerificationMutation = gql`
 export default {
   components: {
     PasswordStrength,
+    SweetalertIcon,
   },
   data() {
     const passwordForm = PasswordForm({ translate: this.$t })
