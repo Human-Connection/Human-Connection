@@ -5,7 +5,6 @@ import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
 import VTooltip from 'v-tooltip'
 import FilterMenu from '~/components/FilterMenu/FilterMenu'
-import { mutations } from '~/store/default'
 
 const localVue = createLocalVue()
 
@@ -43,9 +42,6 @@ describe('PostIndex', () => {
         },
         'posts/usersFollowedFilter': () => {},
         'posts/categoriesFilter': () => {},
-      },
-      mutations: {
-        'default/SET_SHOW_FILTER_POSTS_DROPDOWN': mutations.SET_SHOW_FILTER_POSTS_DROPDOWN,
       },
     })
     mocks = {

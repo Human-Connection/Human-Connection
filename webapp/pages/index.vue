@@ -92,13 +92,9 @@ export default {
     }
   },
   mounted() {
-    this.toggleShowFilterPostsDropdown(true)
     if (this.hashtag) {
       this.changeFilterBubble({ tags_some: { name: this.hashtag } })
     }
-  },
-  beforeDestroy() {
-    this.toggleShowFilterPostsDropdown(false)
   },
   watch: {
     Post(post) {
@@ -122,7 +118,6 @@ export default {
   methods: {
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
-      toggleShowFilterPostsDropdown: 'default/SET_SHOW_FILTER_POSTS_DROPDOWN',
     }),
     changeFilterBubble(filter) {
       if (this.hashtag) {
