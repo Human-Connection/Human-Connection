@@ -76,7 +76,7 @@
     "tiptap-extensions": "~1.26.1",
     "v-tooltip": "~2.0.2",
     "vue-count-to": "~1.0.13",
-    "vue-izitoast": "1.1.2",
+    "vue-izitoast": "roschaefer/vue-izitoast#patch-1",
     "vuex-i18n": "~1.13.1",
     "vue-sweetalert-icons": "~4.1.0",
     "zxcvbn": "^4.4.2"
@@ -97,8 +97,8 @@
     "babel-jest": "~24.8.0",
     "babel-loader": "~8.0.6",
     "babel-preset-vue": "~2.0.2",
-    "css-loader": "~2.1.1",
     "core-js": "~2.6.9",
+    "css-loader": "~2.1.1",
     "eslint": "~5.16.0",
     "eslint-config-prettier": "~6.0.0",
     "eslint-config-standard": "~12.0.0",
