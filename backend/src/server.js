@@ -2,7 +2,6 @@ import express from 'express'
 import helmet from 'helmet'
 import { ApolloServer } from 'apollo-server-express'
 import CONFIG, { requiredConfigs } from './config'
-import mocks from './mocks'
 import middleware from './middleware'
 import { getDriver } from './bootstrap/neo4j'
 import decode from './jwt/decode'
@@ -34,7 +33,6 @@ const createServer = options => {
     schema: middleware(schema),
     debug: CONFIG.DEBUG,
     tracing: CONFIG.DEBUG,
-    mocks: CONFIG.MOCKS ? mocks : false,
   }
   const server = new ApolloServer(Object.assign({}, defaults, options))
 
