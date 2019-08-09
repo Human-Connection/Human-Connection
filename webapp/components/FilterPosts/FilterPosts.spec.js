@@ -4,8 +4,7 @@ import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import FilterPosts from './FilterPosts.vue'
 import FilterPostsMenuItem from './FilterPostsMenuItems.vue'
-import { mutations } from '~/store/posts'
-
+import { mutations, getters } from '~/store/posts'
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
@@ -53,6 +52,21 @@ describe('FilterPosts.vue', () => {
     const store = new Vuex.Store({
       mutations: {
         'posts/SET_POSTS': mutations.SET_POSTS,
+        'posts/SET_FILTERED_BY_CATEGORIES': mutations.SET_FILTERED_BY_CATEGORIES,
+        'posts/SET_FILTERED_BY_FOLLOWERS': mutations.SET_FILTERED_BY_FOLLOWERS,
+        'posts/SET_USERS_FOLLOWED_FILTER': mutations.SET_USERS_FOLLOWED_FILTER,
+        'posts/SET_CATEGORIES_FILTER': mutations.SET_CATEGORIES_FILTER,
+        'posts/SET_SELECTED_CATEGORY_IDS': mutations.SET_SELECTED_CATEGORY_IDS,
+      },
+      getters: {
+        'auth/user': () => {
+          return { id: 'u34' }
+        },
+        'posts/filteredByCategories': getters.filteredByCategories,
+        'posts/filteredByUsersFollowed': getters.filteredByUsersFollowed,
+        'posts/usersFollowedFilter': getters.usersFollowedFilter,
+        'posts/categoriesFilter': getters.categoriesFilter,
+        'posts/selectedCategoryIds': getters.selectedCategoryIds,
       },
     })
     const Wrapper = () => {
@@ -60,6 +74,13 @@ describe('FilterPosts.vue', () => {
     }
 
     beforeEach(() => {
+      store.replaceState({
+        filteredByCategories: false,
+        filteredByUsersFollowed: false,
+        usersFollowedFilter: {},
+        categoriesFilter: {},
+        selectedCategoryIds: [],
+      })
       wrapper = Wrapper()
       menuToggle = wrapper.findAll('a').at(0)
       menuToggle.trigger('click')
@@ -129,6 +150,43 @@ describe('FilterPosts.vue', () => {
       environmentAndNatureButton.trigger('click')
       const filterPostsMenuItem = wrapper.find(FilterPostsMenuItem)
       expect(filterPostsMenuItem.vm.selectedCategoryIds).toEqual([])
+    })
+
+    describe('click "filter-by-followed-authors-only" button', () => {
+      beforeEach(() => {
+        wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+      })
+
+      it('calls the filterPost query', () => {
+        expect(mocks.$apollo.query).toHaveBeenCalledWith(
+          expect.objectContaining({
+            variables: {
+              filter: { author: { followedBy_some: { id: 'u34' } } },
+              first: expect.any(Number),
+              offset: expect.any(Number),
+            },
+          }),
+        )
+      })
+
+      it('toggles filterBubble.author property', () => {
+        wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+        expect(mocks.$apollo.query).toHaveBeenCalledWith(
+          expect.objectContaining({
+            variables: {
+              filter: {},
+              first: expect.any(Number),
+              offset: expect.any(Number),
+            },
+          }),
+        )
+      })
+
+      it("sets the button's class to primary when clicked", async () => {
+        expect(
+          wrapper.find({ name: 'filter-by-followed-authors-only' }).classes('ds-button-primary'),
+        ).toBe(true)
+      })
     })
   })
 })

@@ -5,8 +5,16 @@
     "clearSearch": "Suche löschen"
   },
   "filter-posts": {
-    "header": "Themenkategorien",
-    "all": "Alle"
+    "categories": {
+      "header": "Themenkategorien",
+      "all": "Alle"
+    },
+    "general": {
+      "header": "Filtern nach..."
+    },
+    "followers": {
+      "label": "Benutzern, denen ich folge"
+    }
   },
   "site": {
     "made": "Mit &#10084; gemacht",

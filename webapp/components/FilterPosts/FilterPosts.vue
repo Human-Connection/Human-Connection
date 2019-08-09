@@ -5,7 +5,7 @@
       <ds-icon style="margin: 7px 0px 0px 2px" size="xx-small" name="angle-down" />
     </a>
     <template slot="popover">
-      <filter-posts-menu-items :chunk="chunk" @filterPosts="filterPosts" />
+      <filter-posts-menu-items :chunk="chunk" @filterPosts="filterPosts" :user="currentUser" />
     </template>
   </dropdown>
 </template>
@@ -13,7 +13,7 @@
 import _ from 'lodash'
 import Dropdown from '~/components/Dropdown'
 import { filterPosts } from '~/graphql/PostQuery.js'
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import FilterPostsMenuItems from '~/components/FilterPosts/FilterPostsMenuItems'
 
 export default {
@@ -32,6 +32,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
     chunk() {
       return _.chunk(this.categories, 2)
     },
@@ -40,13 +43,12 @@ export default {
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
     }),
-    filterPosts(categoryIds) {
-      const filter = categoryIds.length ? { categories_some: { id_in: categoryIds } } : {}
+    filterPosts(filter) {
       this.$apollo
         .query({
           query: filterPosts(this.$i18n),
           variables: {
-            filter: filter,
+            filter,
             first: this.pageSize,
             offset: 0,
           },

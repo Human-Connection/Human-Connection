@@ -2,12 +2,7 @@
   <div>
     <ds-flex :width="{ base: '100%' }" gutter="base">
       <ds-flex-item>
-        <filter-menu
-          :user="currentUser"
-          @changeFilterBubble="changeFilterBubble"
-          :hashtag="hashtag"
-          @clearSearch="clearSearch"
-        />
+        <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-flex-item>
       <ds-flex-item>
         <div class="sorting-dropdown">
@@ -97,9 +92,13 @@ export default {
     }
   },
   mounted() {
+    this.toggleShowFilterPostsDropdown(true)
     if (this.hashtag) {
       this.changeFilterBubble({ tags_some: { name: this.hashtag } })
     }
+  },
+  beforeDestroy() {
+    this.toggleShowFilterPostsDropdown(false)
   },
   watch: {
     Post(post) {
@@ -110,6 +109,8 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
       posts: 'posts/posts',
+      usersFollowedFilter: 'posts/usersFollowedFilter',
+      categoriesFilter: 'posts/categoriesFilter',
     }),
     tags() {
       return this.posts ? this.posts.tags.map(tag => tag.name) : '-'
@@ -121,6 +122,7 @@ export default {
   methods: {
     ...mapMutations({
       setPosts: 'posts/SET_POSTS',
+      toggleShowFilterPostsDropdown: 'default/SET_SHOW_FILTER_POSTS_DROPDOWN',
     }),
     changeFilterBubble(filter) {
       if (this.hashtag) {
@@ -133,6 +135,11 @@ export default {
       this.$apollo.queries.Post.refetch()
     },
     toggleOnlySorting(x) {
+      this.filter = {
+        ...this.usersFollowedFilter,
+        ...this.categoriesFilter,
+      }
+
       this.sortingIcon = x.icons
       this.sorting = x.order
       this.$apollo.queries.Post.refetch()
@@ -187,7 +194,11 @@ export default {
       },
       variables() {
         return {
-          filter: this.filter,
+          filter: {
+            ...this.usersFollowedFilter,
+            ...this.categoriesFilter,
+            ...this.filter,
+          },
           first: this.pageSize,
           offset: 0,
           orderBy: this.sorting,

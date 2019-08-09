@@ -5,6 +5,7 @@ import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
 import VTooltip from 'v-tooltip'
 import FilterMenu from '~/components/FilterMenu/FilterMenu'
+import { mutations } from '~/store/default'
 
 const localVue = createLocalVue()
 
@@ -40,6 +41,11 @@ describe('PostIndex', () => {
         'auth/user': () => {
           return { id: 'u23' }
         },
+        'posts/usersFollowedFilter': () => {},
+        'posts/categoriesFilter': () => {},
+      },
+      mutations: {
+        'default/SET_SHOW_FILTER_POSTS_DROPDOWN': mutations.SET_SHOW_FILTER_POSTS_DROPDOWN,
       },
     })
     mocks = {
@@ -93,11 +99,6 @@ describe('PostIndex', () => {
 
     beforeEach(() => {
       wrapper = Wrapper()
-    })
-
-    it('refetches Posts when changeFilterBubble is emitted', () => {
-      wrapper.find(FilterMenu).vm.$emit('changeFilterBubble')
-      expect(mocks.$apollo.queries.Post.refetch).toHaveBeenCalledTimes(1)
     })
 
     it('clears the search when the filter menu emits clearSearch', () => {

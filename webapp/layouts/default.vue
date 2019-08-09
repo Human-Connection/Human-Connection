@@ -38,7 +38,12 @@
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <no-ssr>
-                <filter-posts placement="top-start" offset="8" :categories="categories" />
+                <filter-posts
+                  v-show="showFilterPostsDropdown"
+                  placement="top-start"
+                  offset="8"
+                  :categories="categories"
+                />
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '10%', lg: '2%' }" />
@@ -142,7 +147,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
@@ -178,6 +183,9 @@ export default {
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
+      showFilterPostsDropdown: 'default/showFilterPostsDropdown',
+      usersFollowedFilter: 'posts/usersFollowedFilter',
+      categoriesFilter: 'posts/categoriesFilter',
     }),
     userName() {
       const { name } = this.user || {}
@@ -227,6 +235,9 @@ export default {
       quickSearch: 'search/quickSearch',
       fetchPosts: 'posts/fetchPosts',
     }),
+    ...mapMutations({
+      setFilteredByFollowers: 'posts/SET_FILTERED_BY_FOLLOWERS',
+    }),
     goToPost(item) {
       this.$nextTick(() => {
         this.$router.push({
@@ -247,7 +258,14 @@ export default {
     },
     redirectToRoot() {
       this.$router.replace('/')
-      this.fetchPosts({ i18n: this.$i18n, filter: {} })
+      this.fetchPosts({
+        i18n: this.$i18n,
+        filter: {
+          ...this.usersFollowedFilter,
+          ...this.categoriesFilter,
+          ...this.filter,
+        },
+      })
     },
   },
   apollo: {
