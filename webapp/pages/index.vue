@@ -33,7 +33,7 @@
         primary
       />
     </no-ssr>
-    <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
+    <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
   </div>
 </template>
 
@@ -55,6 +55,7 @@ export default {
     const { hashtag = null } = this.$route.query
     return {
       posts: [],
+      hasMore: true,
       // Initialize your apollo data
       offset: 0,
       pageSize: 12,
@@ -156,6 +157,7 @@ export default {
         // TODO: find out why `update` gets called twice initially.
         // We have to filter for uniq posts only because we get the same
         // result set twice.
+        this.hasMore = !!Post.length
         const posts = uniqBy([...this.posts, ...Post], 'id')
         this.posts = posts
       },
