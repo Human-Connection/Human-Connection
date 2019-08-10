@@ -28,7 +28,7 @@
 <script>
 export default {
   props: {
-    hashtag: { type: Object, default: null },
+    hashtag: { type: String, default: null },
   },
   methods: {
     clearSearch() {
