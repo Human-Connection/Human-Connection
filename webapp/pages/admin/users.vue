@@ -21,7 +21,7 @@
     <ds-card v-if="User && User.length">
       <ds-table :data="User" :fields="fields" condensed>
         <template slot="index" slot-scope="scope">
-          {{ scope.row.index }}.
+          {{ scope.row.index + 1 }}.
         </template>
         <template slot="name" slot-scope="scope">
           <nuxt-link
@@ -57,9 +57,7 @@
       </ds-flex>
     </ds-card>
     <ds-card v-else>
-      <ds-placeholder>
-        {{ $t('admin.users.empty') }}
-      </ds-placeholder>
+      <ds-placeholder>{{ $t('admin.users.empty') }}</ds-placeholder>
     </ds-card>
   </div>
 </template>

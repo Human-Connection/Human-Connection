@@ -2,7 +2,7 @@
   <ds-card :header="$t('admin.tags.name')">
     <ds-table :data="Tag" :fields="fields" condensed>
       <template slot="id" slot-scope="scope">
-        {{ scope.index + 1 }}
+        {{ scope.index + 1 }}.
       </template>
     </ds-table>
   </ds-card>

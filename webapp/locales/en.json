@@ -107,7 +107,7 @@
     "follow": "Follow",
     "followers": "Followers",
     "following": "Following",
-    "shouted": "Recommended",
+    "shouted": "Shouted",
     "commented": "Commented",
     "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find",
@@ -203,7 +203,7 @@
       "projects": "Projects",
       "invites": "Invites",
       "follows": "Follows",
-      "shouts": "Recommended"
+      "shouts": "Shouts"
     },
     "organizations": {
       "name": "Organizations"
@@ -235,7 +235,7 @@
       "postCount": "Posts"
     },
     "tags": {
-      "name": "Tags",
+      "name": "Hashtags",
       "tagCountUnique": "Users",
       "tagCount": "Posts"
     },
