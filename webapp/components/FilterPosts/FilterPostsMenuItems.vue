@@ -15,8 +15,8 @@
           <ds-flex-item width="100%">
             <ds-button
               icon="check"
-              @click.stop.prevent="toggleCategory()"
-              :primary="!filteredByCategories"
+              @click.stop.prevent="resetCategories"
+              :primary="!filteredCategoryIds.length"
             />
             <ds-flex-item>
               <label class="category-labels">{{ $t('filter-posts.categories.all') }}</label>
@@ -40,7 +40,7 @@
             <ds-flex-item width="100%" class="categories-menu-item">
               <ds-button
                 :icon="category.icon"
-                :primary="isActive(category.id)"
+                :primary="filteredCategoryIds.includes(category.id)"
                 @click.stop.prevent="toggleCategory(category.id)"
               />
               <ds-space margin-bottom="small" />
@@ -78,7 +78,7 @@
                 name="filter-by-followed-authors-only"
                 icon="user-plus"
                 :primary="filteredByUsersFollowed"
-                @click="toggleOnlyFollowed"
+                @click="toggleFilteredByFollowed(user.id)"
               />
               <ds-flex-item>
                 <label class="follow-label">{{ $t('filter-posts.followers.label') }}</label>
@@ -107,56 +107,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filteredByUsersFollowed: 'posts/filteredByUsersFollowed',
-      filteredByCategories: 'posts/filteredByCategories',
-      usersFollowedFilter: 'posts/usersFollowedFilter',
-      categoriesFilter: 'posts/categoriesFilter',
-      selectedCategoryIds: 'posts/selectedCategoryIds',
+      filteredCategoryIds: 'postsFilter/filteredCategoryIds',
+      filteredByUsersFollowed: 'postsFilter/filteredByUsersFollowed',
     }),
   },
   methods: {
     ...mapMutations({
-      setFilteredByFollowers: 'posts/SET_FILTERED_BY_FOLLOWERS',
-      setFilteredByCategories: 'posts/SET_FILTERED_BY_CATEGORIES',
-      setUsersFollowedFilter: 'posts/SET_USERS_FOLLOWED_FILTER',
-      setCategoriesFilter: 'posts/SET_CATEGORIES_FILTER',
-      setSelectedCategoryIds: 'posts/SET_SELECTED_CATEGORY_IDS',
+      toggleFilteredByFollowed: 'postsFilter/TOGGLE_FILTER_BY_FOLLOWED',
+      resetCategories: 'postsFilter/RESET_CATEGORIES',
+      toggleCategory: 'postsFilter/TOGGLE_CATEGORY',
     }),
-    isActive(id) {
-      const index = this.selectedCategoryIds.indexOf(id)
-      if (index > -1 && this.setFilteredByCategories) {
-        return true
-      }
-      return false
-    },
-    toggleCategory(categoryId) {
-      if (!categoryId) {
-        this.setSelectedCategoryIds()
-      } else {
-        this.setSelectedCategoryIds(categoryId)
-      }
-      this.setFilteredByCategories(!!this.selectedCategoryIds.length)
-      this.setCategoriesFilter(
-        this.selectedCategoryIds.length
-          ? { categories_some: { id_in: this.selectedCategoryIds } }
-          : {},
-      )
-      this.toggleFilter()
-    },
-    toggleOnlyFollowed() {
-      this.setFilteredByFollowers(!this.filteredByUsersFollowed)
-      this.setUsersFollowedFilter(
-        this.filteredByUsersFollowed ? { author: { followedBy_some: { id: this.user.id } } } : {},
-      )
-      this.toggleFilter()
-    },
-    toggleFilter() {
-      this.filter = {
-        ...this.usersFollowedFilter,
-        ...this.categoriesFilter,
-      }
-      this.$emit('filterPosts', this.filter)
-    },
   },
 }
 </script>

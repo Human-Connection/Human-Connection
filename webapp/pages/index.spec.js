@@ -5,7 +5,6 @@ import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
 import VTooltip from 'v-tooltip'
 import FilterMenu from '~/components/FilterMenu/FilterMenu'
-import { mutations } from '~/store/default'
 
 const localVue = createLocalVue()
 
@@ -27,25 +26,10 @@ describe('PostIndex', () => {
   beforeEach(() => {
     store = new Vuex.Store({
       getters: {
-        'posts/posts': () => {
-          return [
-            {
-              id: 'p23',
-              name: 'It is a post',
-              author: {
-                id: 'u1',
-              },
-            },
-          ]
-        },
+        'postsFilter/postsFilter': () => ({}),
         'auth/user': () => {
           return { id: 'u23' }
         },
-        'posts/usersFollowedFilter': () => {},
-        'posts/categoriesFilter': () => {},
-      },
-      mutations: {
-        'default/SET_SHOW_FILTER_POSTS_DROPDOWN': mutations.SET_SHOW_FILTER_POSTS_DROPDOWN,
       },
     })
     mocks = {
@@ -106,12 +90,6 @@ describe('PostIndex', () => {
       expect(wrapper.vm.hashtag).toBeNull()
     })
 
-    it('calls the changeFilterBubble if there are hasthags in the route query', () => {
-      mocks.$route.query.hashtag = { id: 'hashtag' }
-      wrapper = Wrapper()
-      expect(mocks.$apollo.queries.Post.refetch).toHaveBeenCalledTimes(1)
-    })
-
     describe('mount', () => {
       beforeEach(() => {
         wrapper = mount(PostIndex, {
@@ -129,12 +107,9 @@ describe('PostIndex', () => {
         expect(wrapper.vm.sorting).toEqual('createdAt_desc')
       })
 
-      it('loads more posts when a user clicks on the load more button', () => {
-        wrapper
-          .findAll('button')
-          .at(2)
-          .trigger('click')
-        expect(mocks.$apollo.queries.Post.fetchMore).toHaveBeenCalledTimes(1)
+      it('updates offset when a user clicks on the load more button', () => {
+        wrapper.find('.load-more button').trigger('click')
+        expect(wrapper.vm.offset).toEqual(12)
       })
     })
   })

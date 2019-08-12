@@ -183,7 +183,6 @@ export default {
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
-      showFilterPostsDropdown: 'default/showFilterPostsDropdown',
       usersFollowedFilter: 'posts/usersFollowedFilter',
       categoriesFilter: 'posts/categoriesFilter',
     }),
@@ -222,6 +221,10 @@ export default {
         })
       }
       return routes
+    },
+    showFilterPostsDropdown() {
+      const [firstRoute] = this.$route.matched
+      return firstRoute.name === 'index'
     },
   },
   watch: {

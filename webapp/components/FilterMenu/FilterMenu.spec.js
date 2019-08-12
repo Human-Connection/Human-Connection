@@ -20,7 +20,7 @@ describe('FilterMenu.vue', () => {
   describe('given a user', () => {
     beforeEach(() => {
       propsData = {
-        hashtag: {},
+        hashtag: null,
       }
     })
 
@@ -37,7 +37,7 @@ describe('FilterMenu.vue', () => {
       })
 
       it('renders a card if there are hashtags', () => {
-        propsData.hashtag = { hashtag: 'Frieden' }
+        propsData.hashtag = 'Frieden'
         wrapper = Wrapper()
         expect(wrapper.is('.ds-card')).toBe(true)
       })

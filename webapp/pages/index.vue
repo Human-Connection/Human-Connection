@@ -16,7 +16,7 @@
         </div>
       </ds-flex-item>
       <hc-post-card
-        v-for="(post, index) in posts"
+        v-for="post in posts"
         :key="post.id"
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
@@ -33,7 +33,7 @@
         primary
       />
     </no-ssr>
-    <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
+    <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
   </div>
 </template>
 
@@ -42,7 +42,7 @@ import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 
 export default {
@@ -54,10 +54,11 @@ export default {
   data() {
     const { hashtag = null } = this.$route.query
     return {
+      posts: [],
+      hasMore: true,
       // Initialize your apollo data
-      page: 1,
+      offset: 0,
       pageSize: 12,
-      filter: {},
       hashtag,
       placeholder: this.$t('sorting.newest'),
       selected: this.$t('sorting.newest'),
@@ -91,67 +92,37 @@ export default {
       ],
     }
   },
-  mounted() {
-    this.toggleShowFilterPostsDropdown(true)
-    if (this.hashtag) {
-      this.changeFilterBubble({ tags_some: { name: this.hashtag } })
-    }
-  },
-  beforeDestroy() {
-    this.toggleShowFilterPostsDropdown(false)
-  },
-  watch: {
-    Post(post) {
-      this.setPosts(this.Post)
-    },
-  },
   computed: {
     ...mapGetters({
-      currentUser: 'auth/user',
-      posts: 'posts/posts',
-      usersFollowedFilter: 'posts/usersFollowedFilter',
-      categoriesFilter: 'posts/categoriesFilter',
+      postsFilter: 'postsFilter/postsFilter',
     }),
-    tags() {
-      return this.posts ? this.posts.tags.map(tag => tag.name) : '-'
-    },
-    offset() {
-      return (this.page - 1) * this.pageSize
-    },
-  },
-  methods: {
-    ...mapMutations({
-      setPosts: 'posts/SET_POSTS',
-      toggleShowFilterPostsDropdown: 'default/SET_SHOW_FILTER_POSTS_DROPDOWN',
-    }),
-    changeFilterBubble(filter) {
+    finalFilters() {
+      let filter = this.postsFilter
       if (this.hashtag) {
         filter = {
           ...filter,
           tags_some: { name: this.hashtag },
         }
       }
-      this.filter = filter
-      this.$apollo.queries.Post.refetch()
+      return filter
     },
+  },
+  watch: {
+    postsFilter() {
+      this.offset = 0
+      this.posts = []
+    },
+  },
+  methods: {
     toggleOnlySorting(x) {
-      this.filter = {
-        ...this.usersFollowedFilter,
-        ...this.categoriesFilter,
-      }
-
+      this.offset = 0
+      this.posts = []
       this.sortingIcon = x.icons
       this.sorting = x.order
-      this.$apollo.queries.Post.refetch()
     },
     clearSearch() {
       this.$router.push({ path: '/' })
       this.hashtag = null
-      delete this.filter.tags_some
-      this.changeFilterBubble(this.filter)
-    },
-    uniq(items, field = 'id') {
-      return uniqBy(items, field)
     },
     href(post) {
       return this.$router.resolve({
@@ -160,31 +131,12 @@ export default {
       }).href
     },
     showMoreContributions() {
-      // this.page++
-      // Fetch more data and transform the original result
-      this.page++
-      this.$apollo.queries.Post.fetchMore({
-        variables: {
-          filter: this.filter,
-          first: this.pageSize,
-          offset: this.offset,
-        },
-        // Transform the previous result with new data
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          let output = { Post: this.Post }
-          output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
-          return output
-        },
-        fetchPolicy: 'cache-and-network',
-      })
+      this.offset += this.pageSize
     },
     deletePost(_index, postId) {
-      this.Post = this.Post.filter(post => {
+      this.posts = this.posts.filter(post => {
         return post.id !== postId
       })
-      // Why "uniq(Post)" is used in the array for list creation?
-      // Ideal solution here:
-      // this.Post.splice(index, 1)
     },
   },
   apollo: {
@@ -193,16 +145,21 @@ export default {
         return filterPosts(this.$i18n)
       },
       variables() {
-        return {
-          filter: {
-            ...this.usersFollowedFilter,
-            ...this.categoriesFilter,
-            ...this.filter,
-          },
+        const result = {
+          filter: this.finalFilters,
           first: this.pageSize,
-          offset: 0,
+          offset: this.offset,
           orderBy: this.sorting,
         }
+        return result
+      },
+      update({ Post }) {
+        // TODO: find out why `update` gets called twice initially.
+        // We have to filter for uniq posts only because we get the same
+        // result set twice.
+        this.hasMore = Post.length >= this.pageSize
+        const posts = uniqBy([...this.posts, ...Post], 'id')
+        this.posts = posts
       },
       fetchPolicy: 'cache-and-network',
     },
