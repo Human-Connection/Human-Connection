@@ -77,4 +77,10 @@ module.exports = {
     target: 'User',
     direction: 'out',
   },
+  notifications: {
+    type: 'relationship',
+    relationship: 'NOTIFIED',
+    target: 'Notification',
+    direction: 'in',
+  },
 }

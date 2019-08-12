@@ -1,12 +1,36 @@
-import { GraphQLClient } from 'graphql-request'
-import { host, login, gql } from '../../jest/helpers'
+import { gql } from '../../jest/helpers'
 import Factory from '../../seed/factories'
+import { createTestClient } from 'apollo-server-testing'
+import { neode, getDriver } from '../../bootstrap/neo4j'
+import createServer from '../../server'
 
 const factory = Factory()
-let client
+const driver = getDriver()
+const instance = neode()
+let server
+let query
+let mutate
+let user
+let authenticatedUser
+
+beforeAll(() => {
+  const createServerResult = createServer({
+    context: () => {
+      return {
+        user: authenticatedUser,
+        neode: instance,
+        driver,
+      }
+    },
+  })
+  server = createServerResult.server
+  const createTestClientResult = createTestClient(server)
+  query = createTestClientResult.query
+  mutate = createTestClientResult.mutate
+})
 
 beforeEach(async () => {
-  await factory.create('User', {
+  user = await instance.create('User', {
     id: 'you',
     name: 'Al Capone',
     slug: 'al-capone',
@@ -19,8 +43,8 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('currentUser { notifications }', () => {
-  const query = gql`
+describe('notifications', () => {
+  const notificationQuery = gql`
     query($read: Boolean) {
       currentUser {
         notifications(read: $read, orderBy: createdAt_desc) {
@@ -34,77 +58,54 @@ describe('currentUser { notifications }', () => {
   `
 
   describe('authenticated', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
+      authenticatedUser = user
     })
 
     describe('given another user', () => {
-      let authorClient
-      let authorParams
-      let authorHeaders
-
+      let author
       beforeEach(async () => {
-        authorParams = {
+        author = await instance.create('User', {
           email: 'author@example.org',
           password: '1234',
           id: 'author',
-        }
-        await factory.create('User', authorParams)
-        authorHeaders = await login(authorParams)
+        })
       })
 
       describe('who mentions me in a post', () => {
-        let post
         const title = 'Mentioning Al Capone'
         const content =
           'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
 
         beforeEach(async () => {
           const createPostMutation = gql`
-            mutation($title: String!, $content: String!) {
-              CreatePost(title: $title, content: $content) {
+            mutation($id: ID, $title: String!, $content: String!) {
+              CreatePost(id: $id, title: $title, content: $content) {
                 id
                 title
                 content
               }
             }
           `
-          authorClient = new GraphQLClient(host, {
-            headers: authorHeaders,
+          authenticatedUser = await author.toJson()
+          await mutate({
+            mutation: createPostMutation,
+            variables: { id: 'p47', title, content },
           })
-          const { CreatePost } = await authorClient.request(createPostMutation, {
-            title,
-            content,
-          })
-          post = CreatePost
+          authenticatedUser = await user.toJson()
         })
 
         it('sends you a notification', async () => {
           const expectedContent =
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
-          const expected = {
-            currentUser: {
-              notifications: [
-                {
-                  read: false,
-                  post: {
-                    content: expectedContent,
-                  },
-                },
-              ],
+          const expected = expect.objectContaining({
+            data: {
+              currentUser: { notifications: [{ read: false, post: { content: expectedContent } }] },
             },
-          }
+          })
+          const { query } = createTestClient(server)
           await expect(
-            client.request(query, {
-              read: false,
-            }),
+            query({ query: notificationQuery, variables: { read: false } }),
           ).resolves.toEqual(expected)
         })
 
@@ -132,41 +133,33 @@ describe('currentUser { notifications }', () => {
                 }
               }
             `
-            authorClient = new GraphQLClient(host, {
-              headers: authorHeaders,
+            authenticatedUser = await author.toJson()
+            await mutate({
+              mutation: updatePostMutation,
+              variables: {
+                id: 'p47',
+                title,
+                content: updatedContent,
+              },
             })
-            await authorClient.request(updatePostMutation, {
-              id: post.id,
-              title: post.title,
-              content: updatedContent,
-            })
+            authenticatedUser = await user.toJson()
           })
 
           it('creates exactly one more notification', async () => {
             const expectedContent =
               '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
-            const expected = {
-              currentUser: {
-                notifications: [
-                  {
-                    read: false,
-                    post: {
-                      content: expectedContent,
-                    },
-                  },
-                  {
-                    read: false,
-                    post: {
-                      content: expectedContent,
-                    },
-                  },
-                ],
+            const expected = expect.objectContaining({
+              data: {
+                currentUser: {
+                  notifications: [
+                    { read: false, post: { content: expectedContent } },
+                    { read: false, post: { content: expectedContent } },
+                  ],
+                },
               },
-            }
+            })
             await expect(
-              client.request(query, {
-                read: false,
-              }),
+              query({ query: notificationQuery, variables: { read: false } }),
             ).resolves.toEqual(expected)
           })
         })
@@ -204,46 +197,40 @@ describe('Hashtags', () => {
   `
 
   describe('authenticated', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
+      authenticatedUser = await user.toJson()
     })
 
     describe('create a Post with Hashtags', () => {
       beforeEach(async () => {
-        await client.request(createPostMutation, {
-          postId,
-          postTitle,
-          postContent,
+        await mutate({
+          mutation: createPostMutation,
+          variables: {
+            postId,
+            postTitle,
+            postContent,
+          },
         })
       })
 
-      it('both Hashtags are created with the "id" set to thier "name"', async () => {
+      it('both Hashtags are created with the "id" set to their "name"', async () => {
         const expected = [
-          {
-            id: 'Democracy',
-            name: 'Democracy',
-          },
-          {
-            id: 'Liberty',
-            name: 'Liberty',
-          },
+          { id: 'Democracy', name: 'Democracy' },
+          { id: 'Liberty', name: 'Liberty' },
         ]
         await expect(
-          client.request(postWithHastagsQuery, postWithHastagsVariables),
-        ).resolves.toEqual({
-          Post: [
-            {
-              tags: expect.arrayContaining(expected),
+          query({ query: postWithHastagsQuery, variables: postWithHastagsVariables }),
+        ).resolves.toEqual(
+          expect.objectContaining({
+            data: {
+              Post: [
+                {
+                  tags: expect.arrayContaining(expected),
+                },
+              ],
             },
-          ],
-        })
+          }),
+        )
       })
 
       describe('afterwards update the Post by removing a Hashtag, leaving a Hashtag and add a Hashtag', () => {
@@ -261,31 +248,28 @@ describe('Hashtags', () => {
         `
 
         it('only one previous Hashtag and the new Hashtag exists', async () => {
-          await client.request(updatePostMutation, {
-            postId,
-            postTitle,
-            updatedPostContent,
+          await mutate({
+            mutation: updatePostMutation,
+            variables: {
+              postId,
+              postTitle,
+              updatedPostContent,
+            },
           })
 
           const expected = [
-            {
-              id: 'Elections',
-              name: 'Elections',
-            },
-            {
-              id: 'Liberty',
-              name: 'Liberty',
-            },
+            { id: 'Elections', name: 'Elections' },
+            { id: 'Liberty', name: 'Liberty' },
           ]
           await expect(
-            client.request(postWithHastagsQuery, postWithHastagsVariables),
-          ).resolves.toEqual({
-            Post: [
-              {
-                tags: expect.arrayContaining(expected),
+            query({ query: postWithHastagsQuery, variables: postWithHastagsVariables }),
+          ).resolves.toEqual(
+            expect.objectContaining({
+              data: {
+                Post: [{ tags: expect.arrayContaining(expected) }],
               },
-            ],
-          })
+            }),
+          )
         })
       })
     })
