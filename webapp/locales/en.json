@@ -215,6 +215,7 @@
       },
       "table": {
         "columns": {
+          "number": "#",
           "name": "Name",
           "slug": "Slug",
           "role": "Role",
@@ -236,6 +237,8 @@
     },
     "tags": {
       "name": "Hashtags",
+      "number": "#",
+      "nameOfHashtag": "Name",
       "tagCountUnique": "Users",
       "tagCount": "Posts"
     },
@@ -251,7 +254,12 @@
   "post": {
     "name": "Post",
     "moreInfo": {
-      "name": "More info"
+      "name": "More info",
+      "title": "More Informations",
+      "description": "Here you can find more information about this topic.",
+      "titleOfCategoriesSection": "Categories",
+      "titleOfHashtagsSection": "Hashtags",
+      "titleOfRelatedContributionsSection": "Related Posts"
     },
     "takeAction": {
       "name": "Take action"

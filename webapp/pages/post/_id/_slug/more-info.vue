@@ -1,11 +1,11 @@
 <template>
   <ds-card>
-    <h2 style="margin-bottom: .2em;">Mehr Informationen</h2>
-    <p>Hier findest du weitere infos zum Thema.</p>
+    <h2 style="margin-bottom: .2em;">{{ $t('post.moreInfo.title') }}</h2>
+    <p>{{ $t('post.moreInfo.description') }}</p>
     <ds-space />
     <h3>
-      <ds-icon name="compass" />
-      Themenkategorien
+      <!-- <ds-icon name="compass" /> -->
+      {{ $t('post.moreInfo.titleOfCategoriesSection') }}
     </h3>
     <div class="tags">
       <ds-icon
@@ -22,8 +22,8 @@
     </div>
     <template v-if="post.tags && post.tags.length">
       <h3>
-        <ds-icon name="tags" />
-        Schlagwörter
+        <!-- <ds-icon name="tags" /> -->
+        {{ $t('post.moreInfo.titleOfHashtagsSection') }}
       </h3>
       <div class="tags">
         <ds-tag v-for="tag in post.tags" :key="tag.id">
@@ -32,7 +32,7 @@
         </ds-tag>
       </div>
     </template>
-    <h3>Verwandte Beiträge</h3>
+    <h3>{{ $t('post.moreInfo.titleOfRelatedContributionsSection') }}</h3>
     <ds-section style="margin: 0 -1.5rem; padding: 1.5rem;">
       <ds-flex v-if="post.relatedContributions && post.relatedContributions.length" gutter="small">
         <hc-post-card
@@ -71,7 +71,7 @@ export default {
   apollo: {
     Post: {
       query() {
-        return gql(`
+        return gql`
           query Post($slug: String!) {
             Post(slug: $slug) {
               id
@@ -118,7 +118,7 @@ export default {
               shoutedCount
             }
           }
-        `)
+        `
       },
       variables() {
         return {

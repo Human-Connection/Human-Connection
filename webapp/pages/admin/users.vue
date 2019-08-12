@@ -90,7 +90,7 @@ export default {
     },
     fields() {
       return {
-        index: '#',
+        index: this.$t('admin.users.table.columns.number'),
         name: this.$t('admin.users.table.columns.name'),
         slug: this.$t('admin.users.table.columns.slug'),
         createdAt: this.$t('admin.users.table.columns.createdAt'),
@@ -116,20 +116,26 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql(`
-        query($filter: _UserFilter, $first: Int, $offset: Int, $email: String) {
-          User(email: $email, filter: $filter, first: $first, offset: $offset, orderBy: createdAt_desc) {
-            id
-            name
-            slug
-            role
-            createdAt
-            contributionsCount
-            commentedCount
-            shoutedCount
+        return gql`
+          query($filter: _UserFilter, $first: Int, $offset: Int, $email: String) {
+            User(
+              email: $email
+              filter: $filter
+              first: $first
+              offset: $offset
+              orderBy: createdAt_desc
+            ) {
+              id
+              name
+              slug
+              role
+              createdAt
+              contributionsCount
+              commentedCount
+              shoutedCount
+            }
           }
-        }
-      `)
+        `
       },
       variables() {
         const { offset, first, email, filter } = this

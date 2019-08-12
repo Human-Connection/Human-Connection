@@ -4,6 +4,11 @@
       <template slot="id" slot-scope="scope">
         {{ scope.index + 1 }}.
       </template>
+      <template slot="name" slot-scope="scope">
+        <nuxt-link :to="{ path: '/', query: { hashtag: scope.row.id } }">
+          <b>#{{ scope.row.name | truncate(20) }}</b>
+        </nuxt-link>
+      </template>
     </ds-table>
   </ds-card>
 </template>
@@ -20,8 +25,8 @@ export default {
   computed: {
     fields() {
       return {
-        id: '#',
-        name: 'Name',
+        id: this.$t('admin.tags.number'),
+        name: this.$t('admin.tags.name'),
         taggedCountUnique: {
           label: this.$t('admin.tags.tagCountUnique'),
           align: 'right',
@@ -35,7 +40,7 @@ export default {
   },
   apollo: {
     Tag: {
-      query: gql(`
+      query: gql`
         query {
           Tag(first: 20, orderBy: taggedCountUnique_desc) {
             id
@@ -44,7 +49,7 @@ export default {
             taggedCountUnique
           }
         }
-      `),
+      `,
     },
   },
 }
