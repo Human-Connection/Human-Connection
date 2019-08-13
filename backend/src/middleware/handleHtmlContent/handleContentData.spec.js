@@ -77,7 +77,7 @@ describe('notifications', () => {
         const content =
           'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
 
-        beforeEach(async () => {
+        const createPostAction = async () => {
           const createPostMutation = gql`
             mutation($id: ID, $title: String!, $content: String!) {
               CreatePost(id: $id, title: $title, content: $content) {
@@ -93,9 +93,10 @@ describe('notifications', () => {
             variables: { id: 'p47', title, content },
           })
           authenticatedUser = await user.toJson()
-        })
+        }
 
         it('sends you a notification', async () => {
+          await createPostAction()
           const expectedContent =
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
           const expected = expect.objectContaining({
@@ -110,7 +111,7 @@ describe('notifications', () => {
         })
 
         describe('who mentions me many times', () => {
-          beforeEach(async () => {
+          const updatePostAction = async () => {
             const updatedContent = `
               One more mention to
               <a data-mention-id="you" class="mention" href="/profile/you">
@@ -143,9 +144,11 @@ describe('notifications', () => {
               },
             })
             authenticatedUser = await user.toJson()
-          })
+          }
 
           it('creates exactly one more notification', async () => {
+            await createPostAction()
+            await updatePostAction()
             const expectedContent =
               '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
             const expected = expect.objectContaining({
@@ -158,6 +161,23 @@ describe('notifications', () => {
                 },
               },
             })
+            await expect(
+              query({ query: notificationQuery, variables: { read: false } }),
+            ).resolves.toEqual(expected)
+          })
+        })
+
+        describe('but the author of the post blocked me', () => {
+          beforeEach(async () => {
+            await author.relateTo(user, 'blocked')
+          })
+
+          it('sends no notification', async () => {
+            await createPostAction()
+            const expected = expect.objectContaining({
+              data: { currentUser: { notifications: [] } },
+            })
+            const { query } = createTestClient(server)
             await expect(
               query({ query: notificationQuery, variables: { read: false } }),
             ).resolves.toEqual(expected)
