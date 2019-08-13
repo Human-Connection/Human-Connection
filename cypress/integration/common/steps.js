@@ -362,3 +362,31 @@ Then("the notification gets marked as read", () => {
 Then("there are no notifications in the top menu", () => {
   cy.get(".notifications-menu").should("contain", "0");
 });
+
+Given("there is an annoying user called {string}", (name) => {
+  cy.factory().create('User', { id: 'annoying-user', name })
+})
+
+Given("I am on the profile page of the annoying user", (name) => {
+  cy.openPage('/profile/annoying-user');
+})
+
+When("I ", (name) => {
+  cy.openPage('/profile/annoying-user');
+})
+
+When("I click on {string} from the content menu in the user info box", (button) => {
+  cy.get('.user-content-menu .content-menu-trigger')
+    .click()
+  cy.get('.popover .ds-menu-item-link')
+    .contains(button)
+    .click()
+})
+
+
+When ("I navigate to my {string} settings page", (settingsPage) => {
+  cy.get(".avatar-menu").click();
+  cy.get(".avatar-menu-popover")
+    .find('a[href]').contains("Settings").click()
+  cy.contains('.ds-menu-item-link', settingsPage).click()
+})
