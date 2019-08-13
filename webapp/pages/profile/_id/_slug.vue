@@ -382,10 +382,13 @@ export default {
     },
     async block(user) {
       await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
-      await this.fetchUser()
+      this.$apollo.queries.User.refetch()
+      this.$apollo.queries.Post.refetch()
     },
     async unblock(user) {
       await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
+      this.$apollo.queries.User.refetch()
+      this.$apollo.queries.Post.refetch()
     },
   },
   apollo: {
