@@ -376,7 +376,7 @@ Given("there is an annoying user called {string}", (name) => {
 })
 
 Given("I am on the profile page of the annoying user", (name) => {
-  cy.openPage('/profile/annoying-user');
+  cy.openPage('/profile/annoying-user/spammy-spammer');
 })
 
 When("I visit the profile page of the annoying user", (name) => {
@@ -428,4 +428,30 @@ Then("the list of posts of this user is empty", () => {
 Then("nobody is following the user profile anymore", () => {
   cy.get('.ds-card-content').not('.post-link')
   cy.get('.main-container').contains('.ds-card-content', 'is not followed by anyone')
+})
+
+Given("I wrote a post {string}", (title) => {
+  cy.factory()
+    .authenticateAs(loginCredentials)
+    .create("Post", { title })
+})
+
+When("I block the user {string}", (name) => {
+  cy.neode()
+    .first('User', { name }).then((blocked) => {
+      cy.neode()
+        .first('User', {name: narratorParams.name})
+        .relateTo(blocked, 'blocked')
+    })
+})
+
+When("I log in with:", (table) => {
+  const [firstRow] = table.hashes()
+  const { Email, Password } = firstRow
+  cy.login({email: Email, password: Password})
+})
+
+Then("I see only one post with the title {string}", (title) => {
+  cy.get('.main-container').find('.post-link').should('have.length', 1)
+  cy.get('.main-container').contains('.post-link', title)
 })

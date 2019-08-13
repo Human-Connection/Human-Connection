@@ -23,7 +23,6 @@ Cypress.Commands.add(
   'first',
   { prevSubject: true },
   async (neode, model, properties) => {
-    console.log(neode)
     return neode.first(model, properties)
   }
 )
