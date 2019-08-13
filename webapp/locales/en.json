@@ -196,6 +196,8 @@
         "intro": "If another user has been blocked by you, this is what happens:",
         "your-perspective": "The blocked person's posts will no longer appear in your news feed.",
         "their-perspective": "Vice versa: The blocked person will also no longer see your posts in their news feed.",
+        "search": "Posts of blocked people disappear from your search results.",
+        "notifications": "Blocked users will no longer receive notifications if they are mentioned in your posts.",
         "closing": "This should be sufficient for now so that blocked users can no longer bother you."
 
       },

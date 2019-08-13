@@ -12,6 +12,12 @@
           <ds-list-item>
             {{ $t('settings.blocked-users.explanation.their-perspective') }}
           </ds-list-item>
+          <ds-list-item>
+            {{ $t('settings.blocked-users.explanation.search') }}
+          </ds-list-item>
+          <ds-list-item>
+            {{ $t('settings.blocked-users.explanation.notifications') }}
+          </ds-list-item>
         </ds-list>
         <ds-text>
           {{ $t('settings.blocked-users.explanation.closing') }}
