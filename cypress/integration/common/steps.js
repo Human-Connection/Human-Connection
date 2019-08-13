@@ -364,10 +364,22 @@ Then("there are no notifications in the top menu", () => {
 });
 
 Given("there is an annoying user called {string}", (name) => {
-  cy.factory().create('User', { id: 'annoying-user', name })
+  const annoyingParams = {
+    email: 'spammy-spammer@example.org',
+    password: '1234',
+  }
+  cy.factory().create('User', {
+    ...annoyingParams,
+    id: 'annoying-user',
+    name
+  })
 })
 
 Given("I am on the profile page of the annoying user", (name) => {
+  cy.openPage('/profile/annoying-user');
+})
+
+When("I visit the profile page of the annoying user", (name) => {
   cy.openPage('/profile/annoying-user');
 })
 
@@ -383,10 +395,37 @@ When("I click on {string} from the content menu in the user info box", (button) 
     .click()
 })
 
-
 When ("I navigate to my {string} settings page", (settingsPage) => {
   cy.get(".avatar-menu").click();
   cy.get(".avatar-menu-popover")
     .find('a[href]').contains("Settings").click()
   cy.contains('.ds-menu-item-link', settingsPage).click()
+})
+
+Given("I follow the user {string}", (name) => {
+  cy.neode()
+    .first('User', { name }).then((followed) => {
+      cy.neode()
+        .first('User', {name: narratorParams.name})
+        .relateTo(followed, 'following')
+    })
+})
+
+Given("\"Spammy Spammer\" wrote a post {string}", (title) => {
+  cy.factory()
+    .authenticateAs({
+      email: 'spammy-spammer@example.org',
+      password: '1234',
+    })
+    .create("Post", { title })
+})
+
+Then("the list of posts of this user is empty", () => {
+  cy.get('.ds-card-content').not('.post-link')
+  cy.get('.main-container').find('.ds-space.hc-empty')
+})
+
+Then("nobody is following the user profile anymore", () => {
+  cy.get('.ds-card-content').not('.post-link')
+  cy.get('.main-container').contains('.ds-card-content', 'is not followed by anyone')
 })
