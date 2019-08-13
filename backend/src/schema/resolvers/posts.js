@@ -5,6 +5,7 @@ import { getBlockedUsers, getBlockedByUsers } from './users.js'
 import { mergeWith, isArray } from 'lodash'
 
 const filterForBlockedUsers = async (params, context) => {
+  if (!context.user) return params
   const [blockedUsers, blockedByUsers] = await Promise.all([
     getBlockedUsers(context),
     getBlockedByUsers(context),
