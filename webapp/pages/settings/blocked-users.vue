@@ -96,7 +96,7 @@ export default {
     },
   },
   apollo: {
-    blockedUsers: { query: BlockedUsers },
+    blockedUsers: { query: BlockedUsers, fetchPolicy: 'cache-and-network' },
   },
 }
 </script>
