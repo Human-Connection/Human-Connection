@@ -36,7 +36,7 @@
     "newest": "Newest",
     "oldest": "Oldest",
     "popular": "Popular",
-    "commented": "most Commented"
+    "commented": "Most commented"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
@@ -168,12 +168,12 @@
       "name": "Download Data"
     },
     "deleteUserAccount": {
-      "name": "Delete Data",
+      "name": "Delete data",
       "contributionsCount": "Delete my {count} posts",
       "commentsCount": "Delete my {count} comments",
       "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
       "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
-      "success": "Account successfully deleted",
+      "success": "Account successfully deleted!",
       "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
     },
     "organizations": {
@@ -329,7 +329,7 @@
   "disable": {
     "submit": "Disable",
     "cancel": "Cancel",
-    "success": "Disabled successfully",
+    "success": "Disabled successfully!",
     "user": {
       "title": "Disable User",
       "type": "User",
@@ -417,7 +417,7 @@
   },
   "user": {
     "avatar": {
-      "submitted": "Upload successful"
+      "submitted": "Upload successful!"
     }
   },
   "contribution": {

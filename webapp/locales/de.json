@@ -173,7 +173,7 @@
       "commentsCount": "Meine {count} Kommentare löschen",
       "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
       "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
-      "success": "Konto erfolgreich gelöscht",
+      "success": "Konto erfolgreich gelöscht!",
       "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen."
     },
     "organizations": {
@@ -329,7 +329,7 @@
   "disable": {
     "submit": "Deaktivieren",
     "cancel": "Abbrechen",
-    "success": "Erfolgreich deaktiviert",
+    "success": "Erfolgreich deaktiviert!",
     "user": {
       "title": "Nutzer sperren",
       "type": "Nutzer",
@@ -543,12 +543,12 @@
       "description": "Sollte Dir die Alphaversion unseres Netzwerks wider Erwarten, egal aus welchen Gründen, nicht gefallen, überweisen wir Dir Deine gespendeten Monatsbeiträge innerhalb der ersten 2 Monate gerne zurück. Einfach Mail an:  <a href=\"mailto:info@human-connection.org\" target=\"_blank\" s> info@human-connection.org </a> Achtung: Viele Funktionen werden erst nach und nach eingebaut."
     },
     "questions": {
-    "title": "Fragen",
-    "description": "Die Termine und Links zu den Zoom-Räumen findest Du hier: <a href=\"https://human-connection.org/events-und-news/\" target=\"_blank\" >https://human-connection.org/veranstaltungen/ </a>"
+      "title": "Fragen",
+      "description": "Die Termine und Links zu den Zoom-Räumen findest Du hier: <a href=\"https://human-connection.org/events-und-news/\" target=\"_blank\" >https://human-connection.org/veranstaltungen/ </a>"
     },
     "human-connection": {
-    "title": "Von Menschen für Menschen:",
-    "description": "Bitte hilf uns weitere monatlichen Spender für Human Connection zu bekommen, damit das Netzwerk so schnell wie möglich offiziell an den Start gehen kann. <a href=\"https://human-connection.org/\" target=\"_blank\"> https://human-connection.org </a>"
+      "title": "Von Menschen für Menschen:",
+      "description": "Bitte hilf uns weitere monatlichen Spender für Human Connection zu bekommen, damit das Netzwerk so schnell wie möglich offiziell an den Start gehen kann. <a href=\"https://human-connection.org/\" target=\"_blank\"> https://human-connection.org </a>"
     },
     "have-fun": "Jetzt aber viel Spaß mit der Alpha von Human Connection! Für den ersten Weltfrieden. ♥︎",
     "closing": "Herzlichst <br><br> Euer Human Connection Team"
