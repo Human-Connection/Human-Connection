@@ -189,6 +189,25 @@
       "submit": "Add link",
       "successAdd": "Added social media. Updated user profile!",
       "successDelete": "Deleted social media. Updated user profile!"
+    },
+    "blocked-users": {
+      "name": "Blocked users",
+      "explanation": {
+        "intro": "If another user has been blocked by you, this is what happens:",
+        "your-perspective": "The blocked person's posts will no longer appear in your news feed.",
+        "their-perspective": "Vice versa: The blocked person will also no longer see your posts in their news feed.",
+        "search": "Posts of blocked people disappear from your search results.",
+        "notifications": "Blocked users will no longer receive notifications if they are mentioned in your posts.",
+        "closing": "This should be sufficient for now so that blocked users can no longer bother you."
+      },
+      "columns": {
+        "name": "Name",
+        "slug": "Slug"
+      },
+      "empty": "So far, you have not blocked anybody.",
+      "how-to": "You can block other users on their profile page via the content menu.",
+      "block": "Block user",
+      "unblock": "Unblock user"
     }
   },
   "admin": {

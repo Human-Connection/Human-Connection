@@ -120,60 +120,22 @@ import Factory from './factories'
       bobDerBaumeister.relateTo(turtle, 'rewarded'),
       jennyRostock.relateTo(bear, 'rewarded'),
       dagobert.relateTo(rabbit, 'rewarded'),
-    ])
 
-    await Promise.all([
-      f.relate('User', 'Friends', {
-        from: 'u1',
-        to: 'u2',
-      }),
-      f.relate('User', 'Friends', {
-        from: 'u1',
-        to: 'u3',
-      }),
-      f.relate('User', 'Friends', {
-        from: 'u2',
-        to: 'u3',
-      }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u4',
-      }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u5',
-      }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u6',
-      }),
-    ])
+      peterLustig.relateTo(bobDerBaumeister, 'friends'),
+      peterLustig.relateTo(jennyRostock, 'friends'),
+      bobDerBaumeister.relateTo(jennyRostock, 'friends'),
 
-    await Promise.all([
-      asAdmin.follow({
-        id: 'u3',
-        type: 'User',
-      }),
-      asModerator.follow({
-        id: 'u4',
-        type: 'User',
-      }),
-      asUser.follow({
-        id: 'u4',
-        type: 'User',
-      }),
-      asTick.follow({
-        id: 'u6',
-        type: 'User',
-      }),
-      asTrick.follow({
-        id: 'u4',
-        type: 'User',
-      }),
-      asTrack.follow({
-        id: 'u3',
-        type: 'User',
-      }),
+      peterLustig.relateTo(jennyRostock, 'following'),
+      peterLustig.relateTo(tick, 'following'),
+      bobDerBaumeister.relateTo(tick, 'following'),
+      jennyRostock.relateTo(tick, 'following'),
+      tick.relateTo(track, 'following'),
+      trick.relateTo(tick, 'following'),
+      track.relateTo(jennyRostock, 'following'),
+
+      dagobert.relateTo(tick, 'blocked'),
+      dagobert.relateTo(trick, 'blocked'),
+      dagobert.relateTo(track, 'blocked'),
     ])
 
     await Promise.all([

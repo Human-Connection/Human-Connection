@@ -5,11 +5,12 @@ const notify = async (postId, idsOfMentionedUsers, context) => {
   const session = context.driver.session()
   const createdAt = new Date().toISOString()
   const cypher = `
-    match(u:User) where u.id in $idsOfMentionedUsers
-    match(p:Post) where p.id = $postId
-    create(n:Notification{id: apoc.create.uuid(), read: false, createdAt: $createdAt})
-    merge (n)-[:NOTIFIED]->(u)
-    merge (p)-[:NOTIFIED]->(n)
+    MATCH(p:Post {id: $postId})<-[:WROTE]-(author:User)
+    MATCH(u:User)
+    WHERE u.id in $idsOfMentionedUsers
+    AND NOT (u)<-[:BLOCKED]-(author)
+    CREATE(n:Notification{id: apoc.create.uuid(), read: false, createdAt: $createdAt})
+    MERGE (p)-[:NOTIFIED]->(n)-[:NOTIFIED]->(u)
     `
   await session.run(cypher, {
     idsOfMentionedUsers,
