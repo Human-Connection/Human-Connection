@@ -1,75 +1,83 @@
 <template>
-  <ds-card v-if="success" class="success">
-    <ds-space>
-      <sweetalert-icon icon="success" />
-      <ds-text align="center" bold color="success">
-        {{ $t('registration.create-user-account.success') }}
-      </ds-text>
-    </ds-space>
-  </ds-card>
-  <ds-form
-    v-else
-    class="create-user-account"
-    v-model="formData"
-    :schema="formSchema"
-    @submit="submit"
-  >
-    <template slot-scope="{ errors }">
-      <ds-card :header="$t('registration.create-user-account.title')">
-        <ds-input
-          id="name"
-          model="name"
-          icon="user"
-          :label="$t('settings.data.labelName')"
-          :placeholder="$t('settings.data.namePlaceholder')"
-        />
-        <ds-input
-          id="bio"
-          model="about"
-          type="textarea"
-          rows="3"
-          :label="$t('settings.data.labelBio')"
-          :placeholder="$t('settings.data.labelBio')"
-        />
-        <ds-input
-          id="password"
-          model="password"
-          type="password"
-          autocomplete="off"
-          :label="$t('settings.security.change-password.label-new-password')"
-        />
-        <ds-input
-          id="passwordConfirmation"
-          model="passwordConfirmation"
-          type="password"
-          autocomplete="off"
-          :label="$t('settings.security.change-password.label-new-password-confirm')"
-        />
-        <password-strength :password="formData.password" />
-        <ds-section>
+  <ds-container width="small">
+    <ds-card v-if="success" class="success">
+      <ds-space>
+        <sweetalert-icon icon="success" />
+        <ds-text align="center" bold color="success">
+          {{ $t('registration.create-user-account.success') }}
+        </ds-text>
+      </ds-space>
+    </ds-card>
+    <ds-form
+      v-else
+      class="create-user-account"
+      v-model="formData"
+      :schema="formSchema"
+      @submit="submit"
+    >
+      <template slot-scope="{ errors }">
+        <ds-card :header="$t('registration.create-user-account.title')">
+          <ds-input
+            id="name"
+            model="name"
+            icon="user"
+            :label="$t('settings.data.labelName')"
+            :placeholder="$t('settings.data.namePlaceholder')"
+          />
+          <ds-input
+            id="bio"
+            model="about"
+            type="textarea"
+            rows="3"
+            :label="$t('settings.data.labelBio')"
+            :placeholder="$t('settings.data.labelBio')"
+          />
+          <ds-input
+            id="password"
+            model="password"
+            type="password"
+            autocomplete="off"
+            :label="$t('settings.security.change-password.label-new-password')"
+          />
+          <ds-input
+            id="passwordConfirmation"
+            model="passwordConfirmation"
+            type="password"
+            autocomplete="off"
+            :label="$t('settings.security.change-password.label-new-password-confirm')"
+          />
+          <password-strength :password="formData.password" />
+
           <ds-text>
-            <input id="checkbox" type="checkbox" v-model="checkedDefault" @change="checked" />
-            <label for="checkbox" v-html="$t('site.termsAndConditionsCeckbox')"></label>
+            <input
+              id="checkbox"
+              type="checkbox"
+              v-model="checkedConfimed"
+              @change="checked"
+              :checked="checkedConfimed"
+            />
+            <label for="checkbox" v-html="$t('site.termsAndConditionsRead')"></label>
           </ds-text>
-        </ds-section>
-        <template slot="footer">
-          <ds-space class="backendErrors" v-if="backendErrors">
-            <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
-          </ds-space>
-          <ds-button
-            style="float: right;"
-            icon="check"
-            type="submit"
-            :loading="$apollo.loading"
-            :disabled="errors"
-            primary
-          >
-            {{ $t('actions.save') }}
-          </ds-button>
-        </template>
-      </ds-card>
-    </template>
-  </ds-form>
+
+          <template slot="footer">
+            <ds-space class="backendErrors" v-if="backendErrors">
+              <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
+            </ds-space>
+            <ds-button
+              style="float: right;"
+              icon="check"
+              type="submit"
+              :loading="$apollo.loading"
+              :disabled="errors"
+              primary
+            >
+              {{ $t('actions.save') }}
+            </ds-button>
+          </template>
+        </ds-card>
+      </template>
+    </ds-form>
+  </ds-container>
 </template>
 
 <script>
@@ -112,7 +120,7 @@ export default {
       disabled: true,
       success: null,
       backendErrors: null,
-      checkedDefault: false,
+      checkedConfimed: false,
     }
   },
   props: {
@@ -121,10 +129,12 @@ export default {
   },
   methods: {
     checked: function() {
-      this.backendErrors = { message: '' }
+      this.backendErrors = { message: null }
+      console.log('tzzzzzzzzzz')
+      this.disabled = true
     },
     async submit() {
-      if (this.checkedDefault) {
+      if (this.checkedConfimed) {
         const { name, password, about } = this.formData
         const { email, nonce } = this
         try {
@@ -143,7 +153,7 @@ export default {
           this.backendErrors = err
         }
       } else {
-        this.backendErrors = { message: this.$t(`site.termsAndConditionsNoChecked`) }
+        this.backendErrors = { message: this.$t(`site.confirmTermsAndConditions`) }
       }
     },
   },

@@ -23,8 +23,8 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland",
     "code-of-conduct": "Verhaltenscodex",
-    "termsAndConditionsCeckbox": "<a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> gelesen und verstanden",
-    "termsAndConditionsNoChecked": "Bitte lies und bestätige die Nutzungsbednigungen!"
+    "termsAndConditionsRead": "<a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> gelesen und verstanden",
+    "confirmTermsAndConditions": "Bitte lies und bestätige die Nutzungsbednigungen!"
   },
   "sorting": {
     "newest": "Neuste",
