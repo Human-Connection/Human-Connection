@@ -107,7 +107,7 @@
     "follow": "Follow",
     "followers": "Followers",
     "following": "Following",
-    "shouted": "Recommended",
+    "shouted": "Shouted",
     "commented": "Commented",
     "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find",
@@ -203,7 +203,7 @@
       "projects": "Projects",
       "invites": "Invites",
       "follows": "Follows",
-      "shouts": "Recommended"
+      "shouts": "Shouts"
     },
     "organizations": {
       "name": "Organizations"
@@ -215,6 +215,7 @@
       },
       "table": {
         "columns": {
+          "number": "No.",
           "name": "Name",
           "slug": "Slug",
           "role": "Role",
@@ -235,7 +236,9 @@
       "postCount": "Posts"
     },
     "tags": {
-      "name": "Tags",
+      "name": "Hashtags",
+      "number": "No.",
+      "nameOfHashtag": "Name",
       "tagCountUnique": "Users",
       "tagCount": "Posts"
     },
@@ -251,7 +254,12 @@
   "post": {
     "name": "Post",
     "moreInfo": {
-      "name": "More info"
+      "name": "More info",
+      "title": "More information",
+      "description": "Here you can find more information about this topic.",
+      "titleOfCategoriesSection": "Categories",
+      "titleOfHashtagsSection": "Hashtags",
+      "titleOfRelatedContributionsSection": "Related posts"
     },
     "takeAction": {
       "name": "Take action"

@@ -215,6 +215,7 @@
       },
       "table": {
         "columns": {
+          "number": "Nr.",
           "name": "Name",
           "slug": "Slug",
           "role": "Rolle",
@@ -235,7 +236,9 @@
       "postCount": "Beiträge"
     },
     "tags": {
-      "name": "Schlagworte",
+      "name": "Hashtags",
+      "number": "Nr.",
+      "nameOfHashtag": "Name",
       "tagCountUnique": "Benutzer",
       "tagCount": "Beiträge"
     },
@@ -251,7 +254,12 @@
   "post": {
     "name": "Beitrag",
     "moreInfo": {
-      "name": "Mehr Info"
+      "name": "Mehr Info",
+      "title": "Mehr Informationen",
+      "description": "Hier findest du weitere Infos zum Thema.",
+      "titleOfCategoriesSection": "Kategorien",
+      "titleOfHashtagsSection": "Hashtags",
+      "titleOfRelatedContributionsSection": "Verwandte Beiträge"
     },
     "takeAction": {
       "name": "Aktiv werden"
