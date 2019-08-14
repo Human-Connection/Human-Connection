@@ -130,8 +130,6 @@ export default {
   methods: {
     checked: function() {
       this.backendErrors = { message: null }
-      console.log('tzzzzzzzzzz')
-      this.disabled = true
     },
     async submit() {
       if (this.checkedConfimed) {
