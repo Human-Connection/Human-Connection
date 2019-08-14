@@ -10,7 +10,7 @@ Feature: Block a User
 
   Scenario: Block a user
     Given I am on the profile page of the annoying user
-    When I click on "Block User" from the content menu in the user info box
+    When I click on "Block user" from the content menu in the user info box
     And I navigate to my "Blocked users" settings page
     Then I can see the following table:
       | Avatar | Name           |
@@ -20,7 +20,7 @@ Feature: Block a User
     Given I follow the user "Spammy Spammer"
     And "Spammy Spammer" wrote a post "Spam Spam Spam"
     When I visit the profile page of the annoying user
-    And I click on "Block User" from the content menu in the user info box
+    And I click on "Block user" from the content menu in the user info box
     Then the list of posts of this user is empty
     And nobody is following the user profile anymore
 
