@@ -215,7 +215,7 @@
       },
       "table": {
         "columns": {
-          "number": "#",
+          "number": "No.",
           "name": "Name",
           "slug": "Slug",
           "role": "Role",
@@ -237,7 +237,7 @@
     },
     "tags": {
       "name": "Hashtags",
-      "number": "#",
+      "number": "No.",
       "nameOfHashtag": "Name",
       "tagCountUnique": "Users",
       "tagCount": "Posts"
@@ -259,7 +259,7 @@
       "description": "Here you can find more information about this topic.",
       "titleOfCategoriesSection": "Categories",
       "titleOfHashtagsSection": "Hashtags",
-      "titleOfRelatedContributionsSection": "Related Posts"
+      "titleOfRelatedContributionsSection": "Related posts"
     },
     "takeAction": {
       "name": "Take action"
