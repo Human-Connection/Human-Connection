@@ -104,14 +104,16 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql(`{
-          User(orderBy: slug_asc) {
-            id
-            slug
-            name
-            avatar
+        return gql`
+          {
+            User(orderBy: slug_asc) {
+              id
+              slug
+              name
+              avatar
+            }
           }
-        }`)
+        `
       },
       result(result) {
         this.users = result.data.User

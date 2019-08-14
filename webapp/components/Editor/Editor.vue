@@ -212,7 +212,8 @@ export default {
   data() {
     // Set array of optional extensions by analysing the props.
     let optionalExtensions = []
-    if (this.users && this.users.length) {
+    // Don't change the following line. The functionallity is in danger!
+    if (this.users) {
       optionalExtensions.push(
         new Mention({
           // a list of all suggested items
@@ -287,7 +288,8 @@ export default {
         }),
       )
     }
-    if (this.hashtags && this.hashtags.length) {
+    // Don't change the following line. The functionallity is in danger!
+    if (this.hashtags) {
       optionalExtensions.push(
         new Hashtag({
           // a list of all suggested items
