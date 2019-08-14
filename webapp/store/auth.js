@@ -5,6 +5,7 @@ export const state = () => {
     user: null,
     token: null,
     pending: false,
+    hasAgreedToLatestTermsAndConditions: false,
   }
 }
 
@@ -17,6 +18,9 @@ export const mutations = {
   },
   SET_PENDING(state, pending) {
     state.pending = pending
+  },
+  SET_HAS_AGREED_TO_LATEST_TERMS_AND_CONDITIONS(state, boolean) {
+    state.hasAgreedToLatestTermsAndConditions = boolean
   },
 }
 
@@ -41,6 +45,9 @@ export const getters = {
   },
   token(state) {
     return state.token
+  },
+  hasAgreedToLatestTermsAndConditions(state) {
+    return state.hasAgreedToLatestTermsAndConditions || false
   },
 }
 
@@ -102,6 +109,7 @@ export const actions = {
               slug
             }
           }
+          termsAndConditionsVersion
         }
       }`),
     })
@@ -145,4 +153,10 @@ export const actions = {
   resendVerifySignup({ state, dispatch }) {},
   resetPassword({ state }, data) {},
   setNewPassword({ state }, data) {},
+  async checkTermsAndConditions({ dispatch, commit }) {
+    const currentUser = await dispatch('fetchCurrentUser')
+    if (currentUser.termsAndConditionsVersion === '0.0.3') {
+      commit('SET_HAS_AGREED_TO_LATEST_TERMS_AND_CONDITIONS', true)
+    }
+  },
 }

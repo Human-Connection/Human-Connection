@@ -100,6 +100,9 @@ export default {
     if (this.hashtag) {
       this.changeFilterBubble({ tags_some: { name: this.hashtag } })
     }
+    if (!this.hasAgreedToLatestTermsAndConditions) {
+      this.$router.push('terms-and-conditions')
+    }
   },
   watch: {
     Post(post) {
@@ -110,6 +113,7 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
       posts: 'posts/posts',
+      hasAgreedToLatestTermsAndConditions: 'auth/hasAgreedToLatestTermsAndConditions',
     }),
     tags() {
       return this.posts ? this.posts.tags.map(tag => tag.name) : '-'

@@ -75,7 +75,7 @@ export default {
         'deleted',
         'disabled',
         'locationName',
-        'about',
+        'about',        
       ],
       count: {
         contributionsCount: '-[:WROTE]->(related:Post)',
