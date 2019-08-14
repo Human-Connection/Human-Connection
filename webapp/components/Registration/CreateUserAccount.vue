@@ -15,7 +15,7 @@
       :schema="formSchema"
       @submit="submit"
     >
-      <template slot-scope="{ errors }">
+      <template>
         <ds-card :header="$t('registration.create-user-account.title')">
           <ds-input
             id="name"
@@ -23,6 +23,7 @@
             icon="user"
             :label="$t('settings.data.labelName')"
             :placeholder="$t('settings.data.namePlaceholder')"
+            @change="checked"
           />
           <ds-input
             id="bio"
@@ -39,23 +40,19 @@
             autocomplete="off"
             :label="$t('settings.security.change-password.label-new-password')"
           />
-          <ds-input
-            id="passwordConfirmation"
-            model="passwordConfirmation"
-            type="password"
-            autocomplete="off"
-            :label="$t('settings.security.change-password.label-new-password-confirm')"
-          />
+          <div @click="checkedConfimed = false">
+            <ds-input
+              id="passwordConfirmation"
+              model="passwordConfirmation"
+              type="password"
+              autocomplete="off"
+              :label="$t('settings.security.change-password.label-new-password-confirm')"
+            />
+          </div>
           <password-strength :password="formData.password" />
 
           <ds-text>
-            <input
-              id="checkbox"
-              type="checkbox"
-              v-model="checkedConfimed"
-              @change="checked"
-              :checked="checkedConfimed"
-            />
+            <input id="checkbox" type="checkbox" v-model="checkedConfimed" @change="checked" />
             <label for="checkbox" v-html="$t('site.termsAndConditionsRead')"></label>
           </ds-text>
 
@@ -117,7 +114,7 @@ export default {
         },
         ...passwordForm.formSchema,
       },
-      disabled: true,
+      errors: true,
       success: null,
       backendErrors: null,
       checkedConfimed: false,
@@ -129,7 +126,20 @@ export default {
   },
   methods: {
     checked: function() {
-      this.backendErrors = { message: null }
+      const { password, passwordConfirmation } = this.formData
+      console.log('checked: function')
+      console.log(this.checkedConfimed)
+      console.log(password)
+      console.log(passwordConfirmation)
+
+      if (this.checkedConfimed) {
+        if (passwordConfirmation === password) {
+          this.errors = !this.checkedConfimed
+        }
+        this.backendErrors = { message: null }
+      } else {
+        this.errors = !!this.checkedConfimed
+      }
     },
     async submit() {
       if (this.checkedConfimed) {
