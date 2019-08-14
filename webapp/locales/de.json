@@ -463,6 +463,26 @@
       "cry": "Zum Weinen",
       "angry": "Verärgert",
       "emoted": "angegeben"
+    },
+    "category": {
+      "name": {
+        "freedom-of-speech": "Redefreiheit",
+        "consumption-sustainability": "Verbrauch & Nachhaltigkeit",
+        "global-peace-nonviolence": "Globaler Frieden & Gewaltlosigkeit",
+        "just-for-fun": "Nur zum Spaß",
+        "happiness-values": "Glück & Werte",
+        "health-wellbeing": "Gesundheit & Wohlbefinden",
+        "environment-nature": "Umwelt & Natur",
+        "animal-protection": "Schutz der Tiere",
+        "human-rights-justice": "Menschenrechte & Gerechtigkeit",
+        "education-sciences": "Bildung & Wissenschaft",
+        "cooperation-development": "Zusammenarbeit & Entwicklung",
+        "democracy-politics": "Demokratie & Politik",
+        "economy-finances": "Wirtschaft & Finanzen",
+        "energy-technology": "Energie & Technologie",
+        "it-internet-data-privacy": "IT, Internet & Datenschutz",
+        "art-culture-sport": "Kunst, Kultur & Sport"
+      }
     }
   },
   "changelog": {
