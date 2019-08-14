@@ -5,7 +5,7 @@
       <ds-heading tag="h4">{{ $t('filter-posts.categories.header') }}</ds-heading>
       <ds-space margin-bottom="large" />
     </ds-flex>
-    <ds-flex>
+    <ds-flex :gutter="{ lg: 'small' }">
       <ds-flex-item
         :width="{ base: '100%', sm: '100%', md: '100%', lg: '5%' }"
         class="categories-menu-item"
@@ -47,7 +47,9 @@
             </ds-flex-item>
             <ds-flex>
               <ds-flex-item class="categories-menu-item">
-                <label class="category-labels">{{ category.name }}</label>
+                <label class="category-labels">
+                  {{ $t(`contribution.category.name.${category.slug}`) }}
+                </label>
               </ds-flex-item>
               <ds-space margin-bottom="xx-large" />
             </ds-flex>

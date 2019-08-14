@@ -436,6 +436,26 @@
       "cry": "Cry",
       "angry": "Angry",
       "emoted": "emoted"
+    },
+    "category": {
+      "name": {
+        "freedom-of-speech": "Freedom of Speech",
+        "consumption-sustainability": "Consumption & Sustainability",
+        "global-peace-nonviolence": "Global Peace & Nonviolence",
+        "just-for-fun": "Just for Fun",
+        "happiness-values": "Happiness & Values",
+        "health-wellbeing": "Health & Wellbeing",
+        "environment-nature": "Environment & Nature",
+        "animal-protection": "Animal Protection",
+        "human-rights-justice": "Human Rights & Justice",
+        "education-sciences": "Education & Sciences",
+        "cooperation-development": "Cooperation & Development",
+        "democracy-politics": "Democracy & Politics",
+        "economy-finances": "Economy & Finances",
+        "energy-technology": "Energy & Technology",
+        "it-internet-data-privacy": "IT, Internet & Data Privacy",
+        "art-culture-sport": "Art, Culture, & Sport"
+      }
     }
   },
   "changelog": {

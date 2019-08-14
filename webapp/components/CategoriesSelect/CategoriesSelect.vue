@@ -10,7 +10,7 @@
             :disabled="isDisabled(category.id)"
           >
             <ds-icon :name="category.icon" />
-            {{ category.name }}
+            {{ $t(`contribution.category.name.${category.slug}`) }}
           </ds-button>
         </ds-flex-item>
       </div>
@@ -88,6 +88,7 @@ export default {
         return CategoryQuery()
       },
       result(result) {
+        console.log('result', result)
         this.categories = result.data.Category
       },
     },

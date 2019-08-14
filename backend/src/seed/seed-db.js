@@ -180,13 +180,13 @@ import Factory from './factories'
       f.create('Category', {
         id: 'cat1',
         name: 'Just For Fun',
-        slug: 'justforfun',
+        slug: 'just-for-fun',
         icon: 'smile',
       }),
       f.create('Category', {
         id: 'cat2',
-        name: 'Happyness & Values',
-        slug: 'happyness-values',
+        name: 'Happiness & Values',
+        slug: 'happiness-values',
         icon: 'heart-o',
       }),
       f.create('Category', {
@@ -204,13 +204,13 @@ import Factory from './factories'
       f.create('Category', {
         id: 'cat5',
         name: 'Animal Protection',
-        slug: 'animalprotection',
+        slug: 'animal-protection',
         icon: 'paw',
       }),
       f.create('Category', {
         id: 'cat6',
-        name: 'Humanrights Justice',
-        slug: 'humanrights-justice',
+        name: 'Human Rights & Justice',
+        slug: 'human-rights-justice',
         icon: 'balance-scale',
       }),
       f.create('Category', {
@@ -246,19 +246,19 @@ import Factory from './factories'
       f.create('Category', {
         id: 'cat12',
         name: 'IT, Internet & Data Privacy',
-        slug: 'it-internet-dataprivacy',
+        slug: 'it-internet-data-privacy',
         icon: 'mouse-pointer',
       }),
       f.create('Category', {
         id: 'cat13',
-        name: 'Art, Curlure & Sport',
+        name: 'Art, Culture & Sport',
         slug: 'art-culture-sport',
         icon: 'paint-brush',
       }),
       f.create('Category', {
         id: 'cat14',
         name: 'Freedom of Speech',
-        slug: 'freedomofspeech',
+        slug: 'freedom-of-speech',
         icon: 'bullhorn',
       }),
       f.create('Category', {
@@ -270,7 +270,7 @@ import Factory from './factories'
       f.create('Category', {
         id: 'cat16',
         name: 'Global Peace & Nonviolence',
-        slug: 'globalpeace-nonviolence',
+        slug: 'global-peace-nonviolence',
         icon: 'angellist',
       }),
     ])
