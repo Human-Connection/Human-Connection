@@ -5,8 +5,16 @@
     "clearSearch": "Suche löschen"
   },
   "filter-posts": {
-    "header": "Themenkategorien",
-    "all": "Alle"
+    "categories": {
+      "header": "Themenkategorien",
+      "all": "Alle"
+    },
+    "general": {
+      "header": "Filtern nach..."
+    },
+    "followers": {
+      "label": "Benutzern, denen ich folge"
+    }
   },
   "site": {
     "made": "Mit &#10084; gemacht",
@@ -165,7 +173,7 @@
       "commentsCount": "Meine {count} Kommentare löschen",
       "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
       "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
-      "success": "Konto erfolgreich gelöscht",
+      "success": "Konto erfolgreich gelöscht!",
       "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen."
     },
     "organizations": {
@@ -207,6 +215,7 @@
       },
       "table": {
         "columns": {
+          "number": "Nr.",
           "name": "Name",
           "slug": "Slug",
           "role": "Rolle",
@@ -227,7 +236,9 @@
       "postCount": "Beiträge"
     },
     "tags": {
-      "name": "Schlagworte",
+      "name": "Hashtags",
+      "number": "Nr.",
+      "nameOfHashtag": "Name",
       "tagCountUnique": "Benutzer",
       "tagCount": "Beiträge"
     },
@@ -243,7 +254,12 @@
   "post": {
     "name": "Beitrag",
     "moreInfo": {
-      "name": "Mehr Info"
+      "name": "Mehr Info",
+      "title": "Mehr Informationen",
+      "description": "Hier findest du weitere Infos zum Thema.",
+      "titleOfCategoriesSection": "Kategorien",
+      "titleOfHashtagsSection": "Hashtags",
+      "titleOfRelatedContributionsSection": "Verwandte Beiträge"
     },
     "takeAction": {
       "name": "Aktiv werden"
@@ -321,7 +337,7 @@
   "disable": {
     "submit": "Deaktivieren",
     "cancel": "Abbrechen",
-    "success": "Erfolgreich deaktiviert",
+    "success": "Erfolgreich deaktiviert!",
     "user": {
       "title": "Nutzer sperren",
       "type": "Nutzer",
@@ -420,6 +436,14 @@
     "languageSelectLabel": "Sprache",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
+    },
+    "emotions-label": {
+      "funny": "Lustig",
+      "happy": "Glücklich",
+      "surprised": "Erstaunt",
+      "cry": "Zum Weinen",
+      "angry": "Verärgert",
+      "emoted": "angegeben"
     }
   },
   "changelog": {

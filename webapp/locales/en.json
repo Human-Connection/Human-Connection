@@ -5,8 +5,16 @@
     "clearSearch": "Clear search"
   },
   "filter-posts": {
-    "header": "Categories of Content",
-    "all": "All"
+    "categories": {
+      "header": "Categories of Content",
+      "all": "All"
+    },
+    "general": {
+      "header": "Filter by..."
+    },
+    "followers": {
+      "label": "Users I follow"
+    }
   },
   "site": {
     "made": "Made with &#10084;",
@@ -28,7 +36,7 @@
     "newest": "Newest",
     "oldest": "Oldest",
     "popular": "Popular",
-    "commented": "most Commented"
+    "commented": "Most commented"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
@@ -99,7 +107,7 @@
     "follow": "Follow",
     "followers": "Followers",
     "following": "Following",
-    "shouted": "Recommended",
+    "shouted": "Shouted",
     "commented": "Commented",
     "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find",
@@ -160,12 +168,12 @@
       "name": "Download Data"
     },
     "deleteUserAccount": {
-      "name": "Delete Data",
+      "name": "Delete data",
       "contributionsCount": "Delete my {count} posts",
       "commentsCount": "Delete my {count} comments",
       "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
       "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
-      "success": "Account successfully deleted",
+      "success": "Account successfully deleted!",
       "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
     },
     "organizations": {
@@ -195,7 +203,7 @@
       "projects": "Projects",
       "invites": "Invites",
       "follows": "Follows",
-      "shouts": "Recommended"
+      "shouts": "Shouts"
     },
     "organizations": {
       "name": "Organizations"
@@ -207,6 +215,7 @@
       },
       "table": {
         "columns": {
+          "number": "No.",
           "name": "Name",
           "slug": "Slug",
           "role": "Role",
@@ -227,7 +236,9 @@
       "postCount": "Posts"
     },
     "tags": {
-      "name": "Tags",
+      "name": "Hashtags",
+      "number": "No.",
+      "nameOfHashtag": "Name",
       "tagCountUnique": "Users",
       "tagCount": "Posts"
     },
@@ -243,7 +254,12 @@
   "post": {
     "name": "Post",
     "moreInfo": {
-      "name": "More info"
+      "name": "More info",
+      "title": "More information",
+      "description": "Here you can find more information about this topic.",
+      "titleOfCategoriesSection": "Categories",
+      "titleOfHashtagsSection": "Hashtags",
+      "titleOfRelatedContributionsSection": "Related posts"
     },
     "takeAction": {
       "name": "Take action"
@@ -321,7 +337,7 @@
   "disable": {
     "submit": "Disable",
     "cancel": "Cancel",
-    "success": "Disabled successfully",
+    "success": "Disabled successfully!",
     "user": {
       "title": "Disable User",
       "type": "User",
@@ -409,7 +425,7 @@
   },
   "user": {
     "avatar": {
-      "submitted": "Upload successful"
+      "submitted": "Upload successful!"
     }
   },
   "contribution": {
@@ -420,6 +436,14 @@
     "languageSelectLabel": "Language",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
+    },
+    "emotions-label": {
+      "funny": "Funny",
+      "happy": "Happy",
+      "surprised": "Surprised",
+      "cry": "Cry",
+      "angry": "Angry",
+      "emoted": "emoted"
     }
   },
   "changelog": {

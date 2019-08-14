@@ -27,9 +27,13 @@
 
 <script>
 import gql from 'graphql-tag'
+import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export default {
   name: 'ReportModal',
+  components: {
+    SweetalertIcon,
+  },
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },

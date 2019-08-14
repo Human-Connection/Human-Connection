@@ -26,17 +26,7 @@ describe('PostIndex', () => {
   beforeEach(() => {
     store = new Vuex.Store({
       getters: {
-        'posts/posts': () => {
-          return [
-            {
-              id: 'p23',
-              name: 'It is a post',
-              author: {
-                id: 'u1',
-              },
-            },
-          ]
-        },
+        'postsFilter/postsFilter': () => ({}),
         'auth/user': () => {
           return { id: 'u23' }
         },
@@ -95,20 +85,9 @@ describe('PostIndex', () => {
       wrapper = Wrapper()
     })
 
-    it('refetches Posts when changeFilterBubble is emitted', () => {
-      wrapper.find(FilterMenu).vm.$emit('changeFilterBubble')
-      expect(mocks.$apollo.queries.Post.refetch).toHaveBeenCalledTimes(1)
-    })
-
     it('clears the search when the filter menu emits clearSearch', () => {
       wrapper.find(FilterMenu).vm.$emit('clearSearch')
       expect(wrapper.vm.hashtag).toBeNull()
-    })
-
-    it('calls the changeFilterBubble if there are hasthags in the route query', () => {
-      mocks.$route.query.hashtag = { id: 'hashtag' }
-      wrapper = Wrapper()
-      expect(mocks.$apollo.queries.Post.refetch).toHaveBeenCalledTimes(1)
     })
 
     describe('mount', () => {
@@ -128,12 +107,9 @@ describe('PostIndex', () => {
         expect(wrapper.vm.sorting).toEqual('createdAt_desc')
       })
 
-      it('loads more posts when a user clicks on the load more button', () => {
-        wrapper
-          .findAll('button')
-          .at(2)
-          .trigger('click')
-        expect(mocks.$apollo.queries.Post.fetchMore).toHaveBeenCalledTimes(1)
+      it('updates offset when a user clicks on the load more button', () => {
+        wrapper.find('.load-more button').trigger('click')
+        expect(wrapper.vm.offset).toEqual(12)
       })
     })
   })

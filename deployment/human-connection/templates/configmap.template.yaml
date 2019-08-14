@@ -6,7 +6,6 @@
     SMTP_PORT: "25"
     GRAPHQL_PORT: "4000"
     GRAPHQL_URI: "http://nitro-backend.human-connection:4000"
-    MOCKS: "false"
     NEO4J_URI: "bolt://nitro-neo4j.human-connection:7687"
     NEO4J_AUTH: "none"
     CLIENT_URI: "https://nitro-staging.human-connection.org"

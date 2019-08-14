@@ -21,7 +21,7 @@
     <ds-card v-if="User && User.length">
       <ds-table :data="User" :fields="fields" condensed>
         <template slot="index" slot-scope="scope">
-          {{ scope.row.index }}.
+          {{ scope.row.index + 1 }}.
         </template>
         <template slot="name" slot-scope="scope">
           <nuxt-link
@@ -57,9 +57,7 @@
       </ds-flex>
     </ds-card>
     <ds-card v-else>
-      <ds-placeholder>
-        {{ $t('admin.users.empty') }}
-      </ds-placeholder>
+      <ds-placeholder>{{ $t('admin.users.empty') }}</ds-placeholder>
     </ds-card>
   </div>
 </template>
@@ -92,7 +90,7 @@ export default {
     },
     fields() {
       return {
-        index: '#',
+        index: this.$t('admin.users.table.columns.number'),
         name: this.$t('admin.users.table.columns.name'),
         slug: this.$t('admin.users.table.columns.slug'),
         createdAt: this.$t('admin.users.table.columns.createdAt'),
@@ -118,20 +116,26 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql(`
-        query($filter: _UserFilter, $first: Int, $offset: Int, $email: String) {
-          User(email: $email, filter: $filter, first: $first, offset: $offset, orderBy: createdAt_desc) {
-            id
-            name
-            slug
-            role
-            createdAt
-            contributionsCount
-            commentedCount
-            shoutedCount
+        return gql`
+          query($filter: _UserFilter, $first: Int, $offset: Int, $email: String) {
+            User(
+              email: $email
+              filter: $filter
+              first: $first
+              offset: $offset
+              orderBy: createdAt_desc
+            ) {
+              id
+              name
+              slug
+              role
+              createdAt
+              contributionsCount
+              commentedCount
+              shoutedCount
+            }
           }
-        }
-      `)
+        `
       },
       variables() {
         const { offset, first, email, filter } = this

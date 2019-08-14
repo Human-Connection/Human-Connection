@@ -115,7 +115,6 @@ module.exports = {
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
     { src: '~/plugins/vue-filters.js' },
-    { src: '~/plugins/vue-sweetalert-icons.js' },
   ],
 
   router: {
