@@ -30,7 +30,8 @@
     "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
     "bank": "Bankverbindung",
     "germany": "Deutschland",
-    "code-of-conduct": "Verhaltenscodex"
+    "code-of-conduct": "Verhaltenscodex",
+    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu."
   },
   "sorting": {
     "newest": "Neuste",
@@ -522,7 +523,6 @@
       "title": "Zweck",
       "description": "Mit diesen Verhaltensregeln regeln wir die wesentlichen Grundsätze für das Verhalten in unserem Sozialen Netzwerk. Dabei ist die Menschenrechtscharta der Vereinten Nationen unsere Orientierung und bildet das Herz unseres Werteverständnisses. Die Verhaltensregeln dienen als Leitsätze für den persönlichen Auftritt und den Umgang untereinander. Wer als Nutzer im Human Connection Netzwerk aktiv ist, Beiträge verfasst, kommentiert oder mit anderen Nutzern, auch außerhalb des Netzwerkes, Kontakt aufnimmt, erkennt diese Verhaltensregeln als verbindlich an."
     },
-
     "expected-behaviour": {
       "title": "Erwartetes Verhalten",
       "description": "Die folgenden Verhaltensweisen werden von allen Community-Mitgliedern erwartet und gefordert:",

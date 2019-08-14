@@ -56,6 +56,7 @@ describe('CreateUserAccount', () => {
             wrapper.find('input#name').setValue('John Doe')
             wrapper.find('input#password').setValue('hellopassword')
             wrapper.find('input#passwordConfirmation').setValue('hellopassword')
+            wrapper.find('input#checkbox').setChecked()
             await wrapper.find('form').trigger('submit')
             await wrapper.html()
           }

@@ -30,7 +30,8 @@
     "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
     "germany": "Germany",
-    "code-of-conduct": "Code of Conduct"
+    "code-of-conduct": "Code of Conduct",
+    "termsAndConditionsConfirmed": "I have read and confirmed the <a href=\"/terms-and-conditions\" target=\"_blank\">terms and conditions</a>."
   },
   "sorting": {
     "newest": "Newest",
