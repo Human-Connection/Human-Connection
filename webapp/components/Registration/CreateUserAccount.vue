@@ -52,11 +52,10 @@
             <input
               id="checkbox"
               type="checkbox"
-              v-model="checkedConfimed"
-              @change="checked"
-              :checked="checkedConfimed"
+              v-model="termsAndConditionsConfirmed"
+              :checked="termsAndConditionsConfirmed"
             />
-            <label for="checkbox" v-html="$t('site.termsAndConditionsRead')"></label>
+            <label for="checkbox" v-html="$t('site.termsAndConditionsConfirmed')"></label>
           </ds-text>
 
           <template slot="footer">
@@ -68,7 +67,7 @@
               icon="check"
               type="submit"
               :loading="$apollo.loading"
-              :disabled="errors"
+              :disabled="errors || !termsAndConditionsConfirmed"
               primary
             >
               {{ $t('actions.save') }}
@@ -120,7 +119,10 @@ export default {
       disabled: true,
       success: null,
       backendErrors: null,
-      checkedConfimed: false,
+      // TODO: Our styleguide does not support checkmarks.
+      // Integrate termsAndConditionsConfirmed into `this.formData` once we
+      // have checkmarks available.
+      termsAndConditionsConfirmed: false,
     }
   },
   props: {
@@ -128,30 +130,23 @@ export default {
     email: { type: String, required: true },
   },
   methods: {
-    checked: function() {
-      this.backendErrors = { message: null }
-    },
     async submit() {
-      if (this.checkedConfimed) {
-        const { name, password, about } = this.formData
-        const { email, nonce } = this
-        try {
-          await this.$apollo.mutate({
-            mutation: SignupVerificationMutation,
-            variables: { name, password, about, email, nonce },
+      const { name, password, about } = this.formData
+      const { email, nonce } = this
+      try {
+        await this.$apollo.mutate({
+          mutation: SignupVerificationMutation,
+          variables: { name, password, about, email, nonce },
+        })
+        this.success = true
+        setTimeout(() => {
+          this.$emit('userCreated', {
+            email,
+            password,
           })
-          this.success = true
-          setTimeout(() => {
-            this.$emit('userCreated', {
-              email,
-              password,
-            })
-          }, 3000)
-        } catch (err) {
-          this.backendErrors = err
-        }
-      } else {
-        this.backendErrors = { message: this.$t(`site.confirmTermsAndConditions`) }
+        }, 3000)
+      } catch (err) {
+        this.backendErrors = err
       }
     },
   },

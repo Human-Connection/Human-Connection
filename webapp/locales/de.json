@@ -23,8 +23,7 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland",
     "code-of-conduct": "Verhaltenscodex",
-    "termsAndConditionsRead": "<a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> gelesen und verstanden",
-    "confirmTermsAndConditions": "Bitte lies und bestätige die Nutzungsbednigungen!"
+    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu."
   },
   "sorting": {
     "newest": "Neuste",
