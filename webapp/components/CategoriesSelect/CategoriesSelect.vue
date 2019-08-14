@@ -88,7 +88,6 @@ export default {
         return CategoryQuery()
       },
       result(result) {
-        console.log('result', result)
         this.categories = result.data.Category
       },
     },
