@@ -3,9 +3,11 @@
     <ds-card v-if="success" class="success">
       <ds-space>
         <sweetalert-icon icon="success" />
-        <ds-text align="center" bold color="success">
-          {{ $t('registration.create-user-account.success') }}
-        </ds-text>
+        <ds-text
+          align="center"
+          bold
+          color="success"
+        >{{ $t('registration.create-user-account.success') }}</ds-text>
       </ds-space>
     </ds-card>
     <ds-form
@@ -23,7 +25,6 @@
             icon="user"
             :label="$t('settings.data.labelName')"
             :placeholder="$t('settings.data.namePlaceholder')"
-            @change="checked"
           />
           <ds-input
             id="bio"
@@ -40,7 +41,7 @@
             autocomplete="off"
             :label="$t('settings.security.change-password.label-new-password')"
           />
-          <div @click="checkedConfimed = false">
+          <div v-on:click="checkedConfimed = false">
             <ds-input
               id="passwordConfirmation"
               model="passwordConfirmation"
@@ -65,11 +66,9 @@
               icon="check"
               type="submit"
               :loading="$apollo.loading"
-              :disabled="errors"
+              :disabled="!checkedConfimed"
               primary
-            >
-              {{ $t('actions.save') }}
-            </ds-button>
+            >{{ $t('actions.save') }}</ds-button>
           </template>
         </ds-card>
       </template>
@@ -127,18 +126,21 @@ export default {
   methods: {
     checked: function() {
       const { password, passwordConfirmation } = this.formData
-      console.log('checked: function')
-      console.log(this.checkedConfimed)
-      console.log(password)
-      console.log(passwordConfirmation)
+      //   console.log('checked: function')
+      //   console.log(this.checkedConfimed)
+      //   console.log(password)
+      //   console.log(passwordConfirmation)
 
-      if (this.checkedConfimed) {
+      if (this.checkedConfimed && passwordConfirmation !== '') {
         if (passwordConfirmation === password) {
-          this.errors = !this.checkedConfimed
+          this.checkedConfimed = true
+        } else {
+          this.checkedConfimed = false
+          this.backendErrors = { message: 'Prüfe bitte deine Passwörter' }
         }
         this.backendErrors = { message: null }
       } else {
-        this.errors = !!this.checkedConfimed
+        this.checkedConfimed = false
       }
     },
     async submit() {
