@@ -126,11 +126,6 @@ export default {
   methods: {
     checked: function() {
       const { password, passwordConfirmation } = this.formData
-      //   console.log('checked: function')
-      //   console.log(this.checkedConfimed)
-      //   console.log(password)
-      //   console.log(passwordConfirmation)
-
       if (this.checkedConfimed && passwordConfirmation !== '') {
         if (passwordConfirmation === password) {
           this.checkedConfimed = true
