@@ -3,11 +3,9 @@
     <ds-card v-if="success" class="success">
       <ds-space>
         <sweetalert-icon icon="success" />
-        <ds-text
-          align="center"
-          bold
-          color="success"
-        >{{ $t('registration.create-user-account.success') }}</ds-text>
+        <ds-text align="center" bold color="success">
+          {{ $t('registration.create-user-account.success') }}
+        </ds-text>
       </ds-space>
     </ds-card>
     <ds-form
@@ -68,7 +66,9 @@
               :loading="$apollo.loading"
               :disabled="!checkedConfimed"
               primary
-            >{{ $t('actions.save') }}</ds-button>
+            >
+              {{ $t('actions.save') }}
+            </ds-button>
           </template>
         </ds-card>
       </template>
