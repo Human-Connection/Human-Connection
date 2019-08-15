@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ds-grid>
+    <ds-grid :min-column-width="300">
       <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>

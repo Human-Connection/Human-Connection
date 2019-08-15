@@ -1,5 +1,5 @@
 <template>
-  <ds-grid-item ref="postCard" v-bind:style="{ gridRowEnd: 'span ' + rowSpan }">
+  <ds-grid-item ref="postCard" :rowSpan="rowSpan">
     <ds-card
       :image="post.image | proxyApiUrl"
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
@@ -133,14 +133,15 @@ export default {
       }
     },
     calculateItemHeight() {
-      const grid = document.querySelector('.masonry-grid')
+      const grid = document.querySelector('.ds-grid')
       const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'))
       const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'))
       grid.style.gridAutoRows = 'auto'
       grid.style.alignItems = 'self-start'
-      const itemHeight = this.$refs.postCard.clientHeight
+      const itemHeight = this.$refs.postCard.$el.clientHeight
       this.rowSpan = Math.ceil((itemHeight + rowGap) / (rowHeight + rowGap))
-      grid.removeAttribute('style')
+      grid.style.gridAutoRows = `${rowHeight}px`
+      grid.style.alignItems = 'stretch'
     },
   },
   mounted() {
