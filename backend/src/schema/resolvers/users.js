@@ -6,8 +6,45 @@ import Resolver from './helpers/Resolver'
 
 const instance = neode()
 
+export const getBlockedUsers = async context => {
+  const { neode } = context
+  const userModel = neode.model('User')
+  let blockedUsers = neode
+    .query()
+    .match('user', userModel)
+    .where('user.id', context.user.id)
+    .relationship(userModel.relationships().get('blocked'))
+    .to('blocked', userModel)
+    .return('blocked')
+  blockedUsers = await blockedUsers.execute()
+  blockedUsers = blockedUsers.records.map(r => r.get('blocked').properties)
+  return blockedUsers
+}
+
+export const getBlockedByUsers = async context => {
+  const { neode } = context
+  const userModel = neode.model('User')
+  let blockedByUsers = neode
+    .query()
+    .match('user', userModel)
+    .relationship(userModel.relationships().get('blocked'))
+    .to('blocked', userModel)
+    .where('blocked.id', context.user.id)
+    .return('user')
+  blockedByUsers = await blockedByUsers.execute()
+  blockedByUsers = blockedByUsers.records.map(r => r.get('user').properties)
+  return blockedByUsers
+}
+
 export default {
   Query: {
+    blockedUsers: async (object, args, context, resolveInfo) => {
+      try {
+        return getBlockedUsers(context)
+      } catch (e) {
+        throw new UserInputError(e.message)
+      }
+    },
     User: async (object, args, context, resolveInfo) => {
       const { email } = args
       if (email) {
@@ -20,6 +57,36 @@ export default {
     },
   },
   Mutation: {
+    block: async (object, args, context, resolveInfo) => {
+      const { user: currentUser } = context
+      if (currentUser.id === args.id) return null
+      await instance.cypher(
+        `
+      MATCH(u:User {id: $currentUser.id})-[r:FOLLOWS]->(b:User {id: $args.id})
+      DELETE r
+      `,
+        { currentUser, args },
+      )
+      const [user, blockedUser] = await Promise.all([
+        instance.find('User', currentUser.id),
+        instance.find('User', args.id),
+      ])
+      await user.relateTo(blockedUser, 'blocked')
+      return blockedUser.toJson()
+    },
+    unblock: async (object, args, context, resolveInfo) => {
+      const { user: currentUser } = context
+      if (currentUser.id === args.id) return null
+      await instance.cypher(
+        `
+      MATCH(u:User {id: $currentUser.id})-[r:BLOCKED]->(b:User {id: $args.id})
+      DELETE r
+      `,
+        { currentUser, args },
+      )
+      const blockedUser = await instance.find('User', args.id)
+      return blockedUser.toJson()
+    },
     UpdateUser: async (object, args, context, resolveInfo) => {
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
@@ -73,6 +140,12 @@ export default {
         'locationName',
         'about',
       ],
+      boolean: {
+        followedByCurrentUser:
+          'MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+        isBlocked:
+          'MATCH (this)<-[:BLOCKED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+      },
       count: {
         contributionsCount: '-[:WROTE]->(related:Post)',
         friendsCount: '<-[:FRIENDS]->(related:User)',
@@ -91,7 +164,6 @@ export default {
         followedBy: '<-[:FOLLOWS]-(related:User)',
         following: '-[:FOLLOWS]->(related:User)',
         friends: '-[:FRIENDS]-(related:User)',
-        blacklisted: '-[:BLACKLISTED]->(related:User)',
         socialMedia: '-[:OWNED_BY]->(related:SocialMedia',
         contributions: '-[:WROTE]->(related:Post)',
         comments: '-[:WROTE]->(related:Comment)',

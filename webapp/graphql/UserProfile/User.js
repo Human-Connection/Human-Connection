@@ -46,6 +46,7 @@ export default i18n => {
         }
         followedByCount
         followedByCurrentUser
+        isBlocked
         followedBy(first: 7)  {
           id
           slug

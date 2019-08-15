@@ -10,7 +10,7 @@ const instance = neode()
 const isAuthenticated = rule({
   cache: 'contextual',
 })(async (_parent, _args, ctx, _info) => {
-  return ctx.user != null
+  return !!(ctx && ctx.user && ctx.user.id)
 })
 
 const isModerator = rule()(async (parent, args, { user }, info) => {
@@ -159,6 +159,7 @@ const permissions = shield(
       Badge: allow,
       PostsEmotionsCountByEmotion: allow,
       PostsEmotionsByCurrentUser: allow,
+      blockedUsers: isAuthenticated,
     },
     Mutation: {
       '*': deny,
@@ -195,6 +196,8 @@ const permissions = shield(
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,
       RemovePostEmotions: isAuthenticated,
+      block: isAuthenticated,
+      unblock: isAuthenticated,
     },
     User: {
       email: isMyOwn,
