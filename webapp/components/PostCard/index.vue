@@ -1,5 +1,5 @@
 <template>
-  <div ref="postCard" class="grid-item" v-bind:style="{ gridRowEnd: 'span ' + rowSpan }">
+  <ds-grid-item ref="postCard" v-bind:style="{ gridRowEnd: 'span ' + rowSpan }">
     <ds-card
       :image="post.image | proxyApiUrl"
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
@@ -67,7 +67,7 @@
         </no-ssr>
       </template>
     </ds-card>
-  </div>
+  </ds-grid-item>
 </template>
 
 <script>
@@ -144,7 +144,7 @@ export default {
     },
   },
   mounted() {
-    const image = this.$refs.postCard.querySelector('img')
+    const image = this.$refs.postCard.$el.querySelector('img')
     if (image) {
       image.onload = this.calculateItemHeight
     } else {

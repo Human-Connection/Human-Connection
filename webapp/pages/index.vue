@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="masonry-grid">
-      <div class="grid-item grid-item--full-width">
+    <ds-grid>
+      <ds-grid-item :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
-      </div>
-      <div class="grid-item grid-item--full-width">
+      </ds-grid-item>
+      <ds-grid-item :row-span="2" column-span="fullWidth">
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -14,7 +14,7 @@
             @input="toggleOnlySorting"
           ></ds-select>
         </div>
-      </div>
+      </ds-grid-item>
       <hc-post-card
         v-for="post in posts"
         :key="post.id"
@@ -22,7 +22,7 @@
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
         @removePostFromList="deletePost(index, post.id)"
       />
-    </div>
+    </ds-grid>
     <no-ssr>
       <ds-button
         v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
