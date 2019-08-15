@@ -40,9 +40,18 @@ const validateUpdateComment = async (resolve, root, args, context, info) => {
   return resolve(root, args, context, info)
 }
 
+const validateCreatePost = async (resolve, root, args, context, info) => {
+  const { categoryIds } = args
+  if (!Array.isArray(categoryIds) || !categoryIds.length) {
+    throw new UserInputError('You cannot create a post without at least one category')
+  }
+  return resolve(root, args, context, info)
+}
+
 export default {
   Mutation: {
     CreateComment: validateCommentCreation,
     UpdateComment: validateUpdateComment,
+    CreatePost: validateCreatePost,
   },
 }
