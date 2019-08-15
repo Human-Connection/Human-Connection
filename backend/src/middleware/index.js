@@ -1,4 +1,6 @@
-import { applyMiddleware } from 'graphql-middleware'
+import {
+  applyMiddleware
+} from 'graphql-middleware'
 import CONFIG from './../config'
 
 import activityPub from './activityPubMiddleware'
@@ -12,7 +14,7 @@ import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation/validationMiddleware'
-import handleContentData from './handleHtmlContent/handleContentData'
+import handleNotifications from './handleNotifications/handleNotifications'
 import email from './email/emailMiddleware'
 
 export default schema => {
@@ -23,13 +25,15 @@ export default schema => {
     validation: validation,
     sluggify: sluggify,
     excerpt: excerpt,
-    handleContentData: handleContentData,
+    handleNotifications: handleNotifications,
     xss: xss,
     softDelete: softDelete,
     user: user,
     includedFields: includedFields,
     orderBy: orderBy,
-    email: email({ isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT }),
+    email: email({
+      isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT
+    }),
   }
 
   let order = [
@@ -40,7 +44,7 @@ export default schema => {
     'sluggify',
     'excerpt',
     'email',
-    'handleContentData',
+    'handleNotifications',
     'xss',
     'softDelete',
     'user',
