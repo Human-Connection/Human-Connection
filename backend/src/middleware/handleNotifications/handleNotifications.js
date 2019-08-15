@@ -86,6 +86,6 @@ export default {
     CreatePost: handleContentDataOfPost,
     UpdatePost: handleContentDataOfPost,
     CreateComment: handleContentDataOfComment,
-    // UpdateComment: handleContentDataOfComment,
+    UpdateComment: handleContentDataOfComment,
   },
 }
