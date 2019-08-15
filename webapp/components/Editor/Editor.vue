@@ -12,15 +12,13 @@
           @click="selectItem(item)"
         >
           <div v-if="isMention">@{{ item.slug }}</div>
-          <div v-if="isHashtag">#{{ item.name }}</div>
+          <div v-if="isHashtag">#{{ item.id }}</div>
         </div>
         <div v-if="isHashtag">
           <!-- if query is not empty and is find fully in the suggestions array ... -->
-          <div v-if="query && !filteredItems.find(el => el.name === query)">
+          <div v-if="query && !filteredItems.find(el => el.id === query)">
             <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-            <div class="suggestion-list__item" @click="selectItem({ name: query })">
-              #{{ query }}
-            </div>
+            <div class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</div>
           </div>
           <!-- otherwise if sanitized query is empty advice the user to add a char -->
           <div v-else-if="!query">
@@ -40,9 +38,7 @@
           <!-- if "query" is not empty -->
           <div v-else>
             <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-            <div class="suggestion-list__item" @click="selectItem({ name: query })">
-              #{{ query }}
-            </div>
+            <div class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</div>
           </div>
         </div>
       </div>
@@ -455,7 +451,7 @@ export default {
     // For hashtags handles pressing of space.
     spaceHandler() {
       if (this.suggestionType === this.hashtagSuggestionType && this.query !== '') {
-        this.selectItem({ name: this.query })
+        this.selectItem({ id: this.query })
       }
     },
     // we have to replace our suggestion text with a mention
@@ -467,8 +463,8 @@ export default {
           label: item.slug,
         },
         hashtag: {
-          id: item.name,
-          label: item.name,
+          id: item.id,
+          label: item.id,
         },
       }
       this.insertMentionOrHashtag({

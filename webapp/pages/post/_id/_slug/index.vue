@@ -38,7 +38,7 @@
       <!-- Tags -->
       <div v-if="post.tags && post.tags.length" class="tags">
         <ds-space margin="xx-small" />
-        <hc-tag v-for="tag in post.tags" :key="tag.id" :name="tag.name" />
+        <hc-tag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">

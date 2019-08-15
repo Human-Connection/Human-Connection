@@ -5,9 +5,9 @@ export default function(params) {
 
   return {
     mutation: `
-      mutation($id: ID!, $name: String!) {
-        CreateTag(id: $id, name: $name) {
-          name
+      mutation($id: ID!) {
+        CreateTag(id: $id) {
+          id
         }
       }
     `,
