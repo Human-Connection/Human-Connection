@@ -460,6 +460,7 @@ describe('emotions', () => {
         context: () => {
           return {
             user,
+            neode: instance,
             driver,
           }
         },
@@ -476,6 +477,7 @@ describe('emotions', () => {
         context: () => {
           return {
             user,
+            neode: instance,
             driver,
           }
         },

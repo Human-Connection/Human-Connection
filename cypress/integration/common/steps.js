@@ -362,3 +362,96 @@ Then("the notification gets marked as read", () => {
 Then("there are no notifications in the top menu", () => {
   cy.get(".notifications-menu").should("contain", "0");
 });
+
+Given("there is an annoying user called {string}", (name) => {
+  const annoyingParams = {
+    email: 'spammy-spammer@example.org',
+    password: '1234',
+  }
+  cy.factory().create('User', {
+    ...annoyingParams,
+    id: 'annoying-user',
+    name
+  })
+})
+
+Given("I am on the profile page of the annoying user", (name) => {
+  cy.openPage('/profile/annoying-user/spammy-spammer');
+})
+
+When("I visit the profile page of the annoying user", (name) => {
+  cy.openPage('/profile/annoying-user');
+})
+
+When("I ", (name) => {
+  cy.openPage('/profile/annoying-user');
+})
+
+When("I click on {string} from the content menu in the user info box", (button) => {
+  cy.get('.user-content-menu .content-menu-trigger')
+    .click()
+  cy.get('.popover .ds-menu-item-link')
+    .contains(button)
+    .click()
+})
+
+When ("I navigate to my {string} settings page", (settingsPage) => {
+  cy.get(".avatar-menu").click();
+  cy.get(".avatar-menu-popover")
+    .find('a[href]').contains("Settings").click()
+  cy.contains('.ds-menu-item-link', settingsPage).click()
+})
+
+Given("I follow the user {string}", (name) => {
+  cy.neode()
+    .first('User', { name }).then((followed) => {
+      cy.neode()
+        .first('User', {name: narratorParams.name})
+        .relateTo(followed, 'following')
+    })
+})
+
+Given("\"Spammy Spammer\" wrote a post {string}", (title) => {
+  cy.factory()
+    .authenticateAs({
+      email: 'spammy-spammer@example.org',
+      password: '1234',
+    })
+    .create("Post", { title })
+})
+
+Then("the list of posts of this user is empty", () => {
+  cy.get('.ds-card-content').not('.post-link')
+  cy.get('.main-container').find('.ds-space.hc-empty')
+})
+
+Then("nobody is following the user profile anymore", () => {
+  cy.get('.ds-card-content').not('.post-link')
+  cy.get('.main-container').contains('.ds-card-content', 'is not followed by anyone')
+})
+
+Given("I wrote a post {string}", (title) => {
+  cy.factory()
+    .authenticateAs(loginCredentials)
+    .create("Post", { title })
+})
+
+When("I block the user {string}", (name) => {
+  cy.neode()
+    .first('User', { name }).then((blocked) => {
+      cy.neode()
+        .first('User', {name: narratorParams.name})
+        .relateTo(blocked, 'blocked')
+    })
+})
+
+When("I log in with:", (table) => {
+  const [firstRow] = table.hashes()
+  const { Email, Password } = firstRow
+  cy.login({email: Email, password: Password})
+})
+
+Then("I see only one post with the title {string}", (title) => {
+  cy.get('.main-container').find('.post-link').should('have.length', 1)
+  cy.get('.main-container').contains('.post-link', title)
+})

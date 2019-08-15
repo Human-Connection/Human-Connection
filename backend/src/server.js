@@ -3,7 +3,7 @@ import helmet from 'helmet'
 import { ApolloServer } from 'apollo-server-express'
 import CONFIG, { requiredConfigs } from './config'
 import middleware from './middleware'
-import { getDriver } from './bootstrap/neo4j'
+import { neode as getNeode, getDriver } from './bootstrap/neo4j'
 import decode from './jwt/decode'
 import schema from './schema'
 
@@ -16,6 +16,7 @@ Object.entries(requiredConfigs).map(entry => {
 })
 
 const driver = getDriver()
+const neode = getNeode()
 
 const createServer = options => {
   const defaults = {
@@ -23,6 +24,7 @@ const createServer = options => {
       const user = await decode(driver, req.headers.authorization)
       return {
         driver,
+        neode,
         user,
         req,
         cypherParams: {

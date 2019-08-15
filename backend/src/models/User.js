@@ -71,4 +71,16 @@ module.exports = {
     eager: true,
     cascade: true,
   },
+  blocked: {
+    type: 'relationship',
+    relationship: 'BLOCKED',
+    target: 'User',
+    direction: 'out',
+  },
+  notifications: {
+    type: 'relationship',
+    relationship: 'NOTIFIED',
+    target: 'Notification',
+    direction: 'in',
+  },
 }
