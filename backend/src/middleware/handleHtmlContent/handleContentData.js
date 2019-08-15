@@ -7,13 +7,13 @@ const notifyMentions = async (label, id, idsOfMentionedUsers, context) => {
   const session = context.driver.session()
   const createdAt = new Date().toISOString()
   const cypher = `
-    MATCH (source) 
+    MATCH (source)
     WHERE source.id = $id AND $label IN LABELS(source)
-    MATCH(source)<-[:WROTE]-(author:User)
-    MATCH(u:User)
+    MATCH (source)<-[:WROTE]-(author: User)
+    MATCH (u: User)
     WHERE u.id in $idsOfMentionedUsers
     AND NOT (u)<-[:BLOCKED]-(author)
-    CREATE(n:Notification{id: apoc.create.uuid(), read: false, createdAt: $createdAt})
+    CREATE (n: Notification {id: apoc.create.uuid(), read: false, createdAt: $createdAt })
     MERGE (source)-[:NOTIFIED]->(n)-[:NOTIFIED]->(u)
     `
   await session.run(cypher, {
