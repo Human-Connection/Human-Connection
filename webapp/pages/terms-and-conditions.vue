@@ -1,7 +1,7 @@
 <template>
   <div>
     <ds-space>
-      <ds-heading tag="h2">{{ $t('site.termsAndConditions') }}</ds-heading>
+      <ds-heading tag="h2">{{ $t(`site.termsAndConditions`) }}</ds-heading>
     </ds-space>
     <ds-container>
       <no-ssr>
@@ -12,10 +12,10 @@
               <p v-html="$t(`termsAndConditions.${section}.description`)" />
             </li>
           </ol>
-          <p>{{ $t('termsAndConditions.have-fun') }}</p>
+          <p>{{ $t(`termsAndConditions.have-fun`) }}</p>
           <br />
           <p>
-            <strong v-html="$t('termsAndConditions.closing')" />
+            <strong v-html="$t(`termsAndConditions.closing`)" />
           </p>
         </div>
       </no-ssr>
@@ -23,7 +23,7 @@
         <ds-modal
           v-if="isOpen"
           v-model="isOpen"
-          title="Neue Nutzerbedingungen"
+          v-title="$t(`site.termsAndConditionsNewTitle`)"
           force
           extended
           confirm-label="Ich habe es gelesen und verstanden"
@@ -37,24 +37,25 @@
                 <p v-html="$t(`termsAndConditions.${section}.description`)" />
               </li>
             </ol>
-            <p>{{ $t('termsAndConditions.have-fun') }}</p>
+            <p>{{ $t(`termsAndConditions.have-fun`) }}</p>
             <br />
             <p>
-              <strong v-html="$t('termsAndConditions.closing')" />
+              <strong v-html="$t(`termsAndConditions.closing`)" />
             </p>
           </div>
         </ds-modal>
-        <ds-button primary icon="rocket" @click="isOpen = true">Neue Nutzungsbedingungen bestätigen</ds-button>
+        <div v-if="isLoggedIn">
+          <ds-button primary icon="rocket" class="display:none" @click="isOpen = true">
+            {{ $t(`site.termsAndConditionsNewConfirm`) }}
+          </ds-button>
+        </div>
       </div>
     </ds-container>
   </div>
 </template>
 
 <script>
-/* if you change the version please also change here 
-    "backend/src/seed/factories/users.js" */
-// import { isLoggedIn } from '~/layouts/default'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export const VERSION = '0.0.3'
 
 export default {
@@ -64,9 +65,16 @@ export default {
       title: this.$t('site.termsAndConditions'),
     }
   },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: 'auth/isLoggedIn',
+    }),
+  },
   mounted() {
-    if (!this.hasAgreedToLatestTermsAndConditions) {
-      this.isOpen = true
+    if (this.isLoggedIn) {
+      if (!this.hasAgreedToLatestTermsAndConditions) {
+        this.isOpen = true
+      }
     }
   },
   data() {
@@ -89,6 +97,7 @@ export default {
       checkTermsAndConditions: 'auth/checkTermsAndConditions',
     }),
     setNewConfirmeVersion() {
+      /* TODO  */
       alert('speichern! das der user die neue nutzungsbedingungen zugestimmt hat ')
     },
   },

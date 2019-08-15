@@ -21,7 +21,6 @@ export default {
   },
   Mutation: {
     acceptTermsAndCondition: async (object, args, context, resolveInfo) => {
-      /*console.log(args)*/
       return true
     },
     UpdateUser: async (object, args, context, resolveInfo) => {
