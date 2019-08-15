@@ -56,6 +56,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { SweetalertIcon } from 'vue-sweetalert-icons'
 
 export const SignupMutation = gql`
   mutation($email: String!) {
@@ -72,6 +73,9 @@ export const SignupByInvitationMutation = gql`
   }
 `
 export default {
+  components: {
+    SweetalertIcon,
+  },
   props: {
     token: { type: String, default: null },
   },

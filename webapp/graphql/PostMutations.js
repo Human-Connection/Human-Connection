@@ -60,5 +60,31 @@ export default () => {
         }
       }
     `,
+    AddPostEmotionsMutation: gql`
+      mutation($to: _PostInput!, $data: _EMOTEDInput!) {
+        AddPostEmotions(to: $to, data: $data) {
+          emotion
+          from {
+            id
+          }
+          to {
+            id
+          }
+        }
+      }
+    `,
+    RemovePostEmotionsMutation: gql`
+      mutation($to: _PostInput!, $data: _EMOTEDInput!) {
+        RemovePostEmotions(to: $to, data: $data) {
+          emotion
+          from {
+            id
+          }
+          to {
+            id
+          }
+        }
+      }
+    `,
   }
 }

@@ -4,15 +4,16 @@ type Query {
   currentUser: User
   # Get the latest Network Statistics
   statistics: Statistics!
-  findPosts(filter: String!, limit: Int = 10): [Post]!
+  findPosts(query: String!, limit: Int = 10): [Post]!
     @cypher(
       statement: """
-      CALL db.index.fulltext.queryNodes('full_text_search', $filter)
+      CALL db.index.fulltext.queryNodes('full_text_search', $query)
       YIELD node as post, score
       MATCH (post)<-[:WROTE]-(user:User)
       WHERE score >= 0.2
       AND NOT user.deleted = true AND NOT user.disabled = true
       AND NOT post.deleted = true AND NOT post.disabled = true
+      AND NOT user.id in COALESCE($filter.author_not.id_in, [])
       RETURN post
       LIMIT $limit
       """
@@ -48,14 +49,6 @@ type Statistics {
   countInvites: Int!
   countFollows: Int!
   countShouts: Int!
-}
-
-type Notification {
-  id: ID!
-  read: Boolean
-  user: User @relation(name: "NOTIFIED", direction: "OUT")
-  post: Post @relation(name: "NOTIFIED", direction: "IN")
-  createdAt: String
 }
 
 type Location {

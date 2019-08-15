@@ -71,6 +71,7 @@ export default i18n => {
           }
           shoutedCount
           shoutedByCurrentUser
+          emotionsCount
         }
       }
     `
@@ -119,4 +120,12 @@ export const filterPosts = i18n => {
     }
   }
 `
+}
+
+export const PostsEmotionsByCurrentUser = () => {
+  return gql`
+    query PostsEmotionsByCurrentUser($postId: ID!) {
+      PostsEmotionsByCurrentUser(postId: $postId)
+    }
+  `
 }

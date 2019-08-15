@@ -122,13 +122,34 @@ export default {
         }
       }
 
-      if (this.isOwner && this.resourceType === 'user') {
-        routes.push({
-          name: this.$t(`settings.name`),
-          path: '/settings',
-          icon: 'edit',
-        })
+      if (this.resourceType === 'user') {
+        if (this.isOwner) {
+          routes.push({
+            name: this.$t(`settings.name`),
+            path: '/settings',
+            icon: 'edit',
+          })
+        } else {
+          if (this.resource.isBlocked) {
+            routes.push({
+              name: this.$t(`settings.blocked-users.unblock`),
+              callback: () => {
+                this.$emit('unblock', this.resource)
+              },
+              icon: 'user-plus',
+            })
+          } else {
+            routes.push({
+              name: this.$t(`settings.blocked-users.block`),
+              callback: () => {
+                this.$emit('block', this.resource)
+              },
+              icon: 'user-times',
+            })
+          }
+        }
       }
+
       return routes
     },
     isModerator() {

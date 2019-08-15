@@ -54,10 +54,12 @@
 <script>
 import PasswordStrength from '../Password/Strength'
 import gql from 'graphql-tag'
+import { SweetalertIcon } from 'vue-sweetalert-icons'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
 
 export default {
   components: {
+    SweetalertIcon,
     PasswordStrength,
   },
   props: {

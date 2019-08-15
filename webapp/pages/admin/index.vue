@@ -133,7 +133,7 @@ export default {
   },
   apollo: {
     statistics: {
-      query: gql(`
+      query: gql`
         query {
           statistics {
             countUsers
@@ -147,7 +147,7 @@ export default {
             countShouts
           }
         }
-      `),
+      `,
     },
   },
 }

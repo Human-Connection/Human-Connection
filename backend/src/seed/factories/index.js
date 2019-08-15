@@ -128,6 +128,22 @@ export default function Factory(options = {}) {
       this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
       return this
     },
+    async emote({ to, data }) {
+      const mutation = `
+        mutation {
+          AddPostEmotions(
+            to: { id: "${to}" },
+            data: { emotion: ${data} }
+          ) {
+            from { id }
+            to { id }
+            emotion
+          }
+        }
+      `
+      this.lastResponse = await this.graphQLClient.request(mutation)
+      return this
+    },
   }
   result.authenticateAs.bind(result)
   result.create.bind(result)
