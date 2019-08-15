@@ -966,10 +966,10 @@
     supports-color "^5.5.0"
     tslib "^1.9.3"
 
-"@human-connection/styleguide@0.5.18":
-  version "0.5.18"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.18.tgz#1e869fa198c44f5f164e78a79c196b80c0647d97"
-  integrity sha512-nRx6tk6tzMMibKDMaxbcRQfm8IX3FIjhrCa2rSojAN4rE0Iyefrr9kNNPo7QpjDI45IXn+zH+x9PhdJtByBQAg==
+"@human-connection/styleguide@0.5.19":
+  version "0.5.19"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.19.tgz#ab5df5e421bb8e8259747c0f48b1f324ad013c43"
+  integrity sha512-UrmHtIvJ+bi0s4Q2Xjh0lIcBYcGiiOeIp34XT16CO4Oe/ziZZ/bFph5kTgrYtrIz42qucmNHZ8TxN5gYRD1MoQ==
   dependencies:
     vue "^2.6.10"
 

@@ -50,7 +50,7 @@
     ]
   },
   "dependencies": {
-    "@human-connection/styleguide": "0.5.18",
+    "@human-connection/styleguide": "0.5.19",
     "@nuxtjs/apollo": "^4.0.0-rc10",
     "@nuxtjs/axios": "~5.5.4",
     "@nuxtjs/dotenv": "~1.4.0",
