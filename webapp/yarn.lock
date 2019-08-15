@@ -966,12 +966,12 @@
     supports-color "^5.5.0"
     tslib "^1.9.3"
 
-"@human-connection/styleguide@0.5.17":
-  version "0.5.17"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.17.tgz#99816579616c8d5be6c66ee86c39cb6c4e694878"
-  integrity sha512-Qlo29eOi97lHls40Ms1hbGC29Aoz/W6BLoX/no5TQgHlP4qm+OK7Ra75g0sbj3a2x1Q4mZthUDWcqtjTYf6brw==
+"@human-connection/styleguide@0.5.18":
+  version "0.5.18"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.18.tgz#1e869fa198c44f5f164e78a79c196b80c0647d97"
+  integrity sha512-nRx6tk6tzMMibKDMaxbcRQfm8IX3FIjhrCa2rSojAN4rE0Iyefrr9kNNPo7QpjDI45IXn+zH+x9PhdJtByBQAg==
   dependencies:
-    vue "^2.6.6"
+    vue "^2.6.10"
 
 "@jest/console@^24.7.1":
   version "24.7.1"
@@ -15015,7 +15015,7 @@ vue2-dropzone@3.5.8:
   dependencies:
     dropzone "^5.5.1"
 
-vue@^2.6.10, vue@^2.6.6:
+vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
