@@ -71,26 +71,38 @@ describe('Editor.vue', () => {
 
     describe('optional extensions', () => {
       it('sets the Mention items to the users', () => {
-        propsData.users = [{ id: 'u345' }]
+        propsData.users = [
+          {
+            id: 'u345',
+          },
+        ]
         wrapper = Wrapper()
         expect(wrapper.vm.editor.extensions.options.mention.items()).toEqual(propsData.users)
       })
 
       it('mentions is not an option when there are no users', () => {
         expect(wrapper.vm.editor.extensions.options).toEqual(
-          expect.not.objectContaining({ mention: expect.anything() }),
+          expect.not.objectContaining({
+            mention: expect.anything(),
+          }),
         )
       })
 
       it('sets the Hashtag items to the hashtags', () => {
-        propsData.hashtags = [{ id: 'Frieden' }]
+        propsData.hashtags = [
+          {
+            id: 'Frieden',
+          },
+        ]
         wrapper = Wrapper()
         expect(wrapper.vm.editor.extensions.options.hashtag.items()).toEqual(propsData.hashtags)
       })
 
       it('hashtags is not an option when there are no hashtags', () => {
         expect(wrapper.vm.editor.extensions.options).toEqual(
-          expect.not.objectContaining({ hashtag: expect.anything() }),
+          expect.not.objectContaining({
+            hashtag: expect.anything(),
+          }),
         )
       })
     })

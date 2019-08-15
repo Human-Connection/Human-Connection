@@ -18,9 +18,7 @@
           <!-- if query is not empty and is find fully in the suggestions array ... -->
           <div v-if="query && !filteredItems.find(el => el.name === query)">
             <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-            <div class="suggestion-list__item" @click="selectItem({ name: query })">
-              #{{ query }}
-            </div>
+            <div class="suggestion-list__item" @click="selectItem({ name: query })">#{{ query }}</div>
           </div>
           <!-- otherwise if sanitized query is empty advice the user to add a char -->
           <div v-else-if="!query">
@@ -30,19 +28,19 @@
       </template>
       <!-- if "!hasResults" -->
       <div v-else>
-        <div v-if="isMention" class="suggestion-list__item is-empty">
-          {{ $t('editor.mention.noUsersFound') }}
-        </div>
+        <div
+          v-if="isMention"
+          class="suggestion-list__item is-empty"
+        >{{ $t('editor.mention.noUsersFound') }}</div>
         <div v-if="isHashtag">
-          <div v-if="query === ''" class="suggestion-list__item is-empty">
-            {{ $t('editor.hashtag.noHashtagsFound') }}
-          </div>
+          <div
+            v-if="query === ''"
+            class="suggestion-list__item is-empty"
+          >{{ $t('editor.hashtag.noHashtagsFound') }}</div>
           <!-- if "query" is not empty -->
           <div v-else>
             <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-            <div class="suggestion-list__item" @click="selectItem({ name: query })">
-              #{{ query }}
-            </div>
+            <div class="suggestion-list__item" @click="selectItem({ name: query })">#{{ query }}</div>
           </div>
         </div>
       </div>
@@ -128,18 +126,14 @@
           size="small"
           :ghost="!isActive.heading({ level: 3 })"
           @click.prevent="commands.heading({ level: 3 })"
-        >
-          H3
-        </ds-button>
+        >H3</ds-button>
 
         <ds-button
           class="menubar__button"
           size="small"
           :ghost="!isActive.heading({ level: 4 })"
           @click.prevent="commands.heading({ level: 4 })"
-        >
-          H4
-        </ds-button>
+        >H4</ds-button>
 
         <ds-button
           class="menubar__button"
@@ -204,8 +198,8 @@ export default {
     EditorMenuBubble,
   },
   props: {
-    users: { type: Array, default: () => [] }, // If 'null', than the Mention extention is not assigned.
-    hashtags: { type: Array, default: () => [] }, // If 'null', than the Hashtag extention is not assigned.
+    users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
+    hashtags: { type: Array, default: () => null }, // If 'null', than the Hashtag extention is not assigned.
     value: { type: String, default: '' },
     doc: { type: Object, default: () => {} },
   },
