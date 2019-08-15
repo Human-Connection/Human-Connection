@@ -1,7 +1,7 @@
 <template>
   <div>
     <ds-grid>
-      <ds-grid-item :row-span="2" column-span="fullWidth">
+      <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
       <ds-grid-item :row-span="2" column-span="fullWidth">

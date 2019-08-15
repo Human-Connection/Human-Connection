@@ -1,27 +1,24 @@
 <template>
-  <ds-card v-show="hashtag" class="filter-menu-card">
-    <div>
-      <ds-space margin-bottom="x-small" />
-      <ds-flex>
-        <ds-flex-item>
-          <ds-heading size="h3">{{ $t('filter-menu.hashtag-search', { hashtag }) }}</ds-heading>
-        </ds-flex-item>
-        <ds-flex-item>
-          <div class="filter-menu-buttons">
-            <ds-button
-              v-tooltip="{
-                content: this.$t('filter-menu.clearSearch'),
-                placement: 'left',
-                delay: { show: 500 },
-              }"
-              name="clear-search-button"
-              icon="close"
-              @click="clearSearch"
-            />
-          </div>
-        </ds-flex-item>
-      </ds-flex>
-    </div>
+  <ds-card class="filter-menu-card">
+    <ds-flex class="filter-menu-content">
+      <ds-flex-item>
+        <ds-heading size="h3">{{ $t('filter-menu.hashtag-search', { hashtag }) }}</ds-heading>
+      </ds-flex-item>
+      <ds-flex-item>
+        <div class="filter-menu-buttons">
+          <ds-button
+            v-tooltip="{
+              content: this.$t('filter-menu.clearSearch'),
+              placement: 'left',
+              delay: { show: 500 },
+            }"
+            name="clear-search-button"
+            icon="close"
+            @click="clearSearch"
+          />
+        </div>
+      </ds-flex-item>
+    </ds-flex>
   </ds-card>
 </template>
 
@@ -41,6 +38,11 @@ export default {
 <style lang="scss">
 .filter-menu-card {
   background-color: $background-color-soft;
+}
+
+.filter-menu-content {
+  height: 100%;
+  align-items: center;
 }
 
 .filter-menu-title {
