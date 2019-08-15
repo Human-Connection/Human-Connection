@@ -4062,10 +4062,10 @@ graphql-iso-date@~3.6.1:
   resolved "https://registry.yarnpkg.com/graphql-iso-date/-/graphql-iso-date-3.6.1.tgz#bd2d0dc886e0f954cbbbc496bbf1d480b57ffa96"
   integrity sha512-AwFGIuYMJQXOEAgRlJlFL4H1ncFM8n8XmoVDTNypNOZyQ8LFDG2ppMFlsS862BSTCDcSUfHp8PD3/uJhv7t59Q==
 
-graphql-middleware@~3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-3.0.3.tgz#58cbce80892fb933d72794447f33f978fc743aa5"
-  integrity sha512-Os8Vt25MqqwIPJUCCcHznzs6EqarGmM0kkNPUiDnMEkX6vqjA+HugCWatinP+7+fqBqecFUsJmoL4ZypdqZZkg==
+graphql-middleware@~3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-3.0.5.tgz#8cbce45ce4be95bd4600ffe5332e1936ec721e10"
+  integrity sha512-84HBmvJlMKxgavbygbRgn2i1fOSrZ7KhxWToWDpe4xOgnWxGb5WY1rwRIkyK25ajh4qRwLtGPbBxtClzwGngCQ==
   dependencies:
     graphql-tools "^4.0.5"
 
