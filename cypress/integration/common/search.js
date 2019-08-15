@@ -11,6 +11,13 @@ Then("I should have one post in the select dropdown", () => {
   });
 });
 
+Then("the search has no results", () => {
+  cy.get(".input .ds-select-dropdown").should($li => {
+    expect($li).to.have.length(1);
+  });
+  cy.get(".ds-select-dropdown").should("contain", 'Nothing found');
+});
+
 Then("I should see the following posts in the select dropdown:", table => {
   table.hashes().forEach(({ title }) => {
     cy.get(".ds-select-dropdown").should("contain", title);

@@ -28,8 +28,13 @@
 </template>
 
 <script>
+import { SweetalertIcon } from 'vue-sweetalert-icons'
+
 export default {
   name: 'ConfirmModal',
+  components: {
+    SweetalertIcon,
+  },
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },

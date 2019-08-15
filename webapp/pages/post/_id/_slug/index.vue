@@ -40,14 +40,30 @@
         <ds-space margin="xx-small" />
         <hc-tag v-for="tag in post.tags" :key="tag.id" :name="tag.name" />
       </div>
-      <!-- Shout Button -->
-      <hc-shout-button
-        v-if="post.author"
-        :disabled="isAuthor(post.author.id)"
-        :count="post.shoutedCount"
-        :is-shouted="post.shoutedByCurrentUser"
-        :post-id="post.id"
-      />
+      <ds-space margin-top="x-large">
+        <ds-flex :gutter="{ lg: 'small' }">
+          <ds-flex-item
+            :width="{ lg: '75%', md: '75%', sm: '75%' }"
+            class="emotions-buttons-mobile"
+          >
+            <hc-emotions :post="post" />
+          </ds-flex-item>
+          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
+          <!-- Shout Button -->
+          <ds-flex-item
+            :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
+            class="shout-button"
+          >
+            <hc-shout-button
+              v-if="post.author"
+              :disabled="isAuthor(post.author.id)"
+              :count="post.shoutedCount"
+              :is-shouted="post.shoutedByCurrentUser"
+              :post-id="post.id"
+            />
+          </ds-flex-item>
+        </ds-flex>
+      </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list :post="post" />
@@ -69,6 +85,7 @@ import HcCommentForm from '~/components/comments/CommentForm'
 import HcCommentList from '~/components/comments/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery.js'
+import HcEmotions from '~/components/Emotions/Emotions'
 
 export default {
   name: 'PostSlug',
@@ -84,6 +101,7 @@ export default {
     ContentMenu,
     HcCommentForm,
     HcCommentList,
+    HcEmotions,
     ContentViewer,
   },
   head() {
@@ -196,6 +214,11 @@ export default {
         padding: $space-base;
       }
     }
+  }
+}
+@media only screen and (max-width: 960px) {
+  .shout-button {
+    float: left;
   }
 }
 </style>

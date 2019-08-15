@@ -56,6 +56,7 @@ module.exports = {
     required: true,
     default: () => new Date().toISOString(),
   },
+
   termsAndConditionsConfirmedAt: {
     type: 'string',
     isoDate: true,
@@ -64,5 +65,33 @@ module.exports = {
   termsAndConditionsVersion: {
     type: 'string',
     /* required: true, TODO */
+  },
+
+  emoted: {
+    type: 'relationships',
+    relationship: 'EMOTED',
+    target: 'Post',
+    direction: 'out',
+    properties: {
+      emotion: {
+        type: 'string',
+        valid: ['happy', 'cry', 'surprised', 'angry', 'funny'],
+        invalid: [null],
+      },
+    },
+    eager: true,
+    cascade: true,
+  },
+  blocked: {
+    type: 'relationship',
+    relationship: 'BLOCKED',
+    target: 'User',
+    direction: 'out',
+  },
+  notifications: {
+    type: 'relationship',
+    relationship: 'NOTIFIED',
+    target: 'Notification',
+    direction: 'in',
   },
 }

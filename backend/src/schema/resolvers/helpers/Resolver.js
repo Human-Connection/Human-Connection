@@ -15,10 +15,12 @@ export default function Resolver(type, options = {}) {
   const {
     idAttribute = 'id',
     undefinedToNull = [],
+    boolean = {},
     count = {},
     hasOne = {},
     hasMany = {},
   } = options
+
   const _hasResolver = (resolvers, { key, connection }, { returnType }) => {
     return async (parent, params, context, resolveInfo) => {
       if (typeof parent[key] !== 'undefined') return parent[key]
@@ -29,6 +31,26 @@ export default function Resolver(type, options = {}) {
       if (returnType === 'object') response = response[0] || null
       return response
     }
+  }
+
+  const booleanResolver = obj => {
+    const resolvers = {}
+    for (const [key, condition] of Object.entries(obj)) {
+      resolvers[key] = async (parent, params, { cypherParams }, resolveInfo) => {
+        if (typeof parent[key] !== 'undefined') return parent[key]
+        const result = await instance.cypher(
+          `
+        ${condition.replace('this', 'this {id: $parent.id}')} as ${key}`,
+          {
+            parent,
+            cypherParams,
+          },
+        )
+        const [record] = result.records
+        return record.get(key)
+      }
+    }
+    return resolvers
   }
 
   const countResolver = obj => {
@@ -67,6 +89,7 @@ export default function Resolver(type, options = {}) {
   }
   const result = {
     ...undefinedToNullResolver(undefinedToNull),
+    ...booleanResolver(boolean),
     ...countResolver(count),
     ...hasOneResolver(hasOne),
     ...hasManyResolver(hasMany),

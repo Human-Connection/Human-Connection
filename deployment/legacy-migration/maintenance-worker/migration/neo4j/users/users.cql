@@ -117,7 +117,7 @@ MERGE (e:EmailAddress {
   verifiedAt: toString(datetime())
 })
 MERGE (e)-[:BELONGS_TO]->(u)
-MERGE (u)<-[:PRIMARY_EMAIL]-(e)
+MERGE (u)-[:PRIMARY_EMAIL]->(e)
 WITH u, user, user.badgeIds AS badgeIds
 UNWIND badgeIds AS badgeId
 MATCH (b:Badge {id: badgeId})
