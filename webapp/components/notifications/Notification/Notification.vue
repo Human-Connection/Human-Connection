@@ -8,9 +8,7 @@
           :trunc="35"
         />
       </ds-space>
-      <ds-text color="soft">
-        {{ $t('notifications.menu.mentioned', { resource: post.id ? 'post' : 'comment' }) }}
-      </ds-text>
+      <ds-text color="soft">{{ $t(notificationTextIdents[notification.reason]) }}</ds-text>
     </no-ssr>
     <ds-space margin-bottom="x-small" />
     <nuxt-link
@@ -48,6 +46,15 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      notificationTextIdents: {
+        mentioned_in_post: 'notifications.menu.mentionedInPost',
+        mentioned_in_comment: 'notifications.menu.mentionedInComment',
+        comment_on_your_post: 'notifications.menu.commentedOnPost',
+      },
+    }
   },
   computed: {
     excerpt() {

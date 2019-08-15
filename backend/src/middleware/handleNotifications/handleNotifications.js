@@ -1,8 +1,17 @@
+import {
+  UserInputError
+} from 'apollo-server'
 import extractMentionedUsers from './notifications/extractMentionedUsers'
 import extractHashtags from './hashtags/extractHashtags'
 
-const notifyUsers = async (label, id, idsOfUsers, context) => {
+const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
   if (!idsOfUsers.length) return
+
+  // Done here, because Neode validation is not working.
+  const reasonsAllowed = ['mentioned_in_post', 'mentioned_in_comment', 'comment_on_your_post']
+  if (!(reasonsAllowed.includes(reason))) {
+    throw new UserInputError("Notification reason is not allowed!")
+  }
 
   const session = context.driver.session()
   const createdAt = new Date().toISOString()
@@ -13,14 +22,15 @@ const notifyUsers = async (label, id, idsOfUsers, context) => {
     MATCH (u: User)
     WHERE u.id in $idsOfUsers
     AND NOT (u)<-[:BLOCKED]-(author)
-    CREATE (n: Notification {id: apoc.create.uuid(), read: false, createdAt: $createdAt })
+    CREATE (n: Notification { id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt })
     MERGE (source)-[:NOTIFIED]->(n)-[:NOTIFIED]->(u)
     `
   await session.run(cypher, {
-    idsOfUsers,
     label,
-    createdAt,
     id,
+    idsOfUsers,
+    reason,
+    createdAt,
   })
   session.close()
 }
@@ -63,7 +73,7 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
   // removes classes from the content
   const post = await resolve(root, args, context, resolveInfo)
 
-  await notifyUsers('Post', post.id, idsOfUsers, context)
+  await notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
   await updateHashtagsOfPost(post.id, hashtags, context)
 
   return post
@@ -76,7 +86,7 @@ const handleContentDataOfComment = async (resolve, root, args, context, resolveI
   // removes classes from the content
   const comment = await resolve(root, args, context, resolveInfo)
 
-  await notifyUsers('Comment', comment.id, idsOfUsers, context)
+  await notifyUsers('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
 
   return comment
 }
@@ -98,7 +108,7 @@ const handleCreateComment = async (resolve, root, args, context, resolveInfo) =>
     return record.get('user')
   })
   if (context.user.id !== userWrotePost.id) {
-    await notifyUsers('Comment', comment.id, [userWrotePost.id], context)
+    await notifyUsers('Comment', comment.id, [userWrotePost.id], 'comment_on_your_post', context)
   }
 
   return comment

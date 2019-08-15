@@ -37,6 +37,7 @@ const NOTIFICATIONS = gql`
       notifications(read: false, orderBy: createdAt_desc) {
         id
         read
+        reason
         createdAt
         post {
           id

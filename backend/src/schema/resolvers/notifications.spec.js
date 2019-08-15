@@ -1,6 +1,12 @@
-import { GraphQLClient } from 'graphql-request'
+import {
+  GraphQLClient
+} from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login, gql } from '../../jest/helpers'
+import {
+  host,
+  login,
+  gql
+} from '../../jest/helpers'
 
 const factory = Factory()
 let client
@@ -19,7 +25,7 @@ afterEach(async () => {
 })
 
 describe('query for notification', () => {
-  const notificationQuery = gql`
+  const notificationQuery = gql `
     {
       Notification {
         id
@@ -61,23 +67,29 @@ describe('currentUser notifications', () => {
           factory.create('User', neighborParams),
           factory.create('Notification', {
             id: 'post-mention-not-for-you',
+            reason: 'mentioned_in_post',
           }),
           factory.create('Notification', {
             id: 'post-mention-already-seen',
             read: true,
+            reason: 'mentioned_in_post',
           }),
           factory.create('Notification', {
             id: 'post-mention-unseen',
+            reason: 'mentioned_in_post',
           }),
           factory.create('Notification', {
             id: 'comment-mention-not-for-you',
+            reason: 'mentioned_in_comment',
           }),
           factory.create('Notification', {
             id: 'comment-mention-already-seen',
             read: true,
+            reason: 'mentioned_in_comment',
           }),
           factory.create('Notification', {
             id: 'comment-mention-unseen',
+            reason: 'mentioned_in_comment',
           }),
         ])
         await factory.authenticateAs(neighborParams)
@@ -149,7 +161,7 @@ describe('currentUser notifications', () => {
       })
 
       describe('filter for read: false', () => {
-        const queryCurrentUserNotificationsFilterRead = gql`
+        const queryCurrentUserNotificationsFilterRead = gql `
           query($read: Boolean) {
             currentUser {
               notifications(read: $read, orderBy: createdAt_desc) {
@@ -170,8 +182,7 @@ describe('currentUser notifications', () => {
         it('returns only unread notifications of current user', async () => {
           const expected = {
             currentUser: {
-              notifications: expect.arrayContaining([
-                {
+              notifications: expect.arrayContaining([{
                   id: 'post-mention-unseen',
                   post: {
                     id: 'p1',
@@ -195,7 +206,7 @@ describe('currentUser notifications', () => {
       })
 
       describe('no filters', () => {
-        const queryCurrentUserNotifications = gql`
+        const queryCurrentUserNotifications = gql `
           {
             currentUser {
               notifications(orderBy: createdAt_desc) {
@@ -213,8 +224,7 @@ describe('currentUser notifications', () => {
         it('returns all notifications of current user', async () => {
           const expected = {
             currentUser: {
-              notifications: expect.arrayContaining([
-                {
+              notifications: expect.arrayContaining([{
                   id: 'post-mention-unseen',
                   post: {
                     id: 'p1',
@@ -255,7 +265,7 @@ describe('currentUser notifications', () => {
 })
 
 describe('UpdateNotification', () => {
-  const mutationUpdateNotification = gql`
+  const mutationUpdateNotification = gql `
     mutation($id: ID!, $read: Boolean) {
       UpdateNotification(id: $id, read: $read) {
         id
@@ -286,9 +296,11 @@ describe('UpdateNotification', () => {
         factory.create('User', mentionedParams),
         factory.create('Notification', {
           id: 'post-mention-to-be-updated',
+          reason: 'mentioned_in_post',
         }),
         factory.create('Notification', {
           id: 'comment-mention-to-be-updated',
+          reason: 'mentioned_in_comment',
         }),
       ])
       await factory.authenticateAs(userParams)

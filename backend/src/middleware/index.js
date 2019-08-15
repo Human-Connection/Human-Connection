@@ -1,6 +1,4 @@
-import {
-  applyMiddleware
-} from 'graphql-middleware'
+import { applyMiddleware } from 'graphql-middleware'
 import CONFIG from './../config'
 
 import activityPub from './activityPubMiddleware'
@@ -32,7 +30,7 @@ export default schema => {
     includedFields: includedFields,
     orderBy: orderBy,
     email: email({
-      isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT
+      isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT,
     }),
   }
 
