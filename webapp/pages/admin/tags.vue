@@ -1,12 +1,12 @@
 <template>
   <ds-card :header="$t('admin.tags.name')">
     <ds-table :data="Tag" :fields="fields" condensed>
-      <template slot="id" slot-scope="scope">
+      <template slot="index" slot-scope="scope">
         {{ scope.index + 1 }}.
       </template>
-      <template slot="name" slot-scope="scope">
+      <template slot="id" slot-scope="scope">
         <nuxt-link :to="{ path: '/', query: { hashtag: scope.row.id } }">
-          <b>#{{ scope.row.name | truncate(20) }}</b>
+          <b>#{{ scope.row.id | truncate(20) }}</b>
         </nuxt-link>
       </template>
     </ds-table>
@@ -25,8 +25,8 @@ export default {
   computed: {
     fields() {
       return {
-        id: this.$t('admin.tags.number'),
-        name: this.$t('admin.tags.name'),
+        index: this.$t('admin.tags.number'),
+        id: this.$t('admin.tags.name'),
         taggedCountUnique: {
           label: this.$t('admin.tags.tagCountUnique'),
           align: 'right',
@@ -44,7 +44,6 @@ export default {
         query {
           Tag(first: 20, orderBy: taggedCountUnique_desc) {
             id
-            name
             taggedCount
             taggedCountUnique
           }

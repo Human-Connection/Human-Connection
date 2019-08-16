@@ -198,7 +198,6 @@ describe('Hashtags', () => {
       Post(id: $id) {
         tags {
           id
-          name
         }
       }
     }
@@ -234,10 +233,7 @@ describe('Hashtags', () => {
       })
 
       it('both Hashtags are created with the "id" set to their "name"', async () => {
-        const expected = [
-          { id: 'Democracy', name: 'Democracy' },
-          { id: 'Liberty', name: 'Liberty' },
-        ]
+        const expected = [{ id: 'Democracy' }, { id: 'Liberty' }]
         await expect(
           query({ query: postWithHastagsQuery, variables: postWithHastagsVariables }),
         ).resolves.toEqual(
@@ -277,10 +273,7 @@ describe('Hashtags', () => {
             },
           })
 
-          const expected = [
-            { id: 'Elections', name: 'Elections' },
-            { id: 'Liberty', name: 'Liberty' },
-          ]
+          const expected = [{ id: 'Elections' }, { id: 'Liberty' }]
           await expect(
             query({ query: postWithHastagsQuery, variables: postWithHastagsVariables }),
           ).resolves.toEqual(

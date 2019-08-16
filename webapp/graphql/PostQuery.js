@@ -34,7 +34,7 @@ export default i18n => {
             }
           }
           tags {
-            name
+            id
           }
           commentsCount
           comments(orderBy: createdAt_desc) {
