@@ -255,9 +255,8 @@ import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import { filterPosts } from '~/graphql/PostQuery'
-// import PostQuery from '~/graphql/UserProfile/Post.js'
 import UserQuery from '~/graphql/User'
-import { Block, Unblock } from '~/graphql/settings/BlockedUsers.js'
+import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
