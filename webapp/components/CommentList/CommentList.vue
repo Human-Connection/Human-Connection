@@ -4,7 +4,7 @@
       <span>
         <ds-icon name="comments" />
         <ds-tag
-          v-if="post.comments"
+          v-if="post.comments.length"
           style="margin-top: -4px; margin-left: -12px; position: absolute;"
           color="primary"
           size="small"

@@ -35,7 +35,7 @@ export default i18n => {
           followedByCount
           followedByCurrentUser
           contributionsCount
-          commentsCount
+          commentedCount
           badges {
             id
             icon
@@ -57,7 +57,7 @@ export default i18n => {
           followedByCount
           followedByCurrentUser
           contributionsCount
-          commentsCount
+          commentedCount
           badges {
             id
             icon
@@ -66,7 +66,6 @@ export default i18n => {
             name: name${lang}
           }
         }
-        contributionsCount
         socialMedia {
           id
           url

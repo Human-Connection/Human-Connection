@@ -22,7 +22,7 @@ export default i18n => {
             deleted
             shoutedCount
             contributionsCount
-            commentsCount
+            commentedCount
             followedByCount
             followedByCurrentUser
             location {
@@ -36,7 +36,6 @@ export default i18n => {
           tags {
             name
           }
-          commentsCount
           comments(orderBy: createdAt_asc) {
             id
             contentExcerpt
@@ -53,7 +52,7 @@ export default i18n => {
               deleted
               shoutedCount
               contributionsCount
-              commentsCount
+              commentedCount
               followedByCount
               followedByCurrentUser
               location {
@@ -100,7 +99,7 @@ export const filterPosts = i18n => {
         deleted
         contributionsCount
         shoutedCount
-        commentsCount
+        commentedCount
         followedByCount
         followedByCurrentUser
         location {
@@ -111,7 +110,6 @@ export const filterPosts = i18n => {
           icon
         }
       }
-      commentsCount
       categories {
         id
         name
