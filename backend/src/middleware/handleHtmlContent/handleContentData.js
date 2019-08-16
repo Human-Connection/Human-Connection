@@ -27,9 +27,6 @@ const notifyMentions = async (label, id, idsOfMentionedUsers, context) => {
       MERGE (comment)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
     `
   }
-  // "author" of comment, blocked Peter: Jenny
-  // "user" mentioned on post by Jenny: Peter
-  // owner of post: Bob
   await session.run(cypher, {
     idsOfMentionedUsers,
     label,
