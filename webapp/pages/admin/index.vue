@@ -7,7 +7,7 @@
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.users')" size="x-large" uppercase>
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countUsers || 0" />
+                  <hc-count-to :end-val="statistics.countUsers || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -16,7 +16,7 @@
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.posts')" size="x-large" uppercase>
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countPosts || 0" />
+                  <hc-count-to :end-val="statistics.countPosts || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -30,7 +30,7 @@
                 uppercase
               >
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countComments || 0" />
+                  <hc-count-to :end-val="statistics.countComments || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -44,7 +44,7 @@
                 uppercase
               >
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countNotifications || 0" />
+                  <hc-count-to :end-val="statistics.countNotifications || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -58,7 +58,7 @@
                 uppercase
               >
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countOrganizations || 0" />
+                  <hc-count-to :end-val="statistics.countOrganizations || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -72,7 +72,7 @@
                 uppercase
               >
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countProjects || 0" />
+                  <hc-count-to :end-val="statistics.countProjects || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -81,7 +81,7 @@
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.invites')" size="x-large" uppercase>
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countInvites || 0" />
+                  <hc-count-to :end-val="statistics.countInvites || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -90,7 +90,7 @@
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.follows')" size="x-large" uppercase>
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countFollows || 0" />
+                  <hc-count-to :end-val="statistics.countFollows || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -99,7 +99,7 @@
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.shouts')" size="x-large" uppercase>
                 <no-ssr slot="count">
-                  <hc-count-to :start-val="0" :end-val="statistics.countShouts || 0" />
+                  <hc-count-to :end-val="statistics.countShouts || 0" />
                 </no-ssr>
               </ds-number>
             </ds-space>
@@ -127,9 +127,6 @@ export default {
     isClient() {
       return process.client
     },
-  },
-  mounted() {
-    this.$apollo.queries.statistics.startPolling(5000)
   },
   apollo: {
     statistics: {
