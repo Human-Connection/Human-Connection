@@ -1,5 +1,5 @@
 import { config, shallowMount, createLocalVue } from '@vue/test-utils'
-import NotificationMenu from '.'
+import NotificationMenu from './NotificationMenu'
 
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'

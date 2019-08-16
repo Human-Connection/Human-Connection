@@ -10,12 +10,15 @@ const notifyMentions = async (label, id, idsOfMentionedUsers, context) => {
     MATCH (source)
     WHERE source.id = $id AND $label IN LABELS(source)
     MATCH (source)<-[:WROTE]-(author: User)
-    MATCH (u: User)
-    WHERE u.id in $idsOfMentionedUsers
-    AND NOT (u)<-[:BLOCKED]-(author)
-    CREATE (n: Notification {id: apoc.create.uuid(), read: false, createdAt: $createdAt })
-    MERGE (source)-[:NOTIFIED]->(n)-[:NOTIFIED]->(u)
+    MATCH (user: User)
+    WHERE user.id in $idsOfMentionedUsers
+    AND NOT (user)<-[:BLOCKED]-(author)
+    CREATE (notification: Notification {id: apoc.create.uuid(), read: false, createdAt: $createdAt })
+    MERGE (source)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
     `
+  // "author" of comment, blocked Peter: Jenny
+  // "user" mentioned on post by Jenny: Peter
+  // owner of post: Bob
   await session.run(cypher, {
     idsOfMentionedUsers,
     label,
