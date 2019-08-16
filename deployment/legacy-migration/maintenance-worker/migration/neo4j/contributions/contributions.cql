@@ -148,6 +148,6 @@ MATCH (c:Category {id: categoryId})
 MERGE (p)-[:CATEGORIZED]->(c)
 WITH p, post.tags AS tags
 UNWIND tags AS tag
-MERGE (t:Tag {id: tag, name: tag})
+MERGE (t:Tag {id: apoc.text.clean(tag), disabled: false, deleted: false})
 MERGE (p)-[:TAGGED]->(t)
 ;

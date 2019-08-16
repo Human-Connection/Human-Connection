@@ -42,7 +42,7 @@
     ]
   },
   "dependencies": {
-    "@hapi/joi": "^15.1.0",
+    "@hapi/joi": "^15.1.1",
     "activitystrea.ms": "~2.1.3",
     "apollo-cache-inmemory": "~1.6.3",
     "apollo-client": "~2.6.4",
@@ -63,7 +63,7 @@
     "graphql": "~14.4.2",
     "graphql-custom-directives": "~0.2.14",
     "graphql-iso-date": "~3.6.1",
-    "graphql-middleware": "~3.0.3",
+    "graphql-middleware": "~3.0.5",
     "graphql-shield": "~6.0.4",
     "graphql-tag": "~2.10.1",
     "helmet": "~3.20.0",

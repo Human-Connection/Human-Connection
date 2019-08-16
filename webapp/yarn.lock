@@ -966,12 +966,12 @@
     supports-color "^5.5.0"
     tslib "^1.9.3"
 
-"@human-connection/styleguide@0.5.17":
-  version "0.5.17"
-  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.17.tgz#99816579616c8d5be6c66ee86c39cb6c4e694878"
-  integrity sha512-Qlo29eOi97lHls40Ms1hbGC29Aoz/W6BLoX/no5TQgHlP4qm+OK7Ra75g0sbj3a2x1Q4mZthUDWcqtjTYf6brw==
+"@human-connection/styleguide@0.5.19":
+  version "0.5.19"
+  resolved "https://registry.yarnpkg.com/@human-connection/styleguide/-/styleguide-0.5.19.tgz#ab5df5e421bb8e8259747c0f48b1f324ad013c43"
+  integrity sha512-UrmHtIvJ+bi0s4Q2Xjh0lIcBYcGiiOeIp34XT16CO4Oe/ziZZ/bFph5kTgrYtrIz42qucmNHZ8TxN5gYRD1MoQ==
   dependencies:
-    vue "^2.6.6"
+    vue "^2.6.10"
 
 "@jest/console@^24.7.1":
   version "24.7.1"
@@ -14887,9 +14887,13 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.3.tgz#2756f46cb3258054c5f4723de8ae7e87302a1ccf"
   integrity sha512-KmvZVtmM26BQOMK1rwUZsrqxEGeKiYSZGA7SNWE6uExx8UX/cj9hq2MRV/wWC3Cq6AoeDGk57rL9YMFRel/q+g==
 
+vue-infinite-scroll@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vue-infinite-scroll/-/vue-infinite-scroll-2.0.2.tgz#ca37a91fe92ee0ad3b74acf8682c00917144b711"
+  integrity sha512-n+YghR059YmciANGJh9SsNWRi1YZEBVlODtmnb/12zI+4R72QZSWd+EuZ5mW6auEo/yaJXgxzwsuhvALVnm73A==
+
 vue-izitoast@roschaefer/vue-izitoast#patch-1:
   version "1.1.2"
-  uid ba6b03eb24c7c04c299e64a9703e101bf158ae50
   resolved "https://codeload.github.com/roschaefer/vue-izitoast/tar.gz/ba6b03eb24c7c04c299e64a9703e101bf158ae50"
   dependencies:
     izitoast "^1.3.0"
@@ -15015,7 +15019,7 @@ vue2-dropzone@3.5.8:
   dependencies:
     dropzone "^5.5.1"
 
-vue@^2.6.10, vue@^2.6.6:
+vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
