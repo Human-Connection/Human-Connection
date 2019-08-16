@@ -13,7 +13,7 @@ const styleguideStyles = process.env.STYLEGUIDE_DEV
 const buildDir = process.env.NUXT_BUILD || '.nuxt'
 
 const additionalSentryConfig = {}
-if(process.env.COMMIT) additionalSentryConfig.release = process.env.COMMIT
+if (process.env.COMMIT) additionalSentryConfig.release = process.env.COMMIT
 
 module.exports = {
   buildDir,
