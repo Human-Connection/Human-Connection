@@ -37,9 +37,10 @@ export default i18n => {
             name
           }
           commentsCount
-          comments(orderBy: createdAt_desc) {
+          comments(orderBy: createdAt_asc) {
             id
             contentExcerpt
+            content
             createdAt
             disabled
             deleted

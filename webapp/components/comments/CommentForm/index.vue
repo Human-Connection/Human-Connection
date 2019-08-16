@@ -24,10 +24,10 @@
 
 <script>
 import gql from 'graphql-tag'
-import HcEditor from '~/components/Editor/Editor'
-import PostCommentsQuery from '~/graphql/PostCommentsQuery.js'
-import CommentMutations from '~/graphql/CommentMutations.js'
 import { mapGetters } from 'vuex'
+import HcEditor from '~/components/Editor/Editor'
+import PostQuery from '~/graphql/PostQuery'
+import CommentMutations from '~/graphql/CommentMutations'
 
 export default {
   components: {
@@ -35,7 +35,6 @@ export default {
   },
   props: {
     post: { type: Object, default: () => {} },
-    comments: { type: Array, default: () => [] },
   },
   data() {
     return {
@@ -77,11 +76,11 @@ export default {
           },
           update: (store, { data: { CreateComment } }) => {
             const data = store.readQuery({
-              query: PostCommentsQuery(this.$i18n),
+              query: PostQuery(this.$i18n),
               variables: { slug: this.post.slug },
             })
             data.Post[0].comments.push(CreateComment)
-            store.writeQuery({ query: PostCommentsQuery(this.$i18n), data })
+            store.writeQuery({ query: PostQuery(this.$i18n), data })
           },
         })
         .then(res => {
@@ -98,14 +97,16 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql(`{
-          User(orderBy: slug_asc) {
-            id
-            slug
-            name
-            avatar
+        return gql`
+          {
+            User(orderBy: slug_asc) {
+              id
+              slug
+              name
+              avatar
+            }
           }
-        }`)
+        `
       },
       result(result) {
         this.users = result.data.User
