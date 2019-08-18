@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ds-grid :min-column-width="300">
+    <masonry-grid v-slot="{ rowSpan }">
       <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
@@ -15,14 +15,14 @@
           ></ds-select>
         </div>
       </ds-grid-item>
-      <hc-post-card
-        v-for="post in posts"
-        :key="post.id"
-        :post="post"
-        :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-        @removePostFromList="deletePost(index, post.id)"
-      />
-    </ds-grid>
+      <masonry-grid-item v-for="post in posts" :key="post.id" :rowSpan="rowSpan">
+        <hc-post-card
+          :post="post"
+          :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
+          @removePostFromList="deletePost(index, post.id)"
+        />
+      </masonry-grid-item>
+    </masonry-grid>
     <no-ssr>
       <ds-button
         v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
@@ -42,6 +42,8 @@ import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import uniqBy from 'lodash/uniqBy'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
+import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
+import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 
@@ -50,6 +52,8 @@ export default {
     FilterMenu,
     HcPostCard,
     HcLoadMore,
+    MasonryGrid,
+    MasonryGridItem,
   },
   data() {
     const { hashtag = null } = this.$route.query
