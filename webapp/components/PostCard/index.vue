@@ -1,73 +1,71 @@
 <template>
-  <ds-grid-item ref="postCard" :rowSpan="rowSpan">
-    <ds-card
-      :image="post.image | proxyApiUrl"
-      :class="{ 'post-card': true, 'disabled-content': post.disabled }"
+  <ds-card
+    :image="post.image | proxyApiUrl"
+    :class="{ 'post-card': true, 'disabled-content': post.disabled }"
+  >
+    <!-- Post Link Target -->
+    <nuxt-link
+      class="post-link"
+      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
     >
-      <!-- Post Link Target -->
-      <nuxt-link
-        class="post-link"
-        :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
-      >
-        {{ post.title }}
-      </nuxt-link>
-      <ds-space margin-bottom="small" />
-      <!-- Username, Image & Date of Post -->
-      <div>
-        <no-ssr>
-          <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
-        </no-ssr>
-        <hc-ribbon :text="$t('post.name')" />
+      {{ post.title }}
+    </nuxt-link>
+    <ds-space margin-bottom="small" />
+    <!-- Username, Image & Date of Post -->
+    <div>
+      <no-ssr>
+        <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
+      </no-ssr>
+      <hc-ribbon :text="$t('post.name')" />
+    </div>
+    <ds-space margin-bottom="small" />
+    <!-- Post Title -->
+    <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
+    <ds-space margin-bottom="small" />
+    <!-- Post Content Excerpt -->
+    <!-- eslint-disable vue/no-v-html -->
+    <!-- TODO: replace editor content with tiptap render view -->
+    <div class="hc-editor-content" v-html="excerpt" />
+    <!-- eslint-enable vue/no-v-html -->
+    <!-- Footer o the Post -->
+    <template slot="footer">
+      <div style="display: inline-block; opacity: .5;">
+        <!-- Categories -->
+        <hc-category
+          v-for="category in post.categories"
+          :key="category.id"
+          v-tooltip="{
+            content: category.name,
+            placement: 'bottom-start',
+            delay: { show: 500 },
+          }"
+          :icon="category.icon"
+        />
       </div>
-      <ds-space margin-bottom="small" />
-      <!-- Post Title -->
-      <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
-      <ds-space margin-bottom="small" />
-      <!-- Post Content Excerpt -->
-      <!-- eslint-disable vue/no-v-html -->
-      <!-- TODO: replace editor content with tiptap render view -->
-      <div class="hc-editor-content" v-html="excerpt" />
-      <!-- eslint-enable vue/no-v-html -->
-      <!-- Footer o the Post -->
-      <template slot="footer">
-        <div style="display: inline-block; opacity: .5;">
-          <!-- Categories -->
-          <hc-category
-            v-for="category in post.categories"
-            :key="category.id"
-            v-tooltip="{
-              content: category.name,
-              placement: 'bottom-start',
-              delay: { show: 500 },
-            }"
-            :icon="category.icon"
+      <no-ssr>
+        <div style="display: inline-block; float: right">
+          <!-- Shouts Count -->
+          <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
+            <ds-icon name="bullhorn" />
+            <small>{{ post.shoutedCount }}</small>
+          </span>
+          &nbsp;
+          <!-- Comments Count -->
+          <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
+            <ds-icon name="comments" />
+            <small>{{ post.commentsCount }}</small>
+          </span>
+          <!-- Menu -->
+          <content-menu
+            resource-type="contribution"
+            :resource="post"
+            :modalsData="menuModalsData"
+            :is-owner="isAuthor"
           />
         </div>
-        <no-ssr>
-          <div style="display: inline-block; float: right">
-            <!-- Shouts Count -->
-            <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
-              <ds-icon name="bullhorn" />
-              <small>{{ post.shoutedCount }}</small>
-            </span>
-            &nbsp;
-            <!-- Comments Count -->
-            <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
-              <ds-icon name="comments" />
-              <small>{{ post.commentsCount }}</small>
-            </span>
-            <!-- Menu -->
-            <content-menu
-              resource-type="contribution"
-              :resource="post"
-              :modalsData="menuModalsData"
-              :is-owner="isAuthor"
-            />
-          </div>
-        </no-ssr>
-      </template>
-    </ds-card>
-  </ds-grid-item>
+      </no-ssr>
+    </template>
+  </ds-card>
 </template>
 
 <script>
@@ -96,11 +94,6 @@ export default {
       type: Object,
       default: () => {},
     },
-  },
-  data() {
-    return {
-      rowSpan: 10,
-    }
   },
   computed: {
     ...mapGetters({
@@ -132,26 +125,6 @@ export default {
         this.$toast.error(err.message)
       }
     },
-    calculateItemHeight() {
-      const grid = document.querySelector('.ds-grid')
-      const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'))
-      const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'))
-      grid.style.gridAutoRows = 'auto'
-      grid.style.alignItems = 'self-start'
-      const itemHeight = this.$refs.postCard.$el.clientHeight
-      this.rowSpan = Math.ceil((itemHeight + rowGap) / (rowHeight + rowGap))
-      grid.style.gridAutoRows = `${rowHeight}px`
-      grid.style.alignItems = 'stretch'
-    },
-  },
-  mounted() {
-    const image = this.$refs.postCard.$el.querySelector('img')
-    if (image) {
-      image.onload = this.calculateItemHeight
-    } else {
-      // use timeout to make sure layout is set up before executing
-      setTimeout(this.calculateItemHeight, 0)
-    }
   },
 }
 </script>
