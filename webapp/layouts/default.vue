@@ -3,8 +3,8 @@
     <div class="main-navigation">
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
-          <ds-flex class="main-navigation-flex" centered>
-            <ds-flex-item :width="{ lg: '3.5%' }" />
+          <ds-flex class="main-navigation-flex">
+            <ds-flex-item :width="{ lg: '30%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
               <nuxt-link :to="{ name: 'index' }">
                 <ds-logo />
@@ -17,7 +17,7 @@
               <ds-button icon="bars" @click="toggleMobileMenuView" right />
             </ds-flex-item>
             <ds-flex-item
-              :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
+              :width="{ base: '85%', sm: '85%', md: '50%', lg: '20%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <div id="nav-search-box" v-if="isLoggedIn">
@@ -88,9 +88,11 @@
                           {{ $t('login.hello') }}
                           <b>{{ userName }}</b>
                           <template v-if="user.role !== 'user'">
-                            <ds-text color="softer" size="small" style="margin-bottom: 0">
-                              {{ user.role | camelCase }}
-                            </ds-text>
+                            <ds-text
+                              color="softer"
+                              size="small"
+                              style="margin-bottom: 0"
+                            >{{ user.role | camelCase }}</ds-text>
                           </template>
                           <hr />
                           <ds-menu :routes="routes" :matcher="matcher">
@@ -129,14 +131,10 @@
     <div id="footer" class="ds-footer">
       <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
       &nbsp;-&nbsp;
-      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAndConditions') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/code-of-conduct">{{ $t('site.code-of-conduct') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/data-privacy">{{ $t('site.data-privacy') }}</nuxt-link>
-      &nbsp;‑&nbsp;
+      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>&nbsp;‑&nbsp;
+      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAndConditions') }}</nuxt-link>&nbsp;‑&nbsp;
+      <nuxt-link to="/code-of-conduct">{{ $t('site.code-of-conduct') }}</nuxt-link>&nbsp;‑&nbsp;
+      <nuxt-link to="/data-privacy">{{ $t('site.data-privacy') }}</nuxt-link>&nbsp;‑&nbsp;
       <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
     </div>
     <div id="overlay" />
