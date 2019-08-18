@@ -48,7 +48,7 @@ services:
     networks:
       - hc-network
     ports:
-      - 80:80
+      - 8001:8001
 
 networks:
   hc-network:
