@@ -16,24 +16,9 @@ export default {
       itemsCalculating: 0,
     }
   },
-  computed: {
-    rowHeight() {
-      if (this.$el) {
-        return parseInt(this.$el.style.gridAutoRows)
-      }
-      return 0
-    },
-    rowGap() {
-      if (this.$el) {
-        return parseInt(this.$el.style.gridRowGap)
-      }
-      return 0
-    },
-  },
   methods: {
     startCalculation() {
       this.itemsCalculating += 1
-      return { rowHeight: this.rowHeight, rowGap: this.rowGap }
     },
     endCalculation() {
       this.itemsCalculating -= 1

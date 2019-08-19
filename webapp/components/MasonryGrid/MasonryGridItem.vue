@@ -13,14 +13,14 @@ export default {
   },
   methods: {
     calculateItemHeight() {
-      const grid = this.$parent.$emit('calculating-item-height')
+      this.$parent.$emit('calculating-item-height')
       this.$nextTick(() => {
+        const grid = this.$parent
         const rowHeight = parseInt(grid.$el.style.gridAutoRows)
         const rowGap = parseInt(grid.$el.style.gridRowGap)
-
         const itemHeight = this.$el.clientHeight
-        const rowSpan = Math.ceil((itemHeight + rowGap) / (rowHeight + rowGap))
-        this.rowSpan = rowSpan
+
+        this.rowSpan = Math.ceil((itemHeight + rowGap) / (rowHeight + rowGap))
         this.$parent.$emit('finished-calculating-item-height')
       })
     },
@@ -30,6 +30,7 @@ export default {
     if (image) {
       image.onload = () => this.calculateItemHeight()
     } else {
+      // use timeout to make sure layout is set up before calculation
       setTimeout(() => this.calculateItemHeight(), 0)
     }
   },
