@@ -1,14 +1,7 @@
-import {
-  gql
-} from '../../jest/helpers'
+import { gql } from '../../jest/helpers'
 import Factory from '../../seed/factories'
-import {
-  createTestClient
-} from 'apollo-server-testing'
-import {
-  neode,
-  getDriver
-} from '../../bootstrap/neo4j'
+import { createTestClient } from 'apollo-server-testing'
+import { neode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
 const factory = Factory()
@@ -51,7 +44,7 @@ afterEach(async () => {
 })
 
 describe('notifications', () => {
-  const notificationQuery = gql `
+  const notificationQuery = gql`
     query($read: Boolean) {
       currentUser {
         notifications(read: $read, orderBy: createdAt_desc) {
@@ -74,6 +67,30 @@ describe('notifications', () => {
     })
 
     describe('given another user', () => {
+      let title
+      let content
+      const createPostAction = async () => {
+        const createPostMutation = gql`
+          mutation($id: ID, $title: String!, $content: String!) {
+            CreatePost(id: $id, title: $title, content: $content) {
+              id
+              title
+              content
+            }
+          }
+        `
+        authenticatedUser = await postAuthor.toJson()
+        await mutate({
+          mutation: createPostMutation,
+          variables: {
+            id: 'p47',
+            title,
+            content,
+          },
+        })
+        authenticatedUser = await user.toJson()
+      }
+
       let postAuthor
       beforeEach(async () => {
         postAuthor = await instance.create('User', {
@@ -83,54 +100,42 @@ describe('notifications', () => {
         })
       })
 
-      describe('who mentions me in a post', () => {
-        const title = 'Mentioning Al Capone'
-        const content =
+      describe('comments on my post', () => {
+        title = 'My post'
+        content = 'My content'
+
+        // it('sends me a notification', async () => {
+        //   await createPostAction()
+        //   XXX
+        // })
+      })
+
+      describe('mentions me in a post', () => {
+        title = 'Mentioning Al Capone'
+        content =
           'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
 
-        const createPostAction = async () => {
-          const createPostMutation = gql `
-            mutation($id: ID, $title: String!, $content: String!) {
-              CreatePost(id: $id, title: $title, content: $content) {
-                id
-                title
-                content
-              }
-            }
-          `
-          authenticatedUser = await postAuthor.toJson()
-          await mutate({
-            mutation: createPostMutation,
-            variables: {
-              id: 'p47',
-              title,
-              content,
-            },
-          })
-          authenticatedUser = await user.toJson()
-        }
-
-        it.only('sends you a notification', async () => {
+        it('sends you a notification', async () => {
           await createPostAction()
           const expectedContent =
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
           const expected = expect.objectContaining({
             data: {
               currentUser: {
-                notifications: [{
-                  read: false,
-                  reason: 'mentioned_in_post',
-                  post: {
-                    content: expectedContent,
+                notifications: [
+                  {
+                    read: false,
+                    reason: 'mentioned_in_post',
+                    post: {
+                      content: expectedContent,
+                    },
+                    comment: null,
                   },
-                  comment: null,
-                }, ],
+                ],
               },
             },
           })
-          const {
-            query
-          } = createTestClient(server)
+          const { query } = createTestClient(server)
           await expect(
             query({
               query: notificationQuery,
@@ -157,7 +162,7 @@ describe('notifications', () => {
                 @al-capone
               </a>
             `
-            const updatePostMutation = gql `
+            const updatePostMutation = gql`
               mutation($id: ID!, $title: String!, $content: String!) {
                 UpdatePost(id: $id, content: $content, title: $title) {
                   title
@@ -185,7 +190,8 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: {
                 currentUser: {
-                  notifications: [{
+                  notifications: [
+                    {
                       read: false,
                       reason: 'mentioned_in_post',
                       post: {
@@ -230,9 +236,7 @@ describe('notifications', () => {
                 },
               },
             })
-            const {
-              query
-            } = createTestClient(server)
+            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -247,7 +251,7 @@ describe('notifications', () => {
         describe('but the author of the post blocked me and a mentioner mentions me in a comment', () => {
           const createCommentOnPostAction = async () => {
             await createPostAction()
-            const createCommentMutation = gql `
+            const createCommentMutation = gql`
               mutation($id: ID, $postId: ID!, $commentContent: String!) {
                 CreateComment(id: $id, postId: $postId, content: $commentContent) {
                   id
@@ -261,7 +265,8 @@ describe('notifications', () => {
               variables: {
                 id: 'c47',
                 postId: 'p47',
-                commentContent: 'One mention of me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">.',
+                commentContent:
+                  'One mention of me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">.',
               },
             })
             authenticatedUser = await user.toJson()
@@ -288,9 +293,7 @@ describe('notifications', () => {
                 },
               },
             })
-            const {
-              query
-            } = createTestClient(server)
+            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -311,7 +314,7 @@ describe('Hashtags', () => {
   const postTitle = 'Two Hashtags'
   const postContent =
     '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Democracy">#Democracy</a> should work equal for everybody!? That seems to be the only way to have equal <a class="hashtag" href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
-  const postWithHastagsQuery = gql `
+  const postWithHastagsQuery = gql`
     query($id: ID) {
       Post(id: $id) {
         tags {
@@ -323,7 +326,7 @@ describe('Hashtags', () => {
   const postWithHastagsVariables = {
     id: postId,
   }
-  const createPostMutation = gql `
+  const createPostMutation = gql`
     mutation($postId: ID, $postTitle: String!, $postContent: String!) {
       CreatePost(id: $postId, title: $postTitle, content: $postContent) {
         id
@@ -351,11 +354,14 @@ describe('Hashtags', () => {
       })
 
       it('both Hashtags are created with the "id" set to their "name"', async () => {
-        const expected = [{
-          id: 'Democracy'
-        }, {
-          id: 'Liberty'
-        }]
+        const expected = [
+          {
+            id: 'Democracy',
+          },
+          {
+            id: 'Liberty',
+          },
+        ]
         await expect(
           query({
             query: postWithHastagsQuery,
@@ -364,9 +370,11 @@ describe('Hashtags', () => {
         ).resolves.toEqual(
           expect.objectContaining({
             data: {
-              Post: [{
-                tags: expect.arrayContaining(expected),
-              }, ],
+              Post: [
+                {
+                  tags: expect.arrayContaining(expected),
+                },
+              ],
             },
           }),
         )
@@ -376,7 +384,7 @@ describe('Hashtags', () => {
         // The already existing Hashtag has no class at this point.
         const updatedPostContent =
           '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Elections">#Elections</a> should work equal for everybody!? That seems to be the only way to have equal <a href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
-        const updatePostMutation = gql `
+        const updatePostMutation = gql`
           mutation($postId: ID!, $postTitle: String!, $updatedPostContent: String!) {
             UpdatePost(id: $postId, title: $postTitle, content: $updatedPostContent) {
               id
@@ -396,11 +404,14 @@ describe('Hashtags', () => {
             },
           })
 
-          const expected = [{
-            id: 'Elections'
-          }, {
-            id: 'Liberty'
-          }]
+          const expected = [
+            {
+              id: 'Elections',
+            },
+            {
+              id: 'Liberty',
+            },
+          ]
           await expect(
             query({
               query: postWithHastagsQuery,
@@ -409,9 +420,11 @@ describe('Hashtags', () => {
           ).resolves.toEqual(
             expect.objectContaining({
               data: {
-                Post: [{
-                  tags: expect.arrayContaining(expected),
-                }, ],
+                Post: [
+                  {
+                    tags: expect.arrayContaining(expected),
+                  },
+                ],
               },
             }),
           )

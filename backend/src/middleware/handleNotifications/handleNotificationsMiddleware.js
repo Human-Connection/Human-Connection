@@ -1,6 +1,4 @@
-import {
-  UserInputError
-} from 'apollo-server'
+import { UserInputError } from 'apollo-server'
 import extractMentionedUsers from './notifications/extractMentionedUsers'
 import extractHashtags from './hashtags/extractHashtags'
 
@@ -9,8 +7,8 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
 
   // Done here, because Neode validation is not working.
   const reasonsAllowed = ['mentioned_in_post', 'mentioned_in_comment', 'comment_on_your_post']
-  if (!(reasonsAllowed.includes(reason))) {
-    throw new UserInputError("Notification reason is not allowed!")
+  if (!reasonsAllowed.includes(reason)) {
+    throw new UserInputError('Notification reason is not allowed!')
   }
 
   const session = context.driver.session()
@@ -81,8 +79,10 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
 
   const post = await resolve(root, args, context, resolveInfo)
 
-  await notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
-  await updateHashtagsOfPost(post.id, hashtags, context)
+  if (post) {
+    await notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
+    await updateHashtagsOfPost(post.id, hashtags, context)
+  }
 
   return post
 }
@@ -91,7 +91,9 @@ const handleContentDataOfComment = async (resolve, root, args, context, resolveI
   const idsOfUsers = extractMentionedUsers(args.content)
   const comment = await resolve(root, args, context, resolveInfo)
 
-  await notifyUsers('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
+  if (comment) {
+    await notifyUsers('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
+  }
 
   return comment
 }
@@ -100,20 +102,22 @@ const handleCreateComment = async (resolve, root, args, context, resolveInfo) =>
   // removes classes from the content
   const comment = await handleContentDataOfComment(resolve, root, args, context, resolveInfo)
 
-  const session = context.driver.session()
-  const cypherFindUser = `
+  if (comment) {
+    const session = context.driver.session()
+    const cypherFindUser = `
     MATCH (user: User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
     RETURN user { .id }
     `
-  const result = await session.run(cypherFindUser, {
-    commentId: comment.id,
-  })
-  session.close()
-  const [userWrotePost] = await result.records.map(record => {
-    return record.get('user')
-  })
-  if (context.user.id !== userWrotePost.id) {
-    await notifyUsers('Comment', comment.id, [userWrotePost.id], 'comment_on_your_post', context)
+    const result = await session.run(cypherFindUser, {
+      commentId: comment.id,
+    })
+    session.close()
+    const [postAuthor] = await result.records.map(record => {
+      return record.get('user')
+    })
+    if (context.user.id !== postAuthor.id) {
+      await notifyUsers('Comment', comment.id, [postAuthor.id], 'comment_on_your_post', context)
+    }
   }
 
   return comment

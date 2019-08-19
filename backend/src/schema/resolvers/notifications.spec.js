@@ -1,12 +1,6 @@
-import {
-  GraphQLClient
-} from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import {
-  host,
-  login,
-  gql
-} from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 let client
@@ -25,7 +19,7 @@ afterEach(async () => {
 })
 
 describe('query for notification', () => {
-  const notificationQuery = gql `
+  const notificationQuery = gql`
     {
       Notification {
         id
@@ -161,7 +155,7 @@ describe('currentUser notifications', () => {
       })
 
       describe('filter for read: false', () => {
-        const queryCurrentUserNotificationsFilterRead = gql `
+        const queryCurrentUserNotificationsFilterRead = gql`
           query($read: Boolean) {
             currentUser {
               notifications(read: $read, orderBy: createdAt_desc) {
@@ -182,7 +176,8 @@ describe('currentUser notifications', () => {
         it('returns only unread notifications of current user', async () => {
           const expected = {
             currentUser: {
-              notifications: expect.arrayContaining([{
+              notifications: expect.arrayContaining([
+                {
                   id: 'post-mention-unseen',
                   post: {
                     id: 'p1',
@@ -206,7 +201,7 @@ describe('currentUser notifications', () => {
       })
 
       describe('no filters', () => {
-        const queryCurrentUserNotifications = gql `
+        const queryCurrentUserNotifications = gql`
           {
             currentUser {
               notifications(orderBy: createdAt_desc) {
@@ -224,7 +219,8 @@ describe('currentUser notifications', () => {
         it('returns all notifications of current user', async () => {
           const expected = {
             currentUser: {
-              notifications: expect.arrayContaining([{
+              notifications: expect.arrayContaining([
+                {
                   id: 'post-mention-unseen',
                   post: {
                     id: 'p1',
@@ -265,7 +261,7 @@ describe('currentUser notifications', () => {
 })
 
 describe('UpdateNotification', () => {
-  const mutationUpdateNotification = gql `
+  const mutationUpdateNotification = gql`
     mutation($id: ID!, $read: Boolean) {
       UpdateNotification(id: $id, read: $read) {
         id
