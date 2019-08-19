@@ -4,25 +4,25 @@
       <span>
         <ds-icon name="comments" />
         <ds-tag
-          v-if="comments"
+          v-if="post.comments.length"
           style="margin-top: -4px; margin-left: -12px; position: absolute;"
           color="primary"
           size="small"
           round
         >
-          {{ comments.length }}
+          {{ post.comments.length }}
         </ds-tag>
         &nbsp; Comments
       </span>
     </h3>
     <ds-space margin-bottom="large" />
-    <div v-if="comments && comments.length" id="comments" class="comments">
+    <div v-if="post.comments && post.comments.length" id="comments" class="comments">
       <comment
-        v-for="(comment, index) in comments"
+        v-for="(comment, index) in post.comments"
         :key="comment.id"
         :comment="comment"
         :post="post"
-        @deleteComment="comments.splice(index, 1)"
+        @deleteComment="post.comments.splice(index, 1)"
       />
     </div>
     <hc-empty v-else name="empty" icon="messages" />
@@ -31,7 +31,6 @@
 <script>
 import Comment from '~/components/Comment.vue'
 import HcEmpty from '~/components/Empty.vue'
-import PostCommentsQuery from '~/graphql/PostCommentsQuery.js'
 
 export default {
   components: {
@@ -40,30 +39,6 @@ export default {
   },
   props: {
     post: { type: Object, default: () => {} },
-  },
-  data() {
-    return {
-      comments: [],
-    }
-  },
-  watch: {
-    Post(post) {
-      const [first] = post
-      this.comments = (first && first.comments) || []
-    },
-  },
-  apollo: {
-    Post: {
-      query() {
-        return PostCommentsQuery(this.$i18n)
-      },
-      variables() {
-        return {
-          slug: this.post.slug,
-        }
-      },
-      fetchPolicy: 'cache-and-network',
-    },
   },
 }
 </script>

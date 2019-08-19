@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const BlockedUsers = () => {
-  return gql(`
+  return gql`
     {
       blockedUsers {
         id
@@ -13,27 +13,31 @@ export const BlockedUsers = () => {
         deleted
       }
     }
-  `)
+  `
 }
 
 export const Block = () => {
-  return gql(`mutation($id:ID!) {
-    block(id: $id) {
-      id
-      name
-      isBlocked
-      followedByCurrentUser
+  return gql`
+    mutation($id: ID!) {
+      block(id: $id) {
+        id
+        name
+        isBlocked
+        followedByCurrentUser
+      }
     }
-  }`)
+  `
 }
 
 export const Unblock = () => {
-  return gql(`mutation($id:ID!) {
-    unblock(id: $id) {
-      id
-      name
-      isBlocked
-      followedByCurrentUser
+  return gql`
+    mutation($id: ID!) {
+      unblock(id: $id) {
+        id
+        name
+        isBlocked
+        followedByCurrentUser
+      }
     }
-  }`)
+  `
 }

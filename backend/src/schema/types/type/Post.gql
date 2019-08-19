@@ -29,11 +29,6 @@ type Post {
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
   comments: [Comment]! @relation(name: "COMMENTS", direction: "IN")
-  commentsCount: Int!
-    @cypher(
-      statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) WHERE NOT r.deleted = true AND NOT r.disabled = true  RETURN COUNT(r)"
-    )
-
   shoutedBy: [User]! @relation(name: "SHOUTED", direction: "IN")
   shoutedCount: Int!
     @cypher(

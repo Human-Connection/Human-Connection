@@ -30,12 +30,12 @@
               }}
             </label>
             <ds-space margin-bottom="small" />
-            <label v-if="currentUser.commentsCount" class="checkbox-container">
+            <label v-if="currentUser.commentedCount" class="checkbox-container">
               <input type="checkbox" v-model="deleteComments" />
               <span class="checkmark"></span>
               {{
-                $t('settings.deleteUserAccount.commentsCount', {
-                  count: currentUser.commentsCount,
+                $t('settings.deleteUserAccount.commentedCount', {
+                  count: currentUser.commentedCount,
                 })
               }}
             </label>

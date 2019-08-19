@@ -121,7 +121,7 @@
     "deleteUserAccount": {
       "name": "Usuń dane",
       "contributionsCount": "Usuń {count} moich postów",
-      "commentsCount": "Usuń {count} moich komentarzy",
+      "commentedCount": "Usuń {count} moich komentarzy",
       "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
       "accountWarning": "Po usunięcie Twojego konta, nie możesz <b>ZARZĄDZAĆ</b> ani <b>ODZYSKAĆ</b> danych, wpisów oraz komentarzy!",
       "success": "Konto zostało usunięte",

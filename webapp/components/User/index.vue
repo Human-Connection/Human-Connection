@@ -64,8 +64,8 @@
           <ds-flex-item class="ds-tab-nav-item">
             <ds-space margin="small">
               <ds-number
-                :count="user.commentsCount"
-                :label="$t('common.comment', null, user.commentsCount)"
+                :count="user.commentedCount"
+                :label="$t('common.comment', null, user.commentedCount)"
               />
             </ds-space>
           </ds-flex-item>

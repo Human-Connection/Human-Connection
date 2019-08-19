@@ -260,7 +260,7 @@ Then("the first post on the landing page has the title:", title => {
 Then(
   "the page {string} returns a 404 error with a message:",
   (route, message) => {
-    // TODO: how can we check HTTP codes with cypress?
+    cy.request({ url: route, failOnStatusCode: false }).its('status').should('eq', 404)
     cy.visit(route, { failOnStatusCode: false });
     cy.get(".error").should("contain", message);
   }
