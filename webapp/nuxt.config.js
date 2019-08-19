@@ -192,6 +192,7 @@ module.exports = {
 
   sentry: {
     dsn: process.env.SENTRY_DSN_WEBAPP,
+    publishRelease: !!process.env.COMMIT,
     config: additionalSentryConfig,
   },
 
