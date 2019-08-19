@@ -8,21 +8,30 @@
 export default {
   data() {
     return {
-      span: 10,
+      rowSpan: 10,
     }
   },
-  computed: {
-    rowSpan: {
-      get() {
-        return this.span
-      },
-      set(rowSpan) {
-        this.span = rowSpan
-      },
+  methods: {
+    calculateItemHeight() {
+      const grid = this.$parent.$emit('calculating-item-height')
+      this.$nextTick(() => {
+        const rowHeight = parseInt(grid.$el.style.gridAutoRows)
+        const rowGap = parseInt(grid.$el.style.gridRowGap)
+
+        const itemHeight = this.$el.clientHeight
+        const rowSpan = Math.ceil((itemHeight + rowGap) / (rowHeight + rowGap))
+        this.rowSpan = rowSpan
+        this.$parent.$emit('finished-calculating-item-height')
+      })
     },
   },
   mounted() {
-    this.$parent.$emit('grid-item-mounted', this)
+    const image = this.$el.querySelector('img')
+    if (image) {
+      image.onload = () => this.calculateItemHeight()
+    } else {
+      setTimeout(() => this.calculateItemHeight(), 0)
+    }
   },
 }
 </script>

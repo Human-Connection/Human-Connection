@@ -1,6 +1,6 @@
 <template>
   <div>
-    <masonry-grid v-slot="{ rowSpan }">
+    <masonry-grid>
       <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
@@ -15,7 +15,7 @@
           ></ds-select>
         </div>
       </ds-grid-item>
-      <masonry-grid-item v-for="post in posts" :key="post.id" :rowSpan="rowSpan">
+      <masonry-grid-item v-for="post in posts" :key="post.id">
         <hc-post-card
           :post="post"
           :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"

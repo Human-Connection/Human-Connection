@@ -1,10 +1,11 @@
 <template>
   <ds-grid
     :min-column-width="300"
-    v-on:grid-item-mounted="calculateItemHeight"
-    class="reset-grid-height"
+    v-on:calculating-item-height="startCalculation"
+    v-on:finished-calculating-item-height="endCalculation"
+    :class="[itemsCalculating ? 'reset-grid-height' : '']"
   >
-    <slot :rowSpan="rowSpan">Loading...</slot>
+    <slot></slot>
   </ds-grid>
 </template>
 
@@ -12,24 +13,31 @@
 export default {
   data() {
     return {
-      rowSpan: 10,
-      rowHeight: null,
+      itemsCalculating: 0,
     }
   },
-  methods: {
-    calculateItemHeight(gridItem) {
-      const grid = this.$el
-      const rowHeight = this.rowHeight
-      const rowGap = parseInt(grid.style.gridRowGap)
-
-      const itemHeight = gridItem.$el.clientHeight
-      const rowSpan = Math.ceil((itemHeight + rowGap) / (rowHeight + rowGap))
-      gridItem.rowSpan = rowSpan
+  computed: {
+    rowHeight() {
+      if (this.$el) {
+        return parseInt(this.$el.style.gridAutoRows)
+      }
+      return 0
+    },
+    rowGap() {
+      if (this.$el) {
+        return parseInt(this.$el.style.gridRowGap)
+      }
+      return 0
     },
   },
-  mounted() {
-    this.rowHeight = parseInt(this.$el.style.gridAutoRows)
-    this.$el.classList.remove('reset-grid-height')
+  methods: {
+    startCalculation() {
+      this.itemsCalculating += 1
+      return { rowHeight: this.rowHeight, rowGap: this.rowGap }
+    },
+    endCalculation() {
+      this.itemsCalculating -= 1
+    },
   },
 }
 </script>
