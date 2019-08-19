@@ -70,7 +70,7 @@ export const actions = {
       data: { currentUser },
     } = await client.query({
       query: gql`
-        {
+        query {
           currentUser {
             id
             name
@@ -81,7 +81,7 @@ export const actions = {
             about
             locationName
             contributionsCount
-            commentsCount
+            commentedCount
             socialMedia {
               id
               url

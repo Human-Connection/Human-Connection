@@ -43,14 +43,14 @@
             <ds-flex-item>
               <no-ssr>
                 <ds-number :label="$t('profile.followers')">
-                  <hc-count-to slot="count" :end-val="followedByCount" />
+                  <hc-count-to slot="count" :end-val="user.followedByCount" />
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item>
               <no-ssr>
                 <ds-number :label="$t('profile.following')">
-                  <hc-count-to slot="count" :end-val="Number(user.followingCount) || 0" />
+                  <hc-count-to slot="count" :end-val="user.followingCount" />
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
@@ -254,9 +254,9 @@ import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
-import PostQuery from '~/graphql/UserProfile/Post.js'
-import UserQuery from '~/graphql/User.js'
-import { Block, Unblock } from '~/graphql/settings/BlockedUsers.js'
+import { filterPosts } from '~/graphql/PostQuery'
+import UserQuery from '~/graphql/User'
+import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -308,10 +308,6 @@ export default {
     },
     myProfile() {
       return this.$route.params.id === this.$store.getters['auth/user'].id
-    },
-    followedByCount() {
-      let count = Number(this.user.followedByCount) || 0
-      return count
     },
     user() {
       return this.User ? this.User[0] : {}
@@ -401,7 +397,7 @@ export default {
   apollo: {
     Post: {
       query() {
-        return PostQuery(this.$i18n)
+        return filterPosts(this.$i18n)
       },
       variables() {
         return {

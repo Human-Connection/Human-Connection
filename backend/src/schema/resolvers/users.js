@@ -151,7 +151,6 @@ export default {
         friendsCount: '<-[:FRIENDS]->(related:User)',
         followingCount: '-[:FOLLOWS]->(related:User)',
         followedByCount: '<-[:FOLLOWS]-(related:User)',
-        commentsCount: '-[:WROTE]->(r:Comment)',
         commentedCount: '-[:WROTE]->(:Comment)-[:COMMENTS]->(related:Post)',
         shoutedCount: '-[:SHOUTED]->(related:Post)',
         badgesCount: '<-[:REWARDED]-(related:Badge)',

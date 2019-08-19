@@ -88,7 +88,7 @@ export const actions = {
               deleted
               contributionsCount
               shoutedCount
-              commentsCount
+              commentedCount
               followedByCount
               followedByCurrentUser
               location {
@@ -99,7 +99,6 @@ export const actions = {
                 icon
               }
             }
-            commentsCount
             categories {
               id
               name
