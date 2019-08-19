@@ -19,6 +19,7 @@ const oldTitle = 'Old title'
 const oldContent = 'Old content'
 const newTitle = 'New title'
 const newContent = 'New content'
+const postSaveError = 'You cannot save a post without at least one category or more than three'
 const categoryIds = ['cat9', 'cat4', 'cat15']
 let createPostVariables
 
@@ -87,6 +88,11 @@ beforeEach(async () => {
       id: 'cat15',
       name: 'Consumption & Sustainability',
       icon: 'shopping-cart',
+    }),
+    factory.create('Category', {
+      id: 'cat27',
+      name: 'Animal Protection',
+      icon: 'paw',
     }),
   ])
   createPostVariables = {
@@ -187,14 +193,21 @@ describe('CreatePost', () => {
       it('throws an error if categoryIds is not an array', async () => {
         createPostVariables.categoryIds = null
         await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
-          'You cannot create a post without at least one category',
+          postSaveError,
         )
       })
 
       it('requires at least one category for successful creation', async () => {
         createPostVariables.categoryIds = []
         await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
-          'You cannot create a post without at least one category',
+          postSaveError,
+        )
+      })
+
+      it('allows a maximum of three category for successful update', async () => {
+        createPostVariables.categoryIds = ['cat9', 'cat27', 'cat15', 'cat4']
+        await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
+          postSaveError,
         )
       })
 
@@ -219,31 +232,16 @@ describe('CreatePost', () => {
 })
 
 describe('UpdatePost', () => {
-  let updatePostMutation
   let updatePostVariables
+  const updatePostMutation = gql`
+    mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
+      UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+        id
+        content
+      }
+    }
+  `
   beforeEach(async () => {
-    await Promise.all([
-      factory.create('Category', {
-        id: 'cat9',
-        name: 'Democracy & Politics',
-        icon: 'university',
-      }),
-      factory.create('Category', {
-        id: 'cat4',
-        name: 'Environment & Nature',
-        icon: 'tree',
-      }),
-      factory.create('Category', {
-        id: 'cat15',
-        name: 'Consumption & Sustainability',
-        icon: 'shopping-cart',
-      }),
-      factory.create('Category', {
-        id: 'cat27',
-        name: 'Animal Protection',
-        icon: 'paw',
-      }),
-    ])
     const asAuthor = Factory()
     await asAuthor.create('User', authorParams)
     await asAuthor.authenticateAs(authorParams)
@@ -253,14 +251,6 @@ describe('UpdatePost', () => {
       content: oldContent,
       categoryIds,
     })
-    updatePostMutation = gql`
-      mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
-        UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
-          id
-          content
-        }
-      }
-    `
 
     updatePostVariables = {
       id: 'p1',
@@ -301,6 +291,7 @@ describe('UpdatePost', () => {
     })
 
     it('updates a post', async () => {
+      updatePostVariables.categoryIds = ['cat9']
       const expected = { UpdatePost: { id: 'p1', content: newContent } }
       await expect(client.request(updatePostMutation, updatePostVariables)).resolves.toEqual(
         expected,
@@ -327,6 +318,27 @@ describe('UpdatePost', () => {
         await expect(
           client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
         ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
+      })
+
+      it('throws an error if categoryIds is not an array', async () => {
+        updatePostVariables.categoryIds = null
+        await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
+          postSaveError,
+        )
+      })
+
+      it('requires at least one category for successful update', async () => {
+        updatePostVariables.categoryIds = []
+        await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
+          postSaveError,
+        )
+      })
+
+      it('allows a maximum of three category for a successful update', async () => {
+        updatePostVariables.categoryIds = ['cat9', 'cat27', 'cat15', 'cat4']
+        await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
+          postSaveError,
+        )
       })
     })
   })
@@ -400,7 +412,7 @@ describe('emotions', () => {
     postQueryAction,
     postToEmote,
     postToEmoteNode
-  const PostsEmotionsCountQuery = `
+  const PostsEmotionsCountQuery = gql`
     query($id: ID!) {
       Post(id: $id) {
         emotionsCount
