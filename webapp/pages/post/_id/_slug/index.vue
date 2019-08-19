@@ -110,12 +110,10 @@ export default {
     }
   },
   data() {
-    // Wolle: const { commentId = null } = this.$route.query
     return {
       post: null,
       ready: false,
       title: 'loading',
-      // Wolle: commentId,
     }
   },
   watch: {

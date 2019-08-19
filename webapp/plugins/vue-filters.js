@@ -83,6 +83,15 @@ export default ({ app = {} }) => {
 
       return excerpt
     },
+    removeHtml: content => {
+      if (!content) return ''
+      // replace linebreaks with spaces first
+      let contentExcerpt = content.replace(/<br>/gim, ' ').trim()
+      // remove the rest of the HTML
+      contentExcerpt = contentExcerpt.replace(/<(?:.|\n)*?>/gm, '').trim()
+
+      return contentExcerpt
+    },
     proxyApiUrl: url => {
       if (!url) return url
       return url.startsWith('/') ? url.replace('/', '/api/') : url

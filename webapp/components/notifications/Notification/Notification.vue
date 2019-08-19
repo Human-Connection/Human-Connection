@@ -3,17 +3,19 @@
     <no-ssr>
       <ds-space margin-bottom="x-small">
         <hc-user
-          :user="post.author || comment.author"
-          :date-time="post.createdAt || comment.createdAt"
+          v-if="resourceType == 'Post'"
+          :user="post.author"
+          :date-time="post.createdAt"
           :trunc="35"
         />
+        <hc-user v-else :user="comment.author" :date-time="comment.createdAt" :trunc="35" />
       </ds-space>
       <ds-text color="soft">{{ $t(notificationTextIdents[notification.reason]) }}</ds-text>
     </no-ssr>
     <ds-space margin-bottom="x-small" />
     <nuxt-link
       class="notification-mention-post"
-      :to="{ name: 'post-id-slug', params: postParams, ...hashParam }"
+      :to="{ name: 'post-id-slug', params, ...hashParam }"
       @click.native="$emit('read')"
     >
       <ds-space margin-bottom="x-small">
@@ -24,9 +26,14 @@
           class="notifications-card"
         >
           <ds-space margin-bottom="x-small" />
-          <!-- eslint-disable vue/no-v-html -->
-          <div v-html="excerpt" />
-          <!-- eslint-enable vue/no-v-html -->
+          <div v-if="resourceType == 'Post'">{{ post.contentExcerpt | removeHtml }}</div>
+          <div v-else>
+            <b>
+              Comment:
+              <nbsp />
+            </b>
+            {{ comment.contentExcerpt | removeHtml }}
+          </div>
         </ds-card>
       </ds-space>
     </nuxt-link>
@@ -57,11 +64,8 @@ export default {
     }
   },
   computed: {
-    excerpt() {
-      const excerpt = this.post.id ? this.post.contentExcerpt : this.comment.contentExcerpt
-      return (
-        (!this.post.id ? '<b>Comment: </b>' : '') + excerpt.replace(/<(?:.|\n)*?>/gm, '').trim()
-      )
+    resourceType() {
+      return this.post.id ? 'Post' : 'Comment'
     },
     post() {
       return this.notification.post || {}
@@ -69,7 +73,7 @@ export default {
     comment() {
       return this.notification.comment || {}
     },
-    postParams() {
+    params() {
       return {
         id: this.post.id || this.comment.post.id,
         slug: this.post.slug || this.comment.post.slug,

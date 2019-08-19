@@ -15,16 +15,27 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
 
   const session = context.driver.session()
   const createdAt = new Date().toISOString()
-  const cypher = `
-    MATCH (source)
-    WHERE source.id = $id AND $label IN LABELS(source)
-    MATCH (source)<-[:WROTE]-(author: User)
-    MATCH (u: User)
-    WHERE u.id in $idsOfUsers
-    AND NOT (u)<-[:BLOCKED]-(author)
-    CREATE (n: Notification { id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt })
-    MERGE (source)-[:NOTIFIED]->(n)-[:NOTIFIED]->(u)
+  let cypher
+  if (label === 'Post') {
+    cypher = `
+      MATCH (post: Post { id: $id })<-[:WROTE]-(author: User)
+      MATCH (user: User)
+      WHERE user.id in $idsOfUsers
+      AND NOT (user)<-[:BLOCKED]-(author)
+      CREATE (notification: Notification {id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt })
+      MERGE (post)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
     `
+  } else {
+    cypher = `
+      MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(author: User)
+      MATCH (user: User)
+      WHERE user.id in $idsOfUsers
+      AND NOT (user)<-[:BLOCKED]-(author)
+      AND NOT (user)<-[:BLOCKED]-(postAuthor)
+      CREATE (notification: Notification {id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt })
+      MERGE (comment)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
+    `
+  }
   await session.run(cypher, {
     label,
     id,
@@ -65,12 +76,9 @@ const updateHashtagsOfPost = async (postId, hashtags, context) => {
 }
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
-  // extract user ids before xss-middleware removes classes via the following "resolve" call
   const idsOfUsers = extractMentionedUsers(args.content)
-  // extract tag (hashtag) ids before xss-middleware removes classes via the following "resolve" call
   const hashtags = extractHashtags(args.content)
 
-  // removes classes from the content
   const post = await resolve(root, args, context, resolveInfo)
 
   await notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
@@ -80,10 +88,7 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
 }
 
 const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
-  // extract user ids before xss-middleware removes classes via the following "resolve" call
   const idsOfUsers = extractMentionedUsers(args.content)
-
-  // removes classes from the content
   const comment = await resolve(root, args, context, resolveInfo)
 
   await notifyUsers('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
