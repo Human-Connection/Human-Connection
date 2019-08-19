@@ -46,7 +46,7 @@
                   <ds-flex-item>
                     <ds-text size="small" color="softer" class="search-meta">
                       <span style="text-align: right;">
-                        <b>{{ option.commentsCount }}</b>
+                        <b>{{ option.commentedCount }}</b>
                         <ds-icon name="comments" />
                       </span>
                       <span style="width: 36px; display: inline-block; text-align: right;">

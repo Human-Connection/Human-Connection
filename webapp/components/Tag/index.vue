@@ -1,7 +1,7 @@
 <template>
   <ds-tag>
     <ds-icon name="tag" />
-    {{ name }}
+    {{ id }}
   </ds-tag>
 </template>
 
@@ -9,7 +9,7 @@
 export default {
   name: 'HcTag',
   props: {
-    name: { type: String, required: true },
+    id: { type: String, required: true },
   },
 }
 </script>
