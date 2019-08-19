@@ -31,8 +31,7 @@
           <div v-if="resourceType == 'Post'">{{ post.contentExcerpt | removeHtml }}</div>
           <div v-else>
             <b>
-              Comment:
-              <nbsp />
+              Comment: &nbsp;
             </b>
             {{ comment.contentExcerpt | removeHtml }}
           </div>
