@@ -80,7 +80,7 @@ export const actions = {
           about
           locationName
           contributionsCount
-          commentsCount
+          commentedCount
           socialMedia {
             id
             url

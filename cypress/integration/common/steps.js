@@ -42,9 +42,9 @@ Given("we have a selection of tags and categories as well as posts", () => {
       slug: "health-wellbeing",
       icon: "medkit"
     })
-    .create("Tag", { id: "t1", name: "Ecology" })
-    .create("Tag", { id: "t2", name: "Nature" })
-    .create("Tag", { id: "t3", name: "Democracy" });
+    .create("Tag", { id: "Ecology" })
+    .create("Tag", { id: "Nature" })
+    .create("Tag", { id: "Democracy" });
 
   const someAuthor = {
     id: "authorId",
@@ -71,14 +71,14 @@ Given("we have a selection of tags and categories as well as posts", () => {
     .relate("Post", "Categories", { from: "p0", to: "cat1" })
     .relate("Post", "Categories", { from: "p1", to: "cat2" })
     .relate("Post", "Categories", { from: "p2", to: "cat1" })
-    .relate("Post", "Tags", { from: "p0", to: "t1" })
-    .relate("Post", "Tags", { from: "p0", to: "t2" })
-    .relate("Post", "Tags", { from: "p0", to: "t3" })
-    .relate("Post", "Tags", { from: "p1", to: "t2" })
-    .relate("Post", "Tags", { from: "p1", to: "t3" })
-    .relate("Post", "Tags", { from: "p2", to: "t2" })
-    .relate("Post", "Tags", { from: "p2", to: "t3" })
-    .relate("Post", "Tags", { from: "p3", to: "t3" });
+    .relate("Post", "Tags", { from: "p0", to: "Ecology" })
+    .relate("Post", "Tags", { from: "p0", to: "Nature" })
+    .relate("Post", "Tags", { from: "p0", to: "Democracy" })
+    .relate("Post", "Tags", { from: "p1", to: "Nature" })
+    .relate("Post", "Tags", { from: "p1", to: "Democracy" })
+    .relate("Post", "Tags", { from: "p2", to: "Nature" })
+    .relate("Post", "Tags", { from: "p2", to: "Democracy" })
+    .relate("Post", "Tags", { from: "p3", to: "Democracy" });
 });
 
 Given("we have the following user accounts:", table => {
@@ -260,7 +260,7 @@ Then("the first post on the landing page has the title:", title => {
 Then(
   "the page {string} returns a 404 error with a message:",
   (route, message) => {
-    // TODO: how can we check HTTP codes with cypress?
+    cy.request({ url: route, failOnStatusCode: false }).its('status').should('eq', 404)
     cy.visit(route, { failOnStatusCode: false });
     cy.get(".error").should("contain", message);
   }

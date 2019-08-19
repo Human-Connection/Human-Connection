@@ -244,9 +244,8 @@ export default {
       query() {
         return gql`
           {
-            Tag(orderBy: name_asc) {
+            Tag(orderBy: id_asc) {
               id
-              name
             }
           }
         `

@@ -48,7 +48,7 @@ describe('DeleteData.vue', () => {
     }
     getters = {
       'auth/user': () => {
-        return { id: 'u343', name: deleteAccountName, contributionsCount: 2, commentsCount: 3 }
+        return { id: 'u343', name: deleteAccountName, contributionsCount: 2, commentedCount: 3 }
       },
     }
     actions = { 'auth/logout': jest.fn() }

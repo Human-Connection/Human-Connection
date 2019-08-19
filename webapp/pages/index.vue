@@ -33,7 +33,16 @@
         primary
       />
     </no-ssr>
-    <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
+    <div
+      v-if="hasMore"
+      v-infinite-scroll="showMoreContributions"
+      :infinite-scroll-immediate-check="true"
+      :infinite-scroll-disabled="$apollo.loading"
+      :infinite-scroll-distance="10"
+      :infinite-scroll-throttle-delay="800"
+    >
+      <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
+    </div>
   </div>
 </template>
 
@@ -91,7 +100,7 @@ export default {
           label: this.$t('sorting.commented'),
           value: 'Commented',
           icons: 'comment',
-          order: 'commentsCount_desc',
+          order: 'commentedCount_desc',
         },
       ],
     }

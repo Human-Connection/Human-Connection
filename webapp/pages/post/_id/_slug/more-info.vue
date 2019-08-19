@@ -91,7 +91,7 @@ export default {
                 slug
                 contentExcerpt
                 shoutedCount
-                commentsCount
+                commentedCount
                 categories {
                   id
                   name
@@ -105,7 +105,7 @@ export default {
                   contributionsCount
                   followedByCount
                   followedByCurrentUser
-                  commentsCount
+                  commentedCount
                   location {
                     name: name${this.$i18n.locale().toUpperCase()}
                   }

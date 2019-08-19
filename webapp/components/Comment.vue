@@ -67,7 +67,7 @@ import { mapGetters, mapMutations } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
-import HcEditCommentForm from '~/components/comments/EditCommentForm/EditCommentForm'
+import HcEditCommentForm from '~/components/EditCommentForm/EditCommentForm'
 
 export default {
   data: function() {

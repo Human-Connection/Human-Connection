@@ -1,5 +1,5 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
-import CommentList from '.'
+import CommentList from './CommentList'
 import Empty from '~/components/Empty'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
@@ -21,63 +21,52 @@ describe('CommentList.vue', () => {
   let store
   let wrapper
   let propsData
-  let data
-
-  propsData = {
-    post: {
-      id: 1,
-    },
-  }
-  store = new Vuex.Store({
-    getters: {
-      'auth/user': () => {
-        return {}
-      },
-    },
-  })
-  mocks = {
-    $t: jest.fn(),
-    $filters: {
-      truncate: a => a,
-    },
-    $apollo: {
-      queries: {
-        Post: {
-          refetch: jest.fn(),
-        },
-      },
-    },
-  }
-  data = () => {
-    return {
-      comments: [],
-    }
-  }
 
   describe('shallowMount', () => {
+    beforeEach(() => {
+      propsData = {
+        post: {
+          id: 1,
+          comments: [{ id: 'comment134', contentExcerpt: 'this is a comment' }],
+        },
+      }
+      store = new Vuex.Store({
+        getters: {
+          'auth/user': () => {
+            return {}
+          },
+        },
+      })
+      mocks = {
+        $t: jest.fn(),
+        $filters: {
+          truncate: a => a,
+        },
+        $apollo: {
+          queries: {
+            Post: {
+              refetch: jest.fn(),
+            },
+          },
+        },
+      }
+    })
+
     const Wrapper = () => {
       return mount(CommentList, {
         store,
         mocks,
         localVue,
         propsData,
-        data,
       })
     }
 
     beforeEach(() => {
       wrapper = Wrapper()
-      wrapper.setData({
-        comments: [
-          {
-            id: 'c1',
-            contentExcerpt: 'this is a comment',
-          },
-        ],
-      })
     })
 
     it('displays a message icon when there are no comments to display', () => {
+      propsData.post.comments = []
       expect(Wrapper().findAll(Empty)).toHaveLength(1)
     })
 
