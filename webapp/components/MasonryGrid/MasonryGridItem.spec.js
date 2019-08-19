@@ -1,11 +1,11 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import MasonryGridItem from './MasonryGridItem'
 
 describe('MasonryGridItem', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(MasonryGridItem)
+    wrapper = shallowMount(MasonryGridItem)
     wrapper.vm.$parent.$emit = jest.fn()
   })
 

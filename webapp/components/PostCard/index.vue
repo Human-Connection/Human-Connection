@@ -44,25 +44,25 @@
       </div>
       <no-ssr>
         <div style="display: inline-block; float: right">
-            <!-- Shouts Count -->
-            <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
-              <ds-icon name="bullhorn" />
-              <small>{{ post.shoutedCount }}</small>
-            </span>
-            &nbsp;
-            <!-- Comments Count -->
-            <span :style="{ opacity: post.commentedCount ? 1 : 0.5 }">
-              <ds-icon name="comments" />
-              <small>{{ post.commentedCount }}</small>
-            </span>
-            <!-- Menu -->
-            <content-menu
-              resource-type="contribution"
-              :resource="post"
-              :modalsData="menuModalsData"
-              :is-owner="isAuthor"
-            />
-          </div>
+          <!-- Shouts Count -->
+          <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
+            <ds-icon name="bullhorn" />
+            <small>{{ post.shoutedCount }}</small>
+          </span>
+          &nbsp;
+          <!-- Comments Count -->
+          <span :style="{ opacity: post.commentedCount ? 1 : 0.5 }">
+            <ds-icon name="comments" />
+            <small>{{ post.commentedCount }}</small>
+          </span>
+          <!-- Menu -->
+          <content-menu
+            resource-type="contribution"
+            :resource="post"
+            :modalsData="menuModalsData"
+            :is-owner="isAuthor"
+          />
+        </div>
       </no-ssr>
     </template>
   </ds-card>
