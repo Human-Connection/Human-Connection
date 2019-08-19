@@ -50,7 +50,11 @@
         <ds-flex style="margin-top: -10px">
           <ds-flex-item class="ds-tab-nav-item">
             <ds-space margin="small">
-              <ds-number :count="fanCount" :label="$t('profile.followers')" size="x-large" />
+              <ds-number
+                :count="user.followedByCount"
+                :label="$t('profile.followers')"
+                size="x-large"
+              />
             </ds-space>
           </ds-flex-item>
           <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
@@ -120,10 +124,6 @@ export default {
     }),
     itsMe() {
       return this.user.slug === this.$store.getters['auth/user'].slug
-    },
-    fanCount() {
-      let count = Number(this.user.followedByCount) || 0
-      return count
     },
     userLink() {
       const { id, slug } = this.user
