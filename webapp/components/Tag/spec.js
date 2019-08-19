@@ -6,20 +6,20 @@ const localVue = createLocalVue()
 localVue.use(Styleguide)
 
 describe('Tag', () => {
-  let name
+  let id
 
   let Wrapper = () => {
     return shallowMount(Tag, {
       localVue,
       propsData: {
-        name,
+        id,
       },
     })
   }
 
   describe('given a String for Name', () => {
     beforeEach(() => {
-      name = 'Liebe'
+      id = 'Liebe'
     })
 
     it('shows Name', () => {
