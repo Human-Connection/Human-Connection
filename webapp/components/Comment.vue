@@ -45,7 +45,11 @@
             {{ $t('comment.show.more') }}
           </a>
         </div>
-        <div v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
+        <content-viewer
+          v-if="!isCollapsed"
+          :content="comment.content"
+          style="padding-left: 40px;"
+        />
         <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
           <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" style="padding-left: 40px; ">
             {{ $t('comment.show.less') }}
@@ -62,7 +66,8 @@ import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
-import HcEditCommentForm from '~/components/comments/EditCommentForm/EditCommentForm'
+import ContentViewer from '~/components/Editor/ContentViewer'
+import HcEditCommentForm from '~/components/EditCommentForm/EditCommentForm'
 
 export default {
   data: function() {
@@ -74,6 +79,7 @@ export default {
   components: {
     HcUser,
     ContentMenu,
+    ContentViewer,
     HcEditCommentForm,
   },
   props: {

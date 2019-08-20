@@ -94,12 +94,11 @@
       }
     }
 */
-
 CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL_FILE}") YIELD value as user
 MERGE(u:User {id: user._id["$oid"]})
 ON CREATE SET
 u.name       = user.name,
-u.slug       = user.slug,
+u.slug       = COALESCE(user.slug, apoc.text.random(20, "[A-Za-z]")),
 u.email      = user.email,
 u.encryptedPassword   = user.password,
 u.avatar     = replace(user.avatar, 'https://api-alpha.human-connection.org', ''),
@@ -117,7 +116,7 @@ MERGE (e:EmailAddress {
   verifiedAt: toString(datetime())
 })
 MERGE (e)-[:BELONGS_TO]->(u)
-MERGE (u)<-[:PRIMARY_EMAIL]-(e)
+MERGE (u)-[:PRIMARY_EMAIL]->(e)
 WITH u, user, user.badgeIds AS badgeIds
 UNWIND badgeIds AS badgeId
 MATCH (b:Badge {id: badgeId})

@@ -12,15 +12,13 @@
           @click="selectItem(item)"
         >
           <div v-if="isMention">@{{ item.slug }}</div>
-          <div v-if="isHashtag">#{{ item.name }}</div>
+          <div v-if="isHashtag">#{{ item.id }}</div>
         </div>
         <div v-if="isHashtag">
           <!-- if query is not empty and is find fully in the suggestions array ... -->
-          <div v-if="query && !filteredItems.find(el => el.name === query)">
+          <div v-if="query && !filteredItems.find(el => el.id === query)">
             <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-            <div class="suggestion-list__item" @click="selectItem({ name: query })">
-              #{{ query }}
-            </div>
+            <div class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</div>
           </div>
           <!-- otherwise if sanitized query is empty advice the user to add a char -->
           <div v-else-if="!query">
@@ -40,9 +38,7 @@
           <!-- if "query" is not empty -->
           <div v-else>
             <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-            <div class="suggestion-list__item" @click="selectItem({ name: query })">
-              #{{ query }}
-            </div>
+            <div class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</div>
           </div>
         </div>
       </div>
@@ -183,30 +179,16 @@
 </template>
 
 <script>
+import defaultExtensions from './defaultExtensions.js'
 import linkify from 'linkify-it'
 import stringHash from 'string-hash'
 import Fuse from 'fuse.js'
 import tippy from 'tippy.js'
 import { Editor, EditorContent, EditorFloatingMenu, EditorMenuBubble } from 'tiptap'
 import EventHandler from './plugins/eventHandler.js'
-import {
-  Heading,
-  HardBreak,
-  Blockquote,
-  ListItem,
-  BulletList,
-  OrderedList,
-  HorizontalRule,
-  Placeholder,
-  Bold,
-  Italic,
-  Strike,
-  Underline,
-  Link,
-  History,
-} from 'tiptap-extensions'
-import Mention from './nodes/Mention.js'
+import { History } from 'tiptap-extensions'
 import Hashtag from './nodes/Hashtag.js'
+import Mention from './nodes/Mention.js'
 import { mapGetters } from 'vuex'
 
 let throttleInputEvent
@@ -230,24 +212,8 @@ export default {
         content: this.value || '',
         doc: this.doc,
         extensions: [
+          ...defaultExtensions(this),
           new EventHandler(),
-          new Heading(),
-          new HardBreak(),
-          new Blockquote(),
-          new BulletList(),
-          new OrderedList(),
-          new HorizontalRule(),
-          new Bold(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new Link(),
-          new Heading({ levels: [3, 4] }),
-          new ListItem(),
-          new Placeholder({
-            emptyNodeClass: 'is-empty',
-            emptyNodeText: this.placeholder || this.$t('editor.placeholder'),
-          }),
           new History(),
           new Mention({
             // a list of all suggested items
@@ -485,7 +451,7 @@ export default {
     // For hashtags handles pressing of space.
     spaceHandler() {
       if (this.suggestionType === this.hashtagSuggestionType && this.query !== '') {
-        this.selectItem({ name: this.query })
+        this.selectItem({ id: this.query })
       }
     },
     // we have to replace our suggestion text with a mention
@@ -493,14 +459,12 @@ export default {
     selectItem(item) {
       const typeAttrs = {
         mention: {
-          // TODO: use router here
-          url: `/profile/${item.id}`,
+          id: item.id,
           label: item.slug,
         },
         hashtag: {
-          // TODO: Fill up with input hashtag in search field
-          url: `/search/hashtag/${item.name}`,
-          label: item.name,
+          id: item.id,
+          label: item.id,
         },
       }
       this.insertMentionOrHashtag({

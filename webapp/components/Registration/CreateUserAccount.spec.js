@@ -1,10 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { config, mount, createLocalVue } from '@vue/test-utils'
 import CreateUserAccount, { SignupVerificationMutation } from './CreateUserAccount'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
+config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 
 describe('CreateUserAccount', () => {
   let wrapper
@@ -55,6 +56,7 @@ describe('CreateUserAccount', () => {
             wrapper.find('input#name').setValue('John Doe')
             wrapper.find('input#password').setValue('hellopassword')
             wrapper.find('input#passwordConfirmation').setValue('hellopassword')
+            wrapper.find('input#checkbox').setChecked()
             await wrapper.find('form').trigger('submit')
             await wrapper.html()
           }

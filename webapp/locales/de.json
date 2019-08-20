@@ -5,8 +5,16 @@
     "clearSearch": "Suche löschen"
   },
   "filter-posts": {
-    "header": "Themenkategorien",
-    "all": "Alle"
+    "categories": {
+      "header": "Themenkategorien",
+      "all": "Alle"
+    },
+    "general": {
+      "header": "Filtern nach..."
+    },
+    "followers": {
+      "label": "Benutzern, denen ich folge"
+    }
   },
   "site": {
     "made": "Mit &#10084; gemacht",
@@ -23,8 +31,8 @@
     "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
     "bank": "Bankverbindung",
     "germany": "Deutschland",
-    "code-of-conduct": "Verhaltenscodex",
-    "termsAndConditionsNewConfirm": "Bitte bestätige die neuen AGBs!"
+    "code-of-conduct": "Verhaltenscodex", 
+    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu." 
   },
   "sorting": {
     "newest": "Neuste",
@@ -164,10 +172,10 @@
     "deleteUserAccount": {
       "name": "Daten löschen",
       "contributionsCount": "Meine {count} Beiträge löschen",
-      "commentsCount": "Meine {count} Kommentare löschen",
+      "commentedCount": "Meine {count} Kommentare löschen",
       "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
       "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
-      "success": "Konto erfolgreich gelöscht",
+      "success": "Konto erfolgreich gelöscht!",
       "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen."
     },
     "organizations": {
@@ -183,6 +191,25 @@
       "submit": "Link hinzufügen",
       "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
       "successDelete": "Social-Media gelöscht. Profil aktualisiert!"
+    },
+    "blocked-users": {
+      "name": "Blockierte Benutzer",
+      "explanation": {
+        "intro": "Wenn ein anderer Benutzer von dir blockiert wurde, dann passiert folgendes:",
+        "your-perspective": "In deiner Beitragsübersicht tauchen keine Beiträge der blockierten Person mehr auf.",
+        "their-perspective": "Umgekehrt das gleiche: Die blockierte Person sieht deine Beiträge auch nicht mehr in ihrer Übersicht.",
+        "search": "Die Beiträge von blockierten Personen verschwinden aus deinen Suchergebnissen.",
+        "notifications": "Von dir blockierte Personen erhalten keine Benachrichtigungen mehr, wenn sie in deinen Beiträgen erwähnt werden.",
+        "closing": "Das sollte fürs Erste genügen, damit blockierte Benutzer dich nicht mehr länger belästigen können."
+      },
+      "columns": {
+        "name": "Name",
+        "slug": "Alias"
+      },
+      "empty": "Bislang hast du niemanden blockiert.",
+      "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
+      "block": "Nutzer blockieren",
+      "unblock": "Nutzer entblocken"
     }
   },
   "admin": {
@@ -209,6 +236,7 @@
       },
       "table": {
         "columns": {
+          "number": "Nr.",
           "name": "Name",
           "slug": "Slug",
           "role": "Rolle",
@@ -229,7 +257,9 @@
       "postCount": "Beiträge"
     },
     "tags": {
-      "name": "Schlagworte",
+      "name": "Hashtags",
+      "number": "Nr.",
+      "nameOfHashtag": "Name",
       "tagCountUnique": "Benutzer",
       "tagCount": "Beiträge"
     },
@@ -245,7 +275,12 @@
   "post": {
     "name": "Beitrag",
     "moreInfo": {
-      "name": "Mehr Info"
+      "name": "Mehr Info",
+      "title": "Mehr Informationen",
+      "description": "Hier findest du weitere Infos zum Thema.",
+      "titleOfCategoriesSection": "Kategorien",
+      "titleOfHashtagsSection": "Hashtags",
+      "titleOfRelatedContributionsSection": "Verwandte Beiträge"
     },
     "takeAction": {
       "name": "Aktiv werden"
@@ -323,7 +358,7 @@
   "disable": {
     "submit": "Deaktivieren",
     "cancel": "Abbrechen",
-    "success": "Erfolgreich deaktiviert",
+    "success": "Erfolgreich deaktiviert!",
     "user": {
       "title": "Nutzer sperren",
       "type": "Nutzer",
@@ -422,6 +457,34 @@
     "languageSelectLabel": "Sprache",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
+    },
+    "emotions-label": {
+      "funny": "Lustig",
+      "happy": "Glücklich",
+      "surprised": "Erstaunt",
+      "cry": "Zum Weinen",
+      "angry": "Verärgert",
+      "emoted": "angegeben"
+    },
+    "category": {
+      "name": {
+        "freedom-of-speech": "Redefreiheit",
+        "consumption-sustainability": "Verbrauch & Nachhaltigkeit",
+        "global-peace-nonviolence": "Globaler Frieden & Gewaltlosigkeit",
+        "just-for-fun": "Nur zum Spaß",
+        "happiness-values": "Glück & Werte",
+        "health-wellbeing": "Gesundheit & Wohlbefinden",
+        "environment-nature": "Umwelt & Natur",
+        "animal-protection": "Schutz der Tiere",
+        "human-rights-justice": "Menschenrechte & Gerechtigkeit",
+        "education-sciences": "Bildung & Wissenschaft",
+        "cooperation-development": "Zusammenarbeit & Entwicklung",
+        "democracy-politics": "Demokratie & Politik",
+        "economy-finances": "Wirtschaft & Finanzen",
+        "energy-technology": "Energie & Technologie",
+        "it-internet-data-privacy": "IT, Internet & Datenschutz",
+        "art-culture-sport": "Kunst, Kultur & Sport"
+      }
     }
   },
   "changelog": {
