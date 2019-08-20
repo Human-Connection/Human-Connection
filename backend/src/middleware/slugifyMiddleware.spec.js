@@ -1,19 +1,36 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../seed/factories'
-import { host, login } from '../jest/helpers'
+import { host, login, gql } from '../jest/helpers'
 import { neode } from '../bootstrap/neo4j'
 
 let authenticatedClient
 let headers
 const factory = Factory()
 const instance = neode()
-
+const categoryIds = ['cat9']
+const createPostMutation = gql`
+  mutation($title: String!, $content: String!, $categoryIds: [ID]!, $slug: String) {
+    CreatePost(title: $title, content: $content, categoryIds: $categoryIds, slug: $slug) {
+      slug
+    }
+  }
+`
+let createPostVariables = {
+  title: 'I am a brand new post',
+  content: 'Some content',
+  categoryIds,
+}
 beforeEach(async () => {
   const adminParams = { role: 'admin', email: 'admin@example.org', password: '1234' }
   await factory.create('User', adminParams)
   await factory.create('User', {
     email: 'someone@example.org',
     password: '1234',
+  })
+  await instance.create('Category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    icon: 'university',
   })
   // we need to be an admin, otherwise we're not authorized to create a user
   headers = await login(adminParams)
@@ -27,12 +44,7 @@ afterEach(async () => {
 describe('slugify', () => {
   describe('CreatePost', () => {
     it('generates a slug based on title', async () => {
-      const response = await authenticatedClient.request(`mutation {
-        CreatePost(
-          title: "I am a brand new post",
-          content: "Some content"
-        ) { slug }
-      }`)
+      const response = await authenticatedClient.request(createPostMutation, createPostVariables)
       expect(response).toEqual({
         CreatePost: { slug: 'i-am-a-brand-new-post' },
       })
@@ -47,16 +59,14 @@ describe('slugify', () => {
         await asSomeoneElse.create('Post', {
           title: 'Pre-existing post',
           slug: 'pre-existing-post',
+          content: 'as Someone else content',
+          categoryIds,
         })
       })
 
       it('chooses another slug', async () => {
-        const response = await authenticatedClient.request(`mutation {
-          CreatePost(
-            title: "Pre-existing post",
-            content: "Some content"
-          ) { slug }
-        }`)
+        createPostVariables = { title: 'Pre-existing post', content: 'Some content', categoryIds }
+        const response = await authenticatedClient.request(createPostMutation, createPostVariables)
         expect(response).toEqual({
           CreatePost: { slug: 'pre-existing-post-1' },
         })
@@ -64,14 +74,14 @@ describe('slugify', () => {
 
       describe('but if the client specifies a slug', () => {
         it('rejects CreatePost', async () => {
+          createPostVariables = {
+            title: 'Pre-existing post',
+            content: 'Some content',
+            slug: 'pre-existing-post',
+            categoryIds,
+          }
           await expect(
-            authenticatedClient.request(`mutation {
-              CreatePost(
-                title: "Pre-existing post",
-                content: "Some content",
-                slug: "pre-existing-post"
-              ) { slug }
-            }`),
+            authenticatedClient.request(createPostMutation, createPostVariables),
           ).rejects.toThrow('already exists')
         })
       })

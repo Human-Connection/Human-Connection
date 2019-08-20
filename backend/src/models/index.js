@@ -8,4 +8,5 @@ export default {
   SocialMedia: require('./SocialMedia.js'),
   Post: require('./Post.js'),
   Notification: require('./Notification.js'),
+  Category: require('./Category.js'),
 }

@@ -1,17 +1,25 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
+import { neode } from '../../bootstrap/neo4j'
 
-const factory = Factory()
 let client
+const factory = Factory()
+const instance = neode()
 const userParams = {
   id: 'you',
   email: 'test@example.org',
   password: '1234',
 }
+const categoryIds = ['cat9']
 
 beforeEach(async () => {
   await factory.create('User', userParams)
+  await instance.create('Category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    icon: 'university',
+  })
 })
 
 afterEach(async () => {
@@ -19,11 +27,13 @@ afterEach(async () => {
 })
 
 describe('Notification', () => {
-  const query = `{
-    Notification {
-      id
+  const query = gql`
+    query {
+      Notification {
+        id
+      }
     }
-  }`
+  `
 
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
@@ -57,28 +67,30 @@ describe('currentUser { notifications }', () => {
         ])
         await factory.create('Notification', { id: 'unseen' })
         await factory.authenticateAs(neighborParams)
-        await factory.create('Post', { id: 'p1' })
+        await factory.create('Post', { id: 'p1', categoryIds })
         await Promise.all([
           factory.relate('Notification', 'User', { from: 'not-for-you', to: 'neighbor' }),
-          factory.relate('Notification', 'Post', { from: 'p1', to: 'not-for-you' }),
+          factory.relate('Notification', 'Post', { from: 'p1', to: 'not-for-you', categoryIds }),
           factory.relate('Notification', 'User', { from: 'unseen', to: 'you' }),
-          factory.relate('Notification', 'Post', { from: 'p1', to: 'unseen' }),
+          factory.relate('Notification', 'Post', { from: 'p1', to: 'unseen', categoryIds }),
           factory.relate('Notification', 'User', { from: 'already-seen', to: 'you' }),
-          factory.relate('Notification', 'Post', { from: 'p1', to: 'already-seen' }),
+          factory.relate('Notification', 'Post', { from: 'p1', to: 'already-seen', categoryIds }),
         ])
       })
 
       describe('filter for read: false', () => {
-        const query = `query($read: Boolean) {
-          currentUser {
-            notifications(read: $read, orderBy: createdAt_desc) {
-              id
-              post {
+        const query = gql`
+          query($read: Boolean) {
+            currentUser {
+              notifications(read: $read, orderBy: createdAt_desc) {
                 id
+                post {
+                  id
+                }
               }
             }
           }
-        }`
+        `
         const variables = { read: false }
         it('returns only unread notifications of current user', async () => {
           const expected = {
@@ -91,16 +103,18 @@ describe('currentUser { notifications }', () => {
       })
 
       describe('no filters', () => {
-        const query = `{
-          currentUser {
-            notifications(orderBy: createdAt_desc) {
-              id
-              post {
+        const query = gql`
+          query {
+            currentUser {
+              notifications(orderBy: createdAt_desc) {
                 id
+                post {
+                  id
+                }
               }
             }
           }
-        }`
+        `
         it('returns all notifications of current user', async () => {
           const expected = {
             currentUser: {
@@ -118,11 +132,14 @@ describe('currentUser { notifications }', () => {
 })
 
 describe('UpdateNotification', () => {
-  const mutation = `mutation($id: ID!, $read: Boolean){
-    UpdateNotification(id: $id, read: $read) {
-      id read
+  const mutation = gql`
+    mutation($id: ID!, $read: Boolean) {
+      UpdateNotification(id: $id, read: $read) {
+        id
+        read
+      }
     }
-  }`
+  `
   const variables = { id: 'to-be-updated', read: true }
 
   describe('given a notifications', () => {
@@ -138,7 +155,7 @@ describe('UpdateNotification', () => {
       await factory.create('User', mentionedParams)
       await factory.create('Notification', { id: 'to-be-updated' })
       await factory.authenticateAs(userParams)
-      await factory.create('Post', { id: 'p1' })
+      await factory.create('Post', { id: 'p1', categoryIds })
       await Promise.all([
         factory.relate('Notification', 'User', { from: 'to-be-updated', to: 'mentioned-1' }),
         factory.relate('Notification', 'Post', { from: 'p1', to: 'to-be-updated' }),
