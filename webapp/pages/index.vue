@@ -125,6 +125,9 @@ export default {
     },
   },
   watch: {
+    Post(post) {
+      this.setPosts(this.Post)
+    },
     postsFilter() {
       this.offset = 0
       this.posts = []
