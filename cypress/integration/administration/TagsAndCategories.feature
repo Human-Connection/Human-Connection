@@ -15,7 +15,9 @@ Feature: Tags and Categories
 
   Background:
     Given my user account has the role "admin"
-    And we have a selection of tags and categories as well as posts
+    And we have a selection of categories
+    And we have a selection of tags
+    And we have a selection of posts
     And I am logged in
 
   Scenario: See an overview of categories
@@ -24,8 +26,8 @@ Feature: Tags and Categories
     Then I can see the following table:
       |  | Name               | Posts |
       |  | Just For Fun       | 2     |
-      |  | Happyness & Values | 1     |
-      |  | Health & Wellbeing | 0     |
+      |  | Happiness & Values | 1     |
+      |  | Health & Wellbeing | 1     |
 
   Scenario: See an overview of tags
     When I navigate to the administration dashboard

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import CategoryQuery from '~/graphql/CategoryQuery.js'
+import CategoryQuery from '~/graphql/CategoryQuery'
 
 export default {
   props: {
@@ -87,8 +87,8 @@ export default {
       query() {
         return CategoryQuery()
       },
-      result(result) {
-        this.categories = result.data.Category
+      result({ data: { Category } }) {
+        this.categories = Category
       },
     },
   },

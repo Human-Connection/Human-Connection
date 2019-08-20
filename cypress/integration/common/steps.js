@@ -20,20 +20,19 @@ const narratorParams = {
 Given("I am logged in", () => {
   cy.login(loginCredentials);
 });
-
-Given("we have a selection of tags and categories as well as posts", () => {
+Given("we have a selection of categories", () => {
   cy.factory()
     .authenticateAs(loginCredentials)
     .create("Category", {
       id: "cat1",
       name: "Just For Fun",
-      slug: "justforfun",
+      slug: "just-for-fun",
       icon: "smile"
     })
     .create("Category", {
       id: "cat2",
-      name: "Happyness & Values",
-      slug: "happyness-values",
+      name: "Happiness & Values",
+      slug: "happiness-values",
       icon: "heart-o"
     })
     .create("Category", {
@@ -41,11 +40,18 @@ Given("we have a selection of tags and categories as well as posts", () => {
       name: "Health & Wellbeing",
       slug: "health-wellbeing",
       icon: "medkit"
-    })
+    });
+});
+
+Given("we have a selection of tags", () => {
+  cy.factory()
+    .authenticateAs(loginCredentials)
     .create("Tag", { id: "Ecology" })
     .create("Tag", { id: "Nature" })
     .create("Tag", { id: "Democracy" });
+});
 
+Given("we have a selection of posts", () => {
   const someAuthor = {
     id: "authorId",
     email: "author@example.org",
@@ -59,18 +65,15 @@ Given("we have a selection of tags and categories as well as posts", () => {
   cy.factory()
     .create("User", someAuthor)
     .authenticateAs(someAuthor)
-    .create("Post", { id: "p0" })
-    .create("Post", { id: "p1" });
+    .create("Post", { id: "p0", categoryIds: ["cat1"] })
+    .create("Post", { id: "p1", categoryIds: ["cat2"] });
   cy.factory()
     .create("User", yetAnotherAuthor)
     .authenticateAs(yetAnotherAuthor)
-    .create("Post", { id: "p2" });
+    .create("Post", { id: "p2", categoryIds: ["cat1"] });
   cy.factory()
     .authenticateAs(loginCredentials)
-    .create("Post", { id: "p3" })
-    .relate("Post", "Categories", { from: "p0", to: "cat1" })
-    .relate("Post", "Categories", { from: "p1", to: "cat2" })
-    .relate("Post", "Categories", { from: "p2", to: "cat1" })
+    .create("Post", { id: "p3", categoryIds: ["cat3"] })
     .relate("Post", "Tags", { from: "p0", to: "Ecology" })
     .relate("Post", "Tags", { from: "p0", to: "Nature" })
     .relate("Post", "Tags", { from: "p0", to: "Democracy" })
@@ -182,9 +185,17 @@ Given("we have the following posts in our database:", table => {
     };
     postAttributes.deleted = Boolean(postAttributes.deleted);
     const disabled = Boolean(postAttributes.disabled);
+    postAttributes.categoryIds = [`cat${i}`];
+    postAttributes;
     cy.factory()
       .create("User", userAttributes)
       .authenticateAs(userAttributes)
+      .create("Category", {
+        id: `cat${i}`,
+        name: "Just For Fun",
+        slug: `just-for-fun-${i}`,
+        icon: "smile"
+      })
       .create("Post", postAttributes);
     if (disabled) {
       const moderatorParams = {
@@ -218,6 +229,7 @@ When(
 Given("I previously created a post", () => {
   lastPost.title = "previously created post";
   lastPost.content = "with some content";
+  lastPost.categoryIds = "cat1";
   cy.factory()
     .authenticateAs(loginCredentials)
     .create("Post", lastPost);
@@ -231,6 +243,12 @@ When("I choose {string} as the title of the post", title => {
 When("I type in the following text:", text => {
   lastPost.content = text.replace("\n", " ");
   cy.get(".editor .ProseMirror").type(lastPost.content);
+});
+
+Then("I select a category", () => {
+  cy.get("span")
+    .contains("Just for Fun")
+    .click();
 });
 
 Then("the post shows up on the landing page at position {int}", index => {
@@ -260,7 +278,9 @@ Then("the first post on the landing page has the title:", title => {
 Then(
   "the page {string} returns a 404 error with a message:",
   (route, message) => {
-    cy.request({ url: route, failOnStatusCode: false }).its('status').should('eq', 404)
+    cy.request({ url: route, failOnStatusCode: false })
+      .its("status")
+      .should("eq", 404);
     cy.visit(route, { failOnStatusCode: false });
     cy.get(".error").should("contain", message);
   }
@@ -422,7 +442,7 @@ Given('"Spammy Spammer" wrote a post {string}', title => {
       email: "spammy-spammer@example.org",
       password: "1234"
     })
-    .create("Post", { title });
+    .create("Post", { title, categoryIds: ["cat2"] });
 });
 
 Then("the list of posts of this user is empty", () => {
@@ -441,7 +461,7 @@ Then("nobody is following the user profile anymore", () => {
 Given("I wrote a post {string}", title => {
   cy.factory()
     .authenticateAs(loginCredentials)
-    .create("Post", { title });
+    .create("Post", { title, categoryIds: ["cat2"] });
 });
 
 When("I block the user {string}", name => {
@@ -465,4 +485,15 @@ Then("I see only one post with the title {string}", title => {
     .find(".post-link")
     .should("have.length", 1);
   cy.get(".main-container").contains(".post-link", title);
+});
+
+And("some categories exist", () => {
+  cy.factory()
+    .authenticateAs(loginCredentials)
+    .create("Category", {
+      id: "cat1",
+      name: "Just For Fun",
+      slug: `just-for-fun`,
+      icon: "smile"
+    });
 });

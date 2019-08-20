@@ -159,7 +159,7 @@ export default {
       },
       variables() {
         return {
-          slug: this.$route.params.slug,
+          id: this.$route.params.id,
         }
       },
       fetchPolicy: 'cache-and-network',

@@ -17,8 +17,8 @@
         <no-ssr>
           <hc-editor
             :users="users"
-            :hashtags="hashtags"
             :value="form.content"
+            :hashtags="hashtags"
             @input="updateEditorContent"
           />
           <small class="smallTag">{{ form.contentLength }}/{{ contentMax }}</small>
@@ -177,8 +177,8 @@ export default {
         .then(({ data }) => {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
-          this.failedValidations = true
           const result = data[this.id ? 'UpdatePost' : 'CreatePost']
+          this.failedValidations = false
 
           this.$router.push({
             name: 'post-id-slug',
@@ -188,7 +188,7 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
           this.loading = false
-          this.failedValidations = false
+          this.failedValidations = true
         })
     },
     updateEditorContent(value) {
@@ -234,7 +234,7 @@ export default {
     User: {
       query() {
         return gql`
-          {
+          query {
             User(orderBy: slug_asc) {
               id
               slug
@@ -242,22 +242,22 @@ export default {
           }
         `
       },
-      result(result) {
-        this.users = result.data.User
+      result({ data: { User } }) {
+        this.users = User
       },
     },
     Tag: {
       query() {
         return gql`
-          {
+          query {
             Tag(orderBy: id_asc) {
               id
             }
           }
         `
       },
-      result(result) {
-        this.hashtags = result.data.Tag
+      result({ data: { Tag } }) {
+        this.hashtags = Tag
       },
     },
   },

@@ -74,22 +74,22 @@ beforeEach(async () => {
   }
   await factory.create('User', userParams)
   await Promise.all([
-    factory.create('Category', {
+    instance.create('Category', {
       id: 'cat9',
       name: 'Democracy & Politics',
       icon: 'university',
     }),
-    factory.create('Category', {
+    instance.create('Category', {
       id: 'cat4',
       name: 'Environment & Nature',
       icon: 'tree',
     }),
-    factory.create('Category', {
+    instance.create('Category', {
       id: 'cat15',
       name: 'Consumption & Sustainability',
       icon: 'shopping-cart',
     }),
-    factory.create('Category', {
+    instance.create('Category', {
       id: 'cat27',
       name: 'Animal Protection',
       icon: 'paw',
