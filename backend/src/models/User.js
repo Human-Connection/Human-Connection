@@ -85,12 +85,12 @@ module.exports = {
   },
   termsAndConditionsVersion: {
     type: 'string',
-    allow: [null] ,
+    allow: [null],
   },
   termsAndConditionsConfirmedAt: {
     type: 'string',
     isoDate: true,
-    allow: [null] ,
+    allow: [null],
     /* required: true, TODO */
   },
 }
