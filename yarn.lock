@@ -3570,7 +3570,7 @@ needle@^2.2.1:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-neo4j-driver@^1.6.3, neo4j-driver@^1.7.5:
+neo4j-driver@^1.7.5:
   version "1.7.5"
   resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.5.tgz#c3fe3677f69c12f26944563d45e7e7d818a685e4"
   integrity sha512-xCD2F5+tp/SD9r5avX5bSoY8u8RH2o793xJ9Ikjz1s5qQy7cFxFbbj2c52uz3BVGhRAx/NmB57VjOquYmmxGtw==
@@ -3579,14 +3579,14 @@ neo4j-driver@^1.6.3, neo4j-driver@^1.7.5:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neode@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.1.tgz#d40147bf20d6951b69c9d392fbdd322aeca07816"
-  integrity sha512-SdaJmdjQ3PWOH6W1H8Xgd2CLyJs+BPPXPt0jOVNs7naeQH8nWPP6ixDqI6NWDCxwecTdNl//fpAicB9I6hCwEw==
+neode@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.2.tgz#ced277e1daba26a77c48f5857c30af054f11c7df"
+  integrity sha512-Bm4GBXdXunv8cqUUkJtksIGHDnYdBJf4UHwzFgXbJiDKBAdqfjhzwAPAhf1PrvlFmR4vJva2Bh/XvIghYOiKrA==
   dependencies:
     "@hapi/joi" "^15.1.0"
     dotenv "^4.0.0"
-    neo4j-driver "^1.6.3"
+    neo4j-driver "^1.7.5"
     uuid "^3.3.2"
 
 next-tick@^1.0.0:
