@@ -1,4 +1,4 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
@@ -7,6 +7,7 @@ const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 
 describe('ReportModal.vue', () => {
   let wrapper

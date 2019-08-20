@@ -1,12 +1,11 @@
 import Metascraper from 'metascraper'
 import fetch from 'node-fetch'
-import fs from 'fs'
-import path from 'path'
 
 import { ApolloError } from 'apollo-server'
 import isEmpty from 'lodash/isEmpty'
 import isArray from 'lodash/isArray'
 import mergeWith from 'lodash/mergeWith'
+import findProvider from './findProvider'
 
 const error = require('debug')('embed:error')
 
@@ -30,24 +29,11 @@ const metascraper = Metascraper([
   // require('./rules/metascraper-embed')()
 ])
 
-let oEmbedProvidersFile = fs.readFileSync(path.join(__dirname, './providers.json'), 'utf8')
-
-// some providers allow a format parameter
-// we need JSON
-oEmbedProvidersFile = oEmbedProvidersFile.replace('{format}', 'json')
-
-const oEmbedProviders = JSON.parse(oEmbedProvidersFile)
-
 const fetchEmbed = async url => {
-  const provider = oEmbedProviders.find(provider => {
-    return provider.provider_url.includes(url.hostname)
-  })
-  if (!provider) return {}
-  const {
-    endpoints: [endpoint],
-  } = provider
-  const endpointUrl = new URL(endpoint.url)
-  endpointUrl.searchParams.append('url', url.href)
+  let endpointUrl = findProvider(url)
+  if (!endpointUrl) return {}
+  endpointUrl = new URL(endpointUrl)
+  endpointUrl.searchParams.append('url', url)
   endpointUrl.searchParams.append('format', 'json')
   let json
   try {
@@ -70,7 +56,7 @@ const fetchEmbed = async url => {
 const fetchResource = async url => {
   const response = await fetch(url)
   const html = await response.text()
-  const resource = await metascraper({ html, url: url.href })
+  const resource = await metascraper({ html, url })
   return {
     sources: ['resource'],
     ...resource,
@@ -78,12 +64,6 @@ const fetchResource = async url => {
 }
 
 export default async function scrape(url) {
-  url = new URL(url)
-  if (url.hostname === 'youtu.be') {
-    // replace youtu.be to get proper results
-    url.hostname = 'youtube.com'
-  }
-
   const [meta, embed] = await Promise.all([fetchResource(url), fetchEmbed(url)])
   const output = mergeWith(meta, embed, (objValue, srcValue) => {
     if (isArray(objValue)) {

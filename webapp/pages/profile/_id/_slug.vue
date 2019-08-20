@@ -22,6 +22,8 @@
               :resource="user"
               :is-owner="myProfile"
               class="user-content-menu"
+              @block="block"
+              @unblock="unblock"
             />
           </no-ssr>
           <ds-space margin="small">
@@ -41,26 +43,31 @@
             <ds-flex-item>
               <no-ssr>
                 <ds-number :label="$t('profile.followers')">
-                  <hc-count-to slot="count" :end-val="followedByCount" />
+                  <hc-count-to slot="count" :end-val="user.followedByCount" />
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
             <ds-flex-item>
               <no-ssr>
                 <ds-number :label="$t('profile.following')">
-                  <hc-count-to slot="count" :end-val="Number(user.followingCount) || 0" />
+                  <hc-count-to slot="count" :end-val="user.followingCount" />
                 </ds-number>
               </no-ssr>
             </ds-flex-item>
           </ds-flex>
           <ds-space margin="small">
-            <hc-follow-button
-              v-if="!myProfile"
-              :follow-id="user.id"
-              :is-followed="user.followedByCurrentUser"
-              @optimistic="follow => (user.followedByCurrentUser = follow)"
-              @update="follow => fetchUser()"
-            />
+            <template v-if="!myProfile">
+              <hc-follow-button
+                v-if="!user.isBlocked"
+                :follow-id="user.id"
+                :is-followed="user.followedByCurrentUser"
+                @optimistic="follow => (user.followedByCurrentUser = follow)"
+                @update="follow => fetchUser()"
+              />
+              <ds-button v-else fullwidth @click="unblock(user)">
+                {{ $t('settings.blocked-users.unblock') }}
+              </ds-button>
+            </template>
           </ds-space>
           <template v-if="user.about">
             <hr />
@@ -222,7 +229,14 @@
             </ds-flex-item>
           </template>
         </ds-flex>
-        <hc-load-more v-if="hasMore" :loading="$apollo.loading" @click="showMoreContributions" />
+        <div
+          v-if="hasMore"
+          v-infinite-scroll="showMoreContributions"
+          infinite-scroll-disabled="$apollo.loading"
+          infinite-scroll-distance="10"
+        >
+          <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
+        </div>
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -240,8 +254,9 @@ import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
-import PostQuery from '~/graphql/UserProfile/Post.js'
-import UserQuery from '~/graphql/UserProfile/User.js'
+import { filterPosts } from '~/graphql/PostQuery'
+import UserQuery from '~/graphql/User'
+import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -293,10 +308,6 @@ export default {
     },
     myProfile() {
       return this.$route.params.id === this.$store.getters['auth/user'].id
-    },
-    followedByCount() {
-      let count = Number(this.user.followedByCount) || 0
-      return count
     },
     user() {
       return this.User ? this.User[0] : {}
@@ -372,11 +383,21 @@ export default {
       }
       return this.uniq(this.Post.filter(post => !post.deleted))
     },
+    async block(user) {
+      await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
+      this.$apollo.queries.User.refetch()
+      this.$apollo.queries.Post.refetch()
+    },
+    async unblock(user) {
+      await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
+      this.$apollo.queries.User.refetch()
+      this.$apollo.queries.Post.refetch()
+    },
   },
   apollo: {
     Post: {
       query() {
-        return PostQuery(this.$i18n)
+        return filterPosts(this.$i18n)
       },
       variables() {
         return {

@@ -4,7 +4,7 @@ export default () => {
   return gql(`{
     Category {
       id
-      name
+      slug
       icon
     }
   }`)

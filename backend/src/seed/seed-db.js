@@ -120,73 +120,35 @@ import Factory from './factories'
       bobDerBaumeister.relateTo(turtle, 'rewarded'),
       jennyRostock.relateTo(bear, 'rewarded'),
       dagobert.relateTo(rabbit, 'rewarded'),
-    ])
 
-    await Promise.all([
-      f.relate('User', 'Friends', {
-        from: 'u1',
-        to: 'u2',
-      }),
-      f.relate('User', 'Friends', {
-        from: 'u1',
-        to: 'u3',
-      }),
-      f.relate('User', 'Friends', {
-        from: 'u2',
-        to: 'u3',
-      }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u4',
-      }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u5',
-      }),
-      f.relate('User', 'Blacklisted', {
-        from: 'u7',
-        to: 'u6',
-      }),
-    ])
+      peterLustig.relateTo(bobDerBaumeister, 'friends'),
+      peterLustig.relateTo(jennyRostock, 'friends'),
+      bobDerBaumeister.relateTo(jennyRostock, 'friends'),
 
-    await Promise.all([
-      asAdmin.follow({
-        id: 'u3',
-        type: 'User',
-      }),
-      asModerator.follow({
-        id: 'u4',
-        type: 'User',
-      }),
-      asUser.follow({
-        id: 'u4',
-        type: 'User',
-      }),
-      asTick.follow({
-        id: 'u6',
-        type: 'User',
-      }),
-      asTrick.follow({
-        id: 'u4',
-        type: 'User',
-      }),
-      asTrack.follow({
-        id: 'u3',
-        type: 'User',
-      }),
+      peterLustig.relateTo(jennyRostock, 'following'),
+      peterLustig.relateTo(tick, 'following'),
+      bobDerBaumeister.relateTo(tick, 'following'),
+      jennyRostock.relateTo(tick, 'following'),
+      tick.relateTo(track, 'following'),
+      trick.relateTo(tick, 'following'),
+      track.relateTo(jennyRostock, 'following'),
+
+      dagobert.relateTo(tick, 'blocked'),
+      dagobert.relateTo(trick, 'blocked'),
+      dagobert.relateTo(track, 'blocked'),
     ])
 
     await Promise.all([
       f.create('Category', {
         id: 'cat1',
         name: 'Just For Fun',
-        slug: 'justforfun',
+        slug: 'just-for-fun',
         icon: 'smile',
       }),
       f.create('Category', {
         id: 'cat2',
-        name: 'Happyness & Values',
-        slug: 'happyness-values',
+        name: 'Happiness & Values',
+        slug: 'happiness-values',
         icon: 'heart-o',
       }),
       f.create('Category', {
@@ -204,13 +166,13 @@ import Factory from './factories'
       f.create('Category', {
         id: 'cat5',
         name: 'Animal Protection',
-        slug: 'animalprotection',
+        slug: 'animal-protection',
         icon: 'paw',
       }),
       f.create('Category', {
         id: 'cat6',
-        name: 'Humanrights Justice',
-        slug: 'humanrights-justice',
+        name: 'Human Rights & Justice',
+        slug: 'human-rights-justice',
         icon: 'balance-scale',
       }),
       f.create('Category', {
@@ -246,19 +208,19 @@ import Factory from './factories'
       f.create('Category', {
         id: 'cat12',
         name: 'IT, Internet & Data Privacy',
-        slug: 'it-internet-dataprivacy',
+        slug: 'it-internet-data-privacy',
         icon: 'mouse-pointer',
       }),
       f.create('Category', {
         id: 'cat13',
-        name: 'Art, Curlure & Sport',
+        name: 'Art, Culture & Sport',
         slug: 'art-culture-sport',
         icon: 'paint-brush',
       }),
       f.create('Category', {
         id: 'cat14',
         name: 'Freedom of Speech',
-        slug: 'freedomofspeech',
+        slug: 'freedom-of-speech',
         icon: 'bullhorn',
       }),
       f.create('Category', {
@@ -270,7 +232,7 @@ import Factory from './factories'
       f.create('Category', {
         id: 'cat16',
         name: 'Global Peace & Nonviolence',
-        slug: 'globalpeace-nonviolence',
+        slug: 'global-peace-nonviolence',
         icon: 'angellist',
       }),
     ])
@@ -294,9 +256,10 @@ import Factory from './factories'
       }),
     ])
 
-    const mention1 = 'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
+    const mention1 =
+      'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
     const mention2 =
-      'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
+      'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
 
     await Promise.all([
       asAdmin.create('Post', {
@@ -486,6 +449,116 @@ import Factory from './factories'
       f.relate('Post', 'Tags', {
         from: 'p15',
         to: 'Demokratie',
+      }),
+      f.emote({
+        from: 'u1',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u2',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u3',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u4',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u5',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u6',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u7',
+        to: 'p15',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u2',
+        to: 'p14',
+        data: 'cry',
+      }),
+      f.emote({
+        from: 'u3',
+        to: 'p13',
+        data: 'angry',
+      }),
+      f.emote({
+        from: 'u4',
+        to: 'p12',
+        data: 'funny',
+      }),
+      f.emote({
+        from: 'u5',
+        to: 'p11',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u6',
+        to: 'p10',
+        data: 'cry',
+      }),
+      f.emote({
+        from: 'u5',
+        to: 'p9',
+        data: 'happy',
+      }),
+      f.emote({
+        from: 'u4',
+        to: 'p8',
+        data: 'angry',
+      }),
+      f.emote({
+        from: 'u3',
+        to: 'p7',
+        data: 'funny',
+      }),
+      f.emote({
+        from: 'u2',
+        to: 'p6',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u1',
+        to: 'p5',
+        data: 'cry',
+      }),
+      f.emote({
+        from: 'u2',
+        to: 'p4',
+        data: 'happy',
+      }),
+      f.emote({
+        from: 'u3',
+        to: 'p3',
+        data: 'angry',
+      }),
+      f.emote({
+        from: 'u4',
+        to: 'p2',
+        data: 'funny',
+      }),
+      f.emote({
+        from: 'u5',
+        to: 'p1',
+        data: 'surprised',
+      }),
+      f.emote({
+        from: 'u6',
+        to: 'p0',
+        data: 'cry',
       }),
     ])
 

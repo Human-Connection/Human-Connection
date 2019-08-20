@@ -43,11 +43,13 @@ c.updatedAt = category.updatedAt.`$date`
 MATCH (c:Category)
 WHERE (c.icon = "categories-justforfun")
 SET c.icon = 'smile'
+SET c.slug = 'just-for-fun'
 ;
 
 MATCH (c:Category)
 WHERE (c.icon = "categories-luck")
 SET c.icon = 'heart-o'
+SET c.slug = 'happiness-values'
 ;
 
 MATCH (c:Category)
@@ -63,11 +65,14 @@ SET c.icon = 'tree'
 MATCH (c:Category)
 WHERE (c.icon = "categories-animal-justice")
 SET c.icon = 'paw'
+SET c.slug = 'animal-protection'
 ;
 
 MATCH (c:Category)
 WHERE (c.icon = "categories-human-rights")
 SET c.icon = 'balance-scale'
+SET c.slug = 'human-rights-justice'
+
 ;
 
 MATCH (c:Category)
@@ -98,6 +103,7 @@ SET c.icon = 'flash'
 MATCH (c:Category)
 WHERE (c.icon = "categories-internet")
 SET c.icon = 'mouse-pointer'
+SET c.slug = 'it-internet-data-privacy'
 ;
 
 MATCH (c:Category)
@@ -108,6 +114,7 @@ SET c.icon = 'paint-brush'
 MATCH (c:Category)
 WHERE (c.icon = "categories-freedom-of-speech")
 SET c.icon = 'bullhorn'
+SET c.slug = 'freedom-of-speech'
 ;
 
 MATCH (c:Category)
@@ -118,4 +125,5 @@ SET c.icon = 'shopping-cart'
 MATCH (c:Category)
 WHERE (c.icon = "categories-peace")
 SET c.icon = 'angellist'
+SET c.slug = 'global-peace-nonviolence'
 ;

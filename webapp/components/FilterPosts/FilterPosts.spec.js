@@ -3,23 +3,21 @@ import VTooltip from 'v-tooltip'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import FilterPosts from './FilterPosts.vue'
-import FilterPostsMenuItem from './FilterPostsMenuItems.vue'
-import { mutations } from '~/store/posts'
-
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 localVue.use(VTooltip)
 localVue.use(Vuex)
 
+let mutations
+let getters
+
 describe('FilterPosts.vue', () => {
-  let wrapper
   let mocks
   let propsData
   let menuToggle
   let allCategoriesButton
   let environmentAndNatureButton
-  let consumptionAndSustainabiltyButton
   let democracyAndPoliticsButton
 
   beforeEach(() => {
@@ -50,22 +48,28 @@ describe('FilterPosts.vue', () => {
   })
 
   describe('mount', () => {
-    const store = new Vuex.Store({
-      mutations: {
-        'posts/SET_POSTS': mutations.SET_POSTS,
-      },
-    })
-    const Wrapper = () => {
-      return mount(FilterPosts, { mocks, localVue, propsData, store })
+    mutations = {
+      'postsFilter/TOGGLE_FILTER_BY_FOLLOWED': jest.fn(),
+      'postsFilter/RESET_CATEGORIES': jest.fn(),
+      'postsFilter/TOGGLE_CATEGORY': jest.fn(),
     }
-
-    beforeEach(() => {
-      wrapper = Wrapper()
+    getters = {
+      'auth/user': () => {
+        return { id: 'u34' }
+      },
+      'postsFilter/filteredCategoryIds': jest.fn(() => []),
+      'postsFilter/filteredByUsersFollowed': jest.fn(),
+    }
+    const openFilterPosts = () => {
+      const store = new Vuex.Store({ mutations, getters })
+      const wrapper = mount(FilterPosts, { mocks, localVue, propsData, store })
       menuToggle = wrapper.findAll('a').at(0)
       menuToggle.trigger('click')
-    })
+      return wrapper
+    }
 
     it('groups the categories by pair', () => {
+      const wrapper = openFilterPosts()
       expect(wrapper.vm.chunk).toEqual([
         [
           { id: 'cat4', name: 'Environment & Nature', icon: 'tree' },
@@ -76,59 +80,43 @@ describe('FilterPosts.vue', () => {
     })
 
     it('starts with all categories button active', () => {
+      const wrapper = openFilterPosts()
       allCategoriesButton = wrapper.findAll('button').at(0)
       expect(allCategoriesButton.attributes().class).toContain('ds-button-primary')
     })
 
-    it('adds a categories id to selectedCategoryIds when clicked', () => {
+    it('calls TOGGLE_CATEGORY when clicked', () => {
+      const wrapper = openFilterPosts()
       environmentAndNatureButton = wrapper.findAll('button').at(1)
       environmentAndNatureButton.trigger('click')
-      const filterPostsMenuItem = wrapper.find(FilterPostsMenuItem)
-      expect(filterPostsMenuItem.vm.selectedCategoryIds).toEqual(['cat4'])
+      expect(mutations['postsFilter/TOGGLE_CATEGORY']).toHaveBeenCalledWith({}, 'cat4')
     })
 
-    it('sets primary to true when the button is clicked', () => {
+    it('sets category button attribute `primary` when corresponding category is filtered', () => {
+      getters['postsFilter/filteredCategoryIds'] = jest.fn(() => ['cat9'])
+      const wrapper = openFilterPosts()
       democracyAndPoliticsButton = wrapper.findAll('button').at(3)
-      democracyAndPoliticsButton.trigger('click')
       expect(democracyAndPoliticsButton.attributes().class).toContain('ds-button-primary')
     })
 
-    it('queries a post by its categories', () => {
-      consumptionAndSustainabiltyButton = wrapper.findAll('button').at(2)
-      consumptionAndSustainabiltyButton.trigger('click')
-      expect(mocks.$apollo.query).toHaveBeenCalledWith(
-        expect.objectContaining({
-          variables: {
-            filter: { categories_some: { id_in: ['cat15'] } },
-            first: expect.any(Number),
-            offset: expect.any(Number),
-          },
-        }),
-      )
+    it('sets "filter-by-followed-authors-only" button attribute `primary`', () => {
+      getters['postsFilter/filteredByUsersFollowed'] = jest.fn(() => true)
+      const wrapper = openFilterPosts()
+      expect(
+        wrapper.find({ name: 'filter-by-followed-authors-only' }).classes('ds-button-primary'),
+      ).toBe(true)
     })
 
-    it('supports a query of multiple categories', () => {
-      environmentAndNatureButton = wrapper.findAll('button').at(1)
-      environmentAndNatureButton.trigger('click')
-      consumptionAndSustainabiltyButton = wrapper.findAll('button').at(2)
-      consumptionAndSustainabiltyButton.trigger('click')
-      expect(mocks.$apollo.query).toHaveBeenCalledWith(
-        expect.objectContaining({
-          variables: {
-            filter: { categories_some: { id_in: ['cat4', 'cat15'] } },
-            first: expect.any(Number),
-            offset: expect.any(Number),
-          },
-        }),
-      )
-    })
+    describe('click "filter-by-followed-authors-only" button', () => {
+      let wrapper
+      beforeEach(() => {
+        wrapper = openFilterPosts()
+        wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+      })
 
-    it('toggles the categoryIds when clicked more than once', () => {
-      environmentAndNatureButton = wrapper.findAll('button').at(1)
-      environmentAndNatureButton.trigger('click')
-      environmentAndNatureButton.trigger('click')
-      const filterPostsMenuItem = wrapper.find(FilterPostsMenuItem)
-      expect(filterPostsMenuItem.vm.selectedCategoryIds).toEqual([])
+      it('calls TOGGLE_FILTER_BY_FOLLOWED', () => {
+        expect(mutations['postsFilter/TOGGLE_FILTER_BY_FOLLOWED']).toHaveBeenCalledWith({}, 'u34')
+      })
     })
   })
 })

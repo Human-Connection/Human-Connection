@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
-  return gql(`
+  return gql`
     query User($id: ID!) {
       User(id: $id) {
         id
@@ -35,7 +35,7 @@ export default i18n => {
           followedByCount
           followedByCurrentUser
           contributionsCount
-          commentsCount
+          commentedCount
           badges {
             id
             icon
@@ -46,6 +46,7 @@ export default i18n => {
         }
         followedByCount
         followedByCurrentUser
+        isBlocked
         followedBy(first: 7)  {
           id
           slug
@@ -56,7 +57,7 @@ export default i18n => {
           followedByCount
           followedByCurrentUser
           contributionsCount
-          commentsCount
+          commentedCount
           badges {
             id
             icon
@@ -65,12 +66,11 @@ export default i18n => {
             name: name${lang}
           }
         }
-        contributionsCount
         socialMedia {
           id
           url
         }
       }
     }
-  `)
+  `
 }

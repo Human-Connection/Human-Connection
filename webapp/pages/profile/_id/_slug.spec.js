@@ -3,12 +3,14 @@ import ProfileSlug from './_slug.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
+import InfiniteScroll from '~/plugins/vue-infinite-scroll'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
 localVue.use(Filters)
+localVue.use(InfiniteScroll)
 localVue.filter('date', d => d)
 
 config.stubs['no-ssr'] = '<span><slot /></span>'

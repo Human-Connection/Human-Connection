@@ -6,4 +6,6 @@ export default {
   InvitationCode: require('./InvitationCode.js'),
   EmailAddress: require('./EmailAddress.js'),
   SocialMedia: require('./SocialMedia.js'),
+  Post: require('./Post.js'),
+  Notification: require('./Notification.js'),
 }

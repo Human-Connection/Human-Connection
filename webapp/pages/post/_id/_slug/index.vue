@@ -20,10 +20,7 @@
       <ds-space margin-bottom="small" />
       <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
-      <!-- Content -->
-      <!-- eslint-disable vue/no-v-html -->
-      <!-- TODO: replace editor content with tiptap render view -->
-      <div class="content hc-editor-content" v-html="post.content" />
+      <content-viewer class="content" :content="post.content" />
       <!-- eslint-enable vue/no-v-html -->
       <ds-space margin="xx-large" />
       <!-- Categories -->
@@ -41,16 +38,32 @@
       <!-- Tags -->
       <div v-if="post.tags && post.tags.length" class="tags">
         <ds-space margin="xx-small" />
-        <hc-tag v-for="tag in post.tags" :key="tag.id" :name="tag.name" />
+        <hc-tag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
       </div>
-      <!-- Shout Button -->
-      <hc-shout-button
-        v-if="post.author"
-        :disabled="isAuthor(post.author.id)"
-        :count="post.shoutedCount"
-        :is-shouted="post.shoutedByCurrentUser"
-        :post-id="post.id"
-      />
+      <ds-space margin-top="x-large">
+        <ds-flex :gutter="{ lg: 'small' }">
+          <ds-flex-item
+            :width="{ lg: '75%', md: '75%', sm: '75%' }"
+            class="emotions-buttons-mobile"
+          >
+            <hc-emotions :post="post" />
+          </ds-flex-item>
+          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
+          <!-- Shout Button -->
+          <ds-flex-item
+            :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
+            class="shout-button"
+          >
+            <hc-shout-button
+              v-if="post.author"
+              :disabled="isAuthor(post.author.id)"
+              :count="post.shoutedCount"
+              :is-shouted="post.shoutedByCurrentUser"
+              :post-id="post.id"
+            />
+          </ds-flex-item>
+        </ds-flex>
+      </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list :post="post" />
@@ -62,15 +75,17 @@
 </template>
 
 <script>
+import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
 import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcCommentForm from '~/components/comments/CommentForm'
-import HcCommentList from '~/components/comments/CommentList'
+import HcCommentForm from '~/components/CommentForm/CommentForm'
+import HcCommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
-import PostQuery from '~/graphql/PostQuery.js'
+import PostQuery from '~/graphql/PostQuery'
+import HcEmotions from '~/components/Emotions/Emotions'
 
 export default {
   name: 'PostSlug',
@@ -86,6 +101,8 @@ export default {
     ContentMenu,
     HcCommentForm,
     HcCommentList,
+    HcEmotions,
+    ContentViewer,
   },
   head() {
     return {
@@ -104,29 +121,6 @@ export default {
       this.post = post[0] || {}
       this.title = this.post.title
     },
-  },
-  async asyncData(context) {
-    const {
-      params,
-      error,
-      app: { apolloProvider, $i18n },
-    } = context
-    const client = apolloProvider.defaultClient
-    const query = PostQuery($i18n)
-    const variables = { slug: params.slug }
-    const {
-      data: { Post },
-    } = await client.query({ query, variables })
-    if (Post.length <= 0) {
-      // TODO: custom 404 error page with translations
-      const message = 'This post could not be found'
-      return error({ statusCode: 404, message })
-    }
-    const [post] = Post
-    return {
-      post,
-      title: post.title,
-    }
   },
   mounted() {
     setTimeout(() => {
@@ -158,6 +152,19 @@ export default {
       }
     },
   },
+  apollo: {
+    Post: {
+      query() {
+        return PostQuery(this.$i18n)
+      },
+      variables() {
+        return {
+          slug: this.$route.params.slug,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>
 
@@ -170,7 +177,6 @@ export default {
   }
 
   .post-card {
-    // max-width: 800px;
     margin: auto;
 
     .comments {
@@ -197,6 +203,11 @@ export default {
         padding: $space-base;
       }
     }
+  }
+}
+@media only screen and (max-width: 960px) {
+  .shout-button {
+    float: left;
   }
 }
 </style>

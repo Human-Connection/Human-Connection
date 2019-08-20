@@ -31,7 +31,7 @@ export default {
   },
   apollo: {
     Category: {
-      query: gql(`
+      query: gql`
         query {
           Category(orderBy: postCount_desc) {
             id
@@ -41,7 +41,7 @@ export default {
             postCount
           }
         }
-      `),
+      `,
     },
   },
 }

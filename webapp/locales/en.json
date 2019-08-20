@@ -5,8 +5,16 @@
     "clearSearch": "Clear search"
   },
   "filter-posts": {
-    "header": "Categories of Content",
-    "all": "All"
+    "categories": {
+      "header": "Categories of Content",
+      "all": "All"
+    },
+    "general": {
+      "header": "Filter by..."
+    },
+    "followers": {
+      "label": "Users I follow"
+    }
   },
   "site": {
     "made": "Made with &#10084;",
@@ -22,13 +30,14 @@
     "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
     "germany": "Germany",
-    "code-of-conduct": "Code of Conduct"
+    "code-of-conduct": "Code of Conduct",
+    "termsAndConditionsConfirmed": "I have read and confirmed the <a href=\"/terms-and-conditions\" target=\"_blank\">terms and conditions</a>."
   },
   "sorting": {
     "newest": "Newest",
     "oldest": "Oldest",
     "popular": "Popular",
-    "commented": "most Commented"
+    "commented": "Most commented"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
@@ -99,7 +108,7 @@
     "follow": "Follow",
     "followers": "Followers",
     "following": "Following",
-    "shouted": "Recommended",
+    "shouted": "Shouted",
     "commented": "Commented",
     "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find",
@@ -160,12 +169,12 @@
       "name": "Download Data"
     },
     "deleteUserAccount": {
-      "name": "Delete Data",
+      "name": "Delete data",
       "contributionsCount": "Delete my {count} posts",
-      "commentsCount": "Delete my {count} comments",
+      "commentedCount": "Delete my {count} comments",
       "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
       "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
-      "success": "Account successfully deleted",
+      "success": "Account successfully deleted!",
       "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
     },
     "organizations": {
@@ -181,6 +190,25 @@
       "submit": "Add link",
       "successAdd": "Added social media. Updated user profile!",
       "successDelete": "Deleted social media. Updated user profile!"
+    },
+    "blocked-users": {
+      "name": "Blocked users",
+      "explanation": {
+        "intro": "If another user has been blocked by you, this is what happens:",
+        "your-perspective": "The blocked person's posts will no longer appear in your news feed.",
+        "their-perspective": "Vice versa: The blocked person will also no longer see your posts in their news feed.",
+        "search": "Posts of blocked people disappear from your search results.",
+        "notifications": "Blocked users will no longer receive notifications if they are mentioned in your posts.",
+        "closing": "This should be sufficient for now so that blocked users can no longer bother you."
+      },
+      "columns": {
+        "name": "Name",
+        "slug": "Slug"
+      },
+      "empty": "So far, you have not blocked anybody.",
+      "how-to": "You can block other users on their profile page via the content menu.",
+      "block": "Block user",
+      "unblock": "Unblock user"
     }
   },
   "admin": {
@@ -195,7 +223,7 @@
       "projects": "Projects",
       "invites": "Invites",
       "follows": "Follows",
-      "shouts": "Recommended"
+      "shouts": "Shouts"
     },
     "organizations": {
       "name": "Organizations"
@@ -207,6 +235,7 @@
       },
       "table": {
         "columns": {
+          "number": "No.",
           "name": "Name",
           "slug": "Slug",
           "role": "Role",
@@ -227,7 +256,9 @@
       "postCount": "Posts"
     },
     "tags": {
-      "name": "Tags",
+      "name": "Hashtags",
+      "number": "No.",
+      "nameOfHashtag": "Name",
       "tagCountUnique": "Users",
       "tagCount": "Posts"
     },
@@ -243,7 +274,12 @@
   "post": {
     "name": "Post",
     "moreInfo": {
-      "name": "More info"
+      "name": "More info",
+      "title": "More information",
+      "description": "Here you can find more information about this topic.",
+      "titleOfCategoriesSection": "Categories",
+      "titleOfHashtagsSection": "Hashtags",
+      "titleOfRelatedContributionsSection": "Related posts"
     },
     "takeAction": {
       "name": "Take action"
@@ -321,7 +357,7 @@
   "disable": {
     "submit": "Disable",
     "cancel": "Cancel",
-    "success": "Disabled successfully",
+    "success": "Disabled successfully!",
     "user": {
       "title": "Disable User",
       "type": "User",
@@ -409,7 +445,7 @@
   },
   "user": {
     "avatar": {
-      "submitted": "Upload successful"
+      "submitted": "Upload successful!"
     }
   },
   "contribution": {
@@ -420,6 +456,34 @@
     "languageSelectLabel": "Language",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
+    },
+    "emotions-label": {
+      "funny": "Funny",
+      "happy": "Happy",
+      "surprised": "Surprised",
+      "cry": "Cry",
+      "angry": "Angry",
+      "emoted": "emoted"
+    },
+    "category": {
+      "name": {
+        "freedom-of-speech": "Freedom of Speech",
+        "consumption-sustainability": "Consumption & Sustainability",
+        "global-peace-nonviolence": "Global Peace & Nonviolence",
+        "just-for-fun": "Just for Fun",
+        "happiness-values": "Happiness & Values",
+        "health-wellbeing": "Health & Wellbeing",
+        "environment-nature": "Environment & Nature",
+        "animal-protection": "Animal Protection",
+        "human-rights-justice": "Human Rights & Justice",
+        "education-sciences": "Education & Sciences",
+        "cooperation-development": "Cooperation & Development",
+        "democracy-politics": "Democracy & Politics",
+        "economy-finances": "Economy & Finances",
+        "energy-technology": "Energy & Technology",
+        "it-internet-data-privacy": "IT, Internet & Data Privacy",
+        "art-culture-sport": "Art, Culture, & Sport"
+      }
     }
   },
   "changelog": {

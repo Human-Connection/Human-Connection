@@ -1,12 +1,36 @@
-import { GraphQLClient } from 'graphql-request'
-import { host, login, gql } from '../../jest/helpers'
+import { gql } from '../../jest/helpers'
 import Factory from '../../seed/factories'
+import { createTestClient } from 'apollo-server-testing'
+import { neode, getDriver } from '../../bootstrap/neo4j'
+import createServer from '../../server'
 
 const factory = Factory()
-let client
+const driver = getDriver()
+const instance = neode()
+let server
+let query
+let mutate
+let user
+let authenticatedUser
+
+beforeAll(() => {
+  const createServerResult = createServer({
+    context: () => {
+      return {
+        user: authenticatedUser,
+        neode: instance,
+        driver,
+      }
+    },
+  })
+  server = createServerResult.server
+  const createTestClientResult = createTestClient(server)
+  query = createTestClientResult.query
+  mutate = createTestClientResult.mutate
+})
 
 beforeEach(async () => {
-  await factory.create('User', {
+  user = await instance.create('User', {
     id: 'you',
     name: 'Al Capone',
     slug: 'al-capone',
@@ -19,8 +43,8 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('currentUser { notifications }', () => {
-  const query = gql`
+describe('notifications', () => {
+  const notificationQuery = gql`
     query($read: Boolean) {
       currentUser {
         notifications(read: $read, orderBy: createdAt_desc) {
@@ -34,88 +58,74 @@ describe('currentUser { notifications }', () => {
   `
 
   describe('authenticated', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
+      authenticatedUser = user
     })
 
     describe('given another user', () => {
-      let authorClient
-      let authorParams
-      let authorHeaders
-
+      let author
       beforeEach(async () => {
-        authorParams = {
+        author = await instance.create('User', {
           email: 'author@example.org',
           password: '1234',
           id: 'author',
-        }
-        await factory.create('User', authorParams)
-        authorHeaders = await login(authorParams)
+        })
       })
 
       describe('who mentions me in a post', () => {
-        let post
         const title = 'Mentioning Al Capone'
         const content =
-          'Hey <a class="mention" href="/profile/you/al-capone">@al-capone</a> how do you do?'
+          'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
 
-        beforeEach(async () => {
+        const createPostAction = async () => {
           const createPostMutation = gql`
-            mutation($title: String!, $content: String!) {
-              CreatePost(title: $title, content: $content) {
+            mutation($id: ID, $title: String!, $content: String!) {
+              CreatePost(id: $id, title: $title, content: $content) {
                 id
                 title
                 content
               }
             }
           `
-          authorClient = new GraphQLClient(host, {
-            headers: authorHeaders,
+          authenticatedUser = await author.toJson()
+          await mutate({
+            mutation: createPostMutation,
+            variables: { id: 'p47', title, content },
           })
-          const { CreatePost } = await authorClient.request(createPostMutation, {
-            title,
-            content,
-          })
-          post = CreatePost
-        })
+          authenticatedUser = await user.toJson()
+        }
 
         it('sends you a notification', async () => {
+          await createPostAction()
           const expectedContent =
-            'Hey <a href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
-          const expected = {
-            currentUser: {
-              notifications: [
-                {
-                  read: false,
-                  post: {
-                    content: expectedContent,
-                  },
-                },
-              ],
+            'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
+          const expected = expect.objectContaining({
+            data: {
+              currentUser: { notifications: [{ read: false, post: { content: expectedContent } }] },
             },
-          }
+          })
+          const { query } = createTestClient(server)
           await expect(
-            client.request(query, {
-              read: false,
-            }),
+            query({ query: notificationQuery, variables: { read: false } }),
           ).resolves.toEqual(expected)
         })
 
-        describe('who mentions me again', () => {
-          beforeEach(async () => {
-            const updatedContent = `${post.content} One more mention to <a href="/profile/you" class="mention">@al-capone</a>`
-            // The response `post.content` contains a link but the XSSmiddleware
-            // should have the `mention` CSS class removed. I discovered this
-            // during development and thought: A feature not a bug! This way we
-            // can encode a re-mentioning of users when you edit your post or
-            // comment.
+        describe('who mentions me many times', () => {
+          const updatePostAction = async () => {
+            const updatedContent = `
+              One more mention to
+              <a data-mention-id="you" class="mention" href="/profile/you">
+                @al-capone
+              </a>
+              and again:
+              <a data-mention-id="you" class="mention" href="/profile/you">
+                @al-capone
+              </a>
+              and again
+              <a data-mention-id="you" class="mention" href="/profile/you">
+                @al-capone
+              </a>
+            `
             const updatePostMutation = gql`
               mutation($id: ID!, $title: String!, $content: String!) {
                 UpdatePost(id: $id, content: $content, title: $title) {
@@ -124,41 +134,52 @@ describe('currentUser { notifications }', () => {
                 }
               }
             `
-            authorClient = new GraphQLClient(host, {
-              headers: authorHeaders,
+            authenticatedUser = await author.toJson()
+            await mutate({
+              mutation: updatePostMutation,
+              variables: {
+                id: 'p47',
+                title,
+                content: updatedContent,
+              },
             })
-            await authorClient.request(updatePostMutation, {
-              id: post.id,
-              title: post.title,
-              content: updatedContent,
-            })
-          })
+            authenticatedUser = await user.toJson()
+          }
 
           it('creates exactly one more notification', async () => {
+            await createPostAction()
+            await updatePostAction()
             const expectedContent =
-              'Hey <a href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do? One more mention to <a href="/profile/you" target="_blank">@al-capone</a>'
-            const expected = {
-              currentUser: {
-                notifications: [
-                  {
-                    read: false,
-                    post: {
-                      content: expectedContent,
-                    },
-                  },
-                  {
-                    read: false,
-                    post: {
-                      content: expectedContent,
-                    },
-                  },
-                ],
+              '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
+            const expected = expect.objectContaining({
+              data: {
+                currentUser: {
+                  notifications: [
+                    { read: false, post: { content: expectedContent } },
+                    { read: false, post: { content: expectedContent } },
+                  ],
+                },
               },
-            }
+            })
             await expect(
-              client.request(query, {
-                read: false,
-              }),
+              query({ query: notificationQuery, variables: { read: false } }),
+            ).resolves.toEqual(expected)
+          })
+        })
+
+        describe('but the author of the post blocked me', () => {
+          beforeEach(async () => {
+            await author.relateTo(user, 'blocked')
+          })
+
+          it('sends no notification', async () => {
+            await createPostAction()
+            const expected = expect.objectContaining({
+              data: { currentUser: { notifications: [] } },
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({ query: notificationQuery, variables: { read: false } }),
             ).resolves.toEqual(expected)
           })
         })
@@ -177,7 +198,6 @@ describe('Hashtags', () => {
       Post(id: $id) {
         tags {
           id
-          name
         }
       }
     }
@@ -196,46 +216,37 @@ describe('Hashtags', () => {
   `
 
   describe('authenticated', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
+      authenticatedUser = await user.toJson()
     })
 
     describe('create a Post with Hashtags', () => {
       beforeEach(async () => {
-        await client.request(createPostMutation, {
-          postId,
-          postTitle,
-          postContent,
+        await mutate({
+          mutation: createPostMutation,
+          variables: {
+            postId,
+            postTitle,
+            postContent,
+          },
         })
       })
 
-      it('both Hashtags are created with the "id" set to thier "name"', async () => {
-        const expected = [
-          {
-            id: 'Democracy',
-            name: 'Democracy',
-          },
-          {
-            id: 'Liberty',
-            name: 'Liberty',
-          },
-        ]
+      it('both Hashtags are created with the "id" set to their "name"', async () => {
+        const expected = [{ id: 'Democracy' }, { id: 'Liberty' }]
         await expect(
-          client.request(postWithHastagsQuery, postWithHastagsVariables),
-        ).resolves.toEqual({
-          Post: [
-            {
-              tags: expect.arrayContaining(expected),
+          query({ query: postWithHastagsQuery, variables: postWithHastagsVariables }),
+        ).resolves.toEqual(
+          expect.objectContaining({
+            data: {
+              Post: [
+                {
+                  tags: expect.arrayContaining(expected),
+                },
+              ],
             },
-          ],
-        })
+          }),
+        )
       })
 
       describe('afterwards update the Post by removing a Hashtag, leaving a Hashtag and add a Hashtag', () => {
@@ -253,31 +264,25 @@ describe('Hashtags', () => {
         `
 
         it('only one previous Hashtag and the new Hashtag exists', async () => {
-          await client.request(updatePostMutation, {
-            postId,
-            postTitle,
-            updatedPostContent,
+          await mutate({
+            mutation: updatePostMutation,
+            variables: {
+              postId,
+              postTitle,
+              updatedPostContent,
+            },
           })
 
-          const expected = [
-            {
-              id: 'Elections',
-              name: 'Elections',
-            },
-            {
-              id: 'Liberty',
-              name: 'Liberty',
-            },
-          ]
+          const expected = [{ id: 'Elections' }, { id: 'Liberty' }]
           await expect(
-            client.request(postWithHastagsQuery, postWithHastagsVariables),
-          ).resolves.toEqual({
-            Post: [
-              {
-                tags: expect.arrayContaining(expected),
+            query({ query: postWithHastagsQuery, variables: postWithHastagsVariables }),
+          ).resolves.toEqual(
+            expect.objectContaining({
+              data: {
+                Post: [{ tags: expect.arrayContaining(expected) }],
               },
-            ],
-          })
+            }),
+          )
         })
       })
     })

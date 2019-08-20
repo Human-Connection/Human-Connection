@@ -1,5 +1,5 @@
 import Factory from '../../backend/src/seed/factories'
-import { getDriver } from '../../backend/src/bootstrap/neo4j'
+import { getDriver, neode as getNeode } from '../../backend/src/bootstrap/neo4j'
 import setupNeode from '../../backend/src/bootstrap/neode'
 import neode from 'neode'
 
@@ -15,6 +15,24 @@ const seedServerHost = Cypress.env('SEED_SERVER_HOST')
 beforeEach(async () => {
   await factory.cleanDatabase({ seedServerHost, neo4jDriver })
 })
+
+Cypress.Commands.add('neode', () => {
+  return setupNeode(neo4jConfigs)
+})
+Cypress.Commands.add(
+  'first',
+  { prevSubject: true },
+  async (neode, model, properties) => {
+    return neode.first(model, properties)
+  }
+)
+Cypress.Commands.add(
+  'relateTo',
+  { prevSubject: true },
+  async (node, otherNode, relationship) => {
+    return node.relateTo(otherNode, relationship)
+  }
+)
 
 Cypress.Commands.add('factory', () => {
   return Factory({ seedServerHost, neo4jDriver, neodeInstance: setupNeode(neo4jConfigs) })

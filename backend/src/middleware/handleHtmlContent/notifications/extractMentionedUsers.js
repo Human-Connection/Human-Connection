@@ -1,20 +1,15 @@
 import cheerio from 'cheerio'
-const ID_REGEX = /\/profile\/([\w\-.!~*'"(),]+)/g
 
 export default function(content) {
   if (!content) return []
   const $ = cheerio.load(content)
-  const urls = $('.mention')
+  const userIds = $('a.mention[data-mention-id]')
     .map((_, el) => {
-      return $(el).attr('href')
+      return $(el).attr('data-mention-id')
     })
     .get()
-  const ids = []
-  urls.forEach(url => {
-    let match
-    while ((match = ID_REGEX.exec(url)) != null) {
-      ids.push(match[1])
-    }
-  })
-  return ids
+  return userIds
+    .map(id => id.trim())
+    .filter(id => !!id)
+    .filter((id, index, allIds) => allIds.indexOf(id) === index)
 }
