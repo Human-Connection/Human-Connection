@@ -354,6 +354,7 @@ When("mention {string} in the text", mention => {
 });
 
 Then("the notification gets marked as read", () => {
+  cy.get(".notifications-menu-popover").contains('.notification')
   cy.get(".notification")
     .first()
     .should("have.class", "read");
