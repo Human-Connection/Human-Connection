@@ -102,27 +102,27 @@ export default class ActivityPub {
   handleUndoActivity(activity) {
     debug('inside UNDO')
     switch (activity.object.type) {
-      case 'Follow':
+      case 'Follow': {
         const followActivity = activity.object
         return this.dataSource.undoFollowActivity(followActivity.actor, followActivity.object)
-      case 'Like':
+      }
+      case 'Like': {
         return this.dataSource.deleteShouted(activity)
-      default:
+      }
     }
   }
 
   handleCreateActivity(activity) {
     debug('inside create')
     switch (activity.object.type) {
-      case 'Article':
-      case 'Note':
+      case 'Note': {
         const articleObject = activity.object
         if (articleObject.inReplyTo) {
           return this.dataSource.createComment(activity)
         } else {
           return this.dataSource.createPost(activity)
         }
-      default:
+      }
     }
   }
 
@@ -159,13 +159,14 @@ export default class ActivityPub {
   async handleAcceptActivity(activity) {
     debug('inside accept')
     switch (activity.object.type) {
-      case 'Follow':
+      case 'Follow': {
         const followObject = activity.object
         const followingCollectionPage = await this.collections.getFollowingCollectionPage(
           followObject.actor,
         )
         followingCollectionPage.orderedItems.push(followObject.object)
         await this.dataSource.saveFollowingCollectionPage(followingCollectionPage)
+      }
     }
   }
 
