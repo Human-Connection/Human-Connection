@@ -82,6 +82,7 @@ export const actions = {
             locationName
             contributionsCount
             commentedCount
+            termsAndConditionsAgreedVersion
             socialMedia {
               id
               url
