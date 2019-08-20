@@ -2,7 +2,7 @@ import { GraphQLClient, request } from 'graphql-request'
 import jwt from 'jsonwebtoken'
 import CONFIG from './../../config'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
 
 const factory = Factory()
 
@@ -109,16 +109,18 @@ describe('isLoggedIn', () => {
 })
 
 describe('currentUser', () => {
-  const query = `{
-    currentUser {
-      id
-      slug
-      name
-      avatar
-      email
-      role
-    }
-  }`
+  const query = gql`
+    query {
+      currentUser {
+        id
+        slug
+        name
+        avatar
+        email
+        role
+        hasAgreedToLatestTermsAndConditions
+      }
+    }`
 
   describe('unauthenticated', () => {
     it('returns null', async () => {
@@ -157,9 +159,14 @@ describe('currentUser', () => {
             name: 'Matilde Hermiston',
             slug: 'matilde-hermiston',
             role: 'user',
+            hasAgreedToLatestTermsAndConditions: null,
           },
         }
         await expect(client.request(query)).resolves.toEqual(expected)
+      })
+
+      it('responds true if a user has agreed to the latest terms and condintions', async () => {
+
       })
     })
   })

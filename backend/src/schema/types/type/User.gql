@@ -24,6 +24,8 @@ type User {
   createdAt: String
   updatedAt: String
 
+  hasAgreedToLatestTermsAndConditions: Boolean
+
   notifications(read: Boolean): [Notification]! @relation(name: "NOTIFIED", direction: "IN")
 
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
