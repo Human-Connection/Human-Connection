@@ -1,5 +1,5 @@
 <template>
-  <ds-space :class="{ notification: true, read: notification.read }" margin-bottom="x-small">
+  <ds-space :class="[{ read: notification.read }, notification]" margin-bottom="x-small">
     <no-ssr>
       <ds-space margin-bottom="x-small">
         <hc-user
@@ -30,9 +30,7 @@
           <ds-space margin-bottom="x-small" />
           <div v-if="resourceType == 'Post'">{{ post.contentExcerpt | removeHtml }}</div>
           <div v-else>
-            <b>
-              Comment: &nbsp;
-            </b>
+            <span class="comment-notification-header">Comment:</span>
             {{ comment.contentExcerpt | removeHtml }}
           </div>
         </ds-card>
@@ -85,5 +83,9 @@ export default {
 }
 .notifications-card {
   min-width: 500px;
+}
+.comment-notification-header {
+  font-weight: 700;
+  margin-right: 0.1rem;
 }
 </style>
