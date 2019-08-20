@@ -120,7 +120,8 @@ describe('currentUser', () => {
         role
         hasAgreedToLatestTermsAndConditions
       }
-    }`
+    }
+  `
 
   describe('unauthenticated', () => {
     it('returns null', async () => {
@@ -159,15 +160,13 @@ describe('currentUser', () => {
             name: 'Matilde Hermiston',
             slug: 'matilde-hermiston',
             role: 'user',
-            hasAgreedToLatestTermsAndConditions: null,
+            hasAgreedToLatestTermsAndConditions: true,
           },
         }
         await expect(client.request(query)).resolves.toEqual(expected)
       })
 
-      it('responds true if a user has agreed to the latest terms and condintions', async () => {
-        
-      })
+      it('responds true if a user has agreed to the latest terms and condintions', async () => {})
     })
   })
 })

@@ -57,13 +57,13 @@ module.exports = {
     default: () => new Date().toISOString(),
   },
   termsAndConditionsVersion: {
-    type: 'string', 
-    allow: [null] ,
+    type: 'string',
+    allow: [null],
   },
   termsAndConditionsConfirmedAt: {
     type: 'string',
     isoDate: true,
-    allow: [null] ,
+    allow: [null],
     /* required: true, TODO */
   },
 }

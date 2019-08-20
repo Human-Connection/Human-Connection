@@ -1,9 +1,14 @@
 <template>
   <div>
     <ds-space>
-      <ds-heading tag="h2">{{ $t('site.termsAndConditions') }}</ds-heading>
+      <ds-heading tag="h2">{{ $t(`site.newTermsAndConditions`) }}</ds-heading>
     </ds-space>
     <ds-container>
+      <div>
+        <ds-button secondary class="display:none" @click="submit">
+          {{ $t(`site.termsAndConditionsNewConfirm`) }}
+        </ds-button>
+      </div>
       <div>
         <ol>
           <li v-for="section in sections" :key="section">
@@ -11,39 +16,14 @@
             <p v-html="$t(`termsAndConditions.${section}.description`)" />
           </li>
         </ol>
-        <p>{{ $t('termsAndConditions.have-fun') }}</p>
+        <p>{{ $t(`termsAndConditions.have-fun`) }}</p>
         <br />
         <p>
-          <strong v-html="$t('termsAndConditions.closing')" />
+          <strong v-html="$t(`termsAndConditions.closing`)" />
         </p>
       </div>
       <div>
-        <ds-modal
-          v-if="isOpen"
-          v-model="isOpen"
-          v-title="$t(`site.termsAndConditionsNewTitle`)"
-          force
-          extended
-          confirm-label="Ich habe es gelesen und verstanden"
-          cancel-label="abbrechen"
-          v-on:confirm="setNewConfirmeVersion"
-        >
-          <div>
-            <ol>
-              <li v-for="section in sections" :key="section">
-                <strong>{{ $t(`termsAndConditions.${section}.title`) }}:</strong>
-                <p v-html="$t(`termsAndConditions.${section}.description`)" />
-              </li>
-            </ol>
-            <p>{{ $t(`termsAndConditions.have-fun`) }}</p>
-            <br />
-            <p>
-              <strong v-html="$t(`termsAndConditions.closing`)" />
-            </p>
-          </div>
-        </ds-modal>
-
-        <ds-button primary icon="rocket" class="display:none" @click="isOpen = true">
+        <ds-button secondary class="display:none" @click="submit">
           {{ $t(`site.termsAndConditionsNewConfirm`) }}
         </ds-button>
       </div>
@@ -68,14 +48,10 @@ export default {
   layout: 'default',
   head() {
     return {
-      title: this.$t('site.termsAndConditions'),
+      title: this.$t('site.newTermsAndConditions'),
     }
   },
-  mounted() {
-    if (!this.hasAgreedToLatestTermsAndConditions) {
-      this.isOpen = true
-    }
-  },
+
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
@@ -100,10 +76,6 @@ export default {
     }
   },
   methods: {
-    setNewConfirmeVersion() {
-      /* TODO  */
-      alert('speichern! das der user die neue nutzungsbedingungen zugestimmt hat ')
-    },
     async submit() {
       try {
         await this.$apollo.mutate({
