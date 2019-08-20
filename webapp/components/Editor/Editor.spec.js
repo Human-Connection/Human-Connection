@@ -16,6 +16,22 @@ describe('Editor.vue', () => {
   let mocks
   let getters
 
+  const Wrapper = () => {
+    const store = new Vuex.Store({
+      getters,
+    })
+    return (wrapper = mount(Editor, {
+      mocks,
+      propsData,
+      localVue,
+      sync: false,
+      stubs: {
+        transition: false,
+      },
+      store,
+    }))
+  }
+
   beforeEach(() => {
     propsData = {}
     mocks = {
@@ -26,25 +42,10 @@ describe('Editor.vue', () => {
         return 'some cool placeholder'
       },
     }
+    wrapper = Wrapper()
   })
 
   describe('mount', () => {
-    let Wrapper = () => {
-      const store = new Vuex.Store({
-        getters,
-      })
-      return (wrapper = mount(Editor, {
-        mocks,
-        propsData,
-        localVue,
-        sync: false,
-        stubs: {
-          transition: false,
-        },
-        store,
-      }))
-    }
-
     it('renders', () => {
       expect(Wrapper().is('div')).toBe(true)
     })
@@ -64,6 +65,44 @@ describe('Editor.vue', () => {
       it('from the store', () => {
         expect(wrapper.vm.editor.extensions.options.placeholder.emptyNodeText).toEqual(
           'some cool placeholder',
+        )
+      })
+    })
+
+    describe('optional extensions', () => {
+      it('sets the Mention items to the users', () => {
+        propsData.users = [
+          {
+            id: 'u345',
+          },
+        ]
+        wrapper = Wrapper()
+        expect(wrapper.vm.editor.extensions.options.mention.items()).toEqual(propsData.users)
+      })
+
+      it('mentions is not an option when there are no users', () => {
+        expect(wrapper.vm.editor.extensions.options).toEqual(
+          expect.not.objectContaining({
+            mention: expect.anything(),
+          }),
+        )
+      })
+
+      it('sets the Hashtag items to the hashtags', () => {
+        propsData.hashtags = [
+          {
+            id: 'Frieden',
+          },
+        ]
+        wrapper = Wrapper()
+        expect(wrapper.vm.editor.extensions.options.hashtag.items()).toEqual(propsData.hashtags)
+      })
+
+      it('hashtags is not an option when there are no hashtags', () => {
+        expect(wrapper.vm.editor.extensions.options).toEqual(
+          expect.not.objectContaining({
+            hashtag: expect.anything(),
+          }),
         )
       })
     })

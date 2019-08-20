@@ -24,9 +24,15 @@ describe('CommentForm.vue', () => {
         mutate: jest
           .fn()
           .mockResolvedValueOnce({
-            data: { CreateComment: { contentExcerpt: 'this is a comment' } },
+            data: {
+              CreateComment: {
+                contentExcerpt: 'this is a comment',
+              },
+            },
           })
-          .mockRejectedValue({ message: 'Ouch!' }),
+          .mockRejectedValue({
+            message: 'Ouch!',
+          }),
       },
       $toast: {
         error: jest.fn(),
@@ -34,7 +40,9 @@ describe('CommentForm.vue', () => {
       },
     }
     propsData = {
-      post: { id: 1 },
+      post: {
+        id: 1,
+      },
     }
   })
 
@@ -49,7 +57,12 @@ describe('CommentForm.vue', () => {
       getters,
     })
     const Wrapper = () => {
-      return mount(CommentForm, { mocks, localVue, propsData, store })
+      return mount(CommentForm, {
+        mocks,
+        localVue,
+        propsData,
+        store,
+      })
     }
 
     beforeEach(() => {

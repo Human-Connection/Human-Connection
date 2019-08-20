@@ -17,30 +17,9 @@
 </template>
 
 <script>
-import NotificationList from '../NotificationList'
 import Dropdown from '~/components/Dropdown'
-import gql from 'graphql-tag'
-
-const MARK_AS_READ = gql(`
-mutation($id: ID!, $read: Boolean!) {
-  UpdateNotification(id: $id, read: $read) {
-    id
-    read
-  }
-}`)
-
-const NOTIFICATIONS = gql(`{
-  currentUser {
-    id
-    notifications(read: false, orderBy: createdAt_desc) {
-      id read createdAt
-      post {
-        id createdAt disabled deleted title contentExcerpt slug
-        author { id slug name disabled deleted }
-      }
-    }
-  }
-}`)
+import { currentUserNotificationsQuery, updateNotificationMutation } from '~/graphql/User'
+import NotificationList from '../NotificationList/NotificationList'
 
 export default {
   name: 'NotificationMenu',
@@ -61,7 +40,7 @@ export default {
       const variables = { id: notificationId, read: true }
       try {
         await this.$apollo.mutate({
-          mutation: MARK_AS_READ,
+          mutation: updateNotificationMutation(),
           variables,
         })
       } catch (err) {
@@ -71,7 +50,7 @@ export default {
   },
   apollo: {
     notifications: {
-      query: NOTIFICATIONS,
+      query: currentUserNotificationsQuery(),
       update: data => {
         const {
           currentUser: { notifications },
