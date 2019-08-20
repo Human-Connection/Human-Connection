@@ -68,5 +68,6 @@ export default {
 
       return encode(await currentUser.toJson())
     },
+
   },
 }

@@ -100,6 +100,9 @@ export default {
     if (this.hashtag) {
       this.changeFilterBubble({ tags_some: { name: this.hashtag } })
     }
+    if (!this.hasAgreedToLatestTermsAndConditions) {
+      this.$router.push('terms-and-conditions-confirm')
+    }
   },
   watch: {
     Post(post) {

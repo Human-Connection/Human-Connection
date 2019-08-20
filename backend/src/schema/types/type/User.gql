@@ -24,7 +24,7 @@ type User {
   createdAt: String
   updatedAt: String
 
-  hasAgreedToLatestTermsAndConditions: Boolean
+  hasAgreedToLatestTermsAndConditions: Boolean 
 
   notifications(read: Boolean): [Notification]! @relation(name: "NOTIFIED", direction: "IN")
 

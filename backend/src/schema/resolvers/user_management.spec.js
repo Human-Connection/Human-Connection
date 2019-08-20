@@ -166,7 +166,7 @@ describe('currentUser', () => {
       })
 
       it('responds true if a user has agreed to the latest terms and condintions', async () => {
-
+        
       })
     })
   })
