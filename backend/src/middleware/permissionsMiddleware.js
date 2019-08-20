@@ -1,12 +1,12 @@
 import { rule, shield, deny, allow, and, or, not } from 'graphql-shield'
 import { neode } from '../bootstrap/neo4j'
+import CONFIG from '../config'
+
+const debug = !!CONFIG.DEBUG
+const allowExternalErrors = true
 
 const instance = neode()
 
-/*
- * TODO: implement
- * See: https://github.com/Human-Connection/Nitro-Backend/pull/40#pullrequestreview-180898363
- */
 const isAuthenticated = rule({
   cache: 'contextual',
 })(async (_parent, _args, ctx, _info) => {
@@ -204,6 +204,8 @@ const permissions = shield(
     },
   },
   {
+    debug,
+    allowExternalErrors,
     fallbackRule: allow,
   },
 )
