@@ -109,12 +109,6 @@ export default {
       this.$router.push('terms-and-conditions-confirm')
     }
   },
-  watch: {
-    Post(post) {
-      this.setPosts(this.Post)
-    },
-  },
-},
   computed: {
     ...mapGetters({
       postsFilter: 'postsFilter/postsFilter',
@@ -131,6 +125,9 @@ export default {
     },
   },
   watch: {
+    Post(post) {
+      this.setPosts(this.Post)
+    },
     postsFilter() {
       this.offset = 0
       this.posts = []
