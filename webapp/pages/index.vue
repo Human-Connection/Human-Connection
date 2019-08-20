@@ -110,7 +110,7 @@ export default {
       if (this.hashtag) {
         filter = {
           ...filter,
-          tags_some: { name: this.hashtag },
+          tags_some: { id: this.hashtag },
         }
       }
       return filter
