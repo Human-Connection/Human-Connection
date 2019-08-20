@@ -35,7 +35,7 @@ export default applyScalars(
           ],
           // add 'User' here as soon as possible
         },
-        debug: CONFIG.DEBUG,
+        debug: !!CONFIG.DEBUG,
       },
     }),
   ),

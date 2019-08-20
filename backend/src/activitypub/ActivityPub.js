@@ -109,14 +109,12 @@ export default class ActivityPub {
       case 'Like': {
         return this.dataSource.deleteShouted(activity)
       }
-      default:
     }
   }
 
   handleCreateActivity(activity) {
     debug('inside create')
     switch (activity.object.type) {
-      case 'Article':
       case 'Note': {
         const articleObject = activity.object
         if (articleObject.inReplyTo) {
@@ -125,7 +123,6 @@ export default class ActivityPub {
           return this.dataSource.createPost(activity)
         }
       }
-      default:
     }
   }
 

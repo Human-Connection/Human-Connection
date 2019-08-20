@@ -54,6 +54,7 @@
     "@nuxtjs/apollo": "^4.0.0-rc9",
     "@nuxtjs/axios": "~5.5.4",
     "@nuxtjs/dotenv": "~1.4.0",
+    "@nuxtjs/sentry": "^3.0.0",
     "@nuxtjs/style-resources": "~1.0.0",
     "accounting": "~0.4.1",
     "apollo-cache-inmemory": "~1.6.3",
@@ -78,8 +79,8 @@
     "vue-count-to": "~1.0.13",
     "vue-infinite-scroll": "^2.0.2",
     "vue-izitoast": "roschaefer/vue-izitoast#patch-1",
-    "vuex-i18n": "~1.13.1",
     "vue-sweetalert-icons": "~4.2.0",
+    "vuex-i18n": "~1.13.1",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
