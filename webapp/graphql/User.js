@@ -74,3 +74,78 @@ export default i18n => {
     }
   `
 }
+
+export const currentUserNotificationsQuery = () => {
+  return gql`
+    {
+      currentUser {
+        id
+        notifications(read: false, orderBy: createdAt_desc) {
+          id
+          read
+          createdAt
+          post {
+            id
+            createdAt
+            disabled
+            deleted
+            title
+            contentExcerpt
+            slug
+            author {
+              id
+              slug
+              name
+              disabled
+              deleted
+              avatar
+            }
+          }
+          comment {
+            id
+            createdAt
+            disabled
+            deleted
+            contentExcerpt
+            author {
+              id
+              slug
+              name
+              disabled
+              deleted
+              avatar
+            }
+            post {
+              id
+              createdAt
+              disabled
+              deleted
+              title
+              contentExcerpt
+              slug
+              author {
+                id
+                slug
+                name
+                disabled
+                deleted
+                avatar
+              }
+            }
+          }
+        }
+      }
+    }
+  `
+}
+
+export const updateNotificationMutation = () => {
+  return gql`
+    mutation($id: ID!, $read: Boolean!) {
+      UpdateNotification(id: $id, read: $read) {
+        id
+        read
+      }
+    }
+  `
+}

@@ -1,39 +1,57 @@
 import extractMentionedUsers from './notifications/extractMentionedUsers'
 import extractHashtags from './hashtags/extractHashtags'
 
-const notify = async (postId, idsOfMentionedUsers, context) => {
+const notifyMentions = async (label, id, idsOfMentionedUsers, context) => {
+  if (!idsOfMentionedUsers.length) return
+
   const session = context.driver.session()
   const createdAt = new Date().toISOString()
-  const cypher = `
-    MATCH(p:Post {id: $postId})<-[:WROTE]-(author:User)
-    MATCH(u:User)
-    WHERE u.id in $idsOfMentionedUsers
-    AND NOT (u)<-[:BLOCKED]-(author)
-    CREATE(n:Notification{id: apoc.create.uuid(), read: false, createdAt: $createdAt})
-    MERGE (p)-[:NOTIFIED]->(n)-[:NOTIFIED]->(u)
+  let cypher
+  if (label === 'Post') {
+    cypher = `
+      MATCH (post: Post { id: $id })<-[:WROTE]-(author: User)
+      MATCH (user: User)
+      WHERE user.id in $idsOfMentionedUsers
+      AND NOT (user)<-[:BLOCKED]-(author)
+      CREATE (notification: Notification {id: apoc.create.uuid(), read: false, createdAt: $createdAt })
+      MERGE (post)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
     `
+  } else {
+    cypher = `
+      MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(author: User)
+      MATCH (user: User)
+      WHERE user.id in $idsOfMentionedUsers
+      AND NOT (user)<-[:BLOCKED]-(author)
+      AND NOT (user)<-[:BLOCKED]-(postAuthor)
+      CREATE (notification: Notification {id: apoc.create.uuid(), read: false, createdAt: $createdAt })
+      MERGE (comment)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
+    `
+  }
   await session.run(cypher, {
     idsOfMentionedUsers,
+    label,
     createdAt,
-    postId,
+    id,
   })
   session.close()
 }
 
 const updateHashtagsOfPost = async (postId, hashtags, context) => {
+  if (!hashtags.length) return
+
   const session = context.driver.session()
   // We need two Cypher statements, because the 'MATCH' in the 'cypherDeletePreviousRelations' statement
   //  functions as an 'if'. In case there is no previous relation, the rest of the commands are omitted
   //  and no new Hashtags and relations will be created.
   const cypherDeletePreviousRelations = `
-    MATCH (p:Post { id: $postId })-[previousRelations:TAGGED]->(t:Tag)
+    MATCH (p: Post { id: $postId })-[previousRelations: TAGGED]->(t: Tag)
     DELETE previousRelations
     RETURN p, t
     `
   const cypherCreateNewTagsAndRelations = `
-    MATCH (p:Post { id: $postId})
+    MATCH (p: Post { id: $postId})
     UNWIND $hashtags AS tagName
-    MERGE (t:Tag { id: tagName, name: tagName, disabled: false, deleted: false })
+    MERGE (t: Tag { id: tagName, name: tagName, disabled: false, deleted: false })
     MERGE (p)-[:TAGGED]->(t)
     RETURN p, t
     `
@@ -47,24 +65,32 @@ const updateHashtagsOfPost = async (postId, hashtags, context) => {
   session.close()
 }
 
-const handleContentData = async (resolve, root, args, context, resolveInfo) => {
-  // extract user ids before xss-middleware removes classes via the following "resolve" call
+const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfMentionedUsers = extractMentionedUsers(args.content)
-  // extract tag (hashtag) ids before xss-middleware removes classes via the following "resolve" call
   const hashtags = extractHashtags(args.content)
 
-  // removes classes from the content
   const post = await resolve(root, args, context, resolveInfo)
 
-  await notify(post.id, idsOfMentionedUsers, context)
+  await notifyMentions('Post', post.id, idsOfMentionedUsers, context)
   await updateHashtagsOfPost(post.id, hashtags, context)
 
   return post
 }
 
+const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
+  const idsOfMentionedUsers = extractMentionedUsers(args.content)
+  const comment = await resolve(root, args, context, resolveInfo)
+
+  await notifyMentions('Comment', comment.id, idsOfMentionedUsers, context)
+
+  return comment
+}
+
 export default {
   Mutation: {
-    CreatePost: handleContentData,
-    UpdatePost: handleContentData,
+    CreatePost: handleContentDataOfPost,
+    UpdatePost: handleContentDataOfPost,
+    CreateComment: handleContentDataOfComment,
+    UpdateComment: handleContentDataOfComment,
   },
 }

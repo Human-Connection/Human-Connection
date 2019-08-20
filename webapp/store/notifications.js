@@ -19,7 +19,10 @@ export const mutations = {
     const toBeUpdated = notifications.find(n => {
       return n.id === notification.id
     })
-    state.notifications = { ...toBeUpdated, ...notification }
+    state.notifications = {
+      ...toBeUpdated,
+      ...notification,
+    }
   },
 }
 export const getters = {
@@ -38,28 +41,30 @@ export const actions = {
       const {
         data: { currentUser },
       } = await client.query({
-        query: gql(`{
-          currentUser {
-            id
-            notifications(orderBy: createdAt_desc) {
+        query: gql`
+          {
+            currentUser {
               id
-              read
-              createdAt
-              post {
-                author {
-                  id
+              notifications(orderBy: createdAt_desc) {
+                id
+                read
+                createdAt
+                post {
+                  author {
+                    id
+                    slug
+                    name
+                    disabled
+                    deleted
+                  }
+                  title
+                  contentExcerpt
                   slug
-                  name
-                  disabled
-                  deleted
                 }
-                title
-                contentExcerpt
-                slug
               }
             }
           }
-        }`),
+        `,
       })
       notifications = currentUser.notifications
       commit('SET_NOTIFICATIONS', notifications)
@@ -71,18 +76,24 @@ export const actions = {
 
   async markAsRead({ commit, rootGetters }, notificationId) {
     const client = this.app.apolloProvider.defaultClient
-    const mutation = gql(`
+    const mutation = gql`
       mutation($id: ID!, $read: Boolean!) {
         UpdateNotification(id: $id, read: $read) {
           id
           read
         }
       }
-    `)
-    const variables = { id: notificationId, read: true }
+    `
+    const variables = {
+      id: notificationId,
+      read: true,
+    }
     const {
       data: { UpdateNotification },
-    } = await client.mutate({ mutation, variables })
+    } = await client.mutate({
+      mutation,
+      variables,
+    })
     commit('UPDATE_NOTIFICATIONS', UpdateNotification)
   },
 }

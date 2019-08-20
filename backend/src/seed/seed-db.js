@@ -44,42 +44,49 @@ import Factory from './factories'
       f.create('User', {
         id: 'u1',
         name: 'Peter Lustig',
+        slug: 'peter-lustig',
         role: 'admin',
         email: 'admin@example.org',
       }),
       f.create('User', {
         id: 'u2',
         name: 'Bob der Baumeister',
+        slug: 'bob-der-baumeister',
         role: 'moderator',
         email: 'moderator@example.org',
       }),
       f.create('User', {
         id: 'u3',
         name: 'Jenny Rostock',
+        slug: 'jenny-rostock',
         role: 'user',
         email: 'user@example.org',
       }),
       f.create('User', {
         id: 'u4',
-        name: 'Tick',
+        name: 'Huey (Tick)',
+        slug: 'huey-tick',
         role: 'user',
-        email: 'tick@example.org',
+        email: 'huey@example.org',
       }),
       f.create('User', {
         id: 'u5',
-        name: 'Trick',
+        name: 'Dewey (Trick)',
+        slug: 'dewey-trick',
         role: 'user',
-        email: 'trick@example.org',
+        email: 'dewey@example.org',
       }),
       f.create('User', {
         id: 'u6',
-        name: 'Track',
+        name: 'Louie (Track)',
+        slug: 'louie-track',
         role: 'user',
-        email: 'track@example.org',
+        email: 'louie@example.org',
       }),
       f.create('User', {
         id: 'u7',
         name: 'Dagobert',
+        slug: 'dagobert',
         role: 'user',
         email: 'dagobert@example.org',
       }),
@@ -99,15 +106,15 @@ import Factory from './factories'
         password: '1234',
       }),
       Factory().authenticateAs({
-        email: 'tick@example.org',
+        email: 'huey@example.org',
         password: '1234',
       }),
       Factory().authenticateAs({
-        email: 'trick@example.org',
+        email: 'dewey@example.org',
         password: '1234',
       }),
       Factory().authenticateAs({
-        email: 'track@example.org',
+        email: 'louie@example.org',
         password: '1234',
       }),
     ])
@@ -260,6 +267,10 @@ import Factory from './factories'
       'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
     const mention2 =
       'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
+    const hashtag1 =
+      'See <a class="hashtag" href="/search/hashtag/NaturphilosophieYoga">#NaturphilosophieYoga</a> can really help you!'
+    const hashtagAndMention1 =
+      'The new physics of <a class="hashtag" href="/search/hashtag/QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" href="/search/hashtag/QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u3" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
 
     await Promise.all([
       asAdmin.create('Post', {
@@ -272,6 +283,8 @@ import Factory from './factories'
       }),
       asUser.create('Post', {
         id: 'p2',
+        title: `Nature Philosophy Yoga`,
+        content: `${hashtag1}`,
       }),
       asTick.create('Post', {
         id: 'p3',
@@ -293,6 +306,8 @@ import Factory from './factories'
       asUser.create('Post', {
         id: 'p8',
         image: faker.image.unsplash.nature(),
+        title: `Quantum Flow Theory explains Quantum Gravity`,
+        content: `${hashtagAndMention1}`,
       }),
       asTick.create('Post', {
         id: 'p9',
@@ -639,6 +654,11 @@ import Factory from './factories'
       }),
     ])
 
+    const mentionInComment1 =
+      'I heard <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, practice it since 3 years now.'
+    const mentionInComment2 =
+      'Did <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> told you?'
+
     await Promise.all([
       asUser.create('Comment', {
         id: 'c1',
@@ -655,6 +675,12 @@ import Factory from './factories'
       asTrick.create('Comment', {
         id: 'c4',
         postId: 'p2',
+        content: `${mentionInComment1}`,
+      }),
+      asUser.create('Comment', {
+        id: 'c4-1',
+        postId: 'p2',
+        content: `${mentionInComment2}`,
       }),
       asModerator.create('Comment', {
         id: 'c5',
