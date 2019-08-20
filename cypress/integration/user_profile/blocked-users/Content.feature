@@ -5,6 +5,7 @@ Feature: Block a User
 
   Background:
     Given I have a user account
+    And we have a selection of categories
     And there is an annoying user called "Spammy Spammer"
 
   Scenario Outline: Blocked users cannot see each others posts
