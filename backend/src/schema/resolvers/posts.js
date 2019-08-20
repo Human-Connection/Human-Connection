@@ -84,12 +84,12 @@ export default {
       await session.run(cypherDeletePreviousRelations, { params })
 
       const updatePostCypher = `MATCH (post:Post {id: $params.id})
-      SET post = $params
-      WITH post
-      UNWIND $categoryIds AS categoryId
-      MATCH (category:Category {id: categoryId})
-      MERGE (post)-[:CATEGORIZED]->(category)
-      RETURN post`
+        SET post = $params
+        WITH post
+        UNWIND $categoryIds AS categoryId
+        MATCH (category:Category {id: categoryId})
+        MERGE (post)-[:CATEGORIZED]->(category)
+        RETURN post`
 
       const updatePostVariables = { categoryIds, params }
 

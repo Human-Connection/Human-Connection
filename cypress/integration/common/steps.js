@@ -21,8 +21,7 @@ Given("I am logged in", () => {
   cy.login(loginCredentials);
 });
 Given("we have a selection of categories", () => {
-  cy.factory()
-    .authenticateAs(loginCredentials)
+  cy.neode()
     .create("Category", {
       id: "cat1",
       name: "Just For Fun",
@@ -374,7 +373,7 @@ When("mention {string} in the text", mention => {
 });
 
 Then("the notification gets marked as read", () => {
-  cy.get(".notification")
+  cy.get(".post.createdAt")
     .first()
     .should("have.class", "read");
 });
@@ -485,15 +484,4 @@ Then("I see only one post with the title {string}", title => {
     .find(".post-link")
     .should("have.length", 1);
   cy.get(".main-container").contains(".post-link", title);
-});
-
-And("some categories exist", () => {
-  cy.factory()
-    .authenticateAs(loginCredentials)
-    .create("Category", {
-      id: "cat1",
-      name: "Just For Fun",
-      slug: `just-for-fun`,
-      icon: "smile"
-    });
 });
