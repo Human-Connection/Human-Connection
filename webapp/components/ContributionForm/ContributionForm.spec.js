@@ -28,6 +28,7 @@ describe('ContributionForm.vue', () => {
   let cancelBtn
   let mocks
   let propsData
+  let categoryIds
   const postTitle = 'this is a title for a post'
   const postTitleTooShort = 'xx'
   let postTitleTooLong = ''
@@ -60,6 +61,7 @@ describe('ContributionForm.vue', () => {
               content: postContent,
               contentExcerpt: postContent,
               language: 'en',
+              categoryIds,
             },
           },
         }),
@@ -175,6 +177,23 @@ describe('ContributionForm.vue', () => {
           wrapper.find('.submit-button-for-test').trigger('click')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
+
+        it('should have at least one category', async () => {
+          postTitleInput = wrapper.find('.ds-input')
+          postTitleInput.setValue(postTitle)
+          await wrapper.vm.updateEditorContent(postContent)
+          wrapper.find('.submit-button-for-test').trigger('click')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
+
+        it('should have not have more than three categories', async () => {
+          postTitleInput = wrapper.find('.ds-input')
+          postTitleInput.setValue(postTitle)
+          await wrapper.vm.updateEditorContent(postContent)
+          wrapper.vm.form.categoryIds = ['cat4', 'cat9', 'cat15', 'cat27']
+          wrapper.find('.submit-button-for-test').trigger('click')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
       })
 
       describe('valid form submission', () => {
@@ -186,7 +205,7 @@ describe('ContributionForm.vue', () => {
               content: postContent,
               language: 'en',
               id: null,
-              categoryIds: null,
+              categoryIds: ['cat12'],
               imageUpload: null,
               image: null,
             },
@@ -194,11 +213,13 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           await wrapper.vm.updateEditorContent(postContent)
+          categoryIds = ['cat12']
+          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
         })
 
-        it('with title and content', () => {
-          wrapper.find('.submit-button-for-test').trigger('click')
-          expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
+        it('creates a post with valid title, content, and at least one category', async () => {
+          await wrapper.find('.submit-button-for-test').trigger('click')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
         it("sends a fallback language based on a user's locale", () => {
@@ -211,14 +232,6 @@ describe('ContributionForm.vue', () => {
           deutschOption = wrapper.findAll('li').at(0)
           deutschOption.trigger('click')
           wrapper.find('.submit-button-for-test').trigger('click')
-          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
-        })
-
-        it('supports adding categories', async () => {
-          const categoryIds = ['cat12', 'cat15', 'cat37']
-          expectedParams.variables.categoryIds = categoryIds
-          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
-          await wrapper.find('.submit-button-for-test').trigger('click')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
@@ -260,6 +273,8 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           await wrapper.vm.updateEditorContent(postContent)
+          categoryIds = ['cat12']
+          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
         })
 
         it('shows an error toaster when apollo mutation rejects', async () => {
@@ -307,35 +322,54 @@ describe('ContributionForm.vue', () => {
         expect(wrapper.vm.form.content).toEqual(propsData.contribution.content)
       })
 
-      it('calls the UpdatePost apollo mutation', async () => {
-        expectedParams = {
-          mutation: PostMutations().UpdatePost,
-          variables: {
-            title: postTitle,
-            content: postContent,
-            language: propsData.contribution.language,
-            id: propsData.contribution.id,
-            categoryIds: ['cat12'],
-            image,
-            imageUpload: null,
-          },
-        }
-        postTitleInput = wrapper.find('.ds-input')
-        postTitleInput.setValue(postTitle)
-        wrapper.vm.updateEditorContent(postContent)
-        await wrapper.find('.submit-button-for-test').trigger('click')
-        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
-      })
+      describe('valid update', () => {
+        beforeEach(() => {
+          mocks.$apollo.mutate = jest.fn().mockResolvedValueOnce({
+            data: {
+              UpdatePost: {
+                title: postTitle,
+                slug: 'this-is-a-title-for-a-post',
+                content: postContent,
+                contentExcerpt: postContent,
+                language: 'en',
+                categoryIds,
+              },
+            },
+          })
+          wrapper = Wrapper()
+          expectedParams = {
+            mutation: PostMutations().UpdatePost,
+            variables: {
+              title: postTitle,
+              content: postContent,
+              language: propsData.contribution.language,
+              id: propsData.contribution.id,
+              categoryIds,
+              image,
+              imageUpload: null,
+            },
+          }
+        })
 
-      it('supports updating categories', async () => {
-        const categoryIds = ['cat3', 'cat51', 'cat37']
-        postTitleInput = wrapper.find('.ds-input')
-        postTitleInput.setValue(postTitle)
-        wrapper.vm.updateEditorContent(postContent)
-        expectedParams.variables.categoryIds = categoryIds
-        wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
-        await wrapper.find('.submit-button-for-test').trigger('click')
-        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        it('calls the UpdatePost apollo mutation', async () => {
+          postTitleInput = wrapper.find('.ds-input')
+          postTitleInput.setValue(postTitle)
+          wrapper.vm.updateEditorContent(postContent)
+          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
+          wrapper.find('.submit-button-for-test').trigger('click')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports updating categories', async () => {
+          const categoryIds = ['cat3', 'cat51', 'cat37']
+          postTitleInput = wrapper.find('.ds-input')
+          postTitleInput.setValue(postTitle)
+          wrapper.vm.updateEditorContent(postContent)
+          expectedParams.variables.categoryIds = categoryIds
+          wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
+          await wrapper.find('.submit-button-for-test').trigger('click')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
       })
     })
   })
