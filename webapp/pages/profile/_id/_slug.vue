@@ -153,8 +153,8 @@
       </ds-flex-item>
 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
-        <ds-flex class="user-profile-posts-list" :width="{ base: '100%' }" gutter="small">
-          <ds-flex-item class="profile-top-navigation">
+        <masonry-grid class="user-profile-posts-list">
+          <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
                 <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'post' }">
@@ -193,9 +193,9 @@
                 <li class="Tabs__presentation-slider" role="presentation"></li>
               </ul>
             </ds-card>
-          </ds-flex-item>
+          </ds-grid-item>
 
-          <ds-flex-item style="text-align: center">
+          <ds-grid-item :row-span="2" column-span="fullWidth" class="create-button">
             <ds-button
               v-if="myProfile"
               v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
@@ -205,30 +205,30 @@
               size="large"
               primary
             />
-          </ds-flex-item>
+          </ds-grid-item>
 
           <template v-if="activePosts.length">
-            <hc-post-card
-              v-for="(post, index) in activePosts"
-              :key="post.id"
-              :post="post"
-              :width="{ base: '100%', md: '100%', xl: '50%' }"
-              @removePostFromList="removePostFromList(index)"
-            />
+            <masonry-grid-item v-for="(post, index) in activePosts" :key="post.id">
+              <hc-post-card
+                :post="post"
+                :width="{ base: '100%', md: '100%', xl: '50%' }"
+                @removePostFromList="removePostFromList(index)"
+              />
+            </masonry-grid-item>
           </template>
           <template v-else-if="$apollo.loading">
-            <ds-flex-item>
+            <ds-grid-item>
               <ds-section centered>
                 <ds-spinner size="base"></ds-spinner>
               </ds-section>
-            </ds-flex-item>
+            </ds-grid-item>
           </template>
           <template v-else>
-            <ds-flex-item :width="{ base: '100%' }">
+            <ds-grid-item column-span="fullWidth">
               <hc-empty margin="xx-large" icon="file" />
-            </ds-flex-item>
+            </ds-grid-item>
           </template>
-        </ds-flex>
+        </masonry-grid>
         <div
           v-if="hasMore"
           v-infinite-scroll="showMoreContributions"
@@ -254,6 +254,8 @@ import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
+import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
+import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { filterPosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
@@ -279,6 +281,8 @@ export default {
     HcAvatar,
     ContentMenu,
     HcUpload,
+    MasonryGrid,
+    MasonryGridItem,
   },
   transition: {
     name: 'slide-up',
@@ -425,6 +429,10 @@ export default {
 .pointer {
   cursor: pointer;
 }
+.create-button {
+  text-align: center;
+  margin: auto;
+}
 .Tab {
   border-collapse: collapse;
   padding-bottom: 5px;
@@ -435,6 +443,8 @@ export default {
 .Tabs {
   position: relative;
   background-color: #fff;
+  height: 100%;
+
   &:after {
     content: ' ';
     display: table;
@@ -443,10 +453,13 @@ export default {
   margin: 0;
   padding: 0;
   list-style: none;
+
   &__tab {
     float: left;
     width: 33.333%;
     text-align: center;
+    height: 100%;
+
     &:first-child.active ~ .Tabs__presentation-slider {
       left: 0;
     }
