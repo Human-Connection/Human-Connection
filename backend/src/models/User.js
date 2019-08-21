@@ -83,4 +83,14 @@ module.exports = {
     target: 'Notification',
     direction: 'in',
   },
+  termsAndConditionsAgreedVersion: {
+    type: 'string',
+    allow: [null],
+  },
+  termsAndConditionsAgreedAt: {
+    type: 'string',
+    isoDate: true,
+    allow: [null],
+    /* required: true, TODO */
+  },
 }

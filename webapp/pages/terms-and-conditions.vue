@@ -22,6 +22,8 @@
 </template>
 
 <script>
+export const VERSION = '0.0.2'
+
 export default {
   layout: 'default',
   head() {

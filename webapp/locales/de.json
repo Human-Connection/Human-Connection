@@ -25,6 +25,7 @@
     "imprint": "Impressum",
     "data-privacy": "Datenschutz",
     "termsAndConditions": "Nutzungsbedingungen",
+    "newTermsAndConditions": "Neue Nutzungsbedingungen",
     "changelog": "Änderungen & Verlauf",
     "contact": "Kontakt",
     "tribunal": "Registergericht",
@@ -35,7 +36,8 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland",
     "code-of-conduct": "Verhaltenscodex",
-    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu."
+    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu.",
+    "termsAndConditionsNewConfirm": "Bestätige bitte die neuen Nutzungsbedingungen"
   },
   "sorting": {
     "newest": "Neuste",
