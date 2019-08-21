@@ -93,10 +93,9 @@ export default {
           },
         })
         this.$toast.success(this.$t('DANKE'))
+        this.$router.replace('/')
       } catch (err) {
         this.$toast.error(err.message)
-      } finally {
-        this.$router.replace('/')
       }
     },
   },

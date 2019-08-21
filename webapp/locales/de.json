@@ -31,8 +31,9 @@
     "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
     "bank": "Bankverbindung",
     "germany": "Deutschland",
-    "code-of-conduct": "Verhaltenscodex", 
-    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu." 
+    "code-of-conduct": "Verhaltenscodex",
+    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu.",
+    "termsAndConditionsNewConfirm": "Bestätige bitte die neuen Nutzungsbedingungen"
   },
   "sorting": {
     "newest": "Neuste",

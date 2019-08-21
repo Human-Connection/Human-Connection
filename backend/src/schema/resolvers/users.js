@@ -5,6 +5,7 @@ import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 
 const instance = neode()
+const defaultTermsAndConditionsVersion = "0.0.3"
 
 export const getBlockedUsers = async context => {
   const { neode } = context
@@ -122,14 +123,6 @@ export default {
     },
   },
   User: {
-    email: async (parent, params, context, resolveInfo) => {
-      if (typeof parent.email !== 'undefined') return parent.email
-      const { id } = parent
-      const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
-      const result = await instance.cypher(statement, { id })
-      const [{ email }] = result.records.map(r => r.get('e').properties)
-      return email
-    },
     ...Resolver('User', {
       undefinedToNull: [
         'actorId',
@@ -173,5 +166,23 @@ export default {
         badges: '<-[:REWARDED]-(related:Badge)',
       },
     }),
+    email: async (parent, params, context, resolveInfo) => {
+      if (typeof parent.email !== 'undefined') return parent.email
+      const { id } = parent
+      const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
+      const result = await instance.cypher(statement, { id })
+      const [{ email }] = result.records.map(r => r.get('e').properties)
+      return email
+    },
+    hasAgreedToLatestTermsAndConditions:async (parent, params, context, resolveInfo) => {
+      console.log("hasAgreedToLatestTermsAndConditions -------")
+    
+      if (defaultTermsAndConditionsVersion !== parent.termsAndConditionsVersion){
+        console.log("UNGLEICH")
+        
+      }
+     
+      return true
+    },
   },
 }

@@ -11,10 +11,11 @@ export default {
     isLoggedIn: (_, args, { driver, user }) => {
       return Boolean(user && user.id)
     },
-    currentUser: async (object, params, ctx, resolveInfo) => {
-      const { user } = ctx
-      if (!user) return null
-      return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, false)
+    currentUser: async (object, params, ctx, resolveInfo) => {       
+      if (!ctx.user) return null
+      const user = await instance.find('User', ctx.user.id)
+      return user.toJson()
+     // return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, true)
     },
   },
   Mutation: {
