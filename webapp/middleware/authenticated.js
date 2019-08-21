@@ -1,5 +1,4 @@
 import isEmpty from 'lodash/isEmpty'
-import { VERSION } from '~/pages/terms-and-conditions'
 
 export default async ({ store, env, route, redirect }) => {
   let publicPages = env.publicPages
@@ -10,14 +9,7 @@ export default async ({ store, env, route, redirect }) => {
 
   // await store.dispatch('auth/refreshJWT', 'authenticated middleware')
   const isAuthenticated = await store.dispatch('auth/check')
-
-  // TODO: find a better solution to **reliably** get the user
-  // having the encrypted JWT does not mean we have access to the user object
-  const user = await store.getters['auth/user']
-
-  const upToDate = user.termsAndConditionsAgreedVersion === VERSION
-
-  if (isAuthenticated === true && upToDate) {
+  if (isAuthenticated === true) {
     return true
   }
 
@@ -26,14 +18,9 @@ export default async ({ store, env, route, redirect }) => {
 
   // set the redirect path for after the login
   let params = {}
-  if (!isEmpty(route.path) && route.path !== '/' && route.path !== 'terms-and-conditions-confirm') {
+  if (!isEmpty(route.path) && route.path !== '/') {
     params.path = route.path
   }
-  console.log("ÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖö")
-  if (!upToDate) {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    return redirect('/terms-and-conditions-confirm', params)
-  } else {
-    return redirect('/login', params)
-  }
+
+  return redirect('/login', params)
 }

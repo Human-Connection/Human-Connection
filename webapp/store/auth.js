@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { VERSION } from '~/pages/terms-and-conditions'
 
 export const state = () => {
   return {
@@ -42,6 +43,9 @@ export const getters = {
   token(state) {
     return state.token
   },
+  termsAndConditionsAgreed(state) {
+    return state.user && state.user.termsAndConditionsAgreedVersion === VERSION
+  }
 }
 
 export const actions = {

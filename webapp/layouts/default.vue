@@ -224,7 +224,7 @@ export default {
     },
     showFilterPostsDropdown() {
       const [firstRoute] = this.$route.matched
-      return firstRoute.name === 'index'
+      return firstRoute && firstRoute.name === 'index'
     },
   },
   watch: {

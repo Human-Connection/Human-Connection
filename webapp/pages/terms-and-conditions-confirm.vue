@@ -54,9 +54,6 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
-    ...mapMutations({
-      setCurrentUser: 'auth/SET_USER',
-    }),
   },
   data() {
     return {
@@ -74,15 +71,14 @@ export default {
     }
   },
   asyncData({ store, redirect }) {
-    console.log('store')
-    console.log(store)
-    console.log('redirect')
-    console.log(redirect)
-    if (store.getters['auth/isLoggedIn']) {
+    if (store.getters['auth/termsAndConditionsAgreed']) {
       redirect('/')
     }
   },
   methods: {
+    ...mapMutations({
+      setCurrentUser: 'auth/SET_USER',
+    }),
     async submit() {
       try {
         await this.$apollo.mutate({
@@ -100,7 +96,7 @@ export default {
           },
         })
         this.$toast.success(this.$t('DANKE'))
-        this.$router.push('/')
+        this.$router.replace(this.$route.query.path || '/')
       } catch (err) {
         this.$toast.error(err.message)
       }
