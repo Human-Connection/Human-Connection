@@ -20,37 +20,18 @@ const narratorParams = {
 Given("I am logged in", () => {
   cy.login(loginCredentials);
 });
+
 Given("we have a selection of categories", () => {
-  cy.neode()
-    .create("Category", {
-      id: "cat1",
-      name: "Just For Fun",
-      slug: "just-for-fun",
-      icon: "smile"
-    })
-    .create("Category", {
-      id: "cat2",
-      name: "Happiness & Values",
-      slug: "happiness-values",
-      icon: "heart-o"
-    })
-    .create("Category", {
-      id: "cat3",
-      name: "Health & Wellbeing",
-      slug: "health-wellbeing",
-      icon: "medkit"
-    });
+  cy.createCategories();
 });
 
-Given("we have a selection of tags", () => {
-  cy.factory()
+Given("we have a selection of tags and categories as well as posts", () => {
+  cy.createCategories()
+    .factory()
     .authenticateAs(loginCredentials)
     .create("Tag", { id: "Ecology" })
     .create("Tag", { id: "Nature" })
     .create("Tag", { id: "Democracy" });
-});
-
-Given("we have a selection of posts", () => {
   const someAuthor = {
     id: "authorId",
     email: "author@example.org",
@@ -436,7 +417,8 @@ Given("I follow the user {string}", name => {
 });
 
 Given('"Spammy Spammer" wrote a post {string}', title => {
-  cy.factory()
+  cy.createCategories()
+    .factory()
     .authenticateAs({
       email: "spammy-spammer@example.org",
       password: "1234"
@@ -458,7 +440,8 @@ Then("nobody is following the user profile anymore", () => {
 });
 
 Given("I wrote a post {string}", title => {
-  cy.factory()
+  cy.createCategories()
+    .factory()
     .authenticateAs(loginCredentials)
     .create("Post", { title, categoryIds: ["cat2"] });
 });

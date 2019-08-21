@@ -5,7 +5,7 @@ Feature: Notifications for a mentions
 
   Background:
     Given we have a selection of categories
-    Given we have the following user accounts:
+    And we have the following user accounts:
       | name              | slug              | email             | password |
       | Wolle aus Hamburg | wolle-aus-hamburg | wolle@example.org | 1234     |
       | Matt Rider        | matt-rider        | matt@example.org  | 4321     |

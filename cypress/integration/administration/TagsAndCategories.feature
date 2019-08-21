@@ -15,9 +15,7 @@ Feature: Tags and Categories
 
   Background:
     Given my user account has the role "admin"
-    And we have a selection of categories
-    And we have a selection of tags
-    And we have a selection of posts
+    And we have a selection of tags and categories as well as posts
     And I am logged in
 
   Scenario: See an overview of categories
