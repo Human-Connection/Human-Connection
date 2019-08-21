@@ -51,7 +51,7 @@ const updateHashtagsOfPost = async (postId, hashtags, context) => {
   const cypherCreateNewTagsAndRelations = `
     MATCH (p: Post { id: $postId})
     UNWIND $hashtags AS tagName
-    MERGE (t: Tag { id: tagName, name: tagName, disabled: false, deleted: false })
+    MERGE (t: Tag { id: tagName, disabled: false, deleted: false })
     MERGE (p)-[:TAGGED]->(t)
     RETURN p, t
     `
