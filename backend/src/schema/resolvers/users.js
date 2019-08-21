@@ -8,7 +8,6 @@ import Resolver from './helpers/Resolver'
 
 const instance = neode()
 
-
 export const getBlockedUsers = async context => {
   const { neode } = context
   const userModel = neode.model('User')

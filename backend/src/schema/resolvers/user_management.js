@@ -1,7 +1,6 @@
 import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
-import { neo4jgraphql } from 'neo4j-graphql-js'
 import { neode } from '../../bootstrap/neo4j'
 
 const instance = neode()
@@ -11,11 +10,10 @@ export default {
     isLoggedIn: (_, args, { driver, user }) => {
       return Boolean(user && user.id)
     },
-    currentUser: async (object, params, ctx, resolveInfo) => {       
+    currentUser: async (object, params, ctx, resolveInfo) => {
       if (!ctx.user) return null
       const user = await instance.find('User', ctx.user.id)
       return user.toJson()
-     // return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, true)
     },
   },
   Mutation: {

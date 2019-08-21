@@ -8,8 +8,6 @@ export default {
       return result
     },
     UpdateUser: async (resolve, root, args, context, info) => {
-      
-
       const { currentUser } = context
       if (
         !!currentUser &&
@@ -28,17 +26,15 @@ export default {
           createdAt: new Date().toISOString(),
           version: args.termsAndConditionsAgreedVersion,
         }
-        const transactionResult = await session.run(cypher, variable)
-        const [resultCurrentUser] = transactionResult.records.map(record => {
-          return record.get('user')
-        })
+        await session.run(cypher, variable)
+        // console.log('Nach dem speichern')
+        // console.log(transactionResult)
+        // console.log('-------------------------------------')
         session.close()
-
-       
       }
 
       const result = await resolve(root, args, context, info)
- 
+
       await createOrUpdateLocations(args.id, args.locationName, context.driver)
       return result
     },

@@ -86,9 +86,6 @@ export default {
             termsAndConditionsAgreedVersion: VERSION,
           },
           update: (store, { data: { UpdateUser } }) => {
-            console.log('submit update')
-            console.log('VERSION: ' + VERSION)
-            console.log('___________')
             const { termsAndConditionsAgreedVersion } = UpdateUser
             this.setCurrentUser({
               ...this.currentUser,
@@ -97,7 +94,7 @@ export default {
           },
         })
         this.$toast.success(this.$t('DANKE'))
-        this.$router.replace('/')
+        this.$router.push('/')
       } catch (err) {
         this.$toast.error(err.message)
       }

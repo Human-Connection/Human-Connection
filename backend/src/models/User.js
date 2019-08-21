@@ -82,7 +82,6 @@ module.exports = {
     relationship: 'NOTIFIED',
     target: 'Notification',
     direction: 'in',
-
   },
   termsAndConditionsAgreedVersion: {
     type: 'string',

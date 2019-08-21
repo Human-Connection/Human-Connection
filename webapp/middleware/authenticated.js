@@ -15,10 +15,6 @@ export default async ({ store, env, route, redirect }) => {
   // having the encrypted JWT does not mean we have access to the user object
   const user = await store.getters['auth/user']
 
-  console.log("letzte AGB Version bestätigt vom User")
-  console.log(user.termsAndConditionsAgreedVersion)
-  console.log("aktuelle Version AGB ")
-  console.log(VERSION)
   const upToDate = user.termsAndConditionsAgreedVersion === VERSION
 
   if (isAuthenticated && upToDate) {
@@ -33,7 +29,6 @@ export default async ({ store, env, route, redirect }) => {
   if (!isEmpty(route.path) && route.path !== '/') {
     params.path = route.path
   }
-
 
   if (!upToDate) {
     return redirect('/terms-and-conditions-confirm', params)
