@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default () => {
+export default i18n => {
   return {
     CreateComment: gql`
       mutation($postId: ID!, $content: String!) {
@@ -8,15 +8,26 @@ export default () => {
           id
           contentExcerpt
           content
+          createdAt
+          disabled
+          deleted
           author {
             id
             slug
             name
             avatar
+            disabled
+            deleted
+            shoutedCount
+            contributionsCount
+            commentedCount
+            followedByCount
+            followedByCurrentUser
+            badges {
+              id
+              icon
+            }
           }
-          createdAt
-          deleted
-          disabled
         }
       }
     `,
@@ -24,8 +35,19 @@ export default () => {
       mutation($content: String!, $id: ID!) {
         UpdateComment(content: $content, id: $id) {
           id
-          content
           contentExcerpt
+          content
+          createdAt
+          disabled
+          deleted
+          author {
+            id
+            slug
+            name
+            avatar
+            disabled
+            deleted
+          }
         }
       }
     `,

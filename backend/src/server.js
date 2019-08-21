@@ -33,8 +33,8 @@ const createServer = options => {
       }
     },
     schema: middleware(schema),
-    debug: CONFIG.DEBUG,
-    tracing: CONFIG.DEBUG,
+    debug: !!CONFIG.DEBUG,
+    tracing: !!CONFIG.DEBUG,
   }
   const server = new ApolloServer(Object.assign({}, defaults, options))
 

@@ -51,7 +51,7 @@ export function createSignature(options) {
 // verifying
 export function verifySignature(url, headers) {
   return new Promise((resolve, reject) => {
-    const signatureHeader = headers['signature'] ? headers['signature'] : headers['Signature']
+    const signatureHeader = headers.signature ? headers.signature : headers.Signature
     if (!signatureHeader) {
       debug('No Signature header present!')
       resolve(false)

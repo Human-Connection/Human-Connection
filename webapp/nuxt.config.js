@@ -12,6 +12,9 @@ const styleguideStyles = process.env.STYLEGUIDE_DEV
 
 const buildDir = process.env.NUXT_BUILD || '.nuxt'
 
+const additionalSentryConfig = {}
+if (process.env.COMMIT) additionalSentryConfig.release = process.env.COMMIT
+
 module.exports = {
   buildDir,
   mode: 'universal',
@@ -218,6 +221,7 @@ module.exports = {
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
+    '@nuxtjs/sentry',
   ],
 
   /*
@@ -282,6 +286,12 @@ module.exports = {
     clientConfigs: {
       default: '~/plugins/apollo-config.js',
     },
+  },
+
+  sentry: {
+    dsn: process.env.SENTRY_DSN_WEBAPP,
+    publishRelease: !!process.env.COMMIT,
+    config: additionalSentryConfig,
   },
 
   manifest: {

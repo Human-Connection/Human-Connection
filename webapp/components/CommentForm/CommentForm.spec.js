@@ -1,5 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import CommentForm from './CommentForm.vue'
+import CommentForm from './CommentForm'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import MutationObserver from 'mutation-observer'
