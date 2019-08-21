@@ -1,4 +1,8 @@
 {
+  "index": {
+    "no-results": "No contributions found.",
+    "change-filter-settings": "Change your filter settings to get more results."
+  },
   "filter-menu": {
     "title": "Your filter bubble",
     "hashtag-search": "Searching for #{hashtag}",

@@ -1,4 +1,8 @@
 {
+  "index": {
+    "no-results": "Keine Beiträge gefunden.",
+    "change-filter-settings": "Verändere die Filter-Einstellungen um mehr Ergebnisse zu erhalten."
+  },
   "filter-menu": {
     "title": "Deine Filterblase",
     "hashtag-search": "Suche nach #{hashtag}",
