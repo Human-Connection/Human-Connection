@@ -1,6 +1,5 @@
 type EmailAddress {
-  id: ID!
-  email: String!
+  email: ID!
   verifiedAt: String
   createdAt: String
 }
