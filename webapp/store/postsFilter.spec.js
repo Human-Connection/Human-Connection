@@ -4,6 +4,15 @@ let state
 let testAction
 
 describe('getters', () => {
+  describe('isActive', () => {
+    it('returns true if filter differs from default setting', () => {
+      state = { filter: {} }
+      expect(getters.isActive(state)).toEqual(false)
+      state = { filter: { categories_some: { id_in: [24] } } }
+      expect(getters.isActive(state)).toEqual(true)
+    })
+  })
+
   describe('filteredCategoryIds', () => {
     it('returns category ids if filter is set', () => {
       state = { filter: { categories_some: { id_in: [24] } } }
