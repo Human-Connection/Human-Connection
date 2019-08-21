@@ -1,11 +1,17 @@
-import { shallowMount } from '@vue/test-utils'
+import { config, shallowMount, createLocalVue } from '@vue/test-utils'
+import Styleguide from '@human-connection/styleguide'
 import MasonryGridItem from './MasonryGridItem'
+
+const localVue = createLocalVue()
+localVue.use(Styleguide)
+
+config.stubs['ds-grid-item'] = '<span><slot /></span>'
 
 describe('MasonryGridItem', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallowMount(MasonryGridItem)
+    wrapper = shallowMount(MasonryGridItem, { localVue })
     wrapper.vm.$parent.$emit = jest.fn()
   })
 
