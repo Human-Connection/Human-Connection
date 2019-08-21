@@ -10638,12 +10638,12 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-nuxt-dropzone@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/nuxt-dropzone/-/nuxt-dropzone-1.0.2.tgz#7b39014ebf4c2084ea5c976f8d9f7b3cead2c7af"
-  integrity sha512-Oj6YrQxNH5KhCyFSFz2O809u23+cFAevBTdcld88qakbR2l5stTQjrv8VJ9beaqfenT9kKEkhYQT0mXc3nUdKw==
+nuxt-dropzone@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/nuxt-dropzone/-/nuxt-dropzone-1.0.3.tgz#f808ad3bc30809d34d6cbbcb24cece6e73341107"
+  integrity sha512-lElULoEkPJ1bJ7JzOyvg98/SSEAdvYHjdQ4V1k/XPe1Q/vmzMtOn2DxKwtzFKVWA5RqnB1P+EAjUMYan4mn0aw==
   dependencies:
-    vue2-dropzone "3.5.8"
+    vue2-dropzone "3.6.0"
 
 nuxt-env@~0.1.0:
   version "0.1.0"
@@ -15184,10 +15184,10 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue2-dropzone@3.5.8:
-  version "3.5.8"
-  resolved "https://registry.yarnpkg.com/vue2-dropzone/-/vue2-dropzone-3.5.8.tgz#cbe92d5424b5cc62c4d4ad62814d0cf6f3bb6cda"
-  integrity sha512-32rLGSx+mLKhyzxRz4CdeNT9JmbO6NsYX8m83WYqrf2ilRbm6KSZmUqZ8EIT+2dwq8EzY9jdrWlWuZJRBFPUGw==
+vue2-dropzone@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/vue2-dropzone/-/vue2-dropzone-3.6.0.tgz#b4bb4b64de1cbbb3b88f04b24878e06780a51546"
+  integrity sha512-YXC1nCWIZvfa98e/i6h+EshZCkFSxFEh0Sxr9ODfThAPPDVhAzLLlz/4XIx0NGO1QeSy6htwSstte47R7vVhLQ==
   dependencies:
     dropzone "^5.5.1"
 
