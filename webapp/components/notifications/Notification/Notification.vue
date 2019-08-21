@@ -56,7 +56,7 @@ export default {
       notificationTextIdents: {
         mentioned_in_post: 'notifications.menu.mentionedInPost',
         mentioned_in_comment: 'notifications.menu.mentionedInComment',
-        comment_on_your_post: 'notifications.menu.commentedOnPost',
+        comment_on_post: 'notifications.menu.commentedOnPost',
       },
     }
   },

@@ -63,16 +63,17 @@ describe('notifications', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      authenticatedUser = user
+      authenticatedUser = await user.toJson()
     })
 
     describe('given another user', () => {
-      let title
-      let content
+      let postTitle
+      let postContent
+      let postAuthor
       const createPostAction = async () => {
         const createPostMutation = gql`
-          mutation($id: ID, $title: String!, $content: String!) {
-            CreatePost(id: $id, title: $title, content: $content) {
+          mutation($id: ID, $postTitle: String!, $postContent: String!) {
+            CreatePost(id: $id, title: $postTitle, content: $postContent) {
               id
               title
               content
@@ -84,38 +85,154 @@ describe('notifications', () => {
           mutation: createPostMutation,
           variables: {
             id: 'p47',
-            title,
-            content,
+            postTitle,
+            postContent,
           },
         })
         authenticatedUser = await user.toJson()
       }
 
-      let postAuthor
-      beforeEach(async () => {
-        postAuthor = await instance.create('User', {
-          email: 'post-author@example.org',
-          password: '1234',
-          id: 'postAuthor',
+      let commentContent
+      let commentAuthor
+      const createCommentOnPostAction = async () => {
+        await createPostAction()
+        const createCommentMutation = gql`
+          mutation($id: ID, $postId: ID!, $commentContent: String!) {
+            CreateComment(id: $id, postId: $postId, content: $commentContent) {
+              id
+              content
+            }
+          }
+        `
+        authenticatedUser = await commentAuthor.toJson()
+        await mutate({
+          mutation: createCommentMutation,
+          variables: {
+            id: 'c47',
+            postId: 'p47',
+            commentContent,
+          },
+        })
+        authenticatedUser = await user.toJson()
+      }
+
+      describe('comments on my post', () => {
+        beforeEach(async () => {
+          postTitle = 'My post'
+          postContent = 'My post content.'
+          postAuthor = user
+        })
+
+        describe('commenter is not me', () => {
+          beforeEach(async () => {
+            commentContent = 'Commenters comment.'
+            commentAuthor = await instance.create('User', {
+              id: 'commentAuthor',
+              name: 'Mrs Comment',
+              slug: 'mrs-comment',
+              email: 'commentauthor@example.org',
+              password: '1234',
+            })
+          })
+
+          it('sends me a notification', async () => {
+            await createCommentOnPostAction()
+            const expected = expect.objectContaining({
+              data: {
+                currentUser: {
+                  notifications: [
+                    {
+                      read: false,
+                      reason: 'comment_on_post',
+                      post: null,
+                      comment: {
+                        content: commentContent,
+                      },
+                    },
+                  ],
+                },
+              },
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
+
+          it('sends me no notification if I block the comment author', async () => {
+            await user.relateTo(commentAuthor, 'blocked')
+            await createCommentOnPostAction()
+            const expected = expect.objectContaining({
+              data: {
+                currentUser: {
+                  notifications: [],
+                },
+              },
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
+        })
+
+        describe('commenter is me', () => {
+          beforeEach(async () => {
+            commentContent = 'My comment.'
+            commentAuthor = user
+          })
+
+          it('sends me no notification', async () => {
+            await user.relateTo(commentAuthor, 'blocked')
+            await createCommentOnPostAction()
+            const expected = expect.objectContaining({
+              data: {
+                currentUser: {
+                  notifications: [],
+                },
+              },
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
         })
       })
 
-      describe('comments on my post', () => {
-        title = 'My post'
-        content = 'My content'
-
-        // it('sends me a notification', async () => {
-        //   await createPostAction()
-        //   XXX
-        // })
+      beforeEach(async () => {
+        postAuthor = await instance.create('User', {
+          id: 'postAuthor',
+          name: 'Mrs Post',
+          slug: 'mrs-post',
+          email: 'post-author@example.org',
+          password: '1234',
+        })
       })
 
       describe('mentions me in a post', () => {
-        title = 'Mentioning Al Capone'
-        content =
-          'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
+        beforeEach(async () => {
+          postTitle = 'Mentioning Al Capone'
+          postContent =
+            'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
+        })
 
-        it('sends you a notification', async () => {
+        it('sends me a notification', async () => {
           await createPostAction()
           const expectedContent =
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
@@ -163,8 +280,8 @@ describe('notifications', () => {
               </a>
             `
             const updatePostMutation = gql`
-              mutation($id: ID!, $title: String!, $content: String!) {
-                UpdatePost(id: $id, content: $content, title: $title) {
+              mutation($id: ID!, $postTitle: String!, $postContent: String!) {
+                UpdatePost(id: $id, content: $postContent, title: $postTitle) {
                   title
                   content
                 }
@@ -175,8 +292,8 @@ describe('notifications', () => {
               mutation: updatePostMutation,
               variables: {
                 id: 'p47',
-                title,
-                content: updatedContent,
+                postTitle,
+                postContent: updatedContent,
               },
             })
             authenticatedUser = await user.toJson()
@@ -247,39 +364,67 @@ describe('notifications', () => {
             ).resolves.toEqual(expected)
           })
         })
+      })
 
-        describe('but the author of the post blocked me and a mentioner mentions me in a comment', () => {
-          const createCommentOnPostAction = async () => {
-            await createPostAction()
-            const createCommentMutation = gql`
-              mutation($id: ID, $postId: ID!, $commentContent: String!) {
-                CreateComment(id: $id, postId: $postId, content: $commentContent) {
-                  id
-                  content
-                }
-              }
-            `
-            authenticatedUser = await commentMentioner.toJson()
-            await mutate({
-              mutation: createCommentMutation,
-              variables: {
-                id: 'c47',
-                postId: 'p47',
-                commentContent:
-                  'One mention of me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">.',
+      describe('mentions me in a comment', () => {
+        beforeEach(async () => {
+          postTitle = 'Post where I get mentioned in a comment'
+          postContent = 'Content of post where I get mentioned in a comment.'
+        })
+
+        describe('I am not blocked at all', () => {
+          beforeEach(async () => {
+            commentContent =
+              'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
+            commentAuthor = await instance.create('User', {
+              id: 'commentAuthor',
+              name: 'Mrs Comment',
+              slug: 'mrs-comment',
+              email: 'comment-author@example.org',
+              password: '1234',
+            })
+          })
+
+          it('sends a notification', async () => {
+            await createCommentOnPostAction()
+            const expected = expect.objectContaining({
+              data: {
+                currentUser: {
+                  notifications: [
+                    {
+                      read: false,
+                      reason: 'mentioned_in_comment',
+                      post: null,
+                      comment: {
+                        content: commentContent,
+                      },
+                    },
+                  ],
+                },
               },
             })
-            authenticatedUser = await user.toJson()
-          }
-          let commentMentioner
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
+        })
 
+        describe('but the author of the post blocked me', () => {
           beforeEach(async () => {
             await postAuthor.relateTo(user, 'blocked')
-            commentMentioner = await instance.create('User', {
-              id: 'mentioner',
-              name: 'Mr Mentioner',
-              slug: 'mr-mentioner',
-              email: 'mentioner@example.org',
+            commentContent =
+              'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
+            commentAuthor = await instance.create('User', {
+              id: 'commentAuthor',
+              name: 'Mrs Comment',
+              slug: 'mrs-comment',
+              email: 'comment-author@example.org',
               password: '1234',
             })
           })

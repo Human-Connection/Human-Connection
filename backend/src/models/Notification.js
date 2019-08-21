@@ -12,7 +12,8 @@ module.exports = {
   },
   reason: {
     type: 'string',
-    valid: ['mentioned_in_post', 'mentioned_in_comment', 'comment_on_your_post'],
+    valid: ['mentioned_in_post', 'mentioned_in_comment', 'comment_on_post'],
+    invalid: [null],
     default: 'mentioned_in_post',
   },
   createdAt: {

@@ -1,7 +1,7 @@
 type Notification {
   id: ID!
   read: Boolean
-  reason: String
+  reason: ReasonNotification
   createdAt: String
   user: User @relation(name: "NOTIFIED", direction: "OUT")
   post: Post @relation(name: "NOTIFIED", direction: "IN")
