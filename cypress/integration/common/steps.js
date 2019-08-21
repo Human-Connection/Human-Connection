@@ -22,11 +22,11 @@ Given("I am logged in", () => {
 });
 
 Given("we have a selection of categories", () => {
-  cy.createCategories();
+  cy.createCategories("cat0", "just-for-fun");
 });
 
 Given("we have a selection of tags and categories as well as posts", () => {
-  cy.createCategories()
+  cy.createCategories("cat12")
     .factory()
     .authenticateAs(loginCredentials)
     .create("Tag", { id: "Ecology" })
@@ -45,15 +45,15 @@ Given("we have a selection of tags and categories as well as posts", () => {
   cy.factory()
     .create("User", someAuthor)
     .authenticateAs(someAuthor)
-    .create("Post", { id: "p0", categoryIds: ["cat1"] })
-    .create("Post", { id: "p1", categoryIds: ["cat2"] });
+    .create("Post", { id: "p0", categoryIds: ["cat12"] })
+    .create("Post", { id: "p1", categoryIds: ["cat121"] });
   cy.factory()
     .create("User", yetAnotherAuthor)
     .authenticateAs(yetAnotherAuthor)
-    .create("Post", { id: "p2", categoryIds: ["cat1"] });
+    .create("Post", { id: "p2", categoryIds: ["cat12"] });
   cy.factory()
     .authenticateAs(loginCredentials)
-    .create("Post", { id: "p3", categoryIds: ["cat3"] })
+    .create("Post", { id: "p3", categoryIds: ["cat122"] })
     .relate("Post", "Tags", { from: "p0", to: "Ecology" })
     .relate("Post", "Tags", { from: "p0", to: "Nature" })
     .relate("Post", "Tags", { from: "p0", to: "Democracy" })
@@ -209,7 +209,7 @@ When(
 Given("I previously created a post", () => {
   lastPost.title = "previously created post";
   lastPost.content = "with some content";
-  lastPost.categoryIds = "cat1";
+  lastPost.categoryIds = "cat0";
   cy.factory()
     .authenticateAs(loginCredentials)
     .create("Post", lastPost);
@@ -417,13 +417,13 @@ Given("I follow the user {string}", name => {
 });
 
 Given('"Spammy Spammer" wrote a post {string}', title => {
-  cy.createCategories()
+  cy.createCategories("cat21")
     .factory()
     .authenticateAs({
       email: "spammy-spammer@example.org",
       password: "1234"
     })
-    .create("Post", { title, categoryIds: ["cat2"] });
+    .create("Post", { title, categoryIds: ["cat21"] });
 });
 
 Then("the list of posts of this user is empty", () => {
@@ -440,10 +440,10 @@ Then("nobody is following the user profile anymore", () => {
 });
 
 Given("I wrote a post {string}", title => {
-  cy.createCategories()
+  cy.createCategories(`cat213`, title)
     .factory()
     .authenticateAs(loginCredentials)
-    .create("Post", { title, categoryIds: ["cat2"] });
+    .create("Post", { title, categoryIds: ["cat213"] });
 });
 
 When("I block the user {string}", name => {

@@ -62,24 +62,22 @@ Cypress.Commands.add("openPage", page => {
   cy.visit(`/${page}`);
 });
 
-Cypress.Commands.add("createCategories", () => {
+Cypress.Commands.add("createCategories", (id, slug) => {
   cy.neode()
     .create("Category", {
-      id: "cat1",
+      id: `${id}`,
       name: "Just For Fun",
-      slug: "just-for-fun",
+      slug: `${slug}`,
       icon: "smile"
     })
     .create("Category", {
-      id: "cat2",
+      id: `${id}1`,
       name: "Happiness & Values",
-      slug: "happiness-values",
       icon: "heart-o"
     })
     .create("Category", {
-      id: "cat3",
+      id: `${id}2`,
       name: "Health & Wellbeing",
-      slug: "health-wellbeing",
       icon: "medkit"
     });
 });
