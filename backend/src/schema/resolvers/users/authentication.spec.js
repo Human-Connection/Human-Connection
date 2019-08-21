@@ -1,8 +1,8 @@
 import { GraphQLClient, request } from 'graphql-request'
 import jwt from 'jsonwebtoken'
-import CONFIG from './../../config'
-import Factory from '../../seed/factories'
-import { host, login, gql } from '../../jest/helpers'
+import CONFIG from '../../../config'
+import Factory from '../../../seed/factories'
+import { host, login, gql } from '../../../jest/helpers'
 
 const factory = Factory()
 
@@ -44,6 +44,7 @@ beforeEach(async () => {
     role: 'user',
     email: 'test@example.org',
     password: '1234',
+    termsAndConditionsAgreedVersion: '47.11.3',
   })
 })
 
@@ -118,7 +119,7 @@ describe('currentUser', () => {
         avatar
         email
         role
-        hasAgreedToLatestTermsAndConditions
+        termsAndConditionsAgreedVersion
       }
     }
   `
@@ -160,7 +161,7 @@ describe('currentUser', () => {
             name: 'Matilde Hermiston',
             slug: 'matilde-hermiston',
             role: 'user',
-            hasAgreedToLatestTermsAndConditions: true,
+            termsAndConditionsAgreedVersion: '47.11.3',
           },
         }
         await expect(client.request(query)).resolves.toEqual(expected)

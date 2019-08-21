@@ -200,12 +200,173 @@ export default {
     EditorMenuBubble,
   },
   props: {
-    users: { type: Array, default: () => [] },
-    hashtags: { type: Array, default: () => [] },
+    users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
+    hashtags: { type: Array, default: () => null }, // If 'null', than the Hashtag extention is not assigned.
     value: { type: String, default: '' },
     doc: { type: Object, default: () => {} },
   },
   data() {
+    // Set array of optional extensions by analysing the props.
+    let optionalExtensions = []
+    // Don't change the following line. The functionallity is in danger!
+    if (this.users) {
+      optionalExtensions.push(
+        new Mention({
+          // a list of all suggested items
+          items: () => {
+            return this.users
+          },
+          // is called when a suggestion starts
+          onEnter: ({ items, query, range, command, virtualNode }) => {
+            this.suggestionType = this.mentionSuggestionType
+
+            this.query = query
+            this.filteredItems = items
+            this.suggestionRange = range
+            this.renderPopup(virtualNode)
+            // we save the command for inserting a selected mention
+            // this allows us to call it inside of our custom popup
+            // via keyboard navigation and on click
+            this.insertMentionOrHashtag = command
+          },
+          // is called when a suggestion has changed
+          onChange: ({ items, query, range, virtualNode }) => {
+            this.query = query
+            this.filteredItems = items
+            this.suggestionRange = range
+            this.navigatedItemIndex = 0
+            this.renderPopup(virtualNode)
+          },
+          // is called when a suggestion is cancelled
+          onExit: () => {
+            this.suggestionType = this.nullSuggestionType
+
+            // reset all saved values
+            this.query = null
+            this.filteredItems = []
+            this.suggestionRange = null
+            this.navigatedItemIndex = 0
+            this.destroyPopup()
+          },
+          // is called on every keyDown event while a suggestion is active
+          onKeyDown: ({ event }) => {
+            // pressing up arrow
+            if (event.keyCode === 38) {
+              this.upHandler()
+              return true
+            }
+            // pressing down arrow
+            if (event.keyCode === 40) {
+              this.downHandler()
+              return true
+            }
+            // pressing enter
+            if (event.keyCode === 13) {
+              this.enterHandler()
+              return true
+            }
+            return false
+          },
+          // is called when a suggestion has changed
+          // this function is optional because there is basic filtering built-in
+          // you can overwrite it if you prefer your own filtering
+          // in this example we use fuse.js with support for fuzzy search
+          onFilter: (items, query) => {
+            if (!query) {
+              return items
+            }
+            const fuse = new Fuse(items, {
+              threshold: 0.2,
+              keys: ['slug'],
+            })
+            return fuse.search(query)
+          },
+        }),
+      )
+    }
+    // Don't change the following line. The functionallity is in danger!
+    if (this.hashtags) {
+      optionalExtensions.push(
+        new Hashtag({
+          // a list of all suggested items
+          items: () => {
+            return this.hashtags
+          },
+          // is called when a suggestion starts
+          onEnter: ({ items, query, range, command, virtualNode }) => {
+            this.suggestionType = this.hashtagSuggestionType
+
+            this.query = this.sanitizedQuery(query)
+            this.filteredItems = items
+            this.suggestionRange = range
+            this.renderPopup(virtualNode)
+            // we save the command for inserting a selected mention
+            // this allows us to call it inside of our custom popup
+            // via keyboard navigation and on click
+            this.insertMentionOrHashtag = command
+          },
+          // is called when a suggestion has changed
+          onChange: ({ items, query, range, virtualNode }) => {
+            this.query = this.sanitizedQuery(query)
+            this.filteredItems = items
+            this.suggestionRange = range
+            this.navigatedItemIndex = 0
+            this.renderPopup(virtualNode)
+          },
+          // is called when a suggestion is cancelled
+          onExit: () => {
+            this.suggestionType = this.nullSuggestionType
+
+            // reset all saved values
+            this.query = null
+            this.filteredItems = []
+            this.suggestionRange = null
+            this.navigatedItemIndex = 0
+            this.destroyPopup()
+          },
+          // is called on every keyDown event while a suggestion is active
+          onKeyDown: ({ event }) => {
+            // pressing up arrow
+            if (event.keyCode === 38) {
+              this.upHandler()
+              return true
+            }
+            // pressing down arrow
+            if (event.keyCode === 40) {
+              this.downHandler()
+              return true
+            }
+            // pressing enter
+            if (event.keyCode === 13) {
+              this.enterHandler()
+              return true
+            }
+            // pressing space
+            if (event.keyCode === 32) {
+              this.spaceHandler()
+              return true
+            }
+            return false
+          },
+          // is called when a suggestion has changed
+          // this function is optional because there is basic filtering built-in
+          // you can overwrite it if you prefer your own filtering
+          // in this example we use fuse.js with support for fuzzy search
+          onFilter: (items, query) => {
+            query = this.sanitizedQuery(query)
+            if (!query) {
+              return items
+            }
+            return items.filter(item =>
+              JSON.stringify(item)
+                .toLowerCase()
+                .includes(query.toLowerCase()),
+            )
+          },
+        }),
+      )
+    }
+
     return {
       lastValueHash: null,
       editor: new Editor({
@@ -215,154 +376,7 @@ export default {
           ...defaultExtensions(this),
           new EventHandler(),
           new History(),
-          new Mention({
-            // a list of all suggested items
-            items: () => {
-              return this.users
-            },
-            // is called when a suggestion starts
-            onEnter: ({ items, query, range, command, virtualNode }) => {
-              this.suggestionType = this.mentionSuggestionType
-
-              this.query = query
-              this.filteredItems = items
-              this.suggestionRange = range
-              this.renderPopup(virtualNode)
-              // we save the command for inserting a selected mention
-              // this allows us to call it inside of our custom popup
-              // via keyboard navigation and on click
-              this.insertMentionOrHashtag = command
-            },
-            // is called when a suggestion has changed
-            onChange: ({ items, query, range, virtualNode }) => {
-              this.query = query
-              this.filteredItems = items
-              this.suggestionRange = range
-              this.navigatedItemIndex = 0
-              this.renderPopup(virtualNode)
-            },
-            // is called when a suggestion is cancelled
-            onExit: () => {
-              this.suggestionType = this.nullSuggestionType
-
-              // reset all saved values
-              this.query = null
-              this.filteredItems = []
-              this.suggestionRange = null
-              this.navigatedItemIndex = 0
-              this.destroyPopup()
-            },
-            // is called on every keyDown event while a suggestion is active
-            onKeyDown: ({ event }) => {
-              // pressing up arrow
-              if (event.keyCode === 38) {
-                this.upHandler()
-                return true
-              }
-              // pressing down arrow
-              if (event.keyCode === 40) {
-                this.downHandler()
-                return true
-              }
-              // pressing enter
-              if (event.keyCode === 13) {
-                this.enterHandler()
-                return true
-              }
-              return false
-            },
-            // is called when a suggestion has changed
-            // this function is optional because there is basic filtering built-in
-            // you can overwrite it if you prefer your own filtering
-            // in this example we use fuse.js with support for fuzzy search
-            onFilter: (items, query) => {
-              if (!query) {
-                return items
-              }
-              const fuse = new Fuse(items, {
-                threshold: 0.2,
-                keys: ['slug'],
-              })
-              return fuse.search(query)
-            },
-          }),
-          new Hashtag({
-            // a list of all suggested items
-            items: () => {
-              return this.hashtags
-            },
-            // is called when a suggestion starts
-            onEnter: ({ items, query, range, command, virtualNode }) => {
-              this.suggestionType = this.hashtagSuggestionType
-
-              this.query = this.sanitizedQuery(query)
-              this.filteredItems = items
-              this.suggestionRange = range
-              this.renderPopup(virtualNode)
-              // we save the command for inserting a selected mention
-              // this allows us to call it inside of our custom popup
-              // via keyboard navigation and on click
-              this.insertMentionOrHashtag = command
-            },
-            // is called when a suggestion has changed
-            onChange: ({ items, query, range, virtualNode }) => {
-              this.query = this.sanitizedQuery(query)
-              this.filteredItems = items
-              this.suggestionRange = range
-              this.navigatedItemIndex = 0
-              this.renderPopup(virtualNode)
-            },
-            // is called when a suggestion is cancelled
-            onExit: () => {
-              this.suggestionType = this.nullSuggestionType
-
-              // reset all saved values
-              this.query = null
-              this.filteredItems = []
-              this.suggestionRange = null
-              this.navigatedItemIndex = 0
-              this.destroyPopup()
-            },
-            // is called on every keyDown event while a suggestion is active
-            onKeyDown: ({ event }) => {
-              // pressing up arrow
-              if (event.keyCode === 38) {
-                this.upHandler()
-                return true
-              }
-              // pressing down arrow
-              if (event.keyCode === 40) {
-                this.downHandler()
-                return true
-              }
-              // pressing enter
-              if (event.keyCode === 13) {
-                this.enterHandler()
-                return true
-              }
-              // pressing space
-              if (event.keyCode === 32) {
-                this.spaceHandler()
-                return true
-              }
-              return false
-            },
-            // is called when a suggestion has changed
-            // this function is optional because there is basic filtering built-in
-            // you can overwrite it if you prefer your own filtering
-            // in this example we use fuse.js with support for fuzzy search
-            onFilter: (items, query) => {
-              query = this.sanitizedQuery(query)
-              if (!query) {
-                return items
-              }
-              return items.filter(item =>
-                JSON.stringify(item)
-                  .toLowerCase()
-                  .includes(query.toLowerCase()),
-              )
-            },
-          }),
+          ...optionalExtensions,
         ],
         onUpdate: e => {
           clearTimeout(throttleInputEvent)

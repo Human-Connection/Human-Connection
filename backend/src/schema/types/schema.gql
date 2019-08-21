@@ -123,4 +123,3 @@ type SharedInboxEndpoint {
   id: ID!
   uri: String
 }
-

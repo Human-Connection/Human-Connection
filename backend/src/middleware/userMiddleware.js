@@ -1,39 +1,6 @@
 import createOrUpdateLocations from './nodes/locations'
 
 export default {
-  Query: {
-    currentUser: async (resolve, root, args, context, info) => {
-      const result = await resolve(root, args, context, info)
-
-      const currentTermsAndConditionsDate = new Date('2018-11-09T12:23:23.344Z')
-
-      const { user } = context
-      if (user) {
-        result.hasAgreedToLatestTermsAndConditions = false
-
-        const session = context.driver.session()
-        const cypher = `
-          MATCH (user: User { id: $userId})
-          RETURN user { .termsAndConditionsConfirmedAt }
-        `
-        const variable = {
-          userId: context.user.id,
-        }
-        const transactionResult = await session.run(cypher, variable)
-        const [currentUser] = transactionResult.records.map(record => {
-          return record.get('user')
-        })
-        session.close()
-
-        if (!!currentUser && !!currentUser.termsAndConditionsConfirmedAt) {
-          result.hasAgreedToLatestTermsAndConditions =
-            new Date(currentUser.termsAndConditionsConfirmedAt) > currentTermsAndConditionsDate
-        }
-      }
-
-      return result
-    },
-  },
   Mutation: {
     SignupVerification: async (resolve, root, args, context, info) => {
       const result = await resolve(root, args, context, info)
@@ -52,9 +19,9 @@ export default {
         const session = context.driver.session()
         const cypher = `
           MATCH (user: User { id: $userId})
-          SET user.termsAndConditionsConfirmedAt = $createdAt
-          SET user.termsAndConditionsVersion = $version
-          RETURN user { .termsAndConditionsConfirmedAt, .termsAndConditionsVersion }
+          SET user.termsAndConditionsAgreedAt = $createdAt
+          SET user.termsAndConditionsAgreedVersion = $version
+          RETURN user { .termsAndConditionsAgreedAt, .termsAndConditionsAgreedVersion }
         `
         const variable = {
           userId: currentUser.id,
@@ -69,8 +36,8 @@ export default {
 
         if (
           !!resultCurrentUser &&
-          !!resultCurrentUser.termsAndConditionsConfirmedAt &&
-          !!resultCurrentUser.termsAndConditionsVersion
+          !!resultCurrentUser.termsAndConditionsAgreedAt &&
+          !!resultCurrentUser.termsAndConditionsAgreedVersion
         ) {
           this.hasAgreedToLatestTermsAndConditions = true
         }

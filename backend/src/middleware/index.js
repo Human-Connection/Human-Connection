@@ -14,10 +14,12 @@ import orderBy from './orderByMiddleware'
 import validation from './validation/validationMiddleware'
 import handleContentData from './handleHtmlContent/handleContentData'
 import email from './email/emailMiddleware'
+import sentry from './sentryMiddleware'
 
 export default schema => {
   const middlewares = {
     permissions: permissions,
+    sentry: sentry,
     activityPub: activityPub,
     dateTime: dateTime,
     validation: validation,
@@ -33,6 +35,7 @@ export default schema => {
   }
 
   let order = [
+    'sentry',
     'permissions',
     // 'activityPub', disabled temporarily
     'dateTime',

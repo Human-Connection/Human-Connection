@@ -27,6 +27,7 @@
     * [Kubernetes Dashboard](deployment/digital-ocean/dashboard/README.md)
     * [HTTPS](deployment/digital-ocean/https/README.md)
   * [Human Connection](deployment/human-connection/README.md)
+    * [Error Reporting](deployment/human-connection/error-reporting/README.md)
     * [Mailserver](deployment/human-connection/mailserver/README.md)
     * [Maintenance](deployment/human-connection/maintenance/README.md)
   * [Volumes](deployment/volumes/README.md)

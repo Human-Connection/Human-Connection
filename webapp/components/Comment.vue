@@ -10,7 +10,7 @@
     </ds-card>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
-    <ds-card>
+    <ds-card :id="`commentId-${comment.id}`">
       <ds-space margin-bottom="small">
         <hc-user :user="author" :date-time="comment.createdAt" />
       </ds-space>

@@ -1,5 +1,5 @@
 import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import Notification from '.'
+import Notification from './Notification'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
 
@@ -38,12 +38,19 @@ describe('Notification', () => {
       propsData.notification = {
         post: {
           title: "It's a title",
+          id: 'post-1',
+          slug: 'its-a-title',
+          contentExcerpt: '<a href="/profile/u3" target="_blank">@jenny-rostock</a> is the best',
         },
       }
     })
 
     it('renders title', () => {
       expect(Wrapper().text()).toContain("It's a title")
+    })
+
+    it('renders the contentExcerpt', () => {
+      expect(Wrapper().text()).toContain('@jenny-rostock is the best')
     })
 
     it('has no class "read"', () => {
