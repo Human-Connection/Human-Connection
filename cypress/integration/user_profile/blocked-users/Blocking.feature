@@ -7,6 +7,7 @@ Feature: Block a User
     Given I have a user account
     And there is an annoying user called "Spammy Spammer"
     And I am logged in
+    And we have a selection of categories
 
   Scenario: Block a user
     Given I am on the profile page of the annoying user

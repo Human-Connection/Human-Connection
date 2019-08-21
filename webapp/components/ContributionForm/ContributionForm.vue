@@ -17,8 +17,8 @@
         <no-ssr>
           <hc-editor
             :users="users"
-            :hashtags="hashtags"
             :value="form.content"
+            :hashtags="hashtags"
             @input="updateEditorContent"
           />
           <small class="smallTag">{{ form.contentLength }}/{{ contentMax }}</small>
@@ -57,7 +57,7 @@
             type="submit"
             icon="check"
             :loading="loading"
-            :disabled="disabledByContent || errors"
+            :disabled="failsValidations || errors"
             primary
             @click.prevent="submit"
           >
@@ -101,7 +101,7 @@ export default {
         image: null,
         language: null,
         languageOptions: [],
-        categoryIds: null,
+        categoryIds: [],
       },
       formSchema: {
         title: { required: true, min: 3, max: 64 },
@@ -109,12 +109,11 @@ export default {
       },
       id: null,
       loading: false,
-      disabledByContent: true,
       slug: null,
       users: [],
       contentMin: 3,
       contentMax: 2000,
-
+      failsValidations: true,
       hashtags: [],
     }
   },
@@ -129,9 +128,9 @@ export default {
         this.slug = contribution.slug
         this.form.title = contribution.title
         this.form.content = contribution.content
-        this.manageContent(this.form.content)
         this.form.image = contribution.image
         this.form.categoryIds = this.categoryIds(contribution.categories)
+        this.manageContent(this.form.content)
       },
     },
   },
@@ -175,11 +174,11 @@ export default {
             imageUpload: teaserImage,
           },
         })
-        .then(res => {
+        .then(({ data }) => {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
-          this.disabledByContent = true
-          const result = res.data[this.id ? 'UpdatePost' : 'CreatePost']
+          const result = data[this.id ? 'UpdatePost' : 'CreatePost']
+          this.failedValidations = false
 
           this.$router.push({
             name: 'post-id-slug',
@@ -189,7 +188,7 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
           this.loading = false
-          this.disabledByContent = false
+          this.failedValidations = true
         })
     },
     updateEditorContent(value) {
@@ -202,8 +201,7 @@ export default {
       const str = content.replace(/<\/?[^>]+(>|$)/gm, '')
       // Set counter length of text
       this.form.contentLength = str.length
-      // Enable save button if requirements are met
-      this.disabledByContent = !(this.contentMin <= str.length && str.length <= this.contentMax)
+      this.validatePost()
     },
     availableLocales() {
       orderBy(locales, 'name').map(locale => {
@@ -212,6 +210,7 @@ export default {
     },
     updateCategories(ids) {
       this.form.categoryIds = ids
+      this.validatePost()
     },
     addTeaserImage(file) {
       this.form.teaserImage = file
@@ -223,12 +222,19 @@ export default {
       })
       return categoryIds
     },
+    validatePost() {
+      const passesContentValidations =
+        this.form.contentLength >= this.contentMin && this.form.contentLength <= this.contentMax
+      const passesCategoryValidations =
+        this.form.categoryIds.length > 0 && this.form.categoryIds.length <= 3
+      this.failsValidations = !(passesContentValidations && passesCategoryValidations)
+    },
   },
   apollo: {
     User: {
       query() {
         return gql`
-          {
+          query {
             User(orderBy: slug_asc) {
               id
               slug
@@ -236,22 +242,22 @@ export default {
           }
         `
       },
-      result(result) {
-        this.users = result.data.User
+      result({ data: { User } }) {
+        this.users = User
       },
     },
     Tag: {
       query() {
         return gql`
-          {
+          query {
             Tag(orderBy: id_asc) {
               id
             }
           }
         `
       },
-      result(result) {
-        this.hashtags = result.data.Tag
+      result({ data: { Tag } }) {
+        this.hashtags = Tag
       },
     },
   },

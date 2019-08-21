@@ -1,18 +1,21 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login, gql } from '../../jest/helpers'
+import { neode } from '../../bootstrap/neo4j'
 
-const factory = Factory()
 let client
 let createCommentVariables
 let createCommentVariablesSansPostId
 let createCommentVariablesWithNonExistentPost
 let userParams
 let headers
+const factory = Factory()
+const instance = neode()
+const categoryIds = ['cat9']
 
 const createPostMutation = gql`
-  mutation($id: ID!, $title: String!, $content: String!) {
-    CreatePost(id: $id, title: $title, content: $content) {
+  mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]!) {
+    CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
       id
     }
   }
@@ -29,6 +32,7 @@ const createPostVariables = {
   id: 'p1',
   title: 'post to comment on',
   content: 'please comment on me',
+  categoryIds,
 }
 
 beforeEach(async () => {
@@ -38,6 +42,11 @@ beforeEach(async () => {
     password: '1234',
   }
   await factory.create('User', userParams)
+  await instance.create('Category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    icon: 'university',
+  })
 })
 
 afterEach(async () => {
@@ -199,6 +208,7 @@ describe('ManageComments', () => {
     await asAuthor.create('Post', {
       id: 'p1',
       content: 'Post to be commented',
+      categoryIds,
     })
     await asAuthor.create('Comment', {
       id: 'c456',

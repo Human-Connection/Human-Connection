@@ -1,11 +1,13 @@
 import gql from 'graphql-tag'
 
 export default () => {
-  return gql(`{
-    Category {
-      id
-      slug
-      icon
+  return gql`
+    query {
+      Category {
+        id
+        slug
+        icon
+      }
     }
-  }`)
+  `
 }

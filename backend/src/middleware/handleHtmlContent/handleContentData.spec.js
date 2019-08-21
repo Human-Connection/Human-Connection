@@ -4,14 +4,32 @@ import { createTestClient } from 'apollo-server-testing'
 import { neode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
-const factory = Factory()
-const driver = getDriver()
-const instance = neode()
 let server
 let query
 let mutate
 let user
 let authenticatedUser
+const factory = Factory()
+const driver = getDriver()
+const instance = neode()
+const categoryIds = ['cat9']
+const createPostMutation = gql`
+  mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]!) {
+    CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+      id
+      title
+      content
+    }
+  }
+`
+const updatePostMutation = gql`
+  mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]!) {
+    UpdatePost(id: $id, content: $content, title: $title, categoryIds: $categoryIds) {
+      title
+      content
+    }
+  }
+`
 
 beforeAll(() => {
   const createServerResult = createServer({
@@ -36,6 +54,11 @@ beforeEach(async () => {
     slug: 'al-capone',
     email: 'test@example.org',
     password: '1234',
+  })
+  await instance.create('Category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    icon: 'university',
   })
 })
 
@@ -81,23 +104,10 @@ describe('notifications', () => {
           'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
 
         const createPostAction = async () => {
-          const createPostMutation = gql`
-            mutation($id: ID, $title: String!, $content: String!) {
-              CreatePost(id: $id, title: $title, content: $content) {
-                id
-                title
-                content
-              }
-            }
-          `
           authenticatedUser = await postAuthor.toJson()
           await mutate({
             mutation: createPostMutation,
-            variables: {
-              id: 'p47',
-              title,
-              content,
-            },
+            variables: { id: 'p47', title, content, categoryIds },
           })
           authenticatedUser = await user.toJson()
         }
@@ -148,14 +158,6 @@ describe('notifications', () => {
                 @al-capone
               </a>
             `
-            const updatePostMutation = gql`
-              mutation($id: ID!, $title: String!, $content: String!) {
-                UpdatePost(id: $id, content: $content, title: $title) {
-                  title
-                  content
-                }
-              }
-            `
             authenticatedUser = await postAuthor.toJson()
             await mutate({
               mutation: updatePostMutation,
@@ -163,6 +165,7 @@ describe('notifications', () => {
                 id: 'p47',
                 title,
                 content: updatedContent,
+                categoryIds,
               },
             })
             authenticatedUser = await user.toJson()
@@ -294,9 +297,9 @@ describe('notifications', () => {
 })
 
 describe('Hashtags', () => {
-  const postId = 'p135'
-  const postTitle = 'Two Hashtags'
-  const postContent =
+  const id = 'p135'
+  const title = 'Two Hashtags'
+  const content =
     '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Democracy">#Democracy</a> should work equal for everybody!? That seems to be the only way to have equal <a class="hashtag" href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
   const postWithHastagsQuery = gql`
     query($id: ID) {
@@ -308,17 +311,8 @@ describe('Hashtags', () => {
     }
   `
   const postWithHastagsVariables = {
-    id: postId,
+    id,
   }
-  const createPostMutation = gql`
-    mutation($postId: ID, $postTitle: String!, $postContent: String!) {
-      CreatePost(id: $postId, title: $postTitle, content: $postContent) {
-        id
-        title
-        content
-      }
-    }
-  `
 
   describe('authenticated', () => {
     beforeEach(async () => {
@@ -330,9 +324,10 @@ describe('Hashtags', () => {
         await mutate({
           mutation: createPostMutation,
           variables: {
-            postId,
-            postTitle,
-            postContent,
+            id,
+            title,
+            content,
+            categoryIds,
           },
         })
       })
@@ -359,25 +354,17 @@ describe('Hashtags', () => {
 
       describe('afterwards update the Post by removing a Hashtag, leaving a Hashtag and add a Hashtag', () => {
         // The already existing Hashtag has no class at this point.
-        const updatedPostContent =
+        const content =
           '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Elections">#Elections</a> should work equal for everybody!? That seems to be the only way to have equal <a href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
-        const updatePostMutation = gql`
-          mutation($postId: ID!, $postTitle: String!, $updatedPostContent: String!) {
-            UpdatePost(id: $postId, title: $postTitle, content: $updatedPostContent) {
-              id
-              title
-              content
-            }
-          }
-        `
 
         it('only one previous Hashtag and the new Hashtag exists', async () => {
           await mutate({
             mutation: updatePostMutation,
             variables: {
-              postId,
-              postTitle,
-              updatedPostContent,
+              id,
+              title,
+              content,
+              categoryIds,
             },
           })
 

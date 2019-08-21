@@ -1,26 +1,34 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login, gql } from '../../jest/helpers'
+import { neode } from '../../bootstrap/neo4j'
 
-const factory = Factory()
 let client
+const factory = Factory()
+const instance = neode()
 const userParams = {
   id: 'you',
   email: 'test@example.org',
   password: '1234',
 }
+const categoryIds = ['cat9']
 
 beforeEach(async () => {
   await factory.create('User', userParams)
+  await instance.create('Category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    icon: 'university',
+  })
 })
 
 afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('query for notification', () => {
+describe('Notification', () => {
   const notificationQuery = gql`
-    {
+    query {
       Notification {
         id
       }
@@ -81,12 +89,7 @@ describe('currentUser notifications', () => {
           }),
         ])
         await factory.authenticateAs(neighborParams)
-        // Post and its notifications
-        await Promise.all([
-          factory.create('Post', {
-            id: 'p1',
-          }),
-        ])
+        await factory.create('Post', { id: 'p1', categoryIds })
         await Promise.all([
           factory.relate('Notification', 'User', {
             from: 'post-mention-not-for-you',
@@ -164,9 +167,7 @@ describe('currentUser notifications', () => {
             }
           }
         `
-        const variables = {
-          read: false,
-        }
+        const variables = { read: false }
         it('returns only unread notifications of current user', async () => {
           const expected = {
             currentUser: {
@@ -196,7 +197,7 @@ describe('currentUser notifications', () => {
 
       describe('no filters', () => {
         const queryCurrentUserNotifications = gql`
-          {
+          query {
             currentUser {
               notifications(orderBy: createdAt_desc) {
                 id
@@ -292,12 +293,7 @@ describe('UpdateNotification', () => {
         }),
       ])
       await factory.authenticateAs(userParams)
-      // Post and its notifications
-      await Promise.all([
-        factory.create('Post', {
-          id: 'p1',
-        }),
-      ])
+      await factory.create('Post', { id: 'p1', categoryIds })
       await Promise.all([
         factory.relate('Notification', 'User', {
           from: 'post-mention-to-be-updated',
