@@ -34,12 +34,13 @@
 <script>
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
+import { VERSION } from '~/pages/terms-and-conditions'
 
 const mutation = gql`
-  mutation($id: ID!, $hasAgreedToLatestTermsAndConditions: Boolean) {
-    UpdateUser(id: $id, hasAgreedToLatestTermsAndConditions: $hasAgreedToLatestTermsAndConditions) {
+  mutation($id: ID!, $termsAndConditionsAgreedVersion: String) {
+    UpdateUser(id: $id, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
       id
-      hasAgreedToLatestTermsAndConditions
+      termsAndConditionsAgreedVersion
     }
   }
 `
@@ -82,13 +83,16 @@ export default {
           mutation,
           variables: {
             id: this.currentUser.id,
-            hasAgreedToLatestTermsAndConditions: true,
+            termsAndConditionsAgreedVersion: VERSION,
           },
           update: (store, { data: { UpdateUser } }) => {
-            const { hasAgreedToLatestTermsAndConditions } = UpdateUser
+            console.log('submit update')
+            console.log('VERSION: ' + VERSION)
+            console.log('___________')
+            const { termsAndConditionsAgreedVersion } = UpdateUser
             this.setCurrentUser({
               ...this.currentUser,
-              hasAgreedToLatestTermsAndConditions,
+              termsAndConditionsAgreedVersion,
             })
           },
         })

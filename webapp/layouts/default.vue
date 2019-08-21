@@ -157,6 +157,7 @@ import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
 import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
 import CategoryQuery from '~/graphql/CategoryQuery.js'
+
 export default {
   components: {
     Dropdown,
@@ -175,6 +176,7 @@ export default {
       categories: [],
     }
   },
+
   computed: {
     ...mapGetters({
       user: 'auth/user',

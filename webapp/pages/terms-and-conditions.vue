@@ -22,7 +22,7 @@
 </template>
 
 <script>
-export const VERSION = '0.0.2'
+export const VERSION = '0.0.3'
 
 export default {
   layout: 'default',

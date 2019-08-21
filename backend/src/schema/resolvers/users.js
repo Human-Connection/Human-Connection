@@ -7,7 +7,7 @@ import { AuthenticationError, UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 
 const instance = neode()
-const defaultTermsAndConditionsVersion = "0.0.3"
+
 
 export const getBlockedUsers = async context => {
   const { neode } = context
@@ -233,16 +233,6 @@ export default {
       const result = await instance.cypher(statement, { id })
       const [{ email }] = result.records.map(r => r.get('e').properties)
       return email
-    },
-    hasAgreedToLatestTermsAndConditions:async (parent, params, context, resolveInfo) => {
-      console.log("hasAgreedToLatestTermsAndConditions -------")
-    
-      if (defaultTermsAndConditionsVersion !== parent.termsAndConditionsAgreedVersion){
-        console.log("UNGLEICH")
-        
-      }
-     
-      return true
     },
   },
 }

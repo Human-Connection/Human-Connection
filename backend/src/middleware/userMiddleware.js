@@ -8,13 +8,13 @@ export default {
       return result
     },
     UpdateUser: async (resolve, root, args, context, info) => {
-      const hasAgreedToLatestTermsAndConditions = false
+      
 
       const { currentUser } = context
       if (
         !!currentUser &&
-        !!args.hasAgreedToLatestTermsAndConditions &&
-        args.hasAgreedToLatestTermsAndConditions
+        !!args.termsAndConditionsAgreedVersion &&
+        args.termsAndConditionsAgreedVersion
       ) {
         const session = context.driver.session()
         const cypher = `
@@ -26,7 +26,7 @@ export default {
         const variable = {
           userId: currentUser.id,
           createdAt: new Date().toISOString(),
-          version: '0.0.3',
+          version: args.termsAndConditionsAgreedVersion,
         }
         const transactionResult = await session.run(cypher, variable)
         const [resultCurrentUser] = transactionResult.records.map(record => {
@@ -34,25 +34,11 @@ export default {
         })
         session.close()
 
-        if (
-          !!resultCurrentUser &&
-          !!resultCurrentUser.termsAndConditionsAgreedAt &&
-          !!resultCurrentUser.termsAndConditionsAgreedVersion
-        ) {
-          this.hasAgreedToLatestTermsAndConditions = true
-        }
+       
       }
 
       const result = await resolve(root, args, context, info)
-
-      if (
-        !!currentUser &&
-        !!args.hasAgreedToLatestTermsAndConditions &&
-        args.hasAgreedToLatestTermsAndConditions
-      ) {
-        result.hasAgreedToLatestTermsAndConditions = hasAgreedToLatestTermsAndConditions
-      }
-
+ 
       await createOrUpdateLocations(args.id, args.locationName, context.driver)
       return result
     },
