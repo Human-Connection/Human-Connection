@@ -83,6 +83,7 @@ export const currentUserNotificationsQuery = () => {
         notifications(read: false, orderBy: createdAt_desc) {
           id
           read
+          reason
           createdAt
           post {
             id
