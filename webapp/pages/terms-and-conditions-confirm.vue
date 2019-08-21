@@ -73,6 +73,15 @@ export default {
       ],
     }
   },
+  asyncData({ store, redirect }) {
+    console.log('store')
+    console.log(store)
+    console.log('redirect')
+    console.log(redirect)
+    if (store.getters['auth/isLoggedIn']) {
+      redirect('/')
+    }
+  },
   methods: {
     async submit() {
       try {

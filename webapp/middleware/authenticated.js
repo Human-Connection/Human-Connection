@@ -26,11 +26,12 @@ export default async ({ store, env, route, redirect }) => {
 
   // set the redirect path for after the login
   let params = {}
-  if (!isEmpty(route.path) && route.path !== '/') {
+  if (!isEmpty(route.path) && route.path !== '/' && route.path !== 'terms-and-conditions-confirm') {
     params.path = route.path
   }
-
+  console.log("ÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖö")
   if (!upToDate) {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     return redirect('/terms-and-conditions-confirm', params)
   } else {
     return redirect('/login', params)
