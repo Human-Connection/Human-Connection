@@ -45,7 +45,7 @@ export const getters = {
   },
   termsAndConditionsAgreed(state) {
     return state.user && state.user.termsAndConditionsAgreedVersion === VERSION
-  }
+  },
 }
 
 export const actions = {

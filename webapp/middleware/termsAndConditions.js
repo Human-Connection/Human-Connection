@@ -8,7 +8,7 @@ export default async ({ store, env, route, redirect }) => {
   }
   if (route.name === 'terms-and-conditions-confirm') return true // avoid endless loop
 
-  if(store.getters['auth/termsAndConditionsAgreed']) return true
+  if (store.getters['auth/termsAndConditionsAgreed']) return true
 
   let params = {}
   if (!isEmpty(route.path) && route.path !== '/') {

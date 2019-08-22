@@ -21,10 +21,10 @@
     }
   },
   "site": {
+    "thx": "Thanks!",
     "made": "Made with &#10084;",
     "imprint": "Imprint",
     "termsAndConditions": "Terms and conditions",
-    "newTermsAndConditions": "New Terms and conditions",
     "data-privacy": "Data privacy",
     "changelog": "Changes & History",
     "contact": "Contact",
@@ -35,9 +35,7 @@
     "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
     "germany": "Germany",
-    "code-of-conduct": "Code of Conduct",
-    "termsAndConditionsConfirmed": "I have read and confirmed the <a href=\"/terms-and-conditions\" target=\"_blank\">terms and conditions</a>.",
-    "termsAndConditionsNewConfirm": "Please confirm the new Terms and Conditions"
+    "code-of-conduct": "Code of Conduct"
   },
   "sorting": {
     "newest": "Newest",
@@ -571,6 +569,11 @@
     "get-help": "If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible and link or refer to the corresponding content:"
   },
   "termsAndConditions": {
+    "newTermsAndConditions": "New Terms and Conditions",
+    "termsAndConditionsConfirmed": "I have read and confirmed the <a href=\"/terms-and-conditions\" target=\"_blank\">Terms and Conditions</a>.",
+    "termsAndConditionsNewConfirmText": "Our <a href=\"/terms-and-conditions\" target=\"_blank\"><span class=\"ds-chip ds-chip-size-large ds-chip-warning ds-chip-round\">Terms and Conditions</span></a> have changed!",
+    "termsAndConditionsNewConfirm": "I confirm the new Terms and Conditions",
+    "agree": "I agree!",
     "risk": {
       "title": "Risk of accident",
       "description": "This is a test version! All data, your profile and the server can be completely destroyed, wiped out, lost, burnt and eventually synchronised near Alpha Centauri at any time. Use on your own risk. Commercial effects are not likely though."

@@ -1,34 +1,17 @@
 <template>
-  <div>
-    <ds-space>
-      <ds-heading tag="h2">{{ $t(`site.newTermsAndConditions`) }}</ds-heading>
-    </ds-space>
-    <ds-container>
-      <div>
-        <ds-button secondary class="display:none" @click="submit">
-          {{ $t(`site.termsAndConditionsNewConfirm`) }}
+  <ds-container width="medium">
+    <ds-card icon="balance-scale" header=" " primary centered>
+      <ds-text
+        tag="h2"
+        v-html="$t(`termsAndConditions.termsAndConditionsNewConfirmText`)"
+      ></ds-text>
+      <template slot="footer">
+        <ds-button @click="submit">
+          {{ $t(`termsAndConditions.termsAndConditionsNewConfirm`) }}
         </ds-button>
-      </div>
-      <div>
-        <ol>
-          <li v-for="section in sections" :key="section">
-            <strong>{{ $t(`termsAndConditions.${section}.title`) }}:</strong>
-            <p v-html="$t(`termsAndConditions.${section}.description`)" />
-          </li>
-        </ol>
-        <p>{{ $t(`termsAndConditions.have-fun`) }}</p>
-        <br />
-        <p>
-          <strong v-html="$t(`termsAndConditions.closing`)" />
-        </p>
-      </div>
-      <div>
-        <ds-button secondary class="display:none" @click="submit">
-          {{ $t(`site.termsAndConditionsNewConfirm`) }}
-        </ds-button>
-      </div>
-    </ds-container>
-  </div>
+      </template>
+    </ds-card>
+  </ds-container>
 </template>
 
 <script>
@@ -47,7 +30,7 @@ export default {
   layout: 'default',
   head() {
     return {
-      title: this.$t('site.newTermsAndConditions'),
+      title: this.$t('termsAndConditions.newTermsAndConditions'),
     }
   },
   computed: {
@@ -95,7 +78,7 @@ export default {
             })
           },
         })
-        this.$toast.success(this.$t('DANKE'))
+        this.$toast.success(this.$t('site.thx'))
         this.$router.replace(this.$route.query.path || '/')
       } catch (err) {
         this.$toast.error(err.message)

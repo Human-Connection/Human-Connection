@@ -21,11 +21,11 @@
     }
   },
   "site": {
+    "thx": "Danke!",
     "made": "Mit &#10084; gemacht",
     "imprint": "Impressum",
     "data-privacy": "Datenschutz",
     "termsAndConditions": "Nutzungsbedingungen",
-    "newTermsAndConditions": "Neue Nutzungsbedingungen",
     "changelog": "Änderungen & Verlauf",
     "contact": "Kontakt",
     "tribunal": "Registergericht",
@@ -35,9 +35,7 @@
     "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
     "bank": "Bankverbindung",
     "germany": "Deutschland",
-    "code-of-conduct": "Verhaltenscodex",
-    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu.",
-    "termsAndConditionsNewConfirm": "Bestätige bitte die neuen Nutzungsbedingungen"
+    "code-of-conduct": "Verhaltenscodex"
   },
   "sorting": {
     "newest": "Neuste",
@@ -571,6 +569,11 @@
     "get-help": "Wenn du einem inakzeptablen Verhalten ausgesetzt bist, es miterlebst oder andere Bedenken hast, benachrichtige bitte so schnell wie möglich einen Organisator der Gemeinschaft und verlinke oder verweise auf den entsprechenden Inhalt:"
   },
   "termsAndConditions": {
+    "newTermsAndConditions": "Neue Nutzungsbedingungen",
+    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu.",
+    "termsAndConditionsNewConfirmText": "Unsere <a href=\"/terms-and-conditions\" target=\"_blank\"><span class=\"ds-chip ds-chip-size-large ds-chip-warning ds-chip-round\">Nutzungsbedingungen</span></a> haben sich geändert!",
+    "termsAndConditionsNewConfirm": "Ich bestätige die neuen Nutzungsbedingungen",
+    "agree": "Ich Stimme zu!",
     "risk": {
       "title": "Unfallgefahr",
       "description": "Das ist eine Testversion! Alle Daten, Dein Profil und die Server können jederzeit komplett vernichtet, verloren, verbrannt und vielleicht auch in der Nähe von Alpha Centauri synchronisiert werden. Die Benutzung läuft auf eigene Gefahr. Mit kommerziellen Nebenwirkungen ist jedoch nicht zu rechnen."
