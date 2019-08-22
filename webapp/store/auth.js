@@ -144,10 +144,4 @@ export const actions = {
     commit('SET_TOKEN', null)
     return this.app.$apolloHelpers.onLogout()
   },
-
-  register({ dispatch, commit }, { email, password, inviteCode, invitedByUserId }) {},
-  async patch({ state, commit, dispatch }, data) {},
-  resendVerifySignup({ state, dispatch }) {},
-  resetPassword({ state }, data) {},
-  setNewPassword({ state }, data) {},
 }
