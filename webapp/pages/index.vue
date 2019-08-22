@@ -15,13 +15,26 @@
           ></ds-select>
         </div>
       </ds-grid-item>
-      <masonry-grid-item v-for="post in posts" :key="post.id">
-        <hc-post-card
-          :post="post"
-          :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-          @removePostFromList="deletePost(index, post.id)"
-        />
-      </masonry-grid-item>
+      <template v-if="hasResults">
+        <masonry-grid-item v-for="post in posts" :key="post.id">
+          <hc-post-card
+            :post="post"
+            :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
+            @removePostFromList="deletePost(index, post.id)"
+          />
+        </masonry-grid-item>
+      </template>
+      <template v-else>
+        <ds-grid-item :row-span="2" column-span="fullWidth">
+          <hc-empty icon="docs" />
+          <ds-text align="center">
+            {{ $t('index.no-results') }}
+          </ds-text>
+          <ds-text align="center">
+            {{ $t('index.change-filter-settings') }}
+          </ds-text>
+        </ds-grid-item>
+      </template>
     </masonry-grid>
     <no-ssr>
       <ds-button
@@ -49,6 +62,7 @@
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import uniqBy from 'lodash/uniqBy'
+import HcEmpty from '~/components/Empty'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
@@ -61,6 +75,7 @@ export default {
     FilterMenu,
     HcPostCard,
     HcLoadMore,
+    HcEmpty,
     MasonryGrid,
     MasonryGridItem,
   },
@@ -118,6 +133,9 @@ export default {
         }
       }
       return filter
+    },
+    hasResults() {
+      return this.$apollo.loading || (this.posts && this.posts.length > 0)
     },
   },
   watch: {
