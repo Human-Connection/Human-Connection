@@ -1,16 +1,59 @@
 <template>
   <ds-container width="medium">
     <ds-card icon="balance-scale" header=" " primary centered>
-      <ds-text
-        tag="h2"
-        v-html="$t(`termsAndConditions.termsAndConditionsNewConfirmText`)"
-      ></ds-text>
+      <ds-text>
+        <input
+          id="checkbox"
+          type="checkbox"
+          v-model="termsAndConditionsConfirmed"
+          :checked="checked"
+        />
+        <label
+          for="checkbox"
+          v-html="$t('termsAndConditions.termsAndConditionsNewConfirm')"
+        ></label>
+
+        <ds-button ghost @click="isOpen = true">
+          {{ $t(`termsAndConditions.termsAndConditionsNewConfirmText`) }}
+        </ds-button>
+      </ds-text>
+
       <template slot="footer">
-        <ds-button @click="submit">
-          {{ $t(`termsAndConditions.termsAndConditionsNewConfirm`) }}
+        <ds-button
+          secondary
+          @click="submit"
+          :disabled="disabledSubmitButton && !termsAndConditionsConfirmed"
+        >
+          {{ $t(`actions.save`) }}
         </ds-button>
       </template>
     </ds-card>
+
+    <ds-modal
+      v-if="isOpen"
+      v-model="isOpen"
+      :title="$t('termsAndConditions.newTermsAndConditions')"
+      force
+      extended
+      :confirm-label="$t('termsAndConditions.agree')"
+      :cancel-label="$t('actions.cancel')"
+      v-on:confirm=";(disabledSubmitButton = false), (termsAndConditionsConfirmed = true)"
+      v-on:cancel="disabledSubmitButton = true"
+    >
+      <div>
+        <ol>
+          <li v-for="section in sections" :key="section">
+            <strong>{{ $t(`termsAndConditions.${section}.title`) }}:</strong>
+            <p v-html="$t(`termsAndConditions.${section}.description`)" />
+          </li>
+        </ol>
+        <p>{{ $t(`termsAndConditions.have-fun`) }}</p>
+        <br />
+        <p>
+          <strong v-html="$t(`termsAndConditions.closing`)" />
+        </p>
+      </div>
+    </ds-modal>
   </ds-container>
 </template>
 
@@ -37,10 +80,18 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
+    compiledData() {
+      return {
+        template: `<p>${this.data}</p>`,
+      }
+    },
   },
   data() {
     return {
-      isOpen: false,
+      disabledSubmitButton: false,
+      isOpen: true,
+      termsAndConditionsConfirmed: false,
+      checked: false,
       sections: [
         'risk',
         'data-privacy',

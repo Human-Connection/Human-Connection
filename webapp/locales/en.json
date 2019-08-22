@@ -571,8 +571,8 @@
   "termsAndConditions": {
     "newTermsAndConditions": "New Terms and Conditions",
     "termsAndConditionsConfirmed": "I have read and confirmed the <a href=\"/terms-and-conditions\" target=\"_blank\">Terms and Conditions</a>.",
-    "termsAndConditionsNewConfirmText": "Our <a href=\"/terms-and-conditions\" target=\"_blank\"><span class=\"ds-chip ds-chip-size-large ds-chip-warning ds-chip-round\">Terms and Conditions</span></a> have changed!",
-    "termsAndConditionsNewConfirm": "I confirm the new Terms and Conditions",
+    "termsAndConditionsNewConfirmText": "Read new terms of conditions now!",
+    "termsAndConditionsNewConfirm": "I have read and agree to the new terms of conditions.",
     "agree": "I agree!",
     "risk": {
       "title": "Risk of accident",
