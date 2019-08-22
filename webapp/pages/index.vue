@@ -185,9 +185,6 @@ export default {
         return result
       },
       update({ Post }) {
-        // TODO: find out why `update` gets called twice initially.
-        // We have to filter for uniq posts only because we get the same
-        // result set twice.
         this.hasMore = Post.length >= this.pageSize
         const posts = uniqBy([...this.posts, ...Post], 'id')
         this.posts = posts
