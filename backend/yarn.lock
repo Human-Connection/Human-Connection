@@ -1826,12 +1826,12 @@ apollo-server-plugin-base@0.6.1:
   dependencies:
     apollo-server-types "0.2.1"
 
-apollo-server-testing@~2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/apollo-server-testing/-/apollo-server-testing-2.8.1.tgz#70026e1b6abab1ca51ffee21bfda61f5b5ad92c1"
-  integrity sha512-bWKczu9HPBWBOz3GDtPA1pykmIvK2TOTLaK03AVSZODvZX0YLWizB0bq5I5Ox6rG+wmW638v1Kq+BhADVHovdg==
+apollo-server-testing@~2.8.2:
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/apollo-server-testing/-/apollo-server-testing-2.8.2.tgz#8faa8f1778fa4893f5bf705f7cea84a69477aa3f"
+  integrity sha512-ccp1DpmjdmLT98ww4NtSiDPbeIPlVZJ5Iy408ToyhAGwNXRHk5f8Czf+JAgSayvgt4cxCm1fzxnVe1OjO8oIvA==
   dependencies:
-    apollo-server-core "2.8.1"
+    apollo-server-core "2.8.2"
 
 apollo-server-types@0.2.1:
   version "0.2.1"
@@ -2954,10 +2954,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@2.0.0-beta.5:
-  version "2.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-beta.5.tgz#90885db3772802d55519cd12acd49de56aca1059"
-  integrity sha512-GS5yi964NDFNoja9yOdWFj9T97T67yLrUeJZgddHaVfc/6tHWtX7RXocuubmZkNzrZUZ9BqBOW7jTR5OoWjJ1w==
+date-fns@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0.tgz#52f05c6ae1fe0e395670082c72b690ab781682d0"
+  integrity sha512-nGZDA64Ktq5uTWV4LEH3qX+foV4AguT5qxwRlJDzJtf57d4xLNwtwrfb7SzKCoikoae8Bvxf0zdaEG/xWssp/w==
 
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"

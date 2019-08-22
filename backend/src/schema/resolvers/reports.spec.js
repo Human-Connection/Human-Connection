@@ -1,8 +1,10 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login } from '../../jest/helpers'
+import { neode } from '../../bootstrap/neo4j'
 
 const factory = Factory()
+const instance = neode()
 
 describe('report', () => {
   let mutation
@@ -10,6 +12,7 @@ describe('report', () => {
   let returnedObject
   let variables
   let createPostVariables
+  const categoryIds = ['cat9']
 
   beforeEach(async () => {
     returnedObject = '{ description }'
@@ -27,6 +30,11 @@ describe('report', () => {
       name: 'abusive-user',
       role: 'user',
       email: 'abusive-user@example.org',
+    })
+    await instance.create('Category', {
+      id: 'cat9',
+      name: 'Democracy & Politics',
+      icon: 'university',
     })
   })
 
@@ -126,6 +134,7 @@ describe('report', () => {
             await factory.create('Post', {
               id: 'p23',
               title: 'Matt and Robert having a pair-programming',
+              categoryIds,
             })
             variables = {
               id: 'p23',
@@ -171,6 +180,7 @@ describe('report', () => {
               id: 'p1',
               title: 'post to comment on',
               content: 'please comment on me',
+              categoryIds,
             }
             const asAuthenticatedUser = await factory.authenticateAs({
               email: 'test@example.org',

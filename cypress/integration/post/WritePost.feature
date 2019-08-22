@@ -6,6 +6,7 @@ Feature: Create a post
   Background:
     Given I have a user account
     And I am logged in
+    And we have a selection of categories
     And I am on the "landing" page
 
   Scenario: Create a post
@@ -16,6 +17,7 @@ Feature: Create a post
       Human Connection is a free and open-source social network
       for active citizenship.
       """
+    Then I select a category
     And I click on "Save"
     Then I get redirected to ".../my-first-post"
     And the post was saved successfully

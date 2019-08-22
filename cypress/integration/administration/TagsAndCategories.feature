@@ -24,8 +24,8 @@ Feature: Tags and Categories
     Then I can see the following table:
       |  | Name               | Posts |
       |  | Just For Fun       | 2     |
-      |  | Happyness & Values | 1     |
-      |  | Health & Wellbeing | 0     |
+      |  | Happiness & Values | 1     |
+      |  | Health & Wellbeing | 1     |
 
   Scenario: See an overview of tags
     When I navigate to the administration dashboard

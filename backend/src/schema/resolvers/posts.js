@@ -83,17 +83,14 @@ export default {
 
       await session.run(cypherDeletePreviousRelations, { params })
 
-      let updatePostCypher = `MATCH (post:Post {id: $params.id})
-      SET post = $params
-      `
-      if (categoryIds && categoryIds.length) {
-        updatePostCypher += `WITH post
+      const updatePostCypher = `MATCH (post:Post {id: $params.id})
+        SET post = $params
+        WITH post
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
-        `
-      }
-      updatePostCypher += `RETURN post`
+        RETURN post`
+
       const updatePostVariables = { categoryIds, params }
 
       const transactionRes = await session.run(updatePostCypher, updatePostVariables)
@@ -112,19 +109,16 @@ export default {
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
 
-      let createPostCypher = `CREATE (post:Post {params})
-      WITH post
-      MATCH (author:User {id: $userId})
-      MERGE (post)<-[:WROTE]-(author)
-      `
-      if (categoryIds) {
-        createPostCypher += `WITH post
+      const createPostCypher = `CREATE (post:Post {params})
+        WITH post
+        MATCH (author:User {id: $userId})
+        MERGE (post)<-[:WROTE]-(author)
+        WITH post
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
-        `
-      }
-      createPostCypher += `RETURN post`
+        RETURN post`
+
       const createPostVariables = { userId: context.user.id, categoryIds, params }
 
       const session = context.driver.session()

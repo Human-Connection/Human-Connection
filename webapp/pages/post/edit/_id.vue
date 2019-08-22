@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import HcContributionForm from '~/components/ContributionForm/ContributionForm'
+import PostQuery from '~/graphql/PostQuery'
 
 export default {
   components: {
@@ -36,38 +36,11 @@ export default {
   apollo: {
     Post: {
       query() {
-        return gql(`
-          query($id: ID!) {
-            Post(id: $id) {
-              id
-              title
-              content
-              createdAt
-              disabled
-              deleted
-              slug
-              image
-              language
-              author {
-                id
-                disabled
-                deleted
-              }
-              tags {
-                name
-              }
-              categories {
-                id
-                name
-                icon
-              }
-            }
-          }
-        `)
+        return PostQuery(this.$i18n)
       },
       variables() {
         return {
-          id: this.$route.params.id || 'p1',
+          id: this.$route.params.id,
         }
       },
       fetchPolicy: 'cache-and-network',
