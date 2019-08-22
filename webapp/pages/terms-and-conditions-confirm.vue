@@ -1,59 +1,25 @@
 <template>
   <ds-container width="medium">
-    <ds-card icon="balance-scale" header=" " primary centered>
+    <ds-card icon="balance-scale" :header="$t(`termsAndConditions.newTermsAndConditions`)" centered>
+      <p>
+        <ds-button>
+          <nuxt-link class="post-link" :to="{ name: 'terms-and-conditions' }" target="_blank">
+            {{ $t(`termsAndConditions.termsAndConditionsNewConfirmText`) }}
+          </nuxt-link>
+        </ds-button>
+      </p>
       <ds-text>
-        <input
-          id="checkbox"
-          type="checkbox"
-          v-model="termsAndConditionsConfirmed"
-          :checked="checked"
-        />
+        <input id="checkbox" type="checkbox" v-model="checked" :checked="checked" />
         <label
           for="checkbox"
           v-html="$t('termsAndConditions.termsAndConditionsNewConfirm')"
         ></label>
-
-        <ds-button ghost @click="isOpen = true">
-          {{ $t(`termsAndConditions.termsAndConditionsNewConfirmText`) }}
-        </ds-button>
       </ds-text>
 
       <template slot="footer">
-        <ds-button
-          secondary
-          @click="submit"
-          :disabled="disabledSubmitButton && !termsAndConditionsConfirmed"
-        >
-          {{ $t(`actions.save`) }}
-        </ds-button>
+        <ds-button primary @click="submit" :disabled="!checked">{{ $t(`actions.save`) }}</ds-button>
       </template>
     </ds-card>
-
-    <ds-modal
-      v-if="isOpen"
-      v-model="isOpen"
-      :title="$t('termsAndConditions.newTermsAndConditions')"
-      force
-      extended
-      :confirm-label="$t('termsAndConditions.agree')"
-      :cancel-label="$t('actions.cancel')"
-      v-on:confirm=";(disabledSubmitButton = false), (termsAndConditionsConfirmed = true)"
-      v-on:cancel="disabledSubmitButton = true"
-    >
-      <div>
-        <ol>
-          <li v-for="section in sections" :key="section">
-            <strong>{{ $t(`termsAndConditions.${section}.title`) }}:</strong>
-            <p v-html="$t(`termsAndConditions.${section}.description`)" />
-          </li>
-        </ol>
-        <p>{{ $t(`termsAndConditions.have-fun`) }}</p>
-        <br />
-        <p>
-          <strong v-html="$t(`termsAndConditions.closing`)" />
-        </p>
-      </div>
-    </ds-modal>
   </ds-container>
 </template>
 
@@ -80,17 +46,9 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
-    compiledData() {
-      return {
-        template: `<p>${this.data}</p>`,
-      }
-    },
   },
   data() {
     return {
-      disabledSubmitButton: false,
-      isOpen: true,
-      termsAndConditionsConfirmed: false,
       checked: false,
       sections: [
         'risk',

@@ -571,7 +571,7 @@
   "termsAndConditions": {
     "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu.",
     "newTermsAndConditions": "Neue Nutzungsbedingungen",
-    "termsAndConditionsNewConfirmText": "Neue Nutzungsbedingungen jetzt lesen!",
+    "termsAndConditionsNewConfirmText": "Bitte lies dir die neue Nutzungsbedingungen jetzt durch!",
     "termsAndConditionsNewConfirm": "Ich habe die neuen Nutzungsbedingungen durchgelesen und stimme zu.",
     "agree": "Ich stimme zu!",
     "risk": {
