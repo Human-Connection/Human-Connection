@@ -34,6 +34,7 @@ describe('CreateInvitationCode', () => {
         name: 'Inviter',
         email: 'inviter@example.org',
         password: '1234',
+        termsAndConditionsAgreedVersion: '0.0.1',
       }
       action = async () => {
         const factory = Factory()
@@ -293,8 +294,8 @@ describe('Signup', () => {
 
 describe('SignupVerification', () => {
   const mutation = `
-      mutation($name: String!, $password: String!, $email: String!, $nonce: String!) {
-        SignupVerification(name: $name, password: $password, email: $email, nonce: $nonce) {
+      mutation($name: String!, $password: String!, $email: String!, $nonce: String!, $termsAndConditionsAgreedVersion: String!) {
+        SignupVerification(name: $name, password: $password, email: $email, nonce: $nonce, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
           id
         }
       }
@@ -305,6 +306,7 @@ describe('SignupVerification', () => {
       name: 'John Doe',
       password: '123',
       email: 'john@example.org',
+      termsAndConditionsAgreedVersion: '0.0.1',
     }
 
     describe('unauthenticated', () => {
