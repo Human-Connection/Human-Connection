@@ -1,6 +1,4 @@
-import {
-  UserInputError
-} from 'apollo-server'
+import { UserInputError } from 'apollo-server'
 import extractMentionedUsers from './notifications/extractMentionedUsers'
 import extractHashtags from './hashtags/extractHashtags'
 

@@ -10,7 +10,7 @@
       "all": "All"
     },
     "general": {
-      "header": "Filter by..."
+      "header": "Filter by …"
     },
     "followers": {
       "label": "Users I follow"
@@ -92,7 +92,7 @@
     }
   },
   "editor": {
-    "placeholder": "Leave your inspirational thoughts...",
+    "placeholder": "Leave your inspirational thoughts …",
     "mention": {
       "noUsersFound": "No users found"
     },
@@ -124,9 +124,9 @@
   },
   "notifications": {
     "menu": {
-      "mentionedInPost": "Mentioned you in a post …",
-      "mentionedInComment": "Mentioned you in a comment …",
-      "commentedOnPost": "Commented on your post …"
+      "mentioned_in_post": "Mentioned you in a post …",
+      "mentioned_in_comment": "Mentioned you in a comment …",
+      "comment_on_post": "Commented on your post …"
     }
   },
   "search": {
@@ -298,7 +298,7 @@
   },
   "comment": {
     "content": {
-      "unavailable-placeholder": "...this comment is not available anymore"
+      "unavailable-placeholder": "… this comment is not available anymore"
     },
     "menu": {
       "edit": "Edit Comment",

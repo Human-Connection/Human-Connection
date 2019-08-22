@@ -10,7 +10,7 @@
       "all": "Alle"
     },
     "general": {
-      "header": "Filtern nach..."
+      "header": "Filtern nach …"
     },
     "followers": {
       "label": "Benutzern, denen ich folge"
@@ -92,7 +92,7 @@
     }
   },
   "editor": {
-    "placeholder": "Schreib etwas Inspirierendes...",
+    "placeholder": "Schreib etwas Inspirierendes …",
     "mention": {
       "noUsersFound": "Keine Benutzer gefunden"
     },
@@ -124,9 +124,9 @@
   },
   "notifications": {
     "menu": {
-      "mentionedInPost": "Hat dich in einem Beitrag erwähnt …",
-      "mentionedInComment": "Hat dich in einem Kommentar erwähnt …",
-      "commentedOnPost": "Hat deinen Beitrag kommentiert …"
+      "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …",
+      "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
+      "comment_on_post": "Hat deinen Beitrag kommentiert …"
     }
   },
   "search": {
@@ -298,7 +298,7 @@
   },
   "comment": {
     "content": {
-      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
+      "unavailable-placeholder": "… dieser Kommentar ist nicht mehr verfügbar"
     },
     "menu": {
       "edit": "Kommentar bearbeiten",

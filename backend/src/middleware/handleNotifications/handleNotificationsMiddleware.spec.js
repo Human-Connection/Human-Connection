@@ -1,14 +1,7 @@
-import {
-  gql
-} from '../../jest/helpers'
+import { gql } from '../../jest/helpers'
 import Factory from '../../seed/factories'
-import {
-  createTestClient
-} from 'apollo-server-testing'
-import {
-  neode,
-  getDriver
-} from '../../bootstrap/neo4j'
+import { createTestClient } from 'apollo-server-testing'
+import { neode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
 let server
@@ -20,7 +13,7 @@ const factory = Factory()
 const driver = getDriver()
 const instance = neode()
 const categoryIds = ['cat9']
-const createPostMutation = gql `
+const createPostMutation = gql`
   mutation($id: ID, $title: String!, $postContent: String!, $categoryIds: [ID]!) {
     CreatePost(id: $id, title: $title, content: $postContent, categoryIds: $categoryIds) {
       id
@@ -29,7 +22,7 @@ const createPostMutation = gql `
     }
   }
 `
-const updatePostMutation = gql `
+const updatePostMutation = gql`
   mutation($id: ID!, $title: String!, $postContent: String!, $categoryIds: [ID]!) {
     UpdatePost(id: $id, content: $postContent, title: $title, categoryIds: $categoryIds) {
       title
@@ -37,7 +30,7 @@ const updatePostMutation = gql `
     }
   }
 `
-const createCommentMutation = gql `
+const createCommentMutation = gql`
   mutation($id: ID, $postId: ID!, $commentContent: String!) {
     CreateComment(id: $id, postId: $postId, content: $commentContent) {
       id
@@ -82,7 +75,7 @@ afterEach(async () => {
 })
 
 describe('notifications', () => {
-  const notificationQuery = gql `
+  const notificationQuery = gql`
     query($read: Boolean) {
       currentUser {
         notifications(read: $read, orderBy: createdAt_desc) {
@@ -162,20 +155,20 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: {
                 currentUser: {
-                  notifications: [{
-                    read: false,
-                    reason: 'comment_on_post',
-                    post: null,
-                    comment: {
-                      content: commentContent,
+                  notifications: [
+                    {
+                      read: false,
+                      reason: 'comment_on_post',
+                      post: null,
+                      comment: {
+                        content: commentContent,
+                      },
                     },
-                  }, ],
+                  ],
                 },
               },
             })
-            const {
-              query
-            } = createTestClient(server)
+            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -196,9 +189,7 @@ describe('notifications', () => {
                 },
               },
             })
-            const {
-              query
-            } = createTestClient(server)
+            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -226,9 +217,7 @@ describe('notifications', () => {
                 },
               },
             })
-            const {
-              query
-            } = createTestClient(server)
+            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -265,20 +254,20 @@ describe('notifications', () => {
           const expected = expect.objectContaining({
             data: {
               currentUser: {
-                notifications: [{
-                  read: false,
-                  reason: 'mentioned_in_post',
-                  post: {
-                    content: expectedContent,
+                notifications: [
+                  {
+                    read: false,
+                    reason: 'mentioned_in_post',
+                    post: {
+                      content: expectedContent,
+                    },
+                    comment: null,
                   },
-                  comment: null,
-                }, ],
+                ],
               },
             },
           })
-          const {
-            query
-          } = createTestClient(server)
+          const { query } = createTestClient(server)
           await expect(
             query({
               query: notificationQuery,
@@ -326,7 +315,8 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: {
                 currentUser: {
-                  notifications: [{
+                  notifications: [
+                    {
                       read: false,
                       reason: 'mentioned_in_post',
                       post: {
@@ -371,9 +361,7 @@ describe('notifications', () => {
                 },
               },
             })
-            const {
-              query
-            } = createTestClient(server)
+            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -410,20 +398,20 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: {
                 currentUser: {
-                  notifications: [{
-                    read: false,
-                    reason: 'mentioned_in_comment',
-                    post: null,
-                    comment: {
-                      content: commentContent,
+                  notifications: [
+                    {
+                      read: false,
+                      reason: 'mentioned_in_comment',
+                      post: null,
+                      comment: {
+                        content: commentContent,
+                      },
                     },
-                  }, ],
+                  ],
                 },
               },
             })
-            const {
-              query
-            } = createTestClient(server)
+            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -458,9 +446,7 @@ describe('notifications', () => {
                 },
               },
             })
-            const {
-              query
-            } = createTestClient(server)
+            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -481,7 +467,7 @@ describe('Hashtags', () => {
   const title = 'Two Hashtags'
   const postContent =
     '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Democracy">#Democracy</a> should work equal for everybody!? That seems to be the only way to have equal <a class="hashtag" href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
-  const postWithHastagsQuery = gql `
+  const postWithHastagsQuery = gql`
     query($id: ID) {
       Post(id: $id) {
         tags {
@@ -513,7 +499,8 @@ describe('Hashtags', () => {
       })
 
       it('both Hashtags are created with the "id" set to their "name"', async () => {
-        const expected = [{
+        const expected = [
+          {
             id: 'Democracy',
           },
           {
@@ -528,9 +515,11 @@ describe('Hashtags', () => {
         ).resolves.toEqual(
           expect.objectContaining({
             data: {
-              Post: [{
-                tags: expect.arrayContaining(expected),
-              }, ],
+              Post: [
+                {
+                  tags: expect.arrayContaining(expected),
+                },
+              ],
             },
           }),
         )
@@ -552,7 +541,8 @@ describe('Hashtags', () => {
             },
           })
 
-          const expected = [{
+          const expected = [
+            {
               id: 'Elections',
             },
             {
@@ -567,9 +557,11 @@ describe('Hashtags', () => {
           ).resolves.toEqual(
             expect.objectContaining({
               data: {
-                Post: [{
-                  tags: expect.arrayContaining(expected),
-                }, ],
+                Post: [
+                  {
+                    tags: expect.arrayContaining(expected),
+                  },
+                ],
               },
             }),
           )
