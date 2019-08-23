@@ -995,10 +995,10 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.6.5":
-  version "5.6.5"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.6.5.tgz#6f42bd1a8e3243e051e7bb067145125cd6b37e09"
-  integrity sha512-j9qxXqZ9k/uNkABlsVjNN2Z5pVtukDmZMZ0ACsob+m5o8/yo87GvRf/UJfTPtog9vZ/QwkLav5Hhl+10NC7QLw==
+"@metascraper/helpers@^5.6.5", "@metascraper/helpers@^5.6.6":
+  version "5.6.6"
+  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.6.6.tgz#19e2ae088f2c45052ac58aa097f78b6341390672"
+  integrity sha512-JHNjb5ZzBIf2lqjeAd7uFmthgvwZxuMbNE70tV0FbYgmlT417Tzo77HxRj9Q4jCYasWj6OMcdGg+pVAcP+Xvfw==
   dependencies:
     audio-extensions "0.0.0"
     chrono-node "~1.3.11"
@@ -5904,6 +5904,11 @@ memoize-one@~5.0.5:
   resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.0.5.tgz#8cd3809555723a07684afafcd6f756072ac75d7e"
   integrity sha512-ey6EpYv0tEaIbM/nTDOpHciXUvd+ackQrJgEzBwemhZZIWZjcyodqEcrmqDy2BKRTM3a65kKBV4WtLXJDt26SQ==
 
+memoize-one@~5.1.0:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.1.1.tgz#047b6e3199b508eaec03504de71229b8eb1d75c0"
+  integrity sha512-HKeeBpWvqiVJD57ZUAsJNm71eHTykffzcLZVYWiVfQeI1rJtuEaS7hQiEpWfVVk18donPwJEcFKIkCmPJNOhHA==
+
 memorystream@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/memorystream/-/memorystream-0.3.1.tgz#86d7090b30ce455d63fbae12dda51a47ddcaf9b2"
@@ -6039,15 +6044,15 @@ metascraper-video@^5.6.5:
     "@metascraper/helpers" "^5.6.5"
     lodash "~4.17.15"
 
-metascraper-youtube@^5.6.3:
-  version "5.6.5"
-  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.6.5.tgz#d9c92d591d1181177eed2bc718fda638e657796e"
-  integrity sha512-DQgx1+sCAwHRrjNb9vWmqbV/XKQ5ujLQSyi+C04O2F4Nf6tgGSvhHVMYkr+epLaHzN1cunWwK/pghM018vyoag==
+metascraper-youtube@^5.6.6:
+  version "5.6.6"
+  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.6.6.tgz#ba098f1c92306e39645a11ace263c24d77223a18"
+  integrity sha512-xV9uyMNUdXhsNMqnFk7bde2ygt2rKHJ8r+3Ft+GbgP+Zdw6PXOCy6/+yA/kF5nZouF7DOBBTw2bWEXqu08eCmQ==
   dependencies:
-    "@metascraper/helpers" "^5.6.5"
+    "@metascraper/helpers" "^5.6.6"
     get-video-id "~3.1.4"
     is-reachable "~3.1.0"
-    memoize-one "~5.0.5"
+    memoize-one "~5.1.0"
     p-locate "~4.1.0"
 
 metascraper@^4.10.3:
