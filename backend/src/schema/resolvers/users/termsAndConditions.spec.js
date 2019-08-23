@@ -14,6 +14,9 @@ describe('SignupVerification', () => {
 })
 
 describe('UpdateUser', () => {
+  describe('given terms and conditions are not updated', () => {
+    it.todo('does not update `termsAndConditionsAgreedAt`')
+  })
   describe('given a new agreed version of terms and conditions', () => {
     it.todo('updates `termsAndConditionsAgreedAt`')
     it.todo('updates `termsAndConditionsAgreedVersion`')

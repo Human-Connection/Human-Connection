@@ -55,7 +55,10 @@
               v-model="termsAndConditionsConfirmed"
               :checked="termsAndConditionsConfirmed"
             />
-            <label for="checkbox" v-html="$t('site.termsAndConditionsConfirmed')"></label>
+            <label
+              for="checkbox"
+              v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
+            ></label>
           </ds-text>
 
           <template slot="footer">
