@@ -86,7 +86,7 @@
     "metascraper-publisher": "^5.6.5",
     "metascraper-soundcloud": "^5.6.5",
     "metascraper-title": "^5.6.5",
-    "metascraper-url": "^5.6.5",
+    "metascraper-url": "^5.6.6",
     "metascraper-video": "^5.6.5",
     "metascraper-youtube": "^5.6.3",
     "minimatch": "^3.0.4",
