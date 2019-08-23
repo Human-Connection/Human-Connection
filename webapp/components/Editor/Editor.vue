@@ -48,6 +48,7 @@
     </editor-menu-bubble>
     <menu-bar :editor="editor" :showLinkMenu="showLinkMenu" />
     <editor-content ref="editor" :editor="editor" />
+    <context-menu ref="contextMenu" />
   </div>
 </template>
 
@@ -56,7 +57,6 @@ import defaultExtensions from './defaultExtensions.js'
 import linkify from 'linkify-it'
 import stringHash from 'string-hash'
 import Fuse from 'fuse.js'
-import tippy from 'tippy.js'
 import { Editor, EditorContent, EditorMenuBubble } from 'tiptap'
 import EventHandler from './plugins/eventHandler.js'
 import { History } from 'tiptap-extensions'
@@ -65,6 +65,7 @@ import Mention from './nodes/Mention.js'
 import { mapGetters } from 'vuex'
 import MenuBar from './MenuBar'
 import SuggestionsMenu from './SuggestionsMenu'
+import ContextMenu from './ContextMenu'
 
 let throttleInputEvent
 
@@ -74,6 +75,7 @@ export default {
     EditorMenuBubble,
     MenuBar,
     SuggestionsMenu,
+    ContextMenu,
   },
   props: {
     users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
@@ -99,7 +101,7 @@ export default {
             this.query = query
             this.filteredItems = items
             this.suggestionRange = range
-            this.renderPopup(virtualNode)
+            this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
             // we save the command for inserting a selected mention
             // this allows us to call it inside of our custom popup
             // via keyboard navigation and on click
@@ -111,7 +113,7 @@ export default {
             this.filteredItems = items
             this.suggestionRange = range
             this.navigatedItemIndex = 0
-            this.renderPopup(virtualNode)
+            this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
           },
           // is called when a suggestion is cancelled
           onExit: () => {
@@ -122,7 +124,7 @@ export default {
             this.filteredItems = []
             this.suggestionRange = null
             this.navigatedItemIndex = 0
-            this.destroyPopup()
+            this.$refs.contextMenu.hideContextMenu()
           },
           // is called on every keyDown event while a suggestion is active
           onKeyDown: ({ event }) => {
@@ -175,7 +177,7 @@ export default {
             this.query = this.sanitizedQuery(query)
             this.filteredItems = items
             this.suggestionRange = range
-            this.renderPopup(virtualNode)
+            this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
             // we save the command for inserting a selected mention
             // this allows us to call it inside of our custom popup
             // via keyboard navigation and on click
@@ -187,7 +189,7 @@ export default {
             this.filteredItems = items
             this.suggestionRange = range
             this.navigatedItemIndex = 0
-            this.renderPopup(virtualNode)
+            this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
           },
           // is called when a suggestion is cancelled
           onExit: () => {
@@ -198,7 +200,7 @@ export default {
             this.filteredItems = []
             this.suggestionRange = null
             this.navigatedItemIndex = 0
-            this.destroyPopup()
+            this.$refs.contextMenu.hideContextMenu()
           },
           // is called on every keyDown event while a suggestion is active
           onKeyDown: ({ event }) => {
@@ -362,45 +364,6 @@ export default {
         attrs: typeAttrs[this.suggestionType],
       })
       this.editor.focus()
-    },
-    // renders a popup with suggestions
-    // tiptap provides a virtualNode object for using popper.js (or tippy.js) for popups
-    renderPopup(node) {
-      if (this.popup) {
-        return
-      }
-      this.popup = tippy(node, {
-        content: this.$refs.suggestions.$el,
-        trigger: 'mouseenter',
-        interactive: true,
-        theme: 'dark',
-        placement: 'top-start',
-        inertia: true,
-        duration: [400, 200],
-        showOnInit: true,
-        arrow: true,
-        arrowType: 'round',
-      })
-      // we have to update tippy whenever the DOM is updated
-      if (MutationObserver) {
-        this.observer = new MutationObserver(() => {
-          this.popup.popperInstance.scheduleUpdate()
-        })
-        this.observer.observe(this.$refs.suggestions.$el, {
-          childList: true,
-          subtree: true,
-          characterData: true,
-        })
-      }
-    },
-    destroyPopup() {
-      if (this.popup) {
-        this.popup.destroy()
-        this.popup = null
-      }
-      if (this.observer) {
-        this.observer.disconnect()
-      }
     },
     onUpdate(e) {
       const content = e.getHTML()
