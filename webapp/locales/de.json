@@ -122,8 +122,7 @@
       "followingNobody": "folgt niemandem.",
       "followedBy": "wird gefolgt von:",
       "followedByNobody": "wird von niemandem gefolgt.",
-      "and": "und",
-      "more": "weitere"
+      "andMore": "und {number} weitere …"
     },
     "invites": {
       "title": "Lade jemanden zu Human Connection ein!",
