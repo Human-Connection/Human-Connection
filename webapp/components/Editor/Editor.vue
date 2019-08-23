@@ -43,137 +43,7 @@
         </div>
       </div>
     </div>
-
-    <editor-menu-bubble :editor="editor">
-      <div
-        ref="menu"
-        slot-scope="{ commands, getMarkAttrs, isActive, menu }"
-        class="menububble tooltip"
-        x-placement="top"
-        :class="{ 'is-active': menu.isActive || linkMenuIsActive }"
-        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
-      >
-        <div class="tooltip-wrapper">
-          <template v-if="linkMenuIsActive">
-            <ds-input
-              ref="linkInput"
-              v-model="linkUrl"
-              class="editor-menu-link-input"
-              placeholder="http://"
-              @blur.native.capture="hideMenu(menu.isActive)"
-              @keydown.native.esc.prevent="hideMenu(menu.isActive)"
-              @keydown.native.enter.prevent="setLinkUrl(commands.link, linkUrl)"
-            />
-          </template>
-          <template v-else>
-            <ds-button
-              class="menububble__button"
-              size="small"
-              :hover="isActive.bold()"
-              ghost
-              @click.prevent="() => {}"
-              @mousedown.native.prevent="commands.bold"
-            >
-              <ds-icon name="bold" />
-            </ds-button>
-
-            <ds-button
-              class="menububble__button"
-              size="small"
-              :hover="isActive.italic()"
-              ghost
-              @click.prevent="() => {}"
-              @mousedown.native.prevent="commands.italic"
-            >
-              <ds-icon name="italic" />
-            </ds-button>
-
-            <ds-button
-              class="menububble__button"
-              size="small"
-              :hover="isActive.link()"
-              ghost
-              @click.prevent="() => {}"
-              @mousedown.native.prevent="showLinkMenu(getMarkAttrs('link'))"
-            >
-              <ds-icon name="link" />
-            </ds-button>
-          </template>
-        </div>
-        <div class="tooltip-arrow" />
-      </div>
-    </editor-menu-bubble>
-    <editor-floating-menu :editor="editor">
-      <div
-        slot-scope="{ commands, isActive, menu }"
-        class="editor__floating-menu"
-        :class="{ 'is-active': menu.isActive }"
-        :style="`top: ${menu.top}px`"
-      >
-        <ds-button
-          class="menubar__button"
-          size="small"
-          :ghost="!isActive.paragraph()"
-          @click.prevent="commands.paragraph()"
-        >
-          <ds-icon name="paragraph" />
-        </ds-button>
-
-        <ds-button
-          class="menubar__button"
-          size="small"
-          :ghost="!isActive.heading({ level: 3 })"
-          @click.prevent="commands.heading({ level: 3 })"
-        >
-          H3
-        </ds-button>
-
-        <ds-button
-          class="menubar__button"
-          size="small"
-          :ghost="!isActive.heading({ level: 4 })"
-          @click.prevent="commands.heading({ level: 4 })"
-        >
-          H4
-        </ds-button>
-
-        <ds-button
-          class="menubar__button"
-          size="small"
-          :ghost="!isActive.bullet_list()"
-          @click.prevent="commands.bullet_list()"
-        >
-          <ds-icon name="list-ul" />
-        </ds-button>
-
-        <ds-button
-          class="menubar__button"
-          size="small"
-          :ghost="!isActive.ordered_list()"
-          @click.prevent="commands.ordered_list()"
-        >
-          <ds-icon name="list-ol" />
-        </ds-button>
-
-        <ds-button
-          class="menubar__button"
-          size="small"
-          :ghost="!isActive.blockquote()"
-          @click.prevent="commands.blockquote"
-        >
-          <ds-icon name="quote-right" />
-        </ds-button>
-
-        <ds-button
-          class="menubar__button"
-          size="small"
-          :ghost="!isActive.horizontal_rule()"
-          @click.prevent="commands.horizontal_rule"
-        >
-          <ds-icon name="minus" />
-        </ds-button>
-      </div>
-    </editor-floating-menu>
+    <hc-menu-bar :editor="editor" />
     <editor-content ref="editor" :editor="editor" />
   </div>
 </template>
@@ -184,20 +54,20 @@ import linkify from 'linkify-it'
 import stringHash from 'string-hash'
 import Fuse from 'fuse.js'
 import tippy from 'tippy.js'
-import { Editor, EditorContent, EditorFloatingMenu, EditorMenuBubble } from 'tiptap'
+import { Editor, EditorContent } from 'tiptap'
 import EventHandler from './plugins/eventHandler.js'
 import { History } from 'tiptap-extensions'
 import Hashtag from './nodes/Hashtag.js'
 import Mention from './nodes/Mention.js'
 import { mapGetters } from 'vuex'
+import HcMenuBar from './MenuBar'
 
 let throttleInputEvent
 
 export default {
   components: {
     EditorContent,
-    EditorFloatingMenu,
-    EditorMenuBubble,
+    HcMenuBar,
   },
   props: {
     users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
