@@ -14,13 +14,16 @@ if (sentryConfigs.SENTRY_DSN_BACKEND) {
     },
     withScope: (scope, error, context) => {
       scope.setUser({
-        id: context.user.id,
+        id: context.user && context.user.id,
       })
       scope.setExtra('body', context.req.body)
       scope.setExtra('origin', context.req.headers.origin)
       scope.setExtra('user-agent', context.req.headers['user-agent'])
     },
   })
+} else {
+  // eslint-disable-next-line no-console
+  if (process.env.NODE_ENV !== 'test') console.log('Warning: Sentry middleware inactive.')
 }
 
 export default sentryMiddleware
