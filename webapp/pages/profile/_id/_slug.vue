@@ -95,8 +95,11 @@
             </ds-space>
             <ds-space v-if="user.followingCount - user.following.length" margin="small">
               <ds-text size="small" color="softer">
-                {{ $t('profile.network.and') }} {{ user.followingCount - user.following.length }}
-                {{ $t('profile.network.more') }}
+                {{
+                  $t('profile.network.andMore', {
+                    number: user.followingCount - user.following.length,
+                  })
+                }}
               </ds-text>
             </ds-space>
           </template>
@@ -122,8 +125,11 @@
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
               <ds-text size="small" color="softer">
-                {{ $t('profile.network.and') }} {{ user.followedByCount - user.followedBy.length }}
-                {{ $t('profile.network.more') }}
+                {{
+                  $t('profile.network.andMore', {
+                    number: user.followedByCount - user.followedBy.length,
+                  })
+                }}
               </ds-text>
             </ds-space>
           </template>

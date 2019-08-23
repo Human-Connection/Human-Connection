@@ -122,8 +122,12 @@
       "followingNobody": "folgt niemandem.",
       "followedBy": "wird gefolgt von:",
       "followedByNobody": "wird von niemandem gefolgt.",
-      "and": "und",
-      "more": "weitere"
+      "andMore": "und {number} weitere …"
+    },
+    "invites": {
+      "title": "Lade jemanden zu Human Connection ein!",
+      "description": "Für die Einladung trage seine E-Mail-Adresse hier ein.",
+      "emailPlaceholder": "E-Mail-Adresse für die Einladung"
     }
   },
   "notifications": {
@@ -271,8 +275,8 @@
     },
     "invites": {
       "name": "Benutzer einladen",
-      "title": "Benutzer als Admin anmelden",
-      "description": "Dieses Anmeldeformular ist zu sehen sobald die Anmeldung öffentlich zugänglich ist."
+      "title": "Leute einladen",
+      "description": "Einladungen sind ein wunderbarer Weg, deine Freund in deinem Netzwerk zu haben …"
     }
   },
   "post": {

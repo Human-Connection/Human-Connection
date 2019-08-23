@@ -122,8 +122,12 @@
       "followingNobody": "follows nobody.",
       "followedBy": "is followed by:",
       "followedByNobody": "is not followed by anyone.",
-      "and": "and",
-      "more": "more"
+      "andMore": "and {number} more …"
+    },
+    "invites": {
+      "title": "Invite somebody to Human Connection!",
+      "description": "Enter thier email address for invitation.",
+      "emailPlaceholder": "Email to invite"
     }
   },
   "notifications": {
@@ -271,8 +275,8 @@
     },
     "invites": {
       "name": "Invite users",
-      "title": "Signup users as admin",
-      "description": "This registration form will be visible as soon as the registration is open to the public."
+      "title": "Invite people",
+      "description": "Invitations are a wonderful way to have your friends in your network …"
     }
   },
   "post": {
