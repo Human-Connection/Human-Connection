@@ -75,22 +75,28 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
-      const cypherDeletePreviousRelations = `
-        MATCH (post:Post { id: $params.id })-[previousRelations:CATEGORIZED]->(category:Category)
-        DELETE previousRelations
-        RETURN post, category
+
+      let updatePostCypher = `MATCH (post:Post {id: $params.id}) 
+      SET post = $params
       `
 
-      await session.run(cypherDeletePreviousRelations, { params })
+      if (categoryIds && categoryIds.length) {
+        const cypherDeletePreviousRelations = `
+          MATCH (post:Post { id: $params.id })-[previousRelations:CATEGORIZED]->(category:Category)
+          DELETE previousRelations
+          RETURN post, category
+        `
 
-      const updatePostCypher = `MATCH (post:Post {id: $params.id})
-        SET post = $params
-        WITH post
+        await session.run(cypherDeletePreviousRelations, { params })
+
+        updatePostCypher += `WITH post
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post`
+        `
+      }
 
+      updatePostCypher += `RETURN post`
       const updatePostVariables = { categoryIds, params }
 
       const transactionRes = await session.run(updatePostCypher, updatePostVariables)
