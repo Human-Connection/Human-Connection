@@ -18,19 +18,19 @@ import sentry from './sentryMiddleware'
 
 export default schema => {
   const middlewares = {
-    permissions: permissions,
-    sentry: sentry,
-    activityPub: activityPub,
-    dateTime: dateTime,
-    validation: validation,
-    sluggify: sluggify,
-    excerpt: excerpt,
-    handleContentData: handleContentData,
-    xss: xss,
-    softDelete: softDelete,
-    user: user,
-    includedFields: includedFields,
-    orderBy: orderBy,
+    permissions,
+    sentry,
+    activityPub,
+    dateTime,
+    validation,
+    sluggify,
+    excerpt,
+    handleContentData,
+    xss,
+    softDelete,
+    user,
+    includedFields,
+    orderBy,
     email: email({ isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT }),
   }
 
