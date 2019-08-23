@@ -69,7 +69,6 @@ const validateUpdatePost = async (resolve, root, args, context, info) => {
     if (categoryIds && categoryIds.length > 3) {
       throw new UserInputError(NO_CATEGORIES_ERR_MESSAGE)
     }
-    // return resolve(root, args, context, info)
   } else {
     if (!Array.isArray(categoryIds) || !categoryIds.length || categoryIds.length > 3) {
       throw new UserInputError(NO_CATEGORIES_ERR_MESSAGE)
