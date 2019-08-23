@@ -2,11 +2,16 @@ import get from 'lodash/get'
 import update from 'lodash/update'
 import xor from 'lodash/xor'
 import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
 import clone from 'lodash/clone'
+
+const defaultFilter = {}
 
 export const state = () => {
   return {
-    filter: {},
+    filter: {
+      ...defaultFilter,
+    },
   }
 }
 
@@ -38,6 +43,9 @@ export const mutations = {
 }
 
 export const getters = {
+  isActive(state) {
+    return !isEqual(state.filter, defaultFilter)
+  },
   postsFilter(state) {
     return state.filter
   },

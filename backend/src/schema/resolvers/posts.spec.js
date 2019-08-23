@@ -13,6 +13,7 @@ let client
 let userParams
 let authorParams
 
+const postId = 'p3589'
 const postTitle = 'I am a title'
 const postContent = 'Some content'
 const oldTitle = 'Old title'
@@ -96,7 +97,7 @@ beforeEach(async () => {
     }),
   ])
   createPostVariables = {
-    id: 'p3589',
+    id: postId,
     title: postTitle,
     content: postContent,
     categoryIds,
@@ -218,7 +219,7 @@ describe('CreatePost', () => {
           Post: [
             {
               title: postTitle,
-              id: 'p3589',
+              id: postId,
               categories: expect.arrayContaining(categoryIdsArray),
             },
           ],
@@ -246,17 +247,16 @@ describe('UpdatePost', () => {
     await asAuthor.create('User', authorParams)
     await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
-      id: 'p1',
+      id: postId,
       title: oldTitle,
       content: oldContent,
       categoryIds,
     })
 
     updatePostVariables = {
-      id: 'p1',
+      id: postId,
       title: newTitle,
       content: newContent,
-      categoryIds: null,
     }
   })
 
@@ -291,47 +291,31 @@ describe('UpdatePost', () => {
     })
 
     it('updates a post', async () => {
-      updatePostVariables.categoryIds = ['cat9']
-      const expected = { UpdatePost: { id: 'p1', content: newContent } }
+      updatePostVariables.categoryIds = ['cat27']
+      const expected = { UpdatePost: { id: postId, content: newContent } }
       await expect(client.request(updatePostMutation, updatePostVariables)).resolves.toEqual(
         expected,
       )
     })
 
     describe('categories', () => {
-      beforeEach(async () => {
-        await client.request(createPostMutation, createPostVariables)
-        updatePostVariables = {
-          id: 'p3589',
-          title: newTitle,
-          content: newContent,
-          categoryIds: ['cat27'],
-        }
+      it('allows a user to update other attributes without passing in categoryIds explicitly', async () => {
+        const expected = { UpdatePost: { id: postId, content: newContent } }
+        await expect(client.request(updatePostMutation, updatePostVariables)).resolves.toEqual(
+          expected,
+        )
       })
 
       it('allows a user to update the categories of a post', async () => {
+        updatePostVariables.categoryIds = ['cat27']
         await client.request(updatePostMutation, updatePostVariables)
         const expected = [{ id: 'cat27' }]
         const postQueryWithCategoriesVariables = {
-          id: 'p3589',
+          id: postId,
         }
         await expect(
           client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
         ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
-      })
-
-      it('throws an error if categoryIds is not an array', async () => {
-        updatePostVariables.categoryIds = null
-        await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
-          postSaveError,
-        )
-      })
-
-      it('requires at least one category for successful update', async () => {
-        updatePostVariables.categoryIds = []
-        await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
-          postSaveError,
-        )
       })
 
       it('allows a maximum of three category for a successful update', async () => {
@@ -339,6 +323,63 @@ describe('UpdatePost', () => {
         await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
           postSaveError,
         )
+      })
+
+      describe('post created without categories somehow', () => {
+        let ownerNode, owner, postMutationAction
+        beforeEach(async () => {
+          const postSomehowCreated = await instance.create('Post', {
+            id: 'how-was-this-created',
+            title: postTitle,
+            content: postContent,
+          })
+          ownerNode = await instance.create('User', {
+            id: 'author-of-post-without-category',
+            name: 'Hacker',
+            slug: 'hacker',
+            email: 'hacker@example.org',
+            password: '1234',
+          })
+          owner = await ownerNode.toJson()
+          await postSomehowCreated.relateTo(ownerNode, 'author')
+          postMutationAction = async (user, mutation, variables) => {
+            const { server } = createServer({
+              context: () => {
+                return {
+                  user,
+                  neode: instance,
+                  driver,
+                }
+              },
+            })
+            const { mutate } = createTestClient(server)
+
+            return mutate({
+              mutation,
+              variables,
+            })
+          }
+          updatePostVariables.id = 'how-was-this-created'
+        })
+
+        it('throws an error if categoryIds is not an array', async () => {
+          const mustAddCategoryToPost = await postMutationAction(
+            owner,
+            updatePostMutation,
+            updatePostVariables,
+          )
+          expect(mustAddCategoryToPost.errors[0]).toHaveProperty('message', postSaveError)
+        })
+
+        it('requires at least one category for successful update', async () => {
+          updatePostVariables.categoryIds = []
+          const mustAddCategoryToPost = await postMutationAction(
+            owner,
+            updatePostMutation,
+            updatePostVariables,
+          )
+          expect(mustAddCategoryToPost.errors[0]).toHaveProperty('message', postSaveError)
+        })
       })
     })
   })
@@ -355,7 +396,7 @@ describe('DeletePost', () => {
   `
 
   const variables = {
-    id: 'p1',
+    id: postId,
   }
 
   beforeEach(async () => {
@@ -363,7 +404,7 @@ describe('DeletePost', () => {
     await asAuthor.create('User', authorParams)
     await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
-      id: 'p1',
+      id: postId,
       content: 'To be deleted',
       categoryIds,
     })
@@ -396,7 +437,7 @@ describe('DeletePost', () => {
     })
 
     it('deletes a post', async () => {
-      const expected = { DeletePost: { id: 'p1', content: 'To be deleted' } }
+      const expected = { DeletePost: { id: postId, content: 'To be deleted' } }
       await expect(client.request(mutation, variables)).resolves.toEqual(expected)
     })
   })

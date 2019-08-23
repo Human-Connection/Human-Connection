@@ -2,6 +2,8 @@ import { UserInputError } from 'apollo-server'
 
 const COMMENT_MIN_LENGTH = 1
 const NO_POST_ERR_MESSAGE = 'Comment cannot be created without a post!'
+const NO_CATEGORIES_ERR_MESSAGE =
+  'You cannot save a post without at least one category or more than three'
 
 const validateCommentCreation = async (resolve, root, args, context, info) => {
   const content = args.content.replace(/<(?:.|\n)*?>/gm, '').trim()
@@ -19,6 +21,7 @@ const validateCommentCreation = async (resolve, root, args, context, info) => {
       postId,
     },
   )
+  session.close()
   const [post] = postQueryRes.records.map(record => {
     return record.get('post')
   })
@@ -43,9 +46,33 @@ const validateUpdateComment = async (resolve, root, args, context, info) => {
 const validatePost = async (resolve, root, args, context, info) => {
   const { categoryIds } = args
   if (!Array.isArray(categoryIds) || !categoryIds.length || categoryIds.length > 3) {
-    throw new UserInputError(
-      'You cannot save a post without at least one category or more than three',
-    )
+    throw new UserInputError(NO_CATEGORIES_ERR_MESSAGE)
+  }
+  return resolve(root, args, context, info)
+}
+
+const validateUpdatePost = async (resolve, root, args, context, info) => {
+  const { id, categoryIds } = args
+  const session = context.driver.session()
+  const categoryQueryRes = await session.run(
+    `
+    MATCH (post:Post {id: $id})-[:CATEGORIZED]->(category:Category)
+    RETURN category`,
+    { id },
+  )
+  session.close()
+  const [category] = categoryQueryRes.records.map(record => {
+    return record.get('category')
+  })
+
+  if (category) {
+    if (categoryIds && categoryIds.length > 3) {
+      throw new UserInputError(NO_CATEGORIES_ERR_MESSAGE)
+    }
+  } else {
+    if (!Array.isArray(categoryIds) || !categoryIds.length || categoryIds.length > 3) {
+      throw new UserInputError(NO_CATEGORIES_ERR_MESSAGE)
+    }
   }
   return resolve(root, args, context, info)
 }
@@ -55,6 +82,6 @@ export default {
     CreateComment: validateCommentCreation,
     UpdateComment: validateUpdateComment,
     CreatePost: validatePost,
-    UpdatePost: validatePost,
+    UpdatePost: validateUpdatePost,
   },
 }

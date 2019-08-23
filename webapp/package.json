@@ -63,7 +63,7 @@
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0",
     "express": "~4.17.1",
-    "graphql": "~14.4.2",
+    "graphql": "~14.5.0",
     "isemail": "^3.2.0",
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.2.0",
@@ -78,7 +78,7 @@
     "v-tooltip": "~2.0.2",
     "vue-count-to": "~1.0.13",
     "vue-infinite-scroll": "^2.0.2",
-    "vue-izitoast": "roschaefer/vue-izitoast#patch-1",
+    "vue-izitoast": "^1.2.0",
     "vue-sweetalert-icons": "~4.2.0",
     "vuex-i18n": "~1.13.1",
     "zxcvbn": "^4.4.2"
