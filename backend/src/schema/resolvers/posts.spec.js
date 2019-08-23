@@ -328,15 +328,20 @@ describe('UpdatePost', () => {
       describe('post created without categories somehow', () => {
         let ownerNode, owner, postMutationAction
         beforeEach(async () => {
-          authorParams.id = 'author-of-post-without-category'
           const postSomehowCreated = await instance.create('Post', {
             id: 'how-was-this-created',
             title: postTitle,
             content: postContent,
           })
-          ownerNode = await instance.create('User', authorParams)
+          ownerNode = await instance.create('User', {
+            id: 'author-of-post-without-category',
+            name: 'Hacker',
+            slug: 'hacker',
+            email: 'hacker@example.org',
+            password: '1234',
+          })
           owner = await ownerNode.toJson()
-          postSomehowCreated.relateTo(ownerNode, 'author')
+          await postSomehowCreated.relateTo(ownerNode, 'author')
           postMutationAction = async (user, mutation, variables) => {
             const { server } = createServer({
               context: () => {
@@ -358,7 +363,6 @@ describe('UpdatePost', () => {
         })
 
         it('throws an error if categoryIds is not an array', async () => {
-          updatePostVariables.categoryIds = null
           const mustAddCategoryToPost = await postMutationAction(
             owner,
             updatePostMutation,
