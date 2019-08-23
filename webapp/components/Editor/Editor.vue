@@ -43,7 +43,42 @@
         </div>
       </div>
     </div>
-    <hc-menu-bar :editor="editor" />
+    <editor-menu-bubble :editor="editor">
+      <div
+        ref="menu"
+        slot-scope="{ commands, getMarkAttrs, isActive, menu }"
+        class="menububble tooltip"
+        x-placement="top"
+        :class="{ 'is-active': menu.isActive || linkMenuIsActive }"
+        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+      >
+        <div class="tooltip-wrapper">
+          <template v-if="linkMenuIsActive">
+            <ds-input
+              ref="linkInput"
+              v-model="linkUrl"
+              class="editor-menu-link-input"
+              placeholder="http://"
+              @blur.native.capture="hideMenu(menu.isActive)"
+              @keydown.native.esc.prevent="hideMenu(menu.isActive)"
+              @keydown.native.enter.prevent="setLinkUrl(commands.link, linkUrl)"
+            />
+          </template>
+          <template v-else>
+            <button
+              class="menububble__button"
+              @click="showLinkMenu(getMarkAttrs('link'))"
+              :class="{ 'is-active': isActive.link() }"
+            >
+              <span>{{ isActive.link() ? 'Update Link' : 'Add Link' }}</span>
+              <icon name="link" />
+            </button>
+          </template>
+        </div>
+        <div class="tooltip-arrow" />
+      </div>
+    </editor-menu-bubble>
+    <menu-bar :editor="editor" :showLinkMenu="showLinkMenu" />
     <editor-content ref="editor" :editor="editor" />
   </div>
 </template>
@@ -54,20 +89,21 @@ import linkify from 'linkify-it'
 import stringHash from 'string-hash'
 import Fuse from 'fuse.js'
 import tippy from 'tippy.js'
-import { Editor, EditorContent } from 'tiptap'
+import { Editor, EditorContent, EditorMenuBubble } from 'tiptap'
 import EventHandler from './plugins/eventHandler.js'
 import { History } from 'tiptap-extensions'
 import Hashtag from './nodes/Hashtag.js'
 import Mention from './nodes/Mention.js'
 import { mapGetters } from 'vuex'
-import HcMenuBar from './MenuBar'
+import MenuBar from './MenuBar'
 
 let throttleInputEvent
 
 export default {
   components: {
     EditorContent,
-    HcMenuBar,
+    EditorMenuBubble,
+    MenuBar,
   },
   props: {
     users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
