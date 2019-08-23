@@ -1,20 +1,19 @@
-import { UserInputError } from 'apollo-server'
 import extractMentionedUsers from './notifications/extractMentionedUsers'
 import extractHashtags from './hashtags/extractHashtags'
 
 const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
   if (!idsOfUsers.length) return
 
-  // Done here, because Neode validation is not working.
+  // Checked here, because it does not go through GraphQL checks at all in this file.
   const reasonsAllowed = ['mentioned_in_post', 'mentioned_in_comment', 'comment_on_post']
   if (!reasonsAllowed.includes(reason)) {
-    throw new UserInputError('Notification reason is not allowed!')
+    throw new Error('Notification reason is not allowed!')
   }
   if (
     (label === 'Post' && reason !== 'mentioned_in_post') ||
     (label === 'Comment' && !['mentioned_in_comment', 'comment_on_post'].includes(reason))
   ) {
-    throw new UserInputError('Notification fits not to reason!')
+    throw new Error('Notification does not fit the reason!')
   }
 
   const session = context.driver.session()
