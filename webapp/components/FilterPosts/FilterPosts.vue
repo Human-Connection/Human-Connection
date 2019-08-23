@@ -1,9 +1,15 @@
 <template>
   <dropdown ref="menu" :placement="placement" :offset="offset">
-    <a slot="default" slot-scope="{ toggleMenu }" href="#" @click.prevent="toggleMenu()">
-      <ds-icon style="margin: 12px 0px 0px 10px;" name="filter" size="large" />
-      <ds-icon style="margin: 7px 0px 0px 2px" size="xx-small" name="angle-down" />
-    </a>
+    <ds-button
+      slot="default"
+      icon="filter"
+      :primary="filterActive"
+      :ghost="!filterActive"
+      slot-scope="{ toggleMenu }"
+      @click.prevent="toggleMenu()"
+    >
+      <ds-icon size="xx-small" name="angle-down" />
+    </ds-button>
     <template slot="popover">
       <filter-posts-menu-items :chunk="chunk" :user="currentUser" />
     </template>
@@ -28,6 +34,7 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
+      filterActive: 'postsFilter/isActive',
     }),
     chunk() {
       return _.chunk(this.categories, 2)

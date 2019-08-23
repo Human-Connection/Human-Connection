@@ -3,7 +3,7 @@
     <div class="main-navigation">
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
-          <ds-flex class="main-navigation-flex">
+          <ds-flex class="main-navigation-flex" centered>
             <ds-flex-item :width="{ lg: '3.5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
               <a @click="redirectToRoot">
@@ -293,6 +293,11 @@ export default {
   padding-top: 6rem;
   padding-bottom: 5rem;
 }
+
+.main-navigation-flex {
+  align-items: center;
+}
+
 .main-navigation {
   a {
     color: $text-color-soft;
