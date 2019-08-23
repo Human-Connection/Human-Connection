@@ -271,7 +271,7 @@ module.exports = {
   apollo: {
     tokenName: 'human-connection-token', // optional, default: apollo-token
     cookieAttributes: {
-      expires: 3, // optional, default: 7 (days)
+      expires: 1, // optional, default: 7 (days)
     },
     // includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
 
