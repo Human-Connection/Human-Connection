@@ -1,48 +1,16 @@
 <template>
   <div class="editor">
-    <!-- Mention and Hashtag Suggestions Menu -->
-    <div v-show="showSuggestions" ref="suggestions" class="suggestion-list">
-      <!-- "filteredItems" array is not empty -->
-      <template v-if="hasResults">
-        <div
-          v-for="(item, index) in filteredItems"
-          :key="item.id"
-          class="suggestion-list__item"
-          :class="{ 'is-selected': navigatedItemIndex === index }"
-          @click="selectItem(item)"
-        >
-          <div v-if="isMention">@{{ item.slug }}</div>
-          <div v-if="isHashtag">#{{ item.id }}</div>
-        </div>
-        <div v-if="isHashtag">
-          <!-- if query is not empty and is find fully in the suggestions array ... -->
-          <div v-if="query && !filteredItems.find(el => el.id === query)">
-            <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-            <div class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</div>
-          </div>
-          <!-- otherwise if sanitized query is empty advice the user to add a char -->
-          <div v-else-if="!query">
-            <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addLetter') }}</div>
-          </div>
-        </div>
-      </template>
-      <!-- if "!hasResults" -->
-      <div v-else>
-        <div v-if="isMention" class="suggestion-list__item is-empty">
-          {{ $t('editor.mention.noUsersFound') }}
-        </div>
-        <div v-if="isHashtag">
-          <div v-if="query === ''" class="suggestion-list__item is-empty">
-            {{ $t('editor.hashtag.noHashtagsFound') }}
-          </div>
-          <!-- if "query" is not empty -->
-          <div v-else>
-            <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-            <div class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <suggestions-menu
+      :showSuggestions="showSuggestions"
+      ref="suggestions"
+      :filtered-items="filteredItems"
+      :navigated-item-index="navigatedItemIndex"
+      :query="query"
+      :select-item="selectItem"
+      :is-mention="isMention"
+      :is-hashtag="isHashtag"
+      :has-results="hasResults"
+    />
     <editor-menu-bubble :editor="editor">
       <div
         ref="menu"
@@ -71,7 +39,7 @@
               :class="{ 'is-active': isActive.link() }"
             >
               <span>{{ isActive.link() ? 'Update Link' : 'Add Link' }}</span>
-              <icon name="link" />
+              <ds-icon name="link" />
             </button>
           </template>
         </div>
@@ -96,6 +64,7 @@ import Hashtag from './nodes/Hashtag.js'
 import Mention from './nodes/Mention.js'
 import { mapGetters } from 'vuex'
 import MenuBar from './MenuBar'
+import SuggestionsMenu from './SuggestionsMenu'
 
 let throttleInputEvent
 
@@ -104,6 +73,7 @@ export default {
     EditorContent,
     EditorMenuBubble,
     MenuBar,
+    SuggestionsMenu,
   },
   props: {
     users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
@@ -400,7 +370,7 @@ export default {
         return
       }
       this.popup = tippy(node, {
-        content: this.$refs.suggestions,
+        content: this.$refs.suggestions.$el,
         trigger: 'mouseenter',
         interactive: true,
         theme: 'dark',
@@ -416,7 +386,7 @@ export default {
         this.observer = new MutationObserver(() => {
           this.popup.popperInstance.scheduleUpdate()
         })
-        this.observer.observe(this.$refs.suggestions, {
+        this.observer.observe(this.$refs.suggestions.$el, {
           childList: true,
           subtree: true,
           characterData: true,
