@@ -7,13 +7,13 @@ export default {
     node: Object,
   },
   methods: {
-    displayContextMenu(target, content) {
+    displayContextMenu(target, content, trigger) {
       if (this.menu) {
         return
       }
       this.menu = tippy(target, {
         content: content,
-        trigger: 'mouseenter',
+        trigger: trigger || 'mouseenter',
         interactive: true,
         theme: 'dark',
         placement: 'top-start',

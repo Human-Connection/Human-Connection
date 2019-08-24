@@ -6,8 +6,9 @@
       <menu-bar-button :isActive="isActive.italic()" :onClick="commands.italic" icon="italic" />
 
       <menu-bar-button
+        ref="linkButton"
         :isActive="isActive.link()"
-        :onClick="() => showLinkMenu(getMarkAttrs('link'))"
+        :onClick="event => showLinkMenu(getMarkAttrs('link'), event.currentTarget)"
         icon="link"
       />
 

@@ -1,5 +1,8 @@
 <template>
   <div class="editor">
+    <menu-bar :editor="editor" :showLinkMenu="showLinkMenu" />
+    <editor-content ref="editor" :editor="editor" />
+    <context-menu ref="contextMenu" />
     <suggestions-menu
       :showSuggestions="showSuggestions"
       ref="suggestions"
@@ -11,44 +14,7 @@
       :is-hashtag="isHashtag"
       :has-results="hasResults"
     />
-    <editor-menu-bubble :editor="editor">
-      <div
-        ref="menu"
-        slot-scope="{ commands, getMarkAttrs, isActive, menu }"
-        class="menububble tooltip"
-        x-placement="top"
-        :class="{ 'is-active': menu.isActive || linkMenuIsActive }"
-        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
-      >
-        <div class="tooltip-wrapper">
-          <template v-if="linkMenuIsActive">
-            <ds-input
-              ref="linkInput"
-              v-model="linkUrl"
-              class="editor-menu-link-input"
-              placeholder="http://"
-              @blur.native.capture="hideMenu(menu.isActive)"
-              @keydown.native.esc.prevent="hideMenu(menu.isActive)"
-              @keydown.native.enter.prevent="setLinkUrl(commands.link, linkUrl)"
-            />
-          </template>
-          <template v-else>
-            <button
-              class="menububble__button"
-              @click="showLinkMenu(getMarkAttrs('link'))"
-              :class="{ 'is-active': isActive.link() }"
-            >
-              <span>{{ isActive.link() ? 'Update Link' : 'Add Link' }}</span>
-              <ds-icon name="link" />
-            </button>
-          </template>
-        </div>
-        <div class="tooltip-arrow" />
-      </div>
-    </editor-menu-bubble>
-    <menu-bar :editor="editor" :showLinkMenu="showLinkMenu" />
-    <editor-content ref="editor" :editor="editor" />
-    <context-menu ref="contextMenu" />
+    <link-input v-show="linkMenuIsActive" ref="linkMenu" :editorCommand="editor.commands.link" />
   </div>
 </template>
 
@@ -57,25 +23,26 @@ import defaultExtensions from './defaultExtensions.js'
 import linkify from 'linkify-it'
 import stringHash from 'string-hash'
 import Fuse from 'fuse.js'
-import { Editor, EditorContent, EditorMenuBubble } from 'tiptap'
+import { Editor, EditorContent } from 'tiptap'
 import EventHandler from './plugins/eventHandler.js'
 import { History } from 'tiptap-extensions'
 import Hashtag from './nodes/Hashtag.js'
 import Mention from './nodes/Mention.js'
 import { mapGetters } from 'vuex'
 import MenuBar from './MenuBar'
-import SuggestionsMenu from './SuggestionsMenu'
 import ContextMenu from './ContextMenu'
+import SuggestionsMenu from './SuggestionsMenu'
+import LinkInput from './LinkInput'
 
 let throttleInputEvent
 
 export default {
   components: {
+    ContextMenu,
     EditorContent,
-    EditorMenuBubble,
+    LinkInput,
     MenuBar,
     SuggestionsMenu,
-    ContextMenu,
   },
   props: {
     users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
@@ -373,25 +340,23 @@ export default {
         this.$emit('input', content)
       }
     },
-    showLinkMenu(attrs) {
+    showLinkMenu(attrs, element) {
       this.linkUrl = attrs.href
       this.linkMenuIsActive = true
+      this.$refs.contextMenu.displayContextMenu(element, this.$refs.linkMenu.$el, 'click')
       this.$nextTick(() => {
         try {
-          const $el = this.$refs.linkInput.$el.getElementsByTagName('input')[0]
-          $el.focus()
-          $el.select()
+          const input = this.$refs.linkMenu.$el.querySelector('input')
+          input.focus()
+          input.select()
         } catch (err) {}
       })
     },
     hideLinkMenu() {
+      this.$refs.contextMenu.hideContextMenu()
       this.linkUrl = null
       this.linkMenuIsActive = false
       this.editor.focus()
-    },
-    hideMenu(isActive) {
-      isActive = false
-      this.hideLinkMenu()
     },
     setLinkUrl(command, url) {
       const links = linkify().match(url)
@@ -467,12 +432,6 @@ export default {
   .tippy-popper[x-placement^='right'] & .tippy-arrow {
     border-right-color: $color-neutral-0;
   }
-}
-
-.ProseMirror {
-  padding: $space-base;
-  margin: -$space-base;
-  min-height: $space-large;
 }
 
 .ProseMirror:focus {
