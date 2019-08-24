@@ -51,81 +51,19 @@ export default {
     doc: { type: Object, default: () => {} },
   },
   data() {
-    // Set array of optional extensions by analysing the props.
     let optionalExtensions = []
     // Don't change the following line. The functionallity is in danger!
     if (this.users) {
       optionalExtensions.push(
         new Mention({
-          // a list of all suggested items
           items: () => {
             return this.users
           },
-          // is called when a suggestion starts
-          onEnter: ({ items, query, range, command, virtualNode }) => {
-            this.suggestionType = this.mentionSuggestionType
-
-            this.query = query
-            this.filteredItems = items
-            this.suggestionRange = range
-            this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
-            // we save the command for inserting a selected mention
-            // this allows us to call it inside of our custom popup
-            // via keyboard navigation and on click
-            this.insertMentionOrHashtag = command
-          },
-          // is called when a suggestion has changed
-          onChange: ({ items, query, range, virtualNode }) => {
-            this.query = query
-            this.filteredItems = items
-            this.suggestionRange = range
-            this.navigatedItemIndex = 0
-            this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
-          },
-          // is called when a suggestion is cancelled
-          onExit: () => {
-            this.suggestionType = this.nullSuggestionType
-
-            // reset all saved values
-            this.query = null
-            this.filteredItems = []
-            this.suggestionRange = null
-            this.navigatedItemIndex = 0
-            this.$refs.contextMenu.hideContextMenu()
-          },
-          // is called on every keyDown event while a suggestion is active
-          onKeyDown: ({ event }) => {
-            // pressing up arrow
-            if (event.keyCode === 38) {
-              this.upHandler()
-              return true
-            }
-            // pressing down arrow
-            if (event.keyCode === 40) {
-              this.downHandler()
-              return true
-            }
-            // pressing enter
-            if (event.keyCode === 13) {
-              this.enterHandler()
-              return true
-            }
-            return false
-          },
-          // is called when a suggestion has changed
-          // this function is optional because there is basic filtering built-in
-          // you can overwrite it if you prefer your own filtering
-          // in this example we use fuse.js with support for fuzzy search
-          onFilter: (items, query) => {
-            if (!query) {
-              return items
-            }
-            const fuse = new Fuse(items, {
-              threshold: 0.2,
-              keys: ['slug'],
-            })
-            return fuse.search(query)
-          },
+          onEnter: props => this.openSuggestionList(props, this.mentionSuggestionType),
+          onChange: this.updateSuggestionList,
+          onExit: this.closeSuggestionList,
+          onKeyDown: this.navigateSuggestionList,
+          onFilter: this.filterSuggestionList,
         }),
       )
     }
@@ -133,81 +71,14 @@ export default {
     if (this.hashtags) {
       optionalExtensions.push(
         new Hashtag({
-          // a list of all suggested items
           items: () => {
             return this.hashtags
           },
-          // is called when a suggestion starts
-          onEnter: ({ items, query, range, command, virtualNode }) => {
-            this.suggestionType = this.hashtagSuggestionType
-
-            this.query = this.sanitizedQuery(query)
-            this.filteredItems = items
-            this.suggestionRange = range
-            this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
-            // we save the command for inserting a selected mention
-            // this allows us to call it inside of our custom popup
-            // via keyboard navigation and on click
-            this.insertMentionOrHashtag = command
-          },
-          // is called when a suggestion has changed
-          onChange: ({ items, query, range, virtualNode }) => {
-            this.query = this.sanitizedQuery(query)
-            this.filteredItems = items
-            this.suggestionRange = range
-            this.navigatedItemIndex = 0
-            this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
-          },
-          // is called when a suggestion is cancelled
-          onExit: () => {
-            this.suggestionType = this.nullSuggestionType
-
-            // reset all saved values
-            this.query = null
-            this.filteredItems = []
-            this.suggestionRange = null
-            this.navigatedItemIndex = 0
-            this.$refs.contextMenu.hideContextMenu()
-          },
-          // is called on every keyDown event while a suggestion is active
-          onKeyDown: ({ event }) => {
-            // pressing up arrow
-            if (event.keyCode === 38) {
-              this.upHandler()
-              return true
-            }
-            // pressing down arrow
-            if (event.keyCode === 40) {
-              this.downHandler()
-              return true
-            }
-            // pressing enter
-            if (event.keyCode === 13) {
-              this.enterHandler()
-              return true
-            }
-            // pressing space
-            if (event.keyCode === 32) {
-              this.spaceHandler()
-              return true
-            }
-            return false
-          },
-          // is called when a suggestion has changed
-          // this function is optional because there is basic filtering built-in
-          // you can overwrite it if you prefer your own filtering
-          // in this example we use fuse.js with support for fuzzy search
-          onFilter: (items, query) => {
-            query = this.sanitizedQuery(query)
-            if (!query) {
-              return items
-            }
-            return items.filter(item =>
-              JSON.stringify(item)
-                .toLowerCase()
-                .includes(query.toLowerCase()),
-            )
-          },
+          onEnter: props => this.openSuggestionList(props, this.hashtagSuggestionType),
+          onChange: this.updateSuggestionList,
+          onExit: this.closeSuggestionList,
+          onKeyDown: this.navigateSuggestionList,
+          onFilter: this.filterSuggestionList,
         }),
       )
     }
@@ -283,32 +154,85 @@ export default {
     this.editor.destroy()
   },
   methods: {
-    sanitizedQuery(query) {
-      // remove all not allowed chars
-      query = query.replace(/[^a-zA-Z0-9]/gm, '')
-      // if the query is only made of digits, make it empty
-      return query.replace(/[0-9]/gm, '') === '' ? '' : query
+    openSuggestionList({ items, query, range, command, virtualNode }, suggestionType) {
+      this.suggestionType = suggestionType
+
+      this.query = this.sanitizeQuery(query)
+      this.filteredItems = items
+      this.suggestionRange = range
+      this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
+      this.insertMentionOrHashtag = command
     },
-    // navigate to the previous item
-    // if it's the first item, navigate to the last one
-    upHandler() {
+    updateSuggestionList({ items, query, range, virtualNode }) {
+      this.query = this.sanitizeQuery(query)
+      this.filteredItems = items
+      this.suggestionRange = range
+      this.navigatedItemIndex = 0
+      this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
+    },
+    closeSuggestionList() {
+      this.suggestionType = this.nullSuggestionType
+      this.query = null
+      this.filteredItems = []
+      this.suggestionRange = null
+      this.navigatedItemIndex = 0
+      this.$refs.contextMenu.hideContextMenu()
+    },
+    navigateSuggestionList({ event }) {
+      switch (event.keyCode) {
+        case 38:
+          this.handleUpArrow()
+          return true
+
+        case 40:
+          this.handleDownArrow()
+          return true
+
+        case 13:
+          this.handleEnter()
+          return true
+
+        case 32:
+          this.handleSpace()
+          return true
+
+        default:
+          return false
+      }
+    },
+    filterSuggestionList(items, query) {
+      query = this.sanitizeQuery(query)
+      if (!query) {
+        return items
+      }
+      return items.filter(item => {
+        const itemString = item.slug || item.id
+        return itemString.toLowerCase().includes(query.toLowerCase())
+      })
+    },
+    sanitizeQuery(query) {
+      if (this.suggestionType === this.hashtagSuggestionType) {
+        // remove all not allowed chars
+        query = query.replace(/[^a-zA-Z0-9]/gm, '')
+        // if the query is only made of digits, make it empty
+        return query.replace(/[0-9]/gm, '') === '' ? '' : query
+      }
+      return query
+    },
+    handleUpArrow() {
       this.navigatedItemIndex =
         (this.navigatedItemIndex + this.filteredItems.length - 1) % this.filteredItems.length
     },
-    // navigate to the next item
-    // if it's the last item, navigate to the first one
-    downHandler() {
+    handleDownArrow() {
       this.navigatedItemIndex = (this.navigatedItemIndex + 1) % this.filteredItems.length
     },
-    // Handles pressing of enter.
-    enterHandler() {
+    handleEnter() {
       const item = this.filteredItems[this.navigatedItemIndex]
       if (item) {
         this.selectItem(item)
       }
     },
-    // For hashtags handles pressing of space.
-    spaceHandler() {
+    handleSpace() {
       if (this.suggestionType === this.hashtagSuggestionType && this.query !== '') {
         this.selectItem({ id: this.query })
       }
