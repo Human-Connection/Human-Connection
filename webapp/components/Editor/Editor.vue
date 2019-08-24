@@ -19,22 +19,23 @@
 </template>
 
 <script>
-import defaultExtensions from './defaultExtensions.js'
+import { mapGetters } from 'vuex'
+import { Editor, EditorContent } from 'tiptap'
+import { History } from 'tiptap-extensions'
 import linkify from 'linkify-it'
 import stringHash from 'string-hash'
-import Fuse from 'fuse.js'
-import { Editor, EditorContent } from 'tiptap'
+import defaultExtensions from './defaultExtensions.js'
 import EventHandler from './plugins/eventHandler.js'
-import { History } from 'tiptap-extensions'
 import Hashtag from './nodes/Hashtag.js'
 import Mention from './nodes/Mention.js'
-import { mapGetters } from 'vuex'
 import MenuBar from './MenuBar'
 import ContextMenu from './ContextMenu'
 import SuggestionList from './SuggestionList'
 import LinkInput from './LinkInput'
 
 let throttleInputEvent
+const HASHTAG = 'hashtag'
+const MENTION = 'mention'
 
 export default {
   components: {
@@ -51,60 +52,12 @@ export default {
     doc: { type: Object, default: () => {} },
   },
   data() {
-    let optionalExtensions = []
-    // Don't change the following line. The functionallity is in danger!
-    if (this.users) {
-      optionalExtensions.push(
-        new Mention({
-          items: () => {
-            return this.users
-          },
-          onEnter: props => this.openSuggestionList(props, this.mentionSuggestionType),
-          onChange: this.updateSuggestionList,
-          onExit: this.closeSuggestionList,
-          onKeyDown: this.navigateSuggestionList,
-          onFilter: this.filterSuggestionList,
-        }),
-      )
-    }
-    // Don't change the following line. The functionallity is in danger!
-    if (this.hashtags) {
-      optionalExtensions.push(
-        new Hashtag({
-          items: () => {
-            return this.hashtags
-          },
-          onEnter: props => this.openSuggestionList(props, this.hashtagSuggestionType),
-          onChange: this.updateSuggestionList,
-          onExit: this.closeSuggestionList,
-          onKeyDown: this.navigateSuggestionList,
-          onFilter: this.filterSuggestionList,
-        }),
-      )
-    }
-
     return {
       lastValueHash: null,
-      editor: new Editor({
-        content: this.value || '',
-        doc: this.doc,
-        extensions: [
-          ...defaultExtensions(this),
-          new EventHandler(),
-          new History(),
-          ...optionalExtensions,
-        ],
-        onUpdate: e => {
-          clearTimeout(throttleInputEvent)
-          throttleInputEvent = setTimeout(() => this.onUpdate(e), 300)
-        },
-      }),
+      editor: null,
       linkUrl: null,
       linkMenuIsActive: false,
-      nullSuggestionType: '',
-      mentionSuggestionType: 'mention',
-      hashtagSuggestionType: 'hashtag',
-      suggestionType: this.nullSuggestionType,
+      suggestionType: '',
       query: null,
       suggestionRange: null,
       filteredItems: [],
@@ -122,10 +75,44 @@ export default {
       return this.query || this.hasResults
     },
     isMention() {
-      return this.suggestionType === this.mentionSuggestionType
+      return this.suggestionType === MENTION
     },
     isHashtag() {
-      return this.suggestionType === this.hashtagSuggestionType
+      return this.suggestionType === HASHTAG
+    },
+    optionalExtensions() {
+      const extensions = []
+      // Don't change the following line. The functionallity is in danger!
+      if (this.users) {
+        extensions.push(
+          new Mention({
+            items: () => {
+              return this.users
+            },
+            onEnter: props => this.openSuggestionList(props, MENTION),
+            onChange: this.updateSuggestionList,
+            onExit: this.closeSuggestionList,
+            onKeyDown: this.navigateSuggestionList,
+            onFilter: this.filterSuggestionList,
+          }),
+        )
+      }
+      // Don't change the following line. The functionallity is in danger!
+      if (this.hashtags) {
+        extensions.push(
+          new Hashtag({
+            items: () => {
+              return this.hashtags
+            },
+            onEnter: props => this.openSuggestionList(props, HASHTAG),
+            onChange: this.updateSuggestionList,
+            onExit: this.closeSuggestionList,
+            onKeyDown: this.navigateSuggestionList,
+            onFilter: this.filterSuggestionList,
+          }),
+        )
+      }
+      return extensions
     },
   },
   watch: {
@@ -150,6 +137,22 @@ export default {
       },
     },
   },
+  created() {
+    this.editor = new Editor({
+      content: this.value || '',
+      doc: this.doc,
+      extensions: [
+        ...defaultExtensions(this),
+        new EventHandler(),
+        new History(),
+        ...this.optionalExtensions,
+      ],
+      onUpdate: e => {
+        clearTimeout(throttleInputEvent)
+        throttleInputEvent = setTimeout(() => this.onUpdate(e), 300)
+      },
+    })
+  },
   beforeDestroy() {
     this.editor.destroy()
   },
@@ -171,7 +174,7 @@ export default {
       this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
     },
     closeSuggestionList() {
-      this.suggestionType = this.nullSuggestionType
+      this.suggestionType = ''
       this.query = null
       this.filteredItems = []
       this.suggestionRange = null
@@ -211,7 +214,7 @@ export default {
       })
     },
     sanitizeQuery(query) {
-      if (this.suggestionType === this.hashtagSuggestionType) {
+      if (this.suggestionType === HASHTAG) {
         // remove all not allowed chars
         query = query.replace(/[^a-zA-Z0-9]/gm, '')
         // if the query is only made of digits, make it empty
@@ -233,7 +236,7 @@ export default {
       }
     },
     handleSpace() {
-      if (this.suggestionType === this.hashtagSuggestionType && this.query !== '') {
+      if (this.suggestionType === HASHTAG && this.query !== '') {
         this.selectItem({ id: this.query })
       }
     },
