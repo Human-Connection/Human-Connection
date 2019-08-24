@@ -3,7 +3,7 @@
     <menu-bar :editor="editor" :showLinkMenu="showLinkMenu" />
     <editor-content ref="editor" :editor="editor" />
     <context-menu ref="contextMenu" />
-    <suggestions-menu
+    <suggestion-list
       :showSuggestions="showSuggestions"
       ref="suggestions"
       :filtered-items="filteredItems"
@@ -31,7 +31,7 @@ import Mention from './nodes/Mention.js'
 import { mapGetters } from 'vuex'
 import MenuBar from './MenuBar'
 import ContextMenu from './ContextMenu'
-import SuggestionsMenu from './SuggestionsMenu'
+import SuggestionList from './SuggestionList'
 import LinkInput from './LinkInput'
 
 let throttleInputEvent
@@ -42,7 +42,7 @@ export default {
     EditorContent,
     LinkInput,
     MenuBar,
-    SuggestionsMenu,
+    SuggestionList,
   },
   props: {
     users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
