@@ -1,11 +1,13 @@
 <template>
   <div>
     <ds-input
+      id="linkInputId"
       v-model="linkUrl"
+      autofocus
       class="editor-menu-link-input"
       placeholder="https://"
-      @blur.native.capture="hideLinkMenu()"
-      @keydown.native.esc.prevent="hideLinkMenu()"
+      @blur.native.capture="toggleLinkInput()"
+      @keydown.native.esc.prevent="toggleLinkInput()"
       @keydown.native.enter.prevent="setLinkUrl(editorCommand, linkUrl)"
     />
   </div>
@@ -13,11 +15,11 @@
 
 <script>
 export default {
-  props: ['hideLinkMenu', 'setLinkUrl', 'editorCommand'],
-  data() {
-    return {
-      linkUrl: null,
-    }
+  props: {
+    linkUrl: String,
+    editorCommand: Function,
+    toggleLinkInput: Function,
+    setLinkUrl: Function,
   },
 }
 </script>

@@ -8,7 +8,7 @@
       <menu-bar-button
         ref="linkButton"
         :isActive="isActive.link()"
-        :onClick="event => showLinkMenu(getMarkAttrs('link'), event.currentTarget)"
+        :onClick="event => toggleLinkInput(getMarkAttrs('link'), event.currentTarget)"
         icon="link"
       />
 
@@ -68,7 +68,7 @@ export default {
   },
   props: {
     editor: Object,
-    showLinkMenu: Function,
+    toggleLinkInput: Function,
   },
 }
 </script>

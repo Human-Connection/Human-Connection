@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <menu-bar :editor="editor" :showLinkMenu="showLinkMenu" />
+    <menu-bar :editor="editor" :toggleLinkInput="toggleLinkInput" />
     <editor-content ref="editor" :editor="editor" />
     <context-menu ref="contextMenu" />
     <suggestion-list
@@ -11,7 +11,14 @@
       :query="query"
       :select-item="selectItem"
     />
-    <link-input v-show="linkMenuIsActive" ref="linkMenu" :editorCommand="editor.commands.link" />
+    <link-input
+      v-show="isLinkInputActive"
+      ref="linkInput"
+      :linkUrl="linkUrl"
+      :editor-command="editor.commands.link"
+      :toggle-link-input="toggleLinkInput"
+      :set-link-url="setLinkUrl"
+    />
   </div>
 </template>
 
@@ -54,7 +61,7 @@ export default {
       lastValueHash: null,
       editor: null,
       linkUrl: null,
-      linkMenuIsActive: false,
+      isLinkInputActive: false,
       suggestionType: '',
       query: null,
       suggestionRange: null,
@@ -242,23 +249,17 @@ export default {
         this.$emit('input', content)
       }
     },
-    showLinkMenu(attrs, element) {
-      this.linkUrl = attrs.href
-      this.linkMenuIsActive = true
-      this.$refs.contextMenu.displayContextMenu(element, this.$refs.linkMenu.$el, 'click')
-      this.$nextTick(() => {
-        try {
-          const input = this.$refs.linkMenu.$el.querySelector('input')
-          input.focus()
-          input.select()
-        } catch (err) {}
-      })
-    },
-    hideLinkMenu() {
-      this.$refs.contextMenu.hideContextMenu()
-      this.linkUrl = null
-      this.linkMenuIsActive = false
-      this.editor.focus()
+    toggleLinkInput(attrs, element) {
+      if (!this.isLinkInputActive && attrs && element) {
+        this.linkUrl = attrs.href
+        this.isLinkInputActive = true
+        this.$refs.contextMenu.displayContextMenu(element, this.$refs.linkInput.$el, 'link')
+      } else {
+        this.$refs.contextMenu.hideContextMenu()
+        this.linkUrl = null
+        this.isLinkInputActive = false
+        this.editor.focus()
+      }
     },
     setLinkUrl(command, url) {
       const links = linkify().match(url)
@@ -267,7 +268,7 @@ export default {
         command({
           href: links.pop().url,
         })
-        this.hideLinkMenu()
+        this.toggleLinkInput()
         this.editor.focus()
       } else if (!url) {
         // remove link

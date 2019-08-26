@@ -7,21 +7,28 @@ export default {
     node: Object,
   },
   methods: {
-    displayContextMenu(target, content, trigger) {
+    displayContextMenu(target, content, type) {
+      const trigger = type === 'link' ? 'click' : 'mouseenter'
+      const showOnInit = type !== 'link'
+
       if (this.menu) {
         return
       }
+
       this.menu = tippy(target, {
-        content: content,
-        trigger: trigger || 'mouseenter',
-        interactive: true,
-        theme: 'dark',
-        placement: 'top-start',
-        inertia: true,
-        duration: [400, 200],
-        showOnInit: true,
         arrow: true,
         arrowType: 'round',
+        content: content,
+        // duration: [400, 200],
+        inertia: true,
+        interactive: true,
+        placement: 'top-start',
+        showOnInit,
+        theme: 'dark',
+        trigger,
+        onMount(instance) {
+          instance.popper.querySelector('input').focus()
+        },
       })
       // we have to update tippy whenever the DOM is updated
       if (MutationObserver) {
