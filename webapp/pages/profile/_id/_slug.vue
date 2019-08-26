@@ -247,6 +247,7 @@
           :infinite-scroll-disabled="$apollo.loading"
           :infinite-scroll-distance="10"
           :infinite-scroll-throttle-delay="800"
+          :infinite-scroll-immediate-check="true"
         >
           <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
         </div>
