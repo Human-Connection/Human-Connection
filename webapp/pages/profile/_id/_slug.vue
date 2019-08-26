@@ -201,16 +201,22 @@
             </ds-card>
           </ds-grid-item>
 
-          <ds-grid-item :row-span="2" column-span="fullWidth" class="create-button">
-            <ds-button
-              v-if="myProfile"
-              v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
-              :path="{ name: 'post-create' }"
-              class="profile-post-add-button"
-              icon="plus"
-              size="large"
-              primary
-            />
+          <ds-grid-item :row-span="2" column-span="fullWidth">
+            <ds-space centered>
+              <ds-button
+                v-if="myProfile"
+                v-tooltip="{
+                  content: 'Create a new Post',
+                  placement: 'left',
+                  delay: { show: 500 },
+                }"
+                :path="{ name: 'post-create' }"
+                class="profile-post-add-button"
+                icon="plus"
+                size="large"
+                primary
+              />
+            </ds-space>
           </ds-grid-item>
 
           <template v-if="activePosts.length">
@@ -434,10 +440,6 @@ export default {
 <style lang="scss">
 .pointer {
   cursor: pointer;
-}
-.create-button {
-  text-align: center;
-  margin: auto;
 }
 .Tab {
   border-collapse: collapse;
