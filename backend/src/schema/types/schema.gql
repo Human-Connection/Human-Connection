@@ -13,7 +13,6 @@ type Query {
       WHERE score >= 0.2
       AND NOT user.deleted = true AND NOT user.disabled = true
       AND NOT post.deleted = true AND NOT post.disabled = true
-      AND NOT user.id in COALESCE($filter.author_not.id_in, [])
       RETURN post
       LIMIT $limit
       """
