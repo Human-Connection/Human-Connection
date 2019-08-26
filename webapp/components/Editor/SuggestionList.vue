@@ -1,5 +1,5 @@
 <template>
-  <div class="suggestion-list" v-show="showSuggestions">
+  <div class="suggestion-list">
     <!-- "filteredItems" array is not empty -->
     <template v-if="hasResults">
       <div
@@ -26,13 +26,15 @@
     </template>
     <!-- if "!hasResults" -->
     <div v-else>
-      <div v-if="isMention" class="suggestion-list__item is-empty">
-        {{ $t('editor.mention.noUsersFound') }}
-      </div>
+      <div
+        v-if="isMention"
+        class="suggestion-list__item is-empty"
+      >{{ $t('editor.mention.noUsersFound') }}</div>
       <div v-if="isHashtag">
-        <div v-if="query === ''" class="suggestion-list__item is-empty">
-          {{ $t('editor.hashtag.noHashtagsFound') }}
-        </div>
+        <div
+          v-if="query === ''"
+          class="suggestion-list__item is-empty"
+        >{{ $t('editor.hashtag.noHashtagsFound') }}</div>
         <!-- if "query" is not empty -->
         <div v-else>
           <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
@@ -44,16 +46,24 @@
 </template>
 
 <script>
+import { HASHTAG, MENTION } from '../../constants/editor'
+
 export default {
-  props: [
-    'hasResults',
-    'filteredItems',
-    'navigatedItemIndex',
-    'isMention',
-    'isHashtag',
-    'query',
-    'selectItem',
-    'showSuggestions',
-  ],
+  props: {
+    suggestionType: String,
+    filteredItems: Array,
+    query: String,
+    navigatedItemIndex: Number,
+    selectItem: Function,
+    hasResults: Number,
+  },
+  computed: {
+    isMention() {
+      return this.suggestionType === MENTION
+    },
+    isHashtag() {
+      return this.suggestionType === HASHTAG
+    },
+  },
 }
 </script>

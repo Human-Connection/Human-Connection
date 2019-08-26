@@ -4,14 +4,13 @@
     <editor-content ref="editor" :editor="editor" />
     <context-menu ref="contextMenu" />
     <suggestion-list
-      :showSuggestions="showSuggestions"
+      v-show="showSuggestions"
       ref="suggestions"
+      :suggestion-type="suggestionType"
       :filtered-items="filteredItems"
       :navigated-item-index="navigatedItemIndex"
       :query="query"
       :select-item="selectItem"
-      :is-mention="isMention"
-      :is-hashtag="isHashtag"
       :has-results="hasResults"
     />
     <link-input v-show="linkMenuIsActive" ref="linkMenu" :editorCommand="editor.commands.link" />
@@ -24,6 +23,9 @@ import { Editor, EditorContent } from 'tiptap'
 import { History } from 'tiptap-extensions'
 import linkify from 'linkify-it'
 import stringHash from 'string-hash'
+
+import * as key from '../../constants/keycodes'
+import { HASHTAG, MENTION } from '../../constants/editor'
 import defaultExtensions from './defaultExtensions.js'
 import EventHandler from './plugins/eventHandler.js'
 import Hashtag from './nodes/Hashtag.js'
@@ -34,8 +36,6 @@ import SuggestionList from './SuggestionList'
 import LinkInput from './LinkInput'
 
 let throttleInputEvent
-const HASHTAG = 'hashtag'
-const MENTION = 'mention'
 
 export default {
   components: {
@@ -73,12 +73,6 @@ export default {
     },
     showSuggestions() {
       return this.query || this.hasResults
-    },
-    isMention() {
-      return this.suggestionType === MENTION
-    },
-    isHashtag() {
-      return this.suggestionType === HASHTAG
     },
     optionalExtensions() {
       const extensions = []
@@ -182,21 +176,28 @@ export default {
       this.$refs.contextMenu.hideContextMenu()
     },
     navigateSuggestionList({ event }) {
+      const item = this.filteredItems[this.navigatedItemIndex]
+
       switch (event.keyCode) {
-        case 38:
-          this.handleUpArrow()
+        case key.ARROW_UP:
+          this.navigatedItemIndex =
+            (this.navigatedItemIndex + this.filteredItems.length - 1) % this.filteredItems.length
           return true
 
-        case 40:
-          this.handleDownArrow()
+        case key.ARROW_DOWN:
+          this.navigatedItemIndex = (this.navigatedItemIndex + 1) % this.filteredItems.length
           return true
 
-        case 13:
-          this.handleEnter()
+        case key.RETURN:
+          if (item) {
+            this.selectItem(item)
+          }
           return true
 
-        case 32:
-          this.handleSpace()
+        case key.SPACE:
+          if (this.suggestionType === HASHTAG && this.query !== '') {
+            this.selectItem({ id: this.query })
+          }
           return true
 
         default:
@@ -221,24 +222,6 @@ export default {
         return query.replace(/[0-9]/gm, '') === '' ? '' : query
       }
       return query
-    },
-    handleUpArrow() {
-      this.navigatedItemIndex =
-        (this.navigatedItemIndex + this.filteredItems.length - 1) % this.filteredItems.length
-    },
-    handleDownArrow() {
-      this.navigatedItemIndex = (this.navigatedItemIndex + 1) % this.filteredItems.length
-    },
-    handleEnter() {
-      const item = this.filteredItems[this.navigatedItemIndex]
-      if (item) {
-        this.selectItem(item)
-      }
-    },
-    handleSpace() {
-      if (this.suggestionType === HASHTAG && this.query !== '') {
-        this.selectItem({ id: this.query })
-      }
     },
     // we have to replace our suggestion text with a mention
     // so it's important to pass also the position of your suggestion text
