@@ -147,7 +147,8 @@ UNWIND categoryIds AS categoryId
 MATCH (c:Category {id: categoryId})
 MERGE (p)-[:CATEGORIZED]->(c)
 WITH p, post.tags AS tags
-UNWIND tags AS tag
-MERGE (t:Tag {id: apoc.text.clean(tag), disabled: false, deleted: false})
+UNWIND apoc.text.replace(tags, '/[^a-z^A-Z^0-9]{1}/g', '') AS tag
+WHERE size(apoc.text.regexGroups(tag, '/^(([a-zA-Z]+[a-zA-Z0-9]*)|([0-9]+[a-zA-Z]+[a-zA-Z0-9]*))$/g')) >= 1
+MERGE (t:Tag { id: tag, disabled: false, deleted: false })
 MERGE (p)-[:TAGGED]->(t)
 ;
