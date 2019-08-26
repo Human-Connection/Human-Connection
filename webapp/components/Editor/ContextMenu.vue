@@ -19,7 +19,7 @@ export default {
         arrow: true,
         arrowType: 'round',
         content: content,
-        // duration: [400, 200],
+        duration: [400, 200],
         inertia: true,
         interactive: true,
         placement: 'top-start',
@@ -27,9 +27,10 @@ export default {
         theme: 'dark',
         trigger,
         onMount(instance) {
-          instance.popper.querySelector('input').focus()
+          instance.popper.querySelector('input').focus({ preventScroll: true })
         },
       })
+
       // we have to update tippy whenever the DOM is updated
       if (MutationObserver) {
         this.observer = new MutationObserver(() => {

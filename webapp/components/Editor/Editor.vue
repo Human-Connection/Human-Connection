@@ -14,7 +14,6 @@
     <link-input
       v-show="isLinkInputActive"
       ref="linkInput"
-      :linkUrl="linkUrl"
       :editor-command="editor.commands.link"
       :toggle-link-input="toggleLinkInput"
       :set-link-url="setLinkUrl"
@@ -60,7 +59,6 @@ export default {
     return {
       lastValueHash: null,
       editor: null,
-      linkUrl: null,
       isLinkInputActive: false,
       suggestionType: '',
       query: null,
@@ -251,26 +249,26 @@ export default {
     },
     toggleLinkInput(attrs, element) {
       if (!this.isLinkInputActive && attrs && element) {
-        this.linkUrl = attrs.href
+        this.$refs.linkInput.linkUrl = attrs.href
         this.isLinkInputActive = true
         this.$refs.contextMenu.displayContextMenu(element, this.$refs.linkInput.$el, 'link')
       } else {
         this.$refs.contextMenu.hideContextMenu()
-        this.linkUrl = null
         this.isLinkInputActive = false
         this.editor.focus()
       }
     },
-    setLinkUrl(command, url) {
-      const links = linkify().match(url)
-      if (links) {
+    setLinkUrl(url) {
+      const normalizedLinks = url ? linkify().match(url) : null
+      const command = this.editor.commands.link
+      if (normalizedLinks) {
         // add valid link
         command({
-          href: links.pop().url,
+          href: normalizedLinks.pop().url,
         })
         this.toggleLinkInput()
         this.editor.focus()
-      } else if (!url) {
+      } else {
         // remove link
         command({ href: null })
       }
