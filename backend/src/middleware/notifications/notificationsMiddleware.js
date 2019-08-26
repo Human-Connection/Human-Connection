@@ -1,5 +1,4 @@
-import extractMentionedUsers from './notifications/extractMentionedUsers'
-import extractHashtags from './hashtags/extractHashtags'
+import extractMentionedUsers from './mentions/extractMentionedUsers'
 
 const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
   if (!idsOfUsers.length) return
@@ -66,44 +65,13 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
   session.close()
 }
 
-const updateHashtagsOfPost = async (postId, hashtags, context) => {
-  if (!hashtags.length) return
-
-  const session = context.driver.session()
-  // We need two Cypher statements, because the 'MATCH' in the 'cypherDeletePreviousRelations' statement
-  //  functions as an 'if'. In case there is no previous relation, the rest of the commands are omitted
-  //  and no new Hashtags and relations will be created.
-  const cypherDeletePreviousRelations = `
-    MATCH (p: Post { id: $postId })-[previousRelations: TAGGED]->(t: Tag)
-    DELETE previousRelations
-    RETURN p, t
-    `
-  const cypherCreateNewTagsAndRelations = `
-    MATCH (p: Post { id: $postId})
-    UNWIND $hashtags AS tagName
-    MERGE (t: Tag { id: tagName, disabled: false, deleted: false })
-    MERGE (p)-[:TAGGED]->(t)
-    RETURN p, t
-    `
-  await session.run(cypherDeletePreviousRelations, {
-    postId,
-  })
-  await session.run(cypherCreateNewTagsAndRelations, {
-    postId,
-    hashtags,
-  })
-  session.close()
-}
-
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
-  const hashtags = extractHashtags(args.content)
 
   const post = await resolve(root, args, context, resolveInfo)
 
   if (post) {
     await notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
-    await updateHashtagsOfPost(post.id, hashtags, context)
   }
 
   return post
@@ -121,7 +89,6 @@ const handleContentDataOfComment = async (resolve, root, args, context, resolveI
 }
 
 const handleCreateComment = async (resolve, root, args, context, resolveInfo) => {
-  // removes classes from the content
   const comment = await handleContentDataOfComment(resolve, root, args, context, resolveInfo)
 
   if (comment) {
