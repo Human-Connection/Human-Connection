@@ -1,48 +1,29 @@
 <template>
-  <div class="suggestion-list">
-    <!-- "filteredItems" array is not empty -->
-    <template v-if="hasResults">
-      <div
-        v-for="(item, index) in filteredItems"
-        :key="item.id"
-        class="suggestion-list__item"
-        :class="{ 'is-selected': navigatedItemIndex === index }"
-        @click="selectItem(item)"
-      >
-        <div v-if="isMention">@{{ item.slug }}</div>
-        <div v-if="isHashtag">#{{ item.id }}</div>
-      </div>
-      <div v-if="isHashtag">
-        <!-- if query is not empty and is find fully in the suggestions array ... -->
-        <div v-if="query && !filteredItems.find(el => el.id === query)">
-          <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-          <div class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</div>
-        </div>
-        <!-- otherwise if sanitized query is empty advice the user to add a char -->
-        <div v-else-if="!query">
-          <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addLetter') }}</div>
-        </div>
-      </div>
+  <ul v-show="showSuggestions" class="suggestion-list">
+    <li
+      v-for="(item, index) in filteredItems"
+      :key="item.id"
+      class="suggestion-list__item"
+      :class="{ 'is-selected': navigatedItemIndex === index }"
+      @click="selectItem(item)"
+    >
+      {{ createItemLabel(item) }}
+    </li>
+    <template v-if="isHashtag">
+      <li v-if="!query" class="suggestion-list__item hint">
+        {{ $t('editor.hashtag.addLetter') }}
+      </li>
+      <template v-else-if="!filteredItems.find(el => el.id === query)">
+        <li class="suggestion-list__item hint">{{ $t('editor.hashtag.addHashtag') }}</li>
+        <li class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</li>
+      </template>
     </template>
-    <!-- if "!hasResults" -->
-    <div v-else>
-      <div
-        v-if="isMention"
-        class="suggestion-list__item is-empty"
-      >{{ $t('editor.mention.noUsersFound') }}</div>
-      <div v-if="isHashtag">
-        <div
-          v-if="query === ''"
-          class="suggestion-list__item is-empty"
-        >{{ $t('editor.hashtag.noHashtagsFound') }}</div>
-        <!-- if "query" is not empty -->
-        <div v-else>
-          <div class="suggestion-list__item is-empty">{{ $t('editor.hashtag.addHashtag') }}</div>
-          <div class="suggestion-list__item" @click="selectItem({ id: query })">#{{ query }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <template v-else-if="isMention">
+      <li v-if="!hasResults" class="suggestion-list__item hint">
+        {{ $t('editor.mention.noUsersFound') }}
+      </li>
+    </template>
+  </ul>
 </template>
 
 <script>
@@ -55,15 +36,60 @@ export default {
     query: String,
     navigatedItemIndex: Number,
     selectItem: Function,
-    hasResults: Number,
   },
   computed: {
+    hasResults() {
+      return this.filteredItems.length > 0
+    },
     isMention() {
       return this.suggestionType === MENTION
     },
     isHashtag() {
       return this.suggestionType === HASHTAG
     },
+    showSuggestions() {
+      return this.query || this.hasResults
+    },
+  },
+  methods: {
+    createItemLabel(item) {
+      if (this.isMention) {
+        return `@${item.slug}`
+      } else {
+        return `#${item.id}`
+      }
+    },
   },
 }
 </script>
+
+<style lang="scss">
+.suggestion-list {
+  list-style-type: none;
+  padding: 0.2rem;
+  border: 2px solid rgba($color-neutral-0, 0.1);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.suggestion-list__item {
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+  margin-bottom: 0.2rem;
+  cursor: pointer;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.is-selected,
+  &:hover {
+    background-color: rgba($color-neutral-100, 0.2);
+  }
+
+  &.hint {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+</style>

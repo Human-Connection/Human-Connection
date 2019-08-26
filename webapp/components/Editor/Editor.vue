@@ -4,14 +4,12 @@
     <editor-content ref="editor" :editor="editor" />
     <context-menu ref="contextMenu" />
     <suggestion-list
-      v-show="showSuggestions"
       ref="suggestions"
       :suggestion-type="suggestionType"
       :filtered-items="filteredItems"
       :navigated-item-index="navigatedItemIndex"
       :query="query"
       :select-item="selectItem"
-      :has-results="hasResults"
     />
     <link-input v-show="linkMenuIsActive" ref="linkMenu" :editorCommand="editor.commands.link" />
   </div>
@@ -68,12 +66,6 @@ export default {
   },
   computed: {
     ...mapGetters({ placeholder: 'editor/placeholder' }),
-    hasResults() {
-      return this.filteredItems.length
-    },
-    showSuggestions() {
-      return this.query || this.hasResults
-    },
     optionalExtensions() {
       const extensions = []
       // Don't change the following line. The functionallity is in danger!
@@ -290,32 +282,6 @@ export default {
 </script>
 
 <style lang="scss">
-.suggestion-list {
-  padding: 0.2rem;
-  border: 2px solid rgba($color-neutral-0, 0.1);
-  font-size: 0.8rem;
-  font-weight: bold;
-  &__no-results {
-    padding: 0.2rem 0.5rem;
-  }
-  &__item {
-    border-radius: 5px;
-    padding: 0.2rem 0.5rem;
-    margin-bottom: 0.2rem;
-    cursor: pointer;
-    &:last-child {
-      margin-bottom: 0;
-    }
-    &.is-selected,
-    &:hover {
-      background-color: rgba($color-neutral-100, 0.2);
-    }
-    &.is-empty {
-      opacity: 0.5;
-    }
-  }
-}
-
 .tippy-tooltip.dark-theme {
   background-color: $color-neutral-0;
   padding: 0;
