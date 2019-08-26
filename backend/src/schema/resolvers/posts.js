@@ -35,7 +35,7 @@ export default {
     },
     findPosts: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
-      return neo4jgraphql(object, params, context, resolveInfo, true)
+      return neo4jgraphql(object, params, context, resolveInfo, false)
     },
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
