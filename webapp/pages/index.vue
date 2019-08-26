@@ -36,7 +36,7 @@
         </ds-grid-item>
       </template>
     </masonry-grid>
-    <no-ssr>
+    <client-only>
       <ds-button
         v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
         :path="{ name: 'post-create' }"
@@ -45,7 +45,7 @@
         size="x-large"
         primary
       />
-    </no-ssr>
+    </client-only>
     <div
       v-if="hasMore"
       v-infinite-scroll="showMoreContributions"

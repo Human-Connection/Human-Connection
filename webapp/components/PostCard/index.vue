@@ -13,9 +13,9 @@
     <ds-space margin-bottom="small" />
     <!-- Username, Image & Date of Post -->
     <div>
-      <no-ssr>
+      <client-only>
         <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
-      </no-ssr>
+      </client-only>
       <hc-ribbon :text="$t('post.name')" />
     </div>
     <ds-space margin-bottom="small" />
@@ -42,7 +42,7 @@
           :icon="category.icon"
         />
       </div>
-      <no-ssr>
+      <client-only>
         <div style="display: inline-block; float: right">
           <!-- Shouts Count -->
           <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
@@ -63,7 +63,7 @@
             :is-owner="isAuthor"
           />
         </div>
-      </no-ssr>
+      </client-only>
     </template>
   </ds-card>
 </template>

@@ -14,7 +14,7 @@
         <ds-space />
         <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
         <small class="smallTag">{{ form.title.length }}/{{ formSchema.title.max }}</small>
-        <no-ssr>
+        <client-only>
           <hc-editor
             :users="users"
             :value="form.content"
@@ -22,7 +22,7 @@
             @input="updateEditorContent"
           />
           <small class="smallTag">{{ form.contentLength }}/{{ contentMax }}</small>
-        </no-ssr>
+        </client-only>
         <ds-space margin-bottom="xxx-large" />
         <hc-categories-select
           model="categoryIds"

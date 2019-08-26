@@ -13,7 +13,7 @@ localVue.use(Filters)
 localVue.use(InfiniteScroll)
 localVue.filter('date', d => d)
 
-config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
