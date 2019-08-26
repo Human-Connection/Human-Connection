@@ -11,17 +11,19 @@ const filterForBlockedUsers = async (params, context) => {
     getBlockedByUsers(context),
   ])
   const badIds = [...blockedByUsers.map(b => b.id), ...blockedUsers.map(b => b.id)]
-  params.filter = mergeWith(
-    params.filter,
-    {
-      author_not: { id_in: badIds },
-    },
-    (objValue, srcValue) => {
-      if (isArray(objValue)) {
-        return objValue.concat(srcValue)
-      }
-    },
-  )
+  if (badIds.length) {
+    params.filter = mergeWith(
+      params.filter,
+      {
+        author_not: { id_in: badIds },
+      },
+      (objValue, srcValue) => {
+        if (isArray(objValue)) {
+          return objValue.concat(srcValue)
+        }
+      },
+    )
+  }
   return params
 }
 
