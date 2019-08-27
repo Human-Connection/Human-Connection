@@ -25,7 +25,7 @@ export default {
         interactive: true,
         placement,
         showOnInit,
-        theme: 'dark',
+        theme: 'human-connection',
         trigger,
         onMount(instance) {
           const input = instance.popper.querySelector('input')
@@ -65,31 +65,31 @@ export default {
 </script>
 
 <style lang="scss">
-.tippy-tooltip.dark-theme {
-  background-color: $color-neutral-0;
+.tippy-tooltip.human-connection-theme {
+  background-color: $color-primary;
   padding: 0;
   font-size: 1rem;
   text-align: inherit;
   color: $color-neutral-100;
-  border-radius: 5px;
+
   .tippy-backdrop {
     display: none;
   }
 
   .tippy-roundarrow {
-    fill: $color-neutral-0;
+    fill: $color-primary;
   }
   .tippy-popper[x-placement^='top'] & .tippy-arrow {
-    border-top-color: $color-neutral-0;
+    border-top-color: $color-primary;
   }
   .tippy-popper[x-placement^='bottom'] & .tippy-arrow {
-    border-bottom-color: $color-neutral-0;
+    border-bottom-color: $color-primary;
   }
   .tippy-popper[x-placement^='left'] & .tippy-arrow {
-    border-left-color: $color-neutral-0;
+    border-left-color: $color-primary;
   }
   .tippy-popper[x-placement^='right'] & .tippy-arrow {
-    border-right-color: $color-neutral-0;
+    border-right-color: $color-primary;
   }
 }
 </style>

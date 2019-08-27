@@ -67,7 +67,8 @@ export default {
 .suggestion-list {
   list-style-type: none;
   padding: 0.2rem;
-  border: 2px solid rgba($color-neutral-0, 0.1);
+  border-radius: 5px;
+  border: 2px solid $color-primary;
   font-size: 0.8rem;
   font-weight: bold;
 }
@@ -84,11 +85,11 @@ export default {
 
   &.is-selected,
   &:hover {
-    background-color: rgba($color-neutral-100, 0.2);
+    background-color: rgba($color-neutral-100, 0.3);
   }
 
   &.hint {
-    opacity: 0.5;
+    opacity: 0.7;
     pointer-events: none;
   }
 }
