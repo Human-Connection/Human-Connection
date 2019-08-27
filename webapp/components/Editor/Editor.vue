@@ -114,13 +114,13 @@ export default {
           return
         }
         this.lastValueHash = contentHash
-        this.editor.setContent(content)
+        this.$nextTick(() => this.editor.setContent(content))
       },
     },
     placeholder: {
       immediate: true,
       handler: function(val) {
-        if (!val) {
+        if (!val || !this.editor) {
           return
         }
         this.editor.extensions.options.placeholder.emptyNodeText = val
