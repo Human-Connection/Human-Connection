@@ -1847,10 +1847,10 @@ cucumber@^4.2.1:
     util-arity "^1.0.2"
     verror "^1.9.0"
 
-cypress-cucumber-preprocessor@^1.14.1:
-  version "1.14.1"
-  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.14.1.tgz#47a6ddd28ca1b0a4ec24707b20ca5c0d7ffc7875"
-  integrity sha512-72RN3sUeq0r4aNiFfztQD6Uvi58fifkfc2R4pCyX6oTEZLfHfcudkNQLd98ByCyiWXNXPHlGGihE6+EPCDK59A==
+cypress-cucumber-preprocessor@^1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.15.0.tgz#bc2bbad5799dcc07798a0f8f1d374b99e0d3bbab"
+  integrity sha512-6exZ4cPruFcx55INZtxGnUwoGuzcAq+8T1k7NaCC2g36mdweltGjtjIGuHy4lk+VQaW6zmLV6zDtuxrEQsFC/w==
   dependencies:
     "@cypress/browserify-preprocessor" "^1.1.2"
     chai "^4.1.2"

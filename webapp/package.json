@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@human-connection/styleguide": "0.5.19",
-    "@nuxtjs/apollo": "^4.0.0-rc11",
+    "@nuxtjs/apollo": "^4.0.0-rc12",
     "@nuxtjs/axios": "~5.6.0",
     "@nuxtjs/dotenv": "~1.4.0",
     "@nuxtjs/sentry": "^3.0.0",
@@ -104,7 +104,7 @@
     "eslint": "~5.16.0",
     "eslint-config-prettier": "~6.1.0",
     "eslint-config-standard": "~12.0.0",
-    "eslint-loader": "~2.2.1",
+    "eslint-loader": "~3.0.0",
     "eslint-plugin-import": "~2.18.2",
     "eslint-plugin-jest": "~22.15.2",
     "eslint-plugin-node": "~9.1.0",
