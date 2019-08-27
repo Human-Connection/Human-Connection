@@ -1,0 +1,5 @@
+enum ReasonNotification {
+  mentioned_in_post
+  mentioned_in_comment
+  comment_on_post
+}
