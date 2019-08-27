@@ -141,13 +141,13 @@ export default {
       this.openEditCommentMenu = showMenu
       this.setEditPending(showMenu)
     },
-    deleteCommentCallback() {
-      this.$apollo
-        .mutate({
+    async deleteCommentCallback() {
+      try {
+        await this.$apollo.mutate({
           mutation: CommentMutations(this.$i18n).DeleteComment,
           variables: { id: this.comment.id },
-          update: store => {
-            const data = store.readQuery({
+          update: async store => {
+            const data = await store.readQuery({
               query: PostQuery(this.$i18n),
               variables: { id: this.post.id },
             })
@@ -158,16 +158,14 @@ export default {
             if (index !== -1) {
               data.Post[0].comments.splice(index, 1)
             }
-            store.writeQuery({ query: PostQuery(this.$i18n), data })
+            await store.writeQuery({ query: PostQuery(this.$i18n), data })
           },
         })
-        .then(res => {
-          this.$toast.success(this.$t(`delete.comment.success`))
-          this.$emit('deleteComment')
-        })
-        .catch(err => {
-          this.$toast.error(err.message)
-        })
+        this.$toast.success(this.$t(`delete.comment.success`))
+        this.$emit('deleteComment')
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }
