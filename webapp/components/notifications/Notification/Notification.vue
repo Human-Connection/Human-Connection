@@ -10,8 +10,8 @@
         />
         <hc-user v-else :user="comment.author" :date-time="comment.createdAt" :trunc="35" />
       </ds-space>
-      <ds-text color="soft">
-        {{ $t('notifications.menu.mentioned', { resource: resourceType }) }}
+      <ds-text class="reason-text-for-test" color="soft">
+        {{ $t(`notifications.menu.${notification.reason}`) }}
       </ds-text>
     </no-ssr>
     <ds-space margin-bottom="x-small" />
