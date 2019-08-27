@@ -28,7 +28,11 @@ export default {
         theme: 'dark',
         trigger,
         onMount(instance) {
-          instance.popper.querySelector('input').focus({ preventScroll: true })
+          const input = instance.popper.querySelector('input')
+
+          if (input) {
+            input.focus({ preventScroll: true })
+          }
         },
       })
 
