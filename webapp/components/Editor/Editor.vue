@@ -1,7 +1,7 @@
 <template>
   <div class="editor">
     <menu-bar :editor="editor" :toggleLinkInput="toggleLinkInput" />
-    <editor-content ref="editor" :editor="editor" />
+    <editor-content ref="editor" :editor="editor" class="ds-input editor-content" />
     <context-menu ref="contextMenu" />
     <suggestion-list
       ref="suggestions"
@@ -14,7 +14,6 @@
     <link-input
       v-show="isLinkInputActive"
       ref="linkInput"
-      :editor-command="editor.commands.link"
       :toggle-link-input="toggleLinkInput"
       :set-link-url="setLinkUrl"
     />
@@ -281,38 +280,6 @@ export default {
 </script>
 
 <style lang="scss">
-.tippy-tooltip.dark-theme {
-  background-color: $color-neutral-0;
-  padding: 0;
-  font-size: 1rem;
-  text-align: inherit;
-  color: $color-neutral-100;
-  border-radius: 5px;
-  .tippy-backdrop {
-    display: none;
-  }
-
-  .tippy-roundarrow {
-    fill: $color-neutral-0;
-  }
-  .tippy-popper[x-placement^='top'] & .tippy-arrow {
-    border-top-color: $color-neutral-0;
-  }
-  .tippy-popper[x-placement^='bottom'] & .tippy-arrow {
-    border-bottom-color: $color-neutral-0;
-  }
-  .tippy-popper[x-placement^='left'] & .tippy-arrow {
-    border-left-color: $color-neutral-0;
-  }
-  .tippy-popper[x-placement^='right'] & .tippy-arrow {
-    border-right-color: $color-neutral-0;
-  }
-}
-
-.ProseMirror:focus {
-  outline: none;
-}
-
 .editor p.is-empty:first-child::before {
   content: attr(data-empty-text);
   float: left;
@@ -332,74 +299,41 @@ li > p {
 }
 
 .editor {
-  .mention-suggestion {
-    color: $color-primary;
-  }
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+
   .hashtag {
     color: $color-primary;
   }
   .hashtag-suggestion {
     color: $color-primary;
   }
-  &__floating-menu {
-    position: absolute;
-    margin-top: -0.25rem;
-    margin-left: $space-xx-small;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s, visibility 0.2s;
-    background-color: #fff;
-
-    &.is-active {
-      opacity: 1;
-      visibility: visible;
-    }
+  .mention-suggestion {
+    color: $color-primary;
   }
-  .menububble {
-    position: absolute;
-    // margin-top: -0.5rem;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 200ms, visibility 200ms;
-    // transition-delay: 50ms;
-    transform: translate(-50%, -10%);
+}
 
-    background-color: $background-color-inverse-soft;
-    // color: $text-color-inverse;
-    border-radius: $border-radius-base;
-    padding: $space-xx-small;
-    box-shadow: $box-shadow-large;
+.editor-content {
+  flex-grow: 1;
+  flex-basis: 100%;
+  margin-top: $space-small;
 
-    .ds-button {
-      color: $text-color-inverse;
+  &:focus-within {
+    border-color: $color-primary;
+    background-color: $color-neutral-100;
+  }
+}
 
-      &.ds-button-hover,
-      &:hover {
-        color: $text-color-base;
-      }
-    }
+.ProseMirror {
+  height: 100%;
 
-    &.is-active {
-      opacity: 1;
-      visibility: visible;
-    }
+  &:focus {
+    outline: none;
+  }
 
-    .tooltip-arrow {
-      left: calc(50% - 10px);
-    }
-
-    input,
-    button {
-      border: none;
-      border-radius: 2px;
-    }
-
-    .ds-input {
-      height: auto;
-    }
-    input {
-      padding: $space-xx-small $space-x-small;
-    }
+  p {
+    margin: 0 0 $space-x-small;
   }
 }
 </style>

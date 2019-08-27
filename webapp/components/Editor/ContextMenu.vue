@@ -8,6 +8,7 @@ export default {
   },
   methods: {
     displayContextMenu(target, content, type) {
+      const placement = type === 'link' ? 'right' : 'top-start'
       const trigger = type === 'link' ? 'click' : 'mouseenter'
       const showOnInit = type !== 'link'
 
@@ -22,7 +23,7 @@ export default {
         duration: [400, 200],
         inertia: true,
         interactive: true,
-        placement: 'top-start',
+        placement,
         showOnInit,
         theme: 'dark',
         trigger,
@@ -58,3 +59,33 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.tippy-tooltip.dark-theme {
+  background-color: $color-neutral-0;
+  padding: 0;
+  font-size: 1rem;
+  text-align: inherit;
+  color: $color-neutral-100;
+  border-radius: 5px;
+  .tippy-backdrop {
+    display: none;
+  }
+
+  .tippy-roundarrow {
+    fill: $color-neutral-0;
+  }
+  .tippy-popper[x-placement^='top'] & .tippy-arrow {
+    border-top-color: $color-neutral-0;
+  }
+  .tippy-popper[x-placement^='bottom'] & .tippy-arrow {
+    border-bottom-color: $color-neutral-0;
+  }
+  .tippy-popper[x-placement^='left'] & .tippy-arrow {
+    border-left-color: $color-neutral-0;
+  }
+  .tippy-popper[x-placement^='right'] & .tippy-arrow {
+    border-right-color: $color-neutral-0;
+  }
+}
+</style>
