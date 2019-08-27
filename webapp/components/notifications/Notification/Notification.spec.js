@@ -8,7 +8,7 @@ const localVue = createLocalVue()
 localVue.use(Styleguide)
 localVue.use(Filters)
 
-config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('Notification', () => {
   let stubs

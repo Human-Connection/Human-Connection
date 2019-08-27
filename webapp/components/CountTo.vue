@@ -1,6 +1,6 @@
 <template>
   <span>
-    <no-ssr placeholder="0" tag="span">
+    <client-only placeholder="0" tag="span">
       <count-to
         :start-val="startVal"
         :end-val="endVal"
@@ -8,7 +8,7 @@
         :autoplay="autoplay"
         :separator="separator"
       />
-    </no-ssr>
+    </client-only>
   </span>
 </template>
 

@@ -15,7 +15,7 @@ localVue.use(Filters)
 localVue.use(VTooltip)
 localVue.use(InfiniteScroll)
 
-config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['router-link'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 

@@ -1,6 +1,6 @@
 <template>
   <ds-space :class="[{ read: notification.read }, notification]" margin-bottom="x-small">
-    <no-ssr>
+    <client-only>
       <ds-space margin-bottom="x-small">
         <hc-user
           v-if="resourceType == 'Post'"
@@ -13,7 +13,7 @@
       <ds-text class="reason-text-for-test" color="soft">
         {{ $t(`notifications.menu.${notification.reason}`) }}
       </ds-text>
-    </no-ssr>
+    </client-only>
     <ds-space margin-bottom="x-small" />
     <nuxt-link
       class="notification-mention-post"
