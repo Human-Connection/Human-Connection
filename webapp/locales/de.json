@@ -14,7 +14,7 @@
       "all": "Alle"
     },
     "general": {
-      "header": "Filtern nach..."
+      "header": "Filtern nach …"
     },
     "followers": {
       "label": "Benutzern, denen ich folge"
@@ -96,7 +96,7 @@
     }
   },
   "editor": {
-    "placeholder": "Schreib etwas Inspirierendes...",
+    "placeholder": "Schreib etwas Inspirierendes …",
     "mention": {
       "noUsersFound": "Keine Benutzer gefunden"
     },
@@ -122,13 +122,19 @@
       "followingNobody": "folgt niemandem.",
       "followedBy": "wird gefolgt von:",
       "followedByNobody": "wird von niemandem gefolgt.",
-      "and": "und",
-      "more": "weitere"
+      "andMore": "und {number} weitere …"
+    },
+    "invites": {
+      "title": "Lade jemanden zu Human Connection ein!",
+      "description": "Für die Einladung trage seine E-Mail-Adresse hier ein.",
+      "emailPlaceholder": "E-Mail-Adresse für die Einladung"
     }
   },
   "notifications": {
     "menu": {
-      "mentioned": "hat dich in einem {resource} erwähnt"
+      "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …",
+      "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
+      "comment_on_post": "Hat deinen Beitrag kommentiert …"
     }
   },
   "search": {
@@ -271,8 +277,8 @@
     },
     "invites": {
       "name": "Benutzer einladen",
-      "title": "Benutzer als Admin anmelden",
-      "description": "Dieses Anmeldeformular ist zu sehen sobald die Anmeldung öffentlich zugänglich ist."
+      "title": "Leute einladen",
+      "description": "Einladungen sind ein wunderbarer Weg, deine Freund in deinem Netzwerk zu haben …"
     }
   },
   "post": {
@@ -300,7 +306,7 @@
   },
   "comment": {
     "content": {
-      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
+      "unavailable-placeholder": "… dieser Kommentar ist nicht mehr verfügbar"
     },
     "menu": {
       "edit": "Kommentar bearbeiten",

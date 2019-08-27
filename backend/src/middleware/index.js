@@ -12,26 +12,30 @@ import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation/validationMiddleware'
-import handleContentData from './handleHtmlContent/handleContentData'
+import notifications from './notifications/notificationsMiddleware'
+import hashtags from './hashtags/hashtagsMiddleware'
 import email from './email/emailMiddleware'
 import sentry from './sentryMiddleware'
 
 export default schema => {
   const middlewares = {
-    permissions: permissions,
-    sentry: sentry,
-    activityPub: activityPub,
-    dateTime: dateTime,
-    validation: validation,
-    sluggify: sluggify,
-    excerpt: excerpt,
-    handleContentData: handleContentData,
-    xss: xss,
-    softDelete: softDelete,
-    user: user,
-    includedFields: includedFields,
-    orderBy: orderBy,
-    email: email({ isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT }),
+    permissions,
+    sentry,
+    activityPub,
+    dateTime,
+    validation,
+    sluggify,
+    excerpt,
+    notifications,
+    hashtags,
+    xss,
+    softDelete,
+    user,
+    includedFields,
+    orderBy,
+    email: email({
+      isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT,
+    }),
   }
 
   let order = [
@@ -43,7 +47,8 @@ export default schema => {
     'sluggify',
     'excerpt',
     'email',
-    'handleContentData',
+    'notifications',
+    'hashtags',
     'xss',
     'softDelete',
     'user',

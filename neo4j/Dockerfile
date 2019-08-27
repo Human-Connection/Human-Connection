@@ -5,7 +5,6 @@ ARG BUILD_COMMIT
 ENV BUILD_COMMIT=$BUILD_COMMIT
 
 COPY db_setup.sh /usr/local/bin/db_setup
-COPY entrypoint.sh /docker-entrypoint-wrapper.sh
-RUN apt-get update && apt-get -y install procps wget
+
+RUN apt-get update && apt-get -y install wget htop
 RUN wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.5.0.4/apoc-3.5.0.4-all.jar -P plugins/
-ENTRYPOINT ["/docker-entrypoint-wrapper.sh"]

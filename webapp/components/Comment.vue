@@ -15,7 +15,7 @@
         <hc-user :user="author" :date-time="comment.createdAt" />
       </ds-space>
       <!-- Content Menu (can open Modals) -->
-      <no-ssr>
+      <client-only>
         <content-menu
           placement="bottom-end"
           resource-type="comment"
@@ -25,7 +25,7 @@
           :is-owner="isAuthor(author.id)"
           @showEditCommentMenu="editCommentMenu"
         />
-      </no-ssr>
+      </client-only>
 
       <ds-space margin-bottom="small" />
       <div v-if="openEditCommentMenu">

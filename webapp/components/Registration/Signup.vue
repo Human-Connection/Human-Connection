@@ -9,17 +9,21 @@
         :schema="formSchema"
         @submit="handleSubmit"
       >
-        <h1>{{ $t('registration.signup.title') }}</h1>
+        <h1>{{ invitation ? $t('profile.invites.title') : $t('registration.signup.title') }}</h1>
         <ds-space v-if="token" margin-botton="large">
           <ds-text v-html="$t('registration.signup.form.invitation-code', { code: token })" />
         </ds-space>
         <ds-space margin-botton="large">
           <ds-text>
-            {{ $t('registration.signup.form.description') }}
+            {{
+              invitation
+                ? $t('profile.invites.description')
+                : $t('registration.signup.form.description')
+            }}
           </ds-text>
         </ds-space>
         <ds-input
-          :placeholder="$t('login.email')"
+          :placeholder="invitation ? $t('profile.invites.emailPlaceholder') : $t('login.email')"
           type="email"
           id="email"
           model="email"
@@ -45,9 +49,7 @@
         </template>
         <template v-else>
           <sweetalert-icon icon="error" />
-          <ds-text align="center">
-            {{ error.message }}
-          </ds-text>
+          <ds-text align="center">{{ error.message }}</ds-text>
         </template>
       </div>
     </ds-space>
@@ -73,11 +75,13 @@ export const SignupByInvitationMutation = gql`
   }
 `
 export default {
+  name: 'Signup',
   components: {
     SweetalertIcon,
   },
   props: {
     token: { type: String, default: null },
+    invitation: { type: Boolean, default: false },
   },
   data() {
     return {

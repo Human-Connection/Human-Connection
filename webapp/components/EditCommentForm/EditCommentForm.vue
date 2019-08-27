@@ -2,7 +2,7 @@
   <ds-form v-model="form" @submit="handleSubmit">
     <template slot-scope="{ errors }">
       <ds-card>
-        <!-- with no-ssr the content is not shown -->
+        <!-- with client-only the content is not shown -->
         <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
         <ds-space />
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
