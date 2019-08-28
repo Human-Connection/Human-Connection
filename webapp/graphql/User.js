@@ -78,12 +78,13 @@ export default i18n => {
 
 export const currentUserNotificationsQuery = () => {
   return gql`
-    {
+    query {
       currentUser {
         id
         notifications(read: false, orderBy: createdAt_desc) {
           id
           read
+          reason
           createdAt
           post {
             id

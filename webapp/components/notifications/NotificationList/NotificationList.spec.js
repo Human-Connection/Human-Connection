@@ -13,7 +13,7 @@ localVue.use(Styleguide)
 localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
-config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
 
 describe('NotificationList.vue', () => {

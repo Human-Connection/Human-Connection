@@ -15,7 +15,7 @@
           </hc-upload>
           <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
           <!-- Menu -->
-          <no-ssr>
+          <client-only>
             <content-menu
               placement="bottom-end"
               resource-type="user"
@@ -25,7 +25,7 @@
               @block="block"
               @unblock="unblock"
             />
-          </no-ssr>
+          </client-only>
           <ds-space margin="small">
             <ds-heading tag="h3" align="center" no-margin>{{ userName }}</ds-heading>
             <ds-text v-if="user.location" align="center" color="soft" size="small">
@@ -41,18 +41,18 @@
           </ds-space>
           <ds-flex>
             <ds-flex-item>
-              <no-ssr>
+              <client-only>
                 <ds-number :label="$t('profile.followers')">
                   <hc-count-to slot="count" :end-val="user.followedByCount" />
                 </ds-number>
-              </no-ssr>
+              </client-only>
             </ds-flex-item>
             <ds-flex-item>
-              <no-ssr>
+              <client-only>
                 <ds-number :label="$t('profile.following')">
                   <hc-count-to slot="count" :end-val="user.followingCount" />
                 </ds-number>
-              </no-ssr>
+              </client-only>
             </ds-flex-item>
           </ds-flex>
           <ds-space margin="small">
@@ -89,14 +89,17 @@
           <template v-if="user.following && user.following.length">
             <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
-              <no-ssr>
+              <client-only>
                 <user :user="follow" :trunc="15" />
-              </no-ssr>
+              </client-only>
             </ds-space>
             <ds-space v-if="user.followingCount - user.following.length" margin="small">
               <ds-text size="small" color="softer">
-                {{ $t('profile.network.and') }} {{ user.followingCount - user.following.length }}
-                {{ $t('profile.network.more') }}
+                {{
+                  $t('profile.network.andMore', {
+                    number: user.followingCount - user.following.length,
+                  })
+                }}
               </ds-text>
             </ds-space>
           </template>
@@ -116,14 +119,17 @@
           <template v-if="user.followedBy && user.followedBy.length">
             <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
-              <no-ssr>
+              <client-only>
                 <user :user="follow" :trunc="15" />
-              </no-ssr>
+              </client-only>
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
               <ds-text size="small" color="softer">
-                {{ $t('profile.network.and') }} {{ user.followedByCount - user.followedBy.length }}
-                {{ $t('profile.network.more') }}
+                {{
+                  $t('profile.network.andMore', {
+                    number: user.followedByCount - user.followedBy.length,
+                  })
+                }}
               </ds-text>
             </ds-space>
           </template>
@@ -160,33 +166,33 @@
                 <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'post' }">
                   <a @click="handleTab('post')">
                     <ds-space margin="small">
-                      <no-ssr placeholder="Loading...">
+                      <client-only placeholder="Loading...">
                         <ds-number :label="$t('common.post', null, user.contributionsCount)">
                           <hc-count-to slot="count" :end-val="user.contributionsCount" />
                         </ds-number>
-                      </no-ssr>
+                      </client-only>
                     </ds-space>
                   </a>
                 </li>
                 <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'comment' }">
                   <a @click="handleTab('comment')">
                     <ds-space margin="small">
-                      <no-ssr placeholder="Loading...">
+                      <client-only placeholder="Loading...">
                         <ds-number :label="$t('profile.commented')">
                           <hc-count-to slot="count" :end-val="user.commentedCount" />
                         </ds-number>
-                      </no-ssr>
+                      </client-only>
                     </ds-space>
                   </a>
                 </li>
                 <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'shout' }">
                   <a @click="handleTab('shout')">
                     <ds-space margin="small">
-                      <no-ssr placeholder="Loading...">
+                      <client-only placeholder="Loading...">
                         <ds-number :label="$t('profile.shouted')">
                           <hc-count-to slot="count" :end-val="user.shoutedCount" />
                         </ds-number>
-                      </no-ssr>
+                      </client-only>
                     </ds-space>
                   </a>
                 </li>
@@ -195,16 +201,22 @@
             </ds-card>
           </ds-grid-item>
 
-          <ds-grid-item :row-span="2" column-span="fullWidth" class="create-button">
-            <ds-button
-              v-if="myProfile"
-              v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
-              :path="{ name: 'post-create' }"
-              class="profile-post-add-button"
-              icon="plus"
-              size="large"
-              primary
-            />
+          <ds-grid-item :row-span="2" column-span="fullWidth">
+            <ds-space centered>
+              <ds-button
+                v-if="myProfile"
+                v-tooltip="{
+                  content: 'Create a new Post',
+                  placement: 'left',
+                  delay: { show: 500 },
+                }"
+                :path="{ name: 'post-create' }"
+                class="profile-post-add-button"
+                icon="plus"
+                size="large"
+                primary
+              />
+            </ds-space>
           </ds-grid-item>
 
           <template v-if="activePosts.length">
@@ -232,8 +244,10 @@
         <div
           v-if="hasMore"
           v-infinite-scroll="showMoreContributions"
-          infinite-scroll-disabled="$apollo.loading"
-          infinite-scroll-distance="10"
+          :infinite-scroll-disabled="$apollo.loading"
+          :infinite-scroll-distance="10"
+          :infinite-scroll-throttle-delay="800"
+          :infinite-scroll-immediate-check="true"
         >
           <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
         </div>
@@ -428,10 +442,6 @@ export default {
 <style lang="scss">
 .pointer {
   cursor: pointer;
-}
-.create-button {
-  text-align: center;
-  margin: auto;
 }
 .Tab {
   border-collapse: collapse;

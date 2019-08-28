@@ -14,7 +14,7 @@ localVue.filter('truncate', string => string)
 
 config.stubs['v-popover'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
-config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('CommentList.vue', () => {
   let mocks

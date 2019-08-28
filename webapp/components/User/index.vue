@@ -25,9 +25,9 @@
           <div v-if="dateTime" style="display: inline;">
             <ds-text align="left" size="small" color="soft">
               <ds-icon name="clock" />
-              <no-ssr>
+              <client-only>
                 <hc-relative-date-time :date-time="dateTime" />
-              </no-ssr>
+              </client-only>
             </ds-text>
           </div>
         </div>

@@ -18,6 +18,16 @@ docker-compose up
 You can access Neo4J through [http://localhost:7474/](http://localhost:7474/)
 for an interactive cypher shell and a visualization of the graph.
 
+### Database Indices and Constraints
+
+Database indices and constraints need to be created when the database is
+running. So start the container with the command above and run:
+
+```bash
+docker-compose exec neo4j db_setup
+```
+
+
 ## Installation without Docker
 
 Install the community edition of [Neo4j](https://neo4j.com/) along with the plugin
@@ -35,6 +45,20 @@ Then make sure to allow Apoc procedures by adding the following line to your Neo
 ```
 dbms.security.procedures.unrestricted=apoc.*
 ```
+### Database Indices and Constraints
+
+If you have `cypher-shell` available with your local installation of neo4j you
+can run:
+
+```bash
+# in folder neo4j/
+$ cp .env.template .env
+$ ./db_setup.sh
+```
+
+Otherwise, if you don't have `cypher-shell` available, copy the cypher
+statements [from the `db_setup.sh` script](https://github.com/Human-Connection/Human-Connection/blob/master/neo4j/db_setup.sh) and paste the scripts into your
+[database browser frontend](http://localhost:7474).
 
 ### Alternatives
 
@@ -50,21 +74,3 @@ in `backend/.env`.
 
 Start Neo4J and confirm the database is running at [http://localhost:7474](http://localhost:7474).
 
-## Database Indices and Constraints
-
-If you are not running our dedicated Neo4J [docker image](https://hub.docker.com/r/humanconnection/neo4j),
-which is the case if you setup Neo4J locally without docker, then you have to
-setup unique indices and database constraints manually.
-
-If you have `cypher-shell` available with your local installation of neo4j you
-can run:
-
-```bash
-# in folder neo4j/
-$ cp .env.template .env
-$ ./db_setup.sh
-```
-
-Otherwise, if you don't have `cypher-shell` available, copy the cypher
-statements [from the `db_setup.sh` script](https://github.com/Human-Connection/Human-Connection/blob/master/neo4j/db_setup.sh) and paste the scripts into your
-[database browser frontend](http://localhost:7474).

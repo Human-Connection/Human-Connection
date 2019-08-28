@@ -1,6 +1,6 @@
 <template>
   <ds-space :class="[{ read: notification.read }, notification]" margin-bottom="x-small">
-    <no-ssr>
+    <client-only>
       <ds-space margin-bottom="x-small">
         <hc-user
           v-if="resourceType == 'Post'"
@@ -10,10 +10,10 @@
         />
         <hc-user v-else :user="comment.author" :date-time="comment.createdAt" :trunc="35" />
       </ds-space>
-      <ds-text color="soft">
-        {{ $t('notifications.menu.mentioned', { resource: resourceType }) }}
+      <ds-text class="reason-text-for-test" color="soft">
+        {{ $t(`notifications.menu.${notification.reason}`) }}
       </ds-text>
-    </no-ssr>
+    </client-only>
     <ds-space margin-bottom="x-small" />
     <nuxt-link
       class="notification-mention-post"

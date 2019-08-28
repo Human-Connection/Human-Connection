@@ -37,14 +37,14 @@
               :width="{ base: '15%', sm: '15%', md: '10%', lg: '10%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
-              <no-ssr>
+              <client-only>
                 <filter-posts
                   v-show="showFilterPostsDropdown"
                   placement="top-start"
                   offset="8"
                   :categories="categories"
                 />
-              </no-ssr>
+              </client-only>
             </ds-flex-item>
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '10%', lg: '2%' }" />
             <ds-flex-item
@@ -59,14 +59,14 @@
                   'hide-mobile-menu': !toggleMobileMenu,
                 }"
               >
-                <no-ssr>
+                <client-only>
                   <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
-                </no-ssr>
+                </client-only>
                 <template v-if="isLoggedIn">
-                  <no-ssr>
+                  <client-only>
                     <notification-menu placement="top" />
-                  </no-ssr>
-                  <no-ssr>
+                  </client-only>
+                  <client-only>
                     <dropdown class="avatar-menu" offset="8">
                       <template slot="default" slot-scope="{ toggleMenu }">
                         <a
@@ -113,7 +113,7 @@
                         </div>
                       </template>
                     </dropdown>
-                  </no-ssr>
+                  </client-only>
                 </template>
               </div>
             </ds-flex-item>
@@ -140,9 +140,9 @@
       <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
     </div>
     <div id="overlay" />
-    <no-ssr>
+    <client-only>
       <modal />
-    </no-ssr>
+    </client-only>
   </div>
 </template>
 
