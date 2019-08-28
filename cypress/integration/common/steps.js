@@ -161,7 +161,8 @@ Given("we have the following posts in our database:", table => {
     const userAttributes = {
       name: Author,
       email: `${slugify(Author, { lower: true })}@example.org`,
-      password: "1234"
+      password: "1234",
+      termsAndConditionsAgreedVersion: '0.0.2',
     };
     postAttributes.deleted = Boolean(postAttributes.deleted);
     const disabled = Boolean(postAttributes.disabled);
