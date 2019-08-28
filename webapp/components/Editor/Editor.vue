@@ -299,7 +299,6 @@ li > p {
 }
 
 .editor {
-  min-height: 200px;
   display: flex;
   flex-direction: column;
 
@@ -316,8 +315,8 @@ li > p {
 
 .editor-content {
   flex-grow: 1;
-  flex-basis: 100%;
   margin-top: $space-small;
+  height: auto;
 
   &:focus-within {
     border-color: $color-primary;
@@ -326,7 +325,7 @@ li > p {
 }
 
 .ProseMirror {
-  height: 100%;
+  min-height: 100px;
 
   &:focus {
     outline: none;
