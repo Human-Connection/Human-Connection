@@ -1,6 +1,16 @@
 # End-to-End Testing
 
-## Configure cypress
+## Setup with docker
+
+Are you running everything through docker? You're so lucky you don't have to
+setup anything!
+
+Just:
+```
+docker-compose up
+```
+
+## Setup without docker
 
 First, you have to tell cypress how to connect to your local neo4j database
 among other things. You can copy our template configuration and change the new
@@ -11,15 +21,14 @@ Make sure you are at the root level of the project. Then:
 # in the top level folder Human-Connection/
 $ cp cypress.env.template.json cypress.env.json
 ```
-
-## Run Tests
-
-To run the tests, do this:
+To start the services that are required for cypress testing, run this:
 
 ```bash
 # in the top level folder Human-Connection/
 $ yarn cypress:setup
 ```
+
+## Run cypress
 
 After verifying that there are no errors with the servers starting, open another tab in your terminal and run the following command:
 
@@ -29,13 +38,12 @@ $ yarn cypress:run
 
 ![Console output after running cypress test](../.gitbook/assets/grafik%20%281%29.png)
 
-After the test runs, you will also get some video footage of the test run which you can then analyse in more detail.
 
-## Open Interactive Test Console
+### Open Interactive Test Console
 
 If you are like me, you might want to see some visual output. The interactive cypress environment also helps at debugging your tests, you can even time travel between individual steps and see the exact state of the app.
 
-To use this feature, you will still run the `yarn cypress:setup` above, but instead of `yarn cypress:run` open another tab in your terminal and run the following command:
+To use this feature, instead of `yarn cypress:run` you would run the following command:
 
 ```bash
 $ yarn cypress:open
