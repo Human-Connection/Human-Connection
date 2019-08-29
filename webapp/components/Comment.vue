@@ -62,12 +62,13 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 import HcUser from '~/components/User'
 import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcEditCommentForm from '~/components/EditCommentForm/EditCommentForm'
+import CommentMutations from '~/graphql/CommentMutations'
+import PostQuery from '~/graphql/PostQuery'
 
 export default {
   data: function() {
@@ -142,16 +143,23 @@ export default {
     },
     async deleteCommentCallback() {
       try {
-        var gqlMutation = gql`
-          mutation($id: ID!) {
-            DeleteComment(id: $id) {
-              id
-            }
-          }
-        `
         await this.$apollo.mutate({
-          mutation: gqlMutation,
+          mutation: CommentMutations(this.$i18n).DeleteComment,
           variables: { id: this.comment.id },
+          update: async store => {
+            const data = await store.readQuery({
+              query: PostQuery(this.$i18n),
+              variables: { id: this.post.id },
+            })
+
+            const index = data.Post[0].comments.findIndex(
+              deletedComment => deletedComment.id === this.comment.id,
+            )
+            if (index !== -1) {
+              data.Post[0].comments.splice(index, 1)
+            }
+            await store.writeQuery({ query: PostQuery(this.$i18n), data })
+          },
         })
         this.$toast.success(this.$t(`delete.comment.success`))
         this.$emit('deleteComment')
