@@ -1,0 +1,12 @@
+type NOTIFIED {
+  from: NotificationSource
+  to: User
+  createdAt: String
+  read: Boolean
+}
+
+union NotificationSource = Post | Comment
+
+type Query {
+  notifications: [NOTIFIED]
+}

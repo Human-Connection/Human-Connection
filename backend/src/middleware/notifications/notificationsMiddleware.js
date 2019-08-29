@@ -25,8 +25,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         MATCH (user: User)
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
-        CREATE (notification: Notification {id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt })
-        MERGE (post)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
+        MERGE (post)-[:NOTIFIED {id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt }]->(user)
       `
       break
     }
@@ -37,8 +36,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
         AND NOT (user)<-[:BLOCKED]-(postAuthor)
-        CREATE (notification: Notification {id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt })
-        MERGE (comment)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
+        MERGE (comment)-[:NOTIFIED {id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt }]->(user)
       `
       break
     }
@@ -49,8 +47,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
         AND NOT (author)<-[:BLOCKED]-(user)
-        CREATE (notification: Notification {id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt })
-        MERGE (comment)-[:NOTIFIED]->(notification)-[:NOTIFIED]->(user)
+        MERGE (comment)-[:NOTIFIED {id: apoc.create.uuid(), read: false, reason: $reason, createdAt: $createdAt }]->(user)
       `
       break
     }
