@@ -1,36 +1,33 @@
-import { neo4jgraphql } from 'neo4j-graphql-js'
-
 export default {
   Query: {
     notifications: async (parent, args, context, resolveInfo) => {
-      const { user, driver } = context
-      let session
+      const { user } = context
+      const session = context.driver.session()
       let notifications
       let whereClause
       let orderByClause
-      switch(args.read) {
+      switch (args.read) {
         case true:
           whereClause = 'WHERE notification.read = TRUE'
-          break;
+          break
         case false:
           whereClause = 'WHERE notification.read = FALSE'
-          break;
+          break
         default:
           whereClause = ''
       }
-      switch(args.orderBy) {
+      switch (args.orderBy) {
         case 'createdAt_asc':
           orderByClause = 'ORDER BY notification.createdAt ASC'
-          break;
+          break
         case 'createdAt_desc':
           orderByClause = 'ORDER BY notification.createdAt DESC'
-          break;
+          break
         default:
           orderByClause = ''
       }
 
       try {
-        session = context.driver.session()
         const cypher = `
         MATCH (resource)-[notification:NOTIFIED]->(user:User {id:$id})
         ${whereClause}
@@ -44,12 +41,12 @@ export default {
             ...record.get('notification').properties,
             from: {
               __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
-              ...record.get('resource').properties
+              ...record.get('resource').properties,
             },
             to: {
               __typename: 'User',
               ...record.get('user').properties,
-            }
+            },
           }
         })
       } finally {
@@ -61,6 +58,6 @@ export default {
   Mutation: {
     markAsRead: async (parent, params, context, resolveInfo) => {
       return null
-    }
+    },
   },
 }
