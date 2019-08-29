@@ -77,14 +77,15 @@ afterEach(async () => {
 describe('notifications', () => {
   const notificationQuery = gql`
     query($read: Boolean) {
-      currentUser {
-        notifications(read: $read, orderBy: createdAt_desc) {
-          read
-          reason
-          post {
+      notifications(read: $read, orderBy: createdAt_desc) {
+        read
+        reason
+        from {
+          __typename
+          ... on Post {
             content
           }
-          comment {
+          ... on Comment {
             content
           }
         }
@@ -154,18 +155,16 @@ describe('notifications', () => {
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
               data: {
-                currentUser: {
-                  notifications: [
-                    {
-                      read: false,
-                      reason: 'comment_on_post',
-                      post: null,
-                      comment: {
-                        content: commentContent,
-                      },
+                notifications: [
+                  {
+                    read: false,
+                    reason: 'comment_on_post',
+                    from: {
+                      __typename: 'Comment',
+                      content: commentContent,
                     },
-                  ],
-                },
+                  },
+                ],
               },
             })
             const { query } = createTestClient(server)
@@ -183,11 +182,7 @@ describe('notifications', () => {
             await notifiedUser.relateTo(commentAuthor, 'blocked')
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
-              data: {
-                currentUser: {
-                  notifications: [],
-                },
-              },
+              data: { notifications: [] },
             })
             const { query } = createTestClient(server)
             await expect(
@@ -211,11 +206,7 @@ describe('notifications', () => {
             await notifiedUser.relateTo(commentAuthor, 'blocked')
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
-              data: {
-                currentUser: {
-                  notifications: [],
-                },
-              },
+              data: { notifications: [] },
             })
             const { query } = createTestClient(server)
             await expect(
@@ -253,18 +244,16 @@ describe('notifications', () => {
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
           const expected = expect.objectContaining({
             data: {
-              currentUser: {
-                notifications: [
-                  {
-                    read: false,
-                    reason: 'mentioned_in_post',
-                    post: {
-                      content: expectedContent,
-                    },
-                    comment: null,
+              notifications: [
+                {
+                  read: false,
+                  reason: 'mentioned_in_post',
+                  from: {
+                    __typename: 'Post',
+                    content: expectedContent,
                   },
-                ],
-              },
+                },
+              ],
             },
           })
           const { query } = createTestClient(server)
@@ -314,26 +303,24 @@ describe('notifications', () => {
               '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
             const expected = expect.objectContaining({
               data: {
-                currentUser: {
-                  notifications: [
-                    {
-                      read: false,
-                      reason: 'mentioned_in_post',
-                      post: {
-                        content: expectedContent,
-                      },
-                      comment: null,
+                notifications: [
+                  {
+                    read: false,
+                    reason: 'mentioned_in_post',
+                    from: {
+                      __typename: 'Post',
+                      content: expectedContent,
                     },
-                    {
-                      read: false,
-                      reason: 'mentioned_in_post',
-                      post: {
-                        content: expectedContent,
-                      },
-                      comment: null,
+                  },
+                  {
+                    read: false,
+                    reason: 'mentioned_in_post',
+                    from: {
+                      __typename: 'Post',
+                      content: expectedContent,
                     },
-                  ],
-                },
+                  },
+                ],
               },
             })
             await expect(
@@ -355,11 +342,7 @@ describe('notifications', () => {
           it('sends no notification', async () => {
             await createPostAction()
             const expected = expect.objectContaining({
-              data: {
-                currentUser: {
-                  notifications: [],
-                },
-              },
+              data: { notifications: [] },
             })
             const { query } = createTestClient(server)
             await expect(
@@ -397,18 +380,16 @@ describe('notifications', () => {
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
               data: {
-                currentUser: {
-                  notifications: [
-                    {
-                      read: false,
-                      reason: 'mentioned_in_comment',
-                      post: null,
-                      comment: {
-                        content: commentContent,
-                      },
+                notifications: [
+                  {
+                    read: false,
+                    reason: 'mentioned_in_comment',
+                    from: {
+                      __typename: 'Comment',
+                      content: commentContent,
                     },
-                  ],
-                },
+                  },
+                ],
               },
             })
             const { query } = createTestClient(server)
@@ -440,11 +421,7 @@ describe('notifications', () => {
           it('sends no notification', async () => {
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
-              data: {
-                currentUser: {
-                  notifications: [],
-                },
-              },
+              data: { notifications: [] },
             })
             const { query } = createTestClient(server)
             await expect(
