@@ -26,6 +26,7 @@ import { Editor, EditorContent } from 'tiptap'
 import { History } from 'tiptap-extensions'
 import linkify from 'linkify-it'
 import stringHash from 'string-hash'
+import { replace, build } from 'xregexp/xregexp-all.js'
 
 import * as key from '../../constants/keycodes'
 import { HASHTAG, MENTION } from '../../constants/editor'
@@ -212,8 +213,9 @@ export default {
     },
     sanitizeQuery(query) {
       if (this.suggestionType === HASHTAG) {
-        // remove all not allowed chars
-        query = query.replace(/[^a-zA-Z0-9]/gm, '')
+        // remove all unallowed chars
+        const regX = build('[^\\pL0-9]')
+        query = replace(query, regX, '', 'all')
         // if the query is only made of digits, make it empty
         return query.replace(/[0-9]/gm, '') === '' ? '' : query
       }
