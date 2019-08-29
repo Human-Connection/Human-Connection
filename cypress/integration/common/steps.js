@@ -1,5 +1,5 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
-import { getLangByName } from "../../support/helpers";
+import helpers from "../../support/helpers";
 import slugify from "slug";
 
 /* global cy  */
@@ -131,14 +131,17 @@ Then("I am still logged in", () => {
 When("I select {string} in the language menu", name => {
   cy.switchLanguage(name, true);
 });
+
 Given("I previously switched the language to {string}", name => {
   cy.switchLanguage(name, true);
 });
+
 Then("the whole user interface appears in {string}", name => {
-  const lang = getLangByName(name);
-  cy.get(`html[lang=${lang.code}]`);
-  cy.getCookie("locale").should("have.property", "value", lang.code);
+  const { code } = helpers.getLangByName(name);
+  cy.get(`html[lang=${code}]`);
+  cy.getCookie("locale").should("have.property", "value", code);
 });
+
 Then("I see a button with the label {string}", label => {
   cy.contains("button", label);
 });
