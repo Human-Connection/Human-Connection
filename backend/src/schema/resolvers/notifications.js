@@ -62,7 +62,7 @@ export default {
       let notification
       try {
         const cypher = `
-        MATCH (resource {id: $resourceId})-[notification:NOTIFIED]->(user:User {id:$id})
+        MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
         SET notification.read = TRUE
         RETURN resource, notification, user
         `

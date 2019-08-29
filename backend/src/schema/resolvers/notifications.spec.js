@@ -265,6 +265,20 @@ describe('given some notifications', () => {
               },
             })
           })
+
+          describe('but notification was already marked as read', () => {
+            beforeEach(async () => {
+              variables = {
+                ...variables,
+                id: 'p2',
+              }
+            })
+            it('returns null', async () => {
+              const response = await mutate({ mutation: markAsReadMutation, variables })
+              expect(response.data.markAsRead).toEqual(null)
+              expect(response.errors).toBeUndefined()
+            })
+          })
         })
 
         describe('on a comment', () => {
