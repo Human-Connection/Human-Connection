@@ -23,7 +23,7 @@
           />
           <small class="smallTag">{{ form.contentLength }}/{{ contentMax }}</small>
         </client-only>
-        <ds-space margin-bottom="xxx-large" />
+        <ds-space margin-bottom="small" />
         <hc-categories-select
           model="categoryIds"
           @updateCategories="updateCategories"

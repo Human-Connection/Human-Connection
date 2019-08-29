@@ -101,7 +101,8 @@
     "slug": "~1.1.0",
     "trunc-html": "~1.1.2",
     "uuid": "~3.3.3",
-    "wait-on": "~3.3.0"
+    "wait-on": "~3.3.0",
+    "xregexp": "^4.2.4"
   },
   "devDependencies": {
     "@babel/cli": "~7.5.5",
@@ -116,7 +117,7 @@
     "babel-jest": "~24.9.0",
     "chai": "~4.2.0",
     "cucumber": "~5.1.0",
-    "eslint": "~6.2.1",
+    "eslint": "~6.2.2",
     "eslint-config-prettier": "~6.1.0",
     "eslint-config-standard": "~14.0.1",
     "eslint-plugin-import": "~2.18.2",
