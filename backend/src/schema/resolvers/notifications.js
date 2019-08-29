@@ -56,8 +56,36 @@ export default {
     },
   },
   Mutation: {
-    markAsRead: async (parent, params, context, resolveInfo) => {
-      return null
+    markAsRead: async (parent, args, context, resolveInfo) => {
+      const { user } = context
+      const session = context.driver.session()
+      let notification
+      try {
+        const cypher = `
+        MATCH (resource {id: $resourceId})-[notification:NOTIFIED]->(user:User {id:$id})
+        SET notification.read = TRUE
+        RETURN resource, notification, user
+        `
+        const result = await session.run(cypher, { resourceId: args.id, id: user.id })
+        const resourceTypes = ['Post', 'Comment']
+        const notifications = await result.records.map(record => {
+          return {
+            ...record.get('notification').properties,
+            from: {
+              __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
+              ...record.get('resource').properties,
+            },
+            to: {
+              __typename: 'User',
+              ...record.get('user').properties,
+            },
+          }
+        })
+        notification = notifications[0]
+      } finally {
+        session.close()
+      }
+      return notification
     },
   },
 }
