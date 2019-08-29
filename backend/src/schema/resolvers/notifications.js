@@ -1,3 +1,18 @@
+const resourceTypes = ['Post', 'Comment']
+
+const transformReturnType = record => {
+  return {
+    ...record.get('notification').properties,
+    from: {
+      __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
+      ...record.get('resource').properties,
+    },
+    to: {
+      ...record.get('user').properties,
+    },
+  }
+}
+
 export default {
   Query: {
     notifications: async (parent, args, context, resolveInfo) => {
@@ -35,20 +50,7 @@ export default {
         ${orderByClause}
         `
         const result = await session.run(cypher, { id: user.id })
-        const resourceTypes = ['Post', 'Comment']
-        notifications = await result.records.map(record => {
-          return {
-            ...record.get('notification').properties,
-            from: {
-              __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
-              ...record.get('resource').properties,
-            },
-            to: {
-              __typename: 'User',
-              ...record.get('user').properties,
-            },
-          }
-        })
+        notifications = await result.records.map(transformReturnType)
       } finally {
         session.close()
       }
@@ -67,20 +69,7 @@ export default {
         RETURN resource, notification, user
         `
         const result = await session.run(cypher, { resourceId: args.id, id: user.id })
-        const resourceTypes = ['Post', 'Comment']
-        const notifications = await result.records.map(record => {
-          return {
-            ...record.get('notification').properties,
-            from: {
-              __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
-              ...record.get('resource').properties,
-            },
-            to: {
-              __typename: 'User',
-              ...record.get('user').properties,
-            },
-          }
-        })
+        const notifications = await result.records.map(transformReturnType)
         notification = notifications[0]
       } finally {
         session.close()
