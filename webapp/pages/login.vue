@@ -10,9 +10,9 @@
       <ds-card class="login-card">
         <ds-flex gutter="small">
           <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-            <no-ssr>
+            <client-only>
               <locale-switch class="login-locale-switch" offset="5" />
-            </no-ssr>
+            </client-only>
             <ds-space margin-top="small" margin-bottom="xxx-small" centered>
               <img
                 class="login-image"

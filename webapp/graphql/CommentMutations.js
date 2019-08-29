@@ -51,5 +51,12 @@ export default i18n => {
         }
       }
     `,
+    DeleteComment: gql`
+      mutation($id: ID!) {
+        DeleteComment(id: $id) {
+          id
+        }
+      }
+    `,
   }
 }

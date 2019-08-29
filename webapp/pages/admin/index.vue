@@ -1,23 +1,23 @@
 <template>
   <ds-card>
-    <no-ssr>
+    <client-only>
       <ds-space margin="large">
         <ds-flex>
           <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.users')" size="x-large" uppercase>
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countUsers" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.posts')" size="x-large" uppercase>
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countPosts" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
@@ -29,9 +29,9 @@
                 size="x-large"
                 uppercase
               >
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countComments" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
@@ -43,9 +43,9 @@
                 size="x-large"
                 uppercase
               >
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countNotifications" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
@@ -57,9 +57,9 @@
                 size="x-large"
                 uppercase
               >
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countOrganizations" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
@@ -71,42 +71,42 @@
                 size="x-large"
                 uppercase
               >
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countProjects" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.invites')" size="x-large" uppercase>
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countInvites" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.follows')" size="x-large" uppercase>
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countFollows" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
             <ds-space margin="small">
               <ds-number :count="0" :label="$t('admin.dashboard.shouts')" size="x-large" uppercase>
-                <no-ssr slot="count">
+                <client-only slot="count">
                   <hc-count-to :end-val="statistics.countShouts" />
-                </no-ssr>
+                </client-only>
               </ds-number>
             </ds-space>
           </ds-flex-item>
         </ds-flex>
       </ds-space>
-    </no-ssr>
+    </client-only>
   </ds-card>
 </template>
 

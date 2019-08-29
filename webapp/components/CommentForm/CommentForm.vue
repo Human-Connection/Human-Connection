@@ -80,13 +80,13 @@ export default {
             postId: this.post.id,
             content: this.form.content,
           },
-          update: (store, { data: { CreateComment } }) => {
-            const data = store.readQuery({
+          update: async (store, { data: { CreateComment } }) => {
+            const data = await store.readQuery({
               query: PostQuery(this.$i18n),
               variables: { id: this.post.id },
             })
             data.Post[0].comments.push(CreateComment)
-            store.writeQuery({ query: PostQuery(this.$i18n), data })
+            await store.writeQuery({ query: PostQuery(this.$i18n), data })
           },
         })
         .then(res => {
