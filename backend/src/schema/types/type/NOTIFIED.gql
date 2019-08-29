@@ -7,6 +7,15 @@ type NOTIFIED {
 
 union NotificationSource = Post | Comment
 
+enum NOTIFIEDOrdering {
+  createdAt_asc
+  createdAt_desc
+}
+
 type Query {
-  notifications: [NOTIFIED]
+  notifications(read: Boolean, orderBy: NOTIFIEDOrdering): [NOTIFIED]
+}
+
+type Mutation {
+  markAsRead(id: ID!): NOTIFIED
 }

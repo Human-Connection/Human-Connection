@@ -26,10 +26,10 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('Notification', () => {
+describe('notifications', () => {
   const notificationQuery = gql`
     query {
-      Notification {
+      notifications {
         id
       }
     }
@@ -41,10 +41,6 @@ describe('Notification', () => {
       await expect(client.request(notificationQuery)).rejects.toThrow('Not Authorised')
     })
   })
-})
-
-describe('currentUser notifications', () => {
-  const variables = {}
 
   describe('authenticated', () => {
     let headers
@@ -160,15 +156,13 @@ describe('currentUser notifications', () => {
       describe('filter for read: false', () => {
         const queryCurrentUserNotificationsFilterRead = gql`
           query($read: Boolean) {
-            currentUser {
-              notifications(read: $read, orderBy: createdAt_desc) {
+            notifications(read: $read, orderBy: createdAt_desc) {
+              id
+              post {
                 id
-                post {
-                  id
-                }
-                comment {
-                  id
-                }
+              }
+              comment {
+                id
               }
             }
           }
@@ -204,15 +198,13 @@ describe('currentUser notifications', () => {
       describe('no filters', () => {
         const queryCurrentUserNotifications = gql`
           query {
-            currentUser {
-              notifications(orderBy: createdAt_desc) {
+            notifications(orderBy: createdAt_desc) {
+              id
+              post {
                 id
-                post {
-                  id
-                }
-                comment {
-                  id
-                }
+              }
+              comment {
+                id
               }
             }
           }

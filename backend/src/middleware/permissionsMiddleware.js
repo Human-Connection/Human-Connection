@@ -149,7 +149,6 @@ const permissions = shield(
       Category: allow,
       Tag: allow,
       Report: isModerator,
-      Notification: isAdmin,
       statistics: allow,
       currentUser: allow,
       Post: or(onlyEnabledContent, isModerator),
@@ -169,7 +168,6 @@ const permissions = shield(
       Signup: isAdmin,
       SignupVerification: allow,
       CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
-      UpdateNotification: belongsToMe,
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
@@ -199,6 +197,7 @@ const permissions = shield(
       RemovePostEmotions: isAuthenticated,
       block: isAuthenticated,
       unblock: isAuthenticated,
+      markAsRead: belongsToMe
     },
     User: {
       email: isMyOwn,
