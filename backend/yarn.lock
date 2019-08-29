@@ -6197,10 +6197,10 @@ neo4j-driver@^1.7.3, neo4j-driver@^1.7.5, neo4j-driver@~1.7.5:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neo4j-graphql-js@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.7.1.tgz#2d5bd151685b64644b0cf0645434cc396a923b5d"
-  integrity sha512-WrtcS0q//Rh56OMGJUUKZAucODJcTjDoSoShWCViu2Ft2tSD8V6ag06yHwmvQ2pO33elsAEQ0osTvWL1+s3Xiw==
+neo4j-graphql-js@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.7.2.tgz#6a56c63874bc41e678cb83580c6c7647e6f61ccf"
+  integrity sha512-nrhSmNAkiYgksNabNuHyMHYYaLloYZaVXRiYGrRVUcf84TLiwJdg5k9hIQVH9O6QQOvnK3lwBDlE7T0phpAIpg==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@babel/runtime-corejs2" "^7.5.5"
