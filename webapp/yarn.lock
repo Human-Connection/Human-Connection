@@ -10719,10 +10719,10 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-nuxt-dropzone@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/nuxt-dropzone/-/nuxt-dropzone-1.0.3.tgz#f808ad3bc30809d34d6cbbcb24cece6e73341107"
-  integrity sha512-lElULoEkPJ1bJ7JzOyvg98/SSEAdvYHjdQ4V1k/XPe1Q/vmzMtOn2DxKwtzFKVWA5RqnB1P+EAjUMYan4mn0aw==
+nuxt-dropzone@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/nuxt-dropzone/-/nuxt-dropzone-1.0.4.tgz#ef10af35938f95bfe6a9ba3eb7b7de17db7cbb14"
+  integrity sha512-1QuthM3bDGBN2ugXE5HfcvBmekNy4YUYfMurTeuBrwIGId0JSF9HasspwndxsSNL42eGET83eezRcH4ekLGqeA==
   dependencies:
     vue2-dropzone "3.6.0"
 
