@@ -1,5 +1,58 @@
 import gql from 'graphql-tag'
 
+const fragments = gql`
+  fragment post on Post {
+    id
+    createdAt
+    disabled
+    deleted
+    title
+    contentExcerpt
+    slug
+    author {
+      id
+      slug
+      name
+      disabled
+      deleted
+      avatar
+    }
+  }
+
+  fragment comment on Comment {
+    id
+    createdAt
+    disabled
+    deleted
+    contentExcerpt
+    author {
+      id
+      slug
+      name
+      disabled
+      deleted
+      avatar
+    }
+    post {
+      id
+      createdAt
+      disabled
+      deleted
+      title
+      contentExcerpt
+      slug
+      author {
+        id
+        slug
+        name
+        disabled
+        deleted
+        avatar
+      }
+    }
+  }
+`
+
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
@@ -76,77 +129,37 @@ export default i18n => {
   `
 }
 
-export const currentUserNotificationsQuery = () => {
+export const notificationQuery = () => {
   return gql`
+    ${fragments}
     query {
-      currentUser {
-        id
-        notifications(read: false, orderBy: createdAt_desc) {
-          id
-          read
-          reason
-          createdAt
-          post {
-            id
-            createdAt
-            disabled
-            deleted
-            title
-            contentExcerpt
-            slug
-            author {
-              id
-              slug
-              name
-              disabled
-              deleted
-              avatar
-            }
-          }
-          comment {
-            id
-            createdAt
-            disabled
-            deleted
-            contentExcerpt
-            author {
-              id
-              slug
-              name
-              disabled
-              deleted
-              avatar
-            }
-            post {
-              id
-              createdAt
-              disabled
-              deleted
-              title
-              contentExcerpt
-              slug
-              author {
-                id
-                slug
-                name
-                disabled
-                deleted
-                avatar
-              }
-            }
-          }
+      notifications(read: false, orderBy: createdAt_desc) {
+        read
+        reason
+        createdAt
+        from {
+          __typename
+          ...post
+          ...comment
         }
       }
     }
   `
 }
 
-export const updateNotificationMutation = () => {
+export const markAsReadMutation = () => {
   return gql`
-    mutation($id: ID!, $read: Boolean!) {
-      UpdateNotification(id: $id, read: $read) {
-        id
+    ${fragments}
+    mutation($id: ID!) {
+      markAsRead(id: $id) {
         read
+        reason
+        createdAt
+        from {
+          __typename
+          ...post
+          ...comment
+        }
       }
     }
   `

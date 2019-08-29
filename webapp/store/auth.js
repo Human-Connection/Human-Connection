@@ -86,23 +86,6 @@ export const actions = {
               id
               url
             }
-            notifications(read: false, orderBy: createdAt_desc) {
-              id
-              read
-              createdAt
-              post {
-                author {
-                  id
-                  slug
-                  name
-                  disabled
-                  deleted
-                }
-                title
-                contentExcerpt
-                slug
-              }
-            }
           }
         }
       `,
