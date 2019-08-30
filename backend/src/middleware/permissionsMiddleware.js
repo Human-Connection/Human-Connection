@@ -91,13 +91,11 @@ const isAuthor = rule({
       resourceId,
     },
   )
+  session.close()
   const [author] = result.records.map(record => {
     return record.get('author')
   })
-  const {
-    properties: { id: authorId },
-  } = author
-  session.close()
+  const authorId = author && author.properties && author.properties.id
   return authorId === user.id
 })
 
