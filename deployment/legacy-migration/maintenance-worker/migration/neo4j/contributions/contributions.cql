@@ -148,10 +148,9 @@ MATCH (c:Category {id: categoryId})
 MERGE (p)-[:CATEGORIZED]->(c)
 WITH p, post.tags AS tags
 UNWIND tags AS tag
-WITH apoc.text.replace(tag, '[^\\p{L}0-9]', '') as tagNoSpacesAllowed
-CALL apoc.when(tagNoSpacesAllowed =~ '^((\\p{L}+[\\p{L}0-9]*)|([0-9]+\\p{L}+[\\p{L}0-9]*))$', 'RETURN tagNoSpacesAllowed', '', {tagNoSpacesAllowed: tagNoSpacesAllowed}) 
+CALL apoc.when(tag =~ '^((\\p{L}+[\\p{L}0-9]*)|([0-9]+\\p{L}+[\\p{L}0-9]*))$', 'RETURN tag', '', {tag: tag}) 
 YIELD value as validated
-WHERE validated.tagNoSpacesAllowed IS NOT NULL
-MERGE (t:Tag { id: validated.tagNoSpacesAllowed, disabled: false, deleted: false })
+WHERE validated.tag IS NOT NULL
+MERGE (t:Tag { id: validated.tag, disabled: false, deleted: false })
 MERGE (p)-[:TAGGED]->(t)
 ;
