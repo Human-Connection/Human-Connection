@@ -168,13 +168,13 @@ Given("we have the following posts in our database:", table => {
     };
     postAttributes.deleted = Boolean(postAttributes.deleted);
     const disabled = Boolean(postAttributes.disabled);
-    postAttributes.categoryIds = [`cat${i}`];
+    postAttributes.categoryIds = [`cat${i}${new Date()}`];
     postAttributes;
     cy.factory()
       .create("User", userAttributes)
       .authenticateAs(userAttributes)
       .create("Category", {
-        id: `cat${i}`,
+        id: `cat${i}${new Date()}`,
         name: "Just For Fun",
         slug: `just-for-fun-${i}`,
         icon: "smile"

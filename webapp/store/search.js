@@ -46,8 +46,8 @@ export const actions = {
     await this.app.apolloProvider.defaultClient
       .query({
         query: gql`
-          query findPosts($filter: String!) {
-            findPosts(filter: $filter, limit: 10) {
+          query findPosts($query: String!, $filter: _PostFilter) {
+            findPosts(query: $query, limit: 10, filter: $filter) {
               id
               slug
               label: title
@@ -63,7 +63,8 @@ export const actions = {
           }
         `,
         variables: {
-          filter: value.replace(/\s/g, '~ ') + '~',
+          query: value.replace(/\s/g, '~ ') + '~',
+          filter: {},
         },
       })
       .then(res => {
