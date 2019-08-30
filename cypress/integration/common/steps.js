@@ -384,6 +384,9 @@ Given("there is an annoying user called {string}", name => {
     id: "annoying-user",
     name,
     ...termsAndConditionsAgreedVersion
+
+
+    
   });
 });
 
