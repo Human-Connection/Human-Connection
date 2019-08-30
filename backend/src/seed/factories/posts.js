@@ -34,6 +34,7 @@ export default function create() {
         }),
       )
       const author = args.author || (await neodeInstance.create('User', args))
+      delete args.author
       const post = await neodeInstance.create('Post', args)
       await post.relateTo(author, 'author')
       await Promise.all(categories.map(c => c.relateTo(post, 'post')))
