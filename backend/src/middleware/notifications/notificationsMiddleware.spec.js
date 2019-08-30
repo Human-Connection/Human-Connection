@@ -83,9 +83,11 @@ describe('notifications', () => {
         from {
           __typename
           ... on Post {
+            id
             content
           }
           ... on Comment {
+            id
             content
           }
         }
@@ -161,6 +163,7 @@ describe('notifications', () => {
                     reason: 'comment_on_post',
                     from: {
                       __typename: 'Comment',
+                      id: 'c47',
                       content: commentContent,
                     },
                   },
@@ -250,6 +253,7 @@ describe('notifications', () => {
                   reason: 'mentioned_in_post',
                   from: {
                     __typename: 'Post',
+                    id: 'p47',
                     content: expectedContent,
                   },
                 },
@@ -267,7 +271,7 @@ describe('notifications', () => {
           ).resolves.toEqual(expected)
         })
 
-        describe('many times', () => {
+        describe('updates the post and mentions me again', () => {
           const updatePostAction = async () => {
             const updatedContent = `
               One more mention to
@@ -296,7 +300,7 @@ describe('notifications', () => {
             authenticatedUser = await notifiedUser.toJson()
           }
 
-          it('creates exactly one more notification', async () => {
+          it('creates no duplicate notification for the same resource', async () => {
             await createPostAction()
             await updatePostAction()
             const expectedContent =
@@ -309,14 +313,7 @@ describe('notifications', () => {
                     reason: 'mentioned_in_post',
                     from: {
                       __typename: 'Post',
-                      content: expectedContent,
-                    },
-                  },
-                  {
-                    read: false,
-                    reason: 'mentioned_in_post',
-                    from: {
-                      __typename: 'Post',
+                      id: 'p47',
                       content: expectedContent,
                     },
                   },
@@ -331,6 +328,13 @@ describe('notifications', () => {
                 },
               }),
             ).resolves.toEqual(expected)
+          })
+        })
+
+        describe('if the notification was marked as read earlier', () => {
+          describe('but the next mentioning happens after the notification was marked as read', () => {
+            it.todo('sets the `read` attribute to false again')
+            it.todo('updates the `createdAt` attribute')
           })
         })
 
@@ -386,6 +390,7 @@ describe('notifications', () => {
                     reason: 'mentioned_in_comment',
                     from: {
                       __typename: 'Comment',
+                      id: 'c47',
                       content: commentContent,
                     },
                   },
