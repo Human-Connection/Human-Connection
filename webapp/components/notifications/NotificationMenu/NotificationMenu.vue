@@ -47,7 +47,7 @@ export default {
         })
         if (!(markAsRead && markAsRead.read === true)) return
         this.notifications = this.notifications.map(n => {
-          return (n.from.id === markAsRead.from.id) ? markAsRead : n
+          return n.from.id === markAsRead.from.id ? markAsRead : n
         })
       } catch (err) {
         throw new Error(err)

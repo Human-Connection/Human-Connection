@@ -1,5 +1,5 @@
 <template>
-  <ds-space :class="{ read: notification.read, notification: true}" margin-bottom="x-small">
+  <ds-space :class="{ read: notification.read, notification: true }" margin-bottom="x-small">
     <client-only>
       <ds-space margin-bottom="x-small">
         <hc-user :user="from.author" :date-time="from.createdAt" :trunc="35" />
