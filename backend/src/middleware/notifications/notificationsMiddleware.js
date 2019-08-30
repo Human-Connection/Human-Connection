@@ -4,13 +4,13 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
   if (!idsOfUsers.length) return
 
   // Checked here, because it does not go through GraphQL checks at all in this file.
-  const reasonsAllowed = ['mentioned_in_post', 'mentioned_in_comment', 'comment_on_post']
+  const reasonsAllowed = ['mentioned_in_post', 'mentioned_in_comment', 'commented_on_post']
   if (!reasonsAllowed.includes(reason)) {
     throw new Error('Notification reason is not allowed!')
   }
   if (
     (label === 'Post' && reason !== 'mentioned_in_post') ||
-    (label === 'Comment' && !['mentioned_in_comment', 'comment_on_post'].includes(reason))
+    (label === 'Comment' && !['mentioned_in_comment', 'commented_on_post'].includes(reason))
   ) {
     throw new Error('Notification does not fit the reason!')
   }
@@ -44,7 +44,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
       `
       break
     }
-    case 'comment_on_post': {
+    case 'commented_on_post': {
       cypher = `
         MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(author: User)
         MATCH (user: User)
@@ -108,7 +108,7 @@ const handleCreateComment = async (resolve, root, args, context, resolveInfo) =>
       return record.get('user')
     })
     if (context.user.id !== postAuthor.id) {
-      await notifyUsers('Comment', comment.id, [postAuthor.id], 'comment_on_post', context)
+      await notifyUsers('Comment', comment.id, [postAuthor.id], 'commented_on_post', context)
     }
   }
 

@@ -16,7 +16,7 @@ const transformReturnType = record => {
 export default {
   Query: {
     notifications: async (parent, args, context, resolveInfo) => {
-      const { user } = context
+      const { user: currentUser } = context
       const session = context.driver.session()
       let notifications
       let whereClause
@@ -49,7 +49,7 @@ export default {
         RETURN resource, notification, user
         ${orderByClause}
         `
-        const result = await session.run(cypher, { id: user.id })
+        const result = await session.run(cypher, { id: currentUser.id })
         notifications = await result.records.map(transformReturnType)
       } finally {
         session.close()
@@ -59,7 +59,7 @@ export default {
   },
   Mutation: {
     markAsRead: async (parent, args, context, resolveInfo) => {
-      const { user } = context
+      const { user: currentUser } = context
       const session = context.driver.session()
       let notification
       try {
@@ -68,7 +68,7 @@ export default {
         SET notification.read = TRUE
         RETURN resource, notification, user
         `
-        const result = await session.run(cypher, { resourceId: args.id, id: user.id })
+        const result = await session.run(cypher, { resourceId: args.id, id: currentUser.id })
         const notifications = await result.records.map(transformReturnType)
         notification = notifications[0]
       } finally {

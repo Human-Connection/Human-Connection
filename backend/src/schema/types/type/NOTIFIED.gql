@@ -16,7 +16,7 @@ enum NotificationOrdering {
 enum NotificationReason {
   mentioned_in_post
   mentioned_in_comment
-  comment_on_post
+  commented_on_post
 }
 
 type Query {

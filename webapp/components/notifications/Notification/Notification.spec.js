@@ -37,7 +37,7 @@ describe('Notification', () => {
   describe('given a notification about a comment on a post', () => {
     beforeEach(() => {
       propsData.notification = {
-        reason: 'comment_on_post',
+        reason: 'commented_on_post',
         from: {
           __typename: 'Comment',
           id: 'comment-1',
@@ -56,7 +56,7 @@ describe('Notification', () => {
     it('renders reason', () => {
       wrapper = Wrapper()
       expect(wrapper.find('.reason-text-for-test').text()).toEqual(
-        'notifications.menu.comment_on_post',
+        'notifications.menu.commented_on_post',
       )
     })
     it('renders title', () => {

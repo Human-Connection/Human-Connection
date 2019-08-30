@@ -162,7 +162,7 @@ describe('notifications', () => {
                   {
                     read: false,
                     createdAt: expect.any(String),
-                    reason: 'comment_on_post',
+                    reason: 'commented_on_post',
                     from: {
                       __typename: 'Comment',
                       id: 'c47',
