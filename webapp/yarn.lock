@@ -15165,10 +15165,10 @@ vue-infinite-scroll@^2.0.2:
   resolved "https://registry.yarnpkg.com/vue-infinite-scroll/-/vue-infinite-scroll-2.0.2.tgz#ca37a91fe92ee0ad3b74acf8682c00917144b711"
   integrity sha512-n+YghR059YmciANGJh9SsNWRi1YZEBVlODtmnb/12zI+4R72QZSWd+EuZ5mW6auEo/yaJXgxzwsuhvALVnm73A==
 
-vue-izitoast@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/vue-izitoast/-/vue-izitoast-1.2.0.tgz#55b7434a391c6eb64dd10c0de211e99ba7e486e2"
-  integrity sha512-Jqxfid12SUBIySJxgyPpu6gZ1ssMcbKtCvu9uMQPNM8RUnd3RKC4nyxkncdYe5L6XPU+SaznjYRudnvtclY4wA==
+vue-izitoast@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/vue-izitoast/-/vue-izitoast-1.2.1.tgz#cd2cbfbd96ea438dede8fb00f2c328364cb7141d"
+  integrity sha512-5krrKyAftSR3TnnO3zhMihYCSt0Lay4SBO1AWWKD3jhTErJrR+q9kOKyuAYhn1SttNER87hpnRKqdvLjzjHWQQ==
   dependencies:
     izitoast "^1.4.0"
 
