@@ -69,7 +69,7 @@ export const actions = {
       .then(res => {
         commit('SET_QUICK_RESULTS', res.data.findPosts || [])
       })
-      .catch(_err => {
+      .catch(() => {
         commit('SET_QUICK_RESULTS', [])
       })
       .finally(() => {
