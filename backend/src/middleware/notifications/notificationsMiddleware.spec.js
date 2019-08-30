@@ -275,9 +275,6 @@ describe('notifications', () => {
         })
 
         describe('updates the post and mentions me again', () => {
-          const expectedUpdatedContent =
-            '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
-
           const updatePostAction = async () => {
             const updatedContent = `
               One more mention to
@@ -307,6 +304,8 @@ describe('notifications', () => {
           }
 
           it('creates no duplicate notification for the same resource', async () => {
+            const expectedUpdatedContent =
+              '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
             await createPostAction()
             await updatePostAction()
             const expected = expect.objectContaining({
@@ -347,7 +346,7 @@ describe('notifications', () => {
               await mutate({ mutation, variables: { id: 'p47' } })
             }
 
-            describe('but the next mentioning happens after the notification was marked as read', () => {
+            describe('but the next mention happens after the notification was marked as read', () => {
               it('sets the `read` attribute to false again', async () => {
                 await createPostAction()
                 await markAsReadAction()

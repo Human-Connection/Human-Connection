@@ -24,7 +24,7 @@ export default {
     },
   },
   methods: {
-    async markAsRead(notificationSourceId) {
+    markAsRead(notificationSourceId) {
       this.$emit('markAsRead', notificationSourceId)
     },
   },
