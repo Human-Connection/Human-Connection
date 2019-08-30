@@ -243,10 +243,9 @@ describe('UpdatePost', () => {
     }
   `
   beforeEach(async () => {
-    const asAuthor = Factory()
-    await asAuthor.create('User', authorParams)
-    await asAuthor.authenticateAs(authorParams)
-    await asAuthor.create('Post', {
+    const user = await factory.create('User', authorParams)
+    await factory.create('Post', {
+      author: user,
       id: postId,
       title: oldTitle,
       content: oldContent,
@@ -400,11 +399,10 @@ describe('DeletePost', () => {
   }
 
   beforeEach(async () => {
-    const asAuthor = Factory()
-    await asAuthor.create('User', authorParams)
-    await asAuthor.authenticateAs(authorParams)
-    await asAuthor.create('Post', {
+    const user = await factory.create('User', authorParams)
+    await factory.create('Post', {
       id: postId,
+      author: user,
       content: 'To be deleted',
       categoryIds,
     })
