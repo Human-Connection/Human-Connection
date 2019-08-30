@@ -36,7 +36,7 @@
         </ds-grid-item>
       </template>
     </masonry-grid>
-    <no-ssr>
+    <client-only>
       <ds-button
         v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
         :path="{ name: 'post-create' }"
@@ -45,14 +45,14 @@
         size="x-large"
         primary
       />
-    </no-ssr>
+    </client-only>
     <div
       v-if="hasMore"
       v-infinite-scroll="showMoreContributions"
-      :infinite-scroll-immediate-check="true"
       :infinite-scroll-disabled="$apollo.loading"
       :infinite-scroll-distance="10"
       :infinite-scroll-throttle-delay="800"
+      :infinite-scroll-immediate-check="true"
     >
       <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
     </div>

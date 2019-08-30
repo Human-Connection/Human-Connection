@@ -8,7 +8,7 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.use(Styleguide)
 
-config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('Comment.vue', () => {
   let propsData

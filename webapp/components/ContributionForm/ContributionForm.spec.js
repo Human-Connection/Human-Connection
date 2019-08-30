@@ -16,7 +16,7 @@ localVue.use(Vuex)
 localVue.use(Styleguide)
 localVue.use(Filters)
 
-config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
 

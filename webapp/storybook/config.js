@@ -13,7 +13,7 @@ Vue.component('nuxt-link', {
   },
   template: '<a href="#" @click.prevent="log()"><slot>NuxtLink</slot></a>',
 })
-Vue.component('no-ssr', {
+Vue.component('client-only', {
   render() {
     return this.$slots.default
   },

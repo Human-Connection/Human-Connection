@@ -69,23 +69,29 @@ describe('currentUser notifications', () => {
           factory.create('User', neighborParams),
           factory.create('Notification', {
             id: 'post-mention-not-for-you',
+            reason: 'mentioned_in_post',
           }),
           factory.create('Notification', {
             id: 'post-mention-already-seen',
             read: true,
+            reason: 'mentioned_in_post',
           }),
           factory.create('Notification', {
             id: 'post-mention-unseen',
+            reason: 'mentioned_in_post',
           }),
           factory.create('Notification', {
             id: 'comment-mention-not-for-you',
+            reason: 'mentioned_in_comment',
           }),
           factory.create('Notification', {
             id: 'comment-mention-already-seen',
             read: true,
+            reason: 'mentioned_in_comment',
           }),
           factory.create('Notification', {
             id: 'comment-mention-unseen',
+            reason: 'mentioned_in_comment',
           }),
         ])
         await factory.authenticateAs(neighborParams)
@@ -287,9 +293,11 @@ describe('UpdateNotification', () => {
         factory.create('User', mentionedParams),
         factory.create('Notification', {
           id: 'post-mention-to-be-updated',
+          reason: 'mentioned_in_post',
         }),
         factory.create('Notification', {
           id: 'comment-mention-to-be-updated',
+          reason: 'mentioned_in_comment',
         }),
       ])
       await factory.authenticateAs(userParams)

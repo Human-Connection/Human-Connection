@@ -8,7 +8,7 @@
       <ds-space margin-bottom="small" />
       <hc-user :user="post.author" :date-time="post.createdAt" />
       <!-- Content Menu (can open Modals) -->
-      <no-ssr>
+      <client-only>
         <content-menu
           placement="bottom-end"
           resource-type="contribution"
@@ -16,7 +16,7 @@
           :modalsData="menuModalsData"
           :is-owner="isAuthor(post.author ? post.author.id : null)"
         />
-      </no-ssr>
+      </client-only>
       <ds-space margin-bottom="small" />
       <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
