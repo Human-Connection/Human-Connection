@@ -7,6 +7,7 @@ let client
 const factory = Factory()
 const instance = neode()
 const categoryIds = ['cat9']
+let user
 
 afterEach(async () => {
   await factory.cleanDatabase()
@@ -132,7 +133,6 @@ describe('users', () => {
 
   describe('DeleteUser', () => {
     let deleteUserVariables
-    let asAuthor
     const deleteUserMutation = gql`
       mutation($id: ID!, $resource: [Deletable]) {
         DeleteUser(id: $id, resource: $resource) {
@@ -149,7 +149,7 @@ describe('users', () => {
       }
     `
     beforeEach(async () => {
-      await factory.create('User', {
+      user = await factory.create('User', {
         email: 'test@example.org',
         password: '1234',
         id: 'u343',
@@ -193,8 +193,7 @@ describe('users', () => {
       describe('attempting to delete my own account', () => {
         let expectedResponse
         beforeEach(async () => {
-          asAuthor = Factory()
-          await asAuthor.authenticateAs({
+          await factory.authenticateAs({
             email: 'test@example.org',
             password: '1234',
           })
@@ -203,12 +202,14 @@ describe('users', () => {
             name: 'Democracy & Politics',
             icon: 'university',
           })
-          await asAuthor.create('Post', {
+          await factory.create('Post', {
+            author: user,
             id: 'p139',
             content: 'Post by user u343',
             categoryIds,
           })
-          await asAuthor.create('Comment', {
+          await factory.create('Comment', {
+            author: user,
             id: 'c155',
             postId: 'p139',
             content: 'Comment by user u343',
