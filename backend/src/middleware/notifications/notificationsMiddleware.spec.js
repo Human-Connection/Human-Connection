@@ -77,14 +77,18 @@ afterEach(async () => {
 describe('notifications', () => {
   const notificationQuery = gql`
     query($read: Boolean) {
-      currentUser {
-        notifications(read: $read, orderBy: createdAt_desc) {
-          read
-          reason
-          post {
+      notifications(read: $read, orderBy: createdAt_desc) {
+        read
+        reason
+        createdAt
+        from {
+          __typename
+          ... on Post {
+            id
             content
           }
-          comment {
+          ... on Comment {
+            id
             content
           }
         }
@@ -154,18 +158,18 @@ describe('notifications', () => {
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
               data: {
-                currentUser: {
-                  notifications: [
-                    {
-                      read: false,
-                      reason: 'comment_on_post',
-                      post: null,
-                      comment: {
-                        content: commentContent,
-                      },
+                notifications: [
+                  {
+                    read: false,
+                    createdAt: expect.any(String),
+                    reason: 'commented_on_post',
+                    from: {
+                      __typename: 'Comment',
+                      id: 'c47',
+                      content: commentContent,
                     },
-                  ],
-                },
+                  },
+                ],
               },
             })
             const { query } = createTestClient(server)
@@ -183,11 +187,7 @@ describe('notifications', () => {
             await notifiedUser.relateTo(commentAuthor, 'blocked')
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
-              data: {
-                currentUser: {
-                  notifications: [],
-                },
-              },
+              data: { notifications: [] },
             })
             const { query } = createTestClient(server)
             await expect(
@@ -211,11 +211,7 @@ describe('notifications', () => {
             await notifiedUser.relateTo(commentAuthor, 'blocked')
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
-              data: {
-                currentUser: {
-                  notifications: [],
-                },
-              },
+              data: { notifications: [] },
             })
             const { query } = createTestClient(server)
             await expect(
@@ -253,18 +249,18 @@ describe('notifications', () => {
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
           const expected = expect.objectContaining({
             data: {
-              currentUser: {
-                notifications: [
-                  {
-                    read: false,
-                    reason: 'mentioned_in_post',
-                    post: {
-                      content: expectedContent,
-                    },
-                    comment: null,
+              notifications: [
+                {
+                  read: false,
+                  createdAt: expect.any(String),
+                  reason: 'mentioned_in_post',
+                  from: {
+                    __typename: 'Post',
+                    id: 'p47',
+                    content: expectedContent,
                   },
-                ],
-              },
+                },
+              ],
             },
           })
           const { query } = createTestClient(server)
@@ -278,7 +274,7 @@ describe('notifications', () => {
           ).resolves.toEqual(expected)
         })
 
-        describe('many times', () => {
+        describe('updates the post and mentions me again', () => {
           const updatePostAction = async () => {
             const updatedContent = `
               One more mention to
@@ -307,33 +303,25 @@ describe('notifications', () => {
             authenticatedUser = await notifiedUser.toJson()
           }
 
-          it('creates exactly one more notification', async () => {
+          it('creates no duplicate notification for the same resource', async () => {
+            const expectedUpdatedContent =
+              '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
             await createPostAction()
             await updatePostAction()
-            const expectedContent =
-              '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
             const expected = expect.objectContaining({
               data: {
-                currentUser: {
-                  notifications: [
-                    {
-                      read: false,
-                      reason: 'mentioned_in_post',
-                      post: {
-                        content: expectedContent,
-                      },
-                      comment: null,
+                notifications: [
+                  {
+                    read: false,
+                    createdAt: expect.any(String),
+                    reason: 'mentioned_in_post',
+                    from: {
+                      __typename: 'Post',
+                      id: 'p47',
+                      content: expectedUpdatedContent,
                     },
-                    {
-                      read: false,
-                      reason: 'mentioned_in_post',
-                      post: {
-                        content: expectedContent,
-                      },
-                      comment: null,
-                    },
-                  ],
-                },
+                  },
+                ],
               },
             })
             await expect(
@@ -345,6 +333,68 @@ describe('notifications', () => {
               }),
             ).resolves.toEqual(expected)
           })
+
+          describe('if the notification was marked as read earlier', () => {
+            const markAsReadAction = async () => {
+              const mutation = gql`
+                mutation($id: ID!) {
+                  markAsRead(id: $id) {
+                    read
+                  }
+                }
+              `
+              await mutate({ mutation, variables: { id: 'p47' } })
+            }
+
+            describe('but the next mention happens after the notification was marked as read', () => {
+              it('sets the `read` attribute to false again', async () => {
+                await createPostAction()
+                await markAsReadAction()
+                const {
+                  data: {
+                    notifications: [{ read: readBefore }],
+                  },
+                } = await query({
+                  query: notificationQuery,
+                })
+                await updatePostAction()
+                const {
+                  data: {
+                    notifications: [{ read: readAfter }],
+                  },
+                } = await query({
+                  query: notificationQuery,
+                })
+                expect(readBefore).toEqual(true)
+                expect(readAfter).toEqual(false)
+              })
+
+              it('updates the `createdAt` attribute', async () => {
+                await createPostAction()
+                await markAsReadAction()
+                const {
+                  data: {
+                    notifications: [{ createdAt: createdAtBefore }],
+                  },
+                } = await query({
+                  query: notificationQuery,
+                })
+                await updatePostAction()
+                const {
+                  data: {
+                    notifications: [{ createdAt: createdAtAfter }],
+                  },
+                } = await query({
+                  query: notificationQuery,
+                })
+                expect(createdAtBefore).toBeTruthy()
+                expect(Date.parse(createdAtBefore)).toEqual(expect.any(Number))
+                expect(createdAtAfter).toBeTruthy()
+                expect(Date.parse(createdAtAfter)).toEqual(expect.any(Number))
+                expect(createdAtBefore).not.toEqual(createdAtAfter)
+              })
+            })
+          })
         })
 
         describe('but the author of the post blocked me', () => {
@@ -355,11 +405,7 @@ describe('notifications', () => {
           it('sends no notification', async () => {
             await createPostAction()
             const expected = expect.objectContaining({
-              data: {
-                currentUser: {
-                  notifications: [],
-                },
-              },
+              data: { notifications: [] },
             })
             const { query } = createTestClient(server)
             await expect(
@@ -397,18 +443,18 @@ describe('notifications', () => {
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
               data: {
-                currentUser: {
-                  notifications: [
-                    {
-                      read: false,
-                      reason: 'mentioned_in_comment',
-                      post: null,
-                      comment: {
-                        content: commentContent,
-                      },
+                notifications: [
+                  {
+                    read: false,
+                    createdAt: expect.any(String),
+                    reason: 'mentioned_in_comment',
+                    from: {
+                      __typename: 'Comment',
+                      id: 'c47',
+                      content: commentContent,
                     },
-                  ],
-                },
+                  },
+                ],
               },
             })
             const { query } = createTestClient(server)
@@ -440,11 +486,7 @@ describe('notifications', () => {
           it('sends no notification', async () => {
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
-              data: {
-                currentUser: {
-                  notifications: [],
-                },
-              },
+              data: { notifications: [] },
             })
             const { query } = createTestClient(server)
             await expect(

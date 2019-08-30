@@ -41,32 +41,6 @@ const isMySocialMedia = rule({
   return socialMedia.ownedBy.node.id === user.id
 })
 
-const belongsToMe = rule({
-  cache: 'no_cache',
-})(async (_, args, context) => {
-  const {
-    driver,
-    user: { id: userId },
-  } = context
-  const { id: notificationId } = args
-  const session = driver.session()
-  const result = await session.run(
-    `
-  MATCH (u:User {id: $userId})<-[:NOTIFIED]-(n:Notification {id: $notificationId})
-  RETURN n
-  `,
-    {
-      userId,
-      notificationId,
-    },
-  )
-  const [notification] = result.records.map(record => {
-    return record.get('n')
-  })
-  session.close()
-  return Boolean(notification)
-})
-
 /* TODO: decide if we want to remove this check: the check
  * `onlyEnabledContent` throws authorization errors only if you have
  * arguments for `disabled` or `deleted` assuming these are filter
@@ -149,7 +123,6 @@ const permissions = shield(
       Category: allow,
       Tag: allow,
       Report: isModerator,
-      Notification: isAdmin,
       statistics: allow,
       currentUser: allow,
       Post: or(onlyEnabledContent, isModerator),
@@ -160,6 +133,7 @@ const permissions = shield(
       PostsEmotionsCountByEmotion: allow,
       PostsEmotionsByCurrentUser: allow,
       blockedUsers: isAuthenticated,
+      notifications: isAuthenticated,
     },
     Mutation: {
       '*': deny,
@@ -168,7 +142,6 @@ const permissions = shield(
       Signup: isAdmin,
       SignupVerification: allow,
       CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
-      UpdateNotification: belongsToMe,
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
@@ -198,6 +171,7 @@ const permissions = shield(
       RemovePostEmotions: isAuthenticated,
       block: isAuthenticated,
       unblock: isAuthenticated,
+      markAsRead: isAuthenticated,
     },
     User: {
       email: isMyOwn,

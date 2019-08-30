@@ -1,395 +1,307 @@
-import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login, gql } from '../../jest/helpers'
-import { neode } from '../../bootstrap/neo4j'
+import { gql } from '../../jest/helpers'
+import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import { createTestClient } from 'apollo-server-testing'
+import createServer from '../.././server'
 
-let client
 const factory = Factory()
-const instance = neode()
+const neode = getNeode()
+const driver = getDriver()
 const userParams = {
   id: 'you',
   email: 'test@example.org',
   password: '1234',
 }
-const categoryIds = ['cat9']
+
+let authenticatedUser
+let user
+let variables
+let query
+let mutate
+
+beforeAll(() => {
+  const { server } = createServer({
+    context: () => {
+      return {
+        driver,
+        user: authenticatedUser,
+      }
+    },
+  })
+  query = createTestClient(server).query
+  mutate = createTestClient(server).mutate
+})
 
 beforeEach(async () => {
-  await factory.create('User', userParams)
-  await instance.create('Category', {
-    id: 'cat9',
-    name: 'Democracy & Politics',
-    icon: 'university',
-  })
+  authenticatedUser = null
+  variables = { orderBy: 'createdAt_asc' }
 })
 
 afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('Notification', () => {
-  const notificationQuery = gql`
-    query {
-      Notification {
-        id
-      }
-    }
-  `
-
-  describe('unauthenticated', () => {
-    it('throws authorization error', async () => {
-      client = new GraphQLClient(host)
-      await expect(client.request(notificationQuery)).rejects.toThrow('Not Authorised')
-    })
+describe('given some notifications', () => {
+  beforeEach(async () => {
+    user = await factory.create('User', userParams)
+    await factory.create('User', { id: 'neighbor' })
+    await Promise.all(setupNotifications.map(s => neode.cypher(s)))
   })
-})
+  const setupNotifications = [
+    `MATCH(user:User {id: 'neighbor'})
+    MERGE (:Post {id: 'p1', content: 'Not for you'})
+      -[:NOTIFIED {createdAt: "2019-08-29T17:33:48.651Z", read: false, reason: "mentioned_in_post"}]
+      ->(user);
+    `,
+    `MATCH(user:User {id: 'you'})
+    MERGE (:Post {id: 'p2', content: 'Already seen post mentioning'})
+      -[:NOTIFIED {createdAt: "2019-08-30T17:33:48.651Z", read: true, reason: "mentioned_in_post"}]
+      ->(user);
+    `,
+    `MATCH(user:User {id: 'you'})
+    MERGE (:Post {id: 'p3', content: 'You have been mentioned in a post'})
+      -[:NOTIFIED {createdAt: "2019-08-31T17:33:48.651Z", read: false, reason: "mentioned_in_post"}]
+      ->(user);
+    `,
+    `MATCH(user:User {id: 'you'})
+    MATCH(post:Post {id: 'p3'})
+    CREATE (comment:Comment {id: 'c1', content: 'You have seen this comment mentioning already'})
+    MERGE (comment)-[:COMMENTS]->(post)
+    MERGE (comment)
+      -[:NOTIFIED {createdAt: "2019-08-30T15:33:48.651Z", read: true, reason: "mentioned_in_comment"}]
+      ->(user);
+    `,
+    `MATCH(user:User {id: 'you'})
+    MATCH(post:Post {id: 'p3'})
+    CREATE (comment:Comment {id: 'c2', content: 'You have been mentioned in a comment'})
+    MERGE (comment)-[:COMMENTS]->(post)
+    MERGE (comment)
+      -[:NOTIFIED {createdAt: "2019-08-30T19:33:48.651Z", read: false, reason: "mentioned_in_comment"}]
+      ->(user);
+    `,
+    `MATCH(user:User {id: 'neighbor'})
+    MATCH(post:Post {id: 'p3'})
+    CREATE (comment:Comment {id: 'c3', content: 'Somebody else was mentioned in a comment'})
+    MERGE (comment)-[:COMMENTS]->(post)
+    MERGE (comment)
+      -[:NOTIFIED {createdAt: "2019-09-01T17:33:48.651Z", read: false, reason: "mentioned_in_comment"}]
+      ->(user);
+  `,
+  ]
 
-describe('currentUser notifications', () => {
-  const variables = {}
-
-  describe('authenticated', () => {
-    let headers
-    beforeEach(async () => {
-      headers = await login({
-        email: 'test@example.org',
-        password: '1234',
-      })
-      client = new GraphQLClient(host, {
-        headers,
-      })
-    })
-
-    describe('given some notifications', () => {
-      beforeEach(async () => {
-        const neighborParams = {
-          email: 'neighbor@example.org',
-          password: '1234',
-          id: 'neighbor',
+  describe('notifications', () => {
+    const notificationQuery = gql`
+      query($read: Boolean, $orderBy: NotificationOrdering) {
+        notifications(read: $read, orderBy: $orderBy) {
+          from {
+            __typename
+            ... on Post {
+              content
+            }
+            ... on Comment {
+              content
+            }
+          }
+          read
+          createdAt
         }
-        await Promise.all([
-          factory.create('User', neighborParams),
-          factory.create('Notification', {
-            id: 'post-mention-not-for-you',
-            reason: 'mentioned_in_post',
-          }),
-          factory.create('Notification', {
-            id: 'post-mention-already-seen',
-            read: true,
-            reason: 'mentioned_in_post',
-          }),
-          factory.create('Notification', {
-            id: 'post-mention-unseen',
-            reason: 'mentioned_in_post',
-          }),
-          factory.create('Notification', {
-            id: 'comment-mention-not-for-you',
-            reason: 'mentioned_in_comment',
-          }),
-          factory.create('Notification', {
-            id: 'comment-mention-already-seen',
-            read: true,
-            reason: 'mentioned_in_comment',
-          }),
-          factory.create('Notification', {
-            id: 'comment-mention-unseen',
-            reason: 'mentioned_in_comment',
-          }),
-        ])
-        await factory.authenticateAs(neighborParams)
-        await factory.create('Post', { id: 'p1', categoryIds })
-        await Promise.all([
-          factory.relate('Notification', 'User', {
-            from: 'post-mention-not-for-you',
-            to: 'neighbor',
-          }),
-          factory.relate('Notification', 'Post', {
-            from: 'p1',
-            to: 'post-mention-not-for-you',
-          }),
-          factory.relate('Notification', 'User', {
-            from: 'post-mention-unseen',
-            to: 'you',
-          }),
-          factory.relate('Notification', 'Post', {
-            from: 'p1',
-            to: 'post-mention-unseen',
-          }),
-          factory.relate('Notification', 'User', {
-            from: 'post-mention-already-seen',
-            to: 'you',
-          }),
-          factory.relate('Notification', 'Post', {
-            from: 'p1',
-            to: 'post-mention-already-seen',
-          }),
-        ])
-        // Comment and its notifications
-        await Promise.all([
-          factory.create('Comment', {
-            id: 'c1',
-            postId: 'p1',
-          }),
-        ])
-        await Promise.all([
-          factory.relate('Notification', 'User', {
-            from: 'comment-mention-not-for-you',
-            to: 'neighbor',
-          }),
-          factory.relate('Notification', 'Comment', {
-            from: 'c1',
-            to: 'comment-mention-not-for-you',
-          }),
-          factory.relate('Notification', 'User', {
-            from: 'comment-mention-unseen',
-            to: 'you',
-          }),
-          factory.relate('Notification', 'Comment', {
-            from: 'c1',
-            to: 'comment-mention-unseen',
-          }),
-          factory.relate('Notification', 'User', {
-            from: 'comment-mention-already-seen',
-            to: 'you',
-          }),
-          factory.relate('Notification', 'Comment', {
-            from: 'c1',
-            to: 'comment-mention-already-seen',
-          }),
-        ])
-      })
-
-      describe('filter for read: false', () => {
-        const queryCurrentUserNotificationsFilterRead = gql`
-          query($read: Boolean) {
-            currentUser {
-              notifications(read: $read, orderBy: createdAt_desc) {
-                id
-                post {
-                  id
-                }
-                comment {
-                  id
-                }
-              }
-            }
-          }
-        `
-        const variables = { read: false }
-        it('returns only unread notifications of current user', async () => {
-          const expected = {
-            currentUser: {
-              notifications: expect.arrayContaining([
-                {
-                  id: 'post-mention-unseen',
-                  post: {
-                    id: 'p1',
-                  },
-                  comment: null,
-                },
-                {
-                  id: 'comment-mention-unseen',
-                  post: null,
-                  comment: {
-                    id: 'c1',
-                  },
-                },
-              ]),
-            },
-          }
-          await expect(
-            client.request(queryCurrentUserNotificationsFilterRead, variables),
-          ).resolves.toEqual(expected)
-        })
-      })
-
-      describe('no filters', () => {
-        const queryCurrentUserNotifications = gql`
-          query {
-            currentUser {
-              notifications(orderBy: createdAt_desc) {
-                id
-                post {
-                  id
-                }
-                comment {
-                  id
-                }
-              }
-            }
-          }
-        `
-        it('returns all notifications of current user', async () => {
-          const expected = {
-            currentUser: {
-              notifications: expect.arrayContaining([
-                {
-                  id: 'post-mention-unseen',
-                  post: {
-                    id: 'p1',
-                  },
-                  comment: null,
-                },
-                {
-                  id: 'post-mention-already-seen',
-                  post: {
-                    id: 'p1',
-                  },
-                  comment: null,
-                },
-                {
-                  id: 'comment-mention-unseen',
-                  comment: {
-                    id: 'c1',
-                  },
-                  post: null,
-                },
-                {
-                  id: 'comment-mention-already-seen',
-                  comment: {
-                    id: 'c1',
-                  },
-                  post: null,
-                },
-              ]),
-            },
-          }
-          await expect(client.request(queryCurrentUserNotifications, variables)).resolves.toEqual(
-            expected,
-          )
-        })
-      })
-    })
-  })
-})
-
-describe('UpdateNotification', () => {
-  const mutationUpdateNotification = gql`
-    mutation($id: ID!, $read: Boolean) {
-      UpdateNotification(id: $id, read: $read) {
-        id
-        read
       }
-    }
-  `
-  const variablesPostUpdateNotification = {
-    id: 'post-mention-to-be-updated',
-    read: true,
-  }
-  const variablesCommentUpdateNotification = {
-    id: 'comment-mention-to-be-updated',
-    read: true,
-  }
-
-  describe('given some notifications', () => {
-    let headers
-
-    beforeEach(async () => {
-      const mentionedParams = {
-        id: 'mentioned-1',
-        email: 'mentioned@example.org',
-        password: '1234',
-        slug: 'mentioned',
-      }
-      await Promise.all([
-        factory.create('User', mentionedParams),
-        factory.create('Notification', {
-          id: 'post-mention-to-be-updated',
-          reason: 'mentioned_in_post',
-        }),
-        factory.create('Notification', {
-          id: 'comment-mention-to-be-updated',
-          reason: 'mentioned_in_comment',
-        }),
-      ])
-      await factory.authenticateAs(userParams)
-      await factory.create('Post', { id: 'p1', categoryIds })
-      await Promise.all([
-        factory.relate('Notification', 'User', {
-          from: 'post-mention-to-be-updated',
-          to: 'mentioned-1',
-        }),
-        factory.relate('Notification', 'Post', {
-          from: 'p1',
-          to: 'post-mention-to-be-updated',
-        }),
-      ])
-      // Comment and its notifications
-      await Promise.all([
-        factory.create('Comment', {
-          id: 'c1',
-          postId: 'p1',
-        }),
-      ])
-      await Promise.all([
-        factory.relate('Notification', 'User', {
-          from: 'comment-mention-to-be-updated',
-          to: 'mentioned-1',
-        }),
-        factory.relate('Notification', 'Comment', {
-          from: 'p1',
-          to: 'comment-mention-to-be-updated',
-        }),
-      ])
-    })
-
+    `
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        client = new GraphQLClient(host)
-        await expect(
-          client.request(mutationUpdateNotification, variablesPostUpdateNotification),
-        ).rejects.toThrow('Not Authorised')
+        const result = await query({ query: notificationQuery })
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated', () => {
       beforeEach(async () => {
-        headers = await login({
-          email: 'test@example.org',
-          password: '1234',
-        })
-        client = new GraphQLClient(host, {
-          headers,
+        authenticatedUser = await user.toJson()
+      })
+
+      describe('no filters', () => {
+        it('returns all notifications of current user', async () => {
+          const expected = expect.objectContaining({
+            data: {
+              notifications: [
+                {
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have seen this comment mentioning already',
+                  },
+                  read: true,
+                  createdAt: '2019-08-30T15:33:48.651Z',
+                },
+                {
+                  from: {
+                    __typename: 'Post',
+                    content: 'Already seen post mentioning',
+                  },
+                  read: true,
+                  createdAt: '2019-08-30T17:33:48.651Z',
+                },
+                {
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have been mentioned in a comment',
+                  },
+                  read: false,
+                  createdAt: '2019-08-30T19:33:48.651Z',
+                },
+                {
+                  from: {
+                    __typename: 'Post',
+                    content: 'You have been mentioned in a post',
+                  },
+                  read: false,
+                  createdAt: '2019-08-31T17:33:48.651Z',
+                },
+              ],
+            },
+          })
+          await expect(query({ query: notificationQuery, variables })).resolves.toEqual(expected)
         })
       })
 
+      describe('filter for read: false', () => {
+        it('returns only unread notifications of current user', async () => {
+          const expected = expect.objectContaining({
+            data: {
+              notifications: [
+                {
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have been mentioned in a comment',
+                  },
+                  read: false,
+                  createdAt: '2019-08-30T19:33:48.651Z',
+                },
+                {
+                  from: {
+                    __typename: 'Post',
+                    content: 'You have been mentioned in a post',
+                  },
+                  read: false,
+                  createdAt: '2019-08-31T17:33:48.651Z',
+                },
+              ],
+            },
+          })
+          await expect(
+            query({ query: notificationQuery, variables: { ...variables, read: false } }),
+          ).resolves.toEqual(expected)
+        })
+      })
+    })
+  })
+
+  describe('markAsRead', () => {
+    const markAsReadMutation = gql`
+      mutation($id: ID!) {
+        markAsRead(id: $id) {
+          from {
+            __typename
+            ... on Post {
+              content
+            }
+            ... on Comment {
+              content
+            }
+          }
+          read
+          createdAt
+        }
+      }
+    `
+    describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        await expect(
-          client.request(mutationUpdateNotification, variablesPostUpdateNotification),
-        ).rejects.toThrow('Not Authorised')
+        const result = await mutate({
+          mutation: markAsReadMutation,
+          variables: { ...variables, id: 'p1' },
+        })
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+      })
+    })
+
+    describe('authenticated', () => {
+      beforeEach(async () => {
+        authenticatedUser = await user.toJson()
       })
 
-      describe('and owner', () => {
+      describe('not being notified at all', () => {
         beforeEach(async () => {
-          headers = await login({
-            email: 'mentioned@example.org',
-            password: '1234',
+          variables = {
+            ...variables,
+            id: 'p1',
+          }
+        })
+
+        it('returns null', async () => {
+          const response = await mutate({ mutation: markAsReadMutation, variables })
+          expect(response.data.markAsRead).toEqual(null)
+          expect(response.errors).toBeUndefined()
+        })
+      })
+
+      describe('being notified', () => {
+        describe('on a post', () => {
+          beforeEach(async () => {
+            variables = {
+              ...variables,
+              id: 'p3',
+            }
           })
-          client = new GraphQLClient(host, {
-            headers,
+
+          it('updates `read` attribute and returns NOTIFIED relationship', async () => {
+            const { data } = await mutate({ mutation: markAsReadMutation, variables })
+            expect(data).toEqual({
+              markAsRead: {
+                from: {
+                  __typename: 'Post',
+                  content: 'You have been mentioned in a post',
+                },
+                read: true,
+                createdAt: '2019-08-31T17:33:48.651Z',
+              },
+            })
+          })
+
+          describe('but notification was already marked as read', () => {
+            beforeEach(async () => {
+              variables = {
+                ...variables,
+                id: 'p2',
+              }
+            })
+            it('returns null', async () => {
+              const response = await mutate({ mutation: markAsReadMutation, variables })
+              expect(response.data.markAsRead).toEqual(null)
+              expect(response.errors).toBeUndefined()
+            })
           })
         })
 
-        it('updates post notification', async () => {
-          const expected = {
-            UpdateNotification: {
-              id: 'post-mention-to-be-updated',
-              read: true,
-            },
-          }
-          await expect(
-            client.request(mutationUpdateNotification, variablesPostUpdateNotification),
-          ).resolves.toEqual(expected)
-        })
+        describe('on a comment', () => {
+          beforeEach(async () => {
+            variables = {
+              ...variables,
+              id: 'c2',
+            }
+          })
 
-        it('updates comment notification', async () => {
-          const expected = {
-            UpdateNotification: {
-              id: 'comment-mention-to-be-updated',
-              read: true,
-            },
-          }
-          await expect(
-            client.request(mutationUpdateNotification, variablesCommentUpdateNotification),
-          ).resolves.toEqual(expected)
+          it('updates `read` attribute and returns NOTIFIED relationship', async () => {
+            const { data } = await mutate({ mutation: markAsReadMutation, variables })
+            expect(data).toEqual({
+              markAsRead: {
+                from: {
+                  __typename: 'Comment',
+                  content: 'You have been mentioned in a comment',
+                },
+                read: true,
+                createdAt: '2019-08-30T19:33:48.651Z',
+              },
+            })
+          })
         })
       })
     })

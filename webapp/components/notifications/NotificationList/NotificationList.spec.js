@@ -40,9 +40,9 @@ describe('NotificationList.vue', () => {
     propsData = {
       notifications: [
         {
-          id: 'notification-41',
           read: false,
-          post: {
+          from: {
+            __typename: 'Post',
             id: 'post-1',
             title: 'some post title',
             slug: 'some-post-title',
@@ -55,9 +55,9 @@ describe('NotificationList.vue', () => {
           },
         },
         {
-          id: 'notification-42',
           read: false,
-          post: {
+          from: {
+            __typename: 'Post',
             id: 'post-2',
             title: 'another post title',
             slug: 'another-post-title',
@@ -115,9 +115,9 @@ describe('NotificationList.vue', () => {
           .trigger('click')
       })
 
-      it("emits 'markAsRead' with the notificationId", () => {
+      it("emits 'markAsRead' with the id of the notification source", () => {
         expect(wrapper.emitted('markAsRead')).toBeTruthy()
-        expect(wrapper.emitted('markAsRead')[0]).toEqual(['notification-42'])
+        expect(wrapper.emitted('markAsRead')[0]).toEqual(['post-2'])
       })
     })
   })

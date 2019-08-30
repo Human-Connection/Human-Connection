@@ -20,6 +20,7 @@ export default applyScalars(
             'Statistics',
             'LoggedInUser',
             'SocialMedia',
+            'NOTIFIED',
           ],
           // add 'User' here as soon as possible
         },
@@ -32,6 +33,7 @@ export default applyScalars(
             'Statistics',
             'LoggedInUser',
             'SocialMedia',
+            'NOTIFIED',
           ],
           // add 'User' here as soon as possible
         },

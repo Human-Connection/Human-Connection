@@ -357,7 +357,7 @@ When("mention {string} in the text", mention => {
 });
 
 Then("the notification gets marked as read", () => {
-  cy.get(".post.createdAt")
+  cy.get(".notifications-menu-popover .notification")
     .first()
     .should("have.class", "read");
 });
