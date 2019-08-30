@@ -11,6 +11,8 @@ const filterForBlockedUsers = async (params, context) => {
     getBlockedByUsers(context),
   ])
   const badIds = [...blockedByUsers.map(b => b.id), ...blockedUsers.map(b => b.id)]
+  if (!badIds.length) return params
+
   params.filter = mergeWith(
     params.filter,
     {

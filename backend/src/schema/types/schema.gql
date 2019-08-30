@@ -4,7 +4,7 @@ type Query {
   currentUser: User
   # Get the latest Network Statistics
   statistics: Statistics!
-  findPosts(query: String!, limit: Int = 10): [Post]!
+  findPosts(query: String!, limit: Int = 10, filter: _PostFilter): [Post]!
     @cypher(
       statement: """
       CALL db.index.fulltext.queryNodes('full_text_search', $query)
