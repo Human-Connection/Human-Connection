@@ -9,21 +9,21 @@ Feature: Block a User
     And I am logged in
     And we have a selection of categories
 
-  # Scenario: Block a user
-  #   Given I am on the profile page of the annoying user
-  #   When I click on "Block user" from the content menu in the user info box
-  #   And I navigate to my "Blocked users" settings page
-  #   Then I can see the following table:
-  #     | Avatar | Name           |
-  #     |        | Spammy Spammer |
+  Scenario: Block a user
+    Given I am on the profile page of the annoying user
+    When I click on "Block user" from the content menu in the user info box
+    And I navigate to my "Blocked users" settings page
+    Then I can see the following table:
+      | Avatar | Name           |
+      |        | Spammy Spammer |
 
-  # Scenario: Block a previously followed user
-  #   Given I follow the user "Spammy Spammer"
-  #   And "Spammy Spammer" wrote a post "Spam Spam Spam"
-  #   When I visit the profile page of the annoying user
-  #   And I click on "Block user" from the content menu in the user info box
-  #   Then the list of posts of this user is empty
-  #   And nobody is following the user profile anymore
+  Scenario: Block a previously followed user
+    Given I follow the user "Spammy Spammer"
+    And "Spammy Spammer" wrote a post "Spam Spam Spam"
+    When I visit the profile page of the annoying user
+    And I click on "Block user" from the content menu in the user info box
+    Then the list of posts of this user is empty
+    And nobody is following the user profile anymore
 
   Scenario: Posts of blocked users are filtered from search results
     Given we have the following posts in our database:
