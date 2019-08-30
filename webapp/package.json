@@ -63,7 +63,7 @@
     "cross-env": "~5.2.0",
     "date-fns": "2.0.1",
     "express": "~4.17.1",
-    "graphql": "~14.5.3",
+    "graphql": "~14.5.4",
     "isemail": "^3.2.0",
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.2.0",
