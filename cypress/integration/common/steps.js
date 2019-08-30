@@ -1,6 +1,7 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 import { getLangByName } from "../../support/helpers";
 import slugify from "slug";
+// import { VERSION } from '../../../webapp/pages/terms-and-conditions.vue';
 
 /* global cy  */
 
@@ -10,12 +11,17 @@ let loginCredentials = {
   email: "peterpan@example.org",
   password: "1234"
 };
+
+const termsAndConditionsAgreedVersion = { termsAndConditionsAgreedVersion: "0.0.2" };
+
 const narratorParams = {
   name: "Peter Pan",
   slug: "peter-pan",
   avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
+  ...termsAndConditionsAgreedVersion,
   ...loginCredentials
 };
+
 
 Given("I am logged in", () => {
   cy.login(loginCredentials);
@@ -35,12 +41,14 @@ Given("we have a selection of tags and categories as well as posts", () => {
   const someAuthor = {
     id: "authorId",
     email: "author@example.org",
-    password: "1234"
+    password: "1234",
+    ...termsAndConditionsAgreedVersion
   };
   const yetAnotherAuthor = {
     id: "yetAnotherAuthor",
     email: "yet-another-author@example.org",
-    password: "1234"
+    password: "1234",
+    ...termsAndConditionsAgreedVersion
   };
   cy.factory()
     .create("User", someAuthor)
@@ -66,7 +74,7 @@ Given("we have a selection of tags and categories as well as posts", () => {
 
 Given("we have the following user accounts:", table => {
   table.hashes().forEach(params => {
-    cy.factory().create("User", params);
+    cy.factory().create("User", { ...params, ...termsAndConditionsAgreedVersion });
   });
 });
 
@@ -77,6 +85,7 @@ Given("I have a user account", () => {
 Given("my user account has the role {string}", role => {
   cy.factory().create("User", {
     role,
+    ...termsAndConditionsAgreedVersion,
     ...loginCredentials
   });
 });
@@ -182,7 +191,8 @@ Given("we have the following posts in our database:", table => {
       const moderatorParams = {
         email: "moderator@example.org",
         role: "moderator",
-        password: "1234"
+        password: "1234",
+        termsAndConditionsAgreedVersion: '0.0.2',
       };
       cy.factory()
         .create("User", moderatorParams)
@@ -269,8 +279,7 @@ Then(
 
 Given("my user account has the following login credentials:", table => {
   loginCredentials = table.hashes()[0];
-  cy.debug();
-  cy.factory().create("User", loginCredentials);
+  cy.factory().create("User", { ...termsAndConditionsAgreedVersion, ...loginCredentials });
 });
 
 When("I fill the password form with:", table => {
@@ -367,12 +376,14 @@ Then("there are no notifications in the top menu", () => {
 Given("there is an annoying user called {string}", name => {
   const annoyingParams = {
     email: "spammy-spammer@example.org",
-    password: "1234"
+    password: "1234",
+    ...termsAndConditionsAgreedVersion
   };
   cy.factory().create("User", {
     ...annoyingParams,
     id: "annoying-user",
-    name
+    name,
+    ...termsAndConditionsAgreedVersion
   });
 });
 

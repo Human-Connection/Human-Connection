@@ -31,6 +31,7 @@ Given('I am logged in with a {string} role', role => {
   cy.factory().create('User', {
     email: `${role}@example.org`,
     password: '1234',
+    termsAndConditionsAgreedVersion: "0.0.2",
     role
   })
   cy.login({
