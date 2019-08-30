@@ -80,6 +80,7 @@ describe('notifications', () => {
       notifications(read: $read, orderBy: createdAt_desc) {
         read
         reason
+        createdAt
         from {
           __typename
           ... on Post {
@@ -160,6 +161,7 @@ describe('notifications', () => {
                 notifications: [
                   {
                     read: false,
+                    createdAt: expect.any(String),
                     reason: 'comment_on_post',
                     from: {
                       __typename: 'Comment',
@@ -250,6 +252,7 @@ describe('notifications', () => {
               notifications: [
                 {
                   read: false,
+                  createdAt: expect.any(String),
                   reason: 'mentioned_in_post',
                   from: {
                     __typename: 'Post',
@@ -272,6 +275,9 @@ describe('notifications', () => {
         })
 
         describe('updates the post and mentions me again', () => {
+          const expectedUpdatedContent =
+            '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
+
           const updatePostAction = async () => {
             const updatedContent = `
               One more mention to
@@ -303,18 +309,17 @@ describe('notifications', () => {
           it('creates no duplicate notification for the same resource', async () => {
             await createPostAction()
             await updatePostAction()
-            const expectedContent =
-              '<br>One more mention to<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again:<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>and again<br><a data-mention-id="you" class="mention" href="/profile/you" target="_blank"><br>@al-capone<br></a><br>'
             const expected = expect.objectContaining({
               data: {
                 notifications: [
                   {
                     read: false,
+                    createdAt: expect.any(String),
                     reason: 'mentioned_in_post',
                     from: {
                       __typename: 'Post',
                       id: 'p47',
-                      content: expectedContent,
+                      content: expectedUpdatedContent,
                     },
                   },
                 ],
@@ -329,12 +334,67 @@ describe('notifications', () => {
               }),
             ).resolves.toEqual(expected)
           })
-        })
 
-        describe('if the notification was marked as read earlier', () => {
-          describe('but the next mentioning happens after the notification was marked as read', () => {
-            it.todo('sets the `read` attribute to false again')
-            it.todo('updates the `createdAt` attribute')
+          describe('if the notification was marked as read earlier', () => {
+            const markAsReadAction = async () => {
+              const mutation = gql`
+                mutation($id: ID!) {
+                  markAsRead(id: $id) {
+                    read
+                  }
+                }
+              `
+              await mutate({ mutation, variables: { id: 'p47' } })
+            }
+
+            describe('but the next mentioning happens after the notification was marked as read', () => {
+              it('sets the `read` attribute to false again', async () => {
+                await createPostAction()
+                await markAsReadAction()
+                const {
+                  data: {
+                    notifications: [{ read: readBefore }],
+                  },
+                } = await query({
+                  query: notificationQuery,
+                })
+                await updatePostAction()
+                const {
+                  data: {
+                    notifications: [{ read: readAfter }],
+                  },
+                } = await query({
+                  query: notificationQuery,
+                })
+                expect(readBefore).toEqual(true)
+                expect(readAfter).toEqual(false)
+              })
+
+              it('updates the `createdAt` attribute', async () => {
+                await createPostAction()
+                await markAsReadAction()
+                const {
+                  data: {
+                    notifications: [{ createdAt: createdAtBefore }],
+                  },
+                } = await query({
+                  query: notificationQuery,
+                })
+                await updatePostAction()
+                const {
+                  data: {
+                    notifications: [{ createdAt: createdAtAfter }],
+                  },
+                } = await query({
+                  query: notificationQuery,
+                })
+                expect(createdAtBefore).toBeTruthy()
+                expect(Date.parse(createdAtBefore)).toEqual(expect.any(Number))
+                expect(createdAtAfter).toBeTruthy()
+                expect(Date.parse(createdAtAfter)).toEqual(expect.any(Number))
+                expect(createdAtBefore).not.toEqual(createdAtAfter)
+              })
+            })
           })
         })
 
@@ -387,6 +447,7 @@ describe('notifications', () => {
                 notifications: [
                   {
                     read: false,
+                    createdAt: expect.any(String),
                     reason: 'mentioned_in_comment',
                     from: {
                       __typename: 'Comment',
