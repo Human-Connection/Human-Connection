@@ -73,6 +73,35 @@ export default {
     },
   },
   Mutation: {
+    CreatePost: async (object, params, context, resolveInfo) => {
+      const { categoryIds } = params
+      delete params.categoryIds
+      params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
+      params.id = params.id || uuid()
+
+      const createPostCypher = `CREATE (post:Post {params})
+        WITH post
+        MATCH (author:User {id: $userId})
+        MERGE (post)<-[:WROTE]-(author)
+        WITH post
+        UNWIND $categoryIds AS categoryId
+        MATCH (category:Category {id: categoryId})
+        MERGE (post)-[:CATEGORIZED]->(category)
+        RETURN post`
+
+      const createPostVariables = { userId: context.user.id, categoryIds, params }
+
+      const session = context.driver.session()
+      const transactionRes = await session.run(createPostCypher, createPostVariables)
+
+      const [post] = transactionRes.records.map(record => {
+        return record.get('post')
+      })
+
+      session.close()
+
+      return post.properties
+    },
     UpdatePost: async (object, params, context, resolveInfo) => {
       const { categoryIds } = params
       delete params.categoryIds
@@ -112,34 +141,21 @@ export default {
       return post.properties
     },
 
-    CreatePost: async (object, params, context, resolveInfo) => {
-      const { categoryIds } = params
-      delete params.categoryIds
-      params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
-      params.id = params.id || uuid()
-
-      const createPostCypher = `CREATE (post:Post {params})
-        WITH post
-        MATCH (author:User {id: $userId})
-        MERGE (post)<-[:WROTE]-(author)
-        WITH post
-        UNWIND $categoryIds AS categoryId
-        MATCH (category:Category {id: categoryId})
-        MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post`
-
-      const createPostVariables = { userId: context.user.id, categoryIds, params }
-
+    DeletePost: async (object, args, context, resolveInfo) => {
       const session = context.driver.session()
-      const transactionRes = await session.run(createPostCypher, createPostVariables)
-
-      const [post] = transactionRes.records.map(record => {
-        return record.get('post')
-      })
-
-      session.close()
-
-      return post.properties
+      const transactionRes = await session.run(
+        `
+        MATCH (post:Post {id: $postId})
+        SET post.deleted        = TRUE
+        SET post.image          = 'DELETED'
+        SET post.content        = 'DELETED'
+        SET post.contentExcerpt = 'DELETED'
+        RETURN post
+      `,
+        { postId: args.id },
+      )
+      const [post] = transactionRes.records.map(record => record.get('post').properties)
+      return post
     },
     AddPostEmotions: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
@@ -184,6 +200,7 @@ export default {
   },
   Post: {
     ...Resolver('Post', {
+      undefinedToNull: ['activityId', 'objectId', 'image', 'language'],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',

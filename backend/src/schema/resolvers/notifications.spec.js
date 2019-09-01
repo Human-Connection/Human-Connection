@@ -109,8 +109,8 @@ describe('given some notifications', () => {
     `
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        const result = await query({ query: notificationQuery })
-        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+        const { errors } = await query({ query: notificationQuery })
+        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 

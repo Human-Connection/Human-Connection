@@ -129,7 +129,7 @@ const permissions = shield(
       isLoggedIn: allow,
       Badge: allow,
       PostsEmotionsCountByEmotion: allow,
-      PostsEmotionsByCurrentUser: allow,
+      PostsEmotionsByCurrentUser: isAuthenticated,
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
     },
