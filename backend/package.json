@@ -116,7 +116,7 @@
     "babel-jest": "~24.9.0",
     "chai": "~4.2.0",
     "cucumber": "~5.1.0",
-    "eslint": "~6.2.2",
+    "eslint": "~6.3.0",
     "eslint-config-prettier": "~6.1.0",
     "eslint-config-standard": "~14.1.0",
     "eslint-plugin-import": "~2.18.2",
