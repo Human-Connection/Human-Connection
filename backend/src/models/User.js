@@ -83,4 +83,10 @@ module.exports = {
     target: 'Notification',
     direction: 'in',
   },
+  shouted: {
+    type: 'relationship',
+    relationship: 'SHOUTED',
+    target: 'Post',
+    direction: 'out',
+  },
 }
