@@ -35,16 +35,25 @@ export default function create() {
         }),
       )
 
+      const { tagIds = [] } = args
+      delete args.tags
+      const tags = await Promise.all(
+        tagIds.map(t => {
+          return neodeInstance.find('Tag', t)
+        }),
+      )
+
       let { author, authorId } = args
       delete args.author
       delete args.authorId
       if (author && authorId) throw new Error('You provided both author and authorId')
-      if (authorId) author =  await neodeInstance.find('User', authorId)
-      author = author || (await factoryInstance.create('User', args))
+      if (authorId) author = await neodeInstance.find('User', authorId)
+      author = author || (await factoryInstance.create('User'))
 
       const post = await neodeInstance.create('Post', args)
       await post.relateTo(author, 'author')
       await Promise.all(categories.map(c => c.relateTo(post, 'post')))
+      await Promise.all(tags.map(t => t.relateTo(post, 'post')))
       return post
     },
   }

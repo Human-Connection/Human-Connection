@@ -9,4 +9,5 @@ export default {
   Post: require('./Post.js'),
   Comment: require('./Comment.js'),
   Category: require('./Category.js'),
+  Tag: require('./Tag.js'),
 }
