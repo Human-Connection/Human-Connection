@@ -27,13 +27,13 @@ export default function create() {
       args.slug = args.slug || slugify(args.title, { lower: true })
       args.contentExcerpt = args.contentExcerpt || args.content
 
-      const { categoryIds } = args
-      if (!categoryIds.length) throw new Error('CategoryIds are empty!')
-      const categories = await Promise.all(
-        categoryIds.map(c => {
-          return neodeInstance.find('Category', c)
-        }),
-      )
+      let { categories, categoryIds } = args
+      delete args.categories
+      delete args.categoryIds
+      if (categories && categoryIds) throw new Error('You provided both category and categoryIds')
+      if (categoryIds)
+        categories = await Promise.all(categoryIds.map(id => neodeInstance.find('Category', id)))
+      categories = categories || (await Promise.all([factoryInstance.create('Category')]))
 
       const { tagIds = [] } = args
       delete args.tags

@@ -148,9 +148,9 @@ export default {
         MATCH (post:Post {id: $postId})
         OPTIONAL MATCH (post)<-[:COMMENTS]-(comment:Comment)
         SET post.deleted        = TRUE
-        SET post.image          = 'DELETED'
-        SET post.content        = 'DELETED'
-        SET post.contentExcerpt = 'DELETED'
+        SET post.image          = 'UNAVAILABLE'
+        SET post.content        = 'UNAVAILABLE'
+        SET post.contentExcerpt = 'UNAVAILABLE'
         SET comment.deleted     = TRUE
         RETURN post
       `,

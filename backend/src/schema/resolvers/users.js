@@ -102,23 +102,41 @@ export default {
       const { resource } = params
       const session = context.driver.session()
 
-      if (resource && resource.length) {
-        await Promise.all(
-          resource.map(async node => {
-            await session.run(
-              `
+      let user
+      try {
+        if (resource && resource.length) {
+          await Promise.all(
+            resource.map(async node => {
+              await session.run(
+                `
             MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
+            OPTIONAL MATCH (resource)<-[:COMMENTS]-(comment:Comment)
             SET resource.deleted = true
+            SET resource.content = 'UNAVAILABLE'
+            SET resource.contentExcerpt = 'UNAVAILABLE'
+            SET comment.deleted = true
             RETURN author`,
-              {
-                userId: context.user.id,
-              },
-            )
-          }),
+                {
+                  userId: context.user.id,
+                },
+              )
+            }),
+          )
+        }
+        const transactionResult = await session.run(
+          `
+          MATCH (user:User {id: $userId})
+          SET user.deleted = true
+          SET user.name = 'UNAVAILABLE'
+          SET user.about = 'UNAVAILABLE'
+          RETURN user`,
+          { userId: context.user.id },
         )
+        user = transactionResult.records.map(r => r.get('user').properties)[0]
+      } finally {
         session.close()
       }
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+      return user
     },
   },
   User: {

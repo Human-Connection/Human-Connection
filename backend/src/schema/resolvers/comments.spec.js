@@ -271,8 +271,8 @@ describe('DeleteComment', () => {
           DeleteComment: {
             id: 'c456',
             deleted: true,
-            content: 'DELETED',
-            contentExcerpt: 'DELETED',
+            content: 'UNAVAILABLE',
+            contentExcerpt: 'UNAVAILABLE',
           },
         }
         expect(data).toMatchObject(expected)

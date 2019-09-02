@@ -362,8 +362,8 @@ describe('softDeleteMiddleware', () => {
             authenticatedUser = await moderator.toJson()
           })
 
-          it('shows deleted posts', async () => {
-            const expected = { data: { Post: [{ title: 'Deleted post' }] } }
+          it('does not show deleted posts', async () => {
+            const expected = { data: { Post: [{ title: 'UNAVAILABLE' }] } }
             await expect(action()).resolves.toMatchObject(expected)
           })
         })

@@ -3,7 +3,7 @@ import uuid from 'uuid/v4'
 
 export default function create() {
   return {
-    factory: async ({ args, neodeInstance }) => {
+    factory: async ({ args, neodeInstance, factoryInstance }) => {
       const defaults = {
         id: uuid(),
         content: [faker.lorem.sentence(), faker.lorem.sentence()].join('. '),
@@ -12,11 +12,22 @@ export default function create() {
         ...defaults,
         ...args,
       }
-      const { postId } = args
-      if (!postId) throw new Error('PostId is missing!')
-      const post = await neodeInstance.find('Post', postId)
+      args.contentExcerpt = args.contentExcerpt || args.content
+
+      let { post, postId } = args
+      delete args.post
       delete args.postId
-      const author = args.author || (await neodeInstance.create('User', args))
+      if (post && post) throw new Error('You provided both post and postId')
+      if (postId) post = await neodeInstance.find('Post', postId)
+      post = post || (await factoryInstance.create('Post'))
+
+      let { author, authorId } = args
+      delete args.author
+      delete args.authorId
+      if (author && authorId) throw new Error('You provided both author and authorId')
+      if (authorId) author = await neodeInstance.find('User', authorId)
+      author = author || (await factoryInstance.create('User'))
+
       delete args.author
       const comment = await neodeInstance.create('Comment', args)
       await comment.relateTo(post, 'post')

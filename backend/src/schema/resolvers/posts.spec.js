@@ -468,9 +468,9 @@ describe('DeletePost', () => {
           DeletePost: {
             id: 'p4711',
             deleted: true,
-            content: 'DELETED',
-            contentExcerpt: 'DELETED',
-            image: 'DELETED',
+            content: 'UNAVAILABLE',
+            contentExcerpt: 'UNAVAILABLE',
+            image: 'UNAVAILABLE',
             comments: [],
           },
         },
@@ -495,15 +495,15 @@ describe('DeletePost', () => {
             DeletePost: {
               id: 'p4711',
               deleted: true,
-              content: 'DELETED',
-              contentExcerpt: 'DELETED',
-              image: 'DELETED',
+              content: 'UNAVAILABLE',
+              contentExcerpt: 'UNAVAILABLE',
+              image: 'UNAVAILABLE',
               comments: [
                 {
                   deleted: true,
                   // Should we black out the comment content in the database, too?
-                  content: 'to be deleted comment content',
-                  contentExcerpt: 'to be deleted comment content',
+                  content: 'UNAVAILABLE',
+                  contentExcerpt: 'UNAVAILABLE',
                 },
               ],
             },
