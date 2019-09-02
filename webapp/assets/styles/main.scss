@@ -164,3 +164,9 @@ hr {
 .v-popover.open .trigger a {
   color: $text-color-link-active;
 }
+
+.hyphenate-text {
+  hyphens: auto;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}

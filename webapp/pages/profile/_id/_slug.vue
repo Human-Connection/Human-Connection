@@ -72,7 +72,7 @@
           <template v-if="user.about">
             <hr />
             <ds-space margin-top="small" margin-bottom="small">
-              <ds-text color="soft" size="small">{{ user.about }}</ds-text>
+              <ds-text color="soft" size="small" class="hyphenate-text">{{ user.about }}</ds-text>
             </ds-space>
           </template>
         </ds-card>

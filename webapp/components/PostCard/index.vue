@@ -20,12 +20,12 @@
     </div>
     <ds-space margin-bottom="small" />
     <!-- Post Title -->
-    <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
+    <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
     <ds-space margin-bottom="small" />
     <!-- Post Content Excerpt -->
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
-    <div class="hc-editor-content" v-html="excerpt" />
+    <div class="hc-editor-content hyphenate-text" v-html="excerpt" />
     <!-- eslint-enable vue/no-v-html -->
     <!-- Footer o the Post -->
     <template slot="footer">
