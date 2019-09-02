@@ -5811,10 +5811,10 @@ mem@~5.1.1:
     mimic-fn "^2.1.0"
     p-is-promise "^2.1.0"
 
-memoize-one@~5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.1.0.tgz#ce7af291c0e2fe041b709cac5e8c7b198c994286"
-  integrity sha512-p3tPVJNrjOkJ0vk0FRn6yv898qlQZct1rsQAXuwK9X5brNVajPv/y13ytrUByzSS8olyzeqCLX8BKEWmTmXa1A==
+memoize-one@~5.1.0, memoize-one@~5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.1.1.tgz#047b6e3199b508eaec03504de71229b8eb1d75c0"
+  integrity sha512-HKeeBpWvqiVJD57ZUAsJNm71eHTykffzcLZVYWiVfQeI1rJtuEaS7hQiEpWfVVk18donPwJEcFKIkCmPJNOhHA==
 
 memorystream@^0.3.1:
   version "0.3.1"
@@ -5912,14 +5912,14 @@ metascraper-publisher@^5.6.5:
   dependencies:
     "@metascraper/helpers" "^5.6.6"
 
-metascraper-soundcloud@^5.6.5:
-  version "5.6.6"
-  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.6.6.tgz#7f609cd1f5ad4d466d8ac5e232bb3e2c9608ec24"
-  integrity sha512-8p3tI9BbD3MKv37t5gsh8E5ZDMZvZLKbLqK6hKEG2v0I0fzmpDQdUwhgo6NI4eAmOrPsyiPeQmu6sZLTWeK3OA==
+metascraper-soundcloud@^5.6.7:
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.6.7.tgz#c06a5398c85ec2d8e139c7f2016451ebf54de039"
+  integrity sha512-pHfhrAej8adCwK5Vo0IIOvoCTSWM1gSXeUQAwSyPGySME7NRMfgMq/TJSFF24Qih0UrE7u/4ogtGR3k3/Sno6g==
   dependencies:
     "@metascraper/helpers" "^5.6.6"
-    memoize-one "~5.1.0"
-    tldts "~5.3.2"
+    memoize-one "~5.1.1"
+    tldts "~5.4.0"
 
 metascraper-title@^5.6.5:
   version "5.6.6"
@@ -8154,17 +8154,17 @@ tlds@^1.187.0, tlds@^1.203.0:
   resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.203.1.tgz#4dc9b02f53de3315bc98b80665e13de3edfc1dfc"
   integrity sha512-7MUlYyGJ6rSitEZ3r1Q1QNV8uSIzapS8SmmhSusBuIc7uIxPPwsKllEP0GRp1NS6Ik6F+fRZvnjDWm3ecv2hDw==
 
-tldts-core@^5.3.2:
-  version "5.3.2"
-  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-5.3.2.tgz#3823653310c2dc6e51d00998098a72a3cc203ea9"
-  integrity sha512-bGI7MvrFXnbNhSkKEKAjiRo+eoIuIsuzF/hOtpI7HLMLWamIGtrLuNv2nlBOdN/h6iB6B32B4MxmwPWTZ70TaQ==
+tldts-core@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-5.4.0.tgz#bd69ca3ad96a78ab675c74684c6d0717929777ec"
+  integrity sha512-kfDnB7fcNgNUcn5k21TPM/MbXqJNt2bBGQRfGyE39H334Qk+qNcSqw9It3YPxvrA7msl7DQ8wvcIsa0y55auug==
 
-tldts@~5.3.2:
-  version "5.3.2"
-  resolved "https://registry.yarnpkg.com/tldts/-/tldts-5.3.2.tgz#d7e9b31b70b7d7687a16fe31a18ec2ca8a33f852"
-  integrity sha512-R96Q0sJoD1vMYZ5YI0om32AZW2SYDxWfcg0111gnJYIvfyVgHOwyYj2dLFhpkPCSH7AwwUe0MmewmUrQhJXRjQ==
+tldts@~5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/tldts/-/tldts-5.4.0.tgz#ded769383615341660243acf547f197eb48f6795"
+  integrity sha512-S1CmstJxRb6KK+uLHhMUXXkI/zjA20RGM9QYkLgDEj42C9Zmr+OLjzEqf4Id/EWppuLi1z9FdNsz8/qi/pLCGA==
   dependencies:
-    tldts-core "^5.3.2"
+    tldts-core "^5.4.0"
 
 tmp@^0.0.33:
   version "0.0.33"
