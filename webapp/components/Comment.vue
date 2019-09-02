@@ -68,7 +68,6 @@ import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcEditCommentForm from '~/components/EditCommentForm/EditCommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
-import PostQuery from '~/graphql/PostQuery'
 
 export default {
   data: function() {
@@ -143,26 +142,14 @@ export default {
     },
     async deleteCommentCallback() {
       try {
-        await this.$apollo.mutate({
+        const {
+          data: { DeleteComment },
+        } = await this.$apollo.mutate({
           mutation: CommentMutations(this.$i18n).DeleteComment,
           variables: { id: this.comment.id },
-          update: async store => {
-            const data = await store.readQuery({
-              query: PostQuery(this.$i18n),
-              variables: { id: this.post.id },
-            })
-
-            const index = data.Post[0].comments.findIndex(
-              deletedComment => deletedComment.id === this.comment.id,
-            )
-            if (index !== -1) {
-              data.Post[0].comments.splice(index, 1)
-            }
-            await store.writeQuery({ query: PostQuery(this.$i18n), data })
-          },
         })
         this.$toast.success(this.$t(`delete.comment.success`))
-        this.$emit('deleteComment')
+        this.$emit('deleteComment', DeleteComment)
       } catch (err) {
         this.$toast.error(err.message)
       }

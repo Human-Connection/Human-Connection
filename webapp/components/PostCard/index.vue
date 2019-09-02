@@ -118,9 +118,11 @@ export default {
   methods: {
     async deletePostCallback() {
       try {
-        await this.$apollo.mutate(deletePostMutation(this.post.id))
+        const {
+          data: { DeletePost },
+        } = await this.$apollo.mutate(deletePostMutation(this.post.id))
         this.$toast.success(this.$t('delete.contribution.success'))
-        this.$emit('removePostFromList')
+        this.$emit('removePostFromList', DeletePost)
       } catch (err) {
         this.$toast.error(err.message)
       }

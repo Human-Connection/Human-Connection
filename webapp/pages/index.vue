@@ -20,7 +20,7 @@
           <hc-post-card
             :post="post"
             :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-            @removePostFromList="deletePost(index, post.id)"
+            @removePostFromList="deletePost"
           />
         </masonry-grid-item>
       </template>
@@ -164,9 +164,9 @@ export default {
     showMoreContributions() {
       this.offset += this.pageSize
     },
-    deletePost(_index, postId) {
+    deletePost(deletedPost) {
       this.posts = this.posts.filter(post => {
-        return post.id !== postId
+        return post.id !== deletedPost.id
       })
     },
   },

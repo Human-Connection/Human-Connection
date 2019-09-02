@@ -128,3 +128,51 @@ export const PostsEmotionsByCurrentUser = () => {
     }
   `
 }
+
+export const relatedContributions = i18n => {
+  const lang = i18n.locale().toUpperCase()
+  return gql`query Post($slug: String!) {
+    Post(slug: $slug) {
+      id
+      title
+      tags {
+        id
+      }
+      categories {
+        id
+        name
+        icon
+      }
+      relatedContributions(first: 2) {
+        id
+        title
+        slug
+        contentExcerpt
+        shoutedCount
+        categories {
+          id
+          name
+          icon
+        }
+        author {
+          id
+          name
+          slug
+          avatar
+          contributionsCount
+          followedByCount
+          followedByCurrentUser
+          commentedCount
+          location {
+            name: name${lang}
+          }
+          badges {
+            id
+            icon
+          }
+        }
+      }
+      shoutedCount
+    }
+  }`
+}
