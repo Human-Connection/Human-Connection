@@ -6,7 +6,6 @@ import createPost from './posts.js'
 import createComment from './comments.js'
 import createCategory from './categories.js'
 import createTag from './tags.js'
-import createReport from './reports.js'
 
 export const seedServerHost = 'http://127.0.0.1:4001'
 
@@ -27,7 +26,6 @@ const factories = {
   Comment: createComment,
   Category: createCategory,
   Tag: createTag,
-  Report: createReport,
 }
 
 export const cleanDatabase = async (options = {}) => {
