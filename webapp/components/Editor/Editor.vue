@@ -77,7 +77,7 @@ export default {
         extensions.push(
           new Mention({
             items: () => {
-              return this.users.slice(0, 15)
+              return this.users
             },
             onEnter: props => this.openSuggestionList(props, MENTION),
             onChange: this.updateSuggestionList,
@@ -92,7 +92,7 @@ export default {
         extensions.push(
           new Hashtag({
             items: () => {
-              return this.hashtags.slice(0, 15)
+              return this.hashtags
             },
             onEnter: props => this.openSuggestionList(props, HASHTAG),
             onChange: this.updateSuggestionList,
@@ -203,15 +203,14 @@ export default {
     filterSuggestionList(items, query) {
       query = this.sanitizeQuery(query)
       if (!query) {
-        return items
+        return items.slice(0, 15)
       }
 
-      items = this.suggestionType === HASHTAG ? this.hashtags : this.users
       const filteredList = items.filter(item => {
         const itemString = item.slug || item.id
         return itemString.toLowerCase().includes(query.toLowerCase())
       })
-      return filteredList.slice(0, 14)
+      return filteredList.slice(0, 15)
     },
     sanitizeQuery(query) {
       if (this.suggestionType === HASHTAG) {
