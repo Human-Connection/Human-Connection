@@ -31,4 +31,18 @@ module.exports = {
     target: 'User',
     direction: 'in',
   },
+  notified: {
+    type: 'relationship',
+    relationship: 'NOTIFIED',
+    target: 'User',
+    direction: 'out',
+    properties: {
+      read: { type: 'boolean', default: false },
+      reason: {
+        type: 'string',
+        valid: ['mentioned_in_post', 'mentioned_in_comment', 'commented_on_post'],
+      },
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
 }
