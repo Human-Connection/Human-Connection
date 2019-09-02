@@ -3,6 +3,7 @@ import Editor from './Editor'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import MutationObserver from 'mutation-observer'
+import Vue from 'vue'
 
 global.MutationObserver = MutationObserver
 
@@ -55,9 +56,11 @@ describe('Editor.vue', () => {
         propsData.value = 'I am a piece of text'
       })
 
-      it.skip('renders', () => {
+      it('renders', async () => {
         wrapper = Wrapper()
-        expect(wrapper.find('.ProseMirror').text()).toContain('I am a piece of text')
+        await Vue.nextTick().then(() => {
+          expect(wrapper.find('.editor-content').text()).toContain(propsData.value)
+        })
       })
     })
 
@@ -80,6 +83,16 @@ describe('Editor.vue', () => {
         expect(wrapper.vm.editor.extensions.options.mention.items()).toEqual(propsData.users)
       })
 
+      it('limits the suggestion list to 15 users', () => {
+        let manyUsersList = []
+        for (let i = 0; i < 25; i++) {
+          manyUsersList.push({ id: `user${i}` })
+        }
+        propsData.users = manyUsersList
+        wrapper = Wrapper()
+        expect(wrapper.vm.editor.extensions.options.mention.items()).toHaveLength(15)
+      })
+
       it('mentions is not an option when there are no users', () => {
         expect(wrapper.vm.editor.extensions.options).toEqual(
           expect.not.objectContaining({
@@ -96,6 +109,16 @@ describe('Editor.vue', () => {
         ]
         wrapper = Wrapper()
         expect(wrapper.vm.editor.extensions.options.hashtag.items()).toEqual(propsData.hashtags)
+      })
+
+      it('limits the suggestion list to 15 users', () => {
+        let manyHashtagsList = []
+        for (let i = 0; i < 25; i++) {
+          manyHashtagsList.push({ id: `hashtag${i}` })
+        }
+        propsData.hashtags = manyHashtagsList
+        wrapper = Wrapper()
+        expect(wrapper.vm.editor.extensions.options.hashtag.items()).toHaveLength(15)
       })
 
       it('hashtags is not an option when there are no hashtags', () => {
