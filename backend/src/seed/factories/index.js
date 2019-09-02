@@ -79,6 +79,7 @@ export default function Factory(options = {}) {
         this.lastResponse = await factory({
           args,
           neodeInstance,
+          factoryInstance: this,
         })
         return this.lastResponse
       } else {

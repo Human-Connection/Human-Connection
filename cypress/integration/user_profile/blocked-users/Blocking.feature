@@ -27,8 +27,8 @@ Feature: Block a User
 
   Scenario: Posts of blocked users are filtered from search results
     Given we have the following posts in our database:
-      | Author              | id             | title                    | content               |
-      | Some unblocked user | im-not-blocked | Post that should be seen | cause I'm not blocked |
+      | id             | title                    | content               |
+      | im-not-blocked | Post that should be seen | cause I'm not blocked |
     Given "Spammy Spammer" wrote a post "Spam Spam Spam"
     When I search for "Spam"
     Then I should see the following posts in the select dropdown:

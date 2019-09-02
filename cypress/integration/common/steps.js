@@ -1,6 +1,5 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 import helpers from "../../support/helpers";
-import slugify from "slug";
 
 /* global cy  */
 
@@ -11,6 +10,7 @@ let loginCredentials = {
   password: "1234"
 };
 const narratorParams = {
+  id: 'id-of-peter-pan',
   name: "Peter Pan",
   slug: "peter-pan",
   avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
@@ -158,40 +158,28 @@ When("I press {string}", label => {
   cy.contains(label).click();
 });
 
+Given("we have this user in our database:", table => {
+  const [firstRow] = table.hashes()
+  cy.factory().create('User', firstRow)
+})
+
 Given("we have the following posts in our database:", table => {
-  table.hashes().forEach(({ Author, ...postAttributes }, i) => {
-    Author = Author || `author-${i}`;
-    const userAttributes = {
-      name: Author,
-      email: `${slugify(Author, { lower: true })}@example.org`,
-      password: "1234"
-    };
-    postAttributes.deleted = Boolean(postAttributes.deleted);
-    const disabled = Boolean(postAttributes.disabled);
-    postAttributes.categoryIds = [`cat${i}${new Date()}`];
-    postAttributes;
-    cy.factory()
-      .create("User", userAttributes)
-      .authenticateAs(userAttributes)
-      .create("Category", {
-        id: `cat${i}${new Date()}`,
-        name: "Just For Fun",
-        slug: `just-for-fun-${i}`,
-        icon: "smile"
-      })
-      .create("Post", postAttributes);
-    if (disabled) {
-      const moderatorParams = {
-        email: "moderator@example.org",
-        role: "moderator",
-        password: "1234"
-      };
-      cy.factory()
-        .create("User", moderatorParams)
-        .authenticateAs(moderatorParams)
-        .mutate("mutation($id: ID!) { disable(id: $id) }", postAttributes);
+  cy.factory().create('Category', {
+    id: `cat-456`,
+    name: "Just For Fun",
+    slug: `just-for-fun`,
+    icon: "smile"
+  })
+
+  table.hashes().forEach(({ ...postAttributes }, i) => {
+    postAttributes = {
+      ...postAttributes,
+      deleted: Boolean(postAttributes.deleted),
+      disabled: Boolean(postAttributes.disabled),
+      categoryIds: ['cat-456']
     }
-  });
+    cy.factory().create("Post", postAttributes);
+  })
 });
 
 Then("I see a success message:", message => {
@@ -210,11 +198,11 @@ When(
 );
 
 Given("I previously created a post", () => {
+  lastPost.authorId = narratorParams.id
   lastPost.title = "previously created post";
   lastPost.content = "with some content";
-  lastPost.categoryIds = "cat0";
+  lastPost.categoryIds = ["cat0"];
   cy.factory()
-    .authenticateAs(loginCredentials)
     .create("Post", lastPost);
 });
 
