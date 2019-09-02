@@ -146,10 +146,12 @@ export default {
       const transactionRes = await session.run(
         `
         MATCH (post:Post {id: $postId})
+        OPTIONAL MATCH (post)<-[:COMMENTS]-(comment:Comment)
         SET post.deleted        = TRUE
         SET post.image          = 'DELETED'
         SET post.content        = 'DELETED'
         SET post.contentExcerpt = 'DELETED'
+        SET comment.deleted     = TRUE
         RETURN post
       `,
         { postId: args.id },

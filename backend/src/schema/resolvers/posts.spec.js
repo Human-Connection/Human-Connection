@@ -417,6 +417,11 @@ describe('DeletePost', () => {
         content
         contentExcerpt
         image
+        comments {
+          deleted
+          content
+          contentExcerpt
+        }
       }
     }
   `
@@ -466,6 +471,7 @@ describe('DeletePost', () => {
             content: 'DELETED',
             contentExcerpt: 'DELETED',
             image: 'DELETED',
+            comments: [],
           },
         },
       }
@@ -474,7 +480,40 @@ describe('DeletePost', () => {
       )
     })
 
-    it.todo('marks all comments as deleted')
+    describe('if there are comments on the post', () => {
+      beforeEach(async () => {
+        await factory.create('Comment', {
+          postId: 'p4711',
+          content: 'to be deleted comment content',
+          contentExcerpt: 'to be deleted comment content',
+        })
+      })
+
+      it('marks the comments as deleted', async () => {
+        const expected = {
+          data: {
+            DeletePost: {
+              id: 'p4711',
+              deleted: true,
+              content: 'DELETED',
+              contentExcerpt: 'DELETED',
+              image: 'DELETED',
+              comments: [
+                {
+                  deleted: true,
+                  // Should we black out the comment content in the database, too?
+                  content: 'to be deleted comment content',
+                  contentExcerpt: 'to be deleted comment content',
+                },
+              ],
+            },
+          },
+        }
+        await expect(mutate({ mutation: deletePostMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
+      })
+    })
   })
 })
 
