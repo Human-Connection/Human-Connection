@@ -2,7 +2,6 @@ import { GraphQLClient, request } from 'graphql-request'
 import { getDriver, neode } from '../../bootstrap/neo4j'
 import createBadge from './badges.js'
 import createUser from './users.js'
-import createOrganization from './organizations.js'
 import createPost from './posts.js'
 import createComment from './comments.js'
 import createCategory from './categories.js'
@@ -24,7 +23,6 @@ const authenticatedHeaders = async ({ email, password }, host) => {
 const factories = {
   Badge: createBadge,
   User: createUser,
-  Organization: createOrganization,
   Post: createPost,
   Comment: createComment,
   Category: createCategory,

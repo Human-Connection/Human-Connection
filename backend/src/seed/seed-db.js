@@ -693,29 +693,6 @@ import Factory from './factories'
     ])
 
     await Promise.all([
-      f.create('Organization', {
-        id: 'o1',
-        name: 'Democracy Deutschland',
-        description: 'Description for democracy-deutschland.',
-      }),
-      f.create('Organization', {
-        id: 'o2',
-        name: 'Human-Connection',
-        description: 'Description for human-connection.',
-      }),
-      f.create('Organization', {
-        id: 'o3',
-        name: 'Pro Veg',
-        description: 'Description for pro-veg.',
-      }),
-      f.create('Organization', {
-        id: 'o4',
-        name: 'Greenpeace',
-        description: 'Description for greenpeace.',
-      }),
-    ])
-
-    await Promise.all([
       f.relate('Organization', 'CreatedBy', {
         from: 'u1',
         to: 'o1',
