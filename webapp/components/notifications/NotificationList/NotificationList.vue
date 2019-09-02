@@ -4,7 +4,7 @@
       v-for="notification in notifications"
       :key="notification.id"
       :notification="notification"
-      @read="markAsRead(notification.id)"
+      @read="markAsRead(notification.from.id)"
     />
   </div>
 </template>
@@ -24,8 +24,8 @@ export default {
     },
   },
   methods: {
-    markAsRead(notificationId) {
-      this.$emit('markAsRead', notificationId)
+    markAsRead(notificationSourceId) {
+      this.$emit('markAsRead', notificationSourceId)
     },
   },
 }

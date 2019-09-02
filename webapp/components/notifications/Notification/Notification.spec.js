@@ -37,9 +37,9 @@ describe('Notification', () => {
   describe('given a notification about a comment on a post', () => {
     beforeEach(() => {
       propsData.notification = {
-        reason: 'comment_on_post',
-        post: null,
-        comment: {
+        reason: 'commented_on_post',
+        from: {
+          __typename: 'Comment',
           id: 'comment-1',
           contentExcerpt:
             '<a href="/profile/u123" target="_blank">@dagobert-duck</a> is the best on this comment.',
@@ -56,7 +56,7 @@ describe('Notification', () => {
     it('renders reason', () => {
       wrapper = Wrapper()
       expect(wrapper.find('.reason-text-for-test').text()).toEqual(
-        'notifications.menu.comment_on_post',
+        'notifications.menu.commented_on_post',
       )
     })
     it('renders title', () => {
@@ -92,14 +92,14 @@ describe('Notification', () => {
     beforeEach(() => {
       propsData.notification = {
         reason: 'mentioned_in_post',
-        post: {
+        from: {
+          __typename: 'Post',
           title: "It's a post title",
           id: 'post-1',
           slug: 'its-a-title',
           contentExcerpt:
             '<a href="/profile/u3" target="_blank">@jenny-rostock</a> is the best on this post.',
         },
-        comment: null,
       }
     })
 
@@ -138,8 +138,8 @@ describe('Notification', () => {
     beforeEach(() => {
       propsData.notification = {
         reason: 'mentioned_in_comment',
-        post: null,
-        comment: {
+        from: {
+          __typename: 'Comment',
           id: 'comment-1',
           contentExcerpt:
             '<a href="/profile/u123" target="_blank">@dagobert-duck</a> is the best on this comment.',

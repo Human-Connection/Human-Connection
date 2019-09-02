@@ -147,12 +147,15 @@ export default {
           'MATCH (this)<-[:BLOCKED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
       },
       count: {
-        contributionsCount: '-[:WROTE]->(related:Post)',
+        contributionsCount:
+          '-[:WROTE]->(related:Post) WHERE NOT related.disabled = true AND NOT related.deleted = true',
         friendsCount: '<-[:FRIENDS]->(related:User)',
         followingCount: '-[:FOLLOWS]->(related:User)',
         followedByCount: '<-[:FOLLOWS]-(related:User)',
-        commentedCount: '-[:WROTE]->(:Comment)-[:COMMENTS]->(related:Post)',
-        shoutedCount: '-[:SHOUTED]->(related:Post)',
+        commentedCount:
+          '-[:WROTE]->(c:Comment)-[:COMMENTS]->(related:Post) WHERE NOT related.disabled = true AND NOT related.deleted = true',
+        shoutedCount:
+          '-[:SHOUTED]->(related:Post) WHERE NOT related.disabled = true AND NOT related.deleted = true',
         badgesCount: '<-[:REWARDED]-(related:Badge)',
       },
       hasOne: {

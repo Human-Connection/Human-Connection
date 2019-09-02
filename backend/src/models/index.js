@@ -7,6 +7,5 @@ export default {
   EmailAddress: require('./EmailAddress.js'),
   SocialMedia: require('./SocialMedia.js'),
   Post: require('./Post.js'),
-  Notification: require('./Notification.js'),
   Category: require('./Category.js'),
 }

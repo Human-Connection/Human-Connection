@@ -1,4 +1,5 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
+import Resolver from './helpers/Resolver'
 
 export default {
   Mutation: {
@@ -51,5 +52,14 @@ export default {
 
       return comment
     },
+  },
+  Comment: {
+    ...Resolver('Comment', {
+      hasOne: {
+        author: '<-[:WROTE]-(related:User)',
+        post: '-[:COMMENTS]->(related:Post)',
+        disabledBy: '<-[:DISABLED]-(related:User)',
+      },
+    }),
   },
 }

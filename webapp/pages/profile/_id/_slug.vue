@@ -219,8 +219,8 @@
             </ds-space>
           </ds-grid-item>
 
-          <template v-if="activePosts.length">
-            <masonry-grid-item v-for="(post, index) in activePosts" :key="post.id">
+          <template v-if="posts.length">
+            <masonry-grid-item v-for="(post, index) in posts" :key="post.id">
               <hc-post-card
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
@@ -229,10 +229,10 @@
             </masonry-grid-item>
           </template>
           <template v-else-if="$apollo.loading">
-            <ds-grid-item>
-              <ds-section centered>
+            <ds-grid-item column-span="fullWidth">
+              <ds-space centered>
                 <ds-spinner size="base"></ds-spinner>
-              </ds-section>
+              </ds-space>
             </ds-grid-item>
           </template>
           <template v-else>
@@ -306,32 +306,20 @@ export default {
     const filter = tabToFilterMapping({ tab: 'post', id: this.$route.params.id })
     return {
       User: [],
-      Post: [],
-      activePosts: [],
-      voted: false,
-      page: 1,
+      posts: [],
+      hasMore: false,
+      offset: 0,
       pageSize: 6,
       tabActive: 'post',
       filter,
     }
   },
   computed: {
-    hasMore() {
-      const total = {
-        post: this.user.contributionsCount,
-        shout: this.user.shoutedCount,
-        comment: this.user.commentedCount,
-      }[this.tabActive]
-      return this.Post && this.Post.length < total
-    },
     myProfile() {
       return this.$route.params.id === this.$store.getters['auth/user'].id
     },
     user() {
       return this.User ? this.User[0] : {}
-    },
-    offset() {
-      return (this.page - 1) * this.pageSize
     },
     socialMediaLinks() {
       const { socialMedia = [] } = this.user
@@ -355,19 +343,15 @@ export default {
         throw new Error('User not found!')
       }
     },
-    Post(val) {
-      this.activePosts = this.setActivePosts()
-    },
   },
   methods: {
     removePostFromList(index) {
-      this.activePosts.splice(index, 1)
-      this.$apollo.queries.User.refetch()
+      this.posts.splice(index, 1)
     },
     handleTab(tab) {
       this.tabActive = tab
-      this.Post = null
       this.filter = tabToFilterMapping({ tab, id: this.$route.params.id })
+      this.resetPostList()
     },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
@@ -377,38 +361,23 @@ export default {
       this.$apollo.queries.User.refetch()
     },
     showMoreContributions() {
-      // this.page++
-      // Fetch more data and transform the original result
-      this.page++
-      this.$apollo.queries.Post.fetchMore({
-        variables: {
-          filter: this.filter,
-          first: this.pageSize,
-          offset: this.offset,
-        },
-        // Transform the previous result with new data
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          let output = { Post: this.Post }
-          output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
-          return output
-        },
-        fetchPolicy: 'cache-and-network',
-      })
+      this.offset += this.pageSize
     },
-    setActivePosts() {
-      if (!this.Post) {
-        return []
-      }
-      return this.uniq(this.Post.filter(post => !post.deleted))
+    resetPostList() {
+      this.offset = 0
+      this.posts = []
+      this.hasMore = false
     },
     async block(user) {
       await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
+      this.resetPostList()
       this.$apollo.queries.Post.refetch()
     },
     async unblock(user) {
       await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
+      this.resetPostList()
       this.$apollo.queries.Post.refetch()
     },
   },
@@ -421,10 +390,19 @@ export default {
         return {
           filter: this.filter,
           first: this.pageSize,
-          offset: 0,
+          offset: this.offset,
+          orderBy: 'createdAt_desc',
         }
       },
       fetchPolicy: 'cache-and-network',
+      update({ Post }) {
+        if (!Post) return
+        // TODO: find out why `update` gets called twice initially.
+        // We have to filter for uniq posts only because we get the same
+        // result set twice.
+        this.hasMore = Post.length >= this.pageSize
+        this.posts = this.uniq([...this.posts, ...Post])
+      },
     },
     User: {
       query() {
