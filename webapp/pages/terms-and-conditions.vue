@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  layout: 'default',
+  layout: 'blank',
   head() {
     return {
       title: this.$t('site.termsAndConditions'),

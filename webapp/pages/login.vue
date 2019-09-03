@@ -10,9 +10,6 @@
       <ds-card class="login-card">
         <ds-flex gutter="small">
           <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-            <client-only>
-              <locale-switch class="login-locale-switch" offset="5" />
-            </client-only>
             <ds-space margin-top="small" margin-bottom="xxx-small" centered>
               <img
                 class="login-image"
@@ -74,12 +71,7 @@
 </template>
 
 <script>
-import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
-
 export default {
-  components: {
-    LocaleSwitch,
-  },
   layout: 'blank',
   data() {
     return {
