@@ -344,7 +344,7 @@ describe('UpdatePost', () => {
         it('allows a maximum of three category for a successful update', async () => {
           const {
             errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
+          } = await mutate({ mutation: updatePostMutation, variables })
           expect(error).toHaveProperty(
             'message',
             'You cannot save a post without at least one category or more than three',
@@ -375,7 +375,7 @@ describe('UpdatePost', () => {
           const {
             errors: [error],
           } = await mutate({
-            mutation: createPostMutation,
+            mutation: updatePostMutation,
             variables: {
               ...variables,
               categoryIds: null,
@@ -391,7 +391,7 @@ describe('UpdatePost', () => {
           const {
             errors: [error],
           } = await mutate({
-            mutation: createPostMutation,
+            mutation: updatePostMutation,
             variables: {
               ...variables,
               categoryIds: [],

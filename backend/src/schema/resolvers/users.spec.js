@@ -57,12 +57,11 @@ describe('User', () => {
 
     describe('as admin', () => {
       beforeEach(async () => {
-        const userParams = {
+        const admin = await factory.create('User', {
           role: 'admin',
           email: 'admin@example.org',
           password: '1234',
-        }
-        const admin = await factory.create('User', userParams)
+        })
         authenticatedUser = await admin.toJson()
       })
 
@@ -203,7 +202,7 @@ describe('DeleteUser', () => {
     await factory.create('User', {
       email: 'friends-account@example.org',
       password: '1234',
-      id: 'u565',
+      id: 'not-my-account',
     })
   })
 
@@ -221,7 +220,7 @@ describe('DeleteUser', () => {
 
     describe("attempting to delete another user's account", () => {
       beforeEach(() => {
-        variables = { ...variables, id: 'u565' }
+        variables = { ...variables, id: 'not-my-account' }
       })
 
       it('throws an authorization error', async () => {
