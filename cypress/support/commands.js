@@ -14,7 +14,7 @@
 
 /* globals Cypress cy */
 import "cypress-file-upload";
-import { getLangByName } from "./helpers";
+import helpers from "./helpers";
 import users from "../fixtures/users.json";
 
 const switchLang = name => {
@@ -22,8 +22,9 @@ const switchLang = name => {
   cy.contains(".locale-menu-popover a", name).click();
 };
 
+
 Cypress.Commands.add("switchLanguage", (name, force) => {
-  const code = getLangByName(name).code;
+  const { code } = helpers.getLangByName(name);
   if (force) {
     switchLang(name);
   } else {

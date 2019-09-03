@@ -28,6 +28,17 @@ To start the services that are required for cypress testing, run this:
 $ yarn cypress:setup
 ```
 
+## Install cypress
+
+Even if the required services for testing run via docker, depending on your
+setup, the cypress tests themselves run on your host machine. So with our
+without docker, you would have to install cypress and its dependencies first:
+
+```
+# in the root folder /
+yarn install
+```
+
 ## Run cypress
 
 After verifying that there are no errors with the servers starting, open another tab in your terminal and run the following command:

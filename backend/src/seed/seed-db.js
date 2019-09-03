@@ -270,7 +270,7 @@ import Factory from './factories'
     const hashtag1 =
       'See <a class="hashtag" href="/search/hashtag/NaturphilosophieYoga">#NaturphilosophieYoga</a> can really help you!'
     const hashtagAndMention1 =
-      'The new physics of <a class="hashtag" href="/search/hashtag/QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" href="/search/hashtag/QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u3" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
+      'The new physics of <a class="hashtag" href="/search/hashtag/QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" href="/search/hashtag/QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
 
     await Promise.all([
       asAdmin.create('Post', {

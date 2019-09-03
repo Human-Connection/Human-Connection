@@ -1,5 +1,5 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
-import { getLangByName } from "../../support/helpers";
+import helpers from "../../support/helpers";
 import slugify from "slug";
 // import { VERSION } from '../../../webapp/pages/terms-and-conditions.vue';
 
@@ -140,14 +140,17 @@ Then("I am still logged in", () => {
 When("I select {string} in the language menu", name => {
   cy.switchLanguage(name, true);
 });
+
 Given("I previously switched the language to {string}", name => {
   cy.switchLanguage(name, true);
 });
+
 Then("the whole user interface appears in {string}", name => {
-  const lang = getLangByName(name);
-  cy.get(`html[lang=${lang.code}]`);
-  cy.getCookie("locale").should("have.property", "value", lang.code);
+  const { code } = helpers.getLangByName(name);
+  cy.get(`html[lang=${code}]`);
+  cy.getCookie("locale").should("have.property", "value", code);
 });
+
 Then("I see a button with the label {string}", label => {
   cy.contains("button", label);
 });
@@ -175,13 +178,13 @@ Given("we have the following posts in our database:", table => {
     };
     postAttributes.deleted = Boolean(postAttributes.deleted);
     const disabled = Boolean(postAttributes.disabled);
-    postAttributes.categoryIds = [`cat${i}`];
+    postAttributes.categoryIds = [`cat${i}${new Date()}`];
     postAttributes;
     cy.factory()
       .create("User", userAttributes)
       .authenticateAs(userAttributes)
       .create("Category", {
-        id: `cat${i}`,
+        id: `cat${i}${new Date()}`,
         name: "Just For Fun",
         slug: `just-for-fun-${i}`,
         icon: "smile"
@@ -364,7 +367,7 @@ When("mention {string} in the text", mention => {
 });
 
 Then("the notification gets marked as read", () => {
-  cy.get(".post.createdAt")
+  cy.get(".notifications-menu-popover .notification")
     .first()
     .should("have.class", "read");
 });

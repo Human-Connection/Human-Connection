@@ -203,12 +203,14 @@ export default {
     filterSuggestionList(items, query) {
       query = this.sanitizeQuery(query)
       if (!query) {
-        return items
+        return items.slice(0, 15)
       }
-      return items.filter(item => {
+
+      const filteredList = items.filter(item => {
         const itemString = item.slug || item.id
         return itemString.toLowerCase().includes(query.toLowerCase())
       })
+      return filteredList.slice(0, 15)
     },
     sanitizeQuery(query) {
       if (this.suggestionType === HASHTAG) {

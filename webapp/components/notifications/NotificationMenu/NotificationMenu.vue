@@ -18,7 +18,7 @@
 
 <script>
 import Dropdown from '~/components/Dropdown'
-import { currentUserNotificationsQuery, updateNotificationMutation } from '~/graphql/User'
+import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import NotificationList from '../NotificationList/NotificationList'
 
 export default {
@@ -27,36 +27,41 @@ export default {
     NotificationList,
     Dropdown,
   },
+  data() {
+    return {
+      notifications: [],
+    }
+  },
   props: {
     placement: { type: String },
   },
-  computed: {
-    totalNotifications() {
-      return (this.notifications || []).length
-    },
-  },
   methods: {
-    async markAsRead(notificationId) {
-      const variables = { id: notificationId, read: true }
+    async markAsRead(notificationSourceId) {
+      const variables = { id: notificationSourceId }
       try {
-        await this.$apollo.mutate({
-          mutation: updateNotificationMutation(),
+        const {
+          data: { markAsRead },
+        } = await this.$apollo.mutate({
+          mutation: markAsReadMutation(),
           variables,
+        })
+        if (!(markAsRead && markAsRead.read === true)) return
+        this.notifications = this.notifications.map(n => {
+          return n.from.id === markAsRead.from.id ? markAsRead : n
         })
       } catch (err) {
         throw new Error(err)
       }
     },
   },
+  computed: {
+    totalNotifications() {
+      return this.notifications.length
+    },
+  },
   apollo: {
     notifications: {
-      query: currentUserNotificationsQuery(),
-      update: data => {
-        const {
-          currentUser: { notifications },
-        } = data
-        return notifications
-      },
+      query: notificationQuery(),
     },
   },
 }
