@@ -12,6 +12,7 @@ describe('report', () => {
   let returnedObject
   let variables
   let createPostVariables
+  let user
   const categoryIds = ['cat9']
 
   beforeEach(async () => {
@@ -20,10 +21,10 @@ describe('report', () => {
       id: 'whatever',
     }
     headers = {}
-    await factory.create('User', {
-      id: 'u1',
+    user = await factory.create('User', {
       email: 'test@example.org',
       password: '1234',
+      id: 'u1',
     })
     await factory.create('User', {
       id: 'u2',
@@ -127,11 +128,8 @@ describe('report', () => {
 
         describe('reported resource is a post', () => {
           beforeEach(async () => {
-            await factory.authenticateAs({
-              email: 'test@example.org',
-              password: '1234',
-            })
             await factory.create('Post', {
+              author: user,
               id: 'p23',
               title: 'Matt and Robert having a pair-programming',
               categoryIds,
@@ -182,12 +180,9 @@ describe('report', () => {
               content: 'please comment on me',
               categoryIds,
             }
-            const asAuthenticatedUser = await factory.authenticateAs({
-              email: 'test@example.org',
-              password: '1234',
-            })
-            await asAuthenticatedUser.create('Post', createPostVariables)
-            await asAuthenticatedUser.create('Comment', {
+            await factory.create('Post', { ...createPostVariables, author: user })
+            await factory.create('Comment', {
+              author: user,
               postId: 'p1',
               id: 'c34',
               content: 'Robert getting tired.',

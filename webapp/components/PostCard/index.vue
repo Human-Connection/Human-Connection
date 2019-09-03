@@ -51,9 +51,9 @@
           </span>
           &nbsp;
           <!-- Comments Count -->
-          <span :style="{ opacity: post.commentedCount ? 1 : 0.5 }">
+          <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
             <ds-icon name="comments" />
-            <small>{{ post.commentedCount }}</small>
+            <small>{{ post.commentsCount }}</small>
           </span>
           <!-- Menu -->
           <content-menu
@@ -118,9 +118,11 @@ export default {
   methods: {
     async deletePostCallback() {
       try {
-        await this.$apollo.mutate(deletePostMutation(this.post.id))
+        const {
+          data: { DeletePost },
+        } = await this.$apollo.mutate(deletePostMutation(this.post.id))
         this.$toast.success(this.$t('delete.contribution.success'))
-        this.$emit('removePostFromList')
+        this.$emit('removePostFromList', DeletePost)
       } catch (err) {
         this.$toast.error(err.message)
       }
