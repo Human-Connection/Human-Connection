@@ -217,6 +217,8 @@ export default {
         disabledBy: '<-[:DISABLED]-(related:User)',
       },
       count: {
+        commentsCount:
+          '<-[:COMMENTS]-(related:Comment) WHERE NOT related.deleted = true AND NOT related.disabled = true',
         shoutedCount:
           '<-[:SHOUTED]-(related:User) WHERE NOT related.deleted = true AND NOT related.disabled = true',
         emotionsCount: '<-[related:EMOTED]-(:User)',

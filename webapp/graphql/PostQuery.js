@@ -1,41 +1,62 @@
 import gql from 'graphql-tag'
 
+const fragments = lang => gql`
+fragment user on User {
+  id
+  slug
+  name
+  avatar
+  disabled
+  deleted
+  shoutedCount
+  contributionsCount
+  commentedCount
+  followedByCount
+  followedByCurrentUser
+  location {
+    name: name${lang}
+  }
+  badges {
+    id
+    icon
+  }
+}
+
+fragment post on Post {
+  id
+  title
+  content
+  contentExcerpt
+  createdAt
+  disabled
+  deleted
+  slug
+  image
+  commentsCount
+  shoutedCount
+  shoutedByCurrentUser
+  emotionsCount
+  author {
+    ...user
+  }
+  tags {
+    id
+  }
+  categories {
+    id
+    name
+    icon
+  }
+}
+`
+
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
+    ${fragments(lang)}
     query Post($id: ID!) {
       Post(id: $id) {
-        id
-        title
-        content
-        createdAt
-        disabled
-        deleted
-        slug
-        image
-        author {
-          id
-          slug
-          name
-          avatar
-          disabled
-          deleted
-          shoutedCount
-          contributionsCount
-          commentedCount
-          followedByCount
-          followedByCurrentUser
-          location {
-            name: name${lang}
-          }
-          badges {
-            id
-            icon
-          }
-        }
-        tags {
-          id
-        }
+        ...post
         comments(orderBy: createdAt_asc) {
           id
           contentExcerpt
@@ -44,34 +65,9 @@ export default i18n => {
           disabled
           deleted
           author {
-            id
-            slug
-            name
-            avatar
-            disabled
-            deleted
-            shoutedCount
-            contributionsCount
-            commentedCount
-            followedByCount
-            followedByCurrentUser
-            location {
-              name: name${lang}
-            }
-            badges {
-              id
-              icon
-            }
+            ...user
           }
         }
-        categories {
-          id
-          name
-          icon
-        }
-        shoutedCount
-        shoutedByCurrentUser
-        emotionsCount
       }
     }
   `
@@ -80,45 +76,13 @@ export default i18n => {
 export const filterPosts = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
-  query Post($filter: _PostFilter, $first: Int, $offset: Int, $orderBy: [_PostOrdering]) {
-    Post(filter: $filter, first: $first, offset: $offset, orderBy: $orderBy) {
-      id
-      title
-      contentExcerpt
-      createdAt
-      disabled
-      deleted
-      slug
-      image
-      author {
-        id
-        avatar
-        slug
-        name
-        disabled
-        deleted
-        contributionsCount
-        shoutedCount
-        commentedCount
-        followedByCount
-        followedByCurrentUser
-        location {
-          name: name${lang}
-        }
-        badges {
-          id
-          icon
-        }
+    ${fragments(lang)}
+    query Post($filter: _PostFilter, $first: Int, $offset: Int, $orderBy: [_PostOrdering]) {
+      Post(filter: $filter, first: $first, offset: $offset, orderBy: $orderBy) {
+        ...post
       }
-      categories {
-        id
-        name
-        icon
-      }
-      shoutedCount
     }
-  }
-`
+  `
 }
 
 export const PostsEmotionsByCurrentUser = () => {
@@ -131,48 +95,15 @@ export const PostsEmotionsByCurrentUser = () => {
 
 export const relatedContributions = i18n => {
   const lang = i18n.locale().toUpperCase()
-  return gql`query Post($slug: String!) {
-    Post(slug: $slug) {
-      id
-      title
-      tags {
-        id
-      }
-      categories {
-        id
-        name
-        icon
-      }
-      relatedContributions(first: 2) {
-        id
-        title
-        slug
-        contentExcerpt
-        shoutedCount
-        categories {
-          id
-          name
-          icon
-        }
-        author {
-          id
-          name
-          slug
-          avatar
-          contributionsCount
-          followedByCount
-          followedByCurrentUser
-          commentedCount
-          location {
-            name: name${lang}
-          }
-          badges {
-            id
-            icon
-          }
+  return gql`
+    ${fragments(lang)}
+    query Post($slug: String!) {
+      Post(slug: $slug) {
+        ...post
+        relatedContributions(first: 2) {
+          ...post
         }
       }
-      shoutedCount
     }
-  }`
+  `
 }

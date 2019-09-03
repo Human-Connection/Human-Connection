@@ -51,9 +51,9 @@
           </span>
           &nbsp;
           <!-- Comments Count -->
-          <span :style="{ opacity: post.commentedCount ? 1 : 0.5 }">
+          <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
             <ds-icon name="comments" />
-            <small>{{ post.commentedCount }}</small>
+            <small>{{ post.commentsCount }}</small>
           </span>
           <!-- Menu -->
           <content-menu

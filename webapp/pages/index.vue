@@ -115,7 +115,7 @@ export default {
           label: this.$t('sorting.commented'),
           value: 'Commented',
           icons: 'comment',
-          order: 'commentedCount_desc',
+          order: 'commentsCount_desc',
         },
       ],
     }
