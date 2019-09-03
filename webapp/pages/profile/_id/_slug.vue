@@ -273,6 +273,7 @@ import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { filterPosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
+import isCacheUpdate from '~/components/utils/isCacheUpdate'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -396,15 +397,15 @@ export default {
           orderBy: 'createdAt_desc',
         }
       },
-      fetchPolicy: 'cache-and-network',
       update({ Post }) {
         this.hasMore = Post && Post.length >= this.pageSize
-        if (!Post) return
-        // TODO: find out why `update` gets called twice initially.
-        // We have to filter for uniq posts only because we get the same
-        // result set twice.
-        this.posts = this.uniq([...this.posts, ...Post])
+        if(isCacheUpdate(this.posts, Post)) {
+          this.posts = Post
+        } else {
+          this.posts = [ ...this.posts, ...Post]
+        }
       },
+      fetchPolicy: 'cache-and-network',
     },
     User: {
       query() {

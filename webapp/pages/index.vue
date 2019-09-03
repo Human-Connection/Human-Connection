@@ -61,7 +61,6 @@
 
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
-import uniqBy from 'lodash/uniqBy'
 import HcEmpty from '~/components/Empty'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
@@ -69,6 +68,7 @@ import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
+import isCacheUpdate from '~/components/utils/isCacheUpdate'
 
 export default {
   components: {
@@ -186,9 +186,11 @@ export default {
       },
       update({ Post }) {
         this.hasMore = Post && Post.length >= this.pageSize
-        if (!Post) return
-        const posts = uniqBy([...this.posts, ...Post], 'id')
-        this.posts = posts
+        if(isCacheUpdate(this.posts, Post)) {
+          this.posts = Post
+        } else {
+          this.posts = [ ...this.posts, ...Post]
+        }
       },
       fetchPolicy: 'cache-and-network',
     },

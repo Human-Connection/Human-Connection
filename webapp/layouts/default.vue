@@ -6,9 +6,9 @@
           <ds-flex class="main-navigation-flex" centered>
             <ds-flex-item :width="{ lg: '3.5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
-              <a @click="redirectToRoot">
+              <nuxt-link :to="{name: 'index'}">
                 <ds-logo />
-              </a>
+              </nuxt-link>
             </ds-flex-item>
             <ds-flex-item
               :width="{ base: '20%', sm: '20%', md: '20%', lg: '0%' }"
@@ -183,8 +183,6 @@ export default {
       isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
-      usersFollowedFilter: 'posts/usersFollowedFilter',
-      categoriesFilter: 'posts/categoriesFilter',
     }),
     userName() {
       const { name } = this.user || {}
@@ -236,10 +234,6 @@ export default {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
-      fetchPosts: 'posts/fetchPosts',
-    }),
-    ...mapMutations({
-      setFilteredByFollowers: 'posts/SET_FILTERED_BY_FOLLOWERS',
     }),
     goToPost(item) {
       this.$nextTick(() => {
@@ -258,17 +252,6 @@ export default {
     },
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
-    },
-    redirectToRoot() {
-      this.$router.replace('/')
-      this.fetchPosts({
-        i18n: this.$i18n,
-        filter: {
-          ...this.usersFollowedFilter,
-          ...this.categoriesFilter,
-          ...this.filter,
-        },
-      })
     },
   },
   apollo: {
