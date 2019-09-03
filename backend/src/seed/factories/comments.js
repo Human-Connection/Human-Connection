@@ -17,7 +17,7 @@ export default function create() {
       let { post, postId } = args
       delete args.post
       delete args.postId
-      if (post && post) throw new Error('You provided both post and postId')
+      if (post && postId) throw new Error('You provided both post and postId')
       if (postId) post = await neodeInstance.find('Post', postId)
       post = post || (await factoryInstance.create('Post'))
 

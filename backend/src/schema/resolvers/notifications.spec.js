@@ -219,7 +219,7 @@ describe('given some notifications', () => {
         })
 
         describe('if a resource gets deleted', () => {
-          beforeEach(async () => {
+          const deletePostAction = async () => {
             authenticatedUser = await author.toJson()
             const deletePostMutation = gql`
               mutation($id: ID!) {
@@ -233,13 +233,18 @@ describe('given some notifications', () => {
               mutate({ mutation: deletePostMutation, variables: { id: 'p3' } }),
             ).resolves.toMatchObject({ data: { DeletePost: { id: 'p3', deleted: true } } })
             authenticatedUser = await user.toJson()
-          })
+          }
 
           it('reduces notifications list', async () => {
-            const expected = expect.objectContaining({ data: { notifications: [] } })
             await expect(
               query({ query: notificationQuery, variables: { ...variables, read: false } }),
-            ).resolves.toEqual(expected)
+            ).resolves.toMatchObject({
+              data: { notifications: [expect.any(Object), expect.any(Object)] },
+            })
+            await deletePostAction()
+            await expect(
+              query({ query: notificationQuery, variables: { ...variables, read: false } }),
+            ).resolves.toMatchObject({ data: { notifications: [] } })
           })
         })
       })
