@@ -18,9 +18,9 @@
         />
       </client-only>
       <ds-space margin-bottom="small" />
-      <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
+      <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
-      <content-viewer class="content" :content="post.content" />
+      <content-viewer class="content hyphenate-text" :content="post.content" />
       <!-- eslint-enable vue/no-v-html -->
       <ds-space margin="xx-large" />
       <!-- Categories -->
