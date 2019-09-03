@@ -108,7 +108,7 @@ export default {
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
 
-      let updatePostCypher = `MATCH (post:Post {id: $params.id}) 
+      let updatePostCypher = `MATCH (post:Post {id: $params.id})
       SET post = $params
       `
 

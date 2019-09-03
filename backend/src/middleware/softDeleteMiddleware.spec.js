@@ -17,7 +17,7 @@ let user
 let moderator
 let troll
 
-let action = () => {
+const action = () => {
   return query({ query: graphqlQuery })
 }
 
