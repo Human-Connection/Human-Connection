@@ -24,11 +24,11 @@ export default {
       // }
       const session = driver.session()
       const result = await session.run(
-        'MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})' +
-          'RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1',
-        {
-          userEmail: email,
-        },
+        `
+        MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
+        RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
+      `,
+        { userEmail: email },
       )
       session.close()
       const [currentUser] = await result.records.map(record => {
