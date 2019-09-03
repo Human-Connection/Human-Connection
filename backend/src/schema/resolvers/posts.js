@@ -233,6 +233,7 @@ export default {
       const { id } = parent
       const statement = `
       MATCH (p:Post {id: $id})-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
+      WHERE NOT post.deleted AND NOT post.disabled
       RETURN DISTINCT post
       LIMIT 10
       `

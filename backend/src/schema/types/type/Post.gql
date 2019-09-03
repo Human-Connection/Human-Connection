@@ -20,6 +20,7 @@ type Post {
     @cypher(
       statement: """
       MATCH (this)-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
+      WHERE NOT post.deleted AND NOT post.disabled
       RETURN DISTINCT post
       LIMIT 10
       """
