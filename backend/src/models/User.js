@@ -89,4 +89,10 @@ module.exports = {
     target: 'Post',
     direction: 'out',
   },
+  isIn: {
+    type: 'relationship',
+    relationship: 'IS_IN',
+    target: 'Location',
+    direction: 'out',
+  },
 }

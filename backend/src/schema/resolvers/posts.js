@@ -225,7 +225,7 @@ export default {
       },
       boolean: {
         shoutedByCurrentUser:
-          '<-[:SHOUTED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+          'MATCH(this)<-[:SHOUTED]-(related:User {id: $cypherParams.currentUserId}) RETURN COUNT(related) >= 1',
       },
     }),
     relatedContributions: async (parent, params, context, resolveInfo) => {

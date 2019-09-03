@@ -25,6 +25,86 @@ import { gql } from '../jest/helpers'
     const { mutate } = createTestClient(server)
 
     const f = Factory()
+
+    const [Hamburg, Berlin, Germany, Paris, France] = await Promise.all([
+      f.create('Location', {
+        id: 'region.5127278006398860',
+        name: 'Hamburg',
+        type: 'region',
+        lat: 10.0,
+        lng: 53.55,
+        nameES: 'Hamburgo',
+        nameFR: 'Hambourg',
+        nameIT: 'Amburgo',
+        nameEN: 'Hamburg',
+        namePT: 'Hamburgo',
+        nameDE: 'Hamburg',
+        nameNL: 'Hamburg',
+        namePL: 'Hamburg',
+      }),
+      f.create('Location', {
+        id: 'region.14880313158564380',
+        type: 'region',
+        name: 'Berlin',
+        lat: 13.38333,
+        lng: 52.51667,
+        nameES: 'Berlín',
+        nameFR: 'Berlin',
+        nameIT: 'Berlino',
+        nameEN: 'Berlin',
+        namePT: 'Berlim',
+        nameDE: 'Berlin',
+        nameNL: 'Berlijn',
+        namePL: 'Berlin',
+      }),
+      f.create('Location', {
+        id: 'country.10743216036480410',
+        name: 'Germany',
+        type: 'country',
+        namePT: 'Alemanha',
+        nameDE: 'Deutschland',
+        nameES: 'Alemania',
+        nameNL: 'Duitsland',
+        namePL: 'Niemcy',
+        nameFR: 'Allemagne',
+        nameIT: 'Germania',
+        nameEN: 'Germany',
+      }),
+      f.create('Location', {
+        id: 'region.9397217726497330',
+        name: 'Paris',
+        type: 'region',
+        lat: 2.35183,
+        lng: 48.85658,
+        nameES: 'París',
+        nameFR: 'Paris',
+        nameIT: 'Parigi',
+        nameEN: 'Paris',
+        namePT: 'Paris',
+        nameDE: 'Paris',
+        nameNL: 'Parijs',
+        namePL: 'Paryż',
+      }),
+      f.create('Location', {
+        id: 'country.9759535382641660',
+        name: 'France',
+        type: 'country',
+        namePT: 'França',
+        nameDE: 'Frankreich',
+        nameES: 'Francia',
+        nameNL: 'Frankrijk',
+        namePL: 'Francja',
+        nameFR: 'France',
+        nameIT: 'Francia',
+        nameEN: 'France',
+      }),
+    ])
+    await Promise.all([
+      Berlin.relateTo(Germany, 'isIn'),
+      Hamburg.relateTo(Germany, 'isIn'),
+      Paris.relateTo(France, 'isIn'),
+    ])
+
     const [racoon, rabbit, wolf, bear, turtle, rhino] = await Promise.all([
       f.create('Badge', {
         id: 'indiegogo_en_racoon',
@@ -110,6 +190,13 @@ import { gql } from '../jest/helpers'
         role: 'user',
         email: 'dagobert@example.org',
       }),
+    ])
+
+    await Promise.all([
+      peterLustig.relateTo(Berlin, 'isIn'),
+      bobDerBaumeister.relateTo(Hamburg, 'isIn'),
+      jennyRostock.relateTo(Paris, 'isIn'),
+      huey.relateTo(Paris, 'isIn'),
     ])
 
     await Promise.all([

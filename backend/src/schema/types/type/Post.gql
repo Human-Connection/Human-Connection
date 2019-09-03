@@ -43,10 +43,7 @@ type Post {
   # Has the currently logged in user shouted that post?
   shoutedByCurrentUser: Boolean!
     @cypher(
-      statement: """
-      MATCH (this)<-[:SHOUTED]-(u:User {id: $cypherParams.currentUserId})
-      RETURN COUNT(u) >= 1
-      """
+      statement: "MATCH (this)<-[:SHOUTED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1"
     )
 
   emotions: [EMOTED]
