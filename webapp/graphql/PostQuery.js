@@ -1,72 +1,19 @@
 import gql from 'graphql-tag'
-
-const fragments = lang => gql`
-fragment user on User {
-  id
-  slug
-  name
-  avatar
-  disabled
-  deleted
-  shoutedCount
-  contributionsCount
-  commentedCount
-  followedByCount
-  followedByCurrentUser
-  location {
-    name: name${lang}
-  }
-  badges {
-    id
-    icon
-  }
-}
-
-fragment post on Post {
-  id
-  title
-  content
-  contentExcerpt
-  createdAt
-  disabled
-  deleted
-  slug
-  image
-  commentsCount
-  shoutedCount
-  shoutedByCurrentUser
-  emotionsCount
-  author {
-    ...user
-  }
-  tags {
-    id
-  }
-  categories {
-    id
-    name
-    icon
-  }
-}
-`
+import { postFragment, commentFragment, postCountsFragment, userFragment } from './Fragments'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
-    ${fragments(lang)}
+    ${postFragment(lang)}
+    ${postCountsFragment}
+    ${commentFragment(lang)}
+
     query Post($id: ID!) {
       Post(id: $id) {
         ...post
+        ...postCounts
         comments(orderBy: createdAt_asc) {
-          id
-          contentExcerpt
-          content
-          createdAt
-          disabled
-          deleted
-          author {
-            ...user
-          }
+          ...comment
         }
       }
     }
@@ -76,10 +23,13 @@ export default i18n => {
 export const filterPosts = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
-    ${fragments(lang)}
+    ${postFragment(lang)}
+    ${postCountsFragment}
+
     query Post($filter: _PostFilter, $first: Int, $offset: Int, $orderBy: [_PostOrdering]) {
       Post(filter: $filter, first: $first, offset: $offset, orderBy: $orderBy) {
         ...post
+        ...postCounts
       }
     }
   `
@@ -96,12 +46,16 @@ export const PostsEmotionsByCurrentUser = () => {
 export const relatedContributions = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
-    ${fragments(lang)}
+    ${postFragment(lang)}
+    ${postCountsFragment}
+
     query Post($slug: String!) {
       Post(slug: $slug) {
         ...post
+        ...postCounts
         relatedContributions(first: 2) {
           ...post
+          ...postCounts
         }
       }
     }

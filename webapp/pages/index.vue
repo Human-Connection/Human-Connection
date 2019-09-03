@@ -185,7 +185,8 @@ export default {
         return result
       },
       update({ Post }) {
-        this.hasMore = Post.length >= this.pageSize
+        this.hasMore = Post && Post.length >= this.pageSize
+        if(!Post) return
         const posts = uniqBy([...this.posts, ...Post], 'id')
         this.posts = posts
       },
