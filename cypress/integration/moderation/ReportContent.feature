@@ -15,7 +15,6 @@ Feature: Report and Moderate
       | authorId  | id | title                         | content           |
       | u67       | p1 | The Truth about the Holocaust | It never existed! |
 
-
   Scenario Outline: Report a post from various pages
     Given I am logged in with a "user" role
     When I see David Irving's post on the <Page>
