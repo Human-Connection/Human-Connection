@@ -1,384 +1,406 @@
-import { GraphQLClient } from 'graphql-request'
 import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
-import { host, login, gql } from '../../jest/helpers'
-import { neode, getDriver } from '../../bootstrap/neo4j'
+import { gql } from '../../jest/helpers'
+import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
 const driver = getDriver()
 const factory = Factory()
-const instance = neode()
+const neode = getNeode()
 
-let client
-let userParams
-let authorParams
+let query
+let mutate
+let authenticatedUser
+let user
 
-const postId = 'p3589'
-const postTitle = 'I am a title'
-const postContent = 'Some content'
-const oldTitle = 'Old title'
-const oldContent = 'Old content'
-const newTitle = 'New title'
-const newContent = 'New content'
-const postSaveError = 'You cannot save a post without at least one category or more than three'
 const categoryIds = ['cat9', 'cat4', 'cat15']
-let createPostVariables
-
-const postQueryWithCategories = gql`
-  query($id: ID) {
-    Post(id: $id) {
-      categories {
-        id
-      }
-    }
-  }
-`
-const postQueryFilteredByCategory = gql`
-  query Post($filter: _PostFilter) {
-    Post(filter: $filter) {
-      title
-      id
-      categories {
-        id
-      }
-    }
-  }
-`
-const postCategoriesFilterParam = { categories_some: { id_in: categoryIds } }
-const postQueryFilteredByCategoryVariables = {
-  filter: postCategoriesFilterParam,
-}
+let variables
 
 const createPostMutation = gql`
-  mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]) {
-    CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+  mutation($id: ID, $title: String!, $content: String!, $language: String, $categoryIds: [ID]) {
+    CreatePost(
+      id: $id
+      title: $title
+      content: $content
+      language: $language
+      categoryIds: $categoryIds
+    ) {
       id
       title
       content
       slug
       disabled
       deleted
+      language
+      author {
+        name
+      }
     }
   }
 `
+
+beforeAll(() => {
+  const { server } = createServer({
+    context: () => {
+      return {
+        driver,
+        neode,
+        user: authenticatedUser,
+      }
+    },
+  })
+  query = createTestClient(server).query
+  mutate = createTestClient(server).mutate
+})
+
 beforeEach(async () => {
-  userParams = {
+  variables = {}
+  user = await factory.create('User', {
     id: 'u198',
     name: 'TestUser',
     email: 'test@example.org',
     password: '1234',
-  }
-  authorParams = {
-    id: 'u25',
-    email: 'author@example.org',
-    password: '1234',
-  }
-  await factory.create('User', userParams)
+  })
   await Promise.all([
-    instance.create('Category', {
+    neode.create('Category', {
       id: 'cat9',
       name: 'Democracy & Politics',
       icon: 'university',
     }),
-    instance.create('Category', {
+    neode.create('Category', {
       id: 'cat4',
       name: 'Environment & Nature',
       icon: 'tree',
     }),
-    instance.create('Category', {
+    neode.create('Category', {
       id: 'cat15',
       name: 'Consumption & Sustainability',
       icon: 'shopping-cart',
     }),
-    instance.create('Category', {
+    neode.create('Category', {
       id: 'cat27',
       name: 'Animal Protection',
       icon: 'paw',
     }),
   ])
-  createPostVariables = {
-    id: postId,
-    title: postTitle,
-    content: postContent,
-    categoryIds,
-  }
+  authenticatedUser = null
 })
 
 afterEach(async () => {
   await factory.cleanDatabase()
 })
 
+describe('Post', () => {
+  const postQuery = gql`
+    query Post($filter: _PostFilter) {
+      Post(filter: $filter) {
+        id
+        categories {
+          id
+        }
+      }
+    }
+  `
+
+  describe('can be filtered', () => {
+    it('by categories', async () => {
+      await Promise.all([
+        factory.create('Post', { id: 'p31', categoryIds: ['cat4'] }),
+        factory.create('Post', { id: 'p32', categoryIds: ['cat15'] }),
+        factory.create('Post', { id: 'p33', categoryIds: ['cat9'] }),
+      ])
+      const expected = {
+        data: {
+          Post: [
+            {
+              id: 'p33',
+              categories: [{ id: 'cat9' }],
+            },
+          ],
+        },
+      }
+      variables = { ...variables, filter: { categories_some: { id_in: ['cat9'] } } }
+      await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
+    })
+  })
+})
+
 describe('CreatePost', () => {
+  beforeEach(() => {
+    variables = {
+      ...variables,
+      id: 'p3589',
+      title: 'I am a title',
+      content: 'Some content',
+      categoryIds,
+    }
+  })
+
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
-      client = new GraphQLClient(host)
-      await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
-        'Not Authorised',
-      )
+      const { errors } = await mutate({ mutation: createPostMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
   })
 
   describe('authenticated', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login(userParams)
-      client = new GraphQLClient(host, { headers })
+      authenticatedUser = await user.toJson()
     })
 
     it('creates a post', async () => {
-      const expected = {
-        CreatePost: {
-          title: postTitle,
-          content: postContent,
-        },
-      }
-      await expect(client.request(createPostMutation, createPostVariables)).resolves.toMatchObject(
+      const expected = { data: { CreatePost: { title: 'I am a title', content: 'Some content' } } }
+      await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
         expected,
       )
     })
 
     it('assigns the authenticated user as author', async () => {
-      await client.request(createPostMutation, createPostVariables)
-      const { User } = await client.request(
-        gql`
-          {
-            User(name: "TestUser") {
-              contributions {
-                title
-              }
-            }
-          }
-        `,
-        { headers },
+      const expected = {
+        data: {
+          CreatePost: {
+            title: 'I am a title',
+            author: {
+              name: 'TestUser',
+            },
+          },
+        },
+      }
+      await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
+        expected,
       )
-      expect(User).toEqual([{ contributions: [{ title: postTitle }] }])
     })
 
-    describe('disabled and deleted', () => {
-      it('initially false', async () => {
-        const expected = { CreatePost: { disabled: false, deleted: false } }
-        await expect(
-          client.request(createPostMutation, createPostVariables),
-        ).resolves.toMatchObject(expected)
-      })
+    it('`disabled` and `deleted` default to `false`', async () => {
+      const expected = { data: { CreatePost: { disabled: false, deleted: false } } }
+      await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
+        expected,
+      )
     })
 
     describe('language', () => {
+      beforeEach(() => {
+        variables = { ...variables, language: 'es' }
+      })
+
       it('allows a user to set the language of the post', async () => {
-        const createPostWithLanguageMutation = gql`
-          mutation($title: String!, $content: String!, $language: String, $categoryIds: [ID]) {
-            CreatePost(
-              title: $title
-              content: $content
-              language: $language
-              categoryIds: $categoryIds
-            ) {
-              language
-            }
-          }
-        `
-        const createPostWithLanguageVariables = {
-          title: postTitle,
-          content: postContent,
-          language: 'en',
-          categoryIds,
-        }
-        const expected = { CreatePost: { language: 'en' } }
-        await expect(
-          client.request(createPostWithLanguageMutation, createPostWithLanguageVariables),
-        ).resolves.toEqual(expect.objectContaining(expected))
+        const expected = { data: { CreatePost: { language: 'es' } } }
+        await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
       })
     })
 
     describe('categories', () => {
-      it('throws an error if categoryIds is not an array', async () => {
-        createPostVariables.categoryIds = null
-        await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
-          postSaveError,
-        )
+      describe('null', () => {
+        beforeEach(() => {
+          variables = { ...variables, categoryIds: null }
+        })
+        it('throws UserInputError', async () => {
+          const {
+            errors: [error],
+          } = await mutate({ mutation: createPostMutation, variables })
+          expect(error).toHaveProperty(
+            'message',
+            'You cannot save a post without at least one category or more than three',
+          )
+        })
       })
 
-      it('requires at least one category for successful creation', async () => {
-        createPostVariables.categoryIds = []
-        await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
-          postSaveError,
-        )
+      describe('empty', () => {
+        beforeEach(() => {
+          variables = { ...variables, categoryIds: [] }
+        })
+        it('throws UserInputError', async () => {
+          const {
+            errors: [error],
+          } = await mutate({ mutation: createPostMutation, variables })
+          expect(error).toHaveProperty(
+            'message',
+            'You cannot save a post without at least one category or more than three',
+          )
+        })
       })
 
-      it('allows a maximum of three category for successful update', async () => {
-        createPostVariables.categoryIds = ['cat9', 'cat27', 'cat15', 'cat4']
-        await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
-          postSaveError,
-        )
-      })
-
-      it('allows a user to filter for posts by category', async () => {
-        await client.request(createPostMutation, createPostVariables)
-        const categoryIdsArray = [{ id: 'cat4' }, { id: 'cat15' }, { id: 'cat9' }]
-        const expected = {
-          Post: [
-            {
-              title: postTitle,
-              id: postId,
-              categories: expect.arrayContaining(categoryIdsArray),
-            },
-          ],
-        }
-        await expect(
-          client.request(postQueryFilteredByCategory, postQueryFilteredByCategoryVariables),
-        ).resolves.toEqual(expected)
+      describe('more than 3 items', () => {
+        beforeEach(() => {
+          variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15', 'cat4'] }
+        })
+        it('throws UserInputError', async () => {
+          const {
+            errors: [error],
+          } = await mutate({ mutation: createPostMutation, variables })
+          expect(error).toHaveProperty(
+            'message',
+            'You cannot save a post without at least one category or more than three',
+          )
+        })
       })
     })
   })
 })
 
 describe('UpdatePost', () => {
-  let updatePostVariables
+  let author
   const updatePostMutation = gql`
     mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
       UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
         id
         content
+        categories {
+          id
+        }
       }
     }
   `
   beforeEach(async () => {
-    const asAuthor = Factory()
-    await asAuthor.create('User', authorParams)
-    await asAuthor.authenticateAs(authorParams)
-    await asAuthor.create('Post', {
-      id: postId,
-      title: oldTitle,
-      content: oldContent,
+    author = await factory.create('User', { slug: 'the-author' })
+    await factory.create('Post', {
+      author,
+      id: 'p9876',
+      title: 'Old title',
+      content: 'Old content',
       categoryIds,
     })
 
-    updatePostVariables = {
-      id: postId,
-      title: newTitle,
-      content: newContent,
+    variables = {
+      ...variables,
+      id: 'p9876',
+      title: 'New title',
+      content: 'New content',
     }
   })
 
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
-      client = new GraphQLClient(host)
-      await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
-        'Not Authorised',
-      )
+      const { errors } = await mutate({ mutation: updatePostMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
   })
 
   describe('authenticated but not the author', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login(userParams)
-      client = new GraphQLClient(host, { headers })
+      authenticatedUser = await user.toJson()
     })
 
     it('throws authorization error', async () => {
-      await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
-        'Not Authorised',
-      )
+      const { errors } = await mutate({ mutation: updatePostMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
   })
 
   describe('authenticated as author', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login(authorParams)
-      client = new GraphQLClient(host, { headers })
+      authenticatedUser = await author.toJson()
     })
 
     it('updates a post', async () => {
-      updatePostVariables.categoryIds = ['cat27']
-      const expected = { UpdatePost: { id: postId, content: newContent } }
-      await expect(client.request(updatePostMutation, updatePostVariables)).resolves.toEqual(
+      const expected = { data: { UpdatePost: { id: 'p9876', content: 'New content' } } }
+      await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
         expected,
       )
     })
 
-    describe('categories', () => {
-      it('allows a user to update other attributes without passing in categoryIds explicitly', async () => {
-        const expected = { UpdatePost: { id: postId, content: newContent } }
-        await expect(client.request(updatePostMutation, updatePostVariables)).resolves.toEqual(
+    describe('no new category ids provided for update', () => {
+      it('resolves and keeps current categories', async () => {
+        const expected = {
+          data: {
+            UpdatePost: {
+              id: 'p9876',
+              categories: expect.arrayContaining([{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }]),
+            },
+          },
+        }
+        await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
+      })
+    })
+
+    describe('given category ids', () => {
+      beforeEach(() => {
+        variables = { ...variables, categoryIds: ['cat27'] }
+      })
+
+      it('updates categories of a post', async () => {
+        const expected = {
+          data: {
+            UpdatePost: {
+              id: 'p9876',
+              categories: expect.arrayContaining([{ id: 'cat27' }]),
+            },
+          },
+        }
+        await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
           expected,
         )
       })
 
-      it('allows a user to update the categories of a post', async () => {
-        updatePostVariables.categoryIds = ['cat27']
-        await client.request(updatePostMutation, updatePostVariables)
-        const expected = [{ id: 'cat27' }]
-        const postQueryWithCategoriesVariables = {
-          id: postId,
-        }
-        await expect(
-          client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
-        ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
-      })
+      describe('more than 3 categories', () => {
+        beforeEach(() => {
+          variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15', 'cat4'] }
+        })
 
-      it('allows a maximum of three category for a successful update', async () => {
-        updatePostVariables.categoryIds = ['cat9', 'cat27', 'cat15', 'cat4']
-        await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
-          postSaveError,
-        )
+        it('allows a maximum of three category for a successful update', async () => {
+          const {
+            errors: [error],
+          } = await mutate({ mutation: updatePostMutation, variables })
+          expect(error).toHaveProperty(
+            'message',
+            'You cannot save a post without at least one category or more than three',
+          )
+        })
       })
 
       describe('post created without categories somehow', () => {
-        let ownerNode, owner, postMutationAction
+        let owner
+
         beforeEach(async () => {
-          const postSomehowCreated = await instance.create('Post', {
+          const postSomehowCreated = await neode.create('Post', {
             id: 'how-was-this-created',
-            title: postTitle,
-            content: postContent,
           })
-          ownerNode = await instance.create('User', {
+          owner = await neode.create('User', {
             id: 'author-of-post-without-category',
             name: 'Hacker',
             slug: 'hacker',
             email: 'hacker@example.org',
             password: '1234',
           })
-          owner = await ownerNode.toJson()
-          await postSomehowCreated.relateTo(ownerNode, 'author')
-          postMutationAction = async (user, mutation, variables) => {
-            const { server } = createServer({
-              context: () => {
-                return {
-                  user,
-                  neode: instance,
-                  driver,
-                }
-              },
-            })
-            const { mutate } = createTestClient(server)
-
-            return mutate({
-              mutation,
-              variables,
-            })
-          }
-          updatePostVariables.id = 'how-was-this-created'
+          await postSomehowCreated.relateTo(owner, 'author')
+          authenticatedUser = await owner.toJson()
+          variables = { ...variables, id: 'how-was-this-created' }
         })
 
         it('throws an error if categoryIds is not an array', async () => {
-          const mustAddCategoryToPost = await postMutationAction(
-            owner,
-            updatePostMutation,
-            updatePostVariables,
+          const {
+            errors: [error],
+          } = await mutate({
+            mutation: updatePostMutation,
+            variables: {
+              ...variables,
+              categoryIds: null,
+            },
+          })
+          expect(error).toHaveProperty(
+            'message',
+            'You cannot save a post without at least one category or more than three',
           )
-          expect(mustAddCategoryToPost.errors[0]).toHaveProperty('message', postSaveError)
         })
 
         it('requires at least one category for successful update', async () => {
-          updatePostVariables.categoryIds = []
-          const mustAddCategoryToPost = await postMutationAction(
-            owner,
-            updatePostMutation,
-            updatePostVariables,
+          const {
+            errors: [error],
+          } = await mutate({
+            mutation: updatePostMutation,
+            variables: {
+              ...variables,
+              categoryIds: [],
+            },
+          })
+          expect(error).toHaveProperty(
+            'message',
+            'You cannot save a post without at least one category or more than three',
           )
-          expect(mustAddCategoryToPost.errors[0]).toHaveProperty('message', postSaveError)
         })
       })
     })
@@ -386,73 +408,117 @@ describe('UpdatePost', () => {
 })
 
 describe('DeletePost', () => {
-  const mutation = gql`
+  let author
+  const deletePostMutation = gql`
     mutation($id: ID!) {
       DeletePost(id: $id) {
         id
+        deleted
         content
+        contentExcerpt
+        image
+        comments {
+          deleted
+          content
+          contentExcerpt
+        }
       }
     }
   `
 
-  const variables = {
-    id: postId,
-  }
-
   beforeEach(async () => {
-    const asAuthor = Factory()
-    await asAuthor.create('User', authorParams)
-    await asAuthor.authenticateAs(authorParams)
-    await asAuthor.create('Post', {
-      id: postId,
+    author = await factory.create('User')
+    await factory.create('Post', {
+      id: 'p4711',
+      author,
+      title: 'I will be deleted',
       content: 'To be deleted',
+      image: 'path/to/some/image',
       categoryIds,
     })
+    variables = { ...variables, id: 'p4711' }
   })
 
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
-      client = new GraphQLClient(host)
-      await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      const { errors } = await mutate({ mutation: deletePostMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
   })
 
   describe('authenticated but not the author', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login(userParams)
-      client = new GraphQLClient(host, { headers })
+      authenticatedUser = await user.toJson()
     })
 
     it('throws authorization error', async () => {
-      await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      const { errors } = await mutate({ mutation: deletePostMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
   })
 
   describe('authenticated as author', () => {
-    let headers
     beforeEach(async () => {
-      headers = await login(authorParams)
-      client = new GraphQLClient(host, { headers })
+      authenticatedUser = await author.toJson()
     })
 
-    it('deletes a post', async () => {
-      const expected = { DeletePost: { id: postId, content: 'To be deleted' } }
-      await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+    it('marks the post as deleted and blacks out attributes', async () => {
+      const expected = {
+        data: {
+          DeletePost: {
+            id: 'p4711',
+            deleted: true,
+            content: 'UNAVAILABLE',
+            contentExcerpt: 'UNAVAILABLE',
+            image: null,
+            comments: [],
+          },
+        },
+      }
+      await expect(mutate({ mutation: deletePostMutation, variables })).resolves.toMatchObject(
+        expected,
+      )
+    })
+
+    describe('if there are comments on the post', () => {
+      beforeEach(async () => {
+        await factory.create('Comment', {
+          postId: 'p4711',
+          content: 'to be deleted comment content',
+          contentExcerpt: 'to be deleted comment content',
+        })
+      })
+
+      it('marks the comments as deleted', async () => {
+        const expected = {
+          data: {
+            DeletePost: {
+              id: 'p4711',
+              deleted: true,
+              content: 'UNAVAILABLE',
+              contentExcerpt: 'UNAVAILABLE',
+              image: null,
+              comments: [
+                {
+                  deleted: true,
+                  // Should we black out the comment content in the database, too?
+                  content: 'UNAVAILABLE',
+                  contentExcerpt: 'UNAVAILABLE',
+                },
+              ],
+            },
+          },
+        }
+        await expect(mutate({ mutation: deletePostMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
+      })
     })
   })
 })
 
 describe('emotions', () => {
-  let addPostEmotionsVariables,
-    someUser,
-    ownerNode,
-    owner,
-    postMutationAction,
-    user,
-    postQueryAction,
-    postToEmote,
-    postToEmoteNode
+  let author, postToEmote
   const PostsEmotionsCountQuery = gql`
     query($id: ID!) {
       Post(id: $id) {
@@ -472,104 +538,75 @@ describe('emotions', () => {
       }
     }
   `
-  const addPostEmotionsMutation = gql`
-    mutation($to: _PostInput!, $data: _EMOTEDInput!) {
-      AddPostEmotions(to: $to, data: $data) {
-        from {
-          id
-        }
-        to {
-          id
-        }
-        emotion
-      }
-    }
-  `
+
   beforeEach(async () => {
-    userParams.id = 'u1987'
-    authorParams.id = 'u257'
-    createPostVariables.id = 'p1376'
-    const someUserNode = await instance.create('User', userParams)
-    someUser = await someUserNode.toJson()
-    ownerNode = await instance.create('User', authorParams)
-    owner = await ownerNode.toJson()
-    postToEmoteNode = await instance.create('Post', createPostVariables)
-    postToEmote = await postToEmoteNode.toJson()
-    await postToEmoteNode.relateTo(ownerNode, 'author')
+    author = await neode.create('User', { id: 'u257' })
+    postToEmote = await factory.create('Post', {
+      author,
+      id: 'p1376',
+      categoryIds,
+    })
 
-    postMutationAction = async (user, mutation, variables) => {
-      const { server } = createServer({
-        context: () => {
-          return {
-            user,
-            neode: instance,
-            driver,
-          }
-        },
-      })
-      const { mutate } = createTestClient(server)
-
-      return mutate({
-        mutation,
-        variables,
-      })
-    }
-    postQueryAction = async (postQuery, variables) => {
-      const { server } = createServer({
-        context: () => {
-          return {
-            user,
-            neode: instance,
-            driver,
-          }
-        },
-      })
-      const { query } = createTestClient(server)
-      return query({ query: postQuery, variables })
-    }
-    addPostEmotionsVariables = {
-      to: { id: postToEmote.id },
+    variables = {
+      ...variables,
+      to: { id: 'p1376' },
       data: { emotion: 'happy' },
     }
   })
 
   describe('AddPostEmotions', () => {
+    const addPostEmotionsMutation = gql`
+      mutation($to: _PostInput!, $data: _EMOTEDInput!) {
+        AddPostEmotions(to: $to, data: $data) {
+          from {
+            id
+          }
+          to {
+            id
+          }
+          emotion
+        }
+      }
+    `
     let postsEmotionsQueryVariables
+
     beforeEach(async () => {
-      postsEmotionsQueryVariables = { id: postToEmote.id }
+      postsEmotionsQueryVariables = { id: 'p1376' }
     })
 
     describe('unauthenticated', () => {
+      beforeEach(() => {
+        authenticatedUser = null
+      })
+
       it('throws authorization error', async () => {
-        user = null
-        const addPostEmotions = await postMutationAction(
-          user,
-          addPostEmotionsMutation,
-          addPostEmotionsVariables,
-        )
+        const addPostEmotions = await mutate({
+          mutation: addPostEmotionsMutation,
+          variables,
+        })
 
         expect(addPostEmotions.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated and not the author', () => {
-      beforeEach(() => {
-        user = someUser
+      beforeEach(async () => {
+        authenticatedUser = await user.toJson()
       })
 
       it('adds an emotion to the post', async () => {
         const expected = {
           data: {
             AddPostEmotions: {
-              from: { id: user.id },
-              to: addPostEmotionsVariables.to,
+              from: { id: 'u198' },
+              to: { id: 'p1376' },
               emotion: 'happy',
             },
           },
         }
-        await expect(
-          postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables),
-        ).resolves.toEqual(expect.objectContaining(expected))
+        await expect(mutate({ mutation: addPostEmotionsMutation, variables })).resolves.toEqual(
+          expect.objectContaining(expected),
+        )
       })
 
       it('limits the addition of the same emotion to 1', async () => {
@@ -582,48 +619,53 @@ describe('emotions', () => {
             ],
           },
         }
-        await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
-        await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
+        await mutate({ mutation: addPostEmotionsMutation, variables })
+        await mutate({ mutation: addPostEmotionsMutation, variables })
         await expect(
-          postQueryAction(PostsEmotionsCountQuery, postsEmotionsQueryVariables),
+          query({ query: PostsEmotionsCountQuery, variables: postsEmotionsQueryVariables }),
         ).resolves.toEqual(expect.objectContaining(expected))
       })
 
       it('allows a user to add more than one emotion', async () => {
-        const expectedEmotions = [
-          { emotion: 'happy', User: { id: user.id } },
-          { emotion: 'surprised', User: { id: user.id } },
-        ]
-        const expectedResponse = {
-          data: { Post: [{ emotions: expect.arrayContaining(expectedEmotions) }] },
+        const expected = {
+          data: {
+            Post: [
+              {
+                emotions: expect.arrayContaining([
+                  { emotion: 'happy', User: { id: 'u198' } },
+                  { emotion: 'surprised', User: { id: 'u198' } },
+                ]),
+              },
+            ],
+          },
         }
-        await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
-        addPostEmotionsVariables.data.emotion = 'surprised'
-        await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
+        await mutate({ mutation: addPostEmotionsMutation, variables })
+        variables = { ...variables, data: { emotion: 'surprised' } }
+        await mutate({ mutation: addPostEmotionsMutation, variables })
         await expect(
-          postQueryAction(PostsEmotionsQuery, postsEmotionsQueryVariables),
-        ).resolves.toEqual(expect.objectContaining(expectedResponse))
+          query({ query: PostsEmotionsQuery, variables: postsEmotionsQueryVariables }),
+        ).resolves.toEqual(expect.objectContaining(expected))
       })
     })
 
     describe('authenticated as author', () => {
-      beforeEach(() => {
-        user = owner
+      beforeEach(async () => {
+        authenticatedUser = await author.toJson()
       })
 
       it('adds an emotion to the post', async () => {
         const expected = {
           data: {
             AddPostEmotions: {
-              from: { id: owner.id },
-              to: addPostEmotionsVariables.to,
+              from: { id: 'u257' },
+              to: { id: 'p1376' },
               emotion: 'happy',
             },
           },
         }
-        await expect(
-          postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables),
-        ).resolves.toEqual(expect.objectContaining(expected))
+        await expect(mutate({ mutation: addPostEmotionsMutation, variables })).resolves.toEqual(
+          expect.objectContaining(expected),
+        )
       })
     })
   })
@@ -644,37 +686,41 @@ describe('emotions', () => {
       }
     `
     beforeEach(async () => {
-      await ownerNode.relateTo(postToEmoteNode, 'emoted', { emotion: 'cry' })
-      await postMutationAction(user, addPostEmotionsMutation, addPostEmotionsVariables)
+      await author.relateTo(postToEmote, 'emoted', { emotion: 'happy' })
+      await user.relateTo(postToEmote, 'emoted', { emotion: 'cry' })
 
-      postsEmotionsQueryVariables = { id: postToEmote.id }
+      postsEmotionsQueryVariables = { id: 'p1376' }
       removePostEmotionsVariables = {
-        to: { id: postToEmote.id },
+        to: { id: 'p1376' },
         data: { emotion: 'cry' },
       }
     })
 
     describe('unauthenticated', () => {
+      beforeEach(() => {
+        authenticatedUser = null
+      })
+
       it('throws authorization error', async () => {
-        user = null
-        const removePostEmotions = await postMutationAction(
-          user,
-          removePostEmotionsMutation,
-          removePostEmotionsVariables,
-        )
+        const removePostEmotions = await mutate({
+          mutation: removePostEmotionsMutation,
+          variables: removePostEmotionsVariables,
+        })
         expect(removePostEmotions.errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     describe('authenticated', () => {
       describe('but not the emoter', () => {
+        beforeEach(async () => {
+          authenticatedUser = await author.toJson()
+        })
+
         it('returns null if the emotion could not be found', async () => {
-          user = someUser
-          const removePostEmotions = await postMutationAction(
-            user,
-            removePostEmotionsMutation,
-            removePostEmotionsVariables,
-          )
+          const removePostEmotions = await mutate({
+            mutation: removePostEmotionsMutation,
+            variables: removePostEmotionsVariables,
+          })
           expect(removePostEmotions).toEqual(
             expect.objectContaining({ data: { RemovePostEmotions: null } }),
           )
@@ -682,30 +728,39 @@ describe('emotions', () => {
       })
 
       describe('as the emoter', () => {
+        beforeEach(async () => {
+          authenticatedUser = await user.toJson()
+        })
+
         it('removes an emotion from a post', async () => {
-          user = owner
           const expected = {
             data: {
               RemovePostEmotions: {
-                to: { id: postToEmote.id },
-                from: { id: user.id },
+                to: { id: 'p1376' },
+                from: { id: 'u198' },
                 emotion: 'cry',
               },
             },
           }
           await expect(
-            postMutationAction(user, removePostEmotionsMutation, removePostEmotionsVariables),
+            mutate({
+              mutation: removePostEmotionsMutation,
+              variables: removePostEmotionsVariables,
+            }),
           ).resolves.toEqual(expect.objectContaining(expected))
         })
 
         it('removes only the requested emotion, not all emotions', async () => {
-          const expectedEmotions = [{ emotion: 'happy', User: { id: authorParams.id } }]
+          const expectedEmotions = [{ emotion: 'happy', User: { id: 'u257' } }]
           const expectedResponse = {
             data: { Post: [{ emotions: expect.arrayContaining(expectedEmotions) }] },
           }
-          await postMutationAction(user, removePostEmotionsMutation, removePostEmotionsVariables)
+          await mutate({
+            mutation: removePostEmotionsMutation,
+            variables: removePostEmotionsVariables,
+          })
           await expect(
-            postQueryAction(PostsEmotionsQuery, postsEmotionsQueryVariables),
+            query({ query: PostsEmotionsQuery, variables: postsEmotionsQueryVariables }),
           ).resolves.toEqual(expect.objectContaining(expectedResponse))
         })
       })
@@ -728,30 +783,42 @@ describe('emotions', () => {
       }
     `
     beforeEach(async () => {
-      await ownerNode.relateTo(postToEmoteNode, 'emoted', { emotion: 'cry' })
+      await user.relateTo(postToEmote, 'emoted', { emotion: 'cry' })
 
       PostsEmotionsCountByEmotionVariables = {
-        postId: postToEmote.id,
+        postId: 'p1376',
         data: { emotion: 'cry' },
       }
-      PostsEmotionsByCurrentUserVariables = { postId: postToEmote.id }
+      PostsEmotionsByCurrentUserVariables = { postId: 'p1376' }
     })
 
     describe('PostsEmotionsCountByEmotion', () => {
       it("returns a post's emotions count", async () => {
         const expectedResponse = { data: { PostsEmotionsCountByEmotion: 1 } }
         await expect(
-          postQueryAction(PostsEmotionsCountByEmotionQuery, PostsEmotionsCountByEmotionVariables),
+          query({
+            query: PostsEmotionsCountByEmotionQuery,
+            variables: PostsEmotionsCountByEmotionVariables,
+          }),
         ).resolves.toEqual(expect.objectContaining(expectedResponse))
       })
     })
 
-    describe('PostsEmotionsCountByEmotion', () => {
-      it("returns a currentUser's emotions on a post", async () => {
-        const expectedResponse = { data: { PostsEmotionsByCurrentUser: ['cry'] } }
-        await expect(
-          postQueryAction(PostsEmotionsByCurrentUserQuery, PostsEmotionsByCurrentUserVariables),
-        ).resolves.toEqual(expect.objectContaining(expectedResponse))
+    describe('PostsEmotionsByCurrentUser', () => {
+      describe('authenticated', () => {
+        beforeEach(async () => {
+          authenticatedUser = await user.toJson()
+        })
+
+        it("returns a currentUser's emotions on a post", async () => {
+          const expectedResponse = { data: { PostsEmotionsByCurrentUser: ['cry'] } }
+          await expect(
+            query({
+              query: PostsEmotionsByCurrentUserQuery,
+              variables: PostsEmotionsByCurrentUserVariables,
+            }),
+          ).resolves.toEqual(expect.objectContaining(expectedResponse))
+        })
       })
     })
   })

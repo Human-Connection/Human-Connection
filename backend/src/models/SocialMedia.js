@@ -8,7 +8,7 @@ module.exports = {
     type: 'relationship',
     relationship: 'OWNED_BY',
     target: 'User',
-    direction: 'in',
+    direction: 'out',
     eager: true,
     cascade: 'detach',
   },

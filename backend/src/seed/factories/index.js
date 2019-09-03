@@ -2,12 +2,12 @@ import { GraphQLClient, request } from 'graphql-request'
 import { getDriver, neode } from '../../bootstrap/neo4j'
 import createBadge from './badges.js'
 import createUser from './users.js'
-import createOrganization from './organizations.js'
 import createPost from './posts.js'
 import createComment from './comments.js'
 import createCategory from './categories.js'
 import createTag from './tags.js'
-import createReport from './reports.js'
+import createSocialMedia from './socialMedia.js'
+import createLocation from './locations.js'
 
 export const seedServerHost = 'http://127.0.0.1:4001'
 
@@ -24,12 +24,12 @@ const authenticatedHeaders = async ({ email, password }, host) => {
 const factories = {
   Badge: createBadge,
   User: createUser,
-  Organization: createOrganization,
   Post: createPost,
   Comment: createComment,
   Category: createCategory,
   Tag: createTag,
-  Report: createReport,
+  SocialMedia: createSocialMedia,
+  Location: createLocation,
 }
 
 export const cleanDatabase = async (options = {}) => {
@@ -79,6 +79,7 @@ export default function Factory(options = {}) {
         this.lastResponse = await factory({
           args,
           neodeInstance,
+          factoryInstance: this,
         })
         return this.lastResponse
       } else {

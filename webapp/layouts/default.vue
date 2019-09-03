@@ -121,7 +121,7 @@
         </div>
       </ds-container>
     </div>
-    <ds-container style="word-break: break-all">
+    <ds-container>
       <div class="main-container">
         <nuxt />
       </div>

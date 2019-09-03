@@ -25,11 +25,16 @@ describe('Comment.vue', () => {
         success: jest.fn(),
         error: jest.fn(),
       },
+      $i18n: {
+        locale: () => 'en',
+      },
       $filters: {
         truncate: a => a,
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue(),
+        mutate: jest.fn().mockResolvedValue({
+          data: { DeleteComment: { id: 'it-is-the-deleted-comment' } },
+        }),
       },
     }
     getters = {
@@ -113,24 +118,22 @@ describe('Comment.vue', () => {
         })
 
         describe('deletion of Comment from List by invoking "deleteCommentCallback()"', () => {
-          beforeEach(() => {
-            wrapper.vm.deleteCommentCallback()
+          beforeEach(async () => {
+            await wrapper.vm.deleteCommentCallback()
           })
 
-          describe('after timeout', () => {
-            beforeEach(jest.runAllTimers)
+          it('emits "deleteComment"', () => {
+            expect(wrapper.emitted('deleteComment')).toEqual([
+              [{ id: 'it-is-the-deleted-comment' }],
+            ])
+          })
 
-            it('emits "deleteComment"', () => {
-              expect(wrapper.emitted().deleteComment.length).toBe(1)
-            })
+          it('does call mutation', () => {
+            expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
+          })
 
-            it('does call mutation', () => {
-              expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
-            })
-
-            it('mutation is successful', () => {
-              expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
-            })
+          it('mutation is successful', () => {
+            expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
           })
         })
       })
