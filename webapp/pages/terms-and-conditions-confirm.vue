@@ -87,7 +87,7 @@ export default {
             })
           },
         })
-        this.$toast.success(this.$t('site.thx'))
+        this.$toast.success(this.$t('site.thanks'))
         this.$router.replace(this.$route.query.path || '/')
       } catch (err) {
         this.$toast.error(err.message)

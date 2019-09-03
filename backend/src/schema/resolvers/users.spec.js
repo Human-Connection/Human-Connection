@@ -52,26 +52,35 @@ describe('users', () => {
   })
 
   describe('UpdateUser', () => {
-    const userParams = {
-      email: 'user@example.org',
-      password: '1234',
-      id: 'u47',
-      name: 'John Doe',
-    }
-    const variables = {
-      id: 'u47',
-      name: 'John Doughnut',
-    }
+    let userParams
+    let variables
 
-    const mutation = `
-      mutation($id: ID!, $name: String) {
-        UpdateUser(id: $id, name: $name) {
+    beforeEach(async () => {
+      userParams = {
+        email: 'user@example.org',
+        password: '1234',
+        id: 'u47',
+        name: 'John Doe',
+      }
+    
+      variables = {
+        id: 'u47',
+        name: 'John Doughnut',
+      }
+  })
+
+      
+    const UpdateUserMutation = gql`
+      mutation($id: ID!, $name: String, $termsAndConditionsAgreedVersion: String) {
+        UpdateUser(id: $id, name: $name, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
           id
           name
+          termsAndConditionsAgreedVersion
         }
       }
     `
 
+    
     beforeEach(async () => {
       await factory.create('User', userParams)
     })
@@ -90,7 +99,7 @@ describe('users', () => {
       })
 
       it('is not allowed to change other user accounts', async () => {
-        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+        await expect(client.request(UpdateUserMutation, variables)).rejects.toThrow('Not Authorised')
       })
     })
 
@@ -102,21 +111,18 @@ describe('users', () => {
 
       it('name within specifications', async () => {
         const expected = {
-          UpdateUser: {
+          UpdateUser: expect.objectContaining({
             id: 'u47',
             name: 'John Doughnut',
-          },
+          }),
         }
-        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+        await expect(client.request(UpdateUserMutation, variables)).resolves.toEqual(expected)
       })
 
       it('with `null` as name', async () => {
-        const variables = {
-          id: 'u47',
-          name: null,
-        }
+        variables.name = null        
         const expected = '"name" must be a string'
-        await expect(client.request(mutation, variables)).rejects.toThrow(expected)
+        await expect(client.request(UpdateUserMutation, variables)).rejects.toThrow(expected)
       })
 
       it('with too short name', async () => {
@@ -125,8 +131,33 @@ describe('users', () => {
           name: '  ',
         }
         const expected = '"name" length must be at least 3 characters long'
-        await expect(client.request(mutation, variables)).rejects.toThrow(expected)
+        await expect(client.request(UpdateUserMutation, variables)).rejects.toThrow(expected)
       })
+
+     
+     
+          it ('given a new agreed version of terms and conditions', async () =>  {    
+            variables = { ...variables, termsAndConditionsAgreedVersion: '0.0.2'  }
+            const expected = {
+              UpdateUser: expect.objectContaining({
+                termsAndConditionsAgreedVersion: '0.0.2'              
+              })
+            } 
+            await expect(client.request(UpdateUserMutation, variables)).resolves.toEqual(expected)
+          })
+
+          it('rejects if version of terms and conditions has wrong format', async () => {
+            const expected = {
+              UpdateUser: expect.objectContaining({
+                termsAndConditionsAgreedVersion: 'invalid version format'              
+              })
+            } 
+            await expect(client.request(UpdateUserMutation, {...variables, termsAndConditionsAgreedVersion: 'invalid version format'})).rejects.toThrow(
+              'Invalid version format!',
+            )
+          })
+
+          
     })
   })
 
@@ -180,6 +211,8 @@ describe('users', () => {
         })
         client = new GraphQLClient(host, { headers })
       })
+
+ 
 
       describe("attempting to delete another user's account", () => {
         it('throws an authorization error', async () => {
