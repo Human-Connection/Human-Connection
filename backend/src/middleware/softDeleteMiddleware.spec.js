@@ -240,7 +240,7 @@ describe('softDeleteMiddleware', () => {
         it('obfuscates slug', () => expect(subject.slug).toEqual('UNAVAILABLE'))
         it('obfuscates content', () => expect(subject.content).toEqual('UNAVAILABLE'))
         it('obfuscates contentExcerpt', () => expect(subject.contentExcerpt).toEqual('UNAVAILABLE'))
-        it('obfuscates image', () => expect(subject.image).toEqual('UNAVAILABLE'))
+        it('obfuscates image', () => expect(subject.image).toEqual(null))
       })
 
       describe('Comment', () => {

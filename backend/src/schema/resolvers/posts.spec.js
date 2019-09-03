@@ -470,7 +470,7 @@ describe('DeletePost', () => {
             deleted: true,
             content: 'UNAVAILABLE',
             contentExcerpt: 'UNAVAILABLE',
-            image: 'UNAVAILABLE',
+            image: null,
             comments: [],
           },
         },
@@ -497,7 +497,7 @@ describe('DeletePost', () => {
               deleted: true,
               content: 'UNAVAILABLE',
               contentExcerpt: 'UNAVAILABLE',
-              image: 'UNAVAILABLE',
+              image: null,
               comments: [
                 {
                   deleted: true,
