@@ -50,6 +50,11 @@ $easeOut: cubic-bezier(0.19, 1, 0.22, 1);
   background: #fff;
 }
 
+body.dropdown-open {
+  height: 100vh;
+  overflow: hidden;
+}
+
 blockquote {
   display: block;
   padding: 15px 20px 15px 45px;
