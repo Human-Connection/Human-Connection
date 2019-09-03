@@ -50,8 +50,9 @@ describe('User', () => {
     const variables = { email: 'any-email-address@example.org' }
 
     it('is forbidden', async () => {
-      const { errors } = await query({ query: userQuery, variables })
-      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+      await expect(query({ query: userQuery, variables })).resolves.toMatchObject({
+        errors: [{ message: 'Not Authorised!' }],
+      })
     })
 
     describe('as admin', () => {
@@ -437,6 +438,27 @@ describe('DeleteUser', () => {
               mutate({ mutation: deleteUserMutation, variables }),
             ).resolves.toMatchObject(expectedResponse)
           })
+        })
+      })
+
+      describe('connected `EmailAddress` nodes', () => {
+        it('will be removed completely', async () => {
+          await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+          await mutate({ mutation: deleteUserMutation, variables })
+          await expect(neode.all('EmailAddress')).resolves.toHaveLength(1)
+        })
+      })
+
+      describe('connected `SocialMedia` nodes', () => {
+        beforeEach(async () => {
+          const socialMedia = await factory.create('SocialMedia')
+          await socialMedia.relateTo(user, 'ownedBy')
+        })
+
+        it('will be removed completely', async () => {
+          await expect(neode.all('SocialMedia')).resolves.toHaveLength(1)
+          await mutate({ mutation: deleteUserMutation, variables })
+          await expect(neode.all('SocialMedia')).resolves.toHaveLength(0)
         })
       })
     })

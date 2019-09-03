@@ -129,6 +129,12 @@ export default {
           SET user.deleted = true
           SET user.name = 'UNAVAILABLE'
           SET user.about = 'UNAVAILABLE'
+          WITH user
+          OPTIONAL MATCH (user)<-[:BELONGS_TO]-(email:EmailAddress)
+          DETACH DELETE email
+          WITH user
+          OPTIONAL MATCH (user)<-[:OWNED_BY]-(socialMedia:SocialMedia)
+          DETACH DELETE socialMedia
           RETURN user`,
           { userId: context.user.id },
         )
@@ -185,7 +191,7 @@ export default {
         followedBy: '<-[:FOLLOWS]-(related:User)',
         following: '-[:FOLLOWS]->(related:User)',
         friends: '-[:FRIENDS]-(related:User)',
-        socialMedia: '-[:OWNED_BY]->(related:SocialMedia',
+        socialMedia: '<-[:OWNED_BY]-(related:SocialMedia)',
         contributions: '-[:WROTE]->(related:Post)',
         comments: '-[:WROTE]->(related:Comment)',
         shouted: '-[:SHOUTED]->(related:Post)',
