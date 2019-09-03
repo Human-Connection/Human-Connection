@@ -10,9 +10,6 @@
       <ds-card class="login-card">
         <ds-flex gutter="small">
           <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-            <client-only>
-              <locale-switch class="login-locale-switch" offset="5" />
-            </client-only>
             <ds-space margin-top="small" margin-bottom="xxx-small" centered>
               <img
                 class="login-image"
@@ -53,17 +50,13 @@
                 name="submit"
                 type="submit"
                 icon="sign-in"
-              >
-                {{ $t('login.login') }}
-              </ds-button>
+              >{{ $t('login.login') }}</ds-button>
               <ds-space margin="x-small">
                 <a
                   :href="$t('login.moreInfoURL')"
                   :title="$t('login.moreInfoHint')"
                   target="_blank"
-                >
-                  {{ $t('login.moreInfo') }}
-                </a>
+                >{{ $t('login.moreInfo') }}</a>
               </ds-space>
             </form>
           </ds-flex-item>
@@ -78,9 +71,6 @@ import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 
 export default {
-  components: {
-    LocaleSwitch,
-  },
   layout: 'blank',
   data() {
     return {
