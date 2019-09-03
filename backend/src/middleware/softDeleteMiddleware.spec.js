@@ -11,12 +11,15 @@ const driver = getDriver()
 let query
 let mutate
 let graphqlQuery
-let action
 const categoryIds = ['cat9']
 let authenticatedUser
 let user
 let moderator
 let troll
+
+let action = () => {
+  return query({ query: graphqlQuery })
+}
 
 beforeAll(async () => {
   // For performance reasons we do this only once
@@ -180,10 +183,6 @@ describe('softDeleteMiddleware', () => {
       subject = data.User[0].following[0].contributions[0]
     }
 
-    action = () => {
-      return query({ query: graphqlQuery })
-    }
-
     describe('as moderator', () => {
       beforeEach(async () => {
         authenticatedUser = await moderator.toJson()
@@ -193,7 +192,7 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforeUser)
 
         it('displays name', () => expect(subject.name).toEqual('Offensive Name'))
-        it('obfuscates slug', () => expect(subject.slug).toEqual('offensive-name'))
+        it('displays slug', () => expect(subject.slug).toEqual('offensive-name'))
         it('displays about', () =>
           expect(subject.about).toEqual('This self description is very offensive'))
         it('displays avatar', () => expect(subject.avatar).toEqual('/some/offensive/avatar.jpg'))
@@ -203,7 +202,7 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforePost)
 
         it('displays title', () => expect(subject.title).toEqual('Disabled post'))
-        it('obfuscates slug', () => expect(subject.slug).toEqual('disabled-post'))
+        it('displays slug', () => expect(subject.slug).toEqual('disabled-post'))
         it('displays content', () =>
           expect(subject.content).toEqual('This is an offensive post content'))
         it('displays contentExcerpt', () =>
