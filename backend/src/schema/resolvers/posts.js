@@ -3,6 +3,7 @@ import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
 import { getBlockedUsers, getBlockedByUsers } from './users.js'
 import { mergeWith, isArray } from 'lodash'
+import Resolver from './helpers/Resolver'
 
 const filterForBlockedUsers = async (params, context) => {
   if (!context.user) return params
@@ -11,6 +12,8 @@ const filterForBlockedUsers = async (params, context) => {
     getBlockedByUsers(context),
   ])
   const badIds = [...blockedByUsers.map(b => b.id), ...blockedUsers.map(b => b.id)]
+  if (!badIds.length) return params
+
   params.filter = mergeWith(
     params.filter,
     {
@@ -75,24 +78,27 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
-      const cypherDeletePreviousRelations = `
-        MATCH (post:Post { id: $params.id })-[previousRelations:CATEGORIZED]->(category:Category)
-        DELETE previousRelations
-        RETURN post, category
-      `
 
-      await session.run(cypherDeletePreviousRelations, { params })
-
-      let updatePostCypher = `MATCH (post:Post {id: $params.id})
+      let updatePostCypher = `MATCH (post:Post {id: $params.id}) 
       SET post = $params
       `
+
       if (categoryIds && categoryIds.length) {
+        const cypherDeletePreviousRelations = `
+          MATCH (post:Post { id: $params.id })-[previousRelations:CATEGORIZED]->(category:Category)
+          DELETE previousRelations
+          RETURN post, category
+        `
+
+        await session.run(cypherDeletePreviousRelations, { params })
+
         updatePostCypher += `WITH post
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
         `
       }
+
       updatePostCypher += `RETURN post`
       const updatePostVariables = { categoryIds, params }
 
@@ -112,19 +118,16 @@ export default {
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
 
-      let createPostCypher = `CREATE (post:Post {params})
-      WITH post
-      MATCH (author:User {id: $userId})
-      MERGE (post)<-[:WROTE]-(author)
-      `
-      if (categoryIds) {
-        createPostCypher += `WITH post
+      const createPostCypher = `CREATE (post:Post {params})
+        WITH post
+        MATCH (author:User {id: $userId})
+        MERGE (post)<-[:WROTE]-(author)
+        WITH post
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
-        `
-      }
-      createPostCypher += `RETURN post`
+        RETURN post`
+
       const createPostVariables = { userId: context.user.id, categoryIds, params }
 
       const session = context.driver.session()
@@ -177,6 +180,48 @@ export default {
         }
       })
       return emoted
+    },
+  },
+  Post: {
+    ...Resolver('Post', {
+      hasMany: {
+        tags: '-[:TAGGED]->(related:Tag)',
+        categories: '-[:CATEGORIZED]->(related:Category)',
+        comments: '<-[:COMMENTS]-(related:Comment)',
+        shoutedBy: '<-[:SHOUTED]-(related:User)',
+        emotions: '<-[related:EMOTED]',
+      },
+      hasOne: {
+        author: '<-[:WROTE]-(related:User)',
+        disabledBy: '<-[:DISABLED]-(related:User)',
+      },
+      count: {
+        shoutedCount:
+          '<-[:SHOUTED]-(related:User) WHERE NOT related.deleted = true AND NOT related.disabled = true',
+        emotionsCount: '<-[related:EMOTED]-(:User)',
+      },
+      boolean: {
+        shoutedByCurrentUser:
+          '<-[:SHOUTED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+      },
+    }),
+    relatedContributions: async (parent, params, context, resolveInfo) => {
+      if (typeof parent.relatedContributions !== 'undefined') return parent.relatedContributions
+      const { id } = parent
+      const statement = `
+      MATCH (p:Post {id: $id})-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
+      RETURN DISTINCT post
+      LIMIT 10
+      `
+      let relatedContributions
+      const session = context.driver.session()
+      try {
+        const result = await session.run(statement, { id })
+        relatedContributions = result.records.map(r => r.get('post').properties)
+      } finally {
+        session.close()
+      }
+      return relatedContributions
     },
   },
 }

@@ -13,26 +13,17 @@ let client
 let userParams
 let authorParams
 
+const postId = 'p3589'
 const postTitle = 'I am a title'
 const postContent = 'Some content'
 const oldTitle = 'Old title'
 const oldContent = 'Old content'
 const newTitle = 'New title'
 const newContent = 'New content'
-const createPostVariables = { title: postTitle, content: postContent }
-const createPostWithCategoriesMutation = gql`
-  mutation($title: String!, $content: String!, $categoryIds: [ID]) {
-    CreatePost(title: $title, content: $content, categoryIds: $categoryIds) {
-      id
-      title
-    }
-  }
-`
-const createPostWithCategoriesVariables = {
-  title: postTitle,
-  content: postContent,
-  categoryIds: ['cat9', 'cat4', 'cat15'],
-}
+const postSaveError = 'You cannot save a post without at least one category or more than three'
+const categoryIds = ['cat9', 'cat4', 'cat15']
+let createPostVariables
+
 const postQueryWithCategories = gql`
   query($id: ID) {
     Post(id: $id) {
@@ -42,11 +33,6 @@ const postQueryWithCategories = gql`
     }
   }
 `
-const createPostWithoutCategoriesVariables = {
-  title: 'This is a post without categories',
-  content: 'I should be able to filter it out',
-  categoryIds: null,
-}
 const postQueryFilteredByCategory = gql`
   query Post($filter: _PostFilter) {
     Post(filter: $filter) {
@@ -58,14 +44,14 @@ const postQueryFilteredByCategory = gql`
     }
   }
 `
-const postCategoriesFilterParam = { categories_some: { id_in: ['cat4'] } }
+const postCategoriesFilterParam = { categories_some: { id_in: categoryIds } }
 const postQueryFilteredByCategoryVariables = {
   filter: postCategoriesFilterParam,
 }
 
 const createPostMutation = gql`
-  mutation($title: String!, $content: String!) {
-    CreatePost(title: $title, content: $content) {
+  mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]) {
+    CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
       id
       title
       content
@@ -88,6 +74,34 @@ beforeEach(async () => {
     password: '1234',
   }
   await factory.create('User', userParams)
+  await Promise.all([
+    instance.create('Category', {
+      id: 'cat9',
+      name: 'Democracy & Politics',
+      icon: 'university',
+    }),
+    instance.create('Category', {
+      id: 'cat4',
+      name: 'Environment & Nature',
+      icon: 'tree',
+    }),
+    instance.create('Category', {
+      id: 'cat15',
+      name: 'Consumption & Sustainability',
+      icon: 'shopping-cart',
+    }),
+    instance.create('Category', {
+      id: 'cat27',
+      name: 'Animal Protection',
+      icon: 'paw',
+    }),
+  ])
+  createPostVariables = {
+    id: postId,
+    title: postTitle,
+    content: postContent,
+    categoryIds,
+  }
 })
 
 afterEach(async () => {
@@ -152,8 +166,13 @@ describe('CreatePost', () => {
     describe('language', () => {
       it('allows a user to set the language of the post', async () => {
         const createPostWithLanguageMutation = gql`
-          mutation($title: String!, $content: String!, $language: String) {
-            CreatePost(title: $title, content: $content, language: $language) {
+          mutation($title: String!, $content: String!, $language: String, $categoryIds: [ID]) {
+            CreatePost(
+              title: $title
+              content: $content
+              language: $language
+              categoryIds: $categoryIds
+            ) {
               language
             }
           }
@@ -162,6 +181,7 @@ describe('CreatePost', () => {
           title: postTitle,
           content: postContent,
           language: 'en',
+          categoryIds,
         }
         const expected = { CreatePost: { language: 'en' } }
         await expect(
@@ -171,51 +191,36 @@ describe('CreatePost', () => {
     })
 
     describe('categories', () => {
-      let postWithCategories
-      beforeEach(async () => {
-        await Promise.all([
-          factory.create('Category', {
-            id: 'cat9',
-            name: 'Democracy & Politics',
-            icon: 'university',
-          }),
-          factory.create('Category', {
-            id: 'cat4',
-            name: 'Environment & Nature',
-            icon: 'tree',
-          }),
-          factory.create('Category', {
-            id: 'cat15',
-            name: 'Consumption & Sustainability',
-            icon: 'shopping-cart',
-          }),
-        ])
-        postWithCategories = await client.request(
-          createPostWithCategoriesMutation,
-          createPostWithCategoriesVariables,
+      it('throws an error if categoryIds is not an array', async () => {
+        createPostVariables.categoryIds = null
+        await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
+          postSaveError,
         )
       })
 
-      it('allows a user to set the categories of the post', async () => {
-        const expected = [{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }]
-        const postQueryWithCategoriesVariables = {
-          id: postWithCategories.CreatePost.id,
-        }
+      it('requires at least one category for successful creation', async () => {
+        createPostVariables.categoryIds = []
+        await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
+          postSaveError,
+        )
+      })
 
-        await expect(
-          client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
-        ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
+      it('allows a maximum of three category for successful update', async () => {
+        createPostVariables.categoryIds = ['cat9', 'cat27', 'cat15', 'cat4']
+        await expect(client.request(createPostMutation, createPostVariables)).rejects.toThrow(
+          postSaveError,
+        )
       })
 
       it('allows a user to filter for posts by category', async () => {
-        await client.request(createPostWithCategoriesMutation, createPostWithoutCategoriesVariables)
-        const categoryIds = [{ id: 'cat4' }, { id: 'cat15' }, { id: 'cat9' }]
+        await client.request(createPostMutation, createPostVariables)
+        const categoryIdsArray = [{ id: 'cat4' }, { id: 'cat15' }, { id: 'cat9' }]
         const expected = {
           Post: [
             {
               title: postTitle,
-              id: postWithCategories.CreatePost.id,
-              categories: expect.arrayContaining(categoryIds),
+              id: postId,
+              categories: expect.arrayContaining(categoryIdsArray),
             },
           ],
         }
@@ -228,31 +233,30 @@ describe('CreatePost', () => {
 })
 
 describe('UpdatePost', () => {
-  let updatePostMutation
   let updatePostVariables
+  const updatePostMutation = gql`
+    mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
+      UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+        id
+        content
+      }
+    }
+  `
   beforeEach(async () => {
     const asAuthor = Factory()
     await asAuthor.create('User', authorParams)
     await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
-      id: 'p1',
+      id: postId,
       title: oldTitle,
       content: oldContent,
+      categoryIds,
     })
-    updatePostMutation = gql`
-      mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
-        UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
-          id
-          content
-        }
-      }
-    `
 
     updatePostVariables = {
-      id: 'p1',
+      id: postId,
       title: newTitle,
       content: newContent,
-      categoryIds: null,
     }
   })
 
@@ -287,58 +291,95 @@ describe('UpdatePost', () => {
     })
 
     it('updates a post', async () => {
-      const expected = { UpdatePost: { id: 'p1', content: newContent } }
+      updatePostVariables.categoryIds = ['cat27']
+      const expected = { UpdatePost: { id: postId, content: newContent } }
       await expect(client.request(updatePostMutation, updatePostVariables)).resolves.toEqual(
         expected,
       )
     })
 
     describe('categories', () => {
-      let postWithCategories
-      beforeEach(async () => {
-        await Promise.all([
-          factory.create('Category', {
-            id: 'cat9',
-            name: 'Democracy & Politics',
-            icon: 'university',
-          }),
-          factory.create('Category', {
-            id: 'cat4',
-            name: 'Environment & Nature',
-            icon: 'tree',
-          }),
-          factory.create('Category', {
-            id: 'cat15',
-            name: 'Consumption & Sustainability',
-            icon: 'shopping-cart',
-          }),
-          factory.create('Category', {
-            id: 'cat27',
-            name: 'Animal Protection',
-            icon: 'paw',
-          }),
-        ])
-        postWithCategories = await client.request(
-          createPostWithCategoriesMutation,
-          createPostWithCategoriesVariables,
+      it('allows a user to update other attributes without passing in categoryIds explicitly', async () => {
+        const expected = { UpdatePost: { id: postId, content: newContent } }
+        await expect(client.request(updatePostMutation, updatePostVariables)).resolves.toEqual(
+          expected,
         )
-        updatePostVariables = {
-          id: postWithCategories.CreatePost.id,
-          title: newTitle,
-          content: newContent,
-          categoryIds: ['cat27'],
-        }
       })
 
       it('allows a user to update the categories of a post', async () => {
+        updatePostVariables.categoryIds = ['cat27']
         await client.request(updatePostMutation, updatePostVariables)
         const expected = [{ id: 'cat27' }]
         const postQueryWithCategoriesVariables = {
-          id: postWithCategories.CreatePost.id,
+          id: postId,
         }
         await expect(
           client.request(postQueryWithCategories, postQueryWithCategoriesVariables),
         ).resolves.toEqual({ Post: [{ categories: expect.arrayContaining(expected) }] })
+      })
+
+      it('allows a maximum of three category for a successful update', async () => {
+        updatePostVariables.categoryIds = ['cat9', 'cat27', 'cat15', 'cat4']
+        await expect(client.request(updatePostMutation, updatePostVariables)).rejects.toThrow(
+          postSaveError,
+        )
+      })
+
+      describe('post created without categories somehow', () => {
+        let ownerNode, owner, postMutationAction
+        beforeEach(async () => {
+          const postSomehowCreated = await instance.create('Post', {
+            id: 'how-was-this-created',
+            title: postTitle,
+            content: postContent,
+          })
+          ownerNode = await instance.create('User', {
+            id: 'author-of-post-without-category',
+            name: 'Hacker',
+            slug: 'hacker',
+            email: 'hacker@example.org',
+            password: '1234',
+          })
+          owner = await ownerNode.toJson()
+          await postSomehowCreated.relateTo(ownerNode, 'author')
+          postMutationAction = async (user, mutation, variables) => {
+            const { server } = createServer({
+              context: () => {
+                return {
+                  user,
+                  neode: instance,
+                  driver,
+                }
+              },
+            })
+            const { mutate } = createTestClient(server)
+
+            return mutate({
+              mutation,
+              variables,
+            })
+          }
+          updatePostVariables.id = 'how-was-this-created'
+        })
+
+        it('throws an error if categoryIds is not an array', async () => {
+          const mustAddCategoryToPost = await postMutationAction(
+            owner,
+            updatePostMutation,
+            updatePostVariables,
+          )
+          expect(mustAddCategoryToPost.errors[0]).toHaveProperty('message', postSaveError)
+        })
+
+        it('requires at least one category for successful update', async () => {
+          updatePostVariables.categoryIds = []
+          const mustAddCategoryToPost = await postMutationAction(
+            owner,
+            updatePostMutation,
+            updatePostVariables,
+          )
+          expect(mustAddCategoryToPost.errors[0]).toHaveProperty('message', postSaveError)
+        })
       })
     })
   })
@@ -355,7 +396,7 @@ describe('DeletePost', () => {
   `
 
   const variables = {
-    id: 'p1',
+    id: postId,
   }
 
   beforeEach(async () => {
@@ -363,8 +404,9 @@ describe('DeletePost', () => {
     await asAuthor.create('User', authorParams)
     await asAuthor.authenticateAs(authorParams)
     await asAuthor.create('Post', {
-      id: 'p1',
+      id: postId,
       content: 'To be deleted',
+      categoryIds,
     })
   })
 
@@ -395,7 +437,7 @@ describe('DeletePost', () => {
     })
 
     it('deletes a post', async () => {
-      const expected = { DeletePost: { id: 'p1', content: 'To be deleted' } }
+      const expected = { DeletePost: { id: postId, content: 'To be deleted' } }
       await expect(client.request(mutation, variables)).resolves.toEqual(expected)
     })
   })
@@ -411,7 +453,7 @@ describe('emotions', () => {
     postQueryAction,
     postToEmote,
     postToEmoteNode
-  const PostsEmotionsCountQuery = `
+  const PostsEmotionsCountQuery = gql`
     query($id: ID!) {
       Post(id: $id) {
         emotionsCount

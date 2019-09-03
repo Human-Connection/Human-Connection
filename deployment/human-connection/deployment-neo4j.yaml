@@ -25,13 +25,11 @@
         - name: nitro-neo4j
           image: humanconnection/neo4j:latest
           imagePullPolicy: Always
-          env:
-          - name: NEO4J_apoc_import_file_enabled
-            value: "true"
-          - name: NEO4J_dbms_memory_pagecache_size
-            value: 1G
-          - name: NEO4J_dbms_memory_heap_max__size
-            value: 1G
+          resources:
+            requests:
+              memory: "1G"
+            limits:
+              memory: "2G"
           envFrom:
           - configMapRef:
               name: configmap

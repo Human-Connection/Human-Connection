@@ -3,8 +3,8 @@
     <div class="main-navigation">
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
-          <ds-flex class="main-navigation-flex">
-            <ds-flex-item :width="{ lg: '30%' }" />
+          <ds-flex class="main-navigation-flex" centered>
+            <ds-flex-item :width="{ lg: '3.5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
               <a @click="redirectToRoot">
                 <ds-logo />
@@ -37,14 +37,14 @@
               :width="{ base: '15%', sm: '15%', md: '10%', lg: '10%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
-              <no-ssr>
+              <client-only>
                 <filter-posts
                   v-show="showFilterPostsDropdown"
                   placement="top-start"
                   offset="8"
                   :categories="categories"
                 />
-              </no-ssr>
+              </client-only>
             </ds-flex-item>
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '10%', lg: '2%' }" />
             <ds-flex-item
@@ -59,14 +59,14 @@
                   'hide-mobile-menu': !toggleMobileMenu,
                 }"
               >
-                <no-ssr>
+                <client-only>
                   <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
-                </no-ssr>
+                </client-only>
                 <template v-if="isLoggedIn">
-                  <no-ssr>
+                  <client-only>
                     <notification-menu placement="top" />
-                  </no-ssr>
-                  <no-ssr>
+                  </client-only>
+                  <client-only>
                     <dropdown class="avatar-menu" offset="8">
                       <template slot="default" slot-scope="{ toggleMenu }">
                         <a
@@ -113,7 +113,7 @@
                         </div>
                       </template>
                     </dropdown>
-                  </no-ssr>
+                  </client-only>
                 </template>
               </div>
             </ds-flex-item>
@@ -140,9 +140,9 @@
       <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
     </div>
     <div id="overlay" />
-    <no-ssr>
+    <client-only>
       <modal />
-    </no-ssr>
+    </client-only>
   </div>
 </template>
 
@@ -151,7 +151,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
-import NotificationMenu from '~/components/notifications/NotificationMenu'
+import NotificationMenu from '~/components/notifications/NotificationMenu/NotificationMenu'
 import Dropdown from '~/components/Dropdown'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
@@ -293,6 +293,11 @@ export default {
   padding-top: 6rem;
   padding-bottom: 5rem;
 }
+
+.main-navigation-flex {
+  align-items: center;
+}
+
 .main-navigation {
   a {
     color: $text-color-soft;

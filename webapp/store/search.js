@@ -45,15 +45,14 @@ export const actions = {
     commit('SET_QUICK_PENDING', true)
     await this.app.apolloProvider.defaultClient
       .query({
-        query: gql(`
-          query findPosts($query: String!) {
-            findPosts(query: $query, limit: 10) {
+        query: gql`
+          query findPosts($query: String!, $filter: _PostFilter) {
+            findPosts(query: $query, limit: 10, filter: $filter) {
               id
               slug
               label: title
-              value: title,
+              value: title
               shoutedCount
-              commentsCount
               createdAt
               author {
                 id
@@ -62,9 +61,10 @@ export const actions = {
               }
             }
           }
-        `),
+        `,
         variables: {
           query: value.replace(/\s/g, '~ ') + '~',
+          filter: {},
         },
       })
       .then(res => {

@@ -61,7 +61,6 @@ export default function Resolver(type, options = {}) {
         const id = parent[idAttribute]
         const statement = `
           MATCH(u:${type} {${idAttribute}: {id}})${connection}
-          WHERE NOT related.deleted = true AND NOT related.disabled = true
           RETURN COUNT(DISTINCT(related)) as count
         `
         const result = await instance.cypher(statement, { id })

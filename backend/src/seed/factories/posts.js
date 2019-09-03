@@ -16,6 +16,7 @@ export default function(params) {
     image = faker.image.unsplash.imageUrl(),
     visibility = 'public',
     deleted = false,
+    categoryIds,
   } = params
 
   return {
@@ -28,6 +29,7 @@ export default function(params) {
         $image: String
         $visibility: Visibility
         $deleted: Boolean
+        $categoryIds: [ID]
       ) {
         CreatePost(
           id: $id
@@ -37,12 +39,13 @@ export default function(params) {
           image: $image
           visibility: $visibility
           deleted: $deleted
+          categoryIds: $categoryIds
         ) {
           title
           content
         }
       }
     `,
-    variables: { id, slug, title, content, image, visibility, deleted },
+    variables: { id, slug, title, content, image, visibility, deleted, categoryIds },
   }
 }

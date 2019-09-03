@@ -1,6 +1,6 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
-import { getLangByName } from "../../support/helpers";
-import slugify from 'slug'
+import helpers from "../../support/helpers";
+import slugify from "slug";
 
 /* global cy  */
 
@@ -12,7 +12,7 @@ let loginCredentials = {
 };
 const narratorParams = {
   name: "Peter Pan",
-  slug: 'peter-pan',
+  slug: "peter-pan",
   avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
   ...loginCredentials
 };
@@ -21,31 +21,17 @@ Given("I am logged in", () => {
   cy.login(loginCredentials);
 });
 
+Given("we have a selection of categories", () => {
+  cy.createCategories("cat0", "just-for-fun");
+});
+
 Given("we have a selection of tags and categories as well as posts", () => {
-  cy.factory()
+  cy.createCategories("cat12")
+    .factory()
     .authenticateAs(loginCredentials)
-    .create("Category", {
-      id: "cat1",
-      name: "Just For Fun",
-      slug: "justforfun",
-      icon: "smile"
-    })
-    .create("Category", {
-      id: "cat2",
-      name: "Happyness & Values",
-      slug: "happyness-values",
-      icon: "heart-o"
-    })
-    .create("Category", {
-      id: "cat3",
-      name: "Health & Wellbeing",
-      slug: "health-wellbeing",
-      icon: "medkit"
-    })
     .create("Tag", { id: "Ecology" })
     .create("Tag", { id: "Nature" })
     .create("Tag", { id: "Democracy" });
-
   const someAuthor = {
     id: "authorId",
     email: "author@example.org",
@@ -59,18 +45,15 @@ Given("we have a selection of tags and categories as well as posts", () => {
   cy.factory()
     .create("User", someAuthor)
     .authenticateAs(someAuthor)
-    .create("Post", { id: "p0" })
-    .create("Post", { id: "p1" });
+    .create("Post", { id: "p0", categoryIds: ["cat12"] })
+    .create("Post", { id: "p1", categoryIds: ["cat121"] });
   cy.factory()
     .create("User", yetAnotherAuthor)
     .authenticateAs(yetAnotherAuthor)
-    .create("Post", { id: "p2" });
+    .create("Post", { id: "p2", categoryIds: ["cat12"] });
   cy.factory()
     .authenticateAs(loginCredentials)
-    .create("Post", { id: "p3" })
-    .relate("Post", "Categories", { from: "p0", to: "cat1" })
-    .relate("Post", "Categories", { from: "p1", to: "cat2" })
-    .relate("Post", "Categories", { from: "p2", to: "cat1" })
+    .create("Post", { id: "p3", categoryIds: ["cat122"] })
     .relate("Post", "Tags", { from: "p0", to: "Ecology" })
     .relate("Post", "Tags", { from: "p0", to: "Nature" })
     .relate("Post", "Tags", { from: "p0", to: "Democracy" })
@@ -148,14 +131,17 @@ Then("I am still logged in", () => {
 When("I select {string} in the language menu", name => {
   cy.switchLanguage(name, true);
 });
+
 Given("I previously switched the language to {string}", name => {
   cy.switchLanguage(name, true);
 });
+
 Then("the whole user interface appears in {string}", name => {
-  const lang = getLangByName(name);
-  cy.get(`html[lang=${lang.code}]`);
-  cy.getCookie("locale").should("have.property", "value", lang.code);
+  const { code } = helpers.getLangByName(name);
+  cy.get(`html[lang=${code}]`);
+  cy.getCookie("locale").should("have.property", "value", code);
 });
+
 Then("I see a button with the label {string}", label => {
   cy.contains("button", label);
 });
@@ -174,17 +160,25 @@ When("I press {string}", label => {
 
 Given("we have the following posts in our database:", table => {
   table.hashes().forEach(({ Author, ...postAttributes }, i) => {
-    Author = Author || `author-${i}`
+    Author = Author || `author-${i}`;
     const userAttributes = {
       name: Author,
-      email: `${slugify(Author, {lower: true})}@example.org`,
+      email: `${slugify(Author, { lower: true })}@example.org`,
       password: "1234"
     };
     postAttributes.deleted = Boolean(postAttributes.deleted);
     const disabled = Boolean(postAttributes.disabled);
+    postAttributes.categoryIds = [`cat${i}${new Date()}`];
+    postAttributes;
     cy.factory()
       .create("User", userAttributes)
       .authenticateAs(userAttributes)
+      .create("Category", {
+        id: `cat${i}${new Date()}`,
+        name: "Just For Fun",
+        slug: `just-for-fun-${i}`,
+        icon: "smile"
+      })
       .create("Post", postAttributes);
     if (disabled) {
       const moderatorParams = {
@@ -218,6 +212,7 @@ When(
 Given("I previously created a post", () => {
   lastPost.title = "previously created post";
   lastPost.content = "with some content";
+  lastPost.categoryIds = "cat0";
   cy.factory()
     .authenticateAs(loginCredentials)
     .create("Post", lastPost);
@@ -231,6 +226,12 @@ When("I choose {string} as the title of the post", title => {
 When("I type in the following text:", text => {
   lastPost.content = text.replace("\n", " ");
   cy.get(".editor .ProseMirror").type(lastPost.content);
+});
+
+Then("I select a category", () => {
+  cy.get("span")
+    .contains("Just for Fun")
+    .click();
 });
 
 Then("the post shows up on the landing page at position {int}", index => {
@@ -260,7 +261,9 @@ Then("the first post on the landing page has the title:", title => {
 Then(
   "the page {string} returns a 404 error with a message:",
   (route, message) => {
-    // TODO: how can we check HTTP codes with cypress?
+    cy.request({ url: route, failOnStatusCode: false })
+      .its("status")
+      .should("eq", 404);
     cy.visit(route, { failOnStatusCode: false });
     cy.get(".error").should("contain", message);
   }
@@ -354,7 +357,7 @@ When("mention {string} in the text", mention => {
 });
 
 Then("the notification gets marked as read", () => {
-  cy.get(".notification")
+  cy.get(".notifications-menu-popover .notification")
     .first()
     .should("have.class", "read");
 });
@@ -363,95 +366,108 @@ Then("there are no notifications in the top menu", () => {
   cy.get(".notifications-menu").should("contain", "0");
 });
 
-Given("there is an annoying user called {string}", (name) => {
+Given("there is an annoying user called {string}", name => {
   const annoyingParams = {
-    email: 'spammy-spammer@example.org',
-    password: '1234',
-  }
-  cy.factory().create('User', {
+    email: "spammy-spammer@example.org",
+    password: "1234"
+  };
+  cy.factory().create("User", {
     ...annoyingParams,
-    id: 'annoying-user',
+    id: "annoying-user",
     name
-  })
-})
+  });
+});
 
-Given("I am on the profile page of the annoying user", (name) => {
-  cy.openPage('/profile/annoying-user/spammy-spammer');
-})
+Given("I am on the profile page of the annoying user", name => {
+  cy.openPage("/profile/annoying-user/spammy-spammer");
+});
 
-When("I visit the profile page of the annoying user", (name) => {
-  cy.openPage('/profile/annoying-user');
-})
+When("I visit the profile page of the annoying user", name => {
+  cy.openPage("/profile/annoying-user");
+});
 
-When("I ", (name) => {
-  cy.openPage('/profile/annoying-user');
-})
+When("I ", name => {
+  cy.openPage("/profile/annoying-user");
+});
 
-When("I click on {string} from the content menu in the user info box", (button) => {
-  cy.get('.user-content-menu .content-menu-trigger')
-    .click()
-  cy.get('.popover .ds-menu-item-link')
-    .contains(button)
-    .click()
-})
+When(
+  "I click on {string} from the content menu in the user info box",
+  button => {
+    cy.get(".user-content-menu .content-menu-trigger").click();
+    cy.get(".popover .ds-menu-item-link")
+      .contains(button)
+      .click({ force: true });
+  }
+);
 
-When ("I navigate to my {string} settings page", (settingsPage) => {
+When("I navigate to my {string} settings page", settingsPage => {
   cy.get(".avatar-menu").click();
   cy.get(".avatar-menu-popover")
-    .find('a[href]').contains("Settings").click()
-  cy.contains('.ds-menu-item-link', settingsPage).click()
-})
+    .find("a[href]")
+    .contains("Settings")
+    .click();
+  cy.contains(".ds-menu-item-link", settingsPage).click();
+});
 
-Given("I follow the user {string}", (name) => {
+Given("I follow the user {string}", name => {
   cy.neode()
-    .first('User', { name }).then((followed) => {
+    .first("User", { name })
+    .then(followed => {
       cy.neode()
-        .first('User', {name: narratorParams.name})
-        .relateTo(followed, 'following')
-    })
-})
+        .first("User", { name: narratorParams.name })
+        .relateTo(followed, "following");
+    });
+});
 
-Given("\"Spammy Spammer\" wrote a post {string}", (title) => {
-  cy.factory()
+Given('"Spammy Spammer" wrote a post {string}', title => {
+  cy.createCategories("cat21")
+    .factory()
     .authenticateAs({
-      email: 'spammy-spammer@example.org',
-      password: '1234',
+      email: "spammy-spammer@example.org",
+      password: "1234"
     })
-    .create("Post", { title })
-})
+    .create("Post", { title, categoryIds: ["cat21"] });
+});
 
 Then("the list of posts of this user is empty", () => {
-  cy.get('.ds-card-content').not('.post-link')
-  cy.get('.main-container').find('.ds-space.hc-empty')
-})
+  cy.get(".ds-card-content").not(".post-link");
+  cy.get(".main-container").find(".ds-space.hc-empty");
+});
 
 Then("nobody is following the user profile anymore", () => {
-  cy.get('.ds-card-content').not('.post-link')
-  cy.get('.main-container').contains('.ds-card-content', 'is not followed by anyone')
-})
+  cy.get(".ds-card-content").not(".post-link");
+  cy.get(".main-container").contains(
+    ".ds-card-content",
+    "is not followed by anyone"
+  );
+});
 
-Given("I wrote a post {string}", (title) => {
-  cy.factory()
+Given("I wrote a post {string}", title => {
+  cy.createCategories(`cat213`, title)
+    .factory()
     .authenticateAs(loginCredentials)
-    .create("Post", { title })
-})
+    .create("Post", { title, categoryIds: ["cat213"] });
+});
 
-When("I block the user {string}", (name) => {
+When("I block the user {string}", name => {
   cy.neode()
-    .first('User', { name }).then((blocked) => {
+    .first("User", { name })
+    .then(blocked => {
       cy.neode()
-        .first('User', {name: narratorParams.name})
-        .relateTo(blocked, 'blocked')
-    })
-})
+        .first("User", { name: narratorParams.name })
+        .relateTo(blocked, "blocked");
+    });
+});
 
-When("I log in with:", (table) => {
-  const [firstRow] = table.hashes()
-  const { Email, Password } = firstRow
-  cy.login({email: Email, password: Password})
-})
+When("I log in with:", table => {
+  const [firstRow] = table.hashes();
+  const { Email, Password } = firstRow;
+  cy.login({ email: Email, password: Password });
+});
 
-Then("I see only one post with the title {string}", (title) => {
-  cy.get('.main-container').find('.post-link').should('have.length', 1)
-  cy.get('.main-container').contains('.post-link', title)
-})
+Then("I see only one post with the title {string}", title => {
+  cy.get(".main-container")
+    .find(".post-link")
+    .should("have.length", 1);
+  cy.get(".main-container").contains(".post-link", title);
+});

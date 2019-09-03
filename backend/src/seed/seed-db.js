@@ -44,42 +44,49 @@ import Factory from './factories'
       f.create('User', {
         id: 'u1',
         name: 'Peter Lustig',
+        slug: 'peter-lustig',
         role: 'admin',
         email: 'admin@example.org',
       }),
       f.create('User', {
         id: 'u2',
         name: 'Bob der Baumeister',
+        slug: 'bob-der-baumeister',
         role: 'moderator',
         email: 'moderator@example.org',
       }),
       f.create('User', {
         id: 'u3',
         name: 'Jenny Rostock',
+        slug: 'jenny-rostock',
         role: 'user',
         email: 'user@example.org',
       }),
       f.create('User', {
         id: 'u4',
-        name: 'Tick',
+        name: 'Huey (Tick)',
+        slug: 'huey-tick',
         role: 'user',
-        email: 'tick@example.org',
+        email: 'huey@example.org',
       }),
       f.create('User', {
         id: 'u5',
-        name: 'Trick',
+        name: 'Dewey (Trick)',
+        slug: 'dewey-trick',
         role: 'user',
-        email: 'trick@example.org',
+        email: 'dewey@example.org',
       }),
       f.create('User', {
         id: 'u6',
-        name: 'Track',
+        name: 'Louie (Track)',
+        slug: 'louie-track',
         role: 'user',
-        email: 'track@example.org',
+        email: 'louie@example.org',
       }),
       f.create('User', {
         id: 'u7',
         name: 'Dagobert',
+        slug: 'dagobert',
         role: 'user',
         email: 'dagobert@example.org',
       }),
@@ -99,15 +106,15 @@ import Factory from './factories'
         password: '1234',
       }),
       Factory().authenticateAs({
-        email: 'tick@example.org',
+        email: 'huey@example.org',
         password: '1234',
       }),
       Factory().authenticateAs({
-        email: 'trick@example.org',
+        email: 'dewey@example.org',
         password: '1234',
       }),
       Factory().authenticateAs({
-        email: 'track@example.org',
+        email: 'louie@example.org',
         password: '1234',
       }),
     ])
@@ -260,132 +267,91 @@ import Factory from './factories'
       'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
     const mention2 =
       'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
+    const hashtag1 =
+      'See <a class="hashtag" href="/search/hashtag/NaturphilosophieYoga">#NaturphilosophieYoga</a> can really help you!'
+    const hashtagAndMention1 =
+      'The new physics of <a class="hashtag" href="/search/hashtag/QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" href="/search/hashtag/QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
 
     await Promise.all([
       asAdmin.create('Post', {
         id: 'p0',
         image: faker.image.unsplash.food(),
+        categoryIds: ['cat16'],
       }),
       asModerator.create('Post', {
         id: 'p1',
         image: faker.image.unsplash.technology(),
+        categoryIds: ['cat1'],
       }),
       asUser.create('Post', {
         id: 'p2',
+        title: `Nature Philosophy Yoga`,
+        content: `${hashtag1}`,
+        categoryIds: ['cat2'],
       }),
       asTick.create('Post', {
         id: 'p3',
+        categoryIds: ['cat3'],
       }),
       asTrick.create('Post', {
         id: 'p4',
+        categoryIds: ['cat4'],
       }),
       asTrack.create('Post', {
         id: 'p5',
+        categoryIds: ['cat5'],
       }),
       asAdmin.create('Post', {
         id: 'p6',
         image: faker.image.unsplash.buildings(),
+        categoryIds: ['cat6'],
       }),
       asModerator.create('Post', {
         id: 'p7',
         content: `${mention1} ${faker.lorem.paragraph()}`,
+        categoryIds: ['cat7'],
       }),
       asUser.create('Post', {
         id: 'p8',
         image: faker.image.unsplash.nature(),
+        title: `Quantum Flow Theory explains Quantum Gravity`,
+        content: `${hashtagAndMention1}`,
+        categoryIds: ['cat8'],
       }),
       asTick.create('Post', {
         id: 'p9',
+        categoryIds: ['cat9'],
       }),
       asTrick.create('Post', {
         id: 'p10',
+        categoryIds: ['cat10'],
       }),
       asTrack.create('Post', {
         id: 'p11',
         image: faker.image.unsplash.people(),
+        categoryIds: ['cat11'],
       }),
       asAdmin.create('Post', {
         id: 'p12',
         content: `${mention2} ${faker.lorem.paragraph()}`,
+        categoryIds: ['cat12'],
       }),
       asModerator.create('Post', {
         id: 'p13',
+        categoryIds: ['cat13'],
       }),
       asUser.create('Post', {
         id: 'p14',
         image: faker.image.unsplash.objects(),
+        categoryIds: ['cat14'],
       }),
       asTick.create('Post', {
         id: 'p15',
+        categoryIds: ['cat15'],
       }),
     ])
 
     await Promise.all([
-      f.relate('Post', 'Categories', {
-        from: 'p0',
-        to: 'cat16',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p1',
-        to: 'cat1',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p2',
-        to: 'cat2',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p3',
-        to: 'cat3',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p4',
-        to: 'cat4',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p5',
-        to: 'cat5',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p6',
-        to: 'cat6',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p7',
-        to: 'cat7',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p8',
-        to: 'cat8',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p9',
-        to: 'cat9',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p10',
-        to: 'cat10',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p11',
-        to: 'cat11',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p12',
-        to: 'cat12',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p13',
-        to: 'cat13',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p14',
-        to: 'cat14',
-      }),
-      f.relate('Post', 'Categories', {
-        from: 'p15',
-        to: 'cat15',
-      }),
-
       f.relate('Post', 'Tags', {
         from: 'p0',
         to: 'Freiheit',
@@ -639,6 +605,11 @@ import Factory from './factories'
       }),
     ])
 
+    const mentionInComment1 =
+      'I heard <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, practice it since 3 years now.'
+    const mentionInComment2 =
+      'Did <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> told you?'
+
     await Promise.all([
       asUser.create('Comment', {
         id: 'c1',
@@ -655,6 +626,12 @@ import Factory from './factories'
       asTrick.create('Comment', {
         id: 'c4',
         postId: 'p2',
+        content: `${mentionInComment1}`,
+      }),
+      asUser.create('Comment', {
+        id: 'c4-1',
+        postId: 'p2',
+        content: `${mentionInComment2}`,
       }),
       asModerator.create('Comment', {
         id: 'c5',

@@ -1,9 +1,12 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { host, login, gql } from '../../jest/helpers'
+import { neode } from '../../bootstrap/neo4j'
 
-const factory = Factory()
 let client
+const factory = Factory()
+const instance = neode()
+const categoryIds = ['cat9']
 
 afterEach(async () => {
   await factory.cleanDatabase()
@@ -195,9 +198,15 @@ describe('users', () => {
             email: 'test@example.org',
             password: '1234',
           })
+          await instance.create('Category', {
+            id: 'cat9',
+            name: 'Democracy & Politics',
+            icon: 'university',
+          })
           await asAuthor.create('Post', {
             id: 'p139',
             content: 'Post by user u343',
+            categoryIds,
           })
           await asAuthor.create('Comment', {
             id: 'c155',

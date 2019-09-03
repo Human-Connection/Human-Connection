@@ -7,6 +7,7 @@ Feature: Block a User
     Given I have a user account
     And there is an annoying user called "Spammy Spammer"
     And I am logged in
+    And we have a selection of categories
 
   Scenario: Block a user
     Given I am on the profile page of the annoying user
@@ -25,6 +26,9 @@ Feature: Block a User
     And nobody is following the user profile anymore
 
   Scenario: Posts of blocked users are filtered from search results
+    Given we have the following posts in our database:
+      | Author              | id             | title                    | content               |
+      | Some unblocked user | im-not-blocked | Post that should be seen | cause I'm not blocked |
     Given "Spammy Spammer" wrote a post "Spam Spam Spam"
     When I search for "Spam"
     Then I should see the following posts in the select dropdown:
@@ -34,3 +38,7 @@ Feature: Block a User
     And I refresh the page
     And I search for "Spam"
     Then the search has no results
+    But I search for "not blocked"
+    Then I should see the following posts in the select dropdown:
+      | title                    |
+      | Post that should be seen |

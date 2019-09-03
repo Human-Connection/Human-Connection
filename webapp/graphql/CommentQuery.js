@@ -17,7 +17,7 @@ export default app => {
           deleted
           shoutedCount
           contributionsCount
-          commentsCount
+          commentedCount
           followedByCount
           followedByCurrentUser
           location {

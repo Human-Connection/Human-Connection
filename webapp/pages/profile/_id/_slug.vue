@@ -15,7 +15,7 @@
           </hc-upload>
           <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
           <!-- Menu -->
-          <no-ssr>
+          <client-only>
             <content-menu
               placement="bottom-end"
               resource-type="user"
@@ -25,7 +25,7 @@
               @block="block"
               @unblock="unblock"
             />
-          </no-ssr>
+          </client-only>
           <ds-space margin="small">
             <ds-heading tag="h3" align="center" no-margin>{{ userName }}</ds-heading>
             <ds-text v-if="user.location" align="center" color="soft" size="small">
@@ -41,18 +41,18 @@
           </ds-space>
           <ds-flex>
             <ds-flex-item>
-              <no-ssr>
+              <client-only>
                 <ds-number :label="$t('profile.followers')">
-                  <hc-count-to slot="count" :end-val="followedByCount" />
+                  <hc-count-to slot="count" :end-val="user.followedByCount" />
                 </ds-number>
-              </no-ssr>
+              </client-only>
             </ds-flex-item>
             <ds-flex-item>
-              <no-ssr>
+              <client-only>
                 <ds-number :label="$t('profile.following')">
-                  <hc-count-to slot="count" :end-val="Number(user.followingCount) || 0" />
+                  <hc-count-to slot="count" :end-val="user.followingCount" />
                 </ds-number>
-              </no-ssr>
+              </client-only>
             </ds-flex-item>
           </ds-flex>
           <ds-space margin="small">
@@ -89,14 +89,17 @@
           <template v-if="user.following && user.following.length">
             <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
-              <no-ssr>
+              <client-only>
                 <user :user="follow" :trunc="15" />
-              </no-ssr>
+              </client-only>
             </ds-space>
             <ds-space v-if="user.followingCount - user.following.length" margin="small">
               <ds-text size="small" color="softer">
-                {{ $t('profile.network.and') }} {{ user.followingCount - user.following.length }}
-                {{ $t('profile.network.more') }}
+                {{
+                  $t('profile.network.andMore', {
+                    number: user.followingCount - user.following.length,
+                  })
+                }}
               </ds-text>
             </ds-space>
           </template>
@@ -116,14 +119,17 @@
           <template v-if="user.followedBy && user.followedBy.length">
             <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
-              <no-ssr>
+              <client-only>
                 <user :user="follow" :trunc="15" />
-              </no-ssr>
+              </client-only>
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
               <ds-text size="small" color="softer">
-                {{ $t('profile.network.and') }} {{ user.followedByCount - user.followedBy.length }}
-                {{ $t('profile.network.more') }}
+                {{
+                  $t('profile.network.andMore', {
+                    number: user.followedByCount - user.followedBy.length,
+                  })
+                }}
               </ds-text>
             </ds-space>
           </template>
@@ -153,87 +159,95 @@
       </ds-flex-item>
 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
-        <ds-flex class="user-profile-posts-list" :width="{ base: '100%' }" gutter="small">
-          <ds-flex-item class="profile-top-navigation">
+        <masonry-grid class="user-profile-posts-list">
+          <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
                 <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'post' }">
                   <a @click="handleTab('post')">
                     <ds-space margin="small">
-                      <no-ssr placeholder="Loading...">
+                      <client-only placeholder="Loading...">
                         <ds-number :label="$t('common.post', null, user.contributionsCount)">
                           <hc-count-to slot="count" :end-val="user.contributionsCount" />
                         </ds-number>
-                      </no-ssr>
+                      </client-only>
                     </ds-space>
                   </a>
                 </li>
                 <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'comment' }">
                   <a @click="handleTab('comment')">
                     <ds-space margin="small">
-                      <no-ssr placeholder="Loading...">
+                      <client-only placeholder="Loading...">
                         <ds-number :label="$t('profile.commented')">
                           <hc-count-to slot="count" :end-val="user.commentedCount" />
                         </ds-number>
-                      </no-ssr>
+                      </client-only>
                     </ds-space>
                   </a>
                 </li>
                 <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'shout' }">
                   <a @click="handleTab('shout')">
                     <ds-space margin="small">
-                      <no-ssr placeholder="Loading...">
+                      <client-only placeholder="Loading...">
                         <ds-number :label="$t('profile.shouted')">
                           <hc-count-to slot="count" :end-val="user.shoutedCount" />
                         </ds-number>
-                      </no-ssr>
+                      </client-only>
                     </ds-space>
                   </a>
                 </li>
                 <li class="Tabs__presentation-slider" role="presentation"></li>
               </ul>
             </ds-card>
-          </ds-flex-item>
+          </ds-grid-item>
 
-          <ds-flex-item style="text-align: center">
-            <ds-button
-              v-if="myProfile"
-              v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
-              :path="{ name: 'post-create' }"
-              class="profile-post-add-button"
-              icon="plus"
-              size="large"
-              primary
-            />
-          </ds-flex-item>
+          <ds-grid-item :row-span="2" column-span="fullWidth">
+            <ds-space centered>
+              <ds-button
+                v-if="myProfile"
+                v-tooltip="{
+                  content: 'Create a new Post',
+                  placement: 'left',
+                  delay: { show: 500 },
+                }"
+                :path="{ name: 'post-create' }"
+                class="profile-post-add-button"
+                icon="plus"
+                size="large"
+                primary
+              />
+            </ds-space>
+          </ds-grid-item>
 
-          <template v-if="activePosts.length">
-            <hc-post-card
-              v-for="(post, index) in activePosts"
-              :key="post.id"
-              :post="post"
-              :width="{ base: '100%', md: '100%', xl: '50%' }"
-              @removePostFromList="removePostFromList(index)"
-            />
+          <template v-if="posts.length">
+            <masonry-grid-item v-for="(post, index) in posts" :key="post.id">
+              <hc-post-card
+                :post="post"
+                :width="{ base: '100%', md: '100%', xl: '50%' }"
+                @removePostFromList="removePostFromList(index)"
+              />
+            </masonry-grid-item>
           </template>
           <template v-else-if="$apollo.loading">
-            <ds-flex-item>
-              <ds-section centered>
+            <ds-grid-item column-span="fullWidth">
+              <ds-space centered>
                 <ds-spinner size="base"></ds-spinner>
-              </ds-section>
-            </ds-flex-item>
+              </ds-space>
+            </ds-grid-item>
           </template>
           <template v-else>
-            <ds-flex-item :width="{ base: '100%' }">
+            <ds-grid-item column-span="fullWidth">
               <hc-empty margin="xx-large" icon="file" />
-            </ds-flex-item>
+            </ds-grid-item>
           </template>
-        </ds-flex>
+        </masonry-grid>
         <div
           v-if="hasMore"
           v-infinite-scroll="showMoreContributions"
-          infinite-scroll-disabled="$apollo.loading"
-          infinite-scroll-distance="10"
+          :infinite-scroll-disabled="$apollo.loading"
+          :infinite-scroll-distance="10"
+          :infinite-scroll-throttle-delay="800"
+          :infinite-scroll-immediate-check="true"
         >
           <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
         </div>
@@ -254,9 +268,11 @@ import HcEmpty from '~/components/Empty.vue'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
-import PostQuery from '~/graphql/UserProfile/Post.js'
-import UserQuery from '~/graphql/UserProfile/User.js'
-import { Block, Unblock } from '~/graphql/settings/BlockedUsers.js'
+import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
+import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
+import { filterPosts } from '~/graphql/PostQuery'
+import UserQuery from '~/graphql/User'
+import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -279,6 +295,8 @@ export default {
     HcAvatar,
     ContentMenu,
     HcUpload,
+    MasonryGrid,
+    MasonryGridItem,
   },
   transition: {
     name: 'slide-up',
@@ -288,36 +306,20 @@ export default {
     const filter = tabToFilterMapping({ tab: 'post', id: this.$route.params.id })
     return {
       User: [],
-      Post: [],
-      activePosts: [],
-      voted: false,
-      page: 1,
+      posts: [],
+      hasMore: false,
+      offset: 0,
       pageSize: 6,
       tabActive: 'post',
       filter,
     }
   },
   computed: {
-    hasMore() {
-      const total = {
-        post: this.user.contributionsCount,
-        shout: this.user.shoutedCount,
-        comment: this.user.commentedCount,
-      }[this.tabActive]
-      return this.Post && this.Post.length < total
-    },
     myProfile() {
       return this.$route.params.id === this.$store.getters['auth/user'].id
     },
-    followedByCount() {
-      let count = Number(this.user.followedByCount) || 0
-      return count
-    },
     user() {
       return this.User ? this.User[0] : {}
-    },
-    offset() {
-      return (this.page - 1) * this.pageSize
     },
     socialMediaLinks() {
       const { socialMedia = [] } = this.user
@@ -341,19 +343,15 @@ export default {
         throw new Error('User not found!')
       }
     },
-    Post(val) {
-      this.activePosts = this.setActivePosts()
-    },
   },
   methods: {
     removePostFromList(index) {
-      this.activePosts.splice(index, 1)
-      this.$apollo.queries.User.refetch()
+      this.posts.splice(index, 1)
     },
     handleTab(tab) {
       this.tabActive = tab
-      this.Post = null
       this.filter = tabToFilterMapping({ tab, id: this.$route.params.id })
+      this.resetPostList()
     },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
@@ -363,54 +361,48 @@ export default {
       this.$apollo.queries.User.refetch()
     },
     showMoreContributions() {
-      // this.page++
-      // Fetch more data and transform the original result
-      this.page++
-      this.$apollo.queries.Post.fetchMore({
-        variables: {
-          filter: this.filter,
-          first: this.pageSize,
-          offset: this.offset,
-        },
-        // Transform the previous result with new data
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          let output = { Post: this.Post }
-          output.Post = [...previousResult.Post, ...fetchMoreResult.Post]
-          return output
-        },
-        fetchPolicy: 'cache-and-network',
-      })
+      this.offset += this.pageSize
     },
-    setActivePosts() {
-      if (!this.Post) {
-        return []
-      }
-      return this.uniq(this.Post.filter(post => !post.deleted))
+    resetPostList() {
+      this.offset = 0
+      this.posts = []
+      this.hasMore = false
     },
     async block(user) {
       await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
+      this.resetPostList()
       this.$apollo.queries.Post.refetch()
     },
     async unblock(user) {
       await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
+      this.resetPostList()
       this.$apollo.queries.Post.refetch()
     },
   },
   apollo: {
     Post: {
       query() {
-        return PostQuery(this.$i18n)
+        return filterPosts(this.$i18n)
       },
       variables() {
         return {
           filter: this.filter,
           first: this.pageSize,
-          offset: 0,
+          offset: this.offset,
+          orderBy: 'createdAt_desc',
         }
       },
       fetchPolicy: 'cache-and-network',
+      update({ Post }) {
+        if (!Post) return
+        // TODO: find out why `update` gets called twice initially.
+        // We have to filter for uniq posts only because we get the same
+        // result set twice.
+        this.hasMore = Post.length >= this.pageSize
+        this.posts = this.uniq([...this.posts, ...Post])
+      },
     },
     User: {
       query() {
@@ -439,6 +431,8 @@ export default {
 .Tabs {
   position: relative;
   background-color: #fff;
+  height: 100%;
+
   &:after {
     content: ' ';
     display: table;
@@ -447,10 +441,13 @@ export default {
   margin: 0;
   padding: 0;
   list-style: none;
+
   &__tab {
     float: left;
     width: 33.333%;
     text-align: center;
+    height: 100%;
+
     &:first-child.active ~ .Tabs__presentation-slider {
       left: 0;
     }

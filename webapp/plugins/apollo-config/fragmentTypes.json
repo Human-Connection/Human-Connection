@@ -1,0 +1,18 @@
+{
+  "__schema": {
+    "types": [
+      {
+        "kind": "UNION",
+        "name": "NotificationSource",
+        "possibleTypes": [
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Comment"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -69,41 +69,26 @@ export const actions = {
     const {
       data: { currentUser },
     } = await client.query({
-      query: gql(`{
-        currentUser {
-          id
-          name
-          slug
-          email
-          avatar
-          role
-          about
-          locationName
-          contributionsCount
-          commentsCount
-          socialMedia {
+      query: gql`
+        query {
+          currentUser {
             id
-            url
-          }
-          notifications(read: false, orderBy: createdAt_desc) {
-            id
-            read
-            createdAt
-            post {
-              author {
-                id
-                slug
-                name
-                disabled
-                deleted
-              }
-              title
-              contentExcerpt
-              slug
+            name
+            slug
+            email
+            avatar
+            role
+            about
+            locationName
+            contributionsCount
+            commentedCount
+            socialMedia {
+              id
+              url
             }
           }
         }
-      }`),
+      `,
     })
     if (!currentUser) return dispatch('logout')
     commit('SET_USER', currentUser)
@@ -122,7 +107,10 @@ export const actions = {
               login(email: $email, password: $password)
             }
           `),
-        variables: { email, password },
+        variables: {
+          email,
+          password,
+        },
       })
       await this.app.$apolloHelpers.onLogin(login)
       commit('SET_TOKEN', login)
@@ -139,10 +127,4 @@ export const actions = {
     commit('SET_TOKEN', null)
     return this.app.$apolloHelpers.onLogout()
   },
-
-  register({ dispatch, commit }, { email, password, inviteCode, invitedByUserId }) {},
-  async patch({ state, commit, dispatch }, data) {},
-  resendVerifySignup({ state, dispatch }) {},
-  resetPassword({ state }, data) {},
-  setNewPassword({ state }, data) {},
 }

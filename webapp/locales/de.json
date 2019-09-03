@@ -1,4 +1,8 @@
 {
+  "index": {
+    "no-results": "Keine Beiträge gefunden.",
+    "change-filter-settings": "Verändere die Filter-Einstellungen um mehr Ergebnisse zu erhalten."
+  },
   "filter-menu": {
     "title": "Deine Filterblase",
     "hashtag-search": "Suche nach #{hashtag}",
@@ -10,7 +14,7 @@
       "all": "Alle"
     },
     "general": {
-      "header": "Filtern nach..."
+      "header": "Filtern nach …"
     },
     "followers": {
       "label": "Benutzern, denen ich folge"
@@ -92,7 +96,7 @@
     }
   },
   "editor": {
-    "placeholder": "Schreib etwas Inspirierendes...",
+    "placeholder": "Schreib etwas Inspirierendes …",
     "mention": {
       "noUsersFound": "Keine Benutzer gefunden"
     },
@@ -118,13 +122,19 @@
       "followingNobody": "folgt niemandem.",
       "followedBy": "wird gefolgt von:",
       "followedByNobody": "wird von niemandem gefolgt.",
-      "and": "und",
-      "more": "weitere"
+      "andMore": "und {number} weitere …"
+    },
+    "invites": {
+      "title": "Lade jemanden zu Human Connection ein!",
+      "description": "Für die Einladung trage seine E-Mail-Adresse hier ein.",
+      "emailPlaceholder": "E-Mail-Adresse für die Einladung"
     }
   },
   "notifications": {
     "menu": {
-      "mentioned": "hat dich in einem Beitrag erwähnt"
+      "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …",
+      "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
+      "commented_on_post": "Hat deinen Beitrag kommentiert …"
     }
   },
   "search": {
@@ -171,7 +181,7 @@
     "deleteUserAccount": {
       "name": "Daten löschen",
       "contributionsCount": "Meine {count} Beiträge löschen",
-      "commentsCount": "Meine {count} Kommentare löschen",
+      "commentedCount": "Meine {count} Kommentare löschen",
       "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
       "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
       "success": "Konto erfolgreich gelöscht!",
@@ -267,8 +277,8 @@
     },
     "invites": {
       "name": "Benutzer einladen",
-      "title": "Benutzer als Admin anmelden",
-      "description": "Dieses Anmeldeformular ist zu sehen sobald die Anmeldung öffentlich zugänglich ist."
+      "title": "Leute einladen",
+      "description": "Einladungen sind ein wunderbarer Weg, deine Freund in deinem Netzwerk zu haben …"
     }
   },
   "post": {
@@ -296,7 +306,7 @@
   },
   "comment": {
     "content": {
-      "unavailable-placeholder": "...dieser Kommentar ist nicht mehr verfügbar"
+      "unavailable-placeholder": "… dieser Kommentar ist nicht mehr verfügbar"
     },
     "menu": {
       "edit": "Kommentar bearbeiten",

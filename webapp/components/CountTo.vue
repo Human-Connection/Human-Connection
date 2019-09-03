@@ -1,6 +1,6 @@
 <template>
   <span>
-    <no-ssr placeholder="0" tag="span">
+    <client-only placeholder="0" tag="span">
       <count-to
         :start-val="startVal"
         :end-val="endVal"
@@ -8,7 +8,7 @@
         :autoplay="autoplay"
         :separator="separator"
       />
-    </no-ssr>
+    </client-only>
   </span>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   },
   props: {
     startVal: { type: Number, default: 0 },
-    endVal: { type: Number, required: true },
+    endVal: { type: Number, default: 0 },
     duration: { type: Number, default: 3000 },
     autoplay: { type: Boolean, default: true },
     separator: { type: String, default: '.' },

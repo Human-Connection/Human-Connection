@@ -1,4 +1,8 @@
 {
+  "index": {
+    "no-results": "No contributions found.",
+    "change-filter-settings": "Change your filter settings to get more results."
+  },
   "filter-menu": {
     "title": "Your filter bubble",
     "hashtag-search": "Searching for #{hashtag}",
@@ -10,7 +14,7 @@
       "all": "All"
     },
     "general": {
-      "header": "Filter by..."
+      "header": "Filter by …"
     },
     "followers": {
       "label": "Users I follow"
@@ -92,7 +96,7 @@
     }
   },
   "editor": {
-    "placeholder": "Leave your inspirational thoughts...",
+    "placeholder": "Leave your inspirational thoughts …",
     "mention": {
       "noUsersFound": "No users found"
     },
@@ -118,13 +122,19 @@
       "followingNobody": "follows nobody.",
       "followedBy": "is followed by:",
       "followedByNobody": "is not followed by anyone.",
-      "and": "and",
-      "more": "more"
+      "andMore": "and {number} more …"
+    },
+    "invites": {
+      "title": "Invite somebody to Human Connection!",
+      "description": "Enter thier email address for invitation.",
+      "emailPlaceholder": "Email to invite"
     }
   },
   "notifications": {
     "menu": {
-      "mentioned": "mentioned you in a post"
+      "mentioned_in_post": "Mentioned you in a post …",
+      "mentioned_in_comment": "Mentioned you in a comment …",
+      "commented_on_post": "Commented on your post …"
     }
   },
   "search": {
@@ -171,7 +181,7 @@
     "deleteUserAccount": {
       "name": "Delete data",
       "contributionsCount": "Delete my {count} posts",
-      "commentsCount": "Delete my {count} comments",
+      "commentedCount": "Delete my {count} comments",
       "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
       "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
       "success": "Account successfully deleted!",
@@ -267,8 +277,8 @@
     },
     "invites": {
       "name": "Invite users",
-      "title": "Signup users as admin",
-      "description": "This registration form will be visible as soon as the registration is open to the public."
+      "title": "Invite people",
+      "description": "Invitations are a wonderful way to have your friends in your network …"
     }
   },
   "post": {
@@ -296,7 +306,7 @@
   },
   "comment": {
     "content": {
-      "unavailable-placeholder": "...this comment is not available anymore"
+      "unavailable-placeholder": "… this comment is not available anymore"
     },
     "menu": {
       "edit": "Edit Comment",

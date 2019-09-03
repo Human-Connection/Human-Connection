@@ -54,6 +54,7 @@ describe('FilterPosts.vue', () => {
       'postsFilter/TOGGLE_CATEGORY': jest.fn(),
     }
     getters = {
+      'postsFilter/isActive': () => false,
       'auth/user': () => {
         return { id: 'u34' }
       },
@@ -63,7 +64,7 @@ describe('FilterPosts.vue', () => {
     const openFilterPosts = () => {
       const store = new Vuex.Store({ mutations, getters })
       const wrapper = mount(FilterPosts, { mocks, localVue, propsData, store })
-      menuToggle = wrapper.findAll('a').at(0)
+      menuToggle = wrapper.findAll('button').at(0)
       menuToggle.trigger('click')
       return wrapper
     }
@@ -81,13 +82,13 @@ describe('FilterPosts.vue', () => {
 
     it('starts with all categories button active', () => {
       const wrapper = openFilterPosts()
-      allCategoriesButton = wrapper.findAll('button').at(0)
+      allCategoriesButton = wrapper.findAll('button').at(1)
       expect(allCategoriesButton.attributes().class).toContain('ds-button-primary')
     })
 
     it('calls TOGGLE_CATEGORY when clicked', () => {
       const wrapper = openFilterPosts()
-      environmentAndNatureButton = wrapper.findAll('button').at(1)
+      environmentAndNatureButton = wrapper.findAll('button').at(2)
       environmentAndNatureButton.trigger('click')
       expect(mutations['postsFilter/TOGGLE_CATEGORY']).toHaveBeenCalledWith({}, 'cat4')
     })
@@ -95,7 +96,7 @@ describe('FilterPosts.vue', () => {
     it('sets category button attribute `primary` when corresponding category is filtered', () => {
       getters['postsFilter/filteredCategoryIds'] = jest.fn(() => ['cat9'])
       const wrapper = openFilterPosts()
-      democracyAndPoliticsButton = wrapper.findAll('button').at(3)
+      democracyAndPoliticsButton = wrapper.findAll('button').at(4)
       expect(democracyAndPoliticsButton.attributes().class).toContain('ds-button-primary')
     })
 

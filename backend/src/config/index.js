@@ -11,6 +11,8 @@ const {
   SMTP_PORT,
   SMTP_USERNAME,
   SMTP_PASSWORD,
+  SENTRY_DSN_BACKEND,
+  COMMIT,
   NEO4J_URI = 'bolt://localhost:7687',
   NEO4J_USERNAME = 'neo4j',
   NEO4J_PASSWORD = 'neo4j',
@@ -31,10 +33,12 @@ export const neo4jConfigs = { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD }
 export const serverConfigs = { GRAPHQL_PORT, CLIENT_URI, GRAPHQL_URI }
 
 export const developmentConfigs = {
-  DEBUG: process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true',
+  DEBUG: process.env.NODE_ENV !== 'production' && process.env.DEBUG,
   DISABLED_MIDDLEWARES:
     (process.env.NODE_ENV !== 'production' && process.env.DISABLED_MIDDLEWARES) || '',
 }
+
+export const sentryConfigs = { SENTRY_DSN_BACKEND, COMMIT }
 
 export default {
   ...requiredConfigs,
@@ -42,4 +46,5 @@ export default {
   ...neo4jConfigs,
   ...serverConfigs,
   ...developmentConfigs,
+  ...sentryConfigs,
 }

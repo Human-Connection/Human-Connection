@@ -8,7 +8,7 @@
       <ds-space margin-bottom="small" />
       <hc-user :user="post.author" :date-time="post.createdAt" />
       <!-- Content Menu (can open Modals) -->
-      <no-ssr>
+      <client-only>
         <content-menu
           placement="bottom-end"
           resource-type="contribution"
@@ -16,7 +16,7 @@
           :modalsData="menuModalsData"
           :is-owner="isAuthor(post.author ? post.author.id : null)"
         />
-      </no-ssr>
+      </client-only>
       <ds-space margin-bottom="small" />
       <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
@@ -81,10 +81,10 @@ import HcTag from '~/components/Tag'
 import ContentMenu from '~/components/ContentMenu'
 import HcUser from '~/components/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcCommentForm from '~/components/comments/CommentForm'
-import HcCommentList from '~/components/comments/CommentList'
+import HcCommentForm from '~/components/CommentForm/CommentForm'
+import HcCommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
-import PostQuery from '~/graphql/PostQuery.js'
+import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
 
 export default {
@@ -122,29 +122,6 @@ export default {
       this.title = this.post.title
     },
   },
-  async asyncData(context) {
-    const {
-      params,
-      error,
-      app: { apolloProvider, $i18n },
-    } = context
-    const client = apolloProvider.defaultClient
-    const query = PostQuery($i18n)
-    const variables = { slug: params.slug }
-    const {
-      data: { Post },
-    } = await client.query({ query, variables })
-    if (Post.length <= 0) {
-      // TODO: custom 404 error page with translations
-      const message = 'This post could not be found'
-      return error({ statusCode: 404, message })
-    }
-    const [post] = Post
-    return {
-      post,
-      title: post.title,
-    }
-  },
   mounted() {
     setTimeout(() => {
       // NOTE: quick fix for jumping flexbox implementation
@@ -175,6 +152,19 @@ export default {
       }
     },
   },
+  apollo: {
+    Post: {
+      query() {
+        return PostQuery(this.$i18n)
+      },
+      variables() {
+        return {
+          id: this.$route.params.id,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>
 
@@ -187,7 +177,6 @@ export default {
   }
 
   .post-card {
-    // max-width: 800px;
     margin: auto;
 
     .comments {

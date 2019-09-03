@@ -18,6 +18,7 @@ install:
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --build -d
     # avoid "Database constraints have changed after this transaction started"
   - wait-on http://localhost:7474
+  - docker-compose exec neo4j db_setup
 
 script:
   - export CYPRESS_RETRIES=1

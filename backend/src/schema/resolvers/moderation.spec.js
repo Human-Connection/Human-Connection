@@ -1,9 +1,12 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { host, login, gql } from '../../jest/helpers'
+import { neode } from '../../bootstrap/neo4j'
 
-const factory = Factory()
 let client
+const factory = Factory()
+const instance = neode()
+const categoryIds = ['cat9']
 
 const setupAuthenticateClient = params => {
   const authenticateClient = async () => {
@@ -19,11 +22,16 @@ let authenticateClient
 let createPostVariables
 let createCommentVariables
 
-beforeEach(() => {
+beforeEach(async () => {
   createResource = () => {}
   authenticateClient = () => {
     client = new GraphQLClient(host)
   }
+  await instance.create('Category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    icon: 'university',
+  })
 })
 
 const setup = async () => {
@@ -36,7 +44,7 @@ afterEach(async () => {
 })
 
 describe('disable', () => {
-  const mutation = `
+  const mutation = gql`
     mutation($id: ID!) {
       disable(id: $id)
     }
@@ -108,6 +116,7 @@ describe('disable', () => {
             id: 'p3',
             title: 'post to comment on',
             content: 'please comment on me',
+            categoryIds,
           }
           createCommentVariables = {
             id: 'c47',
@@ -173,6 +182,7 @@ describe('disable', () => {
             await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
             await factory.create('Post', {
               id: 'p9', // that's the ID we will look for
+              categoryIds,
             })
           }
         })
@@ -214,7 +224,7 @@ describe('disable', () => {
 })
 
 describe('enable', () => {
-  const mutation = `
+  const mutation = gql`
     mutation($id: ID!) {
       enable(id: $id)
     }
@@ -286,6 +296,7 @@ describe('enable', () => {
             id: 'p9',
             title: 'post to comment on',
             content: 'please comment on me',
+            categoryIds,
           }
           createCommentVariables = {
             id: 'c456',
@@ -305,7 +316,7 @@ describe('enable', () => {
             await asAuthenticatedUser.create('Post', createPostVariables)
             await asAuthenticatedUser.create('Comment', createCommentVariables)
 
-            const disableMutation = `
+            const disableMutation = gql`
               mutation {
                 disable(id: "c456")
               }
@@ -362,9 +373,10 @@ describe('enable', () => {
             await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
             await factory.create('Post', {
               id: 'p9', // that's the ID we will look for
+              categoryIds,
             })
 
-            const disableMutation = `
+            const disableMutation = gql`
               mutation {
                 disable(id: "p9")
               }

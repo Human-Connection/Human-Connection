@@ -8,7 +8,6 @@ import createComment from './comments.js'
 import createCategory from './categories.js'
 import createTag from './tags.js'
 import createReport from './reports.js'
-import createNotification from './notifications.js'
 
 export const seedServerHost = 'http://127.0.0.1:4001'
 
@@ -31,7 +30,6 @@ const factories = {
   Category: createCategory,
   Tag: createTag,
   Report: createReport,
-  Notification: createNotification,
 }
 
 export const cleanDatabase = async (options = {}) => {
@@ -62,15 +60,26 @@ export default function Factory(options = {}) {
     lastResponse: null,
     neodeInstance,
     async authenticateAs({ email, password }) {
-      const headers = await authenticatedHeaders({ email, password }, seedServerHost)
+      const headers = await authenticatedHeaders(
+        {
+          email,
+          password,
+        },
+        seedServerHost,
+      )
       this.lastResponse = headers
-      this.graphQLClient = new GraphQLClient(seedServerHost, { headers })
+      this.graphQLClient = new GraphQLClient(seedServerHost, {
+        headers,
+      })
       return this
     },
     async create(node, args = {}) {
       const { factory, mutation, variables } = this.factories[node](args)
       if (factory) {
-        this.lastResponse = await factory({ args, neodeInstance })
+        this.lastResponse = await factory({
+          args,
+          neodeInstance,
+        })
         return this.lastResponse
       } else {
         this.lastResponse = await this.graphQLClient.request(mutation, variables)
@@ -121,11 +130,15 @@ export default function Factory(options = {}) {
     },
     async invite({ email }) {
       const mutation = ` mutation($email: String!) { invite( email: $email) } `
-      this.lastResponse = await this.graphQLClient.request(mutation, { email })
+      this.lastResponse = await this.graphQLClient.request(mutation, {
+        email,
+      })
       return this
     },
     async cleanDatabase() {
-      this.lastResponse = await cleanDatabase({ driver: this.neo4jDriver })
+      this.lastResponse = await cleanDatabase({
+        driver: this.neo4jDriver,
+      })
       return this
     },
     async emote({ to, data }) {

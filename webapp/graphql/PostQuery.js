@@ -3,16 +3,46 @@ import gql from 'graphql-tag'
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
-      query Post($slug: String!) {
-        Post(slug: $slug) {
+    query Post($id: ID!) {
+      Post(id: $id) {
+        id
+        title
+        content
+        createdAt
+        disabled
+        deleted
+        slug
+        image
+        author {
           id
-          title
+          slug
+          name
+          avatar
+          disabled
+          deleted
+          shoutedCount
+          contributionsCount
+          commentedCount
+          followedByCount
+          followedByCurrentUser
+          location {
+            name: name${lang}
+          }
+          badges {
+            id
+            icon
+          }
+        }
+        tags {
+          id
+        }
+        comments(orderBy: createdAt_asc) {
+          id
+          contentExcerpt
           content
           createdAt
           disabled
           deleted
-          slug
-          image
           author {
             id
             slug
@@ -22,7 +52,7 @@ export default i18n => {
             deleted
             shoutedCount
             contributionsCount
-            commentsCount
+            commentedCount
             followedByCount
             followedByCurrentUser
             location {
@@ -33,48 +63,18 @@ export default i18n => {
               icon
             }
           }
-          tags {
-            id
-          }
-          commentsCount
-          comments(orderBy: createdAt_desc) {
-            id
-            contentExcerpt
-            createdAt
-            disabled
-            deleted
-            author {
-              id
-              slug
-              name
-              avatar
-              disabled
-              deleted
-              shoutedCount
-              contributionsCount
-              commentsCount
-              followedByCount
-              followedByCurrentUser
-              location {
-                name: name${lang}
-              }
-              badges {
-                id
-                icon
-              }
-            }
-          }
-          categories {
-            id
-            name
-            icon
-          }
-          shoutedCount
-          shoutedByCurrentUser
-          emotionsCount
         }
+        categories {
+          id
+          name
+          icon
+        }
+        shoutedCount
+        shoutedByCurrentUser
+        emotionsCount
       }
-    `
+    }
+  `
 }
 
 export const filterPosts = i18n => {
@@ -99,7 +99,7 @@ export const filterPosts = i18n => {
         deleted
         contributionsCount
         shoutedCount
-        commentsCount
+        commentedCount
         followedByCount
         followedByCurrentUser
         location {
@@ -110,7 +110,6 @@ export const filterPosts = i18n => {
           icon
         }
       }
-      commentsCount
       categories {
         id
         name

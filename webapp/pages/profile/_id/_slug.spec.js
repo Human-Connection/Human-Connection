@@ -13,7 +13,7 @@ localVue.use(Filters)
 localVue.use(InfiniteScroll)
 localVue.filter('date', d => d)
 
-config.stubs['no-ssr'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
@@ -104,9 +104,7 @@ describe('ProfileSlug', () => {
 
           describe('currently no posts available (e.g. after tab switching)', () => {
             beforeEach(() => {
-              wrapper.setData({
-                Post: null,
-              })
+              wrapper.setData({ posts: [], hasMore: false })
             })
 
             it('displays no "load more" button', () => {
@@ -137,9 +135,7 @@ describe('ProfileSlug', () => {
                 }
               })
 
-              wrapper.setData({
-                Post: posts,
-              })
+              wrapper.setData({ posts, hasMore: true })
             })
 
             it('displays a "load more" button', () => {
@@ -170,9 +166,7 @@ describe('ProfileSlug', () => {
                 }
               })
 
-              wrapper.setData({
-                Post: posts,
-              })
+              wrapper.setData({ posts, hasMore: false })
             })
 
             it('displays no "load more" button', () => {

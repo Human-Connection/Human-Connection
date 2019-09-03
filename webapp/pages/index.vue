@@ -1,10 +1,10 @@
 <template>
   <div>
-    <ds-flex :width="{ base: '100%' }" gutter="base">
-      <ds-flex-item>
+    <masonry-grid>
+      <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
-      </ds-flex-item>
-      <ds-flex-item>
+      </ds-grid-item>
+      <ds-grid-item :row-span="2" column-span="fullWidth">
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -14,16 +14,29 @@
             @input="toggleOnlySorting"
           ></ds-select>
         </div>
-      </ds-flex-item>
-      <hc-post-card
-        v-for="post in posts"
-        :key="post.id"
-        :post="post"
-        :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-        @removePostFromList="deletePost(index, post.id)"
-      />
-    </ds-flex>
-    <no-ssr>
+      </ds-grid-item>
+      <template v-if="hasResults">
+        <masonry-grid-item v-for="post in posts" :key="post.id">
+          <hc-post-card
+            :post="post"
+            :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
+            @removePostFromList="deletePost(index, post.id)"
+          />
+        </masonry-grid-item>
+      </template>
+      <template v-else>
+        <ds-grid-item :row-span="2" column-span="fullWidth">
+          <hc-empty icon="docs" />
+          <ds-text align="center">
+            {{ $t('index.no-results') }}
+          </ds-text>
+          <ds-text align="center">
+            {{ $t('index.change-filter-settings') }}
+          </ds-text>
+        </ds-grid-item>
+      </template>
+    </masonry-grid>
+    <client-only>
       <ds-button
         v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
         :path="{ name: 'post-create' }"
@@ -32,14 +45,14 @@
         size="x-large"
         primary
       />
-    </no-ssr>
+    </client-only>
     <div
       v-if="hasMore"
       v-infinite-scroll="showMoreContributions"
-      :infinite-scroll-immediate-check="true"
       :infinite-scroll-disabled="$apollo.loading"
       :infinite-scroll-distance="10"
       :infinite-scroll-throttle-delay="800"
+      :infinite-scroll-immediate-check="true"
     >
       <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
     </div>
@@ -49,8 +62,11 @@
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import uniqBy from 'lodash/uniqBy'
+import HcEmpty from '~/components/Empty'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
+import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
+import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 
@@ -59,6 +75,9 @@ export default {
     FilterMenu,
     HcPostCard,
     HcLoadMore,
+    HcEmpty,
+    MasonryGrid,
+    MasonryGridItem,
   },
   data() {
     const { hashtag = null } = this.$route.query
@@ -96,7 +115,7 @@ export default {
           label: this.$t('sorting.commented'),
           value: 'Commented',
           icons: 'comment',
-          order: 'commentsCount_desc',
+          order: 'commentedCount_desc',
         },
       ],
     }
@@ -110,10 +129,13 @@ export default {
       if (this.hashtag) {
         filter = {
           ...filter,
-          tags_some: { name: this.hashtag },
+          tags_some: { id: this.hashtag },
         }
       }
       return filter
+    },
+    hasResults() {
+      return this.$apollo.loading || (this.posts && this.posts.length > 0)
     },
   },
   watch: {
@@ -163,9 +185,6 @@ export default {
         return result
       },
       update({ Post }) {
-        // TODO: find out why `update` gets called twice initially.
-        // We have to filter for uniq posts only because we get the same
-        // result set twice.
         this.hasMore = Post.length >= this.pageSize
         const posts = uniqBy([...this.posts, ...Post], 'id')
         this.posts = posts
@@ -177,6 +196,21 @@ export default {
 </script>
 
 <style lang="scss">
+.masonry-grid {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 20px;
+}
+
+.grid-item {
+  grid-row-end: span 2;
+
+  &--full-width {
+    grid-column: 1 / -1;
+  }
+}
+
 .post-add-button {
   z-index: 100;
   position: fixed;
@@ -191,5 +225,6 @@ export default {
   position: relative;
   float: right;
   padding: 0 18px;
+  margin: 4px 0;
 }
 </style>

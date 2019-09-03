@@ -1,11 +1,15 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../seed/factories'
 import { host, login } from '../jest/helpers'
+import { neode } from '../bootstrap/neo4j'
 
 const factory = Factory()
+const instance = neode()
+
 let client
 let query
 let action
+const categoryIds = ['cat9']
 
 beforeAll(async () => {
   // For performance reasons we do this only once
@@ -26,13 +30,23 @@ beforeAll(async () => {
       email: 'troll@example.org',
       password: '1234',
     }),
+    instance.create('Category', {
+      id: 'cat9',
+      name: 'Democracy & Politics',
+      icon: 'university',
+    }),
   ])
 
   await factory.authenticateAs({ email: 'user@example.org', password: '1234' })
   await Promise.all([
     factory.follow({ id: 'u2', type: 'User' }),
-    factory.create('Post', { id: 'p1', title: 'Deleted post', deleted: true }),
-    factory.create('Post', { id: 'p3', title: 'Publicly visible post', deleted: false }),
+    factory.create('Post', { id: 'p1', title: 'Deleted post', deleted: true, categoryIds }),
+    factory.create('Post', {
+      id: 'p3',
+      title: 'Publicly visible post',
+      deleted: false,
+      categoryIds,
+    }),
   ])
 
   await Promise.all([
@@ -53,6 +67,7 @@ beforeAll(async () => {
     content: 'This is an offensive post content',
     image: '/some/offensive/image.jpg',
     deleted: false,
+    categoryIds,
   })
   await asTroll.create('Comment', { id: 'c1', postId: 'p3', content: 'Disabled comment' })
   await Promise.all([asTroll.relate('Comment', 'Author', { from: 'u2', to: 'c1' })])
