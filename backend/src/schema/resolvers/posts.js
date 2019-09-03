@@ -143,6 +143,7 @@ export default {
 
     DeletePost: async (object, args, context, resolveInfo) => {
       const session = context.driver.session()
+      // we cannot set slug to 'UNAVAILABE' because of unique constraints
       const transactionRes = await session.run(
         `
         MATCH (post:Post {id: $postId})
@@ -151,6 +152,7 @@ export default {
         SET post.image          = 'UNAVAILABLE'
         SET post.content        = 'UNAVAILABLE'
         SET post.contentExcerpt = 'UNAVAILABLE'
+        SET post.title          = 'UNAVAILABLE'
         SET comment.deleted     = TRUE
         RETURN post
       `,

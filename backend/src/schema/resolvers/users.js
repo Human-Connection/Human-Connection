@@ -123,6 +123,8 @@ export default {
             }),
           )
         }
+
+        // we cannot set slug to 'UNAVAILABE' because of unique constraints
         const transactionResult = await session.run(
           `
           MATCH (user:User {id: $userId})

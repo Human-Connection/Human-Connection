@@ -18,6 +18,7 @@ const obfuscate = async (resolve, root, args, context, info) => {
     root.content = 'UNAVAILABLE'
     root.contentExcerpt = 'UNAVAILABLE'
     root.title = 'UNAVAILABLE'
+    root.slug = 'UNAVAILABLE'
     root.image = 'UNAVAILABLE'
     root.avatar = 'UNAVAILABLE'
     root.about = 'UNAVAILABLE'

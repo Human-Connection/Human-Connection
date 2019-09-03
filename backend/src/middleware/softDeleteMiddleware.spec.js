@@ -31,6 +31,7 @@ beforeAll(async () => {
       id: 'u2',
       role: 'user',
       name: 'Offensive Name',
+      slug: 'offensive-name',
       avatar: '/some/offensive/avatar.jpg',
       about: 'This self description is very offensive',
     }),
@@ -52,6 +53,7 @@ beforeAll(async () => {
       author: user,
       id: 'p1',
       title: 'Deleted post',
+      slug: 'deleted-post',
       deleted: true,
       categoryIds,
     }),
@@ -59,6 +61,7 @@ beforeAll(async () => {
       author: user,
       id: 'p3',
       title: 'Publicly visible post',
+      slug: 'publicly-visible-post',
       deleted: false,
       categoryIds,
     }),
@@ -147,6 +150,7 @@ describe('softDeleteMiddleware', () => {
           User(id: "u1") {
             following {
               name
+              slug
               about
               avatar
             }
@@ -163,6 +167,7 @@ describe('softDeleteMiddleware', () => {
             following {
               contributions {
                 title
+                slug
                 image
                 content
                 contentExcerpt
@@ -188,6 +193,7 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforeUser)
 
         it('displays name', () => expect(subject.name).toEqual('Offensive Name'))
+        it('obfuscates slug', () => expect(subject.slug).toEqual('offensive-name'))
         it('displays about', () =>
           expect(subject.about).toEqual('This self description is very offensive'))
         it('displays avatar', () => expect(subject.avatar).toEqual('/some/offensive/avatar.jpg'))
@@ -197,6 +203,7 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforePost)
 
         it('displays title', () => expect(subject.title).toEqual('Disabled post'))
+        it('obfuscates slug', () => expect(subject.slug).toEqual('disabled-post'))
         it('displays content', () =>
           expect(subject.content).toEqual('This is an offensive post content'))
         it('displays contentExcerpt', () =>
@@ -222,6 +229,7 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforeUser)
 
         it('obfuscates name', () => expect(subject.name).toEqual('UNAVAILABLE'))
+        it('obfuscates slug', () => expect(subject.slug).toEqual('UNAVAILABLE'))
         it('obfuscates about', () => expect(subject.about).toEqual('UNAVAILABLE'))
         it('obfuscates avatar', () => expect(subject.avatar).toEqual('UNAVAILABLE'))
       })
@@ -230,6 +238,7 @@ describe('softDeleteMiddleware', () => {
         beforeEach(beforePost)
 
         it('obfuscates title', () => expect(subject.title).toEqual('UNAVAILABLE'))
+        it('obfuscates slug', () => expect(subject.slug).toEqual('UNAVAILABLE'))
         it('obfuscates content', () => expect(subject.content).toEqual('UNAVAILABLE'))
         it('obfuscates contentExcerpt', () => expect(subject.contentExcerpt).toEqual('UNAVAILABLE'))
         it('obfuscates image', () => expect(subject.image).toEqual('UNAVAILABLE'))
