@@ -63,7 +63,7 @@ export default {
     notifications: {
       query() {
         return notificationQuery(this.$i18n)
-      }
+      },
     },
   },
 }

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { postFragment, commentFragment, postCountsFragment, userFragment } from './Fragments'
+import { postFragment, commentFragment, postCountsFragment } from './Fragments'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()

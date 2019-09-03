@@ -77,7 +77,7 @@ export default i18n => {
   `
 }
 
-export const notificationQuery = (i18n) => {
+export const notificationQuery = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
     ${commentFragment(lang)}
@@ -105,7 +105,7 @@ export const notificationQuery = (i18n) => {
   `
 }
 
-export const markAsReadMutation = (i18n) => {
+export const markAsReadMutation = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
     ${commentFragment(lang)}
