@@ -17,7 +17,7 @@
               <ds-button icon="bars" @click="toggleMobileMenuView" right />
             </ds-flex-item>
             <ds-flex-item
-              :width="{ base: '85%', sm: '85%', md: '50%', lg: '20%' }"
+              :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <div id="nav-search-box" v-if="isLoggedIn">

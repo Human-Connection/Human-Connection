@@ -80,7 +80,7 @@ export default {
   components: {
     LocaleSwitch,
   },
-  layout: 'default',
+  layout: 'blank',
   data() {
     return {
       ready: false,
