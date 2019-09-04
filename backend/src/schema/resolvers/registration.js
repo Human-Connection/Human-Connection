@@ -77,13 +77,12 @@ export default {
       }
     },
     SignupVerification: async (object, args, context, resolveInfo) => {
-
-      let { termsAndConditionsAgreedVersion } = args
+      const { termsAndConditionsAgreedVersion } = args
       const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
       if (!regEx.test(termsAndConditionsAgreedVersion)) {
-        throw new ForbiddenError('Invalid version format!') 
+        throw new ForbiddenError('Invalid version format!')
       }
-      
+
       let { nonce, email } = args
       email = email.toLowerCase()
       const result = await instance.cypher(

@@ -149,15 +149,13 @@ export default {
       return blockedUser.toJson()
     },
     UpdateUser: async (object, args, context, resolveInfo) => {
-
-      let { termsAndConditionsAgreedVersion } = args
-      if (!! termsAndConditionsAgreedVersion ){
-         const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
-         if (!regEx.test(termsAndConditionsAgreedVersion)) {
-            throw new ForbiddenError('Invalid version format!') 
-         }
+      const { termsAndConditionsAgreedVersion } = args
+      if (termsAndConditionsAgreedVersion) {
+        const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
+        if (!regEx.test(termsAndConditionsAgreedVersion)) {
+          throw new ForbiddenError('Invalid version format!')
+        }
       }
-
 
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {

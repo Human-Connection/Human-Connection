@@ -74,41 +74,38 @@ describe('User', () => {
   })
 })
 
-  describe('UpdateUser', () => {
-    let userParams
-    let variables
+describe('UpdateUser', () => {
+  let userParams
+  let variables
 
-    beforeEach(async () => {
-      userParams = {
-        email: 'user@example.org',
-        password: '1234',
-        id: 'u47',
-        name: 'John Doe',
-      }
-    
-      variables = {
-        id: 'u47',
-        name: 'John Doughnut',
-      }
+  beforeEach(async () => {
+    userParams = {
+      email: 'user@example.org',
+      password: '1234',
+      id: 'u47',
+      name: 'John Doe',
+    }
+
+    variables = {
+      id: 'u47',
+      name: 'John Doughnut',
+    }
   })
 
-      
-    const UpdateUserMutation = gql`
-      mutation($id: ID!, $name: String, $termsAndConditionsAgreedVersion: String) {
-        UpdateUser(id: $id, name: $name, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
-          id
-          name
-          termsAndConditionsAgreedVersion
-        }
-
-      }
+  const updateUserMutation = gql`
+  mutation($id: ID!, $name: String, $termsAndConditionsAgreedVersion: String) {
+    UpdateUser(id: $id, name: $name, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
+      id
+      name
+      termsAndConditionsAgreedVersion
     }
-  `
+  }
+}
+`
 
-    beforeEach(async () => {
-      await factory.create('User', userParams)
-    })
-
+  beforeEach(async () => {
+    user = await factory.create('User', userParams)
+  })
 
   describe('as another user', () => {
     beforeEach(async () => {
@@ -122,10 +119,9 @@ describe('User', () => {
       authenticatedUser = await someoneElse.toJson()
     })
 
-
-      it('is not allowed to change other user accounts', async () => {
-        await expect(client.request(UpdateUserMutation, variables)).rejects.toThrow('Not Authorised')
-      })
+    it('is not allowed to change other user accounts', async () => {
+      const { errors } = await mutate({ mutation: updateUserMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
   })
 
@@ -134,53 +130,70 @@ describe('User', () => {
       authenticatedUser = await user.toJson()
     })
 
-      it('name within specifications', async () => {
-        const expected = {
-          UpdateUser: expect.objectContaining({
+    it('name within specifications', async () => {
+      const expected = {
+        data: {
+          UpdateUser: {
             id: 'u47',
             name: 'John Doughnut',
-          }),
-        }
-        await expect(client.request(UpdateUserMutation, variables)).resolves.toEqual(expected)
-      })
+          },
+        },
+      }
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
+        expected,
+      )
+    })
 
-      it('with `null` as name', async () => {
-        variables.name = null        
-        const expected = '"name" must be a string'
-        await expect(client.request(UpdateUserMutation, variables)).rejects.toThrow(expected)
-      })
+    it('with `null` as name', async () => {
+      const variables = {
+        id: 'u47',
+        name: null,
+      }
+      const { errors } = await mutate({ mutation: updateUserMutation, variables })
+      expect(errors[0]).toHaveProperty(
+        'message',
+        'child "name" fails because ["name" contains an invalid value, "name" must be a string]',
+      )
+    })
 
-      it('with too short name', async () => {
-        const variables = {
-          id: 'u47',
-          name: '  ',
-        }
-        const expected = '"name" length must be at least 3 characters long'
-        await expect(client.request(UpdateUserMutation, variables)).rejects.toThrow(expected)
-      })
+    it('with too short name', async () => {
+      const variables = {
+        id: 'u47',
+        name: '  ',
+      }
+      const { errors } = await mutate({ mutation: updateUserMutation, variables })
+      expect(errors[0]).toHaveProperty(
+        'message',
+        'child "name" fails because ["name" length must be at least 3 characters long]',
+      )
+    })
 
-     
-     
-          it ('given a new agreed version of terms and conditions', async () =>  {    
-            variables = { ...variables, termsAndConditionsAgreedVersion: '0.0.2'  }
-            const expected = {
-              UpdateUser: expect.objectContaining({
-                termsAndConditionsAgreedVersion: '0.0.2'              
-              })
-            } 
-            await expect(client.request(UpdateUserMutation, variables)).resolves.toEqual(expected)
-          })
+    it.only('given a new agreed version of terms and conditions', async () => {
+      variables = { ...variables, termsAndConditionsAgreedVersion: '0.0.2' }
+      const expected = {
+        UpdateUser: expect.objectContaining({
+          termsAndConditionsAgreedVersion: '0.0.2',
+        }),
+      }
+      
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(expected)
+    })
 
-          it('rejects if version of terms and conditions has wrong format', async () => {
-            const expected = {
-              UpdateUser: expect.objectContaining({
-                termsAndConditionsAgreedVersion: 'invalid version format'              
-              })
-            } 
-            await expect(client.request(UpdateUserMutation, {...variables, termsAndConditionsAgreedVersion: 'invalid version format'})).rejects.toThrow(
-              'Invalid version format!',
-            )
-          })
+    it('rejects if version of terms and conditions has wrong format', async () => {
+      variables = {
+        ...variables,
+        termsAndConditionsAgreedVersion: 'invalid version format',
+      }
+      const expected = {
+        UpdateUser: expect.objectContaining({
+          termsAndConditionsAgreedVersion: 'invalid version format',
+        }),
+      }
+      const { errors } = await mutate({ mutation: updateUserMutation, variables })
+      expect(errors[0]).toHaveProperty(
+        'message',
+        'Invalid version format!',
+      )
     })
   })
 })
@@ -252,15 +265,9 @@ describe('DeleteUser', () => {
       })
     })
 
-
-      describe("attempting to delete another user's account", () => {
-        it('throws an authorization error', async () => {
-          deleteUserVariables = { id: 'u565' }
-          await expect(client.request(deleteUserMutation, deleteUserVariables)).rejects.toThrow(
-            'Not Authorised',
-          )
-        })
-
+    describe('attempting to delete my own account', () => {
+      beforeEach(() => {
+        variables = { ...variables, id: 'u343' }
       })
 
       describe('given posts and comments', () => {

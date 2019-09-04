@@ -403,14 +403,12 @@ describe('SignupVerification', () => {
           })
 
           it('rejects if version of terms and conditions has wrong format', async () => {
-            const expected = {
-              SignupVerification: expect.objectContaining({
+            await expect(
+              client.request(mutation, {
+                ...variables,
                 termsAndConditionsAgreedVersion: 'invalid version format',
               }),
-            }
-            await expect(client.request(mutation, {...variables, termsAndConditionsAgreedVersion: 'invalid version format'})).rejects.toThrow(
-              'Invalid version format!',
-            )
+            ).rejects.toThrow('Invalid version format!')
           })
         })
 
