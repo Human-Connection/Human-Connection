@@ -1,7 +1,6 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 import helpers from "../../support/helpers";
 import slugify from "slug";
-// import { VERSION } from '../../../webapp/pages/terms-and-conditions.vue';
 
 /* global cy  */
 

@@ -87,7 +87,7 @@ import gql from 'graphql-tag'
 import PasswordStrength from '../Password/Strength'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
-import { VERSION } from '~/pages/terms-and-conditions'
+import { VERSION } from '~/constants/terms-and-conditions-version.js'
 
 /* TODO: hier muss die version rein */
 export const SignupVerificationMutation = gql`

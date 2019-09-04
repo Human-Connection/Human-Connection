@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { VERSION } from '~/pages/terms-and-conditions'
+import { VERSION } from '~/constants/terms-and-conditions-version.js'
 
 export const state = () => {
   return {
