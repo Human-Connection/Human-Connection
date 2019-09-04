@@ -215,8 +215,9 @@ export default {
     },
     sanitizeQuery(query) {
       if (this.suggestionType === HASHTAG) {
-        const regexMatchAllNonUnicodeOrDigits = build('[^\\pL0-9]')
-        query = replace(query, regexMatchAllNonUnicodeOrDigits, '', 'all')
+        // remove all non unicode letters and non digits
+        const regexMatchAllNonUnicodeLettersOrDigits = build('[^\\pL0-9]')
+        query = replace(query, regexMatchAllNonUnicodeLettersOrDigits, '', 'all')
         // if the query is only made of digits, make it empty
         return query.replace(/[0-9]/gm, '') === '' ? '' : query
       }
