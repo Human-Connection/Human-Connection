@@ -168,15 +168,17 @@ describe('UpdateUser', () => {
       )
     })
 
-    it.only('given a new agreed version of terms and conditions', async () => {
+    it('given a new agreed version of terms and conditions', async () => {
       variables = { ...variables, termsAndConditionsAgreedVersion: '0.0.2' }
       const expected = {
         UpdateUser: expect.objectContaining({
           termsAndConditionsAgreedVersion: '0.0.2',
         }),
       }
-      
-      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(expected)
+
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
+        expected,
+      )
     })
 
     it('rejects if version of terms and conditions has wrong format', async () => {
@@ -184,16 +186,8 @@ describe('UpdateUser', () => {
         ...variables,
         termsAndConditionsAgreedVersion: 'invalid version format',
       }
-      const expected = {
-        UpdateUser: expect.objectContaining({
-          termsAndConditionsAgreedVersion: 'invalid version format',
-        }),
-      }
       const { errors } = await mutate({ mutation: updateUserMutation, variables })
-      expect(errors[0]).toHaveProperty(
-        'message',
-        'Invalid version format!',
-      )
+      expect(errors[0]).toHaveProperty('message', 'Invalid version format!')
     })
   })
 })
