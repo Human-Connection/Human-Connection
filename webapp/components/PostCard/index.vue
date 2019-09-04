@@ -20,12 +20,12 @@
     </div>
     <ds-space margin-bottom="small" />
     <!-- Post Title -->
-    <ds-heading tag="h3" no-margin>{{ post.title }}</ds-heading>
+    <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
     <ds-space margin-bottom="small" />
     <!-- Post Content Excerpt -->
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
-    <div class="hc-editor-content" v-html="excerpt" />
+    <div class="hc-editor-content hyphenate-text" v-html="excerpt" />
     <!-- eslint-enable vue/no-v-html -->
     <!-- Footer o the Post -->
     <template slot="footer">
@@ -51,9 +51,9 @@
           </span>
           &nbsp;
           <!-- Comments Count -->
-          <span :style="{ opacity: post.commentedCount ? 1 : 0.5 }">
+          <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
             <ds-icon name="comments" />
-            <small>{{ post.commentedCount }}</small>
+            <small>{{ post.commentsCount }}</small>
           </span>
           <!-- Menu -->
           <content-menu
@@ -118,9 +118,11 @@ export default {
   methods: {
     async deletePostCallback() {
       try {
-        await this.$apollo.mutate(deletePostMutation(this.post.id))
+        const {
+          data: { DeletePost },
+        } = await this.$apollo.mutate(deletePostMutation(this.post.id))
         this.$toast.success(this.$t('delete.contribution.success'))
-        this.$emit('removePostFromList')
+        this.$emit('removePostFromList', DeletePost)
       } catch (err) {
         this.$toast.error(err.message)
       }

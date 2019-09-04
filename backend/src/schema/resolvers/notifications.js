@@ -44,7 +44,7 @@ export default {
 
       try {
         const cypher = `
-        MATCH (resource)-[notification:NOTIFIED]->(user:User {id:$id})
+        MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
         ${whereClause}
         RETURN resource, notification, user
         ${orderByClause}

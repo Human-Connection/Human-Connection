@@ -73,13 +73,42 @@ export default {
     },
   },
   Mutation: {
+    CreatePost: async (object, params, context, resolveInfo) => {
+      const { categoryIds } = params
+      delete params.categoryIds
+      params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
+      params.id = params.id || uuid()
+
+      const createPostCypher = `CREATE (post:Post {params})
+        WITH post
+        MATCH (author:User {id: $userId})
+        MERGE (post)<-[:WROTE]-(author)
+        WITH post
+        UNWIND $categoryIds AS categoryId
+        MATCH (category:Category {id: categoryId})
+        MERGE (post)-[:CATEGORIZED]->(category)
+        RETURN post`
+
+      const createPostVariables = { userId: context.user.id, categoryIds, params }
+
+      const session = context.driver.session()
+      const transactionRes = await session.run(createPostCypher, createPostVariables)
+
+      const [post] = transactionRes.records.map(record => {
+        return record.get('post')
+      })
+
+      session.close()
+
+      return post.properties
+    },
     UpdatePost: async (object, params, context, resolveInfo) => {
       const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
 
-      let updatePostCypher = `MATCH (post:Post {id: $params.id}) 
+      let updatePostCypher = `MATCH (post:Post {id: $params.id})
       SET post = $params
       `
 
@@ -112,34 +141,25 @@ export default {
       return post.properties
     },
 
-    CreatePost: async (object, params, context, resolveInfo) => {
-      const { categoryIds } = params
-      delete params.categoryIds
-      params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
-      params.id = params.id || uuid()
-
-      const createPostCypher = `CREATE (post:Post {params})
-        WITH post
-        MATCH (author:User {id: $userId})
-        MERGE (post)<-[:WROTE]-(author)
-        WITH post
-        UNWIND $categoryIds AS categoryId
-        MATCH (category:Category {id: categoryId})
-        MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post`
-
-      const createPostVariables = { userId: context.user.id, categoryIds, params }
-
+    DeletePost: async (object, args, context, resolveInfo) => {
       const session = context.driver.session()
-      const transactionRes = await session.run(createPostCypher, createPostVariables)
-
-      const [post] = transactionRes.records.map(record => {
-        return record.get('post')
-      })
-
-      session.close()
-
-      return post.properties
+      // we cannot set slug to 'UNAVAILABE' because of unique constraints
+      const transactionRes = await session.run(
+        `
+        MATCH (post:Post {id: $postId})
+        OPTIONAL MATCH (post)<-[:COMMENTS]-(comment:Comment)
+        SET post.deleted        = TRUE
+        SET post.content        = 'UNAVAILABLE'
+        SET post.contentExcerpt = 'UNAVAILABLE'
+        SET post.title          = 'UNAVAILABLE'
+        SET comment.deleted     = TRUE
+        REMOVE post.image
+        RETURN post
+      `,
+        { postId: args.id },
+      )
+      const [post] = transactionRes.records.map(record => record.get('post').properties)
+      return post
     },
     AddPostEmotions: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
@@ -184,6 +204,7 @@ export default {
   },
   Post: {
     ...Resolver('Post', {
+      undefinedToNull: ['activityId', 'objectId', 'image', 'language'],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',
@@ -196,13 +217,15 @@ export default {
         disabledBy: '<-[:DISABLED]-(related:User)',
       },
       count: {
+        commentsCount:
+          '<-[:COMMENTS]-(related:Comment) WHERE NOT related.deleted = true AND NOT related.disabled = true',
         shoutedCount:
           '<-[:SHOUTED]-(related:User) WHERE NOT related.deleted = true AND NOT related.disabled = true',
         emotionsCount: '<-[related:EMOTED]-(:User)',
       },
       boolean: {
         shoutedByCurrentUser:
-          '<-[:SHOUTED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+          'MATCH(this)<-[:SHOUTED]-(related:User {id: $cypherParams.currentUserId}) RETURN COUNT(related) >= 1',
       },
     }),
     relatedContributions: async (parent, params, context, resolveInfo) => {
@@ -210,6 +233,7 @@ export default {
       const { id } = parent
       const statement = `
       MATCH (p:Post {id: $id})-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
+      WHERE NOT post.deleted AND NOT post.disabled
       RETURN DISTINCT post
       LIMIT 10
       `

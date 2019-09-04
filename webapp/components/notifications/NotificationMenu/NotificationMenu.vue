@@ -42,7 +42,7 @@ export default {
         const {
           data: { markAsRead },
         } = await this.$apollo.mutate({
-          mutation: markAsReadMutation(),
+          mutation: markAsReadMutation(this.$i18n),
           variables,
         })
         if (!(markAsRead && markAsRead.read === true)) return
@@ -56,12 +56,14 @@ export default {
   },
   computed: {
     totalNotifications() {
-      return this.notifications.length
+      return (this.notifications || []).length
     },
   },
   apollo: {
     notifications: {
-      query: notificationQuery(),
+      query() {
+        return notificationQuery(this.$i18n)
+      },
     },
   },
 }

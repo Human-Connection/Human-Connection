@@ -1,0 +1,21 @@
+module.exports = {
+  id: { type: 'string', primary: true },
+  lat: { type: 'number' },
+  lng: { type: 'number' },
+  type: { type: 'string' },
+  name: { type: 'string' },
+  nameES: { type: 'string' },
+  nameFR: { type: 'string' },
+  nameIT: { type: 'string' },
+  nameEN: { type: 'string' },
+  namePT: { type: 'string' },
+  nameDE: { type: 'string' },
+  nameNL: { type: 'string' },
+  namePL: { type: 'string' },
+  isIn: {
+    type: 'relationship',
+    relationship: 'IS_IN',
+    target: 'Location',
+    direction: 'out',
+  },
+}
