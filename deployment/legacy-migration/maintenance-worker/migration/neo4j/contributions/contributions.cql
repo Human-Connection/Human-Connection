@@ -147,10 +147,8 @@ MATCH (c:Category {id: categoryId})
 MERGE (p)-[:CATEGORIZED]->(c)
 WITH p, post.tags AS tags
 UNWIND tags AS tag
-WITH '[^\\p{L}0-9]' as regexMatchAllNonUnicodeLettersOrDigits
-WITH apoc.text.replace(tag, regexMatchAllNonUnicodeLettersOrDigits, '') as tagNoSpacesAllowed
-WITH '^((\\p{L}+[\\p{L}0-9]*)|([0-9]+\\p{L}+[\\p{L}0-9]*))$' as regexHashtagMustIncludeOnlyUnicodeLettersOrDigitsButNotOnlyDigits
-CALL apoc.when(tagNoSpacesAllowed =~ regexHashtagMustIncludeOnlyUnicodeLettersOrDigitsButNotOnlyDigits, 'RETURN tagNoSpacesAllowed', '', {tagNoSpacesAllowed: tagNoSpacesAllowed})
+WITH apoc.text.replace(tag, '[^\\p{L}0-9]', '') as tagNoSpacesAllowed
+CALL apoc.when(tagNoSpacesAllowed =~ '^((\\p{L}+[\\p{L}0-9]*)|([0-9]+\\p{L}+[\\p{L}0-9]*))$', 'RETURN tagNoSpacesAllowed', '', {tagNoSpacesAllowed: tagNoSpacesAllowed})
 YIELD value as validated
 WHERE validated.tagNoSpacesAllowed IS NOT NULL
 MERGE (t:Tag { id: validated.tagNoSpacesAllowed, disabled: false, deleted: false })
