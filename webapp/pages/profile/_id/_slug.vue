@@ -307,7 +307,7 @@ export default {
     return {
       User: [],
       posts: [],
-      hasMore: false,
+      hasMore: true,
       offset: 0,
       pageSize: 6,
       tabActive: 'post',
@@ -364,6 +364,23 @@ export default {
     },
     showMoreContributions() {
       this.offset += this.pageSize
+      this.$apollo.queries.Post.fetchMore({
+        variables: {
+          offset: this.offset,
+          filter: this.filter,
+          first: this.pageSize,
+          orderBy: this.sorting,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
+            this.hasMore = false
+          }
+          const result = Object.assign({}, previousResult, {
+            Post: [...previousResult.Post, ...fetchMoreResult.Post],
+          })
+          return result
+        },
+      })
     },
     resetPostList() {
       this.offset = 0
@@ -392,19 +409,14 @@ export default {
         return {
           filter: this.filter,
           first: this.pageSize,
-          offset: this.offset,
+          offset: 0,
           orderBy: 'createdAt_desc',
         }
       },
-      fetchPolicy: 'cache-and-network',
       update({ Post }) {
-        this.hasMore = Post && Post.length >= this.pageSize
-        if (!Post) return
-        // TODO: find out why `update` gets called twice initially.
-        // We have to filter for uniq posts only because we get the same
-        // result set twice.
-        this.posts = this.uniq([...this.posts, ...Post])
+        this.posts = Post
       },
+      fetchPolicy: 'cache-and-network',
     },
     User: {
       query() {

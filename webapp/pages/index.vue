@@ -61,7 +61,6 @@
 
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
-import uniqBy from 'lodash/uniqBy'
 import HcEmpty from '~/components/Empty'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
@@ -151,6 +150,23 @@ export default {
     },
     showMoreContributions() {
       this.offset += this.pageSize
+      this.$apollo.queries.Post.fetchMore({
+        variables: {
+          offset: this.offset,
+          filter: this.finalFilters,
+          first: this.pageSize,
+          orderBy: this.sorting,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
+            this.hasMore = false
+          }
+          const result = Object.assign({}, previousResult, {
+            Post: [...previousResult.Post, ...fetchMoreResult.Post],
+          })
+          return result
+        },
+      })
     },
     deletePost(deletedPost) {
       this.posts = this.posts.filter(post => {
@@ -164,19 +180,15 @@ export default {
         return filterPosts(this.$i18n)
       },
       variables() {
-        const result = {
+        return {
           filter: this.finalFilters,
           first: this.pageSize,
-          offset: this.offset,
           orderBy: this.sorting,
+          offset: 0,
         }
-        return result
       },
       update({ Post }) {
-        this.hasMore = Post && Post.length >= this.pageSize
-        if (!Post) return
-        const posts = uniqBy([...this.posts, ...Post], 'id')
-        this.posts = posts
+        this.posts = Post
       },
       fetchPolicy: 'cache-and-network',
     },
