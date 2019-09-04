@@ -125,7 +125,6 @@
 [ ]   wasSeeded: { type: Boolean }
     }
 */
-
 CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL_FILE}") YIELD value as post
 MERGE (p:Post {id: post._id["$oid"]})
 ON CREATE SET
@@ -148,6 +147,10 @@ MATCH (c:Category {id: categoryId})
 MERGE (p)-[:CATEGORIZED]->(c)
 WITH p, post.tags AS tags
 UNWIND tags AS tag
-MERGE (t:Tag {id: apoc.text.clean(tag), disabled: false, deleted: false})
+WITH apoc.text.replace(tag, '[^\\p{L}0-9]', '') as tagNoSpacesAllowed
+CALL apoc.when(tagNoSpacesAllowed =~ '^((\\p{L}+[\\p{L}0-9]*)|([0-9]+\\p{L}+[\\p{L}0-9]*))$', 'RETURN tagNoSpacesAllowed', '', {tagNoSpacesAllowed: tagNoSpacesAllowed})
+YIELD value as validated
+WHERE validated.tagNoSpacesAllowed IS NOT NULL
+MERGE (t:Tag { id: validated.tagNoSpacesAllowed, disabled: false, deleted: false })
 MERGE (p)-[:TAGGED]->(t)
 ;
