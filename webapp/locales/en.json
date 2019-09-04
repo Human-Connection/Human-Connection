@@ -39,9 +39,7 @@
   },
   "sorting": {
     "newest": "Newest",
-    "oldest": "Oldest",
-    "popular": "Popular",
-    "commented": "Most commented"
+    "oldest": "Oldest"
   },
   "login": {
     "copy": "If you already have a human-connection account, login here.",
