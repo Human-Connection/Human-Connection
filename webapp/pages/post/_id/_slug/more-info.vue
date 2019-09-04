@@ -33,19 +33,18 @@
       </div>
     </template>
     <h3>{{ $t('post.moreInfo.titleOfRelatedContributionsSection') }}</h3>
-    <ds-section style="margin: 0 -1.5rem; padding: 1.5rem;">
-      <ds-flex v-if="post.relatedContributions && post.relatedContributions.length" gutter="small">
-        <hc-post-card
-          v-for="relatedPost in post.relatedContributions"
-          :key="relatedPost.id"
-          :post="relatedPost"
-          :width="{ base: '100%', lg: 1 }"
-          @removePostFromList="removePostFromList"
-        />
-      </ds-flex>
+    <ds-section>
+      <masonry-grid v-if="post.relatedContributions && post.relatedContributions.length">
+        <masonry-grid-item v-for="relatedPost in post.relatedContributions" :key="relatedPost.id">
+          <hc-post-card
+            :post="relatedPost"
+            :width="{ base: '100%', lg: 1 }"
+            @removePostFromList="removePostFromList"
+          />
+        </masonry-grid-item>
+      </masonry-grid>
       <hc-empty v-else margin="large" icon="file" message="No related Posts" />
     </ds-section>
-    <ds-space margin-bottom="large" />
   </ds-card>
 </template>
 
@@ -53,6 +52,8 @@
 import HcPostCard from '~/components/PostCard'
 import HcEmpty from '~/components/Empty.vue'
 import { relatedContributions } from '~/graphql/PostQuery'
+import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
+import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 
 export default {
   transition: {
@@ -62,6 +63,8 @@ export default {
   components: {
     HcPostCard,
     HcEmpty,
+    MasonryGrid,
+    MasonryGridItem,
   },
   computed: {
     post() {
