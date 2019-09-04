@@ -172,6 +172,8 @@ export default {
         'disabled',
         'locationName',
         'about',
+        'termsAndConditionsAgreedVersion',
+        // TODO: 'termsAndConditionsAgreedAt',
       ],
       boolean: {
         followedByCurrentUser:
