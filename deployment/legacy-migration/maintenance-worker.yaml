@@ -8,9 +8,11 @@
     containers:
     - name: nitro-maintenance-worker
       image: humanconnection/maintenance-worker:latest
-      env:
-      - name: NEO4J_apoc_import_file_enabled
-        value: "true"
+      resources:
+        requests:
+          memory: "2G"
+        limits:
+          memory: "8G"
       envFrom:
       - configMapRef:
           name: maintenance-worker
