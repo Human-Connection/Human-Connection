@@ -122,7 +122,7 @@ describe('SearchInput.vue', () => {
                 name: 'Trick',
                 slug: 'trick',
               },
-              commentedCount: 0,
+              commentsCount: 0,
               createdAt: '2019-03-13T11:00:20.835Z',
               id: 'p10',
               label: 'Eos aut illo omnis quis eaque et iure aut.',

@@ -38,7 +38,7 @@ const post = {
     ],
     __typename: 'User',
   },
-  commentedCount: 12,
+  commentsCount: 12,
   categories: [],
   shoutedCount: 421,
   __typename: 'Post',

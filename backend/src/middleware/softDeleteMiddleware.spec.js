@@ -1,49 +1,70 @@
-import { GraphQLClient } from 'graphql-request'
 import Factory from '../seed/factories'
-import { host, login } from '../jest/helpers'
-import { neode } from '../bootstrap/neo4j'
+import { gql } from '../jest/helpers'
+import { neode as getNeode, getDriver } from '../bootstrap/neo4j'
+import createServer from '../server'
+import { createTestClient } from 'apollo-server-testing'
 
 const factory = Factory()
-const instance = neode()
+const neode = getNeode()
+const driver = getDriver()
 
-let client
 let query
-let action
+let mutate
+let graphqlQuery
 const categoryIds = ['cat9']
+let authenticatedUser
+let user
+let moderator
+let troll
+
+const action = () => {
+  return query({ query: graphqlQuery })
+}
 
 beforeAll(async () => {
   // For performance reasons we do this only once
-  await Promise.all([
-    factory.create('User', { id: 'u1', role: 'user', email: 'user@example.org', password: '1234' }),
+  const users = await Promise.all([
+    factory.create('User', { id: 'u1', role: 'user' }),
     factory.create('User', {
       id: 'm1',
       role: 'moderator',
-      email: 'moderator@example.org',
       password: '1234',
     }),
     factory.create('User', {
       id: 'u2',
       role: 'user',
       name: 'Offensive Name',
+      slug: 'offensive-name',
       avatar: '/some/offensive/avatar.jpg',
       about: 'This self description is very offensive',
-      email: 'troll@example.org',
-      password: '1234',
-    }),
-    instance.create('Category', {
-      id: 'cat9',
-      name: 'Democracy & Politics',
-      icon: 'university',
     }),
   ])
 
-  await factory.authenticateAs({ email: 'user@example.org', password: '1234' })
+  user = users[0]
+  moderator = users[1]
+  troll = users[2]
+
+  await neode.create('Category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    icon: 'university',
+  })
+
   await Promise.all([
-    factory.follow({ id: 'u2', type: 'User' }),
-    factory.create('Post', { id: 'p1', title: 'Deleted post', deleted: true, categoryIds }),
+    user.relateTo(troll, 'following'),
     factory.create('Post', {
+      author: user,
+      id: 'p1',
+      title: 'Deleted post',
+      slug: 'deleted-post',
+      deleted: true,
+      categoryIds,
+    }),
+    factory.create('Post', {
+      author: user,
       id: 'p3',
       title: 'Publicly visible post',
+      slug: 'publicly-visible-post',
       deleted: false,
       categoryIds,
     }),
@@ -51,32 +72,56 @@ beforeAll(async () => {
 
   await Promise.all([
     factory.create('Comment', {
+      author: user,
       id: 'c2',
       postId: 'p3',
       content: 'Enabled comment on public post',
     }),
   ])
 
-  await Promise.all([factory.relate('Comment', 'Author', { from: 'u1', to: 'c2' })])
-
-  const asTroll = Factory()
-  await asTroll.authenticateAs({ email: 'troll@example.org', password: '1234' })
-  await asTroll.create('Post', {
+  await factory.create('Post', {
     id: 'p2',
+    author: troll,
     title: 'Disabled post',
     content: 'This is an offensive post content',
+    contentExcerpt: 'This is an offensive post content',
     image: '/some/offensive/image.jpg',
     deleted: false,
     categoryIds,
   })
-  await asTroll.create('Comment', { id: 'c1', postId: 'p3', content: 'Disabled comment' })
-  await Promise.all([asTroll.relate('Comment', 'Author', { from: 'u2', to: 'c1' })])
+  await factory.create('Comment', {
+    id: 'c1',
+    author: troll,
+    postId: 'p3',
+    content: 'Disabled comment',
+    contentExcerpt: 'Disabled comment',
+  })
 
-  const asModerator = Factory()
-  await asModerator.authenticateAs({ email: 'moderator@example.org', password: '1234' })
-  await asModerator.mutate('mutation { disable( id: "p2") }')
-  await asModerator.mutate('mutation { disable( id: "c1") }')
-  await asModerator.mutate('mutation { disable( id: "u2") }')
+  const { server } = createServer({
+    context: () => {
+      return {
+        driver,
+        neode,
+        user: authenticatedUser,
+      }
+    },
+  })
+  const client = createTestClient(server)
+  query = client.query
+  mutate = client.mutate
+
+  authenticatedUser = await moderator.toJson()
+  const disableMutation = gql`
+    mutation($id: ID!) {
+      disable(id: $id)
+    }
+  `
+  await Promise.all([
+    mutate({ mutation: disableMutation, variables: { id: 'c1' } }),
+    mutate({ mutation: disableMutation, variables: { id: 'u2' } }),
+    mutate({ mutation: disableMutation, variables: { id: 'p2' } }),
+  ])
+  authenticatedUser = null
 })
 
 afterAll(async () => {
@@ -85,93 +130,124 @@ afterAll(async () => {
 
 describe('softDeleteMiddleware', () => {
   describe('read disabled content', () => {
-    let user
-    let post
-    let comment
+    let subject
     const beforeComment = async () => {
-      query = '{ User(id: "u1") { following { comments { content contentExcerpt }  } } }'
-      const response = await action()
-      comment = response.User[0].following[0].comments[0]
+      graphqlQuery = gql`
+        {
+          User(id: "u1") {
+            following {
+              comments {
+                content
+                contentExcerpt
+              }
+            }
+          }
+        }
+      `
+      const { data } = await action()
+      subject = data.User[0].following[0].comments[0]
     }
     const beforeUser = async () => {
-      query = '{ User(id: "u1") { following { name about avatar } } }'
-      const response = await action()
-      user = response.User[0].following[0]
+      graphqlQuery = gql`
+        {
+          User(id: "u1") {
+            following {
+              name
+              slug
+              about
+              avatar
+            }
+          }
+        }
+      `
+      const { data } = await action()
+      subject = data.User[0].following[0]
     }
     const beforePost = async () => {
-      query =
-        '{ User(id: "u1") { following { contributions { title image content contentExcerpt }  } } }'
-      const response = await action()
-      post = response.User[0].following[0].contributions[0]
-    }
-
-    action = () => {
-      return client.request(query)
+      graphqlQuery = gql`
+        {
+          User(id: "u1") {
+            following {
+              contributions {
+                title
+                slug
+                image
+                content
+                contentExcerpt
+              }
+            }
+          }
+        }
+      `
+      const { data } = await action()
+      subject = data.User[0].following[0].contributions[0]
     }
 
     describe('as moderator', () => {
       beforeEach(async () => {
-        const headers = await login({ email: 'moderator@example.org', password: '1234' })
-        client = new GraphQLClient(host, { headers })
+        authenticatedUser = await moderator.toJson()
       })
 
       describe('User', () => {
         beforeEach(beforeUser)
 
-        it('displays name', () => expect(user.name).toEqual('Offensive Name'))
+        it('displays name', () => expect(subject.name).toEqual('Offensive Name'))
+        it('displays slug', () => expect(subject.slug).toEqual('offensive-name'))
         it('displays about', () =>
-          expect(user.about).toEqual('This self description is very offensive'))
-        it('displays avatar', () => expect(user.avatar).toEqual('/some/offensive/avatar.jpg'))
+          expect(subject.about).toEqual('This self description is very offensive'))
+        it('displays avatar', () => expect(subject.avatar).toEqual('/some/offensive/avatar.jpg'))
       })
 
       describe('Post', () => {
         beforeEach(beforePost)
 
-        it('displays title', () => expect(post.title).toEqual('Disabled post'))
+        it('displays title', () => expect(subject.title).toEqual('Disabled post'))
+        it('displays slug', () => expect(subject.slug).toEqual('disabled-post'))
         it('displays content', () =>
-          expect(post.content).toEqual('This is an offensive post content'))
+          expect(subject.content).toEqual('This is an offensive post content'))
         it('displays contentExcerpt', () =>
-          expect(post.contentExcerpt).toEqual('This is an offensive post content'))
-        it('displays image', () => expect(post.image).toEqual('/some/offensive/image.jpg'))
+          expect(subject.contentExcerpt).toEqual('This is an offensive post content'))
+        it('displays image', () => expect(subject.image).toEqual('/some/offensive/image.jpg'))
       })
 
       describe('Comment', () => {
         beforeEach(beforeComment)
 
-        it('displays content', () => expect(comment.content).toEqual('Disabled comment'))
+        it('displays content', () => expect(subject.content).toEqual('Disabled comment'))
         it('displays contentExcerpt', () =>
-          expect(comment.contentExcerpt).toEqual('Disabled comment'))
+          expect(subject.contentExcerpt).toEqual('Disabled comment'))
       })
     })
 
     describe('as user', () => {
       beforeEach(async () => {
-        const headers = await login({ email: 'user@example.org', password: '1234' })
-        client = new GraphQLClient(host, { headers })
+        authenticatedUser = await user.toJson()
       })
 
       describe('User', () => {
         beforeEach(beforeUser)
 
-        it('displays name', () => expect(user.name).toEqual('UNAVAILABLE'))
-        it('obfuscates about', () => expect(user.about).toEqual('UNAVAILABLE'))
-        it('obfuscates avatar', () => expect(user.avatar).toEqual('UNAVAILABLE'))
+        it('obfuscates name', () => expect(subject.name).toEqual('UNAVAILABLE'))
+        it('obfuscates slug', () => expect(subject.slug).toEqual('UNAVAILABLE'))
+        it('obfuscates about', () => expect(subject.about).toEqual('UNAVAILABLE'))
+        it('obfuscates avatar', () => expect(subject.avatar).toEqual('UNAVAILABLE'))
       })
 
       describe('Post', () => {
         beforeEach(beforePost)
 
-        it('obfuscates title', () => expect(post.title).toEqual('UNAVAILABLE'))
-        it('obfuscates content', () => expect(post.content).toEqual('UNAVAILABLE'))
-        it('obfuscates contentExcerpt', () => expect(post.contentExcerpt).toEqual('UNAVAILABLE'))
-        it('obfuscates image', () => expect(post.image).toEqual('UNAVAILABLE'))
+        it('obfuscates title', () => expect(subject.title).toEqual('UNAVAILABLE'))
+        it('obfuscates slug', () => expect(subject.slug).toEqual('UNAVAILABLE'))
+        it('obfuscates content', () => expect(subject.content).toEqual('UNAVAILABLE'))
+        it('obfuscates contentExcerpt', () => expect(subject.contentExcerpt).toEqual('UNAVAILABLE'))
+        it('obfuscates image', () => expect(subject.image).toEqual(null))
       })
 
       describe('Comment', () => {
         beforeEach(beforeComment)
 
-        it('obfuscates content', () => expect(comment.content).toEqual('UNAVAILABLE'))
-        it('obfuscates contentExcerpt', () => expect(comment.contentExcerpt).toEqual('UNAVAILABLE'))
+        it('obfuscates content', () => expect(subject.content).toEqual('UNAVAILABLE'))
+        it('obfuscates contentExcerpt', () => expect(subject.contentExcerpt).toEqual('UNAVAILABLE'))
       })
     })
   })
@@ -179,43 +255,57 @@ describe('softDeleteMiddleware', () => {
   describe('Query', () => {
     describe('Post', () => {
       beforeEach(async () => {
-        query = '{ Post { title } }'
+        graphqlQuery = gql`
+          {
+            Post {
+              title
+            }
+          }
+        `
       })
 
       describe('as user', () => {
         beforeEach(async () => {
-          const headers = await login({ email: 'user@example.org', password: '1234' })
-          client = new GraphQLClient(host, { headers })
+          authenticatedUser = await user.toJson()
         })
 
         it('hides deleted or disabled posts', async () => {
-          const expected = { Post: [{ title: 'Publicly visible post' }] }
-          await expect(action()).resolves.toEqual(expected)
+          const expected = { data: { Post: [{ title: 'Publicly visible post' }] } }
+          await expect(action()).resolves.toMatchObject(expected)
         })
       })
 
       describe('as moderator', () => {
         beforeEach(async () => {
-          const headers = await login({ email: 'moderator@example.org', password: '1234' })
-          client = new GraphQLClient(host, { headers })
+          authenticatedUser = await moderator.toJson()
         })
 
         it('shows disabled but hides deleted posts', async () => {
           const expected = [{ title: 'Disabled post' }, { title: 'Publicly visible post' }]
-          const { Post } = await action()
+          const {
+            data: { Post },
+          } = await action()
           await expect(Post).toEqual(expect.arrayContaining(expected))
         })
       })
 
       describe('.comments', () => {
         beforeEach(async () => {
-          query = '{ Post(id: "p3") { title comments { content } } }'
+          graphqlQuery = gql`
+            {
+              Post(id: "p3") {
+                title
+                comments {
+                  content
+                }
+              }
+            }
+          `
         })
 
         describe('as user', () => {
           beforeEach(async () => {
-            const headers = await login({ email: 'user@example.org', password: '1234' })
-            client = new GraphQLClient(host, { headers })
+            authenticatedUser = await user.toJson()
           })
 
           it('conceals disabled comments', async () => {
@@ -224,7 +314,9 @@ describe('softDeleteMiddleware', () => {
               { content: 'UNAVAILABLE' },
             ]
             const {
-              Post: [{ comments }],
+              data: {
+                Post: [{ comments }],
+              },
             } = await action()
             await expect(comments).toEqual(expect.arrayContaining(expected))
           })
@@ -232,8 +324,7 @@ describe('softDeleteMiddleware', () => {
 
         describe('as moderator', () => {
           beforeEach(async () => {
-            const headers = await login({ email: 'moderator@example.org', password: '1234' })
-            client = new GraphQLClient(host, { headers })
+            authenticatedUser = await moderator.toJson()
           })
 
           it('shows disabled comments', async () => {
@@ -242,7 +333,9 @@ describe('softDeleteMiddleware', () => {
               { content: 'Disabled comment' },
             ]
             const {
-              Post: [{ comments }],
+              data: {
+                Post: [{ comments }],
+              },
             } = await action()
             await expect(comments).toEqual(expect.arrayContaining(expected))
           })
@@ -251,58 +344,70 @@ describe('softDeleteMiddleware', () => {
 
       describe('filter (deleted: true)', () => {
         beforeEach(() => {
-          query = '{ Post(deleted: true) { title } }'
+          graphqlQuery = gql`
+            {
+              Post(deleted: true) {
+                title
+              }
+            }
+          `
         })
 
         describe('as user', () => {
           beforeEach(async () => {
-            const headers = await login({ email: 'user@example.org', password: '1234' })
-            client = new GraphQLClient(host, { headers })
+            authenticatedUser = await user.toJson()
           })
 
           it('throws authorisation error', async () => {
-            await expect(action()).rejects.toThrow('Not Authorised!')
+            const { data, errors } = await action()
+            expect(data).toEqual({ Post: null })
+            expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
           })
         })
 
         describe('as moderator', () => {
           beforeEach(async () => {
-            const headers = await login({ email: 'moderator@example.org', password: '1234' })
-            client = new GraphQLClient(host, { headers })
+            authenticatedUser = await moderator.toJson()
           })
 
-          it('shows deleted posts', async () => {
-            const expected = { Post: [{ title: 'Deleted post' }] }
-            await expect(action()).resolves.toEqual(expected)
+          it('does not show deleted posts', async () => {
+            const expected = { data: { Post: [{ title: 'UNAVAILABLE' }] } }
+            await expect(action()).resolves.toMatchObject(expected)
           })
         })
       })
 
       describe('filter (disabled: true)', () => {
         beforeEach(() => {
-          query = '{ Post(disabled: true) { title } }'
+          graphqlQuery = gql`
+            {
+              Post(disabled: true) {
+                title
+              }
+            }
+          `
         })
 
         describe('as user', () => {
           beforeEach(async () => {
-            const headers = await login({ email: 'user@example.org', password: '1234' })
-            client = new GraphQLClient(host, { headers })
+            authenticatedUser = await user.toJson()
           })
 
           it('throws authorisation error', async () => {
-            await expect(action()).rejects.toThrow('Not Authorised!')
+            const { data, errors } = await action()
+            expect(data).toEqual({ Post: null })
+            expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
           })
         })
 
         describe('as moderator', () => {
           beforeEach(async () => {
-            const headers = await login({ email: 'moderator@example.org', password: '1234' })
-            client = new GraphQLClient(host, { headers })
+            authenticatedUser = await moderator.toJson()
           })
 
           it('shows disabled posts', async () => {
-            const expected = { Post: [{ title: 'Disabled post' }] }
-            await expect(action()).resolves.toEqual(expected)
+            const expected = { data: { Post: [{ title: 'Disabled post' }] } }
+            await expect(action()).resolves.toMatchObject(expected)
           })
         })
       })

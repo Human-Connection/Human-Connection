@@ -13,15 +13,16 @@ const setDefaultFilters = (resolve, root, args, context, info) => {
   return resolve(root, args, context, info)
 }
 
-const obfuscateDisabled = async (resolve, root, args, context, info) => {
-  if (!isModerator(context) && root.disabled) {
+const obfuscate = async (resolve, root, args, context, info) => {
+  if (root.deleted || (!isModerator(context) && root.disabled)) {
     root.content = 'UNAVAILABLE'
     root.contentExcerpt = 'UNAVAILABLE'
     root.title = 'UNAVAILABLE'
-    root.image = 'UNAVAILABLE'
+    root.slug = 'UNAVAILABLE'
     root.avatar = 'UNAVAILABLE'
     root.about = 'UNAVAILABLE'
     root.name = 'UNAVAILABLE'
+    root.image = null // avoid unecessary 500 errors
   }
   return resolve(root, args, context, info)
 }
@@ -40,7 +41,7 @@ export default {
     }
     return resolve(root, args, context, info)
   },
-  Post: obfuscateDisabled,
-  User: obfuscateDisabled,
-  Comment: obfuscateDisabled,
+  Post: obfuscate,
+  User: obfuscate,
+  Comment: obfuscate,
 }

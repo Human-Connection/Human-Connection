@@ -1,57 +1,5 @@
 import gql from 'graphql-tag'
-
-const fragments = gql`
-  fragment post on Post {
-    id
-    createdAt
-    disabled
-    deleted
-    title
-    contentExcerpt
-    slug
-    author {
-      id
-      slug
-      name
-      disabled
-      deleted
-      avatar
-    }
-  }
-
-  fragment comment on Comment {
-    id
-    createdAt
-    disabled
-    deleted
-    contentExcerpt
-    author {
-      id
-      slug
-      name
-      disabled
-      deleted
-      avatar
-    }
-    post {
-      id
-      createdAt
-      disabled
-      deleted
-      title
-      contentExcerpt
-      slug
-      author {
-        id
-        slug
-        name
-        disabled
-        deleted
-        avatar
-      }
-    }
-  }
-`
+import { postFragment, commentFragment } from './Fragments'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
@@ -129,9 +77,12 @@ export default i18n => {
   `
 }
 
-export const notificationQuery = () => {
+export const notificationQuery = i18n => {
+  const lang = i18n.locale().toUpperCase()
   return gql`
-    ${fragments}
+    ${commentFragment(lang)}
+    ${postFragment(lang)}
+
     query {
       notifications(read: false, orderBy: createdAt_desc) {
         read
@@ -139,17 +90,27 @@ export const notificationQuery = () => {
         createdAt
         from {
           __typename
-          ...post
-          ...comment
+          ... on Post {
+            ...post
+          }
+          ... on Comment {
+            ...comment
+            post {
+              ...post
+            }
+          }
         }
       }
     }
   `
 }
 
-export const markAsReadMutation = () => {
+export const markAsReadMutation = i18n => {
+  const lang = i18n.locale().toUpperCase()
   return gql`
-    ${fragments}
+    ${commentFragment(lang)}
+    ${postFragment(lang)}
+
     mutation($id: ID!) {
       markAsRead(id: $id) {
         read
@@ -157,8 +118,15 @@ export const markAsReadMutation = () => {
         createdAt
         from {
           __typename
-          ...post
-          ...comment
+          ... on Post {
+            ...post
+          }
+          ... on Comment {
+            ...comment
+            post {
+              ...post
+            }
+          }
         }
       }
     }

@@ -52,29 +52,9 @@ const validatePost = async (resolve, root, args, context, info) => {
 }
 
 const validateUpdatePost = async (resolve, root, args, context, info) => {
-  const { id, categoryIds } = args
-  const session = context.driver.session()
-  const categoryQueryRes = await session.run(
-    `
-    MATCH (post:Post {id: $id})-[:CATEGORIZED]->(category:Category)
-    RETURN category`,
-    { id },
-  )
-  session.close()
-  const [category] = categoryQueryRes.records.map(record => {
-    return record.get('category')
-  })
-
-  if (category) {
-    if (categoryIds && categoryIds.length > 3) {
-      throw new UserInputError(NO_CATEGORIES_ERR_MESSAGE)
-    }
-  } else {
-    if (!Array.isArray(categoryIds) || !categoryIds.length || categoryIds.length > 3) {
-      throw new UserInputError(NO_CATEGORIES_ERR_MESSAGE)
-    }
-  }
-  return resolve(root, args, context, info)
+  const { categoryIds } = args
+  if (typeof categoryIds === 'undefined') return resolve(root, args, context, info)
+  return validatePost(resolve, root, args, context, info)
 }
 
 export default {

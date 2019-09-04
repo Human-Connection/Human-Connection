@@ -54,6 +54,7 @@ services:
       - SMTP_HOST=mailserver
       - SMTP_PORT=25
       - SMTP_IGNORE_TLS=true
+      - "DEBUG=${DEBUG}"
   neo4j:
     environment:
       - NEO4J_AUTH=none

@@ -15,6 +15,7 @@ let loginCredentials = {
 const termsAndConditionsAgreedVersion = { termsAndConditionsAgreedVersion: "0.0.2" };
 
 const narratorParams = {
+  id: 'id-of-peter-pan',
   name: "Peter Pan",
   slug: "peter-pan",
   avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
@@ -34,10 +35,10 @@ Given("we have a selection of categories", () => {
 Given("we have a selection of tags and categories as well as posts", () => {
   cy.createCategories("cat12")
     .factory()
-    .authenticateAs(loginCredentials)
     .create("Tag", { id: "Ecology" })
     .create("Tag", { id: "Nature" })
     .create("Tag", { id: "Democracy" });
+
   const someAuthor = {
     id: "authorId",
     email: "author@example.org",
@@ -50,26 +51,17 @@ Given("we have a selection of tags and categories as well as posts", () => {
     password: "1234",
     ...termsAndConditionsAgreedVersion
   };
+
   cy.factory()
-    .create("User", someAuthor)
-    .authenticateAs(someAuthor)
-    .create("Post", { id: "p0", categoryIds: ["cat12"] })
-    .create("Post", { id: "p1", categoryIds: ["cat121"] });
+    .create("User", { id: 'a1' })
+    .create("Post", {authorId: 'a1', tagIds: [ "Ecology", "Nature", "Democracy" ], categoryIds: ["cat12"] })
+    .create("Post", {authorId: 'a1', tagIds: [ "Nature", "Democracy" ], categoryIds: ["cat121"] });
+
   cy.factory()
-    .create("User", yetAnotherAuthor)
-    .authenticateAs(yetAnotherAuthor)
-    .create("Post", { id: "p2", categoryIds: ["cat12"] });
+    .create("User", { id: 'a2'})
+    .create("Post", { authorId: 'a2', tagIds: ['Nature', 'Democracy'], categoryIds: ["cat12"] });
   cy.factory()
-    .authenticateAs(loginCredentials)
-    .create("Post", { id: "p3", categoryIds: ["cat122"] })
-    .relate("Post", "Tags", { from: "p0", to: "Ecology" })
-    .relate("Post", "Tags", { from: "p0", to: "Nature" })
-    .relate("Post", "Tags", { from: "p0", to: "Democracy" })
-    .relate("Post", "Tags", { from: "p1", to: "Nature" })
-    .relate("Post", "Tags", { from: "p1", to: "Democracy" })
-    .relate("Post", "Tags", { from: "p2", to: "Nature" })
-    .relate("Post", "Tags", { from: "p2", to: "Democracy" })
-    .relate("Post", "Tags", { from: "p3", to: "Democracy" });
+    .create("Post", { authorId: narratorParams.id, tagIds: ['Democracy'], categoryIds: ["cat122"] })
 });
 
 Given("we have the following user accounts:", table => {
@@ -167,7 +159,13 @@ When("I press {string}", label => {
   cy.contains(label).click();
 });
 
+Given("we have this user in our database:", table => {
+  const [firstRow] = table.hashes()
+  cy.factory().create('User', firstRow)
+})
+
 Given("we have the following posts in our database:", table => {
+
   table.hashes().forEach(({ Author, ...postAttributes }, i) => {
     Author = Author || `author-${i}`;
     const userAttributes = {
@@ -201,8 +199,10 @@ Given("we have the following posts in our database:", table => {
         .create("User", moderatorParams)
         .authenticateAs(moderatorParams)
         .mutate("mutation($id: ID!) { disable(id: $id) }", postAttributes);
+
     }
-  });
+    cy.factory().create("Post", postAttributes);
+  })
 });
 
 Then("I see a success message:", message => {
@@ -221,11 +221,11 @@ When(
 );
 
 Given("I previously created a post", () => {
+  lastPost.authorId = narratorParams.id
   lastPost.title = "previously created post";
   lastPost.content = "with some content";
-  lastPost.categoryIds = "cat0";
+  lastPost.categoryIds = ["cat0"];
   cy.factory()
-    .authenticateAs(loginCredentials)
     .create("Post", lastPost);
 });
 
@@ -437,11 +437,7 @@ Given("I follow the user {string}", name => {
 Given('"Spammy Spammer" wrote a post {string}', title => {
   cy.createCategories("cat21")
     .factory()
-    .authenticateAs({
-      email: "spammy-spammer@example.org",
-      password: "1234"
-    })
-    .create("Post", { title, categoryIds: ["cat21"] });
+    .create("Post", { authorId: 'annoying-user', title, categoryIds: ["cat21"] });
 });
 
 Then("the list of posts of this user is empty", () => {
@@ -460,8 +456,7 @@ Then("nobody is following the user profile anymore", () => {
 Given("I wrote a post {string}", title => {
   cy.createCategories(`cat213`, title)
     .factory()
-    .authenticateAs(loginCredentials)
-    .create("Post", { title, categoryIds: ["cat213"] });
+    .create("Post", { authorId: narratorParams.id, title, categoryIds: ["cat213"] });
 });
 
 When("I block the user {string}", name => {
