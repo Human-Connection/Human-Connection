@@ -28,9 +28,14 @@ describe('extractHashtags', () => {
       })
 
       it('ignores Hashtag links with not allowed character combinations', () => {
+        // Allowed are all unicode letters '\pL' and all digits '0-9'. There haveto be at least one letter in it.
         const content =
-          '<p>Something inspirational about <a href="/search/hashtag/AbcDefXyz0123456789!*(),2" class="hashtag" target="_blank">#AbcDefXyz0123456789!*(),2</a>, <a href="/search/hashtag/0123456789" class="hashtag" target="_blank">#0123456789</a>, <a href="/search/hashtag/0123456789a" class="hashtag" target="_blank">#0123456789a</a> and <a href="/search/hashtag/AbcDefXyz0123456789" target="_blank">#AbcDefXyz0123456789</a>.</p>'
-        expect(extractHashtags(content)).toEqual(['0123456789a', 'AbcDefXyz0123456789'])
+          '<p>Something inspirational about <a href="/search/hashtag/AbcDefXyz0123456789!*(),2" class="hashtag" target="_blank">#AbcDefXyz0123456789!*(),2</a>, <a href="/search/hashtag/0123456789" class="hashtag" target="_blank">#0123456789</a>, <a href="/search/hashtag/0123456789a" class="hashtag" target="_blank">#0123456789a</a>, <a href="/search/hashtag/AbcDefXyz0123456789" target="_blank">#AbcDefXyz0123456789</a>, and <a href="/search/hashtag/λαπ" target="_blank">#λαπ</a>.</p>'
+        expect(extractHashtags(content).sort()).toEqual([
+          '0123456789a',
+          'AbcDefXyz0123456789',
+          'λαπ',
+        ])
       })
     })
 
