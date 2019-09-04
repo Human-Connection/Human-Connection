@@ -8,7 +8,7 @@ import { exec, build } from 'xregexp/xregexp-all.js'
 //    2. If it starts with a digit '0-9' than a unicode character has to follow.
 const regX = build('^/search/hashtag/((\\pL+[\\pL0-9]*)|([0-9]+\\pL+[\\pL0-9]*))$')
 
-export default function (content) {
+export default function(content) {
   if (!content) return []
   const $ = cheerio.load(content)
   // We can not search for class '.hashtag', because the classes are removed at the 'xss' middleware.
