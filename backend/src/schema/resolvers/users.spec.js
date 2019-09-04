@@ -93,15 +93,18 @@ describe('UpdateUser', () => {
   })
 
   const updateUserMutation = gql`
-  mutation($id: ID!, $name: String, $termsAndConditionsAgreedVersion: String) {
-    UpdateUser(id: $id, name: $name, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
-      id
-      name
-      termsAndConditionsAgreedVersion
+    mutation($id: ID!, $name: String, $termsAndConditionsAgreedVersion: String) {
+      UpdateUser(
+        id: $id
+        name: $name
+        termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+      ) {
+        id
+        name
+        termsAndConditionsAgreedVersion
+      }
     }
-  }
-}
-`
+  `
 
   beforeEach(async () => {
     user = await factory.create('User', userParams)
@@ -171,9 +174,11 @@ describe('UpdateUser', () => {
     it('given a new agreed version of terms and conditions', async () => {
       variables = { ...variables, termsAndConditionsAgreedVersion: '0.0.2' }
       const expected = {
-        UpdateUser: expect.objectContaining({
-          termsAndConditionsAgreedVersion: '0.0.2',
-        }),
+        data: {
+          UpdateUser: expect.objectContaining({
+            termsAndConditionsAgreedVersion: '0.0.2',
+          }),
+        },
       }
 
       await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
