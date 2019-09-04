@@ -1,12 +1,14 @@
 export default function create() {
   return {
     factory: async ({ args, neodeInstance }) => {
-      const defaults = { name: '#human-connection' }
+      const defaults = {
+        url: 'https://mastodon.social/@Gargron',
+      }
       args = {
         ...defaults,
         ...args,
       }
-      return neodeInstance.create('Tag', args)
+      return neodeInstance.create('SocialMedia', args)
     },
   }
 }

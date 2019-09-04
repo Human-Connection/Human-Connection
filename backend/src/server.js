@@ -18,20 +18,22 @@ Object.entries(requiredConfigs).map(entry => {
 const driver = getDriver()
 const neode = getNeode()
 
+export const context = async ({ req }) => {
+  const user = await decode(driver, req.headers.authorization)
+  return {
+    driver,
+    neode,
+    user,
+    req,
+    cypherParams: {
+      currentUserId: user ? user.id : null,
+    },
+  }
+}
+
 const createServer = options => {
   const defaults = {
-    context: async ({ req }) => {
-      const user = await decode(driver, req.headers.authorization)
-      return {
-        driver,
-        neode,
-        user,
-        req,
-        cypherParams: {
-          currentUserId: user ? user.id : null,
-        },
-      }
-    },
+    context,
     schema: middleware(schema),
     debug: !!CONFIG.DEBUG,
     tracing: !!CONFIG.DEBUG,

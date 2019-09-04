@@ -4,7 +4,7 @@ type Query {
   currentUser: User
   # Get the latest Network Statistics
   statistics: Statistics!
-  findPosts(query: String!, limit: Int = 10): [Post]!
+  findPosts(query: String!, limit: Int = 10, filter: _PostFilter): [Post]!
     @cypher(
       statement: """
       CALL db.index.fulltext.queryNodes('full_text_search', $query)
@@ -49,23 +49,6 @@ type Statistics {
   countInvites: Int!
   countFollows: Int!
   countShouts: Int!
-}
-
-type Location {
-  id: ID!
-  name: String!
-  nameEN: String
-  nameDE: String
-  nameFR: String
-  nameNL: String
-  nameIT: String
-  nameES: String
-  namePT: String
-  namePL: String
-  type: String!
-  lat: Float
-  lng: Float
-  parent: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
 }
 
 type Report {

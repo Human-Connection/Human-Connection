@@ -1,0 +1,28 @@
+type NOTIFIED {
+  from: NotificationSource
+  to: User
+  createdAt: String
+  read: Boolean
+  reason: NotificationReason
+}
+
+union NotificationSource = Post | Comment
+
+enum NotificationOrdering {
+  createdAt_asc
+  createdAt_desc
+}
+
+enum NotificationReason {
+  mentioned_in_post
+  mentioned_in_comment
+  commented_on_post
+}
+
+type Query {
+  notifications(read: Boolean, orderBy: NotificationOrdering): [NOTIFIED]
+}
+
+type Mutation {
+  markAsRead(id: ID!): NOTIFIED
+}

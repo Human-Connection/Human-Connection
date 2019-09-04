@@ -20,6 +20,9 @@ describe('CommentForm.vue', () => {
   beforeEach(() => {
     mocks = {
       $t: jest.fn(),
+      $i18n: {
+        locale: () => 'en',
+      },
       $apollo: {
         mutate: jest
           .fn()

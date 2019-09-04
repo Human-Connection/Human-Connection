@@ -137,8 +137,8 @@ p.contentExcerpt = post.contentExcerpt,
 p.visibility     = toLower(post.visibility),
 p.createdAt      = post.createdAt.`$date`,
 p.updatedAt      = post.updatedAt.`$date`,
-p.deleted        = COALESCE(post.deleted,false),
-p.disabled       = NOT post.isEnabled
+p.deleted        = COALESCE(post.deleted, false),
+p.disabled       = COALESCE(NOT post.isEnabled, false)
 WITH p, post
 MATCH (u:User {id: post.userId})
 MERGE (u)-[:WROTE]->(p)

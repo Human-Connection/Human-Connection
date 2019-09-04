@@ -1,4 +1,5 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
+import Resolver from './helpers/Resolver'
 
 export default {
   Mutation: {
@@ -46,10 +47,29 @@ export default {
       session.close()
       return commentReturnedWithAuthor
     },
-    DeleteComment: async (object, params, context, resolveInfo) => {
-      const comment = await neo4jgraphql(object, params, context, resolveInfo, false)
-
+    DeleteComment: async (object, args, context, resolveInfo) => {
+      const session = context.driver.session()
+      const transactionRes = await session.run(
+        `
+        MATCH (comment:Comment {id: $commentId})
+        SET comment.deleted        = TRUE
+        SET comment.content        = 'UNAVAILABLE'
+        SET comment.contentExcerpt = 'UNAVAILABLE'
+        RETURN comment
+      `,
+        { commentId: args.id },
+      )
+      const [comment] = transactionRes.records.map(record => record.get('comment').properties)
       return comment
     },
+  },
+  Comment: {
+    ...Resolver('Comment', {
+      hasOne: {
+        author: '<-[:WROTE]-(related:User)',
+        post: '-[:COMMENTS]->(related:Post)',
+        disabledBy: '<-[:DISABLED]-(related:User)',
+      },
+    }),
   },
 }

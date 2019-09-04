@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { postFragment, commentFragment } from './Fragments'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
@@ -76,63 +77,26 @@ export default i18n => {
   `
 }
 
-export const currentUserNotificationsQuery = () => {
+export const notificationQuery = i18n => {
+  const lang = i18n.locale().toUpperCase()
   return gql`
+    ${commentFragment(lang)}
+    ${postFragment(lang)}
+
     query {
-      currentUser {
-        id
-        notifications(read: false, orderBy: createdAt_desc) {
-          id
-          read
-          reason
-          createdAt
-          post {
-            id
-            createdAt
-            disabled
-            deleted
-            title
-            contentExcerpt
-            slug
-            author {
-              id
-              slug
-              name
-              disabled
-              deleted
-              avatar
-            }
+      notifications(read: false, orderBy: createdAt_desc) {
+        read
+        reason
+        createdAt
+        from {
+          __typename
+          ... on Post {
+            ...post
           }
-          comment {
-            id
-            createdAt
-            disabled
-            deleted
-            contentExcerpt
-            author {
-              id
-              slug
-              name
-              disabled
-              deleted
-              avatar
-            }
+          ... on Comment {
+            ...comment
             post {
-              id
-              createdAt
-              disabled
-              deleted
-              title
-              contentExcerpt
-              slug
-              author {
-                id
-                slug
-                name
-                disabled
-                deleted
-                avatar
-              }
+              ...post
             }
           }
         }
@@ -141,12 +105,29 @@ export const currentUserNotificationsQuery = () => {
   `
 }
 
-export const updateNotificationMutation = () => {
+export const markAsReadMutation = i18n => {
+  const lang = i18n.locale().toUpperCase()
   return gql`
-    mutation($id: ID!, $read: Boolean!) {
-      UpdateNotification(id: $id, read: $read) {
-        id
+    ${commentFragment(lang)}
+    ${postFragment(lang)}
+
+    mutation($id: ID!) {
+      markAsRead(id: $id) {
         read
+        reason
+        createdAt
+        from {
+          __typename
+          ... on Post {
+            ...post
+          }
+          ... on Comment {
+            ...comment
+            post {
+              ...post
+            }
+          }
+        }
       }
     }
   `
