@@ -77,6 +77,7 @@ describe('CreateUserAccount', () => {
               email: 'sixseven@example.org',
               nonce: '666777',
               password: 'hellopassword',
+              termsAndConditionsAgreedVersion: '0.0.2',
             },
           })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)

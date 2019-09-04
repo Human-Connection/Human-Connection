@@ -89,8 +89,10 @@ describe('slugify', () => {
   })
 
   describe('SignupVerification', () => {
-    const mutation = `mutation($password: String!, $email: String!, $name: String!, $slug: String, $nonce: String!) {
-      SignupVerification(email: $email, password: $password, name: $name, slug: $slug, nonce: $nonce) { slug }
+    const mutation = `mutation($password: String!, $email: String!, $name: String!, $slug: String, $nonce: String!, $termsAndConditionsAgreedVersion: String!) {
+      SignupVerification(email: $email, password: $password, name: $name, slug: $slug, nonce: $nonce, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) { 
+        slug 
+      }
     }
     `
 
@@ -98,7 +100,12 @@ describe('slugify', () => {
       // required for SignupVerification
       await instance.create('EmailAddress', { email: '123@example.org', nonce: '123456' })
 
-      const defaultVariables = { nonce: '123456', password: 'yo', email: '123@example.org' }
+      const defaultVariables = {
+        nonce: '123456',
+        password: 'yo',
+        email: '123@example.org',
+        termsAndConditionsAgreedVersion: '0.0.1',
+      }
       return authenticatedClient.request(mutation, { ...defaultVariables, ...variables })
     }
 

@@ -1,4 +1,8 @@
-import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
+import {
+  Given,
+  When,
+  Then
+} from "cypress-cucumber-preprocessor/steps";
 import helpers from "../../support/helpers";
 
 /* global cy  */
@@ -9,12 +13,16 @@ let loginCredentials = {
   email: "peterpan@example.org",
   password: "1234"
 };
+const termsAndConditionsAgreedVersion = {
+  termsAndConditionsAgreedVersion: "0.0.2"
+};
 const narratorParams = {
   id: 'id-of-peter-pan',
   name: "Peter Pan",
   slug: "peter-pan",
   avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
-  ...loginCredentials
+  ...loginCredentials,
+  ...termsAndConditionsAgreedVersion,
 };
 
 Given("I am logged in", () => {
@@ -28,25 +36,54 @@ Given("we have a selection of categories", () => {
 Given("we have a selection of tags and categories as well as posts", () => {
   cy.createCategories("cat12")
     .factory()
-    .create("Tag", { id: "Ecology" })
-    .create("Tag", { id: "Nature" })
-    .create("Tag", { id: "Democracy" });
+    .create("Tag", {
+      id: "Ecology"
+    })
+    .create("Tag", {
+      id: "Nature"
+    })
+    .create("Tag", {
+      id: "Democracy"
+    });
 
   cy.factory()
-    .create("User", { id: 'a1' })
-    .create("Post", {authorId: 'a1', tagIds: [ "Ecology", "Nature", "Democracy" ], categoryIds: ["cat12"] })
-    .create("Post", {authorId: 'a1', tagIds: [ "Nature", "Democracy" ], categoryIds: ["cat121"] });
+    .create("User", {
+      id: 'a1'
+    })
+    .create("Post", {
+      authorId: 'a1',
+      tagIds: ["Ecology", "Nature", "Democracy"],
+      categoryIds: ["cat12"]
+    })
+    .create("Post", {
+      authorId: 'a1',
+      tagIds: ["Nature", "Democracy"],
+      categoryIds: ["cat121"]
+    });
 
   cy.factory()
-    .create("User", { id: 'a2'})
-    .create("Post", { authorId: 'a2', tagIds: ['Nature', 'Democracy'], categoryIds: ["cat12"] });
+    .create("User", {
+      id: 'a2'
+    })
+    .create("Post", {
+      authorId: 'a2',
+      tagIds: ['Nature', 'Democracy'],
+      categoryIds: ["cat12"]
+    });
   cy.factory()
-    .create("Post", { authorId: narratorParams.id, tagIds: ['Democracy'], categoryIds: ["cat122"] })
+    .create("Post", {
+      authorId: narratorParams.id,
+      tagIds: ['Democracy'],
+      categoryIds: ["cat122"]
+    })
 });
 
 Given("we have the following user accounts:", table => {
   table.hashes().forEach(params => {
-    cy.factory().create("User", params);
+    cy.factory().create("User", {
+      ...params,
+      ...termsAndConditionsAgreedVersion
+    });
   });
 });
 
@@ -57,7 +94,8 @@ Given("I have a user account", () => {
 Given("my user account has the role {string}", role => {
   cy.factory().create("User", {
     role,
-    ...loginCredentials
+    ...loginCredentials,
+    ...termsAndConditionsAgreedVersion,
   });
 });
 
@@ -117,7 +155,9 @@ Given("I previously switched the language to {string}", name => {
 });
 
 Then("the whole user interface appears in {string}", name => {
-  const { code } = helpers.getLangByName(name);
+  const {
+    code
+  } = helpers.getLangByName(name);
   cy.get(`html[lang=${code}]`);
   cy.getCookie("locale").should("have.property", "value", code);
 });
@@ -151,7 +191,9 @@ Given("we have the following posts in our database:", table => {
     icon: "smile"
   })
 
-  table.hashes().forEach(({ ...postAttributes }, i) => {
+  table.hashes().forEach(({
+    ...postAttributes
+  }, i) => {
     postAttributes = {
       ...postAttributes,
       deleted: Boolean(postAttributes.deleted),
@@ -229,10 +271,15 @@ Then("the first post on the landing page has the title:", title => {
 Then(
   "the page {string} returns a 404 error with a message:",
   (route, message) => {
-    cy.request({ url: route, failOnStatusCode: false })
+    cy.request({
+        url: route,
+        failOnStatusCode: false
+      })
       .its("status")
       .should("eq", 404);
-    cy.visit(route, { failOnStatusCode: false });
+    cy.visit(route, {
+      failOnStatusCode: false
+    });
     cy.get(".error").should("contain", message);
   }
 );
@@ -240,7 +287,10 @@ Then(
 Given("my user account has the following login credentials:", table => {
   loginCredentials = table.hashes()[0];
   cy.debug();
-  cy.factory().create("User", loginCredentials);
+  cy.factory().create("User", {
+    ...termsAndConditionsAgreedVersion,
+    ...loginCredentials
+  });
 });
 
 When("I fill the password form with:", table => {
@@ -259,7 +309,9 @@ When("submit the form", () => {
 
 Then("I cannot login anymore with password {string}", password => {
   cy.reload();
-  const { email } = loginCredentials;
+  const {
+    email
+  } = loginCredentials;
   cy.visit(`/login`);
   cy.get("input[name=email]")
     .trigger("focus")
@@ -280,14 +332,22 @@ Then("I can login successfully with password {string}", password => {
   cy.reload();
   cy.login({
     ...loginCredentials,
-    ...{ password }
+    ...{
+      password
+    }
   });
   cy.get(".iziToast-wrapper").should("contain", "You are logged in!");
 });
 
 When("I log in with the following credentials:", table => {
-  const { email, password } = table.hashes()[0];
-  cy.login({ email, password });
+  const {
+    email,
+    password
+  } = table.hashes()[0];
+  cy.login({
+    email,
+    password
+  });
 });
 
 When("open the notification menu and click on the first item", () => {
@@ -337,12 +397,14 @@ Then("there are no notifications in the top menu", () => {
 Given("there is an annoying user called {string}", name => {
   const annoyingParams = {
     email: "spammy-spammer@example.org",
-    password: "1234"
+    password: "1234",
+    ...termsAndConditionsAgreedVersion
   };
   cy.factory().create("User", {
     ...annoyingParams,
     id: "annoying-user",
-    name
+    name,
+    ...termsAndConditionsAgreedVersion,
   });
 });
 
@@ -364,7 +426,9 @@ When(
     cy.get(".user-content-menu .content-menu-trigger").click();
     cy.get(".popover .ds-menu-item-link")
       .contains(button)
-      .click({ force: true });
+      .click({
+        force: true
+      });
   }
 );
 
@@ -379,10 +443,14 @@ When("I navigate to my {string} settings page", settingsPage => {
 
 Given("I follow the user {string}", name => {
   cy.neode()
-    .first("User", { name })
+    .first("User", {
+      name
+    })
     .then(followed => {
       cy.neode()
-        .first("User", { name: narratorParams.name })
+        .first("User", {
+          name: narratorParams.name
+        })
         .relateTo(followed, "following");
     });
 });
@@ -390,7 +458,11 @@ Given("I follow the user {string}", name => {
 Given('"Spammy Spammer" wrote a post {string}', title => {
   cy.createCategories("cat21")
     .factory()
-    .create("Post", { authorId: 'annoying-user', title, categoryIds: ["cat21"] });
+    .create("Post", {
+      authorId: 'annoying-user',
+      title,
+      categoryIds: ["cat21"]
+    });
 });
 
 Then("the list of posts of this user is empty", () => {
@@ -409,23 +481,37 @@ Then("nobody is following the user profile anymore", () => {
 Given("I wrote a post {string}", title => {
   cy.createCategories(`cat213`, title)
     .factory()
-    .create("Post", { authorId: narratorParams.id, title, categoryIds: ["cat213"] });
+    .create("Post", {
+      authorId: narratorParams.id,
+      title,
+      categoryIds: ["cat213"]
+    });
 });
 
 When("I block the user {string}", name => {
   cy.neode()
-    .first("User", { name })
+    .first("User", {
+      name
+    })
     .then(blocked => {
       cy.neode()
-        .first("User", { name: narratorParams.name })
+        .first("User", {
+          name: narratorParams.name
+        })
         .relateTo(blocked, "blocked");
     });
 });
 
 When("I log in with:", table => {
   const [firstRow] = table.hashes();
-  const { Email, Password } = firstRow;
-  cy.login({ email: Email, password: Password });
+  const {
+    Email,
+    Password
+  } = firstRow;
+  cy.login({
+    email: Email,
+    password: Password
+  });
 });
 
 Then("I see only one post with the title {string}", title => {

@@ -1,7 +1,7 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
 import { neode } from '../../bootstrap/neo4j'
-import { UserInputError } from 'apollo-server'
+import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 
 const instance = neode()
@@ -88,6 +88,13 @@ export default {
       return blockedUser.toJson()
     },
     UpdateUser: async (object, args, context, resolveInfo) => {
+      const { termsAndConditionsAgreedVersion } = args
+      if (termsAndConditionsAgreedVersion) {
+        const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
+        if (!regEx.test(termsAndConditionsAgreedVersion)) {
+          throw new ForbiddenError('Invalid version format!')
+        }
+      }
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
         const user = await instance.find('User', args.id)

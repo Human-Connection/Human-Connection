@@ -21,6 +21,7 @@
     }
   },
   "site": {
+    "thanks": "Danke!",
     "made": "Mit &#10084; gemacht",
     "imprint": "Impressum",
     "data-privacy": "Datenschutz",
@@ -34,8 +35,7 @@
     "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
     "bank": "Bankverbindung",
     "germany": "Deutschland",
-    "code-of-conduct": "Verhaltenscodex",
-    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu."
+    "code-of-conduct": "Verhaltenscodex"
   },
   "sorting": {
     "newest": "Neuste",
@@ -575,6 +575,11 @@
     "get-help": "Wenn du einem inakzeptablen Verhalten ausgesetzt bist, es miterlebst oder andere Bedenken hast, benachrichtige bitte so schnell wie möglich einen Organisator der Gemeinschaft und verlinke oder verweise auf den entsprechenden Inhalt:"
   },
   "termsAndConditions": {
+    "termsAndConditionsConfirmed": "Ich habe die <a href=\"/terms-and-conditions\" target=\"_blank\">Nutzungsbedingungen</a> durchgelesen und stimme ihnen zu.",
+    "newTermsAndConditions": "Neue Nutzungsbedingungen",
+    "termsAndConditionsNewConfirmText": "Bitte lies dir die neue Nutzungsbedingungen jetzt durch!",
+    "termsAndConditionsNewConfirm": "Ich habe die neuen Nutzungsbedingungen durchgelesen und stimme zu.",
+    "agree": "Ich stimme zu!",
     "risk": {
       "title": "Unfallgefahr",
       "description": "Das ist eine Testversion! Alle Daten, Dein Profil und die Server können jederzeit komplett vernichtet, verloren, verbrannt und vielleicht auch in der Nähe von Alpha Centauri synchronisiert werden. Die Benutzung läuft auf eigene Gefahr. Mit kommerziellen Nebenwirkungen ist jedoch nicht zu rechnen."
