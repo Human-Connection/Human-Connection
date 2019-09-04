@@ -32,7 +32,7 @@ export default {
   SocialMedia: Resolver('SocialMedia', {
     idAttribute: 'url',
     hasOne: {
-      ownedBy: '<-[:OWNED_BY]-(related:User)',
+      ownedBy: '-[:OWNED_BY]->(related:User)',
     },
   }),
 }

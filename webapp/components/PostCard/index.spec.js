@@ -50,7 +50,9 @@ describe('PostCard', () => {
         error: jest.fn(),
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue(),
+        mutate: jest.fn().mockResolvedValue({
+          data: { DeletePost: { id: 'deleted-post-id' } },
+        }),
       },
     }
     getters = {
@@ -94,7 +96,7 @@ describe('PostCard', () => {
           })
 
           it('emits "removePostFromList"', () => {
-            expect(wrapper.emitted().removePostFromList).toHaveLength(1)
+            expect(wrapper.emitted('removePostFromList')).toEqual([[{ id: 'deleted-post-id' }]])
           })
         })
       })

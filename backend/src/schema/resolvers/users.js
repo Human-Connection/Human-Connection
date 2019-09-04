@@ -102,23 +102,49 @@ export default {
       const { resource } = params
       const session = context.driver.session()
 
-      if (resource && resource.length) {
-        await Promise.all(
-          resource.map(async node => {
-            await session.run(
-              `
+      let user
+      try {
+        if (resource && resource.length) {
+          await Promise.all(
+            resource.map(async node => {
+              await session.run(
+                `
             MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
+            OPTIONAL MATCH (resource)<-[:COMMENTS]-(comment:Comment)
             SET resource.deleted = true
+            SET resource.content = 'UNAVAILABLE'
+            SET resource.contentExcerpt = 'UNAVAILABLE'
+            SET comment.deleted = true
             RETURN author`,
-              {
-                userId: context.user.id,
-              },
-            )
-          }),
+                {
+                  userId: context.user.id,
+                },
+              )
+            }),
+          )
+        }
+
+        // we cannot set slug to 'UNAVAILABE' because of unique constraints
+        const transactionResult = await session.run(
+          `
+          MATCH (user:User {id: $userId})
+          SET user.deleted = true
+          SET user.name = 'UNAVAILABLE'
+          SET user.about = 'UNAVAILABLE'
+          WITH user
+          OPTIONAL MATCH (user)<-[:BELONGS_TO]-(email:EmailAddress)
+          DETACH DELETE email
+          WITH user
+          OPTIONAL MATCH (user)<-[:OWNED_BY]-(socialMedia:SocialMedia)
+          DETACH DELETE socialMedia
+          RETURN user`,
+          { userId: context.user.id },
         )
+        user = transactionResult.records.map(r => r.get('user').properties)[0]
+      } finally {
         session.close()
       }
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+      return user
     },
   },
   User: {
@@ -161,12 +187,13 @@ export default {
       hasOne: {
         invitedBy: '<-[:INVITED]-(related:User)',
         disabledBy: '<-[:DISABLED]-(related:User)',
+        location: '-[:IS_IN]->(related:Location)',
       },
       hasMany: {
         followedBy: '<-[:FOLLOWS]-(related:User)',
         following: '-[:FOLLOWS]->(related:User)',
         friends: '-[:FRIENDS]-(related:User)',
-        socialMedia: '-[:OWNED_BY]->(related:SocialMedia',
+        socialMedia: '<-[:OWNED_BY]-(related:SocialMedia)',
         contributions: '-[:WROTE]->(related:Post)',
         comments: '-[:WROTE]->(related:Comment)',
         shouted: '-[:SHOUTED]->(related:Post)',

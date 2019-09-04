@@ -8,10 +8,12 @@ Feature: Report and Moderate
   So I can look into it and decide what to do
 
   Background:
+    Given we have this user in our database:
+      | id  | name |
+      | u67 | David Irving|
     Given we have the following posts in our database:
-      | Author       | id | title                         | content           |
-      | David Irving | p1 | The Truth about the Holocaust | It never existed! |
-
+      | authorId  | id | title                         | content           |
+      | u67       | p1 | The Truth about the Holocaust | It never existed! |
 
   Scenario Outline: Report a post from various pages
     Given I am logged in with a "user" role

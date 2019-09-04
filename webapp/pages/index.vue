@@ -20,7 +20,7 @@
           <hc-post-card
             :post="post"
             :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-            @removePostFromList="deletePost(index, post.id)"
+            @removePostFromList="deletePost"
           />
         </masonry-grid-item>
       </template>
@@ -115,7 +115,7 @@ export default {
           label: this.$t('sorting.commented'),
           value: 'Commented',
           icons: 'comment',
-          order: 'commentedCount_desc',
+          order: 'commentsCount_desc',
         },
       ],
     }
@@ -164,9 +164,9 @@ export default {
     showMoreContributions() {
       this.offset += this.pageSize
     },
-    deletePost(_index, postId) {
+    deletePost(deletedPost) {
       this.posts = this.posts.filter(post => {
-        return post.id !== postId
+        return post.id !== deletedPost.id
       })
     },
   },
@@ -185,7 +185,8 @@ export default {
         return result
       },
       update({ Post }) {
-        this.hasMore = Post.length >= this.pageSize
+        this.hasMore = Post && Post.length >= this.pageSize
+        if (!Post) return
         const posts = uniqBy([...this.posts, ...Post], 'id')
         this.posts = posts
       },

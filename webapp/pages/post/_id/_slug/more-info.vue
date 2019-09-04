@@ -36,11 +36,11 @@
     <ds-section style="margin: 0 -1.5rem; padding: 1.5rem;">
       <ds-flex v-if="post.relatedContributions && post.relatedContributions.length" gutter="small">
         <hc-post-card
-          v-for="(relatedPost, index) in post.relatedContributions"
+          v-for="relatedPost in post.relatedContributions"
           :key="relatedPost.id"
           :post="relatedPost"
           :width="{ base: '100%', lg: 1 }"
-          @removePostFromList="post.relatedContributions.splice(index, 1)"
+          @removePostFromList="removePostFromList"
         />
       </ds-flex>
       <hc-empty v-else margin="large" icon="file" message="No related Posts" />
@@ -50,9 +50,9 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import HcPostCard from '~/components/PostCard'
 import HcEmpty from '~/components/Empty.vue'
+import { relatedContributions } from '~/graphql/PostQuery'
 
 export default {
   transition: {
@@ -68,57 +68,17 @@ export default {
       return this.Post ? this.Post[0] || {} : {}
     },
   },
+  methods: {
+    removePostFromList(deletedPost) {
+      this.post.relatedContributions = this.post.relatedContributions.filter(contribution => {
+        return contribution.id !== deletedPost.id
+      })
+    },
+  },
   apollo: {
     Post: {
       query() {
-        return gql`
-          query Post($slug: String!) {
-            Post(slug: $slug) {
-              id
-              title
-              tags {
-                id
-                name
-              }
-              categories {
-                id
-                name
-                icon
-              }
-              relatedContributions(first: 2) {
-                id
-                title
-                slug
-                contentExcerpt
-                shoutedCount
-                commentedCount
-                categories {
-                  id
-                  name
-                  icon
-                }
-                author {
-                  id
-                  name
-                  slug
-                  avatar
-                  contributionsCount
-                  followedByCount
-                  followedByCurrentUser
-                  commentedCount
-                  location {
-                    name: name${this.$i18n.locale().toUpperCase()}
-                  }
-                  badges {
-                    id
-                    icon
-                  }
-                }
-              }
-              shoutedCount
-            }
-          }
-        `
+        return relatedContributions(this.$i18n)
       },
       variables() {
         return {

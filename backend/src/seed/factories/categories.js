@@ -1,17 +1,18 @@
 import uuid from 'uuid/v4'
 
-export default function(params) {
-  const { id = uuid(), name, slug, icon } = params
-
+export default function create() {
   return {
-    mutation: `
-    mutation($id: ID, $name: String!, $slug: String, $icon: String!) {
-      CreateCategory(id: $id, name: $name, slug: $slug, icon: $icon) {
-        id
-        name
+    factory: async ({ args, neodeInstance }) => {
+      const defaults = {
+        id: uuid(),
+        icon: 'img/badges/fundraisingbox_de_airship.svg',
+        name: 'Some category name',
       }
-    }
-    `,
-    variables: { id, name, slug, icon },
+      args = {
+        ...defaults,
+        ...args,
+      }
+      return neodeInstance.create('Category', args)
+    },
   }
 }

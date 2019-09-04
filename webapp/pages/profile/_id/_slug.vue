@@ -220,11 +220,11 @@
           </ds-grid-item>
 
           <template v-if="posts.length">
-            <masonry-grid-item v-for="(post, index) in posts" :key="post.id">
+            <masonry-grid-item v-for="post in posts" :key="post.id">
               <hc-post-card
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
-                @removePostFromList="removePostFromList(index)"
+                @removePostFromList="removePostFromList"
               />
             </masonry-grid-item>
           </template>
@@ -345,8 +345,10 @@ export default {
     },
   },
   methods: {
-    removePostFromList(index) {
-      this.posts.splice(index, 1)
+    removePostFromList(deletedPost) {
+      this.posts = this.posts.filter(post => {
+        return post.id !== deletedPost.id
+      })
     },
     handleTab(tab) {
       this.tabActive = tab
@@ -396,11 +398,11 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
       update({ Post }) {
+        this.hasMore = Post && Post.length >= this.pageSize
         if (!Post) return
         // TODO: find out why `update` gets called twice initially.
         // We have to filter for uniq posts only because we get the same
         // result set twice.
-        this.hasMore = Post.length >= this.pageSize
         this.posts = this.uniq([...this.posts, ...Post])
       },
     },
