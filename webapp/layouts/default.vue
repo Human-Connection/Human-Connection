@@ -6,7 +6,7 @@
           <ds-flex class="main-navigation-flex" centered>
             <ds-flex-item :width="{ lg: '3.5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
-              <a @click="redirectToRoot">
+              <a @click="redirectToRoot" class="main-navigation-logo">
                 <ds-logo />
               </a>
             </ds-flex-item>
@@ -309,6 +309,9 @@ export default {
 }
 .main-navigation-right .desktop-view {
   float: right;
+}
+.main-navigation-logo {
+  cursor: pointer;
 }
 .avatar-menu {
   margin: 2px 0px 0px 5px;
