@@ -125,7 +125,6 @@
 [ ]   wasSeeded: { type: Boolean }
     }
 */
-
 CALL apoc.load.json("file:${IMPORT_CHUNK_PATH_CQL_FILE}") YIELD value as post
 MERGE (p:Post {id: post._id["$oid"]})
 ON CREATE SET
@@ -148,9 +147,12 @@ MATCH (c:Category {id: categoryId})
 MERGE (p)-[:CATEGORIZED]->(c)
 WITH p, post.tags AS tags
 UNWIND tags AS tag
-CALL apoc.when(tag =~ '^((\\p{L}+[\\p{L}0-9]*)|([0-9]+\\p{L}+[\\p{L}0-9]*))$', 'RETURN tag', '', {tag: tag}) 
+WITH '[^\\p{L}0-9]' as regexMatchAllNonUnicodeOrDigits
+WITH apoc.text.replace(tag, regexMatchAllNonUnicodeOrDigits, '') as tagNoSpacesAllowed
+WITH '^((\\p{L}+[\\p{L}0-9]*)|([0-9]+\\p{L}+[\\p{L}0-9]*))$' as regexHashtagMustNotIncludeOnlyDigits
+CALL apoc.when(tagNoSpacesAllowed =~ regexHashtagMustNotIncludeOnlyDigits, 'RETURN tagNoSpacesAllowed', '', {tagNoSpacesAllowed: tagNoSpacesAllowed})
 YIELD value as validated
-WHERE validated.tag IS NOT NULL
-MERGE (t:Tag { id: validated.tag, disabled: false, deleted: false })
+WHERE validated.tagNoSpacesAllowed IS NOT NULL
+MERGE (t:Tag { id: validated.tagNoSpacesAllowed, disabled: false, deleted: false })
 MERGE (p)-[:TAGGED]->(t)
 ;
