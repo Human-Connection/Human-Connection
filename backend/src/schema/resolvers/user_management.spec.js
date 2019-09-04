@@ -4,6 +4,7 @@ import Factory from '../../seed/factories'
 import { gql } from '../../jest/helpers'
 import { createTestClient } from 'apollo-server-testing'
 import createServer, { context } from '../../server'
+import encode from '../../jwt/encode'
 
 const factory = Factory()
 let query
@@ -12,16 +13,9 @@ let variables
 let req
 let user
 
-// This is a bearer token of a user with id `u3`:
-const userBearerToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsIm5hbWUiOiJKZW5ueSBSb3N0b2NrIiwiZGlzYWJsZWQiOmZhbHNlLCJhdmF0YXIiOiJodHRwczovL3MzLmFtYXpvbmF3cy5jb20vdWlmYWNlcy9mYWNlcy90d2l0dGVyL2tleXVyaTg1LzEyOC5qcGciLCJpZCI6InUzIiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUub3JnIiwic2x1ZyI6Implbm55LXJvc3RvY2siLCJpYXQiOjE1Njc0NjgyMDIsImV4cCI6MTU2NzU1NDYwMiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwIiwic3ViIjoidTMifQ.RkmrdJDL1kIqGnMWUBl_sJJ4grzfpTEGdT6doMsbLW8'
-
-// This is a bearer token of a user with id `u2`:
-const moderatorBearerToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibW9kZXJhdG9yIiwibmFtZSI6IkJvYiBkZXIgQmF1bWVpc3RlciIsImRpc2FibGVkIjpmYWxzZSwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9hbmRyZXdvZmZpY2VyLzEyOC5qcGciLCJpZCI6InUyIiwiZW1haWwiOiJtb2RlcmF0b3JAZXhhbXBsZS5vcmciLCJzbHVnIjoiYm9iLWRlci1iYXVtZWlzdGVyIiwiaWF0IjoxNTY3NDY4MDUwLCJleHAiOjE1Njc1NTQ0NTAsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDAwMCIsInN1YiI6InUyIn0.LdVFPKqIcoY0a7_kFZSTgnc8NzmZD7CrR3vkWLSqedM'
-
 const disable = async id => {
   await factory.create('User', { id: 'u2', role: 'moderator' })
+  const moderatorBearerToken = encode({ id: 'u2' })
   req = { headers: { authorization: `Bearer ${moderatorBearerToken}` } }
   await mutate({
     mutation: gql`
@@ -74,6 +68,7 @@ describe('isLoggedIn', () => {
   describe('authenticated', () => {
     beforeEach(async () => {
       user = await factory.create('User', { id: 'u3' })
+      const userBearerToken = encode({ id: 'u3' })
       req = { headers: { authorization: `Bearer ${userBearerToken}` } }
     })
 
@@ -139,6 +134,7 @@ describe('currentUser', () => {
           slug: 'matilde-hermiston',
           role: 'user',
         })
+        const userBearerToken = encode({ id: 'u3' })
         req = { headers: { authorization: `Bearer ${userBearerToken}` } }
       })
 
@@ -276,6 +272,7 @@ describe('change password', () => {
   describe('authenticated', () => {
     beforeEach(async () => {
       await factory.create('User', { id: 'u3' })
+      const userBearerToken = encode({ id: 'u3' })
       req = { headers: { authorization: `Bearer ${userBearerToken}` } }
     })
     describe('old password === new password', () => {
