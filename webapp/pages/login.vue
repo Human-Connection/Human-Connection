@@ -71,7 +71,7 @@ import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 
 export default {
-  layout: 'blank',
+  layout: 'basic',
   data() {
     return {
       ready: false,
