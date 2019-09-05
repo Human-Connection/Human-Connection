@@ -165,6 +165,7 @@ export default {
     },
     ...Resolver('User', {
       undefinedToNull: [
+        'termsAndConditionsAgreedVersion',
         'actorId',
         'avatar',
         'coverImg',
@@ -204,8 +205,6 @@ export default {
         contributions: '-[:WROTE]->(related:Post)',
         comments: '-[:WROTE]->(related:Comment)',
         shouted: '-[:SHOUTED]->(related:Post)',
-        organizationsCreated: '-[:CREATED_ORGA]->(related:Organization)',
-        organizationsOwned: '-[:OWNING_ORGA]->(related:Organization)',
         categories: '-[:CATEGORIZED]->(related:Category)',
         badges: '<-[:REWARDED]-(related:Badge)',
       },
