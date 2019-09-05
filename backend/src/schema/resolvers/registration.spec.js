@@ -34,6 +34,7 @@ describe('CreateInvitationCode', () => {
         name: 'Inviter',
         email: 'inviter@example.org',
         password: '1234',
+        termsAndConditionsAgreedVersion: '0.0.1',
       }
       action = async () => {
         const factory = Factory()
@@ -293,19 +294,25 @@ describe('Signup', () => {
 
 describe('SignupVerification', () => {
   const mutation = `
-      mutation($name: String!, $password: String!, $email: String!, $nonce: String!) {
-        SignupVerification(name: $name, password: $password, email: $email, nonce: $nonce) {
+      mutation($name: String!, $password: String!, $email: String!, $nonce: String!, $termsAndConditionsAgreedVersion: String!) {
+        SignupVerification(name: $name, password: $password, email: $email, nonce: $nonce, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
           id
+          termsAndConditionsAgreedVersion
         }
       }
     `
   describe('given valid password and email', () => {
-    const variables = {
-      nonce: '123456',
-      name: 'John Doe',
-      password: '123',
-      email: 'john@example.org',
-    }
+    let variables
+
+    beforeEach(async () => {
+      variables = {
+        nonce: '123456',
+        name: 'John Doe',
+        password: '123',
+        email: 'john@example.org',
+        termsAndConditionsAgreedVersion: '0.0.1',
+      }
+    })
 
     describe('unauthenticated', () => {
       beforeEach(async () => {
@@ -349,9 +356,9 @@ describe('SignupVerification', () => {
         describe('sending a valid nonce', () => {
           it('creates a user account', async () => {
             const expected = {
-              SignupVerification: {
+              SignupVerification: expect.objectContaining({
                 id: expect.any(String),
-              },
+              }),
             }
             await expect(client.request(mutation, variables)).resolves.toEqual(expected)
           })
@@ -384,6 +391,24 @@ describe('SignupVerification', () => {
             await client.request(mutation, variables)
             const { records: emails } = await instance.cypher(cypher, { name: 'John Doe' })
             expect(emails).toHaveLength(1)
+          })
+
+          it('is version of terms and conditions saved correctly', async () => {
+            const expected = {
+              SignupVerification: expect.objectContaining({
+                termsAndConditionsAgreedVersion: '0.0.1',
+              }),
+            }
+            await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+          })
+
+          it('rejects if version of terms and conditions has wrong format', async () => {
+            await expect(
+              client.request(mutation, {
+                ...variables,
+                termsAndConditionsAgreedVersion: 'invalid version format',
+              }),
+            ).rejects.toThrow('Invalid version format!')
           })
         })
 

@@ -83,11 +83,11 @@
     "metascraper-lang-detector": "^4.8.5",
     "metascraper-logo": "^5.6.5",
     "metascraper-publisher": "^5.6.5",
-    "metascraper-soundcloud": "^5.6.5",
+    "metascraper-soundcloud": "^5.6.7",
     "metascraper-title": "^5.6.5",
     "metascraper-url": "^5.6.5",
     "metascraper-video": "^5.6.5",
-    "metascraper-youtube": "^5.6.3",
+    "metascraper-youtube": "^5.6.7",
     "minimatch": "^3.0.4",
     "neo4j-driver": "~1.7.6",
     "neo4j-graphql-js": "^2.7.2",
@@ -100,6 +100,7 @@
     "slug": "~1.1.0",
     "trunc-html": "~1.1.2",
     "uuid": "~3.3.3",
+    "xregexp": "^4.2.4",
     "wait-on": "~3.3.0"
   },
   "devDependencies": {

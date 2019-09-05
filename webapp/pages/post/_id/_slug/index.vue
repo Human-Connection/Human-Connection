@@ -178,6 +178,7 @@ export default {
 
   .post-card {
     margin: auto;
+    cursor: auto;
 
     .comments {
       margin-top: $space-small;

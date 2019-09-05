@@ -1,6 +1,5 @@
 type EmailAddress {
-  id: ID!
-  email: String!
+  email: ID!
   verifiedAt: String
   createdAt: String
 }
@@ -19,5 +18,6 @@ type Mutation {
     avatarUpload: Upload
     locationName: String
     about: String
+    termsAndConditionsAgreedVersion: String
   ): User
 }

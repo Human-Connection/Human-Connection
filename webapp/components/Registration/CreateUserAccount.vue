@@ -55,7 +55,10 @@
               v-model="termsAndConditionsConfirmed"
               :checked="termsAndConditionsConfirmed"
             />
-            <label for="checkbox" v-html="$t('site.termsAndConditionsConfirmed')"></label>
+            <label
+              for="checkbox"
+              v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
+            ></label>
           </ds-text>
 
           <template slot="footer">
@@ -84,9 +87,24 @@ import gql from 'graphql-tag'
 import PasswordStrength from '../Password/Strength'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
+import { VERSION } from '~/constants/terms-and-conditions-version.js'
+
+/* TODO: hier muss die version rein */
 export const SignupVerificationMutation = gql`
-  mutation($nonce: String!, $name: String!, $email: String!, $password: String!) {
-    SignupVerification(nonce: $nonce, email: $email, name: $name, password: $password) {
+  mutation(
+    $nonce: String!
+    $name: String!
+    $email: String!
+    $password: String!
+    $termsAndConditionsAgreedVersion: String!
+  ) {
+    SignupVerification(
+      nonce: $nonce
+      email: $email
+      name: $name
+      password: $password
+      termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+    ) {
       id
       name
       slug
@@ -135,10 +153,11 @@ export default {
     async submit() {
       const { name, password, about } = this.formData
       const { email, nonce } = this
+      const termsAndConditionsAgreedVersion = VERSION
       try {
         await this.$apollo.mutate({
           mutation: SignupVerificationMutation,
-          variables: { name, password, about, email, nonce },
+          variables: { name, password, about, email, nonce, termsAndConditionsAgreedVersion },
         })
         this.success = true
         setTimeout(() => {

@@ -75,22 +75,33 @@ describe('User', () => {
 })
 
 describe('UpdateUser', () => {
-  const userParams = {
-    email: 'user@example.org',
-    password: '1234',
-    id: 'u47',
-    name: 'John Doe',
-  }
-  const variables = {
-    id: 'u47',
-    name: 'John Doughnut',
-  }
+  let userParams
+  let variables
+
+  beforeEach(async () => {
+    userParams = {
+      email: 'user@example.org',
+      password: '1234',
+      id: 'u47',
+      name: 'John Doe',
+    }
+
+    variables = {
+      id: 'u47',
+      name: 'John Doughnut',
+    }
+  })
 
   const updateUserMutation = gql`
-    mutation($id: ID!, $name: String) {
-      UpdateUser(id: $id, name: $name) {
+    mutation($id: ID!, $name: String, $termsAndConditionsAgreedVersion: String) {
+      UpdateUser(
+        id: $id
+        name: $name
+        termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+      ) {
         id
         name
+        termsAndConditionsAgreedVersion
       }
     }
   `
@@ -158,6 +169,30 @@ describe('UpdateUser', () => {
         'message',
         'child "name" fails because ["name" length must be at least 3 characters long]',
       )
+    })
+
+    it('given a new agreed version of terms and conditions', async () => {
+      variables = { ...variables, termsAndConditionsAgreedVersion: '0.0.2' }
+      const expected = {
+        data: {
+          UpdateUser: expect.objectContaining({
+            termsAndConditionsAgreedVersion: '0.0.2',
+          }),
+        },
+      }
+
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
+        expected,
+      )
+    })
+
+    it('rejects if version of terms and conditions has wrong format', async () => {
+      variables = {
+        ...variables,
+        termsAndConditionsAgreedVersion: 'invalid version format',
+      }
+      const { errors } = await mutate({ mutation: updateUserMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Invalid version format!')
     })
   })
 })

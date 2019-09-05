@@ -81,6 +81,7 @@
     "vue-izitoast": "^1.2.1",
     "vue-sweetalert-icons": "~4.2.0",
     "vuex-i18n": "~1.13.1",
+    "xregexp": "^4.2.4",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

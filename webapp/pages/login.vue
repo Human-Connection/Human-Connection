@@ -75,6 +75,7 @@
 
 <script>
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
+import { VERSION } from '~/constants/terms-and-conditions-version.js'
 
 export default {
   components: {
@@ -96,7 +97,7 @@ export default {
     },
   },
   asyncData({ store, redirect }) {
-    if (store.getters['auth/isLoggedIn']) {
+    if (store.getters['auth/user'].termsAndConditionsAgreedVersion === VERSION) {
       redirect('/')
     }
   },
