@@ -27,9 +27,9 @@
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "1G"
-            limits:
               memory: "2G"
+            limits:
+              memory: "8G"
           envFrom:
           - configMapRef:
               name: configmap
