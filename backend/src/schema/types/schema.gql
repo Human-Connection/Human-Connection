@@ -44,8 +44,6 @@ type Statistics {
   countPosts: Int!
   countComments: Int!
   countNotifications: Int!
-  countOrganizations: Int!
-  countProjects: Int!
   countInvites: Int!
   countFollows: Int!
   countShouts: Int!
@@ -70,13 +68,9 @@ enum Deletable {
 
 enum ShoutTypeEnum {
   Post
-  Organization
-  Project
 }
 enum FollowTypeEnum {
   User
-  Organization
-  Project
 }
 
 type Reward {
@@ -85,21 +79,6 @@ type Reward {
   rewarderId: ID
   createdAt: String
   badge: Badge @relation(name: "REWARDED", direction: "OUT")
-}
-
-type Organization {
-  id: ID!
-  createdBy: User @relation(name: "CREATED_ORGA", direction: "IN")
-  ownedBy: [User] @relation(name: "OWNING_ORGA", direction: "IN")
-  name: String!
-  slug: String
-  description: String!
-  descriptionExcerpt: String
-  deleted: Boolean
-  disabled: Boolean
-
-  tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
-  categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 }
 
 type SharedInboxEndpoint {

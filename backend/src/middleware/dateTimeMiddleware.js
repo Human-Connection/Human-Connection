@@ -11,10 +11,8 @@ export default {
   Mutation: {
     CreatePost: setCreatedAt,
     CreateComment: setCreatedAt,
-    CreateOrganization: setCreatedAt,
     UpdateUser: setUpdatedAt,
     UpdatePost: setUpdatedAt,
     UpdateComment: setUpdatedAt,
-    UpdateOrganization: setUpdatedAt,
   },
 }

@@ -43,14 +43,8 @@ export default {
             'MATCH (r:Post) WHERE r.deleted <> true OR NOT exists(r.deleted) RETURN COUNT(r) AS countPosts',
           countComments:
             'MATCH (r:Comment) WHERE r.deleted <> true OR NOT exists(r.deleted) RETURN COUNT(r) AS countComments',
-          countNotifications:
-            'MATCH (r:Notification) WHERE r.deleted <> true OR NOT exists(r.deleted) RETURN COUNT(r) AS countNotifications',
-          countOrganizations:
-            'MATCH (r:Organization) WHERE r.deleted <> true OR NOT exists(r.deleted) RETURN COUNT(r) AS countOrganizations',
-          countProjects:
-            'MATCH (r:Project) WHERE r.deleted <> true OR NOT exists(r.deleted) RETURN COUNT(r) AS countProjects',
-          countInvites:
-            'MATCH (r:Invite) WHERE r.wasUsed <> true OR NOT exists(r.wasUsed) RETURN COUNT(r) AS countInvites',
+          countNotifications: 'MATCH ()-[r:NOTIFIED]->()  RETURN COUNT(r) AS countNotifications',
+          countInvites: 'MATCH (r:InvitationCode) RETURN COUNT(r) AS countInvites',
           countFollows: 'MATCH (:User)-[r:FOLLOWS]->(:User) RETURN COUNT(r) AS countFollows',
           countShouts: 'MATCH (:User)-[r:SHOUTED]->(:Post) RETURN COUNT(r) AS countShouts',
         }
@@ -62,12 +56,6 @@ export default {
           ),
           countNotifications: queryOne(queries.countNotifications, session).then(
             res => res.countNotifications.low,
-          ),
-          countOrganizations: queryOne(queries.countOrganizations, session).then(
-            res => res.countOrganizations.low,
-          ),
-          countProjects: queryOne(queries.countProjects, session).then(
-            res => res.countProjects.low,
           ),
           countInvites: queryOne(queries.countInvites, session).then(res => res.countInvites.low),
           countFollows: queryOne(queries.countFollows, session).then(res => res.countFollows.low),

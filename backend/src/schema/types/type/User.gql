@@ -69,9 +69,6 @@ type User {
 	shouted: [Post]! @relation(name: "SHOUTED", direction: "OUT")
 	shoutedCount: Int! @cypher(statement: "MATCH (this)-[: SHOUTED]->(r: Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
 
-	organizationsCreated: [Organization] @relation(name: "CREATED_ORGA", direction: "OUT")
-	organizationsOwned: [Organization] @relation(name: "OWNING_ORGA", direction: "OUT")
-
 	categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
 	badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
