@@ -363,8 +363,11 @@ export default {
       this.$apollo.queries.User.refetch()
     },
     showMoreContributions() {
+      const { Post: PostQuery } = this.$apollo.queries
+      if (!PostQuery) return // seems this can be undefined on subpages
+
       this.offset += this.pageSize
-      this.$apollo.queries.Post.fetchMore({
+      PostQuery.fetchMore({
         variables: {
           offset: this.offset,
           filter: this.filter,

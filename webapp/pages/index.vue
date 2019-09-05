@@ -125,12 +125,6 @@ export default {
       return this.$apollo.loading || (this.posts && this.posts.length > 0)
     },
   },
-  watch: {
-    postsFilter() {
-      this.offset = 0
-      this.posts = []
-    },
-  },
   methods: {
     toggleOnlySorting(x) {
       this.offset = 0
@@ -149,8 +143,11 @@ export default {
       }).href
     },
     showMoreContributions() {
+      const { Post: PostQuery } = this.$apollo.queries
+      if (!PostQuery) return // seems this can be undefined on subpages
+
       this.offset += this.pageSize
-      this.$apollo.queries.Post.fetchMore({
+      PostQuery.fetchMore({
         variables: {
           offset: this.offset,
           filter: this.finalFilters,
