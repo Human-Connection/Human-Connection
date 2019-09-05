@@ -8,6 +8,7 @@
     containers:
     - name: nitro-maintenance-worker
       image: humanconnection/maintenance-worker:latest
+      imagePullPolicy: Always
       resources:
         requests:
           memory: "2G"
