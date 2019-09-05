@@ -72,7 +72,7 @@
           <template v-if="user.about">
             <hr />
             <ds-space margin-top="small" margin-bottom="small">
-              <ds-text color="soft" size="small">{{ user.about }}</ds-text>
+              <ds-text color="soft" size="small" class="hyphenate-text">{{ user.about }}</ds-text>
             </ds-space>
           </template>
         </ds-card>
@@ -220,11 +220,11 @@
           </ds-grid-item>
 
           <template v-if="posts.length">
-            <masonry-grid-item v-for="(post, index) in posts" :key="post.id">
+            <masonry-grid-item v-for="post in posts" :key="post.id">
               <hc-post-card
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
-                @removePostFromList="removePostFromList(index)"
+                @removePostFromList="removePostFromList"
               />
             </masonry-grid-item>
           </template>
@@ -307,7 +307,7 @@ export default {
     return {
       User: [],
       posts: [],
-      hasMore: false,
+      hasMore: true,
       offset: 0,
       pageSize: 6,
       tabActive: 'post',
@@ -345,8 +345,10 @@ export default {
     },
   },
   methods: {
-    removePostFromList(index) {
-      this.posts.splice(index, 1)
+    removePostFromList(deletedPost) {
+      this.posts = this.posts.filter(post => {
+        return post.id !== deletedPost.id
+      })
     },
     handleTab(tab) {
       this.tabActive = tab
@@ -361,7 +363,27 @@ export default {
       this.$apollo.queries.User.refetch()
     },
     showMoreContributions() {
+      const { Post: PostQuery } = this.$apollo.queries
+      if (!PostQuery) return // seems this can be undefined on subpages
+
       this.offset += this.pageSize
+      PostQuery.fetchMore({
+        variables: {
+          offset: this.offset,
+          filter: this.filter,
+          first: this.pageSize,
+          orderBy: this.sorting,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
+            this.hasMore = false
+          }
+          const result = Object.assign({}, previousResult, {
+            Post: [...previousResult.Post, ...fetchMoreResult.Post],
+          })
+          return result
+        },
+      })
     },
     resetPostList() {
       this.offset = 0
@@ -390,19 +412,14 @@ export default {
         return {
           filter: this.filter,
           first: this.pageSize,
-          offset: this.offset,
+          offset: 0,
           orderBy: 'createdAt_desc',
         }
       },
-      fetchPolicy: 'cache-and-network',
       update({ Post }) {
-        if (!Post) return
-        // TODO: find out why `update` gets called twice initially.
-        // We have to filter for uniq posts only because we get the same
-        // result set twice.
-        this.hasMore = Post.length >= this.pageSize
-        this.posts = this.uniq([...this.posts, ...Post])
+        this.posts = Post
       },
+      fetchPolicy: 'cache-and-network',
     },
     User: {
       query() {

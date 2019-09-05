@@ -91,13 +91,11 @@ const isAuthor = rule({
       resourceId,
     },
   )
+  session.close()
   const [author] = result.records.map(record => {
     return record.get('author')
   })
-  const {
-    properties: { id: authorId },
-  } = author
-  session.close()
+  const authorId = author && author.properties && author.properties.id
   return authorId === user.id
 })
 
@@ -131,7 +129,7 @@ const permissions = shield(
       isLoggedIn: allow,
       Badge: allow,
       PostsEmotionsCountByEmotion: allow,
-      PostsEmotionsByCurrentUser: allow,
+      PostsEmotionsByCurrentUser: isAuthenticated,
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
     },

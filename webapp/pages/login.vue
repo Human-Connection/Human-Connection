@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import { VERSION } from '~/constants/terms-and-conditions-version.js'
+
 export default {
   layout: 'basic',
   data() {
@@ -88,7 +90,7 @@ export default {
     },
   },
   asyncData({ store, redirect }) {
-    if (store.getters['auth/isLoggedIn']) {
+    if (store.getters['auth/user'].termsAndConditionsAgreedVersion === VERSION) {
       redirect('/')
     }
   },

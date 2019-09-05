@@ -31,6 +31,7 @@ Given('I am logged in with a {string} role', role => {
   cy.factory().create('User', {
     email: `${role}@example.org`,
     password: '1234',
+    termsAndConditionsAgreedVersion: "0.0.2",
     role
   })
   cy.login({
@@ -121,7 +122,11 @@ Given('somebody reported the following posts:', table => {
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .create('Report', {
+      .mutate(`mutation($id: ID!, $description: String!) {
+        report(description: $description, id: $id) {
+          id
+        }
+      }`, {
         id,
         description: 'Offensive content'
       })

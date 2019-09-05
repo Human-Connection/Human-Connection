@@ -1,4 +1,4 @@
-import { UserInputError } from 'apollo-server'
+import { ForbiddenError, UserInputError } from 'apollo-server'
 import uuid from 'uuid/v4'
 import { neode } from '../../bootstrap/neo4j'
 import fileUpload from './fileUpload'
@@ -77,6 +77,12 @@ export default {
       }
     },
     SignupVerification: async (object, args, context, resolveInfo) => {
+      const { termsAndConditionsAgreedVersion } = args
+      const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
+      if (!regEx.test(termsAndConditionsAgreedVersion)) {
+        throw new ForbiddenError('Invalid version format!')
+      }
+
       let { nonce, email } = args
       email = email.toLowerCase()
       const result = await instance.cypher(

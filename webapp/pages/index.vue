@@ -20,7 +20,7 @@
           <hc-post-card
             :post="post"
             :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-            @removePostFromList="deletePost(index, post.id)"
+            @removePostFromList="deletePost"
           />
         </masonry-grid-item>
       </template>
@@ -61,7 +61,6 @@
 
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
-import uniqBy from 'lodash/uniqBy'
 import HcEmpty from '~/components/Empty'
 import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
@@ -105,18 +104,6 @@ export default {
           icons: 'sort-amount-asc',
           order: 'createdAt_asc',
         },
-        {
-          label: this.$t('sorting.popular'),
-          value: 'Popular',
-          icons: 'fire',
-          order: 'shoutedCount_desc',
-        },
-        {
-          label: this.$t('sorting.commented'),
-          value: 'Commented',
-          icons: 'comment',
-          order: 'commentedCount_desc',
-        },
       ],
     }
   },
@@ -138,12 +125,6 @@ export default {
       return this.$apollo.loading || (this.posts && this.posts.length > 0)
     },
   },
-  watch: {
-    postsFilter() {
-      this.offset = 0
-      this.posts = []
-    },
-  },
   methods: {
     toggleOnlySorting(x) {
       this.offset = 0
@@ -162,11 +143,31 @@ export default {
       }).href
     },
     showMoreContributions() {
+      const { Post: PostQuery } = this.$apollo.queries
+      if (!PostQuery) return // seems this can be undefined on subpages
+
       this.offset += this.pageSize
+      PostQuery.fetchMore({
+        variables: {
+          offset: this.offset,
+          filter: this.finalFilters,
+          first: this.pageSize,
+          orderBy: this.sorting,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
+            this.hasMore = false
+          }
+          const result = Object.assign({}, previousResult, {
+            Post: [...previousResult.Post, ...fetchMoreResult.Post],
+          })
+          return result
+        },
+      })
     },
-    deletePost(_index, postId) {
+    deletePost(deletedPost) {
       this.posts = this.posts.filter(post => {
-        return post.id !== postId
+        return post.id !== deletedPost.id
       })
     },
   },
@@ -176,18 +177,15 @@ export default {
         return filterPosts(this.$i18n)
       },
       variables() {
-        const result = {
+        return {
           filter: this.finalFilters,
           first: this.pageSize,
-          offset: this.offset,
           orderBy: this.sorting,
+          offset: 0,
         }
-        return result
       },
       update({ Post }) {
-        this.hasMore = Post.length >= this.pageSize
-        const posts = uniqBy([...this.posts, ...Post], 'id')
-        this.posts = posts
+        this.posts = Post
       },
       fetchPolicy: 'cache-and-network',
     },

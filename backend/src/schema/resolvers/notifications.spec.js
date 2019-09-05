@@ -1,20 +1,14 @@
 import Factory from '../../seed/factories'
 import { gql } from '../../jest/helpers'
-import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import { getDriver } from '../../bootstrap/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../.././server'
 
 const factory = Factory()
-const neode = getNeode()
 const driver = getDriver()
-const userParams = {
-  id: 'you',
-  email: 'test@example.org',
-  password: '1234',
-}
-
 let authenticatedUser
 let user
+let author
 let variables
 let query
 let mutate
@@ -43,51 +37,81 @@ afterEach(async () => {
 
 describe('given some notifications', () => {
   beforeEach(async () => {
-    user = await factory.create('User', userParams)
-    await factory.create('User', { id: 'neighbor' })
-    await Promise.all(setupNotifications.map(s => neode.cypher(s)))
+    const categoryIds = ['cat1']
+    author = await factory.create('User', { id: 'author' })
+    user = await factory.create('User', { id: 'you' })
+    const [neighbor] = await Promise.all([
+      factory.create('User', { id: 'neighbor' }),
+      factory.create('Category', { id: 'cat1' }),
+    ])
+    const [post1, post2, post3] = await Promise.all([
+      factory.create('Post', { author, id: 'p1', categoryIds, content: 'Not for you' }),
+      factory.create('Post', {
+        author,
+        id: 'p2',
+        categoryIds,
+        content: 'Already seen post mention',
+      }),
+      factory.create('Post', {
+        author,
+        id: 'p3',
+        categoryIds,
+        content: 'You have been mentioned in a post',
+      }),
+    ])
+    const [comment1, comment2, comment3] = await Promise.all([
+      factory.create('Comment', {
+        author,
+        postId: 'p3',
+        id: 'c1',
+        content: 'You have seen this comment mentioning already',
+      }),
+      factory.create('Comment', {
+        author,
+        postId: 'p3',
+        id: 'c2',
+        content: 'You have been mentioned in a comment',
+      }),
+      factory.create('Comment', {
+        author,
+        postId: 'p3',
+        id: 'c3',
+        content: 'Somebody else was mentioned in a comment',
+      }),
+    ])
+    await Promise.all([
+      post1.relateTo(neighbor, 'notified', {
+        createdAt: '2019-08-29T17:33:48.651Z',
+        read: false,
+        reason: 'mentioned_in_post',
+      }),
+      post2.relateTo(user, 'notified', {
+        createdAt: '2019-08-30T17:33:48.651Z',
+        read: true,
+        reason: 'mentioned_in_post',
+      }),
+      post3.relateTo(user, 'notified', {
+        createdAt: '2019-08-31T17:33:48.651Z',
+        read: false,
+        reason: 'mentioned_in_post',
+      }),
+      comment1.relateTo(user, 'notified', {
+        createdAt: '2019-08-30T15:33:48.651Z',
+        read: true,
+        reason: 'mentioned_in_comment',
+      }),
+      comment2.relateTo(user, 'notified', {
+        createdAt: '2019-08-30T19:33:48.651Z',
+        read: false,
+        reason: 'mentioned_in_comment',
+      }),
+      comment3.relateTo(neighbor, 'notified', {
+        createdAt: '2019-09-01T17:33:48.651Z',
+        read: false,
+        reason: 'mentioned_in_comment',
+      }),
+    ])
   })
-  const setupNotifications = [
-    `MATCH(user:User {id: 'neighbor'})
-    MERGE (:Post {id: 'p1', content: 'Not for you'})
-      -[:NOTIFIED {createdAt: "2019-08-29T17:33:48.651Z", read: false, reason: "mentioned_in_post"}]
-      ->(user);
-    `,
-    `MATCH(user:User {id: 'you'})
-    MERGE (:Post {id: 'p2', content: 'Already seen post mentioning'})
-      -[:NOTIFIED {createdAt: "2019-08-30T17:33:48.651Z", read: true, reason: "mentioned_in_post"}]
-      ->(user);
-    `,
-    `MATCH(user:User {id: 'you'})
-    MERGE (:Post {id: 'p3', content: 'You have been mentioned in a post'})
-      -[:NOTIFIED {createdAt: "2019-08-31T17:33:48.651Z", read: false, reason: "mentioned_in_post"}]
-      ->(user);
-    `,
-    `MATCH(user:User {id: 'you'})
-    MATCH(post:Post {id: 'p3'})
-    CREATE (comment:Comment {id: 'c1', content: 'You have seen this comment mentioning already'})
-    MERGE (comment)-[:COMMENTS]->(post)
-    MERGE (comment)
-      -[:NOTIFIED {createdAt: "2019-08-30T15:33:48.651Z", read: true, reason: "mentioned_in_comment"}]
-      ->(user);
-    `,
-    `MATCH(user:User {id: 'you'})
-    MATCH(post:Post {id: 'p3'})
-    CREATE (comment:Comment {id: 'c2', content: 'You have been mentioned in a comment'})
-    MERGE (comment)-[:COMMENTS]->(post)
-    MERGE (comment)
-      -[:NOTIFIED {createdAt: "2019-08-30T19:33:48.651Z", read: false, reason: "mentioned_in_comment"}]
-      ->(user);
-    `,
-    `MATCH(user:User {id: 'neighbor'})
-    MATCH(post:Post {id: 'p3'})
-    CREATE (comment:Comment {id: 'c3', content: 'Somebody else was mentioned in a comment'})
-    MERGE (comment)-[:COMMENTS]->(post)
-    MERGE (comment)
-      -[:NOTIFIED {createdAt: "2019-09-01T17:33:48.651Z", read: false, reason: "mentioned_in_comment"}]
-      ->(user);
-  `,
-  ]
 
   describe('notifications', () => {
     const notificationQuery = gql`
@@ -109,8 +133,8 @@ describe('given some notifications', () => {
     `
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        const result = await query({ query: notificationQuery })
-        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+        const { errors } = await query({ query: notificationQuery })
+        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
@@ -121,7 +145,7 @@ describe('given some notifications', () => {
 
       describe('no filters', () => {
         it('returns all notifications of current user', async () => {
-          const expected = expect.objectContaining({
+          const expected = {
             data: {
               notifications: [
                 {
@@ -135,7 +159,7 @@ describe('given some notifications', () => {
                 {
                   from: {
                     __typename: 'Post',
-                    content: 'Already seen post mentioning',
+                    content: 'Already seen post mention',
                   },
                   read: true,
                   createdAt: '2019-08-30T17:33:48.651Z',
@@ -158,8 +182,10 @@ describe('given some notifications', () => {
                 },
               ],
             },
-          })
-          await expect(query({ query: notificationQuery, variables })).resolves.toEqual(expected)
+          }
+          await expect(query({ query: notificationQuery, variables })).resolves.toMatchObject(
+            expected,
+          )
         })
       })
 
@@ -190,6 +216,36 @@ describe('given some notifications', () => {
           await expect(
             query({ query: notificationQuery, variables: { ...variables, read: false } }),
           ).resolves.toEqual(expected)
+        })
+
+        describe('if a resource gets deleted', () => {
+          const deletePostAction = async () => {
+            authenticatedUser = await author.toJson()
+            const deletePostMutation = gql`
+              mutation($id: ID!) {
+                DeletePost(id: $id) {
+                  id
+                  deleted
+                }
+              }
+            `
+            await expect(
+              mutate({ mutation: deletePostMutation, variables: { id: 'p3' } }),
+            ).resolves.toMatchObject({ data: { DeletePost: { id: 'p3', deleted: true } } })
+            authenticatedUser = await user.toJson()
+          }
+
+          it('reduces notifications list', async () => {
+            await expect(
+              query({ query: notificationQuery, variables: { ...variables, read: false } }),
+            ).resolves.toMatchObject({
+              data: { notifications: [expect.any(Object), expect.any(Object)] },
+            })
+            await deletePostAction()
+            await expect(
+              query({ query: notificationQuery, variables: { ...variables, read: false } }),
+            ).resolves.toMatchObject({ data: { notifications: [] } })
+          })
         })
       })
     })

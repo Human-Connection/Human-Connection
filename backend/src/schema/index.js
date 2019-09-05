@@ -14,11 +14,13 @@ export default applyScalars(
         query: {
           exclude: [
             'Badge',
+            'Embed',
             'InvitationCode',
             'EmailAddress',
             'Notfication',
             'Statistics',
             'LoggedInUser',
+            'Location',
             'SocialMedia',
             'NOTIFIED',
           ],
@@ -27,12 +29,19 @@ export default applyScalars(
         mutation: {
           exclude: [
             'Badge',
+            'Embed',
             'InvitationCode',
             'EmailAddress',
             'Notfication',
+            'Post',
+            'Comment',
+            'Report',
             'Statistics',
             'LoggedInUser',
+            'Location',
             'SocialMedia',
+            'User',
+            'EMOTED',
             'NOTIFIED',
           ],
           // add 'User' here as soon as possible

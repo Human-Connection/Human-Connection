@@ -80,7 +80,29 @@ module.exports = {
   notifications: {
     type: 'relationship',
     relationship: 'NOTIFIED',
-    target: 'Notification',
+    target: 'User',
     direction: 'in',
+  },
+  termsAndConditionsAgreedVersion: {
+    type: 'string',
+    allow: [null],
+  },
+  /* termsAndConditionsAgreedAt: {
+    type: 'string',
+    isoDate: true,
+    allow: [null],
+    // required: true, TODO
+  }, */
+  shouted: {
+    type: 'relationship',
+    relationship: 'SHOUTED',
+    target: 'Post',
+    direction: 'out',
+  },
+  isIn: {
+    type: 'relationship',
+    relationship: 'IS_IN',
+    target: 'Location',
+    direction: 'out',
   },
 }

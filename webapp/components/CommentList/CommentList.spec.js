@@ -27,7 +27,9 @@ describe('CommentList.vue', () => {
       propsData = {
         post: {
           id: 1,
-          comments: [{ id: 'comment134', contentExcerpt: 'this is a comment' }],
+          comments: [
+            { id: 'comment134', contentExcerpt: 'this is a comment', content: 'this is a comment' },
+          ],
         },
       }
       store = new Vuex.Store({

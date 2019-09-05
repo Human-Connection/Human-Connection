@@ -122,7 +122,7 @@ module.exports = {
   ],
 
   router: {
-    middleware: ['authenticated'],
+    middleware: ['authenticated', 'termsAndConditions'],
     linkActiveClass: 'router-link-active',
     linkExactActiveClass: 'router-link-exact-active',
     scrollBehavior: (to, _from, savedPosition) => {

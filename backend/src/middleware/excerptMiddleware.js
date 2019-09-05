@@ -22,15 +22,5 @@ export default {
       const result = await resolve(root, args, context, info)
       return result
     },
-    CreateOrganization: async (resolve, root, args, context, info) => {
-      args.descriptionExcerpt = trunc(args.description, 120).html
-      const result = await resolve(root, args, context, info)
-      return result
-    },
-    UpdateOrganization: async (resolve, root, args, context, info) => {
-      args.descriptionExcerpt = trunc(args.description, 120).html
-      const result = await resolve(root, args, context, info)
-      return result
-    },
   },
 }

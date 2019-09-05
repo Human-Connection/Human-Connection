@@ -8,3 +8,14 @@ type EMOTED @relation(name: "EMOTED") {
   createdAt: String
   updatedAt: String
 }
+
+input _EMOTEDInput {
+  emotion: Emotion
+  createdAt: String
+  updatedAt: String
+}
+
+type Mutation {
+  AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
+  RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
+}

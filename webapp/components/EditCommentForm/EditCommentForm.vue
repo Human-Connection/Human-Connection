@@ -68,7 +68,7 @@ export default {
       this.disabled = true
       this.$apollo
         .mutate({
-          mutation: CommentMutations().UpdateComment,
+          mutation: CommentMutations(this.$i18n).UpdateComment,
           variables: {
             content: this.form.content,
             id: this.comment.id,

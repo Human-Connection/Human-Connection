@@ -1,7 +1,6 @@
 import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
-import { neo4jgraphql } from 'neo4j-graphql-js'
 import { neode } from '../../bootstrap/neo4j'
 
 const instance = neode()
@@ -12,9 +11,9 @@ export default {
       return Boolean(user && user.id)
     },
     currentUser: async (object, params, ctx, resolveInfo) => {
-      const { user } = ctx
-      if (!user) return null
-      return neo4jgraphql(object, { id: user.id }, ctx, resolveInfo, false)
+      if (!ctx.user) return null
+      const user = await instance.find('User', ctx.user.id)
+      return user.toJson()
     },
   },
   Mutation: {
@@ -24,11 +23,11 @@ export default {
       // }
       const session = driver.session()
       const result = await session.run(
-        'MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})' +
-          'RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1',
-        {
-          userEmail: email,
-        },
+        `
+        MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
+        RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
+      `,
+        { userEmail: email },
       )
       session.close()
       const [currentUser] = await result.records.map(record => {

@@ -33,26 +33,27 @@
       </div>
     </template>
     <h3>{{ $t('post.moreInfo.titleOfRelatedContributionsSection') }}</h3>
-    <ds-section style="margin: 0 -1.5rem; padding: 1.5rem;">
-      <ds-flex v-if="post.relatedContributions && post.relatedContributions.length" gutter="small">
-        <hc-post-card
-          v-for="(relatedPost, index) in post.relatedContributions"
-          :key="relatedPost.id"
-          :post="relatedPost"
-          :width="{ base: '100%', lg: 1 }"
-          @removePostFromList="post.relatedContributions.splice(index, 1)"
-        />
-      </ds-flex>
+    <ds-section>
+      <masonry-grid v-if="post.relatedContributions && post.relatedContributions.length">
+        <masonry-grid-item v-for="relatedPost in post.relatedContributions" :key="relatedPost.id">
+          <hc-post-card
+            :post="relatedPost"
+            :width="{ base: '100%', lg: 1 }"
+            @removePostFromList="removePostFromList"
+          />
+        </masonry-grid-item>
+      </masonry-grid>
       <hc-empty v-else margin="large" icon="file" message="No related Posts" />
     </ds-section>
-    <ds-space margin-bottom="large" />
   </ds-card>
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import HcPostCard from '~/components/PostCard'
 import HcEmpty from '~/components/Empty.vue'
+import { relatedContributions } from '~/graphql/PostQuery'
+import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
+import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 
 export default {
   transition: {
@@ -62,63 +63,25 @@ export default {
   components: {
     HcPostCard,
     HcEmpty,
+    MasonryGrid,
+    MasonryGridItem,
   },
   computed: {
     post() {
       return this.Post ? this.Post[0] || {} : {}
     },
   },
+  methods: {
+    removePostFromList(deletedPost) {
+      this.post.relatedContributions = this.post.relatedContributions.filter(contribution => {
+        return contribution.id !== deletedPost.id
+      })
+    },
+  },
   apollo: {
     Post: {
       query() {
-        return gql`
-          query Post($slug: String!) {
-            Post(slug: $slug) {
-              id
-              title
-              tags {
-                id
-                name
-              }
-              categories {
-                id
-                name
-                icon
-              }
-              relatedContributions(first: 2) {
-                id
-                title
-                slug
-                contentExcerpt
-                shoutedCount
-                commentedCount
-                categories {
-                  id
-                  name
-                  icon
-                }
-                author {
-                  id
-                  name
-                  slug
-                  avatar
-                  contributionsCount
-                  followedByCount
-                  followedByCurrentUser
-                  commentedCount
-                  location {
-                    name: name${this.$i18n.locale().toUpperCase()}
-                  }
-                  badges {
-                    id
-                    icon
-                  }
-                }
-              }
-              shoutedCount
-            }
-          }
-        `
+        return relatedContributions(this.$i18n)
       },
       variables() {
         return {
