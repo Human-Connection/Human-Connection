@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  layout: 'blank',
+  layout: 'basic',
   asyncData({ store, redirect }) {
     if (store.getters['auth/isLoggedIn']) {
       redirect('/')
