@@ -38,18 +38,14 @@
       <div v-show="!openEditCommentMenu">
         <div v-if="isCollapsed" v-html="comment.contentExcerpt" style="padding-left: 40px;" />
         <div
-          v-show="comment.content !== comment.contentExcerpt"
+          v-show="comment.content !== comment.contentExcerpt && comment.content.length > 180"
           style="text-align: right;  margin-right: 20px; margin-top: -12px;"
         >
           <a v-if="isCollapsed" style="padding-left: 40px;" @click="isCollapsed = !isCollapsed">
             {{ $t('comment.show.more') }}
           </a>
         </div>
-        <content-viewer
-          v-if="!isCollapsed"
-          :content="comment.content"
-          style="padding-left: 40px;"
-        />
+        <content-viewer v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
         <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
           <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" style="padding-left: 40px; ">
             {{ $t('comment.show.less') }}

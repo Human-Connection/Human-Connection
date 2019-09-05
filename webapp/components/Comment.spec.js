@@ -63,6 +63,7 @@ describe('Comment.vue', () => {
         propsData.comment = {
           id: '2',
           contentExcerpt: 'Hello I am a comment content',
+          content: 'Hello I am comment content',
         }
       })
 
