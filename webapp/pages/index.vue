@@ -105,18 +105,6 @@ export default {
           icons: 'sort-amount-asc',
           order: 'createdAt_asc',
         },
-        {
-          label: this.$t('sorting.popular'),
-          value: 'Popular',
-          icons: 'fire',
-          order: 'shoutedCount_desc',
-        },
-        {
-          label: this.$t('sorting.commented'),
-          value: 'Commented',
-          icons: 'comment',
-          order: 'commentsCount_desc',
-        },
       ],
     }
   },

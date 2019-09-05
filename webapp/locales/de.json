@@ -39,9 +39,7 @@
   },
   "sorting": {
     "newest": "Neuste",
-    "oldest": "Älteste",
-    "popular": "Beliebt",
-    "commented": "meist Kommentiert"
+    "oldest": "Älteste"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
