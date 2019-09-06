@@ -388,7 +388,7 @@ export default {
     resetPostList() {
       this.offset = 0
       this.posts = []
-      this.hasMore = false
+      this.hasMore = true
     },
     async block(user) {
       await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
