@@ -26,7 +26,7 @@
               params: { id: scope.row.comment.post.id, slug: scope.row.comment.post.slug },
             }"
           >
-            <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
+            <b>{{ scope.row.comment.contentExcerpt | removeHtml | truncate(50) }}</b>
           </nuxt-link>
           <br />
           <ds-text size="small" color="soft">
