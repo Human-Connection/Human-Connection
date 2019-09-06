@@ -1,18 +1,33 @@
-import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
-import { neode } from '../../bootstrap/neo4j'
+import { gql } from '../../jest/helpers'
+import { getDriver, neode as getNeode } from '../../bootstrap/neo4j'
+import createServer from '../../server'
+import { createTestClient } from 'apollo-server-testing'
 
-let factory
-let client
+const factory = Factory()
+const neode = getNeode()
+
+let mutate
+let authenticatedUser
+let user
 let variables
-let action
-let userParams
-const instance = neode()
+const driver = getDriver()
 
 beforeEach(async () => {
   variables = {}
-  factory = Factory()
+})
+
+beforeAll(() => {
+  const { server } = createServer({
+    context: () => {
+      return {
+        driver,
+        neode,
+        user: authenticatedUser,
+      }
+    },
+  })
+  mutate = createTestClient(server).mutate
 })
 
 afterEach(async () => {
@@ -20,83 +35,77 @@ afterEach(async () => {
 })
 
 describe('CreateInvitationCode', () => {
-  const mutation = `mutation { CreateInvitationCode { token } }`
+  const mutation = gql`
+    mutation {
+      CreateInvitationCode {
+        token
+      }
+    }
+  `
 
-  it('throws Authorization error', async () => {
-    const client = new GraphQLClient(host)
-    await expect(client.request(mutation)).rejects.toThrow('Not Authorised!')
+  describe('unauthenticated', () => {
+    beforeEach(() => {
+      authenticatedUser = null
+    })
+
+    it('throws Authorization error', async () => {
+      await expect(mutate({ mutation })).resolves.toMatchObject({
+        errors: [{ message: 'Not Authorised!' }],
+      })
+    })
   })
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      userParams = {
+      user = await factory.create('User', {
         id: 'i123',
         name: 'Inviter',
         email: 'inviter@example.org',
         password: '1234',
         termsAndConditionsAgreedVersion: '0.0.1',
-      }
-      action = async () => {
-        const factory = Factory()
-        await factory.create('User', userParams)
-        const headers = await login(userParams)
-        client = new GraphQLClient(host, { headers })
-        return client.request(mutation)
-      }
+      })
+      authenticatedUser = await user.toJson()
     })
 
     it('resolves', async () => {
-      await expect(action()).resolves.toEqual({
-        CreateInvitationCode: { token: expect.any(String) },
+      await expect(mutate({ mutation })).resolves.toMatchObject({
+        data: { CreateInvitationCode: { token: expect.any(String) } },
       })
     })
 
     it('creates an InvitationCode with a `createdAt` attribute', async () => {
-      await action()
-      const codes = await instance.all('InvitationCode')
+      await mutate({ mutation })
+      const codes = await neode.all('InvitationCode')
       const invitation = await codes.first().toJson()
       expect(invitation.createdAt).toBeTruthy()
       expect(Date.parse(invitation.createdAt)).toEqual(expect.any(Number))
     })
 
     it('relates inviting User to InvitationCode', async () => {
-      await action()
-      const result = await instance.cypher(
+      await mutate({ mutation })
+      const result = await neode.cypher(
         'MATCH(code:InvitationCode)<-[:GENERATED]-(user:User) RETURN user',
       )
-      const inviter = instance.hydrateFirst(result, 'user', instance.model('User'))
+      const inviter = neode.hydrateFirst(result, 'user', neode.model('User'))
       await expect(inviter.toJson()).resolves.toEqual(expect.objectContaining({ name: 'Inviter' }))
     })
 
     describe('who has invited a lot of users already', () => {
-      beforeEach(() => {
-        action = async () => {
-          const factory = Factory()
-          await factory.create('User', userParams)
-          const headers = await login(userParams)
-          client = new GraphQLClient(host, { headers })
-          await Promise.all(
-            [1, 2, 3].map(() => {
-              return client.request(mutation)
-            }),
-          )
-          return client.request(mutation, variables)
-        }
+      beforeEach(async () => {
+        await Promise.all([mutate({ mutation }), mutate({ mutation }), mutate({ mutation })])
       })
 
       describe('as ordinary `user`', () => {
         it('throws `Not Authorised` because of maximum number of invitations', async () => {
-          await expect(action()).rejects.toThrow('Not Authorised')
+          await expect(mutate({ mutation })).resolves.toMatchObject({
+            errors: [{ message: 'Not Authorised!' }],
+          })
         })
 
-        it('creates no additional invitation codes', async done => {
-          try {
-            await action()
-          } catch (e) {
-            const invitationCodes = await instance.all('InvitationCode')
-            await expect(invitationCodes.toJson()).resolves.toHaveLength(3)
-            done()
-          }
+        it('creates no additional invitation codes', async () => {
+          await mutate({ mutation })
+          const invitationCodes = await neode.all('InvitationCode')
+          await expect(invitationCodes.toJson()).resolves.toHaveLength(3)
         })
       })
 
@@ -118,132 +127,144 @@ describe('CreateInvitationCode', () => {
 })
 
 describe('SignupByInvitation', () => {
-  const mutation = `mutation($email: String!, $token: String!) {
-    SignupByInvitation(email: $email, token: $token) { email }
-  }`
-
-  beforeEach(() => {
-    client = new GraphQLClient(host)
-    action = async () => {
-      return client.request(mutation, variables)
+  const mutation = gql`
+    mutation($email: String!, $token: String!) {
+      SignupByInvitation(email: $email, token: $token) {
+        email
+      }
     }
-  })
+  `
 
   describe('with valid email but invalid InvitationCode', () => {
     beforeEach(() => {
-      variables.email = 'any-email@example.org'
-      variables.token = 'wut?'
+      variables = {
+        ...variables,
+        email: 'any-email@example.org',
+        token: 'wut?',
+      }
     })
 
     it('throws UserInputError', async () => {
-      await expect(action()).rejects.toThrow('Invitation code already used or does not exist.')
-    })
-  })
-
-  describe('with valid InvitationCode', () => {
-    beforeEach(async () => {
-      const inviterParams = {
-        name: 'Inviter',
-        email: 'inviter@example.org',
-        password: '1234',
-      }
-      const factory = Factory()
-      await factory.create('User', inviterParams)
-      const headersOfInviter = await login(inviterParams)
-      const anotherClient = new GraphQLClient(host, { headers: headersOfInviter })
-      const invitationMutation = `mutation { CreateInvitationCode { token } }`
-      const {
-        CreateInvitationCode: { token },
-      } = await anotherClient.request(invitationMutation)
-      variables.token = token
+      await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+        errors: [{ message: 'UserInputError: Invitation code already used or does not exist.' }],
+      })
     })
 
-    describe('given an invalid email', () => {
-      beforeEach(() => {
-        variables.email = 'someuser'
-      })
-
-      it('throws `email is not a valid email`', async () => {
-        await expect(action()).rejects.toThrow('"email" must be a valid email')
-      })
-
-      it('creates no additional EmailAddress node', async done => {
-        try {
-          await action()
-        } catch (e) {
-          let emailAddresses = await instance.all('EmailAddress')
-          emailAddresses = await emailAddresses.toJson
-          expect(emailAddresses).toHaveLength(0)
-          done()
+    describe('with valid InvitationCode', () => {
+      beforeEach(async () => {
+        const inviter = await factory.create('User', {
+          name: 'Inviter',
+          email: 'inviter@example.org',
+          password: '1234',
+        })
+        authenticatedUser = await inviter.toJson()
+        const invitationMutation = gql`
+          mutation {
+            CreateInvitationCode {
+              token
+            }
+          }
+        `
+        const {
+          data: {
+            CreateInvitationCode: { token },
+          },
+        } = await mutate({ mutation: invitationMutation })
+        authenticatedUser = null
+        variables = {
+          ...variables,
+          token,
         }
       })
-    })
 
-    describe('given a valid email', () => {
-      beforeEach(() => {
-        variables.email = 'someUser@example.org'
+      describe('given an invalid email', () => {
+        beforeEach(() => {
+          variables = { ...variables, email: 'someuser' }
+        })
+
+        it('throws `email is not a valid email`', async () => {
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            errors: [{ message: expect.stringContaining('"email" must be a valid email') }],
+          })
+        })
+
+        it('creates no additional EmailAddress node', async () => {
+          let emailAddresses = await neode.all('EmailAddress')
+          emailAddresses = await emailAddresses.toJson()
+          expect(emailAddresses).toHaveLength(1)
+          await mutate({ mutation, variables })
+          emailAddresses = await neode.all('EmailAddress')
+          emailAddresses = await emailAddresses.toJson()
+          expect(emailAddresses).toHaveLength(1)
+        })
       })
 
-      it('resolves', async () => {
-        await expect(action()).resolves.toEqual({
-          SignupByInvitation: { email: 'someuser@example.org' },
-        })
-      })
-
-      describe('creates a EmailAddress node', () => {
-        it('with a `createdAt` attribute', async () => {
-          await action()
-          let emailAddress = await instance.first('EmailAddress', { email: 'someuser@example.org' })
-          emailAddress = await emailAddress.toJson()
-          expect(emailAddress.createdAt).toBeTruthy()
-          expect(Date.parse(emailAddress.createdAt)).toEqual(expect.any(Number))
+      describe('given a valid email', () => {
+        beforeEach(() => {
+          variables = { ...variables, email: 'someUser@example.org' }
         })
 
-        it('with a cryptographic `nonce`', async () => {
-          await action()
-          let emailAddress = await instance.first('EmailAddress', { email: 'someuser@example.org' })
-          emailAddress = await emailAddress.toJson()
-          expect(emailAddress.nonce).toEqual(expect.any(String))
-        })
-
-        it('connects inviter through invitation code', async () => {
-          await action()
-          const result = await instance.cypher(
-            'MATCH(inviter:User)-[:GENERATED]->(:InvitationCode)-[:ACTIVATED]->(email:EmailAddress {email: {email}}) RETURN inviter',
-            { email: 'someuser@example.org' },
-          )
-          const inviter = instance.hydrateFirst(result, 'inviter', instance.model('User'))
-          await expect(inviter.toJson()).resolves.toEqual(
-            expect.objectContaining({ name: 'Inviter' }),
-          )
-        })
-
-        describe('using the same InvitationCode twice', () => {
-          it('rejects because codes can be used only once', async done => {
-            await action()
-            try {
-              variables.email = 'yetanotheremail@example.org'
-              await action()
-            } catch (e) {
-              expect(e.message).toMatch(/Invitation code already used/)
-              done()
-            }
+        it('resolves', async () => {
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            data: { SignupByInvitation: { email: 'someuser@example.org' } },
           })
         })
 
-        describe('if a user account with the given email already exists', () => {
-          beforeEach(async () => {
-            await factory.create('User', { email: 'someuser@example.org' })
+        describe('creates a EmailAddress node', () => {
+          it('with a `createdAt` attribute', async () => {
+            await mutate({ mutation, variables })
+            let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
+            emailAddress = await emailAddress.toJson()
+            expect(emailAddress.createdAt).toBeTruthy()
+            expect(Date.parse(emailAddress.createdAt)).toEqual(expect.any(Number))
           })
 
-          it('throws unique violation error', async () => {
-            await expect(action()).rejects.toThrow('User account with this email already exists.')
+          it('with a cryptographic `nonce`', async () => {
+            await mutate({ mutation, variables })
+            let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
+            emailAddress = await emailAddress.toJson()
+            expect(emailAddress.nonce).toEqual(expect.any(String))
           })
-        })
 
-        describe('if the EmailAddress already exists but without user account', () => {
-          // shall we re-send the registration email?
-          it.todo('decide what to do')
+          it('connects inviter through invitation code', async () => {
+            await mutate({ mutation, variables })
+            const result = await neode.cypher(
+              'MATCH(inviter:User)-[:GENERATED]->(:InvitationCode)-[:ACTIVATED]->(email:EmailAddress {email: {email}}) RETURN inviter',
+              { email: 'someuser@example.org' },
+            )
+            const inviter = neode.hydrateFirst(result, 'inviter', neode.model('User'))
+            await expect(inviter.toJson()).resolves.toEqual(
+              expect.objectContaining({ name: 'Inviter' }),
+            )
+          })
+
+          describe('using the same InvitationCode twice', () => {
+            it('rejects because codes can be used only once', async () => {
+              await mutate({ mutation, variables })
+              variables = { ...variables, email: 'yetanotheremail@example.org' }
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                errors: [
+                  { message: 'UserInputError: Invitation code already used or does not exist.' },
+                ],
+              })
+            })
+          })
+
+          describe('if a user account with the given email already exists', () => {
+            beforeEach(async () => {
+              await factory.create('User', { email: 'someuser@example.org' })
+            })
+
+            it('throws unique violation error', async () => {
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                errors: [{ message: 'User account with this email already exists.' }],
+              })
+            })
+          })
+
+          describe('if the EmailAddress already exists but without user account', () => {
+            it.todo('shall we re-send the registration email?')
+          })
         })
       })
     })
@@ -251,61 +272,79 @@ describe('SignupByInvitation', () => {
 })
 
 describe('Signup', () => {
-  const mutation = `mutation($email: String!) {
-    Signup(email: $email) { email }
-  }`
-
-  it('throws AuthorizationError', async () => {
-    client = new GraphQLClient(host)
-    await expect(
-      client.request(mutation, { email: 'get-me-a-user-account@example.org' }),
-    ).rejects.toThrow('Not Authorised')
+  const mutation = gql`
+    mutation($email: String!) {
+      Signup(email: $email) {
+        email
+      }
+    }
+  `
+  beforeEach(() => {
+    variables = { ...variables, email: 'someuser@example.org' }
   })
 
-  describe('as admin', () => {
-    beforeEach(async () => {
-      userParams = {
-        role: 'admin',
-        email: 'admin@example.org',
-        password: '1234',
-      }
-      variables.email = 'someuser@example.org'
-      const factory = Factory()
-      await factory.create('User', userParams)
-      const headers = await login(userParams)
-      client = new GraphQLClient(host, { headers })
-      action = async () => {
-        return client.request(mutation, variables)
-      }
+  describe('unauthenticated', () => {
+    beforeEach(() => {
+      authenticatedUser = null
     })
 
-    it('is allowed to signup users by email', async () => {
-      await expect(action()).resolves.toEqual({ Signup: { email: 'someuser@example.org' } })
+    it('throws AuthorizationError', async () => {
+      await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+        errors: [{ message: 'Not Authorised!' }],
+      })
     })
 
-    it('creates a Signup with a cryptographic `nonce`', async () => {
-      await action()
-      let emailAddress = await instance.first('EmailAddress', { email: 'someuser@example.org' })
-      emailAddress = await emailAddress.toJson()
-      expect(emailAddress.nonce).toEqual(expect.any(String))
+    describe('as admin', () => {
+      beforeEach(async () => {
+        const admin = await factory.create('User', {
+          role: 'admin',
+          email: 'admin@example.org',
+          password: '1234',
+        })
+        authenticatedUser = await admin.toJson()
+      })
+
+      it('is allowed to signup users by email', async () => {
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          data: { Signup: { email: 'someuser@example.org' } },
+        })
+      })
+
+      it('creates a Signup with a cryptographic `nonce`', async () => {
+        await mutate({ mutation, variables })
+        let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
+        emailAddress = await emailAddress.toJson()
+        expect(emailAddress.nonce).toEqual(expect.any(String))
+      })
     })
   })
 })
 
 describe('SignupVerification', () => {
-  const mutation = `
-      mutation($name: String!, $password: String!, $email: String!, $nonce: String!, $termsAndConditionsAgreedVersion: String!) {
-        SignupVerification(name: $name, password: $password, email: $email, nonce: $nonce, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
-          id
-          termsAndConditionsAgreedVersion
-        }
+  const mutation = gql`
+    mutation(
+      $name: String!
+      $password: String!
+      $email: String!
+      $nonce: String!
+      $termsAndConditionsAgreedVersion: String!
+    ) {
+      SignupVerification(
+        name: $name
+        password: $password
+        email: $email
+        nonce: $nonce
+        termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+      ) {
+        id
+        termsAndConditionsAgreedVersion
       }
-    `
+    }
+  `
   describe('given valid password and email', () => {
-    let variables
-
     beforeEach(async () => {
       variables = {
+        ...variables,
         nonce: '123456',
         name: 'John Doe',
         password: '123',
@@ -316,15 +355,15 @@ describe('SignupVerification', () => {
 
     describe('unauthenticated', () => {
       beforeEach(async () => {
-        client = new GraphQLClient(host)
+        authenticatedUser = null
       })
 
       describe('EmailAddress exists, but is already related to a user account', () => {
         beforeEach(async () => {
           const { email, nonce } = variables
           const [emailAddress, user] = await Promise.all([
-            instance.model('EmailAddress').create({ email, nonce }),
-            instance
+            neode.model('EmailAddress').create({ email, nonce }),
+            neode
               .model('User')
               .create({ name: 'Somebody', password: '1234', email: 'john@example.org' }),
           ])
@@ -333,13 +372,13 @@ describe('SignupVerification', () => {
 
         describe('sending a valid nonce', () => {
           beforeEach(() => {
-            variables.nonce = '123456'
+            variables = { ...variables, nonce: '123456' }
           })
 
           it('rejects', async () => {
-            await expect(client.request(mutation, variables)).rejects.toThrow(
-              'Invalid email or nonce',
-            )
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              errors: [{ message: 'Invalid email or nonce' }],
+            })
           })
         })
       })
@@ -350,22 +389,23 @@ describe('SignupVerification', () => {
             email: 'john@example.org',
             nonce: '123456',
           }
-          await instance.model('EmailAddress').create(args)
+          await neode.model('EmailAddress').create(args)
         })
 
         describe('sending a valid nonce', () => {
           it('creates a user account', async () => {
-            const expected = {
-              SignupVerification: expect.objectContaining({
-                id: expect.any(String),
-              }),
-            }
-            await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              data: {
+                SignupVerification: expect.objectContaining({
+                  id: expect.any(String),
+                }),
+              },
+            })
           })
 
           it('sets `verifiedAt` attribute of EmailAddress', async () => {
-            await client.request(mutation, variables)
-            const email = await instance.first('EmailAddress', { email: 'john@example.org' })
+            await mutate({ mutation, variables })
+            const email = await neode.first('EmailAddress', { email: 'john@example.org' })
             await expect(email.toJson()).resolves.toEqual(
               expect.objectContaining({
                 verifiedAt: expect.any(String),
@@ -378,8 +418,8 @@ describe('SignupVerification', () => {
                 MATCH(email:EmailAddress)-[:BELONGS_TO]->(u:User {name: {name}})
                 RETURN email
               `
-            await client.request(mutation, variables)
-            const { records: emails } = await instance.cypher(cypher, { name: 'John Doe' })
+            await mutate({ mutation, variables })
+            const { records: emails } = await neode.cypher(cypher, { name: 'John Doe' })
             expect(emails).toHaveLength(1)
           })
 
@@ -388,39 +428,38 @@ describe('SignupVerification', () => {
                 MATCH(email:EmailAddress)<-[:PRIMARY_EMAIL]-(u:User {name: {name}})
                 RETURN email
               `
-            await client.request(mutation, variables)
-            const { records: emails } = await instance.cypher(cypher, { name: 'John Doe' })
+            await mutate({ mutation, variables })
+            const { records: emails } = await neode.cypher(cypher, { name: 'John Doe' })
             expect(emails).toHaveLength(1)
           })
 
           it('is version of terms and conditions saved correctly', async () => {
-            const expected = {
-              SignupVerification: expect.objectContaining({
-                termsAndConditionsAgreedVersion: '0.0.1',
-              }),
-            }
-            await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              data: {
+                SignupVerification: expect.objectContaining({
+                  termsAndConditionsAgreedVersion: '0.0.1',
+                }),
+              },
+            })
           })
 
           it('rejects if version of terms and conditions has wrong format', async () => {
-            await expect(
-              client.request(mutation, {
-                ...variables,
-                termsAndConditionsAgreedVersion: 'invalid version format',
-              }),
-            ).rejects.toThrow('Invalid version format!')
+            variables = { ...variables, termsAndConditionsAgreedVersion: 'invalid version format' }
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              errors: [{ message: 'Invalid version format!' }],
+            })
           })
         })
 
         describe('sending invalid nonce', () => {
           beforeEach(() => {
-            variables.nonce = 'wut2'
+            variables = { ...variables, nonce: 'wut2' }
           })
 
           it('rejects', async () => {
-            await expect(client.request(mutation, variables)).rejects.toThrow(
-              'Invalid email or nonce',
-            )
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              errors: [{ message: 'Invalid email or nonce' }],
+            })
           })
         })
       })
