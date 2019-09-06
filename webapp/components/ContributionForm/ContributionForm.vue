@@ -79,7 +79,7 @@ import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
-import HcUser from '~/components/User'
+import HcUser from '~/components/User/User'
 
 export default {
   components: {

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!user || ((user.disabled || user.deleted) && !isModerator)">
+  <div v-if="displayAnonymous">
     <div
       style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
     >
@@ -124,6 +124,10 @@ export default {
     }),
     itsMe() {
       return this.user.slug === this.$store.getters['auth/user'].slug
+    },
+    displayAnonymous() {
+      const { user, isModerator } = this
+      return !user || (user.deleted) || (user.disabled && !isModerator)
     },
     userLink() {
       const { id, slug } = this.user

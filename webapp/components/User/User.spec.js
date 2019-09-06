@@ -1,5 +1,5 @@
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import User from './index'
+import User from './User.vue'
 import Vuex from 'vuex'
 import VTooltip from 'v-tooltip'
 import Filters from '~/plugins/vue-filters'
@@ -65,6 +65,30 @@ describe('User', () => {
         const wrapper = Wrapper()
         expect(mocks.$t).not.toHaveBeenCalledWith('profile.userAnonym')
         expect(wrapper.text()).toMatch('Tilda Swinton')
+      })
+
+      describe('user is deleted', () => {
+        beforeEach(() => {
+          propsData.user.deleted = true
+        })
+
+        it('renders anonymous user', () => {
+          const wrapper = Wrapper()
+          expect(wrapper.text()).not.toMatch('Tilda Swinton')
+          expect(mocks.$t).toHaveBeenCalledWith('profile.userAnonym')
+        })
+
+        describe('even if the current user is a moderator', () => {
+          beforeEach(() => {
+            getters['auth/isModerator'] = () => true
+          })
+
+          it('renders anonymous user', () => {
+            const wrapper = Wrapper()
+            expect(wrapper.text()).not.toMatch('Tilda Swinton')
+            expect(mocks.$t).toHaveBeenCalledWith('profile.userAnonym')
+          })
+        })
       })
 
       describe('user is disabled', () => {

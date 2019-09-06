@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import HcUser from '~/components/User'
+import HcUser from '~/components/User/User'
 
 export default {
   name: 'Notification',
