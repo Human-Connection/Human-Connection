@@ -1,7 +1,7 @@
 <template>
   <change-password
     :email="email"
-    :code="code"
+    :nonce="nonce"
     @passwordResetResponse="handlePasswordResetResponse"
   />
 </template>
@@ -11,8 +11,8 @@ import ChangePassword from '~/components/PasswordReset/ChangePassword'
 
 export default {
   data() {
-    const { email = '', code = '' } = this.$route.query
-    return { email, code }
+    const { email = '', nonce = '' } = this.$route.query
+    return { email, nonce }
   },
   components: {
     ChangePassword,

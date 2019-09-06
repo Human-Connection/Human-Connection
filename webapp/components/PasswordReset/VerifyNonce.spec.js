@@ -1,12 +1,12 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import VerifyCode from './VerifyCode'
+import VerifyNonce from './VerifyNonce.vue'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 
-describe('VerifyCode ', () => {
+describe('VerifyNonce ', () => {
   let wrapper
   let Wrapper
   let mocks
@@ -25,27 +25,27 @@ describe('VerifyCode ', () => {
     beforeEach(jest.useFakeTimers)
 
     Wrapper = () => {
-      return mount(VerifyCode, {
+      return mount(VerifyNonce, {
         mocks,
         localVue,
         propsData,
       })
     }
 
-    it('renders a verify code form', () => {
+    it('renders a verify nonce form', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.verify-code').exists()).toBe(true)
+      expect(wrapper.find('.verify-nonce').exists()).toBe(true)
     })
 
-    describe('after verification code given', () => {
+    describe('after verification nonce given', () => {
       beforeEach(() => {
         wrapper = Wrapper()
-        wrapper.find('input#code').setValue('123456')
+        wrapper.find('input#nonce').setValue('123456')
         wrapper.find('form').trigger('submit')
       })
 
-      it('emits `verifyCode`', () => {
-        const expected = [[{ code: '123456', email: 'mail@example.org' }]]
+      it('emits `verification`', () => {
+        const expected = [[{ nonce: '123456', email: 'mail@example.org' }]]
         expect(wrapper.emitted('verification')).toEqual(expected)
       })
     })

@@ -35,11 +35,11 @@ module.exports = {
       'login',
       'logout',
       'password-reset-request',
-      'password-reset-verify-code',
+      'password-reset-verify-nonce',
       'password-reset-change-password',
-      // 'registration-signup', TODO: uncomment to open public registration
-      'registration-signup-by-invitation-code',
-      'registration-verify-code',
+      // 'registration-signup', TODO: implement to open public registration
+      // 'registration-signup-by-invitation-code',
+      // 'registration-verify-nonce',
       'registration-create-user-account',
       'pages-slug',
       'imprint',
