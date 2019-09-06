@@ -75,18 +75,21 @@ export default {
       return ''
     },
     thumbnail: (file, dataUrl) => {
-      let thumbnailElement, contributionImage, uploadArea
+      let thumbnailElement, contributionImage, uploadArea, thumbnailPreview, image
       if (file.previewElement) {
         thumbnailElement = document.querySelectorAll('#postdropzone')[0]
         contributionImage = document.querySelectorAll('.contribution-image')[0]
+        thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
         if (contributionImage) {
           uploadArea = document.querySelectorAll('.hc-attachments-upload-area-update-post')[0]
           uploadArea.removeChild(contributionImage)
           uploadArea.classList.remove('hc-attachments-upload-area-update-post')
         }
-        thumbnailElement.classList.add('image-preview')
-        thumbnailElement.alt = file.name
-        thumbnailElement.style.backgroundImage = 'url("' + dataUrl + '")'
+        image = new Image()
+        image.src = URL.createObjectURL(file)
+        image.classList.add('thumbnail-preview')
+        if (thumbnailPreview) return thumbnailElement.replaceChild(image, thumbnailPreview)
+        thumbnailElement.appendChild(image)
       }
     },
   },
@@ -99,24 +102,23 @@ export default {
   background-color: $background-color-softest;
 }
 
-#postdropzone.image-preview {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  height: auto;
-  transition: all 0.2s ease-out;
-
+#postdropzone img {
   width: 100%;
+  max-height: 300px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: center;
+  object-position: center;
 }
 
 @media only screen and (max-width: 400px) {
-  #postdropzone.image-preview {
+  #postdropzone.thumbnail-preview {
     height: 200px;
   }
 }
 
 @media only screen and (min-width: 401px) and (max-width: 960px) {
-  #postdropzone.image-preview {
+  #postdropzone.thumbnail-preview {
     height: 300px;
   }
 }
