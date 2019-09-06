@@ -22,7 +22,7 @@ and create a user account:
 
 ${actionUrl}
 
-You can also copy+paste this verification code in your browser window:
+You can also copy+paste this verification nonce in your browser window:
 
 ${nonce}
 

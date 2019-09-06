@@ -43,7 +43,7 @@ export default {
       await checkEmailDoesNotExist({ email: args.email })
       try {
         const emailAddress = await instance.create('EmailAddress', args)
-        return { response: emailAddress.toJson(), nonce }
+        return emailAddress.toJson()
       } catch (e) {
         throw new UserInputError(e.message)
       }
@@ -71,7 +71,7 @@ export default {
           throw new UserInputError('Invitation code already used or does not exist.')
         const emailAddress = await instance.create('EmailAddress', args)
         await validInvitationCode.relateTo(emailAddress, 'activated')
-        return { response: emailAddress.toJson(), nonce }
+        return emailAddress.toJson()
       } catch (e) {
         throw new UserInputError(e)
       }

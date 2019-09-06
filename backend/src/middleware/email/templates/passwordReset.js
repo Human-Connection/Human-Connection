@@ -6,12 +6,12 @@ export const resetPasswordMail = options => {
   const {
     name,
     email,
-    code,
+    nonce,
     subject = 'Use this link to reset your password. The link is only valid for 24 hours.',
     supportUrl = 'https://human-connection.org/en/contact/',
   } = options
   const actionUrl = new URL('/password-reset/change-password', CONFIG.CLIENT_URI)
-  actionUrl.searchParams.set('code', code)
+  actionUrl.searchParams.set('nonce', nonce)
   actionUrl.searchParams.set('email', email)
 
   return {
@@ -37,7 +37,7 @@ The Human Connection Team
 If you're having trouble with the link above, you can manually copy and
 paste the following code into your browser window:
 
-${code}
+${nonce}
 
 Human Connection gemeinnützige GmbH
 Bahnhofstr. 11
