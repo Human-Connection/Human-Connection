@@ -1,5 +1,6 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
-import CreateUserAccount, { SignupVerificationMutation } from './CreateUserAccount'
+import CreateUserAccount from './CreateUserAccount'
+import { SignupVerificationMutation } from '~/graphql/Registration.js'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
@@ -55,6 +56,7 @@ describe('CreateUserAccount', () => {
             wrapper = Wrapper()
             wrapper.find('input#name').setValue('John Doe')
             wrapper.find('input#password').setValue('hellopassword')
+            wrapper.find('textarea#about').setValue('Hello I am the `about` attribute')
             wrapper.find('input#passwordConfirmation').setValue('hellopassword')
             wrapper.find('input#checkbox').setChecked()
             await wrapper.find('form').trigger('submit')
@@ -72,7 +74,7 @@ describe('CreateUserAccount', () => {
           await action()
           const expected = expect.objectContaining({
             variables: {
-              about: '',
+              about: 'Hello I am the `about` attribute',
               name: 'John Doe',
               email: 'sixseven@example.org',
               nonce: '666777',
