@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export default app => {
-  return gql(`
+  return gql`
     query {
       Report(first: 20, orderBy: createdAt_desc) {
         id
@@ -30,6 +30,7 @@ export default app => {
           }
         }
         comment {
+          id
           contentExcerpt
           author {
             id
@@ -76,5 +77,5 @@ export default app => {
         }
       }
     }
-  `)
+  `
 }
