@@ -59,7 +59,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import HcUser from '~/components/User'
+import HcUser from '~/components/User/User'
 import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcEditCommentForm from '~/components/EditCommentForm/EditCommentForm'

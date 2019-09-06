@@ -33,13 +33,6 @@ describe('PostCard', () => {
         disabled: false,
       },
     }
-    store = new Vuex.Store({
-      getters: {
-        'auth/user': () => {
-          return {}
-        },
-      },
-    })
     stubs = {
       NuxtLink: RouterLinkStub,
     }
@@ -56,6 +49,7 @@ describe('PostCard', () => {
       },
     }
     getters = {
+      'auth/isModerator': () => false,
       'auth/user': () => {
         return {}
       },
@@ -64,6 +58,7 @@ describe('PostCard', () => {
 
   describe('shallowMount', () => {
     Wrapper = () => {
+      store = new Vuex.Store({ getters })
       return shallowMount(PostCard, {
         store,
         propsData,

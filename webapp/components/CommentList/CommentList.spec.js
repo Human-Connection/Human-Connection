@@ -34,6 +34,7 @@ describe('CommentList.vue', () => {
       }
       store = new Vuex.Store({
         getters: {
+          'auth/isModerator': () => false,
           'auth/user': () => {
             return {}
           },

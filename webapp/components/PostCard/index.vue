@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import HcUser from '~/components/User'
+import HcUser from '~/components/User/User'
 import ContentMenu from '~/components/ContentMenu'
 import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
