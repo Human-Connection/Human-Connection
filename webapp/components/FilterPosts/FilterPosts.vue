@@ -11,7 +11,10 @@
       <ds-icon size="xx-small" name="angle-down" />
     </ds-button>
     <template slot="popover">
-      <filter-posts-menu-items :chunk="chunk" :user="currentUser" />
+      <ds-container>
+        <categories-filter-menu-items :chunk="chunk" />
+        <follows-filter-menu-items :user="currentUser" />
+      </ds-container>
     </template>
   </dropdown>
 </template>
@@ -19,12 +22,14 @@
 import _ from 'lodash'
 import Dropdown from '~/components/Dropdown'
 import { mapGetters } from 'vuex'
-import FilterPostsMenuItems from '~/components/FilterPosts/FilterPostsMenuItems'
+import CategoriesFilterMenuItems from './CategoriesFilterMenuItems'
+import FollowsFilterMenuItems from './FollowsFilterMenuItems'
 
 export default {
   components: {
     Dropdown,
-    FilterPostsMenuItems,
+    CategoriesFilterMenuItems,
+    FollowsFilterMenuItems,
   },
   props: {
     placement: { type: String },

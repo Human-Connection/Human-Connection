@@ -1,7 +1,5 @@
 <template>
-  <ds-container>
-    <categories-filters :chunk="chunk" />
-    <ds-space />
+  <ds-space>
     <ds-flex id="filter-posts-by-followers-header">
       <ds-heading tag="h4">{{ $t('filter-posts.general.header') }}</ds-heading>
       <ds-space margin-bottom="large" />
@@ -36,19 +34,14 @@
       </ds-flex-item>
       <ds-space margin-bottom="large" />
     </ds-flex>
-  </ds-container>
+  </ds-space>
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import CategoriesFilters from './CategoriesFilters'
 
 export default {
-  components: {
-    CategoriesFilters,
-  },
   props: {
     user: { type: Object, required: true },
-    chunk: { type: Array, default: () => [] },
   },
   computed: {
     ...mapGetters({
