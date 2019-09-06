@@ -5,8 +5,11 @@ import { signupTemplate } from './templates/signup'
 
 let sendMail
 if (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT) {
-  sendMail = async template => {
-    await transporter().sendMail(template)
+  sendMail = async templateArgs => {
+    await transporter().sendMail({
+      from: '"Human Connection" <info@human-connection.org>',
+      ...templateArgs,
+    })
   }
 } else {
   sendMail = () => {}

@@ -1,7 +1,5 @@
 import CONFIG from '../../../config'
 
-export const from = '"Human Connection" <info@human-connection.org>'
-
 export const resetPasswordMail = options => {
   const {
     name,

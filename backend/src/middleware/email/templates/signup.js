@@ -1,12 +1,10 @@
 import CONFIG from '../../../config'
 
-export const from = '"Human Connection" <info@human-connection.org>'
-
 export const signupTemplate = options => {
   const {
     email,
     nonce,
-    subject = 'Signup link',
+    subject = 'Welcome to Human Connection! Here is your signup link.',
     supportUrl = 'https://human-connection.org/en/contact/',
   } = options
   const actionUrl = new URL('/registration/create-user-account', CONFIG.CLIENT_URI)
