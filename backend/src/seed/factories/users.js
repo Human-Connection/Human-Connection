@@ -5,7 +5,7 @@ import slugify from 'slug'
 
 export default function create() {
   return {
-    factory: async ({ args, neodeInstance }) => {
+    factory: async ({ args, neodeInstance, factoryInstance }) => {
       const defaults = {
         id: uuid(),
         name: faker.name.findName(),
@@ -24,7 +24,7 @@ export default function create() {
       }
       args = await encryptPassword(args)
       const user = await neodeInstance.create('User', args)
-      const email = await neodeInstance.create('EmailAddress', { email: args.email })
+      const email = await factoryInstance.create('EmailAddress', { email: args.email })
       await user.relateTo(email, 'primaryEmail')
       await email.relateTo(user, 'belongsTo')
       return user
