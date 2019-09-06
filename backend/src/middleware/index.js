@@ -2,7 +2,7 @@ import { applyMiddleware } from 'graphql-middleware'
 import CONFIG from './../config'
 
 import activityPub from './activityPubMiddleware'
-import softDelete from './softDeleteMiddleware'
+import softDelete from './softDelete/softDeleteMiddleware'
 import sluggify from './sluggifyMiddleware'
 import excerpt from './excerptMiddleware'
 import dateTime from './dateTimeMiddleware'
