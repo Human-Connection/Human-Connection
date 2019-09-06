@@ -2,8 +2,6 @@ type Query {
   isLoggedIn: Boolean!
   # Get the currently logged in User based on the given JWT Token
   currentUser: User
-  # Get the latest Network Statistics
-  statistics: Statistics!
   findPosts(query: String!, limit: Int = 10, filter: _PostFilter): [Post]!
     @cypher(
       statement: """
@@ -37,16 +35,6 @@ type Mutation {
   follow(id: ID!, type: FollowTypeEnum): Boolean!
   # Unfollow the given Type and ID
   unfollow(id: ID!, type: FollowTypeEnum): Boolean!
-}
-
-type Statistics {
-  countUsers: Int!
-  countPosts: Int!
-  countComments: Int!
-  countNotifications: Int!
-  countInvites: Int!
-  countFollows: Int!
-  countShouts: Int!
 }
 
 type Report {

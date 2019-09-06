@@ -22,6 +22,7 @@
   },
   "site": {
     "thanks": "Danke!",
+    "error-occurred": "Ein Fehler ist aufgetreten.",
     "made": "Mit &#10084; gemacht",
     "imprint": "Impressum",
     "data-privacy": "Datenschutz",
