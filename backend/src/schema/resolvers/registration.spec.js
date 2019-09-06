@@ -263,8 +263,7 @@ describe('SignupByInvitation', () => {
           })
 
           describe('if the EmailAddress already exists but without user account', () => {
-            // shall we re-send the registration email?
-            it.todo('decide what to do')
+            it.todo('shall we re-send the registration email?')
           })
         })
       })
