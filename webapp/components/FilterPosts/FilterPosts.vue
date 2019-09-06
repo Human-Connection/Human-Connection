@@ -13,23 +13,23 @@
     <template slot="popover">
       <ds-container>
         <categories-filter-menu-items :chunk="chunk" />
-        <follows-filter-menu-items :user="currentUser" />
+        <general-filter-menu-items :user="currentUser" />
       </ds-container>
     </template>
   </dropdown>
 </template>
 <script>
-import _ from 'lodash'
+import { chunk } from 'lodash'
 import Dropdown from '~/components/Dropdown'
 import { mapGetters } from 'vuex'
 import CategoriesFilterMenuItems from './CategoriesFilterMenuItems'
-import FollowsFilterMenuItems from './FollowsFilterMenuItems'
+import GeneralFilterMenuItems from './GeneralFilterMenuItems'
 
 export default {
   components: {
     Dropdown,
     CategoriesFilterMenuItems,
-    FollowsFilterMenuItems,
+    GeneralFilterMenuItems,
   },
   props: {
     placement: { type: String },
@@ -42,7 +42,7 @@ export default {
       filterActive: 'postsFilter/isActive',
     }),
     chunk() {
-      return _.chunk(this.categories, 2)
+      return chunk(this.categories, 2)
     },
   },
 }

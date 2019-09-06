@@ -4,7 +4,7 @@
       <ds-heading tag="h4">{{ $t('filter-posts.general.header') }}</ds-heading>
       <ds-space margin-bottom="large" />
     </ds-flex>
-    <ds-flex>
+    <ds-flex :gutter="{ lg: 'large' }">
       <ds-flex-item
         :width="{ base: '100%', sm: '100%', md: '100%', lg: '10%' }"
         class="categories-menu-item"
@@ -32,6 +32,21 @@
           </ds-flex-item>
         </ds-flex>
       </ds-flex-item>
+      <div v-for="emotion in Object.keys(PostsEmotionsCountByEmotion)" :key="emotion">
+        <ds-flex-item :width="{ lg: '100%' }">
+          <ds-button
+            size="large"
+            ghost
+            @click="toogleFilteredByEmotions(emotion)"
+            class="emotions-buttons"
+          >
+            <img :src="iconPath(emotion)" width="40" />
+          </ds-button>
+          <div class="emotions-mobile-space text-center">
+            <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>
+          </div>
+        </ds-flex-item>
+      </div>
       <ds-space margin-bottom="large" />
     </ds-flex>
   </ds-space>
@@ -43,15 +58,28 @@ export default {
   props: {
     user: { type: Object, required: true },
   },
+  data() {
+    return {
+      PostsEmotionsCountByEmotion: { funny: 0, happy: 0, surprised: 0, cry: 0, angry: 0 },
+    }
+  },
   computed: {
     ...mapGetters({
       filteredByUsersFollowed: 'postsFilter/filteredByUsersFollowed',
+      filteredByEmotions: 'postsFilter/filteredByEmotions',
     }),
   },
   methods: {
     ...mapMutations({
       toggleFilteredByFollowed: 'postsFilter/TOGGLE_FILTER_BY_FOLLOWED',
+      toogleFilteredByEmotions: 'postsFilter/TOGGLE_FILTER_BY_EMOTIONS',
     }),
+    iconPath(emotion) {
+      if (this.filteredByEmotions(emotion)) {
+        return `/img/svg/emoji/${emotion}_color.svg`
+      }
+      return `/img/svg/emoji/${emotion}.svg`
+    },
   },
 }
 </script>
@@ -71,5 +99,9 @@ export default {
   .follow-button {
     float: left;
   }
+}
+
+.text-center {
+  text-align: center;
 }
 </style>

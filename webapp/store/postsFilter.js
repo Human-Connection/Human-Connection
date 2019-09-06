@@ -40,6 +40,19 @@ export const mutations = {
     if (isEmpty(get(filter, 'categories_some.id_in'))) delete filter.categories_some
     state.filter = filter
   },
+  TOGGLE_FILTER_BY_EMOTIONS(state, emotion) {
+    const filter = clone(state.filter)
+    const emotionName = get(filter, 'emotions_in.emotions')
+    if (emotionName) {
+      delete filter.emotions_in
+      state.filter = filter
+    } else {
+      state.filter = {
+        ...filter,
+        emotions_in: { emotion: emotion },
+      }
+    }
+  },
 }
 
 export const getters = {
@@ -54,5 +67,8 @@ export const getters = {
   },
   filteredByUsersFollowed(state) {
     return !!get(state.filter, 'author.followedBy_some.id')
+  },
+  filteredByEmotions: state => emotion => {
+    return get(state.filter, 'emotions_in.emotion') === emotion
   },
 }

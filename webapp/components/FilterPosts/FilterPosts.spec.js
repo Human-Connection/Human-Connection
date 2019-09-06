@@ -61,6 +61,7 @@ describe('FilterPosts.vue', () => {
       },
       'postsFilter/filteredCategoryIds': jest.fn(() => []),
       'postsFilter/filteredByUsersFollowed': jest.fn(),
+      'postsFilter/filteredByEmotions': jest.fn(() => jest.fn()),
     }
     const openFilterPosts = () => {
       const store = new Vuex.Store({ mutations, getters })

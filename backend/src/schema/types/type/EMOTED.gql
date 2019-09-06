@@ -1,21 +1,27 @@
 type EMOTED @relation(name: "EMOTED") {
-  from: User
-  to: Post
+	from: User
+	to: Post
 
-  emotion: Emotion
-  #createdAt: DateTime
-  #updatedAt: DateTime
-  createdAt: String
-  updatedAt: String
+	emotion: Emotion
+	# createdAt: DateTime
+	# updatedAt: DateTime
+	createdAt: String
+	updatedAt: String
 }
 
 input _EMOTEDInput {
-  emotion: Emotion
-  createdAt: String
-  updatedAt: String
+	emotion: Emotion
+	createdAt: String
+	updatedAt: String
+}
+
+input _PostEMOTEDFilter {
+	emotion: Emotion
+	createdAt: String
+	updatedAt: String
 }
 
 type Mutation {
-  AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
-  RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
+	AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
+	RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
 }

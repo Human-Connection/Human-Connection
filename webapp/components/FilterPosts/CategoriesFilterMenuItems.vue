@@ -1,5 +1,5 @@
 <template>
-  <ds-space>
+  <ds-space margin-top="large">
     <ds-flex id="filter-posts-header">
       <ds-heading tag="h4">{{ $t('filter-posts.categories.header') }}</ds-heading>
       <ds-space margin-bottom="large" />
