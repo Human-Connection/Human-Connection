@@ -339,13 +339,4 @@ export default {
     display: none;
   }
 }
-.ds-footer {
-  text-align: center;
-  position: fixed;
-  bottom: 0px;
-  z-index: 10;
-  background-color: white;
-  width: 100%;
-  padding: 10px 10px;
-}
 </style>
