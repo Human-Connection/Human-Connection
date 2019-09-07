@@ -18,9 +18,9 @@
       @submit="submit"
     >
       <template slot-scope="{ errors }">
-        <ds-card class="login-card" :header="$t('registration.create-user-account.title')">
+        <ds-card class="create-account-card" :header="$t('registration.create-user-account.title')">
           <client-only>
-            <locale-switch class="login-locale-switch" offset="5" />
+            <locale-switch class="create-account-locale-switch" offset="5" />
           </client-only>
           <ds-input
             id="name"
@@ -155,10 +155,10 @@ export default {
 </script>
 
 <style lang="scss">
-.login-card {
+.create-account-card {
   position: relative;
 }
-.login-locale-switch {
+.create-account-locale-switch {
   position: absolute;
   top: 1em;
   right: 1em;
