@@ -62,6 +62,7 @@ after_failure:
   - ./send.sh failure $WEBHOOK_URL
 
 before_deploy:
+  - export KUBECONFIG=$HOME/.kube/nitro-staging-kubeconfig.yaml:$HOME/.kube/nitro-production-kubeconfig.yaml
   - ./scripts/setup_kubernetes.sh
 
 deploy:
@@ -70,6 +71,11 @@ deploy:
     on:
       branch: master
   - provider: script
-    script: scripts/deploy.sh
+    script: kubectl config use-context do-fra1-nitro-staging && scripts/deploy.sh
     on:
       branch: master
+  - provider: script
+    script: kubectl config use-context do-fra1-nitro-production && scripts/deploy.sh
+    on:
+      branch: master
+      tags: true
