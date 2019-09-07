@@ -3,9 +3,11 @@
     <ds-card v-if="success" class="success">
       <ds-space>
         <sweetalert-icon icon="success" />
-        <ds-text align="center" bold color="success">
-          {{ $t('registration.create-user-account.success') }}
-        </ds-text>
+        <ds-text
+          align="center"
+          bold
+          color="success"
+        >{{ $t('registration.create-user-account.success') }}</ds-text>
       </ds-space>
     </ds-card>
     <ds-form
@@ -16,7 +18,10 @@
       @submit="submit"
     >
       <template slot-scope="{ errors }">
-        <ds-card :header="$t('registration.create-user-account.title')">
+        <ds-card class="login-card" :header="$t('registration.create-user-account.title')">
+          <client-only>
+            <locale-switch class="login-locale-switch" offset="5" />
+          </client-only>
           <ds-input
             id="name"
             model="name"
@@ -55,10 +60,7 @@
               v-model="termsAndConditionsConfirmed"
               :checked="termsAndConditionsConfirmed"
             />
-            <label
-              for="checkbox"
-              v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
-            ></label>
+            <label for="checkbox" v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"></label>
           </ds-text>
 
           <template slot="footer">
@@ -72,9 +74,7 @@
               :loading="$apollo.loading"
               :disabled="errors || !termsAndConditionsConfirmed"
               primary
-            >
-              {{ $t('actions.save') }}
-            </ds-button>
+            >{{ $t('actions.save') }}</ds-button>
           </template>
         </ds-card>
       </template>
@@ -88,11 +88,13 @@ import { SweetalertIcon } from 'vue-sweetalert-icons'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 import { SignupVerificationMutation } from '~/graphql/Registration.js'
+import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   components: {
     PasswordStrength,
     SweetalertIcon,
+    LocaleSwitch,
   },
   data() {
     const passwordForm = PasswordForm({ translate: this.$t })
@@ -151,3 +153,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.login-card {
+  position: relative;
+}
+.login-locale-switch {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+</style>
