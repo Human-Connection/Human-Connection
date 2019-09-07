@@ -32,7 +32,7 @@
           </ds-flex-item>
         </ds-flex>
       </ds-flex-item>
-      <div v-for="emotion in Object.keys(PostsEmotionsCountByEmotion)" :key="emotion">
+      <div v-for="emotion in emotionsArray" :key="emotion">
         <ds-flex-item :width="{ lg: '100%' }">
           <ds-button
             size="large"
@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      PostsEmotionsCountByEmotion: { funny: 0, happy: 0, surprised: 0, cry: 0, angry: 0 },
+      emotionsArray: ['funny', 'happy', 'surprised', 'cry', 'angry'],
     }
   },
   computed: {
@@ -75,7 +75,7 @@ export default {
       toogleFilteredByEmotions: 'postsFilter/TOGGLE_FILTER_BY_EMOTIONS',
     }),
     iconPath(emotion) {
-      if (this.filteredByEmotions(emotion)) {
+      if (this.filteredByEmotions.includes(emotion)) {
         return `/img/svg/emoji/${emotion}_color.svg`
       }
       return `/img/svg/emoji/${emotion}.svg`

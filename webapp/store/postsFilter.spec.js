@@ -43,6 +43,30 @@ describe('getters', () => {
       expect(getters.filteredByUsersFollowed(state)).toBe(false)
     })
   })
+
+  describe('filteredByEmotions', () => {
+    it('returns an emotions array if filter is set', () => {
+      state = { filter: { emotions_some: { emotion_in: ['sad'] } } }
+      expect(getters.filteredByEmotions(state)).toEqual(['sad'])
+    })
+
+    it('returns an emotions array even when other filters are set', () => {
+      state = {
+        filter: { emotions_some: { emotion_in: ['sad'] }, categories_some: { id_in: [23] } },
+      }
+      expect(getters.filteredByEmotions(state)).toEqual(['sad'])
+    })
+
+    it('returns empty array if filter is not set', () => {
+      state = { filter: {} }
+      expect(getters.filteredByEmotions(state)).toEqual([])
+    })
+
+    it('returns empty array if another filter is set, but not emotions', () => {
+      state = { filter: { categories_some: { id_in: [23] } } }
+      expect(getters.filteredByEmotions(state)).toEqual([])
+    })
+  })
 })
 
 describe('mutations', () => {
