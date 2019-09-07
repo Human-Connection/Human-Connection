@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" appear>
-    <ds-container v-if="ready" width="small">
+    <ds-container v-if="ready" width="medium">
       <ds-space margin="small">
         <blockquote>
           <p>{{ $t('quotes.african.quote') }}</p>
@@ -10,6 +10,9 @@
       <ds-card class="login-card">
         <ds-flex gutter="small">
           <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
+            <client-only>
+              <locale-switch class="login-locale-switch" offset="5" />
+            </client-only>
             <ds-space margin-top="small" margin-bottom="xxx-small" centered>
               <img
                 class="login-image"
@@ -69,9 +72,13 @@
 <script>
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
+import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
-  layout: 'basic',
+  layout: 'no-header',
+  components: {
+    LocaleSwitch,
+  },
   data() {
     return {
       ready: false,
