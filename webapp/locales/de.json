@@ -1,4 +1,9 @@
 {
+  "maintenance": {
+    "title": "Human Connection befindet sich in der Wartung",
+    "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
+    "questions": "Bei Fragen oder Problemen erreichst du uns per E-Mail an" 
+  },
   "index": {
     "no-results": "Keine Beiträge gefunden.",
     "change-filter-settings": "Verändere die Filter-Einstellungen um mehr Ergebnisse zu erhalten."

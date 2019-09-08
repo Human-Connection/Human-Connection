@@ -53,6 +53,7 @@ export const actions = {
     if (!process.server) {
       return
     }
+    if (this.app.$env.maintenance) return
     const token = this.app.$apolloHelpers.getToken()
     if (!token) {
       return
