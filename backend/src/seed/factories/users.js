@@ -14,8 +14,8 @@ export default function create() {
         role: 'user',
         avatar: faker.internet.avatar(),
         about: faker.lorem.paragraph(),
-        // termsAndConditionsAgreedAt: new Date().toISOString(),
         termsAndConditionsAgreedVersion: '0.0.1',
+        termsAndConditionsAgreedAt: '2019-08-01T10:47:19.212Z',
       }
       defaults.slug = slugify(defaults.name, { lower: true })
       args = {

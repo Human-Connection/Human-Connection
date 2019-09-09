@@ -165,7 +165,6 @@ export default {
     },
     ...Resolver('User', {
       undefinedToNull: [
-        'termsAndConditionsAgreedVersion',
         'actorId',
         'avatar',
         'coverImg',
@@ -174,7 +173,7 @@ export default {
         'locationName',
         'about',
         'termsAndConditionsAgreedVersion',
-        // TODO: 'termsAndConditionsAgreedAt',
+        'termsAndConditionsAgreedAt',
       ],
       boolean: {
         followedByCurrentUser:

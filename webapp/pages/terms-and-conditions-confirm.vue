@@ -27,9 +27,19 @@
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
+ 
+
 const mutation = gql`
-  mutation($id: ID!, $termsAndConditionsAgreedVersion: String) {
-    UpdateUser(id: $id, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
+  mutation(
+    $id: ID!
+    $termsAndConditionsAgreedVersion: String
+    $termsAndConditionsAgreedAt: String
+  ) {
+    UpdateUser(
+      id: $id
+      termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+      termsAndConditionsAgreedAt: $termsAndConditionsAgreedAt
+    ) {
       id
       termsAndConditionsAgreedVersion
     }
@@ -78,12 +88,14 @@ export default {
           variables: {
             id: this.currentUser.id,
             termsAndConditionsAgreedVersion: VERSION,
+            termsAndConditionsAgreedAt: new Date().toISOString(),
           },
           update: (store, { data: { UpdateUser } }) => {
             const { termsAndConditionsAgreedVersion } = UpdateUser
             this.setCurrentUser({
               ...this.currentUser,
               termsAndConditionsAgreedVersion,
+              termsAndConditionsAgreedAt,
             })
           },
         })

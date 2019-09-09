@@ -19,5 +19,6 @@ type Mutation {
     locationName: String
     about: String
     termsAndConditionsAgreedVersion: String
+    termsAndConditionsAgreedAt: String
   ): User
 }

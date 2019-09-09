@@ -93,11 +93,17 @@ describe('UpdateUser', () => {
   })
 
   const updateUserMutation = gql`
-    mutation($id: ID!, $name: String, $termsAndConditionsAgreedVersion: String) {
+    mutation(
+      $id: ID!
+      $name: String
+      $termsAndConditionsAgreedVersion: String
+      $termsAndConditionsAgreedAt: String
+    ) {
       UpdateUser(
         id: $id
         name: $name
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+        termsAndConditionsAgreedAt: $termsAndConditionsAgreedAt
       ) {
         id
         name

@@ -25,6 +25,7 @@ type User {
 	updatedAt: String
 
 	termsAndConditionsAgreedVersion: String
+	termsAndConditionsAgreedAt: String
 
 	friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
 	friendsCount: Int! @cypher(statement: "MATCH (this)<-[: FRIENDS]->(r: User) RETURN COUNT(DISTINCT r)")
@@ -164,6 +165,7 @@ type Mutation {
 	locationName: String
 	about: String
 	termsAndConditionsAgreedVersion: String
+	termsAndConditionsAgreedAt: String
 	): User
 
 	DeleteUser(id: ID!, resource: [Deletable]): User
