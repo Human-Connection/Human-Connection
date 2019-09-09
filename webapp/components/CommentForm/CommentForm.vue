@@ -32,7 +32,6 @@
 import HcEditor from '~/components/Editor/Editor'
 import { COMMENT_MIN_LENGTH } from '../../constants/comment'
 import { minimisedUserQuery } from '~/graphql/User'
-import PostQuery from '~/graphql/PostQuery'
 import CommentMutations from '~/graphql/CommentMutations'
 
 export default {
@@ -94,21 +93,13 @@ export default {
             postId: this.post.id,
             content: this.form.content,
           },
-          update: async (store, { data: { CreateComment } }) => {
-            const data = await store.readQuery({
-              query: PostQuery(this.$i18n),
-              variables: { id: this.post.id },
-            })
-            data.Post[0].comments.push(CreateComment)
-            await store.writeQuery({ query: PostQuery(this.$i18n), data })
-          },
         }
       } else {
         mutateParams = {
           mutation: CommentMutations(this.$i18n).UpdateComment,
           variables: {
-            content: this.form.content,
             id: this.comment.id,
+            content: this.form.content,
           },
         }
       }
@@ -120,10 +111,18 @@ export default {
         .then(res => {
           this.loading = false
           if (!this.update) {
+            const {
+              data: { CreateComment },
+            } = res
+            this.$emit('createComment', CreateComment)
             this.clear()
             this.$toast.success(this.$t('post.comment.submitted'))
             this.disabled = false
           } else {
+            const {
+              data: { UpdateComment },
+            } = res
+            this.$emit('updateComment', UpdateComment)
             this.$toast.success(this.$t('post.comment.updated'))
             this.disabled = false
             this.closeEditWindow()

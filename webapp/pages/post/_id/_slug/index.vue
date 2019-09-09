@@ -68,7 +68,7 @@
       <ds-section slot="footer">
         <hc-comment-list :post="post" />
         <ds-space margin-bottom="large" />
-        <hc-comment-form :post="post" />
+        <hc-comment-form :post="post" @createComment="createComment" />
       </ds-section>
     </ds-card>
   </transition>
@@ -150,6 +150,9 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
+    },
+    async createComment(comment) {
+      this.post.comments.push(comment)
     },
   },
   apollo: {

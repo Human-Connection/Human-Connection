@@ -22,7 +22,8 @@
         :key="comment.id"
         :comment="comment"
         :post="post"
-        @deleteComment="deleteComment"
+        @deleteComment="updateCommentList"
+        @updateComment="updateCommentList"
       />
     </div>
     <hc-empty v-else name="empty" icon="messages" />
@@ -41,9 +42,9 @@ export default {
     post: { type: Object, default: () => {} },
   },
   methods: {
-    deleteComment(deleted) {
+    updateCommentList(updatedComment) {
       this.post.comments = this.post.comments.map(comment => {
-        return comment.id === deleted.id ? deleted : comment
+        return comment.id === updatedComment.id ? updatedComment : comment
       })
     },
   },

@@ -34,6 +34,7 @@
           :post="post"
           :comment="comment"
           @showEditCommentMenu="editCommentMenu"
+          @updateComment="updateComment"
         />
       </div>
       <div v-show="!openEditCommentMenu">
@@ -131,8 +132,10 @@ export default {
       return this.user.id === id
     },
     editCommentMenu(showMenu) {
-      console.log('editCommentMenu, showMenu: ', showMenu)
       this.openEditCommentMenu = showMenu
+    },
+    async updateComment(comment) {
+      this.$emit('updateComment', comment)
     },
     async deleteCommentCallback() {
       try {
