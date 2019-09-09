@@ -154,7 +154,6 @@ export default {
       const { name, password, about } = this.formData
       const { email, nonce } = this
       const termsAndConditionsAgreedVersion = VERSION
-
       try {
         await this.$apollo.mutate({
           mutation: SignupVerificationMutation,
