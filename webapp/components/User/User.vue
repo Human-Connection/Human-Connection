@@ -1,6 +1,6 @@
 <template>
   <div class="user" v-if="displayAnonymous">
-    <hc-avatar class="avatar"/>
+    <hc-avatar class="avatar" />
     <div>
       <b class="username">{{ $t('profile.userAnonym') }}</b>
     </div>
