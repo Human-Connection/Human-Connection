@@ -59,13 +59,21 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
   if (isEmpty(locationName)) {
     return
   }
-  const res = await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-      locationName,
-    )}.json?access_token=${CONFIG.MAPBOX_TOKEN}&types=region,place,country&language=${locales.join(
-      ',',
-    )}`,
-  )
+  let res
+  try {
+    res = await fetch(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+        locationName,
+      )}.json?access_token=${
+        CONFIG.MAPBOX_TOKEN
+      }&types=region,place,country&language=${locales.join(',')}`,
+    )
+    /* eslint-disable-next-line no-console */
+    console.log('res', res)
+  } catch (error) {
+    /* eslint-disable-next-line no-console */
+    console.log('error', error)
+  }
 
   if (!res || !res.features || !res.features[0]) {
     throw new UserInputError('locationName is invalid')
