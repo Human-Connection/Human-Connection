@@ -65,7 +65,7 @@
     "graphql-iso-date": "~3.6.1",
     "graphql-middleware": "~3.0.5",
     "graphql-middleware-sentry": "^3.2.0",
-    "graphql-shield": "~6.0.6",
+    "graphql-shield": "~6.1.0",
     "graphql-tag": "~2.10.1",
     "helmet": "~3.21.0",
     "jsonwebtoken": "~8.5.1",
