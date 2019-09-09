@@ -101,7 +101,7 @@ export default {
     async submit() {
       this.loadingData = true
       const { name, about } = this.formData
-      let { locationName } = this.formData
+      let { locationName } = this.formData || this.currentUser
       locationName = locationName && (locationName['label'] || locationName)
       try {
         await this.$apollo.mutate({
@@ -159,7 +159,6 @@ export default {
         this.cities = []
         return
       }
-
       this.loadingGeo = true
       this.axiosSource = CancelToken.source()
 
