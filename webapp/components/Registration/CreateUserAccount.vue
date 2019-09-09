@@ -164,7 +164,7 @@ export default {
             about,
             email,
             nonce,
-            termsAndConditionsAgreedVersion,
+            termsAndConditionsAgreedVersion
           },
         })
         this.success = true
