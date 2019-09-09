@@ -91,7 +91,7 @@ afterEach(async () => {
 })
 
 describe('Post', () => {
-  const postQuery = gql`
+  const postQueryFilteredByCategories = gql`
     query Post($filter: _PostFilter) {
       Post(filter: $filter) {
         id
@@ -102,13 +102,28 @@ describe('Post', () => {
     }
   `
 
+  const postQueryFilteredByEmotions = gql`
+    query Post($filter: _PostFilter) {
+      Post(filter: $filter) {
+        id
+        emotions {
+          emotion
+        }
+      }
+    }
+  `
+
   describe('can be filtered', () => {
-    it('by categories', async () => {
-      await Promise.all([
+    let post31, post32
+    beforeEach(async () => {
+      ;[post31, post32] = await Promise.all([
         factory.create('Post', { id: 'p31', categoryIds: ['cat4'] }),
         factory.create('Post', { id: 'p32', categoryIds: ['cat15'] }),
         factory.create('Post', { id: 'p33', categoryIds: ['cat9'] }),
       ])
+    })
+
+    it('by categories', async () => {
       const expected = {
         data: {
           Post: [
@@ -120,7 +135,50 @@ describe('Post', () => {
         },
       }
       variables = { ...variables, filter: { categories_some: { id_in: ['cat9'] } } }
-      await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
+      await expect(
+        query({ query: postQueryFilteredByCategories, variables }),
+      ).resolves.toMatchObject(expected)
+    })
+
+    it('by emotions', async () => {
+      const expected = {
+        data: {
+          Post: [
+            {
+              id: 'p31',
+              emotions: [{ emotion: 'happy' }],
+            },
+          ],
+        },
+      }
+      await user.relateTo(post31, 'emoted', { emotion: 'happy' })
+      variables = { ...variables, filter: { emotions_some: { emotion_in: ['happy'] } } }
+      await expect(query({ query: postQueryFilteredByEmotions, variables })).resolves.toMatchObject(
+        expected,
+      )
+    })
+
+    it('supports filtering by multiple emotions', async () => {
+      const expected = [
+        {
+          id: 'p31',
+          emotions: [{ emotion: 'happy' }],
+        },
+        {
+          id: 'p32',
+          emotions: [{ emotion: 'cry' }],
+        },
+      ]
+      await user.relateTo(post31, 'emoted', { emotion: 'happy' })
+      await user.relateTo(post32, 'emoted', { emotion: 'cry' })
+      variables = { ...variables, filter: { emotions_some: { emotion_in: ['happy', 'cry'] } } }
+      await expect(query({ query: postQueryFilteredByEmotions, variables })).resolves.toMatchObject(
+        {
+          data: {
+            Post: expect.arrayContaining(expected),
+          },
+        },
+      )
     })
   })
 })
