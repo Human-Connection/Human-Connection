@@ -222,7 +222,6 @@ export default {
   width: 250px;
   position: relative;
   float: right;
-  padding: 0 18px;
   margin: 4px 0;
 }
 </style>
