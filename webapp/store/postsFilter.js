@@ -40,7 +40,7 @@ export const mutations = {
     if (isEmpty(get(filter, 'categories_some.id_in'))) delete filter.categories_some
     state.filter = filter
   },
-  TOGGLE_FILTER_BY_EMOTIONS(state, emotion) {
+  TOGGLE_EMOTION(state, emotion) {
     const filter = clone(state.filter)
     update(filter, 'emotions_some.emotion_in', emotions => xor(emotions, [emotion]))
     if (isEmpty(get(filter, 'emotions_some.emotion_in'))) delete filter.emotions_some
