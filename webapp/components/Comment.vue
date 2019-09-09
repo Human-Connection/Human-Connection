@@ -29,9 +29,10 @@
 
       <ds-space margin-bottom="small" />
       <div v-if="openEditCommentMenu">
-        <hc-edit-comment-form
-          :comment="comment"
+        <hc-comment-form
+          :update="true"
           :post="post"
+          :comment="comment"
           @showEditCommentMenu="editCommentMenu"
         />
       </div>
@@ -62,7 +63,7 @@ import { mapGetters } from 'vuex'
 import HcUser from '~/components/User/User'
 import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
-import HcEditCommentForm from '~/components/EditCommentForm/EditCommentForm'
+import HcCommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
 
 export default {
@@ -76,7 +77,7 @@ export default {
     HcUser,
     ContentMenu,
     ContentViewer,
-    HcEditCommentForm,
+    HcCommentForm,
   },
   props: {
     post: { type: Object, default: () => {} },

@@ -41,6 +41,9 @@ describe('CommentForm.vue', () => {
         error: jest.fn(),
         success: jest.fn(),
       },
+      $filters: {
+        removeHtml: a => a,
+      },
     }
     propsData = {
       post: {

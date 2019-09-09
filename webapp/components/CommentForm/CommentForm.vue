@@ -2,18 +2,18 @@
   <ds-form v-model="form" @submit="handleSubmit">
     <template slot-scope="{ errors }">
       <ds-card>
-        <hc-editor
-          ref="editor"
-          :users="users"
-          :hashtags="null"
-          :value="form.content"
-          @input="updateEditorContent"
-        />
+        <!-- with client-only the content is not shown -->
+        <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
         <ds-space />
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }">
-            <ds-button :disabled="disabled" ghost class="cancelBtn" @click.prevent="clear">
+            <ds-button
+              :disabled="disabled && !update"
+              ghost
+              class="cancelBtn"
+              @click.prevent="handleCancel"
+            >
               {{ $t('actions.cancel') }}
             </ds-button>
           </ds-flex-item>
@@ -30,6 +30,7 @@
 
 <script>
 import HcEditor from '~/components/Editor/Editor'
+import { COMMENT_MIN_LENGTH } from '../../constants/comment'
 import { minimisedUserQuery } from '~/graphql/User'
 import PostQuery from '~/graphql/PostQuery'
 import CommentMutations from '~/graphql/CommentMutations'
@@ -39,36 +40,55 @@ export default {
     HcEditor,
   },
   props: {
+    update: { type: Boolean, default: () => false },
     post: { type: Object, default: () => {} },
+    comment: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
       disabled: true,
       loading: false,
       form: {
-        content: '',
+        content: !this.update || !this.comment.content ? '' : this.comment.content,
       },
       users: [],
     }
   },
   methods: {
     updateEditorContent(value) {
-      const content = value.replace(/<(?:.|\n)*?>/gm, '').trim()
-      if (content.length < 1) {
-        this.disabled = true
+      const sanitizedContent = this.$filters.removeHtml(value, false)
+      if (!this.update) {
+        if (sanitizedContent.length < COMMENT_MIN_LENGTH) {
+          this.disabled = true
+        } else {
+          this.disabled = false
+        }
       } else {
-        this.disabled = false
+        this.disabled =
+          value === this.comment.content || sanitizedContent.length < COMMENT_MIN_LENGTH
       }
       this.form.content = value
     },
     clear() {
       this.$refs.editor.clear()
     },
+    closeEditWindow() {
+      this.$emit('showEditCommentMenu', false)
+    },
+    handleCancel() {
+      if (!this.update) {
+        this.clear()
+      } else {
+        this.closeEditWindow()
+      }
+    },
     handleSubmit() {
-      this.loading = true
-      this.disabled = true
-      this.$apollo
-        .mutate({
+      let mutateParams
+      if (!this.update) {
+        mutateParams = {
           mutation: CommentMutations(this.$i18n).CreateComment,
           variables: {
             postId: this.post.id,
@@ -82,12 +102,32 @@ export default {
             data.Post[0].comments.push(CreateComment)
             await store.writeQuery({ query: PostQuery(this.$i18n), data })
           },
-        })
+        }
+      } else {
+        mutateParams = {
+          mutation: CommentMutations(this.$i18n).UpdateComment,
+          variables: {
+            content: this.form.content,
+            id: this.comment.id,
+          },
+        }
+      }
+
+      this.loading = true
+      this.disabled = true
+      this.$apollo
+        .mutate(mutateParams)
         .then(res => {
           this.loading = false
-          this.clear()
-          this.$toast.success(this.$t('post.comment.submitted'))
-          this.disabled = false
+          if (!this.update) {
+            this.clear()
+            this.$toast.success(this.$t('post.comment.submitted'))
+            this.disabled = false
+          } else {
+            this.$toast.success(this.$t('post.comment.updated'))
+            this.disabled = false
+            this.closeEditWindow()
+          }
         })
         .catch(err => {
           this.$toast.error(err.message)
