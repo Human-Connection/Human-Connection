@@ -72,7 +72,7 @@ export default {
   methods: {
     ...mapMutations({
       toggleFilteredByFollowed: 'postsFilter/TOGGLE_FILTER_BY_FOLLOWED',
-      toogleFilteredByEmotions: 'postsFilter/TOGGLE_FILTER_BY_EMOTIONS',
+      toogleFilteredByEmotions: 'postsFilter/TOGGLE_EMOTION',
     }),
     iconPath(emotion) {
       if (this.filteredByEmotions.includes(emotion)) {
