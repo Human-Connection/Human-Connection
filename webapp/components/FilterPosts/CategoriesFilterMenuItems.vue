@@ -46,9 +46,9 @@
             </ds-flex-item>
             <ds-flex>
               <ds-flex-item class="categories-menu-item">
-                <label
-                  class="category-labels"
-                >{{ $t(`contribution.category.name.${category.slug}`) }}</label>
+                <label class="category-labels">
+                  {{ $t(`contribution.category.name.${category.slug}`) }}
+                </label>
               </ds-flex-item>
               <ds-space margin-bottom="xx-large" />
             </ds-flex>
