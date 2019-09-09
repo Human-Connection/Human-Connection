@@ -8,14 +8,19 @@
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }">
-            <ds-button ghost class="cancelBtn" @click.prevent="closeEditWindow">
-              {{ $t('actions.cancel') }}
-            </ds-button>
+            <ds-button
+              ghost
+              class="cancelBtn"
+              @click.prevent="closeEditWindow"
+            >{{ $t('actions.cancel') }}</ds-button>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '40%', xs: '40%' }">
-            <ds-button type="submit" :loading="loading" :disabled="disabled || errors" primary>
-              {{ $t('post.comment.submit') }}
-            </ds-button>
+            <ds-button
+              type="submit"
+              :loading="loading"
+              :disabled="disabled || errors"
+              primary
+            >{{ $t('post.comment.submit') }}</ds-button>
           </ds-flex-item>
         </ds-flex>
       </ds-card>
@@ -26,7 +31,6 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor/Editor'
-import { mapMutations } from 'vuex'
 import CommentMutations from '~/graphql/CommentMutations.js'
 
 export default {
@@ -52,9 +56,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      setEditPending: 'editor/SET_EDIT_PENDING',
-    }),
     updateEditorContent(value) {
       const sanitizedContent = value.replace(/<(?:.|\n)*?>/gm, '').trim()
       this.disabled = value === this.comment.content || sanitizedContent.length < 1
@@ -79,8 +80,7 @@ export default {
 
           this.$toast.success(this.$t('post.comment.updated'))
           this.disabled = false
-          this.$emit('showEditCommentMenu', false)
-          this.setEditPending(false)
+          this.closeEditWindow()
         })
         .catch(err => {
           this.$toast.error(err.message)
