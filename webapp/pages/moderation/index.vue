@@ -1,8 +1,6 @@
 <template>
   <ds-card space="small">
-    <ds-heading tag="h3">
-      {{ $t('moderation.reports.name') }}
-    </ds-heading>
+    <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
     <ds-table v-if="Report && Report.length" :data="Report" :fields="fields" condensed>
       <template slot="name" slot-scope="scope">
         <div v-if="scope.row.type === 'Post'">
@@ -15,23 +13,23 @@
             <b>{{ scope.row.post.title | truncate(50) }}</b>
           </nuxt-link>
           <br />
-          <ds-text size="small" color="soft">
-            {{ scope.row.post.author.name }}
-          </ds-text>
+          <ds-text size="small" color="soft">{{ scope.row.post.author.name }}</ds-text>
         </div>
         <div v-else-if="scope.row.type === 'Comment'">
           <nuxt-link
             :to="{
               name: 'post-id-slug',
-              params: { id: scope.row.comment.post.id, slug: scope.row.comment.post.slug },
+              params: {
+                id: scope.row.comment.post.id,
+                slug: scope.row.comment.post.slug,
+              },
+              hash: `#commentId-${scope.row.comment.id}`,
             }"
           >
-            <b>{{ scope.row.comment.contentExcerpt | truncate(50) }}</b>
+            <b>{{ scope.row.comment.contentExcerpt | removeHtml | truncate(50) }}</b>
           </nuxt-link>
           <br />
-          <ds-text size="small" color="soft">
-            {{ scope.row.comment.author.name }}
-          </ds-text>
+          <ds-text size="small" color="soft">{{ scope.row.comment.author.name }}</ds-text>
         </div>
         <div v-else>
           <nuxt-link
