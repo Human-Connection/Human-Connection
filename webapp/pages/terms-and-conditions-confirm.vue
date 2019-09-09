@@ -95,7 +95,6 @@ export default {
             this.setCurrentUser({
               ...this.currentUser,
               termsAndConditionsAgreedVersion,
-              termsAndConditionsAgreedAt,
             })
           },
         })
