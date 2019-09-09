@@ -26,8 +26,9 @@
 <script>
 import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
-import { VERSION } from '~/constants/terms-and-conditions-version.js'
- 
+import { VERSION, VERSION_LAST_CURRENT_DATE  } from '~/constants/terms-and-conditions-version.js'
+
+const termsAndConditionsAgreedAt = VERSION_LAST_CURRENT_DATE
 
 const mutation = gql`
   mutation(
