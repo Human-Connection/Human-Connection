@@ -29,13 +29,9 @@ import { mapGetters, mapMutations } from 'vuex'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 
 const mutation = gql`
-  mutation(
-    $id: ID!
-    $termsAndConditionsAgreedVersion: String
+  mutation($id: ID!, $termsAndConditionsAgreedVersion: String
   ) {
-    UpdateUser(
-      id: $id
-      termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+    UpdateUser(id: $id, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
     ) {
       id
       termsAndConditionsAgreedVersion
