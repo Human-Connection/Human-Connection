@@ -159,7 +159,6 @@ export default {
         this.cities = []
         return
       }
-
       this.loadingGeo = true
       this.axiosSource = CancelToken.source()
 
@@ -175,6 +174,10 @@ export default {
         )
         .then(res => {
           this.cities = this.processCityResults(res)
+        })
+        .catch(error => {
+          /* eslint-disable-next-line no-console */
+          console.log(error)
         })
         .finally(() => {
           this.loadingGeo = false
