@@ -8,19 +8,14 @@
         <ds-flex :gutter="{ base: 'small', md: 'small', sm: 'x-large', xs: 'x-large' }">
           <ds-flex-item :width="{ base: '0%', md: '50%', sm: '0%', xs: '0%' }" />
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '30%', xs: '30%' }">
-            <ds-button
-              ghost
-              class="cancelBtn"
-              @click.prevent="closeEditWindow"
-            >{{ $t('actions.cancel') }}</ds-button>
+            <ds-button ghost class="cancelBtn" @click.prevent="closeEditWindow">
+              {{ $t('actions.cancel') }}
+            </ds-button>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '40%', md: '20%', sm: '40%', xs: '40%' }">
-            <ds-button
-              type="submit"
-              :loading="loading"
-              :disabled="disabled || errors"
-              primary
-            >{{ $t('post.comment.submit') }}</ds-button>
+            <ds-button type="submit" :loading="loading" :disabled="disabled || errors" primary>
+              {{ $t('post.comment.submit') }}
+            </ds-button>
           </ds-flex-item>
         </ds-flex>
       </ds-card>
@@ -29,8 +24,8 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor/Editor'
+import { minimisedUserQuery } from '~/graphql/User'
 import CommentMutations from '~/graphql/CommentMutations.js'
 
 export default {
@@ -90,14 +85,7 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql`
-          {
-            User(orderBy: slug_asc) {
-              id
-              slug
-            }
-          }
-        `
+        return minimisedUserQuery()
       },
       result({ data: { User } }) {
         this.users = User

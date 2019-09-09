@@ -77,6 +77,19 @@ export default i18n => {
   `
 }
 
+export const minimisedUserQuery = () => {
+  return gql`
+    query {
+      User(orderBy: slug_asc) {
+        id
+        slug
+        name
+        avatar
+      }
+    }
+  `
+}
+
 export const notificationQuery = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`

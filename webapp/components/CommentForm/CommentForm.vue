@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor/Editor'
+import { minimisedUserQuery } from '~/graphql/User'
 import PostQuery from '~/graphql/PostQuery'
 import CommentMutations from '~/graphql/CommentMutations'
 
@@ -97,16 +97,7 @@ export default {
   apollo: {
     User: {
       query() {
-        return gql`
-          {
-            User(orderBy: slug_asc) {
-              id
-              slug
-              name
-              avatar
-            }
-          }
-        `
+        return minimisedUserQuery()
       },
       result(result) {
         this.users = result.data.User
