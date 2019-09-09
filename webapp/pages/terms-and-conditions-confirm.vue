@@ -32,12 +32,10 @@ const mutation = gql`
   mutation(
     $id: ID!
     $termsAndConditionsAgreedVersion: String
-    $termsAndConditionsAgreedAt: String
   ) {
     UpdateUser(
       id: $id
       termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
-      termsAndConditionsAgreedAt: $termsAndConditionsAgreedAt
     ) {
       id
       termsAndConditionsAgreedVersion

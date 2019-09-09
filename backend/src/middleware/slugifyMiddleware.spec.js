@@ -82,7 +82,7 @@ describe('slugify', () => {
           }
           await expect(
             authenticatedClient.request(createPostMutation, createPostVariables),
-          ).rejects.toThrow('already exists')
+          ).rejects.toThrow('already exists')  
         })
       })
     })
@@ -128,8 +128,7 @@ describe('slugify', () => {
 
       describe('but if the client specifies a slug', () => {
         it('rejects SignupVerification', async () => {
-          await expect(
-            action({ name: 'Pre-existing user', slug: 'pre-existing-user' }),
+          await expect(action({ name: 'Pre-existing user', slug: 'pre-existing-user' }),
           ).rejects.toThrow('already exists')
         })
       })
