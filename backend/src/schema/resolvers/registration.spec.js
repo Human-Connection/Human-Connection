@@ -425,7 +425,7 @@ describe('SignupVerification', () => {
             expect(emails).toHaveLength(1)
           })
 
-          it('set `about` attribute of User', async () => {
+          it('sets `about` attribute of User', async () => {
             variables = { ...variables, about: 'Find this description in the user profile' }
             await mutate({ mutation, variables })
             const user = await neode.first('User', { name: 'John Doe' })

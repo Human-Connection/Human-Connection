@@ -146,7 +146,7 @@ describe('slugifyMiddleware', () => {
       }
     })
 
-    describe('given a user has siged up with her email address', () => {
+    describe('given a user has signed up with their email address', () => {
       beforeEach(async () => {
         await factory.create('EmailAddress', {
           email: '123@example.org',
