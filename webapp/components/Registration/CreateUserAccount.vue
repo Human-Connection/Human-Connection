@@ -97,6 +97,7 @@ export const SignupVerificationMutation = gql`
     $email: String!
     $password: String!
     $termsAndConditionsAgreedVersion: String!
+    termsAndConditionsAgreedAt: String
   ) {
     SignupVerification(
       nonce: $nonce
@@ -104,6 +105,7 @@ export const SignupVerificationMutation = gql`
       name: $name
       password: $password
       termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+      termsAndConditionsAgreedAt: $termsAndConditionsAgreedAt
     ) {
       id
       name
@@ -154,10 +156,20 @@ export default {
       const { name, password, about } = this.formData
       const { email, nonce } = this
       const termsAndConditionsAgreedVersion = VERSION
+      const termsAndConditionsAgreedAt = new Date().toISOString()
+
       try {
         await this.$apollo.mutate({
           mutation: SignupVerificationMutation,
-          variables: { name, password, about, email, nonce, termsAndConditionsAgreedVersion },
+          variables: {
+            name,
+            password,
+            about,
+            email,
+            nonce,
+            termsAndConditionsAgreedVersion,
+            termsAndConditionsAgreedAt,
+          },
         })
         this.success = true
         setTimeout(() => {
