@@ -1,8 +1,11 @@
 import request from 'request'
 import { UserInputError } from 'apollo-server'
 import isEmpty from 'lodash/isEmpty'
+import Debug from 'debug'
 import asyncForEach from '../../helpers/asyncForEach'
 import CONFIG from './../../config'
+
+const debug = Debug('human-connection:location')
 
 const fetch = url => {
   return new Promise((resolve, reject) => {
@@ -59,21 +62,16 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
   if (isEmpty(locationName)) {
     return
   }
-  let res
-  try {
-    res = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-        locationName,
-      )}.json?access_token=${
-        CONFIG.MAPBOX_TOKEN
-      }&types=region,place,country&language=${locales.join(',')}`,
-    )
-    /* eslint-disable-next-line no-console */
-    console.log('res', res)
-  } catch (error) {
-    /* eslint-disable-next-line no-console */
-    console.log('error', error)
-  }
+
+  const res = await fetch(
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+      locationName,
+    )}.json?access_token=${CONFIG.MAPBOX_TOKEN}&types=region,place,country&language=${locales.join(
+      ',',
+    )}`,
+  )
+
+  debug(res)
 
   if (!res || !res.features || !res.features[0]) {
     throw new UserInputError('locationName is invalid')
