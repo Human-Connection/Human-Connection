@@ -1,7 +1,20 @@
-import defaultNuxtConfig, { envWhitelist } from './nuxt.config.js'
+import defaultConfig from './nuxt.config.js'
+
+const {
+  css,
+  styleResources,
+  env: {
+    locales,
+  },
+  manifest,
+} = defaultConfig
 
 export default {
-  ...defaultNuxtConfig,
+  css,
+  styleResources,
+  env: { locales },
+  manifest,
+
   head: {
     title: 'Human Connection',
     meta: [
@@ -26,45 +39,25 @@ export default {
       },
     ],
   },
-  env: {
-    ...defaultNuxtConfig.env,
-    maintenance: true,
-  },
 
-  /*
-   ** Plugins to load before mounting the App
-   */
   plugins: [
     { src: `~/plugins/styleguide.js`, ssr: true },
     { src: '~/plugins/i18n.js', ssr: true },
     { src: '~/plugins/v-tooltip.js', ssr: false },
   ],
 
-
-  /*
-   ** Nuxt.js modules
-   */
   modules: [
-    [
-      'nuxt-env',
-      {
-        keys: envWhitelist,
-      },
-    ],
     'cookie-universal-nuxt',
     '@nuxtjs/style-resources',
-    '@nuxtjs/sentry',
   ],
 
-
   router: {
-    middleware: ['maintenance'],
-    extendRoutes (routes, resolve) {
+    extendRoutes(routes, resolve) {
       routes.push({
         name: 'maintenance',
         path: '*',
-        component: resolve(__dirname, 'maintenance/maintenance.vue'),
+        component: resolve(__dirname, 'pages/index.vue')
       })
     }
-  },
+  }
 }
