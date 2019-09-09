@@ -89,7 +89,6 @@ export default {
           variables: {
             id: this.currentUser.id,
             termsAndConditionsAgreedVersion: VERSION,
-            termsAndConditionsAgreedAt: new Date().toISOString(),
           },
           update: (store, { data: { UpdateUser } }) => {
             const { termsAndConditionsAgreedVersion } = UpdateUser
