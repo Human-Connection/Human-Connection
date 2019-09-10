@@ -14,8 +14,7 @@ WORKDIR $WORKDIR
 # See: https://github.com/nodejs/docker-node/pull/367#issuecomment-430807898
 RUN apk --no-cache add git
 
-COPY maintenance/source/package.json ./package.json
-COPY maintenance/source/yarn.lock ./yarn.lock
+COPY package.json yarn.lock ./
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 
 COPY assets assets
@@ -24,11 +23,11 @@ COPY components/Dropdown.vue components/Dropdown.vue
 COPY layouts/blank.vue layouts/blank.vue
 COPY locales locales
 COPY mixins mixins
-COPY plugins/i18n.js plugins/i18n.js
-COPY plugins/v-tooltip.js plugins/v-tooltip.js
-COPY plugins/styleguide.js plugins/styleguide.js
+COPY plugins/i18n.js plugins/v-tooltip.js plugins/styleguide.js plugins/
 COPY static static
 COPY nuxt.config.js nuxt.config.js
+
+# this will also ovewrite the existing package.json
 COPY maintenance/source ./
 
 

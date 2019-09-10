@@ -12,15 +12,5 @@
     "build": "yarn run nuxt build -c nuxt.config.maintenance.js",
     "start": "yarn run nuxt start -c nuxt.config.maintenance.js",
     "generate": "yarn run nuxt generate -c nuxt.config.maintenance.js"
-  },
-  "devDependencies": {
-    "@human-connection/styleguide": "^0.5.21",
-    "@nuxtjs/style-resources": "^1.0.0",
-    "cookie-universal-nuxt": "^2.0.17",
-    "node-sass": "^4.12.0",
-    "nuxt": "^2.9.2",
-    "sass-loader": "^8.0.0",
-    "v-tooltip": "^2.0.2",
-    "vuex-i18n": "^1.13.1"
   }
 }
