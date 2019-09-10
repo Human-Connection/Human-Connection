@@ -11,6 +11,7 @@
       >
         <ds-flex>
           <ds-flex-item width="10%" />
+          <ds-space margin-bottom="xx-small" />
           <ds-flex-item width="100%">
             <div class="follow-button">
               <ds-button
@@ -24,6 +25,7 @@
                 :primary="filteredByUsersFollowed"
                 @click="toggleFilteredByFollowed(user.id)"
               />
+              <ds-space margin-bottom="x-small" />
               <ds-flex-item>
                 <label class="follow-label">{{ $t('filter-posts.followers.label') }}</label>
               </ds-flex-item>
@@ -42,9 +44,10 @@
           >
             <img :src="iconPath(emotion)" width="40" />
           </ds-button>
-          <div class="emotions-mobile-space text-center">
-            <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>
-          </div>
+          <ds-space margin-bottom="x-small" />
+          <ds-flex-item class="emotions-mobile-space text-center">
+            <label class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</label>
+          </ds-flex-item>
         </ds-flex-item>
       </div>
       <ds-space margin-bottom="large" />
