@@ -124,7 +124,7 @@
     "style-loader": "~0.23.1",
     "style-resources-loader": "~1.2.1",
     "tippy.js": "^4.3.5",
-    "vue-jest": "~3.0.4",
+    "vue-jest": "~3.0.5",
     "vue-loader": "~15.7.0",
     "vue-svg-loader": "~0.12.0",
     "vue-template-compiler": "^2.6.10"
