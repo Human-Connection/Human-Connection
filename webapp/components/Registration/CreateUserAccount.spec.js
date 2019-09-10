@@ -7,12 +7,10 @@ const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('CreateUserAccount', () => {
-  let wrapper
-  let Wrapper
-  let mocks
-  let propsData
+  let wrapper, Wrapper, mocks, propsData, stubs
 
   beforeEach(() => {
     mocks = {
@@ -27,6 +25,9 @@ describe('CreateUserAccount', () => {
       },
     }
     propsData = {}
+    stubs = {
+      LocaleSwitch: "<div class='stub'></div>",
+    }
   })
 
   describe('mount', () => {
@@ -35,6 +36,7 @@ describe('CreateUserAccount', () => {
         mocks,
         propsData,
         localVue,
+        stubs,
       })
     }
 

@@ -36,14 +36,15 @@
     "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
     "germany": "Germany",
-    "code-of-conduct": "Code of Conduct"
+    "code-of-conduct": "Code of Conduct",
+    "login": "Back to login"
   },
   "sorting": {
     "newest": "Newest",
     "oldest": "Oldest"
   },
   "login": {
-    "copy": "If you already have a human-connection account, login here.",
+    "copy": "If you already have a human-connection account, please login.",
     "login": "Login",
     "logout": "Logout",
     "email": "Your Email",
@@ -60,7 +61,7 @@
     "form": {
       "description": "A password reset email will be sent to the given email address.",
       "submit": "Request email",
-      "submitted": "A mail with further instruction has been sent to <b>{email}</b>"
+      "submitted": "An email with further instructions has been sent to <b>{email}</b>"
     }
   },
   "registration": {

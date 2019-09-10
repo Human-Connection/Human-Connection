@@ -53,13 +53,17 @@
                 name="submit"
                 type="submit"
                 icon="sign-in"
-              >{{ $t('login.login') }}</ds-button>
+              >
+                {{ $t('login.login') }}
+              </ds-button>
               <ds-space margin="x-small">
                 <a
                   :href="$t('login.moreInfoURL')"
                   :title="$t('login.moreInfoHint')"
                   target="_blank"
-                >{{ $t('login.moreInfo') }}</a>
+                >
+                  {{ $t('login.moreInfo') }}
+                </a>
               </ds-space>
             </form>
           </ds-flex-item>
@@ -72,7 +76,6 @@
 <script>
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
-import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   layout: 'no-header',

@@ -3,11 +3,9 @@
     <ds-card v-if="success" class="success">
       <ds-space>
         <sweetalert-icon icon="success" />
-        <ds-text
-          align="center"
-          bold
-          color="success"
-        >{{ $t('registration.create-user-account.success') }}</ds-text>
+        <ds-text align="center" bold color="success">
+          {{ $t('registration.create-user-account.success') }}
+        </ds-text>
       </ds-space>
     </ds-card>
     <ds-form
@@ -60,7 +58,10 @@
               v-model="termsAndConditionsConfirmed"
               :checked="termsAndConditionsConfirmed"
             />
-            <label for="checkbox" v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"></label>
+            <label
+              for="checkbox"
+              v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
+            ></label>
           </ds-text>
 
           <template slot="footer">
@@ -74,7 +75,9 @@
               :loading="$apollo.loading"
               :disabled="errors || !termsAndConditionsConfirmed"
               primary
-            >{{ $t('actions.save') }}</ds-button>
+            >
+              {{ $t('actions.save') }}
+            </ds-button>
           </template>
         </ds-card>
       </template>

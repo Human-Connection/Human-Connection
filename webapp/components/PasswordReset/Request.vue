@@ -30,9 +30,7 @@
             icon="envelope"
           />
           <ds-space margin-botton="large">
-            <ds-text>
-              {{ $t('password-reset.form.description') }}
-            </ds-text>
+            <ds-text>{{ $t('password-reset.form.description') }}</ds-text>
           </ds-space>
           <ds-button
             :disabled="disabled"
@@ -53,6 +51,10 @@
             </ds-flex>
           </transition>
           <ds-text v-html="submitMessage" />
+        </div>
+        <ds-space margin-bottom="small" />
+        <div>
+          <nuxt-link to="/login">{{ $t('site.login') }}</nuxt-link>
         </div>
       </ds-flex-item>
     </ds-flex>
