@@ -11,20 +11,25 @@
       <ds-icon size="xx-small" name="angle-down" />
     </ds-button>
     <template slot="popover">
-      <filter-posts-menu-items :chunk="chunk" :user="currentUser" />
+      <ds-container>
+        <categories-filter-menu-items :chunk="chunk" />
+        <general-filter-menu-items :user="currentUser" />
+      </ds-container>
     </template>
   </dropdown>
 </template>
 <script>
-import _ from 'lodash'
+import { chunk } from 'lodash'
 import Dropdown from '~/components/Dropdown'
 import { mapGetters } from 'vuex'
-import FilterPostsMenuItems from '~/components/FilterPosts/FilterPostsMenuItems'
+import CategoriesFilterMenuItems from './CategoriesFilterMenuItems'
+import GeneralFilterMenuItems from './GeneralFilterMenuItems'
 
 export default {
   components: {
     Dropdown,
-    FilterPostsMenuItems,
+    CategoriesFilterMenuItems,
+    GeneralFilterMenuItems,
   },
   props: {
     placement: { type: String },
@@ -37,7 +42,7 @@ export default {
       filterActive: 'postsFilter/isActive',
     }),
     chunk() {
-      return _.chunk(this.categories, 2)
+      return chunk(this.categories, 2)
     },
   },
 }
