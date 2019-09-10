@@ -1,14 +1,14 @@
 <template>
   <ds-form ref="contributionForm" v-model="form" :schema="formSchema">
     <template slot-scope="{ errors }">
+      <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
+        <img
+          v-if="contribution"
+          class="contribution-image"
+          :src="contribution.image | proxyApiUrl"
+        />
+      </hc-teaser-image>
       <ds-card>
-        <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
-          <img
-            v-if="contribution"
-            class="contribution-image"
-            :src="contribution.image | proxyApiUrl"
-          />
-        </hc-teaser-image>
         <ds-space />
         <hc-user :user="currentUser" :trunc="35" />
         <ds-space />
@@ -79,7 +79,7 @@ import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
-import HcUser from '~/components/User'
+import HcUser from '~/components/User/User'
 
 export default {
   components: {

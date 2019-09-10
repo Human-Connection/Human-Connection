@@ -258,7 +258,7 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-import User from '~/components/User'
+import User from '~/components/User/User'
 import HcPostCard from '~/components/PostCard'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
@@ -388,7 +388,7 @@ export default {
     resetPostList() {
       this.offset = 0
       this.posts = []
-      this.hasMore = false
+      this.hasMore = true
     },
     async block(user) {
       await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })

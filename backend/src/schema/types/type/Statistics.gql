@@ -1,0 +1,14 @@
+type Query {
+  statistics: Statistics!
+}
+
+type Statistics {
+  countUsers: Int!
+  countPosts: Int!
+  countComments: Int!
+  countNotifications: Int!
+  countInvites: Int!
+  countFollows: Int!
+  countShouts: Int!
+}
+

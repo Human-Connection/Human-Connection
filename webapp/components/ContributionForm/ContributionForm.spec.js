@@ -86,6 +86,7 @@ describe('ContributionForm.vue', () => {
       'editor/placeholder': () => {
         return 'some cool placeholder'
       },
+      'auth/isModerator': () => false,
       'auth/user': () => {
         return {
           id: '4711',

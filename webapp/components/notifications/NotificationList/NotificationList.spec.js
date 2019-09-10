@@ -26,6 +26,7 @@ describe('NotificationList.vue', () => {
   beforeEach(() => {
     store = new Vuex.Store({
       getters: {
+        'auth/isModerator': () => false,
         'auth/user': () => {
           return {}
         },

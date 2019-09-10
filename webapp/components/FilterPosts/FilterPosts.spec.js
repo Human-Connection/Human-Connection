@@ -55,6 +55,7 @@ describe('FilterPosts.vue', () => {
     }
     getters = {
       'postsFilter/isActive': () => false,
+      'auth/isModerator': () => false,
       'auth/user': () => {
         return { id: 'u34' }
       },

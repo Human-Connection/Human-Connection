@@ -1,25 +1,17 @@
 <template>
-  <div v-if="!user || ((user.disabled || user.deleted) && !isModerator)">
-    <div
-      style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
-    >
-      <hc-avatar />
-    </div>
-    <div style="display: inline-block; height: 100%; vertical-align: middle;">
-      <b class="username" style="vertical-align: middle;">{{ $t('profile.userAnonym') }}</b>
+  <div class="user" v-if="displayAnonymous">
+    <hc-avatar class="avatar" />
+    <div>
+      <b class="username">{{ $t('profile.userAnonym') }}</b>
     </div>
   </div>
   <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
         <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
-          <div
-            style="display: inline-block; float: left; margin-right: 4px;  height: 100%; vertical-align: middle;"
-          >
-            <hc-avatar :user="user" />
-          </div>
-          <div style="display: inline-block; height: 100%; vertical-align: middle;">
-            <b class="username" style="vertical-align: middle;">{{ userName | truncate(18) }}</b>
+          <hc-avatar class="avatar" :user="user" />
+          <div>
+            <b class="username">{{ userName | truncate(18) }}</b>
           </div>
           <!-- Time -->
           <div v-if="dateTime" style="display: inline;">
@@ -125,6 +117,10 @@ export default {
     itsMe() {
       return this.user.slug === this.$store.getters['auth/user'].slug
     },
+    displayAnonymous() {
+      const { user, isModerator } = this
+      return !user || user.deleted || (user.disabled && !isModerator)
+    },
     userLink() {
       const { id, slug } = this.user
       if (!(id && slug)) return ''
@@ -148,7 +144,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+.avatar {
+  display: inline-block;
+  float: left;
+  margin-right: 4px;
+  height: 100%;
+  vertical-align: middle;
+}
+
 .user {
   white-space: nowrap;
   position: relative;

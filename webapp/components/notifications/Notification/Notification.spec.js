@@ -1,10 +1,12 @@
 import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import Notification from './Notification'
+import Notification from './Notification.vue'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 
+localVue.use(Vuex)
 localVue.use(Styleguide)
 localVue.use(Filters)
 
@@ -12,6 +14,7 @@ config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('Notification', () => {
   let stubs
+  let getters
   let mocks
   let propsData
   let wrapper
@@ -23,11 +26,21 @@ describe('Notification', () => {
     stubs = {
       NuxtLink: RouterLinkStub,
     }
+    getters = {
+      'auth/user': () => {
+        return {}
+      },
+      'auth/isModerator': () => false,
+    }
   })
 
   const Wrapper = () => {
+    const store = new Vuex.Store({
+      getters,
+    })
     return mount(Notification, {
       stubs,
+      store,
       mocks,
       propsData,
       localVue,

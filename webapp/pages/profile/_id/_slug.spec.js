@@ -68,6 +68,7 @@ describe('ProfileSlug', () => {
         }
         mocks.$store = {
           getters: {
+            'auth/isModerator': () => false,
             'auth/user': {
               id: 'u23',
             },
