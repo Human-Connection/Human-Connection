@@ -99,7 +99,6 @@ export default {
         const posts = transactionRes.records.map(record => {
           return record.get('post').properties
         })
-        debugger
         post = posts[0]
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
