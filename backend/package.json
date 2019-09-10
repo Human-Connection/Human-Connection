@@ -47,7 +47,7 @@
     "apollo-cache-inmemory": "~1.6.3",
     "apollo-client": "~2.6.4",
     "apollo-link-context": "~1.0.19",
-    "apollo-link-http": "~1.5.15",
+    "apollo-link-http": "~1.5.16",
     "apollo-server": "~2.9.3",
     "apollo-server-express": "^2.9.0",
     "babel-plugin-transform-runtime": "^6.23.0",
