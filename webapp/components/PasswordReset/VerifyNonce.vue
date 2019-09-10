@@ -1,5 +1,5 @@
 <template>
-  <ds-card class="verify-code">
+  <ds-card class="verify-nonce">
     <ds-space margin="large">
       <ds-form
         v-model="formData"
@@ -9,19 +9,19 @@
         @input-valid="handleInputValid"
       >
         <ds-input
-          :placeholder="$t('verify-code.form.code')"
-          model="code"
-          name="code"
-          id="code"
+          :placeholder="$t('verify-nonce.form.nonce')"
+          model="nonce"
+          name="nonce"
+          id="nonce"
           icon="question-circle"
         />
         <ds-space margin-botton="large">
           <ds-text>
-            {{ $t('verify-code.form.description') }}
+            {{ $t('verify-nonce.form.description') }}
           </ds-text>
         </ds-space>
         <ds-button :disabled="disabled" primary fullwidth name="submit" type="submit">
-          {{ $t('verify-code.form.next') }}
+          {{ $t('verify-nonce.form.next') }}
         </ds-button>
       </ds-form>
     </ds-space>
@@ -36,15 +36,15 @@ export default {
   data() {
     return {
       formData: {
-        code: '',
+        nonce: '',
       },
       formSchema: {
-        code: {
+        nonce: {
           type: 'string',
           min: 6,
           max: 6,
           required: true,
-          message: this.$t('common.validations.verification-code'),
+          message: this.$t('common.validations.verification-nonce'),
         },
       },
       disabled: true,
@@ -58,9 +58,9 @@ export default {
       this.disabled = false
     },
     handleSubmitVerify() {
-      const { code } = this.formData
+      const { nonce } = this.formData
       const email = this.email
-      this.$emit('verification', { email, code })
+      this.$emit('verification', { email, nonce })
     },
   },
 }

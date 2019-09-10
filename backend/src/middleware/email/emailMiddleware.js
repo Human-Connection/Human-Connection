@@ -3,6 +3,22 @@ import nodemailer from 'nodemailer'
 import { resetPasswordMail, wrongAccountMail } from './templates/passwordReset'
 import { signupTemplate } from './templates/signup'
 
+let sendMail
+if (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT) {
+  sendMail = async templateArgs => {
+    await transporter().sendMail({
+      from: '"Human Connection" <info@human-connection.org>',
+      ...templateArgs,
+    })
+  }
+} else {
+  sendMail = () => {}
+  if (process.env.NODE_ENV !== 'test') {
+    // eslint-disable-next-line no-console
+    console.log('Warning: Email middleware will not try to send mails.')
+  }
+}
+
 const transporter = () => {
   const configs = {
     host: CONFIG.SMTP_HOST,
@@ -17,41 +33,24 @@ const transporter = () => {
   return nodemailer.createTransport(configs)
 }
 
-const returnResponse = async (resolve, root, args, context, resolveInfo) => {
-  const { response } = await resolve(root, args, context, resolveInfo)
-  delete response.nonce
-  return response
-}
-
 const sendSignupMail = async (resolve, root, args, context, resolveInfo) => {
-  const { email } = args
-  const { response, nonce } = await resolve(root, args, context, resolveInfo)
+  const response = await resolve(root, args, context, resolveInfo)
+  const { email, nonce } = response
+  await sendMail(signupTemplate({ email, nonce }))
   delete response.nonce
-  await transporter().sendMail(signupTemplate({ email, nonce }))
   return response
 }
 
-export default function({ isEnabled }) {
-  if (!isEnabled)
-    return {
-      Mutation: {
-        requestPasswordReset: returnResponse,
-        Signup: returnResponse,
-        SignupByInvitation: returnResponse,
-      },
-    }
-
-  return {
-    Mutation: {
-      requestPasswordReset: async (resolve, root, args, context, resolveInfo) => {
-        const { email } = args
-        const { response, user, code, name } = await resolve(root, args, context, resolveInfo)
-        const mailTemplate = user ? resetPasswordMail : wrongAccountMail
-        await transporter().sendMail(mailTemplate({ email, code, name }))
-        return response
-      },
-      Signup: sendSignupMail,
-      SignupByInvitation: sendSignupMail,
+export default {
+  Mutation: {
+    requestPasswordReset: async (resolve, root, args, context, resolveInfo) => {
+      const { email } = args
+      const { email: emailFound, nonce, name } = await resolve(root, args, context, resolveInfo)
+      const mailTemplate = emailFound ? resetPasswordMail : wrongAccountMail
+      await sendMail(mailTemplate({ email, nonce, name }))
+      return true
     },
-  }
+    Signup: sendSignupMail,
+    SignupByInvitation: sendSignupMail,
+  },
 }

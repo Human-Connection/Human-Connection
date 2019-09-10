@@ -39,10 +39,10 @@ describe('ChangePassword ', () => {
       })
     }
 
-    describe('given email and verification code', () => {
+    describe('given email and verification nonce', () => {
       beforeEach(() => {
         propsData.email = 'mail@example.org'
-        propsData.code = '123456'
+        propsData.nonce = '123456'
       })
 
       describe('submitting new password', () => {
@@ -59,14 +59,14 @@ describe('ChangePassword ', () => {
 
         it('delivers new password to backend', () => {
           const expected = expect.objectContaining({
-            variables: { code: '123456', email: 'mail@example.org', password: 'supersecret' },
+            variables: { nonce: '123456', email: 'mail@example.org', password: 'supersecret' },
           })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
 
         describe('password reset successful', () => {
           it('displays success message', () => {
-            const expected = 'verify-code.form.change-password.success'
+            const expected = 'verify-nonce.form.change-password.success'
             expect(mocks.$t).toHaveBeenCalledWith(expected)
           })
 

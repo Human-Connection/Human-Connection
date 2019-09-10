@@ -37,9 +37,9 @@
       "submitted": "Na adres <b>{email}</b> została wysłana wiadomość z dalszymi instrukcjami."
     }
   },
-  "verify-code": {
+  "verify-nonce": {
     "form": {
-      "code": "Wprowadź swój kod",
+      "nonce": "Wprowadź swój kod",
       "description": "Otwórz swoją skrzynkę odbiorczą i wpisz kod, który do Ciebie wysłaliśmy.",
       "next": "Kontynuuj",
       "change-password": {
@@ -237,7 +237,7 @@
     "reportContent": "Sprawozdanie",
     "validations": {
       "email": "musi być ważny adres e-mail.",
-      "verification-code": "musi mieć długość 6 znaków."
+      "verification-nonce": "musi mieć długość 6 znaków."
     }
   },
   "actions": {
