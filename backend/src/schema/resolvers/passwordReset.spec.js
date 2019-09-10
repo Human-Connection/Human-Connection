@@ -120,7 +120,6 @@ describe('resetPassword', () => {
       resetPassword(nonce: $nonce, email: $email, newPassword: $newPassword)
     }
   `
-  const nonce = 'abcdef'
   beforeEach(() => {
     variables = { ...variables, newPassword: 'supersecret' }
   })
@@ -137,7 +136,7 @@ describe('resetPassword', () => {
     describe('invalid email', () => {
       it('resolves to false', async () => {
         await setup()
-        variables = { ...variables, email: 'non-existent@example.org', nonce }
+        variables = { ...variables, email: 'non-existent@example.org', nonce: 'abcdef' }
         await expect(mutate({ mutation, variables })).resolves.toMatchObject({
           data: { resetPassword: false },
         })
