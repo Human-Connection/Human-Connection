@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import seo from '~/mixins/seo'
 import PageFooter from '~/components/PageFooter/PageFooter'
 

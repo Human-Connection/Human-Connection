@@ -11,7 +11,6 @@
 </template>
 
 <script>
-
 export default {
   layout: 'no-header',
   asyncData({ store, redirect }) {
