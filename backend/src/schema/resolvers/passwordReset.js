@@ -32,11 +32,11 @@ export async function createPasswordReset(options) {
 
 export default {
   Mutation: {
-    requestPasswordReset: async (_, { email }, { driver }) => {
+    requestPasswordReset: async (_parent, { email }, { driver }) => {
       const nonce = uuid().substring(0, 6)
       return createPasswordReset({ driver, nonce, email })
     },
-    resetPassword: async (_, { email, nonce, newPassword }, { driver }) => {
+    resetPassword: async (_parent, { email, nonce, newPassword }, { driver }) => {
       const session = driver.session()
       const stillValid = new Date()
       stillValid.setDate(stillValid.getDate() - 1)

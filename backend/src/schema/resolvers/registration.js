@@ -18,7 +18,7 @@ const checkEmailDoesNotExist = async ({ email }) => {
 
 export default {
   Mutation: {
-    CreateInvitationCode: async (parent, args, context, resolveInfo) => {
+    CreateInvitationCode: async (_parent, args, context, _resolveInfo) => {
       args.token = uuid().substring(0, 6)
       const {
         user: { id: userId },
@@ -37,7 +37,7 @@ export default {
       }
       return response
     },
-    Signup: async (parent, args, context, resolveInfo) => {
+    Signup: async (_parent, args, _context, _resolveInfo) => {
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
       await checkEmailDoesNotExist({ email: args.email })
@@ -48,7 +48,7 @@ export default {
         throw new UserInputError(e.message)
       }
     },
-    SignupByInvitation: async (parent, args, context, resolveInfo) => {
+    SignupByInvitation: async (_parent, args, _context, _resolveInfo) => {
       const { token } = args
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
@@ -76,7 +76,7 @@ export default {
         throw new UserInputError(e)
       }
     },
-    SignupVerification: async (object, args, context, resolveInfo) => {
+    SignupVerification: async (_parent, args, _context, _resolveInfo) => {
       const { termsAndConditionsAgreedVersion } = args
       const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
       if (!regEx.test(termsAndConditionsAgreedVersion)) {

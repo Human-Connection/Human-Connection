@@ -15,6 +15,26 @@ export const signupTemplate = options => {
     to: email,
     subject,
     text: `
+Willkommen bei Human Connection! Benutzen Sie diesen Link, um den Registrierungsprozess abzuschließen.
+und erstellen Sie ein Benutzerkonto
+
+${actionUrl}
+
+Sie können diese Verifizierung auch kopieren und in Ihr Browserfenster einfügen:
+
+${nonce}
+
+Wenn du dich nicht bei Human Connection angemeldet hast, ignoriere bitte diese E-Mail oder
+Kontaktieren Sie den Support, wenn Sie Fragen haben:
+
+${supportUrl}
+
+Danke,
+Das Human Connection Team
+
+Übersetzt mit www.DeepL.com/Translator
+
+
 Welcome to Human Connection! Use this link to complete the registration process
 and create a user account:
 
