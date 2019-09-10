@@ -14,7 +14,7 @@ COPY package.json yarn.lock ./
 COPY .env.template .env
 CMD ["yarn", "run", "start"]
 
-FROM base as builder
+FROM base as build-and-test
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 COPY . .
 RUN cp .env.template .env
@@ -23,6 +23,6 @@ RUN NODE_ENV=production yarn run build
 # reduce image size with a multistage build
 FROM base as production
 ENV NODE_ENV=production
-COPY --from=builder /nitro-backend/dist ./dist
+COPY --from=build-and-test /nitro-backend/dist ./dist
 COPY ./public/img/ ./public/img/
-RUN yarn install --frozen-lockfile --non-interactive
+RUN yarn install --production=true --frozen-lockfile --non-interactive

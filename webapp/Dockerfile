@@ -14,14 +14,14 @@ WORKDIR $WORKDIR
 # See: https://github.com/nodejs/docker-node/pull/367#issuecomment-430807898
 RUN apk --no-cache add git
 
-COPY . .
 
 FROM base as build-and-test
+COPY . .
 RUN cp .env.template .env
 RUN yarn install --production=false --frozen-lockfile --non-interactive
 RUN NODE_ENV=production yarn run build
 
 FROM base as production
-ENV NODE_ENV=production
-COPY --from=build-and-test ./nitro-web/node_modules ./node_modules
+COPY package.json yarn.lock ./
+RUN yarn install --production=true --frozen-lockfile --non-interactive
 COPY --from=build-and-test ./nitro-web/.nuxt ./.nuxt

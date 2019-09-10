@@ -10,6 +10,9 @@ services:
       - 3000:3000
     networks:
       - hc-network
+    volumes:
+      - webapp_node_modules:/nitro-web/node_modules
+      - webapp_nuxt_folder:/nitro-web/.nuxt
     environment:
       - HOST=0.0.0.0
       - GRAPHQL_URI=http://backend:4000
@@ -25,6 +28,9 @@ services:
       - neo4j
     ports:
       - 4000:4000
+    volumes:
+      - backend_node_modules:/nitro-backend/node_modules
+      - uploads:/nitro-backend/public/uploads
     environment:
       - NEO4J_URI=bolt://neo4j:7687
       - GRAPHQL_PORT=4000
@@ -39,6 +45,19 @@ services:
       context: neo4j
     networks:
       - hc-network
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+      - 7687:7687
+      - 7474:7474
+    volumes:
+      - neo4j_data:/data
 
 networks:
   hc-network:
+volumes:
+  webapp_node_modules:
+  webapp_nuxt_folder:
+  backend_node_modules:
+  neo4j_data:
+  uploads:
