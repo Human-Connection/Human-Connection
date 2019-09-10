@@ -88,6 +88,8 @@ describe('PostIndex', () => {
     })
 
     it('clears the search when the filter menu emits clearSearch', () => {
+      mocks.$route.query.hashtag = '#samplehashtag'
+      wrapper = Wrapper()
       wrapper.find(FilterMenu).vm.$emit('clearSearch')
       expect(wrapper.vm.hashtag).toBeNull()
     })

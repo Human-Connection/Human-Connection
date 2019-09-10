@@ -1,6 +1,6 @@
 <template>
   <div class="user" v-if="displayAnonymous">
-    <hc-avatar />
+    <hc-avatar class="avatar" />
     <div>
       <b class="username">{{ $t('profile.userAnonym') }}</b>
     </div>
@@ -9,7 +9,7 @@
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
         <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
-          <hc-avatar :user="user" />
+          <hc-avatar class="avatar" :user="user" />
           <div>
             <b class="username">{{ userName | truncate(18) }}</b>
           </div>
@@ -134,7 +134,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .avatar {
   display: inline-block;
   float: left;
