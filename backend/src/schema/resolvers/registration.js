@@ -1,4 +1,4 @@
-import { ForbiddenError, UserInputError } from 'apollo-server'
+import { UserInputError } from 'apollo-server'
 import uuid from 'uuid/v4'
 import { neode } from '../../bootstrap/neo4j'
 import fileUpload from './fileUpload'
@@ -80,7 +80,7 @@ export default {
       const { termsAndConditionsAgreedVersion } = args
       const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
       if (!regEx.test(termsAndConditionsAgreedVersion)) {
-        throw new ForbiddenError('Invalid version format!')
+        throw new UserInputError('Invalid version format!')
       }
 
       let { nonce, email } = args
@@ -106,6 +106,8 @@ export default {
         ])
         return user.toJson()
       } catch (e) {
+        if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
+          throw new UserInputError('User with this slug already exists!')
         throw new UserInputError(e.message)
       }
     },

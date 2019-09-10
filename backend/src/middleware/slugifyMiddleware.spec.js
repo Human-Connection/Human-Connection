@@ -1,62 +1,81 @@
-import { GraphQLClient } from 'graphql-request'
 import Factory from '../seed/factories'
-import { host, login, gql } from '../jest/helpers'
-import { neode } from '../bootstrap/neo4j'
+import { gql } from '../jest/helpers'
+import { neode as getNeode, getDriver } from '../bootstrap/neo4j'
+import createServer from '../server'
+import { createTestClient } from 'apollo-server-testing'
 
-let authenticatedClient
-let headers
 const factory = Factory()
-const instance = neode()
-const categoryIds = ['cat9']
-const createPostMutation = gql`
-  mutation($title: String!, $content: String!, $categoryIds: [ID]!, $slug: String) {
-    CreatePost(title: $title, content: $content, categoryIds: $categoryIds, slug: $slug) {
-      slug
-    }
-  }
-`
-let createPostVariables = {
-  title: 'I am a brand new post',
-  content: 'Some content',
-  categoryIds,
-}
+
+let mutate
+let authenticatedUser
+let variables
+
+const driver = getDriver()
+const neode = getNeode()
+
+beforeAll(() => {
+  const { server } = createServer({
+    context: () => {
+      return {
+        driver,
+        neode,
+        user: authenticatedUser,
+      }
+    },
+  })
+  mutate = createTestClient(server).mutate
+})
+
 beforeEach(async () => {
-  const adminParams = { role: 'admin', email: 'admin@example.org', password: '1234' }
-  await factory.create('User', adminParams)
+  variables = {}
+  const admin = await factory.create('User', { role: 'admin' })
   await factory.create('User', {
     email: 'someone@example.org',
     password: '1234',
   })
-  await instance.create('Category', {
+  await factory.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',
     icon: 'university',
   })
-  // we need to be an admin, otherwise we're not authorized to create a user
-  headers = await login(adminParams)
-  authenticatedClient = new GraphQLClient(host, { headers })
+  authenticatedUser = await admin.toJson()
 })
 
 afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('slugify', () => {
+describe('slugifyMiddleware', () => {
   describe('CreatePost', () => {
+    const categoryIds = ['cat9']
+    const createPostMutation = gql`
+      mutation($title: String!, $content: String!, $categoryIds: [ID]!, $slug: String) {
+        CreatePost(title: $title, content: $content, categoryIds: $categoryIds, slug: $slug) {
+          slug
+        }
+      }
+    `
+
+    beforeEach(() => {
+      variables = {
+        ...variables,
+        title: 'I am a brand new post',
+        content: 'Some content',
+        categoryIds,
+      }
+    })
+
     it('generates a slug based on title', async () => {
-      const response = await authenticatedClient.request(createPostMutation, createPostVariables)
-      expect(response).toEqual({
-        CreatePost: { slug: 'i-am-a-brand-new-post' },
+      await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+        data: {
+          CreatePost: { slug: 'i-am-a-brand-new-post' },
+        },
       })
     })
 
     describe('if slug exists', () => {
       beforeEach(async () => {
-        const asSomeoneElse = await Factory().authenticateAs({
-          email: 'someone@example.org',
-          password: '1234',
-        })
-        await asSomeoneElse.create('Post', {
+        await factory.create('Post', {
           title: 'Pre-existing post',
           slug: 'pre-existing-post',
           content: 'as Someone else content',
@@ -65,72 +84,110 @@ describe('slugify', () => {
       })
 
       it('chooses another slug', async () => {
-        createPostVariables = { title: 'Pre-existing post', content: 'Some content', categoryIds }
-        const response = await authenticatedClient.request(createPostMutation, createPostVariables)
-        expect(response).toEqual({
-          CreatePost: { slug: 'pre-existing-post-1' },
+        variables = {
+          ...variables,
+          title: 'Pre-existing post',
+          content: 'Some content',
+          categoryIds,
+        }
+        await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+          data: { CreatePost: { slug: 'pre-existing-post-1' } },
         })
       })
 
       describe('but if the client specifies a slug', () => {
         it('rejects CreatePost', async () => {
-          createPostVariables = {
+          variables = {
+            ...variables,
             title: 'Pre-existing post',
             content: 'Some content',
             slug: 'pre-existing-post',
             categoryIds,
           }
-          await expect(
-            authenticatedClient.request(createPostMutation, createPostVariables),
-          ).rejects.toThrow('already exists')
+          await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+            errors: [{ message: 'Post with this slug already exists!' }],
+          })
         })
       })
     })
   })
 
   describe('SignupVerification', () => {
-    const mutation = `mutation($password: String!, $email: String!, $name: String!, $slug: String, $nonce: String!, $termsAndConditionsAgreedVersion: String!) {
-      SignupVerification(email: $email, password: $password, name: $name, slug: $slug, nonce: $nonce, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) { 
-        slug 
+    const mutation = gql`
+      mutation(
+        $password: String!
+        $email: String!
+        $name: String!
+        $slug: String
+        $nonce: String!
+        $termsAndConditionsAgreedVersion: String!
+      ) {
+        SignupVerification(
+          email: $email
+          password: $password
+          name: $name
+          slug: $slug
+          nonce: $nonce
+          termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+        ) {
+          slug
+        }
       }
-    }
     `
 
-    const action = async variables => {
-      // required for SignupVerification
-      await instance.create('EmailAddress', { email: '123@example.org', nonce: '123456' })
-
-      const defaultVariables = {
+    beforeEach(() => {
+      variables = {
+        ...variables,
+        name: 'I am a user',
         nonce: '123456',
         password: 'yo',
         email: '123@example.org',
         termsAndConditionsAgreedVersion: '0.0.1',
       }
-      return authenticatedClient.request(mutation, { ...defaultVariables, ...variables })
-    }
-
-    it('generates a slug based on name', async () => {
-      await expect(action({ name: 'I am a user' })).resolves.toEqual({
-        SignupVerification: { slug: 'i-am-a-user' },
-      })
     })
 
-    describe('if slug exists', () => {
+    describe('given a user has signed up with their email address', () => {
       beforeEach(async () => {
-        await factory.create('User', { name: 'pre-existing user', slug: 'pre-existing-user' })
-      })
-
-      it('chooses another slug', async () => {
-        await expect(action({ name: 'pre-existing-user' })).resolves.toEqual({
-          SignupVerification: { slug: 'pre-existing-user-1' },
+        await factory.create('EmailAddress', {
+          email: '123@example.org',
+          nonce: '123456',
+          verifiedAt: null,
         })
       })
 
-      describe('but if the client specifies a slug', () => {
-        it('rejects SignupVerification', async () => {
-          await expect(
-            action({ name: 'Pre-existing user', slug: 'pre-existing-user' }),
-          ).rejects.toThrow('already exists')
+      it('generates a slug based on name', async () => {
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          data: { SignupVerification: { slug: 'i-am-a-user' } },
+        })
+      })
+
+      describe('if slug exists', () => {
+        beforeEach(async () => {
+          await factory.create('User', { name: 'I am a user', slug: 'i-am-a-user' })
+        })
+
+        it('chooses another slug', async () => {
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            data: {
+              SignupVerification: { slug: 'i-am-a-user-1' },
+            },
+          })
+        })
+
+        describe('but if the client specifies a slug', () => {
+          beforeEach(() => {
+            variables = { ...variables, slug: 'i-am-a-user' }
+          })
+
+          it('rejects SignupVerification', async () => {
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              errors: [
+                {
+                  message: 'User with this slug already exists!',
+                },
+              ],
+            })
+          })
         })
       })
     })

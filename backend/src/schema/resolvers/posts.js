@@ -3,6 +3,7 @@ import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
 import { getBlockedUsers, getBlockedByUsers } from './users.js'
 import { mergeWith, isArray } from 'lodash'
+import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 
 const filterForBlockedUsers = async (params, context) => {
@@ -78,6 +79,7 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
+      let post
 
       const createPostCypher = `CREATE (post:Post {params})
         WITH post
@@ -92,15 +94,21 @@ export default {
       const createPostVariables = { userId: context.user.id, categoryIds, params }
 
       const session = context.driver.session()
-      const transactionRes = await session.run(createPostCypher, createPostVariables)
+      try {
+        const transactionRes = await session.run(createPostCypher, createPostVariables)
+        const posts = transactionRes.records.map(record => {
+          return record.get('post').properties
+        })
+        post = posts[0]
+      } catch (e) {
+        if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
+          throw new UserInputError('Post with this slug already exists!')
+        throw new Error(e)
+      } finally {
+        session.close()
+      }
 
-      const [post] = transactionRes.records.map(record => {
-        return record.get('post')
-      })
-
-      session.close()
-
-      return post.properties
+      return post
     },
     UpdatePost: async (object, params, context, resolveInfo) => {
       const { categoryIds } = params
