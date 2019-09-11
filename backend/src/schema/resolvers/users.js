@@ -95,9 +95,10 @@ export default {
         if (!regEx.test(termsAndConditionsAgreedVersion)) {
           throw new ForbiddenError('Invalid version format!')
         }
+        args.termsAndConditionsAgreedAt = new Date().toISOString()
       }
 
-      args.termsAndConditionsAgreedAt = new Date().toISOString()
+    
 
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
