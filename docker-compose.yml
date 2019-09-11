@@ -10,6 +10,8 @@ services:
       - 3000:3000
     networks:
       - hc-network
+    depends_on:
+      - backend
     volumes:
       - webapp_node_modules:/nitro-web/node_modules
       - webapp_nuxt_folder:/nitro-web/.nuxt
@@ -34,11 +36,12 @@ services:
     environment:
       - NEO4J_URI=bolt://neo4j:7687
       - GRAPHQL_PORT=4000
-      - GRAPHQL_URI=http://localhost:4000
+      - GRAPHQL_URI=http://backend:4000
       - CLIENT_URI=http://localhost:3000
       - JWT_SECRET=b/&&7b78BF&fv/Vd
       - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
       - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
+      - "DEBUG=${DEBUG}"
   neo4j:
     image: humanconnection/neo4j:latest
     build:
