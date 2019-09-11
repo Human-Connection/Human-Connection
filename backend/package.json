@@ -89,6 +89,7 @@
     "metascraper-video": "^5.6.5",
     "metascraper-youtube": "^5.6.7",
     "minimatch": "^3.0.4",
+    "mustache": "^3.0.3",
     "neo4j-driver": "~1.7.6",
     "neo4j-graphql-js": "^2.7.2",
     "neode": "^0.3.3",
@@ -100,8 +101,8 @@
     "slug": "~1.1.0",
     "trunc-html": "~1.1.2",
     "uuid": "~3.3.3",
-    "xregexp": "^4.2.4",
-    "wait-on": "~3.3.0"
+    "wait-on": "~3.3.0",
+    "xregexp": "^4.2.4"
   },
   "devDependencies": {
     "@babel/cli": "~7.6.0",
