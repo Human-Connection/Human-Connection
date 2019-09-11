@@ -15,7 +15,8 @@ services:
       - ./webapp:/nitro-web
       - webapp_node_modules:/nitro-web/node_modules
     command: yarn run dev
-    user: root
+    environment:
+      - NUXT_BUILD=.nuxt-dist # avoid file ownership issues with shared folders
   factories:
     image: humanconnection/nitro-backend:builder
     build:
