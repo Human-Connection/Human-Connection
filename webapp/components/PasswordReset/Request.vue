@@ -11,7 +11,7 @@
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
         <ds-space margin="small">
-          <ds-text size="small">{{ $t('login.copy') }}</ds-text>
+          <ds-text size="small" align="left">{{ $t('login.copy') }}</ds-text>
         </ds-space>
         <ds-form
           v-if="!submitted"
@@ -30,7 +30,7 @@
             icon="envelope"
           />
           <ds-space margin-botton="large">
-            <ds-text>{{ $t('password-reset.form.description') }}</ds-text>
+            <ds-text align="left">{{ $t('password-reset.form.description') }}</ds-text>
           </ds-space>
           <ds-button
             :disabled="disabled"
@@ -50,7 +50,7 @@
               <sweetalert-icon icon="info" />
             </ds-flex>
           </transition>
-          <ds-text v-html="submitMessage" />
+          <ds-text v-html="submitMessage" align="left" />
         </div>
         <ds-space margin-bottom="small" />
         <div>
