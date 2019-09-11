@@ -338,6 +338,7 @@ describe('SignupVerification', () => {
       ) {
         id
         termsAndConditionsAgreedVersion
+        termsAndConditionsAgreedAt
       }
     }
   `
@@ -350,6 +351,8 @@ describe('SignupVerification', () => {
         password: '123',
         email: 'john@example.org',
         termsAndConditionsAgreedVersion: '0.0.1',
+        termsAndConditionsAgreedAt: null,
+        
       }
     })
 
@@ -443,6 +446,17 @@ describe('SignupVerification', () => {
             })
           })
 
+          it('if a current date of the General Terms and Conditions is available', async () => {
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              data: {
+                SignupVerification: expect.objectContaining({
+                  termsAndConditionsAgreedAt: expect.any(String)
+                }),
+              },
+            })
+          })
+
+ 
           it('rejects if version of terms and conditions has wrong format', async () => {
             variables = { ...variables, termsAndConditionsAgreedVersion: 'invalid version format' }
             await expect(mutate({ mutation, variables })).resolves.toMatchObject({
@@ -450,6 +464,9 @@ describe('SignupVerification', () => {
             })
           })
         })
+
+       
+
 
         describe('sending invalid nonce', () => {
           beforeEach(() => {
