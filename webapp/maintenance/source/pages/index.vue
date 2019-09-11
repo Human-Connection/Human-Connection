@@ -10,16 +10,12 @@
         <ds-flex>
           <ds-flex-item :width="{ base: '100%', sm: 1, md: 1 }">
             <ds-space>
-              <img
-                class="login-image"
-                alt="Human Connection"
-                src="/img/sign-up/onourjourney.svg"
-              />
+              <img class="login-image" alt="Human Connection" src="/img/sign-up/onourjourney.svg" />
             </ds-space>
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: 1, md: 1 }">
             <ds-flex-item>
-              <ds-heading tag='h3'>
+              <ds-heading tag="h3">
                 {{ $t('maintenance.title') }}
               </ds-heading>
             </ds-flex-item>
@@ -32,7 +28,8 @@
                   {{ $t('maintenance.questions') }}
                   <a href="mailto:info@human-connection.org" class="email-link">
                     info@human-connection.org
-                  </a>.
+                  </a>
+                  .
                 </ds-text>
               </ds-space>
             </ds-flex-item>
@@ -47,7 +44,7 @@
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
-	layout:'blank',
+  layout: 'blank',
   components: {
     LocaleSwitch,
   },

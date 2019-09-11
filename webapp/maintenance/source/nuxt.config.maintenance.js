@@ -3,9 +3,7 @@ import defaultConfig from './nuxt.config.js'
 const {
   css,
   styleResources,
-  env: {
-    locales,
-  },
+  env: { locales },
   manifest,
 } = defaultConfig
 
@@ -28,7 +26,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'Maintenance page for Human Connection'
+        content: 'Maintenance page for Human Connection',
       },
     ],
     link: [
@@ -46,18 +44,15 @@ export default {
     { src: '~/plugins/v-tooltip.js', ssr: false },
   ],
 
-  modules: [
-    'cookie-universal-nuxt',
-    '@nuxtjs/style-resources',
-  ],
+  modules: ['cookie-universal-nuxt', '@nuxtjs/style-resources'],
 
   router: {
     extendRoutes(routes, resolve) {
       routes.push({
         name: 'maintenance',
         path: '*',
-        component: resolve(__dirname, 'pages/index.vue')
+        component: resolve(__dirname, 'pages/index.vue'),
       })
-    }
-  }
+    },
+  },
 }
