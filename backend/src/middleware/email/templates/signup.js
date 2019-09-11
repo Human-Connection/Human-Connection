@@ -17,8 +17,6 @@ export const signupTemplate = options => {
   actionUrl.searchParams.set('nonce', nonce)
   actionUrl.searchParams.set('email', email)
 
-  console.log(actionUrl)
-
   return {
     to: email,
     subject,
