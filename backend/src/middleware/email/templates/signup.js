@@ -1,12 +1,10 @@
 import CONFIG from '../../../config'
 
-export const from = '"Human Connection" <info@human-connection.org>'
-
 export const signupTemplate = options => {
   const {
     email,
     nonce,
-    subject = 'Signup link',
+    subject = 'Welcome to Human Connection! Here is your signup link.',
     supportUrl = 'https://human-connection.org/en/contact/',
   } = options
   const actionUrl = new URL('/registration/create-user-account', CONFIG.CLIENT_URI)
@@ -17,12 +15,33 @@ export const signupTemplate = options => {
     to: email,
     subject,
     text: `
+Willkommen bei Human Connection! Klick auf diesen Link, um den
+Registrierungsprozess abzuschließen und um ein Benutzerkonto zu erstellen!
+
+${actionUrl}
+
+Alternativ kannst du diesen Code auch kopieren und im Browserfenster einfügen:
+
+${nonce}
+
+Bitte ignoriere diese Mail, falls du dich nicht bei Human Connection angemeldet
+hast. Bei Fragen kontaktiere gerne unseren Support:
+
+${supportUrl}
+
+Danke,
+Das Human Connection Team
+
+
+English Version
+===============
+
 Welcome to Human Connection! Use this link to complete the registration process
 and create a user account:
 
 ${actionUrl}
 
-You can also copy+paste this verification code in your browser window:
+You can also copy+paste this verification nonce in your browser window:
 
 ${nonce}
 

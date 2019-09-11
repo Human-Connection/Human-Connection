@@ -82,9 +82,9 @@
       "success": "Your account has been created!"
     }
   },
-  "verify-code": {
+  "verify-nonce": {
     "form": {
-      "code": "Enter your code",
+      "nonce": "Enter your code",
       "description": "Open your inbox and enter the code that we've sent to you.",
       "next": "Continue",
       "change-password": {
@@ -342,7 +342,7 @@
     "validations": {
       "email": "must be a valid email address",
       "url": "must be a valid URL",
-      "verification-code": "must be 6 characters long"
+      "verification-nonce": "must be 6 characters long"
     }
   },
   "actions": {

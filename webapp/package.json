@@ -50,7 +50,7 @@
     ]
   },
   "dependencies": {
-    "@human-connection/styleguide": "0.5.19",
+    "@human-connection/styleguide": "0.5.21",
     "@nuxtjs/apollo": "^4.0.0-rc12",
     "@nuxtjs/axios": "~5.6.0",
     "@nuxtjs/dotenv": "~1.4.0",
@@ -61,7 +61,7 @@
     "apollo-client": "~2.6.4",
     "cookie-universal-nuxt": "~2.0.17",
     "cross-env": "~5.2.1",
-    "date-fns": "2.0.1",
+    "date-fns": "2.1.0",
     "express": "~4.17.1",
     "graphql": "~14.5.4",
     "isemail": "^3.2.0",
@@ -85,9 +85,9 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "~7.5.5",
+    "@babel/core": "~7.6.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "~7.5.5",
+    "@babel/preset-env": "~7.6.0",
     "@storybook/addon-a11y": "^5.1.11",
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/vue": "~5.1.11",
@@ -124,7 +124,7 @@
     "style-loader": "~0.23.1",
     "style-resources-loader": "~1.2.1",
     "tippy.js": "^4.3.5",
-    "vue-jest": "~3.0.4",
+    "vue-jest": "~3.0.5",
     "vue-loader": "~15.7.0",
     "vue-svg-loader": "~0.12.0",
     "vue-template-compiler": "^2.6.10"
