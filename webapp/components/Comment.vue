@@ -13,19 +13,20 @@
     <ds-card :id="`commentId-${comment.id}`">
       <ds-space margin-bottom="small">
         <hc-user :user="author" :date-time="comment.createdAt" />
+        <!-- Content Menu (can open Modals) -->
+        <client-only>
+          <content-menu
+            v-show="!openEditCommentMenu"
+            placement="bottom-end"
+            resource-type="comment"
+            :resource="comment"
+            :modalsData="menuModalsData"
+            style="float-right"
+            :is-owner="isAuthor(author.id)"
+            @showEditCommentMenu="editCommentMenu"
+          />
+        </client-only>
       </ds-space>
-      <!-- Content Menu (can open Modals) -->
-      <client-only>
-        <content-menu
-          placement="bottom-end"
-          resource-type="comment"
-          :resource="comment"
-          :modalsData="menuModalsData"
-          style="float-right"
-          :is-owner="isAuthor(author.id)"
-          @showEditCommentMenu="editCommentMenu"
-        />
-      </client-only>
 
       <ds-space margin-bottom="small" />
       <div v-if="openEditCommentMenu">

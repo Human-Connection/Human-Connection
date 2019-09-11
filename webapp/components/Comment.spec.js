@@ -33,7 +33,11 @@ describe('Comment.vue', () => {
       },
       $apollo: {
         mutate: jest.fn().mockResolvedValue({
-          data: { DeleteComment: { id: 'it-is-the-deleted-comment' } },
+          data: {
+            DeleteComment: {
+              id: 'it-is-the-deleted-comment',
+            },
+          },
         }),
       },
     }
@@ -125,7 +129,11 @@ describe('Comment.vue', () => {
 
           it('emits "deleteComment"', () => {
             expect(wrapper.emitted('deleteComment')).toEqual([
-              [{ id: 'it-is-the-deleted-comment' }],
+              [
+                {
+                  id: 'it-is-the-deleted-comment',
+                },
+              ],
             ])
           })
 
@@ -135,6 +143,30 @@ describe('Comment.vue', () => {
 
           it('mutation is successful', () => {
             expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
+          })
+        })
+      })
+
+      describe('test update comment', () => {
+        beforeEach(() => {
+          wrapper = Wrapper()
+        })
+
+        describe('with a given comment', () => {
+          beforeEach(async () => {
+            await wrapper.vm.updateComment({
+              id: 'it-is-the-updated-comment',
+            })
+          })
+
+          it('emits "updateComment"', () => {
+            expect(wrapper.emitted('updateComment')).toEqual([
+              [
+                {
+                  id: 'it-is-the-updated-comment',
+                },
+              ],
+            ])
           })
         })
       })
