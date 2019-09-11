@@ -79,6 +79,7 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
+      params.createdAt = params.createdAt || new Date().toISOString()
       let post
 
       const createPostCypher = `CREATE (post:Post {params})
