@@ -88,15 +88,16 @@ export default {
       return blockedUser.toJson()
     },
     UpdateUser: async (object, args, context, resolveInfo) => {
-      const { termsAndConditionsAgreedVersion, termsAndConditionsAgreedAt } = args
+      const { termsAndConditionsAgreedVersion } = args
+
       if (termsAndConditionsAgreedVersion) {
         const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
         if (!regEx.test(termsAndConditionsAgreedVersion)) {
           throw new ForbiddenError('Invalid version format!')
         }
       }
-      
-      termsAndConditionsAgreedAt = new Date().toISOString
+
+      args.termsAndConditionsAgreedAt = new Date().toISOString()
 
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {

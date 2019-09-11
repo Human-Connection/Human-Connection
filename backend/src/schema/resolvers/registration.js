@@ -83,6 +83,8 @@ export default {
         throw new ForbiddenError('Invalid version format!')
       }
 
+      args.termsAndConditionsAgreedAt = new Date().toISOString()
+
       let { nonce, email } = args
       email = email.toLowerCase()
       const result = await instance.cypher(
