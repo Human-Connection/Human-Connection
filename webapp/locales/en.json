@@ -1,4 +1,9 @@
 {
+  "maintenance": {
+    "title": "Human Connection is under maintenance",
+    "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
+    "questions": "Any Questions or concerns, send an email to" 
+  },
   "index": {
     "no-results": "No contributions found.",
     "change-filter-settings": "Change your filter settings to get more results."

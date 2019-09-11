@@ -7,7 +7,7 @@ import { isEmpty, find } from 'lodash'
  * and implement the user preference logic
  */
 export default ({ app, req, cookie, store }) => {
-  const debug = app.$env.NODE_ENV !== 'production'
+  const debug = app.$env && app.$env.NODE_ENV !== 'production'
   const key = 'locale'
 
   const changeHandler = async mutation => {
