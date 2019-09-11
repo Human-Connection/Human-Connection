@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" appear>
-    <ds-container width="small">
+    <ds-container width="medium">
       <ds-card>
         <ds-space>
           <client-only>
@@ -15,15 +15,11 @@
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: 1, md: 1 }">
             <ds-flex-item>
-              <ds-heading tag="h3">
-                {{ $t('maintenance.title') }}
-              </ds-heading>
+              <ds-heading tag="h3">{{ $t('maintenance.title') }}</ds-heading>
             </ds-flex-item>
             <ds-flex-item>
               <ds-space margin="small">
-                <ds-text>
-                  {{ $t('maintenance.explanation') }}
-                </ds-text>
+                <ds-text>{{ $t('maintenance.explanation') }}</ds-text>
                 <ds-text>
                   {{ $t('maintenance.questions') }}
                   <a href="mailto:info@human-connection.org" class="email-link">
