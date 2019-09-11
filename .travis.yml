@@ -15,7 +15,8 @@ before_install:
   - cp cypress.env.template.json cypress.env.json
 
 install:
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --build -d
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml build --parallel
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up -d
     # avoid "Database constraints have changed after this transaction started"
   - wait-on http://localhost:7474
   - docker-compose exec neo4j db_setup
