@@ -352,6 +352,7 @@ describe('SignupVerification', () => {
         email: 'john@example.org',
         termsAndConditionsAgreedVersion: '0.0.1',
         termsAndConditionsAgreedAt: null,
+        
       }
     })
 
@@ -449,12 +450,13 @@ describe('SignupVerification', () => {
             await expect(mutate({ mutation, variables })).resolves.toMatchObject({
               data: {
                 SignupVerification: expect.objectContaining({
-                  termsAndConditionsAgreedAt: expect.any(String),
+                  termsAndConditionsAgreedAt: expect.any(String)
                 }),
               },
             })
           })
 
+ 
           it('rejects if version of terms and conditions has wrong format', async () => {
             variables = { ...variables, termsAndConditionsAgreedVersion: 'invalid version format' }
             await expect(mutate({ mutation, variables })).resolves.toMatchObject({
@@ -462,6 +464,9 @@ describe('SignupVerification', () => {
             })
           })
         })
+
+       
+
 
         describe('sending invalid nonce', () => {
           beforeEach(() => {

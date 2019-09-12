@@ -86,6 +86,7 @@ describe('UpdateUser', () => {
       name: 'John Doe',
       termsAndConditionsAgreedVersion: null,
       termsAndConditionsAgreedAt: null,
+
     }
 
     variables = {
@@ -183,7 +184,7 @@ describe('UpdateUser', () => {
           data: {
             UpdateUser: expect.objectContaining({
               termsAndConditionsAgreedVersion: '0.0.2',
-              termsAndConditionsAgreedAt: expect.any(String),
+              termsAndConditionsAgreedAt: expect.any(String)
             }),
           },
         }
@@ -203,7 +204,7 @@ describe('UpdateUser', () => {
           data: {
             UpdateUser: expect.objectContaining({
               termsAndConditionsAgreedVersion: null,
-              termsAndConditionsAgreedAt: null,
+              termsAndConditionsAgreedAt: null
             }),
           },
         }
@@ -213,6 +214,7 @@ describe('UpdateUser', () => {
         )
       })
     })
+
 
     it('rejects if version of terms and conditions has wrong format', async () => {
       variables = {
