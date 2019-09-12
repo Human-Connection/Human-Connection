@@ -446,7 +446,7 @@ describe('SignupVerification', () => {
             expect(emails).toHaveLength(1)
           })
 
-          it('updates `termsAndConditionsAgreedAt`'', async () => {
+          it('updates termsAndConditionsAgreedAt', async () => {
             await expect(mutate({ mutation, variables })).resolves.toMatchObject({
               data: {
                 SignupVerification: expect.objectContaining({
