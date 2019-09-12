@@ -56,7 +56,7 @@ beforeAll(() => {
 beforeEach(async () => {
   variables = {}
   user = await factory.create('User', {
-    id: 'current-user',
+    id: 'u198',
     name: 'TestUser',
     email: 'test@example.org',
     password: '1234',
@@ -91,156 +91,36 @@ afterEach(async () => {
 })
 
 describe('Post', () => {
-  describe('can be filtered', () => {
-    let followedUser, happyPost, cryPost
-    beforeEach(async () => {
-      ;[followedUser] = await Promise.all([
-        factory.create('User', {
-          id: 'followed-by-me',
-          email: 'followed@example.org',
-          name: 'Followed User',
-          password: '1234',
-        }),
-      ])
-      ;[happyPost, cryPost] = await Promise.all([
-        factory.create('Post', { id: 'happy-post', categoryIds: ['cat4'] }),
-        factory.create('Post', { id: 'cry-post', categoryIds: ['cat15'] }),
-        factory.create('Post', {
-          id: 'post-by-followed-user',
-          categoryIds: ['cat9'],
-          author: followedUser,
-        }),
-      ])
-    })
-
-    describe('no filter', () => {
-      it('returns all posts', async () => {
-        const postQueryNoFilters = gql`
-          query Post($filter: _PostFilter) {
-            Post(filter: $filter) {
-              id
-            }
-          }
-        `
-        const expected = [{ id: 'happy-post' }, { id: 'cry-post' }, { id: 'post-by-followed-user' }]
-        variables = { filter: {} }
-        await expect(query({ query: postQueryNoFilters, variables })).resolves.toMatchObject({
-          data: {
-            Post: expect.arrayContaining(expected),
-          },
-        })
-      })
-    })
-
-    it('by categories', async () => {
-      const postQueryFilteredByCategories = gql`
-        query Post($filter: _PostFilter) {
-          Post(filter: $filter) {
-            id
-            categories {
-              id
-            }
-          }
+  const postQuery = gql`
+    query Post($filter: _PostFilter) {
+      Post(filter: $filter) {
+        id
+        categories {
+          id
         }
-      `
+      }
+    }
+  `
+
+  describe('can be filtered', () => {
+    it('by categories', async () => {
+      await Promise.all([
+        factory.create('Post', { id: 'p31', categoryIds: ['cat4'] }),
+        factory.create('Post', { id: 'p32', categoryIds: ['cat15'] }),
+        factory.create('Post', { id: 'p33', categoryIds: ['cat9'] }),
+      ])
       const expected = {
         data: {
           Post: [
             {
-              id: 'post-by-followed-user',
+              id: 'p33',
               categories: [{ id: 'cat9' }],
             },
           ],
         },
       }
       variables = { ...variables, filter: { categories_some: { id_in: ['cat9'] } } }
-      await expect(
-        query({ query: postQueryFilteredByCategories, variables }),
-      ).resolves.toMatchObject(expected)
-    })
-
-    describe('by emotions', () => {
-      const postQueryFilteredByEmotions = gql`
-        query Post($filter: _PostFilter) {
-          Post(filter: $filter) {
-            id
-            emotions {
-              emotion
-            }
-          }
-        }
-      `
-
-      it('filters by single emotion', async () => {
-        const expected = {
-          data: {
-            Post: [
-              {
-                id: 'happy-post',
-                emotions: [{ emotion: 'happy' }],
-              },
-            ],
-          },
-        }
-        await user.relateTo(happyPost, 'emoted', { emotion: 'happy' })
-        variables = { ...variables, filter: { emotions_some: { emotion_in: ['happy'] } } }
-        await expect(
-          query({ query: postQueryFilteredByEmotions, variables }),
-        ).resolves.toMatchObject(expected)
-      })
-
-      it('filters by multiple emotions', async () => {
-        const expected = [
-          {
-            id: 'happy-post',
-            emotions: [{ emotion: 'happy' }],
-          },
-          {
-            id: 'cry-post',
-            emotions: [{ emotion: 'cry' }],
-          },
-        ]
-        await user.relateTo(happyPost, 'emoted', { emotion: 'happy' })
-        await user.relateTo(cryPost, 'emoted', { emotion: 'cry' })
-        variables = { ...variables, filter: { emotions_some: { emotion_in: ['happy', 'cry'] } } }
-        await expect(
-          query({ query: postQueryFilteredByEmotions, variables }),
-        ).resolves.toMatchObject({
-          data: {
-            Post: expect.arrayContaining(expected),
-          },
-        })
-      })
-    })
-
-    it('by followed-by', async () => {
-      const postQueryFilteredByUsersFollowed = gql`
-        query Post($filter: _PostFilter) {
-          Post(filter: $filter) {
-            id
-            author {
-              id
-              name
-            }
-          }
-        }
-      `
-
-      await user.relateTo(followedUser, 'following')
-      variables = { filter: { author: { followedBy_some: { id: 'current-user' } } } }
-      const expected = {
-        data: {
-          Post: [
-            {
-              id: 'post-by-followed-user',
-              author: { id: 'followed-by-me', name: 'Followed User' },
-            },
-          ],
-        },
-      }
-      await expect(
-        query({ query: postQueryFilteredByUsersFollowed, variables }),
-      ).resolves.toMatchObject(expected)
+      await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
     })
   })
 })
@@ -718,7 +598,7 @@ describe('emotions', () => {
         const expected = {
           data: {
             AddPostEmotions: {
-              from: { id: 'current-user' },
+              from: { id: 'u198' },
               to: { id: 'p1376' },
               emotion: 'happy',
             },
@@ -752,8 +632,8 @@ describe('emotions', () => {
             Post: [
               {
                 emotions: expect.arrayContaining([
-                  { emotion: 'happy', User: { id: 'current-user' } },
-                  { emotion: 'surprised', User: { id: 'current-user' } },
+                  { emotion: 'happy', User: { id: 'u198' } },
+                  { emotion: 'surprised', User: { id: 'u198' } },
                 ]),
               },
             ],
@@ -857,7 +737,7 @@ describe('emotions', () => {
             data: {
               RemovePostEmotions: {
                 to: { id: 'p1376' },
-                from: { id: 'current-user' },
+                from: { id: 'u198' },
                 emotion: 'cry',
               },
             },

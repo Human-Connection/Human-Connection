@@ -1,5 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Editor from './Editor'
+import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import MutationObserver from 'mutation-observer'
 import Vue from 'vue'
@@ -7,14 +8,19 @@ import Vue from 'vue'
 global.MutationObserver = MutationObserver
 
 const localVue = createLocalVue()
+localVue.use(Vuex)
 localVue.use(Styleguide)
 
 describe('Editor.vue', () => {
   let wrapper
   let propsData
   let mocks
+  let getters
 
   const Wrapper = () => {
+    const store = new Vuex.Store({
+      getters,
+    })
     return (wrapper = mount(Editor, {
       mocks,
       propsData,
@@ -23,13 +29,19 @@ describe('Editor.vue', () => {
       stubs: {
         transition: false,
       },
+      store,
     }))
   }
 
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: () => 'some cool placeholder',
+      $t: () => {},
+    }
+    getters = {
+      'editor/placeholder': () => {
+        return 'some cool placeholder'
+      },
     }
     wrapper = Wrapper()
   })
@@ -52,10 +64,12 @@ describe('Editor.vue', () => {
       })
     })
 
-    it('translates the placeholder', () => {
-      expect(wrapper.vm.editor.extensions.options.placeholder.emptyNodeText).toEqual(
-        'some cool placeholder',
-      )
+    describe('uses the placeholder', () => {
+      it('from the store', () => {
+        expect(wrapper.vm.editor.extensions.options.placeholder.emptyNodeText).toEqual(
+          'some cool placeholder',
+        )
+      })
     })
 
     describe('optional extensions', () => {

@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" appear>
-    <ds-container v-if="ready" width="medium">
+    <ds-container v-if="ready" width="small">
       <ds-space margin="small">
         <blockquote>
           <p>{{ $t('quotes.african.quote') }}</p>
@@ -78,10 +78,10 @@ import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 
 export default {
-  layout: 'no-header',
   components: {
     LocaleSwitch,
   },
+  layout: 'default',
   data() {
     return {
       ready: false,

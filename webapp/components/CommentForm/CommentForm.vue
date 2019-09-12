@@ -1,5 +1,5 @@
 <template>
-  <ds-form v-model="form" @submit="handleSubmit">
+  <ds-form v-show="!editPending" v-model="form" @submit="handleSubmit">
     <template slot-scope="{ errors }">
       <ds-card>
         <hc-editor
@@ -30,6 +30,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { mapGetters } from 'vuex'
 import HcEditor from '~/components/Editor/Editor'
 import PostQuery from '~/graphql/PostQuery'
 import CommentMutations from '~/graphql/CommentMutations'
@@ -50,6 +51,11 @@ export default {
       },
       users: [],
     }
+  },
+  computed: {
+    ...mapGetters({
+      editPending: 'editor/editPending',
+    }),
   },
   methods: {
     updateEditorContent(value) {

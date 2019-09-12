@@ -1,5 +1,5 @@
 <template>
-  <ds-card class="verify-nonce">
+  <ds-card class="verify-code">
     <ds-space margin="large">
       <ds-form
         v-if="!changePasswordResult"
@@ -35,14 +35,14 @@
         <template v-if="changePasswordResult === 'success'">
           <sweetalert-icon icon="success" />
           <ds-text>
-            {{ $t(`verify-nonce.form.change-password.success`) }}
+            {{ $t(`verify-code.form.change-password.success`) }}
           </ds-text>
         </template>
         <template v-else>
           <sweetalert-icon icon="error" />
           <ds-text align="left">
-            {{ $t(`verify-nonce.form.change-password.error`) }}
-            {{ $t('verify-nonce.form.change-password.help') }}
+            {{ $t(`verify-code.form.change-password.error`) }}
+            {{ $t('verify-code.form.change-password.help') }}
           </ds-text>
           <a href="mailto:support@human-connection.org">support@human-connection.org</a>
         </template>
@@ -64,7 +64,7 @@ export default {
   },
   props: {
     email: { type: String, required: true },
-    nonce: { type: String, required: true },
+    code: { type: String, required: true },
   },
   data() {
     const passwordForm = PasswordForm({ translate: this.$t })
@@ -82,13 +82,13 @@ export default {
   methods: {
     async handleSubmitPassword() {
       const mutation = gql`
-        mutation($nonce: String!, $email: String!, $password: String!) {
-          resetPassword(nonce: $nonce, email: $email, newPassword: $password)
+        mutation($code: String!, $email: String!, $password: String!) {
+          resetPassword(code: $code, email: $email, newPassword: $password)
         }
       `
       const { password } = this.formData
-      const { email, nonce } = this
-      const variables = { password, email, nonce }
+      const { email, code } = this
+      const variables = { password, email, code }
       try {
         const {
           data: { resetPassword },

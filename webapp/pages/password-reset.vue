@@ -1,5 +1,5 @@
 <template>
-  <ds-container width="medium">
+  <ds-container width="small">
     <ds-flex>
       <ds-flex-item :width="{ base: '100%' }" centered>
         <ds-space style="text-align: center;" margin-top="small" margin-bottom="xxx-small" centered>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  layout: 'no-header',
+  layout: 'default',
   asyncData({ store, redirect }) {
     if (store.getters['auth/isLoggedIn']) {
       redirect('/')

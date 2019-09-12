@@ -1,37 +1,28 @@
 {
   "site": {
-    "made": "Feito com &#10084;",
+    "made": "Com &#10084; feito",
     "imprint": "Impressão",
-    "termsAc": "Termos e Condições",
-    "data-privacy": "Proteção de Dados",
+    "termsAc": "termos e condições",
+    "data-privacy": "protecção de dados",
     "changelog": "Mudanças e Histórico",
     "contact": "Contato",
+    "tribunal": "tribunal",
     "tribunal": "tribunal de registo",
     "register": "número de registo",
     "director": "Diretor Administrativo",
     "taxident": "Número de identificação do imposto sobre o valor acrescentado de acordo com o § 27 da Lei do Imposto sobre o Valor Acrescentado (Alemanha)",
     "responsible": "Responsável segundo § 55 Abs. 2 RStV (Alemanha) ",
     "bank": "conta bancária",
-    "germany": "Alemanha",
-    "code-of-conduct": "Codigo de Conduto",
-    "login": "Voltar para o Login"
+    "germany": "Alemanha"
   },
   "login": {
-    "copy": "Se você já tem uma conta no Human Connection, por favor faça o login.",
+    "copy": "Se você já tem uma conta no Human Connection, entre aqui.",
     "login": "Entrar",
     "logout": "Sair",
     "email": "Seu email",
     "password": "Sua senha",
     "moreInfo": "O que é o Human Connection?",
-    "hello": "Olá",
-    "forgotPassword": "Esqueceu a sua senha?"
-  },
-  "password-reset": {
-    "form": {
-      "description": "Um e-mail de redefinição de senha será enviado para o endereço de e-mail fornecido.",
-      "submit": "Solicitar email",
-      "submitted": "Um e-mail com mais instruções foi enviado para <b>{email}</b>"
-    }
+    "hello": "Olá"
   },
   "profile": {
     "name": "Meu perfil",

@@ -1,6 +1,5 @@
-import path from 'path'
 const pkg = require('./package')
-export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN']
+const envWhitelist = ['NODE_ENV', 'MAINTENANCE', 'MAPBOX_TOKEN']
 const dev = process.env.NODE_ENV !== 'production'
 
 const styleguidePath = '../Nitro-Styleguide'
@@ -16,7 +15,7 @@ const buildDir = process.env.NUXT_BUILD || '.nuxt'
 const additionalSentryConfig = {}
 if (process.env.COMMIT) additionalSentryConfig.release = process.env.COMMIT
 
-export default {
+module.exports = {
   buildDir,
   mode: 'universal',
 
@@ -36,11 +35,11 @@ export default {
       'login',
       'logout',
       'password-reset-request',
-      'password-reset-verify-nonce',
+      'password-reset-verify-code',
       'password-reset-change-password',
-      // 'registration-signup', TODO: implement to open public registration
-      // 'registration-signup-by-invitation-code',
-      // 'registration-verify-nonce',
+      // 'registration-signup', TODO: uncomment to open public registration
+      'registration-signup-by-invitation-code',
+      'registration-verify-code',
       'registration-create-user-account',
       'pages-slug',
       'imprint',
@@ -311,6 +310,7 @@ export default {
      */
     extend(config, ctx) {
       if (process.env.STYLEGUIDE_DEV) {
+        const path = require('path')
         config.resolve.alias['@@'] = path.resolve(__dirname, `${styleguidePath}/src/system`)
         config.module.rules.push({
           resourceQuery: /blockType=docs/,

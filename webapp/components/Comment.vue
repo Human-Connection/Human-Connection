@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import HcUser from '~/components/User/User'
 import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
@@ -126,11 +126,15 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setEditPending: 'editor/SET_EDIT_PENDING',
+    }),
     isAuthor(id) {
       return this.user.id === id
     },
     editCommentMenu(showMenu) {
       this.openEditCommentMenu = showMenu
+      this.setEditPending(showMenu)
     },
     async deleteCommentCallback() {
       try {

@@ -15,10 +15,10 @@ COPY .env.template .env
 CMD ["yarn", "run", "start"]
 
 FROM base as builder
-RUN yarn install --production=false --frozen-lockfile --non-interactive
+RUN yarn install --frozen-lockfile --non-interactive
 COPY . .
 RUN cp .env.template .env
-RUN NODE_ENV=production yarn run build
+RUN yarn run build
 
 # reduce image size with a multistage build
 FROM base as production

@@ -3471,10 +3471,10 @@ neo4j-driver@^1.7.5, neo4j-driver@^1.7.6:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neode@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.3.tgz#a539830cce6f6e4825462f6cb03f2969a0003f1b"
-  integrity sha512-pArHG1hD2kVwrzLlz6B1+IgdOJRQj/BgR6KzH6DlVzSA6geoZRe68fbpvmOJtzyPU7iuUYxXVk87PpPM1A7dlg==
+neode@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.2.tgz#ced277e1daba26a77c48f5857c30af054f11c7df"
+  integrity sha512-Bm4GBXdXunv8cqUUkJtksIGHDnYdBJf4UHwzFgXbJiDKBAdqfjhzwAPAhf1PrvlFmR4vJva2Bh/XvIghYOiKrA==
   dependencies:
     "@hapi/joi" "^15.1.0"
     dotenv "^4.0.0"

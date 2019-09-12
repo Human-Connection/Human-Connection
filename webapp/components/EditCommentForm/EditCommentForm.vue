@@ -26,6 +26,7 @@
 <script>
 import gql from 'graphql-tag'
 import HcEditor from '~/components/Editor/Editor'
+import { mapMutations } from 'vuex'
 import CommentMutations from '~/graphql/CommentMutations.js'
 
 export default {
@@ -51,6 +52,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setEditPending: 'editor/SET_EDIT_PENDING',
+    }),
     updateEditorContent(value) {
       const sanitizedContent = value.replace(/<(?:.|\n)*?>/gm, '').trim()
       this.disabled = value === this.comment.content || sanitizedContent.length < 1
@@ -76,6 +80,7 @@ export default {
           this.$toast.success(this.$t('post.comment.updated'))
           this.disabled = false
           this.$emit('showEditCommentMenu', false)
+          this.setEditPending(false)
         })
         .catch(err => {
           this.$toast.error(err.message)

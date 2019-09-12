@@ -36,6 +36,7 @@
 import Dropdown from '~/components/Dropdown'
 import find from 'lodash/find'
 import orderBy from 'lodash/orderBy'
+import { mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -65,9 +66,11 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({ setPlaceholderText: 'editor/SET_PLACEHOLDER_TEXT' }),
     changeLanguage(locale, toggleMenu) {
       this.$i18n.set(locale)
       toggleMenu()
+      this.setPlaceholderText(this.$t('editor.placeholder'))
     },
     matcher(locale) {
       return locale === this.$i18n.locale()

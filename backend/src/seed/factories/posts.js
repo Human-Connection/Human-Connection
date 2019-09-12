@@ -30,7 +30,7 @@ export default function create() {
       let { categories, categoryIds } = args
       delete args.categories
       delete args.categoryIds
-      if (categories && categoryIds) throw new Error('You provided both categories and categoryIds')
+      if (categories && categoryIds) throw new Error('You provided both category and categoryIds')
       if (categoryIds)
         categories = await Promise.all(categoryIds.map(id => neodeInstance.find('Category', id)))
       categories = categories || (await Promise.all([factoryInstance.create('Category')]))

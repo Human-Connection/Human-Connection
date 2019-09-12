@@ -1,9 +1,4 @@
 {
-  "maintenance": {
-    "title": "Human Connection befindet sich in der Wartung",
-    "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
-    "questions": "Bei Fragen oder Problemen erreichst du uns per E-Mail an" 
-  },
   "index": {
     "no-results": "Keine Beiträge gefunden.",
     "change-filter-settings": "Verändere die Filter-Einstellungen um mehr Ergebnisse zu erhalten."
@@ -41,8 +36,7 @@
     "responsible": "Verantwortlicher gemäß § 55 Abs. 2 RStV ",
     "bank": "Bankverbindung",
     "germany": "Deutschland",
-    "code-of-conduct": "Verhaltenscodex",
-    "login": "Zurück zum Anmeldung"
+    "code-of-conduct": "Verhaltenscodex"
   },
   "sorting": {
     "newest": "Neuste",
@@ -62,6 +56,7 @@
     "success": "Du bist eingeloggt!"
   },
   "password-reset": {
+    "title": "Passwort zurücksetzen",
     "form": {
       "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
       "submit": "Email anfordern",
@@ -87,9 +82,9 @@
       "success": "Dein Benutzerkonto wurde erstellt!"
     }
   },
-  "verify-nonce": {
+  "verify-code": {
     "form": {
-      "nonce": "Code eingeben",
+      "code": "Code eingeben",
       "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
       "next": "Weiter",
       "change-password": {
@@ -347,7 +342,7 @@
     "validations": {
       "email": "muss eine gültige E-Mail Adresse sein",
       "url": "muss eine gültige URL sein",
-      "verification-nonce": "muss genau 6 Buchstaben lang sein"
+      "verification-code": "muss genau 6 Buchstaben lang sein"
     }
   },
   "actions": {

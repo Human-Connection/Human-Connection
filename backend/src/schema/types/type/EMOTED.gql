@@ -3,20 +3,14 @@ type EMOTED @relation(name: "EMOTED") {
   to: Post
 
   emotion: Emotion
-  # createdAt: DateTime
-  # updatedAt: DateTime
+  #createdAt: DateTime
+  #updatedAt: DateTime
   createdAt: String
   updatedAt: String
 }
 
 input _EMOTEDInput {
   emotion: Emotion
-  createdAt: String
-  updatedAt: String
-}
-
-input _PostEMOTEDFilter {
-  emotion_in: [Emotion]
   createdAt: String
   updatedAt: String
 }

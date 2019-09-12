@@ -8,9 +8,11 @@ services:
       target: production
     ports:
       - 3000:3000
+      - 8080:8080
     networks:
       - hc-network
     environment:
+      - NUXT_BUILD=.nuxt-dist
       - HOST=0.0.0.0
       - GRAPHQL_URI=http://backend:4000
       - MAPBOX_TOKEN="pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.bZ8KK9l70omjXbEkkbHGsQ"
@@ -39,6 +41,14 @@ services:
       context: neo4j
     networks:
       - hc-network
+  maintenance:
+    image: humanconnection/maintenance:latest
+    build:
+      context: deployment/human-connection/maintenance
+    networks:
+      - hc-network
+    ports:
+      - 80:80
 
 networks:
   hc-network:

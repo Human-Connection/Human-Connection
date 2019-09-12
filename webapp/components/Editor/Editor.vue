@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Editor, EditorContent } from 'tiptap'
 import { History } from 'tiptap-extensions'
 import linkify from 'linkify-it'
@@ -69,9 +70,7 @@ export default {
     }
   },
   computed: {
-    placeholder() {
-      return this.$t('editor.placeholder')
-    },
+    ...mapGetters({ placeholder: 'editor/placeholder' }),
     optionalExtensions() {
       const extensions = []
       // Don't change the following line. The functionallity is in danger!

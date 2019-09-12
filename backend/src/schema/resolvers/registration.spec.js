@@ -327,7 +327,6 @@ describe('SignupVerification', () => {
       $password: String!
       $email: String!
       $nonce: String!
-      $about: String
       $termsAndConditionsAgreedVersion: String!
     ) {
       SignupVerification(
@@ -335,7 +334,6 @@ describe('SignupVerification', () => {
         password: $password
         email: $email
         nonce: $nonce
-        about: $about
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
       ) {
         id
@@ -425,15 +423,6 @@ describe('SignupVerification', () => {
             await mutate({ mutation, variables })
             const { records: emails } = await neode.cypher(cypher, { name: 'John Doe' })
             expect(emails).toHaveLength(1)
-          })
-
-          it('sets `about` attribute of User', async () => {
-            variables = { ...variables, about: 'Find this description in the user profile' }
-            await mutate({ mutation, variables })
-            const user = await neode.first('User', { name: 'John Doe' })
-            await expect(user.toJson()).resolves.toMatchObject({
-              about: 'Find this description in the user profile',
-            })
           })
 
           it('marks the EmailAddress as primary', async () => {

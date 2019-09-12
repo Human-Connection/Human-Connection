@@ -36,7 +36,6 @@
 
 <script>
 export default {
-  layout: 'basic',
   head() {
     return {
       title: this.$t('site.code-of-conduct'),

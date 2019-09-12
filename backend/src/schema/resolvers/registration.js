@@ -1,4 +1,4 @@
-import { UserInputError } from 'apollo-server'
+import { ForbiddenError, UserInputError } from 'apollo-server'
 import uuid from 'uuid/v4'
 import { neode } from '../../bootstrap/neo4j'
 import fileUpload from './fileUpload'
@@ -18,7 +18,7 @@ const checkEmailDoesNotExist = async ({ email }) => {
 
 export default {
   Mutation: {
-    CreateInvitationCode: async (_parent, args, context, _resolveInfo) => {
+    CreateInvitationCode: async (parent, args, context, resolveInfo) => {
       args.token = uuid().substring(0, 6)
       const {
         user: { id: userId },
@@ -37,18 +37,18 @@ export default {
       }
       return response
     },
-    Signup: async (_parent, args, _context, _resolveInfo) => {
+    Signup: async (parent, args, context, resolveInfo) => {
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
       await checkEmailDoesNotExist({ email: args.email })
       try {
         const emailAddress = await instance.create('EmailAddress', args)
-        return emailAddress.toJson()
+        return { response: emailAddress.toJson(), nonce }
       } catch (e) {
         throw new UserInputError(e.message)
       }
     },
-    SignupByInvitation: async (_parent, args, _context, _resolveInfo) => {
+    SignupByInvitation: async (parent, args, context, resolveInfo) => {
       const { token } = args
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
@@ -71,16 +71,16 @@ export default {
           throw new UserInputError('Invitation code already used or does not exist.')
         const emailAddress = await instance.create('EmailAddress', args)
         await validInvitationCode.relateTo(emailAddress, 'activated')
-        return emailAddress.toJson()
+        return { response: emailAddress.toJson(), nonce }
       } catch (e) {
         throw new UserInputError(e)
       }
     },
-    SignupVerification: async (_parent, args, _context, _resolveInfo) => {
+    SignupVerification: async (object, args, context, resolveInfo) => {
       const { termsAndConditionsAgreedVersion } = args
       const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
       if (!regEx.test(termsAndConditionsAgreedVersion)) {
-        throw new UserInputError('Invalid version format!')
+        throw new ForbiddenError('Invalid version format!')
       }
 
       args.termsAndConditionsAgreedAt = new Date().toISOString()
@@ -108,8 +108,6 @@ export default {
         ])
         return user.toJson()
       } catch (e) {
-        if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
-          throw new UserInputError('User with this slug already exists!')
         throw new UserInputError(e.message)
       }
     },

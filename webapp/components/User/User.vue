@@ -71,8 +71,8 @@
             <hc-follow-button
               :follow-id="user.id"
               :is-followed="user.followedByCurrentUser"
-              @optimistic="optimisticFollow"
-              @update="updateFollow"
+              @optimistic="follow => (user.followedByCurrentUser = follow)"
+              @update="follow => (user.followedByCurrentUser = follow)"
             />
           </ds-flex-item>
           <ds-flex-item :width="{ base: 1 }">
@@ -129,16 +129,6 @@ export default {
     userName() {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
-    },
-  },
-  methods: {
-    optimisticFollow(follow) {
-      const inc = follow ? 1 : -1
-      this.user.followedByCurrentUser = follow
-      this.user.followedByCount += inc
-    },
-    updateFollow(follow) {
-      this.user.followedByCurrentUser = follow
     },
   },
 }

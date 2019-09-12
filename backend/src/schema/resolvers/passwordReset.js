@@ -2,47 +2,39 @@ import uuid from 'uuid/v4'
 import bcrypt from 'bcryptjs'
 
 export async function createPasswordReset(options) {
-  const { driver, nonce, email, issuedAt = new Date() } = options
+  const { driver, code, email, issuedAt = new Date() } = options
   const session = driver.session()
-  let response = {}
-  try {
-    const cypher = `
+  const cypher = `
       MATCH (u:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email:$email})
-      CREATE(pr:PasswordReset {nonce: $nonce, issuedAt: datetime($issuedAt), usedAt: NULL})
+      CREATE(pr:PasswordReset {code: $code, issuedAt: datetime($issuedAt), usedAt: NULL})
       MERGE (u)-[:REQUESTED]->(pr)
-      RETURN e, pr, u
+      RETURN u
       `
-    const transactionRes = await session.run(cypher, {
-      issuedAt: issuedAt.toISOString(),
-      nonce,
-      email,
-    })
-    const records = transactionRes.records.map(record => {
-      const { email } = record.get('e').properties
-      const { nonce } = record.get('pr').properties
-      const { name } = record.get('u').properties
-      return { email, nonce, name }
-    })
-    response = records[0] || {}
-  } finally {
-    session.close()
-  }
-  return response
+  const transactionRes = await session.run(cypher, {
+    issuedAt: issuedAt.toISOString(),
+    code,
+    email,
+  })
+  const users = transactionRes.records.map(record => record.get('u'))
+  session.close()
+  return users
 }
 
 export default {
   Mutation: {
-    requestPasswordReset: async (_parent, { email }, { driver }) => {
-      const nonce = uuid().substring(0, 6)
-      return createPasswordReset({ driver, nonce, email })
+    requestPasswordReset: async (_, { email }, { driver }) => {
+      const code = uuid().substring(0, 6)
+      const [user] = await createPasswordReset({ driver, code, email })
+      const name = (user && user.name) || ''
+      return { user, code, name, response: true }
     },
-    resetPassword: async (_parent, { email, nonce, newPassword }, { driver }) => {
+    resetPassword: async (_, { email, code, newPassword }, { driver }) => {
       const session = driver.session()
       const stillValid = new Date()
       stillValid.setDate(stillValid.getDate() - 1)
       const encryptedNewPassword = await bcrypt.hashSync(newPassword, 10)
       const cypher = `
-      MATCH (pr:PasswordReset {nonce: $nonce})
+      MATCH (pr:PasswordReset {code: $code})
       MATCH (e:EmailAddress {email: $email})<-[:PRIMARY_EMAIL]-(u:User)-[:REQUESTED]->(pr)
       WHERE duration.between(pr.issuedAt, datetime()).days <= 0 AND pr.usedAt IS NULL
       SET pr.usedAt = datetime()
@@ -52,13 +44,13 @@ export default {
       const transactionRes = await session.run(cypher, {
         stillValid,
         email,
-        nonce,
+        code,
         encryptedNewPassword,
       })
       const [reset] = transactionRes.records.map(record => record.get('pr'))
-      const response = !!(reset && reset.properties.usedAt)
+      const result = !!(reset && reset.properties.usedAt)
       session.close()
-      return response
+      return result
     },
   },
 }

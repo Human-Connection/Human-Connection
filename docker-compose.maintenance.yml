@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  maintenance-worker:
+  maintenance:
     image: humanconnection/maintenance-worker:latest
     build:
       context: deployment/legacy-migration/maintenance-worker

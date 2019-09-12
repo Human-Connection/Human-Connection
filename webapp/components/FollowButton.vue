@@ -59,15 +59,16 @@ export default {
         this.hovered = true
       }
     },
-    async toggle() {
+    toggle() {
       const follow = !this.isFollowed
       const mutation = follow ? 'follow' : 'unfollow'
 
       this.hovered = false
+
       this.$emit('optimistic', follow)
 
-      try {
-        await this.$apollo.mutate({
+      this.$apollo
+        .mutate({
           mutation: gql`
             mutation($id: ID!) {
               ${mutation}(id: $id, type: User)
@@ -77,11 +78,13 @@ export default {
             id: this.followId,
           },
         })
-
-        this.$emit('update', follow)
-      } catch {
-        this.$emit('optimistic', !follow)
-      }
+        .then(res => {
+          // this.$emit('optimistic', follow ? res.data.follow : follow)
+          this.$emit('update', follow)
+        })
+        .catch(() => {
+          this.$emit('optimistic', !follow)
+        })
     },
   },
 }

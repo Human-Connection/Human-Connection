@@ -76,7 +76,7 @@
 
 <script>
 export default {
-  layout: 'basic',
+  layout: 'default',
   head() {
     return {
       title: this.$t('site.changelog'),

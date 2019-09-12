@@ -1,17 +1,12 @@
+import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
-import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import { host } from '../../jest/helpers'
+import { getDriver } from '../../bootstrap/neo4j'
 import { createPasswordReset } from './passwordReset'
-import createServer from '../../server'
-import { createTestClient } from 'apollo-server-testing'
 
-const neode = getNeode()
-const driver = getDriver()
 const factory = Factory()
-
-let mutate
-let authenticatedUser
-let variables
+let client
+const driver = getDriver()
 
 const getAllPasswordResets = async () => {
   const session = driver.session()
@@ -21,167 +16,120 @@ const getAllPasswordResets = async () => {
   return resets
 }
 
-beforeEach(() => {
-  variables = {}
-})
-
-beforeAll(() => {
-  const { server } = createServer({
-    context: () => {
-      return {
-        driver,
-        neode,
-        user: authenticatedUser,
-      }
-    },
-  })
-  mutate = createTestClient(server).mutate
-})
-
-afterEach(async () => {
-  await factory.cleanDatabase()
-})
-
 describe('passwordReset', () => {
-  describe('given a user', () => {
-    beforeEach(async () => {
-      await factory.create('User', {
-        email: 'user@example.org',
+  beforeEach(async () => {
+    client = new GraphQLClient(host)
+    await factory.create('User', {
+      email: 'user@example.org',
+      role: 'user',
+      password: '1234',
+    })
+  })
+
+  afterEach(async () => {
+    await factory.cleanDatabase()
+  })
+
+  describe('requestPasswordReset', () => {
+    const mutation = `mutation($email: String!) { requestPasswordReset(email: $email) }`
+
+    describe('with invalid email', () => {
+      const variables = { email: 'non-existent@example.org' }
+
+      it('resolves anyways', async () => {
+        await expect(client.request(mutation, variables)).resolves.toEqual({
+          requestPasswordReset: true,
+        })
+      })
+
+      it('creates no node', async () => {
+        await client.request(mutation, variables)
+        const resets = await getAllPasswordResets()
+        expect(resets).toHaveLength(0)
       })
     })
 
-    describe('requestPasswordReset', () => {
-      const mutation = gql`
-        mutation($email: String!) {
-          requestPasswordReset(email: $email)
-        }
-      `
+    describe('with a valid email', () => {
+      const variables = { email: 'user@example.org' }
 
-      describe('with invalid email', () => {
-        beforeEach(() => {
-          variables = { ...variables, email: 'non-existent@example.org' }
-        })
-
-        it('resolves anyways', async () => {
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-            data: { requestPasswordReset: true },
-          })
-        })
-
-        it('creates no node', async () => {
-          await mutate({ mutation, variables })
-          const resets = await getAllPasswordResets()
-          expect(resets).toHaveLength(0)
+      it('resolves', async () => {
+        await expect(client.request(mutation, variables)).resolves.toEqual({
+          requestPasswordReset: true,
         })
       })
 
-      describe('with a valid email', () => {
-        beforeEach(() => {
-          variables = { ...variables, email: 'user@example.org' }
-        })
+      it('creates node with label `PasswordReset`', async () => {
+        await client.request(mutation, variables)
+        const resets = await getAllPasswordResets()
+        expect(resets).toHaveLength(1)
+      })
 
-        it('resolves', async () => {
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-            data: { requestPasswordReset: true },
-          })
-        })
-
-        it('creates node with label `PasswordReset`', async () => {
-          let resets = await getAllPasswordResets()
-          expect(resets).toHaveLength(0)
-          await mutate({ mutation, variables })
-          resets = await getAllPasswordResets()
-          expect(resets).toHaveLength(1)
-        })
-
-        it('creates a reset nonce', async () => {
-          await mutate({ mutation, variables })
-          const resets = await getAllPasswordResets()
-          const [reset] = resets
-          const { nonce } = reset.properties
-          expect(nonce).toHaveLength(6)
-        })
+      it('creates a reset code', async () => {
+        await client.request(mutation, variables)
+        const resets = await getAllPasswordResets()
+        const [reset] = resets
+        const { code } = reset.properties
+        expect(code).toHaveLength(6)
       })
     })
   })
-})
 
-describe('resetPassword', () => {
-  const setup = async (options = {}) => {
-    const { email = 'user@example.org', issuedAt = new Date(), nonce = 'abcdef' } = options
+  describe('resetPassword', () => {
+    const setup = async (options = {}) => {
+      const { email = 'user@example.org', issuedAt = new Date(), code = 'abcdef' } = options
 
-    const session = driver.session()
-    await createPasswordReset({ driver, email, issuedAt, nonce })
-    session.close()
-  }
-
-  const mutation = gql`
-    mutation($nonce: String!, $email: String!, $newPassword: String!) {
-      resetPassword(nonce: $nonce, email: $email, newPassword: $newPassword)
+      const session = driver.session()
+      await createPasswordReset({ driver, email, issuedAt, code })
+      session.close()
     }
-  `
-  beforeEach(() => {
-    variables = { ...variables, newPassword: 'supersecret' }
-  })
 
-  describe('given a user', () => {
-    beforeEach(async () => {
-      await factory.create('User', {
-        email: 'user@example.org',
-        role: 'user',
-        password: '1234',
-      })
-    })
+    const mutation = `mutation($code: String!, $email: String!, $newPassword: String!) { resetPassword(code: $code, email: $email, newPassword: $newPassword) }`
+    const email = 'user@example.org'
+    const code = 'abcdef'
+    const newPassword = 'supersecret'
+    let variables
 
     describe('invalid email', () => {
       it('resolves to false', async () => {
         await setup()
-        variables = { ...variables, email: 'non-existent@example.org', nonce: 'abcdef' }
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-          data: { resetPassword: false },
-        })
+        variables = { newPassword, email: 'non-existent@example.org', code }
+        await expect(client.request(mutation, variables)).resolves.toEqual({ resetPassword: false })
       })
     })
 
     describe('valid email', () => {
-      beforeEach(() => {
-        variables = { ...variables, email: 'user@example.org' }
-      })
-
-      describe('but invalid nonce', () => {
-        beforeEach(() => {
-          variables = { ...variables, nonce: 'slkdjf' }
-        })
-
+      describe('but invalid code', () => {
         it('resolves to false', async () => {
           await setup()
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-            data: { resetPassword: false },
+          variables = { newPassword, email, code: 'slkdjf' }
+          await expect(client.request(mutation, variables)).resolves.toEqual({
+            resetPassword: false,
           })
         })
       })
 
-      describe('and valid nonce', () => {
+      describe('and valid code', () => {
         beforeEach(() => {
           variables = {
-            ...variables,
-            nonce: 'abcdef',
+            newPassword,
+            email: 'user@example.org',
+            code: 'abcdef',
           }
         })
 
-        describe('and nonce not expired', () => {
+        describe('and code not expired', () => {
           beforeEach(async () => {
             await setup()
           })
 
           it('resolves to true', async () => {
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-              data: { resetPassword: true },
+            await expect(client.request(mutation, variables)).resolves.toEqual({
+              resetPassword: true,
             })
           })
 
           it('updates PasswordReset `usedAt` property', async () => {
-            await mutate({ mutation, variables })
+            await client.request(mutation, variables)
             const requests = await getAllPasswordResets()
             const [request] = requests
             const { usedAt } = request.properties
@@ -189,20 +137,23 @@ describe('resetPassword', () => {
           })
 
           it('updates password of the user', async () => {
-            await mutate({ mutation, variables })
-            const checkLoginMutation = gql`
-              mutation($email: String!, $password: String!) {
-                login(email: $email, password: $password)
-              }
+            await client.request(mutation, variables)
+            const checkLoginMutation = `
+            mutation($email: String!, $password: String!) {
+              login(email: $email, password: $password)
+            }
             `
-            variables = { ...variables, email: 'user@example.org', password: 'supersecret' }
+            const expected = expect.objectContaining({ login: expect.any(String) })
             await expect(
-              mutate({ mutation: checkLoginMutation, variables }),
-            ).resolves.toMatchObject({ data: { login: expect.any(String) } })
+              client.request(checkLoginMutation, {
+                email: 'user@example.org',
+                password: 'supersecret',
+              }),
+            ).resolves.toEqual(expected)
           })
         })
 
-        describe('but expired nonce', () => {
+        describe('but expired code', () => {
           beforeEach(async () => {
             const issuedAt = new Date()
             issuedAt.setDate(issuedAt.getDate() - 1)
@@ -210,13 +161,13 @@ describe('resetPassword', () => {
           })
 
           it('resolves to false', async () => {
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-              data: { resetPassword: false },
+            await expect(client.request(mutation, variables)).resolves.toEqual({
+              resetPassword: false,
             })
           })
 
           it('does not update PasswordReset `usedAt` property', async () => {
-            await mutate({ mutation, variables })
+            await client.request(mutation, variables)
             const requests = await getAllPasswordResets()
             const [request] = requests
             const { usedAt } = request.properties

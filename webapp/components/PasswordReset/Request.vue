@@ -1,77 +1,58 @@
 <template>
   <ds-card class="password-reset">
-    <ds-flex gutter="small">
-      <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-        <client-only>
-          <locale-switch class="login-locale-switch" offset="5" />
-        </client-only>
-        <ds-space margin-top="small" margin-bottom="xxx-small" centered>
-          <img class="login-image" alt="Human Connection" src="/img/sign-up/humanconnection.svg" />
+    <ds-space margin="large">
+      <ds-form
+        v-if="!submitted"
+        @input="handleInput"
+        @input-valid="handleInputValid"
+        v-model="formData"
+        :schema="formSchema"
+        @submit="handleSubmit"
+      >
+        <ds-input
+          :placeholder="$t('login.email')"
+          type="email"
+          id="email"
+          model="email"
+          name="email"
+          icon="envelope"
+        />
+        <ds-space margin-botton="large">
+          <ds-text>
+            {{ $t('password-reset.form.description') }}
+          </ds-text>
         </ds-space>
-      </ds-flex-item>
-      <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-        <ds-space margin="small">
-          <ds-text size="small" align="left">{{ $t('login.copy') }}</ds-text>
-        </ds-space>
-        <ds-form
-          v-if="!submitted"
-          @input="handleInput"
-          @input-valid="handleInputValid"
-          v-model="formData"
-          :schema="formSchema"
-          @submit="handleSubmit"
+        <ds-button
+          :disabled="disabled"
+          :loading="$apollo.loading"
+          primary
+          fullwidth
+          name="submit"
+          type="submit"
+          icon="envelope"
         >
-          <ds-input
-            :placeholder="$t('login.email')"
-            type="email"
-            id="email"
-            model="email"
-            name="email"
-            icon="envelope"
-          />
-          <ds-space margin-botton="large">
-            <ds-text align="left">{{ $t('password-reset.form.description') }}</ds-text>
-          </ds-space>
-          <ds-button
-            :disabled="disabled"
-            :loading="$apollo.loading"
-            primary
-            fullwidth
-            name="submit"
-            type="submit"
-            icon="envelope"
-          >
-            {{ $t('password-reset.form.submit') }}
-          </ds-button>
-        </ds-form>
-        <div v-else>
-          <transition name="ds-transition-fade">
-            <ds-flex centered>
-              <sweetalert-icon icon="info" />
-            </ds-flex>
-          </transition>
-          <ds-text v-html="submitMessage" align="left" />
-        </div>
-        <ds-space margin-bottom="small" />
-        <div>
-          <nuxt-link to="/login">{{ $t('site.login') }}</nuxt-link>
-        </div>
-      </ds-flex-item>
-    </ds-flex>
-
-    <ds-space margin="x-small"></ds-space>
+          {{ $t('password-reset.form.submit') }}
+        </ds-button>
+      </ds-form>
+      <div v-else>
+        <transition name="ds-transition-fade">
+          <ds-flex centered>
+            <sweetalert-icon icon="info" />
+          </ds-flex>
+        </transition>
+        <ds-text v-html="submitMessage" />
+      </div>
+    </ds-space>
   </ds-card>
 </template>
 
 <script>
 import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
-import LocaleSwitch from '../LocaleSwitch/LocaleSwitch'
 
 export default {
   components: {
     SweetalertIcon,
-    LocaleSwitch,
   },
   data() {
     return {
@@ -124,17 +105,3 @@ export default {
   },
 }
 </script>
-<style>
-.login-image {
-  width: 90%;
-  max-width: 200px;
-}
-.password-reset {
-  position: relative;
-}
-.login-locale-switch {
-  position: absolute;
-  top: 1em;
-  left: 1em;
-}
-</style>

@@ -16,10 +16,7 @@
       @submit="submit"
     >
       <template slot-scope="{ errors }">
-        <ds-card class="create-account-card" :header="$t('registration.create-user-account.title')">
-          <client-only>
-            <locale-switch class="create-account-locale-switch" offset="5" />
-          </client-only>
+        <ds-card :header="$t('registration.create-user-account.title')">
           <ds-input
             id="name"
             model="name"
@@ -28,7 +25,7 @@
             :placeholder="$t('settings.data.namePlaceholder')"
           />
           <ds-input
-            id="about"
+            id="bio"
             model="about"
             type="textarea"
             rows="3"
@@ -86,18 +83,38 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import PasswordStrength from '../Password/Strength'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
-import { SignupVerificationMutation } from '~/graphql/Registration.js'
-import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
+/* TODO: hier muss die version rein */
+export const SignupVerificationMutation = gql`
+  mutation(
+    $nonce: String!
+    $name: String!
+    $email: String!
+    $password: String!
+    $termsAndConditionsAgreedVersion: String!
+  ) {
+    SignupVerification(
+      nonce: $nonce
+      email: $email
+      name: $name
+      password: $password
+      termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+    ) {
+      id
+      name
+      slug
+    }
+  }
+`
 export default {
   components: {
     PasswordStrength,
     SweetalertIcon,
-    LocaleSwitch,
   },
   data() {
     const passwordForm = PasswordForm({ translate: this.$t })
@@ -156,14 +173,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.create-account-card {
-  position: relative;
-}
-.create-account-locale-switch {
-  position: absolute;
-  top: 1em;
-  right: 1em;
-}
-</style>
