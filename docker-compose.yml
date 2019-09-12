@@ -14,7 +14,6 @@ services:
       - backend
     volumes:
       - webapp_node_modules:/nitro-web/node_modules
-      - webapp_nuxt_folder:/nitro-web/.nuxt
     environment:
       - HOST=0.0.0.0
       - GRAPHQL_URI=http://backend:4000
@@ -60,7 +59,6 @@ networks:
   hc-network:
 volumes:
   webapp_node_modules:
-  webapp_nuxt_folder:
   backend_node_modules:
   neo4j_data:
   uploads:

@@ -13,6 +13,8 @@ services:
       target: build-and-test
     volumes:
       - ./webapp:/nitro-web
+    environment:
+      - NUXT_BUILD=/tmp/nuxt # avoid file permission issues when `rm -rf .nuxt/`
     command: yarn run dev
   backend:
     build:
