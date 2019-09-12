@@ -89,15 +89,7 @@ export default {
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post {.id,
-          .title,
-          .content, 
-          .slug, 
-          .disabled, 
-          .deleted, 
-          .language, 
-          created_at: { formatted: toString(post.created_at) }} 
-          AS post`
+        RETURN post, toString(post.created_at) as postCreatedAt`
 
       const createPostVariables = { userId: context.user.id, categoryIds, params }
 
@@ -105,7 +97,10 @@ export default {
       try {
         const transactionRes = await session.run(createPostCypher, createPostVariables)
         const posts = transactionRes.records.map(record => {
-          return record.get('post')
+          return {
+            ...record.get('post').properties,
+            created_at: { formatted: record.get('postCreatedAt') },
+          }
         })
         post = posts[0]
       } catch (e) {

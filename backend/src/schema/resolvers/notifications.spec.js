@@ -48,13 +48,15 @@ describe('given some notifications', () => {
       factory.create('Post', { author, id: 'p1', categoryIds, content: 'Not for you' }),
       factory.create('Post', {
         author,
-        id: 'p2',
+        id: 'already-seen-post',
+        title: 'Already seen post title',
         categoryIds,
         content: 'Already seen post mention',
       }),
       factory.create('Post', {
         author,
-        id: 'p3',
+        id: 'have-been-mentioned',
+        title: 'Have been mentioned',
         categoryIds,
         content: 'You have been mentioned in a post',
       }),
@@ -62,19 +64,19 @@ describe('given some notifications', () => {
     const [comment1, comment2, comment3] = await Promise.all([
       factory.create('Comment', {
         author,
-        postId: 'p3',
+        postId: 'have-been-mentioned',
         id: 'c1',
         content: 'You have seen this comment mentioning already',
       }),
       factory.create('Comment', {
         author,
-        postId: 'p3',
+        postId: 'have-been-mentioned',
         id: 'c2',
         content: 'You have been mentioned in a comment',
       }),
       factory.create('Comment', {
         author,
-        postId: 'p3',
+        postId: 'have-been-mentioned',
         id: 'c3',
         content: 'Somebody else was mentioned in a comment',
       }),
@@ -114,6 +116,7 @@ describe('given some notifications', () => {
           from {
             __typename
             ... on Post {
+              title
               content
             }
             ... on Comment {
@@ -153,6 +156,7 @@ describe('given some notifications', () => {
             {
               from: {
                 __typename: 'Post',
+                title: 'Already seen post title',
                 content: 'Already seen post mention',
               },
               read: true,
@@ -169,6 +173,7 @@ describe('given some notifications', () => {
             {
               from: {
                 __typename: 'Post',
+                title: 'Have been mentioned',
                 content: 'You have been mentioned in a post',
               },
               read: false,
@@ -197,6 +202,7 @@ describe('given some notifications', () => {
             {
               from: {
                 __typename: 'Post',
+                title: 'Have been mentioned',
                 content: 'You have been mentioned in a post',
               },
               read: false,
@@ -226,8 +232,10 @@ describe('given some notifications', () => {
               }
             `
             await expect(
-              mutate({ mutation: deletePostMutation, variables: { id: 'p3' } }),
-            ).resolves.toMatchObject({ data: { DeletePost: { id: 'p3', deleted: true } } })
+              mutate({ mutation: deletePostMutation, variables: { id: 'have-been-mentioned' } }),
+            ).resolves.toMatchObject({
+              data: { DeletePost: { id: 'have-been-mentioned', deleted: true } },
+            })
             authenticatedUser = await user.toJson()
           }
 
@@ -302,7 +310,7 @@ describe('given some notifications', () => {
           beforeEach(async () => {
             variables = {
               ...variables,
-              id: 'p3',
+              id: 'have-been-mentioned',
             }
           })
 
@@ -324,7 +332,7 @@ describe('given some notifications', () => {
             beforeEach(async () => {
               variables = {
                 ...variables,
-                id: 'p2',
+                id: 'already-seen-post',
               }
             })
             it('returns null', async () => {

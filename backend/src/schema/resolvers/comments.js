@@ -18,18 +18,18 @@ export default {
         WITH comment
         MATCH (post:Post {id: $postId}), (author:User {id: $userId})
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN comment {.id, 
-          .contentExcerpt, 
-          .content, 
-          .disabled, 
-          .deleted, 
-          created_at: { formatted: toString(comment.created_at) }} 
-          AS comment`
+        RETURN comment, toString(comment.created_at) as commentCreatedAt`
+
       const createCommentVariables = { userId: context.user.id, postId, params }
       const session = context.driver.session()
       try {
         const transactionRes = await session.run(createCommentCypher, createCommentVariables)
-        const comments = transactionRes.records.map(record => record.get('comment'))
+        const comments = transactionRes.records.map(record => {
+          return {
+            ...record.get('comment').properties,
+            created_at: { formatted: record.get('commentCreatedAt') },
+          }
+        })
         comment = comments[0]
       } finally {
         session.close()
