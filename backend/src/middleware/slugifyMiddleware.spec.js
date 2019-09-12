@@ -15,6 +15,7 @@ const createPostMutation = gql`
     }
   }
 `
+
 let createPostVariables = {
   title: 'I am a brand new post',
   content: 'Some content',
@@ -32,6 +33,7 @@ beforeEach(async () => {
     name: 'Democracy & Politics',
     icon: 'university',
   })
+
   // we need to be an admin, otherwise we're not authorized to create a user
   headers = await login(adminParams)
   authenticatedClient = new GraphQLClient(host, { headers })

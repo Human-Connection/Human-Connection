@@ -98,8 +98,6 @@ export default {
         args.termsAndConditionsAgreedAt = new Date().toISOString()
       }
 
-    
-
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
         const user = await instance.find('User', args.id)
