@@ -114,7 +114,7 @@ describe('slugifyMiddleware', () => {
       })
 
       describe('but if the client specifies a slug', () => {
-        it('rejects CreatePost (on FAIL Neo4j constraints may not defined in database)', async () => {
+        it('rejects CreatePost', async (done) => {
           variables = {
             ...variables,
             title: 'Pre-existing post',
@@ -122,18 +122,31 @@ describe('slugifyMiddleware', () => {
             slug: 'pre-existing-post',
             categoryIds,
           }
-          await expect(
-            mutate({
-              mutation: createPostMutation,
-              variables,
-            }),
-          ).resolves.toMatchObject({
-            errors: [
-              {
-                message: 'Post with this slug already exists!',
-              },
-            ],
-          })
+          try {
+            await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+              errors: [
+                {
+                  message: 'Post with this slug already exists!',
+                },
+              ],
+            })
+            done()
+          } catch(error) {
+            throw new Error(`
+              ${error}
+
+              Probably your database has no unique constraints!
+
+              To see all constraints go to http://localhost:7474/browser/ and
+              paste the following:
+              \`\`\`
+                CALL db.constraints();
+              \`\`\`
+
+              Learn how to setup the database here:
+              https://docs.human-connection.org/human-connection/neo4j
+            `)
+          }
         })
       })
     })
