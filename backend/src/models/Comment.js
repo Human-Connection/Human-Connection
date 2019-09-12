@@ -2,7 +2,7 @@ import uuid from 'uuid/v4'
 
 module.exports = {
   id: { type: 'string', primary: true, default: uuid },
-  created_at: { type: 'datetime', default: () => new Date() },
+  createdAt: { type: 'datetime', default: () => new Date() },
   updatedAt: {
     type: 'string',
     isoDate: true,
@@ -42,7 +42,7 @@ module.exports = {
         type: 'string',
         valid: ['mentioned_in_post', 'mentioned_in_comment', 'commented_on_post'],
       },
-      created_at: { type: 'datetime', default: () => new Date() },
+      createdAt: { type: 'datetime', default: () => new Date() },
     },
   },
 }

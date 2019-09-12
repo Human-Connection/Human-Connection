@@ -77,10 +77,10 @@ afterEach(async () => {
 describe('notifications', () => {
   const notificationQuery = gql`
     query($read: Boolean) {
-      notifications(read: $read, orderBy: created_at_desc) {
+      notifications(read: $read, orderBy: createdAt_desc) {
         read
         reason
-        created_at {
+        createdAt {
           formatted
         }
         from {
@@ -163,7 +163,7 @@ describe('notifications', () => {
                 notifications: [
                   {
                     read: false,
-                    created_at: { formatted: expect.any(String) },
+                    createdAt: { formatted: expect.any(String) },
                     reason: 'commented_on_post',
                     from: {
                       __typename: 'Comment',
@@ -254,7 +254,7 @@ describe('notifications', () => {
               notifications: [
                 {
                   read: false,
-                  created_at: { formatted: expect.any(String) },
+                  createdAt: { formatted: expect.any(String) },
                   reason: 'mentioned_in_post',
                   from: {
                     __typename: 'Post',
@@ -315,7 +315,7 @@ describe('notifications', () => {
                 notifications: [
                   {
                     read: false,
-                    created_at: { formatted: expect.any(String) },
+                    createdAt: { formatted: expect.any(String) },
                     reason: 'mentioned_in_post',
                     from: {
                       __typename: 'Post',
@@ -423,7 +423,7 @@ describe('notifications', () => {
                 notifications: [
                   {
                     read: false,
-                    created_at: { formatted: expect.any(String) },
+                    createdAt: { formatted: expect.any(String) },
                     reason: 'mentioned_in_comment',
                     from: {
                       __typename: 'Comment',

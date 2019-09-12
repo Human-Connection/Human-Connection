@@ -34,10 +34,10 @@ module.exports = {
         type: 'string',
         valid: ['mentioned_in_post', 'mentioned_in_comment', 'commented_on_post'],
       },
-      created_at: { type: 'datetime', default: () => new Date() },
+      createdAt: { type: 'datetime', default: () => new Date() },
     },
   },
-  created_at: { type: 'datetime', default: () => new Date() },
+  createdAt: { type: 'datetime', default: () => new Date() },
   updatedAt: {
     type: 'string',
     isoDate: true,

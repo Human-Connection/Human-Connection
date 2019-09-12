@@ -26,8 +26,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (user)<-[:BLOCKED]-(author)
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.created_at = datetime()
-        RETURN notification {.read, .reason, created_at: { formatted: toString(notification.created_at) }} as notification
+        SET notification.createdAt = datetime()
       `
       break
     }
@@ -40,11 +39,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (user)<-[:BLOCKED]-(postAuthor)
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.created_at = datetime()
-        RETURN notification {.read, 
-          .reason, 
-          created_at: { formatted: toString(notification.created_at) }} 
-          AS notification
+        SET notification.createdAt = datetime()
       `
       break
     }
@@ -57,11 +52,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (author)<-[:BLOCKED]-(user)
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.created_at = datetime()
-        RETURN notification {.read, 
-          .reason, 
-          created_at: { formatted: toString(notification.created_at) }} 
-          AS notification 
+        SET notification.createdAt = datetime()
       `
       break
     }

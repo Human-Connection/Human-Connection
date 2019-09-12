@@ -54,7 +54,7 @@ describe('Query', () => {
         ).resolves.toEqual(expected)
       })
 
-      describe('(orderBy: created_at_asc)', () => {
+      describe('(orderBy: createdAt_asc)', () => {
         it('orders by createdAt ascending', async () => {
           const posts = [
             { title: 'first' },
@@ -67,7 +67,7 @@ describe('Query', () => {
             query({
               query: gql`
                 {
-                  Post(orderBy: created_at_asc) {
+                  Post(orderBy: createdAt_asc) {
                     title
                   }
                 }

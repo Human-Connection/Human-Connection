@@ -5,7 +5,7 @@ type Comment {
 	content: String!
 	contentExcerpt: String
 	post: Post @relation(name: "COMMENTS", direction: "OUT")
-	created_at: DateTime
+	createdAt: DateTime
 	updatedAt: String
 	deleted: Boolean
 	disabled: Boolean

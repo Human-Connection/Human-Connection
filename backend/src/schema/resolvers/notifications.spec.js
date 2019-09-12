@@ -28,7 +28,7 @@ beforeAll(() => {
 
 beforeEach(async () => {
   authenticatedUser = null
-  variables = { orderBy: 'created_at_asc' }
+  variables = { orderBy: 'createdAt_asc' }
 })
 
 afterEach(async () => {
@@ -124,7 +124,7 @@ describe('given some notifications', () => {
             }
           }
           read
-          created_at {
+          createdAt {
             formatted
           }
         }
@@ -151,7 +151,7 @@ describe('given some notifications', () => {
                 content: 'You have seen this comment mentioning already',
               },
               read: true,
-              created_at: { formatted: expect.any(String) },
+              createdAt: { formatted: expect.any(String) },
             },
             {
               from: {
@@ -160,7 +160,7 @@ describe('given some notifications', () => {
                 content: 'Already seen post mention',
               },
               read: true,
-              created_at: { formatted: expect.any(String) },
+              createdAt: { formatted: expect.any(String) },
             },
             {
               from: {
@@ -168,7 +168,7 @@ describe('given some notifications', () => {
                 content: 'You have been mentioned in a comment',
               },
               read: false,
-              created_at: { formatted: expect.any(String) },
+              createdAt: { formatted: expect.any(String) },
             },
             {
               from: {
@@ -177,7 +177,7 @@ describe('given some notifications', () => {
                 content: 'You have been mentioned in a post',
               },
               read: false,
-              created_at: { formatted: expect.any(String) },
+              createdAt: { formatted: expect.any(String) },
             },
           ]
           await expect(query({ query: notificationQuery, variables })).resolves.toMatchObject({
@@ -197,7 +197,7 @@ describe('given some notifications', () => {
                 content: 'You have been mentioned in a comment',
               },
               read: false,
-              created_at: { formatted: expect.any(String) },
+              createdAt: { formatted: expect.any(String) },
             },
             {
               from: {
@@ -206,7 +206,7 @@ describe('given some notifications', () => {
                 content: 'You have been mentioned in a post',
               },
               read: false,
-              created_at: { formatted: expect.any(String) },
+              createdAt: { formatted: expect.any(String) },
             },
           ]
           await expect(
@@ -269,7 +269,7 @@ describe('given some notifications', () => {
             }
           }
           read
-          created_at {
+          createdAt {
             formatted
           }
         }
@@ -323,7 +323,7 @@ describe('given some notifications', () => {
                   content: 'You have been mentioned in a post',
                 },
                 read: true,
-                created_at: { formatted: expect.any(String) },
+                createdAt: { formatted: expect.any(String) },
               },
             })
           })
@@ -360,7 +360,7 @@ describe('given some notifications', () => {
                   content: 'You have been mentioned in a comment',
                 },
                 read: true,
-                created_at: { formatted: expect.any(String) },
+                createdAt: { formatted: expect.any(String) },
               },
             })
           })

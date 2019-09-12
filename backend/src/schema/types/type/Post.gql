@@ -13,7 +13,7 @@ type Post {
 	deleted: Boolean
 	disabled: Boolean
 	disabledBy: User @relation(name: "DISABLED", direction: "IN")
-	created_at: DateTime
+	createdAt: DateTime
 	updatedAt: String
 	language: String
 	relatedContributions: [Post]!

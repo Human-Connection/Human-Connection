@@ -1,7 +1,7 @@
 type NOTIFIED {
 	from: NotificationSource
 	to: User
-	created_at: DateTime
+	createdAt: DateTime
 	read: Boolean
 	reason: NotificationReason
 }
@@ -9,8 +9,8 @@ type NOTIFIED {
 union NotificationSource = Post | Comment
 
 enum NotificationOrdering {
-	created_at_asc
-	created_at_desc
+	createdAt_asc
+	createdAt_desc
 }
 
 enum NotificationReason {

@@ -35,7 +35,7 @@ const createPostMutation = gql`
       author {
         name
       }
-      created_at {
+      createdAt {
         formatted
       }
     }
@@ -307,7 +307,7 @@ describe('CreatePost', () => {
           CreatePost: {
             disabled: false,
             deleted: false,
-            created_at: { formatted: expect.any(String) },
+            createdAt: { formatted: expect.any(String) },
           },
         },
       }

@@ -14,11 +14,11 @@ export default {
       let comment
       const createCommentCypher = `
         CREATE (comment:Comment {params})
-        SET comment.created_at = datetime()
+        SET comment.createdAt = datetime()
         WITH comment
         MATCH (post:Post {id: $postId}), (author:User {id: $userId})
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN comment, toString(comment.created_at) as commentCreatedAt`
+        RETURN comment, toString(comment.createdAt) as commentCreatedAt`
 
       const createCommentVariables = { userId: context.user.id, postId, params }
       const session = context.driver.session()
@@ -27,7 +27,7 @@ export default {
         const comments = transactionRes.records.map(record => {
           return {
             ...record.get('comment').properties,
-            created_at: { formatted: record.get('commentCreatedAt') },
+            createdAt: { formatted: record.get('commentCreatedAt') },
           }
         })
         comment = comments[0]

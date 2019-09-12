@@ -33,7 +33,7 @@ export default {
   Query: {
     Post: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
-      return neo4jgraphql(object, params, context, resolveInfo, true)
+      return neo4jgraphql(object, params, context, resolveInfo, false)
     },
     findPosts: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
@@ -81,7 +81,7 @@ export default {
       params.id = params.id || uuid()
       let post
       const createPostCypher = `CREATE (post:Post {params})
-        SET post.created_at = datetime()
+        SET post.createdAt = datetime()
         WITH post
         MATCH (author:User {id: $userId})
         MERGE (post)<-[:WROTE]-(author)
@@ -89,7 +89,7 @@ export default {
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post, toString(post.created_at) as postCreatedAt`
+        RETURN post, toString(post.createdAt) as postCreatedAt`
 
       const createPostVariables = { userId: context.user.id, categoryIds, params }
 
@@ -99,7 +99,7 @@ export default {
         const posts = transactionRes.records.map(record => {
           return {
             ...record.get('post').properties,
-            created_at: { formatted: record.get('postCreatedAt') },
+            createdAt: { formatted: record.get('postCreatedAt') },
           }
         })
         post = posts[0]
