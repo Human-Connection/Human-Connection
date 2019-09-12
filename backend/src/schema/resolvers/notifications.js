@@ -5,7 +5,7 @@ const transformReturnType = record => {
     ...record.get('notification').properties,
     created_at: { formatted: record.get('notificationCreatedAt') },
     from: {
-      __typename: record.get('labels(resource)').find(l => resourceTypes.includes(l)),
+      __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
       ...record.get('resource').properties,
       created_at: { formatted: record.get('resourceCreatedAt') },
     },
@@ -48,7 +48,7 @@ export default {
         const cypher = `
         MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
         ${whereClause}
-        RETURN resource, toString(notification.created_at) AS resourceCreatedAt, notification, toString(notification.created_at) as notificationCreatedAt, user, labels(resource)
+        RETURN resource, toString(notification.created_at) AS resourceCreatedAt, notification, toString(notification.created_at) as notificationCreatedAt, user
         ${orderByClause}
         `
         const result = await session.run(cypher, { id: currentUser.id })
@@ -68,7 +68,7 @@ export default {
         const cypher = `
         MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
         SET notification.read = TRUE
-        RETURN resource, toString(notification.created_at) AS resourceCreatedAt, notification, toString(notification.created_at) as notificationCreatedAt, user, labels(resource)
+        RETURN resource, toString(notification.created_at) AS resourceCreatedAt, notification, toString(notification.created_at) as notificationCreatedAt, user
         `
         const result = await session.run(cypher, { resourceId: args.id, id: currentUser.id })
         const notifications = await result.records.map(transformReturnType)
