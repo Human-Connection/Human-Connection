@@ -4,7 +4,7 @@
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
           <ds-flex class="main-navigation-flex">
-            <ds-flex-item :width="{ lg: '30%' }" />
+            <ds-flex-item :width="{ lg: '3.5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
               <nuxt-link :to="{ name: 'index' }">
                 <ds-logo />
