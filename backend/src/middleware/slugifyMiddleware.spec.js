@@ -114,7 +114,7 @@ describe('slugifyMiddleware', () => {
       })
 
       describe('but if the client specifies a slug', () => {
-        it('rejects CreatePost', async (done) => {
+        it('rejects CreatePost', async done => {
           variables = {
             ...variables,
             title: 'Pre-existing post',
@@ -123,7 +123,9 @@ describe('slugifyMiddleware', () => {
             categoryIds,
           }
           try {
-            await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+            await expect(
+              mutate({ mutation: createPostMutation, variables }),
+            ).resolves.toMatchObject({
               errors: [
                 {
                   message: 'Post with this slug already exists!',
@@ -131,7 +133,7 @@ describe('slugifyMiddleware', () => {
               ],
             })
             done()
-          } catch(error) {
+          } catch (error) {
             throw new Error(`
               ${error}
 
