@@ -352,7 +352,7 @@ describe('SignupVerification', () => {
         name: 'John Doe',
         password: '123',
         email: 'john@example.org',
-        termsAndConditionsAgreedVersion: '0.0.1',
+        termsAndConditionsAgreedVersion: null,
         termsAndConditionsAgreedAt: null,
       }
     })
