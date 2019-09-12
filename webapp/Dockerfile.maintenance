@@ -1,0 +1,40 @@
+FROM node:12.10.0-alpine as build
+LABEL Description="Web Frontend of the Social Network Human-Connection.org" Vendor="Human-Connection gGmbH" Version="0.0.1" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
+
+EXPOSE 3000
+CMD ["yarn", "run", "start"]
+
+# Expose the app port
+ARG BUILD_COMMIT
+ENV BUILD_COMMIT=$BUILD_COMMIT
+ARG WORKDIR=/nitro-web
+RUN mkdir -p $WORKDIR
+WORKDIR $WORKDIR
+
+# See: https://github.com/nodejs/docker-node/pull/367#issuecomment-430807898
+RUN apk --no-cache add git
+
+COPY package.json yarn.lock ./
+RUN yarn install --production=false --frozen-lockfile --non-interactive
+
+COPY assets assets
+COPY components/LocaleSwitch/ components/LocaleSwitch
+COPY components/Dropdown.vue components/Dropdown.vue
+COPY layouts/blank.vue layouts/blank.vue
+COPY locales locales
+COPY mixins mixins
+COPY plugins/i18n.js plugins/v-tooltip.js plugins/styleguide.js plugins/
+COPY static static
+COPY nuxt.config.js nuxt.config.js
+
+# this will also ovewrite the existing package.json
+COPY maintenance/source ./
+
+
+RUN yarn run generate
+
+
+FROM nginx:alpine
+COPY --from=build ./nitro-web/dist/ /usr/share/nginx/html/
+RUN rm /etc/nginx/conf.d/default.conf
+COPY maintenance/nginx/custom.conf /etc/nginx/conf.d/

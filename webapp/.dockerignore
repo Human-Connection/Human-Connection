@@ -16,3 +16,5 @@ README.md
 screenshot*.png
 lokalise.png
 .editorconfig
+
+maintenance/node_modules/

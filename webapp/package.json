@@ -15,6 +15,7 @@
     "storybook": "start-storybook -p 3002 -c storybook/",
     "build": "nuxt build",
     "start": "nuxt start",
+    "generate:maintenance": "nuxt generate -c nuxt.config.maintenance.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue .",
     "precommit": "yarn lint",
