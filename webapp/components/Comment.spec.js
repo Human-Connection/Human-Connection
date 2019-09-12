@@ -68,6 +68,9 @@ describe('Comment.vue', () => {
           id: '2',
           contentExcerpt: 'Hello I am a comment content',
           content: 'Hello I am comment content',
+          createdAt: {
+            formatted: '2019-03-13T11:00:20.835Z',
+          },
         }
       })
 

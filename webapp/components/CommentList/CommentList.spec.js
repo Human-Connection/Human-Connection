@@ -27,8 +27,14 @@ describe('CommentList.vue', () => {
       propsData = {
         post: {
           id: 1,
+          createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
           comments: [
-            { id: 'comment134', contentExcerpt: 'this is a comment', content: 'this is a comment' },
+            {
+              id: 'comment134',
+              contentExcerpt: 'this is a comment',
+              content: 'this is a comment',
+              createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
+            },
           ],
         },
       }
@@ -42,6 +48,9 @@ describe('CommentList.vue', () => {
       })
       mocks = {
         $t: jest.fn(),
+        $i18n: {
+          locale: () => 'en',
+        },
         $filters: {
           truncate: a => a,
         },
@@ -78,7 +87,7 @@ describe('CommentList.vue', () => {
     })
 
     it('displays comments when there are comments to display', () => {
-      expect(wrapper.find('div.comments').text()).toEqual('this is a comment')
+      expect(wrapper.find('div.comments').text()).toContain('this is a comment')
     })
   })
 })

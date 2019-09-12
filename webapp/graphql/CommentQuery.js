@@ -7,7 +7,9 @@ export default app => {
       Comment(postId: $postId) {
         id
         contentExcerpt
-        createdAt
+        createdAt {
+          formatted
+        }
         author {
           id
           slug

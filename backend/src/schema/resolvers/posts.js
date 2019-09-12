@@ -89,7 +89,7 @@ export default {
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post, toString(post.createdAt) as postCreatedAt`
+        RETURN post, toString(post.createdAt) AS postCreatedAt`
 
       const createPostVariables = { userId: context.user.id, categoryIds, params }
 

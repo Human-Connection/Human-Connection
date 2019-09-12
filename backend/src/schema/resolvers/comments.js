@@ -18,7 +18,7 @@ export default {
         WITH comment
         MATCH (post:Post {id: $postId}), (author:User {id: $userId})
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN comment, toString(comment.createdAt) as commentCreatedAt`
+        RETURN comment, toString(comment.createdAt) AS commentCreatedAt`
 
       const createCommentVariables = { userId: context.user.id, postId, params }
       const session = context.driver.session()

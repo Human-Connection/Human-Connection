@@ -14,7 +14,7 @@
     <!-- Username, Image & Date of Post -->
     <div>
       <client-only>
-        <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
+        <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt.formatted" />
       </client-only>
       <hc-ribbon :text="$t('post.name')" />
     </div>

@@ -31,6 +31,7 @@ describe('PostCard', () => {
           id: 'u1',
         },
         disabled: false,
+        createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
       },
     }
     stubs = {
@@ -41,6 +42,9 @@ describe('PostCard', () => {
       $toast: {
         success: jest.fn(),
         error: jest.fn(),
+      },
+      $i18n: {
+        locale: () => 'en',
       },
       $apollo: {
         mutate: jest.fn().mockResolvedValue({
@@ -116,6 +120,7 @@ describe('PostCard', () => {
       beforeEach(() => {
         propsData.post = {
           title: "It's a title",
+          createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
         }
       })
 

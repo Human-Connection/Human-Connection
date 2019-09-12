@@ -6,7 +6,7 @@
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
     >
       <ds-space margin-bottom="small" />
-      <hc-user :user="post.author" :date-time="post.createdAt" />
+      <hc-user :user="post.author" :date-time="post.createdAt.formatted" />
       <!-- Content Menu (can open Modals) -->
       <client-only>
         <content-menu

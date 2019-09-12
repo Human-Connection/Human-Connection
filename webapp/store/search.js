@@ -53,7 +53,9 @@ export const actions = {
               label: title
               value: title
               shoutedCount
-              createdAt
+              createdAt {
+                formatted
+              }
               author {
                 id
                 name

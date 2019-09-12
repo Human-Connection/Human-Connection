@@ -34,6 +34,9 @@ describe('NotificationList.vue', () => {
     })
     mocks = {
       $t: jest.fn(),
+      $i18n: {
+        locale: () => 'en',
+      },
     }
     stubs = {
       NuxtLink: RouterLinkStub,
@@ -47,6 +50,7 @@ describe('NotificationList.vue', () => {
             id: 'post-1',
             title: 'some post title',
             slug: 'some-post-title',
+            createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
             contentExcerpt: 'this is a post content',
             author: {
               id: 'john-1',
@@ -63,6 +67,7 @@ describe('NotificationList.vue', () => {
             title: 'another post title',
             slug: 'another-post-title',
             contentExcerpt: 'this is yet another post content',
+            createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
             author: {
               id: 'john-1',
               slug: 'john-doe',

@@ -2,7 +2,7 @@
   <ds-space :class="{ read: notification.read, notification: true }" margin-bottom="x-small">
     <client-only>
       <ds-space margin-bottom="x-small">
-        <hc-user :user="from.author" :date-time="from.createdAt" :trunc="35" />
+        <hc-user :user="from.author" :date-time="from.createdAt.formatted" :trunc="35" />
       </ds-space>
       <ds-text class="reason-text-for-test" color="soft">
         {{ $t(`notifications.menu.${notification.reason}`) }}

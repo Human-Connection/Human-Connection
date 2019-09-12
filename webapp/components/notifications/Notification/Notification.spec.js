@@ -56,11 +56,13 @@ describe('Notification', () => {
           id: 'comment-1',
           contentExcerpt:
             '<a href="/profile/u123" target="_blank">@dagobert-duck</a> is the best on this comment.',
+          createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
           post: {
             title: "It's a post title",
             id: 'post-1',
             slug: 'its-a-title',
             contentExcerpt: 'Post content.',
+            createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
           },
         },
       }
@@ -112,6 +114,7 @@ describe('Notification', () => {
           slug: 'its-a-title',
           contentExcerpt:
             '<a href="/profile/u3" target="_blank">@jenny-rostock</a> is the best on this post.',
+          createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
         },
       }
     })
@@ -156,11 +159,13 @@ describe('Notification', () => {
           id: 'comment-1',
           contentExcerpt:
             '<a href="/profile/u123" target="_blank">@dagobert-duck</a> is the best on this comment.',
+          createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
           post: {
             title: "It's a post title",
             id: 'post-1',
             slug: 'its-a-title',
             contentExcerpt: 'Post content.',
+            createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
           },
         },
       }

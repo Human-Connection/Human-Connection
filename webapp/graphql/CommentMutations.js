@@ -9,7 +9,9 @@ export default i18n => {
           id
           contentExcerpt
           content
-          createdAt
+          createdAt {
+            formatted
+          }
           disabled
           deleted
           author {
@@ -38,7 +40,9 @@ export default i18n => {
           id
           contentExcerpt
           content
-          createdAt
+          createdAt {
+            formatted
+          }
           disabled
           deleted
           author {
@@ -58,7 +62,6 @@ export default i18n => {
           id
           contentExcerpt
           content
-          createdAt
           disabled
           deleted
           author {

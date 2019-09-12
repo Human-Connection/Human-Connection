@@ -27,6 +27,7 @@ describe('ProfileSlug', () => {
       post: {
         id: 'p23',
         name: 'It is a post',
+        createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
       },
       $t: jest.fn(),
       // If you're mocking router, then don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
@@ -133,6 +134,7 @@ describe('ProfileSlug', () => {
                 return {
                   ...aPost,
                   id,
+                  createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
                 }
               })
 
@@ -164,6 +166,7 @@ describe('ProfileSlug', () => {
                 return {
                   ...aPost,
                   id,
+                  createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
                 }
               })
 

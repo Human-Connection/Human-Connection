@@ -68,6 +68,7 @@ describe('PostSlug', () => {
             author: {
               id: 'u1',
             },
+            createdAt: { formatted: '2019-03-13T11:00:20.835Z' },
           },
         })
       })

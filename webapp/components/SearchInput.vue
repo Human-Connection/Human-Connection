@@ -58,7 +58,7 @@
                   <ds-flex-item>
                     <ds-text size="small" color="softer" align="right">
                       {{ option.author.name | truncate(32) }} -
-                      {{ option.createdAt | dateTime('dd.MM.yyyy') }}
+                      {{ option.createdAt.formatted | dateTime('dd.MM.yyyy') }}
                     </ds-text>
                   </ds-flex-item>
                 </ds-flex>

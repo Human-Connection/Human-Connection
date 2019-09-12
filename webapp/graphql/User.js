@@ -100,7 +100,9 @@ export const notificationQuery = i18n => {
       notifications(read: false, orderBy: createdAt_desc) {
         read
         reason
-        createdAt
+        createdAt {
+          formatted
+        }
         from {
           __typename
           ... on Post {
@@ -128,7 +130,9 @@ export const markAsReadMutation = i18n => {
       markAsRead(id: $id) {
         read
         reason
-        createdAt
+        createdAt {
+          formatted
+        }
         from {
           __typename
           ... on Post {
