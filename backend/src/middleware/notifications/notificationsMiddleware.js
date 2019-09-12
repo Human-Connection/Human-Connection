@@ -57,18 +57,13 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
       break
     }
   }
-  const transactionRes = await session.run(cypher, {
+  await session.run(cypher, {
     label,
     id,
     idsOfUsers,
     reason,
   })
   session.close()
-
-  const [notification] = transactionRes.records.map(record => {
-    return record.get('notification')
-  })
-  return notification
 }
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {

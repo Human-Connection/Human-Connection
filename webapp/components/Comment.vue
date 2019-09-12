@@ -45,21 +45,17 @@
           style="text-align: right;  margin-right: 20px; margin-top: -12px;"
         >
           <span class="show-more-or-less">
-            <a
-              v-if="isCollapsed"
-              class="padding-left"
-              @click="isCollapsed = !isCollapsed"
-            >{{ $t('comment.show.more') }}</a>
+            <a v-if="isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
+              {{ $t('comment.show.more') }}
+            </a>
           </span>
         </div>
         <content-viewer v-if="!isCollapsed" v-html="comment.content" class="padding-left" />
         <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
           <span class="show-more-or-less">
-            <a
-              v-if="!isCollapsed"
-              @click="isCollapsed = !isCollapsed"
-              class="padding-left"
-            >{{ $t('comment.show.less') }}</a>
+            <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" class="padding-left">
+              {{ $t('comment.show.less') }}
+            </a>
           </span>
         </div>
       </div>
