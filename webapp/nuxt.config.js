@@ -3,7 +3,7 @@ const pkg = require('./package')
 export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN']
 const dev = process.env.NODE_ENV !== 'production'
 
-const styleguidePath = '../Nitro-Styleguide'
+const styleguidePath = '../styleguide'
 const styleguideStyles = process.env.STYLEGUIDE_DEV
   ? [
       `${styleguidePath}/src/system/styles/main.scss`,
