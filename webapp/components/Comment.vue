@@ -135,7 +135,7 @@ export default {
     editCommentMenu(showMenu) {
       this.openEditCommentMenu = showMenu
     },
-    async updateComment(comment) {
+    updateComment(comment) {
       this.$emit('updateComment', comment)
     },
     async deleteCommentCallback() {
