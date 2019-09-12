@@ -1,4 +1,4 @@
-import { neo4jgraphql } from 'neo4j-graphql-js'
+import uuid from 'uuid/v4'
 import Resolver from './helpers/Resolver'
 
 export default {
@@ -10,42 +10,32 @@ export default {
       // because we use relationships for this. So, we are deleting it from params
       // before comment creation.
       delete params.postId
-      const session = context.driver.session()
-      const commentWithoutRelationships = await neo4jgraphql(
-        object,
-        params,
-        context,
-        resolveInfo,
-        false,
-      )
-
-      const transactionRes = await session.run(
-        `
-        MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId}), (author:User {id: $userId})
+      params.id = params.id || uuid()
+      let comment
+      const createCommentCypher = `
+        CREATE (comment:Comment {params})
+        SET comment.created_at = datetime()
+        WITH comment
+        MATCH (post:Post {id: $postId}), (author:User {id: $userId})
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN comment, author`,
-        {
-          userId: context.user.id,
-          postId,
-          commentId: commentWithoutRelationships.id,
-        },
-      )
-
-      const [commentWithAuthor] = transactionRes.records.map(record => {
-        return {
-          comment: record.get('comment'),
-          author: record.get('author'),
-        }
-      })
-
-      const { comment, author } = commentWithAuthor
-
-      const commentReturnedWithAuthor = {
-        ...comment.properties,
-        author: author.properties,
+        RETURN comment {.id, 
+          .contentExcerpt, 
+          .content, 
+          .disabled, 
+          .deleted, 
+          created_at: { formatted: toString(comment.created_at) }} 
+          AS comment`
+      const createCommentVariables = { userId: context.user.id, postId, params }
+      const session = context.driver.session()
+      try {
+        const transactionRes = await session.run(createCommentCypher, createCommentVariables)
+        const comments = transactionRes.records.map(record => record.get('comment'))
+        comment = comments[0]
+      } finally {
+        session.close()
       }
-      session.close()
-      return commentReturnedWithAuthor
+
+      return comment
     },
     DeleteComment: async (object, args, context, resolveInfo) => {
       const session = context.driver.session()

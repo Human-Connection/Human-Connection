@@ -195,7 +195,7 @@ describe('block', () => {
           ])
           postQuery = gql`
             query {
-              Post(orderBy: createdAt_asc) {
+              Post(orderBy: created_at_asc) {
                 id
                 title
                 author {

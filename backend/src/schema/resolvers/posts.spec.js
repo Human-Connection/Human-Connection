@@ -35,7 +35,9 @@ const createPostMutation = gql`
       author {
         name
       }
-      createdAt
+      created_at {
+        formatted
+      }
     }
   }
 `
@@ -301,7 +303,13 @@ describe('CreatePost', () => {
 
     it('sets createdAt at time of creation', async () => {
       const expected = {
-        data: { CreatePost: { disabled: false, deleted: false, createdAt: expect.any(String) } },
+        data: {
+          CreatePost: {
+            disabled: false,
+            deleted: false,
+            created_at: { formatted: expect.any(String) },
+          },
+        },
       }
       await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
         expected,

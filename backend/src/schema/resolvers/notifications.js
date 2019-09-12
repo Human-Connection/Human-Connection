@@ -2,10 +2,10 @@ const resourceTypes = ['Post', 'Comment']
 
 const transformReturnType = record => {
   return {
-    ...record.get('notification').properties,
+    ...record.get('notification'),
     from: {
-      __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
-      ...record.get('resource').properties,
+      __typename: record.get('labels(resource)').find(l => resourceTypes.includes(l)),
+      ...record.get('resource'),
     },
     to: {
       ...record.get('user').properties,
@@ -32,11 +32,11 @@ export default {
           whereClause = ''
       }
       switch (args.orderBy) {
-        case 'createdAt_asc':
-          orderByClause = 'ORDER BY notification.createdAt ASC'
+        case 'created_at_asc':
+          orderByClause = 'ORDER BY notification.created_at ASC'
           break
-        case 'createdAt_desc':
-          orderByClause = 'ORDER BY notification.createdAt DESC'
+        case 'created_at_desc':
+          orderByClause = 'ORDER BY notification.created_at DESC'
           break
         default:
           orderByClause = ''
@@ -46,7 +46,7 @@ export default {
         const cypher = `
         MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
         ${whereClause}
-        RETURN resource, notification, user
+        RETURN resource {.id, .content, created_at: { formatted: toString(notification.created_at) }} as resource, notification {.read, .reason, created_at: { formatted: toString(notification.created_at) }} as notification, user, labels(resource)
         ${orderByClause}
         `
         const result = await session.run(cypher, { id: currentUser.id })
@@ -66,7 +66,7 @@ export default {
         const cypher = `
         MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
         SET notification.read = TRUE
-        RETURN resource, notification, user
+        RETURN resource {.id, .content, created_at: { formatted: toString(notification.created_at) }} as resource, notification {.read, .reason, created_at: { formatted: toString(notification.created_at) }} as notification, user, labels(resource)
         `
         const result = await session.run(cypher, { resourceId: args.id, id: currentUser.id })
         const notifications = await result.records.map(transformReturnType)

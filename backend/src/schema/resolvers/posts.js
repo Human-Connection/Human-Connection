@@ -33,7 +33,7 @@ export default {
   Query: {
     Post: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+      return neo4jgraphql(object, params, context, resolveInfo, true)
     },
     findPosts: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
@@ -79,7 +79,7 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
-      let post, postWithCreatedAt
+      let post
       const createPostCypher = `CREATE (post:Post {params})
         SET post.created_at = datetime()
         WITH post
@@ -89,7 +89,15 @@ export default {
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post`
+        RETURN post {.id,
+          .title,
+          .content, 
+          .slug, 
+          .disabled, 
+          .deleted, 
+          .language, 
+          created_at: { formatted: toString(post.created_at) }} 
+          AS post`
 
       const createPostVariables = { userId: context.user.id, categoryIds, params }
 
@@ -97,13 +105,9 @@ export default {
       try {
         const transactionRes = await session.run(createPostCypher, createPostVariables)
         const posts = transactionRes.records.map(record => {
-          return record.get('post').properties
+          return record.get('post')
         })
         post = posts[0]
-        postWithCreatedAt = {
-          ...post,
-          createdAt: `${post.created_at.day.low}/${post.created_at.month.low}/${post.created_at.year.low}`,
-        }
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
           throw new UserInputError('Post with this slug already exists!')
@@ -112,7 +116,7 @@ export default {
         session.close()
       }
 
-      return postWithCreatedAt
+      return post
     },
     UpdatePost: async (object, params, context, resolveInfo) => {
       const { categoryIds } = params
@@ -245,11 +249,11 @@ RETURN userFrom, postTo`,
       if (typeof parent.relatedContributions !== 'undefined') return parent.relatedContributions
       const { id } = parent
       const statement = `
-MATCH(p: Post { id: $id }) - [: TAGGED | CATEGORIZED] -> (categoryOrTag) < -[: TAGGED | CATEGORIZED] - (post: Post)
-WHERE NOT post.deleted AND NOT post.disabled
-RETURN DISTINCT post
-LIMIT 10
-  `
+        MATCH(p: Post { id: $id }) - [: TAGGED | CATEGORIZED] -> (categoryOrTag) < -[: TAGGED | CATEGORIZED] - (post: Post)
+        WHERE NOT post.deleted AND NOT post.disabled
+        RETURN DISTINCT post
+        LIMIT 10
+          `
       let relatedContributions
       const session = context.driver.session()
       try {

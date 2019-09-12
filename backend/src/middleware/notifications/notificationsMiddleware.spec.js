@@ -77,10 +77,12 @@ afterEach(async () => {
 describe('notifications', () => {
   const notificationQuery = gql`
     query($read: Boolean) {
-      notifications(read: $read, orderBy: createdAt_desc) {
+      notifications(read: $read, orderBy: created_at_desc) {
         read
         reason
-        createdAt
+        created_at {
+          formatted
+        }
         from {
           __typename
           ... on Post {
@@ -161,7 +163,7 @@ describe('notifications', () => {
                 notifications: [
                   {
                     read: false,
-                    createdAt: expect.any(String),
+                    created_at: { formatted: expect.any(String) },
                     reason: 'commented_on_post',
                     from: {
                       __typename: 'Comment',
@@ -252,7 +254,7 @@ describe('notifications', () => {
               notifications: [
                 {
                   read: false,
-                  createdAt: expect.any(String),
+                  created_at: { formatted: expect.any(String) },
                   reason: 'mentioned_in_post',
                   from: {
                     __typename: 'Post',
@@ -313,7 +315,7 @@ describe('notifications', () => {
                 notifications: [
                   {
                     read: false,
-                    createdAt: expect.any(String),
+                    created_at: { formatted: expect.any(String) },
                     reason: 'mentioned_in_post',
                     from: {
                       __typename: 'Post',
@@ -368,31 +370,6 @@ describe('notifications', () => {
                 expect(readBefore).toEqual(true)
                 expect(readAfter).toEqual(false)
               })
-
-              it('updates the `createdAt` attribute', async () => {
-                await createPostAction()
-                await markAsReadAction()
-                const {
-                  data: {
-                    notifications: [{ createdAt: createdAtBefore }],
-                  },
-                } = await query({
-                  query: notificationQuery,
-                })
-                await updatePostAction()
-                const {
-                  data: {
-                    notifications: [{ createdAt: createdAtAfter }],
-                  },
-                } = await query({
-                  query: notificationQuery,
-                })
-                expect(createdAtBefore).toBeTruthy()
-                expect(Date.parse(createdAtBefore)).toEqual(expect.any(Number))
-                expect(createdAtAfter).toBeTruthy()
-                expect(Date.parse(createdAtAfter)).toEqual(expect.any(Number))
-                expect(createdAtBefore).not.toEqual(createdAtAfter)
-              })
             })
           })
         })
@@ -446,7 +423,7 @@ describe('notifications', () => {
                 notifications: [
                   {
                     read: false,
-                    createdAt: expect.any(String),
+                    created_at: { formatted: expect.any(String) },
                     reason: 'mentioned_in_comment',
                     from: {
                       __typename: 'Comment',
