@@ -446,7 +446,7 @@ describe('SignupVerification', () => {
             expect(emails).toHaveLength(1)
           })
 
-          it('if a current date of the General Terms and Conditions is available', async () => {
+          it('updates `termsAndConditionsAgreedAt`'', async () => {
             await expect(mutate({ mutation, variables })).resolves.toMatchObject({
               data: {
                 SignupVerification: expect.objectContaining({
