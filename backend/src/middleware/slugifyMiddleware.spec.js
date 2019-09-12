@@ -28,7 +28,9 @@ beforeAll(() => {
 
 beforeEach(async () => {
   variables = {}
-  const admin = await factory.create('User', { role: 'admin' })
+  const admin = await factory.create('User', {
+    role: 'admin',
+  })
   await factory.create('User', {
     email: 'someone@example.org',
     password: '1234',
@@ -66,9 +68,16 @@ describe('slugifyMiddleware', () => {
     })
 
     it('generates a slug based on title', async () => {
-      await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+      await expect(
+        mutate({
+          mutation: createPostMutation,
+          variables,
+        }),
+      ).resolves.toMatchObject({
         data: {
-          CreatePost: { slug: 'i-am-a-brand-new-post' },
+          CreatePost: {
+            slug: 'i-am-a-brand-new-post',
+          },
         },
       })
     })
@@ -90,13 +99,22 @@ describe('slugifyMiddleware', () => {
           content: 'Some content',
           categoryIds,
         }
-        await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
-          data: { CreatePost: { slug: 'pre-existing-post-1' } },
+        await expect(
+          mutate({
+            mutation: createPostMutation,
+            variables,
+          }),
+        ).resolves.toMatchObject({
+          data: {
+            CreatePost: {
+              slug: 'pre-existing-post-1',
+            },
+          },
         })
       })
 
       describe('but if the client specifies a slug', () => {
-        it('rejects CreatePost', async () => {
+        it('rejects CreatePost', async done => {
           variables = {
             ...variables,
             title: 'Pre-existing post',
@@ -104,9 +122,33 @@ describe('slugifyMiddleware', () => {
             slug: 'pre-existing-post',
             categoryIds,
           }
-          await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
-            errors: [{ message: 'Post with this slug already exists!' }],
-          })
+          try {
+            await expect(
+              mutate({ mutation: createPostMutation, variables }),
+            ).resolves.toMatchObject({
+              errors: [
+                {
+                  message: 'Post with this slug already exists!',
+                },
+              ],
+            })
+            done()
+          } catch (error) {
+            throw new Error(`
+              ${error}
+
+              Probably your database has no unique constraints!
+
+              To see all constraints go to http://localhost:7474/browser/ and
+              paste the following:
+              \`\`\`
+                CALL db.constraints();
+              \`\`\`
+
+              Learn how to setup the database here:
+              https://docs.human-connection.org/human-connection/neo4j
+            `)
+          }
         })
       })
     })
@@ -156,31 +198,58 @@ describe('slugifyMiddleware', () => {
       })
 
       it('generates a slug based on name', async () => {
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-          data: { SignupVerification: { slug: 'i-am-a-user' } },
+        await expect(
+          mutate({
+            mutation,
+            variables,
+          }),
+        ).resolves.toMatchObject({
+          data: {
+            SignupVerification: {
+              slug: 'i-am-a-user',
+            },
+          },
         })
       })
 
       describe('if slug exists', () => {
         beforeEach(async () => {
-          await factory.create('User', { name: 'I am a user', slug: 'i-am-a-user' })
+          await factory.create('User', {
+            name: 'I am a user',
+            slug: 'i-am-a-user',
+          })
         })
 
         it('chooses another slug', async () => {
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          await expect(
+            mutate({
+              mutation,
+              variables,
+            }),
+          ).resolves.toMatchObject({
             data: {
-              SignupVerification: { slug: 'i-am-a-user-1' },
+              SignupVerification: {
+                slug: 'i-am-a-user-1',
+              },
             },
           })
         })
 
         describe('but if the client specifies a slug', () => {
           beforeEach(() => {
-            variables = { ...variables, slug: 'i-am-a-user' }
+            variables = {
+              ...variables,
+              slug: 'i-am-a-user',
+            }
           })
 
-          it('rejects SignupVerification', async () => {
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          it('rejects SignupVerification (on FAIL Neo4j constraints may not defined in database)', async () => {
+            await expect(
+              mutate({
+                mutation,
+                variables,
+              }),
+            ).resolves.toMatchObject({
               errors: [
                 {
                   message: 'User with this slug already exists!',
