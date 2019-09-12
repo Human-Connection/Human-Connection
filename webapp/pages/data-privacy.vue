@@ -385,7 +385,7 @@
 
 <script>
 export default {
-  layout: 'default',
+  layout: 'basic',
   head() {
     return {
       title: this.$t('site.data-privacy'),

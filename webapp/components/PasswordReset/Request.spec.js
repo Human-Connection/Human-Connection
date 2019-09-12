@@ -6,11 +6,11 @@ const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('Request', () => {
-  let wrapper
-  let Wrapper
-  let mocks
+  let wrapper, Wrapper, mocks, stubs
 
   beforeEach(() => {
     mocks = {
@@ -23,6 +23,12 @@ describe('Request', () => {
         loading: false,
         mutate: jest.fn().mockResolvedValue({ data: { reqestPasswordReset: true } }),
       },
+      $i18n: {
+        locale: () => 'en',
+      },
+    }
+    stubs = {
+      LocaleSwitch: "<div class='stub'></div>",
     }
   })
 
@@ -33,6 +39,7 @@ describe('Request', () => {
       return mount(Request, {
         mocks,
         localVue,
+        stubs,
       })
     }
 

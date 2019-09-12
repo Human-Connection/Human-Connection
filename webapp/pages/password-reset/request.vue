@@ -11,7 +11,7 @@ export default {
   },
   methods: {
     handlePasswordResetRequested({ email }) {
-      this.$router.push({ path: 'verify-code', query: { email } })
+      this.$router.push({ path: 'verify-nonce', query: { email } })
     },
   },
 }

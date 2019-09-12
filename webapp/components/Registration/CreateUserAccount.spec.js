@@ -1,17 +1,16 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
-import CreateUserAccount, { SignupVerificationMutation } from './CreateUserAccount'
+import CreateUserAccount from './CreateUserAccount'
+import { SignupVerificationMutation } from '~/graphql/Registration.js'
 import Styleguide from '@human-connection/styleguide'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
+config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('CreateUserAccount', () => {
-  let wrapper
-  let Wrapper
-  let mocks
-  let propsData
+  let wrapper, Wrapper, mocks, propsData, stubs
 
   beforeEach(() => {
     mocks = {
@@ -26,6 +25,9 @@ describe('CreateUserAccount', () => {
       },
     }
     propsData = {}
+    stubs = {
+      LocaleSwitch: "<div class='stub'></div>",
+    }
   })
 
   describe('mount', () => {
@@ -34,6 +36,7 @@ describe('CreateUserAccount', () => {
         mocks,
         propsData,
         localVue,
+        stubs,
       })
     }
 
@@ -55,6 +58,7 @@ describe('CreateUserAccount', () => {
             wrapper = Wrapper()
             wrapper.find('input#name').setValue('John Doe')
             wrapper.find('input#password').setValue('hellopassword')
+            wrapper.find('textarea#about').setValue('Hello I am the `about` attribute')
             wrapper.find('input#passwordConfirmation').setValue('hellopassword')
             wrapper.find('input#checkbox').setChecked()
             await wrapper.find('form').trigger('submit')
@@ -72,7 +76,7 @@ describe('CreateUserAccount', () => {
           await action()
           const expected = expect.objectContaining({
             variables: {
-              about: '',
+              about: 'Hello I am the `about` attribute',
               name: 'John Doe',
               email: 'sixseven@example.org',
               nonce: '666777',

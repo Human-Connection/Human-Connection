@@ -1,4 +1,9 @@
 {
+  "maintenance": {
+    "title": "Human Connection is under maintenance",
+    "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
+    "questions": "Any Questions or concerns, send an email to" 
+  },
   "index": {
     "no-results": "No contributions found.",
     "change-filter-settings": "Change your filter settings to get more results."
@@ -36,14 +41,15 @@
     "responsible": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
     "bank": "bank account",
     "germany": "Germany",
-    "code-of-conduct": "Code of Conduct"
+    "code-of-conduct": "Code of Conduct",
+    "login": "Back to login"
   },
   "sorting": {
     "newest": "Newest",
     "oldest": "Oldest"
   },
   "login": {
-    "copy": "If you already have a human-connection account, login here.",
+    "copy": "If you already have a human-connection account, please login.",
     "login": "Login",
     "logout": "Logout",
     "email": "Your Email",
@@ -60,7 +66,7 @@
     "form": {
       "description": "A password reset email will be sent to the given email address.",
       "submit": "Request email",
-      "submitted": "A mail with further instruction has been sent to <b>{email}</b>"
+      "submitted": "An email with further instructions has been sent to <b>{email}</b>"
     }
   },
   "registration": {
@@ -82,9 +88,9 @@
       "success": "Your account has been created!"
     }
   },
-  "verify-code": {
+  "verify-nonce": {
     "form": {
-      "code": "Enter your code",
+      "nonce": "Enter your code",
       "description": "Open your inbox and enter the code that we've sent to you.",
       "next": "Continue",
       "change-password": {
@@ -342,7 +348,7 @@
     "validations": {
       "email": "must be a valid email address",
       "url": "must be a valid URL",
-      "verification-code": "must be 6 characters long"
+      "verification-nonce": "must be 6 characters long"
     }
   },
   "actions": {

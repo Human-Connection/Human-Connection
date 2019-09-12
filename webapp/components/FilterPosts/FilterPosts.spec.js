@@ -19,6 +19,7 @@ describe('FilterPosts.vue', () => {
   let allCategoriesButton
   let environmentAndNatureButton
   let democracyAndPoliticsButton
+  let happyEmotionButton
 
   beforeEach(() => {
     mocks = {
@@ -52,6 +53,7 @@ describe('FilterPosts.vue', () => {
       'postsFilter/TOGGLE_FILTER_BY_FOLLOWED': jest.fn(),
       'postsFilter/RESET_CATEGORIES': jest.fn(),
       'postsFilter/TOGGLE_CATEGORY': jest.fn(),
+      'postsFilter/TOGGLE_EMOTION': jest.fn(),
     }
     getters = {
       'postsFilter/isActive': () => false,
@@ -61,6 +63,7 @@ describe('FilterPosts.vue', () => {
       },
       'postsFilter/filteredCategoryIds': jest.fn(() => []),
       'postsFilter/filteredByUsersFollowed': jest.fn(),
+      'postsFilter/filteredByEmotions': jest.fn(() => []),
     }
     const openFilterPosts = () => {
       const store = new Vuex.Store({ mutations, getters })
@@ -118,6 +121,23 @@ describe('FilterPosts.vue', () => {
 
       it('calls TOGGLE_FILTER_BY_FOLLOWED', () => {
         expect(mutations['postsFilter/TOGGLE_FILTER_BY_FOLLOWED']).toHaveBeenCalledWith({}, 'u34')
+      })
+    })
+
+    describe('click on an "emotions-buttons" button', () => {
+      it('calls TOGGLE_EMOTION when clicked', () => {
+        const wrapper = openFilterPosts()
+        happyEmotionButton = wrapper.findAll('button.emotions-buttons').at(1)
+        happyEmotionButton.trigger('click')
+        expect(mutations['postsFilter/TOGGLE_EMOTION']).toHaveBeenCalledWith({}, 'happy')
+      })
+
+      it('sets the attribute `src` to colorized image', () => {
+        getters['postsFilter/filteredByEmotions'] = jest.fn(() => ['happy'])
+        const wrapper = openFilterPosts()
+        happyEmotionButton = wrapper.findAll('button.emotions-buttons').at(1)
+        const happyEmotionButtonImage = happyEmotionButton.find('img')
+        expect(happyEmotionButtonImage.attributes().src).toEqual('/img/svg/emoji/happy_color.svg')
       })
     })
   })

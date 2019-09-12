@@ -15,7 +15,8 @@ services:
       - ./webapp:/nitro-web
       - webapp_node_modules:/nitro-web/node_modules
     command: yarn run dev
-    user: root
+    environment:
+      - NUXT_BUILD=.nuxt-dist # avoid file ownership issues with shared folders
   factories:
     image: humanconnection/nitro-backend:builder
     build:
@@ -63,6 +64,15 @@ services:
       - 7474:7474
     volumes:
       - neo4j-data:/data
+  maintenance:
+    image: humanconnection/maintenance:latest
+    build:
+      context: webapp
+      dockerfile: Dockerfile.maintenance
+    networks:
+      - hc-network
+    ports:
+      - 3503:80
 
 volumes:
   webapp_node_modules:

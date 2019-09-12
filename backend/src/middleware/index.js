@@ -33,9 +33,7 @@ export default schema => {
     user,
     includedFields,
     orderBy,
-    email: email({
-      isEnabled: CONFIG.SMTP_HOST && CONFIG.SMTP_PORT,
-    }),
+    email,
   }
 
   let order = [
