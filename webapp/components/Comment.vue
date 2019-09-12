@@ -41,15 +41,19 @@
           v-show="comment.content !== comment.contentExcerpt && comment.content.length > 180"
           style="text-align: right;  margin-right: 20px; margin-top: -12px;"
         >
-          <a v-if="isCollapsed" style="padding-left: 40px;" @click="isCollapsed = !isCollapsed">
-            {{ $t('comment.show.more') }}
-          </a>
+          <span class="show-more-or-less">
+            <a v-if="isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
+              {{ $t('comment.show.more') }}
+            </a>
+          </span>
         </div>
-        <content-viewer v-if="!isCollapsed" v-html="comment.content" style="padding-left: 40px;" />
+        <content-viewer v-if="!isCollapsed" v-html="comment.content" class="padding-left" />
         <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
-          <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" style="padding-left: 40px; ">
-            {{ $t('comment.show.less') }}
-          </a>
+          <span class="show-more-or-less">
+            <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" class="padding-left">
+              {{ $t('comment.show.less') }}
+            </a>
+          </span>
         </div>
       </div>
       <ds-space margin-bottom="small" />
@@ -149,3 +153,14 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.padding-left {
+  padding-left: 40px;
+}
+
+span.show-more-or-less {
+  display: block;
+  margin: 10px 20px;
+  cursor: pointer;
+}
+</style>
