@@ -73,6 +73,7 @@
 
 <script>
 export default {
+  layout: 'basic',
   head() {
     return {
       title: this.$t('site.imprint'),

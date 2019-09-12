@@ -3,8 +3,8 @@
     <div class="main-navigation">
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
-          <ds-flex class="main-navigation-flex" centered>
-            <ds-flex-item :width="{ lg: '3.5%' }" />
+          <ds-flex class="main-navigation-flex">
+            <ds-flex-item :width="{ lg: '30%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
               <nuxt-link :to="{ name: 'index' }">
                 <ds-logo />
@@ -126,19 +126,7 @@
         <nuxt />
       </div>
     </ds-container>
-    <div id="footer" class="ds-footer">
-      <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
-      &nbsp;-&nbsp;
-      <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAndConditions') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/code-of-conduct">{{ $t('site.code-of-conduct') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/data-privacy">{{ $t('site.data-privacy') }}</nuxt-link>
-      &nbsp;‑&nbsp;
-      <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
-    </div>
+    <page-footer />
     <div id="overlay" />
     <client-only>
       <modal />
@@ -157,6 +145,8 @@ import HcAvatar from '~/components/Avatar/Avatar.vue'
 import seo from '~/mixins/seo'
 import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
 import CategoryQuery from '~/graphql/CategoryQuery.js'
+import PageFooter from '~/components/PageFooter/PageFooter'
+
 export default {
   components: {
     Dropdown,
@@ -166,6 +156,7 @@ export default {
     NotificationMenu,
     HcAvatar,
     FilterPosts,
+    PageFooter,
   },
   mixins: [seo],
   data() {
@@ -345,14 +336,5 @@ export default {
   .hide-mobile-menu {
     display: none;
   }
-}
-.ds-footer {
-  text-align: center;
-  position: fixed;
-  bottom: 0px;
-  z-index: 10;
-  background-color: white;
-  width: 100%;
-  padding: 10px 10px;
 }
 </style>

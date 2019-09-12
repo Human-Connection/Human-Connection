@@ -16,7 +16,10 @@
       @submit="submit"
     >
       <template slot-scope="{ errors }">
-        <ds-card :header="$t('registration.create-user-account.title')">
+        <ds-card class="create-account-card" :header="$t('registration.create-user-account.title')">
+          <client-only>
+            <locale-switch class="create-account-locale-switch" offset="5" />
+          </client-only>
           <ds-input
             id="name"
             model="name"
@@ -88,11 +91,13 @@ import { SweetalertIcon } from 'vue-sweetalert-icons'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 import { SignupVerificationMutation } from '~/graphql/Registration.js'
+import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   components: {
     PasswordStrength,
     SweetalertIcon,
+    LocaleSwitch,
   },
   data() {
     const passwordForm = PasswordForm({ translate: this.$t })
@@ -151,3 +156,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.create-account-card {
+  position: relative;
+}
+.create-account-locale-switch {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+</style>
