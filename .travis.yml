@@ -15,10 +15,11 @@ before_install:
   - cp cypress.env.template.json cypress.env.json
 
 install:
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --build -d
-    # avoid "Database constraints have changed after this transaction started"
+  - docker-compose -f docker-compose.yml build --parallel
+  - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml build # just tagging, just be quite fast
+  - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml up -d
   - wait-on http://localhost:7474
-  - docker-compose exec neo4j db_setup
+  - docker-compose  -f docker-compose.yml -f docker-compose.build-and-test.yml exec neo4j db_setup
 
 script:
   - export CYPRESS_RETRIES=1
@@ -38,6 +39,9 @@ script:
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
   - docker-compose exec -d backend yarn run test:before:seeder
   # Fullstack
+  - docker-compose down
+  - docker-compose -f docker-compose.yml up -d
+  - wait-on http://localhost:7474
   - yarn run cypress:run
   # Coverage
   - yarn run codecov

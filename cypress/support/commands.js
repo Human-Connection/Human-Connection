@@ -16,12 +16,24 @@
 import "cypress-file-upload";
 import helpers from "./helpers";
 import users from "../fixtures/users.json";
+import { GraphQLClient, request } from 'graphql-request'
+import { gql } from '../../backend/src/jest/helpers'
 
+const backendHost = Cypress.env('BACKEND_HOST')
 const switchLang = name => {
   cy.get(".locale-menu").click();
   cy.contains(".locale-menu-popover a", name).click();
 };
 
+const authenticatedHeaders = async (variables) => {
+  const mutation = gql`
+    mutation($email: String!, $password: String!) {
+      login(email: $email, password: $password)
+    }
+  `
+  const response = await request(backendHost, mutation, variables)
+  return { authorization: `Bearer ${response.login}` }
+}
 
 Cypress.Commands.add("switchLanguage", (name, force) => {
   const { code } = helpers.getLangByName(name);
@@ -82,6 +94,26 @@ Cypress.Commands.add("createCategories", (id, slug) => {
       icon: "medkit"
     });
 });
+
+
+Cypress.Commands.add(
+  'authenticateAs',
+  async ({email, password}) => {
+    const headers = await authenticatedHeaders({ email, password })
+    console.log(headers)
+    return new GraphQLClient(backendHost, { headers })
+  }
+)
+
+Cypress.Commands.add(
+  'mutate',
+  { prevSubject: true },
+  async (graphQLClient, mutation, variables) => {
+    await graphQLClient.request(mutation, variables)
+    return graphQLClient
+  }
+)
+
 //
 //
 // -- This is a child command --

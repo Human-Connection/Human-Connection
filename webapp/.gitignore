@@ -61,8 +61,6 @@ typings/
 
 # nuxt.js build output
 .nuxt
-# also the build output in docker container
-.nuxt-dist
 
 # Nuxt generate
 dist
