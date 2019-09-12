@@ -340,6 +340,7 @@ describe('SignupVerification', () => {
       ) {
         id
         termsAndConditionsAgreedVersion
+        termsAndConditionsAgreedAt
       }
     }
   `
@@ -352,6 +353,7 @@ describe('SignupVerification', () => {
         password: '123',
         email: 'john@example.org',
         termsAndConditionsAgreedVersion: '0.0.1',
+        termsAndConditionsAgreedAt: null,
       }
     })
 
@@ -444,11 +446,11 @@ describe('SignupVerification', () => {
             expect(emails).toHaveLength(1)
           })
 
-          it('is version of terms and conditions saved correctly', async () => {
+          it('if a current date of the General Terms and Conditions is available', async () => {
             await expect(mutate({ mutation, variables })).resolves.toMatchObject({
               data: {
                 SignupVerification: expect.objectContaining({
-                  termsAndConditionsAgreedVersion: '0.0.1',
+                  termsAndConditionsAgreedAt: expect.any(String),
                 }),
               },
             })

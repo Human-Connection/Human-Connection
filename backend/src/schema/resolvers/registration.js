@@ -82,6 +82,7 @@ export default {
       if (!regEx.test(termsAndConditionsAgreedVersion)) {
         throw new UserInputError('Invalid version format!')
       }
+      args.termsAndConditionsAgreedAt = new Date().toISOString()
 
       let { nonce, email } = args
       email = email.toLowerCase()

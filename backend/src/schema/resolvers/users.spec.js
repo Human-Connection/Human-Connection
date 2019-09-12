@@ -84,6 +84,8 @@ describe('UpdateUser', () => {
       password: '1234',
       id: 'u47',
       name: 'John Doe',
+      termsAndConditionsAgreedVersion: null,
+      termsAndConditionsAgreedAt: null,
     }
 
     variables = {
@@ -102,6 +104,7 @@ describe('UpdateUser', () => {
         id
         name
         termsAndConditionsAgreedVersion
+        termsAndConditionsAgreedAt
       }
     }
   `
@@ -171,19 +174,44 @@ describe('UpdateUser', () => {
       )
     })
 
-    it('given a new agreed version of terms and conditions', async () => {
-      variables = { ...variables, termsAndConditionsAgreedVersion: '0.0.2' }
-      const expected = {
-        data: {
-          UpdateUser: expect.objectContaining({
-            termsAndConditionsAgreedVersion: '0.0.2',
-          }),
-        },
-      }
+    describe('given a new agreed version of terms and conditions', () => {
+      beforeEach(async () => {
+        variables = { ...variables, termsAndConditionsAgreedVersion: '0.0.2' }
+      })
+      it('update termsAndConditionsAgreedVersion', async () => {
+        const expected = {
+          data: {
+            UpdateUser: expect.objectContaining({
+              termsAndConditionsAgreedVersion: '0.0.2',
+              termsAndConditionsAgreedAt: expect.any(String),
+            }),
+          },
+        }
 
-      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
-        expected,
-      )
+        await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
+      })
+    })
+
+    describe('given any attribute other than termsAndConditionsAgreedVersion', () => {
+      beforeEach(async () => {
+        variables = { ...variables, name: 'any name' }
+      })
+      it('update termsAndConditionsAgreedVersion', async () => {
+        const expected = {
+          data: {
+            UpdateUser: expect.objectContaining({
+              termsAndConditionsAgreedVersion: null,
+              termsAndConditionsAgreedAt: null,
+            }),
+          },
+        }
+
+        await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
+      })
     })
 
     it('rejects if version of terms and conditions has wrong format', async () => {
