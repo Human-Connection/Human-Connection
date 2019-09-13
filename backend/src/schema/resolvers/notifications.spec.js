@@ -145,47 +145,46 @@ describe('given some notifications', () => {
 
       describe('no filters', () => {
         it('returns all notifications of current user', async () => {
-          const expected = {
-            data: {
-              notifications: [
-                {
-                  from: {
-                    __typename: 'Comment',
-                    content: 'You have seen this comment mentioning already',
-                  },
-                  read: true,
-                  createdAt: '2019-08-30T15:33:48.651Z',
-                },
-                {
-                  from: {
-                    __typename: 'Post',
-                    content: 'Already seen post mention',
-                  },
-                  read: true,
-                  createdAt: '2019-08-30T17:33:48.651Z',
-                },
-                {
-                  from: {
-                    __typename: 'Comment',
-                    content: 'You have been mentioned in a comment',
-                  },
-                  read: false,
-                  createdAt: '2019-08-30T19:33:48.651Z',
-                },
-                {
-                  from: {
-                    __typename: 'Post',
-                    content: 'You have been mentioned in a post',
-                  },
-                  read: false,
-                  createdAt: '2019-08-31T17:33:48.651Z',
-                },
-              ],
+          const expected = [
+            {
+              from: {
+                __typename: 'Comment',
+                content: 'You have seen this comment mentioning already',
+              },
+              read: true,
+              createdAt: '2019-08-30T15:33:48.651Z',
             },
-          }
-          await expect(query({ query: notificationQuery, variables })).resolves.toMatchObject(
-            expected,
-          )
+            {
+              from: {
+                __typename: 'Post',
+                content: 'Already seen post mention',
+              },
+              read: true,
+              createdAt: '2019-08-30T17:33:48.651Z',
+            },
+            {
+              from: {
+                __typename: 'Comment',
+                content: 'You have been mentioned in a comment',
+              },
+              read: false,
+              createdAt: '2019-08-30T19:33:48.651Z',
+            },
+            {
+              from: {
+                __typename: 'Post',
+                content: 'You have been mentioned in a post',
+              },
+              read: false,
+              createdAt: '2019-08-31T17:33:48.651Z',
+            },
+          ]
+
+          await expect(query({ query: notificationQuery, variables })).resolves.toMatchObject({
+            data: {
+              notifications: expect.arrayContaining(expected),
+            },
+          })
         })
       })
 
