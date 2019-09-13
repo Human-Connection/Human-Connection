@@ -17,3 +17,4 @@ cypress.env.json
 !.gitkeep
 **/coverage
 
+release/
