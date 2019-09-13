@@ -6,6 +6,8 @@ services:
     build:
       context: webapp
       target: production
+      args:
+        - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     ports:
       - 3000:3000
     networks:
@@ -23,6 +25,8 @@ services:
     build:
       context: backend
       target: production
+      args:
+        - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     networks:
       - hc-network
     depends_on:
@@ -45,6 +49,8 @@ services:
     image: humanconnection/neo4j:latest
     build:
       context: neo4j
+      args:
+        - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     networks:
       - hc-network
     environment:
