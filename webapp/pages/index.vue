@@ -76,7 +76,9 @@ export default {
   },
   data() {
     let { hashtag = null } = this.$route.query
-    hashtag = decodeURI(hashtag)
+    if (hashtag) {
+      hashtag = decodeURI(hashtag)
+    }
     return {
       posts: [],
       hasMore: true,
