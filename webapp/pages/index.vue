@@ -75,7 +75,8 @@ export default {
     MasonryGridItem,
   },
   data() {
-    const { hashtag = null } = this.$route.query
+    let { hashtag = null } = this.$route.query
+    hashtag = decodeURI(hashtag)
     return {
       posts: [],
       hasMore: true,

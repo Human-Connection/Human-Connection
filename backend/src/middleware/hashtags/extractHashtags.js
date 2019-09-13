@@ -20,7 +20,7 @@ export default function(content) {
     .get()
   const hashtags = []
   urls.forEach(url => {
-    const match = exec(url, regX)
+    const match = exec(decodeURI(url), regX)
     if (match != null) {
       hashtags.push(match[1])
     }

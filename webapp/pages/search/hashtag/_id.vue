@@ -5,8 +5,9 @@
 <script>
 export default {
   mounted() {
-    const { id: hashtag } = this.$route.params
-    this.$router.push({ path: '/', query: { hashtag } })
+    let { id: hashtag } = this.$route.params
+    // 'hashtag' seems automatically 'decodeURI' on macOS Firefox. Don't know if this is always the case.
+    this.$router.push({ path: '/', query: { hashtag: encodeURI(hashtag) } })
   },
 }
 </script>

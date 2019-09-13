@@ -25,7 +25,7 @@ export default class Hashtag extends TipTapMention {
           'a',
           {
             class: this.options.mentionClass,
-            href: `/search/hashtag/${node.attrs.id}`,
+            href: `/search/hashtag/${encodeURI(node.attrs.id)}`,
             'data-hashtag-id': node.attrs.id,
             target: '_blank',
           },

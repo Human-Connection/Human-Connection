@@ -5,7 +5,7 @@
         {{ scope.index + 1 }}.
       </template>
       <template slot="id" slot-scope="scope">
-        <nuxt-link :to="{ path: '/', query: { hashtag: scope.row.id } }">
+        <nuxt-link :to="{ path: '/', query: { hashtag: encodeURI(scope.row.id) } }">
           <b>#{{ scope.row.id | truncate(20) }}</b>
         </nuxt-link>
       </template>
