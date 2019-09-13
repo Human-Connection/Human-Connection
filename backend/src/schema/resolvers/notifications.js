@@ -15,7 +15,7 @@ const transformReturnType = record => {
 
 export default {
   Query: {
-    notifications: async (parent, args, context, resolveInfo) => {
+    notifications: async (_parent, args, context, _resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
       let notifications

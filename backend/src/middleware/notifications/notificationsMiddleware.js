@@ -24,13 +24,9 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         MATCH (user: User)
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
-        MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
+        CREATE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.updatedAt = toString(datetime())
-        SET (
-        CASE
-        WHEN notification.createdAt IS NULL
-        THEN notification END ).createdAt = toString(datetime())
+        SET notification.createdAt = toString(datetime())
       `
       break
     }
@@ -41,13 +37,9 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
         AND NOT (user)<-[:BLOCKED]-(postAuthor)
-        MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
+        CREATE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.updatedAt = toString(datetime())
-        SET (
-        CASE
-        WHEN notification.createdAt IS NULL
-        THEN notification END ).createdAt = toString(datetime())
+        SET notification.createdAt = toString(datetime())
       `
       break
     }
@@ -58,19 +50,14 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
         AND NOT (author)<-[:BLOCKED]-(user)
-        MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
+        CREATE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.updatedAt = toString(datetime())
-        SET (
-          CASE
-          WHEN notification.createdAt IS NULL
-          THEN notification END ).createdAt = toString(datetime())
+        SET notification.createdAt = toString(datetime())
       `
       break
     }
   }
   await session.run(cypher, {
-    label,
     id,
     idsOfUsers,
     reason,
@@ -92,6 +79,7 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
 
 const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
+
   const comment = await resolve(root, args, context, resolveInfo)
 
   if (comment) {

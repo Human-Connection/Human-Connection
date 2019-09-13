@@ -74,7 +74,7 @@ export default {
     },
   },
   Mutation: {
-    CreatePost: async (object, params, context, resolveInfo) => {
+    CreatePost: async (_parent, params, context, _resolveInfo) => {
       const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
@@ -110,14 +110,14 @@ export default {
 
       return post
     },
-    UpdatePost: async (object, params, context, resolveInfo) => {
+    UpdatePost: async (_parent, params, context, _resolveInfo) => {
       const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
 
       let updatePostCypher = `MATCH (post:Post {id: $params.id})
-      SET post = $params
+      SET post += $params
       SET post.updatedAt = toString(datetime())
       `
 
@@ -143,12 +143,12 @@ export default {
 
       const transactionRes = await session.run(updatePostCypher, updatePostVariables)
       const [post] = transactionRes.records.map(record => {
-        return record.get('post')
+        return record.get('post').properties
       })
 
       session.close()
 
-      return post.properties
+      return post
     },
 
     DeletePost: async (object, args, context, resolveInfo) => {

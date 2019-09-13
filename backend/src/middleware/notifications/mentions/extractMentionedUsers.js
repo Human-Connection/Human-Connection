@@ -1,6 +1,6 @@
 import cheerio from 'cheerio'
 
-export default function(content) {
+export default content => {
   if (!content) return []
   const $ = cheerio.load(content)
   const userIds = $('a.mention[data-mention-id]')
