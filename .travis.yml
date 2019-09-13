@@ -62,6 +62,7 @@ after_failure:
   - ./send.sh failure $WEBHOOK_URL
 
 before_deploy:
+  - go get -u github.com/tcnksm/ghr
   - ./scripts/setup_kubernetes.sh
 
 deploy:
@@ -71,5 +72,9 @@ deploy:
       branch: master
   - provider: script
     script: scripts/deploy.sh
+    on:
+      branch: master
+  - provider: script
+    script: scripts/github_release.sh
     on:
       branch: master
