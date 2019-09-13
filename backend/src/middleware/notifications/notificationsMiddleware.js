@@ -24,9 +24,13 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         MATCH (user: User)
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
-        CREATE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
+        MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.createdAt = toString(datetime())
+        SET (
+        CASE
+        WHEN notification.createdAt IS NULL
+        THEN notification END ).createdAt = toString(datetime())
+        SET notification.updatedAt = toString(datetime())
       `
       break
     }
@@ -37,9 +41,13 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
         AND NOT (user)<-[:BLOCKED]-(postAuthor)
-        CREATE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
+        MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.createdAt = toString(datetime())
+        SET (
+        CASE
+        WHEN notification.createdAt IS NULL
+        THEN notification END ).createdAt = toString(datetime())
+        SET notification.updatedAt = toString(datetime())
       `
       break
     }
@@ -50,9 +58,13 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)<-[:BLOCKED]-(author)
         AND NOT (author)<-[:BLOCKED]-(user)
-        CREATE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
+        MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.createdAt = toString(datetime())
+        SET (
+        CASE
+        WHEN notification.createdAt IS NULL
+        THEN notification END ).createdAt = toString(datetime())
+        SET notification.updatedAt = toString(datetime())
       `
       break
     }

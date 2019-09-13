@@ -97,7 +97,7 @@ export const notificationQuery = i18n => {
     ${postFragment(lang)}
 
     query {
-      notifications(read: false, orderBy: createdAt_desc) {
+      notifications(read: false, orderBy: updatedAt_desc) {
         read
         reason
         createdAt

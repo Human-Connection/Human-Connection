@@ -77,7 +77,7 @@ afterEach(async () => {
 describe('notifications', () => {
   const notificationQuery = gql`
     query($read: Boolean) {
-      notifications(read: $read, orderBy: createdAt_desc) {
+      notifications(read: $read, orderBy: updatedAt_desc) {
         read
         reason
         createdAt
