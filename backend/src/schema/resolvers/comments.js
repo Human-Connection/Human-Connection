@@ -30,11 +30,24 @@ export default {
       })
       session.close()
 
-      const [response] = transactionRes.records.map(record => record.get('comment').properties)
+      const [comment] = transactionRes.records.map(record => record.get('comment').properties)
 
-      return response
+      return comment
     },
-    DeleteComment: async (object, args, context, resolveInfo) => {
+    UpdateComment: async (_parent, params, context, _resolveInfo) => {
+      const session = context.driver.session()
+      const updateCommentCypher = `
+        MATCH (comment:Comment {id: $params.id})
+        SET comment += $params
+        SET comment.updatedAt = toString(datetime())
+        RETURN comment
+      `
+      const transactionRes = await session.run(updateCommentCypher, { params })
+      session.close()
+      const [comment] = transactionRes.records.map(record => record.get('comment').properties)
+      return comment
+    },
+    DeleteComment: async (_parent, args, context, _resolveInfo) => {
       const session = context.driver.session()
       const transactionRes = await session.run(
         `
