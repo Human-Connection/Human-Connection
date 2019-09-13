@@ -8,9 +8,9 @@ export default async ({ store, env, route, redirect }) => {
   }
 
   const regX = build('^/search/hashtag/((\\pL+[\\pL0-9]*)|([0-9]+\\pL+[\\pL0-9]*))$')
-  const matchHashtag = exec(decodeURI(route.name), regX)
+  const matchHashtag = route.fullPath ? exec(decodeURI(route.fullPath), regX) : null
 
   if (!matchHashtag) return true
 
-  return redirect(`/?hashtag=${encodeURI(matchHashtag[0])}`)
+  return redirect(`/?hashtag=${encodeURI(matchHashtag[1])}`)
 }
