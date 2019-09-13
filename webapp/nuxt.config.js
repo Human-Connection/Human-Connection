@@ -123,7 +123,7 @@ export default {
   ],
 
   router: {
-    middleware: ['authenticated', 'termsAndConditions'],
+    middleware: ['authenticated', 'termsAndConditions', 'searchHashtag'],
     linkActiveClass: 'router-link-active',
     linkExactActiveClass: 'router-link-exact-active',
     scrollBehavior: (to, _from, savedPosition) => {
