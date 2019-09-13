@@ -8,10 +8,7 @@ const driver = getDriver()
 const neode = getNeode()
 const factory = Factory()
 
-let variables
-let mutate
-let authenticatedUser
-let commentAuthor
+let variables, mutate, authenticatedUser, commentAuthor, newlyCreatedComment
 
 beforeAll(() => {
   const { server } = createServer({
@@ -57,7 +54,7 @@ const setupPostAndComment = async () => {
     content: 'Post to be commented',
     categoryIds: ['cat9'],
   })
-  await factory.create('Comment', {
+  newlyCreatedComment = await factory.create('Comment', {
     id: 'c456',
     postId: 'p1',
     author: commentAuthor,
@@ -160,6 +157,8 @@ describe('UpdateComment', () => {
       UpdateComment(content: $content, id: $id) {
         id
         content
+        createdAt
+        updatedAt
       }
     }
   `
@@ -198,6 +197,33 @@ describe('UpdateComment', () => {
         await expect(mutate({ mutation: updateCommentMutation, variables })).resolves.toMatchObject(
           expected,
         )
+      })
+
+      it('updates a comment, but maintains non-updated attributes', async () => {
+        const expected = {
+          data: {
+            UpdateComment: {
+              id: 'c456',
+              content: 'The comment is updated',
+              createdAt: expect.any(String),
+            },
+          },
+        }
+        await expect(mutate({ mutation: updateCommentMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
+      })
+
+      it('updates the updatedAt attribute', async () => {
+        newlyCreatedComment = await newlyCreatedComment.toJson()
+        const {
+          data: { UpdateComment },
+        } = await mutate({ mutation: updateCommentMutation, variables })
+        expect(newlyCreatedComment.updatedAt).toBeTruthy()
+        expect(Date.parse(newlyCreatedComment.updatedAt)).toEqual(expect.any(Number))
+        expect(UpdateComment.updatedAt).toBeTruthy()
+        expect(Date.parse(UpdateComment.updatedAt)).toEqual(expect.any(Number))
+        expect(newlyCreatedComment.updatedAt).not.toEqual(UpdateComment.updatedAt)
       })
 
       describe('if `content` empty', () => {
