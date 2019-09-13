@@ -94,6 +94,7 @@ export default {
         if (!regEx.test(termsAndConditionsAgreedVersion)) {
           throw new ForbiddenError('Invalid version format!')
         }
+        args.termsAndConditionsAgreedAt = new Date().toISOString()
       }
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
@@ -165,7 +166,6 @@ export default {
     },
     ...Resolver('User', {
       undefinedToNull: [
-        'termsAndConditionsAgreedVersion',
         'actorId',
         'avatar',
         'coverImg',
@@ -174,7 +174,7 @@ export default {
         'locationName',
         'about',
         'termsAndConditionsAgreedVersion',
-        // TODO: 'termsAndConditionsAgreedAt',
+        'termsAndConditionsAgreedAt',
       ],
       boolean: {
         followedByCurrentUser:

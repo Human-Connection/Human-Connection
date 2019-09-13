@@ -18,6 +18,6 @@ type Mutation {
     avatarUpload: Upload
     locationName: String
     about: String
-    termsAndConditionsAgreedVersion: String
+    termsAndConditionsAgreedVersion: String!
   ): User
 }
