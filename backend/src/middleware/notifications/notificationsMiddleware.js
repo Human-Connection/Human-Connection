@@ -16,7 +16,6 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
   }
 
   const session = context.driver.session()
-  const createdAt = new Date().toISOString()
   let cypher
   switch (reason) {
     case 'mentioned_in_post': {
@@ -27,7 +26,8 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (user)<-[:BLOCKED]-(author)
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.createdAt = $createdAt
+        SET notification.updatedAt = toString(datetime())
+        SET notification.createdAt = toString(datetime())
       `
       break
     }
@@ -40,7 +40,8 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (user)<-[:BLOCKED]-(postAuthor)
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.createdAt = $createdAt
+        SET notification.updatedAt = toString(datetime())
+        SET notification.createdAt = toString(datetime())
       `
       break
     }
@@ -53,7 +54,8 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (author)<-[:BLOCKED]-(user)
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET notification.createdAt = $createdAt
+        SET notification.updatedAt = toString(datetime())
+        SET notification.createdAt = toString(datetime())
       `
       break
     }
@@ -63,7 +65,6 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
     id,
     idsOfUsers,
     reason,
-    createdAt,
   })
   session.close()
 }
