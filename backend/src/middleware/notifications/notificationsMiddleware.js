@@ -27,7 +27,10 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
         SET notification.updatedAt = toString(datetime())
-        SET notification.createdAt = toString(datetime())
+        SET (
+        CASE
+        WHEN notification.createdAt IS NULL
+        THEN notification END ).createdAt = toString(datetime())
       `
       break
     }
@@ -41,7 +44,10 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
         SET notification.updatedAt = toString(datetime())
-        SET notification.createdAt = toString(datetime())
+        SET (
+        CASE
+        WHEN notification.createdAt IS NULL
+        THEN notification END ).createdAt = toString(datetime())
       `
       break
     }
@@ -55,7 +61,10 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
         SET notification.updatedAt = toString(datetime())
-        SET notification.createdAt = toString(datetime())
+        SET (
+          CASE
+          WHEN notification.createdAt IS NULL
+          THEN notification END ).createdAt = toString(datetime())
       `
       break
     }

@@ -21,7 +21,7 @@ export default {
         SET comment.createdAt = toString(datetime())
         SET comment.updatedAt = toString(datetime())
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN comment, author
+        RETURN comment
       `
       const transactionRes = await session.run(createCommentCypher, {
         userId: context.user.id,
@@ -30,12 +30,7 @@ export default {
       })
       session.close()
 
-      const [response] = transactionRes.records.map(record => {
-        return {
-          ...record.get('comment').properties,
-          author: record.get('author').properties,
-        }
-      })
+      const [response] = transactionRes.records.map(record => record.get('comment').properties)
 
       return response
     },
