@@ -55,6 +55,8 @@ ON CREATE SET
 c.content        = comment.content,
 c.contentExcerpt = comment.contentExcerpt,
 c.deleted        = comment.deleted,
+c.createdAt      = comment.createdAt.`$date`,
+c.updatedAt      = comment.updatedAt.`$date`,
 c.disabled       = false
 WITH c, comment, comment.contributionId as postId
 MATCH (post:Post {id: postId})
