@@ -950,10 +950,10 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.6.6":
-  version "5.6.6"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.6.6.tgz#19e2ae088f2c45052ac58aa097f78b6341390672"
-  integrity sha512-JHNjb5ZzBIf2lqjeAd7uFmthgvwZxuMbNE70tV0FbYgmlT417Tzo77HxRj9Q4jCYasWj6OMcdGg+pVAcP+Xvfw==
+"@metascraper/helpers@^5.6.6", "@metascraper/helpers@^5.7.0":
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.7.0.tgz#6dfe79a6e47bb1bab6172a6b0b18b96234f8060b"
+  integrity sha512-BtVkeoJN0KpA62mXKY1cpDn3k5NCN2UbycDlC0iN63mz6pUrrA98tfVH3uCss0L1O9R1MpFHk4xbrBeZsbJUMg==
   dependencies:
     audio-extensions "0.0.0"
     chrono-node "~1.3.11"
@@ -5911,12 +5911,12 @@ metascraper-publisher@^5.6.5:
   dependencies:
     "@metascraper/helpers" "^5.6.6"
 
-metascraper-soundcloud@^5.6.7:
-  version "5.6.7"
-  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.6.7.tgz#c06a5398c85ec2d8e139c7f2016451ebf54de039"
-  integrity sha512-pHfhrAej8adCwK5Vo0IIOvoCTSWM1gSXeUQAwSyPGySME7NRMfgMq/TJSFF24Qih0UrE7u/4ogtGR3k3/Sno6g==
+metascraper-soundcloud@^5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.7.0.tgz#f58523d5209eb36d3d8ff27131d9b29694843f89"
+  integrity sha512-oaUX7WPcb0lubSOV/GG0GfDzSDvUcc5n7OnEeaSERCpszf4twtEGZ9I6FaGMsNdI/Qw6Q9TxEi5UwL0iABJpHg==
   dependencies:
-    "@metascraper/helpers" "^5.6.6"
+    "@metascraper/helpers" "^5.7.0"
     memoize-one "~5.1.1"
     tldts "~5.4.0"
 
