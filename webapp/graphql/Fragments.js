@@ -52,6 +52,7 @@ export const postFragment = lang => gql`
     }
     categories {
       id
+      slug
       name
       icon
     }

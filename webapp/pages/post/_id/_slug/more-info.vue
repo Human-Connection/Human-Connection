@@ -7,30 +7,17 @@
       <!-- <ds-icon name="compass" /> -->
       {{ $t('post.moreInfo.titleOfCategoriesSection') }}
     </h3>
-    <div class="tags">
-      <ds-icon
-        v-for="category in post.categories"
-        :key="category.id"
-        v-tooltip="{ content: category.name, placement: 'top-start', delay: { show: 300 } }"
-        :name="category.icon"
-        size="large"
-      />
-      &nbsp;
-      <!--<ds-tag
-        v-for="category in post.categories"
-      :key="category.id"><ds-icon :name="category.icon" /> {{ category.name }}</ds-tag>-->
-    </div>
+    <hc-category
+      v-for="category in post.categories"
+      :key="category.id"
+      :icon="category.icon"
+      :name="$t(`contribution.category.name.${category.slug}`)"
+    />
     <template v-if="post.tags && post.tags.length">
       <h3>
-        <!-- <ds-icon name="tags" /> -->
         {{ $t('post.moreInfo.titleOfHashtagsSection') }}
       </h3>
-      <div class="tags">
-        <ds-tag v-for="tag in post.tags" :key="tag.id">
-          <ds-icon name="tag" />
-          {{ tag.name }}
-        </ds-tag>
-      </div>
+      <hc-hashtag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
     </template>
     <h3>{{ $t('post.moreInfo.titleOfRelatedContributionsSection') }}</h3>
     <ds-section>
@@ -49,8 +36,10 @@
 </template>
 
 <script>
-import HcPostCard from '~/components/PostCard'
 import HcEmpty from '~/components/Empty.vue'
+import HcPostCard from '~/components/PostCard'
+import HcCategory from '~/components/Category'
+import HcHashtag from '~/components/Hashtag/Hashtag'
 import { relatedContributions } from '~/graphql/PostQuery'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
@@ -62,6 +51,8 @@ export default {
   },
   components: {
     HcPostCard,
+    HcCategory,
+    HcHashtag,
     HcEmpty,
     MasonryGrid,
     MasonryGridItem,

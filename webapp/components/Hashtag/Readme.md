@@ -3,5 +3,5 @@
 Tag "Liebe"
 
 ```
-<hc-tag name="Liebe" />
+<hc-hashtag name="Liebe" />
 ```

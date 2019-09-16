@@ -1,13 +1,10 @@
 <template>
-  <ds-tag>
-    <ds-icon name="tag" />
-    {{ id }}
-  </ds-tag>
+  <ds-tag>#{{ id }}</ds-tag>
 </template>
 
 <script>
 export default {
-  name: 'HcTag',
+  name: 'HcHashtag',
   props: {
     id: { type: String, required: true },
   },

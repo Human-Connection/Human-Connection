@@ -1,15 +1,15 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Styleguide from '@human-connection/styleguide'
-import Tag from './'
+import Hashtag from './Hashtag'
 
 const localVue = createLocalVue()
 localVue.use(Styleguide)
 
-describe('Tag', () => {
+describe('Hashtag', () => {
   let id
 
   let Wrapper = () => {
-    return shallowMount(Tag, {
+    return shallowMount(Hashtag, {
       localVue,
       propsData: {
         id,
