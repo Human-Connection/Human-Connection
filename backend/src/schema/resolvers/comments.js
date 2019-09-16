@@ -1,4 +1,4 @@
-import { neo4jgraphql } from 'neo4j-graphql-js'
+import uuid from 'uuid/v4'
 import Resolver from './helpers/Resolver'
 
 export default {
@@ -10,44 +10,44 @@ export default {
       // because we use relationships for this. So, we are deleting it from params
       // before comment creation.
       delete params.postId
+      params.id = params.id || uuid()
+
       const session = context.driver.session()
-      const commentWithoutRelationships = await neo4jgraphql(
-        object,
-        params,
-        context,
-        resolveInfo,
-        false,
-      )
-
-      const transactionRes = await session.run(
-        `
-        MATCH (post:Post {id: $postId}), (comment:Comment {id: $commentId}), (author:User {id: $userId})
+      const createCommentCypher = `
+        MATCH (post:Post {id: $postId})
+        MATCH (author:User {id: $userId})
+        WITH post, author
+        CREATE (comment:Comment {params})
+        SET comment.createdAt = toString(datetime())
+        SET comment.updatedAt = toString(datetime())
         MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)
-        RETURN comment, author`,
-        {
-          userId: context.user.id,
-          postId,
-          commentId: commentWithoutRelationships.id,
-        },
-      )
-
-      const [commentWithAuthor] = transactionRes.records.map(record => {
-        return {
-          comment: record.get('comment'),
-          author: record.get('author'),
-        }
+        RETURN comment
+      `
+      const transactionRes = await session.run(createCommentCypher, {
+        userId: context.user.id,
+        postId,
+        params,
       })
-
-      const { comment, author } = commentWithAuthor
-
-      const commentReturnedWithAuthor = {
-        ...comment.properties,
-        author: author.properties,
-      }
       session.close()
-      return commentReturnedWithAuthor
+
+      const [comment] = transactionRes.records.map(record => record.get('comment').properties)
+
+      return comment
     },
-    DeleteComment: async (object, args, context, resolveInfo) => {
+    UpdateComment: async (_parent, params, context, _resolveInfo) => {
+      const session = context.driver.session()
+      const updateCommentCypher = `
+        MATCH (comment:Comment {id: $params.id})
+        SET comment += $params
+        SET comment.updatedAt = toString(datetime())
+        RETURN comment
+      `
+      const transactionRes = await session.run(updateCommentCypher, { params })
+      session.close()
+      const [comment] = transactionRes.records.map(record => record.get('comment').properties)
+      return comment
+    },
+    DeleteComment: async (_parent, args, context, _resolveInfo) => {
       const session = context.driver.session()
       const transactionRes = await session.run(
         `
