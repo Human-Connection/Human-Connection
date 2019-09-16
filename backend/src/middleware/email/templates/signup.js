@@ -10,7 +10,7 @@ export const signupTemplate = options => {
   const {
     email,
     nonce,
-    subject = 'Welcome to Human Connection! Here is your signup link.',
+    subject = 'Welcome to Human Connection!',
     supportUrl = 'https://human-connection.org/en/contact/',
   } = options
   const actionUrl = new URL('/registration/create-user-account', CONFIG.CLIENT_URI)
@@ -21,6 +21,6 @@ export const signupTemplate = options => {
     to: email,
     subject,
     text: mustache.render(signupText, { actionUrl, nonce, supportUrl }),
-    html: mustache.render(signupHtml, {}),
+    html: mustache.render(signupHtml, { actionUrl, nonce, supportUrl }),
   }
 }
