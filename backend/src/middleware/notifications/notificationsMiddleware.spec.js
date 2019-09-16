@@ -77,7 +77,7 @@ afterEach(async () => {
 describe('notifications', () => {
   const notificationQuery = gql`
     query($read: Boolean) {
-      notifications(read: $read, orderBy: createdAt_desc) {
+      notifications(read: $read, orderBy: updatedAt_desc) {
         read
         reason
         createdAt
@@ -391,7 +391,7 @@ describe('notifications', () => {
                 expect(Date.parse(createdAtBefore)).toEqual(expect.any(Number))
                 expect(createdAtAfter).toBeTruthy()
                 expect(Date.parse(createdAtAfter)).toEqual(expect.any(Number))
-                expect(createdAtBefore).not.toEqual(createdAtAfter)
+                expect(createdAtBefore).toEqual(createdAtAfter)
               })
             })
           })

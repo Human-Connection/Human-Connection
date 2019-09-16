@@ -29,16 +29,15 @@
         <hc-category
           v-for="category in post.categories"
           :key="category.id"
-          v-tooltip="{ content: category.name, placement: 'top-start', delay: { show: 300 } }"
           :icon="category.icon"
-          :name="category.name"
+          :name="$t(`contribution.category.name.${category.slug}`)"
         />
       </div>
       <ds-space margin-bottom="small" />
       <!-- Tags -->
       <div v-if="post.tags && post.tags.length" class="tags">
         <ds-space margin="xx-small" />
-        <hc-tag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
+        <hc-hashtag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
@@ -77,7 +76,7 @@
 <script>
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
-import HcTag from '~/components/Tag'
+import HcHashtag from '~/components/Hashtag/Hashtag'
 import ContentMenu from '~/components/ContentMenu'
 import HcUser from '~/components/User/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
@@ -94,8 +93,8 @@ export default {
     mode: 'out-in',
   },
   components: {
-    HcTag,
     HcCategory,
+    HcHashtag,
     HcUser,
     HcShoutButton,
     ContentMenu,

@@ -5,7 +5,6 @@ import activityPub from './activityPubMiddleware'
 import softDelete from './softDelete/softDeleteMiddleware'
 import sluggify from './sluggifyMiddleware'
 import excerpt from './excerptMiddleware'
-import dateTime from './dateTimeMiddleware'
 import xss from './xssMiddleware'
 import permissions from './permissionsMiddleware'
 import user from './userMiddleware'
@@ -22,7 +21,6 @@ export default schema => {
     permissions,
     sentry,
     activityPub,
-    dateTime,
     validation,
     sluggify,
     excerpt,
@@ -40,7 +38,6 @@ export default schema => {
     'sentry',
     'permissions',
     // 'activityPub', disabled temporarily
-    'dateTime',
     'validation',
     'sluggify',
     'excerpt',

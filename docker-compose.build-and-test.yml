@@ -1,0 +1,13 @@
+version: "3.4"
+
+services:
+  webapp:
+    image: humanconnection/nitro-web:build-and-test
+    build:
+      context: webapp
+      target: build-and-test
+  backend:
+    image: humanconnection/nitro-backend:build-and-test
+    build:
+      context: backend
+      target: build-and-test

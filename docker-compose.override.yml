@@ -13,57 +13,21 @@ services:
       target: build-and-test
     volumes:
       - ./webapp:/nitro-web
-      - webapp_node_modules:/nitro-web/node_modules
+    environment:
+      - NUXT_BUILD=/tmp/nuxt # avoid file permission issues when `rm -rf .nuxt/`
     command: yarn run dev
-    environment:
-      - NUXT_BUILD=.nuxt-dist # avoid file ownership issues with shared folders
-  factories:
-    image: humanconnection/nitro-backend:builder
-    build:
-      context: backend
-      target: builder
-    ports:
-      - 4001:4001
-    networks:
-      - hc-network
-    volumes:
-      - ./backend:/nitro-backend
-      - factories_node_modules:/nitro-backend/node_modules
-      - uploads:/nitro-backend/public/uploads
-    depends_on:
-      - neo4j
-    environment:
-      - NEO4J_URI=bolt://neo4j:7687
-      - GRAPHQL_PORT=4000
-      - GRAPHQL_URI=http://localhost:4000
-      - CLIENT_URI=http://localhost:3000
-      - JWT_SECRET=b/&&7b78BF&fv/Vd
-      - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
-      - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
-    command: yarn run test:before:seeder
   backend:
-    image: humanconnection/nitro-backend:builder
     build:
       context: backend
-      target: builder
+      target: build-and-test
     volumes:
       - ./backend:/nitro-backend
-      - backend_node_modules:/nitro-backend/node_modules
-      - uploads:/nitro-backend/public/uploads
     command: yarn run dev
     environment:
       - SMTP_HOST=mailserver
       - SMTP_PORT=25
       - SMTP_IGNORE_TLS=true
       - "DEBUG=${DEBUG}"
-  neo4j:
-    environment:
-      - NEO4J_AUTH=none
-    ports:
-      - 7687:7687
-      - 7474:7474
-    volumes:
-      - neo4j-data:/data
   maintenance:
     image: humanconnection/maintenance:latest
     build:
@@ -74,9 +38,5 @@ services:
     ports:
       - 3503:80
 
-volumes:
-  webapp_node_modules:
-  backend_node_modules:
-  factories_node_modules:
-  neo4j-data:
-  uploads:
+networks:
+  hc-network:

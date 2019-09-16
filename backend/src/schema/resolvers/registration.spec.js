@@ -62,7 +62,7 @@ describe('CreateInvitationCode', () => {
         name: 'Inviter',
         email: 'inviter@example.org',
         password: '1234',
-        termsAndConditionsAgreedVersion: '0.0.1',
+        termsAndConditionsAgreedVersion: null,
       })
       authenticatedUser = await user.toJson()
     })
@@ -340,6 +340,7 @@ describe('SignupVerification', () => {
       ) {
         id
         termsAndConditionsAgreedVersion
+        termsAndConditionsAgreedAt
       }
     }
   `
@@ -351,7 +352,7 @@ describe('SignupVerification', () => {
         name: 'John Doe',
         password: '123',
         email: 'john@example.org',
-        termsAndConditionsAgreedVersion: '0.0.1',
+        termsAndConditionsAgreedVersion: '0.1.0',
       }
     })
 
@@ -444,13 +445,35 @@ describe('SignupVerification', () => {
             expect(emails).toHaveLength(1)
           })
 
-          it('is version of terms and conditions saved correctly', async () => {
+          it('updates termsAndConditionsAgreedVersion', async () => {
             await expect(mutate({ mutation, variables })).resolves.toMatchObject({
               data: {
                 SignupVerification: expect.objectContaining({
-                  termsAndConditionsAgreedVersion: '0.0.1',
+                  termsAndConditionsAgreedVersion: '0.1.0',
                 }),
               },
+            })
+          })
+
+          it('updates termsAndConditionsAgreedAt', async () => {
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              data: {
+                SignupVerification: expect.objectContaining({
+                  termsAndConditionsAgreedAt: expect.any(String),
+                }),
+              },
+            })
+          })
+
+          it('rejects if version of terms and conditions is missing', async () => {
+            variables = { ...variables, termsAndConditionsAgreedVersion: null }
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              errors: [
+                {
+                  message:
+                    'Variable "$termsAndConditionsAgreedVersion" of non-null type "String!" must not be null.',
+                },
+              ],
             })
           })
 

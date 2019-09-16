@@ -87,12 +87,11 @@ module.exports = {
     type: 'string',
     allow: [null],
   },
-  /* termsAndConditionsAgreedAt: {
+  termsAndConditionsAgreedAt: {
     type: 'string',
     isoDate: true,
     allow: [null],
-    // required: true, TODO
-  }, */
+  },
   shouted: {
     type: 'relationship',
     relationship: 'SHOUTED',

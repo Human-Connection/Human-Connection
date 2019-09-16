@@ -94,12 +94,13 @@ export default {
         if (!regEx.test(termsAndConditionsAgreedVersion)) {
           throw new ForbiddenError('Invalid version format!')
         }
+        args.termsAndConditionsAgreedAt = new Date().toISOString()
       }
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
         const user = await instance.find('User', args.id)
         if (!user) return null
-        await user.update(args)
+        await user.update({ ...args, updatedAt: new Date().toISOString() })
         return user.toJson()
       } catch (e) {
         throw new UserInputError(e.message)
@@ -165,7 +166,6 @@ export default {
     },
     ...Resolver('User', {
       undefinedToNull: [
-        'termsAndConditionsAgreedVersion',
         'actorId',
         'avatar',
         'coverImg',
@@ -174,7 +174,7 @@ export default {
         'locationName',
         'about',
         'termsAndConditionsAgreedVersion',
-        // TODO: 'termsAndConditionsAgreedAt',
+        'termsAndConditionsAgreedAt',
       ],
       boolean: {
         followedByCurrentUser:
