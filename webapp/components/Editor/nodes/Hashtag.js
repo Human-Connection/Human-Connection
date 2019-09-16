@@ -21,11 +21,15 @@ export default class Hashtag extends TipTapMention {
     return {
       ...super.schema,
       toDOM: node => {
+        // use a dummy domain because URL cannot handle relative urls
+        const url = new URL('/', 'http://example.org')
+        url.searchParams.append('hashtag', node.attrs.id)
+
         return [
           'a',
           {
             class: this.options.mentionClass,
-            href: `/search/hashtag/${encodeURI(node.attrs.id)}`,
+            href: `/${url.search}`,
             'data-hashtag-id': node.attrs.id,
             target: '_blank',
           },
