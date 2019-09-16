@@ -129,7 +129,7 @@ describe('hashtags', () => {
         )
       })
 
-      describe('afterwards update the Post by removing a hashtag, leaving a hashtag and add a hashtag', () => {
+      describe('updates the Post by removing, keeping and adding one hashtag respectively', () => {
         // The already existing hashtag has no class at this point.
         const postContent =
           '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Elections">#Elections</a> should work equal for everybody!? That seems to be the only way to have equal <a href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
