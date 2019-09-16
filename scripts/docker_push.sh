@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-ROOT_DIR=$(dirname "$0")
+ROOT_DIR=$(dirname "$0")/..
 DOCKER_CLI_EXPERIMENTAL=enabled
 # BUILD_COMMIT=${TRAVIS_COMMIT:-$(git rev-parse HEAD)}
 
@@ -26,7 +26,7 @@ do
       echo "Docker image ${TARGET} already present, skipping ..."
     else
       docker tag $SOURCE $TARGET
-      docker push tag
+      docker push $TARGET
     fi
   done
 done
