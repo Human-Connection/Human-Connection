@@ -54,7 +54,7 @@
     "@human-connection/styleguide": "0.5.21",
     "@nuxtjs/apollo": "^4.0.0-rc12",
     "@nuxtjs/axios": "~5.6.0",
-    "@nuxtjs/dotenv": "~1.4.0",
+    "@nuxtjs/dotenv": "~1.4.1",
     "@nuxtjs/sentry": "^3.0.0",
     "@nuxtjs/style-resources": "~1.0.0",
     "accounting": "~0.4.1",
