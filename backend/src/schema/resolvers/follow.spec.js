@@ -1,7 +1,6 @@
-import { GraphQLClient } from 'graphql-request'
 import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
-import { host, gql } from '../../jest/helpers'
+import { gql } from '../../jest/helpers'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
@@ -9,7 +8,7 @@ const driver = getDriver()
 const neode = getNeode()
 const factory = Factory()
 
-let authenticatedUser, variables, mutate, currentUser, followedUser, query
+let authenticatedUser, variables, mutate, currentUser, query, followedUser
 
 const mutationFollowUser = gql`
   mutation($id: ID!, $type: FollowTypeEnum) {
@@ -18,7 +17,19 @@ const mutationFollowUser = gql`
 `
 const mutationUnfollowUser = gql`
   mutation($id: ID!, $type: FollowTypeEnum) {
-    unfollow(id: $id)
+    unfollow(id: $id, type: $type)
+  }
+`
+
+const followedUserQuery = gql`
+  query($id: ID) {
+    User(id: $id) {
+      followedBy {
+        id
+        name
+      }
+      followedByCurrentUser
+    }
   }
 `
 
@@ -75,7 +86,7 @@ describe('follow', () => {
         authenticatedUser = await currentUser.toJson()
       })
 
-      it.only('I can follow another user', async () => {
+      it('I can follow another user', async () => {
         const expected = {
           data: {
             follow: true,
@@ -86,18 +97,6 @@ describe('follow', () => {
           expected,
         )
 
-        const followedUserQuery = gql`
-          query($id: ID) {
-            User(id: $id) {
-              followedBy {
-                id
-                name
-              }
-              followedByCurrentUser
-            }
-          }
-        `
-
         const expectedFollowedUser = {
           data: { User: [{ followedBy: [{ id: 'current-user' }], followedByCurrentUser: true }] },
         }
@@ -107,60 +106,78 @@ describe('follow', () => {
           expectedFollowedUser,
         )
       })
-    })
 
-    it('I can`t follow myself', async () => {
-      const res = await clientUser1.request(mutationFollowUser('u1'))
-      const expected = {
-        follow: false,
-      }
-      expect(res).toMatchObject(expected)
-
-      const { User } = await clientUser1.request(`{
-        User(id: "current-user") {
-          followedBy { id }
-          followedByCurrentUser
+      it('I can`t follow myself', async () => {
+        const expected = {
+          data: {
+            follow: false,
+          },
         }
-      }`)
-      const expected2 = {
-        followedBy: [],
-        followedByCurrentUser: false,
-      }
-      expect(User[0]).toMatchObject(expected2)
+        variables = { ...variables, id: 'current-user', type: 'User' }
+        await expect(mutate({ mutation: mutationFollowUser, variables })).resolves.toMatchObject(
+          expected,
+        )
+        const expectedFollowedUser = {
+          data: { User: [{ followedBy: [], followedByCurrentUser: false }] },
+        }
+        variables = { id: 'followed-user' }
+        query({ query: followedUserQuery, variables })
+        await expect(query({ query: followedUserQuery, variables })).resolves.toMatchObject(
+          expectedFollowedUser,
+        )
+      })
     })
   })
+
   describe('unfollow user', () => {
-    describe('unauthenticated follow', () => {
+    describe('unauthenticated unfollow', () => {
       it('throws authorization error', async () => {
-        // follow
-        await clientUser1.request(mutationFollowUser('u2'))
-        // unfollow
-        const client = new GraphQLClient(host)
-        await expect(client.request(mutationUnfollowUser('u2'))).rejects.toThrow('Not Authorised')
+        variables = { ...variables, id: 'followed-user' }
+        const { errors } = await mutate({ mutation: mutationUnfollowUser, variables })
+        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
-    it('I can unfollow a user', async () => {
-      // follow
-      await clientUser1.request(mutationFollowUser('u2'))
-      // unfollow
-      const expected = {
-        unfollow: true,
-      }
-      const res = await clientUser1.request(mutationUnfollowUser('u2'))
-      expect(res).toMatchObject(expected)
+    describe('authenticated user', () => {
+      beforeEach(async () => {
+        authenticatedUser = await currentUser.toJson()
+      })
+      it('can unfollow a user I follow', async () => {
+        // follow
+        const mutationVariables = { ...variables, id: 'followed-user', type: 'User' }
+        const queryVariables = { id: 'followed-user' }
 
-      const { User } = await clientUser1.request(`{
-        User(id: "u2") {
-          followedBy { id }
-          followedByCurrentUser
+        const expectedFollow = { data: { follow: true } }
+        await expect(
+          mutate({ mutation: mutationFollowUser, variables: mutationVariables }),
+        ).resolves.toMatchObject(expectedFollow)
+        const expectedFollowedUser = {
+          data: { User: [{ followedBy: [{ id: 'current-user' }], followedByCurrentUser: true }] },
         }
-      }`)
-      const expected2 = {
-        followedBy: [],
-        followedByCurrentUser: false,
-      }
-      expect(User[0]).toMatchObject(expected2)
+        variables = { id: 'followed-user' }
+        query({ query: followedUserQuery, variables })
+        await expect(
+          query({ query: followedUserQuery, variables: queryVariables }),
+        ).resolves.toMatchObject(expectedFollowedUser)
+
+        // unfollow
+        const expectedUnfollow = {
+          data: {
+            unfollow: true,
+          },
+        }
+        await expect(
+          mutate({ mutation: mutationUnfollowUser, variables: mutationVariables }),
+        ).resolves.toMatchObject(expectedUnfollow)
+
+        const expectedUserAfterUnfollow = {
+          data: { User: [{ followedBy: [], followedByCurrentUser: false }] },
+        }
+        variables = { id: 'followed-user' }
+        await expect(
+          query({ query: followedUserQuery, variables: queryVariables }),
+        ).resolves.toMatchObject(expectedUserAfterUnfollow)
+      })
     })
   })
 })
