@@ -1,10 +1,17 @@
-import { GraphQLClient } from 'graphql-request'
+import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
+import { getDriver } from '../../bootstrap/neo4j'
+import createServer from '../../server'
 
-const factory = Factory()
-let clientUser1
-let headersUser1
+let factory
+let driver
+
+let query
+let mutate
+let authenticatedUser
+
+let user1
+let user2
 
 const mutationFollowUser = id => `
   mutation {
@@ -17,20 +24,42 @@ const mutationUnfollowUser = id => `
   }
 `
 
-beforeEach(async () => {
-  await factory.create('User', {
-    id: 'u1',
-    email: 'test@example.org',
-    password: '1234',
-  })
-  await factory.create('User', {
-    id: 'u2',
-    email: 'test2@example.org',
-    password: '1234',
+beforeAll(() => {
+  factory = Factory()
+  driver = getDriver()
+
+  const { server } = createServer({
+    context: () => ({
+      driver,
+      user: authenticatedUser,
+      cypherParams: {
+        currentUserId: authenticatedUser ? authenticatedUser.id : null,
+      },
+    }),
   })
 
-  headersUser1 = await login({ email: 'test@example.org', password: '1234' })
-  clientUser1 = new GraphQLClient(host, { headers: headersUser1 })
+  const testClient = createTestClient(server)
+  query = testClient.query
+  mutate = testClient.mutate
+})
+
+beforeEach(async () => {
+  user1 = await factory
+    .create('User', {
+      id: 'u1',
+      email: 'test@example.org',
+      password: '1234',
+    })
+    .then(user => user.toJson())
+  user2 = await factory
+    .create('User', {
+      id: 'u2',
+      email: 'test2@example.org',
+      password: '1234',
+    })
+    .then(user => user.toJson())
+
+  authenticatedUser = user1
 })
 
 afterEach(async () => {
@@ -41,44 +70,57 @@ describe('follow', () => {
   describe('follow user', () => {
     describe('unauthenticated follow', () => {
       it('throws authorization error', async () => {
-        const client = new GraphQLClient(host)
-        await expect(client.request(mutationFollowUser('u2'))).rejects.toThrow('Not Authorised')
+        authenticatedUser = null
+        const { errors } = await mutate({
+          mutation: mutationFollowUser('u2'),
+        })
+        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     it('I can follow another user', async () => {
-      const res = await clientUser1.request(mutationFollowUser('u2'))
-      const expected = {
-        follow: true,
-      }
-      expect(res).toMatchObject(expected)
+      const { data: result } = await mutate({
+        mutation: mutationFollowUser(user2.id),
+      })
 
-      const { User } = await clientUser1.request(`{
-        User(id: "u2") {
-          followedBy { id }
-          followedByCurrentUser
-        }
-      }`)
+      const expected = { follow: true }
+      expect(result).toMatchObject(expected)
+
+      const {
+        data: { User },
+      } = await query({
+        query: `{
+          User(id: "${user2.id}") {
+            followedBy { id }
+            followedByCurrentUser
+          }
+        }`,
+      })
+
       const expected2 = {
-        followedBy: [{ id: 'u1' }],
+        followedBy: [{ id: user1.id }],
         followedByCurrentUser: true,
       }
       expect(User[0]).toMatchObject(expected2)
     })
 
     it('I can`t follow myself', async () => {
-      const res = await clientUser1.request(mutationFollowUser('u1'))
-      const expected = {
-        follow: false,
-      }
-      expect(res).toMatchObject(expected)
+      const { data: result } = await mutate({
+        mutation: mutationFollowUser(user1.id),
+      })
+      const expected = { follow: false }
+      expect(result).toMatchObject(expected)
 
-      const { User } = await clientUser1.request(`{
-        User(id: "u1") {
+      const {
+        data: { User },
+      } = await query({
+        query: `{
+        User(id: "${user1.id}") {
           followedBy { id }
           followedByCurrentUser
         }
-      }`)
+      }`,
+      })
       const expected2 = {
         followedBy: [],
         followedByCurrentUser: false,
@@ -87,32 +129,39 @@ describe('follow', () => {
     })
   })
   describe('unfollow user', () => {
+    beforeEach(async () => {
+      await mutate({ mutation: mutationFollowUser(user2.id) })
+    })
+
     describe('unauthenticated follow', () => {
       it('throws authorization error', async () => {
-        // follow
-        await clientUser1.request(mutationFollowUser('u2'))
-        // unfollow
-        const client = new GraphQLClient(host)
-        await expect(client.request(mutationUnfollowUser('u2'))).rejects.toThrow('Not Authorised')
+        authenticatedUser = null
+        const { errors } = await mutate({ mutation: mutationUnfollowUser(user2.id) })
+        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
     it('I can unfollow a user', async () => {
-      // follow
-      await clientUser1.request(mutationFollowUser('u2'))
-      // unfollow
+      const { data: result } = await mutate({
+        mutation: mutationUnfollowUser(user2.id),
+      })
+
       const expected = {
         unfollow: true,
       }
-      const res = await clientUser1.request(mutationUnfollowUser('u2'))
-      expect(res).toMatchObject(expected)
 
-      const { User } = await clientUser1.request(`{
-        User(id: "u2") {
+      expect(result).toMatchObject(expected)
+
+      const {
+        data: { User },
+      } = await query({
+        query: `{
+        User(id: "${user2.id}") {
           followedBy { id }
           followedByCurrentUser
         }
-      }`)
+      }`,
+      })
       const expected2 = {
         followedBy: [],
         followedByCurrentUser: false,
