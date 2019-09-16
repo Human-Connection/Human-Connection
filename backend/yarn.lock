@@ -5911,12 +5911,12 @@ metascraper-publisher@^5.6.5:
   dependencies:
     "@metascraper/helpers" "^5.6.6"
 
-metascraper-soundcloud@^5.6.7:
-  version "5.6.7"
-  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.6.7.tgz#c06a5398c85ec2d8e139c7f2016451ebf54de039"
-  integrity sha512-pHfhrAej8adCwK5Vo0IIOvoCTSWM1gSXeUQAwSyPGySME7NRMfgMq/TJSFF24Qih0UrE7u/4ogtGR3k3/Sno6g==
+metascraper-soundcloud@^5.7.4:
+  version "5.7.4"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.7.4.tgz#94030f0b344e1b742d564856136bc10684677ef3"
+  integrity sha512-MLsCl0c+hfbE9qI8rUj2Jd6bnJRNufiMu9k+yOEpKrglr4ZmqzgwNmsIn72dVxUvhnsTeVvQO6NNzudQJGsqkQ==
   dependencies:
-    "@metascraper/helpers" "^5.6.6"
+    "@metascraper/helpers" "^5.7.4"
     memoize-one "~5.1.1"
     tldts "~5.4.0"
 
