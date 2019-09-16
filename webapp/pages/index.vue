@@ -34,7 +34,7 @@
     </masonry-grid>
     <client-only>
       <ds-button
-        v-tooltip="{ content: 'Create a new Post', placement: 'left', delay: { show: 500 } }"
+        v-tooltip="{ content: $t('contribution.newPost'), placement: 'left', delay: { show: 500 } }"
         :path="{ name: 'post-create' }"
         class="post-add-button"
         icon="plus"
@@ -208,7 +208,7 @@ export default {
 .post-add-button {
   z-index: 100;
   position: fixed;
-  top: 98vh;
+  bottom: -5px;
   left: 98vw;
   transform: translate(-120%, -120%);
   box-shadow: $box-shadow-x-large;
