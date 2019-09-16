@@ -3,7 +3,7 @@ ROOT_DIR=$(dirname "$0")/..
 DOCKER_CLI_EXPERIMENTAL=enabled
 # BUILD_COMMIT=${TRAVIS_COMMIT:-$(git rev-parse HEAD)}
 
-IFS='.' read -r major minor patch < $ROOT_DIR/../VERSION
+IFS='.' read -r major minor patch < $ROOT_DIR/VERSION
 apps=(nitro-web nitro-backend neo4j maintenance-worker maintenance)
 tags=(latest $major $major.$minor $major.$minor.$patch)
 
