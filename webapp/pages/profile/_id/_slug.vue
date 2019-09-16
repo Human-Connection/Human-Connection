@@ -206,7 +206,7 @@
               <ds-button
                 v-if="myProfile"
                 v-tooltip="{
-                  content: 'Create a new Post',
+                  content: $t('contribution.newPost'),
                   placement: 'left',
                   delay: { show: 500 },
                 }"
@@ -518,5 +518,8 @@ export default {
       }
     }
   }
+}
+.profile-post-add-button {
+  box-shadow: $box-shadow-x-large;
 }
 </style>
