@@ -74,7 +74,7 @@ export default {
     },
   },
   Mutation: {
-    CreatePost: async (object, params, context, resolveInfo) => {
+    CreatePost: async (_parent, params, context, _resolveInfo) => {
       const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
@@ -82,6 +82,8 @@ export default {
       let post
 
       const createPostCypher = `CREATE (post:Post {params})
+        SET post.createdAt = toString(datetime())
+        SET post.updatedAt = toString(datetime())
         WITH post
         MATCH (author:User {id: $userId})
         MERGE (post)<-[:WROTE]-(author)
@@ -96,9 +98,7 @@ export default {
       const session = context.driver.session()
       try {
         const transactionRes = await session.run(createPostCypher, createPostVariables)
-        const posts = transactionRes.records.map(record => {
-          return record.get('post').properties
-        })
+        const posts = transactionRes.records.map(record => record.get('post').properties)
         post = posts[0]
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
@@ -110,14 +110,15 @@ export default {
 
       return post
     },
-    UpdatePost: async (object, params, context, resolveInfo) => {
+    UpdatePost: async (_parent, params, context, _resolveInfo) => {
       const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
 
       let updatePostCypher = `MATCH (post:Post {id: $params.id})
-      SET post = $params
+      SET post += $params
+      SET post.updatedAt = toString(datetime())
       `
 
       if (categoryIds && categoryIds.length) {
@@ -129,10 +130,11 @@ export default {
 
         await session.run(cypherDeletePreviousRelations, { params })
 
-        updatePostCypher += `WITH post
-        UNWIND $categoryIds AS categoryId
-        MATCH (category:Category {id: categoryId})
-        MERGE (post)-[:CATEGORIZED]->(category)
+        updatePostCypher += `
+          WITH post
+          UNWIND $categoryIds AS categoryId
+          MATCH (category:Category {id: categoryId})
+          MERGE (post)-[:CATEGORIZED]->(category)
         `
       }
 
@@ -141,12 +143,12 @@ export default {
 
       const transactionRes = await session.run(updatePostCypher, updatePostVariables)
       const [post] = transactionRes.records.map(record => {
-        return record.get('post')
+        return record.get('post').properties
       })
 
       session.close()
 
-      return post.properties
+      return post
     },
 
     DeletePost: async (object, args, context, resolveInfo) => {

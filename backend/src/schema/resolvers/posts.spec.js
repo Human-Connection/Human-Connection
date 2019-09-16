@@ -361,7 +361,7 @@ describe('CreatePost', () => {
 })
 
 describe('UpdatePost', () => {
-  let author
+  let author, newlyCreatedPost
   const updatePostMutation = gql`
     mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
       UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
@@ -370,12 +370,14 @@ describe('UpdatePost', () => {
         categories {
           id
         }
+        createdAt
+        updatedAt
       }
     }
   `
   beforeEach(async () => {
     author = await factory.create('User', { slug: 'the-author' })
-    await factory.create('Post', {
+    newlyCreatedPost = await factory.create('Post', {
       author,
       id: 'p9876',
       title: 'Old title',
@@ -419,6 +421,29 @@ describe('UpdatePost', () => {
       await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
         expected,
       )
+    })
+
+    it('updates a post, but maintains non-updated attributes', async () => {
+      const expected = {
+        data: {
+          UpdatePost: { id: 'p9876', content: 'New content', createdAt: expect.any(String) },
+        },
+      }
+      await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
+        expected,
+      )
+    })
+
+    it('updates the updatedAt attribute', async () => {
+      newlyCreatedPost = await newlyCreatedPost.toJson()
+      const {
+        data: { UpdatePost },
+      } = await mutate({ mutation: updatePostMutation, variables })
+      expect(newlyCreatedPost.updatedAt).toBeTruthy()
+      expect(Date.parse(newlyCreatedPost.updatedAt)).toEqual(expect.any(Number))
+      expect(UpdatePost.updatedAt).toBeTruthy()
+      expect(Date.parse(UpdatePost.updatedAt)).toEqual(expect.any(Number))
+      expect(newlyCreatedPost.updatedAt).not.toEqual(UpdatePost.updatedAt)
     })
 
     describe('no new category ids provided for update', () => {

@@ -78,7 +78,7 @@ const invitationLimitReached = rule({
 
 const isAuthor = rule({
   cache: 'no_cache',
-})(async (parent, args, { user, driver }) => {
+})(async (_parent, args, { user, driver }) => {
   if (!user) return false
   const session = driver.session()
   const { id: resourceId } = args

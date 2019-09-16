@@ -100,7 +100,7 @@ export default {
       try {
         const user = await instance.find('User', args.id)
         if (!user) return null
-        await user.update(args)
+        await user.update({ ...args, updatedAt: new Date().toISOString() })
         return user.toJson()
       } catch (e) {
         throw new UserInputError(e.message)

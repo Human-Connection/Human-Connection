@@ -15,7 +15,7 @@ const transformReturnType = record => {
 
 export default {
   Query: {
-    notifications: async (parent, args, context, resolveInfo) => {
+    notifications: async (_parent, args, context, _resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
       let notifications
@@ -32,11 +32,11 @@ export default {
           whereClause = ''
       }
       switch (args.orderBy) {
-        case 'createdAt_asc':
-          orderByClause = 'ORDER BY notification.createdAt ASC'
+        case 'updatedAt_asc':
+          orderByClause = 'ORDER BY notification.updatedAt ASC'
           break
-        case 'createdAt_desc':
-          orderByClause = 'ORDER BY notification.createdAt DESC'
+        case 'updatedAt_desc':
+          orderByClause = 'ORDER BY notification.updatedAt DESC'
           break
         default:
           orderByClause = ''
