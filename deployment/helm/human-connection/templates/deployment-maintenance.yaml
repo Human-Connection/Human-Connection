@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}-maintenance
+spec:
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-maintenance
+  template:
+    metadata:
+      labels:
+        human-connection.org/commit: {{ .Values.commit }}
+        human-connection.org/selector: deployment-maintenance
+      name: maintenance
+    spec:
+      containers:
+        - name: maintenance
+          env:
+            - name: HOST
+              value: 0.0.0.0
+          image: humanconnection/maintenance:latest
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

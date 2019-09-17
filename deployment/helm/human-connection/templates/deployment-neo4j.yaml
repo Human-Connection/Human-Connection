@@ -35,6 +35,8 @@ spec:
         env:
         - name: NEO4J_dbms_security_procedures_unrestricted
           value: "algo.*,apoc.*"
+        - name: SECURE_FILE_PERMISSIONS
+          value: "yes"
           {{- range $key, $val := .Values.neo4jConfig }}
         - name: NEO4J_{{ $key }}
           value: {{ $val | quote }}

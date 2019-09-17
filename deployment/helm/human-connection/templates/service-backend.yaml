@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name:  {{ .Release.Name }}-backend
+spec:
+  ports:
+    - name: graphql
+      port: 4000
+      targetPort: 4000
+  selector:
+    human-connection.org/selector: deployment-backend
