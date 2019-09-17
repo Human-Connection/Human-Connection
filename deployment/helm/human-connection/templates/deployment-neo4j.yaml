@@ -27,11 +27,11 @@ spec:
         ports:
         - containerPort: 7687
         - containerPort: 7474
-        # resources:
-        #   requests:
-        #     memory: "2G"
-        #   limits:
-        #     memory: "8G"
+        resources:
+          requests:
+            memory: {{ .Values.neo4jResourceRequestsMemory | default "1G" | quote }}
+          limits:
+            memory: {{ .Values.neo4jResourceLimitsMemory | default "1G" | quote }}
         env:
         - name: NEO4J_dbms_security_procedures_unrestricted
           value: "algo.*,apoc.*"

@@ -9,6 +9,8 @@ smtpUsername:
 smtpPassword:
 sentryDsnWebapp:
 sentryDsnBackend:
+neo4jResourceRequestsMemory: "1G"
+neo4jResourceLimitsMemory: "1G"
 neo4jConfig:
   apoc_import_file_enabled: "true"
   dbms_memory_pagecache_size: "490M"
@@ -21,5 +23,5 @@ privateKeyPassphrase: a7dsf78sadg87ad87sfagsadg78
 mapboxToken: pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
 mongodbUsername:
 mongodbPassword:
-neo4jUsername:
-neo4jPassword:
+neo4jUsername: neo4j
+neo4jPassword: neo4j
