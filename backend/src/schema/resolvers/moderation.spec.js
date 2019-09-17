@@ -151,6 +151,7 @@ describe('disable', () => {
             query($id: ID!) {
               Comment(id: $id) {
                 id
+                disabled
                 disabledBy {
                   id
                 }
@@ -162,6 +163,25 @@ describe('disable', () => {
             data: { Comment: [{ id: 'comment-id', disabledBy: { id: 'moderator-id' } }] },
           }
           variables = { id: 'comment-id' }
+          await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(before)
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            data: { disable: 'comment-id' },
+          })
+          await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(expected)
+        })
+
+        it('updates .disabled on comment', async () => {
+          const commentQuery = gql`
+            query($id: ID!) {
+              Comment(id: $id) {
+                id
+                disabled
+              }
+            }
+          `
+          const before = { data: { Comment: [{ id: 'comment-id', disabled: false }] } }
+          const expected = { data: { Comment: [{ id: 'comment-id', disabled: true }] } }
+
           await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(before)
           await expect(mutate({ mutation, variables })).resolves.toMatchObject({
             data: { disable: 'comment-id' },
@@ -181,41 +201,6 @@ describe('disable', () => {
   // })
 
   // describe('as moderator', () => {
-
-  // describe('on a comment', () => {
-  //   beforeEach(async () => {
-  //     variables = {
-  //       id: 'c47',
-  //     }
-
-  //
-  //     createResource = async () => {
-  //       await factory.create('User', {
-  //         id: 'u45',
-  //         email: 'commenter@example.org',
-  //         password: '1234',
-  //       })
-  //       const asAuthenticatedUser = await factory.authenticateAs({
-  //         email: 'commenter@example.org',
-  //         password: '1234',
-  //       })
-  //       await asAuthenticatedUser.create('Post', createPostVariables)
-  //       await asAuthenticatedUser.create('Comment', createCommentVariables)
-  //     }
-  //   })
-
-  //   it('updates .disabled on comment', async () => {
-  //     const before = { Comment: [{ id: 'c47', disabled: false }] }
-  //     const expected = { Comment: [{ id: 'c47', disabled: true }] }
-
-  //     await setup()
-  //     await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(before)
-  //     await action()
-  //     await expect(
-  //       client.request('{ Comment(disabled: true) { id disabled } }'),
-  //     ).resolves.toEqual(expected)
-  //   })
-  // })
 
   // describe('on a post', () => {
   //   beforeEach(async () => {
