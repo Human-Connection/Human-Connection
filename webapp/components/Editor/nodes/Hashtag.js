@@ -37,8 +37,14 @@ export default class Hashtag extends TipTapMention {
         ]
       },
       parseDOM: [
-        // simply don't parse mentions from html
-        // just treat them as normal links
+        {
+          tag: 'a[data-hashtag-id]',
+          getAttrs: dom => {
+            const id = dom.getAttribute('data-hashtag-id')
+            const label = dom.innerText.split(this.options.matcher.char).join('')
+            return { id, label }
+          },
+        },
       ],
     }
   }
