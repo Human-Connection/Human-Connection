@@ -2,13 +2,21 @@
   <div id="footer" class="ds-footer">
     <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
     <span>-</span>
-    <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
+    <a
+      href="https://human-connection.org/impressum/"
+      target="_blank"
+      v-html="$t('site.imprint')"
+    ></a>
     <span>-</span>
     <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAndConditions') }}</nuxt-link>
     <span>-</span>
     <nuxt-link to="/code-of-conduct">{{ $t('site.code-of-conduct') }}</nuxt-link>
     <span>-</span>
-    <nuxt-link to="/data-privacy">{{ $t('site.data-privacy') }}</nuxt-link>
+    <a
+      href="https://human-connection.org/datenschutz/"
+      target="_blank"
+      v-html="$t('site.data-privacy')"
+    ></a>
     <span>-</span>
     <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
   </div>
