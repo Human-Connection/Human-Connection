@@ -6,14 +6,9 @@ dath:
   GRAPHQL_URI: "http://{{ .Release.Name }}-backend:4000"
   NEO4J_URI: "bolt://{{ .Release.Name }}-neo4j:7687"
   CLIENT_URI: "https://{{ .Values.domain }}"
-  NEO4J_apoc_import_file_enabled: {{ .Values.neo4j.apoc_import_file_enabled }}
-  NEO4J_dbms_memory_pagecache_size: {{ .Values.neo4j.dbms_memory_pagecache_size }}
-  NEO4J_dbms_memory_heap_max__size: {{ .Values.neo4j.dbms_memory_heap_max__size }}
-  NEO4J_dbms_memory_heap_initial__size: {{ .Values.neo4j.dbms_memory_heap_initial__size }}
-  NEO4J_dbms_security_procedures_unrestricted: {{ .Values.neo4j.dbms_security_procedures_unrestricted }}
   VERSION: {{ .Chart.AppVersion }}
-  SENTRY_DSN_WEBAPP: {{ .Values.sentry.dsn_webapp }}
-  SENTRY_DSN_BACKEND: {{ .Values.sentry.dsn_backend }}
+  SENTRY_DSN_WEBAPP: {{ .Values.sentryDsnWebapp }}
+  SENTRY_DSN_BACKEND: {{ .Values.sentryDsnBackend }}
   COMMIT: {{ .Values.commit }}
-  SMTP_HOST: {{ .Values.smtp.host }}
-  SMTP_PORT: {{ .Values.smtp.port }}
+  SMTP_HOST: {{ .Values.smtpHost }}
+  SMTP_PORT: {{ .Values.smtpPort }}

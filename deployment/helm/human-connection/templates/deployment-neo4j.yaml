@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}-neo4j
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: "100%"
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-neo4j
+  template:
+    metadata:
+      name: neo4j
+      annotations:
+        backup.velero.io/backup-volumes: neo4j-data
+      labels:
+        human-connection.org/commit: {{ .Values.commit }}
+        human-connection.org/selector: deployment-neo4j
+    spec:
+      containers:
+      - name: neo4j
+        image: humanconnection/neo4j:latest
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        ports:
+        - containerPort: 7687
+        - containerPort: 7474
+        # resources:
+        #   requests:
+        #     memory: "2G"
+        #   limits:
+        #     memory: "8G"
+        env:
+        - name: NEO4J_dbms_security_procedures_unrestricted
+          value: "algo.*,apoc.*"
+          {{- range $key, $val := .Values.neo4jConfig }}
+        - name: NEO4J_{{ $key }}
+          value: {{ $val | quote }}
+          {{- end}}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-configmap
+        - secretRef:
+            name: {{ .Release.Name }}-secrets
+        # volumeMounts:
+        #   - mountPath: /data/
+        #     name: neo4j-data
+      # volumes:
+      # - name: neo4j-data
+      #   persistentVolumeClaim:
+      #     claimName: neo4j-data-claim
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
