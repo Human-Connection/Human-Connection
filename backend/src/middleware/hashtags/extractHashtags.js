@@ -4,8 +4,8 @@ import { exec, build } from 'xregexp/xregexp-all.js'
 //   https://en.wikipedia.org/w/index.php?title=Hashtag&oldid=905141980#Style
 // here:
 //    0. Search for whole string.
-//    1. Hashtag has only all unicode characters and '0-9'.
-//    2. If it starts with a digit '0-9' than a unicode character has to follow.
+//    1. Hashtag has only all unicode letters and '0-9'.
+//    2. If it starts with a digit '0-9' than a unicode letter has to follow.
 const regX = build('^((\\pL+[\\pL0-9]*)|([0-9]+\\pL+[\\pL0-9]*))$')
 
 export default function(content) {
