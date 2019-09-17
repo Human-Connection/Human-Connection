@@ -21,11 +21,15 @@ export default class Hashtag extends TipTapMention {
     return {
       ...super.schema,
       toDOM: node => {
+        // use a dummy domain because URL cannot handle relative urls
+        const url = new URL('/', 'https://human-connection.org')
+        url.searchParams.append('hashtag', node.attrs.id)
+
         return [
           'a',
           {
             class: this.options.mentionClass,
-            href: `/search/hashtag/${node.attrs.id}`,
+            href: `/${url.search}`,
             'data-hashtag-id': node.attrs.id,
             target: '_blank',
           },
@@ -33,8 +37,14 @@ export default class Hashtag extends TipTapMention {
         ]
       },
       parseDOM: [
-        // simply don't parse mentions from html
-        // just treat them as normal links
+        {
+          tag: 'a[data-hashtag-id]',
+          getAttrs: dom => {
+            const id = dom.getAttribute('data-hashtag-id')
+            const label = dom.innerText.split(this.options.matcher.char).join('')
+            return { id, label }
+          },
+        },
       ],
     }
   }

@@ -413,9 +413,9 @@ import { gql } from '../jest/helpers'
     const mention2 =
       'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
     const hashtag1 =
-      'See <a class="hashtag" href="/search/hashtag/NaturphilosophieYoga">#NaturphilosophieYoga</a> can really help you!'
+      'See <a class="hashtag" data-hashtag-id="NaturphilosophieYoga" href="/?hashtag=NaturphilosophieYoga">#NaturphilosophieYoga</a>, it can really help you!'
     const hashtagAndMention1 =
-      'The new physics of <a class="hashtag" href="/search/hashtag/QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" href="/search/hashtag/QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
+      'The new physics of <a class="hashtag" data-hashtag-id="QuantenFlussTheorie" href="/?hashtag=QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" data-hashtag-id="QuantumGravity" href="/?hashtag=QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
     const createPostMutation = gql`
       mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]) {
         CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
@@ -470,9 +470,9 @@ import { gql } from '../jest/helpers'
 
     authenticatedUser = await dewey.toJson()
     const mentionInComment1 =
-      'I heard <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, practice it since 3 years now.'
+      'I heard <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a> has practiced it for 3 years now.'
     const mentionInComment2 =
-      'Did <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> told you?'
+      'Did <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> tell you?'
     const createCommentMutation = gql`
       mutation($id: ID, $postId: ID!, $content: String!) {
         CreateComment(id: $id, postId: $postId, content: $content) {
@@ -661,21 +661,21 @@ import { gql } from '../jest/helpers'
       mutate({
         mutation: reportMutation,
         variables: {
-          description: "I don't like this comment",
+          description: 'This comment is bigoted',
           id: 'c1',
         },
       }),
       mutate({
         mutation: reportMutation,
         variables: {
-          description: "I don't like this post",
+          description: 'This post is bigoted',
           id: 'p1',
         },
       }),
       mutate({
         mutation: reportMutation,
         variables: {
-          description: "I don't like this user",
+          description: 'This user is harassing me with bigoted remarks',
           id: 'u1',
         },
       }),

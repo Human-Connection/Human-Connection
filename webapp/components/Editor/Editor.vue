@@ -134,10 +134,12 @@ export default {
       content: this.value || '',
       doc: this.doc,
       extensions: [
+        // Hashtags must come first, see
+        // https://github.com/scrumpy/tiptap/issues/421#issuecomment-523037460
+        ...this.optionalExtensions,
         ...defaultExtensions(this),
         new EventHandler(),
         new History(),
-        ...this.optionalExtensions,
       ],
       onUpdate: e => {
         clearTimeout(throttleInputEvent)
