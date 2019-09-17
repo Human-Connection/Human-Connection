@@ -2,11 +2,17 @@ import { Node } from 'tiptap'
 import Vue from 'vue'
 import { compileToFunctions } from 'vue-template-compiler'
 import pasteRule from '../commands/pasteRule'
-import VideoEmbed from '~/components/VideoEmbed'
+import VideoEmbed from '~/components/Embeds/VideoEmbed'
+import ImageEmbed from '~/components/Embeds/ImageEmbed'
+import LinkEmbed from '~/components/Embeds/LinkEmbed'
+import DefaultEmbed from '~/components/Embeds/DefaultEmbed'
 
 Vue.component(VideoEmbed)
+Vue.component(ImageEmbed)
+Vue.component(LinkEmbed)
+Vue.component(DefaultEmbed)
 const template = `
-  <div class="ql-embed-item">
+  <div class="embed-item">
     <component :url="dataEmbedUrl" :embedData="embedData" :is="componentType"/>
   </div>
 `
@@ -73,22 +79,19 @@ export default class Embed extends Node {
       },
       computed: {
         componentType() {
-          // if (this.meta.embed && this.meta.embed.type === 'photo') {
-          //   return 'image-embed'
-          // }
+          if (this.embedData && this.embedData.type === 'photo') {
+            return ImageEmbed
+          }
           if (this.embedData && this.embedData.type === 'video') {
             return VideoEmbed
           }
-          // if (!this.meta.embed && this.meta.type === 'video' && this.meta.contentType) {
-          //   return 'video-embed'
-          // }
-          // if (this.meta.embed && this.meta.embed.type === 'link') {
-          //   return 'link-embed'
-          // }
-          // if (this.meta.site_name && this.meta.url) {
-          //   return 'link-embed'
-          // }
-          // return 'default-embed'
+          if (this.embedData && this.embedData.type === 'link') {
+            return LinkEmbed
+          }
+          if (this.embedData.publisher && this.embedData.url) {
+            return LinkEmbed
+          }
+          return DefaultEmbed
         },
         embedClass() {
           return this.embedHtml ? 'embed' : ''
