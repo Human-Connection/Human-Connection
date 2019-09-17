@@ -8,7 +8,7 @@ describe('extractHashtags', () => {
   })
 
   describe('searches through links', () => {
-    it('not `class="hashtag"` but `data-hashtag-id="something"` makes a link a hashtag link', () => {
+    it('without `class="hashtag"` but `data-hashtag-id="something"`, and extracts the Hashtag to make a Hashtag link', () => {
       const content = `
         <p>
           <a
@@ -35,7 +35,7 @@ describe('extractHashtags', () => {
       expect(extractHashtags(content)).toEqual([])
     })
 
-    it('ignores hashtag links with not allowed character combinations', () => {
+    it('ignores hashtag links with unsupported character combinations', () => {
       // Allowed are all unicode letters '\pL' and all digits '0-9'. There haveto be at least one letter in it.
       const content = `
       <p>
