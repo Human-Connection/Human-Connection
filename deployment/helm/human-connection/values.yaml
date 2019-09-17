@@ -1,1 +1,32 @@
 domain: nitro-staging.human-connection.org
+commit: 889a7cdd24dda04a139b2b77d626e984d6db6781
+pullPolicy: Always
+
+# configs
+smtp:
+  host: "mailserver.human-connection"
+  port: "25"
+neo4j:
+  apoc_import_file_enabled: "true"
+  dbms_memory_pagecache_size: "490M"
+  dbms_memory_heap_max__size: "500M"
+  dbms_memory_heap_initial__size: "500M"
+  dbms_security_procedures_unrestricted: "algo.*,apoc.*"
+sentry:
+  dsn_webapp:
+  dsn_backend:
+
+# secrets
+jwt_secret: b/&&7b78BF&fv/Vd
+private_key_passphrase: a7dsf78sadg87ad87sfagsadg78
+mapbox:
+  token: pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
+mongodb:
+  username:
+  password:
+neo4j:
+  username:
+  password:
+smtp:
+  username:
+  password:
