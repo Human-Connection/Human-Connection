@@ -10,17 +10,19 @@ export default {
   Embed: {
     ...undefinedToNullResolver([
       'type',
+      'embed',
       'title',
+      'description',
       'author',
       'publisher',
-      'date',
-      'description',
       'url',
+      'date',
       'image',
       'audio',
       'video',
       'lang',
-      'html',
+      'logo',
+      'sources',
     ]),
     sources: async (parent, params, context, resolveInfo) => {
       return typeof parent.sources === 'undefined' ? [] : parent.sources

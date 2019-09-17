@@ -5,18 +5,19 @@ export default function() {
     query($url: String!) {
       embed(url: $url) {
         type
+        embed
         title
+        description
         author
         publisher
-        date
-        description
         url
+        date
         image
         audio
         video
         lang
+        logo
         sources
-        html
       }
     }
   `
