@@ -5,7 +5,6 @@ export default function() {
     query($url: String!) {
       embed(url: $url) {
         type
-        embed
         title
         description
         author

@@ -12,7 +12,7 @@ Vue.component(ImageEmbed)
 Vue.component(LinkEmbed)
 Vue.component(DefaultEmbed)
 const template = `
-  <div class="embed-item">
+  <div class="embed">
     <component :url="dataEmbedUrl" :embedData="embedData" :is="componentType"/>
   </div>
 `
@@ -85,10 +85,10 @@ export default class Embed extends Node {
           if (this.embedData && this.embedData.type === 'video') {
             return VideoEmbed
           }
-          if (this.embedData && this.embedData.type === 'link') {
-            return LinkEmbed
-          }
-          if (this.embedData.publisher && this.embedData.url) {
+          if (
+            (this.embedData && this.embedData.type === 'link') ||
+            (this.embedData.publisher && this.embedData.url)
+          ) {
             return LinkEmbed
           }
           return DefaultEmbed

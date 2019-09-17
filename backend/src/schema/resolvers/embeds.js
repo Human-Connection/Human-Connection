@@ -10,7 +10,6 @@ export default {
   Embed: {
     ...undefinedToNullResolver([
       'type',
-      'embed',
       'title',
       'description',
       'author',

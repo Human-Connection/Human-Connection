@@ -9,23 +9,17 @@ describe('Embed.vue', () => {
   beforeEach(() => {
     propsData = {}
     const component = new Embed()
-    Wrapper = ({ mocks, propsData }) => {
+    Wrapper = ({ propsData }) => {
       return shallowMount(component.view, { propsData })
     }
   })
 
-  it('renders anchor', () => {
-    propsData = {
-      node: { attrs: { href: someUrl } },
-    }
-    expect(Wrapper({ propsData }).is('a')).toBe(true)
-  })
-
   describe('given a href', () => {
-    describe('onEmbed returned embed data', () => {
-      beforeEach(() => {
+    describe("onEmbed returned embed data of type 'video'", () => {
+      it('renders a video-embed component', async () => {
         propsData.options = {
           onEmbed: () => ({
+            __typename: 'Embed',
             type: 'video',
             title: 'Baby Loves Cat',
             author: 'Merkley Family',
@@ -39,28 +33,105 @@ describe('Embed.vue', () => {
             video: null,
             lang: 'de',
             sources: ['resource', 'oembed'],
-            html:
-              '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
           }),
         }
-      })
-
-      it('renders the given html code', async () => {
         propsData.node = { attrs: { href: 'https://www.youtube.com/watch?v=qkdXAtO40Fo' } }
-        const wrapper = Wrapper({ propsData })
-        await wrapper.html()
-        expect(wrapper.find('div iframe').attributes('src')).toEqual(
-          'https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed',
-        )
+        const wrapper = await Wrapper({ propsData })
+        expect(wrapper.contains('video-embed-stub')).toBe(true)
       })
     })
 
-    describe('without embedded html but some meta data instead', () => {
-      it.todo('renders description and link')
+    describe("onEmbed returned embed data of type 'photo'", () => {
+      it('renders an image-embed component', async () => {
+        propsData.node = {
+          attrs: {
+            href: 'https://www.flickr.com/photos/billmcmullen/48740742012/in/explore-2019-09-16/',
+          },
+        }
+        propsData.options = {
+          onEmbed: () => ({
+            type: 'photo',
+            __typename: 'Embed',
+            audio: null,
+            author: 'Bill McMullen',
+            date: '2019-09-17T14:43:39.794Z',
+            description: 'Gray tree frog blends into its surroundings.',
+            image: 'https://live.staticflickr.com/65535/48740742012_c8bb376483_b.jpg',
+            lang: 'en',
+            logo: null,
+            publisher: 'Flickr',
+            sources: [('resource', 'oembed')],
+            title: 'Blended',
+            url: 'https://www.flickr.com/photos/billmcmullen/48740742012/',
+            video: null,
+          }),
+        }
+        const wrapper = await Wrapper({ propsData })
+        expect(wrapper.contains('image-embed-stub')).toBe(true)
+      })
     })
 
-    describe('without any meta data', () => {
-      it.todo('renders a link without `embed` class')
+    describe("onEmbed returned embed data of type 'link'", () => {
+      it('renders an link-embed component', async () => {
+        propsData.node = { attrs: { href: 'https://www.iamcal.com/book/' } }
+        propsData.options = {
+          onEmbed: () => ({
+            __typename: 'Embed',
+            audio: null,
+            author: null,
+            date: '2006-08-04T22:00:00.000Z',
+            description: null,
+            image: 'https://www.iamcal.com/book/cover_large.png',
+            lang: null,
+            logo: null,
+            publisher: 'YouTube',
+            sources: ['resource'],
+            title: 'Building Scalable Web Sites',
+            type: 'link',
+            url: 'https://www.iamcal.com/book/',
+            video: null,
+          }),
+        }
+        const wrapper = await Wrapper({ propsData })
+        expect(wrapper.contains('link-embed-stub')).toBe(true)
+      })
+    })
+
+    describe('onEmbed returned embed data with no type, but a publisher and url', () => {
+      it('renders an link-embed component', async () => {
+        propsData.node = { attrs: { href: 'https://www.not-sure-which-link/no-type-returned' } }
+        propsData.options = {
+          onEmbed: () => ({
+            __typename: 'Embed',
+            audio: null,
+            author: null,
+            date: '2006-08-04T22:00:00.000Z',
+            description: null,
+            image: 'https://www.iamcal.com/book/cover_large.png',
+            lang: null,
+            logo: null,
+            publisher: 'YouTube',
+            sources: ['resource'],
+            title: 'Building Scalable Web Sites',
+            type: null,
+            url: 'https://www.iamcal.com/book/',
+            video: null,
+          }),
+        }
+        const wrapper = await Wrapper({ propsData })
+        expect(wrapper.contains('link-embed-stub')).toBe(true)
+      })
+    })
+
+    describe('onEmbed returned no meta data', () => {
+      it('renders a default-embed component', async () => {
+        propsData.node = { attrs: { href: 'https://www.youtube.com/watch?v=qkdXAtO40Fo' } }
+        propsData.options = {
+          onEmbed: () => ({}),
+        }
+        const wrapper = await Wrapper({ propsData })
+        expect(wrapper.contains('default-embed-stub')).toBe(true)
+      })
     })
   })
 })
