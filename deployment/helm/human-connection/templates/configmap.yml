@@ -10,5 +10,10 @@ data:
   SENTRY_DSN_WEBAPP: {{ .Values.sentryDsnWebapp }}
   SENTRY_DSN_BACKEND: {{ .Values.sentryDsnBackend }}
   COMMIT: {{ .Values.commit }}
+{{- if .Values.developmentMailserverDomain }}
+  SMTP_HOST: {{ .Release.Name }}-mailserver
+  SMTP_PORT: "25"
+{{- else }}
   SMTP_HOST: {{ .Values.smtpHost }}
   SMTP_PORT: {{ .Values.smtpPort }}
+{{- end }}

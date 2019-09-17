@@ -3,6 +3,7 @@ commit: 889a7cdd24dda04a139b2b77d626e984d6db6781
 pullPolicy: Always
 
 # configs
+developmentMailserverDomain: "nitro-mailserver.human-connection.org"
 smtpHost: "mailserver.human-connection"
 smtpPort: "25"
 smtpUsername:

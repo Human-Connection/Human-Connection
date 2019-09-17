@@ -1,0 +1,34 @@
+{{- if .Values.developmentMailserverDomain }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}-mailserver
+spec:
+  replicas: 1
+  minReadySeconds: 15
+  progressDeadlineSeconds: 60
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-mailserver
+  template:
+    metadata:
+      labels:
+        human-connection.org/selector: deployment-mailserver
+      name: mailserver
+    spec:
+      containers:
+      - name: mailserver
+        image: djfarrelly/maildev
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        ports:
+        - containerPort: 80
+        - containerPort: 25
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-configmap
+        - secretRef:
+            name: {{ .Release.Name }}-secrets
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+status: {}
+{{- end}}
