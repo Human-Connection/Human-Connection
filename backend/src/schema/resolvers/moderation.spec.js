@@ -1,43 +1,51 @@
+import { createTestClient } from 'apollo-server-testing'
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login, gql } from '../../jest/helpers'
-import { neode } from '../../bootstrap/neo4j'
+import { gql } from '../../jest/helpers'
+import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import createServer from '../../server'
 
-let client
 const factory = Factory()
-const instance = neode()
+const neode = getNeode()
+const driver = getDriver()
 const categoryIds = ['cat9']
 
-const setupAuthenticateClient = params => {
-  const authenticateClient = async () => {
-    await factory.create('User', params)
-    const headers = await login(params)
-    client = new GraphQLClient(host, { headers })
-  }
-  return authenticateClient
-}
-
-let createResource
-let authenticateClient
+let query, mutate, authenticatedUser, variables, currentUser
 let createPostVariables
 let createCommentVariables
 
-beforeEach(async () => {
-  createResource = () => {}
-  authenticateClient = () => {
-    client = new GraphQLClient(host)
-  }
-  await instance.create('Category', {
-    id: 'cat9',
-    name: 'Democracy & Politics',
-    icon: 'university',
+beforeAll(() => {
+  authenticatedUser = undefined
+  const { server } = createServer({
+    context: () => {
+      return {
+        driver,
+        neode,
+        user: authenticatedUser,
+      }
+    },
   })
+  mutate = createTestClient(server).mutate
 })
 
-const setup = async () => {
-  await createResource()
-  await authenticateClient()
-}
+beforeEach(async () => {
+  variables = {}
+  currentUser = await factory.create('User', {
+    id: 'current-user',
+    name: 'TestUser',
+    email: 'test@example.org',
+    password: '1234',
+  })
+
+  await Promise.all([
+    neode.create('Category', {
+      id: 'cat9',
+      name: 'Democracy & Politics',
+      icon: 'university',
+    }),
+  ])
+  authenticatedUser = null
+})
 
 afterEach(async () => {
   await factory.cleanDatabase()
@@ -54,369 +62,364 @@ describe('disable', () => {
   beforeEach(() => {
     // our defaul set of variables
     variables = {
-      id: 'blabla',
+      id: 'some-resource',
     }
   })
-
-  const action = async () => {
-    return client.request(mutation, variables)
-  }
-
-  it('throws authorization error', async () => {
-    await setup()
-    await expect(action()).rejects.toThrow('Not Authorised')
+  describe('unauthenticated', () => {
+    beforeEach(async () => {
+      authenticatedUser = await currentUser.toJson()
+    })
+    it('throws authorization error', async () => {
+      const { errors } = await mutate({ mutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+    })
   })
-
   describe('authenticated', () => {
-    beforeEach(() => {
-      authenticateClient = setupAuthenticateClient({
-        email: 'user@example.org',
-        password: '1234',
+    describe('i am not a moderator', () => {
+      let nonModerator
+
+      beforeEach(async () => {
+        nonModerator = await factory.create('User', {
+          id: 'non-moderator',
+          name: 'Non Moderator',
+          email: 'non.moderator@example.org',
+          password: '1234',
+        })
+        authenticatedUser = await nonModerator.toJson()
+      })
+      it('throws authorization error', async () => {
+        const { errors } = await mutate({ mutation, variables })
+        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
       })
     })
 
-    it('throws authorization error', async () => {
-      await setup()
-      await expect(action()).rejects.toThrow('Not Authorised')
-    })
-
-    describe('as moderator', () => {
-      beforeEach(() => {
-        authenticateClient = setupAuthenticateClient({
-          id: 'u7',
+    describe('I am a moderator', () => {
+      let moderator
+      beforeEach(async () => {
+        moderator = await factory.create('User', {
+          id: 'moderator',
+          name: 'Moderator',
           email: 'moderator@example.org',
           password: '1234',
-          role: 'moderator',
         })
+        authenticatedUser = await moderator.toJson()
       })
 
-      describe('on something that is not a (Comment|Post|User) ', () => {
+      describe('moderate a resource that is not a (Comment|Post|User) ', () => {
         beforeEach(async () => {
           variables = {
-            id: 't23',
+            id: 'sample-tag-id',
           }
-          createResource = () => {
-            return Promise.all([factory.create('Tag', { id: 't23' })])
-          }
+          await Promise.all([factory.create('Tag', { id: 'sample-tag-id' })])
         })
 
         it('returns null', async () => {
-          const expected = { disable: null }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
-        })
-      })
-
-      describe('on a comment', () => {
-        beforeEach(async () => {
-          variables = {
-            id: 'c47',
-          }
-          createPostVariables = {
-            id: 'p3',
-            title: 'post to comment on',
-            content: 'please comment on me',
-            categoryIds,
-          }
-          createCommentVariables = {
-            id: 'c47',
-            postId: 'p3',
-            content: 'this comment was created for this post',
-          }
-          createResource = async () => {
-            await factory.create('User', {
-              id: 'u45',
-              email: 'commenter@example.org',
-              password: '1234',
-            })
-            const asAuthenticatedUser = await factory.authenticateAs({
-              email: 'commenter@example.org',
-              password: '1234',
-            })
-            await asAuthenticatedUser.create('Post', createPostVariables)
-            await asAuthenticatedUser.create('Comment', createCommentVariables)
-          }
-        })
-
-        it('returns disabled resource id', async () => {
-          const expected = { disable: 'c47' }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
-        })
-
-        it('changes .disabledBy', async () => {
-          const before = { Comment: [{ id: 'c47', disabledBy: null }] }
-          const expected = { Comment: [{ id: 'c47', disabledBy: { id: 'u7' } }] }
-
-          await setup()
-          await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
-            before,
-          )
-          await action()
-          await expect(
-            client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
-          ).resolves.toEqual(expected)
-        })
-
-        it('updates .disabled on comment', async () => {
-          const before = { Comment: [{ id: 'c47', disabled: false }] }
-          const expected = { Comment: [{ id: 'c47', disabled: true }] }
-
-          await setup()
-          await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(before)
-          await action()
-          await expect(
-            client.request('{ Comment(disabled: true) { id disabled } }'),
-          ).resolves.toEqual(expected)
-        })
-      })
-
-      describe('on a post', () => {
-        beforeEach(async () => {
-          variables = {
-            id: 'p9',
-          }
-
-          createResource = async () => {
-            await factory.create('User', { email: 'author@example.org', password: '1234' })
-            await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
-            await factory.create('Post', {
-              id: 'p9', // that's the ID we will look for
-              categoryIds,
-            })
-          }
-        })
-
-        it('returns disabled resource id', async () => {
-          const expected = { disable: 'p9' }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
-        })
-
-        it('changes .disabledBy', async () => {
-          const before = { Post: [{ id: 'p9', disabledBy: null }] }
-          const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
-
-          await setup()
-          await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
-            before,
-          )
-          await action()
-          await expect(
-            client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
-          ).resolves.toEqual(expected)
-        })
-
-        it('updates .disabled on post', async () => {
-          const before = { Post: [{ id: 'p9', disabled: false }] }
-          const expected = { Post: [{ id: 'p9', disabled: true }] }
-
-          await setup()
-          await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(before)
-          await action()
-          await expect(client.request('{ Post(disabled: true) { id disabled } }')).resolves.toEqual(
-            expected,
-          )
+          const expected = { data: { disable: null } }
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
         })
       })
     })
   })
-})
 
-describe('enable', () => {
-  const mutation = gql`
-    mutation($id: ID!) {
-      enable(id: $id)
-    }
-  `
-  let variables
+  // describe('authenticated', () => {
+  // beforeEach(() => {
+  //   authenticateClient = setupAuthenticateClient({
+  //     email: 'user@example.org',
+  //     password: '1234',
+  //   })
+  // })
 
-  const action = async () => {
-    return client.request(mutation, variables)
-  }
+  // describe('as moderator', () => {
 
-  beforeEach(() => {
-    // our defaul set of variables
-    variables = {
-      id: 'blabla',
-    }
-  })
+  // describe('on something that is not a (Comment|Post|User) ', () => {
+  // describe('on a comment', () => {
+  //   beforeEach(async () => {
+  //     variables = {
+  //       id: 'c47',
+  //     }
+  //     createPostVariables = {
+  //       id: 'p3',
+  //       title: 'post to comment on',
+  //       content: 'please comment on me',
+  //       categoryIds,
+  //     }
+  //     createCommentVariables = {
+  //       id: 'c47',
+  //       postId: 'p3',
+  //       content: 'this comment was created for this post',
+  //     }
+  //     createResource = async () => {
+  //       await factory.create('User', {
+  //         id: 'u45',
+  //         email: 'commenter@example.org',
+  //         password: '1234',
+  //       })
+  //       const asAuthenticatedUser = await factory.authenticateAs({
+  //         email: 'commenter@example.org',
+  //         password: '1234',
+  //       })
+  //       await asAuthenticatedUser.create('Post', createPostVariables)
+  //       await asAuthenticatedUser.create('Comment', createCommentVariables)
+  //     }
+  //   })
 
-  it('throws authorization error', async () => {
-    await setup()
-    await expect(action()).rejects.toThrow('Not Authorised')
-  })
+  //   it('returns disabled resource id', async () => {
+  //     const expected = { disable: 'c47' }
+  //     await setup()
+  //     await expect(action()).resolves.toEqual(expected)
+  //   })
 
-  describe('authenticated', () => {
-    beforeEach(() => {
-      authenticateClient = setupAuthenticateClient({
-        email: 'user@example.org',
-        password: '1234',
-      })
-    })
+  //   it('changes .disabledBy', async () => {
+  //     const before = { Comment: [{ id: 'c47', disabledBy: null }] }
+  //     const expected = { Comment: [{ id: 'c47', disabledBy: { id: 'u7' } }] }
 
-    it('throws authorization error', async () => {
-      await setup()
-      await expect(action()).rejects.toThrow('Not Authorised')
-    })
+  //     await setup()
+  //     await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
+  //       before,
+  //     )
+  //     await action()
+  //     await expect(
+  //       client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
+  //     ).resolves.toEqual(expected)
+  //   })
 
-    describe('as moderator', () => {
-      beforeEach(async () => {
-        authenticateClient = setupAuthenticateClient({
-          role: 'moderator',
-          email: 'someuser@example.org',
-          password: '1234',
-        })
-      })
+  //   it('updates .disabled on comment', async () => {
+  //     const before = { Comment: [{ id: 'c47', disabled: false }] }
+  //     const expected = { Comment: [{ id: 'c47', disabled: true }] }
 
-      describe('on something that is not a (Comment|Post|User) ', () => {
-        beforeEach(async () => {
-          variables = {
-            id: 't23',
-          }
-          createResource = () => {
-            // we cannot create a :DISABLED relationship here
-            return Promise.all([factory.create('Tag', { id: 't23' })])
-          }
-        })
+  //     await setup()
+  //     await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(before)
+  //     await action()
+  //     await expect(
+  //       client.request('{ Comment(disabled: true) { id disabled } }'),
+  //     ).resolves.toEqual(expected)
+  //   })
+  // })
 
-        it('returns null', async () => {
-          const expected = { enable: null }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
-        })
-      })
+  // describe('on a post', () => {
+  //   beforeEach(async () => {
+  //     variables = {
+  //       id: 'p9',
+  //     }
 
-      describe('on a comment', () => {
-        beforeEach(async () => {
-          variables = {
-            id: 'c456',
-          }
-          createPostVariables = {
-            id: 'p9',
-            title: 'post to comment on',
-            content: 'please comment on me',
-            categoryIds,
-          }
-          createCommentVariables = {
-            id: 'c456',
-            postId: 'p9',
-            content: 'this comment was created for this post',
-          }
-          createResource = async () => {
-            await factory.create('User', {
-              id: 'u123',
-              email: 'author@example.org',
-              password: '1234',
-            })
-            const asAuthenticatedUser = await factory.authenticateAs({
-              email: 'author@example.org',
-              password: '1234',
-            })
-            await asAuthenticatedUser.create('Post', createPostVariables)
-            await asAuthenticatedUser.create('Comment', createCommentVariables)
+  //     createResource = async () => {
+  //       await factory.create('User', { email: 'author@example.org', password: '1234' })
+  //       await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
+  //       await factory.create('Post', {
+  //         id: 'p9', // that's the ID we will look for
+  //         categoryIds,
+  //       })
+  //     }
+  //   })
 
-            const disableMutation = gql`
-              mutation {
-                disable(id: "c456")
-              }
-            `
-            await factory.mutate(disableMutation) // that's we want to delete
-          }
-        })
+  //   it('returns disabled resource id', async () => {
+  //     const expected = { disable: 'p9' }
+  //     await setup()
+  //     await expect(action()).resolves.toEqual(expected)
+  //   })
 
-        it('returns disabled resource id', async () => {
-          const expected = { enable: 'c456' }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
-        })
+  //   it('changes .disabledBy', async () => {
+  //     const before = { Post: [{ id: 'p9', disabledBy: null }] }
+  //     const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
 
-        it('changes .disabledBy', async () => {
-          const before = { Comment: [{ id: 'c456', disabledBy: { id: 'u123' } }] }
-          const expected = { Comment: [{ id: 'c456', disabledBy: null }] }
+  //     await setup()
+  //     await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
+  //       before,
+  //     )
+  //     await action()
+  //     await expect(
+  //       client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
+  //     ).resolves.toEqual(expected)
+  //   })
 
-          await setup()
-          await expect(
-            client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
-          ).resolves.toEqual(before)
-          await action()
-          await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
-            expected,
-          )
-        })
+  //   it('updates .disabled on post', async () => {
+  //     const before = { Post: [{ id: 'p9', disabled: false }] }
+  //     const expected = { Post: [{ id: 'p9', disabled: true }] }
 
-        it('updates .disabled on post', async () => {
-          const before = { Comment: [{ id: 'c456', disabled: true }] }
-          const expected = { Comment: [{ id: 'c456', disabled: false }] }
+  //     await setup()
+  //     await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(before)
+  //     await action()
+  //     await expect(
+  //       client.request('{ Post(disabled: true) { id disabled } }'),
+  //     ).resolves.toEqual(expected)
+  //   })
+  // })
+  // })
+  // })
 
-          await setup()
-          await expect(
-            client.request('{ Comment(disabled: true) { id disabled } }'),
-          ).resolves.toEqual(before)
-          await action() // this updates .disabled
-          await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(expected)
-        })
-      })
+  // describe('enable', () => {
+  //   const mutation = gql`
+  //     mutation($id: ID!) {
+  //       enable(id: $id)
+  //     }
+  //   `
+  //   const action = async () => {
+  //     return client.request(mutation, variables)
+  //   }
 
-      describe('on a post', () => {
-        beforeEach(async () => {
-          variables = {
-            id: 'p9',
-          }
+  // beforeEach(() => {
+  // our default set of variables
+  //   variables = {
+  //     id: 'blabla',
+  //   }
+  // })
 
-          createResource = async () => {
-            await factory.create('User', {
-              id: 'u123',
-              email: 'author@example.org',
-              password: '1234',
-            })
-            await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
-            await factory.create('Post', {
-              id: 'p9', // that's the ID we will look for
-              categoryIds,
-            })
+  // it('throws authorization error', async () => {
+  //   await setup()
+  //   await expect(action()).rejects.toThrow('Not Authorised')
+  // })
 
-            const disableMutation = gql`
-              mutation {
-                disable(id: "p9")
-              }
-            `
-            await factory.mutate(disableMutation) // that's we want to delete
-          }
-        })
-
-        it('returns disabled resource id', async () => {
-          const expected = { enable: 'p9' }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
-        })
-
-        it('changes .disabledBy', async () => {
-          const before = { Post: [{ id: 'p9', disabledBy: { id: 'u123' } }] }
-          const expected = { Post: [{ id: 'p9', disabledBy: null }] }
-
-          await setup()
-          await expect(
-            client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
-          ).resolves.toEqual(before)
-          await action()
-          await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
-            expected,
-          )
-        })
-
-        it('updates .disabled on post', async () => {
-          const before = { Post: [{ id: 'p9', disabled: true }] }
-          const expected = { Post: [{ id: 'p9', disabled: false }] }
-
-          await setup()
-          await expect(client.request('{ Post(disabled: true) { id disabled } }')).resolves.toEqual(
-            before,
-          )
-          await action() // this updates .disabled
-          await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(expected)
-        })
-      })
-    })
-  })
+  // describe('authenticated', () => {
+  // beforeEach(() => {
+  //   authenticateClient = setupAuthenticateClient({
+  //     email: 'user@example.org',
+  //     password: '1234',
+  //   })
+  // })
+  // it('throws authorization error', async () => {
+  //   await setup()
+  //   await expect(action()).rejects.toThrow('Not Authorised')
+  // })
+  // describe('as moderator', () => {
+  //   beforeEach(async () => {
+  //     authenticateClient = setupAuthenticateClient({
+  //       role: 'moderator',
+  //       email: 'someuser@example.org',
+  //       password: '1234',
+  //     })
+  //   })
+  //   describe('on something that is not a (Comment|Post|User) ', () => {
+  //     beforeEach(async () => {
+  //       variables = {
+  //         id: 't23',
+  //       }
+  //       createResource = () => {
+  //         // we cannot create a :DISABLED relationship here
+  //         return Promise.all([factory.create('Tag', { id: 't23' })])
+  //       }
+  //     })
+  //     it('returns null', async () => {
+  //       const expected = { enable: null }
+  //       await setup()
+  //       await expect(action()).resolves.toEqual(expected)
+  //     })
+  //   })
+  //   describe('on a comment', () => {
+  //     beforeEach(async () => {
+  //       variables = {
+  //         id: 'c456',
+  //       }
+  //       createPostVariables = {
+  //         id: 'p9',
+  //         title: 'post to comment on',
+  //         content: 'please comment on me',
+  //         categoryIds,
+  //       }
+  //       createCommentVariables = {
+  //         id: 'c456',
+  //         postId: 'p9',
+  //         content: 'this comment was created for this post',
+  //       }
+  //       createResource = async () => {
+  //         await factory.create('User', {
+  //           id: 'u123',
+  //           email: 'author@example.org',
+  //           password: '1234',
+  //         })
+  //         const asAuthenticatedUser = await factory.authenticateAs({
+  //           email: 'author@example.org',
+  //           password: '1234',
+  //         })
+  //         await asAuthenticatedUser.create('Post', createPostVariables)
+  //         await asAuthenticatedUser.create('Comment', createCommentVariables)
+  //         const disableMutation = gql`
+  //           mutation {
+  //             disable(id: "c456")
+  //           }
+  //         `
+  //         await factory.mutate(disableMutation) // that's we want to delete
+  //       }
+  //     })
+  //     it('returns disabled resource id', async () => {
+  //       const expected = { enable: 'c456' }
+  //       await setup()
+  //       await expect(action()).resolves.toEqual(expected)
+  //     })
+  //     it('changes .disabledBy', async () => {
+  //       const before = { Comment: [{ id: 'c456', disabledBy: { id: 'u123' } }] }
+  //       const expected = { Comment: [{ id: 'c456', disabledBy: null }] }
+  //       await setup()
+  //       await expect(
+  //         client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
+  //       ).resolves.toEqual(before)
+  //       await action()
+  //       await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
+  //         expected,
+  //       )
+  //     })
+  //     it('updates .disabled on post', async () => {
+  //       const before = { Comment: [{ id: 'c456', disabled: true }] }
+  //       const expected = { Comment: [{ id: 'c456', disabled: false }] }
+  //       await setup()
+  //       await expect(
+  //         client.request('{ Comment(disabled: true) { id disabled } }'),
+  //       ).resolves.toEqual(before)
+  //       await action() // this updates .disabled
+  //       await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(expected)
+  //     })
+  //   })
+  //   describe('on a post', () => {
+  //     beforeEach(async () => {
+  //       variables = {
+  //         id: 'p9',
+  //       }
+  //       createResource = async () => {
+  //         await factory.create('User', {
+  //           id: 'u123',
+  //           email: 'author@example.org',
+  //           password: '1234',
+  //         })
+  //         await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
+  //         await factory.create('Post', {
+  //           id: 'p9', // that's the ID we will look for
+  //           categoryIds,
+  //         })
+  //         const disableMutation = gql`
+  //           mutation {
+  //             disable(id: "p9")
+  //           }
+  //         `
+  //         await factory.mutate(disableMutation) // that's we want to delete
+  //       }
+  //     })
+  //     it('returns disabled resource id', async () => {
+  //       const expected = { enable: 'p9' }
+  //       await setup()
+  //       await expect(action()).resolves.toEqual(expected)
+  //     })
+  //     it('changes .disabledBy', async () => {
+  //       const before = { Post: [{ id: 'p9', disabledBy: { id: 'u123' } }] }
+  //       const expected = { Post: [{ id: 'p9', disabledBy: null }] }
+  //       await setup()
+  //       await expect(
+  //         client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
+  //       ).resolves.toEqual(before)
+  //       await action()
+  //       await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
+  //         expected,
+  //       )
+  //     })
+  //     it('updates .disabled on post', async () => {
+  //       const before = { Post: [{ id: 'p9', disabled: true }] }
+  //       const expected = { Post: [{ id: 'p9', disabled: false }] }
+  //       await setup()
+  //       await expect(client.request('{ Post(disabled: true) { id disabled } }')).resolves.toEqual(
+  //         before,
+  //       )
+  //       await action() // this updates .disabled
+  //       await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(expected)
+  //     })
+  //   })
+  // })
+  // })
 })
