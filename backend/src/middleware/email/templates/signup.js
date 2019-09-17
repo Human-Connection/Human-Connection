@@ -3,7 +3,6 @@ import fs from 'fs'
 import path from 'path'
 import mustache from 'mustache'
 
-const signupText = fs.readFileSync(path.join(__dirname, './signup.txt'), 'utf-8')
 const signupHtml = fs.readFileSync(path.join(__dirname, './signup.html'), 'utf-8')
 
 export const signupTemplate = options => {
@@ -20,7 +19,6 @@ export const signupTemplate = options => {
   return {
     to: email,
     subject,
-    text: mustache.render(signupText, { actionUrl, nonce, supportUrl }),
     html: mustache.render(signupHtml, { actionUrl, nonce, supportUrl }),
   }
 }

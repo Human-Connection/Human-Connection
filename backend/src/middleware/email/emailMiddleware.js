@@ -1,18 +1,24 @@
 import CONFIG from '../../config'
 import nodemailer from 'nodemailer'
+import { htmlToText } from 'nodemailer-html-to-text'
 import { resetPasswordMail, wrongAccountMail } from './templates/passwordReset'
 import { signupTemplate } from './templates/signup'
 
 let sendMail
 if (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT) {
   sendMail = async templateArgs => {
-    await transporter().sendMail({
+    const transport = transporter()
+    transport.use('compile', htmlToText({
+      ignoreImage: true,
+      wordwrap: false,
+    }))
+    await transport.sendMail({
       from: '"Human Connection" <info@human-connection.org>',
       ...templateArgs,
     })
   }
 } else {
-  sendMail = () => {}
+  sendMail = () => { }
   if (process.env.NODE_ENV !== 'test') {
     // eslint-disable-next-line no-console
     console.log('Warning: Email middleware will not try to send mails.')
