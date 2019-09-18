@@ -8,17 +8,20 @@ let sendMail
 if (CONFIG.SMTP_HOST && CONFIG.SMTP_PORT) {
   sendMail = async templateArgs => {
     const transport = transporter()
-    transport.use('compile', htmlToText({
-      ignoreImage: true,
-      wordwrap: false,
-    }))
+    transport.use(
+      'compile',
+      htmlToText({
+        ignoreImage: true,
+        wordwrap: false,
+      }),
+    )
     await transport.sendMail({
       from: '"Human Connection" <info@human-connection.org>',
       ...templateArgs,
     })
   }
 } else {
-  sendMail = () => { }
+  sendMail = () => {}
   if (process.env.NODE_ENV !== 'test') {
     // eslint-disable-next-line no-console
     console.log('Warning: Email middleware will not try to send mails.')
