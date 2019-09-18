@@ -590,7 +590,7 @@
     },
     "data-privacy": {
       "title": "Du und deine Daten",
-      "description": "Bitte beachte, dass wir die Inhalte der Alphaversion zu Werbezwecken, Webpräsentationen usw. verwenden, aber wir glauben, dass das auch in Deinem Interesse ist. Am besten keinen Nachnamen eingeben und bei noch mehr Datensparsamkeit ein Profilfoto ohne Identität verwenden. Mehr in unserer <a href=\"/data-privacy\">Datenschutzerklärung</a>"
+      "description": "Bitte beachte, dass wir die Inhalte der Alphaversion zu Werbezwecken, Webpräsentationen usw. verwenden, aber wir glauben, dass das auch in Deinem Interesse ist. Am besten keinen Nachnamen eingeben und bei noch mehr Datensparsamkeit ein Profilfoto ohne Identität verwenden. Mehr in unserer  <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\" >Datenschutzerklärung</a>"
     },
     "work-in-progress": {
       "title": "Baustellen",
