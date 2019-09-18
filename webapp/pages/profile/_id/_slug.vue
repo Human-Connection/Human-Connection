@@ -27,7 +27,12 @@
             />
           </client-only>
           <ds-space margin="small">
-            <ds-heading tag="h3" align="center" no-margin>{{ userName }}</ds-heading>
+            <ds-heading tag="h3" align="center" no-margin>
+              {{ userName }}
+            </ds-heading>
+            <ds-text align="center" color="soft">
+              {{ userSlug }}
+            </ds-text>
             <ds-text v-if="user.location" align="center" color="soft" size="small">
               <ds-icon name="map-marker" />
               {{ user.location.name }}
@@ -143,7 +148,7 @@
           <ds-card style="position: relative; height: auto;">
             <ds-space margin="x-small">
               <ds-text tag="h5" color="soft">
-                {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
+                {{ $t('profile.socialMedia') }} {{ userName | truncate(15) }}?
               </ds-text>
               <template>
                 <ds-space v-for="link in socialMediaLinks" :key="link.username" margin="x-small">
@@ -335,6 +340,10 @@ export default {
     userName() {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
+    },
+    userSlug() {
+      const { slug } = this.user || {}
+      return slug && `@${slug}`
     },
   },
   watch: {
