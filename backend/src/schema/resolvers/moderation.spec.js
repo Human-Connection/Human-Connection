@@ -179,11 +179,35 @@ describe('disable', () => {
             id: 'sample-post-id',
           })
         })
-
+        const postQuery = gql`
+          query($id: ID) {
+            Post(id: $id) {
+              id
+              disabledBy {
+                id
+              }
+            }
+          }
+        `
         it('returns disabled resource id', async () => {
           variables = { id: 'sample-post-id' }
-          const expected = { data: { disable: 'sample-post-id' } }
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            data: { disable: 'sample-post-id' },
+          })
+        })
+
+        it.only('changes .disabledBy', async () => {
+          variables = { id: 'sample-post-id' }
+          const before = { data: { Post: [{ id: 'sample-post-id', disabledBy: null }] } }
+          const expected = {
+            data: { Post: [{ id: 'sample-post-id', disabledBy: { id: 'moderator-id' } }] },
+          }
+
+          await expect(query({ query: postQuery, variables })).resolves.toMatchObject(before)
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            data: { disable: 'sample-post-id' },
+          })
+          await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
         })
       })
     })
@@ -211,12 +235,6 @@ describe('disable', () => {
   //         categoryIds,
   //       })
   //     }
-  //   })
-
-  //   it('returns disabled resource id', async () => {
-  //     const expected = { disable: 'p9' }
-  //     await setup()
-  //     await expect(action()).resolves.toEqual(expected)
   //   })
 
   //   it('changes .disabledBy', async () => {
