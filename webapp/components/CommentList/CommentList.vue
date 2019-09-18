@@ -16,7 +16,7 @@
       </span>
     </h3>
     <ds-space margin-bottom="large" />
-    <div v-if="post.comments && post.comments.length" id="comments" class="comments">
+    <div v-if="post.comments && post.comments.length" id="comments">
       <comment
         v-for="comment in post.comments"
         :key="comment.id"
