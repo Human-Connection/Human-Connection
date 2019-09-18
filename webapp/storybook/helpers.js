@@ -3,8 +3,9 @@ import Vuex from 'vuex'
 import vuexI18n from 'vuex-i18n/dist/vuex-i18n.umd.js'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
-import VTooltip from '~/plugins/v-tooltip'
 import layout from './layout.vue'
+
+import '~/plugins/v-tooltip'
 
 const helpers = {
   init(options = {}) {
