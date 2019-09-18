@@ -1,13 +1,13 @@
 import CONFIG from '../../config'
 import nodemailer from 'nodemailer'
 import { htmlToText } from 'nodemailer-html-to-text'
-import { resetPasswordMail, wrongAccountMail } from './templates/passwordReset'
+import { resetPasswordTemplate } from './templates/passwordReset'
 import { signupTemplate } from './templates/signup'
 
 const hasEmailConfig = CONFIG.SMTP_HOST && CONFIG.SMTP_PORT
 const hasAuthData = CONFIG.SMTP_USERNAME && CONFIG.SMTP_PASSWORD
 
-let sendMail = () => {}
+let sendMail = () => { }
 if (!hasEmailConfig) {
   if (process.env.NODE_ENV !== 'test') {
     // eslint-disable-next-line no-console
@@ -49,8 +49,7 @@ const sendSignupMail = async (resolve, root, args, context, resolveInfo) => {
 const sendPasswordResetMail = async (resolve, root, args, context, resolveInfo) => {
   const { email } = args
   const { email: emailFound, nonce, name } = await resolve(root, args, context, resolveInfo)
-  const mailTemplate = emailFound ? resetPasswordMail : wrongAccountMail
-  await sendMail(mailTemplate({ email, nonce, name }))
+  await sendMail(resetPasswordTemplate({ emailFound, email, nonce, name }))
   return true
 }
 

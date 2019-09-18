@@ -6,36 +6,33 @@ import CONFIG from '../../../config'
 const passwordResetHtml = fs.readFileSync(path.join(__dirname, './resetPassword.html'), 'utf-8')
 const wrongAccountHtml = fs.readFileSync(path.join(__dirname, './wrongAccount.html'), 'utf-8')
 
-export const resetPasswordMail = ({
+const supportUrl = 'https://human-connection.org/en/contact/'
+const from = '"Human Connection" <info@human-connection.org>'
+
+export const resetPasswordTemplate = ({
   name,
   email,
+  emailFound,
   nonce,
-  subject = 'Neues Passwort / Reset Password',
-  supportUrl = 'https://human-connection.org/en/contact/',
 }) => {
-  const actionUrl = new URL('/password-reset/change-password', CONFIG.CLIENT_URI)
-  actionUrl.searchParams.set('nonce', nonce)
-  actionUrl.searchParams.set('email', email)
+  let subject, htmlTemplate, actionUrl
 
-  return {
-    from: '"Human Connection" <info@human-connection.org>',
-    to: email,
-    subject,
-    html: mustache.render(passwordResetHtml, { actionUrl, name, nonce, supportUrl }),
+  if (emailFound) {
+    subject = 'Neues Passwort | Reset Password'
+    htmlTemplate = passwordResetHtml
+    actionUrl = new URL('/password-reset/change-password', CONFIG.CLIENT_URI)
+    actionUrl.searchParams.set('nonce', nonce)
+    actionUrl.searchParams.set('email', email)
+  } else {
+    subject = 'Falsche Mailadresse? | Wrong Email?'
+    htmlTemplate = wrongAccountHtml
+    actionUrl = new URL('/password-reset/request', CONFIG.CLIENT_URI)
   }
-}
 
-export const wrongAccountMail = options => {
-  const {
-    email,
-    subject = `We received a request to reset your password with this email address (${email})`,
-    supportUrl = 'https://human-connection.org/en/contact/',
-  } = options
-  const actionUrl = new URL('/password-reset/request', CONFIG.CLIENT_URI)
   return {
-    from: '"Human Connection" <info@human-connection.org>',
+    from,
     to: email,
     subject,
-    html: mustache.render(wrongAccountHtml, { actionUrl, supportUrl }),
+    html: mustache.render(htmlTemplate, { actionUrl, name, nonce, supportUrl }),
   }
 }
