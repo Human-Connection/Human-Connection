@@ -30,7 +30,7 @@
             <ds-heading tag="h3" align="center" no-margin>
               {{ userName }}
             </ds-heading>
-            <ds-text size="large" align="center" color="soft">
+            <ds-text align="center" color="soft">
               {{ userSlug }}
             </ds-text>
             <ds-text v-if="user.location" align="center" color="soft" size="small">

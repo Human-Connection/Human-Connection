@@ -11,17 +11,19 @@
         <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
           <hc-avatar class="avatar" :user="user" />
           <div>
-            <b class="username">{{ userName | truncate(18) }}</b>
+            <ds-text align="left">
+              <b class="username">{{ userName | truncate(18) }}</b>
+              <ds-text v-if="dateTime" size="small" color="soft">
+                <ds-icon name="clock" />
+                <client-only>
+                  <hc-relative-date-time :date-time="dateTime" />
+                </client-only>
+              </ds-text>
+            </ds-text>
           </div>
           <!-- Time -->
-          <ds-text align="right" size="small" color="soft">
-            <span class="slug">{{ userSlug }}</span>
-            <div v-if="dateTime" style="display: inline;">
-              <ds-icon name="clock" />
-              <client-only>
-                <hc-relative-date-time :date-time="dateTime" />
-              </client-only>
-            </div>
+          <ds-text align="left" size="small" color="soft">
+            {{ userSlug }}
           </ds-text>
         </div>
       </nuxt-link>
