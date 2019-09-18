@@ -54,7 +54,7 @@
     "bcryptjs": "~2.4.3",
     "cheerio": "~1.0.0-rc.3",
     "cors": "~2.8.5",
-    "cross-env": "~5.2.1",
+    "cross-env": "~6.0.0",
     "date-fns": "2.2.1",
     "debug": "~4.1.1",
     "dotenv": "~8.1.0",
