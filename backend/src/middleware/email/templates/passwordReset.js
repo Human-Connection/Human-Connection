@@ -13,6 +13,7 @@ export const resetPasswordMail = options => {
   actionUrl.searchParams.set('email', email)
 
   return {
+    from: '"Human Connection" <info@human-connection.org>',
     to: email,
     subject,
     text: `
@@ -53,6 +54,7 @@ export const wrongAccountMail = options => {
   } = options
   const actionUrl = new URL('/password-reset/request', CONFIG.CLIENT_URI)
   return {
+    from: '"Human Connection" <info@human-connection.org>',
     to: email,
     subject,
     text: `
