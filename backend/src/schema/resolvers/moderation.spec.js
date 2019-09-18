@@ -183,6 +183,7 @@ describe('disable', () => {
           query($id: ID) {
             Post(id: $id) {
               id
+              disabled
               disabledBy {
                 id
               }
@@ -196,12 +197,24 @@ describe('disable', () => {
           })
         })
 
-        it.only('changes .disabledBy', async () => {
+        it('changes .disabledBy', async () => {
           variables = { id: 'sample-post-id' }
           const before = { data: { Post: [{ id: 'sample-post-id', disabledBy: null }] } }
           const expected = {
             data: { Post: [{ id: 'sample-post-id', disabledBy: { id: 'moderator-id' } }] },
           }
+
+          await expect(query({ query: postQuery, variables })).resolves.toMatchObject(before)
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            data: { disable: 'sample-post-id' },
+          })
+          await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
+        })
+
+        it('updates .disabled on post', async () => {
+          const before = { data: { Post: [{ id: 'sample-post-id', disabled: false }] } }
+          const expected = { data: { Post: [{ id: 'sample-post-id', disabled: true }] } }
+          variables = { id: 'sample-post-id' }
 
           await expect(query({ query: postQuery, variables })).resolves.toMatchObject(before)
           await expect(mutate({ mutation, variables })).resolves.toMatchObject({
@@ -219,51 +232,6 @@ describe('disable', () => {
   //     email: 'user@example.org',
   //     password: '1234',
   //   })
-  // })
-
-  // describe('as moderator', () => {
-
-  // describe('on a post', () => {
-  //   beforeEach(async () => {
-  //
-
-  //     createResource = async () => {
-  //       await factory.create('User', { email: 'author@example.org', password: '1234' })
-  //       await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
-  //       await factory.create('Post', {
-  //         id: 'p9', // that's the ID we will look for
-  //         categoryIds,
-  //       })
-  //     }
-  //   })
-
-  //   it('changes .disabledBy', async () => {
-  //     const before = { Post: [{ id: 'p9', disabledBy: null }] }
-  //     const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
-
-  //     await setup()
-  //     await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
-  //       before,
-  //     )
-  //     await action()
-  //     await expect(
-  //       client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
-  //     ).resolves.toEqual(expected)
-  //   })
-
-  //   it('updates .disabled on post', async () => {
-  //     const before = { Post: [{ id: 'p9', disabled: false }] }
-  //     const expected = { Post: [{ id: 'p9', disabled: true }] }
-
-  //     await setup()
-  //     await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(before)
-  //     await action()
-  //     await expect(
-  //       client.request('{ Post(disabled: true) { id disabled } }'),
-  //     ).resolves.toEqual(expected)
-  //   })
-  // })
-  // })
   // })
 
   // describe('enable', () => {
