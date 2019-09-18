@@ -17,12 +17,9 @@ config.stubs['nuxt-link'] = '<span><slot /></span>'
 config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('CommentList.vue', () => {
-  let mocks
-  let store
-  let wrapper
-  let propsData
+  let mocks, store, wrapper, propsData, stubs
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     beforeEach(() => {
       propsData = {
         post: {
@@ -53,6 +50,9 @@ describe('CommentList.vue', () => {
           },
         },
       }
+      stubs = {
+        EditorContent: "<div class='stub'></div>",
+      }
     })
 
     const Wrapper = () => {
@@ -61,6 +61,7 @@ describe('CommentList.vue', () => {
         mocks,
         localVue,
         propsData,
+        stubs,
       })
     }
 
@@ -75,10 +76,6 @@ describe('CommentList.vue', () => {
 
     it('displays a comments counter', () => {
       expect(wrapper.find('span.ds-tag').text()).toEqual('1')
-    })
-
-    it('displays comments when there are comments to display', () => {
-      expect(wrapper.find('div.comments').text()).toEqual('this is a comment')
     })
   })
 })

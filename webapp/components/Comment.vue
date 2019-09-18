@@ -46,12 +46,12 @@
         />
         <div
           v-show="comment.content !== comment.contentExcerpt && comment.content.length > 180"
-          style="text-align: right;  margin-right: 20px; margin-top: -12px;"
+          class="show-more-or-less-div"
         >
           <content-viewer
             v-if="isCollapsed"
             :content="comment.contentExcerpt"
-            class="padding-left"
+            class="padding-left text-align-left"
           />
           <span class="show-more-or-less">
             <a v-if="isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
@@ -60,7 +60,7 @@
           </span>
         </div>
         <content-viewer v-if="!isCollapsed" :content="comment.content" class="padding-left" />
-        <div style="text-align: right;  margin-right: 20px; margin-top: -12px;">
+        <div class="show-more-or-less-div">
           <span class="show-more-or-less">
             <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" class="padding-left">
               {{ $t('comment.show.less') }}
@@ -171,6 +171,16 @@ export default {
 <style lang="scss" scoped>
 .padding-left {
   padding-left: 40px;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+div.show-more-or-less-div {
+  text-align: right;
+  margin-right: 20px;
+  margin-top: -12px;
 }
 
 span.show-more-or-less {
