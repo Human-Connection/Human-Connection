@@ -4,6 +4,7 @@ import mustache from 'mustache'
 import CONFIG from '../../../config'
 
 const passwordResetHtml = fs.readFileSync(path.join(__dirname, './resetPassword.html'), 'utf-8')
+const wrongAccountHtml = fs.readFileSync(path.join(__dirname, './wrongAccount.html'), 'utf-8')
 
 export const resetPasswordMail = ({
   name,
@@ -35,29 +36,6 @@ export const wrongAccountMail = options => {
     from: '"Human Connection" <info@human-connection.org>',
     to: email,
     subject,
-    text: `
-We received a request to reset the password to access Human Connection with your
-email address, but we were unable to find an account associated with this
-address.
-
-If you use Human Connection and were expecting this email, consider trying to
-request a password reset using the email address associated with your account.
-Try a different email:
-
-${actionUrl}
-
-If you do not use Human Connection or did not request a password reset, please
-ignore this email. Feel free to contact support if you have further questions:
-
-${supportUrl}
-
-Thanks,
-The Human Connection Team
-
-Human Connection gemeinnützige GmbH
-Bahnhofstr. 11
-73235 Weilheim / Teck
-Deutschland
-  `,
+    html: mustache.render(wrongAccountHtml, { actionUrl, supportUrl }),
   }
 }
