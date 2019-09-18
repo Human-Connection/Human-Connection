@@ -16,7 +16,7 @@ module.exports = {
   wasInvited: 'boolean',
   wasSeeded: 'boolean',
   locationName: { type: 'string', allow: [null] },
-  about: { type: 'string', allow: [null] },
+  about: { type: 'string', allow: [null, ''] },
   primaryEmail: {
     type: 'relationship',
     relationship: 'PRIMARY_EMAIL',
