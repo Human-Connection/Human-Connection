@@ -1,13 +1,17 @@
+import fs from 'fs'
+import path from 'path'
+import mustache from 'mustache'
 import CONFIG from '../../../config'
 
-export const resetPasswordMail = options => {
-  const {
-    name,
-    email,
-    nonce,
-    subject = 'Use this link to reset your password. The link is only valid for 24 hours.',
-    supportUrl = 'https://human-connection.org/en/contact/',
-  } = options
+const passwordResetHtml = fs.readFileSync(path.join(__dirname, './resetPassword.html'), 'utf-8')
+
+export const resetPasswordMail = ({
+  name,
+  email,
+  nonce,
+  subject = 'Neues Passwort / Reset Password',
+  supportUrl = 'https://human-connection.org/en/contact/',
+}) => {
   const actionUrl = new URL('/password-reset/change-password', CONFIG.CLIENT_URI)
   actionUrl.searchParams.set('nonce', nonce)
   actionUrl.searchParams.set('email', email)
@@ -16,33 +20,7 @@ export const resetPasswordMail = options => {
     from: '"Human Connection" <info@human-connection.org>',
     to: email,
     subject,
-    text: `
-Hi ${name}!
-
-You recently requested to reset your password for your Human Connection account.
-Use the link below to reset it. This password reset is only valid for the next
-24 hours.
-
-${actionUrl}
-
-If you did not request a password reset, please ignore this email or contact
-support if you have questions:
-
-${supportUrl}
-
-Thanks,
-The Human Connection Team
-
-If you're having trouble with the link above, you can manually copy and
-paste the following code into your browser window:
-
-${nonce}
-
-Human Connection gemeinnützige GmbH
-Bahnhofstr. 11
-73235 Weilheim / Teck
-Deutschland
-    `,
+    html: mustache.render(passwordResetHtml, { actionUrl, name, nonce, supportUrl }),
   }
 }
 
