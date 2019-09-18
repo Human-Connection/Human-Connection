@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name:  {{ .Release.Name }}-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    certmanager.k8s.io/issuer: {{ .Values.letsencryptIssuer }}
+    certmanager.k8s.io/acme-challenge-type: http01
+    nginx.ingress.kubernetes.io/proxy-body-size: 6m
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.humanConnectionDomain }}
+      secretName: tls
+  rules:
+    - host: {{ .Values.humanConnectionDomain }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: webapp
+              servicePort: 3000
+{{- if .Values.developmentMailserverDomain }}
+    - host: {{ .Values.developmentMailserverDomain }}
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: {{ .Release.Name }}-mailserver
+            servicePort: 80
+{{- end }}
