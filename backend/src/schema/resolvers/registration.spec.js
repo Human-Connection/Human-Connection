@@ -310,11 +310,60 @@ describe('Signup', () => {
         })
       })
 
-      it('creates a Signup with a cryptographic `nonce`', async () => {
-        await mutate({ mutation, variables })
-        let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
-        emailAddress = await emailAddress.toJson()
-        expect(emailAddress.nonce).toEqual(expect.any(String))
+      describe('creates a EmailAddress node', () => {
+        it('with `createdAt` attribute', async () => {
+          await mutate({ mutation, variables })
+          let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
+          emailAddress = await emailAddress.toJson()
+          expect(emailAddress.createdAt).toBeTruthy()
+          expect(Date.parse(emailAddress.createdAt)).toEqual(expect.any(Number))
+        })
+
+        it('with a cryptographic `nonce`', async () => {
+          await mutate({ mutation, variables })
+          let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
+          emailAddress = await emailAddress.toJson()
+          expect(emailAddress.nonce).toEqual(expect.any(String))
+        })
+
+        describe('if the email already exists', () => {
+          let email
+          beforeEach(async () => {
+            email = await factory.create('EmailAddress', {
+              email: 'someuser@example.org',
+              verifiedAt: null,
+            })
+          })
+
+          describe('and the user has registered already', () => {
+            beforeEach(async () => {
+              await factory.create('User', { email })
+            })
+
+            it('throws UserInputError error because of unique constraint violation', async () => {
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                errors: [{ message: 'User account with this email already exists.' }],
+              })
+            })
+          })
+
+          describe('but the user has not yet registered', () => {
+            it('resolves with the already existing email', async () => {
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                data: { Signup: { email: 'someuser@example.org' } },
+              })
+            })
+
+            it('creates no additional `EmailAddress` node', async () => {
+              // admin account and the already existing user
+              await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                data: { Signup: { email: 'someuser@example.org' } },
+              })
+              await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+            })
+          })
+        })
       })
     })
   })

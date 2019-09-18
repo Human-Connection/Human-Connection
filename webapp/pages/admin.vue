@@ -48,8 +48,8 @@ export default {
           path: `/admin/categories`,
         },
         {
-          name: this.$t('admin.tags.name'),
-          path: `/admin/tags`,
+          name: this.$t('admin.hashtags.name'),
+          path: `/admin/hashtags`,
         },
         {
           name: this.$t('admin.invites.name'),

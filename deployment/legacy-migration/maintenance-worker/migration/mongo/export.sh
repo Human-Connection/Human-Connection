@@ -44,7 +44,7 @@ export_collection_query "follows" '{"foreignService": "users"}' "users"
 # export_collection "settings"
 export_collection "shouts"
 # export_collection "status"
-export_collection "users"
+export_collection_query "users" '{"isVerified": true }' "verified"
 # export_collection "userscandos"
 # export_collection "usersettings"
 

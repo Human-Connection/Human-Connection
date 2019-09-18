@@ -6,14 +6,30 @@ import encryptPassword from '../../helpers/encryptPassword'
 
 const instance = neode()
 
-/*
- * TODO: remove this function as soon type `User` has no `email` property
- * anymore
- */
-const checkEmailDoesNotExist = async ({ email }) => {
+const alreadyExistingMail = async (_parent, args, context) => {
+  let { email } = args
   email = email.toLowerCase()
-  const emails = await instance.all('EmailAddress', { email })
-  if (emails.length > 0) throw new UserInputError('User account with this email already exists.')
+  const cypher = `
+    MATCH (email:EmailAddress {email: $email})
+    OPTIONAL MATCH (email)-[:PRIMARY_EMAIL]-(user)
+    RETURN email, user
+  `
+  let transactionRes
+  const session = context.driver.session()
+  try {
+    transactionRes = await session.run(cypher, { email })
+  } finally {
+    session.close()
+  }
+  const [result] = transactionRes.records.map(record => {
+    return {
+      alreadyExistingEmail: record.get('email').properties,
+      user: record.get('user') && record.get('user').properties,
+    }
+  })
+  const { alreadyExistingEmail, user } = result || {}
+  if (user) throw new UserInputError('User account with this email already exists.')
+  return alreadyExistingEmail
 }
 
 export default {
@@ -37,22 +53,24 @@ export default {
       }
       return response
     },
-    Signup: async (_parent, args, _context, _resolveInfo) => {
+    Signup: async (_parent, args, context) => {
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
-      await checkEmailDoesNotExist({ email: args.email })
+      let emailAddress = await alreadyExistingMail(_parent, args, context)
+      if (emailAddress) return emailAddress
       try {
-        const emailAddress = await instance.create('EmailAddress', args)
+        emailAddress = await instance.create('EmailAddress', args)
         return emailAddress.toJson()
       } catch (e) {
         throw new UserInputError(e.message)
       }
     },
-    SignupByInvitation: async (_parent, args, _context, _resolveInfo) => {
+    SignupByInvitation: async (_parent, args, context) => {
       const { token } = args
       const nonce = uuid().substring(0, 6)
       args.nonce = nonce
-      await checkEmailDoesNotExist({ email: args.email })
+      let emailAddress = await alreadyExistingMail(_parent, args, context)
+      if (emailAddress) return emailAddress
       try {
         const result = await instance.cypher(
           `
@@ -69,14 +87,14 @@ export default {
         )
         if (!validInvitationCode)
           throw new UserInputError('Invitation code already used or does not exist.')
-        const emailAddress = await instance.create('EmailAddress', args)
+        emailAddress = await instance.create('EmailAddress', args)
         await validInvitationCode.relateTo(emailAddress, 'activated')
         return emailAddress.toJson()
       } catch (e) {
         throw new UserInputError(e)
       }
     },
-    SignupVerification: async (_parent, args, _context, _resolveInfo) => {
+    SignupVerification: async (_parent, args) => {
       const { termsAndConditionsAgreedVersion } = args
       const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
       if (!regEx.test(termsAndConditionsAgreedVersion)) {

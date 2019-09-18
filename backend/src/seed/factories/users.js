@@ -24,7 +24,15 @@ export default function create() {
       }
       args = await encryptPassword(args)
       const user = await neodeInstance.create('User', args)
-      const email = await factoryInstance.create('EmailAddress', { email: args.email })
+
+      let email
+      if (typeof args.email === 'object') {
+        // probably a neode node
+        email = args.email
+      } else {
+        email = await factoryInstance.create('EmailAddress', { email: args.email })
+      }
+
       await user.relateTo(email, 'primaryEmail')
       await email.relateTo(user, 'belongsTo')
       return user
