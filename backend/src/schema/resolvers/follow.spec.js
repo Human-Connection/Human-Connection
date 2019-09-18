@@ -17,13 +17,27 @@ let variables
 
 const mutationFollowUser = gql`
   mutation($id: ID!, $type: FollowTypeEnum) {
-    follow(id: $id, type: $type)
+    follow(id: $id, type: $type) {
+      name
+      followedBy {
+        id
+        name
+      }
+      followedByCurrentUser
+    }
   }
 `
 
 const mutationUnfollowUser = gql`
   mutation($id: ID!, $type: FollowTypeEnum) {
-    unfollow(id: $id, type: $type)
+    unfollow(id: $id, type: $type) {
+      name
+      followedBy {
+        id
+        name
+      }
+      followedByCurrentUser
+    }
   }
 `
 
@@ -58,6 +72,7 @@ beforeEach(async () => {
   user1 = await factory
     .create('User', {
       id: 'u1',
+      name: 'user1',
       email: 'test@example.org',
       password: '1234',
     })
@@ -65,6 +80,7 @@ beforeEach(async () => {
   user2 = await factory
     .create('User', {
       id: 'u2',
+      name: 'user2',
       email: 'test2@example.org',
       password: '1234',
     })
@@ -81,39 +97,34 @@ afterEach(async () => {
 describe('follow', () => {
   describe('follow user', () => {
     describe('unauthenticated follow', () => {
-      it('throws authorization error', async () => {
+      test('throws authorization error', async () => {
         authenticatedUser = null
-        const { errors } = await mutate({
+        const { errors, data } = await mutate({
           mutation: mutationFollowUser,
           variables,
         })
         expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+        expect(data).toMatchObject({ follow: null })
       })
     })
 
-    it('I can follow another user', async () => {
+    test('I can follow another user', async () => {
       const { data: result } = await mutate({
         mutation: mutationFollowUser,
         variables,
       })
-      const expectedResult = { follow: true }
-      expect(result).toMatchObject(expectedResult)
-
-      const { data } = await query({
-        query: userQuery,
-        variables: { id: user2.id },
-      })
       const expectedUser = {
-        followedBy: [{ id: user1.id }],
+        name: user2.name,
+        followedBy: [{ id: user1.id, name: user1.name }],
         followedByCurrentUser: true,
       }
-      expect(data).toMatchObject({ User: [expectedUser] })
+      expect(result).toMatchObject({ follow: expectedUser })
     })
 
-    it('I can`t follow myself', async () => {
+    test('I can`t follow myself', async () => {
       variables.id = user1.id
       const { data: result } = await mutate({ mutation: mutationFollowUser, variables })
-      const expectedResult = { follow: false }
+      const expectedResult = { follow: null }
       expect(result).toMatchObject(expectedResult)
 
       const { data } = await query({
@@ -137,27 +148,22 @@ describe('follow', () => {
     })
 
     describe('unauthenticated follow', () => {
-      it('throws authorization error', async () => {
+      test('throws authorization error', async () => {
         authenticatedUser = null
-        const { errors } = await mutate({ mutation: mutationUnfollowUser, variables })
+        const { errors, data } = await mutate({ mutation: mutationUnfollowUser, variables })
         expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+        expect(data).toMatchObject({ unfollow: null })
       })
     })
 
     it('I can unfollow a user', async () => {
       const { data: result } = await mutate({ mutation: mutationUnfollowUser, variables })
-      const expectedResult = { unfollow: true }
-      expect(result).toMatchObject(expectedResult)
-
-      const { data } = await query({
-        query: userQuery,
-        variables: { id: user2.id },
-      })
       const expectedUser = {
+        name: user2.name,
         followedBy: [],
         followedByCurrentUser: false,
       }
-      expect(data).toMatchObject({ User: [expectedUser] })
+      expect(result).toMatchObject({ unfollow: expectedUser })
     })
   })
 })

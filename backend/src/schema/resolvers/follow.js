@@ -1,51 +1,44 @@
+import { neode as getNeode } from '../../bootstrap/neo4j'
+
+const neode = getNeode()
+
 export default {
   Mutation: {
     follow: async (_object, params, context, _resolveInfo) => {
-      const { id, type } = params
+      const { id: followedId, type } = params
+      const { user: currentUser } = context
 
-      const session = context.driver.session()
-      const transactionRes = await session.run(
-        `MATCH (node {id: $id}), (user:User {id: $userId})
-          WHERE $type IN labels(node) AND NOT $id = $userId
-          MERGE (user)-[relation:FOLLOWS]->(node)
-          RETURN COUNT(relation) > 0 as isFollowed`,
-        {
-          id,
-          type,
-          userId: context.user.id,
-        },
-      )
+      if (type === 'User' && currentUser.id === followedId) {
+        return null
+      }
 
-      const [isFollowed] = transactionRes.records.map(record => {
-        return record.get('isFollowed')
-      })
-
-      session.close()
-
-      return isFollowed
+      const [user, followedNode] = await Promise.all([
+        neode.find('User', currentUser.id),
+        neode.find(type, followedId),
+      ])
+      await user.relateTo(followedNode, 'following')
+      return followedNode.toJson()
     },
 
     unfollow: async (_object, params, context, _resolveInfo) => {
-      const { id, type } = params
-      const session = context.driver.session()
+      const { id: followedId, type } = params
+      const { user: currentUser } = context
 
-      const transactionRes = await session.run(
-        `MATCH (user:User {id: $userId})-[relation:FOLLOWS]->(node {id: $id})
+      /*
+       * Note: Neode doesn't provide an easy method for retrieving or removing relationships.
+       * It's suggested to use query builder feature (https://github.com/adam-cowley/neode/issues/67)
+       * However, pure cypher query looks cleaner IMO
+       */
+      await neode.cypher(
+        `MATCH (user:User {id: $currentUser.id})-[relation:FOLLOWS]->(node {id: $followedId})
           WHERE $type IN labels(node)
           DELETE relation
           RETURN COUNT(relation) > 0 as isFollowed`,
-        {
-          id,
-          type,
-          userId: context.user.id,
-        },
+        { followedId, type, currentUser },
       )
-      const [isFollowed] = transactionRes.records.map(record => {
-        return record.get('isFollowed')
-      })
-      session.close()
 
-      return isFollowed
+      const followedNode = await neode.find(type, followedId)
+      return followedNode.toJson()
     },
   },
 }
