@@ -122,47 +122,36 @@ describe('disable', () => {
       })
 
       describe('moderate a comment', () => {
-        let postVariables, commentVariables
+        const commentQuery = gql`
+          query($id: ID!) {
+            Comment(id: $id) {
+              id
+              disabled
+              disabledBy {
+                id
+              }
+            }
+          }
+        `
         beforeEach(async () => {
-          variables = { id: 'comment-id' }
-          postVariables = {
-            id: 'post-id',
-            title: 'post to comment on',
-            content: 'please comment on me',
-            categoryIds,
-          }
-          commentVariables = {
+          variables = {}
+          await factory.create('Comment', {
             id: 'comment-id',
-            postId: 'post-id',
-            content: 'this comment was created for this post',
-          }
-
-          await factory.create('Post', postVariables)
-          await factory.create('Comment', commentVariables)
+          })
         })
 
         it('returns disabled resource id', async () => {
+          variables = { id: 'comment-id' }
           const expected = { data: { disable: 'comment-id' } }
           await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
         })
 
         it('changes .disabledBy', async () => {
-          const commentQuery = gql`
-            query($id: ID!) {
-              Comment(id: $id) {
-                id
-                disabled
-                disabledBy {
-                  id
-                }
-              }
-            }
-          `
+          variables = { id: 'comment-id' }
           const before = { data: { Comment: [{ id: 'comment-id', disabledBy: null }] } }
           const expected = {
             data: { Comment: [{ id: 'comment-id', disabledBy: { id: 'moderator-id' } }] },
           }
-          variables = { id: 'comment-id' }
           await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(before)
           await expect(mutate({ mutation, variables })).resolves.toMatchObject({
             data: { disable: 'comment-id' },
@@ -171,14 +160,7 @@ describe('disable', () => {
         })
 
         it('updates .disabled on comment', async () => {
-          const commentQuery = gql`
-            query($id: ID!) {
-              Comment(id: $id) {
-                id
-                disabled
-              }
-            }
-          `
+          variables = { id: 'comment-id' }
           const before = { data: { Comment: [{ id: 'comment-id', disabled: false }] } }
           const expected = { data: { Comment: [{ id: 'comment-id', disabled: true }] } }
 
@@ -187,6 +169,21 @@ describe('disable', () => {
             data: { disable: 'comment-id' },
           })
           await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(expected)
+        })
+      })
+
+      describe('moderate a post', () => {
+        beforeEach(async () => {
+          variables = {}
+          await factory.create('Post', {
+            id: 'sample-post-id',
+          })
+        })
+
+        it('returns disabled resource id', async () => {
+          variables = { id: 'sample-post-id' }
+          const expected = { data: { disable: 'sample-post-id' } }
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
         })
       })
     })
@@ -204,9 +201,7 @@ describe('disable', () => {
 
   // describe('on a post', () => {
   //   beforeEach(async () => {
-  //     variables = {
-  //       id: 'p9',
-  //     }
+  //
 
   //     createResource = async () => {
   //       await factory.create('User', { email: 'author@example.org', password: '1234' })
