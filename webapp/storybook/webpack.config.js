@@ -1,7 +1,6 @@
 const path = require('path')
-const nuxtConf = require('../nuxt.config')
-const srcDir = `../${nuxtConf.srcDir || ''}`
-const rootDir = `../${nuxtConf.rootDir || ''}`
+const srcDir = '..'
+const rootDir = '..'
 
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
