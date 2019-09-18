@@ -43,10 +43,8 @@ export default {
       // 'registration-verify-nonce',
       'registration-create-user-account',
       'pages-slug',
-      'imprint',
       'terms-and-conditions',
       'code-of-conduct',
-      'data-privacy',
       'changelog',
     ],
     // pages to keep alive
