@@ -121,7 +121,8 @@ export default {
       const {
         data: { User },
       } = await this.$apollo.query({ query: checkSlugAvailableQuery, variables })
-      this.slugAvailable = User && !User[0]
+      const existingSlug = User && User[0] && User[0].slug
+      this.slugAvailable = !existingSlug || existingSlug === this.currentUser.slug
     }, 500)
   },
   methods: {
