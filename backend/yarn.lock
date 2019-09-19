@@ -4323,6 +4323,11 @@ he@0.5.0:
   resolved "https://registry.yarnpkg.com/he/-/he-0.5.0.tgz#2c05ffaef90b68e860f3fd2b54ef580989277ee2"
   integrity sha1-LAX/rvkLaOhg8/0rVO9YCYknfuI=
 
+he@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
+  integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
 helmet-crossdomain@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/helmet-crossdomain/-/helmet-crossdomain-0.4.0.tgz#5f1fe5a836d0325f1da0a78eaa5fd8429078894e"
@@ -4395,7 +4400,17 @@ html-encoding-sniffer@^1.0.2:
   dependencies:
     whatwg-encoding "^1.0.1"
 
-htmlparser2@^3.10.0, htmlparser2@^3.9.1:
+html-to-text@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/html-to-text/-/html-to-text-5.1.1.tgz#2d89db7bf34bc7bcb7d546b1b228991a16926e87"
+  integrity sha512-Bci6bD/JIfZSvG4s0gW/9mMKwBRoe/1RWLxUME/d6WUSZCdY7T60bssf/jFf7EYXRyqU4P5xdClVqiYU0/ypdA==
+  dependencies:
+    he "^1.2.0"
+    htmlparser2 "^3.10.1"
+    lodash "^4.17.11"
+    minimist "^1.2.0"
+
+htmlparser2@^3.10.0, htmlparser2@^3.10.1, htmlparser2@^3.9.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.10.1.tgz#bd679dc3f59897b6a34bb10749c855bb53a9392f"
   integrity sha512-IgieNijUMbkDovyoKObU1DUhm1iwNYE/fuifEoEHfd1oZKZDaONBSkal7Y01shxsM49R4XaMdGez3WnF9UfiCQ==
@@ -6134,6 +6149,11 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
+mustache@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/mustache/-/mustache-3.0.3.tgz#ee4fb971887fa6cc1b6b6d219a74b5e3c7535f32"
+  integrity sha512-vM5FkMHamTYmVYeAujypihuPrJQDtaUIlKeeVb1AMJ73OZLtWiF7GprqrjxD0gJWT53W9JfqXxf97nXQjMQkqA==
+
 mute-stream@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
@@ -6323,6 +6343,13 @@ node-releases@^1.1.25:
   integrity sha512-AQw4emh6iSXnCpDiFe0phYcThiccmkNWMZnFZ+lDJjAP8J0m2fVd59duvUUyuTirQOhIAajTFkzG6FHCLBO59g==
   dependencies:
     semver "^5.3.0"
+
+nodemailer-html-to-text@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/nodemailer-html-to-text/-/nodemailer-html-to-text-3.1.0.tgz#11e4e435eb03e4f3b439aaf294b1bd1377e7f789"
+  integrity sha512-AijyAZgcFb6b53g1oMwdCKyLYQVJzbgZKbs3Bma8zR5hPR1gkajQKGGZbwtuA5JhUqnyC8pjp+tiaS7CkQ8TRg==
+  dependencies:
+    html-to-text "^5.1.1"
 
 nodemailer@^6.3.0:
   version "6.3.0"
