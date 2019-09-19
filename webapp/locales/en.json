@@ -136,11 +136,12 @@
     }
   },
   "notifications": {
-    "menu": {
+    "reason": {
       "mentioned_in_post": "Mentioned you in a post …",
       "mentioned_in_comment": "Mentioned you in a comment …",
       "commented_on_post": "Commented on your post …"
-    }
+    },
+    "comment": "Comment"
   },
   "search": {
     "placeholder": "Search",
