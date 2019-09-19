@@ -8,50 +8,34 @@ import createServer from '../../server'
 const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
-const categoryIds = ['cat9']
 
 let query, mutate, authenticatedUser, variables, currentUser
-let createPostVariables
-let createCommentVariables
 
-beforeAll(() => {
-  authenticatedUser = undefined
-  const { server } = createServer({
-    context: () => {
-      return {
-        driver,
-        neode,
-        user: authenticatedUser,
-      }
-    },
-  })
-  mutate = createTestClient(server).mutate
-  query = createTestClient(server).query
-})
-
-beforeEach(async () => {
-  variables = {}
-  currentUser = await factory.create('User', {
-    id: 'current-user',
-    name: 'TestUser',
-    email: 'test@example.org',
-    password: '1234',
-  })
-
-  await Promise.all([
-    neode.create('Category', {
-      id: 'cat9',
-      name: 'Democracy & Politics',
-      icon: 'university',
-    }),
-  ])
-  authenticatedUser = null
-})
-
-afterEach(async () => {
-  await factory.cleanDatabase()
-})
 describe('moderate resources', () => {
+  beforeAll(() => {
+    authenticatedUser = undefined
+    const { server } = createServer({
+      context: () => {
+        return {
+          driver,
+          neode,
+          user: authenticatedUser,
+        }
+      },
+    })
+    mutate = createTestClient(server).mutate
+    query = createTestClient(server).query
+  })
+
+  beforeEach(async () => {
+    variables = {}
+    authenticatedUser = null
+  })
+
+  afterEach(async () => {
+    await factory.cleanDatabase()
+  })
+
   describe('disable', () => {
     const mutation = gql`
       mutation($id: ID!) {
@@ -66,9 +50,6 @@ describe('moderate resources', () => {
       }
     })
     describe('unauthenticated', () => {
-      beforeEach(async () => {
-        authenticatedUser = await currentUser.toJson()
-      })
       it('throws authorization error', async () => {
         await expect(mutate({ mutation, variables })).resolves.toMatchObject({
           errors: [{ message: 'Not Authorised!' }],
@@ -231,6 +212,20 @@ describe('moderate resources', () => {
   })
 
   describe('enable', () => {
+    const mutation = gql`
+      mutation($id: ID!) {
+        enable(id: $id)
+      }
+    `
+    describe('unautenticated', () => {
+      it('throws authorization error', async () => {
+        variables = { id: 'sample-post-id' }
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
+    })
+
     // describe('authenticated', () => {
     // beforeEach(() => {
     //   authenticateClient = setupAuthenticateClient({
