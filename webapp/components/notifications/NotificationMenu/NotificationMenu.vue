@@ -35,7 +35,39 @@ export default {
   props: {
     placement: { type: String },
   },
+  created() {
+    setInterval(this.updateNotifications, 10000)
+  },
+  destroyed() {
+    clearInterval(this.updateNotifications)
+  },
   methods: {
+    async updateNotifications() {
+      try {
+        const {
+          data: { notifications },
+        } = await this.$apollo.mutate({
+          mutation: notificationQuery(this.$i18n),
+        })
+        // add all the new notifications to the notifications
+        if (notifications) {
+          notifications.forEach(updatedElement => {
+            const sameNotification = this.notifications.find(function(oldElement) {
+              return (
+                oldElement.from.id === updatedElement.from.id &&
+                oldElement.createdAt === updatedElement.createdAt &&
+                oldElement.reason === updatedElement.reason
+              )
+            })
+            if (sameNotification === undefined) {
+              this.notifications.unshift(updatedElement)
+            }
+          })
+        }
+      } catch (err) {
+        throw new Error(err)
+      }
+    },
     async markAsRead(notificationSourceId) {
       const variables = { id: notificationSourceId }
       try {
