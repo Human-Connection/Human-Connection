@@ -1,56 +1,49 @@
 <template>
-  <ds-form v-model="form" @submit="submit">
-    <ds-card :header="$t('settings.data.name')">
-      <ds-input
-        id="name"
-        model="name"
-        icon="user"
-        :label="$t('settings.data.labelName')"
-        :placeholder="$t('settings.data.namePlaceholder')"
-      />
-      <ds-input
-        id="slug"
-        model="slug"
-        icon="at"
-        :label="$t('settings.data.labelSlug')"
-        @input.native="validateSlug"
-      />
-      <ds-text v-if="!slugAvailable" color="danger">
-        {{ $t('settings.validation.slug.alreadyTaken') }}
-      </ds-text>
-      <!-- eslint-disable vue/use-v-on-exact -->
-      <ds-select
-        id="city"
-        model="locationName"
-        icon="map-marker"
-        :options="cities"
-        :label="$t('settings.data.labelCity')"
-        :placeholder="$t('settings.data.labelCity')"
-        :loading="loadingGeo"
-        @input.native="handleCityInput"
-      />
-      <!-- eslint-enable vue/use-v-on-exact -->
-      <ds-input
-        id="bio"
-        model="about"
-        type="textarea"
-        rows="3"
-        :label="$t('settings.data.labelBio')"
-        :placeholder="$t('settings.data.labelBio')"
-      />
-      <template slot="footer">
-        <ds-button
-          style="float: right;"
-          icon="check"
-          :disabled="!slugAvailable"
-          type="submit"
-          :loading="loadingData"
-          primary
-        >
-          {{ $t('actions.save') }}
-        </ds-button>
-      </template>
-    </ds-card>
+  <ds-form v-model="form" :schema="formSchema" @submit="submit">
+    <template slot-scope="{ errors }">
+      <ds-card :header="$t('settings.data.name')">
+        <ds-input
+          id="name"
+          model="name"
+          icon="user"
+          :label="$t('settings.data.labelName')"
+          :placeholder="$t('settings.data.namePlaceholder')"
+        />
+        <ds-input id="slug" model="slug" icon="at" :label="$t('settings.data.labelSlug')" />
+        <!-- eslint-disable vue/use-v-on-exact -->
+        <ds-select
+          id="city"
+          model="locationName"
+          icon="map-marker"
+          :options="cities"
+          :label="$t('settings.data.labelCity')"
+          :placeholder="$t('settings.data.labelCity')"
+          :loading="loadingGeo"
+          @input.native="handleCityInput"
+        />
+        <!-- eslint-enable vue/use-v-on-exact -->
+        <ds-input
+          id="bio"
+          model="about"
+          type="textarea"
+          rows="3"
+          :label="$t('settings.data.labelBio')"
+          :placeholder="$t('settings.data.labelBio')"
+        />
+        <template slot="footer">
+          <ds-button
+            style="float: right;"
+            icon="check"
+            :disabled="errors"
+            type="submit"
+            :loading="loadingData"
+            primary
+          >
+            {{ $t('actions.save') }}
+          </ds-button>
+        </template>
+      </ds-card>
+    </template>
   </ds-form>
 </template>
 
@@ -59,8 +52,7 @@ import gql from 'graphql-tag'
 
 import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
-import { checkSlugAvailableQuery } from '~/graphql/User.js'
-import { debounce } from 'lodash'
+import UniqueSlugForm from '~/components/utils/UniqueSlugForm'
 
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
@@ -98,13 +90,22 @@ export default {
       loadingData: false,
       loadingGeo: false,
       formData: {},
-      slugAvailable: true,
     }
   },
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
+    formSchema() {
+      const uniqueSlugForm = UniqueSlugForm({
+        apollo: this.$apollo,
+        currentUser: this.currentUser,
+        translate: this.$t,
+      })
+      return {
+        ...uniqueSlugForm.formSchema,
+      }
+    },
     form: {
       get: function() {
         const { name, slug, locationName, about } = this.currentUser
@@ -114,16 +115,6 @@ export default {
         this.formData = formData
       },
     },
-  },
-  created() {
-    this.validateSlug = debounce(async () => {
-      const variables = { slug: this.formData.slug }
-      const {
-        data: { User },
-      } = await this.$apollo.query({ query: checkSlugAvailableQuery, variables })
-      const existingSlug = User && User[0] && User[0].slug
-      this.slugAvailable = !existingSlug || existingSlug === this.currentUser.slug
-    }, 500)
   },
   methods: {
     ...mapMutations({
