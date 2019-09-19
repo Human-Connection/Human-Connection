@@ -5,7 +5,7 @@
         <hc-user :user="from.author" :date-time="from.createdAt" :trunc="35" />
       </ds-space>
       <ds-text class="reason-text-for-test" color="soft">
-        {{ $t(`notifications.menu.${notification.reason}`) }}
+        {{ $t(`notifications.reason.${notification.reason}`) }}
       </ds-text>
     </client-only>
     <ds-space margin-bottom="x-small" />
@@ -23,7 +23,9 @@
         >
           <ds-space margin-bottom="x-small" />
           <div>
-            <span v-if="isComment" class="comment-notification-header">Comment:</span>
+            <span v-if="isComment" class="comment-notification-header">
+              {{ $t(`notifications.comment`) }}:
+            </span>
             {{ from.contentExcerpt | removeHtml }}
           </div>
         </ds-card>
