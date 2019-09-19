@@ -32,9 +32,9 @@ type Mutation {
   # Unshout the given Type and ID
   unshout(id: ID!, type: ShoutTypeEnum): Boolean!
   # Follow the given Type and ID
-  follow(id: ID!, type: FollowTypeEnum): Boolean!
+  follow(id: ID!, type: FollowTypeEnum): User
   # Unfollow the given Type and ID
-  unfollow(id: ID!, type: FollowTypeEnum): Boolean!
+  unfollow(id: ID!, type: FollowTypeEnum): User
 }
 
 type Report {
