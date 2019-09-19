@@ -42,7 +42,7 @@ export const wrongAccountTemplate = ({ email }) => {
   return {
     from,
     to: email,
-    subject: 'Falsche Mailadresse? | Wrong Email?',
+    subject: 'Falsche Mailadresse? | Wrong E-mail?',
     html: mustache.render(wrongAccountHtml, { actionUrl, supportUrl }),
   }
 }
