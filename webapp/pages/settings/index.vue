@@ -8,6 +8,16 @@
         :label="$t('settings.data.labelName')"
         :placeholder="$t('settings.data.namePlaceholder')"
       />
+      <ds-input
+        id="slug"
+        model="slug"
+        icon="at"
+        :label="$t('settings.data.labelSlug')"
+        @input.native="validateSlug"
+      />
+      <ds-text v-if="!slugAvailable" color="danger">
+        {{ $t('settings.validation.slug.alreadyTaken') }}
+      </ds-text>
       <!-- eslint-disable vue/use-v-on-exact -->
       <ds-select
         id="city"
@@ -29,7 +39,14 @@
         :placeholder="$t('settings.data.labelBio')"
       />
       <template slot="footer">
-        <ds-button style="float: right;" icon="check" type="submit" :loading="loadingData" primary>
+        <ds-button
+          style="float: right;"
+          icon="check"
+          :disabled="!slugAvailable"
+          type="submit"
+          :loading="loadingData"
+          primary
+        >
           {{ $t('actions.save') }}
         </ds-button>
       </template>
@@ -42,6 +59,8 @@ import gql from 'graphql-tag'
 
 import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
+import { checkSlugAvailableQuery } from '~/graphql/User.js'
+import { debounce } from 'lodash'
 
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
@@ -60,9 +79,10 @@ const query = gql`
 */
 
 const mutation = gql`
-  mutation($id: ID!, $name: String, $locationName: String, $about: String) {
-    UpdateUser(id: $id, name: $name, locationName: $locationName, about: $about) {
+  mutation($id: ID!, $slug: String, $name: String, $locationName: String, $about: String) {
+    UpdateUser(id: $id, slug: $slug, name: $name, locationName: $locationName, about: $about) {
       id
+      slug
       name
       locationName
       about
@@ -78,6 +98,7 @@ export default {
       loadingData: false,
       loadingGeo: false,
       formData: {},
+      slugAvailable: true,
     }
   },
   computed: {
@@ -86,13 +107,22 @@ export default {
     }),
     form: {
       get: function() {
-        const { name, locationName, about } = this.currentUser
-        return { name, locationName, about }
+        const { name, slug, locationName, about } = this.currentUser
+        return { name, slug, locationName, about }
       },
       set: function(formData) {
         this.formData = formData
       },
     },
+  },
+  created() {
+    this.validateSlug = debounce(async () => {
+      const variables = { slug: this.formData.slug }
+      const {
+        data: { User },
+      } = await this.$apollo.query({ query: checkSlugAvailableQuery, variables })
+      this.slugAvailable = User && !User[0]
+    }, 500)
   },
   methods: {
     ...mapMutations({
@@ -100,7 +130,7 @@ export default {
     }),
     async submit() {
       this.loadingData = true
-      const { name, about } = this.formData
+      const { name, slug, about } = this.formData
       let { locationName } = this.formData || this.currentUser
       locationName = locationName && (locationName['label'] || locationName)
       try {
@@ -109,14 +139,16 @@ export default {
           variables: {
             id: this.currentUser.id,
             name,
+            slug,
             locationName,
             about,
           },
           update: (store, { data: { UpdateUser } }) => {
-            const { name, locationName, about } = UpdateUser
+            const { name, slug, locationName, about } = UpdateUser
             this.setCurrentUser({
               ...this.currentUser,
               name,
+              slug,
               locationName,
               about,
             })
