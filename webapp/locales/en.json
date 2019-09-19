@@ -501,33 +501,6 @@
       }
     }
   },
-  "changelog": {
-    "24": "Dialog for password change has been added.",
-    "23": "An editor for writing posts has been added.",
-    "22": "A dialogue for blocking content which violates the terms of service had been added for the moderators.",
-    "21": "The 'Shout' button has been added to the article view.",
-    "20": "Automated deployment of the software has been fixed so that new features can always be tested immediately.",
-    "19": "All software repositories on Github have been merged into one to avoid independent version information and incompatible interfaces",
-    "18": "The automated import of data from the Alpha-version to the Nitro had been tested with test data",
-    "17": "The web interface of the Nitro had been tested for correct display on mobile devices.",
-    "16": "A Button for reporting abusive content has been added",
-    "15": "An moderation backend for reported content has been implemented",
-    "14": "A Bug with the user authentication has been fixed",
-    "13": "User can input country, region or city and it is her / his decision how accurate it should be.",
-    "12": "User settings field for setting the interface and preferred content language",
-    "11": "Integration of Nuxt-i18n toolkit for support of server-side rendered pages of webapps",
-    "10": "Integration of Lokalise.co pipeline for translations + Updated used toolkits and frameworks to newest versions",
-    "9": "[in progress] Add icons to categories and tagging (how many users are using this tag, not how often the tag is used generally)",
-    "8": "Updated to actual eslint version for source code quality",
-    "7": "[in progress] Coding a blacklist for Nitro to hide unwanted user's content",
-    "6": "Coding a feature, so users who haven't donated yet, get a chance later to do so",
-    "5": "Coding a database query to identify users, which had not completed the registration dialog",
-    "4": "Introduction of a versioning scheme to identify the running social network code version",
-    "3": "Login for the new Nitro version with a fancier interface.",
-    "2": "Moved project planning to Zenhub",
-    "1": "Decided to use Scrum for project management",
-    "0": "Started work on \"Nitro\". The database and the server interface are replaced:"
-  },
   "code-of-conduct": {
     "subheader": "for the social network of the Human Connection gGmbH",
     "preamble": {

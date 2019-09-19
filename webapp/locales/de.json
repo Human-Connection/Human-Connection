@@ -500,33 +500,6 @@
       }
     }
   },
-  "changelog": {
-    "24": "Dialog zum Ändern des Passwortes wurde hinzugefügt.",
-    "23": "Ein Editor zum Schreiben von Beiträgen wurde hinzugefügt.",
-    "22": "Ein Dialog zum Ausblenden von Posts und Kommentaren, die gegen die Nutzungsbedingungen verstoßen wurde für die Nutzung durch Moderatoren hinzugefügt.",
-    "21": "Der \"Empfehlen\" Knopf mit dem Megafon wurde der Artikelansicht hinzugefügt.",
-    "20": "Das automatische Ausrollen der programmierten Software wurde repariert, so dass neue Features immer gleich getestet werden können.",
-    "19": "Alle Software-Repositories wurden in ein großes vereinigt, damit alle gegenseitigen Abhängigkeiten klar sind und durch einen übergreifenden Versionsstand aneinander gekoppelt sind.",
-    "18": "Der Import der Inhalte der heutigen Alpha-Daten in die zukünftige Nitro-Version wurde getestet und automatisiert. Dabei wurden nur Testdaten verwendet.",
-    "17": "Das Webinterface der Nitro wurde hinsichtlich der korrekten Anzeige auf Mobilgeräten wie Handys und Tablets getestet.",
-    "16": "Eine Schaltfläche zum Melden von Inhalten, die den Nutzungsrichtlinien widersprechen, wurde hinzugefügt.",
-    "15": "Eine Moderationswerkzeug, in welchem alle gemeldeten Beiträge für Moderatoren angezeigt werden, wurde hinzugefügt.",
-    "14": "Ein Fehler bei der Benutzer-Authentifizierung wurde behoben, Eingabemöglichkeit von Land, Region und Stadt im 'Über-mich'-Feld in den User-Profilen.",
-    "13": "Einstellungsmöglichkeit der Sprache für Benutzerinterface und Inhalte in der Nitro, so, wie in der Alpha.",
-    "12": "Integration des Nuxt-i18n-Toolkits für Sprachunterstützung bei serverseitig gerenderten Webapps.",
-    "11": "Integration der Lokalise.co-Pipeline für Übersetzungen.",
-    "10": "Verwendete Toolkits und Frameworks auf den neuesten Stand upgedatet.",
-    "9": "[laufend] Icons für Admin-Interfae der Kategorien und Tags hinzugefügt und Anzahl, wie viele User einen Tag benutzen.",
-    "8": "Ersetzen der eingesetzten eslint-Version für die Code-Qualität durch die Aktuelle.",
-    "7": "[laufend] Implementierung der Blacklist auf der Nitro zum Ausfiltern von Inhalten nicht gewünschter User.",
-    "6": "Programmierung einer Funktionalität, dass später User, die keine Spender sind, um eine Spende gebeten werden können, um die Weiterentwicklung besser zu unterstützen",
-    "5": "Programmierung einer Datenbankabfrage, welche User einen nicht abgeschlossenen Anmeldungprozess haben, um diese zwecks Hilfestellung kontaktieren zu können",
-    "4": "Einführung eines Versions-Schemas in der Netzwerk-Anwendung um in der laufenden Anwendung die jeweilige Versionerkennen zu können",
-    "3": "Login für die Nitro-Version mit einem 'aufgehübschten' Anmeldedialog.",
-    "2": "Umstellung der Projektplanung auf Zenhub",
-    "1": "Einführung von Scrum als Vorgehensweise für das Projektmanagement",
-    "0": "Start der Arbeit an der \"Nitro\". Dabei wird die Datenbank und die Serverschnittstelle ausgetauscht:"
-  },
   "code-of-conduct": {
     "subheader": "für das Soziale Netzwerk der Human Connection gGmbH",
     "preamble": {
