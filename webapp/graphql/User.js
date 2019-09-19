@@ -1,72 +1,27 @@
 import gql from 'graphql-tag'
-import { postFragment, commentFragment } from './Fragments'
+import { userFragment, postFragment, commentFragment } from './Fragments'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
+    ${userFragment(lang)}
+
     query User($id: ID!) {
       User(id: $id) {
-        id
-        slug
-        name
-        avatar
+        ...user
         about
-        disabled
-        deleted
         locationName
-        location {
-          name: name${lang}
-        }
         createdAt
-        badges {
-          id
-          icon
-        }
         badgesCount
-        shoutedCount
-        commentedCount
-        contributionsCount
         followingCount
         following(first: 7) {
-          id
-          slug
-          name
-          avatar
-          disabled
-          deleted
-          followedByCount
-          followedByCurrentUser
-          contributionsCount
-          commentedCount
-          badges {
-            id
-            icon
-          }
-          location {
-            name: name${lang}
-          }
+          ...user
         }
         followedByCount
         followedByCurrentUser
         isBlocked
-        followedBy(first: 7)  {
-          id
-          slug
-          name
-          disabled
-          deleted
-          avatar
-          followedByCount
-          followedByCurrentUser
-          contributionsCount
-          commentedCount
-          badges {
-            id
-            icon
-          }
-          location {
-            name: name${lang}
-          }
+        followedBy(first: 7) {
+          ...user
         }
         socialMedia {
           id
@@ -140,6 +95,40 @@ export const markAsReadMutation = i18n => {
               ...post
             }
           }
+        }
+      }
+    }
+  `
+}
+
+export const followUserMutation = i18n => {
+  const lang = i18n.locale().toUpperCase()
+  return gql`
+    ${userFragment(lang)}
+    mutation($id: ID!) {
+      follow(id: $id, type: User) {
+        name
+        followedByCount
+        followedByCurrentUser
+        followedBy(first: 7) {
+          ...user
+        }
+      }
+    }
+  `
+}
+
+export const unfollowUserMutation = i18n => {
+  const lang = i18n.locale().toUpperCase()
+  return gql`
+    ${userFragment(lang)}
+    mutation($id: ID!) {
+      unfollow(id: $id, type: User) {
+        name
+        followedByCount
+        followedByCurrentUser
+        followedBy(first: 7) {
+          ...user
         }
       }
     }

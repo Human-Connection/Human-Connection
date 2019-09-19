@@ -132,13 +132,14 @@ export default {
     },
   },
   methods: {
-    optimisticFollow(follow) {
-      const inc = follow ? 1 : -1
-      this.user.followedByCurrentUser = follow
+    optimisticFollow({ followedByCurrentUser }) {
+      const inc = followedByCurrentUser ? 1 : -1
+      this.user.followedByCurrentUser = followedByCurrentUser
       this.user.followedByCount += inc
     },
-    updateFollow(follow) {
-      this.user.followedByCurrentUser = follow
+    updateFollow({ followedByCurrentUser, followedByCount }) {
+      this.user.followedByCount = followedByCount
+      this.user.followedByCurrentUser = followedByCurrentUser
     },
   },
 }

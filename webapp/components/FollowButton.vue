@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { followUserMutation, unfollowUserMutation } from '~/graphql/User'
 
 export default {
   name: 'HcFollowButton',
@@ -61,26 +61,23 @@ export default {
     },
     async toggle() {
       const follow = !this.isFollowed
-      const mutation = follow ? 'follow' : 'unfollow'
+      const mutation = follow ? followUserMutation(this.$i18n) : unfollowUserMutation(this.$i18n)
 
       this.hovered = false
-      this.$emit('optimistic', follow)
+      const optimisticResult = { followedByCurrentUser: follow }
+      this.$emit('optimistic', optimisticResult)
 
       try {
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation($id: ID!) {
-              ${mutation}(id: $id, type: User)
-            }
-          `,
-          variables: {
-            id: this.followId,
-          },
+        const { data } = await this.$apollo.mutate({
+          mutation,
+          variables: { id: this.followId },
         })
 
-        this.$emit('update', follow)
+        const followedUser = follow ? data.follow : data.unfollow
+        this.$emit('update', followedUser)
       } catch {
-        this.$emit('optimistic', !follow)
+        optimisticResult.followedByCurrentUser = !follow
+        this.$emit('optimistic', optimisticResult)
       }
     },
   },
