@@ -160,6 +160,7 @@
     },
     "validation": {
       "slug": {
+        "regex": "Allowed characters are only lowercase letters, numbers, underscores and hyphens.",
         "alreadyTaken": "This user name is already taken."
       }
     },

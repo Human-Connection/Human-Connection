@@ -159,6 +159,7 @@
     },
     "validation": {
       "slug": {
+        "regex": "Es sind nur Kleinbuchstaben, Zahlen, Unterstriche oder Bindestriche erlaubt.",
         "alreadyTaken": "Dieser Benutzername ist schon vergeben."
       }
     },
