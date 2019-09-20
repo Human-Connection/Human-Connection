@@ -1,5 +1,4 @@
 import { createTestClient } from 'apollo-server-testing'
-import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
 import { gql } from '../../jest/helpers'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
@@ -9,7 +8,42 @@ const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 
-let query, mutate, authenticatedUser, variables, currentUser
+let query, mutate, authenticatedUser, variables, moderator, nonModerator
+
+const disableMutation = gql`
+  mutation($id: ID!) {
+    disable(id: $id)
+  }
+`
+const enableMutation = gql`
+  mutation($id: ID!) {
+    enable(id: $id)
+  }
+`
+
+const commentQuery = gql`
+  query($id: ID!) {
+    Comment(id: $id) {
+      id
+      disabled
+      disabledBy {
+        id
+      }
+    }
+  }
+`
+
+const postQuery = gql`
+  query($id: ID) {
+    Post(id: $id) {
+      id
+      disabled
+      disabledBy {
+        id
+      }
+    }
+  }
+`
 
 describe('moderate resources', () => {
   beforeAll(() => {
@@ -30,6 +64,13 @@ describe('moderate resources', () => {
   beforeEach(async () => {
     variables = {}
     authenticatedUser = null
+    moderator = await factory.create('User', {
+      id: 'moderator-id',
+      name: 'Moderator',
+      email: 'moderator@example.org',
+      password: '1234',
+      role: 'moderator',
+    })
   })
 
   afterEach(async () => {
@@ -37,13 +78,6 @@ describe('moderate resources', () => {
   })
 
   describe('disable', () => {
-    const mutation = gql`
-      mutation($id: ID!) {
-        disable(id: $id)
-      }
-    `
-    let variables
-
     beforeEach(() => {
       variables = {
         id: 'some-resource',
@@ -51,15 +85,13 @@ describe('moderate resources', () => {
     })
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+        await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
           errors: [{ message: 'Not Authorised!' }],
         })
       })
     })
     describe('authenticated', () => {
-      describe('i am not a moderator', () => {
-        let nonModerator
-
+      describe('non moderator', () => {
         beforeEach(async () => {
           nonModerator = await factory.create('User', {
             id: 'non-moderator',
@@ -70,22 +102,14 @@ describe('moderate resources', () => {
           authenticatedUser = await nonModerator.toJson()
         })
         it('throws authorization error', async () => {
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
             errors: [{ message: 'Not Authorised!' }],
           })
         })
       })
 
-      describe('I am a moderator', () => {
-        let moderator
+      describe('moderator', () => {
         beforeEach(async () => {
-          moderator = await factory.create('User', {
-            id: 'moderator-id',
-            name: 'Moderator',
-            email: 'moderator@example.org',
-            password: '1234',
-            role: 'moderator',
-          })
           authenticatedUser = await moderator.toJson()
         })
 
@@ -98,24 +122,13 @@ describe('moderate resources', () => {
           })
 
           it('returns null', async () => {
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
               data: { disable: null },
             })
           })
         })
 
         describe('moderate a comment', () => {
-          const commentQuery = gql`
-            query($id: ID!) {
-              Comment(id: $id) {
-                id
-                disabled
-                disabledBy {
-                  id
-                }
-              }
-            }
-          `
           beforeEach(async () => {
             variables = {}
             await factory.create('Comment', {
@@ -125,8 +138,9 @@ describe('moderate resources', () => {
 
           it('returns disabled resource id', async () => {
             variables = { id: 'comment-id' }
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
               data: { disable: 'comment-id' },
+              errors: undefined,
             })
           })
 
@@ -137,7 +151,7 @@ describe('moderate resources', () => {
               data: { Comment: [{ id: 'comment-id', disabledBy: { id: 'moderator-id' } }] },
             }
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(before)
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
               data: { disable: 'comment-id' },
             })
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(expected)
@@ -149,7 +163,7 @@ describe('moderate resources', () => {
             const expected = { data: { Comment: [{ id: 'comment-id', disabled: true }] } }
 
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(before)
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
               data: { disable: 'comment-id' },
             })
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(expected)
@@ -163,20 +177,10 @@ describe('moderate resources', () => {
               id: 'sample-post-id',
             })
           })
-          const postQuery = gql`
-            query($id: ID) {
-              Post(id: $id) {
-                id
-                disabled
-                disabledBy {
-                  id
-                }
-              }
-            }
-          `
+
           it('returns disabled resource id', async () => {
             variables = { id: 'sample-post-id' }
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
               data: { disable: 'sample-post-id' },
             })
           })
@@ -189,7 +193,7 @@ describe('moderate resources', () => {
             }
 
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(before)
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
               data: { disable: 'sample-post-id' },
             })
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
@@ -201,7 +205,7 @@ describe('moderate resources', () => {
             variables = { id: 'sample-post-id' }
 
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(before)
-            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
               data: { disable: 'sample-post-id' },
             })
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
@@ -212,198 +216,136 @@ describe('moderate resources', () => {
   })
 
   describe('enable', () => {
-    const mutation = gql`
-      mutation($id: ID!) {
-        enable(id: $id)
-      }
-    `
-    describe('unautenticated', () => {
+    describe('unautenticated user', () => {
       it('throws authorization error', async () => {
         variables = { id: 'sample-post-id' }
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+        await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
           errors: [{ message: 'Not Authorised!' }],
         })
       })
     })
 
-    // describe('authenticated', () => {
-    // beforeEach(() => {
-    //   authenticateClient = setupAuthenticateClient({
-    //     email: 'user@example.org',
-    //     password: '1234',
-    //   })
-    // })
-    // describe('enable', () => {
-    //   const mutation = gql`
-    //     mutation($id: ID!) {
-    //       enable(id: $id)
-    //     }
-    //   `
-    //   const action = async () => {
-    //     return client.request(mutation, variables)
-    //   }
-    // beforeEach(() => {
-    // our default set of variables
-    //   variables = {
-    //     id: 'blabla',
-    //   }
-    // })
-    // it('throws authorization error', async () => {
-    //   await setup()
-    //   await expect(action()).rejects.toThrow('Not Authorised')
-    // })
-    // describe('authenticated', () => {
-    // beforeEach(() => {
-    //   authenticateClient = setupAuthenticateClient({
-    //     email: 'user@example.org',
-    //     password: '1234',
-    //   })
-    // })
-    // it('throws authorization error', async () => {
-    //   await setup()
-    //   await expect(action()).rejects.toThrow('Not Authorised')
-    // })
-    // describe('as moderator', () => {
-    //   beforeEach(async () => {
-    //     authenticateClient = setupAuthenticateClient({
-    //       role: 'moderator',
-    //       email: 'someuser@example.org',
-    //       password: '1234',
-    //     })
-    //   })
-    //   describe('on something that is not a (Comment|Post|User) ', () => {
-    //     beforeEach(async () => {
-    //       variables = {
-    //         id: 't23',
-    //       }
-    //       createResource = () => {
-    //         // we cannot create a :DISABLED relationship here
-    //         return Promise.all([factory.create('Tag', { id: 't23' })])
-    //       }
-    //     })
-    //     it('returns null', async () => {
-    //       const expected = { enable: null }
-    //       await setup()
-    //       await expect(action()).resolves.toEqual(expected)
-    //     })
-    //   })
-    //   describe('on a comment', () => {
-    //     beforeEach(async () => {
-    //       variables = {
-    //         id: 'c456',
-    //       }
-    //       createPostVariables = {
-    //         id: 'p9',
-    //         title: 'post to comment on',
-    //         content: 'please comment on me',
-    //         categoryIds,
-    //       }
-    //       createCommentVariables = {
-    //         id: 'c456',
-    //         postId: 'p9',
-    //         content: 'this comment was created for this post',
-    //       }
-    //       createResource = async () => {
-    //         await factory.create('User', {
-    //           id: 'u123',
-    //           email: 'author@example.org',
-    //           password: '1234',
-    //         })
-    //         const asAuthenticatedUser = await factory.authenticateAs({
-    //           email: 'author@example.org',
-    //           password: '1234',
-    //         })
-    //         await asAuthenticatedUser.create('Post', createPostVariables)
-    //         await asAuthenticatedUser.create('Comment', createCommentVariables)
-    //         const disableMutation = gql`
-    //           mutation {
-    //             disable(id: "c456")
-    //           }
-    //         `
-    //         await factory.mutate(disableMutation) // that's we want to delete
-    //       }
-    //     })
-    //     it('returns disabled resource id', async () => {
-    //       const expected = { enable: 'c456' }
-    //       await setup()
-    //       await expect(action()).resolves.toEqual(expected)
-    //     })
-    //     it('changes .disabledBy', async () => {
-    //       const before = { Comment: [{ id: 'c456', disabledBy: { id: 'u123' } }] }
-    //       const expected = { Comment: [{ id: 'c456', disabledBy: null }] }
-    //       await setup()
-    //       await expect(
-    //         client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
-    //       ).resolves.toEqual(before)
-    //       await action()
-    //       await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
-    //         expected,
-    //       )
-    //     })
-    //     it('updates .disabled on post', async () => {
-    //       const before = { Comment: [{ id: 'c456', disabled: true }] }
-    //       const expected = { Comment: [{ id: 'c456', disabled: false }] }
-    //       await setup()
-    //       await expect(
-    //         client.request('{ Comment(disabled: true) { id disabled } }'),
-    //       ).resolves.toEqual(before)
-    //       await action() // this updates .disabled
-    //       await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(expected)
-    //     })
-    //   })
-    //   describe('on a post', () => {
-    //     beforeEach(async () => {
-    //       variables = {
-    //         id: 'p9',
-    //       }
-    //       createResource = async () => {
-    //         await factory.create('User', {
-    //           id: 'u123',
-    //           email: 'author@example.org',
-    //           password: '1234',
-    //         })
-    //         await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
-    //         await factory.create('Post', {
-    //           id: 'p9', // that's the ID we will look for
-    //           categoryIds,
-    //         })
-    //         const disableMutation = gql`
-    //           mutation {
-    //             disable(id: "p9")
-    //           }
-    //         `
-    //         await factory.mutate(disableMutation) // that's we want to delete
-    //       }
-    //     })
-    //     it('returns disabled resource id', async () => {
-    //       const expected = { enable: 'p9' }
-    //       await setup()
-    //       await expect(action()).resolves.toEqual(expected)
-    //     })
-    //     it('changes .disabledBy', async () => {
-    //       const before = { Post: [{ id: 'p9', disabledBy: { id: 'u123' } }] }
-    //       const expected = { Post: [{ id: 'p9', disabledBy: null }] }
-    //       await setup()
-    //       await expect(
-    //         client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
-    //       ).resolves.toEqual(before)
-    //       await action()
-    //       await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
-    //         expected,
-    //       )
-    //     })
-    //     it('updates .disabled on post', async () => {
-    //       const before = { Post: [{ id: 'p9', disabled: true }] }
-    //       const expected = { Post: [{ id: 'p9', disabled: false }] }
-    //       await setup()
-    //       await expect(client.request('{ Post(disabled: true) { id disabled } }')).resolves.toEqual(
-    //         before,
-    //       )
-    //       await action() // this updates .disabled
-    //       await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(expected)
-    //     })
-    //   })
-    // })
-    // })
+    describe('authenticated user', () => {
+      describe('non moderator', () => {
+        beforeEach(async () => {
+          nonModerator = await factory.create('User', {
+            id: 'non-moderator',
+            name: 'Non Moderator',
+            email: 'non.moderator@example.org',
+            password: '1234',
+          })
+          authenticatedUser = await nonModerator.toJson()
+        })
+        it('throws authorization error', async () => {
+          variables = { id: 'sample-post-id' }
+          await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
+            errors: [{ message: 'Not Authorised!' }],
+          })
+        })
+      })
+
+      describe('moderator', () => {
+        beforeEach(async () => {
+          authenticatedUser = await moderator.toJson()
+        })
+        describe('moderate a resource that is not a (Comment|Post|User) ', () => {
+          beforeEach(async () => {
+            await Promise.all([factory.create('Tag', { id: 'sample-tag-id' })])
+          })
+
+          it('returns null', async () => {
+            await expect(
+              mutate({ mutation: enableMutation, variables: { id: 'sample-tag-id' } }),
+            ).resolves.toMatchObject({
+              data: { enable: null },
+            })
+          })
+        })
+
+        describe('moderate a comment', () => {
+          beforeEach(async () => {
+            variables = { id: 'comment-id' }
+            await factory.create('Comment', {
+              id: 'comment-id',
+            })
+            await mutate({ mutation: disableMutation, variables })
+          })
+
+          it('returns enabled resource id', async () => {
+            await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
+              data: { enable: 'comment-id' },
+              errors: undefined,
+            })
+          })
+
+          it('changes .disabledBy', async () => {
+            const expected = {
+              data: { Comment: [{ id: 'comment-id', disabledBy: null }] },
+              errors: undefined,
+            }
+            await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
+              data: { enable: 'comment-id' },
+              errors: undefined,
+            })
+            await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(expected)
+          })
+
+          it('updates .disabled on comment', async () => {
+            const expected = {
+              data: { Comment: [{ id: 'comment-id', disabled: false }] },
+              errors: undefined,
+            }
+
+            await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
+              data: { enable: 'comment-id' },
+              errors: undefined,
+            })
+            await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(expected)
+          })
+        })
+
+        describe('moderate a post', () => {
+          beforeEach(async () => {
+            variables = { id: 'post-id' }
+            await factory.create('Post', {
+              id: 'post-id',
+            })
+            await mutate({ mutation: disableMutation, variables })
+          })
+
+          it('returns enabled resource id', async () => {
+            await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
+              data: { enable: 'post-id' },
+              errors: undefined,
+            })
+          })
+
+          it('changes .disabledBy', async () => {
+            const expected = {
+              data: { Post: [{ id: 'post-id', disabledBy: null }] },
+              errors: undefined,
+            }
+            await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
+              data: { enable: 'post-id' },
+              errors: undefined,
+            })
+            await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
+          })
+
+          it.only('updates .disabled on post', async () => {
+            const expected = {
+              data: { Post: [{ id: 'post-id', disabled: false }] },
+              errors: undefined,
+            }
+
+            await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
+              data: { enable: 'post-id' },
+              errors: undefined,
+            })
+            await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
+          })
+        })
+      })
+    })
   })
 })
