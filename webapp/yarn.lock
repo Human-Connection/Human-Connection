@@ -3649,6 +3649,11 @@ async-retry@^1.2.1:
   dependencies:
     retry "0.12.0"
 
+async-validator@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-3.1.0.tgz#447db5eb003cbb47e650f040037a29fc3881ce92"
+  integrity sha512-XyAHGwtpx3Y3aHIOaGXXFo4tiulnrh+mXBU9INxig6Q8rtmtmBxDuCxb60j7EIGbAsQg9cxfJ2jrUZ+fIqEnBQ==
+
 async@^2.1.4:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.2.tgz#18330ea7e6e313887f5d2f2a904bac6fe4dd5381"
