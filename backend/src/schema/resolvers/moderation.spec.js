@@ -118,7 +118,7 @@ describe('moderate resources', () => {
             variables = {
               id: 'sample-tag-id',
             }
-            await Promise.all([factory.create('Tag', { id: 'sample-tag-id' })])
+            await factory.create('Tag', { id: 'sample-tag-id' })
           })
 
           it('returns null', async () => {
@@ -332,7 +332,7 @@ describe('moderate resources', () => {
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
           })
 
-          it.only('updates .disabled on post', async () => {
+          it('updates .disabled on post', async () => {
             const expected = {
               data: { Post: [{ id: 'post-id', disabled: false }] },
               errors: undefined,
