@@ -59,9 +59,34 @@ describe('index.vue', () => {
       expect(Wrapper().contains('div')).toBe(true)
     })
 
-    describe('given we bypass the slug validations', () => {
+    describe('given form validation errors', () => {
       beforeEach(() => {
-        // I gave up after 3 hours, feel free to remove the line below
+        options = {
+          ...options,
+          computed: {
+            formSchema: () => ({
+              slug: [
+                (_rule, _value, callback) => {
+                  callback(new Error('Ouch!'))
+                },
+              ],
+            }),
+          },
+        }
+      })
+
+      it('cannot call updateUser mutation', () => {
+        const wrapper = Wrapper()
+
+        wrapper.find('#name').setValue('Peter')
+        wrapper.find('.ds-form').trigger('submit')
+
+        expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('no form validation errors', () => {
+      beforeEach(() => {
         options = { ...options, computed: { formSchema: () => ({}) } }
       })
 

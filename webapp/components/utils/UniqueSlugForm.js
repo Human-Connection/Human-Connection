@@ -5,7 +5,12 @@ export default function UniqueSlugForm({ translate, apollo, currentUser }) {
   return {
     formSchema: {
       slug: [
-        {type: "string", required: true, pattern: /^[a-z0-9_-]+$/, message: translate('settings.validation.slug.regex') },
+        {
+          type: 'string',
+          required: true,
+          pattern: /^[a-z0-9_-]+$/,
+          message: translate('settings.validation.slug.regex'),
+        },
         {
           asyncValidator(rule, value, callback) {
             debounce(() => {
