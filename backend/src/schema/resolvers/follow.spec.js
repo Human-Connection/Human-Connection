@@ -1,11 +1,12 @@
 import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
-import { getDriver } from '../../bootstrap/neo4j'
+import { getDriver, neode as getNeode } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 import { gql } from '../../jest/helpers'
 
 const factory = Factory()
 const driver = getDriver()
+const neode = getNeode()
 
 let query
 let mutate
@@ -16,8 +17,8 @@ let user2
 let variables
 
 const mutationFollowUser = gql`
-  mutation($id: ID!, $type: FollowTypeEnum) {
-    follow(id: $id, type: $type) {
+  mutation($id: ID!) {
+    followUser(id: $id) {
       name
       followedBy {
         id
@@ -29,8 +30,8 @@ const mutationFollowUser = gql`
 `
 
 const mutationUnfollowUser = gql`
-  mutation($id: ID!, $type: FollowTypeEnum) {
-    unfollow(id: $id, type: $type) {
+  mutation($id: ID!) {
+    unfollowUser(id: $id) {
       name
       followedBy {
         id
@@ -52,10 +53,12 @@ const userQuery = gql`
   }
 `
 
-beforeAll(() => {
+beforeAll(async () => {
+  await factory.cleanDatabase()
   const { server } = createServer({
     context: () => ({
       driver,
+      neode,
       user: authenticatedUser,
       cypherParams: {
         currentUserId: authenticatedUser ? authenticatedUser.id : null,
@@ -87,7 +90,7 @@ beforeEach(async () => {
     .then(user => user.toJson())
 
   authenticatedUser = user1
-  variables = { id: user2.id, type: 'User' }
+  variables = { id: user2.id }
 })
 
 afterEach(async () => {
@@ -99,71 +102,85 @@ describe('follow', () => {
     describe('unauthenticated follow', () => {
       test('throws authorization error', async () => {
         authenticatedUser = null
-        const { errors, data } = await mutate({
-          mutation: mutationFollowUser,
-          variables,
+        await expect(
+          mutate({
+            mutation: mutationFollowUser,
+            variables,
+          }),
+        ).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { followUser: null },
         })
-        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-        expect(data).toMatchObject({ follow: null })
       })
     })
 
     test('I can follow another user', async () => {
-      const { data: result } = await mutate({
-        mutation: mutationFollowUser,
-        variables,
-      })
       const expectedUser = {
         name: user2.name,
         followedBy: [{ id: user1.id, name: user1.name }],
         followedByCurrentUser: true,
       }
-      expect(result).toMatchObject({ follow: expectedUser })
+      await expect(
+        mutate({
+          mutation: mutationFollowUser,
+          variables,
+        }),
+      ).resolves.toMatchObject({
+        data: { followUser: expectedUser },
+        errors: undefined,
+      })
     })
 
     test('I can`t follow myself', async () => {
       variables.id = user1.id
-      const { data: result } = await mutate({ mutation: mutationFollowUser, variables })
-      const expectedResult = { follow: null }
-      expect(result).toMatchObject(expectedResult)
-
-      const { data } = await query({
-        query: userQuery,
-        variables: { id: user1.id },
+      await expect(mutate({ mutation: mutationFollowUser, variables })).resolves.toMatchObject({
+        data: { followUser: null },
+        errors: undefined,
       })
+
       const expectedUser = {
         followedBy: [],
         followedByCurrentUser: false,
       }
-      expect(data).toMatchObject({ User: [expectedUser] })
+      await expect(
+        query({
+          query: userQuery,
+          variables: { id: user1.id },
+        }),
+      ).resolves.toMatchObject({
+        data: {
+          User: [expectedUser],
+        },
+        errors: undefined,
+      })
     })
   })
   describe('unfollow user', () => {
     beforeEach(async () => {
-      variables = {
-        id: user2.id,
-        type: 'User',
-      }
+      variables = { id: user2.id }
       await mutate({ mutation: mutationFollowUser, variables })
     })
 
     describe('unauthenticated follow', () => {
       test('throws authorization error', async () => {
         authenticatedUser = null
-        const { errors, data } = await mutate({ mutation: mutationUnfollowUser, variables })
-        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-        expect(data).toMatchObject({ unfollow: null })
+        await expect(mutate({ mutation: mutationUnfollowUser, variables })).resolves.toMatchObject({
+          data: { unfollowUser: null },
+          errors: [{ message: 'Not Authorised!' }],
+        })
       })
     })
 
-    it('I can unfollow a user', async () => {
-      const { data: result } = await mutate({ mutation: mutationUnfollowUser, variables })
+    test('I can unfollow a user', async () => {
       const expectedUser = {
         name: user2.name,
         followedBy: [],
         followedByCurrentUser: false,
       }
-      expect(result).toMatchObject({ unfollow: expectedUser })
+      await expect(mutate({ mutation: mutationUnfollowUser, variables })).resolves.toMatchObject({
+        data: { unfollowUser: expectedUser },
+        errors: undefined,
+      })
     })
   })
 })

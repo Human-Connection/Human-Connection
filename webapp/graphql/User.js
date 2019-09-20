@@ -106,7 +106,7 @@ export const followUserMutation = i18n => {
   return gql`
     ${userFragment(lang)}
     mutation($id: ID!) {
-      follow(id: $id, type: User) {
+      followUser(id: $id) {
         name
         followedByCount
         followedByCurrentUser
@@ -123,7 +123,7 @@ export const unfollowUserMutation = i18n => {
   return gql`
     ${userFragment(lang)}
     mutation($id: ID!) {
-      unfollow(id: $id, type: User) {
+      unfollowUser(id: $id) {
         name
         followedByCount
         followedByCurrentUser
