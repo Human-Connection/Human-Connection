@@ -1458,10 +1458,10 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^4.0.0"
 
-"@nuxtjs/apollo@^4.0.0-rc13":
-  version "4.0.0-rc13"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc13.tgz#b18a5db3c9f1e5dac4be4848a469b84ae1833b62"
-  integrity sha512-JoIoexBz0AGkrWl3vkPN7+2hHSY0EJJaI04lfMhc5MQy4PjmYTtpOUFgxLHWSB/HUPeioQwyEdClzPTJrM4yxw==
+"@nuxtjs/apollo@^4.0.0-rc13.1":
+  version "4.0.0-rc13.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc13.1.tgz#35c9ffae5f0a8f94add1bf0480e67a54bd1fca5b"
+  integrity sha512-a39GSehrJlCB236oEHa3lTwFSHvMWq+0LFosM8UXYMReZPDSNnxtEzfQlRrXsav9iKXcELw31e8sisRB+LcMdQ==
   dependencies:
     cross-fetch "^3.0.4"
     universal-cookie "^4.0.2"
