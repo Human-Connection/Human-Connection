@@ -18,6 +18,7 @@
 
 <script>
 import Dropdown from '~/components/Dropdown'
+import { REFRECH_MILISEC } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import NotificationList from '../NotificationList/NotificationList'
 
@@ -36,7 +37,7 @@ export default {
     placement: { type: String },
   },
   created() {
-    setInterval(this.updateNotifications, 10000)
+    setInterval(this.updateNotifications, REFRECH_MILISEC)
   },
   destroyed() {
     clearInterval(this.updateNotifications)
