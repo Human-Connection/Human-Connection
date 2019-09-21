@@ -1,1 +1,1 @@
-export const REFRECH_MILISEC = '60000'
+export const REFRESH_MILLISEC = '60000'
