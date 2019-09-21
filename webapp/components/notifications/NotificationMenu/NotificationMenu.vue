@@ -37,7 +37,7 @@ export default {
     placement: { type: String },
   },
   created() {
-    setInterval(this.updateNotifications, REFRECH_MILISEC)
+    setInterval(this.updateNotifications, REFRESH_MILLISEC)
   },
   destroyed() {
     clearInterval(this.updateNotifications)
