@@ -40,12 +40,12 @@
       </div>
       <div v-show="!openEditCommentMenu">
         <content-viewer
-          v-if="comment.content.length < 180"
+          v-if="comment.content.length < 400"
           :content="comment.content"
           class="padding-left"
         />
         <div
-          v-show="comment.content !== comment.contentExcerpt && comment.content.length > 180"
+          v-show="comment.content !== comment.contentExcerpt && comment.content.length > 400"
           class="show-more-or-less-div"
         >
           <content-viewer
