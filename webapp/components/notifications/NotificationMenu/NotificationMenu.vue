@@ -18,7 +18,7 @@
 
 <script>
 import Dropdown from '~/components/Dropdown'
-import { REFRECH_MILISEC } from '~/constants/notifications'
+import { REFRESH_MILLISEC } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import NotificationList from '../NotificationList/NotificationList'
 
