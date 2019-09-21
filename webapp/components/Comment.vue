@@ -27,8 +27,6 @@
           />
         </client-only>
       </ds-space>
-
-      <ds-space margin-bottom="small" />
       <div v-if="openEditCommentMenu">
         <hc-comment-form
           :update="true"
@@ -40,12 +38,12 @@
       </div>
       <div v-show="!openEditCommentMenu">
         <content-viewer
-          v-if="comment.content.length < 180"
+          v-if="comment.content.length < 400"
           :content="comment.content"
           class="padding-left"
         />
         <div
-          v-show="comment.content !== comment.contentExcerpt && comment.content.length > 180"
+          v-show="comment.content !== comment.contentExcerpt && comment.content.length > 400"
           class="show-more-or-less-div"
         >
           <content-viewer
@@ -59,7 +57,11 @@
             </a>
           </span>
         </div>
-        <content-viewer v-if="!isCollapsed" :content="comment.content" class="padding-left" />
+        <content-viewer
+          v-if="!isCollapsed"
+          :content="comment.content"
+          class="padding-left text-align-left"
+        />
         <div class="show-more-or-less-div">
           <span class="show-more-or-less">
             <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" class="padding-left">
@@ -180,12 +182,11 @@ export default {
 div.show-more-or-less-div {
   text-align: right;
   margin-right: 20px;
-  margin-top: -12px;
 }
 
 span.show-more-or-less {
   display: block;
-  margin: 10px 20px;
+  margin: 0px 20px;
   cursor: pointer;
 }
 </style>
