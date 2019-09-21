@@ -5,8 +5,8 @@
     id="postdropzone"
     class="ds-card-image"
     :use-custom-slot="true"
-    @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="verror"
+    @vdropzone-thumbnail="transformImage"
   >
     <div class="dz-message">
       <div
@@ -31,6 +31,8 @@
 
 <script>
 import vueDropzone from 'nuxt-dropzone'
+import Cropper from 'cropperjs'
+import 'cropperjs/dist/cropper.css'
 
 export default {
   components: {
@@ -86,11 +88,51 @@ export default {
           uploadArea.classList.remove('hc-attachments-upload-area-update-post')
         }
         image = new Image()
-        image.src = URL.createObjectURL(file)
+        image.src = dataUrl
         image.classList.add('thumbnail-preview')
         if (thumbnailPreview) return thumbnailElement.replaceChild(image, thumbnailPreview)
         thumbnailElement.appendChild(image)
       }
+    },
+    transformImage(file) {
+      let myDropZone = this
+
+      // Create the image editor overlay
+      let editor = document.createElement('div')
+      editor.style.position = 'fixed'
+      editor.style.left = 0
+      editor.style.right = 0
+      editor.style.top = 0
+      editor.style.bottom = 0
+      editor.style.zIndex = 9999
+      editor.style.backgroundColor = '#000'
+
+      // Create the confirm button
+      let confirm = document.createElement('button')
+      confirm.style.position = 'absolute'
+      confirm.style.left = '10px'
+      confirm.style.top = '10px'
+      confirm.style.zIndex = 9999
+      confirm.textContent = 'Confirm'
+      confirm.addEventListener('click', function() {
+        // Get the canvas with image data from Cropper.js
+        let canvas = cropper.getCroppedCanvas()
+        myDropZone.thumbnail(file, canvas.toDataURL())
+
+        // Remove the editor from view
+        editor.parentNode.removeChild(editor)
+      })
+      editor.appendChild(confirm)
+
+      // Load the image
+      let image = new Image()
+      image.src = URL.createObjectURL(file)
+      editor.appendChild(image)
+      // Append the editor to the page
+      document.body.appendChild(editor)
+
+      // Create Cropper.js and pass image
+      let cropper = new Cropper(image, {})
     },
   },
 }
