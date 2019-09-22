@@ -29,6 +29,29 @@ describe('slug', () => {
     )
   })
 
+  it('must be unique', async done => {
+    await instance.create('User', { slug: 'Matt' })
+    try {
+      await expect(instance.create('User', { slug: 'Matt' })).rejects.toThrow('already exists')
+      done()
+    } catch (error) {
+      throw new Error(`
+        ${error}
+
+        Probably your database has no unique constraints!
+
+        To see all constraints go to http://localhost:7474/browser/ and
+        paste the following:
+        \`\`\`
+          CALL db.constraints();
+        \`\`\`
+
+        Learn how to setup the database here:
+        https://docs.human-connection.org/human-connection/neo4j
+      `)
+    }
+  })
+
   describe('characters', () => {
     const createUser = attrs => {
       return instance.create('User', attrs).then(user => user.toJson())
