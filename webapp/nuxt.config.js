@@ -221,6 +221,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
+    '@nuxtjs/pwa'
   ],
 
   /*
