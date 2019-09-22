@@ -42,13 +42,10 @@
           :content="comment.content"
           class="padding-left"
         />
-        <div
-          v-show="comment.content !== comment.contentExcerpt && comment.content.length > 400"
-          class="show-more-or-less-div"
-        >
+        <div v-else class="show-more-or-less-div">
           <content-viewer
             v-if="isCollapsed"
-            :content="comment.contentExcerpt"
+            :content="$filters.truncate(comment.content, 400)"
             class="padding-left text-align-left"
           />
           <span class="show-more-or-less">
