@@ -79,12 +79,26 @@ describe('NotificationMenu.vue', () => {
                   },
                 },
               },
+              {
+                id: 'notification-43',
+                read: true,
+                post: {
+                  id: 'post-3',
+                  title: 'red post title',
+                  contentExcerpt: 'this is yet another post content',
+                  author: {
+                    id: 'john-1',
+                    slug: 'john-doe',
+                    name: 'John Doe',
+                  },
+                },
+              },
             ],
           }
         }
       })
 
-      it('displays the total number of notifications', () => {
+      it('displays the unred number of notifications', () => {
         wrapper = Wrapper()
         expect(wrapper.find('ds-button-stub').text()).toEqual('2')
       })
