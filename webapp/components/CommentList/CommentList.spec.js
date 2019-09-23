@@ -41,6 +41,7 @@ describe('CommentList.vue', () => {
         $t: jest.fn(),
         $filters: {
           truncate: a => a,
+          removeHtml: a => a,
         },
         $apollo: {
           queries: {

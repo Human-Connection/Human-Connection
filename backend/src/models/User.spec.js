@@ -18,3 +18,67 @@ describe('role', () => {
     )
   })
 })
+
+describe('slug', () => {
+  it('normalizes to lowercase letters', async () => {
+    const user = await instance.create('User', { slug: 'Matt' })
+    await expect(user.toJson()).resolves.toEqual(
+      expect.objectContaining({
+        slug: 'matt',
+      }),
+    )
+  })
+
+  it('must be unique', async done => {
+    await instance.create('User', { slug: 'Matt' })
+    try {
+      await expect(instance.create('User', { slug: 'Matt' })).rejects.toThrow('already exists')
+      done()
+    } catch (error) {
+      throw new Error(`
+        ${error}
+
+        Probably your database has no unique constraints!
+
+        To see all constraints go to http://localhost:7474/browser/ and
+        paste the following:
+        \`\`\`
+          CALL db.constraints();
+        \`\`\`
+
+        Learn how to setup the database here:
+        https://docs.human-connection.org/human-connection/neo4j
+      `)
+    }
+  })
+
+  describe('characters', () => {
+    const createUser = attrs => {
+      return instance.create('User', attrs).then(user => user.toJson())
+    }
+
+    it('-', async () => {
+      await expect(createUser({ slug: 'matt-rider' })).resolves.toMatchObject({
+        slug: 'matt-rider',
+      })
+    })
+
+    it('_', async () => {
+      await expect(createUser({ slug: 'matt_rider' })).resolves.toMatchObject({
+        slug: 'matt_rider',
+      })
+    })
+
+    it(' ', async () => {
+      await expect(createUser({ slug: 'matt rider' })).rejects.toThrow(
+        /fails to match the required pattern/,
+      )
+    })
+
+    it('ä', async () => {
+      await expect(createUser({ slug: 'mätt' })).rejects.toThrow(
+        /fails to match the required pattern/,
+      )
+    })
+  })
+})

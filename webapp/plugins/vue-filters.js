@@ -3,6 +3,7 @@ import Vue from 'vue'
 import { enUS, de, nl, fr, es } from 'date-fns/locale'
 import format from 'date-fns/format'
 import accounting from 'accounting'
+import trunc from 'trunc-html'
 
 export default ({ app = {} }) => {
   const locales = {
@@ -45,9 +46,9 @@ export default ({ app = {} }) => {
       if (length <= 0) {
         return value
       }
-      let output = value.substring(0, length)
+      let output = trunc(value, length).html
       if (output.length < value.length) {
-        output += '…'
+        output += ' …'
       }
       return output
     },

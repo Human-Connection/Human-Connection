@@ -30,6 +30,7 @@ describe('Comment.vue', () => {
       },
       $filters: {
         truncate: a => a,
+        removeHtml: a => a,
       },
       $apollo: {
         mutate: jest.fn().mockResolvedValue({
