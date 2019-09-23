@@ -1,0 +1,257 @@
+[
+    {
+        "provider_name": "Codepen",
+        "provider_url": "https:\/\/codepen.io",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/codepen.io\/*",
+                    "https:\/\/codepen.io\/*"
+                ],
+                "url": "http:\/\/codepen.io\/api\/oembed"
+            }
+        ]
+    },
+    {
+        "provider_name": "DTube",
+        "provider_url": "https:\/\/d.tube\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https:\/\/d.tube\/v\/*"
+                ],
+                "url": "https:\/\/api.d.tube\/oembed",
+                "discovery": true
+            }
+        ]
+    },
+    {
+        "provider_name": "Facebook (Post)",
+        "provider_url": "https:\/\/www.facebook.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https:\/\/www.facebook.com\/*\/posts\/*",
+                    "https:\/\/www.facebook.com\/photos\/*",
+                    "https:\/\/www.facebook.com\/*\/photos\/*",
+                    "https:\/\/www.facebook.com\/photo.php*",
+                    "https:\/\/www.facebook.com\/photo.php",
+                    "https:\/\/www.facebook.com\/*\/activity\/*",
+                    "https:\/\/www.facebook.com\/permalink.php",
+                    "https:\/\/www.facebook.com\/media\/set?set=*",
+                    "https:\/\/www.facebook.com\/questions\/*",
+                    "https:\/\/www.facebook.com\/notes\/*\/*\/*"
+                ],
+                "url": "https:\/\/www.facebook.com\/plugins\/post\/oembed.json",
+                "discovery": true
+            }
+        ]
+    },
+    {
+        "provider_name": "Facebook (Video)",
+        "provider_url": "https:\/\/www.facebook.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https:\/\/www.facebook.com\/*\/videos\/*",
+                    "https:\/\/www.facebook.com\/video.php"
+                ],
+                "url": "https:\/\/www.facebook.com\/plugins\/video\/oembed.json",
+                "discovery": true
+            }
+        ]
+    },
+    {
+        "provider_name": "Flickr",
+        "provider_url": "https:\/\/www.flickr.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/*.flickr.com\/photos\/*",
+                    "http:\/\/flic.kr\/p\/*",
+                    "https:\/\/*.flickr.com\/photos\/*",
+                    "https:\/\/flic.kr\/p\/*"
+                ],
+                "url": "https:\/\/www.flickr.com\/services\/oembed\/",
+                "discovery": true
+            }
+        ]
+    },
+    {
+        "provider_name": "GIPHY",
+        "provider_url": "https:\/\/giphy.com",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https:\/\/giphy.com\/gifs\/*",
+                    "http:\/\/gph.is\/*",
+                    "https:\/\/media.giphy.com\/media\/*\/giphy.gif"
+                ],
+                "url": "https:\/\/giphy.com\/services\/oembed",
+                "discovery": true
+            }
+        ]
+    },
+    {
+        "provider_name": "Instagram",
+        "provider_url": "https:\/\/instagram.com",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/instagram.com\/p\/*",
+                    "http:\/\/instagr.am\/p\/*",
+                    "http:\/\/www.instagram.com\/p\/*",
+                    "http:\/\/www.instagr.am\/p\/*",
+                    "https:\/\/instagram.com\/p\/*",
+                    "https:\/\/instagr.am\/p\/*",
+                    "https:\/\/www.instagram.com\/p\/*",
+                    "https:\/\/www.instagr.am\/p\/*"
+                ],
+                "url": "https:\/\/api.instagram.com\/oembed",
+                "formats": [
+                    "json"
+                ]
+            }
+        ]
+    },
+    {
+        "provider_name": "Meetup",
+        "provider_url": "http:\/\/www.meetup.com",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/meetup.com\/*",
+                    "https:\/\/www.meetup.com\/*",
+                    "https:\/\/meetup.com\/*",
+                    "http:\/\/meetu.ps\/*"
+                ],
+                "url": "https:\/\/api.meetup.com\/oembed",
+                "formats": [
+                    "json"
+                ]
+            }
+        ]
+    },
+    {
+        "provider_name": "MixCloud",
+        "provider_url": "https:\/\/mixcloud.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/www.mixcloud.com\/*\/*\/",
+                    "https:\/\/www.mixcloud.com\/*\/*\/"
+                ],
+                "url": "https:\/\/www.mixcloud.com\/oembed\/"
+            }
+        ]
+    },
+    {
+        "provider_name": "Reddit",
+        "provider_url": "https:\/\/reddit.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https:\/\/reddit.com\/r\/*\/comments\/*\/*",
+                    "https:\/\/www.reddit.com\/r\/*\/comments\/*\/*"
+                ],
+                "url": "https:\/\/www.reddit.com\/oembed"
+            }
+        ]
+    },
+    {
+        "provider_name": "SlideShare",
+        "provider_url": "http:\/\/www.slideshare.net\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/www.slideshare.net\/*\/*",
+                    "http:\/\/fr.slideshare.net\/*\/*",
+                    "http:\/\/de.slideshare.net\/*\/*",
+                    "http:\/\/es.slideshare.net\/*\/*",
+                    "http:\/\/pt.slideshare.net\/*\/*"
+                ],
+                "url": "http:\/\/www.slideshare.net\/api\/oembed\/2",
+                "discovery": true
+            }
+        ]
+    },
+    {
+        "provider_name": "SoundCloud",
+        "provider_url": "http:\/\/soundcloud.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/soundcloud.com\/*",
+                    "https:\/\/soundcloud.com\/*"
+                ],
+                "url": "https:\/\/soundcloud.com\/oembed"
+            }
+        ]
+    },
+    {
+        "provider_name": "Twitch",
+        "provider_url": "https:\/\/www.twitch.tv",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/clips.twitch.tv\/*",
+                    "https:\/\/clips.twitch.tv\/*",
+                    "http:\/\/www.twitch.tv\/*",
+                    "https:\/\/www.twitch.tv\/*",
+                    "http:\/\/twitch.tv\/*",
+                    "https:\/\/twitch.tv\/*"
+                ],
+                "url": "https:\/\/api.twitch.tv\/v4\/oembed",
+                "formats": [
+                    "json"
+                ]
+            }
+        ]
+    },
+    {
+        "provider_name": "Twitter",
+        "provider_url": "http:\/\/www.twitter.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https:\/\/twitter.com\/*\/status\/*",
+                    "https:\/\/*.twitter.com\/*\/status\/*"
+                ],
+                "url": "https:\/\/publish.twitter.com\/oembed"
+            }
+        ]
+    },
+    {
+        "provider_name": "Vimeo",
+        "provider_url": "https:\/\/vimeo.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https:\/\/vimeo.com\/*",
+                    "https:\/\/vimeo.com\/album\/*\/video\/*",
+                    "https:\/\/vimeo.com\/channels\/*\/*",
+                    "https:\/\/vimeo.com\/groups\/*\/videos\/*",
+                    "https:\/\/vimeo.com\/ondemand\/*\/*",
+                    "https:\/\/player.vimeo.com\/video\/*"
+                ],
+                "url": "https:\/\/vimeo.com\/api\/oembed.{format}",
+                "discovery": true
+            }
+        ]
+    },
+    {
+        "provider_name": "YouTube",
+        "provider_url": "https:\/\/www.youtube.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https:\/\/*.youtube.com\/watch*",
+                    "https:\/\/*.youtube.com\/v\/*",
+                    "https:\/\/youtu.be\/*"
+                ],
+                "url": "https:\/\/www.youtube.com\/oembed",
+                "discovery": true
+            }
+        ]
+    }
+]
