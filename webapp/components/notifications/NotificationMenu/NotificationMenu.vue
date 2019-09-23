@@ -1,10 +1,25 @@
 <template>
-  <ds-button v-if="totalNotifications <= 0" class="notifications-menu" disabled icon="bell">
-    {{ unreadNotifications }}
-  </ds-button>
+  <div
+    v-if="totalNotifications <= 0"
+    class="notifications-menu-pointer"
+    @click.prevent="updateNotifications"
+  >
+    <ds-button class="notifications-menu" disabled icon="bell">
+      {{ unreadNotifications }}
+    </ds-button>
+  </div>
   <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
-      <ds-button primary icon="bell" @click.prevent="toggleMenu">
+      <ds-button
+        primary
+        icon="bell"
+        @click.prevent="
+          () => {
+            toggleMenu()
+            updateNotifications()
+          }
+        "
+      >
         {{ unreadNotifications }}
       </ds-button>
     </template>
@@ -100,6 +115,9 @@ export default {
       }
       return countUnread
     },
+    clickMenuButton() {
+      toggleMenu()
+    },
   },
   apollo: {
     notifications: {
@@ -115,6 +133,10 @@ export default {
 .notifications-menu {
   display: flex;
   align-items: center;
+}
+
+.notifications-menu-pointer {
+  cursor: pointer;
 }
 
 .notifications-menu-popover {
