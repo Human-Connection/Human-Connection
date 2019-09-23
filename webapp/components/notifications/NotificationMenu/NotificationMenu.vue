@@ -1,11 +1,11 @@
 <template>
   <ds-button v-if="totalNotifications <= 0" class="notifications-menu" disabled icon="bell">
-    {{ totalNotifications }}
+    {{ unreadNotifications }}
   </ds-button>
   <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
       <ds-button primary icon="bell" @click.prevent="toggleMenu">
-        {{ totalNotifications }}
+        {{ unreadNotifications }}
       </ds-button>
     </template>
     <template slot="popover">
@@ -52,16 +52,16 @@ export default {
         })
         // add all the new notifications to the notifications
         if (notifications) {
-          notifications.forEach(updatedElement => {
-            const sameNotification = this.notifications.find(function(oldElement) {
+          notifications.forEach(udatedListNotification => {
+            const sameNotification = this.notifications.find(function(oldListNotification) {
               return (
-                oldElement.from.id === updatedElement.from.id &&
-                oldElement.createdAt === updatedElement.createdAt &&
-                oldElement.reason === updatedElement.reason
+                oldListNotification.from.id === udatedListNotification.from.id &&
+                oldListNotification.createdAt === udatedListNotification.createdAt &&
+                oldListNotification.reason === udatedListNotification.reason
               )
             })
             if (sameNotification === undefined) {
-              this.notifications.unshift(updatedElement)
+              this.notifications.unshift(udatedListNotification)
             }
           })
         }
@@ -90,6 +90,15 @@ export default {
   computed: {
     totalNotifications() {
       return (this.notifications || []).length
+    },
+    unreadNotifications() {
+      let countUnread = 0
+      if (this.notifications) {
+        this.notifications.forEach(notification => {
+          if (!notification.read) countUnread++
+        })
+      }
+      return countUnread
     },
   },
   apollo: {
