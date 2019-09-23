@@ -5,7 +5,7 @@
     @click.prevent="updateNotifications"
   >
     <ds-button class="notifications-menu" disabled icon="bell">
-      {{ unreadNotifications }}
+      {{ unredNotifications }}
     </ds-button>
   </div>
   <dropdown v-else class="notifications-menu" :placement="placement">
@@ -18,7 +18,7 @@
           updateNotifications()
         "
       >
-        {{ unreadNotifications }}
+        {{ unredNotifications }}
       </ds-button>
     </template>
     <template slot="popover">
@@ -104,7 +104,7 @@ export default {
     totalNotifications() {
       return (this.notifications || []).length
     },
-    unreadNotifications() {
+    unredNotifications() {
       let countUnread = 0
       if (this.notifications) {
         this.notifications.forEach(notification => {
