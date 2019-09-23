@@ -192,7 +192,7 @@ describe('given some notifications', () => {
         it('returns only unread notifications of current user', async () => {
           const expected = expect.objectContaining({
             data: {
-              notifications: [
+              notifications: expect.arrayContaining([
                 {
                   from: {
                     __typename: 'Comment',
@@ -209,12 +209,15 @@ describe('given some notifications', () => {
                   read: false,
                   createdAt: '2019-08-31T17:33:48.651Z',
                 },
-              ],
+              ]),
             },
           })
-          await expect(
-            query({ query: notificationQuery, variables: { ...variables, read: false } }),
-          ).resolves.toMatchObject(expected)
+          const response = await query({
+            query: notificationQuery,
+            variables: { ...variables, read: false },
+          })
+          await expect(response).toMatchObject(expected)
+          await expect(response.data.notifications.length).toEqual(2) // double-check
         })
 
         describe('if a resource gets deleted', () => {
