@@ -221,6 +221,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
+    '@nuxtjs/pwa',
   ],
 
   /*
@@ -294,10 +295,12 @@ export default {
   },
 
   manifest: {
-    name: 'Human-Connection.org',
-    description: 'Human-Connection.org',
-    theme_color: '#ffffff',
-    lang: 'de',
+    name: 'Human Connection',
+    short_name: 'HC',
+    homepage_url: 'https://human-connection.org/',
+    description: 'The free and open source social network for active citizenship',
+    theme_color: '#17b53f',
+    lang: 'en',
   },
 
   /*
