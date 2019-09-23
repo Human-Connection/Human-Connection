@@ -1,4 +1,4 @@
-import findProvider from '~/json/findProvider'
+import findProvider from './findProvider'
 
 describe('Vimeo', () => {
   it('matches `https://vimeo.com/showcase/2098620/video/4082288`', () => {

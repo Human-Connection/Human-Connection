@@ -309,17 +309,15 @@
     },
     "allowEmbeds": {
       "name": "Drittanbieter",
-      "description": "In unseren Beiträgen können aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text eingebunden werden.",
+      "description": "In unseren Beiträgen können / werden aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text eingebunden werden.",
       "statustext": "Momentan ist das automatische einbinden:",
       "statuschange": "Einstellung ändern",
       "false": "Abgestellt",
       "true": "Zugelassen",
       "button-tofalse": "Abstellen",
-      "button-toonlysession": "Zugelassen für diese Sitzung",
       "button-totrue": "dauerhaft zulassen",
-      "third-party-false": "Es wird kein Service von Drittanbietern automatisch eingebunden.",
-      "third-party-onlysession": "Sie haben das automatische einbinden für diese Sitzung zugelassen. Nach einem neuen Login ist es wieder abgestellt.",
-      "third-party-true": "Das einbinden der Services von Drittanbietern ist dauerhaft zugelassen und gespeichert für komende Sitzungen."
+      "third-party-false": "Es wird <b style='color:red'>kein</b> Service von Drittanbietern automatisch eingebunden.",
+      "third-party-true": "Das einbinden der Services von Drittanbietern ist <b style='color:red'>dauerhaft zugelassen</b> und gespeichert für komende Sitzungen."
     }
   },
   "comment": {
