@@ -14,10 +14,8 @@
         primary
         icon="bell"
         @click.prevent="
-          () => {
-            toggleMenu()
-            updateNotifications()
-          }
+          toggleMenu()
+          updateNotifications()
         "
       >
         {{ unreadNotifications }}
@@ -65,7 +63,7 @@ export default {
         } = await this.$apollo.mutate({
           mutation: notificationQuery(this.$i18n),
         })
-        // add all the new notifications to the notifications
+        // add all the new notifications to the old notifications at top of the list
         if (notifications) {
           notifications.forEach(udatedListNotification => {
             const sameNotification = this.notifications.find(function(oldListNotification) {
@@ -114,9 +112,6 @@ export default {
         })
       }
       return countUnread
-    },
-    clickMenuButton() {
-      toggleMenu()
     },
   },
   apollo: {
