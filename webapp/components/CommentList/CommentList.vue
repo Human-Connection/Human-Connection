@@ -12,7 +12,7 @@
         >
           {{ post.comments.length }}
         </ds-tag>
-        &nbsp; Comments
+        <span class="list-title">{{ $t('common.comment', null, 0) }}</span>
       </span>
     </h3>
     <ds-space margin-bottom="large" />
@@ -47,3 +47,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.list-title {
+  margin-left: $space-x-small;
+}
+</style>
