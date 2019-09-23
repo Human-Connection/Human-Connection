@@ -151,10 +151,17 @@
     "data": {
       "name": "Deine Daten",
       "labelName": "Dein Name",
+      "labelSlug": "Dein eindeutiger Benutzername",
       "namePlaceholder": "Petra Lustig",
       "labelCity": "Deine Stadt oder Region",
       "labelBio": "Über dich",
       "success": "Deine Daten wurden erfolgreich aktualisiert!"
+    },
+    "validation": {
+      "slug": {
+        "regex": "Es sind nur Kleinbuchstaben, Zahlen, Unterstriche oder Bindestriche erlaubt.",
+        "alreadyTaken": "Dieser Benutzername ist schon vergeben."
+      }
     },
     "security": {
       "name": "Sicherheit",

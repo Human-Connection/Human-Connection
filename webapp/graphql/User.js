@@ -134,3 +134,11 @@ export const unfollowUserMutation = i18n => {
     }
   `
 }
+
+export const checkSlugAvailableQuery = gql`
+  query($slug: String!) {
+    User(slug: $slug) {
+      slug
+    }
+  }
+`

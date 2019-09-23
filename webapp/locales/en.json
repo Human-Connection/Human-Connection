@@ -152,10 +152,17 @@
     "data": {
       "name": "Your data",
       "labelName": "Your Name",
+      "labelSlug": "Your unique user name",
       "namePlaceholder": "Femanon Funny",
       "labelCity": "Your City or Region",
       "labelBio": "About You",
       "success": "Your data was successfully updated!"
+    },
+    "validation": {
+      "slug": {
+        "regex": "Allowed characters are only lowercase letters, numbers, underscores and hyphens.",
+        "alreadyTaken": "This user name is already taken."
+      }
     },
     "security": {
       "name": "Security",
