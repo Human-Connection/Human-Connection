@@ -18,7 +18,7 @@
           updateNotifications()
         "
       >
-        {{ unredNotifications }}
+        {{ unreadNotifications }}
       </ds-button>
     </template>
     <template slot="popover">
