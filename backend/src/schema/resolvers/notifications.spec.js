@@ -212,9 +212,12 @@ describe('given some notifications', () => {
               ]),
             },
           })
-          await expect(
-            query({ query: notificationQuery, variables: { ...variables, read: false } }),
-          ).resolves.toMatchObject(expected)
+          const response = await query({
+            query: notificationQuery,
+            variables: { ...variables, read: false },
+          })
+          await expect(response).toMatchObject(expected)
+          await expect(response.data.notifications.length).toEqual(2) // double-check
         })
 
         describe('if a resource gets deleted', () => {
