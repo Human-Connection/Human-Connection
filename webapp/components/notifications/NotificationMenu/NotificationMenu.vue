@@ -23,7 +23,7 @@
     </template>
     <template slot="popover">
       <div class="notifications-menu-popover">
-        <notification-list :notifications="notifications" @markAsRead="markAsRead" />
+        <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
       </div>
     </template>
   </dropdown>
@@ -43,41 +43,62 @@ export default {
   },
   data() {
     return {
+      displayedNotifications: [],
       notifications: [],
     }
   },
   props: {
     placement: { type: String },
   },
-  created() {
-    setInterval(this.updateNotifications, REFRESH_MILLISEC)
-  },
-  destroyed() {
-    clearInterval(this.updateNotifications)
+  // created() {
+  //   setInterval(this.updateNotifications, REFRESH_MILLISEC)
+  // },
+  // destroyed() {
+  //   clearInterval(this.updateNotifications)
+  // },
+  watch: {
+    notifications: {
+      handler(lastQueriedNotifications) {
+        console.log('lastQueriedNotifications', lastQueriedNotifications)
+
+        if (this.displayedNotifications && lastQueriedNotifications.length > 0) {
+          // set this to be empty to get always called if a query comes with results from the backend
+          this.notifications = [] // has the sideeffect the handler is encouraged to be called again, but only once with no effect
+
+          // add all the new notifications to the displayedNotifications at top of the list
+          if (lastQueriedNotifications) {
+            lastQueriedNotifications.forEach(updatedListNotification => {
+              const sameNotification = this.displayedNotifications.find(function(
+                oldListNotification,
+              ) {
+                return (
+                  oldListNotification.from.id === updatedListNotification.from.id &&
+                  oldListNotification.createdAt === updatedListNotification.createdAt &&
+                  oldListNotification.reason === updatedListNotification.reason
+                )
+              })
+              if (sameNotification === undefined) {
+                this.displayedNotifications.unshift(updatedListNotification)
+              }
+            })
+          }
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   methods: {
     async updateNotifications() {
+      console.log('updateNotifications !!!')
       try {
         const {
           data: { notifications },
-        } = await this.$apollo.mutate({
-          mutation: notificationQuery(this.$i18n),
+        } = await this.$apollo.query({
+          query: notificationQuery(this.$i18n),
         })
-        // add all the new notifications to the old notifications at top of the list
-        if (notifications) {
-          notifications.forEach(udatedListNotification => {
-            const sameNotification = this.notifications.find(function(oldListNotification) {
-              return (
-                oldListNotification.from.id === udatedListNotification.from.id &&
-                oldListNotification.createdAt === udatedListNotification.createdAt &&
-                oldListNotification.reason === udatedListNotification.reason
-              )
-            })
-            if (sameNotification === undefined) {
-              this.notifications.unshift(udatedListNotification)
-            }
-          })
-        }
+        console.log('updateNotifications - notifications: ', notifications)
+        this.notifications = notifications
       } catch (err) {
         throw new Error(err)
       }
@@ -92,7 +113,7 @@ export default {
           variables,
         })
         if (!(markAsRead && markAsRead.read === true)) return
-        this.notifications = this.notifications.map(n => {
+        this.displayedNotifications = this.displayedNotifications.map(n => {
           return n.from.id === markAsRead.from.id ? markAsRead : n
         })
       } catch (err) {
@@ -102,14 +123,12 @@ export default {
   },
   computed: {
     totalNotifications() {
-      return (this.notifications || []).length
+      return (this.displayedNotifications || []).length
     },
     unreadNotifications() {
-      let countUnread = this.notifications.reduce((notification, counter) => {
-        return (notification.read) ? counter : counter +1
-      })
-      if (this.notifications) {
-        this.notifications.forEach(notification => {
+      let countUnread = 0
+      if (this.displayedNotifications) {
+        this.displayedNotifications.forEach(notification => {
           if (!notification.read) countUnread++
         })
       }
@@ -120,6 +139,9 @@ export default {
     notifications: {
       query() {
         return notificationQuery(this.$i18n)
+      },
+      pollInterval() {
+        return REFRESH_MILLISEC
       },
     },
   },
