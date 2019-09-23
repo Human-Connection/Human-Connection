@@ -2,7 +2,7 @@
   "maintenance": {
     "title": "Human Connection is under maintenance",
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
-    "questions": "Any Questions or concerns, send an email to" 
+    "questions": "Any Questions or concerns, send an email to"
   },
   "index": {
     "no-results": "No contributions found.",
@@ -307,6 +307,18 @@
       "submit": "Comment",
       "submitted": "Comment Submitted",
       "updated": "Changes Saved"
+    },
+    "allowEmbeds": {
+      "name": "Third party providers",
+      "description": "In our contributions can / will be included from the following list of providers foreign code from other providers (third parties) in the form of embedded videos, images or text.",
+      "statustext": "At the moment this is automatic embedding:",
+      "statuschange": "Change setting",
+      "false": "Turned off",
+      "true": "Admitted",
+      "button-tofalse": "turn-off",
+      "button-totrue": "allow permanently",
+      "third-party-false": "It automatically integrates <b style='color:red'>no </b> third-party providers' service.",
+      "third-party-true": "The inclusion of third-party services is <b style='color:red'>permanently allowed</b> and stored for future sessions."
     }
   },
   "comment": {

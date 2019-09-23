@@ -12,12 +12,12 @@
       <ds-container width="large">
         <ds-flex>
           <ds-flex-item>
-            <ds-button @click="toFalse" primary :disabled="disabled">
+            <ds-button @click="toFalse" primary :disabled="!disabled">
               {{ $t('post.allowEmbeds.button-tofalse') }}
             </ds-button>
           </ds-flex-item>
           <ds-flex-item>
-            <ds-button @click="toTrue" danger :disabled="!disabled">
+            <ds-button @click="toTrue" danger :disabled="disabled">
               {{ $t('post.allowEmbeds.button-totrue') }}
             </ds-button>
           </ds-flex-item>
@@ -27,7 +27,7 @@
     <ds-space />
     <ds-space />
 
-    <div v-show="!disabled">
+    <div v-show="disabled">
       <p>{{ $t('post.allowEmbeds.description') }}</p>
       <ds-container>
         <ds-placeholder>
@@ -45,13 +45,33 @@
 
 <script>
 import axios from 'axios'
-
+import gql from 'graphql-tag'
+import { mapGetters, mapMutations } from 'vuex'
+const mutation = gql`
+  mutation($id: ID!, $allowEmbedIframes: Boolean) {
+    UpdateUser(id: $id, allowEmbedIframes: $allowEmbedIframes) {
+      id
+      allowEmbedIframes
+    }
+  }
+`
 export default {
+  head() {
+    return {
+      title: this.$t('post.allowEmbeds.name'),
+    }
+  },
+  computed: {
+    ...mapGetters({
+      currentUser: 'auth/user',
+      allowEmbedIframes: 'auth/allowEmbedIframes',
+    }),
+  },
   data() {
     return {
       allowEmbeds_h3: this.$t('post.allowEmbeds.false'),
       allowEmbeds_desc: this.$t('post.allowEmbeds.third-party-false'),
-      disabled: true,
+      disabled: null,
       providers: [],
     }
   },
@@ -59,17 +79,43 @@ export default {
     axios.get('../api/providers.json').then(response => {
       this.providers = response.data
     })
+    this.disabled = this.currentUser.allowEmbedIframes
   },
   methods: {
-    toFalse: function() {
+    ...mapMutations({
+      setCurrentUser: 'auth/SET_USER',
+    }),
+    toFalse() {
       this.allowEmbeds_h3 = this.$t('post.allowEmbeds.false')
       this.allowEmbeds_desc = this.$t('post.allowEmbeds.third-party-false')
-      this.disabled = true
+      this.submit()
     },
-    toTrue: function() {
+    toTrue() {
       this.allowEmbeds_h3 = this.$t('post.allowEmbeds.true')
       this.allowEmbeds_desc = this.$t('post.allowEmbeds.third-party-true')
-      this.disabled = false
+      this.submit()
+    },
+    async submit() {
+      try {
+        await this.$apollo.mutate({
+          mutation,
+          variables: {
+            id: this.currentUser.id,
+            allowEmbedIframes: !this.disabled,
+          },
+          update: (store, { data: { UpdateUser } }) => {
+            const { allowEmbedIframes } = UpdateUser
+            this.setCurrentUser({
+              ...this.currentUser,
+              allowEmbedIframes,
+            })
+          },
+        })
+        this.$toast.success(this.$t('site.thanks') + ' ' + this.allowEmbeds_h3)
+        this.disabled = !this.disabled
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }

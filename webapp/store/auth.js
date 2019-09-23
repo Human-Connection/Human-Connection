@@ -6,6 +6,7 @@ export const state = () => {
     user: null,
     token: null,
     pending: false,
+    allowEmbedIframes: false,
   }
 }
 
@@ -45,6 +46,9 @@ export const getters = {
   },
   termsAndConditionsAgreed(state) {
     return state.user && state.user.termsAndConditionsAgreedVersion === VERSION
+  },
+  allowEmbedIframes(state) {
+    return state.allowEmbedIframes
   },
 }
 
@@ -86,6 +90,7 @@ export const actions = {
             locationName
             contributionsCount
             commentedCount
+            allowEmbedIframes
             termsAndConditionsAgreedVersion
             socialMedia {
               id
