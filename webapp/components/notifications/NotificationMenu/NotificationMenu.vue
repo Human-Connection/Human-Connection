@@ -104,7 +104,7 @@ export default {
     totalNotifications() {
       return (this.notifications || []).length
     },
-    unredNotifications() {
+    unreadNotifications() {
       let countUnread = 0
       if (this.notifications) {
         this.notifications.forEach(notification => {
