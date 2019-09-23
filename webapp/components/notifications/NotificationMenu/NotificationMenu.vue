@@ -4,9 +4,7 @@
     class="notifications-menu-pointer"
     @click.prevent="updateNotifications"
   >
-    <ds-button class="notifications-menu" disabled icon="bell">
-      {{ unreadNotifications }}
-    </ds-button>
+    <ds-button class="notifications-menu" disabled icon="bell">{{ unreadNotifications }}</ds-button>
   </div>
   <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
@@ -58,15 +56,14 @@ export default {
   methods: {
     async updateNotifications() {
       try {
-        const {
-          data: { notifications },
-        } = await this.$apollo.mutate({
-          mutation: notificationQuery(this.$i18n),
-        })
+        let oldNotifications = this.notifications
+        this.$apollo.queries.notifications.refetch()
+        const udatedNotifications = this.notifications
+
         // add all the new notifications to the old notifications at top of the list
-        if (notifications) {
-          notifications.forEach(udatedListNotification => {
-            const sameNotification = this.notifications.find(function(oldListNotification) {
+        if (udatedNotifications) {
+          udatedNotifications.forEach(udatedListNotification => {
+            const sameNotification = oldNotifications.find(function(oldListNotification) {
               return (
                 oldListNotification.from.id === udatedListNotification.from.id &&
                 oldListNotification.createdAt === udatedListNotification.createdAt &&
@@ -74,9 +71,11 @@ export default {
               )
             })
             if (sameNotification === undefined) {
-              this.notifications.unshift(udatedListNotification)
+              oldNotifications.unshift(udatedListNotification)
             }
           })
+
+          this.notifications = oldNotifications
         }
       } catch (err) {
         throw new Error(err)
@@ -105,9 +104,7 @@ export default {
       return (this.notifications || []).length
     },
     unreadNotifications() {
-      let countUnread = this.notifications.reduce((notification, counter) => {
-        return (notification.read) ? counter : counter +1
-      })
+      let countUnread = 0
       if (this.notifications) {
         this.notifications.forEach(notification => {
           if (!notification.read) countUnread++
