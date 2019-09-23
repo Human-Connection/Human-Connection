@@ -21,7 +21,7 @@
     </template>
     <template slot="popover">
       <div class="notifications-menu-popover">
-        <notification-list :notifications="notifications" @markAsRead="markAsRead" />
+        <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
       </div>
     </template>
   </dropdown>
@@ -41,42 +41,45 @@ export default {
   },
   data() {
     return {
+      displayedNotifications: [],
       notifications: [],
     }
   },
   props: {
     placement: { type: String },
   },
-  created() {
-    setInterval(this.updateNotifications, REFRESH_MILLISEC)
-  },
-  destroyed() {
-    clearInterval(this.updateNotifications)
+  watch: {
+    notifications: {
+      handler(lastQueriedNotifications) {
+        if (lastQueriedNotifications && lastQueriedNotifications.length > 0) {
+          // set this to be empty to get always called if a query comes with results from the backend
+          // has the sideeffect the handler is encouraged to be called again, but only once with no effect, because of the if above
+          this.notifications = []
+
+          let oldNotifications = this.displayedNotifications
+          const equalNotification = this.equalNotification // because we can not use 'this.equalNotification' in callback
+
+          // add all the new notifications to the oldNotifications at top of the list
+          lastQueriedNotifications.forEach(updatedListNotification => {
+            const sameNotification = oldNotifications.find(function(oldListNotification) {
+              return equalNotification(oldListNotification, updatedListNotification)
+            })
+            if (sameNotification === undefined) {
+              oldNotifications.unshift(updatedListNotification)
+            }
+          })
+
+          this.displayedNotifications = oldNotifications
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   methods: {
     async updateNotifications() {
       try {
-        let oldNotifications = this.notifications
         this.$apollo.queries.notifications.refetch()
-        const udatedNotifications = this.notifications
-
-        // add all the new notifications to the old notifications at top of the list
-        if (udatedNotifications) {
-          udatedNotifications.forEach(udatedListNotification => {
-            const sameNotification = oldNotifications.find(function(oldListNotification) {
-              return (
-                oldListNotification.from.id === udatedListNotification.from.id &&
-                oldListNotification.createdAt === udatedListNotification.createdAt &&
-                oldListNotification.reason === udatedListNotification.reason
-              )
-            })
-            if (sameNotification === undefined) {
-              oldNotifications.unshift(udatedListNotification)
-            }
-          })
-
-          this.notifications = oldNotifications
-        }
       } catch (err) {
         throw new Error(err)
       }
@@ -91,22 +94,25 @@ export default {
           variables,
         })
         if (!(markAsRead && markAsRead.read === true)) return
-        this.notifications = this.notifications.map(n => {
-          return n.from.id === markAsRead.from.id ? markAsRead : n
+        this.displayedNotifications = this.displayedNotifications.map(n => {
+          return this.equalNotification(n, markAsRead) ? markAsRead : n
         })
       } catch (err) {
         throw new Error(err)
       }
     },
+    equalNotification(a, b) {
+      return a.from.id === b.from.id && a.createdAt === b.createdAt && a.reason === b.reason
+    },
   },
   computed: {
     totalNotifications() {
-      return (this.notifications || []).length
+      return (this.displayedNotifications || []).length
     },
     unreadNotifications() {
       let countUnread = 0
-      if (this.notifications) {
-        this.notifications.forEach(notification => {
+      if (this.displayedNotifications) {
+        this.displayedNotifications.forEach(notification => {
           if (!notification.read) countUnread++
         })
       }
@@ -117,6 +123,9 @@ export default {
     notifications: {
       query() {
         return notificationQuery(this.$i18n)
+      },
+      pollInterval() {
+        return REFRESH_MILLISEC
       },
     },
   },

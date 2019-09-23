@@ -50,7 +50,7 @@ describe('NotificationMenu.vue', () => {
       beforeEach(() => {
         data = () => {
           return {
-            notifications: [
+            displayedNotifications: [
               {
                 id: 'notification-41',
                 read: false,
