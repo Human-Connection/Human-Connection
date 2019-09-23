@@ -1,51 +1,43 @@
+import { neode as getNeode } from '../../bootstrap/neo4j'
+
+const neode = getNeode()
+
 export default {
   Mutation: {
-    follow: async (_object, params, context, _resolveInfo) => {
-      const { id, type } = params
+    followUser: async (_object, params, context, _resolveInfo) => {
+      const { id: followedUserId } = params
+      const { user: currentUser } = context
 
-      const session = context.driver.session()
-      const transactionRes = await session.run(
-        `MATCH (node {id: $id}), (user:User {id: $userId})
-          WHERE $type IN labels(node) AND NOT $id = $userId
-          MERGE (user)-[relation:FOLLOWS]->(node)
-          RETURN COUNT(relation) > 0 as isFollowed`,
-        {
-          id,
-          type,
-          userId: context.user.id,
-        },
-      )
+      if (currentUser.id === followedUserId) {
+        return null
+      }
 
-      const [isFollowed] = transactionRes.records.map(record => {
-        return record.get('isFollowed')
-      })
-
-      session.close()
-
-      return isFollowed
+      const [user, followedUser] = await Promise.all([
+        neode.find('User', currentUser.id),
+        neode.find('User', followedUserId),
+      ])
+      await user.relateTo(followedUser, 'following')
+      return followedUser.toJson()
     },
 
-    unfollow: async (_object, params, context, _resolveInfo) => {
-      const { id, type } = params
-      const session = context.driver.session()
+    unfollowUser: async (_object, params, context, _resolveInfo) => {
+      const { id: followedUserId } = params
+      const { user: currentUser } = context
 
-      const transactionRes = await session.run(
-        `MATCH (user:User {id: $userId})-[relation:FOLLOWS]->(node {id: $id})
-          WHERE $type IN labels(node)
+      /*
+       * Note: Neode doesn't provide an easy method for retrieving or removing relationships.
+       * It's suggested to use query builder feature (https://github.com/adam-cowley/neode/issues/67)
+       * However, pure cypher query looks cleaner IMO
+       */
+      await neode.cypher(
+        `MATCH (user:User {id: $currentUser.id})-[relation:FOLLOWS]->(followedUser:User {id: $followedUserId})
           DELETE relation
           RETURN COUNT(relation) > 0 as isFollowed`,
-        {
-          id,
-          type,
-          userId: context.user.id,
-        },
+        { followedUserId, currentUser },
       )
-      const [isFollowed] = transactionRes.records.map(record => {
-        return record.get('isFollowed')
-      })
-      session.close()
 
-      return isFollowed
+      const followedUser = await neode.find('User', followedUserId)
+      return followedUser.toJson()
     },
   },
 }

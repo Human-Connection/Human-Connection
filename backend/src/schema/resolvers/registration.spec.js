@@ -484,6 +484,17 @@ describe('SignupVerification', () => {
             })
           })
 
+          it('allowing the about field to be an empty string', async () => {
+            variables = { ...variables, about: '' }
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              data: {
+                SignupVerification: expect.objectContaining({
+                  id: expect.any(String),
+                }),
+              },
+            })
+          })
+
           it('marks the EmailAddress as primary', async () => {
             const cypher = `
                 MATCH(email:EmailAddress)<-[:PRIMARY_EMAIL]-(u:User {name: {name}})

@@ -27,7 +27,12 @@
             />
           </client-only>
           <ds-space margin="small">
-            <ds-heading tag="h3" align="center" no-margin>{{ userName }}</ds-heading>
+            <ds-heading tag="h3" align="center" no-margin>
+              {{ userName }}
+            </ds-heading>
+            <ds-text align="center" color="soft">
+              {{ userSlug }}
+            </ds-text>
             <ds-text v-if="user.location" align="center" color="soft" size="small">
               <ds-icon name="map-marker" />
               {{ user.location.name }}
@@ -43,7 +48,11 @@
             <ds-flex-item>
               <client-only>
                 <ds-number :label="$t('profile.followers')">
-                  <hc-count-to slot="count" :end-val="user.followedByCount" />
+                  <hc-count-to
+                    slot="count"
+                    :start-val="followedByCountStartValue"
+                    :end-val="user.followedByCount"
+                  />
                 </ds-number>
               </client-only>
             </ds-flex-item>
@@ -61,8 +70,8 @@
                 v-if="!user.isBlocked"
                 :follow-id="user.id"
                 :is-followed="user.followedByCurrentUser"
-                @optimistic="follow => (user.followedByCurrentUser = follow)"
-                @update="follow => fetchUser()"
+                @optimistic="optimisticFollow"
+                @update="updateFollow"
               />
               <ds-button v-else fullwidth @click="unblock(user)">
                 {{ $t('settings.blocked-users.unblock') }}
@@ -143,7 +152,7 @@
           <ds-card style="position: relative; height: auto;">
             <ds-space margin="x-small">
               <ds-text tag="h5" color="soft">
-                {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
+                {{ $t('profile.socialMedia') }} {{ userName | truncate(15) }}?
               </ds-text>
               <template>
                 <ds-space v-for="link in socialMediaLinks" :key="link.username" margin="x-small">
@@ -312,6 +321,7 @@ export default {
       pageSize: 6,
       tabActive: 'post',
       filter,
+      followedByCountStartValue: 0,
     }
   },
   computed: {
@@ -336,6 +346,10 @@ export default {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
     },
+    userSlug() {
+      const { slug } = this.user || {}
+      return slug && `@${slug}`
+    },
   },
   watch: {
     User(val) {
@@ -357,10 +371,6 @@ export default {
     },
     uniq(items, field = 'id') {
       return uniqBy(items, field)
-    },
-    fetchUser() {
-      // TODO: we should use subscriptions instead of fetching the whole user again
-      this.$apollo.queries.User.refetch()
     },
     showMoreContributions() {
       const { Post: PostQuery } = this.$apollo.queries
@@ -401,6 +411,27 @@ export default {
       this.$apollo.queries.User.refetch()
       this.resetPostList()
       this.$apollo.queries.Post.refetch()
+    },
+    optimisticFollow({ followedByCurrentUser }) {
+      /*
+       * Note: followedByCountStartValue is updated to avoid counting from 0 when follow/unfollow
+       */
+      this.followedByCountStartValue = this.user.followedByCount
+      const currentUser = this.$store.getters['auth/user']
+      if (followedByCurrentUser) {
+        this.user.followedByCount++
+        this.user.followedBy = [currentUser, ...this.user.followedBy]
+      } else {
+        this.user.followedByCount--
+        this.user.followedBy = this.user.followedBy.filter(user => user.id !== currentUser.id)
+      }
+      this.user.followedByCurrentUser = followedByCurrentUser
+    },
+    updateFollow({ followedByCurrentUser, followedBy, followedByCount }) {
+      this.followedByCountStartValue = this.user.followedByCount
+      this.user.followedByCount = followedByCount
+      this.user.followedByCurrentUser = followedByCurrentUser
+      this.user.followedBy = followedBy
     },
   },
   apollo: {

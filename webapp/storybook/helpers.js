@@ -5,6 +5,8 @@ import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
 import layout from './layout.vue'
 
+import '~/plugins/v-tooltip'
+
 const helpers = {
   init(options = {}) {
     Vue.use(Vuex)
@@ -25,6 +27,9 @@ const helpers = {
       auth: {
         namespaced: true,
         getters: {
+          isModerator() {
+            return false
+          },
           user(state) {
             return { id: 1, name: 'admin' }
           },

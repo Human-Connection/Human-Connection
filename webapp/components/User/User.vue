@@ -11,17 +11,20 @@
         <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
           <hc-avatar class="avatar" :user="user" />
           <div>
-            <b class="username">{{ userName | truncate(18) }}</b>
-          </div>
-          <!-- Time -->
-          <div v-if="dateTime" style="display: inline;">
-            <ds-text align="left" size="small" color="soft">
-              <ds-icon name="clock" />
-              <client-only>
-                <hc-relative-date-time :date-time="dateTime" />
-              </client-only>
+            <ds-text align="left">
+              <b class="username">{{ userName | truncate(18) }}</b>
+              <ds-text v-if="dateTime" size="small" color="soft">
+                <ds-icon name="clock" />
+                <client-only>
+                  <hc-relative-date-time :date-time="dateTime" />
+                </client-only>
+              </ds-text>
             </ds-text>
           </div>
+          <!-- Time -->
+          <ds-text align="left" size="small" color="soft">
+            {{ userSlug }}
+          </ds-text>
         </div>
       </nuxt-link>
     </template>
@@ -126,19 +129,24 @@ export default {
       if (!(id && slug)) return ''
       return { name: 'profile-id-slug', params: { slug, id } }
     },
+    userSlug() {
+      const { slug } = this.user || {}
+      return slug && `@${slug}`
+    },
     userName() {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
     },
   },
   methods: {
-    optimisticFollow(follow) {
-      const inc = follow ? 1 : -1
-      this.user.followedByCurrentUser = follow
+    optimisticFollow({ followedByCurrentUser }) {
+      const inc = followedByCurrentUser ? 1 : -1
+      this.user.followedByCurrentUser = followedByCurrentUser
       this.user.followedByCount += inc
     },
-    updateFollow(follow) {
-      this.user.followedByCurrentUser = follow
+    updateFollow({ followedByCurrentUser, followedByCount }) {
+      this.user.followedByCount = followedByCount
+      this.user.followedByCurrentUser = followedByCurrentUser
     },
   },
 }

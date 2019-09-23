@@ -21,7 +21,7 @@
             :hashtags="hashtags"
             @input="updateEditorContent"
           />
-          <small class="smallTag">{{ form.contentLength }}/{{ contentMax }}</small>
+          <small class="smallTag">{{ form.contentLength }}</small>
         </client-only>
         <ds-space margin-bottom="small" />
         <hc-categories-select
@@ -112,7 +112,6 @@ export default {
       slug: null,
       users: [],
       contentMin: 3,
-      contentMax: 2000,
       failsValidations: true,
       hashtags: [],
     }
@@ -223,8 +222,7 @@ export default {
       return categoryIds
     },
     validatePost() {
-      const passesContentValidations =
-        this.form.contentLength >= this.contentMin && this.form.contentLength <= this.contentMax
+      const passesContentValidations = this.form.contentLength >= this.contentMin
       const passesCategoryValidations =
         this.form.categoryIds.length > 0 && this.form.categoryIds.length <= 3
       this.failsValidations = !(passesContentValidations && passesCategoryValidations)
