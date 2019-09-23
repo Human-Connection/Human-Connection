@@ -5,7 +5,7 @@
     @click.prevent="updateNotifications"
   >
     <ds-button class="notifications-menu" disabled icon="bell">
-      {{ unredNotifications }}
+      {{ unreadNotifications }}
     </ds-button>
   </div>
   <dropdown v-else class="notifications-menu" :placement="placement">
