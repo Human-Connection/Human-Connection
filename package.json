@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "bcryptjs": "^2.4.3",
-    "codecov": "^3.6.0",
+    "codecov": "^3.6.1",
     "cross-env": "^6.0.0",
     "cypress": "^3.4.1",
     "cypress-cucumber-preprocessor": "^1.16.0",
