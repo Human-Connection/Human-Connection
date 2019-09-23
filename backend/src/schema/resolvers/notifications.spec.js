@@ -192,7 +192,7 @@ describe('given some notifications', () => {
         it('returns only unread notifications of current user', async () => {
           const expected = expect.objectContaining({
             data: {
-              notifications: [
+              notifications: expect.arrayContaining([
                 {
                   from: {
                     __typename: 'Comment',
@@ -209,7 +209,7 @@ describe('given some notifications', () => {
                   read: false,
                   createdAt: '2019-08-31T17:33:48.651Z',
                 },
-              ],
+              ]),
             },
           })
           await expect(
