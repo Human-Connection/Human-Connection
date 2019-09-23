@@ -26,17 +26,14 @@
         @updateComment="updateCommentList"
       />
     </div>
-    <hc-empty v-else name="empty" icon="messages" />
   </div>
 </template>
 <script>
 import Comment from '~/components/Comment.vue'
-import HcEmpty from '~/components/Empty.vue'
 
 export default {
   components: {
     Comment,
-    HcEmpty,
   },
   props: {
     post: { type: Object, default: () => {} },
