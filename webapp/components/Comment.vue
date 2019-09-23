@@ -38,14 +38,14 @@
       </div>
       <div v-show="!openEditCommentMenu">
         <content-viewer
-          v-if="comment.content.length < 400"
+          v-if="$filters.removeHtml(comment.content).length < 180"
           :content="comment.content"
           class="padding-left"
         />
         <div v-else class="show-more-or-less-div">
           <content-viewer
             v-if="isCollapsed"
-            :content="$filters.truncate(comment.content, 400)"
+            :content="$filters.truncate(comment.content, 180)"
             class="padding-left text-align-left"
           />
           <span class="show-more-or-less">
