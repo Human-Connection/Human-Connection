@@ -98,7 +98,7 @@ describe('NotificationMenu.vue', () => {
         }
       })
 
-      it('displays the unred number of notifications', () => {
+      it('displays the unread number of notifications', () => {
         wrapper = Wrapper()
         expect(wrapper.find('ds-button-stub').text()).toEqual('2')
       })
