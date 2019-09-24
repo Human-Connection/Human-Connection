@@ -95,11 +95,33 @@ describe('AddEmailAddress', () => {
     })
 
     describe('if a lone `EmailAddress` node already exists with that email', () => {
-      it.todo('returns this `EmailAddress` node')
+      it('returns this `EmailAddress` node', async () => {
+        await factory.create('EmailAddress', {
+          verifiedAt: null,
+          createdAt: '2019-09-24T14:00:01.565Z',
+          email: 'new-email@example.org',
+        })
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          data: {
+            AddEmailAddress: {
+              email: 'new-email@example.org',
+              verifiedAt: null,
+              createdAt: '2019-09-24T14:00:01.565Z', // this is to make sure it's the one above
+            },
+          },
+          errors: undefined,
+        })
+      })
     })
 
     describe('but if another user owns an `EmailAddress` already with that email', () => {
-      it.todo('throws UserInputError because of unique constraints')
+      it('throws UserInputError because of unique constraints', async () => {
+        await factory.create('User', { email: 'new-email@example.org' })
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          data: { AddEmailAddress: null },
+          errors: [{ message: 'A user account with this email already exists.' }],
+        })
+      })
     })
   })
 })

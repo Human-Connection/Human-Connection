@@ -257,7 +257,7 @@ describe('SignupByInvitation', () => {
 
             it('throws unique violation error', async () => {
               await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-                errors: [{ message: 'User account with this email already exists.' }],
+                errors: [{ message: 'A user account with this email already exists.' }],
               })
             })
           })
@@ -307,6 +307,7 @@ describe('Signup', () => {
       it('is allowed to signup users by email', async () => {
         await expect(mutate({ mutation, variables })).resolves.toMatchObject({
           data: { Signup: { email: 'someuser@example.org' } },
+          errors: undefined,
         })
       })
 
@@ -342,7 +343,7 @@ describe('Signup', () => {
 
             it('throws UserInputError error because of unique constraint violation', async () => {
               await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-                errors: [{ message: 'User account with this email already exists.' }],
+                errors: [{ message: 'A user account with this email already exists.' }],
               })
             })
           })
@@ -351,6 +352,7 @@ describe('Signup', () => {
             it('resolves with the already existing email', async () => {
               await expect(mutate({ mutation, variables })).resolves.toMatchObject({
                 data: { Signup: { email: 'someuser@example.org' } },
+                errors: undefined,
               })
             })
 
@@ -359,6 +361,7 @@ describe('Signup', () => {
               await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
               await expect(mutate({ mutation, variables })).resolves.toMatchObject({
                 data: { Signup: { email: 'someuser@example.org' } },
+                errors: undefined,
               })
               await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
             })

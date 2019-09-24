@@ -1,10 +1,13 @@
-import generateNonce from '../../helpers/generateNonce'
+import generateNonce from './helpers/generateNonce'
 import Resolver from './helpers/Resolver'
+import existingEmailAddress from './helpers/existingEmailAddress'
 
 export default {
   Mutation: {
     AddEmailAddress: async (_parent, args, context, _resolveInfo) => {
-      let response
+      let response = await existingEmailAddress(_parent, args, context)
+      if (response) return response
+
       const nonce = generateNonce()
       const {
         user: { id: userId },
