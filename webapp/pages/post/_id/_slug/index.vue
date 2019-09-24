@@ -193,7 +193,7 @@ export default {
 
     .ds-card-image {
       img {
-        max-height: 300px;
+        height: 300px;
         object-fit: cover;
         object-position: center;
       }

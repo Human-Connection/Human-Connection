@@ -47,6 +47,33 @@ export default {
         return comment.id === updatedComment.id ? updatedComment : comment
       })
     },
+    scrollCommentsIntoView() {
+      if (!window || !document) {
+        return
+      }
+      const container = document.getElementById('comments')
+      if (container) {
+        const top = container.offsetTop
+        window.scroll({
+          top,
+          left: 0,
+          behavior: 'smooth',
+        })
+      }
+    },
+  },
+  watch: {
+    $route(to, from) {
+      // scroll inside the same page
+      if (to.hash === '#comments') {
+        this.scrollCommentsIntoView()
+      }
+    },
+  },
+  mounted() {
+    if (this.$route.hash === '#comments') {
+      setTimeout(this.scrollCommentsIntoView, 250)
+    }
   },
 }
 </script>
