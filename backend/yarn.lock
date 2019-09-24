@@ -971,10 +971,10 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.7.4":
-  version "5.7.4"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.7.4.tgz#c91c1b11ce585fa973a544a9d24c5d88d50a9354"
-  integrity sha512-GMLFu8j7e65n04w+dfOVF8RWOqNHCqimITtTHYSa1XdLR8vSqE2PjvSOhGoS5ELU5fRlRQKy9EOrKDeRV3/K0w==
+"@metascraper/helpers@^5.7.4", "@metascraper/helpers@^5.7.5":
+  version "5.7.5"
+  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.7.5.tgz#fb4ca0e2825f836f1398dcc85227443a36eeb84c"
+  integrity sha512-ayeJIJqlqeiJHYPYi7fmhjvOg7FHTjfqd57nZCLo0fkqj2exsCa788G5Ihk5qHsk1ASVOgH+flp1XeyMl1vcXQ==
   dependencies:
     audio-extensions "0.0.0"
     chrono-node "~1.3.11"
@@ -990,7 +990,7 @@
     lodash "~4.17.15"
     mem "~5.1.1"
     mime-types "~2.1.24"
-    normalize-url "~4.3.0"
+    normalize-url "~4.4.1"
     smartquotes "~2.3.1"
     title "~3.4.1"
     truncate "~2.1.0"
@@ -5883,12 +5883,12 @@ merge-stream@^2.0.0:
   resolved "https://registry.yarnpkg.com/merge-stream/-/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
   integrity sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==
 
-metascraper-audio@^5.7.4:
-  version "5.7.4"
-  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.7.4.tgz#a476ed484b2642060208243843dc7ef5c9eb7a3e"
-  integrity sha512-5M+C+tirJlR71PXymAkBnEXu8KG0+fkX3G0Dm2UO6jDEchIo+DhW2aGSgB8w9kQN80Ni8jaLjNH3+Mtwbsbbkw==
+metascraper-audio@^5.7.5:
+  version "5.7.5"
+  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.7.5.tgz#9ccdc85a2e17b6767e91ecfc964faaa83e10e917"
+  integrity sha512-2uE2VrsB780krOoKSGM08iquxyZmLEWNEG/8P3+wbZJ3aQA+JVTc7He/D8XMhFd93dFTpVZUNV9qLlPIjWnwnw==
   dependencies:
-    "@metascraper/helpers" "^5.7.4"
+    "@metascraper/helpers" "^5.7.5"
 
 metascraper-author@^5.7.4:
   version "5.7.4"
@@ -6409,7 +6409,7 @@ normalize-path@^3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
-normalize-url@^4.1.0, normalize-url@~4.3.0:
+normalize-url@^4.1.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.3.0.tgz#9c49e10fc1876aeb76dba88bf1b2b5d9fa57b2ee"
   integrity sha512-0NLtR71o4k6GLP+mr6Ty34c5GA6CMoEsncKJxvQd8NzPxaHRJNnb5gZE8R1XF4CPIS7QPHLJ74IFszwtNVAHVQ==
@@ -6418,6 +6418,11 @@ normalize-url@~4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.2.0.tgz#e747f16b58e6d7f391495fd86415fa04ec7c9897"
   integrity sha512-n69+KXI+kZApR+sPwSkoAXpGlNkaiYyoHHqKOFPjJWvwZpew/EjKvuPE4+tStNgb42z5yLtdakgZCQI+LalSPg==
+
+normalize-url@~4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.4.1.tgz#81e9c153b0ad5743755696f2aa20488d48e962b6"
+  integrity sha512-rjH3yRt0Ssx19mUwS0hrDUOdG9VI+oRLpLHJ7tXRdjcuQ7v7wo6qPvOZppHRrqfslTKr0L2yBhjj4UXd7c3cQg==
 
 npm-bundled@^1.0.1:
   version "1.0.6"
