@@ -32,9 +32,6 @@ export default {
   data() {
     return {
       success: false,
-      formSchema: {
-        email: { type: 'email', required: true },
-      },
     }
   },
   computed: {
@@ -53,6 +50,24 @@ export default {
       set: function(formData) {
         this.formData = formData
       },
+    },
+    formSchema() {
+      const { email } = this.currentUser
+      const sameEmailValidationError = this.$t('settings.email.validation.same-email')
+      return {
+        email: [
+          { type: 'email', required: true },
+          {
+            validator(rule, value, callback, source, options) {
+              const errors = []
+              if (email === value) {
+                errors.push(sameEmailValidationError)
+              }
+              return errors
+            },
+          },
+        ],
+      }
     },
   },
   methods: {

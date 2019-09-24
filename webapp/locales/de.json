@@ -159,6 +159,9 @@
       "success": "Deine Daten wurden erfolgreich aktualisiert!"
     },
     "email": {
+      "validation": {
+        "same-email": "Muss sich unterscheiden von der jetzigen E-Mail Addresse"
+      },
       "name": "Deine E-Mail",
       "labelEmail": "E-Mail Adresse ändern",
       "labelNewEmail": "Neue E-Mail Adresse",

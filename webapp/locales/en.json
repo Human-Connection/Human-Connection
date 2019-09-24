@@ -160,6 +160,9 @@
       "success": "Your data was successfully updated!"
     },
     "email": {
+      "validation": {
+        "same-email": "Must be different from your current E-Mail address"
+      },
       "name": "Your E-Mail",
       "labelEmail": "Change your E-Mail address",
       "labelNewEmail": "New E-Mail Address",
