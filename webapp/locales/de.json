@@ -161,8 +161,11 @@
     "email": {
       "name": "Deine E-Mail",
       "labelEmail": "E-Mail Adresse ändern",
+      "labelNewEmail": "Neue E-Mail Adresse",
+      "labelNonce": "Bestätigungscode eingeben",
       "success": "Eine neue E-Mail Addresse wurde registriert.",
-      "submitted": "Eine E-Mail zur Bestätigung deiner Adresse wurde an <b>{email}</b> gesendet."
+      "submitted": "Eine E-Mail zur Bestätigung deiner Adresse wurde an <b>{email}</b> gesendet.",
+      "change-successful": "Deine E-Mail Adresse wurde erfolgreich geändert."
     },
     "validation": {
       "slug": {

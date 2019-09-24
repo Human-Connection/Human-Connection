@@ -65,6 +65,13 @@ export default {
         })
         this.$toast.success(this.$t('settings.email.success'))
         this.success = true
+
+        setTimeout(() => {
+          this.$router.push({
+            path: 'my-email-address/verify-email-address-change',
+            query: { email },
+          })
+        }, 3000)
       } catch (err) {
         this.$toast.error(err.message)
       }

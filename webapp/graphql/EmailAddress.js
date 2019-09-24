@@ -8,3 +8,13 @@ export const AddEmailAddressMutation = gql`
     }
   }
 `
+
+export const VerifyEmailAddressMutation = gql`
+  mutation($email: String!, $nonce: String!) {
+    VerifyEmailAddress(email: $email, nonce: $nonce) {
+      email
+      verifiedAt
+      createdAt
+    }
+  }
+`
