@@ -165,7 +165,9 @@
       "labelNonce": "Bestätigungscode eingeben",
       "success": "Eine neue E-Mail Addresse wurde registriert.",
       "submitted": "Eine E-Mail zur Bestätigung deiner Adresse wurde an <b>{email}</b> gesendet.",
-      "change-successful": "Deine E-Mail Adresse wurde erfolgreich geändert."
+      "change-successful": "Deine E-Mail Adresse wurde erfolgreich geändert.",
+      "change-error": "Deine E-Mail Adresse konnte nicht verifiziert werden.",
+      "change-error-help": "Vielleicht ist der Bestätigungscode falsch oder diese E-Mail Adresse wurde nicht hinterlegt?"
     },
     "validation": {
       "slug": {

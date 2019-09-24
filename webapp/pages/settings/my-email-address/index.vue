@@ -68,7 +68,7 @@ export default {
 
         setTimeout(() => {
           this.$router.push({
-            path: 'my-email-address/verify-email-address-change',
+            path: 'my-email-address/enter-nonce',
             query: { email },
           })
         }, 3000)
