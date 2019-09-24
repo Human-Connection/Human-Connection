@@ -9,7 +9,6 @@
       <p style="display: inline" :key="PostsEmotionsCountByEmotion[emotion]">
         {{ PostsEmotionsCountByEmotion[emotion] }}x
       </p>
-      {{ $t('contribution.emotions-label.emoted') }}
     </div>
   </div>
 </template>
