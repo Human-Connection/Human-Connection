@@ -1,6 +1,5 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
 import CommentList from './CommentList'
-import Empty from '~/components/Empty'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
@@ -68,11 +67,6 @@ describe('CommentList.vue', () => {
 
     beforeEach(() => {
       wrapper = Wrapper()
-    })
-
-    it('displays a message icon when there are no comments to display', () => {
-      propsData.post.comments = []
-      expect(Wrapper().findAll(Empty)).toHaveLength(1)
     })
 
     it('displays a comments counter', () => {
