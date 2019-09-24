@@ -50,32 +50,20 @@ export default {
   },
   watch: {
     notifications: {
+      immediate: true,
       handler(lastQueriedNotifications) {
         if (lastQueriedNotifications && lastQueriedNotifications.length > 0) {
-          // set this to be empty to get always called if a query comes with results from the backend
-          // has the sideeffect the handler is encouraged to be called again, but only once with no effect, because of the if above
-          this.notifications = []
-
-          let oldNotifications = this.displayedNotifications
-          const equalNotification = this.equalNotification // because we can not use 'this.equalNotification' in callback
-
-          // add all the new notifications to the oldNotifications at top of the list
           lastQueriedNotifications.forEach(updatedListNotification => {
-            const sameNotification = oldNotifications.find(function(oldListNotification) {
-              return equalNotification(oldListNotification, updatedListNotification)
+            const sameNotification = this.displayedNotifications.find(oldListNotification => {
+              return this.equalNotification(oldListNotification, updatedListNotification)
             })
-            if (sameNotification === undefined) {
-              oldNotifications.unshift(updatedListNotification)
-            }
+            if (!sameNotification) this.displayedNotifications.unshift(updatedListNotification)
           })
-
-          this.displayedNotifications = oldNotifications
         }
       },
-      deep: true,
-      immediate: true,
     },
   },
+
   methods: {
     async updateNotifications() {
       try {

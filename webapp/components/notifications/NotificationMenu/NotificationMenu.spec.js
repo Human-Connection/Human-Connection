@@ -84,7 +84,7 @@ describe('NotificationMenu.vue', () => {
                 read: true,
                 post: {
                   id: 'post-3',
-                  title: 'red post title',
+                  title: 'read post title',
                   contentExcerpt: 'this is yet another post content',
                   author: {
                     id: 'john-1',
@@ -98,7 +98,7 @@ describe('NotificationMenu.vue', () => {
         }
       })
 
-      it('displays the unread number of notifications', () => {
+      it('displays the number of unread notifications', () => {
         wrapper = Wrapper()
         expect(wrapper.find('ds-button-stub').text()).toEqual('2')
       })
