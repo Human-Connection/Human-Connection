@@ -159,6 +159,12 @@
       "labelBio": "About You",
       "success": "Your data was successfully updated!"
     },
+    "email": {
+      "name": "Your E-Mail",
+      "labelEmail": "Change your E-Mail address",
+      "success": "A new E-Mail address has been registered.",
+      "submitted": "An email to verify your address has been sent to <b>{email}</b>."
+    },
     "validation": {
       "slug": {
         "regex": "Allowed characters are only lowercase letters, numbers, underscores and hyphens.",

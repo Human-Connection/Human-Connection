@@ -158,6 +158,12 @@
       "labelBio": "Über dich",
       "success": "Deine Daten wurden erfolgreich aktualisiert!"
     },
+    "email": {
+      "name": "Deine E-Mail",
+      "labelEmail": "E-Mail Adresse ändern",
+      "success": "Eine neue E-Mail Addresse wurde registriert.",
+      "submitted": "Eine E-Mail zur Bestätigung deiner Adresse wurde an <b>{email}</b> gesendet."
+    },
     "validation": {
       "slug": {
         "regex": "Es sind nur Kleinbuchstaben, Zahlen, Unterstriche oder Bindestriche erlaubt.",
