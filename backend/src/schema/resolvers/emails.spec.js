@@ -37,7 +37,7 @@ afterEach(async () => {
 describe('AddEmailAddress', () => {
   const mutation = gql`
     mutation($email: String!) {
-      AddEmailAddress(email: $email){
+      AddEmailAddress(email: $email) {
         email
         verifiedAt
         createdAt
@@ -62,14 +62,43 @@ describe('AddEmailAddress', () => {
   })
 
   describe('authenticated', () => {
-    it.todo('creates a new unverified `EmailAddress` node')
-    it.todo('connects EmailAddress to the authenticated user')
-
-    describe('even if an unverified `EmailAddress` already exists with that email', () =>{
-      it.todo('creates a new unverified `EmailAddress` node')
+    beforeEach(async () => {
+      user = await factory.create('User', { email: 'user@example.org' })
+      authenticatedUser = await user.toJson()
     })
 
-    describe('but if a verified `EmailAddress` already exists with that email', () =>{
+    it('creates a new unverified `EmailAddress` node', async () => {
+      await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+        data: {
+          AddEmailAddress: {
+            email: 'new-email@example.org',
+            verifiedAt: null,
+            createdAt: expect.any(String),
+          },
+        },
+        errors: undefined,
+      })
+    })
+
+    it('connects `EmailAddress` to the authenticated user', async () => {
+      await mutate({ mutation, variables })
+      const result = await neode.cypher(`
+        MATCH(u:User)-[:PRIMARY_EMAIL]->(p:EmailAddress {email: "user@example.org"})
+        MATCH(u:User)<-[:BELONGS_TO]-(e:EmailAddress {email: "new-email@example.org"})
+        RETURN e
+      `)
+      const email = neode.hydrateFirst(result, 'e', neode.model('EmailAddress'))
+      await expect(email.toJson()).resolves.toMatchObject({
+        email: 'new-email@example.org',
+        nonce: expect.any(String),
+      })
+    })
+
+    describe('if a lone `EmailAddress` node already exists with that email', () => {
+      it.todo('returns this `EmailAddress` node')
+    })
+
+    describe('but if another user owns an `EmailAddress` already with that email', () => {
       it.todo('throws UserInputError because of unique constraints')
     })
   })
@@ -78,7 +107,7 @@ describe('AddEmailAddress', () => {
 describe('VerifyEmailAddress', () => {
   const mutation = gql`
     mutation($email: String!, $nonce: String!) {
-      VerifyEmailAddress(email: $email, nonce: $nonce){
+      VerifyEmailAddress(email: $email, nonce: $nonce) {
         email
         createdAt
       }
@@ -117,7 +146,7 @@ describe('VerifyEmailAddress', () => {
       })
 
       describe('and the `EmailAddress` belongs to the authenticated user', () => {
-        it.todo('verifies the `EmailAddress`')
+        it.todo('adds `verifiedAt`')
         it.todo('connects the new `EmailAddress` as PRIMARY')
         it.todo('removes previous PRIMARY relationship')
       })
