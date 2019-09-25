@@ -123,6 +123,7 @@ export default {
               data: { UpdateComment },
             } = res
             this.$emit('updateComment', UpdateComment)
+            this.$emit('collapse')
             this.$toast.success(this.$t('post.comment.updated'))
             this.disabled = false
             this.closeEditWindow()

@@ -11,7 +11,7 @@
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card :id="`commentId-${comment.id}`">
-      <ds-space margin-bottom="small">
+      <ds-space margin-bottom="small" margin-top="base">
         <hc-user :user="author" :date-time="comment.createdAt" />
         <!-- Content Menu (can open Modals) -->
         <client-only>
@@ -21,7 +21,7 @@
             resource-type="comment"
             :resource="comment"
             :modalsData="menuModalsData"
-            style="float-right"
+            class="float-right"
             :is-owner="isAuthor(author.id)"
             @showEditCommentMenu="editCommentMenu"
           />
@@ -34,6 +34,7 @@
           :comment="comment"
           @showEditCommentMenu="editCommentMenu"
           @updateComment="updateComment"
+          @collapse="isCollapsed = true"
         />
       </div>
       <div v-show="!openEditCommentMenu">
@@ -61,7 +62,7 @@
         />
         <div class="show-more-or-less-div">
           <span class="show-more-or-less">
-            <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" class="padding-left">
+            <a v-if="!isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
               {{ $t('comment.show.less') }}
             </a>
           </span>
@@ -168,6 +169,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.float-right {
+  float: right;
+}
+
 .padding-left {
   padding-left: 40px;
 }
