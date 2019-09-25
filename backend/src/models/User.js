@@ -4,7 +4,7 @@ module.exports = {
   id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
   actorId: { type: 'string', allow: [null] },
   name: { type: 'string', disallow: [null], min: 3 },
-  slug: 'string',
+  slug: { type: 'string', regex: /^[a-z0-9_-]+$/, lowercase: true },
   encryptedPassword: 'string',
   avatar: { type: 'string', allow: [null] },
   coverImg: { type: 'string', allow: [null] },

@@ -118,13 +118,12 @@ export default function Factory(options = {}) {
       this.lastResponse = await this.graphQLClient.request(mutation)
       return this
     },
-    async follow(properties) {
-      const { id, type } = properties
+    async followUser(properties) {
+      const { id } = properties
       const mutation = `
         mutation {
-          follow(
-            id: "${id}",
-            type: ${type}
+          followUser(
+            id: "${id}"
           )
         }
       `
@@ -166,7 +165,7 @@ export default function Factory(options = {}) {
   result.relate.bind(result)
   result.mutate.bind(result)
   result.shout.bind(result)
-  result.follow.bind(result)
+  result.followUser.bind(result)
   result.invite.bind(result)
   result.cleanDatabase.bind(result)
   return result

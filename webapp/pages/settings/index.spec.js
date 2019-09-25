@@ -24,6 +24,7 @@ describe('index.vue', () => {
             data: {
               UpdateUser: {
                 id: 'u1',
+                slug: 'peter',
                 name: 'Peter',
                 locationName: 'Berlin',
                 about: 'Smth',
@@ -37,34 +38,67 @@ describe('index.vue', () => {
       },
     }
     getters = {
-      'auth/user': () => {
-        return {}
-      },
+      'auth/user': () => ({}),
     }
   })
 
   describe('mount', () => {
+    let options
     const Wrapper = () => {
       store = new Vuex.Store({
         getters,
       })
-      return mount(index, { store, mocks, localVue })
+      return mount(index, { store, mocks, localVue, ...options })
     }
+
+    beforeEach(() => {
+      options = {}
+    })
 
     it('renders', () => {
       expect(Wrapper().contains('div')).toBe(true)
     })
 
-    describe('given a new username and hitting submit', () => {
-      it('calls updateUser mutation', () => {
+    describe('given form validation errors', () => {
+      beforeEach(() => {
+        options = {
+          ...options,
+          computed: {
+            formSchema: () => ({
+              slug: [
+                (_rule, _value, callback) => {
+                  callback(new Error('Ouch!'))
+                },
+              ],
+            }),
+          },
+        }
+      })
+
+      it('cannot call updateUser mutation', () => {
         const wrapper = Wrapper()
-        const input = wrapper.find('#name')
-        const submitForm = wrapper.find('.ds-form')
 
-        input.setValue('Peter')
-        submitForm.trigger('submit')
+        wrapper.find('#name').setValue('Peter')
+        wrapper.find('.ds-form').trigger('submit')
 
-        expect(mocks.$apollo.mutate).toHaveBeenCalled()
+        expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('no form validation errors', () => {
+      beforeEach(() => {
+        options = { ...options, computed: { formSchema: () => ({}) } }
+      })
+
+      describe('given a new username and hitting submit', () => {
+        it('calls updateUser mutation', () => {
+          const wrapper = Wrapper()
+
+          wrapper.find('#name').setValue('Peter')
+          wrapper.find('.ds-form').trigger('submit')
+
+          expect(mocks.$apollo.mutate).toHaveBeenCalled()
+        })
       })
     })
   })

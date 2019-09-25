@@ -18,6 +18,8 @@ When('I save {string} as my new name', name => {
   cy.get('[type=submit]')
     .click()
     .not('[disabled]')
+  cy.get('.iziToast-message')
+    .should('contain', 'Your data was successfully updated')
 })
 
 When('I save {string} as my location', location => {
@@ -28,6 +30,8 @@ When('I save {string} as my location', location => {
   cy.get('[type=submit]')
     .click()
     .not('[disabled]')
+  cy.get('.iziToast-message')
+    .should('contain', 'Your data was successfully updated')
   myLocation = location
 })
 
@@ -38,6 +42,8 @@ When('I have the following self-description:', text => {
   cy.get('[type=submit]')
     .click()
     .not('[disabled]')
+  cy.get('.iziToast-message')
+    .should('contain', 'Your data was successfully updated')
   aboutMeText = text
 })
 

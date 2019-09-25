@@ -4,24 +4,24 @@ const neode = getNeode()
 
 export default {
   Mutation: {
-    follow: async (_object, params, context, _resolveInfo) => {
-      const { id: followedId, type } = params
+    followUser: async (_object, params, context, _resolveInfo) => {
+      const { id: followedUserId } = params
       const { user: currentUser } = context
 
-      if (type === 'User' && currentUser.id === followedId) {
+      if (currentUser.id === followedUserId) {
         return null
       }
 
-      const [user, followedNode] = await Promise.all([
+      const [user, followedUser] = await Promise.all([
         neode.find('User', currentUser.id),
-        neode.find(type, followedId),
+        neode.find('User', followedUserId),
       ])
-      await user.relateTo(followedNode, 'following')
-      return followedNode.toJson()
+      await user.relateTo(followedUser, 'following')
+      return followedUser.toJson()
     },
 
-    unfollow: async (_object, params, context, _resolveInfo) => {
-      const { id: followedId, type } = params
+    unfollowUser: async (_object, params, context, _resolveInfo) => {
+      const { id: followedUserId } = params
       const { user: currentUser } = context
 
       /*
@@ -30,15 +30,14 @@ export default {
        * However, pure cypher query looks cleaner IMO
        */
       await neode.cypher(
-        `MATCH (user:User {id: $currentUser.id})-[relation:FOLLOWS]->(node {id: $followedId})
-          WHERE $type IN labels(node)
+        `MATCH (user:User {id: $currentUser.id})-[relation:FOLLOWS]->(followedUser:User {id: $followedUserId})
           DELETE relation
           RETURN COUNT(relation) > 0 as isFollowed`,
-        { followedId, type, currentUser },
+        { followedUserId, currentUser },
       )
 
-      const followedNode = await neode.find(type, followedId)
-      return followedNode.toJson()
+      const followedUser = await neode.find('User', followedUserId)
+      return followedUser.toJson()
     },
   },
 }

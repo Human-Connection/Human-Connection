@@ -31,10 +31,8 @@ type Mutation {
   shout(id: ID!, type: ShoutTypeEnum): Boolean!
   # Unshout the given Type and ID
   unshout(id: ID!, type: ShoutTypeEnum): Boolean!
-  # Follow the given Type and ID
-  follow(id: ID!, type: FollowTypeEnum): User
-  # Unfollow the given Type and ID
-  unfollow(id: ID!, type: FollowTypeEnum): User
+  followUser(id: ID!): User
+  unfollowUser(id: ID!): User
 }
 
 type Report {
@@ -56,9 +54,6 @@ enum Deletable {
 
 enum ShoutTypeEnum {
   Post
-}
-enum FollowTypeEnum {
-  User
 }
 
 type Reward {
