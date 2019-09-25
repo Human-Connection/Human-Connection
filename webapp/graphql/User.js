@@ -134,3 +134,14 @@ export const unfollowUserMutation = i18n => {
     }
   `
 }
+
+export const allowEmbedIframesMutation = () => {
+  return gql`
+    mutation($id: ID!, $allowEmbedIframes: Boolean) {
+      UpdateUser(id: $id, allowEmbedIframes: $allowEmbedIframes) {
+        id
+        allowEmbedIframes
+      }
+    }
+  `
+}

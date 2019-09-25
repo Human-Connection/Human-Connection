@@ -45,16 +45,9 @@
 
 <script>
 import axios from 'axios'
-import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
-const mutation = gql`
-  mutation($id: ID!, $allowEmbedIframes: Boolean) {
-    UpdateUser(id: $id, allowEmbedIframes: $allowEmbedIframes) {
-      id
-      allowEmbedIframes
-    }
-  }
-`
+import { allowEmbedIframesMutation } from '~/graphql/User.js'
+
 export default {
   head() {
     return {
@@ -64,7 +57,6 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
-      allowEmbedIframes: 'auth/allowEmbedIframes',
     }),
   },
   data() {
@@ -98,7 +90,7 @@ export default {
     async submit() {
       try {
         await this.$apollo.mutate({
-          mutation,
+          mutation: allowEmbedIframesMutation(),
           variables: {
             id: this.currentUser.id,
             allowEmbedIframes: !this.disabled,
