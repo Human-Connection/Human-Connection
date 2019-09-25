@@ -95,29 +95,24 @@ export default {
       }
     },
     transformImage(file) {
-      let myDropZone = this
-
+      let thumbnailElement, editor, confirm
       // Create the image editor overlay
-      let editor = document.createElement('div')
-      editor.style.position = 'fixed'
-      editor.style.left = 0
-      editor.style.right = 0
-      editor.style.top = 0
-      editor.style.bottom = 0
-      editor.style.zIndex = 9999
-      editor.style.backgroundColor = '#000'
+      editor = document.createElement('div')
+      thumbnailElement = document.querySelectorAll('.dz-image')[0]
+      // dataDzThumbnail = document.querySelectorAll('[data-dz-thumbnail-bg]')[0]
+      // thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
 
+      editor.classList.add('crop-overlay')
+      // elementToReplace = thumbnailPreview || dataDzThumbnail
+      thumbnailElement.appendChild(editor)
       // Create the confirm button
-      let confirm = document.createElement('button')
-      confirm.style.position = 'absolute'
-      confirm.style.left = '10px'
-      confirm.style.top = '10px'
-      confirm.style.zIndex = 9999
+      confirm = document.createElement('button')
+      confirm.classList.add('crop-confirm')
       confirm.textContent = 'Confirm'
-      confirm.addEventListener('click', function() {
+      confirm.addEventListener('click', () => {
         // Get the canvas with image data from Cropper.js
         let canvas = cropper.getCroppedCanvas()
-        myDropZone.thumbnail(file, canvas.toDataURL())
+        this.thumbnail(file, canvas.toDataURL())
 
         // Remove the editor from view
         editor.parentNode.removeChild(editor)
@@ -129,7 +124,7 @@ export default {
       image.src = URL.createObjectURL(file)
       editor.appendChild(image)
       // Append the editor to the page
-      document.body.appendChild(editor)
+      // document.body.appendChild(editor)
 
       // Create Cropper.js and pass image
       let cropper = new Cropper(image, {})
@@ -222,5 +217,20 @@ export default {
 
 .contribution-image {
   max-height: 300px;
+}
+
+.crop-overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: #000;
+}
+
+.crop-confirm {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 9999;
 }
 </style>
