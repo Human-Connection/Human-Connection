@@ -10,7 +10,7 @@ services:
         - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     ports:
       - 3000:3000
-      - 3502:3502
+      - 3002:3002
     networks:
       - hc-network
     depends_on:

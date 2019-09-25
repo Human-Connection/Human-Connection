@@ -107,7 +107,7 @@ The output should look similar to this:
 
 ![Storybook output](../.gitbook/assets/storybook-output.png)
 
-Click on the link http://172.18.0.6:3002/ to open the browser to your interactive storybook.
+Click on the link http://localhost:3002/ to open the browser to your interactive storybook.
 
 {% endtab %}
 
