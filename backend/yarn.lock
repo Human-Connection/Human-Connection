@@ -5965,12 +5965,12 @@ metascraper-soundcloud@^5.7.4:
     memoize-one "~5.1.1"
     tldts "~5.4.0"
 
-metascraper-title@^5.7.4:
-  version "5.7.4"
-  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-5.7.4.tgz#1f9f05032c2abab2db9a6634b9f6abec5489c116"
-  integrity sha512-qrOw5uRmGVfqiaZxPF6dfXYM79RY13E+nITukPZsktiGMNIknRJmEVI/GSW+6Ek/+GxlW0gByvE+yqFOrgjCTw==
+metascraper-title@^5.7.5:
+  version "5.7.5"
+  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-5.7.5.tgz#64ea7e9175a6cb2166f3cb13cbc8540c28496d47"
+  integrity sha512-NEa61pZj3SUMEqKdfqpBZoffNdHyEMCLU626HkP9aeRFQ8e1ejmghRuYf/m4+QmsLSUMs9vlJC+HSoIHBaL9pw==
   dependencies:
-    "@metascraper/helpers" "^5.7.4"
+    "@metascraper/helpers" "^5.7.5"
     lodash "~4.17.15"
 
 metascraper-url@^5.7.5:
