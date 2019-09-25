@@ -30,9 +30,11 @@ export default {
     },
   },
   created() {
-    setTimeout(() => {
-      this.$router.replace({ name: 'settings-my-email-address' })
-    }, 3000)
+    if (this.success) {
+      setTimeout(() => {
+        this.$router.replace({ name: 'settings-my-email-address' })
+      }, 3000)
+    }
   },
   async asyncData(context) {
     const {
