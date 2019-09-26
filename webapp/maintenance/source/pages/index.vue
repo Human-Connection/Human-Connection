@@ -22,8 +22,8 @@
                 <ds-text>{{ $t('maintenance.explanation') }}</ds-text>
                 <ds-text>
                   {{ $t('maintenance.questions') }}
-                  <a href="mailto:info@human-connection.org" class="email-link">
-                    info@human-connection.org
+                  <a href="mailto:support@human-connection.org" class="email-link">
+                    support@human-connection.org
                   </a>
                   .
                 </ds-text>
