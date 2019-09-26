@@ -113,7 +113,7 @@ export default {
         return notificationQuery(this.$i18n)
       },
       pollInterval() {
-        return REFRESH_MILLISEC
+        return NOTIFICATIONS_POLL_INTERVAL
       },
     },
   },
