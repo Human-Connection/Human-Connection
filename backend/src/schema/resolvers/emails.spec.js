@@ -68,7 +68,16 @@ describe('AddEmailAddress', () => {
     })
 
     describe('email attribute is not a valid email', () => {
-      it.todo('throws UserInputError')
+      beforeEach(() => {
+        variables = { ...variables, email: 'foobar' }
+      })
+
+      it('throws UserInputError', async () => {
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          data: { AddEmailAddress: null },
+          errors: [{ message: 'must be a valid email' }],
+        })
+      })
     })
 
     describe('email attribute is a valid email', () => {
@@ -85,24 +94,23 @@ describe('AddEmailAddress', () => {
         })
       })
 
-      it('connects `EmailAddress` to the authenticated user', async () => {
+      it('connects `EmailAddressRequest` to the authenticated user', async () => {
         await mutate({ mutation, variables })
         const result = await neode.cypher(`
         MATCH(u:User)-[:PRIMARY_EMAIL]->(:EmailAddress {email: "user@example.org"})
-        MATCH(u:User)<-[:BELONGS_TO]-(e:EmailAddress {email: "new-email@example.org"})
+        MATCH(u:User)<-[:BELONGS_TO]-(e:EmailAddressRequest {email: "new-email@example.org"})
         RETURN e
       `)
-        const email = neode.hydrateFirst(result, 'e', neode.model('EmailAddress'))
+        const email = neode.hydrateFirst(result, 'e', neode.model('EmailAddressRequest'))
         await expect(email.toJson()).resolves.toMatchObject({
           email: 'new-email@example.org',
           nonce: expect.any(String),
         })
       })
 
-      describe('if a lone `EmailAddress` node already exists with that email', () => {
-        it('returns this `EmailAddress` node', async () => {
-          await factory.create('EmailAddress', {
-            verifiedAt: null,
+      describe('if another `EmailAddressRequest` node already exists with that email', () => {
+        it('throws no unique constraint violation error', async () => {
+          await factory.create('EmailAddressRequest', {
             createdAt: '2019-09-24T14:00:01.565Z',
             email: 'new-email@example.org',
           })
@@ -111,7 +119,6 @@ describe('AddEmailAddress', () => {
               AddEmailAddress: {
                 email: 'new-email@example.org',
                 verifiedAt: null,
-                createdAt: '2019-09-24T14:00:01.565Z', // this is to make sure it's the one above
               },
             },
             errors: undefined,
@@ -175,10 +182,10 @@ describe('VerifyEmailAddress', () => {
       })
     })
 
-    describe('given an unverified `EmailAddress`', () => {
+    describe('given a `EmailAddressRequest`', () => {
       let emailAddress
       beforeEach(async () => {
-        emailAddress = await factory.create('EmailAddress', {
+        emailAddress = await factory.create('EmailAddressRequest', {
           nonce: 'abcdef',
           verifiedAt: null,
           createdAt: new Date().toISOString(),
@@ -196,7 +203,7 @@ describe('VerifyEmailAddress', () => {
         })
       })
 
-      describe('given valid nonce for unverified `EmailAddress` node', () => {
+      describe('given valid nonce for `EmailAddressRequest` node', () => {
         beforeEach(() => {
           variables = { ...variables, nonce: 'abcdef' }
         })
@@ -210,7 +217,7 @@ describe('VerifyEmailAddress', () => {
           })
         })
 
-        describe('and the `EmailAddress` belongs to the authenticated user', () => {
+        describe('and the `EmailAddressRequest` belongs to the authenticated user', () => {
           beforeEach(async () => {
             await emailAddress.relateTo(user, 'belongsTo')
           })
@@ -255,6 +262,19 @@ describe('VerifyEmailAddress', () => {
             result = await neode.cypher(cypherStatement)
             email = neode.hydrateFirst(result, 'e', neode.model('EmailAddress'))
             await expect(email).toBe(false)
+          })
+
+          describe('Edge case: In the meantime someone created an `EmailAddress` node with the given email', () => {
+            beforeEach(async () => {
+              await factory.create('EmailAddress', { email: 'to-be-verified@example.org' })
+            })
+
+            it('throws UserInputError because of unique constraints', async () => {
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                data: { VerifyEmailAddress: null },
+                errors: [{ message: 'A user account with this email already exists.' }],
+              })
+            })
           })
         })
       })
