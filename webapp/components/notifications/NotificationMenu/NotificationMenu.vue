@@ -1,10 +1,12 @@
 <template>
   <div
-    v-if="totalNotifications <= 0"
+    v-if="totalNotificationsCount === 0"
     class="notifications-menu-pointer"
     @click.prevent="updateNotifications"
   >
-    <ds-button class="notifications-menu" disabled icon="bell">{{ unreadNotifications }}</ds-button>
+    <ds-button class="notifications-menu" disabled icon="bell">
+      {{ unreadNotificationsCount }}
+    </ds-button>
   </div>
   <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
@@ -12,11 +14,11 @@
         primary
         icon="bell"
         @click.prevent="
-          toggleMenu()
           updateNotifications()
+          toggleMenu()
         "
       >
-        {{ unreadNotifications }}
+        {{ unreadNotificationsCount }}
       </ds-button>
     </template>
     <template slot="popover">
@@ -29,7 +31,7 @@
 
 <script>
 import Dropdown from '~/components/Dropdown'
-import { REFRESH_MILLISEC } from '~/constants/notifications'
+import { NOTIFICATIONS_POLL_INTERVAL } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import NotificationList from '../NotificationList/NotificationList'
 
@@ -48,22 +50,6 @@ export default {
   props: {
     placement: { type: String },
   },
-  watch: {
-    notifications: {
-      immediate: true,
-      handler(lastQueriedNotifications) {
-        if (lastQueriedNotifications && lastQueriedNotifications.length > 0) {
-          lastQueriedNotifications.forEach(updatedListNotification => {
-            const sameNotification = this.displayedNotifications.find(oldListNotification => {
-              return this.equalNotification(oldListNotification, updatedListNotification)
-            })
-            if (!sameNotification) this.displayedNotifications.unshift(updatedListNotification)
-          })
-        }
-      },
-    },
-  },
-
   methods: {
     async updateNotifications() {
       try {
@@ -94,10 +80,10 @@ export default {
     },
   },
   computed: {
-    totalNotifications() {
+    totalNotificationsCount() {
       return (this.displayedNotifications || []).length
     },
-    unreadNotifications() {
+    unreadNotificationsCount() {
       let countUnread = 0
       if (this.displayedNotifications) {
         this.displayedNotifications.forEach(notification => {
@@ -114,6 +100,13 @@ export default {
       },
       pollInterval() {
         return NOTIFICATIONS_POLL_INTERVAL
+      },
+      update(data) {
+        const newNotifications = data.notifications.filter(newN => {
+          return !this.displayedNotifications.find(oldN => this.equalNotification(newN, oldN))
+        })
+        this.displayedNotifications = newNotifications.concat(this.displayedNotifications)
+        return data.notifications
       },
     },
   },
