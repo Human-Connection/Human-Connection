@@ -140,5 +140,10 @@
     "save": "Salva",
     "edit": "Modifica",
     "delete": "Cancella"
+  },
+  "contribution": {
+    "teaserImage": {
+      "cropperConfirm": "Confermare"
+    }
   }
 }

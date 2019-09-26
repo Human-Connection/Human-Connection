@@ -7,6 +7,7 @@
     :use-custom-slot="true"
     @vdropzone-error="verror"
     @vdropzone-thumbnail="transformImage"
+    @vdropzone-drop="dropzoneDrop"
   >
     <div class="dz-message">
       <div
@@ -76,44 +77,28 @@ export default {
       this.$emit('addTeaserImage', file[0])
       return ''
     },
-    thumbnail: (file, dataUrl) => {
-      let thumbnailElement, contributionImage, uploadArea, thumbnailPreview, image
-      if (file.previewElement) {
-        thumbnailElement = document.querySelectorAll('#postdropzone')[0]
-        contributionImage = document.querySelectorAll('.contribution-image')[0]
-        thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
-        if (contributionImage) {
-          uploadArea = document.querySelectorAll('.hc-attachments-upload-area-update-post')[0]
-          uploadArea.removeChild(contributionImage)
-          uploadArea.classList.remove('hc-attachments-upload-area-update-post')
-        }
-        image = new Image()
-        image.src = dataUrl
-        image.classList.add('thumbnail-preview')
-        if (thumbnailPreview) return thumbnailElement.replaceChild(image, thumbnailPreview)
-        thumbnailElement.appendChild(image)
-      }
-    },
     transformImage(file) {
-      let thumbnailElement, editor, confirm
+      let thumbnailElement, editor, confirm, thumbnailPreview, contributionImage
       // Create the image editor overlay
       editor = document.createElement('div')
       thumbnailElement = document.querySelectorAll('.dz-image')[0]
-      // dataDzThumbnail = document.querySelectorAll('[data-dz-thumbnail-bg]')[0]
-      // thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
-
+      thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
+      if (thumbnailPreview) thumbnailPreview.remove()
+      contributionImage = document.querySelectorAll('.contribution-image')[0]
+      if (contributionImage) contributionImage.remove()
       editor.classList.add('crop-overlay')
-      // elementToReplace = thumbnailPreview || dataDzThumbnail
       thumbnailElement.appendChild(editor)
       // Create the confirm button
       confirm = document.createElement('button')
-      confirm.classList.add('crop-confirm')
-      confirm.textContent = 'Confirm'
+      confirm.classList.add('crop-confirm', 'ds-button', 'ds-button-primary')
+      confirm.textContent = this.$t('contribution.teaserImage.cropperConfirm')
       confirm.addEventListener('click', () => {
         // Get the canvas with image data from Cropper.js
         let canvas = cropper.getCroppedCanvas()
-        this.thumbnail(file, canvas.toDataURL())
-
+        image = new Image()
+        image.src = canvas.toDataURL()
+        image.classList.add('thumbnail-preview')
+        thumbnailElement.appendChild(image)
         // Remove the editor from view
         editor.parentNode.removeChild(editor)
       })
@@ -123,11 +108,12 @@ export default {
       let image = new Image()
       image.src = URL.createObjectURL(file)
       editor.appendChild(image)
-      // Append the editor to the page
-      // document.body.appendChild(editor)
-
       // Create Cropper.js and pass image
       let cropper = new Cropper(image, {})
+    },
+    dropzoneDrop() {
+      let cropOverlay = document.querySelectorAll('.crop-overlay')[0]
+      if (cropOverlay) cropOverlay.remove()
     },
   },
 }
