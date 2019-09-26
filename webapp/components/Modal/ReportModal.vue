@@ -8,6 +8,18 @@
 
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
+    <ds-select
+      model="XXX"
+      :options="form.reasonCategoryOptions"
+      icon="comment"
+      :label="$t('report.reason.addText.label')"
+      :placeholder="$t('report.reason.addText.placeholder')"
+    />
+    <ds-input
+      id="text"
+      :label="$t('report.reason.addText.label')"
+      :placeholder="$t('report.reason.addText.placeholder')"
+    />
 
     <template slot="footer">
       <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
@@ -44,6 +56,23 @@ export default {
       isOpen: true,
       success: false,
       loading: false,
+      form: {
+        reasonCategory: null,
+        reasonCategoryOptions: [
+          this.$t('report.reason.category.options.discrimination-etc'),
+          this.$t('report.reason.category.options.pornographic-content-links'),
+          this.$t('report.reason.category.options.glorific-trivia-of-cruel-inhuman-acts'),
+          this.$t('report.reason.category.options.unauthorized-disclosure-personalinformation'),
+          this.$t('report.reason.category.options.intentional-intimidation-stalking-persecution'),
+          this.$t('report.reason.category.options.advert-products-services-commercial'),
+          this.$t('report.reason.category.options.criminal-behavior-violation-german-law'),
+          this.$t('report.reason.category.options.other'),
+        ],
+        reasonAddText: '',
+      },
+      formSchema: {
+        reasonAddText: { required: true, min: 0, max: 150 },
+      },
     }
   },
   computed: {
