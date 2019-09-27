@@ -2,7 +2,7 @@
   "maintenance": {
     "title": "Human Connection is under maintenance",
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
-    "questions": "Any Questions or concerns, send an email to" 
+    "questions": "Any Questions or concerns, send an email to"
   },
   "index": {
     "no-results": "No contributions found.",
@@ -170,8 +170,16 @@
       "success": "A new E-Mail address has been registered.",
       "submitted": "An email to verify your address has been sent to <b>{email}</b>.",
       "change-successful": "Your E-Mail address has been changed successfully.",
-      "change-error": "Your E-Mail could not be changed.",
-      "change-error-help": "Maybe the code was invalid or you did not add a new E-Mail address before?"
+      "change-error": {
+        "message": "Your E-Mail could not be changed.",
+        "explanation": "This can have different causes:",
+        "reason": {
+          "invalid-nonce": "Is the confirmation code invalid?",
+          "no-email-request": "You haven't requested a change of your email address at all?",
+          "email-address-taken": "Has the email been assigned to another user in the meantime?"
+        },
+        "support": "If the problem persists, please contact us by e-mail at"
+      }
     },
     "validation": {
       "slug": {

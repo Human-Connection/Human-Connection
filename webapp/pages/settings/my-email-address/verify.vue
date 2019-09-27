@@ -1,18 +1,40 @@
 <template>
-  <ds-card centered>
+  <ds-card>
     <client-only>
       <transition name="ds-transition-fade">
         <sweetalert-icon :icon="sweetAlertIcon" />
       </transition>
+      <ds-space v-if="success">
+        <ds-text>
+          {{ $t(`settings.email.change-successful`) }}
+        </ds-text>
+      </ds-space>
+      <template v-else>
+        <ds-text bold align="center">
+          {{ $t(`settings.email.change-error.message`) }}
+        </ds-text>
+        <ds-space class="message">
+          <ds-text>
+            <ds-space margin-top="large" margin-bottom="small">
+              {{ $t(`settings.email.change-error.explanation`) }}
+            </ds-space>
+            <ds-list>
+              <ds-list-item>
+                {{ $t(`settings.email.change-error.reason.invalid-nonce`) }}
+              </ds-list-item>
+              <ds-list-item>
+                {{ $t(`settings.email.change-error.reason.no-email-request`) }}
+              </ds-list-item>
+              <ds-list-item>
+                {{ $t(`settings.email.change-error.reason.email-address-taken`) }}
+              </ds-list-item>
+            </ds-list>
+            {{ $t('settings.email.change-error.support') }}
+            <a href="mailto:support@human-connection.org">support@human-connection.org</a>
+          </ds-text>
+        </ds-space>
+      </template>
     </client-only>
-    <ds-text v-if="success">
-      {{ $t(`settings.email.change-successful`) }}
-    </ds-text>
-    <ds-text v-else>
-      {{ $t(`settings.email.change-error`) }}
-      <br />
-      {{ $t(`settings.email.change-error-help`) }}
-    </ds-text>
   </ds-card>
 </template>
 
@@ -69,3 +91,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.message {
+  display: flex;
+  justify-content: space-around;
+}
+</style>

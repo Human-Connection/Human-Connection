@@ -169,8 +169,16 @@
       "success": "Eine neue E-Mail Addresse wurde registriert.",
       "submitted": "Eine E-Mail zur Bestätigung deiner Adresse wurde an <b>{email}</b> gesendet.",
       "change-successful": "Deine E-Mail Adresse wurde erfolgreich geändert.",
-      "change-error": "Deine E-Mail Adresse konnte nicht verifiziert werden.",
-      "change-error-help": "Vielleicht ist der Bestätigungscode falsch oder diese E-Mail Adresse wurde nicht hinterlegt?"
+      "change-error": {
+        "message": "Deine E-Mail Adresse konnte nicht verifiziert werden.",
+        "support": "Wenn das Problem weiterhin besteht, kontaktiere uns gerne per E-Mail an",
+        "explanation": "Das kann verschiedene Ursachen haben:",
+        "reason": {
+          "invalid-nonce": "Ist der Bestätigungscode falsch?",
+          "no-email-request": "Wurde gar keine Änderung der E-Mail Adresse angefragt?",
+          "email-address-taken": "Wurde die E-Mail inzwischen einem anderen Benutzer zugewiesen?"
+        }
+      }
     },
     "validation": {
       "slug": {
