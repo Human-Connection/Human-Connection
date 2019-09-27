@@ -52,11 +52,7 @@ export default {
       if (this.updateOn) return
 
       this.updateOn = true
-      try {
-        this.$apollo.queries.notifications.refetch()
-      } catch (err) {
-        throw new Error(err)
-      }
+      this.$apollo.queries.notifications.refetch()
     },
     async markAsRead(notificationSourceId) {
       const variables = { id: notificationSourceId }
@@ -72,7 +68,7 @@ export default {
           return this.equalNotification(n, markAsRead) ? markAsRead : n
         })
       } catch (err) {
-        throw new Error(err)
+        this.$toast.error(err.message)
       }
     },
     hoverUpdate() {
@@ -136,6 +132,9 @@ export default {
           })
         this.updateOn = false
         return data.notifications
+      },
+      error(error) {
+        this.$toast.error(error)
       },
     },
   },
