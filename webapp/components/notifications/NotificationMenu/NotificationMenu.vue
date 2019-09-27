@@ -1,37 +1,37 @@
 <template>
-  <div
-    v-if="totalNotificationsCount === 0"
-    class="notifications-menu-pointer"
-    @click.prevent="updateNotifications"
-  >
-    <ds-button class="notifications-menu" disabled icon="bell">
-      {{ unreadNotificationsCount }}
-    </ds-button>
-  </div>
-  <dropdown v-else class="notifications-menu" :placement="placement">
-    <template slot="default" slot-scope="{ toggleMenu }">
-      <ds-button
-        primary
-        icon="bell"
-        @click.prevent="
-          updateNotifications()
-          toggleMenu()
-        "
-      >
+  <div class="notifications-menu-pointer" @mouseover="hoverActive" @mouseleave="hover = false">
+    <!-- Wolle <div
+      v-if="totalNotificationsCount === 0"
+      class="notifications-menu-pointer"
+      @click.prevent="updateNotifications"
+    > -->
+    <div v-if="totalNotificationsCount === 0" class="notifications-menu-pointer" @click.prevent="">
+      <ds-button class="notifications-menu" disabled icon="bell">
         {{ unreadNotificationsCount }}
       </ds-button>
-    </template>
-    <template slot="popover">
-      <div class="notifications-menu-popover">
-        <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
-      </div>
-    </template>
-  </dropdown>
+    </div>
+    <dropdown v-else class="notifications-menu" :placement="placement">
+      <template slot="default" slot-scope="{ toggleMenu }">
+        <ds-button primary icon="bell" @click.prevent="callToggleMenu(toggleMenu)">
+          {{ unreadNotificationsCount }}
+        </ds-button>
+      </template>
+      <template slot="popover">
+        <div class="notifications-menu-popover">
+          <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
+        </div>
+      </template>
+    </dropdown>
+  </div>
 </template>
 
 <script>
 import Dropdown from '~/components/Dropdown'
-import { NOTIFICATIONS_POLL_INTERVAL } from '~/constants/notifications'
+import {
+  NOTIFICATIONS_POLL_INTERVAL,
+  NOTIFICATIONS_UPDATE_CHECK_INTERVAL,
+  NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL,
+} from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import NotificationList from '../NotificationList/NotificationList'
 
@@ -45,13 +45,21 @@ export default {
     return {
       displayedNotifications: [],
       notifications: [],
+      updateOn: false,
+      updateTicks: 0,
+      updateMenuReference: null,
+      hover: false,
     }
   },
   props: {
     placement: { type: String },
   },
   methods: {
-    async updateNotifications() {
+    updateNotifications() {
+      if (this.updateOn) return
+
+      console.log('hover updateNotifications')
+      this.updateOn = true
       try {
         this.$apollo.queries.notifications.refetch()
       } catch (err) {
@@ -74,6 +82,28 @@ export default {
       } catch (err) {
         throw new Error(err)
       }
+    },
+    hoverActive() {
+      if (this.hover) return
+
+      this.hover = true
+      this.updateNotifications()
+    },
+    callToggleMenu(toggleMenu) {
+      // Wolle this.updateNotifications()
+      if (this.updateMenuReference) return
+
+      this.updateTicks = 0
+      this.updateMenuReference = setInterval(() => {
+        console.log('check for update: ', this.updateOn, this.updateTicks)
+
+        if (!this.updateOn || NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL <= this.updateTicks) {
+          console.log('toggleMenu')
+          toggleMenu()
+          clearInterval(this.updateMenuReference)
+          this.updateMenuReference = null
+        } else this.updateTicks += NOTIFICATIONS_UPDATE_CHECK_INTERVAL
+      }, NOTIFICATIONS_UPDATE_CHECK_INTERVAL)
     },
     equalNotification(a, b) {
       return a.from.id === b.from.id && a.createdAt === b.createdAt && a.reason === b.reason
@@ -106,6 +136,7 @@ export default {
           return !this.displayedNotifications.find(oldN => this.equalNotification(newN, oldN))
         })
         this.displayedNotifications = newNotifications.concat(this.displayedNotifications)
+        this.updateOn = false
         return data.notifications
       },
     },
