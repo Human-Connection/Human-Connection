@@ -6,7 +6,7 @@
       </client-only>
     </transition>
     <ds-space v-if="success">
-      <ds-text>
+      <ds-text bold align="center">
         {{ $t(`settings.email.change-successful`) }}
       </ds-text>
     </ds-space>
