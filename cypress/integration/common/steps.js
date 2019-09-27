@@ -351,10 +351,12 @@ When("I log in with the following credentials:", table => {
 });
 
 When("open the notification menu and click on the first item", () => {
-  cy.get(".notifications-menu").click();
+  cy.get(".notifications-menu").invoke('show').click(); // "invoke('show')" because of the delay for show the menu
   cy.get(".notification-mention-post")
     .first()
-    .click();
+    .click({
+      force: true
+    });
 });
 
 Then("see {int} unread notifications in the top menu", count => {
