@@ -89,7 +89,7 @@
     "metascraper-video": "^5.7.5",
     "metascraper-youtube": "^5.7.5",
     "minimatch": "^3.0.4",
-    "mustache": "^3.0.3",
+    "mustache": "^3.1.0",
     "neo4j-driver": "~1.7.6",
     "neo4j-graphql-js": "^2.7.2",
     "neode": "^0.3.3",
