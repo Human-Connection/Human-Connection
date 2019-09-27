@@ -3,7 +3,6 @@ import Factory from '../../seed/factories'
 import { gql } from '../../jest/helpers'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
-import expectExport from 'expect'
 
 let mutate, query, authenticatedUser, variables
 const factory = Factory()
@@ -30,6 +29,7 @@ const queryPost = gql`
     }
   }
 `
+
 describe('shout and unshout posts', () => {
   let currentUser, postAuthor
   beforeAll(() => {
@@ -46,7 +46,6 @@ describe('shout and unshout posts', () => {
     mutate = createTestClient(server).mutate
     query = createTestClient(server).query
   })
-
   afterEach(() => {
     factory.cleanDatabase()
   })
@@ -134,28 +133,31 @@ describe('shout and unshout posts', () => {
         })
 
         postAuthor = await factory.create('User', {
-          id: 'post-author-id',
-          name: 'Post Author',
-          email: 'post.author@example.org',
+          id: 'id-of-another-user',
+          name: 'Another User',
+          email: 'another.user@example.org',
           password: '1234',
         })
         authenticatedUser = await currentUser.toJson()
         await factory.create('Post', {
-          name: 'Other user post',
-          id: 'another-user-post-id',
+          name: 'Posted By Another User',
+          id: 'posted-by-another-user',
           author: postAuthor,
         })
+        await mutate({
+          mutation: mutationShoutPost,
+          variables: { id: 'posted-by-another-user' },
+        })
         variables = {}
-        await mutate({ mutation: mutationShoutPost, variables: { id: 'another-user-post-id' } })
       })
 
       it("another user's post", async () => {
-        variables = { id: 'another-user-post-id' }
+        variables = { id: 'posted-by-another-user' }
         await expect(mutate({ mutation: mutationUnshoutPost, variables })).resolves.toMatchObject({
           data: { unshout: true },
         })
         await expect(query({ query: queryPost, variables })).resolves.toMatchObject({
-          data: { Post: [{ id: 'another-user-post-id', shoutedBy: [] }] },
+          data: { Post: [{ id: 'posted-by-another-user', shoutedBy: [] }] },
           errors: undefined,
         })
       })
