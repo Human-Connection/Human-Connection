@@ -29,11 +29,14 @@ export default {
             MATCH (user:User {id: $userId})
             MERGE (user)<-[:BELONGS_TO]-(email:EmailAddressRequest {email: $email, nonce: $nonce})
             SET email.createdAt = toString(datetime())
-            RETURN email
+            RETURN email, user
           `,
           { userId, email, nonce },
         )
-        return result.records.map(record => record.get('email').properties)
+        return result.records.map(record => ({
+          name: record.get('user').properties.name,
+          ...record.get('email').properties,
+        }))
       })
       try {
         const txResult = await writeTxResultPromise

@@ -60,7 +60,6 @@ const sendPasswordResetMail = async (resolve, root, args, context, resolveInfo) 
 
 const sendEmailVerificationMail = async (resolve, root, args, context, resolveInfo) => {
   const response = await resolve(root, args, context, resolveInfo)
-  // TODO: return name in response
   const { email, nonce, name } = response
   await sendMail(emailVerificationTemplate({ email, nonce, name }))
   delete response.nonce
