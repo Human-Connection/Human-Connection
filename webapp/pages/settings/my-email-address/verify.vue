@@ -38,19 +38,29 @@ export default {
   },
   async asyncData(context) {
     const {
+      store,
       query,
       app: { apolloProvider },
     } = context
     const client = apolloProvider.defaultClient
     let success
     const { email = '', nonce = '' } = query
+    const currentUser = store.getters['auth/user']
 
     try {
-      await client.mutate({
+      const response = await client.mutate({
         mutation: VerifyEmailAddressMutation,
         variables: { email, nonce },
       })
+      const {
+        data: { VerifyEmailAddress },
+      } = response
       success = true
+      store.commit(
+        'auth/SET_USER',
+        { ...currentUser, email: VerifyEmailAddress.email },
+        { root: true },
+      )
     } catch (error) {
       success = false
     }
