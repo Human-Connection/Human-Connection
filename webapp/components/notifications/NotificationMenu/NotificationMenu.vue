@@ -125,7 +125,15 @@ export default {
         const newNotifications = data.notifications.filter(newN => {
           return !this.displayedNotifications.find(oldN => this.equalNotification(newN, oldN))
         })
-        this.displayedNotifications = newNotifications.concat(this.displayedNotifications)
+        this.displayedNotifications = newNotifications
+          .concat(this.displayedNotifications)
+          .sort((a, b) => {
+            return a.createdAt === b.createdAt
+              ? 0
+              : new Date(a.createdAt) < new Date(b.createdAt)
+              ? 1
+              : -1
+          })
         this.updateOn = false
         return data.notifications
       },
