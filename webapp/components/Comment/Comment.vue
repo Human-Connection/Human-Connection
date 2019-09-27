@@ -11,7 +11,7 @@
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card :id="`commentId-${comment.id}`">
-      <ds-space margin-bottom="small" margin-top="base">
+      <ds-space margin-bottom="small" margin-top="small">
         <hc-user :user="author" :date-time="comment.createdAt" />
         <!-- Content Menu (can open Modals) -->
         <client-only>
@@ -37,7 +37,7 @@
           @collapse="isCollapsed = true"
         />
       </div>
-      <div v-show="!openEditCommentMenu">
+      <div v-else>
         <content-viewer
           v-if="$filters.removeHtml(comment.content).length < 180"
           :content="comment.content"

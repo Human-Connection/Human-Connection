@@ -669,10 +669,10 @@
     js-levenshtein "^1.1.3"
     semver "^5.5.0"
 
-"@babel/register@^7.6.0", "@babel/register@~7.6.0":
-  version "7.6.0"
-  resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.6.0.tgz#76b6f466714680f4becafd45beeb2a7b87431abf"
-  integrity sha512-78BomdN8el+x/nkup9KwtjJXuptW5oXMFmP11WoM2VJBjxrKv4grC3qjpLL8RGGUYUGsm57xnjYFM2uom+jWUQ==
+"@babel/register@^7.6.0", "@babel/register@~7.6.2":
+  version "7.6.2"
+  resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.6.2.tgz#25765a922202cb06f8bdac5a3b1e70cd6bf3dd45"
+  integrity sha512-xgZk2LRZvt6i2SAUWxc7ellk4+OYRgS3Zpsnr13nMS1Qo25w21Uu8o6vTOAqNaxiqrnv30KTYzh9YWY2k21CeQ==
   dependencies:
     find-cache-dir "^2.0.0"
     lodash "^4.17.13"
@@ -1695,10 +1695,10 @@ apollo-server-caching@^0.5.0:
   dependencies:
     lru-cache "^5.0.0"
 
-apollo-server-core@^2.9.3:
-  version "2.9.3"
-  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-2.9.3.tgz#918f836c8215d371935c831c72d0840c7bf0250f"
-  integrity sha512-KQpOM3nAXdMqKVE0HHcOkH/EVhyDqFEKLNFlsyGHGOn9ujpI6RsltX+YpXRyAdbfQHpTk11v/IAo6XksWN+g1Q==
+apollo-server-core@^2.9.3, apollo-server-core@^2.9.4:
+  version "2.9.4"
+  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-2.9.4.tgz#0404455884951804d23ea64e45514c73afd34e5e"
+  integrity sha512-6mzipnn9woJxgo/JQFWTlY13svS7HCr0ZsN035eRmKOsXzROfB9ugXcTuc6MP94ICM7TlB/DtJOP+bLX53mijw==
   dependencies:
     "@apollographql/apollo-tools" "^0.4.0"
     "@apollographql/graphql-playground-html" "1.6.24"
@@ -1735,10 +1735,10 @@ apollo-server-errors@^2.3.3:
   resolved "https://registry.yarnpkg.com/apollo-server-errors/-/apollo-server-errors-2.3.3.tgz#83763b00352c10dc68fbb0d41744ade66de549ff"
   integrity sha512-MO4oJ129vuCcbqwr5ZwgxqGGiLz3hCyowz0bstUF7MR+vNGe4oe3DWajC9lv4CxrhcqUHQOeOPViOdIo1IxE3g==
 
-apollo-server-express@^2.9.0, apollo-server-express@^2.9.3:
-  version "2.9.3"
-  resolved "https://registry.yarnpkg.com/apollo-server-express/-/apollo-server-express-2.9.3.tgz#67573404030c2676be49a7bf97d423b8462e295c"
-  integrity sha512-Hkfs+ce6GqaoSzDOJs8Pj7W3YUjH0BzGglo5HMsOXOnjPZ0pJE9v8fmK76rlkITLw7GjvIq5GKlafymC31FMBw==
+apollo-server-express@^2.9.3, apollo-server-express@^2.9.4:
+  version "2.9.4"
+  resolved "https://registry.yarnpkg.com/apollo-server-express/-/apollo-server-express-2.9.4.tgz#ae7ca0b70a644ba9fa5e3ac395d1e2d9a4b23522"
+  integrity sha512-diX9n81E0tIJ0Sy2bHvDGPM9QsFBsZ76Nx/dszinY00ViyWG0yIAYEYWeRbsoKTeNDWWTvlMrh/3Eu2oaCIEhQ==
   dependencies:
     "@apollographql/graphql-playground-html" "1.6.24"
     "@types/accepts" "^1.3.5"
@@ -1746,7 +1746,7 @@ apollo-server-express@^2.9.0, apollo-server-express@^2.9.3:
     "@types/cors" "^2.8.4"
     "@types/express" "4.17.1"
     accepts "^1.3.5"
-    apollo-server-core "^2.9.3"
+    apollo-server-core "^2.9.4"
     apollo-server-types "^0.2.4"
     body-parser "^1.18.3"
     cors "^2.8.4"
@@ -4209,10 +4209,10 @@ graphql-upload@^8.0.2:
     http-errors "^1.7.2"
     object-path "^0.11.4"
 
-graphql@^14.2.1, graphql@^14.5.7:
-  version "14.5.7"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.5.7.tgz#8646a3fcc07922319cc3967eba4a64b32929f77f"
-  integrity sha512-as410RMJSUFqF8RcH2QWxZ5ioqHzsH9VWnWbaU+UnDXJ/6azMDIYPrtXCBPXd8rlunEVb7W8z6fuUnNHMbFu9A==
+graphql@^14.2.1, graphql@^14.5.8:
+  version "14.5.8"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.5.8.tgz#504f3d3114cb9a0a3f359bbbcf38d9e5bf6a6b3c"
+  integrity sha512-MMwmi0zlVLQKLdGiMfWkgQD7dY/TUKt4L+zgJ/aR0Howebod3aNgP5JkgvAULiR2HPVZaP2VEElqtdidHweLkg==
   dependencies:
     iterall "^1.2.2"
 
@@ -4841,20 +4841,19 @@ is-promise@^2.1.0:
   resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
   integrity sha1-eaKp7OfwlugPNtKy87wWwf9L8/o=
 
-is-reachable@~3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/is-reachable/-/is-reachable-3.1.0.tgz#d75288458fff25ab7befe13ba71ba11802300184"
-  integrity sha512-bpzlmReadJjGejiA3ITIrWNuBvSC6w8tlhorDjk58Ua8qgvd8CWpwk0am6oxKjhJ1RPpetpgcRSANZJFIC7SZA==
+is-reachable@~4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/is-reachable/-/is-reachable-4.0.0.tgz#dcd6fe1d011eb1298030723979b785ce55186400"
+  integrity sha512-eCTBKm9K6nO3H1S3BrJBAqZJIVXKNdwDuGl6KHf1bnf/bn02BvEe+l+MypjsxbqZ7mt5oMhu+bS/mm7G2FRW3A==
   dependencies:
     arrify "^2.0.1"
     got "^9.6.0"
     is-port-reachable "^2.0.1"
     p-any "^2.1.0"
-    p-timeout "^3.1.0"
-    port-numbers "^4.0.7"
-    prepend-http "^2.0.0"
+    p-timeout "^3.2.0"
+    prepend-http "^3.0.1"
     router-ips "^1.0.0"
-    url-parse "^1.4.6"
+    url-parse "^1.4.7"
 
 is-redirect@^1.0.0:
   version "1.0.0"
@@ -5965,12 +5964,12 @@ metascraper-soundcloud@^5.7.4:
     memoize-one "~5.1.1"
     tldts "~5.4.0"
 
-metascraper-title@^5.7.4:
-  version "5.7.4"
-  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-5.7.4.tgz#1f9f05032c2abab2db9a6634b9f6abec5489c116"
-  integrity sha512-qrOw5uRmGVfqiaZxPF6dfXYM79RY13E+nITukPZsktiGMNIknRJmEVI/GSW+6Ek/+GxlW0gByvE+yqFOrgjCTw==
+metascraper-title@^5.7.5:
+  version "5.7.5"
+  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-5.7.5.tgz#64ea7e9175a6cb2166f3cb13cbc8540c28496d47"
+  integrity sha512-NEa61pZj3SUMEqKdfqpBZoffNdHyEMCLU626HkP9aeRFQ8e1ejmghRuYf/m4+QmsLSUMs9vlJC+HSoIHBaL9pw==
   dependencies:
-    "@metascraper/helpers" "^5.7.4"
+    "@metascraper/helpers" "^5.7.5"
     lodash "~4.17.15"
 
 metascraper-url@^5.7.5:
@@ -5988,14 +5987,14 @@ metascraper-video@^5.7.5:
     "@metascraper/helpers" "^5.7.5"
     lodash "~4.17.15"
 
-metascraper-youtube@^5.7.4:
-  version "5.7.4"
-  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.7.4.tgz#3af23aaa90f36e906a739694b632ef014705b65f"
-  integrity sha512-9pXJoPsd3coX/d3mfQ/1T22osDmCyRPWkDUSW3ZqVjThuIU9yXWWxTSmadjDj1pSpr98nL8bU0/Y627GNPNYWg==
+metascraper-youtube@^5.7.5:
+  version "5.7.5"
+  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.7.5.tgz#609670989ce4db6712d2cd92065b0bcaa47d85da"
+  integrity sha512-CvcBQmKK4UiUthXvyIOVHMrcC+gBrYBnMVFtr9HlJouyDjnbVZocfcGBGD4BU3lGZ8R8VLEQuH3IFfNoTVM9sA==
   dependencies:
-    "@metascraper/helpers" "^5.7.4"
+    "@metascraper/helpers" "^5.7.5"
     get-video-id "~3.1.4"
-    is-reachable "~3.1.0"
+    is-reachable "~4.0.0"
     memoize-one "~5.1.1"
     p-locate "~4.1.0"
 
@@ -6736,10 +6735,10 @@ p-some@^4.0.0:
     aggregate-error "^3.0.0"
     p-cancelable "^2.0.0"
 
-p-timeout@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-3.1.0.tgz#198c1f503bb973e9b9727177a276c80afd6851f3"
-  integrity sha512-C27DYI+tCroT8J8cTEyySGydl2B7FlxrGNF5/wmMbl1V+jeehUCzEE/BVgzRebdm2K3ZitKOKx8YbdFumDyYmw==
+p-timeout@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-3.2.0.tgz#c7e17abc971d2a7962ef83626b35d635acf23dfe"
+  integrity sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==
   dependencies:
     p-finally "^1.0.0"
 
@@ -6944,11 +6943,6 @@ pn@^1.1.0:
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
   integrity sha512-2qHaIQr2VLRFoxe2nASzsV6ef4yOOH+Fi9FBOVH6cqeSgUnoyySPZkxzLuzd+RYOQTRpROA0ztTMqxROKSb/nA==
 
-port-numbers@^4.0.7:
-  version "4.0.16"
-  resolved "https://registry.yarnpkg.com/port-numbers/-/port-numbers-4.0.16.tgz#fd47dd3eb6acd3a99d7ddea2caa3d53296286e6c"
-  integrity sha512-JV8PABRPyjyPBpvS4nbSv1Tmx58q7GLdSDpTC1rrKtFpKIHCAlLcAdEkIlIl+3AP2Nx2G5RbtNKX1QJHEkc2PQ==
-
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
@@ -6977,6 +6971,11 @@ prepend-http@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
+
+prepend-http@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-3.0.1.tgz#3e724d58fd5867465b300bb9615009fa2f8ee3b6"
+  integrity sha512-BLxfZh+m6UiAiCPZFJ4+vYoL7NrRs5XgCTRrjseATAggXhdZKKxn+JUNmuVYWY23bDHgaEHodxw8mnmtVEDtHw==
 
 prettier-linter-helpers@^1.0.0:
   version "1.0.0"
@@ -8556,7 +8555,7 @@ url-parse-lax@^3.0.0:
   dependencies:
     prepend-http "^2.0.0"
 
-url-parse@^1.4.6:
+url-parse@^1.4.7:
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.7.tgz#a8a83535e8c00a316e403a5db4ac1b9b853ae278"
   integrity sha512-d3uaVyzDB9tQoSXFvuSUNFibTd9zxd2bkVrDRvF5TmvWWQwqE4lgYJ5m+x1DbecWkw+LK4RNl2CU1hHuOKPVlg==
