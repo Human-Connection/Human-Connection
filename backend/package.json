@@ -87,7 +87,7 @@
     "metascraper-title": "^5.7.5",
     "metascraper-url": "^5.7.5",
     "metascraper-video": "^5.7.5",
-    "metascraper-youtube": "^5.7.4",
+    "metascraper-youtube": "^5.7.5",
     "minimatch": "^3.0.4",
     "mustache": "^3.0.3",
     "neo4j-driver": "~1.7.6",
