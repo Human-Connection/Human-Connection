@@ -1,15 +1,8 @@
 <template>
-  <div class="notifications-menu-pointer" @mouseover="hoverActive" @mouseleave="hover = false">
-    <!-- Wolle <div
-      v-if="totalNotificationsCount === 0"
-      class="notifications-menu-pointer"
-      @click.prevent="updateNotifications"
-    > -->
-    <div v-if="totalNotificationsCount === 0" class="notifications-menu-pointer" @click.prevent="">
-      <ds-button class="notifications-menu" disabled icon="bell">
-        {{ unreadNotificationsCount }}
-      </ds-button>
-    </div>
+  <div @mouseover="hoverUpdate" @mouseleave="hover = false">
+    <ds-button v-if="totalNotificationsCount === 0" class="notifications-menu" disabled icon="bell">
+      {{ unreadNotificationsCount }}
+    </ds-button>
     <dropdown v-else class="notifications-menu" :placement="placement">
       <template slot="default" slot-scope="{ toggleMenu }">
         <ds-button primary icon="bell" @click.prevent="callToggleMenu(toggleMenu)">
@@ -29,7 +22,7 @@
 import Dropdown from '~/components/Dropdown'
 import {
   NOTIFICATIONS_POLL_INTERVAL,
-  NOTIFICATIONS_UPDATE_CHECK_INTERVAL,
+  NOTIFICATIONS_CHECK_UPDATED_INTERVAL,
   NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL,
 } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
@@ -46,8 +39,8 @@ export default {
       displayedNotifications: [],
       notifications: [],
       updateOn: false,
-      updateTicks: 0,
-      updateMenuReference: null,
+      menuDelayTicks: 0,
+      menuTimerId: null,
       hover: false,
     }
   },
@@ -58,7 +51,6 @@ export default {
     updateNotifications() {
       if (this.updateOn) return
 
-      console.log('hover updateNotifications')
       this.updateOn = true
       try {
         this.$apollo.queries.notifications.refetch()
@@ -83,27 +75,25 @@ export default {
         throw new Error(err)
       }
     },
-    hoverActive() {
+    hoverUpdate() {
       if (this.hover) return
 
+      // update is triggered kind of one second before the user clicks
       this.hover = true
       this.updateNotifications()
     },
     callToggleMenu(toggleMenu) {
-      // Wolle this.updateNotifications()
-      if (this.updateMenuReference) return
+      if (this.menuTimerId) return
 
-      this.updateTicks = 0
-      this.updateMenuReference = setInterval(() => {
-        console.log('check for update: ', this.updateOn, this.updateTicks)
-
-        if (!this.updateOn || NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL <= this.updateTicks) {
-          console.log('toggleMenu')
+      // open menu after update is done, but latest after delay of "NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL"
+      this.menuDelayTicks = 0
+      this.menuTimerId = setInterval(() => {
+        if (!this.updateOn || NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL <= this.menuDelayTicks) {
           toggleMenu()
-          clearInterval(this.updateMenuReference)
-          this.updateMenuReference = null
-        } else this.updateTicks += NOTIFICATIONS_UPDATE_CHECK_INTERVAL
-      }, NOTIFICATIONS_UPDATE_CHECK_INTERVAL)
+          clearInterval(this.menuTimerId)
+          this.menuTimerId = null
+        } else this.menuDelayTicks += NOTIFICATIONS_CHECK_UPDATED_INTERVAL
+      }, NOTIFICATIONS_CHECK_UPDATED_INTERVAL)
     },
     equalNotification(a, b) {
       return a.from.id === b.from.id && a.createdAt === b.createdAt && a.reason === b.reason
@@ -148,10 +138,6 @@ export default {
 .notifications-menu {
   display: flex;
   align-items: center;
-}
-
-.notifications-menu-pointer {
-  cursor: pointer;
 }
 
 .notifications-menu-popover {
