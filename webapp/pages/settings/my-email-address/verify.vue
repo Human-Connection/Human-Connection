@@ -1,19 +1,21 @@
 <template>
   <ds-card>
-    <client-only>
-      <transition name="ds-transition-fade">
+    <transition name="ds-transition-fade">
+      <client-only>
         <sweetalert-icon :icon="sweetAlertIcon" />
-      </transition>
-      <ds-space v-if="success">
-        <ds-text>
-          {{ $t(`settings.email.change-successful`) }}
-        </ds-text>
-      </ds-space>
-      <template v-else>
-        <ds-text bold align="center">
-          {{ $t(`settings.email.change-error.message`) }}
-        </ds-text>
-        <ds-space class="message">
+      </client-only>
+    </transition>
+    <ds-space v-if="success">
+      <ds-text>
+        {{ $t(`settings.email.change-successful`) }}
+      </ds-text>
+    </ds-space>
+    <template v-else>
+      <ds-text bold align="center">
+        {{ $t(`settings.email.change-error.message`) }}
+      </ds-text>
+      <ds-space class="message">
+        <client-only>
           <ds-text>
             <ds-space margin-top="large" margin-bottom="small">
               {{ $t(`settings.email.change-error.explanation`) }}
@@ -32,9 +34,9 @@
             {{ $t('settings.email.change-error.support') }}
             <a href="mailto:support@human-connection.org">support@human-connection.org</a>
           </ds-text>
-        </ds-space>
-      </template>
-    </client-only>
+        </client-only>
+      </ds-space>
+    </template>
   </ds-card>
 </template>
 
