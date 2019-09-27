@@ -1,8 +1,14 @@
 <template>
   <div @mouseover="hoverUpdate" @mouseleave="hover = false">
-    <ds-button v-if="totalNotificationsCount === 0" class="notifications-menu" disabled icon="bell">
-      {{ unreadNotificationsCount }}
-    </ds-button>
+    <div
+      v-if="totalNotificationsCount === 0"
+      class="notifications-menu-pointer"
+      @click.prevent="updateNotifications"
+    >
+      <ds-button class="notifications-menu" disabled icon="bell">
+        {{ unreadNotificationsCount }}
+      </ds-button>
+    </div>
     <dropdown v-else class="notifications-menu" :placement="placement">
       <template slot="default" slot-scope="{ toggleMenu }">
         <ds-button primary icon="bell" @click.prevent="callToggleMenu(toggleMenu)">
@@ -24,6 +30,7 @@ import {
   NOTIFICATIONS_POLL_INTERVAL,
   NOTIFICATIONS_CHECK_UPDATED_INTERVAL,
   NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL,
+  NOTIFICATIONS_UPDATE_PAUSE_INTERVAL,
 } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import NotificationList from '../NotificationList/NotificationList'
@@ -39,6 +46,7 @@ export default {
       displayedNotifications: [],
       notifications: [],
       updateOn: false,
+      updatePause: false,
       menuDelayTicks: 0,
       menuTimerId: null,
       hover: false,
@@ -49,7 +57,7 @@ export default {
   },
   methods: {
     updateNotifications() {
-      if (this.updateOn) return
+      if (this.updateOn || this.updatePause) return
 
       this.updateOn = true
       this.$apollo.queries.notifications.refetch()
@@ -81,6 +89,7 @@ export default {
     callToggleMenu(toggleMenu) {
       if (this.menuTimerId) return
 
+      this.updateNotifications() // then the update works even on mobile by click and without hover
       // open menu after update is done, but latest after delay of "NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL"
       this.menuDelayTicks = 0
       this.menuTimerId = setInterval(() => {
@@ -131,6 +140,13 @@ export default {
               : -1
           })
         this.updateOn = false
+
+        // pause before next triggered update by "updateNotifications"
+        this.updatePause = true
+        setTimeout(() => {
+          this.updatePause = false
+        }, NOTIFICATIONS_UPDATE_PAUSE_INTERVAL)
+
         return data.notifications
       },
       error(error) {
@@ -145,6 +161,10 @@ export default {
 .notifications-menu {
   display: flex;
   align-items: center;
+}
+
+.notifications-menu-pointer {
+  cursor: pointer;
 }
 
 .notifications-menu-popover {
