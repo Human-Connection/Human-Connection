@@ -55,6 +55,7 @@ services:
       - hc-network
     environment:
       - NEO4J_AUTH=none
+      - NEO4J_dbms_security_procedures_unrestricted=algo.*,apoc.*
     ports:
       - 7687:7687
       - 7474:7474
