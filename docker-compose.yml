@@ -10,6 +10,7 @@ services:
         - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     ports:
       - 3000:3000
+      - 3002:3002
     networks:
       - hc-network
     depends_on:
@@ -61,7 +62,6 @@ services:
       - 7474:7474
     volumes:
       - neo4j_data:/data
-
 networks:
   hc-network:
 volumes:
