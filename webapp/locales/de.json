@@ -169,7 +169,7 @@
       "success": "Eine neue E-Mail Addresse wurde registriert.",
       "submitted": "Eine E-Mail zur Bestätigung deiner Adresse wurde an <b>{email}</b> gesendet.",
       "change-successful": "Deine E-Mail Adresse wurde erfolgreich geändert.",
-      "change-error": {
+      "verification-error": {
         "message": "Deine E-Mail Adresse konnte nicht verifiziert werden.",
         "support": "Wenn das Problem weiterhin besteht, kontaktiere uns gerne per E-Mail an",
         "explanation": "Das kann verschiedene Ursachen haben:",

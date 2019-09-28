@@ -12,26 +12,26 @@
     </ds-space>
     <template v-else>
       <ds-text bold align="center">
-        {{ $t(`settings.email.change-error.message`) }}
+        {{ $t(`settings.email.verification-error.message`) }}
       </ds-text>
       <ds-space class="message">
         <client-only>
           <ds-text>
             <ds-space margin-top="large" margin-bottom="small">
-              {{ $t(`settings.email.change-error.explanation`) }}
+              {{ $t(`settings.email.verification-error.explanation`) }}
             </ds-space>
             <ds-list>
               <ds-list-item>
-                {{ $t(`settings.email.change-error.reason.invalid-nonce`) }}
+                {{ $t(`settings.email.verification-error.reason.invalid-nonce`) }}
               </ds-list-item>
               <ds-list-item>
-                {{ $t(`settings.email.change-error.reason.no-email-request`) }}
+                {{ $t(`settings.email.verification-error.reason.no-email-request`) }}
               </ds-list-item>
               <ds-list-item>
-                {{ $t(`settings.email.change-error.reason.email-address-taken`) }}
+                {{ $t(`settings.email.verification-error.reason.email-address-taken`) }}
               </ds-list-item>
             </ds-list>
-            {{ $t('settings.email.change-error.support') }}
+            {{ $t('settings.email.verification-error.support') }}
             <a href="mailto:support@human-connection.org">support@human-connection.org</a>
           </ds-text>
         </client-only>

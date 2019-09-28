@@ -11,6 +11,9 @@
         <ds-input id="email" model="email" icon="at" :label="$t('settings.email.labelEmail')" />
 
         <template slot="footer">
+          <ds-space class="backendErrors" v-if="backendErrors">
+            <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
+          </ds-space>
           <ds-button class="submit-button" icon="check" :disabled="errors" type="submit" primary>
             {{ $t('actions.save') }}
           </ds-button>
@@ -31,6 +34,7 @@ export default {
   },
   data() {
     return {
+      backendErrors: null,
       success: false,
     }
   },
@@ -88,6 +92,14 @@ export default {
           })
         }, 3000)
       } catch (err) {
+        if (err.message.includes('exists')) {
+          // We cannot use form validation errors here, the backend does not
+          // have a query to filter for email addresses. This is a privacy
+          // consideration. We could implement a dedicated query to check that
+          // but I think it's too much effort for this feature.
+          this.backendErrors = { message: this.$t('registration.signup.form.errors.email-exists') }
+          return
+        }
         this.$toast.error(err.message)
       }
     },

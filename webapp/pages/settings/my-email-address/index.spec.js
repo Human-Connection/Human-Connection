@@ -95,6 +95,21 @@ describe('EmailSettingsIndexPage', () => {
             })
           })
         })
+
+        describe('if backend responds with unique constraint violation', () => {
+          beforeEach(() => {
+            mocks.$apollo.mutate = jest.fn().mockRejectedValue({
+              message: 'User account already exists',
+            })
+            wrapper = Wrapper()
+            wrapper.find('#email').setValue('already-taken@example.org')
+            wrapper.find('form').trigger('submit')
+          })
+
+          it('translates error message', () => {
+            expect(wrapper.text()).toContain('registration.signup.form.errors.email-exists')
+          })
+        })
       })
     })
   })

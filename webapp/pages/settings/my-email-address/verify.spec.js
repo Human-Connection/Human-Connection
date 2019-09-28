@@ -149,7 +149,7 @@ describe('EmailVerifyPage', () => {
       })
 
       it('shows success message', () => {
-        expect(wrapper.text()).toContain('settings.email.change-error')
+        expect(wrapper.text()).toContain('settings.email.verification-error')
       })
 
       describe('after timeout', () => {

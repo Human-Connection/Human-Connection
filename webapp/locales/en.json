@@ -170,7 +170,7 @@
       "success": "A new E-Mail address has been registered.",
       "submitted": "An email to verify your address has been sent to <b>{email}</b>.",
       "change-successful": "Your E-Mail address has been changed successfully.",
-      "change-error": {
+      "verification-error": {
         "message": "Your E-Mail could not be changed.",
         "explanation": "This can have different causes:",
         "reason": {
