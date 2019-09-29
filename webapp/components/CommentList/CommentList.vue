@@ -12,7 +12,7 @@
         >
           {{ post.comments.length }}
         </ds-tag>
-        &nbsp; Comments
+        <span class="list-title">{{ $t('common.comment', null, 0) }}</span>
       </span>
     </h3>
     <ds-space margin-bottom="large" />
@@ -26,19 +26,16 @@
         @updateComment="updateCommentList"
       />
     </div>
-    <hc-empty v-else name="empty" icon="messages" />
   </div>
 </template>
 <script>
-import Comment from '~/components/Comment.vue'
-import HcEmpty from '~/components/Empty.vue'
-import scrollToAnchor from '~/mixins/scrollToAnchor.js'
+import Comment from '~/components/Comment/Comment'
+import scrollToAnchor from '~/mixins/scrollToAnchor'
 
 export default {
   mixins: [scrollToAnchor],
   components: {
     Comment,
-    HcEmpty,
   },
   props: {
     post: { type: Object, default: () => {} },
@@ -52,3 +49,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.list-title {
+  margin-left: $space-x-small;
+}
+</style>

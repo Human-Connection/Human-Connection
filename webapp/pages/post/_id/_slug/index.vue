@@ -189,6 +189,10 @@ export default {
         margin-top: $space-small;
         position: relative;
       }
+
+      .ProseMirror {
+        min-height: 0px;
+      }
     }
 
     .ds-card-image {
