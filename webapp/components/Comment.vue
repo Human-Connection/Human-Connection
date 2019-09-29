@@ -79,8 +79,10 @@ import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
+import scrollToAnchor from '~/mixins/scrollToAnchor.js'
 
 export default {
+  mixins: [scrollToAnchor],
   data: function() {
     return {
       isCollapsed: true,

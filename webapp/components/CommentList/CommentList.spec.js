@@ -50,9 +50,6 @@ describe('CommentList.vue', () => {
             },
           },
         },
-        $route: {
-          hash: '',
-        },
       }
       stubs = {
         EditorContent: "<div class='stub'></div>",
