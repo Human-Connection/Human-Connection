@@ -1,16 +1,16 @@
 <template>
-  <ds-button v-if="totalNotifications <= 0" class="notifications-menu" disabled icon="bell">
-    {{ totalNotifications }}
+  <ds-button v-if="!notificationsCount" class="notifications-menu" disabled icon="bell">
+    {{ unreadNotificationsCount }}
   </ds-button>
   <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
-      <ds-button primary icon="bell" @click.prevent="toggleMenu">
-        {{ totalNotifications }}
+      <ds-button :primary="!!unreadNotificationsCount" icon="bell" @click.prevent="toggleMenu">
+        {{ unreadNotificationsCount }}
       </ds-button>
     </template>
     <template slot="popover">
       <div class="notifications-menu-popover">
-        <notification-list :notifications="notifications" @markAsRead="markAsRead" />
+        <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
       </div>
     </template>
   </dropdown>
@@ -18,6 +18,7 @@
 
 <script>
 import Dropdown from '~/components/Dropdown'
+import { NOTIFICATIONS_POLL_INTERVAL } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import NotificationList from '../NotificationList/NotificationList'
 
@@ -29,6 +30,7 @@ export default {
   },
   data() {
     return {
+      displayedNotifications: [],
       notifications: [],
     }
   },
@@ -46,23 +48,52 @@ export default {
           variables,
         })
         if (!(markAsRead && markAsRead.read === true)) return
-        this.notifications = this.notifications.map(n => {
-          return n.from.id === markAsRead.from.id ? markAsRead : n
+        this.displayedNotifications = this.displayedNotifications.map(n => {
+          return this.equalNotification(n, markAsRead) ? markAsRead : n
         })
       } catch (err) {
-        throw new Error(err)
+        this.$toast.error(err.message)
       }
+    },
+    equalNotification(a, b) {
+      return a.from.id === b.from.id && a.createdAt === b.createdAt && a.reason === b.reason
     },
   },
   computed: {
-    totalNotifications() {
-      return (this.notifications || []).length
+    notificationsCount() {
+      return (this.displayedNotifications || []).length
+    },
+    unreadNotificationsCount() {
+      let countUnread = 0
+      if (this.displayedNotifications) {
+        this.displayedNotifications.forEach(notification => {
+          if (!notification.read) countUnread++
+        })
+      }
+      return countUnread
     },
   },
   apollo: {
     notifications: {
       query() {
         return notificationQuery(this.$i18n)
+      },
+      pollInterval() {
+        return NOTIFICATIONS_POLL_INTERVAL
+      },
+      update(data) {
+        const newNotifications = data.notifications.filter(newN => {
+          return !this.displayedNotifications.find(oldN => this.equalNotification(newN, oldN))
+        })
+        this.displayedNotifications = newNotifications
+          .concat(this.displayedNotifications)
+          .sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt)
+          })
+        return data.notifications
+      },
+      error(error) {
+        this.$toast.error(error)
       },
     },
   },
