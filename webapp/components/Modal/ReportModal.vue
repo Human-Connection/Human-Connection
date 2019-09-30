@@ -1,5 +1,10 @@
 <template>
-  <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
+  <ds-modal
+    :title="title"
+    :is-open="isOpen"
+    :width="{ base: '100%', sm: '200px', md: '200px', lg: '200px' }"
+    @cancel="cancel"
+  >
     <transition name="ds-transition-fade">
       <ds-flex v-if="success" class="hc-modal-success" centered>
         <sweetalert-icon icon="success" />
@@ -8,18 +13,18 @@
 
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
-    <ds-select
-      model="XXX"
+    <ds-radio
+      :model="form.reasonCategory"
+      :label="$t('report.reason.category.label')"
       :options="form.reasonCategoryOptions"
-      icon="comment"
-      :label="$t('report.reason.addText.label')"
-      :placeholder="$t('report.reason.addText.placeholder')"
+      :placeholder="$t('report.reason.category.placeholder')"
     />
     <ds-input
       id="text"
       :label="$t('report.reason.addText.label')"
       :placeholder="$t('report.reason.addText.placeholder')"
     />
+    <ds-space />
 
     <template slot="footer">
       <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
@@ -28,6 +33,7 @@
         danger
         class="confirm"
         icon="exclamation-circle"
+        :disabled="failsValidations"
         :loading="loading"
         @click="confirm"
       >
@@ -56,13 +62,14 @@ export default {
       isOpen: true,
       success: false,
       loading: false,
+      failsValidations: true,
       form: {
         reasonCategory: null,
         reasonCategoryOptions: [
           this.$t('report.reason.category.options.discrimination-etc'),
           this.$t('report.reason.category.options.pornographic-content-links'),
           this.$t('report.reason.category.options.glorific-trivia-of-cruel-inhuman-acts'),
-          this.$t('report.reason.category.options.unauthorized-disclosure-personalinformation'),
+          this.$t('report.reason.category.options.doxing'),
           this.$t('report.reason.category.options.intentional-intimidation-stalking-persecution'),
           this.$t('report.reason.category.options.advert-products-services-commercial'),
           this.$t('report.reason.category.options.criminal-behavior-violation-german-law'),
@@ -71,7 +78,7 @@ export default {
         reasonAddText: '',
       },
       formSchema: {
-        reasonAddText: { required: true, min: 0, max: 150 },
+        reasonAddText: { required: true, min: 0, max: 200 },
       },
     }
   },
@@ -94,11 +101,13 @@ export default {
       }, 1000)
     },
     async confirm() {
+      const { reasonCategory, reasonAddText } = this.form
+
       this.loading = true
-      try {
-        // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
-        // await this.modalData.buttons.confirm.callback()
-        await this.$apollo.mutate({
+      // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+      // await this.modalData.buttons.confirm.callback()
+      this.$apollo
+        .mutate({
           mutation: gql`
             mutation($id: ID!) {
               report(id: $id) {
@@ -108,32 +117,34 @@ export default {
           `,
           variables: { id: this.id },
         })
-        this.success = true
-        this.$toast.success(this.$t('report.success'))
-        setTimeout(() => {
-          this.isOpen = false
+        .then(({ _data }) => {
+          this.success = true
+          this.$toast.success(this.$t('report.success'))
           setTimeout(() => {
-            this.success = false
-            this.$emit('close')
-          }, 500)
-        }, 1500)
-      } catch (err) {
-        this.$emit('close')
-        this.success = false
-        switch (err.message) {
-          case 'GraphQL error: User':
-            this.$toast.error(this.$t('report.user.error'))
-            break
-          case 'GraphQL error: Post':
-            this.$toast.error(this.$t('report.contribution.error'))
-            break
-          case 'GraphQL error: Comment':
-            this.$toast.error(this.$t('report.comment.error'))
-            break
-        }
-      } finally {
-        this.loading = false
-      }
+            this.isOpen = false
+            setTimeout(() => {
+              this.success = false
+              this.$emit('close')
+            }, 500)
+          }, 1500)
+          this.loading = false
+        })
+        .catch(err => {
+          this.$emit('close')
+          this.success = false
+          switch (err.message) {
+            case 'GraphQL error: User':
+              this.$toast.error(this.$t('report.user.error'))
+              break
+            case 'GraphQL error: Post':
+              this.$toast.error(this.$t('report.contribution.error'))
+              break
+            case 'GraphQL error: Comment':
+              this.$toast.error(this.$t('report.comment.error'))
+              break
+          }
+          this.loading = false
+        })
     },
   },
 }
