@@ -4127,10 +4127,10 @@ graphql-iso-date@~3.6.1:
   resolved "https://registry.yarnpkg.com/graphql-iso-date/-/graphql-iso-date-3.6.1.tgz#bd2d0dc886e0f954cbbbc496bbf1d480b57ffa96"
   integrity sha512-AwFGIuYMJQXOEAgRlJlFL4H1ncFM8n8XmoVDTNypNOZyQ8LFDG2ppMFlsS862BSTCDcSUfHp8PD3/uJhv7t59Q==
 
-graphql-middleware-sentry@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/graphql-middleware-sentry/-/graphql-middleware-sentry-3.2.0.tgz#a72872ae4b9fbe286980023a3c531286b8258df7"
-  integrity sha512-tIrxJIL+MRh2pxoot+EYJIrFfPgB3OF4nqmmh1gi54q/V1rgv7w46Ahn2jgl2nTu4bKw6mtGVF4CKikWCMPa5Q==
+graphql-middleware-sentry@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/graphql-middleware-sentry/-/graphql-middleware-sentry-3.2.1.tgz#b5653d78903d655cf4212a602cfa6e26689cda07"
+  integrity sha512-lAwmHwsyey1db6scQg32javmqAFifabhqPIr0SUzx46O4kvjQlLZZn7KrRT12XDwgW7i6goAotdSPl9Fq+TBrQ==
 
 graphql-middleware@~3.0.5:
   version "3.0.5"
