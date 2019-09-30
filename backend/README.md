@@ -72,6 +72,8 @@ To reset the database run:
 $ docker-compose exec backend yarn run db:reset
 # you could also wipe out your neo4j database and delete all volumes with:
 $ docker-compose down -v
+# if container is not running, run this command to set up your database indeces and contstraints
+$ docker-compose run neo4j db_setup
 ```
 {% endtab %}
 
@@ -87,7 +89,6 @@ $ yarn run db:reset
 ```
 {% endtab %}
 {% endtabs %}
-
 
 # Testing
 
