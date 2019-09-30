@@ -133,11 +133,7 @@ export default {
         this.displayedNotifications = newNotifications
           .concat(this.displayedNotifications)
           .sort((a, b) => {
-            return a.createdAt === b.createdAt
-              ? 0
-              : new Date(a.createdAt) < new Date(b.createdAt)
-              ? 1
-              : -1
+            return new Date(b.createdAt) - new Date(a.createdAt)
           })
         this.updateOn = false
 
