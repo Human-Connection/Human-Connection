@@ -153,4 +153,3 @@ export const checkSlugAvailableQuery = gql`
     }
   }
 `
-

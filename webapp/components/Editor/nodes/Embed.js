@@ -19,7 +19,7 @@ const template = `
           </ds-text>   
           <input type="checkbox" v-model="currentUser.allowEmbedIframes"  @click.prevent="check($event)">  
         </ds-section>
-        <p v-if="!showEmbed" style="cursor: pointer" >
+        <p v-if="!showEmbed || linkOnly" style="cursor: pointer" >
           <img :src="embedImage" alt="dataEmbedUrl"  @click.prevent="clickPreview" height="270" width="auto" />
         <div v-else v-html="embedHtml" />
         <p style="color:black">
@@ -91,6 +91,7 @@ export default class Embed extends Node {
         embedData: {},
         showEmbed: true,
         showOverlay: false,
+        linkOnly: false,
       }),
       async created() {
         if (!this.options) return {}
@@ -103,6 +104,11 @@ export default class Embed extends Node {
         }),
         embedHtml() {
           const { html = '' } = this.embedData
+          if (html === '') {
+            this.linkOnly = true
+          } else {
+            this.linkOnly = false
+          }
           return html
         },
         embedImage() {
