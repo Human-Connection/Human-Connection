@@ -7,6 +7,6 @@
       "autoFix": true
     }
   ],
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "eslint.autoFixOnSave": true
 }
