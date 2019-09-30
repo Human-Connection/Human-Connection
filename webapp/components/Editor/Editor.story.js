@@ -5,8 +5,12 @@ import helpers from '~/storybook/helpers'
 import Vue from 'vue'
 
 const embed = {
+  image: 'https://i.ytimg.com/vi/ptCcgLM-p8k/maxresdefault_live.jpg',
+  title: 'Video Titel',
+  // html: null,
+  description: 'Video Description',
   html:
-    '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+    '<iframe width="auto" height="250" src="https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
 }
 
 const plugins = [
@@ -114,18 +118,28 @@ storiesOf('Editor', module)
     }),
     template: `<hc-editor :users="users" :value="content" />`,
   }))
-  .add('Embeds', () => ({
+  .add('Embeds with iframe', () => ({
     components: { HcEditor },
     store: helpers.store,
     data: () => ({
       users,
       content: `
-        <p>
-          The following link should render a youtube video in addition to the link.
-        </p>
         <a class="embed" href="https://www.youtube.com/watch?v=qkdXAtO40Fo">
           <em>https://www.youtube.com/watch?v=qkdXAtO40Fo</em>
         </a>
+      `,
+    }),
+    template: `<hc-editor :users="users" :value="content" />`,
+  }))
+  .add('Embeds with plain link', () => ({
+    components: { HcEditor },
+    store: helpers.store,
+    data: () => ({
+      users,
+      content: `
+       <a class="embed" href="https://telegram.org/">
+         <em>https://telegram.org/</em>
+       </a>
       `,
     }),
     template: `<hc-editor :users="users" :value="content" />`,
