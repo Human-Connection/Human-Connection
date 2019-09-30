@@ -31,7 +31,7 @@ const helpers = {
             return false
           },
           user(state) {
-            return { id: 1, name: 'admin' }
+            return { id: '1', name: 'admin' }
           },
         },
       },
@@ -39,7 +39,7 @@ const helpers = {
         namespaced: true,
         getters: {
           placeholder(state) {
-            return 'Leave your inspirational thoughts...'
+            return 'Leave your inspirational thoughts ...'
           },
         },
       },

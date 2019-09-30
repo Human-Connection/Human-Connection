@@ -84,3 +84,5 @@ cypress.env.json
 
 # Apple macOS folder attribute file
 .DS_Store
+
+sw.*

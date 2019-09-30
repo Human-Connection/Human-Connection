@@ -11,7 +11,7 @@
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card :id="`commentId-${comment.id}`">
-      <ds-space margin-bottom="small">
+      <ds-space margin-bottom="small" margin-top="base">
         <hc-user :user="author" :date-time="comment.createdAt" />
         <!-- Content Menu (can open Modals) -->
         <client-only>
@@ -21,14 +21,12 @@
             resource-type="comment"
             :resource="comment"
             :modalsData="menuModalsData"
-            style="float-right"
+            class="float-right"
             :is-owner="isAuthor(author.id)"
             @showEditCommentMenu="editCommentMenu"
           />
         </client-only>
       </ds-space>
-
-      <ds-space margin-bottom="small" />
       <div v-if="openEditCommentMenu">
         <hc-comment-form
           :update="true"
@@ -36,21 +34,19 @@
           :comment="comment"
           @showEditCommentMenu="editCommentMenu"
           @updateComment="updateComment"
+          @collapse="isCollapsed = true"
         />
       </div>
       <div v-show="!openEditCommentMenu">
         <content-viewer
-          v-if="comment.content.length < 180"
+          v-if="$filters.removeHtml(comment.content).length < 180"
           :content="comment.content"
           class="padding-left"
         />
-        <div
-          v-show="comment.content !== comment.contentExcerpt && comment.content.length > 180"
-          class="show-more-or-less-div"
-        >
+        <div v-else class="show-more-or-less-div">
           <content-viewer
             v-if="isCollapsed"
-            :content="comment.contentExcerpt"
+            :content="$filters.truncate(comment.content, 180)"
             class="padding-left text-align-left"
           />
           <span class="show-more-or-less">
@@ -59,10 +55,14 @@
             </a>
           </span>
         </div>
-        <content-viewer v-if="!isCollapsed" :content="comment.content" class="padding-left" />
+        <content-viewer
+          v-if="!isCollapsed"
+          :content="comment.content"
+          class="padding-left text-align-left"
+        />
         <div class="show-more-or-less-div">
           <span class="show-more-or-less">
-            <a v-if="!isCollapsed" @click="isCollapsed = !isCollapsed" class="padding-left">
+            <a v-if="!isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
               {{ $t('comment.show.less') }}
             </a>
           </span>
@@ -169,6 +169,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.float-right {
+  float: right;
+}
+
 .padding-left {
   padding-left: 40px;
 }
@@ -180,12 +184,11 @@ export default {
 div.show-more-or-less-div {
   text-align: right;
   margin-right: 20px;
-  margin-top: -12px;
 }
 
 span.show-more-or-less {
   display: block;
-  margin: 10px 20px;
+  margin: 0px 20px;
   cursor: pointer;
 }
 </style>

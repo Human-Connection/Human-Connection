@@ -73,7 +73,7 @@ export default {
           variables: { id: this.followId },
         })
 
-        const followedUser = follow ? data.follow : data.unfollow
+        const followedUser = follow ? data.followUser : data.unfollowUser
         this.$emit('update', followedUser)
       } catch {
         optimisticResult.followedByCurrentUser = !follow

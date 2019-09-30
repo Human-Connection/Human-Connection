@@ -8,80 +8,90 @@
         </ds-text>
       </ds-space>
     </ds-card>
-    <ds-form
-      v-else
-      class="create-user-account"
-      v-model="formData"
-      :schema="formSchema"
-      @submit="submit"
-    >
-      <template slot-scope="{ errors }">
-        <ds-card class="create-account-card" :header="$t('registration.create-user-account.title')">
-          <client-only>
-            <locale-switch class="create-account-locale-switch" offset="5" />
-          </client-only>
-          <ds-input
-            id="name"
-            model="name"
-            icon="user"
-            :label="$t('settings.data.labelName')"
-            :placeholder="$t('settings.data.namePlaceholder')"
-          />
-          <ds-input
-            id="about"
-            model="about"
-            type="textarea"
-            rows="3"
-            :label="$t('settings.data.labelBio')"
-            :placeholder="$t('settings.data.labelBio')"
-          />
-          <ds-input
-            id="password"
-            model="password"
-            type="password"
-            autocomplete="off"
-            :label="$t('settings.security.change-password.label-new-password')"
-          />
-          <ds-input
-            id="passwordConfirmation"
-            model="passwordConfirmation"
-            type="password"
-            autocomplete="off"
-            :label="$t('settings.security.change-password.label-new-password-confirm')"
-          />
-          <password-strength :password="formData.password" />
+    <ds-card v-else class="create-account-card">
+      <client-only>
+        <locale-switch />
+      </client-only>
+      <ds-space centered>
+        <img
+          class="create-account-image"
+          alt="Create an account for Human Connection"
+          src="/img/sign-up/nicetomeetyou.svg"
+        />
+      </ds-space>
+      <ds-space>
+        <ds-heading size="h3">
+          {{ $t('registration.create-user-account.title') }}
+        </ds-heading>
+      </ds-space>
 
-          <ds-text>
-            <input
-              id="checkbox"
-              type="checkbox"
-              v-model="termsAndConditionsConfirmed"
-              :checked="termsAndConditionsConfirmed"
-            />
-            <label
-              for="checkbox"
-              v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
-            ></label>
-          </ds-text>
+      <ds-form class="create-user-account" v-model="formData" :schema="formSchema" @submit="submit">
+        <template v-slot="{ errors }">
+          <ds-flex gutter="base">
+            <ds-flex-item width="100%">
+              <ds-input
+                id="name"
+                model="name"
+                icon="user"
+                :label="$t('settings.data.labelName')"
+                :placeholder="$t('settings.data.namePlaceholder')"
+              />
+              <ds-input
+                id="about"
+                model="about"
+                type="textarea"
+                rows="3"
+                :label="$t('settings.data.labelBio')"
+                :placeholder="$t('settings.data.labelBio')"
+              />
+              <ds-input
+                id="password"
+                model="password"
+                type="password"
+                autocomplete="off"
+                :label="$t('settings.security.change-password.label-new-password')"
+              />
+              <ds-input
+                id="passwordConfirmation"
+                model="passwordConfirmation"
+                type="password"
+                autocomplete="off"
+                :label="$t('settings.security.change-password.label-new-password-confirm')"
+              />
+              <password-strength :password="formData.password" />
 
-          <template slot="footer">
-            <ds-space class="backendErrors" v-if="backendErrors">
-              <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
-            </ds-space>
-            <ds-button
-              style="float: right;"
-              icon="check"
-              type="submit"
-              :loading="$apollo.loading"
-              :disabled="errors || !termsAndConditionsConfirmed"
-              primary
-            >
-              {{ $t('actions.save') }}
-            </ds-button>
-          </template>
-        </ds-card>
-      </template>
-    </ds-form>
+              <ds-text>
+                <input
+                  id="checkbox"
+                  type="checkbox"
+                  v-model="termsAndConditionsConfirmed"
+                  :checked="termsAndConditionsConfirmed"
+                />
+                <label
+                  for="checkbox"
+                  v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
+                ></label>
+              </ds-text>
+            </ds-flex-item>
+            <ds-flex-item width="100%">
+              <ds-space class="backendErrors" v-if="backendErrors">
+                <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
+              </ds-space>
+              <ds-button
+                style="float: right;"
+                icon="check"
+                type="submit"
+                :loading="$apollo.loading"
+                :disabled="errors || !termsAndConditionsConfirmed"
+                primary
+              >
+                {{ $t('actions.save') }}
+              </ds-button>
+            </ds-flex-item>
+          </ds-flex>
+        </template>
+      </ds-form>
+    </ds-card>
   </ds-container>
 </template>
 
@@ -157,13 +167,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.create-account-card {
-  position: relative;
-}
-.create-account-locale-switch {
-  position: absolute;
-  top: 1em;
-  right: 1em;
+<style lang="scss" scoped>
+.create-account-image {
+  width: 50%;
+  max-width: 200px;
 }
 </style>
