@@ -1,7 +1,9 @@
-import { extractNameFromId, extractDomainFromUrl, signAndSend } from './utils'
-import { isPublicAddressed, sendAcceptActivity, sendRejectActivity } from './utils/activity'
+// import { extractDomainFromUrl, signAndSend } from './utils'
+import { extractNameFromId, signAndSend } from './utils'
+import { isPublicAddressed } from './utils/activity'
+// import { isPublicAddressed, sendAcceptActivity, sendRejectActivity } from './utils/activity'
 import request from 'request'
-import as from 'activitystrea.ms'
+// import as from 'activitystrea.ms'
 import NitroDataSource from './NitroDataSource'
 import router from './routes'
 import Collections from './Collections'
@@ -33,71 +35,71 @@ export default class ActivityPub {
     }
   }
 
-  handleFollowActivity(activity) {
-    debug(`inside FOLLOW ${activity.actor}`)
-    const toActorName = extractNameFromId(activity.object)
-    const fromDomain = extractDomainFromUrl(activity.actor)
-    const dataSource = this.dataSource
+  // handleFollowActivity(activity) {
+  //   debug(`inside FOLLOW ${activity.actor}`)
+  //   const toActorName = extractNameFromId(activity.object)
+  //   const fromDomain = extractDomainFromUrl(activity.actor)
+  //   const dataSource = this.dataSource
 
-    return new Promise((resolve, reject) => {
-      request(
-        {
-          url: activity.actor,
-          headers: {
-            Accept: 'application/activity+json',
-          },
-        },
-        async (err, response, toActorObject) => {
-          if (err) return reject(err)
-          // save shared inbox
-          toActorObject = JSON.parse(toActorObject)
-          await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
+  //   return new Promise((resolve, reject) => {
+  //     request(
+  //       {
+  //         url: activity.actor,
+  //         headers: {
+  //           Accept: 'application/activity+json',
+  //         },
+  //       },
+  //       async (err, response, toActorObject) => {
+  //         if (err) return reject(err)
+  //         // save shared inbox
+  //         toActorObject = JSON.parse(toActorObject)
+  //         await this.dataSource.addSharedInboxEndpoint(toActorObject.endpoints.sharedInbox)
 
-          const followersCollectionPage = await this.dataSource.getFollowersCollectionPage(
-            activity.object,
-          )
+  //         const followersCollectionPage = await this.dataSource.getFollowersCollectionPage(
+  //           activity.object,
+  //         )
 
-          const followActivity = as
-            .follow()
-            .id(activity.id)
-            .actor(activity.actor)
-            .object(activity.object)
+  //         const followActivity = as
+  //           .follow()
+  //           .id(activity.id)
+  //           .actor(activity.actor)
+  //           .object(activity.object)
 
-          // add follower if not already in collection
-          if (followersCollectionPage.orderedItems.includes(activity.actor)) {
-            debug('follower already in collection!')
-            debug(`inbox = ${toActorObject.inbox}`)
-            resolve(
-              sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox),
-            )
-          } else {
-            followersCollectionPage.orderedItems.push(activity.actor)
-          }
-          debug(`toActorObject = ${toActorObject}`)
-          toActorObject =
-            typeof toActorObject !== 'object' ? JSON.parse(toActorObject) : toActorObject
-          debug(`followers = ${JSON.stringify(followersCollectionPage.orderedItems, null, 2)}`)
-          debug(`inbox = ${toActorObject.inbox}`)
-          debug(`outbox = ${toActorObject.outbox}`)
-          debug(`followers = ${toActorObject.followers}`)
-          debug(`following = ${toActorObject.following}`)
+  //         // add follower if not already in collection
+  //         if (followersCollectionPage.orderedItems.includes(activity.actor)) {
+  //           debug('follower already in collection!')
+  //           debug(`inbox = ${toActorObject.inbox}`)
+  //           resolve(
+  //             sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox),
+  //           )
+  //         } else {
+  //           followersCollectionPage.orderedItems.push(activity.actor)
+  //         }
+  //         debug(`toActorObject = ${toActorObject}`)
+  //         toActorObject =
+  //           typeof toActorObject !== 'object' ? JSON.parse(toActorObject) : toActorObject
+  //         debug(`followers = ${JSON.stringify(followersCollectionPage.orderedItems, null, 2)}`)
+  //         debug(`inbox = ${toActorObject.inbox}`)
+  //         debug(`outbox = ${toActorObject.outbox}`)
+  //         debug(`followers = ${toActorObject.followers}`)
+  //         debug(`following = ${toActorObject.following}`)
 
-          try {
-            await dataSource.saveFollowersCollectionPage(followersCollectionPage)
-            debug('follow activity saved')
-            resolve(
-              sendAcceptActivity(followActivity, toActorName, fromDomain, toActorObject.inbox),
-            )
-          } catch (e) {
-            debug('followers update error!', e)
-            resolve(
-              sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox),
-            )
-          }
-        },
-      )
-    })
-  }
+  //         try {
+  //           await dataSource.saveFollowersCollectionPage(followersCollectionPage)
+  //           debug('follow activity saved')
+  //           resolve(
+  //             sendAcceptActivity(followActivity, toActorName, fromDomain, toActorObject.inbox),
+  //           )
+  //         } catch (e) {
+  //           debug('followers update error!', e)
+  //           resolve(
+  //             sendRejectActivity(followActivity, toActorName, fromDomain, toActorObject.inbox),
+  //           )
+  //         }
+  //       },
+  //     )
+  //   })
+  // }
 
   handleUndoActivity(activity) {
     debug('inside UNDO')
