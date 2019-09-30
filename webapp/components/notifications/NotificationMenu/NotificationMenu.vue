@@ -1,37 +1,24 @@
 <template>
-  <div @mouseover="hoverUpdate" @mouseleave="hover = false">
-    <div
-      v-if="totalNotificationsCount === 0"
-      class="notifications-menu-pointer"
-      @click.prevent="updateNotifications"
-    >
-      <ds-button class="notifications-menu" disabled icon="bell">
+  <ds-button v-if="totalNotificationsCount === 0" class="notifications-menu" disabled icon="bell">
+    {{ unreadNotificationsCount }}
+  </ds-button>
+  <dropdown v-else class="notifications-menu" :placement="placement">
+    <template slot="default" slot-scope="{ toggleMenu }">
+      <ds-button primary icon="bell" @click.prevent="toggleMenu">
         {{ unreadNotificationsCount }}
       </ds-button>
-    </div>
-    <dropdown v-else class="notifications-menu" :placement="placement">
-      <template slot="default" slot-scope="{ toggleMenu }">
-        <ds-button primary icon="bell" @click.prevent="callToggleMenu(toggleMenu)">
-          {{ unreadNotificationsCount }}
-        </ds-button>
-      </template>
-      <template slot="popover">
-        <div class="notifications-menu-popover">
-          <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
-        </div>
-      </template>
-    </dropdown>
-  </div>
+    </template>
+    <template slot="popover">
+      <div class="notifications-menu-popover">
+        <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
+      </div>
+    </template>
+  </dropdown>
 </template>
 
 <script>
 import Dropdown from '~/components/Dropdown'
-import {
-  NOTIFICATIONS_POLL_INTERVAL,
-  NOTIFICATIONS_CHECK_UPDATED_INTERVAL,
-  NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL,
-  NOTIFICATIONS_UPDATE_PAUSE_INTERVAL,
-} from '~/constants/notifications'
+import { NOTIFICATIONS_POLL_INTERVAL } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import NotificationList from '../NotificationList/NotificationList'
 
@@ -45,23 +32,12 @@ export default {
     return {
       displayedNotifications: [],
       notifications: [],
-      updateOn: false,
-      updatePause: false,
-      menuDelayTicks: 0,
-      menuTimerId: null,
-      hover: false,
     }
   },
   props: {
     placement: { type: String },
   },
   methods: {
-    updateNotifications() {
-      if (this.updateOn || this.updatePause) return
-
-      this.updateOn = true
-      this.$apollo.queries.notifications.refetch()
-    },
     async markAsRead(notificationSourceId) {
       const variables = { id: notificationSourceId }
       try {
@@ -78,27 +54,6 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
-    },
-    hoverUpdate() {
-      if (this.hover) return
-
-      // update is triggered kind of one second before the user clicks
-      this.hover = true
-      this.updateNotifications()
-    },
-    callToggleMenu(toggleMenu) {
-      if (this.menuTimerId) return
-
-      this.updateNotifications() // then the update works even on mobile by click and without hover
-      // open menu after update is done, but latest after delay of "NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL"
-      this.menuDelayTicks = 0
-      this.menuTimerId = setInterval(() => {
-        if (!this.updateOn || NOTIFICATIONS_MENU_OPEN_LATEST_INTERVAL <= this.menuDelayTicks) {
-          toggleMenu()
-          clearInterval(this.menuTimerId)
-          this.menuTimerId = null
-        } else this.menuDelayTicks += NOTIFICATIONS_CHECK_UPDATED_INTERVAL
-      }, NOTIFICATIONS_CHECK_UPDATED_INTERVAL)
     },
     equalNotification(a, b) {
       return a.from.id === b.from.id && a.createdAt === b.createdAt && a.reason === b.reason
@@ -135,14 +90,6 @@ export default {
           .sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt)
           })
-        this.updateOn = false
-
-        // pause before next triggered update by "updateNotifications"
-        this.updatePause = true
-        setTimeout(() => {
-          this.updatePause = false
-        }, NOTIFICATIONS_UPDATE_PAUSE_INTERVAL)
-
         return data.notifications
       },
       error(error) {
@@ -157,10 +104,6 @@ export default {
 .notifications-menu {
   display: flex;
   align-items: center;
-}
-
-.notifications-menu-pointer {
-  cursor: pointer;
 }
 
 .notifications-menu-popover {
