@@ -1,10 +1,10 @@
 <template>
-  <ds-button v-if="totalNotificationsCount === 0" class="notifications-menu" disabled icon="bell">
+  <ds-button v-if="!notificationsCount" class="notifications-menu" disabled icon="bell">
     {{ unreadNotificationsCount }}
   </ds-button>
   <dropdown v-else class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
-      <ds-button primary icon="bell" @click.prevent="toggleMenu">
+      <ds-button :primary="!!unreadNotificationsCount" icon="bell" @click.prevent="toggleMenu">
         {{ unreadNotificationsCount }}
       </ds-button>
     </template>
@@ -60,7 +60,7 @@ export default {
     },
   },
   computed: {
-    totalNotificationsCount() {
+    notificationsCount() {
       return (this.displayedNotifications || []).length
     },
     unreadNotificationsCount() {
