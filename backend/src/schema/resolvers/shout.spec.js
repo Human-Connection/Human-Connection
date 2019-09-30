@@ -91,7 +91,7 @@ describe('shout and unshout posts', () => {
         variables = {}
       })
 
-      it("another user's post", async () => {
+      it("can shout another user's post", async () => {
         variables = { id: 'another-user-post-id' }
         await expect(mutate({ mutation: mutationShoutPost, variables })).resolves.toMatchObject({
           data: { shout: true },
@@ -102,7 +102,7 @@ describe('shout and unshout posts', () => {
         })
       })
 
-      it('my own post', async () => {
+      it('can not shout my own post', async () => {
         variables = { id: 'current-user-post-id' }
         await expect(mutate({ mutation: mutationShoutPost, variables })).resolves.toMatchObject({
           data: { shout: false },
@@ -139,7 +139,7 @@ describe('shout and unshout posts', () => {
         })
       })
 
-      it("another user's post", async () => {
+      it("can unshout another user's post", async () => {
         variables = { id: 'posted-by-another-user' }
         await expect(mutate({ mutation: mutationUnshoutPost, variables })).resolves.toMatchObject({
           data: { unshout: true },
