@@ -50,17 +50,17 @@ But what do we do when waiting for merge into master \(wanting to keep PRs small
   * but what about when you are waiting for merge?
   * solutions
     * 1\) put 2nd PR into branch that the first PR is hitting - but requires update after merging
-    * 2\) prefer to leave exiting PR until it can be reviewed, and instead go and work on some other part of the codebase that is not impacted by the first PR
+    * 2\) prefer to leave existing PR until it can be reviewed, and instead go and work on some other part of the codebase that is not impacted by the first PR
 
 ### Code Review
 * Github setting in place - at least one review is required to merge
   - in principle anyone (who is not the PR owner) can review
-  - but often it will be the core developers (Robert, Ulf, Greg, Wolfgang?)
+  - but often it will be the core developers (Robert, Wolfgang, Matt, Alina, Alex)
   - once there is a review, and presuming no requested changes, PR opener can merge
 
 * CI/tests
   - the CI needs to pass
-    - linting  <-- autofix?
+    - linting (yarn lint --fix)
     - tests (unit, feature) (backend, frontend)
     - codecoverage
 
