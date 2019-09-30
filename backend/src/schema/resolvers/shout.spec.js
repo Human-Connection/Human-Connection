@@ -46,8 +46,23 @@ describe('shout and unshout posts', () => {
     mutate = createTestClient(server).mutate
     query = createTestClient(server).query
   })
-  afterEach(() => {
-    factory.cleanDatabase()
+  beforeEach(async () => {
+    currentUser = await factory.create('User', {
+      id: 'current-user-id',
+      name: 'Current User',
+      email: 'current.user@example.org',
+      password: '1234',
+    })
+
+    postAuthor = await factory.create('User', {
+      id: 'id-of-another-user',
+      name: 'Another User',
+      email: 'another.user@example.org',
+      password: '1234',
+    })
+  })
+  afterEach(async () => {
+    await factory.cleanDatabase()
   })
 
   describe('shout', () => {
@@ -62,19 +77,6 @@ describe('shout and unshout posts', () => {
     })
     describe('authenticated', () => {
       beforeEach(async () => {
-        currentUser = await factory.create('User', {
-          id: 'current-user-id',
-          name: 'Current User',
-          email: 'current.user@example.org',
-          password: '1234',
-        })
-
-        postAuthor = await factory.create('User', {
-          id: 'post-author-id',
-          name: 'Post Author',
-          email: 'post.author@example.org',
-          password: '1234',
-        })
         authenticatedUser = await currentUser.toJson()
         await factory.create('Post', {
           name: 'Other user post',
@@ -125,19 +127,6 @@ describe('shout and unshout posts', () => {
 
     describe('authenticated', () => {
       beforeEach(async () => {
-        currentUser = await factory.create('User', {
-          id: 'current-user-id',
-          name: 'Current User',
-          email: 'current.user@example.org',
-          password: '1234',
-        })
-
-        postAuthor = await factory.create('User', {
-          id: 'id-of-another-user',
-          name: 'Another User',
-          email: 'another.user@example.org',
-          password: '1234',
-        })
         authenticatedUser = await currentUser.toJson()
         await factory.create('Post', {
           name: 'Posted By Another User',
@@ -148,7 +137,6 @@ describe('shout and unshout posts', () => {
           mutation: mutationShoutPost,
           variables: { id: 'posted-by-another-user' },
         })
-        variables = {}
       })
 
       it("another user's post", async () => {
