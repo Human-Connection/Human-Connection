@@ -142,6 +142,7 @@ export default {
         keys: envWhitelist,
       },
     ],
+    'vue-scrollto/nuxt',
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
