@@ -5784,12 +5784,12 @@ metascraper-lang@^5.7.6:
   dependencies:
     "@metascraper/helpers" "^5.7.6"
 
-metascraper-logo@^5.7.5:
-  version "5.7.5"
-  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.7.5.tgz#90f9fc30191a495f439e4f36d90af01fd3995a64"
-  integrity sha512-L+ZyJx+c7V0RyRubr6hITlnTjmEkPVJmXnWHz/bbWXEI++MA8/jI/XVsbxugcliMhdG8/UW+wANZ/uBoRHejdA==
+metascraper-logo@^5.7.6:
+  version "5.7.6"
+  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.7.6.tgz#92680c8e839c6c357ecb4d7fe0445f46233d0f09"
+  integrity sha512-0pMHxua4dNUcWLCk4WGCqBcuMoUoMAr3kFT34tJZTAd345iCagtwNNs2iAcNLdpNqyXzKyGIKcZPNkbWByVcCQ==
   dependencies:
-    "@metascraper/helpers" "^5.7.5"
+    "@metascraper/helpers" "^5.7.6"
 
 metascraper-publisher@^5.7.4:
   version "5.7.4"
