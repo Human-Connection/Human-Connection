@@ -5,7 +5,7 @@
         <ds-input
           id="email"
           model="email"
-          icon="at"
+          icon="envelope"
           disabled
           :label="$t('settings.email.labelNewEmail')"
         />

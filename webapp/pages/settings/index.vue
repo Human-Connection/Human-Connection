@@ -32,7 +32,6 @@
         />
         <template slot="footer">
           <ds-button
-            style="float: right;"
             icon="check"
             :disabled="errors"
             type="submit"

@@ -8,7 +8,7 @@
   <ds-form v-else v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
       <ds-card :header="$t('settings.email.name')">
-        <ds-input id="email" model="email" icon="at" :label="$t('settings.email.labelEmail')" />
+        <ds-input id="email" model="email" icon="envelope" :label="$t('settings.email.labelEmail')" />
 
         <template slot="footer">
           <ds-space class="backendErrors" v-if="backendErrors">
@@ -106,9 +106,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.submit-button {
-  float: right;
-}
-</style>
