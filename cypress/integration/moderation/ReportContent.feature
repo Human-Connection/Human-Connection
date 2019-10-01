@@ -68,7 +68,7 @@ Feature: Report and Moderate
     When I click on the avatar menu in the top right corner
     And I click on "Moderation"
     Then I see all the reported posts including from the user who blocked me
-    And each list item links to the post page
+    And I can visit the post page
 
   Scenario: Normal user can't see the moderation page
     Given I am logged in with a "user" role

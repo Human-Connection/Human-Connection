@@ -150,6 +150,12 @@ Then('each list item links to the post page', () => {
   cy.location('pathname').should('contain', '/post')
 })
 
+Then('I can visit the post page', () => {
+  cy.contains(annoyingUserWhoBlockedModeratorTitle).click()
+  cy.location('pathname').should('contain', '/post')
+    .get('h3').should('contain', annoyingUserWhoBlockedModeratorTitle)
+})
+
 When("they have a post someone has reported", () => {
   cy.factory()
     .create("Post", {
