@@ -116,7 +116,7 @@ When(/^I confirm the reporting dialog .*:$/, message => {
 Given('somebody reported the following posts:', table => {
   table.hashes().forEach(({ id }) => {
     const submitter = {
-      email: `submitter${id}@example.org`,
+      email: `submitter${id}@example.org`,  
       password: '1234'
     }
     cy.factory()
@@ -142,4 +142,13 @@ Then('I see all the reported posts including the one from above', () => {
 Then('each list item links to the post page', () => {
   cy.contains(davidIrvingPostTitle).click()
   cy.location('pathname').should('contain', '/post')
+})
+
+When("they have a post someone has reported", () => {
+  cy.factory()
+    .create("Post", {
+      authorId: 'annnoying-user',
+      title,
+    });
+    
 })

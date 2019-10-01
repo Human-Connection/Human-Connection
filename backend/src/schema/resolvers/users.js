@@ -30,6 +30,7 @@ export const getBlockedByUsers = async context => {
     .relationship(userModel.relationships().get('blocked'))
     .to('blocked', userModel)
     .where('blocked.id', context.user.id)
+    .where('blocked.user', 'user')
     .return('user')
   blockedByUsers = await blockedByUsers.execute()
   blockedByUsers = blockedByUsers.records.map(r => r.get('user').properties)

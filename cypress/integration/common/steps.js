@@ -410,6 +410,21 @@ Given("there is an annoying user called {string}", name => {
   });
 });
 
+Given("there is an annoying user who has blocked me", () => {
+  cy.login({ email: 'i-blocked-a-moderator-ha-ha-ha@example.org', password: '1234' })
+  .neode()
+    .first("User", {
+      role: 'moderator'
+    })
+    .then(blocked => {
+      cy.neode()
+        .first("User", {
+          name
+        })
+        .relateTo(blocked, "blocked");
+    });
+});
+
 Given("I am on the profile page of the annoying user", name => {
   cy.openPage("/profile/annoying-user/spammy-spammer");
 });
