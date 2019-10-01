@@ -5,7 +5,7 @@ import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 let lastReportTitle
 let davidIrvingPostTitle = 'The Truth about the Holocaust'
 let davidIrvingPostSlug = 'the-truth-about-the-holocaust'
-let davidIrvingName = 'David Irving'
+let annoyingUserWhoBlockedModeratorTitle = 'Fake news'
 
 const savePostTitle = $post => {
   return $post
@@ -136,6 +136,12 @@ Given('somebody reported the following posts:', table => {
 Then('I see all the reported posts including the one from above', () => {
   cy.get('table tbody').within(() => {
     cy.contains('tr', davidIrvingPostTitle)
+  })
+})
+
+Then('I see all the reported posts including from the user who blocked me', () => {
+  cy.get('table tbody').within(() => {
+    cy.contains('tr', annoyingUserWhoBlockedModeratorTitle)
   })
 })
 
