@@ -1,32 +1,20 @@
-export function scrollToAnchor(anchor) {
-  if (!anchor) return
-  if (!window || !document) {
-    return
-  }
-  const container = document.querySelector(anchor)
-  if (container) {
-    const { top } = container.getBoundingClientRect()
-    setTimeout(() => {
-      // we have to set a small timeout to ensure this part comes after nuxt
-      // scrollBehaviour: https://nuxtjs.org/api/configuration-router/#scrollbehavior
-      window.scroll({
-        top,
-        left: 0,
-        behavior: 'smooth',
-      })
-    }, 250)
-  }
-}
+import { scrollTo } from 'vue-scrollto'
 
 export default {
   watch: {
     $route(to, from) {
       const anchor = to && to.hash
-      scrollToAnchor(anchor)
+      if (!this.checkAnchor(anchor)) return
+      setTimeout(() => {
+        scrollTo(anchor, 1000)
+      }, 250)
     },
   },
   mounted() {
     const anchor = this.$route && this.$route.hash
-    scrollToAnchor(anchor)
+    if (!this.checkAnchor(anchor)) return
+    setTimeout(() => {
+      scrollTo(anchor, 1000)
+    }, 250)
   },
 }

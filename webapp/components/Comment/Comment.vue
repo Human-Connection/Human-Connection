@@ -10,7 +10,7 @@
     </ds-card>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
-    <ds-card :id="`commentId-${comment.id}`">
+    <ds-card :id="anchor">
       <ds-space margin-bottom="small" margin-top="small">
         <hc-user :user="author" :date-time="comment.createdAt" />
         <!-- Content Menu (can open Modals) -->
@@ -111,6 +111,9 @@ export default {
       user: 'auth/user',
       isModerator: 'auth/isModerator',
     }),
+    anchor() {
+      return `commentId-${this.comment.id}`
+    },
     displaysComment() {
       return !this.unavailable || this.isModerator
     },
@@ -144,6 +147,9 @@ export default {
     },
   },
   methods: {
+    checkAnchor(anchor) {
+      return `#${this.anchor}` === anchor
+    },
     isAuthor(id) {
       return this.user.id === id
     },
