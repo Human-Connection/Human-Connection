@@ -14500,12 +14500,12 @@ tinycolor2@^1.4.1:
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
   integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
 
-tippy.js@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-4.3.5.tgz#882bff8d92f09bb0546d2826d5668c0560006f54"
-  integrity sha512-NDq3efte8nGK6BOJ1dDN1/WelAwfmh3UtIYXXck6+SxLzbIQNZE/cmRSnwScZ/FyiKdIcvFHvYUgqmoGx8CcyA==
+tippy.js@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-5.0.1.tgz#7677b726f9b3bd2e81bbefade11c3a6c4a93fb83"
+  integrity sha512-bE/7F04UpFMM/G57rr9lyZpsykmqsrhIDiCnb7SNA4GD9SFYyQtpPHRpLLZokZhSC4c/+DaW/vTjaWX/MK/K8A==
   dependencies:
-    popper.js "^1.14.7"
+    popper.js "^1.15.0"
 
 tiptap-commands@^1.12.0:
   version "1.12.0"
