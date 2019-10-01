@@ -971,7 +971,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.7.4", "@metascraper/helpers@^5.7.5", "@metascraper/helpers@^5.7.6":
+"@metascraper/helpers@^5.7.5", "@metascraper/helpers@^5.7.6":
   version "5.7.6"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.7.6.tgz#84007215d3b31525995fd85cf0d28bf6a12bf7bb"
   integrity sha512-AD2VTQmMWl/KCUXl9h0fP84VacoiTI/8y8CBgErmYZnm+sliKGedQrDZO3JmzNg73Z5z08GQTjME1WHIDiIQDw==
@@ -5791,12 +5791,12 @@ metascraper-logo@^5.7.6:
   dependencies:
     "@metascraper/helpers" "^5.7.6"
 
-metascraper-publisher@^5.7.4:
-  version "5.7.4"
-  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.7.4.tgz#5f69ad838636ef1fff015c45a66f683fcc2d3d37"
-  integrity sha512-l2FI63BC7cSQCvPD5OMKY4yRYpcxhhrrpsIrC0sIViKs6XrYRphb745NcNgFvKgi/PO0yw0bIEyhAroACaJKOA==
+metascraper-publisher@^5.7.6:
+  version "5.7.6"
+  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.7.6.tgz#d0b04ae2f260a5bf0536fad29b3617fb9b6df296"
+  integrity sha512-RVvyNbzJnWutA2rSbK0CytokBXu1SVfsnME+IeKOGmtiSnKtGx5Q0lALHNVHt+bIShEYgba0UlVO/mPE37dU8g==
   dependencies:
-    "@metascraper/helpers" "^5.7.4"
+    "@metascraper/helpers" "^5.7.6"
 
 metascraper-soundcloud@^5.7.6:
   version "5.7.6"
