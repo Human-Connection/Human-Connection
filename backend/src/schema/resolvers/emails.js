@@ -7,6 +7,7 @@ import Validator from 'neode/build/Services/Validator.js'
 export default {
   Mutation: {
     AddEmailAddress: async (_parent, args, context, _resolveInfo) => {
+      let response
       try {
         const { neode } = context
         await new Validator(neode, neode.model('UnverifiedEmailAddress'), args)
@@ -14,8 +15,8 @@ export default {
         throw new UserInputError('must be a valid email')
       }
 
-      let response = await existingEmailAddress(_parent, args, context)
-      if (response) return response
+      // check email does not belong to anybody
+      await existingEmailAddress(_parent, args, context)
 
       const nonce = generateNonce()
       const {
