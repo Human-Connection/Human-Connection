@@ -94,23 +94,23 @@ describe('AddEmailAddress', () => {
         })
       })
 
-      it('connects `EmailAddressRequest` to the authenticated user', async () => {
+      it('connects `UnverifiedEmailAddress` to the authenticated user', async () => {
         await mutate({ mutation, variables })
         const result = await neode.cypher(`
         MATCH(u:User)-[:PRIMARY_EMAIL]->(:EmailAddress {email: "user@example.org"})
-        MATCH(u:User)<-[:BELONGS_TO]-(e:EmailAddressRequest {email: "new-email@example.org"})
+        MATCH(u:User)<-[:BELONGS_TO]-(e:UnverifiedEmailAddress {email: "new-email@example.org"})
         RETURN e
       `)
-        const email = neode.hydrateFirst(result, 'e', neode.model('EmailAddressRequest'))
+        const email = neode.hydrateFirst(result, 'e', neode.model('UnverifiedEmailAddress'))
         await expect(email.toJson()).resolves.toMatchObject({
           email: 'new-email@example.org',
           nonce: expect.any(String),
         })
       })
 
-      describe('if another `EmailAddressRequest` node already exists with that email', () => {
+      describe('if another `UnverifiedEmailAddress` node already exists with that email', () => {
         it('throws no unique constraint violation error', async () => {
-          await factory.create('EmailAddressRequest', {
+          await factory.create('UnverifiedEmailAddress', {
             createdAt: '2019-09-24T14:00:01.565Z',
             email: 'new-email@example.org',
           })
@@ -182,10 +182,10 @@ describe('VerifyEmailAddress', () => {
       })
     })
 
-    describe('given a `EmailAddressRequest`', () => {
+    describe('given a `UnverifiedEmailAddress`', () => {
       let emailAddress
       beforeEach(async () => {
-        emailAddress = await factory.create('EmailAddressRequest', {
+        emailAddress = await factory.create('UnverifiedEmailAddress', {
           nonce: 'abcdef',
           verifiedAt: null,
           createdAt: new Date().toISOString(),
@@ -203,7 +203,7 @@ describe('VerifyEmailAddress', () => {
         })
       })
 
-      describe('given valid nonce for `EmailAddressRequest` node', () => {
+      describe('given valid nonce for `UnverifiedEmailAddress` node', () => {
         beforeEach(() => {
           variables = { ...variables, nonce: 'abcdef' }
         })
@@ -217,7 +217,7 @@ describe('VerifyEmailAddress', () => {
           })
         })
 
-        describe('and the `EmailAddressRequest` belongs to the authenticated user', () => {
+        describe('and the `UnverifiedEmailAddress` belongs to the authenticated user', () => {
           beforeEach(async () => {
             await emailAddress.relateTo(user, 'belongsTo')
           })

@@ -9,7 +9,7 @@ export default {
     AddEmailAddress: async (_parent, args, context, _resolveInfo) => {
       try {
         const { neode } = context
-        await new Validator(neode, neode.model('EmailAddressRequest'), args)
+        await new Validator(neode, neode.model('UnverifiedEmailAddress'), args)
       } catch (e) {
         throw new UserInputError('must be a valid email')
       }
@@ -27,7 +27,7 @@ export default {
         const result = await txc.run(
           `
             MATCH (user:User {id: $userId})
-            MERGE (user)<-[:BELONGS_TO]-(email:EmailAddressRequest {email: $email, nonce: $nonce})
+            MERGE (user)<-[:BELONGS_TO]-(email:UnverifiedEmailAddress {email: $email, nonce: $nonce})
             SET email.createdAt = toString(datetime())
             RETURN email, user
           `,
@@ -57,11 +57,11 @@ export default {
         const result = await txc.run(
           `
             MATCH (user:User {id: $userId})-[previous:PRIMARY_EMAIL]->(:EmailAddress)
-            MATCH (user)<-[:BELONGS_TO]-(email:EmailAddressRequest {email: $email, nonce: $nonce})
+            MATCH (user)<-[:BELONGS_TO]-(email:UnverifiedEmailAddress {email: $email, nonce: $nonce})
             MERGE (user)-[:PRIMARY_EMAIL]->(email)
             SET email:EmailAddress
             SET email.verifiedAt = toString(datetime())
-            REMOVE email:EmailAddressRequest
+            REMOVE email:UnverifiedEmailAddress
             DELETE previous
             RETURN email
           `,

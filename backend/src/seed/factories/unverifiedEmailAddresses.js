@@ -4,7 +4,7 @@ export default function create() {
   return {
     factory: async ({ args, neodeInstance }) => {
       args = defaults({ args })
-      return neodeInstance.create('EmailAddressRequest', args)
+      return neodeInstance.create('UnverifiedEmailAddress', args)
     },
   }
 }

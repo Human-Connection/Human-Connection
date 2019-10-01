@@ -5,7 +5,7 @@ export default {
   User: require('./User.js'),
   InvitationCode: require('./InvitationCode.js'),
   EmailAddress: require('./EmailAddress.js'),
-  EmailAddressRequest: require('./EmailAddressRequest.js'),
+  UnverifiedEmailAddress: require('./UnverifiedEmailAddress.js'),
   SocialMedia: require('./SocialMedia.js'),
   Post: require('./Post.js'),
   Comment: require('./Comment.js'),
