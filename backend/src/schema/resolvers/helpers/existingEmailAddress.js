@@ -4,7 +4,7 @@ export default async function alreadyExistingMail(_parent, args, context) {
   email = email.toLowerCase()
   const cypher = `
     MATCH (email:EmailAddress {email: $email})
-    OPTIONAL MATCH (email)-[:PRIMARY_EMAIL]-(user)
+    OPTIONAL MATCH (email)-[:BELONGS_TO]-(user)
     RETURN email, user
   `
   let transactionRes
