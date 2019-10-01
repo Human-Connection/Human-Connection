@@ -58,7 +58,7 @@ Feature: Report and Moderate
     Then I see all the reported posts including the one from above
     And each list item links to the post page
 
-  Scenario: Even if a user has blocked me, I can see their reported posts
+  Scenario: Review reported posts of a user who's blocked a moderator
     Given somebody reported the following posts:
       | id |
       | p2 |
