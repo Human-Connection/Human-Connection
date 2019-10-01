@@ -142,7 +142,13 @@ export default {
         keys: envWhitelist,
       },
     ],
-    'vue-scrollto/nuxt',
+    [
+      'vue-scrollto/nuxt',
+      {
+        offset: -100, // to compensate fixed navbar height
+        duration: 1000,
+      },
+    ],
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',

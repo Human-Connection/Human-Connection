@@ -5,7 +5,7 @@ function scrollToAnchor(anchor, { checkAnchor, $scrollTo }) {
     )
   if (!checkAnchor(anchor)) return
   setTimeout(() => {
-    $scrollTo(anchor, 1000)
+    $scrollTo(anchor)
   }, 250)
 }
 

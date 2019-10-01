@@ -145,7 +145,7 @@ describe('Comment.vue', () => {
           it('calls $scrollTo', () => {
             wrapper = Wrapper()
             jest.runAllTimers()
-            expect(mocks.$scrollTo).toHaveBeenCalledWith('#commentId-2', 1000)
+            expect(mocks.$scrollTo).toHaveBeenCalledWith('#commentId-2')
           })
         })
       })
