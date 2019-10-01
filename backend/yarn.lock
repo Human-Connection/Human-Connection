@@ -5725,12 +5725,12 @@ merge-stream@^2.0.0:
   resolved "https://registry.yarnpkg.com/merge-stream/-/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
   integrity sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==
 
-metascraper-audio@^5.7.5:
-  version "5.7.5"
-  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.7.5.tgz#9ccdc85a2e17b6767e91ecfc964faaa83e10e917"
-  integrity sha512-2uE2VrsB780krOoKSGM08iquxyZmLEWNEG/8P3+wbZJ3aQA+JVTc7He/D8XMhFd93dFTpVZUNV9qLlPIjWnwnw==
+metascraper-audio@^5.7.6:
+  version "5.7.6"
+  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.7.6.tgz#05f3a732e8316eb80c0ee58d5981d053baff6cec"
+  integrity sha512-1CXw5+2WIxF5O0sJ1Hp4Zt8nSg4zXJXa9AUPMhnyhovLJ4cqGBdNVUbsxduuEHfYPiG1PtZyrtgDq+OQqiS5kA==
   dependencies:
-    "@metascraper/helpers" "^5.7.5"
+    "@metascraper/helpers" "^5.7.6"
 
 metascraper-author@^5.7.6:
   version "5.7.6"
