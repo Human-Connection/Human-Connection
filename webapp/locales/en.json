@@ -161,7 +161,7 @@
     },
     "email": {
       "validation": {
-        "same-email": "Must be different from your current email address"
+        "same-email": "This is your current email address"
       },
       "name": "Your email",
       "labelEmail": "Change your email address",

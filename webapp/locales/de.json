@@ -160,7 +160,7 @@
     },
     "email": {
       "validation": {
-        "same-email": "Muss sich unterscheiden von der jetzigen E-Mail Addresse"
+        "same-email": "Das ist deine aktuelle E-Mail Addresse"
       },
       "name": "Deine E-Mail",
       "labelEmail": "E-Mail Adresse ändern",
