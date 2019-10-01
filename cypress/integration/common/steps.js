@@ -411,15 +411,14 @@ Given("there is an annoying user called {string}", name => {
 });
 
 Given("there is an annoying user who has blocked me", () => {
-  cy.login({ email: 'i-blocked-a-moderator-ha-ha-ha@example.org', password: '1234' })
-  .neode()
+  cy.neode()
     .first("User", {
       role: 'moderator'
     })
     .then(blocked => {
       cy.neode()
         .first("User", {
-          name
+          id: 'annoying-user'
         })
         .relateTo(blocked, "blocked");
     });

@@ -9,9 +9,9 @@ Feature: Report and Moderate
 
   Background:
     Given we have the following user accounts:
-      | id            | name                                           | email                                      | password |
-      | u67           | David Irving                                   | david-irving@example.org                   | 1234     |
-      | annoying-user | I'm gonna block Moderators and Admins HA HA HA | i-blocked-a-moderator-ha-ha-ha@example.org | 1234     |
+      | id            | name                                           | 
+      | u67           | David Irving                                   |
+      | annoying-user | I'm gonna block Moderators and Admins HA HA HA |
     
     Given we have the following posts in our database:
       | authorId      | id | title                         | content                                              |
