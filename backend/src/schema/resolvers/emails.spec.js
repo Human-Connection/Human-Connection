@@ -63,7 +63,7 @@ describe('AddEmailAddress', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      user = await factory.create('User', { email: 'user@example.org' })
+      user = await factory.create('User', { id: '567', email: 'user@example.org' })
       authenticatedUser = await user.toJson()
     })
 
@@ -169,7 +169,7 @@ describe('VerifyEmailAddress', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      user = await factory.create('User', { email: 'user@example.org' })
+      user = await factory.create('User', { id: '567', email: 'user@example.org' })
       authenticatedUser = await user.toJson()
     })
 
@@ -238,8 +238,7 @@ describe('VerifyEmailAddress', () => {
           it('connects the new `EmailAddress` as PRIMARY', async () => {
             await mutate({ mutation, variables })
             const result = await neode.cypher(`
-            MATCH(u:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: "to-be-verified@example.org"})
-            MATCH(u:User)<-[:BELONGS_TO]-(:EmailAddress {email: "user@example.org"})
+            MATCH(u:User {id: "567"})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: "to-be-verified@example.org"})
             RETURN e
           `)
             const email = neode.hydrateFirst(result, 'e', neode.model('EmailAddress'))
@@ -250,7 +249,23 @@ describe('VerifyEmailAddress', () => {
 
           it('removes previous PRIMARY relationship', async () => {
             const cypherStatement = `
-            MATCH(u:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: "user@example.org"})
+            MATCH(u:User {id: "567"})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: "user@example.org"})
+            RETURN e
+          `
+            let result = await neode.cypher(cypherStatement)
+            let email = neode.hydrateFirst(result, 'e', neode.model('EmailAddress'))
+            await expect(email.toJson()).resolves.toMatchObject({
+              email: 'user@example.org',
+            })
+            await mutate({ mutation, variables })
+            result = await neode.cypher(cypherStatement)
+            email = neode.hydrateFirst(result, 'e', neode.model('EmailAddress'))
+            await expect(email).toBe(false)
+          })
+
+          it('removes previous `EmailAddress` node', async () => {
+            const cypherStatement = `
+            MATCH(u:User {id: "567"})<-[:BELONGS_TO]-(e:EmailAddress {email: "user@example.org"})
             RETURN e
           `
             let result = await neode.cypher(cypherStatement)

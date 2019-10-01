@@ -57,13 +57,13 @@ export default {
       const writeTxResultPromise = session.writeTransaction(async txc => {
         const result = await txc.run(
           `
-            MATCH (user:User {id: $userId})-[previous:PRIMARY_EMAIL]->(:EmailAddress)
+            MATCH (user:User {id: $userId})-[:PRIMARY_EMAIL]->(previous:EmailAddress)
             MATCH (user)<-[:BELONGS_TO]-(email:UnverifiedEmailAddress {email: $email, nonce: $nonce})
             MERGE (user)-[:PRIMARY_EMAIL]->(email)
             SET email:EmailAddress
             SET email.verifiedAt = toString(datetime())
             REMOVE email:UnverifiedEmailAddress
-            DELETE previous
+            DETACH DELETE previous
             RETURN email
           `,
           { userId, email, nonce },
