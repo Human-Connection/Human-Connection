@@ -161,24 +161,24 @@
     },
     "email": {
       "validation": {
-        "same-email": "Must be different from your current E-Mail address"
+        "same-email": "Must be different from your current email address"
       },
-      "name": "Your E-Mail",
-      "labelEmail": "Change your E-Mail address",
-      "labelNewEmail": "New E-Mail Address",
+      "name": "Your email",
+      "labelEmail": "Change your email address",
+      "labelNewEmail": "New email Address",
       "labelNonce": "Enter your code",
-      "success": "A new E-Mail address has been registered.",
+      "success": "A new email address has been registered.",
       "submitted": "An email to verify your address has been sent to <b>{email}</b>.",
-      "change-successful": "Your E-Mail address has been changed successfully.",
+      "change-successful": "Your email address has been changed successfully.",
       "verification-error": {
-        "message": "Your E-Mail could not be changed.",
+        "message": "Your email could not be changed.",
         "explanation": "This can have different causes:",
         "reason": {
           "invalid-nonce": "Is the confirmation code invalid?",
           "no-email-request": "You haven't requested a change of your email address at all?",
           "email-address-taken": "Has the email been assigned to another user in the meantime?"
         },
-        "support": "If the problem persists, please contact us by e-mail at"
+        "support": "If the problem persists, please contact us by email at"
       }
     },
     "validation": {
@@ -276,7 +276,7 @@
     "users": {
       "name": "Users",
       "form": {
-        "placeholder": "E-Mail, name or description"
+        "placeholder": "email, name or description"
       },
       "table": {
         "columns": {
