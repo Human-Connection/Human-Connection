@@ -175,8 +175,7 @@
         "explanation": "This can have different causes:",
         "reason": {
           "invalid-nonce": "Is the confirmation code invalid?",
-          "no-email-request": "You haven't requested a change of your email address at all?",
-          "email-address-taken": "Has the email been assigned to another user in the meantime?"
+          "no-email-request": "Are you certain that you requested a change of your email address?"
         },
         "support": "If the problem persists, please contact us by email at"
       }

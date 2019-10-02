@@ -27,9 +27,6 @@
               <ds-list-item>
                 {{ $t(`settings.email.verification-error.reason.no-email-request`) }}
               </ds-list-item>
-              <ds-list-item>
-                {{ $t(`settings.email.verification-error.reason.email-address-taken`) }}
-              </ds-list-item>
             </ds-list>
             {{ $t('settings.email.verification-error.support') }}
             <a href="mailto:support@human-connection.org">support@human-connection.org</a>

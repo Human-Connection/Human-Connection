@@ -175,8 +175,7 @@
         "explanation": "Das kann verschiedene Ursachen haben:",
         "reason": {
           "invalid-nonce": "Ist der Bestätigungscode falsch?",
-          "no-email-request": "Wurde gar keine Änderung der E-Mail Adresse angefragt?",
-          "email-address-taken": "Wurde die E-Mail inzwischen einem anderen Benutzer zugewiesen?"
+          "no-email-request": "Bist du dir sicher, dass du eine Änderung deiner E-Mail Adresse angefragt hattest?"
         }
       }
     },
