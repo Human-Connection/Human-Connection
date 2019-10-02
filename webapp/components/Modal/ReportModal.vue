@@ -13,18 +13,42 @@
 
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
+
+    <!-- Wolle <ds-form ref="reportForm" v-model="form" :schema="formSchema"> -->
+    <!-- Wolle <ds-radio
+        model="reasonCategory"
+        :label="$t('report.reason.category.label')"
+        :options="form.reasonCategoryOptions"
+        :placeholder="$t('report.reason.category.placeholder')"
+      /> -->
     <ds-radio
-      :model="form.reasonCategory"
+      :value="form.reasonCategory"
+      :schema="formSchema.reasonCategory"
       :label="$t('report.reason.category.label')"
       :options="form.reasonCategoryOptions"
-      :placeholder="$t('report.reason.category.placeholder')"
     />
+    <!-- Wolle <ds-input
+        model="reasonAddText"
+        :label="$t('report.reason.addText.label')"
+        :placeholder="$t('report.reason.addText.placeholder')"
+        type="textarea"
+        rows="5"
+        class="reasonAddText"
+      /> -->
     <ds-input
-      id="text"
+      :value="form.reasonAddText"
+      :schema="formSchema.reasonAddText"
       :label="$t('report.reason.addText.label')"
       :placeholder="$t('report.reason.addText.placeholder')"
+      type="textarea"
+      rows="5"
+      class="reasonAddText"
     />
+    <small class="smallTag">
+      {{ form.reasonAddText.length }}/{{ formSchema.reasonAddText.max }}
+    </small>
     <ds-space />
+    <!-- Wolle </ds-form> -->
 
     <template slot="footer">
       <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
@@ -58,6 +82,24 @@ export default {
     id: { type: String, required: true },
   },
   data() {
+    const valuesReasonCategoryOptions = [
+      'discrimination-etc',
+      'pornographic-content-links',
+      'glorific-trivia-of-cruel-inhuman-acts',
+      'doxing',
+      'intentional-intimidation-stalking-persecution',
+      'advert-products-services-commercial',
+      'criminal-behavior-violation-german-law',
+      'other',
+    ]
+    let reasonCategoryOptions = []
+    valuesReasonCategoryOptions.forEach((categoryId, index) => {
+      reasonCategoryOptions[index] = {
+        label: this.$t('report.reason.category.options.' + categoryId),
+        value: categoryId,
+      }
+    })
+
     return {
       isOpen: true,
       success: false,
@@ -65,20 +107,32 @@ export default {
       failsValidations: true,
       form: {
         reasonCategory: null,
-        reasonCategoryOptions: [
-          this.$t('report.reason.category.options.discrimination-etc'),
-          this.$t('report.reason.category.options.pornographic-content-links'),
-          this.$t('report.reason.category.options.glorific-trivia-of-cruel-inhuman-acts'),
-          this.$t('report.reason.category.options.doxing'),
-          this.$t('report.reason.category.options.intentional-intimidation-stalking-persecution'),
-          this.$t('report.reason.category.options.advert-products-services-commercial'),
-          this.$t('report.reason.category.options.criminal-behavior-violation-german-law'),
-          this.$t('report.reason.category.options.other'),
-        ],
+        // Wolle reasonCategory: reasonCategoryOptions[0],
+        reasonCategoryOptions,
         reasonAddText: '',
       },
       formSchema: {
-        reasonAddText: { required: true, min: 0, max: 200 },
+        reasonCategory: {
+          type: 'enum',
+          required: true,
+          validator: (rule, value, callback, source, options) => {
+            // Wolle console.log('value: ', value)
+            this.form.reasonCategory = value
+            // Wolle console.log('this.form.reasonCategory: ', this.form.reasonCategory)
+            this.failsValidations = !this.form.reasonCategory
+            // Wolle console.log('this.failsValidations: ', this.failsValidations)
+            callback()
+          },
+        },
+        reasonAddText: {
+          type: 'string',
+          min: 0,
+          max: 200,
+          validator: (rule, value, callback, source, options) => {
+            this.form.reasonAddText = value
+            callback()
+          },
+        },
       },
     }
   },
@@ -92,6 +146,15 @@ export default {
     },
   },
   methods: {
+    // Wolle toggleReasonCategory(reasonCategory) {
+    //   console.log('reasonCategory: ', reasonCategory)
+    //   console.log('this.form.reasonCategory: ', this.form.reasonCategory)
+    //   this.failsValidations = false
+    // },
+    // Wolle inputReasonAddText(reasonAddText) {
+    //   console.log('reasonAddText: ', reasonAddText)
+    //   this.form.reasonAddText = reasonAddText
+    // },
     async cancel() {
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
       // await this.modalData.buttons.cancel.callback()
@@ -102,6 +165,8 @@ export default {
     },
     async confirm() {
       const { reasonCategory, reasonAddText } = this.form
+      console.log('reasonCategory: ', reasonCategory)
+      console.log('reasonAddText: ', reasonAddText)
 
       this.loading = true
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
@@ -151,6 +216,16 @@ export default {
 </script>
 
 <style lang="scss">
+.reasonAddText {
+  margin-top: $space-x-small;
+  margin-bottom: $space-xxx-small;
+}
+.smallTag {
+  width: 100%;
+  position: relative;
+  left: 90%;
+  margin-top: $space-xxx-small;
+}
 .hc-modal-success {
   pointer-events: none;
   position: absolute;
