@@ -56,9 +56,9 @@ router.post('/:name/inbox', verify, async function(req, res, next) {
     case 'Undo':
       await activityPub.handleUndoActivity(req.body).catch(next)
       break
-    case 'Follow':
-      await activityPub.handleFollowActivity(req.body).catch(next)
-      break
+    // case 'Follow':
+    //   await activityPub.handleFollowActivity(req.body).catch(next)
+    // break
     case 'Delete':
       await activityPub.handleDeleteActivity(req.body).catch(next)
       break

@@ -21,7 +21,7 @@ if (!hasEmailConfig) {
     const transporter = nodemailer.createTransport({
       host: CONFIG.SMTP_HOST,
       port: CONFIG.SMTP_PORT,
-      ignoreTLS: CONFIG.SMTP_IGNORE_TLS,
+      ignoreTLS: CONFIG.SMTP_IGNORE_TLS === 'true',
       secure: false, // true for 465, false for other ports
       auth: hasAuthData && {
         user: CONFIG.SMTP_USERNAME,

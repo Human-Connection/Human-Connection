@@ -32,6 +32,7 @@ describe('Comment.vue', () => {
         truncate: a => a,
         removeHtml: a => a,
       },
+      $scrollTo: jest.fn(),
       $apollo: {
         mutate: jest.fn().mockResolvedValue({
           data: {
@@ -51,6 +52,8 @@ describe('Comment.vue', () => {
   })
 
   describe('shallowMount', () => {
+    beforeEach(jest.useFakeTimers)
+
     Wrapper = () => {
       const store = new Vuex.Store({
         getters,
@@ -117,7 +120,35 @@ describe('Comment.vue', () => {
         })
       })
 
-      beforeEach(jest.useFakeTimers)
+      describe('scrollToAnchor mixin', () => {
+        describe('$route.hash !== comment.id', () => {
+          beforeEach(() => {
+            mocks.$route = {
+              hash: '',
+            }
+          })
+
+          it('skips $scrollTo', () => {
+            wrapper = Wrapper()
+            jest.runAllTimers()
+            expect(mocks.$scrollTo).not.toHaveBeenCalled()
+          })
+        })
+
+        describe('$route.hash === comment.id', () => {
+          beforeEach(() => {
+            mocks.$route = {
+              hash: '#commentId-2',
+            }
+          })
+
+          it('calls $scrollTo', () => {
+            wrapper = Wrapper()
+            jest.runAllTimers()
+            expect(mocks.$scrollTo).toHaveBeenCalledWith('#commentId-2')
+          })
+        })
+      })
 
       describe('test callbacks', () => {
         beforeEach(() => {

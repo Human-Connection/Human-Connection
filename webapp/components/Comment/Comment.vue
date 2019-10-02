@@ -10,7 +10,7 @@
     </ds-card>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
-    <ds-card :id="`commentId-${comment.id}`">
+    <ds-card :id="anchor">
       <ds-space margin-bottom="small" margin-top="small">
         <hc-user :user="author" :date-time="comment.createdAt" />
         <!-- Content Menu (can open Modals) -->
@@ -80,8 +80,10 @@ import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
+import scrollToAnchor from '~/mixins/scrollToAnchor.js'
 
 export default {
+  mixins: [scrollToAnchor],
   data: function() {
     return {
       isCollapsed: true,
@@ -109,6 +111,9 @@ export default {
       user: 'auth/user',
       isModerator: 'auth/isModerator',
     }),
+    anchor() {
+      return `commentId-${this.comment.id}`
+    },
     displaysComment() {
       return !this.unavailable || this.isModerator
     },
@@ -142,6 +147,9 @@ export default {
     },
   },
   methods: {
+    checkAnchor(anchor) {
+      return `#${this.anchor}` === anchor
+    },
     isAuthor(id) {
       return this.user.id === id
     },
