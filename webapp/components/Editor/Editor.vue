@@ -356,7 +356,6 @@ li > p {
 .embed-content {
   width: 100%;
   height: 100%;
-  cursor: pointer;
 
   h4 {
     margin: $space-small 0 0 $space-small;
@@ -372,6 +371,7 @@ li > p {
 .embed-preview-image {
   width: 100%;
   height: auto;
+  cursor: pointer;
 }
 
 .embed-html {

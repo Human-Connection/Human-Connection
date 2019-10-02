@@ -6,9 +6,9 @@ import { allowEmbedIframesMutation } from '~/graphql/User.js'
 
 const template = `
   <ds-container width="small" class="embed-container">
-    <section @click.prevent="openOverlay()" class="embed-content">
-      <div v-if="!showPreviewImage" v-html="embedHtml" class="embed-html" />
-      <img v-else :src="embedImage" class="embed-preview-image" />
+    <section class="embed-content">
+      <div v-if="showEmbed" v-html="embedHtml" class="embed-html" />
+      <img v-else :src="embedImage" class="embed-preview-image" @click.prevent="openOverlay()" />
       <h4>{{embedTitle}}</h4>
       <p>{{embedDescription}}</p>
       <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>
@@ -17,7 +17,7 @@ const template = `
       <h3>Achte auf deine Daten!</h3>
       <ds-text>Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
       <div class="embed-buttons">
-      <ds-button primary @click.prevent="allowEmbedTemporar('openIframe')">jetzt ansehen</ds-button>
+      <ds-button primary @click.prevent="allowEmbedTemporarily()">jetzt ansehen</ds-button>
       <ds-button ghost @click.prevent="closeOverlay()">Abbrechen</ds-button>
       </div>
       <label class="embed-checkbox">
@@ -85,10 +85,8 @@ export default class Embed extends Node {
       props: ['node', 'updateAttrs', 'options'],
       data: () => ({
         embedData: {},
-        showPreviewImage: true,
         showEmbed: null,
         showOverlay: false,
-        isOnlyLink: false,
       }),
       async created() {
         if (!this.options) return {}
@@ -101,18 +99,6 @@ export default class Embed extends Node {
         }),
         embedHtml() {
           const { html = '' } = this.embedData
-          if (this.embedData.html === null) {
-            this.isOnlyLink = true
-          }
-
-          if (this.showEmbed && !this.isOnlyLink) {
-            this.showPreviewImage = false
-          }
-
-          if (!this.showEmbed && this.isOnlyLink) {
-            this.showPreviewImage = true
-          }
-
           return html
         },
         embedImage() {
@@ -163,12 +149,8 @@ export default class Embed extends Node {
             this.submit(false)
           }
         },
-        allowEmbedTemporar(xx) {
-          if (!this.isOnlyLink) {
-            this.showEmbed = true
-          } else {
-            this.showEmbed = false
-          }
+        allowEmbedTemporarily() {
+          this.showEmbed = true
           this.closeOverlay()
         },
         async submit(allowEmbedIframes) {
