@@ -95,12 +95,19 @@ export default {
       confirm.addEventListener('click', () => {
         // Get the canvas with image data from Cropper.js
         let canvas = cropper.getCroppedCanvas()
-        image = new Image()
-        image.src = canvas.toDataURL()
-        image.classList.add('thumbnail-preview')
-        thumbnailElement.appendChild(image)
-        // Remove the editor from view
-        editor.parentNode.removeChild(editor)
+        canvas.toBlob(blob => {
+          this.$refs.el.manuallyAddFile(blob, canvas.toDataURL(), null, null, {
+            dontSubstractMaxFiles: false,
+            addToFiles: true,
+          })
+          image = new Image()
+          image.src = canvas.toDataURL()
+          image.classList.add('thumbnail-preview')
+          thumbnailElement.appendChild(image)
+          // Remove the editor from view
+          editor.parentNode.removeChild(editor)
+          this.addTeaserImage([blob])
+        })
       })
       editor.appendChild(confirm)
 
