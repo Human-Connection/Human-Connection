@@ -22,6 +22,7 @@ export const getBlockedUsers = async context => {
 }
 
 export const getBlockedByUsers = async context => {
+  if (context.user.role === 'moderator' || context.user.role === 'admin') return []
   const { neode } = context
   const userModel = neode.model('User')
   let blockedByUsers = neode
@@ -30,7 +31,6 @@ export const getBlockedByUsers = async context => {
     .relationship(userModel.relationships().get('blocked'))
     .to('blocked', userModel)
     .where('blocked.id', context.user.id)
-    .where('blocked.role', 'user')
     .return('user')
   blockedByUsers = await blockedByUsers.execute()
   blockedByUsers = blockedByUsers.records.map(r => r.get('user').properties)
