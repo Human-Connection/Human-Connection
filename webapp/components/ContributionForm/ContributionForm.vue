@@ -1,73 +1,75 @@
 <template>
-  <ds-form ref="contributionForm" v-model="form" :schema="formSchema">
-    <template slot-scope="{ errors }">
-      <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
-        <img
-          v-if="contribution"
-          class="contribution-image"
-          :src="contribution.image | proxyApiUrl"
-        />
-      </hc-teaser-image>
-      <ds-card>
-        <ds-space />
-        <hc-user :user="currentUser" :trunc="35" />
-        <ds-space />
-        <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
-        <small class="smallTag">{{ form.title.length }}/{{ formSchema.title.max }}</small>
-        <client-only>
-          <hc-editor
-            :users="users"
-            :value="form.content"
-            :hashtags="hashtags"
-            @input="updateEditorContent"
+  <ds-container width="medium">
+    <ds-form ref="contributionForm" v-model="form" :schema="formSchema">
+      <template slot-scope="{ errors }">
+        <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
+          <img
+            v-if="contribution"
+            class="contribution-image"
+            :src="contribution.image | proxyApiUrl"
           />
-          <small class="smallTag">{{ form.contentLength }}</small>
-        </client-only>
-        <ds-space margin-bottom="small" />
-        <hc-categories-select
-          model="categoryIds"
-          @updateCategories="updateCategories"
-          :existingCategoryIds="form.categoryIds"
-        />
-        <ds-flex class="contribution-form-footer">
-          <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
-          <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
-            <ds-space margin-bottom="small" />
-            <ds-select
-              model="language"
-              :options="form.languageOptions"
-              icon="globe"
-              :placeholder="locale"
-              :label="$t('contribution.languageSelectLabel')"
+        </hc-teaser-image>
+        <ds-card>
+          <ds-space />
+          <hc-user :user="currentUser" :trunc="35" />
+          <ds-space />
+          <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
+          <small class="smallTag">{{ form.title.length }}/{{ formSchema.title.max }}</small>
+          <client-only>
+            <hc-editor
+              :users="users"
+              :value="form.content"
+              :hashtags="hashtags"
+              @input="updateEditorContent"
             />
-          </ds-flex-item>
-        </ds-flex>
-        <ds-space />
-        <div slot="footer" style="text-align: right">
-          <ds-button
-            class="cancel-button"
-            :disabled="loading"
-            ghost
-            @click.prevent="$router.back()"
-          >
-            {{ $t('actions.cancel') }}
-          </ds-button>
-          <ds-button
-            class="submit-button-for-test"
-            type="submit"
-            icon="check"
-            :loading="loading"
-            :disabled="failsValidations || errors"
-            primary
-            @click.prevent="submit"
-          >
-            {{ $t('actions.save') }}
-          </ds-button>
-        </div>
-        <ds-space margin-bottom="large" />
-      </ds-card>
-    </template>
-  </ds-form>
+            <small class="smallTag">{{ form.contentLength }}</small>
+          </client-only>
+          <ds-space margin-bottom="small" />
+          <hc-categories-select
+            model="categoryIds"
+            @updateCategories="updateCategories"
+            :existingCategoryIds="form.categoryIds"
+          />
+          <ds-flex class="contribution-form-footer">
+            <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
+            <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
+              <ds-space margin-bottom="small" />
+              <ds-select
+                model="language"
+                :options="form.languageOptions"
+                icon="globe"
+                :placeholder="locale"
+                :label="$t('contribution.languageSelectLabel')"
+              />
+            </ds-flex-item>
+          </ds-flex>
+          <ds-space />
+          <div slot="footer" style="text-align: right">
+            <ds-button
+              class="cancel-button"
+              :disabled="loading"
+              ghost
+              @click.prevent="$router.back()"
+            >
+              {{ $t('actions.cancel') }}
+            </ds-button>
+            <ds-button
+              class="submit-button-for-test"
+              type="submit"
+              icon="check"
+              :loading="loading"
+              :disabled="failsValidations || errors"
+              primary
+              @click.prevent="submit"
+            >
+              {{ $t('actions.save') }}
+            </ds-button>
+          </div>
+          <ds-space margin-bottom="large" />
+        </ds-card>
+      </template>
+    </ds-form>
+  </ds-container>
 </template>
 
 <script>
@@ -262,7 +264,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .smallTag {
   width: 100%;
   position: relative;
