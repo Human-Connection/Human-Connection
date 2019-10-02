@@ -31,14 +31,7 @@
           :placeholder="$t('settings.data.labelBio')"
         />
         <template slot="footer">
-          <ds-button
-            style="float: right;"
-            icon="check"
-            :disabled="errors"
-            type="submit"
-            :loading="loadingData"
-            primary
-          >
+          <ds-button icon="check" :disabled="errors" type="submit" :loading="loadingData" primary>
             {{ $t('actions.save') }}
           </ds-button>
         </template>

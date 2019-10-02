@@ -5,7 +5,8 @@ import {
   signupTemplate,
   resetPasswordTemplate,
   wrongAccountTemplate,
-} from './templates/templateBuilder'
+  emailVerificationTemplate,
+} from './templateBuilder'
 
 const hasEmailConfig = CONFIG.SMTP_HOST && CONFIG.SMTP_PORT
 const hasAuthData = CONFIG.SMTP_USERNAME && CONFIG.SMTP_PASSWORD
@@ -57,8 +58,17 @@ const sendPasswordResetMail = async (resolve, root, args, context, resolveInfo) 
   return true
 }
 
+const sendEmailVerificationMail = async (resolve, root, args, context, resolveInfo) => {
+  const response = await resolve(root, args, context, resolveInfo)
+  const { email, nonce, name } = response
+  await sendMail(emailVerificationTemplate({ email, nonce, name }))
+  delete response.nonce
+  return response
+}
+
 export default {
   Mutation: {
+    AddEmailAddress: sendEmailVerificationMail,
     requestPasswordReset: sendPasswordResetMail,
     Signup: sendSignupMail,
     SignupByInvitation: sendSignupMail,

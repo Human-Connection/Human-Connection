@@ -2,7 +2,7 @@
   "maintenance": {
     "title": "Human Connection is under maintenance",
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
-    "questions": "Any Questions or concerns, send an email to" 
+    "questions": "Any Questions or concerns, send an email to"
   },
   "index": {
     "no-results": "No contributions found.",
@@ -159,6 +159,27 @@
       "labelBio": "About You",
       "success": "Your data was successfully updated!"
     },
+    "email": {
+      "validation": {
+        "same-email": "This is your current email address"
+      },
+      "name": "Your email",
+      "labelEmail": "Change your email address",
+      "labelNewEmail": "New email Address",
+      "labelNonce": "Enter your code",
+      "success": "A new email address has been registered.",
+      "submitted": "An email to verify your address has been sent to <b>{email}</b>.",
+      "change-successful": "Your email address has been changed successfully.",
+      "verification-error": {
+        "message": "Your email could not be changed.",
+        "explanation": "This can have different causes:",
+        "reason": {
+          "invalid-nonce": "Is the confirmation code invalid?",
+          "no-email-request": "Are you certain that you requested a change of your email address?"
+        },
+        "support": "If the problem persists, please contact us by email at"
+      }
+    },
     "validation": {
       "slug": {
         "regex": "Allowed characters are only lowercase letters, numbers, underscores and hyphens.",
@@ -254,7 +275,7 @@
     "users": {
       "name": "Users",
       "form": {
-        "placeholder": "E-Mail, name or description"
+        "placeholder": "email, name or description"
       },
       "table": {
         "columns": {

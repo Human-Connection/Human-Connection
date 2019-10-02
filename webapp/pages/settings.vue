@@ -24,6 +24,10 @@ export default {
           path: `/settings`,
         },
         {
+          name: this.$t('settings.email.name'),
+          path: `/settings/my-email-address`,
+        },
+        {
           name: this.$t('settings.security.name'),
           path: `/settings/security`,
         },

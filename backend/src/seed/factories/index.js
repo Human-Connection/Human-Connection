@@ -9,6 +9,7 @@ import createTag from './tags.js'
 import createSocialMedia from './socialMedia.js'
 import createLocation from './locations.js'
 import createEmailAddress from './emailAddresses.js'
+import createUnverifiedEmailAddresss from './unverifiedEmailAddresses.js'
 
 export const seedServerHost = 'http://127.0.0.1:4001'
 
@@ -32,6 +33,7 @@ const factories = {
   SocialMedia: createSocialMedia,
   Location: createLocation,
   EmailAddress: createEmailAddress,
+  UnverifiedEmailAddress: createUnverifiedEmailAddresss,
 }
 
 export const cleanDatabase = async (options = {}) => {

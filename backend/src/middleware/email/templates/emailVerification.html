@@ -27,10 +27,9 @@
             style="padding: 20px; padding-top: 0; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
             <h1
               style="margin: 0 0 10px 0; font-family: Lato, sans-serif; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal;">
-              Hallo!</h1>
-            <p style="margin: 0;">Du hast bei uns ein neues Password angefordert – leider haben wir aber keinen
-              Account mit Deiner E-Mailadresse gefunden. Kann es sein, dass Du mit einer anderen Adresse bei uns
-              angemeldet bist?</p>
+              Hallo {{ name }}!</h1>
+            <p style="margin: 0;">Du möchtest also deine E-Mail ändern? Kein Problem! Mit Klick auf diesen Button
+              kannst Du Deine neue E-Mail Adresse bestätigen:</p>
           </td>
         </tr>
         <tr>
@@ -40,8 +39,9 @@
               <tr>
                 <td class="button-td button-td-primary" style="border-radius: 4px; background: #17b53e;">
                   <a class="button-a button-a-primary" href="{{{ actionUrl }}}"
-                    style="background: #17b53e; font-family: Lato, sans-serif; font-size: 16px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Versuch'
-                    es mit einer anderen E-Mail</a>
+                    style="background: #17b53e; font-family: Lato, sans-serif; font-size: 16px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">E-Mail
+                    Adresse
+                    bestätigen</a>
                 </td>
               </tr>
             </table>
@@ -58,10 +58,11 @@
     <td style="background-color: #ffffff; padding: 0 20px;">
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
         <tr>
-          <td style="padding: 20px; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
-            <p style="margin: 0;">Wenn Du noch keinen Account bei <a href="https://human-connection.org"
-                style="color: #17b53e;">Human Connection</a> hast oder Dein Password gar nicht ändern willst,
-              kannst Du diese E-Mail einfach ignorieren!</p>
+          <td
+            style="padding: 20px; padding-bottom: 0; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
+            <p style="margin: 0;">Falls Du deine E-Mail Adresse doch nicht ändern möchtest, kannst du diese Nachricht
+              einfach ignorieren. Mlde Dich gerne <a href="{{{ supportUrl }}}" style="color: #17b53e;">bei
+                unserem Support Team</a>, wenn du noch Fragen hast!</p>
           </td>
         </tr>
       </table>
@@ -74,10 +75,9 @@
     <td style="background-color: #ffffff; padding: 0 20px;">
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
         <tr>
-          <td
-            style="padding: 20px; padding-top: 0; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
-            <p style="margin: 0;">Ansonsten hilft Dir <a href="{{{ supportUrl }}}" style="color: #17b53e;">unser
-                Support Team</a> gerne weiter.</p>
+          <td style="padding: 20px; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
+            <p style="margin: 0;">Sollte der Button für Dich nicht funktionieren, kannst Du auch folgenden Code in
+              Dein Browserfenster kopieren: <span style="color: #17b53e;">{{{ nonce }}}</span></p>
             <p style="margin: 0; margin-top: 10px;">Bis bald bei <a href="https://human-connection.org"
                 style="color: #17b53e;">Human Connection</a>!</p>
             <p style="margin: 0; margin-bottom: 10px;">– Dein Human Connection Team</p>
@@ -125,9 +125,9 @@
             style="padding: 20px; padding-top: 0; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
             <h1
               style="margin: 0 0 10px 0; font-family: Lato, sans-serif; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal;">
-              Hello!</h1>
-            <p style="margin: 0;">You requested a password reset but unfortunately we couldn't find an account
-              associated with your e-mail address. Did you maybe use another one when you signed up?</p>
+              Hello {{ name }}!</h1>
+            <p style="margin: 0;">So, you want to change your e-mail? No problem! Just click the button below to verify
+              your new address:</p>
           </td>
         </tr>
         <tr>
@@ -137,8 +137,8 @@
               <tr>
                 <td class="button-td button-td-primary" style="border-radius: 4px; background: #17b53e;">
                   <a class="button-a button-a-primary" href="{{{ actionUrl }}}"
-                    style="background: #17b53e; font-family: Lato, sans-serif; font-size: 16px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Try
-                    a different e-mail</a>
+                    style="background: #17b53e; font-family: Lato, sans-serif; font-size: 16px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Verify
+                    e-mail address</a>
                 </td>
               </tr>
             </table>
@@ -155,10 +155,12 @@
     <td style="background-color: #ffffff; padding: 0 20px;">
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
         <tr>
-          <td style="padding: 20px; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
-            <p style="margin: 0;">If you don't have an account at <a href="https://human-connection.org"
-                style="color: #17b53e;">Human Connection</a> yet or if you didn't want to reset your password,
-              please ignore this e-mail.</p>
+          <td
+            style="padding: 20px; padding-bottom: 0; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
+            <p style="margin: 0;">If you don't want to change your e-mail address feel free to ignore this message. You
+              can
+              also <a href="{{{ supportUrl }}}" style="color: #17b53e;">contact our
+                support team</a> if you have any questions!</p>
           </td>
         </tr>
       </table>
@@ -171,10 +173,9 @@
     <td style="background-color: #ffffff; padding: 0 20px;">
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
         <tr>
-          <td
-            style="padding: 20px; padding-top: 0; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
-            <p style="margin: 0;">Otherwise <a href="{{{ supportUrl }}}" style="color: #17b53e;">our
-                support team</a> will be happy to help you out.</p>
+          <td style="padding: 20px; font-family: Lato, sans-serif; font-size: 16px; line-height: 22px; color: #555555;">
+            <p style="margin: 0;">If the above button doesn't work you can also copy the following code into your
+              browser window: <span style="color: #17b53e;">{{{ nonce }}}</span></p>
             <p style="margin: 0; margin-top: 10px;">See you soon on <a href="https://human-connection.org"
                 style="color: #17b53e;">Human Connection</a>!</p>
             <p style="margin: 0; margin-bottom: 10px;">– The Human Connection Team</p>

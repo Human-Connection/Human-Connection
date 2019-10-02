@@ -1,41 +1,16 @@
 import { UserInputError } from 'apollo-server'
-import uuid from 'uuid/v4'
 import { neode } from '../../bootstrap/neo4j'
 import fileUpload from './fileUpload'
 import encryptPassword from '../../helpers/encryptPassword'
+import generateNonce from './helpers/generateNonce'
+import existingEmailAddress from './helpers/existingEmailAddress'
 
 const instance = neode()
-
-const alreadyExistingMail = async (_parent, args, context) => {
-  let { email } = args
-  email = email.toLowerCase()
-  const cypher = `
-    MATCH (email:EmailAddress {email: $email})
-    OPTIONAL MATCH (email)-[:PRIMARY_EMAIL]-(user)
-    RETURN email, user
-  `
-  let transactionRes
-  const session = context.driver.session()
-  try {
-    transactionRes = await session.run(cypher, { email })
-  } finally {
-    session.close()
-  }
-  const [result] = transactionRes.records.map(record => {
-    return {
-      alreadyExistingEmail: record.get('email').properties,
-      user: record.get('user') && record.get('user').properties,
-    }
-  })
-  const { alreadyExistingEmail, user } = result || {}
-  if (user) throw new UserInputError('User account with this email already exists.')
-  return alreadyExistingEmail
-}
 
 export default {
   Mutation: {
     CreateInvitationCode: async (_parent, args, context, _resolveInfo) => {
-      args.token = uuid().substring(0, 6)
+      args.token = generateNonce()
       const {
         user: { id: userId },
       } = context
@@ -54,9 +29,9 @@ export default {
       return response
     },
     Signup: async (_parent, args, context) => {
-      const nonce = uuid().substring(0, 6)
+      const nonce = generateNonce()
       args.nonce = nonce
-      let emailAddress = await alreadyExistingMail(_parent, args, context)
+      let emailAddress = await existingEmailAddress(_parent, args, context)
       if (emailAddress) return emailAddress
       try {
         emailAddress = await instance.create('EmailAddress', args)
@@ -67,9 +42,9 @@ export default {
     },
     SignupByInvitation: async (_parent, args, context) => {
       const { token } = args
-      const nonce = uuid().substring(0, 6)
+      const nonce = generateNonce()
       args.nonce = nonce
-      let emailAddress = await alreadyExistingMail(_parent, args, context)
+      let emailAddress = await existingEmailAddress(_parent, args, context)
       if (emailAddress) return emailAddress
       try {
         const result = await instance.cypher(
