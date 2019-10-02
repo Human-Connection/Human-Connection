@@ -6,25 +6,25 @@ import { allowEmbedIframesMutation } from '~/graphql/User.js'
 
 const template = `
   <ds-container width="small" class="embed-container">
+    <section @click.prevent="clickPreview" class="embed-content">
+      <img v-show="showPreviewImage" :src="embedImage" class="embed-preview-image" />
+      <div v-show="!showPreviewImage" v-html="embedHtml" />
+      <h4>{{embedTitle}}</h4>
+      <p>{{embedDescription}}</p>
+      <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>
+    </section>
     <aside v-if="showOverlay" class="embed-overlay">
-      <ds-text v-if="!isOnlyLink">Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
+      <h3>Achte auf deine Daten!</h3>
+      <ds-text>Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
       <div class="embed-buttons">
       <ds-button primary @click.prevent="allowEmbedTemporar('openIframe')">jetzt ansehen</ds-button>
       <ds-button ghost @click.prevent="showOverlay = false">Abbrechen</ds-button>
       </div>
       <label class="embed-checkbox">
-        <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" id="dataEmbedUrl" />
+        <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" />
         <span>Inhalte von Drittanbietern immer zulassen</span>
       </label>
     </aside>
-    <img  v-show="showPreviewImage" style="cursor: pointer"  :src="embedImage" alt="dataEmbedUrl"  @click.prevent="clickPreview" height="270" width="auto" />
-      <div v-show="!showPreviewImage" v-html="embedHtml" />
-    <p style="color:black">
-    <div >{{ embedTitle }}</div>
-    <div>{{ embedDescription }}</div>
-    <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank"  >
-      <em> {{ dataEmbedUrl }} </em>
-    </a>
   </ds-container>
 `
 

@@ -345,10 +345,33 @@ li > p {
 
 .embed-container {
   position: relative;
+  padding: 0;
+  margin: $space-small auto;
+  overflow: hidden;
   border-radius: $border-radius-base;
   border: 1px solid $color-neutral-70;
-  padding: $space-x-small;
-  overflow: hidden;
+  background-color: $color-neutral-90;
+}
+
+.embed-content {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+
+  h4 {
+    margin: $space-small 0 0 $space-small;
+  }
+
+  p,
+  a {
+    display: block;
+    margin: 0 0 0 $space-small;
+  }
+}
+
+.embed-preview-image {
+  width: 100%;
+  height: auto;
 }
 
 .embed-overlay {
