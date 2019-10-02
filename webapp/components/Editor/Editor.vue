@@ -371,6 +371,9 @@ li > p {
 .embed-preview-image {
   width: 100%;
   height: auto;
+}
+
+.embed-preview-image--clickable {
   cursor: pointer;
 }
 

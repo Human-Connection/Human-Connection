@@ -8,7 +8,10 @@ const template = `
   <ds-container width="small" class="embed-container">
     <section class="embed-content">
       <div v-if="showEmbed" v-html="embedHtml" class="embed-html" />
-      <img v-else-if="embedImage" :src="embedImage" class="embed-preview-image" @click.prevent="openOverlay()" />
+      <template v-else>
+        <img v-if="embedHtml && embedImage" :src="embedImage" class="embed-preview-image embed-preview-image--clickable" @click.prevent="openOverlay()" />
+        <img v-else-if="embedImage" :src="embedImage" class="embed-preview-image" />
+      </template>
       <h4 v-if="embedTitle">{{embedTitle}}</h4>
       <p v-if="embedDescription">{{embedDescription}}</p>
       <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>
