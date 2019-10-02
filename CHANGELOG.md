@@ -16,6 +16,7 @@
 - 🐛 \[Bug\] Create account has no info about email, no localisation, no HC logo [\#1631](https://github.com/Human-Connection/Human-Connection/issues/1631)
 - 🐛 \[Bug\] Embeds are displayed when creating comments but get removed [\#1547](https://github.com/Human-Connection/Human-Connection/issues/1547)
 - 🐛 \[Bug\] One cypress test fails but it does not fail the build [\#1312](https://github.com/Human-Connection/Human-Connection/issues/1312)
+- 🐛 \[Bug\] TypeError: Cannot read property 'offsetTop' of null [\#1273](https://github.com/Human-Connection/Human-Connection/issues/1273)
 
 **Closed issues:**
 
@@ -28,7 +29,12 @@
 
 **Merged pull requests:**
 
+- Bump metascraper-logo from 5.7.5 to 5.7.6 in /backend [\#1783](https://github.com/Human-Connection/Human-Connection/pull/1783) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump metascraper-url from 5.7.5 to 5.7.6 in /backend [\#1782](https://github.com/Human-Connection/Human-Connection/pull/1782) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump graphql-middleware from 3.0.5 to 4.0.1 in /backend [\#1781](https://github.com/Human-Connection/Human-Connection/pull/1781) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump eslint from 6.4.0 to 6.5.1 in /backend [\#1780](https://github.com/Human-Connection/Human-Connection/pull/1780) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump metascraper-audio from 5.7.5 to 5.7.6 in /backend [\#1779](https://github.com/Human-Connection/Human-Connection/pull/1779) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump metascraper-publisher from 5.7.4 to 5.7.6 in /backend [\#1778](https://github.com/Human-Connection/Human-Connection/pull/1778) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump metascraper-youtube from 5.7.5 to 5.7.6 in /backend [\#1777](https://github.com/Human-Connection/Human-Connection/pull/1777) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump @babel/preset-env from 7.6.0 to 7.6.2 in /backend [\#1776](https://github.com/Human-Connection/Human-Connection/pull/1776) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump metascraper-soundcloud from 5.7.4 to 5.7.6 in /backend [\#1775](https://github.com/Human-Connection/Human-Connection/pull/1775) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -72,6 +78,7 @@
 - Bump @babel/cli from 7.6.0 to 7.6.2 in /backend [\#1713](https://github.com/Human-Connection/Human-Connection/pull/1713) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - \[WIP\]1706 refactor shout spec [\#1712](https://github.com/Human-Connection/Human-Connection/pull/1712) ([aonomike](https://github.com/aonomike))
 - Remove repetitive labels from emote button [\#1702](https://github.com/Human-Connection/Human-Connection/pull/1702) ([roschaefer](https://github.com/roschaefer))
+- fix the bug with scrolling post comments into view [\#1701](https://github.com/Human-Connection/Human-Connection/pull/1701) ([vbelolapotkov](https://github.com/vbelolapotkov))
 - Bump metascraper-description from 5.7.4 to 5.7.5 in /backend [\#1700](https://github.com/Human-Connection/Human-Connection/pull/1700) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump metascraper-logo from 5.7.4 to 5.7.5 in /backend [\#1698](https://github.com/Human-Connection/Human-Connection/pull/1698) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump metascraper-video from 5.7.4 to 5.7.5 in /backend [\#1697](https://github.com/Human-Connection/Human-Connection/pull/1697) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -108,6 +115,7 @@
 - Fix styling issue in comments list [\#1648](https://github.com/Human-Connection/Human-Connection/pull/1648) ([mattwr18](https://github.com/mattwr18))
 - Provider list approval hard cut [\#1647](https://github.com/Human-Connection/Human-Connection/pull/1647) ([ogerly](https://github.com/ogerly))
 - Point the changelog to Github [\#1646](https://github.com/Human-Connection/Human-Connection/pull/1646) ([roschaefer](https://github.com/roschaefer))
+- Bump eslint-plugin-prettier from 3.1.0 to 3.1.1 in /webapp [\#1643](https://github.com/Human-Connection/Human-Connection/pull/1643) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump eslint-plugin-prettier from 3.1.0 to 3.1.1 in /backend [\#1642](https://github.com/Human-Connection/Human-Connection/pull/1642) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Fix \#1639 - No limits for post length [\#1641](https://github.com/Human-Connection/Human-Connection/pull/1641) ([roschaefer](https://github.com/roschaefer))
 - 1486 make slug more usable [\#1640](https://github.com/Human-Connection/Human-Connection/pull/1640) ([roschaefer](https://github.com/roschaefer))
@@ -115,7 +123,6 @@
 - Exclude broken maintenance-worker docker image [\#1635](https://github.com/Human-Connection/Human-Connection/pull/1635) ([roschaefer](https://github.com/roschaefer))
 - Fix bug where about must not be empty string [\#1630](https://github.com/Human-Connection/Human-Connection/pull/1630) ([mattwr18](https://github.com/mattwr18))
 - Bump @storybook/addon-a11y from 5.2.0 to 5.2.1 in /webapp [\#1627](https://github.com/Human-Connection/Human-Connection/pull/1627) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump cross-env from 5.2.1 to 6.0.0 in /webapp [\#1626](https://github.com/Human-Connection/Human-Connection/pull/1626) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump @storybook/addon-actions from 5.2.0 to 5.2.1 in /webapp [\#1625](https://github.com/Human-Connection/Human-Connection/pull/1625) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump @storybook/vue from 5.2.0 to 5.2.1 in /webapp [\#1624](https://github.com/Human-Connection/Human-Connection/pull/1624) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump cross-env from 5.2.1 to 6.0.0 in /backend [\#1623](https://github.com/Human-Connection/Human-Connection/pull/1623) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -126,6 +133,7 @@
 - links\_to\_imprint\_and\_privacy\_policy\_changed\_to\_human-connection.org [\#1615](https://github.com/Human-Connection/Human-Connection/pull/1615) ([ogerly](https://github.com/ogerly))
 - Bump metascraper-author from 5.6.6 to 5.7.4 in /backend [\#1610](https://github.com/Human-Connection/Human-Connection/pull/1610) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Configure emails [\#1599](https://github.com/Human-Connection/Human-Connection/pull/1599) ([alina-beck](https://github.com/alina-beck))
+- Improve follow/ufollow mutation [\#1596](https://github.com/Human-Connection/Human-Connection/pull/1596) ([vbelolapotkov](https://github.com/vbelolapotkov))
 
 
 
