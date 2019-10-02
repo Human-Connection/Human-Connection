@@ -94,7 +94,12 @@ export default {
       confirm.textContent = this.$t('contribution.teaserImage.cropperConfirm')
       confirm.addEventListener('click', () => {
         // Get the canvas with image data from Cropper.js
-        let canvas = cropper.getCroppedCanvas()
+        let canvas = cropper.getCroppedCanvas({
+          minWidth: 256,
+          minHeight: 256,
+          maxWidth: 550,
+          maxHeight: 550,
+        })
         canvas.toBlob(blob => {
           this.$refs.el.manuallyAddFile(blob, canvas.toDataURL(), null, null, {
             dontSubstractMaxFiles: false,
@@ -116,7 +121,7 @@ export default {
       image.src = URL.createObjectURL(file)
       editor.appendChild(image)
       // Create Cropper.js and pass image
-      let cropper = new Cropper(image, {})
+      let cropper = new Cropper(image, { aspectRatio: 16 / 9 })
     },
     dropzoneDrop() {
       let cropOverlay = document.querySelectorAll('.crop-overlay')[0]
@@ -167,8 +172,7 @@ export default {
   color: hsl(0, 0%, 25%);
   transition: all 0.2s ease-out;
   font-size: 60px;
-  margin: 80px 5px;
-
+  margin: 180px 5px;
   background-color: $background-color-softest;
   opacity: 0.65;
 
@@ -209,13 +213,14 @@ export default {
 }
 
 .contribution-image {
-  max-height: 300px;
+  max-height: 471px;
 }
 
 .crop-overlay {
+  max-height: 471px;
   position: relative;
   width: 100%;
-  height: 100%;
+  // height: 100%;
   z-index: 9999;
   background-color: #000;
 }
@@ -225,5 +230,8 @@ export default {
   left: 10px;
   top: 10px;
   z-index: 9999;
+}
+.thumbnail-preview {
+  max-height: 471px;
 }
 </style>

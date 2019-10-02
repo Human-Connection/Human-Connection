@@ -131,7 +131,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ds-card-image img {
   width: 100%;
   max-height: 300px;
