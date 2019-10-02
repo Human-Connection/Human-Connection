@@ -342,4 +342,37 @@ li > p {
     margin: 0 0 $space-x-small;
   }
 }
+
+.embed-container {
+  position: relative;
+  border-radius: $border-radius-base;
+  border: 1px solid $color-neutral-70;
+  padding: $space-x-small;
+  overflow: hidden;
+}
+
+.embed-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  padding: $space-large;
+  background-color: $color-neutral-100;
+}
+
+.embed-buttons {
+  button {
+    margin-right: $space-small;
+  }
+}
+
+.embed-checkbox {
+  display: flex;
+
+  input {
+    margin-right: $space-small;
+  }
+}
 </style>

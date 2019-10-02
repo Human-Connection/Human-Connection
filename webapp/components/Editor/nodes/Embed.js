@@ -4,35 +4,28 @@ import { compileToFunctions } from 'vue-template-compiler'
 import { mapGetters, mapMutations } from 'vuex'
 import { allowEmbedIframesMutation } from '~/graphql/User.js'
 
-const template = `  
-    <a  class="embed" href="" style="cursor: none">
-      <ds-container width="small">
-        <ds-section secondary v-if="showOverlay"  style="height: 270px;width:80%;position:absolute;z-index:3">
-          <ds-text v-if="!isOnlyLink">Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
-          <ds-text v-else >Du verlässt jetzt Human Connection! Du wirst zu ({{embedPublisher}}) weitergeleitet!</ds-text>
-          <ds-button v-if="!isOnlyLink" size="x-large" @click.prevent="allowEmbedTemporar('openIframe')" >jetzt ansehen</ds-button>
-          <ds-button  v-else size="x-large" > <a :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank" >Webseite aufrufen   </a>  </ds-button>
-          <p v-show="!isOnlyLink">      
-          <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" id="dataEmbedUrl" />
-      
-            <lable v-if="!currentUser.allowEmbedIframes" for="dataEmbedUrl" size="small">
-              automatisches Einbinden <b>zulassen?</b> |
-            </lable>
-            <lable v-else size="small" for="dataEmbedUrl" >
-              automatisches Einbinden <b>zugelassen</b> |
-            </lable>
-          </p>
-        </ds-section>
-        <img  v-show="showPreviewImage" style="cursor: pointer"  :src="embedImage" alt="dataEmbedUrl"  @click.prevent="clickPreview" height="270" width="auto" />
-         <div v-show="!showPreviewImage" v-html="embedHtml" />
-        <p style="color:black">
-        <div >{{ embedTitle }}</div>
-        <div>{{ embedDescription }}</div>
-        <a  :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank"  >
-          <em> {{ dataEmbedUrl }} </em>
-        </a>
-      </ds-container>
+const template = `
+  <ds-container width="small" class="embed-container">
+    <aside v-if="showOverlay" class="embed-overlay">
+      <ds-text v-if="!isOnlyLink">Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
+      <div class="embed-buttons">
+      <ds-button primary @click.prevent="allowEmbedTemporar('openIframe')">jetzt ansehen</ds-button>
+      <ds-button ghost @click.prevent="showOverlay = false">Abbrechen</ds-button>
+      </div>
+      <label class="embed-checkbox">
+        <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" id="dataEmbedUrl" />
+        <span>Inhalte von Drittanbietern immer zulassen</span>
+      </label>
+    </aside>
+    <img  v-show="showPreviewImage" style="cursor: pointer"  :src="embedImage" alt="dataEmbedUrl"  @click.prevent="clickPreview" height="270" width="auto" />
+      <div v-show="!showPreviewImage" v-html="embedHtml" />
+    <p style="color:black">
+    <div >{{ embedTitle }}</div>
+    <div>{{ embedDescription }}</div>
+    <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank"  >
+      <em> {{ dataEmbedUrl }} </em>
     </a>
+  </ds-container>
 `
 
 const compiledTemplate = compileToFunctions(template)
@@ -166,7 +159,6 @@ export default class Embed extends Node {
           } else {
             this.submit(false)
           }
-          this.showOverlay = false
         },
         allowEmbedTemporar(xx) {
           if (!this.isOnlyLink) {
