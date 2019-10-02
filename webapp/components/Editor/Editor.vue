@@ -406,4 +406,11 @@ li > p {
     margin-right: $space-small;
   }
 }
+
+.embed-close-button {
+  position: absolute;
+  top: $space-x-small;
+  right: $space-x-small;
+  background-color: rgba(250, 249, 250, 0.6);
+}
 </style>

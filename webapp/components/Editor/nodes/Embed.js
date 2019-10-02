@@ -8,9 +8,9 @@ const template = `
   <ds-container width="small" class="embed-container">
     <section class="embed-content">
       <div v-if="showEmbed" v-html="embedHtml" class="embed-html" />
-      <img v-else :src="embedImage" class="embed-preview-image" @click.prevent="openOverlay()" />
-      <h4>{{embedTitle}}</h4>
-      <p>{{embedDescription}}</p>
+      <img v-else-if="embedImage" :src="embedImage" class="embed-preview-image" @click.prevent="openOverlay()" />
+      <h4 v-if="embedTitle">{{embedTitle}}</h4>
+      <p v-if="embedDescription">{{embedDescription}}</p>
       <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>
     </section>
     <aside v-if="showOverlay" class="embed-overlay">
@@ -25,6 +25,7 @@ const template = `
         <span>Inhalte von Drittanbietern immer zulassen</span>
       </label>
     </aside>
+    <ds-button icon="close" ghost size="small" class="embed-close-button" @click.prevent="removeEmbed()" />
   </ds-container>
 `
 
@@ -152,6 +153,10 @@ export default class Embed extends Node {
           if (this.checkedAlwaysAllowEmbeds !== this.currentUser.allowEmbedIframes) {
             this.updateEmbedSettings(this.checkedAlwaysAllowEmbeds)
           }
+        },
+        removeEmbed() {
+          // TODO: replace the whole Embed with a proper Link node
+          console.log('I want to be a Link!')
         },
         async updateEmbedSettings(allowEmbedIframes) {
           try {
