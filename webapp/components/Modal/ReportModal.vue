@@ -93,10 +93,10 @@ export default {
       'other',
     ]
     let reasonCategoryOptions = []
-    valuesReasonCategoryOptions.forEach((categoryId, index) => {
+    valuesReasonCategoryOptions.forEach((reasonCategory, index) => {
       reasonCategoryOptions[index] = {
-        label: this.$t('report.reason.category.options.' + categoryId),
-        value: categoryId,
+        label: this.$t('report.reason.category.options.' + reasonCategory),
+        value: reasonCategory,
       }
     })
 
@@ -165,8 +165,8 @@ export default {
     },
     async confirm() {
       const { reasonCategory, reasonAddText } = this.form
-      console.log('reasonCategory: ', reasonCategory)
-      console.log('reasonAddText: ', reasonAddText)
+      // Wolle console.log('reasonCategory: ', reasonCategory.value)
+      // Wolle console.log('reasonAddText: ', reasonAddText)
 
       this.loading = true
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
@@ -174,13 +174,17 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($id: ID!) {
-              report(id: $id) {
+            mutation($id: ID!, $reasonCategory: String!, $description: String!) {
+              report(id: $id, reasonCategory: $reasonCategory, description: $description) {
                 id
               }
             }
           `,
-          variables: { id: this.id },
+          variables: {
+            id: this.id,
+            reasonCategory: reasonCategory.value,
+            description: reasonAddText,
+          },
         })
         .then(({ _data }) => {
           this.success = true

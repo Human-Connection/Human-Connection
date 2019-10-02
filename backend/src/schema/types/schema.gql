@@ -24,7 +24,7 @@ type Mutation {
   changePassword(oldPassword: String!, newPassword: String!): String!
   requestPasswordReset(email: String!): Boolean!
   resetPassword(email: String!, nonce: String!, newPassword: String!): Boolean!
-  report(id: ID!, description: String): Report
+  report(id: ID!, reasonCategory: String!, description: String!): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
   # Shout the given Type and ID
