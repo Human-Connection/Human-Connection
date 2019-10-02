@@ -17,11 +17,11 @@ const template = `
       <h3>Achte auf deine Daten!</h3>
       <ds-text>Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
       <div class="embed-buttons">
-      <ds-button primary @click.prevent="allowEmbedTemporarily()">jetzt ansehen</ds-button>
+      <ds-button primary @click.prevent="allowEmbed()">jetzt ansehen</ds-button>
       <ds-button ghost @click.prevent="closeOverlay()">Abbrechen</ds-button>
       </div>
       <label class="embed-checkbox">
-        <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" />
+        <input type="checkbox" v-model="checkedAlwaysAllowEmbeds" />
         <span>Inhalte von Drittanbietern immer zulassen</span>
       </label>
     </aside>
@@ -85,13 +85,16 @@ export default class Embed extends Node {
       props: ['node', 'updateAttrs', 'options'],
       data: () => ({
         embedData: {},
-        showEmbed: null,
+        checkedAlwaysAllowEmbeds: false,
+        showEmbed: false,
         showOverlay: false,
       }),
       async created() {
-        if (!this.options) return {}
-        this.embedData = await this.options.onEmbed({ url: this.dataEmbedUrl })
-        this.showEmbed = this.currentUser.allowEmbedIframes
+        if (this.options) {
+          this.embedData = await this.options.onEmbed({ url: this.dataEmbedUrl })
+          this.showEmbed = this.currentUser.allowEmbedIframes
+          this.checkedAlwaysAllowEmbeds = this.currentUser.allowEmbedIframes
+        }
       },
       computed: {
         ...mapGetters({
@@ -142,18 +145,15 @@ export default class Embed extends Node {
         closeOverlay() {
           this.showOverlay = false
         },
-        check(e) {
-          if (e.target.checked) {
-            this.submit(true)
-          } else {
-            this.submit(false)
-          }
-        },
-        allowEmbedTemporarily() {
+        allowEmbed() {
           this.showEmbed = true
           this.closeOverlay()
+
+          if (this.checkedAlwaysAllowEmbeds !== this.currentUser.allowEmbedIframes) {
+            this.updateEmbedSettings(this.checkedAlwaysAllowEmbeds)
+          }
         },
-        async submit(allowEmbedIframes) {
+        async updateEmbedSettings(allowEmbedIframes) {
           try {
             await this.$apollo.mutate({
               mutation: allowEmbedIframesMutation(),
