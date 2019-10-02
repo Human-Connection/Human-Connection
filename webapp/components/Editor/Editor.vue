@@ -374,6 +374,14 @@ li > p {
   height: auto;
 }
 
+.embed-html {
+  width: 100%;
+
+  iframe {
+    width: 100%;
+  }
+}
+
 .embed-overlay {
   position: absolute;
   top: 0;

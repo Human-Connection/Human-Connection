@@ -6,9 +6,9 @@ import { allowEmbedIframesMutation } from '~/graphql/User.js'
 
 const template = `
   <ds-container width="small" class="embed-container">
-    <section @click.prevent="clickPreview" class="embed-content">
-      <img v-show="showPreviewImage" :src="embedImage" class="embed-preview-image" />
-      <div v-show="!showPreviewImage" v-html="embedHtml" />
+    <section @click.prevent="openOverlay()" class="embed-content">
+      <div v-if="!showPreviewImage" v-html="embedHtml" class="embed-html" />
+      <img v-else :src="embedImage" class="embed-preview-image" />
       <h4>{{embedTitle}}</h4>
       <p>{{embedDescription}}</p>
       <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>
@@ -18,7 +18,7 @@ const template = `
       <ds-text>Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
       <div class="embed-buttons">
       <ds-button primary @click.prevent="allowEmbedTemporar('openIframe')">jetzt ansehen</ds-button>
-      <ds-button ghost @click.prevent="showOverlay = false">Abbrechen</ds-button>
+      <ds-button ghost @click.prevent="closeOverlay()">Abbrechen</ds-button>
       </div>
       <label class="embed-checkbox">
         <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" />
@@ -87,7 +87,7 @@ export default class Embed extends Node {
         embedData: {},
         showPreviewImage: true,
         showEmbed: null,
-        showOverlay: null,
+        showOverlay: false,
         isOnlyLink: false,
       }),
       async created() {
@@ -150,8 +150,11 @@ export default class Embed extends Node {
         ...mapMutations({
           setCurrentUser: 'auth/SET_USER',
         }),
-        clickPreview() {
+        openOverlay() {
           this.showOverlay = true
+        },
+        closeOverlay() {
+          this.showOverlay = false
         },
         check(e) {
           if (e.target.checked) {
@@ -163,11 +166,10 @@ export default class Embed extends Node {
         allowEmbedTemporar(xx) {
           if (!this.isOnlyLink) {
             this.showEmbed = true
-            this.showOverlay = false
           } else {
             this.showEmbed = false
-            this.showOverlay = false
           }
+          this.closeOverlay()
         },
         async submit(allowEmbedIframes) {
           try {
