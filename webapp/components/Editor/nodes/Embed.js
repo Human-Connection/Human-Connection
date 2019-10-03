@@ -5,16 +5,14 @@ import { mapGetters, mapMutations } from 'vuex'
 import { allowEmbedIframesMutation } from '~/graphql/User.js'
 
 const template = `  
-    <a  class="embed" href="" style="cursor: none">
-      <ds-container width="small">
+    <a  class="embed" href="" style="cursor: none"> 
         <ds-section secondary v-if="showOverlay"  style="height: 270px;width:80%;position:absolute;z-index:3">
           <ds-text v-if="!isOnlyLink">Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
           <ds-text v-else >Du verlässt jetzt Human Connection! Du wirst zu ({{embedPublisher}}) weitergeleitet!</ds-text>
           <ds-button v-if="!isOnlyLink" size="x-large" @click.prevent="allowEmbedTemporar('openIframe')" >jetzt ansehen</ds-button>
           <ds-button  v-else size="x-large" > <a :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank" >Webseite aufrufen   </a>  </ds-button>
           <p v-show="!isOnlyLink">      
-          <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" id="dataEmbedUrl" />
-      
+          <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" id="dataEmbedUrl" />      
             <lable v-if="!currentUser.allowEmbedIframes" for="dataEmbedUrl" size="small">
               automatisches Einbinden <b>zulassen?</b> |
             </lable>
@@ -26,12 +24,11 @@ const template = `
         <img  v-show="showPreviewImage" style="cursor: pointer"  :src="embedImage" alt="dataEmbedUrl"  @click.prevent="clickPreview" height="270" width="auto" />
          <div v-show="!showPreviewImage" v-html="embedHtml" />
         <p style="color:black">
-        <div >{{ embedTitle }}</div>
+        <div>{{ embedTitle }}</div>
         <div>{{ embedDescription }}</div>
-        <a  :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank"  >
+        <a @click.prevent="clickPreview" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank"  >
           <em> {{ dataEmbedUrl }} </em>
-        </a>
-      </ds-container>
+        </a>      
     </a>
 `
 
@@ -39,7 +36,7 @@ const compiledTemplate = compileToFunctions(template)
 
 export default class Embed extends Node {
   get name() {
-    return 'embedUrl'
+    return 'embed'
   }
 
   get defaultOptions() {
@@ -96,6 +93,7 @@ export default class Embed extends Node {
         showEmbed: null,
         showOverlay: null,
         isOnlyLink: false,
+        findimg: null,
       }),
       async created() {
         if (!this.options) return {}
