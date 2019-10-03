@@ -40,6 +40,7 @@ export const postFragment = lang => gql`
     content
     contentExcerpt
     createdAt
+    updatedAt
     disabled
     deleted
     slug
@@ -64,6 +65,7 @@ export const commentFragment = lang => gql`
   fragment comment on Comment {
     id
     createdAt
+    updatedAt
     disabled
     deleted
     content

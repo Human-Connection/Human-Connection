@@ -6,17 +6,30 @@
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
     >
       <ds-space margin-bottom="small" />
-      <hc-user :user="post.author" :date-time="post.createdAt" />
+      <ds-flex>
+        <ds-flex-item width="40%">
+          <hc-user :user="post.author" :date-time="post.createdAt" />
+        </ds-flex-item>
+        <ds-flex-item>
+          <ds-text v-if="post.createdAt !== post.updatedAt" color="softer" class="italics">
+            {{ this.$t('post.edited') }}
+          </ds-text>
+        </ds-flex-item>
+        <ds-flex-item>
+          <ds-space margin-top="base">
+            <client-only>
+              <content-menu
+                placement="bottom-end"
+                resource-type="contribution"
+                :resource="post"
+                :modalsData="menuModalsData"
+                :is-owner="isAuthor(post.author ? post.author.id : null)"
+              />
+            </client-only>
+          </ds-space>
+        </ds-flex-item>
+      </ds-flex>
       <!-- Content Menu (can open Modals) -->
-      <client-only>
-        <content-menu
-          placement="bottom-end"
-          resource-type="contribution"
-          :resource="post"
-          :modalsData="menuModalsData"
-          :is-owner="isAuthor(post.author ? post.author.id : null)"
-        />
-      </client-only>
       <ds-space margin-bottom="small" />
       <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />

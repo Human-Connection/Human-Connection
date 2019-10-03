@@ -12,20 +12,33 @@
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card :id="anchor">
       <ds-space margin-bottom="small" margin-top="small">
-        <hc-user :user="author" :date-time="comment.createdAt" />
+        <ds-flex>
+          <ds-flex-item width="40%">
+            <hc-user :user="author" :date-time="comment.createdAt" />
+          </ds-flex-item>
+          <ds-flex-item>
+            <ds-text v-if="comment.createdAt !== comment.updatedAt" color="softer" class="italics">
+              {{ this.$t('comment.edited') }}
+            </ds-text>
+          </ds-flex-item>
+          <ds-flex-item>
+            <ds-space margin-top="base">
+              <client-only>
+                <content-menu
+                  v-show="!openEditCommentMenu"
+                  placement="bottom-end"
+                  resource-type="comment"
+                  :resource="comment"
+                  :modalsData="menuModalsData"
+                  class="float-right"
+                  :is-owner="isAuthor(author.id)"
+                  @showEditCommentMenu="editCommentMenu"
+                />
+              </client-only>
+            </ds-space>
+          </ds-flex-item>
+        </ds-flex>
         <!-- Content Menu (can open Modals) -->
-        <client-only>
-          <content-menu
-            v-show="!openEditCommentMenu"
-            placement="bottom-end"
-            resource-type="comment"
-            :resource="comment"
-            :modalsData="menuModalsData"
-            class="float-right"
-            :is-owner="isAuthor(author.id)"
-            @showEditCommentMenu="editCommentMenu"
-          />
-        </client-only>
       </ds-space>
       <div v-if="openEditCommentMenu">
         <hc-comment-form
@@ -198,5 +211,9 @@ span.show-more-or-less {
   display: block;
   margin: 0px 20px;
   cursor: pointer;
+}
+
+.ds-text.italics {
+  font-style: italic;
 }
 </style>
