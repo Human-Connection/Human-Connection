@@ -685,7 +685,7 @@ import { gql } from '../jest/helpers'
         return factory.create('User')
       }),
     )
-    
+
     await Promise.all(
       [...Array(30).keys()].map(() => {
         return factory.create('Post', {
