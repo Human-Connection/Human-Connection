@@ -41,7 +41,7 @@
     ]
   },
   "dependencies": {
-    "@hapi/joi": "^16.1.4",
+    "@hapi/joi": "^16.1.5",
     "@sentry/node": "^5.6.2",
     "apollo-cache-inmemory": "~1.6.3",
     "apollo-client": "~2.6.4",
