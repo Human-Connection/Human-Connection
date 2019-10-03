@@ -50,7 +50,7 @@
       :infinite-scroll-throttle-delay="800"
       :infinite-scroll-immediate-check="true"
     >
-      <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
+      <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
     </div>
   </div>
 </template>
@@ -151,7 +151,7 @@ export default {
           orderBy: this.sorting,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
+          if (!fetchMoreResult || fetchMoreResult.Post.length <= this.pageSize) {
             this.hasMore = false
           }
           const result = Object.assign({}, previousResult, {
