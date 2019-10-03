@@ -4,32 +4,33 @@ import { compileToFunctions } from 'vue-template-compiler'
 import { mapGetters, mapMutations } from 'vuex'
 import { allowEmbedIframesMutation } from '~/graphql/User.js'
 
-const template = `  
-    <a  class="embed" href="" style="cursor: none"> 
-        <ds-section secondary v-if="showOverlay"  style="height: 270px;width:80%;position:absolute;z-index:3">
-          <ds-text v-if="!isOnlyLink">Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
-          <ds-text v-else >Du verlässt jetzt Human Connection! Du wirst zu ({{embedPublisher}}) weitergeleitet!</ds-text>
-          <ds-button v-if="!isOnlyLink" size="x-large" @click.prevent="allowEmbedTemporar('openIframe')" >jetzt ansehen</ds-button>
-          <ds-button  v-else size="x-large" > <a :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank" >Webseite aufrufen   </a>  </ds-button>
-          <p v-show="!isOnlyLink">      
-          <input type="checkbox" v-model="currentUser.allowEmbedIframes" @click.prevent="check($event)" id="dataEmbedUrl" />      
-            <lable v-if="!currentUser.allowEmbedIframes" for="dataEmbedUrl" size="small">
-              automatisches Einbinden <b>zulassen?</b> |
-            </lable>
-            <lable v-else size="small" for="dataEmbedUrl" >
-              automatisches Einbinden <b>zugelassen</b> |
-            </lable>
-          </p>
-        </ds-section>
-        <img  v-show="showPreviewImage" style="cursor: pointer"  :src="embedImage" alt="dataEmbedUrl"  @click.prevent="clickPreview" height="270" width="auto" />
-         <div v-show="!showPreviewImage" v-html="embedHtml" />
-        <p style="color:black">
-        <div>{{ embedTitle }}</div>
-        <div>{{ embedDescription }}</div>
-        <a @click.prevent="clickPreview" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank"  >
-          <em> {{ dataEmbedUrl }} </em>
-        </a>      
-    </a>
+const template = ` 
+  <a v-if="removeEmbeds" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>  
+  <ds-container v-else width="small" class="embed-container">
+    <section class="embed-content">
+      <div v-if="showEmbed" v-html="embedHtml" class="embed-html" />
+      <template v-else>
+        <img v-if="embedHtml && embedImage" :src="embedImage" class="embed-preview-image embed-preview-image--clickable" @click.prevent="openOverlay()" />
+        <img v-else-if="embedImage" :src="embedImage" class="embed-preview-image" />
+      </template>
+      <h4 v-if="embedTitle">{{embedTitle}}</h4>
+      <p v-if="embedDescription">{{embedDescription}}</p>
+      <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>
+    </section>   
+    <aside v-if="showOverlay" class="embed-overlay">
+      <h3>Achte auf deine Daten!</h3>
+      <ds-text>Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
+      <div class="embed-buttons">
+      <ds-button primary @click.prevent="allowEmbed()">jetzt ansehen</ds-button>
+      <ds-button ghost @click.prevent="closeOverlay()">Abbrechen</ds-button>
+      </div>
+      <label class="embed-checkbox">
+        <input type="checkbox" v-model="checkedAlwaysAllowEmbeds" />
+        <span>Inhalte von Drittanbietern immer zulassen</span>
+      </label>
+    </aside>
+    <ds-button icon="close" ghost size="small" class="embed-close-button" @click.prevent="removeEmbed()" />
+  </ds-container> 
 `
 
 const compiledTemplate = compileToFunctions(template)
@@ -89,16 +90,17 @@ export default class Embed extends Node {
       props: ['node', 'updateAttrs', 'options'],
       data: () => ({
         embedData: {},
-        showPreviewImage: true,
-        showEmbed: null,
-        showOverlay: null,
-        isOnlyLink: false,
-        findimg: null,
+        checkedAlwaysAllowEmbeds: false,
+        showEmbed: false,
+        showOverlay: false,
+        removeEmbeds: false,
       }),
       async created() {
-        if (!this.options) return {}
-        this.embedData = await this.options.onEmbed({ url: this.dataEmbedUrl })
-        this.showEmbed = this.currentUser.allowEmbedIframes
+        if (this.options) {
+          this.embedData = await this.options.onEmbed({ url: this.dataEmbedUrl })
+          this.showEmbed = this.currentUser.allowEmbedIframes
+          this.checkedAlwaysAllowEmbeds = this.currentUser.allowEmbedIframes
+        }
       },
       computed: {
         ...mapGetters({
@@ -106,18 +108,6 @@ export default class Embed extends Node {
         }),
         embedHtml() {
           const { html = '' } = this.embedData
-          if (this.embedData.html === null) {
-            this.isOnlyLink = true
-          }
-
-          if (this.showEmbed && !this.isOnlyLink) {
-            this.showPreviewImage = false
-          }
-
-          if (!this.showEmbed && this.isOnlyLink) {
-            this.showPreviewImage = true
-          }
-
           return html
         },
         embedImage() {
@@ -155,27 +145,26 @@ export default class Embed extends Node {
         ...mapMutations({
           setCurrentUser: 'auth/SET_USER',
         }),
-        clickPreview() {
+        openOverlay() {
           this.showOverlay = true
         },
-        check(e) {
-          if (e.target.checked) {
-            this.submit(true)
-          } else {
-            this.submit(false)
-          }
+        closeOverlay() {
           this.showOverlay = false
         },
-        allowEmbedTemporar(xx) {
-          if (!this.isOnlyLink) {
-            this.showEmbed = true
-            this.showOverlay = false
-          } else {
-            this.showEmbed = false
-            this.showOverlay = false
+        allowEmbed() {
+          this.showEmbed = true
+          this.closeOverlay()
+
+          if (this.checkedAlwaysAllowEmbeds !== this.currentUser.allowEmbedIframes) {
+            this.updateEmbedSettings(this.checkedAlwaysAllowEmbeds)
           }
         },
-        async submit(allowEmbedIframes) {
+        removeEmbed() {
+          // TODO: replace the whole Embed with a proper Link node
+          console.log('I want to be a Link!')
+          this.removeEmbeds = true
+        },
+        async updateEmbedSettings(allowEmbedIframes) {
           try {
             await this.$apollo.mutate({
               mutation: allowEmbedIframesMutation(),
