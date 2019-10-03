@@ -33,6 +33,16 @@
             <b>{{ scope.row.name | truncate(20) }}</b>
           </nuxt-link>
         </template>
+        <template slot="email" slot-scope="scope">
+          <nuxt-link
+            :to="{
+              name: 'profile-id-slug',
+              params: { id: scope.row.id, slug: scope.row.slug },
+            }"
+          >
+            <b>{{ scope.row.email }}</b>
+          </nuxt-link>
+        </template>
         <template slot="slug" slot-scope="scope">
           <nuxt-link
             :to="{
@@ -128,6 +138,7 @@ export default {
               id
               name
               slug
+              email
               role
               createdAt
               contributionsCount
