@@ -30,8 +30,8 @@ export default {
         })
 
         /*
-        * Note: invites count is calculated this way because invitation codes are not in use yet
-        */
+         * Note: invites count is calculated this way because invitation codes are not in use yet
+         */
         response.countInvites = response.countEmails - response.countUsers
       } finally {
         session.close()
