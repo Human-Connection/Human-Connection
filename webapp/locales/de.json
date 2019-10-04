@@ -2,7 +2,7 @@
   "maintenance": {
     "title": "Human Connection befindet sich in der Wartung",
     "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
-    "questions": "Bei Fragen oder Problemen erreichst du uns per E-Mail an" 
+    "questions": "Bei Fragen oder Problemen erreichst du uns per E-Mail an"
   },
   "index": {
     "no-results": "Keine Beiträge gefunden.",
@@ -335,7 +335,8 @@
       "submit": "Kommentiere",
       "submitted": "Kommentar Gesendet",
       "updated": "Änderungen gespeichert"
-    }
+    },
+    "edited": "bearbeitet"
   },
   "comment": {
     "content": {
@@ -348,10 +349,11 @@
     "show": {
       "more": "mehr anzeigen",
       "less": "weniger anzeigen"
-    }
+    },
+    "edited": "bearbeitet"
   },
   "quotes": {
-    "african": {
+  "african": {
       "quote": "Viele kleine Leute an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
       "author": "Afrikanisches Sprichwort"
     }
