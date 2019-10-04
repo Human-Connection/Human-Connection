@@ -55,6 +55,8 @@
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
     "forgotPassword": "Passwort vergessen?",
+    "no-account": "Du hast noch keinen Benutzerkonto?",
+    "register": "Benutzerkonto erstellen",
     "moreInfo": "Was ist Human Connection?",
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",

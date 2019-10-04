@@ -10,9 +10,6 @@
         </ds-space>
       </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-        <ds-space margin="small">
-          <ds-text size="small" align="left">{{ $t('login.copy') }}</ds-text>
-        </ds-space>
         <ds-form
           v-if="!submitted"
           @input="handleInput"
@@ -21,14 +18,16 @@
           :schema="formSchema"
           @submit="handleSubmit"
         >
-          <ds-input
-            :placeholder="$t('login.email')"
-            type="email"
-            id="email"
-            model="email"
-            name="email"
-            icon="envelope"
-          />
+          <ds-space margin="small">
+            <ds-input
+              :placeholder="$t('login.email')"
+              type="email"
+              id="email"
+              model="email"
+              name="email"
+              icon="envelope"
+            />
+          </ds-space>
           <ds-space margin-botton="large">
             <ds-text align="left">{{ $t('password-reset.form.description') }}</ds-text>
           </ds-space>

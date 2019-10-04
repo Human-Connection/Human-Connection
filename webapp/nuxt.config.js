@@ -38,9 +38,8 @@ export default {
       'password-reset-request',
       'password-reset-verify-nonce',
       'password-reset-change-password',
-      // 'registration-signup', TODO: implement to open public registration
-      // 'registration-signup-by-invitation-code',
-      // 'registration-verify-nonce',
+      'registration-signup',
+      'registration-enter-nonce',
       'registration-create-user-account',
       'pages-slug',
       'terms-and-conditions',

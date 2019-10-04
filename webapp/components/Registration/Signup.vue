@@ -1,59 +1,57 @@
 <template>
-  <ds-card class="signup">
-    <ds-space margin="large">
-      <ds-form
-        v-if="!success && !error"
-        @input="handleInput"
-        @input-valid="handleInputValid"
-        v-model="formData"
-        :schema="formSchema"
-        @submit="handleSubmit"
+  <ds-space margin="large">
+    <ds-form
+      v-if="!success && !error"
+      @input="handleInput"
+      @input-valid="handleInputValid"
+      v-model="formData"
+      :schema="formSchema"
+      @submit="handleSubmit"
+    >
+      <h1>{{ invitation ? $t('profile.invites.title') : $t('registration.signup.title') }}</h1>
+      <ds-space v-if="token" margin-botton="large">
+        <ds-text v-html="$t('registration.signup.form.invitation-code', { code: token })" />
+      </ds-space>
+      <ds-space margin-botton="large">
+        <ds-text>
+          {{
+            invitation
+              ? $t('profile.invites.description')
+              : $t('registration.signup.form.description')
+          }}
+        </ds-text>
+      </ds-space>
+      <ds-input
+        :placeholder="invitation ? $t('profile.invites.emailPlaceholder') : $t('login.email')"
+        type="email"
+        id="email"
+        model="email"
+        name="email"
+        icon="envelope"
+      />
+      <ds-button
+        :disabled="disabled"
+        :loading="$apollo.loading"
+        primary
+        fullwidth
+        name="submit"
+        type="submit"
+        icon="envelope"
       >
-        <h1>{{ invitation ? $t('profile.invites.title') : $t('registration.signup.title') }}</h1>
-        <ds-space v-if="token" margin-botton="large">
-          <ds-text v-html="$t('registration.signup.form.invitation-code', { code: token })" />
-        </ds-space>
-        <ds-space margin-botton="large">
-          <ds-text>
-            {{
-              invitation
-                ? $t('profile.invites.description')
-                : $t('registration.signup.form.description')
-            }}
-          </ds-text>
-        </ds-space>
-        <ds-input
-          :placeholder="invitation ? $t('profile.invites.emailPlaceholder') : $t('login.email')"
-          type="email"
-          id="email"
-          model="email"
-          name="email"
-          icon="envelope"
-        />
-        <ds-button
-          :disabled="disabled"
-          :loading="$apollo.loading"
-          primary
-          fullwidth
-          name="submit"
-          type="submit"
-          icon="envelope"
-        >
-          {{ $t('registration.signup.form.submit') }}
-        </ds-button>
-      </ds-form>
-      <div v-else>
-        <template v-if="!error">
-          <sweetalert-icon icon="info" />
-          <ds-text align="center" v-html="submitMessage" />
-        </template>
-        <template v-else>
-          <sweetalert-icon icon="error" />
-          <ds-text align="center">{{ error.message }}</ds-text>
-        </template>
-      </div>
-    </ds-space>
-  </ds-card>
+        {{ $t('registration.signup.form.submit') }}
+      </ds-button>
+    </ds-form>
+    <div v-else>
+      <template v-if="!error">
+        <sweetalert-icon icon="info" />
+        <ds-text align="center" v-html="submitMessage" />
+      </template>
+      <template v-else>
+        <sweetalert-icon icon="error" />
+        <ds-text align="center">{{ error.message }}</ds-text>
+      </template>
+    </div>
+  </ds-space>
 </template>
 
 <script>
