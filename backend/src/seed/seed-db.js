@@ -649,9 +649,14 @@ import { gql } from '../jest/helpers'
     ])
     authenticatedUser = null
 
+    // There is no error logged or the 'try' fails if this mutation is wrong. Why?
     const reportMutation = gql`
-      mutation($resourceId: ID!, $reasonDescription: String!) {
-        report(reasonDescription: $reasonDescription, resourceId: $resourceId) {
+      mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+        report(
+          resourceId: $resourceId
+          reasonCategory: $reasonCategory
+          reasonDescription: $reasonDescription
+        ) {
           id
         }
       }
@@ -661,22 +666,25 @@ import { gql } from '../jest/helpers'
       mutate({
         mutation: reportMutation,
         variables: {
-          reasonDescription: 'This comment is bigoted',
           resourceId: 'c1',
+          reasonCategory: 'other',
+          reasonDescription: 'This comment is bigoted',
         },
       }),
       mutate({
         mutation: reportMutation,
         variables: {
-          reasonDescription: 'This post is bigoted',
           resourceId: 'p1',
+          reasonCategory: 'discrimination-etc',
+          reasonDescription: 'This post is bigoted',
         },
       }),
       mutate({
         mutation: reportMutation,
         variables: {
-          reasonDescription: 'This user is harassing me with bigoted remarks',
           resourceId: 'u1',
+          reasonCategory: 'doxing',
+          reasonDescription: 'This user is harassing me with bigoted remarks',
         },
       }),
     ])

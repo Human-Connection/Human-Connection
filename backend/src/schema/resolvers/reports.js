@@ -2,7 +2,12 @@ import uuid from 'uuid/v4'
 
 export default {
   Mutation: {
-    report: async (_parent, { resourceId, reasonCategory, reasonDescription }, { driver, req, user }, _resolveInfo) => {
+    report: async (
+      _parent,
+      { resourceId, reasonCategory, reasonDescription },
+      { driver, _req, user },
+      _resolveInfo,
+    ) => {
       const reportId = uuid()
       const session = driver.session()
       const reportProperties = {

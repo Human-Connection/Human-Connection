@@ -123,11 +123,13 @@ describe('report', () => {
 
         it('returns a date', async () => {
           returnedObject = '{ createdAt }'
-          await expect(action()).resolves.toEqual(expect.objectContaining({
-            report: {
-              createdAt: expect.any(String),
-            },
-          }))
+          await expect(action()).resolves.toEqual(
+            expect.objectContaining({
+              report: {
+                createdAt: expect.any(String),
+              },
+            }),
+          )
         })
 
         it('returns the reason category', async () => {
@@ -152,6 +154,19 @@ describe('report', () => {
           await expect(action()).resolves.toEqual({
             report: {
               reasonDescription: 'My reason!',
+            },
+          })
+        })
+
+        it('sanitize the reason description', async () => {
+          variables = {
+            ...variables,
+            reasonDescription: 'My reason <sanitize></sanitize>!',
+          }
+          returnedObject = '{ reasonDescription }'
+          await expect(action()).resolves.toEqual({
+            report: {
+              reasonDescription: 'My reason !',
             },
           })
         })
