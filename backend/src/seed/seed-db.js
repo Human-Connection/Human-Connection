@@ -694,14 +694,14 @@ import { gql } from '../jest/helpers'
         })
       }),
     )
-    
+
     await Promise.all(
       [...Array(6).keys()].map(() => {
         return factory.create('Comment', {
           author: jennyRostock,
           postId: 'p2',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -710,7 +710,7 @@ import { gql } from '../jest/helpers'
           author: jennyRostock,
           postId: 'p15',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -719,7 +719,7 @@ import { gql } from '../jest/helpers'
           author: jennyRostock,
           postId: 'p4',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -730,14 +730,14 @@ import { gql } from '../jest/helpers'
         })
       }),
     )
-    
+
     await Promise.all(
       [...Array(3).keys()].map(() => {
         return factory.create('Comment', {
           author: peterLustig,
           postId: 'p4',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -746,7 +746,7 @@ import { gql } from '../jest/helpers'
           author: peterLustig,
           postId: 'p14',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -755,7 +755,7 @@ import { gql } from '../jest/helpers'
           author: peterLustig,
           postId: 'p0',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -766,14 +766,14 @@ import { gql } from '../jest/helpers'
         })
       }),
     )
-    
+
     await Promise.all(
       [...Array(7).keys()].map(() => {
         return factory.create('Comment', {
           author: dewey,
           postId: 'p2',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -782,7 +782,7 @@ import { gql } from '../jest/helpers'
           author: dewey,
           postId: 'p6',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -791,7 +791,7 @@ import { gql } from '../jest/helpers'
           author: dewey,
           postId: 'p9',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -802,14 +802,14 @@ import { gql } from '../jest/helpers'
         })
       }),
     )
-    
+
     await Promise.all(
       [...Array(4).keys()].map(() => {
         return factory.create('Comment', {
           author: louie,
           postId: 'p1',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -818,7 +818,7 @@ import { gql } from '../jest/helpers'
           author: louie,
           postId: 'p10',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -827,7 +827,7 @@ import { gql } from '../jest/helpers'
           author: louie,
           postId: 'p13',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -838,14 +838,14 @@ import { gql } from '../jest/helpers'
         })
       }),
     )
-    
+
     await Promise.all(
       [...Array(2).keys()].map(() => {
         return factory.create('Comment', {
           author: bobDerBaumeister,
           postId: 'p2',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -854,7 +854,7 @@ import { gql } from '../jest/helpers'
           author: bobDerBaumeister,
           postId: 'p12',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -863,7 +863,7 @@ import { gql } from '../jest/helpers'
           author: bobDerBaumeister,
           postId: 'p13',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -881,7 +881,7 @@ import { gql } from '../jest/helpers'
           author: huey,
           postId: 'p0',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -890,7 +890,7 @@ import { gql } from '../jest/helpers'
           author: huey,
           postId: 'p13',
         })
-      })
+      }),
     )
 
     await Promise.all(
@@ -899,7 +899,7 @@ import { gql } from '../jest/helpers'
           author: huey,
           postId: 'p15',
         })
-      })
+      }),
     )
 
     /* eslint-disable-next-line no-console */
