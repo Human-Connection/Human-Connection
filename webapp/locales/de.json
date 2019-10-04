@@ -82,7 +82,8 @@
         },
         "submit": "Konto erstellen",
         "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}</b> geschickt"
-      }
+      },
+      "back-to-login": "Zurück zur Anmeldung"
     },
     "create-user-account": {
       "title": "Benutzerkonto anlegen",

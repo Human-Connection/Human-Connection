@@ -3,7 +3,7 @@
     <ds-flex gutter="small">
       <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
         <client-only>
-          <locale-switch class="login-locale-switch" offset="5" />
+          <locale-switch offset="5" />
         </client-only>
         <ds-space margin-top="small" margin-bottom="xxx-small" centered>
           <img class="login-image" alt="Human Connection" src="/img/sign-up/humanconnection.svg" />
@@ -123,17 +123,12 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .login-image {
   width: 90%;
   max-width: 200px;
 }
 .password-reset {
   position: relative;
-}
-.login-locale-switch {
-  position: absolute;
-  top: 1em;
-  left: 1em;
 }
 </style>
