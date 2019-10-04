@@ -151,7 +151,7 @@ export default {
           orderBy: this.sorting,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length <= this.pageSize) {
+          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
             this.hasMore = false
           }
           const result = Object.assign({}, previousResult, {
