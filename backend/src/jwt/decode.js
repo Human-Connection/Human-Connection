@@ -14,6 +14,7 @@ export default async (driver, authorizationHeader) => {
   const session = driver.session()
   const query = `
     MATCH (user:User {id: $id, deleted: false, disabled: false })
+    SET user.lastActiveAt = toString(datetime())
     RETURN user {.id, .slug, .name, .avatar, .email, .role, .disabled, .actorId}
     LIMIT 1
   `
