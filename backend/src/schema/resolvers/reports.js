@@ -2,19 +2,20 @@ import uuid from 'uuid/v4'
 
 export default {
   Mutation: {
-    report: async (parent, { id, description }, { driver, req, user }, resolveInfo) => {
+    report: async (_parent, { id, reasonCategory, description }, { driver, req, user }, _resolveInfo) => {
       const reportId = uuid()
       const session = driver.session()
-      const reportData = {
+      const reportProperties = {
         id: reportId,
         createdAt: new Date().toISOString(),
-        description: description,
+        reasonCategory,
+        description,
       }
 
       const reportQueryRes = await session.run(
         `
-        match (u:User {id:$submitterId}) -[:REPORTED]->(report)-[:REPORTED]-> (resource {id: $resourceId}) 
-        return  labels(resource)[0] as label
+          MATCH (u:User {id:$submitterId})-[:REPORTED]->(report)-[:REPORTED]->(resource {id: $resourceId}) 
+          RETURN labels(resource)[0] as label
         `,
         {
           resourceId: id,
@@ -30,20 +31,21 @@ export default {
       if (rep) {
         throw new Error(rep.label)
       }
+
       const res = await session.run(
         `
-        MATCH (submitter:User {id: $userId})
-        MATCH (resource {id: $resourceId})
-        WHERE resource:User OR resource:Comment OR resource:Post
-        MERGE (report:Report  {id: {reportData}.id })
-        MERGE (resource)<-[:REPORTED]-(report)
-        MERGE (report)<-[:REPORTED]-(submitter)
-        RETURN report, submitter, resource, labels(resource)[0] as type
+          MATCH (submitter:User {id: $userId})
+          MATCH (resource {id: $resourceId})
+          WHERE resource:User OR resource:Comment OR resource:Post
+          CREATE (report:Report  {reportProperties})
+          MERGE (resource)<-[:REPORTED]-(report)
+          MERGE (report)<-[:REPORTED]-(submitter)
+          RETURN report, submitter, resource, labels(resource)[0] as type
         `,
         {
           resourceId: id,
           userId: user.id,
-          reportData,
+          reportProperties,
         },
       )
 

@@ -37,11 +37,12 @@ type Mutation {
 
 type Report {
   id: ID!
+  createdAt: String!
+  reasonCategory: String!
+  description: String!
   submitter: User @relation(name: "REPORTED", direction: "IN")
-  description: String
   type: String!
     @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
-  createdAt: String
   comment: Comment @relation(name: "REPORTED", direction: "OUT")
   post: Post @relation(name: "REPORTED", direction: "OUT")
   user: User @relation(name: "REPORTED", direction: "OUT")
