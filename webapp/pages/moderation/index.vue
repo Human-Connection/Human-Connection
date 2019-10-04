@@ -110,7 +110,7 @@
 
 <script>
 import HcEmpty from '~/components/Empty.vue'
-import query from '~/graphql/ModerationListQuery.js'
+import { reportListQuery } from '~/graphql/Moderation.js'
 
 export default {
   components: {
@@ -134,7 +134,7 @@ export default {
   },
   apollo: {
     Report: {
-      query,
+      query: reportListQuery(),
       fetchPolicy: 'cache-and-network',
     },
   },

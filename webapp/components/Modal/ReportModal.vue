@@ -68,8 +68,8 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
+import { reportMutation } from '~/graphql/Moderation.js'
 
 export default {
   name: 'ReportModal',
@@ -173,13 +173,7 @@ export default {
       // await this.modalData.buttons.confirm.callback()
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation($id: ID!, $reasonCategory: String!, $description: String!) {
-              report(id: $id, reasonCategory: $reasonCategory, description: $description) {
-                id
-              }
-            }
-          `,
+          mutation: reportMutation(),
           variables: {
             id: this.id,
             reasonCategory: reasonCategory.value,

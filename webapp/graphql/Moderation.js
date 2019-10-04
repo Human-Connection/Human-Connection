@@ -1,13 +1,14 @@
 import gql from 'graphql-tag'
 
-export default app => {
+export const reportListQuery = () => {
   return gql`
     query {
       Report(first: 20, orderBy: createdAt_desc) {
         id
+        createdAt
+        reasonCategory
         description
         type
-        createdAt
         submitter {
           id
           slug
@@ -75,6 +76,16 @@ export default app => {
             deleted
           }
         }
+      }
+    }
+  `
+}
+
+export const reportMutation = () => {
+  return gql`
+    mutation($id: ID!, $reasonCategory: String!, $description: String!) {
+      report(id: $id, reasonCategory: $reasonCategory, description: $description) {
+        id
       }
     }
   `
