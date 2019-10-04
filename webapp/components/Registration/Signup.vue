@@ -8,7 +8,9 @@
       :schema="formSchema"
       @submit="handleSubmit"
     >
-      <h1>{{ invitation ? $t('profile.invites.title') : $t('registration.signup.title') }}</h1>
+      <h1>
+        {{ invitation ? $t('profile.invites.title') : $t('components.registration.signup.title') }}
+      </h1>
       <ds-space v-if="token" margin-botton="large">
         <ds-text v-html="$t('registration.signup.form.invitation-code', { code: token })" />
       </ds-space>
@@ -17,7 +19,7 @@
           {{
             invitation
               ? $t('profile.invites.description')
-              : $t('registration.signup.form.description')
+              : $t('components.registration.signup.form.description')
           }}
         </ds-text>
       </ds-space>
@@ -38,7 +40,7 @@
         type="submit"
         icon="envelope"
       >
-        {{ $t('registration.signup.form.submit') }}
+        {{ $t('components.registration.signup.form.submit') }}
       </ds-button>
     </ds-form>
     <div v-else>

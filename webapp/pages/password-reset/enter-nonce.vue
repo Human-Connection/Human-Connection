@@ -1,20 +1,20 @@
 <template>
-  <verify-nonce :email="email" @verification="handleVerification" />
+  <enter-nonce :email="email" @nonceEntered="nonceEntered" />
 </template>
 
 <script>
-import VerifyNonce from '~/components/PasswordReset/VerifyNonce'
+import EnterNonce from '~/components/EnterNonce/EnterNonce.vue'
 
 export default {
   components: {
-    VerifyNonce,
+    EnterNonce,
   },
   data() {
     const { email = '' } = this.$route.query
     return { email }
   },
   methods: {
-    handleVerification({ email, nonce }) {
+    nonceEntered({ email, nonce }) {
       this.$router.push({ path: 'change-password', query: { email, nonce } })
     },
   },

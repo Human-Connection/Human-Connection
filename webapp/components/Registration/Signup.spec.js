@@ -42,7 +42,7 @@ describe('Signup', () => {
     describe('without invitation code', () => {
       it('renders signup form', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('.signup').exists()).toBe(true)
+        expect(wrapper.find('form').exists()).toBe(true)
       })
 
       describe('submit', () => {

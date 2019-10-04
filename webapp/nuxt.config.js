@@ -36,7 +36,7 @@ export default {
       'login',
       'logout',
       'password-reset-request',
-      'password-reset-verify-nonce',
+      'password-reset-enter-nonce',
       'password-reset-change-password',
       'registration-signup',
       'registration-enter-nonce',

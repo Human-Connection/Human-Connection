@@ -12,7 +12,7 @@
         </ds-flex-item>
         <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
           <signup :invitation="false" />
-          <nuxt-link to="/login">{{ $t('registration.signup.back-to-login') }}</nuxt-link>
+          <nuxt-link to="/login">{{ $t('site.back-to-login') }}</nuxt-link>
         </ds-flex-item>
       </ds-flex>
     </ds-card>

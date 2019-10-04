@@ -3,7 +3,11 @@
     :email="email"
     :nonce="nonce"
     @passwordResetResponse="handlePasswordResetResponse"
-  />
+  >
+    <ds-space centered>
+      <nuxt-link to="/login">{{ $t('site.back-to-login') }}</nuxt-link>
+    </ds-space>
+  </change-password>
 </template>
 
 <script>

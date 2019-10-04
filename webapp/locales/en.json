@@ -1,4 +1,50 @@
 {
+  "components": {
+    "password-reset": {
+      "request": {
+        "title": "Reset your password",
+        "form": {
+          "description": "A password reset email will be sent to the given email address.",
+          "submit": "Request email",
+          "submitted": "An email with further instructions has been sent to <b>{email}</b>"
+        }
+      },
+      "change-password": {
+        "success": "Changing your password was successful!",
+        "error": "Changing your password failed. Maybe the security code was not correct?",
+        "help": "In case of problems, feel free to ask for help by sending us a mail to:"
+      }
+    },
+    "enter-nonce": {
+      "form": {
+        "nonce": "Enter your code",
+        "description": "Open your inbox and enter the code that we've sent to you.",
+        "next": "Continue",
+        "validations": {
+          "length": "must be 6 characters long"
+        }
+      }
+    },
+    "registration": {
+      "signup": {
+        "title": "Join Human Connection!",
+        "form": {
+          "description": "To get started, enter your email address:",
+          "invitation-code": "Your invitation code is: <b>{code}</b>",
+          "errors": {
+            "email-exists": "There is already a user account with this email address!",
+            "invalid-invitation-token": "It looks like as if the invitation has been used already. Invitation links can only be used once."
+          },
+          "submit": "Create an account",
+          "success": "A mail with a link to complete your registration has been sent to <b>{email}</b>"
+        }
+      },
+      "create-user-account": {
+        "title": "Create user account",
+        "success": "Your account has been created!"
+      }
+    }
+  },
   "maintenance": {
     "title": "Human Connection is under maintenance",
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
@@ -42,7 +88,7 @@
     "bank": "bank account",
     "germany": "Germany",
     "code-of-conduct": "Code of Conduct",
-    "login": "Back to login"
+    "back-to-login": "Back to login page"
   },
   "sorting": {
     "newest": "Newest",
@@ -62,46 +108,6 @@
     "moreInfoHint": "to the presentation page",
     "hello": "Hello",
     "success": "You are logged in!"
-  },
-  "password-reset": {
-    "title": "Reset your password",
-    "form": {
-      "description": "A password reset email will be sent to the given email address.",
-      "submit": "Request email",
-      "submitted": "An email with further instructions has been sent to <b>{email}</b>"
-    }
-  },
-  "registration": {
-    "signup": {
-      "title": "Join Human Connection!",
-      "form": {
-        "description": "To get started, enter your email address:",
-        "invitation-code": "Your invitation code is: <b>{code}</b>",
-        "errors": {
-          "email-exists": "There is already a user account with this email address!",
-          "invalid-invitation-token": "It looks like as if the invitation has been used already. Invitation links can only be used once."
-        },
-        "submit": "Create an account",
-        "success": "A mail with a link to complete your registration has been sent to <b>{email}</b>"
-      },
-      "back-to-login": "Back to login page"
-    },
-    "create-user-account": {
-      "title": "Create user account",
-      "success": "Your account has been created!"
-    }
-  },
-  "verify-nonce": {
-    "form": {
-      "nonce": "Enter your code",
-      "description": "Open your inbox and enter the code that we've sent to you.",
-      "next": "Continue",
-      "change-password": {
-        "success": "Changing your password was successful!",
-        "error": "Changing your password failed. Maybe the security code was not correct?",
-        "help": "In case of problems, feel free to ask for help by sending us a mail to:"
-      }
-    }
   },
   "editor": {
     "placeholder": "Leave your inspirational thoughts …",
@@ -401,8 +407,7 @@
     "reportContent": "Report",
     "validations": {
       "email": "must be a valid email address",
-      "url": "must be a valid URL",
-      "verification-nonce": "must be 6 characters long"
+      "url": "must be a valid URL"
     }
   },
   "actions": {
