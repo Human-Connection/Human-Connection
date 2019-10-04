@@ -158,6 +158,27 @@
       "labelBio": "Über dich",
       "success": "Deine Daten wurden erfolgreich aktualisiert!"
     },
+    "email": {
+      "validation": {
+        "same-email": "Das ist deine aktuelle E-Mail Addresse"
+      },
+      "name": "Deine E-Mail",
+      "labelEmail": "E-Mail Adresse ändern",
+      "labelNewEmail": "Neue E-Mail Adresse",
+      "labelNonce": "Bestätigungscode eingeben",
+      "success": "Eine neue E-Mail Addresse wurde registriert.",
+      "submitted": "Eine E-Mail zur Bestätigung deiner Adresse wurde an <b>{email}</b> gesendet.",
+      "change-successful": "Deine E-Mail Adresse wurde erfolgreich geändert.",
+      "verification-error": {
+        "message": "Deine E-Mail Adresse konnte nicht verifiziert werden.",
+        "support": "Wenn das Problem weiterhin besteht, kontaktiere uns gerne per E-Mail an",
+        "explanation": "Das kann verschiedene Ursachen haben:",
+        "reason": {
+          "invalid-nonce": "Ist der Bestätigungscode falsch?",
+          "no-email-request": "Bist du dir sicher, dass du eine Änderung deiner E-Mail Adresse angefragt hattest?"
+        }
+      }
+    },
     "validation": {
       "slug": {
         "regex": "Es sind nur Kleinbuchstaben, Zahlen, Unterstriche oder Bindestriche erlaubt.",
