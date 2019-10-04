@@ -259,6 +259,7 @@
         "columns": {
           "number": "Nr.",
           "name": "Name",
+          "email": "E-mail",
           "slug": "Slug",
           "role": "Rolle",
           "createdAt": "Erstellt am"

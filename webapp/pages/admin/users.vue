@@ -34,14 +34,9 @@
           </nuxt-link>
         </template>
         <template slot="email" slot-scope="scope">
-          <nuxt-link
-            :to="{
-              name: 'profile-id-slug',
-              params: { id: scope.row.id, slug: scope.row.slug },
-            }"
-          >
+          <a :href="`mailto:${scope.row.email}`">
             <b>{{ scope.row.email }}</b>
-          </nuxt-link>
+          </a>
         </template>
         <template slot="slug" slot-scope="scope">
           <nuxt-link
@@ -102,6 +97,7 @@ export default {
       return {
         index: this.$t('admin.users.table.columns.number'),
         name: this.$t('admin.users.table.columns.name'),
+        email: this.$t('admin.users.table.columns.email'),
         slug: this.$t('admin.users.table.columns.slug'),
         createdAt: this.$t('admin.users.table.columns.createdAt'),
         contributionsCount: {
