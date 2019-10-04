@@ -28,24 +28,24 @@
       :options="form.reasonCategoryOptions"
     />
     <!-- Wolle <ds-input
-        model="reasonAddText"
-        :label="$t('report.reason.addText.label')"
-        :placeholder="$t('report.reason.addText.placeholder')"
+        model="reasonDescription"
+        :label="$t('report.reason.description.label')"
+        :placeholder="$t('report.reason.description.placeholder')"
         type="textarea"
         rows="5"
-        class="reasonAddText"
+        class="reasonDescription"
       /> -->
     <ds-input
-      :value="form.reasonAddText"
-      :schema="formSchema.reasonAddText"
-      :label="$t('report.reason.addText.label')"
-      :placeholder="$t('report.reason.addText.placeholder')"
+      :value="form.reasonDescription"
+      :schema="formSchema.reasonDescription"
+      :label="$t('report.reason.description.label')"
+      :placeholder="$t('report.reason.description.placeholder')"
       type="textarea"
       rows="5"
-      class="reasonAddText"
+      class="reasonDescription"
     />
     <small class="smallTag">
-      {{ form.reasonAddText.length }}/{{ formSchema.reasonAddText.max }}
+      {{ form.reasonDescription.length }}/{{ formSchema.reasonDescription.max }}
     </small>
     <ds-space />
     <!-- Wolle </ds-form> -->
@@ -109,7 +109,7 @@ export default {
         reasonCategory: null,
         // Wolle reasonCategory: reasonCategoryOptions[0],
         reasonCategoryOptions,
-        reasonAddText: '',
+        reasonDescription: '',
       },
       formSchema: {
         reasonCategory: {
@@ -124,12 +124,12 @@ export default {
             callback()
           },
         },
-        reasonAddText: {
+        reasonDescription: {
           type: 'string',
           min: 0,
           max: 200,
           validator: (rule, value, callback, source, options) => {
-            this.form.reasonAddText = value
+            this.form.reasonDescription = value
             callback()
           },
         },
@@ -151,9 +151,9 @@ export default {
     //   console.log('this.form.reasonCategory: ', this.form.reasonCategory)
     //   this.failsValidations = false
     // },
-    // Wolle inputReasonAddText(reasonAddText) {
-    //   console.log('reasonAddText: ', reasonAddText)
-    //   this.form.reasonAddText = reasonAddText
+    // Wolle inputReasonAddText(reasonDescription) {
+    //   console.log('reasonDescription: ', reasonDescription)
+    //   this.form.reasonDescription = reasonDescription
     // },
     async cancel() {
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
@@ -164,9 +164,9 @@ export default {
       }, 1000)
     },
     async confirm() {
-      const { reasonCategory, reasonAddText } = this.form
+      const { reasonCategory, reasonDescription } = this.form
       // Wolle console.log('reasonCategory: ', reasonCategory.value)
-      // Wolle console.log('reasonAddText: ', reasonAddText)
+      // Wolle console.log('reasonDescription: ', reasonDescription)
 
       this.loading = true
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
@@ -175,9 +175,9 @@ export default {
         .mutate({
           mutation: reportMutation(),
           variables: {
-            id: this.id,
+            resourceId: this.id,
             reasonCategory: reasonCategory.value,
-            description: reasonAddText,
+            reasonDescription,
           },
         })
         .then(({ _data }) => {
@@ -214,7 +214,7 @@ export default {
 </script>
 
 <style lang="scss">
-.reasonAddText {
+.reasonDescription {
   margin-top: $space-x-small;
   margin-bottom: $space-xxx-small;
 }

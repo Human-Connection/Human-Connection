@@ -122,13 +122,13 @@ Given('somebody reported the following posts:', table => {
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .mutate(`mutation($id: ID!, $description: String!) {
-        report(description: $description, id: $id) {
+      .mutate(`mutation($resourceId: ID!, $reasonDescription: String!) {
+        report(reasonDescription: $reasonDescription, resourceId: $resourceId) {
           id
         }
       }`, {
-        id,
-        description: 'Offensive content'
+        resourceId,
+        reasonDescription: 'Offensive content'
       })
   })
 })

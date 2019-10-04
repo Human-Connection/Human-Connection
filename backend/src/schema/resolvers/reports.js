@@ -2,14 +2,14 @@ import uuid from 'uuid/v4'
 
 export default {
   Mutation: {
-    report: async (_parent, { id, reasonCategory, description }, { driver, req, user }, _resolveInfo) => {
+    report: async (_parent, { resourceId, reasonCategory, reasonDescription }, { driver, req, user }, _resolveInfo) => {
       const reportId = uuid()
       const session = driver.session()
       const reportProperties = {
         id: reportId,
         createdAt: new Date().toISOString(),
         reasonCategory,
-        description,
+        reasonDescription,
       }
 
       const reportQueryRes = await session.run(
@@ -18,7 +18,7 @@ export default {
           RETURN labels(resource)[0] as label
         `,
         {
-          resourceId: id,
+          resourceId,
           submitterId: user.id,
         },
       )
@@ -43,7 +43,7 @@ export default {
           RETURN report, submitter, resource, labels(resource)[0] as type
         `,
         {
-          resourceId: id,
+          resourceId,
           userId: user.id,
           reportProperties,
         },

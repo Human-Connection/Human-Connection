@@ -650,8 +650,8 @@ import { gql } from '../jest/helpers'
     authenticatedUser = null
 
     const reportMutation = gql`
-      mutation($id: ID!, $description: String!) {
-        report(description: $description, id: $id) {
+      mutation($resourceId: ID!, $reasonDescription: String!) {
+        report(reasonDescription: $reasonDescription, resourceId: $resourceId) {
           id
         }
       }
@@ -661,22 +661,22 @@ import { gql } from '../jest/helpers'
       mutate({
         mutation: reportMutation,
         variables: {
-          description: 'This comment is bigoted',
-          id: 'c1',
+          reasonDescription: 'This comment is bigoted',
+          resourceId: 'c1',
         },
       }),
       mutate({
         mutation: reportMutation,
         variables: {
-          description: 'This post is bigoted',
-          id: 'p1',
+          reasonDescription: 'This post is bigoted',
+          resourceId: 'p1',
         },
       }),
       mutate({
         mutation: reportMutation,
         variables: {
-          description: 'This user is harassing me with bigoted remarks',
-          id: 'u1',
+          reasonDescription: 'This user is harassing me with bigoted remarks',
+          resourceId: 'u1',
         },
       }),
     ])

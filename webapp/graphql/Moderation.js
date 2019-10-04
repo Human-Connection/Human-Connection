@@ -7,7 +7,7 @@ export const reportListQuery = () => {
         id
         createdAt
         reasonCategory
-        description
+        reasonDescription
         type
         submitter {
           id
@@ -83,8 +83,12 @@ export const reportListQuery = () => {
 
 export const reportMutation = () => {
   return gql`
-    mutation($id: ID!, $reasonCategory: String!, $description: String!) {
-      report(id: $id, reasonCategory: $reasonCategory, description: $description) {
+    mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+      report(
+        resourceId: $resourceId
+        reasonCategory: $reasonCategory
+        reasonDescription: $reasonDescription
+      ) {
         id
       }
     }

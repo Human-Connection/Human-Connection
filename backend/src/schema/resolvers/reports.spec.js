@@ -18,9 +18,9 @@ describe('report', () => {
   beforeEach(async () => {
     returnedObject = '{ id }'
     variables = {
-      id: 'whatever',
+      resourceId: 'whatever',
       reasonCategory: 'reason-category-dummy',
-      description: 'Violates code of conduct !!!',
+      reasonDescription: 'Violates code of conduct !!!',
     }
     headers = {}
     user = await factory.create('User', {
@@ -49,8 +49,8 @@ describe('report', () => {
   const action = () => {
     // because of the template `${returnedObject}` the 'gql' tag from 'jest/helpers' is not working here
     reportMutation = `
-      mutation($id: ID!, $reasonCategory: String!, $description: String!) {
-        report( id: $id, reasonCategory: $reasonCategory, description: $description) ${returnedObject}
+      mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+        report( resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) ${returnedObject}
       }
     `
     client = new GraphQLClient(host, {
@@ -86,7 +86,7 @@ describe('report', () => {
         beforeEach(async () => {
           variables = {
             ...variables,
-            id: 'u2',
+            resourceId: 'u2',
           }
         })
 
@@ -146,12 +146,12 @@ describe('report', () => {
         it('returns the reason description', async () => {
           variables = {
             ...variables,
-            description: 'My reason!',
+            reasonDescription: 'My reason!',
           }
-          returnedObject = '{ description }'
+          returnedObject = '{ reasonDescription }'
           await expect(action()).resolves.toEqual({
             report: {
-              description: 'My reason!',
+              reasonDescription: 'My reason!',
             },
           })
         })
@@ -167,7 +167,7 @@ describe('report', () => {
           })
           variables = {
             ...variables,
-            id: 'p23',
+            resourceId: 'p23',
           }
         })
 
@@ -221,7 +221,7 @@ describe('report', () => {
           })
           variables = {
             ...variables,
-            id: 'c34',
+            resourceId: 'c34',
           }
         })
 
@@ -256,7 +256,7 @@ describe('report', () => {
           })
           variables = {
             ...variables,
-            id: 't23',
+            resourceId: 't23',
           }
         })
 

@@ -24,7 +24,7 @@ type Mutation {
   changePassword(oldPassword: String!, newPassword: String!): String!
   requestPasswordReset(email: String!): Boolean!
   resetPassword(email: String!, nonce: String!, newPassword: String!): Boolean!
-  report(id: ID!, reasonCategory: String!, description: String!): Report
+  report(resourceId: ID!, reasonCategory: String!, reasonDescription: String!): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
   # Shout the given Type and ID
@@ -39,7 +39,7 @@ type Report {
   id: ID!
   createdAt: String!
   reasonCategory: String!
-  description: String!
+  reasonDescription: String!
   submitter: User @relation(name: "REPORTED", direction: "IN")
   type: String!
     @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
