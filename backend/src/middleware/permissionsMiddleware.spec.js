@@ -1,22 +1,56 @@
-import { GraphQLClient } from 'graphql-request'
+import { createTestClient } from 'apollo-server-testing'
+import createServer from '../server'
 import Factory from '../seed/factories'
-import { host, login } from '../jest/helpers'
+import { gql } from '../jest/helpers'
+import { getDriver, neode as getNeode } from '../bootstrap/neo4j'
 
 const factory = Factory()
+const instance = getNeode()
+const driver = getDriver()
+
+let query, authenticatedUser, owner, someoneElse, adminExtraordinaire, variables
+
+const userQuery = gql`
+  query($name: String) {
+    User(name: $name) {
+      email
+    }
+  }
+`
 
 describe('authorization', () => {
+  beforeAll(async()=>{
+    await factory.cleanDatabase()
+    const { server } = createServer({
+      context: () => ({
+        driver,
+        instance,
+        user: authenticatedUser,
+      }),
+    })
+    query = createTestClient(server).query
+  })
+
   describe('given two existing users', () => {
     beforeEach(async () => {
-      await factory.create('User', {
-        email: 'owner@example.org',
-        name: 'Owner',
-        password: 'iamtheowner',
-      })
-      await factory.create('User', {
-        email: 'someone@example.org',
-        name: 'Someone else',
-        password: 'else',
-      })
+      [owner, someoneElse, adminExtraordinaire] = await Promise.all([
+        factory.create('User', {
+          email: 'owner@example.org',
+          name: 'Owner',
+          password: 'iamtheowner',
+        }),
+      factory.create('User', {
+          email: 'someone@example.org',
+          name: 'Someone else',
+          password: 'else',
+        }),
+        factory.create('User', {
+          email: 'admin@example.org',
+          name: 'Admin extraordinaire',
+          password: 'admin',
+        }),
+      ])
+      variables = {}
     })
 
     afterEach(async () => {
@@ -24,30 +58,16 @@ describe('authorization', () => {
     })
 
     describe('access email address', () => {
-      let headers = {}
-      let loginCredentials = null
-      const action = async () => {
-        if (loginCredentials) {
-          headers = await login(loginCredentials)
-        }
-        const graphQLClient = new GraphQLClient(host, { headers })
-        return graphQLClient.request('{User(name: "Owner") { email } }')
-      }
-
       describe('not logged in', () => {
-        it('rejects', async () => {
-          await expect(action()).rejects.toThrow('Not Authorised!')
+        beforeEach(()=>{
+          authenticatedUser = null
         })
-
-        it("does not expose the owner's email address", async () => {
-          let response = {}
-          try {
-            await action()
-          } catch (error) {
-            response = error.response.data
-          } finally {
-            expect(response).toEqual({ User: [null] })
-          }
+        it("throws an error and does not expose the owner's email address", async () => {
+          const expected = await query({ query: userQuery, variables: { name: 'Owner' } })
+          await expect(query({ query: userQuery, variables: { name: 'Owner' } })).resolves.toMatchObject({ 
+            errors: [{ message: 'Not Authorised!'}],
+            data: { User: [null]}
+          })
         })
       })
 
