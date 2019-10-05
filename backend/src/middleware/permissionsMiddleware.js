@@ -172,7 +172,7 @@ const permissions = shield(
       markAsRead: isAuthenticated,
     },
     User: {
-      email: isMyOwn,
+      email: or(isMyOwn, isAdmin),
     },
   },
   {
