@@ -8,7 +8,7 @@ const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
-let query, authenticatedUser, owner, someoneElse, adminExtraordinaire, variables
+let query, authenticatedUser, owner, anotherRegularUser, administrator, variables, moderator
 
 const userQuery = gql`
   query($name: String) {
@@ -19,7 +19,7 @@ const userQuery = gql`
 `
 
 describe('authorization', () => {
-  beforeAll(async()=>{
+  beforeAll(async () => {
     await factory.cleanDatabase()
     const { server } = createServer({
       context: () => ({
@@ -33,21 +33,28 @@ describe('authorization', () => {
 
   describe('given two existing users', () => {
     beforeEach(async () => {
-      [owner, someoneElse, adminExtraordinaire] = await Promise.all([
+      ;[owner, anotherRegularUser, administrator, moderator] = await Promise.all([
         factory.create('User', {
           email: 'owner@example.org',
           name: 'Owner',
           password: 'iamtheowner',
         }),
-      factory.create('User', {
-          email: 'someone@example.org',
-          name: 'Someone else',
+        factory.create('User', {
+          email: 'another.regular.user@example.org',
+          name: 'Another Regular User',
           password: 'else',
         }),
         factory.create('User', {
           email: 'admin@example.org',
-          name: 'Admin extraordinaire',
+          name: 'Admin',
           password: 'admin',
+          role: 'admin',
+        }),
+        factory.create('User', {
+          email: 'moderator@example.org',
+          name: 'Moderator',
+          password: 'moderator',
+          role: 'moderator',
         }),
       ])
       variables = {}
@@ -58,52 +65,77 @@ describe('authorization', () => {
     })
 
     describe('access email address', () => {
-      describe('not logged in', () => {
-        beforeEach(()=>{
+      describe('unauthenticated', () => {
+        beforeEach(() => {
           authenticatedUser = null
         })
         it("throws an error and does not expose the owner's email address", async () => {
-          const expected = await query({ query: userQuery, variables: { name: 'Owner' } })
-          await expect(query({ query: userQuery, variables: { name: 'Owner' } })).resolves.toMatchObject({ 
-            errors: [{ message: 'Not Authorised!'}],
-            data: { User: [null]}
+          await expect(
+            query({ query: userQuery, variables: { name: 'Owner' } }),
+          ).resolves.toMatchObject({
+            errors: [{ message: 'Not Authorised!' }],
+            data: { User: [null] },
           })
         })
       })
 
-      describe('as owner', () => {
-        beforeEach(() => {
-          loginCredentials = {
-            email: 'owner@example.org',
-            password: 'iamtheowner',
-          }
+      describe('authenticated', () => {
+        describe('as the owner', () => {
+          beforeEach(async () => {
+            authenticatedUser = await owner.toJson()
+          })
+
+          it("exposes the owner's email address", async () => {
+            variables = { name: 'Owner' }
+            await expect(query({ query: userQuery, variables })).resolves.toMatchObject({
+              data: { User: [{ email: 'owner@example.org' }] },
+              errors: undefined,
+            })
+          })
         })
 
-        it("exposes the owner's email address", async () => {
-          await expect(action()).resolves.toEqual({ User: [{ email: 'owner@example.org' }] })
-        })
-      })
+        describe('as another regular user', () => {
+          beforeEach(async () => {
+            authenticatedUser = await anotherRegularUser.toJson()
+          })
 
-      describe('authenticated as another user', () => {
-        beforeEach(async () => {
-          loginCredentials = {
-            email: 'someone@example.org',
-            password: 'else',
-          }
-        })
-
-        it('rejects', async () => {
-          await expect(action()).rejects.toThrow('Not Authorised!')
+          it("throws an error and does not expose the owner's email address", async () => {
+            await expect(
+              query({ query: userQuery, variables: { name: 'Owner' } }),
+            ).resolves.toMatchObject({
+              errors: [{ message: 'Not Authorised!' }],
+              data: { User: [null] },
+            })
+          })
         })
 
-        it("does not expose the owner's email address", async () => {
-          let response
-          try {
-            await action()
-          } catch (error) {
-            response = error.response.data
-          }
-          expect(response).toEqual({ User: [null] })
+        describe('as a moderator', () => {
+          beforeEach(async () => {
+            authenticatedUser = await moderator.toJson()
+          })
+
+          it("throws an error and does not expose the owner's email address", async () => {
+            await expect(
+              query({ query: userQuery, variables: { name: 'Owner' } }),
+            ).resolves.toMatchObject({
+              errors: [{ message: 'Not Authorised!' }],
+              data: { User: [null] },
+            })
+          })
+        })
+
+        describe('administrator', () => {
+          beforeEach(async () => {
+            authenticatedUser = await administrator.toJson()
+          })
+
+          it("exposes the owner's email address", async () => {
+            variables = { name: 'Owner' }
+            await expect(query({ query: userQuery, variables })).resolves.toMatchObject({
+              data: { User: [{ email: 'owner@example.org' }] },
+              errors: undefined,
+            })
+          })
         })
       })
     })
