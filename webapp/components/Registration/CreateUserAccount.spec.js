@@ -8,6 +8,7 @@ const localVue = createLocalVue()
 localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 config.stubs['client-only'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('CreateUserAccount', () => {
   let wrapper, Wrapper, mocks, propsData, stubs
@@ -102,7 +103,7 @@ describe('CreateUserAccount', () => {
 
           it('displays success', async () => {
             await action()
-            expect(mocks.$t).toHaveBeenCalledWith('registration.create-user-account.success')
+            expect(mocks.$t).toHaveBeenCalledWith('components.registration.create-user-account.success')
           })
 
           describe('after timeout', () => {
@@ -130,7 +131,7 @@ describe('CreateUserAccount', () => {
 
           it('displays form errors', async () => {
             await action()
-            expect(wrapper.find('.backendErrors').text()).toContain('Invalid nonce')
+            expect(mocks.$t).toHaveBeenCalledWith('components.registration.create-user-account.error')
           })
         })
       })
