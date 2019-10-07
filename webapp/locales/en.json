@@ -396,8 +396,10 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "submitter": "reported by",
-      "disabledBy": "disabled by"
+      "reasonCategory": "Category",
+      "reasonDescription": "Description",
+      "submitter": "Reported by",
+      "disabledBy": "Disabled by"
     }
   },
   "disable": {

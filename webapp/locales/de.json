@@ -395,8 +395,10 @@
     "reports": {
       "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
-      "submitter": "gemeldet von",
-      "disabledBy": "deaktiviert von"
+      "reasonCategory": "Kategorie",
+      "reasonDescription": "Beschreibung",
+      "submitter": "Gemeldet von",
+      "disabledBy": "Deaktiviert von"
     }
   },
   "disable": {
