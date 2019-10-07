@@ -5,8 +5,8 @@ import { mapGetters, mapMutations } from 'vuex'
 import { allowEmbedIframesMutation } from '~/graphql/User.js'
 
 const template = ` 
-  <a v-if="removeEmbeds" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>  
-  <ds-container v-else width="small" class="embed-container">
+  <a v-show="removeEmbeds" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>  
+  <ds-container v-if="!removeEmbeds" width="small" class="embed-container">
     <section class="embed-content">
       <div v-if="showEmbed" v-html="embedHtml" class="embed-html" />
       <template v-else>
