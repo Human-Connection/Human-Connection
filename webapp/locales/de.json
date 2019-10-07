@@ -62,6 +62,7 @@
     "success": "Du bist eingeloggt!"
   },
   "password-reset": {
+    "title": "Dein Passwort zurücksetzen",
     "form": {
       "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
       "submit": "Email anfordern",
@@ -458,6 +459,26 @@
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?",
       "error": "Du hast den Kommentar bereits gemeldet!"
+    },
+    "reason": {
+      "category": {
+        "label": "Wähle eine Kategorie:",
+        "placeholder": "Kategorie …",
+        "options": {
+          "discrimination-etc": "Diskriminierende Beiträge, Kommentare, Äußerungen oder Beleidigungen.",
+          "pornographic-content-links": "Das Posten oder Verlinken eindeutig pornografischen Materials.",
+          "glorific-trivia-of-cruel-inhuman-acts": "Verherrlichung oder Verharmlosung grausamer oder unmenschlicher Gewalttätigkeiten.",
+          "doxing": "Das Veröffentlichen von personenbezogenen Daten anderer ohne deren Einverständnis oder das Androhen dessen (\"Doxing\").",
+          "intentional-intimidation-stalking-persecution": "Absichtliche Einschüchterung, Stalking oder Verfolgung.",
+          "advert-products-services-commercial": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
+          "criminal-behavior-violation-german-law": "Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
+          "other": "Anderes …"
+        }
+      },
+      "description": {
+        "label": "Bitte erkläre: Warum möchtest du dies melden?",
+        "placeholder": "Zusätzliche Information …"
+      }
     }
   },
   "followButton": {

@@ -465,18 +465,18 @@
         "label": "Select a category:",
         "placeholder": "Category …",
         "options": {
-          "discrimination-etc": "Discriminatory posts, comments, utterances or insults",
-          "pornographic-content-links": "Posting or linking of clearly pornographic material",
-          "glorific-trivia-of-cruel-inhuman-acts": "Glorification or trivialization of cruel or inhuman acts of violence",
-          "doxing": "The disclosure of others' personal information without their consent or threat there of (\"doxing\")",
-          "intentional-intimidation-stalking-persecution": "Intentional intimidation, stalking or persecution",
-          "advert-products-services-commercial": "Advertising products and services with commercial intent",
-          "criminal-behavior-violation-german-law": "Criminal behavior or violation of German law",
-          "other": "Other"
+          "discrimination-etc": "Discriminatory posts, comments, utterances or insults.",
+          "pornographic-content-links": "Posting or linking of clearly pornographic material.",
+          "glorific-trivia-of-cruel-inhuman-acts": "Glorification or trivialization of cruel or inhuman acts of violence.",
+          "doxing": "The disclosure of others' personal information without their consent or threat there of (\"doxing\").",
+          "intentional-intimidation-stalking-persecution": "Intentional intimidation, stalking or persecution.",
+          "advert-products-services-commercial": "Advertising products and services with commercial intent.",
+          "criminal-behavior-violation-german-law": "Criminal behavior or violation of German law.",
+          "other": "Other …"
         }
       },
       "description": {
-        "label": "Please explain why you like to report this?",
+        "label": "Please explain: Why you like to report this?",
         "placeholder": "Additional information …"
       }
     }
