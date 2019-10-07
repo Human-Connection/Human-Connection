@@ -108,6 +108,12 @@
       "noHashtagsFound": "Keine Hashtags gefunden",
       "addHashtag": "Neuer Hashtag",
       "addLetter": "Tippe einen Buchstaben"
+    },
+    "embed": {
+      "data_privacy_warning": "Achte auf deine Daten!",
+      "data_privacy_info": "Deine Daten wurden noch nicht an Drittanbieter weitergegeben. Wenn du dieses Video jetzt abspielst, registriert der folgende Anbieter wahrscheinlich deine Nutzerdaten:",
+      "play_now": "Jetzt ansehen",
+      "always_allow": "Inhalte von Drittanbietern immer anzeigen (diese Einstellung kannst du jederzeit ändern)"
     }
   },
   "profile": {

@@ -23,15 +23,15 @@ const template = `
       <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>
     </section>
     <aside v-if="showOverlay" class="embed-overlay">
-      <h3>Achte auf deine Daten!</h3>
-      <ds-text>Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
+      <h3>{{ $t('editor.embed.data_privacy_warning') }}</h3>
+      <ds-text>{{ $t('editor.embed.data_privacy_info') }} {{embedPublisher}}</ds-text>
       <div class="embed-buttons">
-      <ds-button primary @click.prevent="allowEmbed()">jetzt ansehen</ds-button>
-      <ds-button ghost @click.prevent="closeOverlay()">Abbrechen</ds-button>
+      <ds-button primary @click.prevent="allowEmbed()">{{ $t('editor.embed.play_now') }}</ds-button>
+      <ds-button ghost @click.prevent="closeOverlay()">{{ $t('actions.cancel') }}</ds-button>
       </div>
       <label class="embed-checkbox">
         <input type="checkbox" v-model="checkedAlwaysAllowEmbeds" />
-        <span>Inhalte von Drittanbietern immer zulassen</span>
+        <span>{{ $t('editor.embed.always_allow') }}</span>
       </label>
     </aside>
     <ds-button icon="close" ghost size="small" class="embed-close-button" @click.prevent="removeEmbed()" />
