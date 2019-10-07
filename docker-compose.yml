@@ -10,6 +10,7 @@ services:
         - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     ports:
       - 3000:3000
+      - 3002:3002
     networks:
       - hc-network
     depends_on:
@@ -55,12 +56,13 @@ services:
       - hc-network
     environment:
       - NEO4J_AUTH=none
+      - NEO4J_dbms_security_procedures_unrestricted=algo.*,apoc.*
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
     ports:
       - 7687:7687
       - 7474:7474
     volumes:
       - neo4j_data:/data
-
 networks:
   hc-network:
 volumes:

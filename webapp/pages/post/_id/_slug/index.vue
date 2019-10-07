@@ -6,8 +6,11 @@
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
     >
       <ds-space margin-bottom="small" />
-      <hc-user :user="post.author" :date-time="post.createdAt" />
-      <!-- Content Menu (can open Modals) -->
+      <hc-user :user="post.author" :date-time="post.createdAt">
+        <template v-slot:dateTime>
+          <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
+        </template>
+      </hc-user>
       <client-only>
         <content-menu
           placement="bottom-end"
@@ -189,11 +192,15 @@ export default {
         margin-top: $space-small;
         position: relative;
       }
+
+      .ProseMirror {
+        min-height: 0px;
+      }
     }
 
     .ds-card-image {
       img {
-        max-height: 300px;
+        max-height: 710px;
         object-fit: cover;
         object-position: center;
       }

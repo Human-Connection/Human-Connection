@@ -5,7 +5,7 @@ import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 let lastReportTitle
 let davidIrvingPostTitle = 'The Truth about the Holocaust'
 let davidIrvingPostSlug = 'the-truth-about-the-holocaust'
-let davidIrvingName = 'David Irving'
+let annoyingUserWhoBlockedModeratorTitle = 'Fake news'
 
 const savePostTitle = $post => {
   return $post
@@ -116,7 +116,7 @@ When(/^I confirm the reporting dialog .*:$/, message => {
 Given('somebody reported the following posts:', table => {
   table.hashes().forEach(({ id }) => {
     const submitter = {
-      email: `submitter${id}@example.org`,
+      email: `submitter${id}@example.org`,  
       password: '1234'
     }
     cy.factory()
@@ -139,7 +139,28 @@ Then('I see all the reported posts including the one from above', () => {
   })
 })
 
+Then('I see all the reported posts including from the user who blocked me', () => {
+  cy.get('table tbody').within(() => {
+    cy.contains('tr', annoyingUserWhoBlockedModeratorTitle)
+  })
+})
+
 Then('each list item links to the post page', () => {
   cy.contains(davidIrvingPostTitle).click()
   cy.location('pathname').should('contain', '/post')
+})
+
+Then('I can visit the post page', () => {
+  cy.contains(annoyingUserWhoBlockedModeratorTitle).click()
+  cy.location('pathname').should('contain', '/post')
+    .get('h3').should('contain', annoyingUserWhoBlockedModeratorTitle)
+})
+
+When("they have a post someone has reported", () => {
+  cy.factory()
+    .create("Post", {
+      authorId: 'annnoying-user',
+      title,
+    });
+    
 })
