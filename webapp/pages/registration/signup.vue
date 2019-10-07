@@ -1,33 +1,23 @@
 <template>
-  <ds-container width="medium">
-    <ds-card>
-      <ds-flex gutter="small">
-        <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-          <client-only>
-            <locale-switch offset="5" />
-          </client-only>
-          <ds-space margin-top="small" margin-bottom="xxx-small" centered>
-            <img class="signup-image" alt="Human Connection" src="/img/sign-up/nicetomeetyou.svg" />
-          </ds-space>
-        </ds-flex-item>
-        <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-          <signup :invitation="false" />
-          <nuxt-link to="/login">{{ $t('site.back-to-login') }}</nuxt-link>
-        </ds-flex-item>
-      </ds-flex>
-    </ds-card>
-  </ds-container>
+  <signup :invitation="false" @submit="handleSubmitted">
+    <ds-space centered margin-top="large">
+      <nuxt-link to="/login">{{ $t('site.back-to-login') }}</nuxt-link>
+    </ds-space>
+  </signup>
 </template>
 
 <script>
 import Signup from '~/components/Registration/Signup'
-import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   layout: 'no-header',
   components: {
     Signup,
-    LocaleSwitch,
+  },
+  methods: {
+    handleSubmitted({ email }) {
+      this.$router.push({ path: 'enter-nonce', query: { email } })
+    },
   },
 }
 </script>
