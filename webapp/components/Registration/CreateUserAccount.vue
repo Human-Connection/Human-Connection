@@ -1,10 +1,23 @@
 <template>
-  <ds-space v-if="success">
+  <div v-if="response === 'success'">
     <sweetalert-icon icon="success" />
     <ds-text align="center" bold color="success">
-      {{ $t('registration.create-user-account.success') }}
+      {{ $t('components.registration.create-user-account.success') }}
     </ds-text>
-  </ds-space>
+  </div>
+  <div v-else-if="response === 'error'">
+    <sweetalert-icon icon="error" />
+    <ds-text align="center" bold color="danger">
+      {{ $t('components.registration.create-user-account.error') }}
+    </ds-text>
+    <ds-text align="center">
+      {{ $t('components.registration.create-user-account.help') }}
+      <a :href="supportEmail.href">{{ supportEmail.label }}</a>
+    </ds-text>
+    <ds-space centered>
+      <nuxt-link to="/login">{{ $t('site.back-to-login') }}</nuxt-link>
+    </ds-space>
+  </div>
   <div v-else class="create-account-card">
     <ds-space margin-top="large">
       <ds-heading size="h3">
@@ -57,9 +70,6 @@
             v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
           ></label>
         </ds-text>
-        <ds-space class="backendErrors" v-if="backendErrors">
-          <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
-        </ds-space>
         <ds-button
           style="float: right;"
           icon="check"
@@ -79,6 +89,7 @@
 import PasswordStrength from '../Password/Strength'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 import PasswordForm from '~/components/utils/PasswordFormHelper'
+import { SUPPORT_EMAIL } from '~/constants/emails.js'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 import { SignupVerificationMutation } from '~/graphql/Registration.js'
 
@@ -90,6 +101,7 @@ export default {
   data() {
     const passwordForm = PasswordForm({ translate: this.$t })
     return {
+      supportEmail: SUPPORT_EMAIL,
       formData: {
         name: '',
         about: '',
@@ -108,8 +120,7 @@ export default {
         ...passwordForm.formSchema,
       },
       disabled: true,
-      success: null,
-      backendErrors: null,
+      response: null,
       // TODO: Our styleguide does not support checkmarks.
       // Integrate termsAndConditionsConfirmed into `this.formData` once we
       // have checkmarks available.
@@ -130,7 +141,7 @@ export default {
           mutation: SignupVerificationMutation,
           variables: { name, password, about, email, nonce, termsAndConditionsAgreedVersion },
         })
-        this.success = true
+        this.response = 'success'
         setTimeout(() => {
           this.$emit('userCreated', {
             email,
@@ -138,7 +149,7 @@ export default {
           })
         }, 3000)
       } catch (err) {
-        this.backendErrors = err
+        this.response = 'error'
       }
     },
   },

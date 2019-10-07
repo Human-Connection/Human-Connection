@@ -40,7 +40,9 @@
       },
       "create-user-account": {
         "title": "Benutzerkonto anlegen",
-        "success": "Dein Benutzerkonto wurde erstellt!"
+        "success": "Dein Benutzerkonto wurde erstellt!",
+        "error": "Es konnte kein Benutzerkonto erstellt werden!",
+        "help": "Vielleicht war der Bestätigungscode falsch oder abgelaufen? Wenn das Problem weiterhin besteht, schick uns gerne eine E-Mail an:"
       }
     }
   },

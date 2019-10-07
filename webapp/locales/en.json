@@ -41,7 +41,9 @@
       },
       "create-user-account": {
         "title": "Create user account",
-        "success": "Your account has been created!"
+        "success": "Your account has been created!",
+        "error": "No user account could be created!",
+        "help": " Maybe the confirmation was invalid? In case of problems, feel free to ask for help by sending us a mail to:"
       }
     }
   },
