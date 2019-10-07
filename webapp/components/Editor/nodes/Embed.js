@@ -161,7 +161,7 @@ export default class Embed extends Node {
         },
         removeEmbed() {
           // TODO: replace the whole Embed with a proper Link node
-          console.log('I want to be a Link!')
+          // console.log('I want to be a Link!')
           this.removeEmbeds = true
         },
         async updateEmbedSettings(allowEmbedIframes) {

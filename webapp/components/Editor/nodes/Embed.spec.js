@@ -14,11 +14,11 @@ describe('Embed.vue', () => {
     }
   })
 
-  it('renders anchor', () => {
+  it('renders ds-container', () => {
     propsData = {
       node: { attrs: { href: someUrl } },
     }
-    expect(Wrapper({ propsData }).is('a')).toBe(true)
+    expect(Wrapper({ propsData }).is('ds-container')).toBe(true)
   })
 
   describe('given a href', () => {
@@ -49,8 +49,8 @@ describe('Embed.vue', () => {
         propsData.node = { attrs: { href: 'https://www.youtube.com/watch?v=qkdXAtO40Fo' } }
         const wrapper = Wrapper({ propsData })
         await wrapper.html()
-        expect(wrapper.find('div iframe').attributes('src')).toEqual(
-          'https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed',
+        expect(wrapper.find('ds-container img').attributes('src')).toEqual(
+          'https://i.ytimg.com/vi/qkdXAtO40Fo/maxresdefault.jpg',
         )
       })
     })
