@@ -75,7 +75,7 @@ export default {
 
         const followedUser = follow ? data.followUser : data.unfollowUser
         this.$emit('update', followedUser)
-      } catch {
+      } catch (err) {
         optimisticResult.followedByCurrentUser = !follow
         this.$emit('optimistic', optimisticResult)
       }

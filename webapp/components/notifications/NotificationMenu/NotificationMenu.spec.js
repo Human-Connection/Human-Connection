@@ -46,11 +46,46 @@ describe('NotificationMenu.vue', () => {
       expect(wrapper.contains('.dropdown')).toBe(false)
     })
 
+    describe('given only unread notifications', () => {
+      beforeEach(() => {
+        data = () => {
+          return {
+            displayedNotifications: [
+              {
+                id: 'notification-41',
+                read: true,
+                post: {
+                  id: 'post-1',
+                  title: 'some post title',
+                  contentExcerpt: 'this is a post content',
+                  author: {
+                    id: 'john-1',
+                    slug: 'john-doe',
+                    name: 'John Doe',
+                  },
+                },
+              },
+            ],
+          }
+        }
+      })
+
+      it('counter displays 0', () => {
+        wrapper = Wrapper()
+        expect(wrapper.find('ds-button-stub').text()).toEqual('0')
+      })
+
+      it('button is not primary', () => {
+        wrapper = Wrapper()
+        expect(wrapper.find('ds-button-stub').props('primary')).toBe(false)
+      })
+    })
+
     describe('given some notifications', () => {
       beforeEach(() => {
         data = () => {
           return {
-            notifications: [
+            displayedNotifications: [
               {
                 id: 'notification-41',
                 read: false,
@@ -79,14 +114,33 @@ describe('NotificationMenu.vue', () => {
                   },
                 },
               },
+              {
+                id: 'notification-43',
+                read: true,
+                post: {
+                  id: 'post-3',
+                  title: 'read post title',
+                  contentExcerpt: 'this is yet another post content',
+                  author: {
+                    id: 'john-1',
+                    slug: 'john-doe',
+                    name: 'John Doe',
+                  },
+                },
+              },
             ],
           }
         }
       })
 
-      it('displays the total number of notifications', () => {
+      it('displays the number of unread notifications', () => {
         wrapper = Wrapper()
         expect(wrapper.find('ds-button-stub').text()).toEqual('2')
+      })
+
+      it('renders primary button', () => {
+        wrapper = Wrapper()
+        expect(wrapper.find('ds-button-stub').props('primary')).toBe(true)
       })
     })
   })

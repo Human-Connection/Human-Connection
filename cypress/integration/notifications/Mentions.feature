@@ -1,4 +1,4 @@
-Feature: Notifications for a mentions
+Feature: Notification for a mention
   As a user
   I want to be notified if sb. mentions me in a post or comment
   In order join conversations about or related to me

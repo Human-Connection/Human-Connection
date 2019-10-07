@@ -136,11 +136,12 @@
     }
   },
   "notifications": {
-    "menu": {
+    "reason": {
       "mentioned_in_post": "Mentioned you in a post …",
       "mentioned_in_comment": "Mentioned you in a comment …",
       "commented_on_post": "Commented on your post …"
-    }
+    },
+    "comment": "Comment"
   },
   "search": {
     "placeholder": "Search",
@@ -157,6 +158,27 @@
       "labelCity": "Your City or Region",
       "labelBio": "About You",
       "success": "Your data was successfully updated!"
+    },
+    "email": {
+      "validation": {
+        "same-email": "This is your current email address"
+      },
+      "name": "Your email",
+      "labelEmail": "Change your email address",
+      "labelNewEmail": "New email Address",
+      "labelNonce": "Enter your code",
+      "success": "A new email address has been registered.",
+      "submitted": "An email to verify your address has been sent to <b>{email}</b>.",
+      "change-successful": "Your email address has been changed successfully.",
+      "verification-error": {
+        "message": "Your email could not be changed.",
+        "explanation": "This can have different causes:",
+        "reason": {
+          "invalid-nonce": "Is the confirmation code invalid?",
+          "no-email-request": "Are you certain that you requested a change of your email address?"
+        },
+        "support": "If the problem persists, please contact us by email at"
+      }
     },
     "validation": {
       "slug": {
@@ -253,7 +275,7 @@
     "users": {
       "name": "Users",
       "form": {
-        "placeholder": "E-Mail, name or description"
+        "placeholder": "email, name or description"
       },
       "table": {
         "columns": {
@@ -327,6 +349,7 @@
       "third-party-false": "It automatically integrates <b style='color:red'>no </b> third-party providers' service.",
       "third-party-true": "The inclusion of third-party services is <b style='color:red'>permanently allowed</b> and stored for future sessions."
     }
+    "edited": "edited"
   },
   "comment": {
     "content": {
@@ -339,7 +362,8 @@
     "show": {
       "more": "show more",
       "less": "show less"
-    }
+    },
+    "edited": "edited"
   },
   "quotes": {
     "african": {

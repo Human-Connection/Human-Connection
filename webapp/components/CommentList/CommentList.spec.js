@@ -42,6 +42,7 @@ describe('CommentList.vue', () => {
           truncate: a => a,
           removeHtml: a => a,
         },
+        $scrollTo: jest.fn(),
         $apollo: {
           queries: {
             Post: {
@@ -65,12 +66,46 @@ describe('CommentList.vue', () => {
       })
     }
 
-    beforeEach(() => {
+    it('displays a comments counter', () => {
       wrapper = Wrapper()
+      expect(wrapper.find('span.ds-tag').text()).toEqual('1')
     })
 
     it('displays a comments counter', () => {
+      wrapper = Wrapper()
       expect(wrapper.find('span.ds-tag').text()).toEqual('1')
+    })
+
+    describe('scrollToAnchor mixin', () => {
+      beforeEach(jest.useFakeTimers)
+
+      describe('$route.hash !== `#comments`', () => {
+        beforeEach(() => {
+          mocks.$route = {
+            hash: '',
+          }
+        })
+
+        it('skips $scrollTo', () => {
+          wrapper = Wrapper()
+          jest.runAllTimers()
+          expect(mocks.$scrollTo).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('$route.hash === `#comments`', () => {
+        beforeEach(() => {
+          mocks.$route = {
+            hash: '#comments',
+          }
+        })
+
+        it('calls $scrollTo', () => {
+          wrapper = Wrapper()
+          jest.runAllTimers()
+          expect(mocks.$scrollTo).toHaveBeenCalledWith('#comments')
+        })
+      })
     })
   })
 })

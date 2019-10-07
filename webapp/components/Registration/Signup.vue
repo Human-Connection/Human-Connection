@@ -128,7 +128,7 @@ export default {
       } catch (err) {
         const { message } = err
         const mapping = {
-          'User account with this email already exists': 'email-exists',
+          'A user account with this email already exists': 'email-exists',
           'Invitation code already used or does not exist': 'invalid-invitation-token',
         }
         for (const [pattern, key] of Object.entries(mapping)) {

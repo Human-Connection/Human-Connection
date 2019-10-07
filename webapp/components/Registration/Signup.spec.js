@@ -115,7 +115,7 @@ describe('Signup', () => {
             mocks.$apollo.mutate = jest
               .fn()
               .mockRejectedValue(
-                new Error('UserInputError: User account with this email already exists.'),
+                new Error('UserInputError: A user account with this email already exists.'),
               )
           })
 

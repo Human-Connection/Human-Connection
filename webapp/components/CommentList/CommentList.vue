@@ -30,8 +30,10 @@
 </template>
 <script>
 import Comment from '~/components/Comment/Comment'
+import scrollToAnchor from '~/mixins/scrollToAnchor'
 
 export default {
+  mixins: [scrollToAnchor],
   components: {
     Comment,
   },
@@ -39,6 +41,9 @@ export default {
     post: { type: Object, default: () => {} },
   },
   methods: {
+    checkAnchor(anchor) {
+      return anchor === '#comments'
+    },
     updateCommentList(updatedComment) {
       this.post.comments = this.post.comments.map(comment => {
         return comment.id === updatedComment.id ? updatedComment : comment

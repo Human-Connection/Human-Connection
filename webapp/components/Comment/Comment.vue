@@ -10,10 +10,15 @@
     </ds-card>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
-    <ds-card :id="`commentId-${comment.id}`">
-      <ds-space margin-bottom="small" margin-top="base">
-        <hc-user :user="author" :date-time="comment.createdAt" />
-        <!-- Content Menu (can open Modals) -->
+    <ds-card :id="anchor">
+      <ds-space margin-bottom="small" margin-top="small">
+        <hc-user :user="author" :date-time="comment.createdAt">
+          <template v-slot:dateTime>
+            <ds-text v-if="comment.createdAt !== comment.updatedAt">
+              ({{ $t('comment.edited') }})
+            </ds-text>
+          </template>
+        </hc-user>
         <client-only>
           <content-menu
             v-show="!openEditCommentMenu"
@@ -37,7 +42,7 @@
           @collapse="isCollapsed = true"
         />
       </div>
-      <div v-show="!openEditCommentMenu">
+      <div v-else>
         <content-viewer
           v-if="$filters.removeHtml(comment.content).length < 180"
           :content="comment.content"
@@ -80,8 +85,10 @@ import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
+import scrollToAnchor from '~/mixins/scrollToAnchor.js'
 
 export default {
+  mixins: [scrollToAnchor],
   data: function() {
     return {
       isCollapsed: true,
@@ -109,6 +116,9 @@ export default {
       user: 'auth/user',
       isModerator: 'auth/isModerator',
     }),
+    anchor() {
+      return `commentId-${this.comment.id}`
+    },
     displaysComment() {
       return !this.unavailable || this.isModerator
     },
@@ -142,6 +152,9 @@ export default {
     },
   },
   methods: {
+    checkAnchor(anchor) {
+      return `#${this.anchor}` === anchor
+    },
     isAuthor(id) {
       return this.user.id === id
     },

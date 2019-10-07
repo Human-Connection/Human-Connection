@@ -135,11 +135,12 @@
     }
   },
   "notifications": {
-    "menu": {
+    "reason": {
       "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …",
       "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
       "commented_on_post": "Hat deinen Beitrag kommentiert …"
-    }
+    },
+    "comment": "Kommentar"
   },
   "search": {
     "placeholder": "Suchen",
@@ -156,6 +157,27 @@
       "labelCity": "Deine Stadt oder Region",
       "labelBio": "Über dich",
       "success": "Deine Daten wurden erfolgreich aktualisiert!"
+    },
+    "email": {
+      "validation": {
+        "same-email": "Das ist deine aktuelle E-Mail Addresse"
+      },
+      "name": "Deine E-Mail",
+      "labelEmail": "E-Mail Adresse ändern",
+      "labelNewEmail": "Neue E-Mail Adresse",
+      "labelNonce": "Bestätigungscode eingeben",
+      "success": "Eine neue E-Mail Addresse wurde registriert.",
+      "submitted": "Eine E-Mail zur Bestätigung deiner Adresse wurde an <b>{email}</b> gesendet.",
+      "change-successful": "Deine E-Mail Adresse wurde erfolgreich geändert.",
+      "verification-error": {
+        "message": "Deine E-Mail Adresse konnte nicht verifiziert werden.",
+        "support": "Wenn das Problem weiterhin besteht, kontaktiere uns gerne per E-Mail an",
+        "explanation": "Das kann verschiedene Ursachen haben:",
+        "reason": {
+          "invalid-nonce": "Ist der Bestätigungscode falsch?",
+          "no-email-request": "Bist du dir sicher, dass du eine Änderung deiner E-Mail Adresse angefragt hattest?"
+        }
+      }
     },
     "validation": {
       "slug": {
@@ -326,6 +348,7 @@
       "third-party-false": "Es wird <b style='color:red'>kein</b> Service von Drittanbietern automatisch eingebunden.",
       "third-party-true": "Das einbinden der Services von Drittanbietern ist <b style='color:red'>dauerhaft zugelassen</b> und gespeichert für komende Sitzungen."
     }
+    "edited": "bearbeitet"
   },
   "comment": {
     "content": {
@@ -338,10 +361,11 @@
     "show": {
       "more": "mehr anzeigen",
       "less": "weniger anzeigen"
-    }
+    },
+    "edited": "bearbeitet"
   },
   "quotes": {
-    "african": {
+  "african": {
       "quote": "Viele kleine Leute an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
       "author": "Afrikanisches Sprichwort"
     }

@@ -69,16 +69,16 @@ describe('Notification', () => {
     it('renders reason', () => {
       wrapper = Wrapper()
       expect(wrapper.find('.reason-text-for-test').text()).toEqual(
-        'notifications.menu.commented_on_post',
+        'notifications.reason.commented_on_post',
       )
     })
     it('renders title', () => {
       wrapper = Wrapper()
       expect(wrapper.text()).toContain("It's a post title")
     })
-    it('renders the "Comment:"', () => {
+    it('renders the identifier "notifications.comment"', () => {
       wrapper = Wrapper()
-      expect(wrapper.text()).toContain('Comment:')
+      expect(wrapper.text()).toContain('notifications.comment')
     })
     it('renders the contentExcerpt', () => {
       wrapper = Wrapper()
@@ -119,7 +119,7 @@ describe('Notification', () => {
     it('renders reason', () => {
       wrapper = Wrapper()
       expect(wrapper.find('.reason-text-for-test').text()).toEqual(
-        'notifications.menu.mentioned_in_post',
+        'notifications.reason.mentioned_in_post',
       )
     })
     it('renders title', () => {
@@ -169,7 +169,7 @@ describe('Notification', () => {
     it('renders reason', () => {
       wrapper = Wrapper()
       expect(wrapper.find('.reason-text-for-test').text()).toEqual(
-        'notifications.menu.mentioned_in_comment',
+        'notifications.reason.mentioned_in_comment',
       )
     })
     it('renders title', () => {
@@ -177,9 +177,9 @@ describe('Notification', () => {
       expect(wrapper.text()).toContain("It's a post title")
     })
 
-    it('renders the "Comment:"', () => {
+    it('renders the identifier "notifications.comment"', () => {
       wrapper = Wrapper()
-      expect(wrapper.text()).toContain('Comment:')
+      expect(wrapper.text()).toContain('notifications.comment')
     })
 
     it('renders the contentExcerpt', () => {
