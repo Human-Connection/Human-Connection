@@ -9,22 +9,20 @@
     @vdropzone-thumbnail="transformImage"
     @vdropzone-drop="dropzoneDrop"
   >
-    <div class="dz-message">
+    <div
+      :class="{
+        'hc-attachments-upload-area-post': true,
+        'hc-attachments-upload-area-update-post': contribution,
+      }"
+    >
+      <slot></slot>
       <div
         :class="{
-          'hc-attachments-upload-area-post': true,
-          'hc-attachments-upload-area-update-post': contribution,
+          'hc-drag-marker-post': true,
+          'hc-drag-marker-update-post': contribution,
         }"
       >
-        <slot></slot>
-        <div
-          :class="{
-            'hc-drag-marker-post': true,
-            'hc-drag-marker-update-post': contribution,
-          }"
-        >
-          <ds-icon name="image" size="xxx-large" />
-        </div>
+        <ds-icon name="image" size="xxx-large" />
       </div>
     </div>
   </vue-dropzone>
@@ -45,7 +43,7 @@ export default {
   data() {
     return {
       dropzoneOptions: {
-        url: this.addTeaserImage,
+        url: () => '',
         maxFilesize: 5.0,
         previewTemplate: this.template(),
       },
@@ -73,15 +71,11 @@ export default {
       this.error = true
       this.$toast.error(file.status, message)
     },
-    addTeaserImage(file) {
-      this.$emit('addTeaserImage', file[0])
-      return ''
-    },
     transformImage(file) {
       let thumbnailElement, editor, confirm, thumbnailPreview, contributionImage
       // Create the image editor overlay
       editor = document.createElement('div')
-      thumbnailElement = document.querySelectorAll('.dz-image')[0]
+      thumbnailElement = document.querySelectorAll('#postdropzone')[0]
       thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
       if (thumbnailPreview) thumbnailPreview.remove()
       contributionImage = document.querySelectorAll('.contribution-image')[0]
@@ -106,7 +100,7 @@ export default {
           thumbnailElement.appendChild(image)
           // Remove the editor from view
           editor.parentNode.removeChild(editor)
-          this.addTeaserImage([blob])
+          this.$emit('addTeaserImage', blob)
         })
       })
       editor.appendChild(confirm)
@@ -128,7 +122,7 @@ export default {
 <style lang="scss">
 #postdropzone {
   width: 100%;
-  min-height: 300px;
+  min-height: 500px;
   background-color: $background-color-softest;
 }
 
@@ -164,10 +158,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 180px 5px;
   color: hsl(0, 0%, 25%);
   transition: all 0.2s ease-out;
   font-size: 60px;
-  margin: 180px 5px;
   background-color: $background-color-softest;
   opacity: 0.65;
 
@@ -208,11 +202,11 @@ export default {
 }
 
 .contribution-image {
-  max-height: 620px;
+  max-height: 710px;
 }
 
 .crop-overlay {
-  max-height: 620px;
+  max-height: 710px;
   position: relative;
   width: 100%;
   // height: 100%;
@@ -227,6 +221,6 @@ export default {
   z-index: 9999;
 }
 .thumbnail-preview {
-  max-height: 620px;
+  max-height: 710px;
 }
 </style>
