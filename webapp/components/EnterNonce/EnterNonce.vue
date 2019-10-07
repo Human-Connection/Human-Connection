@@ -23,6 +23,7 @@
         {{ $t('components.enter-nonce.form.next') }}
       </ds-button>
     </ds-form>
+    <slot></slot>
   </ds-space>
 </template>
 
