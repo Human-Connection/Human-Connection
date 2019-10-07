@@ -26,6 +26,7 @@
     },
     "registration": {
       "signup": {
+        "unavailable": "Leider ist die öffentliche Registrierung von Benutzerkonten auf diesem Server derzeit nicht möglich.",
         "title": "Mach mit bei Human Connection!",
         "form": {
           "description": "Um loszulegen, gib deine E-Mail Adresse ein:",

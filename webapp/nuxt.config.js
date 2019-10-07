@@ -1,6 +1,10 @@
 import path from 'path'
+import dotenv from 'dotenv'
+
+dotenv.config() // we want to synchronize @nuxt-dotenv and nuxt-env
+
 const pkg = require('./package')
-export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN']
+export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN', 'PUBLIC_REGISTRATION']
 const dev = process.env.NODE_ENV !== 'production'
 
 const styleguidePath = '../styleguide'

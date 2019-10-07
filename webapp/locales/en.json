@@ -27,6 +27,7 @@
     },
     "registration": {
       "signup": {
+        "unavailable": "Unfortunately, public registration of user accounts is not available right now on this server.",
         "title": "Join Human Connection!",
         "form": {
           "description": "To get started, enter your email address:",
