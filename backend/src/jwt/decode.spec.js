@@ -1,9 +1,10 @@
 import Factory from '../seed/factories/index'
-import { getDriver } from '../bootstrap/neo4j'
+import { getDriver, neode as getNeode } from '../bootstrap/neo4j'
 import decode from './decode'
 
 const factory = Factory()
 const driver = getDriver()
+const neode = getNeode()
 
 // here is the decoded JWT token:
 // {
@@ -85,6 +86,33 @@ describe('decode', () => {
         })
       })
 
+      it('sets `lastActiveAt`', async () => {
+        let user = await neode.first('User', { id: 'u3' })
+        await expect(user.toJson()).resolves.not.toHaveProperty('lastActiveAt')
+        await decode(driver, authorizationHeader)
+        user = await neode.first('User', { id: 'u3' })
+        await expect(user.toJson()).resolves.toMatchObject({
+          lastActiveAt: expect.any(String),
+        })
+      })
+
+      it('updates `lastActiveAt` for every authenticated request', async () => {
+        let user = await neode.first('User', { id: 'u3' })
+        await user.update({
+          updatedAt: new Date().toISOString(),
+          lastActiveAt: '2019-10-03T23:33:08.598Z',
+        })
+        await expect(user.toJson()).resolves.toMatchObject({
+          lastActiveAt: '2019-10-03T23:33:08.598Z',
+        })
+        await decode(driver, authorizationHeader)
+        user = await neode.first('User', { id: 'u3' })
+        await expect(user.toJson()).resolves.toMatchObject({
+          // should be a different time by now ;)
+          lastActiveAt: expect.not.stringContaining('2019-10-03T23:33'),
+        })
+      })
+
       describe('but user is deleted', () => {
         beforeEach(async () => {
           await user.update({ updatedAt: new Date().toISOString(), deleted: true })
@@ -92,6 +120,7 @@ describe('decode', () => {
 
         it('returns null', returnsNull)
       })
+
       describe('but user is disabled', () => {
         beforeEach(async () => {
           await user.update({ updatedAt: new Date().toISOString(), disabled: true })

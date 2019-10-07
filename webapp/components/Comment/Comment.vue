@@ -12,8 +12,13 @@
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card :id="anchor">
       <ds-space margin-bottom="small" margin-top="small">
-        <hc-user :user="author" :date-time="comment.createdAt" />
-        <!-- Content Menu (can open Modals) -->
+        <hc-user :user="author" :date-time="comment.createdAt">
+          <template v-slot:dateTime>
+            <ds-text v-if="comment.createdAt !== comment.updatedAt">
+              ({{ $t('comment.edited') }})
+            </ds-text>
+          </template>
+        </hc-user>
         <client-only>
           <content-menu
             v-show="!openEditCommentMenu"

@@ -336,7 +336,8 @@
       "submit": "Comment",
       "submitted": "Comment Submitted",
       "updated": "Changes Saved"
-    }
+    },
+    "edited": "edited"
   },
   "comment": {
     "content": {
@@ -349,7 +350,8 @@
     "show": {
       "more": "show more",
       "less": "show less"
-    }
+    },
+    "edited": "edited"
   },
   "quotes": {
     "african": {
