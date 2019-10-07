@@ -343,6 +343,12 @@ li > p {
   }
 }
 
+.ProseMirror[contenteditable='false'] {
+  .embed-close-button {
+    display: none;
+  }
+}
+
 .embed-container {
   position: relative;
   padding: 0;

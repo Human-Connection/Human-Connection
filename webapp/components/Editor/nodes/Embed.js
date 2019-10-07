@@ -4,8 +4,13 @@ import { compileToFunctions } from 'vue-template-compiler'
 import { mapGetters, mapMutations } from 'vuex'
 import { allowEmbedIframesMutation } from '~/graphql/User.js'
 
-const template = ` 
-  <a v-if="removeEmbeds" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>  
+const template = `
+  <a
+    v-if="showLinkOnly"
+    :href="dataEmbedUrl"
+    rel="noopener noreferrer nofollow"
+    target="_blank"
+  >{{dataEmbedUrl}}</a>
   <ds-container v-else width="small" class="embed-container">
     <section class="embed-content">
       <div v-if="showEmbed" v-html="embedHtml" class="embed-html" />
@@ -16,7 +21,7 @@ const template = `
       <h4 v-if="embedTitle">{{embedTitle}}</h4>
       <p v-if="embedDescription">{{embedDescription}}</p>
       <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">{{dataEmbedUrl}}</a>
-    </section>   
+    </section>
     <aside v-if="showOverlay" class="embed-overlay">
       <h3>Achte auf deine Daten!</h3>
       <ds-text>Deine Daten sind noch nicht weitergegeben. Wenn Du die das jetzt ansiehst dann werden auch Daten mit dem Anbieter ({{embedPublisher}}) ausgetauscht!</ds-text>
@@ -30,7 +35,7 @@ const template = `
       </label>
     </aside>
     <ds-button icon="close" ghost size="small" class="embed-close-button" @click.prevent="removeEmbed()" />
-  </ds-container> 
+  </ds-container>
 `
 
 const compiledTemplate = compileToFunctions(template)
@@ -93,7 +98,7 @@ export default class Embed extends Node {
         checkedAlwaysAllowEmbeds: false,
         showEmbed: false,
         showOverlay: false,
-        removeEmbeds: false,
+        showLinkOnly: false,
       }),
       async created() {
         if (this.options) {
@@ -160,9 +165,7 @@ export default class Embed extends Node {
           }
         },
         removeEmbed() {
-          // TODO: replace the whole Embed with a proper Link node
-          // console.log('I want to be a Link!')
-          this.removeEmbeds = true
+          this.showLinkOnly = true
         },
         async updateEmbedSettings(allowEmbedIframes) {
           try {
