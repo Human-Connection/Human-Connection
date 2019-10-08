@@ -2,10 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import minimatch from 'minimatch'
 
-let oEmbedProvidersFile = fs.readFileSync(
-  path.join(__dirname, './providers.json'),
-  'utf8',
-)
+let oEmbedProvidersFile = fs.readFileSync(path.join(__dirname, './providers.json'), 'utf8')
 
 // some providers allow a format parameter
 // we need JSON

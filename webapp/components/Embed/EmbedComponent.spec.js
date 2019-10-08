@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import EmbedComponent from './EmbedComponent'
 
-let Wrapper, wrapper, propsData, getters, mocks
+let wrapper, propsData, getters, mocks
 const someUrl = 'https://www.youtube.com/watch?v=qkdXAtO40Fo'
 const localVue = createLocalVue()
 
@@ -11,21 +11,31 @@ localVue.use(Vuex)
 localVue.use(Styleguide)
 
 describe('EmbedComponent.vue', () => {
+  const Wrapper = () => {
+    const store = new Vuex.Store({
+      getters,
+    })
+    return mount(EmbedComponent, { propsData, localVue, store, mocks })
+  }
+
   beforeEach(() => {
     mocks = {
       $t: a => a,
+      $apollo: {
+        mutate: jest
+          .fn()
+          .mockResolvedValueOnce({ data: { UpdateUser: { allowEmbedIframes: true } } }),
+      },
+      $toast: {
+        success: jest.fn(),
+        error: jest.fn(),
+      },
     }
     propsData = {}
     getters = {
       'auth/user': () => {
         return { id: 'u5', allowEmbedIframes: false }
       },
-    }
-    Wrapper = ({ propsData }) => {
-      const store = new Vuex.Store({
-        getters,
-      })
-      return mount(EmbedComponent, { propsData, localVue, store, mocks })
     }
   })
 
@@ -48,7 +58,7 @@ describe('EmbedComponent.vue', () => {
         sources: ['resource', 'oembed'],
         html: null,
       }
-      wrapper = Wrapper({ propsData })
+      wrapper = Wrapper()
     })
 
     it('shows the title', () => {
@@ -64,12 +74,8 @@ describe('EmbedComponent.vue', () => {
     })
 
     it('shows preview Images for link', () => {
-      expect(wrapper.find('.embed-preview-image--clickable')).toEqual({
-        selector: '.embed-preview-image--clickable',
-      })
+      expect(wrapper.find('.embed-preview-image').exists()).toBe(true)
     })
-
-           
   })
 
   describe('given a href with embed html', () => {
@@ -81,7 +87,7 @@ describe('EmbedComponent.vue', () => {
           description:
             'She’s incapable of controlling her limbs when her kitty is around. The obsession grows every day. Ps. That’s a sleep sack she’s in. Not a starfish outfit. Al...',
         }
-        wrapper = Wrapper({ propsData })
+        wrapper = Wrapper()
       })
 
       it('show the title', () => {
@@ -94,67 +100,107 @@ describe('EmbedComponent.vue', () => {
         )
       })
 
-    describe('onEmbed returned embed data with html', () => {
-      beforeEach(() => {
-        propsData.embedData = {
-          __typename: 'Embed',
-          type: 'video',
-          title: 'Baby Loves Cat',
-          author: 'Merkley Family',
-          publisher: 'YouTube',
-          date: '2015-08-16T00:00:00.000Z',
-          description:
-            'She’s incapable of controlling her limbs when her kitty is around. The obsession grows every day. Ps. That’s a sleep sack she’s in. Not a starfish outfit. Al...',
-          url: someUrl,
-          image: 'https://i.ytimg.com/vi/qkdXAtO40Fo/maxresdefault.jpg',
-          audio: null,
-          video: null,
-          lang: 'de',
-          sources: ['resource', 'oembed'],
-          html:
-            '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
-        }
-        wrapper = Wrapper({ propsData })
-      })
+      describe('onEmbed returned embed data with html', () => {
+        beforeEach(() => {
+          propsData.embedData = {
+            __typename: 'Embed',
+            type: 'video',
+            title: 'Baby Loves Cat',
+            author: 'Merkley Family',
+            publisher: 'YouTube',
+            date: '2015-08-16T00:00:00.000Z',
+            description:
+              'She’s incapable of controlling her limbs when her kitty is around. The obsession grows every day. Ps. That’s a sleep sack she’s in. Not a starfish outfit. Al...',
+            url: someUrl,
+            image: 'https://i.ytimg.com/vi/qkdXAtO40Fo/maxresdefault.jpg',
+            audio: null,
+            video: null,
+            lang: 'de',
+            sources: ['resource', 'oembed'],
+            html:
+              '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>',
+          }
+          wrapper = Wrapper()
+        })
 
-      it('shows a simple link when a user closes the embed preview', () => {
-        wrapper.find('.embed-close-button').trigger('click')
-        expect(wrapper.vm.showLinkOnly).toBe(true)
-      })
+        it('shows a simple link when a user closes the embed preview', () => {
+          wrapper.find('.embed-close-button').trigger('click')
+          expect(wrapper.vm.showLinkOnly).toBe(true)
+        })
 
-      it('opens the data privacy overlay when a user clicks on the preview image', () => {
-        wrapper.find('.embed-preview-image--clickable').trigger('click')
-        expect(wrapper.vm.showOverlay).toBe(true)
-      })
+        it('opens the data privacy overlay when a user clicks on the preview image', () => {
+          wrapper.find('.embed-preview-image--clickable').trigger('click')
+          expect(wrapper.vm.showOverlay).toBe(true)
+        })
 
-      it("click show iframe, but don't select to change setting permanetly", () => {
-        wrapper.setData({ showOverlay: true })
-        wrapper.find('.ds-button-primary').trigger('click')
-        expect(wrapper.vm.showEmbed).toBe(true)
-        expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(false)
-      })
+        describe('shows iframe', () => {
+          beforeEach(() => {
+            wrapper.setData({ showOverlay: true })
+          })
 
-      it('click show iframe and change setting permanetly', () => {
-        wrapper.setData({ showOverlay: true })
-        wrapper.find('input[type=checkbox]').trigger('click')
-        wrapper.find('.ds-button-primary').trigger('click')
-        expect(wrapper.vm.showEmbed).toBe(true)
-        expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(true)
-      })
+          it('when user agress', () => {
+            wrapper.find('.ds-button-primary').trigger('click')
+            expect(wrapper.vm.showEmbed).toBe(true)
+          })
 
-      it('click cancel do not show iframe', () => {
-        wrapper.setData({ showOverlay: true })
-        wrapper.find('.ds-button-ghost').trigger('click')
-        expect(wrapper.vm.showOverlay).toBe(false)
-        expect(wrapper.vm.showEmbed).toBe(false)
-      })
+          it('does not show iframe when user clicks to cancel', () => {
+            wrapper.find('.ds-button-ghost').trigger('click')
+            expect(wrapper.vm.showEmbed).toBe(false)
+          })
 
-      it('show only iframe if allowEmbedIframes true', () => {
-        wrapper.setData({ allowEmbedIframes: true })
-        expect(wrapper.find('.embed-html')).toEqual({ selector: '.embed-html' })
-        expect(wrapper.find('.embed-preview-image--clickable')).toEqual({})
+          describe("doesn't set permanently", () => {
+            beforeEach(() => {
+              wrapper.find('.ds-button-primary').trigger('click')
+            })
+
+            it("if user doesn't give consent", () => {
+              expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(false)
+            })
+
+            it("doesn't update the user's profile", () => {
+              expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+            })
+          })
+
+          describe('sets permanently', () => {
+            beforeEach(() => {
+              wrapper.find('input[type=checkbox]').trigger('click')
+              wrapper.find('.ds-button-primary').trigger('click')
+            })
+
+            it('changes setting permanetly when user requests', () => {
+              expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(true)
+            })
+
+            it("updates the user's profile", () => {
+              expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
+            })
+          })
+        })
+
+        describe('immediately shows', () => {
+          beforeEach(() => {
+            getters = {
+              'auth/user': () => {
+                return { id: 'u5', allowEmbedIframes: true }
+              },
+            }
+            wrapper = Wrapper()
+          })
+
+          it('sets showEmbed to true', () => {
+            expect(wrapper.vm.showEmbed).toBe(true)
+          })
+
+          it('the iframe returned from oEmbed', () => {
+            expect(wrapper.find('iframe').html()).toEqual(propsData.embedData.html)
+          })
+
+          it('does not display image to click', () => {
+            expect(wrapper.find('.embed-preview-image--clickable').exists()).toBe(false)
+          })
+        })
       })
-    })
     })
   })
 })

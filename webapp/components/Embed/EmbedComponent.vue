@@ -145,6 +145,7 @@ export default {
         this.$toast.success(this.$t('contribution.success'))
         this.showEmbed = this.currentUser.allowEmbedIframes
       } catch (err) {
+        console.log(err)
         this.$toast.error(err.message)
       }
     },
