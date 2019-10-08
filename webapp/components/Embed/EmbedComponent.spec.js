@@ -68,8 +68,6 @@ describe('EmbedComponent.vue', () => {
         selector: '.embed-preview-image--clickable',
       })
     })
-
-           
   })
 
   describe('given a href with embed html', () => {
@@ -94,67 +92,67 @@ describe('EmbedComponent.vue', () => {
         )
       })
 
-    describe('onEmbed returned embed data with html', () => {
-      beforeEach(() => {
-        propsData.embedData = {
-          __typename: 'Embed',
-          type: 'video',
-          title: 'Baby Loves Cat',
-          author: 'Merkley Family',
-          publisher: 'YouTube',
-          date: '2015-08-16T00:00:00.000Z',
-          description:
-            'She’s incapable of controlling her limbs when her kitty is around. The obsession grows every day. Ps. That’s a sleep sack she’s in. Not a starfish outfit. Al...',
-          url: someUrl,
-          image: 'https://i.ytimg.com/vi/qkdXAtO40Fo/maxresdefault.jpg',
-          audio: null,
-          video: null,
-          lang: 'de',
-          sources: ['resource', 'oembed'],
-          html:
-            '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
-        }
-        wrapper = Wrapper({ propsData })
-      })
+      describe('onEmbed returned embed data with html', () => {
+        beforeEach(() => {
+          propsData.embedData = {
+            __typename: 'Embed',
+            type: 'video',
+            title: 'Baby Loves Cat',
+            author: 'Merkley Family',
+            publisher: 'YouTube',
+            date: '2015-08-16T00:00:00.000Z',
+            description:
+              'She’s incapable of controlling her limbs when her kitty is around. The obsession grows every day. Ps. That’s a sleep sack she’s in. Not a starfish outfit. Al...',
+            url: someUrl,
+            image: 'https://i.ytimg.com/vi/qkdXAtO40Fo/maxresdefault.jpg',
+            audio: null,
+            video: null,
+            lang: 'de',
+            sources: ['resource', 'oembed'],
+            html:
+              '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+          }
+          wrapper = Wrapper({ propsData })
+        })
 
-      it('shows a simple link when a user closes the embed preview', () => {
-        wrapper.find('.embed-close-button').trigger('click')
-        expect(wrapper.vm.showLinkOnly).toBe(true)
-      })
+        it('shows a simple link when a user closes the embed preview', () => {
+          wrapper.find('.embed-close-button').trigger('click')
+          expect(wrapper.vm.showLinkOnly).toBe(true)
+        })
 
-      it('opens the data privacy overlay when a user clicks on the preview image', () => {
-        wrapper.find('.embed-preview-image--clickable').trigger('click')
-        expect(wrapper.vm.showOverlay).toBe(true)
-      })
+        it('opens the data privacy overlay when a user clicks on the preview image', () => {
+          wrapper.find('.embed-preview-image--clickable').trigger('click')
+          expect(wrapper.vm.showOverlay).toBe(true)
+        })
 
-      it("click show iframe, but don't select to change setting permanetly", () => {
-        wrapper.setData({ showOverlay: true })
-        wrapper.find('.ds-button-primary').trigger('click')
-        expect(wrapper.vm.showEmbed).toBe(true)
-        expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(false)
-      })
+        it("click show iframe, but don't select to change setting permanetly", () => {
+          wrapper.setData({ showOverlay: true })
+          wrapper.find('.ds-button-primary').trigger('click')
+          expect(wrapper.vm.showEmbed).toBe(true)
+          expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(false)
+        })
 
-      it('click show iframe and change setting permanetly', () => {
-        wrapper.setData({ showOverlay: true })
-        wrapper.find('input[type=checkbox]').trigger('click')
-        wrapper.find('.ds-button-primary').trigger('click')
-        expect(wrapper.vm.showEmbed).toBe(true)
-        expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(true)
-      })
+        it('click show iframe and change setting permanetly', () => {
+          wrapper.setData({ showOverlay: true })
+          wrapper.find('input[type=checkbox]').trigger('click')
+          wrapper.find('.ds-button-primary').trigger('click')
+          expect(wrapper.vm.showEmbed).toBe(true)
+          expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(true)
+        })
 
-      it('click cancel do not show iframe', () => {
-        wrapper.setData({ showOverlay: true })
-        wrapper.find('.ds-button-ghost').trigger('click')
-        expect(wrapper.vm.showOverlay).toBe(false)
-        expect(wrapper.vm.showEmbed).toBe(false)
-      })
+        it('click cancel do not show iframe', () => {
+          wrapper.setData({ showOverlay: true })
+          wrapper.find('.ds-button-ghost').trigger('click')
+          expect(wrapper.vm.showOverlay).toBe(false)
+          expect(wrapper.vm.showEmbed).toBe(false)
+        })
 
-      it('show only iframe if allowEmbedIframes true', () => {
-        wrapper.setData({ allowEmbedIframes: true })
-        expect(wrapper.find('.embed-html')).toEqual({ selector: '.embed-html' })
-        expect(wrapper.find('.embed-preview-image--clickable')).toEqual({})
+        it('show only iframe if allowEmbedIframes true', () => {
+          wrapper.setData({ allowEmbedIframes: true })
+          expect(wrapper.find('.embed-html')).toEqual({ selector: '.embed-html' })
+          expect(wrapper.find('.embed-preview-image--clickable')).toEqual({})
+        })
       })
-    })
     })
   })
 })
