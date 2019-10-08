@@ -51,26 +51,26 @@ describe('EmbedComponent.vue', () => {
       wrapper = Wrapper({ propsData })
     })
 
-    it.only('show the title', () => {
+    it('shows the title', () => {
       expect(wrapper.find('h4').text()).toBe(
         '👻 ✉️ Bruno... le ciel sur répondeur ! 🔮 🧠 - Clément FREZE',
       )
     })
 
-    it.only('show the desciption', () => {
+    it('shows the description', () => {
       expect(wrapper.find('.embed-content p').text()).toBe(
         'Salut tout le monde ! Aujourd’hui, une vidéo sur le scepticisme, nous allons parler médiumnité avec le cas de Bruno CHARVET : « Bruno, un nouveau message ». Merci de rester respectueux dans les commentaires : SOURCES : Les sources des vi...',
       )
     })
 
-    it.only('show preview Images for link', () => {
+    it('shows preview Images for link', () => {
       expect(wrapper.find('.embed-preview-image--clickable')).toEqual({
         selector: '.embed-preview-image--clickable',
       })
     })
   })
 
-  describe('given a href wite embed html', () => {
+  describe('given a href with embed html', () => {
     describe('onEmbed returned title and description', () => {
       beforeEach(() => {
         propsData.embedData = {
@@ -82,11 +82,11 @@ describe('EmbedComponent.vue', () => {
         wrapper = Wrapper({ propsData })
       })
 
-      it.only('show the title', () => {
+      it('show the title', () => {
         expect(wrapper.find('h4').text()).toBe('Baby Loves Cat')
       })
 
-      it.only('show the desciption', () => {
+      it('show the desciption', () => {
         expect(wrapper.find('.embed-content p').text()).toBe(
           'She’s incapable of controlling her limbs when her kitty is around. The obsession grows every day. Ps. That’s a sleep sack she’s in. Not a starfish outfit. Al...',
         )
@@ -121,19 +121,19 @@ describe('EmbedComponent.vue', () => {
         expect(wrapper.vm.showLinkOnly).toBe(true)
       })
 
-      it.only('opens the data privacy overlay when a user clicks on the preview image', () => {
+      it('opens the data privacy overlay when a user clicks on the preview image', () => {
         wrapper.find('.embed-preview-image--clickable').trigger('click')
         expect(wrapper.vm.showOverlay).toBe(true)
       })
 
-      it.only('click show iframe and change NOT setting permanetly', () => {
+      it("click show iframe, but don't select to change setting permanetly", () => {
         wrapper.setData({ showOverlay: true })
         wrapper.find('.ds-button-primary').trigger('click')
         expect(wrapper.vm.showEmbed).toBe(true)
         expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(false)
       })
 
-      it.only('click show iframe and change setting permanetly', () => {
+      it('click show iframe and change setting permanetly', () => {
         wrapper.setData({ showOverlay: true })
         wrapper.find('input[type=checkbox]').trigger('click')
         wrapper.find('.ds-button-primary').trigger('click')
@@ -141,7 +141,14 @@ describe('EmbedComponent.vue', () => {
         expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(true)
       })
 
-      it.only('show only iframe if allowEmbedIframes true', () => {
+      it('click do not show iframe', () => {
+        wrapper.setData({ showOverlay: true })
+        wrapper.find('.ds-button-ghost').trigger('click')
+        expect(wrapper.vm.showOverlay).toBe(false)
+        expect(wrapper.vm.showEmbed).toBe(false)
+      })
+
+      it('show only iframe if allowEmbedIframes true', () => {
         wrapper.setData({ allowEmbedIframes: true })
         expect(wrapper.find('.embed-html')).toEqual({ selector: '.embed-html' })
         expect(wrapper.find('.embed-preview-image--clickable')).toEqual({})
