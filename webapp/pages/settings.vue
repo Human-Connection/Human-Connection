@@ -36,6 +36,10 @@ export default {
           path: `/settings/my-social-media`,
         },
         {
+          name: this.$t('settings.blocked-users.name'),
+          path: `/settings/blocked-users`,
+        },
+        {
           name: this.$t('post.allowEmbeds.name'),
           path: `/settings/allow-embeds`,
         },
