@@ -26,18 +26,18 @@ script:
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
   # Backend
-  - docker-compose exec backend yarn run lint
-  - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
-  - docker-compose exec backend yarn run db:seed
-  - docker-compose exec backend yarn run db:reset
+  # - docker-compose exec backend yarn run lint
+  # - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
+  # - docker-compose exec backend yarn run db:seed
+  # - docker-compose exec backend yarn run db:reset
   # ActivityPub cucumber testing temporarily disabled because it's too buggy
   # - docker-compose exec backend yarn run test:cucumber --tags "not @wip"
   # - docker-compose exec backend yarn run db:reset
   # - docker-compose exec backend yarn run db:seed
   # Frontend
-  - docker-compose exec webapp yarn run lint
-  - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
-  - docker-compose exec -d backend yarn run test:before:seeder
+  # - docker-compose exec webapp yarn run lint
+  # - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
+  # - docker-compose exec -d backend yarn run test:before:seeder
   # Fullstack
   - docker-compose down
   - docker-compose -f docker-compose.yml up -d
