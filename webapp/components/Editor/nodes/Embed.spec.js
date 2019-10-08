@@ -14,11 +14,6 @@ describe('Embed.vue', () => {
   beforeEach(() => {
     propsData = {}
     component = new Embed()
-    // computed = {
-    //   currentUser: () => {
-    //     return { id: 'im a user', allowEmbedIframes: false }
-    //   },
-    // }
     Wrapper = ({ propsData }) => {
       return shallowMount(component.view, { propsData })
     }

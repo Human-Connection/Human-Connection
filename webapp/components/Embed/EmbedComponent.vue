@@ -71,7 +71,7 @@ export default {
     }
   },
   created() {
-    if (this.embedData.options) {
+    if (this.currentUser.allowEmbedIframes) {
       this.showEmbed = this.currentUser.allowEmbedIframes
       this.checkedAlwaysAllowEmbeds = this.currentUser.allowEmbedIframes
     }
