@@ -16,6 +16,7 @@ type Post {
   createdAt: String
   updatedAt: String
   language: String
+  pinned: Boolean
   relatedContributions: [Post]!
     @cypher(
       statement: """
@@ -68,6 +69,7 @@ type Mutation {
     language: String
     categoryIds: [ID]
     contentExcerpt: String
+    pinned: Boolean
   ): Post
   UpdatePost(
     id: ID!

@@ -17,13 +17,21 @@ const categoryIds = ['cat9', 'cat4', 'cat15']
 let variables
 
 const createPostMutation = gql`
-  mutation($id: ID, $title: String!, $content: String!, $language: String, $categoryIds: [ID]) {
+  mutation(
+    $id: ID
+    $title: String!
+    $content: String!
+    $language: String
+    $categoryIds: [ID]
+    $pinned: Boolean
+  ) {
     CreatePost(
       id: $id
       title: $title
       content: $content
       language: $language
       categoryIds: $categoryIds
+      pinned: $pinned
     ) {
       id
       title
@@ -31,6 +39,7 @@ const createPostMutation = gql`
       slug
       disabled
       deleted
+      pinned
       language
       author {
         name
@@ -357,6 +366,73 @@ describe('CreatePost', () => {
         })
       })
     })
+
+    describe('pinned posts', () => {
+      beforeEach(async () => {
+        variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15'], pinned: true }
+      })
+      describe('users cannot create pinned posts', () => {
+        it('throws authorization error', async () => {
+          await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+            errors: [{ message: 'Not Authorised!' }],
+            data: { CreatePost: null },
+          })
+        })
+      })
+
+      describe('moderator cannot create pinned posts', () => {
+        let moderator
+        beforeEach(async () => {
+          moderator = await user.update({ role: 'moderator', updatedAt: new Date().toISOString() })
+          authenticatedUser = await moderator.toJson()
+        })
+
+        it('throws authorization error', async () => {
+          await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+            errors: [{ message: 'Not Authorised!' }],
+            data: { CreatePost: null },
+          })
+        })
+      })
+
+      describe('admin can create pinned posts', () => {
+        let admin
+        beforeEach(async () => {
+          admin = await user.update({
+            role: 'admin',
+            name: 'Admin',
+            updatedAt: new Date().toISOString(),
+          })
+          authenticatedUser = await admin.toJson()
+          variables = {
+            ...variables,
+            title: 'pinned post',
+            content:
+              'this is super important for the community and we promise not to have too many',
+          }
+        })
+
+        it('throws authorization error', async () => {
+          const expected = {
+            data: {
+              CreatePost: {
+                title: 'pinned post',
+                content:
+                  'this is super important for the community and we promise not to have too many',
+                author: {
+                  name: 'Admin',
+                },
+                pinned: true,
+              },
+            },
+          }
+
+          await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
+            expected,
+          )
+        })
+      })
+    })
   })
 })
 
@@ -386,7 +462,6 @@ describe('UpdatePost', () => {
     })
 
     variables = {
-      ...variables,
       id: 'p9876',
       title: 'New title',
       content: 'New content',
@@ -395,8 +470,11 @@ describe('UpdatePost', () => {
 
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
-      const { errors } = await mutate({ mutation: updatePostMutation, variables })
-      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+      authenticatedUser = null
+      expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject({
+        errors: [{ message: 'Not Authorised!' }],
+        data: { UpdatePost: null },
+      })
     })
   })
 
