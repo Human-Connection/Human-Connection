@@ -68,6 +68,8 @@ describe('EmbedComponent.vue', () => {
         selector: '.embed-preview-image--clickable',
       })
     })
+
+           
   })
 
   describe('given a href with embed html', () => {
@@ -91,7 +93,6 @@ describe('EmbedComponent.vue', () => {
           'She’s incapable of controlling her limbs when her kitty is around. The obsession grows every day. Ps. That’s a sleep sack she’s in. Not a starfish outfit. Al...',
         )
       })
-    })
 
     describe('onEmbed returned embed data with html', () => {
       beforeEach(() => {
@@ -141,7 +142,7 @@ describe('EmbedComponent.vue', () => {
         expect(wrapper.vm.checkedAlwaysAllowEmbeds).toBe(true)
       })
 
-      it('click do not show iframe', () => {
+      it('click cancel do not show iframe', () => {
         wrapper.setData({ showOverlay: true })
         wrapper.find('.ds-button-ghost').trigger('click')
         expect(wrapper.vm.showOverlay).toBe(false)
@@ -153,6 +154,7 @@ describe('EmbedComponent.vue', () => {
         expect(wrapper.find('.embed-html')).toEqual({ selector: '.embed-html' })
         expect(wrapper.find('.embed-preview-image--clickable')).toEqual({})
       })
+    })
     })
   })
 })
