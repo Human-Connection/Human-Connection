@@ -287,6 +287,7 @@
         "columns": {
           "number": "No.",
           "name": "Name",
+          "email": "E-mail",
           "slug": "Slug",
           "role": "Role",
           "createdAt": "Created at"

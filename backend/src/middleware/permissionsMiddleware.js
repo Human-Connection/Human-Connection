@@ -174,7 +174,7 @@ const permissions = shield(
       VerifyEmailAddress: isAuthenticated,
     },
     User: {
-      email: isMyOwn,
+      email: or(isMyOwn, isAdmin),
     },
   },
   {
