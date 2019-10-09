@@ -1,10 +1,5 @@
 <template>
-  <ds-modal
-    :title="title"
-    :is-open="isOpen"
-    :width="{ base: '100%', sm: '200px', md: '200px', lg: '200px' }"
-    @cancel="cancel"
-  >
+  <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
     <transition name="ds-transition-fade">
       <ds-flex v-if="success" class="hc-modal-success" centered>
         <sweetalert-icon icon="success" />
@@ -26,6 +21,7 @@
       :schema="formSchema.reasonCategory"
       :label="$t('report.reason.category.label')"
       :options="form.reasonCategoryOptions"
+      labelProp="label"
     />
     <!-- Wolle <ds-input
         model="reasonDescription"
@@ -33,16 +29,16 @@
         :placeholder="$t('report.reason.description.placeholder')"
         type="textarea"
         rows="5"
-        class="reasonDescription"
+        class="reason-description"
       /> -->
     <ds-input
+      class="reason-description"
       :value="form.reasonDescription"
       :schema="formSchema.reasonDescription"
       :label="$t('report.reason.description.label')"
       :placeholder="$t('report.reason.description.placeholder')"
       type="textarea"
       rows="5"
-      class="reasonDescription"
     />
     <small class="smallTag">
       {{ form.reasonDescription.length }}/{{ formSchema.reasonDescription.max }}
@@ -214,15 +210,24 @@ export default {
 </script>
 
 <style lang="scss">
-.reasonDescription {
-  margin-top: $space-x-small;
-  margin-bottom: $space-xxx-small;
+.ds-modal {
+  max-width: 600px !important;
+}
+.ds-radio-option:not(.ds-button) {
+  width: 100% !important;
+}
+.ds-radio-option-label {
+  margin: 5px 20px 5px 5px !important;
+  width: 100% !important;
+}
+.reason-description {
+  margin-top: $space-x-small !important;
+  margin-bottom: $space-xx-small !important;
 }
 .smallTag {
   width: 100%;
   position: relative;
   left: 90%;
-  margin-top: $space-xxx-small;
 }
 .hc-modal-success {
   pointer-events: none;
