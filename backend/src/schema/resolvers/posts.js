@@ -97,7 +97,8 @@ export default {
           `
       }
 
-      createPostCypher += `UNWIND $categoryIds AS categoryId
+      createPostCypher += `
+        UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
         RETURN post`

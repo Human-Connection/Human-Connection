@@ -282,7 +282,10 @@ describe('CreatePost', () => {
     })
 
     it('creates a post', async () => {
-      const expected = { data: { CreatePost: { title: 'I am a title', content: 'Some content' } } }
+      const expected = {
+        data: { CreatePost: { title: 'I am a title', content: 'Some content' } },
+        errors: undefined,
+      }
       await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
         expected,
       )
@@ -298,6 +301,7 @@ describe('CreatePost', () => {
             },
           },
         },
+        errors: undefined,
       }
       await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
         expected,
