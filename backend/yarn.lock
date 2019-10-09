@@ -2065,7 +2065,7 @@ bcryptjs@~2.4.3:
   resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
   integrity sha1-mrVie5PmBiH/fNrF2pczAn3x0Ms=
 
-becke-ch--regex--s0-0-v1--base--pl--lib@^1.2.0:
+becke-ch--regex--s0-0-v1--base--pl--lib@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/becke-ch--regex--s0-0-v1--base--pl--lib/-/becke-ch--regex--s0-0-v1--base--pl--lib-1.4.0.tgz#429ceebbfa5f7e936e78d73fbdc7da7162b20e20"
   integrity sha1-Qpzuu/pffpNueNc/vcfacWKyDiA=
@@ -2707,29 +2707,30 @@ cssstyle@^1.0.0:
   dependencies:
     cssom "0.3.x"
 
-cucumber-expressions@^7.0.0:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/cucumber-expressions/-/cucumber-expressions-7.0.2.tgz#aa4f959c68e72e0893613406e18cb3afe2fd4d82"
-  integrity sha512-U7xNcsDOA26rhbW/RlhrMexMyYDsu9Fea+RcEGrRB23heZjmy9rOHQcHAVvzSd+drlKC7XaSS6rlGL977j8ClQ==
+cucumber-expressions@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/cucumber-expressions/-/cucumber-expressions-8.0.1.tgz#47eb87dcb626e90a4672986da1130f3c470b9e3d"
+  integrity sha512-g+A+tUEafNofe6ErwvOkqaMvDj9NuOr0GouGotpw4r5yK2d4144o9/6sQpXBr2YXbRy5ItmER/2bzAyDAzhPyQ==
   dependencies:
-    becke-ch--regex--s0-0-v1--base--pl--lib "^1.2.0"
+    becke-ch--regex--s0-0-v1--base--pl--lib "^1.4.0"
+    xregexp "^4.2.4"
 
 cucumber-tag-expressions@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/cucumber-tag-expressions/-/cucumber-tag-expressions-2.0.2.tgz#aac27aae3690818ec15235bd056282dad8a2d2b8"
   integrity sha512-DohmT4X641KX/sb96bdb7J2kXNcQBPrYmf3Oc5kiHCLfzFMWx/o2kB4JvjvQPZnYuA9lRt6pqtArM5gvUn4uzw==
 
-cucumber@~6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/cucumber/-/cucumber-6.0.1.tgz#e1f003df9849e1861195783e92fe3463c360ca63"
-  integrity sha512-a/OmPfz00gNH8urg90e8tzFq2R5J8xZZUlXXpQk5xERSeQBZK7QeBKZArvQP476i9GarvFXY2eyIfKhGdCNrcw==
+cucumber@~6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/cucumber/-/cucumber-6.0.2.tgz#3c4fbf1f76e60ddee79ab58f137a62c897a4d7f0"
+  integrity sha512-yEwPYGvgS2KG6ODdUXQwWcxjyr/l31dmpGJsZSkJIXNLNNmieKVefTpf8zLj6+0V2TCPwkmUZt4+OIXv97duEw==
   dependencies:
     assertion-error-formatter "^3.0.0"
     bluebird "^3.4.1"
     cli-table3 "^0.5.1"
     colors "^1.1.2"
     commander "^3.0.1"
-    cucumber-expressions "^7.0.0"
+    cucumber-expressions "^8.0.1"
     cucumber-tag-expressions "^2.0.2"
     duration "^0.2.1"
     escape-string-regexp "^2.0.0"
