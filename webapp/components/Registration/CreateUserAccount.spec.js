@@ -103,7 +103,9 @@ describe('CreateUserAccount', () => {
 
           it('displays success', async () => {
             await action()
-            expect(mocks.$t).toHaveBeenCalledWith('components.registration.create-user-account.success')
+            expect(mocks.$t).toHaveBeenCalledWith(
+              'components.registration.create-user-account.success',
+            )
           })
 
           describe('after timeout', () => {
@@ -131,7 +133,9 @@ describe('CreateUserAccount', () => {
 
           it('displays form errors', async () => {
             await action()
-            expect(mocks.$t).toHaveBeenCalledWith('components.registration.create-user-account.error')
+            expect(mocks.$t).toHaveBeenCalledWith(
+              'components.registration.create-user-account.error',
+            )
           })
         })
       })
