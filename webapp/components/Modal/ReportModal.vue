@@ -9,13 +9,6 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
 
-    <!-- Wolle <ds-form ref="reportForm" v-model="form" :schema="formSchema"> -->
-    <!-- Wolle <ds-radio
-        model="reasonCategory"
-        :label="$t('report.reason.category.label')"
-        :options="form.reasonCategoryOptions"
-        :placeholder="$t('report.reason.category.placeholder')"
-      /> -->
     <ds-radio
       :value="form.reasonCategory"
       :schema="formSchema.reasonCategory"
@@ -23,14 +16,6 @@
       :options="form.reasonCategoryOptions"
       labelProp="label"
     />
-    <!-- Wolle <ds-input
-        model="reasonDescription"
-        :label="$t('report.reason.description.label')"
-        :placeholder="$t('report.reason.description.placeholder')"
-        type="textarea"
-        rows="5"
-        class="reason-description"
-      /> -->
     <ds-input
       class="reason-description"
       :value="form.reasonDescription"
@@ -44,7 +29,6 @@
       {{ form.reasonDescription.length }}/{{ formSchema.reasonDescription.max }}
     </small>
     <ds-space />
-    <!-- Wolle </ds-form> -->
 
     <template slot="footer">
       <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
@@ -103,7 +87,6 @@ export default {
       failsValidations: true,
       form: {
         reasonCategory: null,
-        // Wolle reasonCategory: reasonCategoryOptions[0],
         reasonCategoryOptions,
         reasonDescription: '',
       },
@@ -112,11 +95,8 @@ export default {
           type: 'enum',
           required: true,
           validator: (rule, value, callback, source, options) => {
-            // Wolle console.log('value: ', value)
             this.form.reasonCategory = value
-            // Wolle console.log('this.form.reasonCategory: ', this.form.reasonCategory)
             this.failsValidations = !this.form.reasonCategory
-            // Wolle console.log('this.failsValidations: ', this.failsValidations)
             callback()
           },
         },
@@ -142,15 +122,6 @@ export default {
     },
   },
   methods: {
-    // Wolle toggleReasonCategory(reasonCategory) {
-    //   console.log('reasonCategory: ', reasonCategory)
-    //   console.log('this.form.reasonCategory: ', this.form.reasonCategory)
-    //   this.failsValidations = false
-    // },
-    // Wolle inputReasonAddText(reasonDescription) {
-    //   console.log('reasonDescription: ', reasonDescription)
-    //   this.form.reasonDescription = reasonDescription
-    // },
     async cancel() {
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
       // await this.modalData.buttons.cancel.callback()
@@ -161,8 +132,6 @@ export default {
     },
     async confirm() {
       const { reasonCategory, reasonDescription } = this.form
-      // Wolle console.log('reasonCategory: ', reasonCategory.value)
-      // Wolle console.log('reasonDescription: ', reasonDescription)
 
       this.loading = true
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
