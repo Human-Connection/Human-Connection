@@ -346,7 +346,8 @@
     },
     "allowEmbeds": {
       "name": "Third party providers",
-      "description": "In our contributions can / will be included from the following list of providers foreign code from other providers (third parties) in the form of embedded videos, images or text.",
+      "info-description": "If you agree, the posts from the following list of providers will automatically include third-party code from other providers (third parties) in the form of embedded videos, images, or text.",
+      "description": "You have agreed that in the contributions from the following list of providers, foreign code from other providers (third parties) in the form of embedded videos, images or text automatically are embedded.",
       "statustext": "At the moment this is automatic embedding:",
       "statuschange": "Change setting",
       "false": "Turned off",

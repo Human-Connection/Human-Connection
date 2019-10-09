@@ -345,7 +345,8 @@
     },
     "allowEmbeds": {
       "name": "Drittanbieter",
-      "description": "In unseren Beiträgen können / werden aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text eingebunden werden.",
+      "info-description": "Wenn du zustimmst werden in den Beiträgen aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text automatisch eingebunden werden.",
+      "description": "Du hast zugestimmt das in den Beiträgen aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text automatisch eingebunden werden.",
       "statustext": "Momentan ist das automatische einbinden:",
       "statuschange": "Einstellung ändern",
       "false": "Abgestellt",

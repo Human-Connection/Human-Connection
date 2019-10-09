@@ -12,12 +12,12 @@
       <ds-container width="large">
         <ds-flex>
           <ds-flex-item>
-            <ds-button @click="toFalse" primary :disabled="!disabled">
+            <ds-button @click="toFalse" :disabled="!disabled">
               {{ $t('post.allowEmbeds.button-tofalse') }}
             </ds-button>
           </ds-flex-item>
           <ds-flex-item>
-            <ds-button @click="toTrue" danger :disabled="disabled">
+            <ds-button @click="toTrue" secondary :disabled="disabled">
               {{ $t('post.allowEmbeds.button-totrue') }}
             </ds-button>
           </ds-flex-item>
@@ -27,8 +27,11 @@
     <ds-space />
     <ds-space />
 
-    <div v-show="disabled">
-      <p>{{ $t('post.allowEmbeds.description') }}</p>
+    <div>
+      <p v-if="disabled">
+        <b>{{ $t('post.allowEmbeds.description') }}</b>
+      </p>
+      <p v-else>{{ $t('post.allowEmbeds.info-description') }}</p>
       <ds-container>
         <ds-placeholder>
           <ul>
