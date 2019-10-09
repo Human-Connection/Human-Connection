@@ -119,9 +119,9 @@ When(/^I confirm the reporting dialog .*:$/, message => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach(({ resourceId, reasonCategory, reasonDescription }) => {
+  table.hashes().forEach(({ submitterEmail, resourceId, reasonCategory, reasonDescription }) => {
     const submitter = {
-      email: `submitter${resourceId}@example.org`,
+      email: submitterEmail,
       password: '1234'
     }
     cy.factory()
