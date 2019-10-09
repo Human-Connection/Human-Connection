@@ -32,7 +32,7 @@ describe('ContributionForm.vue', () => {
   const postTitle = 'this is a title for a post'
   const postTitleTooShort = 'xx'
   let postTitleTooLong = ''
-  for (let i = 0; i < 65; i++) {
+  for (let i = 0; i < 101; i++) {
     postTitleTooLong += 'x'
   }
   const postContent = 'this is a post'

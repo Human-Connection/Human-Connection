@@ -104,7 +104,7 @@ export default {
         categoryIds: [],
       },
       formSchema: {
-        title: { required: true, min: 3, max: 64 },
+        title: { required: true, min: 3, max: 100 },
         content: [{ required: true }],
       },
       id: null,
