@@ -28,12 +28,18 @@ module.exports = {
     relationship: 'FOLLOWS',
     target: 'User',
     direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() }
+    },
   },
   followedBy: {
     type: 'relationship',
     relationship: 'FOLLOWS',
     target: 'User',
     direction: 'in',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() }
+    },
   },
   friends: { type: 'relationship', relationship: 'FRIENDS', target: 'User', direction: 'both' },
   disabledBy: {
@@ -97,6 +103,9 @@ module.exports = {
     relationship: 'SHOUTED',
     target: 'Post',
     direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() }
+    },
   },
   isIn: {
     type: 'relationship',
