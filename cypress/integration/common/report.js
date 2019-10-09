@@ -107,6 +107,11 @@ Then(`I can't see the moderation menu item`, () => {
 When(/^I confirm the reporting dialog .*:$/, message => {
   cy.contains(message) // wait for element to become visible
   cy.get('.ds-modal').within(() => {
+    cy.get('.ds-radio-option-label')
+      .first()
+      .click({
+        force: true
+      })
     cy.get('button')
       .contains('Report')
       .click()
@@ -114,21 +119,22 @@ When(/^I confirm the reporting dialog .*:$/, message => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach(({ id }) => {
+  table.hashes().forEach(({ resourceId, reasonCategory, reasonDescription }) => {
     const submitter = {
-      email: `submitter${id}@example.org`,  
+      email: `submitter${resourceId}@example.org`,
       password: '1234'
     }
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .mutate(`mutation($resourceId: ID!, $reasonDescription: String!) {
-        report(reasonDescription: $reasonDescription, resourceId: $resourceId) {
+      .mutate(`mutation(resourceId: ID!, reasonCategory: String!, reasonDescription: String!) {
+        report(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
           id
         }
       }`, {
         resourceId,
-        reasonDescription: 'Offensive content'
+        reasonCategory,
+        reasonDescription
       })
   })
 })
