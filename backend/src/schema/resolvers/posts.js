@@ -75,20 +75,29 @@ export default {
   },
   Mutation: {
     CreatePost: async (_parent, params, context, _resolveInfo) => {
-      const { categoryIds } = params
+      const { categoryIds, pinned } = params
+      delete params.pinned
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
       let post
 
-      const createPostCypher = `CREATE (post:Post {params})
+      let createPostCypher = `CREATE (post:Post {params})
         SET post.createdAt = toString(datetime())
         SET post.updatedAt = toString(datetime())
         WITH post
         MATCH (author:User {id: $userId})
         MERGE (post)<-[:WROTE]-(author)
-        WITH post
-        UNWIND $categoryIds AS categoryId
+        WITH post, author`
+
+      if (pinned) {
+        createPostCypher += `
+          MERGE (post)<-[:PINNED]-(author)
+          WITH post
+          `
+      }
+
+      createPostCypher += `UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
         RETURN post`
@@ -98,7 +107,9 @@ export default {
       const session = context.driver.session()
       try {
         const transactionRes = await session.run(createPostCypher, createPostVariables)
-        const posts = transactionRes.records.map(record => record.get('post').properties)
+        const posts = transactionRes.records.map(record => {
+          return record.get('post').properties
+        })
         post = posts[0]
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
@@ -225,6 +236,7 @@ export default {
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         disabledBy: '<-[:DISABLED]-(related:User)',
+        pinnedBy: '<-[:PINNED]-(related:User)',
       },
       count: {
         commentsCount:

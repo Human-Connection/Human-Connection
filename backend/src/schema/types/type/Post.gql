@@ -16,7 +16,7 @@ type Post {
   createdAt: String
   updatedAt: String
   language: String
-  pinned: Boolean
+  pinnedBy: User @relation(name:"PINNED", direction: "IN")
   relatedContributions: [Post]!
     @cypher(
       statement: """
@@ -41,7 +41,7 @@ type Post {
     @cypher(
       statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)"
     )
-
+  
   # Has the currently logged in user shouted that post?
   shoutedByCurrentUser: Boolean!
     @cypher(

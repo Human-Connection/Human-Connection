@@ -39,7 +39,11 @@ const createPostMutation = gql`
       slug
       disabled
       deleted
-      pinned
+      pinnedBy {
+        id
+        name
+        role
+      }
       language
       author {
         name
@@ -422,9 +426,14 @@ describe('CreatePost', () => {
                 author: {
                   name: 'Admin',
                 },
-                pinned: true,
+                pinnedBy: {
+                  id: 'current-user',
+                  name: 'Admin',
+                  role: 'admin',
+                },
               },
             },
+            errors: undefined,
           }
 
           await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
