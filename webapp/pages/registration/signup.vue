@@ -22,7 +22,7 @@ export default {
   },
   asyncData({ app }) {
     return {
-      publicRegistration: app.$env.PUBLIC_REGISTRATION,
+      publicRegistration: app.$env.PUBLIC_REGISTRATION === 'true',
     }
   },
   methods: {
