@@ -12,6 +12,12 @@ export const state = () => {
     filter: {
       ...defaultFilter,
     },
+    postsOrder: {
+      label: null,
+      value: 'Newest',
+      icons: 'sort-amount-desc',
+      order: 'createdAt_desc',
+    }
   }
 }
 
@@ -46,6 +52,9 @@ export const mutations = {
     if (isEmpty(get(filter, 'emotions_some.emotion_in'))) delete filter.emotions_some
     state.filter = filter
   },
+  UPDATE_ORDER(state, postsOrder) {
+    state.postsOrder = postsOrder
+  }
 }
 
 export const getters = {
@@ -64,4 +73,7 @@ export const getters = {
   filteredByEmotions(state) {
     return get(state.filter, 'emotions_some.emotion_in') || []
   },
+  postsOrder(state) {
+    return state.postsOrder
+  }
 }

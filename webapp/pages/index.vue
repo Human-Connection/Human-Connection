@@ -11,7 +11,7 @@
             :options="sortingOptions"
             size="large"
             v-bind:icon-right="sortingIcon"
-            @input="toggleOnlySorting"
+            @input="updateOrder"
           ></ds-select>
         </div>
       </ds-grid-item>
@@ -62,7 +62,7 @@ import HcPostCard from '~/components/PostCard'
 import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 
 export default {
@@ -83,10 +83,8 @@ export default {
       offset: 0,
       pageSize: 12,
       hashtag,
-      placeholder: this.$t('sorting.newest'),
-      selected: this.$t('sorting.newest'),
       sortingIcon: 'sort-amount-desc',
-      sorting: 'createdAt_desc',
+      selected: this.$t('sorting.newest'),
       sortingOptions: [
         {
           label: this.$t('sorting.newest'),
@@ -103,9 +101,15 @@ export default {
       ],
     }
   },
+  mounted() {
+    if(this.postsOrder.label) {
+      this.selected = this.postsOrder.label
+    }
+  },
   computed: {
     ...mapGetters({
       postsFilter: 'postsFilter/postsFilter',
+      postsOrder: 'postsFilter/postsOrder',
     }),
     finalFilters() {
       let filter = this.postsFilter
@@ -122,11 +126,15 @@ export default {
     },
   },
   methods: {
-    toggleOnlySorting(x) {
+    ...mapMutations({
+      setPostsOrder: 'postsFilter/UPDATE_ORDER',
+    }),
+    updateOrder(sortingOptions) {
       this.offset = 0
       this.posts = []
-      this.sortingIcon = x.icons
-      this.sorting = x.order
+      this.sortingIcon = sortingOptions.icons
+      this.selected = sortingOptions.label
+      this.setPostsOrder(sortingOptions)
     },
     clearSearch() {
       this.$router.push({ path: '/' })
@@ -176,7 +184,7 @@ export default {
         return {
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: this.postsOrder.order,
           offset: 0,
         }
       },
