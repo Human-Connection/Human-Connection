@@ -73,11 +73,11 @@ export default {
       'other',
     ]
     let reasonCategoryOptions = []
-    valuesReasonCategoryOptions.forEach((reasonCategory, index) => {
-      reasonCategoryOptions[index] = {
+    valuesReasonCategoryOptions.forEach(reasonCategory => {
+      reasonCategoryOptions.push({
         label: this.$t('report.reason.category.options.' + reasonCategory),
         value: reasonCategory,
-      }
+      })
     })
 
     return {
