@@ -1,11 +1,19 @@
 <template>
   <ds-container width="small">
     <ds-card>
-      <client-only>
-        <locale-switch offset="5" />
-      </client-only>
-      <nuxt-child />
-      <ds-space margin="x-small"></ds-space>
+      <ds-flex gutter="small">
+        <ds-flex-item :width="{ base: '100%', sm: '40%' }">
+          <client-only>
+            <locale-switch offset="5" />
+          </client-only>
+          <ds-space margin-top="small" margin-bottom="xxx-small" centered>
+            <img alt="Human Connection" src="/icon.png" />
+          </ds-space>
+        </ds-flex-item>
+        <ds-flex-item :width="{ base: '100%', sm: '60%' }" centered>
+          <nuxt-child />
+        </ds-flex-item>
+      </ds-flex>
     </ds-card>
   </ds-container>
 </template>

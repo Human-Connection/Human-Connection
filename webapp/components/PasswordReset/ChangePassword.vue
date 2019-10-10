@@ -30,7 +30,7 @@
         </ds-space>
       </template>
     </ds-form>
-    <ds-text v-else>
+    <ds-space v-else>
       <template v-if="changePasswordResult === 'success'">
         <sweetalert-icon icon="success" />
         <ds-text>
@@ -51,7 +51,7 @@
         </ds-text>
       </template>
       <slot></slot>
-    </ds-text>
+    </ds-space>
   </ds-space>
 </template>
 

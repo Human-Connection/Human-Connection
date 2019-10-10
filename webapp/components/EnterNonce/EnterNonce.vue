@@ -1,5 +1,5 @@
 <template>
-  <ds-space margin="large">
+  <ds-space margin-top="large" margin-bottom="xxx-small">
     <ds-form
       v-model="formData"
       :schema="formSchema"
