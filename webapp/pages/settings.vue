@@ -40,6 +40,10 @@ export default {
           path: `/settings/blocked-users`,
         },
         {
+          name: this.$t('post.allowEmbeds.name'),
+          path: `/settings/allow-embeds`,
+        },
+        {
           name: this.$t('settings.deleteUserAccount.name'),
           path: `/settings/delete-account`,
         },

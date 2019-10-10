@@ -108,6 +108,12 @@
       "noHashtagsFound": "Keine Hashtags gefunden",
       "addHashtag": "Neuer Hashtag",
       "addLetter": "Tippe einen Buchstaben"
+    },
+    "embed": {
+      "data_privacy_warning": "Achte auf deine Daten!",
+      "data_privacy_info": "Deine Daten wurden noch nicht an Drittanbieter weitergegeben. Wenn du dieses Video jetzt abspielst, registriert der folgende Anbieter wahrscheinlich deine Nutzerdaten:",
+      "play_now": "Jetzt ansehen",
+      "always_allow": "Inhalte von Drittanbietern immer anzeigen (diese Einstellung kannst du jederzeit ändern)"
     }
   },
   "profile": {
@@ -336,6 +342,19 @@
       "submit": "Kommentiere",
       "submitted": "Kommentar Gesendet",
       "updated": "Änderungen gespeichert"
+    },
+    "allowEmbeds": {
+      "name": "Drittanbieter",
+      "info-description": "Wenn du zustimmst werden in den Beiträgen aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text automatisch eingebunden werden.",
+      "description": "Du hast zugestimmt das in den Beiträgen aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text automatisch eingebunden werden.",
+      "statustext": "Momentan ist das automatische einbinden:",
+      "statuschange": "Einstellung ändern",
+      "false": "Abgestellt",
+      "true": "Zugelassen",
+      "button-tofalse": "Abstellen",
+      "button-totrue": "dauerhaft zulassen",
+      "third-party-false": "Es wird <b style='color:red'>kein</b> Service von Drittanbietern automatisch eingebunden.",
+      "third-party-true": "Das einbinden der Services von Drittanbietern ist <b style='color:red'>dauerhaft zugelassen</b> und gespeichert für komende Sitzungen."
     },
     "edited": "bearbeitet"
   },

@@ -1,24 +1,22 @@
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
+import Vuex from 'vuex'
+import Styleguide from '@human-connection/styleguide'
 import Embed from './Embed'
 
-let Wrapper
-let propsData
+let Wrapper, propsData, component
 const someUrl = 'https://www.youtube.com/watch?v=qkdXAtO40Fo'
+const localVue = createLocalVue()
+
+localVue.use(Vuex)
+localVue.use(Styleguide)
 
 describe('Embed.vue', () => {
   beforeEach(() => {
     propsData = {}
-    const component = new Embed()
-    Wrapper = ({ mocks, propsData }) => {
+    component = new Embed()
+    Wrapper = ({ propsData }) => {
       return shallowMount(component.view, { propsData })
     }
-  })
-
-  it('renders anchor', () => {
-    propsData = {
-      node: { attrs: { href: someUrl } },
-    }
-    expect(Wrapper({ propsData }).is('a')).toBe(true)
   })
 
   describe('given a href', () => {
@@ -26,6 +24,7 @@ describe('Embed.vue', () => {
       beforeEach(() => {
         propsData.options = {
           onEmbed: () => ({
+            __typename: 'Embed',
             type: 'video',
             title: 'Baby Loves Cat',
             author: 'Merkley Family',
@@ -49,9 +48,7 @@ describe('Embed.vue', () => {
         propsData.node = { attrs: { href: 'https://www.youtube.com/watch?v=qkdXAtO40Fo' } }
         const wrapper = Wrapper({ propsData })
         await wrapper.html()
-        expect(wrapper.find('div iframe').attributes('src')).toEqual(
-          'https://www.youtube.com/embed/qkdXAtO40Fo?feature=oembed',
-        )
+        expect(wrapper.contains('embed-component-stub')).toBe(true)
       })
     })
 

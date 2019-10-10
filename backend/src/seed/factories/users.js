@@ -16,6 +16,7 @@ export default function create() {
         about: faker.lorem.paragraph(),
         termsAndConditionsAgreedVersion: '0.0.1',
         termsAndConditionsAgreedAt: '2019-08-01T10:47:19.212Z',
+        allowEmbedIframes: false,
       }
       defaults.slug = slugify(defaults.name, { lower: true })
       args = {
