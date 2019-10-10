@@ -1,4 +1,52 @@
 {
+  "components": {
+    "password-reset": {
+      "request": {
+        "form": {
+          "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
+          "submit": "Email anfordern",
+          "submitted": "Eine E-Mail mit weiteren Instruktionen wurde verschickt an <b>{email}</b>"
+        }
+      },
+      "change-password": {
+        "success": "Änderung des Passworts war erfolgreich!",
+        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
+        "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
+      }
+    },
+    "enter-nonce": {
+      "form": {
+        "nonce": "Code eingeben",
+        "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
+        "next": "Weiter",
+        "validations": {
+          "length": "muss genau 6 Buchstaben lang sein"
+        }
+      }
+    },
+    "registration": {
+      "signup": {
+        "unavailable": "Leider ist die öffentliche Registrierung von Benutzerkonten auf diesem Server derzeit nicht möglich.",
+        "title": "Mach mit bei Human Connection!",
+        "form": {
+          "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
+          "invitation-code": "Dein Einladungscode lautet: <b>{code}</b>",
+          "errors": {
+            "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
+            "invalid-invitation-token": "Es sieht so aus, als ob der Einladungscode schon eingelöst wurde. Jeder Code kann nur einmalig benutzt werden."
+          },
+          "submit": "Konto erstellen",
+          "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}</b> geschickt"
+        }
+      },
+      "create-user-account": {
+        "title": "Benutzerkonto anlegen",
+        "success": "Dein Benutzerkonto wurde erstellt!",
+        "error": "Es konnte kein Benutzerkonto erstellt werden!",
+        "help": "Vielleicht war der Bestätigungscode falsch oder abgelaufen? Wenn das Problem weiterhin besteht, schick uns gerne eine E-Mail an:"
+      }
+    }
+  },
   "maintenance": {
     "title": "Human Connection befindet sich in der Wartung",
     "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
@@ -42,7 +90,7 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland",
     "code-of-conduct": "Verhaltenscodex",
-    "login": "Zurück zum Anmeldung"
+    "back-to-login": "Zurück zur Anmeldung"
   },
   "sorting": {
     "newest": "Neueste",
@@ -55,49 +103,13 @@
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
     "forgotPassword": "Passwort vergessen?",
+    "no-account": "Du hast noch keinen Benutzerkonto?",
+    "register": "Benutzerkonto erstellen",
     "moreInfo": "Was ist Human Connection?",
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo",
     "success": "Du bist eingeloggt!"
-  },
-  "password-reset": {
-    "form": {
-      "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
-      "submit": "Email anfordern",
-      "submitted": "Eine E-Mail mit weiteren Instruktionen wurde verschickt an <b>{email}</b>"
-    }
-  },
-  "registration": {
-    "signup": {
-      "title": "Mach mit bei Human Connection!",
-      "form": {
-        "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
-        "invitation-code": "Dein Einladungscode lautet: <b>{code}</b>",
-        "errors": {
-          "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
-          "invalid-invitation-token": "Es sieht so aus, als ob der Einladungscode schon eingelöst wurde. Jeder Code kann nur einmalig benutzt werden."
-        },
-        "submit": "Konto erstellen",
-        "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}</b> geschickt"
-      }
-    },
-    "create-user-account": {
-      "title": "Benutzerkonto anlegen",
-      "success": "Dein Benutzerkonto wurde erstellt!"
-    }
-  },
-  "verify-nonce": {
-    "form": {
-      "nonce": "Code eingeben",
-      "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
-      "next": "Weiter",
-      "change-password": {
-        "success": "Änderung des Passworts war erfolgreich!",
-        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
-        "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
-      }
-    }
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes …",
@@ -400,8 +412,7 @@
     "reportContent": "Melden",
     "validations": {
       "email": "muss eine gültige E-Mail Adresse sein",
-      "url": "muss eine gültige URL sein",
-      "verification-nonce": "muss genau 6 Buchstaben lang sein"
+      "url": "muss eine gültige URL sein"
     }
   },
   "actions": {
