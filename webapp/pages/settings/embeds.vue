@@ -1,6 +1,6 @@
 <template>
-  <ds-card :header="$t('post.allowEmbeds.name')">
-    <p>{{ $t('post.allowEmbeds.statustext') }}</p>
+  <ds-card :header="$t('settings.embeds.name')">
+    <p>{{ $t('settings.embeds.statustext') }}</p>
     <ds-container width="large">
       <h3 v-html="allowEmbeds_h3" />
       <div v-html="allowEmbeds_desc" />
@@ -8,17 +8,17 @@
     <div>
       <ds-space />
       <ds-space />
-      <p>{{ $t('post.allowEmbeds.statuschange') }}</p>
+      <p>{{ $t('settings.embeds.statuschange') }}</p>
       <ds-container width="large">
         <ds-flex>
           <ds-flex-item>
             <ds-button @click="toFalse" :disabled="!disabled">
-              {{ $t('post.allowEmbeds.button-tofalse') }}
+              {{ $t('settings.embeds.button-tofalse') }}
             </ds-button>
           </ds-flex-item>
           <ds-flex-item>
             <ds-button @click="toTrue" secondary :disabled="disabled">
-              {{ $t('post.allowEmbeds.button-totrue') }}
+              {{ $t('settings.embeds.button-totrue') }}
             </ds-button>
           </ds-flex-item>
         </ds-flex>
@@ -29,9 +29,9 @@
 
     <div>
       <p v-if="disabled">
-        <b>{{ $t('post.allowEmbeds.description') }}</b>
+        <b>{{ $t('settings.embeds.description') }}</b>
       </p>
-      <p v-else>{{ $t('post.allowEmbeds.info-description') }}</p>
+      <p v-else>{{ $t('settings.embeds.info-description') }}</p>
       <ds-container>
         <ds-placeholder>
           <ul>
@@ -54,7 +54,7 @@ import { allowEmbedIframesMutation } from '~/graphql/User.js'
 export default {
   head() {
     return {
-      title: this.$t('post.allowEmbeds.name'),
+      title: this.$t('settings.embeds.name'),
     }
   },
   computed: {
@@ -64,8 +64,8 @@ export default {
   },
   data() {
     return {
-      allowEmbeds_h3: this.$t('post.allowEmbeds.false'),
-      allowEmbeds_desc: this.$t('post.allowEmbeds.third-party-false'),
+      allowEmbeds_h3: this.$t('settings.embeds.false'),
+      allowEmbeds_desc: this.$t('settings.embeds.third-party-false'),
       disabled: null,
       providers: [],
     }
@@ -81,13 +81,13 @@ export default {
       setCurrentUser: 'auth/SET_USER',
     }),
     toFalse() {
-      this.allowEmbeds_h3 = this.$t('post.allowEmbeds.false')
-      this.allowEmbeds_desc = this.$t('post.allowEmbeds.third-party-false')
+      this.allowEmbeds_h3 = this.$t('settings.embeds.false')
+      this.allowEmbeds_desc = this.$t('settings.embeds.third-party-false')
       this.submit()
     },
     toTrue() {
-      this.allowEmbeds_h3 = this.$t('post.allowEmbeds.true')
-      this.allowEmbeds_desc = this.$t('post.allowEmbeds.third-party-true')
+      this.allowEmbeds_h3 = this.$t('settings.embeds.true')
+      this.allowEmbeds_desc = this.$t('settings.embeds.third-party-true')
       this.submit()
     },
     async submit() {
