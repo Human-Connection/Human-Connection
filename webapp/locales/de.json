@@ -228,16 +228,19 @@
     },
     "embeds": {
       "name": "Drittanbieter",
-      "info-description": "Wenn du zustimmst werden in den Beiträgen aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text automatisch eingebunden werden.",
-      "description": "Du hast zugestimmt das in den Beiträgen aus der folgenden Liste an Providern Fremdcode von anderen Anbietern (Drittanbietern) in Form von eingebundenen Videos, Bilder oder Text automatisch eingebunden werden.",
-      "statustext": "Momentan ist das automatische einbinden:",
-      "statuschange": "Einstellung ändern",
-      "false": "Abgestellt",
-      "true": "Zugelassen",
-      "button-tofalse": "Abstellen",
-      "button-totrue": "dauerhaft zulassen",
-      "third-party-false": "Es wird <b style='color:red'>kein</b> Service von Drittanbietern automatisch eingebunden.",
-      "third-party-true": "Das einbinden der Services von Drittanbietern ist <b style='color:red'>dauerhaft zugelassen</b> und gespeichert für komende Sitzungen."
+      "info-description": "Hier ist die Liste an Drittanbietern, deren Inhalte als Fremdcode z.B. in Form von eingebetteten Videos angezeigt werden kann:",
+      "status": {
+        "description": "Als Grundeinstellung für dich wird eingebetter Fremdcode von Drittanbietern",
+        "disabled": {
+          "false": "zunächst nicht angezeigt",
+          "true": "sofort angezeigt"
+        },
+        "change": {
+          "question": "Soll eingebetter Fremdcode von Dritten für dich immer angezeigt werden?",
+          "allow": "Na klar",
+          "deny": "Lieber nicht"
+        }
+      }
     },
     "organizations": {
       "name": "Meine Organisationen"

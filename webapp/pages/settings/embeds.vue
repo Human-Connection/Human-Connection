@@ -1,48 +1,31 @@
 <template>
   <ds-card :header="$t('settings.embeds.name')">
-    <p>{{ $t('settings.embeds.statustext') }}</p>
-    <ds-container width="large">
-      <h3 v-html="allowEmbeds_h3" />
-      <div v-html="allowEmbeds_desc" />
-    </ds-container>
-    <div>
-      <ds-space />
-      <ds-space />
-      <p>{{ $t('settings.embeds.statuschange') }}</p>
-      <ds-container width="large">
-        <ds-flex>
-          <ds-flex-item>
-            <ds-button @click="toFalse" :disabled="!disabled">
-              {{ $t('settings.embeds.button-tofalse') }}
-            </ds-button>
-          </ds-flex-item>
-          <ds-flex-item>
-            <ds-button @click="toTrue" secondary :disabled="disabled">
-              {{ $t('settings.embeds.button-totrue') }}
-            </ds-button>
-          </ds-flex-item>
-        </ds-flex>
-      </ds-container>
-    </div>
-    <ds-space />
-    <ds-space />
+    <ds-section>
+      <ds-text>
+        {{ $t('settings.embeds.status.description') }}
+        <ds-text bold>
+          {{ $t(`settings.embeds.status.disabled.${disabled}`) }}
+        </ds-text>
+        .
+      </ds-text>
+      <ds-text>
+        {{ $t('settings.embeds.status.change.question') }}
+      </ds-text>
+      <ds-button @click="toFalse" :primary="!disabled" :disabled="!disabled">
+        {{ $t('settings.embeds.status.change.deny') }}
+      </ds-button>
+      <ds-button @click="toTrue" :primary="disabled" :disabled="disabled">
+        {{ $t('settings.embeds.status.change.allow') }}
+      </ds-button>
 
-    <div>
-      <p v-if="disabled">
-        <b>{{ $t('settings.embeds.description') }}</b>
-      </p>
-      <p v-else>{{ $t('settings.embeds.info-description') }}</p>
-      <ds-container>
-        <ds-placeholder>
-          <ul>
-            <li v-for="provider in providers" :key="provider.provider_name">
-              {{ provider.provider_name }},
-              <small>{{ provider.provider_url }}</small>
-            </li>
-          </ul>
-        </ds-placeholder>
-      </ds-container>
-    </div>
+      <p>{{ $t('settings.embeds.info-description') }}</p>
+      <ul>
+        <li v-for="provider in providers" :key="provider.provider_name">
+          {{ provider.provider_name }},
+          <small>{{ provider.provider_url }}</small>
+        </li>
+      </ul>
+    </ds-section>
   </ds-card>
 </template>
 
@@ -106,7 +89,6 @@ export default {
             })
           },
         })
-        this.$toast.success(this.$t('site.thanks') + ' ' + this.allowEmbeds_h3)
         this.disabled = !this.disabled
       } catch (err) {
         this.$toast.error(err.message)
