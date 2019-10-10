@@ -32,13 +32,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.signup-image {
-  width: 90%;
-  max-width: 200px;
-}
-.login-card {
-  position: relative;
-}
-</style>

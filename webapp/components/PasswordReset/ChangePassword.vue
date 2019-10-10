@@ -32,13 +32,17 @@
     </ds-form>
     <ds-space v-else>
       <template v-if="changePasswordResult === 'success'">
-        <sweetalert-icon icon="success" />
+        <transition name="ds-transition-fade">
+          <sweetalert-icon icon="success" />
+        </transition>
         <ds-text>
           {{ $t('components.password-reset.change-password.success') }}
         </ds-text>
       </template>
       <template v-else>
-        <sweetalert-icon icon="error" />
+        <transition name="ds-transition-fade">
+          <sweetalert-icon icon="error" />
+        </transition>
         <ds-text>
           <p>
             {{ $t(`components.password-reset.change-password.error`) }}

@@ -102,9 +102,3 @@ export default {
   },
 }
 </script>
-<style scoped>
-.login-image {
-  width: 90%;
-  max-width: 200px;
-}
-</style>

@@ -46,11 +46,15 @@
   </ds-space>
   <div v-else margin="large">
     <template v-if="!error">
-      <sweetalert-icon icon="info" />
+      <transition name="ds-transition-fade">
+        <sweetalert-icon icon="info" />
+      </transition>
       <ds-text align="center" v-html="submitMessage" />
     </template>
     <template v-else>
-      <sweetalert-icon icon="error" />
+      <transition name="ds-transition-fade">
+        <sweetalert-icon icon="error" />
+      </transition>
       <ds-text align="center">{{ error.message }}</ds-text>
     </template>
   </div>

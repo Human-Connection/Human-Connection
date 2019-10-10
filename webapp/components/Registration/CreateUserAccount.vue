@@ -1,12 +1,16 @@
 <template>
   <div v-if="response === 'success'">
-    <sweetalert-icon icon="success" />
+    <transition name="ds-transition-fade">
+      <sweetalert-icon icon="success" />
+    </transition>
     <ds-text align="center" bold color="success">
       {{ $t('components.registration.create-user-account.success') }}
     </ds-text>
   </div>
   <div v-else-if="response === 'error'">
-    <sweetalert-icon icon="error" />
+    <transition name="ds-transition-fade">
+      <sweetalert-icon icon="error" />
+    </transition>
     <ds-text align="center" bold color="danger">
       {{ $t('components.registration.create-user-account.error') }}
     </ds-text>
