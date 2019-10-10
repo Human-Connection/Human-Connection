@@ -50,7 +50,7 @@ describe('report', () => {
     // because of the template `${returnedObject}` the 'gql' tag from 'jest/helpers' is not working here
     reportMutation = `
       mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
-        report( resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) ${returnedObject}
+        report(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) ${returnedObject}
       }
     `
     client = new GraphQLClient(host, {
