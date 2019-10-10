@@ -227,6 +227,22 @@
       "success": "Account successfully deleted!",
       "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
     },
+    "embeds": {
+      "name": "Third party providers",
+      "info-description": "Here is the list of third-party providers whose content can be displayed as third-party code, e.g. in the form of embedded videos.",
+      "status": {
+        "description": "As a default for you, embedded code of third-party providers is",
+        "disabled": {
+          "false": "initially not displayed",
+          "true": "displayed immediately"
+        },
+        "change": {
+          "question": "Should embedded source code from third parties always be displayed to you?",
+          "allow": "Sure",
+          "deny": "No thanks"
+        }
+      }
+    },
     "organizations": {
       "name": "My Organizations"
     },
@@ -343,19 +359,6 @@
       "submit": "Comment",
       "submitted": "Comment Submitted",
       "updated": "Changes Saved"
-    },
-    "allowEmbeds": {
-      "name": "Third party providers",
-      "info-description": "If you agree, the posts from the following list of providers will automatically include third-party code from other providers (third parties) in the form of embedded videos, images, or text.",
-      "description": "You have agreed that in the contributions from the following list of providers, foreign code from other providers (third parties) in the form of embedded videos, images or text automatically are embedded.",
-      "statustext": "At the moment this is automatic embedding:",
-      "statuschange": "Change setting",
-      "false": "Turned off",
-      "true": "Admitted",
-      "button-tofalse": "turn-off",
-      "button-totrue": "allow permanently",
-      "third-party-false": "It automatically integrates <b style='color:red'>no </b> third-party providers' service.",
-      "third-party-true": "The inclusion of third-party services is <b style='color:red'>permanently allowed</b> and stored for future sessions."
     },
     "edited": "edited"
   },
