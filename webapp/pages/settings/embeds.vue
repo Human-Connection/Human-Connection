@@ -11,10 +11,10 @@
       <ds-text>
         {{ $t('settings.embeds.status.change.question') }}
       </ds-text>
-      <ds-button @click="toFalse" :primary="!disabled" :disabled="!disabled">
+      <ds-button @click="submit" :primary="!disabled" :disabled="!disabled">
         {{ $t('settings.embeds.status.change.deny') }}
       </ds-button>
-      <ds-button @click="toTrue" :primary="disabled" :disabled="disabled">
+      <ds-button @click="submit" :primary="disabled" :disabled="disabled">
         {{ $t('settings.embeds.status.change.allow') }}
       </ds-button>
 
@@ -47,8 +47,6 @@ export default {
   },
   data() {
     return {
-      allowEmbeds_h3: this.$t('settings.embeds.false'),
-      allowEmbeds_desc: this.$t('settings.embeds.third-party-false'),
       disabled: null,
       providers: [],
     }
@@ -63,16 +61,6 @@ export default {
     ...mapMutations({
       setCurrentUser: 'auth/SET_USER',
     }),
-    toFalse() {
-      this.allowEmbeds_h3 = this.$t('settings.embeds.false')
-      this.allowEmbeds_desc = this.$t('settings.embeds.third-party-false')
-      this.submit()
-    },
-    toTrue() {
-      this.allowEmbeds_h3 = this.$t('settings.embeds.true')
-      this.allowEmbeds_desc = this.$t('settings.embeds.third-party-true')
-      this.submit()
-    },
     async submit() {
       try {
         await this.$apollo.mutate({
