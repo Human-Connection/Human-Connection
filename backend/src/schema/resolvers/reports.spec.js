@@ -16,7 +16,7 @@ describe('report', () => {
   const categoryIds = ['cat9']
 
   beforeEach(async () => {
-    returnedObject = '{ id }'
+    returnedObject = '{ createdAt }'
     variables = {
       resourceId: 'whatever',
       reasonCategory: 'reason-category-dummy',

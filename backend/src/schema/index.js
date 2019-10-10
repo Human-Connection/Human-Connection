@@ -35,7 +35,7 @@ export default applyScalars(
             'Notfication',
             'Post',
             'Comment',
-            'Report',
+            'REPORTED',
             'Statistics',
             'LoggedInUser',
             'Location',

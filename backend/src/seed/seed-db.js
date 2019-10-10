@@ -657,7 +657,7 @@ import { gql } from '../jest/helpers'
           reasonCategory: $reasonCategory
           reasonDescription: $reasonDescription
         ) {
-          id
+          type
         }
       }
     `

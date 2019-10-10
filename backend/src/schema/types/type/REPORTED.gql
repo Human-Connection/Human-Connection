@@ -1,0 +1,30 @@
+type REPORTED {
+  createdAt: String
+  reasonCategory: String
+  reasonDescription: String
+  submitter: User
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
+  resource: ReportReource
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource")
+  resourceId: ID
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource {.id}")
+  type: String
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN labels(resource)[0]")
+  user: User
+  post: Post
+  comment: Comment
+}
+
+union ReportReource = User | Post | Comment
+
+enum ReportOrdering {
+  createdAt_desc
+}
+
+type Query {
+  Report(orderBy: ReportOrdering): [REPORTED]
+}
+
+type Mutation {
+  report(resourceId: ID!, reasonCategory: String!, reasonDescription: String!): REPORTED
+}

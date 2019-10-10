@@ -1,14 +1,15 @@
 import gql from 'graphql-tag'
 
 export const reportListQuery = () => {
+  // no limit vor the moment like before: "Report(first: 20, orderBy: createdAt_desc)"
   return gql`
     query {
-      Report(first: 20, orderBy: createdAt_desc) {
-        id
+      Report(orderBy: createdAt_desc) {
         createdAt
         reasonCategory
         reasonDescription
         type
+        resourceId
         submitter {
           id
           slug
@@ -89,7 +90,7 @@ export const reportMutation = () => {
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
-        id
+        type
       }
     }
   `

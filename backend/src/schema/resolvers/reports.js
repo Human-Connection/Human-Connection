@@ -8,10 +8,10 @@ export default {
       { driver, _req, user },
       _resolveInfo,
     ) => {
-      const reportId = uuid()
+      // Wolle const reportId = uuid()
       const session = driver.session()
       const reportProperties = {
-        id: reportId,
+        // Wolle id: reportId,
         createdAt: new Date().toISOString(),
         reasonCategory,
         reasonDescription,
@@ -19,7 +19,7 @@ export default {
 
       const reportQueryRes = await session.run(
         `
-          MATCH (u:User {id:$submitterId})-[:REPORTED]->(report)-[:REPORTED]->(resource {id: $resourceId}) 
+          MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId}) 
           RETURN labels(resource)[0] as label
         `,
         {
@@ -39,22 +39,22 @@ export default {
 
       const res = await session.run(
         `
-          MATCH (submitter:User {id: $userId})
+          MATCH (submitter:User {id: $submitterId})
           MATCH (resource {id: $resourceId})
           WHERE resource:User OR resource:Comment OR resource:Post
-          CREATE (report:Report  {reportProperties})
-          MERGE (resource)<-[:REPORTED]-(report)
-          MERGE (report)<-[:REPORTED]-(submitter)
+          CREATE (resource)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
           RETURN report, submitter, resource, labels(resource)[0] as type
         `,
         {
           resourceId,
-          userId: user.id,
-          reportProperties,
+          submitterId: user.id,
+          createdAt: reportProperties.createdAt,
+          reasonCategory: reportProperties.reasonCategory,
+          reasonDescription: reportProperties.reasonDescription,
         },
       )
 
-      session.close()
+     session.close()
 
       const [dbResponse] = res.records.map(r => {
         return {
@@ -65,6 +65,7 @@ export default {
         }
       })
       if (!dbResponse) return null
+
       const { report, submitter, resource, type } = dbResponse
 
       const response = {
