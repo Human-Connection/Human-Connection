@@ -1,59 +1,63 @@
 <template>
-  <ds-card class="signup">
-    <ds-space margin="large">
-      <ds-form
-        v-if="!success && !error"
-        @input="handleInput"
-        @input-valid="handleInputValid"
-        v-model="formData"
-        :schema="formSchema"
-        @submit="handleSubmit"
+  <ds-space v-if="!success && !error" margin="large">
+    <ds-form
+      @input="handleInput"
+      @input-valid="handleInputValid"
+      v-model="formData"
+      :schema="formSchema"
+      @submit="handleSubmit"
+    >
+      <h1>
+        {{ invitation ? $t('profile.invites.title') : $t('components.registration.signup.title') }}
+      </h1>
+      <ds-space v-if="token" margin-botton="large">
+        <ds-text v-html="$t('registration.signup.form.invitation-code', { code: token })" />
+      </ds-space>
+      <ds-space margin-botton="large">
+        <ds-text>
+          {{
+            invitation
+              ? $t('profile.invites.description')
+              : $t('components.registration.signup.form.description')
+          }}
+        </ds-text>
+      </ds-space>
+      <ds-input
+        :placeholder="invitation ? $t('profile.invites.emailPlaceholder') : $t('login.email')"
+        type="email"
+        id="email"
+        model="email"
+        name="email"
+        icon="envelope"
+      />
+      <ds-button
+        :disabled="disabled"
+        :loading="$apollo.loading"
+        primary
+        fullwidth
+        name="submit"
+        type="submit"
+        icon="envelope"
       >
-        <h1>{{ invitation ? $t('profile.invites.title') : $t('registration.signup.title') }}</h1>
-        <ds-space v-if="token" margin-botton="large">
-          <ds-text v-html="$t('registration.signup.form.invitation-code', { code: token })" />
-        </ds-space>
-        <ds-space margin-botton="large">
-          <ds-text>
-            {{
-              invitation
-                ? $t('profile.invites.description')
-                : $t('registration.signup.form.description')
-            }}
-          </ds-text>
-        </ds-space>
-        <ds-input
-          :placeholder="invitation ? $t('profile.invites.emailPlaceholder') : $t('login.email')"
-          type="email"
-          id="email"
-          model="email"
-          name="email"
-          icon="envelope"
-        />
-        <ds-button
-          :disabled="disabled"
-          :loading="$apollo.loading"
-          primary
-          fullwidth
-          name="submit"
-          type="submit"
-          icon="envelope"
-        >
-          {{ $t('registration.signup.form.submit') }}
-        </ds-button>
-      </ds-form>
-      <div v-else>
-        <template v-if="!error">
-          <sweetalert-icon icon="info" />
-          <ds-text align="center" v-html="submitMessage" />
-        </template>
-        <template v-else>
-          <sweetalert-icon icon="error" />
-          <ds-text align="center">{{ error.message }}</ds-text>
-        </template>
-      </div>
-    </ds-space>
-  </ds-card>
+        {{ $t('components.registration.signup.form.submit') }}
+      </ds-button>
+      <slot></slot>
+    </ds-form>
+  </ds-space>
+  <div v-else margin="large">
+    <template v-if="!error">
+      <transition name="ds-transition-fade">
+        <sweetalert-icon icon="info" />
+      </transition>
+      <ds-text align="center" v-html="submitMessage" />
+    </template>
+    <template v-else>
+      <transition name="ds-transition-fade">
+        <sweetalert-icon icon="error" />
+      </transition>
+      <ds-text align="center">{{ error.message }}</ds-text>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -103,7 +107,7 @@ export default {
   computed: {
     submitMessage() {
       const { email } = this.formData
-      return this.$t('registration.signup.form.success', { email })
+      return this.$t('components.registration.signup.form.success', { email })
     },
   },
   methods: {
@@ -123,7 +127,7 @@ export default {
         this.success = true
 
         setTimeout(() => {
-          this.$emit('handleSubmitted', { email })
+          this.$emit('submit', { email })
         }, 3000)
       } catch (err) {
         const { message } = err
@@ -133,7 +137,10 @@ export default {
         }
         for (const [pattern, key] of Object.entries(mapping)) {
           if (message.includes(pattern))
-            this.error = { key, message: this.$t(`registration.signup.form.errors.${key}`) }
+            this.error = {
+              key,
+              message: this.$t(`components.registration.signup.form.errors.${key}`),
+            }
         }
         if (!this.error) {
           this.$toast.error(message)

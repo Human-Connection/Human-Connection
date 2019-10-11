@@ -18,7 +18,7 @@ describe('Request', () => {
         success: jest.fn(),
         error: jest.fn(),
       },
-      $t: jest.fn(),
+      $t: jest.fn(t => t),
       $apollo: {
         loading: false,
         mutate: jest.fn().mockResolvedValue({ data: { reqestPasswordReset: true } }),
@@ -45,7 +45,7 @@ describe('Request', () => {
 
     it('renders a password reset form', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.password-reset').exists()).toBe(true)
+      expect(wrapper.find('form').exists()).toBe(true)
     })
 
     describe('submit', () => {
@@ -69,7 +69,10 @@ describe('Request', () => {
       })
 
       it('displays a message that a password email was requested', () => {
-        const expected = ['password-reset.form.submitted', { email: 'mail@example.org' }]
+        const expected = [
+          'components.password-reset.request.form.submitted',
+          { email: 'mail@example.org' },
+        ]
         expect(mocks.$t).toHaveBeenCalledWith(...expected)
       })
 

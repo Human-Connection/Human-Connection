@@ -1,13 +1,12 @@
 import { Node } from 'tiptap'
 import pasteRule from '../commands/pasteRule'
 import { compileToFunctions } from 'vue-template-compiler'
+import Vue from 'vue'
+import EmbedComponent from '~/components/Embed/EmbedComponent'
 
-const template = `
-  <a class="embed" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">
-    <div v-if="embedHtml" v-html="embedHtml" />
-    <em> {{ dataEmbedUrl }} </em>
-  </a>
-`
+Vue.component(EmbedComponent)
+const template = `<component :dataEmbedUrl="dataEmbedUrl" :embedData="embedData" :is="componentType" />`
+
 const compiledTemplate = compileToFunctions(template)
 
 export default class Embed extends Node {
@@ -67,16 +66,13 @@ export default class Embed extends Node {
         embedData: {},
       }),
       async created() {
-        if (!this.options) return {}
-        this.embedData = await this.options.onEmbed({ url: this.dataEmbedUrl })
+        if (this.options) {
+          this.embedData = await this.options.onEmbed({ url: this.dataEmbedUrl })
+        }
       },
       computed: {
-        embedClass() {
-          return this.embedHtml ? 'embed' : ''
-        },
-        embedHtml() {
-          const { html = '' } = this.embedData
-          return html
+        componentType() {
+          return EmbedComponent
         },
         dataEmbedUrl: {
           get() {

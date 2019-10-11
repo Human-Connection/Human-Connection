@@ -18,7 +18,7 @@ export const signupTemplate = ({ email, nonce }) => {
     subject,
     html: mustache.render(
       templates.layout,
-      { actionUrl, supportUrl, subject },
+      { actionUrl, nonce, supportUrl, subject },
       { content: templates.signup },
     ),
   }

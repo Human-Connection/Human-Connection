@@ -40,6 +40,10 @@ export default {
           path: `/settings/blocked-users`,
         },
         {
+          name: this.$t('settings.embeds.name'),
+          path: `/settings/embeds`,
+        },
+        {
           name: this.$t('settings.deleteUserAccount.name'),
           path: `/settings/delete-account`,
         },

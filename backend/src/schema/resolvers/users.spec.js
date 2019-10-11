@@ -86,6 +86,7 @@ describe('UpdateUser', () => {
       name: 'John Doe',
       termsAndConditionsAgreedVersion: null,
       termsAndConditionsAgreedAt: null,
+      allowEmbedIframes: false,
     }
 
     variables = {

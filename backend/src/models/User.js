@@ -105,4 +105,8 @@ module.exports = {
     target: 'Location',
     direction: 'out',
   },
+  allowEmbedIframes: {
+    type: 'boolean',
+    default: false,
+  },
 }
