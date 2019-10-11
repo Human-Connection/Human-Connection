@@ -342,4 +342,84 @@ li > p {
     margin: 0 0 $space-x-small;
   }
 }
+
+.ProseMirror[contenteditable='false'] {
+  .embed-close-button {
+    display: none;
+  }
+}
+
+.embed-container {
+  position: relative;
+  padding: 0;
+  margin: $space-small auto;
+  overflow: hidden;
+  border-radius: $border-radius-base;
+  border: 1px solid $color-neutral-70;
+  background-color: $color-neutral-90;
+}
+
+.embed-content {
+  width: 100%;
+  height: 100%;
+
+  h4 {
+    margin: $space-small 0 0 $space-small;
+  }
+
+  p,
+  a {
+    display: block;
+    margin: 0 0 0 $space-small;
+  }
+}
+
+.embed-preview-image {
+  width: 100%;
+  height: auto;
+}
+
+.embed-preview-image--clickable {
+  cursor: pointer;
+}
+
+.embed-html {
+  width: 100%;
+
+  iframe {
+    width: 100%;
+  }
+}
+
+.embed-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  padding: $space-large;
+  background-color: $color-neutral-100;
+}
+
+.embed-buttons {
+  button {
+    margin-right: $space-small;
+  }
+}
+
+.embed-checkbox {
+  display: flex;
+
+  input {
+    margin-right: $space-small;
+  }
+}
+
+.embed-close-button {
+  position: absolute;
+  top: $space-x-small;
+  right: $space-x-small;
+  background-color: rgba(250, 249, 250, 0.6);
+}
 </style>

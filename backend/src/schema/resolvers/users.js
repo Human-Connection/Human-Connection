@@ -176,6 +176,7 @@ export default {
         'about',
         'termsAndConditionsAgreedVersion',
         'termsAndConditionsAgreedAt',
+        'allowEmbedIframes',
       ],
       boolean: {
         followedByCurrentUser:

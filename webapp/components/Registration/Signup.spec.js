@@ -42,7 +42,7 @@ describe('Signup', () => {
     describe('without invitation code', () => {
       it('renders signup form', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('.signup').exists()).toBe(true)
+        expect(wrapper.find('form').exists()).toBe(true)
       })
 
       describe('submit', () => {
@@ -69,15 +69,18 @@ describe('Signup', () => {
         })
 
         it('displays a message that a mail for email verification was sent', () => {
-          const expected = ['registration.signup.form.success', { email: 'mail@example.org' }]
+          const expected = [
+            'components.registration.signup.form.success',
+            { email: 'mail@example.org' },
+          ]
           expect(mocks.$t).toHaveBeenCalledWith(...expected)
         })
 
         describe('after animation', () => {
           beforeEach(jest.runAllTimers)
 
-          it('emits `handleSubmitted`', () => {
-            expect(wrapper.emitted('handleSubmitted')).toEqual([[{ email: 'mail@example.org' }]])
+          it('emits `submit`', () => {
+            expect(wrapper.emitted('submit')).toEqual([[{ email: 'mail@example.org' }]])
           })
         })
       })
@@ -121,7 +124,9 @@ describe('Signup', () => {
 
           it('explains the error', async () => {
             await action()
-            expect(mocks.$t).toHaveBeenCalledWith('registration.signup.form.errors.email-exists')
+            expect(mocks.$t).toHaveBeenCalledWith(
+              'components.registration.signup.form.errors.email-exists',
+            )
           })
         })
 
@@ -137,7 +142,7 @@ describe('Signup', () => {
           it('explains the error', async () => {
             await action()
             expect(mocks.$t).toHaveBeenCalledWith(
-              'registration.signup.form.errors.invalid-invitation-token',
+              'components.registration.signup.form.errors.invalid-invitation-token',
             )
           })
         })
