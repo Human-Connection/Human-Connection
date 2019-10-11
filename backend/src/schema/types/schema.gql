@@ -34,29 +34,6 @@ type Mutation {
   unfollowUser(id: ID!): User
 }
 
-# Wolle
-# type Report {
-  # not necessary
-  # id: ID!
-  # done
-  # createdAt: String!
-  # done
-  # reasonCategory: String!
-  # done
-  # reasonDescription: String!
-  # done
-  # submitter: User @relation(name: "REPORTED", direction: "IN")
-  # done
-  # type: String!
-  #   @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
-  # seems unused
-  # comment: Comment @relation(name: "REPORTED", direction: "OUT")
-  # seems unused
-  # post: Post @relation(name: "REPORTED", direction: "OUT")
-  # seems unused
-  # user: User @relation(name: "REPORTED", direction: "OUT")
-# }
-
 enum Deletable {
   Post
   Comment

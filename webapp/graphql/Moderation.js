@@ -1,10 +1,10 @@
 import gql from 'graphql-tag'
 
 export const reportListQuery = () => {
-  // no limit vor the moment like before: "Report(first: 20, orderBy: createdAt_desc)"
+  // no limit vor the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
   return gql`
     query {
-      Report(orderBy: createdAt_desc) {
+      reports(orderBy: createdAt_desc) {
         createdAt
         reasonCategory
         reasonDescription

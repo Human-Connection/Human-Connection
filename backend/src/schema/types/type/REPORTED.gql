@@ -4,8 +4,9 @@ type REPORTED {
   reasonDescription: String
   submitter: User
     @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
-  resource: ReportReource
-    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource")
+  # not yet supported
+  # resource: ReportReource
+  #   @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource")
   resourceId: ID
     @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource {.id}")
   type: String
@@ -15,14 +16,15 @@ type REPORTED {
   comment: Comment
 }
 
-union ReportReource = User | Post | Comment
+# not yet supported
+# union ReportReource = User | Post | Comment
 
 enum ReportOrdering {
   createdAt_desc
 }
 
 type Query {
-  Report(orderBy: ReportOrdering): [REPORTED]
+  reports(orderBy: ReportOrdering): [REPORTED]
 }
 
 type Mutation {

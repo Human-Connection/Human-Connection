@@ -1,17 +1,10 @@
-import uuid from 'uuid/v4'
-
 export default {
   Mutation: {
-    report: async (
-      _parent,
-      { resourceId, reasonCategory, reasonDescription },
-      { driver, _req, user },
-      _resolveInfo,
-    ) => {
-      // Wolle const reportId = uuid()
+    report: async (_parent, params, { driver, _req, user }, _resolveInfo) => {
+      const { resourceId, reasonCategory, reasonDescription } = params
+
       const session = driver.session()
       const reportProperties = {
-        // Wolle id: reportId,
         createdAt: new Date().toISOString(),
         reasonCategory,
         reasonDescription,
@@ -54,7 +47,7 @@ export default {
         },
       )
 
-     session.close()
+      session.close()
 
       const [dbResponse] = res.records.map(r => {
         return {
@@ -87,6 +80,60 @@ export default {
           response.user = resource.properties
           break
       }
+
+      return response
+    },
+  },
+  Query: {
+    reports: async (_parent, _params, { driver, _req, _user }, _resolveInfo) => {
+      const session = driver.session()
+      const res = await session.run(
+        `
+          MATCH (submitter:User)-[report:REPORTED]->(resource)
+          WHERE resource:User OR resource:Comment OR resource:Post
+          RETURN report, submitter, resource, labels(resource)[0] as type
+        `,
+        {},
+      )
+      session.close()
+
+      const dbResponse = res.records.map(r => {
+        return {
+          report: r.get('report'),
+          submitter: r.get('submitter'),
+          resource: r.get('resource'),
+          type: r.get('type'),
+        }
+      })
+      if (!dbResponse) return null
+
+      const response = []
+      dbResponse.forEach(ele => {
+        const { report, submitter, resource, type } = ele
+
+        const responseEle = {
+          ...report.properties,
+          resource: resource.properties,
+          resourceId: resource.properties.id,
+          post: null,
+          comment: null,
+          user: null,
+          submitter: submitter.properties,
+          type,
+        }
+        switch (type) {
+          case 'Post':
+            responseEle.post = resource.properties
+            break
+          case 'Comment':
+            responseEle.comment = resource.properties
+            break
+          case 'User':
+            responseEle.user = resource.properties
+            break
+        }
+        response.push(responseEle)
+      })
 
       return response
     },
