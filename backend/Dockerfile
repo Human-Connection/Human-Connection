@@ -24,4 +24,5 @@ FROM base as production
 ENV NODE_ENV=production
 COPY --from=build-and-test /nitro-backend/dist ./dist
 COPY ./public/img/ ./public/img/
+COPY ./public/providers.json ./public/providers.json
 RUN yarn install --production=true --frozen-lockfile --non-interactive --no-cache

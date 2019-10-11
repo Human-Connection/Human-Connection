@@ -244,8 +244,8 @@
       "status": {
         "description": "Als Grundeinstellung für dich wird eingebetter Fremdcode von Drittanbietern",
         "disabled": {
-          "false": "zunächst nicht angezeigt",
-          "true": "sofort angezeigt"
+          "off": "zunächst nicht angezeigt",
+          "on": "sofort angezeigt"
         },
         "change": {
           "question": "Soll eingebetter Fremdcode von Dritten für dich immer angezeigt werden?",
