@@ -4,7 +4,12 @@
       <ds-text>
         {{ $t('settings.embeds.status.description') }}
         <ds-text bold>
-          {{ $t(`settings.embeds.status.disabled.${disabled}`) }}
+          <template v-if="disabled">
+            {{ $t(`settings.embeds.status.disabled.on`) }}
+          </template>
+          <template v-else>
+            {{ $t(`settings.embeds.status.disabled.off`) }}
+          </template>
         </ds-text>
         .
       </ds-text>
@@ -52,10 +57,10 @@ export default {
     }
   },
   mounted() {
-    axios.get('../api/providers.json').then(response => {
+    axios.get('/api/providers.json').then(response => {
       this.providers = response.data
     })
-    this.disabled = this.currentUser.allowEmbedIframes
+    if (this.currentUser.allowEmbedIframes) this.disabled = this.currentUser.allowEmbedIframes
   },
   methods: {
     ...mapMutations({
