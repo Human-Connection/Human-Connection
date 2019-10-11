@@ -1,7 +1,7 @@
 <template>
   <ds-card space="small">
     <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
-    <ds-table v-if="Report && Report.length" :data="Report" :fields="fields" condensed>
+    <ds-table v-if="reports && reports.length" :data="reports" :fields="fields" condensed>
       <!-- Icon -->
       <template slot="type" slot-scope="scope">
         <ds-text color="soft">
@@ -82,6 +82,14 @@
           {{ scope.row.submitter.name }}
         </nuxt-link>
       </template>
+      <!-- createdAt -->
+      <template slot="createdAt" slot-scope="scope">
+        <ds-text size="small">
+          <client-only>
+            <hc-relative-date-time :date-time="scope.row.createdAt" />
+          </client-only>
+        </ds-text>
+      </template>
       <!-- disabledBy -->
       <template slot="disabledBy" slot-scope="scope">
         <nuxt-link
@@ -123,15 +131,17 @@
 
 <script>
 import HcEmpty from '~/components/Empty.vue'
+import HcRelativeDateTime from '~/components/RelativeDateTime'
 import { reportListQuery } from '~/graphql/Moderation.js'
 
 export default {
   components: {
     HcEmpty,
+    HcRelativeDateTime,
   },
   data() {
     return {
-      Report: [],
+      reports: [],
     }
   },
   computed: {
@@ -142,13 +152,14 @@ export default {
         reasonCategory: this.$t('moderation.reports.reasonCategory'),
         reasonDescription: this.$t('moderation.reports.reasonDescription'),
         submitter: this.$t('moderation.reports.submitter'),
+        createdAt: this.$t('moderation.reports.createdAt'),
         disabledBy: this.$t('moderation.reports.disabledBy'),
         // actions: ' '
       }
     },
   },
   apollo: {
-    Report: {
+    reports: {
       query: reportListQuery(),
       fetchPolicy: 'cache-and-network',
     },
