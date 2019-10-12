@@ -1,10 +1,14 @@
-import { GraphQLClient } from 'graphql-request'
+import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
-import { host, login, gql } from '../../jest/helpers'
+import { gql } from '../../jest/helpers'
+import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import  createServer  from '../../server'
 
 const factory = Factory()
-let user
-let badge
+const driver = getDriver()
+const instance = getNeode()
+
+let authenticatedUser, regularUser, badge, query, mutate, variables
 
 describe('rewards', () => {
   const variables = {
@@ -12,20 +16,35 @@ describe('rewards', () => {
     to: 'u1',
   }
 
+  beforeAll(async()=>{
+    const { server } = createServer({
+      context: () => {
+        return {
+          driver,
+          neode: instance,
+          user: authenticatedUser,
+        }
+      },
+    })
+    query = createTestClient(server).query
+    mutate = createTestClient(server).mutate
+  })
+
   beforeEach(async () => {
-    user = await factory.create('User', {
-      id: 'u1',
+    
+    regularUser = await factory.create('User', {
+      id: 'regular-user-id',
       role: 'user',
       email: 'user@example.org',
       password: '1234',
     })
     await factory.create('User', {
-      id: 'u2',
+      id: 'moderator-id',
       role: 'moderator',
       email: 'moderator@example.org',
     })
     await factory.create('User', {
-      id: 'u3',
+      id: 'admin-id',
       role: 'admin',
       email: 'admin@example.org',
     })
@@ -54,11 +73,14 @@ describe('rewards', () => {
     `
 
     describe('unauthenticated', () => {
-      let client
-
-      it('throws authorization error', async () => {
-        client = new GraphQLClient(host)
-        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+      it.only('throws authorization error', async () => {
+        const variables = {
+          from: 'indiegogo_en_rhino',
+          to: 'regular-user-id',
+        }
+        authenticatedUser = null
+        await expect(mutate({mutation, variables})).resolves.toMatchObject({ data: {reward: null},
+          errors: [{ message: 'Not Authorised!' }]})
       })
     })
 
