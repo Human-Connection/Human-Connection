@@ -46,6 +46,7 @@ export default {
       'registration-enter-nonce',
       'registration-create-user-account',
       'pages-slug',
+      'imprint',
       'terms-and-conditions',
       'code-of-conduct',
       'changelog',

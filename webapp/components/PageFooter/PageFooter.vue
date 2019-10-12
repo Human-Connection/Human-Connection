@@ -2,9 +2,7 @@
   <div id="footer" class="ds-footer">
     <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
     <span>-</span>
-    <a href="https://human-connection.org/impressum/" target="_blank">
-      {{ $t('site.imprint') }}
-    </a>
+    <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
     <span>-</span>
     <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAndConditions') }}</nuxt-link>
     <span>-</span>
