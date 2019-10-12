@@ -232,15 +232,15 @@ describe('rewards', () => {
     })
 
     describe('authenticated moderator', () => {
-      let client
       beforeEach(async () => {
-        const headers = await login({ email: 'moderator@example.org', password: '1234' })
-        client = new GraphQLClient(host, { headers })
+        authenticatedUser = moderator.toJson()
       })
 
-      describe('rewards bage to user', () => {
+      describe('rewards badge to user', () => {
         it('throws authorization error', async () => {
-          await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+          await expect(
+            mutate({ mutation, variables: { to: 'regular-user-id', from: 'indiegogo_en_rhino' } }),
+          ).resolves.toMatchObject({data: {reward: null}, errors: [{message: 'Not Authorised!'}]})
         })
       })
     })
