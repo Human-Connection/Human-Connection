@@ -2,13 +2,14 @@ import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
 import { gql } from '../../jest/helpers'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
-import  createServer  from '../../server'
+import createServer from '../../server'
+import { addMinutes } from 'date-fns'
 
 const factory = Factory()
 const driver = getDriver()
 const instance = getNeode()
 
-let authenticatedUser, regularUser, badge, query, mutate, variables
+let authenticatedUser, regularUser, administrator, moderator, badge, query, mutate, variables
 
 describe('rewards', () => {
   const variables = {
@@ -16,7 +17,7 @@ describe('rewards', () => {
     to: 'u1',
   }
 
-  beforeAll(async()=>{
+  beforeAll(async () => {
     const { server } = createServer({
       context: () => {
         return {
@@ -31,19 +32,18 @@ describe('rewards', () => {
   })
 
   beforeEach(async () => {
-    
     regularUser = await factory.create('User', {
       id: 'regular-user-id',
       role: 'user',
       email: 'user@example.org',
       password: '1234',
     })
-    await factory.create('User', {
+    moderator = await factory.create('User', {
       id: 'moderator-id',
       role: 'moderator',
       email: 'moderator@example.org',
     })
-    await factory.create('User', {
+    administrator = await factory.create('User', {
       id: 'admin-id',
       role: 'admin',
       email: 'admin@example.org',
@@ -73,54 +73,62 @@ describe('rewards', () => {
     `
 
     describe('unauthenticated', () => {
-      it.only('throws authorization error', async () => {
+      it('throws authorization error', async () => {
         const variables = {
           from: 'indiegogo_en_rhino',
           to: 'regular-user-id',
         }
         authenticatedUser = null
-        await expect(mutate({mutation, variables})).resolves.toMatchObject({ data: {reward: null},
-          errors: [{ message: 'Not Authorised!' }]})
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          data: { reward: null },
+          errors: [{ message: 'Not Authorised!' }],
+        })
       })
     })
 
     describe('authenticated admin', () => {
-      let client
       beforeEach(async () => {
-        const headers = await login({ email: 'admin@example.org', password: '1234' })
-        client = new GraphQLClient(host, { headers })
+        authenticatedUser = await administrator.toJson()
       })
 
       describe('badge for id does not exist', () => {
         it('rejects with a telling error message', async () => {
           await expect(
-            client.request(mutation, {
-              ...variables,
-              from: 'bullshit',
-            }),
-          ).rejects.toThrow("Couldn't find a badge with that id")
+            mutate({ mutation, variables: { to: 'regular-user-id', from: 'ndiegogo_en_rhino' } }),
+          ).resolves.toMatchObject({
+            data: { reward: null },
+            errors: [{ message: "Couldn't find a badge with that id" }],
+          })
         })
       })
 
       describe('user for id does not exist', () => {
         it('rejects with a telling error message', async () => {
           await expect(
-            client.request(mutation, {
-              ...variables,
-              to: 'bullshit',
+            mutate({
+              mutation,
+              variables: { to: 'non-existent-user-id', from: 'non-existent-badge' },
             }),
-          ).rejects.toThrow("Couldn't find a user with that id")
+          ).resolves.toMatchObject({
+            data: { reward: null },
+            errors: [{ message: "Couldn't find a user with that id" }],
+          })
         })
       })
 
       it('rewards a badge to user', async () => {
         const expected = {
-          reward: {
-            id: 'u1',
-            badges: [{ id: 'indiegogo_en_rhino' }],
+          data: {
+            reward: {
+              id: 'regular-user-id',
+              badges: [{ id: 'indiegogo_en_rhino' }],
+            },
           },
+          errors: undefined,
         }
-        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+        await expect(
+          mutate({ mutation, variables: { to: 'regular-user-id', from: 'indiegogo_en_rhino' } }),
+        ).resolves.toMatchObject(expected)
       })
 
       it('rewards a second different badge to same user', async () => {
@@ -130,42 +138,83 @@ describe('rewards', () => {
         })
         const badges = [{ id: 'indiegogo_en_racoon' }, { id: 'indiegogo_en_rhino' }]
         const expected = {
-          reward: {
-            id: 'u1',
-            badges: expect.arrayContaining(badges),
+          data: {
+            reward: {
+              id: 'regular-user-id',
+              badges: expect.arrayContaining(badges),
+            },
           },
+          errors: undefined,
         }
-        await client.request(mutation, variables)
+        await mutate({
+          mutation,
+          variables: {
+            to: 'regular-user-id',
+            from: 'indiegogo_en_rhino',
+          },
+        })
         await expect(
-          client.request(mutation, {
-            ...variables,
-            from: 'indiegogo_en_racoon',
+          mutate({
+            mutation,
+            variables: {
+              to: 'regular-user-id',
+              from: 'indiegogo_en_racoon',
+            },
           }),
-        ).resolves.toEqual(expected)
+        ).resolves.toMatchObject(expected)
       })
 
       it('rewards the same badge as well to another user', async () => {
         const expected = {
-          reward: {
-            id: 'u2',
-            badges: [{ id: 'indiegogo_en_rhino' }],
+          data: {
+            reward: {
+              id: 'regular-user-2-id',
+              badges: [{ id: 'indiegogo_en_rhino' }],
+            },
           },
+          errors: undefined,
         }
+        await factory.create('User', {
+          id: 'regular-user-2-id',
+          email: 'regular2@email.com',
+        })
+        await mutate({
+          mutation,
+          variables: {
+            to: 'regular-user-id',
+            from: 'indiegogo_en_rhino',
+          },
+        })
         await expect(
-          client.request(mutation, {
-            ...variables,
-            to: 'u2',
+          mutate({
+            mutation,
+            variables: {
+              to: 'regular-user-2-id',
+              from: 'indiegogo_en_rhino',
+            },
           }),
-        ).resolves.toEqual(expected)
+        ).resolves.toMatchObject(expected)
       })
 
       it('creates no duplicate reward relationships', async () => {
-        await client.request(mutation, variables)
-        await client.request(mutation, variables)
+        await mutate({
+          mutation,
+          variables: {
+            to: 'regular-user-id',
+            from: 'indiegogo_en_rhino',
+          },
+        })
+        await mutate({
+          mutation,
+          variables: {
+            to: 'regular-user-id',
+            from: 'indiegogo_en_rhino',
+          },
+        })
 
-        const query = gql`
+        const userQuery = gql`
           {
-            User(id: "u1") {
+            User(id: "regular-user-id") {
               badgesCount
               badges {
                 id
@@ -173,9 +222,12 @@ describe('rewards', () => {
             }
           }
         `
-        const expected = { User: [{ badgesCount: 1, badges: [{ id: 'indiegogo_en_rhino' }] }] }
+        const expected = {
+          data: { User: [{ badgesCount: 1, badges: [{ id: 'indiegogo_en_rhino' }] }] },
+          errors: undefined,
+        }
 
-        await expect(client.request(query)).resolves.toEqual(expected)
+        await expect(query({ query: userQuery })).resolves.toMatchObject(expected)
       })
     })
 
