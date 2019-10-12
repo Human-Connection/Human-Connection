@@ -3,18 +3,17 @@ import Factory from '../../seed/factories'
 import { gql } from '../../jest/helpers'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
-import { addMinutes } from 'date-fns'
 
 const factory = Factory()
 const driver = getDriver()
 const instance = getNeode()
 
-let authenticatedUser, regularUser, administrator, moderator, badge, query, mutate, variables
+let authenticatedUser, regularUser, administrator, moderator, badge, query, mutate
 
 describe('rewards', () => {
   const variables = {
     from: 'indiegogo_en_rhino',
-    to: 'u1',
+    to: 'regular-user-id',
   }
 
   beforeAll(async () => {
@@ -74,10 +73,6 @@ describe('rewards', () => {
 
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
-        const variables = {
-          from: 'indiegogo_en_rhino',
-          to: 'regular-user-id',
-        }
         authenticatedUser = null
         await expect(mutate({ mutation, variables })).resolves.toMatchObject({
           data: { reward: null },
@@ -126,9 +121,7 @@ describe('rewards', () => {
           },
           errors: undefined,
         }
-        await expect(
-          mutate({ mutation, variables: { to: 'regular-user-id', from: 'indiegogo_en_rhino' } }),
-        ).resolves.toMatchObject(expected)
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
       })
 
       it('rewards a second different badge to same user', async () => {
@@ -180,10 +173,7 @@ describe('rewards', () => {
         })
         await mutate({
           mutation,
-          variables: {
-            to: 'regular-user-id',
-            from: 'indiegogo_en_rhino',
-          },
+          variables,
         })
         await expect(
           mutate({
@@ -199,17 +189,11 @@ describe('rewards', () => {
       it('creates no duplicate reward relationships', async () => {
         await mutate({
           mutation,
-          variables: {
-            to: 'regular-user-id',
-            from: 'indiegogo_en_rhino',
-          },
+          variables,
         })
         await mutate({
           mutation,
-          variables: {
-            to: 'regular-user-id',
-            from: 'indiegogo_en_rhino',
-          },
+          variables,
         })
 
         const userQuery = gql`
@@ -238,9 +222,10 @@ describe('rewards', () => {
 
       describe('rewards badge to user', () => {
         it('throws authorization error', async () => {
-          await expect(
-            mutate({ mutation, variables: { to: 'regular-user-id', from: 'indiegogo_en_rhino' } }),
-          ).resolves.toMatchObject({data: {reward: null}, errors: [{message: 'Not Authorised!'}]})
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            data: { reward: null },
+            errors: [{ message: 'Not Authorised!' }],
+          })
         })
       })
     })
@@ -248,9 +233,12 @@ describe('rewards', () => {
 
   describe('unreward', () => {
     beforeEach(async () => {
-      await user.relateTo(badge, 'rewarded')
+      await regularUser.relateTo(badge, 'rewarded')
     })
-    const expected = { unreward: { id: 'u1', badges: [] } }
+    const expected = {
+      data: { unreward: { id: 'regular-user-id', badges: [] } },
+      errors: undefined,
+    }
 
     const mutation = gql`
       mutation($from: ID!, $to: ID!) {
@@ -265,9 +253,10 @@ describe('rewards', () => {
 
     describe('check test setup', () => {
       it('user has one badge', async () => {
-        const query = gql`
+        authenticatedUser = regularUser.toJson()
+        const userQuery = gql`
           {
-            User(id: "u1") {
+            User(id: "regular-user-id") {
               badgesCount
               badges {
                 id
@@ -275,48 +264,50 @@ describe('rewards', () => {
             }
           }
         `
-        const expected = { User: [{ badgesCount: 1, badges: [{ id: 'indiegogo_en_rhino' }] }] }
-        const client = new GraphQLClient(host)
-        await expect(client.request(query)).resolves.toEqual(expected)
+        const expected = {
+          data: { User: [{ badgesCount: 1, badges: [{ id: 'indiegogo_en_rhino' }] }] },
+          errors: undefined,
+        }
+        await expect(query({ query: userQuery })).resolves.toMatchObject(expected)
       })
     })
 
     describe('unauthenticated', () => {
-      let client
-
       it('throws authorization error', async () => {
-        client = new GraphQLClient(host)
-        await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+        authenticatedUser = null
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          data: { unreward: null },
+          errors: [{ message: 'Not Authorised!' }],
+        })
       })
     })
 
     describe('authenticated admin', () => {
-      let client
       beforeEach(async () => {
-        const headers = await login({ email: 'admin@example.org', password: '1234' })
-        client = new GraphQLClient(host, { headers })
+        authenticatedUser = await administrator.toJson()
       })
 
       it('removes a badge from user', async () => {
-        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
       })
 
       it('does not crash when unrewarding multiple times', async () => {
-        await client.request(mutation, variables)
-        await expect(client.request(mutation, variables)).resolves.toEqual(expected)
+        await mutate({ mutation, variables })
+        await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
       })
     })
 
     describe('authenticated moderator', () => {
-      let client
       beforeEach(async () => {
-        const headers = await login({ email: 'moderator@example.org', password: '1234' })
-        client = new GraphQLClient(host, { headers })
+        authenticatedUser = await moderator.toJson()
       })
 
       describe('removes bage from user', () => {
         it('throws authorization error', async () => {
-          await expect(client.request(mutation, variables)).rejects.toThrow('Not Authorised')
+          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+            data: { unreward: null },
+            errors: [{ message: 'Not Authorised!' }],
+          })
         })
       })
     })
