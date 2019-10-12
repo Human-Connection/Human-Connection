@@ -2469,6 +2469,11 @@ fsevents@^1.2.7:
     nan "^2.9.2"
     node-pre-gyp "^0.10.0"
 
+fsevents@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.1.0.tgz#ce1a5f9ac71c6d75278b0c5bd236d7dfece4cbaa"
+  integrity sha512-+iXhW3LuDQsno8dOIrCIT/CBjeBWuP7PXe8w9shnj9Lebny/Gx1ZjVBYwexLz36Ri2jKuXMNpV6CYNh8lHHgrQ==
+
 function-bind@^1.0.2, function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
@@ -3486,13 +3491,14 @@ neo4j-driver@^1.7.5, neo4j-driver@^1.7.6:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neode@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.3.tgz#a539830cce6f6e4825462f6cb03f2969a0003f1b"
-  integrity sha512-pArHG1hD2kVwrzLlz6B1+IgdOJRQj/BgR6KzH6DlVzSA6geoZRe68fbpvmOJtzyPU7iuUYxXVk87PpPM1A7dlg==
+neode@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.4.tgz#9fc1e7d46cb91bc7a95061db766a0e3b2ad61692"
+  integrity sha512-HB4/oAxkb/besnTG7t6P3Fy6KIUyo00ouoKJdhnqUixGeRvKHFH7Pw7jj0xrzM69jR7+RW14dHgzBf7jUaF+YQ==
   dependencies:
     "@hapi/joi" "^15.1.0"
     dotenv "^4.0.0"
+    fsevents "^2.1.0"
     neo4j-driver "^1.7.5"
     uuid "^3.3.2"
 
