@@ -51,7 +51,7 @@ Feature: Report and Moderate
   Scenario: Review reported content
     Given somebody reported the following posts:
       | submitterEmail           | resourceId | reasonCategory     | reasonDescription |
-      | p1.submitter@example.org | p1         | discrimination-etc | Offensive content |
+      | p1.submitter@example.org | p1         | discrimination_etc | Offensive content |
     And I am logged in with a "moderator" role
     When I click on the avatar menu in the top right corner
     And I click on "Moderation"

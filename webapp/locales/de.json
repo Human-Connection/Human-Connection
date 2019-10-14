@@ -499,13 +499,13 @@
         "label": "Wähle eine Kategorie:",
         "placeholder": "Kategorie …",
         "options": {
-          "discrimination-etc": "Diskriminierende Beiträge, Kommentare, Äußerungen oder Beleidigungen.",
-          "pornographic-content-links": "Das Posten oder Verlinken eindeutig pornografischen Materials.",
-          "glorific-trivia-of-cruel-inhuman-acts": "Verherrlichung oder Verharmlosung grausamer oder unmenschlicher Gewalttätigkeiten.",
+          "discrimination_etc": "Diskriminierende Beiträge, Kommentare, Äußerungen oder Beleidigungen.",
+          "pornographic_content_links": "Das Posten oder Verlinken eindeutig pornografischen Materials.",
+          "glorific_trivia_of_cruel_inhuman_acts": "Verherrlichung oder Verharmlosung grausamer oder unmenschlicher Gewalttätigkeiten.",
           "doxing": "Das Veröffentlichen von personenbezogenen Daten anderer ohne deren Einverständnis oder das Androhen dessen (\"Doxing\").",
-          "intentional-intimidation-stalking-persecution": "Absichtliche Einschüchterung, Stalking oder Verfolgung.",
-          "advert-products-services-commercial": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
-          "criminal-behavior-violation-german-law": "Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
+          "intentional_intimidation_stalking_persecution": "Absichtliche Einschüchterung, Stalking oder Verfolgung.",
+          "advert_products_services_commercial": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
+          "criminal_behavior_violation_german_law": "Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
           "other": "Andere …"
         }
       },
