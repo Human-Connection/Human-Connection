@@ -5,10 +5,8 @@ type REPORTED {
   submitter: User
     @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
   # not yet supported
-  # resource: ReportReource
+  # resource: ReportResource
   #   @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource")
-  resourceId: ID
-    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource {.id}")
   type: String
     @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN labels(resource)[0]")
   user: User
@@ -29,7 +27,7 @@ enum ReasonCategory {
 }
 
 # not yet supported
-# union ReportReource = User | Post | Comment
+# union ReportResource = User | Post | Comment
 
 enum ReportOrdering {
   createdAt_desc
@@ -40,5 +38,5 @@ type Query {
 }
 
 type Mutation {
-  report(resourceId: ID!, reasonCategory: String!, reasonDescription: String!): REPORTED
+  report(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): REPORTED
 }

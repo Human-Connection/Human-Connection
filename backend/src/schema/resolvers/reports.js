@@ -1,87 +1,60 @@
 export default {
   Mutation: {
     report: async (_parent, params, { driver, user }, _resolveInfo) => {
+      let createdRelationshipWithNestedAttributes
       const { resourceId, reasonCategory, reasonDescription } = params
-
       const session = driver.session()
-      const reportProperties = {
-        createdAt: new Date().toISOString(),
-        reasonCategory,
-        reasonDescription,
-      }
-
-      const reportQueryRes = await session.run(
-        `
-          MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId}) 
-          RETURN labels(resource)[0] as label
-        `,
-        {
-          resourceId,
-          submitterId: user.id,
-        },
-      )
-      const [rep] = reportQueryRes.records.map(record => {
-        return {
-          label: record.get('label'),
-        }
+      const writeTxResultPromise = session.writeTransaction(async txc => {
+        const reportRelationshipTransactionResponse = await txc.run(
+          `
+            MATCH (submitter:User {id: $submitterId})
+            MATCH (resource {id: $resourceId})
+            WHERE resource:User OR resource:Comment OR resource:Post
+            CREATE (resource)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
+            RETURN report, submitter, resource, labels(resource)[0] as type
+          `,
+          {
+            resourceId,
+            submitterId: user.id,
+            createdAt: new Date().toISOString(),
+            reasonCategory,
+            reasonDescription,
+          },
+        )
+        return reportRelationshipTransactionResponse.records.map(record => ({
+          report: record.get('report'),
+          submitter: record.get('submitter'),
+          resource: record.get('resource').properties,
+          type: record.get('type'),
+        }))
       })
-
-      if (rep) {
-        throw new Error(rep.label)
-      }
-
-      const res = await session.run(
-        `
-          MATCH (submitter:User {id: $submitterId})
-          MATCH (resource {id: $resourceId})
-          WHERE resource:User OR resource:Comment OR resource:Post
-          CREATE (resource)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
-          RETURN report, submitter, resource, labels(resource)[0] as type
-        `,
-        {
-          resourceId,
-          submitterId: user.id,
-          createdAt: reportProperties.createdAt,
-          reasonCategory: reportProperties.reasonCategory,
-          reasonDescription: reportProperties.reasonDescription,
-        },
-      )
-
-      session.close()
-
-      const [dbResponse] = res.records.map(r => {
-        return {
-          report: r.get('report'),
-          submitter: r.get('submitter'),
-          resource: r.get('resource'),
-          type: r.get('type'),
+      try {
+        const txResult = await writeTxResultPromise
+        if (!txResult[0]) return null
+        const { report, submitter, resource, type } = txResult[0]
+        createdRelationshipWithNestedAttributes = {
+          ...report.properties,
+          post: null,
+          comment: null,
+          user: null,
+          submitter: submitter.properties,
+          type,
         }
-      })
-      if (!dbResponse) return null
-
-      const { report, submitter, resource, type } = dbResponse
-
-      const response = {
-        ...report.properties,
-        post: null,
-        comment: null,
-        user: null,
-        submitter: submitter.properties,
-        type,
+        switch (type) {
+          case 'Post':
+            createdRelationshipWithNestedAttributes.post = resource
+            break
+          case 'Comment':
+            createdRelationshipWithNestedAttributes.comment = resource
+            break
+          case 'User':
+            createdRelationshipWithNestedAttributes.user = resource
+            break
+        }
+      } finally {
+        session.close()
       }
-      switch (type) {
-        case 'Post':
-          response.post = resource.properties
-          break
-        case 'Comment':
-          response.comment = resource.properties
-          break
-        case 'User':
-          response.user = resource.properties
-          break
-      }
-
-      return response
+      return createdRelationshipWithNestedAttributes
     },
   },
   Query: {
@@ -113,13 +86,13 @@ export default {
 
         const responseEle = {
           ...report.properties,
-          resourceId: resource.properties.id,
           post: null,
           comment: null,
           user: null,
           submitter: submitter.properties,
           type,
         }
+
         switch (type) {
           case 'Post':
             responseEle.post = resource.properties

@@ -20,7 +20,7 @@ describe('report mutation', () => {
 
   const action = () => {
     reportMutation = gql`
-      mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+      mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         report(
           resourceId: $resourceId
           reasonCategory: $reasonCategory
@@ -166,7 +166,7 @@ describe('report mutation', () => {
             reasonCategory: 'my_category',
           }
           await expect(action()).rejects.toThrow(
-            'Expected a value of type "ReasonCategory" but received: "my_category"',
+            'got invalid value "my_category"; Expected type ReasonCategory',
           )
         })
 
@@ -307,16 +307,11 @@ describe('report mutation', () => {
 })
 
 describe('reports query', () => {
-  let query
-  let mutate
-  let authenticatedUser = null
-  let moderator
-  let user
-  let author
+  let query, mutate, authenticatedUser, moderator, user, author
   const categoryIds = ['cat9']
 
   const reportMutation = gql`
-    mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+    mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       report(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
@@ -335,7 +330,6 @@ describe('reports query', () => {
         submitter {
           id
         }
-        resourceId
         type
         user {
           id
@@ -350,7 +344,8 @@ describe('reports query', () => {
     }
   `
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    await factory.cleanDatabase()
     const { server } = createServer({
       context: () => {
         return {
@@ -480,7 +475,6 @@ describe('reports query', () => {
             submitter: expect.objectContaining({
               id: 'user1',
             }),
-            resourceId: 'auth1',
             type: 'User',
             user: expect.objectContaining({
               id: 'auth1',
@@ -495,7 +489,6 @@ describe('reports query', () => {
             submitter: expect.objectContaining({
               id: 'user1',
             }),
-            resourceId: 'p1',
             type: 'Post',
             user: null,
             post: expect.objectContaining({
@@ -510,7 +503,6 @@ describe('reports query', () => {
             submitter: expect.objectContaining({
               id: 'user1',
             }),
-            resourceId: 'c1',
             type: 'Comment',
             user: null,
             post: null,
