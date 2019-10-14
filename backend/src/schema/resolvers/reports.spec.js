@@ -448,7 +448,7 @@ describe('reports query', () => {
       expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
 
-    it('roll "user" gets no reports', async () => {
+    it('role "user" gets no reports', async () => {
       authenticatedUser = await user.toJson()
       const { data, errors } = await query({ query: reportsQuery })
       expect(data).toEqual({
@@ -457,7 +457,7 @@ describe('reports query', () => {
       expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
 
-    it('roll "moderator" gets reports', async () => {
+    it('role "moderator" gets reports', async () => {
       const expected = {
         // to check 'orderBy: createdAt_desc' is not possible here, because 'createdAt' does not differ
         reports: expect.arrayContaining([
