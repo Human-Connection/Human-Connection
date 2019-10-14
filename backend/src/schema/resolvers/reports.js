@@ -1,6 +1,6 @@
 export default {
   Mutation: {
-    report: async (_parent, params, { driver, _req, user }, _resolveInfo) => {
+    report: async (_parent, params, { driver, user }, _resolveInfo) => {
       const { resourceId, reasonCategory, reasonDescription } = params
 
       const session = driver.session()
@@ -85,7 +85,7 @@ export default {
     },
   },
   Query: {
-    reports: async (_parent, _params, { driver, _req, _user }, _resolveInfo) => {
+    reports: async (_parent, _params, { driver }, _resolveInfo) => {
       const session = driver.session()
       const res = await session.run(
         `
@@ -113,7 +113,6 @@ export default {
 
         const responseEle = {
           ...report.properties,
-          resource: resource.properties,
           resourceId: resource.properties.id,
           post: null,
           comment: null,

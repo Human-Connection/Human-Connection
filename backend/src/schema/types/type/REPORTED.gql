@@ -1,6 +1,6 @@
 type REPORTED {
   createdAt: String
-  reasonCategory: String
+  reasonCategory: ReasonCategory
   reasonDescription: String
   submitter: User
     @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
@@ -14,6 +14,18 @@ type REPORTED {
   user: User
   post: Post
   comment: Comment
+}
+
+# list see "reportReasonCategoriesDatabaseList" in shared file "shared/moderation/report.js"
+enum ReasonCategory {
+  other
+  discrimination-etc
+  pornographic-content-links
+  glorific-trivia-of-cruel-inhuman-acts
+  doxing
+  intentional-intimidation-stalking-persecution
+  advert-products-services-commercial
+  criminal-behavior-violation-german-law
 }
 
 # not yet supported
