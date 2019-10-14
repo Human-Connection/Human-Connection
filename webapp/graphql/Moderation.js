@@ -84,7 +84,7 @@ export const reportListQuery = () => {
 
 export const reportMutation = () => {
   return gql`
-    mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+    mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       report(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
