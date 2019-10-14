@@ -44,7 +44,8 @@
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
-      "^~/(.*)$": "<rootDir>/$1"
+      "^~/(.*)$": "<rootDir>/$1",
+      "\\.(css|less)$": "identity-obj-proxy"
     },
     "testMatch": [
       "**/?(*.)+(spec|test).js?(x)"
@@ -62,6 +63,7 @@
     "apollo-cache-inmemory": "~1.6.3",
     "apollo-client": "~2.6.4",
     "cookie-universal-nuxt": "~2.0.18",
+    "cropperjs": "^1.5.5",
     "cross-env": "~6.0.3",
     "date-fns": "2.4.1",
     "express": "~4.17.1",
@@ -121,6 +123,7 @@
     "eslint-plugin-vue": "~5.2.3",
     "flush-promises": "^1.0.2",
     "fuse.js": "^3.4.5",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "~24.9.0",
     "mutation-observer": "^1.0.3",
     "node-sass": "~4.12.0",

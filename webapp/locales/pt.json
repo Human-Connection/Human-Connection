@@ -203,7 +203,10 @@
   },
   "contribution": {
     "edit": "Editar Contribuição",
-    "delete": "Apagar Contribuição"
+    "delete": "Apagar Contribuição",
+    "teaserImage": {
+      "cropperConfirm": "Confirmar"
+    }
   },
   "comment": {
     "content": {

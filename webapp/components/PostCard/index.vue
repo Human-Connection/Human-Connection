@@ -131,10 +131,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ds-card-image img {
   width: 100%;
-  max-height: 300px;
+  max-height: 2000px;
+  object-fit: contain;
   -o-object-fit: cover;
   object-fit: cover;
   -o-object-position: center;

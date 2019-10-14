@@ -562,6 +562,9 @@
         "it-internet-data-privacy": "IT, Internet & Datenschutz",
         "art-culture-sport": "Kunst, Kultur & Sport"
       }
+    },
+    "teaserImage": {
+      "cropperConfirm": "Bestätigen"
     }
   },
   "code-of-conduct": {

@@ -563,6 +563,9 @@
         "it-internet-data-privacy": "IT, Internet & Data Privacy",
         "art-culture-sport": "Art, Culture, & Sport"
       }
+    },
+    "teaserImage": {
+      "cropperConfirm": "Confirm"
     }
   },
   "code-of-conduct": {

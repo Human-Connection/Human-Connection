@@ -5,25 +5,24 @@
     id="postdropzone"
     class="ds-card-image"
     :use-custom-slot="true"
-    @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="verror"
+    @vdropzone-thumbnail="transformImage"
+    @vdropzone-drop="dropzoneDrop"
   >
-    <div class="dz-message">
+    <div
+      :class="{
+        'hc-attachments-upload-area-post': true,
+        'hc-attachments-upload-area-update-post': contribution,
+      }"
+    >
+      <slot></slot>
       <div
         :class="{
-          'hc-attachments-upload-area-post': true,
-          'hc-attachments-upload-area-update-post': contribution,
+          'hc-drag-marker-post': true,
+          'hc-drag-marker-update-post': contribution,
         }"
       >
-        <slot></slot>
-        <div
-          :class="{
-            'hc-drag-marker-post': true,
-            'hc-drag-marker-update-post': contribution,
-          }"
-        >
-          <ds-icon name="image" size="xxx-large" />
-        </div>
+        <ds-icon name="image" size="xxx-large" />
       </div>
     </div>
   </vue-dropzone>
@@ -31,6 +30,8 @@
 
 <script>
 import vueDropzone from 'nuxt-dropzone'
+import Cropper from 'cropperjs'
+import 'cropperjs/dist/cropper.css'
 
 export default {
   components: {
@@ -42,7 +43,7 @@ export default {
   data() {
     return {
       dropzoneOptions: {
-        url: this.addTeaserImage,
+        url: () => '',
         maxFilesize: 5.0,
         previewTemplate: this.template(),
       },
@@ -70,27 +71,50 @@ export default {
       this.error = true
       this.$toast.error(file.status, message)
     },
-    addTeaserImage(file) {
-      this.$emit('addTeaserImage', file[0])
-      return ''
+    transformImage(file) {
+      let thumbnailElement, editor, confirm, thumbnailPreview, contributionImage
+      // Create the image editor overlay
+      editor = document.createElement('div')
+      thumbnailElement = document.querySelectorAll('#postdropzone')[0]
+      thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
+      if (thumbnailPreview) thumbnailPreview.remove()
+      contributionImage = document.querySelectorAll('.contribution-image')[0]
+      if (contributionImage) contributionImage.remove()
+      editor.classList.add('crop-overlay')
+      thumbnailElement.appendChild(editor)
+      // Create the confirm button
+      confirm = document.createElement('button')
+      confirm.classList.add('crop-confirm', 'ds-button', 'ds-button-primary')
+      confirm.textContent = this.$t('contribution.teaserImage.cropperConfirm')
+      confirm.addEventListener('click', () => {
+        // Get the canvas with image data from Cropper.js
+        let canvas = cropper.getCroppedCanvas()
+        canvas.toBlob(blob => {
+          this.$refs.el.manuallyAddFile(blob, canvas.toDataURL(), null, null, {
+            dontSubstractMaxFiles: false,
+            addToFiles: true,
+          })
+          image = new Image()
+          image.src = canvas.toDataURL()
+          image.classList.add('thumbnail-preview')
+          thumbnailElement.appendChild(image)
+          // Remove the editor from view
+          editor.parentNode.removeChild(editor)
+          this.$emit('addTeaserImage', blob)
+        })
+      })
+      editor.appendChild(confirm)
+
+      // Load the image
+      let image = new Image()
+      image.src = URL.createObjectURL(file)
+      editor.appendChild(image)
+      // Create Cropper.js and pass image
+      let cropper = new Cropper(image, { zoomable: false })
     },
-    thumbnail: (file, dataUrl) => {
-      let thumbnailElement, contributionImage, uploadArea, thumbnailPreview, image
-      if (file.previewElement) {
-        thumbnailElement = document.querySelectorAll('#postdropzone')[0]
-        contributionImage = document.querySelectorAll('.contribution-image')[0]
-        thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
-        if (contributionImage) {
-          uploadArea = document.querySelectorAll('.hc-attachments-upload-area-update-post')[0]
-          uploadArea.removeChild(contributionImage)
-          uploadArea.classList.remove('hc-attachments-upload-area-update-post')
-        }
-        image = new Image()
-        image.src = URL.createObjectURL(file)
-        image.classList.add('thumbnail-preview')
-        if (thumbnailPreview) return thumbnailElement.replaceChild(image, thumbnailPreview)
-        thumbnailElement.appendChild(image)
-      }
+    dropzoneDrop() {
+      let cropOverlay = document.querySelectorAll('.crop-overlay')[0]
+      if (cropOverlay) cropOverlay.remove()
     },
   },
 }
@@ -98,14 +122,8 @@ export default {
 <style lang="scss">
 #postdropzone {
   width: 100%;
-  min-height: 300px;
+  min-height: 500px;
   background-color: $background-color-softest;
-}
-
-@media only screen and (max-width: 960px) {
-  #postdropzone {
-    min-height: 200px;
-  }
 }
 
 .hc-attachments-upload-area-post {
@@ -134,11 +152,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 180px 5px;
   color: hsl(0, 0%, 25%);
   transition: all 0.2s ease-out;
   font-size: 60px;
-  margin: 80px 5px;
-
   background-color: $background-color-softest;
   opacity: 0.65;
 
@@ -178,7 +195,17 @@ export default {
   border-top: $border-size-base solid $border-color-softest;
 }
 
-.contribution-image {
-  max-height: 300px;
+.crop-overlay {
+  max-height: 2000px;
+  position: relative;
+  width: 100%;
+  background-color: #000;
+}
+
+.crop-confirm {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 1;
 }
 </style>
