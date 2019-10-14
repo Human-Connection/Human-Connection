@@ -110,7 +110,7 @@ export default {
       image.src = URL.createObjectURL(file)
       editor.appendChild(image)
       // Create Cropper.js and pass image
-      let cropper = new Cropper(image, { aspectRatio: 1.25 / 1 })
+      let cropper = new Cropper(image, {})
     },
     dropzoneDrop() {
       let cropOverlay = document.querySelectorAll('.crop-overlay')[0]
