@@ -448,7 +448,7 @@ describe('reports query', () => {
       expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
 
-    it('roll "user" gets no reports', async () => {
+    it('role "user" gets no reports', async () => {
       authenticatedUser = await user.toJson()
       const { data, errors } = await query({ query: reportsQuery })
       expect(data).toEqual({
