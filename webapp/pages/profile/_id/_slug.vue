@@ -251,7 +251,7 @@
           </template>
         </masonry-grid>
         <div
-          v-if="hasMore"
+          v-if="hasMore && posts.length >= pageSize"
           v-infinite-scroll="showMoreContributions"
           :infinite-scroll-disabled="$apollo.loading"
           :infinite-scroll-distance="10"
@@ -375,14 +375,14 @@ export default {
     showMoreContributions() {
       const { Post: PostQuery } = this.$apollo.queries
       if (!PostQuery) return // seems this can be undefined on subpages
-
       this.offset += this.pageSize
+
       PostQuery.fetchMore({
         variables: {
           offset: this.offset,
           filter: this.filter,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: 'createdAt_desc',
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {

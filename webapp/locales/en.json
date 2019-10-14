@@ -245,8 +245,8 @@
       "status": {
         "description": "As a default for you, embedded code of third-party providers is",
         "disabled": {
-          "false": "initially not displayed",
-          "true": "displayed immediately"
+          "off": "initially not displayed",
+          "on": "displayed immediately"
         },
         "change": {
           "question": "Should embedded source code from third parties always be displayed to you?",
