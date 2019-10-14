@@ -110,7 +110,7 @@ export default {
       image.src = URL.createObjectURL(file)
       editor.appendChild(image)
       // Create Cropper.js and pass image
-      let cropper = new Cropper(image, {})
+      let cropper = new Cropper(image, { zoomable: false })
     },
     dropzoneDrop() {
       let cropOverlay = document.querySelectorAll('.crop-overlay')[0]
@@ -124,12 +124,6 @@ export default {
   width: 100%;
   min-height: 500px;
   background-color: $background-color-softest;
-}
-
-@media only screen and (max-width: 960px) {
-  #postdropzone {
-    min-height: 200px;
-  }
 }
 
 .hc-attachments-upload-area-post {
@@ -202,9 +196,9 @@ export default {
 }
 
 .crop-overlay {
+  max-height: 2000px;
   position: relative;
   width: 100%;
-  z-index: 9999;
   background-color: #000;
 }
 

@@ -190,6 +190,10 @@ export default {
 </script>
 
 <style lang="scss">
+.ds-card-image img {
+  max-height: 2000px;
+}
+
 .masonry-grid {
   display: grid;
   grid-gap: 10px;
