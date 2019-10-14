@@ -23,6 +23,7 @@ export default applyScalars(
             'Location',
             'SocialMedia',
             'NOTIFIED',
+            'REPORTED',
           ],
           // add 'User' here as soon as possible
         },

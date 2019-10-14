@@ -13,17 +13,36 @@ describe('report mutation', () => {
   let reportMutation
   let headers
   let client
-  let returnedObject
   let variables
   let createPostVariables
   let user
   const categoryIds = ['cat9']
 
   const action = () => {
-    // because of the template `${returnedObject}` the 'gql' tag from 'jest/helpers' is not working here
-    reportMutation = `
+    reportMutation = gql`
       mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
-        report(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) ${returnedObject}
+        report(
+          resourceId: $resourceId
+          reasonCategory: $reasonCategory
+          reasonDescription: $reasonDescription
+        ) {
+          createdAt
+          reasonCategory
+          reasonDescription
+          type
+          submitter {
+            email
+          }
+          user {
+            name
+          }
+          post {
+            title
+          }
+          comment {
+            content
+          }
+        }
       }
     `
     client = new GraphQLClient(host, {
@@ -33,10 +52,9 @@ describe('report mutation', () => {
   }
 
   beforeEach(async () => {
-    returnedObject = '{ createdAt }'
     variables = {
       resourceId: 'whatever',
-      reasonCategory: 'reason-category-dummy',
+      reasonCategory: 'other',
       reasonDescription: 'Violates code of conduct !!!',
     }
     headers = {}
@@ -95,8 +113,7 @@ describe('report mutation', () => {
         })
 
         it('returns type "User"', async () => {
-          returnedObject = '{ type }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               type: 'User',
             },
@@ -104,8 +121,7 @@ describe('report mutation', () => {
         })
 
         it('returns resource in user attribute', async () => {
-          returnedObject = '{ user { name } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               user: {
                 name: 'abusive-user',
@@ -115,8 +131,7 @@ describe('report mutation', () => {
         })
 
         it('returns the submitter', async () => {
-          returnedObject = '{ submitter { email } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               submitter: {
                 email: 'test@example.org',
@@ -126,27 +141,33 @@ describe('report mutation', () => {
         })
 
         it('returns a date', async () => {
-          returnedObject = '{ createdAt }'
-          await expect(action()).resolves.toEqual(
-            expect.objectContaining({
-              report: {
-                createdAt: expect.any(String),
-              },
-            }),
-          )
+          await expect(action()).resolves.toMatchObject({
+            report: {
+              createdAt: expect.any(String),
+            },
+          })
         })
 
         it('returns the reason category', async () => {
           variables = {
             ...variables,
-            reasonCategory: 'my-category',
+            reasonCategory: 'criminal_behavior_violation_german_law',
           }
-          returnedObject = '{ reasonCategory }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
-              reasonCategory: 'my-category',
+              reasonCategory: 'criminal_behavior_violation_german_law',
             },
           })
+        })
+
+        it('gives an error if the reason category is not in enum "ReasonCategory"', async () => {
+          variables = {
+            ...variables,
+            reasonCategory: 'my_category',
+          }
+          await expect(action()).rejects.toThrow(
+            'Expected a value of type "ReasonCategory" but received: "my_category"',
+          )
         })
 
         it('returns the reason description', async () => {
@@ -154,8 +175,7 @@ describe('report mutation', () => {
             ...variables,
             reasonDescription: 'My reason!',
           }
-          returnedObject = '{ reasonDescription }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               reasonDescription: 'My reason!',
             },
@@ -167,8 +187,7 @@ describe('report mutation', () => {
             ...variables,
             reasonDescription: 'My reason <sanitize></sanitize>!',
           }
-          returnedObject = '{ reasonDescription }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               reasonDescription: 'My reason !',
             },
@@ -191,8 +210,7 @@ describe('report mutation', () => {
         })
 
         it('returns type "Post"', async () => {
-          returnedObject = '{ type }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               type: 'Post',
             },
@@ -200,8 +218,7 @@ describe('report mutation', () => {
         })
 
         it('returns resource in post attribute', async () => {
-          returnedObject = '{ post { title } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               post: {
                 title: 'Matt and Robert having a pair-programming',
@@ -211,8 +228,7 @@ describe('report mutation', () => {
         })
 
         it('returns null in user attribute', async () => {
-          returnedObject = '{ user { name } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               user: null,
             },
@@ -245,8 +261,7 @@ describe('report mutation', () => {
         })
 
         it('returns type "Comment"', async () => {
-          returnedObject = '{ type }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               type: 'Comment',
             },
@@ -254,8 +269,7 @@ describe('report mutation', () => {
         })
 
         it('returns resource in comment attribute', async () => {
-          returnedObject = '{ comment { content } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               comment: {
                 content: 'Robert getting tired.',
@@ -280,7 +294,7 @@ describe('report mutation', () => {
         })
 
         it('returns null', async () => {
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: null,
           })
         })
@@ -381,19 +395,19 @@ describe('reports query', () => {
         author,
         id: 'p1',
         categoryIds,
-        content: 'Not for you',
+        content: 'Interesting Knowledge',
       }),
       factory.create('Post', {
         author: moderator,
         id: 'p2',
         categoryIds,
-        content: 'Already seen post mention',
+        content: 'More things to do …',
       }),
       factory.create('Post', {
         author: user,
         id: 'p3',
         categoryIds,
-        content: 'You have been mentioned in a post',
+        content: 'I am at school …',
       }),
     ])
     await Promise.all([
@@ -418,7 +432,7 @@ describe('reports query', () => {
         mutation: reportMutation,
         variables: {
           resourceId: 'c1',
-          reasonCategory: 'discrimination-etc',
+          reasonCategory: 'discrimination_etc',
           reasonDescription: 'This post is bigoted',
         },
       }),
@@ -441,20 +455,18 @@ describe('reports query', () => {
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
       authenticatedUser = null
-      const { data, errors } = await query({ query: reportsQuery })
-      expect(data).toEqual({
-        reports: null,
+      expect(query({ query: reportsQuery })).resolves.toMatchObject({
+        data: { reports: null },
+        errors: [{ message: 'Not Authorised!' }],
       })
-      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
 
     it('role "user" gets no reports', async () => {
       authenticatedUser = await user.toJson()
-      const { data, errors } = await query({ query: reportsQuery })
-      expect(data).toEqual({
-        reports: null,
+      expect(query({ query: reportsQuery })).resolves.toMatchObject({
+        data: { reports: null },
+        errors: [{ message: 'Not Authorised!' }],
       })
-      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
 
     it('role "moderator" gets reports', async () => {
@@ -493,7 +505,7 @@ describe('reports query', () => {
           }),
           expect.objectContaining({
             createdAt: expect.any(String),
-            reasonCategory: 'discrimination-etc',
+            reasonCategory: 'discrimination_etc',
             reasonDescription: 'This post is bigoted',
             submitter: expect.objectContaining({
               id: 'user1',
