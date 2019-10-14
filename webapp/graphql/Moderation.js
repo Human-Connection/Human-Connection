@@ -9,7 +9,6 @@ export const reportListQuery = () => {
         reasonCategory
         reasonDescription
         type
-        resourceId
         submitter {
           id
           slug
