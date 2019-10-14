@@ -50,6 +50,7 @@
 <script>
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 import { reportMutation } from '~/graphql/Moderation.js'
+import { reportReasonCategoriesDatabaseList } from '~/../shared/moderation/report.js'
 
 export default {
   name: 'ReportModal',
@@ -62,16 +63,10 @@ export default {
     id: { type: String, required: true },
   },
   data() {
-    const valuesReasonCategoryOptions = [
-      'discrimination-etc',
-      'pornographic-content-links',
-      'glorific-trivia-of-cruel-inhuman-acts',
-      'doxing',
-      'intentional-intimidation-stalking-persecution',
-      'advert-products-services-commercial',
-      'criminal-behavior-violation-german-law',
-      'other',
-    ]
+    const reasonCategoryList = reportReasonCategoriesDatabaseList()
+    // move the first element "other" to the end
+    let valuesReasonCategoryOptions = reasonCategoryList.slice(1).concat(reasonCategoryList[0])
+
     let reasonCategoryOptions = []
     valuesReasonCategoryOptions.forEach(reasonCategory => {
       reasonCategoryOptions.push({
