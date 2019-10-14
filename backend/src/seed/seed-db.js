@@ -673,7 +673,7 @@ import { gql } from '../jest/helpers'
         mutation: reportMutation,
         variables: {
           resourceId: 'p1',
-          reasonCategory: 'discrimination-etc',
+          reasonCategory: 'discrimination_etc',
           reasonDescription: 'This post is bigoted',
         },
       }),

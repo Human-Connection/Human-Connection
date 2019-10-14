@@ -499,13 +499,13 @@
         "label": "Select a category:",
         "placeholder": "Category …",
         "options": {
-          "discrimination-etc": "Discriminatory posts, comments, utterances or insults.",
-          "pornographic-content-links": "Posting or linking of clearly pornographic material.",
-          "glorific-trivia-of-cruel-inhuman-acts": "Glorification or trivialization of cruel or inhuman acts of violence.",
+          "discrimination_etc": "Discriminatory posts, comments, utterances or insults.",
+          "pornographic_content_links": "Posting or linking of clearly pornographic material.",
+          "glorific_trivia_of_cruel_inhuman_acts": "Glorification or trivialization of cruel or inhuman acts of violence.",
           "doxing": "The disclosure of others' personal information without their consent or threat there of (\"doxing\").",
-          "intentional-intimidation-stalking-persecution": "Intentional intimidation, stalking or persecution.",
-          "advert-products-services-commercial": "Advertising products and services with commercial intent.",
-          "criminal-behavior-violation-german-law": "Criminal behavior or violation of German law.",
+          "intentional_intimidation_stalking_persecution": "Intentional intimidation, stalking or persecution.",
+          "advert_products_services_commercial": "Advertising products and services with commercial intent.",
+          "criminal_behavior_violation_german_law": "Criminal behavior or violation of German law.",
           "other": "Other …"
         }
       },
