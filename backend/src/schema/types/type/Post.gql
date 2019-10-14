@@ -16,6 +16,9 @@ type Post {
   createdAt: String
   updatedAt: String
   language: String
+  pinnedAt: String @cypher(
+      statement: "MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN this.createdAt"
+    )
   pinnedBy: User @relation(name:"PINNED", direction: "IN")
   relatedContributions: [Post]!
     @cypher(
@@ -69,7 +72,6 @@ type Mutation {
     language: String
     categoryIds: [ID]
     contentExcerpt: String
-    pinned: Boolean
   ): Post
   UpdatePost(
     id: ID!
@@ -82,6 +84,7 @@ type Mutation {
     visibility: Visibility
     language: String
     categoryIds: [ID]
+    pinned: Boolean
   ): Post
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED

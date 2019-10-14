@@ -23,7 +23,6 @@ const createPostMutation = gql`
     $content: String!
     $language: String
     $categoryIds: [ID]
-    $pinned: Boolean
   ) {
     CreatePost(
       id: $id
@@ -31,7 +30,6 @@ const createPostMutation = gql`
       content: $content
       language: $language
       categoryIds: $categoryIds
-      pinned: $pinned
     ) {
       id
       title
@@ -52,7 +50,8 @@ const createPostMutation = gql`
   }
 `
 
-beforeAll(() => {
+beforeAll(async () => {
+  await factory.cleanDatabase()
   const { server } = createServer({
     context: () => {
       return {
@@ -374,86 +373,14 @@ describe('CreatePost', () => {
         })
       })
     })
-
-    describe('pinned posts', () => {
-      beforeEach(async () => {
-        variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15'], pinned: true }
-      })
-      describe('users cannot create pinned posts', () => {
-        it('throws authorization error', async () => {
-          await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
-            errors: [{ message: 'Not Authorised!' }],
-            data: { CreatePost: null },
-          })
-        })
-      })
-
-      describe('moderator cannot create pinned posts', () => {
-        let moderator
-        beforeEach(async () => {
-          moderator = await user.update({ role: 'moderator', updatedAt: new Date().toISOString() })
-          authenticatedUser = await moderator.toJson()
-        })
-
-        it('throws authorization error', async () => {
-          await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
-            errors: [{ message: 'Not Authorised!' }],
-            data: { CreatePost: null },
-          })
-        })
-      })
-
-      describe('admin can create pinned posts', () => {
-        let admin
-        beforeEach(async () => {
-          admin = await user.update({
-            role: 'admin',
-            name: 'Admin',
-            updatedAt: new Date().toISOString(),
-          })
-          authenticatedUser = await admin.toJson()
-          variables = {
-            ...variables,
-            title: 'pinned post',
-            content:
-              'this is super important for the community and we promise not to have too many',
-          }
-        })
-
-        it('throws authorization error', async () => {
-          const expected = {
-            data: {
-              CreatePost: {
-                title: 'pinned post',
-                content:
-                  'this is super important for the community and we promise not to have too many',
-                author: {
-                  name: 'Admin',
-                },
-                pinnedBy: {
-                  id: 'current-user',
-                  name: 'Admin',
-                  role: 'admin',
-                },
-              },
-            },
-            errors: undefined,
-          }
-
-          await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
-            expected,
-          )
-        })
-      })
-    })
   })
 })
 
 describe('UpdatePost', () => {
   let author, newlyCreatedPost
   const updatePostMutation = gql`
-    mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
-      UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+    mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID], $pinned: Boolean) {
+      UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds, pinned: $pinned) {
         id
         content
         categories {
@@ -638,6 +565,77 @@ describe('UpdatePost', () => {
             'You cannot save a post without at least one category or more than three',
           )
         })
+      })
+    })
+  })
+  
+  describe('pinned posts', () => {
+    beforeEach(async () => {
+      variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15'], pinned: true }
+    })
+    describe('users cannot pin posts on update', () => {
+      it.only('throws authorization error', async () => {
+        await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { UpdatePost: null },
+        })
+      })
+    })
+
+    describe('moderator cannot create pinned posts', () => {
+      let moderator
+      beforeEach(async () => {
+        moderator = await user.update({ role: 'moderator', updatedAt: new Date().toISOString() })
+        authenticatedUser = await moderator.toJson()
+      })
+
+      it('throws authorization error', async () => {
+        await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { CreatePost: null },
+        })
+      })
+    })
+
+    describe('admin can create pinned posts', () => {
+      let admin
+      beforeEach(async () => {
+        admin = await user.update({
+          role: 'admin',
+          name: 'Admin',
+          updatedAt: new Date().toISOString(),
+        })
+        authenticatedUser = await admin.toJson()
+        variables = {
+          ...variables,
+          title: 'pinned post',
+          content: 'this is super important for the community and we promise not to have too many',
+        }
+      })
+
+      it('throws authorization error', async () => {
+        const expected = {
+          data: {
+            CreatePost: {
+              title: 'pinned post',
+              content:
+                'this is super important for the community and we promise not to have too many',
+              author: {
+                name: 'Admin',
+              },
+              pinnedBy: {
+                id: 'current-user',
+                name: 'Admin',
+                role: 'admin',
+              },
+            },
+          },
+          errors: undefined,
+        }
+
+        await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
       })
     })
   })
