@@ -60,7 +60,7 @@ describe('rewards', () => {
   })
 
   describe('reward', () => {
-    const mutation = gql`
+    const rewardMutation = gql`
       mutation($from: ID!, $to: ID!) {
         reward(badgeKey: $from, userId: $to) {
           id
@@ -74,7 +74,7 @@ describe('rewards', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         authenticatedUser = null
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+        await expect(mutate({ mutation: rewardMutation, variables })).resolves.toMatchObject({
           data: { reward: null },
           errors: [{ message: 'Not Authorised!' }],
         })
@@ -87,9 +87,12 @@ describe('rewards', () => {
       })
 
       describe('badge for id does not exist', () => {
-        it('rejects with a telling error message', async () => {
+        it('rejects with an informative error message', async () => {
           await expect(
-            mutate({ mutation, variables: { to: 'regular-user-id', from: 'ndiegogo_en_rhino' } }),
+            mutate({
+              mutation: rewardMutation,
+              variables: { to: 'regular-user-id', from: 'non-existent-badge-id' },
+            }),
           ).resolves.toMatchObject({
             data: { reward: null },
             errors: [{ message: "Couldn't find a badge with that id" }],
@@ -97,12 +100,12 @@ describe('rewards', () => {
         })
       })
 
-      describe('user for id does not exist', () => {
+      describe('non-existent user', () => {
         it('rejects with a telling error message', async () => {
           await expect(
             mutate({
-              mutation,
-              variables: { to: 'non-existent-user-id', from: 'non-existent-badge' },
+              mutation: rewardMutation,
+              variables: { to: 'non-existent-user-id', from: 'indiegogo_en_rhino' },
             }),
           ).resolves.toMatchObject({
             data: { reward: null },
@@ -121,7 +124,9 @@ describe('rewards', () => {
           },
           errors: undefined,
         }
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
+        await expect(mutate({ mutation: rewardMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
       })
 
       it('rewards a second different badge to same user', async () => {
@@ -140,7 +145,7 @@ describe('rewards', () => {
           errors: undefined,
         }
         await mutate({
-          mutation,
+          mutation: rewardMutation,
           variables: {
             to: 'regular-user-id',
             from: 'indiegogo_en_rhino',
@@ -148,7 +153,7 @@ describe('rewards', () => {
         })
         await expect(
           mutate({
-            mutation,
+            mutation: rewardMutation,
             variables: {
               to: 'regular-user-id',
               from: 'indiegogo_en_racoon',
@@ -172,12 +177,12 @@ describe('rewards', () => {
           email: 'regular2@email.com',
         })
         await mutate({
-          mutation,
+          mutation: rewardMutation,
           variables,
         })
         await expect(
           mutate({
-            mutation,
+            mutation: rewardMutation,
             variables: {
               to: 'regular-user-2-id',
               from: 'indiegogo_en_rhino',
@@ -188,11 +193,11 @@ describe('rewards', () => {
 
       it('creates no duplicate reward relationships', async () => {
         await mutate({
-          mutation,
+          mutation: rewardMutation,
           variables,
         })
         await mutate({
-          mutation,
+          mutation: rewardMutation,
           variables,
         })
 
@@ -222,7 +227,7 @@ describe('rewards', () => {
 
       describe('rewards badge to user', () => {
         it('throws authorization error', async () => {
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          await expect(mutate({ mutation: rewardMutation, variables })).resolves.toMatchObject({
             data: { reward: null },
             errors: [{ message: 'Not Authorised!' }],
           })
@@ -240,7 +245,7 @@ describe('rewards', () => {
       errors: undefined,
     }
 
-    const mutation = gql`
+    const unrewardMutation = gql`
       mutation($from: ID!, $to: ID!) {
         unreward(badgeKey: $from, userId: $to) {
           id
@@ -275,7 +280,7 @@ describe('rewards', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         authenticatedUser = null
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+        await expect(mutate({ mutation: unrewardMutation, variables })).resolves.toMatchObject({
           data: { unreward: null },
           errors: [{ message: 'Not Authorised!' }],
         })
@@ -288,12 +293,16 @@ describe('rewards', () => {
       })
 
       it('removes a badge from user', async () => {
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
+        await expect(mutate({ mutation: unrewardMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
       })
 
       it('does not crash when unrewarding multiple times', async () => {
-        await mutate({ mutation, variables })
-        await expect(mutate({ mutation, variables })).resolves.toMatchObject(expected)
+        await mutate({ mutation: unrewardMutation, variables })
+        await expect(mutate({ mutation: unrewardMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
       })
     })
 
@@ -304,7 +313,7 @@ describe('rewards', () => {
 
       describe('removes bage from user', () => {
         it('throws authorization error', async () => {
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+          await expect(mutate({ mutation: unrewardMutation, variables })).resolves.toMatchObject({
             data: { unreward: null },
             errors: [{ message: 'Not Authorised!' }],
           })
