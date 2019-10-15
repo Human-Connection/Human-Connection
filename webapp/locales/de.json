@@ -508,7 +508,7 @@
           "criminal_behavior_violation_german_law": "Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
           "other": "Andere …"
         },
-        "invalid": "Bitte wählen Sie eine gültige Kategorie aus"
+        "invalid": "Bitte wähle eine gültige Kategorie aus"
       },
       "description": {
         "label": "Bitte erkläre: Warum möchtest du dies melden?",
