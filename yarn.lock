@@ -2469,6 +2469,11 @@ fsevents@^1.2.7:
     nan "^2.9.2"
     node-pre-gyp "^0.10.0"
 
+fsevents@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.1.1.tgz#74c64e21df71721845d0c44fe54b7f56b82995a9"
+  integrity sha512-4FRPXWETxtigtJW/gxzEDsX1LVbPAM93VleB83kZB+ellqbHMkyt2aJfuzNLRvFPnGi6bcE5SvfxgbXPeKteJw==
+
 function-bind@^1.0.2, function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
@@ -3477,7 +3482,7 @@ needle@^2.2.1:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-neo4j-driver@^1.7.5, neo4j-driver@^1.7.6:
+neo4j-driver@^1.7.6:
   version "1.7.6"
   resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.6.tgz#eccb135a71eba9048c68717444593a6424cffc49"
   integrity sha512-6c3ALO3vYDfUqNoCy8OFzq+fQ7q/ab3LCuJrmm8P04M7RmyRCCnUtJ8IzSTGbiZvyhcehGK+azNDAEJhxPV/hA==
@@ -3486,14 +3491,15 @@ neo4j-driver@^1.7.5, neo4j-driver@^1.7.6:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neode@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.3.tgz#a539830cce6f6e4825462f6cb03f2969a0003f1b"
-  integrity sha512-pArHG1hD2kVwrzLlz6B1+IgdOJRQj/BgR6KzH6DlVzSA6geoZRe68fbpvmOJtzyPU7iuUYxXVk87PpPM1A7dlg==
+neode@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.5.tgz#65857e2695132e981c3b11c629a0d51fcf80cdea"
+  integrity sha512-SJhQQBon6e4rbgXvEpuNyW/dQ7OFMTqq17h4Hq5zzsDS62g0NmUsnqnY6xOr05UbQ/ST2vWUMveaZolnu1V7Pw==
   dependencies:
     "@hapi/joi" "^15.1.0"
     dotenv "^4.0.0"
-    neo4j-driver "^1.7.5"
+    fsevents "^2.1.0"
+    neo4j-driver "^1.7.6"
     uuid "^3.3.2"
 
 next-tick@^1.0.0:
