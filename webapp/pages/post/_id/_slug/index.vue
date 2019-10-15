@@ -68,7 +68,7 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list :post="post" />
+        <hc-comment-list :post="post" :routeHash="$route.hash" />
         <ds-space margin-bottom="large" />
         <hc-comment-form :post="post" @createComment="createComment" />
       </ds-section>

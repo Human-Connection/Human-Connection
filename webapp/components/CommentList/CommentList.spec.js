@@ -42,9 +42,6 @@ describe('CommentList.vue', () => {
           truncate: a => a,
           removeHtml: a => a,
         },
-        $route: {
-          hash: '',
-        },
         $scrollTo: jest.fn(),
         $apollo: {
           queries: {

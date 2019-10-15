@@ -71,7 +71,7 @@ export default {
   mixins: [scrollToAnchor],
   data() {
     const anchor = `commentId-${this.comment.id}`
-    const isTarget = this.$route.hash === `#${anchor}`
+    const isTarget = this.routeHash === `#${anchor}`
 
     return {
       anchor,
@@ -87,13 +87,9 @@ export default {
     HcCommentForm,
   },
   props: {
-    post: { type: Object, default: () => {} },
-    comment: {
-      type: Object,
-      default() {
-        return {}
-      },
-    },
+    routeHash: { type: String, default: () => '' },
+    post: { type: Object, default: () => ({}) },
+    comment: { type: Object, default: () => ({}) },
     dateTime: { type: [Date, String], default: null },
   },
   computed: {

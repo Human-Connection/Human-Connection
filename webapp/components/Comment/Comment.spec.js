@@ -32,9 +32,6 @@ describe('Comment.vue', () => {
         truncate: a => a,
         removeHtml: a => a,
       },
-      $route: {
-        hash: '',
-      },
       $scrollTo: jest.fn(),
       $apollo: {
         mutate: jest.fn().mockResolvedValue({
