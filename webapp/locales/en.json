@@ -508,7 +508,8 @@
           "advert_products_services_commercial": "Advertising products and services with commercial intent.",
           "criminal_behavior_violation_german_law": "Criminal behavior or violation of German law.",
           "other": "Other …"
-        }
+        },
+        "invalid": "Please select a valid category"
       },
       "description": {
         "label": "Please explain: Why you like to report this?",

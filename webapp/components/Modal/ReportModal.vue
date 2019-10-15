@@ -8,9 +8,8 @@
 
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
-
     <ds-radio
-      :value="form.reasonCategory"
+      v-model="form.reasonCategory"
       :schema="formSchema.reasonCategory"
       :label="$t('report.reason.category.label')"
       :options="form.reasonCategoryOptions"
@@ -18,7 +17,7 @@
     />
     <ds-input
       class="reason-description"
-      :value="form.reasonDescription"
+      v-model="form.reasonDescription"
       :schema="formSchema.reasonDescription"
       :label="$t('report.reason.description.label')"
       :placeholder="$t('report.reason.description.placeholder')"
@@ -29,15 +28,16 @@
       {{ form.reasonDescription.length }}/{{ formSchema.reasonDescription.max }}
     </small>
     <ds-space />
-
-    <template slot="footer">
-      <ds-button class="cancel" icon="close" @click="cancel">{{ $t('report.cancel') }}</ds-button>
+    <template #footer>
+      <ds-button class="cancel" icon="close" @click="cancel">
+        {{ $t('report.cancel') }}
+      </ds-button>
 
       <ds-button
         danger
         class="confirm"
         icon="exclamation-circle"
-        :disabled="failsValidations"
+        :disabled="!form.reasonCategory"
         :loading="loading"
         @click="confirm"
       >
@@ -50,6 +50,8 @@
 <script>
 import { SweetalertIcon } from 'vue-sweetalert-icons'
 import { reportMutation } from '~/graphql/Moderation.js'
+import { valuesReasonCategoryOptions } from '~/constants/modals.js'
+import validReport from '~/components/utils/ReportModal'
 
 export default {
   name: 'ReportModal',
@@ -62,57 +64,24 @@ export default {
     id: { type: String, required: true },
   },
   data() {
-    // this list equals to enums in GraphQL schema file "backend/src/schema/types/type/REPORTED.gql"
-    let valuesReasonCategoryOptions = [
-      'discrimination_etc',
-      'pornographic_content_links',
-      'glorific_trivia_of_cruel_inhuman_acts',
-      'doxing',
-      'intentional_intimidation_stalking_persecution',
-      'advert_products_services_commercial',
-      'criminal_behavior_violation_german_law',
-      'other',
-    ]
-
-    let reasonCategoryOptions = []
-    valuesReasonCategoryOptions.forEach(reasonCategory => {
-      reasonCategoryOptions.push({
-        label: this.$t('report.reason.category.options.' + reasonCategory),
-        value: reasonCategory,
-      })
-    })
-
     return {
       isOpen: true,
       success: false,
       loading: false,
-      failsValidations: true,
       form: {
         reasonCategory: null,
-        reasonCategoryOptions,
+        reasonCategoryOptions: [],
         reasonDescription: '',
       },
-      formSchema: {
-        reasonCategory: {
-          type: 'enum',
-          required: true,
-          validator: (rule, value, callback, source, options) => {
-            this.form.reasonCategory = value
-            this.failsValidations = !this.form.reasonCategory
-            callback()
-          },
-        },
-        reasonDescription: {
-          type: 'string',
-          min: 0,
-          max: 200,
-          validator: (rule, value, callback, source, options) => {
-            this.form.reasonDescription = value
-            callback()
-          },
-        },
-      },
     }
+  },
+  created() {
+    this.form.reasonCategoryOptions = valuesReasonCategoryOptions.map(reasonCategory => {
+      return {
+        label: this.$t('report.reason.category.options.' + reasonCategory),
+        value: reasonCategory,
+      }
+    })
   },
   computed: {
     title() {
@@ -121,6 +90,12 @@ export default {
     message() {
       const name = this.$filters.truncate(this.name, 30)
       return this.$t(`report.${this.type}.message`, { name })
+    },
+    formSchema() {
+      const validReportSchema = validReport({ translate: this.$t })
+      return {
+        ...validReportSchema.formSchema,
+      }
     },
   },
   methods: {
@@ -134,7 +109,6 @@ export default {
     },
     async confirm() {
       const { reasonCategory, reasonDescription } = this.form
-
       this.loading = true
       // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
       // await this.modalData.buttons.confirm.callback()
@@ -172,6 +146,8 @@ export default {
             case 'GraphQL error: Comment':
               this.$toast.error(this.$t('report.comment.error'))
               break
+            default:
+              this.$toast.error(err.message)
           }
           this.loading = false
         })

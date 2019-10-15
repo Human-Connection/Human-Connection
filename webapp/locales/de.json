@@ -507,7 +507,8 @@
           "advert_products_services_commercial": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
           "criminal_behavior_violation_german_law": "Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
           "other": "Andere …"
-        }
+        },
+        "invalid": "Bitte wählen Sie eine gültige Kategorie aus"
       },
       "description": {
         "label": "Bitte erkläre: Warum möchtest du dies melden?",

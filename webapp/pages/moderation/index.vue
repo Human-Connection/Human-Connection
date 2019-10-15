@@ -67,7 +67,7 @@
       <template slot="reasonCategory" slot-scope="scope">
         {{ $t('report.reason.category.options.' + scope.row.reasonCategory) }}
       </template>
-      <!-- reasonCategory -->
+      <!-- reasonDescription -->
       <template slot="reasonDescription" slot-scope="scope">
         {{ scope.row.reasonDescription }}
       </template>

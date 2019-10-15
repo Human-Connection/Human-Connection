@@ -78,10 +78,7 @@ const validateReport = async (resolve, root, args, context, info) => {
     }
   })
 
-  if (existingReportedResource)
-    throw new Error(
-      `You have already reported the ${existingReportedResource.label}, please only report the same ${existingReportedResource.label} once`,
-    )
+  if (existingReportedResource) throw new Error(`${existingReportedResource.label}`)
   return resolve(root, args, context, info)
 }
 
