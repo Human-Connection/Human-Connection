@@ -69,9 +69,14 @@ import scrollToAnchor from '~/mixins/scrollToAnchor.js'
 
 export default {
   mixins: [scrollToAnchor],
-  data: function() {
+  data() {
+    const anchor = `commentId-${this.comment.id}`
+    const isTarget = this.$route.hash === `#${anchor}`
+
     return {
-      isCollapsed: true,
+      anchor,
+      isTarget,
+      isCollapsed: !isTarget,
       openEditCommentMenu: false,
     }
   },
@@ -96,9 +101,6 @@ export default {
       user: 'auth/user',
       isModerator: 'auth/isModerator',
     }),
-    isTarget() {
-      return this.$route.hash === `#${this.anchor}`
-    },
     isLongComment() {
       return this.$filters.removeHtml(this.comment.content).length > 180
     },
@@ -108,9 +110,6 @@ export default {
       }
 
       return this.comment.content
-    },
-    anchor() {
-      return `commentId-${this.comment.id}`
     },
     displaysComment() {
       return !this.unavailable || this.isModerator
