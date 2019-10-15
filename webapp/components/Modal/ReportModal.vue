@@ -62,6 +62,7 @@ export default {
     id: { type: String, required: true },
   },
   data() {
+    // this list equals to enums in GraphQL schema file "backend/src/schema/types/type/REPORTED.gql"
     let valuesReasonCategoryOptions = [
       'discrimination_etc',
       'pornographic_content_links',

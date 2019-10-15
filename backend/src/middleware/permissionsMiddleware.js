@@ -122,7 +122,7 @@ const permissions = shield(
       embed: allow,
       Category: allow,
       Tag: allow,
-      Report: isModerator,
+      reports: isModerator,
       statistics: allow,
       currentUser: allow,
       Post: or(onlyEnabledContent, isModerator),

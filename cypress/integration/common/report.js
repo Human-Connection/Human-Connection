@@ -127,9 +127,9 @@ Given('somebody reported the following posts:', table => {
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .mutate(`mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+      .mutate(`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         report(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
-          id
+          type
         }
       }`, {
         resourceId,

@@ -1,10 +1,10 @@
 import gql from 'graphql-tag'
 
 export const reportListQuery = () => {
+  // no limit vor the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
   return gql`
     query {
-      Report(first: 20, orderBy: createdAt_desc) {
-        id
+      reports(orderBy: createdAt_desc) {
         createdAt
         reasonCategory
         reasonDescription
@@ -83,13 +83,13 @@ export const reportListQuery = () => {
 
 export const reportMutation = () => {
   return gql`
-    mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+    mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       report(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
-        id
+        type
       }
     }
   `

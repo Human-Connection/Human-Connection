@@ -431,6 +431,7 @@
       "name": "Meldungen",
       "reasonCategory": "Kategorie",
       "reasonDescription": "Beschreibung",
+      "createdAt": "Datum",
       "submitter": "Gemeldet von",
       "disabledBy": "Deaktiviert von"
     }

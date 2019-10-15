@@ -432,6 +432,7 @@
       "name": "Reports",
       "reasonCategory": "Category",
       "reasonDescription": "Description",
+      "createdAt": "Date",
       "submitter": "Reported by",
       "disabledBy": "Disabled by"
     }

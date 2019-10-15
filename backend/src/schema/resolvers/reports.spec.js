@@ -1,37 +1,73 @@
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../seed/factories'
-import { host, login } from '../../jest/helpers'
-import { neode } from '../../bootstrap/neo4j'
+import { host, login, gql } from '../../jest/helpers'
+import { getDriver, neode } from '../../bootstrap/neo4j'
+import { createTestClient } from 'apollo-server-testing'
+import createServer from '../.././server'
 
 const factory = Factory()
 const instance = neode()
+const driver = getDriver()
 
-describe('report', () => {
+describe('report mutation', () => {
   let reportMutation
   let headers
-  let returnedObject
+  let client
   let variables
   let createPostVariables
   let user
   const categoryIds = ['cat9']
 
+  const action = () => {
+    reportMutation = gql`
+      mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+        report(
+          resourceId: $resourceId
+          reasonCategory: $reasonCategory
+          reasonDescription: $reasonDescription
+        ) {
+          createdAt
+          reasonCategory
+          reasonDescription
+          type
+          submitter {
+            email
+          }
+          user {
+            name
+          }
+          post {
+            title
+          }
+          comment {
+            content
+          }
+        }
+      }
+    `
+    client = new GraphQLClient(host, {
+      headers,
+    })
+    return client.request(reportMutation, variables)
+  }
+
   beforeEach(async () => {
-    returnedObject = '{ id }'
     variables = {
       resourceId: 'whatever',
-      reasonCategory: 'reason-category-dummy',
+      reasonCategory: 'other',
       reasonDescription: 'Violates code of conduct !!!',
     }
     headers = {}
     user = await factory.create('User', {
+      id: 'u1',
+      role: 'user',
       email: 'test@example.org',
       password: '1234',
-      id: 'u1',
     })
     await factory.create('User', {
       id: 'u2',
-      name: 'abusive-user',
       role: 'user',
+      name: 'abusive-user',
       email: 'abusive-user@example.org',
     })
     await instance.create('Category', {
@@ -44,20 +80,6 @@ describe('report', () => {
   afterEach(async () => {
     await factory.cleanDatabase()
   })
-
-  let client
-  const action = () => {
-    // because of the template `${returnedObject}` the 'gql' tag from 'jest/helpers' is not working here
-    reportMutation = `
-      mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
-        report(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) ${returnedObject}
-      }
-    `
-    client = new GraphQLClient(host, {
-      headers,
-    })
-    return client.request(reportMutation, variables)
-  }
 
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
@@ -91,8 +113,7 @@ describe('report', () => {
         })
 
         it('returns type "User"', async () => {
-          returnedObject = '{ type }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               type: 'User',
             },
@@ -100,8 +121,7 @@ describe('report', () => {
         })
 
         it('returns resource in user attribute', async () => {
-          returnedObject = '{ user { name } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               user: {
                 name: 'abusive-user',
@@ -111,8 +131,7 @@ describe('report', () => {
         })
 
         it('returns the submitter', async () => {
-          returnedObject = '{ submitter { email } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               submitter: {
                 email: 'test@example.org',
@@ -122,27 +141,33 @@ describe('report', () => {
         })
 
         it('returns a date', async () => {
-          returnedObject = '{ createdAt }'
-          await expect(action()).resolves.toEqual(
-            expect.objectContaining({
-              report: {
-                createdAt: expect.any(String),
-              },
-            }),
-          )
+          await expect(action()).resolves.toMatchObject({
+            report: {
+              createdAt: expect.any(String),
+            },
+          })
         })
 
         it('returns the reason category', async () => {
           variables = {
             ...variables,
-            reasonCategory: 'my-category',
+            reasonCategory: 'criminal_behavior_violation_german_law',
           }
-          returnedObject = '{ reasonCategory }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
-              reasonCategory: 'my-category',
+              reasonCategory: 'criminal_behavior_violation_german_law',
             },
           })
+        })
+
+        it('gives an error if the reason category is not in enum "ReasonCategory"', async () => {
+          variables = {
+            ...variables,
+            reasonCategory: 'my_category',
+          }
+          await expect(action()).rejects.toThrow(
+            'got invalid value "my_category"; Expected type ReasonCategory',
+          )
         })
 
         it('returns the reason description', async () => {
@@ -150,8 +175,7 @@ describe('report', () => {
             ...variables,
             reasonDescription: 'My reason!',
           }
-          returnedObject = '{ reasonDescription }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               reasonDescription: 'My reason!',
             },
@@ -163,8 +187,7 @@ describe('report', () => {
             ...variables,
             reasonDescription: 'My reason <sanitize></sanitize>!',
           }
-          returnedObject = '{ reasonDescription }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               reasonDescription: 'My reason !',
             },
@@ -187,8 +210,7 @@ describe('report', () => {
         })
 
         it('returns type "Post"', async () => {
-          returnedObject = '{ type }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               type: 'Post',
             },
@@ -196,8 +218,7 @@ describe('report', () => {
         })
 
         it('returns resource in post attribute', async () => {
-          returnedObject = '{ post { title } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               post: {
                 title: 'Matt and Robert having a pair-programming',
@@ -207,8 +228,7 @@ describe('report', () => {
         })
 
         it('returns null in user attribute', async () => {
-          returnedObject = '{ user { name } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               user: null,
             },
@@ -241,8 +261,7 @@ describe('report', () => {
         })
 
         it('returns type "Comment"', async () => {
-          returnedObject = '{ type }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               type: 'Comment',
             },
@@ -250,8 +269,7 @@ describe('report', () => {
         })
 
         it('returns resource in comment attribute', async () => {
-          returnedObject = '{ comment { content } }'
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: {
               comment: {
                 content: 'Robert getting tired.',
@@ -276,7 +294,7 @@ describe('report', () => {
         })
 
         it('returns null', async () => {
-          await expect(action()).resolves.toEqual({
+          await expect(action()).resolves.toMatchObject({
             report: null,
           })
         })
@@ -284,6 +302,220 @@ describe('report', () => {
 
       /* An der Stelle würde ich den t23 noch mal prüfen, diesmal muss aber eine error meldung kommen.
            At this point I would check the t23 again, but this time there must be an error message. */
+    })
+  })
+})
+
+describe('reports query', () => {
+  let query, mutate, authenticatedUser, moderator, user, author
+  const categoryIds = ['cat9']
+
+  const reportMutation = gql`
+    mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+      report(
+        resourceId: $resourceId
+        reasonCategory: $reasonCategory
+        reasonDescription: $reasonDescription
+      ) {
+        type
+      }
+    }
+  `
+  const reportsQuery = gql`
+    query {
+      reports(orderBy: createdAt_desc) {
+        createdAt
+        reasonCategory
+        reasonDescription
+        submitter {
+          id
+        }
+        type
+        user {
+          id
+        }
+        post {
+          id
+        }
+        comment {
+          id
+        }
+      }
+    }
+  `
+
+  beforeAll(async () => {
+    await factory.cleanDatabase()
+    const { server } = createServer({
+      context: () => {
+        return {
+          driver,
+          user: authenticatedUser,
+        }
+      },
+    })
+    query = createTestClient(server).query
+    mutate = createTestClient(server).mutate
+  })
+
+  beforeEach(async () => {
+    authenticatedUser = null
+
+    moderator = await factory.create('User', {
+      id: 'mod1',
+      role: 'moderator',
+      email: 'moderator@example.org',
+      password: '1234',
+    })
+    user = await factory.create('User', {
+      id: 'user1',
+      role: 'user',
+      email: 'test@example.org',
+      password: '1234',
+    })
+    author = await factory.create('User', {
+      id: 'auth1',
+      role: 'user',
+      name: 'abusive-user',
+      email: 'abusive-user@example.org',
+    })
+    await instance.create('Category', {
+      id: 'cat9',
+      name: 'Democracy & Politics',
+      icon: 'university',
+    })
+
+    await Promise.all([
+      factory.create('Post', {
+        author,
+        id: 'p1',
+        categoryIds,
+        content: 'Interesting Knowledge',
+      }),
+      factory.create('Post', {
+        author: moderator,
+        id: 'p2',
+        categoryIds,
+        content: 'More things to do …',
+      }),
+      factory.create('Post', {
+        author: user,
+        id: 'p3',
+        categoryIds,
+        content: 'I am at school …',
+      }),
+    ])
+    await Promise.all([
+      factory.create('Comment', {
+        author: user,
+        id: 'c1',
+        postId: 'p1',
+      }),
+    ])
+
+    authenticatedUser = await user.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p1',
+          reasonCategory: 'other',
+          reasonDescription: 'This comment is bigoted',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'c1',
+          reasonCategory: 'discrimination_etc',
+          reasonDescription: 'This post is bigoted',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'auth1',
+          reasonCategory: 'doxing',
+          reasonDescription: 'This user is harassing me with bigoted remarks',
+        },
+      }),
+    ])
+    authenticatedUser = null
+  })
+
+  afterEach(async () => {
+    await factory.cleanDatabase()
+  })
+
+  describe('unauthenticated', () => {
+    it('throws authorization error', async () => {
+      authenticatedUser = null
+      expect(query({ query: reportsQuery })).resolves.toMatchObject({
+        data: { reports: null },
+        errors: [{ message: 'Not Authorised!' }],
+      })
+    })
+
+    it('role "user" gets no reports', async () => {
+      authenticatedUser = await user.toJson()
+      expect(query({ query: reportsQuery })).resolves.toMatchObject({
+        data: { reports: null },
+        errors: [{ message: 'Not Authorised!' }],
+      })
+    })
+
+    it('role "moderator" gets reports', async () => {
+      const expected = {
+        // to check 'orderBy: createdAt_desc' is not possible here, because 'createdAt' does not differ
+        reports: expect.arrayContaining([
+          expect.objectContaining({
+            createdAt: expect.any(String),
+            reasonCategory: 'doxing',
+            reasonDescription: 'This user is harassing me with bigoted remarks',
+            submitter: expect.objectContaining({
+              id: 'user1',
+            }),
+            type: 'User',
+            user: expect.objectContaining({
+              id: 'auth1',
+            }),
+            post: null,
+            comment: null,
+          }),
+          expect.objectContaining({
+            createdAt: expect.any(String),
+            reasonCategory: 'other',
+            reasonDescription: 'This comment is bigoted',
+            submitter: expect.objectContaining({
+              id: 'user1',
+            }),
+            type: 'Post',
+            user: null,
+            post: expect.objectContaining({
+              id: 'p1',
+            }),
+            comment: null,
+          }),
+          expect.objectContaining({
+            createdAt: expect.any(String),
+            reasonCategory: 'discrimination_etc',
+            reasonDescription: 'This post is bigoted',
+            submitter: expect.objectContaining({
+              id: 'user1',
+            }),
+            type: 'Comment',
+            user: null,
+            post: null,
+            comment: expect.objectContaining({
+              id: 'c1',
+            }),
+          }),
+        ]),
+      }
+
+      authenticatedUser = await moderator.toJson()
+      const { data } = await query({ query: reportsQuery })
+      expect(data).toEqual(expected)
     })
   })
 })

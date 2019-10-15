@@ -649,13 +649,13 @@ import { gql } from '../jest/helpers'
 
     // There is no error logged or the 'try' fails if this mutation is wrong. Why?
     const reportMutation = gql`
-      mutation($resourceId: ID!, $reasonCategory: String!, $reasonDescription: String!) {
+      mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         report(
           resourceId: $resourceId
           reasonCategory: $reasonCategory
           reasonDescription: $reasonDescription
         ) {
-          id
+          type
         }
       }
     `
