@@ -10,7 +10,7 @@
     </ds-card>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
-    <ds-card :id="anchor">
+    <ds-card :id="anchor" :class="{ 'comment--target': isTarget }">
       <ds-space margin-bottom="small" margin-top="small">
         <hc-user :user="author" :date-time="comment.createdAt">
           <template v-slot:dateTime>
@@ -116,6 +116,9 @@ export default {
       user: 'auth/user',
       isModerator: 'auth/isModerator',
     }),
+    isTarget() {
+      return this.$route.hash === `#${this.anchor}`
+    },
     anchor() {
       return `commentId-${this.comment.id}`
     },
@@ -203,5 +206,18 @@ span.show-more-or-less {
   display: block;
   margin: 0px 20px;
   cursor: pointer;
+}
+
+@keyframes highlight {
+  0% {
+    border: 1px solid $color-primary;
+  }
+  100% {
+    border: 1px solid transparent;
+  }
+}
+
+.comment--target {
+  animation: highlight 4s ease;
 }
 </style>
