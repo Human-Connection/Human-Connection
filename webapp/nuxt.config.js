@@ -52,8 +52,6 @@ export default {
     ],
     // pages to keep alive
     keepAlivePages: ['index'],
-    // active locales
-    locales: require('./locales'),
   },
   /*
    ** Headers of the page

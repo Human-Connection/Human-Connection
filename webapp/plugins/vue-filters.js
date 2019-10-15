@@ -1,36 +1,21 @@
 import Vue from 'vue'
-
-import { enUS, de, nl, fr, es } from 'date-fns/locale'
 import format from 'date-fns/format'
 import accounting from 'accounting'
 import trunc from 'trunc-html'
+import { getDateFnsLocale } from '~/locales'
 
 export default ({ app = {} }) => {
-  const locales = {
-    en: enUS,
-    de: de,
-    nl: nl,
-    fr: fr,
-    es: es,
-    pt: es,
-    pl: de,
-  }
-  const getLocalizedFormat = () => {
-    let locale = app.$i18n.locale()
-    locale = locales[locale] ? locale : 'en'
-    return locales[locale]
-  }
   app.$filters = Object.assign(app.$filters || {}, {
     date: (value, fmt = 'dd. MMM yyyy') => {
       if (!value) return ''
       return format(new Date(value), fmt, {
-        locale: getLocalizedFormat(),
+        locale: getDateFnsLocale(app),
       })
     },
     dateTime: (value, fmt = 'dd. MMM yyyy HH:mm') => {
       if (!value) return ''
       return format(new Date(value), fmt, {
-        locale: getLocalizedFormat(),
+        locale: getDateFnsLocale(app),
       })
     },
     number: (value, precision = 2, thousands = '.', decimals = ',', fallback = null) => {

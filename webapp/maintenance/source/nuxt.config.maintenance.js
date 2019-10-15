@@ -1,16 +1,10 @@
 import defaultConfig from './nuxt.config.js'
 
-const {
-  css,
-  styleResources,
-  env: { locales },
-  manifest,
-} = defaultConfig
+const { css, styleResources, manifest } = defaultConfig
 
 export default {
   css,
   styleResources,
-  env: { locales },
   manifest,
 
   head: {
