@@ -187,27 +187,12 @@ export default {
   cursor: pointer;
 }
 
-.float-right {
-  float: right;
-}
-
 .comment-content {
   padding-left: 40px;
 }
 
-.text-align-left {
-  text-align: left;
-}
-
-div.show-more-or-less-div {
-  text-align: right;
-  margin-right: 20px;
-}
-
-span.show-more-or-less {
-  display: block;
-  margin: 0px 20px;
-  cursor: pointer;
+.float-right {
+  float: right;
 }
 
 @keyframes highlight {
