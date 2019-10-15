@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import helpers from '~/storybook/helpers'
 import LoginForm from './LoginForm.vue'
@@ -13,14 +12,33 @@ const createStore = ({ loginSuccess }) => {
     modules: {
       auth: {
         namespaced: true,
+        state: () => ({
+          pending: false,
+        }),
+        mutations: {
+          SET_PENDING(state, pending) {
+            state.pending = pending
+          },
+        },
+        getters: {
+          pending(state) {
+            return !!state.pending
+          },
+        },
         actions: {
           async login({ commit, dispatch }, args) {
             action('Vuex action `auth/login`')(args)
-            if (loginSuccess) {
-              return loginSuccess
-            } else {
-              throw new Error('Login unsuccessful')
-            }
+            return new Promise((resolve, reject) => {
+              commit('SET_PENDING', true)
+              setTimeout(() => {
+                commit('SET_PENDING', false)
+                if (loginSuccess) {
+                  resolve(loginSuccess)
+                } else {
+                  reject(new Error('Login unsuccessful'))
+                }
+              }, 1000)
+            })
           },
         },
       },
