@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "nuxt",
     "dev:styleguide": "cross-env STYLEGUIDE_DEV=true yarn run dev",
-    "storybook": "start-storybook -p 3002 -c storybook/",
+    "storybook": "start-storybook -p 3002  -s ./static -c storybook/",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate:maintenance": "nuxt generate -c nuxt.config.maintenance.js",
