@@ -725,20 +725,29 @@ describe('UpdatePost', () => {
       })
 
       describe('removes other pinned post', () => {
+        let pinnedPost
         beforeEach(async () => {
           await factory.create('Post', {
             id: 'only-pinned-post',
             author: admin,
           })
-        })
-
-        it('leaves only one pinned post at a time', async () => {
-          expect.assertions(1)
           await mutate({ mutation: updatePostMutation, variables })
           variables = { ...variables, id: 'only-pinned-post' }
           await mutate({ mutation: updatePostMutation, variables })
-          const pinnedPosts = await neode.cypher(`MATCH ()-[:PINNED]->(post:Post) RETURN post`)
-          expect(pinnedPosts.records).toHaveLength(1)
+          pinnedPost = await neode.cypher(
+            `MATCH ()-[relationship:PINNED]->(post:Post) RETURN post, relationship`,
+          )
+        })
+
+        it('leaves only one pinned post at a time', async () => {
+          expect(pinnedPost.records).toHaveLength(1)
+        })
+
+        it('leaves only one pinned post at a time', async () => {
+          const [pinnedPostCreatedAt] = pinnedPost.records.map(
+            record => record.get('relationship').properties.createdAt,
+          )
+          expect(pinnedPostCreatedAt).toEqual(expect.any(String))
         })
       })
     })

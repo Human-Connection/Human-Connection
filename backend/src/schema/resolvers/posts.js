@@ -153,7 +153,7 @@ export default {
 
         updatePostCypher += `
           MATCH (user:User {id: $userId}) WHERE user.role = 'admin'
-          MERGE (user)-[:PINNED]->(post)
+          MERGE (user)-[:PINNED {createdAt: toString(datetime())}]->(post)
           WITH post
           `
       }
