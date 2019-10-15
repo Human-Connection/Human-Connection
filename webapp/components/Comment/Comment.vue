@@ -43,35 +43,12 @@
         />
       </div>
       <div v-else>
-        <content-viewer
-          v-if="$filters.removeHtml(comment.content).length < 180"
-          :content="comment.content"
-          class="padding-left"
-        />
-        <div v-else class="show-more-or-less-div">
-          <content-viewer
-            v-if="isCollapsed"
-            :content="$filters.truncate(comment.content, 180)"
-            class="padding-left text-align-left"
-          />
-          <span class="show-more-or-less">
-            <a v-if="isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
-              {{ $t('comment.show.more') }}
-            </a>
-          </span>
-        </div>
-        <content-viewer
-          v-if="!isCollapsed"
-          :content="comment.content"
-          class="padding-left text-align-left"
-        />
-        <div class="show-more-or-less-div">
-          <span class="show-more-or-less">
-            <a v-if="!isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
-              {{ $t('comment.show.less') }}
-            </a>
-          </span>
-        </div>
+        <content-viewer :content="commentContent" class="padding-left text-align-left" />
+        <span v-if="isLongComment" class="show-more-or-less">
+          <a class="padding-left" @click="isCollapsed = !isCollapsed">
+            {{ isCollapsed ? $t('comment.show.more') : $t('comment.show.less') }}
+          </a>
+        </span>
       </div>
       <ds-space margin-bottom="small" />
     </ds-card>
@@ -118,6 +95,16 @@ export default {
     }),
     isTarget() {
       return this.$route.hash === `#${this.anchor}`
+    },
+    isLongComment() {
+      return this.$filters.removeHtml(this.comment.content).length > 180
+    },
+    commentContent() {
+      if (this.isLongComment && this.isCollapsed) {
+        return this.$filters.truncate(this.comment.content, 180)
+      }
+
+      return this.comment.content
     },
     anchor() {
       return `commentId-${this.comment.id}`
