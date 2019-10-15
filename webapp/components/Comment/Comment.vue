@@ -43,12 +43,15 @@
         />
       </div>
       <div v-else>
-        <content-viewer :content="commentContent" class="padding-left text-align-left" />
-        <span v-if="isLongComment" class="show-more-or-less">
-          <a class="padding-left" @click="isCollapsed = !isCollapsed">
-            {{ isCollapsed ? $t('comment.show.more') : $t('comment.show.less') }}
-          </a>
-        </span>
+        <content-viewer :content="commentContent" class="comment-content" />
+        <button
+          v-if="isLongComment"
+          type="button"
+          class="collapse-button"
+          @click="isCollapsed = !isCollapsed"
+        >
+          {{ isCollapsed ? $t('comment.show.more') : $t('comment.show.less') }}
+        </button>
       </div>
       <ds-space margin-bottom="small" />
     </ds-card>
@@ -172,11 +175,24 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.collapse-button {
+  // TODO: move this to css resets
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background-color: transparent;
+
+  float: right;
+  padding: 0 16px 16px 16px;
+  color: $color-primary;
+  cursor: pointer;
+}
+
 .float-right {
   float: right;
 }
 
-.padding-left {
+.comment-content {
   padding-left: 40px;
 }
 
