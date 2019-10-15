@@ -30,6 +30,16 @@
         name="email"
         icon="envelope"
       />
+      <ds-list size="base">
+        <ds-list-item>
+          <ds-text v-html="$t('components.registration.signup.form.terms-and-condition')"></ds-text>
+        </ds-list-item>
+        <ds-list-item>
+          <ds-text v-html="$t('components.registration.signup.form.data-privacy')"></ds-text>
+        </ds-list-item>
+        <ds-list-item>{{ $t('components.registration.signup.form.minimum-age') }}</ds-list-item>
+      </ds-list>
+
       <ds-button
         :disabled="disabled"
         :loading="$apollo.loading"

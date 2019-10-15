@@ -31,6 +31,9 @@
         "title": "Join Human Connection!",
         "form": {
           "description": "To get started, enter your email address:",
+          "terms-and-condition": "Our <a href=\"/terms-and-conditions\"><ds-text bold color=\"primary\" > terms of conditions!</ds-text></a> apply!",
+          "data-privacy": "Our <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" > Data privacy </ds-text></a> apply!",
+          "minimum-age": "You must be at least 18 years old!",
           "invitation-code": "Your invitation code is: <b>{code}</b>",
           "errors": {
             "email-exists": "There is already a user account with this email address!",
