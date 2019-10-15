@@ -1,4 +1,4 @@
-FROM node:12.11.1-alpine as build
+FROM node:12.12.0-alpine as build
 LABEL Description="Web Frontend of the Social Network Human-Connection.org" Vendor="Human-Connection gGmbH" Version="0.0.1" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
 
 EXPOSE 3000
