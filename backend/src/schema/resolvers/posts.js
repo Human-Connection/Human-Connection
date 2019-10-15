@@ -75,29 +75,19 @@ export default {
   },
   Mutation: {
     CreatePost: async (_parent, params, context, _resolveInfo) => {
-      const { categoryIds, pinned } = params
-      delete params.pinned
+      const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
       let post
 
-      let createPostCypher = `CREATE (post:Post {params})
+      const createPostCypher = `CREATE (post:Post {params})
         SET post.createdAt = toString(datetime())
         SET post.updatedAt = toString(datetime())
         WITH post
         MATCH (author:User {id: $userId})
         MERGE (post)<-[:WROTE]-(author)
-        WITH post, author`
-
-      if (pinned) {
-        createPostCypher += `
-          MERGE (post)<-[:PINNED]-(author)
-          WITH post
-          `
-      }
-
-      createPostCypher += `
+        WITH post, author
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
@@ -123,14 +113,16 @@ export default {
       return post
     },
     UpdatePost: async (_parent, params, context, _resolveInfo) => {
-      const { categoryIds } = params
+      const { categoryIds, pinned } = params
+      const { id: userId } = context.user
+      delete params.pinned
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
-
       let updatePostCypher = `MATCH (post:Post {id: $params.id})
       SET post += $params
       SET post.updatedAt = toString(datetime())
+      WITH post
       `
 
       if (categoryIds && categoryIds.length) {
@@ -143,15 +135,31 @@ export default {
         await session.run(cypherDeletePreviousRelations, { params })
 
         updatePostCypher += `
-          WITH post
           UNWIND $categoryIds AS categoryId
           MATCH (category:Category {id: categoryId})
           MERGE (post)-[:CATEGORIZED]->(category)
+          WITH post
         `
       }
 
+      if (pinned) {
+        const cypherDeletePreviousRelations = `
+          MATCH ()-[previousRelations:PINNED]->(post:Post)
+          DELETE previousRelations
+          RETURN post
+        `
+
+        await session.run(cypherDeletePreviousRelations)
+
+        updatePostCypher += `
+          MATCH (user:User {id: $userId}) WHERE user.role = 'admin'
+          MERGE (user)-[:PINNED]->(post)
+          WITH post
+          `
+      }
+
       updatePostCypher += `RETURN post`
-      const updatePostVariables = { categoryIds, params }
+      const updatePostVariables = { categoryIds, params, userId }
 
       const transactionRes = await session.run(updatePostCypher, updatePostVariables)
       const [post] = transactionRes.records.map(record => {
