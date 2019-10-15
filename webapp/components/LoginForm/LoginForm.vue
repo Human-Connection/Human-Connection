@@ -1,5 +1,5 @@
 <template>
-  <ds-container v-if="ready" width="medium">
+  <ds-container width="medium">
     <ds-space margin="small">
       <blockquote>
         <p>{{ $t('quotes.african.quote') }}</p>
@@ -80,7 +80,6 @@ export default {
   },
   data() {
     return {
-      ready: false,
       form: {
         email: '',
         password: '',
@@ -91,13 +90,6 @@ export default {
     pending() {
       return this.$store.getters['auth/pending']
     },
-  },
-  mounted() {
-    setTimeout(() => {
-      // NOTE: quick fix for jumping flexbox implementation
-      // will be fixed in a future update of the styleguide
-      this.ready = true
-    }, 50)
   },
   methods: {
     async onSubmit() {
