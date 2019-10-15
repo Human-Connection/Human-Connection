@@ -30,25 +30,6 @@
         name="email"
         icon="envelope"
       />
-      <p>
-        <label class="add-checkbox">
-          <input @change="handleInputValid" type="checkbox" v-model="checkbox1" />
-          <span v-html="$t('components.registration.signup.form.terms-and-condition')"></span>
-        </label>
-      </p>
-      <p>
-        <label class="add-checkbox">
-          <input@change="handleInputValid" type="checkbox" v-model="checkbox2"/>
-          <span v-html="$t('components.registration.signup.form.data-privacy')"></span>
-        </label>
-      </p>
-      <p>
-        <label class="add-checkbox">
-          <input @change="handleInputValid" type="checkbox" v-model="checkbox3" />
-          <span v-html="$t('components.registration.signup.form.minimum-age')"></span>
-        </label>
-      </p>
-
       <ds-button
         :disabled="disabled"
         :loading="$apollo.loading"
@@ -121,9 +102,6 @@ export default {
       disabled: true,
       success: false,
       error: null,
-      checkbox1: false,
-      checkbox2: false,
-      checkbox3: false,
     }
   },
   computed: {
@@ -137,11 +115,7 @@ export default {
       this.disabled = true
     },
     handleInputValid() {
-      if (this.checkbox1 && this.checkbox2 && this.checkbox3) {
-        this.disabled = false
-      } else {
-        this.disabled = true
-      }
+      this.disabled = false
     },
     async handleSubmit() {
       const mutation = this.token ? SignupByInvitationMutation : SignupMutation

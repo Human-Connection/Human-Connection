@@ -64,7 +64,7 @@
 
         <ds-text>
           <input
-            id="checkbox"
+            id="checkbox0"
             type="checkbox"
             v-model="termsAndConditionsConfirmed"
             :checked="termsAndConditionsConfirmed"
@@ -74,12 +74,24 @@
             v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
           ></label>
         </ds-text>
+        <p>
+          <label>
+            <input id="checkbox1" type="checkbox" v-model="dataPrivacy" :checked="dataPrivacy" />
+            <span v-html="$t('components.registration.signup.form.data-privacy')"></span>
+          </label>
+        </p>
+        <p>
+          <label>
+            <input id="checkbox2" type="checkbox" v-model="minimumAge" :checked="minimumAge" />
+            <span v-html="$t('components.registration.signup.form.minimum-age')"></span>
+          </label>
+        </p>
         <ds-button
           style="float: right;"
           icon="check"
           type="submit"
           :loading="$apollo.loading"
-          :disabled="errors || !termsAndConditionsConfirmed"
+          :disabled="errors || !termsAndConditionsConfirmed || !dataPrivacy || !minimumAge"
           primary
         >
           {{ $t('actions.save') }}
@@ -129,6 +141,8 @@ export default {
       // Integrate termsAndConditionsConfirmed into `this.formData` once we
       // have checkmarks available.
       termsAndConditionsConfirmed: false,
+      dataPrivacy: false,
+      minimumAge: false,
     }
   },
   props: {
