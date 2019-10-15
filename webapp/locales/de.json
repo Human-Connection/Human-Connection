@@ -531,6 +531,7 @@
     }
   },
   "contribution": {
+    "title": "Titel",
     "newPost": "Erstelle einen neuen Beitrag",
     "filterFollow": "Beiträge filtern von Usern denen ich folge",
     "filterALL": "Alle Beiträge anzeigen",
