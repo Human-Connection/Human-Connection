@@ -87,9 +87,5 @@ export default {
 <style lang="scss">
 .related-post {
   box-shadow: $box-shadow-base;
-
-  .ds-card-image {
-    max-height: 80px;
-  }
 }
 </style>
