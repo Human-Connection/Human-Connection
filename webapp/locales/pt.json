@@ -202,6 +202,7 @@
     }
   },
   "contribution": {
+    "title": "Título",
     "edit": "Editar Contribuição",
     "delete": "Apagar Contribuição",
     "teaserImage": {
