@@ -1,5 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import SearchInput from './SearchInput.vue'
+import SearchInput from './index.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 const localVue = createLocalVue()

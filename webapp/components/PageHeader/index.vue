@@ -81,7 +81,7 @@ import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import NotificationMenu from '~/components/notifications/NotificationMenu/NotificationMenu'
-import SearchInput from '~/components/SearchInput.vue'
+import SearchInput from '~/components/SearchInput'
 
 export default {
   components: {
