@@ -108,7 +108,7 @@ module.exports = {
   allowEmbedIframes: {
     type: 'boolean',
     default: false,
-  }, 
+  },
   language: {
     type: 'string',
     allow: [null],

@@ -158,7 +158,15 @@ export default {
       try {
         await this.$apollo.mutate({
           mutation: SignupVerificationMutation,
-          variables: { name, password, about, email, nonce, termsAndConditionsAgreedVersion, language },
+          variables: {
+            name,
+            password,
+            about,
+            email,
+            nonce,
+            termsAndConditionsAgreedVersion,
+            language,
+          },
         })
         this.response = 'success'
         setTimeout(() => {
