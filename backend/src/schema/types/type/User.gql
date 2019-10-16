@@ -121,6 +121,7 @@ input _UserFilter {
 	followedBy_none: _UserFilter
 	followedBy_single: _UserFilter
 	followedBy_every: _UserFilter
+  role_in: [UserGroup!]
 }
 
 type Query {

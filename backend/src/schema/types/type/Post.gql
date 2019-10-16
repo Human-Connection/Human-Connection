@@ -85,6 +85,7 @@ type Mutation {
     language: String
     categoryIds: [ID]
     pinned: Boolean
+    unpinned: Boolean
   ): Post
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED

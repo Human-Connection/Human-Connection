@@ -113,9 +113,10 @@ export default {
       return post
     },
     UpdatePost: async (_parent, params, context, _resolveInfo) => {
-      const { categoryIds, pinned } = params
+      const { categoryIds, pinned, unpinned } = params
       const { id: userId } = context.user
       delete params.pinned
+      delete params.unpinned
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
@@ -140,6 +141,16 @@ export default {
           MERGE (post)-[:CATEGORIZED]->(category)
           WITH post
         `
+      }
+
+      if (unpinned) {
+        const cypherRemovePinnedStatus = `
+          MATCH ()-[previousRelations:PINNED]->(post:Post {id: $params.id})
+          DELETE previousRelations
+          RETURN post
+      `
+
+        await session.run(cypherRemovePinnedStatus, { params })
       }
 
       if (pinned) {
