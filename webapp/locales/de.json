@@ -113,7 +113,7 @@
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo",
     "success": "Du bist eingeloggt!",
-    "failure": "Login fehlgeschlagen"
+    "failure": "Fehlerhafte E-Mail-Adresse oder Passwort."
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes …",
