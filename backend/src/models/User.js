@@ -105,6 +105,15 @@ module.exports = {
     target: 'Location',
     direction: 'out',
   },
+  pinned: {
+    type: 'relationship',
+    relationship: 'PINNED',
+    target: 'Post',
+    direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
   allowEmbedIframes: {
     type: 'boolean',
     default: false,

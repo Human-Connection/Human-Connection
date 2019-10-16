@@ -743,11 +743,77 @@ describe('UpdatePost', () => {
           expect(pinnedPost.records).toHaveLength(1)
         })
 
-        it('leaves only one pinned post at a time', async () => {
-          const [pinnedPostCreatedAt] = pinnedPost.records.map(
-            record => record.get('relationship').properties.createdAt,
-          )
+        it('sets createdAt date for PINNED', () => {
+          const [pinnedPostCreatedAt] = pinnedPost.records.map(record => {
+            return record.get('relationship').properties.createdAt
+          })
           expect(pinnedPostCreatedAt).toEqual(expect.any(String))
+        })
+      })
+
+      describe('PostOrdering', () => {
+        let pinnedPost, postCreatedAfterPinnedPost, newDate, timeInPast, admin
+        beforeEach(async () => {
+          ;[pinnedPost, postCreatedAfterPinnedPost] = await Promise.all([
+            neode.create('Post', {
+              id: 'im-a-pinned-post',
+            }),
+            neode.create('Post', {
+              id: 'i-was-created-after-pinned-post',
+            }),
+          ])
+          newDate = new Date()
+          timeInPast = newDate.getDate() - 3
+          newDate.setDate(timeInPast)
+          await pinnedPost.update({
+            createdAt: newDate.toISOString(),
+            updatedAt: new Date().toISOString(),
+          })
+          timeInPast = newDate.getDate() + 1
+          newDate.setDate(timeInPast)
+          await postCreatedAfterPinnedPost.update({
+            createdAt: newDate.toISOString(),
+            updatedAt: new Date().toISOString(),
+          })
+          admin = await user.update({
+            role: 'admin',
+            name: 'Admin',
+            updatedAt: new Date().toISOString(),
+          })
+          await admin.relateTo(pinnedPost, 'pinned', { createdAt: newDate.toISOString() })
+        })
+
+        it('pinned post appear first even when created before other posts', async () => {
+          const postOrderingQuery = gql`
+            query($orderBy: [_PostOrdering]) {
+              Post(orderBy: $orderBy) {
+                id
+                pinnedAt
+              }
+            }
+          `
+          const expected = {
+            data: {
+              Post: [
+                {
+                  id: 'im-a-pinned-post',
+                  pinnedAt: expect.any(String),
+                },
+                {
+                  id: 'p9876',
+                  pinnedAt: null,
+                },
+                {
+                  id: 'i-was-created-after-pinned-post',
+                  pinnedAt: null,
+                },
+              ],
+            },
+          }
+          variables = { orderBy: ['pinnedAt_asc', 'createdAt_desc'] }
+          await expect(query({ query: postOrderingQuery, variables })).resolves.toMatchObject(
+            expected,
+          )
         })
       })
     })
