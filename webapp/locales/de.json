@@ -31,7 +31,7 @@
         "form": {
           "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
           "terms-and-condition": "Ich stimme den <a href=\"/terms-and-conditions\"><ds-text bold color=\"primary\" > Nutzungsbedingungen</ds-text></a>zu.",
-          "data-privacy": "Ich habe die  <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" >Datenschutzerklärungen</ds-text></a> gelesen und verstanden",
+          "data-privacy": "Ich habe die  <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" >Datenschutzerklärung</ds-text></a> gelesen und verstanden",
           "minimum-age": "Ich bin 18 Jahre oder älter.",
           "invitation-code": "Dein Einladungscode lautet: <b>{code}</b>",
           "errors": {
