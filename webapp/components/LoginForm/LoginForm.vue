@@ -99,7 +99,6 @@ export default {
         this.$emit('success')
       } catch (err) {
         this.$toast.error(this.$t('login.failure'))
-        console.log(err)
       }
     },
   },
