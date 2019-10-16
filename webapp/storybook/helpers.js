@@ -5,6 +5,7 @@ import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
 import IziToast from '~/plugins/izi-toast'
 import layout from './layout.vue'
+import locales from '~/locales/index.js'
 
 import '~/plugins/v-tooltip'
 
@@ -16,8 +17,10 @@ const helpers = {
     Vue.use(IziToast)
 
     Vue.use(vuexI18n.plugin, helpers.store)
-    Vue.i18n.add('en', require('~/locales/en.json'))
-    Vue.i18n.add('de', require('~/locales/de.json'))
+    locales.forEach(({ code }) => {
+      Vue.i18n.add(code, require(`~/locales/${code}.json`))
+    })
+
     Vue.i18n.set('en')
     Vue.i18n.fallback('en')
 
