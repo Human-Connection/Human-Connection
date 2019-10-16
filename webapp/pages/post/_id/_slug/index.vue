@@ -18,6 +18,8 @@
           :resource="post"
           :modalsData="menuModalsData"
           :is-owner="isAuthor(post.author ? post.author.id : null)"
+          @pinPost="pinPost"
+          @unpinPost="unpinPost"
         />
       </client-only>
       <ds-space margin-bottom="small" />
@@ -77,6 +79,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
@@ -88,6 +91,7 @@ import HcCommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
+import PostMutations from '~/graphql/PostMutations'
 
 export default {
   name: 'PostSlug',
@@ -141,6 +145,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setCurrentUser: 'auth/SET_USER',
+    }),
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
@@ -155,6 +162,33 @@ export default {
     },
     async createComment(comment) {
       this.post.comments.push(comment)
+    },
+    resetPostList() {
+      this.offset = 0
+      this.posts = []
+      this.hasMore = true
+    },
+    pinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().UpdatePost,
+          variables: { id: post.id, title: post.title, content: post.content, pinned: true },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    unpinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().UpdatePost,
+          variables: { id: post.id, title: post.title, content: post.content, unpinned: true },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+        })
+        .catch(error => this.$toast.error(error.message))
     },
   },
   apollo: {

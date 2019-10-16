@@ -34,6 +34,8 @@ export default () => {
         $imageUpload: Upload
         $categoryIds: [ID]
         $image: String
+        $pinned: Boolean
+        $unpinned: Boolean
       ) {
         UpdatePost(
           id: $id
@@ -43,6 +45,8 @@ export default () => {
           imageUpload: $imageUpload
           categoryIds: $categoryIds
           image: $image
+          pinned: $pinned
+          unpinned: $unpinned
         ) {
           id
           title
@@ -50,6 +54,11 @@ export default () => {
           content
           contentExcerpt
           language
+          pinnedBy {
+            id
+            name
+            role
+          }
         }
       }
     `,

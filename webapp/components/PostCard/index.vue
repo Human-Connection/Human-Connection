@@ -61,6 +61,8 @@
             :resource="post"
             :modalsData="menuModalsData"
             :is-owner="isAuthor"
+            @pinPost="pinPost"
+            @unpinPost="unpinPost"
           />
         </div>
       </client-only>
@@ -126,6 +128,12 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
+    },
+    pinPost(post) {
+      this.$emit('pinPost', post)
+    },
+    unpinPost(post) {
+      this.$emit('unpinPost', post)
     },
   },
 }

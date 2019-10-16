@@ -368,7 +368,11 @@
     },
     "menu": {
       "edit": "Edit Post",
-      "delete": "Delete Post"
+      "delete": "Delete Post",
+      "pin": "Pin post",
+      "pinnedSuccessfully": "Post pinned successfully!",
+      "unpin": "Unpin post",
+      "unpinnedSuccessfully": "Post unpinned successfully!"
     },
     "comment": {
       "submit": "Comment",
