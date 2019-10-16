@@ -1,8 +1,9 @@
 export default {
   Mutation: {
-    report: async (_parent, params, { driver, user }, _resolveInfo) => {
+    report: async (_parent, params, context, _resolveInfo) => {
       let createdRelationshipWithNestedAttributes
       const { resourceId, reasonCategory, reasonDescription } = params
+      const { driver, user } = context
       const session = driver.session()
       const writeTxResultPromise = session.writeTransaction(async txc => {
         const reportRelationshipTransactionResponse = await txc.run(
@@ -58,54 +59,68 @@ export default {
     },
   },
   Query: {
-    reports: async (_parent, _params, { driver }, _resolveInfo) => {
+    reports: async (_parent, params, context, _resolveInfo) => {
+      const { driver } = context
       const session = driver.session()
-      const res = await session.run(
-        `
+      let response
+      let orderByClause
+      switch (params.orderBy) {
+        // case 'createdAt_asc':
+        //   orderByClause = 'ORDER BY report.createdAt ASC'
+        //   break
+        case 'createdAt_desc':
+          orderByClause = 'ORDER BY report.createdAt DESC'
+          break
+        default:
+          orderByClause = ''
+      }
+      try {
+        const cypher = `
           MATCH (submitter:User)-[report:REPORTED]->(resource)
           WHERE resource:User OR resource:Comment OR resource:Post
           RETURN report, submitter, resource, labels(resource)[0] as type
-        `,
-        {},
-      )
-      session.close()
+          ${orderByClause}
+        `
+        const result = await session.run(cypher, {})
+        const dbResponse = result.records.map(r => {
+          return {
+            report: r.get('report'),
+            submitter: r.get('submitter'),
+            resource: r.get('resource'),
+            type: r.get('type'),
+          }
+        })
+        if (!dbResponse) return null
 
-      const dbResponse = res.records.map(r => {
-        return {
-          report: r.get('report'),
-          submitter: r.get('submitter'),
-          resource: r.get('resource'),
-          type: r.get('type'),
-        }
-      })
-      if (!dbResponse) return null
+        response = []
+        dbResponse.forEach(ele => {
+          const { report, submitter, resource, type } = ele
 
-      const response = []
-      dbResponse.forEach(ele => {
-        const { report, submitter, resource, type } = ele
+          const responseEle = {
+            ...report.properties,
+            post: null,
+            comment: null,
+            user: null,
+            submitter: submitter.properties,
+            type,
+          }
 
-        const responseEle = {
-          ...report.properties,
-          post: null,
-          comment: null,
-          user: null,
-          submitter: submitter.properties,
-          type,
-        }
-
-        switch (type) {
-          case 'Post':
-            responseEle.post = resource.properties
-            break
-          case 'Comment':
-            responseEle.comment = resource.properties
-            break
-          case 'User':
-            responseEle.user = resource.properties
-            break
-        }
-        response.push(responseEle)
-      })
+          switch (type) {
+            case 'Post':
+              responseEle.post = resource.properties
+              break
+            case 'Comment':
+              responseEle.comment = resource.properties
+              break
+            case 'User':
+              responseEle.user = resource.properties
+              break
+          }
+          response.push(responseEle)
+        })
+      } finally {
+        session.close()
+      }
 
       return response
     },
