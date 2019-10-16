@@ -1,7 +1,7 @@
 <template>
   <header class="page-header">
     <div class="page-header__content">
-      <nuxt-link :to="{ name: 'index' }">
+      <nuxt-link :to="{ name: 'index' }" class="page-header__logo">
         <ds-logo />
       </nuxt-link>
       <search-input
@@ -195,9 +195,40 @@ export default {
   height: 100%;
   max-width: 1200px;
   margin: auto;
+}
 
+.page-header__logo {
+  height: 100%;
+
+  // TODO: remove this scss block when we are no longer using the styleguide logo component
   .ds-logo {
     margin-right: $space-small;
+    height: 100%;
+
+    .ds-logo-svg {
+      height: 100%;
+      width: auto;
+      margin-right: -110px;
+    }
+
+    & > svg > g > g {
+      display: none;
+    }
+  }
+}
+
+@media ($media-query-small) {
+  // TODO: remove this scss block when we are no longer using the styleguide logo component
+  .page-header__logo {
+    .ds-logo {
+      .ds-logo-svg {
+        margin-right: 0;
+      }
+
+      & > svg > g > g {
+        display: inline;
+      }
+    }
   }
 }
 </style>
