@@ -57,11 +57,37 @@ const validateUpdatePost = async (resolve, root, args, context, info) => {
   return validatePost(resolve, root, args, context, info)
 }
 
+const validateReport = async (resolve, root, args, context, info) => {
+  const { resourceId } = args
+  const { user, driver } = context
+  if (resourceId === user.id) throw new Error('You cannot report yourself!')
+  const session = driver.session()
+  const reportQueryRes = await session.run(
+    `
+      MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId}) 
+      RETURN labels(resource)[0] as label
+    `,
+    {
+      resourceId,
+      submitterId: user.id,
+    },
+  )
+  const [existingReportedResource] = reportQueryRes.records.map(record => {
+    return {
+      label: record.get('label'),
+    }
+  })
+
+  if (existingReportedResource) throw new Error(`${existingReportedResource.label}`)
+  return resolve(root, args, context, info)
+}
+
 export default {
   Mutation: {
     CreateComment: validateCommentCreation,
     UpdateComment: validateUpdateComment,
     CreatePost: validatePost,
     UpdatePost: validateUpdatePost,
+    report: validateReport,
   },
 }

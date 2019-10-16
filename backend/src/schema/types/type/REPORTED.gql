@@ -1,0 +1,42 @@
+type REPORTED {
+  createdAt: String
+  reasonCategory: ReasonCategory
+  reasonDescription: String
+  submitter: User
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
+  # not yet supported
+  # resource: ReportResource
+  #   @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource")
+  type: String
+    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN labels(resource)[0]")
+  user: User
+  post: Post
+  comment: Comment
+}
+
+# this list equals the strings of an array in file "webapp/constants/modals.js"
+enum ReasonCategory {
+  other
+  discrimination_etc
+  pornographic_content_links
+  glorific_trivia_of_cruel_inhuman_acts
+  doxing
+  intentional_intimidation_stalking_persecution
+  advert_products_services_commercial
+  criminal_behavior_violation_german_law
+}
+
+# not yet supported
+# union ReportResource = User | Post | Comment
+
+enum ReportOrdering {
+  createdAt_desc
+}
+
+type Query {
+  reports(orderBy: ReportOrdering): [REPORTED]
+}
+
+type Mutation {
+  report(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): REPORTED
+}

@@ -24,7 +24,6 @@ type Mutation {
   changePassword(oldPassword: String!, newPassword: String!): String!
   requestPasswordReset(email: String!): Boolean!
   resetPassword(email: String!, nonce: String!, newPassword: String!): Boolean!
-  report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
   # Shout the given Type and ID
@@ -33,18 +32,6 @@ type Mutation {
   unshout(id: ID!, type: ShoutTypeEnum): Boolean!
   followUser(id: ID!): User
   unfollowUser(id: ID!): User
-}
-
-type Report {
-  id: ID!
-  submitter: User @relation(name: "REPORTED", direction: "IN")
-  description: String
-  type: String!
-    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(this) RETURN labels(resource)[0]")
-  createdAt: String
-  comment: Comment @relation(name: "REPORTED", direction: "OUT")
-  post: Post @relation(name: "REPORTED", direction: "OUT")
-  user: User @relation(name: "REPORTED", direction: "OUT")
 }
 
 enum Deletable {

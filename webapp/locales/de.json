@@ -432,8 +432,11 @@
     "reports": {
       "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
-      "submitter": "gemeldet von",
-      "disabledBy": "deaktiviert von"
+      "reasonCategory": "Kategorie",
+      "reasonDescription": "Beschreibung",
+      "createdAt": "Datum",
+      "submitter": "Gemeldet von",
+      "disabledBy": "Deaktiviert von"
     }
   },
   "disable": {
@@ -493,6 +496,27 @@
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?",
       "error": "Du hast den Kommentar bereits gemeldet!"
+    },
+    "reason": {
+      "category": {
+        "label": "Wähle eine Kategorie:",
+        "placeholder": "Kategorie …",
+        "options": {
+          "discrimination_etc": "Diskriminierende Beiträge, Kommentare, Äußerungen oder Beleidigungen.",
+          "pornographic_content_links": "Das Posten oder Verlinken eindeutig pornografischen Materials.",
+          "glorific_trivia_of_cruel_inhuman_acts": "Verherrlichung oder Verharmlosung grausamer oder unmenschlicher Gewalttätigkeiten.",
+          "doxing": "Das Veröffentlichen von personenbezogenen Daten anderer ohne deren Einverständnis oder das Androhen dessen (\"Doxing\").",
+          "intentional_intimidation_stalking_persecution": "Absichtliche Einschüchterung, Stalking oder Verfolgung.",
+          "advert_products_services_commercial": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
+          "criminal_behavior_violation_german_law": "Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
+          "other": "Andere …"
+        },
+        "invalid": "Bitte wähle eine gültige Kategorie aus"
+      },
+      "description": {
+        "label": "Bitte erkläre: Warum möchtest du dies melden?",
+        "placeholder": "Zusätzliche Information …"
+      }
     }
   },
   "followButton": {

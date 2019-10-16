@@ -433,8 +433,11 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "submitter": "reported by",
-      "disabledBy": "disabled by"
+      "reasonCategory": "Category",
+      "reasonDescription": "Description",
+      "createdAt": "Date",
+      "submitter": "Reported by",
+      "disabledBy": "Disabled by"
     }
   },
   "disable": {
@@ -494,6 +497,27 @@
       "type": "Comment",
       "message": "Do you really want to report the comment from \"<b>{name}</b>\"?",
       "error": "You have already reported the comment!"
+    },
+    "reason": {
+      "category": {
+        "label": "Select a category:",
+        "placeholder": "Category …",
+        "options": {
+          "discrimination_etc": "Discriminatory posts, comments, utterances or insults.",
+          "pornographic_content_links": "Posting or linking of clearly pornographic material.",
+          "glorific_trivia_of_cruel_inhuman_acts": "Glorification or trivialization of cruel or inhuman acts of violence.",
+          "doxing": "The disclosure of others' personal information without their consent or threat there of (\"doxing\").",
+          "intentional_intimidation_stalking_persecution": "Intentional intimidation, stalking or persecution.",
+          "advert_products_services_commercial": "Advertising products and services with commercial intent.",
+          "criminal_behavior_violation_german_law": "Criminal behavior or violation of German law.",
+          "other": "Other …"
+        },
+        "invalid": "Please select a valid category"
+      },
+      "description": {
+        "label": "Please explain: Why you like to report this?",
+        "placeholder": "Additional information …"
+      }
     }
   },
   "followButton": {
