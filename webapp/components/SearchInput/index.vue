@@ -187,16 +187,20 @@ export default {
 
 <style lang="scss">
 .search {
-  display: flex;
-  align-self: center;
-  width: 100%;
   position: relative;
+  align-self: center;
+  display: flex;
+  width: 100%;
+  min-width: 100px;
+  max-width: 500px;
 
-  $padding-left: $space-x-small;
+  &.is-open {
+    min-width: 75vw;
+  }
 
   .search-option-label {
     align-self: center;
-    padding-left: $padding-left;
+    padding-left: $space-x-small;
   }
 
   .search-option-meta {
@@ -221,7 +225,7 @@ export default {
 
   .ds-select-dropdown-message {
     opacity: 0.5;
-    padding-left: $padding-left;
+    padding-left: $space-x-small;
   }
 
   .search-clear-btn {
@@ -263,6 +267,12 @@ export default {
 
   .control {
     width: 100%;
+  }
+}
+
+@media ($media-query-x-small) {
+  .search.is-open {
+    min-width: 100px;
   }
 }
 </style>
