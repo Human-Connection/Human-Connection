@@ -98,7 +98,7 @@ export default {
         this.$toast.success(this.$t('login.success'))
         this.$emit('success')
       } catch (err) {
-        this.$toast.error(err.message)
+        this.$toast.error(this.$t('login.failure'))
       }
     },
   },
