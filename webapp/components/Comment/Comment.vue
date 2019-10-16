@@ -60,6 +60,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { COMMENT_MAX_UNTRUNCATED_LENGTH, COMMENT_TRUNCATE_TO_LENGTH } from '~/constants/comment'
 import HcUser from '~/components/User/User'
 import ContentMenu from '~/components/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
@@ -98,11 +99,11 @@ export default {
       isModerator: 'auth/isModerator',
     }),
     isLongComment() {
-      return this.$filters.removeHtml(this.comment.content).length > 180
+      return this.$filters.removeHtml(this.comment.content).length > COMMENT_MAX_UNTRUNCATED_LENGTH
     },
     commentContent() {
       if (this.isLongComment && this.isCollapsed) {
-        return this.$filters.truncate(this.comment.content, 180)
+        return this.$filters.truncate(this.comment.content, COMMENT_TRUNCATE_TO_LENGTH)
       }
 
       return this.comment.content
