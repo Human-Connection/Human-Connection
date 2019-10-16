@@ -22,6 +22,7 @@
         :key="comment.id"
         :comment="comment"
         :post="post"
+        :routeHash="routeHash"
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
       />
@@ -38,6 +39,7 @@ export default {
     Comment,
   },
   props: {
+    routeHash: { type: String, default: () => '' },
     post: { type: Object, default: () => {} },
   },
   methods: {

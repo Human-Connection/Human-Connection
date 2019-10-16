@@ -10,7 +10,7 @@
     </ds-card>
   </div>
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
-    <ds-card :id="anchor">
+    <ds-card :id="anchor" :class="{ 'comment--target': isTarget }">
       <ds-space margin-bottom="small" margin-top="small">
         <hc-user :user="author" :date-time="comment.createdAt">
           <template v-slot:dateTime>
@@ -43,35 +43,15 @@
         />
       </div>
       <div v-else>
-        <content-viewer
-          v-if="$filters.removeHtml(comment.content).length < 180"
-          :content="comment.content"
-          class="padding-left"
-        />
-        <div v-else class="show-more-or-less-div">
-          <content-viewer
-            v-if="isCollapsed"
-            :content="$filters.truncate(comment.content, 180)"
-            class="padding-left text-align-left"
-          />
-          <span class="show-more-or-less">
-            <a v-if="isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
-              {{ $t('comment.show.more') }}
-            </a>
-          </span>
-        </div>
-        <content-viewer
-          v-if="!isCollapsed"
-          :content="comment.content"
-          class="padding-left text-align-left"
-        />
-        <div class="show-more-or-less-div">
-          <span class="show-more-or-less">
-            <a v-if="!isCollapsed" class="padding-left" @click="isCollapsed = !isCollapsed">
-              {{ $t('comment.show.less') }}
-            </a>
-          </span>
-        </div>
+        <content-viewer :content="commentContent" class="comment-content" />
+        <button
+          v-if="isLongComment"
+          type="button"
+          class="collapse-button"
+          @click="isCollapsed = !isCollapsed"
+        >
+          {{ isCollapsed ? $t('comment.show.more') : $t('comment.show.less') }}
+        </button>
       </div>
       <ds-space margin-bottom="small" />
     </ds-card>
@@ -89,9 +69,14 @@ import scrollToAnchor from '~/mixins/scrollToAnchor.js'
 
 export default {
   mixins: [scrollToAnchor],
-  data: function() {
+  data() {
+    const anchor = `commentId-${this.comment.id}`
+    const isTarget = this.routeHash === `#${anchor}`
+
     return {
-      isCollapsed: true,
+      anchor,
+      isTarget,
+      isCollapsed: !isTarget,
       openEditCommentMenu: false,
     }
   },
@@ -102,13 +87,9 @@ export default {
     HcCommentForm,
   },
   props: {
-    post: { type: Object, default: () => {} },
-    comment: {
-      type: Object,
-      default() {
-        return {}
-      },
-    },
+    routeHash: { type: String, default: () => '' },
+    post: { type: Object, default: () => ({}) },
+    comment: { type: Object, default: () => ({}) },
     dateTime: { type: [Date, String], default: null },
   },
   computed: {
@@ -116,8 +97,15 @@ export default {
       user: 'auth/user',
       isModerator: 'auth/isModerator',
     }),
-    anchor() {
-      return `commentId-${this.comment.id}`
+    isLongComment() {
+      return this.$filters.removeHtml(this.comment.content).length > 180
+    },
+    commentContent() {
+      if (this.isLongComment && this.isCollapsed) {
+        return this.$filters.truncate(this.comment.content, 180)
+      }
+
+      return this.comment.content
     },
     displaysComment() {
       return !this.unavailable || this.isModerator
@@ -182,26 +170,37 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.collapse-button {
+  // TODO: move this to css resets
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background-color: transparent;
+
+  float: right;
+  padding: 0 16px 16px 16px;
+  color: $color-primary;
+  cursor: pointer;
+}
+
+.comment-content {
+  padding-left: 40px;
+}
+
 .float-right {
   float: right;
 }
 
-.padding-left {
-  padding-left: 40px;
+@keyframes highlight {
+  0% {
+    border: 1px solid $color-primary;
+  }
+  100% {
+    border: 1px solid transparent;
+  }
 }
 
-.text-align-left {
-  text-align: left;
-}
-
-div.show-more-or-less-div {
-  text-align: right;
-  margin-right: 20px;
-}
-
-span.show-more-or-less {
-  display: block;
-  margin: 0px 20px;
-  cursor: pointer;
+.comment--target {
+  animation: highlight 4s ease;
 }
 </style>
