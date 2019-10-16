@@ -10,31 +10,23 @@ const defaultFilter = {}
 export const state = () => {
   return {
     filter: {
-      OR: [{ pinnedBy_in: { role_in: ['admin'] } }, {}],
+      ...defaultFilter,
     },
   }
 }
 
 export const mutations = {
   TOGGLE_FILTER_BY_FOLLOWED(state, currentUserId) {
-    let filter = clone(state.filter)
-    const id = filter.OR.find(object => object.author)
+    const filter = clone(state.filter)
+    const id = get(filter, 'author.followedBy_some.id')
     if (id) {
-      filter.OR.forEach(object => delete object.author)
+      delete filter.author
       state.filter = filter
     } else {
-      if (isEmpty(filter.OR[-1])) filter.OR.pop()
-      filter.OR.map(object => {
-        for (let key in object) {
-          if (object.hasOwnProperty(key)) {
-            object = { key: object[key] }
-          }
-        }
-      })
-      filter.OR.unshift({
+      state.filter = {
+        ...filter,
         author: { followedBy_some: { id: currentUserId } },
-      })
-      state.filter = filter
+      }
     }
   },
   RESET_CATEGORIES(state) {
@@ -43,20 +35,9 @@ export const mutations = {
     state.filter = filter
   },
   TOGGLE_CATEGORY(state, categoryId) {
-    let filter = clone(state.filter)
-    if (isEmpty(filter.OR[-1])) filter.OR.pop()
-    filter.OR.map(object => {
-      for (let key in object) {
-        if (object.hasOwnProperty(key)) {
-          object = { key: object[key] }
-        }
-      }
-    })
-    filter.OR.unshift({
-      categories_some: { id_in: [categoryId] },
-    })
-    // update(filter, 'categories_some.id_in', categoryIds => xor(categoryIds, [categoryId]))
-    // if (isEmpty(get(filter.OR[0], 'categories_some.id_in'))) delete filter.OR[0].categories_some
+    const filter = clone(state.filter)
+    update(filter, 'categories_some.id_in', categoryIds => xor(categoryIds, [categoryId]))
+    if (isEmpty(get(filter, 'categories_some.id_in'))) delete filter.categories_some
     state.filter = filter
   },
   TOGGLE_EMOTION(state, emotion) {

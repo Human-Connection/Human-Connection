@@ -2,10 +2,9 @@ import uuid from 'uuid/v4'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
 import { getBlockedUsers, getBlockedByUsers } from './users.js'
-import { mergeWith, isArray } from 'lodash'
+import { mergeWith, isArray, isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
-
 const filterForBlockedUsers = async (params, context) => {
   if (!context.user) return params
   const [blockedUsers, blockedByUsers] = await Promise.all([
@@ -29,10 +28,26 @@ const filterForBlockedUsers = async (params, context) => {
   return params
 }
 
+const maintainPinnedPosts = params => {
+  const pinnedPostFilter = { pinnedBy_in: { role_in: ['admin'] } }
+  if (isEmpty(params.filter)) {
+    params.filter = { OR: [pinnedPostFilter, {}] }
+  } else {
+    const filteredPostsArray = []
+    Object.keys(params.filter).forEach(key => {
+      filteredPostsArray.push({ [key]: params.filter[key] })
+    })
+    filteredPostsArray.push(pinnedPostFilter)
+    params.filter = { OR: filteredPostsArray }
+  }
+  return params
+}
+
 export default {
   Query: {
     Post: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
+      params = await maintainPinnedPosts(params)
       return neo4jgraphql(object, params, context, resolveInfo, false)
     },
     findPosts: async (object, params, context, resolveInfo) => {
