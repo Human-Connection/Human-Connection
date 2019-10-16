@@ -14,7 +14,7 @@ type REPORTED {
   comment: Comment
 }
 
-# this list equals the strings of an array in file "webapp/components/Modal/ReportModal.vue"
+# this list equals the strings of an array in file "webapp/constants/modals.js"
 enum ReasonCategory {
   other
   discrimination_etc
