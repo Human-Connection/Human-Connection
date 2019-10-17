@@ -65,9 +65,9 @@ export default {
       let response
       let orderByClause
       switch (params.orderBy) {
-        // case 'createdAt_asc':
-        //   orderByClause = 'ORDER BY report.createdAt ASC'
-        //   break
+        case 'createdAt_asc':
+          orderByClause = 'ORDER BY report.createdAt ASC'
+          break
         case 'createdAt_desc':
           orderByClause = 'ORDER BY report.createdAt DESC'
           break
