@@ -100,8 +100,9 @@ export default {
           thumbnailElement.appendChild(image)
           // Remove the editor from view
           editor.parentNode.removeChild(editor)
-          this.$emit('addTeaserImage', blob)
-        })
+          const croppedImageFile = new File([blob], file.name, { type: 'image/jpeg' })
+          this.$emit('addTeaserImage', croppedImageFile)
+        }, 'image/jpeg')
       })
       editor.appendChild(confirm)
 
