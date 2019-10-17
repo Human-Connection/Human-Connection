@@ -113,4 +113,4 @@ module.exports = {
     target: 'Location',
     direction: 'out',
   },
-}
+};

@@ -30,6 +30,10 @@ const queryPost = gql`
   }
 `
 
+
+
+
+
 describe('shout and unshout posts', () => {
   let currentUser, postAuthor
   beforeAll(() => {
@@ -100,6 +104,14 @@ describe('shout and unshout posts', () => {
           data: { Post: [{ id: 'another-user-post-id', shoutedBy: [{ id: 'current-user-id' }] }] },
           errors: undefined,
         })
+        // Test to make sure SHOUT relationship has "createdAt" date.
+        let relation = await instance.cypher(
+            'MATCH (user:User {id: $userId1})-[relationship:SHOUTED]->(node {id: $userId2}) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
+            { userId1: 'current-user-id', userId2: 'another-user-post-id' },
+        )
+        const relationshipProperties = relation.records.map(record => record.get('relationship').properties.createdAt)
+        expect(relationshipProperties[0]).toEqual(expect.any(String))
+
       })
 
       it('can not shout my own post', async () => {
