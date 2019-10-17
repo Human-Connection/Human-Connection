@@ -76,6 +76,7 @@ export default {
     transformImage(file) {
       let thumbnailElement, editor, confirm, thumbnailPreview, contributionImage
       // Create the image editor overlay
+      editor = document.querySelectorAll('.crop-overlay')[0]
       this.showCropper = false
       thumbnailElement = document.querySelectorAll('#postdropzone')[0]
       thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
