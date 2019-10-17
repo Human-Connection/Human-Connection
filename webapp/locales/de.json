@@ -1,8 +1,59 @@
 {
+  "components": {
+    "password-reset": {
+      "request": {
+        "form": {
+          "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
+          "submit": "Email anfordern",
+          "submitted": "Eine E-Mail mit weiteren Instruktionen wurde verschickt an <b>{email}</b>"
+        }
+      },
+      "change-password": {
+        "success": "Änderung des Passworts war erfolgreich!",
+        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
+        "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
+      }
+    },
+    "enter-nonce": {
+      "form": {
+        "nonce": "Code eingeben",
+        "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
+        "next": "Weiter",
+        "validations": {
+          "length": "muss genau 6 Buchstaben lang sein"
+        }
+      }
+    },
+    "registration": {
+      "signup": {
+        "unavailable": "Leider ist die öffentliche Registrierung von Benutzerkonten auf diesem Server derzeit nicht möglich.",
+        "title": "Mach mit bei Human Connection!",
+        "form": {
+          "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
+          "terms-and-condition": "Ich stimme den <a href=\"/terms-and-conditions\"><ds-text bold color=\"primary\" > Nutzungsbedingungen</ds-text></a>zu.",
+          "data-privacy": "Ich habe die  <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" >Datenschutzerklärung</ds-text></a> gelesen und verstanden",
+          "minimum-age": "Ich bin 18 Jahre oder älter.",
+          "invitation-code": "Dein Einladungscode lautet: <b>{code}</b>",
+          "errors": {
+            "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
+            "invalid-invitation-token": "Es sieht so aus, als ob der Einladungscode schon eingelöst wurde. Jeder Code kann nur einmalig benutzt werden."
+          },
+          "submit": "Konto erstellen",
+          "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}</b> geschickt"
+        }
+      },
+      "create-user-account": {
+        "title": "Benutzerkonto anlegen",
+        "success": "Dein Benutzerkonto wurde erstellt!",
+        "error": "Es konnte kein Benutzerkonto erstellt werden!",
+        "help": "Vielleicht war der Bestätigungscode falsch oder abgelaufen? Wenn das Problem weiterhin besteht, schick uns gerne eine E-Mail an:"
+      }
+    }
+  },
   "maintenance": {
     "title": "Human Connection befindet sich in der Wartung",
     "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
-    "questions": "Bei Fragen oder Problemen erreichst du uns per E-Mail an" 
+    "questions": "Bei Fragen oder Problemen erreichst du uns per E-Mail an"
   },
   "index": {
     "no-results": "Keine Beiträge gefunden.",
@@ -42,7 +93,7 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland",
     "code-of-conduct": "Verhaltenscodex",
-    "login": "Zurück zum Anmeldung"
+    "back-to-login": "Zurück zur Anmeldung"
   },
   "sorting": {
     "newest": "Neueste",
@@ -55,49 +106,13 @@
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
     "forgotPassword": "Passwort vergessen?",
+    "no-account": "Du hast noch kein Benutzerkonto?",
+    "register": "Benutzerkonto erstellen",
     "moreInfo": "Was ist Human Connection?",
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo",
     "success": "Du bist eingeloggt!"
-  },
-  "password-reset": {
-    "form": {
-      "description": "Eine Mail zum Zurücksetzen des Passworts wird an die angegebene E-Mail Adresse geschickt.",
-      "submit": "Email anfordern",
-      "submitted": "Eine E-Mail mit weiteren Instruktionen wurde verschickt an <b>{email}</b>"
-    }
-  },
-  "registration": {
-    "signup": {
-      "title": "Mach mit bei Human Connection!",
-      "form": {
-        "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
-        "invitation-code": "Dein Einladungscode lautet: <b>{code}</b>",
-        "errors": {
-          "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
-          "invalid-invitation-token": "Es sieht so aus, als ob der Einladungscode schon eingelöst wurde. Jeder Code kann nur einmalig benutzt werden."
-        },
-        "submit": "Konto erstellen",
-        "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}</b> geschickt"
-      }
-    },
-    "create-user-account": {
-      "title": "Benutzerkonto anlegen",
-      "success": "Dein Benutzerkonto wurde erstellt!"
-    }
-  },
-  "verify-nonce": {
-    "form": {
-      "nonce": "Code eingeben",
-      "description": "Öffne dein E-Mail Postfach und gib den Code ein, den wir geschickt haben.",
-      "next": "Weiter",
-      "change-password": {
-        "success": "Änderung des Passworts war erfolgreich!",
-        "error": "Passwort Änderung fehlgeschlagen. Möglicherweise falscher Sicherheitscode?",
-        "help": "Falls Probleme auftreten, schreib uns gerne eine Mail an:"
-      }
-    }
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes …",
@@ -108,6 +123,12 @@
       "noHashtagsFound": "Keine Hashtags gefunden",
       "addHashtag": "Neuer Hashtag",
       "addLetter": "Tippe einen Buchstaben"
+    },
+    "embed": {
+      "data_privacy_warning": "Achte auf deine Daten!",
+      "data_privacy_info": "Deine Daten wurden noch nicht an Drittanbieter weitergegeben. Wenn du dieses Video jetzt abspielst, registriert der folgende Anbieter wahrscheinlich deine Nutzerdaten:",
+      "play_now": "Jetzt ansehen",
+      "always_allow": "Inhalte von Drittanbietern immer anzeigen (diese Einstellung kannst du jederzeit ändern)"
     }
   },
   "profile": {
@@ -220,6 +241,22 @@
       "success": "Konto erfolgreich gelöscht!",
       "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen."
     },
+    "embeds": {
+      "name": "Drittanbieter",
+      "info-description": "Hier ist die Liste an Drittanbietern, deren Inhalte als Fremdcode z.B. in Form von eingebetteten Videos angezeigt werden kann:",
+      "status": {
+        "description": "Als Grundeinstellung für dich wird eingebetter Fremdcode von Drittanbietern",
+        "disabled": {
+          "off": "zunächst nicht angezeigt",
+          "on": "sofort angezeigt"
+        },
+        "change": {
+          "question": "Soll eingebetter Fremdcode von Dritten für dich immer angezeigt werden?",
+          "allow": "Na klar",
+          "deny": "Lieber nicht"
+        }
+      }
+    },
     "organizations": {
       "name": "Meine Organisationen"
     },
@@ -280,6 +317,7 @@
         "columns": {
           "number": "Nr.",
           "name": "Name",
+          "email": "E-mail",
           "slug": "Slug",
           "role": "Rolle",
           "createdAt": "Erstellt am"
@@ -335,7 +373,8 @@
       "submit": "Kommentiere",
       "submitted": "Kommentar Gesendet",
       "updated": "Änderungen gespeichert"
-    }
+    },
+    "edited": "bearbeitet"
   },
   "comment": {
     "content": {
@@ -348,10 +387,11 @@
     "show": {
       "more": "mehr anzeigen",
       "less": "weniger anzeigen"
-    }
+    },
+    "edited": "bearbeitet"
   },
   "quotes": {
-    "african": {
+  "african": {
       "quote": "Viele kleine Leute an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
       "author": "Afrikanisches Sprichwort"
     }
@@ -375,8 +415,7 @@
     "reportContent": "Melden",
     "validations": {
       "email": "muss eine gültige E-Mail Adresse sein",
-      "url": "muss eine gültige URL sein",
-      "verification-nonce": "muss genau 6 Buchstaben lang sein"
+      "url": "muss eine gültige URL sein"
     }
   },
   "actions": {
@@ -393,8 +432,11 @@
     "reports": {
       "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
-      "submitter": "gemeldet von",
-      "disabledBy": "deaktiviert von"
+      "reasonCategory": "Kategorie",
+      "reasonDescription": "Beschreibung",
+      "createdAt": "Datum",
+      "submitter": "Gemeldet von",
+      "disabledBy": "Deaktiviert von"
     }
   },
   "disable": {
@@ -454,6 +496,27 @@
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?",
       "error": "Du hast den Kommentar bereits gemeldet!"
+    },
+    "reason": {
+      "category": {
+        "label": "Wähle eine Kategorie:",
+        "placeholder": "Kategorie …",
+        "options": {
+          "discrimination_etc": "Diskriminierende Beiträge, Kommentare, Äußerungen oder Beleidigungen.",
+          "pornographic_content_links": "Das Posten oder Verlinken eindeutig pornografischen Materials.",
+          "glorific_trivia_of_cruel_inhuman_acts": "Verherrlichung oder Verharmlosung grausamer oder unmenschlicher Gewalttätigkeiten.",
+          "doxing": "Das Veröffentlichen von personenbezogenen Daten anderer ohne deren Einverständnis oder das Androhen dessen (\"Doxing\").",
+          "intentional_intimidation_stalking_persecution": "Absichtliche Einschüchterung, Stalking oder Verfolgung.",
+          "advert_products_services_commercial": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
+          "criminal_behavior_violation_german_law": "Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
+          "other": "Andere …"
+        },
+        "invalid": "Bitte wähle eine gültige Kategorie aus"
+      },
+      "description": {
+        "label": "Bitte erkläre: Warum möchtest du dies melden?",
+        "placeholder": "Zusätzliche Information …"
+      }
     }
   },
   "followButton": {
@@ -492,6 +555,7 @@
     }
   },
   "contribution": {
+    "title": "Titel",
     "newPost": "Erstelle einen neuen Beitrag",
     "filterFollow": "Beiträge filtern von Usern denen ich folge",
     "filterALL": "Alle Beiträge anzeigen",
@@ -526,6 +590,9 @@
         "it-internet-data-privacy": "IT, Internet & Datenschutz",
         "art-culture-sport": "Kunst, Kultur & Sport"
       }
+    },
+    "teaserImage": {
+      "cropperConfirm": "Bestätigen"
     }
   },
   "code-of-conduct": {

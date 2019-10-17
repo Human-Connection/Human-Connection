@@ -49,6 +49,12 @@ describe('Users', () => {
           expect(wrapper.vm.email).toEqual('email@example.org')
           expect(wrapper.vm.filter).toBe(null)
         })
+
+        it('email address is case-insensitive', async () => {
+          const wrapper = await searchAction(Wrapper(), { query: 'eMaiL@example.org' })
+          expect(wrapper.vm.email).toEqual('email@example.org')
+          expect(wrapper.vm.filter).toBe(null)
+        })
       })
 
       describe('query is just text', () => {

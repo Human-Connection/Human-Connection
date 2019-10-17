@@ -27,6 +27,7 @@ export default class Link extends TipTapLink {
         {
           ...node.attrs,
           rel: 'noopener noreferrer nofollow',
+          target: '_blank',
         },
         0,
       ],

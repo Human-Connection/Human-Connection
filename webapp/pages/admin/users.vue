@@ -33,6 +33,11 @@
             <b>{{ scope.row.name | truncate(20) }}</b>
           </nuxt-link>
         </template>
+        <template slot="email" slot-scope="scope">
+          <a :href="`mailto:${scope.row.email}`">
+            <b>{{ scope.row.email }}</b>
+          </a>
+        </template>
         <template slot="slug" slot-scope="scope">
           <nuxt-link
             :to="{
@@ -92,6 +97,7 @@ export default {
       return {
         index: this.$t('admin.users.table.columns.number'),
         name: this.$t('admin.users.table.columns.name'),
+        email: this.$t('admin.users.table.columns.email'),
         slug: this.$t('admin.users.table.columns.slug'),
         createdAt: this.$t('admin.users.table.columns.createdAt'),
         contributionsCount: {
@@ -128,6 +134,7 @@ export default {
               id
               name
               slug
+              email
               role
               createdAt
               contributionsCount
@@ -163,7 +170,7 @@ export default {
       this.offset = 0
       const { query } = formData
       if (isemail.validate(query)) {
-        this.email = query
+        this.email = query.toLowerCase()
         this.filter = null
       } else {
         this.email = null

@@ -25,17 +25,6 @@ describe('TeaserImage.vue', () => {
       wrapper = Wrapper()
     })
 
-    describe('File upload', () => {
-      const imageUpload = [
-        { file: { filename: 'avataar.svg', previewElement: '' }, url: 'someUrlToImage' },
-      ]
-
-      it('supports adding a teaser image', () => {
-        wrapper.vm.addTeaserImage(imageUpload)
-        expect(wrapper.emitted().addTeaserImage[0]).toEqual(imageUpload)
-      })
-    })
-
     describe('handles errors', () => {
       beforeEach(() => jest.useFakeTimers())
       const message = 'File upload failed'

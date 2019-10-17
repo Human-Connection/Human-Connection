@@ -142,60 +142,6 @@
       }
     }
   </style>
-
-  <!-- LANGUAGE TOGGLE -->
-  <style>
-    .toggle+label {
-      display: inline-block;
-      height: 40px;
-      padding: 0 12px;
-      margin-top: 40px;
-      line-height: 38px;
-      font-family: Lato, sans-serif;
-      font-size: 16px;
-      border: 1px solid #cbc7d1;
-      cursor: pointer;
-    }
-
-    .toggle+label:hover {
-      background-color: #bee876;
-    }
-
-    .toggle:checked+label {
-      background-color: #19c243;
-      color: white;
-    }
-
-    .toggle-english+label {
-      border-bottom-right-radius: 50px;
-      border-top-right-radius: 50px;
-      border-left: none;
-      margin-left: -2px;
-    }
-
-    .toggle-german+label {
-      border-bottom-left-radius: 50px;
-      border-top-left-radius: 50px;
-      border-right: none;
-      margin-right: -2px;
-    }
-
-    .toggle-german:checked~table.email-german {
-      display: block;
-    }
-
-    .toggle-german:checked~table.email-english {
-      display: none;
-    }
-
-    .toggle-english:checked~table.email-english {
-      display: block;
-    }
-
-    .toggle-english:checked~table.email-german {
-      display: none;
-    }
-  </style>
 </head>
 
 <body width="100%" style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f5f4f6;">
@@ -213,13 +159,7 @@
             <td>
       <![endif]-->
 
-      <!-- LANGUAGE TOGGLE -->
-      <input type="radio" name="language" class="toggle toggle-german" style="display: none;" id="toggle-german"
-        checked="checked">
-      <label for="toggle-german">Deutsch</label>
-      <input type="radio" name="language" class="toggle toggle-english" style="display:none;" id="toggle-english">
-      <label for="toggle-english">English</label>
-      <p style="margin: 0;"></p>
+      <p style="color:#19c243; font-style: italic; font-family: Lato, sans-serif; font-size: 16px; padding-top: 20px;">English version below!</p>
 
       {{> content}}
 

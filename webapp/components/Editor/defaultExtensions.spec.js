@@ -35,7 +35,7 @@ describe('defaultExtensions', () => {
     it('renders mentioning as link', () => {
       const editor = createEditor()
       const expected =
-        '<p>This is a post content mentioning <a href="/profile/f0628376-e692-4167-bdb4-d521de5a014f" rel="noopener noreferrer nofollow">@alicia-luettgen</a>.</p>'
+        '<p>This is a post content mentioning <a href="/profile/f0628376-e692-4167-bdb4-d521de5a014f" rel="noopener noreferrer nofollow" target="_blank">@alicia-luettgen</a>.</p>'
       expect(editor.getHTML()).toEqual(expected)
     })
   })
@@ -49,7 +49,7 @@ describe('defaultExtensions', () => {
     it('renders hashtag as link', () => {
       const editor = createEditor()
       const expected =
-        '<p>This is a post content with a hashtag <a href="/search/hashtag/metoo" rel="noopener noreferrer nofollow">#metoo</a>.</p>'
+        '<p>This is a post content with a hashtag <a href="/search/hashtag/metoo" rel="noopener noreferrer nofollow" target="_blank">#metoo</a>.</p>'
       expect(editor.getHTML()).toEqual(expected)
     })
   })

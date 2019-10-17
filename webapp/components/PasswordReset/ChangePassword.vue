@@ -1,54 +1,62 @@
 <template>
-  <ds-card class="verify-nonce">
-    <ds-space margin="large">
-      <ds-form
-        v-if="!changePasswordResult"
-        v-model="formData"
-        :schema="formSchema"
-        @submit="handleSubmitPassword"
-        class="change-password"
-      >
-        <template slot-scope="{ errors }">
-          <ds-input
-            id="password"
-            model="password"
-            type="password"
-            autocomplete="off"
-            :label="$t('settings.security.change-password.label-new-password')"
-          />
-          <ds-input
-            id="passwordConfirmation"
-            model="passwordConfirmation"
-            type="password"
-            autocomplete="off"
-            :label="$t('settings.security.change-password.label-new-password-confirm')"
-          />
-          <password-strength :password="formData.password" />
-          <ds-space margin-top="base">
-            <ds-button :loading="$apollo.loading" :disabled="errors" primary>
-              {{ $t('settings.security.change-password.button') }}
-            </ds-button>
-          </ds-space>
-        </template>
-      </ds-form>
-      <ds-text v-else>
-        <template v-if="changePasswordResult === 'success'">
+  <ds-space margin-top="base" margin-bottom="xxx-small">
+    <ds-form
+      v-if="!changePasswordResult"
+      v-model="formData"
+      :schema="formSchema"
+      @submit="handleSubmitPassword"
+      class="change-password"
+    >
+      <template slot-scope="{ errors }">
+        <ds-input
+          id="password"
+          model="password"
+          type="password"
+          autocomplete="off"
+          :label="$t('settings.security.change-password.label-new-password')"
+        />
+        <ds-input
+          id="passwordConfirmation"
+          model="passwordConfirmation"
+          type="password"
+          autocomplete="off"
+          :label="$t('settings.security.change-password.label-new-password-confirm')"
+        />
+        <password-strength :password="formData.password" />
+        <ds-space margin-top="base" margin-bottom="xxx-small">
+          <ds-button :loading="$apollo.loading" :disabled="errors" primary>
+            {{ $t('settings.security.change-password.button') }}
+          </ds-button>
+        </ds-space>
+      </template>
+    </ds-form>
+    <ds-space v-else>
+      <template v-if="changePasswordResult === 'success'">
+        <transition name="ds-transition-fade">
           <sweetalert-icon icon="success" />
-          <ds-text>
-            {{ $t(`verify-nonce.form.change-password.success`) }}
-          </ds-text>
-        </template>
-        <template v-else>
+        </transition>
+        <ds-text>
+          {{ $t('components.password-reset.change-password.success') }}
+        </ds-text>
+      </template>
+      <template v-else>
+        <transition name="ds-transition-fade">
           <sweetalert-icon icon="error" />
-          <ds-text align="left">
-            {{ $t(`verify-nonce.form.change-password.error`) }}
-            {{ $t('verify-nonce.form.change-password.help') }}
-          </ds-text>
-          <a href="mailto:support@human-connection.org">support@human-connection.org</a>
-        </template>
-      </ds-text>
+        </transition>
+        <ds-text>
+          <p>
+            {{ $t(`components.password-reset.change-password.error`) }}
+          </p>
+          <p>
+            {{ $t('components.password-reset.change-password.help') }}
+            <br />
+            <a href="mailto:support@human-connection.org">support@human-connection.org</a>
+          </p>
+        </ds-text>
+      </template>
+      <slot></slot>
     </ds-space>
-  </ds-card>
+  </ds-space>
 </template>
 
 <script>

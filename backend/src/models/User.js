@@ -55,6 +55,7 @@ module.exports = {
     direction: 'in',
   },
   invitedBy: { type: 'relationship', relationship: 'INVITED', target: 'User', direction: 'in' },
+  lastActiveAt: { type: 'string', isoDate: true },
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   updatedAt: {
     type: 'string',
@@ -113,4 +114,8 @@ module.exports = {
     target: 'Location',
     direction: 'out',
   },
-};
+  allowEmbedIframes: {
+    type: 'boolean',
+    default: false,
+  },
+}

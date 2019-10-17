@@ -1,4 +1,31 @@
 {
+  "components": {
+    "password-reset": {
+      "request": {
+        "title": "Zresetuj hasło",
+        "form": {
+          "description": "Na podany adres e-mail zostanie wysłany email z resetem hasła.",
+          "submit": "Poproś o wiadomość e-mail",
+          "submitted": "Na adres <b>{email}</b> została wysłana wiadomość z dalszymi instrukcjami."
+        }
+      },
+      "change-password": {
+        "success": "Zmiana hasła zakończyła się sukcesem!",
+        "error": "Zmiana hasła nie powiodła się. Może kod bezpieczeństwa nie był poprawny?",
+        "help": "W przypadku problemów, zachęcamy do zwrócenia się o pomoc, wysyłając do nas wiadomość e-mail:"
+      }
+    },
+    "enter-nonce": {
+      "form": {
+        "nonce": "Wprowadź swój kod",
+        "description": "Otwórz swoją skrzynkę odbiorczą i wpisz kod, który do Ciebie wysłaliśmy.",
+        "next": "Kontynuuj",
+        "validations": {
+          "length": "musi mieć długość 6 znaków."
+        }
+      }
+    }
+  },
   "filter-menu": {
     "title": "Twoja bańka filtrująca"
   },
@@ -28,26 +55,6 @@
     "moreInfoURL": "https://human-connection.org/en/",
     "moreInfoHint": "idź po więcej szczegółów",
     "hello": "Cześć"
-  },
-  "password-reset": {
-    "title": "Zresetuj hasło",
-    "form": {
-      "description": "Na podany adres e-mail zostanie wysłany email z resetem hasła.",
-      "submit": "Poproś o wiadomość e-mail",
-      "submitted": "Na adres <b>{email}</b> została wysłana wiadomość z dalszymi instrukcjami."
-    }
-  },
-  "verify-nonce": {
-    "form": {
-      "nonce": "Wprowadź swój kod",
-      "description": "Otwórz swoją skrzynkę odbiorczą i wpisz kod, który do Ciebie wysłaliśmy.",
-      "next": "Kontynuuj",
-      "change-password": {
-        "success": "Zmiana hasła zakończyła się sukcesem!",
-        "error": "Zmiana hasła nie powiodła się. Może kod bezpieczeństwa nie był poprawny?",
-        "help": "W przypadku problemów, zachęcamy do zwrócenia się o pomoc, wysyłając do nas wiadomość e-mail:"
-      }
-    }
   },
   "editor": {
     "placeholder": "Napisz coś inspirującego..."
@@ -236,8 +243,7 @@
     "loading": "załadunek",
     "reportContent": "Sprawozdanie",
     "validations": {
-      "email": "musi być ważny adres e-mail.",
-      "verification-nonce": "musi mieć długość 6 znaków."
+      "email": "musi być ważny adres e-mail."
     }
   },
   "actions": {
@@ -356,6 +362,9 @@
     "languageSelectLabel": "Język",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} z {max} wybrane kategorie"
+    },
+    "teaserImage": {
+      "cropperConfirm": "Potwierdzać"
     }
   }
 }

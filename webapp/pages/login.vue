@@ -23,6 +23,11 @@
           </ds-flex-item>
           <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
             <ds-space margin="small">
+              <a :href="$t('login.moreInfoURL')" :title="$t('login.moreInfoHint')" target="_blank">
+                {{ $t('login.moreInfo') }}
+              </a>
+            </ds-space>
+            <ds-space margin="small">
               <ds-text size="small">{{ $t('login.copy') }}</ds-text>
             </ds-space>
             <form :disabled="pending" @submit.prevent="onSubmit">
@@ -43,7 +48,7 @@
                 name="password"
                 type="password"
               />
-              <ds-space class="password-reset-link" margin-bottom="large">
+              <ds-space margin-bottom="large">
                 <nuxt-link to="/password-reset/request">{{ $t('login.forgotPassword') }}</nuxt-link>
               </ds-space>
               <ds-button
@@ -56,14 +61,9 @@
               >
                 {{ $t('login.login') }}
               </ds-button>
-              <ds-space margin="x-small">
-                <a
-                  :href="$t('login.moreInfoURL')"
-                  :title="$t('login.moreInfoHint')"
-                  target="_blank"
-                >
-                  {{ $t('login.moreInfo') }}
-                </a>
+              <ds-space margin-top="large" margin-bottom="x-small">
+                {{ $t('login.no-account') }}
+                <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
               </ds-space>
             </form>
           </ds-flex-item>

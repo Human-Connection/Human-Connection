@@ -1,4 +1,4 @@
-FROM node:12.10.0-alpine as base
+FROM node:12.12.0-alpine as base
 LABEL Description="Backend of the Social Network Human-Connection.org" Vendor="Human Connection gGmbH" Version="0.0.1" Maintainer="Human Connection gGmbH (developer@human-connection.org)"
 
 EXPOSE 4000
@@ -24,4 +24,5 @@ FROM base as production
 ENV NODE_ENV=production
 COPY --from=build-and-test /nitro-backend/dist ./dist
 COPY ./public/img/ ./public/img/
+COPY ./public/providers.json ./public/providers.json
 RUN yarn install --production=true --frozen-lockfile --non-interactive --no-cache

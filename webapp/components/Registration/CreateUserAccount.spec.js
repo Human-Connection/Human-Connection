@@ -8,6 +8,7 @@ const localVue = createLocalVue()
 localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 config.stubs['client-only'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('CreateUserAccount', () => {
   let wrapper, Wrapper, mocks, propsData, stubs
@@ -60,7 +61,9 @@ describe('CreateUserAccount', () => {
             wrapper.find('input#password').setValue('hellopassword')
             wrapper.find('textarea#about').setValue('Hello I am the `about` attribute')
             wrapper.find('input#passwordConfirmation').setValue('hellopassword')
-            wrapper.find('input#checkbox').setChecked()
+            wrapper.find('input#checkbox0').setChecked()
+            wrapper.find('input#checkbox1').setChecked()
+            wrapper.find('input#checkbox2').setChecked()
             await wrapper.find('form').trigger('submit')
             await wrapper.html()
           }
@@ -102,7 +105,9 @@ describe('CreateUserAccount', () => {
 
           it('displays success', async () => {
             await action()
-            expect(mocks.$t).toHaveBeenCalledWith('registration.create-user-account.success')
+            expect(mocks.$t).toHaveBeenCalledWith(
+              'components.registration.create-user-account.success',
+            )
           })
 
           describe('after timeout', () => {
@@ -130,7 +135,9 @@ describe('CreateUserAccount', () => {
 
           it('displays form errors', async () => {
             await action()
-            expect(wrapper.find('.backendErrors').text()).toContain('Invalid nonce')
+            expect(mocks.$t).toHaveBeenCalledWith(
+              'components.registration.create-user-account.error',
+            )
           })
         })
       })

@@ -23,6 +23,7 @@ export default applyScalars(
             'Location',
             'SocialMedia',
             'NOTIFIED',
+            'REPORTED',
           ],
           // add 'User' here as soon as possible
         },
@@ -35,7 +36,6 @@ export default applyScalars(
             'Notfication',
             'Post',
             'Comment',
-            'Report',
             'Statistics',
             'LoggedInUser',
             'Location',
@@ -43,6 +43,7 @@ export default applyScalars(
             'User',
             'EMOTED',
             'NOTIFIED',
+            'REPORTED',
           ],
           // add 'User' here as soon as possible
         },

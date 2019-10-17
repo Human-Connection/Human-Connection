@@ -118,7 +118,11 @@
     },
     "takeAction": {
       "name": "Tomar uma ação"
-    }
+    },
+    "comment": {
+      "submit": "Commentar"
+    },
+    "edited": "editado"
   },
   "quotes": {
     "african": {
@@ -198,12 +202,26 @@
     }
   },
   "contribution": {
+    "title": "Título",
     "edit": "Editar Contribuição",
-    "delete": "Apagar Contribuição"
+    "delete": "Apagar Contribuição",
+    "teaserImage": {
+      "cropperConfirm": "Confirmar"
+    }
   },
   "comment": {
-    "edit": "Editar Comentário",
-    "delete": "Apagar Comentário"
+    "content": {
+      "unavailable-placeholder": "… este commenttário não está disponível"
+    },
+    "menu": {
+      "edit": "Editar Comentário",
+      "delete": "Apagar Comentário"
+    },
+    "show": {
+      "more": "mostrar mais",
+      "less": "mostrar menos"
+    },
+    "edited": "editado"
   },
   "followButton": {
     "follow": "Seguir",

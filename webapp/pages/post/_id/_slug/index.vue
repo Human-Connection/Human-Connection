@@ -6,8 +6,11 @@
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"
     >
       <ds-space margin-bottom="small" />
-      <hc-user :user="post.author" :date-time="post.createdAt" />
-      <!-- Content Menu (can open Modals) -->
+      <hc-user :user="post.author" :date-time="post.createdAt">
+        <template v-slot:dateTime>
+          <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
+        </template>
+      </hc-user>
       <client-only>
         <content-menu
           placement="bottom-end"
@@ -65,7 +68,7 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list :post="post" />
+        <hc-comment-list :post="post" :routeHash="$route.hash" />
         <ds-space margin-bottom="large" />
         <hc-comment-form :post="post" @createComment="createComment" />
       </ds-section>
@@ -197,8 +200,8 @@ export default {
 
     .ds-card-image {
       img {
-        height: 300px;
-        object-fit: cover;
+        max-height: 2000px;
+        object-fit: contain;
         object-position: center;
       }
     }

@@ -56,7 +56,7 @@ const user = {
 storiesOf('User', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
-  .add('available user', () => ({
+  .add('available', () => ({
     components: { User },
     store: helpers.store,
     data: () => ({
@@ -64,7 +64,21 @@ storiesOf('User', module)
     }),
     template: '<user :user="user" :trunc="35" :date-time="new Date()" />',
   }))
-  .add('anonymous user', () => ({
+  .add('has edited something', () => ({
+    components: { User },
+    store: helpers.store,
+    data: () => ({
+      user,
+    }),
+    template: `
+    <user :user="user" :trunc="35" :date-time="new Date()">
+      <template v-slot:dateTime>
+        - HEY! I'm edited
+      </template>
+    </user>
+    `,
+  }))
+  .add('anonymous', () => ({
     components: { User },
     store: helpers.store,
     data: () => ({

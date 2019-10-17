@@ -10,9 +10,17 @@
       </hc-teaser-image>
       <ds-card>
         <ds-space />
-        <hc-user :user="currentUser" :trunc="35" />
+        <client-only>
+          <hc-user :user="currentUser" :trunc="35" />
+        </client-only>
         <ds-space />
-        <ds-input model="title" class="post-title" placeholder="Title" name="title" autofocus />
+        <ds-input
+          model="title"
+          class="post-title"
+          :placeholder="$t('contribution.title')"
+          name="title"
+          autofocus
+        />
         <small class="smallTag">{{ form.title.length }}/{{ formSchema.title.max }}</small>
         <client-only>
           <hc-editor
@@ -104,7 +112,7 @@ export default {
         categoryIds: [],
       },
       formSchema: {
-        title: { required: true, min: 3, max: 64 },
+        title: { required: true, min: 3, max: 100 },
         content: [{ required: true }],
       },
       id: null,
@@ -262,7 +270,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .smallTag {
   width: 100%;
   position: relative;

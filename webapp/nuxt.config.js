@@ -1,6 +1,10 @@
 import path from 'path'
+import dotenv from 'dotenv'
+
+dotenv.config() // we want to synchronize @nuxt-dotenv and nuxt-env
+
 const pkg = require('./package')
-export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN']
+export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN', 'PUBLIC_REGISTRATION']
 const dev = process.env.NODE_ENV !== 'production'
 
 const styleguidePath = '../styleguide'
@@ -36,11 +40,10 @@ export default {
       'login',
       'logout',
       'password-reset-request',
-      'password-reset-verify-nonce',
+      'password-reset-enter-nonce',
       'password-reset-change-password',
-      // 'registration-signup', TODO: implement to open public registration
-      // 'registration-signup-by-invitation-code',
-      // 'registration-verify-nonce',
+      'registration-signup',
+      'registration-enter-nonce',
       'registration-create-user-account',
       'pages-slug',
       'terms-and-conditions',
@@ -49,8 +52,6 @@ export default {
     ],
     // pages to keep alive
     keepAlivePages: ['index'],
-    // active locales
-    locales: require('./locales'),
   },
   /*
    ** Headers of the page

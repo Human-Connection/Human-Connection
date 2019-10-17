@@ -9,7 +9,7 @@ export default {
           countPosts: 'Post',
           countComments: 'Comment',
           countNotifications: 'NOTIFIED',
-          countInvites: 'InvitationCode',
+          countEmails: 'EmailAddress',
           countFollows: 'FOLLOWS',
           countShouts: 'SHOUTED',
         }
@@ -28,6 +28,11 @@ export default {
           const stat = statistics[mapping[key]]
           response[key] = stat ? stat.toNumber() : 0
         })
+
+        /*
+         * Note: invites count is calculated this way because invitation codes are not in use yet
+         */
+        response.countInvites = response.countEmails - response.countUsers
       } finally {
         session.close()
       }

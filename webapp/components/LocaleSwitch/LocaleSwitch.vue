@@ -36,6 +36,7 @@
 import Dropdown from '~/components/Dropdown'
 import find from 'lodash/find'
 import orderBy from 'lodash/orderBy'
+import locales from '~/locales'
 
 export default {
   components: {
@@ -47,7 +48,7 @@ export default {
   },
   data() {
     return {
-      locales: orderBy(process.env.locales, 'name'),
+      locales: orderBy(locales, 'name'),
     }
   },
   computed: {

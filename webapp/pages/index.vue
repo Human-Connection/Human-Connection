@@ -50,7 +50,7 @@
       :infinite-scroll-throttle-delay="800"
       :infinite-scroll-immediate-check="true"
     >
-      <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
+      <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
     </div>
   </div>
 </template>
@@ -190,6 +190,11 @@ export default {
 </script>
 
 <style lang="scss">
+.ds-card-image img {
+  max-height: 2000px;
+  object-fit: contain;
+}
+
 .masonry-grid {
   display: grid;
   grid-gap: 10px;

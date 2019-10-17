@@ -11,17 +11,17 @@
         <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
           <hc-avatar class="avatar" :user="user" />
           <div>
-            <ds-text align="left">
+            <ds-text>
               <b class="username">{{ userName | truncate(18) }}</b>
               <ds-text v-if="dateTime" size="small" color="soft">
                 <ds-icon name="clock" />
                 <client-only>
                   <hc-relative-date-time :date-time="dateTime" />
                 </client-only>
+                <slot name="dateTime"></slot>
               </ds-text>
             </ds-text>
           </div>
-          <!-- Time -->
           <ds-text align="left" size="small" color="soft">
             {{ userSlug }}
           </ds-text>
