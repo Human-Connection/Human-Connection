@@ -177,7 +177,7 @@ export default {
     pinPost(post) {
       this.$apollo
         .mutate({
-          mutation: PostMutations().UpdatePost,
+          mutation: PostMutations().pinPost,
           variables: { id: post.id, title: post.title, content: post.content, pinned: true },
         })
         .then(() => {
@@ -190,7 +190,7 @@ export default {
     unpinPost(post) {
       this.$apollo
         .mutate({
-          mutation: PostMutations().UpdatePost,
+          mutation: PostMutations().unpinPost,
           variables: { id: post.id, title: post.title, content: post.content, unpinned: true },
         })
         .then(() => {

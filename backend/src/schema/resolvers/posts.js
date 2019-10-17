@@ -33,12 +33,7 @@ const maintainPinnedPosts = params => {
   if (isEmpty(params.filter)) {
     params.filter = { OR: [pinnedPostFilter, {}] }
   } else {
-    const filteredPostsArray = []
-    Object.keys(params.filter).forEach(key => {
-      filteredPostsArray.push({ [key]: params.filter[key] })
-    })
-    filteredPostsArray.push(pinnedPostFilter)
-    params.filter = { OR: filteredPostsArray }
+    params.filter = { OR: [pinnedPostFilter, { ...params.filter }] }
   }
   return params
 }
@@ -128,7 +123,7 @@ export default {
       return post
     },
     UpdatePost: async (_parent, params, context, _resolveInfo) => {
-      const { categoryIds, pinned, unpinned } = params
+      const { categoryIds } = params
       const { id: userId } = context.user
       delete params.pinned
       delete params.unpinned
@@ -156,32 +151,6 @@ export default {
           MERGE (post)-[:CATEGORIZED]->(category)
           WITH post
         `
-      }
-
-      if (unpinned) {
-        const cypherRemovePinnedStatus = `
-          MATCH ()-[previousRelations:PINNED]->(post:Post {id: $params.id})
-          DELETE previousRelations
-          RETURN post
-      `
-
-        await session.run(cypherRemovePinnedStatus, { params })
-      }
-
-      if (pinned) {
-        const cypherDeletePreviousRelations = `
-          MATCH ()-[previousRelations:PINNED]->(post:Post)
-          DELETE previousRelations
-          RETURN post
-        `
-
-        await session.run(cypherDeletePreviousRelations)
-
-        updatePostCypher += `
-          MATCH (user:User {id: $userId}) WHERE user.role = 'admin'
-          MERGE (user)-[:PINNED {createdAt: toString(datetime())}]->(post)
-          WITH post
-          `
       }
 
       updatePostCypher += `RETURN post`
@@ -256,6 +225,64 @@ export default {
         }
       })
       return emoted
+    },
+    pinPost: async (_parent, params, context, _resolveInfo) => {
+      let pinnedPost
+      const { driver, user } = context
+      const session = driver.session()
+      const { id: userId } = user
+      let writeTxResultPromise = session.writeTransaction(async transaction => {
+        const deletePreviousRelationsResponse = await transaction.run(
+          `
+          MATCH ()-[previousRelations:PINNED]->(post:Post)
+          DELETE previousRelations
+          RETURN post
+        `,
+          { params },
+        )
+        return deletePreviousRelationsResponse.records.map(record => record.get('post').properties)
+      })
+      await writeTxResultPromise
+
+      writeTxResultPromise = session.writeTransaction(async transaction => {
+        const pinPostTransactionResponse = await transaction.run(
+          `
+            MATCH (user:User {id: $userId}) WHERE user.role = 'admin'
+            MATCH (post:Post {id: $params.id})
+            MERGE (user)-[:PINNED {createdAt: toString(datetime())}]->(post)
+            RETURN post
+         `,
+          { userId, params },
+        )
+        return pinPostTransactionResponse.records.map(record => record.get('post').properties)
+      })
+      try {
+        ;[pinnedPost] = await writeTxResultPromise
+      } finally {
+        session.close()
+      }
+      return pinnedPost
+    },
+    unpinPost: async (_parent, params, context, _resolveInfo) => {
+      let unpinnedPost
+      const session = context.driver.session()
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const unpinPostTransactionResponse = await transaction.run(
+          `
+          MATCH ()-[previousRelations:PINNED]->(post:Post {id: $params.id})
+          DELETE previousRelations
+          RETURN post
+        `,
+          { params },
+        )
+        return unpinPostTransactionResponse.records.map(record => record.get('post').properties)
+      })
+      try {
+        ;[unpinnedPost] = await writeTxResultPromise
+      } finally {
+        session.close()
+      }
+      return unpinnedPost
     },
   },
   Post: {

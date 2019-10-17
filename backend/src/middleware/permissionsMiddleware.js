@@ -111,11 +111,6 @@ const noEmailFilter = rule({
   return !('email' in args)
 })
 
-const pinnedPost = rule({
-  cache: 'no_cache',
-})(async (_, args) => {
-  return 'pinned' in args
-})
 const publicRegistration = rule()(() => !!CONFIG.PUBLIC_REGISTRATION)
 
 // Permissions
@@ -149,7 +144,7 @@ const permissions = shield(
       CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
-      UpdatePost: or(and(isAuthor, not(pinnedPost)), isAdmin),
+      UpdatePost: isAuthor,
       DeletePost: isAuthor,
       report: isAuthenticated,
       CreateSocialMedia: isAuthenticated,
@@ -179,6 +174,8 @@ const permissions = shield(
       markAsRead: isAuthenticated,
       AddEmailAddress: isAuthenticated,
       VerifyEmailAddress: isAuthenticated,
+      pinPost: isAdmin,
+      unpinPost: isAdmin,
     },
     User: {
       email: or(isMyOwn, isAdmin),
