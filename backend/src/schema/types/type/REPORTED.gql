@@ -30,6 +30,7 @@ enum ReasonCategory {
 # union ReportResource = User | Post | Comment
 
 enum ReportOrdering {
+  createdAt_asc
   createdAt_desc
 }
 

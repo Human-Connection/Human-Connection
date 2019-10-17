@@ -21,6 +21,6 @@ DETACH DELETE report
 CREATE (submitter)-[reported:REPORTED]->(resource)
 SET reported.createdAt = toString(datetime())
 SET reported.reasonCategory = 'other'
-SET reported.reasonDescription = '!!! Created automatically to ensure database consistency! createdAt is when the database manipulation happened.'
+SET reported.reasonDescription = '!!! Created automatically to ensure database consistency! Creation date is when the database manipulation happened.'
 RETURN reported;
 " | cypher-shell
