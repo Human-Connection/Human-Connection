@@ -64,6 +64,7 @@ describe('CreateUserAccount', () => {
             wrapper.find('input#checkbox0').setChecked()
             wrapper.find('input#checkbox1').setChecked()
             wrapper.find('input#checkbox2').setChecked()
+            wrapper.find('input#checkbox3').setChecked()
             await wrapper.find('form').trigger('submit')
             await wrapper.html()
           }

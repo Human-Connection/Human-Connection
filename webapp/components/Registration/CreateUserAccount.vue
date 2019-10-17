@@ -86,12 +86,21 @@
             <span v-html="$t('components.registration.signup.form.minimum-age')"></span>
           </label>
         </p>
+        <ds-text>
+          <input id="checkbox3" type="checkbox" v-model="notCompany" :checked="notCompany" />
+          <label
+            for="checkbox3"
+            v-html="$t('components.registration.signup.form.not-company')"
+          ></label>
+        </ds-text>
         <ds-button
           style="float: right;"
           icon="check"
           type="submit"
           :loading="$apollo.loading"
-          :disabled="errors || !termsAndConditionsConfirmed || !dataPrivacy || !minimumAge"
+          :disabled="
+            errors || !termsAndConditionsConfirmed || !dataPrivacy || !minimumAge || !notCompany
+          "
           primary
         >
           {{ $t('actions.save') }}
@@ -143,6 +152,7 @@ export default {
       termsAndConditionsConfirmed: false,
       dataPrivacy: false,
       minimumAge: false,
+      notCompany: false,
     }
   },
   props: {

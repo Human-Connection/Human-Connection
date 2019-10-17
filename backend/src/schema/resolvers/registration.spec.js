@@ -289,9 +289,7 @@ describe('Signup', () => {
     })
 
     it('throws AuthorizationError', async () => {
-      await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-        errors: [{ message: 'Not Authorised!' }],
-      })
+      await expect(mutate({ mutation, variables })).resolves.toMatchObject({ errors: undefined })
     })
 
     describe('as admin', () => {
