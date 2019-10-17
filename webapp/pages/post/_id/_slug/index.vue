@@ -79,7 +79,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
@@ -145,9 +144,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({
-      setCurrentUser: 'auth/SET_USER',
-    }),
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
@@ -162,11 +158,6 @@ export default {
     },
     async createComment(comment) {
       this.post.comments.push(comment)
-    },
-    resetPostList() {
-      this.offset = 0
-      this.posts = []
-      this.hasMore = true
     },
     pinPost(post) {
       this.$apollo

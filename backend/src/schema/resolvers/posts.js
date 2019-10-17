@@ -97,7 +97,7 @@ export default {
         WITH post
         MATCH (author:User {id: $userId})
         MERGE (post)<-[:WROTE]-(author)
-        WITH post, author
+        WITH post
         UNWIND $categoryIds AS categoryId
         MATCH (category:Category {id: categoryId})
         MERGE (post)-[:CATEGORIZED]->(category)
@@ -108,9 +108,7 @@ export default {
       const session = context.driver.session()
       try {
         const transactionRes = await session.run(createPostCypher, createPostVariables)
-        const posts = transactionRes.records.map(record => {
-          return record.get('post').properties
-        })
+        const posts = transactionRes.records.map(record => record.get('post').properties)
         post = posts[0]
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
@@ -124,9 +122,6 @@ export default {
     },
     UpdatePost: async (_parent, params, context, _resolveInfo) => {
       const { categoryIds } = params
-      const { id: userId } = context.user
-      delete params.pinned
-      delete params.unpinned
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
@@ -154,7 +149,7 @@ export default {
       }
 
       updatePostCypher += `RETURN post`
-      const updatePostVariables = { categoryIds, params, userId }
+      const updatePostVariables = { categoryIds, params }
 
       const transactionRes = await session.run(updatePostCypher, updatePostVariables)
       const [post] = transactionRes.records.map(record => {
@@ -287,7 +282,7 @@ export default {
   },
   Post: {
     ...Resolver('Post', {
-      undefinedToNull: ['activityId', 'objectId', 'image', 'language'],
+      undefinedToNull: ['activityId', 'objectId', 'image', 'language', 'pinnedAt'],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',
