@@ -48,6 +48,7 @@ export default {
         previewTemplate: this.template(),
       },
       error: false,
+      showCropper: false,
     }
   },
   watch: {
@@ -63,6 +64,7 @@ export default {
       return `<div class="dz-preview dz-file-preview">
                 <div class="dz-image">
                   <div data-dz-thumbnail-bg></div>
+                  <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper"></div>
                 </div>
               </div>
       `
@@ -74,13 +76,12 @@ export default {
     transformImage(file) {
       let thumbnailElement, editor, confirm, thumbnailPreview, contributionImage
       // Create the image editor overlay
-      editor = document.createElement('div')
+      this.showCropper = false
       thumbnailElement = document.querySelectorAll('#postdropzone')[0]
       thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
       if (thumbnailPreview) thumbnailPreview.remove()
       contributionImage = document.querySelectorAll('.contribution-image')[0]
       if (contributionImage) contributionImage.remove()
-      editor.classList.add('crop-overlay')
       thumbnailElement.appendChild(editor)
       // Create the confirm button
       confirm = document.createElement('button')
@@ -114,8 +115,9 @@ export default {
       let cropper = new Cropper(image, { zoomable: false })
     },
     dropzoneDrop() {
-      let cropOverlay = document.querySelectorAll('.crop-overlay')[0]
-      if (cropOverlay) cropOverlay.remove()
+      let cropperOverlay = this.$refs.cropperOverlay
+      cropperOverlay.innerHTML = ''
+      this.showCropper = true
     },
   },
 }
