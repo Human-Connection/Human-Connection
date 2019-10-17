@@ -95,4 +95,5 @@ type Mutation {
 type Query {
   PostsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
   PostsEmotionsByCurrentUser(postId: ID!): [String]
+  profilePagePosts(filter: _PostFilter, first: Int, offset: Int, orderBy: [_PostOrdering]): [Post]
 }

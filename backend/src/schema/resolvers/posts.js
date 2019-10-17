@@ -49,6 +49,10 @@ export default {
       params = await filterForBlockedUsers(params, context)
       return neo4jgraphql(object, params, context, resolveInfo, false)
     },
+    profilePagePosts: async (object, params, context, resolveInfo) => {
+      params = await filterForBlockedUsers(params, context)
+      return neo4jgraphql(object, params, context, resolveInfo, false)
+    },
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()
       const { postId, data } = params

@@ -134,6 +134,7 @@ const permissions = shield(
       PostsEmotionsByCurrentUser: isAuthenticated,
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
+      profilePagePosts: or(onlyEnabledContent, isModerator),
     },
     Mutation: {
       '*': deny,

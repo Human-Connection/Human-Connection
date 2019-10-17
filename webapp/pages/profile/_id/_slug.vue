@@ -281,7 +281,7 @@ import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
-import { filterPosts } from '~/graphql/PostQuery'
+import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
 import PostMutations from '~/graphql/PostMutations'
@@ -466,7 +466,7 @@ export default {
   apollo: {
     Post: {
       query() {
-        return filterPosts(this.$i18n)
+        return profilePagePosts(this.$i18n)
       },
       variables() {
         return {
@@ -476,8 +476,8 @@ export default {
           orderBy: ['pinnedAt_asc', 'createdAt_desc'],
         }
       },
-      update({ Post }) {
-        this.posts = Post
+      update({ profilePagePosts }) {
+        this.posts = profilePagePosts
       },
       fetchPolicy: 'cache-and-network',
     },
