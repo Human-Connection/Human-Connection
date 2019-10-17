@@ -1,10 +1,12 @@
 <template>
-  <ds-button v-if="!notificationsCount" class="notifications-menu" disabled icon="bell">
-    {{ unreadNotificationsCount }}
-  </ds-button>
-  <dropdown v-else class="notifications-menu" :placement="placement">
+  <dropdown class="notifications-menu" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
-      <ds-button :primary="!!unreadNotificationsCount" icon="bell" @click.prevent="toggleMenu">
+      <ds-button
+        :primary="!!unreadNotificationsCount"
+        icon="bell"
+        :disabled="!notificationsCount"
+        @click.prevent="toggleMenu"
+      >
         {{ unreadNotificationsCount }}
       </ds-button>
     </template>
@@ -100,7 +102,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .notifications-menu {
   display: flex;
   align-items: center;

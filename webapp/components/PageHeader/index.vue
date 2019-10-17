@@ -1,6 +1,6 @@
 <template>
   <header class="page-header">
-    <div class="page-header__content">
+    <ds-container class="page-header__content">
       <nuxt-link :to="{ name: 'index' }" class="page-header__logo">
         <ds-logo />
       </nuxt-link>
@@ -36,7 +36,6 @@
             @click.prevent="toggleMenu"
           >
             <hc-avatar :user="user" />
-            <ds-icon size="xx-small" name="angle-down" />
           </a>
         </template>
         <template slot="popover" slot-scope="{ closeMenu }">
@@ -69,7 +68,7 @@
           </div>
         </template>
       </dropdown>
-    </div>
+    </ds-container>
   </header>
 </template>
 
@@ -182,19 +181,37 @@ export default {
 
 <style lang="scss">
 .page-header {
+  box-sizing: border-box;
   position: fixed;
   width: 100%;
   height: 65px;
-  padding: $space-x-small;
+  padding: $space-x-small 0;
   background-color: $color-neutral-100;
 }
 
 .page-header__content {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 100%;
   max-width: 1200px;
   margin: auto;
+
+  > * {
+    margin: 0 4px;
+  }
+
+  :first-child {
+    margin-left: 0;
+  }
+
+  :last-child {
+    margin-right: 0;
+  }
+
+  .ds-button {
+    padding: $space-x-small;
+  }
 }
 
 .page-header__logo {
@@ -202,7 +219,6 @@ export default {
 
   // TODO: remove this scss block when we are no longer using the styleguide logo component
   .ds-logo {
-    margin-right: $space-small;
     height: 100%;
 
     .ds-logo-svg {

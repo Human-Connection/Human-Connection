@@ -3,13 +3,12 @@
     <ds-button
       slot="default"
       icon="filter"
+      name="filter"
       :primary="filterActive"
       :ghost="!filterActive"
       slot-scope="{ toggleMenu }"
       @click.prevent="toggleMenu()"
-    >
-      <ds-icon size="xx-small" name="angle-down" />
-    </ds-button>
+    />
     <template slot="popover">
       <ds-container>
         <categories-filter-menu-items :chunk="chunk" />

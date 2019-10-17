@@ -1,16 +1,15 @@
 <template>
   <dropdown ref="menu" :placement="placement" :offset="offset">
-    <a
+    <ds-button
       slot="default"
       slot-scope="{ toggleMenu }"
-      class="locale-menu"
-      href="#"
+      icon="globe"
+      name="select language"
+      ghost
       @click.prevent="toggleMenu()"
     >
-      <ds-icon style="margin-right: 2px;" name="globe" />
       {{ current.code.toUpperCase() }}
-      <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
-    </a>
+    </ds-button>
     <ds-menu
       slot="popover"
       slot-scope="{ toggleMenu }"
@@ -78,13 +77,11 @@ export default {
 </script>
 
 <style lang="scss">
-.locale-menu {
-  user-select: none;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding: $space-xx-small;
-  color: $text-color-soft;
+.topbar-locale-switch {
+  .ds-button-text {
+    font-weight: normal;
+    margin-left: $space-xxx-small;
+  }
 }
 
 nav.locale-menu-popover {
