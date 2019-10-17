@@ -106,7 +106,7 @@ describe('follow', () => {
           mutate({
             mutation: mutationFollowUser,
             variables,
-          }),
+          })
         ).resolves.toMatchObject({
           errors: [{ message: 'Not Authorised!' }],
           data: { followUser: null },
@@ -124,71 +124,72 @@ describe('follow', () => {
         mutate({
           mutation: mutationFollowUser,
           variables,
-        }),
+        })
       ).resolves.toMatchObject({
-        data: {followUser: expectedUser},
+        data: { followUser: expectedUser },
         errors: undefined,
       })
       // Test to make sure FOLLOWS relationship has "createdAt" date.
-      let relation = await neode.cypher(
-          'MATCH (user:User {id: {id}})-[relationship:FOLLOWS]->(followed:User) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
-          { id: 'u1' },
+      const relation = await neode.cypher(
+        'MATCH (user:User {id: {id}})-[relationship:FOLLOWS]->(followed:User) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
+        { id: 'u1' }
       )
-      const relationshipProperties = relation.records.map(record => record.get('relationship').properties.createdAt)
+      const relationshipProperties = relation.records.map(
+        record => record.get('relationship').properties.createdAt
+      )
       expect(relationshipProperties[0]).toEqual(expect.any(String))
     })
 
+    test('I can`t follow myself', async () => {
+      variables.id = user1.id
+      await expect(mutate({ mutation: mutationFollowUser, variables })).resolves.toMatchObject({
+        data: { followUser: null },
+        errors: undefined,
+      })
 
-test('I can`t follow myself', async () => {
-  variables.id = user1.id
-  await expect(mutate({ mutation: mutationFollowUser, variables })).resolves.toMatchObject({
-    data: { followUser: null },
-    errors: undefined,
-  })
-
-  const expectedUser = {
-    followedBy: [],
-    followedByCurrentUser: false,
-  }
-  await expect(
-      query({
-        query: userQuery,
-        variables: { id: user1.id },
-      }),
-  ).resolves.toMatchObject({
-    data: {
-      User: [expectedUser],
-    },
-    errors: undefined,
-  })
-})
-})
-describe('unfollow user', () => {
-  beforeEach(async () => {
-    variables = { id: user2.id }
-    await mutate({ mutation: mutationFollowUser, variables })
-  })
-
-  describe('unauthenticated follow', () => {
-    test('throws authorization error', async () => {
-      authenticatedUser = null
-      await expect(mutate({ mutation: mutationUnfollowUser, variables })).resolves.toMatchObject({
-        data: { unfollowUser: null },
-        errors: [{ message: 'Not Authorised!' }],
+      const expectedUser = {
+        followedBy: [],
+        followedByCurrentUser: false,
+      }
+      await expect(
+        query({
+          query: userQuery,
+          variables: { id: user1.id },
+        })
+      ).resolves.toMatchObject({
+        data: {
+          User: [expectedUser],
+        },
+        errors: undefined,
       })
     })
   })
+  describe('unfollow user', () => {
+    beforeEach(async () => {
+      variables = { id: user2.id }
+      await mutate({ mutation: mutationFollowUser, variables })
+    })
 
-  test('I can unfollow a user', async () => {
-    const expectedUser = {
-      name: user2.name,
-      followedBy: [],
-      followedByCurrentUser: false,
-    }
-    await expect(mutate({ mutation: mutationUnfollowUser, variables })).resolves.toMatchObject({
-      data: { unfollowUser: expectedUser },
-      errors: undefined,
+    describe('unauthenticated follow', () => {
+      test('throws authorization error', async () => {
+        authenticatedUser = null
+        await expect(mutate({ mutation: mutationUnfollowUser, variables })).resolves.toMatchObject({
+          data: { unfollowUser: null },
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
+    })
+
+    test('I can unfollow a user', async () => {
+      const expectedUser = {
+        name: user2.name,
+        followedBy: [],
+        followedByCurrentUser: false,
+      }
+      await expect(mutate({ mutation: mutationUnfollowUser, variables })).resolves.toMatchObject({
+        data: { unfollowUser: expectedUser },
+        errors: undefined,
+      })
     })
   })
-})
 })
