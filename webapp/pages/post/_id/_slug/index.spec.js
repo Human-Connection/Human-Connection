@@ -44,6 +44,9 @@ describe('PostSlug', () => {
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
       },
+      $route: {
+        hash: '',
+      },
     }
   })
 

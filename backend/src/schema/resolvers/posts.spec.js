@@ -888,7 +888,7 @@ describe('UpdatePost', () => {
     describe('admin can unpin posts', () => {
       let admin, pinnedPost
       beforeEach(async () => {
-        pinnedPost = await neode.create('Post', { id: 'post-to-be-unpinned' })
+        pinnedPost = await factory.create('Post', { id: 'post-to-be-unpinned' })
         admin = await user.update({
           role: 'admin',
           name: 'Admin',

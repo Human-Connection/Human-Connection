@@ -178,7 +178,7 @@ export default {
       this.$apollo
         .mutate({
           mutation: PostMutations().pinPost,
-          variables: { id: post.id, title: post.title, content: post.content, pinned: true },
+          variables: { id: post.id },
         })
         .then(() => {
           this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
@@ -191,7 +191,7 @@ export default {
       this.$apollo
         .mutate({
           mutation: PostMutations().unpinPost,
-          variables: { id: post.id, title: post.title, content: post.content, unpinned: true },
+          variables: { id: post.id },
         })
         .then(() => {
           this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))

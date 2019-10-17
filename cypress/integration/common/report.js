@@ -67,13 +67,11 @@ When('I click on the author', () => {
 })
 
 When('I report the author', () => {
-  cy.get('.page-name-profile-id-slug').then(() => {
-    invokeReportOnElement('.ds-card').then(() => {
-      cy.get('button')
-        .contains('Send')
-        .click()
-    })
-  })
+  cy.get('.page-name-profile-id-slug')
+  invokeReportOnElement('.ds-card')
+  cy.get('button')
+    .contains('Send')
+    .click()
 })
 
 When('I click on send in the confirmation dialog', () => {
@@ -87,11 +85,10 @@ Then('I get a success message', () => {
 })
 
 Then('I see my reported user', () => {
-  cy.get('table').then(() => {
-    cy.get('tbody tr')
-      .first()
-      .contains(lastReportTitle.trim())
-  })
+  cy.get('table')
+  cy.get('tbody tr')
+    .first()
+    .contains(lastReportTitle.trim())
 })
 
 Then(`I can't see the moderation menu item`, () => {

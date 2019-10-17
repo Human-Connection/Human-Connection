@@ -36,15 +36,8 @@ const authenticatedHeaders = async (variables) => {
 }
 
 Cypress.Commands.add("switchLanguage", (name, force) => {
-  const { code } = helpers.getLangByName(name);
   if (force) {
     switchLang(name);
-  } else {
-    cy.get("html").then($html => {
-      if ($html && $html.attr("lang") !== code) {
-        switchLang(name);
-      }
-    });
   }
 });
 
