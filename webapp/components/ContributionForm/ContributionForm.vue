@@ -10,7 +10,9 @@
       </hc-teaser-image>
       <ds-card>
         <ds-space />
-        <hc-user :user="currentUser" :trunc="35" />
+        <client-only>
+          <hc-user :user="currentUser" :trunc="35" />
+        </client-only>
         <ds-space />
         <ds-input
           model="title"
