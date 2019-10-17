@@ -234,6 +234,8 @@
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
                 @removePostFromList="removePostFromList"
+                @pinPost="pinPost"
+                @unpinPost="unpinPost"
               />
             </masonry-grid-item>
           </template>
@@ -282,6 +284,7 @@ import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { filterPosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
+import PostMutations from '~/graphql/PostMutations'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -411,6 +414,32 @@ export default {
       this.$apollo.queries.User.refetch()
       this.resetPostList()
       this.$apollo.queries.Post.refetch()
+    },
+    pinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().pinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.Post.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    unpinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().unpinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.Post.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
     },
     optimisticFollow({ followedByCurrentUser }) {
       /*
