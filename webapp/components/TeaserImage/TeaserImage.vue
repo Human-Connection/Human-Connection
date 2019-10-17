@@ -9,6 +9,7 @@
     @vdropzone-thumbnail="transformImage"
     @vdropzone-drop="dropzoneDrop"
   >
+    <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper"></div>
     <div
       :class="{
         'hc-attachments-upload-area-post': true,
@@ -64,7 +65,6 @@ export default {
       return `<div class="dz-preview dz-file-preview">
                 <div class="dz-image">
                   <div data-dz-thumbnail-bg></div>
-                  <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper"></div>
                 </div>
               </div>
       `
@@ -76,8 +76,7 @@ export default {
     transformImage(file) {
       let thumbnailElement, editor, confirm, thumbnailPreview, contributionImage
       // Create the image editor overlay
-      editor = document.querySelectorAll('.crop-overlay')[0]
-      this.showCropper = false
+      editor = this.$refs.cropperOverlay
       thumbnailElement = document.querySelectorAll('#postdropzone')[0]
       thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
       if (thumbnailPreview) thumbnailPreview.remove()
@@ -90,6 +89,7 @@ export default {
       confirm.textContent = this.$t('contribution.teaserImage.cropperConfirm')
       confirm.addEventListener('click', () => {
         // Get the canvas with image data from Cropper.js
+        this.showCropper = false
         let canvas = cropper.getCroppedCanvas()
         canvas.toBlob(blob => {
           this.$refs.el.manuallyAddFile(blob, canvas.toDataURL(), null, null, {
@@ -116,8 +116,6 @@ export default {
       let cropper = new Cropper(image, { zoomable: false })
     },
     dropzoneDrop() {
-      let cropperOverlay = this.$refs.cropperOverlay
-      cropperOverlay.innerHTML = ''
       this.showCropper = true
     },
   },
