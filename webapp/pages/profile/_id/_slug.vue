@@ -268,7 +268,7 @@
 <script>
 import uniqBy from 'lodash/uniqBy'
 import User from '~/components/User/User'
-import HcPostCard from '~/components/PostCard'
+import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'

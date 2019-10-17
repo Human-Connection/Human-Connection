@@ -1,7 +1,7 @@
 <template>
   <ds-card
     :image="post.image | proxyApiUrl"
-    :class="{ 'post-card': true, 'disabled-content': post.disabled }"
+    :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--target': isPinned }"
   >
     <!-- Post Link Target -->
     <nuxt-link
@@ -16,7 +16,8 @@
       <client-only>
         <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
       </client-only>
-      <hc-ribbon :text="$t('post.name')" />
+      <hc-ribbon v-if="isPinned" :text="$t('post.pinned')" />
+      <hc-ribbon v-else :text="$t('post.name')" />
     </div>
     <ds-space margin-bottom="small" />
     <!-- Post Title -->
@@ -116,6 +117,9 @@ export default {
         this.deletePostCallback,
       )
     },
+    isPinned() {
+      return this.post && this.post.pinnedBy
+    },
   },
   methods: {
     async deletePostCallback() {
@@ -174,5 +178,9 @@ export default {
     height: 100%;
     text-indent: -999999px;
   }
+}
+
+.post--target {
+  border: 1px solid $color-primary;
 }
 </style>

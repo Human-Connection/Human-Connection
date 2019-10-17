@@ -354,6 +354,7 @@
   },
   "post": {
     "name": "Beitrag",
+    "pinned": "Gepinnt",
     "moreInfo": {
       "name": "Mehr Info",
       "title": "Mehr Informationen",

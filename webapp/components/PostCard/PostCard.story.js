@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import HcPostCard from '~/components/PostCard'
+import HcPostCard from './PostCard.vue'
 import helpers from '~/storybook/helpers'
 
 helpers.init()
@@ -67,6 +67,26 @@ storiesOf('Post Card', module)
       post: {
         ...post,
         image: 'https://unsplash.com/photos/R4y_E5ZQDPg/download',
+      },
+    }),
+    template: `
+      <hc-post-card
+        :post="post"
+        :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
+      />
+    `,
+  }))
+  .add('pinned by admin', () => ({
+    components: { HcPostCard },
+    store: helpers.store,
+    data: () => ({
+      post: {
+        ...post,
+        pinnedBy: {
+          id: '4711',
+          name: 'Ad Min',
+          role: 'admin',
+        },
       },
     }),
     template: `
