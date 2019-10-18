@@ -106,7 +106,7 @@ describe('follow', () => {
           mutate({
             mutation: mutationFollowUser,
             variables,
-          })
+          }),
         ).resolves.toMatchObject({
           errors: [{ message: 'Not Authorised!' }],
           data: { followUser: null },
@@ -124,18 +124,19 @@ describe('follow', () => {
         mutate({
           mutation: mutationFollowUser,
           variables,
-        })
+        }),
       ).resolves.toMatchObject({
         data: { followUser: expectedUser },
         errors: undefined,
       })
+
       // Test to make sure FOLLOWS relationship has "createdAt" date.
       const relation = await neode.cypher(
         'MATCH (user:User {id: {id}})-[relationship:FOLLOWS]->(followed:User) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
-        { id: 'u1' }
+        { id: 'u1' },
       )
       const relationshipProperties = relation.records.map(
-        record => record.get('relationship').properties.createdAt
+        record => record.get('relationship').properties.createdAt,
       )
       expect(relationshipProperties[0]).toEqual(expect.any(String))
     })
@@ -155,7 +156,7 @@ describe('follow', () => {
         query({
           query: userQuery,
           variables: { id: user1.id },
-        })
+        }),
       ).resolves.toMatchObject({
         data: {
           User: [expectedUser],
@@ -164,6 +165,7 @@ describe('follow', () => {
       })
     })
   })
+
   describe('unfollow user', () => {
     beforeEach(async () => {
       variables = { id: user2.id }

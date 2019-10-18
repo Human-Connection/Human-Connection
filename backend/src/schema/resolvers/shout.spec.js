@@ -106,10 +106,10 @@ describe('shout and unshout posts', () => {
           {
             userId1: 'current-user-id',
             userId2: 'another-user-post-id',
-          }
+          },
         )
         const relationshipProperties = relation.records.map(
-          record => record.get('relationship').properties.createdAt
+          record => record.get('relationship').properties.createdAt,
         )
         expect(relationshipProperties[0]).toEqual(expect.any(String))
       })
