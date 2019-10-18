@@ -32,6 +32,9 @@ describe('PostSlug', () => {
         truncate: a => a,
       },
       // If you are mocking the router, then don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
+      $route: {
+        hash: '',
+      },
       $router: {
         history: {
           push: jest.fn(),
