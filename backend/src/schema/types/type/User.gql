@@ -29,6 +29,8 @@ type User {
 
 	allowEmbedIframes: Boolean
 
+	locale: String
+
 	friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
 	friendsCount: Int! @cypher(statement: "MATCH (this)<-[: FRIENDS]->(r: User) RETURN COUNT(DISTINCT r)")
 
@@ -169,6 +171,7 @@ type Mutation {
 	termsAndConditionsAgreedVersion: String
 	termsAndConditionsAgreedAt: String
 	allowEmbedIframes: Boolean
+	locale: String
 	): User
 
 	DeleteUser(id: ID!, resource: [Deletable]): User

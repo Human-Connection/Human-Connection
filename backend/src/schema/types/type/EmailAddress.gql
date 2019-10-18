@@ -19,6 +19,7 @@ type Mutation {
     locationName: String
     about: String
     termsAndConditionsAgreedVersion: String!
+    locale: String
   ): User
   AddEmailAddress(email: String!): EmailAddress
   VerifyEmailAddress(
