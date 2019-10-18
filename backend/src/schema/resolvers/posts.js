@@ -233,11 +233,10 @@ export default {
       let writeTxResultPromise = session.writeTransaction(async transaction => {
         const deletePreviousRelationsResponse = await transaction.run(
           `
-          MATCH ()-[previousRelations:PINNED]->(post:Post)
+          MATCH (:User)-[previousRelations:PINNED]->(post:Post)
           DELETE previousRelations
           RETURN post
         `,
-          { params },
         )
         return deletePreviousRelationsResponse.records.map(record => record.get('post').properties)
       })
@@ -276,7 +275,7 @@ export default {
       const writeTxResultPromise = session.writeTransaction(async transaction => {
         const unpinPostTransactionResponse = await transaction.run(
           `
-          MATCH ()-[previousRelations:PINNED]->(post:Post {id: $params.id})
+          MATCH (:User)-[previousRelations:PINNED]->(post:Post {id: $params.id})
           DELETE previousRelations
           RETURN post
         `,

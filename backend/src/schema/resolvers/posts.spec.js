@@ -759,7 +759,7 @@ describe('UpdatePost', () => {
           variables = { ...variables, id: 'only-pinned-post' }
           await mutate({ mutation: pinPostMutation, variables })
           pinnedPost = await neode.cypher(
-            `MATCH ()-[pinned:PINNED]->(post:Post) RETURN post, pinned`,
+            `MATCH (:User)-[pinned:PINNED]->(post:Post) RETURN post, pinned`,
           )
         })
 

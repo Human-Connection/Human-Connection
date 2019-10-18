@@ -200,7 +200,6 @@ export default {
         },
       })
     },
-    pinPost() {},
   },
 }
 </script>
