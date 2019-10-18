@@ -436,7 +436,7 @@
       "reasonCategory": "Category",
       "reasonDescription": "Description",
       "createdAt": "Date",
-      "submitter": "Reported by",
+      "submitter": "Reported by / at",
       "disabledBy": "Disabled by"
     }
   },

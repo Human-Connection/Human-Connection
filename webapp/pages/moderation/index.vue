@@ -33,8 +33,19 @@
           >
             <b>{{ scope.row.post.title | truncate(50) }}</b>
           </nuxt-link>
-          <br />
-          <ds-text size="small" color="soft">{{ scope.row.post.author.name }}</ds-text>
+          <!-- author: Same as author of comment underneath. Maybe dry the code … -->
+          <ds-space margin="x-small" />
+          <ds-flex>
+            <ds-flex-item width="20px">
+              <ds-icon
+                v-tooltip="{ content: $t('report.user.type'), placement: 'right' }"
+                name="user"
+              />
+            </ds-flex-item>
+            <ds-flex-item>
+              <hc-user :user="scope.row.post.author" :showAvatar="false" :trunc="25" />
+            </ds-flex-item>
+          </ds-flex>
         </div>
         <div v-else-if="scope.row.type === 'Comment'">
           <nuxt-link
@@ -49,18 +60,22 @@
           >
             <b>{{ scope.row.comment.contentExcerpt | removeHtml | truncate(50) }}</b>
           </nuxt-link>
-          <br />
-          <ds-text size="small" color="soft">{{ scope.row.comment.author.name }}</ds-text>
+          <!-- author: Same as author of post above. Maybe dry the code … -->
+          <ds-space margin="x-small" />
+          <ds-flex>
+            <ds-flex-item width="20px">
+              <ds-icon
+                v-tooltip="{ content: $t('report.user.type'), placement: 'right' }"
+                name="user"
+              />
+            </ds-flex-item>
+            <ds-flex-item>
+              <hc-user :user="scope.row.comment.author" :showAvatar="false" :trunc="25" />
+            </ds-flex-item>
+          </ds-flex>
         </div>
         <div v-else>
-          <nuxt-link
-            :to="{
-              name: 'profile-id-slug',
-              params: { id: scope.row.user.id, slug: scope.row.user.slug },
-            }"
-          >
-            <b>{{ scope.row.user.name | truncate(50) }}</b>
-          </nuxt-link>
+          <hc-user :user="scope.row.user" :showAvatar="false" :trunc="30" />
         </div>
       </template>
       <!-- reasonCategory -->
@@ -73,14 +88,13 @@
       </template>
       <!-- submitter -->
       <template slot="submitter" slot-scope="scope">
-        <nuxt-link
-          :to="{
-            name: 'profile-id-slug',
-            params: { id: scope.row.submitter.id, slug: scope.row.submitter.slug },
-          }"
-        >
-          {{ scope.row.submitter.name }}
-        </nuxt-link>
+        <hc-user
+          :user="scope.row.submitter"
+          :showAvatar="false"
+          :trunc="30"
+          :date-time="scope.row.createdAt"
+          :positionDatetime="'below'"
+        />
       </template>
       <!-- createdAt -->
       <template slot="createdAt" slot-scope="scope">
@@ -132,11 +146,13 @@
 <script>
 import HcEmpty from '~/components/Empty.vue'
 import HcRelativeDateTime from '~/components/RelativeDateTime'
+import HcUser from '~/components/User/User'
 import { reportListQuery } from '~/graphql/Moderation.js'
 
 export default {
   components: {
     HcEmpty,
+    HcUser,
     HcRelativeDateTime,
   },
   data() {

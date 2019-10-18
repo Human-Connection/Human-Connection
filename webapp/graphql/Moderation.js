@@ -15,6 +15,9 @@ export const reportListQuery = () => {
           name
           disabled
           deleted
+          followedByCount
+          contributionsCount
+          commentedCount
         }
         user {
           id
@@ -29,6 +32,9 @@ export const reportListQuery = () => {
             disabled
             deleted
           }
+          followedByCount
+          contributionsCount
+          commentedCount
         }
         comment {
           id
@@ -39,6 +45,9 @@ export const reportListQuery = () => {
             name
             disabled
             deleted
+            followedByCount
+            contributionsCount
+            commentedCount
           }
           post {
             id
@@ -67,6 +76,9 @@ export const reportListQuery = () => {
             name
             disabled
             deleted
+            followedByCount
+            contributionsCount
+            commentedCount
           }
           disabledBy {
             id

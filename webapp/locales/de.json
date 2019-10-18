@@ -435,7 +435,7 @@
       "reasonCategory": "Kategorie",
       "reasonDescription": "Beschreibung",
       "createdAt": "Datum",
-      "submitter": "Gemeldet von",
+      "submitter": "Gemeldet von / am",
       "disabledBy": "Deaktiviert von"
     }
   },
