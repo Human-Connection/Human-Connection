@@ -156,7 +156,7 @@ export default {
       const { name, password, about } = this.formData
       const { email, nonce } = this
       const termsAndConditionsAgreedVersion = VERSION
-      const language = this.$i18n.locale()
+      const locale = this.$i18n.locale()
       try {
         await this.$apollo.mutate({
           mutation: SignupVerificationMutation,
@@ -167,7 +167,7 @@ export default {
             email,
             nonce,
             termsAndConditionsAgreedVersion,
-            language,
+            locale,
           },
         })
         this.response = 'success'

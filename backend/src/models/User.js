@@ -109,7 +109,7 @@ module.exports = {
     type: 'boolean',
     default: false,
   },
-  language: {
+  locale: {
     type: 'string',
     allow: [null],
   },

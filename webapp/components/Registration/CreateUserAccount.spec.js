@@ -82,7 +82,7 @@ describe('CreateUserAccount', () => {
               nonce: '666777',
               password: 'hellopassword',
               termsAndConditionsAgreedVersion: '0.0.2',
-              language: 'en',
+              locale: 'en',
             },
           })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
