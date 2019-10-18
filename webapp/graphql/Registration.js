@@ -7,6 +7,7 @@ export const SignupVerificationMutation = gql`
     $password: String!
     $about: String
     $termsAndConditionsAgreedVersion: String!
+    $locale: String
   ) {
     SignupVerification(
       nonce: $nonce
@@ -15,6 +16,7 @@ export const SignupVerificationMutation = gql`
       password: $password
       about: $about
       termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+      locale: $locale
     ) {
       id
       name

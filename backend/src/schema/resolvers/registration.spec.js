@@ -381,6 +381,7 @@ describe('SignupVerification', () => {
       $nonce: String!
       $about: String
       $termsAndConditionsAgreedVersion: String!
+      $locale: String
     ) {
       SignupVerification(
         name: $name
@@ -389,6 +390,7 @@ describe('SignupVerification', () => {
         nonce: $nonce
         about: $about
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+        locale: $locale
       ) {
         id
         termsAndConditionsAgreedVersion
@@ -405,6 +407,7 @@ describe('SignupVerification', () => {
         password: '123',
         email: 'john@example.org',
         termsAndConditionsAgreedVersion: '0.1.0',
+        locale: 'en',
       }
     })
 

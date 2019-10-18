@@ -24,6 +24,9 @@ describe('CreateUserAccount', () => {
         loading: false,
         mutate: jest.fn(),
       },
+      $i18n: {
+        locale: () => 'en',
+      },
     }
     propsData = {}
     stubs = {
@@ -69,12 +72,6 @@ describe('CreateUserAccount', () => {
           }
         })
 
-        it('calls CreateUserAccount graphql mutation', async () => {
-          await action()
-          const expected = expect.objectContaining({ mutation: SignupVerificationMutation })
-          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
-        })
-
         it('delivers data to backend', async () => {
           await action()
           const expected = expect.objectContaining({
@@ -85,8 +82,15 @@ describe('CreateUserAccount', () => {
               nonce: '666777',
               password: 'hellopassword',
               termsAndConditionsAgreedVersion: '0.0.2',
+              locale: 'en',
             },
           })
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
+        })
+
+        it('calls CreateUserAccount graphql mutation', async () => {
+          await action()
+          const expected = expect.objectContaining({ mutation: SignupVerificationMutation })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
 
