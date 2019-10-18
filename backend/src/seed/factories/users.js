@@ -17,7 +17,7 @@ export default function create() {
         termsAndConditionsAgreedVersion: '0.0.1',
         termsAndConditionsAgreedAt: '2019-08-01T10:47:19.212Z',
         allowEmbedIframes: false,
-        language: 'en',
+        locale: 'en',
       }
       defaults.slug = slugify(defaults.name, { lower: true })
       args = {
