@@ -70,22 +70,24 @@
             :checked="termsAndConditionsConfirmed"
           />
           <label
-            for="checkbox"
+            for="checkbox0"
             v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
           ></label>
         </ds-text>
-        <p>
-          <label>
-            <input id="checkbox1" type="checkbox" v-model="dataPrivacy" :checked="dataPrivacy" />
-            <span v-html="$t('components.registration.signup.form.data-privacy')"></span>
-          </label>
-        </p>
-        <p>
-          <label>
-            <input id="checkbox2" type="checkbox" v-model="minimumAge" :checked="minimumAge" />
-            <span v-html="$t('components.registration.signup.form.minimum-age')"></span>
-          </label>
-        </p>
+        <ds-text>
+          <input id="checkbox1" type="checkbox" v-model="dataPrivacy" :checked="dataPrivacy" />
+          <label
+            for="checkbox1"
+            v-html="$t('components.registration.signup.form.data-privacy')"
+          ></label>
+        </ds-text>
+        <ds-text>
+          <input id="checkbox2" type="checkbox" v-model="minimumAge" :checked="minimumAge" />
+          <label
+            for="checkbox2"
+            v-html="$t('components.registration.signup.form.minimum-age')"
+          ></label>
+        </ds-text>
         <ds-button
           style="float: right;"
           icon="check"
@@ -154,10 +156,19 @@ export default {
       const { name, password, about } = this.formData
       const { email, nonce } = this
       const termsAndConditionsAgreedVersion = VERSION
+      const locale = this.$i18n.locale()
       try {
         await this.$apollo.mutate({
           mutation: SignupVerificationMutation,
-          variables: { name, password, about, email, nonce, termsAndConditionsAgreedVersion },
+          variables: {
+            name,
+            password,
+            about,
+            email,
+            nonce,
+            termsAndConditionsAgreedVersion,
+            locale,
+          },
         })
         this.response = 'success'
         setTimeout(() => {

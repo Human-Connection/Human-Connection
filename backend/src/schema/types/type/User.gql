@@ -170,6 +170,7 @@ type Mutation {
   termsAndConditionsAgreedVersion: String
   termsAndConditionsAgreedAt: String
   allowEmbedIframes: Boolean
+	locale: String
   ): User
 
   DeleteUser(id: ID!, resource: [Deletable]): User
