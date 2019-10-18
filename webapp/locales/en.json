@@ -51,6 +51,18 @@
       }
     }
   },
+  "store": {
+    "posts": {
+      "orderBy": {
+        "newest": {
+          "label": "Newest"
+        },
+        "oldest": {
+          "label": "Oldest"
+        }
+      }
+    }
+  },
   "maintenance": {
     "title": "Human Connection is under maintenance",
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
@@ -95,10 +107,6 @@
     "germany": "Germany",
     "code-of-conduct": "Code of Conduct",
     "back-to-login": "Back to login page"
-  },
-  "sorting": {
-    "newest": "Newest",
-    "oldest": "Oldest"
   },
   "login": {
     "copy": "If you already have a human-connection account, please login.",

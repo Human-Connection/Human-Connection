@@ -7,17 +7,25 @@ import clone from 'lodash/clone'
 
 const defaultFilter = {}
 
+const orderOptions = {
+  createdAt_asc: {
+    value: 'createdAt_asc',
+    key: 'store.posts.orderBy.oldest.label',
+    icon: 'sort-amount-asc',
+  },
+  createdAt_desc: {
+    value: 'createdAt_desc',
+    key: 'store.posts.orderBy.newest.label',
+    icon: 'sort-amount-desc',
+  },
+}
+
 export const state = () => {
   return {
     filter: {
       ...defaultFilter,
     },
-    postsOrder: {
-      label: null,
-      value: 'Newest',
-      icons: 'sort-amount-desc',
-      order: 'createdAt_desc',
-    }
+    order: orderOptions['createdAt_desc'],
   }
 }
 
@@ -52,16 +60,16 @@ export const mutations = {
     if (isEmpty(get(filter, 'emotions_some.emotion_in'))) delete filter.emotions_some
     state.filter = filter
   },
-  UPDATE_ORDER(state, postsOrder) {
-    state.postsOrder = postsOrder
-  }
+  SELECT_ORDER(state, value) {
+    state.order = orderOptions[value]
+  },
 }
 
 export const getters = {
   isActive(state) {
     return !isEqual(state.filter, defaultFilter)
   },
-  postsFilter(state) {
+  filter(state) {
     return state.filter
   },
   filteredCategoryIds(state) {
@@ -73,7 +81,23 @@ export const getters = {
   filteredByEmotions(state) {
     return get(state.filter, 'emotions_some.emotion_in') || []
   },
-  postsOrder(state) {
-    return state.postsOrder
-  }
+  orderOptions: state => ({ $t }) =>
+    Object.values(orderOptions).map(option => {
+      return {
+        ...option,
+        label: $t(option.key),
+      }
+    }),
+  selectedOrder: state => ({ $t }) => {
+    return {
+      ...state.order,
+      label: $t(state.order.key),
+    }
+  },
+  orderBy(state) {
+    return state.order.value
+  },
+  orderIcon(state) {
+    return state.order.icon
+  },
 }

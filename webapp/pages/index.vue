@@ -10,8 +10,7 @@
             v-model="selected"
             :options="sortingOptions"
             size="large"
-            v-bind:icon-right="sortingIcon"
-            @input="updateOrder"
+            :icon-right="sortingIcon"
           ></ds-select>
         </div>
       </ds-grid-item>
@@ -83,34 +82,29 @@ export default {
       offset: 0,
       pageSize: 12,
       hashtag,
-      sortingIcon: 'sort-amount-desc',
-      selected: this.$t('sorting.newest'),
-      sortingOptions: [
-        {
-          label: this.$t('sorting.newest'),
-          value: 'Newest',
-          icons: 'sort-amount-desc',
-          order: 'createdAt_desc',
-        },
-        {
-          label: this.$t('sorting.oldest'),
-          value: 'Oldest',
-          icons: 'sort-amount-asc',
-          order: 'createdAt_asc',
-        },
-      ],
-    }
-  },
-  mounted() {
-    if(this.postsOrder.label) {
-      this.selected = this.postsOrder.label
     }
   },
   computed: {
     ...mapGetters({
-      postsFilter: 'postsFilter/postsFilter',
-      postsOrder: 'postsFilter/postsOrder',
+      postsFilter: 'posts/filter',
+      orderOptions: 'posts/orderOptions',
+      orderBy: 'posts/orderBy',
+      selectedOrder: 'posts/selectedOrder',
+      sortingIcon: 'posts/orderIcon',
     }),
+    selected: {
+      get() {
+        return this.selectedOrder(this)
+      },
+      set({ value }) {
+        this.offset = 0
+        this.posts = []
+        this.selectOrder(value)
+      },
+    },
+    sortingOptions() {
+      return this.orderOptions(this)
+    },
     finalFilters() {
       let filter = this.postsFilter
       if (this.hashtag) {
@@ -127,15 +121,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setPostsOrder: 'postsFilter/UPDATE_ORDER',
+      selectOrder: 'posts/SELECT_ORDER',
     }),
-    updateOrder(sortingOptions) {
-      this.offset = 0
-      this.posts = []
-      this.sortingIcon = sortingOptions.icons
-      this.selected = sortingOptions.label
-      this.setPostsOrder(sortingOptions)
-    },
     clearSearch() {
       this.$router.push({ path: '/' })
       this.hashtag = null
@@ -156,7 +143,7 @@ export default {
           offset: this.offset,
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: this.orderBy,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
@@ -184,7 +171,7 @@ export default {
         return {
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.postsOrder.order,
+          orderBy: this.orderBy,
           offset: 0,
         }
       },

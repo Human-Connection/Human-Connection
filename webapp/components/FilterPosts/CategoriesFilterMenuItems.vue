@@ -67,13 +67,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filteredCategoryIds: 'postsFilter/filteredCategoryIds',
+      filteredCategoryIds: 'posts/filteredCategoryIds',
     }),
   },
   methods: {
     ...mapMutations({
-      resetCategories: 'postsFilter/RESET_CATEGORIES',
-      toggleCategory: 'postsFilter/TOGGLE_CATEGORY',
+      resetCategories: 'posts/RESET_CATEGORIES',
+      toggleCategory: 'posts/TOGGLE_CATEGORY',
     }),
   },
 }
