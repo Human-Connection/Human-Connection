@@ -226,7 +226,7 @@ export default {
       return emoted
     },
     pinPost: async (_parent, params, context, _resolveInfo) => {
-      let pinnedPost
+      let pinnedPostWithNestedAttributes
       const { driver, user } = context
       const session = driver.session()
       const { id: userId } = user
@@ -248,19 +248,27 @@ export default {
           `
             MATCH (user:User {id: $userId}) WHERE user.role = 'admin'
             MATCH (post:Post {id: $params.id})
-            MERGE (user)-[:PINNED {createdAt: toString(datetime())}]->(post)
-            RETURN post
+            MERGE (user)-[pinned:PINNED {createdAt: toString(datetime())}]->(post)
+            RETURN post, pinned.createdAt as pinnedAt
          `,
           { userId, params },
         )
-        return pinPostTransactionResponse.records.map(record => record.get('post').properties)
+        return pinPostTransactionResponse.records.map(record => ({
+          pinnedPost: record.get('post').properties,
+          pinnedAt: record.get('pinnedAt'),
+        }))
       })
       try {
-        ;[pinnedPost] = await writeTxResultPromise
+        const [transactionResult] = await writeTxResultPromise
+        const { pinnedPost, pinnedAt } = transactionResult
+        pinnedPostWithNestedAttributes = {
+          ...pinnedPost,
+          pinnedAt
+        }
       } finally {
         session.close()
       }
-      return pinnedPost
+      return pinnedPostWithNestedAttributes
     },
     unpinPost: async (_parent, params, context, _resolveInfo) => {
       let unpinnedPost

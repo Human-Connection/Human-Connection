@@ -581,6 +581,7 @@ describe('UpdatePost', () => {
           }
           createdAt
           updatedAt
+          pinnedAt
         }
       }
     `
@@ -607,7 +608,7 @@ describe('UpdatePost', () => {
       })
     })
 
-    describe('moderator cannot pin posts', () => {
+    describe('moderators cannot pin posts', () => {
       let moderator
       beforeEach(async () => {
         moderator = await user.update({ role: 'moderator', updatedAt: new Date().toISOString() })
@@ -660,6 +661,22 @@ describe('UpdatePost', () => {
             errors: undefined,
           }
 
+          await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject(
+            expected,
+          )
+        })
+
+        it('sets createdAt date for PINNED', async () => {
+          variables = { ...variables, id: 'created-and-pinned-by-same-admin' }
+          const expected = {
+            data: {
+              pinPost: {
+                id: 'created-and-pinned-by-same-admin',
+                pinnedAt: expect.any(String)
+              },
+            },
+            errors: undefined,
+          }
           await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject(
             expected,
           )
@@ -742,19 +759,12 @@ describe('UpdatePost', () => {
           variables = { ...variables, id: 'only-pinned-post' }
           await mutate({ mutation: pinPostMutation, variables })
           pinnedPost = await neode.cypher(
-            `MATCH ()-[relationship:PINNED]->(post:Post) RETURN post, relationship`,
+            `MATCH ()-[pinned:PINNED]->(post:Post) RETURN post, pinned`,
           )
         })
 
         it('leaves only one pinned post at a time', async () => {
           expect(pinnedPost.records).toHaveLength(1)
-        })
-
-        it('sets createdAt date for PINNED', () => {
-          const [pinnedPostCreatedAt] = pinnedPost.records.map(record => {
-            return record.get('relationship').properties.createdAt
-          })
-          expect(pinnedPostCreatedAt).toEqual(expect.any(String))
         })
       })
 
@@ -787,7 +797,7 @@ describe('UpdatePost', () => {
             name: 'Admin',
             updatedAt: new Date().toISOString(),
           })
-          await admin.relateTo(pinnedPost, 'pinned', { createdAt: newDate.toISOString() })
+          await admin.relateTo(pinnedPost, 'pinned')
         })
 
         it('pinned post appear first even when created before other posts', async () => {
@@ -870,7 +880,7 @@ describe('UpdatePost', () => {
       })
     })
 
-    describe('moderator cannot unpin posts', () => {
+    describe('moderators cannot unpin posts', () => {
       let moderator
       beforeEach(async () => {
         moderator = await user.update({ role: 'moderator', updatedAt: new Date().toISOString() })

@@ -17,7 +17,7 @@ type Post {
   updatedAt: String
   language: String
   pinnedAt: String @cypher(
-      statement: "MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN this.createdAt"
+      statement: "MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN pinned.createdAt"
     )
   pinnedBy: User @relation(name:"PINNED", direction: "IN")
   relatedContributions: [Post]!
