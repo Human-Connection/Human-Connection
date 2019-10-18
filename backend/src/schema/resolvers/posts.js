@@ -263,7 +263,7 @@ export default {
         const { pinnedPost, pinnedAt } = transactionResult
         pinnedPostWithNestedAttributes = {
           ...pinnedPost,
-          pinnedAt
+          pinnedAt,
         }
       } finally {
         session.close()

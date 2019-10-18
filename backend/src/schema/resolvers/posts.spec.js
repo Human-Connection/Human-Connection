@@ -672,7 +672,7 @@ describe('UpdatePost', () => {
             data: {
               pinPost: {
                 id: 'created-and-pinned-by-same-admin',
-                pinnedAt: expect.any(String)
+                pinnedAt: expect.any(String),
               },
             },
             errors: undefined,
