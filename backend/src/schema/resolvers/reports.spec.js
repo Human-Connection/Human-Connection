@@ -8,7 +8,7 @@ const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
-describe('report', () => {
+describe('report resources', () => {
   let authenticatedUser, currentUser, mutate, query
   const reportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
@@ -387,42 +387,37 @@ describe('report', () => {
             })
           })
         })
-        /* An der Stelle würde ich den c34 noch mal prüfen, diesmal muss aber eine error meldung kommen.
-           At this point I would check the c34 again, but this time there must be an error message. */
+        /* An der Stelle würde ich den comment-to-report-id noch mal prüfen, diesmal muss aber eine error meldung kommen.
+           At this point I would check the comment-to-report-id again, but this time there must be an error message. */
+        describe('reported resource is a tag', () => {
+          beforeEach(async () => {
+            await factory.create('Tag', {
+              id: 'tag-to-report-id',
+            })
+          })
+
+          it('returns null', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'tag-to-report-id',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: { report: null },
+              errors: undefined,
+            })
+          })
+        })
+
+        /* An der Stelle würde ich den tag-to-report-id noch mal prüfen, diesmal muss aber eine error meldung kommen.
+//            At this point I would check the tag-to-report-id again, but this time there must be an error message. */
       })
     })
   })
 })
-// describe('report mutation', () => {
-//   describe('authenticated', () => {
-
-//     describe('valid resource id', () => {
-
-//       describe('reported resource is a post', () => {
-
-//       describe('reported resource is a tag', () => {
-//         beforeEach(async () => {
-//           await factory.create('Tag', {
-//             id: 't23',
-//           })
-//           variables = {
-//             ...variables,
-//             resourceId: 't23',
-//           }
-//         })
-
-//         it('returns null', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: null,
-//           })
-//         })
-//       })
-
-//       /* An der Stelle würde ich den t23 noch mal prüfen, diesmal muss aber eine error meldung kommen.
-//            At this point I would check the t23 again, but this time there must be an error message. */
-//     })
-//   })
-// })
 
 // describe('reports query', () => {
 //   let query, mutate, authenticatedUser, moderator, user, author
