@@ -8,66 +8,116 @@ const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
-describe('report',()=>{
-  let authenticatedUser, mutate, query
+describe('report', () => {
+  let authenticatedUser, user, mutate, query
   const reportMutation = gql`
-  mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-    report(
-      resourceId: $resourceId
-      reasonCategory: $reasonCategory
-      reasonDescription: $reasonDescription
-    ) {
-      createdAt
-      reasonCategory
-      reasonDescription
-      type
-      submitter {
-        email
-      }
-      user {
-        name
-      }
-      post {
-        title
-      }
-      comment {
-        content
+    mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+      report(
+        resourceId: $resourceId
+        reasonCategory: $reasonCategory
+        reasonDescription: $reasonDescription
+      ) {
+        createdAt
+        reasonCategory
+        reasonDescription
+        type
+        submitter {
+          email
+        }
+        user {
+          name
+        }
+        post {
+          title
+        }
+        comment {
+          content
+        }
       }
     }
+  `
+  const variables = {
+    resourceId: 'whatever',
+    reasonCategory: 'other',
+    reasonDescription: 'Violates code of conduct !!!',
   }
-`
-const variables = {
-  resourceId: 'whatever',
-  reasonCategory: 'other',
-  reasonDescription: 'Violates code of conduct !!!',
-}
 
-  beforeAll(()=>{
-    const {server} = createServer({
-      context: ()=>{
+  beforeAll(() => {
+    const { server } = createServer({
+      context: () => {
         return {
           driver,
           neode: instance,
-          user: authenticatedUser
+          user: authenticatedUser,
         }
-
-      }
-    }
-  )
-  mutate = createTestClient(server).mutate
-  query = createTestClient(server).query
+      },
+    })
+    mutate = createTestClient(server).mutate
+    query = createTestClient(server).query
   })
 
-  afterEach(async()=>{
+  afterEach(async () => {
     await factory.cleanDatabase()
   })
 
-  describe('create report', ()=>{
-    describe('unauthenticated',()=>{
-      it.only('throws authorization error', async() =>{
-        await expect(mutate({mutation: reportMutation, variables})).resolves.toMatchObject({
-          data: {report: null},
-          errors: [{message: 'Not Authorised!'}]
+  describe('create report', () => {
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        authenticatedUser = null
+        await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
+          data: { report: null },
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
+    })
+
+    describe('authenticated', () => {
+      const categoryIds = ['cat9']
+      beforeEach(async () => {
+        user = await factory.create('User', {
+          id: 'u1',
+          role: 'user',
+          email: 'test@example.org',
+          password: '1234',
+        })
+        await factory.create('User', {
+          id: 'abusive-user-id',
+          role: 'user',
+          name: 'abusive-user',
+          email: 'abusive-user@example.org',
+        })
+        await instance.create('Category', {
+          id: 'cat9',
+          name: 'Democracy & Politics',
+          icon: 'university',
+        })
+
+        authenticatedUser = await user.toJson()
+      })
+
+      describe('invalid resource id', () => {
+        it('returns null', async () => {
+          await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
+            data: { report: null },
+            errors: undefined,
+          })
+        })
+      })
+
+      describe('valid resource', () => {
+        describe('reported resource is a user', () => {
+          it('returns type "User"', async () => {
+            await expect(
+              mutate({ mutation: reportMutation, variables: { ...variables, resourceId: 'abusive-user-id' } }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  type: 'User',
+                },
+              },
+              errors: undefined,
+            })
+          })
         })
       })
     })
@@ -83,107 +133,10 @@ const variables = {
 //   let user
 //   const categoryIds = ['cat9']
 
-//   const action = () => {
-//     reportMutation = gql`
-//       mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-//         report(
-//           resourceId: $resourceId
-//           reasonCategory: $reasonCategory
-//           reasonDescription: $reasonDescription
-//         ) {
-//           createdAt
-//           reasonCategory
-//           reasonDescription
-//           type
-//           submitter {
-//             email
-//           }
-//           user {
-//             name
-//           }
-//           post {
-//             title
-//           }
-//           comment {
-//             content
-//           }
-//         }
-//       }
-//     `
-//     client = new GraphQLClient(host, {
-//       headers,
-//     })
-//     return client.request(reportMutation, variables)
-//   }
-
-//   beforeEach(async () => {
-//     variables = {
-//       resourceId: 'whatever',
-//       reasonCategory: 'other',
-//       reasonDescription: 'Violates code of conduct !!!',
-//     }
-//     headers = {}
-//     user = await factory.create('User', {
-//       id: 'u1',
-//       role: 'user',
-//       email: 'test@example.org',
-//       password: '1234',
-//     })
-//     await factory.create('User', {
-//       id: 'u2',
-//       role: 'user',
-//       name: 'abusive-user',
-//       email: 'abusive-user@example.org',
-//     })
-//     await instance.create('Category', {
-//       id: 'cat9',
-//       name: 'Democracy & Politics',
-//       icon: 'university',
-//     })
-//   })
-
-//   afterEach(async () => {
-//     await factory.cleanDatabase()
-//   })
-
-//   describe('unauthenticated', () => {
-//     it('throws authorization error', async () => {
-//       await expect(action()).rejects.toThrow('Not Authorised')
-//     })
-//   })
-
 //   describe('authenticated', () => {
-//     beforeEach(async () => {
-//       headers = await login({
-//         email: 'test@example.org',
-//         password: '1234',
-//       })
-//     })
-
-//     describe('invalid resource id', () => {
-//       it('returns null', async () => {
-//         await expect(action()).resolves.toEqual({
-//           report: null,
-//         })
-//       })
-//     })
 
 //     describe('valid resource id', () => {
 //       describe('reported resource is a user', () => {
-//         beforeEach(async () => {
-//           variables = {
-//             ...variables,
-//             resourceId: 'u2',
-//           }
-//         })
-
-//         it('returns type "User"', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               type: 'User',
-//             },
-//           })
-//         })
 
 //         it('returns resource in user attribute', async () => {
 //           await expect(action()).resolves.toMatchObject({
