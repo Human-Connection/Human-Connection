@@ -9,7 +9,8 @@ const instance = getNeode()
 const driver = getDriver()
 
 describe('report resources', () => {
-  let authenticatedUser, currentUser, mutate, query
+  let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser
+  const categoryIds = ['cat9']
   const reportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       report(
@@ -60,7 +61,7 @@ describe('report resources', () => {
     await factory.cleanDatabase()
   })
 
-  describe('create report', () => {
+  describe('report a resource', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         authenticatedUser = null
@@ -72,7 +73,6 @@ describe('report resources', () => {
     })
 
     describe('authenticated', () => {
-      const categoryIds = ['cat9']
       beforeEach(async () => {
         currentUser = await factory.create('User', {
           id: 'current-user-id',
@@ -413,222 +413,187 @@ describe('report resources', () => {
         })
 
         /* An der Stelle würde ich den tag-to-report-id noch mal prüfen, diesmal muss aber eine error meldung kommen.
-//            At this point I would check the tag-to-report-id again, but this time there must be an error message. */
+           At this point I would check the tag-to-report-id again, but this time there must be an error message. */
+      })
+    })
+  })
+  describe('query for reported resource', () => {
+    const reportsQuery = gql`
+      query {
+        reports(orderBy: createdAt_desc) {
+          createdAt
+          reasonCategory
+          reasonDescription
+          submitter {
+            id
+          }
+          type
+          user {
+            id
+          }
+          post {
+            id
+          }
+          comment {
+            id
+          }
+        }
+      }
+    `
+
+    beforeEach(async () => {
+      authenticatedUser = null
+
+      moderator = await factory.create('User', {
+        id: 'moderator-1',
+        role: 'moderator',
+        email: 'moderator@example.org',
+        password: '1234',
+      })
+      currentUser = await factory.create('User', {
+        id: 'current-user-id',
+        role: 'user',
+        email: 'current.user@example.org',
+        password: '1234',
+      })
+      abusiveUser = await factory.create('User', {
+        id: 'abusive-user-1',
+        role: 'user',
+        name: 'abusive-user',
+        email: 'abusive-user@example.org',
+      })
+      await instance.create('Category', {
+        id: 'cat9',
+        name: 'Democracy & Politics',
+        icon: 'university',
+      })
+
+      await Promise.all([
+        factory.create('Post', {
+          author: abusiveUser,
+          id: 'abusive-post-1',
+          categoryIds,
+          content: 'Interesting Knowledge',
+        }),
+        factory.create('Post', {
+          author: moderator,
+          id: 'post-2',
+          categoryIds,
+          content: 'More things to do …',
+        }),
+        factory.create('Post', {
+          author: currentUser,
+          id: 'post-3',
+          categoryIds,
+          content: 'I am at school …',
+        }),
+      ])
+      await Promise.all([
+        factory.create('Comment', {
+          author: currentUser,
+          id: 'abusive-comment-1',
+          postId: 'post-1',
+        }),
+      ])
+      authenticatedUser = await currentUser.toJson()
+      await Promise.all([
+        mutate({
+          mutation: reportMutation,
+          variables: {
+            resourceId: 'abusive-post-1',
+            reasonCategory: 'other',
+            reasonDescription: 'This comment is bigoted',
+          },
+        }),
+        mutate({
+          mutation: reportMutation,
+          variables: {
+            resourceId: 'abusive-comment-1',
+            reasonCategory: 'discrimination_etc',
+            reasonDescription: 'This post is bigoted',
+          },
+        }),
+        mutate({
+          mutation: reportMutation,
+          variables: {
+            resourceId: 'abusive-user-1',
+            reasonCategory: 'doxing',
+            reasonDescription: 'This user is harassing me with bigoted remarks',
+          },
+        }),
+      ])
+      authenticatedUser = null
+    })
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        authenticatedUser = null
+        expect(query({ query: reportsQuery })).resolves.toMatchObject({
+          data: { reports: null },
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
+    })
+    describe('authenticated', () => {
+      it('role "user" gets no reports', async () => {
+        authenticatedUser = await currentUser.toJson()
+        expect(query({ query: reportsQuery })).resolves.toMatchObject({
+          data: { reports: null },
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
+
+      it('role "moderator" gets reports', async () => {
+        const expected = {
+          // to check 'orderBy: createdAt_desc' is not possible here, because 'createdAt' does not differ
+          reports: expect.arrayContaining([
+            expect.objectContaining({
+              createdAt: expect.any(String),
+              reasonCategory: 'doxing',
+              reasonDescription: 'This user is harassing me with bigoted remarks',
+              submitter: expect.objectContaining({
+                id: 'current-user-id',
+              }),
+              type: 'User',
+              user: expect.objectContaining({
+                id: 'abusive-user-1',
+              }),
+              post: null,
+              comment: null,
+            }),
+            expect.objectContaining({
+              createdAt: expect.any(String),
+              reasonCategory: 'other',
+              reasonDescription: 'This comment is bigoted',
+              submitter: expect.objectContaining({
+                id: 'current-user-id',
+              }),
+              type: 'Post',
+              user: null,
+              post: expect.objectContaining({
+                id: 'abusive-post-1',
+              }),
+              comment: null,
+            }),
+            expect.objectContaining({
+              createdAt: expect.any(String),
+              reasonCategory: 'discrimination_etc',
+              reasonDescription: 'This post is bigoted',
+              submitter: expect.objectContaining({
+                id: 'current-user-id',
+              }),
+              type: 'Comment',
+              user: null,
+              post: null,
+              comment: expect.objectContaining({
+                id: 'abusive-comment-1',
+              }),
+            }),
+          ]),
+        }
+        authenticatedUser = await moderator.toJson()
+        const { data } = await query({ query: reportsQuery })
+        expect(data).toEqual(expected)
       })
     })
   })
 })
-
-// describe('reports query', () => {
-//   let query, mutate, authenticatedUser, moderator, user, author
-//   const categoryIds = ['cat9']
-
-//   const reportMutation = gql`
-//     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-//       report(
-//         resourceId: $resourceId
-//         reasonCategory: $reasonCategory
-//         reasonDescription: $reasonDescription
-//       ) {
-//         type
-//       }
-//     }
-//   `
-//   const reportsQuery = gql`
-//     query {
-//       reports(orderBy: createdAt_desc) {
-//         createdAt
-//         reasonCategory
-//         reasonDescription
-//         submitter {
-//           id
-//         }
-//         type
-//         user {
-//           id
-//         }
-//         post {
-//           id
-//         }
-//         comment {
-//           id
-//         }
-//       }
-//     }
-//   `
-
-//   beforeAll(async () => {
-//     await factory.cleanDatabase()
-//     const { server } = createServer({
-//       context: () => {
-//         return {
-//           driver,
-//           user: authenticatedUser,
-//         }
-//       },
-//     })
-//     query = createTestClient(server).query
-//     mutate = createTestClient(server).mutate
-//   })
-
-//   beforeEach(async () => {
-//     authenticatedUser = null
-
-//     moderator = await factory.create('User', {
-//       id: 'mod1',
-//       role: 'moderator',
-//       email: 'moderator@example.org',
-//       password: '1234',
-//     })
-//     user = await factory.create('User', {
-//       id: 'user1',
-//       role: 'user',
-//       email: 'test@example.org',
-//       password: '1234',
-//     })
-//     author = await factory.create('User', {
-//       id: 'auth1',
-//       role: 'user',
-//       name: 'abusive-user',
-//       email: 'abusive-user@example.org',
-//     })
-//     await instance.create('Category', {
-//       id: 'cat9',
-//       name: 'Democracy & Politics',
-//       icon: 'university',
-//     })
-
-//     await Promise.all([
-//       factory.create('Post', {
-//         author,
-//         id: 'p1',
-//         categoryIds,
-//         content: 'Interesting Knowledge',
-//       }),
-//       factory.create('Post', {
-//         author: moderator,
-//         id: 'p2',
-//         categoryIds,
-//         content: 'More things to do …',
-//       }),
-//       factory.create('Post', {
-//         author: user,
-//         id: 'p3',
-//         categoryIds,
-//         content: 'I am at school …',
-//       }),
-//     ])
-//     await Promise.all([
-//       factory.create('Comment', {
-//         author: user,
-//         id: 'c1',
-//         postId: 'p1',
-//       }),
-//     ])
-
-//     authenticatedUser = await user.toJson()
-//     await Promise.all([
-//       mutate({
-//         mutation: reportMutation,
-//         variables: {
-//           resourceId: 'p1',
-//           reasonCategory: 'other',
-//           reasonDescription: 'This comment is bigoted',
-//         },
-//       }),
-//       mutate({
-//         mutation: reportMutation,
-//         variables: {
-//           resourceId: 'c1',
-//           reasonCategory: 'discrimination_etc',
-//           reasonDescription: 'This post is bigoted',
-//         },
-//       }),
-//       mutate({
-//         mutation: reportMutation,
-//         variables: {
-//           resourceId: 'auth1',
-//           reasonCategory: 'doxing',
-//           reasonDescription: 'This user is harassing me with bigoted remarks',
-//         },
-//       }),
-//     ])
-//     authenticatedUser = null
-//   })
-
-//   afterEach(async () => {
-//     await factory.cleanDatabase()
-//   })
-
-//   describe('unauthenticated', () => {
-//     it('throws authorization error', async () => {
-//       authenticatedUser = null
-//       expect(query({ query: reportsQuery })).resolves.toMatchObject({
-//         data: { reports: null },
-//         errors: [{ message: 'Not Authorised!' }],
-//       })
-//     })
-
-//     it('role "user" gets no reports', async () => {
-//       authenticatedUser = await user.toJson()
-//       expect(query({ query: reportsQuery })).resolves.toMatchObject({
-//         data: { reports: null },
-//         errors: [{ message: 'Not Authorised!' }],
-//       })
-//     })
-
-//     it('role "moderator" gets reports', async () => {
-//       const expected = {
-//         // to check 'orderBy: createdAt_desc' is not possible here, because 'createdAt' does not differ
-//         reports: expect.arrayContaining([
-//           expect.objectContaining({
-//             createdAt: expect.any(String),
-//             reasonCategory: 'doxing',
-//             reasonDescription: 'This user is harassing me with bigoted remarks',
-//             submitter: expect.objectContaining({
-//               id: 'user1',
-//             }),
-//             type: 'User',
-//             user: expect.objectContaining({
-//               id: 'auth1',
-//             }),
-//             post: null,
-//             comment: null,
-//           }),
-//           expect.objectContaining({
-//             createdAt: expect.any(String),
-//             reasonCategory: 'other',
-//             reasonDescription: 'This comment is bigoted',
-//             submitter: expect.objectContaining({
-//               id: 'user1',
-//             }),
-//             type: 'Post',
-//             user: null,
-//             post: expect.objectContaining({
-//               id: 'p1',
-//             }),
-//             comment: null,
-//           }),
-//           expect.objectContaining({
-//             createdAt: expect.any(String),
-//             reasonCategory: 'discrimination_etc',
-//             reasonDescription: 'This post is bigoted',
-//             submitter: expect.objectContaining({
-//               id: 'user1',
-//             }),
-//             type: 'Comment',
-//             user: null,
-//             post: null,
-//             comment: expect.objectContaining({
-//               id: 'c1',
-//             }),
-//           }),
-//         ]),
-//       }
-
-//       authenticatedUser = await moderator.toJson()
-//       const { data } = await query({ query: reportsQuery })
-//       expect(data).toEqual(expected)
-//     })
-//   })
-// })
