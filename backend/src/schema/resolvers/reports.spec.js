@@ -328,79 +328,77 @@ describe('report', () => {
 
         /* An der Stelle würde ich den p23 noch mal prüfen, diesmal muss aber eine error meldung kommen.
            At this point I would check the p23 again, but this time there must be an error message. */
+
+        describe('reported resource is a comment', () => {
+          let createPostVariables
+          beforeEach(async () => {
+            createPostVariables = {
+              id: 'p1',
+              title: 'post to comment on',
+              content: 'please comment on me',
+              categoryIds,
+            }
+            await factory.create('Post', { ...createPostVariables, author: currentUser })
+            await factory.create('Comment', {
+              author: currentUser,
+              postId: 'p1',
+              id: 'comment-to-report-id',
+              content: 'Post comment to be reported.',
+            })
+          })
+
+          it('returns type "Comment"', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'comment-to-report-id',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  type: 'Comment',
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('returns resource in comment attribute', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'comment-to-report-id',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  comment: {
+                    content: 'Post comment to be reported.',
+                  },
+                },
+              },
+              errors: undefined,
+            })
+          })
+        })
+        /* An der Stelle würde ich den c34 noch mal prüfen, diesmal muss aber eine error meldung kommen.
+           At this point I would check the c34 again, but this time there must be an error message. */
       })
     })
   })
 })
-
 // describe('report mutation', () => {
-
-//   let client
-//   let createPostVariables
-//   let user
-//   const categoryIds = ['cat9']
-
 //   describe('authenticated', () => {
 
 //     describe('valid resource id', () => {
 
 //       describe('reported resource is a post', () => {
-//
-
-//         it('returns null in user attribute', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               user: null,
-//             },
-//           })
-//         })
-//       })
-
-//       /* An der Stelle würde ich den p23 noch mal prüfen, diesmal muss aber eine error meldung kommen.
-//            At this point I would check the p23 again, but this time there must be an error message. */
-
-//       describe('reported resource is a comment', () => {
-//         beforeEach(async () => {
-//           createPostVariables = {
-//             id: 'p1',
-//             title: 'post to comment on',
-//             content: 'please comment on me',
-//             categoryIds,
-//           }
-//           await factory.create('Post', { ...createPostVariables, author: user })
-//           await factory.create('Comment', {
-//             author: user,
-//             postId: 'p1',
-//             id: 'c34',
-//             content: 'Robert getting tired.',
-//           })
-//           variables = {
-//             ...variables,
-//             resourceId: 'c34',
-//           }
-//         })
-
-//         it('returns type "Comment"', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               type: 'Comment',
-//             },
-//           })
-//         })
-
-//         it('returns resource in comment attribute', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               comment: {
-//                 content: 'Robert getting tired.',
-//               },
-//             },
-//           })
-//         })
-//       })
-
-//       /* An der Stelle würde ich den c34 noch mal prüfen, diesmal muss aber eine error meldung kommen.
-//            At this point I would check the c34 again, but this time there must be an error message. */
 
 //       describe('reported resource is a tag', () => {
 //         beforeEach(async () => {
