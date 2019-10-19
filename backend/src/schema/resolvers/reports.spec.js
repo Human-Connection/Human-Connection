@@ -108,11 +108,147 @@ describe('report', () => {
         describe('reported resource is a user', () => {
           it('returns type "User"', async () => {
             await expect(
-              mutate({ mutation: reportMutation, variables: { ...variables, resourceId: 'abusive-user-id' } }),
+              mutate({
+                mutation: reportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              }),
             ).resolves.toMatchObject({
               data: {
                 report: {
                   type: 'User',
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('returns resource in user attribute', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  user: {
+                    name: 'abusive-user',
+                  },
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('returns the submitter', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  submitter: {
+                    email: 'test@example.org',
+                  },
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('returns a date', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  createdAt: expect.any(String),
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('returns the reason category', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'abusive-user-id',
+                  reasonCategory: 'criminal_behavior_violation_german_law',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  reasonCategory: 'criminal_behavior_violation_german_law',
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('gives an error if the reason category is not in enum "ReasonCategory"', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'abusive-user-id',
+                  reasonCategory: 'category_missing_from_enum_reason_category',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: undefined,
+              errors: [
+                {
+                  message:
+                    'Variable "$reasonCategory" got invalid value "category_missing_from_enum_reason_category"; Expected type ReasonCategory.',
+                },
+              ],
+            })
+          })
+
+          it('returns the reason description', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'abusive-user-id',
+                  reasonDescription: 'My reason!',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  reasonDescription: 'My reason!',
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('sanitize the reason description', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'abusive-user-id',
+                  reasonDescription: 'My reason <sanitize></sanitize>!',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  reasonDescription: 'My reason !',
                 },
               },
               errors: undefined,
@@ -138,79 +274,6 @@ describe('report', () => {
 //     describe('valid resource id', () => {
 //       describe('reported resource is a user', () => {
 
-//         it('returns resource in user attribute', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               user: {
-//                 name: 'abusive-user',
-//               },
-//             },
-//           })
-//         })
-
-//         it('returns the submitter', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               submitter: {
-//                 email: 'test@example.org',
-//               },
-//             },
-//           })
-//         })
-
-//         it('returns a date', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               createdAt: expect.any(String),
-//             },
-//           })
-//         })
-
-//         it('returns the reason category', async () => {
-//           variables = {
-//             ...variables,
-//             reasonCategory: 'criminal_behavior_violation_german_law',
-//           }
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               reasonCategory: 'criminal_behavior_violation_german_law',
-//             },
-//           })
-//         })
-
-//         it('gives an error if the reason category is not in enum "ReasonCategory"', async () => {
-//           variables = {
-//             ...variables,
-//             reasonCategory: 'my_category',
-//           }
-//           await expect(action()).rejects.toThrow(
-//             'got invalid value "my_category"; Expected type ReasonCategory',
-//           )
-//         })
-
-//         it('returns the reason description', async () => {
-//           variables = {
-//             ...variables,
-//             reasonDescription: 'My reason!',
-//           }
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               reasonDescription: 'My reason!',
-//             },
-//           })
-//         })
-
-//         it('sanitize the reason description', async () => {
-//           variables = {
-//             ...variables,
-//             reasonDescription: 'My reason <sanitize></sanitize>!',
-//           }
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               reasonDescription: 'My reason !',
-//             },
-//           })
-//         })
 //       })
 
 //       describe('reported resource is a post', () => {
