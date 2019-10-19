@@ -9,7 +9,7 @@ const instance = getNeode()
 const driver = getDriver()
 
 describe('report', () => {
-  let authenticatedUser, user, mutate, query
+  let authenticatedUser, currentUser, mutate, query
   const reportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       report(
@@ -74,8 +74,8 @@ describe('report', () => {
     describe('authenticated', () => {
       const categoryIds = ['cat9']
       beforeEach(async () => {
-        user = await factory.create('User', {
-          id: 'u1',
+        currentUser = await factory.create('User', {
+          id: 'current-user-id',
           role: 'user',
           email: 'test@example.org',
           password: '1234',
@@ -92,7 +92,7 @@ describe('report', () => {
           icon: 'university',
         })
 
-        authenticatedUser = await user.toJson()
+        authenticatedUser = await currentUser.toJson()
       })
 
       describe('invalid resource id', () => {
@@ -255,16 +255,87 @@ describe('report', () => {
             })
           })
         })
+
+        describe('reported resource is a post', () => {
+          beforeEach(async () => {
+            await factory.create('Post', {
+              author: currentUser,
+              id: 'post-to-report-id',
+              title: 'This is a post that is going to be reported',
+              categoryIds,
+            })
+          })
+
+          it('returns type "Post"', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'post-to-report-id',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  type: 'Post',
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('returns resource in post attribute', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'post-to-report-id',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  post: {
+                    title: 'This is a post that is going to be reported',
+                  },
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('returns null in user attribute', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: {
+                  ...variables,
+                  resourceId: 'post-to-report-id',
+                },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  user: null,
+                },
+              },
+              errors: undefined,
+            })
+          })
+        })
+
+        /* An der Stelle würde ich den p23 noch mal prüfen, diesmal muss aber eine error meldung kommen.
+           At this point I would check the p23 again, but this time there must be an error message. */
       })
     })
   })
 })
 
 // describe('report mutation', () => {
-//   let reportMutation
-//   let headers
+
 //   let client
-//   let variables
 //   let createPostVariables
 //   let user
 //   const categoryIds = ['cat9']
@@ -272,41 +343,9 @@ describe('report', () => {
 //   describe('authenticated', () => {
 
 //     describe('valid resource id', () => {
-//       describe('reported resource is a user', () => {
-
-//       })
 
 //       describe('reported resource is a post', () => {
-//         beforeEach(async () => {
-//           await factory.create('Post', {
-//             author: user,
-//             id: 'p23',
-//             title: 'Matt and Robert having a pair-programming',
-//             categoryIds,
-//           })
-//           variables = {
-//             ...variables,
-//             resourceId: 'p23',
-//           }
-//         })
-
-//         it('returns type "Post"', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               type: 'Post',
-//             },
-//           })
-//         })
-
-//         it('returns resource in post attribute', async () => {
-//           await expect(action()).resolves.toMatchObject({
-//             report: {
-//               post: {
-//                 title: 'Matt and Robert having a pair-programming',
-//               },
-//             },
-//           })
-//         })
+//
 
 //         it('returns null in user attribute', async () => {
 //           await expect(action()).resolves.toMatchObject({
