@@ -1,33 +1,33 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import ChangePassword from './Change.vue'
-import Vue from 'vue'
 import Styleguide from '@human-connection/styleguide'
+import Filters from '~/plugins/vue-filters'
 
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
+localVue.use(Filters)
 
 describe('ChangePassword.vue', () => {
   let mocks
-  let wrapper
 
   beforeEach(() => {
     mocks = {
       validate: jest.fn(),
       $toast: {
         error: jest.fn(),
-        success: jest.fn()
+        success: jest.fn(),
       },
       $t: jest.fn(),
       $store: {
-        commit: jest.fn()
+        commit: jest.fn(),
       },
       $apollo: {
         mutate: jest
           .fn()
           .mockRejectedValue({ message: 'Ouch!' })
-          .mockResolvedValueOnce({ data: { changePassword: 'NEWTOKEN' } })
-      }
+          .mockResolvedValueOnce({ data: { changePassword: 'NEWTOKEN' } }),
+      },
     }
   })
 
@@ -54,7 +54,7 @@ describe('ChangePassword.vue', () => {
         describe('match', () => {
           beforeEach(() => {
             wrapper.find('input#oldPassword').setValue('some secret')
-            wrapper.find('input#newPassword').setValue('some secret')
+            wrapper.find('input#password').setValue('some secret')
           })
 
           it('invalid', () => {
@@ -63,9 +63,7 @@ describe('ChangePassword.vue', () => {
 
           it.skip('displays a warning', () => {
             const calls = mocks.validate.mock.calls
-            const expected = [
-              ['change-password.validations.old-and-new-password-match']
-            ]
+            const expected = [['change-password.validations.old-and-new-password-match']]
             expect(calls).toEqual(expect.arrayContaining(expected))
           })
         })
@@ -92,8 +90,8 @@ describe('ChangePassword.vue', () => {
     describe('given valid input', () => {
       beforeEach(() => {
         wrapper.find('input#oldPassword').setValue('supersecret')
-        wrapper.find('input#newPassword').setValue('superdupersecret')
-        wrapper.find('input#confirmPassword').setValue('superdupersecret')
+        wrapper.find('input#password').setValue('superdupersecret')
+        wrapper.find('input#passwordConfirmation').setValue('superdupersecret')
       })
 
       describe('submit form', () => {
@@ -111,10 +109,10 @@ describe('ChangePassword.vue', () => {
             expect.objectContaining({
               variables: {
                 oldPassword: 'supersecret',
-                newPassword: 'superdupersecret',
-                confirmPassword: 'superdupersecret'
-              }
-            })
+                password: 'superdupersecret',
+                passwordConfirmation: 'superdupersecret',
+              },
+            }),
           )
         })
 
@@ -124,16 +122,11 @@ describe('ChangePassword.vue', () => {
           })
 
           it('calls auth/SET_TOKEN with response', () => {
-            expect(mocks.$store.commit).toHaveBeenCalledWith(
-              'auth/SET_TOKEN',
-              'NEWTOKEN'
-            )
+            expect(mocks.$store.commit).toHaveBeenCalledWith('auth/SET_TOKEN', 'NEWTOKEN')
           })
 
           it('displays success message', () => {
-            expect(mocks.$t).toHaveBeenCalledWith(
-              'settings.security.change-password.success'
-            )
+            expect(mocks.$t).toHaveBeenCalledWith('settings.security.change-password.success')
             expect(mocks.$toast.success).toHaveBeenCalled()
           })
         })
@@ -142,8 +135,8 @@ describe('ChangePassword.vue', () => {
         /* describe('mutation rejects', () => {
           beforeEach(async () => {
             await wrapper.find('input#oldPassword').setValue('supersecret')
-            await wrapper.find('input#newPassword').setValue('supersecret')
-            await wrapper.find('input#confirmPassword').setValue('supersecret')
+            await wrapper.find('input#password').setValue('supersecret')
+            await wrapper.find('input#passwordConfirmation').setValue('supersecret')
           })
 
           it('displays error message', async () => {

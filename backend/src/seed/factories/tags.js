@@ -1,19 +1,12 @@
-import uuid from 'uuid/v4'
-
-export default function (params) {
-  const {
-    id = uuid(),
-    name = '#human-connection'
-  } = params
-
+export default function create() {
   return {
-    mutation: `
-      mutation($id: ID!, $name: String!) {
-        CreateTag(id: $id, name: $name) {
-          name
-        }
+    factory: async ({ args, neodeInstance }) => {
+      const defaults = { name: '#human-connection' }
+      args = {
+        ...defaults,
+        ...args,
       }
-    `,
-    variables: { id, name }
+      return neodeInstance.create('Tag', args)
+    },
   }
 }

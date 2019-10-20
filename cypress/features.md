@@ -16,7 +16,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Account
 
-[Cucumber Features](./integration/user_account)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/master/cypress/integration/user_account)
 
 * Sign-up
 * Agree to Data Privacy Statement
@@ -34,7 +34,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### User Profile
 
-[Cucumber Features](./integration/user_profile)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/master/cypress/integration/user_profile)
 
 * Upload and Change Avatar
 * Upload and Change Profile Picture
@@ -59,7 +59,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### Posts
 
-[Cucumber Features](./integration/post/)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/master/cypress/integration/post)
 
 * Creating Posts
 * Persistent Links
@@ -78,13 +78,13 @@ The following features will be implemented. This gets done in three steps:
 
 ### Comments
 
-* Creating Comments 
+* Creating Comments
 * Deleting Comments
 * Editing Comments
 * Upvote comments of others
 
 ### Notifications
-[Cucumber features](./integration/notifications)
+[Cucumber features](https://github.com/Human-Connection/Human-Connection/tree/master/cypress/integration/notifications)
 
 * User @-mentionings
 * Notify authors for comments
@@ -94,12 +94,12 @@ The following features will be implemented. This gets done in three steps:
 
 * Show Posts by Tiles
 * Show Posts as List
-* Filter by Category \(Health and Wellbeing, Global Peace & Non-Violence, ...\) 
+* Filter by Category \(Health and Wellbeing, Global Peace & Non-Violence, ...\)
 * Filter by Mood \(Funny, Happy, Surprised, Cry, Angry, ...\)
 * Filter by Source \(Connections, Following, Individuals, Non-Profits, ...\)
 * Filter by Posts & Tools \(Post, Events, CanDos, ...\)
 * Filter by Format Type \(Text, Pictures, Video, ...\)
-* Extended Filter \(Continent, Country, Language, ...\) 
+* Extended Filter \(Continent, Country, Language, ...\)
 * Sort Posts by Date
 * Sort Posts by Shouts
 * Sort Posts by most Comments
@@ -116,7 +116,7 @@ The following features will be implemented. This gets done in three steps:
 
 ### Search
 
-[Cucumber Features](./integration/search)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/master/cypress/integration/search)
 
 * Search for Categories
 * Search for Tags
@@ -186,13 +186,13 @@ The following features will be implemented. This gets done in three steps:
 
 ### More Info
 
-Shows autmatically releated information for existing post.
+Shows automatically related information for existing post.
 
 * Show related Posts
 * Show Pros and Cons
 * Show Bestlist
 * Show Votes
-* Link to corresponding Chatroom 
+* Link to corresponding Chatroom
 
 ### Take Action
 
@@ -237,7 +237,7 @@ Shows automatically related actions for existing post.
 
 ### Moderation
 
-[Cucumber Features](./integration/moderation)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/master/cypress/integration/moderation)
 
 * Report Button for users for doubtful Content
 * Moderator Panel
@@ -262,7 +262,7 @@ Shows automatically related actions for existing post.
 
 ### Internationalization
 
-[Cucumber Features](./integration/internationalization)
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/master/cypress/integration/internationalization)
 
 * Frontend UI
 * Backend Error Messages
@@ -276,4 +276,3 @@ Shows automatically related actions for existing post.
 * Receiving Undo and Delete Activities for Articles and Notes
 * Serving Webfinger records and Actor Objects
 * Serving Followers, Following and Outbox collections
-

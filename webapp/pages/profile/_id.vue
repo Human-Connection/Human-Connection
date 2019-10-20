@@ -24,11 +24,11 @@ const options = {
     }
   `,
   message: 'This user could not be found',
-  path: 'profile'
+  path: 'profile',
 }
 const persistentLinks = PersistentLinks(options)
 
 export default {
-  mixins: [persistentLinks]
+  mixins: [persistentLinks],
 }
 </script>

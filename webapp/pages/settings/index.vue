@@ -1,48 +1,42 @@
 <template>
-  <ds-form
-    v-model="form"
-    @submit="submit"
-  >
-    <ds-card :header="$t('settings.data.name')">
-      <ds-input
-        id="name"
-        model="name"
-        icon="user"
-        :label="$t('settings.data.labelName')"
-        :placeholder="$t('settings.data.namePlaceholder')"
-      />
-      <!-- eslint-disable vue/use-v-on-exact -->
-      <ds-select
-        id="city"
-        model="locationName"
-        icon="map-marker"
-        :options="cities"
-        :label="$t('settings.data.labelCity')"
-        :placeholder="$t('settings.data.labelCity')"
-        :loading="loadingGeo"
-        @input.native="handleCityInput"
-      />
-      <!-- eslint-enable vue/use-v-on-exact -->
-      <ds-input
-        id="bio"
-        model="about"
-        type="textarea"
-        rows="3"
-        :label="$t('settings.data.labelBio')"
-        :placeholder="$t('settings.data.labelBio')"
-      />
-      <template slot="footer">
-        <ds-button
-          style="float: right;"
-          icon="check"
-          type="submit"
-          :loading="loadingData"
-          primary
-        >
-          {{ $t('actions.save') }}
-        </ds-button>
-      </template>
-    </ds-card>
+  <ds-form v-model="form" :schema="formSchema" @submit="submit">
+    <template slot-scope="{ errors }">
+      <ds-card :header="$t('settings.data.name')">
+        <ds-input
+          id="name"
+          model="name"
+          icon="user"
+          :label="$t('settings.data.labelName')"
+          :placeholder="$t('settings.data.namePlaceholder')"
+        />
+        <ds-input id="slug" model="slug" icon="at" :label="$t('settings.data.labelSlug')" />
+        <!-- eslint-disable vue/use-v-on-exact -->
+        <ds-select
+          id="city"
+          model="locationName"
+          icon="map-marker"
+          :options="cities"
+          :label="$t('settings.data.labelCity')"
+          :placeholder="$t('settings.data.labelCity')"
+          :loading="loadingGeo"
+          @input.native="handleCityInput"
+        />
+        <!-- eslint-enable vue/use-v-on-exact -->
+        <ds-input
+          id="bio"
+          model="about"
+          type="textarea"
+          rows="3"
+          :label="$t('settings.data.labelBio')"
+          :placeholder="$t('settings.data.labelBio')"
+        />
+        <template slot="footer">
+          <ds-button icon="check" :disabled="errors" type="submit" :loading="loadingData" primary>
+            {{ $t('actions.save') }}
+          </ds-button>
+        </template>
+      </ds-card>
+    </template>
   </ds-form>
 </template>
 
@@ -51,11 +45,12 @@ import gql from 'graphql-tag'
 
 import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
-import find from 'lodash/find'
+import UniqueSlugForm from '~/components/utils/UniqueSlugForm'
 
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
 
+/*
 const query = gql`
   query getUser($id: ID) {
     User(id: $id) {
@@ -66,16 +61,13 @@ const query = gql`
     }
   }
 `
+*/
 
 const mutation = gql`
-  mutation($id: ID!, $name: String, $locationName: String, $about: String) {
-    UpdateUser(
-      id: $id
-      name: $name
-      locationName: $locationName
-      about: $about
-    ) {
+  mutation($id: ID!, $slug: String, $name: String, $locationName: String, $about: String) {
+    UpdateUser(id: $id, slug: $slug, name: $name, locationName: $locationName, about: $about) {
       id
+      slug
       name
       locationName
       about
@@ -90,50 +82,62 @@ export default {
       cities: [],
       loadingData: false,
       loadingGeo: false,
-      formData: {}
+      formData: {},
     }
   },
   computed: {
     ...mapGetters({
-      currentUser: 'auth/user'
+      currentUser: 'auth/user',
     }),
+    formSchema() {
+      const uniqueSlugForm = UniqueSlugForm({
+        apollo: this.$apollo,
+        currentUser: this.currentUser,
+        translate: this.$t,
+      })
+      return {
+        ...uniqueSlugForm.formSchema,
+      }
+    },
     form: {
       get: function() {
-        const { name, locationName, about } = this.currentUser
-        return { name, locationName, about }
+        const { name, slug, locationName, about } = this.currentUser
+        return { name, slug, locationName, about }
       },
       set: function(formData) {
         this.formData = formData
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations({
-      setCurrentUser: 'auth/SET_USER'
+      setCurrentUser: 'auth/SET_USER',
     }),
     async submit() {
       this.loadingData = true
-      const { name, about } = this.formData
-      let { locationName } = this.formData
+      const { name, slug, about } = this.formData
+      let { locationName } = this.formData || this.currentUser
       locationName = locationName && (locationName['label'] || locationName)
       try {
-        const { data } = await this.$apollo.mutate({
+        await this.$apollo.mutate({
           mutation,
           variables: {
             id: this.currentUser.id,
             name,
+            slug,
             locationName,
-            about
+            about,
           },
           update: (store, { data: { UpdateUser } }) => {
-            const { name, locationName, about } = UpdateUser
+            const { name, slug, locationName, about } = UpdateUser
             this.setCurrentUser({
               ...this.currentUser,
               name,
+              slug,
               locationName,
-              about
+              about,
             })
-          }
+          },
         })
         this.$toast.success(this.$t('settings.data.success'))
       } catch (err) {
@@ -147,12 +151,7 @@ export default {
       timeout = setTimeout(() => this.requestGeoData(value), 500)
     },
     processCityResults(res) {
-      if (
-        !res ||
-        !res.data ||
-        !res.data.features ||
-        !res.data.features.length
-      ) {
+      if (!res || !res.data || !res.data.features || !res.data.features.length) {
         return []
       }
       let output = []
@@ -160,7 +159,7 @@ export default {
         output.push({
           label: item.place_name,
           value: item.place_name,
-          id: item.id
+          id: item.id,
         })
       })
 
@@ -177,7 +176,6 @@ export default {
         this.cities = []
         return
       }
-
       this.loadingGeo = true
       this.axiosSource = CancelToken.source()
 
@@ -188,8 +186,8 @@ export default {
         .get(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${place}.json?access_token=${mapboxToken}&types=region,place,country&language=${lang}`,
           {
-            cancelToken: this.axiosSource.token
-          }
+            cancelToken: this.axiosSource.token,
+          },
         )
         .then(res => {
           this.cities = this.processCityResults(res)
@@ -197,7 +195,7 @@ export default {
         .finally(() => {
           this.loadingGeo = false
         })
-    }
-  }
+    },
+  },
 }
 </script>

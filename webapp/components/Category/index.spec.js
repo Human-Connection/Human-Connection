@@ -14,8 +14,8 @@ describe('Category', () => {
       localVue,
       propsData: {
         icon,
-        name
-      }
+        name,
+      },
     })
   }
 

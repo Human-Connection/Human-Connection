@@ -1,0 +1,31 @@
+type Badge {
+  id: ID!
+  type: BadgeType!
+  status: BadgeStatus!
+  icon: String!
+  #createdAt: DateTime
+  #updatedAt: DateTime
+  createdAt: String
+  updatedAt: String
+
+  rewarded: [User]! @relation(name: "REWARDED", direction: "OUT")
+}
+
+enum BadgeStatus {
+  permanent
+  temporary
+}
+
+enum BadgeType {
+  role
+  crowdfunding
+}
+
+type Query {
+  Badge: [Badge]
+}
+
+type Mutation {
+  reward(badgeKey: ID!, userId: ID!): User
+  unreward(badgeKey: ID!, userId: ID!): User
+}

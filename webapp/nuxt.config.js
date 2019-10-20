@@ -1,16 +1,27 @@
+import path from 'path'
+import dotenv from 'dotenv'
+
+dotenv.config() // we want to synchronize @nuxt-dotenv and nuxt-env
+
 const pkg = require('./package')
-const envWhitelist = ['NODE_ENV', 'MAINTENANCE', 'MAPBOX_TOKEN']
+export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN', 'PUBLIC_REGISTRATION']
 const dev = process.env.NODE_ENV !== 'production'
 
-const styleguidePath = '../Nitro-Styleguide'
+const styleguidePath = '../styleguide'
 const styleguideStyles = process.env.STYLEGUIDE_DEV
   ? [
       `${styleguidePath}/src/system/styles/main.scss`,
-      `${styleguidePath}/src/system/styles/shared.scss`
+      `${styleguidePath}/src/system/styles/shared.scss`,
     ]
   : '@human-connection/styleguide/dist/shared.scss'
 
-module.exports = {
+const buildDir = process.env.NUXT_BUILD || '.nuxt'
+
+const additionalSentryConfig = {}
+if (process.env.COMMIT) additionalSentryConfig.release = process.env.COMMIT
+
+export default {
+  buildDir,
   mode: 'universal',
 
   dev: dev,
@@ -18,9 +29,9 @@ module.exports = {
 
   modern: !dev ? 'server' : false,
 
-  transition: {
+  pageTransition: {
     name: 'slide-up',
-    mode: 'out-in'
+    mode: 'out-in',
   },
 
   env: {
@@ -28,59 +39,77 @@ module.exports = {
     publicPages: [
       'login',
       'logout',
-      'register',
-      'signup',
-      'reset',
-      'reset-token',
-      'pages-slug'
+      'password-reset-request',
+      'password-reset-enter-nonce',
+      'password-reset-change-password',
+      'registration-signup',
+      'registration-enter-nonce',
+      'registration-create-user-account',
+      'pages-slug',
+      'terms-and-conditions',
+      'code-of-conduct',
+      'changelog',
     ],
     // pages to keep alive
     keepAlivePages: ['index'],
-    // active locales
-    locales: require('./locales')
   },
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     title: 'Human Connection',
     titleTemplate: '%s - Human Connection',
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      {
+        charset: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        hid: 'description',
+        name: 'description',
+        content: pkg.description,
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.ico',
+      },
+    ],
   },
 
   /*
-  ** Customize the progress-bar color
-  */
+   ** Customize the progress-bar color
+   */
   loading: {
     color: '#86b31e',
     height: '2px',
-    duration: 20000
+    duration: 20000,
   },
 
   /*
-  ** Global CSS
-  */
+   ** Global CSS
+   */
   css: ['~assets/styles/main.scss'],
 
   /*
-  ** Global processed styles
-  */
+   ** Global processed styles
+   */
   styleResources: {
-    scss: styleguideStyles
+    scss: styleguideStyles,
   },
 
   /*
-  ** Plugins to load before mounting the App
-  */
+   ** Plugins to load before mounting the App
+   */
   plugins: [
     {
       src: `~/plugins/styleguide${process.env.STYLEGUIDE_DEV ? '-dev' : ''}.js`,
-      ssr: true
+      ssr: true,
     },
     { src: '~/plugins/i18n.js', ssr: true },
     { src: '~/plugins/axios.js', ssr: false },
@@ -88,37 +117,54 @@ module.exports = {
     { src: '~/plugins/vue-directives.js', ssr: false },
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
-    { src: '~/plugins/vue-filters.js' }
+    { src: '~/plugins/vue-filters.js' },
+    { src: '~/plugins/vue-infinite-scroll.js', ssr: false },
   ],
 
   router: {
-    middleware: ['authenticated'],
+    middleware: ['authenticated', 'termsAndConditions'],
     linkActiveClass: 'router-link-active',
     linkExactActiveClass: 'router-link-exact-active',
-    scrollBehavior: () => {
-      return { x: 0, y: 0 }
-    }
   },
 
   /*
-  ** Nuxt.js modules
-  */
+   ** Nuxt.js modules
+   */
   modules: [
-    ['@nuxtjs/dotenv', { only: envWhitelist }],
-    ['nuxt-env', { keys: envWhitelist }],
+    [
+      '@nuxtjs/dotenv',
+      {
+        only: envWhitelist,
+      },
+    ],
+    [
+      'nuxt-env',
+      {
+        keys: envWhitelist,
+      },
+    ],
+    [
+      'vue-scrollto/nuxt',
+      {
+        offset: -100, // to compensate fixed navbar height
+        duration: 1000,
+      },
+    ],
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxtjs/sentry',
+    '@nuxtjs/pwa',
   ],
 
   /*
-  ** Axios module configuration
-  */
+   ** Axios module configuration
+   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     debug: dev,
-    proxy: true
+    proxy: true,
   },
   proxy: {
     '/.well-known/webfinger': {
@@ -127,8 +173,8 @@ module.exports = {
       headers: {
         Accept: 'application/json',
         'X-UI-Request': true,
-        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
-      }
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL',
+      },
     },
     '/activitypub': {
       // make this configurable (nuxt-dotenv)
@@ -137,36 +183,31 @@ module.exports = {
       headers: {
         Accept: 'application/json',
         'X-UI-Request': true,
-        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
-      }
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL',
+      },
     },
     '/api': {
       // make this configurable (nuxt-dotenv)
       target: process.env.GRAPHQL_URI || 'http://localhost:4000',
-      pathRewrite: { '^/api': '' },
+      pathRewrite: {
+        '^/api': '',
+      },
       toProxy: true, // cloudflare needs that
       headers: {
         Accept: 'application/json',
         'X-UI-Request': true,
-        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL'
-      }
-    }
+        'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL',
+      },
+    },
   },
 
   // Give apollo module options
   apollo: {
     tokenName: 'human-connection-token', // optional, default: apollo-token
-    tokenExpires: 3, // optional, default: 7 (days)
-    // includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
-    // optional
-    errorHandler(error) {
-      /* eslint-disable-next-line no-console */
-      console.log(
-        '%cError',
-        'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;',
-        error.message
-      )
+    cookieAttributes: {
+      expires: 1, // optional, default: 7 (days)
     },
+    // includeNodeModules: true, // optional, default: false (this includes graphql-tag for node_modules folder)
 
     // Watch loading state for all queries
     // See 'Smart Query > options > watchLoading' for detail
@@ -177,36 +218,38 @@ module.exports = {
     // },
     // required
     clientConfigs: {
-      default: '~/plugins/apollo-config.js'
-    }
+      default: '~/plugins/apollo-config.js',
+    },
+  },
+
+  sentry: {
+    dsn: process.env.SENTRY_DSN_WEBAPP,
+    publishRelease: !!process.env.COMMIT,
+    config: additionalSentryConfig,
   },
 
   manifest: {
-    name: 'Human-Connection.org',
-    description: 'Human-Connection.org',
-    theme_color: '#ffffff',
-    lang: 'de'
+    name: 'Human Connection',
+    short_name: 'HC',
+    homepage_url: 'https://human-connection.org/',
+    description: 'The free and open source social network for active citizenship',
+    theme_color: '#17b53f',
+    lang: 'en',
   },
 
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     /*
-    ** You can extend webpack config here
-    */
+     ** You can extend webpack config here
+     */
     extend(config, ctx) {
       if (process.env.STYLEGUIDE_DEV) {
-        const path = require('path')
-        config.resolve.alias['@@'] = path.resolve(
-          __dirname,
-          `${styleguidePath}/src/system`
-        )
+        config.resolve.alias['@@'] = path.resolve(__dirname, `${styleguidePath}/src/system`)
         config.module.rules.push({
           resourceQuery: /blockType=docs/,
-          loader: require.resolve(
-            `${styleguidePath}/src/loader/docs-trim-loader.js`
-          )
+          loader: require.resolve(`${styleguidePath}/src/loader/docs-trim-loader.js`),
         })
       }
 
@@ -219,15 +262,15 @@ module.exports = {
           svgo: {
             plugins: [
               {
-                removeViewBox: false
+                removeViewBox: false,
               },
               {
-                removeDimensions: true
-              }
-            ]
-          }
-        }
+                removeDimensions: true,
+              },
+            ],
+          },
+        },
       })
-    }
-  }
+    },
+  },
 }

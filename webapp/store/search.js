@@ -5,7 +5,7 @@ export const state = () => {
   return {
     quickResults: [],
     quickPending: false,
-    quickValue: ''
+    quickValue: '',
   }
 }
 
@@ -19,7 +19,7 @@ export const mutations = {
   },
   SET_QUICK_VALUE(state, value) {
     state.quickValue = value
-  }
+  },
 }
 
 export const getters = {
@@ -31,7 +31,7 @@ export const getters = {
   },
   quickValue(state) {
     return state.quickValue
-  }
+  },
 }
 
 export const actions = {
@@ -45,15 +45,14 @@ export const actions = {
     commit('SET_QUICK_PENDING', true)
     await this.app.apolloProvider.defaultClient
       .query({
-        query: gql(`
-          query findPosts($filter: String!) {
-            findPosts(filter: $filter, limit: 10) {
+        query: gql`
+          query findPosts($query: String!, $filter: _PostFilter) {
+            findPosts(query: $query, limit: 10, filter: $filter) {
               id
               slug
               label: title
-              value: title,
+              value: title
               shoutedCount
-              commentsCount
               createdAt
               author {
                 id
@@ -62,10 +61,11 @@ export const actions = {
               }
             }
           }
-        `),
+        `,
         variables: {
-          filter: value.replace(/\s/g, '~ ') + '~'
-        }
+          query: value.replace(/\s/g, '~ ') + '~',
+          filter: {},
+        },
       })
       .then(res => {
         commit('SET_QUICK_RESULTS', res.data.findPosts || [])
@@ -82,5 +82,5 @@ export const actions = {
     commit('SET_QUICK_PENDING', false)
     commit('SET_QUICK_RESULTS', [])
     commit('SET_QUICK_VALUE', '')
-  }
+  },
 }

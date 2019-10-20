@@ -8,5 +8,5 @@ do
   fi
 done
 
-/migration/mongo/import.sh
+/migration/mongo/export.sh
 /migration/neo4j/import.sh

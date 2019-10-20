@@ -1,10 +1,8 @@
 import find from 'lodash/find'
+import locales from '../../webapp/locales'
 
-const helpers = {
-  locales: require('../../webapp/locales'),
-  getLangByName: name => {
-    return find(helpers.locales, { name })
+export default {
+  getLangByName(name) {
+    return find(locales, { name })
   }
 }
-
-export default helpers

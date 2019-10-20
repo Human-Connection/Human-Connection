@@ -1,50 +1,58 @@
 import Factory from '../../backend/src/seed/factories'
-import { getDriver } from '../../backend/src/bootstrap/neo4j'
+import { getDriver, neode as getNeode } from '../../backend/src/bootstrap/neo4j'
+import setupNeode from '../../backend/src/bootstrap/neode'
+import neode from 'neode'
 
-const neo4jDriver = getDriver({
+const backendHost = Cypress.env('SEED_SERVER_HOST')
+const neo4jConfigs = {
   uri: Cypress.env('NEO4J_URI'),
   username: Cypress.env('NEO4J_USERNAME'),
   password: Cypress.env('NEO4J_PASSWORD')
-})
-const factory = Factory({ neo4jDriver })
-const seedServerHost = Cypress.env('SEED_SERVER_HOST')
+}
+const neo4jDriver = getDriver(neo4jConfigs)
+const factoryOptions = { seedServerHost: backendHost, neo4jDriver, neodeInstance: setupNeode(neo4jConfigs)}
+const factory = Factory(factoryOptions)
 
 beforeEach(async () => {
-  await factory.cleanDatabase({ seedServerHost, neo4jDriver })
+  await factory.cleanDatabase()
 })
 
+Cypress.Commands.add('neode', () => {
+  return setupNeode(neo4jConfigs)
+})
+Cypress.Commands.add(
+  'first',
+  { prevSubject: true },
+  async (neode, model, properties) => {
+    return neode.first(model, properties)
+  }
+)
+Cypress.Commands.add(
+  'relateTo',
+  { prevSubject: true },
+  async (node, otherNode, relationship) => {
+    return node.relateTo(otherNode, relationship)
+  }
+)
+
 Cypress.Commands.add('factory', () => {
-  return Factory({ seedServerHost })
+  return Factory(factoryOptions)
 })
 
 Cypress.Commands.add(
   'create',
   { prevSubject: true },
-  (factory, node, properties) => {
-    return factory.create(node, properties)
+  async (factory, node, properties) => {
+    await factory.create(node, properties)
+    return factory
   }
 )
 
 Cypress.Commands.add(
   'relate',
   { prevSubject: true },
-  (factory, node, relationship, properties) => {
-    return factory.relate(node, relationship, properties)
-  }
-)
-
-Cypress.Commands.add(
-  'mutate',
-  { prevSubject: true },
-  (factory, mutation, variables) => {
-    return factory.mutate(mutation, variables)
-  }
-)
-
-Cypress.Commands.add(
-  'authenticateAs',
-  { prevSubject: true },
-  (factory, loginCredentials) => {
-    return factory.authenticateAs(loginCredentials)
+  async (factory, node, relationship, properties) => {
+    await factory.relate(node, relationship, properties)
+    return factory
   }
 )

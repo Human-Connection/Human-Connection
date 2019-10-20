@@ -1,12 +1,6 @@
 # Edit this Documentation
 
-Go to the section and theme you want to change: On the left navigator.
-
-Click **Edit on GitHub** on the right.
-
-On the **Issue** tab you’ll find the open issues. Read what need to be done by clicking on the issue you like to fix.
-
-By going backwards in the browser **\(!\)**, again go to the **Code** tab.
+Find the [**table of contents** for this documentation on GitHub](https://github.com/Human-Connection/Human-Connection/blob/master/SUMMARY.md) and navigate to the file you need to update.
 
 Click on the **edit pencil** on the right side directly above the text to edit this file on your fork of Human Connection \(HC\).
 
@@ -14,7 +8,7 @@ You can see a preview of your changes by clicking the **Preview changes** tab as
 
 If you are ready, fill in the **Propose file change** at the end of the webpage.
 
-After that you have to send your change to the HC basis with a pull request. Here make a comment which issue you have fixed. At least the number.
+After that you have to send your change to the HC basis with a pull request. Here make a comment which issue you have fixed. (If you are working on one of our [open issues](https://github.com/Human-Connection/Human-Connection/issues) please include the number.)
 
 ## Markdown your documentation
 
@@ -117,4 +111,3 @@ TODO: How to modify screenshots in Linux ...
 {% endhint %}
 {% endtab %}
 {% endtabs %}
-

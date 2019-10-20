@@ -15,20 +15,20 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { followUserMutation, unfollowUserMutation } from '~/graphql/User'
 
 export default {
   name: 'HcFollowButton',
 
   props: {
     followId: { type: String, default: null },
-    isFollowed: { type: Boolean, default: false }
+    isFollowed: { type: Boolean, default: false },
   },
   data() {
     return {
       disabled: false,
       loading: false,
-      hovered: false
+      hovered: false,
     }
   },
   computed: {
@@ -45,13 +45,13 @@ export default {
       } else {
         return this.$t('followButton.follow')
       }
-    }
+    },
   },
   watch: {
     isFollowed() {
       this.loading = false
       this.hovered = false
-    }
+    },
   },
   methods: {
     onHover() {
@@ -59,33 +59,27 @@ export default {
         this.hovered = true
       }
     },
-    toggle() {
+    async toggle() {
       const follow = !this.isFollowed
-      const mutation = follow ? 'follow' : 'unfollow'
+      const mutation = follow ? followUserMutation(this.$i18n) : unfollowUserMutation(this.$i18n)
 
       this.hovered = false
+      const optimisticResult = { followedByCurrentUser: follow }
+      this.$emit('optimistic', optimisticResult)
 
-      this.$emit('optimistic', follow)
+      try {
+        const { data } = await this.$apollo.mutate({
+          mutation,
+          variables: { id: this.followId },
+        })
 
-      this.$apollo
-        .mutate({
-          mutation: gql`
-            mutation($id: ID!) {
-              ${mutation}(id: $id, type: User)
-            }
-          `,
-          variables: {
-            id: this.followId
-          }
-        })
-        .then(res => {
-          // this.$emit('optimistic', follow ? res.data.follow : follow)
-          this.$emit('update', follow)
-        })
-        .catch(() => {
-          this.$emit('optimistic', !follow)
-        })
-    }
-  }
+        const followedUser = follow ? data.followUser : data.unfollowUser
+        this.$emit('update', followedUser)
+      } catch (err) {
+        optimisticResult.followedByCurrentUser = !follow
+        this.$emit('optimistic', optimisticResult)
+      }
+    },
+  },
 }
 </script>

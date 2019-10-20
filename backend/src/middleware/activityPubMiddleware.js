@@ -18,13 +18,14 @@ export default {
           .id(`${actorId}/status/${args.activityId}`)
           .actor(`${actorId}`)
           .object(
-            as.article()
+            as.article() // eslint-disable-line
               .id(`${actorId}/status/${post.id}`)
               .content(post.content)
               .to('https://www.w3.org/ns/activitystreams#Public')
               .publishedNow()
-              .attributedTo(`${actorId}`)
-          ).prettyWrite((err, doc) => {
+              .attributedTo(`${actorId}`),
+          )
+          .prettyWrite((err, doc) => {
             if (err) {
               reject(err)
             } else {
@@ -35,15 +36,14 @@ export default {
       })
       try {
         await activityPub.sendActivity(createActivity)
-      } catch (e) {
-
-      }
+      } catch (e) {}
       return post
     },
-    CreateUser: async (resolve, root, args, context, info) => {
+    SignupVerification: async (resolve, root, args, context, info) => {
       const keys = generateRsaKeyPair()
       Object.assign(args, keys)
+      args.actorId = `${activityPub.host}/api/users/${args.slug}`
       return resolve(root, args, context, info)
-    }
-  }
+    },
+  },
 }

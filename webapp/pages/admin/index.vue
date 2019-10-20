@@ -1,206 +1,144 @@
 <template>
   <ds-card>
-    <no-ssr>
-      <ds-space margin="large">
-        <ds-flex>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.users')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countUsers || 0"
-                  />
-                </no-ssr>
-              </ds-number>
+    <ApolloQuery :query="Statistics">
+      <template v-slot="{ result: { loading, error, data } }">
+        <template v-if="loading">
+          <ds-space centered>
+            <ds-spinner size="large"></ds-spinner>
+          </ds-space>
+        </template>
+        <template v-else-if="error">
+          <ds-space centered>
+            <ds-space>
+              <img :src="errorIconPath" width="40" />
             </ds-space>
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.posts')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countPosts || 0"
-                  />
-                </no-ssr>
-              </ds-number>
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.comments')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countComments || 0"
-                  />
-                </no-ssr>
-              </ds-number>
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.notifications')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countNotifications || 0"
-                  />
-                </no-ssr>
-              </ds-number>
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.organizations')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countOrganizations || 0"
-                  />
-                </no-ssr>
-              </ds-number>
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.projects')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countProjects || 0"
-                  />
-                </no-ssr>
-              </ds-number>
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.invites')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countInvites || 0"
-                  />
-                </no-ssr>
-              </ds-number>
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.follows')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countFollows || 0"
-                  />
-                </no-ssr>
-              </ds-number>
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
-            <ds-space margin="small">
-              <ds-number
-                :count="0"
-                :label="$t('admin.dashboard.shouts')"
-                size="x-large"
-                uppercase
-              >
-                <no-ssr slot="count">
-                  <hc-count-to
-                    :start-val="0"
-                    :end-val="statistics.countShouts || 0"
-                  />
-                </no-ssr>
-              </ds-number>
-            </ds-space>
-          </ds-flex-item>
-        </ds-flex>
-      </ds-space>
-    </no-ssr>
+            <ds-text>
+              {{ $t('site.error-occurred') }}
+            </ds-text>
+          </ds-space>
+        </template>
+        <template v-else-if="data">
+          <ds-space margin="large">
+            <ds-flex>
+              <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
+                <ds-space margin="small">
+                  <ds-number
+                    :count="0"
+                    :label="$t('admin.dashboard.users')"
+                    size="x-large"
+                    uppercase
+                  >
+                    <client-only slot="count">
+                      <hc-count-to :end-val="data.statistics.countUsers" />
+                    </client-only>
+                  </ds-number>
+                </ds-space>
+              </ds-flex-item>
+              <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
+                <ds-space margin="small">
+                  <ds-number
+                    :count="0"
+                    :label="$t('admin.dashboard.posts')"
+                    size="x-large"
+                    uppercase
+                  >
+                    <client-only slot="count">
+                      <hc-count-to :end-val="data.statistics.countPosts" />
+                    </client-only>
+                  </ds-number>
+                </ds-space>
+              </ds-flex-item>
+              <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
+                <ds-space margin="small">
+                  <ds-number
+                    :count="0"
+                    :label="$t('admin.dashboard.comments')"
+                    size="x-large"
+                    uppercase
+                  >
+                    <client-only slot="count">
+                      <hc-count-to :end-val="data.statistics.countComments" />
+                    </client-only>
+                  </ds-number>
+                </ds-space>
+              </ds-flex-item>
+              <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
+                <ds-space margin="small">
+                  <ds-number
+                    :count="0"
+                    :label="$t('admin.dashboard.notifications')"
+                    size="x-large"
+                    uppercase
+                  >
+                    <client-only slot="count">
+                      <hc-count-to :end-val="data.statistics.countNotifications" />
+                    </client-only>
+                  </ds-number>
+                </ds-space>
+              </ds-flex-item>
+              <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
+                <ds-space margin="small">
+                  <ds-number
+                    :count="0"
+                    :label="$t('admin.dashboard.invites')"
+                    size="x-large"
+                    uppercase
+                  >
+                    <client-only slot="count">
+                      <hc-count-to :end-val="data.statistics.countInvites" />
+                    </client-only>
+                  </ds-number>
+                </ds-space>
+              </ds-flex-item>
+              <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
+                <ds-space margin="small">
+                  <ds-number
+                    :count="0"
+                    :label="$t('admin.dashboard.follows')"
+                    size="x-large"
+                    uppercase
+                  >
+                    <client-only slot="count">
+                      <hc-count-to :end-val="data.statistics.countFollows" />
+                    </client-only>
+                  </ds-number>
+                </ds-space>
+              </ds-flex-item>
+              <ds-flex-item :width="{ base: '100%', sm: '50%', md: '33%' }">
+                <ds-space margin="small">
+                  <ds-number
+                    :count="0"
+                    :label="$t('admin.dashboard.shouts')"
+                    size="x-large"
+                    uppercase
+                  >
+                    <client-only slot="count">
+                      <hc-count-to :end-val="data.statistics.countShouts" />
+                    </client-only>
+                  </ds-number>
+                </ds-space>
+              </ds-flex-item>
+            </ds-flex>
+          </ds-space>
+        </template>
+      </template>
+    </ApolloQuery>
   </ds-card>
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import HcCountTo from '~/components/CountTo.vue'
+import { Statistics } from '~/graphql/admin/Statistics'
 
 export default {
   components: {
-    HcCountTo
+    HcCountTo,
   },
   data() {
     return {
-      statistics: {}
+      errorIconPath: '/img/svg/emoji/cry.svg',
+      Statistics,
     }
   },
-  computed: {
-    isClient() {
-      return process.client
-    }
-  },
-  mounted() {
-    this.$apollo.queries.statistics.startPolling(5000)
-  },
-  apollo: {
-    statistics: {
-      query: gql(`
-        query {
-          statistics {
-            countUsers
-            countPosts
-            countComments
-            countNotifications
-            countOrganizations
-            countProjects
-            countInvites
-            countFollows
-            countShouts
-          }
-        }
-      `)
-    }
-  }
 }
 </script>

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  COMMIT: <COMMIT>
+metadata:
+  name: configmap
+  namespace: human-connection

@@ -1,68 +1,51 @@
-import { GraphQLServer } from 'graphql-yoga'
-import { makeAugmentedSchema } from 'neo4j-graphql-js'
-import { typeDefs, resolvers } from './graphql-schema'
 import express from 'express'
-import dotenv from 'dotenv'
-import mocks from './mocks'
-import middleware from './middleware'
-import applyDirectives from './bootstrap/directives'
-import applyScalars from './bootstrap/scalars'
-import { getDriver } from './bootstrap/neo4j'
 import helmet from 'helmet'
+import { ApolloServer } from 'apollo-server-express'
+import CONFIG, { requiredConfigs } from './config'
+import middleware from './middleware'
+import { neode as getNeode, getDriver } from './bootstrap/neo4j'
 import decode from './jwt/decode'
+import schema from './schema'
 
-dotenv.config()
-// check env and warn
-const requiredEnvVars = ['MAPBOX_TOKEN', 'JWT_SECRET', 'PRIVATE_KEY_PASSPHRASE']
-requiredEnvVars.forEach(env => {
-  if (!process.env[env]) {
-    throw new Error(`ERROR: "${env}" env variable is missing.`)
+// check required configs and throw error
+// TODO check this directly in config file - currently not possible due to testsetup
+Object.entries(requiredConfigs).map(entry => {
+  if (!entry[1]) {
+    throw new Error(`ERROR: "${entry[0]}" env variable is missing.`)
   }
 })
 
 const driver = getDriver()
-const debug = process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true'
+const neode = getNeode()
 
-let schema = makeAugmentedSchema({
-  typeDefs,
-  resolvers,
-  config: {
-    query: {
-      exclude: ['Notfication', 'Statistics', 'LoggedInUser']
+export const context = async ({ req }) => {
+  const user = await decode(driver, req.headers.authorization)
+  return {
+    driver,
+    neode,
+    user,
+    req,
+    cypherParams: {
+      currentUserId: user ? user.id : null,
     },
-    mutation: {
-      exclude: ['Notfication', 'Statistics', 'LoggedInUser']
-    },
-    debug: debug
   }
-})
-schema = applyScalars(applyDirectives(schema))
+}
 
-const createServer = (options) => {
+const createServer = options => {
   const defaults = {
-    context: async ({ request }) => {
-      const authorizationHeader = request.headers.authorization || ''
-      const user = await decode(driver, authorizationHeader)
-      return {
-        driver,
-        user,
-        req: request,
-        cypherParams: {
-          currentUserId: user ? user.id : null
-        }
-      }
-    },
-    schema: schema,
-    debug: debug,
-    tracing: debug,
-    middlewares: middleware(schema),
-    mocks: (process.env.MOCK === 'true') ? mocks : false
+    context,
+    schema: middleware(schema),
+    debug: !!CONFIG.DEBUG,
+    tracing: !!CONFIG.DEBUG,
   }
-  const server = new GraphQLServer(Object.assign({}, defaults, options))
+  const server = new ApolloServer(Object.assign({}, defaults, options))
 
-  server.express.use(helmet())
-  server.express.use(express.static('public'))
-  return server
+  const app = express()
+  app.use(helmet())
+  app.use(express.static('public'))
+  server.applyMiddleware({ app, path: '/' })
+
+  return { server, app }
 }
 
 export default createServer

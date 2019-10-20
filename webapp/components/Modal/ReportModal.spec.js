@@ -1,6 +1,5 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 
@@ -8,36 +7,42 @@ const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
+config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 
 describe('ReportModal.vue', () => {
   let wrapper
-  let Wrapper
   let propsData
   let mocks
 
   beforeEach(() => {
     propsData = {
       type: 'contribution',
-      id: 'c43'
+      id: 'c43',
     }
     mocks = {
-      $t: jest.fn(),
+      $t: jest.fn(a => a),
       $filters: {
-        truncate: a => a
+        truncate: a => a,
       },
       $toast: {
         success: () => {},
-        error: () => {}
+        error: () => {},
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue()
-      }
+        mutate: jest.fn().mockResolvedValue({
+          data: {},
+        }),
+      },
     }
   })
 
   describe('shallowMount', () => {
     const Wrapper = () => {
-      return shallowMount(ReportModal, { propsData, mocks, localVue })
+      return shallowMount(ReportModal, {
+        propsData,
+        mocks,
+        localVue,
+      })
     }
 
     describe('defaults', () => {
@@ -53,16 +58,24 @@ describe('ReportModal.vue', () => {
     describe('given a user', () => {
       beforeEach(() => {
         propsData = {
+          ...propsData,
           type: 'user',
           id: 'u4',
-          name: 'Bob Ross'
+          name: 'Bob Ross',
         }
       })
 
       it('mentions user name', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['report.user.message', { name: 'Bob Ross' }]]
+        const expected = [
+          [
+            'report.user.message',
+            {
+              name: 'Bob Ross',
+            },
+          ],
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -70,16 +83,24 @@ describe('ReportModal.vue', () => {
     describe('given a post', () => {
       beforeEach(() => {
         propsData = {
-          id: 'p23',
+          ...propsData,
           type: 'post',
-          name: 'It is a post'
+          id: 'p23',
+          name: 'It is a post',
         }
       })
 
       it('mentions post title', () => {
         Wrapper()
         const calls = mocks.$t.mock.calls
-        const expected = [['report.post.message', { name: 'It is a post' }]]
+        const expected = [
+          [
+            'report.post.message',
+            {
+              name: 'It is a post',
+            },
+          ],
+        ]
         expect(calls).toEqual(expect.arrayContaining(expected))
       })
     })
@@ -87,7 +108,11 @@ describe('ReportModal.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(ReportModal, { propsData, mocks, localVue })
+      return mount(ReportModal, {
+        propsData,
+        mocks,
+        localVue,
+      })
     }
 
     beforeEach(jest.useFakeTimers)
@@ -99,8 +124,9 @@ describe('ReportModal.vue', () => {
     describe('given id', () => {
       beforeEach(() => {
         propsData = {
+          ...propsData,
           type: 'user',
-          id: 'u4711'
+          id: 'u4711',
         }
         wrapper = Wrapper()
       })
@@ -130,6 +156,7 @@ describe('ReportModal.vue', () => {
 
       describe('click confirm button', () => {
         beforeEach(() => {
+          wrapper.find('.ds-radio-option-label').trigger('click')
           wrapper.find('button.confirm').trigger('click')
         })
 

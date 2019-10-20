@@ -10,7 +10,7 @@ export default ({ app }) => {
           el.focus()
         }
       })
-    }
+    },
   })
 
   Vue.directive('router-link', {
@@ -28,6 +28,6 @@ export default ({ app }) => {
       if (binding.clickEventListener) {
         el.removeEventListener('click', binding.clickEventListener)
       }
-    }
+    },
   })
 }

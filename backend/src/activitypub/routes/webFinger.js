@@ -3,10 +3,14 @@ import { createWebFinger } from '../utils/actor'
 
 const router = express.Router()
 
-router.get('/', async function (req, res) {
+router.get('/', async function(req, res) {
   const resource = req.query.resource
   if (!resource || !resource.includes('acct:')) {
-    return res.status(400).send('Bad request. Please make sure "acct:USER@DOMAIN" is what you are sending as the "resource" query parameter.')
+    return res
+      .status(400)
+      .send(
+        'Bad request. Please make sure "acct:USER@DOMAIN" is what you are sending as the "resource" query parameter.',
+      )
   } else {
     const nameAndDomain = resource.replace('acct:', '')
     const name = nameAndDomain.split('@')[0]

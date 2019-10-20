@@ -1,55 +1,44 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
+import encryptPassword from '../../helpers/encryptPassword'
+import slugify from 'slug'
 
-export default function create (params) {
-  const {
-    id = uuid(),
-    actorId,
-    name = faker.name.findName(),
-    slug = '',
-    email = faker.internet.email(),
-    password = '1234',
-    role = 'user',
-    avatar = faker.internet.avatar(),
-    about = faker.lorem.paragraph()
-  } = params
-
+export default function create() {
   return {
-    mutation: `
-      mutation(
-        $id: ID!
-        $actorId: String
-        $name: String
-        $slug: String
-        $password: String!
-        $email: String!
-        $avatar: String
-        $about: String
-        $role: UserGroupEnum
-      ) {
-        CreateUser(
-          id: $id
-          actorId: $actorId
-          name: $name
-          slug: $slug
-          password: $password
-          email: $email
-          avatar: $avatar
-          about: $about
-          role: $role
-        ) {
-          id
-          actorId
-          name
-          slug
-          email
-          avatar
-          role
-          deleted
-          disabled
-        }
+    factory: async ({ args, neodeInstance, factoryInstance }) => {
+      const defaults = {
+        id: uuid(),
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        password: '1234',
+        role: 'user',
+        avatar: faker.internet.avatar(),
+        about: faker.lorem.paragraph(),
+        termsAndConditionsAgreedVersion: '0.0.1',
+        termsAndConditionsAgreedAt: '2019-08-01T10:47:19.212Z',
+        allowEmbedIframes: false,
+        locale: 'en',
       }
-    `,
-    variables: { id, name, slug, password, email, avatar, about, role, actorId }
+      defaults.slug = slugify(defaults.name, { lower: true })
+      defaults.actorId = 'http://localhost:4123/api/users/' + defaults.slug
+      args = {
+        ...defaults,
+        ...args,
+      }
+      args = await encryptPassword(args)
+      const user = await neodeInstance.create('User', args)
+
+      let email
+      if (typeof args.email === 'object') {
+        // probably a neode node
+        email = args.email
+      } else {
+        email = await factoryInstance.create('EmailAddress', { email: args.email })
+      }
+
+      await user.relateTo(email, 'primaryEmail')
+      await email.relateTo(user, 'belongsTo')
+      return user
+    },
   }
 }

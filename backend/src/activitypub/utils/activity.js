@@ -4,20 +4,20 @@ import crypto from 'crypto'
 import as from 'activitystrea.ms'
 const debug = require('debug')('ea:utils:activity')
 
-export async function createNoteObject (activityId, objectId, text, actorId, id, published, updated) {
+export async function createNoteObject(activityId, objectId, text, actorId, id, published, updated) {
   const object = {
     '@context': 'https://www.w3.org/ns/activitystreams',
-    'id': `${activityId}`,
-    'type': 'Create',
-    'actor': `${actorId}`,
-    'object': {
-      'id': `${objectId}`,
-      'type': 'Note',
-      'published': published,
-      'attributedTo': `${actorId}`,
-      'content': text,
-      'to': ['https://www.w3.org/ns/activitystreams#Public']
-    }
+    id: `${activityId}`,
+    type: 'Create',
+    actor: `${actorId}`,
+    object: {
+      id: `${objectId}`,
+      type: 'Note',
+      published: published,
+      attributedTo: `${actorId}`,
+      content: text,
+      to: ['https://www.w3.org/ns/activitystreams#Public'],
+    },
   }
   if (updated) {
     object.type = 'Update'
@@ -26,20 +26,20 @@ export async function createNoteObject (activityId, objectId, text, actorId, id,
   return object
 }
 
-export async function createArticleObject (activityId, objectId, text, actorId, id, published, updated) {
+export async function createArticleObject(activityId, objectId, text, actorId, id, published, updated) {
   const object = {
     '@context': 'https://www.w3.org/ns/activitystreams',
-    'id': `${activityId}`,
-    'type': 'Create',
-    'actor': `${actorId}`,
-    'object': {
-      'id': `${objectId}`,
-      'type': 'Article',
-      'published': published,
-      'attributedTo': `${actorId}`,
-      'content': text,
-      'to': 'https://www.w3.org/ns/activitystreams#Public'
-    }
+    id: `${activityId}`,
+    type: 'Create',
+    actor: `${actorId}`,
+    object: {
+      id: `${objectId}`,
+      type: 'Article',
+      published: published,
+      attributedTo: `${actorId}`,
+      content: text,
+      to: ['https://www.w3.org/ns/activitystreams#Public'],
+    },
   }
   if (updated) {
     object.type = 'Update'
@@ -48,9 +48,12 @@ export async function createArticleObject (activityId, objectId, text, actorId, 
   return object
 }
 
-export function sendAcceptActivity (theBody, name, targetDomain, url) {
+export function sendAcceptActivity(theBody, name, targetDomain, url) {
   as.accept()
-    .id(`${activityPub.endpoint}/api/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
+    .id(
+      `${activityPub.endpoint}/api/users/${name}/status/` +
+       crypto.randomBytes(16).toString('hex'),
+    )
     .actor(`${activityPub.endpoint}/api/users/${name}`)
     .object(theBody)
     .prettyWrite((err, doc) => {
@@ -63,9 +66,11 @@ export function sendAcceptActivity (theBody, name, targetDomain, url) {
     })
 }
 
-export function sendRejectActivity (theBody, name, targetDomain, url) {
+export function sendRejectActivity(theBody, name, targetDomain, url) {
   as.reject()
-    .id(`${activityPub.endpoint}/api/users/${name}/status/` + crypto.randomBytes(16).toString('hex'))
+    .id(
+      `${activityPub.endpoint}/api/users/${name}/status/` + crypto.randomBytes(16).toString('hex')
+    )
     .actor(`${activityPub.endpoint}/api/users/${name}`)
     .object(theBody)
     .prettyWrite((err, doc) => {
@@ -78,7 +83,7 @@ export function sendRejectActivity (theBody, name, targetDomain, url) {
     })
 }
 
-export function isPublicAddressed (postObject) {
+export function isPublicAddressed(postObject) {
   if (typeof postObject.to === 'string') {
     postObject.to = [postObject.to]
   }
@@ -88,7 +93,9 @@ export function isPublicAddressed (postObject) {
   if (Array.isArray(postObject)) {
     postObject.to = postObject
   }
-  return postObject.to.includes('Public') ||
+  return (
+    postObject.to.includes('Public') ||
     postObject.to.includes('as:Public') ||
     postObject.to.includes('https://www.w3.org/ns/activitystreams#Public')
+  )
 }

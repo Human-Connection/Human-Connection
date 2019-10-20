@@ -6,7 +6,7 @@ export default function(options = {}) {
         params: { id, slug },
         redirect,
         error,
-        app: { apolloProvider }
+        app: { apolloProvider },
       } = context
       const idOrSlug = id || slug
 
@@ -27,6 +27,6 @@ export default function(options = {}) {
       if (resource) return redirect(`/${path}/${resource.id}/${resource.slug}`)
 
       return error({ statusCode: 404, message })
-    }
+    },
   }
 }

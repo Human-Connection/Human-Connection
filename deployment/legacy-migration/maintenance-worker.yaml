@@ -8,6 +8,12 @@
     containers:
     - name: nitro-maintenance-worker
       image: humanconnection/maintenance-worker:latest
+      imagePullPolicy: Always
+      resources:
+        requests:
+          memory: "2G"
+        limits:
+          memory: "8G"
       envFrom:
       - configMapRef:
           name: maintenance-worker
@@ -18,7 +24,7 @@
         readOnly: false
         mountPath: /root/.ssh
       - name: uploads
-        mountPath: /nitro-backend/public/uploads
+        mountPath: /uploads
       - name: neo4j-data
         mountPath: /data/
     volumes:

@@ -56,7 +56,7 @@ Deploy one-time maintenance-worker pod:
 
 ```bash
 # in deployment/legacy-migration/
-$ kubectl apply -f db-migration-worker.yaml
+$ kubectl apply -f maintenance-worker.yaml
 pod/nitro-maintenance-worker created
 ```
 
@@ -65,7 +65,7 @@ Import legacy database and uploads:
 ```bash
 $ kubectl --namespace=human-connection exec -it nitro-maintenance-worker bash
 $ import_legacy_db
-$ import_uploads
+$ import_legacy_uploads
 $ exit
 ```
 

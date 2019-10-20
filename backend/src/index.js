@@ -1,17 +1,8 @@
 import createServer from './server'
-import initService from './activitypub/ActivityPub'
+import CONFIG from './config'
 
-const serverConfig = {
-  port: process.env.GRAPHQL_PORT || 4000
-  // cors: {
-  //   credentials: true,
-  //   origin: [process.env.CLIENT_URI] // your frontend url.
-  // }
-}
-
-const server = createServer()
-server.start(serverConfig, options => {
+const { app } = createServer()
+app.listen({ port: CONFIG.GRAPHQL_PORT }, () => {
   /* eslint-disable-next-line no-console */
-  console.log(`GraphQLServer ready at ${process.env.GRAPHQL_URI} 🚀`)
-  initService(server)
+  console.log(`GraphQLServer ready at ${CONFIG.GRAPHQL_URI} 🚀`)
 })

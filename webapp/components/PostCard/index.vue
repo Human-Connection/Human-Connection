@@ -1,98 +1,103 @@
 <template>
   <ds-card
-    :header="post.title"
-    :image="post.image"
-    :class="{'post-card': true, 'disabled-content': post.disabled}"
+    :image="post.image | proxyApiUrl"
+    :class="{ 'post-card': true, 'disabled-content': post.disabled }"
   >
+    <!-- Post Link Target -->
     <nuxt-link
       class="post-link"
       :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
     >
       {{ post.title }}
     </nuxt-link>
+    <ds-space margin-bottom="small" />
+    <!-- Username, Image & Date of Post -->
+    <div>
+      <client-only>
+        <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
+      </client-only>
+      <hc-ribbon :text="$t('post.name')" />
+    </div>
+    <ds-space margin-bottom="small" />
+    <!-- Post Title -->
+    <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
+    <ds-space margin-bottom="small" />
+    <!-- Post Content Excerpt -->
     <!-- eslint-disable vue/no-v-html -->
     <!-- TODO: replace editor content with tiptap render view -->
-    <ds-space margin-bottom="large">
-      <div
-        class="hc-editor-content"
-        v-html="excerpt"
-      />
-    </ds-space>
+    <div class="hc-editor-content hyphenate-text" v-html="excerpt" />
     <!-- eslint-enable vue/no-v-html -->
-    <ds-space>
-      <ds-text
-        v-if="post.createdAt"
-        align="right"
-        size="small"
-        color="soft"
-      >
-        {{ post.createdAt | dateTime('dd. MMMM yyyy HH:mm') }}
-      </ds-text>
-    </ds-space>
-    <ds-space
-      margin="small"
-      style="position: absolute; bottom: 44px;"
-    >
-      <!-- TODO: find better solution for rendering errors -->
-      <no-ssr>
-        <hc-user
-          :user="post.author"
-          :trunc="35"
-        />
-      </no-ssr>
-    </ds-space>
+    <!-- Footer o the Post -->
     <template slot="footer">
       <div style="display: inline-block; opacity: .5;">
-        <ds-icon
+        <!-- Categories -->
+        <hc-category
           v-for="category in post.categories"
           :key="category.id"
-          v-tooltip="{content: category.name, placement: 'bottom-start', delay: { show: 500 }}"
-          :name="category.icon"
-        />&nbsp;
+          v-tooltip="{
+            content: $t(`contribution.category.name.${category.slug}`),
+            placement: 'bottom-start',
+            delay: { show: 500 },
+          }"
+          :icon="category.icon"
+        />
       </div>
-      <div style="display: inline-block; float: right">
-        <span :style="{ opacity: post.shoutedCount ? 1 : .5 }">
-          <ds-icon name="bullhorn" />
-          <small>{{ post.shoutedCount }}</small>
-        </span>
-        &nbsp;
-        <span :style="{ opacity: post.commentsCount ? 1 : .5 }">
-          <ds-icon name="comments" />
-          <small>{{ post.commentsCount }}</small>
-        </span>
-        <no-ssr>
+      <client-only>
+        <div style="display: inline-block; float: right">
+          <!-- Shouts Count -->
+          <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
+            <ds-icon name="bullhorn" />
+            <small>{{ post.shoutedCount }}</small>
+          </span>
+          &nbsp;
+          <!-- Comments Count -->
+          <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
+            <ds-icon name="comments" />
+            <small>{{ post.commentsCount }}</small>
+          </span>
+          <!-- Menu -->
           <content-menu
             resource-type="contribution"
             :resource="post"
+            :modalsData="menuModalsData"
             :is-owner="isAuthor"
           />
-        </no-ssr>
-      </div>
+        </div>
+      </client-only>
     </template>
   </ds-card>
 </template>
 
 <script>
-import HcUser from '~/components/User'
+import HcUser from '~/components/User/User'
 import ContentMenu from '~/components/ContentMenu'
-import { randomBytes } from 'crypto'
+import HcCategory from '~/components/Category'
+import HcRibbon from '~/components/Ribbon'
+// import { randomBytes } from 'crypto'
 import { mapGetters } from 'vuex'
+import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 
 export default {
   name: 'HcPostCard',
   components: {
     HcUser,
-    ContentMenu
+    HcCategory,
+    HcRibbon,
+    ContentMenu,
   },
   props: {
     post: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
+    width: {
+      type: Object,
+      default: () => {},
+    },
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
+      user: 'auth/user',
     }),
     excerpt() {
       return this.$filters.removeLinks(this.post.contentExcerpt)
@@ -101,12 +106,42 @@ export default {
       const { author } = this.post
       if (!author) return false
       return this.user.id === this.post.author.id
-    }
-  }
+    },
+    menuModalsData() {
+      return postMenuModalsData(
+        // "this.post" may not always be defined at the beginning …
+        this.post ? this.$filters.truncate(this.post.title, 30) : '',
+        this.deletePostCallback,
+      )
+    },
+  },
+  methods: {
+    async deletePostCallback() {
+      try {
+        const {
+          data: { DeletePost },
+        } = await this.$apollo.mutate(deletePostMutation(this.post.id))
+        this.$toast.success(this.$t('delete.contribution.success'))
+        this.$emit('removePostFromList', DeletePost)
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+  },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.ds-card-image img {
+  width: 100%;
+  max-height: 2000px;
+  object-fit: contain;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: center;
+  object-position: center;
+}
+
 .post-card {
   cursor: pointer;
   position: relative;

@@ -1,0 +1,18 @@
+---
+  kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: neo4j-data-claim
+    namespace: human-connection
+    labels:
+      app: human-connection
+  spec:
+    dataSource:
+      name: neo4j-data-snapshot
+      kind: VolumeSnapshot
+      apiGroup: snapshot.storage.k8s.io
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi

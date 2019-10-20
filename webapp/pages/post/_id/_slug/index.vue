@@ -1,41 +1,29 @@
 <template>
-  <transition
-    name="fade"
-    appear
-  >
+  <transition name="fade" appear>
     <ds-card
       v-if="post && ready"
-      :image="post.image"
-      :class="{'post-card': true, 'disabled-content': post.disabled}"
+      :image="post.image | proxyApiUrl"
+      :class="{ 'post-card': true, 'disabled-content': post.disabled }"
     >
       <ds-space margin-bottom="small" />
-      <hc-user
-        :user="post.author"
-        :date-time="post.createdAt"
-      />
-      <no-ssr>
+      <hc-user :user="post.author" :date-time="post.createdAt">
+        <template v-slot:dateTime>
+          <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
+        </template>
+      </hc-user>
+      <client-only>
         <content-menu
           placement="bottom-end"
           resource-type="contribution"
           :resource="post"
-          :is-owner="isAuthor(post.author.id)"
+          :modalsData="menuModalsData"
+          :is-owner="isAuthor(post.author ? post.author.id : null)"
         />
-      </no-ssr>
+      </client-only>
       <ds-space margin-bottom="small" />
-      <ds-heading
-        tag="h3"
-        no-margin
-      >
-        {{ post.title }}
-      </ds-heading>
+      <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
       <ds-space margin-bottom="small" />
-      <!-- Content -->
-      <!-- eslint-disable vue/no-v-html -->
-      <!-- TODO: replace editor content with tiptap render view -->
-      <div
-        class="content hc-editor-content"
-        v-html="post.content"
-      />
+      <content-viewer class="content hyphenate-text" :content="post.content" />
       <!-- eslint-enable vue/no-v-html -->
       <ds-space margin="xx-large" />
       <!-- Categories -->
@@ -44,204 +32,97 @@
         <hc-category
           v-for="category in post.categories"
           :key="category.id"
-          v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
           :icon="category.icon"
-          :name="category.name"
+          :name="$t(`contribution.category.name.${category.slug}`)"
         />
       </div>
       <ds-space margin-bottom="small" />
       <!-- Tags -->
-      <div
-        v-if="post.tags && post.tags.length"
-        class="tags"
-      >
+      <div v-if="post.tags && post.tags.length" class="tags">
         <ds-space margin="xx-small" />
-        <hc-tag
-          v-for="tag in post.tags"
-          :key="tag.id"
-          :name="tag.name"
-        />
+        <hc-hashtag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
       </div>
-      <!-- Shout Button -->
-      <hc-shout-button
-        v-if="post.author"
-        :disabled="isAuthor(post.author.id)"
-        :count="post.shoutedCount"
-        :is-shouted="post.shoutedByCurrentUser"
-        :post-id="post.id"
-      />
-      <!-- Categories -->
-      <ds-icon
-        v-for="category in post.categories"
-        :key="category.id"
-        v-tooltip="{content: category.name, placement: 'top-start', delay: { show: 300 }}"
-        :name="category.icon"
-        size="large"
-      />&nbsp;
-      <ds-space margin-bottom="small" />
-      <!-- Tags -->
-      <template v-if="post.tags && post.tags.length">
-        <ds-space margin="xx-small" />
-        <div class="tags">
-          <ds-icon name="tags" />
-          <ds-tag
-            v-for="tag in post.tags"
-            :key="tag.id"
+      <ds-space margin-top="x-large">
+        <ds-flex :gutter="{ lg: 'small' }">
+          <ds-flex-item
+            :width="{ lg: '75%', md: '75%', sm: '75%' }"
+            class="emotions-buttons-mobile"
           >
-            <ds-icon name="tag" />
-            {{ tag.name }}
-          </ds-tag>
-        </div>
-      </template>
-      <ds-space margin="small" />
+            <hc-emotions :post="post" />
+          </ds-flex-item>
+          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
+          <!-- Shout Button -->
+          <ds-flex-item
+            :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
+            class="shout-button"
+          >
+            <hc-shout-button
+              v-if="post.author"
+              :disabled="isAuthor(post.author.id)"
+              :count="post.shoutedCount"
+              :is-shouted="post.shoutedByCurrentUser"
+              :post-id="post.id"
+            />
+          </ds-flex-item>
+        </ds-flex>
+      </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list :post="post" />
+        <hc-comment-list :post="post" :routeHash="$route.hash" />
         <ds-space margin-bottom="large" />
-        <hc-comment-form :post="post" />
+        <hc-comment-form :post="post" @createComment="createComment" />
       </ds-section>
     </ds-card>
   </transition>
 </template>
 
 <script>
-import gql from 'graphql-tag'
-
+import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
-import HcTag from '~/components/Tag'
+import HcHashtag from '~/components/Hashtag/Hashtag'
 import ContentMenu from '~/components/ContentMenu'
-import HcUser from '~/components/User'
+import HcUser from '~/components/User/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcCommentForm from '~/components/comments/CommentForm'
-import HcCommentList from '~/components/comments/CommentList'
+import HcCommentForm from '~/components/CommentForm/CommentForm'
+import HcCommentList from '~/components/CommentList/CommentList'
+import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
+import PostQuery from '~/graphql/PostQuery'
+import HcEmotions from '~/components/Emotions/Emotions'
 
 export default {
+  name: 'PostSlug',
   transition: {
     name: 'slide-up',
-    mode: 'out-in'
+    mode: 'out-in',
   },
   components: {
-    HcTag,
     HcCategory,
+    HcHashtag,
     HcUser,
     HcShoutButton,
     ContentMenu,
     HcCommentForm,
-    HcCommentList
+    HcCommentList,
+    HcEmotions,
+    ContentViewer,
   },
   head() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   data() {
     return {
       post: null,
       ready: false,
-      title: 'loading'
+      title: 'loading',
     }
   },
   watch: {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
-    }
-  },
-  async asyncData(context) {
-    const {
-      params,
-      error,
-      app: { apolloProvider, $i18n }
-    } = context
-    const client = apolloProvider.defaultClient
-    const query = gql(`
-      query Post($slug: String!) {
-        Post(slug: $slug) {
-          id
-          title
-          content
-          createdAt
-          disabled
-          deleted
-          slug
-          image
-          author {
-            id
-            slug
-            name
-            avatar
-            disabled
-            deleted
-            shoutedCount
-            contributionsCount
-            commentsCount
-            followedByCount
-            followedByCurrentUser
-            location {
-              name: name${$i18n.locale().toUpperCase()}
-            }
-            badges {
-              id
-              key
-              icon
-            }
-          }
-          tags {
-            name
-          }
-          commentsCount
-          comments(orderBy: createdAt_desc) {
-            id
-            contentExcerpt
-            createdAt
-            disabled
-            deleted
-            author {
-              id
-              slug
-              name
-              avatar
-              disabled
-              deleted
-              shoutedCount
-              contributionsCount
-              commentsCount
-              followedByCount
-              followedByCurrentUser
-              location {
-                name: name${$i18n.locale().toUpperCase()}
-              }
-              badges {
-                id
-                key
-                icon
-              }
-            }
-          }
-          categories {
-            id
-            name
-            icon
-          }
-          shoutedCount
-          shoutedByCurrentUser
-        }
-      }
-    `)
-    const variables = { slug: params.slug }
-    const {
-      data: { Post }
-    } = await client.query({ query, variables })
-    if (Post.length <= 0) {
-      // TODO: custom 404 error page with translations
-      const message = 'This post could not be found'
-      return error({ statusCode: 404, message })
-    }
-    const [post] = Post
-    return {
-      post,
-      title: post.title
-    }
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -250,11 +131,45 @@ export default {
       this.ready = true
     }, 50)
   },
+  computed: {
+    menuModalsData() {
+      return postMenuModalsData(
+        // "this.post" may not always be defined at the beginning …
+        this.post ? this.$filters.truncate(this.post.title, 30) : '',
+        this.deletePostCallback,
+      )
+    },
+  },
   methods: {
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
-    }
-  }
+    },
+    async deletePostCallback() {
+      try {
+        await this.$apollo.mutate(deletePostMutation(this.post.id))
+        this.$toast.success(this.$t('delete.contribution.success'))
+        this.$router.history.push('/') // Redirect to index (main) page
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+    async createComment(comment) {
+      this.post.comments.push(comment)
+    },
+  },
+  apollo: {
+    Post: {
+      query() {
+        return PostQuery(this.$i18n)
+      },
+      variables() {
+        return {
+          id: this.$route.params.id,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 }
 </script>
 
@@ -267,8 +182,8 @@ export default {
   }
 
   .post-card {
-    // max-width: 800px;
     margin: auto;
+    cursor: auto;
 
     .comments {
       margin-top: $space-small;
@@ -277,12 +192,16 @@ export default {
         margin-top: $space-small;
         position: relative;
       }
+
+      .ProseMirror {
+        min-height: 0px;
+      }
     }
 
     .ds-card-image {
       img {
-        max-height: 300px;
-        object-fit: cover;
+        max-height: 2000px;
+        object-fit: contain;
         object-position: center;
       }
     }
@@ -294,6 +213,11 @@ export default {
         padding: $space-base;
       }
     }
+  }
+}
+@media only screen and (max-width: 960px) {
+  .shout-button {
+    float: left;
   }
 }
 </style>

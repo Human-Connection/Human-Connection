@@ -1,14 +1,14 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 import vuexI18n from 'vuex-i18n/dist/vuex-i18n.umd.js'
-import { debounce, isEmpty, find } from 'lodash'
+import { isEmpty, find } from 'lodash'
+import locales from '~/locales'
 
 /**
  * TODO: Refactor and simplify browser detection
  * and implement the user preference logic
  */
 export default ({ app, req, cookie, store }) => {
-  const debug = app.$env.NODE_ENV !== 'production'
+  const debug = app.$env && app.$env.NODE_ENV !== 'production'
   const key = 'locale'
 
   const changeHandler = async mutation => {
@@ -48,11 +48,9 @@ export default ({ app, req, cookie, store }) => {
     onTranslationNotFound: function(locale, key) {
       if (debug) {
         /* eslint-disable-next-line no-console */
-        console.warn(
-          `vuex-i18n :: Key '${key}' not found for locale '${locale}'`
-        )
+        console.warn(`vuex-i18n :: Key '${key}' not found for locale '${locale}'`)
       }
-    }
+    },
   })
 
   // register the fallback locales
@@ -79,10 +77,8 @@ export default ({ app, req, cookie, store }) => {
     }
   }
 
-  const availableLocales = process.env.locales.filter(lang => !!lang.enabled)
-  const locale = find(availableLocales, ['code', userLocale])
-    ? userLocale
-    : 'en'
+  const availableLocales = locales.filter(lang => !!lang.enabled)
+  const locale = find(availableLocales, ['code', userLocale]) ? userLocale : 'en'
 
   if (locale !== 'en') {
     Vue.i18n.add(locale, require(`~/locales/${locale}.json`))

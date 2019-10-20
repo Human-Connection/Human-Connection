@@ -24,7 +24,7 @@ if (!process.server) {
         if (this.$metaInfo && !keepAlivePages.includes(lastRoute)) {
           this.$destroy()
         }
-      }
+      },
     })
   }
   Vue.use(keepAliveHook)

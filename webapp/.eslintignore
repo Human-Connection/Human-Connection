@@ -3,3 +3,4 @@ build
 .nuxt
 styleguide/
 **/*.min.js
+static/sw.js

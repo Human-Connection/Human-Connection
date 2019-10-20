@@ -1,16 +1,10 @@
 <template>
   <div class="field">
     <div class="password-strength-meter">
-      <div
-        class="password-strength-meter-inner"
-        :class="'strength-' + strength"
-      />
+      <div class="password-strength-meter-inner" :class="'strength-' + strength" />
     </div>
     <p class="help">
-      <span
-        v-if="pass"
-        :class="{ insecure: !isSecure }"
-      >
+      <span v-if="pass" :class="{ insecure: !isSecure }">
         {{ $t('settings.security.change-password.passwordSecurity') }}:
         <strong>{{ $t(`settings.security.change-password.passwordStrength${strength}`) }}</strong>
       </span>
@@ -28,14 +22,14 @@ export default {
   props: {
     password: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       strength: null,
       isSecure: false,
-      pass: this.password || null
+      pass: this.password || null,
     }
   },
   watch: {
@@ -50,11 +44,11 @@ export default {
         this.isSecure = Boolean(strength >= 3)
         this.$emit('change', {
           strength,
-          isSecure: this.isSecure
+          isSecure: this.isSecure,
         })
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

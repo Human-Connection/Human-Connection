@@ -18,6 +18,8 @@ When('I save {string} as my new name', name => {
   cy.get('[type=submit]')
     .click()
     .not('[disabled]')
+  cy.get('.iziToast-message')
+    .should('contain', 'Your data was successfully updated')
 })
 
 When('I save {string} as my location', location => {
@@ -28,6 +30,8 @@ When('I save {string} as my location', location => {
   cy.get('[type=submit]')
     .click()
     .not('[disabled]')
+  cy.get('.iziToast-message')
+    .should('contain', 'Your data was successfully updated')
   myLocation = location
 })
 
@@ -38,12 +42,15 @@ When('I have the following self-description:', text => {
   cy.get('[type=submit]')
     .click()
     .not('[disabled]')
+  cy.get('.iziToast-message')
+    .should('contain', 'Your data was successfully updated')
   aboutMeText = text
 })
 
 When('people visit my profile page', url => {
   cy.openPage('/profile/peter-pan')
 })
+
 
 When('they can see the text in the info box below my avatar', () => {
   cy.contains(aboutMeText)
@@ -78,7 +85,7 @@ Then('I should be on the {string} page', page => {
 })
 
 When('I add a social media link', () => {
-  cy.get("input[name='social-media']")
+  cy.get('input#addSocialMedia')
     .type('https://freeradical.zone/peter-pan')
     .get('button')
     .contains('Add link')
@@ -97,7 +104,7 @@ Then('the new social media link shows up on the page', () => {
 
 Given('I have added a social media link', () => {
   cy.openPage('/settings/my-social-media')
-    .get("input[name='social-media']")
+    .get('input#addSocialMedia')
     .type('https://freeradical.zone/peter-pan')
     .get('button')
     .contains('Add link')
@@ -119,4 +126,35 @@ When('I delete a social media link', () => {
 Then('it gets deleted successfully', () => {
   cy.get('.iziToast-message')
     .should('contain', 'Deleted social media')
+})
+
+When('I start editing a social media link', () => {
+  cy.get("a[name='edit']")
+    .click()
+})
+
+Then('I can cancel editing', () => {
+  cy.get('button#cancel')
+    .click()
+    .get('input#editSocialMedia')
+    .should('have.length', 0)
+})
+
+When('I edit and save the link', () => {
+  cy.get('input#editSocialMedia')
+    .clear()
+    .type('https://freeradical.zone/tinkerbell')
+    .get('button')
+    .contains('Save')
+    .click()
+})
+
+Then('the new url is displayed', () => {
+  cy.get("a[href='https://freeradical.zone/tinkerbell']")
+    .should('have.length', 1)
+})
+
+Then('the old url is not displayed', () => {
+  cy.get("a[href='https://freeradical.zone/peter-pan']")
+    .should('have.length', 0)
 })

@@ -15,7 +15,7 @@ Feature: Like an object e.g. an article or note
       "@context": "https://www.w3.org/ns/activitystreams",
       "id": "http://localhost:4123/api/users/theodor/status/faslkasa7dasfzkjn2398hsfd",
       "type": "Create",
-      "actor": "http://localhost:4123/users/theodor",
+      "actor": "http://localhost:4123/api/users/theodor",
       "object": {
         "id": "http://localhost:4123/api/users/theodor/status/dkaaadsfljsdfaaaffg9843jknsdf",
         "type": "Article",
@@ -34,7 +34,7 @@ Feature: Like an object e.g. an article or note
       "@context": "https://www.w3.org/ns/activitystreams",
       "id": "http://localhost:4123/api/users/karl-heinz/status/83J23549sda1k72fsa4567na42312455kad83",
       "type": "Like",
-      "actor": "http://localhost:4123/users/karl-heinz",
+      "actor": "http://localhost:4123/api/users/karl-heinz",
       "object": "http://localhost:4123/api/users/theodor/status/dkaaadsfljsdfaaaffg9843jknsdf"
     }
     """

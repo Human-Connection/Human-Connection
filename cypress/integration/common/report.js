@@ -5,7 +5,7 @@ import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 let lastReportTitle
 let davidIrvingPostTitle = 'The Truth about the Holocaust'
 let davidIrvingPostSlug = 'the-truth-about-the-holocaust'
-let davidIrvingName = 'David Irving'
+let annoyingUserWhoBlockedModeratorTitle = 'Fake news'
 
 const savePostTitle = $post => {
   return $post
@@ -31,6 +31,7 @@ Given('I am logged in with a {string} role', role => {
   cy.factory().create('User', {
     email: `${role}@example.org`,
     password: '1234',
+    termsAndConditionsAgreedVersion: "0.0.2",
     role
   })
   cy.login({
@@ -106,6 +107,11 @@ Then(`I can't see the moderation menu item`, () => {
 When(/^I confirm the reporting dialog .*:$/, message => {
   cy.contains(message) // wait for element to become visible
   cy.get('.ds-modal').within(() => {
+    cy.get('.ds-radio-option-label')
+      .first()
+      .click({
+        force: true
+      })
     cy.get('button')
       .contains('Report')
       .click()
@@ -113,17 +119,22 @@ When(/^I confirm the reporting dialog .*:$/, message => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach(({ id }) => {
+  table.hashes().forEach(({ submitterEmail, resourceId, reasonCategory, reasonDescription }) => {
     const submitter = {
-      email: `submitter${id}@example.org`,
+      email: submitterEmail,
       password: '1234'
     }
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .create('Report', {
-        id,
-        description: 'Offensive content'
+      .mutate(`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+        report(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
+          type
+        }
+      }`, {
+        resourceId,
+        reasonCategory,
+        reasonDescription
       })
   })
 })
@@ -134,7 +145,28 @@ Then('I see all the reported posts including the one from above', () => {
   })
 })
 
+Then('I see all the reported posts including from the user who blocked me', () => {
+  cy.get('table tbody').within(() => {
+    cy.contains('tr', annoyingUserWhoBlockedModeratorTitle)
+  })
+})
+
 Then('each list item links to the post page', () => {
   cy.contains(davidIrvingPostTitle).click()
   cy.location('pathname').should('contain', '/post')
+})
+
+Then('I can visit the post page', () => {
+  cy.contains(annoyingUserWhoBlockedModeratorTitle).click()
+  cy.location('pathname').should('contain', '/post')
+    .get('h3').should('contain', annoyingUserWhoBlockedModeratorTitle)
+})
+
+When("they have a post someone has reported", () => {
+  cy.factory()
+    .create("Post", {
+      authorId: 'annnoying-user',
+      title,
+    });
+    
 })

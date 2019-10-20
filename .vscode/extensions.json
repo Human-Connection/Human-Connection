@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "octref.vetur",
+    "gruntfuggly.todo-tree",
+  ]
+}

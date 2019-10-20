@@ -10,7 +10,7 @@ $easeOut: cubic-bezier(0.19, 1, 0.22, 1);
   &::before {
     @include border-radius($border-radius-x-large);
     box-shadow: inset 0 0 0 5px $color-danger;
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     width: 100%;
@@ -50,6 +50,11 @@ $easeOut: cubic-bezier(0.19, 1, 0.22, 1);
   background: #fff;
 }
 
+body.dropdown-open {
+  height: 100vh;
+  overflow: hidden;
+}
+
 blockquote {
   display: block;
   padding: 15px 20px 15px 45px;
@@ -66,7 +71,8 @@ blockquote {
   border-left: 3px dotted $color-neutral-70;
 
   &::before {
-    content: '\201C'; /*Unicode for Left Double Quote*/
+    content: '\201C';
+    /*Unicode for Left Double Quote*/
 
     /*Font*/
     font-size: $font-size-xxxx-large;
@@ -102,10 +108,10 @@ hr {
   height: 1px !important;
 }
 
-[class$=menu-trigger] {
+[class$='menu-trigger'] {
   user-select: none;
 }
-[class$=menu-popover] {
+[class$='menu-popover'] {
   display: inline-block;
 
   nav {
@@ -145,10 +151,11 @@ hr {
   }
 }
 
-[class$="menu-popover"] {
+[class$='menu-popover'] {
   min-width: 130px;
 
-  a, button {
+  a,
+  button {
     display: flex;
     align-content: center;
     align-items: center;
@@ -161,4 +168,10 @@ hr {
 
 .v-popover.open .trigger a {
   color: $text-color-link-active;
+}
+
+.hyphenate-text {
+  hyphens: auto;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }

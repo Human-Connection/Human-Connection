@@ -5,7 +5,7 @@ const defaultOrderBy = (resolve, root, args, context, resolveInfo) => {
   const newestFirst = {
     kind: 'Argument',
     name: { kind: 'Name', value: 'orderBy' },
-    value: { kind: 'EnumValue', value: 'createdAt_desc' }
+    value: { kind: 'EnumValue', value: 'createdAt_desc' },
   }
   const [fieldNode] = copy.fieldNodes
   if (fieldNode) fieldNode.arguments.push(newestFirst)
@@ -14,6 +14,6 @@ const defaultOrderBy = (resolve, root, args, context, resolveInfo) => {
 
 export default {
   Query: {
-    Post: defaultOrderBy
-  }
+    Post: defaultOrderBy,
+  },
 }

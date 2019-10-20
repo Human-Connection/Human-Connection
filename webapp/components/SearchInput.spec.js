@@ -10,7 +10,6 @@ localVue.filter('truncate', () => 'truncated string')
 localVue.filter('dateTime', () => Date.now)
 
 describe('SearchInput.vue', () => {
-  let wrapper
   let mocks
   let propsData
 
@@ -21,7 +20,7 @@ describe('SearchInput.vue', () => {
   describe('mount', () => {
     const Wrapper = () => {
       mocks = {
-        $t: () => {}
+        $t: () => {},
       }
       return mount(SearchInput, { mocks, localVue, propsData })
     }
@@ -121,7 +120,7 @@ describe('SearchInput.vue', () => {
                 __typename: 'User',
                 id: 'u5',
                 name: 'Trick',
-                slug: 'trick'
+                slug: 'trick',
               },
               commentsCount: 0,
               createdAt: '2019-03-13T11:00:20.835Z',
@@ -129,9 +128,9 @@ describe('SearchInput.vue', () => {
               label: 'Eos aut illo omnis quis eaque et iure aut.',
               shoutedCount: 0,
               slug: 'eos-aut-illo-omnis-quis-eaque-et-iure-aut',
-              value: 'Eos aut illo omnis quis eaque et iure aut.'
-            }
-          ]
+              value: 'Eos aut illo omnis quis eaque et iure aut.',
+            },
+          ],
         }
         wrapper = Wrapper()
         select.trigger('input')

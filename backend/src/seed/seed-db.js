@@ -1,235 +1,918 @@
 import faker from 'faker'
+import { createTestClient } from 'apollo-server-testing'
+import createServer from '../server'
 import Factory from './factories'
+import { neode as getNeode, getDriver } from '../bootstrap/neo4j'
+import { gql } from '../jest/helpers'
 
 /* eslint-disable no-multi-spaces */
-(async function () {
+;(async function() {
+  let authenticatedUser = null
+  const driver = getDriver()
+  const factory = Factory()
+  const neode = getNeode()
+
   try {
-    const f = Factory()
-    await Promise.all([
-      f.create('Badge', { id: 'b1', key: 'indiegogo_en_racoon', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_racoon.svg' }),
-      f.create('Badge', { id: 'b2', key: 'indiegogo_en_rabbit', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_rabbit.svg' }),
-      f.create('Badge', { id: 'b3', key: 'indiegogo_en_wolf',   type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_wolf.svg' }),
-      f.create('Badge', { id: 'b4', key: 'indiegogo_en_bear',   type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_bear.svg' }),
-      f.create('Badge', { id: 'b5', key: 'indiegogo_en_turtle', type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_turtle.svg' }),
-      f.create('Badge', { id: 'b6', key: 'indiegogo_en_rhino',  type: 'crowdfunding', status: 'permanent', icon: '/img/badges/indiegogo_en_rhino.svg' })
-    ])
+    const { server } = createServer({
+      context: () => {
+        return {
+          driver,
+          neode,
+          user: authenticatedUser,
+        }
+      },
+    })
+    const { mutate } = createTestClient(server)
 
-    await Promise.all([
-      f.create('User', { id: 'u1', name: 'Peter Lustig',       role: 'admin',     email: 'admin@example.org',     actorId: 'http://localhost:4000/api/users/peter-lustig' }),
-      f.create('User', { id: 'u2', name: 'Bob der Baumeister', role: 'moderator', email: 'moderator@example.org', actorId: 'http://localhost:4000/api/users/bob-der-baumeister' }),
-      f.create('User', { id: 'u3', name: 'Jenny Rostock',      role: 'user',      email: 'user@example.org',      actorId: 'http://localhost:4000/api/users/jenny-rostock' }),
-      f.create('User', { id: 'u4', name: 'Tick',               role: 'user',      email: 'tick@example.org',      actorId: 'http://localhost:4000/api/users/tick' }),
-      f.create('User', { id: 'u5', name: 'Trick',              role: 'user',      email: 'trick@example.org',     actorId: 'http://localhost:4000/api/users/trick' }),
-      f.create('User', { id: 'u6', name: 'Track',              role: 'user',      email: 'track@example.org',     actorId: 'http://localhost:4000/api/users/track' }),
-      f.create('User', { id: 'u7', name: 'Dagobert',           role: 'user',      email: 'dagobert@example.org',  actorId: 'http://localhost:4000/api/users/dagobert' })
-    ])
-
-    const [ asAdmin, asModerator, asUser, asTick, asTrick, asTrack ] = await Promise.all([
-      Factory().authenticateAs({ email: 'admin@example.org',     password: '1234' }),
-      Factory().authenticateAs({ email: 'moderator@example.org', password: '1234' }),
-      Factory().authenticateAs({ email: 'user@example.org',      password: '1234' }),
-      Factory().authenticateAs({ email: 'tick@example.org',      password: '1234' }),
-      Factory().authenticateAs({ email: 'trick@example.org',     password: '1234' }),
-      Factory().authenticateAs({ email: 'track@example.org',     password: '1234' })
-    ])
-
-    await Promise.all([
-      f.relate('User', 'Badges',      { from: 'b6', to: 'u1' }),
-      f.relate('User', 'Badges',      { from: 'b5', to: 'u2' }),
-      f.relate('User', 'Badges',      { from: 'b4', to: 'u3' }),
-      f.relate('User', 'Badges',      { from: 'b3', to: 'u4' }),
-      f.relate('User', 'Badges',      { from: 'b2', to: 'u5' }),
-      f.relate('User', 'Badges',      { from: 'b1', to: 'u6' }),
-      f.relate('User', 'Friends',     { from: 'u1', to: 'u2' }),
-      f.relate('User', 'Friends',     { from: 'u1', to: 'u3' }),
-      f.relate('User', 'Friends',     { from: 'u2', to: 'u3' }),
-      f.relate('User', 'Blacklisted', { from: 'u7', to: 'u4' }),
-      f.relate('User', 'Blacklisted', { from: 'u7', to: 'u5' }),
-      f.relate('User', 'Blacklisted', { from: 'u7', to: 'u6' })
-    ])
-
-    await Promise.all([
-      asAdmin
-        .follow({ id: 'u3', type: 'User' }),
-      asModerator
-        .follow({ id: 'u4', type: 'User' }),
-      asUser
-        .follow({ id: 'u4', type: 'User' }),
-      asTick
-        .follow({ id: 'u6', type: 'User' }),
-      asTrick
-        .follow({ id: 'u4', type: 'User' }),
-      asTrack
-        .follow({ id: 'u3', type: 'User' })
-    ])
-
-    await Promise.all([
-      f.create('Category', { id: 'cat1',  name: 'Just For Fun',                 slug: 'justforfun',                 icon: 'smile' }),
-      f.create('Category', { id: 'cat2',  name: 'Happyness & Values',           slug: 'happyness-values',           icon: 'heart-o' }),
-      f.create('Category', { id: 'cat3',  name: 'Health & Wellbeing',           slug: 'health-wellbeing',           icon: 'medkit' }),
-      f.create('Category', { id: 'cat4',  name: 'Environment & Nature',         slug: 'environment-nature',         icon: 'tree' }),
-      f.create('Category', { id: 'cat5',  name: 'Animal Protection',            slug: 'animalprotection',           icon: 'paw' }),
-      f.create('Category', { id: 'cat6',  name: 'Humanrights Justice',          slug: 'humanrights-justice',        icon: 'balance-scale' }),
-      f.create('Category', { id: 'cat7',  name: 'Education & Sciences',         slug: 'education-sciences',         icon: 'graduation-cap' }),
-      f.create('Category', { id: 'cat8',  name: 'Cooperation & Development',    slug: 'cooperation-development',    icon: 'users' }),
-      f.create('Category', { id: 'cat9',  name: 'Democracy & Politics',         slug: 'democracy-politics',         icon: 'university' }),
-      f.create('Category', { id: 'cat10', name: 'Economy & Finances',           slug: 'economy-finances',           icon: 'money' }),
-      f.create('Category', { id: 'cat11', name: 'Energy & Technology',          slug: 'energy-technology',          icon: 'flash' }),
-      f.create('Category', { id: 'cat12', name: 'IT, Internet & Data Privacy',  slug: 'it-internet-dataprivacy',    icon: 'mouse-pointer' }),
-      f.create('Category', { id: 'cat13', name: 'Art, Curlure & Sport',         slug: 'art-culture-sport',          icon: 'paint-brush' }),
-      f.create('Category', { id: 'cat14', name: 'Freedom of Speech',            slug: 'freedomofspeech',            icon: 'bullhorn' }),
-      f.create('Category', { id: 'cat15', name: 'Consumption & Sustainability', slug: 'consumption-sustainability', icon: 'shopping-cart' }),
-      f.create('Category', { id: 'cat16', name: 'Global Peace & Nonviolence',   slug: 'globalpeace-nonviolence',    icon: 'angellist' })
-    ])
-
-    await Promise.all([
-      f.create('Tag', { id: 't1', name: 'Umwelt' }),
-      f.create('Tag', { id: 't2', name: 'Naturschutz' }),
-      f.create('Tag', { id: 't3', name: 'Demokratie' }),
-      f.create('Tag', { id: 't4', name: 'Freiheit' })
-    ])
-
-    const mention1 = 'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
-    const mention2 = 'Hey <a class="mention" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
-
-    await Promise.all([
-      asAdmin.create('Post',     { id: 'p0' }),
-      asModerator.create('Post', { id: 'p1' }),
-      asUser.create('Post',      { id: 'p2' }),
-      asTick.create('Post',      { id: 'p3' }),
-      asTrick.create('Post',     { id: 'p4' }),
-      asTrack.create('Post',     { id: 'p5' }),
-      asAdmin.create('Post',     { id: 'p6' }),
-      asModerator.create('Post', { id: 'p7', content: `${mention1} ${faker.lorem.paragraph()}` }),
-      asUser.create('Post',      { id: 'p8' }),
-      asTick.create('Post',      { id: 'p9' }),
-      asTrick.create('Post',     { id: 'p10' }),
-      asTrack.create('Post',     { id: 'p11' }),
-      asAdmin.create('Post',     { id: 'p12', content: `${mention2} ${faker.lorem.paragraph()}` }),
-      asModerator.create('Post', { id: 'p13' }),
-      asUser.create('Post',      { id: 'p14' }),
-      asTick.create('Post',      { id: 'p15' })
-    ])
-
-    await Promise.all([
-      f.relate('Post', 'Categories', { from: 'p0',  to: 'cat16' }),
-      f.relate('Post', 'Categories', { from: 'p1',  to: 'cat1' }),
-      f.relate('Post', 'Categories', { from: 'p2',  to: 'cat2' }),
-      f.relate('Post', 'Categories', { from: 'p3',  to: 'cat3' }),
-      f.relate('Post', 'Categories', { from: 'p4',  to: 'cat4' }),
-      f.relate('Post', 'Categories', { from: 'p5',  to: 'cat5' }),
-      f.relate('Post', 'Categories', { from: 'p6',  to: 'cat6' }),
-      f.relate('Post', 'Categories', { from: 'p7',  to: 'cat7' }),
-      f.relate('Post', 'Categories', { from: 'p8',  to: 'cat8' }),
-      f.relate('Post', 'Categories', { from: 'p9',  to: 'cat9' }),
-      f.relate('Post', 'Categories', { from: 'p10', to: 'cat10' }),
-      f.relate('Post', 'Categories', { from: 'p11', to: 'cat11' }),
-      f.relate('Post', 'Categories', { from: 'p12', to: 'cat12' }),
-      f.relate('Post', 'Categories', { from: 'p13', to: 'cat13' }),
-      f.relate('Post', 'Categories', { from: 'p14', to: 'cat14' }),
-      f.relate('Post', 'Categories', { from: 'p15', to: 'cat15' }),
-
-      f.relate('Post', 'Tags', { from: 'p0',  to: 't4' }),
-      f.relate('Post', 'Tags', { from: 'p1',  to: 't1' }),
-      f.relate('Post', 'Tags', { from: 'p2',  to: 't2' }),
-      f.relate('Post', 'Tags', { from: 'p3',  to: 't3' }),
-      f.relate('Post', 'Tags', { from: 'p4',  to: 't4' }),
-      f.relate('Post', 'Tags', { from: 'p5',  to: 't1' }),
-      f.relate('Post', 'Tags', { from: 'p6',  to: 't2' }),
-      f.relate('Post', 'Tags', { from: 'p7',  to: 't3' }),
-      f.relate('Post', 'Tags', { from: 'p8',  to: 't4' }),
-      f.relate('Post', 'Tags', { from: 'p9',  to: 't1' }),
-      f.relate('Post', 'Tags', { from: 'p10', to: 't2' }),
-      f.relate('Post', 'Tags', { from: 'p11', to: 't3' }),
-      f.relate('Post', 'Tags', { from: 'p12', to: 't4' }),
-      f.relate('Post', 'Tags', { from: 'p13', to: 't1' }),
-      f.relate('Post', 'Tags', { from: 'p14', to: 't2' }),
-      f.relate('Post', 'Tags', { from: 'p15', to: 't3' })
-    ])
-
-    await Promise.all([
-      asAdmin
-        .shout({ id: 'p2', type: 'Post' }),
-      asAdmin
-        .shout({ id: 'p6', type: 'Post' }),
-      asModerator
-        .shout({ id: 'p0', type: 'Post' }),
-      asModerator
-        .shout({ id: 'p6', type: 'Post' }),
-      asUser
-        .shout({ id: 'p6', type: 'Post' }),
-      asUser
-        .shout({ id: 'p7', type: 'Post' }),
-      asTick
-        .shout({ id: 'p8', type: 'Post' }),
-      asTick
-        .shout({ id: 'p9', type: 'Post' }),
-      asTrack
-        .shout({ id: 'p10', type: 'Post' })
+    const [Hamburg, Berlin, Germany, Paris, France] = await Promise.all([
+      factory.create('Location', {
+        id: 'region.5127278006398860',
+        name: 'Hamburg',
+        type: 'region',
+        lat: 10.0,
+        lng: 53.55,
+        nameES: 'Hamburgo',
+        nameFR: 'Hambourg',
+        nameIT: 'Amburgo',
+        nameEN: 'Hamburg',
+        namePT: 'Hamburgo',
+        nameDE: 'Hamburg',
+        nameNL: 'Hamburg',
+        namePL: 'Hamburg',
+      }),
+      factory.create('Location', {
+        id: 'region.14880313158564380',
+        type: 'region',
+        name: 'Berlin',
+        lat: 13.38333,
+        lng: 52.51667,
+        nameES: 'Berlín',
+        nameFR: 'Berlin',
+        nameIT: 'Berlino',
+        nameEN: 'Berlin',
+        namePT: 'Berlim',
+        nameDE: 'Berlin',
+        nameNL: 'Berlijn',
+        namePL: 'Berlin',
+      }),
+      factory.create('Location', {
+        id: 'country.10743216036480410',
+        name: 'Germany',
+        type: 'country',
+        namePT: 'Alemanha',
+        nameDE: 'Deutschland',
+        nameES: 'Alemania',
+        nameNL: 'Duitsland',
+        namePL: 'Niemcy',
+        nameFR: 'Allemagne',
+        nameIT: 'Germania',
+        nameEN: 'Germany',
+      }),
+      factory.create('Location', {
+        id: 'region.9397217726497330',
+        name: 'Paris',
+        type: 'region',
+        lat: 2.35183,
+        lng: 48.85658,
+        nameES: 'París',
+        nameFR: 'Paris',
+        nameIT: 'Parigi',
+        nameEN: 'Paris',
+        namePT: 'Paris',
+        nameDE: 'Paris',
+        nameNL: 'Parijs',
+        namePL: 'Paryż',
+      }),
+      factory.create('Location', {
+        id: 'country.9759535382641660',
+        name: 'France',
+        type: 'country',
+        namePT: 'França',
+        nameDE: 'Frankreich',
+        nameES: 'Francia',
+        nameNL: 'Frankrijk',
+        namePL: 'Francja',
+        nameFR: 'France',
+        nameIT: 'Francia',
+        nameEN: 'France',
+      }),
     ])
     await Promise.all([
-      asAdmin
-        .shout({ id: 'p2', type: 'Post' }),
-      asAdmin
-        .shout({ id: 'p6', type: 'Post' }),
-      asModerator
-        .shout({ id: 'p0', type: 'Post' }),
-      asModerator
-        .shout({ id: 'p6', type: 'Post' }),
-      asUser
-        .shout({ id: 'p6', type: 'Post' }),
-      asUser
-        .shout({ id: 'p7', type: 'Post' }),
-      asTick
-        .shout({ id: 'p8', type: 'Post' }),
-      asTick
-        .shout({ id: 'p9', type: 'Post' }),
-      asTrack
-        .shout({ id: 'p10', type: 'Post' })
+      Berlin.relateTo(Germany, 'isIn'),
+      Hamburg.relateTo(Germany, 'isIn'),
+      Paris.relateTo(France, 'isIn'),
+    ])
+
+    const [racoon, rabbit, wolf, bear, turtle, rhino] = await Promise.all([
+      factory.create('Badge', {
+        id: 'indiegogo_en_racoon',
+        icon: '/img/badges/indiegogo_en_racoon.svg',
+      }),
+      factory.create('Badge', {
+        id: 'indiegogo_en_rabbit',
+        icon: '/img/badges/indiegogo_en_rabbit.svg',
+      }),
+      factory.create('Badge', {
+        id: 'indiegogo_en_wolf',
+        icon: '/img/badges/indiegogo_en_wolf.svg',
+      }),
+      factory.create('Badge', {
+        id: 'indiegogo_en_bear',
+        icon: '/img/badges/indiegogo_en_bear.svg',
+      }),
+      factory.create('Badge', {
+        id: 'indiegogo_en_turtle',
+        icon: '/img/badges/indiegogo_en_turtle.svg',
+      }),
+      factory.create('Badge', {
+        id: 'indiegogo_en_rhino',
+        icon: '/img/badges/indiegogo_en_rhino.svg',
+      }),
+    ])
+
+    const [
+      peterLustig,
+      bobDerBaumeister,
+      jennyRostock,
+      huey,
+      dewey,
+      louie,
+      dagobert,
+    ] = await Promise.all([
+      factory.create('User', {
+        id: 'u1',
+        name: 'Peter Lustig',
+        slug: 'peter-lustig',
+        role: 'admin',
+        email: 'admin@example.org',
+      }),
+      factory.create('User', {
+        id: 'u2',
+        name: 'Bob der Baumeister',
+        slug: 'bob-der-baumeister',
+        role: 'moderator',
+        email: 'moderator@example.org',
+      }),
+      factory.create('User', {
+        id: 'u3',
+        name: 'Jenny Rostock',
+        slug: 'jenny-rostock',
+        role: 'user',
+        email: 'user@example.org',
+      }),
+      factory.create('User', {
+        id: 'u4',
+        name: 'Huey',
+        slug: 'huey',
+        role: 'user',
+        email: 'huey@example.org',
+      }),
+      factory.create('User', {
+        id: 'u5',
+        name: 'Dewey',
+        slug: 'dewey',
+        role: 'user',
+        email: 'dewey@example.org',
+      }),
+      factory.create('User', {
+        id: 'u6',
+        name: 'Louie',
+        slug: 'louie',
+        role: 'user',
+        email: 'louie@example.org',
+      }),
+      factory.create('User', {
+        id: 'u7',
+        name: 'Dagobert',
+        slug: 'dagobert',
+        role: 'user',
+        email: 'dagobert@example.org',
+      }),
     ])
 
     await Promise.all([
-      asUser.create('Comment', { id: 'c1', postId: 'p1' }),
-      asTick.create('Comment', { id: 'c2', postId: 'p1' }),
-      asTrack.create('Comment', { id: 'c3', postId: 'p3' }),
-      asTrick.create('Comment', { id: 'c4', postId: 'p2' }),
-      asModerator.create('Comment', { id: 'c5', postId: 'p3' }),
-      asAdmin.create('Comment', { id: 'c6', postId: 'p4' }),
-      asUser.create('Comment', { id: 'c7', postId: 'p2' }),
-      asTick.create('Comment', { id: 'c8', postId: 'p15' }),
-      asTrick.create('Comment', { id: 'c9', postId: 'p15' }),
-      asTrack.create('Comment', { id: 'c10', postId: 'p15' }),
-      asUser.create('Comment', { id: 'c11', postId: 'p15' }),
-      asUser.create('Comment', { id: 'c12', postId: 'p15' })
-    ])
-
-    const disableMutation = 'mutation($id: ID!) { disable(id: $id) }'
-    await Promise.all([
-      asModerator.mutate(disableMutation, { id: 'p11' }),
-      asModerator.mutate(disableMutation, { id: 'c5' })
+      peterLustig.relateTo(Berlin, 'isIn'),
+      bobDerBaumeister.relateTo(Hamburg, 'isIn'),
+      jennyRostock.relateTo(Paris, 'isIn'),
+      huey.relateTo(Paris, 'isIn'),
     ])
 
     await Promise.all([
-      asTick.create('Report',  { description: 'I don\'t like this comment', id: 'c1' }),
-      asTrick.create('Report', { description: 'I don\'t like this post',    id: 'p1' }),
-      asTrack.create('Report', { description: 'I don\'t like this user',    id: 'u1' })
+      peterLustig.relateTo(racoon, 'rewarded'),
+      peterLustig.relateTo(rhino, 'rewarded'),
+      peterLustig.relateTo(wolf, 'rewarded'),
+      bobDerBaumeister.relateTo(racoon, 'rewarded'),
+      bobDerBaumeister.relateTo(turtle, 'rewarded'),
+      jennyRostock.relateTo(bear, 'rewarded'),
+      dagobert.relateTo(rabbit, 'rewarded'),
+
+      peterLustig.relateTo(bobDerBaumeister, 'friends'),
+      peterLustig.relateTo(jennyRostock, 'friends'),
+      bobDerBaumeister.relateTo(jennyRostock, 'friends'),
+
+      peterLustig.relateTo(jennyRostock, 'following'),
+      peterLustig.relateTo(huey, 'following'),
+      bobDerBaumeister.relateTo(huey, 'following'),
+      jennyRostock.relateTo(huey, 'following'),
+      huey.relateTo(dewey, 'following'),
+      dewey.relateTo(huey, 'following'),
+      louie.relateTo(jennyRostock, 'following'),
+
+      dagobert.relateTo(huey, 'blocked'),
+      dagobert.relateTo(dewey, 'blocked'),
+      dagobert.relateTo(louie, 'blocked'),
     ])
 
     await Promise.all([
-      f.create('Organization', { id: 'o1', name: 'Democracy Deutschland', description: 'Description for democracy-deutschland.' }),
-      f.create('Organization', { id: 'o2', name: 'Human-Connection',      description: 'Description for human-connection.' }),
-      f.create('Organization', { id: 'o3', name: 'Pro Veg',               description: 'Description for pro-veg.' }),
-      f.create('Organization', { id: 'o4', name: 'Greenpeace',            description: 'Description for greenpeace.' })
+      factory.create('Category', {
+        id: 'cat1',
+        name: 'Just For Fun',
+        slug: 'just-for-fun',
+        icon: 'smile',
+      }),
+      factory.create('Category', {
+        id: 'cat2',
+        name: 'Happiness & Values',
+        slug: 'happiness-values',
+        icon: 'heart-o',
+      }),
+      factory.create('Category', {
+        id: 'cat3',
+        name: 'Health & Wellbeing',
+        slug: 'health-wellbeing',
+        icon: 'medkit',
+      }),
+      factory.create('Category', {
+        id: 'cat4',
+        name: 'Environment & Nature',
+        slug: 'environment-nature',
+        icon: 'tree',
+      }),
+      factory.create('Category', {
+        id: 'cat5',
+        name: 'Animal Protection',
+        slug: 'animal-protection',
+        icon: 'paw',
+      }),
+      factory.create('Category', {
+        id: 'cat6',
+        name: 'Human Rights & Justice',
+        slug: 'human-rights-justice',
+        icon: 'balance-scale',
+      }),
+      factory.create('Category', {
+        id: 'cat7',
+        name: 'Education & Sciences',
+        slug: 'education-sciences',
+        icon: 'graduation-cap',
+      }),
+      factory.create('Category', {
+        id: 'cat8',
+        name: 'Cooperation & Development',
+        slug: 'cooperation-development',
+        icon: 'users',
+      }),
+      factory.create('Category', {
+        id: 'cat9',
+        name: 'Democracy & Politics',
+        slug: 'democracy-politics',
+        icon: 'university',
+      }),
+      factory.create('Category', {
+        id: 'cat10',
+        name: 'Economy & Finances',
+        slug: 'economy-finances',
+        icon: 'money',
+      }),
+      factory.create('Category', {
+        id: 'cat11',
+        name: 'Energy & Technology',
+        slug: 'energy-technology',
+        icon: 'flash',
+      }),
+      factory.create('Category', {
+        id: 'cat12',
+        name: 'IT, Internet & Data Privacy',
+        slug: 'it-internet-data-privacy',
+        icon: 'mouse-pointer',
+      }),
+      factory.create('Category', {
+        id: 'cat13',
+        name: 'Art, Culture & Sport',
+        slug: 'art-culture-sport',
+        icon: 'paint-brush',
+      }),
+      factory.create('Category', {
+        id: 'cat14',
+        name: 'Freedom of Speech',
+        slug: 'freedom-of-speech',
+        icon: 'bullhorn',
+      }),
+      factory.create('Category', {
+        id: 'cat15',
+        name: 'Consumption & Sustainability',
+        slug: 'consumption-sustainability',
+        icon: 'shopping-cart',
+      }),
+      factory.create('Category', {
+        id: 'cat16',
+        name: 'Global Peace & Nonviolence',
+        slug: 'global-peace-nonviolence',
+        icon: 'angellist',
+      }),
+    ])
+
+    const [environment, nature, democracy, freedom] = await Promise.all([
+      factory.create('Tag', {
+        id: 'Environment',
+      }),
+      factory.create('Tag', {
+        id: 'Nature',
+      }),
+      factory.create('Tag', {
+        id: 'Democracy',
+      }),
+      factory.create('Tag', {
+        id: 'Freedom',
+      }),
+    ])
+
+    const [p0, p1, p3, p4, p5, p6, p9, p10, p11, p13, p14, p15] = await Promise.all([
+      factory.create('Post', {
+        author: peterLustig,
+        id: 'p0',
+        image: faker.image.unsplash.food(),
+        categoryIds: ['cat16'],
+      }),
+      factory.create('Post', {
+        author: bobDerBaumeister,
+        id: 'p1',
+        image: faker.image.unsplash.technology(),
+        categoryIds: ['cat1'],
+      }),
+      factory.create('Post', {
+        author: huey,
+        id: 'p3',
+        categoryIds: ['cat3'],
+      }),
+      factory.create('Post', {
+        author: dewey,
+        id: 'p4',
+        categoryIds: ['cat4'],
+      }),
+      factory.create('Post', {
+        author: louie,
+        id: 'p5',
+        categoryIds: ['cat5'],
+      }),
+      factory.create('Post', {
+        authorId: 'u1',
+        id: 'p6',
+        image: faker.image.unsplash.buildings(),
+        categoryIds: ['cat6'],
+      }),
+      factory.create('Post', {
+        author: huey,
+        id: 'p9',
+        categoryIds: ['cat9'],
+      }),
+      factory.create('Post', {
+        author: dewey,
+        id: 'p10',
+        categoryIds: ['cat10'],
+      }),
+      factory.create('Post', {
+        author: louie,
+        id: 'p11',
+        image: faker.image.unsplash.people(),
+        categoryIds: ['cat11'],
+      }),
+      factory.create('Post', {
+        author: bobDerBaumeister,
+        id: 'p13',
+        categoryIds: ['cat13'],
+      }),
+      factory.create('Post', {
+        author: jennyRostock,
+        id: 'p14',
+        image: faker.image.unsplash.objects(),
+        categoryIds: ['cat14'],
+      }),
+      factory.create('Post', {
+        author: huey,
+        id: 'p15',
+        categoryIds: ['cat15'],
+      }),
+    ])
+
+    authenticatedUser = await louie.toJson()
+    const mention1 =
+      'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, what\'s up?'
+    const mention2 =
+      'Hey <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a>, here is another notification for you!'
+    const hashtag1 =
+      'See <a class="hashtag" data-hashtag-id="NaturphilosophieYoga" href="/?hashtag=NaturphilosophieYoga">#NaturphilosophieYoga</a>, it can really help you!'
+    const hashtagAndMention1 =
+      'The new physics of <a class="hashtag" data-hashtag-id="QuantenFlussTheorie" href="/?hashtag=QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" data-hashtag-id="QuantumGravity" href="/?hashtag=QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
+    const createPostMutation = gql`
+      mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]) {
+        CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+          id
+        }
+      }
+    `
+
+    await Promise.all([
+      mutate({
+        mutation: createPostMutation,
+        variables: {
+          id: 'p2',
+          title: `Nature Philosophy Yoga`,
+          content: hashtag1,
+          categoryIds: ['cat2'],
+        },
+      }),
+      mutate({
+        mutation: createPostMutation,
+        variables: {
+          id: 'p7',
+          title: 'This is post #7',
+          content: `${mention1} ${faker.lorem.paragraph()}`,
+          categoryIds: ['cat7'],
+        },
+      }),
+      mutate({
+        mutation: createPostMutation,
+        variables: {
+          id: 'p8',
+          image: faker.image.unsplash.nature(),
+          title: `Quantum Flow Theory explains Quantum Gravity`,
+          content: hashtagAndMention1,
+          categoryIds: ['cat8'],
+        },
+      }),
+      mutate({
+        mutation: createPostMutation,
+        variables: {
+          id: 'p12',
+          title: 'This is post #12',
+          content: `${mention2} ${faker.lorem.paragraph()}`,
+          categoryIds: ['cat12'],
+        },
+      }),
+    ])
+    const [p2, p7, p8, p12] = await Promise.all(
+      ['p2', 'p7', 'p8', 'p12'].map(id => neode.find('Post', id)),
+    )
+    authenticatedUser = null
+
+    authenticatedUser = await dewey.toJson()
+    const mentionInComment1 =
+      'I heard <a class="mention" data-mention-id="u3" href="/profile/u3">@jenny-rostock</a> has practiced it for 3 years now.'
+    const mentionInComment2 =
+      'Did <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> tell you?'
+    const createCommentMutation = gql`
+      mutation($id: ID, $postId: ID!, $content: String!) {
+        CreateComment(id: $id, postId: $postId, content: $content) {
+          id
+        }
+      }
+    `
+    await Promise.all([
+      mutate({
+        mutation: createCommentMutation,
+        variables: {
+          id: 'c4',
+          postId: 'p2',
+          content: mentionInComment1,
+        },
+      }),
+      mutate({
+        mutation: createCommentMutation,
+        variables: {
+          id: 'c4-1',
+          postId: 'p2',
+          content: mentionInComment2,
+        },
+      }),
+      mutate({
+        mutation: createCommentMutation,
+        variables: {
+          postId: 'p14',
+          content: faker.lorem.paragraph(),
+        },
+      }), // should send a notification
+    ])
+    authenticatedUser = null
+
+    await Promise.all([
+      factory.create('Comment', {
+        author: jennyRostock,
+        id: 'c1',
+        postId: 'p1',
+      }),
+      factory.create('Comment', {
+        author: huey,
+        id: 'c2',
+        postId: 'p1',
+      }),
+      factory.create('Comment', {
+        author: louie,
+        id: 'c3',
+        postId: 'p3',
+      }),
+      factory.create('Comment', {
+        author: bobDerBaumeister,
+        id: 'c5',
+        postId: 'p3',
+      }),
+      factory.create('Comment', {
+        author: peterLustig,
+        id: 'c6',
+        postId: 'p4',
+      }),
+      factory.create('Comment', {
+        author: jennyRostock,
+        id: 'c7',
+        postId: 'p2',
+      }),
+      factory.create('Comment', {
+        author: huey,
+        id: 'c8',
+        postId: 'p15',
+      }),
+      factory.create('Comment', {
+        author: dewey,
+        id: 'c9',
+        postId: 'p15',
+      }),
+      factory.create('Comment', {
+        author: louie,
+        id: 'c10',
+        postId: 'p15',
+      }),
+      factory.create('Comment', {
+        author: jennyRostock,
+        id: 'c11',
+        postId: 'p15',
+      }),
+      factory.create('Comment', {
+        author: jennyRostock,
+        id: 'c12',
+        postId: 'p15',
+      }),
     ])
 
     await Promise.all([
-      f.relate('Organization', 'CreatedBy', { from: 'u1', to: 'o1' }),
-      f.relate('Organization', 'CreatedBy', { from: 'u1', to: 'o2' }),
-      f.relate('Organization', 'OwnedBy',   { from: 'u2', to: 'o2' }),
-      f.relate('Organization', 'OwnedBy',   { from: 'u2', to: 'o3' })
+      democracy.relateTo(p3, 'post'),
+      democracy.relateTo(p11, 'post'),
+      democracy.relateTo(p15, 'post'),
+      democracy.relateTo(p7, 'post'),
+      environment.relateTo(p1, 'post'),
+      environment.relateTo(p5, 'post'),
+      environment.relateTo(p9, 'post'),
+      environment.relateTo(p13, 'post'),
+      freedom.relateTo(p0, 'post'),
+      freedom.relateTo(p4, 'post'),
+      freedom.relateTo(p8, 'post'),
+      freedom.relateTo(p12, 'post'),
+      nature.relateTo(p2, 'post'),
+      nature.relateTo(p6, 'post'),
+      nature.relateTo(p10, 'post'),
+      nature.relateTo(p14, 'post'),
+      peterLustig.relateTo(p15, 'emoted', { emotion: 'surprised' }),
+      bobDerBaumeister.relateTo(p15, 'emoted', { emotion: 'surprised' }),
+      jennyRostock.relateTo(p15, 'emoted', { emotion: 'surprised' }),
+      huey.relateTo(p15, 'emoted', { emotion: 'surprised' }),
+      dewey.relateTo(p15, 'emoted', { emotion: 'surprised' }),
+      louie.relateTo(p15, 'emoted', { emotion: 'surprised' }),
+      dagobert.relateTo(p15, 'emoted', { emotion: 'surprised' }),
+      bobDerBaumeister.relateTo(p14, 'emoted', { emotion: 'cry' }),
+      jennyRostock.relateTo(p13, 'emoted', { emotion: 'angry' }),
+      huey.relateTo(p12, 'emoted', { emotion: 'funny' }),
+      dewey.relateTo(p11, 'emoted', { emotion: 'surprised' }),
+      louie.relateTo(p10, 'emoted', { emotion: 'cry' }),
+      dewey.relateTo(p9, 'emoted', { emotion: 'happy' }),
+      huey.relateTo(p8, 'emoted', { emotion: 'angry' }),
+      jennyRostock.relateTo(p7, 'emoted', { emotion: 'funny' }),
+      bobDerBaumeister.relateTo(p6, 'emoted', { emotion: 'surprised' }),
+      peterLustig.relateTo(p5, 'emoted', { emotion: 'cry' }),
+      bobDerBaumeister.relateTo(p4, 'emoted', { emotion: 'happy' }),
+      jennyRostock.relateTo(p3, 'emoted', { emotion: 'angry' }),
+      huey.relateTo(p2, 'emoted', { emotion: 'funny' }),
+      dewey.relateTo(p1, 'emoted', { emotion: 'surprised' }),
+      louie.relateTo(p0, 'emoted', { emotion: 'cry' }),
     ])
+
+    await Promise.all([
+      peterLustig.relateTo(p1, 'shouted'),
+      peterLustig.relateTo(p6, 'shouted'),
+      bobDerBaumeister.relateTo(p0, 'shouted'),
+      bobDerBaumeister.relateTo(p6, 'shouted'),
+      jennyRostock.relateTo(p6, 'shouted'),
+      jennyRostock.relateTo(p7, 'shouted'),
+      huey.relateTo(p8, 'shouted'),
+      huey.relateTo(p9, 'shouted'),
+      dewey.relateTo(p10, 'shouted'),
+      peterLustig.relateTo(p2, 'shouted'),
+      peterLustig.relateTo(p6, 'shouted'),
+      bobDerBaumeister.relateTo(p0, 'shouted'),
+      bobDerBaumeister.relateTo(p6, 'shouted'),
+      jennyRostock.relateTo(p6, 'shouted'),
+      jennyRostock.relateTo(p7, 'shouted'),
+      huey.relateTo(p8, 'shouted'),
+      huey.relateTo(p9, 'shouted'),
+      louie.relateTo(p10, 'shouted'),
+    ])
+
+    const disableMutation = gql`
+      mutation($id: ID!) {
+        disable(id: $id)
+      }
+    `
+    authenticatedUser = await bobDerBaumeister.toJson()
+    await Promise.all([
+      mutate({
+        mutation: disableMutation,
+        variables: {
+          id: 'p11',
+        },
+      }),
+      mutate({
+        mutation: disableMutation,
+        variables: {
+          id: 'c5',
+        },
+      }),
+    ])
+    authenticatedUser = null
+
+    // There is no error logged or the 'try' fails if this mutation is wrong. Why?
+    const reportMutation = gql`
+      mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+        report(
+          resourceId: $resourceId
+          reasonCategory: $reasonCategory
+          reasonDescription: $reasonDescription
+        ) {
+          type
+        }
+      }
+    `
+    authenticatedUser = await huey.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'c1',
+          reasonCategory: 'other',
+          reasonDescription: 'This comment is bigoted',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p1',
+          reasonCategory: 'discrimination_etc',
+          reasonDescription: 'This post is bigoted',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'u1',
+          reasonCategory: 'doxing',
+          reasonDescription: 'This user is harassing me with bigoted remarks',
+        },
+      }),
+    ])
+    authenticatedUser = null
+
+    await Promise.all(
+      [...Array(30).keys()].map(i => {
+        return factory.create('User')
+      }),
+    )
+
+    await Promise.all(
+      [...Array(30).keys()].map(() => {
+        return factory.create('Post', {
+          author: jennyRostock,
+          image: faker.image.unsplash.objects(),
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(6).keys()].map(() => {
+        return factory.create('Comment', {
+          author: jennyRostock,
+          postId: 'p2',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(4).keys()].map(() => {
+        return factory.create('Comment', {
+          author: jennyRostock,
+          postId: 'p15',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(2).keys()].map(() => {
+        return factory.create('Comment', {
+          author: jennyRostock,
+          postId: 'p4',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(21).keys()].map(() => {
+        return factory.create('Post', {
+          author: peterLustig,
+          image: faker.image.unsplash.buildings(),
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(3).keys()].map(() => {
+        return factory.create('Comment', {
+          author: peterLustig,
+          postId: 'p4',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(5).keys()].map(() => {
+        return factory.create('Comment', {
+          author: peterLustig,
+          postId: 'p14',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(6).keys()].map(() => {
+        return factory.create('Comment', {
+          author: peterLustig,
+          postId: 'p0',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(11).keys()].map(() => {
+        return factory.create('Post', {
+          author: dewey,
+          image: faker.image.unsplash.food(),
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(7).keys()].map(() => {
+        return factory.create('Comment', {
+          author: dewey,
+          postId: 'p2',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(5).keys()].map(() => {
+        return factory.create('Comment', {
+          author: dewey,
+          postId: 'p6',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(2).keys()].map(() => {
+        return factory.create('Comment', {
+          author: dewey,
+          postId: 'p9',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(16).keys()].map(() => {
+        return factory.create('Post', {
+          author: louie,
+          image: faker.image.unsplash.technology(),
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(4).keys()].map(() => {
+        return factory.create('Comment', {
+          author: louie,
+          postId: 'p1',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(8).keys()].map(() => {
+        return factory.create('Comment', {
+          author: louie,
+          postId: 'p10',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(5).keys()].map(() => {
+        return factory.create('Comment', {
+          author: louie,
+          postId: 'p13',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(45).keys()].map(() => {
+        return factory.create('Post', {
+          author: bobDerBaumeister,
+          image: faker.image.unsplash.people(),
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(2).keys()].map(() => {
+        return factory.create('Comment', {
+          author: bobDerBaumeister,
+          postId: 'p2',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(3).keys()].map(() => {
+        return factory.create('Comment', {
+          author: bobDerBaumeister,
+          postId: 'p12',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(7).keys()].map(() => {
+        return factory.create('Comment', {
+          author: bobDerBaumeister,
+          postId: 'p13',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(8).keys()].map(() => {
+        return factory.create('Post', {
+          author: huey,
+          image: faker.image.unsplash.nature(),
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(6).keys()].map(() => {
+        return factory.create('Comment', {
+          author: huey,
+          postId: 'p0',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(8).keys()].map(() => {
+        return factory.create('Comment', {
+          author: huey,
+          postId: 'p13',
+        })
+      }),
+    )
+
+    await Promise.all(
+      [...Array(9).keys()].map(() => {
+        return factory.create('Comment', {
+          author: huey,
+          postId: 'p15',
+        })
+      }),
+    )
+
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
+    process.exit(0)
   } catch (err) {
     /* eslint-disable-next-line no-console */
     console.error(err)

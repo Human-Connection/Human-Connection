@@ -10,7 +10,6 @@ export default class EventHandler extends Extension {
       new Plugin({
         props: {
           transformPastedText(text) {
-            // console.log('#### transformPastedText', text)
             return text.trim()
           },
           transformPastedHTML(html) {
@@ -18,10 +17,7 @@ export default class EventHandler extends Extension {
               // remove all tags with "space only"
               .replace(/<[a-z-]+>[\s]+<\/[a-z-]+>/gim, '')
               // remove all iframes
-              .replace(
-                /(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/gim,
-                ''
-              )
+              .replace(/(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/gim, '')
               .replace(/[\n]{3,}/gim, '\n\n')
               .replace(/(\r\n|\n\r|\r|\n)/g, '<br>$1')
 
@@ -29,22 +25,15 @@ export default class EventHandler extends Extension {
               // limit linebreaks to max 2 (equivalent to html "br" linebreak)
               .replace(/(<br ?\/?>\s*){2,}/gim, '<br>')
               // remove additional linebreaks after p tags
-              .replace(
-                /<\/(p|div|th|tr)>\s*(<br ?\/?>\s*)+\s*<(p|div|th|tr)>/gim,
-                '</p><p>'
-              )
+              .replace(/<\/(p|div|th|tr)>\s*(<br ?\/?>\s*)+\s*<(p|div|th|tr)>/gim, '</p><p>')
               // remove additional linebreaks inside p tags
-              .replace(
-                /<[a-z-]+>(<[a-z-]+>)*\s*(<br ?\/?>\s*)+\s*(<\/[a-z-]+>)*<\/[a-z-]+>/gim,
-                ''
-              )
+              .replace(/<[a-z-]+>(<[a-z-]+>)*\s*(<br ?\/?>\s*)+\s*(<\/[a-z-]+>)*<\/[a-z-]+>/gim, '')
               // remove additional linebreaks when first child inside p tags
               .replace(/<p>(\s*<br ?\/?>\s*)+/gim, '<p>')
               // remove additional linebreaks when last child inside p tags
               .replace(/(\s*<br ?\/?>\s*)+<\/p>/gim, '</p>')
-            // console.log('#### transformPastedHTML', html)
             return html
-          }
+          },
           // transformPasted(slice) {
           //   // console.log('#### transformPasted', slice.content)
           //   let content = []
@@ -76,8 +65,8 @@ export default class EventHandler extends Extension {
           //   return slice
           //   // return newSlice
           // }
-        }
-      })
+        },
+      }),
     ]
   }
 }
