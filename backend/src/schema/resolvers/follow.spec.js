@@ -129,8 +129,18 @@ describe('follow', () => {
         data: { followUser: expectedUser },
         errors: undefined,
       })
+    })
 
-      // Test to make sure FOLLOWS relationship has "createdAt" date.
+    test('adds `createdAt` to `FOLLOW` relationship', async () => {
+      const expectedUser = {
+        name: user2.name,
+        followedBy: [{ id: user1.id, name: user1.name }],
+        followedByCurrentUser: true,
+      }
+      await mutate({
+        mutation: mutationFollowUser,
+        variables,
+      })
       const relation = await neode.cypher(
         'MATCH (user:User {id: {id}})-[relationship:FOLLOWS]->(followed:User) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
         { id: 'u1' },

@@ -100,7 +100,11 @@ describe('shout and unshout posts', () => {
           data: { Post: [{ id: 'another-user-post-id', shoutedBy: [{ id: 'current-user-id' }] }] },
           errors: undefined,
         })
-        // Test to make sure SHOUT relationship has "createdAt" date.
+      })
+
+      it('adds `createdAt` to `SHOUT` relationship', async () => {
+        variables = { id: 'another-user-post-id' }
+        await mutate({ mutation: mutationShoutPost, variables })
         const relation = await instance.cypher(
           'MATCH (user:User {id: $userId1})-[relationship:SHOUTED]->(node {id: $userId2}) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
           {
