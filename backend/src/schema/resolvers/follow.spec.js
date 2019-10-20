@@ -132,11 +132,6 @@ describe('follow', () => {
     })
 
     test('adds `createdAt` to `FOLLOW` relationship', async () => {
-      const expectedUser = {
-        name: user2.name,
-        followedBy: [{ id: user1.id, name: user1.name }],
-        followedByCurrentUser: true,
-      }
       await mutate({
         mutation: mutationFollowUser,
         variables,
