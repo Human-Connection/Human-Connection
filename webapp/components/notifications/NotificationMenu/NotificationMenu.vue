@@ -12,6 +12,9 @@
       <div class="notifications-menu-popover">
         <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
       </div>
+      <ds-space centered>
+        <nuxt-link to="/notifications">{{ $t('notifications.page') }}</nuxt-link>
+      </ds-space>
     </template>
   </dropdown>
 </template>

@@ -176,7 +176,13 @@
       "mentioned_in_comment": "Mentioned you in a comment …",
       "commented_on_post": "Commented on your post …"
     },
-    "comment": "Comment"
+    "comment": "Comment",
+    "title": "Notifications",
+    "page": "All notifications",
+    "createdAt": "Notification created at",
+    "type": "Type",
+    "user": "User",
+    "action": "Action"
   },
   "search": {
     "placeholder": "Search",
