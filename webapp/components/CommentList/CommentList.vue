@@ -25,6 +25,7 @@
         :routeHash="routeHash"
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
+        @toggleNewCommentForm="toggleNewCommentForm"
       />
     </div>
   </div>
@@ -50,6 +51,9 @@ export default {
       this.post.comments = this.post.comments.map(comment => {
         return comment.id === updatedComment.id ? updatedComment : comment
       })
+    },
+    toggleNewCommentForm(showNewCommentForm) {
+      this.$emit('toggleNewCommentForm', showNewCommentForm)
     },
   },
 }
