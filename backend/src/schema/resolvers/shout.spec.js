@@ -102,6 +102,22 @@ describe('shout and unshout posts', () => {
         })
       })
 
+      it('adds `createdAt` to `SHOUT` relationship', async () => {
+        variables = { id: 'another-user-post-id' }
+        await mutate({ mutation: mutationShoutPost, variables })
+        const relation = await instance.cypher(
+          'MATCH (user:User {id: $userId1})-[relationship:SHOUTED]->(node {id: $userId2}) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
+          {
+            userId1: 'current-user-id',
+            userId2: 'another-user-post-id',
+          },
+        )
+        const relationshipProperties = relation.records.map(
+          record => record.get('relationship').properties.createdAt,
+        )
+        expect(relationshipProperties[0]).toEqual(expect.any(String))
+      })
+
       it('can not shout my own post', async () => {
         variables = { id: 'current-user-post-id' }
         await expect(mutate({ mutation: mutationShoutPost, variables })).resolves.toMatchObject({
