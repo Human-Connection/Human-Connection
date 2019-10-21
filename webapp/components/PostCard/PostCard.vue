@@ -1,7 +1,7 @@
 <template>
   <ds-card
     :image="post.image | proxyApiUrl"
-    :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--target': isPinned }"
+    :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--pinned': isPinned }"
   >
     <!-- Post Link Target -->
     <nuxt-link
@@ -16,7 +16,7 @@
       <client-only>
         <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
       </client-only>
-      <hc-ribbon v-if="isPinned" :text="$t('post.pinned')" />
+      <hc-ribbon v-if="isPinned" class="ribbon--pinned" :text="$t('post.pinned')" />
       <hc-ribbon v-else :text="$t('post.name')" />
     </div>
     <ds-space margin-bottom="small" />
@@ -180,7 +180,7 @@ export default {
   }
 }
 
-.post--target {
-  border: 1px solid $color-primary;
+.post--pinned {
+  border: 1px solid $color-warning;
 }
 </style>

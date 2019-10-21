@@ -355,7 +355,7 @@
   },
   "post": {
     "name": "Post",
-    "pinned": "Pinned",
+    "pinned": "Announcement",
     "moreInfo": {
       "name": "More info",
       "title": "More information",
