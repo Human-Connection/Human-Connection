@@ -43,7 +43,8 @@ describe('report resources', () => {
     reasonDescription: 'Violates code of conduct !!!',
   }
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    await factory.cleanDatabase()
     const { server } = createServer({
       context: () => {
         return {
@@ -326,9 +327,6 @@ describe('report resources', () => {
           })
         })
 
-        /* An der Stelle würde ich den p23 noch mal prüfen, diesmal muss aber eine error meldung kommen.
-           At this point I would check the p23 again, but this time there must be an error message. */
-
         describe('reported resource is a comment', () => {
           let createPostVariables
           beforeEach(async () => {
@@ -387,8 +385,7 @@ describe('report resources', () => {
             })
           })
         })
-        /* An der Stelle würde ich den comment-to-report-id noch mal prüfen, diesmal muss aber eine error meldung kommen.
-           At this point I would check the comment-to-report-id again, but this time there must be an error message. */
+
         describe('reported resource is a tag', () => {
           beforeEach(async () => {
             await factory.create('Tag', {
@@ -411,9 +408,6 @@ describe('report resources', () => {
             })
           })
         })
-
-        /* An der Stelle würde ich den tag-to-report-id noch mal prüfen, diesmal muss aber eine error meldung kommen.
-           At this point I would check the tag-to-report-id again, but this time there must be an error message. */
       })
     })
   })
