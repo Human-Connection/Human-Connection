@@ -21,6 +21,8 @@
             :post="post"
             :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
             @removePostFromList="deletePost"
+            @pinPost="pinPost"
+            @unpinPost="unpinPost"
           />
         </masonry-grid-item>
       </template>
@@ -58,12 +60,13 @@
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import HcEmpty from '~/components/Empty'
-import HcPostCard from '~/components/PostCard'
+import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
+import PostMutations from '~/graphql/PostMutations'
 
 export default {
   components: {
@@ -166,6 +169,37 @@ export default {
         return post.id !== deletedPost.id
       })
     },
+    resetPostList() {
+      this.offset = 0
+      this.posts = []
+      this.hasMore = true
+    },
+    pinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().pinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.Post.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    unpinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().unpinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.Post.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
   },
   apollo: {
     Post: {
@@ -176,7 +210,7 @@ export default {
         return {
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: ['pinnedAt_asc', this.sorting],
           offset: 0,
         }
       },

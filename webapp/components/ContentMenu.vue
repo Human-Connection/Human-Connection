@@ -55,24 +55,46 @@ export default {
     routes() {
       let routes = []
 
-      if (this.isOwner && this.resourceType === 'contribution') {
-        routes.push({
-          name: this.$t(`post.menu.edit`),
-          path: this.$router.resolve({
-            name: 'post-edit-id',
-            params: {
-              id: this.resource.id,
+      if (this.resourceType === 'contribution') {
+        if (this.isOwner) {
+          routes.push({
+            name: this.$t(`post.menu.edit`),
+            path: this.$router.resolve({
+              name: 'post-edit-id',
+              params: {
+                id: this.resource.id,
+              },
+            }).href,
+            icon: 'edit',
+          })
+          routes.push({
+            name: this.$t(`post.menu.delete`),
+            callback: () => {
+              this.openModal('delete')
             },
-          }).href,
-          icon: 'edit',
-        })
-        routes.push({
-          name: this.$t(`post.menu.delete`),
-          callback: () => {
-            this.openModal('delete')
-          },
-          icon: 'trash',
-        })
+            icon: 'trash',
+          })
+        }
+
+        if (this.isAdmin) {
+          if (!this.resource.pinnedBy) {
+            routes.push({
+              name: this.$t(`post.menu.pin`),
+              callback: () => {
+                this.$emit('pinPost', this.resource)
+              },
+              icon: 'link',
+            })
+          } else {
+            routes.push({
+              name: this.$t(`post.menu.unpin`),
+              callback: () => {
+                this.$emit('unpinPost', this.resource)
+              },
+              icon: 'unlink',
+            })
+          }
+        }
       }
 
       if (this.isOwner && this.resourceType === 'comment') {
@@ -154,6 +176,9 @@ export default {
     },
     isModerator() {
       return this.$store.getters['auth/isModerator']
+    },
+    isAdmin() {
+      return this.$store.getters['auth/isAdmin']
     },
   },
   methods: {

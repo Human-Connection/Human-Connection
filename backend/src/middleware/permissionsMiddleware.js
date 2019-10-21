@@ -134,6 +134,7 @@ const permissions = shield(
       PostsEmotionsByCurrentUser: isAuthenticated,
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
+      profilePagePosts: or(onlyEnabledContent, isModerator),
     },
     Mutation: {
       '*': deny,
@@ -174,6 +175,8 @@ const permissions = shield(
       markAsRead: isAuthenticated,
       AddEmailAddress: isAuthenticated,
       VerifyEmailAddress: isAuthenticated,
+      pinPost: isAdmin,
+      unpinPost: isAdmin,
     },
     User: {
       email: or(isMyOwn, isAdmin),

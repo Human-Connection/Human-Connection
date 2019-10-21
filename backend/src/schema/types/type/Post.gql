@@ -16,6 +16,10 @@ type Post {
   createdAt: String
   updatedAt: String
   language: String
+  pinnedAt: String @cypher(
+      statement: "MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN pinned.createdAt"
+    )
+  pinnedBy: User @relation(name:"PINNED", direction: "IN")
   relatedContributions: [Post]!
     @cypher(
       statement: """
@@ -40,7 +44,7 @@ type Post {
     @cypher(
       statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)"
     )
-
+  
   # Has the currently logged in user shouted that post?
   shoutedByCurrentUser: Boolean!
     @cypher(
@@ -84,9 +88,12 @@ type Mutation {
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
   RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
+  pinPost(id: ID!): Post
+  unpinPost(id: ID!): Post
 }
 
 type Query {
   PostsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
   PostsEmotionsByCurrentUser(postId: ID!): [String]
+  profilePagePosts(filter: _PostFilter, first: Int, offset: Int, orderBy: [_PostOrdering]): [Post]
 }

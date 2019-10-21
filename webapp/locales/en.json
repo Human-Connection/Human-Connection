@@ -355,6 +355,7 @@
   },
   "post": {
     "name": "Post",
+    "pinned": "Announcement",
     "moreInfo": {
       "name": "More info",
       "title": "More information",
@@ -368,7 +369,11 @@
     },
     "menu": {
       "edit": "Edit Post",
-      "delete": "Delete Post"
+      "delete": "Delete Post",
+      "pin": "Pin post",
+      "pinnedSuccessfully": "Post pinned successfully!",
+      "unpin": "Unpin post",
+      "unpinnedSuccessfully": "Post unpinned successfully!"
     },
     "comment": {
       "submit": "Comment",
