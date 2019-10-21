@@ -3832,10 +3832,10 @@ async-retry@^1.2.1:
   dependencies:
     retry "0.12.0"
 
-async-validator@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-3.1.0.tgz#447db5eb003cbb47e650f040037a29fc3881ce92"
-  integrity sha512-XyAHGwtpx3Y3aHIOaGXXFo4tiulnrh+mXBU9INxig6Q8rtmtmBxDuCxb60j7EIGbAsQg9cxfJ2jrUZ+fIqEnBQ==
+async-validator@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-3.2.0.tgz#fcbd644e7b5b7c9304d29a4752c3f06214ef0d56"
+  integrity sha512-QBuW7Qrg8wbh7Wtqw1QdN162GUmXDs9gayxFaXcCOf3bCqHJ/TQep0H4I63iVk7Q3kIGWU4wbAr/C0Uj64JiMw==
 
 async@^1.4.0:
   version "1.5.2"
