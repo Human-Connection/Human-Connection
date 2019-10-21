@@ -1895,10 +1895,10 @@ cypress-cucumber-preprocessor@^1.16.2:
     js-string-escape "^1.0.1"
     through "^2.3.8"
 
-cypress-file-upload@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.3.4.tgz#cbeb8a7a07150a1c60f2873666979e48b6335070"
-  integrity sha512-kfdrQ6cWBw82G7EbHSqZJiOQWRh9cGz9K1mjePNZax00gBL0qOdRTjfkAnR2vEmmJyCfnN3efryjfhFeLrGWVw==
+cypress-file-upload@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.4.0.tgz#f066853357994ed7b64e0ea35920d3d85273914e"
+  integrity sha512-BY7jrpOPFEGcGBzkTReEjwQ59+O3u2SH2OleXdnDCuWIPHjbDx7haXukyAFd906JsI4Z2zXPiKrUVFHZc96eFA==
 
 cypress-plugin-retries@^1.3.0:
   version "1.3.0"
@@ -2359,7 +2359,8 @@ extsprintf@^1.2.0:
 
 faker@Marak/faker.js#master:
   version "4.1.0"
-  resolved "https://codeload.github.com/Marak/faker.js/tar.gz/10bfb9f467b0ac2b8912ffc15690b50ef3244f09"
+  uid "9fd8d7d37b398842d0784a116a340f7aa6afb89b"
+  resolved "https://codeload.github.com/Marak/faker.js/tar.gz/9fd8d7d37b398842d0784a116a340f7aa6afb89b"
 
 fast-deep-equal@^2.0.1:
   version "2.0.1"
