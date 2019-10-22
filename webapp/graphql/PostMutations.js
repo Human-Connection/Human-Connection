@@ -50,6 +50,11 @@ export default () => {
           content
           contentExcerpt
           language
+          pinnedBy {
+            id
+            name
+            role
+          }
         }
       }
     `,
@@ -82,6 +87,40 @@ export default () => {
           }
           to {
             id
+          }
+        }
+      }
+    `,
+    pinPost: gql`
+      mutation($id: ID!) {
+        pinPost(id: $id) {
+          id
+          title
+          slug
+          content
+          contentExcerpt
+          language
+          pinnedBy {
+            id
+            name
+            role
+          }
+        }
+      }
+    `,
+    unpinPost: gql`
+      mutation($id: ID!) {
+        unpinPost(id: $id) {
+          id
+          title
+          slug
+          content
+          contentExcerpt
+          language
+          pinnedBy {
+            id
+            name
+            role
           }
         }
       }

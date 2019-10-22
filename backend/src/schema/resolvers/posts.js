@@ -2,10 +2,9 @@ import uuid from 'uuid/v4'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
 import { getBlockedUsers, getBlockedByUsers } from './users.js'
-import { mergeWith, isArray } from 'lodash'
+import { mergeWith, isArray, isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
-
 const filterForBlockedUsers = async (params, context) => {
   if (!context.user) return params
   const [blockedUsers, blockedByUsers] = await Promise.all([
@@ -29,13 +28,28 @@ const filterForBlockedUsers = async (params, context) => {
   return params
 }
 
+const maintainPinnedPosts = params => {
+  const pinnedPostFilter = { pinnedBy_in: { role_in: ['admin'] } }
+  if (isEmpty(params.filter)) {
+    params.filter = { OR: [pinnedPostFilter, {}] }
+  } else {
+    params.filter = { OR: [pinnedPostFilter, { ...params.filter }] }
+  }
+  return params
+}
+
 export default {
   Query: {
     Post: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
+      params = await maintainPinnedPosts(params)
       return neo4jgraphql(object, params, context, resolveInfo, false)
     },
     findPosts: async (object, params, context, resolveInfo) => {
+      params = await filterForBlockedUsers(params, context)
+      return neo4jgraphql(object, params, context, resolveInfo, false)
+    },
+    profilePagePosts: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
       return neo4jgraphql(object, params, context, resolveInfo, false)
     },
@@ -115,10 +129,10 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       const session = context.driver.session()
-
       let updatePostCypher = `MATCH (post:Post {id: $params.id})
       SET post += $params
       SET post.updatedAt = toString(datetime())
+      WITH post
       `
 
       if (categoryIds && categoryIds.length) {
@@ -131,10 +145,10 @@ export default {
         await session.run(cypherDeletePreviousRelations, { params })
 
         updatePostCypher += `
-          WITH post
           UNWIND $categoryIds AS categoryId
           MATCH (category:Category {id: categoryId})
           MERGE (post)-[:CATEGORIZED]->(category)
+          WITH post
         `
       }
 
@@ -211,10 +225,75 @@ export default {
       })
       return emoted
     },
+    pinPost: async (_parent, params, context, _resolveInfo) => {
+      let pinnedPostWithNestedAttributes
+      const { driver, user } = context
+      const session = driver.session()
+      const { id: userId } = user
+      let writeTxResultPromise = session.writeTransaction(async transaction => {
+        const deletePreviousRelationsResponse = await transaction.run(
+          `
+          MATCH (:User)-[previousRelations:PINNED]->(post:Post)
+          DELETE previousRelations
+          RETURN post
+        `,
+        )
+        return deletePreviousRelationsResponse.records.map(record => record.get('post').properties)
+      })
+      await writeTxResultPromise
+
+      writeTxResultPromise = session.writeTransaction(async transaction => {
+        const pinPostTransactionResponse = await transaction.run(
+          `
+            MATCH (user:User {id: $userId}) WHERE user.role = 'admin'
+            MATCH (post:Post {id: $params.id})
+            MERGE (user)-[pinned:PINNED {createdAt: toString(datetime())}]->(post)
+            RETURN post, pinned.createdAt as pinnedAt
+         `,
+          { userId, params },
+        )
+        return pinPostTransactionResponse.records.map(record => ({
+          pinnedPost: record.get('post').properties,
+          pinnedAt: record.get('pinnedAt'),
+        }))
+      })
+      try {
+        const [transactionResult] = await writeTxResultPromise
+        const { pinnedPost, pinnedAt } = transactionResult
+        pinnedPostWithNestedAttributes = {
+          ...pinnedPost,
+          pinnedAt,
+        }
+      } finally {
+        session.close()
+      }
+      return pinnedPostWithNestedAttributes
+    },
+    unpinPost: async (_parent, params, context, _resolveInfo) => {
+      let unpinnedPost
+      const session = context.driver.session()
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const unpinPostTransactionResponse = await transaction.run(
+          `
+          MATCH (:User)-[previousRelations:PINNED]->(post:Post {id: $params.id})
+          DELETE previousRelations
+          RETURN post
+        `,
+          { params },
+        )
+        return unpinPostTransactionResponse.records.map(record => record.get('post').properties)
+      })
+      try {
+        ;[unpinnedPost] = await writeTxResultPromise
+      } finally {
+        session.close()
+      }
+      return unpinnedPost
+    },
   },
   Post: {
     ...Resolver('Post', {
-      undefinedToNull: ['activityId', 'objectId', 'image', 'language'],
+      undefinedToNull: ['activityId', 'objectId', 'image', 'language', 'pinnedAt'],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',
@@ -225,6 +304,7 @@ export default {
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         disabledBy: '<-[:DISABLED]-(related:User)',
+        pinnedBy: '<-[:PINNED]-(related:User)',
       },
       count: {
         commentsCount:

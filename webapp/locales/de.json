@@ -362,6 +362,7 @@
   },
   "post": {
     "name": "Beitrag",
+    "pinned": "Meldung",
     "moreInfo": {
       "name": "Mehr Info",
       "title": "Mehr Informationen",
@@ -375,7 +376,11 @@
     },
     "menu": {
       "edit": "Beitrag bearbeiten",
-      "delete": "Beitrag löschen"
+      "delete": "Beitrag löschen",
+      "pin": "Post festpinnen",
+      "pinnedSuccessfully": "Post erfolgreich festgepinnt!",
+      "unpin": "Post nicht mehr festpinnen",
+      "unpinnedSuccessfully": "Post erfolgreich nicht mehr festgepinnt!"
     },
     "comment": {
       "submit": "Kommentiere",

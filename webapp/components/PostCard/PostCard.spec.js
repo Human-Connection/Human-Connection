@@ -2,7 +2,7 @@ import { config, shallowMount, mount, createLocalVue, RouterLinkStub } from '@vu
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import Filters from '~/plugins/vue-filters'
-import PostCard from '.'
+import PostCard from './PostCard.vue'
 
 const localVue = createLocalVue()
 
