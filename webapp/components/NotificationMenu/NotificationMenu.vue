@@ -13,7 +13,9 @@
         <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
       </div>
       <ds-space centered>
-        <nuxt-link to="/notifications">{{ $t('notifications.page') }}</nuxt-link>
+        <nuxt-link to="/notifications">
+          {{ $t('notifications.page') }}
+        </nuxt-link>
       </ds-space>
     </template>
   </dropdown>
@@ -35,6 +37,7 @@ export default {
     return {
       displayedNotifications: [],
       notifications: [],
+      nofiticationRead: null,
     }
   },
   props: {
@@ -75,15 +78,24 @@ export default {
       }
       return countUnread
     },
+    updateNotifications() {
+      return this.notificationRead
+    },
   },
   apollo: {
     notifications: {
       query() {
         return notificationQuery(this.$i18n)
       },
+      variables() {
+        return {
+          read: false,
+          orderBy: 'updatedAt_desc',
+        }
+      },
       pollInterval: NOTIFICATIONS_POLL_INTERVAL,
-      update(data) {
-        const newNotifications = data.notifications.filter(newN => {
+      update({ notifications }) {
+        const newNotifications = notifications.filter(newN => {
           return !this.displayedNotifications.find(oldN => this.equalNotification(newN, oldN))
         })
         this.displayedNotifications = newNotifications
@@ -91,7 +103,7 @@ export default {
           .sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt)
           })
-        return data.notifications
+        return notifications
       },
       error(error) {
         this.$toast.error(error.message)

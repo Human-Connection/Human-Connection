@@ -14,7 +14,7 @@
             @click.prevent="toggleMenu()"
           >
             <ds-icon style="margin-right: 2px;" name="sort" />
-            {{ 'All' }}
+            {{ selected }}
             <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
           </a>
           <ds-menu
@@ -29,9 +29,9 @@
               class="locale-menu-item"
               :route="item.route"
               :parents="item.parents"
-              @click.stop.prevent="sortNotifications(item.route.option, toggleMenu)"
+              @click.stop.prevent="sortNotifications(item.route, toggleMenu)"
             >
-              {{ item.route.option }}
+              {{ item.route.label }}
             </ds-menu-item>
           </ds-menu>
         </dropdown>
@@ -39,51 +39,12 @@
     </ds-flex>
     <ds-space />
     <ds-table
-      v-if="notifications && notifications.length"
-      :data="notifications"
+      v-if="selectedNotifications && selectedNotifications.length"
+      :data="selectedNotifications"
       :fields="fields"
-      id="notifications-table"
+      class="notifications-table"
     >
-      <template slot="notifications" slot-scope="scope">
-        <ds-space :class="{ read: scope.row.read, notification: true }" margin="small">
-          <client-only>
-            <ds-space margin-bottom="x-small">
-              <hc-user
-                :user="scope.row.from.author"
-                :date-time="scope.row.from.createdAt"
-                :trunc="35"
-              />
-            </ds-space>
-            <ds-text class="reason-text-for-test" color="soft">
-              {{ $t(`notifications.reason.${scope.row.reason}`) }}
-            </ds-text>
-          </client-only>
-          <ds-space margin-bottom="x-small" />
-          <nuxt-link
-            class="notification-mention-post"
-            :to="{ name: 'post-id-slug', params, ...hashParam }"
-            @click.native="$emit('read')"
-          >
-            <ds-space margin-bottom="x-small">
-              <ds-card
-                :header="scope.row.from.title || scope.row.from.post.title"
-                hover
-                space="x-small"
-                class="notifications-card"
-              >
-                <ds-space margin-bottom="x-small" />
-                <div>
-                  <span v-if="isComment" class="comment-notification-header">
-                    {{ $t(`notifications.comment`) }}:
-                  </span>
-                  {{ scope.row.from.contentExcerpt | removeHtml }}
-                </div>
-              </ds-card>
-            </ds-space>
-          </nuxt-link>
-        </ds-space>
-      </template>
-      <!-- <template slot="user" slot-scope="scope">
+      <template slot="user" slot-scope="scope">
         <ds-space margin-bottom="base">
           <hc-user
             :user="scope.row.from.author"
@@ -93,30 +54,31 @@
         </ds-space>
         {{ $t(`notifications.reason.${scope.row.reason}`) }}
       </template>
-      <template slot="type" slot-scope="scope">
+      <template slot="post" slot-scope="scope">
         <nuxt-link
           class="notification-mention-post"
-          :to="{ name: 'post-id-slug', params, ...hashParam }"
+          :to="{
+            name: 'post-id-slug',
+            params: {
+              id:
+                scope.row.from.__typename === 'Comment'
+                  ? scope.row.from.post.id
+                  : scope.row.from.id,
+              slug:
+                scope.row.from.__typename === 'Comment'
+                  ? scope.row.from.post.slug
+                  : scope.row.from.slug,
+            },
+            hash: scope.row.from.__typename === 'Comment' ? `#commentId-${scope.row.from.id}` : {},
+          }"
           @click.native="$emit('read')"
         >
-          <ds-space margin-bottom="x-small">
-            <ds-card
-              :header="scope.row.from.title || scope.row.from.post.title"
-              hover
-              space="x-small"
-              class="notifications-card"
-            >
-              <ds-space margin-bottom="x-small" />
-              <div>
-                <span v-if="isComment" class="comment-notification-header">
-                  {{ $t(`notifications.comment`) }}:
-                </span>
-                {{ scope.row.from.contentExcerpt | removeHtml }}
-              </div>
-            </ds-card>
-          </ds-space>
+          <b>{{ scope.row.from.title || scope.row.from.post.title | truncate(50) }}</b>
         </nuxt-link>
-      </template> -->
+      </template>
+      <template slot="content" slot-scope="scope">
+        <b>{{ scope.row.from.contentExcerpt || scope.row.from.contentExcerpt | removeHtml }}</b>
+      </template>
     </ds-table>
     <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
   </ds-card>
@@ -136,23 +98,29 @@ export default {
   },
   data() {
     return {
-      notifications: [],
-      sortingOptions: ['All', 'Read', 'Unread'],
+      selectedNotifications: [],
+      selected: 'All',
+      sortingOptions: [
+        { label: 'All', value: null },
+        { label: 'Read', value: true },
+        { label: 'Unread', value: false },
+      ],
       nofiticationRead: null,
     }
   },
   computed: {
     fields() {
       return {
-        notifications: null,
-        // user: this.$t('notifications.user'),
-        // type: this.$t('notifications.type'),
+        user: this.$t('notifications.user'),
+        post: this.$t('notifications.type'),
+        content: this.$t('notifications.content'),
       }
     },
     routes() {
       let routes = this.sortingOptions.map(option => {
         return {
-          option,
+          label: option.label,
+          value: option.value,
         }
       })
       return routes
@@ -160,24 +128,25 @@ export default {
   },
   methods: {
     sortNotifications(option, toggleMenu) {
-      if (option === 'Read') {
-        this.notificationRead = true
-      } else if (option === 'Unread') {
-        this.notificationRead = false
-      } else {
-        this.notificationRead = null
-      }
-      this.$apollo.queries.notificationsPage.refetch()
+      this.notificationRead = option.value
+      this.selected = option.label
+      this.$apollo.queries.notifications.refresh()
       toggleMenu()
     },
   },
   apollo: {
-    notificationsPage: {
+    notifications: {
       query() {
         return notificationQuery(this.$i18n)
       },
+      variables() {
+        return {
+          read: this.notificationRead,
+          orderBy: 'updatedAt_desc',
+        }
+      },
       update({ notifications }) {
-        this.notifications = notifications
+        this.selectedNotifications = notifications
       },
       fetchPolicy: 'cache-and-network',
       error(error) {
@@ -191,7 +160,7 @@ export default {
 .sorting-dropdown {
   float: right;
 }
-#notifications-table thead {
-  display: none;
+.notifications-table td {
+  width: 500px;
 }
 </style>
