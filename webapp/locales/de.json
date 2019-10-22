@@ -112,7 +112,8 @@
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo",
-    "success": "Du bist eingeloggt!"
+    "success": "Du bist eingeloggt!",
+    "failure": "Fehlerhafte E-Mail-Adresse oder Passwort."
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes …",

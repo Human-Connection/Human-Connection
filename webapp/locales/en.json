@@ -113,7 +113,8 @@
     "moreInfoURL": "https://human-connection.org/en/",
     "moreInfoHint": "to the presentation page",
     "hello": "Hello",
-    "success": "You are logged in!"
+    "success": "You are logged in!",
+    "failure": "Incorrect email address or password."
   },
   "editor": {
     "placeholder": "Leave your inspirational thoughts …",

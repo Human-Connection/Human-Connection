@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "nuxt",
     "dev:styleguide": "cross-env STYLEGUIDE_DEV=true yarn run dev",
-    "storybook": "start-storybook -p 3002 -c storybook/",
+    "storybook": "start-storybook -p 3002  -s ./static -c storybook/",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate:maintenance": "nuxt generate -c nuxt.config.maintenance.js",
@@ -121,6 +121,7 @@
     "eslint-plugin-promise": "~4.2.1",
     "eslint-plugin-standard": "~4.0.1",
     "eslint-plugin-vue": "~5.2.3",
+    "faker": "^4.1.0",
     "flush-promises": "^1.0.2",
     "fuse.js": "^3.4.5",
     "identity-obj-proxy": "^3.0.0",
