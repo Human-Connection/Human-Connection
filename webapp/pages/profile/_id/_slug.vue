@@ -473,7 +473,7 @@ export default {
           filter: this.filter,
           first: this.pageSize,
           offset: 0,
-          orderBy: ['pinnedAt_asc', 'createdAt_desc'],
+          orderBy: 'createdAt_desc',
         }
       },
       update({ profilePagePosts }) {
