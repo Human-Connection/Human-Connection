@@ -50,6 +50,18 @@
       }
     }
   },
+  "store": {
+    "posts": {
+      "orderBy": {
+        "newest": {
+          "label": "Neueste"
+        },
+        "oldest": {
+          "label": "Älteste"
+        }
+      }
+    }
+  },
   "maintenance": {
     "title": "Human Connection befindet sich in der Wartung",
     "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
@@ -94,10 +106,6 @@
     "germany": "Deutschland",
     "code-of-conduct": "Verhaltenscodex",
     "back-to-login": "Zurück zur Anmeldung"
-  },
-  "sorting": {
-    "newest": "Neueste",
-    "oldest": "Älteste"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
