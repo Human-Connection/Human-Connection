@@ -234,6 +234,7 @@ export default {
         const deletePreviousRelationsResponse = await transaction.run(
           `
           MATCH (:User)-[previousRelations:PINNED]->(post:Post)
+          REMOVE post.pinned
           DELETE previousRelations
           RETURN post
         `,
@@ -248,6 +249,7 @@ export default {
             MATCH (user:User {id: $userId}) WHERE user.role = 'admin'
             MATCH (post:Post {id: $params.id})
             MERGE (user)-[pinned:PINNED {createdAt: toString(datetime())}]->(post)
+            SET post.pinned = true
             RETURN post, pinned.createdAt as pinnedAt
          `,
           { userId, params },
@@ -276,6 +278,7 @@ export default {
         const unpinPostTransactionResponse = await transaction.run(
           `
           MATCH (:User)-[previousRelations:PINNED]->(post:Post {id: $params.id})
+          REMOVE post.pinned
           DELETE previousRelations
           RETURN post
         `,
@@ -293,7 +296,7 @@ export default {
   },
   Post: {
     ...Resolver('Post', {
-      undefinedToNull: ['activityId', 'objectId', 'image', 'language', 'pinnedAt'],
+      undefinedToNull: ['activityId', 'objectId', 'image', 'language', 'pinnedAt', 'pinned'],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',
