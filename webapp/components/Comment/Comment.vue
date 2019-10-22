@@ -149,6 +149,7 @@ export default {
     },
     editCommentMenu(showMenu) {
       this.openEditCommentMenu = showMenu
+      this.$emit('toggleNewCommentForm', !showMenu)
     },
     updateComment(comment) {
       this.$emit('updateComment', comment)

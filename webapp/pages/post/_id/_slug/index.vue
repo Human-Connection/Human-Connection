@@ -70,9 +70,13 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list :post="post" :routeHash="$route.hash" />
+        <hc-comment-list
+          :post="post"
+          :routeHash="$route.hash"
+          @toggleNewCommentForm="toggleNewCommentForm"
+        />
         <ds-space margin-bottom="large" />
-        <hc-comment-form :post="post" @createComment="createComment" />
+        <hc-comment-form v-if="showNewCommentForm" :post="post" @createComment="createComment" />
       </ds-section>
     </ds-card>
   </transition>
@@ -119,6 +123,7 @@ export default {
       post: null,
       ready: false,
       title: 'loading',
+      showNewCommentForm: true,
     }
   },
   watch: {
@@ -180,6 +185,9 @@ export default {
           this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
         })
         .catch(error => this.$toast.error(error.message))
+    },
+    toggleNewCommentForm(showNewCommentForm) {
+      this.showNewCommentForm = showNewCommentForm
     },
   },
   apollo: {
