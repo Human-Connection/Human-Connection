@@ -205,7 +205,7 @@ export default {
         return {
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: ['pinnedAt_asc', this.orderBy],
+          orderBy: ['pinned_asc', this.orderBy],
           offset: 0,
         }
       },
