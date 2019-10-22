@@ -390,7 +390,7 @@ describe('SignupVerification', () => {
         nonce: $nonce
         about: $about
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
-        locale: $language
+        locale: $locale
       ) {
         id
         termsAndConditionsAgreedVersion
