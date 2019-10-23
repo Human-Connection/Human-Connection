@@ -81,6 +81,24 @@
         </nuxt-link>
         <b v-else>—</b>
       </template>
+      <!-- <template slot="reports" slot-scope="scope">
+        <ds-table
+          :data="scope.row.submitter"
+          :fields="reportFields"
+          condensed
+        > -->
+          <!-- submitter -->
+          <!-- <template slot="submitter" slot-scope="scope">
+            <hc-user
+              :user="scope.row.submitter"
+              :showAvatar="false"
+              :trunc="30"
+              :date-time="scope.row.createdAt"
+              :positionDatetime="'below'"
+            />
+          </template>
+        </ds-table>
+      </template> -->
     </ds-table>
     <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
     <ds-table v-if="reports && reports.length" :data="reports" :fields="fields" condensed>
@@ -249,6 +267,11 @@ export default {
         type: ' ',
         reportedUserContent: ' ',
         disabledBy: this.$t('moderation.reports.disabledBy'),
+      }
+    },
+    reportFields() {
+      return {
+        id: 'ID',
       }
     },
     fields() {
