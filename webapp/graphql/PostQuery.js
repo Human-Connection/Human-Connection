@@ -35,6 +35,26 @@ export const filterPosts = i18n => {
   `
 }
 
+export const profilePagePosts = i18n => {
+  const lang = i18n.locale().toUpperCase()
+  return gql`
+    ${postFragment(lang)}
+    ${postCountsFragment}
+
+    query profilePagePosts(
+      $filter: _PostFilter
+      $first: Int
+      $offset: Int
+      $orderBy: [_PostOrdering]
+    ) {
+      profilePagePosts(filter: $filter, first: $first, offset: $offset, orderBy: $orderBy) {
+        ...post
+        ...postCounts
+      }
+    }
+  `
+}
+
 export const PostsEmotionsByCurrentUser = () => {
   return gql`
     query PostsEmotionsByCurrentUser($postId: ID!) {

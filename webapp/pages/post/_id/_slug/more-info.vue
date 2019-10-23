@@ -37,7 +37,7 @@
 
 <script>
 import HcEmpty from '~/components/Empty.vue'
-import HcPostCard from '~/components/PostCard'
+import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
 import { relatedContributions } from '~/graphql/PostQuery'

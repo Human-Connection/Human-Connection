@@ -93,7 +93,7 @@ export default {
         return data.notifications
       },
       error(error) {
-        this.$toast.error(error)
+        this.$toast.error(error.message)
       },
     },
   },

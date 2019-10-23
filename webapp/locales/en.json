@@ -51,6 +51,18 @@
       }
     }
   },
+  "store": {
+    "posts": {
+      "orderBy": {
+        "newest": {
+          "label": "Newest"
+        },
+        "oldest": {
+          "label": "Oldest"
+        }
+      }
+    }
+  },
   "maintenance": {
     "title": "Human Connection is under maintenance",
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
@@ -96,10 +108,6 @@
     "code-of-conduct": "Code of Conduct",
     "back-to-login": "Back to login page"
   },
-  "sorting": {
-    "newest": "Newest",
-    "oldest": "Oldest"
-  },
   "login": {
     "copy": "If you already have a human-connection account, please login.",
     "login": "Login",
@@ -113,7 +121,8 @@
     "moreInfoURL": "https://human-connection.org/en/",
     "moreInfoHint": "to the presentation page",
     "hello": "Hello",
-    "success": "You are logged in!"
+    "success": "You are logged in!",
+    "failure": "Incorrect email address or password."
   },
   "editor": {
     "placeholder": "Leave your inspirational thoughts …",
@@ -355,6 +364,7 @@
   },
   "post": {
     "name": "Post",
+    "pinned": "Announcement",
     "moreInfo": {
       "name": "More info",
       "title": "More information",
@@ -368,7 +378,11 @@
     },
     "menu": {
       "edit": "Edit Post",
-      "delete": "Delete Post"
+      "delete": "Delete Post",
+      "pin": "Pin post",
+      "pinnedSuccessfully": "Post pinned successfully!",
+      "unpin": "Unpin post",
+      "unpinnedSuccessfully": "Post unpinned successfully!"
     },
     "comment": {
       "submit": "Comment",

@@ -50,6 +50,18 @@
       }
     }
   },
+  "store": {
+    "posts": {
+      "orderBy": {
+        "newest": {
+          "label": "Neueste"
+        },
+        "oldest": {
+          "label": "Älteste"
+        }
+      }
+    }
+  },
   "maintenance": {
     "title": "Human Connection befindet sich in der Wartung",
     "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
@@ -95,10 +107,6 @@
     "code-of-conduct": "Verhaltenscodex",
     "back-to-login": "Zurück zur Anmeldung"
   },
-  "sorting": {
-    "newest": "Neueste",
-    "oldest": "Älteste"
-  },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
     "login": "Einloggen",
@@ -112,7 +120,8 @@
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo",
-    "success": "Du bist eingeloggt!"
+    "success": "Du bist eingeloggt!",
+    "failure": "Fehlerhafte E-Mail-Adresse oder Passwort."
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes …",
@@ -354,6 +363,7 @@
   },
   "post": {
     "name": "Beitrag",
+    "pinned": "Meldung",
     "moreInfo": {
       "name": "Mehr Info",
       "title": "Mehr Informationen",
@@ -367,7 +377,11 @@
     },
     "menu": {
       "edit": "Beitrag bearbeiten",
-      "delete": "Beitrag löschen"
+      "delete": "Beitrag löschen",
+      "pin": "Post festpinnen",
+      "pinnedSuccessfully": "Post erfolgreich festgepinnt!",
+      "unpin": "Post nicht mehr festpinnen",
+      "unpinnedSuccessfully": "Post erfolgreich nicht mehr festgepinnt!"
     },
     "comment": {
       "submit": "Kommentiere",
