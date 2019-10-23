@@ -15,7 +15,11 @@
         </div>
       </ds-grid-item>
       <template v-if="hasResults">
-        <masonry-grid-item v-for="post in posts" :key="post.id">
+        <masonry-grid-item
+          v-for="post in posts"
+          :key="post.id"
+          :class="{ 'first-post-in-grid': post.pinnedBy }"
+        >
           <hc-post-card
             :post="post"
             :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
@@ -237,6 +241,10 @@ export default {
   &--full-width {
     grid-column: 1 / -1;
   }
+}
+
+.first-post-in-grid {
+  grid-row-start: 3;
 }
 
 .post-add-button {
