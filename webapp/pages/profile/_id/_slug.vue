@@ -410,13 +410,13 @@ export default {
       await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
       this.resetPostList()
-      this.$apollo.queries.Post.refetch()
+      this.$apollo.queries.profilePagePosts.refetch()
     },
     async unblock(user) {
       await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
       this.resetPostList()
-      this.$apollo.queries.Post.refetch()
+      this.$apollo.queries.profilePagePosts.refetch()
     },
     pinPost(post) {
       this.$apollo
@@ -427,7 +427,7 @@ export default {
         .then(() => {
           this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
           this.resetPostList()
-          this.$apollo.queries.Post.refetch()
+          this.$apollo.queries.profilePagePosts.refetch()
         })
         .catch(error => this.$toast.error(error.message))
     },
@@ -440,7 +440,7 @@ export default {
         .then(() => {
           this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
           this.resetPostList()
-          this.$apollo.queries.Post.refetch()
+          this.$apollo.queries.profilePagePosts.refetch()
         })
         .catch(error => this.$toast.error(error.message))
     },
