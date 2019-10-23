@@ -449,8 +449,10 @@
       "reasonCategory": "Kategorie",
       "reasonDescription": "Beschreibung",
       "createdAt": "Datum",
-      "submitter": "Gemeldet von / am",
-      "disabledBy": "Deaktiviert von"
+      "submitter": "Gemeldet von",
+      "disabledBy": "Deaktiviert von",
+      "decision": "Entscheidung",
+      "noDecision": "Keine Entscheidung!"
     }
   },
   "disable": {

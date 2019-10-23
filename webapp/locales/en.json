@@ -450,8 +450,10 @@
       "reasonCategory": "Category",
       "reasonDescription": "Description",
       "createdAt": "Date",
-      "submitter": "Reported by / at",
-      "disabledBy": "Disabled by"
+      "submitter": "Reported by",
+      "disabledBy": "Disabled by",
+      "decision": "Decision",
+      "noDecision": "No decision!"
     }
   },
   "disable": {

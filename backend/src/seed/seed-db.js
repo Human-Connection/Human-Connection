@@ -693,24 +693,24 @@ import { gql } from '../jest/helpers'
         mutation: reportMutation,
         variables: {
           resourceId: 'c1',
-          reasonCategory: 'other',
-          reasonDescription: 'This comment is bigoted',
+          reasonCategory: 'pornographic_content_links',
+          reasonDescription: 'This comment is porno!!!',
         },
       }),
       mutate({
         mutation: reportMutation,
         variables: {
           resourceId: 'p1',
-          reasonCategory: 'discrimination_etc',
-          reasonDescription: 'This post is bigoted',
+          reasonCategory: 'intentional_intimidation_stalking_persecution',
+          reasonDescription: '',
         },
       }),
       mutate({
         mutation: reportMutation,
         variables: {
           resourceId: 'u1',
-          reasonCategory: 'doxing',
-          reasonDescription: 'This user is harassing me with bigoted remarks',
+          reasonCategory: 'glorific_trivia_of_cruel_inhuman_acts',
+          reasonDescription: 'murder',
         },
       }),
     ])
