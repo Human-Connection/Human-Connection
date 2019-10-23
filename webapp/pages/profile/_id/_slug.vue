@@ -376,7 +376,7 @@ export default {
       return uniqBy(items, field)
     },
     showMoreContributions() {
-      const { Post: PostQuery } = this.$apollo.queries
+      const { profilePagePosts: PostQuery } = this.$apollo.queries
       if (!PostQuery) return // seems this can be undefined on subpages
       this.offset += this.pageSize
 
@@ -388,11 +388,14 @@ export default {
           orderBy: 'createdAt_desc',
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
+          if (!fetchMoreResult || fetchMoreResult.profilePagePosts.length < this.pageSize) {
             this.hasMore = false
           }
           const result = Object.assign({}, previousResult, {
-            Post: [...previousResult.Post, ...fetchMoreResult.Post],
+            profilePagePosts: [
+              ...previousResult.profilePagePosts,
+              ...fetchMoreResult.profilePagePosts,
+            ],
           })
           return result
         },
@@ -464,7 +467,7 @@ export default {
     },
   },
   apollo: {
-    Post: {
+    profilePagePosts: {
       query() {
         return profilePagePosts(this.$i18n)
       },
