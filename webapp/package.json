@@ -98,7 +98,7 @@
     "@storybook/addon-a11y": "^5.2.4",
     "@storybook/addon-actions": "^5.2.4",
     "@storybook/vue": "~5.2.5",
-    "@vue/cli-shared-utils": "~4.0.4",
+    "@vue/cli-shared-utils": "~4.0.5",
     "@vue/eslint-config-prettier": "~5.0.0",
     "@vue/server-test-utils": "~1.0.0-beta.29",
     "@vue/test-utils": "~1.0.0-beta.29",
