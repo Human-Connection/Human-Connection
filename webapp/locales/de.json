@@ -511,6 +511,7 @@
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?",
       "error": "Du hast den Kommentar bereits gemeldet!"
     },
+    "author": "Verfasser",
     "reason": {
       "category": {
         "label": "Wähle eine Kategorie:",

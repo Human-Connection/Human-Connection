@@ -512,6 +512,7 @@
       "message": "Do you really want to report the comment from \"<b>{name}</b>\"?",
       "error": "You have already reported the comment!"
     },
+    "author": "Author",
     "reason": {
       "category": {
         "label": "Select a category:",

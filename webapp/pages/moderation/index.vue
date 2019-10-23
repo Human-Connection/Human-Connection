@@ -1,6 +1,88 @@
 <template>
   <ds-card space="small">
     <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
+    <ds-table
+      v-if="reports && reports.length"
+      :data="reportedContentStructure"
+      :fields="contentFields"
+      condensed
+    >
+      <!-- Icon -->
+      <template slot="type" slot-scope="scope">
+        <ds-text color="soft">
+          <ds-icon
+            v-if="scope.row.type === 'Post'"
+            v-tooltip="{ content: $t('report.contribution.type'), placement: 'right' }"
+            name="bookmark"
+          />
+          <ds-icon
+            v-else-if="scope.row.type === 'Comment'"
+            v-tooltip="{ content: $t('report.comment.type'), placement: 'right' }"
+            name="comments"
+          />
+          <ds-icon
+            v-else-if="scope.row.type === 'User'"
+            v-tooltip="{ content: $t('report.user.type'), placement: 'right' }"
+            name="user"
+          />
+        </ds-text>
+      </template>
+      <!-- reported user or content -->
+      <template slot="reportedUserContent" slot-scope="scope">
+        <div v-if="scope.row.type === 'Post' || scope.row.type === 'Comment'">
+          <nuxt-link
+            :to="{
+              name: 'post-id-slug',
+              params: {
+                id: scope.row.type === 'Post' ? scope.row.post.id : scope.row.comment.post.id,
+                slug: scope.row.type === 'Post' ? scope.row.post.slug : scope.row.comment.post.slug,
+              },
+              hash: scope.row.type === 'Comment' ? `#commentId-${scope.row.comment.id}` : undefined,
+            }"
+          >
+            <b v-if="scope.row.type === 'Post'">{{ scope.row.post.title | truncate(100) }}</b>
+            <b v-else>{{ scope.row.comment.contentExcerpt | removeHtml | truncate(100) }}</b>
+          </nuxt-link>
+          <ds-space margin="x-small" />
+          <ds-flex>
+            <ds-flex-item width="20px">
+              <ds-icon
+                v-tooltip="{ content: $t('report.author'), placement: 'right' }"
+                name="user"
+              />
+            </ds-flex-item>
+            <ds-flex-item>
+              <hc-user
+                v-if="scope.row.contentBelongsToUser"
+                :user="scope.row.contentBelongsToUser"
+                :showAvatar="false"
+                :trunc="25"
+              />
+            </ds-flex-item>
+          </ds-flex>
+        </div>
+        <div v-else>
+          <hc-user :user="scope.row.user" :showAvatar="false" :trunc="30" />
+        </div>
+      </template>
+      <!-- disabledBy -->
+      <template slot="disabledBy" slot-scope="scope">
+        <nuxt-link
+          v-if="scope.row.resource.disabledBy"
+          :to="{
+            name: 'profile-id-slug',
+            params: {
+              id: scope.row.resource.disabledBy.id,
+              slug: scope.row.resource.disabledBy.slug,
+            },
+          }"
+        >
+          <b>{{ scope.row.resource.disabledBy.name | truncate(50) }}</b>
+        </nuxt-link>
+        <b v-else>—</b>
+      </template>
+    </ds-table>
+    <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
     <ds-table v-if="reports && reports.length" :data="reports" :fields="fields" condensed>
       <!-- Icon -->
       <template slot="type" slot-scope="scope">
@@ -158,9 +240,17 @@ export default {
   data() {
     return {
       reports: [],
+      reportedContentStructure: [],
     }
   },
   computed: {
+    contentFields() {
+      return {
+        type: ' ',
+        reportedUserContent: ' ',
+        disabledBy: this.$t('moderation.reports.disabledBy'),
+      }
+    },
     fields() {
       return {
         type: ' ',
@@ -172,6 +262,40 @@ export default {
         disabledBy: this.$t('moderation.reports.disabledBy'),
         // actions: ' '
       }
+    },
+  },
+  watch: {
+    reports: {
+      immediate: true,
+      handler(newReports) {
+        const newReportedContentStructure = []
+        newReports.forEach(report => {
+          const resource =
+            report.type === 'User'
+              ? report.user
+              : report.type === 'Post'
+              ? report.post
+              : report.type === 'Comment'
+              ? report.comment
+              : undefined
+          let idx = newReportedContentStructure.findIndex(content => content.resource.id === resource.id)
+          // if content not in content list, then push
+          if (idx === -1) {
+            idx = newReportedContentStructure.length
+            newReportedContentStructure.push({
+              type: report.type,
+              resource,
+              user: report.user,
+              post: report.post,
+              comment: report.comment,
+              contentBelongsToUser: report.type === 'User' ? null : resource.author,
+              reports: [],
+            })
+          }
+          newReportedContentStructure[idx].reports.push(report)
+        })
+        this.reportedContentStructure = newReportedContentStructure
+      },
     },
   },
   apollo: {

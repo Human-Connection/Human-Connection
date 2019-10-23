@@ -686,6 +686,34 @@ import { gql } from '../jest/helpers'
         },
       }),
     ])
+    // report content a second time
+    authenticatedUser = await dewey.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'c1',
+          reasonCategory: 'other',
+          reasonDescription: 'This comment is bigoted',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p1',
+          reasonCategory: 'discrimination_etc',
+          reasonDescription: 'This post is bigoted',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'u1',
+          reasonCategory: 'doxing',
+          reasonDescription: 'This user is harassing me with bigoted remarks',
+        },
+      }),
+    ])
     authenticatedUser = null
 
     await Promise.all(
