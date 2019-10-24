@@ -11,11 +11,6 @@
             <p v-html="$t(`termsAndConditions.${section}.description`)" />
           </li>
         </ol>
-        <p>{{ $t('termsAndConditions.have-fun') }}</p>
-        <br />
-        <p>
-          <strong v-html="$t('termsAndConditions.closing')" />
-        </p>
       </div>
     </ds-container>
   </div>
@@ -32,14 +27,14 @@ export default {
   data() {
     return {
       sections: [
-        'risk',
-        'data-privacy',
-        'work-in-progress',
+        'terms-of-service',
+        'use-and-license',
+        'privacy-statement',
         'code-of-conduct',
         'moderation',
-        'fairness',
-        'questions',
-        'human-connection',
+        'errors-and-feedback',
+        'help-and-questions',
+        'addition',
       ],
     }
   },
