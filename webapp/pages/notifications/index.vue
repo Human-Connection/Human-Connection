@@ -99,11 +99,11 @@ export default {
   data() {
     return {
       selectedNotifications: [],
-      selected: 'All',
+      selected: this.$t('notifications.sortingLabel.all'),
       sortingOptions: [
-        { label: 'All', value: null },
-        { label: 'Read', value: true },
-        { label: 'Unread', value: false },
+        { label: this.$t('notifications.sortingLabel.all'), value: null },
+        { label: this.$t('notifications.sortingLabel.read'), value: true },
+        { label: this.$t('notifications.sortingLabel.unread'), value: false },
       ],
       nofiticationRead: null,
     }
@@ -112,7 +112,7 @@ export default {
     fields() {
       return {
         user: this.$t('notifications.user'),
-        post: this.$t('notifications.type'),
+        post: this.$t('notifications.post'),
         content: this.$t('notifications.content'),
       }
     },

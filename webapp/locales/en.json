@@ -178,11 +178,14 @@
     },
     "comment": "Comment",
     "title": "Notifications",
-    "page": "All notifications",
-    "createdAt": "Notification created at",
-    "type": "Type",
+    "post": "Post",
     "user": "User",
-    "content": "Content"
+    "content": "Content",
+    "sortingLabel": {
+      "all": "All",
+      "read": "Read",
+      "unread": "Unread"
+    }
   },
   "search": {
     "placeholder": "Search",
