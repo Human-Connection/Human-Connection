@@ -14,6 +14,10 @@
       {{ $t('site.data-privacy') }}
     </a>
     <span>-</span>
+    <a href="https://faq.human-connection.org/" target="_blank">
+      {{ $t('site.faq') }}
+    </a>
+    <span>-</span>
     <a href="https://github.com/Human-Connection/Human-Connection/releases" target="_blank">
       {{ $t('site.changelog') }}
     </a>

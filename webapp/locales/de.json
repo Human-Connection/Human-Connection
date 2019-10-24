@@ -105,7 +105,8 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland",
     "code-of-conduct": "Verhaltenscodex",
-    "back-to-login": "Zurück zur Anmeldung"
+    "back-to-login": "Zurück zur Anmeldung",
+    "faq": "FAQ"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
