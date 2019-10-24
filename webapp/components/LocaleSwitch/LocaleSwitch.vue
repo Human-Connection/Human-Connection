@@ -73,7 +73,7 @@ export default {
   methods: {
     changeLanguage(locale, toggleMenu) {
       this.$i18n.set(locale)
-      this.change()
+      this.updateUserLocale()
       toggleMenu()
     },
     matcher(locale) {
@@ -83,7 +83,7 @@ export default {
     ...mapMutations({
       setCurrentUser: 'auth/SET_USER',
     }),
-    async change() {
+    async updateUserLocale() {
       try {
         await this.$apollo.mutate({
           mutation: localeMutation(),
