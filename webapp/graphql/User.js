@@ -153,3 +153,14 @@ export const checkSlugAvailableQuery = gql`
     }
   }
 `
+
+export const localeMutation = () => {
+  return gql`
+    mutation($id: ID!, $locale: String) {
+      UpdateUser(id: $id, locale: $locale) {
+        id
+        locale
+      }
+    }
+  `
+}
