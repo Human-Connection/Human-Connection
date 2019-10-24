@@ -26,6 +26,7 @@ export default {
   },
   data() {
     return {
+      // if you change terms and conditions please change also version in file "webapp/constants/terms-and-conditions-version.js"
       sections: [
         'terms-of-service',
         'use-and-license',
