@@ -106,7 +106,8 @@
     "bank": "bank account",
     "germany": "Germany",
     "code-of-conduct": "Code of Conduct",
-    "back-to-login": "Back to login page"
+    "back-to-login": "Back to login page",
+    "faq": "FAQ"
   },
   "login": {
     "copy": "If you already have a human-connection account, please login.",
