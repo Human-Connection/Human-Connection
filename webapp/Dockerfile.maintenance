@@ -19,7 +19,6 @@ RUN yarn install --production=false --frozen-lockfile --non-interactive
 
 COPY assets assets
 COPY components/LocaleSwitch/ components/LocaleSwitch
-COPY graphql graphql
 COPY components/Dropdown.vue components/Dropdown.vue
 COPY layouts/blank.vue layouts/blank.vue
 COPY locales locales
