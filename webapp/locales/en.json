@@ -447,13 +447,16 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
+      "type": "Type",
+      "content": "Content",
+      "author": "Author",
+      "decision": "Decision",
+      "noDecision": "No decision!",
+      "disabledBy": "Disabled by",
       "reasonCategory": "Category",
       "reasonDescription": "Description",
       "createdAt": "Date",
-      "submitter": "Reported by",
-      "disabledBy": "Disabled by",
-      "decision": "Decision",
-      "noDecision": "No decision!"
+      "submitter": "Reported by"
     }
   },
   "disable": {

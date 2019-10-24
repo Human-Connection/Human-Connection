@@ -9,11 +9,27 @@
     >
       <colgroup><col width="" /></colgroup>
       <template v-for="content in reportedContentStructure">
-        <tbody :key="content.resource.id">
+        <thead :key="'thead-' + content.resource.id">
+          <tr valign="top">
+            <th class="ds-table-col ds-table-head-col ds-table-head-col-border">
+              {{ $t('moderation.reports.type') }}
+            </th>
+            <th class="ds-table-col ds-table-head-col ds-table-head-col-border">
+              {{ $t('moderation.reports.content') }}
+            </th>
+            <th class="ds-table-col ds-table-head-col ds-table-head-col-border">
+              {{ $t('moderation.reports.author') }}
+            </th>
+            <th class="ds-table-col ds-table-head-col ds-table-head-col-border">
+              {{ $t('moderation.reports.decision') }}
+            </th>
+          </tr>
+        </thead>
+        <tbody :key="'tbody-' + content.resource.id">
           <tr valign="top">
             <td class="ds-table-col ds-table-head-col ds-table-head-col-border">
               <!-- Icon -->
-              <ds-text color="soft">
+              <ds-text :class="[!content.resource.disabledBy && 'no-decision']" color="soft">
                 <ds-icon
                   v-if="content.type === 'Post'"
                   v-tooltip="{ content: $t('report.contribution.type'), placement: 'right' }"
@@ -62,28 +78,17 @@
                   />
                 </ds-flex-item>
                 <ds-flex-item>
-                  <hc-user :user="content.contentBelongsToUser" :showAvatar="false" :trunc="25" />
+                  <hc-user :user="content.contentBelongsToUser" :showAvatar="false" :trunc="30" />
                 </ds-flex-item>
               </ds-flex>
+              <span v-else>—</span>
             </td>
             <td class="ds-table-col ds-table-head-col-border">
-              <b>{{ $t('moderation.reports.decision') }}:</b>
-              <br />
               <!-- disabledBy -->
               <div v-if="content.resource.disabledBy">
                 {{ $t('moderation.reports.disabledBy') }}
                 <br />
-                <nuxt-link
-                  :to="{
-                    name: 'profile-id-slug',
-                    params: {
-                      id: content.resource.disabledBy.id,
-                      slug: content.resource.disabledBy.slug,
-                    },
-                  }"
-                >
-                  <b>{{ content.resource.disabledBy.name | truncate(50) }}</b>
-                </nuxt-link>
+                <hc-user :user="content.resource.disabledBy" :showAvatar="false" :trunc="30" />
               </div>
               <span v-else class="no-decision">{{ $t('moderation.reports.noDecision') }}</span>
             </td>
@@ -137,13 +142,6 @@ export default {
     }
   },
   computed: {
-    contentFields() {
-      return {
-        type: ' ',
-        reportedUserContent: ' ',
-        disabledBy: this.$t('moderation.reports.disabledBy'),
-      }
-    },
     reportFields() {
       return {
         submitter: this.$t('moderation.reports.submitter'),
@@ -152,6 +150,7 @@ export default {
         // Wolle createdAt: this.$t('moderation.reports.createdAt'),
       }
     },
+    // Wolle delete + language
     fields() {
       return {
         type: ' ',
@@ -182,7 +181,7 @@ export default {
           let idx = newReportedContentStructure.findIndex(
             content => content.resource.id === resource.id,
           )
-          // if content not in content list, then push
+          // if content not in content list, then add it
           if (idx === -1) {
             idx = newReportedContentStructure.length
             newReportedContentStructure.push({
@@ -197,7 +196,6 @@ export default {
           }
           newReportedContentStructure[idx].reports.push(report)
         })
-        // Wolle !!! Sortieren !!!
         this.reportedContentStructure = newReportedContentStructure
       },
     },
@@ -212,7 +210,7 @@ export default {
 </script>
 
 <style lang="scss">
-// Wolle
+// Wolle delete?
 .ds-table-head-col-border {
   border-bottom: $border-color-softer dotted $border-size-base;
 }

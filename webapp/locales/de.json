@@ -446,13 +446,16 @@
     "reports": {
       "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
+      "type": "Typ",
+      "content": "Inhalt",
+      "author": "Autor",
+      "decision": "Entscheidung",
+      "noDecision": "Keine Entscheidung!",
+      "disabledBy": "Deaktiviert von",
       "reasonCategory": "Kategorie",
       "reasonDescription": "Beschreibung",
       "createdAt": "Datum",
-      "submitter": "Gemeldet von",
-      "disabledBy": "Deaktiviert von",
-      "decision": "Entscheidung",
-      "noDecision": "Keine Entscheidung!"
+      "submitter": "Gemeldet von"
     }
   },
   "disable": {
