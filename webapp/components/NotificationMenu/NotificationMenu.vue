@@ -14,7 +14,7 @@
       </div>
       <ds-space centered>
         <nuxt-link to="/notifications">
-          {{ $t('notifications.page') }}
+          {{ $t('notifications.pageLink') }}
         </nuxt-link>
       </ds-space>
     </template>
