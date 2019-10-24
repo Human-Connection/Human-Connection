@@ -172,7 +172,7 @@
           <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'post' }">
+                <li class="Tabs__tab pointer" :class="{ active: tabActive === 'post' }">
                   <a @click="handleTab('post')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -183,7 +183,7 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'comment' }">
+                <li class="Tabs__tab pointer" :class="{ active: tabActive === 'comment' }">
                   <a @click="handleTab('comment')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -194,7 +194,11 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'shout' }">
+                <li
+                  class="Tabs__tab pointer"
+                  :class="{ active: tabActive === 'shout' }"
+                  v-if="myProfile"
+                >
                   <a @click="handleTab('shout')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -205,7 +209,6 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__presentation-slider" role="presentation"></li>
               </ul>
             </ds-card>
           </ds-grid-item>
@@ -501,51 +504,28 @@ export default {
 .pointer {
   cursor: pointer;
 }
-.Tab {
-  border-collapse: collapse;
-  padding-bottom: 5px;
-}
-.Tab:hover {
-  border-bottom: 2px solid #c9c6ce;
-}
+
 .Tabs {
   position: relative;
   background-color: #fff;
   height: 100%;
-
-  &:after {
-    content: ' ';
-    display: table;
-    clear: both;
-  }
+  display: flex;
   margin: 0;
   padding: 0;
   list-style: none;
 
   &__tab {
-    float: left;
-    width: 33.333%;
     text-align: center;
     height: 100%;
+    flex-grow: 1;
 
-    &:first-child.active ~ .Tabs__presentation-slider {
-      left: 0;
+    &:hover {
+      border-bottom: 2px solid #c9c6ce;
     }
-    &:nth-child(2).active ~ .Tabs__presentation-slider {
-      left: 33.333%;
+
+    &.active {
+      border-bottom: 2px solid #17b53f;
     }
-    &:nth-child(3).active ~ .Tabs__presentation-slider {
-      left: calc(33.333% * 2);
-    }
-  }
-  &__presentation-slider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 33.333%;
-    height: 2px;
-    background-color: #17b53f;
-    transition: left 0.25s;
   }
 }
 .profile-avatar.ds-avatar {
