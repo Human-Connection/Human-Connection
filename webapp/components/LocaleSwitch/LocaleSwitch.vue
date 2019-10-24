@@ -33,12 +33,12 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import Dropdown from '~/components/Dropdown'
 import find from 'lodash/find'
 import orderBy from 'lodash/orderBy'
 import locales from '~/locales'
 import { mapGetters, mapMutations } from 'vuex'
-import { localeMutation } from '~/graphql/User.js'
 
 export default {
   components: {
@@ -84,9 +84,17 @@ export default {
       setCurrentUser: 'auth/SET_USER',
     }),
     async updateUserLocale() {
+      if (!this.currentUser || !this.currentUser.id) return null
       try {
         await this.$apollo.mutate({
-          mutation: localeMutation(),
+          mutation: gql`
+            mutation($id: ID!, $locale: String) {
+              UpdateUser(id: $id, locale: $locale) {
+                id
+                locale
+              }
+            }
+          `,
           variables: {
             id: this.currentUser.id,
             locale: this.$i18n.locale(),
