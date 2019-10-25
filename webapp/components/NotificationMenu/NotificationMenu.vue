@@ -9,14 +9,14 @@
       </ds-button>
     </template>
     <template slot="popover">
+      <ds-space centered>
+        <ds-button primary fullwidth :path="{ name: 'notifications' }">
+          {{ $t('notifications.pageLink') }}
+        </ds-button>
+      </ds-space>
       <div class="notifications-menu-popover">
         <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
       </div>
-      <ds-space centered>
-        <nuxt-link to="/notifications">
-          {{ $t('notifications.pageLink') }}
-        </nuxt-link>
-      </ds-space>
     </template>
   </dropdown>
 </template>
@@ -113,7 +113,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .notifications-menu {
   display: flex;
   align-items: center;
@@ -121,5 +121,14 @@ export default {
 
 .notifications-menu-popover {
   max-width: 500px;
+}
+.link-bg {
+  position: sticky;
+  width: 100%;
+  background-color: $background-color-primary-active;
+  text-align: center;
+}
+.notifications-link {
+  color: $text-color-softer;
 }
 </style>

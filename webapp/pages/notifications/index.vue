@@ -44,19 +44,35 @@
       :fields="fields"
       class="notifications-table"
     >
+      <template slot="icon" slot-scope="scope">
+        <ds-icon
+          v-if="scope.row.from.post"
+          name="comment"
+          v-tooltip="{ content: $t('notifications.comment'), placement: 'right' }"
+        />
+        <ds-icon
+          v-else
+          name="bookmark"
+          v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"
+        />
+      </template>
       <template slot="user" slot-scope="scope">
         <ds-space margin-bottom="base">
           <hc-user
             :user="scope.row.from.author"
             :date-time="scope.row.from.createdAt"
             :trunc="35"
+            :class="{ 'notification-status': scope.row.read }"
           />
         </ds-space>
-        {{ $t(`notifications.reason.${scope.row.reason}`) }}
+        <ds-text :class="{ 'notification-status': scope.row.read }">
+          {{ $t(`notifications.reason.${scope.row.reason}`) }}
+        </ds-text>
       </template>
       <template slot="post" slot-scope="scope">
         <nuxt-link
           class="notification-mention-post"
+          :class="{ 'notification-status': scope.row.read }"
           :to="{
             name: 'post-id-slug',
             params: {
@@ -71,16 +87,18 @@
             },
             hash: scope.row.from.__typename === 'Comment' ? `#commentId-${scope.row.from.id}` : {},
           }"
-          @click.native="$emit('read')"
+          @click.native="markNotificationAsRead(scope.row.from.id)"
         >
           <b>{{ scope.row.from.title || scope.row.from.post.title | truncate(50) }}</b>
         </nuxt-link>
       </template>
       <template slot="content" slot-scope="scope">
-        <b>{{ scope.row.from.contentExcerpt || scope.row.from.contentExcerpt | removeHtml }}</b>
+        <b :class="{ 'notification-status': scope.row.read }">
+          {{ scope.row.from.contentExcerpt || scope.row.from.contentExcerpt | removeHtml }}
+        </b>
       </template>
     </ds-table>
-    <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
+    <hc-empty v-else icon="alert" :message="$t('notifications.empty')" />
   </ds-card>
 </template>
 
@@ -88,7 +106,7 @@
 import HcUser from '~/components/User/User'
 import HcEmpty from '~/components/Empty.vue'
 import Dropdown from '~/components/Dropdown'
-import { notificationQuery } from '~/graphql/User'
+import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 
 export default {
   components: {
@@ -111,7 +129,14 @@ export default {
   computed: {
     fields() {
       return {
-        user: this.$t('notifications.user'),
+        icon: {
+          label: ' ',
+          width: '60px',
+        },
+        user: {
+          label: this.$t('notifications.user'),
+          width: '350px',
+        },
         post: this.$t('notifications.post'),
         content: this.$t('notifications.content'),
       }
@@ -132,6 +157,16 @@ export default {
       this.selected = option.label
       this.$apollo.queries.notifications.refresh()
       toggleMenu()
+    },
+    async markNotificationAsRead(notificationSourceId) {
+      try {
+        await this.$apollo.mutate({
+          mutation: markAsReadMutation(this.$i18n),
+          variables: { id: notificationSourceId },
+        })
+      } catch (error) {
+        this.$toast.error(error.message)
+      }
     },
   },
   apollo: {
@@ -160,7 +195,8 @@ export default {
 .sorting-dropdown {
   float: right;
 }
-.notifications-table td {
-  width: 500px;
+.notification-status {
+  opacity: 0.6; /* Real browsers */
+  filter: alpha(opacity = 60); /* MSIE */
 }
 </style>
