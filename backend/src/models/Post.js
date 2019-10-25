@@ -19,7 +19,7 @@ module.exports = {
   disabled: { type: 'boolean', default: false },
   disabledBy: {
     type: 'relationship',
-    relationship: 'DISABLED',
+    relationship: 'DECIDED',
     target: 'User',
     direction: 'in',
   },

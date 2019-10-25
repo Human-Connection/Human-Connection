@@ -8,7 +8,16 @@ export default {
       MATCH (resource {id: $id})
       WHERE resource:User OR resource:Comment OR resource:Post
       SET resource.disabled = true
-      MERGE (resource)<-[:DISABLED]-(u)
+      MERGE (resource)<-[decided:DECIDED]-(u)
+      SET (
+      CASE
+      WHEN decided.createdAt IS NOT NULL
+      THEN decided END).updatedAt = toString(datetime())
+      SET (
+      CASE
+      WHEN decided.createdAt IS NULL
+      THEN decided END).createdAt = toString(datetime())
+      SET decided.disabled = true
       RETURN resource {.id}
       `
       const session = driver.session()
@@ -23,11 +32,14 @@ export default {
     enable: async (object, params, { user, driver }) => {
       const { id } = params
       const cypher = `
-      MATCH (resource {id: $id})<-[d:DISABLED]-()
+      MATCH (resource {id: $id})<-[decided:DECIDED]-(:User)
       SET resource.disabled = false
-      DELETE d
+      DELETE decided
       RETURN resource {.id}
       `
+      // Wolle
+      // SET decided.updatedAt = toString(datetime())
+      // SET decided.disabled = false
       const session = driver.session()
       const res = await session.run(cypher, { id })
       session.close()
