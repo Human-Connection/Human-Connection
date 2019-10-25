@@ -1351,10 +1351,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@types/yup@0.26.23":
-  version "0.26.23"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.23.tgz#00721a3b675e7609e5bcccb94234e86b754bcd04"
-  integrity sha512-+tipAL6prdInS/avA6QityIFBDvHnqk1Tv9L5JMEws5IZC6agymBGAoDsrPyYp42wGcktyQtYKv9kvGPEKd4Qg==
+"@types/yup@0.26.24":
+  version "0.26.24"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.24.tgz#c24170b3a5c867b4fabd49fcc42fe45f780cb153"
+  integrity sha512-x0bhHnYjH5mZit4HivUYbTMO4LouOTGwp/LLxSL1mbJYVwNJtHYESH0ed2bwM1lkI2yDmsoCDYJnWEgHeJDACg==
 
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
@@ -4030,14 +4030,14 @@ graphql-request@~1.8.2:
   dependencies:
     cross-fetch "2.2.2"
 
-graphql-shield@~6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-6.1.0.tgz#7298af72167e7c9fd19a36fac9b425b94025a393"
-  integrity sha512-dIZ6ABnUn3XQtIzw9/9f8wFmZoY5XZlsHgkxSKF+N/oXmKvQoi11J5/y/jxJTBmKYi/2JZ12C1JjDn5TOopn+w==
+graphql-shield@~7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.0.tgz#0cdca5c16af4ba7dd4fbcce6df279c5c8e463452"
+  integrity sha512-hr0PR6t/UXAO5+BMOOD2W3zTIKbtO/u8twjLn8hw4646E08NeLrIxDAmUFKKlLhyTe5JzlH4nNflP6SRtL6Q2A==
   dependencies:
-    "@types/yup" "0.26.23"
+    "@types/yup" "0.26.24"
     lightercollective "^0.3.0"
-    object-hash "^1.3.1"
+    object-hash "^2.0.0"
     yup "^0.27.0"
 
 graphql-subscriptions@^1.0.0:
@@ -6326,10 +6326,10 @@ object-copy@^0.1.0:
     define-property "^0.2.5"
     kind-of "^3.0.3"
 
-object-hash@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-1.3.1.tgz#fde452098a951cb145f039bb7d455449ddc126df"
-  integrity sha512-OSuu/pU4ENM9kmREg0BdNrUDIl1heYa4mBZacJc+vVWz4GtAwu7jO8s4AIt2aGRUTqxykpWzI3Oqnsm13tTMDA==
+object-hash@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-2.0.0.tgz#7c4cc341eb8b53367312a7c546142f00c9e0ea20"
+  integrity sha512-I7zGBH0rDKwVGeGZpZoFaDhIwvJa3l1CZE+8VchylXbInNiCj7sxxea9P5dTM4ftKR5//nrqxrdeGSTWL2VpBA==
 
 object-keys@^1.0.11, object-keys@^1.0.12:
   version "1.1.1"
