@@ -891,6 +891,11 @@
   dependencies:
     "@hapi/hoek" "8.x.x"
 
+"@types/sizzle@2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
+  integrity sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
+
 JSONStream@^1.0.3:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.5.tgz#3208c1f08d3a4d99261ab64f92302bc15e111ca0"
@@ -1905,13 +1910,14 @@ cypress-plugin-retries@^1.3.0:
   resolved "https://registry.yarnpkg.com/cypress-plugin-retries/-/cypress-plugin-retries-1.3.0.tgz#a2c1f49dce69b521cbb5ce3ab1a3a25acf41f08f"
   integrity sha512-s2STd3vVeoIeKmdOvDhmWicARxK3cu7xF02MhH120wycUhdtR0SbAbo+zmcNnHquyshccE6cv17DfNvPOV7Rog==
 
-cypress@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.4.1.tgz#ca2e4e9864679da686c6a6189603efd409664c30"
-  integrity sha512-1HBS7t9XXzkt6QHbwfirWYty8vzxNMawGj1yI+Fu6C3/VZJ8UtUngMW6layqwYZzLTZV8tiDpdCNBypn78V4Dg==
+cypress@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.5.0.tgz#e188bc8f48782953f6865d8830a4dc342334b81c"
+  integrity sha512-I1iSReD2C8CTP6s4BvQky4gEqHBnKLmhBIqFyCUZdj6BQ6ZDxGnmIbQPM5g79E2iP60KTIbTK99ZPSDVtsNUUg==
   dependencies:
     "@cypress/listr-verbose-renderer" "0.4.1"
     "@cypress/xvfb" "1.2.4"
+    "@types/sizzle" "2.3.2"
     arch "2.1.1"
     bluebird "3.5.0"
     cachedir "1.3.0"
@@ -1938,6 +1944,7 @@ cypress@^3.4.1:
     request-progress "3.0.0"
     supports-color "5.5.0"
     tmp "0.1.0"
+    untildify "3.0.3"
     url "0.11.0"
     yauzl "2.10.0"
 
@@ -1965,10 +1972,10 @@ date-fns@^1.27.2:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
-date-fns@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.5.1.tgz#6bd76f01d3a438e9c481d4c18512ddac37585b4c"
-  integrity sha512-ZBrQmuaqH9YqIejbgu8f09ki7wdD2JxWsRTZ/+HnnLNmkI56ty0evnWzKY+ihLT0xX5VdUX0vDNZCxJJGKX2+Q==
+date-fns@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.6.0.tgz#a5bc82e6a4c3995ae124b0ba1a71aec7b8cbd666"
+  integrity sha512-F55YxqRdEfP/eYQmQjLN798v0AwLjmZ8nMBjdQvNwEE3N/zWVrlkkqT+9seBlPlsbkybG4JmWg3Ee3dIV9BcGQ==
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -4842,6 +4849,11 @@ unset-value@^1.0.0:
   dependencies:
     has-value "^0.3.1"
     isobject "^3.0.0"
+
+untildify@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/untildify/-/untildify-3.0.3.tgz#1e7b42b140bcfd922b22e70ca1265bfe3634c7c9"
+  integrity sha512-iSk/J8efr8uPT/Z4eSUywnqyrQU7DSdMfdqK4iWEaUVVmcP5JcnpRqmVMwcwcnmI1ATFNgC5V90u09tBynNFKA==
 
 upath@^1.1.1:
   version "1.1.2"

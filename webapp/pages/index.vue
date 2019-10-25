@@ -146,7 +146,7 @@ export default {
           offset: this.offset,
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.orderBy,
+          orderBy: ['pinned_asc', this.orderBy],
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {

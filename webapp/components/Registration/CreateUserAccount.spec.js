@@ -1,4 +1,5 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
+import { VERSION } from '~/constants/terms-and-conditions-version.js'
 import CreateUserAccount from './CreateUserAccount'
 import { SignupVerificationMutation } from '~/graphql/Registration.js'
 import Styleguide from '@human-connection/styleguide'
@@ -81,7 +82,7 @@ describe('CreateUserAccount', () => {
               email: 'sixseven@example.org',
               nonce: '666777',
               password: 'hellopassword',
-              termsAndConditionsAgreedVersion: '0.0.2',
+              termsAndConditionsAgreedVersion: VERSION,
               locale: 'en',
             },
           })
