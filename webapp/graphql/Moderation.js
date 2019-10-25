@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const reportListQuery = () => {
-  // no limit vor the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
+  // no limit for the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
   return gql`
     query {
       reports(orderBy: createdAt_desc) {
