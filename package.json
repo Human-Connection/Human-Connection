@@ -17,7 +17,7 @@
     "cypress:run": "cypress run --browser chromium",
     "cypress:open": "cypress open --browser chromium",
     "test:jest": "cd webapp && yarn test && cd ../backend && yarn test:jest && codecov",
-    "version": "auto-changelog -p && git add CHANGELOG.md"
+    "version": "auto-changelog -p"
   },
   "devDependencies": {
     "auto-changelog": "^1.16.1",
