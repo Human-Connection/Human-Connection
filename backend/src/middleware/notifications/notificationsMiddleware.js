@@ -91,11 +91,30 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
 
 const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
-
   const comment = await resolve(root, args, context, resolveInfo)
 
   if (comment) {
-    await notifyUsers('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
+    const session = context.driver.session()
+    const cypherFindUser = `
+    MATCH (user: User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
+    RETURN user { .id }
+    `
+    const result = await session.run(cypherFindUser, {
+      commentId: comment.id,
+    })
+    session.close()
+    const [postAuthor] = await result.records.map(record => {
+      return record.get('user')
+    })
+    const idsOfUsersExcludingPostAuthor = idsOfUsers.filter(res => !res.equals([postAuthor]))
+    cosole.log('idsOfUsers1')
+    await notifyUsers(
+      'Comment',
+      comment.id,
+      idsOfUsersExcludingPostAuthor,
+      'mentioned_in_comment',
+      context,
+    )
   }
 
   return comment
