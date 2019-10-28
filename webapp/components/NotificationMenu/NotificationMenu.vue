@@ -2,20 +2,20 @@
   <ds-button v-if="!notificationsCount" class="notifications-menu" disabled icon="bell">
     {{ unreadNotificationsCount }}
   </ds-button>
-  <dropdown v-else class="notifications-menu" :placement="placement">
+  <dropdown v-else class="notifications-menu" offset="8" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
       <ds-button :primary="!!unreadNotificationsCount" icon="bell" @click.prevent="toggleMenu">
         {{ unreadNotificationsCount }}
       </ds-button>
     </template>
     <template slot="popover">
-      <ds-space centered>
-        <ds-button primary fullwidth :path="{ name: 'notifications' }">
-          {{ $t('notifications.pageLink') }}
-        </ds-button>
-      </ds-space>
       <div class="notifications-menu-popover">
         <notification-list :notifications="displayedNotifications" @markAsRead="markAsRead" />
+      </div>
+      <div class="notifications-link-container">
+        <nuxt-link :to="{ name: 'notifications' }">
+          {{ $t('notifications.pageLink') }}
+        </nuxt-link>
       </div>
     </template>
   </dropdown>
@@ -121,14 +121,16 @@ export default {
 
 .notifications-menu-popover {
   max-width: 500px;
+  margin-bottom: $size-height-base;
 }
-.link-bg {
-  position: sticky;
-  width: 100%;
-  background-color: $background-color-primary-active;
+.notifications-link-container {
+  background-color: $background-color-softer-active;
   text-align: center;
-}
-.notifications-link {
-  color: $text-color-softer;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $size-height-base;
+  padding: $space-x-small;
 }
 </style>

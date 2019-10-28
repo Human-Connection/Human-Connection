@@ -135,7 +135,7 @@ export default {
         },
         user: {
           label: this.$t('notifications.user'),
-          width: '350px',
+          width: '33.333%',
         },
         post: this.$t('notifications.post'),
         content: this.$t('notifications.content'),

@@ -71,7 +71,7 @@
                     <notification-menu placement="top" />
                   </client-only>
                   <client-only>
-                    <avatar-menu placement="top" :user="user" />
+                    <avatar-menu placement="top" />
                   </client-only>
                 </template>
               </div>

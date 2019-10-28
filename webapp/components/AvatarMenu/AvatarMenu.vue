@@ -1,5 +1,5 @@
 <template>
-  <dropdown class="avatar-menu" offset="8">
+  <dropdown class="avatar-menu" offset="8" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
       <a
         class="avatar-menu-trigger"
@@ -58,7 +58,6 @@ export default {
   },
   props: {
     placement: { type: String, default: 'top-end' },
-    user: { type: Object, default: null },
   },
   computed: {
     ...mapGetters({
@@ -73,7 +72,7 @@ export default {
       let routes = [
         {
           name: this.$t('profile.name'),
-          path: `/profile/${this.user.slug}`,
+          path: `/profile/${this.user.id}/${this.user.slug}`,
           icon: 'user',
         },
         {
