@@ -162,6 +162,7 @@ const permissions = shield(
       changePassword: isAuthenticated,
       enable: isModerator,
       disable: isModerator,
+      decide: isModerator,
       CreateComment: isAuthenticated,
       UpdateComment: isAuthor,
       DeleteComment: isAuthor,
