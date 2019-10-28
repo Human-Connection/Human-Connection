@@ -1700,7 +1700,7 @@ apollo-server-errors@^2.3.4:
   resolved "https://registry.yarnpkg.com/apollo-server-errors/-/apollo-server-errors-2.3.4.tgz#b70ef01322f616cbcd876f3e0168a1a86b82db34"
   integrity sha512-Y0PKQvkrb2Kd18d1NPlHdSqmlr8TgqJ7JQcNIfhNDgdb45CnqZlxL1abuIRhr8tiw8OhVOcFxz2KyglBi8TKdA==
 
-apollo-server-express@^2.9.6, apollo-server-express@^2.9.7:
+apollo-server-express@^2.9.7:
   version "2.9.7"
   resolved "https://registry.yarnpkg.com/apollo-server-express/-/apollo-server-express-2.9.7.tgz#54fbaf93b68f0123ecb1dead26cbfda5b15bd10e"
   integrity sha512-+DuJk1oq34Zx0bLYzgBgJH/eXS0JNxw2JycHQvV0+PAQ0Qi01oomJRA2r1S5isnfnSAnHb2E9jyBTptoHdw3MQ==
@@ -1745,13 +1745,13 @@ apollo-server-types@^0.2.5:
     apollo-server-caching "^0.5.0"
     apollo-server-env "^2.4.3"
 
-apollo-server@~2.9.6:
-  version "2.9.6"
-  resolved "https://registry.yarnpkg.com/apollo-server/-/apollo-server-2.9.6.tgz#11b6f1128ddb674d2651bb289e0c0fc28aa18653"
-  integrity sha512-sDvrGpMQsTGQ9FTkFm3xracrSUi8nFoh3svlD98pe6qb75UDDrXAZgxwQCSOwZ3BkaJ7UkdndfhnruhFstTeMw==
+apollo-server@~2.9.7:
+  version "2.9.7"
+  resolved "https://registry.yarnpkg.com/apollo-server/-/apollo-server-2.9.7.tgz#aab337b75c04ddea0fa9b171b30c4e91932c04d8"
+  integrity sha512-maGGCsK4Ft5ucox5ZJf6oaKhgPvzHY3jXWbA1F/mn0/EYX8e1RVO3Qtj8aQQ0/vCKx8r4vYgj+ctqBVaN/nr4A==
   dependencies:
-    apollo-server-core "^2.9.6"
-    apollo-server-express "^2.9.6"
+    apollo-server-core "^2.9.7"
+    apollo-server-express "^2.9.7"
     express "^4.0.0"
     graphql-subscriptions "^1.0.0"
     graphql-tools "^4.0.0"
@@ -5721,12 +5721,12 @@ metascraper-audio@^5.7.6:
   dependencies:
     "@metascraper/helpers" "^5.7.6"
 
-metascraper-author@^5.7.6:
-  version "5.7.6"
-  resolved "https://registry.yarnpkg.com/metascraper-author/-/metascraper-author-5.7.6.tgz#ccef7c987f433ebe00a444ff9d1bcd1c3f65c825"
-  integrity sha512-kxUrQIZVZUWzA7GInasT/InTuRZ6VPE3QCWNqrha6p89+nxHfRMpfL1YTgdQWs1Y8MGKETt1uXV20tkKQVbPuw==
+metascraper-author@^5.7.14:
+  version "5.7.14"
+  resolved "https://registry.yarnpkg.com/metascraper-author/-/metascraper-author-5.7.14.tgz#5504c413eece572c66e72825bb1cff757974a4b8"
+  integrity sha512-P8xpHHoCzlbt1lb8qKbkz9XQ4MWC0c9ElKFORQ1GPmSVh0n+aTO1APKofFYcnl9rq6QIyYU4PLTqQZ54KXMqtA==
   dependencies:
-    "@metascraper/helpers" "^5.7.6"
+    "@metascraper/helpers" "^5.7.14"
     lodash "~4.17.15"
 
 metascraper-clearbit-logo@^5.3.0:
@@ -5743,12 +5743,12 @@ metascraper-date@^5.7.6:
   dependencies:
     "@metascraper/helpers" "^5.7.6"
 
-metascraper-description@^5.7.6:
-  version "5.7.6"
-  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.7.6.tgz#3a26b8bb8f325b1e959864f2c983ad4ef6050c24"
-  integrity sha512-DtcIRTwI2RFdy2NBSYCUpekNSqMH4BVNjAJNpWWYsDJZbk5rw6w2gOgzJH4HUM4eYKDkd0/tVd+HZYz57xxYBQ==
+metascraper-description@^5.7.14:
+  version "5.7.14"
+  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.7.14.tgz#4b77b04120f5f4f17dcabb4f549a7954da74b581"
+  integrity sha512-++qN4Rf0Hx13SbhJgRiLSuVOZHsYwhUkMfHa5sVVihSJkrLVjOSdBTpNBajRC7yHwG6m6/qIesuERbT1jdu5bw==
   dependencies:
-    "@metascraper/helpers" "^5.7.6"
+    "@metascraper/helpers" "^5.7.14"
 
 metascraper-image@^5.7.6:
   version "5.7.6"
@@ -5780,28 +5780,28 @@ metascraper-logo@^5.7.6:
   dependencies:
     "@metascraper/helpers" "^5.7.6"
 
-metascraper-publisher@^5.7.6:
-  version "5.7.6"
-  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.7.6.tgz#d0b04ae2f260a5bf0536fad29b3617fb9b6df296"
-  integrity sha512-RVvyNbzJnWutA2rSbK0CytokBXu1SVfsnME+IeKOGmtiSnKtGx5Q0lALHNVHt+bIShEYgba0UlVO/mPE37dU8g==
+metascraper-publisher@^5.7.14:
+  version "5.7.14"
+  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.7.14.tgz#74218cd2c1042264a3df754930e18d5e1f731750"
+  integrity sha512-6WHVr03tu4+KtcETR/q8y7ND9HxKI8QEEI1NAVpAolm1szDSpzV1PXVxWILcc2zPsaAHBSvM0iMwmE1zBEs+BA==
   dependencies:
-    "@metascraper/helpers" "^5.7.6"
+    "@metascraper/helpers" "^5.7.14"
 
-metascraper-soundcloud@^5.7.7:
-  version "5.7.7"
-  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.7.7.tgz#b7cb56e5ce7744aed90c83e37303e9b40ad3ff9d"
-  integrity sha512-TDJxUwFJCxU4bTrrx3GWiGeZdNhvRhlI61JiprLkYBriM65uzCfaJ5FjS5uzZy1CfMYhvQgxLZ7XRq1bgbPpTg==
+metascraper-soundcloud@^5.7.14:
+  version "5.7.14"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.7.14.tgz#5f369ffe06cfee9af9f877dc71da46daa1280218"
+  integrity sha512-Oc/TEXvq+Qw4acZQipwLCDazME9bsCIbkZmrw1603zOmudANE9EPJ6D3ZdcZkwIDjE/GtYtCkJENjuN55mTQ2Q==
   dependencies:
-    "@metascraper/helpers" "^5.7.6"
+    "@metascraper/helpers" "^5.7.14"
     memoize-one "~5.1.1"
     tldts "~5.6.1"
 
-metascraper-title@^5.7.6:
-  version "5.7.6"
-  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-5.7.6.tgz#346c637e735a040f299af5f67715eb8ed0016850"
-  integrity sha512-DF6TeMODzzLgJMLyUtN6wLPrz9/3JcRKyUIfWpuuw+WFC3Kx6ON8nWldTRh1yUu9xbSAOleae//f/dn+JhYlCw==
+metascraper-title@^5.7.14:
+  version "5.7.14"
+  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-5.7.14.tgz#4abea12bc9f0d3df5b442cb3c1a8c6559e417ea4"
+  integrity sha512-ZiVo4LEfqiNHlCGjht5OSZ3yRKxcZnbaXeRmUReMkCHcFujok5YZBj5ktDpAANmG9T3x2gn3twM3ZbBSyXLYyg==
   dependencies:
-    "@metascraper/helpers" "^5.7.6"
+    "@metascraper/helpers" "^5.7.14"
     lodash "~4.17.15"
 
 metascraper-url@^5.7.6:
@@ -5819,12 +5819,12 @@ metascraper-video@^5.7.6:
     "@metascraper/helpers" "^5.7.6"
     lodash "~4.17.15"
 
-metascraper-youtube@^5.7.6:
-  version "5.7.6"
-  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.7.6.tgz#4add25d3e86752d0429cf195ef9a130c5f0d1a4a"
-  integrity sha512-GLjnYeOELQJ7upu6ji6yILpF835i7cttZZwIrPxKWwTJKyAUJ5Ydp0wiqm/xkmMBIsQ6isgRIVSxOb6g9SnH+w==
+metascraper-youtube@^5.7.14:
+  version "5.7.14"
+  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.7.14.tgz#8745762dcd1c3721b342351632b21f046b85f2e3"
+  integrity sha512-ZDTc/8bN+XJSLmQmSh4bMFzniywhBr/W7UtloHWr9H86zTq+GEFgJTzu7RniuuU/vDUWFd1bswYb3D8KEjRwjg==
   dependencies:
-    "@metascraper/helpers" "^5.7.6"
+    "@metascraper/helpers" "^5.7.14"
     get-video-id "~3.1.4"
     is-reachable "~4.0.0"
     memoize-one "~5.1.1"
@@ -6054,13 +6054,14 @@ neo4j-driver@^1.7.3, neo4j-driver@^1.7.5, neo4j-driver@~1.7.6:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neo4j-graphql-js@^2.7.2:
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.7.2.tgz#6a56c63874bc41e678cb83580c6c7647e6f61ccf"
-  integrity sha512-nrhSmNAkiYgksNabNuHyMHYYaLloYZaVXRiYGrRVUcf84TLiwJdg5k9hIQVH9O6QQOvnK3lwBDlE7T0phpAIpg==
+neo4j-graphql-js@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.8.0.tgz#58035b9213656e17b6ed4c6cbf4dfe1c56a8a219"
+  integrity sha512-nDuzmi6W/YGIIVm+GAXCr/8CLABsU/RfeLebLH32vqeKViFATMfm4eT66aOq/GwHJ0838+o20yCbIFdx5rTP/A==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@babel/runtime-corejs2" "^7.5.5"
+    debug "^4.1.1"
     graphql "^14.2.1"
     graphql-auth-directives "^2.1.0"
     lodash "^4.17.15"

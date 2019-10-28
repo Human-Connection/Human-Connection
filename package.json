@@ -1,6 +1,6 @@
 {
   "name": "nitro-cypress",
-  "version": "1.0.0",
+  "version": "0.1.8",
   "description": "Fullstack tests with cypress for Human Connection",
   "author": "Human Connection gGmbh",
   "license": "MIT",
@@ -16,9 +16,11 @@
     "cypress:setup": "run-p cypress:backend:* cypress:webapp",
     "cypress:run": "cypress run --browser chromium",
     "cypress:open": "cypress open --browser chromium",
-    "test:jest": "cd webapp && yarn test && cd ../backend && yarn test:jest && codecov"
+    "test:jest": "cd webapp && yarn test && cd ../backend && yarn test:jest && codecov",
+    "version": "auto-changelog -p"
   },
   "devDependencies": {
+    "auto-changelog": "^1.16.1",
     "bcryptjs": "^2.4.3",
     "codecov": "^3.6.1",
     "cross-env": "^6.0.3",
