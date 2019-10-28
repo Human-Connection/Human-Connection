@@ -16,11 +16,10 @@ do
 done
 
 echo "
-MATCH (submitter:User)-[:REPORTED]->(report:Report)-[:REPORTED]->(resource)
-DETACH DELETE report
-CREATE (submitter)-[reported:REPORTED]->(resource)
-SET reported.createdAt = toString(datetime())
-SET reported.reasonCategory = 'other'
-SET reported.reasonDescription = '!!! Created automatically to ensure database consistency! Creation date is when the database manipulation happened.'
-RETURN reported;
+MATCH (moderator:User)-[disabled:DISABLED]->(resource)
+DELETE disabled
+CREATE (moderator)-[decided:DECIDED]->(resource)
+SET decided.createdAt = toString(datetime())
+SET decided.disabled = true
+RETURN decided;
 " | cypher-shell

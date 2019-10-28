@@ -27,7 +27,7 @@ module.exports = {
   },
   disabledBy: {
     type: 'relationship',
-    relationship: 'DISABLED',
+    relationship: 'DECIDED',
     target: 'User',
     direction: 'in',
   },

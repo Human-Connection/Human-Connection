@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const reportListQuery = () => {
-  // no limit vor the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
+  // no limit for the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
   return gql`
     query {
       reports(orderBy: createdAt_desc) {
@@ -15,6 +15,9 @@ export const reportListQuery = () => {
           name
           disabled
           deleted
+          followedByCount
+          contributionsCount
+          commentedCount
         }
         user {
           id
@@ -29,6 +32,9 @@ export const reportListQuery = () => {
             disabled
             deleted
           }
+          followedByCount
+          contributionsCount
+          commentedCount
         }
         comment {
           id
@@ -39,6 +45,9 @@ export const reportListQuery = () => {
             name
             disabled
             deleted
+            followedByCount
+            contributionsCount
+            commentedCount
           }
           post {
             id
@@ -67,6 +76,9 @@ export const reportListQuery = () => {
             name
             disabled
             deleted
+            followedByCount
+            contributionsCount
+            commentedCount
           }
           disabledBy {
             id

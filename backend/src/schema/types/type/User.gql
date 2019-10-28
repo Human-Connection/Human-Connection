@@ -8,7 +8,7 @@ type User {
   coverImg: String
   deleted: Boolean
   disabled: Boolean
-  disabledBy: User @relation(name: "DISABLED", direction: "IN")
+  disabledBy: User @relation(name: "DECIDED", direction: "IN")
   role: UserGroup!
   publicKey: String
   invitedBy: User @relation(name: "INVITED", direction: "IN")

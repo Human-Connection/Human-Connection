@@ -306,7 +306,7 @@ export default {
       },
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
-        disabledBy: '<-[:DISABLED]-(related:User)',
+        disabledBy: '<-[:DECIDED]-(related:User)',
         pinnedBy: '<-[:PINNED]-(related:User)',
       },
       count: {

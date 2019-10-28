@@ -686,6 +686,34 @@ import { gql } from '../jest/helpers'
         },
       }),
     ])
+    // report content a second time
+    authenticatedUser = await dewey.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'c1',
+          reasonCategory: 'pornographic_content_links',
+          reasonDescription: 'This comment is porno!!!',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p1',
+          reasonCategory: 'intentional_intimidation_stalking_persecution',
+          reasonDescription: '',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'u1',
+          reasonCategory: 'glorific_trivia_of_cruel_inhuman_acts',
+          reasonDescription: 'murder',
+        },
+      }),
+    ])
     authenticatedUser = null
 
     await Promise.all(
