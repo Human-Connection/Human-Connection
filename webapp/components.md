@@ -17,8 +17,14 @@ Usually `pages` use `layouts` as templates and will be composed of `features`. `
 
 - The `index` page is responsible for displaying a list of posts. It uses the `default` layout and the `PostList` feature.
 - The `PostList` feature uses a `List` component to render `PostTeaser` features.
-- The `PostTeaser` feature consists of a `Card` wrapped around a `CardImage`, `CardTitle` and `CardContent` component.
+- The `PostTeaser` feature consists of a `LayoutCard` wrapped around a `CardImage`, `CardTitle` and `CardContent` component.
 
 The `index` page is unique in the app and will never be reused. The `PostList` knows it is handling post data and can therefore not be used for anything else – but it can display posts on the `index` as well as the `user` page.
 
 The `Card` on the other hand does not care about the type of data it needs to handle. It just takes whatever it receives and renders it in a certain way, so it can be reused throughout the app for many different features.
+
+## We use two-word names
+
+We follow the W3C rules for naming custom elements as suggested in the [Vue.js docs](https://vuejs.org/v2/guide/components-registration.html#Component-Names) to differentiate our own components from regular HTML elements in our templates.
+
+Names should also be meaningful and unique to avoid confusion and code duplication, and also not too long to make them readable. Therefore: aim for two-word names, such as `layout-card`, `post-list` or `post-teaser`.
