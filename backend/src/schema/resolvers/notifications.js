@@ -18,9 +18,8 @@ export default {
     notifications: async (_parent, args, context, _resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
-      let notifications
-      let whereClause
-      let orderByClause
+      let notifications, whereClause, orderByClause
+
       switch (args.read) {
         case true:
           whereClause = 'WHERE notification.read = TRUE'
@@ -41,13 +40,15 @@ export default {
         default:
           orderByClause = ''
       }
-
+      const offset = args.offset ? `SKIP ${args.offset}` : ''
+      const limit = args.first ? `LIMIT ${args.first}` : ''
       try {
         const cypher = `
         MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
         ${whereClause}
         RETURN resource, notification, user
         ${orderByClause}
+        ${offset} ${limit}
         `
         const result = await session.run(cypher, { id: currentUser.id })
         notifications = await result.records.map(transformReturnType)
