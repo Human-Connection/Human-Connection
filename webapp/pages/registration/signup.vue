@@ -12,7 +12,7 @@
 
 <script>
 import Signup from '~/components/Registration/Signup'
-import HcEmpty from '~/components/Empty.vue'
+import HcEmpty from '~/components/Empty/Empty'
 
 export default {
   layout: 'no-header',

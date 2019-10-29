@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import HcEmpty from '~/components/Empty.vue'
+import HcEmpty from '~/components/Empty/Empty'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
