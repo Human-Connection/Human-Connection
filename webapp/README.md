@@ -38,7 +38,7 @@ $ yarn start
 We ensure the quality of our frontend code by using
 - [ESLint](https://eslint.org/) for checking our JavaScript code
 - [Jest](https://jestjs.io/) and [Vue Test Utils](https://vue-test-utils.vuejs.org/) to unit test our components
-- [Storybook](https://storybook.js.org/) to manually test our components in an isolated playground
+- [Storybook](https://storybook.js.org/) to document and manually test our components in an isolated playground
 
 For more information see our [frontend testing guide](testing.md). Use these commands to run the tests:
 

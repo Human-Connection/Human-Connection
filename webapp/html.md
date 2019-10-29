@@ -20,3 +20,10 @@ HTML is used to _structure content on the page_ and should therefore reflect its
 Why?
 - deep nesting makes it hard to understand, style and maintain components
 - it can lead to performance issues
+
+## Recommended reads
+
+For a deeper dive into the WHY and HOW have a look at the following resources:
+
+- [HTML: a good basis for accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/HTML)
+- [Why, how, and when to use semantic HTML and ARIA](https://css-tricks.com/why-how-and-when-to-use-semantic-html-and-aria/)
