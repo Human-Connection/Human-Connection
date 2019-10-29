@@ -106,15 +106,13 @@ const handleContentDataOfComment = async (resolve, root, args, context, resolveI
     const [postAuthor] = await result.records.map(record => {
       return record.get('user')
     })
-    const idsOfUsersExcludingPostAuthor = idsOfUsers.filter(res => !res.equals([postAuthor]))
-    cosole.log('idsOfUsers1')
-    await notifyUsers(
-      'Comment',
-      comment.id,
-      idsOfUsersExcludingPostAuthor,
-      'mentioned_in_comment',
-      context,
-    )
+    var index = idsOfUsers.indexOf(postAuthor.id)
+
+    if (index > -1) {
+      idsOfUsers.splice(index)
+    }
+
+    await notifyUsers('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
   }
 
   return comment
