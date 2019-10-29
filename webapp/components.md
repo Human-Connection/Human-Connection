@@ -28,3 +28,11 @@ The `Card` on the other hand does not care about the type of data it needs to ha
 We follow the W3C rules for naming custom elements as suggested in the [Vue.js docs](https://vuejs.org/v2/guide/components-registration.html#Component-Names) to differentiate our own components from regular HTML elements in our templates.
 
 Names should also be meaningful and unique to avoid confusion and code duplication, and also not too long to make them readable. Therefore: aim for two-word names, such as `layout-card`, `post-list` or `post-teaser`.
+
+## Recommended reads
+
+For a deeper dive into the WHY and HOW have a look at the following resources which the above guidelines are based on:
+
+- [Atomic design](https://bradfrost.com/blog/post/atomic-web-design/)
+- [CDD – component based design](https://medium.com/@wereheavyweight/how-were-using-component-based-design-5f9e3176babb)
+- [Vue.js component styleguide](https://pablohpsilva.github.io/vuejs-component-style-guide/#/)

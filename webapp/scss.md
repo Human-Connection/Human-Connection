@@ -64,3 +64,10 @@ To do that, use the `child selector`, like this:
 ```
 
 A special case are dimensions like `width` and `height`. If it is important that a component always has the same dimensions (the height of a button should be consistent, for example) define it _within the component_ itself, if a component should have flexible dimensions (a card, for example, could stretch over the whole screen in one place and be limited to a certain width in another) define the dimensions _in the parent_.
+
+## Recommended reads
+
+For a deeper dive into the WHY and HOW have a look at the following resources which the above guidelines are based on:
+
+- [rscss – reasonable system for css stylesheet structure](https://rscss.io/index.html)
+- [itcss – inverted triangle architecture for css](https://csswizardry.net/talks/2014/11/itcss-dafed.pdf)
