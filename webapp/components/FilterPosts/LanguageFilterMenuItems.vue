@@ -33,6 +33,7 @@
         <ds-flex class="languages-menu">
           <ds-flex-item width="100%" class="language-menu-item">
             <ds-button
+              class="language-buttons"
               icon="flag"
               :primary="filteredLanguagesCodes.includes(language.code)"
               @click.stop.prevent="toggleLanguage(language.code)"

@@ -88,10 +88,10 @@
     "followers": {
       "label": "Users I follow"
     },
-      "language": {
-	  "header": "Languages",
-	  "all": "All"
-      }
+    "language": {
+      "header": "Languages",
+      "all": "All"
+    }
   },
   "site": {
     "thanks": "Thanks!",

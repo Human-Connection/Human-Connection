@@ -87,10 +87,10 @@
     "followers": {
       "label": "Benutzern, denen ich folge"
     },
-      "language": {
-	  "header": "Sprachen",
-	  "all": "Alle"
-      }
+    "language": {
+      "header": "Sprachen",
+      "all": "Alle"
+    }
   },
   "site": {
     "thanks": "Danke!",
