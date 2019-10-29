@@ -28,4 +28,10 @@ When adding new components or changing existing ones Storybook can be helpful no
 
 With the right addons Storybook also gives immediate feedback on how well the component complies with accessibility guidelines.
 
-To run Storybook first start the app, then enter the following command in a new terminal window: `yarn storybook`. The Human Connection Storybook will then be available on `http://localhost:3002`.
+------
+
+To run Storybook first start the app, then enter the following command in a new terminal window: `yarn storybook`. The output should look similar to this:
+
+![Storybook output](../.gitbook/assets/storybook-output.png)
+
+The Human Connection Storybook will then be available on `http://localhost:3002`.
