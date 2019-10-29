@@ -103,8 +103,4 @@ export default {
 .sorting-dropdown {
   float: right;
 }
-.notification-status {
-  opacity: 0.6; /* Real browsers */
-  filter: alpha(opacity = 60); /* MSIE */
-}
 </style>
