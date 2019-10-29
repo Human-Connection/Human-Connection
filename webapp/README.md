@@ -40,7 +40,7 @@ We ensure the quality of our frontend code by using
 - [Jest](https://jestjs.io/) and [Vue Test Utils](https://vue-test-utils.vuejs.org/) to unit test our components
 - [Storybook](https://storybook.js.org/) to manually test our components in an isolated playground
 
-Use these commands to run the tests:
+For more information see our [frontend testing guide](testing.md). Use these commands to run the tests:
 
 {% tabs %}
 {% tab title="With Docker" %}
@@ -101,5 +101,6 @@ The folder structure we are aiming for is based on the [directory setup proposed
 - **assets** contains icons, images and logos in `svg` format
 - **components** are the generic building blocks of the app – small, reusable and usually not coupled to state
 - **features** are composed of components but tied to a particular function of the app (e.g. `comment` or `post`)
-- **pages** are the entry points for all `routes` in the app and are composed of features and components
+- **layouts** can use components to create templates for pages
+- **pages** are the entry points for all `routes` in the app and are composed of layouts, features and components
 - **styles** holds all shared SCSS files such as `variables` and `mixins`
