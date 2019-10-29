@@ -51,8 +51,8 @@ export const notificationQuery = i18n => {
     ${commentFragment(lang)}
     ${postFragment(lang)}
 
-    query($read: Boolean, $orderBy: NotificationOrdering) {
-      notifications(read: $read, orderBy: $orderBy) {
+    query($read: Boolean, $orderBy: NotificationOrdering, $first: Int, $offset: Int) {
+      notifications(read: $read, orderBy: $orderBy, first: $first, offset: $offset) {
         read
         reason
         createdAt
