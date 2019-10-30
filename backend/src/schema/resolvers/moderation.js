@@ -17,8 +17,7 @@ export default {
       CASE
       WHEN decision.createdAt IS NULL
       THEN decision END).createdAt = toString(datetime())
-      SET decision.disabled = true
-      SET decision.closed = false
+      SET decision.disabled = true, decision.closed = false, decision.last = true
       RETURN resource {.id}
       `
       const session = driver.session()
@@ -75,8 +74,8 @@ export default {
         const cypherHeader = ''
 
         // is there an open decision?
-        const existingDecisionTxResult = await existingDecisionWriteTxResultPromise
-        if (!existingDecisionTxResult[0]) {
+        const [existingDecisionTxResult] = await existingDecisionWriteTxResultPromise
+        if (!existingDecisionTxResult) {
           // no open decision, then create one
           if (!disabled) disabled = false // default for creation
           if (!disabled) closed = false // default for creation
@@ -85,14 +84,20 @@ export default {
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Comment OR resource:Post
             CREATE (resource)<-[decision:DECIDED]-(moderator)
+            SET decision.last = true
+            OPTIONAL MATCH (:User)-[lastDecision:DECIDED {last: true}]->(resource)
+            SET (
+            CASE
+            WHEN lastDecision IS NOT NULL
+            THEN lastDecision END).last = false
           `
         } else {
           // an open decision …
 
-          if (!disabled) disabled = existingDecisionTxResult[0].decision.properties.disabled // default set to existing
-          if (!disabled) closed = existingDecisionTxResult[0].decision.properties.closed // default set to existing
+          if (!disabled) disabled = existingDecisionTxResult.decision.properties.disabled // default set to existing
+          if (!disabled) closed = existingDecisionTxResult.decision.properties.closed // default set to existing
           // current moderator is not the same as old
-          if (moderator.id !== existingDecisionTxResult[0].decisionModerator.id) {
+          if (moderator.id !== existingDecisionTxResult.decisionModerator.id) {
             // an open decision from different moderator, then change relation and properties
             cypherHeader = `
               MATCH (moderator:User)-[oldDecision:DECIDED {closed: false}]->(resource {id: $resourceId})
@@ -124,8 +129,7 @@ export default {
               CASE
               WHEN decision.createdAt IS NULL
               THEN decision END).createdAt = toString(datetime())
-              SET decision.disabled = $disabled
-              SET decision.closed = $closed
+              SET decision.disabled = $disabled, decision.closed = $closed
               SET resource.disabled = $disabled
               RETURN decision, resource, moderator, labels(resource)[0] AS type
             `, {

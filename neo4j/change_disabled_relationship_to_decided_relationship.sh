@@ -19,8 +19,6 @@ echo "
 MATCH (moderator:User)-[disabled:DISABLED]->(resource)
 DELETE disabled
 CREATE (moderator)-[decision:DECIDED]->(resource)
-SET decision.createdAt = toString(datetime())
-SET decision.disabled = true
-SET decision.closed = false
+SET decision.createdAt = toString(datetime()), decision.disabled = true, decision.last = true, decision.closed = false
 RETURN decision;
 " | cypher-shell

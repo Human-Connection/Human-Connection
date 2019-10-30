@@ -5,6 +5,9 @@ type DECIDED {
   # reasonDescription: String
   disabled: Boolean!
   closed: Boolean!
+
+  # internal
+  last: Boolean!
   
   moderator: User
     @cypher(statement: "MATCH (resource)<-[:DECIDED]-(moderator:User) RETURN moderator")
