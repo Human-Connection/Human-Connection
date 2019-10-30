@@ -68,9 +68,12 @@ export default {
     }
   },
   computed: {
-    submitMessage() {
+    lowercaseEmail() {
       const { email } = this.formData
-      return this.$t('components.password-reset.request.form.submitted', { email })
+      return email.toLowerCase()
+    },
+    submitMessage() {
+      return this.$t('components.password-reset.request.form.submitted', { email: this.lowercaseEmail })
     },
   },
   methods: {
@@ -86,7 +89,7 @@ export default {
           requestPasswordReset(email: $email)
         }
       `
-      const { email } = this.formData
+      const email = this.lowercaseEmail
 
       try {
         await this.$apollo.mutate({ mutation, variables: { email } })
