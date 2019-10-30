@@ -24,6 +24,7 @@ export default applyScalars(
             'SocialMedia',
             'NOTIFIED',
             'REPORTED',
+            'DECIDED',
           ],
           // add 'User' here as soon as possible
         },
@@ -44,6 +45,7 @@ export default applyScalars(
             'EMOTED',
             'NOTIFIED',
             'REPORTED',
+            'DECIDED',
           ],
           // add 'User' here as soon as possible
         },

@@ -1,0 +1,23 @@
+type DECIDED {
+  createdAt: String!
+  updatedAt: String
+  # reasonCategory: ReasonCategory
+  # reasonDescription: String
+  disabled: Boolean!
+  closed: Boolean!
+  
+  moderator: User
+    @cypher(statement: "MATCH (resource)<-[:DECIDED]-(moderator:User) RETURN moderator")
+  # not yet supported
+  # resource: ReportResource
+  #   @cypher(statement: "MATCH (resource)<-[:DECIDED]-(:User) RETURN resource")
+  type: String
+    @cypher(statement: "MATCH (resource)<-[:DECIDED]-(:User) RETURN labels(resource)[0]")
+  user: User
+  post: Post
+  comment: Comment
+}
+
+type Mutation {
+  decide(resourceId: ID!, disabled: Boolean, closed: Boolean): DECIDED
+}
