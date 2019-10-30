@@ -37,7 +37,6 @@ export default {
     return {
       displayedNotifications: [],
       notifications: [],
-      nofiticationRead: null,
     }
   },
   props: {
@@ -113,7 +112,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .notifications-menu {
   display: flex;
   align-items: center;
