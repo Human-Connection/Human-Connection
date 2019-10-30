@@ -1,5 +1,7 @@
 <template>
-  <ds-tag><a v-bind:href="`/?hashtag=${id}`" target="_blank">#{{ id }}</a></ds-tag>
+  <ds-tag>
+    <a v-bind:href="`/?hashtag=${id}`" target="_blank">#{{ id }}</a>
+  </ds-tag>
 </template>
 
 <script>
