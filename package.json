@@ -20,7 +20,7 @@
     "version": "auto-changelog -p"
   },
   "devDependencies": {
-    "auto-changelog": "^1.16.1",
+    "auto-changelog": "^1.16.2",
     "bcryptjs": "^2.4.3",
     "codecov": "^3.6.1",
     "cross-env": "^6.0.3",
