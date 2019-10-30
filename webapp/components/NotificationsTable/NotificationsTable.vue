@@ -66,14 +66,20 @@ export default {
       return {
         icon: {
           label: ' ',
-          width: '60px',
+          width: '5',
         },
         user: {
           label: this.$t('notifications.user'),
-          width: '33.333%',
+          width: '45%',
         },
-        post: this.$t('notifications.post'),
-        content: this.$t('notifications.content'),
+        post: {
+          label: this.$t('notifications.post'),
+          width: '25%',
+        },
+        content: {
+          label: this.$t('notifications.content'),
+          width: '25%',
+        },
       }
     },
   },
