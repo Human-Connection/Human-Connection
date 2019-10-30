@@ -46,4 +46,12 @@ export default {
     border-color: $background-color-secondary transparent transparent $background-color-secondary;
   }
 }
+
+.ribbon--pinned {
+  background-color: $color-warning-active;
+
+  &::before {
+    border-color: $color-warning transparent transparent $color-warning;
+  }
+}
 </style>

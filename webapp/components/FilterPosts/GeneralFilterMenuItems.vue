@@ -68,14 +68,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filteredByUsersFollowed: 'postsFilter/filteredByUsersFollowed',
-      filteredByEmotions: 'postsFilter/filteredByEmotions',
+      filteredByUsersFollowed: 'posts/filteredByUsersFollowed',
+      filteredByEmotions: 'posts/filteredByEmotions',
     }),
   },
   methods: {
     ...mapMutations({
-      toggleFilteredByFollowed: 'postsFilter/TOGGLE_FILTER_BY_FOLLOWED',
-      toogleFilteredByEmotions: 'postsFilter/TOGGLE_EMOTION',
+      toggleFilteredByFollowed: 'posts/TOGGLE_FILTER_BY_FOLLOWED',
+      toogleFilteredByEmotions: 'posts/TOGGLE_EMOTION',
     }),
     iconPath(emotion) {
       if (this.filteredByEmotions.includes(emotion)) {

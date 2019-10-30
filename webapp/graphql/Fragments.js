@@ -57,6 +57,12 @@ export const postFragment = lang => gql`
       name
       icon
     }
+    pinnedBy {
+      id
+      name
+      role
+    }
+    pinnedAt
   }
 `
 export const commentFragment = lang => gql`

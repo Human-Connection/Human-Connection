@@ -4,6 +4,7 @@ import {
   Then
 } from "cypress-cucumber-preprocessor/steps";
 import helpers from "../../support/helpers";
+import { VERSION } from '../../constants/terms-and-conditions-version.js'
 
 /* global cy  */
 
@@ -14,7 +15,7 @@ let loginCredentials = {
   password: "1234"
 };
 const termsAndConditionsAgreedVersion = {
-  termsAndConditionsAgreedVersion: "0.0.2"
+  termsAndConditionsAgreedVersion: VERSION
 };
 const narratorParams = {
   id: 'id-of-peter-pan',

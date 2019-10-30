@@ -32,6 +32,7 @@
     * [Maintenance](deployment/human-connection/maintenance/README.md)
   * [Volumes](deployment/volumes/README.md)
     * [Neo4J Offline-Backups](deployment/volumes/neo4j-offline-backup/README.md)
+    * [Neo4J Online-Backups](deployment/volumes/neo4j-online-backup/README.md)
     * [Volume Snapshots](deployment/volumes/volume-snapshots/README.md)
     * [Reclaim Policy](deployment/volumes/reclaim-policy/README.md)
     * [Velero](deployment/volumes/velero/README.md)
