@@ -69,10 +69,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .notification.read {
-  opacity: 0.6; /* Real browsers */
-  filter: alpha(opacity = 60); /* MSIE */
+  opacity: $opacity-soft;
 }
 .notifications-card {
   min-width: 500px;

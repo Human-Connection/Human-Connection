@@ -1,10 +1,10 @@
 <template>
   <ds-card space="small">
-    <ds-flex>
+    <ds-flex class="notifications-page-flex">
       <ds-flex-item :width="{ lg: '85%' }">
         <ds-heading tag="h3">{{ $t('notifications.title') }}</ds-heading>
       </ds-flex-item>
-      <ds-flex-item class="sorting-dropdown">
+      <ds-flex-item width="100px">
         <client-only>
           <notifications-dropdown-filter @filterNotifications="filterNotifications" />
         </client-only>
@@ -100,7 +100,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.sorting-dropdown {
-  float: right;
+.notifications-page-flex {
+  justify-content: space-between;
 }
 </style>

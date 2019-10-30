@@ -76,7 +76,7 @@ describe('AvatarMenu.vue', () => {
       })
     })
 
-    describe('routes', () => {
+    describe('menu items', () => {
       beforeEach(() => {
         getters = {
           'auth/user': () => {

@@ -105,7 +105,6 @@ export default {
 </script>
 <style lang="scss">
 .notification-status {
-  opacity: 0.6; /* Real browsers */
-  filter: alpha(opacity = 60); /* MSIE */
+  opacity: $opacity-soft;
 }
 </style>

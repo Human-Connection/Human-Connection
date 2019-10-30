@@ -118,9 +118,9 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .avatar-menu {
-  margin: 2px 0px 0px 5px;
+  margin: $space-xxx-small 0px 0px $space-xx-small;
 }
 .avatar-menu-trigger {
   user-select: none;
@@ -129,21 +129,15 @@ export default {
   padding-left: $space-xx-small;
 }
 .avatar-menu-popover {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: $space-x-small;
+  padding-bottom: $space-x-small;
   hr {
     color: $color-neutral-90;
     background-color: $color-neutral-90;
   }
   .logout-link {
-    margin-left: -$space-small;
-    margin-right: -$space-small;
-    margin-top: -$space-xxx-small;
-    margin-bottom: -$space-x-small;
-    padding: $space-x-small $space-small;
-    // subtract menu border with from padding
-    padding-left: $space-small - 2;
     color: $text-color-base;
+    padding-top: $space-xx-small;
     &:hover {
       color: $text-color-link-active;
     }
