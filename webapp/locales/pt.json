@@ -182,6 +182,25 @@
     "hint": "O que você está pesquisando??",
     "failed": "Nada foi encontrado"
   },
+  "notifications": {
+    "reason": {
+      "mentioned_in_post": "Mencinou você em um post …",
+      "mentioned_in_comment": "Mentionou você em um comentário …",
+      "commented_on_post": "Comentou no seu post …"
+    },
+    "comment": "Comentário",
+    "title": "Notificações",
+    "pageLink": "Todas as notificações",
+    "post": "Post",
+    "user": "Usuário",
+    "content": "Conteúdo",
+    "sortingLabel": {
+      "all": "Todos",
+      "read": "Lido",
+      "unread": "Não lido"
+    },
+    "empty": "Desculpe, não tem nenhuma notificação neste momento."
+  },
   "settings": {
     "name": "Configurações",
     "data": {
