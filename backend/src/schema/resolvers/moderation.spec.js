@@ -26,7 +26,7 @@ const commentQuery = gql`
     Comment(id: $id) {
       id
       disabled
-      disabledBy {
+      decidedByModerator {
         id
       }
     }
@@ -38,7 +38,7 @@ const postQuery = gql`
     Post(id: $id) {
       id
       disabled
-      disabledBy {
+      decidedByModerator {
         id
       }
     }
@@ -144,11 +144,11 @@ describe('moderate resources', () => {
             })
           })
 
-          it('changes .disabledBy', async () => {
+          it('changes .decidedByModerator', async () => {
             variables = { id: 'comment-id' }
-            const before = { data: { Comment: [{ id: 'comment-id', disabledBy: null }] } }
+            const before = { data: { Comment: [{ id: 'comment-id', decidedByModerator: null }] } }
             const expected = {
-              data: { Comment: [{ id: 'comment-id', disabledBy: { id: 'moderator-id' } }] },
+              data: { Comment: [{ id: 'comment-id', decidedByModerator: { id: 'moderator-id' } }] },
             }
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(before)
             await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
@@ -185,11 +185,11 @@ describe('moderate resources', () => {
             })
           })
 
-          it('changes .disabledBy', async () => {
+          it('changes .decidedByModerator', async () => {
             variables = { id: 'sample-post-id' }
-            const before = { data: { Post: [{ id: 'sample-post-id', disabledBy: null }] } }
+            const before = { data: { Post: [{ id: 'sample-post-id', decidedByModerator: null }] } }
             const expected = {
-              data: { Post: [{ id: 'sample-post-id', disabledBy: { id: 'moderator-id' } }] },
+              data: { Post: [{ id: 'sample-post-id', decidedByModerator: { id: 'moderator-id' } }] },
             }
 
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(before)
@@ -278,9 +278,9 @@ describe('moderate resources', () => {
             })
           })
 
-          it('changes .disabledBy', async () => {
+          it('changes .decidedByModerator', async () => {
             const expected = {
-              data: { Comment: [{ id: 'comment-id', disabledBy: null }] },
+              data: { Comment: [{ id: 'comment-id', decidedByModerator: { id: 'moderator-id' } }] },
               errors: undefined,
             }
             await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({
@@ -320,9 +320,9 @@ describe('moderate resources', () => {
             })
           })
 
-          it('changes .disabledBy', async () => {
+          it('changes .decidedByModerator', async () => {
             const expected = {
-              data: { Post: [{ id: 'post-id', disabledBy: null }] },
+              data: { Post: [{ id: 'post-id', decidedByModerator: { id: 'moderator-id' } }] },
               errors: undefined,
             }
             await expect(mutate({ mutation: enableMutation, variables })).resolves.toMatchObject({

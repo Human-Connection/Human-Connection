@@ -4,21 +4,21 @@ export default {
       const { id: resourceId } = params
       const { id: userId } = user
       const cypher = `
-      MATCH (u:User {id: $userId})
-      MATCH (resource {id: $resourceId})
-      WHERE resource:User OR resource:Comment OR resource:Post
-      SET resource.disabled = true
-      MERGE (resource)<-[decision:DECIDED]-(u)
-      SET (
-      CASE
-      WHEN decision.createdAt IS NOT NULL
-      THEN decision END).updatedAt = toString(datetime())
-      SET (
-      CASE
-      WHEN decision.createdAt IS NULL
-      THEN decision END).createdAt = toString(datetime())
-      SET decision.disabled = true, decision.closed = false, decision.last = true
-      RETURN resource {.id}
+        MATCH (u:User {id: $userId})
+        MATCH (resource {id: $resourceId})
+        WHERE resource:User OR resource:Comment OR resource:Post
+        SET resource.disabled = true
+        MERGE (resource)<-[decision:DECIDED]-(u)
+        SET (
+        CASE
+        WHEN decision.createdAt IS NOT NULL
+        THEN decision END).updatedAt = toString(datetime())
+        SET (
+        CASE
+        WHEN decision.createdAt IS NULL
+        THEN decision END).createdAt = toString(datetime())
+        SET decision.disabled = true, decision.closed = false, decision.last = true
+        RETURN resource {.id}
       `
       const session = driver.session()
       const res = await session.run(cypher, { resourceId, userId })
@@ -32,14 +32,14 @@ export default {
     enable: async (object, params, { user, driver }) => {
       const { id: resourceId } = params
       const cypher = `
-      MATCH (resource {id: $resourceId})<-[decision:DECIDED]-(:User)
-      SET resource.disabled = false
-      DELETE decision
-      RETURN resource {.id}
+        MATCH (resource {id: $resourceId})<-[decision:DECIDED]-(:User)
+        SET resource.disabled = false
+        SET decision.disabled = false, decision.updatedAt = toString(datetime())
+        RETURN resource {.id}
       `
       // Wolle
-      // SET decision.updatedAt = toString(datetime())
-      // SET decision.disabled = false
+      // DELETE decision
+
       const session = driver.session()
       const res = await session.run(cypher, { resourceId })
       session.close()

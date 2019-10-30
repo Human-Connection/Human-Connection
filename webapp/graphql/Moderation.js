@@ -25,7 +25,7 @@ export const reportListQuery = () => {
           name
           disabled
           deleted
-          disabledBy {
+          decidedByModerator {
             id
             slug
             name
@@ -56,7 +56,7 @@ export const reportListQuery = () => {
             disabled
             deleted
           }
-          disabledBy {
+          decidedByModerator {
             id
             slug
             name
@@ -80,7 +80,7 @@ export const reportListQuery = () => {
             contributionsCount
             commentedCount
           }
-          disabledBy {
+          decidedByModerator {
             id
             slug
             name

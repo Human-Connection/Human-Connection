@@ -47,7 +47,7 @@ type Post {
   deleted: Boolean
   disabled: Boolean
   pinned: Boolean
-  disabledBy: User @relation(name: "DECIDED", direction: "IN")
+  decidedByModerator: User @relation(name: "DECIDED", direction: "IN")
   createdAt: String
   updatedAt: String
   language: String

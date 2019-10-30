@@ -198,7 +198,7 @@ export default {
       },
       hasOne: {
         invitedBy: '<-[:INVITED]-(related:User)',
-        disabledBy: '<-[:DECIDED]-(related:User)',
+        decidedByModerator: '<-[:DECIDED]-(related:User)',
         location: '-[:IS_IN]->(related:Location)',
       },
       hasMany: {

@@ -29,7 +29,10 @@
           <tr valign="top">
             <td class="ds-table-col ds-table-head-col ds-table-head-col-border">
               <!-- Icon -->
-              <ds-text :class="[!content.resource.disabledBy && 'no-decision']" color="soft">
+              <ds-text
+                :class="[!content.resource.decidedByModerator && 'no-decision']"
+                color="soft"
+              >
                 <ds-icon
                   v-if="content.type === 'Post'"
                   v-tooltip="{ content: $t('report.contribution.type'), placement: 'right' }"
@@ -85,10 +88,10 @@
             </td>
             <td class="ds-table-col ds-table-head-col-border">
               <!-- disabledBy -->
-              <div v-if="content.resource.disabledBy">
+              <div v-if="content.resource.decidedByModerator">
                 {{ $t('moderation.reports.disabledBy') }}
                 <br />
-                <hc-user :user="content.resource.disabledBy" :showAvatar="false" :trunc="30" />
+                <hc-user :user="content.resource.decidedByModerator" :showAvatar="false" :trunc="30" />
               </div>
               <span v-else class="no-decision">{{ $t('moderation.reports.noDecision') }}</span>
             </td>

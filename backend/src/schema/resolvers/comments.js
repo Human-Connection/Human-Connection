@@ -68,7 +68,7 @@ export default {
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         post: '-[:COMMENTS]->(related:Post)',
-        disabledBy: '<-[:DECIDED]-(related:User)',
+        decidedByModerator: '<-[:DECIDED]-(related:User)',
       },
     }),
   },

@@ -42,7 +42,7 @@ module.exports = {
     },
   },
   friends: { type: 'relationship', relationship: 'FRIENDS', target: 'User', direction: 'both' },
-  disabledBy: {
+  decidedByModerator: {
     type: 'relationship',
     relationship: 'DECIDED',
     target: 'User',

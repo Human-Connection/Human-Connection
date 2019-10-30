@@ -17,7 +17,7 @@ module.exports = {
   image: { type: 'string', allow: [null] },
   deleted: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },
-  disabledBy: {
+  decidedByModerator: {
     type: 'relationship',
     relationship: 'DECIDED',
     target: 'User',
