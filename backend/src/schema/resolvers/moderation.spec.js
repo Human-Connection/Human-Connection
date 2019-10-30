@@ -12,7 +12,14 @@ let query, mutate, authenticatedUser, variables, moderator, nonModerator
 
 const disableMutation = gql`
   mutation($id: ID!) {
-    disable(id: $id)
+    decide(resourceId: $id, disabled: true, closed: false) {
+      post {
+        id
+      }
+      comment {
+        id
+      }
+    }
   }
 `
 const enableMutation = gql`
@@ -123,7 +130,7 @@ describe('moderate resources', () => {
 
           it('returns null', async () => {
             await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
-              data: { disable: null },
+              data: { decide: null },
             })
           })
         })
@@ -139,7 +146,7 @@ describe('moderate resources', () => {
           it('returns disabled resource id', async () => {
             variables = { id: 'comment-id' }
             await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
-              data: { disable: 'comment-id' },
+              data: { decide: { comment: { id: 'comment-id' } } },
               errors: undefined,
             })
           })
@@ -152,7 +159,7 @@ describe('moderate resources', () => {
             }
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(before)
             await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
-              data: { disable: 'comment-id' },
+              data: { decide: { comment: { id: 'comment-id' } } },
             })
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(expected)
           })
@@ -164,7 +171,7 @@ describe('moderate resources', () => {
 
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(before)
             await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
-              data: { disable: 'comment-id' },
+              data: { decide: { comment: { id: 'comment-id' } } },
             })
             await expect(query({ query: commentQuery, variables })).resolves.toMatchObject(expected)
           })
@@ -181,7 +188,7 @@ describe('moderate resources', () => {
           it('returns disabled resource id', async () => {
             variables = { id: 'sample-post-id' }
             await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
-              data: { disable: 'sample-post-id' },
+              data: { decide: { post: { id: 'sample-post-id' } } },
             })
           })
 
@@ -189,12 +196,14 @@ describe('moderate resources', () => {
             variables = { id: 'sample-post-id' }
             const before = { data: { Post: [{ id: 'sample-post-id', decidedByModerator: null }] } }
             const expected = {
-              data: { Post: [{ id: 'sample-post-id', decidedByModerator: { id: 'moderator-id' } }] },
+              data: {
+                Post: [{ id: 'sample-post-id', decidedByModerator: { id: 'moderator-id' } }],
+              },
             }
 
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(before)
             await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
-              data: { disable: 'sample-post-id' },
+              data: { decide: { post: { id: 'sample-post-id' } } },
             })
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
           })
@@ -206,7 +215,7 @@ describe('moderate resources', () => {
 
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(before)
             await expect(mutate({ mutation: disableMutation, variables })).resolves.toMatchObject({
-              data: { disable: 'sample-post-id' },
+              data: { decide: { post: { id: 'sample-post-id' } } },
             })
             await expect(query({ query: postQuery, variables })).resolves.toMatchObject(expected)
           })

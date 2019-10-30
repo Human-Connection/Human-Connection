@@ -91,7 +91,11 @@
               <div v-if="content.resource.decidedByModerator">
                 {{ $t('moderation.reports.disabledBy') }}
                 <br />
-                <hc-user :user="content.resource.decidedByModerator" :showAvatar="false" :trunc="30" />
+                <hc-user
+                  :user="content.resource.decidedByModerator"
+                  :showAvatar="false"
+                  :trunc="30"
+                />
               </div>
               <span v-else class="no-decision">{{ $t('moderation.reports.noDecision') }}</span>
             </td>

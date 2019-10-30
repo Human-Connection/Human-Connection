@@ -89,7 +89,7 @@ const validateReport = async (resolve, root, args, context, info) => {
 //   const session = driver.session()
 //   const reportQueryRes = await session.run(
 //     `
-//       MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId}) 
+//       MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId})
 //       RETURN labels(resource)[0] as label
 //     `,
 //     {

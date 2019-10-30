@@ -37,9 +37,6 @@ export default {
         SET decision.disabled = false, decision.updatedAt = toString(datetime())
         RETURN resource {.id}
       `
-      // Wolle
-      // DELETE decision
-
       const session = driver.session()
       const res = await session.run(cypher, { resourceId })
       session.close()
@@ -51,7 +48,8 @@ export default {
     },
     decide: async (object, params, context, _resolveInfo) => {
       let createdRelationshipWithNestedAttributes = null
-      const { resourceId, disabled, closed } = params
+      const { resourceId } = params
+      let { disabled, closed } = params
       const { user: moderator, driver } = context
 
       const session = driver.session()
@@ -62,7 +60,8 @@ export default {
             MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
             WHERE resource:User OR resource:Comment OR resource:Post
             RETURN decision, moderator {.id} AS decisionModerator
-          `, { resourceId },
+          `,
+          { resourceId },
         )
         return decisionRelationshipTransactionResponse.records.map(record => ({
           decision: record.get('decision'),
@@ -71,31 +70,32 @@ export default {
       })
 
       try {
-        const cypherHeader = ''
+        let cypherHeader = ''
 
         // is there an open decision?
         const [existingDecisionTxResult] = await existingDecisionWriteTxResultPromise
         if (!existingDecisionTxResult) {
           // no open decision, then create one
-          if (!disabled) disabled = false // default for creation
-          if (!disabled) closed = false // default for creation
+          if (disabled === undefined) disabled = false // default for creation
+          if (closed === undefined) closed = false // default for creation
           cypherHeader = `
             MATCH (moderator:User {id: $moderatorId})
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Comment OR resource:Post
             CREATE (resource)<-[decision:DECIDED]-(moderator)
             SET decision.last = true
+            WITH decision, resource, moderator
             OPTIONAL MATCH (:User)-[lastDecision:DECIDED {last: true}]->(resource)
             SET (
             CASE
             WHEN lastDecision IS NOT NULL
             THEN lastDecision END).last = false
-          `
+            `
         } else {
           // an open decision …
-
-          if (!disabled) disabled = existingDecisionTxResult.decision.properties.disabled // default set to existing
-          if (!disabled) closed = existingDecisionTxResult.decision.properties.closed // default set to existing
+          if (disabled === undefined)
+            disabled = existingDecisionTxResult.decision.properties.disabled // default set to existing
+          if (closed === undefined) closed = existingDecisionTxResult.decision.properties.closed // default set to existing
           // current moderator is not the same as old
           if (moderator.id !== existingDecisionTxResult.decisionModerator.id) {
             // an open decision from different moderator, then change relation and properties
@@ -108,37 +108,37 @@ export default {
               WHERE resource:User OR resource:Comment OR resource:Post
               CREATE (resource)<-[decision:DECIDED]-(moderator)
               SET decision = oldDecision
-            `
+              `
           } else {
             // an open decision from same moderator, then change properties
             cypherHeader = `
               MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
               WHERE resource:User OR resource:Comment OR resource:Post
-            `
+              `
           }
         }
+        const cypher =
+          cypherHeader +
+          `SET (
+            CASE
+            WHEN decision.createdAt IS NOT NULL
+            THEN decision END).updatedAt = toString(datetime())
+            SET (
+            CASE
+            WHEN decision.createdAt IS NULL
+            THEN decision END).createdAt = toString(datetime())
+            SET decision.disabled = $disabled, decision.closed = $closed
+            SET resource.disabled = $disabled
+            RETURN decision, resource, moderator, labels(resource)[0] AS type
+          `
 
         const newDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
-          const decisionRelationshipTransactionResponse = await txc.run(
-            cypherHeader + `
-              SET (
-              CASE
-              WHEN decision.createdAt IS NOT NULL
-              THEN decision END).updatedAt = toString(datetime())
-              SET (
-              CASE
-              WHEN decision.createdAt IS NULL
-              THEN decision END).createdAt = toString(datetime())
-              SET decision.disabled = $disabled, decision.closed = $closed
-              SET resource.disabled = $disabled
-              RETURN decision, resource, moderator, labels(resource)[0] AS type
-            `, {
-              resourceId,
-              moderatorId: moderator.id,
-              disabled,
-              closed,
-            },
-          )
+          const decisionRelationshipTransactionResponse = await txc.run(cypher, {
+            resourceId,
+            moderatorId: moderator.id,
+            disabled,
+            closed,
+          })
           return decisionRelationshipTransactionResponse.records.map(record => ({
             decision: record.get('decision'),
             resource: record.get('resource'),

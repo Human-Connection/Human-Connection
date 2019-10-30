@@ -12,6 +12,8 @@ type REPORTED {
   user: User
   post: Post
   comment: Comment
+
+  # decided: DECIDED
 }
 
 # this list equals the strings of an array in file "webapp/constants/modals.js"
