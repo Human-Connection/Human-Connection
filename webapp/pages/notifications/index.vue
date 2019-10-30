@@ -6,7 +6,7 @@
       </ds-flex-item>
       <ds-flex-item class="sorting-dropdown">
         <client-only>
-          <notifications-dropdown-filter @sortNotifications="sortNotifications" />
+          <notifications-dropdown-filter @filterNotifications="filterNotifications" />
         </client-only>
       </ds-flex-item>
     </ds-flex>
@@ -48,8 +48,8 @@ export default {
     },
   },
   methods: {
-    sortNotifications(option) {
-      this.notificationRead = option.value
+    filterNotifications(value) {
+      this.notificationRead = value
       this.$apollo.queries.notifications.refresh()
     },
     async markNotificationAsRead(notificationSourceId) {

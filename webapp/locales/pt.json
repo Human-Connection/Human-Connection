@@ -194,7 +194,7 @@
     "post": "Post",
     "user": "Usuário",
     "content": "Conteúdo",
-    "sortingLabel": {
+    "filterLabel": {
       "all": "Todos",
       "read": "Lido",
       "unread": "Não lido"
