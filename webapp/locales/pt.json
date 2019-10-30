@@ -10,68 +10,68 @@
         }
       },
       "change-password": {
-        "success": "Changing your password was successful!",
-        "error": "Changing your password failed. Maybe the security code was not correct?",
-        "help": "In case of problems, feel free to ask for help by sending us a mail to:"
+        "success": "A alteração da sua senha foi bem-sucedida!",
+        "error": "A alteração da sua senha falhou. Talvez o código de segurança não estava correto?",
+        "help": "Em caso de problemas, sinta-se à vontade para pedir ajuda, enviando um e-mail para:"
       }
     },
     "enter-nonce": {
       "form": {
-        "nonce": "Enter your code",
-        "description": "Open your inbox and enter the code that we've sent to you.",
+        "nonce": "Digite seu código",
+        "description": "Abra a sua caixa de entrada e digite o código que lhe enviamos.",
         "next": "Continue",
         "validations": {
-          "length": "must be 6 characters long"
+          "length": "deve ter 6 caracteres"
         }
       }
     },
     "registration": {
       "signup": {
-        "unavailable": "Unfortunately, public registration of user accounts is not available right now on this server.",
-        "title": "Join Human Connection!",
+        "unavailable": "Infelizmente, o registo público para usuário não está disponível neste servidor.",
+        "title": "Junte-se à Human Connection!",
         "form": {
-          "description": "To get started, enter your email address:",
-          "invitation-code": "Your invitation code is: <b>{code}</b>",
+          "description": "Para começar, digite seu endereço de e-mail:",
+          "invitation-code": "O seu código de convite é: <b>{code}</b>",
           "errors": {
-            "email-exists": "There is already a user account with this email address!",
-            "invalid-invitation-token": "It looks like as if the invitation has been used already. Invitation links can only be used once."
+            "email-exists": "Já existe uma conta de usuário com este endereço de e-mail!",
+            "invalid-invitation-token": "Parece que o convite já foi usado. Os links para convites só podem ser usados uma vez."
           },
-          "submit": "Create an account",
-          "success": "A mail with a link to complete your registration has been sent to <b>{email}</b>"
+          "submit": "Criar uma conta",
+          "success": "Um e-mail com um link para completar o seu registo foi enviado para <b>{email}</b>"
         }
       },
       "create-user-account": {
-        "title": "Create user account",
-        "success": "Your account has been created!",
-        "error": "No user account could be created!",
-        "help": " Maybe the confirmation was invalid? In case of problems, feel free to ask for help by sending us a mail to:"
+        "title": "Criar uma conta de usuário",
+        "success": "A sua conta foi criada!",
+        "error": "Nenhuma conta de usuário pode ser criada!",
+        "help": " Talvez a confirmação tenha sido inválida? Em caso de problemas, sinta-se à vontade para pedir ajuda, enviando um e-mail para:"
       }
     }
   },
   "maintenance": {
-    "title": "Human Connection is under maintenance",
-    "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
-    "questions": "Any Questions or concerns, send an email to"
+    "title": "Human Connection está em manutenção",
+    "explanation": "No momento estamos em manutenção, por favor tente novamente mais tarde.",
+    "questions": "Qualquer dúvida, envie um e-mail para"
   },
   "index": {
-    "no-results": "No contributions found.",
-    "change-filter-settings": "Change your filter settings to get more results."
+    "no-results": "Nenhuma contribuição encontrada.",
+    "change-filter-settings": "Altere suas configurações de filtro para obter mais resultados."
   },
   "filter-menu": {
-    "title": "Your filter bubble",
-    "hashtag-search": "Searching for #{hashtag}",
-    "clearSearch": "Clear search"
+    "title": "Sua bolha de filtro",
+    "hashtag-search": "Procurando por #{hashtag}",
+    "clearSearch": "Limpar pesquisa"
   },
   "filter-posts": {
     "categories": {
-      "header": "Categories of Content",
-      "all": "All"
+      "header": "Categorias de Conteúdo",
+      "all": "Todos"
     },
     "general": {
-      "header": "Filter by …"
+      "header": "Filtrar por …"
     },
     "followers": {
-      "label": "Users I follow"
+      "label": "Usuários que eu sigo"
     }
   },
   "site": {
@@ -94,8 +94,8 @@
     "back-to-login": "Voltar para o Login"
   },
   "sorting": {
-    "newest": "Newest",
-    "oldest": "Oldest"
+    "newest": "Mais recentes",
+    "oldest": "Mais antigos"
   },
   "login": {
     "copy": "Se você já tem uma conta no Human Connection, por favor faça o login.",
@@ -112,30 +112,30 @@
     "success": "Você está conectado!"
   },
   "editor": {
-    "placeholder": "Leave your inspirational thoughts …",
+    "placeholder": " Escreva algo inspirador…",
     "mention": {
-      "noUsersFound": "No users found"
+      "noUsersFound": "Nenhum usuário encontrado"
     },
     "hashtag": {
-      "noHashtagsFound": "No hashtags found",
-      "addHashtag": "New hashtag",
-      "addLetter": "Type a letter"
+      "noHashtagsFound": "Nenhuma hashtag encontrada",
+      "addHashtag": "Nova hashtag",
+      "addLetter": "Digite uma letra"
     },
     "embed": {
-      "data_privacy_warning": "Data Privacy Warning!",
-      "data_privacy_info": "Your data has not yet been shared with any third party providers. If you proceed to watch this video the following provider will likely collect user data:",
-      "play_now": "Watch now",
-      "always_allow": "Always allow embedded content by third party providers (this setting can be changed any time)"
+      "data_privacy_warning": "Aviso de Privacidade de Dados!",
+      "data_privacy_info": "Seus dados ainda não foram compartilhados com terceiros. Se continuar assistindo este vídeo, o seguinte fornecedor irá provavelmente recolher dados do utilizador:",
+      "play_now": "Assista agora",
+      "always_allow": "Sempre permita conteúdo incorporado por provedores de terceiros (esta configuração pode ser alterada a qualquer momento)"
     }
   },
   "profile": {
-    "name": "My Profile",
-    "memberSince": "Member since",
-    "follow": "Follow",
-    "followers": "Followers",
-    "following": "Following",
-    "shouted": "Shouted",
-    "commented": "Commented",
+    "name": "Meu perfil",
+    "memberSince": "Membro desde",
+    "follow": "Seguir",
+    "followers": "Seguidores",
+    "following": "Seguindo",
+    "shouted": "Aclamou",
+    "commented": "Comentou",
     "userAnonym": "Anonymous",
     "socialMedia": "Where else can I find",
     "network": {
