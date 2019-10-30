@@ -20,6 +20,7 @@ describe('Paginate.vue', () => {
     beforeEach(() => {
       wrapper = Wrapper()
     })
+
     describe('next button', () => {
       beforeEach(() => {
         propsData.hasNext = true
@@ -38,7 +39,7 @@ describe('Paginate.vue', () => {
         expect(nextButton.attributes().disabled).toBeUndefined()
       })
 
-      it('emits back when clicked', async () => {
+      it('emits next when clicked', async () => {
         await nextButton.trigger('click')
         expect(wrapper.emitted().next).toHaveLength(1)
       })
