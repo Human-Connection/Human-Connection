@@ -65,7 +65,7 @@ export default {
                   <div data-dz-thumbnail-bg></div>
                 </div>
               </div>
-      `
+	     `
     },
     verror(file, message) {
       this.error = true
@@ -100,8 +100,9 @@ export default {
           thumbnailElement.appendChild(image)
           // Remove the editor from view
           editor.parentNode.removeChild(editor)
-          this.$emit('addTeaserImage', blob)
-        })
+          const croppedImageFile = new File([blob], file.name, { type: 'image/jpeg' })
+          this.$emit('addTeaserImage', croppedImageFile)
+        }, 'image/jpeg')
       })
       editor.appendChild(confirm)
 
@@ -110,7 +111,7 @@ export default {
       image.src = URL.createObjectURL(file)
       editor.appendChild(image)
       // Create Cropper.js and pass image
-      let cropper = new Cropper(image, { zoomable: false })
+      let cropper = new Cropper(image, { zoomable: false, autoCropArea: 1.0 })
     },
     dropzoneDrop() {
       let cropOverlay = document.querySelectorAll('.crop-overlay')[0]

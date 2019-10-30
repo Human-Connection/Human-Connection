@@ -39,7 +39,7 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
-      filterActive: 'postsFilter/isActive',
+      filterActive: 'posts/isActive',
     }),
     chunk() {
       return chunk(this.categories, 2)

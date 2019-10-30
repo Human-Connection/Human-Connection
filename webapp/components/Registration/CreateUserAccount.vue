@@ -64,14 +64,28 @@
 
         <ds-text>
           <input
-            id="checkbox"
+            id="checkbox0"
             type="checkbox"
             v-model="termsAndConditionsConfirmed"
             :checked="termsAndConditionsConfirmed"
           />
           <label
-            for="checkbox"
+            for="checkbox0"
             v-html="$t('termsAndConditions.termsAndConditionsConfirmed')"
+          ></label>
+        </ds-text>
+        <ds-text>
+          <input id="checkbox1" type="checkbox" v-model="dataPrivacy" :checked="dataPrivacy" />
+          <label
+            for="checkbox1"
+            v-html="$t('components.registration.signup.form.data-privacy')"
+          ></label>
+        </ds-text>
+        <ds-text>
+          <input id="checkbox2" type="checkbox" v-model="minimumAge" :checked="minimumAge" />
+          <label
+            for="checkbox2"
+            v-html="$t('components.registration.signup.form.minimum-age')"
           ></label>
         </ds-text>
         <ds-button
@@ -79,7 +93,7 @@
           icon="check"
           type="submit"
           :loading="$apollo.loading"
-          :disabled="errors || !termsAndConditionsConfirmed"
+          :disabled="errors || !termsAndConditionsConfirmed || !dataPrivacy || !minimumAge"
           primary
         >
           {{ $t('actions.save') }}
@@ -129,6 +143,8 @@ export default {
       // Integrate termsAndConditionsConfirmed into `this.formData` once we
       // have checkmarks available.
       termsAndConditionsConfirmed: false,
+      dataPrivacy: false,
+      minimumAge: false,
     }
   },
   props: {
@@ -140,10 +156,19 @@ export default {
       const { name, password, about } = this.formData
       const { email, nonce } = this
       const termsAndConditionsAgreedVersion = VERSION
+      const locale = this.$i18n.locale()
       try {
         await this.$apollo.mutate({
           mutation: SignupVerificationMutation,
-          variables: { name, password, about, email, nonce, termsAndConditionsAgreedVersion },
+          variables: {
+            name,
+            password,
+            about,
+            email,
+            nonce,
+            termsAndConditionsAgreedVersion,
+            locale,
+          },
         })
         this.response = 'success'
         setTimeout(() => {

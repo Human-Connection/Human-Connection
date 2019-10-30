@@ -4,9 +4,9 @@
       "request": {
         "title": "Reset your password",
         "form": {
-          "description": "A password reset email will be sent to the given email address.",
-          "submit": "Request email",
-          "submitted": "An email with further instructions has been sent to <b>{email}</b>"
+          "description": "A password reset e-mail will be sent to the given e-mail address.",
+          "submit": "Request e-mail",
+          "submitted": "An e-mail with further instructions has been sent to <b>{email}</b>"
         }
       },
       "change-password": {
@@ -30,10 +30,13 @@
         "unavailable": "Unfortunately, public registration of user accounts is not available right now on this server.",
         "title": "Join Human Connection!",
         "form": {
-          "description": "To get started, enter your email address:",
+          "description": "To get started, enter your e-mail address:",
+          "terms-and-condition": "I confirm to the <a href=\"/terms-and-conditions\"><ds-text bold color=\"primary\" > Terms and conditions</ds-text></a>.",
+          "data-privacy": " I have read and understood the <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" >Privacy Statement</ds-text></a> ",
+          "minimum-age": "I'm 18 years or older.",
           "invitation-code": "Your invitation code is: <b>{code}</b>",
           "errors": {
-            "email-exists": "There is already a user account with this email address!",
+            "email-exists": "There is already a user account with this e-mail address!",
             "invalid-invitation-token": "It looks like as if the invitation has been used already. Invitation links can only be used once."
           },
           "submit": "Create an account",
@@ -48,10 +51,22 @@
       }
     }
   },
+  "store": {
+    "posts": {
+      "orderBy": {
+        "newest": {
+          "label": "Newest"
+        },
+        "oldest": {
+          "label": "Oldest"
+        }
+      }
+    }
+  },
   "maintenance": {
     "title": "Human Connection is under maintenance",
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
-    "questions": "Any Questions or concerns, send an email to"
+    "questions": "Any Questions or concerns, send an e-mail to"
   },
   "index": {
     "no-results": "No contributions found.",
@@ -81,7 +96,7 @@
     "imprint": "Imprint",
     "termsAndConditions": "Terms and conditions",
     "data-privacy": "Data privacy",
-    "changelog": "Changes & History",
+    "changelog": "Changes",
     "contact": "Contact",
     "tribunal": "Registry court",
     "register": "Registry number",
@@ -91,17 +106,14 @@
     "bank": "bank account",
     "germany": "Germany",
     "code-of-conduct": "Code of Conduct",
-    "back-to-login": "Back to login page"
-  },
-  "sorting": {
-    "newest": "Newest",
-    "oldest": "Oldest"
+    "back-to-login": "Back to login page",
+    "faq": "FAQ"
   },
   "login": {
     "copy": "If you already have a human-connection account, please login.",
     "login": "Login",
     "logout": "Logout",
-    "email": "Your Email",
+    "email": "Your E-mail",
     "password": "Your Password",
     "forgotPassword": "Forgot Password?",
     "no-account": "Don't have an account?",
@@ -110,7 +122,8 @@
     "moreInfoURL": "https://human-connection.org/en/",
     "moreInfoHint": "to the presentation page",
     "hello": "Hello",
-    "success": "You are logged in!"
+    "success": "You are logged in!",
+    "failure": "Incorrect email address or password."
   },
   "editor": {
     "placeholder": "Leave your inspirational thoughts …",
@@ -149,8 +162,8 @@
     },
     "invites": {
       "title": "Invite somebody to Human Connection!",
-      "description": "Enter thier email address for invitation.",
-      "emailPlaceholder": "Email to invite"
+      "description": "Enter thier e-mail address for invitation.",
+      "emailPlaceholder": "E-mail to invite"
     }
   },
   "notifications": {
@@ -179,23 +192,23 @@
     },
     "email": {
       "validation": {
-        "same-email": "This is your current email address"
+        "same-email": "This is your current e-mail address"
       },
-      "name": "Your email",
-      "labelEmail": "Change your email address",
-      "labelNewEmail": "New email Address",
+      "name": "Your e-mail",
+      "labelEmail": "Change your e-mail address",
+      "labelNewEmail": "New e-mail Address",
       "labelNonce": "Enter your code",
-      "success": "A new email address has been registered.",
-      "submitted": "An email to verify your address has been sent to <b>{email}</b>.",
-      "change-successful": "Your email address has been changed successfully.",
+      "success": "A new e-mail address has been registered.",
+      "submitted": "An e-mail to verify your address has been sent to <b>{email}</b>.",
+      "change-successful": "Your e-mail address has been changed successfully.",
       "verification-error": {
-        "message": "Your email could not be changed.",
+        "message": "Your e-mail could not be changed.",
         "explanation": "This can have different causes:",
         "reason": {
           "invalid-nonce": "Is the confirmation code invalid?",
-          "no-email-request": "Are you certain that you requested a change of your email address?"
+          "no-email-request": "Are you certain that you requested a change of your e-mail address?"
         },
-        "support": "If the problem persists, please contact us by email at"
+        "support": "If the problem persists, please contact us by e-mail at"
       }
     },
     "validation": {
@@ -309,7 +322,7 @@
     "users": {
       "name": "Users",
       "form": {
-        "placeholder": "email, name or description"
+        "placeholder": "e-mail, name or description"
       },
       "table": {
         "columns": {
@@ -352,6 +365,7 @@
   },
   "post": {
     "name": "Post",
+    "pinned": "Announcement",
     "moreInfo": {
       "name": "More info",
       "title": "More information",
@@ -365,7 +379,11 @@
     },
     "menu": {
       "edit": "Edit Post",
-      "delete": "Delete Post"
+      "delete": "Delete Post",
+      "pin": "Pin post",
+      "pinnedSuccessfully": "Post pinned successfully!",
+      "unpin": "Unpin post",
+      "unpinnedSuccessfully": "Post unpinned successfully!"
     },
     "comment": {
       "submit": "Comment",
@@ -412,7 +430,7 @@
     "loading": "loading",
     "reportContent": "Report",
     "validations": {
-      "email": "must be a valid email address",
+      "email": "must be a valid e-mail address",
       "url": "must be a valid URL"
     }
   },
@@ -430,8 +448,11 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "submitter": "reported by",
-      "disabledBy": "disabled by"
+      "reasonCategory": "Category",
+      "reasonDescription": "Description",
+      "createdAt": "Date",
+      "submitter": "Reported by",
+      "disabledBy": "Disabled by"
     }
   },
   "disable": {
@@ -491,6 +512,27 @@
       "type": "Comment",
       "message": "Do you really want to report the comment from \"<b>{name}</b>\"?",
       "error": "You have already reported the comment!"
+    },
+    "reason": {
+      "category": {
+        "label": "Select a category:",
+        "placeholder": "Category …",
+        "options": {
+          "discrimination_etc": "Discriminatory posts, comments, utterances or insults.",
+          "pornographic_content_links": "Posting or linking of clearly pornographic material.",
+          "glorific_trivia_of_cruel_inhuman_acts": "Glorification or trivialization of cruel or inhuman acts of violence.",
+          "doxing": "The disclosure of others' personal information without their consent or threat there of (\"doxing\").",
+          "intentional_intimidation_stalking_persecution": "Intentional intimidation, stalking or persecution.",
+          "advert_products_services_commercial": "Advertising products and services with commercial intent.",
+          "criminal_behavior_violation_german_law": "Criminal behavior or violation of German law.",
+          "other": "Other …"
+        },
+        "invalid": "Please select a valid category"
+      },
+      "description": {
+        "label": "Please explain: Why you like to report this?",
+        "placeholder": "Additional information …"
+      }
     }
   },
   "followButton": {
@@ -529,6 +571,7 @@
     }
   },
   "contribution": {
+    "title": "Title",
     "newPost": "Create a new Post",
     "filterFollow": "Filter contributions from users I follow",
     "filterALL": "View all contributions",
@@ -625,39 +668,41 @@
     "termsAndConditionsNewConfirmText": "Please read the new terms of use now!",
     "termsAndConditionsNewConfirm": "I have read and agree to the new terms of conditions.",
     "agree": "I agree!",
-    "risk": {
-      "title": "Risk of accident",
-      "description": "This is a test version! All data, your profile and the server can be completely destroyed, wiped out, lost, burnt and eventually synchronised near Alpha Centauri at any time. Use on your own risk. Commercial effects are not likely though."
+    "terms-of-service": {
+      "title": "Terms of Service",
+      "description": "The following terms of use form the basis for the use of our network. When you register, you must accept them and we will inform you later about any changes that may take place. The Human Connection Network is operated in Germany and is therefore subject to German law. Place of jurisdiction is Kirchheim / Teck. For details see our imprint: <a href=\"https://human-connection.org/imprint\" target=\"_blank\" >https://human-connection.org/imprint</a> "
+    },   
+    "use-and-license" : {
+      "title": "Use and License",
+      "description": "If any content you post to us is protected by intellectual property rights, you grant us a non-exclusive, transferable, sublicensable, worldwide license to use such content for posting to our network. This license expires when you delete your content or your entire account. Remember that others may share your content and we cannot delete it."
     },
-    "data-privacy": {
-      "title": "You and your data",
-      "description": "Please note that the content of the alpha version will be used for public web presentations etc. but we are sure, this is in your interest. Avoid real names and use anonymous profile pictures without your face. You can find more information in our <a href=\"https://human-connection.org/en/privacy/\" target=\"_blank\">data privacy policy</a>"
+    "privacy-statement" : {
+      "title": "Privacy Statement",
+      "description": "Our network is a social knowledge and action network. It is therefore particularly important to us that as much content as possible is publicly accessible. In the course of the development of our network there will be more and more the possibility to decide about the visibility of the personal data. We will inform you about these new features. Otherwise, you should always think about which personal data you disclose about yourself (or others). This applies in particular to the content of posts and comments, as these have a largely public character. Later there will be possibilities to limit the visibility of your profile. Part of the terms of service is our privacy statement, which informs you about the individual data processing operations in our network: <a href=\"https://human-connection.org/datenschutz/#netzwerk\" target=\"_blank\"> https://human-connection.org/datenschutz/#netzwerk</a>  bzw. <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\">https://human-connection.org/datenschutz/</a> Our privacy statement is adapted to the legal situation and characteristics of our network and is always valid in the most current version."
     },
-    "work-in-progress": {
-      "title": "Work in progress",
-      "description": "This is still a test version. Please excuse if some applications are not working, blocking, irritating, displayed falsely or not able to be clicked on. Please report faults and bugs! <a href=\"mailto:support@human-connection.org\" target=\"_blank\">mailto:support@human-connection.org</a>"
+    "code-of-conduct" : {
+      "title": "Code of Conduct",
+      "description": "Our code of conduct serves as a handbook for personal appearance and interaction with each other. Whoever is active as a user in the Human Connection network, writes articles, comments or makes contact with other users, even outside the network, acknowledges these rules of conduct as binding. <a href=\"https://alpha.human-connection.org/code-of-conduct\" target=\"_blank\"> https://alpha.human-connection.org/code-of-conduct</a>"
     },
-    "code-of-conduct": {
-      "title": "Code of conduct",
-      "description": "The <a href=\"/code-of-conduct\">code of conduct</a> serves as guiding principles for our personal appearance and interaction with one another. Anyone who is active as a user in the Human Connection Network, writes articles, comments or contacts other users, including those outside the network, acknowledges these rules of conduct as binding."
-    },
-    "moderation": {
+    "moderation" : {
       "title": "Moderation",
-      "description": "As long as there is no community moderation-system in operation, a rainbow colored unicorn decides, if you are physically and mentally stable enough to operate our test version. The unicorn can delete you from the alpha version at any time. So be so kind and leave rainbow food!"
+      "description": "Until our financial possibilities allow us to implement the community moderation system, we moderate with a simplified system and with our own or possibly volunteer staff. We train these moderators and for this reason only they make the appropriate decisions. These moderators carry out their work anonymously. You can report posts, comments and users to us (for example, if they provide information in their profile or have images that violate these Terms of Use). If you report something to us, you can give us a reason and a short explanation. We will then take a look at what you have reported and sanction you if necessary, e.g. by blocking contributions, comments or users. Unfortunately, you and the person concerned will not receive any feedback from us at this time, but this is in the planning stage. Irrespective of this, we reserve the right to impose sanctions in principle for reasons that may not or not yet be listed in our Code of Conduct or these terms of service."
     },
-    "fairness": {
-      "title": "Fairness",
-      "description": "If, against all expectations, our alpha version is not to your liking, we return your monthly payment within the first two months. Please send a mail to: <a href=\"mailto:info@human-connection.org\" target=\"_blank\"> info@human-connection.org </a> Note that more features are added on a regular basis."
+    "errors-and-feedback" : {
+      "title": "Errors and Feedback",
+      "description": "We make every effort to keep our network and data secure and available. Each new release of the software goes through both automated and manual testing. However, unforeseen errors may occur. Therefore, we are grateful for any reported bugs. You are welcome to report any bugs you discover by emailing Support at support@human-connection.org"
     },
-    "questions": {
-      "title": "Questions",
-      "description": "You can find the dates and links to our zoom-rooms here: <a href=\"https://human-connection.org/en/events/\" target=\"_blank\" >https://human-connection.org/en/events/ </a>"
+    "help-and-questions" : {
+      "title": "Help and Questions",
+      "description": "For help and questions we have compiled a comprehensive collection of frequently asked questions and answers (FAQ) for you. You can find them here: <a href=\"https://support.human-connection.org/kb/\" target=\"_blank\" > https://support.human-connection.org/kb/ </a>"
     },
-    "human-connection": {
-      "title": "By humans for humans",
-      "description": "Please help us to get new donators for Human Connection, so the network can take off as soon as possible. <a href=\"https://human-connection.org/\" target=\"_blank\"> https://human-connection.org </a>"
-    },
-    "have-fun": "Now have fun with the alpha version of Human Connection! For the first universal peace. ♥︎",
-    "closing": "Thank you very much <br> <br> your Human Connection Team"
+    "addition" : {
+      "title": "In addition, we regularly hold events where you can also share your impressions and ask questions. You can find a current overview here:",
+      "description": "<a href=\"https://human-connection.org/events/\" target=\"_blank\" > https://human-connection.org/events/ </a>"
+    } 
   }
 }
+
+ 
+ 
+ 

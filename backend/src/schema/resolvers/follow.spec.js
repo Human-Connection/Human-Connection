@@ -131,6 +131,21 @@ describe('follow', () => {
       })
     })
 
+    test('adds `createdAt` to `FOLLOW` relationship', async () => {
+      await mutate({
+        mutation: mutationFollowUser,
+        variables,
+      })
+      const relation = await neode.cypher(
+        'MATCH (user:User {id: {id}})-[relationship:FOLLOWS]->(followed:User) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
+        { id: 'u1' },
+      )
+      const relationshipProperties = relation.records.map(
+        record => record.get('relationship').properties.createdAt,
+      )
+      expect(relationshipProperties[0]).toEqual(expect.any(String))
+    })
+
     test('I can`t follow myself', async () => {
       variables.id = user1.id
       await expect(mutate({ mutation: mutationFollowUser, variables })).resolves.toMatchObject({
@@ -155,6 +170,7 @@ describe('follow', () => {
       })
     })
   })
+
   describe('unfollow user', () => {
     beforeEach(async () => {
       variables = { id: user2.id }

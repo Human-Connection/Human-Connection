@@ -31,6 +31,9 @@ describe('PostSlug', () => {
       $filters: {
         truncate: a => a,
       },
+      $route: {
+        hash: '',
+      },
       // If you are mocking the router, then don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
       $router: {
         history: {

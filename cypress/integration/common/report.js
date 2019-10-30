@@ -1,4 +1,5 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
+import { VERSION } from '../../constants/terms-and-conditions-version.js'
 
 /* global cy  */
 
@@ -31,7 +32,7 @@ Given('I am logged in with a {string} role', role => {
   cy.factory().create('User', {
     email: `${role}@example.org`,
     password: '1234',
-    termsAndConditionsAgreedVersion: "0.0.2",
+    termsAndConditionsAgreedVersion: VERSION,
     role
   })
   cy.login({
@@ -107,6 +108,11 @@ Then(`I can't see the moderation menu item`, () => {
 When(/^I confirm the reporting dialog .*:$/, message => {
   cy.contains(message) // wait for element to become visible
   cy.get('.ds-modal').within(() => {
+    cy.get('.ds-radio-option-label')
+      .first()
+      .click({
+        force: true
+      })
     cy.get('button')
       .contains('Report')
       .click()
@@ -114,21 +120,22 @@ When(/^I confirm the reporting dialog .*:$/, message => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach(({ id }) => {
+  table.hashes().forEach(({ submitterEmail, resourceId, reasonCategory, reasonDescription }) => {
     const submitter = {
-      email: `submitter${id}@example.org`,  
+      email: submitterEmail,
       password: '1234'
     }
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .mutate(`mutation($id: ID!, $description: String!) {
-        report(description: $description, id: $id) {
-          id
+      .mutate(`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+        report(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
+          type
         }
       }`, {
-        id,
-        description: 'Offensive content'
+        resourceId,
+        reasonCategory,
+        reasonDescription
       })
   })
 })

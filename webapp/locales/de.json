@@ -30,6 +30,9 @@
         "title": "Mach mit bei Human Connection!",
         "form": {
           "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
+          "terms-and-condition": "Ich stimme den <a href=\"/terms-and-conditions\"><ds-text bold color=\"primary\" > Nutzungsbedingungen</ds-text></a>zu.",
+          "data-privacy": "Ich habe die  <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" >Datenschutzerklärung</ds-text></a> gelesen und verstanden",
+          "minimum-age": "Ich bin 18 Jahre oder älter.",
           "invitation-code": "Dein Einladungscode lautet: <b>{code}</b>",
           "errors": {
             "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
@@ -44,6 +47,18 @@
         "success": "Dein Benutzerkonto wurde erstellt!",
         "error": "Es konnte kein Benutzerkonto erstellt werden!",
         "help": "Vielleicht war der Bestätigungscode falsch oder abgelaufen? Wenn das Problem weiterhin besteht, schick uns gerne eine E-Mail an:"
+      }
+    }
+  },
+  "store": {
+    "posts": {
+      "orderBy": {
+        "newest": {
+          "label": "Neueste"
+        },
+        "oldest": {
+          "label": "Älteste"
+        }
       }
     }
   },
@@ -80,7 +95,7 @@
     "imprint": "Impressum",
     "data-privacy": "Datenschutz",
     "termsAndConditions": "Nutzungsbedingungen",
-    "changelog": "Änderungen & Verlauf",
+    "changelog": "Änderungen",
     "contact": "Kontakt",
     "tribunal": "Registergericht",
     "register": "Registernummer",
@@ -90,11 +105,8 @@
     "bank": "Bankverbindung",
     "germany": "Deutschland",
     "code-of-conduct": "Verhaltenscodex",
-    "back-to-login": "Zurück zur Anmeldung"
-  },
-  "sorting": {
-    "newest": "Neueste",
-    "oldest": "Älteste"
+    "back-to-login": "Zurück zur Anmeldung",
+    "faq": "FAQ"
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
@@ -109,7 +121,8 @@
     "moreInfoURL": "https://human-connection.org",
     "moreInfoHint": "zur Präsentationsseite",
     "hello": "Hallo",
-    "success": "Du bist eingeloggt!"
+    "success": "Du bist eingeloggt!",
+    "failure": "Fehlerhafte E-Mail-Adresse oder Passwort."
   },
   "editor": {
     "placeholder": "Schreib etwas Inspirierendes …",
@@ -351,6 +364,7 @@
   },
   "post": {
     "name": "Beitrag",
+    "pinned": "Meldung",
     "moreInfo": {
       "name": "Mehr Info",
       "title": "Mehr Informationen",
@@ -364,7 +378,11 @@
     },
     "menu": {
       "edit": "Beitrag bearbeiten",
-      "delete": "Beitrag löschen"
+      "delete": "Beitrag löschen",
+      "pin": "Post festpinnen",
+      "pinnedSuccessfully": "Post erfolgreich festgepinnt!",
+      "unpin": "Post nicht mehr festpinnen",
+      "unpinnedSuccessfully": "Post erfolgreich nicht mehr festgepinnt!"
     },
     "comment": {
       "submit": "Kommentiere",
@@ -429,8 +447,11 @@
     "reports": {
       "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
-      "submitter": "gemeldet von",
-      "disabledBy": "deaktiviert von"
+      "reasonCategory": "Kategorie",
+      "reasonDescription": "Beschreibung",
+      "createdAt": "Datum",
+      "submitter": "Gemeldet von",
+      "disabledBy": "Deaktiviert von"
     }
   },
   "disable": {
@@ -490,6 +511,27 @@
       "type": "Kommentar",
       "message": "Bist du sicher, dass du den Kommentar von \"<b>{name}</b>\" melden möchtest?",
       "error": "Du hast den Kommentar bereits gemeldet!"
+    },
+    "reason": {
+      "category": {
+        "label": "Wähle eine Kategorie:",
+        "placeholder": "Kategorie …",
+        "options": {
+          "discrimination_etc": "Diskriminierende Beiträge, Kommentare, Äußerungen oder Beleidigungen.",
+          "pornographic_content_links": "Das Posten oder Verlinken eindeutig pornografischen Materials.",
+          "glorific_trivia_of_cruel_inhuman_acts": "Verherrlichung oder Verharmlosung grausamer oder unmenschlicher Gewalttätigkeiten.",
+          "doxing": "Das Veröffentlichen von personenbezogenen Daten anderer ohne deren Einverständnis oder das Androhen dessen (\"Doxing\").",
+          "intentional_intimidation_stalking_persecution": "Absichtliche Einschüchterung, Stalking oder Verfolgung.",
+          "advert_products_services_commercial": "Bewerben von Produkten und Dienstleistungen mit kommerzieller Absicht.",
+          "criminal_behavior_violation_german_law": "Strafbares Verhalten bzw. Verstoß gegen deutsches Recht.",
+          "other": "Andere …"
+        },
+        "invalid": "Bitte wähle eine gültige Kategorie aus"
+      },
+      "description": {
+        "label": "Bitte erkläre: Warum möchtest du dies melden?",
+        "placeholder": "Zusätzliche Information …"
+      }
     }
   },
   "followButton": {
@@ -528,6 +570,7 @@
     }
   },
   "contribution": {
+    "title": "Titel",
     "newPost": "Erstelle einen neuen Beitrag",
     "filterFollow": "Beiträge filtern von Usern denen ich folge",
     "filterALL": "Alle Beiträge anzeigen",
@@ -624,39 +667,37 @@
     "termsAndConditionsNewConfirmText": "Bitte lies dir die neue Nutzungsbedingungen jetzt durch!",
     "termsAndConditionsNewConfirm": "Ich habe die neuen Nutzungsbedingungen durchgelesen und stimme zu.",
     "agree": "Ich stimme zu!",
-    "risk": {
-      "title": "Unfallgefahr",
-      "description": "Das ist eine Testversion! Alle Daten, Dein Profil und die Server können jederzeit komplett vernichtet, verloren, verbrannt und vielleicht auch in der Nähe von Alpha Centauri synchronisiert werden. Die Benutzung läuft auf eigene Gefahr. Mit kommerziellen Nebenwirkungen ist jedoch nicht zu rechnen."
+    "terms-of-service": {
+      "title": "Nutzungsbedingungen",
+      "description": "Die folgenden Nutzungsbedingungen sind Basis für die Nutzung unseres Netzwerkes. Beim Registrieren musst Du sie anerkennen und wir werden Dich auch später über ggf. stattfindende Änderungen informieren. Das Human Connection Netzwerk wird in Deutschland betrieben und unterliegt daher deutschem Recht. Gerichtsstand ist Kirchheim / Teck. Zu Details schau in unser Impressum: <a href=\"https://human-connection.org/impressum\" target=\"_blank\" >https://human-connection.org/impressum</a> "
+    },   
+    "use-and-license" : {
+      "title": "Nutzung und Lizenz",
+      "description": "Sind Inhalte, die Du bei uns einstellst, durch Rechte am geistigen Eigentum geschützt, erteilst Du uns eine nicht-exklusive, übertragbare, unterlizenzierbare und weltweite Lizenz für die Nutzung dieser Inhalte für die Bereitstellung in unserem Netzwerk. Diese Lizenz endet, sobald Du Deine Inhalte oder Deinen ganzen Account löscht. Bedenke, dass andere Deine Inhalte weiter teilen können und wir diese nicht löschen können."
     },
-    "data-privacy": {
-      "title": "Du und deine Daten",
-      "description": "Bitte beachte, dass wir die Inhalte der Alphaversion zu Werbezwecken, Webpräsentationen usw. verwenden, aber wir glauben, dass das auch in Deinem Interesse ist. Am besten keinen Nachnamen eingeben und bei noch mehr Datensparsamkeit ein Profilfoto ohne Identität verwenden. Mehr in unserer  <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\" >Datenschutzerklärung</a>"
+    "privacy-statement" : {
+      "title": "Datenschutz",
+      "description": "    Unser Netzwerk ist ein soziales Wissens- und Aktionsnetzwerk. Daher ist es uns besonders wichtig, dass möglichst viele Inhalte öffentlich zugänglich sind. Im Laufe der Entwicklung unseres Netzwerkes wird es mehr und mehr die Möglichkeit geben, über die Sichtbarkeit der selbst angegebenen bzw. persönlichen Daten zu entscheiden. Über diese neuen Features werden wir informieren. Ansonsten gilt, dass Du immer darüber nachdenken solltest, welche persönlichen Daten Du über Dich (oder andere) preisgibst. Dies gilt insbesondere für Inhalte von Posts und Kommentaren, da diese einen weitestgehend öffentlichen Charakter haben. Bei den Profilangaben wird es später Möglichkeiten geben, die Sichtbarkeit selbst einzuschränken.  Teil der Nutzungsbedingungen ist unsere Datenschutzerklärung, die Dich über die einzelnen Datenverarbeitungen in unserem Netzwerk informiert: <a href=\"https://human-connection.org/datenschutz/#netzwerk\" target=\"_blank\"> https://human-connection.org/datenschutz/#netzwerk</a>  bzw. <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\">https://human-connection.org/datenschutz/</a>  Unsere Datenschutzerklärung wird je nach Gesetzeslage und Eigenschaften unseres Netzwerkes angepasst und ist jeweils in der aktuellen Version gültig."
     },
-    "work-in-progress": {
-      "title": "Baustellen",
-      "description": "Das ist immer noch eine Testversion. Wenn etwas nicht funktioniert, blockiert, irritiert, falsch angezeigt, verbogen oder nicht anklickbar ist, bitten wir dies zu entschuldigen. Fehler, Käfer und Bugs bitte melden! <a href=\"mailto:support@human-connection.org\" target=\"_blank\">support@human-connection.org</a>"
-    },
-    "code-of-conduct": {
+    "code-of-conduct" : {
       "title": "Verhaltenscodex",
-      "description": "<a href=\"/code-of-conduct\">Die Verhaltensregeln </a> dienen als Leitsätze für den persönlichen Auftritt und den Umgang untereinander. Wer als Nutzer im Human Connection Netzwerk aktiv ist, Beiträge verfasst, kommentiert oder mit anderen Nutzern, auch außerhalb des Netzwerkes, Kontakt aufnimmt, erkennt diese Verhaltensregeln als verbindlich an"
+      "description": "Unser Verhaltenscodex dient als Handreiche für den persönlichen Auftritt und den Umgang untereinander. Wer als Nutzer im Human Connection Netzwerk aktiv ist, Beiträge verfasst, kommentiert oder mit anderen Nutzern, auch außerhalb des Netzwerkes, Kontakt aufnimmt, erkennt diese Verhaltensregeln als verbindlich an.  <a href=\"https://alpha.human-connection.org/code-of-conduct\" target=\"_blank\"> https://alpha.human-connection.org/code-of-conduct</a>"
     },
-    "moderation": {
+    "moderation" : {
       "title": "Moderation",
-      "description": "Solange kein Community-Moderationssystem lauffähig ist, entscheidet ein Regenbogen-Einhorn darüber, ob Du körperlich und psychisch stabil genug bist, unsere Testversion zu bedienen. Das Einhorn kann Dich jederzeit von der Alpha entfernen. Also sei nett und lass Regenbogenfutter da!"
+      "description": "Bis unsere finanziellen Möglichkeiten uns erlauben, das Community-Moderationssystem zu implementieren, moderieren wir mit einem vereinfachten System und eigenen bzw. ggf. ehrenamtlichen Mitarbeitern. Wir schulen diese Moderatoren und aus diesem Grund treffen auch nur diese entsprechende Entscheidungen. Diese Moderatoren führen Ihre Tätigkeit anonym aus. Du kannst uns Beiträge, Kommentare und auch Nutzer melden (wenn diese zum Beispiel in ihrem Profil Angaben machen oder Bilder haben, die diese Nutzungsbedingungen verletzen). Wenn Du uns etwas meldest, kannst Du einen Meldegrund angeben und noch einen kurze Erläuterung mitgeben. Wir schauen uns dann das Gemeldete an und sanktionieren ggf., z.B. indem wir Beiträge, Kommentare oder Nutzer sperren. Du und auch der Betroffene erhält zum jetzigen Zeitpunkt von uns leider noch keine Rückmeldung, das ist aber in Planung. Unabhängig davon behalten wir uns prinzipiell Sanktionen vor aus Gründen, die unter Umständen nicht oder noch nicht in unserem Verhaltenscodex oder diesen Nutzungsbedingungen aufgeführt sind."
     },
-    "fairness": {
-      "title": "Fairness",
-      "description": "Sollte Dir die Alphaversion unseres Netzwerks wider Erwarten, egal aus welchen Gründen, nicht gefallen, überweisen wir Dir Deine gespendeten Monatsbeiträge innerhalb der ersten 2 Monate gerne zurück. Einfach Mail an:  <a href=\"mailto:info@human-connection.org\" target=\"_blank\" s> info@human-connection.org </a> Achtung: Viele Funktionen werden erst nach und nach eingebaut."
+    "errors-and-feedback" : {
+      "title": " Fehler und Feedback",
+      "description": "Wir geben uns größte Mühe, unser Netzwerk und die Daten sicher und verfügbar zu halten. Jedes neue Release der Software durchläuft sowohl automatisierte und händische Tests. Trotzdem kann es passieren, dass unvorhergesehene Fehler auftreten. Daher sind wir dankbar für jeden gemeldeten Fehler. Du kannst von Dir entdeckte Fehler gerne per E-Mail an den Support mitteilen: support@human-connection.org"
     },
-    "questions": {
-      "title": "Fragen",
-      "description": "Die Termine und Links zu den Zoom-Räumen findest Du hier: <a href=\"https://human-connection.org/events-und-news/\" target=\"_blank\" >https://human-connection.org/veranstaltungen/ </a>"
+    "help-and-questions" : {
+      "title": "Hilfe und Fragen",
+      "description": "Für Hilfe und Fragen haben wir für Dich eine umfassende Sammlung an immer wieder gestellten Fragen bzw. Antworten (FAQ) zusammengestellt. Du findest diese hier: <a href=\"https://support.human-connection.org/kb/\" target=\"_blank\" > https://support.human-connection.org/kb/ </a>"
     },
-    "human-connection": {
-      "title": "Von Menschen für Menschen:",
-      "description": "Bitte hilf uns weitere monatlichen Spender für Human Connection zu bekommen, damit das Netzwerk so schnell wie möglich offiziell an den Start gehen kann. <a href=\"https://human-connection.org/\" target=\"_blank\"> https://human-connection.org </a>"
-    },
-    "have-fun": "Jetzt aber viel Spaß mit der Alpha von Human Connection! Für den ersten Weltfrieden. ♥︎",
-    "closing": "Herzlichst <br><br> Euer Human Connection Team"
+    "addition" : {
+      "title": "Zusätzliche machen wir regelmäßig Veranstaltungen, wo Du auch Eindrücke wiedergeben und Fragen stellen kannst. Du findest eine aktuelle Übersicht hier:",
+      "description": "<a href=\"https://human-connection.org/veranstaltungen/\" target=\"_blank\" > https://human-connection.org/veranstaltungen/ </a>"
+    } 
   }
 }
