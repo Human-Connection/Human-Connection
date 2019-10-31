@@ -443,7 +443,7 @@ describe('notifications', () => {
 
           it('sends only one notification with reason mentioned_in_comment', async () => {
             postAuthor = await instance.create('User', {
-              id: 'postAuthor',
+              id: 'MrPostAuthor',
               name: 'Mr Author',
               slug: 'mr-author',
               email: 'post-author@example.org',
