@@ -127,6 +127,10 @@ module.exports = {
     type: 'boolean',
     default: false,
   },
+  allowShouts: {
+    type: 'boolean',
+    default: false,
+  },
   locale: {
     type: 'string',
     allow: [null],
