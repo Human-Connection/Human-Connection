@@ -32,12 +32,13 @@
       <ds-flex v-for="language in locales" :key="language.code" class="languages-menu">
         <ds-flex class="languages-menu">
           <ds-flex-item width="100%" class="language-menu-item">
-              <ds-button
-		  class="language-buttons"
-		  :primary="filteredLanguagesCodes.includes(language.code)"
-		  @click.stop.prevent="toggleLanguage(language.code)">
-		  {{ language.code.toUpperCase()  }}
-	    </ds-button>
+            <ds-button
+              class="language-buttons"
+              :primary="filteredLanguagesCodes.includes(language.code)"
+              @click.stop.prevent="toggleLanguage(language.code)"
+            >
+              {{ language.code.toUpperCase() }}
+            </ds-button>
             <ds-space margin-bottom="small" />
           </ds-flex-item>
           <ds-flex>
