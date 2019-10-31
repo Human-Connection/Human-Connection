@@ -34,7 +34,8 @@ export default {
   Mutation: {
     requestPasswordReset: async (_parent, { email }, { driver }) => {
       const nonce = uuid().substring(0, 6)
-      return createPasswordReset({ driver, nonce, email })
+      const lowerCasedEmail = email.toLowerCase()
+      return createPasswordReset({ driver, nonce, lowerCasedEmail })
     },
     resetPassword: async (_parent, { email, nonce, newPassword }, { driver }) => {
       const session = driver.session()
