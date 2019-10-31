@@ -32,6 +32,7 @@ export default {
     Post: setDefaultFilters,
     Comment: setDefaultFilters,
     User: setDefaultFilters,
+    profilePagePosts: setDefaultFilters,
   },
   Mutation: async (resolve, root, args, context, info) => {
     args.disabled = false
