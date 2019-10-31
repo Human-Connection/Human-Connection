@@ -482,19 +482,6 @@ describe('notifications', () => {
             title = 'Post where Im the author and I get mentioned in a comment'
             postContent = 'Content of post where I get mentioned in a comment.'
             postAuthor = notifiedUser
-            const createPostAction = async () => {
-              authenticatedUser = await postAuthor.toJson()
-              await mutate({
-                mutation: createPostMutation,
-                variables: {
-                  id: 'p49',
-                  title,
-                  postContent,
-                  categoryIds,
-                },
-              })
-              authenticatedUser = await notifiedUser.toJson()
-            }
           })
           it('sends only one notification with reason commented_on_post, no notification with reason mentioned_in_comment', async () => {
             await createCommentOnPostAction()
