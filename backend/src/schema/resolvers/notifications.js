@@ -78,4 +78,10 @@ export default {
       return notification
     },
   },
+  NOTIFIED: {
+    id: async (parent) => {
+      // serialize an ID to help the client update the cache
+      return `${parent.reason}/${parent.from.id}/${parent.to.id}`
+    }
+  }
 }

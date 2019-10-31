@@ -53,6 +53,7 @@ export const notificationQuery = i18n => {
 
     query($read: Boolean, $orderBy: NotificationOrdering, $first: Int, $offset: Int) {
       notifications(read: $read, orderBy: $orderBy, first: $first, offset: $offset) {
+        id
         read
         reason
         createdAt
@@ -81,6 +82,7 @@ export const markAsReadMutation = i18n => {
 
     mutation($id: ID!) {
       markAsRead(id: $id) {
+        id
         read
         reason
         createdAt
