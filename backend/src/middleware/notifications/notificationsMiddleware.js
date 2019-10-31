@@ -1,5 +1,21 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 
+const postAuthorOfComment = async (comment, { context }) => {
+  const session = context.driver.session()
+  const cypherFindUser = `
+    MATCH (user: User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
+    RETURN user { .id }
+    `
+  const result = await session.run(cypherFindUser, {
+    commentId: comment.id,
+  })
+  session.close()
+  const [postAuthor] = await result.records.map(record => {
+    return record.get('user')
+  })
+  return postAuthor
+}
+
 const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
   if (!idsOfUsers.length) return
 
@@ -90,11 +106,13 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
 }
 
 const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
-  const idsOfUsers = extractMentionedUsers(args.content)
-
+  let idsOfUsers = extractMentionedUsers(args.content)
   const comment = await resolve(root, args, context, resolveInfo)
 
   if (comment) {
+    const postAuthor = await postAuthorOfComment(comment, { context })
+    idsOfUsers = idsOfUsers.filter(id => id !== postAuthor.id)
+
     await notifyUsers('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
   }
 
