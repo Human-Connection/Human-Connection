@@ -73,7 +73,7 @@ describe('FilterPosts.vue', () => {
       'posts/filteredCategoryIds': jest.fn(() => []),
       'posts/filteredByUsersFollowed': jest.fn(),
       'posts/filteredByEmotions': jest.fn(() => []),
-      'posts/filteredLanguagesCodes': jest.fn(() => []),
+      'posts/filteredLanguageCodes': jest.fn(() => []),
     }
     const openFilterPosts = () => {
       const store = new Vuex.Store({ mutations, getters })
@@ -124,7 +124,7 @@ describe('FilterPosts.vue', () => {
     })
 
     it('sets language button attribute `primary` when corresponding language is filtered', () => {
-      getters['posts/filteredLanguagesCodes'] = jest.fn(() => ['es'])
+      getters['posts/filteredLanguageCodes'] = jest.fn(() => ['es'])
       const wrapper = openFilterPosts()
       spanishButton = wrapper
         .findAll('button.language-buttons')

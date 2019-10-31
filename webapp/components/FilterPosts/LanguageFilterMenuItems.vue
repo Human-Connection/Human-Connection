@@ -15,7 +15,7 @@
             <ds-button
               icon="check"
               @click.stop.prevent="resetLanguages"
-              :primary="!filteredLanguagesCodes.length"
+              :primary="!filteredLanguageCodes.length"
             />
             <ds-flex-item>
               <label class="language-labels">{{ $t('filter-posts.language.all') }}</label>
@@ -34,7 +34,7 @@
           <ds-flex-item width="100%" class="language-menu-item">
             <ds-button
               class="language-buttons"
-              :primary="filteredLanguagesCodes.includes(language.code)"
+              :primary="filteredLanguageCodes.includes(language.code)"
               @click.stop.prevent="toggleLanguage(language.code)"
             >
               {{ language.code.toUpperCase() }}
@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filteredLanguagesCodes: 'posts/filteredLanguagesCodes',
+      filteredLanguageCodes: 'posts/filteredLanguageCodes',
     }),
   },
   methods: {

@@ -86,7 +86,7 @@ export const getters = {
   filteredCategoryIds(state) {
     return get(state.filter, 'categories_some.id_in') || []
   },
-  filteredLanguagesCodes(state) {
+  filteredLanguageCodes(state) {
     return get(state.filter, 'language_in') || []
   },
   filteredByUsersFollowed(state) {
