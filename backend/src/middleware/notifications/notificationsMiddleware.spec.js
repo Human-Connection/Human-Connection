@@ -479,7 +479,7 @@ describe('notifications', () => {
           })
 
           beforeEach(async () => {
-            title = 'Post where Im the author and I get mentioned in a comment'
+            title = "Post where I'm the author and I get mentioned in a comment"
             postContent = 'Content of post where I get mentioned in a comment.'
             postAuthor = notifiedUser
           })
