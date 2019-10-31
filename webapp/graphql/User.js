@@ -146,6 +146,17 @@ export const allowEmbedIframesMutation = () => {
   `
 }
 
+export const allowShoutsMutation = () => {
+  return gql`
+    mutation($id: ID!, $allowShouts: Boolean) {
+      UpdateUser(id: $id, allowShouts: $allowShouts) {
+        id
+        allowShouts
+      }
+    }
+  `
+}
+
 export const checkSlugAvailableQuery = gql`
   query($slug: String!) {
     User(slug: $slug) {
