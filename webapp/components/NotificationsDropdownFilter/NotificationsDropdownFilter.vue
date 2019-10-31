@@ -40,12 +40,16 @@ export default {
   data() {
     return {
       selected: this.$t('notifications.filterLabel.all'),
-      filterOptions: [
+    }
+  },
+  computed: {
+    filterOptions() {
+      return [
         { label: this.$t('notifications.filterLabel.all'), value: null },
         { label: this.$t('notifications.filterLabel.read'), value: true },
         { label: this.$t('notifications.filterLabel.unread'), value: false },
-      ],
-    }
+      ]
+    },
   },
   methods: {
     filterNotifications(option, toggleMenu) {
