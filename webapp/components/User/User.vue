@@ -79,7 +79,7 @@
             />
           </ds-flex-item>
           <ds-flex-item :width="{ base: 1 }">
-            <ds-button fullwidth>
+            <ds-button fullwidth @click="block(user)">
               <ds-icon name="user-times" />
             </ds-button>
           </ds-flex-item>
@@ -98,6 +98,7 @@ import HcFollowButton from '~/components/FollowButton'
 import HcBadges from '~/components/Badges'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import Dropdown from '~/components/Dropdown'
+import { Block } from '~/graphql/settings/BlockedUsers'
 
 export default {
   name: 'HcUser',
@@ -147,6 +148,13 @@ export default {
     updateFollow({ followedByCurrentUser, followedByCount }) {
       this.user.followedByCount = followedByCount
       this.user.followedByCurrentUser = followedByCurrentUser
+    },
+    async block(user) {
+      await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
+      this.$toast.success(user.name + 'geblockt')
+      setTimeout(() => {
+        this.$router.go()
+      }, 2000)
     },
   },
 }
