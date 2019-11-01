@@ -46,9 +46,6 @@ export const getters = {
   termsAndConditionsAgreed(state) {
     return state.user && state.user.termsAndConditionsAgreedVersion === VERSION
   },
-  locale(state) {
-    return state.locale
-  },
 }
 
 export const actions = {
