@@ -1,14 +1,16 @@
 <template>
   <dropdown offset="8">
     <a
+      :v-model="selected"
       slot="default"
       slot-scope="{ toggleMenu }"
-      class="locale-menu"
+      name="dropdown"
+      class="dropdown-filter"
       href="#"
       @click.prevent="toggleMenu()"
     >
       <ds-icon style="margin-right: 2px;" name="filter" />
-      {{ selected }}
+      <label for="dropdown">{{ selected }}</label>
       <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
     </a>
     <ds-menu
@@ -37,26 +39,25 @@ export default {
   components: {
     Dropdown,
   },
-  data() {
-    return {
-      selected: this.$t('notifications.filterLabel.all'),
-    }
-  },
-  computed: {
-    filterOptions() {
-      return [
-        { label: this.$t('notifications.filterLabel.all'), value: null },
-        { label: this.$t('notifications.filterLabel.read'), value: true },
-        { label: this.$t('notifications.filterLabel.unread'), value: false },
-      ]
-    },
+  props: {
+    selected: { type: String, default: '' },
+    filterOptions: { type: Array, default: () => [] },
   },
   methods: {
     filterNotifications(option, toggleMenu) {
-      this.$emit('filterNotifications', option.value)
-      this.selected = option.label
+      this.$emit('filterNotifications', option)
       toggleMenu()
     },
   },
 }
 </script>
+<style lang="scss">
+.dropdown-filter {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: $space-xx-small;
+  color: $text-color-soft;
+}
+</style>

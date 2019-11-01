@@ -4,9 +4,13 @@
       <ds-flex-item :width="{ lg: '85%' }">
         <ds-heading tag="h3">{{ $t('notifications.title') }}</ds-heading>
       </ds-flex-item>
-      <ds-flex-item width="100px">
+      <ds-flex-item width="110px">
         <client-only>
-          <notifications-dropdown-filter @filterNotifications="filterNotifications" />
+          <dropdown-filter
+            @filterNotifications="filterNotifications"
+            :filterOptions="filterOptions"
+            :selected="selected"
+          />
         </client-only>
       </ds-flex-item>
     </ds-flex>
@@ -21,13 +25,13 @@
 
 <script>
 import NotificationsTable from '~/components/NotificationsTable/NotificationsTable'
-import NotificationsDropdownFilter from '~/components/NotificationsDropdownFilter/NotificationsDropdownFilter'
+import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import Paginate from '~/components/Paginate/Paginate'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 
 export default {
   components: {
-    NotificationsDropdownFilter,
+    DropdownFilter,
     NotificationsTable,
     Paginate,
   },
@@ -40,16 +44,25 @@ export default {
       pageSize,
       first: pageSize,
       hasNext: false,
+      selected: this.$t('notifications.filterLabel.all'),
     }
   },
   computed: {
     hasPrevious() {
       return this.offset > 0
     },
+    filterOptions() {
+      return [
+        { label: this.$t('notifications.filterLabel.all'), value: null },
+        { label: this.$t('notifications.filterLabel.read'), value: true },
+        { label: this.$t('notifications.filterLabel.unread'), value: false },
+      ]
+    },
   },
   methods: {
-    filterNotifications(value) {
-      this.notificationRead = value
+    filterNotifications(option) {
+      this.notificationRead = option.value
+      this.selected = option.label
       this.$apollo.queries.notifications.refresh()
     },
     async markNotificationAsRead(notificationSourceId) {
