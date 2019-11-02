@@ -16,13 +16,13 @@
     <ds-menu
       slot="popover"
       slot-scope="{ toggleMenu }"
-      class="locale-menu-popover"
+      class="dropdown-menu-popover"
       :routes="filterOptions"
     >
       <ds-menu-item
         slot="menuitem"
         slot-scope="item"
-        class="locale-menu-item"
+        class="dropdown-menu-item"
         :route="item.route"
         :parents="item.parents"
         @click.stop.prevent="filterNotifications(item.route, toggleMenu)"
@@ -59,5 +59,20 @@ export default {
   height: 100%;
   padding: $space-xx-small;
   color: $text-color-soft;
+}
+.dropdown-menu {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: $space-xx-small;
+  color: $text-color-soft;
+}
+
+.dropdown-menu-popover {
+  a {
+    padding: $space-x-small $space-small;
+    padding-right: $space-base;
+  }
 }
 </style>
