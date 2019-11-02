@@ -15,6 +15,7 @@ describe('TeaserImage.vue', () => {
       $toast: {
         error: jest.fn(),
       },
+      $t: jest.fn(string => string),
     }
   })
   describe('mount', () => {
