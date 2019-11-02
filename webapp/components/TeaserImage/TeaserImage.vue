@@ -9,7 +9,10 @@
     @vdropzone-thumbnail="transformImage"
   >
     <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
-      <ds-button @click="cropImage" class="crop-confirm" primary>{{ $t('contribution.teaserImage.cropperConfirm') }}</ds-button>
+      <ds-button @click="cropImage" class="crop-confirm" primary>
+        {{ $t('contribution.teaserImage.cropperConfirm') }}
+      </ds-button>
+      <ds-button @click="cancelCrop" class="crop-cancel" icon="close"></ds-button>
     </div>
     <div
       :class="{
@@ -110,10 +113,17 @@ export default {
         this.image.classList.add('thumbnail-preview')
         this.thumbnailElement.appendChild(this.image)
         // Remove the editor from view
-        this.editor.removeChild(document.querySelectorAll('.cropper-container')[0])
+        this.removeCropper()
         const croppedImageFile = new File([blob], this.file.name, { type: 'image/jpeg' })
         this.$emit('addTeaserImage', croppedImageFile)
       }, 'image/jpeg')
+    },
+    cancelCrop() {
+      this.showCropper = false
+      this.removeCropper()
+    },
+    removeCropper() {
+      this.editor.removeChild(document.querySelectorAll('.cropper-container')[0])
     },
   },
 }
@@ -204,6 +214,12 @@ export default {
 .crop-confirm {
   position: absolute;
   left: 10px;
+  top: 10px;
+  z-index: 1;
+}
+.crop-cancel {
+  position: absolute;
+  right: 10px;
   top: 10px;
   z-index: 1;
 }
