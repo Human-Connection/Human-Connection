@@ -7,7 +7,7 @@ import { post } from '~/components/PostCard/PostCard.story.js'
 import { user } from '~/components/User/User.story.js'
 
 helpers.init()
-const notifications = [
+export const notifications = [
   {
     read: true,
     reason: 'mentioned_in_post',

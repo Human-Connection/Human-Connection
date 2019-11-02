@@ -23,7 +23,7 @@
           />
         </client-only>
       </ds-space>
-      <ds-text :class="{ 'notification-status': scope.row.read }">
+      <ds-text :class="{ 'notification-status': scope.row.read, reason: true }">
         {{ $t(`notifications.reason.${scope.row.reason}`) }}
       </ds-text>
     </template>
@@ -43,7 +43,7 @@
     </template>
     <template slot="content" slot-scope="scope">
       <b :class="{ 'notification-status': scope.row.read }">
-        {{ scope.row.from.contentExcerpt || scope.row.from.contentExcerpt | removeHtml }}
+        {{ scope.row.from.contentExcerpt | removeHtml }}
       </b>
     </template>
   </ds-table>
