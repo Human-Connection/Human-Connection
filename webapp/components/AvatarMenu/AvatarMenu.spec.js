@@ -91,18 +91,24 @@ describe('AvatarMenu.vue', () => {
 
       describe('role user', () => {
         it('displays a link to user profile', () => {
-          const profileLink = wrapper.findAll('.ds-menu-item span').at(0)
-          expect(profileLink.attributes().to).toEqual('/profile/u343/matt')
+          const profileLink = wrapper
+            .findAll('.ds-menu-item span')
+            .at(wrapper.vm.routes.findIndex(route => route.path === '/profile/u343/matt'))
+          expect(profileLink.exists()).toBe(true)
         })
 
         it('displays a link to the notifications page', () => {
-          const notificationsLink = wrapper.findAll('.ds-menu-item span').at(2)
-          expect(notificationsLink.attributes().to).toEqual('/notifications')
+          const notificationsLink = wrapper
+            .findAll('.ds-menu-item span')
+            .at(wrapper.vm.routes.findIndex(route => route.path === '/notifications'))
+          expect(notificationsLink.exists()).toBe(true)
         })
 
         it('displays a link to the settings page', () => {
-          const settingsLink = wrapper.findAll('.ds-menu-item span').at(4)
-          expect(settingsLink.attributes().to).toEqual('/settings')
+          const settingsLink = wrapper
+            .findAll('.ds-menu-item span')
+            .at(wrapper.vm.routes.findIndex(route => route.path === '/settings'))
+          expect(settingsLink.exists()).toBe(true)
         })
       })
 
@@ -120,8 +126,15 @@ describe('AvatarMenu.vue', () => {
         })
 
         it('displays a link to moderation page', () => {
-          const moderationLink = wrapper.findAll('.ds-menu-item span').at(6)
-          expect(moderationLink.attributes().to).toEqual('/moderation')
+          const moderationLink = wrapper
+            .findAll('.ds-menu-item span')
+            .at(wrapper.vm.routes.findIndex(route => route.path === '/moderation'))
+          expect(moderationLink.exists()).toBe(true)
+        })
+
+        it('displays a total of 4 links', () => {
+          const allLinks = wrapper.findAll('.ds-menu-item')
+          expect(allLinks).toHaveLength(4)
         })
       })
 
@@ -139,8 +152,15 @@ describe('AvatarMenu.vue', () => {
         })
 
         it('displays a link to admin page', () => {
-          const adminLink = wrapper.findAll('.ds-menu-item span').at(8)
-          expect(adminLink.attributes().to).toEqual('/admin')
+          const adminLink = wrapper
+            .findAll('.ds-menu-item span')
+            .at(wrapper.vm.routes.findIndex(route => route.path === '/admin'))
+          expect(adminLink.exists()).toBe(true)
+        })
+
+        it('displays a total of 5 links', () => {
+          const allLinks = wrapper.findAll('.ds-menu-item')
+          expect(allLinks).toHaveLength(5)
         })
       })
     })
