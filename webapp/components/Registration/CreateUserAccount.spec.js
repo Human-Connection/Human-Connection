@@ -1,4 +1,5 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
+import { VERSION } from '~/constants/terms-and-conditions-version.js'
 import CreateUserAccount from './CreateUserAccount'
 import { SignupVerificationMutation } from '~/graphql/Registration.js'
 import Styleguide from '@human-connection/styleguide'
@@ -23,6 +24,9 @@ describe('CreateUserAccount', () => {
       $apollo: {
         loading: false,
         mutate: jest.fn(),
+      },
+      $i18n: {
+        locale: () => 'en',
       },
     }
     propsData = {}
@@ -69,12 +73,6 @@ describe('CreateUserAccount', () => {
           }
         })
 
-        it('calls CreateUserAccount graphql mutation', async () => {
-          await action()
-          const expected = expect.objectContaining({ mutation: SignupVerificationMutation })
-          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
-        })
-
         it('delivers data to backend', async () => {
           await action()
           const expected = expect.objectContaining({
@@ -84,9 +82,16 @@ describe('CreateUserAccount', () => {
               email: 'sixseven@example.org',
               nonce: '666777',
               password: 'hellopassword',
-              termsAndConditionsAgreedVersion: '0.0.2',
+              termsAndConditionsAgreedVersion: VERSION,
+              locale: 'en',
             },
           })
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
+        })
+
+        it('calls CreateUserAccount graphql mutation', async () => {
+          await action()
+          const expected = expect.objectContaining({ mutation: SignupVerificationMutation })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
 

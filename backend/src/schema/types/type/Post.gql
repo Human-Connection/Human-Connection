@@ -1,3 +1,37 @@
+enum _PostOrdering {
+  id_asc
+  id_desc
+  activityId_asc
+  activityId_desc
+  objectId_asc
+  objectId_desc
+  title_asc
+  title_desc
+  slug_asc
+  slug_desc
+  content_asc
+  content_desc
+  contentExcerpt_asc
+  contentExcerpt_desc
+  image_asc
+  image_desc
+  visibility_asc
+  visibility_desc
+  deleted_asc
+  deleted_desc
+  disabled_asc
+  disabled_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+  language_asc
+  language_desc
+  pinned_asc
+  pinned_desc
+}
+
+
 type Post {
   id: ID!
   activityId: String
@@ -12,10 +46,15 @@ type Post {
   visibility: Visibility
   deleted: Boolean
   disabled: Boolean
+  pinned: Boolean
   disabledBy: User @relation(name: "DISABLED", direction: "IN")
   createdAt: String
   updatedAt: String
   language: String
+  pinnedAt: String @cypher(
+      statement: "MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN pinned.createdAt"
+    )
+  pinnedBy: User @relation(name:"PINNED", direction: "IN")
   relatedContributions: [Post]!
     @cypher(
       statement: """
@@ -40,7 +79,7 @@ type Post {
     @cypher(
       statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)"
     )
-
+  
   # Has the currently logged in user shouted that post?
   shoutedByCurrentUser: Boolean!
     @cypher(
@@ -84,9 +123,12 @@ type Mutation {
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
   RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
+  pinPost(id: ID!): Post
+  unpinPost(id: ID!): Post
 }
 
 type Query {
   PostsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
   PostsEmotionsByCurrentUser(postId: ID!): [String]
+  profilePagePosts(filter: _PostFilter, first: Int, offset: Int, orderBy: [_PostOrdering]): [Post]
 }

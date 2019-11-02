@@ -3,7 +3,9 @@ import Vuex from 'vuex'
 import vuexI18n from 'vuex-i18n/dist/vuex-i18n.umd.js'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
+import IziToast from '~/plugins/izi-toast'
 import layout from './layout.vue'
+import locales from '~/locales/index.js'
 
 import '~/plugins/v-tooltip'
 
@@ -12,10 +14,13 @@ const helpers = {
     Vue.use(Vuex)
     Vue.use(Styleguide)
     Vue.use(Filters)
+    Vue.use(IziToast)
 
     Vue.use(vuexI18n.plugin, helpers.store)
-    Vue.i18n.add('en', require('~/locales/en.json'))
-    Vue.i18n.add('de', require('~/locales/de.json'))
+    locales.forEach(({ code }) => {
+      Vue.i18n.add(code, require(`~/locales/${code}.json`))
+    })
+
     Vue.i18n.set('en')
     Vue.i18n.fallback('en')
 
@@ -32,14 +37,6 @@ const helpers = {
           },
           user(state) {
             return { id: '1', name: 'admin' }
-          },
-        },
-      },
-      editor: {
-        namespaced: true,
-        getters: {
-          placeholder(state) {
-            return 'Leave your inspirational thoughts ...'
           },
         },
       },

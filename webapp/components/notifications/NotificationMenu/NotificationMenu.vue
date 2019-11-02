@@ -78,9 +78,7 @@ export default {
       query() {
         return notificationQuery(this.$i18n)
       },
-      pollInterval() {
-        return NOTIFICATIONS_POLL_INTERVAL
-      },
+      pollInterval: NOTIFICATIONS_POLL_INTERVAL,
       update(data) {
         const newNotifications = data.notifications.filter(newN => {
           return !this.displayedNotifications.find(oldN => this.equalNotification(newN, oldN))
@@ -93,7 +91,7 @@ export default {
         return data.notifications
       },
       error(error) {
-        this.$toast.error(error)
+        this.$toast.error(error.message)
       },
     },
   },

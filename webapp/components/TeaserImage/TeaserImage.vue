@@ -67,7 +67,7 @@ export default {
                   <div data-dz-thumbnail-bg></div>
                 </div>
               </div>
-      `
+	     `
     },
     verror(file, message) {
       this.error = true
@@ -113,7 +113,7 @@ export default {
       image.src = URL.createObjectURL(file)
       editor.appendChild(image)
       // Create Cropper.js and pass image
-      let cropper = new Cropper(image, { zoomable: false })
+      let cropper = new Cropper(image, { zoomable: false, autoCropArea: 1.0 })
     },
     dropzoneDrop() {
       this.showCropper = true

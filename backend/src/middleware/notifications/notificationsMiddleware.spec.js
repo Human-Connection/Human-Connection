@@ -105,6 +105,7 @@ describe('notifications', () => {
       let title
       let postContent
       let postAuthor
+
       const createPostAction = async () => {
         authenticatedUser = await postAuthor.toJson()
         await mutate({
@@ -239,6 +240,7 @@ describe('notifications', () => {
       describe('mentions me in a post', () => {
         beforeEach(async () => {
           title = 'Mentioning Al Capone'
+
           postContent =
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone">@al-capone</a> how do you do?'
         })
@@ -439,7 +441,15 @@ describe('notifications', () => {
             })
           })
 
-          it('sends a notification', async () => {
+          it('sends only one notification with reason mentioned_in_comment', async () => {
+            postAuthor = await instance.create('User', {
+              id: 'MrPostAuthor',
+              name: 'Mr Author',
+              slug: 'mr-author',
+              email: 'post-author@example.org',
+              password: '1234',
+            })
+
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
               data: {
@@ -448,6 +458,40 @@ describe('notifications', () => {
                     read: false,
                     createdAt: expect.any(String),
                     reason: 'mentioned_in_comment',
+                    from: {
+                      __typename: 'Comment',
+                      id: 'c47',
+                      content: commentContent,
+                    },
+                  },
+                ],
+              },
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
+
+          beforeEach(async () => {
+            title = "Post where I'm the author and I get mentioned in a comment"
+            postContent = 'Content of post where I get mentioned in a comment.'
+            postAuthor = notifiedUser
+          })
+          it('sends only one notification with reason commented_on_post, no notification with reason mentioned_in_comment', async () => {
+            await createCommentOnPostAction()
+            const expected = expect.objectContaining({
+              data: {
+                notifications: [
+                  {
+                    read: false,
+                    createdAt: expect.any(String),
+                    reason: 'commented_on_post',
                     from: {
                       __typename: 'Comment',
                       id: 'c47',

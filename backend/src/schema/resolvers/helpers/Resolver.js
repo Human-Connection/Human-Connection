@@ -86,6 +86,7 @@ export default function Resolver(type, options = {}) {
     }
     return resolvers
   }
+
   const result = {
     ...undefinedToNullResolver(undefinedToNull),
     ...booleanResolver(boolean),
