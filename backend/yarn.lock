@@ -963,7 +963,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.7.14", "@metascraper/helpers@^5.7.17":
+"@metascraper/helpers@^5.7.17":
   version "5.7.17"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.7.17.tgz#401897c7239090ca7149b83e581712845bbb3709"
   integrity sha512-t21LqfDpaIrWg2JaivXG6mVzUsIVW05cAsKySA5Tj9Hgi9oZXxaaNes5XipOzk6P242RI48SDo7CkSbYiio7Tw==
@@ -3589,7 +3589,6 @@ extsprintf@^1.2.0:
 
 faker@Marak/faker.js#master:
   version "4.1.0"
-  uid "9fd8d7d37b398842d0784a116a340f7aa6afb89b"
   resolved "https://codeload.github.com/Marak/faker.js/tar.gz/9fd8d7d37b398842d0784a116a340f7aa6afb89b"
 
 fast-deep-equal@^2.0.1:

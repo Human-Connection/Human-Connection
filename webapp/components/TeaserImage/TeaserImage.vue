@@ -7,9 +7,10 @@
     :use-custom-slot="true"
     @vdropzone-error="verror"
     @vdropzone-thumbnail="transformImage"
-    @vdropzone-drop="dropzoneDrop"
   >
-    <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper"></div>
+    <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
+      <ds-button @click="cropImage" class="crop-confirm" primary>{{ $t('contribution.teaserImage.cropperConfirm') }}</ds-button>
+    </div>
     <div
       :class="{
         'hc-attachments-upload-area-post': true,
@@ -48,6 +49,11 @@ export default {
         maxFilesize: 5.0,
         previewTemplate: this.template(),
       },
+      image: null,
+      file: null,
+      editor: null,
+      cropper: null,
+      thumbnailElement: null,
       error: false,
       showCropper: false,
     }
@@ -74,49 +80,40 @@ export default {
       this.$toast.error(file.status, message)
     },
     transformImage(file) {
-      let thumbnailElement, editor, confirm, thumbnailPreview, contributionImage
+      this.file = file
+      this.showCropper = true
       // Create the image editor overlay
-      editor = this.$refs.cropperOverlay
-      thumbnailElement = document.querySelectorAll('#postdropzone')[0]
+      this.initEditor()
+
+      // Load the image
+      this.image = new Image()
+      this.image.src = URL.createObjectURL(this.file)
+      this.editor.appendChild(this.image)
+      this.cropper = new Cropper(this.image, { zoomable: false, autoCropArea: 0.9 })
+    },
+    initEditor() {
+      let thumbnailPreview, contributionImage
+      this.editor = this.$refs.cropperOverlay
+      this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
       thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
       if (thumbnailPreview) thumbnailPreview.remove()
       contributionImage = document.querySelectorAll('.contribution-image')[0]
       if (contributionImage) contributionImage.remove()
-      thumbnailElement.appendChild(editor)
-      // Create the confirm button
-      confirm = document.createElement('button')
-      confirm.classList.add('crop-confirm', 'ds-button', 'ds-button-primary')
-      confirm.textContent = this.$t('contribution.teaserImage.cropperConfirm')
-      confirm.addEventListener('click', () => {
-        // Get the canvas with image data from Cropper.js
-        this.showCropper = false
-        let canvas = cropper.getCroppedCanvas()
-        canvas.toBlob(blob => {
-          this.$refs.el.manuallyAddFile(blob, canvas.toDataURL(), null, null, {
-            dontSubstractMaxFiles: false,
-            addToFiles: true,
-          })
-          image = new Image()
-          image.src = canvas.toDataURL()
-          image.classList.add('thumbnail-preview')
-          thumbnailElement.appendChild(image)
-          // Remove the editor from view
-          editor.parentNode.removeChild(editor)
-          const croppedImageFile = new File([blob], file.name, { type: 'image/jpeg' })
-          this.$emit('addTeaserImage', croppedImageFile)
-        }, 'image/jpeg')
-      })
-      editor.appendChild(confirm)
-
-      // Load the image
-      let image = new Image()
-      image.src = URL.createObjectURL(file)
-      editor.appendChild(image)
-      // Create Cropper.js and pass image
-      let cropper = new Cropper(image, { zoomable: false, autoCropArea: 1.0 })
+      this.thumbnailElement.appendChild(this.editor)
     },
-    dropzoneDrop() {
-      this.showCropper = true
+    cropImage() {
+      this.showCropper = false
+      let canvas = this.cropper.getCroppedCanvas()
+      canvas.toBlob(blob => {
+        this.image = new Image()
+        this.image.src = canvas.toDataURL()
+        this.image.classList.add('thumbnail-preview')
+        this.thumbnailElement.appendChild(this.image)
+        // Remove the editor from view
+        this.editor.removeChild(document.querySelectorAll('.cropper-container')[0])
+        const croppedImageFile = new File([blob], this.file.name, { type: 'image/jpeg' })
+        this.$emit('addTeaserImage', croppedImageFile)
+      }, 'image/jpeg')
     },
   },
 }
