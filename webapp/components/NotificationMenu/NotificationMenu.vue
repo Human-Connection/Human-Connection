@@ -57,8 +57,8 @@ export default {
   },
   computed: {
     unreadNotificationsCount() {
-      const result = this.notifications.reduce((count, n) => {
-        return n.read ? count : count + 1
+      const result = this.notifications.reduce((count, notification) => {
+        return notification.read ? count : count + 1
       }, 0)
       return result
     },
@@ -76,7 +76,7 @@ export default {
       },
       pollInterval: NOTIFICATIONS_POLL_INTERVAL,
       update({ notifications }) {
-        return unionBy(notifications, this.notifications, n => n.id).sort(
+        return unionBy(notifications, this.notifications, notification => notification.id).sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         )
       },
