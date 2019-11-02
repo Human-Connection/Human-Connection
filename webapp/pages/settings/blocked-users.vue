@@ -56,6 +56,11 @@
             <b>{{ scope.row.slug | truncate(20) }}</b>
           </nuxt-link>
         </template>
+       
+        <template slot="unblock" slot-scope="scope" > 
+            <ds-button   size="small" @click="unblock(scope)"><ds-icon name="power-off" /></ds-button>
+        </template>
+       
       </ds-table>
     </ds-card>
     <ds-card v-else>
@@ -74,7 +79,7 @@
 </template>
 
 <script>
-import { BlockedUsers } from '~/graphql/settings/BlockedUsers'
+import { BlockedUsers, Unblock} from '~/graphql/settings/BlockedUsers'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 
 export default {
@@ -92,11 +97,19 @@ export default {
         avatar: '',
         name: this.$t('settings.blocked-users.columns.name'),
         slug: this.$t('settings.blocked-users.columns.slug'),
+        unblock: this.$t('settings.blocked-users.columns.unblock'),
       }
     },
   },
   apollo: {
     blockedUsers: { query: BlockedUsers, fetchPolicy: 'cache-and-network' },
+  },
+  methods: {   
+     async unblock(user) {
+       await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.row.id } })
+       this.$apollo.queries.blockedUsers.refetch()
+       this.$toast.success(user.row.slug + " " + this.$t('settings.blocked-users.unblocked'))
+    },
   },
 }
 </script>

@@ -313,12 +313,14 @@
       },
       "columns": {
         "name": "Name",
-        "slug": "Alias"
+        "slug": "Alias",
+        "unblk": "Entblocken"
       },
       "empty": "Bislang hast du niemanden blockiert.",
       "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
       "block": "Nutzer blockieren",
-      "unblock": "Nutzer entblocken"
+      "unblock": "Nutzer entblocken",
+      "unblocked": " ist wieder entblockt"
     }
   },
   "admin": {
