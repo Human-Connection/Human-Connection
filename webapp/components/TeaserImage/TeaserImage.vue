@@ -57,6 +57,7 @@ export default {
       editor: null,
       cropper: null,
       thumbnailElement: null,
+      oldImage: null,
       error: false,
       showCropper: false,
     }
@@ -85,41 +86,47 @@ export default {
     transformImage(file) {
       this.file = file
       this.showCropper = true
-      // Create the image editor overlay
       this.initEditor()
-
-      // Load the image
+      this.initCropper()
+    },
+    initEditor() {
+      this.editor = this.$refs.cropperOverlay
+      this.clearImages()
+      this.thumbnailElement.appendChild(this.editor)
+    },
+    clearImages() {
+      this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
+      const thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
+      if (thumbnailPreview) thumbnailPreview.remove()
+      const contributionImage = document.querySelectorAll('.contribution-image')[0]
+      this.oldImage = contributionImage
+      if (contributionImage) contributionImage.remove()
+    },
+    initCropper() {
       this.image = new Image()
       this.image.src = URL.createObjectURL(this.file)
       this.editor.appendChild(this.image)
       this.cropper = new Cropper(this.image, { zoomable: false, autoCropArea: 0.9 })
     },
-    initEditor() {
-      let thumbnailPreview, contributionImage
-      this.editor = this.$refs.cropperOverlay
-      this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
-      thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
-      if (thumbnailPreview) thumbnailPreview.remove()
-      contributionImage = document.querySelectorAll('.contribution-image')[0]
-      if (contributionImage) contributionImage.remove()
-      this.thumbnailElement.appendChild(this.editor)
-    },
     cropImage() {
       this.showCropper = false
-      let canvas = this.cropper.getCroppedCanvas()
+      const canvas = this.cropper.getCroppedCanvas()
       canvas.toBlob(blob => {
-        this.image = new Image()
-        this.image.src = canvas.toDataURL()
-        this.image.classList.add('thumbnail-preview')
-        this.thumbnailElement.appendChild(this.image)
-        // Remove the editor from view
+        this.setupPreview(canvas)
         this.removeCropper()
         const croppedImageFile = new File([blob], this.file.name, { type: 'image/jpeg' })
         this.$emit('addTeaserImage', croppedImageFile)
       }, 'image/jpeg')
     },
+    setupPreview(canvas) {
+      this.image = new Image()
+      this.image.src = canvas.toDataURL()
+      this.image.classList.add('thumbnail-preview')
+      this.thumbnailElement.appendChild(this.image)
+    },
     cancelCrop() {
       this.showCropper = false
+      if (this.oldImage) this.thumbnailElement.appendChild(this.oldImage)
       this.removeCropper()
     },
     removeCropper() {
