@@ -15,9 +15,9 @@ Placed in the same folder are also:
 
 ## We use typed props
 
-Vue.js allows us to define component props either as strings or as objects with `type`, `default` and `required` values. Always go for the second option!
+Vue.js allows us to define component props either as strings or as objects (with `type` and `default` or `required` values). Always go for the second option!
 
-Also: define defaults _only and always_ for non-required props.
+Also: only (and always!) define a `default` for props that are _not required_.
 
 Why?
 - it makes our code more robust – a warning will be shown when passing a wrong prop type

@@ -68,20 +68,20 @@ You can then visit the Storybook playground on `http://localhost:3002`
 
 {% tab title="Without Docker" %}
 
-After starting the application following the above guidelines, open new terminal windows for each of these commands:
+After starting the application following the above guidelines, open new terminal windows and navigate to the `/webapp` directory for each of these commands:
 
 ```bash
-# run eslint
+# run eslint in /webapp
 $ yarn lint
 ```
 
 ```bash
-# run unit tests
+# run unit tests in /webapp
 $ yarn test
 ```
 
 ```bash
-# start storybook
+# start storybook in /webapp
 $ yarn storybook
 ```
 
