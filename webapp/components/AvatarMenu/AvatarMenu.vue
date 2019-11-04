@@ -142,14 +142,5 @@ export default {
       color: $text-color-link-active;
     }
   }
-  nav {
-    margin-left: -$space-small;
-    margin-right: -$space-small;
-    margin-top: -$space-xx-small;
-    margin-bottom: -$space-xx-small;
-    a {
-      padding-left: 12px;
-    }
-  }
 }
 </style>
