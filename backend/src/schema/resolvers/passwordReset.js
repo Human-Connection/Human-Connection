@@ -1,7 +1,6 @@
 import uuid from 'uuid/v4'
 import bcrypt from 'bcryptjs'
-import createPasswordReset from './passwordReset/createPasswordReset'
-
+import createPasswordReset from './helpers/createPasswordReset'
 
 export default {
   Mutation: {

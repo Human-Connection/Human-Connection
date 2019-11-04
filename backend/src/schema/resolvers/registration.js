@@ -4,6 +4,7 @@ import fileUpload from './fileUpload'
 import encryptPassword from '../../helpers/encryptPassword'
 import generateNonce from './helpers/generateNonce'
 import existingEmailAddress from './helpers/existingEmailAddress'
+import { normalizeEmail } from 'validator'
 
 const instance = neode()
 
@@ -29,9 +30,9 @@ export default {
       return response
     },
     Signup: async (_parent, args, context) => {
-      const nonce = generateNonce()
-      args.nonce = nonce
-      let emailAddress = await existingEmailAddress(_parent, args, context)
+      args.nonce = generateNonce()
+      args.email = normalizeEmail(args.email)
+      let emailAddress = await existingEmailAddress({ args, context })
       if (emailAddress) return emailAddress
       try {
         emailAddress = await instance.create('EmailAddress', args)
@@ -42,8 +43,8 @@ export default {
     },
     SignupByInvitation: async (_parent, args, context) => {
       const { token } = args
-      const nonce = generateNonce()
-      args.nonce = nonce
+      args.nonce = generateNonce()
+      args.email = normalizeEmail(args.email)
       let emailAddress = await existingEmailAddress(_parent, args, context)
       if (emailAddress) return emailAddress
       try {
@@ -78,7 +79,7 @@ export default {
       args.termsAndConditionsAgreedAt = new Date().toISOString()
 
       let { nonce, email } = args
-      email = email.toLowerCase()
+      email = normalizeEmail(email)
       const result = await instance.cypher(
         `
       MATCH(email:EmailAddress {nonce: {nonce}, email: {email}})

@@ -12,9 +12,9 @@ describe('createPasswordReset', () => {
         close() {},
         run: jest.fn().mockReturnValue({
           records: {
-            map: jest.fn(() => [])
-          }
-        })
+            map: jest.fn(() => []),
+          },
+        }),
       }
       driver = { session: () => mockSession }
     })
@@ -22,10 +22,14 @@ describe('createPasswordReset', () => {
     it('lowercases email address', async () => {
       const email = 'stRaNGeCaSiNG@ExAmplE.ORG'
       await createPasswordReset({ driver, email, issuedAt, nonce })
-      expect(mockSession.run.mock.calls)
-        .toEqual([[expect.any(String), expect.objectContaining({
-          email: 'strangecasing@example.org'
-      })]])
+      expect(mockSession.run.mock.calls).toEqual([
+        [
+          expect.any(String),
+          expect.objectContaining({
+            email: 'strangecasing@example.org',
+          }),
+        ],
+      ])
     })
   })
 })

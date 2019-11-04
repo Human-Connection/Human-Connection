@@ -1,7 +1,6 @@
 import { UserInputError } from 'apollo-server'
-export default async function alreadyExistingMail(_parent, args, context) {
-  let { email } = args
-  email = email.toLowerCase()
+
+export default async function alreadyExistingMail({ args, context }) {
   const cypher = `
     MATCH (email:EmailAddress {email: $email})
     OPTIONAL MATCH (email)-[:BELONGS_TO]-(user)
@@ -10,7 +9,7 @@ export default async function alreadyExistingMail(_parent, args, context) {
   let transactionRes
   const session = context.driver.session()
   try {
-    transactionRes = await session.run(cypher, { email })
+    transactionRes = await session.run(cypher, { email: args.email })
   } finally {
     session.close()
   }
