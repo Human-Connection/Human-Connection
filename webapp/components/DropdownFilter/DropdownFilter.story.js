@@ -5,14 +5,26 @@ import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import helpers from '~/storybook/helpers'
 
 helpers.init()
-
+const filterOptions = [
+  { label: 'All', value: null },
+  { label: 'Read', value: true },
+  { label: 'Unread', value: false },
+]
 storiesOf('DropdownFilter', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
   .add('filter dropdown', () => ({
     components: { DropdownFilter },
+    data: () => ({
+      filterOptions,
+      selected: filterOptions[0].label,
+    }),
     methods: {
       filterNotifications: action('filterNotifications'),
     },
-    template: '<notifications-dropdown-filter @filterNotifications="filterNotifications" />',
+    template: `<dropdown-filter
+                  @filterNotifications="filterNotifications"
+                  :filterOptions="filterOptions"
+                  :selected="selected"
+                />`,
   }))
