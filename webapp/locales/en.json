@@ -87,6 +87,10 @@
     },
     "followers": {
       "label": "Users I follow"
+    },
+    "language": {
+      "header": "Languages",
+      "all": "All"
     }
   },
   "site": {
