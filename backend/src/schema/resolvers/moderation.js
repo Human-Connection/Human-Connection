@@ -96,8 +96,7 @@ export default {
             `
         } else {
           // an open decision …
-          if (disable === undefined)
-            disable = existingDecisionTxResult.decision.properties.disable // default set to existing
+          if (disable === undefined) disable = existingDecisionTxResult.decision.properties.disable // default set to existing
           if (closed === undefined) closed = existingDecisionTxResult.decision.properties.closed // default set to existing
           // current moderator is not the same as old
           if (moderator.id !== existingDecisionTxResult.decisionModerator.id) {
