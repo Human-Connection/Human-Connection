@@ -45,7 +45,7 @@ For more information see our [frontend testing guide](testing.md). Use these com
 {% tabs %}
 {% tab title="With Docker" %}
 
-After starting the application following the above guidelines open new terminal windows for each of these commands:
+After starting the application following the above guidelines, open new terminal windows for each of these commands:
 
 ```bash
 # run eslint
@@ -68,7 +68,7 @@ You can then visit the Storybook playground on `http://localhost:3002`
 
 {% tab title="Without Docker" %}
 
-After starting the application following the above guidelines open new terminal windows for each of these commands:
+After starting the application following the above guidelines, open new terminal windows for each of these commands:
 
 ```bash
 # run eslint
@@ -92,7 +92,7 @@ You can then visit the Storybook playground on `http://localhost:3002`
 
 ## Styleguide Migration
 
-We are currently in the process of migrating our styleguide components and design tokens from the [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) into the main [Human Connection repository](https://github.com/Human-Connection/Human-Connection) and refactoring our components in the process. During this migration our new components will live in a `view` folder to separate them from the old, yet untouched components.
+We are currently in the process of migrating our styleguide components and design tokens from the [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) into the main [Human Connection repository](https://github.com/Human-Connection/Human-Connection) and refactoring our components in the process. During this migration, our new components will live in a `view` folder to separate them from the old, yet untouched components.
 
 ### Folder Structure
 
