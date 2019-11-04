@@ -17,7 +17,7 @@ export default {
         CASE
         WHEN decision.createdAt IS NULL
         THEN decision END).createdAt = toString(datetime())
-        SET decision.disabled = true, decision.closed = false, decision.last = true
+        SET decision.disable = true, decision.closed = false, decision.last = true
         RETURN resource {.id}
       `
       const session = driver.session()
@@ -34,7 +34,7 @@ export default {
       const cypher = `
         MATCH (resource {id: $resourceId})<-[decision:DECIDED]-(:User)
         SET resource.disabled = false
-        SET decision.disabled = false, decision.updatedAt = toString(datetime())
+        SET decision.disable = false, decision.updatedAt = toString(datetime())
         RETURN resource {.id}
       `
       const session = driver.session()
@@ -46,10 +46,13 @@ export default {
       if (!resource) return null
       return resource.id
     },
-    decide: async (object, params, context, _resolveInfo) => {
+    decide: async (_object, params, context, _resolveInfo) => {
       let createdRelationshipWithNestedAttributes = null
+      // Wolle console.log('params: ', params)
       const { resourceId } = params
-      let { disabled, closed } = params
+      // Wolle console.log('resourceId: ', resourceId)
+      let { disable, closed } = params
+      // Wolle console.log('disable: ', disable)
       const { user: moderator, driver } = context
 
       const session = driver.session()
@@ -76,7 +79,7 @@ export default {
         const [existingDecisionTxResult] = await existingDecisionWriteTxResultPromise
         if (!existingDecisionTxResult) {
           // no open decision, then create one
-          if (disabled === undefined) disabled = false // default for creation
+          if (disable === undefined) disable = false // default for creation
           if (closed === undefined) closed = false // default for creation
           cypherHeader = `
             MATCH (moderator:User {id: $moderatorId})
@@ -93,8 +96,8 @@ export default {
             `
         } else {
           // an open decision …
-          if (disabled === undefined)
-            disabled = existingDecisionTxResult.decision.properties.disabled // default set to existing
+          if (disable === undefined)
+            disable = existingDecisionTxResult.decision.properties.disable // default set to existing
           if (closed === undefined) closed = existingDecisionTxResult.decision.properties.closed // default set to existing
           // current moderator is not the same as old
           if (moderator.id !== existingDecisionTxResult.decisionModerator.id) {
@@ -127,16 +130,18 @@ export default {
             CASE
             WHEN decision.createdAt IS NULL
             THEN decision END).createdAt = toString(datetime())
-            SET decision.disabled = $disabled, decision.closed = $closed
-            SET resource.disabled = $disabled
+            SET decision.disable = $disable, decision.closed = $closed
+            SET resource.disabled = $disable
             RETURN decision, resource, moderator, labels(resource)[0] AS type
           `
+        // Wolle console.log('cypher: ', cypher)
+        // console.log('disable: ', disable)
 
         const newDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
           const decisionRelationshipTransactionResponse = await txc.run(cypher, {
             resourceId,
             moderatorId: moderator.id,
-            disabled,
+            disable,
             closed,
           })
           return decisionRelationshipTransactionResponse.records.map(record => ({

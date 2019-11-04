@@ -3,7 +3,7 @@ type DECIDED {
   updatedAt: String
   # reasonCategory: ReasonCategory
   # reasonDescription: String
-  disabled: Boolean!
+  disable: Boolean!
   closed: Boolean!
 
   # internal
@@ -22,5 +22,5 @@ type DECIDED {
 }
 
 type Mutation {
-  decide(resourceId: ID!, disabled: Boolean, closed: Boolean): DECIDED
+  decide(resourceId: ID!, disable: Boolean, closed: Boolean): DECIDED
 }
