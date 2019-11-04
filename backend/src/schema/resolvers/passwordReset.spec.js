@@ -1,7 +1,7 @@
 import Factory from '../../seed/factories'
 import { gql } from '../../jest/helpers'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
-import { createPasswordReset } from './passwordReset'
+import { createPasswordReset } from './passwordReset/createPasswordReset'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 
@@ -109,10 +109,7 @@ describe('passwordReset', () => {
 describe('resetPassword', () => {
   const setup = async (options = {}) => {
     const { email = 'user@example.org', issuedAt = new Date(), nonce = 'abcdef' } = options
-
-    const session = driver.session()
     await createPasswordReset({ driver, email, issuedAt, nonce })
-    session.close()
   }
 
   const mutation = gql`
