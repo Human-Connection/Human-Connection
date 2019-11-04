@@ -15104,6 +15104,11 @@ storybook-design-token@^0.4.1:
     raw-loader "3.1.0"
     react-use-clipboard "0.1.4"
 
+storybook-vue-router@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/storybook-vue-router/-/storybook-vue-router-1.0.7.tgz#366451212149d9d0a32557545b244667bb01768e"
+  integrity sha512-R+DYARQ40YVbMbV5moLDmQvodJX5FQPVy5cULb782P1gD5rAkulWtgt8yrM7pmjYru+LTPdLS4blrFPnWlb0sQ==
+
 stream-browserify@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-2.0.2.tgz#87521d38a44aa7ee91ce1cd2a47df0cb49dd660b"
