@@ -1,6 +1,6 @@
 <template>
   <dropdown class="avatar-menu" offset="8" :placement="placement">
-    <template slot="default" slot-scope="{ toggleMenu }">
+    <template #default="{ toggleMenu }">
       <a
         class="avatar-menu-trigger"
         :href="
@@ -15,7 +15,7 @@
         <ds-icon size="xx-small" name="angle-down" />
       </a>
     </template>
-    <template slot="popover" slot-scope="{ closeMenu }">
+    <template #popover="{ closeMenu }">
       <div class="avatar-menu-popover">
         {{ $t('login.hello') }}
         <b>{{ userName }}</b>

@@ -1,6 +1,6 @@
 <template>
   <ds-table v-if="notifications && notifications.length" :data="notifications" :fields="fields">
-    <template slot="icon" slot-scope="scope">
+    <template #icon="scope">
       <ds-icon
         v-if="scope.row.from.post"
         name="comment"
@@ -12,7 +12,7 @@
         v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"
       />
     </template>
-    <template slot="user" slot-scope="scope">
+    <template #user="scope">
       <ds-space margin-bottom="base">
         <client-only>
           <hc-user
@@ -27,7 +27,7 @@
         {{ $t(`notifications.reason.${scope.row.reason}`) }}
       </ds-text>
     </template>
-    <template slot="post" slot-scope="scope">
+    <template #post="scope">
       <nuxt-link
         class="notification-mention-post"
         :class="{ 'notification-status': scope.row.read }"
@@ -41,7 +41,7 @@
         <b>{{ scope.row.from.title || scope.row.from.post.title | truncate(50) }}</b>
       </nuxt-link>
     </template>
-    <template slot="content" slot-scope="scope">
+    <template #content="scope">
       <b :class="{ 'notification-status': scope.row.read }">
         {{ scope.row.from.contentExcerpt | removeHtml }}
       </b>
