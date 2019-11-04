@@ -39,6 +39,7 @@ import { gql } from '../jest/helpers'
         nameDE: 'Hamburg',
         nameNL: 'Hamburg',
         namePL: 'Hamburg',
+        nameRU: 'Гамбург',
       }),
       factory.create('Location', {
         id: 'region.14880313158564380',
@@ -54,6 +55,7 @@ import { gql } from '../jest/helpers'
         nameDE: 'Berlin',
         nameNL: 'Berlijn',
         namePL: 'Berlin',
+        nameRU: 'Берлин',
       }),
       factory.create('Location', {
         id: 'country.10743216036480410',
@@ -67,6 +69,7 @@ import { gql } from '../jest/helpers'
         nameFR: 'Allemagne',
         nameIT: 'Germania',
         nameEN: 'Germany',
+        nameRU: 'Германия',
       }),
       factory.create('Location', {
         id: 'region.9397217726497330',
@@ -82,6 +85,7 @@ import { gql } from '../jest/helpers'
         nameDE: 'Paris',
         nameNL: 'Parijs',
         namePL: 'Paryż',
+        nameRU: 'Париж',
       }),
       factory.create('Location', {
         id: 'country.9759535382641660',
@@ -95,6 +99,7 @@ import { gql } from '../jest/helpers'
         nameFR: 'France',
         nameIT: 'Francia',
         nameEN: 'France',
+        nameRU: 'Франция',
       }),
     ])
     await Promise.all([
