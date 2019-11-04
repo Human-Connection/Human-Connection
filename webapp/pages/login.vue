@@ -25,8 +25,8 @@ export default {
     }
   },
   methods: {
-    handleSuccess() {      
-      this.$i18n.set(this.user.locale)   
+    handleSuccess() {
+      this.$i18n.set(this.user.locale)
       this.$router.replace(this.$route.query.path || '/')
     },
   },
