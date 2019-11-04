@@ -134,263 +134,263 @@
     "follow": "Seguir",
     "followers": "Seguidores",
     "following": "Seguindo",
-    "shouted": "Aclamou",
+    "shouted": "Anunciou",
     "commented": "Comentou",
-    "userAnonym": "Anonymous",
-    "socialMedia": "Where else can I find",
+    "userAnonym": "Anônimo",
+    "socialMedia": "Onde mais posso encontrar",
     "network": {
-      "title": "Network",
-      "following": "is following:",
-      "followingNobody": "follows nobody.",
-      "followedBy": "is followed by:",
-      "followedByNobody": "is not followed by anyone.",
-      "andMore": "and {number} more …"
+      "title": "Rede",
+      "following": "está seguindo:",
+      "followingNobody": "não segue ninguém.",
+      "followedBy": "é seguido por:",
+      "followedByNobody": "não é seguido por ninguém.",
+      "andMore": "e {number} mais …"
     },
     "invites": {
-      "title": "Invite somebody to Human Connection!",
-      "description": "Enter thier email address for invitation.",
-      "emailPlaceholder": "Email to invite"
+      "title": "Convidar alguém para Human Connection!",
+      "description": "Digite o endereço de e-mail para o convite.",
+      "emailPlaceholder": "E-mail para convidar"
     }
   },
   "notifications": {
     "reason": {
-      "mentioned_in_post": "Mentioned you in a post …",
-      "mentioned_in_comment": "Mentioned you in a comment …",
-      "commented_on_post": "Commented on your post …"
+      "mentioned_in_post": "Mencionou você em um post …",
+      "mentioned_in_comment": "Mencionou você em um comentário …",
+      "commented_on_post": "Comentou no seu post …"
     },
-    "comment": "Comment"
+    "comment": "Comentário"
   },
   "search": {
-    "placeholder": "Search",
-    "hint": "What are you searching for?",
-    "failed": "Nothing found"
+    "placeholder": "Pesquisar",
+    "hint": "O que você está pesquisando??",
+    "failed": "Nada foi encontrado"
   },
   "settings": {
-    "name": "Settings",
+    "name": "Configurações",
     "data": {
-      "name": "Your data",
-      "labelName": "Your Name",
-      "labelSlug": "Your unique user name",
+      "name": "Seus dados",
+      "labelName": "Seu Nome",
+      "labelSlug": "Seu nome de usuário exclusivo",
       "namePlaceholder": "Femanon Funny",
-      "labelCity": "Your City or Region",
-      "labelBio": "About You",
-      "success": "Your data was successfully updated!"
+      "labelCity": "Sua cidade ou região",
+      "labelBio": "Sobre você",
+      "success": "Seus dados foram atualizados com sucesso!"
     },
     "email": {
       "validation": {
-        "same-email": "This is your current email address"
+        "same-email": "Este é o seu endereço de e-mail atual"
       },
-      "name": "Your email",
-      "labelEmail": "Change your email address",
-      "labelNewEmail": "New email Address",
-      "labelNonce": "Enter your code",
-      "success": "A new email address has been registered.",
-      "submitted": "An email to verify your address has been sent to <b>{email}</b>.",
-      "change-successful": "Your email address has been changed successfully.",
+      "name": "Seu email",
+      "labelEmail": "Alterar o seu endereço de e-mail",
+      "labelNewEmail": "Novo endereço de e-mail",
+      "labelNonce": "Digite o seu código",
+      "success": "Um novo endereço de e-mail foi registrado.",
+      "submitted": "Um e-mail para verificar o seu endereço foi enviado para <b>{email}</b>.",
+      "change-successful": "O seu endereço de e-mail foi alterado com sucesso.",
       "verification-error": {
-        "message": "Your email could not be changed.",
-        "explanation": "This can have different causes:",
+        "message": "O seu e-mail não pode ser alterado.",
+        "explanation": "Isto pode ter diferentes causas:",
         "reason": {
-          "invalid-nonce": "Is the confirmation code invalid?",
-          "no-email-request": "Are you certain that you requested a change of your email address?"
+          "invalid-nonce": "O código de confirmação esta inválido?",
+          "no-email-request": "Você tem certeza de que solicitou uma alteração no seu endereço de e-mail?"
         },
-        "support": "If the problem persists, please contact us by email at"
+        "support": "Se o problema persistir, por favor contacte-nos por e-mail"
       }
     },
     "validation": {
       "slug": {
-        "regex": "Allowed characters are only lowercase letters, numbers, underscores and hyphens.",
-        "alreadyTaken": "This user name is already taken."
+        "regex": "Os caracteres permitidos são apenas letras minúsculas, números, sublinhados e hífens.",
+        "alreadyTaken": "Este nome de usuário já está registrado."
       }
     },
     "security": {
-      "name": "Security",
+      "name": "Segurança",
       "change-password": {
-        "button": "Change password",
-        "success": "Password successfully changed!",
-        "label-old-password": "Your old password",
-        "label-new-password": "Your new password",
-        "label-new-password-confirm": "Confirm new password",
-        "message-old-password-required": "Enter your old password",
-        "message-new-password-required": "Enter a new password",
-        "message-new-password-confirm-required": "Confirm your new password",
-        "message-new-password-missmatch": "Type the same password again",
-        "passwordSecurity": "Password security",
-        "passwordStrength0": "Very insecure password",
-        "passwordStrength1": "Insecure password",
-        "passwordStrength2": "Mediocre password",
-        "passwordStrength3": "Strong password",
-        "passwordStrength4": "Very strong password"
+        "button": "Alterar senha",
+        "success": "Senha alterada com sucesso!",
+        "label-old-password": "Sua senha antiga",
+        "label-new-password": "Sua nova senha",
+        "label-new-password-confirm": "Confirme sua nova senha",
+        "message-old-password-required": "Digite sua senha antiga",
+        "message-new-password-required": "Digite uma nova senha",
+        "message-new-password-confirm-required": "Confirme sua nova senha",
+        "message-new-password-missmatch": "Digite a mesma senha novamente",
+        "passwordSecurity": "Segurança da senha",
+        "passwordStrength0": "Senha muito insegura",
+        "passwordStrength1": "Senha insegura",
+        "passwordStrength2": "Senha medíocre",
+        "passwordStrength3": "Senha forte",
+        "passwordStrength4": "Senha muito forte"
       }
     },
     "invites": {
-      "name": "Invites"
+      "name": "Convites"
     },
     "download": {
-      "name": "Download Data"
+      "name": "Baixar Dados"
     },
     "deleteUserAccount": {
-      "name": "Delete data",
-      "contributionsCount": "Delete my {count} posts",
-      "commentedCount": "Delete my {count} comments",
-      "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
-      "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
-      "success": "Account successfully deleted!",
-      "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
+      "name": "Deletar dados",
+      "contributionsCount": "Deletar meus {count} posts",
+      "commentedCount": "Deletar meus {count} comentários",
+      "accountDescription": "Esteja ciente de que o seus Posts e Comentários são importantes para a nossa comunidade. Se você ainda optar por excluí-los, você tem que marcá-los abaixo.",
+      "accountWarning": "Você <b>NÃO PODE GERENCIAR</b> e <b>NÃO PODE RECUPERAR</b> sua conta, Posts, ou Comentários após excluir sua conta!",
+      "success": "Conta eliminada com sucesso!",
+      "pleaseConfirm": "<b class='is-danger'>Ação destrutiva!</b> Digitar <b>{confirm}</b> para confirmar"
     },
     "embeds": {
-      "name": "Third party providers",
-      "info-description": "Here is the list of third-party providers whose content can be displayed as third-party code, e.g. in the form of embedded videos.",
+      "name": "Fornecedores de terceiros",
+      "info-description": "Aqui está a lista de fornecedores terceiros, cujo conteúdo pode ser exibido como código de terceiros, por exemplo, sob a forma de vídeos incorporados.",
       "status": {
-        "description": "As a default for you, embedded code of third-party providers is",
+        "description": "Como padrão para você, o código incorporado de provedores de terceiros é",
         "disabled": {
-          "off": "initially not displayed",
-          "on": "displayed immediately"
+          "off": "não exibido inicialmente",
+          "on": "exibido inicialmente"
         },
         "change": {
-          "question": "Should embedded source code from third parties always be displayed to you?",
-          "allow": "Sure",
-          "deny": "No thanks"
+          "question": "O código-fonte incorporado de terceiros deve sempre ser exibido para você?",
+          "allow": "Sim",
+          "deny": "Não, obrigado"
         }
       }
     },
     "organizations": {
-      "name": "My Organizations"
+      "name": "Minhas Organizações"
     },
     "languages": {
-      "name": "Languages"
+      "name": "Linguagens"
     },
     "social-media": {
-      "name": "Social media",
-      "placeholder": "Your social media url",
-      "requireUnique": "You added this url already",
-      "submit": "Add link",
-      "successAdd": "Added social media. Updated user profile!",
-      "successDelete": "Deleted social media. Updated user profile!"
+      "name": "Mídias sociais",
+      "placeholder": "Sua url de mídia social",
+      "requireUnique": "Você já adicionou esta url",
+      "submit": "Adicionar link",
+      "successAdd": "Mídias sociais adicionadas. Perfil de usuário atualizado!",
+      "successDelete": "Mídias sociais removidas. Perfil de usuário atualizado!"
     },
     "blocked-users": {
-      "name": "Blocked users",
+      "name": "Usuários bloqueados",
       "explanation": {
-        "intro": "If another user has been blocked by you, this is what happens:",
-        "your-perspective": "The blocked person's posts will no longer appear in your news feed.",
-        "their-perspective": "Vice versa: The blocked person will also no longer see your posts in their news feed.",
-        "search": "Posts of blocked people disappear from your search results.",
-        "notifications": "Blocked users will no longer receive notifications if they are mentioned in your posts.",
-        "closing": "This should be sufficient for now so that blocked users can no longer bother you."
+        "intro": "Se outro usuário foi bloqueado por você, isto é o que acontece:",
+        "your-perspective": "As mensagens da pessoa bloqueada não aparecerão mais no seu feed de notícias.",
+        "their-perspective": "Vice versa: A pessoa bloqueada também não verá mais suas mensagens em seu feed de notícias.",
+        "search": "Posts de pessoas bloqueadas desaparecem dos resultados da sua pesquisa.",
+        "notifications": "Usuários bloqueados não receberão mais notificações se forem mencionados em suas mensagens.",
+        "closing": "Isso deve ser suficiente por enquanto para que os usuários bloqueados não possam mais incomodá-lo."
       },
       "columns": {
-        "name": "Name",
+        "name": "Nome",
         "slug": "Slug"
       },
-      "empty": "So far, you have not blocked anybody.",
-      "how-to": "You can block other users on their profile page via the content menu.",
-      "block": "Block user",
-      "unblock": "Unblock user"
+      "empty": "Até agora, você não bloqueou ninguém.",
+      "how-to": "Você pode bloquear outros usuários em suas páginas de perfil através do menu de conteúdo.",
+      "block": "Bloquear usuário",
+      "unblock": "Desbloquear usuário"
     }
   },
   "admin": {
-    "name": "Admin",
+    "name": "Administração",
     "dashboard": {
-      "name": "Dashboard",
-      "users": "Users",
-      "posts": "Posts",
-      "comments": "Comments",
-      "notifications": "Notifications",
-      "organizations": "Organizations",
-      "projects": "Projects",
-      "invites": "Invites",
-      "follows": "Follows",
-      "shouts": "Shouts"
+      "name": "Painel de controle",
+      "users": "Usuários",
+      "posts": "Postagens",
+      "comments": "Comentários",
+      "notifications": "Notificações",
+      "organizations": "Organizações",
+      "projects": "Projetos",
+      "invites": "Convites",
+      "follows": "Segue",
+      "shouts": "Recomendar"
     },
     "organizations": {
-      "name": "Organizations"
+      "name": "Organizações"
     },
     "users": {
-      "name": "Users",
+      "name": "Usuários",
       "form": {
-        "placeholder": "email, name or description"
+        "placeholder": "e-mail, nome ou descrição"
       },
       "table": {
         "columns": {
-          "number": "No.",
-          "name": "Name",
+          "number": "N.º",
+          "name": "Nome",
           "email": "E-mail",
           "slug": "Slug",
-          "role": "Role",
-          "createdAt": "Created at"
+          "role": "Função",
+          "createdAt": "Criado em"
         }
       },
-      "empty": "No users found"
+      "empty": "Nenhum usuário encontrado"
     },
     "pages": {
-      "name": "Pages"
+      "name": "Páginas"
     },
     "notifications": {
-      "name": "Notifications"
+      "name": "Notificações"
     },
     "categories": {
-      "name": "Categories",
-      "categoryName": "Name",
+      "name": "Categorias",
+      "categoryName": "Nome",
       "postCount": "Posts"
     },
     "hashtags": {
       "name": "Hashtags",
-      "number": "No.",
-      "nameOfHashtag": "Name",
-      "tagCountUnique": "Users",
+      "number": "Não.",
+      "nameOfHashtag": "Nome",
+      "tagCountUnique": "Usuários",
       "tagCount": "Posts"
     },
     "settings": {
-      "name": "Settings"
+      "name": "Configurações"
     },
     "invites": {
-      "name": "Invite users",
-      "title": "Invite people",
-      "description": "Invitations are a wonderful way to have your friends in your network …"
+      "name": "Convidar usuários",
+      "title": "Convidar pessoas",
+      "description": "Convites são uma maneira maravilhosa de ter seus amigos em sua rede …"
     }
   },
   "post": {
-    "name": "Post",
+    "name": "Publicação",
     "moreInfo": {
-      "name": "More info",
-      "title": "More information",
-      "description": "Here you can find more information about this topic.",
-      "titleOfCategoriesSection": "Categories",
+      "name": "Mais informações",
+      "title": "Mais informações",
+      "description": "Aqui você pode encontrar mais informações sobre este tópico.",
+      "titleOfCategoriesSection": "Categorias",
       "titleOfHashtagsSection": "Hashtags",
-      "titleOfRelatedContributionsSection": "Related posts"
+      "titleOfRelatedContributionsSection": "Publicações relacionadas"
     },
     "takeAction": {
-      "name": "Take action"
+      "name": "Tomar providências"
     },
     "menu": {
-      "edit": "Edit Post",
-      "delete": "Delete Post"
+      "edit": "Editar publicação",
+      "delete": "Excluir publicação"
     },
     "comment": {
-      "submit": "Comment",
-      "submitted": "Comment Submitted",
-      "updated": "Changes Saved"
+      "submit": "Comentário",
+      "submitted": "Comentário Enviado",
+      "updated": "Alterações salvas"
     },
-    "edited": "edited"
+    "edited": "editado"
   },
   "comment": {
     "content": {
-      "unavailable-placeholder": "… this comment is not available anymore"
+      "unavailable-placeholder": "… este comentário não está mais disponível"
     },
     "menu": {
-      "edit": "Edit Comment",
-      "delete": "Delete Comment"
+      "edit": "Editar Comentário",
+      "delete": "Apagar Comentário"
     },
     "show": {
-      "more": "show more",
-      "less": "show less"
+      "more": "mostrar mais",
+      "less": "mostrar menos"
     },
-    "edited": "edited"
+    "edited": "editado"
   },
   "quotes": {
     "african": {
-      "quote": "Many small people in many small places do many small things, that can alter the face of the world.",
-      "author": "African proverb"
+      "quote": "Muitas pessoas pequenas em muitos lugares pequenos fazem muitas coisas pequenas, que podem alterar a face do mundo.",
+      "author": "Provérbio africano"
     }
   },
   "common": {
