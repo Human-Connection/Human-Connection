@@ -63,6 +63,7 @@
 <script>
 import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
+import { normalizeEmail } from 'validator'
 
 export const SignupMutation = gql`
   mutation($email: String!) {
@@ -105,8 +106,11 @@ export default {
     }
   },
   computed: {
+    email() {
+      return normalizeEmail(this.formData.email)
+    },
     submitMessage() {
-      const { email } = this.formData
+      const { email } = this
       return this.$t('components.registration.signup.form.success', { email })
     },
   },
@@ -119,8 +123,7 @@ export default {
     },
     async handleSubmit() {
       const mutation = this.token ? SignupByInvitationMutation : SignupMutation
-      const { email } = this.formData
-      const { token } = this
+      const { email, token } = this
 
       try {
         await this.$apollo.mutate({ mutation, variables: { email, token } })

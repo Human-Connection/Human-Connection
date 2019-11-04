@@ -32,6 +32,7 @@
 import { mapGetters } from 'vuex'
 import { AddEmailAddressMutation } from '~/graphql/EmailAddress.js'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
+import { normalizeEmail } from 'validator'
 
 export default {
   components: {
@@ -44,8 +45,11 @@ export default {
     }
   },
   computed: {
+    email() {
+      return normalizeEmail(this.formData.email)
+    },
     submitMessage() {
-      const { email } = this.formData
+      const { email } = this
       return this.$t('settings.email.submitted', { email })
     },
     ...mapGetters({
@@ -69,7 +73,7 @@ export default {
           {
             validator(rule, value, callback, source, options) {
               const errors = []
-              if (email === value) {
+              if (email === normalizeEmail(value)) {
                 errors.push(sameEmailValidationError)
               }
               return errors
@@ -81,7 +85,7 @@ export default {
   },
   methods: {
     async submit() {
-      const { email } = this.formData
+      const { email } = this
       try {
         await this.$apollo.mutate({
           mutation: AddEmailAddressMutation,
@@ -102,7 +106,9 @@ export default {
           // have a query to filter for email addresses. This is a privacy
           // consideration. We could implement a dedicated query to check that
           // but I think it's too much effort for this feature.
-          this.backendErrors = { message: this.$t('registration.signup.form.errors.email-exists') }
+          this.backendErrors = {
+            message: this.$t('components.registration.signup.form.errors.email-exists'),
+          }
           return
         }
         this.$toast.error(err.message)
