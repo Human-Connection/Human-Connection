@@ -1,5 +1,5 @@
 <template>
-  <ds-card centered v-if="success">
+  <ds-card centered v-if="data">
     <transition name="ds-transition-fade">
       <sweetalert-icon icon="info" />
     </transition>
@@ -41,15 +41,12 @@ export default {
   data() {
     return {
       backendErrors: null,
-      success: false,
+      data: null,
     }
   },
   computed: {
-    email() {
-      return normalizeEmail(this.formData.email)
-    },
     submitMessage() {
-      const { email } = this
+      const { email } = this.data.AddEmailAddress
       return this.$t('settings.email.submitted', { email })
     },
     ...mapGetters({
@@ -65,7 +62,7 @@ export default {
       },
     },
     formSchema() {
-      const { email } = this.currentUser
+      const currentEmail = normalizeEmail(this.currentUser.email)
       const sameEmailValidationError = this.$t('settings.email.validation.same-email')
       return {
         email: [
@@ -73,7 +70,7 @@ export default {
           {
             validator(rule, value, callback, source, options) {
               const errors = []
-              if (email === normalizeEmail(value)) {
+              if (currentEmail === normalizeEmail(value)) {
                 errors.push(sameEmailValidationError)
               }
               return errors
@@ -85,19 +82,19 @@ export default {
   },
   methods: {
     async submit() {
-      const { email } = this
+      const { email } = this.formData
       try {
-        await this.$apollo.mutate({
+        const response = await this.$apollo.mutate({
           mutation: AddEmailAddressMutation,
           variables: { email },
         })
+        this.data = response.data
         this.$toast.success(this.$t('settings.email.success'))
-        this.success = true
 
         setTimeout(() => {
           this.$router.push({
             path: 'my-email-address/enter-nonce',
-            query: { email },
+            query: { email: this.data.AddEmailAddress.email },
           })
         }, 3000)
       } catch (err) {
