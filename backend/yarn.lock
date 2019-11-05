@@ -4031,13 +4031,12 @@ graphql-request@~1.8.2:
   dependencies:
     cross-fetch "2.2.2"
 
-graphql-shield@~7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.0.tgz#0cdca5c16af4ba7dd4fbcce6df279c5c8e463452"
-  integrity sha512-hr0PR6t/UXAO5+BMOOD2W3zTIKbtO/u8twjLn8hw4646E08NeLrIxDAmUFKKlLhyTe5JzlH4nNflP6SRtL6Q2A==
+graphql-shield@~7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.1.tgz#4d9b5a0e1b169ebe5ee786a4bad102c5fe3354b7"
+  integrity sha512-wDKpnMeou/XNkHCzRQHsi9kit5FkO1uAu+9UL/erJPEpwO4yaSkkGPNELsTTQdxhsX3SzWly792dqIj2T8suAw==
   dependencies:
     "@types/yup" "0.26.24"
-    lightercollective "^0.3.0"
     object-hash "^2.0.0"
     yup "^0.27.0"
 
@@ -5440,11 +5439,6 @@ libphonenumber-js@^1.6.4:
   dependencies:
     minimist "^1.2.0"
     xml2js "^0.4.17"
-
-lightercollective@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.3.0.tgz#1f07638642ec645d70bdb69ab2777676f35a28f0"
-  integrity sha512-RFOLSUVvwdK3xA0P8o6G7QGXLIyy1L2qv5caEI7zXN5ciaEjbAriRF182kbsoJ1S1TgvpyGcN485fMky6qxOPw==
 
 linkifyjs@~2.1.8:
   version "2.1.8"
