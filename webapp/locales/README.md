@@ -1,16 +1,15 @@
 # Primer on adding or updating a language file used in Human Connection
 
-## Getting the current files as base for changes
+## Get the current files as base for changes
 
 * Checkout the current repository if you have not done yet
-    ```git clone https://github.com/Human-Connection/Human-Connection.git```
+  
+    git clone https://github.com/Human-Connection/Human-Connection.git
 
 * Update an already existing repository to the most recent state
 
-```
-  git checkout master
-  git pull upstream master
-```
+    git checkout master
+    git pull upstream master
 
 * Create a branch for your coming changes based on the language code for your language.
   For a list of all the codes based on ISO-639 see [Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
@@ -26,20 +25,26 @@
   
   For example:  update-it-rev_1.2.3
 
-    ```git checkout -b update-it-rev_1.2.3```
+    git checkout -b update-it-rev_1.2.3
 
-## Adding a new language
+## Add a new language
 
+    git add it.json
 
-## Updating an existing language file
+  blabla
 
+## Update an existing language file
 
-## Releasing your changes
+  blabla
 
-* Finally upload your changes to the offical repository
+## Release your changes
+
+* Upload your changes to the offical repository
   
-    ```git push origin update-it-rev_1.2.3```
+    git push origin update-it-rev_1.2.3
 
+* Create a pull request for your branch on GitHub by visiting the according link in your browser:
+  https://github.com/Human-Connection/Human-Connection/pull/new/update-it-rev_1.2.3
 
-    Create a pull request for 'lokalise-automation' on GitHub by visiting:
-remote:      https://github.com/Human-Connection/Human-Connection/pull/new/lokalise-automation
+  If everything goes well, the maintainers will accept your request. Otherwise they will
+  notify via the usual ways Github supports. Additionally all the messages appear on the above web site.
