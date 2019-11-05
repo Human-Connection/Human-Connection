@@ -19,9 +19,21 @@ describe('getters', () => {
       expect(getters.filteredCategoryIds(state)).toEqual([24])
     })
 
-    it('returns empty array if filter is not set', () => {
+    it('returns empty array if category filter is not set', () => {
       state = { filter: { author: { followedBy_some: { id: 7 } } } }
       expect(getters.filteredCategoryIds(state)).toEqual([])
+    })
+  })
+
+  describe('filteredLanguageCodes', () => {
+    it('returns category ids if filter is set', () => {
+      state = { filter: { language_in: ['en', 'de', 'pt'] } }
+      expect(getters.filteredLanguageCodes(state)).toEqual(['en', 'de', 'pt'])
+    })
+
+    it('returns empty array if language filter is not set', () => {
+      state = { filter: { author: { followedBy_some: { id: 7 } } } }
+      expect(getters.filteredLanguageCodes(state)).toEqual([])
     })
   })
 
@@ -104,6 +116,19 @@ describe('getters', () => {
 })
 
 describe('mutations', () => {
+  describe('RESET_LANGUAGES', () => {
+    it('resets the languages filter', () => {
+      state = {
+        filter: {
+          author: { followedBy_some: { id: 7 } },
+          language_in: ['nl'],
+        },
+      }
+      mutations.RESET_LANGUAGES(state)
+      expect(getters.filter(state)).toEqual({ author: { followedBy_some: { id: 7 } } })
+    })
+  })
+
   describe('RESET_CATEGORIES', () => {
     beforeEach(() => {
       testMutation = categoryId => {
@@ -119,6 +144,45 @@ describe('mutations', () => {
         },
       }
       expect(testMutation(23)).toEqual({ author: { followedBy_some: { id: 7 } } })
+    })
+  })
+
+  describe('TOGGLE_LANGUAGE', () => {
+    beforeEach(() => {
+      testMutation = languageCode => {
+        mutations.TOGGLE_LANGUAGE(state, languageCode)
+        return getters.filter(state)
+      }
+    })
+
+    it('creates category filter if empty', () => {
+      state = { filter: {} }
+      expect(testMutation('de')).toEqual({ language_in: ['de'] })
+    })
+
+    it('adds language code to existing filter', () => {
+      state = { filter: { language_in: ['de'] } }
+      expect(testMutation('en')).toEqual({ language_in: ['de', 'en'] })
+    })
+
+    it('removes category id if present', () => {
+      state = { filter: { language_in: ['de', 'en'] } }
+      expect(testMutation('de')).toEqual({ language_in: ['en'] })
+    })
+
+    it('removes language filter if empty', () => {
+      state = { filter: { language_in: ['de'] } }
+      expect(testMutation('de')).toEqual({})
+    })
+
+    it('does not get in the way of other filters', () => {
+      state = {
+        filter: {
+          author: { followedBy_some: { id: 7 } },
+          language_in: ['de'],
+        },
+      }
+      expect(testMutation('de')).toEqual({ author: { followedBy_some: { id: 7 } } })
     })
   })
 
