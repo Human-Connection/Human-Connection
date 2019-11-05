@@ -1,7 +1,7 @@
 import Factory from '../../seed/factories'
 import { gql } from '../../jest/helpers'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
-import { createPasswordReset } from './helpers/createPasswordReset'
+import createPasswordReset from './helpers/createPasswordReset'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 

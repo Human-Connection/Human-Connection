@@ -45,7 +45,7 @@ export default {
       const { token } = args
       args.nonce = generateNonce()
       args.email = normalizeEmail(args.email)
-      let emailAddress = await existingEmailAddress(_parent, args, context)
+      let emailAddress = await existingEmailAddress({ args, context })
       if (emailAddress) return emailAddress
       try {
         const result = await instance.cypher(
