@@ -314,7 +314,7 @@
       "columns": {
         "name": "Name",
         "slug": "Alias",
-        "unblk": "Entblocken"
+        "unblock": "Entblocken"
       },
       "empty": "Bislang hast du niemanden blockiert.",
       "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
