@@ -315,7 +315,7 @@
       "columns": {
         "name": "Name",
         "slug": "Slug",
-        "unblk": "Unblock"
+        "unblock": "Unblock"
       },
       "empty": "So far, you have not blocked anybody.",
       "how-to": "You can block other users on their profile page via the content menu.",
