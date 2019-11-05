@@ -1,5 +1,5 @@
 <template>
-  <ds-space v-if="!success && !error" margin="large">
+  <ds-space v-if="!data && !error" margin="large">
     <ds-form
       @input="handleInput"
       @input-valid="handleInputValid"
@@ -63,7 +63,6 @@
 <script>
 import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
-import { normalizeEmail } from 'validator'
 
 export const SignupMutation = gql`
   mutation($email: String!) {
@@ -101,16 +100,13 @@ export default {
         },
       },
       disabled: true,
-      success: false,
+      data: null,
       error: null,
     }
   },
   computed: {
-    email() {
-      return normalizeEmail(this.formData.email)
-    },
     submitMessage() {
-      const { email } = this
+      const { email } = this.data.Signup
       return this.$t('components.registration.signup.form.success', { email })
     },
   },
@@ -123,14 +119,14 @@ export default {
     },
     async handleSubmit() {
       const mutation = this.token ? SignupByInvitationMutation : SignupMutation
-      const { email, token } = this
+      const { token } = this
+      const { email } = this.formData
 
       try {
-        await this.$apollo.mutate({ mutation, variables: { email, token } })
-        this.success = true
-
+        const response = await this.$apollo.mutate({ mutation, variables: { email, token } })
+        this.data = response.data
         setTimeout(() => {
-          this.$emit('submit', { email })
+          this.$emit('submit', { email: this.data.Signup.email })
         }, 3000)
       } catch (err) {
         const { message } = err
