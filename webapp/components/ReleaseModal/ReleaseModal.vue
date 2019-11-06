@@ -53,11 +53,13 @@ export default {
         // await this.modalData.buttons.confirm.callback()
         await this.$apollo.mutate({
           mutation: gql`
-            mutation($id: ID!) {
-              enable(id: $id)
+            mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+              decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+                disable
+              }
             }
           `,
-          variables: { id: this.id },
+          variables: { resourceId: this.id, disable: false, closed: false },
         })
         this.$toast.success(this.$t('release.success'))
         this.isOpen = false
