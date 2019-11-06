@@ -1,0 +1,1 @@
+# Guideline for uses to help translate Human-Connection

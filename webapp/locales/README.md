@@ -48,3 +48,9 @@
 
   If everything goes well, the maintainers will accept your request. Otherwise they will
   notify via the usual ways Github supports. Additionally all the messages appear on the above web site.
+
+  After your Pull Request is accepted on merged into the official part you should move your
+  local repository back to master as well and delete the temporary branch:
+
+    git checkout master
+    git branch -D update-it-rev_1.2.3
