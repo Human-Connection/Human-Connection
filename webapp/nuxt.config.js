@@ -100,7 +100,7 @@ export default {
    ** Global processed styles
    */
   styleResources: {
-    scss: styleguideStyles,
+    scss: [styleguideStyles, '~view/styles/tokens.scss'],
   },
 
   /*
