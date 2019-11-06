@@ -1,3 +1,5 @@
+import uuid from 'uuid/v4'
+
 export default {
   Mutation: {
     decide: async (_object, params, context, _resolveInfo) => {
@@ -36,17 +38,17 @@ export default {
           if (disable === undefined) disable = false // default for creation
           if (closed === undefined) closed = false // default for creation
           cypherHeader = `
-            MATCH (moderator:User {id: $moderatorId})
-            MATCH (resource {id: $resourceId})
-            WHERE resource:User OR resource:Comment OR resource:Post
-            CREATE (resource)<-[decision:DECIDED]-(moderator)
-            SET decision.last = true
-            WITH decision, resource, moderator
-            OPTIONAL MATCH (:User)-[lastDecision:DECIDED {last: true}]->(resource)
-            SET (
-            CASE
-            WHEN lastDecision IS NOT NULL
-            THEN lastDecision END).last = false
+              MATCH (moderator:User {id: $moderatorId})
+              MATCH (resource {id: $resourceId})
+              WHERE resource:User OR resource:Comment OR resource:Post
+              CREATE (resource)<-[decision:DECIDED]-(moderator)
+              SET decision.last = true
+              WITH decision, resource, moderator
+              OPTIONAL MATCH (:User)-[lastDecision:DECIDED {last: true}]->(resource)
+              SET (
+              CASE
+              WHEN lastDecision IS NOT NULL
+              THEN lastDecision END).last = false
             `
         } else {
           // an open decision …
@@ -56,23 +58,33 @@ export default {
           if (moderator.id !== existingDecisionTxResult.decisionModerator.id) {
             // an open decision from different moderator, then change relation and properties
             cypherHeader = `
-              MATCH (moderator:User)-[oldDecision:DECIDED {closed: false}]->(resource {id: $resourceId})
-              WHERE resource:User OR resource:Comment OR resource:Post
-              DELETE oldDecision
-              MATCH (moderator:User {id: $moderatorId})
-              MATCH (resource {id: $resourceId})
-              WHERE resource:User OR resource:Comment OR resource:Post
-              CREATE (resource)<-[decision:DECIDED]-(moderator)
-              SET decision = oldDecision
+                MATCH (moderator:User)-[oldDecision:DECIDED {closed: false}]->(resource {id: $resourceId})
+                WHERE resource:User OR resource:Comment OR resource:Post
+                DELETE oldDecision
+                MATCH (moderator:User {id: $moderatorId})
+                MATCH (resource {id: $resourceId})
+                WHERE resource:User OR resource:Comment OR resource:Post
+                CREATE (resource)<-[decision:DECIDED]-(moderator)
+                SET decision = oldDecision
               `
           } else {
             // an open decision from same moderator, then change properties
             cypherHeader = `
-              MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
-              WHERE resource:User OR resource:Comment OR resource:Post
+                MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
+                WHERE resource:User OR resource:Comment OR resource:Post
               `
           }
         }
+        let decisionUUID = null
+        let cypherClosed = ''
+        // if (closed) {
+        //   decisionUUID = uuid()
+        //   cypherClosed = `
+        //       OPTIONAL MATCH (:User)-[report:REPORTED {closed: false}]->(resource)
+        //       SET report.closed = true, report.decisionUuid = $decisionUUID
+        //       SET decision.uuid = $decisionUUID
+        //     `
+        // }
         const cypher =
           cypherHeader +
           `SET (
@@ -85,7 +97,9 @@ export default {
             THEN decision END).createdAt = toString(datetime())
             SET decision.disable = $disable, decision.closed = $closed
             SET resource.disabled = $disable
-            RETURN decision, resource, moderator, labels(resource)[0] AS type
+          ` +
+          cypherClosed +
+          `RETURN decision, resource, moderator, labels(resource)[0] AS type
           `
         // Wolle console.log('cypher: ', cypher)
         // console.log('disable: ', disable)
@@ -96,6 +110,7 @@ export default {
             moderatorId: moderator.id,
             disable,
             closed,
+            decisionUUID,
           })
           return decisionRelationshipTransactionResponse.records.map(record => ({
             decision: record.get('decision'),
