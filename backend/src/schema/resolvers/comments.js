@@ -59,6 +59,7 @@ export default {
       `,
         { commentId: args.id },
       )
+      session.close()
       const [comment] = transactionRes.records.map(record => record.get('comment').properties)
       return comment
     },
