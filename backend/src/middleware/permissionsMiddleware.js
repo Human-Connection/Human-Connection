@@ -160,7 +160,6 @@ const permissions = shield(
       shout: isAuthenticated,
       unshout: isAuthenticated,
       changePassword: isAuthenticated,
-      enable: isModerator,
       disable: isModerator,
       decide: isModerator,
       CreateComment: isAuthenticated,

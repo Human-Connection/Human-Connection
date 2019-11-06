@@ -29,23 +29,6 @@ export default {
       if (!resource) return null
       return resource.id
     },
-    enable: async (object, params, { user, driver }) => {
-      const { id: resourceId } = params
-      const cypher = `
-        MATCH (resource {id: $resourceId})<-[decision:DECIDED]-(:User)
-        SET resource.disabled = false
-        SET decision.disable = false, decision.updatedAt = toString(datetime())
-        RETURN resource {.id}
-      `
-      const session = driver.session()
-      const res = await session.run(cypher, { resourceId })
-      session.close()
-      const [resource] = res.records.map(record => {
-        return record.get('resource')
-      })
-      if (!resource) return null
-      return resource.id
-    },
     decide: async (_object, params, context, _resolveInfo) => {
       let createdRelationshipWithNestedAttributes = null
       // Wolle console.log('params: ', params)
