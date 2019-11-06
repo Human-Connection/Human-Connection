@@ -4018,10 +4018,10 @@ graphql-request@~1.8.2:
   dependencies:
     cross-fetch "2.2.2"
 
-graphql-shield@~7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.1.tgz#4d9b5a0e1b169ebe5ee786a4bad102c5fe3354b7"
-  integrity sha512-wDKpnMeou/XNkHCzRQHsi9kit5FkO1uAu+9UL/erJPEpwO4yaSkkGPNELsTTQdxhsX3SzWly792dqIj2T8suAw==
+graphql-shield@~7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.2.tgz#65d51528b4e36c4a5023276267abbd1abb57ce0b"
+  integrity sha512-ZgCQ9efzgehkIVMFoxaOubnvwHVqthtsIXA+xRu8B4ga2Ch/EHiswNCDKpTXTBQZmjeDCSHeAj4XDmbzR4Trxw==
   dependencies:
     "@types/yup" "0.26.24"
     object-hash "^2.0.0"
