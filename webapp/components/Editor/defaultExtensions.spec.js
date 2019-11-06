@@ -63,30 +63,26 @@ describe('defaultExtensions', () => {
     it('recognizes embed code', () => {
       const editor = createEditor()
       const expected = {
+        type: 'doc',
         content: [
           {
+            type: 'paragraph',
             content: [
               {
                 text: 'Baby loves cat:',
-                type: 'text',
-              },
-            ],
-            type: 'paragraph',
+                type: 'text'
+              }
+            ]
           },
           {
-            content: [
-              {
-                attrs: {
-                  dataEmbedUrl: 'https://www.youtube.com/watch?v=qkdXAtO40Fo',
-                },
-                type: 'embed',
-              },
-            ],
-            type: 'paragraph',
-          },
-        ],
-        type: 'doc',
+            type: 'embed',
+            attrs: {
+              dataEmbedUrl: 'https://www.youtube.com/watch?v=qkdXAtO40Fo'
+            }
+          }
+        ]
       }
+
       expect(editor.getJSON()).toEqual(expected)
     })
   })
