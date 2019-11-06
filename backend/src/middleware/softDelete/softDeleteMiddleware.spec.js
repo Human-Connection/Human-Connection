@@ -111,15 +111,22 @@ beforeAll(async () => {
   mutate = client.mutate
 
   authenticatedUser = await moderator.toJson()
-  const disableMutation = gql`
-    mutation($id: ID!) {
-      disable(id: $id)
+  const decideMutation = gql`
+    mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+      decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+        disable
+      }
     }
   `
+  const disableVariables = {
+    resourceId: 'undefined-resource',
+    disable: true,
+    closed: false,
+  }
   await Promise.all([
-    mutate({ mutation: disableMutation, variables: { id: 'c1' } }),
-    mutate({ mutation: disableMutation, variables: { id: 'u2' } }),
-    mutate({ mutation: disableMutation, variables: { id: 'p2' } }),
+    mutate({ mutation: decideMutation, variables: { ...disableVariables, resourceId: 'c1' } }),
+    mutate({ mutation: decideMutation, variables: { ...disableVariables, resourceId: 'u2' } }),
+    mutate({ mutation: decideMutation, variables: { ...disableVariables, resourceId: 'p2' } }),
   ])
   authenticatedUser = null
 })

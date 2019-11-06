@@ -19,11 +19,13 @@ const disable = async id => {
   req = { headers: { authorization: `Bearer ${moderatorBearerToken}` } }
   await mutate({
     mutation: gql`
-      mutation($id: ID!) {
-        disable(id: $id)
+      mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+        decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+          disable
+        }
       }
     `,
-    variables: { id },
+    variables: { resourceId: id, disable: true, closed: false },
   })
   req = { headers: {} }
 }

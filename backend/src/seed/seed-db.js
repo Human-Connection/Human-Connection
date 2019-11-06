@@ -536,7 +536,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         postId: 'p3',
       }),
       factory.create('Comment', {
-        author: bobDerBaumeister,
+        author: jennyRostock,
         id: 'c5',
         postId: 'p3',
       }),
@@ -639,28 +639,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie.relateTo(p10, 'shouted'),
     ])
 
-    const disableMutation = gql`
-      mutation($id: ID!) {
-        disable(id: $id)
-      }
-    `
-    authenticatedUser = await bobDerBaumeister.toJson()
-    await Promise.all([
-      mutate({
-        mutation: disableMutation,
-        variables: {
-          id: 'p11',
-        },
-      }),
-      mutate({
-        mutation: disableMutation,
-        variables: {
-          id: 'c5',
-        },
-      }),
-    ])
-    authenticatedUser = null
-
     // There is no error logged or the 'try' fails if this mutation is wrong. Why?
     const reportMutation = gql`
       mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
@@ -675,6 +653,22 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     `
     authenticatedUser = await huey.toJson()
     await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p11',
+          reasonCategory: 'discrimination_etc',
+          reasonDescription: 'I am what I am !!!',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'c5',
+          reasonCategory: 'doxing',
+          reasonDescription: "This shouldn't be shown to anybody else! It's my privat thing!",
+        },
+      }),
       mutate({
         mutation: reportMutation,
         variables: {
@@ -725,6 +719,39 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           resourceId: 'u1',
           reasonCategory: 'glorific_trivia_of_cruel_inhuman_acts',
           reasonDescription: 'murder',
+        },
+      }),
+    ])
+    authenticatedUser = null
+
+    // only decide after report !!!
+    const decideMutation = gql`
+      mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+        decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+          disable
+        }
+      }
+    `
+    const disableVariables = {
+      resourceId: 'undefined-resource',
+      disable: true,
+      closed: false,
+    }
+    authenticatedUser = await bobDerBaumeister.toJson()
+    await Promise.all([
+      mutate({
+        mutation: decideMutation,
+        variables: {
+          ...disableVariables,
+          resourceId: 'p11',
+        },
+      }),
+      mutate({
+        mutation: decideMutation,
+        variables: {
+          ...disableVariables,
+          resourceId: 'c5',
+          closed: true,
         },
       }),
     ])
