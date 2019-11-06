@@ -35,34 +35,21 @@ export const cleanDatabase = async (options = {}) => {
 }
 
 export default function Factory(options = {}) {
-  const {
-    neo4jDriver = getDriver(),
-    neodeInstance = neode(),
-  } = options
+  const { neo4jDriver = getDriver(), neodeInstance = neode() } = options
 
   const result = {
     neo4jDriver,
     factories,
     lastResponse: null,
     neodeInstance,
-    async authenticateAs({ email, password }) {
-      const headers = await authenticatedHeaders(
-        {
-          email,
-          password,
-        },
-       )
-      this.lastResponse = headers
-      return this
-    },
     async create(node, args = {}) {
-      const { factory } = this.factories[node](args)  
-        this.lastResponse = await factory({
-          args,
-          neodeInstance,
-          factoryInstance: this,
-        })
-        return this.lastResponse
+      const { factory } = this.factories[node](args)
+      this.lastResponse = await factory({
+        args,
+        neodeInstance,
+        factoryInstance: this,
+      })
+      return this.lastResponse
     },
 
     async cleanDatabase() {
@@ -72,7 +59,6 @@ export default function Factory(options = {}) {
       return this
     },
   }
-  result.authenticateAs.bind(result)
   result.create.bind(result)
   result.cleanDatabase.bind(result)
   return result
