@@ -1,4 +1,4 @@
-import { enUS, de, nl, fr, es, it, pt, pl } from 'date-fns/locale'
+import { enUS, de, nl, fr, es, it, pt, pl, ru } from 'date-fns/locale'
 import find from 'lodash/find'
 
 const locales = [
@@ -57,6 +57,13 @@ const locales = [
     iso: 'pl-PL',
     enabled: true,
     dateFnsLocale: pl,
+  },
+  {
+    name: 'Русский',
+    code: 'ru',
+    iso: 'ru-RU',
+    enabled: true,
+    dateFnsLocale: ru,
   },
 ]
 

@@ -42,6 +42,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         nameDE: 'Hamburg',
         nameNL: 'Hamburg',
         namePL: 'Hamburg',
+        nameRU: 'Гамбург',
       }),
       factory.create('Location', {
         id: 'region.14880313158564380',
@@ -57,6 +58,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         nameDE: 'Berlin',
         nameNL: 'Berlijn',
         namePL: 'Berlin',
+        nameRU: 'Берлин',
       }),
       factory.create('Location', {
         id: 'country.10743216036480410',
@@ -70,6 +72,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         nameFR: 'Allemagne',
         nameIT: 'Germania',
         nameEN: 'Germany',
+        nameRU: 'Германия',
       }),
       factory.create('Location', {
         id: 'region.9397217726497330',
@@ -85,6 +88,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         nameDE: 'Paris',
         nameNL: 'Parijs',
         namePL: 'Paryż',
+        nameRU: 'Париж',
       }),
       factory.create('Location', {
         id: 'country.9759535382641660',
@@ -98,6 +102,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         nameFR: 'France',
         nameIT: 'Francia',
         nameEN: 'France',
+        nameRU: 'Франция',
       }),
     ])
     await Promise.all([

@@ -9,6 +9,7 @@ type Location {
   nameES: String
   namePT: String
   namePL: String
+  nameRU: String
   type: String!
   lat: Float
   lng: Float

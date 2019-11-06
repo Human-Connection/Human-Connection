@@ -12,6 +12,7 @@ module.exports = {
   nameDE: { type: 'string' },
   nameNL: { type: 'string' },
   namePL: { type: 'string' },
+  nameRU: { type: 'string' },
   isIn: {
     type: 'relationship',
     relationship: 'IS_IN',
