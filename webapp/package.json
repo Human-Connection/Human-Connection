@@ -130,6 +130,7 @@
     "node-sass": "~4.13.0",
     "prettier": "~1.18.2",
     "sass-loader": "~8.0.0",
+    "storybook-design-token": "^0.4.1",
     "style-loader": "~0.23.1",
     "style-resources-loader": "~1.2.1",
     "vue-jest": "~3.0.5",
