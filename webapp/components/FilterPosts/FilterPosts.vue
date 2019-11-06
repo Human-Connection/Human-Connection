@@ -14,6 +14,7 @@
       <ds-container>
         <categories-filter-menu-items :chunk="chunk" />
         <general-filter-menu-items :user="currentUser" />
+        <language-filter-menu-items :user="currentUser" />
       </ds-container>
     </template>
   </dropdown>
@@ -24,12 +25,14 @@ import Dropdown from '~/components/Dropdown'
 import { mapGetters } from 'vuex'
 import CategoriesFilterMenuItems from './CategoriesFilterMenuItems'
 import GeneralFilterMenuItems from './GeneralFilterMenuItems'
+import LanguageFilterMenuItems from './LanguageFilterMenuItems'
 
 export default {
   components: {
     Dropdown,
     CategoriesFilterMenuItems,
     GeneralFilterMenuItems,
+    LanguageFilterMenuItems,
   },
   props: {
     placement: { type: String },

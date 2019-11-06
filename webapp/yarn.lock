@@ -1386,10 +1386,10 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^4.0.0"
 
-"@nuxtjs/apollo@^4.0.0-rc16":
-  version "4.0.0-rc16"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc16.tgz#b816cbb9eada9dc6a0ef10ad7358dc4b2f290336"
-  integrity sha512-iMuw6QtZupLF/xbAmUqrS00Fg/bPPbMxwHrFoERtx53PlwMQKaFarmJ63Wp0a0n4eyCTYtJHeFDuoMtvxAGAdA==
+"@nuxtjs/apollo@^4.0.0-rc17":
+  version "4.0.0-rc17"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.0-rc17.tgz#089ae5bdd70021d2a05076d1a5dfebdc5700cbe2"
+  integrity sha512-HCtbfvfO2H1HQEKNmPczZfroKPt4SYPyuY6XEMbYW6S16SGr95644Ne7/wo7BW4OSXybpr/HYXKYceEGga9Z2g==
   dependencies:
     cross-fetch "^3.0.4"
     universal-cookie "^4.0.2"
@@ -3831,10 +3831,10 @@ async-retry@^1.2.1:
   dependencies:
     retry "0.12.0"
 
-async-validator@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-3.2.0.tgz#fcbd644e7b5b7c9304d29a4752c3f06214ef0d56"
-  integrity sha512-QBuW7Qrg8wbh7Wtqw1QdN162GUmXDs9gayxFaXcCOf3bCqHJ/TQep0H4I63iVk7Q3kIGWU4wbAr/C0Uj64JiMw==
+async-validator@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-3.2.1.tgz#19ac8655c1296a5331b00c75f2492f0d33cae1f8"
+  integrity sha512-yc96RhAthww0n52m9osoI1uDQbbyd/N2xwPWS1gVvngSWOsKerpBFCulvmhp8GfNwUay41TWskNTd3swQM1XMA==
 
 async@^1.4.0:
   version "1.5.2"
@@ -6051,10 +6051,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.5.0.tgz#b939f17c2902ce81cffe449702ba22c0781b38ec"
-  integrity sha512-I6Tkis01//nRcmvMQw/MRE1HAtcuA5Ie6jGPb8bJZJub7494LGOObqkV3ParnsSVviAjk5C8mNKDqYVBzCopWg==
+date-fns@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.6.0.tgz#a5bc82e6a4c3995ae124b0ba1a71aec7b8cbd666"
+  integrity sha512-F55YxqRdEfP/eYQmQjLN798v0AwLjmZ8nMBjdQvNwEE3N/zWVrlkkqT+9seBlPlsbkybG4JmWg3Ee3dIV9BcGQ==
 
 date-fns@^1.27.2:
   version "1.30.1"
@@ -6774,10 +6774,10 @@ eslint-plugin-import@~2.18.2:
     read-pkg-up "^2.0.0"
     resolve "^1.11.0"
 
-eslint-plugin-jest@~23.0.0:
-  version "23.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.0.0.tgz#cbf61109b503ca72cab86178ea9a42064b901b4e"
-  integrity sha512-rvFXz4t/2gjktyJL1CTPz2Kqh3bx82ChsNaLxk4tKXav858e04fw1xfS5o+rIAUCRtoFoj4CI7MeZzUnvGkfMA==
+eslint-plugin-jest@~23.0.2:
+  version "23.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.0.2.tgz#54a59bfe77245186afe13711a297067aefefff0a"
+  integrity sha512-fkxcvOJm0hC/jbJqYJjtuC9mvpTJqXd0Nixx7joVQvJoBQuXk/ws3+MtRYzD/4TcKSgvr21uuSLdwSxKJKC2cg==
   dependencies:
     "@typescript-eslint/experimental-utils" "^2.5.0"
 
@@ -16062,10 +16062,10 @@ vue-jest@~3.0.5:
     tsconfig "^7.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
-vue-loader@^15.7.1, vue-loader@~15.7.0:
-  version "15.7.1"
-  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.7.1.tgz#6ccacd4122aa80f69baaac08ff295a62e3aefcfd"
-  integrity sha512-fwIKtA23Pl/rqfYP5TSGK7gkEuLhoTvRYW+TU7ER3q9GpNLt/PjG5NLv3XHRDiTg7OPM1JcckBgds+VnAc+HbA==
+vue-loader@^15.7.1, vue-loader@~15.7.2:
+  version "15.7.2"
+  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.7.2.tgz#cc89e2716df87f70fe656c9da9d7f8bec06c73d6"
+  integrity sha512-H/P9xt/nkocyu4hZKg5TzPqyCT1oKOaCSk9zs0JCbJuy0Q8KtR0bjJpnT/5R5x/Ckd1GFkkLQnQ1C4x6xXeLZg==
   dependencies:
     "@vue/component-compiler-utils" "^3.0.0"
     hash-sum "^1.0.2"

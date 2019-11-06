@@ -1,6 +1,6 @@
 {
   "name": "nitro-cypress",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Fullstack tests with cypress for Human Connection",
   "author": "Human Connection gGmbh",
   "license": "MIT",
@@ -20,14 +20,14 @@
     "version": "auto-changelog -p"
   },
   "devDependencies": {
-    "auto-changelog": "^1.16.1",
+    "auto-changelog": "^1.16.2",
     "bcryptjs": "^2.4.3",
     "codecov": "^3.6.1",
     "cross-env": "^6.0.3",
-    "cypress": "^3.5.0",
+    "cypress": "^3.6.0",
     "cypress-cucumber-preprocessor": "^1.16.2",
     "cypress-file-upload": "^3.4.0",
-    "cypress-plugin-retries": "^1.3.0",
+    "cypress-plugin-retries": "^1.4.0",
     "date-fns": "^2.6.0",
     "dotenv": "^8.2.0",
     "faker": "Marak/faker.js#master",

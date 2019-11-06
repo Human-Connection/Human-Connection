@@ -33,48 +33,74 @@ $ yarn build
 $ yarn start
 ```
 
-### Storybook
+### Run tests
 
-We encourage contributors to use Storybook to test out new components in an isolated way, and benefit from its many features.
-See the docs for live examples and answers to FAQ, among other helpful information. ![Storybook docs](https://storybook.js.org/docs/basics/introduction/)
+We ensure the quality of our frontend code by using
+- [ESLint](https://eslint.org/) for checking our JavaScript code
+- [Jest](https://jestjs.io/) and [Vue Test Utils](https://vue-test-utils.vuejs.org/) to unit test our components
+- [Storybook](https://storybook.js.org/) to document and manually test our components in an isolated playground
+
+For more information see our [frontend testing guide](testing.md). Use these commands to run the tests:
 
 {% tabs %}
-{% tab title="Docker" %}
+{% tab title="With Docker" %}
 
-After you have started the application following the instructions above, in another terminal run:
+After starting the application following the above guidelines, open new terminal windows for each of these commands:
 
 ```bash
+# run eslint
+$ docker-compose exec webapp yarn lint
+```
+
+```bash
+# run unit tests
+$ docker-compose exec webapp yarn test
+```
+
+```bash
+# start storybook
 $ docker-compose exec webapp yarn storybook
 ```
-The output should look similar to this:
 
-![Storybook output](../.gitbook/assets/storybook-output.png)
-
-Click on the link http://localhost:3002/ to open the browser to your interactive storybook.
+You can then visit the Storybook playground on `http://localhost:3002`
 
 {% endtab %}
 
 {% tab title="Without Docker" %}
-Run the following command:
+
+After starting the application following the above guidelines, open new terminal windows and navigate to the `/webapp` directory for each of these commands:
 
 ```bash
-# in webapp/
-yarn storybook
+# run eslint in /webapp
+$ yarn lint
 ```
 
-Open http://localhost:3002/ in your browser
+```bash
+# run unit tests in /webapp
+$ yarn test
+```
+
+```bash
+# start storybook in /webapp
+$ yarn storybook
+```
+
+You can then visit the Storybook playground on `http://localhost:3002`
 
 {% endtab %}
 {% endtabs %}
 
+## Styleguide Migration
 
+We are currently in the process of migrating our styleguide components and design tokens from the [Nitro Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) into the main [Human Connection repository](https://github.com/Human-Connection/Human-Connection) and refactoring our components in the process. During this migration, our new components will live in a `view` folder to separate them from the old, yet untouched components.
 
-## Styleguide
+### Folder Structure
 
-All reusable Components \(for example avatar\) should be done inside the [Nitro-Styleguide](https://github.com/Human-Connection/Nitro-Styleguide) repository.
+The folder structure we are aiming for is based on the [directory setup proposed by Nuxt.js](https://nuxtjs.org/guide/directory-structure):
 
-![Styleguide Screenshot](../.gitbook/assets/screenshot-styleguide%20%281%29.png)
-
-More information can be found here: [https://github.com/Human-Connection/Nitro-Styleguide](https://github.com/Human-Connection/Nitro-Styleguide)
-
-If you need to change something in the styleguide and want to see the effects on the frontend immediately, then we have you covered. You need to clone the styleguide to the parent directory `../Nitro-Styleguide` and run `yarn && yarn run dev`. After that you run `yarn run dev:styleguide` instead of `yarn run dev` and you will see your changes reflected inside the frontend!
+- **assets** contains icons, images and logos in `svg` format
+- **components** are the generic building blocks of the app – small, reusable and usually not coupled to state
+- **features** are composed of components but tied to a particular function of the app (e.g. `comment` or `post`)
+- **layouts** can use components to create layout templates for pages
+- **pages** are the entry points for all `routes` in the app and are composed of layouts, features and components
+- **styles** holds all shared SCSS files such as `variables` and `mixins`
