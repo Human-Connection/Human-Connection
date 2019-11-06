@@ -1,34 +1,5 @@
 export default {
   Mutation: {
-    disable: async (object, params, { user, driver }) => {
-      const { id: resourceId } = params
-      const { id: userId } = user
-      const cypher = `
-        MATCH (u:User {id: $userId})
-        MATCH (resource {id: $resourceId})
-        WHERE resource:User OR resource:Comment OR resource:Post
-        SET resource.disabled = true
-        MERGE (resource)<-[decision:DECIDED]-(u)
-        SET (
-        CASE
-        WHEN decision.createdAt IS NOT NULL
-        THEN decision END).updatedAt = toString(datetime())
-        SET (
-        CASE
-        WHEN decision.createdAt IS NULL
-        THEN decision END).createdAt = toString(datetime())
-        SET decision.disable = true, decision.closed = false, decision.last = true
-        RETURN resource {.id}
-      `
-      const session = driver.session()
-      const res = await session.run(cypher, { resourceId, userId })
-      session.close()
-      const [resource] = res.records.map(record => {
-        return record.get('resource')
-      })
-      if (!resource) return null
-      return resource.id
-    },
     decide: async (_object, params, context, _resolveInfo) => {
       let createdRelationshipWithNestedAttributes = null
       // Wolle console.log('params: ', params)
