@@ -1,5 +1,5 @@
 <template>
-  <ds-form ref="contributionForm" v-model="form" :schema="formSchema">
+  <ds-form ref="contributionForm" v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
       <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
         <img
@@ -78,13 +78,11 @@
             {{ $t('actions.cancel') }}
           </ds-button>
           <ds-button
-            class="submit-button-for-test"
             type="submit"
             icon="check"
             :loading="loading"
             :disabled="errors"
             primary
-            @click.prevent="submit"
           >
             {{ $t('actions.save') }}
           </ds-button>
@@ -141,8 +139,8 @@ export default {
           required: true,
           validator: (rule, value) => {
             const errors = []
-            if (!value || value.length <= 0) {
-              errors.push(new Error('Choose at least 1 but at most 3 categories'))
+            if (!(value && 1 <= value.length && value.length <= 3)) {
+              errors.push(new Error(this.$t('common.validations.categories')))
             }
             return errors
           },

@@ -434,7 +434,8 @@
     "reportContent": "Melden",
     "validations": {
       "email": "muss eine gültige E-Mail Adresse sein",
-      "url": "muss eine gültige URL sein"
+      "url": "muss eine gültige URL sein",
+      "categories": "es müssen eine bis drei Kategorien ausgewählt werden"
     }
   },
   "actions": {
