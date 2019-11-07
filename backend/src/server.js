@@ -6,6 +6,7 @@ import middleware from './middleware'
 import { neode as getNeode, getDriver } from './bootstrap/neo4j'
 import decode from './jwt/decode'
 import schema from './schema'
+import ActivityPub from './activitypub/ActivityPub'
 
 // check required configs and throw error
 // TODO check this directly in config file - currently not possible due to testsetup
@@ -43,6 +44,7 @@ const createServer = options => {
   const app = express()
   app.use(helmet())
   app.use(express.static('public'))
+  ActivityPub(app)
   server.applyMiddleware({ app, path: '/' })
 
   return { server, app }
