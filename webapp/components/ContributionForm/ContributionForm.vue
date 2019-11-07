@@ -24,7 +24,7 @@
         <ds-text align="right">
           <ds-chip v-if="form.title.length < formSchema.title.min" class="checkicon" size="base">
             {{ form.title.length }}/{{ formSchema.title.max }}
-            <ds-icon name="check"></ds-icon>
+            <ds-icon name="warning"></ds-icon>
           </ds-chip>
           <ds-chip
             v-else-if="form.title.length < formSchema.title.max"
@@ -37,7 +37,7 @@
           </ds-chip>
           <ds-chip v-else class="checkicon" size="base" color="danger">
             {{ form.title.length }}/{{ formSchema.title.max }}
-            <ds-icon name="check"></ds-icon>
+            <ds-icon name="warning"></ds-icon>
           </ds-chip>
         </ds-text>
         <client-only>
@@ -48,14 +48,18 @@
             @input="updateEditorContent"
           />
           <ds-text align="right">
-            <small class="smallTag">{{ form.contentLength }}</small>
-            <ds-button
+            <ds-chip
               v-if="form.contentLength < formSchema.content.min"
               class="checkicon"
-              icon="check"
-              size="small"
-            ></ds-button>
-            <ds-button v-else class="checkicon" icon="check" size="small" primary></ds-button>
+              size="base"
+            >
+              {{ form.contentLength }}
+              <ds-icon name="warning"></ds-icon>
+            </ds-chip>
+            <ds-chip v-else class="checkicon" size="base" color="primary">
+              {{ form.contentLength }}
+              <ds-icon name="check"></ds-icon>
+            </ds-chip>
           </ds-text>
         </client-only>
         <ds-space margin-bottom="small" />
@@ -65,19 +69,14 @@
           :existingCategoryIds="form.categoryIds"
         />
         <ds-text align="right">
-          <ds-button
-            v-if="form.categoryIds.length === 0"
-            class="checkicon checkicon_cat "
-            icon="check"
-            size="small"
-          ></ds-button>
-          <ds-button
-            v-else
-            class="checkicon checkicon_cat"
-            icon="check"
-            primary
-            size="small"
-          ></ds-button>
+          <ds-chip v-if="form.categoryIds.length === 0" class="checkicon checkicon_cat" size="base">
+            {{ form.categoryIds.length }} / 3
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+          <ds-chip v-else class="checkicon checkicon_cat" size="base" color="primary">
+            {{ form.categoryIds.length }} / 3
+            <ds-icon name="check"></ds-icon>
+          </ds-chip>
         </ds-text>
         <ds-flex class="contribution-form-footer">
           <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
@@ -333,6 +332,6 @@ export default {
   top: -18px;
 }
 .checkicon_cat {
-  top: -38px;
+  top: -58px;
 }
 </style>
