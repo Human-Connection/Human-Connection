@@ -1,6 +1,7 @@
-import { activityPub } from '../ActivityPub'
 import { constructIdFromName } from './index'
 const debug = require('debug')('ea:utils:collections')
+
+/* global activityPub */
 
 export function createOrderedCollection(name, collectionName) {
   return {

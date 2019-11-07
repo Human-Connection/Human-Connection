@@ -1,6 +1,7 @@
 import { generateRsaKeyPair } from '../activitypub/security'
-import { activityPub } from '../activitypub/ActivityPub'
 import as from 'activitystrea.ms'
+
+/* globals activityPub */
 
 export default {
   Mutation: {
@@ -42,7 +43,6 @@ export default {
     SignupVerification: async (resolve, root, args, context, info) => {
       const keys = generateRsaKeyPair()
       Object.assign(args, keys)
-      args.actorId = `${activityPub.host}/api/users/${args.slug}`
       return resolve(root, args, context, info)
     },
   },

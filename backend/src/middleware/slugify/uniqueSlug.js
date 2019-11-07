@@ -14,15 +14,12 @@ export default async function uniqueSlug(string, isUnique) {
   return uniqueSlug
 }
 
-export function isUniqueFor (context, type) {
+export function isUniqueFor(context, type) {
   return async slug => {
     const session = context.driver.session()
-    const response = await session.run(
-      `MATCH(p:${type} {slug: $slug }) return p.slug`,
-      {
-        slug
-      }
-    )
+    const response = await session.run(`MATCH(p:${type} {slug: $slug }) return p.slug`, {
+      slug,
+    })
     session.close()
     return response.records.length === 0
   }

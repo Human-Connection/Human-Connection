@@ -1,9 +1,9 @@
 import express from 'express'
-import { activityPub } from '../ActivityPub'
 
 const debug = require('debug')('ea:inbox')
-
 const router = express.Router()
+
+/* global activityPub */
 
 router.post('/', async function(req, res, next) {
   debug(`Content-Type = ${req.get('Content-Type')}`)

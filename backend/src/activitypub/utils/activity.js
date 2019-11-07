@@ -1,10 +1,19 @@
-import { activityPub } from '../ActivityPub'
 import { signAndSend } from './index'
-import crypto from 'crypto'
 import as from 'activitystrea.ms'
+import uuid from 'uuid'
 const debug = require('debug')('ea:utils:activity')
 
-export async function createNoteObject(activityId, objectId, text, actorId, id, published, updated) {
+/* global activityPub */
+
+export async function createNoteObject(
+  activityId,
+  objectId,
+  text,
+  actorId,
+  id,
+  published,
+  updated,
+) {
   const object = {
     '@context': 'https://www.w3.org/ns/activitystreams',
     id: `${activityId}`,
@@ -26,7 +35,15 @@ export async function createNoteObject(activityId, objectId, text, actorId, id, 
   return object
 }
 
-export async function createArticleObject(activityId, objectId, text, actorId, id, published, updated) {
+export async function createArticleObject(
+  activityId,
+  objectId,
+  text,
+  actorId,
+  id,
+  published,
+  updated,
+) {
   const object = {
     '@context': 'https://www.w3.org/ns/activitystreams',
     id: `${activityId}`,
@@ -50,10 +67,7 @@ export async function createArticleObject(activityId, objectId, text, actorId, i
 
 export function sendAcceptActivity(theBody, name, targetDomain, url) {
   as.accept()
-    .id(
-      `${activityPub.endpoint}/api/users/${name}/status/` +
-       crypto.randomBytes(16).toString('hex'),
-    )
+    .id(`${activityPub.endpoint}/api/users/${name}/status/` + uuid())
     .actor(`${activityPub.endpoint}/api/users/${name}`)
     .object(theBody)
     .prettyWrite((err, doc) => {
@@ -68,9 +82,7 @@ export function sendAcceptActivity(theBody, name, targetDomain, url) {
 
 export function sendRejectActivity(theBody, name, targetDomain, url) {
   as.reject()
-    .id(
-      `${activityPub.endpoint}/api/users/${name}/status/` + crypto.randomBytes(16).toString('hex')
-    )
+    .id(`${activityPub.endpoint}/api/users/${name}/status/` + uuid())
     .actor(`${activityPub.endpoint}/api/users/${name}`)
     .object(theBody)
     .prettyWrite((err, doc) => {

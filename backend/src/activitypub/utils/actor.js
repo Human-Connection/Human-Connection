@@ -1,4 +1,4 @@
-import { activityPub } from '../ActivityPub'
+/* global activityPub */
 
 export function createActor(name, pubkey) {
   return {

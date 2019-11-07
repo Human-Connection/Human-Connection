@@ -1,7 +1,8 @@
-import { activityPub } from '../ActivityPub'
 import { createSignature } from '../security'
 import request from 'request'
 const debug = require('debug')('ea:utils')
+
+/* global activityPub */
 
 export function extractNameFromId(uri) {
   return getPathSegmentFromUriAfter(uri, 'users')
@@ -34,12 +35,12 @@ export function throwErrorIfApolloErrorOccurred(result) {
   }
 }
 
-export function signAndSend(activity, fromName, toHost, url) {
+export async function signAndSend(activity, fromName, toHost, url) {
   // fix for development: replace with http
   url = url.indexOf('localhost') > -1 ? url.replace('https', 'http') : url
-  return new Promise(async (resolve, reject) => {
+  const privateKey = await activityPub.dataSource.getEncryptedPrivateKey(fromName)
+  return new Promise((resolve, reject) => {
     debug('inside signAndSend')
-    const privateKey = await activityPub.dataSource.getEncryptedPrivateKey(fromName)
 
     const date = new Date().toUTCString()
     const signature = createSignature({
@@ -63,7 +64,7 @@ export function signAndSend(activity, fromName, toHost, url) {
           'Content-Type': 'application/activity+json',
         },
         method: 'POST',
-        body: typeof activity === 'string' ? activity : JSON.stringify(activity)
+        body: typeof activity === 'string' ? activity : JSON.stringify(activity),
       },
       (error, response) => {
         if (error) {
