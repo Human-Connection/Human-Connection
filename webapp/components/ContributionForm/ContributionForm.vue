@@ -39,16 +39,15 @@
           />
           <ds-text align="right">
             <ds-chip
-              v-if="form.contentLength < formSchema.content.min"
-              class="checkicon"
+              v-if="errors && errors.content"
+              color="danger"
               size="base"
             >
-              {{ form.contentLength }}
+              {{ contentLength }}
               <ds-icon name="warning"></ds-icon>
             </ds-chip>
-            <ds-chip v-else class="checkicon" size="base" color="primary">
-              {{ form.contentLength }}
-              <ds-icon name="check"></ds-icon>
+            <ds-chip v-else size="base">
+              {{ contentLength }}
             </ds-chip>
           </ds-text>
         </client-only>
@@ -135,7 +134,6 @@ export default {
       form: {
         title: '',
         content: '',
-        contentLength: 0,
         teaserImage: null,
         image: null,
         language: null,
@@ -144,7 +142,13 @@ export default {
       },
       formSchema: {
         title: { required: true, min: 3, max: 100 },
-        content: { required: true, min: 3 },
+        content: {
+          required: true,
+          min: 3,
+          transform: (content) => {
+            return this.$filters.removeHtml(content)
+          }
+        },
       },
       id: null,
       loading: false,
@@ -168,11 +172,13 @@ export default {
         this.form.content = contribution.content
         this.form.image = contribution.image
         this.form.categoryIds = this.categoryIds(contribution.categories)
-        this.manageContent(this.form.content)
       },
     },
   },
   computed: {
+    contentLength() {
+      return this.$filters.removeHtml(this.form.content).length
+    },
     locale() {
       const locale =
         this.contribution && this.contribution.language
@@ -230,14 +236,7 @@ export default {
         })
     },
     updateEditorContent(value) {
-      // TODO: Do smth????? what is happening
       this.$refs.contributionForm.update('content', value)
-      this.manageContent(value)
-    },
-    manageContent(content) {
-      let str = content.replace(/<\/?[^>]+(>|$)/gm, '')
-      this.form.contentLength = str.length
-      this.validatePost()
     },
     availableLocales() {
       orderBy(locales, 'name').map(locale => {
@@ -259,10 +258,9 @@ export default {
       return categoryIds
     },
     validatePost() {
-      const passesContentValidations = this.form.contentLength >= this.contentMin
       const passesCategoryValidations =
         this.form.categoryIds.length > 0 && this.form.categoryIds.length <= 3
-      this.failsValidations = !(passesContentValidations && passesCategoryValidations)
+      this.failsValidations = !(passesCategoryValidations)
     },
   },
   apollo: {
