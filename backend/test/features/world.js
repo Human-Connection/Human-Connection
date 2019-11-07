@@ -3,50 +3,65 @@ import { setWorldConstructor } from 'cucumber'
 import request from 'request'
 
 class CustomWorld {
-  constructor () {
-    // webFinger.feature
+  constructor() {
     this.lastResponses = []
     this.lastContentType = null
     this.lastInboxUrl = null
     this.lastActivity = null
-    // object-article.feature
     this.statusCode = null
   }
-  get (pathname) {
+
+  get(pathname) {
     return new Promise((resolve, reject) => {
-      request(`http://localhost:4123/${this.replaceSlashes(pathname)}`, {
-        headers: {
-          'Accept': 'application/activity+json'
-        }}, function (error, response, body) {
-        if (!error) {
-          resolve({ lastResponse: body, lastContentType: response.headers['content-type'], statusCode: response.statusCode })
-        } else {
-          reject(error)
-        }
-      })
+      request(
+        `http://localhost:4123/${this.replaceSlashes(pathname)}`,
+        {
+          headers: {
+            Accept: 'application/activity+json',
+          },
+        },
+        function(error, response, body) {
+          if (!error) {
+            resolve({
+              lastResponse: body,
+              lastContentType: response.headers['content-type'],
+              statusCode: response.statusCode,
+            })
+          } else {
+            reject(error)
+          }
+        },
+      )
     })
   }
 
-  replaceSlashes (pathname) {
+  replaceSlashes(pathname) {
     return pathname.replace(/^\/+/, '')
   }
 
-  post (pathname, activity) {
+  post(pathname, activity) {
     return new Promise((resolve, reject) => {
-      request({
-        url: `http://localhost:4123/${this.replaceSlashes(pathname)}`,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/activity+json'
+      request(
+        {
+          url: `http://localhost:4123/${this.replaceSlashes(pathname)}`,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/activity+json',
+          },
+          body: activity,
         },
-        body: activity
-      }, function (error, response, body) {
-        if (!error) {
-          resolve({ lastResponse: body, lastContentType: response.headers['content-type'], statusCode: response.statusCode })
-        } else {
-          reject(error)
-        }
-      })
+        function(error, response, body) {
+          if (!error) {
+            resolve({
+              lastResponse: body,
+              lastContentType: response.headers['content-type'],
+              statusCode: response.statusCode,
+            })
+          } else {
+            reject(error)
+          }
+        },
+      )
     })
   }
 }
