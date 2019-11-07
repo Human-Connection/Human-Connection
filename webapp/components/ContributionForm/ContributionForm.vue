@@ -40,7 +40,6 @@
             <ds-icon name="check"></ds-icon>
           </ds-chip>
         </ds-text>
-        <floatClear />
         <client-only>
           <hc-editor
             :users="users"
@@ -67,7 +66,7 @@
         />
         <ds-text align="right">
           <ds-button
-            v-if="form.categoryIds !== 0"
+            v-if="form.categoryIds.length === 0"
             class="checkicon checkicon_cat "
             icon="check"
             size="small"
