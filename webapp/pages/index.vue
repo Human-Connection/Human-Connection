@@ -15,7 +15,7 @@
         </div>
       </ds-grid-item>
       <template v-if="hasResults">
-        <masonry-grid-item v-for="post in posts" :key="post.id">
+        <masonry-grid-item v-for="post in currentPosts" :key="post.id">
           <hc-post-card
             :post="post"
             :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
@@ -94,6 +94,7 @@ export default {
       orderBy: 'posts/orderBy',
       selectedOrder: 'posts/selectedOrder',
       sortingIcon: 'posts/orderIcon',
+      currentPosts: 'posts/currentPosts',
     }),
     selected: {
       get() {
@@ -101,7 +102,7 @@ export default {
       },
       set({ value }) {
         this.offset = 0
-        this.posts = []
+        this.setCurrentPosts([])
         this.selectOrder(value)
       },
     },
@@ -119,12 +120,13 @@ export default {
       return filter
     },
     hasResults() {
-      return this.$apollo.loading || (this.posts && this.posts.length > 0)
+      return this.$apollo.loading || (this.currentPosts && this.currentPosts.length > 0)
     },
   },
   methods: {
     ...mapMutations({
       selectOrder: 'posts/SELECT_ORDER',
+      setCurrentPosts: 'posts/SET_CURRENT_POSTS',
     }),
     clearSearch() {
       this.$router.push({ path: '/' })
@@ -152,21 +154,30 @@ export default {
           if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
             this.hasMore = false
           }
-          const result = Object.assign({}, previousResult, {
-            Post: [...previousResult.Post, ...fetchMoreResult.Post],
-          })
-          return result
+          const result = {
+            ...previousResult,
+            Post: [
+              ...previousResult.Post.filter(prevPost => {
+                return (
+                  fetchMoreResult.Post.filter(newPost => newPost.id === prevPost.id).length === 0
+                )
+              }),
+              ...fetchMoreResult.Post,
+            ],
+          }
+          this.setCurrentPosts(result.Post)
         },
       })
     },
     deletePost(deletedPost) {
-      this.posts = this.posts.filter(post => {
+      const posts = this.currentPosts.filter(post => {
         return post.id !== deletedPost.id
       })
+      this.setCurrentPosts(posts)
     },
     resetPostList() {
       this.offset = 0
-      this.posts = []
+      this.setCurrentPosts([])
       this.hasMore = true
     },
     pinPost(post) {
@@ -210,7 +221,7 @@ export default {
         }
       },
       update({ Post }) {
-        this.posts = Post
+        this.setCurrentPosts(Post)
       },
       fetchPolicy: 'cache-and-network',
     },
