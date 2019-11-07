@@ -329,6 +329,7 @@ export default {
   }
 }
 .checkicon {
+  cursor: default;
   top: -18px;
 }
 .checkicon_cat {
