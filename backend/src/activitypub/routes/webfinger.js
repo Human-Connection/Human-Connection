@@ -3,6 +3,8 @@ import { createWebFinger } from '../utils/actor'
 
 const router = express.Router()
 
+/* global activityPub */
+
 router.get('/', async function(req, res) {
   const resource = req.query.resource
   if (!resource || !resource.includes('acct:')) {
@@ -15,7 +17,7 @@ router.get('/', async function(req, res) {
     const nameAndDomain = resource.replace('acct:', '')
     const name = nameAndDomain.split('@')[0]
 
-    const exists = await req.app.get('ap').userExists(name)
+    const exists = await activityPub.userExists(name)
 
     if (!exists) {
       return res.status(404).json({ error: `No record found for ${nameAndDomain}.` })
