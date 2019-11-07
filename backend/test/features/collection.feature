@@ -9,7 +9,7 @@ Feature: Receiving collections
       | joe     |
 
   Scenario: Send a request to the outbox URI of joe and expect a ordered collection
-    When I send a GET request to "/users/joe/outbox"
+    When I send a GET request to "/api/users/joe/outbox"
     Then I expect the status code to be 200
     And I receive the following json:
     """
@@ -24,7 +24,7 @@ Feature: Receiving collections
     """
 
   Scenario: Send a request to the following URI of tim and expect a ordered collection
-    When I send a GET request to "/users/tim/following"
+    When I send a GET request to "/api/users/tim/following"
     Then I expect the status code to be 200
     And I receive the following json:
     """
@@ -39,7 +39,7 @@ Feature: Receiving collections
     """
 
   Scenario: Send a request to the followers URI of tim and expect a ordered collection
-    When I send a GET request to "/users/tim/followers"
+    When I send a GET request to "/api/users/tim/followers"
     Then I expect the status code to be 200
     And I receive the following json:
     """
@@ -54,7 +54,7 @@ Feature: Receiving collections
     """
 
   Scenario: Send a request to the outbox URI of tim and expect a paginated outbox collection
-    When I send a GET request to "/users/tim/outbox?page=true"
+    When I send a GET request to "/api/users/tim/outbox?page=true"
     Then I expect the status code to be 200
     And I receive the following json:
     """
@@ -70,7 +70,7 @@ Feature: Receiving collections
     """
 
   Scenario: Send a request to the following URI of tim and expect a paginated following collection
-    When I send a GET request to "/users/tim/following?page=true"
+    When I send a GET request to "/api/users/tim/following?page=true"
     Then I expect the status code to be 200
     And I receive the following json:
     """
@@ -86,7 +86,7 @@ Feature: Receiving collections
     """
 
   Scenario: Send a request to the followers URI of tim and expect a paginated followers collection
-    When I send a GET request to "/users/tim/followers?page=true"
+    When I send a GET request to "/api/users/tim/followers?page=true"
     Then I expect the status code to be 200
     And I receive the following json:
     """

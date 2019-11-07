@@ -10,15 +10,14 @@ Feature: Follow a user
       | stuart-little      |
       | daisy              |
 
-  @wip
   Scenario: Send a follow to a user inbox and make sure it's added to the right followers collection
-    When I send a POST request with the following activity to "/users/stuart-little/inbox":
+    When I send a POST request with the following activity to "/api/users/stuart-little/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
       "id": "http://localhost:4123/api/users/daisy/status/83J23549sda1k72fsa4567na42312455kad83",
       "type": "Follow",
-      "actor": "http://localhost:4123/users/daisy",
+      "actor": "http://localhost:4123/api/users/daisy",
       "object": "http://localhost:4123/api/users/stuart-little"
     }
     """
@@ -29,13 +28,13 @@ Feature: Follow a user
     """
 
   Scenario: Send an undo activity to revert the previous follow activity
-    When I send a POST request with the following activity to "/users/stuart-little/inbox":
+    When I send a POST request with the following activity to "/api/users/stuart-little/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
       "id": "http://localhost:4123/api/users/daisy/status/a4DJ2afdg323v32641vna42lkj685kasd2",
       "type": "Undo",
-      "actor": "http://localhost:4123/users/daisy",
+      "actor": "http://localhost:4123/api/users/daisy",
       "object": {
         "id": "http://localhost:4123/api/users/daisy/status/83J23549sda1k72fsa4567na42312455kad83",
         "type": "Follow",

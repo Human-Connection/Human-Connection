@@ -9,7 +9,7 @@ Feature: Like an object e.g. an article or note
       | Slug           |
       | karl-heinz     |
       | theodor        |
-    And I send a POST request with the following activity to "/inbox":
+    And we have the following post in our database:
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
@@ -28,7 +28,7 @@ Feature: Like an object e.g. an article or note
     """
 
   Scenario: Send a like of a person to a users inbox and make sure the object has been liked
-    When I send a POST request with the following activity to "/users/theodor/inbox":
+    When I send a POST request with the following activity to "/api/users/theodor/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
@@ -42,13 +42,13 @@ Feature: Like an object e.g. an article or note
     And the post with id "dkaaadsfljsdfaaaffg9843jknsdf" has been liked by "karl-heinz"
 
   Scenario: Send an Undo of a previous like activity to a users inbox and make sure the object has been disliked
-    When I send a POST request with the following activity to "/users/theodor/inbox":
+    When I send a POST request with the following activity to "/api/users/theodor/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
       "id": "http://localhost:4123/api/users/karl-heinz/status/faskjh6sda1k72fsa4567nfgdj367s83",
       "type": "Undo",
-      "actor": "http://localhost:4123/users/karl-heinz",
+      "actor": "http://localhost:4123/api/users/karl-heinz",
       "object": {
         "@context": "https://www.w3.org/ns/activitystreams",
         "id": "http://localhost:4123/api/users/karl-heinz/status/83J23549sda1k72fsa4567na42312455kad83",

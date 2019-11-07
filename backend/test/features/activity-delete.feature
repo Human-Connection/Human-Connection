@@ -12,7 +12,7 @@ Feature: Delete an object
       "@context": "https://www.w3.org/ns/activitystreams",
       "id": "https://localhost:4123/api/users/spongebob/status/kljsddgnffgdgsx9bv8adg43jfdgkgnsdf234s",
       "type": "Create",
-      "actor": "http://localhost:4123/users/spongebob",
+      "actor": "http://localhost:4123/api/users/spongebob",
       "object": {
         "id": "https://localhost:4123/api/users/spongebob/status/kljsddgnffgdgsx9bv8adg43jfdgkgnsdf234",
         "type": "Article",
@@ -25,13 +25,13 @@ Feature: Delete an object
     """
 
   Scenario: Deleting a post (Article Object)
-    When I send a POST request with the following activity to "/inbox":
+    When I send a POST request with the following activity to "/api/inbox":
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
       "id": "https://localhost:4123/api/users/spongebob/status/kljsddgnffgdgsx9bv8adg43jfdgkgnsdf234s",
       "type": "Delete",
-      "actor": "http://localhost:4123/users/spongebob",
+      "actor": "http://localhost:4123/api/users/spongebob",
       "object": {
         "id": "https://localhost:4123/api/users/spongebob/status/kljsddgnffgdgsx9bv8adg43jfdgkgnsdf234",
         "type": "Article",

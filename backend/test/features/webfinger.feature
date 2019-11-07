@@ -36,7 +36,7 @@ Feature: Webfinger discovery
     """
 
   Scenario: Receiving an actor object
-    When I send a GET request to "/users/hans"
+    When I send a GET request to "/api/users/hans"
     Then I expect the status code to be 200
     Then I receive the following json:
     """
@@ -66,5 +66,5 @@ Feature: Webfinger discovery
     """
 
   Scenario: Try receiving a non existing actor object
-    When I send a GET request to "/users/no-one"
+    When I send a GET request to "/api/users/no-one"
     Then I expect the status code to be 404
