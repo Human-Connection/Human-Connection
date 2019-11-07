@@ -151,7 +151,7 @@
     "follow": "Seguir",
     "followers": "Seguidores",
     "following": "Seguindo",
-    "shouted": "Anunciou",
+    "shouted": "Recomendou",
     "commented": "Comentou",
     "userAnonym": "Anônimo",
     "socialMedia": "Onde mais posso encontrar",
@@ -171,9 +171,9 @@
   },
   "notifications": {
     "reason": {
-      "mentioned_in_post": "Mencionou você em um post …",
+      "mentioned_in_post": "Mencionou você em uma publicação …",
       "mentioned_in_comment": "Mencionou você em um comentário …",
-      "commented_on_post": "Comentou no seu post …"
+      "commented_on_post": "Comentou na sua publicação …"
     },
     "comment": "Comentário"
   },
@@ -248,16 +248,16 @@
     },
     "deleteUserAccount": {
       "name": "Deletar dados",
-      "contributionsCount": "Deletar meus {count} posts",
+      "contributionsCount": "Deletar minhas {count} publicações",
       "commentedCount": "Deletar meus {count} comentários",
-      "accountDescription": "Esteja ciente de que o seus Posts e Comentários são importantes para a nossa comunidade. Se você ainda optar por excluí-los, você tem que marcá-los abaixo.",
-      "accountWarning": "Você <b>NÃO PODE GERENCIAR</b> e <b>NÃO PODE RECUPERAR</b> sua conta, Posts, ou Comentários após excluir sua conta!",
+      "accountDescription": "Esteja ciente de que o suas Publicações e Comentários são importantes para a nossa comunidade. Se você ainda optar por excluí-los, você tem que marcá-los abaixo.",
+      "accountWarning": "Você <b>NÃO PODE GERENCIAR</b> e <b>NÃO PODE RECUPERAR</b> sua conta, Publicações, ou Comentários após excluir sua conta!",
       "success": "Conta eliminada com sucesso!",
       "pleaseConfirm": "<b class='is-danger'>Ação destrutiva!</b> Digitar <b>{confirm}</b> para confirmar"
     },
     "embeds": {
       "name": "Fornecedores de terceiros",
-      "info-description": "Se você concordar, as postagens da seguinte lista de provedores incluirão automaticamente código de terceiros de outros provedores (terceiros) na forma de vídeos, imagens ou texto incorporados.",
+      "info-description": "Se você concordar, as publicações da seguinte lista de provedores incluirão automaticamente código de terceiros de outros provedores (terceiros) na forma de vídeos, imagens ou texto incorporados.",
       "description": "Você concordou que nas contribuições da seguinte lista de provedores, o código estrangeiro de outros provedores (terceiros) na forma de vídeos, imagens ou texto incorporados são automaticamente incorporados",
       "statustext": "No momento, isto é uma incorporação automática:",
       "statuschange": "Modificar configuração",
@@ -288,7 +288,7 @@
         "intro": "Se outro usuário foi bloqueado por você, isto é o que acontece:",
         "your-perspective": "As mensagens da pessoa bloqueada não aparecerão mais no seu feed de notícias.",
         "their-perspective": "Vice versa: A pessoa bloqueada também não verá mais suas mensagens em seu feed de notícias.",
-        "search": "Posts de pessoas bloqueadas desaparecem dos resultados da sua pesquisa.",
+        "search": "Publicações de pessoas bloqueadas desaparecem dos resultados da sua pesquisa.",
         "notifications": "Usuários bloqueados não receberão mais notificações se forem mencionados em suas mensagens.",
         "closing": "Isso deve ser suficiente por enquanto para que os usuários bloqueados não possam mais incomodá-lo."
       },
@@ -307,7 +307,7 @@
     "dashboard": {
       "name": "Painel de controle",
       "users": "Usuários",
-      "posts": "Postagens",
+      "posts": "Publicações",
       "comments": "Comentários",
       "notifications": "Notificações",
       "organizations": "Organizações",
@@ -345,14 +345,14 @@
     "categories": {
       "name": "Categorias",
       "categoryName": "Nome",
-      "postCount": "Posts"
+      "postCount": "Publicações"
     },
     "hashtags": {
       "name": "Hashtags",
       "number": "Não.",
       "nameOfHashtag": "Nome",
       "tagCountUnique": "Usuários",
-      "tagCount": "Posts"
+      "tagCount": "Publicações"
     },
     "settings": {
       "name": "Configurações"
@@ -413,13 +413,13 @@
     }
   },
   "common": {
-    "post": "Postagem ::: Postagens",
+    "post": "Publicação::: Publicações",
     "comment": "Comentário ::: Comentários",
     "letsTalk": "Vamos Conversar",
     "versus": "Contra",
     "moreInfo": "Mais informações",
     "takeAction": "Tomar uma ação",
-    "shout": "Anunciar ::: Anúncios",
+    "shout": "Recomendar ::: Recomendações",
     "user": "Usuário ::: Usuários",
     "category": "Categoria ::: Categorias",
     "organization": "Organização ::: Organizações",
@@ -479,7 +479,7 @@
     "submit": "Excluir",
     "cancel": "Cancelar",
     "contribution": {
-      "title": "Excluir postagem",
+      "title": "Excluir publicação",
       "type": "Contribuição",
       "message": "Você realmente deseja excluir a publicação \"<b>{name}</b>\"?",
       "success": "Publicação  excluída com êxito!"
@@ -540,7 +540,7 @@
     "following": "Seguindo"
   },
   "shoutButton": {
-    "shouted": "Anunciou"
+    "shouted": "Recomendou"
   },
   "release": {
     "submit": "Liberar",
@@ -572,7 +572,7 @@
   },
   "contribution": {
     "title": "Título",
-    "newPost": "Criar uma nova mensagem",
+    "newPost": "Criar uma nova publicação",
     "filterFollow": "Filtrar contribuições de usuários que eu sigo",
     "filterALL": "Ver todas as contribuições",
     "success": "Salvo!",
@@ -674,7 +674,7 @@
     },   
     "use-and-license" : {
       "title": "Uso e Licença",
-      "description": "Se qualquer conteúdo que você postar para nós for protegido por direitos de propriedade intelectual, você nos concede uma licença não exclusiva, transferível, sublicenciável e mundial para usar tal conteúdo para postar em nossa rede. Esta licença expira quando você exclui seu conteúdo ou toda a sua conta. Lembre-se de que outros podem compartilhar seu conteúdo e nós não podemos excluí-lo."
+      "description": "Se qualquer conteúdo que você publicar para nós for protegido por direitos de propriedade intelectual, você nos concede uma licença não exclusiva, transferível, sublicenciável e mundial para usar tal conteúdo para postar em nossa rede. Esta licença expira quando você exclui seu conteúdo ou toda a sua conta. Lembre-se de que outros podem compartilhar seu conteúdo e nós não podemos excluí-lo."
     },
     "privacy-statement" : {
       "title": "Política de Privacidade",
