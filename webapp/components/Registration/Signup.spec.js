@@ -48,7 +48,7 @@ describe('Signup', () => {
       describe('submit', () => {
         beforeEach(async () => {
           wrapper = Wrapper()
-          wrapper.find('input#email').setValue('mail@example.org')
+          wrapper.find('input#email').setValue('mAIL@exAMPLE.org')
           await wrapper.find('form').trigger('submit')
         })
 
@@ -59,7 +59,7 @@ describe('Signup', () => {
 
         it('delivers email to backend', () => {
           const expected = expect.objectContaining({
-            variables: { email: 'mail@example.org', token: null },
+            variables: { email: 'mAIL@exAMPLE.org', token: null },
           })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
