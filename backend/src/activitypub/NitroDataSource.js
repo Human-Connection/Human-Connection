@@ -24,10 +24,7 @@ export default NitroDataSource
 function NitroDataSource(uri) {
   this.uri = uri
   const driver = getDriver()
-  let defaultToken
-  let token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoiUGV0ZXIgTHVzdGlnIiwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9qb2huY2FmYXp6YS8xMjguanBnIiwiaWQiOiJ1MSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5vcmciLCJzbHVnIjoicGV0ZXItbHVzdGlnIiwiaWF0IjoxNTUyNDIwMTExLCJleHAiOjE2Mzg4MjAxMTEsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDAwMCIsInN1YiI6InUxIn0.G7An1yeQUViJs-0Qj-Tc-zm0WrLCMB3M02pfPnm6xzw'
-  defaultToken = token
+  let token
   const defaultOptions = {
     query: {
       fetchPolicy: 'network-only',
@@ -54,7 +51,7 @@ function NitroDataSource(uri) {
 
   this.setToken = async function(actorId) {
     if (!actorId) {
-      token = defaultToken
+      token = null
       return
     }
     const splitted = actorId.split('/')
@@ -64,11 +61,11 @@ function NitroDataSource(uri) {
       .run('MATCH (u:User) WHERE u.slug = { slug } RETURN u', { slug: slug })
       .catch(() => {
         session.close()
-        token = defaultToken
+        token = null
       })
     session.close()
     if (result.records.length === 0) {
-      token = defaultToken
+      token = null
       return
     }
     const user = result.records[0].get('u').properties
@@ -76,7 +73,6 @@ function NitroDataSource(uri) {
   }
 
   this.getFollowersCollection = async actorId => {
-    await this.setToken()
     const slug = extractNameFromId(actorId)
     debug(`slug= ${slug}`)
     const result = await this.client.query({
@@ -104,7 +100,6 @@ function NitroDataSource(uri) {
   }
 
   this.getFollowersCollectionPage = async actorId => {
-    await this.setToken()
     const slug = extractNameFromId(actorId)
     debug(`getFollowersPage slug = ${slug}`)
     const result = await this.client.query({
@@ -142,7 +137,6 @@ function NitroDataSource(uri) {
   }
 
   this.getFollowingCollection = async actorId => {
-    await this.setToken()
     const slug = extractNameFromId(actorId)
     const result = await this.client.query({
       query: gql`
@@ -169,7 +163,6 @@ function NitroDataSource(uri) {
   }
 
   this.getFollowingCollectionPage = async actorId => {
-    await this.setToken()
     const slug = extractNameFromId(actorId)
     const result = await this.client.query({
       query: gql`
@@ -205,8 +198,7 @@ function NitroDataSource(uri) {
     }
   }
 
-  this.getOutboxCollection = async (actorId) => {
-    await this.setToken()
+  this.getOutboxCollection = async actorId => {
     const slug = extractNameFromId(actorId)
     const result = await this.client.query({
       query: gql`
@@ -235,7 +227,6 @@ function NitroDataSource(uri) {
   }
 
   this.getOutboxCollectionPage = async actorId => {
-    await this.setToken()
     const slug = extractNameFromId(actorId)
     debug(`inside getting outbox collection page => ${slug}`)
     const result = await this.client.query({
@@ -291,14 +282,14 @@ function NitroDataSource(uri) {
   }
 
   this.undoFollowActivity = async (fromActorId, toActorId) => {
-    const fromUserId = await ensureUser(fromActorId)
+    await ensureUser(fromActorId)
     const toUserId = await ensureUser(toActorId)
     await this.setToken(fromActorId)
     const result = await this.client.mutate({
       mutation: gql`
           mutation {
-              RemoveUserFollowedBy(from: {id: "${fromUserId}"}, to: {id: "${toUserId}"}) {
-                  from { name }
+              unfollowUser(id: "${toUserId}") {
+                  slug
               }
           }
       `,
@@ -307,56 +298,23 @@ function NitroDataSource(uri) {
     throwErrorIfApolloErrorOccurred(result)
   }
 
-  this.saveFollowersCollectionPage = async (followersCollection, onlyNewestItem = true) => {
-    debug('inside saveFollowers')
-    let orderedItems = followersCollection.orderedItems
-    const toUserName = extractNameFromId(followersCollection.id)
-    const toUserId = await ensureUser(constructIdFromName(toUserName))
-    await this.setToken(followersCollection.id)
-    orderedItems = onlyNewestItem ? [orderedItems.pop()] : orderedItems
-
-    return Promise.all(
-      orderedItems.map(async follower => {
-        debug(`follower = ${follower}`)
-        const fromUserId = await ensureUser(follower)
-        debug(`fromUserId = ${fromUserId}`)
-        debug(`toUserId = ${toUserId}`)
-        const result = await this.client.mutate({
-          mutation: gql`
-              mutation {
-                  AddUserFollowedBy(from: {id: "${fromUserId}"}, to: {id: "${toUserId}"}) {
-                      from { name }
-                  }
-              }
-          `,
-        })
-        debug(`addUserFollowedBy edge = ${JSON.stringify(result, null, 2)}`)
-        throwErrorIfApolloErrorOccurred(result)
-        debug('saveFollowers: added follow edge successfully')
-      }),
-    )
-  }
-
   this.saveFollowingCollectionPage = async (followingCollection, onlyNewestItem = true) => {
     debug('inside saveFollowers')
     let orderedItems = followingCollection.orderedItems
-    const fromUserName = extractNameFromId(followingCollection.id)
-    const fromUserId = await ensureUser(constructIdFromName(fromUserName))
+    await ensureUser(followingCollection.id)
     await this.setToken(followingCollection.id)
     orderedItems = onlyNewestItem ? [orderedItems.pop()] : orderedItems
     return Promise.all(
       orderedItems.map(async following => {
         debug(`follower = ${following}`)
         const toUserId = await ensureUser(following)
-        debug(`fromUserId = ${fromUserId}`)
-        debug(`toUserId = ${toUserId}`)
         const result = await this.client.mutate({
           mutation: gql`
-              mutation {
-                  AddUserFollowing(from: {id: "${fromUserId}"}, to: {id: "${toUserId}"}) {
-                      from { name }
-                  }
+            mutation {
+              followUser(id: "${toUserId}") {
+                id  
               }
+            }
           `,
         })
 
@@ -385,21 +343,24 @@ function NitroDataSource(uri) {
           .join(' ')
     const postId = extractIdFromActivityId(postObject.id)
     debug('inside create post')
-    let result = await this.client.mutate({
+    /* eslint-disable */
+    const result = await this.client.mutate({
       mutation: gql`
-          mutation {
-              CreatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120)}", 
-              title: "${title}", id: "${postId}", objectId: "${postObject.id}", activityId: "${activity.id}") {
-                  id
-              }
-          }
-      `,
+        mutation {
+            CreatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120)}",  
+            title: "${title}", id: "${postId}", categoryIds: ["cat16"]) {
+                id
+            }
+        }
+    `,
     })
+
+    /* eslint-enable */
 
     throwErrorIfApolloErrorOccurred(result)
   }
 
-  this.deletePost = async (activity) => {
+  this.deletePost = async activity => {
     await this.setToken(activity.actor)
     const postId = extractIdFromActivityId(activity.object.id)
     const result = await this.client.mutate({
@@ -418,13 +379,18 @@ function NitroDataSource(uri) {
     await this.setToken(activity.actor)
     const postObject = activity.object
     const postId = extractIdFromActivityId(postObject.id)
-    const date = postObject.updated ? postObject.updated : new Date().toISOString()
-    const title = postObject.summary ? postObject.summary : postObject.content.split(' ').slice(0, 5).join(' ')
+    const title = postObject.summary
+      ? postObject.summary
+      : postObject.content
+          .split(' ')
+          .slice(0, 5)
+          .join(' ')
+    const contentExcerpt = trunc(postObject.content, 120).html
     const result = await this.client.mutate({
       mutation: gql`
           mutation {
-              UpdatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120).html}", 
-              id: "${postId}", title: "${title}", updatedAt: "${date}") {
+              UpdatePost(content: "${postObject.content}", contentExcerpt: "${contentExcerpt}", 
+              id: "${postId}", title: "${title}") {
                   title
               }
           }
@@ -469,7 +435,6 @@ function NitroDataSource(uri) {
   }
 
   this.getSharedInboxEndpoints = async () => {
-    await this.setToken()
     const result = await this.client.query({
       query: gql`
         query {
@@ -484,7 +449,6 @@ function NitroDataSource(uri) {
   }
 
   this.addSharedInboxEndpoint = async uri => {
-    await this.setToken()
     try {
       let result = await this.client.query({
         query: gql`
@@ -534,9 +498,7 @@ function NitroDataSource(uri) {
     result = await this.client.mutate({
       mutation: gql`
           mutation {
-              AddCommentAuthor(from: {id: "${
-                result.data.CreateComment.id
-              }"}, to: {id: "${toUserId}"}) {
+              AddCommentAuthor(from: {id: "${result.data.CreateComment.id}"}, to: {id: "${toUserId}"}) {
                   id
               }
           }
@@ -548,9 +510,7 @@ function NitroDataSource(uri) {
     result = await this.client.mutate({
       mutation: gql`
           mutation {
-              AddCommentPost(from: { id: "${
-                result.data.CreateComment.id
-              }", to: { id: "${postId}" }}) {
+              AddCommentPost(from: { id: "${result.data.CreateComment.id}", to: { id: "${postId}" }}) {
                   id
               }
           }
@@ -561,7 +521,6 @@ function NitroDataSource(uri) {
   }
 
   this.getActorId = async name => {
-    await this.setToken()
     const result = await this.client.query({
       query: gql`
           query {
@@ -580,7 +539,6 @@ function NitroDataSource(uri) {
   }
 
   this.getPublicKey = async name => {
-    await this.setToken()
     const result = await this.client.query({
       query: gql`
           query {
@@ -614,7 +572,6 @@ function NitroDataSource(uri) {
   }
 
   this.userExists = async name => {
-    await this.setToken()
     const result = await this.client.query({
       query: gql`
           query {
@@ -633,7 +590,7 @@ function NitroDataSource(uri) {
   }
 
   /**
-   * This function will search for user existence and will create a disabled user with a random 16 bytes password when no user is found.
+   * This function will search for user existence and will create a user
    *
    * @param actorId
    * @returns {Promise<*>}
@@ -674,7 +631,7 @@ function NitroDataSource(uri) {
       result = await session
         .run(
           'CREATE (u:User {slug: { slug }, id: { id }, name: { name }, actorId: { actorId }}) RETURN u',
-          { slug: slug, id: uuid(), name: name, actorId: actorId }
+          { slug: slug, id: uuid(), name: name, actorId: actorId },
         )
         .catch(() => {
           session.close()
