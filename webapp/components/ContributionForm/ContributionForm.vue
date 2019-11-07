@@ -26,9 +26,7 @@
             {{ form.title.length }}/{{ formSchema.title.max }}
             <ds-icon name="warning"></ds-icon>
           </ds-chip>
-          <ds-chip v-else size="base">
-            {{ form.title.length }}/{{ formSchema.title.max }}
-          </ds-chip>
+          <ds-chip v-else size="base">{{ form.title.length }}/{{ formSchema.title.max }}</ds-chip>
         </ds-text>
         <client-only>
           <hc-editor
@@ -38,11 +36,7 @@
             @input="updateEditorContent"
           />
           <ds-text align="right">
-            <ds-chip
-              v-if="errors && errors.content"
-              color="danger"
-              size="base"
-            >
+            <ds-chip v-if="errors && errors.content" color="danger" size="base">
               {{ contentLength }}
               <ds-icon name="warning"></ds-icon>
             </ds-chip>
@@ -52,20 +46,13 @@
           </ds-text>
         </client-only>
         <ds-space margin-bottom="small" />
-        <hc-categories-select
-          model="categoryIds"
-          @updateCategories="updateCategories"
-          :existingCategoryIds="form.categoryIds"
-        />
+        <hc-categories-select model="categoryIds" :existingCategoryIds="form.categoryIds" />
         <ds-text align="right">
-          <ds-chip v-if="form.categoryIds.length === 0" class="checkicon checkicon_cat" size="base">
+          <ds-chip v-if="errors && errors.categoryIds" color="danger" size="base">
             {{ form.categoryIds.length }} / 3
             <ds-icon name="warning"></ds-icon>
           </ds-chip>
-          <ds-chip v-else class="checkicon checkicon_cat" size="base" color="primary">
-            {{ form.categoryIds.length }} / 3
-            <ds-icon name="check"></ds-icon>
-          </ds-chip>
+          <ds-chip v-else size="base">{{ form.categoryIds.length }} / 3</ds-chip>
         </ds-text>
         <ds-flex class="contribution-form-footer">
           <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
@@ -95,7 +82,7 @@
             type="submit"
             icon="check"
             :loading="loading"
-            :disabled="failsValidations || errors"
+            :disabled="errors"
             primary
             @click.prevent="submit"
           >
@@ -134,20 +121,31 @@ export default {
       form: {
         title: '',
         content: '',
+        categoryIds: [],
         teaserImage: null,
         image: null,
         language: null,
         languageOptions: [],
-        categoryIds: [],
       },
       formSchema: {
         title: { required: true, min: 3, max: 100 },
         content: {
           required: true,
           min: 3,
-          transform: (content) => {
+          transform: content => {
             return this.$filters.removeHtml(content)
-          }
+          },
+        },
+        categoryIds: {
+          type: 'array',
+          required: true,
+          validator: (rule, value) => {
+            const errors = []
+            if (!value || value.length <= 0) {
+              errors.push(new Error('Choose at least 1 but at most 3 categories'))
+            }
+            return errors
+          },
         },
       },
       id: null,
@@ -155,7 +153,6 @@ export default {
       slug: null,
       users: [],
       contentMin: 3,
-      failsValidations: true,
       hashtags: [],
     }
   },
@@ -222,7 +219,6 @@ export default {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
           const result = data[this.id ? 'UpdatePost' : 'CreatePost']
-          this.failedValidations = false
 
           this.$router.push({
             name: 'post-id-slug',
@@ -232,7 +228,6 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
           this.loading = false
-          this.failedValidations = true
         })
     },
     updateEditorContent(value) {
@@ -243,24 +238,11 @@ export default {
         this.form.languageOptions.push({ label: locale.name, value: locale.code })
       })
     },
-    updateCategories(ids) {
-      this.form.categoryIds = ids
-      this.validatePost()
-    },
     addTeaserImage(file) {
       this.form.teaserImage = file
     },
     categoryIds(categories) {
-      let categoryIds = []
-      categories.map(categoryId => {
-        categoryIds.push(categoryId.id)
-      })
-      return categoryIds
-    },
-    validatePost() {
-      const passesCategoryValidations =
-        this.form.categoryIds.length > 0 && this.form.categoryIds.length <= 3
-      this.failsValidations = !(passesCategoryValidations)
+      return categories.map(c => c.id)
     },
   },
   apollo: {
@@ -314,12 +296,5 @@ export default {
     padding-left: 0;
     padding-right: 0;
   }
-}
-.checkicon {
-  cursor: default;
-  top: -18px;
-}
-.checkicon_cat {
-  top: -58px;
 }
 </style>
