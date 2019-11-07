@@ -31,11 +31,7 @@ export default ({ app = {} }) => {
       if (length <= 0) {
         return value
       }
-      let output = trunc(value, length).html
-      if (output.length < value.length) {
-        output += ' …'
-      }
-      return output
+      return trunc(value, length).html
     },
     list: (value, glue = ', ', truncate = 0) => {
       if (!Array.isArray(value) || !value.length) {

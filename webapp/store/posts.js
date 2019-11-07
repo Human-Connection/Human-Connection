@@ -1,0 +1,145 @@
+import get from 'lodash/get'
+import update from 'lodash/update'
+import xor from 'lodash/xor'
+import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
+import clone from 'lodash/clone'
+import { filterPosts } from '~/graphql/PostQuery'
+import { first, offset } from '~/constants/posts'
+
+const defaultFilter = {}
+
+const orderOptions = {
+  createdAt_asc: {
+    value: 'createdAt_asc',
+    key: 'store.posts.orderBy.oldest.label',
+    icon: 'sort-amount-asc',
+  },
+  createdAt_desc: {
+    value: 'createdAt_desc',
+    key: 'store.posts.orderBy.newest.label',
+    icon: 'sort-amount-desc',
+  },
+}
+
+export const state = () => {
+  return {
+    filter: {
+      ...defaultFilter,
+    },
+    order: orderOptions['createdAt_desc'],
+    currentPosts: [],
+  }
+}
+
+export const mutations = {
+  TOGGLE_FILTER_BY_FOLLOWED(state, currentUserId) {
+    const filter = clone(state.filter)
+    const id = get(filter, 'author.followedBy_some.id')
+    if (id) {
+      delete filter.author
+      state.filter = filter
+    } else {
+      state.filter = {
+        ...filter,
+        author: { followedBy_some: { id: currentUserId } },
+      }
+    }
+  },
+  RESET_CATEGORIES(state) {
+    const filter = clone(state.filter)
+    delete filter.categories_some
+    state.filter = filter
+  },
+  RESET_LANGUAGES(state) {
+    const filter = clone(state.filter)
+    delete filter.language_in
+    state.filter = filter
+  },
+  TOGGLE_CATEGORY(state, categoryId) {
+    const filter = clone(state.filter)
+    update(filter, 'categories_some.id_in', categoryIds => xor(categoryIds, [categoryId]))
+    if (isEmpty(get(filter, 'categories_some.id_in'))) delete filter.categories_some
+    state.filter = filter
+  },
+  TOGGLE_LANGUAGE(state, languageCode) {
+    const filter = clone(state.filter)
+    update(filter, 'language_in', languageCodes => xor(languageCodes, [languageCode]))
+    if (isEmpty(get(filter, 'language_in'))) delete filter.language_in
+    state.filter = filter
+  },
+  TOGGLE_EMOTION(state, emotion) {
+    const filter = clone(state.filter)
+    update(filter, 'emotions_some.emotion_in', emotions => xor(emotions, [emotion]))
+    if (isEmpty(get(filter, 'emotions_some.emotion_in'))) delete filter.emotions_some
+    state.filter = filter
+  },
+  SELECT_ORDER(state, value) {
+    state.order = orderOptions[value]
+  },
+  SET_CURRENT_POSTS(state, posts) {
+    state.currentPosts = posts
+  },
+}
+
+export const getters = {
+  isActive(state) {
+    return !isEqual(state.filter, defaultFilter)
+  },
+  filter(state) {
+    return state.filter
+  },
+  filteredCategoryIds(state) {
+    return get(state.filter, 'categories_some.id_in') || []
+  },
+  filteredLanguageCodes(state) {
+    return get(state.filter, 'language_in') || []
+  },
+  filteredByUsersFollowed(state) {
+    return !!get(state.filter, 'author.followedBy_some.id')
+  },
+  filteredByEmotions(state) {
+    return get(state.filter, 'emotions_some.emotion_in') || []
+  },
+  orderOptions: state => ({ $t }) =>
+    Object.values(orderOptions).map(option => {
+      return {
+        ...option,
+        label: $t(option.key),
+      }
+    }),
+  selectedOrder: state => ({ $t }) => {
+    return {
+      ...state.order,
+      label: $t(state.order.key),
+    }
+  },
+  orderBy(state) {
+    return state.order.value
+  },
+  orderIcon(state) {
+    return state.order.icon
+  },
+  currentPosts(state) {
+    return state.currentPosts || []
+  },
+}
+
+export const actions = {
+  async refreshPosts({ commit, getters }, { i18n }) {
+    const client = this.app.apolloProvider.defaultClient
+    const {
+      data: { Post },
+    } = await client.query({
+      query: filterPosts(i18n),
+      variables: {
+        filter: getters.filter,
+        first,
+        orderBy: ['pinned_asc', getters.orderBy],
+        offset,
+      },
+    })
+    commit('SET_CURRENT_POSTS', Post)
+    return Post
+  },
+}

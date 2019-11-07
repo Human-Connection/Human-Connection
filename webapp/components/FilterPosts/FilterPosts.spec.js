@@ -3,6 +3,9 @@ import VTooltip from 'v-tooltip'
 import Styleguide from '@human-connection/styleguide'
 import Vuex from 'vuex'
 import FilterPosts from './FilterPosts.vue'
+import locales from '~/locales'
+import orderBy from 'lodash/orderBy'
+
 const localVue = createLocalVue()
 
 localVue.use(Styleguide)
@@ -12,6 +15,8 @@ localVue.use(Vuex)
 let mutations
 let getters
 
+const languages = orderBy(locales, 'name')
+
 describe('FilterPosts.vue', () => {
   let mocks
   let propsData
@@ -20,6 +25,8 @@ describe('FilterPosts.vue', () => {
   let environmentAndNatureButton
   let democracyAndPoliticsButton
   let happyEmotionButton
+  let englishButton
+  let spanishButton
 
   beforeEach(() => {
     mocks = {
@@ -50,20 +57,23 @@ describe('FilterPosts.vue', () => {
 
   describe('mount', () => {
     mutations = {
-      'postsFilter/TOGGLE_FILTER_BY_FOLLOWED': jest.fn(),
-      'postsFilter/RESET_CATEGORIES': jest.fn(),
-      'postsFilter/TOGGLE_CATEGORY': jest.fn(),
-      'postsFilter/TOGGLE_EMOTION': jest.fn(),
+      'posts/TOGGLE_FILTER_BY_FOLLOWED': jest.fn(),
+      'posts/RESET_CATEGORIES': jest.fn(),
+      'posts/TOGGLE_CATEGORY': jest.fn(),
+      'posts/TOGGLE_EMOTION': jest.fn(),
+      'posts/TOGGLE_LANGUAGE': jest.fn(),
+      'posts/RESET_LANGUAGES': jest.fn(),
     }
     getters = {
-      'postsFilter/isActive': () => false,
+      'posts/isActive': () => false,
       'auth/isModerator': () => false,
       'auth/user': () => {
         return { id: 'u34' }
       },
-      'postsFilter/filteredCategoryIds': jest.fn(() => []),
-      'postsFilter/filteredByUsersFollowed': jest.fn(),
-      'postsFilter/filteredByEmotions': jest.fn(() => []),
+      'posts/filteredCategoryIds': jest.fn(() => []),
+      'posts/filteredByUsersFollowed': jest.fn(),
+      'posts/filteredByEmotions': jest.fn(() => []),
+      'posts/filteredLanguageCodes': jest.fn(() => []),
     }
     const openFilterPosts = () => {
       const store = new Vuex.Store({ mutations, getters })
@@ -94,18 +104,36 @@ describe('FilterPosts.vue', () => {
       const wrapper = openFilterPosts()
       environmentAndNatureButton = wrapper.findAll('button').at(2)
       environmentAndNatureButton.trigger('click')
-      expect(mutations['postsFilter/TOGGLE_CATEGORY']).toHaveBeenCalledWith({}, 'cat4')
+      expect(mutations['posts/TOGGLE_CATEGORY']).toHaveBeenCalledWith({}, 'cat4')
+    })
+
+    it('calls TOGGLE_LANGUAGE when clicked', () => {
+      const wrapper = openFilterPosts()
+      englishButton = wrapper
+        .findAll('button.language-buttons')
+        .at(languages.findIndex(l => l.code === 'en'))
+      englishButton.trigger('click')
+      expect(mutations['posts/TOGGLE_LANGUAGE']).toHaveBeenCalledWith({}, 'en')
     })
 
     it('sets category button attribute `primary` when corresponding category is filtered', () => {
-      getters['postsFilter/filteredCategoryIds'] = jest.fn(() => ['cat9'])
+      getters['posts/filteredCategoryIds'] = jest.fn(() => ['cat9'])
       const wrapper = openFilterPosts()
       democracyAndPoliticsButton = wrapper.findAll('button').at(4)
       expect(democracyAndPoliticsButton.attributes().class).toContain('ds-button-primary')
     })
 
+    it('sets language button attribute `primary` when corresponding language is filtered', () => {
+      getters['posts/filteredLanguageCodes'] = jest.fn(() => ['es'])
+      const wrapper = openFilterPosts()
+      spanishButton = wrapper
+        .findAll('button.language-buttons')
+        .at(languages.findIndex(l => l.code === 'es'))
+      expect(spanishButton.attributes().class).toContain('ds-button-primary')
+    })
+
     it('sets "filter-by-followed-authors-only" button attribute `primary`', () => {
-      getters['postsFilter/filteredByUsersFollowed'] = jest.fn(() => true)
+      getters['posts/filteredByUsersFollowed'] = jest.fn(() => true)
       const wrapper = openFilterPosts()
       expect(
         wrapper.find({ name: 'filter-by-followed-authors-only' }).classes('ds-button-primary'),
@@ -120,7 +148,7 @@ describe('FilterPosts.vue', () => {
       })
 
       it('calls TOGGLE_FILTER_BY_FOLLOWED', () => {
-        expect(mutations['postsFilter/TOGGLE_FILTER_BY_FOLLOWED']).toHaveBeenCalledWith({}, 'u34')
+        expect(mutations['posts/TOGGLE_FILTER_BY_FOLLOWED']).toHaveBeenCalledWith({}, 'u34')
       })
     })
 
@@ -129,11 +157,11 @@ describe('FilterPosts.vue', () => {
         const wrapper = openFilterPosts()
         happyEmotionButton = wrapper.findAll('button.emotions-buttons').at(1)
         happyEmotionButton.trigger('click')
-        expect(mutations['postsFilter/TOGGLE_EMOTION']).toHaveBeenCalledWith({}, 'happy')
+        expect(mutations['posts/TOGGLE_EMOTION']).toHaveBeenCalledWith({}, 'happy')
       })
 
       it('sets the attribute `src` to colorized image', () => {
-        getters['postsFilter/filteredByEmotions'] = jest.fn(() => ['happy'])
+        getters['posts/filteredByEmotions'] = jest.fn(() => ['happy'])
         const wrapper = openFilterPosts()
         happyEmotionButton = wrapper.findAll('button.emotions-buttons').at(1)
         const happyEmotionButtonImage = happyEmotionButton.find('img')

@@ -134,6 +134,7 @@ const permissions = shield(
       PostsEmotionsByCurrentUser: isAuthenticated,
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
+      profilePagePosts: or(onlyEnabledContent, isModerator),
       SharedInboxEndpoint: allow,
     },
     Mutation: {
@@ -175,6 +176,8 @@ const permissions = shield(
       markAsRead: isAuthenticated,
       AddEmailAddress: isAuthenticated,
       VerifyEmailAddress: isAuthenticated,
+      pinPost: isAdmin,
+      unpinPost: isAdmin,
       CreateSharedInboxEndpoint: allow,
     },
     User: {

@@ -172,7 +172,7 @@
           <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'post' }">
+                <li class="Tabs__tab pointer" :class="{ active: tabActive === 'post' }">
                   <a @click="handleTab('post')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -183,7 +183,7 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'comment' }">
+                <li class="Tabs__tab pointer" :class="{ active: tabActive === 'comment' }">
                   <a @click="handleTab('comment')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -194,7 +194,11 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'shout' }">
+                <li
+                  class="Tabs__tab pointer"
+                  :class="{ active: tabActive === 'shout' }"
+                  v-if="myProfile"
+                >
                   <a @click="handleTab('shout')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -205,7 +209,6 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__presentation-slider" role="presentation"></li>
               </ul>
             </ds-card>
           </ds-grid-item>
@@ -234,6 +237,8 @@
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
                 @removePostFromList="removePostFromList"
+                @pinPost="pinPost"
+                @unpinPost="unpinPost"
               />
             </masonry-grid-item>
           </template>
@@ -268,7 +273,7 @@
 <script>
 import uniqBy from 'lodash/uniqBy'
 import User from '~/components/User/User'
-import HcPostCard from '~/components/PostCard'
+import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
@@ -279,9 +284,10 @@ import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
-import { filterPosts } from '~/graphql/PostQuery'
+import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
+import PostMutations from '~/graphql/PostMutations'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -373,7 +379,7 @@ export default {
       return uniqBy(items, field)
     },
     showMoreContributions() {
-      const { Post: PostQuery } = this.$apollo.queries
+      const { profilePagePosts: PostQuery } = this.$apollo.queries
       if (!PostQuery) return // seems this can be undefined on subpages
       this.offset += this.pageSize
 
@@ -385,12 +391,21 @@ export default {
           orderBy: 'createdAt_desc',
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
+          if (!fetchMoreResult || fetchMoreResult.profilePagePosts.length < this.pageSize) {
             this.hasMore = false
           }
-          const result = Object.assign({}, previousResult, {
-            Post: [...previousResult.Post, ...fetchMoreResult.Post],
-          })
+          const result = {
+            ...previousResult,
+            profilePagePosts: [
+              ...previousResult.profilePagePosts.filter(prevPost => {
+                return (
+                  fetchMoreResult.profilePagePosts.filter(newPost => newPost.id === prevPost.id)
+                    .length === 0
+                )
+              }),
+              ...fetchMoreResult.profilePagePosts,
+            ],
+          }
           return result
         },
       })
@@ -404,13 +419,39 @@ export default {
       await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
       this.resetPostList()
-      this.$apollo.queries.Post.refetch()
+      this.$apollo.queries.profilePagePosts.refetch()
     },
     async unblock(user) {
       await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
       this.resetPostList()
-      this.$apollo.queries.Post.refetch()
+      this.$apollo.queries.profilePagePosts.refetch()
+    },
+    pinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().pinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.profilePagePosts.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    unpinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().unpinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.profilePagePosts.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
     },
     optimisticFollow({ followedByCurrentUser }) {
       /*
@@ -435,9 +476,9 @@ export default {
     },
   },
   apollo: {
-    Post: {
+    profilePagePosts: {
       query() {
-        return filterPosts(this.$i18n)
+        return profilePagePosts(this.$i18n)
       },
       variables() {
         return {
@@ -447,8 +488,8 @@ export default {
           orderBy: 'createdAt_desc',
         }
       },
-      update({ Post }) {
-        this.posts = Post
+      update({ profilePagePosts }) {
+        this.posts = profilePagePosts
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -469,51 +510,28 @@ export default {
 .pointer {
   cursor: pointer;
 }
-.Tab {
-  border-collapse: collapse;
-  padding-bottom: 5px;
-}
-.Tab:hover {
-  border-bottom: 2px solid #c9c6ce;
-}
+
 .Tabs {
   position: relative;
   background-color: #fff;
   height: 100%;
-
-  &:after {
-    content: ' ';
-    display: table;
-    clear: both;
-  }
+  display: flex;
   margin: 0;
   padding: 0;
   list-style: none;
 
   &__tab {
-    float: left;
-    width: 33.333%;
     text-align: center;
     height: 100%;
+    flex-grow: 1;
 
-    &:first-child.active ~ .Tabs__presentation-slider {
-      left: 0;
+    &:hover {
+      border-bottom: 2px solid #c9c6ce;
     }
-    &:nth-child(2).active ~ .Tabs__presentation-slider {
-      left: 33.333%;
+
+    &.active {
+      border-bottom: 2px solid #17b53f;
     }
-    &:nth-child(3).active ~ .Tabs__presentation-slider {
-      left: calc(33.333% * 2);
-    }
-  }
-  &__presentation-slider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 33.333%;
-    height: 2px;
-    background-color: #17b53f;
-    transition: left 0.25s;
   }
 }
 .profile-avatar.ds-avatar {

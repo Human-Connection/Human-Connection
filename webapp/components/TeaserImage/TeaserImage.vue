@@ -7,8 +7,13 @@
     :use-custom-slot="true"
     @vdropzone-error="verror"
     @vdropzone-thumbnail="transformImage"
-    @vdropzone-drop="dropzoneDrop"
   >
+    <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
+      <ds-button @click="cropImage" class="crop-confirm" primary>
+        {{ $t('contribution.teaserImage.cropperConfirm') }}
+      </ds-button>
+      <ds-button @click="cancelCrop" class="crop-cancel" icon="close"></ds-button>
+    </div>
     <div
       :class="{
         'hc-attachments-upload-area-post': true,
@@ -47,7 +52,14 @@ export default {
         maxFilesize: 5.0,
         previewTemplate: this.template(),
       },
+      image: null,
+      file: null,
+      editor: null,
+      cropper: null,
+      thumbnailElement: null,
+      oldImage: null,
       error: false,
+      showCropper: false,
     }
   },
   watch: {
@@ -65,57 +77,60 @@ export default {
                   <div data-dz-thumbnail-bg></div>
                 </div>
               </div>
-      `
+	     `
     },
     verror(file, message) {
       this.error = true
       this.$toast.error(file.status, message)
     },
     transformImage(file) {
-      let thumbnailElement, editor, confirm, thumbnailPreview, contributionImage
-      // Create the image editor overlay
-      editor = document.createElement('div')
-      thumbnailElement = document.querySelectorAll('#postdropzone')[0]
-      thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
-      if (thumbnailPreview) thumbnailPreview.remove()
-      contributionImage = document.querySelectorAll('.contribution-image')[0]
-      if (contributionImage) contributionImage.remove()
-      editor.classList.add('crop-overlay')
-      thumbnailElement.appendChild(editor)
-      // Create the confirm button
-      confirm = document.createElement('button')
-      confirm.classList.add('crop-confirm', 'ds-button', 'ds-button-primary')
-      confirm.textContent = this.$t('contribution.teaserImage.cropperConfirm')
-      confirm.addEventListener('click', () => {
-        // Get the canvas with image data from Cropper.js
-        let canvas = cropper.getCroppedCanvas()
-        canvas.toBlob(blob => {
-          this.$refs.el.manuallyAddFile(blob, canvas.toDataURL(), null, null, {
-            dontSubstractMaxFiles: false,
-            addToFiles: true,
-          })
-          image = new Image()
-          image.src = canvas.toDataURL()
-          image.classList.add('thumbnail-preview')
-          thumbnailElement.appendChild(image)
-          // Remove the editor from view
-          editor.parentNode.removeChild(editor)
-          const croppedImageFile = new File([blob], file.name, { type: 'image/jpeg' })
-          this.$emit('addTeaserImage', croppedImageFile)
-        }, 'image/jpeg')
-      })
-      editor.appendChild(confirm)
-
-      // Load the image
-      let image = new Image()
-      image.src = URL.createObjectURL(file)
-      editor.appendChild(image)
-      // Create Cropper.js and pass image
-      let cropper = new Cropper(image, { zoomable: false })
+      this.file = file
+      this.showCropper = true
+      this.initEditor()
+      this.initCropper()
     },
-    dropzoneDrop() {
-      let cropOverlay = document.querySelectorAll('.crop-overlay')[0]
-      if (cropOverlay) cropOverlay.remove()
+    initEditor() {
+      this.editor = this.$refs.cropperOverlay
+      this.clearImages()
+      this.thumbnailElement.appendChild(this.editor)
+    },
+    clearImages() {
+      this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
+      const thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
+      if (thumbnailPreview) thumbnailPreview.remove()
+      const contributionImage = document.querySelectorAll('.contribution-image')[0]
+      this.oldImage = contributionImage
+      if (contributionImage) contributionImage.remove()
+    },
+    initCropper() {
+      this.image = new Image()
+      this.image.src = URL.createObjectURL(this.file)
+      this.editor.appendChild(this.image)
+      this.cropper = new Cropper(this.image, { zoomable: false, autoCropArea: 0.9 })
+    },
+    cropImage() {
+      this.showCropper = false
+      const canvas = this.cropper.getCroppedCanvas()
+      canvas.toBlob(blob => {
+        this.setupPreview(canvas)
+        this.removeCropper()
+        const croppedImageFile = new File([blob], this.file.name, { type: 'image/jpeg' })
+        this.$emit('addTeaserImage', croppedImageFile)
+      }, 'image/jpeg')
+    },
+    setupPreview(canvas) {
+      this.image = new Image()
+      this.image.src = canvas.toDataURL()
+      this.image.classList.add('thumbnail-preview')
+      this.thumbnailElement.appendChild(this.image)
+    },
+    cancelCrop() {
+      this.showCropper = false
+      if (this.oldImage) this.thumbnailElement.appendChild(this.oldImage)
+      this.removeCropper()
+    },
+    removeCropper() {
+      this.editor.removeChild(document.querySelectorAll('.cropper-container')[0])
     },
   },
 }
@@ -206,6 +221,12 @@ export default {
 .crop-confirm {
   position: absolute;
   left: 10px;
+  top: 10px;
+  z-index: 1;
+}
+.crop-cancel {
+  position: absolute;
+  right: 10px;
   top: 10px;
   z-index: 1;
 }

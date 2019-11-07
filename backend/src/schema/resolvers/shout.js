@@ -7,7 +7,7 @@ export default {
       const transactionRes = await session.run(
         `MATCH (node {id: $id})<-[:WROTE]-(userWritten:User), (user:User {id: $userId})
           WHERE $type IN labels(node) AND NOT userWritten.id = $userId
-          MERGE (user)-[relation:SHOUTED]->(node)
+          MERGE (user)-[relation:SHOUTED{createdAt:toString(datetime())}]->(node)
           RETURN COUNT(relation) > 0 as isShouted`,
         {
           id,

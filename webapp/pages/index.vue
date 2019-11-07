@@ -10,17 +10,18 @@
             v-model="selected"
             :options="sortingOptions"
             size="large"
-            v-bind:icon-right="sortingIcon"
-            @input="toggleOnlySorting"
+            :icon-right="sortingIcon"
           ></ds-select>
         </div>
       </ds-grid-item>
       <template v-if="hasResults">
-        <masonry-grid-item v-for="post in posts" :key="post.id">
+        <masonry-grid-item v-for="post in currentPosts" :key="post.id">
           <hc-post-card
             :post="post"
             :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
             @removePostFromList="deletePost"
+            @pinPost="pinPost"
+            @unpinPost="unpinPost"
           />
         </masonry-grid-item>
       </template>
@@ -58,12 +59,13 @@
 <script>
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import HcEmpty from '~/components/Empty'
-import HcPostCard from '~/components/PostCard'
+import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
+import PostMutations from '~/graphql/PostMutations'
 
 export default {
   components: {
@@ -83,30 +85,30 @@ export default {
       offset: 0,
       pageSize: 12,
       hashtag,
-      placeholder: this.$t('sorting.newest'),
-      selected: this.$t('sorting.newest'),
-      sortingIcon: 'sort-amount-desc',
-      sorting: 'createdAt_desc',
-      sortingOptions: [
-        {
-          label: this.$t('sorting.newest'),
-          value: 'Newest',
-          icons: 'sort-amount-desc',
-          order: 'createdAt_desc',
-        },
-        {
-          label: this.$t('sorting.oldest'),
-          value: 'Oldest',
-          icons: 'sort-amount-asc',
-          order: 'createdAt_asc',
-        },
-      ],
     }
   },
   computed: {
     ...mapGetters({
-      postsFilter: 'postsFilter/postsFilter',
+      postsFilter: 'posts/filter',
+      orderOptions: 'posts/orderOptions',
+      orderBy: 'posts/orderBy',
+      selectedOrder: 'posts/selectedOrder',
+      sortingIcon: 'posts/orderIcon',
+      currentPosts: 'posts/currentPosts',
     }),
+    selected: {
+      get() {
+        return this.selectedOrder(this)
+      },
+      set({ value }) {
+        this.offset = 0
+        this.setCurrentPosts([])
+        this.selectOrder(value)
+      },
+    },
+    sortingOptions() {
+      return this.orderOptions(this)
+    },
     finalFilters() {
       let filter = this.postsFilter
       if (this.hashtag) {
@@ -118,16 +120,14 @@ export default {
       return filter
     },
     hasResults() {
-      return this.$apollo.loading || (this.posts && this.posts.length > 0)
+      return this.$apollo.loading || (this.currentPosts && this.currentPosts.length > 0)
     },
   },
   methods: {
-    toggleOnlySorting(x) {
-      this.offset = 0
-      this.posts = []
-      this.sortingIcon = x.icons
-      this.sorting = x.order
-    },
+    ...mapMutations({
+      selectOrder: 'posts/SELECT_ORDER',
+      setCurrentPosts: 'posts/SET_CURRENT_POSTS',
+    }),
     clearSearch() {
       this.$router.push({ path: '/' })
       this.hashtag = null
@@ -148,23 +148,63 @@ export default {
           offset: this.offset,
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: ['pinned_asc', this.orderBy],
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
             this.hasMore = false
           }
-          const result = Object.assign({}, previousResult, {
-            Post: [...previousResult.Post, ...fetchMoreResult.Post],
-          })
-          return result
+          const result = {
+            ...previousResult,
+            Post: [
+              ...previousResult.Post.filter(prevPost => {
+                return (
+                  fetchMoreResult.Post.filter(newPost => newPost.id === prevPost.id).length === 0
+                )
+              }),
+              ...fetchMoreResult.Post,
+            ],
+          }
+          this.setCurrentPosts(result.Post)
         },
       })
     },
     deletePost(deletedPost) {
-      this.posts = this.posts.filter(post => {
+      const posts = this.currentPosts.filter(post => {
         return post.id !== deletedPost.id
       })
+      this.setCurrentPosts(posts)
+    },
+    resetPostList() {
+      this.offset = 0
+      this.setCurrentPosts([])
+      this.hasMore = true
+    },
+    pinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().pinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.Post.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    unpinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().unpinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.Post.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
     },
   },
   apollo: {
@@ -176,12 +216,12 @@ export default {
         return {
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: ['pinned_asc', this.orderBy],
           offset: 0,
         }
       },
       update({ Post }) {
-        this.posts = Post
+        this.setCurrentPosts(Post)
       },
       fetchPolicy: 'cache-and-network',
     },
