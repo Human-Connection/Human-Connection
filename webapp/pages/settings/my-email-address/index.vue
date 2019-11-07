@@ -1,5 +1,5 @@
 <template>
-  <ds-card centered v-if="success">
+  <ds-card centered v-if="data">
     <transition name="ds-transition-fade">
       <sweetalert-icon icon="info" />
     </transition>
@@ -32,6 +32,7 @@
 import { mapGetters } from 'vuex'
 import { AddEmailAddressMutation } from '~/graphql/EmailAddress.js'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
+import { normalizeEmail } from 'validator'
 
 export default {
   components: {
@@ -40,12 +41,12 @@ export default {
   data() {
     return {
       backendErrors: null,
-      success: false,
+      data: null,
     }
   },
   computed: {
     submitMessage() {
-      const { email } = this.formData
+      const { email } = this.data.AddEmailAddress
       return this.$t('settings.email.submitted', { email })
     },
     ...mapGetters({
@@ -61,7 +62,7 @@ export default {
       },
     },
     formSchema() {
-      const { email } = this.currentUser
+      const currentEmail = normalizeEmail(this.currentUser.email)
       const sameEmailValidationError = this.$t('settings.email.validation.same-email')
       return {
         email: [
@@ -69,7 +70,7 @@ export default {
           {
             validator(rule, value, callback, source, options) {
               const errors = []
-              if (email === value) {
+              if (currentEmail === normalizeEmail(value)) {
                 errors.push(sameEmailValidationError)
               }
               return errors
@@ -83,17 +84,17 @@ export default {
     async submit() {
       const { email } = this.formData
       try {
-        await this.$apollo.mutate({
+        const response = await this.$apollo.mutate({
           mutation: AddEmailAddressMutation,
           variables: { email },
         })
+        this.data = response.data
         this.$toast.success(this.$t('settings.email.success'))
-        this.success = true
 
         setTimeout(() => {
           this.$router.push({
             path: 'my-email-address/enter-nonce',
-            query: { email },
+            query: { email: this.data.AddEmailAddress.email },
           })
         }, 3000)
       } catch (err) {
@@ -102,7 +103,9 @@ export default {
           // have a query to filter for email addresses. This is a privacy
           // consideration. We could implement a dedicated query to check that
           // but I think it's too much effort for this feature.
-          this.backendErrors = { message: this.$t('registration.signup.form.errors.email-exists') }
+          this.backendErrors = {
+            message: this.$t('components.registration.signup.form.errors.email-exists'),
+          }
           return
         }
         this.$toast.error(err.message)
