@@ -72,6 +72,7 @@ const validateReport = async (resolve, root, args, context, info) => {
       submitterId: user.id,
     },
   )
+  session.close()
   const [existingReportedResource] = reportQueryRes.records.map(record => {
     return {
       label: record.get('label'),
