@@ -145,6 +145,7 @@ import { gql } from '../jest/helpers'
         slug: 'peter-lustig',
         role: 'admin',
         email: 'admin@example.org',
+        actorId: 'http://localhost:4123/api/users/peter-lustig',
       }),
       factory.create('User', {
         id: 'u2',
@@ -152,6 +153,7 @@ import { gql } from '../jest/helpers'
         slug: 'bob-der-baumeister',
         role: 'moderator',
         email: 'moderator@example.org',
+        actorId: 'http://localhost:4123/api/users/bob-der-baumeister',
       }),
       factory.create('User', {
         id: 'u3',
@@ -159,6 +161,7 @@ import { gql } from '../jest/helpers'
         slug: 'jenny-rostock',
         role: 'user',
         email: 'user@example.org',
+        actorId: 'http://localhost:4123/api/users/jenny-rostock',
       }),
       factory.create('User', {
         id: 'u4',
@@ -166,6 +169,7 @@ import { gql } from '../jest/helpers'
         slug: 'huey',
         role: 'user',
         email: 'huey@example.org',
+        actorId: 'http://localhost:4123/api/users/huey',
       }),
       factory.create('User', {
         id: 'u5',
@@ -173,6 +177,7 @@ import { gql } from '../jest/helpers'
         slug: 'dewey',
         role: 'user',
         email: 'dewey@example.org',
+        actorId: 'http://localhost:4123/api/users/dewey',
       }),
       factory.create('User', {
         id: 'u6',
@@ -180,6 +185,7 @@ import { gql } from '../jest/helpers'
         slug: 'louie',
         role: 'user',
         email: 'louie@example.org',
+        actorId: 'http://localhost:4123/api/users/louie',
       }),
       factory.create('User', {
         id: 'u7',
@@ -187,6 +193,7 @@ import { gql } from '../jest/helpers'
         slug: 'dagobert',
         role: 'user',
         email: 'dagobert@example.org',
+        actorId: 'http://localhost:4123/api/users/dagobert',
       }),
     ])
 
