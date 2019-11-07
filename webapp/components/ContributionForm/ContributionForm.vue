@@ -22,22 +22,12 @@
           autofocus
         />
         <ds-text align="right">
-          <ds-chip v-if="form.title.length < formSchema.title.min" class="checkicon" size="base">
+          <ds-chip v-if="errors && errors.title" color="danger" size="base">
             {{ form.title.length }}/{{ formSchema.title.max }}
             <ds-icon name="warning"></ds-icon>
           </ds-chip>
-          <ds-chip
-            v-else-if="form.title.length < formSchema.title.max"
-            class="checkicon"
-            size="base"
-            color="primary"
-          >
+          <ds-chip v-else size="base">
             {{ form.title.length }}/{{ formSchema.title.max }}
-            <ds-icon name="check"></ds-icon>
-          </ds-chip>
-          <ds-chip v-else class="checkicon" size="base" color="danger">
-            {{ form.title.length }}/{{ formSchema.title.max }}
-            <ds-icon name="warning"></ds-icon>
           </ds-chip>
         </ds-text>
         <client-only>
