@@ -700,6 +700,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       mutate({
         mutation: reportMutation,
         variables: {
+          resourceId: 'c5',
+          reasonCategory: 'doxing',
+          reasonDescription: "That's my friends privat data!",
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
           resourceId: 'c1',
           reasonCategory: 'pornographic_content_links',
           reasonDescription: 'This comment is porno!!!',

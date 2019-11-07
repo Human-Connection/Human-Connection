@@ -1,3 +1,5 @@
+import { undefinedToNullResolver } from './helpers/Resolver'
+
 export default {
   Mutation: {
     report: async (_parent, params, context, _resolveInfo) => {
@@ -11,7 +13,7 @@ export default {
             MATCH (submitter:User {id: $submitterId})
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Comment OR resource:Post
-            CREATE (resource)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
+            CREATE (resource)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription, closed: false}]-(submitter)
             RETURN report, submitter, resource, labels(resource)[0] as type
           `,
           {
@@ -78,7 +80,9 @@ export default {
         const cypher = `
           MATCH (submitter:User)-[report:REPORTED]->(resource)
           WHERE resource:User OR resource:Comment OR resource:Post
-          RETURN report, submitter, resource, labels(resource)[0] as type
+          OPTIONAL MATCH (:User)-[decision:DECIDED {uuid: report.decisionUuid}]->(resource)
+          OPTIONAL MATCH (:User)-[decisionPending:DECIDED {last: true}]->(resource)
+          RETURN report, submitter, resource, labels(resource)[0] as type, decision, decisionPending
           ${orderByClause}
         `
         const result = await session.run(cypher, {})
@@ -88,16 +92,28 @@ export default {
             submitter: r.get('submitter'),
             resource: r.get('resource'),
             type: r.get('type'),
+            decision: r.get('decision'),
+            decisionPending: r.get('decisionPending'),
           }
         })
         if (!dbResponse) return null
 
         response = []
         dbResponse.forEach(ele => {
-          const { report, submitter, resource, type } = ele
+          const { report, submitter, resource, type, decision, decisionPending } = ele
 
           const responseEle = {
             ...report.properties,
+            decisionAt: decision
+              ? decision.properties.updatedAt
+              : decisionPending
+              ? decisionPending.properties.updatedAt
+              : null,
+            decisionDisable: decision
+              ? decision.properties.disable
+              : decisionPending
+              ? decisionPending.properties.disable
+              : null,
             post: null,
             comment: null,
             user: null,
@@ -122,7 +138,19 @@ export default {
         session.close()
       }
 
+      // Wolle console.log('response: ')
+      // response.forEach((ele, index) => {
+      //   // console.log('ele #', index, ': ', ele)
+      //   // if (ele.decision === undefined)
+      //   // console.log('ele #', index, ': ', ele)
+      //   if (ele.decision) console.log('ele #', index, ': ', ele)
+      // })
+      // // Wolle console.log('response: ', response)
+
       return response
     },
+  },
+  REPORTED: {
+    ...undefinedToNullResolver(['decisionUuid', 'decisionAt', 'decisionDisable']),
   },
 }

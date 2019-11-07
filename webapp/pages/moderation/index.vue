@@ -87,17 +87,30 @@
               <span v-else>—</span>
             </td>
             <td class="ds-table-col ds-table-head-col-border">
-              <!-- disabledBy -->
+              <!-- closed -->
+              <span v-if="content.closed" class="decision">
+                {{ $t('moderation.reports.decided') }}
+              </span>
+              <span v-else class="no-decision">
+                {{ $t('moderation.reports.noDecision') }}
+              </span>
+              <!-- decidedByModerator -->
               <div v-if="content.resource.decidedByModerator">
-                {{ $t('moderation.reports.disabledBy') }}
                 <br />
+                <div v-if="content.decisionDisable">
+                  {{ $t('moderation.reports.disabledBy') }}
+                </div>
+                <div v-else>
+                  {{ $t('moderation.reports.enabledBy') }}
+                </div>
                 <hc-user
                   :user="content.resource.decidedByModerator"
                   :showAvatar="false"
                   :trunc="30"
+                  :date-time="content.decisionAt"
+                  positionDatetime="below"
                 />
               </div>
-              <span v-else class="no-decision">{{ $t('moderation.reports.noDecision') }}</span>
             </td>
           </tr>
           <tr>
@@ -175,6 +188,7 @@ export default {
     reports: {
       immediate: true,
       handler(newReports) {
+        // Wolle console.log('newReports: ', newReports)
         const newReportedContentStructure = []
         newReports.forEach(report => {
           const resource =
@@ -192,6 +206,10 @@ export default {
           if (idx === -1) {
             idx = newReportedContentStructure.length
             newReportedContentStructure.push({
+              closed: report.closed,
+              decisionUuid: report.decisionUuid,
+              decisionAt: report.decisionAt,
+              decisionDisable: report.decisionDisable,
               type: report.type,
               resource,
               user: report.user,
@@ -203,6 +221,7 @@ export default {
           }
           newReportedContentStructure[idx].reports.push(report)
         })
+        // Wolle console.log('newReportedContentStructure: ', newReportedContentStructure)
         this.reportedContentStructure = newReportedContentStructure
       },
     },
@@ -220,6 +239,9 @@ export default {
 // Wolle delete?
 .ds-table-head-col-border {
   border-bottom: $border-color-softer dotted $border-size-base;
+}
+.decision {
+  color: $color-secondary;
 }
 .no-decision {
   color: $text-color-danger;

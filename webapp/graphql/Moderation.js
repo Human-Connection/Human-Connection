@@ -8,6 +8,10 @@ export const reportListQuery = () => {
         createdAt
         reasonCategory
         reasonDescription
+        closed
+        decisionUuid
+        decisionAt
+        decisionDisable
         type
         submitter {
           id

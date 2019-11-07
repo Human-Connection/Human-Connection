@@ -5,8 +5,7 @@ type DECIDED {
   # reasonDescription: String
   disable: Boolean!
   closed: Boolean!
-
-  # internal
+  uuid: ID
   last: Boolean!
   
   moderator: User
@@ -15,7 +14,7 @@ type DECIDED {
   # resource: ReportResource
   #   @cypher(statement: "MATCH (resource)<-[:DECIDED]-(:User) RETURN resource")
   type: String
-    @cypher(statement: "MATCH (resource)<-[:DECIDED]-(:User) RETURN labels(resource)[0]")
+    @cypher(statement: "MATCH (resource)<-[:DECIDED]-(user:User) RETURN labels(resource)[0]")
   user: User
   post: Post
   comment: Comment

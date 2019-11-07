@@ -411,6 +411,7 @@ describe('report resources', () => {
       })
     })
   })
+
   describe('query for reported resource', () => {
     const reportsQuery = gql`
       query {

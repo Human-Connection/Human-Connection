@@ -1,4 +1,5 @@
 import uuid from 'uuid/v4'
+import { undefinedToNullResolver } from './helpers/Resolver'
 
 export default {
   Mutation: {
@@ -38,18 +39,15 @@ export default {
           if (disable === undefined) disable = false // default for creation
           if (closed === undefined) closed = false // default for creation
           cypherHeader = `
-              MATCH (moderator:User {id: $moderatorId})
               MATCH (resource {id: $resourceId})
-              WHERE resource:User OR resource:Comment OR resource:Post
+              WHERE resource: User OR resource: Comment OR resource: Post
+              OPTIONAL MATCH (:User)-[lastDecision:DECIDED {last: true}]->(resource)
+              SET (CASE WHEN lastDecision IS NOT NULL THEN lastDecision END).last = false
+              WITH resource
+              MATCH (moderator:User {id: $moderatorId})
               CREATE (resource)<-[decision:DECIDED]-(moderator)
               SET decision.last = true
-              WITH decision, resource, moderator
-              OPTIONAL MATCH (:User)-[lastDecision:DECIDED {last: true}]->(resource)
-              SET (
-              CASE
-              WHEN lastDecision IS NOT NULL
-              THEN lastDecision END).last = false
-            `
+              `
         } else {
           // an open decision …
           if (disable === undefined) disable = existingDecisionTxResult.decision.properties.disable // default set to existing
@@ -77,24 +75,20 @@ export default {
         }
         let decisionUUID = null
         let cypherClosed = ''
-        // if (closed) {
-        //   decisionUUID = uuid()
-        //   cypherClosed = `
-        //       OPTIONAL MATCH (:User)-[report:REPORTED {closed: false}]->(resource)
-        //       SET report.closed = true, report.decisionUuid = $decisionUUID
-        //       SET decision.uuid = $decisionUUID
-        //     `
-        // }
+        if (closed) {
+          decisionUUID = uuid()
+          cypherClosed = `
+              WITH decision, resource, moderator
+              OPTIONAL MATCH (:User)-[report:REPORTED {closed: false}]->(resource)
+              SET (CASE WHEN report IS NOT NULL THEN report END).closed = true
+              SET (CASE WHEN report IS NOT NULL THEN report END).decisionUuid = $decisionUUID
+              SET decision.uuid = $decisionUUID
+            `
+        }
         const cypher =
           cypherHeader +
-          `SET (
-            CASE
-            WHEN decision.createdAt IS NOT NULL
-            THEN decision END).updatedAt = toString(datetime())
-            SET (
-            CASE
-            WHEN decision.createdAt IS NULL
-            THEN decision END).createdAt = toString(datetime())
+          `SET (CASE WHEN decision.createdAt IS NOT NULL THEN decision END).updatedAt = toString(datetime())
+            SET (CASE WHEN decision.createdAt IS NULL THEN decision END).createdAt = toString(datetime())
             SET decision.disable = $disable, decision.closed = $closed
             SET resource.disabled = $disable
           ` +
@@ -147,5 +141,8 @@ export default {
 
       return createdRelationshipWithNestedAttributes
     },
+  },
+  DECIDED: {
+    ...undefinedToNullResolver(['updatedAt', 'uuid']),
   },
 }

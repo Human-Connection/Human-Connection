@@ -20,5 +20,8 @@ MATCH (moderator:User)-[disabled:DISABLED]->(resource)
 DELETE disabled
 CREATE (moderator)-[decision:DECIDED]->(resource)
 SET decision.createdAt = toString(datetime()), decision.disable = true, decision.last = true, decision.closed = false
-RETURN decision;
+WITH decision
+MATCH (:User)-[report:REPORTED]->(resource)
+SET report.closed = false
+RETURN decision, report;
 " | cypher-shell

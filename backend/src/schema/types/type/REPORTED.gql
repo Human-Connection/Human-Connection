@@ -1,7 +1,16 @@
 type REPORTED {
-  createdAt: String
-  reasonCategory: ReasonCategory
-  reasonDescription: String
+  createdAt: String!
+  reasonCategory: ReasonCategory!
+  reasonDescription: String!
+  closed: Boolean!
+  decisionUuid: ID
+
+  decisionDisable: Boolean
+  decisionAt: String
+
+  # Wolle decision: DECIDED
+    # @cypher(statement: "MATCH (resource)<-[decision:DECIDED {uuid: $decisionUuid}]-(user:User) RETURN decision")
+
   submitter: User
     @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
   # not yet supported
@@ -12,8 +21,6 @@ type REPORTED {
   user: User
   post: Post
   comment: Comment
-
-  # decided: DECIDED
 }
 
 # this list equals the strings of an array in file "webapp/constants/modals.js"
