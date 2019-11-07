@@ -59,6 +59,8 @@ input _PostInput {
 type Mutation {
   CreatePost(
     id: ID
+    objectId: String
+    activityId: String
     title: String!
     slug: String
     content: String!
@@ -71,6 +73,8 @@ type Mutation {
   ): Post
   UpdatePost(
     id: ID!
+    objectId: String
+    activityId: String
     title: String!
     slug: String
     content: String!
