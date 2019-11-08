@@ -451,9 +451,10 @@
     "reports": {
       "empty": "Glückwunsch, es gibt nichts zu moderieren.",
       "name": "Meldungen",
-      "type": "Typ",
-      "content": "Inhalt",
-      "author": "Autor",
+      "typeRowHeadline": "Typ",
+      "contentRowHeadline": "Inhalt",
+      "authorRowHeadline": "Autor",
+      "decisionRowHeadline": "Decision",
       "decided": "Entschieden",
       "noDecision": "Keine Entscheidung!",
       "enabledBy": "Aktiviert von",

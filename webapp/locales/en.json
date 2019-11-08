@@ -452,9 +452,10 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "type": "Type",
-      "content": "Content",
-      "author": "Author",
+      "typeRowHeadline": "Type",
+      "contentRowHeadline": "Content",
+      "authorRowHeadline": "Author",
+      "decisionRowHeadline": "Decision",
       "decided": "Decided",
       "noDecision": "No decision!",
       "enabledBy": "Enabled by",

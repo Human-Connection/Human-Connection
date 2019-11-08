@@ -9,19 +9,27 @@
     >
       <colgroup><col width="" /></colgroup>
       <template v-for="content in reportedContentStructure">
-        <thead :key="'thead-' + content.resource.id">
+        <thead
+          :class="[
+            content.closed ? 'decision' : 'no-decision',
+            'ds-table-col',
+            'ds-table-head-col',
+            'ds-table-head-col-border',
+          ]"
+          :key="'thead-' + content.resource.id"
+        >
           <tr valign="top">
-            <th class="ds-table-col ds-table-head-col ds-table-head-col-border">
-              {{ $t('moderation.reports.type') }}
+            <th>
+              {{ $t('moderation.reports.typeRowHeadline') }}
             </th>
-            <th class="ds-table-col ds-table-head-col ds-table-head-col-border">
-              {{ $t('moderation.reports.content') }}
+            <th>
+              {{ $t('moderation.reports.contentRowHeadline') }}
             </th>
-            <th class="ds-table-col ds-table-head-col ds-table-head-col-border">
-              {{ $t('moderation.reports.author') }}
+            <th>
+              {{ $t('moderation.reports.authorRowHeadline') }}
             </th>
-            <th class="ds-table-col ds-table-head-col ds-table-head-col-border">
-              {{ $t('moderation.reports.decision') }}
+            <th>
+              {{ $t('moderation.reports.decisionRowHeadline') }}
             </th>
           </tr>
         </thead>
