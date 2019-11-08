@@ -110,3 +110,13 @@ export const reportMutation = () => {
     }
   `
 }
+
+export const decideMutation = () => {
+  return gql`
+    mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+      decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+        disable
+      }
+    }
+  `
+}

@@ -31,7 +31,10 @@ export default {
 
       const session = driver.session()
       try {
-        const queryOpenDecisionWriteTxResultPromise = queryOpenDecisionWriteTransaction(session, resourceId)
+        const queryOpenDecisionWriteTxResultPromise = queryOpenDecisionWriteTransaction(
+          session,
+          resourceId,
+        )
         const [openDecisionTxResult] = await queryOpenDecisionWriteTxResultPromise
 
         let cypherHeader = ''
@@ -50,7 +53,8 @@ export default {
               CREATE (resource)<-[decision:DECIDED]-(moderator)
               SET decision.latest = true
               `
-        } else { // an open decision, then change it
+        } else {
+          // an open decision, then change it
           if (disable === undefined) disable = openDecisionTxResult.decision.properties.disable // default set to existing
           if (closed === undefined) closed = openDecisionTxResult.decision.properties.closed // default set to existing
           // current moderator is not the same as old
@@ -100,8 +104,7 @@ export default {
         // console.log('disable: ', disable)
 
         const mutateDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
-          const mutateDecisionTransactionResponse = await txc.run(
-            cypher, {
+          const mutateDecisionTransactionResponse = await txc.run(cypher, {
             resourceId,
             moderatorId: moderator.id,
             disable,

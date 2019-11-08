@@ -8,7 +8,7 @@
       cellpadding="0"
     >
       <colgroup><col width="" /></colgroup>
-      <template v-for="content in reportedContentStructure">
+      <template v-for="(content, index) in reportedContentStructure">
         <thead
           :class="[
             content.closed ? 'decision' : 'no-decision',
@@ -77,28 +77,30 @@
                 <hc-user :user="content.user" :showAvatar="false" :trunc="30" />
               </div>
             </td>
+            <!-- contentBelongsToUser -->
             <td class="ds-table-col ds-table-head-col-border">
-              <ds-flex v-if="content.contentBelongsToUser">
-                <ds-flex-item width="20px">
-                  <ds-icon
-                    v-tooltip="{ content: $t('report.author'), placement: 'right' }"
-                    name="user"
-                  />
-                </ds-flex-item>
-                <ds-flex-item>
-                  <hc-user :user="content.contentBelongsToUser" :showAvatar="false" :trunc="30" />
-                </ds-flex-item>
-              </ds-flex>
+              <hc-user
+                v-if="content.contentBelongsToUser"
+                :user="content.contentBelongsToUser"
+                :showAvatar="false"
+                :trunc="30"
+              />
               <span v-else>—</span>
             </td>
             <td class="ds-table-col ds-table-head-col-border">
               <!-- closed -->
-              <b v-if="content.closed" class="decision">
+              <b v-if="content.closed">
                 {{ $t('moderation.reports.decided') }}
               </b>
-              <b v-else class="no-decision">
-                {{ $t('moderation.reports.noDecision') }}
-              </b>
+              <ds-button
+                v-else
+                danger
+                class="confirm"
+                icon="exclamation-circle"
+                @click="confirm(content.resource.id, index)"
+              >
+                {{ $t('moderation.reports.decideButton') }}
+              </ds-button>
               <!-- decidedByModerator -->
               <div v-if="content.resource.decidedByModerator">
                 <br />
@@ -153,7 +155,7 @@
 <script>
 import HcEmpty from '~/components/Empty.vue'
 import HcUser from '~/components/User/User'
-import { reportListQuery } from '~/graphql/Moderation.js'
+import { reportListQuery, decideMutation } from '~/graphql/Moderation.js'
 
 export default {
   components: {
@@ -231,9 +233,29 @@ export default {
       },
     },
   },
+  methods: {
+    async confirm(resourceId, index) {
+      this.$apollo
+        .mutate({
+          mutation: decideMutation(),
+          variables: { resourceId, closed: true },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('moderation.reports.DecisionSuccess'))
+          this.$apollo.queries.reports.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+  },
   apollo: {
     reports: {
       query: reportListQuery(),
+      variables() {
+        return {}
+      },
+      // Wolle update({ Post }) {
+      //   this.setCurrentPosts(Post)
+      // },
       fetchPolicy: 'cache-and-network',
     },
   },
@@ -249,6 +271,6 @@ export default {
   color: $color-secondary;
 }
 .no-decision {
-  color: $text-color-danger;
+  color: $color-warning;
 }
 </style>

@@ -458,6 +458,8 @@
       "decisionRowHeadline": "Decision",
       "decided": "Decided",
       "noDecision": "No decision!",
+      "decideButton": "Decide",
+      "DecisionSuccess": "Decided successfully!",
       "enabledBy": "Enabled by",
       "disabledBy": "Disabled by",
       "reasonCategory": "Category",
