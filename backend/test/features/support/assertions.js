@@ -2,9 +2,8 @@
 import { Given, Then } from 'cucumber'
 import { expect } from 'chai'
 import { GraphQLClient } from 'graphql-request'
-import { host } from '../../../src/jest/helpers'
 
-const client = new GraphQLClient(host)
+const client = new GraphQLClient('http://127.0.0.1:4123')
 // setDefaultTimeout(60 * 1000)
 
 Then('I expect the Content-Type to be {string}', function(contentType) {

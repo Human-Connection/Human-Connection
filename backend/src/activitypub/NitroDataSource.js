@@ -348,7 +348,7 @@ function NitroDataSource(uri) {
       mutation: gql`
         mutation {
             CreatePost(content: "${postObject.content}", contentExcerpt: "${trunc(postObject.content, 120)}",  
-            title: "${title}", id: "${postId}", categoryIds: ["cat16"]) {
+            title: "${title}", id: "${postId}", categoryIds: ["cat16"], activityId: "${activity.id}", objectId: "${postObject.id}") {
                 id
             }
         }

@@ -37,7 +37,7 @@ export default schema => {
   let order = [
     'sentry',
     'permissions',
-    // 'activityPub', disabled temporarily
+    'activityPub',
     'validation',
     'sluggify',
     'excerpt',
