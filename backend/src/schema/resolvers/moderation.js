@@ -99,7 +99,7 @@ export default {
         // Wolle console.log('cypher: ', cypher)
         // console.log('disable: ', disable)
 
-        const newDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
+        const mutateDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
           const mutateDecisionTransactionResponse = await txc.run(
             cypher, {
             resourceId,
@@ -115,7 +115,7 @@ export default {
             type: record.get('type'),
           }))
         })
-        const txResult = await newDecisionWriteTxResultPromise
+        const txResult = await mutateDecisionWriteTxResultPromise
         if (!txResult[0]) return null
         const { decision, resource, moderator: moderatorInResult, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
