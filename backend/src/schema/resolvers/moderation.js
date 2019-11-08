@@ -50,12 +50,12 @@ export default {
               CREATE (resource)<-[decision:DECIDED]-(moderator)
               SET decision.latest = true
               `
-        } else { // an open decision …
+        } else { // an open decision, then change it
           if (disable === undefined) disable = openDecisionTxResult.decision.properties.disable // default set to existing
           if (closed === undefined) closed = openDecisionTxResult.decision.properties.closed // default set to existing
           // current moderator is not the same as old
           if (moderator.id !== openDecisionTxResult.decisionModerator.id) {
-            // an open decision from different moderator, then change relation and properties
+            // from a different moderator, then create relation with properties to new moderator
             cypherHeader = `
                 MATCH (moderator:User)-[oldDecision:DECIDED {closed: false}]->(resource {id: $resourceId})
                 WHERE resource:User OR resource:Comment OR resource:Post
@@ -67,7 +67,7 @@ export default {
                 SET decision = oldDecision
               `
           } else {
-            // an open decision from same moderator, then change properties
+            // an open decision from same moderator, then match this
             cypherHeader = `
                 MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
                 WHERE resource:User OR resource:Comment OR resource:Post
