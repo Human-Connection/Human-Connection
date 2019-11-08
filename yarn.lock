@@ -1924,10 +1924,10 @@ cypress-cucumber-preprocessor@^1.16.2:
     js-string-escape "^1.0.1"
     through "^2.3.8"
 
-cypress-file-upload@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.4.0.tgz#f066853357994ed7b64e0ea35920d3d85273914e"
-  integrity sha512-BY7jrpOPFEGcGBzkTReEjwQ59+O3u2SH2OleXdnDCuWIPHjbDx7haXukyAFd906JsI4Z2zXPiKrUVFHZc96eFA==
+cypress-file-upload@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-3.5.0.tgz#7ff6294a3be68adcac72bc1fa25c75c57e0701fc"
+  integrity sha512-MgrsP4C2pUMvHqixH33OtXHNKkwQZV6ny0fu+APDTEP9O/uuKFh3sYcnPNU6XGfuC85/RmqVNw21ZQyyT+S5IQ==
 
 cypress-plugin-retries@^1.4.0:
   version "1.4.0"
