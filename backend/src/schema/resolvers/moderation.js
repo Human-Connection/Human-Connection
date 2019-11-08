@@ -1,6 +1,23 @@
 import uuid from 'uuid/v4'
 import { undefinedToNullResolver } from './helpers/Resolver'
 
+const queryOpenDecisionWriteTransaction = (session, resourceId) => {
+  return session.writeTransaction(async txc => {
+    const queryOpenDecisionTransactionResponse = await txc.run(
+      `
+        MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
+        WHERE resource:User OR resource:Comment OR resource:Post
+        RETURN decision, moderator {.id} AS decisionModerator
+      `,
+      { resourceId },
+    )
+    return queryOpenDecisionTransactionResponse.records.map(record => ({
+      decision: record.get('decision'),
+      decisionModerator: record.get('decisionModerator'),
+    }))
+  })
+}
+
 export default {
   Mutation: {
     decide: async (_object, params, context, _resolveInfo) => {
@@ -13,47 +30,32 @@ export default {
       const { user: moderator, driver } = context
 
       const session = driver.session()
-
-      const existingDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
-        const decisionRelationshipTransactionResponse = await txc.run(
-          `
-            MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
-            WHERE resource:User OR resource:Comment OR resource:Post
-            RETURN decision, moderator {.id} AS decisionModerator
-          `,
-          { resourceId },
-        )
-        return decisionRelationshipTransactionResponse.records.map(record => ({
-          decision: record.get('decision'),
-          decisionModerator: record.get('decisionModerator'),
-        }))
-      })
-
       try {
+        const queryOpenDecisionWriteTxResultPromise = queryOpenDecisionWriteTransaction(session, resourceId)
+        const [openDecisionTxResult] = await queryOpenDecisionWriteTxResultPromise
+
         let cypherHeader = ''
 
-        // is there an open decision?
-        const [existingDecisionTxResult] = await existingDecisionWriteTxResultPromise
-        if (!existingDecisionTxResult) {
+        if (!openDecisionTxResult) {
           // no open decision, then create one
           if (disable === undefined) disable = false // default for creation
           if (closed === undefined) closed = false // default for creation
           cypherHeader = `
               MATCH (resource {id: $resourceId})
               WHERE resource: User OR resource: Comment OR resource: Post
-              OPTIONAL MATCH (:User)-[lastDecision:DECIDED {last: true}]->(resource)
-              SET (CASE WHEN lastDecision IS NOT NULL THEN lastDecision END).last = false
+              OPTIONAL MATCH (:User)-[lastDecision:DECIDED {latest: true}]->(resource)
+              SET (CASE WHEN lastDecision IS NOT NULL THEN lastDecision END).latest = false
               WITH resource
               MATCH (moderator:User {id: $moderatorId})
               CREATE (resource)<-[decision:DECIDED]-(moderator)
-              SET decision.last = true
+              SET decision.latest = true
               `
         } else {
           // an open decision …
-          if (disable === undefined) disable = existingDecisionTxResult.decision.properties.disable // default set to existing
-          if (closed === undefined) closed = existingDecisionTxResult.decision.properties.closed // default set to existing
+          if (disable === undefined) disable = openDecisionTxResult.decision.properties.disable // default set to existing
+          if (closed === undefined) closed = openDecisionTxResult.decision.properties.closed // default set to existing
           // current moderator is not the same as old
-          if (moderator.id !== existingDecisionTxResult.decisionModerator.id) {
+          if (moderator.id !== openDecisionTxResult.decisionModerator.id) {
             // an open decision from different moderator, then change relation and properties
             cypherHeader = `
                 MATCH (moderator:User)-[oldDecision:DECIDED {closed: false}]->(resource {id: $resourceId})
@@ -99,14 +101,15 @@ export default {
         // console.log('disable: ', disable)
 
         const newDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
-          const decisionRelationshipTransactionResponse = await txc.run(cypher, {
+          const mutateDecisionTransactionResponse = await txc.run(
+            cypher, {
             resourceId,
             moderatorId: moderator.id,
             disable,
             closed,
             decisionUUID,
           })
-          return decisionRelationshipTransactionResponse.records.map(record => ({
+          return mutateDecisionTransactionResponse.records.map(record => ({
             decision: record.get('decision'),
             resource: record.get('resource'),
             moderator: record.get('moderator'),

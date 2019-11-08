@@ -81,7 +81,7 @@ export default {
           MATCH (submitter:User)-[report:REPORTED]->(resource)
           WHERE resource:User OR resource:Comment OR resource:Post
           OPTIONAL MATCH (:User)-[decision:DECIDED {uuid: report.decisionUuid}]->(resource)
-          OPTIONAL MATCH (:User)-[decisionPending:DECIDED {last: true}]->(resource)
+          OPTIONAL MATCH (:User)-[decisionPending:DECIDED {latest: true}]->(resource)
           RETURN report, submitter, resource, labels(resource)[0] as type, decision, decisionPending
           ${orderByClause}
         `
