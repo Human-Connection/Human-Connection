@@ -4,6 +4,8 @@ import xor from 'lodash/xor'
 import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 import clone from 'lodash/clone'
+import { filterPosts } from '~/graphql/PostQuery'
+import { first, offset } from '~/constants/posts'
 
 const defaultFilter = {}
 
@@ -26,6 +28,7 @@ export const state = () => {
       ...defaultFilter,
     },
     order: orderOptions['createdAt_desc'],
+    currentPosts: [],
   }
 }
 
@@ -74,6 +77,9 @@ export const mutations = {
   SELECT_ORDER(state, value) {
     state.order = orderOptions[value]
   },
+  SET_CURRENT_POSTS(state, posts) {
+    state.currentPosts = posts
+  },
 }
 
 export const getters = {
@@ -113,5 +119,27 @@ export const getters = {
   },
   orderIcon(state) {
     return state.order.icon
+  },
+  currentPosts(state) {
+    return state.currentPosts || []
+  },
+}
+
+export const actions = {
+  async refreshPosts({ commit, getters }, { i18n }) {
+    const client = this.app.apolloProvider.defaultClient
+    const {
+      data: { Post },
+    } = await client.query({
+      query: filterPosts(i18n),
+      variables: {
+        filter: getters.filter,
+        first,
+        orderBy: ['pinned_asc', getters.orderBy],
+        offset,
+      },
+    })
+    commit('SET_CURRENT_POSTS', Post)
+    return Post
   },
 }

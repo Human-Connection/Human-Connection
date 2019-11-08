@@ -3,11 +3,14 @@ import Resolver from './helpers/Resolver'
 import existingEmailAddress from './helpers/existingEmailAddress'
 import { UserInputError } from 'apollo-server'
 import Validator from 'neode/build/Services/Validator.js'
+import { normalizeEmail } from 'validator'
 
 export default {
   Mutation: {
     AddEmailAddress: async (_parent, args, context, _resolveInfo) => {
       let response
+      args.email = normalizeEmail(args.email)
+
       try {
         const { neode } = context
         await new Validator(neode, neode.model('UnverifiedEmailAddress'), args)
@@ -16,13 +19,13 @@ export default {
       }
 
       // check email does not belong to anybody
-      await existingEmailAddress(_parent, args, context)
+      await existingEmailAddress({ args, context })
 
       const nonce = generateNonce()
       const {
         user: { id: userId },
       } = context
-      const { email } = args
+
       const session = context.driver.session()
       const writeTxResultPromise = session.writeTransaction(async txc => {
         const result = await txc.run(
@@ -32,7 +35,7 @@ export default {
             SET email.createdAt = toString(datetime())
             RETURN email, user
           `,
-          { userId, email, nonce },
+          { userId, email: args.email, nonce },
         )
         return result.records.map(record => ({
           name: record.get('user').properties.name,

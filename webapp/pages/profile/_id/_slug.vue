@@ -394,12 +394,18 @@ export default {
           if (!fetchMoreResult || fetchMoreResult.profilePagePosts.length < this.pageSize) {
             this.hasMore = false
           }
-          const result = Object.assign({}, previousResult, {
+          const result = {
+            ...previousResult,
             profilePagePosts: [
-              ...previousResult.profilePagePosts,
+              ...previousResult.profilePagePosts.filter(prevPost => {
+                return (
+                  fetchMoreResult.profilePagePosts.filter(newPost => newPost.id === prevPost.id)
+                    .length === 0
+                )
+              }),
               ...fetchMoreResult.profilePagePosts,
             ],
-          })
+          }
           return result
         },
       })

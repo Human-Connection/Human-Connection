@@ -27,7 +27,7 @@ script:
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
   # Backend
   - docker-compose exec backend yarn run lint
-  - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
+  - docker-compose exec backend yarn run test --ci --verbose=false --coverage
   - docker-compose exec backend yarn run db:seed
   - docker-compose exec backend yarn run db:reset
   # ActivityPub cucumber testing temporarily disabled because it's too buggy
@@ -37,7 +37,6 @@ script:
   # Frontend
   - docker-compose exec webapp yarn run lint
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
-  - docker-compose exec -d backend yarn run test:before:seeder
   # Fullstack
   - docker-compose down
   - docker-compose -f docker-compose.yml up -d
