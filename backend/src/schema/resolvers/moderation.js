@@ -50,8 +50,7 @@ export default {
               CREATE (resource)<-[decision:DECIDED]-(moderator)
               SET decision.latest = true
               `
-        } else {
-          // an open decision …
+        } else { // an open decision …
           if (disable === undefined) disable = openDecisionTxResult.decision.properties.disable // default set to existing
           if (closed === undefined) closed = openDecisionTxResult.decision.properties.closed // default set to existing
           // current moderator is not the same as old
@@ -89,8 +88,8 @@ export default {
         }
         const cypher =
           cypherHeader +
-          `SET (CASE WHEN decision.createdAt IS NOT NULL THEN decision END).updatedAt = toString(datetime())
-            SET (CASE WHEN decision.createdAt IS NULL THEN decision END).createdAt = toString(datetime())
+          `SET decision.updatedAt = toString(datetime())
+            SET (CASE WHEN decision.createdAt IS NULL THEN decision END).createdAt = decision.updatedAt
             SET decision.disable = $disable, decision.closed = $closed
             SET resource.disabled = $disable
           ` +
@@ -146,6 +145,6 @@ export default {
     },
   },
   DECIDED: {
-    ...undefinedToNullResolver(['updatedAt', 'uuid']),
+    ...undefinedToNullResolver(['uuid']),
   },
 }

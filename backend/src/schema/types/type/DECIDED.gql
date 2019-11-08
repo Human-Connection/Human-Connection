@@ -1,6 +1,6 @@
 type DECIDED {
   createdAt: String!
-  updatedAt: String
+  updatedAt: String!
   # reasonCategory: ReasonCategory
   # reasonDescription: String
   disable: Boolean!
