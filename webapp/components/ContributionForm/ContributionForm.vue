@@ -1,5 +1,11 @@
 <template>
-  <ds-form ref="contributionForm" v-model="form" :schema="formSchema" @submit="submit">
+  <ds-form
+    class="contribution-form"
+    ref="contributionForm"
+    v-model="form"
+    :schema="formSchema"
+    @submit="submit"
+  >
     <template slot-scope="{ errors }">
       <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
         <img
@@ -50,7 +56,7 @@
         <ds-text align="right">
           <ds-chip v-if="errors && errors.categoryIds" color="danger" size="base">
             {{ form.categoryIds.length }} / 3
-            <ds-icon name="warning" class="colorRed"></ds-icon>
+            <ds-icon name="warning"></ds-icon>
           </ds-chip>
           <ds-chip v-else size="base">{{ form.categoryIds.length }} / 3</ds-chip>
         </ds-text>
@@ -282,14 +288,10 @@ export default {
     padding-right: 0;
   }
 }
-.checkicon {
-  cursor: default;
-  top: -18px;
-}
-.checkicon_cat {
-  top: -58px;
-}
-.colorRed {
-  color: red;
+
+.contribution-form {
+  .ds-chip {
+    cursor: default;
+  }
 }
 </style>
