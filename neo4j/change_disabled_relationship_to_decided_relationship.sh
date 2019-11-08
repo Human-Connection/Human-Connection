@@ -19,7 +19,7 @@ echo "
 MATCH (moderator:User)-[disabled:DISABLED]->(resource)
 DELETE disabled
 CREATE (moderator)-[decision:DECIDED]->(resource)
-SET decision.createdAt = toString(datetime()), decision.disable = true, decision.last = true, decision.closed = false
+SET decision.updatedAt = toString(datetime()), decision.createdAt = decision.updatedAt, decision.disable = true, decision.latest = true, decision.closed = false
 WITH decision
 MATCH (:User)-[report:REPORTED]->(resource)
 SET report.closed = false
