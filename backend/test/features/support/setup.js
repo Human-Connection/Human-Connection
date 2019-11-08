@@ -1,11 +1,11 @@
 // features/support/assertions.js
-import { Given, BeforeAll, setWorldConstructor } from 'cucumber'
+import { Given, BeforeAll, setWorldConstructor, setDefaultTimeout } from 'cucumber'
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../../src/seed/factories'
 
 const factory = Factory()
 const client = new GraphQLClient('http://127.0.0.1:4123')
-// setDefaultTimeout(60 * 1000)
+setDefaultTimeout(60 * 100000)
 
 setWorldConstructor()
 
