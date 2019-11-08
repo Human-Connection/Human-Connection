@@ -1,5 +1,5 @@
 import { generateRsaKeyPair } from '../activitypub/security'
-import as from 'activitystrea.ms'
+// import as from 'activitystrea.ms'
 
 /* globals activityPub */
 
@@ -11,7 +11,7 @@ export default {
 
       const post = await resolve(root, args, context, info)
 
-      const { user: author } = context
+      /*const { user: author } = context
       const actorId = author.actorId
 
       const createActivity = await new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ export default {
       })
       try {
         await activityPub.sendActivity(createActivity)
-      } catch (e) {}
+      } catch (e) {}*/
       return post
     },
     SignupVerification: async (resolve, root, args, context, info) => {
