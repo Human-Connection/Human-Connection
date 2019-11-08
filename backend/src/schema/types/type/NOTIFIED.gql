@@ -2,8 +2,8 @@ type NOTIFIED {
   id: ID!
   from: NotificationSource
   to: User
-  createdAt: String
-  updatedAt: String
+  createdAt: String!
+  updatedAt: String!
   read: Boolean
   reason: NotificationReason
 }
