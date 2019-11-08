@@ -50,23 +50,27 @@
         <ds-text align="right">
           <ds-chip v-if="errors && errors.categoryIds" color="danger" size="base">
             {{ form.categoryIds.length }} / 3
-            <ds-icon name="warning"></ds-icon>
+            <ds-icon name="warning" class="colorRed"></ds-icon>
           </ds-chip>
           <ds-chip v-else size="base">{{ form.categoryIds.length }} / 3</ds-chip>
         </ds-text>
         <ds-flex class="contribution-form-footer">
-          <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
-          <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
+          <ds-flex-item>
             <ds-space margin-bottom="small" />
             <ds-select
               model="language"
-              :options="form.languageOptions"
+              :options="languageOptions"
               icon="globe"
-              :placeholder="locale"
+              :placeholder="$t('contribution.languageSelectText')"
               :label="$t('contribution.languageSelectLabel')"
             />
           </ds-flex-item>
         </ds-flex>
+        <ds-text align="right">
+          <ds-chip v-if="errors && errors.language" size="base" color="danger">
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+        </ds-text>
         <ds-space />
         <div slot="footer" style="text-align: right">
           <ds-button
@@ -77,13 +81,7 @@
           >
             {{ $t('actions.cancel') }}
           </ds-button>
-          <ds-button
-            type="submit"
-            icon="check"
-            :loading="loading"
-            :disabled="errors"
-            primary
-          >
+          <ds-button type="submit" icon="check" :loading="loading" :disabled="errors" primary>
             {{ $t('actions.save') }}
           </ds-button>
         </div>
@@ -115,16 +113,35 @@ export default {
     contribution: { type: Object, default: () => {} },
   },
   data() {
+    const languageOptions = orderBy(locales, 'name').map(locale => {
+      return { label: locale.name, value: locale.code }
+    })
+
+    const formDefaults = {
+      title: '',
+      content: '',
+      teaserImage: null,
+      image: null,
+      language: null,
+      categoryIds: [],
+    }
+    let id = null
+    let slug = null
+    const form = { ...formDefaults }
+    if (this.contribution && this.contribution.id) {
+      id = this.contribution.id
+      slug = this.contribution.slug
+      form.title = this.contribution.title
+      form.content = this.contribution.content
+      form.image = this.contribution.image
+      form.language =
+        this.contribution && this.contribution.language
+          ? languageOptions.find(o => this.contribution.language === o.value)
+          : null
+      form.categoryIds = this.categoryIds(this.contribution.categories)
+    }
     return {
-      form: {
-        title: '',
-        content: '',
-        categoryIds: [],
-        teaserImage: null,
-        image: null,
-        language: null,
-        languageOptions: [],
-      },
+      form,
       formSchema: {
         title: { required: true, min: 3, max: 100 },
         content: {
@@ -139,66 +156,41 @@ export default {
           required: true,
           validator: (rule, value) => {
             const errors = []
-            if (!(value && 1 <= value.length && value.length <= 3)) {
+            if (!(value && value.length >= 1 && value.length <= 3)) {
               errors.push(new Error(this.$t('common.validations.categories')))
             }
             return errors
           },
         },
+        language: { required: true },
       },
-      id: null,
+      languageOptions,
+      id,
+      slug,
       loading: false,
-      slug: null,
       users: [],
       contentMin: 3,
       hashtags: [],
     }
   },
-  watch: {
-    contribution: {
-      immediate: true,
-      handler: function(contribution) {
-        if (!contribution || !contribution.id) {
-          return
-        }
-        this.id = contribution.id
-        this.slug = contribution.slug
-        this.form.title = contribution.title
-        this.form.content = contribution.content
-        this.form.image = contribution.image
-        this.form.categoryIds = this.categoryIds(contribution.categories)
-      },
-    },
-  },
   computed: {
     contentLength() {
       return this.$filters.removeHtml(this.form.content).length
-    },
-    locale() {
-      const locale =
-        this.contribution && this.contribution.language
-          ? locales.find(loc => this.contribution.language === loc.code)
-          : locales.find(loc => this.$i18n.locale() === loc.code)
-      return locale.name
     },
     ...mapGetters({
       currentUser: 'auth/user',
     }),
   },
-  mounted() {
-    this.availableLocales()
-  },
   methods: {
     submit() {
-      const { title, content, image, teaserImage, categoryIds } = this.form
-      let language
-      if (this.form.language) {
-        language = this.form.language.value
-      } else if (this.contribution && this.contribution.language) {
-        language = this.contribution.language
-      } else {
-        language = this.$i18n.locale()
-      }
+      const {
+        language: { value: language },
+        title,
+        content,
+        image,
+        teaserImage,
+        categoryIds,
+      } = this.form
       this.loading = true
       this.$apollo
         .mutate({
@@ -230,11 +222,6 @@ export default {
     },
     updateEditorContent(value) {
       this.$refs.contributionForm.update('content', value)
-    },
-    availableLocales() {
-      orderBy(locales, 'name').map(locale => {
-        this.form.languageOptions.push({ label: locale.name, value: locale.code })
-      })
     },
     addTeaserImage(file) {
       this.form.teaserImage = file
@@ -294,5 +281,15 @@ export default {
     padding-left: 0;
     padding-right: 0;
   }
+}
+.checkicon {
+  cursor: default;
+  top: -18px;
+}
+.checkicon_cat {
+  top: -58px;
+}
+.colorRed {
+  color: red;
 }
 </style>

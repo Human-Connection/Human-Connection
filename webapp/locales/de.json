@@ -580,7 +580,8 @@
     "filterFollow": "Beiträge filtern von Usern denen ich folge",
     "filterALL": "Alle Beiträge anzeigen",
     "success": "Gespeichert!",
-    "languageSelectLabel": "Sprache",
+    "languageSelectLabel": "Sprache deines Beitrags",
+    "languageSelectText": "Sprache wählen",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
     },

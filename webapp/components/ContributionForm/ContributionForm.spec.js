@@ -22,37 +22,36 @@ config.stubs['v-popover'] = '<span><slot /></span>'
 
 const categories = [
   {
-    "id": "cat3",
-    "slug": "health-wellbeing",
-    "icon": "medkit"
+    id: 'cat3',
+    slug: 'health-wellbeing',
+    icon: 'medkit',
   },
   {
-    "id": "cat12",
-    "slug": "it-internet-data-privacy",
-    "icon": "mouse-pointer"
+    id: 'cat12',
+    slug: 'it-internet-data-privacy',
+    icon: 'mouse-pointer',
   },
   {
-    "id": "cat9",
-    "slug": "democracy-politics",
-    "icon": "university"
+    id: 'cat9',
+    slug: 'democracy-politics',
+    icon: 'university',
   },
   {
-    "id": "cat15",
-    "slug": "consumption-sustainability",
-    "icon": "shopping-cart"
+    id: 'cat15',
+    slug: 'consumption-sustainability',
+    icon: 'shopping-cart',
   },
   {
-    "id": "cat4",
-    "slug": "environment-nature",
-    "icon": "tree"
-  }
+    id: 'cat4',
+    slug: 'environment-nature',
+    icon: 'tree',
+  },
 ]
 
 describe('ContributionForm.vue', () => {
   let wrapper
   let postTitleInput
   let expectedParams
-  let deutschOption
   let cancelBtn
   let mocks
   let propsData
@@ -137,21 +136,13 @@ describe('ContributionForm.vue', () => {
 
     beforeEach(() => {
       wrapper = Wrapper()
-      wrapper.setData({
-        form: {
-          languageOptions: [
-            {
-              label: 'Deutsch',
-              value: 'de',
-            },
-          ],
-        },
-      })
     })
 
     describe('CreatePost', () => {
       describe('language placeholder', () => {
-        it("displays the name that corresponds with the user's location code", () => {
+        it.skip("displays the name that corresponds with the user's location code", () => {
+          // Well not anymore right? We want the user to save the language
+          // excplicitly. I'll keep this test if we change our minds
           expect(wrapper.find('.ds-select-placeholder').text()).toEqual('English')
         })
       })
@@ -242,8 +233,16 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           await wrapper.vm.updateEditorContent(postContent)
-          wrapper.find(CategoriesSelect).setData({categories})
-          await wrapper.find(CategoriesSelect).findAll('button').at(1).trigger('click')
+          wrapper.find(CategoriesSelect).setData({ categories })
+          wrapper
+            .findAll('li')
+            .at(1)
+            .trigger('click') // language
+          await wrapper
+            .find(CategoriesSelect)
+            .findAll('button')
+            .at(1)
+            .trigger('click')
         })
 
         it('creates a post with valid title, content, and at least one category', async () => {
@@ -251,15 +250,12 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
-        it("sends a fallback language based on a user's locale", () => {
-          wrapper.find('form').trigger('submit')
-          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
-        })
-
         it('supports changing the language', async () => {
           expectedParams.variables.language = 'de'
-          deutschOption = wrapper.findAll('li').at(0)
-          deutschOption.trigger('click')
+          wrapper
+            .findAll('li')
+            .at(0)
+            .trigger('click') // choose German as language
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -303,8 +299,16 @@ describe('ContributionForm.vue', () => {
           postTitleInput.setValue(postTitle)
           await wrapper.vm.updateEditorContent(postContent)
           categoryIds = ['cat12']
-          wrapper.find(CategoriesSelect).setData({categories})
-          await wrapper.find(CategoriesSelect).findAll('button').at(1).trigger('click')
+          wrapper.find(CategoriesSelect).setData({ categories })
+          wrapper
+            .findAll('li')
+            .at(1)
+            .trigger('click') // language
+          await wrapper
+            .find(CategoriesSelect)
+            .findAll('button')
+            .at(1)
+            .trigger('click')
         })
 
         it('shows an error toaster when apollo mutation rejects', async () => {
@@ -385,6 +389,10 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           wrapper.vm.updateEditorContent(postContent)
+          wrapper
+            .findAll('li')
+            .at(0)
+            .trigger('click') // language
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -394,10 +402,26 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           wrapper.vm.updateEditorContent(postContent)
-          wrapper.find(CategoriesSelect).setData({categories})
-          await wrapper.find(CategoriesSelect).findAll('button').at(0).trigger('click')
-          await wrapper.find(CategoriesSelect).findAll('button').at(3).trigger('click')
-          await wrapper.find(CategoriesSelect).findAll('button').at(4).trigger('click')
+          wrapper
+            .findAll('li')
+            .at(0)
+            .trigger('click') // language
+          wrapper.find(CategoriesSelect).setData({ categories })
+          await wrapper
+            .find(CategoriesSelect)
+            .findAll('button')
+            .at(0)
+            .trigger('click')
+          await wrapper
+            .find(CategoriesSelect)
+            .findAll('button')
+            .at(3)
+            .trigger('click')
+          await wrapper
+            .find(CategoriesSelect)
+            .findAll('button')
+            .at(4)
+            .trigger('click')
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
