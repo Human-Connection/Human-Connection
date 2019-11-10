@@ -58,6 +58,7 @@ const createLocation = async (session, mapboxData) => {
   query += ' RETURN l.id'
 
   await session.run(query, data)
+  session.close()
 }
 
 const createOrUpdateLocations = async (userId, locationName, driver) => {

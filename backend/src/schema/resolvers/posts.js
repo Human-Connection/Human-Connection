@@ -182,6 +182,7 @@ export default {
       `,
         { postId: args.id },
       )
+      session.close()
       const [post] = transactionRes.records.map(record => record.get('post').properties)
       return post
     },

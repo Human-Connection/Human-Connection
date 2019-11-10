@@ -1,34 +1,6 @@
 import uuid from 'uuid/v4'
 import bcrypt from 'bcryptjs'
-
-export async function createPasswordReset(options) {
-  const { driver, nonce, email, issuedAt = new Date() } = options
-  const session = driver.session()
-  let response = {}
-  try {
-    const cypher = `
-      MATCH (u:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email:$email})
-      CREATE(pr:PasswordReset {nonce: $nonce, issuedAt: datetime($issuedAt), usedAt: NULL})
-      MERGE (u)-[:REQUESTED]->(pr)
-      RETURN e, pr, u
-      `
-    const transactionRes = await session.run(cypher, {
-      issuedAt: issuedAt.toISOString(),
-      nonce,
-      email,
-    })
-    const records = transactionRes.records.map(record => {
-      const { email } = record.get('e').properties
-      const { nonce } = record.get('pr').properties
-      const { name } = record.get('u').properties
-      return { email, nonce, name }
-    })
-    response = records[0] || {}
-  } finally {
-    session.close()
-  }
-  return response
-}
+import createPasswordReset from './helpers/createPasswordReset'
 
 export default {
   Mutation: {
