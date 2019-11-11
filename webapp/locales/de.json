@@ -175,7 +175,18 @@
       "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
       "commented_on_post": "Hat deinen Beitrag kommentiert …"
     },
-    "comment": "Kommentar"
+    "comment": "Kommentar",
+    "title": "Benachrichtigungen",
+    "pageLink": "Alle Benachrichtigungen",
+    "post": "Beitrag",
+    "user": "Benutzer",
+    "content": "Inhalt",
+    "filterLabel": {
+      "all": "Alle",
+      "read": "Gelesen  ",
+      "unread": "Ungelesen"
+    },
+    "empty": "Sorry, du hast im Moment keine Benachrichtigungen."
   },
   "search": {
     "placeholder": "Suchen",
@@ -674,7 +685,7 @@
     "terms-of-service": {
       "title": "Nutzungsbedingungen",
       "description": "Die folgenden Nutzungsbedingungen sind Basis für die Nutzung unseres Netzwerkes. Beim Registrieren musst Du sie anerkennen und wir werden Dich auch später über ggf. stattfindende Änderungen informieren. Das Human Connection Netzwerk wird in Deutschland betrieben und unterliegt daher deutschem Recht. Gerichtsstand ist Kirchheim / Teck. Zu Details schau in unser Impressum: <a href=\"https://human-connection.org/impressum\" target=\"_blank\" >https://human-connection.org/impressum</a> "
-    },   
+    },
     "use-and-license" : {
       "title": "Nutzung und Lizenz",
       "description": "Sind Inhalte, die Du bei uns einstellst, durch Rechte am geistigen Eigentum geschützt, erteilst Du uns eine nicht-exklusive, übertragbare, unterlizenzierbare und weltweite Lizenz für die Nutzung dieser Inhalte für die Bereitstellung in unserem Netzwerk. Diese Lizenz endet, sobald Du Deine Inhalte oder Deinen ganzen Account löscht. Bedenke, dass andere Deine Inhalte weiter teilen können und wir diese nicht löschen können."
@@ -702,6 +713,6 @@
     "addition" : {
       "title": "Zusätzliche machen wir regelmäßig Veranstaltungen, wo Du auch Eindrücke wiedergeben und Fragen stellen kannst. Du findest eine aktuelle Übersicht hier:",
       "description": "<a href=\"https://human-connection.org/veranstaltungen/\" target=\"_blank\" > https://human-connection.org/veranstaltungen/ </a>"
-    } 
+    }
   }
 }

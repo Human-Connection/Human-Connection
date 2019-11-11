@@ -26,7 +26,7 @@ export default {
      */
     icon: {
       type: String,
-      required: true,
+      default: 'alert',
       validator: value => {
         return value.match(/(messages|events|alert|tasks|docs|file)/)
       },
