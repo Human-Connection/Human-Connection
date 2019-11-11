@@ -176,7 +176,18 @@
       "mentioned_in_comment": "Mentioned you in a comment …",
       "commented_on_post": "Commented on your post …"
     },
-    "comment": "Comment"
+    "comment": "Comment",
+    "title": "Notifications",
+    "pageLink": "All notifications",
+    "post": "Post",
+    "user": "User",
+    "content": "Content",
+    "filterLabel": {
+      "all": "All",
+      "read": "Read",
+      "unread": "Unread"
+    },
+    "empty": "Sorry, you don't have any notifications at the moment."
   },
   "search": {
     "placeholder": "Search",
@@ -721,7 +732,7 @@
     "terms-of-service": {
       "title": "Terms of Service",
       "description": "The following terms of use form the basis for the use of our network. When you register, you must accept them and we will inform you later about any changes that may take place. The Human Connection Network is operated in Germany and is therefore subject to German law. Place of jurisdiction is Kirchheim / Teck. For details see our imprint: <a href=\"https://human-connection.org/imprint\" target=\"_blank\" >https://human-connection.org/imprint</a> "
-    },   
+    },
     "use-and-license" : {
       "title": "Use and License",
       "description": "If any content you post to us is protected by intellectual property rights, you grant us a non-exclusive, transferable, sublicensable, worldwide license to use such content for posting to our network. This license expires when you delete your content or your entire account. Remember that others may share your content and we cannot delete it."
@@ -749,10 +760,10 @@
     "addition" : {
       "title": "In addition, we regularly hold events where you can also share your impressions and ask questions. You can find a current overview here:",
       "description": "<a href=\"https://human-connection.org/events/\" target=\"_blank\" > https://human-connection.org/events/ </a>"
-    } 
+    }
   }
 }
 
- 
- 
- 
+
+
+

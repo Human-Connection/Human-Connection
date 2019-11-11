@@ -166,7 +166,7 @@
 </template>
 
 <script>
-import HcEmpty from '~/components/Empty.vue'
+import HcEmpty from '~/components/Empty/Empty'
 import HcUser from '~/components/User/User'
 import { reportListQuery, decideMutation } from '~/graphql/Moderation.js'
 

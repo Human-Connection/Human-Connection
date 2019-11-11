@@ -33,10 +33,13 @@ const helpers = {
         namespaced: true,
         getters: {
           isModerator() {
-            return false
+            return true
+          },
+          isAdmin() {
+            return true
           },
           user(state) {
-            return { id: '1', name: 'admin' }
+            return { id: '1', name: 'admin', slug: 'admin' }
           },
         },
       },
