@@ -1122,10 +1122,10 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.7.17":
-  version "5.7.17"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.7.17.tgz#401897c7239090ca7149b83e581712845bbb3709"
-  integrity sha512-t21LqfDpaIrWg2JaivXG6mVzUsIVW05cAsKySA5Tj9Hgi9oZXxaaNes5XipOzk6P242RI48SDo7CkSbYiio7Tw==
+"@metascraper/helpers@^5.7.17", "@metascraper/helpers@^5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.8.0.tgz#8e47224ec4d118f882c5759f9a1ecf43bf680d08"
+  integrity sha512-12UG36W2X8oirM3M88Z13PVyLiOwKCvshydDNAK4/naO95Xi7dzMOcf8VXw375DYKnllfi8YdWzYJU8ie0BejA==
   dependencies:
     audio-extensions "0.0.0"
     chrono-node "~1.3.11"
@@ -5817,12 +5817,12 @@ metascraper-lang-detector@^4.8.5:
     franc "~4.0.0"
     iso-639-3 "~1.1.0"
 
-metascraper-lang@^5.7.17:
-  version "5.7.17"
-  resolved "https://registry.yarnpkg.com/metascraper-lang/-/metascraper-lang-5.7.17.tgz#3952db650bcd909fff0308d1d2254e954a0c0028"
-  integrity sha512-G/XqySeDpZmoV1rgWeMs/hmX1NFX0IN2w4viNdgdMRXB+lhqeyk5Z20x9ssPAqiJ4Ab6tyR274NkgYa0ZNRMDw==
+metascraper-lang@^5.8.0:
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/metascraper-lang/-/metascraper-lang-5.8.0.tgz#5aaa5466697a8b48d9f22b9e872a86f4c89c2df8"
+  integrity sha512-mWGIeMXWJhOu+dGAmR1PcSUXslBglBPIHI4AHtmOVnoeJvtLarBg0uZbvZhYVwc70GklE2tU0W6H7pLPWSkZHA==
   dependencies:
-    "@metascraper/helpers" "^5.7.17"
+    "@metascraper/helpers" "^5.8.0"
 
 metascraper-logo@^5.7.17:
   version "5.7.17"
