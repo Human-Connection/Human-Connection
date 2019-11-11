@@ -16,19 +16,32 @@
 </template>
 
 <script>
+import { UpdateDonations } from '~/graphql/Donations'
+
 export default {
   data() {
     return {
       formData: {
-        goal: '',
-        progress: '',
+        goal: null,
+        progress: null,
       },
     }
   },
   methods: {
     submit() {
-      // TODO: save form data... somewhere
-      console.log('submitting donations form')
+      const { goal, progress } = this
+      this.$apollo
+        .mutate({
+          mutation: UpdateDonations(),
+          variables: {
+            goal,
+            progress,
+          },
+        })
+        .then(() => {
+          this.$toast.success('yay!!')
+        })
+        .catch(error => this.$toast.error(error.message))
     },
   },
 }
