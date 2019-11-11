@@ -5,18 +5,7 @@
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
       <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
-        <div class="donation-info">
-          <!-- TODO: use dynamic values -->
-          <progress-bar
-            title="Donations for November"
-            label="500 of 15.000 €"
-            :goal="15000"
-            :progress="12000"
-          />
-          <a href="https://human-connection.org/spenden/">
-            <ds-button primary>Donate now</ds-button>
-          </a>
-        </div>
+        <donation-info />
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -69,26 +58,26 @@
 </template>
 
 <script>
+import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import HcEmpty from '~/components/Empty'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
-import ProgressBar from '~/components/ProgressBar/ProgressBar.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations'
 
 export default {
   components: {
+    DonationInfo,
     FilterMenu,
     HcPostCard,
     HcLoadMore,
     HcEmpty,
     MasonryGrid,
     MasonryGridItem,
-    ProgressBar,
   },
   data() {
     const { hashtag = null } = this.$route.query
@@ -282,11 +271,5 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-}
-
-.donation-info {
-  display: flex;
-  align-items: flex-end;
-  height: 100%;
 }
 </style>
