@@ -580,7 +580,8 @@
     "filterFollow": "Filter contributions from users I follow",
     "filterALL": "View all contributions",
     "success": "Saved!",
-    "languageSelectLabel": "Language",
+    "languageSelectLabel": "Language of your contribution",
+    "languageSelectText": "Select Language",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
     },

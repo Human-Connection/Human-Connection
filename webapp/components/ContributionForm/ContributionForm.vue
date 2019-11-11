@@ -21,7 +21,25 @@
           name="title"
           autofocus
         />
-        <small class="smallTag">{{ form.title.length }}/{{ formSchema.title.max }}</small>
+          <ds-text align="right">
+          <ds-chip v-if="form.title.length < formSchema.title.min" class="checkicon" size="base">
+            {{ form.title.length }}/{{ formSchema.title.max }}
+            <ds-icon name="warning" class="colorRed"></ds-icon>
+          </ds-chip>
+          <ds-chip
+            v-else-if="form.title.length < formSchema.title.max"
+            class="checkicon"
+            size="base"
+            color="primary"
+          >
+            {{ form.title.length }}/{{ formSchema.title.max }}
+            <ds-icon name="check"></ds-icon>
+          </ds-chip>
+          <ds-chip v-else class="checkicon" size="base" color="danger">
+            {{ form.title.length }}/{{ formSchema.title.max }}
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+        </ds-text>
         <client-only>
           <hc-editor
             :users="users"
@@ -29,7 +47,20 @@
             :hashtags="hashtags"
             @input="updateEditorContent"
           />
-          <small class="smallTag">{{ form.contentLength }}</small>
+            <ds-text align="right">
+            <ds-chip
+              v-if="form.contentLength < formSchema.content.min"
+              class="checkicon"
+              size="base"
+            >
+              {{ form.contentLength }}
+              <ds-icon name="warning" class="colorRed"></ds-icon>
+            </ds-chip>
+            <ds-chip v-else class="checkicon" size="base" color="primary">
+              {{ form.contentLength }}
+              <ds-icon name="check"></ds-icon>
+            </ds-chip>
+          </ds-text>
         </client-only>
         <ds-space margin-bottom="small" />
         <hc-categories-select
@@ -37,19 +68,39 @@
           @updateCategories="updateCategories"
           :existingCategoryIds="form.categoryIds"
         />
+        <ds-text align="right">
+          <ds-chip v-if="form.categoryIds.length === 0" class="checkicon checkicon_cat" size="base">
+            {{ form.categoryIds.length }} / 3
+            <ds-icon name="warning" class="colorRed">></ds-icon>
+          </ds-chip>
+          <ds-chip v-else class="checkicon checkicon_cat" size="base" color="primary">
+            {{ form.categoryIds.length }} / 3
+            <ds-icon name="check"></ds-icon>
+          </ds-chip>
+        </ds-text>
         <ds-flex class="contribution-form-footer">
-          <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
-          <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
+          <ds-flex-item >
             <ds-space margin-bottom="small" />
             <ds-select
               model="language"
               :options="form.languageOptions"
               icon="globe"
-              :placeholder="locale"
+              :placeholder="form.languageDefault"
               :label="$t('contribution.languageSelectLabel')"
+              @input.native="updateLanguage"
             />
           </ds-flex-item>
         </ds-flex>
+        <ds-text align="right">
+          <ds-chip v-if="form.language !== null" size="base" color="primary">
+            {{ form.language.label }}
+            <ds-icon name="check"></ds-icon>
+          </ds-chip>
+          <ds-chip v-else size="base">
+            {{ $t('contribution.languageSelectLabel') }}
+            <ds-icon name="warning" class="colorRed"></ds-icon>
+          </ds-chip>
+        </ds-text>
         <ds-space />
         <div slot="footer" style="text-align: right">
           <ds-button
@@ -109,11 +160,13 @@ export default {
         image: null,
         language: null,
         languageOptions: [],
+        languageDefault: this.$t('contribution.languageSelectText'),
+        selectedLanguage: '',
         categoryIds: [],
       },
       formSchema: {
         title: { required: true, min: 3, max: 100 },
-        content: [{ required: true }],
+        content: { required: true, min: 3 },
       },
       id: null,
       loading: false,
@@ -219,6 +272,10 @@ export default {
       this.form.categoryIds = ids
       this.validatePost()
     },
+    updateLanguage() {
+      this.form.selectedLanguage = this.form.language.label
+      this.validatePost()
+    },
     addTeaserImage(file) {
       this.form.teaserImage = file
     },
@@ -233,7 +290,12 @@ export default {
       const passesContentValidations = this.form.contentLength >= this.contentMin
       const passesCategoryValidations =
         this.form.categoryIds.length > 0 && this.form.categoryIds.length <= 3
-      this.failsValidations = !(passesContentValidations && passesCategoryValidations)
+        const passedLanguageValidation = this.form.language !== null
+      this.failsValidations = !(
+        passesContentValidations &&
+        passesCategoryValidations &&
+        passedLanguageValidation
+      )
     },
   },
   apollo: {
@@ -287,5 +349,15 @@ export default {
     padding-left: 0;
     padding-right: 0;
   }
+}
+.checkicon {
+  cursor: default;
+  top: -18px;
+}
+.checkicon_cat {
+  top: -58px;
+}
+.colorRed {
+  color: red;
 }
 </style>
