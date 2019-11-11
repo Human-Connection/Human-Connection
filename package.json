@@ -24,7 +24,7 @@
     "bcryptjs": "^2.4.3",
     "codecov": "^3.6.1",
     "cross-env": "^6.0.3",
-    "cypress": "^3.6.0",
+    "cypress": "^3.6.1",
     "cypress-cucumber-preprocessor": "^1.16.2",
     "cypress-file-upload": "^3.5.0",
     "cypress-plugin-retries": "^1.4.0",
