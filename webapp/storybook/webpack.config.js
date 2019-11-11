@@ -23,6 +23,7 @@ module.exports = async ({ config, mode }) => {
               __dirname,
               '../node_modules/@human-connection/styleguide/dist/shared.scss',
             ),
+            path.resolve(__dirname, '../view/styles/tokens.scss'),
           ],
           injector: 'prepend',
         },
