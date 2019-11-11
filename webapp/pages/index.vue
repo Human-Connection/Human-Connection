@@ -4,7 +4,18 @@
       <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
-      <ds-grid-item :row-span="2" column-span="fullWidth">
+      <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
+        <div class="donation-info">
+          <div class="progress-bar">
+            <h4 class="progress-bar__title">Donations for November</h4>
+            <div class="progress-bar__goal" style="width: 100%;"></div>
+            <div class="progress-bar__progress" style="width: 18.33%;"></div>
+            <span class="progress-bar__label">500 of 15.000 €</span>
+          </div>
+          <a href="https://human-connection.org/spenden/">
+            <ds-button primary>Donate now</ds-button>
+          </a>
+        </div>
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -262,7 +273,55 @@ export default {
 .sorting-dropdown {
   width: 250px;
   position: relative;
-  float: right;
-  margin: 4px 0;
+}
+
+.top-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.donation-info {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.progress-bar {
+  position: relative;
+  height: 100%;
+  width: 240px;
+  margin-right: $space-x-small;
+}
+
+.progress-bar__title {
+  position: absolute;
+  top: -2px;
+  left: $space-xx-small;
+  margin: 0;
+}
+
+.progress-bar__goal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 37.5px; // styleguide-button-size
+  background-color: $color-neutral-100;
+  border-radius: $border-radius-base;
+}
+
+.progress-bar__progress {
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  height: 35.5px; // styleguide-button-size
+  background-color: $color-yellow;
+  border-radius: $border-radius-base;
+}
+
+.progress-bar__label {
+  position: absolute;
+  top: 50%;
+  left: $space-xx-small;
 }
 </style>
