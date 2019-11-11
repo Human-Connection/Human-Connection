@@ -1,5 +1,6 @@
 <template>
   <ds-card
+    :language="language"
     :image="post.image | proxyApiUrl"
     :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--pinned': isPinned }"
   >
@@ -116,6 +117,10 @@ export default {
         this.post ? this.$filters.truncate(this.post.title, 30) : '',
         this.deletePostCallback,
       )
+    },
+    language() {
+      // if older posts have language not set I assume German as language
+      return this.post.language ? this.post.language : 'de'
     },
     isPinned() {
       return this.post && this.post.pinnedBy
