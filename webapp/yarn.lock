@@ -7914,10 +7914,10 @@ glob@7.1.4:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.5, glob@~7.1.1:
-  version "7.1.5"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.5.tgz#6714c69bee20f3c3e64c4dd905553e532b40cdc0"
-  integrity sha512-J9dlskqUXK1OeTOYBEn5s8aMukWMwWfs+rPTn/jn50Ux4MNXVhubL1wu/j2t+H4NVI+cXEcCaYellqaPVGXNqQ==
+glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.5, glob@^7.1.6, glob@~7.1.1:
+  version "7.1.6"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
+  integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -13868,18 +13868,10 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-schema-utils@^2.0.0, schema-utils@^2.1.0, schema-utils@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.2.0.tgz#48a065ce219e0cacf4631473159037b2c1ae82da"
-  integrity sha512-5EwsCNhfFTZvUreQhx/4vVQpJ/lnCAkgoIHLhSpp4ZirE+4hzFvdJi0FMub6hxbFVBJYSpeVVmon+2e7uEGRrA==
-  dependencies:
-    ajv "^6.10.2"
-    ajv-keywords "^3.4.1"
-
-schema-utils@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.4.1.tgz#e89ade5d056dc8bcaca377574bb4a9c4e1b8be56"
-  integrity sha512-RqYLpkPZX5Oc3fw/kHHHyP56fg5Y+XBpIpV8nCg0znIALfq3OH+Ea9Hfeac9BAMwG5IICltiZ0vxFvJQONfA5w==
+schema-utils@^2.0.0, schema-utils@^2.1.0, schema-utils@^2.2.0, schema-utils@^2.4.1, schema-utils@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.5.0.tgz#8f254f618d402cc80257486213c8970edfd7c22f"
+  integrity sha512-32ISrwW2scPXHUSusP8qMg5dLUawKkyV+/qIEV9JdXKx+rsM6mi8vZY8khg2M69Qom16rtroWXD3Ybtiws38gQ==
   dependencies:
     ajv "^6.10.2"
     ajv-keywords "^3.4.1"
@@ -14871,16 +14863,15 @@ style-loader@^0.23.1, style-loader@~0.23.1:
     loader-utils "^1.1.0"
     schema-utils "^1.0.0"
 
-style-resources-loader@^1.2.1, style-resources-loader@~1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/style-resources-loader/-/style-resources-loader-1.2.1.tgz#7679d5dc2f27046b2fc2b83c1d5b6c1b8a9b820c"
-  integrity sha512-ekId7AwZRW429UjQo02CJTt0Y8GwoT9zidvJLq4lRTJbu0cghv9XNRmt9mS4MR41+gZwMRT0EpFzP68HDWLbXQ==
+style-resources-loader@^1.2.1, style-resources-loader@~1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/style-resources-loader/-/style-resources-loader-1.3.0.tgz#8fe40a9ff99401f2cf100023d9d391635b6841bb"
+  integrity sha512-23GDQqC7rA16qYQEhFk0K1KHyMRNWywzsa+tpf5aCkL+aALcQvv7ySP0Arm19xd4xSxmmmoKBpKj26c1rJs3Sg==
   dependencies:
-    glob "^7.1.2"
-    is-callable "^1.1.4"
-    is-plain-object "^2.0.4"
+    glob "^7.1.6"
     is-promise "^2.1.0"
-    loader-utils "^1.1.0"
+    loader-utils "^1.2.3"
+    schema-utils "^2.5.0"
 
 stylehacks@^4.0.0:
   version "4.0.3"
