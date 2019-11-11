@@ -9,17 +9,19 @@ const mockDate = new Date(2019, 11, 6)
 global.Date = jest.fn(() => mockDate)
 
 describe('DonationInfo.vue', () => {
-  const mocks = {
-    $t: jest.fn(string => string),
-    $i18n: {
-      locale: () => 'de',
-    },
-  }
-
-  const propsData = {
-    goal: 50000,
-    progress: 10000,
-  }
+  let mocks, propsData
+  beforeEach(() => {
+    mocks = {
+      $t: jest.fn(string => string),
+      $i18n: {
+        locale: () => 'de',
+      },
+    }
+    propsData = {
+      goal: 50000,
+      progress: 10000,
+    }
+  })
 
   const Wrapper = () => mount(DonationInfo, { propsData, mocks, localVue })
 
@@ -44,12 +46,26 @@ describe('DonationInfo.vue', () => {
     expect(Wrapper().vm.title).toBe('Spenden für Dezember')
   })
 
-  it('creates a label from the given amounts and a translation string', () => {
-    Wrapper()
-    expect(mocks.$t.mock.calls[1][0]).toBe('donations.amount-of-total')
-    expect(mocks.$t.mock.calls[1][1]).toBe({
-      amount: '10.000',
-      total: '50.000',
+  describe('given german locale', () => {
+    it('creates a label from the given amounts and a translation string', () => {
+      Wrapper()
+      expect(mocks.$t.mock.calls[1][0]).toBe('donations.amount-of-total')
+      expect(mocks.$t.mock.calls[1][1]).toStrictEqual({
+        amount: '10.000',
+        total: '50.000',
+      })
+    })
+  })
+
+  describe('given english locale', () => {
+    it('creates a label from the given amounts and a translation string', () => {
+      mocks.$i18n.locale = () => 'en'
+      Wrapper()
+      expect(mocks.$t.mock.calls[1][0]).toBe('donations.amount-of-total')
+      expect(mocks.$t.mock.calls[1][1]).toStrictEqual({
+        amount: '10,000',
+        total: '50,000',
+      })
     })
   })
 })
