@@ -46,5 +46,12 @@ export default {
   display: flex;
   align-items: flex-end;
   height: 100%;
+
+  @media (max-width: 546px) {
+    width: 100%;
+    height: 50%;
+    justify-content: flex-end;
+    margin-bottom: $space-x-small;
+  }
 }
 </style>

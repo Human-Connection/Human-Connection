@@ -265,11 +265,20 @@ export default {
 .sorting-dropdown {
   width: 250px;
   position: relative;
+
+  @media (max-width: 680px) {
+    width: 180px;
+  }
 }
 
 .top-info-bar {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+
+  @media (max-width: 546px) {
+    grid-row-end: span 3 !important;
+    flex-direction: column;
+  }
 }
 </style>

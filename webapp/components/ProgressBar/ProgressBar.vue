@@ -1,8 +1,8 @@
 <template>
   <div class="progress-bar">
-    <h4 v-if="title" class="progress-bar__title">{{ title }}</h4>
     <div class="progress-bar__goal"></div>
     <div class="progress-bar__progress" :style="progressBarWidth"></div>
+    <h4 v-if="title" class="progress-bar__title">{{ title }}</h4>
     <span v-if="label" class="progress-bar__label">{{ label }}</span>
   </div>
 </template>
@@ -39,6 +39,15 @@ export default {
   height: 100%;
   width: 240px;
   margin-right: $space-x-small;
+
+  @media (max-width: 680px) {
+    width: 180px;
+  }
+
+  @media (max-width: 546px) {
+    flex-basis: 50%;
+    flex-grow: 1;
+  }
 }
 
 .progress-bar__title {
@@ -46,6 +55,10 @@ export default {
   top: -2px;
   left: $space-xx-small;
   margin: 0;
+
+  @media (max-width: 546px) {
+    top: $space-xx-small;
+  }
 }
 
 .progress-bar__goal {
