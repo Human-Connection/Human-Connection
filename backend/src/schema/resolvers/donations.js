@@ -1,13 +1,18 @@
+import uuid from 'uuid/v4'
+
 export default {
   Mutation: {
     UpdateDonations: async (_parent, params, context, _resolveInfo) => {
       const { driver } = context
       const session = driver.session()
       let donations
+      params.id = params.id || uuid()
+
       const writeTxResultPromise = session.writeTransaction(async txc => {
         const updateDonationsTransactionResponse = await txc.run(
           ` 
-            MATCH (donations:Donations {id: $params.id})
+            MATCH (donations:Donations)
+            WITH donations LIMIT 1
             SET donations += $params
             SET donations.updatedAt = toString(datetime())
             RETURN donations

@@ -1,4 +1,5 @@
 type Donations {
+  id: ID!
   goal: Int!
   progress: Int!
   createdAt: String
@@ -10,5 +11,5 @@ type Query {
 }
 
 type Mutation {
-  UpdateDonations(id: ID!, goal: Int, progress: Int): Donations
+  UpdateDonations(goal: Int, progress: Int): Donations
 }

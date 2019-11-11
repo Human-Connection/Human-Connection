@@ -10,8 +10,8 @@ const instance = getNeode()
 const driver = getDriver()
 
 const updateDonationsMutation = gql`
-  mutation($id: ID!, $goal: Int, $progress: Int) {
-    UpdateDonations(id: $id, goal: $goal, progress: $progress) {
+  mutation($goal: Int, $progress: Int) {
+    UpdateDonations(goal: $goal, progress: $progress) {
       goal
       progress
       createdAt
@@ -48,7 +48,7 @@ describe('donations', () => {
 
   beforeEach(async () => {
     variables = {}
-    newlyCreatedDonations = await factory.create('Donations', { id: 'total-donations' })
+    newlyCreatedDonations = await factory.create('Donations')
   })
 
   afterEach(async () => {
@@ -84,7 +84,7 @@ describe('donations', () => {
 
   describe('update donations', () => {
     beforeEach(() => {
-      variables = { id: 'total-donations', goal: 20000, progress: 3000 }
+      variables = { goal: 20000, progress: 3000 }
     })
 
     describe('unauthenticated', () => {
