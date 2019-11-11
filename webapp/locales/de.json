@@ -369,6 +369,11 @@
       "name": "Benutzer einladen",
       "title": "Leute einladen",
       "description": "Einladungen sind ein wunderbarer Weg, deine Freund in deinem Netzwerk zu haben …"
+    },
+    "donations": {
+      "name": "Spendeninfo",
+      "goal": "Monatlich benötigte Spenden",
+      "progress": "Bereits gesammelte Spenden"
     }
   },
   "post": {

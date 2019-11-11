@@ -370,6 +370,11 @@
       "name": "Invite users",
       "title": "Invite people",
       "description": "Invitations are a wonderful way to have your friends in your network …"
+    },
+    "donations": {
+      "name": "Donations info",
+      "goal": "Monthly donations needed",
+      "progress": "Donations collected so far"
     }
   },
   "post": {
