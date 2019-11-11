@@ -84,6 +84,7 @@ export const actions = {
             role
             about
             locationName
+            locale
             contributionsCount
             commentedCount
             allowEmbedIframes

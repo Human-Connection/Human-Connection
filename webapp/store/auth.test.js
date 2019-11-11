@@ -13,6 +13,7 @@ const currentUser = {
   email: 'user@example.org',
   avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
   role: 'user',
+  locale: 'de',
 }
 const successfulLoginResponse = { data: { login: token } }
 const successfulCurrentUserResponse = { data: { currentUser } }
@@ -126,6 +127,7 @@ describe('actions', () => {
                 email: 'user@example.org',
                 avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
                 role: 'user',
+                locale: 'de',
               },
             ],
           ]),
