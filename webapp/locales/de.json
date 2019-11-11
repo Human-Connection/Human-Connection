@@ -464,7 +464,41 @@
       "reasonCategory": "Kategorie",
       "reasonDescription": "Beschreibung",
       "createdAt": "Datum",
-      "submitter": "Gemeldet von"
+      "submitter": "Gemeldet von",
+      "decideModal": {
+        "submit": "Abschließende Entscheidung",
+        "cancel": "Abbruch",
+        "User": {
+          "disable": {
+            "title": "Sperre den Benutzer abschließend",
+            "message": "Möchtest du den Benutzer \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
+          },
+          "enable": {
+            "title": "Entsperre den Benutzer abschließend",
+            "message": "Möchtest du den Benutzer \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
+          }
+        },
+        "Post": {
+          "disable": {
+            "title": "Sperre den Beitrag abschließend",
+            "message": "Möchtest du den Beitrag \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
+          },
+          "enable": {
+            "title": "Entsperre den Beitrag abschließend",
+            "message": "Möchtest du den Beitrag \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
+          }
+        },
+        "Comment": {
+          "disable": {
+            "title": "Sperre den Kommentar abschließend",
+            "message": "Möchtest du den Kommentar \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
+          },
+          "enable": {
+            "title": "Entsperre den Kommentar abschließend",
+            "message": "Möchtest du den Kommentar \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
+          }
+        }
+      }
     }
   },
   "disable": {

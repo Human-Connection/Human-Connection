@@ -465,7 +465,41 @@
       "reasonCategory": "Category",
       "reasonDescription": "Description",
       "createdAt": "Date",
-      "submitter": "Reported by"
+      "submitter": "Reported by",
+      "decideModal": {
+        "submit": "Final decision",
+        "cancel": "Cancel",
+        "User": {
+          "disable": {
+            "title": "Finally Disable User",
+            "message": "Do you really want to let the user \"<b>{name}</b>\" stay <b>disabled</b>?"
+          },
+          "enable": {
+            "title": "Finally Enable User",
+            "message": "Do you really want to let the user \"<b>{name}</b>\" stay <b>enabled</b>?"
+          }
+        },
+        "Post": {
+          "disable": {
+            "title": "Finally Disable Post",
+            "message": "Do you really want to let the post \"<b>{name}</b>\" stay <b>disabled</b>?"
+          },
+          "enable": {
+            "title": "Finally Enable Post",
+            "message": "Do you really want to let the post \"<b>{name}</b>\" stay <b>enabled</b>?"
+          }
+        },
+        "Comment": {
+          "disable": {
+            "title": "Finally Disable Comment",
+            "message": "Do you really want to let the comment \"<b>{name}</b>\" stay <b>disabled</b>?"
+          },
+          "enable": {
+            "title": "Finally Enable Comment",
+            "message": "Do you really want to let the comment \"<b>{name}</b>\" stay <b>enabled</b>?"
+          }
+        }
+      }
     }
   },
   "disable": {

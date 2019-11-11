@@ -8,7 +8,7 @@
       cellpadding="0"
     >
       <colgroup><col width="" /></colgroup>
-      <template v-for="(content, index) in reportedContentStructure">
+      <template v-for="content in reportedContentStructure">
         <thead
           :class="[
             content.closed ? 'decision' : 'no-decision',
@@ -97,7 +97,7 @@
                 danger
                 class="confirm"
                 icon="exclamation-circle"
-                @click="confirm(content.resource.id, index)"
+                @click="confirm(content)"
               >
                 {{ $t('moderation.reports.decideButton') }}
               </ds-button>
@@ -234,7 +234,10 @@ export default {
     },
   },
   methods: {
-    async confirm(resourceId, index) {
+    confirm(content) {
+      this.openModal(content)
+    },
+    async confirmCallback(resourceId) {
       this.$apollo
         .mutate({
           mutation: decideMutation(),
@@ -245,6 +248,52 @@ export default {
           this.$apollo.queries.reports.refetch()
         })
         .catch(error => this.$toast.error(error.message))
+    },
+    openModal(content) {
+      const identStart =
+        'moderation.reports.decideModal.' +
+        content.type +
+        '.' +
+        (content.decisionDisable ? 'disable' : 'enable')
+      this.$store.commit('modal/SET_OPEN', {
+        name: 'confirm',
+        data: {
+          type: content.type,
+          resource: content.resource,
+          modalData: {
+            titleIdent: identStart + '.title',
+            messageIdent: identStart + '.message',
+            messageParams: {
+              name:
+                content.type === 'User'
+                  ? content.user.name
+                  : content.type === 'Post'
+                  ? this.$filters.truncate(content.post.title, 30)
+                  : content.type === 'Comment'
+                  ? this.$filters.truncate(
+                      this.$filters.removeHtml(content.comment.contentExcerpt),
+                      30,
+                    )
+                  : '',
+            },
+            buttons: {
+              confirm: {
+                danger: true,
+                icon: 'exclamation-circle',
+                textIdent: 'moderation.reports.decideModal.submit',
+                callback: () => {
+                  this.confirmCallback(content.resource.id)
+                },
+              },
+              cancel: {
+                icon: 'close',
+                textIdent: 'moderation.reports.decideModal.cancel',
+                callback: () => {},
+              },
+            },
+          },
+        },
+      })
     },
   },
   apollo: {

@@ -70,7 +70,7 @@ export default {
           routes.push({
             name: this.$t(`post.menu.delete`),
             callback: () => {
-              this.openModal('delete')
+              this.openModal('confirm', 'delete')
             },
             icon: 'trash',
           })
@@ -108,7 +108,7 @@ export default {
         routes.push({
           name: this.$t(`comment.menu.delete`),
           callback: () => {
-            this.openModal('delete')
+            this.openModal('confirm', 'delete')
           },
           icon: 'trash',
         })
@@ -137,7 +137,7 @@ export default {
           routes.push({
             name: this.$t(`release.${this.resourceType}.title`),
             callback: () => {
-              this.openModal('release', this.resource.id)
+              this.openModal('release')
             },
             icon: 'eye',
           })
@@ -190,13 +190,13 @@ export default {
       }
       toggleMenu()
     },
-    openModal(dialog) {
+    openModal(dialog, modalDataName = null) {
       this.$store.commit('modal/SET_OPEN', {
         name: dialog,
         data: {
           type: this.resourceType,
           resource: this.resource,
-          modalsData: this.modalsData,
+          modalData: modalDataName ? this.modalsData[modalDataName] : {},
         },
       })
     },
