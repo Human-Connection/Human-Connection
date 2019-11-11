@@ -3,64 +3,77 @@ language: generic
 addons:
   apt:
     packages:
-    - libgconf-2-4
+      - libgconf-2-4
   snaps:
-  - docker
-  - chromium
+    - docker
+    - chromium
+
 before_install:
-- yarn global add wait-on
-- yarn install
-- cp cypress.env.template.json cypress.env.json
+  - yarn global add wait-on
+  # Install Codecov
+  - yarn install
+  - cp cypress.env.template.json cypress.env.json
+
 install:
-- docker-compose -f docker-compose.yml build --parallel
-- docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml build
-- docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml up -d
-- wait-on http://localhost:7474
-- docker-compose  -f docker-compose.yml -f docker-compose.build-and-test.yml exec
-  neo4j db_setup
+  - docker-compose -f docker-compose.yml build --parallel
+  - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml build # just tagging, just be quite fast
+  - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml up -d
+  - wait-on http://localhost:7474
+  - docker-compose  -f docker-compose.yml -f docker-compose.build-and-test.yml exec neo4j db_setup
+
 script:
-- export CYPRESS_RETRIES=1
-- export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH;
-  else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-- echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-- docker-compose exec backend yarn run lint
-- docker-compose exec backend yarn run test --ci --verbose=false --coverage
-- docker-compose exec backend yarn run db:seed
-- docker-compose exec backend yarn run db:reset
-- docker-compose exec webapp yarn run lint
-- docker-compose exec webapp yarn run test --ci --verbose=false --coverage
-- docker-compose down
-- docker-compose -f docker-compose.yml up -d
-- wait-on http://localhost:7474
-- yarn run cypress:run
-- yarn run codecov
+  - export CYPRESS_RETRIES=1
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+  # Backend
+  - docker-compose exec backend yarn run lint
+  - docker-compose exec backend yarn run test --ci --verbose=false --coverage
+  - docker-compose exec backend yarn run db:seed
+  - docker-compose exec backend yarn run db:reset
+  # ActivityPub cucumber testing temporarily disabled because it's too buggy
+  # - docker-compose exec backend yarn run test:cucumber --tags "not @wip"
+  # - docker-compose exec backend yarn run db:reset
+  # - docker-compose exec backend yarn run db:seed
+  # Frontend
+  - docker-compose exec webapp yarn run lint
+  - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
+  # Fullstack
+  - docker-compose down
+  - docker-compose -f docker-compose.yml up -d
+  - wait-on http://localhost:7474
+  - yarn run cypress:run
+  # Coverage
+  - yarn run codecov
+
 after_success:
-- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-- chmod +x send.sh
-- "./send.sh success $WEBHOOK_URL"
-- if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then wget
-  https://raw.githubusercontent.com/Human-Connection/Discord-Bot/develop/tester.sh
-  && chmod +x tester.sh && ./tester.sh staging $WEBHOOK_URL; fi
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    wget https://raw.githubusercontent.com/Human-Connection/Discord-Bot/develop/tester.sh &&
+    chmod +x tester.sh &&
+    ./tester.sh staging $WEBHOOK_URL;
+    fi
+
 after_failure:
-- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-- chmod +x send.sh
-- "./send.sh failure $WEBHOOK_URL"
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
+
 before_deploy:
-- go get -u github.com/tcnksm/ghr
-- "./scripts/setup_kubernetes.sh"
+  - go get -u github.com/tcnksm/ghr
+  - ./scripts/setup_kubernetes.sh
+
 deploy:
-- provider: script
-  script: scripts/docker_push.sh
-  on:
-    branch: master
-- provider: script
-  script: scripts/deploy.sh
-  on:
-    branch: master
-- provider: script
-  script: scripts/github_release.sh
-  on:
-    branch: master
-env:
-  global:
-    secure: FBhnnSKb1iA4/RrvN/k5aXRaC570cLZMcTKMV7yB6X93JmVR6HWD0iCVkkqfoqyCf07ijQO5bzf051O6LzbFjIFGN4sMcfJEVZ4z/VvuljBT3aLvKrH0M89U0a9F1hAswffvynkLuw53EdLF7ZfaMpFtxyUJe+uTA11xYOhbSUg7pdVAQ0x4aGwe35YxRkXC/V0DKU91qHi/FPRin9oJSNj/QQusN2wCvEZdrBX+PhzFfZKAqie6NcoYcqZoFbs/8ZjkhzWlkr77yt9/n8WfaWftPG0VpB6UT4mFy8iSLqKkOVSNHMoWsjjuuDcuOVT2pAY0FXM8iuALBSzLEP8QCntex8rkOn4CtMRo0TvOB8jtD/QCuz7K5YwDhHRkh6kiAvxcIGmecDgSswX4iiVdLXf0P3gDvBWj/4TTmgv6YqEwFjnxC/QCAg04JHqiXwrwifKsqGZ2E7tu7l/hJ916IjfVw9jvjsFJsMCihoxLIWprBbIfyrfP/eBnXrYRtBy8wJw7asVMya8uKpuJPIWYVXDy95Nnr3cLtCZH2gJ4UUo5cWGWT/SsGhqynxidTrafJoWtgyDm/gOIgFE3zkYyIS0esAu7xX9aw/bsPUSlXUwaXuWB8ehWhT5gFali/D9ipQh5kzd1L+yYOg1PXvOFqab4JnrMLmARIzhBUbjmr8w=
+  - provider: script
+    script: scripts/docker_push.sh
+    on:
+      branch: master
+  - provider: script
+    script: scripts/deploy.sh
+    on:
+      branch: master
+  - provider: script
+    script: scripts/github_release.sh
+    on:
+      branch: master
