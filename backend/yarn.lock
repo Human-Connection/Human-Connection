@@ -1122,10 +1122,10 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.7.17":
-  version "5.7.17"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.7.17.tgz#401897c7239090ca7149b83e581712845bbb3709"
-  integrity sha512-t21LqfDpaIrWg2JaivXG6mVzUsIVW05cAsKySA5Tj9Hgi9oZXxaaNes5XipOzk6P242RI48SDo7CkSbYiio7Tw==
+"@metascraper/helpers@^5.7.17", "@metascraper/helpers@^5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.8.0.tgz#8e47224ec4d118f882c5759f9a1ecf43bf680d08"
+  integrity sha512-12UG36W2X8oirM3M88Z13PVyLiOwKCvshydDNAK4/naO95Xi7dzMOcf8VXw375DYKnllfi8YdWzYJU8ie0BejA==
   dependencies:
     audio-extensions "0.0.0"
     chrono-node "~1.3.11"
@@ -5862,12 +5862,12 @@ metascraper-url@^5.7.17:
   dependencies:
     "@metascraper/helpers" "^5.7.17"
 
-metascraper-video@^5.7.17:
-  version "5.7.17"
-  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.7.17.tgz#414d4641fbea667e73c42fe3706d673ee4c4aec5"
-  integrity sha512-lftJGynCVNfC15eyMW7tN3QWJl9T2sVNCgP0dZsW8OC1hWQM7WY3PW8yYd2PP6nUuwOTjNLL1F4oWNhldWrE8A==
+metascraper-video@^5.8.0:
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.8.0.tgz#88f43b744a88e877577c689e024beb0b007f14f1"
+  integrity sha512-3tBlQsSHoQ4Kg52OUoYp8vVmpfwm4bJ4s38DWQTZf5dDXvDgSa0MdgAGDhhnEWaU8V7ALGRAES+IAIoTqiOGJA==
   dependencies:
-    "@metascraper/helpers" "^5.7.17"
+    "@metascraper/helpers" "^5.8.0"
     lodash "~4.17.15"
 
 metascraper-youtube@^5.7.17:
