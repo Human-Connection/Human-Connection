@@ -96,7 +96,7 @@
                 v-else
                 danger
                 class="confirm"
-                icon="exclamation-circle"
+                :icon="content.resource.disabled ? 'eye-slash' : 'eye'"
                 @click="confirm(content)"
               >
                 {{ $t('moderation.reports.decideButton') }}
@@ -292,7 +292,7 @@ export default {
             buttons: {
               confirm: {
                 danger: true,
-                icon: 'exclamation-circle',
+                icon: content.resource.disabled ? 'eye-slash' : 'eye',
                 textIdent: 'moderation.reports.decideModal.submit',
                 callback: () => {
                   this.confirmCallback(content.resource.id)
