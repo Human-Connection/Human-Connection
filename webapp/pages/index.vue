@@ -6,12 +6,13 @@
       </ds-grid-item>
       <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
         <div class="donation-info">
-          <div class="progress-bar">
-            <h4 class="progress-bar__title">Donations for November</h4>
-            <div class="progress-bar__goal" style="width: 100%;"></div>
-            <div class="progress-bar__progress" style="width: 18.33%;"></div>
-            <span class="progress-bar__label">500 of 15.000 €</span>
-          </div>
+          <!-- TODO: use dynamic values -->
+          <progress-bar
+            title="Donations for November"
+            label="500 of 15.000 €"
+            :goal="15000"
+            :progress="12000"
+          />
           <a href="https://human-connection.org/spenden/">
             <ds-button primary>Donate now</ds-button>
           </a>
@@ -74,6 +75,7 @@ import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
+import ProgressBar from '~/components/ProgressBar/ProgressBar.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations'
@@ -86,6 +88,7 @@ export default {
     HcEmpty,
     MasonryGrid,
     MasonryGridItem,
+    ProgressBar,
   },
   data() {
     const { hashtag = null } = this.$route.query
@@ -285,43 +288,5 @@ export default {
   display: flex;
   align-items: flex-end;
   height: 100%;
-}
-
-.progress-bar {
-  position: relative;
-  height: 100%;
-  width: 240px;
-  margin-right: $space-x-small;
-}
-
-.progress-bar__title {
-  position: absolute;
-  top: -2px;
-  left: $space-xx-small;
-  margin: 0;
-}
-
-.progress-bar__goal {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 37.5px; // styleguide-button-size
-  background-color: $color-neutral-100;
-  border-radius: $border-radius-base;
-}
-
-.progress-bar__progress {
-  position: absolute;
-  bottom: 1px;
-  left: 0;
-  height: 35.5px; // styleguide-button-size
-  background-color: $color-yellow;
-  border-radius: $border-radius-base;
-}
-
-.progress-bar__label {
-  position: absolute;
-  top: 50%;
-  left: $space-xx-small;
 }
 </style>
