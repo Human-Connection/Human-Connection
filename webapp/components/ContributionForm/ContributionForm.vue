@@ -21,7 +21,7 @@
           name="title"
           autofocus
         />
-          <ds-text align="right">
+        <ds-text align="right">
           <ds-chip v-if="form.title.length < formSchema.title.min" class="checkicon" size="base">
             {{ form.title.length }}/{{ formSchema.title.max }}
             <ds-icon name="warning" class="colorRed"></ds-icon>
@@ -47,7 +47,7 @@
             :hashtags="hashtags"
             @input="updateEditorContent"
           />
-            <ds-text align="right">
+          <ds-text align="right">
             <ds-chip
               v-if="form.contentLength < formSchema.content.min"
               class="checkicon"
@@ -79,7 +79,7 @@
           </ds-chip>
         </ds-text>
         <ds-flex class="contribution-form-footer">
-          <ds-flex-item >
+          <ds-flex-item>
             <ds-space margin-bottom="small" />
             <ds-select
               model="language"
@@ -290,7 +290,7 @@ export default {
       const passesContentValidations = this.form.contentLength >= this.contentMin
       const passesCategoryValidations =
         this.form.categoryIds.length > 0 && this.form.categoryIds.length <= 3
-        const passedLanguageValidation = this.form.language !== null
+      const passedLanguageValidation = this.form.language !== null
       this.failsValidations = !(
         passesContentValidations &&
         passesCategoryValidations &&
