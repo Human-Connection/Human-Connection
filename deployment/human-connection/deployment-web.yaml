@@ -1,37 +1,54 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nitro-web
+  creationTimestamp: null
+  labels:
+    human-connection.org/commit: COMMIT
+    human-connection.org/selector: deployment-human-connection-web
+  name: web
   namespace: human-connection
 spec:
-  replicas: 2
   minReadySeconds: 15
   progressDeadlineSeconds: 60
+  replicas: 2
+  revisionHistoryLimit: 2147483647
   selector:
     matchLabels:
       human-connection.org/selector: deployment-human-connection-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
+      creationTimestamp: null
       labels:
         human-connection.org/commit: COMMIT
         human-connection.org/selector: deployment-human-connection-web
-      name: nitro-web
+      name: web
     spec:
       containers:
-      - name: web
+      - env:
+        - name: HOST
+          value: 0.0.0.0
         envFrom:
         - configMapRef:
             name: configmap
         - secretRef:
             name: human-connection
-        env:
-        - name: HOST
-          value: 0.0.0.0
         image: humanconnection/nitro-web:latest
+        imagePullPolicy: Always
+        name: web
         ports:
         - containerPort: 3000
+          protocol: TCP
         resources: {}
-        imagePullPolicy: Always
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
       terminationGracePeriodSeconds: 30
 status: {}
