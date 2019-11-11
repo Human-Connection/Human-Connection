@@ -83,6 +83,7 @@
             <ds-space margin-bottom="small" />
             <ds-select
               model="language"
+              class="contribution_language"
               :options="form.languageOptions"
               icon="globe"
               :placeholder="form.languageDefault"

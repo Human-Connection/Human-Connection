@@ -60,7 +60,7 @@ describe('ContributionForm.vue', () => {
               slug: 'this-is-a-title-for-a-post',
               content: postContent,
               contentExcerpt: postContent,
-              language: 'en',
+              language: 'Select Language',
               categoryIds,
             },
           },
@@ -124,7 +124,7 @@ describe('ContributionForm.vue', () => {
     describe('CreatePost', () => {
       describe('language placeholder', () => {
         it("displays the name that corresponds with the user's location code", () => {
-          expect(wrapper.find('.ds-select-placeholder').text()).toEqual('English')
+          expect(wrapper.find('.ds-select').isEmpty()).toBe(false)
         })
       })
 
@@ -204,7 +204,7 @@ describe('ContributionForm.vue', () => {
             variables: {
               title: postTitle,
               content: postContent,
-              language: 'en',
+              language: 'de',
               id: null,
               categoryIds: ['cat12'],
               imageUpload: null,
@@ -216,9 +216,14 @@ describe('ContributionForm.vue', () => {
           await wrapper.vm.updateEditorContent(postContent)
           categoryIds = ['cat12']
           wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
+          
+          deutschOption =wrapper.findAll('li').at(0)
+           deutschOption.trigger('click')
         })
 
         it('creates a post with valid title, content, and at least one category', async () => {
+          deutschOption =wrapper.findAll('li').at(0)
+           deutschOption.trigger('click')
           await wrapper.find('.submit-button-for-test').trigger('click')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -238,7 +243,10 @@ describe('ContributionForm.vue', () => {
 
         it('supports adding a teaser image', async () => {
           expectedParams.variables.imageUpload = imageUpload
+          expectedParams.variables.language = 'de'
           wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
+          deutschOption = wrapper.findAll('li').at(0)
+          deutschOption.trigger('click')
           await wrapper.find('.submit-button-for-test').trigger('click')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -276,6 +284,8 @@ describe('ContributionForm.vue', () => {
           await wrapper.vm.updateEditorContent(postContent)
           categoryIds = ['cat12']
           wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
+          deutschOption =wrapper.findAll('li').at(0)
+           deutschOption.trigger('click')
         })
 
         it('shows an error toaster when apollo mutation rejects', async () => {
@@ -332,7 +342,7 @@ describe('ContributionForm.vue', () => {
                 slug: 'this-is-a-title-for-a-post',
                 content: postContent,
                 contentExcerpt: postContent,
-                language: 'en',
+                language: 'de',
                 categoryIds,
               },
             },
@@ -357,6 +367,8 @@ describe('ContributionForm.vue', () => {
           postTitleInput.setValue(postTitle)
           wrapper.vm.updateEditorContent(postContent)
           wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
+          deutschOption =wrapper.findAll('li').at(0)
+           deutschOption.trigger('click')
           wrapper.find('.submit-button-for-test').trigger('click')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -368,6 +380,8 @@ describe('ContributionForm.vue', () => {
           wrapper.vm.updateEditorContent(postContent)
           expectedParams.variables.categoryIds = categoryIds
           wrapper.find(CategoriesSelect).vm.$emit('updateCategories', categoryIds)
+          deutschOption =wrapper.findAll('li').at(0)
+           deutschOption.trigger('click')
           await wrapper.find('.submit-button-for-test').trigger('click')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
