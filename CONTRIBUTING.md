@@ -6,7 +6,7 @@ Thank you so much for thinking of contributing to the Human Connection project! 
 
 Instructions for how to install all the necessary software and some code guidelines can be found in our [documentation](https://docs.human-connection.org/human-connection/).
 
-To get you started we recommend that you join forces with a regular contributor. Please join [our discord instance](https://discord.gg/6ub73U3) to chat with developers or just get in touch directly on an issue on either [Github](https://github.com/Human-Connection/Human-Connection/issues) or [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f/boards?repos=152252353):
+To get you started we recommend that you join forces with a regular contributor. Please join [our discord instance](https://human-connection.org/discord) to chat with developers or just get in touch directly on an issue on either [Github](https://github.com/Human-Connection/Human-Connection/issues) or [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f/boards?repos=152252353):
 
 ![](https://dl.dropbox.com/s/vbmcihkduy9dhko/Screenshot%202019-01-03%2015.50.11.png?dl=0)
 
@@ -29,7 +29,7 @@ This is how we solve bugs and implement features, step by step:
 8. We then incorporate the suggestions from the reviews into our work and once it has been approved it can be merged into master!
 
 Every pull request needs to:
-* fix an issue (if there is something you want to work on but there is no issue for it, create on first and discuss it with the team)
+* fix an issue (if there is something you want to work on but there is no issue for it, create one first and discuss it with the team)
 * include tests for the code that is added or changed
 * pass all tests (linter, backend, frontend, end-to-end)
 * be approved by at least 1 developer who is not the owner of the PR (when more than 10 files were changed it needs 2 approvals)
@@ -61,14 +61,14 @@ Regular pair programming sessions
 * all contributors welcome!
 * we team up and work on an issue together (often using Visual Studio live sharing sessions)
 
-Developer's Community Meeting
+Open-Source Community Meeting
 * every Thursday 12:00 UTC
 * the link will be posted in the [discord chat](https://discord.gg/6ub73U3) and on the [Agile Ventures website](https://www.agileventures.org/events?utf8=%E2%9C%93&project_id=220&commit=Filter+by+Project)
 * all contributors welcome!
-* ???
 
 Meet the team
 * every Monday 20:00 UTC (at the moment only in German)
+* details here https://human-connection.org/veranstaltungen/
 * via this [zoom link](https://zoom.us/j/936943532)
 * all contributors and users of the network welcome!
 * users of the network chat with the Human Connection team and discuss current questions and issues
