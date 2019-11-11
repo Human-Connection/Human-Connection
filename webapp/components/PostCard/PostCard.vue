@@ -1,6 +1,6 @@
 <template>
   <ds-card
-    :language="language"
+    :lang="language"
     :image="post.image | proxyApiUrl"
     :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--pinned': isPinned }"
   >
