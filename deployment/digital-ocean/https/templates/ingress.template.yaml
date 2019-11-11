@@ -12,20 +12,20 @@ spec:
   tls:
     - hosts:
         # - nitro-mailserver.human-connection.org
-        - nitro-staging.human-connection.org
+        - develop.human-connection.org
       secretName: tls
   rules:
-    - host: nitro-staging.human-connection.org
+    - host: develop.human-connection.org
       http:
         paths:
           - path: /
             backend:
-              serviceName: nitro-web
+              serviceName: web
               servicePort: 3000
-  # - host: nitro-mailserver.human-connection.org
-  #   http:
-  #     paths:
-  #     - path: /
-  #       backend:
-  #         serviceName: mailserver
-  #         servicePort: 80
+  - host: mailserver.human-connection.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: mailserver
+          servicePort: 80
