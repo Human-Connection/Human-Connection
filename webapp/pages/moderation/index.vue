@@ -37,7 +37,7 @@
           <tr valign="top">
             <td class="ds-table-col ds-table-head-col ds-table-head-col-border">
               <!-- Icon -->
-              <ds-text :class="[!content.closed && 'no-decision']" color="soft">
+              <ds-text color="soft">
                 <ds-icon
                   v-if="content.type === 'Post'"
                   v-tooltip="{ content: $t('report.contribution.type'), placement: 'right' }"
@@ -105,9 +105,11 @@
               <div v-if="content.resource.decidedByModerator">
                 <br />
                 <div v-if="content.decisionDisable">
+                  <ds-icon name="eye-slash" class="ban" />
                   {{ $t('moderation.reports.disabledBy') }}
                 </div>
                 <div v-else>
+                  <ds-icon name="eye" class="no-ban" />
                   {{ $t('moderation.reports.enabledBy') }}
                 </div>
                 <hc-user
@@ -117,6 +119,17 @@
                   :date-time="content.decisionAt"
                   positionDatetime="below"
                 />
+              </div>
+              <div v-else>
+                <br />
+                <div v-if="content.resource.disabled">
+                  <ds-icon name="eye-slash" class="ban" />
+                  {{ $t('moderation.reports.disabled') }}
+                </div>
+                <div v-else>
+                  <ds-icon name="eye" class="no-ban" />
+                  {{ $t('moderation.reports.enabled') }}
+                </div>
               </div>
             </td>
           </tr>
@@ -321,5 +334,11 @@ export default {
 }
 .no-decision {
   color: $color-warning;
+}
+.ban {
+  color: $color-danger;
+}
+.no-ban {
+  color: $color-success;
 }
 </style>
