@@ -13,6 +13,6 @@ tar xf doctl-1.14.0-linux-amd64.tar.gz
 chmod +x ./doctl
 sudo mv ./doctl /usr/local/bin/doctl
 
-doctl auth --context develop init --access-token $DIGITALOCEAN_ACCESS_TOKEN
+doctl auth init --access-token $DIGITALOCEAN_ACCESS_TOKEN
 mkdir -p ~/.kube/
-doctl k8s --context develop cluster kubeconfig show develop > ~/.kube/config
+doctl k8s cluster kubeconfig show develop > ~/.kube/config
