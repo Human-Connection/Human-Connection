@@ -380,6 +380,12 @@
       "name": "Convidar usuários",
       "title": "Convidar pessoas",
       "description": "Convites são uma maneira maravilhosa de ter seus amigos em sua rede …"
+    },
+    "donations": {
+      "name": "Informações sobre Doações",
+      "goal": "Doações mensais necessárias",
+      "progress": "Doações arrecadadas até o momento",
+      "successfulUpdate": "Informações sobre doações atualizadas com sucesso!"
     }
   },
   "post": {

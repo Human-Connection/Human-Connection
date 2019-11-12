@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      goal: 0,
+      goal: 15000,
       progress: 0,
     }
   },
@@ -39,7 +39,8 @@ export default {
       query() {
         return DonationsQuery()
       },
-      result({ data: { Donations } }) {
+      update({ Donations }) {
+        if (!Donations[0]) return
         const { goal, progress } = Donations[0]
         this.goal = goal
         this.progress = progress

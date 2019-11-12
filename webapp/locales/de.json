@@ -384,7 +384,8 @@
     "donations": {
       "name": "Spendeninfo",
       "goal": "Monatlich benötigte Spenden",
-      "progress": "Bereits gesammelte Spenden"
+      "progress": "Bereits gesammelte Spenden",
+      "successfulUpdate": "Spenden-Info erfolgreich aktualisiert!"
     }
   },
   "post": {

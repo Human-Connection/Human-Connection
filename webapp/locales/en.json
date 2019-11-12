@@ -385,7 +385,8 @@
     "donations": {
       "name": "Donations info",
       "goal": "Monthly donations needed",
-      "progress": "Donations collected so far"
+      "progress": "Donations collected so far",
+      "successfulUpdate": "Donations info updated successfully!"
     }
   },
   "post": {

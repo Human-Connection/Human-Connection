@@ -39,7 +39,7 @@ export default {
           },
         })
         .then(() => {
-          this.$toast.success('yay!!')
+          this.$toast.success(this.$t('admin.donations.successfulUpdate'))
         })
         .catch(error => this.$toast.error(error.message))
     },
@@ -50,6 +50,7 @@ export default {
         return DonationsQuery()
       },
       update({ Donations }) {
+        if (!Donations[0]) return
         const { goal, progress } = Donations[0]
         this.formData = {
           goal,
