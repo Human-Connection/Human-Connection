@@ -127,7 +127,7 @@ module.exports = {
     type: 'boolean',
     default: false,
   },
-  allowShouts: {
+  showShoutsPublicly: {
     type: 'boolean',
     default: false,
   },

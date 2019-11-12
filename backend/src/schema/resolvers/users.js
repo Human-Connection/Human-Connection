@@ -177,7 +177,7 @@ export default {
         'termsAndConditionsAgreedVersion',
         'termsAndConditionsAgreedAt',
         'allowEmbedIframes',
-        'allowShouts',
+        'showShoutsPublicly',
       ],
       boolean: {
         followedByCurrentUser:

@@ -146,12 +146,12 @@ export const allowEmbedIframesMutation = () => {
   `
 }
 
-export const allowShoutsMutation = () => {
+export const showShoutsPubliclyMutation = () => {
   return gql`
-    mutation($id: ID!, $allowShouts: Boolean) {
-      UpdateUser(id: $id, allowShouts: $allowShouts) {
+    mutation($id: ID!, $showShoutsPublicly: Boolean) {
+      UpdateUser(id: $id, showShoutsPublicly: $showShoutsPublicly) {
         id
-        allowShouts
+        showShoutsPublicly
       }
     }
   `

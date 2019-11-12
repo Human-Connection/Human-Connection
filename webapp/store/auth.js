@@ -87,7 +87,7 @@ export const actions = {
             contributionsCount
             commentedCount
             allowEmbedIframes
-            allowShouts
+            showShoutsPublicly
             termsAndConditionsAgreedVersion
             socialMedia {
               id
