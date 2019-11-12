@@ -1,7 +1,7 @@
 <template>
   <div class="donation-info">
     <progress-bar :title="title" :label="label" :goal="goal" :progress="progress" />
-    <a href="https://human-connection.org/spenden/">
+    <a target="_blank" href="https://human-connection.org/spenden/">
       <ds-button primary>{{ $t('donations.donate-now') }}</ds-button>
     </a>
   </div>
