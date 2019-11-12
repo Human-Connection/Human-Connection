@@ -923,7 +923,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         })
       }),
     )
-
+    
+    await factory.create('Donations')
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
     process.exit(0)
