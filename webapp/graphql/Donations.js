@@ -1,5 +1,14 @@
 import gql from 'graphql-tag'
 
+export const DonationsQuery = () => gql`
+  query {
+    Donations {
+      goal
+      progress
+    }
+  }
+`
+
 export const UpdateDonations = () => {
   return gql`
     mutation($goal: Int, $progress: Int) {

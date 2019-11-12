@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { UpdateDonations } from '~/graphql/Donations'
+import { DonationsQuery, UpdateDonations } from '~/graphql/Donations'
 
 export default {
   data() {
@@ -42,6 +42,20 @@ export default {
           this.$toast.success('yay!!')
         })
         .catch(error => this.$toast.error(error.message))
+    },
+  },
+  apollo: {
+    Donations: {
+      query() {
+        return DonationsQuery()
+      },
+      result({ data: { Donations } }) {
+        const { goal, progress } = Donations[0]
+        this.formData = {
+          goal,
+          progress,
+        }
+      },
     },
   },
 }
