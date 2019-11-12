@@ -180,7 +180,18 @@
       "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
       "commented_on_post": "Hat deinen Beitrag kommentiert …"
     },
-    "comment": "Kommentar"
+    "comment": "Kommentar",
+    "title": "Benachrichtigungen",
+    "pageLink": "Alle Benachrichtigungen",
+    "post": "Beitrag",
+    "user": "Benutzer",
+    "content": "Inhalt",
+    "filterLabel": {
+      "all": "Alle",
+      "read": "Gelesen  ",
+      "unread": "Ungelesen"
+    },
+    "empty": "Sorry, du hast im Moment keine Benachrichtigungen."
   },
   "search": {
     "placeholder": "Suchen",

@@ -3,8 +3,8 @@ import NotificationList from './NotificationList'
 import Notification from '../Notification/Notification'
 import Vuex from 'vuex'
 import Filters from '~/plugins/vue-filters'
-
 import Styleguide from '@human-connection/styleguide'
+import { notifications } from '~/components/utils/Notifications'
 
 const localVue = createLocalVue()
 
@@ -38,40 +38,7 @@ describe('NotificationList.vue', () => {
     stubs = {
       NuxtLink: RouterLinkStub,
     }
-    propsData = {
-      notifications: [
-        {
-          read: false,
-          from: {
-            __typename: 'Post',
-            id: 'post-1',
-            title: 'some post title',
-            slug: 'some-post-title',
-            contentExcerpt: 'this is a post content',
-            author: {
-              id: 'john-1',
-              slug: 'john-doe',
-              name: 'John Doe',
-            },
-          },
-        },
-        {
-          read: false,
-          from: {
-            __typename: 'Post',
-            id: 'post-2',
-            title: 'another post title',
-            slug: 'another-post-title',
-            contentExcerpt: 'this is yet another post content',
-            author: {
-              id: 'john-1',
-              slug: 'john-doe',
-              name: 'John Doe',
-            },
-          },
-        },
-      ],
-    }
+    propsData = { notifications }
   })
 
   describe('shallowMount', () => {
@@ -110,15 +77,11 @@ describe('NotificationList.vue', () => {
 
     describe('click on a notification', () => {
       beforeEach(() => {
-        wrapper
-          .findAll('.notification-mention-post')
-          .at(1)
-          .trigger('click')
+        wrapper.find('.notification-mention-post').trigger('click')
       })
 
       it("emits 'markAsRead' with the id of the notification source", () => {
-        expect(wrapper.emitted('markAsRead')).toBeTruthy()
-        expect(wrapper.emitted('markAsRead')[0]).toEqual(['post-2'])
+        expect(wrapper.emitted('markAsRead')[0]).toEqual(['post-1'])
       })
     })
   })

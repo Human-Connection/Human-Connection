@@ -70,18 +70,13 @@
           </ds-flex-item>
         </ds-flex>
         <ds-flex v-if="!itsMe" gutter="x-small" style="margin-bottom: 0;">
-          <ds-flex-item :width="{ base: 3 }">
+          <ds-flex-item>
             <hc-follow-button
               :follow-id="user.id"
               :is-followed="user.followedByCurrentUser"
               @optimistic="optimisticFollow"
               @update="updateFollow"
             />
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: 1 }">
-            <ds-button fullwidth>
-              <ds-icon name="user-times" />
-            </ds-button>
           </ds-flex-item>
         </ds-flex>
         <!--<ds-space margin-bottom="x-small" />-->

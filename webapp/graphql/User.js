@@ -51,8 +51,9 @@ export const notificationQuery = i18n => {
     ${commentFragment(lang)}
     ${postFragment(lang)}
 
-    query {
-      notifications(read: false, orderBy: updatedAt_desc) {
+    query($read: Boolean, $orderBy: NotificationOrdering, $first: Int, $offset: Int) {
+      notifications(read: $read, orderBy: $orderBy, first: $first, offset: $offset) {
+        id
         read
         reason
         createdAt
@@ -81,6 +82,7 @@ export const markAsReadMutation = i18n => {
 
     mutation($id: ID!) {
       markAsRead(id: $id) {
+        id
         read
         reason
         createdAt
