@@ -62,6 +62,9 @@ describe('PostIndex', () => {
         truncate: a => a,
         removeLinks: jest.fn(),
       },
+      $i18n: {
+        locale: () => 'de',
+      },
       // If you are mocking router, than don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
       $router: {
         history: {
