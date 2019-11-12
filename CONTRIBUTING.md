@@ -52,7 +52,7 @@ You can see the core team behind Human Connection [on our website](https://human
 Times below refer to **German Time** – that's CET (GMT+1) in winter and CEST (GMT+2) in summer – because most Human Connection core team members are living in Germany.
 
 Daily standup
-* every Monday–Friday 11:45
+* every Monday–Friday 11:30
 * in the discord `Conference Room`
 * all contributors welcome!
 * everybody shares what they are working on and asks for help if they are blocked
