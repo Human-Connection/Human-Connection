@@ -12,4 +12,5 @@ export default {
   Category: require('./Category.js'),
   Tag: require('./Tag.js'),
   Location: require('./Location.js'),
+  Donations: require('./Donations.js'),
 }

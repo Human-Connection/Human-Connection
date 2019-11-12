@@ -55,6 +55,10 @@ export default {
           name: this.$t('admin.invites.name'),
           path: `/admin/invite`,
         },
+        {
+          name: this.$t('admin.donations.name'),
+          path: '/admin/donations',
+        },
         // TODO implement
         /* {
           name: this.$t('admin.settings.name'),
