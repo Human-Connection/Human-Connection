@@ -54,7 +54,7 @@ describe('PostIndex', () => {
         'auth/user': () => {
           return { id: 'u23' }
         },
-        'posts/currentPosts': () => jest.fn(),
+          'posts/currentPosts': () => [],
       },
       mutations,
     })
