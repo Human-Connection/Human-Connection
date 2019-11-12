@@ -245,6 +245,11 @@ Then("I select a category", () => {
     .click();
 });
 
+When("I choose a language for the post", () => {
+  cy.get('.ds-flex-item > .ds-form-item .ds-select ')
+    .click().get('.ds-select-option').first().click()
+})
+
 Then("the post shows up on the landing page at position {int}", index => {
   cy.openPage("landing");
   const selector = `.post-card:nth-child(${index}) > .ds-card-content`;
