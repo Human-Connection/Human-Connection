@@ -29,13 +29,13 @@ export default {
   },
   methods: {
     submit() {
-      const { goal, progress } = this
+      const { goal, progress } = this.formData
       this.$apollo
         .mutate({
           mutation: UpdateDonations(),
           variables: {
-            goal,
-            progress,
+            goal: parseInt(goal),
+            progress: parseInt(progress),
           },
         })
         .then(() => {
