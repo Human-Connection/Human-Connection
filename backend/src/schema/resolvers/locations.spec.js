@@ -6,8 +6,7 @@ import { createTestClient } from 'apollo-server-testing'
 
 const factory = Factory()
 
-let mutate
-let authenticatedUser
+let mutate, authenticatedUser
 
 const driver = getDriver()
 const neode = getNeode()
