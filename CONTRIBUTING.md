@@ -49,38 +49,40 @@ You can see the core team behind Human Connection [on our website](https://human
 
 ## Meetings and Pair Programming Sessions
 
+Times below refer to **German Time** – that's CET (GMT+1) in winter and CEST (GMT+2) in summer – because most Human Connection core team members are living in Germany.
+
 Daily standup
-* every Monday–Friday 10:45 UTC
+* every Monday–Friday 11:45
 * in the discord `Conference Room`
 * all contributors welcome!
 * everybody shares what they are working on and asks for help if they are blocked
 
 Regular pair programming sessions
-* every Monday, Wednesday and Thursday 14:00 UTC
+* every Monday, Wednesday and Thursday 15:00
 * the link will be posted in the [discord chat](https://discord.gg/6ub73U3) and on the [Agile Ventures website](https://www.agileventures.org/events?utf8=%E2%9C%93&project_id=220&commit=Filter+by+Project)
 * all contributors welcome!
 * we team up and work on an issue together (often using Visual Studio live sharing sessions)
 
 Open-Source Community Meeting
-* every Thursday 12:00 UTC
+* every Thursday 13:00
 * the link will be posted in the [discord chat](https://discord.gg/6ub73U3) and on the [Agile Ventures website](https://www.agileventures.org/events?utf8=%E2%9C%93&project_id=220&commit=Filter+by+Project)
 * all contributors welcome!
 
 Meet the team
-* every Monday 20:00 UTC (at the moment only in German)
+* every Monday 21:00 (at the moment only in German)
 * details here https://human-connection.org/veranstaltungen/
 * via this [zoom link](https://zoom.us/j/936943532)
 * all contributors and users of the network welcome!
 * users of the network chat with the Human Connection team and discuss current questions and issues
 
 Sprint planning
-* bi-weekly on Tuesday 12:00 UTC
+* bi-weekly on Tuesday 13:00
 * via this [zoom link](https://zoom.us/j/7743582385)
 * all contributors welcome (recommended for those who want to work on an issue in this sprint)
 * we select and prioritise the issues we will work on in the following two weeks
 
 Sprint retrospective
-* bi-weekly on Monday 12:00 UTC
+* bi-weekly on Monday 13:00
 * via this [zoom link](https://zoom.us/j/7743582385)
 * all contributors welcome (most interesting for those who participated in the sprint)
 * we review the past sprint and talk about what went well and what we could improve
