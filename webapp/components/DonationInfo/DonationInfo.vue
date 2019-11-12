@@ -8,22 +8,18 @@
 </template>
 
 <script>
+import { DonationsQuery } from '~/graphql/Donations'
 import ProgressBar from '~/components/ProgressBar/ProgressBar.vue'
 
 export default {
   components: {
     ProgressBar,
   },
-  // TODO: get values from state / database? --> should not be props and not have defaults
-  props: {
-    goal: {
-      type: Number,
-      default: 15000,
-    },
-    progress: {
-      type: Number,
-      default: 500,
-    },
+  data() {
+    return {
+      goal: 0,
+      progress: 0,
+    }
   },
   computed: {
     title() {
@@ -36,6 +32,18 @@ export default {
         amount: this.progress.toLocaleString(this.$i18n.locale()),
         total: this.goal.toLocaleString(this.$i18n.locale()),
       })
+    },
+  },
+  apollo: {
+    Donations: {
+      query() {
+        return DonationsQuery()
+      },
+      result({ data: { Donations } }) {
+        const { goal, progress } = Donations[0]
+        this.goal = goal
+        this.progress = progress
+      },
     },
   },
 }
