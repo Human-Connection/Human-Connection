@@ -59,6 +59,10 @@ export default {
   @media (max-width: 546px) {
     top: $space-xx-small;
   }
+
+  @media (max-width: 350px) {
+    font-size: $font-size-small;
+  }
 }
 
 .progress-bar__goal {
@@ -85,5 +89,9 @@ export default {
   position: absolute;
   top: 50%;
   left: $space-xx-small;
+
+  @media (max-width: 350px) {
+    font-size: $font-size-small;
+  }
 }
 </style>
