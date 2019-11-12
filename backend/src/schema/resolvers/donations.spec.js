@@ -12,6 +12,7 @@ const driver = getDriver()
 const updateDonationsMutation = gql`
   mutation($goal: Int, $progress: Int) {
     UpdateDonations(goal: $goal, progress: $progress) {
+      id
       goal
       progress
       createdAt
@@ -22,6 +23,7 @@ const updateDonationsMutation = gql`
 const donationsQuery = gql`
   query {
     Donations {
+      id
       goal
       progress
     }

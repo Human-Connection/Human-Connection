@@ -49,7 +49,7 @@ export default {
       query() {
         return DonationsQuery()
       },
-      result({ data: { Donations } }) {
+      update({ Donations }) {
         const { goal, progress } = Donations[0]
         this.formData = {
           goal,

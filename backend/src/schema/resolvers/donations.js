@@ -1,13 +1,9 @@
-import uuid from 'uuid/v4'
-
 export default {
   Mutation: {
     UpdateDonations: async (_parent, params, context, _resolveInfo) => {
       const { driver } = context
       const session = driver.session()
       let donations
-      params.id = params.id || uuid()
-
       const writeTxResultPromise = session.writeTransaction(async txc => {
         const updateDonationsTransactionResponse = await txc.run(
           ` 

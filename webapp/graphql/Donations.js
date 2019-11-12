@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 export const DonationsQuery = () => gql`
   query {
     Donations {
+      id
       goal
       progress
     }
