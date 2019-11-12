@@ -29,6 +29,7 @@ describe('PostIndex', () => {
   beforeEach(() => {
     mutations = {
       'posts/SELECT_ORDER': jest.fn(),
+      'posts/SET_CURRENT_POSTS': jest.fn(),
     }
     store = new Vuex.Store({
       getters: {
@@ -53,6 +54,7 @@ describe('PostIndex', () => {
         'auth/user': () => {
           return { id: 'u23' }
         },
+        'posts/currentPosts': () => [],
       },
       mutations,
     })
