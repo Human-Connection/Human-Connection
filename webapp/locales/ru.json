@@ -4,46 +4,46 @@
     "create": "Создать",
     "delete": "Удалить",
     "edit": "Редактировать",
-    "loading": "погрузочный",
-    "loadMore": "Загрузить больше",
+    "loading": "загрузка",
+    "loadMore": "Загрузить ещё",
     "save": "Сохранить"
   },
   "admin": {
     "categories": {
       "categoryName": "Имя",
       "name": "Категории",
-      "postCount": "Сообщения"
+      "postCount": "Посты"
     },
     "dashboard": {
       "comments": "Комментарии",
-      "follows": "Следит",
+      "follows": "Подписки",
       "invites": "Приглашения",
-      "name": "Приборная панель",
+      "name": "Панель управления",
       "notifications": "Уведомления",
-      "organizations": "Организаций",
-      "posts": "сообщения",
+      "organizations": "Организации",
+      "posts": "Посты",
       "projects": "Проекты",
-      "shouts": "Оглашения",
+      "shouts": "Выкрики",
       "users": "Пользователи"
     },
     "hashtags": {
       "name": "Хэштеги",
+      "number": "№",
       "nameOfHashtag": "Имя",
-      "number": "Но.",
-      "tagCount": "Сообщений",
-      "tagCountUnique": "Пользователи"
+      "tagCountUnique": "Пользователи",
+      "tagCount": "Посты"
     },
     "invites": {
-      "description": "Приглашения — это замечательный способ завести своих друзей в своей сети ...",
+      "description": "Приглашения — это замечательный способ завести друзей в своей сети ...",
       "name": "Пригласить пользователей",
       "title": "Пригласить людей"
     },
-    "name": "Администратор",
+    "name": "Администрирование",
     "notifications": {
       "name": "Уведомления"
     },
     "organizations": {
-      "name": "Организаций"
+      "name": "Организации"
     },
     "pages": {
       "name": "Страницы"
@@ -51,23 +51,18 @@
     "settings": {
       "name": "Настройки"
     },
-    "tags": {
-      "name": "Теги",
-      "tagCount": "Сообщения",
-      "tagCountUnique": "Пользователи"
-    },
     "users": {
-      "empty": "Не найдено пользователей",
+      "empty": "Пользователи не найдены",
       "form": {
         "placeholder": "Электронная почта, имя или описание"
       },
       "name": "Пользователи",
       "table": {
         "columns": {
-          "createdAt": "Создано в",
+          "createdAt": "Дата создания",
           "email": "Эл. почта",
           "name": "Имя",
-          "number": "Но.",
+          "number": "№",
           "role": "Роль",
           "slug": "Slug"
         }
