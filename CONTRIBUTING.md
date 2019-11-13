@@ -1,79 +1,101 @@
 # CONTRIBUTING
 
-Thanks so much for thinking of contributing to the Human Connection project, we really appreciate it! :-\)
+Thank you so much for thinking of contributing to the Human Connection project! It's awesome you're here, we really appreciate it. :-\)
 
 ## Getting Set Up
 
-Instructions for how to install all the necessary software can be found in our [documentation](https://docs.human-connection.org/human-connection/).
+Instructions for how to install all the necessary software and some code guidelines can be found in our [documentation](https://docs.human-connection.org/human-connection/).
 
-We recommend that new folks should ideally work together with an existing developer. Please join our [discord](https://discord.gg/6ub73U3) instance to chat with developers or just ask them in tickets in [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f/boards?repos=152252353):
+To get you started we recommend that you join forces with a regular contributor. Please join [our discord instance](https://human-connection.org/discord) to chat with developers or just get in touch directly on an issue on either [Github](https://github.com/Human-Connection/Human-Connection/issues) or [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f/boards?repos=152252353):
 
 ![](https://dl.dropbox.com/s/vbmcihkduy9dhko/Screenshot%202019-01-03%2015.50.11.png?dl=0)
 
-Here are some general notes on our development flow:
+We also have regular pair programming sessions that you are very welcome to join! We feel this is often the best way to get to know both the project and the team. Most developers are also available for spontaneous sessions if the times listed below don't work for you – just ping us on discord.
 
-## Development
+## Development Flow
 
-* Currently operating in two week sprints
-* We are using ZenHub to coordinate
-  * estimating time per issue is the crucial feature of [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f) that Github does not have
-  * "up-for-grabs" links to [Github project](https://github.com/Human-Connection/Human-Connection/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
-  * ordering on ZenHub not necessarily reflected on github projects
-* AgileVentures run open pairing sessions at 10:30am UTC each week on Tuesdays and Thursdays
-* Core team
-  * all the people who are hired by HC non-profit corporation
-  * you can Meet-the-team [every two weeks in German](https://human-connection.org/veranstaltungen/) and [every month in English](https://human-connection.org/en/events/).
-  * 9 people
-    * 2 core developers \(Robert [@roschaefer](https://github.com/roschaefer) and Greg [@appinteractive](https://github.com/appinteractive)\)
-    * 3 marketeers Jasi, Dennis and Sensi
-    * Hardy doing business development
-    * Martin head of IT and previously data protection officer
-    * Victor doing accounting and controlling
-    * Nicolas is the community manager \(reviews content in the network\) reflects community opinion back to the core team
-* when can folks pair with Robert
-  * 10am UTC until 5pm UTC every working day
+We operate in two week sprints that are planned, estimated and prioritised on [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f). All issues are also linked to and synced with [Github](https://github.com/Human-Connection/Human-Connection/issues). Look for the `good first issue` label if you're not sure where to start!
+
+We try to discuss all questions directly related to a feature or bug in the respective issue, in order to preserve it for the future and for other developers. We use discord for real-time communication.
+
+This is how we solve bugs and implement features, step by step:
+1. We find an issue we want to work on, usually during the sprint planning but as an open source contributor this can happen at any time.
+2. We communicate with the team to see if the issue is still available. (When you comment on an issue but don't get an answer there within 1-2 days try to mention @Human-Connection/hc-dev-team to make sure we check in.)
+3. We make sure we understand the issue in detail – what problem is it solving and how should it be implemented?
+4. We assign ourselves to the issue and move it to `In Progress` on [Zenhub](https://app.zenhub.com/workspaces/human-connection-nitro-5c0154ecc699f60fc92cf11f).
+5. We start working on it in a `new branch` and open a `pull request` prefixed with `[WIP]` (work in progress) to which we regularly push our changes.
+6. When questions come up we clarify them with the team (directly in the issue on Github).
+7. When we are happy with our work and our PR is passing all tests we remove the `[WIP]` from the PR description and ask for reviews (if you're not sure who to ask there is @Human-Connection/hc-dev-team which pings all core developers).
+8. We then incorporate the suggestions from the reviews into our work and once it has been approved it can be merged into master!
+
+Every pull request needs to:
+* fix an issue (if there is something you want to work on but there is no issue for it, create one first and discuss it with the team)
+* include tests for the code that is added or changed
+* pass all tests (linter, backend, frontend, end-to-end)
+* be approved by at least 1 developer who is not the owner of the PR (when more than 10 files were changed it needs 2 approvals)
+
+## The Team
+
+There are many volunteers all around the world helping us build this network and without their contributions we wouldn't be where we are today. Big thank you to all of you!
+
+You can see the core team behind Human Connection [on our website](https://human-connection.org/en/the-team/). On Github you will mostly run into our developers:
+* Robert (@roschaefer)
+* Matt (@mattwr18)
+* Wolle (@Tirokk)
+* Alex (@ogerly)
+* Alina (@alina-beck)
+* Martin (@datenbrei), our head of IT
+* and sometimes Dennis (@DennisHack), the founder of Human Connection
+
+## Meetings and Pair Programming Sessions
+
+Times below refer to **German Time** – that's CET (GMT+1) in winter and CEST (GMT+2) in summer – because most Human Connection core team members are living in Germany.
+
+Daily standup
+* every Monday–Friday 11:30
+* in the discord `Conference Room`
+* all contributors welcome!
+* everybody shares what they are working on and asks for help if they are blocked
+
+Regular pair programming sessions
+* every Monday, Wednesday and Thursday 15:00
+* the link will be posted in the [discord chat](https://discord.gg/6ub73U3) and on the [Agile Ventures website](https://www.agileventures.org/events?utf8=%E2%9C%93&project_id=220&commit=Filter+by+Project)
+* all contributors welcome!
+* we team up and work on an issue together (often using Visual Studio live sharing sessions)
+
+Open-Source Community Meeting
+* every Thursday 13:00
+* the link will be posted in the [discord chat](https://discord.gg/6ub73U3) and on the [Agile Ventures website](https://www.agileventures.org/events?utf8=%E2%9C%93&project_id=220&commit=Filter+by+Project)
+* all contributors welcome!
+
+Meet the team
+* every Monday 21:00 (at the moment only in German)
+* details here https://human-connection.org/veranstaltungen/
+* via this [zoom link](https://zoom.us/j/936943532)
+* all contributors and users of the network welcome!
+* users of the network chat with the Human Connection team and discuss current questions and issues
+
+Sprint planning
+* bi-weekly on Tuesday 13:00
+* via this [zoom link](https://zoom.us/j/7743582385)
+* all contributors welcome (recommended for those who want to work on an issue in this sprint)
+* we select and prioritise the issues we will work on in the following two weeks
+
+Sprint retrospective
+* bi-weekly on Monday 13:00
+* via this [zoom link](https://zoom.us/j/7743582385)
+* all contributors welcome (most interesting for those who participated in the sprint)
+* we review the past sprint and talk about what went well and what we could improve
 
 ## Philosophy
 
 We practise [collective code ownership](http://www.extremeprogramming.org/rules/collective.html) rather than strong code ownership, which means that:
-
-* anyone can start working on anyone elses code
-* we avoid blocking because someone else isn't working on something
-* however it's sometimes good to leave something in order to create successful education experience
+* developers can make contributions to other people's PRs (after checking in with them)
+* we avoid blocking because someone else isn't working, so we sometimes take over PRs from other developers
 * everyone should always push their code to branches so others can see it
 
-Everyone feel free to request merges or answers to issues from the project managers
+We believe in open source contributions as a learning experience – everyone is welcome to join our team of volunteers and to contribute to the project, no matter their background or level of experience.
 
-But what do we do when waiting for merge into master \(wanting to keep PRs small\) --&gt; Robert recommends creating a pull request for each step
+We use pair programming sessions as a tool for knowledge sharing. We can learn a lot from each other and only by sharing what we know and overcoming challenges together can we grow as a team and truly own this project collectively.
 
-* programming is also about thinking about other people - empathy for your co-workers
-  * but what about when you are waiting for merge?
-  * solutions
-    * 1\) put 2nd PR into branch that the first PR is hitting - but requires update after merging
-    * 2\) prefer to leave existing PR until it can be reviewed, and instead go and work on some other part of the codebase that is not impacted by the first PR
-
-### Code Review
-* Github setting in place - at least one review is required to merge
-  - in principle anyone (who is not the PR owner) can review
-  - but often it will be the core developers (Robert, Wolfgang, Matt, Alina, Alex)
-  - once there is a review, and presuming no requested changes, PR opener can merge
-
-* CI/tests
-  - the CI needs to pass
-    - linting (yarn lint --fix)
-    - tests (unit, feature) (backend, frontend)
-    - codecoverage
-
-## Notes
-
-question: when you want to pick a task - \(find out priority\) - is it in discord? is it in AV slack? --&gt; Robert says you can always ask in discord - group channels are the best
-
-Robert shares: [Zenhub board](https://app.zenhub.com/workspaces/nitro-embed-5c0154ecc699f60fc92cf11f/boards?repos=112590397,152252353,152252578,157710732,163305928) Robert says the order of tickets are preserved in ZenHub and reflect their priority \(most important at the top\) and so check out the current milestones
-
-Matt - question about who can work on [ticket 100](https://app.zenhub.com/workspaces/nitro-embed-5c0154ecc699f60fc92cf11f/issues/human-connection/human-connection/100) --&gt; Robert - in rare occasions it might be exclusive to someone with admin permissions Robert: notes greg just pushed this today: [https://github.com/Human-Connection/Nitro-Deployment](https://github.com/Human-Connection/Nitro-Deployment)
-
-Matt makes point that new stories will have to be taken off the "New Issues" and Robert says that's fine, if you don't like the first one, then you can take the next one. Volunteeers have no commitment except their own self development and their awesomeness by contributing to free and open-source software projects.
-
-Robert notes that everyone is invited to join the kickoff meetings
-
-Robert - difference between "important" \(creates a lot of value\) and "beginner friendly" \(easy to implement\)
+As a volunteeer you have no commitment except your own self development and your awesomeness by contributing to this free and open-source software project. Cheers to you!

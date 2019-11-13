@@ -4,7 +4,8 @@
       <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
-      <ds-grid-item :row-span="2" column-span="fullWidth">
+      <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
+        <donation-info />
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -57,6 +58,7 @@
 </template>
 
 <script>
+import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
@@ -69,6 +71,7 @@ import PostMutations from '~/graphql/PostMutations'
 
 export default {
   components: {
+    DonationInfo,
     FilterMenu,
     HcPostCard,
     HcLoadMore,
@@ -262,7 +265,20 @@ export default {
 .sorting-dropdown {
   width: 250px;
   position: relative;
-  float: right;
-  margin: 4px 0;
+
+  @media (max-width: 680px) {
+    width: 180px;
+  }
+}
+
+.top-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  @media (max-width: 546px) {
+    grid-row-end: span 3 !important;
+    flex-direction: column;
+  }
 }
 </style>

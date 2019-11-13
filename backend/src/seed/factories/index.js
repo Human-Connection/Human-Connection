@@ -8,6 +8,7 @@ import createTag from './tags.js'
 import createSocialMedia from './socialMedia.js'
 import createLocation from './locations.js'
 import createEmailAddress from './emailAddresses.js'
+import createDonations from './donations.js'
 import createUnverifiedEmailAddresss from './unverifiedEmailAddresses.js'
 
 const factories = {
@@ -21,6 +22,7 @@ const factories = {
   Location: createLocation,
   EmailAddress: createEmailAddress,
   UnverifiedEmailAddress: createUnverifiedEmailAddresss,
+  Donations: createDonations,
 }
 
 export const cleanDatabase = async (options = {}) => {
