@@ -44,3 +44,8 @@ Then("I should see an abreviated version of my comment", () => {
 Then("the editor should be cleared", () => {
   cy.get(".ProseMirror p").should("have.class", "is-empty");
 });
+
+Then("I should see latest post first", () => {
+  cy.get("article.post-card").eq(0).should("contain", "101")
+  cy.get("article.post-card").eq(1).should("contain", "102")
+})
