@@ -238,7 +238,8 @@
     },
     "privacy": {
       "name": "Privatsphäre",
-      "make-shouts-public": "Teile von mir empfohlene Artikel öffentlich auf meinem Profil"
+      "make-shouts-public": "Teile von mir empfohlene Artikel öffentlich auf meinem Profil",
+      "success-update": "Privatsphäre-Einstellungen gespeichert"
     },
     "invites": {
       "name": "Einladungen"
