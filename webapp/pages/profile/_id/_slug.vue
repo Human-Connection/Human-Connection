@@ -197,7 +197,7 @@
                 <li
                   class="Tabs__tab pointer"
                   :class="{ active: tabActive === 'shout' }"
-                  v-if="myProfile"
+                  v-if="myProfile || user.showShoutsPublicly"
                 >
                   <a @click="handleTab('shout')">
                     <ds-space margin="small">

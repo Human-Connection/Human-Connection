@@ -27,6 +27,7 @@ export default i18n => {
           id
           url
         }
+        showShoutsPublicly
       }
     }
   `
