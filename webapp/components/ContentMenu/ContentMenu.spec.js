@@ -33,7 +33,7 @@ describe('ContentMenu.vue', () => {
 
   describe('mount', () => {
     mutations = {
-      'modal/SET_OPEN': () => jest.fn(),
+      'modal/SET_OPEN': jest.fn(),
     }
     getters = {
       'auth/isModerator': () => false,
@@ -55,37 +55,39 @@ describe('ContentMenu.vue', () => {
       return wrapper
     }
 
-    describe('contribution', () => {
-      it('owner can edit and delete contribution', () => {
-        const wrapper = openContentMenu({
+    describe('owner of contribution', () => {
+      let wrapper
+      beforeEach(() => {
+        wrapper = openContentMenu({
           isOwner: true,
           resourceType: 'contribution',
           resource: {
             id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
           },
         })
-        let items = wrapper.findAll('.ds-menu-item')
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        expect(items).toHaveLength(2)
-        expect(items.at(0).text()).toBe('post.menu.edit')
+      })
+      it('can edit the contribution', () => {
         expect(
-          items
+          wrapper
+            .findAll('.ds-menu-item')
             .at(0)
             .find('span.ds-menu-item-link')
             .attributes('to'),
         ).toBe('/post/edit/d23a4265-f5f7-4e17-9f86-85f714b4b9f8')
-        expect(items.at(1).text()).toBe('post.menu.delete')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/post-menu-delete')
-        items.at(1).trigger('click')
-        expect(openModalSpy).toHaveBeenCalledWith('delete')
       })
 
-      it('admin can pin unpinned post', () => {
+      it('can delete the contribution', () => {
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
+        expect(openModalSpy).toHaveBeenCalledWith('delete')
+      })
+    })
+
+    describe('admin can', () => {
+      it('pin unpinned post', () => {
         getters['auth/isAdmin'] = () => true
         const wrapper = openContentMenu({
           isOwner: false,
@@ -95,15 +97,10 @@ describe('ContentMenu.vue', () => {
             pinnedBy: null,
           },
         })
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items.at(0).text()).toBe('post.menu.pin')
-        expect(
-          items
-            .at(0)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/post-menu-pin')
-        items.at(0).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(0)
+          .trigger('click')
         expect(wrapper.emitted('pinPost')).toEqual([
           [
             {
@@ -114,7 +111,7 @@ describe('ContentMenu.vue', () => {
         ])
       })
 
-      it('admin can unpin pinned post', () => {
+      it('unpin pinned post', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'contribution',
@@ -123,16 +120,10 @@ describe('ContentMenu.vue', () => {
             pinnedBy: 'someone',
           },
         })
-        let items = wrapper.findAll('.ds-menu-item')
-        // for (var i = 0; i < items.length; i++) { console.log(items.at(i).html()) }
-        expect(items.at(0).text()).toBe('post.menu.unpin')
-        expect(
-          items
-            .at(0)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/post-menu-unpin')
-        items.at(0).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(0)
+          .trigger('click')
         expect(wrapper.emitted('unpinPost')).toEqual([
           [
             {
@@ -144,9 +135,10 @@ describe('ContentMenu.vue', () => {
       })
     })
 
-    describe('comment', () => {
-      it('owner can edit and delete comment', () => {
-        const wrapper = openContentMenu({
+    describe('owner of comment can', () => {
+      let wrapper
+      beforeEach(() => {
+        wrapper = openContentMenu({
           isOwner: true,
           resourceType: 'comment',
           resource: {
@@ -154,31 +146,25 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(2)
-        expect(items.at(0).text()).toBe('comment.menu.edit')
-        expect(
-          items
-            .at(0)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/comment-menu-edit')
-        items.at(0).trigger('click')
+      })
+      it('edit the comment', () => {
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(0)
+          .trigger('click')
         expect(wrapper.emitted('showEditCommentMenu')).toEqual([[true]])
-        expect(items.at(1).text()).toBe('comment.menu.delete')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/comment-menu-delete')
-        items.at(1).trigger('click')
+      })
+      it('delete the comment', () => {
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('delete')
       })
     })
 
-    describe('report', () => {
-      it('anyone who is not owner can report post', () => {
+    describe('reporting', () => {
+      it('a post of another user is possible', () => {
         getters['auth/isAdmin'] = () => false
         getters['auth/isModerator'] = () => false
         const wrapper = openContentMenu({
@@ -189,20 +175,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(1)
-        expect(items.at(0).text()).toBe('report.contribution.title')
-        expect(
-          items
-            .at(0)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/report-contribution-title')
-        items.at(0).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(0)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('report')
       })
 
-      it('anyone who is not owner can report comment', () => {
+      it('a comment of another user is possible', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'comment',
@@ -211,20 +191,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(1)
-        expect(items.at(0).text()).toBe('report.comment.title')
-        expect(
-          items
-            .at(0)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/report-comment-title')
-        items.at(0).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(0)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('report')
       })
 
-      it('other users can be reported', () => {
+      it('another user is possible', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
@@ -233,20 +207,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(2)
-        expect(items.at(0).text()).toBe('report.user.title')
-        expect(
-          items
-            .at(0)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/report-user-title')
-        items.at(0).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(0)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('report')
       })
 
-      it('other organizations can be reported', () => {
+      it('another organization is possible', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'organization',
@@ -255,22 +223,16 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(1)
-        expect(items.at(0).text()).toBe('report.organization.title')
-        expect(
-          items
-            .at(0)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/report-organization-title')
-        items.at(0).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(0)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('report')
       })
     })
 
     describe('moderator', () => {
-      it('moderator can disable posts', () => {
+      it('can disable posts', () => {
         getters['auth/isAdmin'] = () => false
         getters['auth/isModerator'] = () => true
         const wrapper = openContentMenu({
@@ -282,20 +244,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(2)
-        expect(items.at(1).text()).toBe('disable.contribution.title')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/disable-contribution-title')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('disable')
       })
 
-      it('moderator can disable comments', () => {
+      it('can disable comments', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'comment',
@@ -305,20 +261,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(2)
-        expect(items.at(1).text()).toBe('disable.comment.title')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/disable-comment-title')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('disable')
       })
 
-      it('moderator can disable users', () => {
+      it('can disable users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
@@ -328,20 +278,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(3)
-        expect(items.at(1).text()).toBe('disable.user.title')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/disable-user-title')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('disable')
       })
 
-      it('moderator can disable organizations', () => {
+      it('can disable organizations', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'organization',
@@ -351,21 +295,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        // for (var i = 0; i < items.length; i++) { console.log(items.at(i).html()) }
-        expect(items).toHaveLength(2)
-        expect(items.at(1).text()).toBe('disable.organization.title')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/disable-organization-title')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('disable')
       })
 
-      it('moderator can release posts', () => {
+      it('can release posts', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'contribution',
@@ -375,20 +312,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(2)
-        expect(items.at(1).text()).toBe('release.contribution.title')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/release-contribution-title')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('release', 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8')
       })
 
-      it('moderator can release comments', () => {
+      it('can release comments', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'comment',
@@ -398,20 +329,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(2)
-        expect(items.at(1).text()).toBe('release.comment.title')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/release-comment-title')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('release', 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8')
       })
 
-      it('moderator can release users', () => {
+      it('can release users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
@@ -421,20 +346,14 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(3)
-        expect(items.at(1).text()).toBe('release.user.title')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/release-user-title')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('release', 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8')
       })
 
-      it('moderator can release organizations', () => {
+      it('can release organizations', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'organization',
@@ -444,22 +363,16 @@ describe('ContentMenu.vue', () => {
           },
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(2)
-        expect(items.at(1).text()).toBe('release.organization.title')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/release-organization-title')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('release', 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8')
       })
     })
 
     describe('user', () => {
-      it('user can access settings', () => {
+      it('can access settings', () => {
         getters['auth/isAdmin'] = () => false
         getters['auth/isModerator'] = () => false
         const wrapper = openContentMenu({
@@ -469,18 +382,16 @@ describe('ContentMenu.vue', () => {
             id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
           },
         })
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(1)
-        expect(items.at(0).text()).toBe('settings.name')
         expect(
-          items
+          wrapper
+            .findAll('.ds-menu-item')
             .at(0)
             .find('span.ds-menu-item-link')
             .attributes('to'),
         ).toBe('/settings')
       })
 
-      it('user can block other users', () => {
+      it('can block other users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
@@ -489,16 +400,10 @@ describe('ContentMenu.vue', () => {
             isBlocked: false,
           },
         })
-        let items = wrapper.findAll('.ds-menu-item')
-        expect(items).toHaveLength(2)
-        expect(items.at(1).text()).toBe('settings.blocked-users.block')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/settings-blocked-users-block')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(wrapper.emitted('block')).toEqual([
           [
             {
@@ -509,7 +414,7 @@ describe('ContentMenu.vue', () => {
         ])
       })
 
-      it('user can unblock blocked users', () => {
+      it('can unblock blocked users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
@@ -518,17 +423,10 @@ describe('ContentMenu.vue', () => {
             isBlocked: true,
           },
         })
-        let items = wrapper.findAll('.ds-menu-item')
-        // for (var i = 0; i < items.length; i++) { console.log(items.at(i).html()) }
-        expect(items).toHaveLength(2)
-        expect(items.at(1).text()).toBe('settings.blocked-users.unblock')
-        expect(
-          items
-            .at(1)
-            .find('span.ds-menu-item-link')
-            .attributes('to'),
-        ).toBe('/settings-blocked-users-unblock')
-        items.at(1).trigger('click')
+        wrapper
+          .findAll('.ds-menu-item')
+          .at(1)
+          .trigger('click')
         expect(wrapper.emitted('unblock')).toEqual([
           [
             {
