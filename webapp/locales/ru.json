@@ -212,13 +212,13 @@
   },
   "contribution": {
     "categories": {
-      "infoSelectedNoOfMaxCategories": "{chosen} из {max} выбранных категорий"
+      "infoSelectedNoOfMaxCategories": "выбрано {chosen} из {max} категорий"
     },
     "category": {
       "name": {
         "animal-protection": "Защита животных",
         "art-culture-sport": "Искусство, культура и спорт",
-        "consumption-sustainability": "Потребление И Устойчивость",
+        "consumption-sustainability": "Потребление и стабильность",
         "cooperation-development": "Сотрудничество и развитие",
         "democracy-politics": "Демократия и политика",
         "economy-finances": "Экономика и финансы",
@@ -226,65 +226,65 @@
         "energy-technology": "Энергия и технологии",
         "environment-nature": "Окружающая среда и природа",
         "freedom-of-speech": "Свобода слова",
-        "global-peace-nonviolence": "Глобальный мир и ненасилие",
-        "happiness-values": "Счастье и Ценности",
+        "global-peace-nonviolence": "Глобальный мир и борьба с насилием",
+        "happiness-values": "Счастье и ценности",
         "health-wellbeing": "Здоровье и благополучие",
-        "human-rights-justice": "Права Человека и Справедливость",
+        "human-rights-justice": "Права человека и справедливость",
         "it-internet-data-privacy": "ИТ, интернет и конфиденциальность",
         "just-for-fun": "Просто для удовольствия"
       }
     },
-    "delete": "Удалить вклад",
-    "edit": "редакти́ровать вклад",
+    "delete": "Удалить",
+    "edit": "Редактировать",
     "emotions-label": {
-      "angry": "Сердитый",
-      "cry": "Плакать",
-      "funny": "Смешно́й",
-      "happy": "Счастливый",
-      "surprised": "Удивленный"
+      "angry": "Возмутительно",
+      "cry": "Плачу",
+      "funny": "Смешно",
+      "happy": "Счастлив",
+      "surprised": "Удивлен"
     },
-    "filterALL": "Просмотреть все вклады",
-    "filterFollow": "Фильтровать сообщения пользователей, на которых я слежу",
+    "filterALL": "Просмотреть все посты",
+    "filterFollow": "Показать сообщения пользователей, на которых я подписан",
     "languageSelectLabel": "Язык",
-    "newPost": "Создать новое сообщение",
+    "newPost": "Создать пост",
     "success": "Сохранено!",
     "teaserImage": {
       "cropperConfirm": "Подтвердить"
     },
-    "title": "Заглавие"
+    "title": "Заголовок"
   },
   "delete": {
     "cancel": "Отменить",
     "comment": {
-      "message": "Ты уверены, что хочешь удалить комментарий \"<b>{name}<\/b>\"?",
+      "message": "Вы уверены, что хотите удалить комментарий \"<b>{name}<\/b>\"?",
       "success": "Комментарий успешно удален!",
       "title": "Удалить комментарий",
       "type": "Комментарий"
     },
     "contribution": {
-      "message": "Ты уверены, что хочешь удалить сообщение \"<b>{name}<\/b>\"?",
-      "success": "Сообщение успешно удалено!",
-      "title": "Удаленный вклад",
-      "type": "Вклад"
+      "message": "Вы уверены, что хотите удалить пост \"<b>{name}<\/b>\"?",
+      "success": "Пост успешно удален!",
+      "title": "Удалить пост",
+      "type": "Пост"
     },
     "submit": "Удалить"
   },
   "disable": {
     "cancel": "Отменить",
     "comment": {
-      "message": "ты действительно хочешь отключить комментарий от «<b>{name}<\/b>»?",
+      "message": "вы действительно хотите отключить комментарий от «<b>{name}<\/b>»?",
       "title": "Отключить комментарий",
       "type": "Комментарий"
     },
     "contribution": {
-      "message": "Вы действительно хотите отключить вклад «<b>{name}<\/b>»?",
-      "title": "Отключить вклад",
-      "type": "Вклад"
+      "message": "Вы действительно хотите отключить пост «<b>{name}<\/b>»?",
+      "title": "Отключить пост",
+      "type": "Пост"
     },
     "submit": "Отключить",
     "success": "Успешно отключен",
     "user": {
-      "message": "ты действительно хочешь отключить пользователя «<b>{name}<\/b>»?",
+      "message": "Вы действительно хотите отключить пользователя «<b>{name}<\/b>»?",
       "title": "Отключить пользователя",
       "type": "Пользователь"
     }
