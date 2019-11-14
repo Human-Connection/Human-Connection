@@ -336,20 +336,20 @@
     "no-results": "Посты не найдены."
   },
   "login": {
-    "copy": "Если у тебя уже есть учетная запись Human Connection, войдите здесь.",
-    "email": "Твой адрес электронной почты",
+    "copy": "Авторизуйтесь, если у вас уже есть учетная запись Human Connection.",
+    "email": "Электронная почта",
     "failure": "Неверный адрес электронной почты или пароль.",
-    "forgotPassword": "Забыл пароль?",
+    "forgotPassword": "Забыли пароль?",
     "hello": "Привет",
     "login": "Вход",
     "logout": "Выйти",
-    "moreInfo": "Что такое Human Connection",
-    "moreInfoHint": "на страницу презентации",
+    "moreInfo": "Что такое Human Connection?",
+    "moreInfoHint": "на страницу проекта",
     "moreInfoURL": "https:\/\/human-connection.org\/en\/",
     "no-account": "У вас нет аккаунта?",
-    "password": "Твой пароль",
-    "register": "Зарегистрироваться",
-    "success": "Ты вошёл в систему!"
+    "password": "Пароль",
+    "register": "Зарегистрируйтесь",
+    "success": "Вы вошли в систему!"
   },
   "maintenance": {
     "explanation": "В данный момент мы проводим плановое техническое обслуживание, пожалуйста, повтори попытку позже.",
