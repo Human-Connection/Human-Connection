@@ -11,6 +11,8 @@ enum _CategoryOrdering {
   createdAt_desc
   updatedAt_asc
   updatedAt_desc
+  postCount_asc
+  postCount_desc
 }
 
 type Category {

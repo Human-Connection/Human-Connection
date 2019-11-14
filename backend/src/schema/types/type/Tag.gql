@@ -27,6 +27,10 @@ type Tag {
 enum _TagOrdering {
   id_asc
   id_desc
+  taggedCount_asc
+  taggedCount_desc
+  taggedCountUnique_asc
+  taggedCountUnique_desc
 }
 
 type Query {
