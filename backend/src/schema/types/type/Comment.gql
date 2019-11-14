@@ -1,3 +1,41 @@
+enum _CommentOrdering {
+  id_asc
+  id_desc
+  content_asc
+  content_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+}
+
+input _CommentFilter {
+  AND: [_CommentFilter!]
+  OR: [_CommentFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  author: _UserFilter
+  author_not: _UserFilter
+  author_in: [_UserFilter!]
+  author_not_in: [_UserFilter!]
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  post: _PostFilter
+  post_not: _PostFilter
+  post_in: [_PostFilter!]
+  post_not_in: [_PostFilter!]
+}
+
 type Comment {
   id: ID!
   activityId: String
@@ -10,6 +48,19 @@ type Comment {
   deleted: Boolean
   disabled: Boolean
   disabledBy: User @relation(name: "DISABLED", direction: "IN")
+}
+
+type Query {
+  Comment(
+    id: ID
+    content: String
+    createdAt: String
+    updatedAt: String
+    first: Int
+    offset: Int
+    orderBy: [_CommentOrdering]
+    filter: _CommentFilter
+  ): [Comment]
 }
 
 type Mutation {

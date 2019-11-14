@@ -29,7 +29,7 @@ const filterForBlockedUsers = async (params, context) => {
 }
 
 const maintainPinnedPosts = params => {
-  const pinnedPostFilter = { pinnedBy_in: { role_in: ['admin'] } }
+  const pinnedPostFilter = { pinned: true }
   if (isEmpty(params.filter)) {
     params.filter = { OR: [pinnedPostFilter, {}] }
   } else {

@@ -19,28 +19,9 @@ export default makeAugmentedSchema({
         'SocialMedia',
         'NOTIFIED',
         'REPORTED',
+        'Donations',
       ],
-      // add 'User' here as soon as possible
     },
-    mutation: {
-      exclude: [
-        'Badge',
-        'Embed',
-        'InvitationCode',
-        'EmailAddress',
-        'Notfication',
-        'Post',
-        'Comment',
-        'Statistics',
-        'LoggedInUser',
-        'Location',
-        'SocialMedia',
-        'User',
-        'EMOTED',
-        'NOTIFIED',
-        'REPORTED',
-      ],
-      // add 'User' here as soon as possible
-    },
+    mutation: false,
   },
 })

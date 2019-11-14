@@ -210,6 +210,7 @@ describe('Post', () => {
           data: {
             Post: expect.arrayContaining(expected),
           },
+          errors: undefined,
         })
       })
     })
@@ -229,7 +230,9 @@ describe('Post', () => {
 
       await user.relateTo(followedUser, 'following')
       variables = { filter: { author: { followedBy_some: { id: 'current-user' } } } }
-      const expected = {
+      await expect(
+        query({ query: postQueryFilteredByUsersFollowed, variables }),
+      ).resolves.toMatchObject({
         data: {
           Post: [
             {
@@ -238,10 +241,8 @@ describe('Post', () => {
             },
           ],
         },
-      }
-      await expect(
-        query({ query: postQueryFilteredByUsersFollowed, variables }),
-      ).resolves.toMatchObject(expected)
+        errors: undefined,
+      })
     })
   })
 })
