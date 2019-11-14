@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import HcEmpty from '~/components/Empty.vue'
+import HcEmpty from '~/components/Empty/Empty'
 
 export default {
   components: {

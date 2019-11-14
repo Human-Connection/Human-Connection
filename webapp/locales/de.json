@@ -62,6 +62,11 @@
       }
     }
   },
+  "donations": {
+    "donations-for": "Spenden für",
+    "donate-now": "Jetzt spenden",
+    "amount-of-total": "{amount} von {total} € erreicht"
+  },
   "maintenance": {
     "title": "Human Connection befindet sich in der Wartung",
     "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
@@ -86,6 +91,10 @@
     },
     "followers": {
       "label": "Benutzern, denen ich folge"
+    },
+    "language": {
+      "header": "Sprachen",
+      "all": "Alle"
     }
   },
   "site": {
@@ -171,7 +180,18 @@
       "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
       "commented_on_post": "Hat deinen Beitrag kommentiert …"
     },
-    "comment": "Kommentar"
+    "comment": "Kommentar",
+    "title": "Benachrichtigungen",
+    "pageLink": "Alle Benachrichtigungen",
+    "post": "Beitrag",
+    "user": "Benutzer",
+    "content": "Inhalt",
+    "filterLabel": {
+      "all": "Alle",
+      "read": "Gelesen  ",
+      "unread": "Ungelesen"
+    },
+    "empty": "Sorry, du hast im Moment keine Benachrichtigungen."
   },
   "search": {
     "placeholder": "Suchen",
@@ -365,6 +385,12 @@
       "name": "Benutzer einladen",
       "title": "Leute einladen",
       "description": "Einladungen sind ein wunderbarer Weg, deine Freund in deinem Netzwerk zu haben …"
+    },
+    "donations": {
+      "name": "Spendeninfo",
+      "goal": "Monatlich benötigte Spenden",
+      "progress": "Bereits gesammelte Spenden",
+      "successfulUpdate": "Spenden-Info erfolgreich aktualisiert!"
     }
   },
   "post": {

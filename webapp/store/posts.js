@@ -4,6 +4,8 @@ import xor from 'lodash/xor'
 import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 import clone from 'lodash/clone'
+import { filterPosts } from '~/graphql/PostQuery'
+import { first, offset } from '~/constants/posts'
 
 const defaultFilter = {}
 
@@ -26,6 +28,7 @@ export const state = () => {
       ...defaultFilter,
     },
     order: orderOptions['createdAt_desc'],
+    currentPosts: [],
   }
 }
 
@@ -48,10 +51,21 @@ export const mutations = {
     delete filter.categories_some
     state.filter = filter
   },
+  RESET_LANGUAGES(state) {
+    const filter = clone(state.filter)
+    delete filter.language_in
+    state.filter = filter
+  },
   TOGGLE_CATEGORY(state, categoryId) {
     const filter = clone(state.filter)
     update(filter, 'categories_some.id_in', categoryIds => xor(categoryIds, [categoryId]))
     if (isEmpty(get(filter, 'categories_some.id_in'))) delete filter.categories_some
+    state.filter = filter
+  },
+  TOGGLE_LANGUAGE(state, languageCode) {
+    const filter = clone(state.filter)
+    update(filter, 'language_in', languageCodes => xor(languageCodes, [languageCode]))
+    if (isEmpty(get(filter, 'language_in'))) delete filter.language_in
     state.filter = filter
   },
   TOGGLE_EMOTION(state, emotion) {
@@ -62,6 +76,9 @@ export const mutations = {
   },
   SELECT_ORDER(state, value) {
     state.order = orderOptions[value]
+  },
+  SET_CURRENT_POSTS(state, posts) {
+    state.currentPosts = posts
   },
 }
 
@@ -74,6 +91,9 @@ export const getters = {
   },
   filteredCategoryIds(state) {
     return get(state.filter, 'categories_some.id_in') || []
+  },
+  filteredLanguageCodes(state) {
+    return get(state.filter, 'language_in') || []
   },
   filteredByUsersFollowed(state) {
     return !!get(state.filter, 'author.followedBy_some.id')
@@ -99,5 +119,27 @@ export const getters = {
   },
   orderIcon(state) {
     return state.order.icon
+  },
+  currentPosts(state) {
+    return state.currentPosts || []
+  },
+}
+
+export const actions = {
+  async refreshPosts({ commit, getters }, { i18n }) {
+    const client = this.app.apolloProvider.defaultClient
+    const {
+      data: { Post },
+    } = await client.query({
+      query: filterPosts(i18n),
+      variables: {
+        filter: getters.filter,
+        first,
+        orderBy: ['pinned_asc', getters.orderBy],
+        offset,
+      },
+    })
+    commit('SET_CURRENT_POSTS', Post)
+    return Post
   },
 }

@@ -1,9 +1,12 @@
 import faker from 'faker'
+import sample from 'lodash/sample'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
 import Factory from './factories'
 import { neode as getNeode, getDriver } from '../bootstrap/neo4j'
 import { gql } from '../jest/helpers'
+
+const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
 /* eslint-disable no-multi-spaces */
 ;(async function() {
@@ -39,6 +42,7 @@ import { gql } from '../jest/helpers'
         nameDE: 'Hamburg',
         nameNL: 'Hamburg',
         namePL: 'Hamburg',
+        nameRU: 'Гамбург',
       }),
       factory.create('Location', {
         id: 'region.14880313158564380',
@@ -54,6 +58,7 @@ import { gql } from '../jest/helpers'
         nameDE: 'Berlin',
         nameNL: 'Berlijn',
         namePL: 'Berlin',
+        nameRU: 'Берлин',
       }),
       factory.create('Location', {
         id: 'country.10743216036480410',
@@ -67,6 +72,7 @@ import { gql } from '../jest/helpers'
         nameFR: 'Allemagne',
         nameIT: 'Germania',
         nameEN: 'Germany',
+        nameRU: 'Германия',
       }),
       factory.create('Location', {
         id: 'region.9397217726497330',
@@ -82,6 +88,7 @@ import { gql } from '../jest/helpers'
         nameDE: 'Paris',
         nameNL: 'Parijs',
         namePL: 'Paryż',
+        nameRU: 'Париж',
       }),
       factory.create('Location', {
         id: 'country.9759535382641660',
@@ -95,6 +102,7 @@ import { gql } from '../jest/helpers'
         nameFR: 'France',
         nameIT: 'Francia',
         nameEN: 'France',
+        nameRU: 'Франция',
       }),
     ])
     await Promise.all([
@@ -341,39 +349,46 @@ import { gql } from '../jest/helpers'
       factory.create('Post', {
         author: peterLustig,
         id: 'p0',
+        language: sample(languages),
         image: faker.image.unsplash.food(),
         categoryIds: ['cat16'],
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
         id: 'p1',
+        language: sample(languages),
         image: faker.image.unsplash.technology(),
         categoryIds: ['cat1'],
       }),
       factory.create('Post', {
         author: huey,
         id: 'p3',
+        language: sample(languages),
         categoryIds: ['cat3'],
       }),
       factory.create('Post', {
         author: dewey,
         id: 'p4',
+        language: sample(languages),
         categoryIds: ['cat4'],
       }),
       factory.create('Post', {
         author: louie,
         id: 'p5',
+        language: sample(languages),
         categoryIds: ['cat5'],
       }),
       factory.create('Post', {
         authorId: 'u1',
         id: 'p6',
+        language: sample(languages),
         image: faker.image.unsplash.buildings(),
         categoryIds: ['cat6'],
       }),
       factory.create('Post', {
         author: huey,
         id: 'p9',
+        language: sample(languages),
         categoryIds: ['cat9'],
       }),
       factory.create('Post', {
@@ -384,23 +399,27 @@ import { gql } from '../jest/helpers'
       factory.create('Post', {
         author: louie,
         id: 'p11',
+        language: sample(languages),
         image: faker.image.unsplash.people(),
         categoryIds: ['cat11'],
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
         id: 'p13',
+        language: sample(languages),
         categoryIds: ['cat13'],
       }),
       factory.create('Post', {
         author: jennyRostock,
         id: 'p14',
+        language: sample(languages),
         image: faker.image.unsplash.objects(),
         categoryIds: ['cat14'],
       }),
       factory.create('Post', {
         author: huey,
         id: 'p15',
+        language: sample(languages),
         categoryIds: ['cat15'],
       }),
     ])
@@ -910,6 +929,7 @@ import { gql } from '../jest/helpers'
       }),
     )
 
+    await factory.create('Donations')
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
     process.exit(0)

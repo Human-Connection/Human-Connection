@@ -31,7 +31,9 @@ describe('EmailSettingsIndexPage', () => {
         error: jest.fn(),
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue(),
+        mutate: jest.fn().mockResolvedValue({
+          data: { AddEmailAddress: { email: 'yet-another-email@example.org' } },
+        }),
       },
       $router: {
         push: jest.fn(),
@@ -71,12 +73,15 @@ describe('EmailSettingsIndexPage', () => {
         describe('enter another email', () => {
           beforeEach(() => {
             wrapper = Wrapper()
-            wrapper.find('#email').setValue('yet-another-email@example.org')
+            wrapper.find('#email').setValue('yet-ANOTHER-email@example.org')
             wrapper.find('form').trigger('submit')
           })
 
-          it('calls $apollo.mutate', () => {
-            expect(mocks.$apollo.mutate).toHaveBeenCalled()
+          it('delivers email to backend', () => {
+            const expected = expect.objectContaining({
+              variables: { email: 'yet-ANOTHER-email@example.org' },
+            })
+            expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
           })
 
           it('no form errors', () => {
@@ -87,7 +92,7 @@ describe('EmailSettingsIndexPage', () => {
           describe('after timeout', () => {
             beforeEach(jest.runAllTimers)
 
-            it('redirects to `my-email-address/enter-nonce`', () => {
+            it('redirects with response from backend', () => {
               expect(mocks.$router.push).toHaveBeenCalledWith({
                 path: 'my-email-address/enter-nonce',
                 query: { email: 'yet-another-email@example.org' },

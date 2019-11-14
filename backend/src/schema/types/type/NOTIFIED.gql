@@ -1,8 +1,9 @@
 type NOTIFIED {
+  id: ID!
   from: NotificationSource
   to: User
-  createdAt: String
-  updatedAt: String
+  createdAt: String!
+  updatedAt: String!
   read: Boolean
   reason: NotificationReason
 }
@@ -23,7 +24,7 @@ enum NotificationReason {
 }
 
 type Query {
-  notifications(read: Boolean, orderBy: NotificationOrdering): [NOTIFIED]
+  notifications(read: Boolean, orderBy: NotificationOrdering, first: Int, offset: Int): [NOTIFIED]
 }
 
 type Mutation {

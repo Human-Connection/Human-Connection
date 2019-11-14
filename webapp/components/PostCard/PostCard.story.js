@@ -5,7 +5,7 @@ import helpers from '~/storybook/helpers'
 
 helpers.init()
 
-const post = {
+export const post = {
   id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
   title: 'Very nice Post Title',
   contentExcerpt: '<p>My post content</p>',

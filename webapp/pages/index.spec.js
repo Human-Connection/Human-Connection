@@ -29,6 +29,7 @@ describe('PostIndex', () => {
   beforeEach(() => {
     mutations = {
       'posts/SELECT_ORDER': jest.fn(),
+      'posts/SET_CURRENT_POSTS': jest.fn(),
     }
     store = new Vuex.Store({
       getters: {
@@ -53,6 +54,7 @@ describe('PostIndex', () => {
         'auth/user': () => {
           return { id: 'u23' }
         },
+        'posts/currentPosts': () => [],
       },
       mutations,
     })
@@ -61,6 +63,9 @@ describe('PostIndex', () => {
       $filters: {
         truncate: a => a,
         removeLinks: jest.fn(),
+      },
+      $i18n: {
+        locale: () => 'de',
       },
       // If you are mocking router, than don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
       $router: {

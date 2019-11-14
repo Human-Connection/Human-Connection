@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import HcEmpty from '~/components/Empty.vue'
+import HcEmpty from '~/components/Empty/Empty'
 import HcRelativeDateTime from '~/components/RelativeDateTime'
 import { reportListQuery } from '~/graphql/Moderation.js'
 

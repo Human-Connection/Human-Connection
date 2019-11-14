@@ -1,47 +1,61 @@
----
-  apiVersion: extensions/v1beta1
-  kind: Deployment
-  metadata:
-    name: nitro-neo4j
-    namespace: human-connection
-  spec:
-    replicas: 1
-    strategy:
-      rollingUpdate:
-        maxSurge: 0
-        maxUnavailable: "100%"
-    selector:
-      matchLabels:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    human-connection.org/selector: deployment-human-connection-neo4j
+  name: neo4j
+  namespace: human-connection
+spec:
+  progressDeadlineSeconds: 2147483647
+  replicas: 1
+  revisionHistoryLimit: 2147483647
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-human-connection-neo4j
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        backup.velero.io/backup-volumes: neo4j-data
+      creationTimestamp: null
+      labels:
         human-connection.org/selector: deployment-human-connection-neo4j
-    template:
-      metadata:
-        annotations:
-          backup.velero.io/backup-volumes: neo4j-data
-        labels:
-          human-connection.org/selector: deployment-human-connection-neo4j
-        name: nitro-neo4j
-      spec:
-        containers:
-        - name: nitro-neo4j
-          image: humanconnection/neo4j:latest
-          imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "2G"
-            limits:
-              memory: "8G"
-          envFrom:
-          - configMapRef:
-              name: configmap
-          ports:
-          - containerPort: 7687
-          - containerPort: 7474
-          volumeMounts:
-            - mountPath: /data/
-              name: neo4j-data
-        volumes:
-        - name: neo4j-data
-          persistentVolumeClaim:
-            claimName: neo4j-data-claim
-        restartPolicy: Always
-        terminationGracePeriodSeconds: 30
+      name: neo4j
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: configmap
+        image: humanconnection/neo4j:latest
+        imagePullPolicy: Always
+        name: neo4j
+        ports:
+        - containerPort: 7687
+          protocol: TCP
+        - containerPort: 7474
+          protocol: TCP
+        resources:
+          limits:
+            memory: 2G
+          requests:
+            memory: 1G
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data/
+          name: neo4j-data
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: neo4j-data
+        persistentVolumeClaim:
+          claimName: neo4j-data-claim
+status: {}

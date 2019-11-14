@@ -1,47 +1,60 @@
----
-  apiVersion: extensions/v1beta1
-  kind: Deployment
-  metadata:
-    name: nitro-backend
-    namespace: human-connection
-  spec:
-    replicas: 1
-    minReadySeconds: 15
-    progressDeadlineSeconds: 60
-    strategy:
-      rollingUpdate:
-        maxSurge: 0
-        maxUnavailable: "100%"
-    selector:
-      matchLabels:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    human-connection.org/commit: COMMIT
+    human-connection.org/selector: deployment-human-connection-backend
+  name: backend
+  namespace: human-connection
+spec:
+  minReadySeconds: 15
+  progressDeadlineSeconds: 60
+  replicas: 1
+  revisionHistoryLimit: 2147483647
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-human-connection-backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        backup.velero.io/backup-volumes: uploads
+      creationTimestamp: null
+      labels:
+        human-connection.org/commit: COMMIT
         human-connection.org/selector: deployment-human-connection-backend
-    template:
-      metadata:
-        annotations:
-          backup.velero.io/backup-volumes: uploads
-        labels:
-          human-connection.org/commit: COMMIT
-          human-connection.org/selector: deployment-human-connection-backend
-        name: "nitro-backend"
-      spec:
-        containers:
-        - name: nitro-backend
-          image: humanconnection/nitro-backend:latest
-          imagePullPolicy: Always
-          ports:
-          - containerPort: 4000
-          envFrom:
-          - configMapRef:
-              name: configmap
-          - secretRef:
-              name: human-connection
-          volumeMounts:
-            - mountPath: /nitro-backend/public/uploads
-              name: uploads
-        volumes:
-        - name: uploads
-          persistentVolumeClaim:
-            claimName: uploads-claim
-        restartPolicy: Always
-        terminationGracePeriodSeconds: 30
-  status: {}
+      name: backend
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: configmap
+        - secretRef:
+            name: human-connection
+        image: humanconnection/nitro-backend:latest
+        imagePullPolicy: Always
+        name: nitro-backend
+        ports:
+        - containerPort: 4000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /nitro-backend/public/uploads
+          name: uploads
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: uploads
+        persistentVolumeClaim:
+          claimName: uploads-claim
+status: {}
