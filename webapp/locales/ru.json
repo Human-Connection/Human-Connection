@@ -307,20 +307,24 @@
     "placeholder": "Поделитесь своими вдохновляющими мыслями ..."
   },
   "filter-menu": {
-    "clearSearch": "Опорожнить поиск",
+    "clearSearch": "Очистить поиск",
     "hashtag-search": "Поиск по #{hashtag}",
     "title": "Твой фильтр-пузырь"
   },
   "filter-posts": {
     "categories": {
       "all": "Все",
-      "header": "Категории контента"
+      "header": "Категории"
     },
     "followers": {
-      "label": "Пользователи, за которыми я слежу"
+      "label": "Мои подписки"
     },
     "general": {
-      "header": "Фильтровать по …"
+      "header": "Другие фильтры"
+    },
+    "language": {
+      "header": "Языки",
+      "all": "Все"
     }
   },
   "followButton": {
