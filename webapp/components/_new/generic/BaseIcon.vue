@@ -5,13 +5,16 @@
 </template>
 
 <script>
-import icons from '~/view/assets/icons'
+import icons, { iconNames } from '~/assets/_new/icons'
 
 export default {
   props: {
     name: {
       type: String,
       required: true,
+      validator(value) {
+        return iconNames.indexOf(value) !== -1
+      },
     },
   },
   computed: {
