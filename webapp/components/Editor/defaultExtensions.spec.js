@@ -70,17 +70,17 @@ describe('defaultExtensions', () => {
             content: [
               {
                 text: 'Baby loves cat:',
-                type: 'text'
-              }
-            ]
+                type: 'text',
+              },
+            ],
           },
           {
             type: 'embed',
             attrs: {
-              dataEmbedUrl: 'https://www.youtube.com/watch?v=qkdXAtO40Fo'
-            }
-          }
-        ]
+              dataEmbedUrl: 'https://www.youtube.com/watch?v=qkdXAtO40Fo',
+            },
+          },
+        ],
       }
 
       expect(editor.getJSON()).toEqual(expected)
