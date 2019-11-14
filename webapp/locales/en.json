@@ -63,6 +63,11 @@
       }
     }
   },
+  "donations": {
+    "donations-for": "Donations for",
+    "donate-now": "Donate now",
+    "amount-of-total": "{amount} of {total} € collected"
+  },
   "maintenance": {
     "title": "Human Connection is under maintenance",
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
@@ -376,6 +381,12 @@
       "name": "Invite users",
       "title": "Invite people",
       "description": "Invitations are a wonderful way to have your friends in your network …"
+    },
+    "donations": {
+      "name": "Donations info",
+      "goal": "Monthly donations needed",
+      "progress": "Donations collected so far",
+      "successfulUpdate": "Donations info updated successfully!"
     }
   },
   "post": {

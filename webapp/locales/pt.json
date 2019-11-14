@@ -380,6 +380,12 @@
       "name": "Convidar usuários",
       "title": "Convidar pessoas",
       "description": "Convites são uma maneira maravilhosa de ter seus amigos em sua rede …"
+    },
+    "donations": {
+      "name": "Informações sobre Doações",
+      "goal": "Doações mensais necessárias",
+      "progress": "Doações arrecadadas até o momento",
+      "successfulUpdate": "Informações sobre doações atualizadas com sucesso!"
     }
   },
   "post": {
@@ -690,7 +696,7 @@
     "terms-of-service": {
       "title": "Termos do Serviço",
       "description": "As seguintes condições de utilização constituem a base para a utilização da nossa rede. Ao registar-se, deve aceitar os termos de utilização e informaremos mais tarde sobre quaisquer alterações que possam ocorrer. A Human Connection Network é operada na Alemanha e, portanto, está sujeita à lei alemã. O local de jurisdição é Kirchheim / Teck. Para mais detalhes, veja a nossa impressão: <a href=\"https://human-connection.org/imprint\" target=\"_blank\" >https://human-connection.org/imprint</a> "
-    },   
+    },
     "use-and-license" : {
       "title": "Uso e Licença",
       "description": "Se qualquer conteúdo que você publicar para nós for protegido por direitos de propriedade intelectual, você nos concede uma licença não exclusiva, transferível, sublicenciável e mundial para usar tal conteúdo para postar em nossa rede. Esta licença expira quando você exclui seu conteúdo ou toda a sua conta. Lembre-se de que outros podem compartilhar seu conteúdo e nós não podemos excluí-lo."
@@ -718,6 +724,6 @@
     "addition" : {
       "title": "Além disso, realizamos regularmente eventos onde você também pode compartilhar suas impressões e fazer perguntas. Você pode encontrar uma visão geral atual aqui:",
       "description": "<a href=\"https://human-connection.org/events/\" target=\"_blank\" > https://human-connection.org/events/ </a>"
-    } 
+    }
   }
 }

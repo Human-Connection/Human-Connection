@@ -25,6 +25,7 @@ export default applyScalars(
             'NOTIFIED',
             'REPORTED',
             'DECIDED',
+            'Donations',
           ],
           // add 'User' here as soon as possible
         },
@@ -46,6 +47,7 @@ export default applyScalars(
             'NOTIFIED',
             'REPORTED',
             'DECIDED',
+            'Donations',
           ],
           // add 'User' here as soon as possible
         },

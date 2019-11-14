@@ -135,6 +135,7 @@ const permissions = shield(
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
       profilePagePosts: or(onlyEnabledContent, isModerator),
+      Donations: isAuthenticated,
     },
     Mutation: {
       '*': deny,
@@ -176,6 +177,7 @@ const permissions = shield(
       VerifyEmailAddress: isAuthenticated,
       pinPost: isAdmin,
       unpinPost: isAdmin,
+      UpdateDonations: isAdmin,
     },
     User: {
       email: or(isMyOwn, isAdmin),
