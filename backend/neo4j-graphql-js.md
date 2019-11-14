@@ -1,7 +1,7 @@
 # neo4j-graphql.js
 
 We use an npm package called `neo4j-graphql-js` as a cypher query builder. This
-library also generates resolvers for graphql queries, unless we implement it
+library also generates resolvers for graphql queries, unless we implement them
 ourselves.
 
 
