@@ -256,10 +256,7 @@
           </template>
         </masonry-grid>
         <client-only>
-          <infinite-loading
-            v-if="hasMore && posts.length >= pageSize"
-            @infinite="showMoreContributions"
-          >
+          <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
             <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
           </infinite-loading>
         </client-only>
