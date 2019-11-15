@@ -3,19 +3,20 @@ import ProfileSlug from './_slug.vue'
 import Vuex from 'vuex'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
-import InfiniteScroll from '~/plugins/vue-infinite-scroll'
+import InfiniteLoading from '~/plugins/vue-infinite-loading'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuex)
 localVue.use(Styleguide)
 localVue.use(Filters)
-localVue.use(InfiniteScroll)
+localVue.use(InfiniteLoading)
 localVue.filter('date', d => d)
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
+config.stubs['infinite-loading'] = '<span><slot /></span>'
 
 describe('ProfileSlug', () => {
   let wrapper
@@ -124,23 +125,6 @@ describe('ProfileSlug', () => {
               it('displays a loading spinner below the posts list', () => {
                 expect(wrapper.find('.user-profile-posts-list .ds-spinner').exists()).toBe(true)
               })
-            })
-          })
-
-          describe('pagination returned less posts than available', () => {
-            beforeEach(() => {
-              const posts = [1, 2, 3, 4, 5].map(id => {
-                return {
-                  ...aPost,
-                  id,
-                }
-              })
-
-              wrapper.setData({ posts, hasMore: true })
-            })
-
-            it('does not display a "load more" button', () => {
-              expect(wrapper.find('.load-more').exists()).toBe(false)
             })
           })
 

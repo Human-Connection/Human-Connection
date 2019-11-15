@@ -6,6 +6,7 @@
 * [Neo4J](neo4j/README.md)
 * [Backend](backend/README.md)
   * [GraphQL](backend/graphql.md)
+  * [neo4j-graphql-js](backend/neo4j-graphql-js.md)
 * [Webapp](webapp/README.md)
   * [Components](webapp/components.md)
   * [HTML](webapp/html.md)
