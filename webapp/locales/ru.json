@@ -418,26 +418,26 @@
     }
   },
   "profile": {
-    "commented": "Прокомментированный",
-    "follow": "Следовать",
-    "followers": "Последователей",
-    "following": "Следующий",
+    "commented": "Прокомментированные",
+    "follow": "Подписаться",
+    "followers": "Подписчики",
+    "following": "Подписки",
     "invites": {
-      "description": "Введи адрес электронной почты для приглашения.",
+      "description": "Введите адрес электронной почты для приглашения.",
       "emailPlaceholder": "Электронная почта для приглашения",
-      "title": "Пригласи кого-нибудь в Human Connection!"
+      "title": "Пригласите кого-нибудь в Human Connection!"
     },
-    "memberSince": "член с тех пор",
-    "name": "Мой профайл",
+    "memberSince": "в сообществе с",
+    "name": "Мой профиль",
     "network": {
-      "andMore": "и {number} больше…",
-      "followedBy": "за ним следуют:",
-      "followedByNobody": "никому не следует.",
-      "following": "Следует:",
-      "followingNobody": "не следует ни за кем.",
+      "andMore": "и ещё {number} человек... ::: и ещё {number} человека... ::: и ещё {number} человек...",
+      "followedBy": ", ваши подписчики:",
+      "followedByNobody": ", у вас нет подписчиков.",
+      "following": "подписан на:",
+      "followingNobody": "ни на кого не подписан.",
       "title": "Сеть"
     },
-    "shouted": "оглашали",
+    "shouted": "С выкриками",
     "socialMedia": "Где еще я могу найти",
     "userAnonym": "Анонимный"
   },
