@@ -8,6 +8,7 @@
     "nonGlobalStepDefinitions": true
   },
   "scripts": {
+    "install:all": "yarn install && cd backend && yarn install && cd ../webapp && yarn install",
     "db:seed": "cd backend && yarn run db:seed",
     "db:reset": "cd backend && yarn run db:reset",
     "cypress:backend:server": "cd backend && yarn run test:before:server",
