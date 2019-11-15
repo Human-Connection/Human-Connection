@@ -58,7 +58,7 @@
         </template>
 
         <template slot="unblock" slot-scope="scope">
-          <ds-button size="small" @click="unblock(scope)"><ds-icon name="power-off" /></ds-button>
+          <ds-button size="small" @click="unblock(scope)"><ds-icon name="user-plus" /></ds-button>
         </template>
       </ds-table>
     </ds-card>
@@ -107,7 +107,8 @@ export default {
     async unblock(user) {
       await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.row.id } })
       this.$apollo.queries.blockedUsers.refetch()
-      this.$toast.success(user.row.slug + ' ' + this.$t('settings.blocked-users.unblocked'))
+      const { name } = user.row
+      this.$toast.success(this.$t('settings.blocked-users.unblocked', { name }))
     },
   },
 }
