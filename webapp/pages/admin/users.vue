@@ -20,9 +20,7 @@
     </ds-space>
     <ds-card v-if="User && User.length">
       <ds-table :data="User" :fields="fields" condensed>
-        <template slot="index" slot-scope="scope">
-          {{ scope.row.index + 1 }}.
-        </template>
+        <template slot="index" slot-scope="scope">{{ scope.row.index + 1 }}.</template>
         <template slot="name" slot-scope="scope">
           <nuxt-link
             :to="{
