@@ -29,10 +29,10 @@ WITH moderator, disabledResource, case
 //, review
 //OPTIONAL MATCH (noReporterDisabledResource:User)-[:REPORTED]->(disabledResource)
 //WHERE noReporterDisabledResource IS NULL
-OPTIONAL MATCH (:User)-[notExistingReport:REPORTED]->(disabledResource)
-WHERE notExistingReport IS NULL
-//MATCH (noReporterDisabledResource:User)
-//WHERE NOT (noReporterDisabledResource:User)-[:REPORTED]->(disabledResource)
+//OPTIONAL MATCH (:User)-[notExistingReport:REPORTED]->(disabledResource)
+//WHERE notExistingReport IS NULL
+OPTIONAL MATCH (noReporterDisabledResource:User)-[notExistingReport:REPORTED]->(disabledResource)
+WHERE NOT (noReporterDisabledResource)-[notExistingReport]->(disabledResource)
 CREATE (moderator)-[addModeratorReport:REPORTED]->(case)
 SET addModeratorReport.createdAt = toString(datetime()), addModeratorReport.reasonCategory = 'other', addModeratorReport.reasonDescription = 'Old DISABLED relation had no now mandatory report !!! Created automatically to ensure database consistency! Creation date is when the database manipulation happened.'
 
