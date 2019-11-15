@@ -376,7 +376,7 @@ export default {
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
-    showMoreContributions() {
+    showMoreContributions($state) {
       const { profilePagePosts: PostQuery } = this.$apollo.queries
       if (!PostQuery) return // seems this can be undefined on subpages
       this.offset += this.pageSize
@@ -391,6 +391,7 @@ export default {
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.profilePagePosts.length < this.pageSize) {
             this.hasMore = false
+            $state.complete()
           }
           const result = {
             ...previousResult,
@@ -404,6 +405,7 @@ export default {
               ...fetchMoreResult.profilePagePosts,
             ],
           }
+          $state.loaded()
           return result
         },
       })
