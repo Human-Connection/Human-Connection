@@ -10,12 +10,11 @@
   "scripts": {
     "db:seed": "cd backend && yarn run db:seed",
     "db:reset": "cd backend && yarn run db:reset",
-    "cypress:backend": "cd backend && cross-env GRAPHQL_URI=http://localhost:4001 yarn run dev",
-    "cypress:webapp": "cd webapp && cross-env GRAPHQL_URI=http://localhost:4001 NUXT_PORT=3001 yarn run dev",
+    "cypress:backend": "cd backend && yarn run dev",
+    "cypress:webapp": "cd webapp && yarn run dev",
     "cypress:setup": "run-p cypress:backend cypress:webapp",
-    "cypress:run": "cross-env CYPRESS_BASE_URL=http://localhost:3001 cypress run --browser chromium",
-    "cypress:open": "cross-env CYPRESS_BASE_URL=http://localhost:3001 cypress open --browser chromium",
-    "test:jest": "cd webapp && yarn test && cd ../backend && yarn test:jest && codecov",
+    "cypress:run": "cross-env cypress run --browser chromium",
+    "cypress:open": "cross-env cypress open --browser chromium",
     "version": "auto-changelog -p"
   },
   "devDependencies": {
