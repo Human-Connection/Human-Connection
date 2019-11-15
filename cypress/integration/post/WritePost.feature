@@ -18,7 +18,7 @@ Feature: Create a post
       for active citizenship.
       """
     And I select a category
-    And I choose a language for the post
+    And I choose "en" as the language for the post
     And I click on "Save"
     Then I get redirected to ".../my-first-post"
     And the post was saved successfully

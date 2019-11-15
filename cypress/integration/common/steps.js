@@ -5,9 +5,12 @@ import {
 } from "cypress-cucumber-preprocessor/steps";
 import helpers from "../../support/helpers";
 import { VERSION } from '../../constants/terms-and-conditions-version.js'
+import locales from '../../../webapp/locales'
+import orderBy from 'lodash/orderBy'
 
 /* global cy  */
 
+const languages = orderBy(locales, 'name')
 let lastPost = {};
 
 let loginCredentials = {
@@ -245,9 +248,10 @@ Then("I select a category", () => {
     .click();
 });
 
-When("I choose a language for the post", () => {
+When("I choose {string} as the language for the post", (languageCode) => {
   cy.get('.ds-flex-item > .ds-form-item .ds-select ')
-    .click().get('.ds-select-option').first().click()
+    .click().get('.ds-select-option')
+    .eq(languages.findIndex(l => l.code === languageCode)).click()
 })
 
 Then("the post shows up on the landing page at position {int}", index => {
