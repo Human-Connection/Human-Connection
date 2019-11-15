@@ -45,7 +45,11 @@ export default ({ app = {} }) => {
       return value.join(glue)
     },
     listByKey: (values, key, glue, truncate) => {
-      return app.$filters.list(values.map(item => item[key]), glue, truncate)
+      return app.$filters.list(
+        values.map(item => item[key]),
+        glue,
+        truncate,
+      )
     },
     camelCase: (value = '') => {
       return value
