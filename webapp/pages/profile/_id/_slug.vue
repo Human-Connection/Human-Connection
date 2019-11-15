@@ -255,16 +255,14 @@
             </ds-grid-item>
           </template>
         </masonry-grid>
-        <div
-          v-if="hasMore && posts.length >= pageSize"
-          v-infinite-scroll="showMoreContributions"
-          :infinite-scroll-disabled="$apollo.loading"
-          :infinite-scroll-distance="10"
-          :infinite-scroll-throttle-delay="800"
-          :infinite-scroll-immediate-check="true"
-        >
-          <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
-        </div>
+        <client-only>
+          <infinite-loading
+            v-if="hasMore && posts.length >= pageSize"
+            @infinite="showMoreContributions"
+          >
+            <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
+          </infinite-loading>
+        </client-only>
       </ds-flex-item>
     </ds-flex>
   </div>
