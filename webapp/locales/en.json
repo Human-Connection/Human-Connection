@@ -314,12 +314,14 @@
       },
       "columns": {
         "name": "Name",
-        "slug": "Slug"
+        "slug": "Slug",
+        "unblock": "Unblock"
       },
       "empty": "So far, you have not blocked anybody.",
       "how-to": "You can block other users on their profile page via the content menu.",
       "block": "Block user",
-      "unblock": "Unblock user"
+      "unblock": "Unblock user",
+      "unblocked": "{name} is unblocked again"
     }
   },
   "admin": {
