@@ -99,6 +99,8 @@ export const results = [
   {
     id: '7b654f72-f4da-4315-8bed-39de0859754b',
     searchType: 'Users',
+    avatar:
+      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
     name: 'Tonya Mohr',
     label: 'Tonya Mohr',
     slug: 'tonya-mohr',
