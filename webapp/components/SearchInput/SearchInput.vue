@@ -37,7 +37,10 @@
           @click.capture.native="isOpen = true"
         >
           <template slot="option" slot-scope="{ option }">
-            <ds-flex>
+            <ds-flex v-if="option.firstType" class="search-option-heading">
+              <ds-text>{{ option.searchType }}</ds-text>
+            </ds-flex>
+            <ds-flex v-if="option.searchType === 'Contributions'">
               <ds-flex-item class="search-option-label">
                 <ds-text>{{ option.label | truncate(70) }}</ds-text>
               </ds-flex-item>
@@ -63,6 +66,11 @@
                     </ds-text>
                   </ds-flex-item>
                 </ds-flex>
+              </ds-flex-item>
+            </ds-flex>
+            <ds-flex v-if="option.searchType === 'Users'">
+              <ds-flex-item class="search-option-label">
+                <ds-text>{{ option.label | truncate(70) }}</ds-text>
               </ds-flex-item>
             </ds-flex>
           </template>
@@ -264,6 +272,10 @@ export default {
 
   .control {
     width: 100%;
+  }
+  .search-option-heading {
+    font-weight: bold;
+    margin-bottom: 1em;
   }
 }
 </style>
