@@ -4,7 +4,7 @@ import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
 import Factory from './factories'
 import { neode as getNeode, getDriver } from '../bootstrap/neo4j'
-import { gql } from '../jest/helpers'
+import { gql } from '../helpers/jest'
 
 const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 

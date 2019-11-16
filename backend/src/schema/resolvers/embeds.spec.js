@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'
-import { gql } from '../../jest/helpers'
+import { gql } from '../../helpers/jest'
 
 jest.mock('node-fetch')
 const { Response } = jest.requireActual('node-fetch')
@@ -15,15 +15,15 @@ afterEach(() => {
 let variables = {}
 
 const HumanConnectionOrg = fs.readFileSync(
-  path.join(__dirname, '../../jest/snapshots/embeds/HumanConnectionOrg.html'),
+  path.join(__dirname, '../../../snapshots/embeds/HumanConnectionOrg.html'),
   'utf8',
 )
 const pr960 = fs.readFileSync(
-  path.join(__dirname, '../../jest/snapshots/embeds/pr960.html'),
+  path.join(__dirname, '../../../snapshots/embeds/pr960.html'),
   'utf8',
 )
 const babyLovesCat = fs.readFileSync(
-  path.join(__dirname, '../../jest/snapshots/embeds/babyLovesCat.html'),
+  path.join(__dirname, '../../../snapshots/embeds/babyLovesCat.html'),
   'utf8',
 )
 
@@ -88,7 +88,7 @@ describe('Query', () => {
       })
 
       it('shows some default data', async () => {
-        const expected = expect.objectContaining({
+        await expect(embedAction(variables)).resolves.toMatchObject({
           data: {
             embed: {
               audio: null,
@@ -106,8 +106,9 @@ describe('Query', () => {
               video: null,
             },
           },
-        })
-        await expect(embedAction(variables)).resolves.toEqual(expected)
+          errors: undefined
+        }
+        )
       })
     })
 
