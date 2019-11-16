@@ -223,7 +223,7 @@ export default {
       this.form.teaserImage = file
     },
     categoryIds(categories) {
-      let categoryIds = []
+      const categoryIds = []
       categories.map(categoryId => {
         categoryIds.push(categoryId.id)
       })

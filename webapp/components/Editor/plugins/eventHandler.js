@@ -5,6 +5,7 @@ export default class EventHandler extends Extension {
   get name() {
     return 'event_handler'
   }
+
   get plugins() {
     return [
       new Plugin({
