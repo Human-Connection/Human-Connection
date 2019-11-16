@@ -69,7 +69,7 @@ export default {
       if (!this.user.slug) {
         return []
       }
-      let routes = [
+      const routes = [
         {
           name: this.$t('profile.name'),
           path: `/profile/${this.user.id}/${this.user.slug}`,

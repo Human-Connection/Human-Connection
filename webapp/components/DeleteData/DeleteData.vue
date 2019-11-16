@@ -101,7 +101,7 @@ export default {
       }
     },
     handleSubmit() {
-      let resourceArgs = []
+      const resourceArgs = []
       if (this.deleteContributions) {
         resourceArgs.push('Post')
       }
