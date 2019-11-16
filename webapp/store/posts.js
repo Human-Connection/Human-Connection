@@ -25,7 +25,7 @@ export const state = () => {
     filter: {
       ...defaultFilter,
     },
-    order: orderOptions['createdAt_desc'],
+    order: orderOptions.createdAt_desc,
   }
 }
 

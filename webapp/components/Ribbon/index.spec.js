@@ -6,7 +6,7 @@ const localVue = createLocalVue()
 describe('Ribbon', () => {
   let text
 
-  let Wrapper = () => {
+  const Wrapper = () => {
     return shallowMount(Ribbon, {
       localVue,
       propsData: {

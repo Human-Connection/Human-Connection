@@ -79,7 +79,7 @@ describe('Editor.vue', () => {
 
       describe('limists suggestion list to 15 users', () => {
         beforeEach(() => {
-          let manyUsersList = []
+          const manyUsersList = []
           for (let i = 0; i < 25; i++) {
             manyUsersList.push({ id: `user${i}` })
           }
@@ -120,7 +120,7 @@ describe('Editor.vue', () => {
 
       describe('limists suggestion list to 15 hashtags', () => {
         beforeEach(() => {
-          let manyHashtagsList = []
+          const manyHashtagsList = []
           for (let i = 0; i < 25; i++) {
             manyHashtagsList.push({ id: `hashtag${i}` })
           }
