@@ -6,10 +6,9 @@ import helpers from '~/storybook/helpers'
 helpers.init()
 
 export const results = [
-    /*
     {
 	heading: 'Contributions'
-    },*/
+    },
   {
     id: 'de100841-2336-4b01-a574-f1bd2c0b262a',
     searchType: 'Contributions',
@@ -66,9 +65,9 @@ export const results = [
       slug: 'louie',
     },
   },
-/*    {
+    {
 	heading: 'Users'
-    },*/
+    },
   {
     id: 'u1',
     searchType: 'Users',
