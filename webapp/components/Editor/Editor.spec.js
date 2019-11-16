@@ -1,10 +1,7 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Editor from './Editor'
 import Styleguide from '@human-connection/styleguide'
-import MutationObserver from 'mutation-observer'
 import Vue from 'vue'
-
-global.MutationObserver = MutationObserver
 
 const localVue = createLocalVue()
 localVue.use(Styleguide)

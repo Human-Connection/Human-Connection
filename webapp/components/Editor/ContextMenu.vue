@@ -4,57 +4,39 @@ import tippy from 'tippy.js'
 export default {
   props: {
     content: Object,
-    node: Object,
   },
   methods: {
-    displayContextMenu(target, content, type) {
+    displayContextMenu(decorationNode, virtualNode, content, type) {
       const placement = type === 'link' ? 'right' : 'top-start'
       const trigger = type === 'link' ? 'click' : 'mouseenter'
-      const showOnInit = type !== 'link'
+      const showOnCreate = type !== 'link'
 
       if (this.menu) {
         return
       }
 
-      this.menu = tippy(target, {
-        arrow: true,
-        arrowType: 'round',
-        content: content,
-        duration: [400, 200],
-        inertia: true,
-        interactive: true,
+      this.menu = tippy(decorationNode, {
+        lazy: false,
+        content,
         placement,
-        showOnInit,
+        showOnCreate,
         theme: 'human-connection',
         trigger,
+        onCreate(instance) {
+          instance.popperInstance.reference = virtualNode
+        },
         onMount(instance) {
           const input = instance.popper.querySelector('input')
-
           if (input) {
             input.focus({ preventScroll: true })
           }
         },
       })
-
-      // we have to update tippy whenever the DOM is updated
-      if (MutationObserver) {
-        this.observer = new MutationObserver(() => {
-          this.menu.popperInstance.scheduleUpdate()
-        })
-        this.observer.observe(content, {
-          childList: true,
-          subtree: true,
-          characterData: true,
-        })
-      }
     },
     hideContextMenu() {
       if (this.menu) {
         this.menu.destroy()
         this.menu = null
-      }
-      if (this.observer) {
-        this.observer.disconnect()
       }
     },
   },

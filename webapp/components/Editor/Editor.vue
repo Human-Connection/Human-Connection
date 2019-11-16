@@ -151,21 +151,33 @@ export default {
     this.editor.destroy()
   },
   methods: {
-    openSuggestionList({ items, query, range, command, virtualNode }, suggestionType) {
+    openSuggestionList(
+      { items, query, range, command, decorationNode, virtualNode },
+      suggestionType,
+    ) {
       this.suggestionType = suggestionType
 
       this.query = this.sanitizeQuery(query)
       this.filteredItems = items
       this.suggestionRange = range
-      this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
+      this.$refs.contextMenu.displayContextMenu(
+        decorationNode,
+        virtualNode,
+        this.$refs.suggestions.$el,
+      )
       this.insertMentionOrHashtag = command
     },
-    updateSuggestionList({ items, query, range, virtualNode }) {
+    updateSuggestionList({ items, query, range, decorationNode, virtualNode }) {
       this.query = this.sanitizeQuery(query)
       this.filteredItems = items
       this.suggestionRange = range
       this.navigatedItemIndex = 0
-      this.$refs.contextMenu.displayContextMenu(virtualNode, this.$refs.suggestions.$el)
+      this.$refs.contextMenu.hideContextMenu()
+      this.$refs.contextMenu.displayContextMenu(
+        decorationNode,
+        virtualNode,
+        this.$refs.suggestions.$el,
+      )
     },
     closeSuggestionList() {
       this.suggestionType = ''
