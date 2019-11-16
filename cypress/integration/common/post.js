@@ -45,7 +45,25 @@ Then("the editor should be cleared", () => {
   cy.get(".ProseMirror p").should("have.class", "is-empty");
 });
 
-Then("I should see latest post first", () => {
-  cy.get("article.post-card").eq(0).should("contain", "101")
-  cy.get("article.post-card").eq(1).should("contain", "102")
+Then("I should see post with title {string} before the post with title {string}", (title_1, title_2) => {
+  cy.get("article.post-card").eq(0).should("contain", title_1)
+  cy.get("article.post-card").eq(1).should("contain", title_2)
+})
+
+And("I should be able to pin the post whose title contains {string}", (string)=> {
+  cy.get("article.post-card").contains(string)
+    .parent()
+    .siblings("footer")
+    .find("button.content-menu-trigger")
+    .click()
+    .get("a.ds-menu-item-link").contains("Pin post")
+    .click()
+    // .get("p").contains("Post pinned succesfully")
+})
+
+And("post with title {string} should have ribbon for pinned posts", (title) => {
+  cy.get("article.post-card").contains(title)
+  .parent()
+  .find("div.ribbon.ribbon--pinned")
+  .should("contain", "Announcement")
 })
