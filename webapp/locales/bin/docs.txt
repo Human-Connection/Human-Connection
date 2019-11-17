@@ -1,0 +1,9 @@
+
+Deleting local branches in Git
+
+git branch -d feature/login
+
+
+Deleting remote branches in Git
+
+git push origin --delete feature/login
