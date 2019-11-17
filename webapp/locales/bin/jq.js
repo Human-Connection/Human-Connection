@@ -1,1 +1,0 @@
-`jq -s '.[0] * .[1]' <(jq 'walk(if type == "string" then null else . end)' en.json) es.json` 

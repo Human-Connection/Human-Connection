@@ -17,16 +17,19 @@
     git pull upstream master
 ```
 
-* Create a branch for your coming changes based on the language code for your language.
-  For a list of all the codes based on ISO-639 see [Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+* Create a branch for your coming changes based on the language code for your
+  language. For a list of all the codes based on ISO-639 see
+  [Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
   Use the two-letter code in column *639-1* like *en* or *de*.
 
-  The branch name should help recognise what is happing in it. As a suggestion you could use the following pattern:
+  The branch name should help recognise what is happing in it. As a suggestion
+  you could use the following pattern:
 
   * Start with _update_ for updates, _new_ for new languages
   * One minus sign
   * Your two-letter language code
-  * Optionally another minus sign and short details if needed. Maybe a date or a release number if appropriate.
+  * Optionally another minus sign and short details if needed. Maybe a date or a
+    release number if appropriate.
   * Do not use spaces in the branch name, replace them with underscores instead.
   
   For example:  update-it-rev_1.2.3
@@ -47,6 +50,35 @@
 
   blabla
 
+## Commands to check or remedy certain issues
+
+### Check what changes you have pending
+
+```shell
+    git status
+```
+
+### Change your branch name
+
+  At some point you mght decide to give to temporaray branch a better name.
+  In that case you can move your current and local changes to a new place.
+  **But make sure, you have no changes from other branches pending.**
+  This document focusses only on temporary branches for translation
+  related changes.
+
+```shell
+    git branch -m new_branch
+```
+
+### Revert all or some pending changes
+
+In case you made a lot of bad changes and want to throw away everything since
+to last commit away, you issue the following:
+
+```shell
+  git checkout -- <files to revert>
+```
+
 ## Release your changes
 
 * Upload your changes to the offical repository
@@ -55,22 +87,24 @@
     git push origin update-it-rev_1.2.3
 ```
 
-* Create a pull request for your branch on GitHub by visiting the according link in your browser:
+* Create a pull request for your branch on GitHub by visiting the according link
+* in your browser:
   https://github.com/Human-Connection/Human-Connection/pull/new/update-it-rev_1.2.3
 
-  If everything goes well, the maintainers will accept your request. Otherwise they will
-  notify via the usual ways Github supports. Additionally all the messages appear on the above web site.
+  If everything goes well, the maintainers will accept your request. Otherwise
+  they will notify via the usual ways Github supports. Additionally all the messages
+  appear on the above web site.
 
-  After your Pull Request is accepted on merged into the official part you should move your
-  local repository back to master as well and delete the temporary branch:
+  After your Pull Request is accepted on merged into the official part you should
+  move your local repository back to master as well and delete the temporary branch:
 
 ```shell
     git checkout master
     git branch -D update-it-rev_1.2.3
 ```
 
-  If you get stuck between commits and pulls, thw following two commands force a return to
-  the most recent remote state:
+  If you get stuck between commits and pulls, thw following two commands force a
+  return to the most recent remote state:
 
 ```shell
     git fetch origin
