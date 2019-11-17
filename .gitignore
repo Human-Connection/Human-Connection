@@ -18,3 +18,5 @@ cypress.env.json
 **/coverage
 
 release/
+
+*~
