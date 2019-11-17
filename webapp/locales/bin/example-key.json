@@ -1,0 +1,32 @@
+{
+  "project_id": "556252725c18dd752dd546.13222042",
+  "keys": [
+    {
+      "created_at": "2019-11-15 18:18:18 (Etc/UTC)",
+      "created_at_timestamp": 1573841898,
+      "key_id": 30679010,
+      "key_name": {
+        "android": "post::delete::message",
+        "ios": "post::delete::message",
+        "other": "post::delete::message",
+        "web": "post::delete::message"
+      },
+      "filenames": {
+        "web": "webapp/locales/%LANG_ISO%.json"
+      },
+      "description": "",
+      "platforms": [
+        "web"
+      ],
+      "tags": [],
+      "comments": null,
+      "screenshots": null,
+      "translations": null,
+      "is_plural": false,
+      "is_hidden": false,
+      "is_archived": false,
+      "base_words": 0,
+      "char_limit": 0
+    }
+  ]
+}
