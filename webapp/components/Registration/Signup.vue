@@ -56,6 +56,9 @@
         <sweetalert-icon icon="error" />
       </transition>
       <ds-text align="center">{{ error.message }}</ds-text>
+      <ds-space centered class="space-top">
+        <nuxt-link to="/login">{{ $t('site.back-to-login') }}</nuxt-link>
+      </ds-space>
     </template>
   </div>
 </template>
@@ -149,3 +152,8 @@ export default {
   },
 }
 </script>
+<style>
+.space-top {
+  margin-top: 6ex;
+}
+</style>
