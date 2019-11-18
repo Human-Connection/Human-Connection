@@ -1,5 +1,7 @@
 <script>
-import tippy from 'tippy.js'
+import tippy, { roundArrow } from 'tippy.js'
+
+import 'tippy.js/dist/svg-arrow.css'
 
 export default {
   props: {
@@ -16,6 +18,7 @@ export default {
       }
 
       this.menu = tippy(decorationNode, {
+        arrow: roundArrow,
         lazy: false,
         content,
         placement,
@@ -23,7 +26,10 @@ export default {
         theme: 'human-connection',
         trigger,
         onCreate(instance) {
-          instance.popperInstance.reference = virtualNode
+          instance.popperInstance.reference = {
+            ...virtualNode,
+            popperOptions: { positionFixed: true },
+          }
         },
         onMount(instance) {
           const input = instance.popper.querySelector('input')
@@ -49,7 +55,6 @@ export default {
 <style lang="scss">
 .tippy-tooltip.human-connection-theme {
   background-color: $color-primary;
-  padding: 0;
   font-size: 1rem;
   text-align: inherit;
   color: $color-neutral-100;
@@ -58,19 +63,20 @@ export default {
     display: none;
   }
 
-  .tippy-roundarrow {
+  .tippy-svg-arrow {
     fill: $color-primary;
+    top: $border-radius-x-large;
   }
-  .tippy-popper[x-placement^='top'] & .tippy-arrow {
+  .tippy-popper[data-placement^='top'] & .tippy-arrow {
     border-top-color: $color-primary;
   }
-  .tippy-popper[x-placement^='bottom'] & .tippy-arrow {
+  .tippy-popper[data-placement^='bottom'] & .tippy-arrow {
     border-bottom-color: $color-primary;
   }
-  .tippy-popper[x-placement^='left'] & .tippy-arrow {
+  .tippy-popper[data-placement^='left'] & .tippy-arrow {
     border-left-color: $color-primary;
   }
-  .tippy-popper[x-placement^='right'] & .tippy-arrow {
+  .tippy-popper[data-placement^='right'] & .tippy-arrow {
     border-right-color: $color-primary;
   }
 }
