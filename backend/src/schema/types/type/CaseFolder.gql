@@ -1,0 +1,9 @@
+type CaseFolder {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  disable: Boolean!
+  # reasonCategory: ReasonCategory!
+  # reasonDescription: String!
+  closed: Boolean!
+}
