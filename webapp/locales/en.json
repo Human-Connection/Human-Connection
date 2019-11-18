@@ -435,7 +435,8 @@
     "reportContent": "Report",
     "validations": {
       "email": "must be a valid e-mail address",
-      "url": "must be a valid URL"
+      "url": "must be a valid URL",
+      "categories": "at least one and at most three categories must be selected"
     }
   },
   "actions": {

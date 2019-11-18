@@ -1,5 +1,11 @@
 <template>
-  <ds-form ref="contributionForm" v-model="form" :schema="formSchema">
+  <ds-form
+    class="contribution-form"
+    ref="contributionForm"
+    v-model="form"
+    :schema="formSchema"
+    @submit="submit"
+  >
     <template slot-scope="{ errors }">
       <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
         <img
@@ -22,23 +28,11 @@
           autofocus
         />
         <ds-text align="right">
-          <ds-chip v-if="form.title.length < formSchema.title.min" class="checkicon" size="base">
-            {{ form.title.length }}/{{ formSchema.title.max }}
-            <ds-icon name="warning" class="colorRed"></ds-icon>
-          </ds-chip>
-          <ds-chip
-            v-else-if="form.title.length < formSchema.title.max"
-            class="checkicon"
-            size="base"
-            color="primary"
-          >
-            {{ form.title.length }}/{{ formSchema.title.max }}
-            <ds-icon name="check"></ds-icon>
-          </ds-chip>
-          <ds-chip v-else class="checkicon" size="base" color="danger">
+          <ds-chip v-if="errors && errors.title" color="danger" size="base">
             {{ form.title.length }}/{{ formSchema.title.max }}
             <ds-icon name="warning"></ds-icon>
           </ds-chip>
+          <ds-chip v-else size="base">{{ form.title.length }}/{{ formSchema.title.max }}</ds-chip>
         </ds-text>
         <client-only>
           <hc-editor
@@ -48,57 +42,39 @@
             @input="updateEditorContent"
           />
           <ds-text align="right">
-            <ds-chip
-              v-if="form.contentLength < formSchema.content.min"
-              class="checkicon"
-              size="base"
-            >
-              {{ form.contentLength }}
-              <ds-icon name="warning" class="colorRed"></ds-icon>
+            <ds-chip v-if="errors && errors.content" color="danger" size="base">
+              {{ contentLength }}
+              <ds-icon name="warning"></ds-icon>
             </ds-chip>
-            <ds-chip v-else class="checkicon" size="base" color="primary">
-              {{ form.contentLength }}
-              <ds-icon name="check"></ds-icon>
+            <ds-chip v-else size="base">
+              {{ contentLength }}
             </ds-chip>
           </ds-text>
         </client-only>
         <ds-space margin-bottom="small" />
-        <hc-categories-select
-          model="categoryIds"
-          @updateCategories="updateCategories"
-          :existingCategoryIds="form.categoryIds"
-        />
+        <hc-categories-select model="categoryIds" :existingCategoryIds="form.categoryIds" />
         <ds-text align="right">
-          <ds-chip v-if="form.categoryIds.length === 0" class="checkicon checkicon_cat" size="base">
+          <ds-chip v-if="errors && errors.categoryIds" color="danger" size="base">
             {{ form.categoryIds.length }} / 3
-            <ds-icon name="warning" class="colorRed">></ds-icon>
+            <ds-icon name="warning"></ds-icon>
           </ds-chip>
-          <ds-chip v-else class="checkicon checkicon_cat" size="base" color="primary">
-            {{ form.categoryIds.length }} / 3
-            <ds-icon name="check"></ds-icon>
-          </ds-chip>
+          <ds-chip v-else size="base">{{ form.categoryIds.length }} / 3</ds-chip>
         </ds-text>
         <ds-flex class="contribution-form-footer">
           <ds-flex-item>
             <ds-space margin-bottom="small" />
             <ds-select
               model="language"
-              :options="form.languageOptions"
+              :options="languageOptions"
               icon="globe"
-              :placeholder="form.languageDefault"
+              :placeholder="$t('contribution.languageSelectText')"
               :label="$t('contribution.languageSelectLabel')"
-              @input.native="updateLanguage"
             />
           </ds-flex-item>
         </ds-flex>
         <ds-text align="right">
-          <ds-chip v-if="form.language !== null" size="base" color="primary">
-            {{ form.language.label }}
-            <ds-icon name="check"></ds-icon>
-          </ds-chip>
-          <ds-chip v-else size="base">
-            {{ $t('contribution.languageSelectLabel') }}
-            <ds-icon name="warning" class="colorRed"></ds-icon>
+          <ds-chip v-if="errors && errors.language" size="base" color="danger">
+            <ds-icon name="warning"></ds-icon>
           </ds-chip>
         </ds-text>
         <ds-space />
@@ -111,15 +87,7 @@
           >
             {{ $t('actions.cancel') }}
           </ds-button>
-          <ds-button
-            class="submit-button-for-test"
-            type="submit"
-            icon="check"
-            :loading="loading"
-            :disabled="failsValidations || errors"
-            primary
-            @click.prevent="submit"
-          >
+          <ds-button type="submit" icon="check" :loading="loading" :disabled="errors" primary>
             {{ $t('actions.save') }}
           </ds-button>
         </div>
@@ -151,75 +119,84 @@ export default {
     contribution: { type: Object, default: () => {} },
   },
   data() {
+    const languageOptions = orderBy(locales, 'name').map(locale => {
+      return { label: locale.name, value: locale.code }
+    })
+
+    const formDefaults = {
+      title: '',
+      content: '',
+      teaserImage: null,
+      image: null,
+      language: null,
+      categoryIds: [],
+    }
+    let id = null
+    let slug = null
+    const form = { ...formDefaults }
+    if (this.contribution && this.contribution.id) {
+      id = this.contribution.id
+      slug = this.contribution.slug
+      form.title = this.contribution.title
+      form.content = this.contribution.content
+      form.image = this.contribution.image
+      form.language =
+        this.contribution && this.contribution.language
+          ? languageOptions.find(o => this.contribution.language === o.value)
+          : null
+      form.categoryIds = this.categoryIds(this.contribution.categories)
+    }
     return {
-      form: {
-        title: '',
-        content: '',
-        contentLength: 0,
-        teaserImage: null,
-        image: null,
-        language: null,
-        languageOptions: [],
-        languageDefault: this.$t('contribution.languageSelectText'),
-        selectedLanguage: '',
-        categoryIds: [],
-      },
+      form,
       formSchema: {
         title: { required: true, min: 3, max: 100 },
-        content: { required: true, min: 3 },
+        content: {
+          required: true,
+          min: 3,
+          transform: content => {
+            return this.$filters.removeHtml(content)
+          },
+        },
+        categoryIds: {
+          type: 'array',
+          required: true,
+          validator: (rule, value) => {
+            const errors = []
+            if (!(value && value.length >= 1 && value.length <= 3)) {
+              errors.push(new Error(this.$t('common.validations.categories')))
+            }
+            return errors
+          },
+        },
+        language: { required: true },
       },
-      id: null,
+      languageOptions,
+      id,
+      slug,
       loading: false,
-      slug: null,
       users: [],
       contentMin: 3,
-      failsValidations: true,
       hashtags: [],
     }
   },
-  watch: {
-    contribution: {
-      immediate: true,
-      handler: function(contribution) {
-        if (!contribution || !contribution.id) {
-          return
-        }
-        this.id = contribution.id
-        this.slug = contribution.slug
-        this.form.title = contribution.title
-        this.form.content = contribution.content
-        this.form.image = contribution.image
-        this.form.categoryIds = this.categoryIds(contribution.categories)
-        this.manageContent(this.form.content)
-      },
-    },
-  },
   computed: {
-    locale() {
-      const locale =
-        this.contribution && this.contribution.language
-          ? locales.find(loc => this.contribution.language === loc.code)
-          : locales.find(loc => this.$i18n.locale() === loc.code)
-      return locale.name
+    contentLength() {
+      return this.$filters.removeHtml(this.form.content).length
     },
     ...mapGetters({
       currentUser: 'auth/user',
     }),
   },
-  mounted() {
-    this.availableLocales()
-  },
   methods: {
     submit() {
-      const { title, content, image, teaserImage, categoryIds } = this.form
-      let language
-      if (this.form.language) {
-        language = this.form.language.value
-      } else if (this.contribution && this.contribution.language) {
-        language = this.contribution.language
-      } else {
-        language = this.$i18n.locale()
-      }
+      const {
+        language: { value: language },
+        title,
+        content,
+        image,
+        teaserImage,
+        categoryIds,
+      } = this.form
       this.loading = true
       this.$apollo
         .mutate({
@@ -238,7 +215,6 @@ export default {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
           const result = data[this.id ? 'UpdatePost' : 'CreatePost']
-          this.failedValidations = false
 
           this.$router.push({
             name: 'post-id-slug',
@@ -248,53 +224,16 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
           this.loading = false
-          this.failedValidations = true
         })
     },
     updateEditorContent(value) {
-      // TODO: Do smth????? what is happening
       this.$refs.contributionForm.update('content', value)
-      this.manageContent(value)
-    },
-    manageContent(content) {
-      let str = content.replace(/<\/?[^>]+(>|$)/gm, '')
-      this.form.contentLength = str.length
-      this.validatePost()
-    },
-    availableLocales() {
-      orderBy(locales, 'name').map(locale => {
-        this.form.languageOptions.push({ label: locale.name, value: locale.code })
-      })
-    },
-    updateCategories(ids) {
-      this.form.categoryIds = ids
-      this.validatePost()
-    },
-    updateLanguage() {
-      this.form.selectedLanguage = this.form.language.label
-      this.validatePost()
     },
     addTeaserImage(file) {
       this.form.teaserImage = file
     },
     categoryIds(categories) {
-      let categoryIds = []
-      categories.map(categoryId => {
-        categoryIds.push(categoryId.id)
-      })
-      return categoryIds
-    },
-    validatePost() {
-      const passesContentValidations = this.form.contentLength >= this.contentMin
-      const passesCategoryValidations =
-        this.form.categoryIds.length > 0 && this.form.categoryIds.length <= 3
-      const passedLanguageValidation = this.form.language !== null
-
-      this.failsValidations = !(
-        passesContentValidations &&
-        passesCategoryValidations &&
-        passedLanguageValidation
-      )
+      return categories.map(c => c.id)
     },
   },
   apollo: {
@@ -349,14 +288,10 @@ export default {
     padding-right: 0;
   }
 }
-.checkicon {
-  cursor: default;
-  top: -18px;
-}
-.checkicon_cat {
-  top: -58px;
-}
-.colorRed {
-  color: red;
+
+.contribution-form {
+  .ds-chip {
+    cursor: default;
+  }
 }
 </style>

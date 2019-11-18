@@ -45,6 +45,7 @@ export const postFragment = lang => gql`
     deleted
     slug
     image
+    language
     author {
       ...user
     }
