@@ -61,6 +61,7 @@
           <ds-chip v-else size="base">{{ form.categoryIds.length }} / 3</ds-chip>
         </ds-text>
         <ds-flex class="contribution-form-footer">
+          <ds-flex-item :width="{ lg: '50%', md: '50%', sm: '100%' }" />
           <ds-flex-item>
             <ds-space margin-bottom="small" />
             <ds-select
