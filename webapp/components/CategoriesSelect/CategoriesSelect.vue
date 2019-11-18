@@ -5,6 +5,7 @@
         <ds-flex-item>
           <ds-button
             size="small"
+            :data-test="categoryButtonsId(category.id)"
             @click.prevent="toggleCategory(category.id)"
             :primary="isActive(category.id)"
             :disabled="isDisabled(category.id)"
@@ -67,6 +68,9 @@ export default {
     },
     isDisabled(id) {
       return !!(this.reachedMaximum && !this.isActive(id))
+    },
+    categoryButtonsId(categoryId) {
+      return `category-buttons-${categoryId}`
     },
   },
   apollo: {
