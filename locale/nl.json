@@ -1,0 +1,2232 @@
+{
+    "login": {
+        "copy": {
+            "translation": "Als u al een mini-aansluiting account heeft, log dan hier in.",
+            "notes": ""
+        },
+        "login": {
+            "translation": "Inloggen",
+            "notes": ""
+        },
+        "logout": {
+            "translation": "Uitloggen",
+            "notes": ""
+        },
+        "email": {
+            "translation": "Uw E-mail",
+            "notes": ""
+        },
+        "password": {
+            "translation": "Uw Wachtwoord",
+            "notes": ""
+        },
+        "moreInfo": {
+            "translation": "Wat is Human Connection?",
+            "notes": ""
+        },
+        "hello": {
+            "translation": "Hallo",
+            "notes": ""
+        },
+        "forgotPassword": {
+            "translation": "",
+            "notes": ""
+        },
+        "no-account": {
+            "translation": "",
+            "notes": ""
+        },
+        "register": {
+            "translation": "",
+            "notes": ""
+        },
+        "moreInfoURL": {
+            "translation": "",
+            "notes": ""
+        },
+        "moreInfoHint": {
+            "translation": "",
+            "notes": ""
+        },
+        "success": {
+            "translation": "",
+            "notes": ""
+        },
+        "failure": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "profile": {
+        "name": {
+            "translation": "Mijn profiel",
+            "notes": ""
+        },
+        "memberSince": {
+            "translation": "Lid sinds",
+            "notes": ""
+        },
+        "follow": {
+            "translation": "Volgen",
+            "notes": ""
+        },
+        "followers": {
+            "translation": "Volgelingen",
+            "notes": ""
+        },
+        "following": {
+            "translation": "Volgt",
+            "notes": ""
+        },
+        "shouted": {
+            "translation": "Aanbevolen",
+            "notes": ""
+        },
+        "commented": {
+            "translation": "Reacties",
+            "notes": ""
+        },
+        "userAnonym": {
+            "translation": "",
+            "notes": ""
+        },
+        "socialMedia": {
+            "translation": "",
+            "notes": ""
+        },
+        "network": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "following": {
+                "translation": "",
+                "notes": ""
+            },
+            "followingNobody": {
+                "translation": "",
+                "notes": ""
+            },
+            "followedBy": {
+                "translation": "",
+                "notes": ""
+            },
+            "followedByNobody": {
+                "translation": "",
+                "notes": ""
+            },
+            "andMore": {
+                "translation": "",
+                "notes": ""
+            },
+            "and": {
+                "translation": "",
+                "notes": ""
+            },
+            "more": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "invites": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "emailPlaceholder": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "settings": {
+        "name": {
+            "translation": "Instellingen",
+            "notes": ""
+        },
+        "data": {
+            "name": {
+                "translation": "Uw gegevens",
+                "notes": ""
+            },
+            "labelName": {
+                "translation": "Uw naam",
+                "notes": ""
+            },
+            "labelCity": {
+                "translation": "Uw stad of regio",
+                "notes": ""
+            },
+            "labelBio": {
+                "translation": "Over u",
+                "notes": ""
+            },
+            "labelSlug": {
+                "translation": "",
+                "notes": ""
+            },
+            "namePlaceholder": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "security": {
+            "name": {
+                "translation": "Veiligheid",
+                "notes": ""
+            },
+            "change-password": {
+                "button": {
+                    "translation": "Wachtwoord wijzigen",
+                    "notes": ""
+                },
+                "success": {
+                    "translation": "Wachtwoord succesvol gewijzigd!",
+                    "notes": ""
+                },
+                "label-old-password": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "label-new-password": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "label-new-password-confirm": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "message-old-password-required": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "message-new-password-required": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "message-new-password-confirm-required": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "message-new-password-missmatch": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordSecurity": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength0": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength1": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength2": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength3": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength4": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "invites": {
+            "name": {
+                "translation": "Uitnodigingen",
+                "notes": ""
+            }
+        },
+        "download": {
+            "name": {
+                "translation": "Gegevens downloaden",
+                "notes": ""
+            }
+        },
+        "delete": {
+            "name": {
+                "translation": "Account verwijderen",
+                "notes": ""
+            }
+        },
+        "organizations": {
+            "name": {
+                "translation": "Mijn Organisaties",
+                "notes": ""
+            }
+        },
+        "languages": {
+            "name": {
+                "translation": "Talen",
+                "notes": ""
+            }
+        },
+        "email": {
+            "validation": {
+                "same-email": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "labelEmail": {
+                "translation": "",
+                "notes": ""
+            },
+            "labelNewEmail": {
+                "translation": "",
+                "notes": ""
+            },
+            "labelNonce": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            },
+            "submitted": {
+                "translation": "",
+                "notes": ""
+            },
+            "change-successful": {
+                "translation": "",
+                "notes": ""
+            },
+            "verification-error": {
+                "message": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "explanation": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "reason": {
+                    "invalid-nonce": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "no-email-request": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                },
+                "support": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "validation": {
+            "slug": {
+                "regex": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "alreadyTaken": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "deleteUserAccount": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "contributionsCount": {
+                "translation": "",
+                "notes": ""
+            },
+            "commentedCount": {
+                "translation": "",
+                "notes": ""
+            },
+            "accountDescription": {
+                "translation": "",
+                "notes": ""
+            },
+            "accountWarning": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            },
+            "pleaseConfirm": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "embeds": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "info-description": {
+                "translation": "",
+                "notes": ""
+            },
+            "status": {
+                "description": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "disabled": {
+                    "off": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "on": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                },
+                "change": {
+                    "question": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "allow": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "deny": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "statustext": {
+                "translation": "",
+                "notes": ""
+            },
+            "statuschange": {
+                "translation": "",
+                "notes": ""
+            },
+            "false": {
+                "translation": "",
+                "notes": ""
+            },
+            "true": {
+                "translation": "",
+                "notes": ""
+            },
+            "button-tofalse": {
+                "translation": "",
+                "notes": ""
+            },
+            "button-totrue": {
+                "translation": "",
+                "notes": ""
+            },
+            "third-party-false": {
+                "translation": "",
+                "notes": ""
+            },
+            "third-party-true": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "social-media": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "placeholder": {
+                "translation": "",
+                "notes": ""
+            },
+            "requireUnique": {
+                "translation": "",
+                "notes": ""
+            },
+            "submit": {
+                "translation": "",
+                "notes": ""
+            },
+            "successAdd": {
+                "translation": "",
+                "notes": ""
+            },
+            "successDelete": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "blocked-users": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "explanation": {
+                "intro": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "your-perspective": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "their-perspective": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "search": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "notifications": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "closing": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "columns": {
+                "name": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "slug": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "unblock": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "empty": {
+                "translation": "",
+                "notes": ""
+            },
+            "how-to": {
+                "translation": "",
+                "notes": ""
+            },
+            "block": {
+                "translation": "",
+                "notes": ""
+            },
+            "unblock": {
+                "translation": "",
+                "notes": ""
+            },
+            "unblocked": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "admin": {
+        "name": {
+            "translation": "Admin",
+            "notes": ""
+        },
+        "dashboard": {
+            "name": {
+                "translation": "Dashboard",
+                "notes": ""
+            },
+            "users": {
+                "translation": "Gebruikers",
+                "notes": ""
+            },
+            "posts": {
+                "translation": "Berichten",
+                "notes": ""
+            },
+            "comments": {
+                "translation": "Opmerkingen",
+                "notes": ""
+            },
+            "notifications": {
+                "translation": "Meldingen",
+                "notes": ""
+            },
+            "organizations": {
+                "translation": "Organisaties",
+                "notes": ""
+            },
+            "projects": {
+                "translation": "Projecten",
+                "notes": ""
+            },
+            "invites": {
+                "translation": "Uitnodigingen",
+                "notes": ""
+            },
+            "follows": {
+                "translation": "Volgt",
+                "notes": ""
+            },
+            "shouts": {
+                "translation": "Shouts",
+                "notes": ""
+            }
+        },
+        "organizations": {
+            "name": {
+                "translation": "Organisaties",
+                "notes": ""
+            }
+        },
+        "users": {
+            "name": {
+                "translation": "Gebruikers",
+                "notes": ""
+            },
+            "form": {
+                "placeholder": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "table": {
+                "columns": {
+                    "number": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "name": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "email": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "slug": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "role": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "createdAt": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            },
+            "empty": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "pages": {
+            "name": {
+                "translation": "Pages",
+                "notes": ""
+            }
+        },
+        "notifications": {
+            "name": {
+                "translation": "Meldingen",
+                "notes": ""
+            }
+        },
+        "categories": {
+            "name": {
+                "translation": "Categorieën",
+                "notes": ""
+            },
+            "categoryName": {
+                "translation": "Naam",
+                "notes": ""
+            },
+            "postCount": {
+                "translation": "Berichten",
+                "notes": ""
+            }
+        },
+        "tags": {
+            "name": {
+                "translation": "Tags",
+                "notes": ""
+            },
+            "tagCountUnique": {
+                "translation": "Gebruikers",
+                "notes": ""
+            },
+            "tagCount": {
+                "translation": "Berichten",
+                "notes": ""
+            }
+        },
+        "settings": {
+            "name": {
+                "translation": "Instellingen",
+                "notes": ""
+            }
+        },
+        "hashtags": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "number": {
+                "translation": "",
+                "notes": ""
+            },
+            "nameOfHashtag": {
+                "translation": "",
+                "notes": ""
+            },
+            "tagCountUnique": {
+                "translation": "",
+                "notes": ""
+            },
+            "tagCount": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "invites": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "donations": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "goal": {
+                "translation": "",
+                "notes": ""
+            },
+            "progress": {
+                "translation": "",
+                "notes": ""
+            },
+            "successfulUpdate": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "post": {
+        "name": {
+            "translation": "Post",
+            "notes": ""
+        },
+        "moreInfo": {
+            "name": {
+                "translation": "Meer info",
+                "notes": ""
+            },
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "titleOfCategoriesSection": {
+                "translation": "",
+                "notes": ""
+            },
+            "titleOfHashtagsSection": {
+                "translation": "",
+                "notes": ""
+            },
+            "titleOfRelatedContributionsSection": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "takeAction": {
+            "name": {
+                "translation": "Onderneem actie",
+                "notes": ""
+            }
+        },
+        "pinned": {
+            "translation": "",
+            "notes": ""
+        },
+        "menu": {
+            "edit": {
+                "translation": "",
+                "notes": ""
+            },
+            "delete": {
+                "translation": "",
+                "notes": ""
+            },
+            "pin": {
+                "translation": "",
+                "notes": ""
+            },
+            "pinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpin": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "submit": {
+                "translation": "",
+                "notes": ""
+            },
+            "submitted": {
+                "translation": "",
+                "notes": ""
+            },
+            "updated": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "edited": {
+            "translation": "",
+            "notes": ""
+        },
+        "delete": {
+            "submit": {
+                "translation": "",
+                "notes": ""
+            },
+            "cancel": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            },
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "quotes": {
+        "african": {
+            "quote": {
+                "translation": "Veel kleine mensen op veel kleine plaatsen doen veel kleine dingen, die het gezicht van de wereld kunnen veranderen.",
+                "notes": ""
+            },
+            "author": {
+                "translation": "Afrikaans spreekwoord",
+                "notes": ""
+            }
+        }
+    },
+    "common": {
+        "post": {
+            "translation": "Bericht ::: Berichten",
+            "notes": ""
+        },
+        "comment": {
+            "translation": "Opmerking ::: Opmerkingen",
+            "notes": ""
+        },
+        "letsTalk": {
+            "translation": "Laten we praten",
+            "notes": ""
+        },
+        "versus": {
+            "translation": "Versus",
+            "notes": ""
+        },
+        "moreInfo": {
+            "translation": "Meer info",
+            "notes": ""
+        },
+        "takeAction": {
+            "translation": "Onderneem actie",
+            "notes": ""
+        },
+        "shout": {
+            "translation": "Shout ::: Shouts",
+            "notes": ""
+        },
+        "user": {
+            "translation": "Gebruiker ::: Gebruikers",
+            "notes": ""
+        },
+        "category": {
+            "translation": "Categorie ::: Categorieën",
+            "notes": ""
+        },
+        "organization": {
+            "translation": "Organisatie ::: Organisaties",
+            "notes": ""
+        },
+        "project": {
+            "translation": "Project ::: Projecten",
+            "notes": ""
+        },
+        "tag": {
+            "translation": "Tag ::: Tags",
+            "notes": ""
+        },
+        "name": {
+            "translation": "Naam",
+            "notes": ""
+        },
+        "loadMore": {
+            "translation": "meer laden",
+            "notes": ""
+        },
+        "loading": {
+            "translation": "inlading",
+            "notes": ""
+        },
+        "reportContent": {
+            "translation": "Melden",
+            "notes": ""
+        },
+        "validations": {
+            "email": {
+                "translation": "",
+                "notes": ""
+            },
+            "url": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "your": {
+            "post": {
+                "translation": "",
+                "notes": ""
+            },
+            "comment": {
+                "translation": "",
+                "notes": ""
+            },
+            "shout": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "actions": {
+        "loading": {
+            "translation": "bezig met laden",
+            "notes": ""
+        },
+        "loadMore": {
+            "translation": "meer laden",
+            "notes": ""
+        },
+        "create": {
+            "translation": "Creëer",
+            "notes": ""
+        },
+        "save": {
+            "translation": "Opslaan",
+            "notes": ""
+        },
+        "edit": {
+            "translation": "Bewerken",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Verwijderen",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Annuleren",
+            "notes": ""
+        }
+    },
+    "moderation": {
+        "name": {
+            "translation": "Moderatie",
+            "notes": ""
+        },
+        "reports": {
+            "empty": {
+                "translation": "Gefeliciteerd, niets te modereren.",
+                "notes": ""
+            },
+            "name": {
+                "translation": "Rapporten",
+                "notes": ""
+            },
+            "reporter": {
+                "translation": "aangegeven door",
+                "notes": ""
+            },
+            "submitter": {
+                "translation": "aangegeven door",
+                "notes": ""
+            },
+            "disabledBy": {
+                "translation": "uitgeschakeld door",
+                "notes": ""
+            },
+            "reasonCategory": {
+                "translation": "",
+                "notes": ""
+            },
+            "reasonDescription": {
+                "translation": "",
+                "notes": ""
+            },
+            "createdAt": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "disable": {
+        "user": {
+            "title": {
+                "translation": "Gebruiker blokkeren",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Gebruiker",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Weet u zeker dat u de gebruiker \"<b>{naam}<\/b>\" wilt blokkeren?",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Schakel bijdrage uit",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Bijdrage",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Wilt u de reactie van \" <b> {name} <\/b> \" echt uitschakelen?",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Commentaar uitschakelen",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Melding",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Wilt u de reactie van \" <b> {name} <\/b> \" echt uitschakelen?",
+                "notes": ""
+            }
+        },
+        "submit": {
+            "translation": "Uitschakelen",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Annuleren",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Succesvol uitgeschakeld",
+            "notes": ""
+        }
+    },
+    "report": {
+        "submit": {
+            "translation": "Verzenden",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Annuleren",
+            "notes": ""
+        },
+        "user": {
+            "title": {
+                "translation": "Gebruiker melden",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Gebruiker",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Wilt u echt het commentaar van \"<b>{name}<\/b>\" melden?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Bijdrage melden",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Bijdrage",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Wilt u echt het commentaar van \"<b>{name}<\/b>\" melden?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Reactie melden",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Melding",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Wilt u echt het commentaar van \"<b>{name}<\/b>\" melden?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "success": {
+            "translation": "Bedankt voor het melden!",
+            "notes": ""
+        },
+        "reason": {
+            "category": {
+                "label": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "placeholder": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "options": {
+                    "discrimination_etc": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "pornographic_content_links": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "glorific_trivia_of_cruel_inhuman_acts": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "doxing": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "intentional_intimidation_stalking_persecution": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "advert_products_services_commercial": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "criminal_behavior_violation_german_law": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "other": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                },
+                "invalid": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "description": {
+                "label": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "placeholder": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        }
+    },
+    "contribution": {
+        "edit": {
+            "translation": "Bijdrage bewerken",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Bijdrage verwijderen",
+            "notes": ""
+        },
+        "title": {
+            "translation": "",
+            "notes": ""
+        },
+        "newPost": {
+            "translation": "",
+            "notes": ""
+        },
+        "filterFollow": {
+            "translation": "",
+            "notes": ""
+        },
+        "filterALL": {
+            "translation": "",
+            "notes": ""
+        },
+        "success": {
+            "translation": "",
+            "notes": ""
+        },
+        "languageSelectLabel": {
+            "translation": "",
+            "notes": ""
+        },
+        "categories": {
+            "infoSelectedNoOfMaxCategories": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "emotions-label": {
+            "funny": {
+                "translation": "",
+                "notes": ""
+            },
+            "happy": {
+                "translation": "",
+                "notes": ""
+            },
+            "surprised": {
+                "translation": "",
+                "notes": ""
+            },
+            "cry": {
+                "translation": "",
+                "notes": ""
+            },
+            "angry": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "category": {
+            "name": {
+                "freedom-of-speech": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "consumption-sustainability": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "global-peace-nonviolence": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "just-for-fun": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "happiness-values": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "health-wellbeing": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "environment-nature": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "animal-protection": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "human-rights-justice": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "education-sciences": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "cooperation-development": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "democracy-politics": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "economy-finances": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "energy-technology": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "it-internet-data-privacy": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "art-culture-sport": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "teaserImage": {
+            "cropperConfirm": {
+                "translation": "Bevestigen",
+                "notes": ""
+            }
+        }
+    },
+    "comment": {
+        "edit": {
+            "translation": "Commentaar bewerken",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Commentaar verwijderen",
+            "notes": ""
+        },
+        "content": {
+            "unavailable-placeholder": {
+                "translation": "... deze opmerking is niet meer beschikbaar",
+                "notes": ""
+            }
+        },
+        "menu": {
+            "edit": {
+                "translation": "",
+                "notes": ""
+            },
+            "delete": {
+                "translation": "",
+                "notes": ""
+            },
+            "pin": {
+                "translation": "",
+                "notes": ""
+            },
+            "pinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpin": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "show": {
+            "more": {
+                "translation": "",
+                "notes": ""
+            },
+            "less": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "edited": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "followButton": {
+        "follow": {
+            "translation": "Volgen",
+            "notes": ""
+        },
+        "following": {
+            "translation": "Volgt",
+            "notes": ""
+        }
+    },
+    "shoutButton": {
+        "shouted": {
+            "translation": "uitgeroepen",
+            "notes": ""
+        }
+    },
+    "search": {
+        "placeholder": {
+            "translation": "Zoeken",
+            "notes": ""
+        },
+        "hint": {
+            "translation": "Wat zoek je?",
+            "notes": ""
+        },
+        "failed": {
+            "translation": "Niets gevonden",
+            "notes": ""
+        }
+    },
+    "components": {
+        "password-reset": {
+            "request": {
+                "title": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "form": {
+                    "description": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "submit": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "submitted": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            },
+            "change-password": {
+                "success": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "error": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "help": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "enter-nonce": {
+            "form": {
+                "nonce": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "description": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "next": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "validations": {
+                    "length": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            }
+        },
+        "registration": {
+            "signup": {
+                "unavailable": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "title": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "form": {
+                    "description": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "terms-and-condition": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "data-privacy": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "minimum-age": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "invitation-code": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "errors": {
+                        "email-exists": {
+                            "translation": "",
+                            "notes": ""
+                        },
+                        "invalid-invitation-token": {
+                            "translation": "",
+                            "notes": ""
+                        }
+                    },
+                    "submit": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "success": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            },
+            "create-user-account": {
+                "title": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "success": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "error": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "help": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        }
+    },
+    "store": {
+        "posts": {
+            "orderBy": {
+                "newest": {
+                    "label": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                },
+                "oldest": {
+                    "label": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            }
+        }
+    },
+    "maintenance": {
+        "title": {
+            "translation": "",
+            "notes": ""
+        },
+        "explanation": {
+            "translation": "",
+            "notes": ""
+        },
+        "questions": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "index": {
+        "no-results": {
+            "translation": "",
+            "notes": ""
+        },
+        "change-filter-settings": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "filter-menu": {
+        "title": {
+            "translation": "",
+            "notes": ""
+        },
+        "hashtag-search": {
+            "translation": "",
+            "notes": ""
+        },
+        "clearSearch": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "filter-posts": {
+        "categories": {
+            "header": {
+                "translation": "",
+                "notes": ""
+            },
+            "all": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "general": {
+            "header": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "followers": {
+            "label": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "language": {
+            "header": {
+                "translation": "",
+                "notes": ""
+            },
+            "all": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "site": {
+        "thanks": {
+            "translation": "",
+            "notes": ""
+        },
+        "error-occurred": {
+            "translation": "",
+            "notes": ""
+        },
+        "made": {
+            "translation": "Met &#10084; gemaakt",
+            "notes": ""
+        },
+        "imprint": {
+            "translation": "Afdruk",
+            "notes": ""
+        },
+        "termsAndConditions": {
+            "translation": "",
+            "notes": ""
+        },
+        "data-privacy": {
+            "translation": "gegevensbescherming",
+            "notes": ""
+        },
+        "changelog": {
+            "translation": "Veranderingen & Geschiedenis",
+            "notes": ""
+        },
+        "contact": {
+            "translation": "contact",
+            "notes": ""
+        },
+        "tribunal": {
+            "translation": "registerrechtbank",
+            "notes": ""
+        },
+        "register": {
+            "translation": "inschrijfnummer",
+            "notes": ""
+        },
+        "director": {
+            "translation": "Directeur",
+            "notes": ""
+        },
+        "taxident": {
+            "translation": "Identificatienummer voor de belasting over de toegevoegde waarde overeenkomstig § 27 a Wet op de belasting over de toegevoegde waarde (Duitsland).",
+            "notes": ""
+        },
+        "responsible": {
+            "translation": "Verantwoordelijk volgens § 55 Abs. 2 RStV (Duitsland).",
+            "notes": ""
+        },
+        "bank": {
+            "translation": "bankrekening",
+            "notes": ""
+        },
+        "germany": {
+            "translation": "Duitsland",
+            "notes": ""
+        },
+        "code-of-conduct": {
+            "translation": "",
+            "notes": ""
+        },
+        "back-to-login": {
+            "translation": "",
+            "notes": ""
+        },
+        "faq": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAc": {
+            "translation": "Gebruiksvoorwaarden",
+            "notes": ""
+        }
+    },
+    "editor": {
+        "placeholder": {
+            "translation": "",
+            "notes": ""
+        },
+        "mention": {
+            "noUsersFound": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "hashtag": {
+            "noHashtagsFound": {
+                "translation": "",
+                "notes": ""
+            },
+            "addHashtag": {
+                "translation": "",
+                "notes": ""
+            },
+            "addLetter": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "embed": {
+            "data_privacy_warning": {
+                "translation": "",
+                "notes": ""
+            },
+            "data_privacy_info": {
+                "translation": "",
+                "notes": ""
+            },
+            "play_now": {
+                "translation": "",
+                "notes": ""
+            },
+            "always_allow": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "notifications": {
+        "reason": {
+            "mentioned_in_post": {
+                "translation": "",
+                "notes": ""
+            },
+            "mentioned_in_comment": {
+                "translation": "",
+                "notes": ""
+            },
+            "commented_on_post": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "translation": "",
+            "notes": ""
+        },
+        "title": {
+            "translation": "",
+            "notes": ""
+        },
+        "pageLink": {
+            "translation": "",
+            "notes": ""
+        },
+        "post": {
+            "translation": "",
+            "notes": ""
+        },
+        "user": {
+            "translation": "",
+            "notes": ""
+        },
+        "content": {
+            "translation": "",
+            "notes": ""
+        },
+        "filterLabel": {
+            "all": {
+                "translation": "",
+                "notes": ""
+            },
+            "read": {
+                "translation": "",
+                "notes": ""
+            },
+            "unread": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "empty": {
+            "translation": "",
+            "notes": ""
+        },
+        "menu": {
+            "mentioned": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "delete": {
+        "submit": {
+            "translation": "",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "",
+            "notes": ""
+        },
+        "contribution": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "release": {
+        "submit": {
+            "translation": "",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "",
+            "notes": ""
+        },
+        "success": {
+            "translation": "",
+            "notes": ""
+        },
+        "user": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "user": {
+        "avatar": {
+            "submitted": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "code-of-conduct": {
+        "subheader": {
+            "translation": "",
+            "notes": ""
+        },
+        "preamble": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "purpose": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "expected-behaviour": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "unacceptable-behaviour": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "4": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "5": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "6": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "7": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "consequences": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "4": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "5": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "6": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "7": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "8": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "get-help": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "termsAndConditions": {
+        "newTermsAndConditions": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAndConditionsConfirmed": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAndConditionsNewConfirmText": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAndConditionsNewConfirm": {
+            "translation": "",
+            "notes": ""
+        },
+        "agree": {
+            "translation": "",
+            "notes": ""
+        },
+        "terms-of-service": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "use-and-license": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "privacy-statement": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "code-of-conduct": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "moderation": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "errors-and-feedback": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "help-and-questions": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "addition": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "donations": {
+        "donations-for": {
+            "translation": "",
+            "notes": ""
+        },
+        "donate-now": {
+            "translation": "",
+            "notes": ""
+        },
+        "amount-of-total": {
+            "translation": "",
+            "notes": ""
+        }
+    }
+}
