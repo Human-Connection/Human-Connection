@@ -41,7 +41,7 @@ script:
   - docker-compose down
   - docker-compose -f docker-compose.yml up -d
   - wait-on http://localhost:7474
-  - yarn run cypress:run
+  - yarn run cypress:run --record
   # Coverage
   - yarn run codecov
 
