@@ -5,7 +5,7 @@ The kubernetes dashboard is optional but very helpful for debugging. If you want
 ```bash
 # in folder deployment/digital-ocean/
 $ kubectl apply -f dashboard/
-$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
 ```
 
 ### Login to your dashboard
@@ -18,7 +18,7 @@ $ kubectl proxy
 
 Visit:
 
-[http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/)
+[http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 
 You should see a login screen.
 

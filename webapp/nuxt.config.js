@@ -100,7 +100,7 @@ export default {
    ** Global processed styles
    */
   styleResources: {
-    scss: styleguideStyles,
+    scss: [styleguideStyles, '~view/styles/tokens.scss'],
   },
 
   /*
@@ -118,7 +118,7 @@ export default {
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
     { src: '~/plugins/vue-filters.js' },
-    { src: '~/plugins/vue-infinite-scroll.js', ssr: false },
+    { src: '~/plugins/vue-infinite-loading.js', ssr: false },
   ],
 
   router: {

@@ -2,11 +2,15 @@ version: "3.4"
 
 services:
   webapp:
+    environment:
+      - "CI=${CI}"
     image: humanconnection/nitro-web:build-and-test
     build:
       context: webapp
       target: build-and-test
   backend:
+    environment:
+      - "CI=${CI}"
     image: humanconnection/nitro-backend:build-and-test
     build:
       context: backend

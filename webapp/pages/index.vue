@@ -4,7 +4,8 @@
       <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
-      <ds-grid-item :row-span="2" column-span="fullWidth">
+      <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
+        <donation-info />
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -43,22 +44,18 @@
         primary
       />
     </client-only>
-    <div
-      v-if="hasMore"
-      v-infinite-scroll="showMoreContributions"
-      :infinite-scroll-disabled="$apollo.loading"
-      :infinite-scroll-distance="10"
-      :infinite-scroll-throttle-delay="800"
-      :infinite-scroll-immediate-check="true"
-    >
-      <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
-    </div>
+    <client-only>
+      <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
+        <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
+      </infinite-loading>
+    </client-only>
   </div>
 </template>
 
 <script>
+import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
-import HcEmpty from '~/components/Empty'
+import HcEmpty from '~/components/Empty/Empty'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
@@ -69,6 +66,7 @@ import PostMutations from '~/graphql/PostMutations'
 
 export default {
   components: {
+    DonationInfo,
     FilterMenu,
     HcPostCard,
     HcLoadMore,
@@ -136,7 +134,7 @@ export default {
         params: { id: post.id, slug: post.slug },
       }).href
     },
-    showMoreContributions() {
+    showMoreContributions($state) {
       const { Post: PostQuery } = this.$apollo.queries
       if (!PostQuery) return // seems this can be undefined on subpages
 
@@ -151,10 +149,21 @@ export default {
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
             this.hasMore = false
+            $state.complete()
           }
-          const result = Object.assign({}, previousResult, {
-            Post: [...previousResult.Post, ...fetchMoreResult.Post],
-          })
+
+          const result = {
+            ...previousResult,
+            Post: [
+              ...previousResult.Post.filter(prevPost => {
+                return (
+                  fetchMoreResult.Post.filter(newPost => newPost.id === prevPost.id).length === 0
+                )
+              }),
+              ...fetchMoreResult.Post,
+            ],
+          }
+          $state.loaded()
           return result
         },
       })
@@ -251,7 +260,20 @@ export default {
 .sorting-dropdown {
   width: 250px;
   position: relative;
-  float: right;
-  margin: 4px 0;
+
+  @media (max-width: 680px) {
+    width: 180px;
+  }
+}
+
+.top-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  @media (max-width: 546px) {
+    grid-row-end: span 3 !important;
+    flex-direction: column;
+  }
 }
 </style>

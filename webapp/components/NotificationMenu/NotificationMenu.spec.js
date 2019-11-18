@@ -10,7 +10,7 @@ localVue.use(Styleguide)
 localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
-config.stubs['dropdown'] = '<span class="dropdown"><slot /></span>'
+config.stubs.dropdown = '<span class="dropdown"><slot /></span>'
 
 describe('NotificationMenu.vue', () => {
   let wrapper
@@ -50,7 +50,7 @@ describe('NotificationMenu.vue', () => {
       beforeEach(() => {
         data = () => {
           return {
-            displayedNotifications: [
+            notifications: [
               {
                 id: 'notification-41',
                 read: true,
@@ -85,7 +85,7 @@ describe('NotificationMenu.vue', () => {
       beforeEach(() => {
         data = () => {
           return {
-            displayedNotifications: [
+            notifications: [
               {
                 id: 'notification-41',
                 read: false,

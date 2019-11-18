@@ -62,6 +62,11 @@
       }
     }
   },
+  "donations": {
+    "donations-for": "Spenden für",
+    "donate-now": "Jetzt spenden",
+    "amount-of-total": "{amount} von {total} € erreicht"
+  },
   "maintenance": {
     "title": "Human Connection befindet sich in der Wartung",
     "explanation": "Zurzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuch es später erneut.",
@@ -175,7 +180,18 @@
       "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
       "commented_on_post": "Hat deinen Beitrag kommentiert …"
     },
-    "comment": "Kommentar"
+    "comment": "Kommentar",
+    "title": "Benachrichtigungen",
+    "pageLink": "Alle Benachrichtigungen",
+    "post": "Beitrag",
+    "user": "Benutzer",
+    "content": "Inhalt",
+    "filterLabel": {
+      "all": "Alle",
+      "read": "Gelesen  ",
+      "unread": "Ungelesen"
+    },
+    "empty": "Sorry, du hast im Moment keine Benachrichtigungen."
   },
   "search": {
     "placeholder": "Suchen",
@@ -297,12 +313,14 @@
       },
       "columns": {
         "name": "Name",
-        "slug": "Alias"
+        "slug": "Alias",
+        "unblock": "Entblocken"
       },
       "empty": "Bislang hast du niemanden blockiert.",
       "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
       "block": "Nutzer blockieren",
-      "unblock": "Nutzer entblocken"
+      "unblock": "Nutzer entblocken",
+      "unblocked": "{name} ist wieder entblockt"
     }
   },
   "admin": {
@@ -364,6 +382,12 @@
       "name": "Benutzer einladen",
       "title": "Leute einladen",
       "description": "Einladungen sind ein wunderbarer Weg, deine Freund in deinem Netzwerk zu haben …"
+    },
+    "donations": {
+      "name": "Spendeninfo",
+      "goal": "Monatlich benötigte Spenden",
+      "progress": "Bereits gesammelte Spenden",
+      "successfulUpdate": "Spenden-Info erfolgreich aktualisiert!"
     }
   },
   "post": {
@@ -676,7 +700,7 @@
     "terms-of-service": {
       "title": "Nutzungsbedingungen",
       "description": "Die folgenden Nutzungsbedingungen sind Basis für die Nutzung unseres Netzwerkes. Beim Registrieren musst Du sie anerkennen und wir werden Dich auch später über ggf. stattfindende Änderungen informieren. Das Human Connection Netzwerk wird in Deutschland betrieben und unterliegt daher deutschem Recht. Gerichtsstand ist Kirchheim / Teck. Zu Details schau in unser Impressum: <a href=\"https://human-connection.org/impressum\" target=\"_blank\" >https://human-connection.org/impressum</a> "
-    },   
+    },
     "use-and-license" : {
       "title": "Nutzung und Lizenz",
       "description": "Sind Inhalte, die Du bei uns einstellst, durch Rechte am geistigen Eigentum geschützt, erteilst Du uns eine nicht-exklusive, übertragbare, unterlizenzierbare und weltweite Lizenz für die Nutzung dieser Inhalte für die Bereitstellung in unserem Netzwerk. Diese Lizenz endet, sobald Du Deine Inhalte oder Deinen ganzen Account löscht. Bedenke, dass andere Deine Inhalte weiter teilen können und wir diese nicht löschen können."
@@ -704,6 +728,6 @@
     "addition" : {
       "title": "Zusätzliche machen wir regelmäßig Veranstaltungen, wo Du auch Eindrücke wiedergeben und Fragen stellen kannst. Du findest eine aktuelle Übersicht hier:",
       "description": "<a href=\"https://human-connection.org/veranstaltungen/\" target=\"_blank\" > https://human-connection.org/veranstaltungen/ </a>"
-    } 
+    }
   }
 }

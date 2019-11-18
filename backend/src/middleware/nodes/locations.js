@@ -19,7 +19,7 @@ const fetch = url => {
   })
 }
 
-const locales = ['en', 'de', 'fr', 'nl', 'it', 'es', 'pt', 'pl']
+const locales = ['en', 'de', 'fr', 'nl', 'it', 'es', 'pt', 'pl', 'ru']
 
 const createLocation = async (session, mapboxData) => {
   const data = {
@@ -32,6 +32,7 @@ const createLocation = async (session, mapboxData) => {
     nameES: mapboxData.text_es,
     namePT: mapboxData.text_pt,
     namePL: mapboxData.text_pl,
+    nameRU: mapboxData.text_ru,
     type: mapboxData.id.split('.')[0].toLowerCase(),
     lat: mapboxData.center && mapboxData.center.length ? mapboxData.center[0] : null,
     lng: mapboxData.center && mapboxData.center.length ? mapboxData.center[1] : null,
@@ -48,6 +49,7 @@ const createLocation = async (session, mapboxData) => {
     'l.nameES = $nameES, ' +
     'l.namePT = $namePT, ' +
     'l.namePL = $namePL, ' +
+    'l.nameRU = $nameRU, ' +
     'l.type = $type'
 
   if (data.lat && data.lng) {
@@ -56,6 +58,7 @@ const createLocation = async (session, mapboxData) => {
   query += ' RETURN l.id'
 
   await session.run(query, data)
+  session.close()
 }
 
 const createOrUpdateLocations = async (userId, locationName, driver) => {

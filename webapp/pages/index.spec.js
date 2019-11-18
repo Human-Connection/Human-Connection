@@ -5,7 +5,7 @@ import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
 import VTooltip from 'v-tooltip'
 import FilterMenu from '~/components/FilterMenu/FilterMenu'
-import InfiniteScroll from '~/plugins/vue-infinite-scroll'
+import InfiniteLoading from '~/plugins/vue-infinite-loading'
 
 const localVue = createLocalVue()
 
@@ -13,11 +13,12 @@ localVue.use(Vuex)
 localVue.use(Styleguide)
 localVue.use(Filters)
 localVue.use(VTooltip)
-localVue.use(InfiniteScroll)
+localVue.use(InfiniteLoading)
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['router-link'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
+config.stubs['infinite-loading'] = '<span><slot /></span>'
 
 describe('PostIndex', () => {
   let wrapper
@@ -61,6 +62,9 @@ describe('PostIndex', () => {
       $filters: {
         truncate: a => a,
         removeLinks: jest.fn(),
+      },
+      $i18n: {
+        locale: () => 'de',
       },
       // If you are mocking router, than don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
       $router: {

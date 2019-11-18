@@ -6,7 +6,7 @@
           <ds-flex class="main-navigation-flex">
             <ds-flex-item :width="{ lg: '3.5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
-              <nuxt-link :to="{ name: 'index' }">
+              <nuxt-link :to="{ name: 'index' }" v-scroll-to="'.main-navigation'">
                 <ds-logo />
               </nuxt-link>
             </ds-flex-item>
@@ -67,52 +67,7 @@
                     <notification-menu placement="top" />
                   </client-only>
                   <client-only>
-                    <dropdown class="avatar-menu" offset="8">
-                      <template slot="default" slot-scope="{ toggleMenu }">
-                        <a
-                          class="avatar-menu-trigger"
-                          :href="
-                            $router.resolve({
-                              name: 'profile-id-slug',
-                              params: { id: user.id, slug: user.slug },
-                            }).href
-                          "
-                          @click.prevent="toggleMenu"
-                        >
-                          <hc-avatar :user="user" />
-                          <ds-icon size="xx-small" name="angle-down" />
-                        </a>
-                      </template>
-                      <template slot="popover" slot-scope="{ closeMenu }">
-                        <div class="avatar-menu-popover">
-                          {{ $t('login.hello') }}
-                          <b>{{ userName }}</b>
-                          <template v-if="user.role !== 'user'">
-                            <ds-text color="softer" size="small" style="margin-bottom: 0">
-                              {{ user.role | camelCase }}
-                            </ds-text>
-                          </template>
-                          <hr />
-                          <ds-menu :routes="routes" :matcher="matcher">
-                            <ds-menu-item
-                              slot="menuitem"
-                              slot-scope="item"
-                              :route="item.route"
-                              :parents="item.parents"
-                              @click.native="closeMenu(false)"
-                            >
-                              <ds-icon :name="item.route.icon" />
-                              {{ item.route.name }}
-                            </ds-menu-item>
-                          </ds-menu>
-                          <hr />
-                          <nuxt-link class="logout-link" :to="{ name: 'logout' }">
-                            <ds-icon name="sign-out" />
-                            {{ $t('login.logout') }}
-                          </nuxt-link>
-                        </div>
-                      </template>
-                    </dropdown>
+                    <avatar-menu placement="top" />
                   </client-only>
                 </template>
               </div>
@@ -139,22 +94,20 @@ import { mapGetters, mapActions } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput.vue'
 import Modal from '~/components/Modal'
-import NotificationMenu from '~/components/notifications/NotificationMenu/NotificationMenu'
-import Dropdown from '~/components/Dropdown'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
+import NotificationMenu from '~/components/NotificationMenu/NotificationMenu'
 import seo from '~/mixins/seo'
 import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
 import CategoryQuery from '~/graphql/CategoryQuery.js'
 import PageFooter from '~/components/PageFooter/PageFooter'
+import AvatarMenu from '~/components/AvatarMenu/AvatarMenu'
 
 export default {
   components: {
-    Dropdown,
     LocaleSwitch,
     SearchInput,
     Modal,
     NotificationMenu,
-    HcAvatar,
+    AvatarMenu,
     FilterPosts,
     PageFooter,
   },
@@ -168,49 +121,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user',
       isLoggedIn: 'auth/isLoggedIn',
-      isModerator: 'auth/isModerator',
-      isAdmin: 'auth/isAdmin',
       quickSearchResults: 'search/quickResults',
       quickSearchPending: 'search/quickPending',
     }),
-    userName() {
-      const { name } = this.user || {}
-      return name || this.$t('profile.userAnonym')
-    },
-    routes() {
-      if (!this.user.slug) {
-        return []
-      }
-      let routes = [
-        {
-          name: this.$t('profile.name'),
-          path: `/profile/${this.user.slug}`,
-          icon: 'user',
-        },
-        {
-          name: this.$t('settings.name'),
-          path: `/settings`,
-          icon: 'cogs',
-        },
-      ]
-      if (this.isModerator) {
-        routes.push({
-          name: this.$t('moderation.name'),
-          path: `/moderation`,
-          icon: 'balance-scale',
-        })
-      }
-      if (this.isAdmin) {
-        routes.push({
-          name: this.$t('admin.name'),
-          path: `/admin`,
-          icon: 'shield',
-        })
-      }
-      return routes
-    },
     showFilterPostsDropdown() {
       const [firstRoute] = this.$route.matched
       return firstRoute && firstRoute.name === 'index'
@@ -233,13 +147,6 @@ export default {
           params: { id: item.id, slug: item.slug },
         })
       })
-    },
-    matcher(url, route) {
-      if (url.indexOf('/profile') === 0) {
-        // do only match own profile
-        return this.$route.path === url
-      }
-      return this.$route.path.indexOf(url) === 0
     },
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
@@ -283,45 +190,6 @@ export default {
 }
 .main-navigation-right .desktop-view {
   float: right;
-}
-.avatar-menu {
-  margin: 2px 0px 0px 5px;
-}
-.avatar-menu-trigger {
-  user-select: none;
-  display: flex;
-  align-items: center;
-  padding-left: $space-xx-small;
-}
-.avatar-menu-popover {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  hr {
-    color: $color-neutral-90;
-    background-color: $color-neutral-90;
-  }
-  .logout-link {
-    margin-left: -$space-small;
-    margin-right: -$space-small;
-    margin-top: -$space-xxx-small;
-    margin-bottom: -$space-x-small;
-    padding: $space-x-small $space-small;
-    // subtract menu border with from padding
-    padding-left: $space-small - 2;
-    color: $text-color-base;
-    &:hover {
-      color: $text-color-link-active;
-    }
-  }
-  nav {
-    margin-left: -$space-small;
-    margin-right: -$space-small;
-    margin-top: -$space-xx-small;
-    margin-bottom: -$space-xx-small;
-    a {
-      padding-left: 12px;
-    }
-  }
 }
 @media only screen and (min-width: 960px) {
   .mobile-hamburger-menu {

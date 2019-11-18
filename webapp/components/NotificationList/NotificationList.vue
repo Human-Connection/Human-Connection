@@ -20,7 +20,7 @@ export default {
   props: {
     notifications: {
       type: Array,
-      required: true,
+      default: () => [],
     },
   },
   methods: {

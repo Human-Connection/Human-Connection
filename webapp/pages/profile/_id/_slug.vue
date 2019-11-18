@@ -255,16 +255,11 @@
             </ds-grid-item>
           </template>
         </masonry-grid>
-        <div
-          v-if="hasMore && posts.length >= pageSize"
-          v-infinite-scroll="showMoreContributions"
-          :infinite-scroll-disabled="$apollo.loading"
-          :infinite-scroll-distance="10"
-          :infinite-scroll-throttle-delay="800"
-          :infinite-scroll-immediate-check="true"
-        >
-          <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
-        </div>
+        <client-only>
+          <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
+            <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
+          </infinite-loading>
+        </client-only>
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -278,7 +273,7 @@ import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
-import HcEmpty from '~/components/Empty.vue'
+import HcEmpty from '~/components/Empty/Empty'
 import ContentMenu from '~/components/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
@@ -378,7 +373,7 @@ export default {
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
-    showMoreContributions() {
+    showMoreContributions($state) {
       const { profilePagePosts: PostQuery } = this.$apollo.queries
       if (!PostQuery) return // seems this can be undefined on subpages
       this.offset += this.pageSize
@@ -393,13 +388,21 @@ export default {
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.profilePagePosts.length < this.pageSize) {
             this.hasMore = false
+            $state.complete()
           }
-          const result = Object.assign({}, previousResult, {
+          const result = {
+            ...previousResult,
             profilePagePosts: [
-              ...previousResult.profilePagePosts,
+              ...previousResult.profilePagePosts.filter(prevPost => {
+                return (
+                  fetchMoreResult.profilePagePosts.filter(newPost => newPost.id === prevPost.id)
+                    .length === 0
+                )
+              }),
               ...fetchMoreResult.profilePagePosts,
             ],
-          })
+          }
+          $state.loaded()
           return result
         },
       })

@@ -5,7 +5,7 @@ import helpers from '~/storybook/helpers'
 
 helpers.init()
 
-const user = {
+export const user = {
   id: 'u6',
   slug: 'louie',
   name: 'Louie',

@@ -69,7 +69,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import isemail from 'isemail'
+import { isEmail, normalizeEmail } from 'validator'
 
 export default {
   data() {
@@ -169,8 +169,8 @@ export default {
     submit(formData) {
       this.offset = 0
       const { query } = formData
-      if (isemail.validate(query)) {
-        this.email = query.toLowerCase()
+      if (isEmail(query)) {
+        this.email = normalizeEmail(query)
         this.filter = null
       } else {
         this.email = null

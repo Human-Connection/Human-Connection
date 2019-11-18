@@ -54,7 +54,7 @@ export default {
         user = await user.toJson()
         return [user.node]
       }
-      return neo4jgraphql(object, args, context, resolveInfo, false)
+      return neo4jgraphql(object, args, context, resolveInfo)
     },
   },
   Mutation: {
@@ -177,6 +177,7 @@ export default {
         'termsAndConditionsAgreedVersion',
         'termsAndConditionsAgreedAt',
         'allowEmbedIframes',
+        'locale',
       ],
       boolean: {
         followedByCurrentUser:
