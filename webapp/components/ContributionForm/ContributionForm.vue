@@ -151,13 +151,7 @@ export default {
       form,
       formSchema: {
         title: { required: true, min: 3, max: 100 },
-        content: {
-          required: true,
-          min: 3,
-          transform: content => {
-            return this.$filters.removeHtml(content)
-          },
-        },
+        content: { required: true },
         categoryIds: {
           type: 'array',
           required: true,
