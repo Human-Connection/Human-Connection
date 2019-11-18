@@ -15,7 +15,7 @@ export default {
             WHERE resource:User OR resource:Comment OR resource:Post
             //CREATE (resource)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription, closed: false}]-(submitter)
             MATCH (resource)<-[:FLAGGED]-(case:Case {closed: false})
-            MERGE (resource)<-[:FLAGGED]-(case:Case {closed: false})
+            MERGE (resource)<-[:FLAGGED]-(case:Case)
             ON CREATE SET case.id = randomUUID(), case.updatedAt = toString(datetime()), case.createdAt = case.updatedAt, case.disable = true, case.closed = false
             //WITH submitter, resource
             CREATE (case)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
