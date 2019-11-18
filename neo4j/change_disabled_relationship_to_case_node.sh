@@ -16,40 +16,40 @@ do
 done
 
 echo "
-// convert old DISABLED to new REVIEWED-Case-FLAGGED structure
+// convert old DISABLED to new REVIEWED-CaseFolder-FLAGGED structure
 MATCH (moderator:User)-[disabled:DISABLED]->(disabledResource)
 WHERE disabledResource:User OR disabledResource:Comment OR disabledResource:Post
 DELETE disabled
-CREATE (moderator)-[review:REVIEWED]->(case:Case)-[:FLAGGED]->(disabledResource)
+CREATE (moderator)-[review:REVIEWED]->(caseFolder:CaseFolder)-[:FLAGGED]->(disabledResource)
 SET review.createdAt = toString(datetime()), review.updatedAt = review.createdAt, review.disable = true
-SET case.id = randomUUID(), case.createdAt = toString(datetime()), case.updatedAt = case.createdAt, case.disable = true, case.closed = false
+SET caseFolder.id = randomUUID(), caseFolder.createdAt = toString(datetime()), caseFolder.updatedAt = caseFolder.createdAt, caseFolder.disable = true, caseFolder.closed = false
 
 // if disabledResource has no report, then create a moderators default report
-WITH moderator, disabledResource, case
+WITH moderator, disabledResource, caseFolder
 OPTIONAL MATCH (disabledResourceReporter:User)-[existingReport:REPORTED]->(disabledResource)
 FOREACH(disabledResource IN CASE WHEN existingReport IS NULL THEN [1] ELSE [] END | 
-  CREATE (moderator)-[addModeratorReport:REPORTED]->(case)
+  CREATE (moderator)-[addModeratorReport:REPORTED]->(caseFolder)
   SET addModeratorReport.createdAt = toString(datetime()), addModeratorReport.reasonCategory = 'other', addModeratorReport.reasonDescription = 'Old DISABLED relation had no now mandatory report !!! Created automatically to ensure database consistency! Creation date is when the database manipulation happened.'
 )
 FOREACH(disabledResource IN CASE WHEN existingReport IS NOT NULL THEN [1] ELSE [] END | 
-  CREATE (disabledResourceReporter)-[moveModeratorReport:REPORTED]->(case)
+  CREATE (disabledResourceReporter)-[moveModeratorReport:REPORTED]->(caseFolder)
   SET moveModeratorReport = existingReport
   DELETE existingReport
 )
 
-RETURN disabledResource;
+RETURN disabledResource {.id};
 " | cypher-shell
 
 echo "
-// for REPORTED resources without DISABLED relation which are handled above, create new REPORTED-Case-FLAGGED structure
+// for REPORTED resources without DISABLED relation which are handled above, create new REPORTED-CaseFolder-FLAGGED structure
 MATCH (reporter:User)-[oldReport:REPORTED]->(notDisabledResource)
 WHERE notDisabledResource:User OR notDisabledResource:Comment OR notDisabledResource:Post
-CREATE (reporter)-[report:REPORTED]->(case:Case)
-MERGE (case)-[:FLAGGED]->(notDisabledResource)
-ON CREATE SET case.id = randomUUID(), case.createdAt = toString(datetime()), case.updatedAt = case.createdAt, case.disable = false, case.closed = false
+CREATE (reporter)-[report:REPORTED]->(caseFolder:CaseFolder)
+MERGE (caseFolder)-[:FLAGGED]->(notDisabledResource)
+ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = toString(datetime()), caseFolder.updatedAt = caseFolder.createdAt, caseFolder.disable = false, caseFolder.closed = false
 SET report = oldReport
 DELETE oldReport
 
-RETURN notDisabledResource;
+RETURN notDisabledResource {.id};
 " | cypher-shell
 
