@@ -3,8 +3,6 @@ type Badge {
   type: BadgeType!
   status: BadgeStatus!
   icon: String!
-  #createdAt: DateTime
-  #updatedAt: DateTime
   createdAt: String
   updatedAt: String
 
