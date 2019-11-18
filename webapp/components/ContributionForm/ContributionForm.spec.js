@@ -370,7 +370,7 @@ describe('ContributionForm.vue', () => {
         it('supports updating categories', async () => {
           expectedParams.variables.categoryIds.push('cat3')
           wrapper.find(CategoriesSelect).setData({ categories })
-          let healthWellbeingButton = await wrapper
+          const healthWellbeingButton = await wrapper
             .find(CategoriesSelect)
             .find('[data-test="category-buttons-cat3"]')
           healthWellbeingButton.trigger('click')

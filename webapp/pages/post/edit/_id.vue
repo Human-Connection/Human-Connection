@@ -28,7 +28,7 @@ export default {
       error,
       params: { id },
     } = context
-    let client = app.apolloProvider.defaultClient
+    const client = app.apolloProvider.defaultClient
     const {
       data: {
         Post: [contribution],
