@@ -5,6 +5,7 @@ export default {
     report: async (_parent, params, context, _resolveInfo) => {
       let createdRelationshipWithNestedAttributes
       const { resourceId, reasonCategory, reasonDescription } = params
+      // Wolle console.log('resourceId: ', resourceId)
       const { driver, user } = context
       const session = driver.session()
       const writeTxResultPromise = session.writeTransaction(async txc => {
@@ -12,15 +13,15 @@ export default {
           `
             MATCH (submitter:User {id: $submitterId})
             MATCH (resource {id: $resourceId})
-            WHERE resource:User OR resource:Comment OR resource:Post
-            //CREATE (resource)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription, closed: false}]-(submitter)
-            MATCH (resource)<-[:FLAGGED]-(case:Case {closed: false})
-            MERGE (resource)<-[:FLAGGED]-(case:Case)
-            ON CREATE SET case.id = randomUUID(), case.updatedAt = toString(datetime()), case.createdAt = case.updatedAt, case.disable = true, case.closed = false
-            //WITH submitter, resource
-            CREATE (case)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
-            CREATE (resource)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription, closed: false}]-(submitter)
-            RETURN report, submitter, resource, labels(resource)[0] as type
+            WHERE resource:User OR resource:Post OR resource:Comment
+            // no open caseFolder, create one
+            MERGE (resource)<-[:FLAGGED]-(caseFolder:CaseFolder {closed: false})
+            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $createdAt, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.disable = false, caseFolder.closed = false
+            // Create report on caseFolder
+            WITH submitter, resource, caseFolder
+            CREATE (caseFolder)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
+
+            RETURN caseFolder {.id}, submitter, report, resource, labels(resource)[0] AS type
           `,
           {
             resourceId,
@@ -31,18 +32,22 @@ export default {
           },
         )
         return reportRelationshipTransactionResponse.records.map(record => ({
-          report: record.get('report'),
+          caseFolder: record.get('caseFolder'),
           submitter: record.get('submitter'),
+          report: record.get('report'),
           resource: record.get('resource').properties,
           type: record.get('type'),
         }))
       })
       try {
+        // Wolle console.log('reasonCategory: ', reasonCategory)
         const txResult = await writeTxResultPromise
+        // Wolle console.log('txResult: ', txResult)
         if (!txResult[0]) return null
-        const { report, submitter, resource, type } = txResult[0]
+        const { caseFolder, submitter, report, resource, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
           ...report.properties,
+          caseFolderId: caseFolder.id,
           post: null,
           comment: null,
           user: null,

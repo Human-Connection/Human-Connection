@@ -2,11 +2,12 @@ type REPORTED {
   createdAt: String!
   reasonCategory: ReasonCategory!
   reasonDescription: String!
-  closed: Boolean!
-  decisionUuid: ID
+  caseFolderId: ID!
+  closed: Boolean # ! Wolle comlete still needed?
+  decisionUuid: ID # Wolle still needed?
 
-  decisionDisable: Boolean
-  decisionAt: String
+  decisionDisable: Boolean # Wolle still needed?
+  decisionAt: String # Wolle still needed?
 
   # Wolle decision: DECIDED
     # @cypher(statement: "MATCH (resource)<-[decision:DECIDED {uuid: $decisionUuid}]-(user:User) RETURN decision")
