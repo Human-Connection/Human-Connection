@@ -17,7 +17,7 @@ import "cypress-file-upload";
 import helpers from "./helpers";
 import users from "../fixtures/users.json";
 import { GraphQLClient, request } from 'graphql-request'
-import { gql } from '../../backend/src/jest/helpers'
+import { gql } from '../../backend/src/helpers/jest'
 
 const backendHost = Cypress.env('BACKEND_HOST')
 const switchLang = name => {

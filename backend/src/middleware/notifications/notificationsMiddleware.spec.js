@@ -1,4 +1,4 @@
-import { gql } from '../../jest/helpers'
+import { gql } from '../../helpers/jest'
 import Factory from '../../seed/factories'
 import { createTestClient } from 'apollo-server-testing'
 import { neode, getDriver } from '../../bootstrap/neo4j'
