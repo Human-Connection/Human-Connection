@@ -1,6 +1,6 @@
 <template>
-  <span v-if="svgIcon">
-    <component :is="svgIcon" />
+  <span v-if="svgIcon" class="base-icon">
+    <component :is="svgIcon" aria-hidden="true" focusable="false" class="svg" />
   </span>
 </template>
 
@@ -26,10 +26,21 @@ export default {
       /*
       a Vue component needs a render function,
       so we check if there is a render function directly on the icon –
-      otherwise it is wrapped in icon.default
+      otherwise we know it is wrapped in icon.default
       */
       return icon.render ? icon : icon.default
     },
   },
 }
 </script>
+
+<style lang="scss">
+.base-icon {
+  display: inline-flex;
+
+  > .svg {
+    height: 1em;
+    fill: currentColor;
+  }
+}
+</style>
