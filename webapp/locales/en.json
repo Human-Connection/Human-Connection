@@ -257,6 +257,11 @@
         "passwordStrength4": "Very strong password"
       }
     },
+    "privacy": {
+      "name": "Privacy",
+      "make-shouts-public": "Share articles I have shouted on my public profile",
+      "success-update": "Privacy settings saved"
+    },
     "invites": {
       "name": "Invites"
     },
