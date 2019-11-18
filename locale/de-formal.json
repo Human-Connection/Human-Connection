@@ -1,0 +1,2232 @@
+{
+    "login": {
+        "copy": {
+            "translation": "Falls Sie bereits ein Konto bei Human Connection haben, melden Sie sich bitte hier an.",
+            "notes": ""
+        },
+        "login": {
+            "translation": "Anmelden",
+            "notes": ""
+        },
+        "logout": {
+            "translation": "Abmelden",
+            "notes": ""
+        },
+        "email": {
+            "translation": "Ihre E-Mail",
+            "notes": ""
+        },
+        "password": {
+            "translation": "Ihr Passwort",
+            "notes": ""
+        },
+        "moreInfo": {
+            "translation": "Was ist Human Connection?",
+            "notes": ""
+        },
+        "hello": {
+            "translation": "Hallo",
+            "notes": ""
+        },
+        "forgotPassword": {
+            "translation": "",
+            "notes": ""
+        },
+        "no-account": {
+            "translation": "",
+            "notes": ""
+        },
+        "register": {
+            "translation": "",
+            "notes": ""
+        },
+        "moreInfoURL": {
+            "translation": "",
+            "notes": ""
+        },
+        "moreInfoHint": {
+            "translation": "",
+            "notes": ""
+        },
+        "success": {
+            "translation": "",
+            "notes": ""
+        },
+        "failure": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "profile": {
+        "name": {
+            "translation": "Mein Profil",
+            "notes": ""
+        },
+        "memberSince": {
+            "translation": "Mitglied seit",
+            "notes": ""
+        },
+        "follow": {
+            "translation": "Folgen",
+            "notes": ""
+        },
+        "followers": {
+            "translation": "Folgen",
+            "notes": ""
+        },
+        "following": {
+            "translation": "Folge Ich",
+            "notes": ""
+        },
+        "shouted": {
+            "translation": "Empfohlen",
+            "notes": ""
+        },
+        "commented": {
+            "translation": "Kommentiert",
+            "notes": ""
+        },
+        "userAnonym": {
+            "translation": "",
+            "notes": ""
+        },
+        "socialMedia": {
+            "translation": "",
+            "notes": ""
+        },
+        "network": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "following": {
+                "translation": "",
+                "notes": ""
+            },
+            "followingNobody": {
+                "translation": "",
+                "notes": ""
+            },
+            "followedBy": {
+                "translation": "",
+                "notes": ""
+            },
+            "followedByNobody": {
+                "translation": "",
+                "notes": ""
+            },
+            "andMore": {
+                "translation": "",
+                "notes": ""
+            },
+            "and": {
+                "translation": "",
+                "notes": ""
+            },
+            "more": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "invites": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "emailPlaceholder": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "settings": {
+        "name": {
+            "translation": "Einstellungen",
+            "notes": ""
+        },
+        "data": {
+            "name": {
+                "translation": "Ihre Daten",
+                "notes": ""
+            },
+            "labelName": {
+                "translation": "Ihr Name",
+                "notes": ""
+            },
+            "labelCity": {
+                "translation": "Ihre Stadt oder Region",
+                "notes": ""
+            },
+            "labelBio": {
+                "translation": "Über Sie",
+                "notes": ""
+            },
+            "labelSlug": {
+                "translation": "",
+                "notes": ""
+            },
+            "namePlaceholder": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "security": {
+            "name": {
+                "translation": "Sicherheit",
+                "notes": ""
+            },
+            "change-password": {
+                "button": {
+                    "translation": "Passwort ändern",
+                    "notes": ""
+                },
+                "success": {
+                    "translation": "Passwort erfolgreich geändert!",
+                    "notes": ""
+                },
+                "label-old-password": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "label-new-password": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "label-new-password-confirm": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "message-old-password-required": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "message-new-password-required": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "message-new-password-confirm-required": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "message-new-password-missmatch": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordSecurity": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength0": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength1": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength2": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength3": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "passwordStrength4": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "invites": {
+            "name": {
+                "translation": "Einladungen",
+                "notes": ""
+            }
+        },
+        "download": {
+            "name": {
+                "translation": "Daten herunterladen",
+                "notes": ""
+            }
+        },
+        "delete": {
+            "name": {
+                "translation": "Konto löschen",
+                "notes": ""
+            }
+        },
+        "organizations": {
+            "name": {
+                "translation": "Meine Organisationen",
+                "notes": ""
+            }
+        },
+        "languages": {
+            "name": {
+                "translation": "Sprachen",
+                "notes": ""
+            }
+        },
+        "email": {
+            "validation": {
+                "same-email": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "labelEmail": {
+                "translation": "",
+                "notes": ""
+            },
+            "labelNewEmail": {
+                "translation": "",
+                "notes": ""
+            },
+            "labelNonce": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            },
+            "submitted": {
+                "translation": "",
+                "notes": ""
+            },
+            "change-successful": {
+                "translation": "",
+                "notes": ""
+            },
+            "verification-error": {
+                "message": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "explanation": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "reason": {
+                    "invalid-nonce": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "no-email-request": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                },
+                "support": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "validation": {
+            "slug": {
+                "regex": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "alreadyTaken": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "deleteUserAccount": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "contributionsCount": {
+                "translation": "",
+                "notes": ""
+            },
+            "commentedCount": {
+                "translation": "",
+                "notes": ""
+            },
+            "accountDescription": {
+                "translation": "",
+                "notes": ""
+            },
+            "accountWarning": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            },
+            "pleaseConfirm": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "embeds": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "info-description": {
+                "translation": "",
+                "notes": ""
+            },
+            "status": {
+                "description": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "disabled": {
+                    "off": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "on": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                },
+                "change": {
+                    "question": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "allow": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "deny": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "statustext": {
+                "translation": "",
+                "notes": ""
+            },
+            "statuschange": {
+                "translation": "",
+                "notes": ""
+            },
+            "false": {
+                "translation": "",
+                "notes": ""
+            },
+            "true": {
+                "translation": "",
+                "notes": ""
+            },
+            "button-tofalse": {
+                "translation": "",
+                "notes": ""
+            },
+            "button-totrue": {
+                "translation": "",
+                "notes": ""
+            },
+            "third-party-false": {
+                "translation": "",
+                "notes": ""
+            },
+            "third-party-true": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "social-media": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "placeholder": {
+                "translation": "",
+                "notes": ""
+            },
+            "requireUnique": {
+                "translation": "",
+                "notes": ""
+            },
+            "submit": {
+                "translation": "",
+                "notes": ""
+            },
+            "successAdd": {
+                "translation": "",
+                "notes": ""
+            },
+            "successDelete": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "blocked-users": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "explanation": {
+                "intro": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "your-perspective": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "their-perspective": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "search": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "notifications": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "closing": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "columns": {
+                "name": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "slug": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "unblock": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "empty": {
+                "translation": "",
+                "notes": ""
+            },
+            "how-to": {
+                "translation": "",
+                "notes": ""
+            },
+            "block": {
+                "translation": "",
+                "notes": ""
+            },
+            "unblock": {
+                "translation": "",
+                "notes": ""
+            },
+            "unblocked": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "admin": {
+        "name": {
+            "translation": "Systemverwaltung",
+            "notes": ""
+        },
+        "dashboard": {
+            "name": {
+                "translation": "Startzentrale",
+                "notes": ""
+            },
+            "users": {
+                "translation": "Benutzer",
+                "notes": ""
+            },
+            "posts": {
+                "translation": "Beiträge",
+                "notes": ""
+            },
+            "comments": {
+                "translation": "Kommentare",
+                "notes": ""
+            },
+            "notifications": {
+                "translation": "Benachrichtigungen",
+                "notes": ""
+            },
+            "organizations": {
+                "translation": "Organisationen",
+                "notes": ""
+            },
+            "projects": {
+                "translation": "Projekte",
+                "notes": ""
+            },
+            "invites": {
+                "translation": "Einladungen",
+                "notes": ""
+            },
+            "follows": {
+                "translation": "Folgen",
+                "notes": ""
+            },
+            "shouts": {
+                "translation": "Zurufe",
+                "notes": ""
+            }
+        },
+        "organizations": {
+            "name": {
+                "translation": "Organisationen",
+                "notes": ""
+            }
+        },
+        "users": {
+            "name": {
+                "translation": "Benutzer",
+                "notes": ""
+            },
+            "form": {
+                "placeholder": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "table": {
+                "columns": {
+                    "number": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "name": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "email": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "slug": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "role": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "createdAt": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            },
+            "empty": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "pages": {
+            "name": {
+                "translation": "Seiten",
+                "notes": ""
+            }
+        },
+        "notifications": {
+            "name": {
+                "translation": "Benachrichtigungen",
+                "notes": ""
+            }
+        },
+        "categories": {
+            "name": {
+                "translation": "Kategorien",
+                "notes": ""
+            },
+            "categoryName": {
+                "translation": "Name",
+                "notes": ""
+            },
+            "postCount": {
+                "translation": "Beiträge",
+                "notes": ""
+            }
+        },
+        "tags": {
+            "name": {
+                "translation": "Schlagworte",
+                "notes": ""
+            },
+            "tagCountUnique": {
+                "translation": "Benutzer",
+                "notes": ""
+            },
+            "tagCount": {
+                "translation": "Beiträge",
+                "notes": ""
+            }
+        },
+        "settings": {
+            "name": {
+                "translation": "Einstellungen",
+                "notes": ""
+            }
+        },
+        "hashtags": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "number": {
+                "translation": "",
+                "notes": ""
+            },
+            "nameOfHashtag": {
+                "translation": "",
+                "notes": ""
+            },
+            "tagCountUnique": {
+                "translation": "",
+                "notes": ""
+            },
+            "tagCount": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "invites": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "donations": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "goal": {
+                "translation": "",
+                "notes": ""
+            },
+            "progress": {
+                "translation": "",
+                "notes": ""
+            },
+            "successfulUpdate": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "post": {
+        "name": {
+            "translation": "Beitrag",
+            "notes": ""
+        },
+        "moreInfo": {
+            "name": {
+                "translation": "Mehr Info",
+                "notes": ""
+            },
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "titleOfCategoriesSection": {
+                "translation": "",
+                "notes": ""
+            },
+            "titleOfHashtagsSection": {
+                "translation": "",
+                "notes": ""
+            },
+            "titleOfRelatedContributionsSection": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "takeAction": {
+            "name": {
+                "translation": "Aktiv werden",
+                "notes": ""
+            }
+        },
+        "pinned": {
+            "translation": "",
+            "notes": ""
+        },
+        "menu": {
+            "edit": {
+                "translation": "",
+                "notes": ""
+            },
+            "delete": {
+                "translation": "",
+                "notes": ""
+            },
+            "pin": {
+                "translation": "",
+                "notes": ""
+            },
+            "pinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpin": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "submit": {
+                "translation": "",
+                "notes": ""
+            },
+            "submitted": {
+                "translation": "",
+                "notes": ""
+            },
+            "updated": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "edited": {
+            "translation": "",
+            "notes": ""
+        },
+        "delete": {
+            "submit": {
+                "translation": "",
+                "notes": ""
+            },
+            "cancel": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            },
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "quotes": {
+        "african": {
+            "quote": {
+                "translation": "Viele kleine Leute an vielen kleinen Orten, die viele kleine Dinge tun, werden das Antlitz dieser Welt verändern.",
+                "notes": ""
+            },
+            "author": {
+                "translation": "Afrikanisches Sprichwort",
+                "notes": ""
+            }
+        }
+    },
+    "common": {
+        "post": {
+            "translation": "Beitrag ::: Beiträge",
+            "notes": ""
+        },
+        "comment": {
+            "translation": "Kommentar ::: Kommentare",
+            "notes": ""
+        },
+        "letsTalk": {
+            "translation": "Miteinander reden",
+            "notes": ""
+        },
+        "versus": {
+            "translation": "Versus",
+            "notes": ""
+        },
+        "moreInfo": {
+            "translation": "Mehr Info",
+            "notes": ""
+        },
+        "takeAction": {
+            "translation": "Aktiv werden",
+            "notes": ""
+        },
+        "shout": {
+            "translation": "Empfehlung ::: Empfehlungen",
+            "notes": ""
+        },
+        "user": {
+            "translation": "Benutzer ::: Benutzer",
+            "notes": ""
+        },
+        "category": {
+            "translation": "Kategorie ::: Kategorien",
+            "notes": ""
+        },
+        "organization": {
+            "translation": "Organisation ::: Organisationen",
+            "notes": ""
+        },
+        "project": {
+            "translation": "Projekt ::: Projekte",
+            "notes": ""
+        },
+        "tag": {
+            "translation": "Schlagwort ::: Schlagwörter",
+            "notes": ""
+        },
+        "name": {
+            "translation": "Name",
+            "notes": ""
+        },
+        "loadMore": {
+            "translation": "mehr laden",
+            "notes": ""
+        },
+        "loading": {
+            "translation": "wird geladen",
+            "notes": ""
+        },
+        "reportContent": {
+            "translation": "Melden",
+            "notes": ""
+        },
+        "validations": {
+            "email": {
+                "translation": "",
+                "notes": ""
+            },
+            "url": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "your": {
+            "post": {
+                "translation": "",
+                "notes": ""
+            },
+            "comment": {
+                "translation": "",
+                "notes": ""
+            },
+            "shout": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "actions": {
+        "loading": {
+            "translation": "wird geladen",
+            "notes": ""
+        },
+        "loadMore": {
+            "translation": "mehr laden",
+            "notes": ""
+        },
+        "create": {
+            "translation": "Erstellen",
+            "notes": ""
+        },
+        "save": {
+            "translation": "Speichern",
+            "notes": ""
+        },
+        "edit": {
+            "translation": "Bearbeiten",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Löschen",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Abbrechen",
+            "notes": ""
+        }
+    },
+    "moderation": {
+        "name": {
+            "translation": "Moderation",
+            "notes": ""
+        },
+        "reports": {
+            "empty": {
+                "translation": "Glückwunsch, es gibt nichts zu moderieren.",
+                "notes": ""
+            },
+            "name": {
+                "translation": "Meldungen",
+                "notes": ""
+            },
+            "reporter": {
+                "translation": "gemeldet von",
+                "notes": ""
+            },
+            "submitter": {
+                "translation": "gemeldet von",
+                "notes": ""
+            },
+            "disabledBy": {
+                "translation": "deaktiviert von",
+                "notes": ""
+            },
+            "reasonCategory": {
+                "translation": "",
+                "notes": ""
+            },
+            "reasonDescription": {
+                "translation": "",
+                "notes": ""
+            },
+            "createdAt": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "disable": {
+        "user": {
+            "title": {
+                "translation": "Nutzer sperren",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Nutzer",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Sind Sie sicher, dass Sie den Nutzer „<b>{name}<\/b>“ sperren möchten?",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Beitrag sperren",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Beitrag",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Sind Sie sicher, dass Sie den Beitrag von „<b>{name}<\/b>“ deaktivieren möchten?",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Kommentar sperren",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Kommentar",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Sind Sie sicher, dass Sie den Kommentar von „<b>{name}<\/b>“ deaktivieren möchten?",
+                "notes": ""
+            }
+        },
+        "submit": {
+            "translation": "Deaktivieren",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Abbrechen",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Erfolgreich deaktiviert",
+            "notes": ""
+        }
+    },
+    "report": {
+        "submit": {
+            "translation": "Meldung senden",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Abbrechen",
+            "notes": ""
+        },
+        "user": {
+            "title": {
+                "translation": "Nutzer melden",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Nutzer",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Sind Sie sicher, dass Sie den Nutzer „<b>{name}<\/b>“ melden möchten?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Beitrag melden",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Beitrag",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Sind Sie sicher, dass Sie den Beitrag von „<b>{name}<\/b>“ melden möchten?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Kommentar melden",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Kommentar",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Sind Sie sicher, dass Sie den Kommentar von „<b>{name}<\/b>“ melden möchten?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "success": {
+            "translation": "Vielen Dank für diese Meldung!",
+            "notes": ""
+        },
+        "reason": {
+            "category": {
+                "label": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "placeholder": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "options": {
+                    "discrimination_etc": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "pornographic_content_links": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "glorific_trivia_of_cruel_inhuman_acts": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "doxing": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "intentional_intimidation_stalking_persecution": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "advert_products_services_commercial": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "criminal_behavior_violation_german_law": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "other": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                },
+                "invalid": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "description": {
+                "label": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "placeholder": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        }
+    },
+    "contribution": {
+        "edit": {
+            "translation": "Beitrag bearbeiten",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Beitrag löschen",
+            "notes": ""
+        },
+        "title": {
+            "translation": "",
+            "notes": ""
+        },
+        "newPost": {
+            "translation": "",
+            "notes": ""
+        },
+        "filterFollow": {
+            "translation": "",
+            "notes": ""
+        },
+        "filterALL": {
+            "translation": "",
+            "notes": ""
+        },
+        "success": {
+            "translation": "",
+            "notes": ""
+        },
+        "languageSelectLabel": {
+            "translation": "",
+            "notes": ""
+        },
+        "categories": {
+            "infoSelectedNoOfMaxCategories": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "emotions-label": {
+            "funny": {
+                "translation": "",
+                "notes": ""
+            },
+            "happy": {
+                "translation": "",
+                "notes": ""
+            },
+            "surprised": {
+                "translation": "",
+                "notes": ""
+            },
+            "cry": {
+                "translation": "",
+                "notes": ""
+            },
+            "angry": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "category": {
+            "name": {
+                "freedom-of-speech": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "consumption-sustainability": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "global-peace-nonviolence": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "just-for-fun": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "happiness-values": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "health-wellbeing": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "environment-nature": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "animal-protection": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "human-rights-justice": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "education-sciences": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "cooperation-development": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "democracy-politics": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "economy-finances": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "energy-technology": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "it-internet-data-privacy": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "art-culture-sport": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "teaserImage": {
+            "cropperConfirm": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "comment": {
+        "edit": {
+            "translation": "Kommentar bearbeiten",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Kommentar löschen",
+            "notes": ""
+        },
+        "content": {
+            "unavailable-placeholder": {
+                "translation": "… dieser Kommentar ist nicht mehr verfügbar",
+                "notes": ""
+            }
+        },
+        "menu": {
+            "edit": {
+                "translation": "",
+                "notes": ""
+            },
+            "delete": {
+                "translation": "",
+                "notes": ""
+            },
+            "pin": {
+                "translation": "",
+                "notes": ""
+            },
+            "pinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpin": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "show": {
+            "more": {
+                "translation": "",
+                "notes": ""
+            },
+            "less": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "edited": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "followButton": {
+        "follow": {
+            "translation": "Folgen",
+            "notes": ""
+        },
+        "following": {
+            "translation": "Folge Ich",
+            "notes": ""
+        }
+    },
+    "shoutButton": {
+        "shouted": {
+            "translation": "empfohlen",
+            "notes": ""
+        }
+    },
+    "search": {
+        "placeholder": {
+            "translation": "Suchen",
+            "notes": ""
+        },
+        "hint": {
+            "translation": "Wonach suchen Sie?",
+            "notes": ""
+        },
+        "failed": {
+            "translation": "Nichts gefunden",
+            "notes": ""
+        }
+    },
+    "components": {
+        "password-reset": {
+            "request": {
+                "title": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "form": {
+                    "description": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "submit": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "submitted": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            },
+            "change-password": {
+                "success": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "error": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "help": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "enter-nonce": {
+            "form": {
+                "nonce": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "description": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "next": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "validations": {
+                    "length": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            }
+        },
+        "registration": {
+            "signup": {
+                "unavailable": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "title": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "form": {
+                    "description": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "terms-and-condition": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "data-privacy": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "minimum-age": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "invitation-code": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "errors": {
+                        "email-exists": {
+                            "translation": "",
+                            "notes": ""
+                        },
+                        "invalid-invitation-token": {
+                            "translation": "",
+                            "notes": ""
+                        }
+                    },
+                    "submit": {
+                        "translation": "",
+                        "notes": ""
+                    },
+                    "success": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            },
+            "create-user-account": {
+                "title": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "success": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "error": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "help": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        }
+    },
+    "store": {
+        "posts": {
+            "orderBy": {
+                "newest": {
+                    "label": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                },
+                "oldest": {
+                    "label": {
+                        "translation": "",
+                        "notes": ""
+                    }
+                }
+            }
+        }
+    },
+    "maintenance": {
+        "title": {
+            "translation": "",
+            "notes": ""
+        },
+        "explanation": {
+            "translation": "",
+            "notes": ""
+        },
+        "questions": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "index": {
+        "no-results": {
+            "translation": "",
+            "notes": ""
+        },
+        "change-filter-settings": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "filter-menu": {
+        "title": {
+            "translation": "",
+            "notes": ""
+        },
+        "hashtag-search": {
+            "translation": "",
+            "notes": ""
+        },
+        "clearSearch": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "filter-posts": {
+        "categories": {
+            "header": {
+                "translation": "",
+                "notes": ""
+            },
+            "all": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "general": {
+            "header": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "followers": {
+            "label": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "language": {
+            "header": {
+                "translation": "",
+                "notes": ""
+            },
+            "all": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "site": {
+        "thanks": {
+            "translation": "",
+            "notes": ""
+        },
+        "error-occurred": {
+            "translation": "",
+            "notes": ""
+        },
+        "made": {
+            "translation": "",
+            "notes": ""
+        },
+        "imprint": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAndConditions": {
+            "translation": "",
+            "notes": ""
+        },
+        "data-privacy": {
+            "translation": "",
+            "notes": ""
+        },
+        "changelog": {
+            "translation": "",
+            "notes": ""
+        },
+        "contact": {
+            "translation": "",
+            "notes": ""
+        },
+        "tribunal": {
+            "translation": "",
+            "notes": ""
+        },
+        "register": {
+            "translation": "",
+            "notes": ""
+        },
+        "director": {
+            "translation": "",
+            "notes": ""
+        },
+        "taxident": {
+            "translation": "",
+            "notes": ""
+        },
+        "responsible": {
+            "translation": "",
+            "notes": ""
+        },
+        "bank": {
+            "translation": "",
+            "notes": ""
+        },
+        "germany": {
+            "translation": "",
+            "notes": ""
+        },
+        "code-of-conduct": {
+            "translation": "",
+            "notes": ""
+        },
+        "back-to-login": {
+            "translation": "",
+            "notes": ""
+        },
+        "faq": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAc": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "editor": {
+        "placeholder": {
+            "translation": "",
+            "notes": ""
+        },
+        "mention": {
+            "noUsersFound": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "hashtag": {
+            "noHashtagsFound": {
+                "translation": "",
+                "notes": ""
+            },
+            "addHashtag": {
+                "translation": "",
+                "notes": ""
+            },
+            "addLetter": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "embed": {
+            "data_privacy_warning": {
+                "translation": "",
+                "notes": ""
+            },
+            "data_privacy_info": {
+                "translation": "",
+                "notes": ""
+            },
+            "play_now": {
+                "translation": "",
+                "notes": ""
+            },
+            "always_allow": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "notifications": {
+        "reason": {
+            "mentioned_in_post": {
+                "translation": "",
+                "notes": ""
+            },
+            "mentioned_in_comment": {
+                "translation": "",
+                "notes": ""
+            },
+            "commented_on_post": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "translation": "",
+            "notes": ""
+        },
+        "title": {
+            "translation": "",
+            "notes": ""
+        },
+        "pageLink": {
+            "translation": "",
+            "notes": ""
+        },
+        "post": {
+            "translation": "",
+            "notes": ""
+        },
+        "user": {
+            "translation": "",
+            "notes": ""
+        },
+        "content": {
+            "translation": "",
+            "notes": ""
+        },
+        "filterLabel": {
+            "all": {
+                "translation": "",
+                "notes": ""
+            },
+            "read": {
+                "translation": "",
+                "notes": ""
+            },
+            "unread": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "empty": {
+            "translation": "",
+            "notes": ""
+        },
+        "menu": {
+            "mentioned": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "delete": {
+        "submit": {
+            "translation": "",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "",
+            "notes": ""
+        },
+        "contribution": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "release": {
+        "submit": {
+            "translation": "",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "",
+            "notes": ""
+        },
+        "success": {
+            "translation": "",
+            "notes": ""
+        },
+        "user": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            },
+            "error": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "user": {
+        "avatar": {
+            "submitted": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "code-of-conduct": {
+        "subheader": {
+            "translation": "",
+            "notes": ""
+        },
+        "preamble": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "purpose": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "expected-behaviour": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "unacceptable-behaviour": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "4": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "5": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "6": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "7": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "consequences": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "4": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "5": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "6": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "7": {
+                    "translation": "",
+                    "notes": ""
+                },
+                "8": {
+                    "translation": "",
+                    "notes": ""
+                }
+            }
+        },
+        "get-help": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "termsAndConditions": {
+        "newTermsAndConditions": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAndConditionsConfirmed": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAndConditionsNewConfirmText": {
+            "translation": "",
+            "notes": ""
+        },
+        "termsAndConditionsNewConfirm": {
+            "translation": "",
+            "notes": ""
+        },
+        "agree": {
+            "translation": "",
+            "notes": ""
+        },
+        "terms-of-service": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "use-and-license": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "privacy-statement": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "code-of-conduct": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "moderation": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "errors-and-feedback": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "help-and-questions": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "addition": {
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "donations": {
+        "donations-for": {
+            "translation": "",
+            "notes": ""
+        },
+        "donate-now": {
+            "translation": "",
+            "notes": ""
+        },
+        "amount-of-total": {
+            "translation": "",
+            "notes": ""
+        }
+    }
+}
