@@ -27,7 +27,11 @@ const plugins = [
 ]
 helpers.init({ plugins })
 
-const users = [{ id: 1, slug: 'peter' }, { id: 2, slug: 'sandra' }, { id: 3, slug: 'jane' }]
+const users = [
+  { id: 1, slug: 'peter' },
+  { id: 2, slug: 'sandra' },
+  { id: 3, slug: 'jane' },
+]
 
 storiesOf('Editor', module)
   .addDecorator(withA11y)
