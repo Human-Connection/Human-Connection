@@ -39,7 +39,6 @@ services:
       - uploads:/nitro-backend/public/uploads
     environment:
       - NEO4J_URI=bolt://neo4j:7687
-      - GRAPHQL_PORT=4000
       - GRAPHQL_URI=http://backend:4000
       - CLIENT_URI=http://localhost:3000
       - JWT_SECRET=b/&&7b78BF&fv/Vd
