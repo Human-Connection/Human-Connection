@@ -14,7 +14,7 @@ beforeEach(() => {
 })
 
 describe('UniqueSlugForm', () => {
-  let validate = object => {
+  const validate = object => {
     const { formSchema } = UniqueSlugForm({ translate, apollo, currentUser })
     const validator = new Schema(formSchema)
     return validator.validate(object, { suppressWarning: true }).catch(({ errors }) => {

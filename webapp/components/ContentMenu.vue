@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     routes() {
-      let routes = []
+      const routes = []
 
       if (this.resourceType === 'contribution') {
         if (this.isOwner) {

@@ -6,11 +6,7 @@
           <ds-flex class="main-navigation-flex">
             <ds-flex-item :width="{ lg: '3.5%' }" />
             <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
-              <nuxt-link
-                :to="{ name: 'index' }"
-                @click.native="refreshPosts({ i18n: $i18n })"
-                v-scroll-to="'.main-navigation'"
-              >
+              <nuxt-link :to="{ name: 'index' }" v-scroll-to="'.main-navigation'">
                 <ds-logo />
               </nuxt-link>
             </ds-flex-item>
@@ -143,7 +139,6 @@ export default {
     ...mapActions({
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
-      refreshPosts: 'posts/refreshPosts',
     }),
     goToPost(item) {
       this.$nextTick(() => {

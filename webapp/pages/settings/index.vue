@@ -117,7 +117,7 @@ export default {
       this.loadingData = true
       const { name, slug, about } = this.formData
       let { locationName } = this.formData || this.currentUser
-      locationName = locationName && (locationName['label'] || locationName)
+      locationName = locationName && (locationName.label || locationName)
       try {
         await this.$apollo.mutate({
           mutation,
@@ -154,7 +154,7 @@ export default {
       if (!res || !res.data || !res.data.features || !res.data.features.length) {
         return []
       }
-      let output = []
+      const output = []
       res.data.features.forEach(item => {
         output.push({
           label: item.place_name,

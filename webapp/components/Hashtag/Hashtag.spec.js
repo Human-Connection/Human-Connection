@@ -10,7 +10,7 @@ config.stubs['nuxt-link'] = '<span><slot /></span>'
 describe('Hashtag', () => {
   let id
 
-  let Wrapper = () => {
+  const Wrapper = () => {
     return shallowMount(Hashtag, {
       localVue,
       propsData: {
