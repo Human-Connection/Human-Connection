@@ -464,7 +464,8 @@
     "reportContent": "Report",
     "validations": {
       "email": "must be a valid e-mail address",
-      "url": "must be a valid URL"
+      "url": "must be a valid URL",
+      "categories": "at least one and at most three categories must be selected"
     }
   },
   "actions": {
@@ -609,7 +610,8 @@
     "filterFollow": "Filter contributions from users I follow",
     "filterALL": "View all contributions",
     "success": "Saved!",
-    "languageSelectLabel": "Language",
+    "languageSelectLabel": "Language of your contribution",
+    "languageSelectText": "Select Language",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
     },

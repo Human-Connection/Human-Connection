@@ -20,6 +20,7 @@ Feature: Notification for a mention
       """
     And mention "@matt-rider" in the text
     And I select a category
+    And I choose "en" as the language for the post
     And I click on "Save"
     When I log out
     And I log in with the following credentials:
