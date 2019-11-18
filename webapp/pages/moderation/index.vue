@@ -11,7 +11,7 @@
       <template v-for="content in reportedContentStructure">
         <thead
           :class="[
-            content.closed ? 'decision' : 'no-decision',
+            content.caseFolderClosed ? 'decision' : 'no-decision',
             'ds-table-col',
             'ds-table-head-col',
             'ds-table-head-col-border',
@@ -88,8 +88,8 @@
               <span v-else>—</span>
             </td>
             <td class="ds-table-col ds-table-head-col-border">
-              <!-- closed -->
-              <b v-if="content.closed">
+              <!-- caseFolderClosed -->
+              <b v-if="content.caseFolderClosed">
                 {{ $t('moderation.reports.decided') }}
               </b>
               <ds-button
@@ -104,7 +104,7 @@
               <!-- decidedByModerator -->
               <div v-if="content.resource.decidedByModerator">
                 <br />
-                <div v-if="content.decisionDisable">
+                <div v-if="content.caseFolderDisable">
                   <ds-icon name="eye-slash" class="ban" />
                   {{ $t('moderation.reports.disabledBy') }}
                 </div>
@@ -116,7 +116,7 @@
                   :user="content.resource.decidedByModerator"
                   :showAvatar="false"
                   :trunc="30"
-                  :date-time="content.decisionAt"
+                  :date-time="content.caseFolderUpdatedAt"
                   positionDatetime="below"
                 />
               </div>
@@ -226,10 +226,10 @@ export default {
           if (idx === -1) {
             idx = newReportedContentStructure.length
             newReportedContentStructure.push({
-              closed: report.closed,
-              decisionUuid: report.decisionUuid,
-              decisionAt: report.decisionAt,
-              decisionDisable: report.decisionDisable,
+              caseFolderId: report.caseFolderId,
+              caseFolderUpdatedAt: report.caseFolderUpdatedAt,
+              caseFolderDisable: report.caseFolderDisable,
+              caseFolderClosed: report.caseFolderClosed,
               type: report.type,
               resource,
               user: report.user,
@@ -267,7 +267,7 @@ export default {
         'moderation.reports.decideModal.' +
         content.type +
         '.' +
-        (content.decisionDisable ? 'disable' : 'enable')
+        (content.caseFolderDisable ? 'disable' : 'enable')
       this.$store.commit('modal/SET_OPEN', {
         name: 'confirm',
         data: {

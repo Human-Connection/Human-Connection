@@ -5,7 +5,6 @@ export default {
     report: async (_parent, params, context, _resolveInfo) => {
       let createdRelationshipWithNestedAttributes
       const { resourceId, reasonCategory, reasonDescription } = params
-      // Wolle console.log('resourceId: ', resourceId)
       const { driver, user } = context
       const session = driver.session()
       const writeTxResultPromise = session.writeTransaction(async txc => {
@@ -21,7 +20,7 @@ export default {
             WITH submitter, resource, caseFolder
             CREATE (caseFolder)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
-            RETURN caseFolder {.id}, submitter, report, resource, labels(resource)[0] AS type
+            RETURN submitter, report, caseFolder {.id}, resource, labels(resource)[0] AS type
           `,
           {
             resourceId,
@@ -32,19 +31,17 @@ export default {
           },
         )
         return reportRelationshipTransactionResponse.records.map(record => ({
-          caseFolder: record.get('caseFolder'),
           submitter: record.get('submitter'),
           report: record.get('report'),
+          caseFolder: record.get('caseFolder'),
           resource: record.get('resource').properties,
           type: record.get('type'),
         }))
       })
       try {
-        // Wolle console.log('reasonCategory: ', reasonCategory)
         const txResult = await writeTxResultPromise
-        // Wolle console.log('txResult: ', txResult)
         if (!txResult[0]) return null
-        const { caseFolder, submitter, report, resource, type } = txResult[0]
+        const { submitter, report, caseFolder, resource, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
           ...report.properties,
           caseFolderId: caseFolder.id,
@@ -89,42 +86,34 @@ export default {
       }
       try {
         const cypher = `
-          MATCH (submitter:User)-[report:REPORTED]->(resource)
-          WHERE resource:User OR resource:Comment OR resource:Post
-          OPTIONAL MATCH (:User)-[decision:DECIDED {uuid: report.decisionUuid}]->(resource)
-          OPTIONAL MATCH (:User)-[decisionPending:DECIDED {latest: true}]->(resource)
-          RETURN report, submitter, resource, labels(resource)[0] as type, decision, decisionPending
+          MATCH (submitter:User)-[report:REPORTED]->(caseFolder:CaseFolder)-[:FLAGGED]->(resource)
+          // Wolle OPTIONAL MATCH (reviewer:User)-[:REVIEWED]->(caseFolder)
+          WHERE resource:User OR resource:Post OR resource:Comment
+          RETURN submitter, report, caseFolder, resource, labels(resource)[0] as type
           ${orderByClause}
         `
         const result = await session.run(cypher, {})
         const dbResponse = result.records.map(r => {
           return {
-            report: r.get('report'),
             submitter: r.get('submitter'),
+            report: r.get('report'),
+            caseFolder: r.get('caseFolder'),
             resource: r.get('resource'),
             type: r.get('type'),
-            decision: r.get('decision'),
-            decisionPending: r.get('decisionPending'),
           }
         })
         if (!dbResponse) return null
 
         response = []
         dbResponse.forEach(ele => {
-          const { report, submitter, resource, type, decision, decisionPending } = ele
+          const { report, submitter, caseFolder, resource, type, decision, decisionPending } = ele
 
           const responseEle = {
             ...report.properties,
-            decisionAt: decision
-              ? decision.properties.updatedAt
-              : decisionPending
-              ? decisionPending.properties.updatedAt
-              : null,
-            decisionDisable: decision
-              ? decision.properties.disable
-              : decisionPending
-              ? decisionPending.properties.disable
-              : null,
+            caseFolderId: caseFolder.id,
+            caseFolderUpdatedAt: caseFolder.updatedAt,
+            caseFolderDisable: caseFolder.disable,
+            caseFolderClosed: caseFolder.closed,
             post: null,
             comment: null,
             user: null,
@@ -162,6 +151,6 @@ export default {
     },
   },
   REPORTED: {
-    ...undefinedToNullResolver(['decisionUuid', 'decisionAt', 'decisionDisable']),
+    // Wolle ...undefinedToNullResolver(['decisionUuid', 'decisionAt', 'decisionDisable']),
   },
 }
