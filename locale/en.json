@@ -1,0 +1,2232 @@
+{
+    "login": {
+        "copy": {
+            "translation": "If you already have a human-connection account, login here.",
+            "notes": ""
+        },
+        "login": {
+            "translation": "Login",
+            "notes": ""
+        },
+        "logout": {
+            "translation": "Logout",
+            "notes": ""
+        },
+        "email": {
+            "translation": "Your Email",
+            "notes": ""
+        },
+        "password": {
+            "translation": "Your Password",
+            "notes": ""
+        },
+        "moreInfo": {
+            "translation": "What is Human Connection?",
+            "notes": ""
+        },
+        "hello": {
+            "translation": "Hello",
+            "notes": ""
+        },
+        "forgotPassword": {
+            "translation": "Forgot Password?",
+            "notes": ""
+        },
+        "no-account": {
+            "translation": "Don't have an account?",
+            "notes": ""
+        },
+        "register": {
+            "translation": "Sign up",
+            "notes": ""
+        },
+        "moreInfoURL": {
+            "translation": "https:\/\/human-connection.org\/en\/",
+            "notes": ""
+        },
+        "moreInfoHint": {
+            "translation": "to the presentation page",
+            "notes": ""
+        },
+        "success": {
+            "translation": "You are logged in!",
+            "notes": ""
+        },
+        "failure": {
+            "translation": "Incorrect email address or password.",
+            "notes": ""
+        }
+    },
+    "profile": {
+        "name": {
+            "translation": "My Profile",
+            "notes": ""
+        },
+        "memberSince": {
+            "translation": "Member since",
+            "notes": ""
+        },
+        "follow": {
+            "translation": "Follow",
+            "notes": ""
+        },
+        "followers": {
+            "translation": "Followers",
+            "notes": ""
+        },
+        "following": {
+            "translation": "Following",
+            "notes": ""
+        },
+        "shouted": {
+            "translation": "Shouted",
+            "notes": ""
+        },
+        "commented": {
+            "translation": "Commented",
+            "notes": ""
+        },
+        "userAnonym": {
+            "translation": "Anonymous",
+            "notes": ""
+        },
+        "socialMedia": {
+            "translation": "Where else can I find",
+            "notes": ""
+        },
+        "network": {
+            "title": {
+                "translation": "Network",
+                "notes": ""
+            },
+            "following": {
+                "translation": "is following:",
+                "notes": ""
+            },
+            "followingNobody": {
+                "translation": "follows nobody.",
+                "notes": ""
+            },
+            "followedBy": {
+                "translation": "is followed by:",
+                "notes": ""
+            },
+            "followedByNobody": {
+                "translation": "is not followed by anyone.",
+                "notes": ""
+            },
+            "andMore": {
+                "translation": "and {number} more …",
+                "notes": ""
+            },
+            "and": {
+                "translation": "",
+                "notes": ""
+            },
+            "more": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "invites": {
+            "title": {
+                "translation": "Invite somebody to Human Connection!",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Enter their e-mail address for invitation.",
+                "notes": ""
+            },
+            "emailPlaceholder": {
+                "translation": "E-mail to invite",
+                "notes": ""
+            }
+        }
+    },
+    "settings": {
+        "name": {
+            "translation": "Settings",
+            "notes": ""
+        },
+        "data": {
+            "name": {
+                "translation": "Your data",
+                "notes": ""
+            },
+            "labelName": {
+                "translation": "Your Name",
+                "notes": ""
+            },
+            "labelCity": {
+                "translation": "Your City or Region",
+                "notes": ""
+            },
+            "labelBio": {
+                "translation": "About You",
+                "notes": ""
+            },
+            "labelSlug": {
+                "translation": "Your unique user name",
+                "notes": ""
+            },
+            "namePlaceholder": {
+                "translation": "Femanon Funny",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Your data was successfully updated!",
+                "notes": ""
+            }
+        },
+        "security": {
+            "name": {
+                "translation": "Security",
+                "notes": ""
+            },
+            "change-password": {
+                "button": {
+                    "translation": "Change password",
+                    "notes": ""
+                },
+                "success": {
+                    "translation": "Password successfully changed!",
+                    "notes": ""
+                },
+                "label-old-password": {
+                    "translation": "Your old password",
+                    "notes": ""
+                },
+                "label-new-password": {
+                    "translation": "Your new password",
+                    "notes": ""
+                },
+                "label-new-password-confirm": {
+                    "translation": "Confirm new password",
+                    "notes": ""
+                },
+                "message-old-password-required": {
+                    "translation": "Enter your old password",
+                    "notes": ""
+                },
+                "message-new-password-required": {
+                    "translation": "Enter a new password",
+                    "notes": ""
+                },
+                "message-new-password-confirm-required": {
+                    "translation": "Confirm your new password",
+                    "notes": ""
+                },
+                "message-new-password-missmatch": {
+                    "translation": "Type the same password again",
+                    "notes": ""
+                },
+                "passwordSecurity": {
+                    "translation": "Password security",
+                    "notes": ""
+                },
+                "passwordStrength0": {
+                    "translation": "Very insecure password",
+                    "notes": ""
+                },
+                "passwordStrength1": {
+                    "translation": "Insecure password",
+                    "notes": ""
+                },
+                "passwordStrength2": {
+                    "translation": "Mediocre password",
+                    "notes": ""
+                },
+                "passwordStrength3": {
+                    "translation": "Strong password",
+                    "notes": ""
+                },
+                "passwordStrength4": {
+                    "translation": "Very strong password",
+                    "notes": ""
+                }
+            }
+        },
+        "invites": {
+            "name": {
+                "translation": "Invites",
+                "notes": ""
+            }
+        },
+        "download": {
+            "name": {
+                "translation": "Download Data",
+                "notes": ""
+            }
+        },
+        "delete": {
+            "name": {
+                "translation": "Delete Account",
+                "notes": ""
+            }
+        },
+        "organizations": {
+            "name": {
+                "translation": "My Organizations",
+                "notes": ""
+            }
+        },
+        "languages": {
+            "name": {
+                "translation": "Languages",
+                "notes": ""
+            }
+        },
+        "email": {
+            "validation": {
+                "same-email": {
+                    "translation": "This is your current e-mail address",
+                    "notes": ""
+                }
+            },
+            "name": {
+                "translation": "Your e-mail",
+                "notes": ""
+            },
+            "labelEmail": {
+                "translation": "Change your e-mail address",
+                "notes": ""
+            },
+            "labelNewEmail": {
+                "translation": "New e-mail Address",
+                "notes": ""
+            },
+            "labelNonce": {
+                "translation": "Enter your code",
+                "notes": ""
+            },
+            "success": {
+                "translation": "A new e-mail address has been registered.",
+                "notes": ""
+            },
+            "submitted": {
+                "translation": "An e-mail to verify your address has been sent to <b>{email}<\/b>.",
+                "notes": ""
+            },
+            "change-successful": {
+                "translation": "Your e-mail address has been changed successfully.",
+                "notes": ""
+            },
+            "verification-error": {
+                "message": {
+                    "translation": "Your e-mail could not be changed.",
+                    "notes": ""
+                },
+                "explanation": {
+                    "translation": "This can have different causes:",
+                    "notes": ""
+                },
+                "reason": {
+                    "invalid-nonce": {
+                        "translation": "Is the confirmation code invalid?",
+                        "notes": ""
+                    },
+                    "no-email-request": {
+                        "translation": "Are you certain that you requested a change of your e-mail address?",
+                        "notes": ""
+                    }
+                },
+                "support": {
+                    "translation": "If the problem persists, please contact us by e-mail at",
+                    "notes": ""
+                }
+            }
+        },
+        "validation": {
+            "slug": {
+                "regex": {
+                    "translation": "Allowed characters are only lowercase letters, numbers, underscores and hyphens.",
+                    "notes": ""
+                },
+                "alreadyTaken": {
+                    "translation": "This user name is already taken.",
+                    "notes": ""
+                }
+            }
+        },
+        "deleteUserAccount": {
+            "name": {
+                "translation": "Delete data",
+                "notes": ""
+            },
+            "contributionsCount": {
+                "translation": "Delete my {count} posts",
+                "notes": ""
+            },
+            "commentedCount": {
+                "translation": "Delete my {count} comments",
+                "notes": ""
+            },
+            "accountDescription": {
+                "translation": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
+                "notes": ""
+            },
+            "accountWarning": {
+                "translation": "You <b>CAN'T MANAGE<\/b> and <b>CAN'T RECOVER<\/b> your Account, Posts, or Comments after deleting your account!",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Account successfully deleted!",
+                "notes": ""
+            },
+            "pleaseConfirm": {
+                "translation": "<b class='is-danger'>Destructive action!<\/b> Type <b>{confirm}<\/b> to confirm",
+                "notes": ""
+            }
+        },
+        "embeds": {
+            "name": {
+                "translation": "Third party providers",
+                "notes": ""
+            },
+            "info-description": {
+                "translation": "Here is the list of third-party providers whose content can be displayed as third-party code, e.g. in the form of embedded videos.",
+                "notes": ""
+            },
+            "status": {
+                "description": {
+                    "translation": "As a default for you, embedded code of third-party providers is",
+                    "notes": ""
+                },
+                "disabled": {
+                    "off": {
+                        "translation": "initially not displayed",
+                        "notes": ""
+                    },
+                    "on": {
+                        "translation": "displayed immediately",
+                        "notes": ""
+                    }
+                },
+                "change": {
+                    "question": {
+                        "translation": "Should embedded source code from third parties always be displayed to you?",
+                        "notes": ""
+                    },
+                    "allow": {
+                        "translation": "Sure",
+                        "notes": ""
+                    },
+                    "deny": {
+                        "translation": "No thanks",
+                        "notes": ""
+                    }
+                }
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "statustext": {
+                "translation": "",
+                "notes": ""
+            },
+            "statuschange": {
+                "translation": "",
+                "notes": ""
+            },
+            "false": {
+                "translation": "",
+                "notes": ""
+            },
+            "true": {
+                "translation": "",
+                "notes": ""
+            },
+            "button-tofalse": {
+                "translation": "",
+                "notes": ""
+            },
+            "button-totrue": {
+                "translation": "",
+                "notes": ""
+            },
+            "third-party-false": {
+                "translation": "",
+                "notes": ""
+            },
+            "third-party-true": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "social-media": {
+            "name": {
+                "translation": "Social media",
+                "notes": ""
+            },
+            "placeholder": {
+                "translation": "Your social media url",
+                "notes": ""
+            },
+            "requireUnique": {
+                "translation": "You added this url already",
+                "notes": ""
+            },
+            "submit": {
+                "translation": "Add link",
+                "notes": ""
+            },
+            "successAdd": {
+                "translation": "Added social media. Updated user profile!",
+                "notes": ""
+            },
+            "successDelete": {
+                "translation": "Deleted social media. Updated user profile!",
+                "notes": ""
+            }
+        },
+        "blocked-users": {
+            "name": {
+                "translation": "Blocked users",
+                "notes": ""
+            },
+            "explanation": {
+                "intro": {
+                    "translation": "If another user has been blocked by you, this is what happens:",
+                    "notes": ""
+                },
+                "your-perspective": {
+                    "translation": "The blocked person's posts will no longer appear in your news feed.",
+                    "notes": ""
+                },
+                "their-perspective": {
+                    "translation": "Vice versa: The blocked person will also no longer see your posts in their news feed.",
+                    "notes": ""
+                },
+                "search": {
+                    "translation": "Posts of blocked people disappear from your search results.",
+                    "notes": ""
+                },
+                "notifications": {
+                    "translation": "Blocked users will no longer receive notifications if they are mentioned in your posts.",
+                    "notes": ""
+                },
+                "closing": {
+                    "translation": "This should be sufficient for now so that blocked users can no longer bother you.",
+                    "notes": ""
+                }
+            },
+            "columns": {
+                "name": {
+                    "translation": "Name",
+                    "notes": ""
+                },
+                "slug": {
+                    "translation": "Slug",
+                    "notes": ""
+                },
+                "unblock": {
+                    "translation": "Unblock",
+                    "notes": ""
+                }
+            },
+            "empty": {
+                "translation": "So far, you have not blocked anybody.",
+                "notes": ""
+            },
+            "how-to": {
+                "translation": "You can block other users on their profile page via the content menu.",
+                "notes": ""
+            },
+            "block": {
+                "translation": "Block user",
+                "notes": ""
+            },
+            "unblock": {
+                "translation": "Unblock user",
+                "notes": ""
+            },
+            "unblocked": {
+                "translation": "{name} is unblocked again",
+                "notes": ""
+            }
+        }
+    },
+    "admin": {
+        "name": {
+            "translation": "Admin",
+            "notes": ""
+        },
+        "dashboard": {
+            "name": {
+                "translation": "Dashboard",
+                "notes": ""
+            },
+            "users": {
+                "translation": "Users",
+                "notes": ""
+            },
+            "posts": {
+                "translation": "Posts",
+                "notes": ""
+            },
+            "comments": {
+                "translation": "Comments",
+                "notes": ""
+            },
+            "notifications": {
+                "translation": "Notifications",
+                "notes": ""
+            },
+            "organizations": {
+                "translation": "Organizations",
+                "notes": ""
+            },
+            "projects": {
+                "translation": "Projects",
+                "notes": ""
+            },
+            "invites": {
+                "translation": "Invites",
+                "notes": ""
+            },
+            "follows": {
+                "translation": "Follows",
+                "notes": ""
+            },
+            "shouts": {
+                "translation": "Shouts",
+                "notes": ""
+            }
+        },
+        "organizations": {
+            "name": {
+                "translation": "Organizations",
+                "notes": ""
+            }
+        },
+        "users": {
+            "name": {
+                "translation": "Users",
+                "notes": ""
+            },
+            "form": {
+                "placeholder": {
+                    "translation": "e-mail, name or description",
+                    "notes": ""
+                }
+            },
+            "table": {
+                "columns": {
+                    "number": {
+                        "translation": "No.",
+                        "notes": ""
+                    },
+                    "name": {
+                        "translation": "Name",
+                        "notes": ""
+                    },
+                    "email": {
+                        "translation": "E-mail",
+                        "notes": ""
+                    },
+                    "slug": {
+                        "translation": "Slug",
+                        "notes": ""
+                    },
+                    "role": {
+                        "translation": "Role",
+                        "notes": ""
+                    },
+                    "createdAt": {
+                        "translation": "Created at",
+                        "notes": ""
+                    }
+                }
+            },
+            "empty": {
+                "translation": "No users found",
+                "notes": ""
+            }
+        },
+        "pages": {
+            "name": {
+                "translation": "Pages",
+                "notes": ""
+            }
+        },
+        "notifications": {
+            "name": {
+                "translation": "Notifications",
+                "notes": ""
+            }
+        },
+        "categories": {
+            "name": {
+                "translation": "Categories",
+                "notes": ""
+            },
+            "categoryName": {
+                "translation": "Name",
+                "notes": ""
+            },
+            "postCount": {
+                "translation": "Posts",
+                "notes": ""
+            }
+        },
+        "tags": {
+            "name": {
+                "translation": "Tags",
+                "notes": ""
+            },
+            "tagCountUnique": {
+                "translation": "Users",
+                "notes": ""
+            },
+            "tagCount": {
+                "translation": "Posts",
+                "notes": ""
+            }
+        },
+        "settings": {
+            "name": {
+                "translation": "Settings",
+                "notes": ""
+            }
+        },
+        "hashtags": {
+            "name": {
+                "translation": "Hashtags",
+                "notes": ""
+            },
+            "number": {
+                "translation": "No.",
+                "notes": ""
+            },
+            "nameOfHashtag": {
+                "translation": "Name",
+                "notes": ""
+            },
+            "tagCountUnique": {
+                "translation": "Users",
+                "notes": ""
+            },
+            "tagCount": {
+                "translation": "Posts",
+                "notes": ""
+            }
+        },
+        "invites": {
+            "name": {
+                "translation": "Invite users",
+                "notes": ""
+            },
+            "title": {
+                "translation": "Invite people",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Invitations are a wonderful way to have your friends in your network …",
+                "notes": ""
+            }
+        },
+        "donations": {
+            "name": {
+                "translation": "Donations info",
+                "notes": ""
+            },
+            "goal": {
+                "translation": "Monthly donations needed",
+                "notes": ""
+            },
+            "progress": {
+                "translation": "Donations collected so far",
+                "notes": ""
+            },
+            "successfulUpdate": {
+                "translation": "Donations info updated successfully!",
+                "notes": ""
+            }
+        }
+    },
+    "post": {
+        "name": {
+            "translation": "Post",
+            "notes": ""
+        },
+        "moreInfo": {
+            "name": {
+                "translation": "More info",
+                "notes": ""
+            },
+            "title": {
+                "translation": "More information",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Here you can find more information about this topic.",
+                "notes": ""
+            },
+            "titleOfCategoriesSection": {
+                "translation": "Categories",
+                "notes": ""
+            },
+            "titleOfHashtagsSection": {
+                "translation": "Hashtags",
+                "notes": ""
+            },
+            "titleOfRelatedContributionsSection": {
+                "translation": "Related posts",
+                "notes": ""
+            }
+        },
+        "takeAction": {
+            "name": {
+                "translation": "Take action",
+                "notes": ""
+            }
+        },
+        "pinned": {
+            "translation": "Announcement",
+            "notes": ""
+        },
+        "menu": {
+            "edit": {
+                "translation": "Edit Post",
+                "notes": ""
+            },
+            "delete": {
+                "translation": "Delete Post",
+                "notes": ""
+            },
+            "pin": {
+                "translation": "Pin post",
+                "notes": ""
+            },
+            "pinnedSuccessfully": {
+                "translation": "Post pinned successfully!",
+                "notes": ""
+            },
+            "unpin": {
+                "translation": "Unpin post",
+                "notes": ""
+            },
+            "unpinnedSuccessfully": {
+                "translation": "Post unpinned successfully!",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "submit": {
+                "translation": "Comment",
+                "notes": ""
+            },
+            "submitted": {
+                "translation": "Comment Submitted",
+                "notes": ""
+            },
+            "updated": {
+                "translation": "Changes Saved",
+                "notes": ""
+            }
+        },
+        "edited": {
+            "translation": "edited",
+            "notes": ""
+        },
+        "delete": {
+            "submit": {
+                "translation": "",
+                "notes": ""
+            },
+            "cancel": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            },
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "quotes": {
+        "african": {
+            "quote": {
+                "translation": "Many small people in many small places do many small things, that can alter the face of the world.",
+                "notes": ""
+            },
+            "author": {
+                "translation": "African proverb",
+                "notes": ""
+            }
+        }
+    },
+    "common": {
+        "post": {
+            "translation": "Post ::: Posts",
+            "notes": ""
+        },
+        "comment": {
+            "translation": "Comment ::: Comments",
+            "notes": ""
+        },
+        "letsTalk": {
+            "translation": "Let`s Talk",
+            "notes": ""
+        },
+        "versus": {
+            "translation": "Versus",
+            "notes": ""
+        },
+        "moreInfo": {
+            "translation": "More Info",
+            "notes": ""
+        },
+        "takeAction": {
+            "translation": "Take Action",
+            "notes": ""
+        },
+        "shout": {
+            "translation": "Shout ::: Shouts",
+            "notes": ""
+        },
+        "user": {
+            "translation": "User ::: Users",
+            "notes": ""
+        },
+        "category": {
+            "translation": "Category ::: Categories",
+            "notes": ""
+        },
+        "organization": {
+            "translation": "Organization ::: Organizations",
+            "notes": ""
+        },
+        "project": {
+            "translation": "Project ::: Projects",
+            "notes": ""
+        },
+        "tag": {
+            "translation": "Tag ::: Tags",
+            "notes": ""
+        },
+        "name": {
+            "translation": "Name",
+            "notes": ""
+        },
+        "loadMore": {
+            "translation": "load more",
+            "notes": ""
+        },
+        "loading": {
+            "translation": "loading",
+            "notes": ""
+        },
+        "reportContent": {
+            "translation": "Report",
+            "notes": ""
+        },
+        "validations": {
+            "email": {
+                "translation": "must be a valid e-mail address",
+                "notes": ""
+            },
+            "url": {
+                "translation": "must be a valid URL",
+                "notes": ""
+            }
+        },
+        "your": {
+            "post": {
+                "translation": "",
+                "notes": ""
+            },
+            "comment": {
+                "translation": "",
+                "notes": ""
+            },
+            "shout": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "actions": {
+        "loading": {
+            "translation": "loading",
+            "notes": ""
+        },
+        "loadMore": {
+            "translation": "load more",
+            "notes": ""
+        },
+        "create": {
+            "translation": "Create",
+            "notes": ""
+        },
+        "save": {
+            "translation": "Save",
+            "notes": ""
+        },
+        "edit": {
+            "translation": "Edit",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Delete",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Cancel",
+            "notes": ""
+        }
+    },
+    "moderation": {
+        "name": {
+            "translation": "Moderation",
+            "notes": ""
+        },
+        "reports": {
+            "empty": {
+                "translation": "Congratulations, nothing to moderate.",
+                "notes": ""
+            },
+            "name": {
+                "translation": "Reports",
+                "notes": ""
+            },
+            "reporter": {
+                "translation": "reported by",
+                "notes": ""
+            },
+            "submitter": {
+                "translation": "reported by",
+                "notes": ""
+            },
+            "disabledBy": {
+                "translation": "disabled by",
+                "notes": ""
+            },
+            "reasonCategory": {
+                "translation": "Category",
+                "notes": ""
+            },
+            "reasonDescription": {
+                "translation": "Description",
+                "notes": ""
+            },
+            "createdAt": {
+                "translation": "Date",
+                "notes": ""
+            }
+        }
+    },
+    "disable": {
+        "user": {
+            "title": {
+                "translation": "Disable User",
+                "notes": ""
+            },
+            "type": {
+                "translation": "User",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to disable the user “<b>{name}<\/b>”?",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Disable Contribution",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Contribution",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to disable the contribution “<b>{name}<\/b>”?",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Disable Comment",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Comment",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to disable the comment from “<b>{name}<\/b>”?",
+                "notes": ""
+            }
+        },
+        "submit": {
+            "translation": "Disable",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Cancel",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Disabled successfully",
+            "notes": ""
+        }
+    },
+    "report": {
+        "submit": {
+            "translation": "Send Report",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Cancel",
+            "notes": ""
+        },
+        "user": {
+            "title": {
+                "translation": "Report User",
+                "notes": ""
+            },
+            "type": {
+                "translation": "User",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to report the user “<b>{name}<\/b>”?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "You already reported the user!",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Report Contribution",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Contribution",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to report the contribution “<b>{name}<\/b>”?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "You have already reported the contribution!",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Report Comment",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Comment",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to report the comment from “<b>{name}<\/b>”?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "You have already reported the comment!",
+                "notes": ""
+            }
+        },
+        "success": {
+            "translation": "Thanks for reporting!",
+            "notes": ""
+        },
+        "reason": {
+            "category": {
+                "label": {
+                    "translation": "Select a category:",
+                    "notes": ""
+                },
+                "placeholder": {
+                    "translation": "Category …",
+                    "notes": ""
+                },
+                "options": {
+                    "discrimination_etc": {
+                        "translation": "Discriminatory posts, comments, utterances or insults.",
+                        "notes": ""
+                    },
+                    "pornographic_content_links": {
+                        "translation": "Posting or linking of clearly pornographic material.",
+                        "notes": ""
+                    },
+                    "glorific_trivia_of_cruel_inhuman_acts": {
+                        "translation": "Glorification or trivialization of cruel or inhuman acts of violence.",
+                        "notes": ""
+                    },
+                    "doxing": {
+                        "translation": "The disclosure of others' personal information without their consent or threat there of (\"doxing\").",
+                        "notes": ""
+                    },
+                    "intentional_intimidation_stalking_persecution": {
+                        "translation": "Intentional intimidation, stalking or persecution.",
+                        "notes": ""
+                    },
+                    "advert_products_services_commercial": {
+                        "translation": "Advertising products and services with commercial intent.",
+                        "notes": ""
+                    },
+                    "criminal_behavior_violation_german_law": {
+                        "translation": "Criminal behavior or violation of German law.",
+                        "notes": ""
+                    },
+                    "other": {
+                        "translation": "Other …",
+                        "notes": ""
+                    }
+                },
+                "invalid": {
+                    "translation": "Please select a valid category",
+                    "notes": ""
+                }
+            },
+            "description": {
+                "label": {
+                    "translation": "Please explain: Why you like to report this?",
+                    "notes": ""
+                },
+                "placeholder": {
+                    "translation": "Additional information …",
+                    "notes": ""
+                }
+            }
+        }
+    },
+    "contribution": {
+        "edit": {
+            "translation": "Edit Contribution",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Delete Contribution",
+            "notes": ""
+        },
+        "title": {
+            "translation": "Title",
+            "notes": ""
+        },
+        "newPost": {
+            "translation": "Create a new Post",
+            "notes": ""
+        },
+        "filterFollow": {
+            "translation": "Filter contributions from users I follow",
+            "notes": ""
+        },
+        "filterALL": {
+            "translation": "View all contributions",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Saved!",
+            "notes": ""
+        },
+        "languageSelectLabel": {
+            "translation": "Language",
+            "notes": ""
+        },
+        "categories": {
+            "infoSelectedNoOfMaxCategories": {
+                "translation": "{chosen} of {max} categories selected",
+                "notes": ""
+            }
+        },
+        "emotions-label": {
+            "funny": {
+                "translation": "Funny",
+                "notes": ""
+            },
+            "happy": {
+                "translation": "Happy",
+                "notes": ""
+            },
+            "surprised": {
+                "translation": "Surprised",
+                "notes": ""
+            },
+            "cry": {
+                "translation": "Cry",
+                "notes": ""
+            },
+            "angry": {
+                "translation": "Angry",
+                "notes": ""
+            }
+        },
+        "category": {
+            "name": {
+                "freedom-of-speech": {
+                    "translation": "Freedom of Speech",
+                    "notes": ""
+                },
+                "consumption-sustainability": {
+                    "translation": "Consumption & Sustainability",
+                    "notes": ""
+                },
+                "global-peace-nonviolence": {
+                    "translation": "Global Peace & Nonviolence",
+                    "notes": ""
+                },
+                "just-for-fun": {
+                    "translation": "Just for Fun",
+                    "notes": ""
+                },
+                "happiness-values": {
+                    "translation": "Happiness & Values",
+                    "notes": ""
+                },
+                "health-wellbeing": {
+                    "translation": "Health & Wellbeing",
+                    "notes": ""
+                },
+                "environment-nature": {
+                    "translation": "Environment & Nature",
+                    "notes": ""
+                },
+                "animal-protection": {
+                    "translation": "Animal Protection",
+                    "notes": ""
+                },
+                "human-rights-justice": {
+                    "translation": "Human Rights & Justice",
+                    "notes": ""
+                },
+                "education-sciences": {
+                    "translation": "Education & Sciences",
+                    "notes": ""
+                },
+                "cooperation-development": {
+                    "translation": "Cooperation & Development",
+                    "notes": ""
+                },
+                "democracy-politics": {
+                    "translation": "Democracy & Politics",
+                    "notes": ""
+                },
+                "economy-finances": {
+                    "translation": "Economy & Finances",
+                    "notes": ""
+                },
+                "energy-technology": {
+                    "translation": "Energy & Technology",
+                    "notes": ""
+                },
+                "it-internet-data-privacy": {
+                    "translation": "IT, Internet & Data Privacy",
+                    "notes": ""
+                },
+                "art-culture-sport": {
+                    "translation": "Art, Culture, & Sport",
+                    "notes": ""
+                }
+            }
+        },
+        "teaserImage": {
+            "cropperConfirm": {
+                "translation": "Confirm",
+                "notes": ""
+            }
+        }
+    },
+    "comment": {
+        "edit": {
+            "translation": "Edit Comment",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Delete Comment",
+            "notes": ""
+        },
+        "content": {
+            "unavailable-placeholder": {
+                "translation": "...this comment is not available anymore",
+                "notes": ""
+            }
+        },
+        "menu": {
+            "edit": {
+                "translation": "Edit Comment",
+                "notes": ""
+            },
+            "delete": {
+                "translation": "Delete Comment",
+                "notes": ""
+            },
+            "pin": {
+                "translation": "",
+                "notes": ""
+            },
+            "pinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpin": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "show": {
+            "more": {
+                "translation": "show more",
+                "notes": ""
+            },
+            "less": {
+                "translation": "show less",
+                "notes": ""
+            }
+        },
+        "edited": {
+            "translation": "edited",
+            "notes": ""
+        }
+    },
+    "followButton": {
+        "follow": {
+            "translation": "Follow",
+            "notes": ""
+        },
+        "following": {
+            "translation": "Following",
+            "notes": ""
+        }
+    },
+    "shoutButton": {
+        "shouted": {
+            "translation": "shouted",
+            "notes": ""
+        }
+    },
+    "search": {
+        "placeholder": {
+            "translation": "Search",
+            "notes": ""
+        },
+        "hint": {
+            "translation": "What are you searching for?",
+            "notes": ""
+        },
+        "failed": {
+            "translation": "Nothing found",
+            "notes": ""
+        }
+    },
+    "components": {
+        "password-reset": {
+            "request": {
+                "title": {
+                    "translation": "Reset your password",
+                    "notes": ""
+                },
+                "form": {
+                    "description": {
+                        "translation": "A password reset e-mail will be sent to the given e-mail address.",
+                        "notes": ""
+                    },
+                    "submit": {
+                        "translation": "Request e-mail",
+                        "notes": ""
+                    },
+                    "submitted": {
+                        "translation": "An e-mail with further instructions has been sent to <b>{email}<\/b>",
+                        "notes": ""
+                    }
+                }
+            },
+            "change-password": {
+                "success": {
+                    "translation": "Changing your password was successful!",
+                    "notes": ""
+                },
+                "error": {
+                    "translation": "Changing your password failed. Maybe the security code was not correct?",
+                    "notes": ""
+                },
+                "help": {
+                    "translation": "In case of problems, feel free to ask for help by sending us a mail to:",
+                    "notes": ""
+                }
+            }
+        },
+        "enter-nonce": {
+            "form": {
+                "nonce": {
+                    "translation": "Enter your code",
+                    "notes": ""
+                },
+                "description": {
+                    "translation": "Open your inbox and enter the code that we've sent to you.",
+                    "notes": ""
+                },
+                "next": {
+                    "translation": "Continue",
+                    "notes": ""
+                },
+                "validations": {
+                    "length": {
+                        "translation": "must be 6 characters long",
+                        "notes": ""
+                    }
+                }
+            }
+        },
+        "registration": {
+            "signup": {
+                "unavailable": {
+                    "translation": "Unfortunately, public registration of user accounts is not available right now on this server.",
+                    "notes": ""
+                },
+                "title": {
+                    "translation": "Join Human Connection!",
+                    "notes": ""
+                },
+                "form": {
+                    "description": {
+                        "translation": "To get started, enter your e-mail address:",
+                        "notes": ""
+                    },
+                    "terms-and-condition": {
+                        "translation": "I confirm to the <a href=\"\/terms-and-conditions\"><ds-text bold color=\"primary\" > Terms and conditions<\/ds-text><\/a>.",
+                        "notes": ""
+                    },
+                    "data-privacy": {
+                        "translation": " I have read and understood the <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\"><ds-text bold color=\"primary\" >Privacy Statement<\/ds-text><\/a> ",
+                        "notes": ""
+                    },
+                    "minimum-age": {
+                        "translation": "I'm 18 years or older.",
+                        "notes": ""
+                    },
+                    "invitation-code": {
+                        "translation": "Your invitation code is: <b>{code}<\/b>",
+                        "notes": ""
+                    },
+                    "errors": {
+                        "email-exists": {
+                            "translation": "There is already a user account with this e-mail address!",
+                            "notes": ""
+                        },
+                        "invalid-invitation-token": {
+                            "translation": "It looks like as if the invitation has been used already. Invitation links can only be used once.",
+                            "notes": ""
+                        }
+                    },
+                    "submit": {
+                        "translation": "Create an account",
+                        "notes": ""
+                    },
+                    "success": {
+                        "translation": "A mail with a link to complete your registration has been sent to <b>{email}<\/b>",
+                        "notes": ""
+                    }
+                }
+            },
+            "create-user-account": {
+                "title": {
+                    "translation": "Create user account",
+                    "notes": ""
+                },
+                "success": {
+                    "translation": "Your account has been created!",
+                    "notes": ""
+                },
+                "error": {
+                    "translation": "No user account could be created!",
+                    "notes": ""
+                },
+                "help": {
+                    "translation": " Maybe the confirmation was invalid? In case of problems, feel free to ask for help by sending us a mail to:",
+                    "notes": ""
+                }
+            }
+        }
+    },
+    "store": {
+        "posts": {
+            "orderBy": {
+                "newest": {
+                    "label": {
+                        "translation": "Newest",
+                        "notes": ""
+                    }
+                },
+                "oldest": {
+                    "label": {
+                        "translation": "Oldest",
+                        "notes": ""
+                    }
+                }
+            }
+        }
+    },
+    "maintenance": {
+        "title": {
+            "translation": "Human Connection is under maintenance",
+            "notes": ""
+        },
+        "explanation": {
+            "translation": "At the moment we are doing some scheduled maintenance, please try again later.",
+            "notes": ""
+        },
+        "questions": {
+            "translation": "Any Questions or concerns, send an e-mail to",
+            "notes": ""
+        }
+    },
+    "index": {
+        "no-results": {
+            "translation": "No contributions found.",
+            "notes": ""
+        },
+        "change-filter-settings": {
+            "translation": "Change your filter settings to get more results.",
+            "notes": ""
+        }
+    },
+    "filter-menu": {
+        "title": {
+            "translation": "Your filter bubble",
+            "notes": ""
+        },
+        "hashtag-search": {
+            "translation": "Searching for #{hashtag}",
+            "notes": ""
+        },
+        "clearSearch": {
+            "translation": "Clear search",
+            "notes": ""
+        }
+    },
+    "filter-posts": {
+        "categories": {
+            "header": {
+                "translation": "Categories of Content",
+                "notes": ""
+            },
+            "all": {
+                "translation": "All",
+                "notes": ""
+            }
+        },
+        "general": {
+            "header": {
+                "translation": "Filter by …",
+                "notes": ""
+            }
+        },
+        "followers": {
+            "label": {
+                "translation": "Users I follow",
+                "notes": ""
+            }
+        },
+        "language": {
+            "header": {
+                "translation": "Languages",
+                "notes": ""
+            },
+            "all": {
+                "translation": "All",
+                "notes": ""
+            }
+        }
+    },
+    "site": {
+        "thanks": {
+            "translation": "Thanks!",
+            "notes": ""
+        },
+        "error-occurred": {
+            "translation": "An error occurred.",
+            "notes": ""
+        },
+        "made": {
+            "translation": "Made with &#10084;",
+            "notes": ""
+        },
+        "imprint": {
+            "translation": "Imprint",
+            "notes": ""
+        },
+        "termsAndConditions": {
+            "translation": "Terms and conditions",
+            "notes": ""
+        },
+        "data-privacy": {
+            "translation": "Data privacy",
+            "notes": ""
+        },
+        "changelog": {
+            "translation": "Changes",
+            "notes": ""
+        },
+        "contact": {
+            "translation": "Contact",
+            "notes": ""
+        },
+        "tribunal": {
+            "translation": "Registry court",
+            "notes": ""
+        },
+        "register": {
+            "translation": "Registry number",
+            "notes": ""
+        },
+        "director": {
+            "translation": "Managing Director",
+            "notes": ""
+        },
+        "taxident": {
+            "translation": "USt-ID. according to §27a of the German Sales Tax Law:",
+            "notes": ""
+        },
+        "responsible": {
+            "translation": "responsible for contents of this page (§ 55 Abs. 2 RStV)",
+            "notes": ""
+        },
+        "bank": {
+            "translation": "bank account",
+            "notes": ""
+        },
+        "germany": {
+            "translation": "Germany",
+            "notes": ""
+        },
+        "code-of-conduct": {
+            "translation": "Code of Conduct",
+            "notes": ""
+        },
+        "back-to-login": {
+            "translation": "Back to login page",
+            "notes": ""
+        },
+        "faq": {
+            "translation": "FAQ",
+            "notes": ""
+        },
+        "termsAc": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "editor": {
+        "placeholder": {
+            "translation": "Leave your inspirational thoughts …",
+            "notes": ""
+        },
+        "mention": {
+            "noUsersFound": {
+                "translation": "No users found",
+                "notes": ""
+            }
+        },
+        "hashtag": {
+            "noHashtagsFound": {
+                "translation": "No hashtags found",
+                "notes": ""
+            },
+            "addHashtag": {
+                "translation": "New hashtag",
+                "notes": ""
+            },
+            "addLetter": {
+                "translation": "Type a letter",
+                "notes": ""
+            }
+        },
+        "embed": {
+            "data_privacy_warning": {
+                "translation": "Data Privacy Warning!",
+                "notes": ""
+            },
+            "data_privacy_info": {
+                "translation": "Your data has not yet been shared with any third party providers. If you proceed to watch this video the following provider will likely collect user data:",
+                "notes": ""
+            },
+            "play_now": {
+                "translation": "Watch now",
+                "notes": ""
+            },
+            "always_allow": {
+                "translation": "Always allow embedded content by third party providers (this setting can be changed any time)",
+                "notes": ""
+            }
+        }
+    },
+    "notifications": {
+        "reason": {
+            "mentioned_in_post": {
+                "translation": "Mentioned you in a post …",
+                "notes": ""
+            },
+            "mentioned_in_comment": {
+                "translation": "Mentioned you in a comment …",
+                "notes": ""
+            },
+            "commented_on_post": {
+                "translation": "Commented on your post …",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "translation": "Comment",
+            "notes": ""
+        },
+        "title": {
+            "translation": "Notifications",
+            "notes": ""
+        },
+        "pageLink": {
+            "translation": "All notifications",
+            "notes": ""
+        },
+        "post": {
+            "translation": "Post",
+            "notes": ""
+        },
+        "user": {
+            "translation": "User",
+            "notes": ""
+        },
+        "content": {
+            "translation": "Content",
+            "notes": ""
+        },
+        "filterLabel": {
+            "all": {
+                "translation": "All",
+                "notes": ""
+            },
+            "read": {
+                "translation": "Read",
+                "notes": ""
+            },
+            "unread": {
+                "translation": "Unread",
+                "notes": ""
+            }
+        },
+        "empty": {
+            "translation": "Sorry, you don't have any notifications at the moment.",
+            "notes": ""
+        },
+        "menu": {
+            "mentioned": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "delete": {
+        "submit": {
+            "translation": "Delete",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Cancel",
+            "notes": ""
+        },
+        "contribution": {
+            "title": {
+                "translation": "Delete Post",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Contribution",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to delete the post \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Post successfully deleted!",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Delete Comment",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Comment",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to delete the comment \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Comment successfully deleted!",
+                "notes": ""
+            }
+        }
+    },
+    "release": {
+        "submit": {
+            "translation": "Release",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Cancel",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Released successfully!",
+            "notes": ""
+        },
+        "user": {
+            "title": {
+                "translation": "Release User",
+                "notes": ""
+            },
+            "type": {
+                "translation": "User",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to release the user \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "You already reported the user!",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Release Contribution",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Contribution",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to release the contribution \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "You have already reported the contribution!!",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Release Comment",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Comment",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Do you really want to release the comment from \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "You have already reported the comment!",
+                "notes": ""
+            }
+        }
+    },
+    "user": {
+        "avatar": {
+            "submitted": {
+                "translation": "Upload successful!",
+                "notes": ""
+            }
+        }
+    },
+    "code-of-conduct": {
+        "subheader": {
+            "translation": "for the social network of the Human Connection gGmbH",
+            "notes": ""
+        },
+        "preamble": {
+            "title": {
+                "translation": "Preamble",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Human Connection is a non-profit social knowledge and action network of the next generation. By people - for people. Open Source, fair and transparent. For positive local and global change in all areas of life. We completely redesign the public exchange of knowledge, ideas and projects. The functions of Human Connection bring people together - offline and online - so that we can make the  world a better place.",
+                "notes": ""
+            }
+        },
+        "purpose": {
+            "title": {
+                "translation": "Purpose",
+                "notes": ""
+            },
+            "description": {
+                "translation": "With these code of conduct we regulate the essential principles for behavior in our social network. The United Nations Charter of Human Rights is our orientation and forms the heart of our understanding of values. The code of conduct serves as guiding principles for our personal appearance and interaction with one another. Anyone who is active as a user in the Human Connection Network, writes articles, comments or contacts other users, including those outside the network,acknowledges these rules of conduct as binding.",
+                "notes": ""
+            }
+        },
+        "expected-behaviour": {
+            "title": {
+                "translation": "Expected Behaviour",
+                "notes": ""
+            },
+            "description": {
+                "translation": "The following behaviors are expected and requested of all community members:",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "Exercise consideration and respect in your speech and actions.",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "Attempt collaboration before conflict.",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "Refrain from demeaning, discriminatory, or harassing behavior and speech.",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "Be mindful of your surroundings and of your fellow participants. Alert community leaders if you notice a dangerous situation, someone in distress, or violations of this Code of Conduct, even if they seem inconsequential.",
+                    "notes": ""
+                }
+            }
+        },
+        "unacceptable-behaviour": {
+            "title": {
+                "translation": "Unacceptable Behavior",
+                "notes": ""
+            },
+            "description": {
+                "translation": "The following behaviors are unacceptable within our community:",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "Discriminatory posts, comments, utterances or insults, particularly those relating to gender, sexual orientation, race, religion, political or philosophical orientation or disability.",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "Posting or linking of clearly pornographic material.",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "Glorification or trivialization of cruel or inhuman acts of violence.",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "The disclosure of others' personal information without their consent or threat there of (\"doxing\").",
+                    "notes": ""
+                },
+                "4": {
+                    "translation": "Intentional intimidation, stalking or persecution.",
+                    "notes": ""
+                },
+                "5": {
+                    "translation": "Advertising products and services with commercial intent.",
+                    "notes": ""
+                },
+                "6": {
+                    "translation": "Criminal behavior or violation of German law.",
+                    "notes": ""
+                },
+                "7": {
+                    "translation": "Endorse or encourage such conduct.",
+                    "notes": ""
+                }
+            }
+        },
+        "consequences": {
+            "title": {
+                "translation": "Consequences of Unacceptable Behavior",
+                "notes": ""
+            },
+            "description": {
+                "translation": "If a community member exhibits unacceptable behaviour, the responsible operators, moderators and administrators of the network may take appropriate measures, including but not limited to:",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "Request for immediate cessation of unacceptable conduct",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "Locking or deleting comments",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "Temporary exclusion from the respective post or contribution",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "Blocking or deleting of content",
+                    "notes": ""
+                },
+                "4": {
+                    "translation": "Temporary withdrawal of write permissions",
+                    "notes": ""
+                },
+                "5": {
+                    "translation": "Temporary exclusion from the network",
+                    "notes": ""
+                },
+                "6": {
+                    "translation": "Final exclusion from the network",
+                    "notes": ""
+                },
+                "7": {
+                    "translation": "Violations of German law can be reported.",
+                    "notes": ""
+                },
+                "8": {
+                    "translation": "Advocacy or encouragement to these behaviors.",
+                    "notes": ""
+                }
+            }
+        },
+        "get-help": {
+            "translation": "If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible and link or refer to the corresponding content:",
+            "notes": ""
+        }
+    },
+    "termsAndConditions": {
+        "newTermsAndConditions": {
+            "translation": "New Terms and Conditions",
+            "notes": ""
+        },
+        "termsAndConditionsConfirmed": {
+            "translation": "I have read and confirmed the <a href=\"\/terms-and-conditions\" target=\"_blank\">Terms and Conditions<\/a>.",
+            "notes": ""
+        },
+        "termsAndConditionsNewConfirmText": {
+            "translation": "Please read the new terms of use now!",
+            "notes": ""
+        },
+        "termsAndConditionsNewConfirm": {
+            "translation": "I have read and agree to the new terms of conditions.",
+            "notes": ""
+        },
+        "agree": {
+            "translation": "I agree!",
+            "notes": ""
+        },
+        "terms-of-service": {
+            "title": {
+                "translation": "Terms of Service",
+                "notes": ""
+            },
+            "description": {
+                "translation": "The following terms of use form the basis for the use of our network. When you register, you must accept them and we will inform you later about any changes that may take place. The Human Connection Network is operated in Germany and is therefore subject to German law. Place of jurisdiction is Kirchheim \/ Teck. For details see our imprint: <a href=\"https:\/\/human-connection.org\/en\/imprint\" target=\"_blank\" >https:\/\/human-connection.org\/en\/imprint<\/a> ",
+                "notes": ""
+            }
+        },
+        "use-and-license": {
+            "title": {
+                "translation": "Use and License",
+                "notes": ""
+            },
+            "description": {
+                "translation": "If any content you post to us is protected by intellectual property rights, you grant us a non-exclusive, transferable, sublicensable, worldwide license to use such content for posting to our network. This license expires when you delete your content or your entire account. Remember that others may share your content and we cannot delete it.",
+                "notes": ""
+            }
+        },
+        "privacy-statement": {
+            "title": {
+                "translation": "Privacy Statement",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Our network is a social knowledge and action network. It is therefore particularly important to us that as much content as possible is publicly accessible. In the course of the development of our network there will be more and more the possibility to decide about the visibility of the personal data. We will inform you about these new features. Otherwise, you should always think about which personal data you disclose about yourself (or others). This applies in particular to the content of posts and comments, as these have a largely public character. Later there will be possibilities to limit the visibility of your profile. Part of the terms of service is our privacy statement, which informs you about the individual data processing operations in our network: <a href=\"https:\/\/human-connection.org\/datenschutz\/#netzwerk\" target=\"_blank\"> https:\/\/human-connection.org\/datenschutz\/#netzwerk<\/a>  resp. <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\">https:\/\/human-connection.org\/datenschutz\/<\/a> Our privacy statement is adapted to the legal situation and characteristics of our network and is always valid in the most current version.",
+                "notes": ""
+            }
+        },
+        "code-of-conduct": {
+            "title": {
+                "translation": "Code of Conduct",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Our code of conduct serves as a handbook for personal appearance and interaction with each other. Whoever is active as a user in the Human Connection network, writes articles, comments or makes contact with other users, even outside the network, acknowledges these rules of conduct as binding. <a href=\"https:\/\/alpha.human-connection.org\/code-of-conduct\" target=\"_blank\"> https:\/\/alpha.human-connection.org\/code-of-conduct<\/a>",
+                "notes": ""
+            }
+        },
+        "moderation": {
+            "title": {
+                "translation": "Moderation",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Until our financial possibilities allow us to implement the community moderation system, we moderate with a simplified system and with our own or possibly volunteer staff. We train these moderators and for this reason only they make the appropriate decisions. These moderators carry out their work anonymously. You can report posts, comments and users to us (for example, if they provide information in their profile or have images that violate these Terms of Use). If you report something to us, you can give us a reason and a short explanation. We will then take a look at what you have reported and sanction you if necessary, e.g. by blocking contributions, comments or users. Unfortunately, you and the person concerned will not receive any feedback from us at this time, but this is in the planning stage. Irrespective of this, we reserve the right to impose sanctions in principle for reasons that may not or not yet be listed in our Code of Conduct or these terms of service.",
+                "notes": ""
+            }
+        },
+        "errors-and-feedback": {
+            "title": {
+                "translation": "Errors and Feedback",
+                "notes": ""
+            },
+            "description": {
+                "translation": "We make every effort to keep our network and data secure and available. Each new release of the software goes through both automated and manual testing. However, unforeseen errors may occur. Therefore, we are grateful for any reported bugs. You are welcome to report any bugs you discover by emailing Support at support@human-connection.org",
+                "notes": ""
+            }
+        },
+        "help-and-questions": {
+            "title": {
+                "translation": "Help and Questions",
+                "notes": ""
+            },
+            "description": {
+                "translation": "For help and questions we have compiled a comprehensive collection of frequently asked questions and answers (FAQ) for you. You can find them here: <a href=\"https:\/\/support.human-connection.org\/kb\/\" target=\"_blank\" > https:\/\/support.human-connection.org\/kb\/ <\/a>",
+                "notes": ""
+            }
+        },
+        "addition": {
+            "title": {
+                "translation": "In addition, we regularly hold events where you can also share your impressions and ask questions. You can find a current overview here:",
+                "notes": ""
+            },
+            "description": {
+                "translation": "<a href=\"https:\/\/human-connection.org\/events\/\" target=\"_blank\" > https:\/\/human-connection.org\/events\/ <\/a>",
+                "notes": ""
+            }
+        }
+    },
+    "donations": {
+        "donations-for": {
+            "translation": "Donations for",
+            "notes": ""
+        },
+        "donate-now": {
+            "translation": "Donate now",
+            "notes": ""
+        },
+        "amount-of-total": {
+            "translation": "{amount} of {total} € collected",
+            "notes": ""
+        }
+    }
+}
