@@ -5863,10 +5863,10 @@ cookie-signature@1.0.6:
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
   integrity sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
 
-cookie-universal-nuxt@~2.0.18:
-  version "2.0.18"
-  resolved "https://registry.yarnpkg.com/cookie-universal-nuxt/-/cookie-universal-nuxt-2.0.18.tgz#95e762a88b5a5b6c23db05521c146260b5576358"
-  integrity sha512-+5ciWAm1B15JN5e4LVnU4Ovs9KqBeYFYwaHrm9ThDZr/12u9REJfxH3wji0iY9NnF2ard3ULlD+R4uEQ0vUNKg==
+cookie-universal-nuxt@~2.0.19:
+  version "2.0.19"
+  resolved "https://registry.yarnpkg.com/cookie-universal-nuxt/-/cookie-universal-nuxt-2.0.19.tgz#2946ba4424d8d62fca8d5e4c83acbd1ae934ca79"
+  integrity sha512-7W5vDCw5R+AgvtuAEPapMgxS+dhYVBUqlQdx3ZhqUnhODQHIgcVtYEtQzDlY1/yick+L5X3e/1AQHRNDcQ5ilQ==
   dependencies:
     "@types/cookie" "^0.3.1"
     cookie-universal "^2.0.16"
