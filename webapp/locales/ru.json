@@ -1,717 +1,2246 @@
 {
-  "actions": {
-    "cancel": "Отменить",
-    "create": "Создать",
-    "delete": "Удалить",
-    "edit": "Редактировать",
-    "loading": "погрузочный",
-    "loadMore": "Загрузить больше",
-    "save": "Сохранить"
-  },
-  "admin": {
-    "categories": {
-      "categoryName": "Имя",
-      "name": "Категории",
-      "postCount": "Сообщения"
+    "login": {
+        "copy": {
+            "translation": "Если у тебя уже есть учетная запись Human Connection, войдите здесь.",
+            "notes": ""
+        },
+        "login": {
+            "translation": "Вход",
+            "notes": ""
+        },
+        "logout": {
+            "translation": "Выйти",
+            "notes": ""
+        },
+        "email": {
+            "translation": "Твой адрес электронной почты",
+            "notes": ""
+        },
+        "password": {
+            "translation": "Твой пароль",
+            "notes": ""
+        },
+        "moreInfo": {
+            "translation": "Что такое Human Connection",
+            "notes": ""
+        },
+        "hello": {
+            "translation": "Привет",
+            "notes": ""
+        },
+        "forgotPassword": {
+            "translation": "Забыл пароль?",
+            "notes": ""
+        },
+        "no-account": {
+            "translation": "У вас нет аккаунта?",
+            "notes": ""
+        },
+        "register": {
+            "translation": "Зарегистрироваться",
+            "notes": ""
+        },
+        "moreInfoURL": {
+            "translation": "https:\/\/human-connection.org\/en\/",
+            "notes": ""
+        },
+        "moreInfoHint": {
+            "translation": "на страницу презентации",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Ты вошёл в систему!",
+            "notes": ""
+        },
+        "failure": {
+            "translation": "Неверный адрес электронной почты или пароль.",
+            "notes": ""
+        }
     },
-    "dashboard": {
-      "comments": "Комментарии",
-      "follows": "Следит",
-      "invites": "Приглашения",
-      "name": "Приборная панель",
-      "notifications": "Уведомления",
-      "organizations": "Организаций",
-      "posts": "сообщения",
-      "projects": "Проекты",
-      "shouts": "Оглашения",
-      "users": "Пользователи"
-    },
-    "hashtags": {
-      "name": "Хэштеги",
-      "nameOfHashtag": "Имя",
-      "number": "Но.",
-      "tagCount": "Сообщений",
-      "tagCountUnique": "Пользователи"
-    },
-    "invites": {
-      "description": "Приглашения — это замечательный способ завести своих друзей в своей сети ...",
-      "name": "Пригласить пользователей",
-      "title": "Пригласить людей"
-    },
-    "name": "Администратор",
-    "notifications": {
-      "name": "Уведомления"
-    },
-    "organizations": {
-      "name": "Организаций"
-    },
-    "pages": {
-      "name": "Страницы"
+    "profile": {
+        "name": {
+            "translation": "Мой профайл",
+            "notes": ""
+        },
+        "memberSince": {
+            "translation": "член с тех пор",
+            "notes": ""
+        },
+        "follow": {
+            "translation": "Следовать",
+            "notes": ""
+        },
+        "followers": {
+            "translation": "Последователей",
+            "notes": ""
+        },
+        "following": {
+            "translation": "Следующий",
+            "notes": ""
+        },
+        "shouted": {
+            "translation": "оглашали",
+            "notes": ""
+        },
+        "commented": {
+            "translation": "Прокомментированный",
+            "notes": ""
+        },
+        "userAnonym": {
+            "translation": "Анонимный",
+            "notes": ""
+        },
+        "socialMedia": {
+            "translation": "Где еще я могу найти",
+            "notes": ""
+        },
+        "network": {
+            "title": {
+                "translation": "Сеть",
+                "notes": ""
+            },
+            "following": {
+                "translation": "Следует:",
+                "notes": ""
+            },
+            "followingNobody": {
+                "translation": "не следует ни за кем.",
+                "notes": ""
+            },
+            "followedBy": {
+                "translation": "за ним следуют:",
+                "notes": ""
+            },
+            "followedByNobody": {
+                "translation": "никому не следует.",
+                "notes": ""
+            },
+            "andMore": {
+                "translation": "и {number} больше…",
+                "notes": ""
+            },
+            "and": {
+                "translation": "",
+                "notes": ""
+            },
+            "more": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "invites": {
+            "title": {
+                "translation": "Пригласи кого-нибудь в Human Connection!",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Введи адрес электронной почты для приглашения.",
+                "notes": ""
+            },
+            "emailPlaceholder": {
+                "translation": "Электронная почта для приглашения",
+                "notes": ""
+            }
+        }
     },
     "settings": {
-      "name": "Настройки"
-    },
-    "tags": {
-      "name": "Теги",
-      "tagCount": "Сообщения",
-      "tagCountUnique": "Пользователи"
-    },
-    "users": {
-      "empty": "Не найдено пользователей",
-      "form": {
-        "placeholder": "Электронная почта, имя или описание"
-      },
-      "name": "Пользователи",
-      "table": {
-        "columns": {
-          "createdAt": "Создано в",
-          "email": "Эл. почта",
-          "name": "Имя",
-          "number": "Но.",
-          "role": "Роль",
-          "slug": "Slug"
+        "name": {
+            "translation": "Настройки",
+            "notes": ""
+        },
+        "data": {
+            "name": {
+                "translation": "твой данные",
+                "notes": ""
+            },
+            "labelName": {
+                "translation": "Твое имя",
+                "notes": ""
+            },
+            "labelCity": {
+                "translation": "Твой город или регион",
+                "notes": ""
+            },
+            "labelBio": {
+                "translation": "О тебя",
+                "notes": ""
+            },
+            "labelSlug": {
+                "translation": "Твой уникальное имя пользователя",
+                "notes": ""
+            },
+            "namePlaceholder": {
+                "translation": "Маша Медведкина",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Твои данные были успешно обновлены!",
+                "notes": ""
+            }
+        },
+        "security": {
+            "name": {
+                "translation": "Безопасность",
+                "notes": ""
+            },
+            "change-password": {
+                "button": {
+                    "translation": "Изменить пароль",
+                    "notes": ""
+                },
+                "success": {
+                    "translation": "Пароль успешно изменен!",
+                    "notes": ""
+                },
+                "label-old-password": {
+                    "translation": "Твой старый пароль",
+                    "notes": ""
+                },
+                "label-new-password": {
+                    "translation": "Твой новый пароль",
+                    "notes": ""
+                },
+                "label-new-password-confirm": {
+                    "translation": "Подтверди свой новый пароль",
+                    "notes": ""
+                },
+                "message-old-password-required": {
+                    "translation": "Введи свой старый пароль",
+                    "notes": ""
+                },
+                "message-new-password-required": {
+                    "translation": "Введи новый пароль",
+                    "notes": ""
+                },
+                "message-new-password-confirm-required": {
+                    "translation": "Подтверди свой новый пароль",
+                    "notes": ""
+                },
+                "message-new-password-missmatch": {
+                    "translation": "Введите тот же пароль еще раз",
+                    "notes": ""
+                },
+                "passwordSecurity": {
+                    "translation": "Безопасность пароля",
+                    "notes": ""
+                },
+                "passwordStrength0": {
+                    "translation": "Очень небезопасный пароль",
+                    "notes": ""
+                },
+                "passwordStrength1": {
+                    "translation": "Небезопасный пароль",
+                    "notes": ""
+                },
+                "passwordStrength2": {
+                    "translation": "Посредственный пароль",
+                    "notes": ""
+                },
+                "passwordStrength3": {
+                    "translation": "Надежный пароль",
+                    "notes": ""
+                },
+                "passwordStrength4": {
+                    "translation": "Очень надежный пароль",
+                    "notes": ""
+                }
+            }
+        },
+        "invites": {
+            "name": {
+                "translation": "Приглашения",
+                "notes": ""
+            }
+        },
+        "download": {
+            "name": {
+                "translation": "Скачать данные",
+                "notes": ""
+            }
+        },
+        "delete": {
+            "name": {
+                "translation": "Удалить аккаунт",
+                "notes": ""
+            }
+        },
+        "organizations": {
+            "name": {
+                "translation": "Мои организации",
+                "notes": ""
+            }
+        },
+        "languages": {
+            "name": {
+                "translation": "Языки",
+                "notes": ""
+            }
+        },
+        "email": {
+            "validation": {
+                "same-email": {
+                    "translation": "Это твой текущий адрес электронной почты.",
+                    "notes": ""
+                }
+            },
+            "name": {
+                "translation": "Твой адрес электронной почты",
+                "notes": ""
+            },
+            "labelEmail": {
+                "translation": "Изменить адрес электронной почты",
+                "notes": ""
+            },
+            "labelNewEmail": {
+                "translation": "Новый адрес электронной почты",
+                "notes": ""
+            },
+            "labelNonce": {
+                "translation": "Введите свой код",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Новый адрес электронной почты был зарегистрирован.",
+                "notes": ""
+            },
+            "submitted": {
+                "translation": "Электронное письмо с подтверждением твоего адреса отправлено на <b>{email}<\/b>.",
+                "notes": ""
+            },
+            "change-successful": {
+                "translation": "Твой адрес электронной почты был успешно изменен.",
+                "notes": ""
+            },
+            "verification-error": {
+                "message": {
+                    "translation": "Твой адрес электронной почты не может быть подтвержден.",
+                    "notes": ""
+                },
+                "explanation": {
+                    "translation": "Это может иметь разные причины:",
+                    "notes": ""
+                },
+                "reason": {
+                    "invalid-nonce": {
+                        "translation": "Код подтверждения неверен?",
+                        "notes": ""
+                    },
+                    "no-email-request": {
+                        "translation": "Ты уверены, что запросил изменение своего адреса электронной почты?",
+                        "notes": ""
+                    }
+                },
+                "support": {
+                    "translation": "Если проблема сохраняется, пожалуйста, свяжешься с нами по электронной почте",
+                    "notes": ""
+                }
+            }
+        },
+        "validation": {
+            "slug": {
+                "regex": {
+                    "translation": "Допускаются только строчные буквы, цифры, подчеркивания или дефисы.",
+                    "notes": ""
+                },
+                "alreadyTaken": {
+                    "translation": "Это имя пользователя уже занято.",
+                    "notes": ""
+                }
+            }
+        },
+        "deleteUserAccount": {
+            "name": {
+                "translation": "Удалить данные",
+                "notes": ""
+            },
+            "contributionsCount": {
+                "translation": "Удалить мои {count} сообщения",
+                "notes": ""
+            },
+            "commentedCount": {
+                "translation": "Удалить мои {count} комментарии",
+                "notes": ""
+            },
+            "accountDescription": {
+                "translation": "Помни, что твои сообщение и комментарии важны для нашего сообщества. Если ты все равно хочешь удалить их, ты должны помечать их ниже.",
+                "notes": ""
+            },
+            "accountWarning": {
+                "translation": "Ты можешь удалить свой аккаунт, сообщения или комментарии после их удаления <b>НИ УПРАВЛЯТЬ<\/b>, <b>НИ ВОССТАНАВЛИВАТЬ!<\/b>",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Аккаунт успешно удален!",
+                "notes": ""
+            },
+            "pleaseConfirm": {
+                "translation": "<b class='is-danger'>Разрушительное действие!<\/b> Введите <b>{confirm}<\/b> для подтверждения.",
+                "notes": ""
+            }
+        },
+        "embeds": {
+            "name": {
+                "translation": "Сторонние поставщики",
+                "notes": ""
+            },
+            "info-description": {
+                "translation": "Вот список сторонних провайдеров, чьё содержимое может отображаться в виде иностранного кода, например, в виде встроенных видео:",
+                "notes": ""
+            },
+            "status": {
+                "description": {
+                    "translation": "По умолчанию настройки для тебя будет встроенный сторонний код",
+                    "notes": ""
+                },
+                "disabled": {
+                    "off": {
+                        "translation": "сначала не отображается",
+                        "notes": ""
+                    },
+                    "on": {
+                        "translation": "отображается сразу",
+                        "notes": ""
+                    }
+                },
+                "change": {
+                    "question": {
+                        "translation": "Ты хочешь, чтобы встроенный сторонний код всегда отображался для тебя?",
+                        "notes": ""
+                    },
+                    "allow": {
+                        "translation": "Конечно.",
+                        "notes": ""
+                    },
+                    "deny": {
+                        "translation": "Лучше не",
+                        "notes": ""
+                    }
+                }
+            },
+            "description": {
+                "translation": "",
+                "notes": ""
+            },
+            "statustext": {
+                "translation": "",
+                "notes": ""
+            },
+            "statuschange": {
+                "translation": "",
+                "notes": ""
+            },
+            "false": {
+                "translation": "",
+                "notes": ""
+            },
+            "true": {
+                "translation": "",
+                "notes": ""
+            },
+            "button-tofalse": {
+                "translation": "",
+                "notes": ""
+            },
+            "button-totrue": {
+                "translation": "",
+                "notes": ""
+            },
+            "third-party-false": {
+                "translation": "",
+                "notes": ""
+            },
+            "third-party-true": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "social-media": {
+            "name": {
+                "translation": "Социальные Медиа",
+                "notes": ""
+            },
+            "placeholder": {
+                "translation": "Твой URL социальной сети",
+                "notes": ""
+            },
+            "requireUnique": {
+                "translation": "Эта ссылка уже существует",
+                "notes": ""
+            },
+            "submit": {
+                "translation": "Добавить ссылку",
+                "notes": ""
+            },
+            "successAdd": {
+                "translation": "Добавлены Социальные Медиа. Профиль обновлен!",
+                "notes": ""
+            },
+            "successDelete": {
+                "translation": "Социальные медиа удалены. Профиль обновлен!",
+                "notes": ""
+            }
+        },
+        "blocked-users": {
+            "name": {
+                "translation": "Заблокированные пользователи",
+                "notes": ""
+            },
+            "explanation": {
+                "intro": {
+                    "translation": "Если ты заблокировал другого пользователя, произойдет следующее:",
+                    "notes": ""
+                },
+                "your-perspective": {
+                    "translation": "В твоем обзоре сообщений больше не отображаются сообщения заблокированного человека.",
+                    "notes": ""
+                },
+                "their-perspective": {
+                    "translation": "И наоборот, то же самое: заблокированный человек больше не видит твоих сообщения в своем обзоре.",
+                    "notes": ""
+                },
+                "search": {
+                    "translation": "Сообщения от заблокированных пользователей исчезают из результатов поиска.",
+                    "notes": ""
+                },
+                "notifications": {
+                    "translation": "Люди, которых ты блокируешь, больше не будут получать уведомления, когда они упоминаются в твоих сообщениях.",
+                    "notes": ""
+                },
+                "closing": {
+                    "translation": "На данный момент этого должно быть достаточно, чтобы заблокированные пользователи больше не беспокоили тебя.",
+                    "notes": ""
+                }
+            },
+            "columns": {
+                "name": {
+                    "translation": "Имя",
+                    "notes": ""
+                },
+                "slug": {
+                    "translation": "Псевдоним",
+                    "notes": ""
+                },
+                "unblock": {
+                    "translation": "",
+                    "notes": ""
+                }
+            },
+            "empty": {
+                "translation": "До сих пор ты никого не блокировал.",
+                "notes": ""
+            },
+            "how-to": {
+                "translation": "Ты можешь заблокировать других пользователей на странице их профиля с помощью меню содержимого.",
+                "notes": ""
+            },
+            "block": {
+                "translation": "Блокировать пользователя",
+                "notes": ""
+            },
+            "unblock": {
+                "translation": "Разблокировать пользователей",
+                "notes": ""
+            },
+            "unblocked": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "privacy": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "make-shouts-public": {
+                "translation": "",
+                "notes": ""
+            },
+            "success-update": {
+                "translation": "",
+                "notes": ""
+            }
         }
-      }
-    }
-  },
-  "code-of-conduct": {
-    "consequences": {
-      "description": "Если участник сообщества проявляет неприемлемое поведение, ответственные операторы, модераторы и администраторы сети могут принять соответствующие меры, включая, но не ограничиваясь:",
-      "list": {
-        "0": "Просьба о немедленном прекращении неприемлемого поведения",
-        "1": "запирание или удаление контента",
-        "2": "Временное исключение из соответствующей должности или вклада",
-        "3": "блокирование или удаление контента",
-        "4": "Временное снятие разрешений на запись",
-        "5": "Временное исключение из сети",
-        "6": "Окончательное исключение из сети",
-        "7": "Можно сообщить о нарушениях немецкого законодательства.",
-        "8": "Адвокатура или поощрение такого поведения."
-      },
-      "title": "Последствия неприемлемого поведения"
     },
-    "expected-behaviour": {
-      "description": "Следующее поведение ожидается и требуется от всех членов сообщества:",
-      "list": {
-        "0": "Будь внимательны и уважительны к тому, что ты пишешь и делаешь.",
-        "1": "Попытайтесь подойти к другим, прежде чем возникнет конфликт.",
-        "2": "Унижающего достоинство, дискриминационного или преследующего поведения и выражений.",
-        "3": "Будь внимательны к своей среде. Сообщи о поддержке в опасных ситуациях, когда человек нуждается или нарушает настоящий Кодекс поведения, даже если он кажется незначительным."
-      },
-      "title": "Ожидаемое поведение"
+    "admin": {
+        "name": {
+            "translation": "Администратор",
+            "notes": ""
+        },
+        "dashboard": {
+            "name": {
+                "translation": "Приборная панель",
+                "notes": ""
+            },
+            "users": {
+                "translation": "Пользователи",
+                "notes": ""
+            },
+            "posts": {
+                "translation": "сообщения",
+                "notes": ""
+            },
+            "comments": {
+                "translation": "Комментарии",
+                "notes": ""
+            },
+            "notifications": {
+                "translation": "Уведомления",
+                "notes": ""
+            },
+            "organizations": {
+                "translation": "Организаций",
+                "notes": ""
+            },
+            "projects": {
+                "translation": "Проекты",
+                "notes": ""
+            },
+            "invites": {
+                "translation": "Приглашения",
+                "notes": ""
+            },
+            "follows": {
+                "translation": "Следит",
+                "notes": ""
+            },
+            "shouts": {
+                "translation": "Оглашения",
+                "notes": ""
+            }
+        },
+        "organizations": {
+            "name": {
+                "translation": "Организаций",
+                "notes": ""
+            }
+        },
+        "users": {
+            "name": {
+                "translation": "Пользователи",
+                "notes": ""
+            },
+            "form": {
+                "placeholder": {
+                    "translation": "Электронная почта, имя или описание",
+                    "notes": ""
+                }
+            },
+            "table": {
+                "columns": {
+                    "number": {
+                        "translation": "Но.",
+                        "notes": ""
+                    },
+                    "name": {
+                        "translation": "Имя",
+                        "notes": ""
+                    },
+                    "email": {
+                        "translation": "Эл. почта",
+                        "notes": ""
+                    },
+                    "slug": {
+                        "translation": "Slug",
+                        "notes": ""
+                    },
+                    "role": {
+                        "translation": "Роль",
+                        "notes": ""
+                    },
+                    "createdAt": {
+                        "translation": "Создано в",
+                        "notes": ""
+                    }
+                }
+            },
+            "empty": {
+                "translation": "Не найдено пользователей",
+                "notes": ""
+            }
+        },
+        "pages": {
+            "name": {
+                "translation": "Страницы",
+                "notes": ""
+            }
+        },
+        "notifications": {
+            "name": {
+                "translation": "Уведомления",
+                "notes": ""
+            }
+        },
+        "categories": {
+            "name": {
+                "translation": "Категории",
+                "notes": ""
+            },
+            "categoryName": {
+                "translation": "Имя",
+                "notes": ""
+            },
+            "postCount": {
+                "translation": "Сообщения",
+                "notes": ""
+            }
+        },
+        "tags": {
+            "name": {
+                "translation": "Теги",
+                "notes": ""
+            },
+            "tagCountUnique": {
+                "translation": "Пользователи",
+                "notes": ""
+            },
+            "tagCount": {
+                "translation": "Сообщения",
+                "notes": ""
+            }
+        },
+        "settings": {
+            "name": {
+                "translation": "Настройки",
+                "notes": ""
+            }
+        },
+        "hashtags": {
+            "name": {
+                "translation": "Хэштеги",
+                "notes": ""
+            },
+            "number": {
+                "translation": "Но.",
+                "notes": ""
+            },
+            "nameOfHashtag": {
+                "translation": "Имя",
+                "notes": ""
+            },
+            "tagCountUnique": {
+                "translation": "Пользователи",
+                "notes": ""
+            },
+            "tagCount": {
+                "translation": "Сообщений",
+                "notes": ""
+            }
+        },
+        "invites": {
+            "name": {
+                "translation": "Пригласить пользователей",
+                "notes": ""
+            },
+            "title": {
+                "translation": "Пригласить людей",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Приглашения — это замечательный способ завести своих друзей в своей сети ...",
+                "notes": ""
+            }
+        },
+        "donations": {
+            "name": {
+                "translation": "",
+                "notes": ""
+            },
+            "goal": {
+                "translation": "",
+                "notes": ""
+            },
+            "progress": {
+                "translation": "",
+                "notes": ""
+            },
+            "successfulUpdate": {
+                "translation": "",
+                "notes": ""
+            }
+        }
     },
-    "get-help": "Если ты стал жертвой или свидетелем неприемлемого поведения или у вас возникли какие-либо другие проблемы, пожалуйста, как можно скорее сообщите об этом организатору сообщества и укажите ссылку на соответствующий контент:",
-    "preamble": {
-      "description": "Human Connection-это некоммерческая сеть социальных знаний и действий следующего поколения. Из людей – для людей. Открытый исходный код, справедливый и прозрачный. Для позитивных локальных и глобальных изменений во всех сферах жизни. Мы полностью перестраиваем публичный обмен знаниями, идеями и проектами. Функции Human Connection объединяют людей – в автономном режиме и в интернете – так что мы можем сделать мир лучше.",
-      "title": "Преамбула"
+    "post": {
+        "name": {
+            "translation": "Пост",
+            "notes": ""
+        },
+        "moreInfo": {
+            "name": {
+                "translation": "Больше информации",
+                "notes": ""
+            },
+            "title": {
+                "translation": "Больше информация",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Здесь ты найдешь больше информации по теме.",
+                "notes": ""
+            },
+            "titleOfCategoriesSection": {
+                "translation": "Категории",
+                "notes": ""
+            },
+            "titleOfHashtagsSection": {
+                "translation": "Хэштеги",
+                "notes": ""
+            },
+            "titleOfRelatedContributionsSection": {
+                "translation": "Похожие  вклады",
+                "notes": ""
+            }
+        },
+        "takeAction": {
+            "name": {
+                "translation": "Действовать",
+                "notes": ""
+            }
+        },
+        "pinned": {
+            "translation": "Объявление",
+            "notes": ""
+        },
+        "menu": {
+            "edit": {
+                "translation": "Редактировать вклад",
+                "notes": ""
+            },
+            "delete": {
+                "translation": "Удалить вклад",
+                "notes": ""
+            },
+            "pin": {
+                "translation": "Закрепить Сообщение",
+                "notes": ""
+            },
+            "pinnedSuccessfully": {
+                "translation": "Сообщение успешно закреплен!",
+                "notes": ""
+            },
+            "unpin": {
+                "translation": "Не прикрепи́ть Сообщение больше",
+                "notes": ""
+            },
+            "unpinnedSuccessfully": {
+                "translation": "Сообщение успешно не закреплено!",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "submit": {
+                "translation": "Комментируй",
+                "notes": ""
+            },
+            "submitted": {
+                "translation": "Комментарий отправлен",
+                "notes": ""
+            },
+            "updated": {
+                "translation": "Сохраненные изменения",
+                "notes": ""
+            }
+        },
+        "edited": {
+            "translation": "Отредактированы",
+            "notes": ""
+        },
+        "delete": {
+            "submit": {
+                "translation": "",
+                "notes": ""
+            },
+            "cancel": {
+                "translation": "",
+                "notes": ""
+            },
+            "success": {
+                "translation": "",
+                "notes": ""
+            },
+            "title": {
+                "translation": "",
+                "notes": ""
+            },
+            "type": {
+                "translation": "",
+                "notes": ""
+            },
+            "message": {
+                "translation": "",
+                "notes": ""
+            }
+        }
     },
-    "purpose": {
-      "description": "С помощью этих правил поведения мы регулируем основные принципы поведения в нашей социальной сети. При этом Устав ООН по правам человека является нашей ориентацией и лежит в основе нашего понимания ценностей. Правила поведения служат руководящими принципами для личного выступления и общения друг с другом. Любой, кто является активным пользователем в сети Human Connection, публикует сообщения, комментирует или контактирует с другими пользователями, в том числе за пределами сети, признает эти правила поведения обязательными.",
-      "title": "Цель"
+    "quotes": {
+        "african": {
+            "quote": {
+                "translation": "Многие маленькие люди во многих маленьких местах делают много маленьких вещей, которые могут изменить лицо мира.",
+                "notes": ""
+            },
+            "author": {
+                "translation": "Африканская пословица",
+                "notes": ""
+            }
+        }
     },
-    "subheader": "для социальной сети \"Human Connection gGmbH\"",
-    "unacceptable-behaviour": {
-      "description": "В нашем сообществе неприемлемы следующие типы поведения:",
-      "list": {
-        "0": "Дискриминационные сообщения, комментарии, высказывания или оскорбления, в частности, касающиеся пола, сексуальной ориентации, расы, религии, политической или мировоззренческой ориентации, или инвалидности.",
-        "1": "Публикация или ссылка явно порнографический материал.",
-        "2": "Прославление или умаление жестоких, или бесчеловечных актов насилия.",
-        "3": "Публикация персональных данных других лиц без их согласия или угрозы (\"Доксинг\").",
-        "4": "Преднамеренное запугивание, сталкинг или преследование.",
-        "5": "Рекламировать продукты и услуги с коммерческим намерением.",
-        "6": "Уголовного поведение или нарушении немецкое право.",
-        "7": "Одобрение или поощрение этого поведения."
-      },
-      "title": "Недопустимое поведение"
-    }
-  },
-  "comment": {
-    "content": {
-      "unavailable-placeholder": "...этот комментарий больше не доступен"
-    },
-    "delete": "Удалить комментарий",
-    "edit": "редакти́ровать Комментарий",
-    "edited": "Отредактированы",
-    "menu": {
-      "delete": "Удалить комментарий",
-      "edit": "Редактировать комментарий"
-    },
-    "show": {
-      "less": "показать меньше",
-      "more": "показать больше"
-    }
-  },
-  "common": {
-    "category": "Категория ::: Категории",
-    "comment": "Комментарий ::: Комментарии",
-    "letsTalk": "Давай поговорим",
-    "loading": "идёт загрузка",
-    "loadMore": "Загрузить больше",
-    "moreInfo": "Больше информации",
-    "name": "Имя",
-    "organization": "Организация ::: Организации",
-    "post": "Сообщение ::: Сообщения",
-    "project": "Проект ::: Проекты",
-    "reportContent": "Отчет",
-    "shout": "Оглашения ::: Оглашении",
-    "tag": "Тег ::: Теги",
-    "takeAction": "принять меры",
-    "user": "Пользователь ::: Пользователи",
-    "validations": {
-      "email": "должен быть действительный адрес электронной почты",
-      "url": "должен быть действительным URL"
-    },
-    "versus": "Против"
-  },
-  "components": {
-    "enter-nonce": {
-      "form": {
-        "description": "Откройте папку \"Входящие\" и введите код, который мы тебя отправили.",
-        "next": "Продолжить",
-        "nonce": "Введите свой код",
+    "common": {
+        "post": {
+            "translation": "Сообщение ::: Сообщения",
+            "notes": ""
+        },
+        "comment": {
+            "translation": "Комментарий ::: Комментарии",
+            "notes": ""
+        },
+        "letsTalk": {
+            "translation": "Давай поговорим",
+            "notes": ""
+        },
+        "versus": {
+            "translation": "Против",
+            "notes": ""
+        },
+        "moreInfo": {
+            "translation": "Больше информации",
+            "notes": ""
+        },
+        "takeAction": {
+            "translation": "принять меры",
+            "notes": ""
+        },
+        "shout": {
+            "translation": "Оглашения ::: Оглашении",
+            "notes": ""
+        },
+        "user": {
+            "translation": "Пользователь ::: Пользователи",
+            "notes": ""
+        },
+        "category": {
+            "translation": "Категория ::: Категории",
+            "notes": ""
+        },
+        "organization": {
+            "translation": "Организация ::: Организации",
+            "notes": ""
+        },
+        "project": {
+            "translation": "Проект ::: Проекты",
+            "notes": ""
+        },
+        "tag": {
+            "translation": "Тег ::: Теги",
+            "notes": ""
+        },
+        "name": {
+            "translation": "Имя",
+            "notes": ""
+        },
+        "loadMore": {
+            "translation": "Загрузить больше",
+            "notes": ""
+        },
+        "loading": {
+            "translation": "идёт загрузка",
+            "notes": ""
+        },
+        "reportContent": {
+            "translation": "Отчет",
+            "notes": ""
+        },
         "validations": {
-          "length": "должна состоять из 6 символов."
+            "email": {
+                "translation": "должен быть действительный адрес электронной почты",
+                "notes": ""
+            },
+            "url": {
+                "translation": "должен быть действительным URL",
+                "notes": ""
+            }
+        },
+        "your": {
+            "post": {
+                "translation": "",
+                "notes": ""
+            },
+            "comment": {
+                "translation": "",
+                "notes": ""
+            },
+            "shout": {
+                "translation": "",
+                "notes": ""
+            }
         }
-      }
     },
-    "password-reset": {
-      "change-password": {
-        "error": "Смена пароля не удалась. Может быть, код безопасности был неправильным?",
-        "help": "В случае возникновения проблем, не стесняйся обращаться за помощью, отправив нам письмо по адресу:",
-        "success": "Смена пароля прошла успешно!"
-      },
-      "request": {
-        "form": {
-          "description": "На указанный адрес электронной почты будет отправлено сообщение для сброса пароля.",
-          "submit": "Запросить электронную почту",
-          "submitted": "На адрес <b>{email}<\/b>было отправлено электронное письмо с дальнейшими инструкциями"
+    "actions": {
+        "loading": {
+            "translation": "погрузочный",
+            "notes": ""
         },
-        "title": "Сбросить пароль"
-      }
-    },
-    "registration": {
-      "create-user-account": {
-        "error": "Невозможно создать учетную запись пользователя!",
-        "help": "Может быть, подтверждение было недействительным? В случае возникновения проблем, не стесняйтесь обращаться за помощью, отправив нам письмо по электронной почте:",
-        "success": "Твоя учетная запись создана!",
-        "title": "Создать учетную запись пользователя"
-      },
-      "signup": {
-        "form": {
-          "data-privacy": "Я прочитал и понял <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\"><ds-text bold color=\"primary\" >Заявление о конфиденциальности<\/ds-text><\/a>",
-          "description": "Чтобы начать работу, введи свой адрес электронной почты:",
-          "errors": {
-            "email-exists": "Уже есть учетная запись пользователя с этим адресом электронной почты!",
-            "invalid-invitation-token": "Похоже, что приглашение уже использовалось. Ссылки на приглашения можно использовать только один раз."
-          },
-          "invitation-code": "Твой код приглашения: <b>{code}<\/b>",
-          "minimum-age": "Мне 18 лет или старше.",
-          "submit": "Создать учетную запись",
-          "success": "Письмо со ссылкой для завершения регистрации было отправлено на <b> {email} <\/b>",
-          "terms-and-condition": "Подтверждаю, на <a href=\"\/terms-and-conditions\"><ds-text bold color=\"primary\" >Условия и положения<\/ds-text><\/a>.ю"
+        "loadMore": {
+            "translation": "Загрузить больше",
+            "notes": ""
         },
-        "title": "Присоединяйся к Human Connection!",
-        "unavailable": "К сожалению, публичная регистрация учетных записей пользователей на этом сервере сейчас недоступна."
-      }
-    }
-  },
-  "contribution": {
-    "categories": {
-      "infoSelectedNoOfMaxCategories": "{chosen} из {max} выбранных категорий"
-    },
-    "category": {
-      "name": {
-        "animal-protection": "Защита животных",
-        "art-culture-sport": "Искусство, культура и спорт",
-        "consumption-sustainability": "Потребление И Устойчивость",
-        "cooperation-development": "Сотрудничество и развитие",
-        "democracy-politics": "Демократия и политика",
-        "economy-finances": "Экономика и финансы",
-        "education-sciences": "Образование и наука",
-        "energy-technology": "Энергия и технологии",
-        "environment-nature": "Окружающая среда и природа",
-        "freedom-of-speech": "Свобода слова",
-        "global-peace-nonviolence": "Глобальный мир и ненасилие",
-        "happiness-values": "Счастье и Ценности",
-        "health-wellbeing": "Здоровье и благополучие",
-        "human-rights-justice": "Права Человека и Справедливость",
-        "it-internet-data-privacy": "ИТ, интернет и конфиденциальность",
-        "just-for-fun": "Просто для удовольствия"
-      }
-    },
-    "delete": "Удалить вклад",
-    "edit": "редакти́ровать вклад",
-    "emotions-label": {
-      "angry": "Сердитый",
-      "cry": "Плакать",
-      "funny": "Смешно́й",
-      "happy": "Счастливый",
-      "surprised": "Удивленный"
-    },
-    "filterALL": "Просмотреть все вклады",
-    "filterFollow": "Фильтровать сообщения пользователей, на которых я слежу",
-    "languageSelectLabel": "Язык",
-    "newPost": "Создать новое сообщение",
-    "success": "Сохранено!",
-    "teaserImage": {
-      "cropperConfirm": "Подтвердить"
-    },
-    "title": "Заглавие"
-  },
-  "delete": {
-    "cancel": "Отменить",
-    "comment": {
-      "message": "Ты уверены, что хочешь удалить комментарий \"<b>{name}<\/b>\"?",
-      "success": "Комментарий успешно удален!",
-      "title": "Удалить комментарий",
-      "type": "Комментарий"
-    },
-    "contribution": {
-      "message": "Ты уверены, что хочешь удалить сообщение \"<b>{name}<\/b>\"?",
-      "success": "Сообщение успешно удалено!",
-      "title": "Удаленный вклад",
-      "type": "Вклад"
-    },
-    "submit": "Удалить"
-  },
-  "disable": {
-    "cancel": "Отменить",
-    "comment": {
-      "message": "ты действительно хочешь отключить комментарий от «<b>{name}<\/b>»?",
-      "title": "Отключить комментарий",
-      "type": "Комментарий"
-    },
-    "contribution": {
-      "message": "Вы действительно хотите отключить вклад «<b>{name}<\/b>»?",
-      "title": "Отключить вклад",
-      "type": "Вклад"
-    },
-    "submit": "Отключить",
-    "success": "Успешно отключен",
-    "user": {
-      "message": "ты действительно хочешь отключить пользователя «<b>{name}<\/b>»?",
-      "title": "Отключить пользователя",
-      "type": "Пользователь"
-    }
-  },
-  "editor": {
-    "embed": {
-      "always_allow": "Всегда отображать содержимое сторонних производителей (эту настройку можно изменить в любое время).",
-      "data_privacy_info": "Твои данные еще не были переданы третьим лицам. Если ты воспроизводишь это видео сейчас, следующий провайдер, вероятно, зарегистрирует твои данные пользователя:",
-      "data_privacy_warning": "Внимание Конфиденциальность данных!",
-      "play_now": "Смотреть сейчас"
-    },
-    "hashtag": {
-      "addHashtag": "Новый хэштег",
-      "addLetter": "Введите букву",
-      "noHashtagsFound": "Хэштеги не найдены"
-    },
-    "mention": {
-      "noUsersFound": "Пользователи не найдены"
-    },
-    "placeholder": "Оставь свои вдохновляющие мысли ..."
-  },
-  "filter-menu": {
-    "clearSearch": "Опорожнить поиск",
-    "hashtag-search": "Поиск по #{hashtag}",
-    "title": "Твой фильтр-пузырь"
-  },
-  "filter-posts": {
-    "categories": {
-      "all": "Все",
-      "header": "Категории контента"
-    },
-    "followers": {
-      "label": "Пользователи, за которыми я слежу"
-    },
-    "general": {
-      "header": "Фильтровать по …"
-    }
-  },
-  "followButton": {
-    "follow": "Следовать",
-    "following": "Следующий"
-  },
-  "index": {
-    "change-filter-settings": "Измени настройки фильтра, чтобы получить больше результатов.",
-    "no-results": "Вклады не найдены."
-  },
-  "login": {
-    "copy": "Если у тебя уже есть учетная запись Human Connection, войдите здесь.",
-    "email": "Твой адрес электронной почты",
-    "failure": "Неверный адрес электронной почты или пароль.",
-    "forgotPassword": "Забыл пароль?",
-    "hello": "Привет",
-    "login": "Вход",
-    "logout": "Выйти",
-    "moreInfo": "Что такое Human Connection",
-    "moreInfoHint": "на страницу презентации",
-    "moreInfoURL": "https:\/\/human-connection.org\/en\/",
-    "no-account": "У вас нет аккаунта?",
-    "password": "Твой пароль",
-    "register": "Зарегистрироваться",
-    "success": "Ты вошёл в систему!"
-  },
-  "maintenance": {
-    "explanation": "В данный момент мы проводим плановое техническое обслуживание, пожалуйста, повтори попытку позже.",
-    "questions": "Любые вопросы или проблемы, отправь по электронной почте по адресу",
-    "title": "Human Connection находится в технического обслуживания"
-  },
-  "moderation": {
-    "name": "Модерация",
-    "reports": {
-      "createdAt": "Дата",
-      "disabledBy": "отключены",
-      "empty": "Поздравляю, модерировать нечего.",
-      "name": "Отчеты",
-      "reasonCategory": "Категория",
-      "reasonDescription": "Описание",
-      "reporter": "сообщила",
-      "submitter": "сообщила"
-    }
-  },
-  "notifications": {
-    "comment": "Комментарий",
-    "reason": {
-      "commented_on_post": "Прокомментировал твой вклад...",
-      "mentioned_in_comment": "Упоминал тебе в комментарии....",
-      "mentioned_in_post": "Упоминал тебе в сообщении...."
-    }
-  },
-  "post": {
-    "comment": {
-      "submit": "Комментируй",
-      "submitted": "Комментарий отправлен",
-      "updated": "Сохраненные изменения"
-    },
-    "edited": "Отредактированы",
-    "menu": {
-      "delete": "Удалить вклад",
-      "edit": "Редактировать вклад",
-      "pin": "Закрепить Сообщение",
-      "pinnedSuccessfully": "Сообщение успешно закреплен!",
-      "unpin": "Не прикрепи́ть Сообщение больше",
-      "unpinnedSuccessfully": "Сообщение успешно не закреплено!"
-    },
-    "moreInfo": {
-      "description": "Здесь ты найдешь больше информации по теме.",
-      "name": "Больше информации",
-      "title": "Больше информация",
-      "titleOfCategoriesSection": "Категории",
-      "titleOfHashtagsSection": "Хэштеги",
-      "titleOfRelatedContributionsSection": "Похожие  вклады"
-    },
-    "name": "Пост",
-    "pinned": "Объявление",
-    "takeAction": {
-      "name": "Действовать"
-    }
-  },
-  "profile": {
-    "commented": "Прокомментированный",
-    "follow": "Следовать",
-    "followers": "Последователей",
-    "following": "Следующий",
-    "invites": {
-      "description": "Введи адрес электронной почты для приглашения.",
-      "emailPlaceholder": "Электронная почта для приглашения",
-      "title": "Пригласи кого-нибудь в Human Connection!"
-    },
-    "memberSince": "член с тех пор",
-    "name": "Мой профайл",
-    "network": {
-      "andMore": "и {number} больше…",
-      "followedBy": "за ним следуют:",
-      "followedByNobody": "никому не следует.",
-      "following": "Следует:",
-      "followingNobody": "не следует ни за кем.",
-      "title": "Сеть"
-    },
-    "shouted": "оглашали",
-    "socialMedia": "Где еще я могу найти",
-    "userAnonym": "Анонимный"
-  },
-  "quotes": {
-    "african": {
-      "author": "Африканская пословица",
-      "quote": "Многие маленькие люди во многих маленьких местах делают много маленьких вещей, которые могут изменить лицо мира."
-    }
-  },
-  "release": {
-    "cancel": "Отменить",
-    "comment": {
-      "error": "Ты уже сообщил о комментариях!",
-      "message": "Ты уверены, что хочешь поделиться комментарием \"<b>{name}<\/b>\"?",
-      "title": "Выпускать Комментарий",
-      "type": "Комментарий"
-    },
-    "contribution": {
-      "error": "Ты уже сообщил о вкладе!",
-      "message": "Ты уверены, что хочешь поделиться постом \"<b>{name}<\/b>\"?",
-      "title": "Опубликовать вклад",
-      "type": "Вклад"
-    },
-    "submit": "Выпускать",
-    "success": "Выпущен успешно!",
-    "user": {
-      "error": "Ты уже сообщил о пользователе!",
-      "message": "Ты уверены, что хочешь поделиться пользователем \"<b>{name}<\/b>\"?",
-      "title": "Выпускать пользователя",
-      "type": "Пользователь"
-    }
-  },
-  "report": {
-    "cancel": "Отменить",
-    "comment": {
-      "error": "Ты уже сообщил о комментарии!",
-      "message": "Ты действительно хочешь сообщить комментарий от « <b> {name} <\/b> »?",
-      "title": "Пожаловаться на комментарий",
-      "type": "Комментарий"
-    },
-    "contribution": {
-      "error": "Ты уже сообщил о посте!",
-      "message": "Ты действительно хочешь сообщить о вкладе  «<b>{name}<\/b>»?",
-      "title": "Отчет Вклад",
-      "type": "Вклад"
-    },
-    "reason": {
-      "category": {
-        "invalid": "Пожалуйста, выберите действительную категорию",
-        "label": "Выбери категорию:",
-        "options": {
-          "advert_products_services_commercial": "Рекламировать продукты и услуги с коммерческим намерением.",
-          "criminal_behavior_violation_german_law": "Уголовного поведение или нарушении немецкое право.",
-          "discrimination_etc": "Дискриминационные вклады, комментарии, заявления или оскорбления.",
-          "doxing": "Публикация персональных данных других лиц без их согласия или угрозы (\"Доксинг\").",
-          "glorific_trivia_of_cruel_inhuman_acts": "Прославление или умаление жестоких, или бесчеловечных актов насилия.",
-          "intentional_intimidation_stalking_persecution": "Преднамеренное запугивание, сталкинг или преследование.",
-          "other": "Другие...",
-          "pornographic_content_links": "Публикация или ссылка явно порнографический материал."
+        "create": {
+            "translation": "Создать",
+            "notes": ""
         },
-        "placeholder": "Категория ...."
-      },
-      "description": {
-        "label": "Пожалуйста, объясни: Зачем ты хочешь сообщить об этом?",
-        "placeholder": "Дополнительная информация ..."
-      }
-    },
-    "submit": "Отправить жалобу",
-    "success": "Спасибо за сообщение!",
-    "user": {
-      "error": "Ты уже сообщил о пользователе!",
-      "message": "ты действительно хочешь сообщить пользователя «<b>{name}<\/b>»?",
-      "title": "Пожаловаться на пользователя",
-      "type": "Пользователь"
-    }
-  },
-  "search": {
-    "failed": "Ничего не найдено",
-    "hint": "Что ты ищешь?",
-    "placeholder": "Поиск"
-  },
-  "settings": {
-    "blocked-users": {
-      "block": "Блокировать пользователя",
-      "columns": {
-        "name": "Имя",
-        "slug": "Псевдоним"
-      },
-      "empty": "До сих пор ты никого не блокировал.",
-      "explanation": {
-        "closing": "На данный момент этого должно быть достаточно, чтобы заблокированные пользователи больше не беспокоили тебя.",
-        "intro": "Если ты заблокировал другого пользователя, произойдет следующее:",
-        "notifications": "Люди, которых ты блокируешь, больше не будут получать уведомления, когда они упоминаются в твоих сообщениях.",
-        "search": "Сообщения от заблокированных пользователей исчезают из результатов поиска.",
-        "their-perspective": "И наоборот, то же самое: заблокированный человек больше не видит твоих сообщения в своем обзоре.",
-        "your-perspective": "В твоем обзоре сообщений больше не отображаются сообщения заблокированного человека."
-      },
-      "how-to": "Ты можешь заблокировать других пользователей на странице их профиля с помощью меню содержимого.",
-      "name": "Заблокированные пользователи",
-      "unblock": "Разблокировать пользователей"
-    },
-    "data": {
-      "labelBio": "О тебя",
-      "labelCity": "Твой город или регион",
-      "labelName": "Твое имя",
-      "labelSlug": "Твой уникальное имя пользователя",
-      "name": "твой данные",
-      "namePlaceholder": "Маша Медведкина",
-      "success": "Твои данные были успешно обновлены!"
-    },
-    "delete": {
-      "name": "Удалить аккаунт"
-    },
-    "deleteUserAccount": {
-      "accountDescription": "Помни, что твои сообщение и комментарии важны для нашего сообщества. Если ты все равно хочешь удалить их, ты должны помечать их ниже.",
-      "accountWarning": "Ты можешь удалить свой аккаунт, сообщения или комментарии после их удаления <b>НИ УПРАВЛЯТЬ<\/b>, <b>НИ ВОССТАНАВЛИВАТЬ!<\/b>",
-      "commentedCount": "Удалить мои {count} комментарии",
-      "contributionsCount": "Удалить мои {count} сообщения",
-      "name": "Удалить данные",
-      "pleaseConfirm": "<b class='is-danger'>Разрушительное действие!<\/b> Введите <b>{confirm}<\/b> для подтверждения.",
-      "success": "Аккаунт успешно удален!"
-    },
-    "download": {
-      "name": "Скачать данные"
-    },
-    "email": {
-      "change-successful": "Твой адрес электронной почты был успешно изменен.",
-      "labelEmail": "Изменить адрес электронной почты",
-      "labelNewEmail": "Новый адрес электронной почты",
-      "labelNonce": "Введите свой код",
-      "name": "Твой адрес электронной почты",
-      "submitted": "Электронное письмо с подтверждением твоего адреса отправлено на <b>{email}<\/b>.",
-      "success": "Новый адрес электронной почты был зарегистрирован.",
-      "validation": {
-        "same-email": "Это твой текущий адрес электронной почты."
-      },
-      "verification-error": {
-        "explanation": "Это может иметь разные причины:",
-        "message": "Твой адрес электронной почты не может быть подтвержден.",
-        "reason": {
-          "invalid-nonce": "Код подтверждения неверен?",
-          "no-email-request": "Ты уверены, что запросил изменение своего адреса электронной почты?"
+        "save": {
+            "translation": "Сохранить",
+            "notes": ""
         },
-        "support": "Если проблема сохраняется, пожалуйста, свяжешься с нами по электронной почте"
-      }
-    },
-    "embeds": {
-      "info-description": "Вот список сторонних провайдеров, чьё содержимое может отображаться в виде иностранного кода, например, в виде встроенных видео:",
-      "name": "Сторонние поставщики",
-      "status": {
-        "change": {
-          "allow": "Конечно.",
-          "deny": "Лучше не",
-          "question": "Ты хочешь, чтобы встроенный сторонний код всегда отображался для тебя?"
+        "edit": {
+            "translation": "Редактировать",
+            "notes": ""
         },
-        "description": "По умолчанию настройки для тебя будет встроенный сторонний код",
-        "disabled": {
-          "off": "сначала не отображается",
-          "on": "отображается сразу"
+        "delete": {
+            "translation": "Удалить",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Отменить",
+            "notes": ""
         }
-      }
-    },
-    "invites": {
-      "name": "Приглашения"
-    },
-    "languages": {
-      "name": "Языки"
-    },
-    "name": "Настройки",
-    "organizations": {
-      "name": "Мои организации"
-    },
-    "security": {
-      "change-password": {
-        "button": "Изменить пароль",
-        "label-new-password": "Твой новый пароль",
-        "label-new-password-confirm": "Подтверди свой новый пароль",
-        "label-old-password": "Твой старый пароль",
-        "message-new-password-confirm-required": "Подтверди свой новый пароль",
-        "message-new-password-missmatch": "Введите тот же пароль еще раз",
-        "message-new-password-required": "Введи новый пароль",
-        "message-old-password-required": "Введи свой старый пароль",
-        "passwordSecurity": "Безопасность пароля",
-        "passwordStrength0": "Очень небезопасный пароль",
-        "passwordStrength1": "Небезопасный пароль",
-        "passwordStrength2": "Посредственный пароль",
-        "passwordStrength3": "Надежный пароль",
-        "passwordStrength4": "Очень надежный пароль",
-        "success": "Пароль успешно изменен!"
-      },
-      "name": "Безопасность"
-    },
-    "social-media": {
-      "name": "Социальные Медиа",
-      "placeholder": "Твой URL социальной сети",
-      "requireUnique": "Эта ссылка уже существует",
-      "submit": "Добавить ссылку",
-      "successAdd": "Добавлены Социальные Медиа. Профиль обновлен!",
-      "successDelete": "Социальные медиа удалены. Профиль обновлен!"
-    },
-    "validation": {
-      "slug": {
-        "alreadyTaken": "Это имя пользователя уже занято.",
-        "regex": "Допускаются только строчные буквы, цифры, подчеркивания или дефисы."
-      }
-    }
-  },
-  "shoutButton": {
-    "shouted": "оглашали"
-  },
-  "site": {
-    "back-to-login": "Вернуться на страницу входа",
-    "bank": "банковский счет",
-    "changelog": "Изменения",
-    "code-of-conduct": "Кодекс поведения",
-    "contact": "Контакт",
-    "data-privacy": "Конфиденциальность данных",
-    "director": "Управляющий директор",
-    "error-occurred": "Произошла ошибка.",
-    "faq": "ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ (FAQ)",
-    "germany": "Германия",
-    "imprint": "Импрессум",
-    "made": "Сделано с #10084;",
-    "register": "Номер регистрации",
-    "responsible": "ответственный за содержание этой страницы (§ 55 Abs. 2 RStV)",
-    "taxident": "UST-ID. в соответствии с §27a Закона о налоге с продаж Германии:",
-    "termsAndConditions": "Условия и положения",
-    "thanks": "Спасибо!",
-    "tribunal": "Суд регистрации"
-  },
-  "store": {
-    "posts": {
-      "orderBy": {
-        "newest": {
-          "label": "Новейший"
-        },
-        "oldest": {
-          "label": "Старейший"
-        }
-      }
-    }
-  },
-  "termsAndConditions": {
-    "addition": {
-      "description": "<a href=\"https:\/\/human-connection.org\/events\/\" target=\"_blank\" > https:\/\/human-connection.org\/events\/ <\/a>",
-      "title": "Кроме того, мы регулярно проводим мероприятия, где ты также можешь\nподелиться своими впечатлениями и задать вопросы. Здесь ты можешь найти текущий обзор :"
-    },
-    "agree": "Я согласен!",
-    "code-of-conduct": {
-      "description": "Наш кодекс поведения служит руководством для личного появления и взаимодействия друг с другом. Тот, кто является активным пользователем в Сети Human Connection, пишет статьи, комментирует или вступает в контакт с другими пользователями, даже за пределами сети, признает эти правила поведения обязательными. <a href=\"https:\/\/alpha.human-connection.org\/code-of-conduct\" target=\"_blank\"> https:\/\/alpha.human-connection.org\/code-of-conduct<\/a>",
-      "title": "Кодекс поведения"
-    },
-    "errors-and-feedback": {
-      "description": "Мы прилагаем все усилия для обеспечения безопасности и доступности нашей сети и данных. Каждый новый выпуск программного обеспечения проходит как автоматическое, так и ручное тестирование. Однако могут возникнуть непредвиденные ошибки. Поэтому мы благодарны за любые обнаруженные ошибки. ты можешь сообщить о любых обнаруженных ошибках, отправив электронное письмо в службу поддержки по адресу support@human-connection.org",
-      "title": "Ошибки и обратная связь"
-    },
-    "help-and-questions": {
-      "description": "Для справки и вопросов мы собрали для вас исчерпывающую подборку часто задаваемых вопросов и ответов (FAQ). Ты можешь\nнайти их здесь:<a href=\"https:\/\/support.human-connection.org\/kb\/\" target=\"_blank\" > https:\/\/support.human-connection.org\/kb\/ <\/a>",
-      "title": "Помощь и вопросы"
     },
     "moderation": {
-      "description": "Пока наши финансовые возможности позволяют нам реализовать это сообщество-система Модерации, модерировать мы с упрощенной системой и собственными или, при необходимости, добровольных сотрудниках. Мы обучаем этих модераторов, и по этой причине они тоже принимают соответствующие решения. Эти модераторы выполняют свою деятельность анонимно. ты можешь сообщать нам о сообщениях, комментариях и пользователях (например, если они предоставляют информацию в своем профиле или имеют изображения, которые нарушают настоящие Условия использования). Если ты сообщаешь нам что-то, ты можешь указать причину сообщения и дать еще одно краткое объяснение. Давайте посмотрим на то Сообщается и санкционировать в случае необходимости, например, путем блокировки сообщения, комментарии или пользователей. К сожалению, ты, а также пострадавший в настоящее время не получаешь от нас обратной связи, но это в планировании. Несмотря на это, мы оставляем за собой право на санкции по причинам, которые не могут или не могут быть указаны в нашем кодексе поведения или настоящих Условиях использования.",
-      "title": "ведение"
+        "name": {
+            "translation": "Модерация",
+            "notes": ""
+        },
+        "reports": {
+            "empty": {
+                "translation": "Поздравляю, модерировать нечего.",
+                "notes": ""
+            },
+            "name": {
+                "translation": "Отчеты",
+                "notes": ""
+            },
+            "reporter": {
+                "translation": "сообщила",
+                "notes": ""
+            },
+            "submitter": {
+                "translation": "сообщила",
+                "notes": ""
+            },
+            "disabledBy": {
+                "translation": "отключены",
+                "notes": ""
+            },
+            "reasonCategory": {
+                "translation": "Категория",
+                "notes": ""
+            },
+            "reasonDescription": {
+                "translation": "Описание",
+                "notes": ""
+            },
+            "createdAt": {
+                "translation": "Дата",
+                "notes": ""
+            }
+        }
     },
-    "newTermsAndConditions": "Новые условия и положения",
-    "privacy-statement": {
-      "description": "Наша сеть — это социальная сеть знаний и действий. Поэтому для нас особенно важно, чтобы как можно больше контента было общедоступным. В процессе развития нашей сети будет намного больше возможностей, чтобы решить вопрос о видимости сами указанные личные данные. Об этих новых функциях мы сообщим. В противном случае ты должны всегда думать о том, какие личные данные ты раскрываешь о себе (или других). Это особенно актуально для содержания сообщений и комментариев, поскольку они имеют в основном общедоступный характер. В профиле позже появятся способы ограничения самой видимости.  Часть условий использования - это наша политика конфиденциальности, которая информирует тебя о каждой обработке данных в нашей сети: \n<a href=\"https:\/\/human-connection.org\/datenschutz\/#netzwerk\" target=\"_blank\">https:\/\/human-connection.org\/datenschutz\/#netzwerk<\/a>\n  или. \n<a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\">https:\/\/human-connection.org\/datenschutz<\/a>\nНаша политика конфиденциальности корректируется в соответствии с законодательством и характеристиками нашей сети и действует в текущей версии.",
-      "title": "Заявление о конфиденциальности"
+    "disable": {
+        "user": {
+            "title": {
+                "translation": "Отключить пользователя",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Пользователь",
+                "notes": ""
+            },
+            "message": {
+                "translation": "ты действительно хочешь отключить пользователя «<b>{name}<\/b>»?",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Отключить вклад",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Вклад",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Вы действительно хотите отключить вклад «<b>{name}<\/b>»?",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Отключить комментарий",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Комментарий",
+                "notes": ""
+            },
+            "message": {
+                "translation": "ты действительно хочешь отключить комментарий от «<b>{name}<\/b>»?",
+                "notes": ""
+            }
+        },
+        "submit": {
+            "translation": "Отключить",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Отменить",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Успешно отключен",
+            "notes": ""
+        }
     },
-    "terms-of-service": {
-      "description": "Следующие условия использования являются основой для использования нашей сети. При Регистрации ты должны признать их и мы сообщим Тебе позже через происходящий при необходимости Изменений. Сеть Human Connection работает в Германии и поэтому регулируется немецким законодательством. Суд Kirchheim \/ Teck Stand. Подробности смотри в наших выходных данных: <a href=\"https:\/\/human-connection.org\/impressum\" target=\"_blank\">https:\/\/human-connection.org\/impressum<\/a>",
-      "title": "Условия обслуживания"
+    "report": {
+        "submit": {
+            "translation": "Отправить жалобу",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Отменить",
+            "notes": ""
+        },
+        "user": {
+            "title": {
+                "translation": "Пожаловаться на пользователя",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Пользователь",
+                "notes": ""
+            },
+            "message": {
+                "translation": "ты действительно хочешь сообщить пользователя «<b>{name}<\/b>»?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "Ты уже сообщил о пользователе!",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Отчет Вклад",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Вклад",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Ты действительно хочешь сообщить о вкладе  «<b>{name}<\/b>»?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "Ты уже сообщил о посте!",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Пожаловаться на комментарий",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Комментарий",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Ты действительно хочешь сообщить комментарий от « <b> {name} <\/b> »?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "Ты уже сообщил о комментарии!",
+                "notes": ""
+            }
+        },
+        "success": {
+            "translation": "Спасибо за сообщение!",
+            "notes": ""
+        },
+        "reason": {
+            "category": {
+                "label": {
+                    "translation": "Выбери категорию:",
+                    "notes": ""
+                },
+                "placeholder": {
+                    "translation": "Категория ....",
+                    "notes": ""
+                },
+                "options": {
+                    "discrimination_etc": {
+                        "translation": "Дискриминационные вклады, комментарии, заявления или оскорбления.",
+                        "notes": ""
+                    },
+                    "pornographic_content_links": {
+                        "translation": "Публикация или ссылка явно порнографический материал.",
+                        "notes": ""
+                    },
+                    "glorific_trivia_of_cruel_inhuman_acts": {
+                        "translation": "Прославление или умаление жестоких, или бесчеловечных актов насилия.",
+                        "notes": ""
+                    },
+                    "doxing": {
+                        "translation": "Публикация персональных данных других лиц без их согласия или угрозы (\"Доксинг\").",
+                        "notes": ""
+                    },
+                    "intentional_intimidation_stalking_persecution": {
+                        "translation": "Преднамеренное запугивание, сталкинг или преследование.",
+                        "notes": ""
+                    },
+                    "advert_products_services_commercial": {
+                        "translation": "Рекламировать продукты и услуги с коммерческим намерением.",
+                        "notes": ""
+                    },
+                    "criminal_behavior_violation_german_law": {
+                        "translation": "Уголовного поведение или нарушении немецкое право.",
+                        "notes": ""
+                    },
+                    "other": {
+                        "translation": "Другие...",
+                        "notes": ""
+                    }
+                },
+                "invalid": {
+                    "translation": "Пожалуйста, выберите действительную категорию",
+                    "notes": ""
+                }
+            },
+            "description": {
+                "label": {
+                    "translation": "Пожалуйста, объясни: Зачем ты хочешь сообщить об этом?",
+                    "notes": ""
+                },
+                "placeholder": {
+                    "translation": "Дополнительная информация ...",
+                    "notes": ""
+                }
+            }
+        }
     },
-    "termsAndConditionsConfirmed": "Я прочитал и подтвердил <a href=\"\/terms-and-conditions\" target=\"_blank\">Условия и положения<\/a>.",
-    "termsAndConditionsNewConfirm": "Я прочитал и согласен с новыми условиями.",
-    "termsAndConditionsNewConfirmText": "Пожалуйста, ознакомляешься с новыми условиями использования прямо сейчас!",
-    "use-and-license": {
-      "description": "Если контент, который ты нанимаешь у нас, защищен правами на интеллектуальную собственность, ты предоставляешь нам неисключительную, передаваемую, сублицензируемую и всемирную лицензию на использование этого контента для развертывания в нашей сети. Эта лицензия заканчивается, как только вт удаляешь свой контент или всю учетную запись. Имей в виду, что другие могут продолжать делиться вашим контентом, и мы не можем его удалить.",
-      "title": "Использование и лицензия"
+    "contribution": {
+        "edit": {
+            "translation": "редакти́ровать вклад",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Удалить вклад",
+            "notes": ""
+        },
+        "title": {
+            "translation": "Заглавие",
+            "notes": ""
+        },
+        "newPost": {
+            "translation": "Создать новое сообщение",
+            "notes": ""
+        },
+        "filterFollow": {
+            "translation": "Фильтровать сообщения пользователей, на которых я слежу",
+            "notes": ""
+        },
+        "filterALL": {
+            "translation": "Просмотреть все вклады",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Сохранено!",
+            "notes": ""
+        },
+        "languageSelectLabel": {
+            "translation": "Язык",
+            "notes": ""
+        },
+        "categories": {
+            "infoSelectedNoOfMaxCategories": {
+                "translation": "{chosen} из {max} выбранных категорий",
+                "notes": ""
+            }
+        },
+        "emotions-label": {
+            "funny": {
+                "translation": "Смешно́й",
+                "notes": ""
+            },
+            "happy": {
+                "translation": "Счастливый",
+                "notes": ""
+            },
+            "surprised": {
+                "translation": "Удивленный",
+                "notes": ""
+            },
+            "cry": {
+                "translation": "Плакать",
+                "notes": ""
+            },
+            "angry": {
+                "translation": "Сердитый",
+                "notes": ""
+            }
+        },
+        "category": {
+            "name": {
+                "freedom-of-speech": {
+                    "translation": "Свобода слова",
+                    "notes": ""
+                },
+                "consumption-sustainability": {
+                    "translation": "Потребление И Устойчивость",
+                    "notes": ""
+                },
+                "global-peace-nonviolence": {
+                    "translation": "Глобальный мир и ненасилие",
+                    "notes": ""
+                },
+                "just-for-fun": {
+                    "translation": "Просто для удовольствия",
+                    "notes": ""
+                },
+                "happiness-values": {
+                    "translation": "Счастье и Ценности",
+                    "notes": ""
+                },
+                "health-wellbeing": {
+                    "translation": "Здоровье и благополучие",
+                    "notes": ""
+                },
+                "environment-nature": {
+                    "translation": "Окружающая среда и природа",
+                    "notes": ""
+                },
+                "animal-protection": {
+                    "translation": "Защита животных",
+                    "notes": ""
+                },
+                "human-rights-justice": {
+                    "translation": "Права Человека и Справедливость",
+                    "notes": ""
+                },
+                "education-sciences": {
+                    "translation": "Образование и наука",
+                    "notes": ""
+                },
+                "cooperation-development": {
+                    "translation": "Сотрудничество и развитие",
+                    "notes": ""
+                },
+                "democracy-politics": {
+                    "translation": "Демократия и политика",
+                    "notes": ""
+                },
+                "economy-finances": {
+                    "translation": "Экономика и финансы",
+                    "notes": ""
+                },
+                "energy-technology": {
+                    "translation": "Энергия и технологии",
+                    "notes": ""
+                },
+                "it-internet-data-privacy": {
+                    "translation": "ИТ, интернет и конфиденциальность",
+                    "notes": ""
+                },
+                "art-culture-sport": {
+                    "translation": "Искусство, культура и спорт",
+                    "notes": ""
+                }
+            }
+        },
+        "teaserImage": {
+            "cropperConfirm": {
+                "translation": "Подтвердить",
+                "notes": ""
+            }
+        }
+    },
+    "comment": {
+        "edit": {
+            "translation": "редакти́ровать Комментарий",
+            "notes": ""
+        },
+        "delete": {
+            "translation": "Удалить комментарий",
+            "notes": ""
+        },
+        "content": {
+            "unavailable-placeholder": {
+                "translation": "...этот комментарий больше не доступен",
+                "notes": ""
+            }
+        },
+        "menu": {
+            "edit": {
+                "translation": "Редактировать комментарий",
+                "notes": ""
+            },
+            "delete": {
+                "translation": "Удалить комментарий",
+                "notes": ""
+            },
+            "pin": {
+                "translation": "",
+                "notes": ""
+            },
+            "pinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpin": {
+                "translation": "",
+                "notes": ""
+            },
+            "unpinnedSuccessfully": {
+                "translation": "",
+                "notes": ""
+            }
+        },
+        "show": {
+            "more": {
+                "translation": "показать больше",
+                "notes": ""
+            },
+            "less": {
+                "translation": "показать меньше",
+                "notes": ""
+            }
+        },
+        "edited": {
+            "translation": "Отредактированы",
+            "notes": ""
+        }
+    },
+    "followButton": {
+        "follow": {
+            "translation": "Следовать",
+            "notes": ""
+        },
+        "following": {
+            "translation": "Следующий",
+            "notes": ""
+        }
+    },
+    "shoutButton": {
+        "shouted": {
+            "translation": "оглашали",
+            "notes": ""
+        }
+    },
+    "search": {
+        "placeholder": {
+            "translation": "Поиск",
+            "notes": ""
+        },
+        "hint": {
+            "translation": "Что ты ищешь?",
+            "notes": ""
+        },
+        "failed": {
+            "translation": "Ничего не найдено",
+            "notes": ""
+        }
+    },
+    "components": {
+        "password-reset": {
+            "request": {
+                "title": {
+                    "translation": "Сбросить пароль",
+                    "notes": ""
+                },
+                "form": {
+                    "description": {
+                        "translation": "На указанный адрес электронной почты будет отправлено сообщение для сброса пароля.",
+                        "notes": ""
+                    },
+                    "submit": {
+                        "translation": "Запросить электронную почту",
+                        "notes": ""
+                    },
+                    "submitted": {
+                        "translation": "На адрес <b>{email}<\/b>было отправлено электронное письмо с дальнейшими инструкциями",
+                        "notes": ""
+                    }
+                }
+            },
+            "change-password": {
+                "success": {
+                    "translation": "Смена пароля прошла успешно!",
+                    "notes": ""
+                },
+                "error": {
+                    "translation": "Смена пароля не удалась. Может быть, код безопасности был неправильным?",
+                    "notes": ""
+                },
+                "help": {
+                    "translation": "В случае возникновения проблем, не стесняйся обращаться за помощью, отправив нам письмо по адресу:",
+                    "notes": ""
+                }
+            }
+        },
+        "enter-nonce": {
+            "form": {
+                "nonce": {
+                    "translation": "Введите свой код",
+                    "notes": ""
+                },
+                "description": {
+                    "translation": "Откройте папку \"Входящие\" и введите код, который мы тебя отправили.",
+                    "notes": ""
+                },
+                "next": {
+                    "translation": "Продолжить",
+                    "notes": ""
+                },
+                "validations": {
+                    "length": {
+                        "translation": "должна состоять из 6 символов.",
+                        "notes": ""
+                    }
+                }
+            }
+        },
+        "registration": {
+            "signup": {
+                "unavailable": {
+                    "translation": "К сожалению, публичная регистрация учетных записей пользователей на этом сервере сейчас недоступна.",
+                    "notes": ""
+                },
+                "title": {
+                    "translation": "Присоединяйся к Human Connection!",
+                    "notes": ""
+                },
+                "form": {
+                    "description": {
+                        "translation": "Чтобы начать работу, введи свой адрес электронной почты:",
+                        "notes": ""
+                    },
+                    "terms-and-condition": {
+                        "translation": "Подтверждаю, на <a href=\"\/terms-and-conditions\"><ds-text bold color=\"primary\" >Условия и положения<\/ds-text><\/a>.ю",
+                        "notes": ""
+                    },
+                    "data-privacy": {
+                        "translation": "Я прочитал и понял <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\"><ds-text bold color=\"primary\" >Заявление о конфиденциальности<\/ds-text><\/a>",
+                        "notes": ""
+                    },
+                    "minimum-age": {
+                        "translation": "Мне 18 лет или старше.",
+                        "notes": ""
+                    },
+                    "invitation-code": {
+                        "translation": "Твой код приглашения: <b>{code}<\/b>",
+                        "notes": ""
+                    },
+                    "errors": {
+                        "email-exists": {
+                            "translation": "Уже есть учетная запись пользователя с этим адресом электронной почты!",
+                            "notes": ""
+                        },
+                        "invalid-invitation-token": {
+                            "translation": "Похоже, что приглашение уже использовалось. Ссылки на приглашения можно использовать только один раз.",
+                            "notes": ""
+                        }
+                    },
+                    "submit": {
+                        "translation": "Создать учетную запись",
+                        "notes": ""
+                    },
+                    "success": {
+                        "translation": "Письмо со ссылкой для завершения регистрации было отправлено на <b> {email} <\/b>",
+                        "notes": ""
+                    }
+                }
+            },
+            "create-user-account": {
+                "title": {
+                    "translation": "Создать учетную запись пользователя",
+                    "notes": ""
+                },
+                "success": {
+                    "translation": "Твоя учетная запись создана!",
+                    "notes": ""
+                },
+                "error": {
+                    "translation": "Невозможно создать учетную запись пользователя!",
+                    "notes": ""
+                },
+                "help": {
+                    "translation": "Может быть, подтверждение было недействительным? В случае возникновения проблем, не стесняйтесь обращаться за помощью, отправив нам письмо по электронной почте:",
+                    "notes": ""
+                }
+            }
+        }
+    },
+    "store": {
+        "posts": {
+            "orderBy": {
+                "newest": {
+                    "label": {
+                        "translation": "Новейший",
+                        "notes": ""
+                    }
+                },
+                "oldest": {
+                    "label": {
+                        "translation": "Старейший",
+                        "notes": ""
+                    }
+                }
+            }
+        }
+    },
+    "maintenance": {
+        "title": {
+            "translation": "Human Connection находится в технического обслуживания",
+            "notes": ""
+        },
+        "explanation": {
+            "translation": "В данный момент мы проводим плановое техническое обслуживание, пожалуйста, повтори попытку позже.",
+            "notes": ""
+        },
+        "questions": {
+            "translation": "Любые вопросы или проблемы, отправь по электронной почте по адресу",
+            "notes": ""
+        }
+    },
+    "index": {
+        "no-results": {
+            "translation": "Вклады не найдены.",
+            "notes": ""
+        },
+        "change-filter-settings": {
+            "translation": "Измени настройки фильтра, чтобы получить больше результатов.",
+            "notes": ""
+        }
+    },
+    "filter-menu": {
+        "title": {
+            "translation": "Твой фильтр-пузырь",
+            "notes": ""
+        },
+        "hashtag-search": {
+            "translation": "Поиск по #{hashtag}",
+            "notes": ""
+        },
+        "clearSearch": {
+            "translation": "Опорожнить поиск",
+            "notes": ""
+        }
+    },
+    "filter-posts": {
+        "categories": {
+            "header": {
+                "translation": "Категории контента",
+                "notes": ""
+            },
+            "all": {
+                "translation": "Все",
+                "notes": ""
+            }
+        },
+        "general": {
+            "header": {
+                "translation": "Фильтровать по …",
+                "notes": ""
+            }
+        },
+        "followers": {
+            "label": {
+                "translation": "Пользователи, за которыми я слежу",
+                "notes": ""
+            }
+        },
+        "language": {
+            "header": {
+                "translation": "Языки",
+                "notes": ""
+            },
+            "all": {
+                "translation": "Все",
+                "notes": ""
+            }
+        }
+    },
+    "site": {
+        "thanks": {
+            "translation": "Спасибо!",
+            "notes": ""
+        },
+        "error-occurred": {
+            "translation": "Произошла ошибка.",
+            "notes": ""
+        },
+        "made": {
+            "translation": "Сделано с #10084;",
+            "notes": ""
+        },
+        "imprint": {
+            "translation": "Импрессум",
+            "notes": ""
+        },
+        "termsAndConditions": {
+            "translation": "Условия и положения",
+            "notes": ""
+        },
+        "data-privacy": {
+            "translation": "Конфиденциальность данных",
+            "notes": ""
+        },
+        "changelog": {
+            "translation": "Изменения",
+            "notes": ""
+        },
+        "contact": {
+            "translation": "Контакт",
+            "notes": ""
+        },
+        "tribunal": {
+            "translation": "Суд регистрации",
+            "notes": ""
+        },
+        "register": {
+            "translation": "Номер регистрации",
+            "notes": ""
+        },
+        "director": {
+            "translation": "Управляющий директор",
+            "notes": ""
+        },
+        "taxident": {
+            "translation": "UST-ID. в соответствии с §27a Закона о налоге с продаж Германии:",
+            "notes": ""
+        },
+        "responsible": {
+            "translation": "ответственный за содержание этой страницы (§ 55 Abs. 2 RStV)",
+            "notes": ""
+        },
+        "bank": {
+            "translation": "банковский счет",
+            "notes": ""
+        },
+        "germany": {
+            "translation": "Германия",
+            "notes": ""
+        },
+        "code-of-conduct": {
+            "translation": "Кодекс поведения",
+            "notes": ""
+        },
+        "back-to-login": {
+            "translation": "Вернуться на страницу входа",
+            "notes": ""
+        },
+        "faq": {
+            "translation": "ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ (FAQ)",
+            "notes": ""
+        },
+        "termsAc": {
+            "translation": "",
+            "notes": ""
+        }
+    },
+    "editor": {
+        "placeholder": {
+            "translation": "Оставь свои вдохновляющие мысли ...",
+            "notes": ""
+        },
+        "mention": {
+            "noUsersFound": {
+                "translation": "Пользователи не найдены",
+                "notes": ""
+            }
+        },
+        "hashtag": {
+            "noHashtagsFound": {
+                "translation": "Хэштеги не найдены",
+                "notes": ""
+            },
+            "addHashtag": {
+                "translation": "Новый хэштег",
+                "notes": ""
+            },
+            "addLetter": {
+                "translation": "Введите букву",
+                "notes": ""
+            }
+        },
+        "embed": {
+            "data_privacy_warning": {
+                "translation": "Внимание Конфиденциальность данных!",
+                "notes": ""
+            },
+            "data_privacy_info": {
+                "translation": "Твои данные еще не были переданы третьим лицам. Если ты воспроизводишь это видео сейчас, следующий провайдер, вероятно, зарегистрирует твои данные пользователя:",
+                "notes": ""
+            },
+            "play_now": {
+                "translation": "Смотреть сейчас",
+                "notes": ""
+            },
+            "always_allow": {
+                "translation": "Всегда отображать содержимое сторонних производителей (эту настройку можно изменить в любое время).",
+                "notes": ""
+            }
+        }
+    },
+    "notifications": {
+        "reason": {
+            "mentioned_in_post": {
+                "translation": "Упоминал тебе в сообщении....",
+                "notes": ""
+            },
+            "mentioned_in_comment": {
+                "translation": "Упоминал тебе в комментарии....",
+                "notes": ""
+            },
+            "commented_on_post": {
+                "translation": "Прокомментировал твой вклад...",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "translation": "Комментарий",
+            "notes": ""
+        },
+        "title": {
+            "translation": "Уведомления",
+            "notes": ""
+        },
+        "pageLink": {
+            "translation": "Все уведомления",
+            "notes": ""
+        },
+        "post": {
+            "translation": "Пост",
+            "notes": ""
+        },
+        "user": {
+            "translation": "Пользователь",
+            "notes": ""
+        },
+        "content": {
+            "translation": "Содержа́ние",
+            "notes": ""
+        },
+        "filterLabel": {
+            "all": {
+                "translation": "Все",
+                "notes": ""
+            },
+            "read": {
+                "translation": "Прочитанные",
+                "notes": ""
+            },
+            "unread": {
+                "translation": "Непрочитанные",
+                "notes": ""
+            }
+        },
+        "empty": {
+            "translation": "",
+            "notes": ""
+        },
+        "menu": {
+            "mentioned": {
+                "translation": "",
+                "notes": ""
+            }
+        }
+    },
+    "delete": {
+        "submit": {
+            "translation": "Удалить",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Отменить",
+            "notes": ""
+        },
+        "contribution": {
+            "title": {
+                "translation": "Удаленный вклад",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Вклад",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Ты уверены, что хочешь удалить сообщение \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Сообщение успешно удалено!",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Удалить комментарий",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Комментарий",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Ты уверены, что хочешь удалить комментарий \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "success": {
+                "translation": "Комментарий успешно удален!",
+                "notes": ""
+            }
+        }
+    },
+    "release": {
+        "submit": {
+            "translation": "Выпускать",
+            "notes": ""
+        },
+        "cancel": {
+            "translation": "Отменить",
+            "notes": ""
+        },
+        "success": {
+            "translation": "Выпущен успешно!",
+            "notes": ""
+        },
+        "user": {
+            "title": {
+                "translation": "Выпускать пользователя",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Пользователь",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Ты уверены, что хочешь поделиться пользователем \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "Ты уже сообщил о пользователе!",
+                "notes": ""
+            }
+        },
+        "contribution": {
+            "title": {
+                "translation": "Опубликовать вклад",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Вклад",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Ты уверены, что хочешь поделиться постом \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "Ты уже сообщил о вкладе!",
+                "notes": ""
+            }
+        },
+        "comment": {
+            "title": {
+                "translation": "Выпускать Комментарий",
+                "notes": ""
+            },
+            "type": {
+                "translation": "Комментарий",
+                "notes": ""
+            },
+            "message": {
+                "translation": "Ты уверены, что хочешь поделиться комментарием \"<b>{name}<\/b>\"?",
+                "notes": ""
+            },
+            "error": {
+                "translation": "Ты уже сообщил о комментариях!",
+                "notes": ""
+            }
+        }
+    },
+    "user": {
+        "avatar": {
+            "submitted": {
+                "translation": "Загрузка успешная",
+                "notes": ""
+            }
+        }
+    },
+    "code-of-conduct": {
+        "subheader": {
+            "translation": "для социальной сети \"Human Connection gGmbH\"",
+            "notes": ""
+        },
+        "preamble": {
+            "title": {
+                "translation": "Преамбула",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Human Connection-это некоммерческая сеть социальных знаний и действий следующего поколения. Из людей – для людей. Открытый исходный код, справедливый и прозрачный. Для позитивных локальных и глобальных изменений во всех сферах жизни. Мы полностью перестраиваем публичный обмен знаниями, идеями и проектами. Функции Human Connection объединяют людей – в автономном режиме и в интернете – так что мы можем сделать мир лучше.",
+                "notes": ""
+            }
+        },
+        "purpose": {
+            "title": {
+                "translation": "Цель",
+                "notes": ""
+            },
+            "description": {
+                "translation": "С помощью этих правил поведения мы регулируем основные принципы поведения в нашей социальной сети. При этом Устав ООН по правам человека является нашей ориентацией и лежит в основе нашего понимания ценностей. Правила поведения служат руководящими принципами для личного выступления и общения друг с другом. Любой, кто является активным пользователем в сети Human Connection, публикует сообщения, комментирует или контактирует с другими пользователями, в том числе за пределами сети, признает эти правила поведения обязательными.",
+                "notes": ""
+            }
+        },
+        "expected-behaviour": {
+            "title": {
+                "translation": "Ожидаемое поведение",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Следующее поведение ожидается и требуется от всех членов сообщества:",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "Будь внимательны и уважительны к тому, что ты пишешь и делаешь.",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "Попытайтесь подойти к другим, прежде чем возникнет конфликт.",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "Унижающего достоинство, дискриминационного или преследующего поведения и выражений.",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "Будь внимательны к своей среде. Сообщи о поддержке в опасных ситуациях, когда человек нуждается или нарушает настоящий Кодекс поведения, даже если он кажется незначительным.",
+                    "notes": ""
+                }
+            }
+        },
+        "unacceptable-behaviour": {
+            "title": {
+                "translation": "Недопустимое поведение",
+                "notes": ""
+            },
+            "description": {
+                "translation": "В нашем сообществе неприемлемы следующие типы поведения:",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "Дискриминационные сообщения, комментарии, высказывания или оскорбления, в частности, касающиеся пола, сексуальной ориентации, расы, религии, политической или мировоззренческой ориентации, или инвалидности.",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "Публикация или ссылка явно порнографический материал.",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "Прославление или умаление жестоких, или бесчеловечных актов насилия.",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "Публикация персональных данных других лиц без их согласия или угрозы (\"Доксинг\").",
+                    "notes": ""
+                },
+                "4": {
+                    "translation": "Преднамеренное запугивание, сталкинг или преследование.",
+                    "notes": ""
+                },
+                "5": {
+                    "translation": "Рекламировать продукты и услуги с коммерческим намерением.",
+                    "notes": ""
+                },
+                "6": {
+                    "translation": "Уголовного поведение или нарушении немецкое право.",
+                    "notes": ""
+                },
+                "7": {
+                    "translation": "Одобрение или поощрение этого поведения.",
+                    "notes": ""
+                }
+            }
+        },
+        "consequences": {
+            "title": {
+                "translation": "Последствия неприемлемого поведения",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Если участник сообщества проявляет неприемлемое поведение, ответственные операторы, модераторы и администраторы сети могут принять соответствующие меры, включая, но не ограничиваясь:",
+                "notes": ""
+            },
+            "list": {
+                "0": {
+                    "translation": "Просьба о немедленном прекращении неприемлемого поведения",
+                    "notes": ""
+                },
+                "1": {
+                    "translation": "запирание или удаление контента",
+                    "notes": ""
+                },
+                "2": {
+                    "translation": "Временное исключение из соответствующей должности или вклада",
+                    "notes": ""
+                },
+                "3": {
+                    "translation": "Блокирование или удаление контента",
+                    "notes": ""
+                },
+                "4": {
+                    "translation": "Временное снятие разрешений на запись",
+                    "notes": ""
+                },
+                "5": {
+                    "translation": "Временное исключение из сети",
+                    "notes": ""
+                },
+                "6": {
+                    "translation": "Окончательное исключение из сети",
+                    "notes": ""
+                },
+                "7": {
+                    "translation": "Можно сообщить о нарушениях немецкого законодательства.",
+                    "notes": ""
+                },
+                "8": {
+                    "translation": "Адвокатура или поощрение такого поведения.",
+                    "notes": ""
+                }
+            }
+        },
+        "get-help": {
+            "translation": "Если ты стал жертвой или свидетелем неприемлемого поведения или у вас возникли какие-либо другие проблемы, пожалуйста, как можно скорее сообщите об этом организатору сообщества и укажите ссылку на соответствующий контент:",
+            "notes": ""
+        }
+    },
+    "termsAndConditions": {
+        "newTermsAndConditions": {
+            "translation": "Новые условия и положения",
+            "notes": ""
+        },
+        "termsAndConditionsConfirmed": {
+            "translation": "Я прочитал и подтвердил <a href=\"\/terms-and-conditions\" target=\"_blank\">Условия и положения<\/a>.",
+            "notes": ""
+        },
+        "termsAndConditionsNewConfirmText": {
+            "translation": "Пожалуйста, ознакомляешься с новыми условиями использования прямо сейчас!",
+            "notes": ""
+        },
+        "termsAndConditionsNewConfirm": {
+            "translation": "Я прочитал и согласен с новыми условиями.",
+            "notes": ""
+        },
+        "agree": {
+            "translation": "Я согласен!",
+            "notes": ""
+        },
+        "terms-of-service": {
+            "title": {
+                "translation": "Условия обслуживания",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Следующие условия использования являются основой для использования нашей сети. При Регистрации ты должны признать их и мы сообщим Тебе позже через происходящий при необходимости Изменений. Сеть Human Connection работает в Германии и поэтому регулируется немецким законодательством. Суд Kirchheim \/ Teck Stand. Подробности смотри в наших выходных данных: <a href=\"https:\/\/human-connection.org\/impressum\" target=\"_blank\">https:\/\/human-connection.org\/impressum<\/a>",
+                "notes": ""
+            }
+        },
+        "use-and-license": {
+            "title": {
+                "translation": "Использование и лицензия",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Если контент, который ты нанимаешь у нас, защищен правами на интеллектуальную собственность, ты предоставляешь нам неисключительную, передаваемую, сублицензируемую и всемирную лицензию на использование этого контента для развертывания в нашей сети. Эта лицензия заканчивается, как только вт удаляешь свой контент или всю учетную запись. Имей в виду, что другие могут продолжать делиться вашим контентом, и мы не можем его удалить.",
+                "notes": ""
+            }
+        },
+        "privacy-statement": {
+            "title": {
+                "translation": "Заявление о конфиденциальности",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Наша сеть — это социальная сеть знаний и действий. Поэтому для нас особенно важно, чтобы как можно больше контента было общедоступным. В процессе развития нашей сети будет намного больше возможностей, чтобы решить вопрос о видимости сами указанные личные данные. Об этих новых функциях мы сообщим. В противном случае ты должны всегда думать о том, какие личные данные ты раскрываешь о себе (или других). Это особенно актуально для содержания сообщений и комментариев, поскольку они имеют в основном общедоступный характер. В профиле позже появятся способы ограничения самой видимости.  Часть условий использования - это наша политика конфиденциальности, которая информирует тебя о каждой обработке данных в нашей сети: \n<a href=\"https:\/\/human-connection.org\/datenschutz\/#netzwerk\" target=\"_blank\">https:\/\/human-connection.org\/datenschutz\/#netzwerk<\/a>\n  или. \n<a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\">https:\/\/human-connection.org\/datenschutz<\/a>\nНаша политика конфиденциальности корректируется в соответствии с законодательством и характеристиками нашей сети и действует в текущей версии.",
+                "notes": ""
+            }
+        },
+        "code-of-conduct": {
+            "title": {
+                "translation": "Кодекс поведения",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Наш кодекс поведения служит руководством для личного появления и взаимодействия друг с другом. Тот, кто является активным пользователем в Сети Human Connection, пишет статьи, комментирует или вступает в контакт с другими пользователями, даже за пределами сети, признает эти правила поведения обязательными. <a href=\"https:\/\/alpha.human-connection.org\/code-of-conduct\" target=\"_blank\"> https:\/\/alpha.human-connection.org\/code-of-conduct<\/a>",
+                "notes": ""
+            }
+        },
+        "moderation": {
+            "title": {
+                "translation": "Ведение",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Пока наши финансовые возможности позволяют нам реализовать это сообщество-система Модерации, модерировать мы с упрощенной системой и собственными или, при необходимости, добровольных сотрудниках. Мы обучаем этих модераторов, и по этой причине они тоже принимают соответствующие решения. Эти модераторы выполняют свою деятельность анонимно. ты можешь сообщать нам о сообщениях, комментариях и пользователях (например, если они предоставляют информацию в своем профиле или имеют изображения, которые нарушают настоящие Условия использования). Если ты сообщаешь нам что-то, ты можешь указать причину сообщения и дать еще одно краткое объяснение. Давайте посмотрим на то Сообщается и санкционировать в случае необходимости, например, путем блокировки сообщения, комментарии или пользователей. К сожалению, ты, а также пострадавший в настоящее время не получаешь от нас обратной связи, но это в планировании. Несмотря на это, мы оставляем за собой право на санкции по причинам, которые не могут или не могут быть указаны в нашем кодексе поведения или настоящих Условиях использования.",
+                "notes": ""
+            }
+        },
+        "errors-and-feedback": {
+            "title": {
+                "translation": "Ошибки и обратная связь",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Мы прилагаем все усилия для обеспечения безопасности и доступности нашей сети и данных. Каждый новый выпуск программного обеспечения проходит как автоматическое, так и ручное тестирование. Однако могут возникнуть непредвиденные ошибки. Поэтому мы благодарны за любые обнаруженные ошибки. ты можешь сообщить о любых обнаруженных ошибках, отправив электронное письмо в службу поддержки по адресу support@human-connection.org",
+                "notes": ""
+            }
+        },
+        "help-and-questions": {
+            "title": {
+                "translation": "Помощь и вопросы",
+                "notes": ""
+            },
+            "description": {
+                "translation": "Для справки и вопросов мы собрали для вас исчерпывающую подборку часто задаваемых вопросов и ответов (FAQ). Ты можешь\nнайти их здесь:<a href=\"https:\/\/support.human-connection.org\/kb\/\" target=\"_blank\" > https:\/\/support.human-connection.org\/kb\/ <\/a>",
+                "notes": ""
+            }
+        },
+        "addition": {
+            "title": {
+                "translation": "Кроме того, мы регулярно проводим мероприятия, где ты также можешь\nподелиться своими впечатлениями и задать вопросы. Здесь ты можешь найти текущий обзор:",
+                "notes": ""
+            },
+            "description": {
+                "translation": "<a href=\"https:\/\/human-connection.org\/events\/\" target=\"_blank\" > https:\/\/human-connection.org\/events\/ <\/a>",
+                "notes": ""
+            }
+        }
+    },
+    "donations": {
+        "donations-for": {
+            "translation": "Пожертвования для",
+            "notes": ""
+        },
+        "donate-now": {
+            "translation": "Пожертвует сейчас",
+            "notes": ""
+        },
+        "amount-of-total": {
+            "translation": "{amount} из {total} € собрано",
+            "notes": ""
+        }
     }
-  },
-  "user": {
-    "avatar": {
-      "submitted": "Загрузка успешная"
-    }
-  }
 }
