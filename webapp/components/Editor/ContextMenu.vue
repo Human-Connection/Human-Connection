@@ -1,6 +1,6 @@
 <script>
 import tippy, { roundArrow } from 'tippy.js'
-
+import 'tippy.js/dist/tippy.css'
 import 'tippy.js/dist/svg-arrow.css'
 
 export default {
@@ -21,6 +21,8 @@ export default {
         arrow: roundArrow,
         lazy: false,
         content,
+        duration: [400, 200],
+        inertia: true,
         placement,
         showOnCreate,
         theme: 'human-connection',
@@ -63,21 +65,12 @@ export default {
     display: none;
   }
 
+  .tippy-content {
+    padding: 0;
+  }
+
   .tippy-svg-arrow {
     fill: $color-primary;
-    top: $border-radius-x-large;
-  }
-  .tippy-popper[data-placement^='top'] & .tippy-arrow {
-    border-top-color: $color-primary;
-  }
-  .tippy-popper[data-placement^='bottom'] & .tippy-arrow {
-    border-bottom-color: $color-primary;
-  }
-  .tippy-popper[data-placement^='left'] & .tippy-arrow {
-    border-left-color: $color-primary;
-  }
-  .tippy-popper[data-placement^='right'] & .tippy-arrow {
-    border-right-color: $color-primary;
   }
 }
 </style>
