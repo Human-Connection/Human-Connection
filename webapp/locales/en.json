@@ -171,7 +171,7 @@
     },
     "invites": {
       "title": "Invite somebody to Human Connection!",
-      "description": "Enter thier e-mail address for invitation.",
+      "description": "Enter their e-mail address for invitation.",
       "emailPlaceholder": "E-mail to invite"
     }
   },
