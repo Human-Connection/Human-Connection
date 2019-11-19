@@ -383,7 +383,7 @@ When("mention {string} in the text", mention => {
   cy.get(".ProseMirror").type(" @");
   cy.get(".suggestion-list__item")
     .contains(mention)
-    .click();
+    .click({ force: true });
   cy.debug();
 });
 
