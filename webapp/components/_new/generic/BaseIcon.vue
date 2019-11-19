@@ -39,7 +39,7 @@ export default {
   display: inline-flex;
 
   > .svg {
-    height: 1em;
+    height: 1.2em;
     fill: currentColor;
   }
 }

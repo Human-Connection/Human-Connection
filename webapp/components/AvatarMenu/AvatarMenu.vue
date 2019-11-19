@@ -12,7 +12,7 @@
         @click.prevent="toggleMenu"
       >
         <hc-avatar :user="user" />
-        <ds-icon size="xx-small" name="angle-down" />
+        <base-icon class="dropdown-arrow" name="angle-down" />
       </a>
     </template>
     <template #popover="{ closeMenu }">
@@ -33,13 +33,13 @@
             :parents="item.parents"
             @click.native="closeMenu(false)"
           >
-            <ds-icon :name="item.route.icon" />
+            <base-icon :name="item.route.icon" />
             {{ item.route.name }}
           </ds-menu-item>
         </ds-menu>
         <hr />
         <nuxt-link class="logout-link" :to="{ name: 'logout' }">
-          <ds-icon name="sign-out" />
+          <base-icon name="sign-out" />
           {{ $t('login.logout') }}
         </nuxt-link>
       </div>

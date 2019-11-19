@@ -11,10 +11,10 @@
         <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
           <hc-avatar class="avatar" :user="user" />
           <div>
-            <ds-text>
+            <ds-text class="userinfo">
               <b class="username">{{ userName | truncate(18) }}</b>
               <ds-text v-if="dateTime" size="small" color="soft">
-                <ds-icon name="clock" />
+                <base-icon name="clock" />
                 <client-only>
                   <hc-relative-date-time :date-time="dateTime" />
                 </client-only>
@@ -39,7 +39,7 @@
           style="margin-top: 5px"
           bold
         >
-          <ds-icon name="map-marker" />
+          <base-icon name="map-marker" />
           {{ user.location.name }}
         </ds-text>
         <ds-flex style="margin-top: -10px">
@@ -154,6 +154,17 @@ export default {
   margin-right: 4px;
   height: 100%;
   vertical-align: middle;
+}
+
+.userinfo {
+  display: flex;
+  align-items: center;
+
+  > .ds-text {
+    display: flex;
+    align-items: center;
+    margin-left: $space-xx-small;
+  }
 }
 
 .user {

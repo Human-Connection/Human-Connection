@@ -9,7 +9,7 @@
             :primary="isActive(category.id)"
             :disabled="isDisabled(category.id)"
           >
-            <ds-icon :name="category.icon" />
+            <base-icon :name="category.icon" />
             {{ $t(`contribution.category.name.${category.slug}`) }}
           </ds-button>
         </ds-flex-item>

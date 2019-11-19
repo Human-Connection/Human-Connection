@@ -3,7 +3,7 @@
     <ds-card>
       <ds-space margin-bottom="base" />
       <ds-text style="padding-left: 40px; font-weight: bold;" color="soft">
-        <ds-icon name="ban" />
+        <base-icon name="ban" />
         {{ this.$t('comment.content.unavailable-placeholder') }}
       </ds-text>
       <ds-space margin-bottom="base" />

@@ -7,9 +7,9 @@
       href="#"
       @click.prevent="toggleMenu()"
     >
-      <ds-icon style="margin-right: 2px;" name="globe" />
-      {{ current.code.toUpperCase() }}
-      <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
+      <base-icon name="globe" />
+      <span class="label">{{ current.code.toUpperCase() }}</span>
+      <base-icon class="dropdown-arrow" name="angle-down" />
     </a>
     <ds-menu
       slot="popover"
@@ -124,6 +124,10 @@ export default {
   height: 100%;
   padding: $space-xx-small;
   color: $text-color-soft;
+
+  > .label {
+    margin: 0 $space-xx-small;
+  }
 }
 
 nav.locale-menu-popover {

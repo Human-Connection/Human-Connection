@@ -47,11 +47,11 @@
                     <ds-text size="small" color="softer" class="search-meta">
                       <span style="text-align: right;">
                         <b>{{ option.commentsCount }}</b>
-                        <ds-icon name="comments" />
+                        <base-icon name="comments" />
                       </span>
                       <span style="width: 36px; display: inline-block; text-align: right;">
                         <b>{{ option.shoutedCount }}</b>
-                        <ds-icon name="bullhorn" />
+                        <base-icon name="bullhorn" />
                       </span>
                     </ds-text>
                   </ds-flex-item>
@@ -239,7 +239,7 @@ export default {
     white-space: nowrap;
     word-wrap: none;
 
-    .ds-icon {
+    .base-icon {
       vertical-align: sub;
     }
   }

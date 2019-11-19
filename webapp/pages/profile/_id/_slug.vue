@@ -34,7 +34,7 @@
               {{ userSlug }}
             </ds-text>
             <ds-text v-if="user.location" align="center" color="soft" size="small">
-              <ds-icon name="map-marker" />
+              <base-icon name="map-marker" />
               {{ user.location.name }}
             </ds-text>
             <ds-text align="center" color="soft" size="small">

@@ -25,7 +25,7 @@ describe('Avatar.vue', () => {
   it('renders an icon', () => {
     expect(
       Wrapper()
-        .find('.ds-icon')
+        .find('.base-icon')
         .exists(),
     ).toBe(true)
   })
