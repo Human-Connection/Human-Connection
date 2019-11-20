@@ -5,15 +5,21 @@ const queryOpenDecisionWriteTransaction = (session, resourceId) => {
   return session.writeTransaction(async txc => {
     const queryOpenDecisionTransactionResponse = await txc.run(
       `
-        MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
-        WHERE resource:User OR resource:Comment OR resource:Post
-        RETURN decision, moderator {.id} AS decisionModerator
+        //MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
+        //WHERE resource:User OR resource:Comment OR resource:Post
+        //RETURN decision, moderator {.id} AS decisionModerator
+
+        // Wolle only review on reported resources
+
+        MATCH (moderator:User)-[:REPORTED]->(caseFolder:CaseFolder {closed: false})-[:FLAGGED]->(resource {id: $resourceId})
+        WHERE resource:User OR resource:Post OR resource:Comment
+        RETURN caseFolder, moderator {.id} AS caseModerator
       `,
       { resourceId },
     )
     return queryOpenDecisionTransactionResponse.records.map(record => ({
-      decision: record.get('decision'),
-      decisionModerator: record.get('decisionModerator'),
+      caseFolder: record.get('caseFolder'),
+      caseModerator: record.get('caseModerator'),
     }))
   })
 }
@@ -40,7 +46,7 @@ export default {
         let cypherHeader = ''
 
         if (!openDecisionTxResult) {
-          // no open decision, then create one
+          // no open caseFolder, then create one
           if (disable === undefined) disable = false // default for creation
           if (closed === undefined) closed = false // default for creation
           cypherHeader = `
@@ -54,11 +60,11 @@ export default {
               SET decision.latest = true
               `
         } else {
-          // an open decision, then change it
-          if (disable === undefined) disable = openDecisionTxResult.decision.properties.disable // default set to existing
-          if (closed === undefined) closed = openDecisionTxResult.decision.properties.closed // default set to existing
+          // an open caseFolder, then change it
+          if (disable === undefined) disable = openDecisionTxResult.caseFolder.properties.disable // default set to existing
+          if (closed === undefined) closed = openDecisionTxResult.caseFolder.properties.closed // default set to existing
           // current moderator is not the same as old
-          if (moderator.id !== openDecisionTxResult.decisionModerator.id) {
+          if (moderator.id !== openDecisionTxResult.caseModerator.id) {
             // from a different moderator, then create relation with properties to new moderator
             cypherHeader = `
                 MATCH (moderator:User)-[oldDecision:DECIDED {closed: false}]->(resource {id: $resourceId})
@@ -71,7 +77,7 @@ export default {
                 SET decision = oldDecision
               `
           } else {
-            // an open decision from same moderator, then match this
+            // an open caseFolder from same moderator, then match this
             cypherHeader = `
                 MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
                 WHERE resource:User OR resource:Comment OR resource:Post
