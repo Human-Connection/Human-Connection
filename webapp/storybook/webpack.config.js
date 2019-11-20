@@ -33,7 +33,7 @@ module.exports = async ({ config, mode }) => {
   })
 
   // load svgs with vue-svg-loader instead of file-loader
-  let rule = config.module.rules.find(
+  const rule = config.module.rules.find(
     r =>
       r.test && r.test.toString().includes('svg') && r.loader && r.loader.includes('file-loader'),
   )
