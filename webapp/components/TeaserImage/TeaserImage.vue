@@ -111,12 +111,16 @@ export default {
     cropImage() {
       this.showCropper = false
       const canvas = this.cropper.getCroppedCanvas()
+      console.log('canvas', canvas)
       canvas.toBlob(blob => {
         this.setupPreview(canvas)
         this.removeCropper()
-        const croppedImageFile = new File([blob], this.file.name, { type: 'image/jpeg' })
+        console.log(blob)
+        const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
+        console.log('croppedImageFile', croppedImageFile)
         this.$emit('addTeaserImage', croppedImageFile)
-      }, 'image/jpeg')
+        this.$emit('addTeaserImageHeight', canvas.height)
+      })
     },
     setupPreview(canvas) {
       this.image = new Image()

@@ -4,6 +4,9 @@
     :image="post.image | proxyApiUrl"
     :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--pinned': isPinned }"
   >
+    <ds-placeholder v-if="showPlaceholder && post.teaserImageHeight" class="placeholder-image">
+      I'm a placeholder
+    </ds-placeholder>
     <!-- Post Link Target -->
     <nuxt-link
       class="post-link"
@@ -98,6 +101,15 @@ export default {
       type: Object,
       default: () => {},
     },
+    showPlaceholder: {
+      type: Boolean,
+      default: true,
+    }
+  },
+  data() {
+    return {
+      imageLoading: true,
+    }
   },
   computed: {
     ...mapGetters({
@@ -121,6 +133,11 @@ export default {
     isPinned() {
       return this.post && this.post.pinnedBy
     },
+    cssVars() {
+      return {
+        '--height': this.post.teaserImageHeight + 'px'
+      }
+    }
   },
   methods: {
     async deletePostCallback() {
@@ -140,6 +157,10 @@ export default {
     unpinPost(post) {
       this.$emit('unpinPost', post)
     },
+    hidePlaceholder() {
+      console.log('this has been called')
+      this.imageLoading = false
+    }
   },
 }
 </script>
@@ -183,5 +204,9 @@ export default {
 
 .post--pinned {
   border: 1px solid $color-warning;
+}
+
+.placeholder-image {
+  height: var(--height)
 }
 </style>

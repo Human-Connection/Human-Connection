@@ -22,6 +22,7 @@ export default {
     },
     endCalculation() {
       this.itemsCalculating -= 1
+      this.$emit('hidePlaceholder')
     },
   },
 }

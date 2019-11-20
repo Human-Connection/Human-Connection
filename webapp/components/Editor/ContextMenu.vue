@@ -22,11 +22,24 @@ export default {
         content: content,
         duration: [400, 200],
         inertia: true,
+<<<<<<< Updated upstream
         interactive: true,
+=======
+        // interactive: true,
+>>>>>>> Stashed changes
         placement,
         showOnInit,
         theme: 'human-connection',
         trigger,
+<<<<<<< Updated upstream
+=======
+        onCreate(instance) {
+          instance.popperInstance.reference = {
+            ...virtualNode,
+            // popperOptions: { positionFixed: true },
+          }
+        },
+>>>>>>> Stashed changes
         onMount(instance) {
           const input = instance.popper.querySelector('input')
 
@@ -79,6 +92,7 @@ export default {
   .tippy-roundarrow {
     fill: $color-primary;
   }
+<<<<<<< Updated upstream
   .tippy-popper[x-placement^='top'] & .tippy-arrow {
     border-top-color: $color-primary;
   }
@@ -91,5 +105,10 @@ export default {
   .tippy-popper[x-placement^='right'] & .tippy-arrow {
     border-right-color: $color-primary;
   }
+=======
+  // .tippy-popper {
+  //   pointer-events: auto;
+  // }
+>>>>>>> Stashed changes
 }
 </style>

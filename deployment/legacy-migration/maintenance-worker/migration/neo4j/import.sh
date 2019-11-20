@@ -39,6 +39,7 @@ function import_collection () {
       echo "Import $1 ${CHUNK_FILE_NAME} (${chunk})"
       echo "${NEO4J_COMMAND}" | "${IMPORT_CYPHERSHELL_BIN}" > /dev/null
       # add file to array and file
+      echo "$IMPORT_CHUNK_PATH_CQL_FILE"
       IMPORT_INDEX+=("${CHUNK_FILE_NAME}")
       echo "${CHUNK_FILE_NAME}" >> ${INDEX_FILE}
     else

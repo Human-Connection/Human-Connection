@@ -118,6 +118,7 @@ type Post {
   contentExcerpt: String
   image: String
   imageUpload: Upload
+  teaserImageHeight: String
   visibility: Visibility
   deleted: Boolean
   disabled: Boolean
@@ -194,6 +195,7 @@ type Mutation {
     visibility: Visibility
     language: String
     categoryIds: [ID]
+    teaserImageHeight: String
   ): Post
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED

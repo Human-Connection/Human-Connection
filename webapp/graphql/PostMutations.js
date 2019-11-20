@@ -34,6 +34,7 @@ export default () => {
         $imageUpload: Upload
         $categoryIds: [ID]
         $image: String
+        $teaserImageHeight: String
       ) {
         UpdatePost(
           id: $id
@@ -43,6 +44,7 @@ export default () => {
           imageUpload: $imageUpload
           categoryIds: $categoryIds
           image: $image
+          teaserImageHeight: $teaserImageHeight
         ) {
           id
           title
@@ -55,6 +57,7 @@ export default () => {
             name
             role
           }
+          teaserImageHeight
         }
       }
     `,

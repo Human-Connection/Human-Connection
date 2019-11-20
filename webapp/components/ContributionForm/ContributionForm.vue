@@ -7,7 +7,7 @@
     @submit="submit"
   >
     <template slot-scope="{ errors }">
-      <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
+      <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage" @addTeaserImageHeight="addTeaserImageHeight">
         <img
           v-if="contribution"
           class="contribution-image"
@@ -190,9 +190,12 @@ export default {
         content,
         image,
         teaserImage,
+        teaserImageHeight,
         categoryIds,
       } = this.form
       this.loading = true
+      console.log('file', teaserImage)
+      console.log('imageHeight', typeof teaserImageHeight)
       this.$apollo
         .mutate({
           mutation: this.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
@@ -204,6 +207,7 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
+            teaserImageHeight
           },
         })
         .then(({ data }) => {
@@ -226,6 +230,10 @@ export default {
     },
     addTeaserImage(file) {
       this.form.teaserImage = file
+    },
+    addTeaserImageHeight(height) {
+      console.log(height.toString())
+      this.form.teaserImageHeight = height.toString()
     },
     categoryIds(categories) {
       return categories.map(c => c.id)
