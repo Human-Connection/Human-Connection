@@ -1,305 +1,752 @@
 {
-  "filter-menu": {
-    "title": "Su burbuja de filtro"
-  },
-  "site": {
-    "made": "Con &#10084; realizado",
-    "imprint": "Pie de imprenta",
-    "termsAc": "términos y condiciones",
-    "data-privacy": "protección de datos",
-    "changelog": "Cambios e historia",
-    "contact": "Contacto",
-    "tribunal": "tribunal de registro",
-    "register": "número de registro",
-    "director": "Director General",
-    "taxident": "Número de identificación del impuesto sobre el valor añadido según el § 27 a de la Ley del Impuesto sobre el Valor Añadido (Alemania)",
-    "responsible": "Responsable según § 55 Abs. 2 RStV (Alemania)",
-    "bank": "cuenta",
-    "germany": "Alemania"
-  },
-  "login": {
-    "copy": "Si ya tiene una cuenta de Human Connection, inicie sesión aquí.",
-    "login": "Iniciar sesión",
-    "logout": "Cierre de sesión",
-    "email": "Tu correo electrónico",
-    "password": "Tu contraseña",
-    "moreInfo": "¿Qué es Human Connection?",
-    "moreInfoURL": "https://human-connection.org/es/",
-    "moreInfoHint": "a la página de presentación",
-    "hello": "Hola"
-  },
-  "editor": {
-    "placeholder": "Write something inspiring..."
-  },
-  "profile": {
-    "name": "Mi Perfil",
-    "memberSince": "Miembro desde",
-    "follow": "Seguir",
-    "followers": "Seguidores",
-    "following": "Siguiendo",
-    "shouted": "Recomendado",
-    "commented": "Comentado",
-    "userAnonym": "Anónimo",
-    "socialMedia": "¿Dónde más puedo encontrar"
-  },
-  "notifications": {
-    "menu": {
-      "mentioned": "te ha mencionado en un post"
-    }
-  },
-  "search": {
-    "placeholder": "Buscar",
-    "hint": "¿Qué estás buscando?",
-    "failed": "no encontró nada"
-  },
-  "settings": {
-    "name": "Configuración",
-    "data": {
-      "name": "Sus datos",
-      "labelName": "Su nombre",
-      "namePlaceholder": "Femanon Funny",
-      "labelCity": "Su ciudad o región",
-      "labelBio": "Acerca de usted",
-      "success": "Sus datos han sido actualizados con éxito!"
+    "login": {
+        "copy": "Si ya tiene una cuenta de Human Connection, inicie sesión aquí.",
+        "login": "Iniciar sesión",
+        "logout": "Cierre de sesión",
+        "email": "Su correo electrónico",
+        "password": "Su contraseña",
+        "moreInfo": "¿Qué es Human Connection?",
+        "hello": "Hola",
+        "forgotPassword": "¿Olvidó su contraseña?",
+        "no-account": "¿No tiene una cuenta?",
+        "register": "Regístrese",
+        "moreInfoURL": "https:\/\/human-connection.org\/es\/",
+        "moreInfoHint": "a la página de presentación",
+        "success": "¡Usted ha iniciado sesión!",
+        "failure": "Dirección de correo electrónico o contraseña incorrecta."
     },
-    "security": {
-      "name": "Seguridad",
-      "change-password": {
-        "button": "Cambiar contraseña",
-        "success": "Contraseña cambiada con éxito!",
-        "label-old-password": "Su contraseña antigua",
-        "label-new-password": "Su nueva contraseña",
-        "label-new-password-confirm": "Confirm new password",
-        "message-old-password-required": "Ingrese su contraseña anterior",
-        "message-new-password-required": "Introduzca una nueva contraseña",
-        "message-new-password-confirm-required": "Confirme su nueva contraseña",
-        "message-new-password-missmatch": "Vuelva a escribir la misma contraseña",
-        "passwordSecurity": "Seguridad de la contraseña",
-        "passwordStrength0": "Contraseña muy insegura",
-        "passwordStrength1": "Contraseña insegura",
-        "passwordStrength2": "Contraseña mediocre",
-        "passwordStrength3": "Contraseña segura",
-        "passwordStrength4": "Contraseña muy sólida"
-      }
-    },
-    "invites": {
-      "name": "invitaciones"
-    },
-    "download": {
-      "name": "Descargar datos"
-    },
-    "delete": {
-      "name": "Eliminar cuenta"
-    },
-    "organizations": {
-      "name": "Mis organizaciones"
-    },
-    "languages": {
-      "name": "idiomas"
-    },
-    "social-media": {
-      "name": "Medios de comunicación social",
-      "placeholder": "Agregar una URL de Social-Media",
-      "submit": "Añadir enlace",
-      "successAdd": "Social-Media agregó. Perfil actualizado!",
-      "successDelete": "Social-Media borrado. Perfil actualizado!"
-    }
-  },
-  "admin": {
-    "name": "Admin",
-    "dashboard": {
-      "name": "Tablero",
-      "users": "Usuarios",
-      "posts": "Mensajes",
-      "comments": "Comentarios",
-      "notifications": "Notificaciones",
-      "organizations": "Organizaciones",
-      "projects": "Proyectos",
-      "invites": "Invita",
-      "follows": "Sigue",
-      "shouts": "Recomendado"
-    },
-    "organizations": {
-      "name": "Organizaciones"
-    },
-    "users": {
-      "name": "Usuarios"
-    },
-    "pages": {
-      "name": "Páginas"
-    },
-    "notifications": {
-      "name": "Notificaciones"
-    },
-    "categories": {
-      "name": "Categorías",
-      "categoryName": "Nombre",
-      "postCount": "Mensajes"
-    },
-    "tags": {
-      "name": "Etiquetas",
-      "tagCountUnique": "Usuarios",
-      "tagCount": "Mensajes"
+    "profile": {
+        "name": "Mi perfil",
+        "memberSince": "Miembro desde",
+        "follow": "Seguir",
+        "followers": "Seguidores",
+        "following": "Siguiendo",
+        "shouted": "Recomendado",
+        "commented": "Comentado",
+        "userAnonym": "Anónimo",
+        "socialMedia": "¿Dónde más puedo encontrar?",
+        "network": {
+            "title": "Red",
+            "following": "está siguiendo:",
+            "followingNobody": "no sigue a nadie.",
+            "followedBy": "es seguido por:",
+            "followedByNobody": "no es seguido por nadie.",
+            "andMore": "y {number} más ..."
+        },
+        "invites": {
+            "title": "¡Invite a alguien a Human Connection!",
+            "description": "Introduzca la dirección de correo electrónico para la invitación.",
+            "emailPlaceholder": "Correo electrónico para invitar"
+        }
     },
     "settings": {
-      "name": "Configuración"
-    }
-  },
-  "post": {
-    "name": "Mensaje",
-    "moreInfo": {
-      "name": "Más info"
+        "name": "Configuración",
+        "data": {
+            "name": "Sus datos",
+            "labelName": "Su nombre",
+            "labelCity": "Su ciudad o región",
+            "labelBio": "Acerca de usted",
+            "labelSlug": "Su nombre de usuario único",
+            "namePlaceholder": "Femanon Funny",
+            "success": "¡Sus datos han sido actualizados con éxito!"
+        },
+        "security": {
+            "name": "Seguridad",
+            "change-password": {
+                "button": "Cambiar contraseña",
+                "success": "¡Contraseña cambiada con éxito!",
+                "label-old-password": "Su contraseña antigua",
+                "label-new-password": "Su nueva contraseña",
+                "label-new-password-confirm": "Confirmar nueva contraseña",
+                "message-old-password-required": "Ingrese su contraseña anterior",
+                "message-new-password-required": "Introduzca una nueva contraseña",
+                "message-new-password-confirm-required": "Confirme su nueva contraseña",
+                "message-new-password-missmatch": "Vuelva a escribir la misma contraseña",
+                "passwordSecurity": "Seguridad de la contraseña",
+                "passwordStrength0": "Contraseña muy insegura",
+                "passwordStrength1": "Contraseña insegura",
+                "passwordStrength2": "Contraseña mediocre",
+                "passwordStrength3": "Contraseña segura",
+                "passwordStrength4": "Contraseña muy sólida"
+            }
+        },
+        "invites": {
+            "name": "Invita"
+        },
+        "download": {
+            "name": "Descargar datos"
+        },
+        "delete": {
+            "name": "Borrar cuenta"
+        },
+        "organizations": {
+            "name": "Mis organizaciones"
+        },
+        "languages": {
+            "name": "Idiomas"
+        },
+        "email": {
+            "validation": {
+                "same-email": "Esta es su dirección de correo electrónico actual"
+            },
+            "name": "Su correo electrónico",
+            "labelEmail": "Cambiar su dirección de correo electrónico",
+            "labelNewEmail": "Nueva dirección de correo electrónico",
+            "labelNonce": "Introduzca su código",
+            "success": "Se ha registrado una nueva dirección de correo electrónico.",
+            "submitted": "Se ha enviado un correo electrónico a <b>{email}<\/b> para verificar su dirección.",
+            "change-successful": "Su dirección de correo electrónico ha sido cambiada con éxito.",
+            "verification-error": {
+                "message": "Su correo electrónico no se pudo cambiar.",
+                "explanation": "Esto puede tener diferentes causas:",
+                "reason": {
+                    "invalid-nonce": "¿El código de confirmación no es válido?",
+                    "no-email-request": "¿Está seguro de que ha solicitado un cambio de su dirección de correo electrónico?"
+                },
+                "support": "Si el problema persiste, póngase en contacto con nosotros por correo electrónico a"
+            }
+        },
+        "validation": {
+            "slug": {
+                "regex": "Los caracteres permitidos son solo letras minúsculas, números, guiones bajos y guiones.",
+                "alreadyTaken": "Este nombre de usuario ya está en uso."
+            }
+        },
+        "deleteUserAccount": {
+            "name": "Borrar datos",
+            "contributionsCount": "Eliminar mis {count} contribuciones",
+            "commentedCount": "Eliminar mis {count} comentarios",
+            "accountDescription": "Tenga en cuenta que su contribución y sus comentarios son importantes para nuestra comunidad. Si aún decide borrarlos, debe marcarlos a continuación.",
+            "accountWarning": "¡<b> NO PUEDE GESTIONAR <\/b> y <b> NO PUEDE RECUPERAR <\/b> su cuenta, contribuciones o comentarios después de eliminar su cuenta!",
+            "success": "¡Cuenta eliminada con éxito!",
+            "pleaseConfirm": "<b class='is-danger'> ¡Acción destructiva! <\/b> Escriba <b> {confirm} <\/b> para confirmar"
+        },
+        "embeds": {
+            "name": "Proveedores externos",
+            "info-description": "Aquí está la lista de proveedores de terceros cuyo contenido se puede mostrar como código de terceros, por ejemplo, en forma de vídeos incrustados.",
+            "status": {
+                "description": "Por defecto, el código incrustado de proveedores externos está",
+                "disabled": {
+                    "off": "inicialmente sin mostrar",
+                    "on": "mostrado inmediatamente"
+                },
+                "change": {
+                    "question": "¿Debería mostrarse siempre el código fuente incrustado de terceros?",
+                    "allow": "Seguro",
+                    "deny": "No, gracias"
+                }
+            }
+        },
+        "social-media": {
+            "name": "Medios de comunicación social",
+            "placeholder": "Agregar una URL de Social-Media",
+            "requireUnique": "Ya ha añadido esta url",
+            "submit": "Añadir enlace",
+            "successAdd": "Social-Media agregó. Perfil actualizado!",
+            "successDelete": "Social-Media borrado. Perfil actualizado!"
+        },
+        "blocked-users": {
+            "name": "Usuarios bloqueados",
+            "explanation": {
+                "intro": "Si otro usuario ha sido bloqueado por usted, esto es lo que sucede:",
+                "your-perspective": "Las contribuciones de la persona bloqueada no aparecerán más en su canal de noticias.",
+                "their-perspective": "Viceversa: la persona bloqueada tampoco verá más sus contribuciones en sus noticias.",
+                "search": "Las contribuciones de personas bloqueadas desaparecen de los resultados de búsqueda.",
+                "notifications": "Los usuarios bloqueados no recibirán más notificaciones si se mencionan en sus contribuciones.",
+                "closing": "Esto debería ser suficiente por ahora para que los usuarios bloqueados no puedan molestarle más."
+            },
+            "columns": {
+                "name": "Nombre",
+                "slug": "Alias",
+                "unblock": "Desbloquear"
+            },
+            "empty": "Hasta ahora, no ha bloqueado a nadie.",
+            "how-to": "Puede bloquear a otros usuarios en la página de perfil de aquellos a través del menú de contenido.",
+            "block": "Bloquear usuario",
+            "unblock": "Desbloquear usuario",
+            "unblocked": "{name} está desbloqueado nuevamente"
+        },
+        "privacy": {
+            "name": "Privacidad",
+            "make-shouts-public": "Compartir artículos que he recomendado en mi perfil público",
+            "success-update": "Configuración de privacidad guardada"
+        }
     },
-    "takeAction": {
-      "name": "Tomar acción"
+    "admin": {
+        "name": "Admin",
+        "dashboard": {
+            "name": "Tablero",
+            "users": "Usuarios",
+            "posts": "Contribuciones",
+            "comments": "Comentarios",
+            "notifications": "Notificaciones",
+            "organizations": "Organizaciones",
+            "projects": "Proyectos",
+            "invites": "Invita",
+            "follows": "Sigue",
+            "shouts": "Recomendaciones"
+        },
+        "organizations": {
+            "name": "Organizaciones"
+        },
+        "users": {
+            "name": "Usuarios",
+            "form": {
+                "placeholder": "correo electrónico, nombre o descripción"
+            },
+            "table": {
+                "columns": {
+                    "number": "No.",
+                    "name": "Nombre",
+                    "email": "Correo electrónico",
+                    "slug": "Alias",
+                    "role": "Rol",
+                    "createdAt": "Creado el"
+                }
+            },
+            "empty": "No se han encontrado usuarios"
+        },
+        "pages": {
+            "name": "Páginas"
+        },
+        "notifications": {
+            "name": "Notificaciones"
+        },
+        "categories": {
+            "name": "Categorías",
+            "categoryName": "Nombre",
+            "postCount": "Contribuciones"
+        },
+        "tags": {
+            "name": "Etiquetas",
+            "tagCountUnique": "Usuarios",
+            "tagCount": "Contribuciones"
+        },
+        "settings": {
+            "name": "Configuración"
+        },
+        "hashtags": {
+            "name": "Hashtags",
+            "number": "No.",
+            "nameOfHashtag": "Nombre",
+            "tagCountUnique": "Usuarios",
+            "tagCount": "Contribuciones"
+        },
+        "invites": {
+            "name": "Invitar usuarios",
+            "title": "Invitar personas",
+            "description": "Las invitaciones son una manera maravillosa de tener a sus amigos en su red ..."
+        },
+        "donations": {
+            "name": "Información de donaciones",
+            "goal": "Donaciones mensuales necesarias",
+            "progress": "Donaciones recogidas hasta ahora",
+            "successfulUpdate": "¡Información de donaciones actualizada con éxito!"
+        }
+    },
+    "post": {
+        "name": "Contribución",
+        "moreInfo": {
+            "name": "Más info",
+            "title": "Más información",
+            "description": "Aquí puede encontrar más información sobre este tema.",
+            "titleOfCategoriesSection": "Categorías",
+            "titleOfHashtagsSection": "Hashtags",
+            "titleOfRelatedContributionsSection": "Contribuciones relacionadas"
+        },
+        "takeAction": {
+            "name": "Tomar acción"
+        },
+        "pinned": "Anuncio",
+        "menu": {
+            "edit": "Editar contribución",
+            "delete": "Borrar contribución",
+            "pin": "Anclar contribución",
+            "pinnedSuccessfully": "¡Contribución anclado con éxito!",
+            "unpin": "Desanclar contribución",
+            "unpinnedSuccessfully": "¡Contribución desanclado con éxito!"
+        },
+        "comment": {
+            "submit": "Comentario",
+            "submitted": "Comentario enviado",
+            "updated": "Cambios guardados"
+        },
+        "edited": "editado"
+    },
+    "quotes": {
+        "african": {
+            "quote": "Muchas personas pequeñas en muchos lugares pequeños hacen muchas cosas pequeñas, que pueden alterar la faz del mundo.",
+            "author": "Proverbio africano"
+        }
+    },
+    "common": {
+        "post": "Mensaje ::: Mensajes",
+        "comment": "Comentario ::: Comentarios",
+        "letsTalk": "Hablemos",
+        "versus": "Versus",
+        "moreInfo": "Más información",
+        "takeAction": "Tomar acción",
+        "shout": "Grito ::: Gritos",
+        "user": "Usuario ::: Usuarios",
+        "category": "Categoría ::: Categorías",
+        "organization": "Organización ::: Organizaciones",
+        "project": "Proyecto ::: Proyectos",
+        "tag": "Etiqueta ::: Etiquetas",
+        "name": "Nombre",
+        "loadMore": "cargar más",
+        "loading": "cargando",
+        "reportContent": "Informe",
+        "validations": {
+            "email": "debe ser una dirección de correo electrónico válida",
+            "url": "debe ser una URL válida",
+            "categories": "deben seleccionarse al menos una y como máximo tres categorías"
+        }
+    },
+    "actions": {
+        "loading": "cargamento",
+        "loadMore": "cargar más",
+        "create": "Crear",
+        "save": "Guardar",
+        "edit": "Edite",
+        "delete": "Borrar",
+        "cancel": "Cancelar"
+    },
+    "moderation": {
+        "name": "Moderación",
+        "reports": {
+            "empty": "Felicitaciones, nada que moderar.",
+            "name": "Informes",
+            "reporter": "reportado por",
+            "submitter": "comunicado por",
+            "disabledBy": "desactivado por",
+            "reasonCategory": "Categoría",
+            "reasonDescription": "Descripción",
+            "createdAt": "Fecha"
+        }
+    },
+    "disable": {
+        "user": {
+            "title": "Desactivar usuario",
+            "type": "Usuario",
+            "message": "¿Realmente quieres deshabilitar el usuario \"<b>{name}<\/b>\"?"
+        },
+        "contribution": {
+            "title": "Deshabilitar contribución",
+            "type": "Contribución",
+            "message": "¿Realmente quieres deshabilitar la contribución \"<b>{name}<\/b>\"?"
+        },
+        "comment": {
+            "title": "Desactivar comentario",
+            "type": "Comentario",
+            "message": "¿Realmente quieres deshabilitar el comentario de \"<b>{name}<\/b>\"?"
+        },
+        "submit": "Desactivar",
+        "cancel": "Cancelar",
+        "success": "Discapacitado con éxito"
+    },
+    "report": {
+        "submit": "Informe",
+        "cancel": "Cancelar",
+        "user": {
+            "title": "Reportar usuario",
+            "type": "Usuario",
+            "message": "¿Realmente quieres reportar al usuario \"<b>{name}<\/b>\"?",
+            "error": "¡Ya reportó al usuario!"
+        },
+        "contribution": {
+            "title": "Informe Contribución",
+            "type": "Contribución",
+            "message": "¿Realmente quieres informar al usuario de la contribución \"<b>{name}<\/b>\"?",
+            "error": "¡Ya ha reportado la contribución!"
+        },
+        "comment": {
+            "title": "Reportar comentario",
+            "type": "Comentario",
+            "message": "¿Realmente quieres reportar el comentario de \"<b>{name}<\/b>\"?",
+            "error": "¡Ya ha reportado al comentario!"
+        },
+        "success": "¡Gracias por informar!",
+        "reason": {
+            "category": {
+                "label": "Seleccione una categoría:",
+                "placeholder": "Categoría ...",
+                "options": {
+                    "discrimination_etc": "Contribuciones discriminatorias, comentarios, expresiones o insultos.",
+                    "pornographic_content_links": "Publicación o enlace de material claramente pornográfico.",
+                    "glorific_trivia_of_cruel_inhuman_acts": "Glorificación o minimización de actos de violencia crueles o inhumanos.",
+                    "doxing": "La divulgación de información personal de otros sin su consentimiento o amenaza de (\"doxing\").",
+                    "intentional_intimidation_stalking_persecution": "Intimidación intencional, acoso o persecución.",
+                    "advert_products_services_commercial": "Publicidad de productos y servicios con fines comerciales.",
+                    "criminal_behavior_violation_german_law": "Comportamiento criminal o violación de la ley alemana.",
+                    "other": "Otra ..."
+                },
+                "invalid": "Por favor seleccione una categoría válida"
+            },
+            "description": {
+                "label": "Por favor explique: ¿Por qué le gusta reportar esto?",
+                "placeholder": "Información adicional...."
+            }
+        }
+    },
+    "contribution": {
+        "edit": "Editar contribución",
+        "delete": "Eliminar contribución",
+        "title": "Título",
+        "newPost": "Crear una nueva contribución",
+        "filterFollow": "Filtrar las contribuciones de los usuarios que sigo",
+        "filterALL": "Ver todas las contribuciones",
+        "success": "¡Guardado!",
+        "languageSelectLabel": "Idioma",
+        "categories": {
+            "infoSelectedNoOfMaxCategories": "{chosen} de {max} categorías seleccionadas"
+        },
+        "emotions-label": {
+            "funny": "Gracioso",
+            "happy": "Feliz",
+            "surprised": "Sorprendido",
+            "cry": "Llorar",
+            "angry": "Enfadado"
+        },
+        "category": {
+            "name": {
+                "freedom-of-speech": "Libertad de expresión",
+                "consumption-sustainability": "Consumo y Sostenibilidad",
+                "global-peace-nonviolence": "Paz Global y No-Violencia",
+                "just-for-fun": "Sólo por diversión",
+                "happiness-values": "Felicidad y Valores",
+                "health-wellbeing": "Salud y Bienestar",
+                "environment-nature": "Medio ambiente y Naturaleza",
+                "animal-protection": "Protección de animales",
+                "human-rights-justice": "Derechos Humanos y Justicia",
+                "education-sciences": "Educación y Ciencias",
+                "cooperation-development": "Cooperación y Desarrollo",
+                "democracy-politics": "Democracia y Política",
+                "economy-finances": "Economía y Finanzas",
+                "energy-technology": "Energía y Tecnología",
+                "it-internet-data-privacy": "TI, Internet y privacidad de datos",
+                "art-culture-sport": "Arte, Cultura y Deporte"
+            }
+        },
+        "teaserImage": {
+            "cropperConfirm": "Confirmar"
+        },
+        "languageSelectText": "Seleccione el idioma"
+    },
+    "comment": {
+        "edit": "Editar comentario",
+        "delete": "Eliminar comentario",
+        "content": {
+            "unavailable-placeholder": "... este comentario ya no está disponible"
+        },
+        "menu": {
+            "edit": "Editar comentario",
+            "delete": "Borrar comentario"
+        },
+        "show": {
+            "more": "mostrar más",
+            "less": "mostrar menos"
+        },
+        "edited": "editado"
+    },
+    "followButton": {
+        "follow": "Seguir",
+        "following": "Siguiendo"
+    },
+    "shoutButton": {
+        "shouted": "recomendado"
+    },
+    "search": {
+        "placeholder": "Buscar",
+        "hint": "¿Qué estás buscando?",
+        "failed": "No se ha encontrado nada"
+    },
+    "components": {
+        "password-reset": {
+            "request": {
+                "title": "Restablecer su contraseña",
+                "form": {
+                    "description": "Se enviará un correo electrónico de restablecimiento de contraseña a la dirección de correo electrónico especificada.",
+                    "submit": "Solicitar correo electrónico",
+                    "submitted": "Se ha enviado un correo electrónico con más instrucciones a <b>{email}<\/b>."
+                }
+            },
+            "change-password": {
+                "success": "El cambio de contraseña ha sido un éxito!",
+                "error": "Error al cambiar la contraseña. ¿Posiblemente un código de seguridad incorrecto?",
+                "help": "Si tiene algún problema, por favor envíenos un correo electrónico a:"
+            }
+        },
+        "enter-nonce": {
+            "form": {
+                "nonce": "Introduzca el código",
+                "description": "Abra su buzón de correo e introduzca el código que le enviamos.",
+                "next": "Continuar",
+                "validations": {
+                    "length": "debe tener exactamente 6 letras"
+                }
+            }
+        },
+        "registration": {
+            "signup": {
+                "unavailable": "Desafortunadamente, el registro público de cuentas de usuario en este servidor actualmente no es posible.",
+                "title": "¡Únete a Human Connection!",
+                "form": {
+                    "description": "Para empezar, introduzca su dirección de correo electrónico:",
+                    "terms-and-condition": "Estoy de acuerdo con los <a href=\"\/terms-and-conditions\"><ds-text bold color=\"primary\" >términos de uso<\/ds-text><\/a>.",
+                    "data-privacy": "He leido y entendido la <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\"><ds-text bold color=\"primary\" >declaración de protección de datos<\/ds-text><\/a>",
+                    "minimum-age": "Tengo 18 años o más.",
+                    "invitation-code": "Su código de invitación es: <b>{code}<\/b>",
+                    "errors": {
+                        "email-exists": "¡Ya hay una cuenta de usuario con esta dirección de correo electrónico!",
+                        "invalid-invitation-token": "Parece que el código de invitación ya ha sido canjeado. Cada código sólo se puede utilizar una vez."
+                    },
+                    "submit": "Crear una cuenta",
+                    "success": "Se ha enviado un correo electrónico con un enlace de confirmación para el registro a <b>{email}<\/b>."
+                }
+            },
+            "create-user-account": {
+                "title": "Crear una cuenta de usuario",
+                "success": "¡Su cuenta de usuario ha sido creada!",
+                "error": "¡No se ha podido crear una cuenta de usuario!",
+                "help": "¿Tal vez el código de verificación era incorrecto o expiró? Si el problema persiste, por favor envíenos un correo electrónico a:"
+            }
+        }
+    },
+    "store": {
+        "posts": {
+            "orderBy": {
+                "newest": {
+                    "label": "Más reciente"
+                },
+                "oldest": {
+                    "label": "Más antiguo"
+                }
+            }
+        }
+    },
+    "maintenance": {
+        "title": "Human Connection está en mantenimiento",
+        "explanation": "Actualmente estamos llevando a cabo algunos trabajos de mantenimiento planificados, por favor, inténtelo de nuevo más tarde.",
+        "questions": "Si tiene alguna pregunta o problema, por favor contáctenos por correo electrónico a"
+    },
+    "index": {
+        "no-results": "No se han encontrado contribuciones.",
+        "change-filter-settings": "Cambie la configuración de sus filtros para obtener más resultados."
+    },
+    "filter-menu": {
+        "title": "Su burbuja de filtro",
+        "hashtag-search": "Buscando a #{hashtag}",
+        "clearSearch": "Borrar búsqueda"
+    },
+    "filter-posts": {
+        "categories": {
+            "header": "Categorías de contenido",
+            "all": "Todas"
+        },
+        "general": {
+            "header": "Filtrar por...."
+        },
+        "followers": {
+            "label": "Usuarios que sigo"
+        },
+        "language": {
+            "header": "Idiomas",
+            "all": "Todos"
+        }
+    },
+    "site": {
+        "thanks": "¡Gracias!",
+        "error-occurred": "Se ha ocurrido un error.",
+        "made": "Hecho con &#10084;",
+        "imprint": "Pie de imprenta",
+        "termsAndConditions": "Términos y condiciones",
+        "data-privacy": "Protección de datos",
+        "changelog": "Cambios e historia",
+        "contact": "Contacto",
+        "tribunal": "Tribunal de registro",
+        "register": "Número de registro",
+        "director": "Director General",
+        "taxident": "Número de identificación del impuesto sobre el valor añadido según el § 27 a de la Ley del Impuesto sobre el Valor Añadido (Alemania)",
+        "responsible": "Responsable según § 55 Abs. 2 RStV (Alemania)",
+        "bank": "cuenta bancaria",
+        "germany": "Alemania",
+        "code-of-conduct": "Código de conducta",
+        "back-to-login": "Volver a la página de inicio de sesión",
+        "faq": "Preguntas más frecuentes"
+    },
+    "editor": {
+        "placeholder": "Deje sus pensamientos inspiradores....",
+        "mention": {
+            "noUsersFound": "No se han encontrado usuarios"
+        },
+        "hashtag": {
+            "noHashtagsFound": "No se han encontrado hashtags",
+            "addHashtag": "Nuevo hashtag",
+            "addLetter": "Escriba una letra"
+        },
+        "embed": {
+            "data_privacy_warning": "¡Advertencia de privacidad de datos!",
+            "data_privacy_info": "Sus datos aún no han sido compartidos con terceros proveedores. Si usted procede a ver este video, el siguiente proveedor probablemente recolectará datos del usuario:",
+            "play_now": "Ver ahora",
+            "always_allow": "Permitir siempre contenido incrustado por proveedores externos (esta configuración se puede cambiar en cualquier momento)"
+        }
+    },
+    "notifications": {
+        "reason": {
+            "mentioned_in_post": "Le mencionó en una contribución …",
+            "mentioned_in_comment": "Le mencionó en un comentario …",
+            "commented_on_post": "Comentó su contribución ..."
+        },
+        "comment": "Comentario",
+        "title": "Notificaciones",
+        "pageLink": "Todas las notificaciones",
+        "post": "Contribución",
+        "user": "Usuario",
+        "content": "Contenido",
+        "filterLabel": {
+            "all": "Todas",
+            "read": "Leído",
+            "unread": "No leído"
+        },
+        "empty": "Lo sentimos, no tiene ninguna notificación en este momento."
     },
     "delete": {
-      "submit": "Borrar",
-      "cancel": "Cancelar",
-      "success": "Mensaje borrado satisfactoriamente",
-      "title": "Borrar mensaje",
-      "type": "Mensaje",
-      "message": "¿Realmente quieres borrar el mensaje \"<b>{name}</b>\"?"
-    }
-  },
-  "quotes": {
-    "african": {
-      "quote": "Muchas personas pequeñas en muchos lugares pequeños hacen muchas cosas pequeñas, que pueden alterar la faz del mundo.",
-      "author": "Proverbio africano"
-    }
-  },
-  "common": {
-    "your": {
-      "post": "Your Post ::: Your Posts",
-      "comment": "Your Comment ::: Your Comments",
-      "shout": "Your Shout ::: Your Shouts"
+        "submit": "Borrar",
+        "cancel": "Cancelar",
+        "contribution": {
+            "title": "Borrar contribución",
+            "type": "Contribución",
+            "message": "¿Realmente desea eliminar la Contribución \"<b>{name}<\/b>\" ?",
+            "success": "¡Publicación eliminado con éxito!"
+        },
+        "comment": {
+            "title": "Eliminar comentario",
+            "type": "Comentario",
+            "message": "¿Realmente quieres borrar el comentario de \"<b>{name}<\/b>\" ?",
+            "success": "¡Comentario eliminado con éxito!"
+        }
     },
-    "post": "Mensaje ::: Mensajes",
-    "comment": "Comentario ::: Comentarios",
-    "letsTalk": "Hablemos",
-    "versus": "Versus",
-    "moreInfo": "Más info",
-    "takeAction": "Tomar acción",
-    "shout": "Grito ::: Gritos",
-    "user": "Usuario ::: Usuarios",
-    "category": "Categoría ::: Categorías",
-    "organization": "Organización ::: Organizaciones",
-    "project": "Proyecto ::: Proyectos",
-    "tag": "Etiqueta ::: Etiquetas",
-    "name": "Nombre",
-    "loadMore": "cargar más",
-    "loading": "cargando",
-    "reportContent": "Report"
-  },
-  "actions": {
-    "loading": "cargamento",
-    "loadMore": "cargar más",
-    "create": "Crear",
-    "save": "Guardar",
-    "edit": "Edite",
-    "delete": "Delete",
-    "cancel": "Cancelar"
-  },
-  "moderation": {
-    "name": "Moderación",
-    "reports": {
-      "empty": "Felicitaciones, nada que moderar.",
-      "name": "Informes",
-      "submitter": "comunicado por",
-      "disabledBy": "desactivado por"
-    }
-  },
-  "disable": {
-    "submit": "Desactivar",
-    "cancel": "Cancelar",
-    "success": "Discapacitado con éxito",
+    "release": {
+        "submit": "Liberar",
+        "cancel": "Cancelar",
+        "success": "¡Liberado con éxito!",
+        "user": {
+            "title": "Liberar usuario",
+            "type": "Usuario",
+            "message": "¿Realmente quieres liberar al usuario \"<b>{name}<\/b>\"?",
+            "error": "¡Ya ha reportado el usuario!"
+        },
+        "contribution": {
+            "title": "Contribución de la versión ",
+            "type": "Contribución",
+            "message": "¿Realmente quieres liberar la contribución \"<b>{name}<\/b>\"?",
+            "error": "¡Ya ha reportado la contribución!"
+        },
+        "comment": {
+            "title": "Comentario de la versión",
+            "type": "Comentario",
+            "message": "¿Realmente quieres liberar el comentario de \"<b>{name}<\/b>\"?",
+            "error": "¡Ya ha reportado el comentario!"
+        }
+    },
     "user": {
-      "title": "Desactivar usuario",
-      "type": "Usuario",
-      "message": "¿Realmente quieres deshabilitar el usuario \"<b>{name}</b>\"?"
+        "avatar": {
+            "submitted": "Carga con éxito"
+        }
     },
-    "contribution": {
-      "title": "Deshabilitar contribución",
-      "type": "Contribución",
-      "message": "¿Realmente quieres deshabilitar la contribución \"<b>{name}</b>\"?"
+    "code-of-conduct": {
+        "subheader": "para la red social de Human Connection gGmbH",
+        "preamble": {
+            "title": "Preámbulo",
+            "description": "Human Connection es una red de conocimiento y acción social sin fines de lucro de la próxima generación. Por la gente - para la gente. Código Abierto, justo y transparente. Por un cambio positivo a nivel local y global en todas las áreas de la vida. Rediseñamos completamente el intercambio público de conocimientos, ideas y proyectos. Las funciones de Human Connection unen a las personas - fuera de línea y en línea - para que podamos hacer del mundo un lugar mejor."
+        },
+        "purpose": {
+            "title": "Propósito",
+            "description": "Con este código de conducta regulamos los principios esenciales de comportamiento en nuestra red social. La Carta de Derechos Humanos de las Naciones Unidas es nuestra orientación y constituye el núcleo de nuestra comprensión de los valores. El código de conducta sirve como principios rectores para nuestra apariencia personal y la interacción entre nosotros. Cualquiera que esté activo como usuario de la Red de Human Connection, escriba artículos, comentarios o se ponga en contacto con otros usuarios, incluidos los que están fuera de la red, reconoce que estas normas de conducta son vinculantes."
+        },
+        "expected-behaviour": {
+            "title": "Comportamiento esperado",
+            "description": "Los siguientes comportamientos son esperados y solicitados de todos los miembros de la comunidad:",
+            "list": {
+                "0": "Ejercite la consideración y el respeto en su discurso y en sus acciones.",
+                "1": "Intento de colaboración antes del conflicto.",
+                "2": "Abstenerse de denigrar, discriminar o acosar la conducta y el habla.",
+                "3": "Tenga en cuenta su entorno y sus compañeros participantes. Alerte a los líderes de la comunidad si nota una situación peligrosa, alguien en apuros o violaciones de este Código de Conducta, incluso si parecen no tener consecuencias."
+            }
+        },
+        "unacceptable-behaviour": {
+            "title": "Comportamiento Inaceptable",
+            "description": "Los siguientes comportamientos son inaceptables dentro de nuestra comunidad:",
+            "list": {
+                "0": "Publicaciones, comentarios, expresiones o insultos discriminatorios, particularmente aquellos relacionados con género, orientación sexual, raza, religión, orientación política o filosófica o discapacidad.",
+                "1": "Publicación o enlace de material claramente pornográfico.",
+                "2": "Glorificación o trivialización de actos de violencia crueles o inhumanos.",
+                "3": "La divulgación de información personal de otros sin su consentimiento o amenaza de (\"doxing\").",
+                "4": "Intimidación intencional, acoso o persecución.",
+                "5": "Publicidad de productos y servicios con fines comerciales.",
+                "6": "Comportamiento criminal o violación de la ley alemana.",
+                "7": "Apoyar o alentar dicha conducta."
+            }
+        },
+        "consequences": {
+            "title": "Consecuencias de Comportamiento Inaceptable",
+            "description": "Si un miembro de la comunidad muestra un comportamiento inaceptable, los operadores, moderadores y administradores responsables de la red pueden tomar las medidas apropiadas, incluyendo pero no limitándose a:",
+            "list": {
+                "0": "Solicitud de cese inmediato de conducta inaceptable",
+                "1": "Bloquear o eliminar comentarios",
+                "2": "Exclusión temporal de la contribución respectiva",
+                "3": "Bloqueo o eliminación de contenido",
+                "4": "Retirada temporal de permisos de escritura",
+                "5": "Exclusión temporal de la red.",
+                "6": "Exclusión definitiva de la red",
+                "7": "Las violaciones de la ley alemana pueden ser denunciadas.",
+                "8": "Notificación de incidentes"
+            }
+        },
+        "get-help": "Si usted está sujeto a un comportamiento inaceptable, lo experimenta o tiene otras preocupaciones, por favor notifique a un organizador de la comunidad tan pronto como sea posible y enlace o apunte el contenido relevante:"
     },
-    "comment": {
-      "title": "Desactivar comentario",
-      "type": "Comentario",
-      "message": "¿Realmente quieres deshabilitar el comentario de \"<b>{name}</b>\"?"
+    "termsAndConditions": {
+        "newTermsAndConditions": "Nuevos términos de uso",
+        "termsAndConditionsConfirmed": "He leído y acepto los <a href=\"\/terms-and-conditions\" target=\"_blank\">términos de uso<\/a>.",
+        "termsAndConditionsNewConfirmText": "¡Por favor, lea los nuevos términos de uso ahora!",
+        "termsAndConditionsNewConfirm": "He leído y acepto los nuevos términos de uso.",
+        "agree": "¡Estoy de acuerdo!",
+        "terms-of-service": {
+            "title": "Términos de uso",
+            "description": "Las siguientes condiciones de uso constituyen la base para el uso de nuestra red. Cuando se registre, deberá aceptarlos y le informaremos más adelante de cualquier cambio que se produzca. La Red de Human Connection es operada en Alemania y por lo tanto está sujeta a la ley alemana. El fuero competente es Kirchheim \/ Teck. Para más detalles, consulte nuestro pie de imprenta: <a href=\"https:\/\/human-connection.org\/en\/imprint\" target=\"_blank\" >https:\/\/human-connection.org\/en\/imprint<\/a> "
+        },
+        "use-and-license": {
+            "title": "Uso y Licencia",
+            "description": "Si cualquier contenido que nos envíe está protegido por derechos de propiedad intelectual, nos concede una licencia mundial no exclusiva, transferible, sublicenciable y no exclusiva para utilizar dicho contenido para su publicación en nuestra red. Esta licencia caduca cuando usted elimina su contenido o toda su cuenta. Recuerde que otros pueden compartir su contenido y que nosotros no podemos eliminarlo."
+        },
+        "privacy-statement": {
+            "title": "Protección de datos",
+            "description": "Nuestra red es una red de conocimiento y acción social. Por lo tanto, es especialmente importante para nosotros que el mayor número posible de contenidos sea accesible al público. En el curso del desarrollo de nuestra red habrá cada vez más la posibilidad de decidir sobre la visibilidad de los datos personales. Le informaremos sobre estas nuevas características. De lo contrario, siempre debe pensar en los datos personales que revela sobre usted (u otros). Esto se aplica en particular al contenido de los mensajes y comentarios, ya que éstos tienen un carácter ampliamente público. Más tarde habrá posibilidades de limitar la visibilidad de su perfil. Parte de los términos del servicio es nuestra declaración de privacidad, que le informa sobre las operaciones individuales de procesamiento de datos en nuestra red: <a href=\"https:\/\/human-connection.org\/datenschutz\/#netzwerk\" target=\"_blank\">https:\/\/human-connection.org\/datenschutz\/#netzwerk<\/a> o <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\">https:\/\/human-connection.org\/datenschutz\/<\/a> Nuestra declaración de privacidad está adaptada a la situación legal y a las características de nuestra red y es siempre válida en la versión más actualizada."
+        },
+        "code-of-conduct": {
+            "title": "Código de conducta",
+            "description": "Nuestro código de conducta sirve como un manual para la apariencia personal y la interacción entre nosotros. Quien esté activo como usuario en la red de Human Connection, escriba artículos, haga comentarios o se ponga en contacto con otros usuarios, incluso fuera de la red, reconoce que estas normas de conducta son vinculantes. <a href=\"https:\/\/alpha.human-connection.org\/code-of-conduct\" target=\"_blank\">https:\/\/alpha.human-connection.org\/code-of-conduct<\/a>"
+        },
+        "moderation": {
+            "title": "Moderación",
+            "description": "Hasta que nuestras posibilidades financieras nos permitan implementar el sistema de moderación comunitaria, moderaremos con un sistema simplificado y con personal propio o posiblemente voluntario. Formamos a estos moderadores y por eso sólo ellos toman las decisiones adecuadas. Estos moderadores realizan su trabajo de forma anónima. Usted puede reportarnos contribuciones, comentarios y usuarios (por ejemplo, si proporcionan información en su perfil o tienen imágenes que violan estos Términos de Uso). Si nos informa de algo, puede darnos una razón y una breve explicación. A continuación, examinaremos su denuncia y le sancionaremos si es necesario, por ejemplo, bloqueando las contribuciones, los comentarios o los usuarios. Desafortunadamente, usted y la persona en cuestión no recibirán ninguna respuesta de nuestra parte en este momento, pero esto se encuentra en la fase de planificación. Independientemente de esto, nos reservamos el derecho de imponer sanciones en principio por razones que pueden no estar incluidas o no estar incluidas en nuestro Código de Conducta o en estas condiciones de servicio."
+        },
+        "errors-and-feedback": {
+            "title": "Errores y comentarios",
+            "description": "Hacemos todo lo posible para mantener nuestra red y los datos seguros y disponibles. Cada nueva versión del software pasa por pruebas automáticas y manuales. No obstante, pueden producirse errores imprevistos. Por lo tanto, estamos agradecidos por cualquier error reportado. Le invitamos a informar de cualquier error que haya descubierto enviando un correo electrónico a Soporte: support@human-connection.org"
+        },
+        "help-and-questions": {
+            "title": "Ayuda y preguntas",
+            "description": "Para ayuda y preguntas hemos compilado una colección completa de preguntas y respuestas frecuentes (FAQ) para usted. Puede encontrarlos aquí: <a href=\"https:\/\/support.human-connection.org\/kb\/\" target=\"_blank\" >https:\/\/support.human-connection.org\/kb\/<\/a>"
+        },
+        "addition": {
+            "title": "Además, regularmente celebramos eventos donde también puede dar impresiones y hacer preguntas. Puede encontrar un resumen actualizado aquí:",
+            "description": "<a href=\"https:\/\/human-connection.org\/events\/\" target=\"_blank\" > https:\/\/human-connection.org\/events\/ <\/a>"
+        }
+    },
+    "donations": {
+        "donations-for": "Donaciones para",
+        "donate-now": "Donar ahora",
+        "amount-of-total": "{amount} de {total} € recaudados"
     }
-  },
-  "delete": {
-    "submit": "Borrar",
-    "cancel": "Cancelar",
-    "contribution": {
-      "title": "Borrar contribución",
-      "type": "Contribución",
-      "message": "¿Realmente desea eliminar la Contribución \"<b>{name}</b>\" ?",
-      "success": "Contribución eliminada con éxito!"
-    },
-    "comment": {
-      "title": "Eliminar comentario",
-      "type": "Comentario",
-      "message": "¿Realmente quieres borrar el comentario de \"<b>{name}</b>\" ?",
-      "success": "Comentario eliminado con éxito!"
-    }
-  },
-  "report": {
-    "submit": "Informe",
-    "cancel": "Cancelar",
-    "success": "Gracias por informarnos!",
-    "user": {
-      "title": "Usuario de informe",
-      "type": "Usuario",
-      "message": "¿Realmente quieres reportar al usuario \"<b>{name}</b>\"?"
-    },
-    "contribution": {
-      "title": "Informe Contribución",
-      "type": "Contribución",
-      "message": "¿Realmente quieres informar al usuario de la contribución  \"<b>{name}</b>\"?"
-    },
-    "comment": {
-      "title": "Informe Comentario",
-      "type": "Comentario",
-      "message": "¿Realmente quieres reportar el comentario de \"<b>{name}</b>\"?"
-    }
-  },
-  "followButton": {
-    "follow": "Folgen",
-    "following": "Folge Ich"
-  },
-  "shoutButton": {
-    "shouted": "empfohlen"
-  },
-  "release": {
-    "submit": "Liberación",
-    "cancel": "Cancelar",
-    "success": "Liberar con éxito!",
-    "user": {
-      "title": "Usuario de la versión  ",
-      "type": "Usuario",
-      "message": "¿Realmente quieres liberar al usuario \"<b>{name}</b>\"?"
-    },
-    "contribution": {
-      "title": "Contribución de la versión ",
-      "type": "Contribución",
-      "message": "¿Realmente quieres liberar la contribución \"<b>{name}</b>\"?"
-    },
-    "comment": {
-      "title": "Comentario de la versión",
-      "type": "Comentario",
-      "message": "¿Realmente quieres liberar el comentario de \"<b>{name}</b>\"?"
-    }
-  },
-  "contribution": {
-    "teaserImage": {
-      "cropperConfirm": "Confirmar"
-    }
-  },
-  "user": {
-    "avatar": {
-      "submitted": "Carga con éxito"
-    }
-  }
 }
