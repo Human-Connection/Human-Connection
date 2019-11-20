@@ -1,9 +1,8 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
+import { shallowMount } from '@vue/test-utils'
+
 import Category from './index'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('Category', () => {
   let icon

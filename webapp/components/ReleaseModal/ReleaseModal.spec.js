@@ -1,10 +1,7 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, mount } from '@vue/test-utils'
 import ReleaseModal from './ReleaseModal.vue'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('ReleaseModal.vue', () => {
   let mocks

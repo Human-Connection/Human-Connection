@@ -1,9 +1,8 @@
-import { config, shallowMount, createLocalVue } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
+import { config, shallowMount } from '@vue/test-utils'
+
 import Hashtag from './Hashtag'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 

@@ -1,19 +1,10 @@
-import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount, mount } from '@vue/test-utils'
 import PostIndex from './index.vue'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
-import Filters from '~/plugins/vue-filters'
-import VTooltip from 'v-tooltip'
+
 import FilterMenu from '~/components/FilterMenu/FilterMenu'
-import InfiniteScroll from '~/plugins/vue-infinite-scroll'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
-localVue.use(Filters)
-localVue.use(VTooltip)
-localVue.use(InfiniteScroll)
+const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['router-link'] = '<span><slot /></span>'

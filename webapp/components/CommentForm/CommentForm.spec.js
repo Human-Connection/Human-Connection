@@ -1,12 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import CommentForm from './CommentForm'
-import Styleguide from '@human-connection/styleguide'
+
 import MutationObserver from 'mutation-observer'
 
 global.MutationObserver = MutationObserver
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('CommentForm.vue', () => {
   let mocks

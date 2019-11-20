@@ -47,6 +47,9 @@
       "^~/(.*)$": "<rootDir>/$1",
       "\\.(css|less)$": "identity-obj-proxy"
     },
+    "setupFiles": [
+      "<rootDir>/testSetup.js"
+    ],
     "testMatch": [
       "**/?(*.)+(spec|test).js?(x)"
     ]
@@ -62,6 +65,7 @@
     "accounting": "~0.4.1",
     "apollo-cache-inmemory": "~1.6.3",
     "apollo-client": "~2.6.4",
+    "babel-plugin-transform-require-context": "^0.1.1",
     "cookie-universal-nuxt": "~2.0.18",
     "cropperjs": "^1.5.5",
     "cross-env": "~6.0.3",
