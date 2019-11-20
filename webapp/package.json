@@ -45,11 +45,12 @@
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
       "^~/(.*)$": "<rootDir>/$1",
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less)$": "identity-obj-proxy",
+      "\\.(svg)$": "<rootDir>/test/fileMock.js"
     },
     "setupFiles": [
-      "<rootDir>/registerContext.js",
-      "<rootDir>/testSetup.js"
+      "<rootDir>/test/registerContext.js",
+      "<rootDir>/test/testSetup.js"
     ],
     "testMatch": [
       "**/?(*.)+(spec|test).js?(x)"
