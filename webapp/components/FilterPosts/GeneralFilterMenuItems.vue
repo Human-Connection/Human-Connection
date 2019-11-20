@@ -46,7 +46,12 @@
           </ds-button>
           <ds-space margin-bottom="x-small" />
           <ds-flex-item class="emotions-mobile-space text-center">
-            <label class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</label>
+            <label class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</label> <!-- i18n-variable -->
+<!-- i18n $t(`contribution.emotions-label.funny`)      -->
+<!-- i18n $t(`contribution.emotions-label.happy`)      -->
+<!-- i18n $t(`contribution.emotions-label.surprised`)  -->
+<!-- i18n $t(`contribution.emotions-label.cry`)        -->
+<!-- i18n $t(`contribution.emotions-label.angry`)      -->
           </ds-flex-item>
         </ds-flex-item>
       </div>

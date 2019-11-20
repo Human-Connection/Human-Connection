@@ -5,7 +5,12 @@
     </ds-button>
     <ds-space margin-bottom="xx-small" />
     <div class="emotions-mobile-space">
-      <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>
+      <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>    <!-- i18n-variable -->
+<!-- i18n $t(`contribution.emotions-label.funny`)      -->
+<!-- i18n $t(`contribution.emotions-label.happy`)      -->
+<!-- i18n $t(`contribution.emotions-label.surprised`)  -->
+<!-- i18n $t(`contribution.emotions-label.cry`)        -->
+<!-- i18n $t(`contribution.emotions-label.angry`)      -->
       <p style="display: inline" :key="PostsEmotionsCountByEmotion[emotion]">
         {{ PostsEmotionsCountByEmotion[emotion] }}x
       </p>

@@ -6,7 +6,12 @@
     <p class="help">
       <span v-if="pass" :class="{ insecure: !isSecure }">
         {{ $t('settings.security.change-password.passwordSecurity') }}:
-        <strong>{{ $t(`settings.security.change-password.passwordStrength${strength}`) }}</strong>
+        <strong>{{ $t(`settings.security.change-password.passwordStrength${strength}`) }}</strong>  <!-- i18n-variable -->
+<!-- i18n $t(`settings.security.change-password.passwordStrength0`)      -->
+<!-- i18n $t(`settings.security.change-password.passwordStrength1`)      -->
+<!-- i18n $t(`settings.security.change-password.passwordStrength2`)      -->
+<!-- i18n $t(`settings.security.change-password.passwordStrength3`)      -->
+<!-- i18n $t(`settings.security.change-password.passwordStrength4`)      -->
       </span>
       <span v-else>&nbsp;</span>
     </p>

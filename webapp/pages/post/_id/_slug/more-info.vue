@@ -11,8 +11,24 @@
       v-for="category in post.categories"
       :key="category.id"
       :icon="category.icon"
-      :name="$t(`contribution.category.name.${category.slug}`)"
+      :name="$t(`contribution.category.name.${category.slug}`)"  
     />
+<!-- i18n $t(`contribution.category.name.freedom-of-speech`)           -->
+<!-- i18n $t(`contribution.category.name.consumption-sustainability`)  -->
+<!-- i18n $t(`contribution.category.name.global-peace-nonviolence`)    -->
+<!-- i18n $t(`contribution.category.name.just-for-fun`)                -->
+<!-- i18n $t(`contribution.category.name.happiness-values`)            -->
+<!-- i18n $t(`contribution.category.name.health-wellbeing`)            -->
+<!-- i18n $t(`contribution.category.name.environment-nature`)          -->
+<!-- i18n $t(`contribution.category.name.animal-protection`)           -->
+<!-- i18n $t(`contribution.category.name.human-rights-justice`)        -->
+<!-- i18n $t(`contribution.category.name.education-sciences`)          -->
+<!-- i18n $t(`contribution.category.name.cooperation-development`)     -->
+<!-- i18n $t(`contribution.category.name.democracy-politics`)          -->
+<!-- i18n $t(`contribution.category.name.economy-finances`)            -->
+<!-- i18n $t(`contribution.category.name.energy-technology`)           -->
+<!-- i18n $t(`contribution.category.name.it-internet-data-privacy`)    -->
+<!-- i18n $t(`contribution.category.name.art-culture-sport`)           -->
     <template v-if="post.tags && post.tags.length">
       <h3>
         {{ $t('post.moreInfo.titleOfHashtagsSection') }}

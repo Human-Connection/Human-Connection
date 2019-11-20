@@ -116,7 +116,10 @@ export default {
 
       if (!this.isOwner) {
         routes.push({
-          name: this.$t(`report.${this.resourceType}.title`),
+          name: this.$t(`report.${this.resourceType}.title`),  // i18n-variable
+// i18n $t(`report.user.title`)      
+// i18n $t(`report.contribution.title`)      
+// i18n $t(`report.comment.title`)      
           callback: () => {
             this.openModal('report')
           },
@@ -127,7 +130,10 @@ export default {
       if (!this.isOwner && this.isModerator) {
         if (!this.resource.disabled) {
           routes.push({
-            name: this.$t(`disable.${this.resourceType}.title`),
+            name: this.$t(`disable.${this.resourceType}.title`),  // i18n-variable
+// i18n $t(`disable.user.title`)      
+// i18n $t(`disable.contribution.title`)      
+// i18n $t(`disable.comment.title`)      
             callback: () => {
               this.openModal('disable')
             },
@@ -135,7 +141,10 @@ export default {
           })
         } else {
           routes.push({
-            name: this.$t(`release.${this.resourceType}.title`),
+            name: this.$t(`release.${this.resourceType}.title`),  // i18n-variable
+// i18n $t(`release.user.title`)      
+// i18n $t(`release.contribution.title`)      
+// i18n $t(`release.comment.title`)      
             callback: () => {
               this.openModal('release', this.resource.id)
             },

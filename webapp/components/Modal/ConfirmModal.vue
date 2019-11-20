@@ -11,7 +11,7 @@
 
     <template slot="footer">
       <ds-button class="cancel" :icon="modalData.buttons.cancel.icon" @click="cancel">
-        {{ $t(modalData.buttons.cancel.textIdent) }}
+        {{ $t(modalData.buttons.cancel.textIdent) }}  <!-- i18n-variable??  -->
       </ds-button>
 
       <ds-button
@@ -21,7 +21,7 @@
         :loading="loading"
         @click="confirm"
       >
-        {{ $t(modalData.buttons.confirm.textIdent) }}
+        {{ $t(modalData.buttons.confirm.textIdent) }}  <!-- i18n-variable??  -->
       </ds-button>
     </template>
   </ds-modal>
@@ -50,10 +50,10 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(this.modalData.titleIdent)
+      return this.$t(this.modalData.titleIdent)  // i18n-variable??
     },
     message() {
-      return this.$t(this.modalData.messageIdent, this.modalData.messageParams)
+      return this.$t(this.modalData.messageIdent, this.modalData.messageParams)  // i18n-variable??
     },
   },
   methods: {

@@ -32,11 +32,17 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(`disable.${this.type}.title`)
+      return this.$t(`disable.${this.type}.title`)  // i18n-variable
+// i18n $t(`disable.user.title`)      
+// i18n $t(`disable.contribution.title`)      
+// i18n $t(`disable.comment.title`)      
     },
     message() {
       const name = this.$filters.truncate(this.name, 30)
-      return this.$t(`disable.${this.type}.message`, { name })
+      return this.$t(`disable.${this.type}.message`, { name })   // i18n-variable
+// i18n $t(`disable.user.message`)      
+// i18n $t(`disable.contribution.message`)      
+// i18n $t(`disable.comment.message`)      
     },
   },
   methods: {

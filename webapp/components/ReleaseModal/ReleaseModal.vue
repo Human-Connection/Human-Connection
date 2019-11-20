@@ -31,11 +31,17 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(`release.${this.type}.title`)
+      return this.$t(`release.${this.type}.title`)  // i18n-variable
+// i18n $t(`release.user.title`)      
+// i18n $t(`release.contribution.title`)      
+// i18n $t(`release.comment.title`)      
     },
     message() {
       const name = this.$filters.truncate(this.name, 30)
-      return this.$t(`release.${this.type}.message`, { name })
+      return this.$t(`release.${this.type}.message`, { name })  // i18n-variable
+// i18n $t(`release.user.message`)      
+// i18n $t(`release.contribution.message`)      
+// i18n $t(`release.comment.message`)      
     },
   },
   methods: {

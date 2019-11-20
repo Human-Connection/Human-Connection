@@ -138,7 +138,9 @@ export default {
           if (message.includes(pattern))
             this.error = {
               key,
-              message: this.$t(`components.registration.signup.form.errors.${key}`),
+              message: this.$t(`components.registration.signup.form.errors.${key}`),  // i18n-variable
+// i18n  $t(`components.registration.signup.form.errors.email-exists`)              
+// i18n  $t(`components.registration.signup.form.errors.invalid-invitation-token`)              
             }
         }
         if (!this.error) {

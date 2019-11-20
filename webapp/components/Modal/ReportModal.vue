@@ -85,11 +85,17 @@ export default {
   },
   computed: {
     title() {
-      return this.$t(`report.${this.type}.title`)
+      return this.$t(`report.${this.type}.title`)  // i18n-variable
+// i18n $t(`report.user.title`)      
+// i18n $t(`report.contribution.title`)      
+// i18n $t(`report.comment.title`)      
     },
     message() {
       const name = this.$filters.truncate(this.name, 30)
-      return this.$t(`report.${this.type}.message`, { name })
+      return this.$t(`report.${this.type}.message`, { name })  // i18n-variable
+// i18n $t(`report.user.message`)      
+// i18n $t(`report.contribution.message`)      
+// i18n $t(`report.comment.message`)      
     },
     formSchema() {
       const validReportSchema = validReport({ translate: this.$t })

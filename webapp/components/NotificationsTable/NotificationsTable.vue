@@ -24,7 +24,10 @@
         </client-only>
       </ds-space>
       <ds-text :class="{ 'notification-status': scope.row.read, reason: true }">
-        {{ $t(`notifications.reason.${scope.row.reason}`) }}
+        {{ $t(`notifications.reason.${scope.row.reason}`) }}  <!-- i18n-variable  -->
+<!-- i18n  $t(`notifications.reason.mentioned_in_post`) -->
+<!-- i18n  $t(`notifications.reason.mentioned_in_comment`) -->
+<!-- i18n  $t(`notifications.reason.commented_on_post`) -->
       </ds-text>
     </template>
     <template #post="scope">

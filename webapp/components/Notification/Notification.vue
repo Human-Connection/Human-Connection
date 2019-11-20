@@ -5,7 +5,10 @@
         <hc-user :user="from.author" :date-time="from.createdAt" :trunc="35" />
       </ds-space>
       <ds-text class="reason-text-for-test" color="soft">
-        {{ $t(`notifications.reason.${notification.reason}`) }}
+        {{ $t(`notifications.reason.${notification.reason}`) }}  <!-- i18n-variable -->
+<!-- i18n $t(`notifications.reason.mentioned_in_post`)      -->
+<!-- i18n $t(`notifications.reason.mentioned_in_comment`)   -->
+<!-- i18n $t(`notifications.reason.commented_on_post`)      -->
       </ds-text>
     </client-only>
     <ds-space margin-bottom="x-small" />
