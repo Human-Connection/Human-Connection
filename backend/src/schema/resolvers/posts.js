@@ -307,7 +307,7 @@ export default {
       },
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
-        decidedByModerator: '<-[:DECIDED]-(related:User)',
+        // Wolle reviewedByModerator: '<-[:DECIDED]-(related:User)',
         pinnedBy: '<-[:PINNED]-(related:User)',
       },
       count: {

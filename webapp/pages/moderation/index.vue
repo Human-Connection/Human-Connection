@@ -101,8 +101,8 @@
               >
                 {{ $t('moderation.reports.decideButton') }}
               </ds-button>
-              <!-- decidedByModerator -->
-              <div v-if="content.resource.decidedByModerator">
+              <!-- reviewedByModerator -->
+              <div v-if="content.resource.reviewedByModerator">
                 <br />
                 <div v-if="content.caseFolderDisable">
                   <ds-icon name="eye-slash" class="ban" />
@@ -113,7 +113,7 @@
                   {{ $t('moderation.reports.enabledBy') }}
                 </div>
                 <hc-user
-                  :user="content.resource.decidedByModerator"
+                  :user="content.resource.reviewedByModerator"
                   :showAvatar="false"
                   :trunc="30"
                   :date-time="content.caseFolderUpdatedAt"

@@ -42,12 +42,12 @@ module.exports = {
     },
   },
   friends: { type: 'relationship', relationship: 'FRIENDS', target: 'User', direction: 'both' },
-  decidedByModerator: {
-    type: 'relationship',
-    relationship: 'DECIDED',
-    target: 'User',
-    direction: 'in',
-  },
+  // Wolle reviewedByModerator: {
+  //   type: 'relationship',
+  //   relationship: 'DECIDED',
+  //   target: 'User',
+  //   direction: 'in',
+  // },
   rewarded: {
     type: 'relationship',
     relationship: 'REWARDED',

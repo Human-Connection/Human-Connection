@@ -29,7 +29,7 @@ export const reportListQuery = () => {
           name
           disabled
           deleted
-          decidedByModerator {
+          reviewedByModerator {
             id
             slug
             name
@@ -60,7 +60,7 @@ export const reportListQuery = () => {
             disabled
             deleted
           }
-          decidedByModerator {
+          reviewedByModerator {
             id
             slug
             name
@@ -84,7 +84,7 @@ export const reportListQuery = () => {
             contributionsCount
             commentedCount
           }
-          decidedByModerator {
+          reviewedByModerator {
             id
             slug
             name

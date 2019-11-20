@@ -17,12 +17,12 @@ module.exports = {
   image: { type: 'string', allow: [null] },
   deleted: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },
-  decidedByModerator: {
-    type: 'relationship',
-    relationship: 'DECIDED',
-    target: 'User',
-    direction: 'in',
-  },
+  // Wolle reviewedByModerator: {
+  //   type: 'relationship',
+  //   relationship: 'DECIDED',
+  //   target: 'User',
+  //   direction: 'in',
+  // },
   notified: {
     type: 'relationship',
     relationship: 'NOTIFIED',

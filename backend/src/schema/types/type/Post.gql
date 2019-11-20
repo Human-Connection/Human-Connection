@@ -46,8 +46,16 @@ type Post {
   visibility: Visibility
   deleted: Boolean
   disabled: Boolean
+  reviewedByModerator: User
+    @cypher(
+      statement: """
+      MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
+      RETURN moderator
+      ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
+      LIMIT 1
+      """
+    )
   pinned: Boolean
-  decidedByModerator: User @relation(name: "DECIDED", direction: "IN")
   createdAt: String
   updatedAt: String
   language: String

@@ -34,7 +34,7 @@ const commentQuery = gql`
     Comment(id: $id) {
       id
       disabled
-      decidedByModerator {
+      reviewedByModerator {
         id
       }
     }
@@ -45,7 +45,7 @@ const postQuery = gql`
     Post(id: $id) {
       id
       disabled
-      decidedByModerator {
+      reviewedByModerator {
         id
       }
     }
@@ -172,7 +172,7 @@ describe('moderate resources', () => {
             })
           })
 
-          it('changes .decidedByModerator', async () => {
+          it('changes .reviewedByModerator', async () => {
             resourceVariables = {
               id: 'comment-id',
             }
@@ -180,9 +180,9 @@ describe('moderate resources', () => {
               ...disableVariables,
               resourceId: 'comment-id',
             }
-            const before = { data: { Comment: [{ id: 'comment-id', decidedByModerator: null }] } }
+            const before = { data: { Comment: [{ id: 'comment-id', reviewedByModerator: null }] } }
             const expected = {
-              data: { Comment: [{ id: 'comment-id', decidedByModerator: { id: 'moderator-id' } }] },
+              data: { Comment: [{ id: 'comment-id', reviewedByModerator: { id: 'moderator-id' } }] },
             }
             await expect(
               query({ query: commentQuery, variables: resourceVariables }),
@@ -241,7 +241,7 @@ describe('moderate resources', () => {
             })
           })
 
-          it('changes .decidedByModerator', async () => {
+          it('changes .reviewedByModerator', async () => {
             resourceVariables = {
               id: 'sample-post-id',
             }
@@ -249,10 +249,10 @@ describe('moderate resources', () => {
               ...disableVariables,
               resourceId: 'sample-post-id',
             }
-            const before = { data: { Post: [{ id: 'sample-post-id', decidedByModerator: null }] } }
+            const before = { data: { Post: [{ id: 'sample-post-id', reviewedByModerator: null }] } }
             const expected = {
               data: {
-                Post: [{ id: 'sample-post-id', decidedByModerator: { id: 'moderator-id' } }],
+                Post: [{ id: 'sample-post-id', reviewedByModerator: { id: 'moderator-id' } }],
               },
             }
 
@@ -387,9 +387,9 @@ describe('moderate resources', () => {
             })
           })
 
-          it('changes .decidedByModerator', async () => {
+          it('changes .reviewedByModerator', async () => {
             const expected = {
-              data: { Comment: [{ id: 'comment-id', decidedByModerator: { id: 'moderator-id' } }] },
+              data: { Comment: [{ id: 'comment-id', reviewedByModerator: { id: 'moderator-id' } }] },
             }
 
             await expect(
@@ -443,9 +443,9 @@ describe('moderate resources', () => {
             })
           })
 
-          it('changes .decidedByModerator', async () => {
+          it('changes .reviewedByModerator', async () => {
             const expected = {
-              data: { Post: [{ id: 'post-id', decidedByModerator: { id: 'moderator-id' } }] },
+              data: { Post: [{ id: 'post-id', reviewedByModerator: { id: 'moderator-id' } }] },
             }
             await expect(
               mutate({ mutation: decideMutation, variables: enableVariables }),

@@ -69,8 +69,35 @@ export default {
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         post: '-[:COMMENTS]->(related:Post)',
-        decidedByModerator: '<-[:DECIDED]-(related:User)',
+        // Wolle reviewedByModerator: '<-[:DECIDED]-(related:User)',
       },
     }),
+    // Wolle reviewedByModerator: async (parent, params, context, resolveInfo) => {
+    //   console.log('reviewedByModerator !!!')
+    //   console.log('reviewedByModerator !!!')
+    //   console.log('reviewedByModerator !!!')
+    //   console.log('reviewedByModerator !!!')
+    //   console.log('reviewedByModerator !!!')
+    //   if (typeof parent.reviewedByModerator !== 'undefined') return parent.reviewedByModerator
+    //   // const { id } = parent
+    //   // const statement = `
+    //   // MATCH (p:Post {id: $id})-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
+    //   // WHERE NOT post.deleted AND NOT post.disabled
+    //   // RETURN DISTINCT post
+    //   // LIMIT 10
+    //   // `
+    //   // let reviewedByModerator
+    //   // const session = context.driver.session()
+    //   // try {
+    //   //   const result = await session.run(statement, { id })
+    //   //   relatedContributions = result.records.map(r => r.get('post').properties)
+    //   // } finally {
+    //   //   session.close()
+    //   // }
+    //   // return reviewedByModerator
+    //   return {
+    //     id: 'Hallo !!!'
+    //   }
+    // },
   },
 }

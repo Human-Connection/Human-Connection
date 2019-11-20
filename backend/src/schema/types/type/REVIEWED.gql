@@ -1,25 +1,25 @@
-type DECIDED {
+type REVIEWED {
   createdAt: String!
   updatedAt: String!
   # reasonCategory: ReasonCategory
   # reasonDescription: String
   disable: Boolean!
   closed: Boolean!
-  uuid: ID
-  last: Boolean!
+  caseFolderId: ID!
+  # Wolle last: Boolean!
   
   moderator: User
-    @cypher(statement: "MATCH (resource)<-[:DECIDED]-(moderator:User) RETURN moderator")
+    # @cypher(statement: "MATCH (resource)<-[:DECIDED]-(moderator:User) RETURN moderator")
   # not yet supported
   # resource: ReportResource
   #   @cypher(statement: "MATCH (resource)<-[:DECIDED]-(:User) RETURN resource")
   type: String
-    @cypher(statement: "MATCH (resource)<-[:DECIDED]-(user:User) RETURN labels(resource)[0]")
+    # @cypher(statement: "MATCH (resource)<-[:DECIDED]-(user:User) RETURN labels(resource)[0]")
   user: User
   post: Post
   comment: Comment
 }
 
 type Mutation {
-  decide(resourceId: ID!, disable: Boolean, closed: Boolean): DECIDED
+  decide(resourceId: ID!, disable: Boolean, closed: Boolean): REVIEWED
 }
