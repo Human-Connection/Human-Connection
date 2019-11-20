@@ -20,7 +20,7 @@ describe('Category', () => {
 
   describe('given Strings for Icon and Name', () => {
     beforeEach(() => {
-      icon = 'mouse-cursor'
+      icon = 'mouse-pointer'
       name = 'Peter'
     })
 

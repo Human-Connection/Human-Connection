@@ -18,10 +18,11 @@ describe('Avatar.vue', () => {
     ).toBe(false)
   })
 
+  // this is testing the style guide
   it('renders an icon', () => {
     expect(
       Wrapper()
-        .find('.base-icon')
+        .find('.ds-icon')
         .exists(),
     ).toBe(true)
   })
