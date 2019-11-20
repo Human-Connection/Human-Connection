@@ -48,6 +48,7 @@
       "\\.(css|less)$": "identity-obj-proxy"
     },
     "setupFiles": [
+      "<rootDir>/registerContext.js",
       "<rootDir>/testSetup.js"
     ],
     "testMatch": [
@@ -65,7 +66,6 @@
     "accounting": "~0.4.1",
     "apollo-cache-inmemory": "~1.6.3",
     "apollo-client": "~2.6.4",
-    "babel-plugin-transform-require-context": "^0.1.1",
     "cookie-universal-nuxt": "~2.0.18",
     "cropperjs": "^1.5.5",
     "cross-env": "~6.0.3",
@@ -112,6 +112,7 @@
     "babel-eslint": "~10.0.3",
     "babel-jest": "~24.9.0",
     "babel-loader": "~8.0.6",
+    "babel-plugin-require-context-hook": "^1.0.0",
     "babel-preset-vue": "~2.0.2",
     "core-js": "~2.6.10",
     "css-loader": "~3.2.0",

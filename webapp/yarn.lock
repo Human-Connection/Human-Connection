@@ -867,7 +867,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/template@7", "@babel/template@^7.1.0", "@babel/template@^7.4.0", "@babel/template@^7.4.4", "@babel/template@^7.7.0":
+"@babel/template@^7.1.0", "@babel/template@^7.4.0", "@babel/template@^7.4.4", "@babel/template@^7.7.0":
   version "7.7.0"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.7.0.tgz#4fadc1b8e734d97f56de39c77de76f2562e597d0"
   integrity sha512-OKcwSYOW1mhWbnTBgQY5lvg1Fxg+VyfQGjcBduZFljfc044J5iDlnDSfhQ867O17XHiSCxYHUxHg2b7ryitbUQ==
@@ -4498,6 +4498,11 @@ babel-plugin-minify-type-constructors@^0.4.3:
   dependencies:
     babel-helper-is-void-0 "^0.4.3"
 
+babel-plugin-require-context-hook@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-require-context-hook/-/babel-plugin-require-context-hook-1.0.0.tgz#3f0e7cce87c338f53639b948632fd4e73834632d"
+  integrity sha512-EMZD1563QUqLhzrqcThk759RhuNVX/ZJdrtGK6drwzgvnR+ARjWyXIHPbu+tUNaMGtPz/gQeAM2M6VUw2UiUeA==
+
 babel-plugin-syntax-jsx@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-jsx/-/babel-plugin-syntax-jsx-6.18.0.tgz#0af32a9a6e13ca7a3fd5069e62d7b0f58d0d8946"
@@ -4561,13 +4566,6 @@ babel-plugin-transform-remove-undefined@^0.5.0:
   integrity sha512-+M7fJYFaEE/M9CXa0/IRkDbiV3wRELzA1kKQFCJ4ifhrzLKn/9VCCgj9OFmYWwBd8IB48YdgPkHYtbYq+4vtHQ==
   dependencies:
     babel-helper-evaluate-path "^0.5.0"
-
-babel-plugin-transform-require-context@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-require-context/-/babel-plugin-transform-require-context-0.1.1.tgz#319b545ca83080b5062776b46cc9b8b346fea9a6"
-  integrity sha512-4ceqYOtzgmq4/QsB8dP7pUrUOCjY/jrRYdt7YkIOWHxtGDQbcf6YZDyLCiPQf6KsEIcIbSQiTRXOsbLiuJfgNQ==
-  dependencies:
-    "@babel/template" "7"
 
 babel-plugin-transform-simplify-comparison-operators@^6.9.4:
   version "6.9.4"

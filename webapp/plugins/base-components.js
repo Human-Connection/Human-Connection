@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const componentFiles = require.context('~/components/_new/generic', true, /Base[a-zA-Z]+\.vue/)
+const componentFiles = require.context('../components/_new/generic', true, /Base[a-zA-Z]+\.vue/)
 
 componentFiles.keys().forEach(fileName => {
   const component = componentFiles(fileName)

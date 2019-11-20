@@ -1,7 +1,6 @@
 {
   "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    "transform-require-context"
+    "@babel/plugin-syntax-dynamic-import"
   ],
   "presets": [
     [
@@ -13,6 +12,7 @@
   ],
   "env": {
     "test": {
+      "plugins": ["require-context-hook"],
       "presets": [
         [
           "@babel/preset-env",
