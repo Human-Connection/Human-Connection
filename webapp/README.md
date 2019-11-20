@@ -98,10 +98,9 @@ We are currently in the process of migrating our styleguide components and desig
 
 The folder structure we are following is [prescribed by Nuxt.js](https://nuxtjs.org/guide/directory-structure):
 
-- **assets** contains icons, images and logos in `svg` format
+- **assets** contains icons, images and logos in `svg` format and all shared SCSS files such as `tokens`
 - **components** separated into two sub-folders:
     - **generics** are the generic building blocks of the app – small, reusable and usually not coupled to state
     - **features** are composed of components but tied to a particular function of the app (e.g. `comment` or `post`)
 - **layouts** can use components to create layout templates for pages
 - **pages** are the entry points for all `routes` in the app and are composed of layouts, features and components
-- **styles** holds all shared SCSS files such as `variables` and `mixins`
