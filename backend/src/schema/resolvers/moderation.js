@@ -120,10 +120,11 @@ export default {
             MATCH (moderator:User {id: $moderatorId})
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
+            //WHERE (caseFolder)<-[report:REPORTED]-(submitter:User)
 
             // no open caseFolder, create one, update existing
             MERGE (resource)<-[:FLAGGED]-(caseFolder:CaseFolder {closed: false})
-            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $createdAt, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.disable = $disable, caseFolder.closed = $closed
+            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $createdAt, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAt', caseFolder.disable = $disable, caseFolder.closed = $closed
             ON MATCH SET caseFolder.updatedAt = $createdAt, caseFolder.disable = $disable, caseFolder.closed = $closed
 
             // Create review on caseFolder

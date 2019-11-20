@@ -2,8 +2,13 @@ type CaseFolder {
   id: ID!
   createdAt: String!
   updatedAt: String!
+  rule: CaseRule!
   disable: Boolean!
   # reasonCategory: ReasonCategory!
   # reasonDescription: String!
   closed: Boolean!
+}
+
+enum CaseRule {
+  latestReviewUpdatedAt
 }
