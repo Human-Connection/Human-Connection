@@ -32,6 +32,30 @@ module.exports = async ({ config, mode }) => {
     include: path.resolve(__dirname, '../'),
   })
 
+  // load svgs with vue-svg-loader instead of file-loader
+  let rule = config.module.rules.find(
+    r =>
+      r.test && r.test.toString().includes('svg') && r.loader && r.loader.includes('file-loader'),
+  )
+  rule.test = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani)(\?.*)?$/
+
+  config.module.rules.push({
+    test: /\.svg$/,
+    loader: 'vue-svg-loader',
+    options: {
+      svgo: {
+        plugins: [
+          {
+            removeViewBox: false,
+          },
+          {
+            removeDimensions: true,
+          },
+        ],
+      },
+    },
+  })
+
   config.resolve.alias = {
     ...config.resolve.alias,
     '~~': path.resolve(__dirname, rootDir),
