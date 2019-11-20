@@ -30,11 +30,11 @@ export default {
       // Wolle console.log('params: ', params)
       const { resourceId } = params
       // Wolle console.log('resourceId: ', resourceId)
-      let { disable, closed } = params
+      const { disable, closed } = params
       // Wolle console.log('disable: ', disable)
       const { user: moderator, driver } = context
 
-      let createdRelationshipWithNestedAttributes = null  // return value
+      let createdRelationshipWithNestedAttributes = null // return value
 
       const session = driver.session()
       try {
@@ -113,8 +113,7 @@ export default {
         //   cypherClosed +
         //   `RETURN decision, resource, moderator, labels(resource)[0] AS type
         //   `
-        const cypher =
-          ` 
+        const cypher = ` 
             // Wolle only review on reported resources
 
             MATCH (moderator:User {id: $moderatorId})
@@ -158,8 +157,7 @@ export default {
         //   }))
         // })
         const mutateDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
-          const mutateDecisionTransactionResponse = await txc.run(
-            cypher, {
+          const mutateDecisionTransactionResponse = await txc.run(cypher, {
             resourceId,
             moderatorId: moderator.id,
             createdAt: new Date().toISOString(),

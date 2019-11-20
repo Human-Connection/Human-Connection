@@ -182,7 +182,9 @@ describe('moderate resources', () => {
             }
             const before = { data: { Comment: [{ id: 'comment-id', reviewedByModerator: null }] } }
             const expected = {
-              data: { Comment: [{ id: 'comment-id', reviewedByModerator: { id: 'moderator-id' } }] },
+              data: {
+                Comment: [{ id: 'comment-id', reviewedByModerator: { id: 'moderator-id' } }],
+              },
             }
             await expect(
               query({ query: commentQuery, variables: resourceVariables }),
@@ -389,7 +391,9 @@ describe('moderate resources', () => {
 
           it('changes .reviewedByModerator', async () => {
             const expected = {
-              data: { Comment: [{ id: 'comment-id', reviewedByModerator: { id: 'moderator-id' } }] },
+              data: {
+                Comment: [{ id: 'comment-id', reviewedByModerator: { id: 'moderator-id' } }],
+              },
             }
 
             await expect(

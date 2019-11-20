@@ -20,7 +20,7 @@ export default {
             WITH submitter, resource, caseFolder
             CREATE (caseFolder)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
-            RETURN submitter, report, caseFolder {.id}, resource, labels(resource)[0] AS type
+            RETURN submitter, report, caseFolder, resource, labels(resource)[0] AS type
           `,
           {
             resourceId,
@@ -44,7 +44,10 @@ export default {
         const { submitter, report, caseFolder, resource, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
           ...report.properties,
-          caseFolderId: caseFolder.id,
+          caseFolderId: caseFolder.properties.id,
+          caseFolderUpdatedAt: caseFolder.properties.updatedAt,
+          caseFolderDisable: caseFolder.properties.disable,
+          caseFolderClosed: caseFolder.properties.closed,
           post: null,
           comment: null,
           user: null,
@@ -106,14 +109,14 @@ export default {
 
         response = []
         dbResponse.forEach(ele => {
-          const { report, submitter, caseFolder, resource, type, decision, decisionPending } = ele
+          const { report, submitter, caseFolder, resource, type } = ele
 
           const responseEle = {
             ...report.properties,
-            caseFolderId: caseFolder.id,
-            caseFolderUpdatedAt: caseFolder.updatedAt,
-            caseFolderDisable: caseFolder.disable,
-            caseFolderClosed: caseFolder.closed,
+            caseFolderId: caseFolder.properties.id,
+            caseFolderUpdatedAt: caseFolder.properties.updatedAt,
+            caseFolderDisable: caseFolder.properties.disable,
+            caseFolderClosed: caseFolder.properties.closed,
             post: null,
             comment: null,
             user: null,
@@ -151,6 +154,6 @@ export default {
     },
   },
   REPORTED: {
-    // Wolle ...undefinedToNullResolver(['decisionUuid', 'decisionAt', 'decisionDisable']),
+    // Wolle ...undefinedToNullResolver(['caseFolderId', 'caseFolderDisable', 'caseFolderUpdatedAt', 'caseFolderClosed']),
   },
 }
