@@ -38,8 +38,8 @@ export default class Embed extends Node {
           default: null,
         },
       },
-      group: 'inline',
-      inline: true,
+      group: 'block',
+      inline: false,
       parseDOM: [
         {
           tag: 'a[href].embed',

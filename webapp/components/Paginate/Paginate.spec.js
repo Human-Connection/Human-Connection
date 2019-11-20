@@ -5,13 +5,13 @@ import Paginate from './Paginate'
 const localVue = global.localVue
 
 describe('Paginate.vue', () => {
-  let propsData, wrapper, Wrapper, nextButton, backButton
+  let propsData, wrapper, nextButton, backButton
 
   beforeEach(() => {
     propsData = {}
   })
 
-  Wrapper = () => {
+  const Wrapper = () => {
     return mount(Paginate, { propsData, localVue })
   }
   describe('mount', () => {

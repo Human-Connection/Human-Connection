@@ -169,7 +169,10 @@ describe('actions', () => {
 
       it('saves pending flags in order', () => {
         expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([['SET_PENDING', true], ['SET_PENDING', false]]),
+          expect.arrayContaining([
+            ['SET_PENDING', true],
+            ['SET_PENDING', false],
+          ]),
         )
       })
     })
@@ -207,7 +210,10 @@ describe('actions', () => {
           await action({ commit }, { email: 'user@example.org', password: 'wrong' })
         } catch (err) {} // ignore
         expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([['SET_PENDING', true], ['SET_PENDING', false]]),
+          expect.arrayContaining([
+            ['SET_PENDING', true],
+            ['SET_PENDING', false],
+          ]),
         )
       })
     })

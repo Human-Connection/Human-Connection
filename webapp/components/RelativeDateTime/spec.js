@@ -16,7 +16,7 @@ describe('RelativeDateTime', () => {
     }
   })
 
-  let Wrapper = () => {
+  const Wrapper = () => {
     return shallowMount(RelativeDateTime, {
       mocks,
       localVue,

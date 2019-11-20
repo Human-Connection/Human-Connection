@@ -4,6 +4,7 @@ import Signup, { SignupMutation, SignupByInvitationMutation } from './Signup'
 const localVue = global.localVue
 
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('Signup', () => {
   let wrapper

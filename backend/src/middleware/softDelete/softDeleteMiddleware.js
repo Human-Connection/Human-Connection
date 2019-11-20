@@ -3,9 +3,7 @@ const isModerator = ({ user }) => {
 }
 
 const setDefaultFilters = (resolve, root, args, context, info) => {
-  if (typeof args.deleted !== 'boolean') {
-    args.deleted = false
-  }
+  args.deleted = false
 
   if (!isModerator(context)) {
     args.disabled = false

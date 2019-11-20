@@ -4,7 +4,7 @@ import VTooltip from 'v-tooltip'
 import Styleguide from '@human-connection/styleguide'
 import BaseComponents from '~/plugins/base-components'
 import Filters from '~/plugins/vue-filters'
-import InfiniteScroll from '~/plugins/vue-infinite-scroll'
+import InfiniteLoading from '~/plugins/vue-infinite-loading'
 
 global.localVue = createLocalVue()
 
@@ -13,4 +13,4 @@ global.localVue.use(VTooltip)
 global.localVue.use(Styleguide)
 global.localVue.use(BaseComponents)
 global.localVue.use(Filters)
-global.localVue.use(InfiniteScroll)
+global.localVue.use(InfiniteLoading)

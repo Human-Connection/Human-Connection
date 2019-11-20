@@ -43,7 +43,7 @@ export default {
   },
   watch: {
     error() {
-      let that = this
+      const that = this
       setTimeout(function() {
         that.error = false
       }, 2000)

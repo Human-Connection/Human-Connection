@@ -1,3 +1,28 @@
+enum _UserOrdering {
+  id_asc
+  id_desc
+  name_asc
+  name_desc
+  slug_asc
+  slug_desc
+  avatar_asc
+  avatar_desc
+  coverImg_asc
+  coverImg_desc
+  role_asc
+  role_desc
+  locationName_asc
+  locationName_desc
+  about_asc
+  about_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+  locale_asc
+  locale_desc
+}
+
 type User {
   id: ID!
   actorId: String
@@ -28,6 +53,7 @@ type User {
   termsAndConditionsAgreedAt: String
 
   allowEmbedIframes: Boolean
+  showShoutsPublicly: Boolean
   locale: String
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
   friendsCount: Int! @cypher(statement: "MATCH (this)<-[: FRIENDS]->(r: User) RETURN COUNT(DISTINCT r)")
@@ -91,12 +117,6 @@ input _UserFilter {
   id_not: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
   friends: _UserFilter
   friends_not: _UserFilter
   friends_in: [_UserFilter!]
@@ -127,8 +147,7 @@ input _UserFilter {
 type Query {
   User(
   id: ID
-  email: String
-  actorId: String
+  email: String # admins need to search for a user sometimes
   name: String
   slug: String
   avatar: String
@@ -138,14 +157,6 @@ type Query {
   about: String
   createdAt: String
   updatedAt: String
-  friendsCount: Int
-  followingCount: Int
-  followedByCount: Int
-  followedByCurrentUser: Boolean
-  contributionsCount: Int
-  commentedCount: Int
-  shoutedCount: Int
-  badgesCount: Int
   first: Int
   offset: Int
   orderBy: [_UserOrdering]
@@ -170,6 +181,8 @@ type Mutation {
   termsAndConditionsAgreedVersion: String
   termsAndConditionsAgreedAt: String
   allowEmbedIframes: Boolean
+  showShoutsPublicly: Boolean
+
 	locale: String
   ): User
 

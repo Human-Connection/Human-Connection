@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty'
 
 export default async ({ store, env, route, redirect }) => {
-  let publicPages = env.publicPages
+  const publicPages = env.publicPages
   // only affect non public pages
   if (publicPages.indexOf(route.name) >= 0) {
     return true
@@ -17,7 +17,7 @@ export default async ({ store, env, route, redirect }) => {
   // await store.dispatch('auth/logout', null, { root: true })
 
   // set the redirect path for after the login
-  let params = {}
+  const params = {}
   if (!isEmpty(route.path) && route.path !== '/') {
     params.path = route.path
   }

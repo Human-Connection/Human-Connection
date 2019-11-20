@@ -29,7 +29,7 @@ const filterForBlockedUsers = async (params, context) => {
 }
 
 const maintainPinnedPosts = params => {
-  const pinnedPostFilter = { pinnedBy_in: { role_in: ['admin'] } }
+  const pinnedPostFilter = { pinned: true }
   if (isEmpty(params.filter)) {
     params.filter = { OR: [pinnedPostFilter, {}] }
   } else {
@@ -43,15 +43,15 @@ export default {
     Post: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
       params = await maintainPinnedPosts(params)
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+      return neo4jgraphql(object, params, context, resolveInfo)
     },
     findPosts: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+      return neo4jgraphql(object, params, context, resolveInfo)
     },
     profilePagePosts: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
-      return neo4jgraphql(object, params, context, resolveInfo, false)
+      return neo4jgraphql(object, params, context, resolveInfo)
     },
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
       const session = context.driver.session()

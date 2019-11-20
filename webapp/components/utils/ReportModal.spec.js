@@ -8,7 +8,7 @@ beforeEach(() => {
 })
 
 describe('validReport', () => {
-  let validate = object => {
+  const validate = object => {
     const { formSchema } = validReport({ translate })
     const validator = new Schema(formSchema)
     return validator.validate(object, { suppressWarning: true }).catch(({ errors }) => {

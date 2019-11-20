@@ -8,7 +8,7 @@ describe('Category', () => {
   let icon
   let name
 
-  let Wrapper = () => {
+  const Wrapper = () => {
     return shallowMount(Category, {
       localVue,
       propsData: {

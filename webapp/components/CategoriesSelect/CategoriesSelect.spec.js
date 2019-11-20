@@ -6,10 +6,12 @@ const localVue = global.localVue
 describe('CategoriesSelect.vue', () => {
   let wrapper
   let mocks
+  let provide
   let democracyAndPolitics
   let environmentAndNature
   let consumptionAndSustainablity
 
+  const propsData = { model: 'categoryIds' }
   const categories = [
     {
       id: 'cat9',
@@ -33,6 +35,11 @@ describe('CategoriesSelect.vue', () => {
     },
   ]
   beforeEach(() => {
+    provide = {
+      $parentForm: {
+        update: jest.fn(),
+      },
+    }
     mocks = {
       $t: jest.fn(),
     }
@@ -40,7 +47,7 @@ describe('CategoriesSelect.vue', () => {
 
   describe('shallowMount', () => {
     const Wrapper = () => {
-      return mount(CategoriesSelect, { mocks, localVue })
+      return mount(CategoriesSelect, { propsData, mocks, localVue, provide })
     }
 
     beforeEach(() => {
@@ -58,8 +65,8 @@ describe('CategoriesSelect.vue', () => {
         expect(wrapper.vm.selectedCategoryIds).toEqual([categories[0].id])
       })
 
-      it('emits an updateCategories event when the selectedCategoryIds changes', () => {
-        expect(wrapper.emitted().updateCategories[0][0]).toEqual([categories[0].id])
+      it('calls $parent.update with selected category ids', () => {
+        expect(provide.$parentForm.update).toHaveBeenCalledWith('categoryIds', ['cat9'])
       })
 
       it('removes categories when clicked a second time', () => {

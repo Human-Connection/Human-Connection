@@ -10,41 +10,37 @@
 <script>
 import HcContributionForm from '~/components/ContributionForm/ContributionForm'
 import PostQuery from '~/graphql/PostQuery'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     HcContributionForm,
   },
   computed: {
-    user() {
-      return this.$store.getters['auth/user']
-    },
-    author() {
-      return this.contribution ? this.contribution.author : {}
-    },
-    contribution() {
-      return this.Post ? this.Post[0] : {}
-    },
+    ...mapGetters({
+      user: 'auth/user',
+    }),
   },
-  watch: {
-    contribution() {
-      if (this.author.id !== this.user.id) {
-        throw new Error(`You can't edit that!`)
-      }
-    },
-  },
-  apollo: {
-    Post: {
-      query() {
-        return PostQuery(this.$i18n)
+  async asyncData(context) {
+    const {
+      app,
+      store,
+      error,
+      params: { id },
+    } = context
+    const client = app.apolloProvider.defaultClient
+    const {
+      data: {
+        Post: [contribution],
       },
-      variables() {
-        return {
-          id: this.$route.params.id,
-        }
-      },
-      fetchPolicy: 'cache-and-network',
-    },
+    } = await client.query({
+      query: PostQuery(app.$i18n),
+      variables: { id },
+    })
+    if (contribution.author.id !== store.getters['auth/user'].id) {
+      error({ statusCode: 403, message: "You can't edit that!" })
+    }
+    return { contribution }
   },
 }
 </script>

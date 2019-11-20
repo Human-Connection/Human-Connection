@@ -1,5 +1,5 @@
 import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
+import { gql } from '../../helpers/jest'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
@@ -338,76 +338,6 @@ describe('softDeleteMiddleware', () => {
               },
             } = await action()
             await expect(comments).toEqual(expect.arrayContaining(expected))
-          })
-        })
-      })
-
-      describe('filter (deleted: true)', () => {
-        beforeEach(() => {
-          graphqlQuery = gql`
-            {
-              Post(deleted: true) {
-                title
-              }
-            }
-          `
-        })
-
-        describe('as user', () => {
-          beforeEach(async () => {
-            authenticatedUser = await user.toJson()
-          })
-
-          it('throws authorisation error', async () => {
-            const { data, errors } = await action()
-            expect(data).toEqual({ Post: null })
-            expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-          })
-        })
-
-        describe('as moderator', () => {
-          beforeEach(async () => {
-            authenticatedUser = await moderator.toJson()
-          })
-
-          it('does not show deleted posts', async () => {
-            const expected = { data: { Post: [{ title: 'UNAVAILABLE' }] } }
-            await expect(action()).resolves.toMatchObject(expected)
-          })
-        })
-      })
-
-      describe('filter (disabled: true)', () => {
-        beforeEach(() => {
-          graphqlQuery = gql`
-            {
-              Post(disabled: true) {
-                title
-              }
-            }
-          `
-        })
-
-        describe('as user', () => {
-          beforeEach(async () => {
-            authenticatedUser = await user.toJson()
-          })
-
-          it('throws authorisation error', async () => {
-            const { data, errors } = await action()
-            expect(data).toEqual({ Post: null })
-            expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-          })
-        })
-
-        describe('as moderator', () => {
-          beforeEach(async () => {
-            authenticatedUser = await moderator.toJson()
-          })
-
-          it('shows disabled posts', async () => {
-            const expected = { data: { Post: [{ title: 'Disabled post' }] } }
-            await expect(action()).resolves.toMatchObject(expected)
           })
         })
       })

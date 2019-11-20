@@ -1,7 +1,6 @@
 import { config, shallowMount, mount } from '@vue/test-utils'
 import PostIndex from './index.vue'
 import Vuex from 'vuex'
-
 import FilterMenu from '~/components/FilterMenu/FilterMenu'
 
 const localVue = global.localVue
@@ -9,6 +8,7 @@ const localVue = global.localVue
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['router-link'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
+config.stubs['infinite-loading'] = '<span><slot /></span>'
 
 describe('PostIndex', () => {
   let wrapper
@@ -20,7 +20,6 @@ describe('PostIndex', () => {
   beforeEach(() => {
     mutations = {
       'posts/SELECT_ORDER': jest.fn(),
-      'posts/SET_CURRENT_POSTS': jest.fn(),
     }
     store = new Vuex.Store({
       getters: {
@@ -45,7 +44,6 @@ describe('PostIndex', () => {
         'auth/user': () => {
           return { id: 'u23' }
         },
-        'posts/currentPosts': () => [],
       },
       mutations,
     })

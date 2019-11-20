@@ -6,7 +6,7 @@ const localVue = global.localVue
 describe('Ribbon', () => {
   let text
 
-  let Wrapper = () => {
+  const Wrapper = () => {
     return shallowMount(Ribbon, {
       localVue,
       propsData: {

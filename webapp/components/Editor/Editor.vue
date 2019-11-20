@@ -377,6 +377,7 @@ li > p {
 .embed-preview-image {
   width: 100%;
   height: auto;
+  max-height: 450px;
 }
 
 .embed-preview-image--clickable {
