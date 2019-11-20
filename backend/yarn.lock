@@ -5837,10 +5837,10 @@ metascraper-video@^5.8.7:
     "@metascraper/helpers" "^5.8.7"
     lodash "~4.17.15"
 
-metascraper-youtube@^5.8.7:
-  version "5.8.7"
-  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.8.7.tgz#8a799602788d90ed34a885f4754fc98aa5e917ca"
-  integrity sha512-00b+KNoRxDYc+Pbx25a74ZV2hX4ARqKY9J70AFZm/kstmxh2VOApyuIkuNkQM8PgTqEMXm3lAFiz6aYMnPcVMg==
+metascraper-youtube@^5.8.9:
+  version "5.8.9"
+  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.8.9.tgz#595f5e384e0db519378ca2023bd8aa6603866c9d"
+  integrity sha512-Zuew1tLSC14ceL9ZaNvlQ4GmFopbYDalr8gL+Ofo4ha4jKyX58VaPQtmIgASAJv/jlOXd9zCwEdhNw8/YyZZWw==
   dependencies:
     "@metascraper/helpers" "^5.8.7"
     get-video-id "~3.1.4"
