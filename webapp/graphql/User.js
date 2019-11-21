@@ -27,6 +27,7 @@ export default i18n => {
           id
           url
         }
+        showShoutsPublicly
       }
     }
   `
@@ -143,6 +144,17 @@ export const allowEmbedIframesMutation = () => {
       UpdateUser(id: $id, allowEmbedIframes: $allowEmbedIframes) {
         id
         allowEmbedIframes
+      }
+    }
+  `
+}
+
+export const showShoutsPubliclyMutation = () => {
+  return gql`
+    mutation($id: ID!, $showShoutsPublicly: Boolean) {
+      UpdateUser(id: $id, showShoutsPublicly: $showShoutsPublicly) {
+        id
+        showShoutsPublicly
       }
     }
   `

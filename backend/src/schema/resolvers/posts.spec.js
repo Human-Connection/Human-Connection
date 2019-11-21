@@ -1,6 +1,6 @@
 import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
+import { gql } from '../../helpers/jest'
 import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
@@ -210,6 +210,7 @@ describe('Post', () => {
           data: {
             Post: expect.arrayContaining(expected),
           },
+          errors: undefined,
         })
       })
     })
@@ -229,7 +230,9 @@ describe('Post', () => {
 
       await user.relateTo(followedUser, 'following')
       variables = { filter: { author: { followedBy_some: { id: 'current-user' } } } }
-      const expected = {
+      await expect(
+        query({ query: postQueryFilteredByUsersFollowed, variables }),
+      ).resolves.toMatchObject({
         data: {
           Post: [
             {
@@ -238,10 +241,8 @@ describe('Post', () => {
             },
           ],
         },
-      }
-      await expect(
-        query({ query: postQueryFilteredByUsersFollowed, variables }),
-      ).resolves.toMatchObject(expected)
+        errors: undefined,
+      })
     })
   })
 })

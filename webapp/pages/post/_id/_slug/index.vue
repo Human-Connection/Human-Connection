@@ -1,6 +1,7 @@
 <template>
   <transition name="fade" appear>
     <ds-card
+      :lang="post.language"
       v-if="post && ready"
       :image="post.image | proxyApiUrl"
       :class="{ 'post-card': true, 'disabled-content': post.disabled }"

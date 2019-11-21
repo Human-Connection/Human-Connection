@@ -2,9 +2,6 @@ type InvitationCode {
   id: ID!
   token: String
   generatedBy: User @relation(name: "GENERATED", direction: "IN")
-
-  #createdAt: DateTime
-  #usedAt: DateTime
   createdAt: String
 }
 

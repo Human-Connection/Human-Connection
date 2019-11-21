@@ -259,6 +259,11 @@
         "passwordStrength4": "Senha muito forte"
       }
     },
+    "privacy": {
+      "name": "Privacidade",
+      "make-shouts-public": "Compartilhar postagens que eu recomendei no meu perfil público",
+      "success-update": "Configurações de privacidade salvas"
+    },
     "invites": {
       "name": "Convites"
     },

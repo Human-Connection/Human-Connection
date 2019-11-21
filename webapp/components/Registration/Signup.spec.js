@@ -6,6 +6,7 @@ const localVue = createLocalVue()
 
 localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('Signup', () => {
   let wrapper

@@ -256,6 +256,11 @@
         "passwordStrength4": "Sehr sicheres Passwort"
       }
     },
+    "privacy": {
+      "name": "Privatsphäre",
+      "make-shouts-public": "Teile von mir empfohlene Artikel öffentlich auf meinem Profil",
+      "success-update": "Privatsphäre-Einstellungen gespeichert"
+    },
     "invites": {
       "name": "Einladungen"
     },
@@ -458,7 +463,8 @@
     "reportContent": "Melden",
     "validations": {
       "email": "muss eine gültige E-Mail Adresse sein",
-      "url": "muss eine gültige URL sein"
+      "url": "muss eine gültige URL sein",
+      "categories": "es müssen eine bis drei Kategorien ausgewählt werden"
     }
   },
   "actions": {
@@ -649,7 +655,8 @@
     "filterFollow": "Beiträge filtern von Usern denen ich folge",
     "filterALL": "Alle Beiträge anzeigen",
     "success": "Gespeichert!",
-    "languageSelectLabel": "Sprache",
+    "languageSelectLabel": "Sprache deines Beitrags",
+    "languageSelectText": "Sprache wählen",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
     },

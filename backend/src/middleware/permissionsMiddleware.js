@@ -41,20 +41,6 @@ const isMySocialMedia = rule({
   return socialMedia.ownedBy.node.id === user.id
 })
 
-/* TODO: decide if we want to remove this check: the check
- * `onlyEnabledContent` throws authorization errors only if you have
- * arguments for `disabled` or `deleted` assuming these are filter
- * parameters. Soft-delete middleware obfuscates data on its way out
- * anyways. Furthermore, `neo4j-graphql-js` offers many ways to filter for
- * data so I believe, this is not a good check anyways.
- */
-const onlyEnabledContent = rule({
-  cache: 'strict',
-})(async (parent, args, ctx, info) => {
-  const { disabled, deleted } = args
-  return !(disabled || deleted)
-})
-
 const invitationLimitReached = rule({
   cache: 'no_cache',
 })(async (parent, args, { user, driver }) => {
@@ -125,7 +111,8 @@ const permissions = shield(
       reports: isModerator,
       statistics: allow,
       currentUser: allow,
-      Post: or(onlyEnabledContent, isModerator),
+      Post: allow,
+      profilePagePosts: allow,
       Comment: allow,
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
@@ -134,7 +121,6 @@ const permissions = shield(
       PostsEmotionsByCurrentUser: isAuthenticated,
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
-      profilePagePosts: or(onlyEnabledContent, isModerator),
       Donations: isAuthenticated,
     },
     Mutation: {
