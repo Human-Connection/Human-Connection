@@ -10,25 +10,6 @@ const instance = neode()
 
 export default {
   Mutation: {
-    CreateInvitationCode: async (_parent, args, context, _resolveInfo) => {
-      args.token = generateNonce()
-      const {
-        user: { id: userId },
-      } = context
-      let response
-      try {
-        const [user, invitationCode] = await Promise.all([
-          instance.find('User', userId),
-          instance.create('InvitationCode', args),
-        ])
-        await invitationCode.relateTo(user, 'generatedBy')
-        response = invitationCode.toJson()
-        response.generatedBy = user.toJson()
-      } catch (e) {
-        throw new UserInputError(e)
-      }
-      return response
-    },
     Signup: async (_parent, args, context) => {
       args.nonce = generateNonce()
       args.email = normalizeEmail(args.email)
@@ -39,35 +20,6 @@ export default {
         return emailAddress.toJson()
       } catch (e) {
         throw new UserInputError(e.message)
-      }
-    },
-    SignupByInvitation: async (_parent, args, context) => {
-      const { token } = args
-      args.nonce = generateNonce()
-      args.email = normalizeEmail(args.email)
-      let emailAddress = await existingEmailAddress({ args, context })
-      if (emailAddress) return emailAddress
-      try {
-        const result = await instance.cypher(
-          `
-        MATCH (invitationCode:InvitationCode {token:{token}})
-        WHERE NOT (invitationCode)-[:ACTIVATED]->()
-        RETURN invitationCode
-        `,
-          { token },
-        )
-        const validInvitationCode = instance.hydrateFirst(
-          result,
-          'invitationCode',
-          instance.model('InvitationCode'),
-        )
-        if (!validInvitationCode)
-          throw new UserInputError('Invitation code already used or does not exist.')
-        emailAddress = await instance.create('EmailAddress', args)
-        await validInvitationCode.relateTo(emailAddress, 'activated')
-        return emailAddress.toJson()
-      } catch (e) {
-        throw new UserInputError(e)
       }
     },
     SignupVerification: async (_parent, args) => {
