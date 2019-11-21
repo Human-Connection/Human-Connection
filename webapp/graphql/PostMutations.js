@@ -9,6 +9,7 @@ export default () => {
         $language: String
         $categoryIds: [ID]
         $imageUpload: Upload
+        $imageAspectRatio: Float
       ) {
         CreatePost(
           title: $title
@@ -16,6 +17,7 @@ export default () => {
           language: $language
           categoryIds: $categoryIds
           imageUpload: $imageUpload
+          imageAspectRatio: $imageAspectRatio
         ) {
           title
           slug
@@ -34,7 +36,7 @@ export default () => {
         $imageUpload: Upload
         $categoryIds: [ID]
         $image: String
-        $teaserImageHeight: String
+        $imageAspectRatio: Float
       ) {
         UpdatePost(
           id: $id
@@ -44,7 +46,7 @@ export default () => {
           imageUpload: $imageUpload
           categoryIds: $categoryIds
           image: $image
-          teaserImageHeight: $teaserImageHeight
+          imageAspectRatio: $imageAspectRatio
         ) {
           id
           title
@@ -57,7 +59,7 @@ export default () => {
             name
             role
           }
-          teaserImageHeight
+          imageAspectRatio
         }
       }
     `,

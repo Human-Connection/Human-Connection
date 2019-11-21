@@ -4,7 +4,7 @@
     :image="post.image | proxyApiUrl"
     :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--pinned': isPinned }"
   >
-    <ds-placeholder v-if="showPlaceholder && post.teaserImageHeight" class="placeholder-image">
+    <ds-placeholder v-if="showPlaceholder && post.imageAspectRatio" class="placeholder-image">
       I'm a placeholder
     </ds-placeholder>
     <!-- Post Link Target -->
@@ -104,7 +104,7 @@ export default {
     showPlaceholder: {
       type: Boolean,
       default: true,
-    }
+    },
   },
   data() {
     return {
@@ -135,9 +135,9 @@ export default {
     },
     cssVars() {
       return {
-        '--height': this.post.teaserImageHeight + 'px'
+        '--height': this.post.imageAspectRatio + 'px',
       }
-    }
+    },
   },
   methods: {
     async deletePostCallback() {
@@ -158,9 +158,8 @@ export default {
       this.$emit('unpinPost', post)
     },
     hidePlaceholder() {
-      console.log('this has been called')
       this.imageLoading = false
-    }
+    },
   },
 }
 </script>
@@ -207,6 +206,6 @@ export default {
 }
 
 .placeholder-image {
-  height: var(--height)
+  height: var(--height);
 }
 </style>

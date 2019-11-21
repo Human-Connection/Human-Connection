@@ -208,7 +208,7 @@ export default {
     },
     hidePlaceholder() {
       this.showPlaceholder = false
-    }
+    },
   },
   apollo: {
     Post: {

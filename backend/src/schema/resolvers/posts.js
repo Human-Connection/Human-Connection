@@ -121,7 +121,6 @@ export default {
       } finally {
         session.close()
       }
-
       return post
     },
     UpdatePost: async (_parent, params, context, _resolveInfo) => {
@@ -297,7 +296,15 @@ export default {
   },
   Post: {
     ...Resolver('Post', {
-      undefinedToNull: ['activityId', 'objectId', 'image', 'language', 'pinnedAt', 'pinned', 'teaserImageHeight'],
+      undefinedToNull: [
+        'activityId',
+        'objectId',
+        'image',
+        'language',
+        'pinnedAt',
+        'pinned',
+        'imageAspectRatio',
+      ],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',

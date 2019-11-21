@@ -9,7 +9,7 @@
     @vdropzone-thumbnail="transformImage"
   >
     <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
-      <ds-button @click="cropImage" class="crop-confirm" primary>
+      <ds-button @click.native="cropImage" class="crop-confirm" primary>
         {{ $t('contribution.teaserImage.cropperConfirm') }}
       </ds-button>
       <ds-button @click="cancelCrop" class="crop-cancel" icon="close"></ds-button>
@@ -111,15 +111,13 @@ export default {
     cropImage() {
       this.showCropper = false
       const canvas = this.cropper.getCroppedCanvas()
-      console.log('canvas', canvas)
       canvas.toBlob(blob => {
+        const imageAspectRatio = canvas.width / canvas.height
         this.setupPreview(canvas)
         this.removeCropper()
-        console.log(blob)
         const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
-        console.log('croppedImageFile', croppedImageFile)
         this.$emit('addTeaserImage', croppedImageFile)
-        this.$emit('addTeaserImageHeight', canvas.height)
+        this.$emit('addImageAspectRatio', imageAspectRatio)
       })
     },
     setupPreview(canvas) {

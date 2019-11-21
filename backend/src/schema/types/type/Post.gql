@@ -118,7 +118,7 @@ type Post {
   contentExcerpt: String
   image: String
   imageUpload: Upload
-  teaserImageHeight: String
+  imageAspectRatio: Float
   visibility: Visibility
   deleted: Boolean
   disabled: Boolean
@@ -183,6 +183,7 @@ type Mutation {
     language: String
     categoryIds: [ID]
     contentExcerpt: String
+    imageAspectRatio: Float
   ): Post
   UpdatePost(
     id: ID!
@@ -195,7 +196,7 @@ type Mutation {
     visibility: Visibility
     language: String
     categoryIds: [ID]
-    teaserImageHeight: String
+    imageAspectRatio: Float
   ): Post
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
@@ -220,6 +221,7 @@ type Query {
     offset: Int
     orderBy: [_PostOrdering]
     filter: _PostFilter
+    imageAspectRatio: Float
   ): [Post]
   PostsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
   PostsEmotionsByCurrentUser(postId: ID!): [String]
