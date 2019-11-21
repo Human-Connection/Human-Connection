@@ -727,6 +727,10 @@
       "title": "Errors and Feedback",
       "description": "We make every effort to keep our network and data secure and available. Each new release of the software goes through both automated and manual testing. However, unforeseen errors may occur. Therefore, we are grateful for any reported bugs. You are welcome to report any bugs you discover by emailing Support at support@human-connection.org"
     },
+    "no-commercial-use" : {
+      "title": "No Commercial Use",
+      "description": "The use of the Human Connection Network is not permitted for commercial purposes. This includes, but is not limited to, advertising products with commercial intent, posting affiliate links, directly soliciting donations, or providing financial support for purposes that are not recognized as charitable for tax purposes."
+    },
     "help-and-questions" : {
       "title": "Help and Questions",
       "description": "For help and questions we have compiled a comprehensive collection of frequently asked questions and answers (FAQ) for you. You can find them here: <a href=\"https://support.human-connection.org/kb/\" target=\"_blank\" > https://support.human-connection.org/kb/ </a>"

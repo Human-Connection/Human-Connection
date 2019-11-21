@@ -726,6 +726,10 @@
       "title": " Fehler und Feedback",
       "description": "Wir geben uns größte Mühe, unser Netzwerk und die Daten sicher und verfügbar zu halten. Jedes neue Release der Software durchläuft sowohl automatisierte und händische Tests. Trotzdem kann es passieren, dass unvorhergesehene Fehler auftreten. Daher sind wir dankbar für jeden gemeldeten Fehler. Du kannst von Dir entdeckte Fehler gerne per E-Mail an den Support mitteilen: support@human-connection.org"
     },
+    "no-commercial-use" : {
+      "title": "Keine kommerzielle Nutzung",
+      "description": "Die Nutzung des Human Connection Netzwerkes ist nicht gestattet für kommerzielle Nutzung. Darunter fällt unter anderem das Bewerben von Produkten mit kommerzieller Absicht, das Einstellen von Affiliate-Links, direkter Aufruf zu Spenden oder finanzieller Unterstützung für Zwecke, die steuerlich nicht als gemeinnützig anerkannt sind."
+    },
     "help-and-questions" : {
       "title": "Hilfe und Fragen",
       "description": "Für Hilfe und Fragen haben wir für Dich eine umfassende Sammlung an immer wieder gestellten Fragen bzw. Antworten (FAQ) zusammengestellt. Du findest diese hier: <a href=\"https://support.human-connection.org/kb/\" target=\"_blank\" > https://support.human-connection.org/kb/ </a>"
