@@ -1,4 +1,4 @@
-import { undefinedToNullResolver } from './helpers/Resolver'
+// Wolle import { undefinedToNullResolver } from './helpers/Resolver'
 
 export default {
   Mutation: {

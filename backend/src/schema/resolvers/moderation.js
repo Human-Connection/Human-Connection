@@ -1,7 +1,6 @@
-import uuid from 'uuid/v4'
-import { undefinedToNullResolver } from './helpers/Resolver'
+// Wolle import { undefinedToNullResolver } from './helpers/Resolver'
 
-// const queryOpenDecisionWriteTransaction = (session, resourceId) => {
+// Wolle const queryOpenDecisionWriteTransaction = (session, resourceId) => {
 //   return session.writeTransaction(async txc => {
 //     const queryOpenDecisionTransactionResponse = await txc.run(
 //       `

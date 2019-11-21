@@ -33,13 +33,24 @@ type User {
   coverImg: String
   deleted: Boolean
   disabled: Boolean
+  # Wolle reviewedByModerator: User
+  #   @cypher(
+  #     statement: """
+  #     MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
+  #     RETURN moderator
+  #     ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
+  #     LIMIT 1
+  #     """
+  #   )
   reviewedByModerator: User
     @cypher(
       statement: """
-      MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
-      RETURN moderator
+      MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderators:User)
+      WITH caseFolder, review, moderators
       ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
-      LIMIT 1
+      WITH collect(moderators) AS orderedModerators
+      WITH orderedModerators[0] AS moderator
+      RETURN moderator
       """
     )
   role: UserGroup!

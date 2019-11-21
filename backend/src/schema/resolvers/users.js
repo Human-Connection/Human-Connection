@@ -200,7 +200,9 @@ export default {
       },
       hasOne: {
         invitedBy: '<-[:INVITED]-(related:User)',
-        // Wolle reviewedByModerator: '<-[:DECIDED]-(related:User)',
+        // Wolle !!! Following statement is not correct, but the correct (see file 'backend/src/schema/types/type/User.gql') makes an error. Should be: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(related:User) RETURN related ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC LIMIT 1'
+        // Wolle reviewedByModerator: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(related:User)',
+        reviewedByModerator: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderators:User) WITH caseFolder, review, moderators ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC WITH collect(moderators) AS orderedModerators WITH orderedModerators AS related',
         location: '-[:IS_IN]->(related:Location)',
       },
       hasMany: {

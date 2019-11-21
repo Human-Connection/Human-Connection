@@ -69,7 +69,9 @@ export default {
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         post: '-[:COMMENTS]->(related:Post)',
-        // Wolle reviewedByModerator: '<-[:DECIDED]-(related:User)',
+        // Wolle !!! Following statement is not correct, but the correct (see file 'backend/src/schema/types/type/Comment.gql') makes an error. Should be: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(related:User) RETURN related ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC LIMIT 1'
+        // Wolle reviewedByModerator: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(related:User)',
+        reviewedByModerator: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(related:User) WITH caseFolder, review, related ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC WITH collect(related) AS orderedRelated WITH orderedRelated[0] AS related',
       },
     }),
     // Wolle reviewedByModerator: async (parent, params, context, resolveInfo) => {

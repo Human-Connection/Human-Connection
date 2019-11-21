@@ -122,14 +122,25 @@ type Post {
   deleted: Boolean
   disabled: Boolean
   reviewedByModerator: User
-    @cypher(
-      statement: """
-      MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
-      RETURN moderator
-      ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
-      LIMIT 1
-      """
-    )
+    # @cypher(
+    #   statement: """
+    #   MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
+    #   RETURN moderator
+    #   ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
+    #   LIMIT 1
+    #   """
+    # )
+  # reviewedByModerator: User
+  #   @cypher(
+  #     statement: """
+  #     MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderators:User)
+  #     WITH caseFolder, review, moderators
+  #     ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
+  #     WITH collect(moderators) AS orderedModerators
+  #     WITH orderedModerators[0] AS moderator
+  #     RETURN moderator
+  #     """
+  #   )
   pinned: Boolean
   createdAt: String
   updatedAt: String

@@ -307,7 +307,6 @@ export default {
       },
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
-        // Wolle reviewedByModerator: '<-[:DECIDED]-(related:User)',
         pinnedBy: '<-[:PINNED]-(related:User)',
       },
       count: {
@@ -340,6 +339,26 @@ export default {
         session.close()
       }
       return relatedContributions
+    },
+    reviewedByModerator: async (parent, params, context, resolveInfo) => {
+      if (typeof parent.reviewedByModerator !== 'undefined') return parent.reviewedByModerator
+      const { id } = parent
+      const statement = `
+        MATCH (p:Post {id: $id})<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
+        RETURN moderator
+        ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
+        LIMIT 1
+      `
+      let reviewedByModerator
+      const session = context.driver.session()
+      try {
+        const result = await session.run(statement, { id })
+        const [firstElement] = result.records.map(r => r.get('moderator').properties)
+        reviewedByModerator = firstElement 
+      } finally {
+        session.close()
+      }
+      return reviewedByModerator
     },
   },
 }
