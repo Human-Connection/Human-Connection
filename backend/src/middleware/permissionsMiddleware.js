@@ -68,21 +68,21 @@ const isAuthor = rule({
   if (!user) return false
   const session = driver.session()
   const { id: resourceId } = args
-  const result = await session.run(
-    `
-  MATCH (resource {id: $resourceId})<-[:WROTE]-(author)
-  RETURN author
-  `,
-    {
-      resourceId,
-    },
-  )
-  session.close()
-  const [author] = result.records.map(record => {
-    return record.get('author')
-  })
-  const authorId = author && author.properties && author.properties.id
-  return authorId === user.id
+  try {
+    const result = await session.run(
+      `
+      MATCH (resource {id: $resourceId})<-[:WROTE]-(author {id: $userId})
+      RETURN author
+    `,
+      { resourceId, userId: user.id },
+    )
+    const [author] = result.records.map(record => {
+      return record.get('author')
+    })
+    return !!author
+  } finally {
+    session.close()
+  }
 })
 
 const isDeletingOwnAccount = rule({
