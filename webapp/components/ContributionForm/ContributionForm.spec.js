@@ -202,6 +202,7 @@ describe('ContributionForm.vue', () => {
               id: null,
               categoryIds: ['cat12'],
               imageUpload: null,
+              imageAspectRatio: null,
               image: null,
             },
           }
@@ -356,6 +357,7 @@ describe('ContributionForm.vue', () => {
               categoryIds: ['cat12'],
               image,
               imageUpload: null,
+              imageAspectRatio: null,
             },
           }
         })
