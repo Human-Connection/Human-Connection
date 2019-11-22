@@ -153,7 +153,6 @@ describe('moderate resources', () => {
 
         describe('moderate a comment', () => {
           beforeEach(async () => {
-            // Wolle variables = {}
             await factory.create('Comment', {
               id: 'comment-id',
             })

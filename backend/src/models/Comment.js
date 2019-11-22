@@ -25,12 +25,6 @@ module.exports = {
     target: 'User',
     direction: 'in',
   },
-  // Wolle reviewedByModerator: {
-  //   type: 'relationship',
-  //   relationship: 'DECIDED',
-  //   target: 'User',
-  //   direction: 'in',
-  // },
   notified: {
     type: 'relationship',
     relationship: 'NOTIFIED',

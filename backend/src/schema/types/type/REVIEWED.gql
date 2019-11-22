@@ -12,12 +12,7 @@ type REVIEWED {
   claimClosed: Boolean!
   
   moderator: User
-    # Wolle @cypher(statement: "MATCH (resource)<-[:DECIDED]-(moderator:User) RETURN moderator")
-  # not yet supported
-  # Wolle resource: ReportResource
-  #   @cypher(statement: "MATCH (resource)<-[:DECIDED]-(:User) RETURN resource")
   type: String
-    # @cypher(statement: "MATCH (resource)<-[:DECIDED]-(user:User) RETURN labels(resource)[0]")
   user: User
   post: Post
   comment: Comment

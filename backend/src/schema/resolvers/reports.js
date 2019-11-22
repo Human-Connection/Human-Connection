@@ -1,5 +1,3 @@
-// Wolle import { undefinedToNullResolver } from './helpers/Resolver'
-
 export default {
   Mutation: {
     report: async (_parent, params, context, _resolveInfo) => {
@@ -16,7 +14,7 @@ export default {
             // no open claim, create one
             MERGE (resource)<-[:BELONGS_TO]-(claim:Claim {closed: false})
             ON CREATE SET claim.id = randomUUID(), claim.createdAt = $createdAt, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = false, claim.closed = false
-            // Create report on claim
+            // Create report to claim
             WITH submitter, resource, claim
             CREATE (claim)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
@@ -90,7 +88,6 @@ export default {
       try {
         const cypher = `
           MATCH (submitter:User)-[report:REPORTED]->(claim:Claim)-[:BELONGS_TO]->(resource)
-          // Wolle OPTIONAL MATCH (reviewer:User)-[:REVIEWED]->(claim)
           WHERE resource:User OR resource:Post OR resource:Comment
           RETURN submitter, report, claim, resource, labels(resource)[0] as type
           ${orderByClause}
@@ -141,19 +138,7 @@ export default {
         session.close()
       }
 
-      // Wolle console.log('response: ')
-      // response.forEach((ele, index) => {
-      //   // console.log('ele #', index, ': ', ele)
-      //   // if (ele.decision === undefined)
-      //   // console.log('ele #', index, ': ', ele)
-      //   if (ele.decision) console.log('ele #', index, ': ', ele)
-      // })
-      // // Wolle console.log('response: ', response)
-
       return response
     },
-  },
-  REPORTED: {
-    // Wolle ...undefinedToNullResolver(['claimId', 'claimDisable', 'claimUpdatedAt', 'claimClosed']),
   },
 }

@@ -1,28 +1,3 @@
-// Wolle import { undefinedToNullResolver } from './helpers/Resolver'
-
-// Wolle const queryOpenDecisionWriteTransaction = (session, resourceId) => {
-//   return session.writeTransaction(async txc => {
-//     const queryOpenDecisionTransactionResponse = await txc.run(
-//       `
-//         //MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
-//         //WHERE resource:User OR resource:Comment OR resource:Post
-//         //RETURN decision, moderator {.id} AS decisionModerator
-
-//         // Wolle only review on reported resources
-
-//         MATCH (caseModerator:User)-[:REPORTED]->(claim:Claim {closed: false})-[:BELONGS_TO]->(resource {id: $resourceId})
-//         WHERE resource:User OR resource:Post OR resource:Comment
-//         RETURN claim, caseModerator {.id}
-//       `,
-//       { resourceId },
-//     )
-//     return queryOpenDecisionTransactionResponse.records.map(record => ({
-//       claim: record.get('claim'),
-//       caseModerator: record.get('caseModerator'),
-//     }))
-//   })
-// }
-
 export default {
   Mutation: {
     review: async (_object, params, context, _resolveInfo) => {
@@ -40,89 +15,10 @@ export default {
 
       const session = driver.session()
       try {
-        // const queryOpenDecisionWriteTxResultPromise = queryOpenDecisionWriteTransaction(
-        //   session,
-        //   resourceId,
-        // )
-        // console.log('queryOpenDecisionWriteTxResultPromise: ', queryOpenDecisionWriteTxResultPromise)
-        // console.log('queryOpenDecisionWriteTxResultPromise: ', queryOpenDecisionWriteTxResultPromise)
-        // console.log('queryOpenDecisionWriteTxResultPromise: ', queryOpenDecisionWriteTxResultPromise)
-        // console.log('queryOpenDecisionWriteTxResultPromise: ', queryOpenDecisionWriteTxResultPromise)
-        // console.log('queryOpenDecisionWriteTxResultPromise: ', queryOpenDecisionWriteTxResultPromise)
-        // const [openDecisionTxResult] = await queryOpenDecisionWriteTxResultPromise
-
-        // let cypherHeader = ''
-
-        // // Wolle openDecisionTxResult should not be undefined !!!
-        // if (!openDecisionTxResult) {
-        //   // no open claim, then create one
-        //   if (disable === undefined) disable = false // default for creation
-        //   if (closed === undefined) closed = false // default for creation
-        //   cypherHeader = `
-        //       MATCH (resource {id: $resourceId})
-        //       WHERE resource: User OR resource: Comment OR resource: Post
-        //       OPTIONAL MATCH (:User)-[lastDecision:DECIDED {latest: true}]->(resource)
-        //       SET (CASE WHEN lastDecision IS NOT NULL THEN lastDecision END).latest = false
-        //       WITH resource
-        //       MATCH (moderator:User {id: $moderatorId})
-        //       CREATE (resource)<-[decision:DECIDED]-(moderator)
-        //       SET decision.latest = true
-        //       `
-        // } else {
-        //   // an open claim, then change it
-        //   if (disable === undefined) disable = openDecisionTxResult.claim.properties.disable // default set to existing
-        //   if (closed === undefined) closed = openDecisionTxResult.claim.properties.closed // default set to existing
-        //   // current moderator is not the same as old
-        //   if (moderator.id !== openDecisionTxResult.caseModerator.id) {
-        //     // from a different moderator, then create relation with properties to new moderator
-        //     cypherHeader = `
-        //         MATCH (moderator:User)-[oldDecision:DECIDED {closed: false}]->(resource {id: $resourceId})
-        //         WHERE resource:User OR resource:Comment OR resource:Post
-        //         DELETE oldDecision
-        //         MATCH (moderator:User {id: $moderatorId})
-        //         MATCH (resource {id: $resourceId})
-        //         WHERE resource:User OR resource:Comment OR resource:Post
-        //         CREATE (resource)<-[decision:DECIDED]-(moderator)
-        //         SET decision = oldDecision
-        //       `
-        //   } else {
-        //     // an open claim from same moderator, then match this
-        //     cypherHeader = `
-        //         MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
-        //         WHERE resource:User OR resource:Comment OR resource:Post
-        //       `
-        //   }
-        // }
-        // let decisionUUID = null
-        // let cypherClosed = ''
-        // if (closed) {
-        //   decisionUUID = uuid()
-        //   cypherClosed = `
-        //       WITH decision, resource, moderator
-        //       OPTIONAL MATCH (:User)-[report:REPORTED {closed: false}]->(resource)
-        //       SET (CASE WHEN report IS NOT NULL THEN report END).closed = true
-        //       SET (CASE WHEN report IS NOT NULL THEN report END).decisionUuid = $decisionUUID
-        //       SET decision.uuid = $decisionUUID
-        //     `
-        // }
-        // const cypher =
-        //   cypherHeader +
-        //   `SET decision.updatedAt = toString(datetime())
-        //     SET (CASE WHEN decision.createdAt IS NULL THEN decision END).createdAt = decision.updatedAt
-        //     SET decision.disable = $disable, decision.closed = $closed
-        //     SET resource.disabled = $disable
-        //   ` +
-        //   cypherClosed +
-        //   `RETURN decision, resource, moderator, labels(resource)[0] AS type
-        //   `
         const cypher = ` 
-            // Wolle only review on reported resources
-
             MATCH (moderator:User {id: $moderatorId})
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
-            // report exists?
-            //WHERE (claim)<-[report:REPORTED]-(submitter:User)
 
             // no open claim, create one, update existing
             MERGE (resource)<-[:BELONGS_TO]-(claim:Claim {closed: false})
@@ -154,26 +50,6 @@ export default {
 
             RETURN moderator, review, claim, resource, labels(resource)[0] AS type
           `
-
-        // Wolle console.log('cypher: ', cypher)
-        // console.log('disable: ', disable)
-
-        // const mutateDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
-        //   const mutateDecisionTransactionResponse = await txc.run(
-        //     cypher, {
-        //     resourceId,
-        //     moderatorId: moderator.id,
-        //     disable,
-        //     closed,
-        //     decisionUUID,
-        //   })
-        //   return mutateDecisionTransactionResponse.records.map(record => ({
-        //     decision: record.get('decision'),
-        //     resource: record.get('resource'),
-        //     moderator: record.get('moderator'),
-        //     type: record.get('type'),
-        //   }))
-        // })
         const mutateDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
           const mutateDecisionTransactionResponse = await txc.run(cypher, {
             resourceId,
@@ -228,8 +104,5 @@ export default {
 
       return createdRelationshipWithNestedAttributes
     },
-  },
-  REVIEWED: {
-    // Wolle ...undefinedToNullResolver(['uuid']),
   },
 }
