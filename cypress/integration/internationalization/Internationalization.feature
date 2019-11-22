@@ -14,7 +14,7 @@ Feature: Internationalization
     Examples: Login Button
         | language   | buttonLabel |
         | Français   | Connexion   |
-        | Deutsch    | Einloggen   |
+        | Deutsch    | Anmelden    |
         | English    | Login       |
 
   Scenario: Keep preferred language after refresh

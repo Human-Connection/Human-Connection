@@ -119,7 +119,7 @@
   },
   "login": {
     "copy": "Wenn Du bereits ein Konto bei Human Connection hast, melde Dich bitte hier an.",
-    "login": "Einloggen",
+    "login": "Anmelden",
     "logout": "Ausloggen",
     "email": "Deine E-Mail",
     "password": "Dein Passwort",
