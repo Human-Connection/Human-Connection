@@ -13,7 +13,7 @@ export default {
             WHERE resource:User OR resource:Post OR resource:Comment
             // no open claim, create one
             MERGE (resource)<-[:BELONGS_TO]-(claim:Claim {closed: false})
-            ON CREATE SET claim.id = randomUUID(), claim.createdAt = $createdAt, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = false, claim.closed = false
+            ON CREATE SET claim.id = randomUUID(), claim.createdAt = $createdAt, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = resource.disabled, claim.closed = false
             // Create report to claim
             WITH submitter, resource, claim
             CREATE (claim)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)

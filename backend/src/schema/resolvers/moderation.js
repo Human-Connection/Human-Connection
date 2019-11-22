@@ -22,7 +22,7 @@ export default {
 
             // no open claim, create one, update existing
             MERGE (resource)<-[:BELONGS_TO]-(claim:Claim {closed: false})
-            ON CREATE SET claim.id = randomUUID(), claim.createdAt = $dateTime, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = false, claim.closed = false
+            ON CREATE SET claim.id = randomUUID(), claim.createdAt = $dateTime, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = resource.disabled, claim.closed = false
             ON MATCH SET claim.updatedAt = $dateTime
             // claim.disable and claim.closed are set after setting them in review
 
