@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4'
 import Resolver from './helpers/Resolver'
+import { queryReviewedByModerator } from './helpers/claimResource.js'
 
 export default {
   Mutation: {
@@ -69,37 +70,10 @@ export default {
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         post: '-[:COMMENTS]->(related:Post)',
-        // Wolle !!! Following statement is not correct, but the correct (see file 'backend/src/schema/types/type/Comment.gql') makes an error. Should be: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(related:User) RETURN related ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC LIMIT 1'
-        // Wolle reviewedByModerator: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(related:User)',
-        reviewedByModerator: '<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(related:User) WITH caseFolder, review, related ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC WITH collect(related) AS orderedRelated WITH orderedRelated[0] AS related',
       },
     }),
-    // Wolle reviewedByModerator: async (parent, params, context, resolveInfo) => {
-    //   console.log('reviewedByModerator !!!')
-    //   console.log('reviewedByModerator !!!')
-    //   console.log('reviewedByModerator !!!')
-    //   console.log('reviewedByModerator !!!')
-    //   console.log('reviewedByModerator !!!')
-    //   if (typeof parent.reviewedByModerator !== 'undefined') return parent.reviewedByModerator
-    //   // const { id } = parent
-    //   // const statement = `
-    //   // MATCH (p:Post {id: $id})-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
-    //   // WHERE NOT post.deleted AND NOT post.disabled
-    //   // RETURN DISTINCT post
-    //   // LIMIT 10
-    //   // `
-    //   // let reviewedByModerator
-    //   // const session = context.driver.session()
-    //   // try {
-    //   //   const result = await session.run(statement, { id })
-    //   //   relatedContributions = result.records.map(r => r.get('post').properties)
-    //   // } finally {
-    //   //   session.close()
-    //   // }
-    //   // return reviewedByModerator
-    //   return {
-    //     id: 'Hallo !!!'
-    //   }
-    // },
+    reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
+      return await queryReviewedByModerator('Comment', parent, context)
+    },
   },
 }

@@ -5,6 +5,8 @@ import { getBlockedUsers, getBlockedByUsers } from './users.js'
 import { mergeWith, isArray, isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
+import { queryReviewedByModerator } from './helpers/claimResource.js'
+
 const filterForBlockedUsers = async (params, context) => {
   if (!context.user) return params
   const [blockedUsers, blockedByUsers] = await Promise.all([
@@ -340,25 +342,8 @@ export default {
       }
       return relatedContributions
     },
-    reviewedByModerator: async (parent, params, context, resolveInfo) => {
-      if (typeof parent.reviewedByModerator !== 'undefined') return parent.reviewedByModerator
-      const { id } = parent
-      const statement = `
-        MATCH (p:Post {id: $id})<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
-        RETURN moderator
-        ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
-        LIMIT 1
-      `
-      let reviewedByModerator
-      const session = context.driver.session()
-      try {
-        const result = await session.run(statement, { id })
-        const [firstElement] = result.records.map(r => r.get('moderator').properties)
-        reviewedByModerator = firstElement 
-      } finally {
-        session.close()
-      }
-      return reviewedByModerator
+    reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
+      return await queryReviewedByModerator('Post', parent, context)
     },
   },
 }
