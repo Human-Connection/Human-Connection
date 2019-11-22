@@ -1,6 +1,6 @@
 {
   "name": "nitro-cypress",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Fullstack tests with cypress for Human Connection",
   "author": "Human Connection gGmbh",
   "license": "MIT",
