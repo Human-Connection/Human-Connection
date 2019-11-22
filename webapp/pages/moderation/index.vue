@@ -204,48 +204,6 @@ export default {
       }
     },
   },
-  watch: {
-    reports: {
-      immediate: true,
-      handler(newReports) {
-        // Wolle console.log('newReports: ', newReports)
-        const newReportedContentStructure = []
-        newReports.forEach(report => {
-          const resource =
-            report.type === 'User'
-              ? report.user
-              : report.type === 'Post'
-              ? report.post
-              : report.type === 'Comment'
-              ? report.comment
-              : undefined
-          let idx = newReportedContentStructure.findIndex(
-            content => content.resource.id === resource.id,
-          )
-          // if content not in content list, then add it
-          if (idx === -1) {
-            idx = newReportedContentStructure.length
-            newReportedContentStructure.push({
-              claimId: report.claimId,
-              claimUpdatedAt: report.claimUpdatedAt,
-              claimDisable: report.claimDisable,
-              claimClosed: report.claimClosed,
-              type: report.type,
-              resource,
-              user: report.user,
-              post: report.post,
-              comment: report.comment,
-              contentBelongsToUser: report.type === 'User' ? null : resource.author,
-              reports: [],
-            })
-          }
-          newReportedContentStructure[idx].reports.push(report)
-        })
-        // Wolle console.log('newReportedContentStructure: ', newReportedContentStructure)
-        this.reportedContentStructure = newReportedContentStructure
-      },
-    },
-  },
   methods: {
     confirm(content) {
       this.openModal(content)
@@ -315,9 +273,44 @@ export default {
       variables() {
         return {}
       },
-      // Wolle update({ Post }) {
-      //   this.setCurrentPosts(Post)
-      // },
+      update({ reports }) {
+        // Wolle console.log('reports: ', reports)
+        const newReportedContentStructure = []
+        reports.forEach(report => {
+          const resource =
+            report.type === 'User'
+              ? report.user
+              : report.type === 'Post'
+              ? report.post
+              : report.type === 'Comment'
+              ? report.comment
+              : undefined
+          let idx = newReportedContentStructure.findIndex(
+            content => content.resource.id === resource.id,
+          )
+          // if content not in content list, then add it
+          if (idx === -1) {
+            idx = newReportedContentStructure.length
+            newReportedContentStructure.push({
+              claimId: report.claimId,
+              claimUpdatedAt: report.claimUpdatedAt,
+              claimDisable: report.claimDisable,
+              claimClosed: report.claimClosed,
+              type: report.type,
+              resource,
+              user: report.user,
+              post: report.post,
+              comment: report.comment,
+              contentBelongsToUser: report.type === 'User' ? null : resource.author,
+              reports: [],
+            })
+          }
+          newReportedContentStructure[idx].reports.push(report)
+        })
+        // Wolle console.log('newReportedContentStructure: ', newReportedContentStructure)
+        this.reportedContentStructure = newReportedContentStructure
+        return reports
+      },
       fetchPolicy: 'cache-and-network',
     },
   },
