@@ -8,16 +8,10 @@ type REPORTED {
   claimUpdatedAt: String!
   claimClosed: Boolean!
 
-  # Wolle decision: DECIDED
-    # @cypher(statement: "MATCH (resource)<-[decision:DECIDED {uuid: $decisionUuid}]-(user:User) RETURN decision")
-
   submitter: User
-    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
-  # not yet supported
-  # resource: ReportResource
-  #   @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN resource")
+    # @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
   type: String
-    @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN labels(resource)[0]")
+    # @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN labels(resource)[0]")
   user: User
   post: Post
   comment: Comment

@@ -168,7 +168,7 @@
 <script>
 import HcEmpty from '~/components/Empty/Empty'
 import HcUser from '~/components/User/User'
-import { reportListQuery, decideMutation } from '~/graphql/Moderation.js'
+import { reportListQuery, reviewMutation } from '~/graphql/Moderation.js'
 
 export default {
   components: {
@@ -253,7 +253,7 @@ export default {
     async confirmCallback(resourceId) {
       this.$apollo
         .mutate({
-          mutation: decideMutation(),
+          mutation: reviewMutation(),
           variables: { resourceId, closed: true },
         })
         .then(() => {

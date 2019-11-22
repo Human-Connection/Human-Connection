@@ -737,10 +737,10 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
     authenticatedUser = null
 
-    // only decide after report !!!
-    const decideMutation = gql`
+    // only review after report !!!
+    const reviewMutation = gql`
       mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
-        decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+        review(resourceId: $resourceId, disable: $disable, closed: $closed) {
           disable
         }
       }
@@ -753,14 +753,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     authenticatedUser = await bobDerBaumeister.toJson()
     await Promise.all([
       mutate({
-        mutation: decideMutation,
+        mutation: reviewMutation,
         variables: {
           ...disableVariables,
           resourceId: 'p11',
         },
       }),
       mutate({
-        mutation: decideMutation,
+        mutation: reviewMutation,
         variables: {
           ...disableVariables,
           resourceId: 'c5',

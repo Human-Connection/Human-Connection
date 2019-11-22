@@ -25,14 +25,15 @@
 
 export default {
   Mutation: {
-    decide: async (_object, params, context, _resolveInfo) => {
-      // Wolle console.log('params: ', params)
+    review: async (_object, params, context, _resolveInfo) => {
       const { resourceId } = params
-      // Wolle console.log('resourceId: ', resourceId)
       let { disable, closed } = params
+      // Wolle console.log('disable: ', disable)
+      // console.log('closed: ', closed)
       disable = disable === undefined ? null : disable
       closed = closed === undefined ? null : closed
       // Wolle console.log('disable: ', disable)
+      // console.log('closed: ', closed)
       const { user: moderator, driver } = context
 
       let createdRelationshipWithNestedAttributes = null // return value
@@ -134,10 +135,10 @@ export default {
             MERGE (claim)<-[review:REVIEWED]-(moderator)
             ON CREATE SET review.createdAt = $dateTime, review.updatedAt = review.createdAt,
               review.disable = CASE WHEN $disable IS NULL
-                THEN false
+                THEN claim.disable
                 ELSE $disable END,
               review.closed = CASE WHEN $closed IS NULL
-                THEN false
+                THEN claim.closed
                 ELSE $closed END
             ON MATCH SET
               review.updatedAt = $dateTime,
@@ -151,7 +152,7 @@ export default {
             SET claim.disable = review.disable, claim.closed = review.closed
             SET resource.disabled = review.disable
 
-            RETURN moderator, review, claim {.id}, resource, labels(resource)[0] AS type
+            RETURN moderator, review, claim, resource, labels(resource)[0] AS type
           `
 
         // Wolle console.log('cypher: ', cypher)
@@ -191,18 +192,18 @@ export default {
         })
         const txResult = await mutateDecisionWriteTxResultPromise
         if (!txResult[0]) return null
-        // const { decision, resource, moderator: moderatorInResult, type } = txResult[0]
-        // createdRelationshipWithNestedAttributes = {
-        //   ...decision.properties,
-        //   moderator: moderatorInResult.properties,
-        //   type,
-        //   post: null,
-        //   comment: null,
-        //   user: null,
-        // }
         const { moderator: moderatorInResult, review, claim, resource, type } = txResult[0]
+        // Wolle console.log('review.properties.disable: ', review.properties.disable)
+        // console.log('claim.properties.disable: ', claim.properties.disable)
+        // console.log('resource.properties.disabled: ', resource.properties.disabled)
+        // console.log('review.properties.closed: ', review.properties.closed)
+        // console.log('claim.properties.closed: ', claim.properties.closed)
         createdRelationshipWithNestedAttributes = {
           ...review.properties,
+          claimId: claim.properties.id,
+          claimUpdatedAt: claim.properties.updatedAt,
+          claimDisable: claim.properties.disable,
+          claimClosed: claim.properties.closed,
           moderator: moderatorInResult.properties,
           claimId: claim.id,
           type,

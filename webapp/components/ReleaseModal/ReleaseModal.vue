@@ -54,7 +54,7 @@ export default {
         await this.$apollo.mutate({
           mutation: gql`
             mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
-              decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+              review(resourceId: $resourceId, disable: $disable, closed: $closed) {
                 disable
               }
             }
@@ -68,6 +68,7 @@ export default {
         }, 1000)
       } catch (err) {
         this.$toast.error(err.message)
+        this.isOpen = false
       }
     },
   },

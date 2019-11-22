@@ -17,9 +17,9 @@ let query,
   moderator,
   nonModerator
 
-const decideMutation = gql`
+const reviewMutation = gql`
   mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
-    decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+    review(resourceId: $resourceId, disable: $disable, closed: $closed) {
       post {
         id
       }
@@ -96,11 +96,11 @@ describe('moderate resources', () => {
     await factory.cleanDatabase()
   })
 
-  describe('decide to disable', () => {
+  describe('review to disable', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         await expect(
-          mutate({ mutation: decideMutation, variables: disableVariables }),
+          mutate({ mutation: reviewMutation, variables: disableVariables }),
         ).resolves.toMatchObject({
           errors: [{ message: 'Not Authorised!' }],
         })
@@ -121,7 +121,7 @@ describe('moderate resources', () => {
 
         it('throws authorization error', async () => {
           await expect(
-            mutate({ mutation: decideMutation, variables: disableVariables }),
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
             errors: [{ message: 'Not Authorised!' }],
           })
@@ -144,9 +144,9 @@ describe('moderate resources', () => {
 
           it('returns null', async () => {
             await expect(
-              mutate({ mutation: decideMutation, variables: disableVariables }),
+              mutate({ mutation: reviewMutation, variables: disableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: null },
+              data: { review: null },
             })
           })
         })
@@ -165,9 +165,9 @@ describe('moderate resources', () => {
               resourceId: 'comment-id',
             }
             await expect(
-              mutate({ mutation: decideMutation, variables: disableVariables }),
+              mutate({ mutation: reviewMutation, variables: disableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { comment: { id: 'comment-id' } } },
+              data: { review: { comment: { id: 'comment-id' } } },
               errors: undefined,
             })
           })
@@ -190,9 +190,9 @@ describe('moderate resources', () => {
               query({ query: commentQuery, variables: resourceVariables }),
             ).resolves.toMatchObject(before)
             await expect(
-              mutate({ mutation: decideMutation, variables: disableVariables }),
+              mutate({ mutation: reviewMutation, variables: disableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { comment: { id: 'comment-id' } } },
+              data: { review: { comment: { id: 'comment-id' } } },
             })
             await expect(
               query({ query: commentQuery, variables: resourceVariables }),
@@ -214,9 +214,9 @@ describe('moderate resources', () => {
               query({ query: commentQuery, variables: resourceVariables }),
             ).resolves.toMatchObject(before)
             await expect(
-              mutate({ mutation: decideMutation, variables: disableVariables }),
+              mutate({ mutation: reviewMutation, variables: disableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { comment: { id: 'comment-id' } } },
+              data: { review: { comment: { id: 'comment-id' } } },
             })
             await expect(
               query({ query: commentQuery, variables: resourceVariables }),
@@ -237,9 +237,9 @@ describe('moderate resources', () => {
               resourceId: 'sample-post-id',
             }
             await expect(
-              mutate({ mutation: decideMutation, variables: disableVariables }),
+              mutate({ mutation: reviewMutation, variables: disableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { post: { id: 'sample-post-id' } } },
+              data: { review: { post: { id: 'sample-post-id' } } },
             })
           })
 
@@ -262,9 +262,9 @@ describe('moderate resources', () => {
               query({ query: postQuery, variables: resourceVariables }),
             ).resolves.toMatchObject(before)
             await expect(
-              mutate({ mutation: decideMutation, variables: disableVariables }),
+              mutate({ mutation: reviewMutation, variables: disableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { post: { id: 'sample-post-id' } } },
+              data: { review: { post: { id: 'sample-post-id' } } },
             })
             await expect(
               query({ query: postQuery, variables: resourceVariables }),
@@ -286,9 +286,9 @@ describe('moderate resources', () => {
               query({ query: postQuery, variables: resourceVariables }),
             ).resolves.toMatchObject(before)
             await expect(
-              mutate({ mutation: decideMutation, variables: disableVariables }),
+              mutate({ mutation: reviewMutation, variables: disableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { post: { id: 'sample-post-id' } } },
+              data: { review: { post: { id: 'sample-post-id' } } },
             })
             await expect(
               query({ query: postQuery, variables: resourceVariables }),
@@ -307,7 +307,7 @@ describe('moderate resources', () => {
           resourceId: 'sample-post-id',
         }
         await expect(
-          mutate({ mutation: decideMutation, variables: enableVariables }),
+          mutate({ mutation: reviewMutation, variables: enableVariables }),
         ).resolves.toMatchObject({
           errors: [{ message: 'Not Authorised!' }],
         })
@@ -332,7 +332,7 @@ describe('moderate resources', () => {
             resourceId: 'sample-post-id',
           }
           await expect(
-            mutate({ mutation: decideMutation, variables: enableVariables }),
+            mutate({ mutation: reviewMutation, variables: enableVariables }),
           ).resolves.toMatchObject({
             errors: [{ message: 'Not Authorised!' }],
           })
@@ -355,9 +355,9 @@ describe('moderate resources', () => {
               resourceId: 'sample-tag-id',
             }
             await expect(
-              mutate({ mutation: decideMutation, variables: enableVariables }),
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: null },
+              data: { review: null },
             })
           })
         })
@@ -378,14 +378,14 @@ describe('moderate resources', () => {
             await factory.create('Comment', {
               id: 'comment-id',
             })
-            await mutate({ mutation: decideMutation, variables: disableVariables })
+            await mutate({ mutation: reviewMutation, variables: disableVariables })
           })
 
           it('returns enabled resource id', async () => {
             await expect(
-              mutate({ mutation: decideMutation, variables: enableVariables }),
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { comment: { id: 'comment-id' } } },
+              data: { review: { comment: { id: 'comment-id' } } },
             })
           })
 
@@ -397,9 +397,9 @@ describe('moderate resources', () => {
             }
 
             await expect(
-              mutate({ mutation: decideMutation, variables: enableVariables }),
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { comment: { id: 'comment-id' } } },
+              data: { review: { comment: { id: 'comment-id' } } },
             })
             await expect(
               query({ query: commentQuery, variables: resourceVariables }),
@@ -412,9 +412,9 @@ describe('moderate resources', () => {
             }
 
             await expect(
-              mutate({ mutation: decideMutation, variables: enableVariables }),
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { comment: { id: 'comment-id' } } },
+              data: { review: { comment: { id: 'comment-id' } } },
             })
             await expect(
               query({ query: commentQuery, variables: resourceVariables }),
@@ -436,14 +436,14 @@ describe('moderate resources', () => {
             await factory.create('Post', {
               id: 'post-id',
             })
-            await mutate({ mutation: decideMutation, variables: disableVariables })
+            await mutate({ mutation: reviewMutation, variables: disableVariables })
           })
 
           it('returns enabled resource id', async () => {
             await expect(
-              mutate({ mutation: decideMutation, variables: enableVariables }),
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { post: { id: 'post-id' } } },
+              data: { review: { post: { id: 'post-id' } } },
             })
           })
 
@@ -452,9 +452,9 @@ describe('moderate resources', () => {
               data: { Post: [{ id: 'post-id', reviewedByModerator: { id: 'moderator-id' } }] },
             }
             await expect(
-              mutate({ mutation: decideMutation, variables: enableVariables }),
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { post: { id: 'post-id' } } },
+              data: { review: { post: { id: 'post-id' } } },
             })
             await expect(
               query({ query: postQuery, variables: resourceVariables }),
@@ -467,9 +467,9 @@ describe('moderate resources', () => {
             }
 
             await expect(
-              mutate({ mutation: decideMutation, variables: enableVariables }),
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { decide: { post: { id: 'post-id' } } },
+              data: { review: { post: { id: 'post-id' } } },
             })
             await expect(
               query({ query: postQuery, variables: resourceVariables }),

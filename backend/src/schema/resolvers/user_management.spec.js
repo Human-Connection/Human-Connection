@@ -20,7 +20,7 @@ const disable = async id => {
   await mutate({
     mutation: gql`
       mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
-        decide(resourceId: $resourceId, disable: $disable, closed: $closed) {
+        review(resourceId: $resourceId, disable: $disable, closed: $closed) {
           disable
         }
       }

@@ -78,6 +78,7 @@ export default {
         }, 1500)
       } catch (err) {
         this.success = false
+        this.isOpen = false
       } finally {
         this.loading = false
       }
