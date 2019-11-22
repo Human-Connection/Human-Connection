@@ -5,7 +5,7 @@ type REVIEWED {
   # reasonDescription: String
   disable: Boolean!
   closed: Boolean!
-  caseFolderId: ID!
+  claimId: ID!
   # Wolle last: Boolean!
   
   moderator: User

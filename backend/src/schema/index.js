@@ -20,7 +20,7 @@ export default makeAugmentedSchema({
         'NOTIFIED',
         'REPORTED',
         'REVIEWED',
-        'CaseFolder',
+        'Claim',
         'Donations',
       ],
     },

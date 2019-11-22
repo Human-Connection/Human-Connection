@@ -1,14 +1,12 @@
-type CaseFolder {
+type Claim {
   id: ID!
   createdAt: String!
   updatedAt: String!
-  rule: CaseRule!
+  rule: ClaimRule!
   disable: Boolean!
-  # reasonCategory: ReasonCategory!
-  # reasonDescription: String!
   closed: Boolean!
 }
 
-enum CaseRule {
+enum ClaimRule {
   latestReviewUpdatedAtRules
 }

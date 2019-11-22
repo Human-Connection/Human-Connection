@@ -3,10 +3,10 @@ type REPORTED {
   reasonCategory: ReasonCategory!
   reasonDescription: String!
 
-  caseFolderId: ID!
-  caseFolderDisable: Boolean!
-  caseFolderUpdatedAt: String!
-  caseFolderClosed: Boolean!
+  claimId: ID!
+  claimDisable: Boolean!
+  claimUpdatedAt: String!
+  claimClosed: Boolean!
 
   # Wolle decision: DECIDED
     # @cypher(statement: "MATCH (resource)<-[decision:DECIDED {uuid: $decisionUuid}]-(user:User) RETURN decision")

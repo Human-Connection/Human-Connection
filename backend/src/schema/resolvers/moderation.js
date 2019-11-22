@@ -10,14 +10,14 @@
 
 //         // Wolle only review on reported resources
 
-//         MATCH (caseModerator:User)-[:REPORTED]->(caseFolder:CaseFolder {closed: false})-[:FLAGGED]->(resource {id: $resourceId})
+//         MATCH (caseModerator:User)-[:REPORTED]->(claim:Claim {closed: false})-[:BELONGS_TO]->(resource {id: $resourceId})
 //         WHERE resource:User OR resource:Post OR resource:Comment
-//         RETURN caseFolder, caseModerator {.id}
+//         RETURN claim, caseModerator {.id}
 //       `,
 //       { resourceId },
 //     )
 //     return queryOpenDecisionTransactionResponse.records.map(record => ({
-//       caseFolder: record.get('caseFolder'),
+//       claim: record.get('claim'),
 //       caseModerator: record.get('caseModerator'),
 //     }))
 //   })
@@ -54,7 +54,7 @@ export default {
 
         // // Wolle openDecisionTxResult should not be undefined !!!
         // if (!openDecisionTxResult) {
-        //   // no open caseFolder, then create one
+        //   // no open claim, then create one
         //   if (disable === undefined) disable = false // default for creation
         //   if (closed === undefined) closed = false // default for creation
         //   cypherHeader = `
@@ -68,9 +68,9 @@ export default {
         //       SET decision.latest = true
         //       `
         // } else {
-        //   // an open caseFolder, then change it
-        //   if (disable === undefined) disable = openDecisionTxResult.caseFolder.properties.disable // default set to existing
-        //   if (closed === undefined) closed = openDecisionTxResult.caseFolder.properties.closed // default set to existing
+        //   // an open claim, then change it
+        //   if (disable === undefined) disable = openDecisionTxResult.claim.properties.disable // default set to existing
+        //   if (closed === undefined) closed = openDecisionTxResult.claim.properties.closed // default set to existing
         //   // current moderator is not the same as old
         //   if (moderator.id !== openDecisionTxResult.caseModerator.id) {
         //     // from a different moderator, then create relation with properties to new moderator
@@ -85,7 +85,7 @@ export default {
         //         SET decision = oldDecision
         //       `
         //   } else {
-        //     // an open caseFolder from same moderator, then match this
+        //     // an open claim from same moderator, then match this
         //     cypherHeader = `
         //         MATCH (moderator:User)-[decision:DECIDED {closed: false}]->(resource {id: $resourceId})
         //         WHERE resource:User OR resource:Comment OR resource:Post
@@ -121,17 +121,17 @@ export default {
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
             // report exists?
-            //WHERE (caseFolder)<-[report:REPORTED]-(submitter:User)
+            //WHERE (claim)<-[report:REPORTED]-(submitter:User)
 
-            // no open caseFolder, create one, update existing
-            MERGE (resource)<-[:FLAGGED]-(caseFolder:CaseFolder {closed: false})
-            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $dateTime, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAtRules', caseFolder.disable = false, caseFolder.closed = false
-            ON MATCH SET caseFolder.updatedAt = $dateTime
-            // caseFolder.disable and caseFolder.closed are set after setting them in review
+            // no open claim, create one, update existing
+            MERGE (resource)<-[:BELONGS_TO]-(claim:Claim {closed: false})
+            ON CREATE SET claim.id = randomUUID(), claim.createdAt = $dateTime, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = false, claim.closed = false
+            ON MATCH SET claim.updatedAt = $dateTime
+            // claim.disable and claim.closed are set after setting them in review
 
-            // Create review on caseFolder
-            WITH moderator, resource, caseFolder
-            MERGE (caseFolder)<-[review:REVIEWED]-(moderator)
+            // Create review on claim
+            WITH moderator, resource, claim
+            MERGE (claim)<-[review:REVIEWED]-(moderator)
             ON CREATE SET review.createdAt = $dateTime, review.updatedAt = review.createdAt,
               review.disable = CASE WHEN $disable IS NULL
                 THEN false
@@ -148,10 +148,10 @@ export default {
                 THEN review.closed
                 ELSE $closed END
 
-            SET caseFolder.disable = review.disable, caseFolder.closed = review.closed
+            SET claim.disable = review.disable, claim.closed = review.closed
             SET resource.disabled = review.disable
 
-            RETURN moderator, review, caseFolder {.id}, resource, labels(resource)[0] AS type
+            RETURN moderator, review, claim {.id}, resource, labels(resource)[0] AS type
           `
 
         // Wolle console.log('cypher: ', cypher)
@@ -184,7 +184,7 @@ export default {
           return mutateDecisionTransactionResponse.records.map(record => ({
             moderator: record.get('moderator'),
             review: record.get('review'),
-            caseFolder: record.get('caseFolder'),
+            claim: record.get('claim'),
             resource: record.get('resource'),
             type: record.get('type'),
           }))
@@ -200,11 +200,11 @@ export default {
         //   comment: null,
         //   user: null,
         // }
-        const { moderator: moderatorInResult, review, caseFolder, resource, type } = txResult[0]
+        const { moderator: moderatorInResult, review, claim, resource, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
           ...review.properties,
           moderator: moderatorInResult.properties,
-          caseFolderId: caseFolder.id,
+          claimId: claim.id,
           type,
           post: null,
           comment: null,

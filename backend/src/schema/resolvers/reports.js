@@ -13,14 +13,14 @@ export default {
             MATCH (submitter:User {id: $submitterId})
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
-            // no open caseFolder, create one
-            MERGE (resource)<-[:FLAGGED]-(caseFolder:CaseFolder {closed: false})
-            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $createdAt, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAtRules', caseFolder.disable = false, caseFolder.closed = false
-            // Create report on caseFolder
-            WITH submitter, resource, caseFolder
-            CREATE (caseFolder)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
+            // no open claim, create one
+            MERGE (resource)<-[:BELONGS_TO]-(claim:Claim {closed: false})
+            ON CREATE SET claim.id = randomUUID(), claim.createdAt = $createdAt, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = false, claim.closed = false
+            // Create report on claim
+            WITH submitter, resource, claim
+            CREATE (claim)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
-            RETURN submitter, report, caseFolder, resource, labels(resource)[0] AS type
+            RETURN submitter, report, claim, resource, labels(resource)[0] AS type
           `,
           {
             resourceId,
@@ -33,7 +33,7 @@ export default {
         return reportRelationshipTransactionResponse.records.map(record => ({
           submitter: record.get('submitter'),
           report: record.get('report'),
-          caseFolder: record.get('caseFolder'),
+          claim: record.get('claim'),
           resource: record.get('resource').properties,
           type: record.get('type'),
         }))
@@ -41,13 +41,13 @@ export default {
       try {
         const txResult = await writeTxResultPromise
         if (!txResult[0]) return null
-        const { submitter, report, caseFolder, resource, type } = txResult[0]
+        const { submitter, report, claim, resource, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
           ...report.properties,
-          caseFolderId: caseFolder.properties.id,
-          caseFolderUpdatedAt: caseFolder.properties.updatedAt,
-          caseFolderDisable: caseFolder.properties.disable,
-          caseFolderClosed: caseFolder.properties.closed,
+          claimId: claim.properties.id,
+          claimUpdatedAt: claim.properties.updatedAt,
+          claimDisable: claim.properties.disable,
+          claimClosed: claim.properties.closed,
           post: null,
           comment: null,
           user: null,
@@ -89,10 +89,10 @@ export default {
       }
       try {
         const cypher = `
-          MATCH (submitter:User)-[report:REPORTED]->(caseFolder:CaseFolder)-[:FLAGGED]->(resource)
-          // Wolle OPTIONAL MATCH (reviewer:User)-[:REVIEWED]->(caseFolder)
+          MATCH (submitter:User)-[report:REPORTED]->(claim:Claim)-[:BELONGS_TO]->(resource)
+          // Wolle OPTIONAL MATCH (reviewer:User)-[:REVIEWED]->(claim)
           WHERE resource:User OR resource:Post OR resource:Comment
-          RETURN submitter, report, caseFolder, resource, labels(resource)[0] as type
+          RETURN submitter, report, claim, resource, labels(resource)[0] as type
           ${orderByClause}
         `
         const result = await session.run(cypher, {})
@@ -100,7 +100,7 @@ export default {
           return {
             submitter: r.get('submitter'),
             report: r.get('report'),
-            caseFolder: r.get('caseFolder'),
+            claim: r.get('claim'),
             resource: r.get('resource'),
             type: r.get('type'),
           }
@@ -109,14 +109,14 @@ export default {
 
         response = []
         dbResponse.forEach(ele => {
-          const { report, submitter, caseFolder, resource, type } = ele
+          const { report, submitter, claim, resource, type } = ele
 
           const responseEle = {
             ...report.properties,
-            caseFolderId: caseFolder.properties.id,
-            caseFolderUpdatedAt: caseFolder.properties.updatedAt,
-            caseFolderDisable: caseFolder.properties.disable,
-            caseFolderClosed: caseFolder.properties.closed,
+            claimId: claim.properties.id,
+            claimUpdatedAt: claim.properties.updatedAt,
+            claimDisable: claim.properties.disable,
+            claimClosed: claim.properties.closed,
             post: null,
             comment: null,
             user: null,
@@ -154,6 +154,6 @@ export default {
     },
   },
   REPORTED: {
-    // Wolle ...undefinedToNullResolver(['caseFolderId', 'caseFolderDisable', 'caseFolderUpdatedAt', 'caseFolderClosed']),
+    // Wolle ...undefinedToNullResolver(['claimId', 'claimDisable', 'claimUpdatedAt', 'claimClosed']),
   },
 }
