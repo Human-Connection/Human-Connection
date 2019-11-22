@@ -111,6 +111,27 @@ beforeAll(async () => {
   mutate = client.mutate
 
   authenticatedUser = await moderator.toJson()
+  const reportMutation = gql `
+    mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+      report(
+        resourceId: $resourceId
+        reasonCategory: $reasonCategory
+        reasonDescription: $reasonDescription
+      ) {
+        type
+      }
+    }
+  `
+  const reportVariables = {
+    resourceId: 'undefined-resource',
+    reasonCategory: 'discrimination_etc',
+    reasonDescription: 'I am what I am !!!',
+  }
+  await Promise.all([
+    mutate({ mutation: reportMutation, variables: { ...reportVariables, resourceId: 'c1' } }),
+    mutate({ mutation: reportMutation, variables: { ...reportVariables, resourceId: 'u2' } }),
+    mutate({ mutation: reportMutation, variables: { ...reportVariables, resourceId: 'p2' } }),
+  ])
   const reviewMutation = gql`
     mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
       review(resourceId: $resourceId, disable: $disable, closed: $closed) {

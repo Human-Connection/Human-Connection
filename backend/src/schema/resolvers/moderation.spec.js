@@ -17,6 +17,17 @@ let query,
   moderator,
   nonModerator
 
+const reportMutation = gql `
+  mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+    report(
+      resourceId: $resourceId
+      reasonCategory: $reasonCategory
+      reasonDescription: $reasonDescription
+    ) {
+      type
+    }
+  }
+`
 const reviewMutation = gql`
   mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
     review(resourceId: $resourceId, disable: $disable, closed: $closed) {
@@ -156,6 +167,14 @@ describe('moderate resources', () => {
             await factory.create('Comment', {
               id: 'comment-id',
             })
+            await mutate({
+              mutation: reportMutation,
+              variables: {
+                resourceId: 'comment-id',
+                reasonCategory: 'discrimination_etc',
+                reasonDescription: 'I am what I am !!!',
+              },
+            })
           })
 
           it('returns disabled resource id', async () => {
@@ -227,6 +246,14 @@ describe('moderate resources', () => {
           beforeEach(async () => {
             await factory.create('Post', {
               id: 'sample-post-id',
+            })
+            await mutate({
+              mutation: reportMutation,
+              variables: {
+                resourceId: 'sample-post-id',
+                reasonCategory: 'discrimination_etc',
+                reasonDescription: 'I am what I am !!!',
+              },
             })
           })
 
@@ -377,6 +404,14 @@ describe('moderate resources', () => {
             await factory.create('Comment', {
               id: 'comment-id',
             })
+            await mutate({
+              mutation: reportMutation,
+              variables: {
+                resourceId: 'comment-id',
+                reasonCategory: 'discrimination_etc',
+                reasonDescription: 'I am what I am !!!',
+              },
+            })
             await mutate({ mutation: reviewMutation, variables: disableVariables })
           })
 
@@ -434,6 +469,14 @@ describe('moderate resources', () => {
             }
             await factory.create('Post', {
               id: 'post-id',
+            })
+            await mutate({
+              mutation: reportMutation,
+              variables: {
+                resourceId: 'post-id',
+                reasonCategory: 'discrimination_etc',
+                reasonDescription: 'I am what I am !!!',
+              },
             })
             await mutate({ mutation: reviewMutation, variables: disableVariables })
           })
