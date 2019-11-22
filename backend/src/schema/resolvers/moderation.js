@@ -81,7 +81,6 @@ export default {
           claimDisable: claim.properties.disable,
           claimClosed: claim.properties.closed,
           moderator: moderatorInResult.properties,
-          claimId: claim.id,
           type,
           post: null,
           comment: null,

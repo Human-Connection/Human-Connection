@@ -18,7 +18,7 @@ const disable = async id => {
   const moderatorBearerToken = encode({ id: 'u2' })
   req = { headers: { authorization: `Bearer ${moderatorBearerToken}` } }
   await mutate({
-    mutation: gql `
+    mutation: gql`
       mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         report(
           resourceId: $resourceId

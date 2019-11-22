@@ -17,7 +17,7 @@ let query,
   moderator,
   nonModerator
 
-const reportMutation = gql `
+const reportMutation = gql`
   mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
     report(
       resourceId: $resourceId

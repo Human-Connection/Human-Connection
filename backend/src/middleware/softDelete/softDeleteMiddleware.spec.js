@@ -111,7 +111,7 @@ beforeAll(async () => {
   mutate = client.mutate
 
   authenticatedUser = await moderator.toJson()
-  const reportMutation = gql `
+  const reportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       report(
         resourceId: $resourceId

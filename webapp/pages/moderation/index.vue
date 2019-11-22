@@ -2,16 +2,16 @@
   <ds-card space="small">
     <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
     <table
-      v-if="reportedContentStructure && reportedContentStructure.length"
+      v-if="resourcesClaims && resourcesClaims.length"
       class="ds-table ds-table-condensed ds-table-bordered"
       cellspacing="0"
       cellpadding="0"
     >
       <colgroup><col width="" /></colgroup>
-      <template v-for="content in reportedContentStructure">
+      <template v-for="content in resourcesClaims">
         <thead
           :class="[
-            content.claimClosed ? 'decision' : 'no-decision',
+            content.latestClaim.closed ? 'decision' : 'no-decision',
             'ds-table-col',
             'ds-table-head-col',
             'ds-table-head-col-border',
@@ -88,8 +88,8 @@
               <span v-else>—</span>
             </td>
             <td class="ds-table-col ds-table-head-col-border">
-              <!-- claimClosed -->
-              <b v-if="content.claimClosed">
+              <!-- latestClaim.closed -->
+              <b v-if="content.latestClaim.closed">
                 {{ $t('moderation.reports.decided') }}
               </b>
               <ds-button
@@ -104,7 +104,7 @@
               <!-- reviewedByModerator -->
               <div v-if="content.resource.reviewedByModerator">
                 <br />
-                <div v-if="content.claimDisable">
+                <div v-if="content.latestClaim.disable">
                   <ds-icon name="eye-slash" class="ban" />
                   {{ $t('moderation.reports.disabledBy') }}
                 </div>
@@ -116,7 +116,7 @@
                   :user="content.resource.reviewedByModerator"
                   :showAvatar="false"
                   :trunc="30"
-                  :date-time="content.claimUpdatedAt"
+                  :date-time="content.latestClaim.updatedAt"
                   positionDatetime="below"
                 />
               </div>
@@ -136,26 +136,51 @@
           <tr>
             <td class="ds-table-col ds-table-head-col-border"></td>
             <td class="ds-table-col ds-table-head-col-border" colspan="3">
-              <ds-table :data="content.reports" :fields="reportFields" condensed>
-                <!-- submitter -->
-                <template slot="submitter" slot-scope="scope">
-                  <hc-user
-                    :user="scope.row.submitter"
-                    :showAvatar="false"
-                    :trunc="30"
-                    :date-time="scope.row.createdAt"
-                    :positionDatetime="'below'"
-                  />
-                </template>
-                <!-- reasonCategory -->
-                <template slot="reasonCategory" slot-scope="scope">
-                  {{ $t('report.reason.category.options.' + scope.row.reasonCategory) }}
-                </template>
-                <!-- reasonDescription -->
-                <template slot="reasonDescription" slot-scope="scope">
-                  {{ scope.row.reasonDescription.length ? scope.row.reasonDescription : '—' }}
-                </template>
-              </ds-table>
+              <template v-for="(claim, indexClaim) in content.claims">
+                <div :key="claim.id">
+                  <div v-if="indexClaim > 0">
+                    <b>{{ $t('moderation.reports.previousDecision') }}</b>
+                    <div>
+                      <span v-if="claim.disable">
+                        <ds-icon name="eye-slash" class="ban" />
+                        {{ $t('moderation.reports.disabledAt') }}
+                      </span>
+                      <span v-else>
+                        <ds-icon name="eye" class="no-ban" />
+                        {{ $t('moderation.reports.enabledAt') }}
+                      </span>
+                      <ds-text size="small" color="soft">
+                        <ds-icon name="clock" />
+                        <client-only>
+                          <hc-relative-date-time :date-time="claim.updatedAt" />
+                        </client-only>
+                      </ds-text>
+                    </div>
+                    <ds-space margin-bottom="x-small" />
+                  </div>
+                  <ds-table :data="claim.reports" :fields="reportFields" condensed>
+                    <!-- submitter -->
+                    <template slot="submitter" slot-scope="scope">
+                      <hc-user
+                        :user="scope.row.submitter"
+                        :showAvatar="false"
+                        :trunc="30"
+                        :date-time="scope.row.createdAt"
+                        :positionDatetime="'below'"
+                      />
+                    </template>
+                    <!-- reasonCategory -->
+                    <template slot="reasonCategory" slot-scope="scope">
+                      {{ $t('report.reason.category.options.' + scope.row.reasonCategory) }}
+                    </template>
+                    <!-- reasonDescription -->
+                    <template slot="reasonDescription" slot-scope="scope">
+                      {{ scope.row.reasonDescription.length ? scope.row.reasonDescription : '—' }}
+                    </template>
+                  </ds-table>
+                  <ds-space margin-bottom="base" />
+                </div>
+              </template>
             </td>
           </tr>
         </tbody>
@@ -167,18 +192,20 @@
 
 <script>
 import HcEmpty from '~/components/Empty/Empty'
+import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcUser from '~/components/User/User'
 import { reportListQuery, reviewMutation } from '~/graphql/Moderation.js'
 
 export default {
   components: {
     HcEmpty,
+    HcRelativeDateTime,
     HcUser,
   },
   data() {
     return {
       reports: [],
-      reportedContentStructure: [],
+      resourcesClaims: [],
     }
   },
   computed: {
@@ -187,22 +214,20 @@ export default {
         submitter: this.$t('moderation.reports.submitter'),
         reasonCategory: this.$t('moderation.reports.reasonCategory'),
         reasonDescription: this.$t('moderation.reports.reasonDescription'),
-        // Wolle createdAt: this.$t('moderation.reports.createdAt'),
       }
     },
-    // Wolle delete + language
-    fields() {
-      return {
-        type: ' ',
-        reportedUserContent: ' ',
-        reasonCategory: this.$t('moderation.reports.reasonCategory'),
-        reasonDescription: this.$t('moderation.reports.reasonDescription'),
-        submitter: this.$t('moderation.reports.submitter'),
-        createdAt: this.$t('moderation.reports.createdAt'),
-        disabledBy: this.$t('moderation.reports.disabledBy'),
-        // actions: ' '
-      }
-    },
+    // Wolle delete + remove unneeded translations
+    // fields() {
+    //   return {
+    //     type: ' ',
+    //     reportedUserContent: ' ',
+    //     reasonCategory: this.$t('moderation.reports.reasonCategory'),
+    //     reasonDescription: this.$t('moderation.reports.reasonDescription'),
+    //     submitter: this.$t('moderation.reports.submitter'),
+    //     createdAt: this.$t('moderation.reports.createdAt'),
+    //     disabledBy: this.$t('moderation.reports.disabledBy'),
+    //   }
+    // },
   },
   methods: {
     confirm(content) {
@@ -225,7 +250,7 @@ export default {
         'moderation.reports.decideModal.' +
         content.type +
         '.' +
-        (content.claimDisable ? 'disable' : 'enable')
+        (content.latestClaim.disable ? 'disable' : 'enable')
       this.$store.commit('modal/SET_OPEN', {
         name: 'confirm',
         data: {
@@ -275,7 +300,7 @@ export default {
       },
       update({ reports }) {
         // Wolle console.log('reports: ', reports)
-        const newReportedContentStructure = []
+        const newResourcesClaims = []
         reports.forEach(report => {
           const resource =
             report.type === 'User'
@@ -285,30 +310,46 @@ export default {
               : report.type === 'Comment'
               ? report.comment
               : undefined
-          let idx = newReportedContentStructure.findIndex(
+          let idxResource = newResourcesClaims.findIndex(
             content => content.resource.id === resource.id,
           )
-          // if content not in content list, then add it
-          if (idx === -1) {
-            idx = newReportedContentStructure.length
-            newReportedContentStructure.push({
-              claimId: report.claimId,
-              claimUpdatedAt: report.claimUpdatedAt,
-              claimDisable: report.claimDisable,
-              claimClosed: report.claimClosed,
+          // if resource not in resource list, then add it
+          if (idxResource === -1) {
+            idxResource = newResourcesClaims.length
+            newResourcesClaims.push({
+              latestClaim: {
+                id: report.claimId,
+                updatedAt: report.claimUpdatedAt,
+                disable: report.claimDisable,
+                closed: report.claimClosed,
+              },
               type: report.type,
               resource,
               user: report.user,
               post: report.post,
               comment: report.comment,
               contentBelongsToUser: report.type === 'User' ? null : resource.author,
+              claims: [],
+            })
+          }
+          let idxClaim = newResourcesClaims[idxResource].claims.findIndex(
+            claim => claim.id === report.claimId,
+          )
+          // if claim not in claim list, then add it
+          if (idxClaim === -1) {
+            idxClaim = newResourcesClaims[idxResource].claims.length
+            newResourcesClaims[idxResource].claims.push({
+              id: report.claimId,
+              updatedAt: report.claimUpdatedAt,
+              disable: report.claimDisable,
+              closed: report.claimClosed,
               reports: [],
             })
           }
-          newReportedContentStructure[idx].reports.push(report)
+          newResourcesClaims[idxResource].claims[idxClaim].reports.push(report)
         })
-        // Wolle console.log('newReportedContentStructure: ', newReportedContentStructure)
-        this.reportedContentStructure = newReportedContentStructure
+        // Wolle console.log('newResourcesClaims: ', newResourcesClaims)
+        this.resourcesClaims = newResourcesClaims
         return reports
       },
       fetchPolicy: 'cache-and-network',

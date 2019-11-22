@@ -112,9 +112,16 @@ const validateReview = async (resolve, root, args, context, info) => {
   })
 
   if (!existingReportedResource) throw new Error(`Resource not found!`)
-  if (!existingReportedResource.report) throw new Error(`Before you can start the reviewing process, please report the ${existingReportedResource.label}!`)
-  const authorId = existingReportedResource.label !== 'User' && existingReportedResource.author ? existingReportedResource.author.id : null
-  if (authorId && resourceId === authorId) throw new Error(`You cannot review your own ${existingReportedResource.label}!`)
+  if (!existingReportedResource.report)
+    throw new Error(
+      `Before you can start the reviewing process, please report the ${existingReportedResource.label}!`,
+    )
+  const authorId =
+    existingReportedResource.label !== 'User' && existingReportedResource.author
+      ? existingReportedResource.author.id
+      : null
+  if (authorId && resourceId === authorId)
+    throw new Error(`You cannot review your own ${existingReportedResource.label}!`)
   return resolve(root, args, context, info)
 }
 
