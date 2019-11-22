@@ -5829,10 +5829,10 @@ metascraper-url@^5.8.7:
   dependencies:
     "@metascraper/helpers" "^5.8.7"
 
-metascraper-video@^5.8.7:
-  version "5.8.7"
-  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.8.7.tgz#7a5d1e8955f9a65891908eef319683b6176765a2"
-  integrity sha512-J4OJlB+nla8ITwqH2H6dgQ+nrecYILVhsGFKG54p2qsSokXwgZrQ4P7WhUMd0VpBsYuebcRgdzY8OGUDb+7l0Q==
+metascraper-video@^5.8.9:
+  version "5.8.9"
+  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.8.9.tgz#23c0fe71fae5088bc8e11bfa537eff80658aa6d9"
+  integrity sha512-xaimkGz1Txsd9qHUN2U5HyFMP8tkrb5LuW8bCo+0kdTu5c00HGurvs0/BpWrTW/CzUQBNl/uEybeDXm8J++03g==
   dependencies:
     "@metascraper/helpers" "^5.8.7"
     lodash "~4.17.15"
