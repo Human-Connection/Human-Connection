@@ -10,5 +10,5 @@ type CaseFolder {
 }
 
 enum CaseRule {
-  latestReviewUpdatedAt
+  latestReviewUpdatedAtRules
 }

@@ -15,7 +15,7 @@ export default {
             WHERE resource:User OR resource:Post OR resource:Comment
             // no open caseFolder, create one
             MERGE (resource)<-[:FLAGGED]-(caseFolder:CaseFolder {closed: false})
-            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $createdAt, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAt', caseFolder.disable = false, caseFolder.closed = false
+            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $createdAt, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAtRules', caseFolder.disable = false, caseFolder.closed = false
             // Create report on caseFolder
             WITH submitter, resource, caseFolder
             CREATE (caseFolder)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)

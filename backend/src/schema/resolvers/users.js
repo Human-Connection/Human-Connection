@@ -216,7 +216,7 @@ export default {
       },
     }),
     reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
-      return await queryReviewedByModerator('User', parent, context)
+      return queryReviewedByModerator('User', parent, context)
     },
   },
 }

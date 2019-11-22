@@ -22,7 +22,7 @@ WHERE disabledResource:User OR disabledResource:Comment OR disabledResource:Post
 DELETE disabled
 CREATE (moderator)-[review:REVIEWED]->(caseFolder:CaseFolder)-[:FLAGGED]->(disabledResource)
 SET review.createdAt = toString(datetime()), review.updatedAt = review.createdAt, review.disable = true
-SET caseFolder.id = randomUUID(), caseFolder.createdAt = toString(datetime()), caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAt', caseFolder.disable = true, caseFolder.closed = false
+SET caseFolder.id = randomUUID(), caseFolder.createdAt = toString(datetime()), caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAtRules', caseFolder.disable = true, caseFolder.closed = false
 
 // if disabledResource has no report, then create a moderators default report
 WITH moderator, disabledResource, caseFolder
@@ -45,7 +45,7 @@ echo "
 MATCH (reporter:User)-[oldReport:REPORTED]->(notDisabledResource)
 WHERE notDisabledResource:User OR notDisabledResource:Comment OR notDisabledResource:Post
 MERGE (caseFolder:CaseFolder)-[:FLAGGED]->(notDisabledResource)
-ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = toString(datetime()), caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAt', caseFolder.disable = false, caseFolder.closed = false
+ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = toString(datetime()), caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAtRules', caseFolder.disable = false, caseFolder.closed = false
 CREATE (reporter)-[report:REPORTED]->(caseFolder)
 SET report = oldReport
 DELETE oldReport

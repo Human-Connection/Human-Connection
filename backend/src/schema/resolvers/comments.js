@@ -73,7 +73,7 @@ export default {
       },
     }),
     reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
-      return await queryReviewedByModerator('Comment', parent, context)
+      return queryReviewedByModerator('Comment', parent, context)
     },
   },
 }

@@ -343,7 +343,7 @@ export default {
       return relatedContributions
     },
     reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
-      return await queryReviewedByModerator('Post', parent, context)
+      return queryReviewedByModerator('Post', parent, context)
     },
   },
 }

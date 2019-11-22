@@ -33,26 +33,15 @@ type User {
   coverImg: String
   deleted: Boolean
   disabled: Boolean
-  # Wolle reviewedByModerator: User
-  #   @cypher(
-  #     statement: """
-  #     MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
-  #     RETURN moderator
-  #     ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
-  #     LIMIT 1
-  #     """
-  #   )
   reviewedByModerator: User
-    # Wolle @cypher(
-    #   statement: """
-    #   MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderators:User)
-    #   WITH caseFolder, review, moderators
-    #   ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
-    #   WITH collect(moderators) AS orderedModerators
-    #   WITH orderedModerators[0] AS moderator
-    #   RETURN moderator
-    #   """
-    # )
+    @cypher(
+      statement: """
+        MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
+        RETURN moderator
+        ORDER BY caseFolder.updatedAt DESC, review.updatedAt DESC
+        LIMIT 1
+      """
+    )
   role: UserGroup!
   publicKey: String
   invitedBy: User @relation(name: "INVITED", direction: "IN")
@@ -63,8 +52,6 @@ type User {
   about: String
   socialMedia: [SocialMedia]! @relation(name: "OWNED_BY", direction: "IN")
 
-  # createdAt: DateTime
-  # updatedAt: DateTime
   createdAt: String
   updatedAt: String
 

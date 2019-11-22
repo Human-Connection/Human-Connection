@@ -13,7 +13,7 @@ export async function queryReviewedByModerator(label, parent, context) {
   try {
     const result = await session.run(statement, { label, id })
     const [firstElement] = result.records.map(r => r.get('moderator').properties)
-    reviewedByModerator = firstElement 
+    reviewedByModerator = firstElement
   } finally {
     session.close()
   }

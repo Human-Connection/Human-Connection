@@ -9,26 +9,15 @@ type Comment {
   updatedAt: String
   deleted: Boolean
   disabled: Boolean
-  # Wolle reviewedByModerator: User
-    # @cypher(
-    #   statement: """
-    #   MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
-    #   RETURN moderator
-    #   ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
-    #   LIMIT 1
-    #   """
-    # )
   reviewedByModerator: User
-    # Wolle @cypher(
-    #   statement: """
-    #   MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderators:User)
-    #   WITH caseFolder, review, moderators
-    #   ORDER BY caseFolder.updatedAt ASC, review.updatedAt ASC
-    #   WITH collect(moderators) AS orderedModerators
-    #   WITH orderedModerators[0] AS moderator
-    #   RETURN moderator
-    #   """
-    # )
+    @cypher(
+      statement: """
+        MATCH (this)<-[:FLAGGED]-(caseFolder:CaseFolder)<-[review:REVIEWED]-(moderator:User)
+        RETURN moderator
+        ORDER BY caseFolder.updatedAt DESC, review.updatedAt DESC
+        LIMIT 1
+      """
+    )
 }
 
 type Mutation {

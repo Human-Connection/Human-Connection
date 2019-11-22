@@ -29,7 +29,9 @@ export default {
       // Wolle console.log('params: ', params)
       const { resourceId } = params
       // Wolle console.log('resourceId: ', resourceId)
-      const { disable, closed } = params
+      let { disable, closed } = params
+      disable = disable === undefined ? null : disable
+      closed = closed === undefined ? null : closed
       // Wolle console.log('disable: ', disable)
       const { user: moderator, driver } = context
 
@@ -118,22 +120,38 @@ export default {
             MATCH (moderator:User {id: $moderatorId})
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
+            // report exists?
             //WHERE (caseFolder)<-[report:REPORTED]-(submitter:User)
 
             // no open caseFolder, create one, update existing
             MERGE (resource)<-[:FLAGGED]-(caseFolder:CaseFolder {closed: false})
-            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $createdAt, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAt', caseFolder.disable = $disable, caseFolder.closed = $closed
-            ON MATCH SET caseFolder.updatedAt = $createdAt, caseFolder.disable = $disable, caseFolder.closed = $closed
+            ON CREATE SET caseFolder.id = randomUUID(), caseFolder.createdAt = $dateTime, caseFolder.updatedAt = caseFolder.createdAt, caseFolder.rule = 'latestReviewUpdatedAtRules', caseFolder.disable = false, caseFolder.closed = false
+            ON MATCH SET caseFolder.updatedAt = $dateTime
+            // caseFolder.disable and caseFolder.closed are set after setting them in review
 
             // Create review on caseFolder
             WITH moderator, resource, caseFolder
-            CREATE (caseFolder)<-[review:REVIEWED {createdAt: $createdAt, updatedAt: $createdAt, disable: $disable, closed: $closed}]-(moderator)
+            MERGE (caseFolder)<-[review:REVIEWED]-(moderator)
+            ON CREATE SET review.createdAt = $dateTime, review.updatedAt = review.createdAt,
+              review.disable = CASE WHEN $disable IS NULL
+                THEN false
+                ELSE $disable END,
+              review.closed = CASE WHEN $closed IS NULL
+                THEN false
+                ELSE $closed END
+            ON MATCH SET
+              review.updatedAt = $dateTime,
+              review.disable = CASE WHEN $disable IS NULL
+                THEN review.disable
+                ELSE $disable END,
+              review.closed = CASE WHEN $closed IS NULL
+                THEN review.closed
+                ELSE $closed END
 
-            SET resource.disabled = $disable
+            SET caseFolder.disable = review.disable, caseFolder.closed = review.closed
+            SET resource.disabled = review.disable
 
             RETURN moderator, review, caseFolder {.id}, resource, labels(resource)[0] AS type
-
-            //RETURN decision, resource, moderator, labels(resource)[0] AS type
           `
 
         // Wolle console.log('cypher: ', cypher)
@@ -159,7 +177,7 @@ export default {
           const mutateDecisionTransactionResponse = await txc.run(cypher, {
             resourceId,
             moderatorId: moderator.id,
-            createdAt: new Date().toISOString(),
+            dateTime: new Date().toISOString(),
             disable,
             closed,
           })
