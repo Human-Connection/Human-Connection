@@ -112,7 +112,7 @@
     "core-js": "~2.6.10",
     "css-loader": "~3.2.0",
     "eslint": "~6.6.0",
-    "eslint-config-prettier": "~6.6.0",
+    "eslint-config-prettier": "~6.7.0",
     "eslint-config-standard": "~14.1.0",
     "eslint-loader": "~3.0.2",
     "eslint-plugin-import": "~2.18.2",
