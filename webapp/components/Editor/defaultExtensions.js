@@ -1,4 +1,5 @@
 import Embed from '~/components/Editor/nodes/Embed.js'
+import LegacyEmbed from '~/components/Editor/nodes/LegacyEmbed.js'
 import Link from '~/components/Editor/nodes/Link.js'
 import Strike from '~/components/Editor/marks/Strike'
 import Italic from '~/components/Editor/marks/Italic'
@@ -37,6 +38,14 @@ export default function defaultExtensions(component) {
       emptyNodeText: placeholder || $t('editor.placeholder'),
     }),
     new Embed({
+      onEmbed: async ({ url }) => {
+        const {
+          data: { embed },
+        } = await $apollo.query({ query: EmbedQuery(), variables: { url } })
+        return embed
+      },
+    }),
+    new LegacyEmbed({
       onEmbed: async ({ url }) => {
         const {
           data: { embed },
