@@ -57,17 +57,6 @@ describe('LoginForm', () => {
           undefined,
         )
       })
-
-      describe('given email is a gmail address', () => {
-        it('removes dots, issue #2329', () => {
-          fillIn(Wrapper(), { email: 'example.user@gmail.com' })
-          expect(storeMocks.actions['auth/login']).toHaveBeenCalledWith(
-            expect.any(Object),
-            { email: 'exampleuser@gmail.com', password: '1234' },
-            undefined,
-          )
-        })
-      })
     })
   })
 })

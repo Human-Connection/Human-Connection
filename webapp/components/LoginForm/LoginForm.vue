@@ -73,7 +73,6 @@
 
 <script>
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch.vue'
-import { normalizeEmail } from 'validator'
 
 export default {
   components: {
@@ -94,8 +93,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      let { email, password } = this.form
-      email = normalizeEmail(email)
+      const { email, password } = this.form
       try {
         await this.$store.dispatch('auth/login', { email, password })
         this.$toast.success(this.$t('login.success'))
