@@ -64,8 +64,9 @@ const validateReport = async (resolve, root, args, context, info) => {
   const session = driver.session()
   const reportQueryRes = await session.run(
     `
-      MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId}) 
-      RETURN labels(resource)[0] as label
+      MATCH (:User {id: $submitterId})-[:REPORTED]->(:Claim {closed: false})-[:BELONGS_TO]->(resource {id: $resourceId}) 
+      WHERE resource:User OR resource:Post OR resource:Comment
+      RETURN labels(resource)[0] AS label
     `,
     {
       resourceId,
@@ -83,30 +84,39 @@ const validateReport = async (resolve, root, args, context, info) => {
   return resolve(root, args, context, info)
 }
 
-// const validateDecide = async (resolve, root, args, context, info) => {
-//   const { resourceId } = args
-//   const { user, driver } = context
-//   if (resourceId === user.id) throw new Error('You cannot report yourself!')
-//   const session = driver.session()
-//   const reportQueryRes = await session.run(
-//     `
-//       MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId})
-//       RETURN labels(resource)[0] as label
-//     `,
-//     {
-//       resourceId,
-//       submitterId: user.id,
-//     },
-//   )
-//   const [existingReportedResource] = reportQueryRes.records.map(record => {
-//     return {
-//       label: record.get('label'),
-//     }
-//   })
+const validateReview = async (resolve, root, args, context, info) => {
+  const { resourceId } = args
+  const { user, driver } = context
+  if (resourceId === user.id) throw new Error('You can not review yourself!')
+  const session = driver.session()
+  const reportQueryRes = await session.run(
+    `
+      MATCH (resource {id: $resourceId})
+      WHERE resource:User OR resource:Post OR resource:Comment
+      OPTIONAL MATCH (:User)-[report:REPORTED]->(:Claim {closed: false})-[:BELONGS_TO]->(resource)
+      OPTIONAL MATCH (resource)<-[:WROTE]-(author:User)
+      RETURN labels(resource)[0] AS label, author, report
+    `,
+    {
+      resourceId,
+      submitterId: user.id,
+    },
+  )
+  session.close()
+  const [existingReportedResource] = reportQueryRes.records.map(record => {
+    return {
+      label: record.get('label'),
+      author: record.get('author'),
+      report: record.get('report'),
+    }
+  })
 
-//   if (existingReportedResource) throw new Error(`${existingReportedResource.label}`)
-//   return resolve(root, args, context, info)
-// }
+  if (!existingReportedResource) throw new Error(`Resource not found!`)
+  if (!existingReportedResource.report) throw new Error(`Before you can start the reviewing process, please report the ${existingReportedResource.label}!`)
+  const authorId = existingReportedResource.label !== 'User' && existingReportedResource.author ? existingReportedResource.author.id : null
+  if (authorId && resourceId === authorId) throw new Error(`You cannot review your own ${existingReportedResource.label}!`)
+  return resolve(root, args, context, info)
+}
 
 export default {
   Mutation: {
@@ -115,6 +125,6 @@ export default {
     CreatePost: validatePost,
     UpdatePost: validateUpdatePost,
     report: validateReport,
-    // decide: validateDecide,
+    review: validateReview,
   },
 }
