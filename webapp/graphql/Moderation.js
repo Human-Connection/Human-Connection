@@ -9,6 +9,7 @@ export const reportListQuery = () => {
         reasonCategory
         reasonDescription
         claimId
+        claimCreatedAt
         claimUpdatedAt
         claimDisable
         claimClosed
@@ -35,6 +36,9 @@ export const reportListQuery = () => {
             name
             disabled
             deleted
+            followedByCount
+            contributionsCount
+            commentedCount
           }
           followedByCount
           contributionsCount
@@ -66,6 +70,9 @@ export const reportListQuery = () => {
             name
             disabled
             deleted
+            followedByCount
+            contributionsCount
+            commentedCount
           }
         }
         post {
@@ -90,6 +97,9 @@ export const reportListQuery = () => {
             name
             disabled
             deleted
+            followedByCount
+            contributionsCount
+            commentedCount
           }
         }
       }

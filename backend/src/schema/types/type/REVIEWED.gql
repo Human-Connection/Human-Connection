@@ -7,8 +7,9 @@ type REVIEWED {
   closed: Boolean!
 
   claimId: ID!
-  claimDisable: Boolean!
+  claimCreatedAt: String!
   claimUpdatedAt: String!
+  claimDisable: Boolean!
   claimClosed: Boolean!
   
   moderator: User

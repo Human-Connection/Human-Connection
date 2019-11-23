@@ -77,6 +77,7 @@ export default {
         createdRelationshipWithNestedAttributes = {
           ...review.properties,
           claimId: claim.properties.id,
+          claimCreatedAt: claim.properties.createdAt,
           claimUpdatedAt: claim.properties.updatedAt,
           claimDisable: claim.properties.disable,
           claimClosed: claim.properties.closed,

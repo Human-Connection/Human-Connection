@@ -44,6 +44,7 @@ export default {
         createdRelationshipWithNestedAttributes = {
           ...report.properties,
           claimId: claim.properties.id,
+          claimCreatedAt: claim.properties.createdAt,
           claimUpdatedAt: claim.properties.updatedAt,
           claimDisable: claim.properties.disable,
           claimClosed: claim.properties.closed,
@@ -112,6 +113,7 @@ export default {
           const responseEle = {
             ...report.properties,
             claimId: claim.properties.id,
+            claimCreatedAt: claim.properties.createdAt,
             claimUpdatedAt: claim.properties.updatedAt,
             claimDisable: claim.properties.disable,
             claimClosed: claim.properties.closed,

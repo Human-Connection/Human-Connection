@@ -4,8 +4,9 @@ type REPORTED {
   reasonDescription: String!
 
   claimId: ID!
-  claimDisable: Boolean!
+  claimCreatedAt: String!
   claimUpdatedAt: String!
+  claimDisable: Boolean!
   claimClosed: Boolean!
 
   submitter: User

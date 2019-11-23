@@ -223,18 +223,6 @@ export default {
         reasonDescription: this.$t('moderation.reports.reasonDescription'),
       }
     },
-    // Wolle delete + remove unneeded translations
-    // fields() {
-    //   return {
-    //     type: ' ',
-    //     reportedUserContent: ' ',
-    //     reasonCategory: this.$t('moderation.reports.reasonCategory'),
-    //     reasonDescription: this.$t('moderation.reports.reasonDescription'),
-    //     submitter: this.$t('moderation.reports.submitter'),
-    //     createdAt: this.$t('moderation.reports.createdAt'),
-    //     disabledBy: this.$t('moderation.reports.disabledBy'),
-    //   }
-    // },
   },
   methods: {
     confirm(content) {
@@ -306,8 +294,8 @@ export default {
         return {}
       },
       update({ reports }) {
-        // Wolle console.log('reports: ', reports)
         const newResourcesClaims = []
+
         reports.forEach(report => {
           const resource =
             report.type === 'User'
@@ -320,16 +308,10 @@ export default {
           let idxResource = newResourcesClaims.findIndex(
             content => content.resource.id === resource.id,
           )
-          // if resource not in resource list, then add it
+          // if resource is not in resource list, then add it
           if (idxResource === -1) {
             idxResource = newResourcesClaims.length
             newResourcesClaims.push({
-              latestClaim: {
-                id: report.claimId,
-                updatedAt: report.claimUpdatedAt,
-                disable: report.claimDisable,
-                closed: report.claimClosed,
-              },
               type: report.type,
               resource,
               user: report.user,
@@ -342,11 +324,13 @@ export default {
           let idxClaim = newResourcesClaims[idxResource].claims.findIndex(
             claim => claim.id === report.claimId,
           )
-          // if claim not in claim list, then add it
+          // if claim is not in claim list, then add it
           if (idxClaim === -1) {
             idxClaim = newResourcesClaims[idxResource].claims.length
             newResourcesClaims[idxResource].claims.push({
+              // it is the same for all reports of a claim
               id: report.claimId,
+              createdAt: report.claimCreatedAt,
               updatedAt: report.claimUpdatedAt,
               disable: report.claimDisable,
               closed: report.claimClosed,
@@ -355,7 +339,37 @@ export default {
           }
           newResourcesClaims[idxResource].claims[idxClaim].reports.push(report)
         })
-        // Wolle console.log('newResourcesClaims: ', newResourcesClaims)
+
+        // sorting of resource claims and their reports
+        newResourcesClaims.forEach(resourceClaims => {
+          // latestClaim by updatedAt rules
+          resourceClaims.claims.sort(
+            (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+          )
+          resourceClaims.latestClaim = {
+            id: resourceClaims.claims[0].id,
+            createdAt: resourceClaims.claims[0].createdAt,
+            updatedAt: resourceClaims.claims[0].updatedAt,
+            disable: resourceClaims.claims[0].disable,
+            closed: resourceClaims.claims[0].closed,
+          }
+          // display claims always by starting with latest createdAt
+          resourceClaims.claims.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+          )
+
+          resourceClaims.claims.forEach(claim => {
+            // display reports always by starting with latest createdAt
+            claim.reports.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+            )
+          })
+        })
+        // display resources by starting with claims by their latest createdAt
+        newResourcesClaims.sort(
+          (a, b) => new Date(b.claims[0].createdAt) - new Date(a.claims[0].createdAt),
+        )
+        
         this.resourcesClaims = newResourcesClaims
         return reports
       },
