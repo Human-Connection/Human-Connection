@@ -8,15 +8,15 @@
       cellpadding="0"
     >
       <colgroup><col width="" /></colgroup>
-      <template v-for="content in resourcesClaims">
+      <template v-for="resourceClaims in resourcesClaims">
         <thead
           :class="[
-            content.latestClaim.closed ? 'decision' : 'no-decision',
+            resourceClaims.latestClaim.closed ? 'decision' : 'no-decision',
             'ds-table-col',
             'ds-table-head-col',
             'ds-table-head-col-border',
           ]"
-          :key="'thead-' + content.resource.id"
+          :key="'thead-' + resourceClaims.resource.id"
         >
           <tr valign="top">
             <th>
@@ -33,57 +33,57 @@
             </th>
           </tr>
         </thead>
-        <tbody :key="'tbody-' + content.resource.id">
+        <tbody :key="'tbody-' + resourceClaims.resource.id">
           <tr valign="top">
             <td class="ds-table-col ds-table-head-col ds-table-head-col-border">
               <!-- Icon -->
               <ds-text color="soft">
                 <ds-icon
-                  v-if="content.type === 'Post'"
-                  v-tooltip="{ content: $t('report.contribution.type'), placement: 'right' }"
+                  v-if="resourceClaims.type === 'Post'"
+                  v-tooltip="{ resourceClaims: $t('report.contribution.type'), placement: 'right' }"
                   name="bookmark"
                 />
                 <ds-icon
-                  v-else-if="content.type === 'Comment'"
-                  v-tooltip="{ content: $t('report.comment.type'), placement: 'right' }"
+                  v-else-if="resourceClaims.type === 'Comment'"
+                  v-tooltip="{ resourceClaims: $t('report.comment.type'), placement: 'right' }"
                   name="comments"
                 />
                 <ds-icon
-                  v-else-if="content.type === 'User'"
-                  v-tooltip="{ content: $t('report.user.type'), placement: 'right' }"
+                  v-else-if="resourceClaims.type === 'User'"
+                  v-tooltip="{ resourceClaims: $t('report.user.type'), placement: 'right' }"
                   name="user"
                 />
-                <ds-icon v-if="content.resource.disabled" name="eye-slash" class="ban" />
+                <ds-icon v-if="resourceClaims.resource.disabled" name="eye-slash" class="ban" />
                 <ds-icon v-else name="eye" class="no-ban" />
               </ds-text>
             </td>
             <td class="ds-table-col ds-table-head-col-border">
-              <!-- reported user or content -->
-              <div v-if="content.type === 'Post' || content.type === 'Comment'">
+              <!-- reported user or other resource -->
+              <div v-if="resourceClaims.type === 'Post' || resourceClaims.type === 'Comment'">
                 <nuxt-link
                   :to="{
                     name: 'post-id-slug',
                     params: {
-                      id: content.type === 'Post' ? content.post.id : content.comment.post.id,
-                      slug: content.type === 'Post' ? content.post.slug : content.comment.post.slug,
+                      id: resourceClaims.type === 'Post' ? resourceClaims.post.id : resourceClaims.comment.post.id,
+                      slug: resourceClaims.type === 'Post' ? resourceClaims.post.slug : resourceClaims.comment.post.slug,
                     },
                     hash:
-                      content.type === 'Comment' ? `#commentId-${content.comment.id}` : undefined,
+                      resourceClaims.type === 'Comment' ? `#commentId-${resourceClaims.comment.id}` : undefined,
                   }"
                 >
-                  <b v-if="content.type === 'Post'">{{ content.post.title | truncate(100) }}</b>
-                  <b v-else>{{ content.comment.contentExcerpt | removeHtml | truncate(100) }}</b>
+                  <b v-if="resourceClaims.type === 'Post'">{{ resourceClaims.post.title | truncate(100) }}</b>
+                  <b v-else>{{ resourceClaims.comment.contentExcerpt | removeHtml | truncate(100) }}</b>
                 </nuxt-link>
               </div>
               <div v-else>
-                <hc-user :user="content.user" :showAvatar="false" :trunc="30" />
+                <hc-user :user="resourceClaims.user" :showAvatar="false" :trunc="30" />
               </div>
             </td>
             <!-- contentBelongsToUser -->
             <td class="ds-table-col ds-table-head-col-border">
               <hc-user
-                v-if="content.contentBelongsToUser"
-                :user="content.contentBelongsToUser"
+                v-if="resourceClaims.contentBelongsToUser"
+                :user="resourceClaims.contentBelongsToUser"
                 :showAvatar="false"
                 :trunc="30"
               />
@@ -91,22 +91,22 @@
             </td>
             <td class="ds-table-col ds-table-head-col-border">
               <!-- latestClaim.closed -->
-              <b v-if="content.latestClaim.closed">
+              <b v-if="resourceClaims.latestClaim.closed">
                 {{ $t('moderation.reports.decided') }}
               </b>
               <ds-button
                 v-else
                 danger
                 class="confirm"
-                :icon="content.resource.disabled ? 'eye-slash' : 'eye'"
-                @click="confirm(content)"
+                :icon="resourceClaims.resource.disabled ? 'eye-slash' : 'eye'"
+                @click="confirm(resourceClaims)"
               >
                 {{ $t('moderation.reports.decideButton') }}
               </ds-button>
               <!-- reviewedByModerator -->
-              <div v-if="content.resource.reviewedByModerator">
+              <div v-if="resourceClaims.resource.reviewedByModerator">
                 <br />
-                <div v-if="content.latestClaim.disable">
+                <div v-if="resourceClaims.latestClaim.disable">
                   <ds-icon name="eye-slash" class="ban" />
                   {{ $t('moderation.reports.disabledBy') }}
                 </div>
@@ -115,16 +115,16 @@
                   {{ $t('moderation.reports.enabledBy') }}
                 </div>
                 <hc-user
-                  :user="content.resource.reviewedByModerator"
+                  :user="resourceClaims.resource.reviewedByModerator"
                   :showAvatar="false"
                   :trunc="30"
-                  :date-time="content.latestClaim.updatedAt"
+                  :date-time="resourceClaims.latestClaim.updatedAt"
                   positionDatetime="below"
                 />
               </div>
               <div v-else>
                 <br />
-                <div v-if="content.resource.disabled">
+                <div v-if="resourceClaims.resource.disabled">
                   <ds-icon name="eye-slash" class="ban" />
                   {{ $t('moderation.reports.disabled') }}
                 </div>
@@ -138,7 +138,7 @@
           <tr>
             <td class="ds-table-col ds-table-head-col-border"></td>
             <td class="ds-table-col ds-table-head-col-border" colspan="3">
-              <template v-for="(claim, indexClaim) in content.claims">
+              <template v-for="(claim, indexClaim) in resourceClaims.claims">
                 <div :key="claim.id">
                   <!-- previousDecision -->
                   <div v-if="indexClaim > 0">
@@ -242,7 +242,7 @@ export default {
               ? report.comment
               : undefined
           let idxResource = newResourcesClaims.findIndex(
-            content => content.resource.id === resource.id,
+            resourceClaims => resourceClaims.resource.id === resource.id,
           )
           // if resource is not in resource list, then add it
           if (idxResource === -1) {
@@ -311,8 +311,8 @@ export default {
     },
   },
   methods: {
-    confirm(content) {
-      this.openModal(content)
+    confirm(resourceClaims) {
+      this.openModal(resourceClaims)
     },
     async confirmCallback(resourceId) {
       this.$apollo
@@ -326,29 +326,29 @@ export default {
         })
         .catch(error => this.$toast.error(error.message))
     },
-    openModal(content) {
+    openModal(resourceClaims) {
       const identStart =
         'moderation.reports.decideModal.' +
-        content.type +
+        resourceClaims.type +
         '.' +
-        (content.latestClaim.disable ? 'disable' : 'enable')
+        (resourceClaims.latestClaim.disable ? 'disable' : 'enable')
       this.$store.commit('modal/SET_OPEN', {
         name: 'confirm',
         data: {
-          type: content.type,
-          resource: content.resource,
+          type: resourceClaims.type,
+          resource: resourceClaims.resource,
           modalData: {
             titleIdent: identStart + '.title',
             messageIdent: identStart + '.message',
             messageParams: {
               name:
-                content.type === 'User'
-                  ? content.user.name
-                  : content.type === 'Post'
-                  ? this.$filters.truncate(content.post.title, 30)
-                  : content.type === 'Comment'
+                resourceClaims.type === 'User'
+                  ? resourceClaims.user.name
+                  : resourceClaims.type === 'Post'
+                  ? this.$filters.truncate(resourceClaims.post.title, 30)
+                  : resourceClaims.type === 'Comment'
                   ? this.$filters.truncate(
-                      this.$filters.removeHtml(content.comment.contentExcerpt),
+                      this.$filters.removeHtml(resourceClaims.comment.contentExcerpt),
                       30,
                     )
                   : '',
@@ -356,10 +356,10 @@ export default {
             buttons: {
               confirm: {
                 danger: true,
-                icon: content.resource.disabled ? 'eye-slash' : 'eye',
+                icon: resourceClaims.resource.disabled ? 'eye-slash' : 'eye',
                 textIdent: 'moderation.reports.decideModal.submit',
                 callback: () => {
-                  this.confirmCallback(content.resource.id)
+                  this.confirmCallback(resourceClaims.resource.id)
                 },
               },
               cancel: {
