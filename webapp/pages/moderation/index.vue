@@ -389,10 +389,6 @@ export default {
 </script>
 
 <style lang="scss">
-// Wolle delete?
-.ds-table-head-col-border {
-  border-bottom: $border-color-softer dotted $border-size-base;
-}
 .decision {
   color: $color-secondary;
 }
