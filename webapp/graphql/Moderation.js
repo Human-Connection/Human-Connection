@@ -47,6 +47,8 @@ export const reportListQuery = () => {
         comment {
           id
           contentExcerpt
+          disabled
+          deleted
           author {
             id
             slug
