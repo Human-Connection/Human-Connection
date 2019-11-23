@@ -226,79 +226,13 @@ export default {
       }
     },
   },
-  methods: {
-    confirm(content) {
-      this.openModal(content)
-    },
-    async confirmCallback(resourceId) {
-      this.$apollo
-        .mutate({
-          mutation: reviewMutation(),
-          variables: { resourceId, closed: true },
-        })
-        .then(() => {
-          this.$toast.success(this.$t('moderation.reports.DecisionSuccess'))
-          this.$apollo.queries.reports.refetch()
-        })
-        .catch(error => this.$toast.error(error.message))
-    },
-    openModal(content) {
-      const identStart =
-        'moderation.reports.decideModal.' +
-        content.type +
-        '.' +
-        (content.latestClaim.disable ? 'disable' : 'enable')
-      this.$store.commit('modal/SET_OPEN', {
-        name: 'confirm',
-        data: {
-          type: content.type,
-          resource: content.resource,
-          modalData: {
-            titleIdent: identStart + '.title',
-            messageIdent: identStart + '.message',
-            messageParams: {
-              name:
-                content.type === 'User'
-                  ? content.user.name
-                  : content.type === 'Post'
-                  ? this.$filters.truncate(content.post.title, 30)
-                  : content.type === 'Comment'
-                  ? this.$filters.truncate(
-                      this.$filters.removeHtml(content.comment.contentExcerpt),
-                      30,
-                    )
-                  : '',
-            },
-            buttons: {
-              confirm: {
-                danger: true,
-                icon: content.resource.disabled ? 'eye-slash' : 'eye',
-                textIdent: 'moderation.reports.decideModal.submit',
-                callback: () => {
-                  this.confirmCallback(content.resource.id)
-                },
-              },
-              cancel: {
-                icon: 'close',
-                textIdent: 'moderation.reports.decideModal.cancel',
-                callback: () => {},
-              },
-            },
-          },
-        },
-      })
-    },
-  },
-  apollo: {
+  watch: {
     reports: {
-      query: reportListQuery(),
-      variables() {
-        return {}
-      },
-      update({ reports }) {
+      immediate: true,
+      handler(newReports) {
         const newResourcesClaims = []
 
-        reports.forEach(report => {
+        newReports.forEach(report => {
           const resource =
             report.type === 'User'
               ? report.user
@@ -373,6 +307,79 @@ export default {
         )
         
         this.resourcesClaims = newResourcesClaims
+      },
+    },
+  },
+  methods: {
+    confirm(content) {
+      this.openModal(content)
+    },
+    async confirmCallback(resourceId) {
+      this.$apollo
+        .mutate({
+          mutation: reviewMutation(),
+          variables: { resourceId, closed: true },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('moderation.reports.DecisionSuccess'))
+          this.$apollo.queries.reports.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    openModal(content) {
+      const identStart =
+        'moderation.reports.decideModal.' +
+        content.type +
+        '.' +
+        (content.latestClaim.disable ? 'disable' : 'enable')
+      this.$store.commit('modal/SET_OPEN', {
+        name: 'confirm',
+        data: {
+          type: content.type,
+          resource: content.resource,
+          modalData: {
+            titleIdent: identStart + '.title',
+            messageIdent: identStart + '.message',
+            messageParams: {
+              name:
+                content.type === 'User'
+                  ? content.user.name
+                  : content.type === 'Post'
+                  ? this.$filters.truncate(content.post.title, 30)
+                  : content.type === 'Comment'
+                  ? this.$filters.truncate(
+                      this.$filters.removeHtml(content.comment.contentExcerpt),
+                      30,
+                    )
+                  : '',
+            },
+            buttons: {
+              confirm: {
+                danger: true,
+                icon: content.resource.disabled ? 'eye-slash' : 'eye',
+                textIdent: 'moderation.reports.decideModal.submit',
+                callback: () => {
+                  this.confirmCallback(content.resource.id)
+                },
+              },
+              cancel: {
+                icon: 'close',
+                textIdent: 'moderation.reports.decideModal.cancel',
+                callback: () => {},
+              },
+            },
+          },
+        },
+      })
+    },
+  },
+  apollo: {
+    reports: {
+      query: reportListQuery(),
+      variables() {
+        return {}
+      },
+      update({ reports }) {
         return reports
       },
       fetchPolicy: 'cache-and-network',
