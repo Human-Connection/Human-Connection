@@ -499,7 +499,6 @@
       "disabledAt": "Disabled at",
       "reasonCategory": "Category",
       "reasonDescription": "Description",
-      "createdAt": "Date",
       "submitter": "Reported by",
       "decideModal": {
         "submit": "Confirm decision",
@@ -595,7 +594,6 @@
       "message": "Do you really want to report the comment from \"<b>{name}</b>\"?",
       "error": "You have already reported the comment!"
     },
-    "author": "Author",
     "reason": {
       "category": {
         "label": "Select a category:",

@@ -3,12 +3,8 @@ export default {
     review: async (_object, params, context, _resolveInfo) => {
       const { resourceId } = params
       let { disable, closed } = params
-      // Wolle console.log('disable: ', disable)
-      // console.log('closed: ', closed)
       disable = disable === undefined ? null : disable
       closed = closed === undefined ? null : closed
-      // Wolle console.log('disable: ', disable)
-      // console.log('closed: ', closed)
       const { user: moderator, driver } = context
 
       let createdRelationshipWithNestedAttributes = null // return value
@@ -69,11 +65,6 @@ export default {
         const txResult = await mutateDecisionWriteTxResultPromise
         if (!txResult[0]) return null
         const { moderator: moderatorInResult, review, claim, resource, type } = txResult[0]
-        // Wolle console.log('review.properties.disable: ', review.properties.disable)
-        // console.log('claim.properties.disable: ', claim.properties.disable)
-        // console.log('resource.properties.disabled: ', resource.properties.disabled)
-        // console.log('review.properties.closed: ', review.properties.closed)
-        // console.log('claim.properties.closed: ', claim.properties.closed)
         createdRelationshipWithNestedAttributes = {
           ...review.properties,
           claimId: claim.properties.id,

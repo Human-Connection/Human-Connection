@@ -333,7 +333,6 @@
             "disabledAt": "Gesperrt am",
             "reasonCategory": "Kategorie",
             "reasonDescription": "Beschreibung",
-            "createdAt": "Datum",
             "submitter": "Gemeldet von",
             "decideModal": {
               "submit": "Bestätige Entscheidung",
@@ -394,6 +393,7 @@
     "report": {
         "submit": "Meldung senden",
         "cancel": "Abbrechen",
+        "success": "Vielen Dank für diese Meldung!",
         "user": {
             "title": "Nutzer melden",
             "type": "Nutzer",
@@ -412,8 +412,6 @@
             "message": "Bist Du sicher, dass Du den Kommentar von „<b>{name}<\/b>“ melden möchtest?",
             "error": "Du hast den Kommentar bereits gemeldet!"
         },
-        "author": "Verfasser",
-        "success": "Vielen Dank für diese Meldung!",
         "reason": {
             "category": {
                 "label": "Wähle eine Kategorie:",
