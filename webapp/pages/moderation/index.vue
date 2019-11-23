@@ -53,6 +53,8 @@
                   v-tooltip="{ content: $t('report.user.type'), placement: 'right' }"
                   name="user"
                 />
+                <ds-icon v-if="content.resource.disabled" name="eye-slash" class="ban" />
+                <ds-icon v-else name="eye" class="no-ban" />
               </ds-text>
             </td>
             <td class="ds-table-col ds-table-head-col-border">
