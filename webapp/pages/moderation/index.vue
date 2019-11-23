@@ -64,15 +64,27 @@
                   :to="{
                     name: 'post-id-slug',
                     params: {
-                      id: resourceClaims.type === 'Post' ? resourceClaims.post.id : resourceClaims.comment.post.id,
-                      slug: resourceClaims.type === 'Post' ? resourceClaims.post.slug : resourceClaims.comment.post.slug,
+                      id:
+                        resourceClaims.type === 'Post'
+                          ? resourceClaims.post.id
+                          : resourceClaims.comment.post.id,
+                      slug:
+                        resourceClaims.type === 'Post'
+                          ? resourceClaims.post.slug
+                          : resourceClaims.comment.post.slug,
                     },
                     hash:
-                      resourceClaims.type === 'Comment' ? `#commentId-${resourceClaims.comment.id}` : undefined,
+                      resourceClaims.type === 'Comment'
+                        ? `#commentId-${resourceClaims.comment.id}`
+                        : undefined,
                   }"
                 >
-                  <b v-if="resourceClaims.type === 'Post'">{{ resourceClaims.post.title | truncate(100) }}</b>
-                  <b v-else>{{ resourceClaims.comment.contentExcerpt | removeHtml | truncate(100) }}</b>
+                  <b v-if="resourceClaims.type === 'Post'">
+                    {{ resourceClaims.post.title | truncate(100) }}
+                  </b>
+                  <b v-else>
+                    {{ resourceClaims.comment.contentExcerpt | removeHtml | truncate(100) }}
+                  </b>
                 </nuxt-link>
               </div>
               <div v-else>
@@ -144,7 +156,7 @@
                   <div v-if="indexClaim > 0">
                     <ds-flex gutter="small">
                       <ds-flex-item width="25%">
-                       <b>{{ $t('moderation.reports.previousDecision') }}</b>
+                        <b>{{ $t('moderation.reports.previousDecision') }}</b>
                       </ds-flex-item>
                       <ds-flex-item>
                         <div>
@@ -279,9 +291,7 @@ export default {
         // sorting of resource claims and their reports
         newResourcesClaims.forEach(resourceClaims => {
           // latestClaim by updatedAt rules
-          resourceClaims.claims.sort(
-            (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
-          )
+          resourceClaims.claims.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
           resourceClaims.latestClaim = {
             id: resourceClaims.claims[0].id,
             createdAt: resourceClaims.claims[0].createdAt,
@@ -290,22 +300,18 @@ export default {
             closed: resourceClaims.claims[0].closed,
           }
           // display claims always by starting with latest createdAt
-          resourceClaims.claims.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-          )
+          resourceClaims.claims.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 
           resourceClaims.claims.forEach(claim => {
             // display reports always by starting with latest createdAt
-            claim.reports.sort(
-              (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-            )
+            claim.reports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           })
         })
         // display resources by starting with claims by their latest createdAt
         newResourcesClaims.sort(
           (a, b) => new Date(b.claims[0].createdAt) - new Date(a.claims[0].createdAt),
         )
-        
+
         this.resourcesClaims = newResourcesClaims
       },
     },

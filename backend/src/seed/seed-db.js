@@ -828,7 +828,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         variables: {
           resourceId: 'p2',
           reasonCategory: 'doxing',
-          reasonDescription: "I think it is my friends data!",
+          reasonDescription: 'I think it is my friends data!',
         },
       }),
     ])
@@ -869,7 +869,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         variables: {
           resourceId: 'p2',
           reasonCategory: 'doxing',
-          reasonDescription: "I think it is my friends data again!",
+          reasonDescription: 'I think it is my friends data again!',
         },
       }),
     ])
