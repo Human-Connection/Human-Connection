@@ -1,0 +1,206 @@
+1,16d0
+< actions.cancel
+< actions.delete
+< actions.edit
+< actions.loadMore
+< actions.save
+< admin.categories.categoryName
+< admin.categories.name
+< admin.categories.postCount
+< admin.dashboard.comments
+< admin.dashboard.follows
+< admin.dashboard.invites
+< admin.dashboard.name
+< admin.dashboard.notifications
+< admin.dashboard.posts
+< admin.dashboard.shouts
+< admin.dashboard.users
+21a6
+> admin.hashtags.nameOfHashtag
+28,32d12
+< admin.name
+< admin.notifications.name
+< admin.organizations.name
+< admin.pages.name
+< admin.settings.name
+35d14
+< admin.users.name
+75d53
+< comment.content.unavailable-placeholder
+80,84c58,59
+< common.comment
+< common.letsTalk
+< common.moreInfo
+< common.post
+< common.takeAction
+---
+> comment.show.more
+> common.validations.categories
+87d61
+< common.versus
+97a72
+> components.password-reset.request.title
+105a81
+> components.registration.signup.form.invitation-code
+108a85
+> components.registration.signup.form.terms-and-condition
+132a110
+> contribution.filterALL
+134a113
+> contribution.languageSelectText
+138a118,119
+> delete.cancel
+> delete.comment.message
+139a121,123
+> delete.comment.title
+> delete.comment.type
+> delete.contribution.message
+141,149c125,127
+< disable.cancel
+< disable.comment.message
+< disable.comment.title
+< disable.contribution.message
+< disable.contribution.title
+< disable.submit
+< disable.success
+< disable.user.message
+< disable.user.title
+---
+> delete.contribution.title
+> delete.contribution.type
+> delete.submit
+158a137
+> editor.hashtag.noHashtagsFound
+162a142
+> filter-menu.title
+169,170d148
+< followButton.follow
+< followButton.following
+173,174d150
+< login.copy
+< login.email
+177,180d152
+< login.hello
+< login.login
+< login.logout
+< login.moreInfo
+181a154
+> login.moreInfoURL
+183d155
+< login.password
+189d160
+< moderation.name
+191,193d161
+< moderation.reports.disabledBy
+< moderation.reports.empty
+< moderation.reports.name
+196d163
+< moderation.reports.submitter
+225d191
+< post.name
+227,229d192
+< profile.commented
+< profile.followers
+< profile.following
+231,232c194,195
+< profile.memberSince
+< profile.name
+---
+> profile.invites.emailPlaceholder
+> profile.invites.title
+239d201
+< profile.shouted
+242,244d203
+< quotes.african.author
+< quotes.african.quote
+< registration.signup.form.invitation-code
+245a205
+> release.comment.error
+247a208,209
+> release.comment.type
+> release.contribution.error
+249a212
+> release.contribution.type
+251a215
+> release.user.error
+254c218
+< report.cancel
+---
+> release.user.type
+256,258d219
+< report.comment.message
+< report.comment.title
+< report.comment.type
+260,262c221
+< report.contribution.message
+< report.contribution.title
+< report.contribution.type
+---
+> report.reason.category.invalid
+264c223,231
+< report.reason.category.options.
+---
+> report.reason.category.options.advert_products_services_commercial
+> report.reason.category.options.criminal_behavior_violation_german_law
+> report.reason.category.options.discrimination_etc
+> report.reason.category.options.doxing
+> report.reason.category.options.glorific_trivia_of_cruel_inhuman_acts
+> report.reason.category.options.intentional_intimidation_stalking_persecution
+> report.reason.category.options.other
+> report.reason.category.options.pornographic_content_links
+> report.reason.category.placeholder
+267,268d233
+< report.submit
+< report.success
+270,274d234
+< report.user.message
+< report.user.title
+< report.user.type
+< search.hint
+< search.placeholder
+290,292d249
+< settings.data.labelBio
+< settings.data.labelCity
+< settings.data.labelName
+294d250
+< settings.data.name
+304d259
+< settings.download.name
+326,329c281,283
+< settings.invites.name
+< settings.languages.name
+< settings.name
+< settings.organizations.name
+---
+> settings.privacy.make-shouts-public
+> settings.privacy.name
+> settings.privacy.success-update
+333a288,290
+> settings.security.change-password.message-new-password-confirm-required
+> settings.security.change-password.message-new-password-missmatch
+> settings.security.change-password.message-new-password-required
+342d298
+< settings.security.name
+349c305,306
+< shoutButton.shouted
+---
+> settings.validation.slug.alreadyTaken
+> settings.validation.slug.regex
+350a308
+> site.bank
+352a311
+> site.contact
+353a313
+> site.director
+355a316
+> site.germany
+357a319,321
+> site.register
+> site.responsible
+> site.taxident
+359a324,326
+> site.tribunal
+> store.posts.orderBy.newest.label
+> store.posts.orderBy.oldest.label
+361a329
+> termsAndConditions.agree

@@ -1,1 +1,1 @@
-~/bin/lokalise2 key list --token $MY_LOKALISE_TOKEN --project-id 556252725c18dd752dd546.13222042 
+~/bin/lokalise2 key list --token $MY_LOKALISE_TOKEN --project-id 556252725c18dd752dd546.13222042 --filter-filenames 'webapp/locales/%LANG_ISO%.json'  
