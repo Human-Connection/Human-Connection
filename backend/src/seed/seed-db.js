@@ -657,6 +657,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }
     `
     authenticatedUser = await huey.toJson()
+    // report resource first time
     await Promise.all([
       mutate({
         mutation: reportMutation,
@@ -693,13 +694,21 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       mutate({
         mutation: reportMutation,
         variables: {
+          resourceId: 'p2',
+          reasonCategory: 'doxing',
+          reasonDescription: 'OMG my data !!!',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
           resourceId: 'u1',
           reasonCategory: 'doxing',
           reasonDescription: 'This user is harassing me with bigoted remarks',
         },
       }),
     ])
-    // report content a second time
+    // report resource a second time
     authenticatedUser = await dewey.toJson()
     await Promise.all([
       mutate({
@@ -729,6 +738,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       mutate({
         mutation: reportMutation,
         variables: {
+          resourceId: 'p2',
+          reasonCategory: 'intentional_intimidation_stalking_persecution',
+          reasonDescription: '',
+        },
+      }),
+      mutate({
+        mutation: reportMutation,
+        variables: {
           resourceId: 'u1',
           reasonCategory: 'glorific_trivia_of_cruel_inhuman_acts',
           reasonDescription: 'murder',
@@ -737,7 +754,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
     authenticatedUser = null
 
-    // only review after report !!!
+    // only review resource after report !!!
     const reviewMutation = gql`
       mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
         review(resourceId: $resourceId, disable: $disable, closed: $closed) {
@@ -750,8 +767,16 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       disable: true,
       closed: false,
     }
+    // review resource first time
     authenticatedUser = await bobDerBaumeister.toJson()
     await Promise.all([
+      mutate({
+        mutation: reviewMutation,
+        variables: {
+          ...disableVariables,
+          resourceId: 'p2',
+        },
+      }),
       mutate({
         mutation: reviewMutation,
         variables: {
@@ -765,6 +790,86 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           ...disableVariables,
           resourceId: 'c5',
           closed: true,
+        },
+      }),
+    ])
+    // second review of resource and close claim
+    authenticatedUser = await peterLustig.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reviewMutation,
+        variables: {
+          ...disableVariables,
+          resourceId: 'p2',
+          disable: false,
+          closed: true,
+        },
+      }),
+    ])
+    authenticatedUser = null
+
+    // report resource after closing of the claim
+    authenticatedUser = await bobDerBaumeister.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p2',
+          reasonCategory: 'doxing',
+          reasonDescription: "That's my friends privat data!",
+        },
+      }),
+    ])
+    // report resource second time after closing of the claim
+    authenticatedUser = await jennyRostock.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p2',
+          reasonCategory: 'doxing',
+          reasonDescription: "I think it is my friends data!",
+        },
+      }),
+    ])
+    authenticatedUser = null
+
+    // third review of resource and close claim
+    authenticatedUser = await bobDerBaumeister.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reviewMutation,
+        variables: {
+          ...disableVariables,
+          resourceId: 'p2',
+          disable: true,
+          closed: true,
+        },
+      }),
+    ])
+    authenticatedUser = null
+
+    // report resource after second closing of the claim
+    authenticatedUser = await huey.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p2',
+          reasonCategory: 'doxing',
+          reasonDescription: "That's my privat data!",
+        },
+      }),
+    ])
+    // report resource second time after second closing of the claim
+    authenticatedUser = await jennyRostock.toJson()
+    await Promise.all([
+      mutate({
+        mutation: reportMutation,
+        variables: {
+          resourceId: 'p2',
+          reasonCategory: 'doxing',
+          reasonDescription: "I think it is my friends data again!",
         },
       }),
     ])
