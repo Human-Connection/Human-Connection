@@ -14,6 +14,7 @@ export default {
             // no open claim, create one
             MERGE (resource)<-[:BELONGS_TO]-(claim:Claim {closed: false})
             ON CREATE SET claim.id = randomUUID(), claim.createdAt = $createdAt, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = resource.disabled, claim.closed = false
+            // ON MATCH: do not update claim.updatedAt !!! that is only for reviews!
             // Create report to claim
             WITH submitter, resource, claim
             CREATE (claim)<-[report:REPORTED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
@@ -77,7 +78,7 @@ export default {
       let orderByClause
       switch (params.orderBy) {
         case 'createdAt_asc':
-          orderByClause = 'ORDER BY claim.createdAt ASC, report.createdAt ASC'
+          orderByClause = 'ORDER BY claim.createdAt ASC, report.createdAt DESC'
           break
         case 'createdAt_desc':
           orderByClause = 'ORDER BY claim.createdAt DESC, report.createdAt DESC'
