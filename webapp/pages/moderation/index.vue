@@ -138,24 +138,31 @@
             <td class="ds-table-col ds-table-head-col-border" colspan="3">
               <template v-for="(claim, indexClaim) in content.claims">
                 <div :key="claim.id">
+                  <!-- previousDecision -->
                   <div v-if="indexClaim > 0">
-                    <b>{{ $t('moderation.reports.previousDecision') }}</b>
-                    <div>
-                      <span v-if="claim.disable">
-                        <ds-icon name="eye-slash" class="ban" />
-                        {{ $t('moderation.reports.disabledAt') }}
-                      </span>
-                      <span v-else>
-                        <ds-icon name="eye" class="no-ban" />
-                        {{ $t('moderation.reports.enabledAt') }}
-                      </span>
-                      <ds-text size="small" color="soft">
-                        <ds-icon name="clock" />
-                        <client-only>
-                          <hc-relative-date-time :date-time="claim.updatedAt" />
-                        </client-only>
-                      </ds-text>
-                    </div>
+                    <ds-flex gutter="small">
+                      <ds-flex-item width="25%">
+                       <b>{{ $t('moderation.reports.previousDecision') }}</b>
+                      </ds-flex-item>
+                      <ds-flex-item>
+                        <div>
+                          <span v-if="claim.disable">
+                            <ds-icon name="eye-slash" class="ban" />
+                            {{ $t('moderation.reports.disabledAt') }}
+                          </span>
+                          <span v-else>
+                            <ds-icon name="eye" class="no-ban" />
+                            {{ $t('moderation.reports.enabledAt') }}
+                          </span>
+                          <ds-text size="small" color="soft">
+                            <ds-icon name="clock" />
+                            <client-only>
+                              <hc-relative-date-time :date-time="claim.updatedAt" />
+                            </client-only>
+                          </ds-text>
+                        </div>
+                      </ds-flex-item>
+                    </ds-flex>
                     <ds-space margin-bottom="x-small" />
                   </div>
                   <ds-table :data="claim.reports" :fields="reportFields" condensed>
