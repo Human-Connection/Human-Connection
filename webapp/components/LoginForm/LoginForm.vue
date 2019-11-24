@@ -93,8 +93,9 @@ export default {
   },
   methods: {
     async onSubmit() {
+      const { email, password } = this.form
       try {
-        await this.$store.dispatch('auth/login', { ...this.form })
+        await this.$store.dispatch('auth/login', { email, password })
         this.$toast.success(this.$t('login.success'))
         this.$emit('success')
       } catch (err) {

@@ -5,8 +5,10 @@ import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer, { context } from '../../server'
 import encode from '../../jwt/encode'
+import { neode as getNeode } from '../../bootstrap/neo4j'
 
 const factory = Factory()
+const neode = getNeode()
 let query
 let mutate
 let variables
@@ -211,6 +213,28 @@ describe('login', () => {
           await respondsWith({
             data: null,
             errors: [{ message: 'Your account has been disabled.' }],
+          })
+        })
+      })
+
+      describe('normalization', () => {
+        describe('email address is a gmail address ', () => {
+          beforeEach(async () => {
+            const email = await neode.first('EmailAddress', { email: 'test@example.org' })
+            await email.update({ email: 'someuser@gmail.com' })
+          })
+
+          describe('supplied email contains dots', () => {
+            beforeEach(() => {
+              variables = { ...variables, email: 'some.user@gmail.com' }
+            })
+
+            it('normalizes email, issue #2329', async () => {
+              await respondsWith({
+                data: { login: expect.any(String) },
+                errors: undefined,
+              })
+            })
           })
         })
       })
