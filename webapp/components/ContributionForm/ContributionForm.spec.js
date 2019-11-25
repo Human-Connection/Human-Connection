@@ -245,6 +245,14 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
         })
 
+        describe('questionable images should be blurred', () => { 
+     
+          it('questionable images unset be blurred', async () => {
+            await  wrapper.find('input[type="checkbox"]').trigger('click')
+            expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true)
+          })
+        })
+
         it("pushes the user to the post's page", async () => {
           wrapper.find('form').trigger('submit')
           await mocks.$apollo.mutate

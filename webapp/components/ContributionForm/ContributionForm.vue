@@ -79,6 +79,28 @@
           </ds-chip>
         </ds-text>
         <ds-space />
+        <ds-text align="right">
+          <label for="bad-img">Anstösiger Inhalt</label>
+          <input
+            id="bad-img"
+            type="checkbox"
+            name="checkbox"
+            :checked="checkedBlur"
+            @change="checkedChange"
+          />
+          <label for="bad-img">
+            <span class=""></span>
+          </label>
+          <div>
+            <a href="https://faq.human-connection.org/" target="_blank">
+              <small>
+                Bilder werden Verschwommen dargestellt
+                <ds-icon name="question-circle" />
+              </small>
+            </a>
+          </div>
+        </ds-text>
+        <ds-space />
         <div slot="footer" style="text-align: right">
           <ds-button
             class="cancel-button"
@@ -172,6 +194,9 @@ export default {
       users: [],
       contentMin: 3,
       hashtags: [],
+      checkedBlur: false,
+      elem: null,
+       elem1: null,
     }
   },
   computed: {
@@ -183,6 +208,23 @@ export default {
     }),
   },
   methods: {
+    checkedChange() {
+      this.elem  = this.$el.querySelector('img')
+      this.elem1 = this.$el.querySelector('img.thumbnail-preview')
+      if (this.checkedBlur) {
+        this.elem.classList.remove('img-blur-in')
+        this.checkedBlur = false
+      } else {
+        if (this.elem != null) {
+             this.elem.classList.add('img-blur-in') 
+        }
+         if (this.elem1 != null) {
+             this.elem1.classList.add('img-blur-in')
+        }
+     
+        this.checkedBlur = true
+      }
+    },
     submit() {
       const {
         language: { value: language },
@@ -288,5 +330,32 @@ export default {
   .ds-chip {
     cursor: default;
   }
+}
+input[type='checkbox'] {
+  display: none;
+}
+input[type='checkbox'] + label span {
+  display: inline-block;
+  width: 29px;
+  height: 27px;
+  vertical-align: middle;
+  background: url(../../static/img/checkbox/checkbox-set-blank-checked-line.png) left top no-repeat;
+  cursor: pointer;
+}
+input[type='checkbox']:checked + label span {
+  background: url(../../static/img/checkbox/checkbox-set-blank-checked-line.png) -30px top no-repeat;
+}
+
+.img-blur-in {
+  -webkit-filter: blur(32px);
+  -moz-filter: blur(32px);
+  -ms-filter: blur(32px);
+  -o-filter: blur(32px);
+  filter: blur(32px);
+  -webkit-transition: all ease 0.2s;
+  -moz-transition: all ease 0.2s;
+  -ms-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  transition: all ease 0.2s;
 }
 </style>
