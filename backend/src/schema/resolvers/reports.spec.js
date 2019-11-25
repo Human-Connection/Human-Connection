@@ -9,7 +9,7 @@ const instance = getNeode()
 const driver = getDriver()
 
 describe('report resources', () => {
-  let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser
+  let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser, otherReportingUser
   const categoryIds = ['cat9']
   const reportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
@@ -33,6 +33,13 @@ describe('report resources', () => {
         }
         comment {
           content
+        }
+        claim {
+          id
+          createdAt
+          updatedAt
+          disable
+          closed
         }
       }
     }
@@ -81,6 +88,12 @@ describe('report resources', () => {
           email: 'test@example.org',
           password: '1234',
         })
+        otherReportingUser = await factory.create('User', {
+          id: 'other-reporting-user-id',
+          role: 'user',
+          email: 'reporting@example.org',
+          password: '1234',
+        })
         await factory.create('User', {
           id: 'abusive-user-id',
           role: 'user',
@@ -106,6 +119,46 @@ describe('report resources', () => {
       })
 
       describe('valid resource', () => {
+        describe('creates claim', () => {
+          it('which belongs to resource', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                report: {
+                  type: 'User',
+                  claim: {
+                    id: expect.any(String),
+                    createdAt: expect.any(String),
+                    updatedAt: expect.any(String),
+                    disable: false,
+                    closed: false,
+                  },
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('creates only one claim for multiple reports on the same resource', async () => {
+            const firstReport = await mutate({
+              mutation: reportMutation,
+              variables: { ...variables, resourceId: 'abusive-user-id' },
+            })
+            authenticatedUser = await otherReportingUser.toJson()
+            const secondReport = await mutate({
+              mutation: reportMutation,
+              variables: { ...variables, resourceId: 'abusive-user-id' },
+            })
+            expect(firstReport.data.report.claim).toEqual(secondReport.data.report.claim)
+          })
+
+          it.todo('creates multiple reports')
+        })
+
         describe('reported resource is a user', () => {
           it('returns type "User"', async () => {
             await expect(
@@ -236,7 +289,7 @@ describe('report resources', () => {
             })
           })
 
-          it('sanitize the reason description', async () => {
+          it('sanitizes the reason description', async () => {
             await expect(
               mutate({
                 mutation: reportMutation,
@@ -432,13 +485,19 @@ describe('report resources', () => {
           comment {
             id
           }
+          claim {
+            id
+            createdAt
+            updatedAt
+            disable
+            closed
+          }
         }
       }
     `
 
     beforeEach(async () => {
       authenticatedUser = null
-
       moderator = await factory.create('User', {
         id: 'moderator-1',
         role: 'moderator',
@@ -519,6 +578,7 @@ describe('report resources', () => {
       ])
       authenticatedUser = null
     })
+
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         authenticatedUser = null
@@ -528,6 +588,7 @@ describe('report resources', () => {
         })
       })
     })
+
     describe('authenticated', () => {
       it('role "user" gets no reports', async () => {
         authenticatedUser = await currentUser.toJson()
@@ -539,7 +600,6 @@ describe('report resources', () => {
 
       it('role "moderator" gets reports', async () => {
         const expected = {
-          // to check 'orderBy: createdAt_desc' is not possible here, because 'createdAt' does not differ
           reports: expect.arrayContaining([
             expect.objectContaining({
               createdAt: expect.any(String),
@@ -554,6 +614,13 @@ describe('report resources', () => {
               }),
               post: null,
               comment: null,
+              claim: {
+                id: expect.any(String),
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String),
+                disable: false,
+                closed: false,
+              },
             }),
             expect.objectContaining({
               createdAt: expect.any(String),
@@ -568,6 +635,13 @@ describe('report resources', () => {
                 id: 'abusive-post-1',
               }),
               comment: null,
+              claim: {
+                id: expect.any(String),
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String),
+                disable: false,
+                closed: false,
+              },
             }),
             expect.objectContaining({
               createdAt: expect.any(String),
@@ -582,6 +656,13 @@ describe('report resources', () => {
               comment: expect.objectContaining({
                 id: 'abusive-comment-1',
               }),
+              claim: {
+                id: expect.any(String),
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String),
+                disable: false,
+                closed: false,
+              },
             }),
           ]),
         }
