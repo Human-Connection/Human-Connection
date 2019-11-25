@@ -30,9 +30,9 @@ export default {
           },
         )
         return reportRelationshipTransactionResponse.records.map(record => ({
-          submitter: record.get('submitter'),
-          report: record.get('report'),
-          claim: record.get('claim'),
+          submitter: record.get('submitter').properties,
+          report: record.get('report').properties,
+          claim: record.get('claim').properties,
           resource: record.get('resource').properties,
           type: record.get('type'),
         }))
@@ -42,16 +42,12 @@ export default {
         if (!txResult[0]) return null
         const { submitter, report, claim, resource, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
-          ...report.properties,
-          claimId: claim.properties.id,
-          claimCreatedAt: claim.properties.createdAt,
-          claimUpdatedAt: claim.properties.updatedAt,
-          claimDisable: claim.properties.disable,
-          claimClosed: claim.properties.closed,
+          ...report,
+          claim,
           post: null,
           comment: null,
           user: null,
-          submitter: submitter.properties,
+          submitter,
           type,
         }
         switch (type) {
@@ -75,8 +71,7 @@ export default {
     reports: async (_parent, params, context, _resolveInfo) => {
       const { driver } = context
       const session = driver.session()
-      let response
-      let orderByClause
+      let reports, orderByClause
       switch (params.orderBy) {
         case 'createdAt_asc':
           orderByClause = 'ORDER BY claim.createdAt ASC, report.createdAt DESC'
@@ -87,61 +82,55 @@ export default {
         default:
           orderByClause = ''
       }
-      try {
-        const cypher = `
+      const readTxPromise = session.readTransaction(async tx => {
+        const allReportsTransactionResponse = await tx.run(
+          `
           MATCH (submitter:User)-[report:REPORTED]->(claim:Claim)-[:BELONGS_TO]->(resource)
           WHERE resource:User OR resource:Post OR resource:Comment
           RETURN submitter, report, claim, resource, labels(resource)[0] as type
           ${orderByClause}
-        `
-        const result = await session.run(cypher, {})
-        const dbResponse = result.records.map(r => {
-          return {
-            submitter: r.get('submitter'),
-            report: r.get('report'),
-            claim: r.get('claim'),
-            resource: r.get('resource'),
-            type: r.get('type'),
-          }
-        })
-        if (!dbResponse) return null
-
-        response = []
-        dbResponse.forEach(ele => {
-          const { report, submitter, claim, resource, type } = ele
-
-          const responseEle = {
-            ...report.properties,
-            claimId: claim.properties.id,
-            claimCreatedAt: claim.properties.createdAt,
-            claimUpdatedAt: claim.properties.updatedAt,
-            claimDisable: claim.properties.disable,
-            claimClosed: claim.properties.closed,
+          `,
+          {},
+        )
+        return allReportsTransactionResponse.records.map(record => ({
+          submitter: record.get('submitter').properties,
+          report: record.get('report').properties,
+          claim: record.get('claim').properties,
+          resource: record.get('resource').properties,
+          type: record.get('type'),
+        }))
+      })
+      try {
+        const txResult = await readTxPromise
+        if (!txResult[0]) return null
+        reports = txResult.map(reportedRecord => {
+          const { report, submitter, claim, resource, type } = reportedRecord
+          const relationshipWithNestedAttributes = {
+            ...report,
+            claim,
             post: null,
             comment: null,
             user: null,
-            submitter: submitter.properties,
+            submitter,
             type,
           }
-
           switch (type) {
             case 'Post':
-              responseEle.post = resource.properties
+              relationshipWithNestedAttributes.post = resource
               break
             case 'Comment':
-              responseEle.comment = resource.properties
+              relationshipWithNestedAttributes.comment = resource
               break
             case 'User':
-              responseEle.user = resource.properties
+              relationshipWithNestedAttributes.user = resource
               break
           }
-          response.push(responseEle)
+          return relationshipWithNestedAttributes
         })
       } finally {
         session.close()
       }
-
-      return response
+      return reports
     },
   },
 }

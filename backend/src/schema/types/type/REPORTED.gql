@@ -2,12 +2,9 @@ type REPORTED {
   createdAt: String!
   reasonCategory: ReasonCategory!
   reasonDescription: String!
-
-  claimId: ID!
-  claimCreatedAt: String!
-  claimUpdatedAt: String!
-  claimDisable: Boolean!
-  claimClosed: Boolean!
+  claim: Claim  @cypher(
+    statement: "MATCH (resource)<-[:BELONGS_TO]-(claim:Claim)<-[:REPORTED]-(:User) WHERE NOT resource.deleted = true AND NOT resource.disabled = true RETURN claim"
+  )
 
   submitter: User
     # @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
