@@ -9,7 +9,7 @@
     @vdropzone-thumbnail="transformImage"
   >
     <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
-      <ds-button @click="cropImage" class="crop-confirm" primary>
+      <ds-button @click.stop.prevent="cropImage" class="crop-confirm" primary>
         {{ $t('contribution.teaserImage.cropperConfirm') }}
       </ds-button>
       <ds-button @click="cancelCrop" class="crop-cancel" icon="close"></ds-button>
