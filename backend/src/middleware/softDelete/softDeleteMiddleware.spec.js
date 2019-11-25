@@ -8,14 +8,8 @@ const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 
-let query
-let mutate
-let graphqlQuery
 const categoryIds = ['cat9']
-let authenticatedUser
-let user
-let moderator
-let troll
+let query, graphqlQuery, authenticatedUser, user, moderator, troll
 
 const action = () => {
   return query({ query: graphqlQuery })
@@ -38,17 +32,16 @@ beforeAll(async () => {
       avatar: '/some/offensive/avatar.jpg',
       about: 'This self description is very offensive',
     }),
+    neode.create('Category', {
+      id: 'cat9',
+      name: 'Democracy & Politics',
+      icon: 'university',
+    }),
   ])
 
   user = users[0]
   moderator = users[1]
   troll = users[2]
-
-  await neode.create('Category', {
-    id: 'cat9',
-    name: 'Democracy & Politics',
-    icon: 'university',
-  })
 
   await Promise.all([
     user.relateTo(troll, 'following'),
@@ -70,32 +63,31 @@ beforeAll(async () => {
     }),
   ])
 
-  await Promise.all([
+  const resources = await Promise.all([
     factory.create('Comment', {
       author: user,
       id: 'c2',
       postId: 'p3',
       content: 'Enabled comment on public post',
     }),
+    factory.create('Post', {
+      id: 'p2',
+      author: troll,
+      title: 'Disabled post',
+      content: 'This is an offensive post content',
+      contentExcerpt: 'This is an offensive post content',
+      image: '/some/offensive/image.jpg',
+      deleted: false,
+      categoryIds,
+    }),
+    factory.create('Comment', {
+      id: 'c1',
+      author: troll,
+      postId: 'p3',
+      content: 'Disabled comment',
+      contentExcerpt: 'Disabled comment',
+    }),
   ])
-
-  await factory.create('Post', {
-    id: 'p2',
-    author: troll,
-    title: 'Disabled post',
-    content: 'This is an offensive post content',
-    contentExcerpt: 'This is an offensive post content',
-    image: '/some/offensive/image.jpg',
-    deleted: false,
-    categoryIds,
-  })
-  await factory.create('Comment', {
-    id: 'c1',
-    author: troll,
-    postId: 'p3',
-    content: 'Disabled comment',
-    contentExcerpt: 'Disabled comment',
-  })
 
   const { server } = createServer({
     context: () => {
@@ -108,48 +100,57 @@ beforeAll(async () => {
   })
   const client = createTestClient(server)
   query = client.query
-  mutate = client.mutate
 
-  authenticatedUser = await moderator.toJson()
-  const reportMutation = gql`
-    mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-      report(
-        resourceId: $resourceId
-        reasonCategory: $reasonCategory
-        reasonDescription: $reasonDescription
-      ) {
-        type
-      }
-    }
-  `
+  const trollingPost = resources[1]
+  const trollingComment = resources[2]
+
+  const claims = await Promise.all([
+    factory.create('Claim'),
+    factory.create('Claim'),
+    factory.create('Claim'),
+  ])
+  const claimAgainstTroll = claims[0]
+  const claimAgainstTrollingPost = claims[1]
+  const claimAgainstTrollingComment = claims[2]
+
   const reportVariables = {
     resourceId: 'undefined-resource',
     reasonCategory: 'discrimination_etc',
     reasonDescription: 'I am what I am !!!',
   }
+
   await Promise.all([
-    mutate({ mutation: reportMutation, variables: { ...reportVariables, resourceId: 'c1' } }),
-    mutate({ mutation: reportMutation, variables: { ...reportVariables, resourceId: 'u2' } }),
-    mutate({ mutation: reportMutation, variables: { ...reportVariables, resourceId: 'p2' } }),
+    claimAgainstTroll.relateTo(user, 'reported', { ...reportVariables, resourceId: 'u2' }),
+    claimAgainstTroll.relateTo(troll, 'belongsTo'),
+    claimAgainstTrollingPost.relateTo(user, 'reported', { ...reportVariables, resourceId: 'p2' }),
+    claimAgainstTrollingPost.relateTo(trollingPost, 'belongsTo'),
+    claimAgainstTrollingComment.relateTo(moderator, 'reported', {
+      ...reportVariables,
+      resourceId: 'c1',
+    }),
+    claimAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
   ])
-  const reviewMutation = gql`
-    mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
-      review(resourceId: $resourceId, disable: $disable, closed: $closed) {
-        disable
-      }
-    }
-  `
+
   const disableVariables = {
     resourceId: 'undefined-resource',
     disable: true,
     closed: false,
   }
+
   await Promise.all([
-    mutate({ mutation: reviewMutation, variables: { ...disableVariables, resourceId: 'c1' } }),
-    mutate({ mutation: reviewMutation, variables: { ...disableVariables, resourceId: 'u2' } }),
-    mutate({ mutation: reviewMutation, variables: { ...disableVariables, resourceId: 'p2' } }),
+    claimAgainstTroll.relateTo(moderator, 'reviewed', { ...disableVariables, resourceId: 'u2' }),
+    troll.update({ disabled: true, updatedAt: new Date().toISOString() }),
+    claimAgainstTrollingPost.relateTo(moderator, 'reviewed', {
+      ...disableVariables,
+      resourceId: 'p2',
+    }),
+    trollingPost.update({ disabled: true, updatedAt: new Date().toISOString() }),
+    claimAgainstTrollingComment.relateTo(moderator, 'reviewed', {
+      ...disableVariables,
+      resourceId: 'c1',
+    }),
+    trollingComment.update({ disabled: true, updatedAt: new Date().toISOString() }),
   ])
-  authenticatedUser = null
 })
 
 afterAll(async () => {
