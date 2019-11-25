@@ -8,11 +8,13 @@ export const reportListQuery = () => {
         createdAt
         reasonCategory
         reasonDescription
-        claimId
-        claimCreatedAt
-        claimUpdatedAt
-        claimDisable
-        claimClosed
+        claim {
+          id
+          createdAt
+          updatedAt
+          disable
+          closed
+        }
         type
         submitter {
           id
