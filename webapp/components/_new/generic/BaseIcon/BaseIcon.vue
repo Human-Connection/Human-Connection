@@ -13,7 +13,7 @@ export default {
       type: String,
       required: true,
       validator(value) {
-        return iconNames.indexOf(value) !== -1
+        return iconNames.includes(value)
       },
     },
   },
