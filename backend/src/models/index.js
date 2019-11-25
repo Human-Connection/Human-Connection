@@ -13,4 +13,5 @@ export default {
   Tag: require('./Tag.js'),
   Location: require('./Location.js'),
   Donations: require('./Donations.js'),
+  Claim: require('./Claim.js'),
 }
