@@ -94,14 +94,14 @@
     "slug": "~1.1.0",
     "trunc-html": "~1.1.2",
     "uuid": "~3.3.3",
-    "validator": "^12.0.0",
+    "validator": "^12.1.0",
     "wait-on": "~3.3.0",
     "xregexp": "^4.2.4"
   },
   "devDependencies": {
     "@babel/cli": "~7.7.0",
     "@babel/core": "~7.7.2",
-    "@babel/node": "~7.7.0",
+    "@babel/node": "~7.7.4",
     "@babel/plugin-proposal-throw-expressions": "^7.2.0",
     "@babel/preset-env": "~7.7.1",
     "@babel/register": "~7.7.0",
@@ -121,7 +121,7 @@
     "eslint-plugin-promise": "~4.2.1",
     "eslint-plugin-standard": "~4.0.1",
     "jest": "~24.9.0",
-    "nodemon": "~1.19.4",
+    "nodemon": "~2.0.1",
     "prettier": "~1.19.1",
     "supertest": "~4.0.2"
   }

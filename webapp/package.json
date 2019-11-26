@@ -94,7 +94,7 @@
   "devDependencies": {
     "@babel/core": "~7.7.2",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "~7.7.1",
+    "@babel/preset-env": "~7.7.4",
     "@storybook/addon-a11y": "^5.2.6",
     "@storybook/addon-actions": "^5.2.6",
     "@storybook/addon-notes": "^5.2.5",
@@ -111,7 +111,7 @@
     "babel-preset-vue": "~2.0.2",
     "core-js": "~2.6.10",
     "css-loader": "~3.2.0",
-    "eslint": "~6.6.0",
+    "eslint": "~6.7.1",
     "eslint-config-prettier": "~6.7.0",
     "eslint-config-standard": "~14.1.0",
     "eslint-loader": "~3.0.2",
