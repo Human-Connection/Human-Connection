@@ -2,17 +2,7 @@ type FILED {
   createdAt: String!
   reasonCategory: ReasonCategory!
   reasonDescription: String!
-  report: Report  @cypher(
-    statement: "MATCH (resource)<-[:BELONGS_TO]-(report:Report)<-[:FILED]-(:User) WHERE NOT resource.deleted = true AND NOT resource.disabled = true RETURN report"
-  )
-
   submitter: User
-    # @cypher(statement: "MATCH (resource)<-[:FILED]-(user:User) RETURN user")
-  type: String
-    # @cypher(statement: "MATCH (resource)<-[:FILED]-(user:User) RETURN labels(resource)[0]")
-  user: User
-  post: Post
-  comment: Comment
 }
 
 # this list equals the strings of an array in file "webapp/constants/modals.js"
@@ -33,12 +23,4 @@ enum ReasonCategory {
 enum ReportOrdering {
   createdAt_asc
   createdAt_desc
-}
-
-type Query {
-  reports(orderBy: ReportOrdering): [FILED]
-}
-
-type Mutation {
-  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): FILED
 }

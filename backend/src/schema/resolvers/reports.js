@@ -19,7 +19,7 @@ export default {
             WITH submitter, resource, report
             CREATE (report)<-[filed:FILED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
-            RETURN submitter, report, filed, resource, labels(resource)[0] AS type
+            RETURN submitter, report, resource, labels(resource)[0] AS type
           `,
           {
             resourceId,
@@ -32,7 +32,6 @@ export default {
         return reportRelationshipTransactionResponse.records.map(record => ({
           submitter: record.get('submitter').properties,
           report: record.get('report').properties,
-          filed: record.get('filed').properties,
           resource: record.get('resource').properties,
           type: record.get('type'),
         }))
@@ -40,10 +39,9 @@ export default {
       try {
         const txResult = await writeTxResultPromise
         if (!txResult[0]) return null
-        const { submitter, report, filed, resource, type } = txResult[0]
+        const { submitter, report, resource, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
-          ...filed,
-          report,
+          ...report,
           post: null,
           comment: null,
           user: null,
@@ -74,10 +72,10 @@ export default {
       let reports, orderByClause
       switch (params.orderBy) {
         case 'createdAt_asc':
-          orderByClause = 'ORDER BY report.createdAt ASC, filed.createdAt DESC'
+          orderByClause = 'ORDER BY report.createdAt ASC'
           break
         case 'createdAt_desc':
-          orderByClause = 'ORDER BY report.createdAt DESC, filed.createdAt DESC'
+          orderByClause = 'ORDER BY report.createdAt DESC'
           break
         default:
           orderByClause = ''
@@ -87,7 +85,7 @@ export default {
           `
           MATCH (submitter:User)-[filed:FILED]->(report:Report)-[:BELONGS_TO]->(resource)
           WHERE resource:User OR resource:Post OR resource:Comment
-          RETURN submitter, report, filed, resource, labels(resource)[0] as type
+          RETURN submitter, report, resource, labels(resource)[0] as type
           ${orderByClause}
           `,
           {},
@@ -95,7 +93,6 @@ export default {
         return allReportsTransactionResponse.records.map(record => ({
           submitter: record.get('submitter').properties,
           report: record.get('report').properties,
-          filed: record.get('filed').properties,
           resource: record.get('resource').properties,
           type: record.get('type'),
         }))
@@ -104,10 +101,9 @@ export default {
         const txResult = await readTxPromise
         if (!txResult[0]) return null
         reports = txResult.map(reportedRecord => {
-          const { report, submitter, filed, resource, type } = reportedRecord
+          const { report, submitter, resource, type } = reportedRecord
           const relationshipWithNestedAttributes = {
             ...report,
-            filed,
             post: null,
             comment: null,
             user: null,
@@ -131,6 +127,42 @@ export default {
         session.close()
       }
       return reports
+    },
+  },
+  Report: {
+    reportsFiled: async (parent, _params, context, _resolveInfo) => {
+      if (typeof parent.reportsFiled !== 'undefined') return parent.reportsFiled
+      const session = context.driver.session()
+      const { id } = parent
+      let reportsFiled
+      const readTxPromise = session.readTransaction(async tx => {
+        const allReportsTransactionResponse = await tx.run(
+          `
+          MATCH (submitter:User)-[filed:FILED]->(report:Report {id: $id})
+          RETURN filed, submitter
+          `,
+          { id },
+        )
+        return allReportsTransactionResponse.records.map(record => ({
+          submitter: record.get('submitter').properties,
+          filed: record.get('filed').properties,
+        }))
+      })
+      try {
+        const txResult = await readTxPromise
+        if (!txResult[0]) return null
+        reportsFiled = txResult.map(reportedRecord => {
+          const { submitter, filed } = reportedRecord
+          const relationshipWithNestedAttributes = {
+            ...filed,
+            submitter,
+          }
+          return relationshipWithNestedAttributes
+        })
+      } finally {
+        session.close()
+      }
+      return reportsFiled
     },
   },
 }

@@ -18,13 +18,12 @@ describe('file a report on a resource', () => {
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
+        id
         createdAt
-        reasonCategory
-        reasonDescription
+        updatedAt
+        disable
+        closed
         type
-        submitter {
-          email
-        }
         user {
           name
         }
@@ -34,12 +33,13 @@ describe('file a report on a resource', () => {
         comment {
           content
         }
-        report {
-          id
+        reportsFiled {
+          submitter {
+            id
+          }
           createdAt
-          updatedAt
-          disable
-          closed
+          reasonCategory
+          reasonDescription
         }
       }
     }
@@ -129,14 +129,15 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  type: 'User',
-                  report: {
-                    id: expect.any(String),
-                    createdAt: expect.any(String),
-                    updatedAt: expect.any(String),
-                    disable: false,
-                    closed: false,
+                  id: expect.any(String),
+                  createdAt: expect.any(String),
+                  updatedAt: expect.any(String),
+                  disable: false,
+                  closed: false,
+                  user: {
+                    name: 'abusive-user',
                   },
+                  type: 'User',
                 },
               },
               errors: undefined,
@@ -153,7 +154,7 @@ describe('file a report on a resource', () => {
               mutation: reportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
             })
-            expect(firstReport.data.fileReport.report).toEqual(secondReport.data.fileReport.report)
+            expect(firstReport.data.fileReport.id).toEqual(secondReport.data.fileReport.id)
           })
 
           it.todo('creates multiple reports')
@@ -169,7 +170,22 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
+                  id: expect.any(String),
+                  createdAt: expect.any(String),
+                  updatedAt: expect.any(String),
+                  disable: false,
+                  closed: false,
                   type: 'User',
+                  reportsFiled: [
+                    {
+                      submitter: {
+                        id: 'current-user-id',
+                      },
+                      createdAt: expect.any(String),
+                      reasonCategory: 'other',
+                      reasonDescription: 'Violates code of conduct !!!',
+                    },
+                  ],
                 },
               },
               errors: undefined,
@@ -203,9 +219,13 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  submitter: {
-                    email: 'test@example.org',
-                  },
+                  reportsFiled: [
+                    {
+                      submitter: {
+                        id: 'current-user-id',
+                      },
+                    },
+                  ],
                 },
               },
               errors: undefined,
@@ -241,7 +261,11 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  reasonCategory: 'criminal_behavior_violation_german_law',
+                  reportsFiled: [
+                    {
+                      reasonCategory: 'criminal_behavior_violation_german_law',
+                    },
+                  ],
                 },
               },
               errors: undefined,
@@ -282,7 +306,11 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  reasonDescription: 'My reason!',
+                  reportsFiled: [
+                    {
+                      reasonDescription: 'My reason!',
+                    },
+                  ],
                 },
               },
               errors: undefined,
@@ -302,7 +330,11 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  reasonDescription: 'My reason !',
+                  reportsFiled: [
+                    {
+                      reasonDescription: 'My reason !',
+                    },
+                  ],
                 },
               },
               errors: undefined,
@@ -469,12 +501,11 @@ describe('file a report on a resource', () => {
     const reportsQuery = gql`
       query {
         reports(orderBy: createdAt_desc) {
+          id
           createdAt
-          reasonCategory
-          reasonDescription
-          submitter {
-            id
-          }
+          updatedAt
+          disable
+          closed
           type
           user {
             id
@@ -485,12 +516,13 @@ describe('file a report on a resource', () => {
           comment {
             id
           }
-          report {
-            id
+          reportsFiled {
+            submitter {
+              id
+            }
             createdAt
-            updatedAt
-            disable
-            closed
+            reasonCategory
+            reasonDescription
           }
         }
       }
@@ -602,67 +634,73 @@ describe('file a report on a resource', () => {
         const expected = {
           reports: expect.arrayContaining([
             expect.objectContaining({
+              id: expect.any(String),
               createdAt: expect.any(String),
-              reasonCategory: 'doxing',
-              reasonDescription: 'This user is harassing me with bigoted remarks',
-              submitter: expect.objectContaining({
-                id: 'current-user-id',
-              }),
+              updatedAt: expect.any(String),
+              disable: false,
+              closed: false,
               type: 'User',
               user: expect.objectContaining({
                 id: 'abusive-user-1',
               }),
               post: null,
               comment: null,
-              report: {
-                id: expect.any(String),
-                createdAt: expect.any(String),
-                updatedAt: expect.any(String),
-                disable: false,
-                closed: false,
-              },
+              reportsFiled: expect.arrayContaining([
+                expect.objectContaining({
+                  submitter: expect.objectContaining({
+                    id: 'current-user-id',
+                  }),
+                  createdAt: expect.any(String),
+                  reasonCategory: 'doxing',
+                  reasonDescription: 'This user is harassing me with bigoted remarks',
+                }),
+              ]),
             }),
             expect.objectContaining({
+              id: expect.any(String),
               createdAt: expect.any(String),
-              reasonCategory: 'other',
-              reasonDescription: 'This comment is bigoted',
-              submitter: expect.objectContaining({
-                id: 'current-user-id',
-              }),
+              updatedAt: expect.any(String),
+              disable: false,
+              closed: false,
               type: 'Post',
               user: null,
               post: expect.objectContaining({
                 id: 'abusive-post-1',
               }),
               comment: null,
-              report: {
-                id: expect.any(String),
-                createdAt: expect.any(String),
-                updatedAt: expect.any(String),
-                disable: false,
-                closed: false,
-              },
+              reportsFiled: expect.arrayContaining([
+                expect.objectContaining({
+                  submitter: expect.objectContaining({
+                    id: 'current-user-id',
+                  }),
+                  createdAt: expect.any(String),
+                  reasonCategory: 'other',
+                  reasonDescription: 'This comment is bigoted',
+                }),
+              ]),
             }),
             expect.objectContaining({
+              id: expect.any(String),
               createdAt: expect.any(String),
-              reasonCategory: 'discrimination_etc',
-              reasonDescription: 'This post is bigoted',
-              submitter: expect.objectContaining({
-                id: 'current-user-id',
-              }),
+              updatedAt: expect.any(String),
+              disable: false,
+              closed: false,
               type: 'Comment',
               user: null,
               post: null,
               comment: expect.objectContaining({
                 id: 'abusive-comment-1',
               }),
-              report: {
-                id: expect.any(String),
-                createdAt: expect.any(String),
-                updatedAt: expect.any(String),
-                disable: false,
-                closed: false,
-              },
+              reportsFiled: expect.arrayContaining([
+                expect.objectContaining({
+                  submitter: expect.objectContaining({
+                    id: 'current-user-id',
+                  }),
+                  createdAt: expect.any(String),
+                  reasonCategory: 'discrimination_etc',
+                  reasonDescription: 'This post is bigoted',
+                }),
+              ]),
             }),
           ]),
         }
