@@ -124,9 +124,9 @@ type Post {
   reviewedByModerator: User
     @cypher(
       statement: """
-        MATCH (this)<-[:BELONGS_TO]-(claim:Claim)<-[review:REVIEWED]-(moderator:User)
+        MATCH (this)<-[:BELONGS_TO]-(report:Report)<-[review:REVIEWED]-(moderator:User)
         RETURN moderator
-        ORDER BY claim.updatedAt DESC, review.updatedAt DESC
+        ORDER BY report.updatedAt DESC, review.updatedAt DESC
         LIMIT 1
       """
     )

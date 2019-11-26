@@ -13,9 +13,9 @@ module.exports = {
     target: ['User', 'Comment', 'Post'],
     direction: 'out',
   },
-  reported: {
+  filed: {
     type: 'relationship',
-    relationship: 'REPORTED',
+    relationship: 'FILED',
     target: 'User',
     direction: 'in',
     properties: {

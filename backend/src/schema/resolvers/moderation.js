@@ -16,21 +16,21 @@ export default {
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
 
-            // no open claim, create one, update existing
-            MERGE (resource)<-[:BELONGS_TO]-(claim:Claim {closed: false})
-            ON CREATE SET claim.id = randomUUID(), claim.createdAt = $dateTime, claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = resource.disabled, claim.closed = false
-            ON MATCH SET claim.updatedAt = $dateTime
-            // claim.disable and claim.closed are set after setting them in review
+            // no open report, create one, update existing
+            MERGE (resource)<-[:BELONGS_TO]-(report:Report {closed: false})
+            ON CREATE SET report.id = randomUUID(), report.createdAt = $dateTime, report.updatedAt = report.createdAt, report.rule = 'latestReviewUpdatedAtRules', report.disable = resource.disabled, report.closed = false
+            ON MATCH SET report.updatedAt = $dateTime
+            // report.disable and report.closed are set after setting them in review
 
-            // Create review on claim
-            WITH moderator, resource, claim
-            MERGE (claim)<-[review:REVIEWED]-(moderator)
+            // Create review on report
+            WITH moderator, resource, report
+            MERGE (report)<-[review:REVIEWED]-(moderator)
             ON CREATE SET review.createdAt = $dateTime, review.updatedAt = review.createdAt,
               review.disable = CASE WHEN $disable IS NULL
-                THEN claim.disable
+                THEN report.disable
                 ELSE $disable END,
               review.closed = CASE WHEN $closed IS NULL
-                THEN claim.closed
+                THEN report.closed
                 ELSE $closed END
             ON MATCH SET
               review.updatedAt = $dateTime,
@@ -41,10 +41,10 @@ export default {
                 THEN review.closed
                 ELSE $closed END
 
-            SET claim.disable = review.disable, claim.closed = review.closed
+            SET report.disable = review.disable, report.closed = review.closed
             SET resource.disabled = review.disable
 
-            RETURN moderator, review, claim, resource, labels(resource)[0] AS type
+            RETURN moderator, review, report, resource, labels(resource)[0] AS type
           `
         const mutateDecisionWriteTxResultPromise = session.writeTransaction(async txc => {
           const mutateDecisionTransactionResponse = await txc.run(cypher, {
@@ -57,21 +57,21 @@ export default {
           return mutateDecisionTransactionResponse.records.map(record => ({
             moderator: record.get('moderator'),
             review: record.get('review'),
-            claim: record.get('claim'),
+            report: record.get('report'),
             resource: record.get('resource'),
             type: record.get('type'),
           }))
         })
         const txResult = await mutateDecisionWriteTxResultPromise
         if (!txResult[0]) return null
-        const { moderator: moderatorInResult, review, claim, resource, type } = txResult[0]
+        const { moderator: moderatorInResult, review, report, resource, type } = txResult[0]
         createdRelationshipWithNestedAttributes = {
           ...review.properties,
-          claimId: claim.properties.id,
-          claimCreatedAt: claim.properties.createdAt,
-          claimUpdatedAt: claim.properties.updatedAt,
-          claimDisable: claim.properties.disable,
-          claimClosed: claim.properties.closed,
+          reportId: report.properties.id,
+          reportCreatedAt: report.properties.createdAt,
+          reportUpdatedAt: report.properties.updatedAt,
+          reportDisable: report.properties.disable,
+          reportClosed: report.properties.closed,
           moderator: moderatorInResult.properties,
           type,
           post: null,

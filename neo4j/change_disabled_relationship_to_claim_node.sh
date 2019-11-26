@@ -16,23 +16,23 @@ do
 done
 
 echo "
-// convert old DISABLED to new REVIEWED-Claim-BELONGS_TO structure
+// convert old DISABLED to new REVIEWED-Report-BELONGS_TO structure
 MATCH (moderator:User)-[disabled:DISABLED]->(disabledResource)
 WHERE disabledResource:User OR disabledResource:Comment OR disabledResource:Post
 DELETE disabled
-CREATE (moderator)-[review:REVIEWED]->(claim:Claim)-[:BELONGS_TO]->(disabledResource)
+CREATE (moderator)-[review:REVIEWED]->(report:Report)-[:BELONGS_TO]->(disabledResource)
 SET review.createdAt = toString(datetime()), review.updatedAt = review.createdAt, review.disable = true
-SET claim.id = randomUUID(), claim.createdAt = toString(datetime()), claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = true, claim.closed = false
+SET report.id = randomUUID(), report.createdAt = toString(datetime()), report.updatedAt = report.createdAt, report.rule = 'latestReviewUpdatedAtRules', report.disable = true, report.closed = false
 
 // if disabledResource has no report, then create a moderators default report
-WITH moderator, disabledResource, claim
-OPTIONAL MATCH (disabledResourceReporter:User)-[existingReport:REPORTED]->(disabledResource)
+WITH moderator, disabledResource, report
+OPTIONAL MATCH (disabledResourceReporter:User)-[existingReport:FILED]->(disabledResource)
 FOREACH(disabledResource IN CASE WHEN existingReport IS NULL THEN [1] ELSE [] END | 
-  CREATE (moderator)-[addModeratorReport:REPORTED]->(claim)
+  CREATE (moderator)-[addModeratorReport:FILED]->(report)
   SET addModeratorReport.createdAt = toString(datetime()), addModeratorReport.reasonCategory = 'other', addModeratorReport.reasonDescription = 'Old DISABLED relation had no now mandatory report !!! Created automatically to ensure database consistency! Creation date is when the database manipulation happened.'
 )
 FOREACH(disabledResource IN CASE WHEN existingReport IS NOT NULL THEN [1] ELSE [] END | 
-  CREATE (disabledResourceReporter)-[moveModeratorReport:REPORTED]->(claim)
+  CREATE (disabledResourceReporter)-[moveModeratorReport:FILED]->(report)
   SET moveModeratorReport = existingReport
   DELETE existingReport
 )
@@ -41,12 +41,12 @@ RETURN disabledResource {.id};
 " | cypher-shell
 
 echo "
-// for REPORTED resources without DISABLED relation which are handled above, create new REPORTED-Claim-BELONGS_TO structure
-MATCH (reporter:User)-[oldReport:REPORTED]->(notDisabledResource)
+// for FILED resources without DISABLED relation which are handled above, create new FILED-Report-BELONGS_TO structure
+MATCH (reporter:User)-[oldReport:FILED]->(notDisabledResource)
 WHERE notDisabledResource:User OR notDisabledResource:Comment OR notDisabledResource:Post
-MERGE (claim:Claim)-[:BELONGS_TO]->(notDisabledResource)
-ON CREATE SET claim.id = randomUUID(), claim.createdAt = toString(datetime()), claim.updatedAt = claim.createdAt, claim.rule = 'latestReviewUpdatedAtRules', claim.disable = false, claim.closed = false
-CREATE (reporter)-[report:REPORTED]->(claim)
+MERGE (report:Report)-[:BELONGS_TO]->(notDisabledResource)
+ON CREATE SET report.id = randomUUID(), report.createdAt = toString(datetime()), report.updatedAt = report.createdAt, report.rule = 'latestReviewUpdatedAtRules', report.disable = false, report.closed = false
+CREATE (reporter)-[report:FILED]->(report)
 SET report = oldReport
 DELETE oldReport
 

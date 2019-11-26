@@ -8,7 +8,7 @@ export const reportListQuery = () => {
         createdAt
         reasonCategory
         reasonDescription
-        claim {
+        report {
           id
           createdAt
           updatedAt
@@ -114,7 +114,7 @@ export const reportListQuery = () => {
 export const reportMutation = () => {
   return gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-      report(
+      fileReport(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription

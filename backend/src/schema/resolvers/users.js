@@ -3,7 +3,7 @@ import fileUpload from './fileUpload'
 import { neode } from '../../bootstrap/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
-import { queryReviewedByModerator } from './helpers/claimResource.js'
+import { queryReviewedByModerator } from './helpers/reportResource.js'
 
 const instance = neode()
 

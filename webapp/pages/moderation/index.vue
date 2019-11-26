@@ -238,84 +238,84 @@ export default {
       }
     },
   },
-  watch: {
-    reports: {
-      immediate: true,
-      handler(newReports) {
-        const newResourcesClaims = []
+  // watch: {
+  //   reports: {
+  //     immediate: true,
+  //     handler(newReports) {
+  //       const newResourcesClaims = []
+  //       if (!newReports) return null
+  //       newReports.forEach(report => {
+  //         const resource =
+  //           report.type === 'User'
+  //             ? report.user
+  //             : report.type === 'Post'
+  //             ? report.post
+  //             : report.type === 'Comment'
+  //             ? report.comment
+  //             : undefined
+  //         let idxResource = newResourcesClaims.findIndex(
+  //           resourceClaims => resourceClaims.resource.id === resource.id,
+  //         )
+  //         // if resource is not in resource list, then add it
+  //         if (idxResource === -1) {
+  //           idxResource = newResourcesClaims.length
+  //           newResourcesClaims.push({
+  //             type: report.type,
+  //             resource,
+  //             user: report.user,
+  //             post: report.post,
+  //             comment: report.comment,
+  //             contentBelongsToUser: report.type === 'User' ? null : resource.author,
+  //             claims: [],
+  //           })
+  //         }
+  //         let idxClaim = newResourcesClaims[idxResource].claims.findIndex(
+  //           claim => claim.id === report.claim.id,
+  //         )
+  //         // if claim is not in claim list, then add it
+  //         if (idxClaim === -1) {
+  //           idxClaim = newResourcesClaims[idxResource].claims.length
+  //           newResourcesClaims[idxResource].claims.push({
+  //             // it is the same for all reports of a claim
+  //             id: report.claim.id,
+  //             createdAt: report.claim.createdAt,
+  //             updatedAt: report.claim.updatedAt,
+  //             disable: report.claim.disable,
+  //             closed: report.claim.closed,
+  //             reports: [],
+  //           })
+  //         }
+  //         newResourcesClaims[idxResource].claims[idxClaim].reports.push(report)
+  //       })
 
-        newReports.forEach(report => {
-          const resource =
-            report.type === 'User'
-              ? report.user
-              : report.type === 'Post'
-              ? report.post
-              : report.type === 'Comment'
-              ? report.comment
-              : undefined
-          let idxResource = newResourcesClaims.findIndex(
-            resourceClaims => resourceClaims.resource.id === resource.id,
-          )
-          // if resource is not in resource list, then add it
-          if (idxResource === -1) {
-            idxResource = newResourcesClaims.length
-            newResourcesClaims.push({
-              type: report.type,
-              resource,
-              user: report.user,
-              post: report.post,
-              comment: report.comment,
-              contentBelongsToUser: report.type === 'User' ? null : resource.author,
-              claims: [],
-            })
-          }
-          let idxClaim = newResourcesClaims[idxResource].claims.findIndex(
-            claim => claim.id === report.claimId,
-          )
-          // if claim is not in claim list, then add it
-          if (idxClaim === -1) {
-            idxClaim = newResourcesClaims[idxResource].claims.length
-            newResourcesClaims[idxResource].claims.push({
-              // it is the same for all reports of a claim
-              id: report.claimId,
-              createdAt: report.claimCreatedAt,
-              updatedAt: report.claimUpdatedAt,
-              disable: report.claimDisable,
-              closed: report.claimClosed,
-              reports: [],
-            })
-          }
-          newResourcesClaims[idxResource].claims[idxClaim].reports.push(report)
-        })
+  //       // sorting of resource claims and their reports
+  //       newResourcesClaims.forEach(resourceClaims => {
+  //         // latestClaim by updatedAt rules
+  //         resourceClaims.claims.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+  //         resourceClaims.latestClaim = {
+  //           id: resourceClaims.claims[0].id,
+  //           createdAt: resourceClaims.claims[0].createdAt,
+  //           updatedAt: resourceClaims.claims[0].updatedAt,
+  //           disable: resourceClaims.claims[0].disable,
+  //           closed: resourceClaims.claims[0].closed,
+  //         }
+  //         // display claims always by starting with latest createdAt
+  //         resourceClaims.claims.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 
-        // sorting of resource claims and their reports
-        newResourcesClaims.forEach(resourceClaims => {
-          // latestClaim by updatedAt rules
-          resourceClaims.claims.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-          resourceClaims.latestClaim = {
-            id: resourceClaims.claims[0].id,
-            createdAt: resourceClaims.claims[0].createdAt,
-            updatedAt: resourceClaims.claims[0].updatedAt,
-            disable: resourceClaims.claims[0].disable,
-            closed: resourceClaims.claims[0].closed,
-          }
-          // display claims always by starting with latest createdAt
-          resourceClaims.claims.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  //         resourceClaims.claims.forEach(claim => {
+  //           // display reports always by starting with latest createdAt
+  //           claim.reports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  //         })
+  //       })
+  //       // display resources by starting with claims by their latest createdAt
+  //       newResourcesClaims.sort(
+  //         (a, b) => new Date(b.claims[0].createdAt) - new Date(a.claims[0].createdAt),
+  //       )
 
-          resourceClaims.claims.forEach(claim => {
-            // display reports always by starting with latest createdAt
-            claim.reports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          })
-        })
-        // display resources by starting with claims by their latest createdAt
-        newResourcesClaims.sort(
-          (a, b) => new Date(b.claims[0].createdAt) - new Date(a.claims[0].createdAt),
-        )
-
-        this.resourcesClaims = newResourcesClaims
-      },
-    },
-  },
+  //       this.resourcesClaims = newResourcesClaims
+  //     },
+  //   },
+  // },
   methods: {
     confirm(resourceClaims) {
       this.openModal(resourceClaims)
@@ -386,7 +386,8 @@ export default {
         return {}
       },
       update({ reports }) {
-        return reports
+        console.log(reports)
+        // this.resourcesClaims = reports
       },
       fetchPolicy: 'cache-and-network',
     },

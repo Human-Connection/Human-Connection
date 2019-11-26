@@ -8,12 +8,12 @@ const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
-describe('report resources', () => {
+describe('file a report on a resource', () => {
   let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser, otherReportingUser
   const categoryIds = ['cat9']
   const reportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-      report(
+      fileReport(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
@@ -34,7 +34,7 @@ describe('report resources', () => {
         comment {
           content
         }
-        claim {
+        report {
           id
           createdAt
           updatedAt
@@ -74,7 +74,7 @@ describe('report resources', () => {
       it('throws authorization error', async () => {
         authenticatedUser = null
         await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
-          data: { report: null },
+          data: { fileReport: null },
           errors: [{ message: 'Not Authorised!' }],
         })
       })
@@ -112,14 +112,14 @@ describe('report resources', () => {
       describe('invalid resource id', () => {
         it('returns null', async () => {
           await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
-            data: { report: null },
+            data: { fileReport: null },
             errors: undefined,
           })
         })
       })
 
       describe('valid resource', () => {
-        describe('creates claim', () => {
+        describe('creates report', () => {
           it('which belongs to resource', async () => {
             await expect(
               mutate({
@@ -128,9 +128,9 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   type: 'User',
-                  claim: {
+                  report: {
                     id: expect.any(String),
                     createdAt: expect.any(String),
                     updatedAt: expect.any(String),
@@ -143,7 +143,7 @@ describe('report resources', () => {
             })
           })
 
-          it('creates only one claim for multiple reports on the same resource', async () => {
+          it('creates only one report for multiple reports on the same resource', async () => {
             const firstReport = await mutate({
               mutation: reportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
@@ -153,7 +153,7 @@ describe('report resources', () => {
               mutation: reportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
             })
-            expect(firstReport.data.report.claim).toEqual(secondReport.data.report.claim)
+            expect(firstReport.data.fileReport.report).toEqual(secondReport.data.fileReport.report)
           })
 
           it.todo('creates multiple reports')
@@ -168,7 +168,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   type: 'User',
                 },
               },
@@ -184,7 +184,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   user: {
                     name: 'abusive-user',
                   },
@@ -202,7 +202,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   submitter: {
                     email: 'test@example.org',
                   },
@@ -220,7 +220,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   createdAt: expect.any(String),
                 },
               },
@@ -240,7 +240,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   reasonCategory: 'criminal_behavior_violation_german_law',
                 },
               },
@@ -281,7 +281,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   reasonDescription: 'My reason!',
                 },
               },
@@ -301,7 +301,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   reasonDescription: 'My reason !',
                 },
               },
@@ -331,7 +331,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   type: 'Post',
                 },
               },
@@ -350,7 +350,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   post: {
                     title: 'This is a post that is going to be reported',
                   },
@@ -371,7 +371,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   user: null,
                 },
               },
@@ -409,7 +409,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   type: 'Comment',
                 },
               },
@@ -428,7 +428,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   comment: {
                     content: 'Post comment to be reported.',
                   },
@@ -456,7 +456,7 @@ describe('report resources', () => {
                 },
               }),
             ).resolves.toMatchObject({
-              data: { report: null },
+              data: { fileReport: null },
               errors: undefined,
             })
           })
@@ -485,7 +485,7 @@ describe('report resources', () => {
           comment {
             id
           }
-          claim {
+          report {
             id
             createdAt
             updatedAt
@@ -614,7 +614,7 @@ describe('report resources', () => {
               }),
               post: null,
               comment: null,
-              claim: {
+              report: {
                 id: expect.any(String),
                 createdAt: expect.any(String),
                 updatedAt: expect.any(String),
@@ -635,7 +635,7 @@ describe('report resources', () => {
                 id: 'abusive-post-1',
               }),
               comment: null,
-              claim: {
+              report: {
                 id: expect.any(String),
                 createdAt: expect.any(String),
                 updatedAt: expect.any(String),
@@ -656,7 +656,7 @@ describe('report resources', () => {
               comment: expect.objectContaining({
                 id: 'abusive-comment-1',
               }),
-              claim: {
+              report: {
                 id: expect.any(String),
                 createdAt: expect.any(String),
                 updatedAt: expect.any(String),

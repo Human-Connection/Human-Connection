@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4'
 import Resolver from './helpers/Resolver'
-import { queryReviewedByModerator } from './helpers/claimResource.js'
+import { queryReviewedByModerator } from './helpers/reportResource.js'
 
 export default {
   Mutation: {

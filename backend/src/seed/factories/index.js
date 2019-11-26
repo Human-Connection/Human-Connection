@@ -10,7 +10,7 @@ import createLocation from './locations.js'
 import createEmailAddress from './emailAddresses.js'
 import createDonations from './donations.js'
 import createUnverifiedEmailAddresss from './unverifiedEmailAddresses.js'
-import createClaim from './claims.js'
+import createReport from './reports.js'
 
 const factories = {
   Badge: createBadge,
@@ -24,7 +24,7 @@ const factories = {
   EmailAddress: createEmailAddress,
   UnverifiedEmailAddress: createUnverifiedEmailAddresss,
   Donations: createDonations,
-  Claim: createClaim,
+  Report: createReport,
 }
 
 export const cleanDatabase = async (options = {}) => {

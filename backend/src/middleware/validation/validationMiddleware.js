@@ -64,7 +64,7 @@ const validateReport = async (resolve, root, args, context, info) => {
   const session = driver.session()
   const reportQueryRes = await session.run(
     `
-      MATCH (:User {id: $submitterId})-[:REPORTED]->(:Claim {closed: false})-[:BELONGS_TO]->(resource {id: $resourceId}) 
+      MATCH (:User {id: $submitterId})-[:FILED]->(:Report {closed: false})-[:BELONGS_TO]->(resource {id: $resourceId}) 
       WHERE resource:User OR resource:Post OR resource:Comment
       RETURN labels(resource)[0] AS label
     `,
@@ -93,9 +93,9 @@ const validateReview = async (resolve, root, args, context, info) => {
     `
       MATCH (resource {id: $resourceId})
       WHERE resource:User OR resource:Post OR resource:Comment
-      OPTIONAL MATCH (:User)-[report:REPORTED]->(:Claim {closed: false})-[:BELONGS_TO]->(resource)
+      OPTIONAL MATCH (:User)-[filed:FILED]->(:Report {closed: false})-[:BELONGS_TO]->(resource)
       OPTIONAL MATCH (resource)<-[:WROTE]-(author:User)
-      RETURN labels(resource)[0] AS label, author, report
+      RETURN labels(resource)[0] AS label, author, filed
     `,
     {
       resourceId,
@@ -107,12 +107,12 @@ const validateReview = async (resolve, root, args, context, info) => {
     return {
       label: record.get('label'),
       author: record.get('author'),
-      report: record.get('report'),
+      filed: record.get('filed'),
     }
   })
 
   if (!existingReportedResource) throw new Error(`Resource not found!`)
-  if (!existingReportedResource.report)
+  if (!existingReportedResource.filed)
     throw new Error(
       `Before you can start the reviewing process, please report the ${existingReportedResource.label}!`,
     )
@@ -131,7 +131,7 @@ export default {
     UpdateComment: validateUpdateComment,
     CreatePost: validatePost,
     UpdatePost: validateUpdatePost,
-    report: validateReport,
+    fileReport: validateReport,
     review: validateReview,
   },
 }

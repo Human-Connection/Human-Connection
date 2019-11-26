@@ -16,9 +16,9 @@ do
 done
 
 echo "
-MATCH (submitter:User)-[:REPORTED]->(report:Report)-[:REPORTED]->(resource)
+MATCH (submitter:User)-[:FILED]->(report:Report)-[:FILED]->(resource)
 DETACH DELETE report
-CREATE (submitter)-[reported:REPORTED]->(resource)
+CREATE (submitter)-[reported:FILED]->(resource)
 SET reported.createdAt = toString(datetime())
 SET reported.reasonCategory = 'other'
 SET reported.reasonDescription = '!!! Created automatically to ensure database consistency! Creation date is when the database manipulation happened.'

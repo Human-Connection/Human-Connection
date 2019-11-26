@@ -6,11 +6,11 @@ type REVIEWED {
   disable: Boolean!
   closed: Boolean!
 
-  claimId: ID!
-  claimCreatedAt: String!
-  claimUpdatedAt: String!
-  claimDisable: Boolean!
-  claimClosed: Boolean!
+  reportId: ID!
+  reportCreatedAt: String!
+  reportUpdatedAt: String!
+  reportDisable: Boolean!
+  reportClosed: Boolean!
   
   moderator: User
   type: String

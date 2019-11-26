@@ -104,14 +104,14 @@ beforeAll(async () => {
   const trollingPost = resources[1]
   const trollingComment = resources[2]
 
-  const claims = await Promise.all([
-    factory.create('Claim'),
-    factory.create('Claim'),
-    factory.create('Claim'),
+  const reports = await Promise.all([
+    factory.create('Report'),
+    factory.create('Report'),
+    factory.create('Report'),
   ])
-  const claimAgainstTroll = claims[0]
-  const claimAgainstTrollingPost = claims[1]
-  const claimAgainstTrollingComment = claims[2]
+  const reportAgainstTroll = reports[0]
+  const reportAgainstTrollingPost = reports[1]
+  const reportAgainstTrollingComment = reports[2]
 
   const reportVariables = {
     resourceId: 'undefined-resource',
@@ -120,15 +120,15 @@ beforeAll(async () => {
   }
 
   await Promise.all([
-    claimAgainstTroll.relateTo(user, 'reported', { ...reportVariables, resourceId: 'u2' }),
-    claimAgainstTroll.relateTo(troll, 'belongsTo'),
-    claimAgainstTrollingPost.relateTo(user, 'reported', { ...reportVariables, resourceId: 'p2' }),
-    claimAgainstTrollingPost.relateTo(trollingPost, 'belongsTo'),
-    claimAgainstTrollingComment.relateTo(moderator, 'reported', {
+    reportAgainstTroll.relateTo(user, 'filed', { ...reportVariables, resourceId: 'u2' }),
+    reportAgainstTroll.relateTo(troll, 'belongsTo'),
+    reportAgainstTrollingPost.relateTo(user, 'filed', { ...reportVariables, resourceId: 'p2' }),
+    reportAgainstTrollingPost.relateTo(trollingPost, 'belongsTo'),
+    reportAgainstTrollingComment.relateTo(moderator, 'filed', {
       ...reportVariables,
       resourceId: 'c1',
     }),
-    claimAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+    reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
   ])
 
   const disableVariables = {
@@ -138,14 +138,14 @@ beforeAll(async () => {
   }
 
   await Promise.all([
-    claimAgainstTroll.relateTo(moderator, 'reviewed', { ...disableVariables, resourceId: 'u2' }),
+    reportAgainstTroll.relateTo(moderator, 'reviewed', { ...disableVariables, resourceId: 'u2' }),
     troll.update({ disabled: true, updatedAt: new Date().toISOString() }),
-    claimAgainstTrollingPost.relateTo(moderator, 'reviewed', {
+    reportAgainstTrollingPost.relateTo(moderator, 'reviewed', {
       ...disableVariables,
       resourceId: 'p2',
     }),
     trollingPost.update({ disabled: true, updatedAt: new Date().toISOString() }),
-    claimAgainstTrollingComment.relateTo(moderator, 'reviewed', {
+    reportAgainstTrollingComment.relateTo(moderator, 'reviewed', {
       ...disableVariables,
       resourceId: 'c1',
     }),

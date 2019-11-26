@@ -134,7 +134,7 @@ const permissions = shield(
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
       DeletePost: isAuthor,
-      report: isAuthenticated,
+      fileReport: isAuthenticated,
       CreateSocialMedia: isAuthenticated,
       UpdateSocialMedia: isMySocialMedia,
       DeleteSocialMedia: isMySocialMedia,

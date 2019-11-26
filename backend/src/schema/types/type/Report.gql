@@ -1,0 +1,16 @@
+type Report {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  rule: ReportRule!
+  disable: Boolean!
+  closed: Boolean!
+  resource: ReportResource
+  filed: [FILED]
+}
+# not yet supported
+union ReportResource = User | Post | Comment
+
+enum ReportRule {
+  latestReviewUpdatedAtRules
+}

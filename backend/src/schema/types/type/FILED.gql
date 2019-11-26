@@ -1,15 +1,15 @@
-type REPORTED {
+type FILED {
   createdAt: String!
   reasonCategory: ReasonCategory!
   reasonDescription: String!
-  claim: Claim  @cypher(
-    statement: "MATCH (resource)<-[:BELONGS_TO]-(claim:Claim)<-[:REPORTED]-(:User) WHERE NOT resource.deleted = true AND NOT resource.disabled = true RETURN claim"
+  report: Report  @cypher(
+    statement: "MATCH (resource)<-[:BELONGS_TO]-(report:Report)<-[:FILED]-(:User) WHERE NOT resource.deleted = true AND NOT resource.disabled = true RETURN report"
   )
 
   submitter: User
-    # @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN user")
+    # @cypher(statement: "MATCH (resource)<-[:FILED]-(user:User) RETURN user")
   type: String
-    # @cypher(statement: "MATCH (resource)<-[:REPORTED]-(user:User) RETURN labels(resource)[0]")
+    # @cypher(statement: "MATCH (resource)<-[:FILED]-(user:User) RETURN labels(resource)[0]")
   user: User
   post: Post
   comment: Comment
@@ -36,9 +36,9 @@ enum ReportOrdering {
 }
 
 type Query {
-  reports(orderBy: ReportOrdering): [REPORTED]
+  reports(orderBy: ReportOrdering): [FILED]
 }
 
 type Mutation {
-  report(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): REPORTED
+  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): FILED
 }

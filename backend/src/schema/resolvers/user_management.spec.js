@@ -22,7 +22,7 @@ const disable = async id => {
   await mutate({
     mutation: gql`
       mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-        report(
+        fileReport(
           resourceId: $resourceId
           reasonCategory: $reasonCategory
           reasonDescription: $reasonDescription

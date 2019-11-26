@@ -524,7 +524,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
     authenticatedUser = null
 
-    await Promise.all([
+    const comments = await Promise.all([
       factory.create('Comment', {
         author: jennyRostock,
         id: 'c1',
@@ -581,6 +581,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         postId: 'p15',
       }),
     ])
+    const trollingComment = comments[0]
 
     await Promise.all([
       democracy.relateTo(p3, 'post'),
@@ -644,236 +645,334 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie.relateTo(p10, 'shouted'),
     ])
 
-    // There is no error logged or the 'try' fails if this mutation is wrong. Why?
-    const reportMutation = gql`
-      mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-        report(
-          resourceId: $resourceId
-          reasonCategory: $reasonCategory
-          reasonDescription: $reasonDescription
-        ) {
-          type
-        }
-      }
-    `
-    authenticatedUser = await huey.toJson()
+    const reports = await Promise.all([
+      factory.create('Report'),
+      factory.create('Report'),
+      factory.create('Report'),
+    ])
+    const reportAgainstDagobert = reports[0]
+    const reportAgainstTrollingPost = reports[1]
+    const reportAgainstTrollingComment = reports[2]
+
     // report resource first time
     await Promise.all([
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p11',
-          reasonCategory: 'discrimination_etc',
-          reasonDescription: 'I am what I am !!!',
-        },
+      reportAgainstDagobert.relateTo(jennyRostock, 'filed', {
+        resourceId: 'u7',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'This user is harassing me with bigoted remarks!',
       }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'c5',
-          reasonCategory: 'doxing',
-          reasonDescription: "This shouldn't be shown to anybody else! It's my privat thing!",
-        },
+      reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
+      reportAgainstTrollingPost.relateTo(jennyRostock, 'filed', {
+        resourceId: 'p2',
+        reasonCategory: 'doxing',
+        reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
       }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'c1',
-          reasonCategory: 'other',
-          reasonDescription: 'This comment is bigoted',
-        },
+      reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
+      reportAgainstTrollingComment.relateTo(huey, 'filed', {
+        resourceId: 'c1',
+        reasonCategory: 'other',
+        reasonDescription: 'This comment is bigoted',
       }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p1',
-          reasonCategory: 'discrimination_etc',
-          reasonDescription: 'This post is bigoted',
-        },
-      }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p2',
-          reasonCategory: 'doxing',
-          reasonDescription: 'OMG my data !!!',
-        },
-      }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'u1',
-          reasonCategory: 'doxing',
-          reasonDescription: 'This user is harassing me with bigoted remarks',
-        },
-      }),
+      reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
     ])
-    // report resource a second time
-    authenticatedUser = await dewey.toJson()
-    await Promise.all([
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'c5',
-          reasonCategory: 'doxing',
-          reasonDescription: "That's my friends privat data!",
-        },
-      }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'c1',
-          reasonCategory: 'pornographic_content_links',
-          reasonDescription: 'This comment is porno!!!',
-        },
-      }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p1',
-          reasonCategory: 'intentional_intimidation_stalking_persecution',
-          reasonDescription: '',
-        },
-      }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p2',
-          reasonCategory: 'intentional_intimidation_stalking_persecution',
-          reasonDescription: '',
-        },
-      }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'u1',
-          reasonCategory: 'glorific_trivia_of_cruel_inhuman_acts',
-          reasonDescription: 'murder',
-        },
-      }),
-    ])
-    authenticatedUser = null
 
-    // only review resource after report !!!
-    const reviewMutation = gql`
-      mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
-        review(resourceId: $resourceId, disable: $disable, closed: $closed) {
-          disable
-        }
-      }
-    `
+    // report resource a second time
+    await Promise.all([
+      reportAgainstDagobert.relateTo(louie, 'filed', {
+        resourceId: 'u7',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'this user is attacking me for who I am!',
+      }),
+      reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
+      reportAgainstTrollingPost.relateTo(peterLustig, 'filed', {
+        resourceId: 'p2',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'This post is bigoted',
+      }),
+      reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
+
+      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'filed', {
+        resourceId: 'c1',
+        reasonCategory: 'pornographic_content_links',
+        reasonDescription: 'This comment is porno!!!',
+      }),
+      reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+    ])
+
     const disableVariables = {
       resourceId: 'undefined-resource',
       disable: true,
       closed: false,
     }
+
     // review resource first time
-    authenticatedUser = await bobDerBaumeister.toJson()
     await Promise.all([
-      mutate({
-        mutation: reviewMutation,
-        variables: {
-          ...disableVariables,
-          resourceId: 'p2',
-        },
+      reportAgainstDagobert.relateTo(bobDerBaumeister, 'reviewed', {
+        ...disableVariables,
+        resourceId: 'u7',
       }),
-      mutate({
-        mutation: reviewMutation,
-        variables: {
-          ...disableVariables,
-          resourceId: 'p11',
-        },
+      dagobert.update({ disabled: true, updatedAt: new Date().toISOString() }),
+      reportAgainstTrollingPost.relateTo(peterLustig, 'reviewed', {
+        ...disableVariables,
+        resourceId: 'p2',
       }),
-      mutate({
-        mutation: reviewMutation,
-        variables: {
-          ...disableVariables,
-          resourceId: 'c5',
-          closed: true,
-        },
+      p2.update({ disabled: true, updatedAt: new Date().toISOString() }),
+      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'reviewed', {
+        ...disableVariables,
+        resourceId: 'c1',
       }),
+      trollingComment.update({ disabled: true, updatedAt: new Date().toISOString() }),
     ])
-    // second review of resource and close claim
-    authenticatedUser = await peterLustig.toJson()
-    await Promise.all([
-      mutate({
-        mutation: reviewMutation,
-        variables: {
-          ...disableVariables,
-          resourceId: 'p2',
-          disable: false,
-          closed: true,
-        },
-      }),
-    ])
-    authenticatedUser = null
 
-    // report resource after closing of the claim
-    authenticatedUser = await bobDerBaumeister.toJson()
+    // second review of resource and close report
     await Promise.all([
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p2',
-          reasonCategory: 'doxing',
-          reasonDescription: "That's my friends privat data!",
-        },
+      reportAgainstDagobert.relateTo(peterLustig, 'reviewed', {
+        resourceId: 'u7',
+        disable: false,
+        closed: true,
       }),
-    ])
-    // report resource second time after closing of the claim
-    authenticatedUser = await jennyRostock.toJson()
-    await Promise.all([
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p2',
-          reasonCategory: 'doxing',
-          reasonDescription: 'I think it is my friends data!',
-        },
+      dagobert.update({ disabled: false, updatedAt: new Date().toISOString(), closed: true }),
+      reportAgainstTrollingPost.relateTo(bobDerBaumeister, 'reviewed', {
+        resourceId: 'p2',
+        disable: true,
+        closed: true,
       }),
+      p2.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
+      reportAgainstTrollingComment.relateTo(peterLustig, 'reviewed', {
+        ...disableVariables,
+        resourceId: 'c1',
+        disable: true,
+        closed: true,
+      }),
+      trollingComment.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
     ])
-    authenticatedUser = null
 
-    // third review of resource and close claim
-    authenticatedUser = await bobDerBaumeister.toJson()
-    await Promise.all([
-      mutate({
-        mutation: reviewMutation,
-        variables: {
-          ...disableVariables,
-          resourceId: 'p2',
-          disable: true,
-          closed: true,
-        },
-      }),
-    ])
-    authenticatedUser = null
+    // There is no error logged or the 'try' fails if this mutation is wrong. Why?
+    // const reportMutation = gql`
+    //   mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+    //     report(
+    //       resourceId: $resourceId
+    //       reasonCategory: $reasonCategory
+    //       reasonDescription: $reasonDescription
+    //     ) {
+    //       type
+    //     }
+    //   }
+    // `
+    // authenticatedUser = await huey.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p11',
+    //       reasonCategory: 'discrimination_etc',
+    //       reasonDescription: 'I am what I am !!!',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'c5',
+    //       reasonCategory: 'doxing',
+    //       reasonDescription: "This shouldn't be shown to anybody else! It's my privat thing!",
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'c1',
+    //       reasonCategory: 'other',
+    //       reasonDescription: 'This comment is bigoted',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p1',
+    //       reasonCategory: 'discrimination_etc',
+    //       reasonDescription: 'This post is bigoted',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p2',
+    //       reasonCategory: 'doxing',
+    //       reasonDescription: 'OMG my data !!!',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'u1',
+    //       reasonCategory: 'doxing',
+    //       reasonDescription: 'This user is harassing me with bigoted remarks',
+    //     },
+    //   }),
+    // ])
+    // authenticatedUser = await dewey.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'c5',
+    //       reasonCategory: 'doxing',
+    //       reasonDescription: "That's my friends privat data!",
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'c1',
+    //       reasonCategory: 'pornographic_content_links',
+    //       reasonDescription: 'This comment is porno!!!',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p1',
+    //       reasonCategory: 'intentional_intimidation_stalking_persecution',
+    //       reasonDescription: '',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p2',
+    //       reasonCategory: 'intentional_intimidation_stalking_persecution',
+    //       reasonDescription: '',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'u1',
+    //       reasonCategory: 'glorific_trivia_of_cruel_inhuman_acts',
+    //       reasonDescription: 'murder',
+    //     },
+    //   }),
+    // ])
+    // authenticatedUser = null
 
-    // report resource after second closing of the claim
-    authenticatedUser = await huey.toJson()
-    await Promise.all([
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p2',
-          reasonCategory: 'doxing',
-          reasonDescription: "That's my privat data!",
-        },
-      }),
-    ])
-    // report resource second time after second closing of the claim
-    authenticatedUser = await jennyRostock.toJson()
-    await Promise.all([
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p2',
-          reasonCategory: 'doxing',
-          reasonDescription: 'I think it is my friends data again!',
-        },
-      }),
-    ])
-    authenticatedUser = null
+    // only review resource after report !!!
+    // const reviewMutation = gql`
+    //   mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+    //     review(resourceId: $resourceId, disable: $disable, closed: $closed) {
+    //       disable
+    //     }
+    //   }
+    // `
+    // const disableVariables = {
+    //   resourceId: 'undefined-resource',
+    //   disable: true,
+    //   closed: false,
+    // }
+    // authenticatedUser = await bobDerBaumeister.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reviewMutation,
+    //     variables: {
+    //       ...disableVariables,
+    //       resourceId: 'p2',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reviewMutation,
+    //     variables: {
+    //       ...disableVariables,
+    //       resourceId: 'p11',
+    //     },
+    //   }),
+    //   mutate({
+    //     mutation: reviewMutation,
+    //     variables: {
+    //       ...disableVariables,
+    //       resourceId: 'c5',
+    //       closed: true,
+    //     },
+    //   }),
+    // ])
+    // authenticatedUser = await peterLustig.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reviewMutation,
+    //     variables: {
+    //       ...disableVariables,
+    //       resourceId: 'p2',
+    //       disable: false,
+    //       closed: true,
+    //     },
+    //   }),
+    // ])
+    // authenticatedUser = null
+
+    // report resource after closing of the report
+    // authenticatedUser = await bobDerBaumeister.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p2',
+    //       reasonCategory: 'doxing',
+    //       reasonDescription: "That's my friends privat data!",
+    //     },
+    //   }),
+    // ])
+    // // report resource second time after closing of the report
+    // authenticatedUser = await jennyRostock.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p2',
+    //       reasonCategory: 'doxing',
+    //       reasonDescription: 'I think it is my friends data!',
+    //     },
+    //   }),
+    // ])
+    // authenticatedUser = null
+
+    // // third review of resource and close report
+    // authenticatedUser = await bobDerBaumeister.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reviewMutation,
+    //     variables: {
+    //       ...disableVariables,
+    //       resourceId: 'p2',
+    //       disable: true,
+    //       closed: true,
+    //     },
+    //   }),
+    // ])
+    // authenticatedUser = null
+
+    // // report resource after second closing of the report
+    // authenticatedUser = await huey.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p2',
+    //       reasonCategory: 'doxing',
+    //       reasonDescription: "That's my privat data!",
+    //     },
+    //   }),
+    // ])
+    // // report resource second time after second closing of the report
+    // authenticatedUser = await jennyRostock.toJson()
+    // await Promise.all([
+    //   mutate({
+    //     mutation: reportMutation,
+    //     variables: {
+    //       resourceId: 'p2',
+    //       reasonCategory: 'doxing',
+    //       reasonDescription: 'I think it is my friends data again!',
+    //     },
+    //   }),
+    // ])
+    // authenticatedUser = null
 
     await Promise.all(
       [...Array(30).keys()].map(i => {

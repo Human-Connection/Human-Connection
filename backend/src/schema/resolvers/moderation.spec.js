@@ -19,7 +19,7 @@ let query,
 
 const reportMutation = gql`
   mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-    report(
+    fileReport(
       resourceId: $resourceId
       reasonCategory: $reasonCategory
       reasonDescription: $reasonDescription
