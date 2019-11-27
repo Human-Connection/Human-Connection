@@ -1,9 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import CategoriesSelect from './CategoriesSelect'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('CategoriesSelect.vue', () => {
   let wrapper

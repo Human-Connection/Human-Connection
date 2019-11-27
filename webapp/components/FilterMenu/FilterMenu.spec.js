@@ -1,12 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import FilterMenu from './FilterMenu.vue'
-import Styleguide from '@human-connection/styleguide'
-import VTooltip from 'v-tooltip'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(VTooltip)
+const localVue = global.localVue
 
 describe('FilterMenu.vue', () => {
   let wrapper

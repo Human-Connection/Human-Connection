@@ -27,7 +27,7 @@
           'hc-drag-marker-update-post': contribution,
         }"
       >
-        <ds-icon name="image" size="xxx-large" />
+        <base-icon name="image" />
       </div>
     </div>
   </vue-dropzone>

@@ -1,12 +1,12 @@
 <template>
   <ds-table v-if="notifications && notifications.length" :data="notifications" :fields="fields">
     <template #icon="scope">
-      <ds-icon
+      <base-icon
         v-if="scope.row.from.post"
         name="comment"
         v-tooltip="{ content: $t('notifications.comment'), placement: 'right' }"
       />
-      <ds-icon
+      <base-icon
         v-else
         name="bookmark"
         v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"

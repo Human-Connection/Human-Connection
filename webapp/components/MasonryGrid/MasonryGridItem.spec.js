@@ -1,9 +1,8 @@
-import { config, shallowMount, createLocalVue } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
+import { config, shallowMount } from '@vue/test-utils'
+
 import MasonryGridItem from './MasonryGridItem'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 config.stubs['ds-grid-item'] = '<span><slot /></span>'
 
