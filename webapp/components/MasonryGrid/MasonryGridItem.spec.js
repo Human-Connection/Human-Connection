@@ -1,5 +1,4 @@
-import { config, shallowMount } from '@vue/test-utils'
-
+import { config, mount } from '@vue/test-utils'
 import MasonryGridItem from './MasonryGridItem'
 
 const localVue = global.localVue
@@ -10,23 +9,22 @@ describe('MasonryGridItem', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallowMount(MasonryGridItem, { localVue })
-    wrapper.vm.$parent.$emit = jest.fn()
+    wrapper = mount(MasonryGridItem, { localVue })
   })
 
-  it('emits "calculating-item-height" when starting calculation', async () => {
+  it('parent emits "calculating-item-height" when starting calculation', async () => {
     wrapper.vm.calculateItemHeight()
     await wrapper.vm.$nextTick()
 
-    const firstCallArgument = wrapper.vm.$parent.$emit.mock.calls[0][0]
-    expect(firstCallArgument).toBe('calculating-item-height')
+    const firstEmittedFunction = wrapper.vm.$parent.__emittedByOrder[0]
+    expect(firstEmittedFunction.name).toBe('calculating-item-height')
   })
 
-  it('emits "finished-calculating-item-height" after the calculation', async () => {
+  it('parent emits "finished-calculating-item-height" after the calculation', async () => {
     wrapper.vm.calculateItemHeight()
     await wrapper.vm.$nextTick()
 
-    const secondCallArgument = wrapper.vm.$parent.$emit.mock.calls[1][0]
-    expect(secondCallArgument).toBe('finished-calculating-item-height')
+    const secondEmittedFunction = wrapper.vm.$parent.__emittedByOrder[1]
+    expect(secondEmittedFunction.name).toBe('finished-calculating-item-height')
   })
 })

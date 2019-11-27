@@ -149,7 +149,6 @@ export default {
 
 <style scoped lang="scss">
 .avatar {
-  display: inline-block;
   float: left;
   margin-right: 4px;
   height: 100%;

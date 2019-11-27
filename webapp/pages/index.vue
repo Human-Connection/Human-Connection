@@ -1,6 +1,6 @@
 <template>
   <div>
-    <masonry-grid @hidePlaceholder="hidePlaceholder">
+    <masonry-grid>
       <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
@@ -16,11 +16,13 @@
         </div>
       </ds-grid-item>
       <template v-if="hasResults">
-        <masonry-grid-item v-for="post in posts" :key="post.id">
+        <masonry-grid-item
+          v-for="post in posts"
+          :key="post.id"
+          :imageAspectRatio="post.imageAspectRatio"
+        >
           <hc-post-card
             :post="post"
-            :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
-            :showPlaceholder="showPlaceholder"
             @removePostFromList="deletePost"
             @pinPost="pinPost"
             @unpinPost="unpinPost"
@@ -84,7 +86,6 @@ export default {
       offset: 0,
       pageSize: 12,
       hashtag,
-      showPlaceholder: true,
     }
   },
   computed: {
@@ -205,9 +206,6 @@ export default {
           this.$apollo.queries.Post.refetch()
         })
         .catch(error => this.$toast.error(error.message))
-    },
-    hidePlaceholder() {
-      this.showPlaceholder = false
     },
   },
   apollo: {

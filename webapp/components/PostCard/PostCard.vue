@@ -4,9 +4,6 @@
     :image="post.image | proxyApiUrl"
     :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--pinned': isPinned }"
   >
-    <ds-placeholder v-if="showPlaceholder && post.imageAspectRatio" class="placeholder-image">
-      I'm a placeholder
-    </ds-placeholder>
     <!-- Post Link Target -->
     <nuxt-link
       class="post-link"
@@ -16,7 +13,7 @@
     </nuxt-link>
     <ds-space margin-bottom="small" />
     <!-- Username, Image & Date of Post -->
-    <div>
+    <div class="user-wrapper">
       <client-only>
         <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
       </client-only>
@@ -101,15 +98,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    showPlaceholder: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  data() {
-    return {
-      imageLoading: true,
-    }
   },
   computed: {
     ...mapGetters({
@@ -133,11 +121,6 @@ export default {
     isPinned() {
       return this.post && this.post.pinnedBy
     },
-    cssVars() {
-      return {
-        '--height': this.post.imageAspectRatio + 'px',
-      }
-    },
   },
   methods: {
     async deletePostCallback() {
@@ -157,14 +140,20 @@ export default {
     unpinPost(post) {
       this.$emit('unpinPost', post)
     },
-    hidePlaceholder() {
-      this.imageLoading = false
-    },
+  },
+  mounted() {
+    const width = this.$el.offsetWidth
+    const height = width / this.post.imageAspectRatio
+    const imageElement = this.$el.querySelector('.ds-card-image')
+
+    if (imageElement) {
+      imageElement.style.height = `${height}px`
+    }
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ds-card-image img {
   width: 100%;
   max-height: 2000px;
@@ -179,9 +168,21 @@ export default {
   cursor: pointer;
   position: relative;
   z-index: 1;
+  justify-content: space-between;
 
-  /*.ds-card-footer {
-  }*/
+  > .ds-card-content {
+    flex-grow: 0;
+  }
+
+  /* workaround to avoid jumping layout when footer is rendered */
+  > .ds-card-footer {
+    height: 75px;
+  }
+
+  /* workaround to avoid jumping layout when hc-user is rendered */
+  .user-wrapper {
+    height: 36px;
+  }
 
   .content-menu {
     display: inline-block;
@@ -203,9 +204,5 @@ export default {
 
 .post--pinned {
   border: 1px solid $color-warning;
-}
-
-.placeholder-image {
-  height: var(--height);
 }
 </style>
