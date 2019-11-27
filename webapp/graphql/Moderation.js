@@ -5,34 +5,14 @@ export const reportListQuery = () => {
   return gql`
     query {
       reports(orderBy: createdAt_desc) {
+        id
         createdAt
-        reasonCategory
-        reasonDescription
-        report {
-          id
-          createdAt
-          updatedAt
-          disable
-          closed
-        }
-        type
-        submitter {
-          id
-          slug
-          name
-          disabled
-          deleted
-          followedByCount
-          contributionsCount
-          commentedCount
-        }
-        user {
-          id
-          slug
-          name
-          disabled
-          deleted
-          reviewedByModerator {
+        updatedAt
+        disable
+        closed
+        to {
+          __typename
+          ... on User {
             id
             slug
             name
@@ -42,50 +22,49 @@ export const reportListQuery = () => {
             contributionsCount
             commentedCount
           }
-          followedByCount
-          contributionsCount
-          commentedCount
-        }
-        comment {
-          id
-          contentExcerpt
-          disabled
-          deleted
-          author {
+          ... on Comment {
             id
-            slug
-            name
+            contentExcerpt
             disabled
             deleted
-            followedByCount
-            contributionsCount
-            commentedCount
+            author {
+              id
+              slug
+              name
+              disabled
+              deleted
+              followedByCount
+              contributionsCount
+              commentedCount
+            }
+            post {
+              id
+              slug
+              title
+              disabled
+              deleted
+            }
           }
-          post {
+          ... on Post {
             id
             slug
             title
             disabled
             deleted
-          }
-          reviewedByModerator {
-            id
-            slug
-            name
-            disabled
-            deleted
-            followedByCount
-            contributionsCount
-            commentedCount
+            author {
+              id
+              slug
+              name
+              disabled
+              deleted
+              followedByCount
+              contributionsCount
+              commentedCount
+            }
           }
         }
-        post {
-          id
-          slug
-          title
-          disabled
-          deleted
-          author {
+        reportsFiled {
+          submitter {
             id
             slug
             name
@@ -95,16 +74,9 @@ export const reportListQuery = () => {
             contributionsCount
             commentedCount
           }
-          reviewedByModerator {
-            id
-            slug
-            name
-            disabled
-            deleted
-            followedByCount
-            contributionsCount
-            commentedCount
-          }
+          createdAt
+          reasonCategory
+          reasonDescription
         }
       }
     }

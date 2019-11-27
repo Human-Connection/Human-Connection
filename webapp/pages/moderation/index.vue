@@ -386,8 +386,7 @@ export default {
         return {}
       },
       update({ reports }) {
-        console.log(reports)
-        // this.resourcesClaims = reports
+        this.reports = reports
       },
       fetchPolicy: 'cache-and-network',
     },
