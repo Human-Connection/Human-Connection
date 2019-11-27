@@ -6,13 +6,12 @@ type Report {
   disable: Boolean!
   closed: Boolean!
   reportsFiled: [FILED]
-  user: User
-  post: Post
-  comment: Comment
+  to: ReportedResource
   type: String
+  reviewedByModerator: User
 }
-# not yet supported
-# union ReportResource = User | Post | Comment
+
+union ReportedResource = User | Post | Comment
 
 enum ReportRule {
   latestReviewUpdatedAtRules

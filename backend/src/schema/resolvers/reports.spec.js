@@ -23,15 +23,17 @@ describe('file a report on a resource', () => {
         updatedAt
         disable
         closed
-        type
-        user {
-          name
-        }
-        post {
-          title
-        }
-        comment {
-          content
+        to {
+          __typename
+          ... on User {
+            name
+          }
+          ... on Post {
+            title
+          }
+          ... on Comment {
+            content
+          }
         }
         reportsFiled {
           submitter {
@@ -130,14 +132,6 @@ describe('file a report on a resource', () => {
               data: {
                 fileReport: {
                   id: expect.any(String),
-                  createdAt: expect.any(String),
-                  updatedAt: expect.any(String),
-                  disable: false,
-                  closed: false,
-                  user: {
-                    name: 'abusive-user',
-                  },
-                  type: 'User',
                 },
               },
               errors: undefined,
@@ -157,11 +151,11 @@ describe('file a report on a resource', () => {
             expect(firstReport.data.fileReport.id).toEqual(secondReport.data.fileReport.id)
           })
 
-          it.todo('creates multiple reports')
+          it.todo('creates multiple filed reports')
         })
 
         describe('reported resource is a user', () => {
-          it('returns type "User"', async () => {
+          it('returns __typename "User"', async () => {
             await expect(
               mutate({
                 mutation: reportMutation,
@@ -170,29 +164,16 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  id: expect.any(String),
-                  createdAt: expect.any(String),
-                  updatedAt: expect.any(String),
-                  disable: false,
-                  closed: false,
-                  type: 'User',
-                  reportsFiled: [
-                    {
-                      submitter: {
-                        id: 'current-user-id',
-                      },
-                      createdAt: expect.any(String),
-                      reasonCategory: 'other',
-                      reasonDescription: 'Violates code of conduct !!!',
-                    },
-                  ],
+                  to: {
+                    __typename: 'User',
+                  },
                 },
               },
               errors: undefined,
             })
           })
 
-          it('returns resource in user attribute', async () => {
+          it('returns user attribute info', async () => {
             await expect(
               mutate({
                 mutation: reportMutation,
@@ -201,7 +182,8 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  user: {
+                  to: {
+                    __typename: 'User',
                     name: 'abusive-user',
                   },
                 },
@@ -364,7 +346,9 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  type: 'Post',
+                  to: {
+                    __typename: 'Post',
+                  },
                 },
               },
               errors: undefined,
@@ -383,28 +367,10 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  post: {
+                  to: {
+                    __typename: 'Post',
                     title: 'This is a post that is going to be reported',
                   },
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          it('returns null in user attribute', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'post-to-report-id',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  user: null,
                 },
               },
               errors: undefined,
@@ -442,7 +408,9 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  type: 'Comment',
+                  to: {
+                    __typename: 'Comment',
+                  },
                 },
               },
               errors: undefined,
@@ -461,7 +429,8 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  comment: {
+                  to: {
+                    __typename: 'Comment',
                     content: 'Post comment to be reported.',
                   },
                 },
@@ -506,15 +475,17 @@ describe('file a report on a resource', () => {
           updatedAt
           disable
           closed
-          type
-          user {
-            id
-          }
-          post {
-            id
-          }
-          comment {
-            id
+          to {
+            __typename
+            ... on User {
+              id
+            }
+            ... on Post {
+              id
+            }
+            ... on Comment {
+              id
+            }
           }
           reportsFiled {
             submitter {
@@ -639,12 +610,10 @@ describe('file a report on a resource', () => {
               updatedAt: expect.any(String),
               disable: false,
               closed: false,
-              type: 'User',
-              user: expect.objectContaining({
+              to: {
+                __typename: 'User',
                 id: 'abusive-user-1',
-              }),
-              post: null,
-              comment: null,
+              },
               reportsFiled: expect.arrayContaining([
                 expect.objectContaining({
                   submitter: expect.objectContaining({
@@ -662,12 +631,10 @@ describe('file a report on a resource', () => {
               updatedAt: expect.any(String),
               disable: false,
               closed: false,
-              type: 'Post',
-              user: null,
-              post: expect.objectContaining({
+              to: {
+                __typename: 'Post',
                 id: 'abusive-post-1',
-              }),
-              comment: null,
+              },
               reportsFiled: expect.arrayContaining([
                 expect.objectContaining({
                   submitter: expect.objectContaining({
@@ -685,12 +652,10 @@ describe('file a report on a resource', () => {
               updatedAt: expect.any(String),
               disable: false,
               closed: false,
-              type: 'Comment',
-              user: null,
-              post: null,
-              comment: expect.objectContaining({
+              to: {
+                __typename: 'Comment',
                 id: 'abusive-comment-1',
-              }),
+              },
               reportsFiled: expect.arrayContaining([
                 expect.objectContaining({
                   submitter: expect.objectContaining({
