@@ -6,10 +6,12 @@ import helpers from '~/storybook/helpers'
 helpers.init()
 
 export const results = [
+    {
+	heading: 'Contributions'
+    },
   {
     id: 'de100841-2336-4b01-a574-f1bd2c0b262a',
     searchType: 'Contributions',
-    firstType: true,
     slug: 'user-post-by-jenny',
     label: 'User Post by Jenny',
     value: 'User Post by Jenny',
@@ -24,7 +26,6 @@ export const results = [
   {
     id: 'f48f00a0-c412-432f-8334-4276a4e15d1c',
     searchType: 'Contributions',
-    firstType: false,
     slug: 'eum-quos-est-molestiae-enim-magni-consequuntur-sed-commodi-eos',
     label: 'Eum quos est molestiae enim magni consequuntur sed commodi eos.',
     value: 'Eum quos est molestiae enim magni consequuntur sed commodi eos.',
@@ -39,7 +40,6 @@ export const results = [
   {
     id: 'p7',
     searchType: 'Contributions',
-    firstType: false,
     slug: 'this-is-post-7',
     label: 'This is post #7',
     value: 'This is post #7',
@@ -54,7 +54,6 @@ export const results = [
   {
     id: 'p12',
     searchType: 'Contributions',
-    firstType: false,
     slug: 'this-is-post-12',
     label: 'This is post #12',
     value: 'This is post #12',
@@ -66,9 +65,11 @@ export const results = [
       slug: 'louie',
     },
   },
+    {
+	heading: 'Users'
+    },
   {
     id: 'u1',
-    firstType: true,
     searchType: 'Users',
     name: 'Peter Lustig',
     label: 'Peter Lustig',
@@ -85,7 +86,6 @@ export const results = [
   {
     id: 'u2',
     searchType: 'Users',
-    firstType: false,
     name: 'Bob der Baumeister',
     label: 'Bob der Baumeister',
     slug: 'bob-der-baumeister',
@@ -93,7 +93,6 @@ export const results = [
   {
     id: '7b654f72-f4da-4315-8bed-39de0859754b',
     searchType: 'Users',
-    firstType: false,
     name: 'Tonya Mohr',
     label: 'Tonya Mohr',
     slug: 'tonya-mohr',

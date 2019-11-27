@@ -37,8 +37,10 @@
           @click.capture.native="isOpen = true"
         >
           <template slot="option" slot-scope="{ option }">
-            <ds-flex v-if="option.firstType" class="search-option-heading">
-              <ds-text>{{ option.searchType }}</ds-text>
+              <ds-flex v-if="option.heading" class="search-option-heading">
+		  <ds-flex-item class="search-option-heading">
+		      <ds-text>{{ option.heading }}</ds-text>
+		  </ds-flex-item>
             </ds-flex>
             <ds-flex v-if="option.searchType === 'Contributions'">
               <ds-flex-item class="search-option-label">
@@ -274,8 +276,8 @@ export default {
     width: 100%;
   }
   .search-option-heading {
-    font-weight: bold;
-    margin-bottom: 1em;
+      font-weight: bold;
+      cursor: default;
   }
 }
 </style>
