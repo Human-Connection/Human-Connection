@@ -1,14 +1,9 @@
-import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
+import { config, mount, RouterLinkStub } from '@vue/test-utils'
 import Notification from './Notification.vue'
-import Styleguide from '@human-connection/styleguide'
-import Filters from '~/plugins/vue-filters'
+
 import Vuex from 'vuex'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
-localVue.use(Filters)
+const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 

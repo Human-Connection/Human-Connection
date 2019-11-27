@@ -19,6 +19,7 @@ input _PostFilter {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  shoutedBy_some: _UserFilter
   slug: String
   slug_not: String
   slug_in: [String!]

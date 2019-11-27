@@ -1,11 +1,10 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import AdminIndexPage from './index.vue'
-import Styleguide from '@human-connection/styleguide'
+
 import VueApollo from 'vue-apollo'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Styleguide)
 localVue.use(VueApollo)
 
 describe('admin/index.vue', () => {

@@ -1,10 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import EnterNoncePage from './enter-nonce.vue'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('EnterNoncePage', () => {
   let mocks

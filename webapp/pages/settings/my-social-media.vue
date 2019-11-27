@@ -25,7 +25,7 @@
               </a>
               <span class="divider">|</span>
               <a name="edit" @click="handleEditSocialMedia(link)">
-                <ds-icon
+                <base-icon
                   :aria-label="$t('actions.edit')"
                   class="icon-button"
                   name="edit"
@@ -33,7 +33,7 @@
                 />
               </a>
               <a name="delete" @click="handleDeleteSocialMedia(link)">
-                <ds-icon
+                <base-icon
                   :aria-label="$t('actions.delete')"
                   class="icon-button"
                   name="trash"

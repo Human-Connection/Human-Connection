@@ -45,8 +45,13 @@
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
       "^~/(.*)$": "<rootDir>/$1",
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less)$": "identity-obj-proxy",
+      "\\.(svg)$": "<rootDir>/test/fileMock.js"
     },
+    "setupFiles": [
+      "<rootDir>/test/registerContext.js",
+      "<rootDir>/test/testSetup.js"
+    ],
     "testMatch": [
       "**/?(*.)+(spec|test).js?(x)"
     ]
@@ -81,7 +86,7 @@
     "tiptap-extensions": "~1.28.4",
     "trunc-html": "^1.1.2",
     "v-tooltip": "~2.0.2",
-    "validator": "^12.0.0",
+    "validator": "^12.1.0",
     "vue-count-to": "~1.0.13",
     "vue-infinite-loading": "^2.4.4",
     "vue-izitoast": "^1.2.1",
@@ -92,9 +97,9 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "~7.7.2",
+    "@babel/core": "~7.7.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "~7.7.1",
+    "@babel/preset-env": "~7.7.4",
     "@storybook/addon-a11y": "^5.2.6",
     "@storybook/addon-actions": "^5.2.6",
     "@storybook/addon-notes": "^5.2.5",
@@ -108,10 +113,11 @@
     "babel-eslint": "~10.0.3",
     "babel-jest": "~24.9.0",
     "babel-loader": "~8.0.6",
+    "babel-plugin-require-context-hook": "^1.0.0",
     "babel-preset-vue": "~2.0.2",
     "core-js": "~2.6.10",
     "css-loader": "~3.2.0",
-    "eslint": "~6.6.0",
+    "eslint": "~6.7.1",
     "eslint-config-prettier": "~6.7.0",
     "eslint-config-standard": "~14.1.0",
     "eslint-loader": "~3.0.2",

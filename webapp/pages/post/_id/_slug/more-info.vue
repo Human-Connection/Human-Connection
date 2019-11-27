@@ -3,10 +3,7 @@
     <h2 style="margin-bottom: .2em;">{{ $t('post.moreInfo.title') }}</h2>
     <p>{{ $t('post.moreInfo.description') }}</p>
     <ds-space />
-    <h3>
-      <!-- <ds-icon name="compass" /> -->
-      {{ $t('post.moreInfo.titleOfCategoriesSection') }}
-    </h3>
+    <h3>{{ $t('post.moreInfo.titleOfCategoriesSection') }}</h3>
     <hc-category
       v-for="category in post.categories"
       :key="category.id"
