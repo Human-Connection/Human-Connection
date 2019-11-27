@@ -1,16 +1,12 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Modal from './Modal.vue'
 import ConfirmModal from './Modal/ConfirmModal.vue'
 import DisableModal from './Modal/DisableModal.vue'
 import ReportModal from './Modal/ReportModal.vue'
 import Vuex from 'vuex'
 import { getters, mutations } from '../store/modal'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('Modal.vue', () => {
   let wrapper

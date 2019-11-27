@@ -1,14 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
+
 import EmbedComponent from './EmbedComponent'
 
 let wrapper, propsData, getters, mocks
 const someUrl = 'https://www.youtube.com/watch?v=qkdXAtO40Fo'
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('EmbedComponent.vue', () => {
   const Wrapper = () => {

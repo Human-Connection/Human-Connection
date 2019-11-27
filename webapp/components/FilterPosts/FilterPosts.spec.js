@@ -1,16 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import VTooltip from 'v-tooltip'
-import Styleguide from '@human-connection/styleguide'
+import { mount } from '@vue/test-utils'
+
 import Vuex from 'vuex'
 import FilterPosts from './FilterPosts.vue'
 import locales from '~/locales'
 import orderBy from 'lodash/orderBy'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(VTooltip)
-localVue.use(Vuex)
+const localVue = global.localVue
 
 let mutations
 let getters

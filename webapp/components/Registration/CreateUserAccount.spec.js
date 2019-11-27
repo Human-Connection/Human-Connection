@@ -1,12 +1,10 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 import CreateUserAccount from './CreateUserAccount'
 import { SignupVerificationMutation } from '~/graphql/Registration.js'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'

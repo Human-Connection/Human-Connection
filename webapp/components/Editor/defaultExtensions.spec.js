@@ -66,19 +66,24 @@ describe('defaultExtensions', () => {
         type: 'doc',
         content: [
           {
-            type: 'paragraph',
             content: [
               {
                 text: 'Baby loves cat:',
                 type: 'text',
               },
             ],
+            type: 'paragraph',
           },
           {
-            type: 'embed',
-            attrs: {
-              dataEmbedUrl: 'https://www.youtube.com/watch?v=qkdXAtO40Fo',
-            },
+            content: [
+              {
+                attrs: {
+                  dataEmbedUrl: 'https://www.youtube.com/watch?v=qkdXAtO40Fo',
+                },
+                type: 'embed',
+              },
+            ],
+            type: 'paragraph',
           },
         ],
       }

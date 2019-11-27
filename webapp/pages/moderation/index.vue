@@ -5,17 +5,17 @@
       <!-- Icon -->
       <template slot="type" slot-scope="scope">
         <ds-text color="soft">
-          <ds-icon
+          <base-icon
             v-if="scope.row.type === 'Post'"
             v-tooltip="{ content: $t('report.contribution.type'), placement: 'right' }"
             name="bookmark"
           />
-          <ds-icon
+          <base-icon
             v-else-if="scope.row.type === 'Comment'"
             v-tooltip="{ content: $t('report.comment.type'), placement: 'right' }"
             name="comments"
           />
-          <ds-icon
+          <base-icon
             v-else-if="scope.row.type === 'User'"
             v-tooltip="{ content: $t('report.user.type'), placement: 'right' }"
             name="user"

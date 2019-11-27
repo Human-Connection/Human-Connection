@@ -1,9 +1,8 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
+import { shallowMount } from '@vue/test-utils'
+
 import Empty from './Empty.vue'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('Empty.vue', () => {
   let propsData, wrapper

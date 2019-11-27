@@ -1,12 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import ChangePassword from './Change.vue'
-import Styleguide from '@human-connection/styleguide'
-import Filters from '~/plugins/vue-filters'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(Filters)
+const localVue = global.localVue
 
 describe('ChangePassword.vue', () => {
   let mocks

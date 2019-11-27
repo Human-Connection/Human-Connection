@@ -2,6 +2,7 @@ import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
 import { neode } from '../../bootstrap/neo4j'
+import { normalizeEmail } from 'validator'
 
 const instance = neode()
 
@@ -21,6 +22,7 @@ export default {
       // if (user && user.id) {
       //   throw new Error('Already logged in.')
       // }
+      email = normalizeEmail(email)
       const session = driver.session()
       const result = await session.run(
         `

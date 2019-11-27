@@ -1,149 +1,752 @@
 {
-  "site": {
-    "made": "Con &#10084; fatto",
-    "imprint": "Impressum",
-    "termsAc": "Condizioni d'uso",
-    "data-privacy": "protezione dei dati",
-    "changelog": "Cambiamenti e storia",
-    "contact": "Contatto",
-    "tribunal": "registro tribunale",
-    "register": "numero di registro",
-    "director": "Direttore Generale",
-    "taxident": "Numero di identificazione dell'imposta sul valore aggiunto ai sensi del § 27 a Legge sull'imposta sul valore aggiunto (Germania)",
-    "responsible": "Responsabile ai sensi del § 55 Abs. 2 RStV (Germania)",
-    "bank": "conto bancario",
-    "germany": "Germania"
-  },
-  "login": {
-    "copy": "Se sei gia registrato su Human Connection, accedi qui.",
-    "login": "Accesso",
-    "logout": "Logout",
-    "email": "La tua email",
-    "password": "La tua password",
-    "moreInfo": "Che cosa è Human Connection?",
-    "hello": "Ciao"
-  },
-  "profile": {
-    "name": "Il mio profilo",
-    "memberSince": "Membro dal",
-    "follow": "Seguire",
-    "followers": "Seguenti",
-    "following": "Seguendo",
-    "shouted": "Gridato",
-    "commented": "Commentato",
-    "userAnonym": "Anonymous"
-  },
-  "settings": {
-    "name": "Impostazioni",
-    "data": {
-      "name": "I tuoi dati",
-      "labelName": "Nome",
-      "namePlaceholder": "Anonymous",
-      "labelCity": "La tua città o regione",
-      "labelBio": "Su di te"
+    "login": {
+        "copy": "Se sei gia registrato su Human Connection, accedi qui.",
+        "login": "Accesso",
+        "logout": "Logout",
+        "email": "La tua email",
+        "password": "La tua password",
+        "moreInfo": "Che cosa è Human Connection?",
+        "hello": "Ciao",
+        "forgotPassword": "",
+        "no-account": "",
+        "register": "",
+        "moreInfoURL": "",
+        "moreInfoHint": "",
+        "success": "",
+        "failure": ""
     },
-    "security": {
-      "name": "Sicurezza"
-    },
-    "invites": {
-      "name": "Inviti"
-    },
-    "download": {
-      "name": "Scaricamento dati"
-    },
-    "delete": {
-      "name": "Elimina Account"
-    },
-    "organizations": {
-      "name": "Mie organizzazioni"
-    },
-    "languages": {
-      "name": "Lingue"
-    }
-  },
-  "admin": {
-    "name": "Admin",
-    "dashboard": {
-      "name": "Cruscotto",
-      "users": "Utenti",
-      "posts": "Messaggi",
-      "comments": "Commenti",
-      "notifications": "Notifiche",
-      "organizations": "Organizzazioni",
-      "projects": "Progetti",
-      "invites": "Inviti",
-      "follows": "Segue",
-      "shouts": "Gridi"
-    },
-    "organizations": {
-      "name": "Organizzazioni"
-    },
-    "users": {
-      "name": "Utenti"
-    },
-    "pages": {
-      "name": "Pagine"
-    },
-    "notifications": {
-      "name": "Notifiche"
-    },
-    "categories": {
-      "name": "Categorie",
-      "categoryName": "Nome",
-      "postCount": "Messaggi"
-    },
-    "tags": {
-      "name": "Tag",
-      "tagCountUnique": "Utenti",
-      "tagCount": "Messaggi"
+    "profile": {
+        "name": "Il mio profilo",
+        "memberSince": "Membro dal",
+        "follow": "Seguire",
+        "followers": "Seguenti",
+        "following": "Seguendo",
+        "shouted": "Gridato",
+        "commented": "Commentato",
+        "userAnonym": "Anonymous",
+        "socialMedia": "",
+        "network": {
+            "title": "",
+            "following": "",
+            "followingNobody": "",
+            "followedBy": "",
+            "followedByNobody": "",
+            "andMore": ""
+        },
+        "invites": {
+            "title": "",
+            "description": "",
+            "emailPlaceholder": ""
+        }
     },
     "settings": {
-      "name": "Impostazioni"
-    }
-  },
-  "post": {
-    "name": "Messaggio",
-    "moreInfo": {
-      "name": "Ulteriori informazioni"
+        "name": "Impostazioni",
+        "data": {
+            "name": "I tuoi dati",
+            "labelName": "Nome",
+            "labelCity": "La tua città o regione",
+            "labelBio": "Su di te",
+            "labelSlug": "",
+            "namePlaceholder": "Anonymous",
+            "success": ""
+        },
+        "security": {
+            "name": "Sicurezza",
+            "change-password": {
+                "button": "",
+                "success": "",
+                "label-old-password": "",
+                "label-new-password": "",
+                "label-new-password-confirm": "",
+                "message-old-password-required": "",
+                "message-new-password-required": "",
+                "message-new-password-confirm-required": "",
+                "message-new-password-missmatch": "",
+                "passwordSecurity": "",
+                "passwordStrength0": "",
+                "passwordStrength1": "",
+                "passwordStrength2": "",
+                "passwordStrength3": "",
+                "passwordStrength4": ""
+            }
+        },
+        "invites": {
+            "name": "Inviti"
+        },
+        "download": {
+            "name": "Scaricamento dati"
+        },
+        "delete": {
+            "name": "Elimina Account"
+        },
+        "organizations": {
+            "name": "Mie organizzazioni"
+        },
+        "languages": {
+            "name": "Lingue"
+        },
+        "email": {
+            "validation": {
+                "same-email": ""
+            },
+            "name": "",
+            "labelEmail": "",
+            "labelNewEmail": "",
+            "labelNonce": "",
+            "success": "",
+            "submitted": "",
+            "change-successful": "",
+            "verification-error": {
+                "message": "",
+                "explanation": "",
+                "reason": {
+                    "invalid-nonce": "",
+                    "no-email-request": ""
+                },
+                "support": ""
+            }
+        },
+        "validation": {
+            "slug": {
+                "regex": "",
+                "alreadyTaken": ""
+            }
+        },
+        "deleteUserAccount": {
+            "name": "",
+            "contributionsCount": "",
+            "commentedCount": "",
+            "accountDescription": "Essere consapevoli che i tuoi post e commenti sono importanti per la nostra comunità. Se scegli ancora di cancellarli, devi contrassegnarli qui sotto.",
+            "accountWarning": "",
+            "success": "",
+            "pleaseConfirm": ""
+        },
+        "embeds": {
+            "name": "",
+            "info-description": "Ecco l'elenco dei fornitori di terze parti i cui contenuti possono essere visualizzati come codice di terze parti, ad esempio sotto forma di video incorporati.",
+            "status": {
+                "description": "",
+                "disabled": {
+                    "off": "",
+                    "on": ""
+                },
+                "change": {
+                    "question": "",
+                    "allow": "",
+                    "deny": ""
+                }
+            }
+        },
+        "social-media": {
+            "name": "",
+            "placeholder": "",
+            "requireUnique": "",
+            "submit": "",
+            "successAdd": "Social media aggiunti. \nProfilo utente aggiornato ",
+            "successDelete": "Social media cancellati. Profilo utente aggiornato!"
+        },
+        "blocked-users": {
+            "name": "",
+            "explanation": {
+                "intro": "",
+                "your-perspective": "",
+                "their-perspective": "",
+                "search": "",
+                "notifications": "",
+                "closing": ""
+            },
+            "columns": {
+                "name": "",
+                "slug": "",
+                "unblock": ""
+            },
+            "empty": "",
+            "how-to": "",
+            "block": "",
+            "unblock": "",
+            "unblocked": ""
+        },
+        "privacy": {
+            "name": "",
+            "make-shouts-public": "",
+            "success-update": ""
+        }
     },
-    "takeAction": {
-      "name": "Agire"
+    "admin": {
+        "name": "Admin",
+        "dashboard": {
+            "name": "Cruscotto",
+            "users": "Utenti",
+            "posts": "Messaggi",
+            "comments": "Commenti",
+            "notifications": "Notifiche",
+            "organizations": "Organizzazioni",
+            "projects": "Progetti",
+            "invites": "Inviti",
+            "follows": "Segue",
+            "shouts": "Gridi"
+        },
+        "organizations": {
+            "name": "Organizzazioni"
+        },
+        "users": {
+            "name": "Utenti",
+            "form": {
+                "placeholder": ""
+            },
+            "table": {
+                "columns": {
+                    "number": "",
+                    "name": "",
+                    "email": "",
+                    "slug": "",
+                    "role": "",
+                    "createdAt": ""
+                }
+            },
+            "empty": ""
+        },
+        "pages": {
+            "name": "Pagine"
+        },
+        "notifications": {
+            "name": "Notifiche"
+        },
+        "categories": {
+            "name": "Categorie",
+            "categoryName": "Nome",
+            "postCount": "Messaggi"
+        },
+        "tags": {
+            "name": "Tag",
+            "tagCountUnique": "Utenti",
+            "tagCount": "Messaggi"
+        },
+        "settings": {
+            "name": "Impostazioni"
+        },
+        "hashtags": {
+            "name": "",
+            "number": "",
+            "nameOfHashtag": "",
+            "tagCountUnique": "",
+            "tagCount": ""
+        },
+        "invites": {
+            "name": "",
+            "title": "",
+            "description": ""
+        },
+        "donations": {
+            "name": "",
+            "goal": "",
+            "progress": "",
+            "successfulUpdate": ""
+        }
+    },
+    "post": {
+        "name": "Messaggio",
+        "moreInfo": {
+            "name": "Ulteriori informazioni",
+            "title": "",
+            "description": "",
+            "titleOfCategoriesSection": "",
+            "titleOfHashtagsSection": "",
+            "titleOfRelatedContributionsSection": ""
+        },
+        "takeAction": {
+            "name": "Agire"
+        },
+        "pinned": "",
+        "menu": {
+            "edit": "",
+            "delete": "",
+            "pin": "",
+            "pinnedSuccessfully": "",
+            "unpin": "",
+            "unpinnedSuccessfully": ""
+        },
+        "comment": {
+            "submit": "",
+            "submitted": "",
+            "updated": ""
+        },
+        "edited": ""
+    },
+    "quotes": {
+        "african": {
+            "quote": "Molte piccole persone in molti piccoli luoghi fanno molte piccole cose, che possono cambiare la faccia del mondo.",
+            "author": "Proverbio africano"
+        }
+    },
+    "common": {
+        "post": "Messaggio ::: Messaggi",
+        "comment": "Commento ::: Commenti",
+        "letsTalk": "Discutiamo",
+        "versus": "Verso",
+        "moreInfo": "Ulteriori informazioni",
+        "takeAction": "Agire",
+        "shout": "Grido ::: Gridi",
+        "user": "Utente ::: Utenti",
+        "category": "Categoria ::: Categorie",
+        "organization": "Organizzazione ::: Organizzazioni",
+        "project": "Progetto ::: Progetti",
+        "tag": "Tag ::: Tag",
+        "name": "Nome",
+        "loadMore": "Caricare di più",
+        "loading": "Caricamento in corso",
+        "reportContent": "",
+        "validations": {
+            "email": "",
+            "url": "",
+            "categories": ""
+        }
+    },
+    "actions": {
+        "loading": "Caricamento in corso",
+        "loadMore": "Carica di più",
+        "create": "Crea",
+        "save": "Salva",
+        "edit": "Modifica",
+        "delete": "Cancella",
+        "cancel": ""
+    },
+    "moderation": {
+        "name": "",
+        "reports": {
+            "empty": "",
+            "name": "",
+            "reporter": "",
+            "submitter": "",
+            "disabledBy": "",
+            "reasonCategory": "",
+            "reasonDescription": "",
+            "createdAt": ""
+        }
+    },
+    "disable": {
+        "user": {
+            "title": "",
+            "type": "",
+            "message": ""
+        },
+        "contribution": {
+            "title": "",
+            "type": "",
+            "message": ""
+        },
+        "comment": {
+            "title": "",
+            "type": "",
+            "message": ""
+        },
+        "submit": "",
+        "cancel": "",
+        "success": ""
+    },
+    "report": {
+        "submit": "",
+        "cancel": "",
+        "user": {
+            "title": "",
+            "type": "",
+            "message": "",
+            "error": ""
+        },
+        "contribution": {
+            "title": "",
+            "type": "",
+            "message": "",
+            "error": ""
+        },
+        "comment": {
+            "title": "",
+            "type": "",
+            "message": "",
+            "error": ""
+        },
+        "success": "",
+        "reason": {
+            "category": {
+                "label": "",
+                "placeholder": "",
+                "options": {
+                    "discrimination_etc": "",
+                    "pornographic_content_links": "",
+                    "glorific_trivia_of_cruel_inhuman_acts": "",
+                    "doxing": "",
+                    "intentional_intimidation_stalking_persecution": "",
+                    "advert_products_services_commercial": "",
+                    "criminal_behavior_violation_german_law": "",
+                    "other": ""
+                },
+                "invalid": ""
+            },
+            "description": {
+                "label": "",
+                "placeholder": ""
+            }
+        }
+    },
+    "contribution": {
+        "edit": "",
+        "delete": "",
+        "title": "",
+        "newPost": "",
+        "filterFollow": "",
+        "filterALL": "",
+        "success": "",
+        "languageSelectLabel": "",
+        "categories": {
+            "infoSelectedNoOfMaxCategories": ""
+        },
+        "emotions-label": {
+            "funny": "",
+            "happy": "",
+            "surprised": "",
+            "cry": "",
+            "angry": ""
+        },
+        "category": {
+            "name": {
+                "freedom-of-speech": "",
+                "consumption-sustainability": "",
+                "global-peace-nonviolence": "",
+                "just-for-fun": "",
+                "happiness-values": "",
+                "health-wellbeing": "",
+                "environment-nature": "",
+                "animal-protection": "",
+                "human-rights-justice": "",
+                "education-sciences": "",
+                "cooperation-development": "",
+                "democracy-politics": "",
+                "economy-finances": "",
+                "energy-technology": "",
+                "it-internet-data-privacy": "",
+                "art-culture-sport": ""
+            }
+        },
+        "teaserImage": {
+            "cropperConfirm": "Confermare"
+        },
+        "languageSelectText": ""
+    },
+    "comment": {
+        "edit": "",
+        "delete": "",
+        "content": {
+            "unavailable-placeholder": ""
+        },
+        "menu": {
+            "edit": "",
+            "delete": ""
+        },
+        "show": {
+            "more": "",
+            "less": ""
+        },
+        "edited": ""
+    },
+    "followButton": {
+        "follow": "",
+        "following": ""
+    },
+    "shoutButton": {
+        "shouted": ""
+    },
+    "search": {
+        "placeholder": "",
+        "hint": "",
+        "failed": ""
+    },
+    "components": {
+        "password-reset": {
+            "request": {
+                "title": "",
+                "form": {
+                    "description": "",
+                    "submit": "",
+                    "submitted": ""
+                }
+            },
+            "change-password": {
+                "success": "",
+                "error": "Modifica della password non riuscita. Forse il codice di sicurezza non era corretto?",
+                "help": ""
+            }
+        },
+        "enter-nonce": {
+            "form": {
+                "nonce": "",
+                "description": "",
+                "next": "",
+                "validations": {
+                    "length": ""
+                }
+            }
+        },
+        "registration": {
+            "signup": {
+                "unavailable": "",
+                "title": "",
+                "form": {
+                    "description": "",
+                    "terms-and-condition": "",
+                    "data-privacy": "",
+                    "minimum-age": "",
+                    "invitation-code": "",
+                    "errors": {
+                        "email-exists": "",
+                        "invalid-invitation-token": "Sembra che l'invito sia già stato utilizzato. I link di invito possono essere utilizzati una sola volta."
+                    },
+                    "submit": "",
+                    "success": ""
+                }
+            },
+            "create-user-account": {
+                "title": "",
+                "success": "",
+                "error": "",
+                "help": ""
+            }
+        }
+    },
+    "store": {
+        "posts": {
+            "orderBy": {
+                "newest": {
+                    "label": ""
+                },
+                "oldest": {
+                    "label": ""
+                }
+            }
+        }
+    },
+    "maintenance": {
+        "title": "",
+        "explanation": "",
+        "questions": ""
+    },
+    "index": {
+        "no-results": "",
+        "change-filter-settings": ""
+    },
+    "filter-menu": {
+        "title": "",
+        "hashtag-search": "",
+        "clearSearch": ""
+    },
+    "filter-posts": {
+        "categories": {
+            "header": "",
+            "all": ""
+        },
+        "general": {
+            "header": ""
+        },
+        "followers": {
+            "label": ""
+        },
+        "language": {
+            "header": "",
+            "all": ""
+        }
+    },
+    "site": {
+        "thanks": "",
+        "error-occurred": "",
+        "made": "Con &#10084; fatto",
+        "imprint": "Impressum",
+        "termsAndConditions": "",
+        "data-privacy": "protezione dei dati",
+        "changelog": "Cambiamenti e storia",
+        "contact": "Contatto",
+        "tribunal": "registro tribunale",
+        "register": "numero di registro",
+        "director": "Direttore Generale",
+        "taxident": "Numero di identificazione dell'imposta sul valore aggiunto ai sensi del § 27 a Legge sull'imposta sul valore aggiunto (Germania)",
+        "responsible": "Responsabile ai sensi del § 55 Abs. 2 RStV (Germania)",
+        "bank": "conto bancario",
+        "germany": "Germania",
+        "code-of-conduct": "",
+        "back-to-login": "",
+        "faq": ""
+    },
+    "editor": {
+        "placeholder": "",
+        "mention": {
+            "noUsersFound": ""
+        },
+        "hashtag": {
+            "noHashtagsFound": "",
+            "addHashtag": "",
+            "addLetter": ""
+        },
+        "embed": {
+            "data_privacy_warning": "",
+            "data_privacy_info": "I tuoi dati non sono ancora stati condivisi con fornitori terzi. Se continui a guardare questo video, il seguente fornitore probabilmente raccoglierà i dati dell'utente:",
+            "play_now": "",
+            "always_allow": ""
+        }
+    },
+    "notifications": {
+        "reason": {
+            "mentioned_in_post": "",
+            "mentioned_in_comment": "",
+            "commented_on_post": ""
+        },
+        "comment": "",
+        "title": "",
+        "pageLink": "",
+        "post": "",
+        "user": "",
+        "content": "",
+        "filterLabel": {
+            "all": "",
+            "read": "",
+            "unread": ""
+        },
+        "empty": ""
+    },
+    "delete": {
+        "submit": "",
+        "cancel": "",
+        "contribution": {
+            "title": "",
+            "type": "",
+            "message": "",
+            "success": ""
+        },
+        "comment": {
+            "title": "",
+            "type": "",
+            "message": "",
+            "success": ""
+        }
+    },
+    "release": {
+        "submit": "",
+        "cancel": "",
+        "success": "",
+        "user": {
+            "title": "",
+            "type": "",
+            "message": "",
+            "error": ""
+        },
+        "contribution": {
+            "title": "",
+            "type": "",
+            "message": "",
+            "error": ""
+        },
+        "comment": {
+            "title": "",
+            "type": "",
+            "message": "",
+            "error": ""
+        }
+    },
+    "user": {
+        "avatar": {
+            "submitted": ""
+        }
+    },
+    "code-of-conduct": {
+        "subheader": "",
+        "preamble": {
+            "title": "",
+            "description": "Human Connection è una rete di conoscenza e azione sociale senza scopo di lucro della prossima generazione. Dalle persone - per le persone. Open Source, equo e trasparente. Per un cambiamento locale e globale positivo in tutte le aree della vita. Ridisegniamo completamente lo scambio pubblico di conoscenze, idee e progetti. Le funzioni di Human Connection riuniscono le persone - offline e online - in modo che possiamo rendere il mondo un posto migliore."
+        },
+        "purpose": {
+            "title": "",
+            "description": "Con questo codice di condotta regoliamo i principi essenziali di comportamento nel nostro social network. La Carta dei diritti umani delle Nazioni Unite è il nostro orientamento e costituisce il cuore della nostra comprensione dei valori. Il codice di condotta funge da principio guida per il nostro aspetto personale e l'interazione reciproca. Chiunque sia attivo come utente nella rete di connessione umana, scrive articoli, commenti o contatta altri utenti, compresi quelli esterni alla rete, riconosce queste regole di condotta come vincolanti."
+        },
+        "expected-behaviour": {
+            "title": "",
+            "description": "",
+            "list": {
+                "0": "",
+                "1": "",
+                "2": "",
+                "3": "Fai attenzione a ciò che ti circonda e ai tuoi compagni partecipanti. Avvisare i leader della comunità se si nota una situazione pericolosa, qualcuno in difficoltà o violazioni del presente Codice di condotta, anche se sembrano insignificanti."
+            }
+        },
+        "unacceptable-behaviour": {
+            "title": "",
+            "description": "",
+            "list": {
+                "0": "Posti discriminatori, commenti, dichiarazioni o insulti, in particolare quelli relativi a genere, orientamento sessuale, razza, religione, orientamento politico o filosofico o disabilità.",
+                "1": "Pubblicazione o collegamento di materiale chiaramente pornografico.",
+                "2": "Glorificazione o banalizzazione di atti di violenza crudele o disumana.",
+                "3": "La divulgazione di informazioni personali altrui senza il loro consenso o minaccia di (\"doxing\").",
+                "4": "Intimidazione intenzionale, stalking o persecuzione.",
+                "5": "Pubblicità di prodotti e servizi a fini commerciali.",
+                "6": "Comportamento criminale o violazione della legge tedesca.",
+                "7": "Sostenere o incoraggiare tale condotta."
+            }
+        },
+        "consequences": {
+            "title": "Conseguenze di comportamenti inaccettabilil",
+            "description": "Se un membro della comunità manifesta comportamenti inaccettabili, gli operatori, i moderatori e gli amministratori responsabili della rete possono adottare le misure appropriate, inclusi ma non limitati a:",
+            "list": {
+                "0": "Richiesta di cessazione immediata di comportamenti inaccettabili",
+                "1": "Blocco o eliminazione di commenti",
+                "2": "Esclusione temporanea dal rispettivo posto o contributo",
+                "3": "Blocco o eliminazione di contenuti",
+                "4": "Revoca temporanea delle autorizzazioni di scrittura",
+                "5": "Esclusione temporanea dalla rete",
+                "6": "Esclusione definitiva dalla rete",
+                "7": "Violazioni della legge tedesca possono essere segnalate.",
+                "8": "Sostegno o incoraggiamento a questi comportamenti."
+            }
+        },
+        "get-help": "Se sei soggetto o testimone di un comportamento inaccettabile, o se hai altre preoccupazioni, ti preghiamo di avvisare al più presto un organizzatore della comunità e di fare riferimento al contenuto corrispondente:"
+    },
+    "termsAndConditions": {
+        "newTermsAndConditions": "Nuovi Termini e Condizioni",
+        "termsAndConditionsConfirmed": "Ho letto e confermato i <a href=\"\/terms-and-conditions\" target=\"_blank\"> Termini e condizioni <\/a> .",
+        "termsAndConditionsNewConfirmText": "Si prega di leggere le nuove condizioni d'uso ora!",
+        "termsAndConditionsNewConfirm": "Ho letto e accetto le nuove condizioni generali di contratto.",
+        "agree": "Sono d'accordo!",
+        "terms-of-service": {
+            "title": "Termini di servizio",
+            "description": "Le seguenti condizioni d'uso costituiscono la base per l'utilizzo della nostra rete. Quando ti registri, devi accettarli e ti informeremo in seguito di eventuali modifiche che potrebbero aver luogo. La rete di connessione umana è gestita in Germania ed è quindi soggetta alla legge tedesca. Il foro competente è Kirchheim \/ Teck. Per i dettagli, consulta la nostra impronta: <a href=\"https:\/\/human-connection.org\/imprint\" target=\"_blank\" > https:\/\/human-connection.org\/imprint <\/a>"
+        },
+        "use-and-license": {
+            "title": "Uso e licenza",
+            "description": "Se qualsiasi contenuto pubblicato su di noi è protetto da diritti di proprietà intellettuale, l'utente ci concede una licenza mondiale, non esclusiva, trasferibile e sub-licenziabile, per l'utilizzo di tali contenuti per la pubblicazione nella nostra rete. Questa licenza scade quando si elimina il contenuto o l'intero account. Ricorda che altri potrebbero condividere i tuoi contenuti e noi non possiamo cancellarli."
+        },
+        "privacy-statement": {
+            "title": "Informativa sulla Privacy",
+            "description": "La nostra rete è una rete di conoscenza e azione sociale. Per noi è quindi particolarmente importante che il maggior numero possibile di contenuti sia accessibile al pubblico. Nel corso dello sviluppo della nostra rete ci sarà sempre più la possibilità di decidere sulla visibilità dei dati personali. Ti informeremo su queste nuove funzionalità. Altrimenti, dovresti sempre pensare a quali dati personali divulghi su te stesso (o altri). Ciò vale in particolare per il contenuto di post e commenti, poiché questi hanno un carattere ampiamente pubblico. Successivamente ci saranno possibilità di limitare la visibilità del tuo profilo. Parte dei termini di servizio è la nostra informativa sulla privacy, che ti informa sulle singole operazioni di trattamento dei dati nella nostra rete: <a href=\"https:\/\/human-connection.org\/datenschutz\/#netzwerk\" target=\"_blank\"> https:\/\/human-connection.org\/datenschutz\/#netzwerk <\/a> bzw. <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\"> https:\/\/human-connection.org\/datenschutz\/ <\/a> La nostra informativa sulla privacy è adattata alla situazione legale e caratteristiche della nostra rete ed è sempre valido nella versione più recente."
+        },
+        "code-of-conduct": {
+            "title": "Codice di condotta",
+            "description": "Il nostro codice di condotta funge da manuale per l'aspetto personale e l'interazione reciproca. Chiunque sia attivo come utente nella rete di Human Connection, scrive articoli, commenti o contatta altri utenti, anche al di fuori della rete, riconosce queste regole di condotta come vincolanti. <a href=\"https:\/\/alpha.human-connection.org\/code-of-conduct\" target=\"_blank\"> https:\/\/alpha.human-connection.org\/code-of-conduct <\/a>"
+        },
+        "moderation": {
+            "title": "Moderazione",
+            "description": "Fino a quando le nostre possibilità finanziarie ci permettono di implementare il sistema di moderazione comunitaria, abbiamo moderato con un sistema semplificato e con personale proprio o eventualmente volontario. Formiamo questi moderatori e per questo motivo solo loro prendono le decisioni appropriate. Questi moderatori svolgono il loro lavoro in forma anonima. È possibile segnalare a noi messaggi, commenti e utenti (ad esempio, se forniscono informazioni nel loro profilo o se hanno immagini che violano queste Condizioni d'uso). Se ci segnalate qualcosa, potete darci una ragione e una breve spiegazione. Dopodiché daremo un'occhiata a ciò che hai segnalato e, se necessario, ti sanzioneremo, ad esempio bloccando i contributi, i commenti o gli utenti. Purtroppo, lei e la persona interessata non riceverà alcun feedback da parte nostra in questo momento, ma questo è in fase di pianificazione. Indipendentemente da ciò, ci riserviamo il diritto di imporre sanzioni in linea di principio per motivi che non sono o non sono ancora elencati nel nostro Codice di condotta o nei presenti termini di servizio."
+        },
+        "errors-and-feedback": {
+            "title": "Errori e feedback",
+            "description": "Facciamo ogni sforzo per mantenere la nostra rete e i nostri dati al sicuro e disponibili. Ogni nuova versione del software viene sottoposta a test sia automatizzati che manuali. Tuttavia, possono verificarsi errori imprevisti. Pertanto, siamo grati per tutti i bug segnalati. Siete invitati a segnalare eventuali bug che si scopre inviando un'e-mail al supporto presso support@human-connection.org"
+        },
+        "help-and-questions": {
+            "title": "Aiuto e domande",
+            "description": "Per aiuto e domande abbiamo compilato per voi una raccolta completa di domande e risposte alle domande più frequenti (FAQ). Potete trovarli qui: <a href=\"https:\/\/support.human-connection.org\/kb\/\" target=\"_blank\" >https:<\/a>\/\/support.human-connection.org\/kb\/ "
+        },
+        "addition": {
+            "title": "Inoltre, teniamo regolarmente eventi in cui puoi anche condividere le tue impressioni e porre domande. Puoi trovare una panoramica attuale qui:",
+            "description": "Https:\/\/human-connection. org\/eventi\/"
+        }
+    },
+    "donations": {
+        "donations-for": "",
+        "donate-now": "",
+        "amount-of-total": ""
     }
-  },
-  "quotes": {
-    "african": {
-      "quote": "Molte piccole persone in molti piccoli luoghi fanno molte piccole cose, che possono cambiare la faccia del mondo.",
-      "author": "Proverbio africano"
-    }
-  },
-  "common": {
-    "post": "Messaggio ::: Messaggi",
-    "comment": "Commento ::: Commenti",
-    "letsTalk": "Discutiamo",
-    "versus": "Verso",
-    "moreInfo": "Ulteriori informazioni",
-    "takeAction": "Agire",
-    "shout": "Grido ::: Gridi",
-    "user": "Utente ::: Utenti",
-    "category": "Categoria ::: Categorie",
-    "organization": "Organizzazione ::: Organizzazioni",
-    "project": "Progetto ::: Progetti",
-    "tag": "Tag ::: Tag",
-    "name": "Nome",
-    "loadMore": "Caricare di più",
-    "loading": "Caricamento in corso"
-  },
-  "actions": {
-    "loading": "Caricamento in corso",
-    "loadMore": "Carica di più",
-    "create": "Crea",
-    "save": "Salva",
-    "edit": "Modifica",
-    "delete": "Cancella"
-  },
-  "contribution": {
-    "teaserImage": {
-      "cropperConfirm": "Confermare"
-    }
-  }
 }

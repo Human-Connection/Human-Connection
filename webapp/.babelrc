@@ -12,6 +12,7 @@
   ],
   "env": {
     "test": {
+      "plugins": ["require-context-hook"],
       "presets": [
         [
           "@babel/preset-env",

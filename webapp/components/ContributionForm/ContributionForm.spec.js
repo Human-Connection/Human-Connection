@@ -1,20 +1,16 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import ContributionForm from './ContributionForm.vue'
-import Styleguide from '@human-connection/styleguide'
+
 import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
-import Filters from '~/plugins/vue-filters'
+
 import TeaserImage from '~/components/TeaserImage/TeaserImage'
 import MutationObserver from 'mutation-observer'
 
 global.MutationObserver = MutationObserver
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
-localVue.use(Filters)
+const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'

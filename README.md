@@ -25,7 +25,7 @@ Human Connection is a nonprofit social, action and knowledge network that connec
 
 ## Live demo
 
-Try out our deployed [staging environment](https://nitro-staging.human-connection.org/).
+Try out our deployed [development environment](https://develop.human-connection.org/).
 
 Logins:
 

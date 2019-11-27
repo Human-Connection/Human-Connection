@@ -1,14 +1,9 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
+import { shallowMount } from '@vue/test-utils'
+
 import Embed from './Embed'
 
 let Wrapper, propsData, component
 const someUrl = 'https://www.youtube.com/watch?v=qkdXAtO40Fo'
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
 
 describe('Embed.vue', () => {
   beforeEach(() => {
