@@ -12,7 +12,7 @@
         <slot></slot>
         <div class="hc-attachments-upload-area">
           <div class="hc-drag-marker">
-            <ds-icon v-if="hover" name="image" size="xxx-large" />
+            <base-icon v-if="hover" name="image" />
           </div>
         </div>
       </div>

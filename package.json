@@ -27,7 +27,7 @@
     "cypress-cucumber-preprocessor": "^1.16.2",
     "cypress-file-upload": "^3.5.0",
     "cypress-plugin-retries": "^1.4.0",
-    "date-fns": "^2.8.0",
+    "date-fns": "^2.8.1",
     "dotenv": "^8.2.0",
     "faker": "Marak/faker.js#master",
     "graphql-request": "^1.8.2",

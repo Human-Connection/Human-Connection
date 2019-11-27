@@ -3,7 +3,7 @@
     <ds-card>
       <ds-space margin-bottom="base" />
       <ds-text style="padding-left: 40px; font-weight: bold;" color="soft">
-        <ds-icon name="ban" />
+        <base-icon name="ban" />
         {{ this.$t('comment.content.unavailable-placeholder') }}
       </ds-text>
       <ds-space margin-bottom="base" />
@@ -62,7 +62,7 @@
 import { mapGetters } from 'vuex'
 import { COMMENT_MAX_UNTRUNCATED_LENGTH, COMMENT_TRUNCATE_TO_LENGTH } from '~/constants/comment'
 import HcUser from '~/components/User/User'
-import ContentMenu from '~/components/ContentMenu'
+import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'

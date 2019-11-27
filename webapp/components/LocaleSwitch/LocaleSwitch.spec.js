@@ -1,14 +1,9 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
-import VTooltip from 'v-tooltip'
+import { mount } from '@vue/test-utils'
+
 import LocaleSwitch from './LocaleSwitch.vue'
 import Vuex from 'vuex'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(VTooltip)
-localVue.use(Vuex)
+const localVue = global.localVue
 
 describe('LocaleSwitch.vue', () => {
   let wrapper, mocks, computed, deutschLanguageItem, getters

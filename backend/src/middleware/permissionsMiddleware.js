@@ -100,7 +100,7 @@ const noEmailFilter = rule({
 const publicRegistration = rule()(() => !!CONFIG.PUBLIC_REGISTRATION)
 
 // Permissions
-const permissions = shield(
+export default shield(
   {
     Query: {
       '*': deny,
@@ -175,5 +175,3 @@ const permissions = shield(
     fallbackRule: allow,
   },
 )
-
-export default permissions

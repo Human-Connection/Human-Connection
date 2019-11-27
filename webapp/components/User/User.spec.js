@@ -1,18 +1,9 @@
-import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
+import { mount, RouterLinkStub } from '@vue/test-utils'
 import User from './User.vue'
 import Vuex from 'vuex'
-import VTooltip from 'v-tooltip'
-import Filters from '~/plugins/vue-filters'
 
-import Styleguide from '@human-connection/styleguide'
-
-const localVue = createLocalVue()
+const localVue = global.localVue
 const filter = jest.fn(str => str)
-
-localVue.use(Vuex)
-localVue.use(VTooltip)
-localVue.use(Styleguide)
-localVue.use(Filters)
 
 localVue.filter('truncate', filter)
 

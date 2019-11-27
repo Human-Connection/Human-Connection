@@ -1,16 +1,11 @@
-import { config, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
-import VTooltip from 'v-tooltip'
+import { config, mount, RouterLinkStub } from '@vue/test-utils'
+
 import Vuex from 'vuex'
 import NotificationsTable from './NotificationsTable'
-import Filters from '~/plugins/vue-filters'
-import { notifications } from '~/components/utils/Notifications'
-const localVue = createLocalVue()
 
-localVue.use(Styleguide)
-localVue.use(Filters)
-localVue.use(VTooltip)
-localVue.use(Vuex)
+import { notifications } from '~/components/utils/Notifications'
+const localVue = global.localVue
+
 localVue.filter('truncate', string => string)
 
 config.stubs['client-only'] = '<span><slot /></span>'

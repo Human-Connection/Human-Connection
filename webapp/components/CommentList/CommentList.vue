@@ -2,7 +2,7 @@
   <div id="comments">
     <h3 style="margin-top: -10px;">
       <span>
-        <ds-icon name="comments" />
+        <base-icon name="comments" />
         <ds-tag
           v-if="post.comments.length"
           style="margin-top: -4px; margin-left: -12px; position: absolute;"

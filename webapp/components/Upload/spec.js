@@ -1,12 +1,7 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Upload from '.'
-import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('Upload', () => {
   let wrapper

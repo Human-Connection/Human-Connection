@@ -49,10 +49,22 @@ export default {
     User: async (object, args, context, resolveInfo) => {
       const { email } = args
       if (email) {
-        const e = await instance.first('EmailAddress', { email })
-        let user = e.get('belongsTo')
-        user = await user.toJson()
-        return [user.node]
+        let session
+        try {
+          session = context.driver.session()
+          const readTxResult = await session.readTransaction(txc => {
+            const result = txc.run(
+              `
+            MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $args.email})
+            RETURN user`,
+              { args },
+            )
+            return result
+          })
+          return readTxResult.records.map(r => r.get('user').properties)
+        } finally {
+          session.close()
+        }
       }
       return neo4jgraphql(object, args, context, resolveInfo)
     },

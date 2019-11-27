@@ -34,7 +34,7 @@
               {{ userSlug }}
             </ds-text>
             <ds-text v-if="user.location" align="center" color="soft" size="small">
-              <ds-icon name="map-marker" />
+              <base-icon name="map-marker" />
               {{ user.location.name }}
             </ds-text>
             <ds-text align="center" color="soft" size="small">
@@ -274,7 +274,7 @@ import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
 import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty/Empty'
-import ContentMenu from '~/components/ContentMenu'
+import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcUpload from '~/components/Upload'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
