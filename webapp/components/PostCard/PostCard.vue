@@ -74,7 +74,7 @@
 
 <script>
 import HcUser from '~/components/User/User'
-import ContentMenu from '~/components/ContentMenu'
+import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
 // import { randomBytes } from 'crypto'
