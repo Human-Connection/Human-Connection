@@ -113,7 +113,7 @@ type Post {
   objectId: String
   author: User @relation(name: "WROTE", direction: "IN")
   title: String!
-  slug: String
+  slug: String!
   content: String!
   contentExcerpt: String
   image: String
