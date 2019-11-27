@@ -352,6 +352,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.food(),
         categoryIds: ['cat16'],
+        imageAspectRatio: 1.777,
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
@@ -359,24 +360,28 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.technology(),
         categoryIds: ['cat1'],
+        imageAspectRatio: 0.2,
       }),
       factory.create('Post', {
         author: huey,
         id: 'p3',
         language: sample(languages),
         categoryIds: ['cat3'],
+        imageAspectRatio: 0.5,
       }),
       factory.create('Post', {
         author: dewey,
         id: 'p4',
         language: sample(languages),
         categoryIds: ['cat4'],
+        imageAspectRatio: 0.75,
       }),
       factory.create('Post', {
         author: louie,
         id: 'p5',
         language: sample(languages),
         categoryIds: ['cat5'],
+        imageAspectRatio: 1,
       }),
       factory.create('Post', {
         authorId: 'u1',
@@ -384,17 +389,20 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.buildings(),
         categoryIds: ['cat6'],
+        imageAspectRatio: 0.35,
       }),
       factory.create('Post', {
         author: huey,
         id: 'p9',
         language: sample(languages),
         categoryIds: ['cat9'],
+        imageAspectRatio: 1.25,
       }),
       factory.create('Post', {
         author: dewey,
         id: 'p10',
         categoryIds: ['cat10'],
+        imageAspectRatio: 1.5,
       }),
       factory.create('Post', {
         author: louie,
@@ -402,12 +410,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.people(),
         categoryIds: ['cat11'],
+        imageAspectRatio: 0.333,
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
         id: 'p13',
         language: sample(languages),
         categoryIds: ['cat13'],
+        imageAspectRatio: 0.4,
       }),
       factory.create('Post', {
         author: jennyRostock,
@@ -415,12 +425,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.objects(),
         categoryIds: ['cat14'],
+        imageAspectRatio: 0.5,
       }),
       factory.create('Post', {
         author: huey,
         id: 'p15',
         language: sample(languages),
         categoryIds: ['cat15'],
+        imageAspectRatio: 0.8,
       }),
     ])
 
@@ -434,8 +446,20 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     const hashtagAndMention1 =
       'The new physics of <a class="hashtag" data-hashtag-id="QuantenFlussTheorie" href="/?hashtag=QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" data-hashtag-id="QuantumGravity" href="/?hashtag=QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
     const createPostMutation = gql`
-      mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]) {
-        CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+      mutation(
+        $id: ID
+        $title: String!
+        $content: String!
+        $categoryIds: [ID]
+        $imageAspectRatio: Float
+      ) {
+        CreatePost(
+          id: $id
+          title: $title
+          content: $content
+          categoryIds: $categoryIds
+          imageAspectRatio: $imageAspectRatio
+        ) {
           id
         }
       }
@@ -449,6 +473,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Nature Philosophy Yoga`,
           content: hashtag1,
           categoryIds: ['cat2'],
+          imageAspectRatio: 0.66,
         },
       }),
       mutate({
@@ -458,6 +483,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #7',
           content: `${mention1} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat7'],
+          imageAspectRatio: 1.66,
         },
       }),
       mutate({
@@ -468,6 +494,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Quantum Flow Theory explains Quantum Gravity`,
           content: hashtagAndMention1,
           categoryIds: ['cat8'],
+          imageAspectRatio: 0.3,
         },
       }),
       mutate({
@@ -477,6 +504,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #12',
           content: `${mention2} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat12'],
+          imageAspectRatio: 1.5,
         },
       }),
     ])

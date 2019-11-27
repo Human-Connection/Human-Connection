@@ -19,6 +19,7 @@ export default function create() {
         visibility: 'public',
         deleted: false,
         categoryIds: [],
+        imageAspectRatio: 1.0,
       }
       args = {
         ...defaults,

@@ -45,4 +45,5 @@ module.exports = {
     default: () => new Date().toISOString(),
   },
   language: { type: 'string', allow: [null] },
+  imageAspectRatio: { type: 'float', default: 1.0 },
 }
