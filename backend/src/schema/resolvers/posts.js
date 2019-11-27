@@ -5,7 +5,6 @@ import { getBlockedUsers, getBlockedByUsers } from './users.js'
 import { mergeWith, isArray, isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
-import { queryReviewedByModerator } from './helpers/reportResource.js'
 
 const filterForBlockedUsers = async (params, context) => {
   if (!context.user) return params
@@ -341,9 +340,6 @@ export default {
         session.close()
       }
       return relatedContributions
-    },
-    reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
-      return queryReviewedByModerator('Post', parent, context)
     },
   },
 }

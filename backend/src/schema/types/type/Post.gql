@@ -121,15 +121,6 @@ type Post {
   visibility: Visibility
   deleted: Boolean
   disabled: Boolean
-  reviewedByModerator: User
-    @cypher(
-      statement: """
-        MATCH (this)<-[:BELONGS_TO]-(report:Report)<-[review:REVIEWED]-(moderator:User)
-        RETURN moderator
-        ORDER BY report.updatedAt DESC, review.updatedAt DESC
-        LIMIT 1
-      """
-    )
   pinned: Boolean
   createdAt: String
   updatedAt: String

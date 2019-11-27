@@ -1,6 +1,5 @@
 import uuid from 'uuid/v4'
 import Resolver from './helpers/Resolver'
-import { queryReviewedByModerator } from './helpers/reportResource.js'
 
 export default {
   Mutation: {
@@ -72,8 +71,5 @@ export default {
         post: '-[:COMMENTS]->(related:Post)',
       },
     }),
-    reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
-      return queryReviewedByModerator('Comment', parent, context)
-    },
   },
 }

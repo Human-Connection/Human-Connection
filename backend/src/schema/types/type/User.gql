@@ -33,15 +33,6 @@ type User {
   coverImg: String
   deleted: Boolean
   disabled: Boolean
-  reviewedByModerator: User
-    @cypher(
-      statement: """
-        MATCH (this)<-[:BELONGS_TO]-(report:Report)<-[review:REVIEWED]-(moderator:User)
-        RETURN moderator
-        ORDER BY report.updatedAt DESC, review.updatedAt DESC
-        LIMIT 1
-      """
-    )
   role: UserGroup!
   publicKey: String
   invitedBy: User @relation(name: "INVITED", direction: "IN")

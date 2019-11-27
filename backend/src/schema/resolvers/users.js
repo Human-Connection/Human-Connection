@@ -3,7 +3,6 @@ import fileUpload from './fileUpload'
 import { neode } from '../../bootstrap/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
-import { queryReviewedByModerator } from './helpers/reportResource.js'
 
 const instance = neode()
 
@@ -215,8 +214,5 @@ export default {
         badges: '<-[:REWARDED]-(related:Badge)',
       },
     }),
-    reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
-      return queryReviewedByModerator('User', parent, context)
-    },
   },
 }
