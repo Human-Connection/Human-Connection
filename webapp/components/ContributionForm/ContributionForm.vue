@@ -16,6 +16,27 @@
       </hc-teaser-image>
       <ds-card>
         <ds-space />
+        <ds-text align="right">
+          <label for="blur_img">{{ $t('contribution.shockingPicture') }}</label>
+          <input
+            name="checkedBlur"
+            type="checkbox"
+            id="blur_img"
+            :checked="checkedBlur"
+            @change="checkedChange"
+          />
+
+          <label for="blur_img"><span class=""></span></label>
+          <div>
+            <a href="https://faq.human-connection.org/" target="_blank">
+              <small>
+                {{ $t('contribution.shockingPicture-text') }}
+                <ds-icon name="question-circle" />
+              </small>
+            </a>
+          </div>
+        </ds-text>
+        <ds-space />
         <client-only>
           <hc-user :user="currentUser" :trunc="35" />
         </client-only>
@@ -78,28 +99,7 @@
             <ds-icon name="warning"></ds-icon>
           </ds-chip>
         </ds-text>
-        <ds-space />
-        <ds-text align="right">
-          <label for="bad-img">Anstösiger Inhalt</label>
-          <input
-            id="bad-img"
-            type="checkbox"
-            name="checkbox"
-            :checked="checkedBlur"
-            @change="checkedChange"
-          />
-          <label for="bad-img">
-            <span class=""></span>
-          </label>
-          <div>
-            <a href="https://faq.human-connection.org/" target="_blank">
-              <small>
-                Bilder werden Verschwommen dargestellt
-                <ds-icon name="question-circle" />
-              </small>
-            </a>
-          </div>
-        </ds-text>
+
         <ds-space />
         <div slot="footer" style="text-align: right">
           <ds-button
@@ -153,11 +153,13 @@ export default {
       image: null,
       language: null,
       categoryIds: [],
+      checkedBlur: false,
     }
     let id = null
     let slug = null
     const form = { ...formDefaults }
     if (this.contribution && this.contribution.id) {
+      //  console.log("edit jaaa")
       id = this.contribution.id
       slug = this.contribution.slug
       form.title = this.contribution.title
@@ -168,7 +170,12 @@ export default {
           ? languageOptions.find(o => this.contribution.language === o.value)
           : null
       form.categoryIds = this.categoryIds(this.contribution.categories)
+      form.checkedBlur = this.contribution.checkedBlur
+
+      // console.log(this.contribution.checkedBlur)
+      // console.log(this.contribution)
     }
+
     return {
       form,
       formSchema: {
@@ -186,6 +193,7 @@ export default {
           },
         },
         language: { required: true },
+        checkedBlur: { required: false },
       },
       languageOptions,
       id,
@@ -194,9 +202,13 @@ export default {
       users: [],
       contentMin: 3,
       hashtags: [],
-      checkedBlur: false,
       elem: null,
-       elem1: null,
+      checkedBlur: false,
+    }
+  },
+  created() {
+    if (this.contribution && this.contribution.checkedBlur) {
+      this.checkedChange()
     }
   },
   computed: {
@@ -209,21 +221,29 @@ export default {
   },
   methods: {
     checkedChange() {
-      this.elem  = this.$el.querySelector('img')
-      this.elem1 = this.$el.querySelector('img.thumbnail-preview')
+      // console.log( 'checkedChange')
+      // console.log( 'this.checkedBlur old', this.checkedBlur)
+      // console.log( 'THIS', this.$el)
+      // console.log( 'THIS.form', this.form)
+
+      if (this.$el) {
+        this.elem = this.$el.querySelector('img')
+      } else {
+      }
       if (this.checkedBlur) {
         this.elem.classList.remove('img-blur-in')
         this.checkedBlur = false
+        this.form.checkedBlur = false
+        this.form.checkbox = false
       } else {
         if (this.elem != null) {
-             this.elem.classList.add('img-blur-in') 
+          this.elem.classList.add('img-blur-in')
         }
-         if (this.elem1 != null) {
-             this.elem1.classList.add('img-blur-in')
-        }
-     
         this.checkedBlur = true
+        this.form.checkedBlur = true
+        this.form.checkbox = true
       }
+      //  console.log( 'this.checkedBlur new', this.checkedBlur)
     },
     submit() {
       const {
@@ -246,6 +266,7 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
+            checkedBlur: this.form.checkbox,
           },
         })
         .then(({ data }) => {
@@ -307,6 +328,21 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.img-blur-in .ds-card-image img {
+  -webkit-filter: blur(32px);
+  -moz-filter: blur(32px);
+  -ms-filter: blur(32px);
+  -o-filter: blur(32px);
+  filter: blur(32px);
+  -webkit-transition: all ease 0.2s;
+  -moz-transition: all ease 0.2s;
+  -ms-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+}
+</style>
+
 <style lang="scss" scoped>
 .smallTag {
   width: 100%;
@@ -344,18 +380,5 @@ input[type='checkbox'] + label span {
 }
 input[type='checkbox']:checked + label span {
   background: url(../../static/img/checkbox/checkbox-set-blank-checked-line.png) -30px top no-repeat;
-}
-
-.img-blur-in {
-  -webkit-filter: blur(32px);
-  -moz-filter: blur(32px);
-  -ms-filter: blur(32px);
-  -o-filter: blur(32px);
-  filter: blur(32px);
-  -webkit-transition: all ease 0.2s;
-  -moz-transition: all ease 0.2s;
-  -ms-transition: all ease 0.2s;
-  -o-transition: all ease 0.2s;
-  transition: all ease 0.2s;
 }
 </style>

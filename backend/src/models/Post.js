@@ -45,4 +45,5 @@ module.exports = {
     default: () => new Date().toISOString(),
   },
   language: { type: 'string', allow: [null] },
+  checkedBlur: { type: 'boolean', default: false },
 }

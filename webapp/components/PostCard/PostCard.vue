@@ -2,8 +2,17 @@
   <ds-card
     :lang="post.language"
     :image="post.image | proxyApiUrl"
-    :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--pinned': isPinned }"
+    :class="{
+      'post-card': true,
+      'disabled-content': post.disabled,
+      'post--pinned': isPinned,
+      'images-set-blur': post.checkedBlur,
+    }"
   >
+    <ds-text v-show="post.checkedBlur" align="center" class="blurbox">
+      <ds-button class="bluricon" icon="eye-slash" primary></ds-button>
+    </ds-text>
+
     <!-- Post Link Target -->
     <nuxt-link
       class="post-link"
@@ -144,8 +153,35 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.images-set-blur .ds-card-image img {
+  -webkit-filter: blur(32px);
+  -moz-filter: blur(32px);
+  -ms-filter: blur(32px);
+  -o-filter: blur(32px);
+  filter: blur(32px);
+  -webkit-transition: all ease 0.2s;
+  -moz-transition: all ease 0.2s;
+  -ms-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+}
+
+.blurbox {
+  padding: 13px 0px;
+  top: 67px;
+  right: 34px;
+  left: 25px;
+  position: absolute;
+  color: floralwhite;
+}
+.bluricon {
+  font-size: xx-large;
+}
+</style>
+
 <style lang="scss" scoped>
-.ds-card-image img {
+.ds-card-image {
   width: 100%;
   max-height: 2000px;
   object-fit: contain;

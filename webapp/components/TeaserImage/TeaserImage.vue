@@ -103,6 +103,7 @@ export default {
       if (contributionImage) contributionImage.remove()
     },
     initCropper() {
+      // console.log(' new Image initCropper')
       this.image = new Image()
       this.image.src = URL.createObjectURL(this.file)
       this.editor.appendChild(this.image)
@@ -119,6 +120,7 @@ export default {
       }, 'image/jpeg')
     },
     setupPreview(canvas) {
+      // console.log(' new Image setupPreview')
       this.image = new Image()
       this.image.src = canvas.toDataURL()
       this.image.classList.add('thumbnail-preview')

@@ -644,7 +644,9 @@
     },
     "teaserImage": {
       "cropperConfirm": "Confirm"
-    }
+    },
+    "shockingPicture" : "Shocking Picture",
+    "shockingPicture-text" : "Contribution picture is blurred"
   },
   "code-of-conduct": {
     "subheader": "for the social network of the Human Connection gGmbH",
