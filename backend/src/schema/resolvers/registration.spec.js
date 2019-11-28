@@ -9,7 +9,6 @@ const neode = getNeode()
 
 let mutate
 let authenticatedUser
-let user
 let variables
 const driver = getDriver()
 

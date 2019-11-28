@@ -1,4 +1,4 @@
-import { rule, shield, deny, allow, and, or, not } from 'graphql-shield'
+import { rule, shield, deny, allow, or } from 'graphql-shield'
 import { neode } from '../bootstrap/neo4j'
 import CONFIG from '../config'
 
