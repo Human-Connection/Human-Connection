@@ -86,11 +86,11 @@ export default {
     },
   },
   Report: {
-    reportsFiled: async (parent, _params, context, _resolveInfo) => {
-      if (typeof parent.reportsFiled !== 'undefined') return parent.reportsFiled
+    filed: async (parent, _params, context, _resolveInfo) => {
+      if (typeof parent.filed !== 'undefined') return parent.filed
       const session = context.driver.session()
       const { id } = parent
-      let reportsFiled
+      let filed
       const readTxPromise = session.readTransaction(async tx => {
         const allReportsTransactionResponse = await tx.run(
           `
@@ -107,7 +107,7 @@ export default {
       try {
         const txResult = await readTxPromise
         if (!txResult[0]) return null
-        reportsFiled = txResult.map(reportedRecord => {
+        filed = txResult.map(reportedRecord => {
           const { submitter, filed } = reportedRecord
           const relationshipWithNestedAttributes = {
             ...filed,
@@ -118,35 +118,42 @@ export default {
       } finally {
         session.close()
       }
-      return reportsFiled
+      return filed
     },
-    reviewedByModerator: async (parent, _params, context, _resolveInfo) => {
-      if (typeof parent.reviewedByModerator !== 'undefined') return parent.reviewedByModerator
+    reviewed: async (parent, _params, context, _resolveInfo) => {
+      if (typeof parent.reviewed !== 'undefined') return parent.reviewed
       const session = context.driver.session()
       const { id } = parent
-      let reviewedByModerator
+      let reviewed
       const readTxPromise = session.readTransaction(async tx => {
         const allReportsTransactionResponse = await tx.run(
           `
             MATCH (resource)<-[:BELONGS_TO]-(report:Report {id: $id})<-[review:REVIEWED]-(moderator:User)
-            RETURN moderator
+            RETURN moderator, review
             ORDER BY report.updatedAt DESC, review.updatedAt DESC
-            LIMIT 1
           `,
           { id },
         )
-        return allReportsTransactionResponse.records.map(
-          record => record.get('moderator').properties,
-        )
+        return allReportsTransactionResponse.records.map(record => ({
+          review: record.get('review').properties,
+          moderator: record.get('moderator').properties,
+        }))
       })
       try {
         const txResult = await readTxPromise
         if (!txResult[0]) return null
-        reviewedByModerator = txResult[0]
+        reviewed = txResult.map(reportedRecord => {
+          const { review, moderator } = reportedRecord
+          const relationshipWithNestedAttributes = {
+            ...review,
+            moderator,
+          }
+          return relationshipWithNestedAttributes
+        })
       } finally {
         session.close()
       }
-      return reviewedByModerator
+      return reviewed
     },
   },
 }

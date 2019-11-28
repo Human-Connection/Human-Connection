@@ -35,7 +35,7 @@ describe('file a report on a resource', () => {
             content
           }
         }
-        reportsFiled {
+        filed {
           submitter {
             id
           }
@@ -201,7 +201,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  reportsFiled: [
+                  filed: [
                     {
                       submitter: {
                         id: 'current-user-id',
@@ -243,7 +243,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  reportsFiled: [
+                  filed: [
                     {
                       reasonCategory: 'criminal_behavior_violation_german_law',
                     },
@@ -288,7 +288,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  reportsFiled: [
+                  filed: [
                     {
                       reasonDescription: 'My reason!',
                     },
@@ -312,7 +312,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  reportsFiled: [
+                  filed: [
                     {
                       reasonDescription: 'My reason !',
                     },
@@ -487,7 +487,7 @@ describe('file a report on a resource', () => {
               id
             }
           }
-          reportsFiled {
+          filed {
             submitter {
               id
             }
@@ -614,7 +614,7 @@ describe('file a report on a resource', () => {
                 __typename: 'User',
                 id: 'abusive-user-1',
               },
-              reportsFiled: expect.arrayContaining([
+              filed: expect.arrayContaining([
                 expect.objectContaining({
                   submitter: expect.objectContaining({
                     id: 'current-user-id',
@@ -635,7 +635,7 @@ describe('file a report on a resource', () => {
                 __typename: 'Post',
                 id: 'abusive-post-1',
               },
-              reportsFiled: expect.arrayContaining([
+              filed: expect.arrayContaining([
                 expect.objectContaining({
                   submitter: expect.objectContaining({
                     id: 'current-user-id',
@@ -656,7 +656,7 @@ describe('file a report on a resource', () => {
                 __typename: 'Comment',
                 id: 'abusive-comment-1',
               },
-              reportsFiled: expect.arrayContaining([
+              filed: expect.arrayContaining([
                 expect.objectContaining({
                   submitter: expect.objectContaining({
                     id: 'current-user-id',

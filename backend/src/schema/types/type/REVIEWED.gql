@@ -6,7 +6,6 @@ type REVIEWED {
   report: Report
     # @cypher(statement: "MATCH (report:Report)<-[this:REVIEWED]-(:User) RETURN report")
   moderator: User
-  type: String
   resource: ReviewedResource
 }
 union ReviewedResource = User | Post | Comment

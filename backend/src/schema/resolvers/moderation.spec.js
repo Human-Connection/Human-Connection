@@ -41,8 +41,11 @@ const reviewMutation = gql`
         createdAt
         updatedAt
         closed
-        reviewedByModerator {
-          id
+        reviewed {
+          createdAt
+          moderator {
+            id
+          }
         }
       }
     }
@@ -236,14 +239,19 @@ describe('moderate resources', () => {
           })
         })
 
-        it('returns .reviewedByModerator', async () => {
+        it('returns .reviewed', async () => {
           await expect(
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
             data: {
               review: {
                 resource: { __typename: 'Comment', id: 'comment-id' },
-                report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
+                report: {
+                  id: expect.any(String),
+                  reviewed: expect.arrayContaining([
+                    { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                  ]),
+                },
               },
             },
           })
@@ -309,14 +317,19 @@ describe('moderate resources', () => {
           })
         })
 
-        it('returns .reviewedByModerator', async () => {
+        it('returns .reviewed', async () => {
           await expect(
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
             data: {
               review: {
                 resource: { __typename: 'Post', id: 'post-id' },
-                report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
+                report: {
+                  id: expect.any(String),
+                  reviewed: expect.arrayContaining([
+                    { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                  ]),
+                },
               },
             },
           })
@@ -376,14 +389,19 @@ describe('moderate resources', () => {
           })
         })
 
-        it('returns .reviewedByModerator', async () => {
+        it('returns .reviewed', async () => {
           await expect(
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
             data: {
               review: {
                 resource: { __typename: 'User', id: 'user-id' },
-                report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
+                report: {
+                  id: expect.any(String),
+                  reviewed: expect.arrayContaining([
+                    { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                  ]),
+                },
               },
             },
           })
@@ -509,14 +527,19 @@ describe('moderate resources', () => {
             })
           })
 
-          it('returns .reviewedByModerator', async () => {
+          it('returns .reviewed', async () => {
             await expect(
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
               data: {
                 review: {
                   resource: { __typename: 'Comment', id: 'comment-id' },
-                  report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
+                  report: {
+                    id: expect.any(String),
+                    reviewed: expect.arrayContaining([
+                      { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                    ]),
+                  },
                 },
               },
             })
@@ -569,14 +592,19 @@ describe('moderate resources', () => {
             })
           })
 
-          it('returns .reviewedByModerator', async () => {
+          it('returns .reviewed', async () => {
             await expect(
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
               data: {
                 review: {
                   resource: { __typename: 'Post', id: 'post-id' },
-                  report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
+                  report: {
+                    id: expect.any(String),
+                    reviewed: expect.arrayContaining([
+                      { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                    ]),
+                  },
                 },
               },
             })
@@ -628,14 +656,19 @@ describe('moderate resources', () => {
             })
           })
 
-          it('returns .reviewedByModerator', async () => {
+          it('returns .reviewed', async () => {
             await expect(
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
               data: {
                 review: {
                   resource: { __typename: 'User', id: 'user-id' },
-                  report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
+                  report: {
+                    id: expect.any(String),
+                    reviewed: expect.arrayContaining([
+                      { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                    ]),
+                  },
                 },
               },
             })

@@ -5,10 +5,9 @@ type Report {
   rule: ReportRule!
   disable: Boolean!
   closed: Boolean!
-  reportsFiled: [FILED]
+  filed: [FILED]
+  reviewed: [REVIEWED]
   resource: ReportedResource
-  type: String
-  reviewedByModerator: User
 }
 
 union ReportedResource = User | Post | Comment
