@@ -10,6 +10,17 @@ export const reportListQuery = () => {
         updatedAt
         disable
         closed
+        reviewed {
+          disable
+          moderator {
+            id
+            slug
+            name
+            followedByCount
+            contributionsCount
+            commentedCount
+          }
+        }
         resource {
           __typename
           ... on User {
@@ -63,7 +74,7 @@ export const reportListQuery = () => {
             }
           }
         }
-        reportsFiled {
+        filed {
           submitter {
             id
             slug
@@ -91,7 +102,7 @@ export const reportMutation = () => {
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
-        type
+        id
       }
     }
   `

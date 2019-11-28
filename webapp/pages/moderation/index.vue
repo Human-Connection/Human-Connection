@@ -2,21 +2,21 @@
   <ds-card space="small">
     <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
     <table
-      v-if="resourcesClaims && resourcesClaims.length"
+      v-if="reports && reports.length"
       class="ds-table ds-table-condensed ds-table-bordered"
       cellspacing="0"
       cellpadding="0"
     >
       <colgroup><col width="" /></colgroup>
-      <template v-for="resourceClaims in resourcesClaims">
+      <template v-for="report in reports">
         <thead
           :class="[
-            resourceClaims.latestClaim.closed ? 'decision' : 'no-decision',
+            report.closed ? 'decision' : 'no-decision',
             'ds-table-col',
             'ds-table-head-col',
             'ds-table-head-col-border',
           ]"
-          :key="'thead-' + resourceClaims.resource.id"
+          :key="'thead-' + report.resource.id"
         >
           <tr valign="top">
             <th>
@@ -33,69 +33,70 @@
             </th>
           </tr>
         </thead>
-        <tbody :key="'tbody-' + resourceClaims.resource.id">
+        <tbody :key="'tbody-' + report.resource.id">
           <tr valign="top">
             <td class="ds-table-col ds-table-head-col ds-table-head-col-border">
               <!-- Icon -->
               <ds-text color="soft">
                 <ds-icon
-                  v-if="resourceClaims.type === 'Post'"
-                  v-tooltip="{ resourceClaims: $t('report.contribution.type'), placement: 'right' }"
+                  v-if="report.resource.__typename === 'Post'"
+                  v-tooltip="{ report: $t('report.contribution.type'), placement: 'right' }"
                   name="bookmark"
                 />
                 <ds-icon
-                  v-else-if="resourceClaims.type === 'Comment'"
-                  v-tooltip="{ resourceClaims: $t('report.comment.type'), placement: 'right' }"
+                  v-else-if="report.resource.__typename === 'Comment'"
+                  v-tooltip="{ report: $t('report.comment.type'), placement: 'right' }"
                   name="comments"
                 />
                 <ds-icon
-                  v-else-if="resourceClaims.type === 'User'"
-                  v-tooltip="{ resourceClaims: $t('report.user.type'), placement: 'right' }"
+                  v-else-if="report.resource.__typename === 'User'"
+                  v-tooltip="{ report: $t('report.user.type'), placement: 'right' }"
                   name="user"
                 />
-                <ds-icon v-if="resourceClaims.resource.disabled" name="eye-slash" class="ban" />
+                <ds-icon v-if="report.resource.disabled" name="eye-slash" class="ban" />
                 <ds-icon v-else name="eye" class="no-ban" />
               </ds-text>
             </td>
             <td class="ds-table-col ds-table-head-col-border">
               <!-- reported user or other resource -->
-              <div v-if="resourceClaims.type === 'Post' || resourceClaims.type === 'Comment'">
+              <div
+                v-if="
+                  report.resource.__typename === 'Post' || report.resource.__typename === 'Comment'
+                "
+              >
                 <nuxt-link
                   :to="{
                     name: 'post-id-slug',
                     params: {
-                      id:
-                        resourceClaims.type === 'Post'
-                          ? resourceClaims.post.id
-                          : resourceClaims.comment.post.id,
+                      id: report.resource.id,
                       slug:
-                        resourceClaims.type === 'Post'
-                          ? resourceClaims.post.slug
-                          : resourceClaims.comment.post.slug,
+                        report.resource.__typename === 'Post'
+                          ? report.resource.slug
+                          : report.resource.post.slug,
                     },
                     hash:
-                      resourceClaims.type === 'Comment'
-                        ? `#commentId-${resourceClaims.comment.id}`
+                      report.resource.__typename === 'Comment'
+                        ? `#commentId-${report.resource.id}`
                         : undefined,
                   }"
                 >
-                  <b v-if="resourceClaims.type === 'Post'">
-                    {{ resourceClaims.post.title | truncate(100) }}
+                  <b v-if="report.resource.__typename === 'Post'">
+                    {{ report.resource.title | truncate(100) }}
                   </b>
                   <b v-else>
-                    {{ resourceClaims.comment.contentExcerpt | removeHtml | truncate(100) }}
+                    {{ report.resource.contentExcerpt | removeHtml | truncate(100) }}
                   </b>
                 </nuxt-link>
               </div>
               <div v-else>
-                <hc-user :user="resourceClaims.user" :showAvatar="false" :trunc="30" />
+                <hc-user :user="report.resource" :showAvatar="false" :trunc="30" />
               </div>
             </td>
             <!-- contentBelongsToUser -->
             <td class="ds-table-col ds-table-head-col-border">
               <hc-user
-                v-if="resourceClaims.contentBelongsToUser"
-                :user="resourceClaims.contentBelongsToUser"
+                v-if="report.resource.__typename !== 'User'"
+                :user="report.resource.author"
                 :showAvatar="false"
                 :trunc="30"
               />
@@ -103,22 +104,22 @@
             </td>
             <td class="ds-table-col ds-table-head-col-border">
               <!-- latestClaim.closed -->
-              <b v-if="resourceClaims.latestClaim.closed">
+              <b v-if="report.closed">
                 {{ $t('moderation.reports.decided') }}
               </b>
               <ds-button
                 v-else
                 danger
                 class="confirm"
-                :icon="resourceClaims.resource.disabled ? 'eye-slash' : 'eye'"
-                @click="confirm(resourceClaims)"
+                :icon="report.resource.disabled ? 'eye-slash' : 'eye'"
+                @click="confirm(report)"
               >
                 {{ $t('moderation.reports.decideButton') }}
               </ds-button>
-              <!-- reviewedByModerator -->
-              <div v-if="resourceClaims.resource.reviewedByModerator">
+              <!-- reviewed -->
+              <div v-if="report.reviewed">
                 <br />
-                <div v-if="resourceClaims.latestClaim.disable">
+                <div v-if="report.resource.disabled">
                   <ds-icon name="eye-slash" class="ban" />
                   {{ $t('moderation.reports.disabledBy') }}
                 </div>
@@ -127,16 +128,16 @@
                   {{ $t('moderation.reports.enabledBy') }}
                 </div>
                 <hc-user
-                  :user="resourceClaims.resource.reviewedByModerator"
+                  :user="report.reviewed[0].moderator"
                   :showAvatar="false"
                   :trunc="30"
-                  :date-time="resourceClaims.latestClaim.updatedAt"
+                  :date-time="report.updatedAt"
                   positionDatetime="below"
                 />
               </div>
               <div v-else>
                 <br />
-                <div v-if="resourceClaims.resource.disabled">
+                <div v-if="report.resource.disabled">
                   <ds-icon name="eye-slash" class="ban" />
                   {{ $t('moderation.reports.disabled') }}
                 </div>
@@ -150,17 +151,17 @@
           <tr>
             <td class="ds-table-col ds-table-head-col-border"></td>
             <td class="ds-table-col ds-table-head-col-border" colspan="3">
-              <template v-for="(claim, indexClaim) in resourceClaims.claims">
-                <div :key="claim.id">
+              <template>
+                <div :key="report.id">
                   <!-- previousDecision -->
-                  <div v-if="indexClaim > 0">
+                  <div v-if="report.reviewed">
                     <ds-flex gutter="small">
                       <ds-flex-item width="25%">
                         <b>{{ $t('moderation.reports.previousDecision') }}</b>
                       </ds-flex-item>
                       <ds-flex-item>
                         <div>
-                          <span v-if="claim.disable">
+                          <span v-if="report.resource.disabled">
                             <ds-icon name="eye-slash" class="ban" />
                             {{ $t('moderation.reports.disabledAt') }}
                           </span>
@@ -171,7 +172,7 @@
                           <ds-text size="small" color="soft">
                             <ds-icon name="clock" />
                             <client-only>
-                              <hc-relative-date-time :date-time="claim.updatedAt" />
+                              <hc-relative-date-time :date-time="report.updatedAt" />
                             </client-only>
                           </ds-text>
                         </div>
@@ -179,7 +180,7 @@
                     </ds-flex>
                     <ds-space margin-bottom="x-small" />
                   </div>
-                  <ds-table :data="claim.reports" :fields="reportFields" condensed>
+                  <ds-table :data="report.filed" :fields="reportFields" condensed>
                     <!-- submitter -->
                     <template slot="submitter" slot-scope="scope">
                       <hc-user
@@ -226,7 +227,6 @@ export default {
   data() {
     return {
       reports: [],
-      resourcesClaims: [],
     }
   },
   computed: {
@@ -238,87 +238,9 @@ export default {
       }
     },
   },
-  // watch: {
-  //   reports: {
-  //     immediate: true,
-  //     handler(newReports) {
-  //       const newResourcesClaims = []
-  //       if (!newReports) return null
-  //       newReports.forEach(report => {
-  //         const resource =
-  //           report.type === 'User'
-  //             ? report.user
-  //             : report.type === 'Post'
-  //             ? report.post
-  //             : report.type === 'Comment'
-  //             ? report.comment
-  //             : undefined
-  //         let idxResource = newResourcesClaims.findIndex(
-  //           resourceClaims => resourceClaims.resource.id === resource.id,
-  //         )
-  //         // if resource is not in resource list, then add it
-  //         if (idxResource === -1) {
-  //           idxResource = newResourcesClaims.length
-  //           newResourcesClaims.push({
-  //             type: report.type,
-  //             resource,
-  //             user: report.user,
-  //             post: report.post,
-  //             comment: report.comment,
-  //             contentBelongsToUser: report.type === 'User' ? null : resource.author,
-  //             claims: [],
-  //           })
-  //         }
-  //         let idxClaim = newResourcesClaims[idxResource].claims.findIndex(
-  //           claim => claim.id === report.claim.id,
-  //         )
-  //         // if claim is not in claim list, then add it
-  //         if (idxClaim === -1) {
-  //           idxClaim = newResourcesClaims[idxResource].claims.length
-  //           newResourcesClaims[idxResource].claims.push({
-  //             // it is the same for all reports of a claim
-  //             id: report.claim.id,
-  //             createdAt: report.claim.createdAt,
-  //             updatedAt: report.claim.updatedAt,
-  //             disable: report.claim.disable,
-  //             closed: report.claim.closed,
-  //             reports: [],
-  //           })
-  //         }
-  //         newResourcesClaims[idxResource].claims[idxClaim].reports.push(report)
-  //       })
-
-  //       // sorting of resource claims and their reports
-  //       newResourcesClaims.forEach(resourceClaims => {
-  //         // latestClaim by updatedAt rules
-  //         resourceClaims.claims.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-  //         resourceClaims.latestClaim = {
-  //           id: resourceClaims.claims[0].id,
-  //           createdAt: resourceClaims.claims[0].createdAt,
-  //           updatedAt: resourceClaims.claims[0].updatedAt,
-  //           disable: resourceClaims.claims[0].disable,
-  //           closed: resourceClaims.claims[0].closed,
-  //         }
-  //         // display claims always by starting with latest createdAt
-  //         resourceClaims.claims.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-
-  //         resourceClaims.claims.forEach(claim => {
-  //           // display reports always by starting with latest createdAt
-  //           claim.reports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-  //         })
-  //       })
-  //       // display resources by starting with claims by their latest createdAt
-  //       newResourcesClaims.sort(
-  //         (a, b) => new Date(b.claims[0].createdAt) - new Date(a.claims[0].createdAt),
-  //       )
-
-  //       this.resourcesClaims = newResourcesClaims
-  //     },
-  //   },
-  // },
   methods: {
-    confirm(resourceClaims) {
-      this.openModal(resourceClaims)
+    confirm(report) {
+      this.openModal(report)
     },
     async confirmCallback(resourceId) {
       this.$apollo
@@ -332,29 +254,29 @@ export default {
         })
         .catch(error => this.$toast.error(error.message))
     },
-    openModal(resourceClaims) {
+    openModal(report) {
       const identStart =
         'moderation.reports.decideModal.' +
-        resourceClaims.type +
+        report.resource.__typename +
         '.' +
-        (resourceClaims.latestClaim.disable ? 'disable' : 'enable')
+        (report.resource.disabled ? 'disable' : 'enable')
       this.$store.commit('modal/SET_OPEN', {
         name: 'confirm',
         data: {
-          type: resourceClaims.type,
-          resource: resourceClaims.resource,
+          type: report.resource.__typename,
+          resource: report.resource,
           modalData: {
             titleIdent: identStart + '.title',
             messageIdent: identStart + '.message',
             messageParams: {
               name:
-                resourceClaims.type === 'User'
-                  ? resourceClaims.user.name
-                  : resourceClaims.type === 'Post'
-                  ? this.$filters.truncate(resourceClaims.post.title, 30)
-                  : resourceClaims.type === 'Comment'
+                report.resource.__typename === 'User'
+                  ? report.resource.name
+                  : report.resource.__typename === 'Post'
+                  ? this.$filters.truncate(report.resource.title, 30)
+                  : report.resource.__typename === 'Comment'
                   ? this.$filters.truncate(
-                      this.$filters.removeHtml(resourceClaims.comment.contentExcerpt),
+                      this.$filters.removeHtml(report.resource.contentExcerpt),
                       30,
                     )
                   : '',
@@ -362,10 +284,10 @@ export default {
             buttons: {
               confirm: {
                 danger: true,
-                icon: resourceClaims.resource.disabled ? 'eye-slash' : 'eye',
+                icon: report.resource.disabled ? 'eye-slash' : 'eye',
                 textIdent: 'moderation.reports.decideModal.submit',
                 callback: () => {
-                  this.confirmCallback(resourceClaims.resource.id)
+                  this.confirmCallback(report.resource.id)
                 },
               },
               cancel: {
@@ -380,11 +302,8 @@ export default {
     },
   },
   apollo: {
-    reports: {
+    reportsList: {
       query: reportListQuery(),
-      variables() {
-        return {}
-      },
       update({ reports }) {
         this.reports = reports
       },

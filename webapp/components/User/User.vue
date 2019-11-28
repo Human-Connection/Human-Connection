@@ -13,7 +13,7 @@
           <div>
             <ds-text class="userinfo">
               <b class="username">{{ userName | truncate(18) }}</b>
-              <ds-text v-if="dateTime" size="small" color="soft">
+              <ds-text v-if="positionDatetime === 'sideward' && dateTime" size="small" color="soft">
                 <base-icon name="clock" />
                 <client-only>
                   <hc-relative-date-time :date-time="dateTime" />
