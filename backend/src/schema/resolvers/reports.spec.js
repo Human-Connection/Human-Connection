@@ -23,7 +23,7 @@ describe('file a report on a resource', () => {
         updatedAt
         disable
         closed
-        to {
+        resource {
           __typename
           ... on User {
             name
@@ -164,7 +164,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  to: {
+                  resource: {
                     __typename: 'User',
                   },
                 },
@@ -182,7 +182,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  to: {
+                  resource: {
                     __typename: 'User',
                     name: 'abusive-user',
                   },
@@ -346,7 +346,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  to: {
+                  resource: {
                     __typename: 'Post',
                   },
                 },
@@ -367,7 +367,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  to: {
+                  resource: {
                     __typename: 'Post',
                     title: 'This is a post that is going to be reported',
                   },
@@ -408,7 +408,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  to: {
+                  resource: {
                     __typename: 'Comment',
                   },
                 },
@@ -429,7 +429,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  to: {
+                  resource: {
                     __typename: 'Comment',
                     content: 'Post comment to be reported.',
                   },
@@ -475,7 +475,7 @@ describe('file a report on a resource', () => {
           updatedAt
           disable
           closed
-          to {
+          resource {
             __typename
             ... on User {
               id
@@ -610,7 +610,7 @@ describe('file a report on a resource', () => {
               updatedAt: expect.any(String),
               disable: false,
               closed: false,
-              to: {
+              resource: {
                 __typename: 'User',
                 id: 'abusive-user-1',
               },
@@ -631,7 +631,7 @@ describe('file a report on a resource', () => {
               updatedAt: expect.any(String),
               disable: false,
               closed: false,
-              to: {
+              resource: {
                 __typename: 'Post',
                 id: 'abusive-post-1',
               },
@@ -652,7 +652,7 @@ describe('file a report on a resource', () => {
               updatedAt: expect.any(String),
               disable: false,
               closed: false,
-              to: {
+              resource: {
                 __typename: 'Comment',
                 id: 'abusive-comment-1',
               },

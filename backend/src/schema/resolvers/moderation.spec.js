@@ -21,7 +21,7 @@ const reviewMutation = gql`
     review(resourceId: $resourceId, disable: $disable, closed: $closed) {
       createdAt
       updatedAt
-      to {
+      resource {
         __typename
         ... on User {
           id
@@ -149,7 +149,7 @@ describe('moderate resources', () => {
         ).resolves.toMatchObject({
           data: {
             review: {
-              to: { __typename: 'Post', id: 'should-i-be-disabled', disabled: false },
+              resource: { __typename: 'Post', id: 'should-i-be-disabled', disabled: false },
               report: { id: expect.any(String), closed: true },
             },
           },
@@ -231,7 +231,7 @@ describe('moderate resources', () => {
           await expect(
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
-            data: { review: { to: { __typename: 'Comment', id: 'comment-id' } } },
+            data: { review: { resource: { __typename: 'Comment', id: 'comment-id' } } },
             errors: undefined,
           })
         })
@@ -242,7 +242,7 @@ describe('moderate resources', () => {
           ).resolves.toMatchObject({
             data: {
               review: {
-                to: { __typename: 'Comment', id: 'comment-id' },
+                resource: { __typename: 'Comment', id: 'comment-id' },
                 report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
               },
             },
@@ -253,7 +253,9 @@ describe('moderate resources', () => {
           await expect(
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
-            data: { review: { to: { __typename: 'Comment', id: 'comment-id', disabled: true } } },
+            data: {
+              review: { resource: { __typename: 'Comment', id: 'comment-id', disabled: true } },
+            },
           })
         })
 
@@ -267,7 +269,7 @@ describe('moderate resources', () => {
           ).resolves.toMatchObject({
             data: {
               review: {
-                to: { __typename: 'Comment', id: 'comment-id' },
+                resource: { __typename: 'Comment', id: 'comment-id' },
                 report: { id: expect.any(String), closed: true },
               },
             },
@@ -301,7 +303,7 @@ describe('moderate resources', () => {
           ).resolves.toMatchObject({
             data: {
               review: {
-                to: { __typename: 'Post', id: 'post-id' },
+                resource: { __typename: 'Post', id: 'post-id' },
               },
             },
           })
@@ -313,7 +315,7 @@ describe('moderate resources', () => {
           ).resolves.toMatchObject({
             data: {
               review: {
-                to: { __typename: 'Post', id: 'post-id' },
+                resource: { __typename: 'Post', id: 'post-id' },
                 report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
               },
             },
@@ -324,7 +326,7 @@ describe('moderate resources', () => {
           await expect(
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
-            data: { review: { to: { __typename: 'Post', id: 'post-id', disabled: true } } },
+            data: { review: { resource: { __typename: 'Post', id: 'post-id', disabled: true } } },
           })
         })
 
@@ -338,7 +340,7 @@ describe('moderate resources', () => {
           ).resolves.toMatchObject({
             data: {
               review: {
-                to: { __typename: 'Post', id: 'post-id' },
+                resource: { __typename: 'Post', id: 'post-id' },
                 report: { id: expect.any(String), closed: true },
               },
             },
@@ -370,7 +372,7 @@ describe('moderate resources', () => {
           await expect(
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
-            data: { review: { to: { __typename: 'User', id: 'user-id' } } },
+            data: { review: { resource: { __typename: 'User', id: 'user-id' } } },
           })
         })
 
@@ -380,7 +382,7 @@ describe('moderate resources', () => {
           ).resolves.toMatchObject({
             data: {
               review: {
-                to: { __typename: 'User', id: 'user-id' },
+                resource: { __typename: 'User', id: 'user-id' },
                 report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
               },
             },
@@ -391,7 +393,7 @@ describe('moderate resources', () => {
           await expect(
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
-            data: { review: { to: { __typename: 'User', id: 'user-id', disabled: true } } },
+            data: { review: { resource: { __typename: 'User', id: 'user-id', disabled: true } } },
           })
         })
 
@@ -405,7 +407,7 @@ describe('moderate resources', () => {
           ).resolves.toMatchObject({
             data: {
               review: {
-                to: { __typename: 'User', id: 'user-id' },
+                resource: { __typename: 'User', id: 'user-id' },
                 report: { id: expect.any(String), closed: true },
               },
             },
@@ -503,7 +505,7 @@ describe('moderate resources', () => {
             await expect(
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { review: { to: { __typename: 'Comment', id: 'comment-id' } } },
+              data: { review: { resource: { __typename: 'Comment', id: 'comment-id' } } },
             })
           })
 
@@ -513,7 +515,7 @@ describe('moderate resources', () => {
             ).resolves.toMatchObject({
               data: {
                 review: {
-                  to: { __typename: 'Comment', id: 'comment-id' },
+                  resource: { __typename: 'Comment', id: 'comment-id' },
                   report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
                 },
               },
@@ -525,7 +527,7 @@ describe('moderate resources', () => {
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
               data: {
-                review: { to: { __typename: 'Comment', id: 'comment-id', disabled: false } },
+                review: { resource: { __typename: 'Comment', id: 'comment-id', disabled: false } },
               },
             })
           })
@@ -563,7 +565,7 @@ describe('moderate resources', () => {
             await expect(
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { review: { to: { __typename: 'Post', id: 'post-id' } } },
+              data: { review: { resource: { __typename: 'Post', id: 'post-id' } } },
             })
           })
 
@@ -573,7 +575,7 @@ describe('moderate resources', () => {
             ).resolves.toMatchObject({
               data: {
                 review: {
-                  to: { __typename: 'Post', id: 'post-id' },
+                  resource: { __typename: 'Post', id: 'post-id' },
                   report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
                 },
               },
@@ -584,7 +586,9 @@ describe('moderate resources', () => {
             await expect(
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { review: { to: { __typename: 'Post', id: 'post-id', disabled: false } } },
+              data: {
+                review: { resource: { __typename: 'Post', id: 'post-id', disabled: false } },
+              },
             })
           })
         })
@@ -620,7 +624,7 @@ describe('moderate resources', () => {
             await expect(
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { review: { to: { __typename: 'User', id: 'user-id' } } },
+              data: { review: { resource: { __typename: 'User', id: 'user-id' } } },
             })
           })
 
@@ -630,7 +634,7 @@ describe('moderate resources', () => {
             ).resolves.toMatchObject({
               data: {
                 review: {
-                  to: { __typename: 'User', id: 'user-id' },
+                  resource: { __typename: 'User', id: 'user-id' },
                   report: { id: expect.any(String), reviewedByModerator: { id: 'moderator-id' } },
                 },
               },
@@ -641,7 +645,9 @@ describe('moderate resources', () => {
             await expect(
               mutate({ mutation: reviewMutation, variables: enableVariables }),
             ).resolves.toMatchObject({
-              data: { review: { to: { __typename: 'User', id: 'user-id', disabled: false } } },
+              data: {
+                review: { resource: { __typename: 'User', id: 'user-id', disabled: false } },
+              },
             })
           })
         })

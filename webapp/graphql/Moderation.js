@@ -10,7 +10,7 @@ export const reportListQuery = () => {
         updatedAt
         disable
         closed
-        to {
+        resource {
           __typename
           ... on User {
             id

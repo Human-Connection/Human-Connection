@@ -17,9 +17,6 @@ enum ReasonCategory {
   criminal_behavior_violation_german_law
 }
 
-# not yet supported
-# union ReportResource = User | Post | Comment
-
 enum ReportOrdering {
   createdAt_asc
   createdAt_desc

@@ -6,7 +6,7 @@ type Report {
   disable: Boolean!
   closed: Boolean!
   reportsFiled: [FILED]
-  to: ReportedResource
+  resource: ReportedResource
   type: String
   reviewedByModerator: User
 }

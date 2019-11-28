@@ -1,7 +1,7 @@
 const transformReturnType = record => {
   return {
     ...record.get('report').properties,
-    to: {
+    resource: {
       __typename: record.get('type'),
       ...record.get('resource').properties,
     },
