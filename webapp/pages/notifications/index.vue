@@ -6,11 +6,7 @@
       </ds-flex-item>
       <ds-flex-item width="110px">
         <client-only>
-          <dropdown-filter
-            @filter="filter"
-            :filterOptions="filterOptions"
-            :selected="selected"
-          />
+          <dropdown-filter @filter="filter" :filterOptions="filterOptions" :selected="selected" />
         </client-only>
       </ds-flex-item>
     </ds-flex>

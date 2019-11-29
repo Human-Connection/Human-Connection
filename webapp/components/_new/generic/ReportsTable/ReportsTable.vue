@@ -133,8 +133,7 @@
           </td>
         </tr>
         <tr>
-          <td class="ds-table-col ds-table-head-col-border"></td>
-          <td class="ds-table-col ds-table-head-col-border" colspan="3">
+          <td class="ds-table-col ds-table-head-col-border filed-table" colspan="4">
             <ds-space margin-bottom="base" />
             <filed-table :filed="report.filed" v-if="showFiledReports" />
           </td>
@@ -188,3 +187,8 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.filed-table {
+  padding-left: $space-xx-large;
+}
+</style>

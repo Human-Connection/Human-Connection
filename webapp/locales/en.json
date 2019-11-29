@@ -506,6 +506,7 @@
         "reviewed": "Reviewed",
         "closed": "Closed"
       },
+      "reportedOn": "Date",
       "moreDetails": "Report Details",
       "decideModal": {
         "submit": "Confirm decision",
