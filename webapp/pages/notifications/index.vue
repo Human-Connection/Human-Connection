@@ -7,7 +7,7 @@
       <ds-flex-item width="110px">
         <client-only>
           <dropdown-filter
-            @filterNotifications="filterNotifications"
+            @filter="filter"
             :filterOptions="filterOptions"
             :selected="selected"
           />
@@ -60,7 +60,7 @@ export default {
     },
   },
   methods: {
-    filterNotifications(option) {
+    filter(option) {
       this.notificationRead = option.value
       this.selected = option.label
       this.$apollo.queries.notifications.refresh()

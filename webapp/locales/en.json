@@ -500,6 +500,13 @@
       "reasonCategory": "Category",
       "reasonDescription": "Description",
       "submitter": "Reported by",
+      "filterLabel": {
+        "all": "All",
+        "unreviewed": "Unreviewed",
+        "reviewed": "Reviewed",
+        "closed": "Closed"
+      },
+      "moreDetails": "Report Details",
       "decideModal": {
         "submit": "Confirm decision",
         "cancel": "Cancel",

@@ -27,7 +27,7 @@
           </ds-text>
           <!-- dateTime: kind of same as above: make own component? -->
           <ds-text v-if="positionDatetime === 'below' && dateTime" size="small" color="soft">
-            <ds-icon name="clock" />
+            <base-icon name="clock" />
             <client-only>
               <hc-relative-date-time :date-time="dateTime" />
             </client-only>
