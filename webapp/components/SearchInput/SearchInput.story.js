@@ -6,9 +6,10 @@ import helpers from '~/storybook/helpers'
 helpers.init()
 
 export const results = [
+    /*
     {
 	heading: 'Contributions'
-    },
+    },*/
   {
     id: 'de100841-2336-4b01-a574-f1bd2c0b262a',
     searchType: 'Contributions',
@@ -65,12 +66,14 @@ export const results = [
       slug: 'louie',
     },
   },
-    {
+/*    {
 	heading: 'Users'
-    },
+    },*/
   {
     id: 'u1',
     searchType: 'Users',
+    avatar:
+      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
     name: 'Peter Lustig',
     label: 'Peter Lustig',
     slug: 'peter-lustig',
@@ -78,7 +81,8 @@ export const results = [
   {
     id: 'cdbca762-0632-4564-b646-415a0c42d8b8',
     searchType: 'Users',
-    firstType: false,
+    avatar:
+      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
     name: 'Herbert Schultz',
     label: 'Herbert Schultz',
     slug: 'herbert-schultz',
@@ -86,6 +90,8 @@ export const results = [
   {
     id: 'u2',
     searchType: 'Users',
+    avatar:
+      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
     name: 'Bob der Baumeister',
     label: 'Bob der Baumeister',
     slug: 'bob-der-baumeister',
