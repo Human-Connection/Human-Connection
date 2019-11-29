@@ -2568,6 +2568,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/cheerio@^0.22.10":
+  version "0.22.14"
+  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.14.tgz#d150889891e7db892c6a0b16bd5583cc70b3fc44"
+  integrity sha512-SVtcP2fvPYrebTwpyqxjxb7K5v3ZOAdH409yAEWFPpZThCSGa1K2IFfx6Rg6ttvThCBQXP4fU9WF94sqLoiQGg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/connect@*":
   version "3.4.32"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.32.tgz#aa0e9616b9435ccad02bc52b5b454ffc2c70ba28"
@@ -3001,11 +3008,12 @@
   dependencies:
     eslint-config-prettier "^6.0.0"
 
-"@vue/server-test-utils@~1.0.0-beta.29":
-  version "1.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@vue/server-test-utils/-/server-test-utils-1.0.0-beta.29.tgz#8a61a9900992b742cda7c143593db1c5e4a019bd"
-  integrity sha512-N6e2cixTnz7+mos0wL+R3LM/2op+f3ym1aSQYuNfksZzvX81lrQtjGr6Aszv0+1Ryms+WrqlL18Jb/MY8XyXaQ==
+"@vue/server-test-utils@~1.0.0-beta.30":
+  version "1.0.0-beta.30"
+  resolved "https://registry.yarnpkg.com/@vue/server-test-utils/-/server-test-utils-1.0.0-beta.30.tgz#960a6383de81ba5ff763bdd6e961b9443e98fa82"
+  integrity sha512-H5vABB3uWbr+JlpN9pA7OpepYsHSmocbIHJQA00Xz0s4Qqmg4jX93GArO4KVC7zs/QS12w3mXfmMlYV8w7DwEg==
   dependencies:
+    "@types/cheerio" "^0.22.10"
     cheerio "^1.0.0-rc.2"
 
 "@vue/test-utils@~1.0.0-beta.29":
