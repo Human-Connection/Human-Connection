@@ -1,4 +1,4 @@
-import { rule, shield, deny, allow, and, or, not } from 'graphql-shield'
+import { rule, shield, deny, allow, or } from 'graphql-shield'
 import { neode } from '../bootstrap/neo4j'
 import CONFIG from '../config'
 
@@ -39,27 +39,6 @@ const isMySocialMedia = rule({
   let socialMedia = await instance.find('SocialMedia', args.id)
   socialMedia = await socialMedia.toJson()
   return socialMedia.ownedBy.node.id === user.id
-})
-
-const invitationLimitReached = rule({
-  cache: 'no_cache',
-})(async (parent, args, { user, driver }) => {
-  const session = driver.session()
-  try {
-    const result = await session.run(
-      `
-      MATCH (user:User {id:$id})-[:GENERATED]->(i:InvitationCode)
-      RETURN COUNT(i) >= 3 as limitReached
-      `,
-      { id: user.id },
-    )
-    const [limitReached] = result.records.map(record => {
-      return record.get('limitReached')
-    })
-    return limitReached
-  } finally {
-    session.close()
-  }
 })
 
 const isAuthor = rule({
@@ -129,7 +108,6 @@ export default shield(
       SignupByInvitation: allow,
       Signup: or(publicRegistration, isAdmin),
       SignupVerification: allow,
-      CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
