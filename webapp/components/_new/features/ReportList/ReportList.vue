@@ -1,23 +1,60 @@
 <template>
-  <reports-table v-if="reports && reports.length" :reports="reports" @confirm="confirm" />
+  <ds-card space="small" v-if="reports && reports.length">
+    <ds-flex class="notifications-page-flex">
+      <ds-flex-item :width="{ lg: '85%' }">
+        <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
+      </ds-flex-item>
+      <ds-flex-item width="110px">
+        <client-only>
+          <dropdown-filter @filter="filter" :filterOptions="filterOptions" :selected="selected" />
+        </client-only>
+      </ds-flex-item>
+    </ds-flex>
+    <ds-space />
+    <reports-table :reports="reports" @confirm="confirm" />
+  </ds-card>
   <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
 </template>
 <script>
-import ReportsTable from '~/components/features/ReportsTable/ReportsTable'
+import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
+import ReportsTable from '~/components/_new/generic/ReportsTable/ReportsTable'
 import HcEmpty from '~/components/Empty/Empty'
 import { reportsListQuery, reviewMutation } from '~/graphql/Moderation.js'
 
 export default {
   components: {
+    DropdownFilter,
     ReportsTable,
     HcEmpty,
   },
   data() {
     return {
       reports: [],
+      allReports: [],
+      unreviewedReports: [],
+      reviewedReports: [],
+      closedReports: [],
+      selected: this.$t('moderation.reports.filterLabel.all'),
     }
   },
+  computed: {
+    filterOptions() {
+      return [
+        { label: this.$t('moderation.reports.filterLabel.all'), value: this.allReports },
+        {
+          label: this.$t('moderation.reports.filterLabel.unreviewed'),
+          value: this.unreviewedReports,
+        },
+        { label: this.$t('moderation.reports.filterLabel.reviewed'), value: this.reviewedReports },
+        { label: this.$t('moderation.reports.filterLabel.closed'), value: this.closedReports },
+      ]
+    },
+  },
   methods: {
+    filter(option) {
+      this.reports = option.value
+      this.selected = option.label
+    },
     confirm(report) {
       this.openModal(report)
     },
@@ -86,6 +123,10 @@ export default {
       query: reportsListQuery(),
       update({ reports }) {
         this.reports = reports
+        this.allReports = reports
+        this.unreviewedReports = reports.filter(report => !report.reviewed)
+        this.reviewedReports = reports.filter(report => report.reviewed)
+        this.closedReports = reports.filter(report => report.closed)
       },
       fetchPolicy: 'cache-and-network',
     },

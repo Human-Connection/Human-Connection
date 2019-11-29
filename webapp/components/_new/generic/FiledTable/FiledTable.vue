@@ -1,16 +1,14 @@
 <template>
-  <ds-table :data="filed" :fields="reportFields" condensed>
+  <ds-table v-if="filed && filed.length" :data="filed" :fields="reportFields" condensed>
     <template #submitter="scope">
-      <ds-space margin-bottom="x-large">
-        <client-only>
-          <hc-user
-            :user="scope.row.submitter"
-            :showAvatar="false"
-            :trunc="30"
-            :date-time="scope.row.createdAt"
-            :positionDatetime="'below'"
-          />
-        </client-only>
+      <ds-space margin-bottom="base">
+        <hc-user
+          :user="scope.row.submitter"
+          :showAvatar="false"
+          :trunc="30"
+          :date-time="scope.row.createdAt"
+          :position-date-time="'below'"
+        />
       </ds-space>
     </template>
     <template #reasonCategory="scope">

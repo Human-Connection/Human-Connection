@@ -29,56 +29,44 @@
       <tbody :key="'tbody-' + report.resource.id">
         <tr valign="top">
           <td class="ds-table-col ds-table-head-col ds-table-head-col-border">
-            <!-- Icon -->
             <ds-text color="soft">
-              <ds-icon
-                v-if="report.resource.__typename === 'Post'"
+              <base-icon
+                v-if="isPost(report.resource)"
                 v-tooltip="{ report: $t('report.contribution.type'), placement: 'right' }"
                 name="bookmark"
               />
-              <ds-icon
-                v-else-if="report.resource.__typename === 'Comment'"
+              <base-icon
+                v-else-if="isComment(report.resource)"
                 v-tooltip="{ report: $t('report.comment.type'), placement: 'right' }"
                 name="comments"
               />
-              <ds-icon
-                v-else-if="report.resource.__typename === 'User'"
+              <base-icon
+                v-else-if="isUser(report.resource)"
                 v-tooltip="{ report: $t('report.user.type'), placement: 'right' }"
                 name="user"
               />
-              <ds-icon v-if="report.resource.disabled" name="eye-slash" class="ban" />
-              <ds-icon v-else name="eye" class="no-ban" />
+              <base-icon v-if="report.resource.disabled" name="eye-slash" class="ban" />
+              <base-icon v-else name="eye" class="no-ban" />
             </ds-text>
+            <ds-space margin-top="xx-large" margin-bottom="x-small">
+              <counter-icon icon="flag" :count="report.filed.length">
+                <a @click="showFiledReports = !showFiledReports">
+                  {{ $t('moderation.reports.moreDetails') }}
+                </a>
+              </counter-icon>
+            </ds-space>
           </td>
           <td class="ds-table-col ds-table-head-col-border">
-            <!-- reported user or other resource -->
-            <div
-              v-if="
-                report.resource.__typename === 'Post' || report.resource.__typename === 'Comment'
-              "
-            >
+            <div v-if="isPost(report.resource) || isComment(report.resource)">
               <nuxt-link
                 :to="{
                   name: 'post-id-slug',
-                  params: {
-                    id: report.resource.id,
-                    slug:
-                      report.resource.__typename === 'Post'
-                        ? report.resource.slug
-                        : report.resource.post.slug,
-                  },
-                  hash:
-                    report.resource.__typename === 'Comment'
-                      ? `#commentId-${report.resource.id}`
-                      : undefined,
+                  params: params(report.resource),
+                  hash: hashParam(report.resource),
                 }"
+                @click.native="markNotificationAsRead(report.resource.id)"
               >
-                <b v-if="report.resource.__typename === 'Post'">
-                  {{ report.resource.title | truncate(100) }}
-                </b>
-                <b v-else>
-                  {{ report.resource.contentExcerpt | removeHtml | truncate(100) }}
-                </b>
+                <b>{{ report.resource.title || report.resource.contentExcerpt | truncate(50) }}</b>
               </nuxt-link>
             </div>
             <div v-else>
@@ -86,35 +74,7 @@
                 <hc-user :user="report.resource" :showAvatar="false" :trunc="30" />
               </client-only>
             </div>
-            <!-- <div v-if="report.reviewed">
-              <ds-space margin="x-large"/>
-              <ds-flex gutter="small">
-                <ds-flex-item width="25%">
-                  <b>{{ $t('moderation.reports.previousDecision') }}</b>
-                </ds-flex-item>
-                <ds-flex-item>
-                  <div>
-                    <span v-if="report.resource.disabled">
-                      <ds-icon name="eye-slash" class="ban" />
-                      {{ $t('moderation.reports.disabledAt') }}
-                    </span>
-                    <span v-else>
-                      <ds-icon name="eye" class="no-ban" />
-                      {{ $t('moderation.reports.enabledAt') }}
-                    </span>
-                    <ds-text size="small" color="soft">
-                      <ds-icon name="clock" />
-                      <client-only>
-                        <hc-relative-date-time :date-time="report.updatedAt" />
-                      </client-only>
-                    </ds-text>
-                  </div>
-                </ds-flex-item>
-              </ds-flex>
-              <ds-space margin-bottom="x-small" />
-            </div> -->
           </td>
-          <!-- contentBelongsToUser -->
           <td class="ds-table-col ds-table-head-col-border">
             <client-only>
               <hc-user
@@ -127,7 +87,6 @@
             </client-only>
           </td>
           <td class="ds-table-col ds-table-head-col-border">
-            <!-- latestClaim.closed -->
             <b v-if="report.closed">
               {{ $t('moderation.reports.decided') }}
             </b>
@@ -140,15 +99,14 @@
             >
               {{ $t('moderation.reports.decideButton') }}
             </ds-button>
-            <!-- reviewed -->
             <div v-if="report.reviewed">
               <br />
               <div v-if="report.resource.disabled">
-                <ds-icon name="eye-slash" class="ban" />
+                <base-icon name="eye-slash" class="ban" />
                 {{ $t('moderation.reports.disabledBy') }}
               </div>
               <div v-else>
-                <ds-icon name="eye" class="no-ban" />
+                <base-icon name="eye" class="no-ban" />
                 {{ $t('moderation.reports.enabledBy') }}
               </div>
               <client-only>
@@ -164,11 +122,11 @@
             <div v-else>
               <br />
               <div v-if="report.resource.disabled">
-                <ds-icon name="eye-slash" class="ban" />
+                <base-icon name="eye-slash" class="ban" />
                 {{ $t('moderation.reports.disabled') }}
               </div>
               <div v-else>
-                <ds-icon name="eye" class="no-ban" />
+                <base-icon name="eye" class="no-ban" />
                 {{ $t('moderation.reports.enabled') }}
               </div>
             </div>
@@ -177,10 +135,8 @@
         <tr>
           <td class="ds-table-col ds-table-head-col-border"></td>
           <td class="ds-table-col ds-table-head-col-border" colspan="3">
-            <div>
-              <ds-space margin-bottom="base" />
-              <filed-table :filed="report.filed" />
-            </div>
+            <ds-space margin-bottom="base" />
+            <filed-table :filed="report.filed" v-if="showFiledReports" />
           </td>
         </tr>
       </tbody>
@@ -188,15 +144,20 @@
   </table>
 </template>
 <script>
-// import HcRelativeDateTime from '~/components/RelativeDateTime'
+import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import HcUser from '~/components/User/User'
-import FiledTable from '~/components/generic/FiledTable/FiledTable'
+import FiledTable from '~/components/_new/generic/FiledTable/FiledTable'
 
 export default {
   components: {
-    // HcRelativeDateTime,
+    CounterIcon,
     HcUser,
     FiledTable,
+  },
+  data() {
+    return {
+      showFiledReports: false,
+    }
   },
   props: {
     reports: { type: Array, default: () => [] },
@@ -204,6 +165,25 @@ export default {
   methods: {
     confirm(report) {
       this.$emit('confirm', report)
+    },
+    isComment(resource) {
+      return resource.__typename === 'Comment'
+    },
+    isPost(resource) {
+      return resource.__typename === 'Post'
+    },
+    isUser(resource) {
+      return resource.__typename === 'User'
+    },
+    params(resource) {
+      const post = this.isComment(resource) ? resource.post : resource
+      return {
+        id: post.id,
+        slug: post.slug,
+      }
+    },
+    hashParam(resource) {
+      return this.isComment(resource) ? `#commentId-${resource.id}` : ''
     },
   },
 }
