@@ -159,7 +159,6 @@ export default {
     let slug = null
     const form = { ...formDefaults }
     if (this.contribution && this.contribution.id) {
-      //  console.log("edit jaaa")
       id = this.contribution.id
       slug = this.contribution.slug
       form.title = this.contribution.title
@@ -171,9 +170,6 @@ export default {
           : null
       form.categoryIds = this.categoryIds(this.contribution.categories)
       form.checkedBlur = this.contribution.checkedBlur
-
-      // console.log(this.contribution.checkedBlur)
-      // console.log(this.contribution)
     }
 
     return {
@@ -221,11 +217,6 @@ export default {
   },
   methods: {
     checkedChange() {
-      // console.log( 'checkedChange')
-      // console.log( 'this.checkedBlur old', this.checkedBlur)
-      // console.log( 'THIS', this.$el)
-      // console.log( 'THIS.form', this.form)
-
       if (this.$el) {
         this.elem = this.$el.querySelector('img')
       } else {
@@ -243,7 +234,6 @@ export default {
         this.form.checkedBlur = true
         this.form.checkbox = true
       }
-      //  console.log( 'this.checkedBlur new', this.checkedBlur)
     },
     submit() {
       const {
@@ -329,7 +319,7 @@ export default {
 </script>
 
 <style lang="scss">
-.img-blur-in .ds-card-image img {
+.img-blur-in {
   -webkit-filter: blur(32px);
   -moz-filter: blur(32px);
   -ms-filter: blur(32px);

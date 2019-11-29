@@ -4,9 +4,28 @@
       :lang="post.language"
       v-if="post && ready"
       :image="post.image | proxyApiUrl"
-      :class="{ 'post-card': true, 'disabled-content': post.disabled }"
+      :class="{
+        'post-card': true,
+        'disabled-content': post.disabled,
+        'images-set-blur': post.checkedBlur,
+      }"
     >
-      <ds-space margin-bottom="small" />
+      <ds-text align="right" class="blurBox">
+        <ds-button
+          v-show="post.checkedBlur"
+          class="bluricon-post"
+          icon="eye-slash"
+          primary
+          @click.prevent="unBlur"
+        ></ds-button>
+        <img
+          v-show="post.checkedBlur"
+          :src="post.image | proxyApiUrl"
+          class="blurImgPreview"
+          @click.prevent="unBlur"
+        />
+      </ds-text>
+      <div style="clear: both" />
       <hc-user :user="post.author" :date-time="post.createdAt">
         <template v-slot:dateTime>
           <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
@@ -150,6 +169,11 @@ export default {
     },
   },
   methods: {
+    unBlur() {
+      if (this.post.checkedBlur) {
+        this.post.checkedBlur = false
+      }
+    },
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
@@ -206,8 +230,38 @@ export default {
   },
 }
 </script>
-
 <style lang="scss">
+.images-set-blur .ds-card-image img {
+  -webkit-filter: blur(22px);
+  -moz-filter: blur(22px);
+  -ms-filter: blur(22px);
+  -o-filter: blur(22px);
+  filter: blur(22px);
+  -webkit-transition: all ease 0.2s;
+  -moz-transition: all ease 0.2s;
+  -ms-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+}
+
+.blurBox {
+  text-align: right;
+  position: relative;
+  top: -70px;
+  float: right;
+}
+.blurImgPreview {
+  width: 100px;
+}
+
+.bluricon-post {
+  font-size: xx-large;
+  /* padding: 13px; */
+  /* position: absolute; */
+  background-color: green;
+  /* top: 131px; */
+}
+
 .page-name-post-id-slug {
   .content-menu {
     float: right;

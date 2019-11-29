@@ -9,10 +9,6 @@
       'images-set-blur': post.checkedBlur,
     }"
   >
-    <ds-text v-show="post.checkedBlur" align="center" class="blurbox">
-      <ds-button class="bluricon" icon="eye-slash" primary></ds-button>
-    </ds-text>
-
     <!-- Post Link Target -->
     <nuxt-link
       class="post-link"
@@ -165,18 +161,6 @@ export default {
   -ms-transition: all ease 0.2s;
   -o-transition: all ease 0.2s;
   transition: all ease 0.2s;
-}
-
-.blurbox {
-  padding: 13px 0px;
-  top: 67px;
-  right: 34px;
-  left: 25px;
-  position: absolute;
-  color: floralwhite;
-}
-.bluricon {
-  font-size: xx-large;
 }
 </style>
 
