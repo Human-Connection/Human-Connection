@@ -2,7 +2,7 @@ import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
 import { neode } from '../../bootstrap/neo4j'
-import { normalizeEmail } from 'validator'
+import normalizeEmail from './helpers/normalizeEmail'
 
 const instance = neode()
 
