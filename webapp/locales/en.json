@@ -645,7 +645,7 @@
     "teaserImage": {
       "cropperConfirm": "Confirm"
     },
-    "shockingPicture" : "Shocking Picture",
+    "shockingPicture" : "This image may be inappropriate for some people.",
     "shockingPicture-text" : "Contribution picture is blurred"
   },
   "code-of-conduct": {

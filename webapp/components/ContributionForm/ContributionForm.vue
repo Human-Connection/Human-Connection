@@ -7,15 +7,20 @@
     @submit="submit"
   >
     <template slot-scope="{ errors }">
-      <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
+      <hc-teaser-image
+        :contribution="contribution"
+        @addTeaserImage="addTeaserImage"
+        :class="{ 'images-set-blur': checkedBlur }"
+      >
         <img
           v-if="contribution"
           class="contribution-image"
           :src="contribution.image | proxyApiUrl"
         />
       </hc-teaser-image>
+
       <ds-card>
-        <ds-space />
+         
         <ds-text align="right">
           <label for="blur_img">{{ $t('contribution.shockingPicture') }}</label>
           <input

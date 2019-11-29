@@ -14,7 +14,7 @@
         <ds-button
           v-show="post.checkedBlur"
           class="bluricon-post"
-          icon="eye-slash"
+          icon="eye"
           primary
           @click.prevent="unBlur"
         ></ds-button>
