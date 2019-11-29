@@ -122,7 +122,7 @@ describe('validateReview', () => {
       mutate({ mutation: reviewMutation, variables: disableVariables }),
     ).resolves.toMatchObject({
       data: { review: null },
-      errors: [{ message: 'Resource not found!' }],
+      errors: [{ message: 'Resource not found or is not a Post|Comment|User!' }],
     })
   })
 
@@ -151,6 +151,25 @@ describe('validateReview', () => {
     ).resolves.toMatchObject({
       data: { review: null },
       errors: [{ message: 'You cannot review your own Post!' }],
+    })
+  })
+
+  describe('moderate a resource that is not a (Comment|Post|User) ', () => {
+    beforeEach(async () => {
+      await Promise.all([factory.create('Tag', { id: 'tag-id' })])
+    })
+
+    it('returns null', async () => {
+      disableVariables = {
+        ...disableVariables,
+        resourceId: 'tag-id',
+      }
+      await expect(
+        mutate({ mutation: reviewMutation, variables: disableVariables }),
+      ).resolves.toMatchObject({
+        data: { review: null },
+        errors: [{ message: 'Resource not found or is not a Post|Comment|User!' }],
+      })
     })
   })
 })

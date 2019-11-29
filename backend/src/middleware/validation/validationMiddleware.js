@@ -86,19 +86,20 @@ const validateReview = async (resolve, root, args, context, info) => {
   const [existingReportedResource] = reportQueryRes.records.map(record => {
     return {
       label: record.get('label'),
-      author: record.get('author').properties,
+      author: record.get('author'),
       filed: record.get('filed'),
     }
   })
 
-  if (!existingReportedResource) throw new Error(`Resource not found!`)
+  if (!existingReportedResource)
+    throw new Error(`Resource not found or is not a Post|Comment|User!`)
   if (!existingReportedResource.filed)
     throw new Error(
       `Before starting the review process, please report the ${existingReportedResource.label}!`,
     )
   const authorId =
     existingReportedResource.label !== 'User' && existingReportedResource.author
-      ? existingReportedResource.author.id
+      ? existingReportedResource.author.properties.id
       : null
   if (authorId && authorId === user.id)
     throw new Error(`You cannot review your own ${existingReportedResource.label}!`)
