@@ -9,45 +9,25 @@ import { neode as getNeode } from '../../bootstrap/neo4j'
 
 const factory = Factory()
 const neode = getNeode()
-let query
-let mutate
-let variables
-let req
-let user
+let query, mutate, variables, req, user
 
 const disable = async id => {
-  await factory.create('User', { id: 'u2', role: 'moderator' })
-  const moderatorBearerToken = encode({ id: 'u2' })
-  req = { headers: { authorization: `Bearer ${moderatorBearerToken}` } }
-  await mutate({
-    mutation: gql`
-      mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-        fileReport(
-          resourceId: $resourceId
-          reasonCategory: $reasonCategory
-          reasonDescription: $reasonDescription
-        ) {
-          type
-        }
-      }
-    `,
-    variables: {
+  const moderator = await factory.create('User', { id: 'u2', role: 'moderator' })
+  const user = await neode.find('User', id)
+  const reportAgainstUser = await factory.create('Report')
+  await Promise.all([
+    reportAgainstUser.relateTo(moderator, 'filed', {
       resourceId: id,
       reasonCategory: 'discrimination_etc',
-      reasonDescription: 'I am what I am !!!',
-    },
-  })
-  await mutate({
-    mutation: gql`
-      mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
-        review(resourceId: $resourceId, disable: $disable, closed: $closed) {
-          disable
-        }
-      }
-    `,
-    variables: { resourceId: id, disable: true, closed: false },
-  })
-  req = { headers: {} }
+      reasonDescription: 'This user is harassing me with bigoted remarks!',
+    }),
+    reportAgainstUser.relateTo(user, 'belongsTo'),
+  ])
+  const disableVariables = { resourceId: user.id, disable: true, closed: false }
+  await Promise.all([
+    reportAgainstUser.relateTo(moderator, 'reviewed', disableVariables),
+    user.update({ disabled: true, updatedAt: new Date().toISOString() }),
+  ])
 }
 
 beforeEach(() => {
