@@ -1,4 +1,4 @@
-import { normalizeEmail } from 'validator'
+import normalizeEmail from './normalizeEmail'
 
 export default async function createPasswordReset(options) {
   const { driver, nonce, email, issuedAt = new Date() } = options

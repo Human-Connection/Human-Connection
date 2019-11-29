@@ -4,7 +4,7 @@ import fileUpload from './fileUpload'
 import encryptPassword from '../../helpers/encryptPassword'
 import generateNonce from './helpers/generateNonce'
 import existingEmailAddress from './helpers/existingEmailAddress'
-import { normalizeEmail } from 'validator'
+import normalizeEmail from './helpers/normalizeEmail'
 
 const instance = neode()
 

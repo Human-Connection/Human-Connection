@@ -67,7 +67,8 @@
 
 <script>
 import gql from 'graphql-tag'
-import { isEmail, normalizeEmail } from 'validator'
+import { isEmail } from 'validator'
+import normalizeEmail from '~/components/utils/NormalizeEmail'
 
 export default {
   data() {
