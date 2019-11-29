@@ -18,12 +18,13 @@ export default {
       const session = driver.session()
       try {
         const cypher = ` 
-            MATCH (resource {id: $params.resourceId})<-[:BELONGS_TO]-(report:Report {closed: false})
             MATCH (moderator:User {id: $moderatorId})
+            MATCH (resource {id: $params.resourceId})<-[:BELONGS_TO]-(report:Report {closed: false})
             WHERE resource:User OR resource:Post OR resource:Comment
-            MERGE (report)<-[review:REVIEWED { disable: $params.disable, closed: $params.closed }]-(moderator)
+            MERGE (report)<-[review:REVIEWED]-(moderator)
             ON CREATE SET review.createdAt = $dateTime, review.updatedAt = review.createdAt
             ON MATCH SET review.updatedAt = $dateTime
+            SET review.disable = $params.disable, review.closed = $params.closed
             SET report.updatedAt = $dateTime, report.closed = review.closed
             SET resource.disabled = review.disable
 

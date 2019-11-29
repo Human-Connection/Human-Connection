@@ -159,6 +159,41 @@ describe('moderate resources', () => {
           errors: undefined,
         })
       })
+
+      it('creates only one review for multiple reviews by the same moderator on same resource', async () => {
+        await Promise.all([
+          mutate({
+            mutation: reviewMutation,
+            variables: { ...disableVariables, resourceId: 'should-i-be-disabled' },
+          }),
+          mutate({
+            mutation: reviewMutation,
+            variables: { ...enableVariables, resourceId: 'should-i-be-disabled' },
+          }),
+        ])
+        const cypher =
+          'MATCH (:Report)<-[review:REVIEWED]-(moderator:User {id: "moderator-id"}) RETURN review'
+        const reviews = await neode.cypher(cypher)
+        expect(reviews.records).toHaveLength(1)
+      })
+
+      it('updates the updatedAt attribute', async () => {
+        const [firstReview, secondReview] = await Promise.all([
+          mutate({
+            mutation: reviewMutation,
+            variables: { ...disableVariables, resourceId: 'should-i-be-disabled' },
+          }),
+          mutate({
+            mutation: reviewMutation,
+            variables: { ...enableVariables, resourceId: 'should-i-be-disabled' },
+          }),
+        ])
+        expect(firstReview.data.review.updatedAt).toBeTruthy()
+        expect(Date.parse(firstReview.data.review.updatedAt)).toEqual(expect.any(Number))
+        expect(secondReview.data.review.updatedAt).toBeTruthy()
+        expect(Date.parse(secondReview.data.review.updatedAt)).toEqual(expect.any(Number))
+        expect(firstReview.data.review.updatedAt).not.toEqual(secondReview.data.review.updatedAt)
+      })
     })
   })
 
@@ -190,24 +225,6 @@ describe('moderate resources', () => {
     describe('moderator', () => {
       beforeEach(async () => {
         authenticatedUser = await moderator.toJson()
-      })
-
-      describe('review of a resource that is not a (Comment|Post|User) ', () => {
-        beforeEach(async () => {
-          disableVariables = {
-            ...disableVariables,
-            resourceId: 'tag-id',
-          }
-          await factory.create('Tag', { id: 'tag-id' })
-        })
-
-        it('returns null', async () => {
-          await expect(
-            mutate({ mutation: reviewMutation, variables: disableVariables }),
-          ).resolves.toMatchObject({
-            data: { review: null },
-          })
-        })
       })
 
       describe('moderate a comment', () => {
@@ -254,6 +271,7 @@ describe('moderate resources', () => {
                 },
               },
             },
+            errors: undefined,
           })
         })
 
@@ -264,6 +282,7 @@ describe('moderate resources', () => {
             data: {
               review: { resource: { __typename: 'Comment', id: 'comment-id', disabled: true } },
             },
+            errors: undefined,
           })
         })
 
@@ -281,6 +300,7 @@ describe('moderate resources', () => {
                 report: { id: expect.any(String), closed: true },
               },
             },
+            errors: undefined,
           })
         })
       })
@@ -314,6 +334,7 @@ describe('moderate resources', () => {
                 resource: { __typename: 'Post', id: 'post-id' },
               },
             },
+            errors: undefined,
           })
         })
 
@@ -332,6 +353,7 @@ describe('moderate resources', () => {
                 },
               },
             },
+            errors: undefined,
           })
         })
 
@@ -340,6 +362,7 @@ describe('moderate resources', () => {
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
             data: { review: { resource: { __typename: 'Post', id: 'post-id', disabled: true } } },
+            errors: undefined,
           })
         })
 
@@ -357,6 +380,7 @@ describe('moderate resources', () => {
                 report: { id: expect.any(String), closed: true },
               },
             },
+            errors: undefined,
           })
         })
       })
@@ -386,6 +410,7 @@ describe('moderate resources', () => {
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
             data: { review: { resource: { __typename: 'User', id: 'user-id' } } },
+            errors: undefined,
           })
         })
 
@@ -404,6 +429,7 @@ describe('moderate resources', () => {
                 },
               },
             },
+            errors: undefined,
           })
         })
 
@@ -412,6 +438,7 @@ describe('moderate resources', () => {
             mutate({ mutation: reviewMutation, variables: disableVariables }),
           ).resolves.toMatchObject({
             data: { review: { resource: { __typename: 'User', id: 'user-id', disabled: true } } },
+            errors: undefined,
           })
         })
 
@@ -429,6 +456,7 @@ describe('moderate resources', () => {
                 report: { id: expect.any(String), closed: true },
               },
             },
+            errors: undefined,
           })
         })
       })
@@ -472,24 +500,6 @@ describe('moderate resources', () => {
       describe('moderator', () => {
         beforeEach(async () => {
           authenticatedUser = await moderator.toJson()
-        })
-
-        describe('moderate a resource that is not a (Comment|Post|User) ', () => {
-          beforeEach(async () => {
-            await Promise.all([factory.create('Tag', { id: 'tag-id' })])
-          })
-
-          it('returns null', async () => {
-            enableVariables = {
-              ...enableVariables,
-              resourceId: 'tag-id',
-            }
-            await expect(
-              mutate({ mutation: reviewMutation, variables: enableVariables }),
-            ).resolves.toMatchObject({
-              data: { review: null },
-            })
-          })
         })
 
         describe('moderate a comment', () => {
