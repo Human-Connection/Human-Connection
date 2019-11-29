@@ -71,7 +71,7 @@ describe('PostIndex', () => {
       }
     })
 
-    describe('filterNotifications', () => {
+    describe('filter', () => {
       beforeEach(() => {
         propsData.filterOptions = [
           { label: 'All', value: null },
@@ -79,7 +79,7 @@ describe('PostIndex', () => {
           { label: 'Unread', value: false },
         ]
         wrapper = Wrapper()
-        wrapper.find(DropdownFilter).vm.$emit('filterNotifications', propsData.filterOptions[1])
+        wrapper.find(DropdownFilter).vm.$emit('filter', propsData.filterOptions[1])
       })
 
       it('sets `notificationRead` to value of received option', () => {

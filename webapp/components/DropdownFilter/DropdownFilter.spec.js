@@ -64,9 +64,9 @@ describe('DropdownFilter.vue', () => {
         expect(unreadLink.text()).toEqual('Unread')
       })
 
-      it('clicking on menu item emits filterNotifications', () => {
+      it('clicking on menu item emits filter', () => {
         allLink.trigger('click')
-        expect(wrapper.emitted().filterNotifications[0]).toEqual(
+        expect(wrapper.emitted().filter[0]).toEqual(
           propsData.filterOptions.filter(option => option.label === 'All'),
         )
       })

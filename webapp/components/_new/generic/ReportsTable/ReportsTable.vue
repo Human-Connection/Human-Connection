@@ -64,7 +64,6 @@
                   params: params(report.resource),
                   hash: hashParam(report.resource),
                 }"
-                @click.native="markNotificationAsRead(report.resource.id)"
               >
                 <b>{{ report.resource.title || report.resource.contentExcerpt | truncate(50) }}</b>
               </nuxt-link>

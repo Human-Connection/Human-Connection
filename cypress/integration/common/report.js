@@ -130,7 +130,7 @@ Given('somebody reported the following posts:', table => {
       .authenticateAs(submitter)
       .mutate(`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         fileReport(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
-          type
+          id
         }
       }`, {
         resourceId,
