@@ -48,8 +48,6 @@ beforeAll(() => {
   mutate = createTestClient(server).mutate
 })
 
-// const { query } = createTestClient(server)
-
 beforeEach(async () => {
   users = await Promise.all([
     factory.create('User', {

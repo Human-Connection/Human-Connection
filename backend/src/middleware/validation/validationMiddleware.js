@@ -59,35 +59,15 @@ const validateUpdatePost = async (resolve, root, args, context, info) => {
 
 const validateReport = async (resolve, root, args, context, info) => {
   const { resourceId } = args
-  const { user, driver } = context
+  const { user } = context
   if (resourceId === user.id) throw new Error('You cannot report yourself!')
-  const session = driver.session()
-  const reportQueryRes = await session.run(
-    `
-      MATCH (:User {id: $submitterId})-[:FILED]->(:Report {closed: false})-[:BELONGS_TO]->(resource {id: $resourceId}) 
-      WHERE resource:User OR resource:Post OR resource:Comment
-      RETURN labels(resource)[0] AS label
-    `,
-    {
-      resourceId,
-      submitterId: user.id,
-    },
-  )
-  session.close()
-  const [existingReportedResource] = reportQueryRes.records.map(record => {
-    return {
-      label: record.get('label'),
-    }
-  })
-
-  if (existingReportedResource) throw new Error(`${existingReportedResource.label}`)
   return resolve(root, args, context, info)
 }
 
 const validateReview = async (resolve, root, args, context, info) => {
   const { resourceId } = args
   const { user, driver } = context
-  if (resourceId === user.id) throw new Error('You can not review yourself!')
+  if (resourceId === user.id) throw new Error('You cannot review yourself!')
   const session = driver.session()
   const reportQueryRes = await session.run(
     `
@@ -106,7 +86,7 @@ const validateReview = async (resolve, root, args, context, info) => {
   const [existingReportedResource] = reportQueryRes.records.map(record => {
     return {
       label: record.get('label'),
-      author: record.get('author'),
+      author: record.get('author').properties,
       filed: record.get('filed'),
     }
   })
@@ -114,13 +94,13 @@ const validateReview = async (resolve, root, args, context, info) => {
   if (!existingReportedResource) throw new Error(`Resource not found!`)
   if (!existingReportedResource.filed)
     throw new Error(
-      `Before you can start the reviewing process, please report the ${existingReportedResource.label}!`,
+      `Before starting the review process, please report the ${existingReportedResource.label}!`,
     )
   const authorId =
     existingReportedResource.label !== 'User' && existingReportedResource.author
       ? existingReportedResource.author.id
       : null
-  if (authorId && resourceId === authorId)
+  if (authorId && authorId === user.id)
     throw new Error(`You cannot review your own ${existingReportedResource.label}!`)
   return resolve(root, args, context, info)
 }
