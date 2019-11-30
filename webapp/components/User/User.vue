@@ -12,7 +12,7 @@
           <hc-avatar class="avatar" :user="user" />
           <div>
             <ds-text class="userinfo">
-              <b class="username">{{ userName | truncate(18) }}</b>
+              <b class="username">{{ userSlug }}</b>
               <ds-text v-if="dateTime" size="small" color="soft">
                 <base-icon name="clock" />
                 <client-only>
@@ -23,7 +23,7 @@
             </ds-text>
           </div>
           <ds-text align="left" size="small" color="soft">
-            {{ userSlug }}
+            {{  userName | truncate(18) }}
           </ds-text>
         </div>
       </nuxt-link>
