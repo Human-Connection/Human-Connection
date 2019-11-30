@@ -1,6 +1,10 @@
 <template>
-  <table class="ds-table ds-table-condensed ds-table-bordered" cellspacing="0" cellpadding="0">
-    <colgroup><col width="" /></colgroup>
+  <table
+    v-if="reports && reports.length"
+    class="ds-table ds-table-condensed ds-table-bordered"
+    cellspacing="0"
+    cellpadding="0"
+  >
     <template v-for="report in reports">
       <thead
         :class="[
@@ -140,17 +144,21 @@
       </tbody>
     </template>
   </table>
+  <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
 </template>
+
 <script>
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import HcUser from '~/components/User/User'
 import FiledTable from '~/components/_new/generic/FiledTable/FiledTable'
+import HcEmpty from '~/components/Empty/Empty'
 
 export default {
   components: {
     CounterIcon,
     HcUser,
     FiledTable,
+    HcEmpty,
   },
   data() {
     return {

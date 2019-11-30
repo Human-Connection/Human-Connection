@@ -1,5 +1,5 @@
 <template>
-  <ds-card space="small" v-if="reports && reports.length">
+  <ds-card space="small">
     <ds-flex class="notifications-page-flex">
       <ds-flex-item :width="{ lg: '85%' }">
         <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
@@ -13,19 +13,16 @@
     <ds-space />
     <reports-table :reports="reports" @confirm="confirm" />
   </ds-card>
-  <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />
 </template>
 <script>
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import ReportsTable from '~/components/_new/generic/ReportsTable/ReportsTable'
-import HcEmpty from '~/components/Empty/Empty'
 import { reportsListQuery, reviewMutation } from '~/graphql/Moderation.js'
 
 export default {
   components: {
     DropdownFilter,
     ReportsTable,
-    HcEmpty,
   },
   data() {
     return {
