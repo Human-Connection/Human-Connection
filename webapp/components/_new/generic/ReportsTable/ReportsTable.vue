@@ -50,9 +50,9 @@
             </ds-text>
             <ds-space margin-top="xx-large" margin-bottom="x-small">
               <counter-icon icon="flag" :count="report.filed.length">
-                <a @click="showFiledReports = !showFiledReports">
+                <ds-button ghost primary @click="showFiledReports = !showFiledReports">
                   {{ $t('moderation.reports.moreDetails') }}
-                </a>
+                </ds-button>
               </counter-icon>
             </ds-space>
           </td>
