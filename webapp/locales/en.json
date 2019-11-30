@@ -482,7 +482,7 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
-      "typeRowHeadline": "Type",
+      "typeRowHeadline": "Current status",
       "contentRowHeadline": "Content",
       "authorRowHeadline": "Author",
       "decisionRowHeadline": "Decision",

@@ -316,7 +316,7 @@
         "reports": {
             "empty": "Glückwunsch, es gibt nichts zu moderieren.",
             "name": "Meldungen",
-            "typeRowHeadline": "Typ",
+            "typeRowHeadline": "Aktueller Status",
             "contentRowHeadline": "Inhalt",
             "authorRowHeadline": "Autor",
             "decisionRowHeadline": "Entscheidung",
