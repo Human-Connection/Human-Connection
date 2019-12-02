@@ -153,14 +153,15 @@ describe('file a report on a resource', () => {
           })
 
           it('returns the rule for how the report was decided', async () => {
-            await expect(mutate({
-              mutation: reportMutation,
-              variables: { ...variables, resourceId: 'abusive-user-id' },
-            }),
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              }),
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  rule: 'latestReviewUpdatedAtRules'
+                  rule: 'latestReviewUpdatedAtRules',
                 },
               },
               errors: undefined,
