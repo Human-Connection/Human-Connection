@@ -29,7 +29,7 @@ WITH moderator, disabledResource, report
 OPTIONAL MATCH (disabledResourceReporter:User)-[existingFiledReport:FILED]->(disabledResource)
 FOREACH(disabledResource IN CASE WHEN existingFiledReport IS NULL THEN [1] ELSE [] END | 
   CREATE (moderator)-[addModeratorReport:FILED]->(report)
-  SET addModeratorReport.createdAt = toString(datetime()), addModeratorReport.reasonCategory = 'other', addModeratorReport.reasonDescription = 'Old DISABLED relation had no now mandatory report !!! Created automatically to ensure database consistency! Creation date is when the database manipulation happened.'
+  SET addModeratorReport.createdAt = toString(datetime()), addModeratorReport.reasonCategory = 'other', addModeratorReport.reasonDescription = 'Old DISABLED relations didn't enforce mandatory reporting !!! Created automatically to ensure database consistency! Creation date is when the database manipulation happened.'
 )
 FOREACH(disabledResource IN CASE WHEN existingFiledReport IS NOT NULL THEN [1] ELSE [] END | 
   CREATE (disabledResourceReporter)-[moveModeratorReport:FILED]->(report)

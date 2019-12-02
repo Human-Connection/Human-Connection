@@ -23,6 +23,7 @@ describe('file a report on a resource', () => {
         updatedAt
         disable
         closed
+        rule
         resource {
           __typename
           ... on User {
@@ -151,6 +152,20 @@ describe('file a report on a resource', () => {
             expect(firstReport.data.fileReport.id).toEqual(secondReport.data.fileReport.id)
           })
 
+          it('returns the rule for how the report was decided', async () => {
+            await expect(mutate({
+              mutation: reportMutation,
+              variables: { ...variables, resourceId: 'abusive-user-id' },
+            }),
+            ).resolves.toMatchObject({
+              data: {
+                fileReport: {
+                  rule: 'latestReviewUpdatedAtRules'
+                },
+              },
+              errors: undefined,
+            })
+          })
           it.todo('creates multiple filed reports')
         })
 
