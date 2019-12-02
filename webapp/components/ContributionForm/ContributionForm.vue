@@ -18,9 +18,25 @@
           :src="contribution.image | proxyApiUrl"
         />
       </hc-teaser-image>
-
+      <ds-text align="right" class="blurBox">
+        <div v-show="checkedBlur">
+          <ds-button
+            v-if="contribution"
+            class="bluricon-post"
+            icon="eye"
+            primary
+            @click.prevent="unBlur"
+          ></ds-button>
+          <img
+            v-if="contribution"
+            :src="contribution.image | proxyApiUrl"
+            class="blurImgPreview"
+            @click.prevent="unBlur"
+          />
+        </div>
+      </ds-text>
+      <div style="clear: both" />
       <ds-card>
-         
         <ds-text align="right">
           <label for="blur_img">{{ $t('contribution.shockingPicture') }}</label>
           <input
@@ -158,7 +174,7 @@ export default {
       image: null,
       language: null,
       categoryIds: [],
-      checkedBlur: false,
+      checkbox: false,
     }
     let id = null
     let slug = null
@@ -174,7 +190,7 @@ export default {
           ? languageOptions.find(o => this.contribution.language === o.value)
           : null
       form.categoryIds = this.categoryIds(this.contribution.categories)
-      form.checkedBlur = this.contribution.checkedBlur
+      form.checkbox = this.contribution.checkedBlur
     }
 
     return {
@@ -194,7 +210,7 @@ export default {
           },
         },
         language: { required: true },
-        checkedBlur: { required: false },
+        checkbox: { required: false },
       },
       languageOptions,
       id,
@@ -207,9 +223,11 @@ export default {
       checkedBlur: false,
     }
   },
-  created() {
-    if (this.contribution && this.contribution.checkedBlur) {
+  created() {},
+  mounted() {
+    if (this.contribution && this.contribution.checkedBlur === true) {
       this.checkedChange()
+      this.$el.querySelector('.hc-attachments-upload-area-post img').classList.add('img-blur-in')
     }
   },
   computed: {
@@ -221,6 +239,11 @@ export default {
     }),
   },
   methods: {
+    unBlur() {
+      if (this.checkedBlur) {
+        this.checkedChange()
+      }
+    },
     checkedChange() {
       if (this.$el) {
         this.elem = this.$el.querySelector('img')
@@ -229,14 +252,12 @@ export default {
       if (this.checkedBlur) {
         this.elem.classList.remove('img-blur-in')
         this.checkedBlur = false
-        this.form.checkedBlur = false
         this.form.checkbox = false
       } else {
         if (this.elem != null) {
           this.elem.classList.add('img-blur-in')
         }
         this.checkedBlur = true
-        this.form.checkedBlur = true
         this.form.checkbox = true
       }
     },
@@ -335,6 +356,24 @@ export default {
   -ms-transition: all ease 0.2s;
   -o-transition: all ease 0.2s;
   transition: all ease 0.2s;
+}
+
+.blurBox {
+  text-align: right;
+  position: relative;
+  top: -70px;
+  float: right;
+}
+.blurImgPreview {
+  width: 100px;
+}
+
+.bluricon-post {
+  font-size: xx-large;
+  /* padding: 13px; */
+  /* position: absolute; */
+  background-color: green;
+  /* top: 131px; */
 }
 </style>
 
