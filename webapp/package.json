@@ -104,7 +104,7 @@
     "@storybook/addon-actions": "^5.2.6",
     "@storybook/addon-notes": "^5.2.5",
     "@storybook/vue": "~5.2.6",
-    "@vue/cli-shared-utils": "~4.0.5",
+    "@vue/cli-shared-utils": "~4.1.1",
     "@vue/eslint-config-prettier": "~6.0.0",
     "@vue/server-test-utils": "~1.0.0-beta.30",
     "@vue/test-utils": "~1.0.0-beta.29",
