@@ -34,7 +34,7 @@
         </tr>
       </thead>
       <tbody :key="'tbody-' + report.resource.id">
-        <tr valign="top">
+        <tr valign="top" :data-test="report.resource.__typename">
           <td class="ds-table-col">
             <ds-text color="soft">
               <base-icon
@@ -57,18 +57,29 @@
           <td class="ds-table-col ">
             <div v-if="isPost(report.resource) || isComment(report.resource)">
               <nuxt-link
+                data-test="post-link"
                 :to="{
                   name: 'post-id-slug',
                   params: params(report.resource),
                   hash: hashParam(report.resource),
                 }"
               >
-                <b>{{ report.resource.title || report.resource.contentExcerpt | truncate(50) }}</b>
+                <b>
+                  {{
+                    report.resource.title ||
+                      $filters.removeHtml(report.resource.contentExcerpt) | truncate(50)
+                  }}
+                </b>
               </nuxt-link>
             </div>
             <div v-else>
               <client-only>
-                <hc-user :user="report.resource" :showAvatar="false" :trunc="30" />
+                <hc-user
+                  :user="report.resource"
+                  :showAvatar="false"
+                  :trunc="30"
+                  :data-test="report.resource.slug"
+                />
               </client-only>
             </div>
           </td>
@@ -79,6 +90,7 @@
                 :user="report.resource.author"
                 :showAvatar="false"
                 :trunc="30"
+                :data-test="report.resource.author.slug"
               />
               <span v-else>—</span>
             </client-only>
@@ -86,38 +98,35 @@
           <td>
             <div v-if="report.reviewed">
               <br />
-              <div v-if="report.resource.disabled">
+              <div v-if="report.resource.disabled" data-test="disabled">
                 <base-icon name="eye-slash" class="ban" />
                 {{ $t('moderation.reports.disabledBy') }}
               </div>
-              <div v-else>
+              <div v-else data-test="enabled">
                 <base-icon name="eye" class="no-ban" />
                 {{ $t('moderation.reports.enabledBy') }}
               </div>
               <client-only>
                 <hc-user
-                  :user="report.reviewed[0].moderator"
+                  :user="moderatorOfLatestReview(report)"
                   :showAvatar="false"
                   :trunc="30"
                   :date-time="report.updatedAt"
                   positionDatetime="below"
+                  :data-test="moderatorOfLatestReview(report).slug"
                 />
               </client-only>
             </div>
             <div v-else>
               <br />
-              <div v-if="report.resource.disabled">
-                <base-icon name="eye-slash" class="ban" />
-                {{ $t('moderation.reports.disabled') }}
-              </div>
-              <div v-else>
+              <div data-test="unreviewed">
                 <base-icon name="eye" class="no-ban" />
                 {{ $t('moderation.reports.enabled') }}
               </div>
             </div>
           </td>
           <td class="ds-table-col">
-            <b v-if="report.closed">
+            <b v-if="report.closed" data-test="closed">
               {{ $t('moderation.reports.decided') }}
             </b>
             <ds-button
@@ -186,6 +195,9 @@ export default {
     },
     isUser(resource) {
       return resource.__typename === 'User'
+    },
+    moderatorOfLatestReview(report) {
+      return report.reviewed[0].moderator
     },
     params(resource) {
       const post = this.isComment(resource) ? resource.post : resource
