@@ -199,6 +199,7 @@ describe('ContributionForm.vue', () => {
               categoryIds: ['cat12'],
               imageUpload: null,
               image: null,
+              checkedBlur: false,
             },
           }
           postTitleInput = wrapper.find('.ds-input')

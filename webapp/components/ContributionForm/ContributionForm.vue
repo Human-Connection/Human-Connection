@@ -23,7 +23,7 @@
           <ds-button
             v-if="contribution"
             class="bluricon-post"
-            icon="eye"
+            icon="ban"
             primary
             @click.prevent="unBlur"
           ></ds-button>

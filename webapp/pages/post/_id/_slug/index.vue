@@ -18,6 +18,13 @@
           primary
           @click.prevent="unBlur"
         ></ds-button>
+        <ds-button
+          v-show="blur"
+          class="bluricon-post"
+          icon="eye-slash"
+          primary
+          @click.prevent="Blur"
+        ></ds-button>
         <img
           v-show="post.checkedBlur"
           :src="post.image | proxyApiUrl"
@@ -144,6 +151,7 @@ export default {
       ready: false,
       title: 'loading',
       showNewCommentForm: true,
+      blur: false,
     }
   },
   watch: {
@@ -172,6 +180,13 @@ export default {
     unBlur() {
       if (this.post.checkedBlur) {
         this.post.checkedBlur = false
+        this.blur = true
+      }
+    },
+    Blur() {
+      if (!this.post.checkedBlur) {
+        this.post.checkedBlur = true
+        this.blur = false
       }
     },
     isAuthor(id) {
