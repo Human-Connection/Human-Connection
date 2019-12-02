@@ -11,6 +11,8 @@ export const reportsListQuery = () => {
         disable
         closed
         reviewed {
+          createdAt
+          updatedAt
           disable
           moderator {
             id
