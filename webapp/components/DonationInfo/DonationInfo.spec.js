@@ -1,9 +1,8 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
+import { mount } from '@vue/test-utils'
+
 import DonationInfo from './DonationInfo.vue'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 const mockDate = new Date(2019, 11, 6)
 global.Date = jest.fn(() => mockDate)

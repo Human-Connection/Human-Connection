@@ -1,4 +1,4 @@
-import { rule, shield, deny, allow, and, or, not } from 'graphql-shield'
+import { rule, shield, deny, allow, or } from 'graphql-shield'
 import { neode } from '../bootstrap/neo4j'
 import CONFIG from '../config'
 
@@ -41,48 +41,27 @@ const isMySocialMedia = rule({
   return socialMedia.ownedBy.node.id === user.id
 })
 
-const invitationLimitReached = rule({
-  cache: 'no_cache',
-})(async (parent, args, { user, driver }) => {
-  const session = driver.session()
-  try {
-    const result = await session.run(
-      `
-      MATCH (user:User {id:$id})-[:GENERATED]->(i:InvitationCode)
-      RETURN COUNT(i) >= 3 as limitReached
-      `,
-      { id: user.id },
-    )
-    const [limitReached] = result.records.map(record => {
-      return record.get('limitReached')
-    })
-    return limitReached
-  } finally {
-    session.close()
-  }
-})
-
 const isAuthor = rule({
   cache: 'no_cache',
 })(async (_parent, args, { user, driver }) => {
   if (!user) return false
   const session = driver.session()
   const { id: resourceId } = args
-  const result = await session.run(
-    `
-  MATCH (resource {id: $resourceId})<-[:WROTE]-(author)
-  RETURN author
-  `,
-    {
-      resourceId,
-    },
-  )
-  session.close()
-  const [author] = result.records.map(record => {
-    return record.get('author')
-  })
-  const authorId = author && author.properties && author.properties.id
-  return authorId === user.id
+  try {
+    const result = await session.run(
+      `
+      MATCH (resource {id: $resourceId})<-[:WROTE]-(author {id: $userId})
+      RETURN author
+    `,
+      { resourceId, userId: user.id },
+    )
+    const [author] = result.records.map(record => {
+      return record.get('author')
+    })
+    return !!author
+  } finally {
+    session.close()
+  }
 })
 
 const isDeletingOwnAccount = rule({
@@ -100,7 +79,7 @@ const noEmailFilter = rule({
 const publicRegistration = rule()(() => !!CONFIG.PUBLIC_REGISTRATION)
 
 // Permissions
-const permissions = shield(
+export default shield(
   {
     Query: {
       '*': deny,
@@ -129,7 +108,6 @@ const permissions = shield(
       SignupByInvitation: allow,
       Signup: or(publicRegistration, isAdmin),
       SignupVerification: allow,
-      CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
@@ -176,5 +154,3 @@ const permissions = shield(
     fallbackRule: allow,
   },
 )
-
-export default permissions

@@ -1,14 +1,9 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import CommentList from './CommentList'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
-import Filters from '~/plugins/vue-filters'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Styleguide)
-localVue.use(Vuex)
-localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
 config.stubs['v-popover'] = '<span><slot /></span>'

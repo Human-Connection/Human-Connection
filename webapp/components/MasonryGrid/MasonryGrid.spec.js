@@ -1,9 +1,8 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
+import { mount } from '@vue/test-utils'
+
 import MasonryGrid from './MasonryGrid'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('MasonryGrid', () => {
   let wrapper

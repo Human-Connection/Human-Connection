@@ -1,10 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import EnterNonce from './EnterNonce.vue'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('EnterNonce ', () => {
   let wrapper

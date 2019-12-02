@@ -1,16 +1,12 @@
-import { config, shallowMount, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
+import { config, shallowMount, mount, RouterLinkStub } from '@vue/test-utils'
 import NotificationList from './NotificationList'
 import Notification from '../Notification/Notification'
 import Vuex from 'vuex'
-import Filters from '~/plugins/vue-filters'
-import Styleguide from '@human-connection/styleguide'
+
 import { notifications } from '~/components/utils/Notifications'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Vuex)
-localVue.use(Styleguide)
-localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
 config.stubs['client-only'] = '<span><slot /></span>'

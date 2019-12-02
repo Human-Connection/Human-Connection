@@ -34,6 +34,7 @@ export default {
         'code-of-conduct',
         'moderation',
         'errors-and-feedback',
+        'no-commercial-use',
         'help-and-questions',
         'addition',
       ],

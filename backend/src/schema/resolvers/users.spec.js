@@ -70,6 +70,21 @@ describe('User', () => {
           data: { User: [{ name: 'Johnny' }] },
         })
       })
+
+      it('non-existing email address, issue #2294', async () => {
+        // see: https://github.com/Human-Connection/Human-Connection/issues/2294
+        await expect(
+          query({
+            query: userQuery,
+            variables: {
+              email: 'this-email-does-not-exist@example.org',
+            },
+          }),
+        ).resolves.toMatchObject({
+          data: { User: [] },
+          errors: undefined,
+        })
+      })
     })
   })
 })

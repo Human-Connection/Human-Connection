@@ -1,10 +1,8 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import Signup, { SignupMutation, SignupByInvitationMutation } from './Signup'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 

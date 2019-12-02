@@ -46,7 +46,7 @@
 <script>
 import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
-import { normalizeEmail } from 'validator'
+import normalizeEmail from '~/components/utils/NormalizeEmail'
 
 export default {
   components: {

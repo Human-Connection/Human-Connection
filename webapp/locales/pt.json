@@ -11,7 +11,7 @@
         "no-account": "Ainda não tem uma conta?",
         "register": "Cadastrar-se",
         "moreInfoURL": "https:\/\/human-connection.org\/en\/",
-        "moreInfoHint": "",
+        "moreInfoHint": "para a página de apresentação",
         "success": "Você está conectado!",
         "failure": "Endereço de e-mail ou senha incorretos."
     },
@@ -125,15 +125,15 @@
             "name": "Fornecedores de terceiros",
             "info-description": "Se você concordar, as publicações da seguinte lista de provedores incluirão automaticamente código de terceiros de outros provedores (terceiros) na forma de vídeos, imagens ou texto incorporados.",
             "status": {
-                "description": "",
+                "description": "Como padrão para você, o código incorporado de provedores de terceiros é",
                 "disabled": {
-                    "off": "",
-                    "on": ""
+                    "off": "não exibido inicialmente",
+                    "on": "exibido imediatamente"
                 },
                 "change": {
-                    "question": "",
-                    "allow": "",
-                    "deny": ""
+                    "question": "O código-fonte incorporado de terceiros deve sempre ser exibido para você?",
+                    "allow": "Certeza",
+                    "deny": "Não, obrigado"
                 }
             }
         },
@@ -158,13 +158,13 @@
             "columns": {
                 "name": "Nome",
                 "slug": "Slug",
-                "unblock": ""
+                "unblock": "Desbloquear"
             },
             "empty": "Até agora, você não bloqueou ninguém.",
             "how-to": "Você pode bloquear outros usuários em suas páginas de perfil através do menu de conteúdo.",
             "block": "Bloquear usuário",
             "unblock": "Desbloquear usuário",
-            "unblocked": ""
+            "unblocked": "{name} está desbloqueado novamente"
         },
         "privacy": {
             "name": "Privacidade",
@@ -261,10 +261,10 @@
         "menu": {
             "edit": "Editar publicação",
             "delete": "Excluir publicação",
-            "pin": "",
-            "pinnedSuccessfully": "",
-            "unpin": "",
-            "unpinnedSuccessfully": ""
+            "pin": "Fixar publicação",
+            "pinnedSuccessfully": "Publicação fixada com sucesso!",
+            "unpin": "Desafixar publicação",
+            "unpinnedSuccessfully": "Publicação desafixada com sucesso!"
         },
         "comment": {
             "submit": "Commentar",
@@ -299,7 +299,7 @@
         "validations": {
             "email": "deve ser um endereço de e-mail válido",
             "url": "deve ser uma URL válida",
-            "categories": ""
+            "categories": "devem ser seleccionadas, no mínimo uma e, no máximo três categorias"
         }
     },
     "actions": {
@@ -430,7 +430,7 @@
         "teaserImage": {
             "cropperConfirm": "Confirmar"
         },
-        "languageSelectText": ""
+        "languageSelectText": "Selecionar Idioma"
     },
     "comment": {
         "edit": "Editar Comentário",
@@ -745,8 +745,8 @@
         }
     },
     "donations": {
-        "donations-for": "",
-        "donate-now": "",
-        "amount-of-total": ""
+        "donations-for": "Doações para",
+        "donate-now": "Doe agora",
+        "amount-of-total": "{amount} dos {total} € foram coletados"
     }
 }
