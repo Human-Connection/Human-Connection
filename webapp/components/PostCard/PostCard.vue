@@ -143,7 +143,7 @@ export default {
   },
   mounted() {
     const width = this.$el.offsetWidth
-    const height = Math.min((width / this.post.imageAspectRatio), 2000)
+    const height = Math.min(width / this.post.imageAspectRatio, 2000)
     const imageElement = this.$el.querySelector('.ds-card-image')
 
     if (imageElement) {

@@ -115,7 +115,7 @@ describe('ProfileSlug', () => {
               })
 
               it('displays a loading spinner below the posts list', () => {
-                expect(wrapper.find('.user-profile-posts-list .ds-spinner').exists()).toBe(true)
+                expect(wrapper.find('.ds-spinner').exists()).toBe(true)
               })
             })
           })
