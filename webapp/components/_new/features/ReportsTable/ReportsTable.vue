@@ -1,29 +1,32 @@
 <template>
   <table
     v-if="reports && reports.length"
-    class="ds-table ds-table-condensed ds-table-bordered"
+    class="ds-table ds-table-condensed"
     cellspacing="0"
     cellpadding="0"
   >
+    <colgroup>
+      <col width="5%" />
+      <col width="35%" />
+      <col width="20%" />
+      <col width="20%" />
+      <col width="20%" />
+    </colgroup>
     <template v-for="report in reports">
       <thead
-        :class="[
-          report.closed ? 'decision' : 'no-decision',
-          'ds-table-col',
-          'ds-table-head-col',
-          'ds-table-head-col-border',
-        ]"
+        :class="[report.closed ? 'decision' : 'no-decision', 'ds-table-col', 'ds-table-head-col']"
         :key="'thead-' + report.resource.id"
       >
         <tr valign="top">
-          <th>
-            {{ $t('moderation.reports.typeRowHeadline') }}
-          </th>
+          <th></th>
           <th>
             {{ $t('moderation.reports.contentRowHeadline') }}
           </th>
           <th>
             {{ $t('moderation.reports.authorRowHeadline') }}
+          </th>
+          <th>
+            {{ $t('moderation.reports.typeRowHeadline') }}
           </th>
           <th>
             {{ $t('moderation.reports.decisionRowHeadline') }}
@@ -32,7 +35,7 @@
       </thead>
       <tbody :key="'tbody-' + report.resource.id">
         <tr valign="top">
-          <td class="ds-table-col ds-table-head-col ds-table-head-col-border">
+          <td class="ds-table-col">
             <ds-text color="soft">
               <base-icon
                 v-if="isPost(report.resource)"
@@ -49,18 +52,9 @@
                 v-tooltip="{ report: $t('report.user.type'), placement: 'right' }"
                 name="user"
               />
-              <base-icon v-if="report.resource.disabled" name="eye-slash" class="ban" />
-              <base-icon v-else name="eye" class="no-ban" />
             </ds-text>
-            <ds-space margin-top="xx-large" margin-bottom="x-small">
-              <counter-icon icon="flag" :count="report.filed.length">
-                <ds-button ghost primary @click="showFiledReports = !showFiledReports">
-                  {{ $t('moderation.reports.moreDetails') }}
-                </ds-button>
-              </counter-icon>
-            </ds-space>
           </td>
-          <td class="ds-table-col ds-table-head-col-border">
+          <td class="ds-table-col ">
             <div v-if="isPost(report.resource) || isComment(report.resource)">
               <nuxt-link
                 :to="{
@@ -78,7 +72,7 @@
               </client-only>
             </div>
           </td>
-          <td class="ds-table-col ds-table-head-col-border">
+          <td class="ds-table-col ">
             <client-only>
               <hc-user
                 v-if="report.resource.__typename !== 'User'"
@@ -89,19 +83,7 @@
               <span v-else>—</span>
             </client-only>
           </td>
-          <td class="ds-table-col ds-table-head-col-border">
-            <b v-if="report.closed">
-              {{ $t('moderation.reports.decided') }}
-            </b>
-            <ds-button
-              v-else
-              danger
-              class="confirm"
-              :icon="report.resource.disabled ? 'eye-slash' : 'eye'"
-              @click="confirm(report)"
-            >
-              {{ $t('moderation.reports.decideButton') }}
-            </ds-button>
+          <td>
             <div v-if="report.reviewed">
               <br />
               <div v-if="report.resource.disabled">
@@ -134,9 +116,33 @@
               </div>
             </div>
           </td>
+          <td class="ds-table-col">
+            <b v-if="report.closed">
+              {{ $t('moderation.reports.decided') }}
+            </b>
+            <ds-button
+              v-else
+              danger
+              class="confirm"
+              :icon="report.resource.disabled ? 'eye-slash' : 'eye'"
+              @click="confirm(report)"
+            >
+              {{ $t('moderation.reports.decideButton') }}
+            </ds-button>
+          </td>
         </tr>
         <tr>
-          <td class="ds-table-col ds-table-head-col-border filed-table" colspan="4">
+          <td></td>
+          <td>
+            <counter-icon icon="flag" :count="report.filed.length">
+              <ds-button ghost primary @click="showFiledReports = !showFiledReports">
+                {{ $t('moderation.reports.moreDetails') }}
+              </ds-button>
+            </counter-icon>
+          </td>
+        </tr>
+        <tr>
+          <td class="ds-table-col filed-table" colspan="4">
             <ds-space margin-bottom="base" />
             <filed-table :filed="report.filed" v-if="showFiledReports" />
           </td>
@@ -150,7 +156,7 @@
 <script>
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import HcUser from '~/components/User/User'
-import FiledTable from '~/components/_new/generic/FiledTable/FiledTable'
+import FiledTable from '~/components/_new/features/FiledTable/FiledTable'
 import HcEmpty from '~/components/Empty/Empty'
 
 export default {

@@ -16,7 +16,7 @@
 </template>
 <script>
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
-import ReportsTable from '~/components/_new/generic/ReportsTable/ReportsTable'
+import ReportsTable from '~/components/_new/features/ReportsTable/ReportsTable'
 import { reportsListQuery, reviewMutation } from '~/graphql/Moderation.js'
 
 export default {
