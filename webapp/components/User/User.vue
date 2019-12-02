@@ -12,18 +12,16 @@
           <hc-avatar class="avatar" :user="user" />
           <div>
             <ds-text class="userinfo">
-              <b class="username">{{ userSlug }}</b>
-              <ds-text v-if="dateTime" size="small" color="soft">
-                <base-icon name="clock" />
-                <client-only>
-                  <hc-relative-date-time :date-time="dateTime" />
-                </client-only>
-                <slot name="dateTime"></slot>
-              </ds-text>
+              <b>{{ userSlug }}</b>
             </ds-text>
           </div>
-          <ds-text align="left" size="small" color="soft">
-            {{  userName | truncate(18) }}
+          <ds-text class="username" align="left" size="small" color="soft">
+            {{ userName | truncate(18) }}
+            <base-icon name="clock" />
+            <template v-if="dateTime">
+              <hc-relative-date-time :date-time="dateTime" />
+              <slot name="dateTime"></slot>
+            </template>
           </ds-text>
         </div>
       </nuxt-link>
