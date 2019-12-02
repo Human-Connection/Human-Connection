@@ -1,5 +1,5 @@
 import Factory from '../../backend/src/seed/factories'
-import { getDriver, neode as getNeode } from '../../backend/src/bootstrap/neo4j'
+import { getDriver, getNeode } from '../../backend/src/bootstrap/neo4j'
 import setupNeode from '../../backend/src/bootstrap/neode'
 import neode from 'neode'
 

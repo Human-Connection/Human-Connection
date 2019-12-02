@@ -2,7 +2,7 @@ import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
 import Factory from '../seed/factories'
 import { gql } from '../helpers/jest'
-import { getDriver, neode as getNeode } from '../bootstrap/neo4j'
+import { getDriver, getNeode } from '../bootstrap/neo4j'
 
 const factory = Factory()
 const instance = getNeode()
