@@ -63,7 +63,7 @@ export default {
         default:
           orderByClause = ''
       }
-      const readTxPromise = session.readTransaction(async tx => {
+      const reportReadTxPromise = session.readTransaction(async tx => {
         const allReportsTransactionResponse = await tx.run(
           `
           MATCH (submitter:User)-[filed:FILED]->(report:Report)-[:BELONGS_TO]->(resource)
@@ -76,7 +76,7 @@ export default {
         return allReportsTransactionResponse.records.map(transformReturnType)
       })
       try {
-        const txResult = await readTxPromise
+        const txResult = await reportReadTxPromise
         if (!txResult[0]) return null
         reports = txResult
       } finally {

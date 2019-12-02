@@ -66,43 +66,50 @@ const validateReport = async (resolve, root, args, context, info) => {
 
 const validateReview = async (resolve, root, args, context, info) => {
   const { resourceId } = args
+  let existingReportedResource
   const { user, driver } = context
   if (resourceId === user.id) throw new Error('You cannot review yourself!')
   const session = driver.session()
-  const reportQueryRes = await session.run(
-    `
-      MATCH (resource {id: $resourceId})
-      WHERE resource:User OR resource:Post OR resource:Comment
-      OPTIONAL MATCH (:User)-[filed:FILED]->(:Report {closed: false})-[:BELONGS_TO]->(resource)
-      OPTIONAL MATCH (resource)<-[:WROTE]-(author:User)
-      RETURN labels(resource)[0] AS label, author, filed
-    `,
-    {
-      resourceId,
-      submitterId: user.id,
-    },
-  )
-  session.close()
-  const [existingReportedResource] = reportQueryRes.records.map(record => {
-    return {
+  const reportReadTxPromise = session.writeTransaction(async txc => {
+    const validateReviewTransactionResponse = await txc.run(
+      `
+        MATCH (resource {id: $resourceId})
+        WHERE resource:User OR resource:Post OR resource:Comment
+        OPTIONAL MATCH (:User)-[filed:FILED]->(:Report {closed: false})-[:BELONGS_TO]->(resource)
+        OPTIONAL MATCH (resource)<-[:WROTE]-(author:User)
+        RETURN labels(resource)[0] AS label, author, filed
+      `,
+      {
+        resourceId,
+        submitterId: user.id,
+      },
+    )
+    return validateReviewTransactionResponse.records.map(record => ({
       label: record.get('label'),
       author: record.get('author'),
       filed: record.get('filed'),
-    }
+    }))
   })
+  try {
+    const txResult = await reportReadTxPromise
+    existingReportedResource = txResult
+    if (!existingReportedResource || !existingReportedResource.length)
+      throw new Error(`Resource not found or is not a Post|Comment|User!`)
+    existingReportedResource = existingReportedResource[0]
+    if (!existingReportedResource.filed)
+      throw new Error(
+        `Before starting the review process, please report the ${existingReportedResource.label}!`,
+      )
+    const authorId =
+      existingReportedResource.label !== 'User' && existingReportedResource.author
+        ? existingReportedResource.author.properties.id
+        : null
+    if (authorId && authorId === user.id)
+      throw new Error(`You cannot review your own ${existingReportedResource.label}!`)
+  } finally {
+    session.close()
+  }
 
-  if (!existingReportedResource)
-    throw new Error(`Resource not found or is not a Post|Comment|User!`)
-  if (!existingReportedResource.filed)
-    throw new Error(
-      `Before starting the review process, please report the ${existingReportedResource.label}!`,
-    )
-  const authorId =
-    existingReportedResource.label !== 'User' && existingReportedResource.author
-      ? existingReportedResource.author.properties.id
-      : null
-  if (authorId && authorId === user.id)
-    throw new Error(`You cannot review your own ${existingReportedResource.label}!`)
   return resolve(root, args, context, info)
 }
 

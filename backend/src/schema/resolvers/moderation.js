@@ -24,8 +24,8 @@ export default {
             MERGE (report)<-[review:REVIEWED]-(moderator)
             ON CREATE SET review.createdAt = $dateTime, review.updatedAt = review.createdAt
             ON MATCH SET review.updatedAt = $dateTime
-            SET review.disable = $params.disable, review.closed = $params.closed
-            SET report.updatedAt = $dateTime, report.closed = review.closed
+            SET review.disable = $params.disable
+            SET report.updatedAt = $dateTime, report.closed = $params.closed
             SET resource.disabled = review.disable
 
             RETURN review, report, resource, labels(resource)[0] AS type
