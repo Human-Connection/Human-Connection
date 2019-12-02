@@ -12,13 +12,16 @@ export default {
       RETURN resource {.id}
       `
       const session = driver.session()
-      const res = await session.run(cypher, { id, userId })
-      session.close()
-      const [resource] = res.records.map(record => {
-        return record.get('resource')
-      })
-      if (!resource) return null
-      return resource.id
+      try {
+        const res = await session.run(cypher, { id, userId })
+        const [resource] = res.records.map(record => {
+          return record.get('resource')
+        })
+        if (!resource) return null
+        return resource.id
+      } finally {
+        session.close()
+      }
     },
     enable: async (object, params, { user, driver }) => {
       const { id } = params
@@ -29,13 +32,16 @@ export default {
       RETURN resource {.id}
       `
       const session = driver.session()
-      const res = await session.run(cypher, { id })
-      session.close()
-      const [resource] = res.records.map(record => {
-        return record.get('resource')
-      })
-      if (!resource) return null
-      return resource.id
+      try {
+        const res = await session.run(cypher, { id })
+        const [resource] = res.records.map(record => {
+          return record.get('resource')
+        })
+        if (!resource) return null
+        return resource.id
+      } finally {
+        session.close()
+      }
     },
   },
 }

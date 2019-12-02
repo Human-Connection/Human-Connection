@@ -13,23 +13,26 @@ const validateCommentCreation = async (resolve, root, args, context, info) => {
     throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
   }
   const session = context.driver.session()
-  const postQueryRes = await session.run(
-    `
+  try {
+    const postQueryRes = await session.run(
+      `
     MATCH (post:Post {id: $postId})
     RETURN post`,
-    {
-      postId,
-    },
-  )
-  session.close()
-  const [post] = postQueryRes.records.map(record => {
-    return record.get('post')
-  })
+      {
+        postId,
+      },
+    )
+    const [post] = postQueryRes.records.map(record => {
+      return record.get('post')
+    })
 
-  if (!post) {
-    throw new UserInputError(NO_POST_ERR_MESSAGE)
-  } else {
-    return resolve(root, args, context, info)
+    if (!post) {
+      throw new UserInputError(NO_POST_ERR_MESSAGE)
+    } else {
+      return resolve(root, args, context, info)
+    }
+  } finally {
+    session.close()
   }
 }
 
@@ -62,25 +65,28 @@ const validateReport = async (resolve, root, args, context, info) => {
   const { user, driver } = context
   if (resourceId === user.id) throw new Error('You cannot report yourself!')
   const session = driver.session()
-  const reportQueryRes = await session.run(
-    `
+  try {
+    const reportQueryRes = await session.run(
+      `
       MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId}) 
       RETURN labels(resource)[0] as label
     `,
-    {
-      resourceId,
-      submitterId: user.id,
-    },
-  )
-  session.close()
-  const [existingReportedResource] = reportQueryRes.records.map(record => {
-    return {
-      label: record.get('label'),
-    }
-  })
+      {
+        resourceId,
+        submitterId: user.id,
+      },
+    )
+    const [existingReportedResource] = reportQueryRes.records.map(record => {
+      return {
+        label: record.get('label'),
+      }
+    })
 
-  if (existingReportedResource) throw new Error(`${existingReportedResource.label}`)
-  return resolve(root, args, context, info)
+    if (existingReportedResource) throw new Error(`${existingReportedResource.label}`)
+    return resolve(root, args, context, info)
+  } finally {
+    session.close()
+  }
 }
 
 export default {

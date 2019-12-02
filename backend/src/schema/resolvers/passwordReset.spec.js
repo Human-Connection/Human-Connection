@@ -15,10 +15,13 @@ let variables
 
 const getAllPasswordResets = async () => {
   const session = driver.session()
-  const transactionRes = await session.run('MATCH (r:PasswordReset) RETURN r')
-  const resets = transactionRes.records.map(record => record.get('r'))
-  session.close()
-  return resets
+  try {
+    const transactionRes = await session.run('MATCH (r:PasswordReset) RETURN r')
+    const resets = transactionRes.records.map(record => record.get('r'))
+    return resets
+  } finally {
+    session.close()
+  }
 }
 
 beforeEach(() => {

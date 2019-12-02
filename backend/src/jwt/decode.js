@@ -11,15 +11,21 @@ export default async (driver, authorizationHeader) => {
   } catch (err) {
     return null
   }
-  const session = driver.session()
   const query = `
     MATCH (user:User {id: $id, deleted: false, disabled: false })
     SET user.lastActiveAt = toString(datetime())
     RETURN user {.id, .slug, .name, .avatar, .email, .role, .disabled, .actorId}
     LIMIT 1
   `
-  const result = await session.run(query, { id })
-  session.close()
+  const session = driver.session()
+  let result
+
+  try {
+    result = await session.run(query, { id })
+  } finally {
+    session.close()
+  }
+
   const [currentUser] = await result.records.map(record => {
     return record.get('user')
   })

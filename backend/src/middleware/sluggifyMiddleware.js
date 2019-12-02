@@ -3,11 +3,14 @@ import uniqueSlug from './slugify/uniqueSlug'
 const isUniqueFor = (context, type) => {
   return async slug => {
     const session = context.driver.session()
-    const response = await session.run(`MATCH(p:${type} {slug: $slug }) return p.slug`, {
-      slug,
-    })
-    session.close()
-    return response.records.length === 0
+    try {
+      const response = await session.run(`MATCH(p:${type} {slug: $slug }) return p.slug`, {
+        slug,
+      })
+      return response.records.length === 0
+    } finally {
+      session.close()
+    }
   }
 }
 
