@@ -15,6 +15,7 @@
   </ds-card>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import ReportsTable from '~/components/_new/features/ReportsTable/ReportsTable'
 import { reportsListQuery, reviewMutation } from '~/graphql/Moderation.js'
@@ -46,8 +47,55 @@ export default {
         { label: this.$t('moderation.reports.filterLabel.closed'), value: this.closedReports },
       ]
     },
+    modalData() {
+      return function(report) {
+        const identStart =
+          'moderation.reports.decideModal.' +
+          report.resource.__typename +
+          '.' +
+          (report.resource.disabled ? 'disable' : 'enable')
+        return {
+          name: 'confirm',
+          data: {
+            type: report.resource.__typename,
+            resource: report.resource,
+            modalData: {
+              titleIdent: identStart + '.title',
+              messageIdent: identStart + '.message',
+              messageParams: {
+                name:
+                  report.resource.name ||
+                  this.$filters.truncate(report.resource.title, 30) ||
+                  this.$filters.truncate(
+                    this.$filters.removeHtml(report.resource.contentExcerpt),
+                    30,
+                  ),
+              },
+              buttons: {
+                confirm: {
+                  danger: true,
+                  icon: report.resource.disabled ? 'eye-slash' : 'eye',
+                  textIdent: 'moderation.reports.decideModal.submit',
+                  callback: () => {
+                    this.confirmCallback(report.resource)
+                  },
+                },
+                cancel: {
+                  icon: 'close',
+                  textIdent: 'moderation.reports.decideModal.cancel',
+                  callback: () => {},
+                },
+              },
+            },
+          },
+        }
+      }
+    },
   },
   methods: {
+    ...mapMutations({
+      commitModalData: 'modal/SET_OPEN',
+    }),
     filter(option) {
       this.reports = option.value
       this.selected = option.label
@@ -69,50 +117,7 @@ export default {
         .catch(error => this.$toast.error(error.message))
     },
     openModal(report) {
-      const identStart =
-        'moderation.reports.decideModal.' +
-        report.resource.__typename +
-        '.' +
-        (report.resource.disabled ? 'disable' : 'enable')
-      this.$store.commit('modal/SET_OPEN', {
-        name: 'confirm',
-        data: {
-          type: report.resource.__typename,
-          resource: report.resource,
-          modalData: {
-            titleIdent: identStart + '.title',
-            messageIdent: identStart + '.message',
-            messageParams: {
-              name:
-                report.resource.__typename === 'User'
-                  ? report.resource.name
-                  : report.resource.__typename === 'Post'
-                  ? this.$filters.truncate(report.resource.title, 30)
-                  : report.resource.__typename === 'Comment'
-                  ? this.$filters.truncate(
-                      this.$filters.removeHtml(report.resource.contentExcerpt),
-                      30,
-                    )
-                  : '',
-            },
-            buttons: {
-              confirm: {
-                danger: true,
-                icon: report.resource.disabled ? 'eye-slash' : 'eye',
-                textIdent: 'moderation.reports.decideModal.submit',
-                callback: () => {
-                  this.confirmCallback(report.resource)
-                },
-              },
-              cancel: {
-                icon: 'close',
-                textIdent: 'moderation.reports.decideModal.cancel',
-                callback: () => {},
-              },
-            },
-          },
-        },
-      })
+      this.commitModalData(this.modalData(report))
     },
   },
   apollo: {
