@@ -334,6 +334,15 @@
             "reasonCategory": "Kategorie",
             "reasonDescription": "Beschreibung",
             "submitter": "Gemeldet von",
+            "numberOfUsers": "{count} Nutzern",
+            "filterLabel": {
+              "all": "Alle",
+              "unreviewed": "Nicht bearbeitet",
+              "reviewed": "Bearbeitet",
+              "closed": "Abgeschlossen"
+            },
+            "reportedOn": "Datum",
+            "moreDetails": "Details öffnen",
             "decideModal": {
               "submit": "Bestätige Entscheidung",
               "cancel": "Abbruch",

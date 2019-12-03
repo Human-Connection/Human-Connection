@@ -500,6 +500,7 @@
       "reasonCategory": "Category",
       "reasonDescription": "Description",
       "submitter": "Reported by",
+      "numberOfUsers": "{count} users",
       "filterLabel": {
         "all": "All",
         "unreviewed": "Unreviewed",
@@ -507,7 +508,7 @@
         "closed": "Closed"
       },
       "reportedOn": "Date",
-      "moreDetails": "Report Details",
+      "moreDetails": "View Details",
       "decideModal": {
         "submit": "Confirm decision",
         "cancel": "Cancel",

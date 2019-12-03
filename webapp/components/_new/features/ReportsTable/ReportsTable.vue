@@ -6,15 +6,17 @@
     cellpadding="0"
   >
     <colgroup>
-      <col width="5%" />
+      <col width="4%" />
+      <col width="12%" />
       <col width="40%" />
-      <col width="20%" />
-      <col width="20%" />
-      <col width="15%" />
+      <col width="16%" />
+      <col width="16%" />
+      <col width="12%" />
     </colgroup>
     <thead class="ds-table-col ds-table-head-col">
       <tr valign="top">
         <th class="ds-table-head-col"></th>
+        <th class="ds-table-head-col">{{ $t('moderation.reports.submitter') }}</th>
         <th class="ds-table-head-col">{{ $t('moderation.reports.content') }}</th>
         <th class="ds-table-head-col">{{ $t('moderation.reports.author') }}</th>
         <th class="ds-table-head-col">{{ $t('moderation.reports.status') }}</th>
@@ -43,7 +45,15 @@
               />
             </ds-text>
           </td>
-          <td class="ds-table-col ">
+          <td class="ds-table-col">
+            <span class="user-count">
+              {{ $t('moderation.reports.numberOfUsers', { count: report.filed.length }) }}
+            </span>
+            <ds-button size="small" @click="showFiledReports = !showFiledReports">
+              {{ $t('moderation.reports.moreDetails') }}
+            </ds-button>
+          </td>
+          <td class="ds-table-col">
             <div v-if="isPost(report.resource) || isComment(report.resource)">
               <nuxt-link
                 data-test="post-link"
@@ -70,13 +80,6 @@
                   :data-test="report.resource.slug"
                 />
               </client-only>
-            </div>
-            <div class="nested-table-toggle">
-              <counter-icon icon="flag" :count="report.filed.length">
-                <ds-button ghost primary @click="showFiledReports = !showFiledReports">
-                  {{ $t('moderation.reports.moreDetails') }}
-                </ds-button>
-              </counter-icon>
             </div>
           </td>
           <td class="ds-table-col">
@@ -217,6 +220,11 @@ export default {
   > .base-icon {
     margin-right: $space-xx-small;
   }
+}
+
+.user-count {
+  display: block;
+  margin-bottom: $space-xx-small;
 }
 
 .nested-table-toggle {
