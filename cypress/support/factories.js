@@ -2,10 +2,9 @@ import Factory from '../../backend/src/seed/factories'
 import { getDriver, getNeode } from '../../backend/src/bootstrap/neo4j'
 import neode from 'neode'
 
-const backendHost = Cypress.env('SEED_SERVER_HOST')
 const neo4jDriver = getDriver()
 const neodeInstance = getNeode()
-const factoryOptions = { seedServerHost: backendHost, neo4jDriver, neodeInstance }
+const factoryOptions = { neo4jDriver, neodeInstance }
 const factory = Factory(factoryOptions)
 
 beforeEach(async () => {
