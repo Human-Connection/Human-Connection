@@ -111,42 +111,6 @@ describe('CreateComment', () => {
           },
         )
       })
-
-      describe('comment content is empty', () => {
-        beforeEach(() => {
-          variables = { ...variables, content: '<p></p>' }
-        })
-
-        it('throw UserInput error', async () => {
-          const { data, errors } = await mutate({ mutation: createCommentMutation, variables })
-          expect(data).toEqual({ CreateComment: null })
-          expect(errors[0]).toHaveProperty('message', 'Comment must be at least 1 character long!')
-        })
-      })
-
-      describe('comment content contains only whitespaces', () => {
-        beforeEach(() => {
-          variables = { ...variables, content: '   <p>   </p>   ' }
-        })
-
-        it('throw UserInput error', async () => {
-          const { data, errors } = await mutate({ mutation: createCommentMutation, variables })
-          expect(data).toEqual({ CreateComment: null })
-          expect(errors[0]).toHaveProperty('message', 'Comment must be at least 1 character long!')
-        })
-      })
-
-      describe('invalid post id', () => {
-        beforeEach(() => {
-          variables = { ...variables, postId: 'does-not-exist' }
-        })
-
-        it('throw UserInput error', async () => {
-          const { data, errors } = await mutate({ mutation: createCommentMutation, variables })
-          expect(data).toEqual({ CreateComment: null })
-          expect(errors[0]).toHaveProperty('message', 'Comment cannot be created without a post!')
-        })
-      })
     })
   })
 })
@@ -224,17 +188,6 @@ describe('UpdateComment', () => {
         expect(UpdateComment.updatedAt).toBeTruthy()
         expect(Date.parse(UpdateComment.updatedAt)).toEqual(expect.any(Number))
         expect(newlyCreatedComment.updatedAt).not.toEqual(UpdateComment.updatedAt)
-      })
-
-      describe('if `content` empty', () => {
-        beforeEach(() => {
-          variables = { ...variables, content: '  <p> </p>' }
-        })
-
-        it('throws InputError', async () => {
-          const { errors } = await mutate({ mutation: updateCommentMutation, variables })
-          expect(errors[0]).toHaveProperty('message', 'Comment must be at least 1 character long!')
-        })
       })
 
       describe('if comment does not exist for given id', () => {
