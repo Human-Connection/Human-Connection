@@ -118,7 +118,7 @@ export default {
         const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
         this.$emit('addTeaserImage', croppedImageFile)
         this.$emit('addImageAspectRatio', imageAspectRatio)
-      })
+      }, 'image/jpeg')
     },
     setupPreview(canvas) {
       this.image = new Image()

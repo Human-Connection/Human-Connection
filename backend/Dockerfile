@@ -25,5 +25,4 @@ ENV NODE_ENV=production
 COPY --from=build-and-test /nitro-backend/dist ./dist
 COPY ./public/img/ ./public/img/
 COPY ./public/providers.json ./public/providers.json
-COPY ./public/add_image_aspect_ratio.sh ./public/add_image_aspect_ratio.sh
 RUN yarn install --production=true --frozen-lockfile --non-interactive --no-cache
