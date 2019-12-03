@@ -1,6 +1,6 @@
 export default {
   Query: {
-    statistics: async (parent, args, { driver, user }) => {
+    statistics: async (_parent, _args, { driver }) => {
       const session = driver.session()
       const response = {}
       try {
