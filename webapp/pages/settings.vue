@@ -33,7 +33,7 @@ export default {
         },
         {
           name: this.$t('settings.privacy.name'),
-          path: 'settings/privacy',
+          path: '/settings/privacy',
         },
         {
           name: this.$t('settings.social-media.name'),
