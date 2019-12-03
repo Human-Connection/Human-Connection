@@ -1,16 +1,11 @@
 <template>
-  <ds-card space="small">
-    <ds-flex class="notifications-page-flex">
-      <ds-flex-item :width="{ lg: '85%' }">
-        <ds-heading tag="h3">{{ $t('moderation.reports.name') }}</ds-heading>
-      </ds-flex-item>
-      <ds-flex-item width="110px">
-        <client-only>
-          <dropdown-filter @filter="filter" :filterOptions="filterOptions" :selected="selected" />
-        </client-only>
-      </ds-flex-item>
-    </ds-flex>
-    <ds-space />
+  <ds-card>
+    <div class="report-list-header">
+      <h3 class="title">{{ $t('moderation.reports.name') }}</h3>
+      <client-only>
+        <dropdown-filter @filter="filter" :filterOptions="filterOptions" :selected="selected" />
+      </client-only>
+    </div>
     <reports-table :reports="reports" @confirm="confirm" />
   </ds-card>
 </template>
@@ -137,6 +132,17 @@ export default {
 </script>
 
 <style lang="scss">
+.report-list-header {
+  display: flex;
+  justify-content: space-between;
+  margin: $space-small 0;
+
+  > .title {
+    margin: 0;
+    font-size: $font-size-large;
+  }
+}
+
 .decision {
   color: $color-secondary;
 }
