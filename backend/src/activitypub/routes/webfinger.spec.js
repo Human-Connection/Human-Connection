@@ -50,7 +50,7 @@ describe('webfinger', () => {
     })
   })
 
-  describe('?ressource query param', () => {
+  describe('?resource query param', () => {
     describe('is missing acct:', () => {
       beforeEach(() => {
         resource = 'some-user@domain'
