@@ -1,22 +1,20 @@
 <template>
-  <ds-space margin-bottom="base">
-    <ds-table v-if="filed && filed.length" :data="filed" :fields="reportFields" condensed>
-      <template #submitter="scope">
-        <hc-user :user="scope.row.submitter" :showAvatar="false" :trunc="30" />
-      </template>
-      <template #reportedOn="scope">
-        <ds-text size="small">
-          <hc-relative-date-time :date-time="scope.row.createdAt" />
-        </ds-text>
-      </template>
-      <template #reasonCategory="scope">
-        {{ $t('report.reason.category.options.' + scope.row.reasonCategory) }}
-      </template>
-      <template #reasonDescription="scope">
-        {{ scope.row.reasonDescription.length ? scope.row.reasonDescription : '—' }}
-      </template>
-    </ds-table>
-  </ds-space>
+  <ds-table class="nested-table" v-if="filed && filed.length" :data="filed" :fields="reportFields" condensed>
+    <template #submitter="scope">
+      <hc-user :user="scope.row.submitter" :showAvatar="false" :trunc="30" />
+    </template>
+    <template #reportedOn="scope">
+      <ds-text size="small">
+        <hc-relative-date-time :date-time="scope.row.createdAt" />
+      </ds-text>
+    </template>
+    <template #reasonCategory="scope">
+      {{ $t('report.reason.category.options.' + scope.row.reasonCategory) }}
+    </template>
+    <template #reasonDescription="scope">
+      {{ scope.row.reasonDescription.length ? scope.row.reasonDescription : '—' }}
+    </template>
+  </ds-table>
 </template>
 <script>
 import HcUser from '~/components/User/User'
@@ -54,3 +52,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.nested-table {
+  padding: $space-small;
+  border-top: $border-size-base solid $color-neutral-60;
+  border-bottom: $border-size-base solid $color-neutral-60;
+}
+</style>
