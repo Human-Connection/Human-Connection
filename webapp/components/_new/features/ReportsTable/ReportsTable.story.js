@@ -88,7 +88,7 @@ export const reports = [
         slug: 'dagobert',
       },
       deleted: false,
-      disabled: true,
+      disabled: false,
       id: 'p2',
       slug: 'bigoted-post',
       title: "I'm a bigoted post!",

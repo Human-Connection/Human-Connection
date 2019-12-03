@@ -60,7 +60,7 @@ describe('ReportsTable', () => {
       describe('Comment', () => {
         let commentRow
         beforeEach(() => {
-          commentRow = wrapper.find('[data-test="Comment"]')
+          commentRow = wrapper.find('.report-comment')
         })
 
         it('renders a comments icon', () => {
@@ -69,32 +69,32 @@ describe('ReportsTable', () => {
         })
 
         it('renders a link to the post, with the comment contentExcerpt', () => {
-          const postLink = commentRow.find('[data-test="post-link"]')
+          const postLink = commentRow.find('.report-content a')
           expect(postLink.text()).toEqual('@peter-lustig Lorem ipsum dolor sit amet, …')
         })
 
         it('renders the author', () => {
-          const username = commentRow.find('[data-test="louie"] b')
+          const username = commentRow.find('.report-author b')
           expect(username.text()).toEqual('Louie')
         })
 
         describe('given it has been reviewed', () => {
           it('renders the enabled icon', () => {
-            const enabledIcon = commentRow
-              .findAll(BaseIcon)
-              .filter(icon => icon.props().name === 'eye')
-            expect(enabledIcon.exists()).toBe(true)
+            expect(
+              commentRow
+                .find('.status-line')
+                .find(BaseIcon)
+                .props().name,
+            ).toEqual('eye')
           })
 
           it('renders its current status', () => {
-            expect(commentRow.find('[data-test="enabled"]').text()).toEqual(
-              'moderation.reports.enabledBy',
-            )
+            expect(commentRow.find('.status-line').text()).toEqual('moderation.reports.enabledBy')
           })
 
           it('renders the moderator who reviewed the resource', () => {
-            const username = commentRow.find('[data-test="moderator"] b')
-            expect(username.text()).toEqual('Moderator')
+            const username = commentRow.find('.report-reviewer')
+            expect(username.text()).toContain('@moderator')
           })
         })
 
@@ -117,7 +117,7 @@ describe('ReportsTable', () => {
       describe('Post', () => {
         let postRow
         beforeEach(() => {
-          postRow = wrapper.find('[data-test="Post"]')
+          postRow = wrapper.find('.report-post')
         })
 
         it('renders a bookmark icon', () => {
@@ -126,27 +126,27 @@ describe('ReportsTable', () => {
         })
 
         it('renders a link to the post', () => {
-          const postLink = postRow.find('[data-test="post-link"]')
+          const postLink = postRow.find('.report-content a')
           expect(postLink.text()).toEqual("I'm a bigoted post!")
         })
 
         it('renders the author', () => {
-          const username = postRow.find('[data-test="dagobert"] b')
-          expect(username.text()).toEqual('Dagobert')
+          const username = postRow.find('.report-author')
+          expect(username.text()).toContain('Dagobert')
         })
 
         describe('given it has not been reviewed', () => {
           it('renders the enabled icon', () => {
-            const enabledIcon = postRow
-              .findAll(BaseIcon)
-              .filter(icon => icon.props().name === 'eye')
-            expect(enabledIcon.exists()).toBe(true)
+            expect(
+              postRow
+                .find('.status-line')
+                .find(BaseIcon)
+                .props().name,
+            ).toEqual('eye')
           })
 
           it('renders its current status', () => {
-            expect(postRow.find('[data-test="unreviewed"]').text()).toEqual(
-              'moderation.reports.enabled',
-            )
+            expect(postRow.find('.status-line').text()).toEqual('moderation.reports.enabled')
           })
         })
 
@@ -170,7 +170,7 @@ describe('ReportsTable', () => {
       describe('User', () => {
         let userRow
         beforeEach(() => {
-          userRow = wrapper.find('[data-test="User"]')
+          userRow = wrapper.find('.report-user')
         })
 
         it('renders a bookmark icon', () => {
@@ -179,35 +179,33 @@ describe('ReportsTable', () => {
         })
 
         it('renders a link to the user profile', () => {
-          const userLink = userRow.find('[data-test="abusive-user"] b')
-          expect(userLink.text()).toEqual('Abusive user')
+          const userLink = userRow.find('.report-content a')
+          expect(userLink.text()).toContain('Abusive user')
         })
 
         describe('given it has been reviewed', () => {
           it('renders the disabled icon', () => {
-            const disabledIcon = userRow
-              .findAll(BaseIcon)
-              .filter(icon => icon.props().name === 'eye-slash')
-            expect(disabledIcon.exists()).toBe(true)
+            expect(
+              userRow
+                .find('.status-line')
+                .find(BaseIcon)
+                .props().name,
+            ).toEqual('eye-slash')
           })
 
           it('renders its current status', () => {
-            expect(userRow.find('[data-test="disabled"]').text()).toEqual(
-              'moderation.reports.disabledBy',
-            )
+            expect(userRow.find('.status-line').text()).toEqual('moderation.reports.disabledBy')
           })
 
           it('renders the moderator who reviewed the resource', () => {
-            const username = userRow.find('[data-test="peter-lustig"] b')
-            expect(username.text()).toEqual('Peter Lustig')
+            const username = userRow.find('.report-reviewer')
+            expect(username.text()).toContain('Peter Lustig')
           })
         })
 
         describe('give report has been closed', () => {
           it('renders Decided text', () => {
-            expect(userRow.find('[data-test="closed"]').text()).toEqual(
-              'moderation.reports.decided',
-            )
+            expect(userRow.find('.report-closed').text()).toEqual('moderation.reports.decided')
           })
         })
       })

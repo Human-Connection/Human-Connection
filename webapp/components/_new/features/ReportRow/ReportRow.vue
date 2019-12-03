@@ -1,5 +1,12 @@
 <template>
-  <tbody class="report-row">
+  <tbody
+    :class="{
+      'report-row': true,
+      'report-comment': isComment,
+      'report-post': isPost,
+      'report-user': isUser,
+    }"
+  >
     <tr>
       <!-- Icon Column -->
       <td class="ds-table-col">
@@ -17,14 +24,9 @@
       </td>
 
       <!-- Content Column -->
-      <td class="ds-table-col">
+      <td class="ds-table-col report-content">
         <client-only v-if="isUser">
-          <hc-user
-            :user="report.resource"
-            :showAvatar="false"
-            :trunc="30"
-            :data-test="report.resource.slug"
-          />
+          <hc-user :user="report.resource" :showAvatar="false" :trunc="30" />
         </client-only>
         <nuxt-link v-else class="title" :to="linkTarget">
           {{ linkText | truncate(50) }}
@@ -32,20 +34,15 @@
       </td>
 
       <!-- Author Column -->
-      <td class="ds-table-col">
+      <td class="ds-table-col report-author">
         <client-only v-if="!isUser">
-          <hc-user
-            :user="report.resource.author"
-            :showAvatar="false"
-            :trunc="30"
-            :data-test="report.resource.author.slug"
-          />
+          <hc-user :user="report.resource.author" :showAvatar="false" :trunc="30" />
         </client-only>
         <span v-else>—</span>
       </td>
 
       <!-- Status Column -->
-      <td class="ds-table-col">
+      <td class="ds-table-col report-reviewer">
         <span class="status-line">
           <base-icon :name="statusIconName" :class="isDisabled ? 'ban' : 'no-ban'" />
           {{ statusText }}
@@ -63,7 +60,7 @@
 
       <!-- Decision Column -->
       <td class="ds-table-col">
-        <b v-if="report.closed" data-test="closed">
+        <b v-if="report.closed" class="report-closed">
           {{ $t('moderation.reports.decided') }}
         </b>
         <ds-button
