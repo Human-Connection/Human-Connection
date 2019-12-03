@@ -1,5 +1,11 @@
 <template>
-  <ds-table class="nested-table" v-if="filed && filed.length" :data="filed" :fields="reportFields" condensed>
+  <ds-table
+    class="nested-table"
+    v-if="filed && filed.length"
+    :data="filed"
+    :fields="reportFields"
+    condensed
+  >
     <template #submitter="scope">
       <hc-user :user="scope.row.submitter" :showAvatar="false" :trunc="30" />
     </template>
