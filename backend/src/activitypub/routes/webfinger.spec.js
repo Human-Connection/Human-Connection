@@ -2,11 +2,7 @@ import { handler } from './webfinger'
 import Factory from '../../seed/factories'
 import { getDriver } from '../../bootstrap/neo4j'
 
-let resource
-let res
-let json
-let status
-let contentType
+let resource, res, json, status, contentType
 
 const factory = Factory()
 const driver = getDriver()
@@ -84,7 +80,7 @@ describe('webfinger', () => {
         resource = 'acct:some-user@domain'
       })
 
-      it('returns empty json', async () => {
+      it('returns error as json', async () => {
         await request()
         expect(status).toHaveBeenCalledWith(404)
         expect(json).toHaveBeenCalledWith({
