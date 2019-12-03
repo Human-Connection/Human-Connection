@@ -7,18 +7,18 @@
   >
     <colgroup>
       <col width="5%" />
-      <col width="35%" />
+      <col width="45%" />
       <col width="20%" />
       <col width="20%" />
-      <col width="20%" />
+      <col width="10%" />
     </colgroup>
     <thead class="ds-table-col ds-table-head-col">
       <tr valign="top">
-        <th></th>
-        <th>{{ $t('moderation.reports.content') }}</th>
-        <th>{{ $t('moderation.reports.author') }}</th>
-        <th>{{ $t('moderation.reports.status') }}</th>
-        <th>{{ $t('moderation.reports.decision') }}</th>
+        <th class="ds-table-head-col"></th>
+        <th class="ds-table-head-col">{{ $t('moderation.reports.content') }}</th>
+        <th class="ds-table-head-col">{{ $t('moderation.reports.author') }}</th>
+        <th class="ds-table-head-col">{{ $t('moderation.reports.status') }}</th>
+        <th class="ds-table-head-col">{{ $t('moderation.reports.decision') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -72,7 +72,7 @@
               </client-only>
             </div>
           </td>
-          <td class="ds-table-col ">
+          <td class="ds-table-col">
             <client-only>
               <hc-user
                 v-if="report.resource.__typename !== 'User'"
@@ -84,17 +84,16 @@
               <span v-else>—</span>
             </client-only>
           </td>
-          <td>
-            <div v-if="report.reviewed">
-              <br />
-              <div v-if="report.resource.disabled" data-test="disabled">
+          <td class="ds-table-col">
+            <template v-if="report.reviewed">
+              <span v-if="report.resource.disabled" data-test="disabled" class="status-line">
                 <base-icon name="eye-slash" class="ban" />
                 {{ $t('moderation.reports.disabledBy') }}
-              </div>
-              <div v-else data-test="enabled">
+              </span>
+              <span v-else data-test="enabled" class="status-line">
                 <base-icon name="eye" class="no-ban" />
                 {{ $t('moderation.reports.enabledBy') }}
-              </div>
+              </span>
               <client-only>
                 <hc-user
                   :user="moderatorOfLatestReview(report)"
@@ -105,9 +104,8 @@
                   :data-test="moderatorOfLatestReview(report).slug"
                 />
               </client-only>
-            </div>
+            </template>
             <div v-else>
-              <br />
               <div data-test="unreviewed">
                 <base-icon name="eye" class="no-ban" />
                 {{ $t('moderation.reports.enabled') }}
@@ -122,6 +120,7 @@
               v-else
               danger
               class="confirm"
+              size="small"
               :icon="report.resource.disabled ? 'eye-slash' : 'eye'"
               @click="confirm(report)"
             >
@@ -202,6 +201,13 @@ export default {
 }
 </script>
 <style lang="scss">
+.status-line {
+  display: inline-flex;
+
+  > .base-icon {
+    margin-right: $space-xx-small;
+  }
+}
 .filed-table {
   padding-left: $space-xx-large;
 }
