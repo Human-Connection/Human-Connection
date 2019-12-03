@@ -1,16 +1,16 @@
 <template>
   <table
     v-if="reports && reports.length"
-    class="ds-table ds-table-condensed ds-table-bordered"
+    class="ds-table ds-table-condensed ds-table-bordered reports-table"
     cellspacing="0"
     cellpadding="0"
   >
     <colgroup>
       <col width="5%" />
-      <col width="45%" />
+      <col width="40%" />
       <col width="20%" />
       <col width="20%" />
-      <col width="10%" />
+      <col width="15%" />
     </colgroup>
     <thead class="ds-table-col ds-table-head-col">
       <tr valign="top">
@@ -23,7 +23,7 @@
     </thead>
     <tbody>
       <template v-for="report in reports">
-        <tr :key="'1-' + report.resource.id" valign="top" :data-test="report.resource.__typename">
+        <tr :key="report.resource.id" valign="top" class="row" :data-test="report.resource.__typename">
           <td class="ds-table-col">
             <ds-text color="soft">
               <base-icon
@@ -70,6 +70,13 @@
                   :data-test="report.resource.slug"
                 />
               </client-only>
+            </div>
+            <div class="nested-table-toggle">
+              <counter-icon icon="flag" :count="report.filed.length">
+                <ds-button ghost primary @click="showFiledReports = !showFiledReports">
+                  {{ $t('moderation.reports.moreDetails') }}
+                </ds-button>
+              </counter-icon>
             </div>
           </td>
           <td class="ds-table-col">
@@ -128,19 +135,8 @@
             </ds-button>
           </td>
         </tr>
-        <tr :key="'2-' + report.resource.id">
-          <td></td>
-          <td>
-            <counter-icon icon="flag" :count="report.filed.length">
-              <ds-button ghost primary @click="showFiledReports = !showFiledReports">
-                {{ $t('moderation.reports.moreDetails') }}
-              </ds-button>
-            </counter-icon>
-          </td>
-        </tr>
-        <tr :key="'3-' + report.resource.id">
-          <td class="ds-table-col filed-table" colspan="4">
-            <ds-space margin-bottom="base" />
+        <tr :key="'nested-table-' + report.resource.id" class="row">
+          <td colspan="100%">
             <filed-table :filed="report.filed" v-if="showFiledReports" />
           </td>
         </tr>
@@ -201,6 +197,20 @@ export default {
 }
 </script>
 <style lang="scss">
+.reports-table {
+  .row {
+    position: relative;
+  }
+
+  .row:nth-child(4n+1) {
+    background-color: $color-neutral-95;
+  }
+
+  .row:nth-child(4n+2) {
+    background-color: $color-neutral-95;
+  }
+}
+
 .status-line {
   display: inline-flex;
 
@@ -208,6 +218,13 @@ export default {
     margin-right: $space-xx-small;
   }
 }
+
+.nested-table-toggle {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
 .filed-table {
   padding-left: $space-xx-large;
 }
