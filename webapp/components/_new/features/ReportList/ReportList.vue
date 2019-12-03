@@ -1,6 +1,6 @@
 <template>
   <ds-card>
-    <div class="report-list-header">
+    <div class="reports-header">
       <h3 class="title">{{ $t('moderation.reports.name') }}</h3>
       <client-only>
         <dropdown-filter @filter="filter" :filterOptions="filterOptions" :selected="selected" />
@@ -132,7 +132,7 @@ export default {
 </script>
 
 <style lang="scss">
-.report-list-header {
+.reports-header {
   display: flex;
   justify-content: space-between;
   margin: $space-small 0;
