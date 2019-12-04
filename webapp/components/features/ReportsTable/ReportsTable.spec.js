@@ -1,7 +1,7 @@
 import { config, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 import ReportsTable from './ReportsTable.vue'
-import { reports } from '~/components/features/ReportsList/ReportsList.story.js'
+import { reports } from '~/components/features/ReportList/ReportList.story.js'
 
 const localVue = global.localVue
 

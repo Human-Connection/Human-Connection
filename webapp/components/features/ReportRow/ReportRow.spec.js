@@ -2,7 +2,7 @@ import { config, mount, RouterLinkStub } from '@vue/test-utils'
 import Vuex from 'vuex'
 import ReportRow from './ReportRow.vue'
 import BaseIcon from '~/components/_new/generic/BaseIcon/BaseIcon'
-import { reports } from '~/components/features/ReportsList/ReportsList.story.js'
+import { reports } from '~/components/features/ReportList/ReportList.story.js'
 
 const localVue = global.localVue
 
