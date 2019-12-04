@@ -6,7 +6,7 @@
         <dropdown-filter @filter="filter" :filterOptions="filterOptions" :selected="selected" />
       </client-only>
     </div>
-    <reports-table :reports="reports" @confirm="confirm" />
+    <reports-table :reports="reports" @confirm="openModal" />
   </ds-card>
 </template>
 <script>
@@ -95,9 +95,6 @@ export default {
       this.reports = option.value
       this.selected = option.label
     },
-    confirm(report) {
-      this.openModal(report)
-    },
     async confirmCallback(resource) {
       const { disabled: disable, id: resourceId } = resource
       this.$apollo
@@ -141,18 +138,5 @@ export default {
     margin: 0;
     font-size: $font-size-large;
   }
-}
-
-.decision {
-  color: $color-secondary;
-}
-.no-decision {
-  color: $color-warning;
-}
-.ban {
-  color: $color-danger;
-}
-.no-ban {
-  color: $color-success;
 }
 </style>

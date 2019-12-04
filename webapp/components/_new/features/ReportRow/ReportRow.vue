@@ -37,7 +37,7 @@
       <!-- Status Column -->
       <td class="ds-table-col" data-test="report-reviewer">
         <span class="status-line">
-          <base-icon :name="statusIconName" :class="isDisabled ? 'ban' : 'no-ban'" />
+          <base-icon :name="statusIconName" :class="isDisabled ? '--disabled' : '--enabled'" />
           {{ statusText }}
         </span>
         <client-only v-if="report.reviewed">
@@ -174,6 +174,14 @@ export default {
   .user-count {
     display: block;
     margin-bottom: $space-xx-small;
+  }
+
+  .--disabled {
+    color: $color-danger;
+  }
+
+  .--enabled {
+    color: $color-success;
   }
 }
 </style>
