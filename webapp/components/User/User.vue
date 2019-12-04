@@ -12,27 +12,25 @@
           <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
           <div>
             <ds-text class="userinfo">
-              <b class="username">{{ userName | truncate(18) }}</b>
-              <ds-text v-if="positionDatetime === 'sideward' && dateTime" size="small" color="soft">
-                <base-icon name="clock" />
-                <client-only>
-                  <hc-relative-date-time :date-time="dateTime" />
-                </client-only>
-                <slot name="dateTime"></slot>
-              </ds-text>
+              <b>{{ userSlug }}</b>
             </ds-text>
           </div>
-          <ds-text class="user-slug" align="left" size="small" color="soft">
-            {{ userSlug }}
+          <ds-text class="username" align="left" size="small" color="soft">
+            {{ userName | truncate(18) }}
+            <base-icon name="clock" />
+            <template v-if="dateTime">
+              <hc-relative-date-time :date-time="dateTime" />
+              <slot name="dateTime"></slot>
+            </template>
           </ds-text>
-          <!-- dateTime: kind of same as above: make own component? -->
+          <!-- dateTime: kind of same as above: make own component?
           <ds-text v-if="positionDatetime === 'below' && dateTime" size="small" color="soft">
             <base-icon name="clock" />
             <client-only>
               <hc-relative-date-time :date-time="dateTime" />
             </client-only>
             <slot name="dateTime"></slot>
-          </ds-text>
+          </ds-text> -->
         </div>
       </nuxt-link>
     </template>
@@ -116,7 +114,7 @@ export default {
     showAvatar: { type: Boolean, default: true },
     trunc: { type: Number, default: 18 }, // "-1" is no trunc
     dateTime: { type: [Date, String], default: null },
-    positionDatetime: { type: String, default: 'sideward' }, // 'below' is the otherone
+    // positionDatetime: { type: String, default: 'sideward' }, // 'below' is the otherone
   },
   computed: {
     ...mapGetters({

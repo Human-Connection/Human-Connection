@@ -316,53 +316,6 @@ describe('CreatePost', () => {
         )
       })
     })
-
-    describe('categories', () => {
-      describe('null', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: null }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-
-      describe('empty', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: [] }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-
-      describe('more than 3 items', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15', 'cat4'] }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-    })
   })
 })
 
@@ -492,74 +445,6 @@ describe('UpdatePost', () => {
         await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
           expected,
         )
-      })
-
-      describe('more than 3 categories', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15', 'cat4'] }
-        })
-
-        it('allows a maximum of three category for a successful update', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: updatePostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-
-      describe('post created without categories somehow', () => {
-        let owner
-
-        beforeEach(async () => {
-          const postSomehowCreated = await neode.create('Post', {
-            id: 'how-was-this-created',
-          })
-          owner = await neode.create('User', {
-            id: 'author-of-post-without-category',
-            name: 'Hacker',
-            slug: 'hacker',
-            email: 'hacker@example.org',
-            password: '1234',
-          })
-          await postSomehowCreated.relateTo(owner, 'author')
-          authenticatedUser = await owner.toJson()
-          variables = { ...variables, id: 'how-was-this-created' }
-        })
-
-        it('throws an error if categoryIds is not an array', async () => {
-          const {
-            errors: [error],
-          } = await mutate({
-            mutation: updatePostMutation,
-            variables: {
-              ...variables,
-              categoryIds: null,
-            },
-          })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-
-        it('requires at least one category for successful update', async () => {
-          const {
-            errors: [error],
-          } = await mutate({
-            mutation: updatePostMutation,
-            variables: {
-              ...variables,
-              categoryIds: [],
-            },
-          })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
       })
     })
   })

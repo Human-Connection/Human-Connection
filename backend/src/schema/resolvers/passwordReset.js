@@ -9,7 +9,6 @@ export default {
       return createPasswordReset({ driver, nonce, email })
     },
     resetPassword: async (_parent, { email, nonce, newPassword }, { driver }) => {
-      const session = driver.session()
       const stillValid = new Date()
       stillValid.setDate(stillValid.getDate() - 1)
       const encryptedNewPassword = await bcrypt.hashSync(newPassword, 10)
@@ -21,16 +20,20 @@ export default {
       SET u.encryptedPassword = $encryptedNewPassword
       RETURN pr
       `
-      const transactionRes = await session.run(cypher, {
-        stillValid,
-        email,
-        nonce,
-        encryptedNewPassword,
-      })
-      const [reset] = transactionRes.records.map(record => record.get('pr'))
-      const response = !!(reset && reset.properties.usedAt)
-      session.close()
-      return response
+      const session = driver.session()
+      try {
+        const transactionRes = await session.run(cypher, {
+          stillValid,
+          email,
+          nonce,
+          encryptedNewPassword,
+        })
+        const [reset] = transactionRes.records.map(record => record.get('pr'))
+        const response = !!(reset && reset.properties.usedAt)
+        return response
+      } finally {
+        session.close()
+      }
     },
   },
 }

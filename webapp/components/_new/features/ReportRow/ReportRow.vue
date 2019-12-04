@@ -46,7 +46,6 @@
             :showAvatar="false"
             :trunc="30"
             :date-time="report.updatedAt"
-            positionDatetime="below"
           />
         </client-only>
       </td>
@@ -59,7 +58,6 @@
         <ds-button
           v-else
           danger
-          class="confirm"
           size="small"
           :icon="statusIconName"
           @click="$emit('confirm-report')"

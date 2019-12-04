@@ -101,7 +101,7 @@ describe('ReportsTable', () => {
         describe('give report has not been closed', () => {
           let confirmButton
           beforeEach(() => {
-            confirmButton = commentRow.find('button.confirm')
+            confirmButton = commentRow.find('[data-test="confirm"]')
           })
           it('renders a confirm button', () => {
             expect(confirmButton.exists()).toBe(true)
@@ -153,7 +153,7 @@ describe('ReportsTable', () => {
         describe('give report has not been closed', () => {
           let confirmButton
           beforeEach(() => {
-            confirmButton = postRow.find('button.confirm')
+            confirmButton = postRow.find('[data-test="confirm"]')
           })
 
           it('renders a confirm button', () => {

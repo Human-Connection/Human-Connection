@@ -10,8 +10,6 @@
     "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js -e js,gql",
     "lint": "eslint src --config .eslintrc.js",
     "test": "jest --forceExit --detectOpenHandles --runInBand",
-    "test:cucumber:cmd": "wait-on tcp:4001 tcp:4123 && cucumber-js --require-module @babel/register --exit test/",
-    "test:cucumber": " cross-env CLIENT_URI=http://localhost:4123 run-p --race test:before:* 'test:cucumber:cmd {@}' --",
     "db:reset": "babel-node src/seed/reset-db.js",
     "db:seed": "babel-node src/seed/seed-db.js"
   },
@@ -99,7 +97,7 @@
     "xregexp": "^4.2.4"
   },
   "devDependencies": {
-    "@babel/cli": "~7.7.0",
+    "@babel/cli": "~7.7.4",
     "@babel/core": "~7.7.4",
     "@babel/node": "~7.7.4",
     "@babel/plugin-proposal-throw-expressions": "^7.7.4",
@@ -111,11 +109,11 @@
     "babel-jest": "~24.9.0",
     "chai": "~4.2.0",
     "cucumber": "~6.0.5",
-    "eslint": "~6.7.1",
+    "eslint": "~6.7.2",
     "eslint-config-prettier": "~6.7.0",
     "eslint-config-standard": "~14.1.0",
     "eslint-plugin-import": "~2.18.2",
-    "eslint-plugin-jest": "~23.0.5",
+    "eslint-plugin-jest": "~23.1.1",
     "eslint-plugin-node": "~10.0.0",
     "eslint-plugin-prettier": "~3.1.1",
     "eslint-plugin-promise": "~4.2.1",

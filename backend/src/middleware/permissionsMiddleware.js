@@ -45,8 +45,8 @@ const isAuthor = rule({
   cache: 'no_cache',
 })(async (_parent, args, { user, driver }) => {
   if (!user) return false
-  const session = driver.session()
   const { id: resourceId } = args
+  const session = driver.session()
   try {
     const result = await session.run(
       `

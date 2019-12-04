@@ -8,13 +8,13 @@ addons:
     - docker
     - chromium
 
-before_install:
+install:
   - yarn global add wait-on
   # Install Codecov
   - yarn install
   - cp cypress.env.template.json cypress.env.json
 
-install:
+before_script:
   - docker-compose -f docker-compose.yml build --parallel
   - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml build # just tagging, just be quite fast
   - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml up -d
@@ -30,10 +30,6 @@ script:
   - docker-compose exec backend yarn run test --ci --verbose=false --coverage
   - docker-compose exec backend yarn run db:seed
   - docker-compose exec backend yarn run db:reset
-  # ActivityPub cucumber testing temporarily disabled because it's too buggy
-  # - docker-compose exec backend yarn run test:cucumber --tags "not @wip"
-  # - docker-compose exec backend yarn run db:reset
-  # - docker-compose exec backend yarn run db:seed
   # Frontend
   - docker-compose exec webapp yarn run lint
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
@@ -42,6 +38,7 @@ script:
   - docker-compose -f docker-compose.yml up -d
   - wait-on http://localhost:7474
   - yarn run cypress:run --record
+  - yarn run cucumber
   # Coverage
   - yarn run codecov
 

@@ -15,7 +15,7 @@ services:
       - ./webapp:/nitro-web
     environment:
       - NUXT_BUILD=/tmp/nuxt # avoid file permission issues when `rm -rf .nuxt/`
-      - PUBLIC_REGISTRATION=true
+      - PUBLIC_REGISTRATION=false
     command: yarn run dev
   backend:
     build:
@@ -29,7 +29,7 @@ services:
       - SMTP_PORT=25
       - SMTP_IGNORE_TLS=true
       - "DEBUG=${DEBUG}"
-      - PUBLIC_REGISTRATION=true
+      - PUBLIC_REGISTRATION=false
   maintenance:
     image: humanconnection/maintenance:latest
     build:

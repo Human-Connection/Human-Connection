@@ -29,8 +29,8 @@ const factories = {
 
 export const cleanDatabase = async (options = {}) => {
   const { driver = getDriver() } = options
-  const session = driver.session()
   const cypher = 'MATCH (n) DETACH DELETE n'
+  const session = driver.session()
   try {
     return await session.run(cypher)
   } finally {
