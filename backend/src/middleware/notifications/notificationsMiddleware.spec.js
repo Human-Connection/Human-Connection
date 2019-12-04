@@ -371,7 +371,7 @@ describe('notifications', () => {
                 expect(readAfter).toEqual(false)
               })
 
-              it('updates the `createdAt` attribute', async () => {
+              it('does not update the `createdAt` attribute', async () => {
                 await createPostAction()
                 await markAsReadAction()
                 const {
