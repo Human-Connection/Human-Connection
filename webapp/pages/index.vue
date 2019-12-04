@@ -6,7 +6,11 @@
       </ds-grid-item>
       <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
         <!--<donation-info /> -->
-        <div></div>
+        <div>
+          <a target="_blank" href="https://human-connection.org/spenden/">
+            <ds-button primary>{{ $t('donations.donate-now') }}</ds-button>
+          </a>
+        </div>
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
