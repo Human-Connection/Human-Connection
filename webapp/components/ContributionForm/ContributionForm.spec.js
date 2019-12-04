@@ -250,7 +250,6 @@ describe('ContributionForm.vue', () => {
             await wrapper.find('input[type="checkbox"]').trigger('click')
             expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true)
             expect(wrapper.find('.images-set-blur').exists()).toBe(true)
-           
           })
         })
 
