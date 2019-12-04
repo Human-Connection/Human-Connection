@@ -1,12 +1,5 @@
 <template>
-  <tbody
-    :class="{
-      'report-row': true,
-      'report-comment': isComment,
-      'report-post': isPost,
-      'report-user': isUser,
-    }"
-  >
+  <tbody class="report-row" :data-test="dataTest">
     <tr>
       <!-- Icon Column -->
       <td class="ds-table-col">
@@ -24,7 +17,7 @@
       </td>
 
       <!-- Content Column -->
-      <td class="ds-table-col report-content">
+      <td class="ds-table-col" data-test="report-content">
         <client-only v-if="isUser">
           <hc-user :user="report.resource" :showAvatar="false" :trunc="30" />
         </client-only>
@@ -34,7 +27,7 @@
       </td>
 
       <!-- Author Column -->
-      <td class="ds-table-col report-author">
+      <td class="ds-table-col" data-test="report-author">
         <client-only v-if="!isUser">
           <hc-user :user="report.resource.author" :showAvatar="false" :trunc="30" />
         </client-only>
@@ -42,7 +35,7 @@
       </td>
 
       <!-- Status Column -->
-      <td class="ds-table-col report-reviewer">
+      <td class="ds-table-col" data-test="report-reviewer">
         <span class="status-line">
           <base-icon :name="statusIconName" :class="isDisabled ? 'ban' : 'no-ban'" />
           {{ statusText }}
@@ -60,7 +53,7 @@
 
       <!-- Decision Column -->
       <td class="ds-table-col">
-        <b v-if="report.closed" class="report-closed">
+        <b v-if="report.closed" data-test="report-closed">
           {{ $t('moderation.reports.decided') }}
         </b>
         <ds-button
@@ -105,6 +98,9 @@ export default {
     }
   },
   computed: {
+    dataTest() {
+      return `report-${this.report.resource.__typename}`.toLowerCase()
+    },
     isPost() {
       return this.report.resource.__typename === 'Post'
     },

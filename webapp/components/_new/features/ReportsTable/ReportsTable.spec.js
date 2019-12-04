@@ -60,7 +60,7 @@ describe('ReportsTable', () => {
       describe('Comment', () => {
         let commentRow
         beforeEach(() => {
-          commentRow = wrapper.find('.report-comment')
+          commentRow = wrapper.find('[data-test="report-comment"]')
         })
 
         it('renders a comments icon', () => {
@@ -69,12 +69,12 @@ describe('ReportsTable', () => {
         })
 
         it('renders a link to the post, with the comment contentExcerpt', () => {
-          const postLink = commentRow.find('.report-content a')
+          const postLink = commentRow.find('[data-test="report-content"] a')
           expect(postLink.text()).toEqual('@peter-lustig Lorem ipsum dolor sit amet, …')
         })
 
         it('renders the author', () => {
-          const username = commentRow.find('.report-author b')
+          const username = commentRow.find('[data-test="report-author"] b')
           expect(username.text()).toEqual('Louie')
         })
 
@@ -93,7 +93,7 @@ describe('ReportsTable', () => {
           })
 
           it('renders the moderator who reviewed the resource', () => {
-            const username = commentRow.find('.report-reviewer')
+            const username = commentRow.find('[data-test="report-reviewer"]')
             expect(username.text()).toContain('@moderator')
           })
         })
@@ -117,7 +117,7 @@ describe('ReportsTable', () => {
       describe('Post', () => {
         let postRow
         beforeEach(() => {
-          postRow = wrapper.find('.report-post')
+          postRow = wrapper.find('[data-test="report-post"]')
         })
 
         it('renders a bookmark icon', () => {
@@ -126,12 +126,12 @@ describe('ReportsTable', () => {
         })
 
         it('renders a link to the post', () => {
-          const postLink = postRow.find('.report-content a')
+          const postLink = postRow.find('[data-test="report-content"] a')
           expect(postLink.text()).toEqual("I'm a bigoted post!")
         })
 
         it('renders the author', () => {
-          const username = postRow.find('.report-author')
+          const username = postRow.find('[data-test="report-author"]')
           expect(username.text()).toContain('Dagobert')
         })
 
@@ -170,7 +170,7 @@ describe('ReportsTable', () => {
       describe('User', () => {
         let userRow
         beforeEach(() => {
-          userRow = wrapper.find('.report-user')
+          userRow = wrapper.find('[data-test="report-user"]')
         })
 
         it('renders a bookmark icon', () => {
@@ -179,7 +179,7 @@ describe('ReportsTable', () => {
         })
 
         it('renders a link to the user profile', () => {
-          const userLink = userRow.find('.report-content a')
+          const userLink = userRow.find('[data-test="report-content"] a')
           expect(userLink.text()).toContain('Abusive user')
         })
 
@@ -198,14 +198,16 @@ describe('ReportsTable', () => {
           })
 
           it('renders the moderator who reviewed the resource', () => {
-            const username = userRow.find('.report-reviewer')
+            const username = userRow.find('[data-test="report-reviewer"]')
             expect(username.text()).toContain('Peter Lustig')
           })
         })
 
         describe('give report has been closed', () => {
           it('renders Decided text', () => {
-            expect(userRow.find('.report-closed').text()).toEqual('moderation.reports.decided')
+            expect(userRow.find('[data-test="report-closed"]').text()).toEqual(
+              'moderation.reports.decided',
+            )
           })
         })
       })
