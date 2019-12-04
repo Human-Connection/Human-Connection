@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ReportList from '~/components/_new/features/ReportList/ReportList'
+import ReportList from '~/components/features/ReportList/ReportList'
 
 export default {
   components: {
