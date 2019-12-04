@@ -23,6 +23,16 @@ Then("I should see my comment", () => {
     .should("contain", "today at");
 });
 
+Then("I should see the entirety of my comment", () => {
+  cy.get("div.comment")
+  .should("not.contain", "show more")
+});
+
+Then("I should see an abreviated version of my comment", () => {
+  cy.get("div.comment")
+  .should("contain", "show more")
+});
+
 Then("the editor should be cleared", () => {
   cy.get(".ProseMirror p").should("have.class", "is-empty");
 });
