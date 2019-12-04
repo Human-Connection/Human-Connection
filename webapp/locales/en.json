@@ -482,11 +482,67 @@
     "reports": {
       "empty": "Congratulations, nothing to moderate.",
       "name": "Reports",
+      "status": "Current status",
+      "content": "Content",
+      "author": "Author",
+      "decision": "Decision",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "decided": "Decided",
+      "noDecision": "No decision!",
+      "decideButton": "Confirm",
+      "DecisionSuccess": "Decided successfully!",
+      "enabledBy": "Enabled by",
+      "disabledBy": "Disabled by",
+      "previousDecision": "Previous decision:",
+      "enabledAt": "Enabled at",
+      "disabledAt": "Disabled at",
       "reasonCategory": "Category",
       "reasonDescription": "Description",
-      "createdAt": "Date",
       "submitter": "Reported by",
-      "disabledBy": "Disabled by"
+      "numberOfUsers": "{count} users",
+      "filterLabel": {
+        "all": "All",
+        "unreviewed": "Unreviewed",
+        "reviewed": "Reviewed",
+        "closed": "Closed"
+      },
+      "reportedOn": "Date",
+      "moreDetails": "View Details",
+      "decideModal": {
+        "submit": "Confirm decision",
+        "cancel": "Cancel",
+        "User": {
+          "disable": {
+            "title": "Finally Disable User",
+            "message": "Do you really want to let the user \"<b>{name}</b>\" stay <b>disabled</b>?"
+          },
+          "enable": {
+            "title": "Finally Enable User",
+            "message": "Do you really want to let the user \"<b>{name}</b>\" stay <b>enabled</b>?"
+          }
+        },
+        "Post": {
+          "disable": {
+            "title": "Finally Disable Post",
+            "message": "Do you really want to let the post \"<b>{name}</b>\" stay <b>disabled</b>?"
+          },
+          "enable": {
+            "title": "Finally Enable Post",
+            "message": "Do you really want to let the post \"<b>{name}</b>\" stay <b>enabled</b>?"
+          }
+        },
+        "Comment": {
+          "disable": {
+            "title": "Finally Disable Comment",
+            "message": "Do you really want to let the comment \"<b>{name}</b>\" stay <b>disabled</b>?"
+          },
+          "enable": {
+            "title": "Finally Enable Comment",
+            "message": "Do you really want to let the comment \"<b>{name}</b>\" stay <b>enabled</b>?"
+          }
+        }
+      }
     }
   },
   "disable": {

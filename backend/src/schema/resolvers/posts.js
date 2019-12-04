@@ -5,6 +5,7 @@ import { getBlockedUsers, getBlockedByUsers } from './users.js'
 import { mergeWith, isArray, isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
+
 const filterForBlockedUsers = async (params, context) => {
   if (!context.user) return params
   const [blockedUsers, blockedByUsers] = await Promise.all([
@@ -318,7 +319,6 @@ export default {
       },
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
-        disabledBy: '<-[:DISABLED]-(related:User)',
         pinnedBy: '<-[:PINNED]-(related:User)',
       },
       count: {

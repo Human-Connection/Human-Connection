@@ -17,12 +17,6 @@ module.exports = {
   image: { type: 'string', allow: [null] },
   deleted: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },
-  disabledBy: {
-    type: 'relationship',
-    relationship: 'DISABLED',
-    target: 'User',
-    direction: 'in',
-  },
   notified: {
     type: 'relationship',
     relationship: 'NOTIFIED',

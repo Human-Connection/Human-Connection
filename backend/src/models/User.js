@@ -42,12 +42,6 @@ module.exports = {
     },
   },
   friends: { type: 'relationship', relationship: 'FRIENDS', target: 'User', direction: 'both' },
-  disabledBy: {
-    type: 'relationship',
-    relationship: 'DISABLED',
-    target: 'User',
-    direction: 'in',
-  },
   rewarded: {
     type: 'relationship',
     relationship: 'REWARDED',
