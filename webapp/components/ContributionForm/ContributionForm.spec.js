@@ -199,7 +199,7 @@ describe('ContributionForm.vue', () => {
               categoryIds: ['cat12'],
               imageUpload: null,
               image: null,
-              checkedBlur: false,
+              blurImage: false,
             },
           }
           postTitleInput = wrapper.find('.ds-input')
@@ -244,8 +244,10 @@ describe('ContributionForm.vue', () => {
 
         describe('questionable images should be blurred', () => {
           it('questionable images unset be blurred', async () => {
+         
             await wrapper.find('input[type="checkbox"]').trigger('click')
             expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true)
+            expect(wrapper.find('img.img-blur-in').exists()).toBe(true)
           })
         })
 

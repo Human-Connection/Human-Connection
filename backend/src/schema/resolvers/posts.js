@@ -304,7 +304,7 @@ export default {
         'language',
         'pinnedAt',
         'pinned',
-        'checkedBlur',
+        'blurImage',
       ],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',

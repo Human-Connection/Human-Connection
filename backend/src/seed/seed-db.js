@@ -352,7 +352,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.food(),
         categoryIds: ['cat16'],
-        checkedBlur: true,
+        blurImage: true,
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
@@ -360,28 +360,28 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.technology(),
         categoryIds: ['cat1'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         author: huey,
         id: 'p3',
         language: sample(languages),
         categoryIds: ['cat3'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         author: dewey,
         id: 'p4',
         language: sample(languages),
         categoryIds: ['cat4'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         author: louie,
         id: 'p5',
         language: sample(languages),
         categoryIds: ['cat5'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         authorId: 'u1',
@@ -389,20 +389,20 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.buildings(),
         categoryIds: ['cat6'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         author: huey,
         id: 'p9',
         language: sample(languages),
         categoryIds: ['cat9'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         author: dewey,
         id: 'p10',
         categoryIds: ['cat10'],
-        checkedBlur: true,
+        blurImage: true,
       }),
       factory.create('Post', {
         author: louie,
@@ -410,14 +410,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.people(),
         categoryIds: ['cat11'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
         id: 'p13',
         language: sample(languages),
         categoryIds: ['cat13'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         author: jennyRostock,
@@ -425,14 +425,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.objects(),
         categoryIds: ['cat14'],
-        checkedBlur: false,
+        blurImage: false,
       }),
       factory.create('Post', {
         author: huey,
         id: 'p15',
         language: sample(languages),
         categoryIds: ['cat15'],
-        checkedBlur: false,
+        blurImage: false,
       }),
     ])
 
@@ -451,14 +451,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         $title: String!
         $content: String!
         $categoryIds: [ID]
-        $checkedBlur: Boolean
+        $blurImage: Boolean
       ) {
         CreatePost(
           id: $id
           title: $title
           content: $content
           categoryIds: $categoryIds
-          checkedBlur: $checkedBlur
+          blurImage: $blurImage
         ) {
           id
         }
@@ -473,7 +473,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Nature Philosophy Yoga`,
           content: hashtag1,
           categoryIds: ['cat2'],
-          checkedBlur: false,
+          blurImage: false,
         },
       }),
       mutate({
@@ -483,7 +483,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #7',
           content: `${mention1} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat7'],
-          checkedBlur: false,
+          blurImage: false,
         },
       }),
       mutate({
@@ -494,7 +494,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Quantum Flow Theory explains Quantum Gravity`,
           content: hashtagAndMention1,
           categoryIds: ['cat8'],
-          checkedBlur: false,
+          blurImage: false,
         },
       }),
       mutate({
@@ -504,7 +504,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #12',
           content: `${mention2} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat12'],
-          checkedBlur: false,
+          blurImage: false,
         },
       }),
     ])

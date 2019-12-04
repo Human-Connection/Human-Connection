@@ -6,7 +6,7 @@
       'post-card': true,
       'disabled-content': post.disabled,
       'post--pinned': isPinned,
-      'images-set-blur': post.checkedBlur,
+      'images-set-blur': post.blurImage,
     }"
   >
     <!-- Post Link Target -->

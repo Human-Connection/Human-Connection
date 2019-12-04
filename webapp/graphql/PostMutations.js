@@ -9,7 +9,7 @@ export default () => {
         $language: String
         $categoryIds: [ID]
         $imageUpload: Upload
-        $checkedBlur: Boolean
+        $blurImage: Boolean
       ) {
         CreatePost(
           title: $title
@@ -17,14 +17,14 @@ export default () => {
           language: $language
           categoryIds: $categoryIds
           imageUpload: $imageUpload
-          checkedBlur: $checkedBlur
+          blurImage: $blurImage
         ) {
           title
           slug
           content
           contentExcerpt
           language
-          checkedBlur
+          blurImage
         }
       }
     `,
@@ -37,7 +37,7 @@ export default () => {
         $imageUpload: Upload
         $categoryIds: [ID]
         $image: String
-        $checkedBlur: Boolean
+        $blurImage: Boolean
       ) {
         UpdatePost(
           id: $id
@@ -47,7 +47,7 @@ export default () => {
           imageUpload: $imageUpload
           categoryIds: $categoryIds
           image: $image
-          checkedBlur: $checkedBlur
+          blurImage: $blurImage
         ) {
           id
           title
@@ -55,7 +55,7 @@ export default () => {
           content
           contentExcerpt
           language
-          checkedBlur
+          blurImage
           pinnedBy {
             id
             name

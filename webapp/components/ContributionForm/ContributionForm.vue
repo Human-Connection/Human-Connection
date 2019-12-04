@@ -40,11 +40,12 @@
         <ds-text align="right">
           <label for="blur_img">{{ $t('contribution.shockingPicture') }}</label>
           <input
-            name="checkedBlur"
+            name="blurImage"
+            class="blurImageCheckbox"
             type="checkbox"
             id="blur_img"
             :checked="checkedBlur"
-            @change="checkedChange"
+            @change="(checkedBlur = !checkedBlur), (form.checkbox = !checkedBlur)"
           />
 
           <label for="blur_img"><span class=""></span></label>
@@ -190,7 +191,7 @@ export default {
           ? languageOptions.find(o => this.contribution.language === o.value)
           : null
       form.categoryIds = this.categoryIds(this.contribution.categories)
-      form.checkbox = this.contribution.checkedBlur
+      form.checkbox = this.contribution.blurImage
     }
 
     return {
@@ -225,7 +226,7 @@ export default {
   },
   created() {},
   mounted() {
-    if (this.contribution && this.contribution.checkedBlur === true) {
+    if (this.contribution && this.contribution.blurImage === true) {
       this.checkedChange()
       this.$el.querySelector('.hc-attachments-upload-area-post img').classList.add('img-blur-in')
     }
@@ -246,15 +247,19 @@ export default {
     },
     checkedChange() {
       if (this.$el) {
+        console.log(this.$el.querySelector('.crop-overlay'))
+        console.log(document.querySelector('.crop-overlay'))
         this.elem = this.$el.querySelector('img')
       } else {
       }
       if (this.checkedBlur) {
         this.elem.classList.remove('img-blur-in')
+        document.querySelector('.crop-overlay').classList.remove('images-set-blur')
         this.checkedBlur = false
         this.form.checkbox = false
       } else {
         if (this.elem != null) {
+          
           this.elem.classList.add('img-blur-in')
         }
         this.checkedBlur = true
@@ -282,7 +287,7 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
-            checkedBlur: this.form.checkbox,
+            blurImage: this.form.checkbox,
           },
         })
         .then(({ data }) => {
@@ -357,7 +362,18 @@ export default {
   -o-transition: all ease 0.2s;
   transition: all ease 0.2s;
 }
-
+.images-set-blur img{
+  -webkit-filter: blur(32px);
+  -moz-filter: blur(32px);
+  -ms-filter: blur(32px);
+  -o-filter: blur(32px);
+  filter: blur(32px);
+  -webkit-transition: all ease 0.2s;
+  -moz-transition: all ease 0.2s;
+  -ms-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+}
 .blurBox {
   text-align: right;
   position: relative;

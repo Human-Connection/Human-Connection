@@ -7,12 +7,12 @@
       :class="{
         'post-card': true,
         'disabled-content': post.disabled,
-        'images-set-blur': post.checkedBlur,
+        'images-set-blur': post.blurImage,
       }"
     >
       <ds-text align="right" class="blurBox">
         <ds-button
-          v-show="post.checkedBlur"
+          v-show="post.blurImage"
           class="bluricon-post"
           icon="eye"
           primary
@@ -26,7 +26,7 @@
           @click.prevent="Blur"
         ></ds-button>
         <img
-          v-show="post.checkedBlur"
+          v-show="post.blurImage"
           :src="post.image | proxyApiUrl"
           class="blurImgPreview"
           @click.prevent="unBlur"
@@ -178,14 +178,14 @@ export default {
   },
   methods: {
     unBlur() {
-      if (this.post.checkedBlur) {
-        this.post.checkedBlur = false
+      if (this.post.blurImage) {
+        this.post.blurImage = false
         this.blur = true
       }
     },
     Blur() {
-      if (!this.post.checkedBlur) {
-        this.post.checkedBlur = true
+      if (!this.post.blurImage) {
+        this.post.blurImage = true
         this.blur = false
       }
     },
