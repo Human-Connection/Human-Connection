@@ -12,21 +12,21 @@
     >
       <ds-text align="right" class="blurBox">
         <ds-button
-          v-show="post.blurImage"
+          v-if="post.blurImage"
           class="bluricon-post"
           icon="eye"
           primary
           @click.prevent="unBlur"
         ></ds-button>
         <ds-button
-          v-show="blur"
+          v-if="blur"
           class="bluricon-post"
           icon="eye-slash"
           primary
           @click.prevent="Blur"
         ></ds-button>
         <img
-          v-show="post.blurImage"
+          v-if="post.blurImage"
           :src="post.image | proxyApiUrl"
           class="blurImgPreview"
           @click.prevent="unBlur"

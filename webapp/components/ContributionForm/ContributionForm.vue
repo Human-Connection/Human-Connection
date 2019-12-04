@@ -40,12 +40,12 @@
         <ds-text align="right">
           <label for="blur_img">{{ $t('contribution.shockingPicture') }}</label>
           <input
-            name="blurImage"
+            name="checkbox"
             class="blurImageCheckbox"
             type="checkbox"
             id="blur_img"
-            :checked="checkedBlur"
-            @change="(checkedBlur = !checkedBlur), (form.checkbox = !checkedBlur)"
+            v-model="checkedBlur"
+            @change="form.checkbox = checkedBlur"
           />
 
           <label for="blur_img"><span class=""></span></label>
@@ -227,8 +227,7 @@ export default {
   created() {},
   mounted() {
     if (this.contribution && this.contribution.blurImage === true) {
-      this.checkedChange()
-      this.$el.querySelector('.hc-attachments-upload-area-post img').classList.add('img-blur-in')
+      this.checkedBlur = true
     }
   },
   computed: {
@@ -242,28 +241,7 @@ export default {
   methods: {
     unBlur() {
       if (this.checkedBlur) {
-        this.checkedChange()
-      }
-    },
-    checkedChange() {
-      if (this.$el) {
-        console.log(this.$el.querySelector('.crop-overlay'))
-        console.log(document.querySelector('.crop-overlay'))
-        this.elem = this.$el.querySelector('img')
-      } else {
-      }
-      if (this.checkedBlur) {
-        this.elem.classList.remove('img-blur-in')
-        document.querySelector('.crop-overlay').classList.remove('images-set-blur')
         this.checkedBlur = false
-        this.form.checkbox = false
-      } else {
-        if (this.elem != null) {
-          
-          this.elem.classList.add('img-blur-in')
-        }
-        this.checkedBlur = true
-        this.form.checkbox = true
       }
     },
     submit() {
@@ -362,7 +340,7 @@ export default {
   -o-transition: all ease 0.2s;
   transition: all ease 0.2s;
 }
-.images-set-blur img{
+.images-set-blur img {
   -webkit-filter: blur(32px);
   -moz-filter: blur(32px);
   -ms-filter: blur(32px);
@@ -416,19 +394,5 @@ export default {
   .ds-chip {
     cursor: default;
   }
-}
-input[type='checkbox'] {
-  display: none;
-}
-input[type='checkbox'] + label span {
-  display: inline-block;
-  width: 29px;
-  height: 27px;
-  vertical-align: middle;
-  background: url(../../static/img/checkbox/checkbox-set-blank-checked-line.png) left top no-repeat;
-  cursor: pointer;
-}
-input[type='checkbox']:checked + label span {
-  background: url(../../static/img/checkbox/checkbox-set-blank-checked-line.png) -30px top no-repeat;
 }
 </style>

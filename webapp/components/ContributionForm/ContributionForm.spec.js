@@ -244,10 +244,13 @@ describe('ContributionForm.vue', () => {
 
         describe('questionable images should be blurred', () => {
           it('questionable images unset be blurred', async () => {
-         
+            expectedParams.variables.imageUpload = imageUpload
+            wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
+            expect(wrapper.find('.images-set-blur').exists()).toBe(false)
             await wrapper.find('input[type="checkbox"]').trigger('click')
             expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true)
-            expect(wrapper.find('img.img-blur-in').exists()).toBe(true)
+            expect(wrapper.find('.images-set-blur').exists()).toBe(true)
+           
           })
         })
 
