@@ -23,7 +23,7 @@
           class="bluricon-post"
           icon="eye-slash"
           primary
-          @click.prevent="Blur"
+          @click.prevent="blur"
         ></ds-button>
         <img
           v-if="post.blurImage"
@@ -183,7 +183,7 @@ export default {
         this.blur = true
       }
     },
-    Blur() {
+    blur() {
       if (!this.post.blurImage) {
         this.post.blurImage = true
         this.blur = false
