@@ -4,11 +4,7 @@ import { createTestClient } from 'apollo-server-testing'
 import { neode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
-let server
-let query
-let mutate
-let notifiedUser
-let authenticatedUser
+let server, query, mutate, notifiedUser, authenticatedUser
 const factory = Factory()
 const driver = getDriver()
 const instance = neode()

@@ -38,7 +38,7 @@ const createLocation = async (session, mapboxData) => {
     lng: mapboxData.center && mapboxData.center.length ? mapboxData.center[1] : null,
   }
 
-  let query =
+  let mutation =
     'MERGE (l:Location {id: $id}) ' +
     'SET l.name = $nameEN, ' +
     'l.nameEN = $nameEN, ' +
@@ -53,12 +53,17 @@ const createLocation = async (session, mapboxData) => {
     'l.type = $type'
 
   if (data.lat && data.lng) {
-    query += ', l.lat = $lat, l.lng = $lng'
+    mutation += ', l.lat = $lat, l.lng = $lng'
   }
-  query += ' RETURN l.id'
+  mutation += ' RETURN l.id'
 
-  await session.run(query, data)
-  session.close()
+  try {
+    await session.writeTransaction(transaction => {
+      return transaction.run(mutation, data)
+    })
+  } finally {
+    session.close()
+  }
 }
 
 const createOrUpdateLocations = async (userId, locationName, driver) => {

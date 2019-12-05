@@ -3,7 +3,7 @@ import extractHashtags from '../hashtags/extractHashtags'
 const updateHashtagsOfPost = async (postId, hashtags, context) => {
   if (!hashtags.length) return
   const session = context.driver.session()
-  
+
   try {
     await session.writeTransaction(txc => {
       return txc.run(

@@ -1,23 +1,22 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 
-const postAuthorOfComment = async (comment, { context }) => {
-  const cypherFindUser = `
-    MATCH (user: User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
-    RETURN user { .id }
-    `
+const postAuthorOfComment = async (commentId, { context }) => {
   const session = context.driver.session()
-  let result
+  let postAuthorId
   try {
-    result = await session.run(cypherFindUser, {
-      commentId: comment.id,
+    postAuthorId = await session.readTransaction(transaction => {
+      return transaction.run(
+        ` 
+          MATCH (author:User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
+          RETURN author { .id } as authorId
+        `,
+        { commentId },
+      )
     })
+    return postAuthorId.records.map(record => record.get('authorId'))
   } finally {
     session.close()
   }
-  const [postAuthor] = await result.records.map(record => {
-    return record.get('user')
-  })
-  return postAuthor
 }
 
 const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
@@ -90,10 +89,8 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
   }
   const session = context.driver.session()
   try {
-    await session.run(cypher, {
-      id,
-      idsOfUsers,
-      reason,
+    await session.writeTransaction(transaction => {
+      return transaction.run(cypher, { id, idsOfUsers, reason })
     })
   } finally {
     session.close()
@@ -102,56 +99,24 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
-
   const post = await resolve(root, args, context, resolveInfo)
-
-  if (post) {
-    await notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
-  }
-
-  return post
+  if (post) return notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
 }
 
 const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
-  let idsOfUsers = extractMentionedUsers(args.content)
-  const comment = await resolve(root, args, context, resolveInfo)
-
-  if (comment) {
-    const postAuthor = await postAuthorOfComment(comment, { context })
-    idsOfUsers = idsOfUsers.filter(id => id !== postAuthor.id)
-
-    await notifyUsers('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
-  }
-
-  return comment
+  const { content, id: commentId } = args
+  let idsOfUsers = extractMentionedUsers(content)
+  const [postAuthor] = await postAuthorOfComment(commentId, { context })
+  idsOfUsers = idsOfUsers.filter(id => id !== postAuthor.id)
+  if (idsOfUsers && idsOfUsers.length)
+    await notifyUsers('Comment', commentId, idsOfUsers, 'mentioned_in_comment', context)
+  if (context.user.id !== postAuthor.id)
+    await notifyUsers('Comment', commentId, [postAuthor.id], 'commented_on_post', context)
 }
 
 const handleCreateComment = async (resolve, root, args, context, resolveInfo) => {
-  const comment = await handleContentDataOfComment(resolve, root, args, context, resolveInfo)
-
-  if (comment) {
-    const cypherFindUser = `
-    MATCH (user: User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
-    RETURN user { .id }
-    `
-    const session = context.driver.session()
-    let result
-    try {
-      result = await session.run(cypherFindUser, {
-        commentId: comment.id,
-      })
-    } finally {
-      session.close()
-    }
-    const [postAuthor] = await result.records.map(record => {
-      return record.get('user')
-    })
-    if (context.user.id !== postAuthor.id) {
-      await notifyUsers('Comment', comment.id, [postAuthor.id], 'commented_on_post', context)
-    }
-  }
-
-  return comment
+  const comment = await resolve(root, args, context, resolveInfo)
+  if (comment) return handleContentDataOfComment(resolve, root, args, context, resolveInfo)
 }
 
 export default {

@@ -23,14 +23,12 @@ export default async (driver, authorizationHeader) => {
       `,
       { id },
     )
-    return updateUserLastActiveTransactionResponse.records.map(
-      record => record.get('user'),
-    )
+    return updateUserLastActiveTransactionResponse.records.map(record => record.get('user'))
   })
   try {
     const [currentUser] = await writeTxResultPromise
-     if (!currentUser) return null
-     return {
+    if (!currentUser) return null
+    return {
       token,
       ...currentUser,
     }
