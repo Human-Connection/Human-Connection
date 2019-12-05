@@ -8,7 +8,6 @@ export const reportsListQuery = () => {
         id
         createdAt
         updatedAt
-        disable
         closed
         reviewed {
           createdAt
