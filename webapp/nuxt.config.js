@@ -258,19 +258,24 @@ export default {
       svgRule.test = /\.(png|jpe?g|gif|webp)$/
       config.module.rules.push({
         test: /\.svg$/,
-        loader: 'vue-svg-loader',
-        options: {
-          svgo: {
-            plugins: [
-              {
-                removeViewBox: false,
+        use: [
+          'babel-loader',
+          {
+            loader: 'vue-svg-loader',
+            options: {
+              svgo: {
+                plugins: [
+                  {
+                    removeViewBox: false,
+                  },
+                  {
+                    removeDimensions: true,
+                  },
+                ],
               },
-              {
-                removeDimensions: true,
-              },
-            ],
+            },
           },
-        },
+        ],
       })
     },
   },
