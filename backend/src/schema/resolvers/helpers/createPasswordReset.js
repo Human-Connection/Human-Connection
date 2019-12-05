@@ -1,10 +1,9 @@
-import { normalizeEmail } from 'validator'
+import normalizeEmail from './normalizeEmail'
 
 export default async function createPasswordReset(options) {
   const { driver, nonce, email, issuedAt = new Date() } = options
   const normalizedEmail = normalizeEmail(email)
   const session = driver.session()
-  let response = {}
   try {
     const cypher = `
       MATCH (u:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email:$email})
@@ -23,9 +22,8 @@ export default async function createPasswordReset(options) {
       const { name } = record.get('u').properties
       return { email, nonce, name }
     })
-    response = records[0] || {}
+    return records[0] || {}
   } finally {
     session.close()
   }
-  return response
 }

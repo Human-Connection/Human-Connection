@@ -33,7 +33,6 @@ type User {
   coverImg: String
   deleted: Boolean
   disabled: Boolean
-  disabledBy: User @relation(name: "DISABLED", direction: "IN")
   role: UserGroup!
   publicKey: String
   invitedBy: User @relation(name: "INVITED", direction: "IN")
@@ -44,8 +43,6 @@ type User {
   about: String
   socialMedia: [SocialMedia]! @relation(name: "OWNED_BY", direction: "IN")
 
-  # createdAt: DateTime
-  # updatedAt: DateTime
   createdAt: String
   updatedAt: String
 

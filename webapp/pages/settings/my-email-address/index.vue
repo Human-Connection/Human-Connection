@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex'
 import { AddEmailAddressMutation } from '~/graphql/EmailAddress.js'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
-import { normalizeEmail } from 'validator'
+import normalizeEmail from '~/components/utils/NormalizeEmail'
 
 export default {
   components: {

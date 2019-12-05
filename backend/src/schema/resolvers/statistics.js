@@ -1,6 +1,6 @@
 export default {
   Query: {
-    statistics: async (parent, args, { driver, user }) => {
+    statistics: async (_parent, _args, { driver }) => {
       const session = driver.session()
       const response = {}
       try {
@@ -33,10 +33,10 @@ export default {
          * Note: invites count is calculated this way because invitation codes are not in use yet
          */
         response.countInvites = response.countEmails - response.countUsers
+        return response
       } finally {
         session.close()
       }
-      return response
     },
   },
 }

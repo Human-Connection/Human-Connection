@@ -2,7 +2,7 @@ import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
 import { neode } from '../../bootstrap/neo4j'
-import { normalizeEmail } from 'validator'
+import normalizeEmail from './helpers/normalizeEmail'
 
 const instance = neode()
 
@@ -24,29 +24,32 @@ export default {
       // }
       email = normalizeEmail(email)
       const session = driver.session()
-      const result = await session.run(
-        `
+      try {
+        const result = await session.run(
+          `
         MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
         RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
       `,
-        { userEmail: email },
-      )
-      session.close()
-      const [currentUser] = await result.records.map(record => {
-        return record.get('user')
-      })
+          { userEmail: email },
+        )
+        const [currentUser] = await result.records.map(record => {
+          return record.get('user')
+        })
 
-      if (
-        currentUser &&
-        (await bcrypt.compareSync(password, currentUser.encryptedPassword)) &&
-        !currentUser.disabled
-      ) {
-        delete currentUser.encryptedPassword
-        return encode(currentUser)
-      } else if (currentUser && currentUser.disabled) {
-        throw new AuthenticationError('Your account has been disabled.')
-      } else {
-        throw new AuthenticationError('Incorrect email address or password.')
+        if (
+          currentUser &&
+          (await bcrypt.compareSync(password, currentUser.encryptedPassword)) &&
+          !currentUser.disabled
+        ) {
+          delete currentUser.encryptedPassword
+          return encode(currentUser)
+        } else if (currentUser && currentUser.disabled) {
+          throw new AuthenticationError('Your account has been disabled.')
+        } else {
+          throw new AuthenticationError('Incorrect email address or password.')
+        }
+      } finally {
+        session.close()
       }
     },
     changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {

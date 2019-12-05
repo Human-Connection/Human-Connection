@@ -184,7 +184,7 @@
             "projects": "Projekte",
             "invites": "Einladungen",
             "follows": "Folgen",
-            "shouts": "Zurufe"
+            "shouts": "Empfehlungen"
         },
         "organizations": {
             "name": "Organisationen"
@@ -316,12 +316,67 @@
         "reports": {
             "empty": "Glückwunsch, es gibt nichts zu moderieren.",
             "name": "Meldungen",
-            "reporter": "gemeldet von",
-            "submitter": "gemeldet von",
-            "disabledBy": "deaktiviert von",
+            "status": "Aktueller Status",
+            "content": "Inhalt",
+            "author": "Autor",
+            "decision": "Entscheidung",
+            "enabled": "Entsperrt",
+            "disabled": "Gesperrt",
+            "decided": "Entschieden",
+            "noDecision": "Keine Entscheidung!",
+            "decideButton": "Bestätige",
+            "DecisionSuccess": "Erfolgreich entschieden!",
+            "enabledBy": "Entsperrt von",
+            "disabledBy": "Gesperrt von",
+            "previousDecision": "Vorherige Entscheidung:",
+            "enabledAt": "Entsperrt am",
+            "disabledAt": "Gesperrt am",
             "reasonCategory": "Kategorie",
             "reasonDescription": "Beschreibung",
-            "createdAt": "Datum"
+            "submitter": "Gemeldet von",
+            "numberOfUsers": "{count} Nutzern",
+            "filterLabel": {
+              "all": "Alle",
+              "unreviewed": "Nicht bearbeitet",
+              "reviewed": "Bearbeitet",
+              "closed": "Abgeschlossen"
+            },
+            "reportedOn": "Datum",
+            "moreDetails": "Details öffnen",
+            "decideModal": {
+              "submit": "Bestätige Entscheidung",
+              "cancel": "Abbruch",
+              "User": {
+                "disable": {
+                  "title": "Sperre den Benutzer abschließend",
+                  "message": "Möchtest du den Benutzer \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
+                },
+                "enable": {
+                  "title": "Entsperre den Benutzer abschließend",
+                  "message": "Möchtest du den Benutzer \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
+                }
+              },
+              "Post": {
+                "disable": {
+                  "title": "Sperre den Beitrag abschließend",
+                  "message": "Möchtest du den Beitrag \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
+                },
+                "enable": {
+                  "title": "Entsperre den Beitrag abschließend",
+                  "message": "Möchtest du den Beitrag \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
+                }
+              },
+              "Comment": {
+                "disable": {
+                  "title": "Sperre den Kommentar abschließend",
+                  "message": "Möchtest du den Kommentar \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
+                },
+                "enable": {
+                  "title": "Entsperre den Kommentar abschließend",
+                  "message": "Möchtest du den Kommentar \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
+                }
+              }
+            }
         }
     },
     "disable": {
@@ -347,6 +402,7 @@
     "report": {
         "submit": "Meldung senden",
         "cancel": "Abbrechen",
+        "success": "Vielen Dank für diese Meldung!",
         "user": {
             "title": "Nutzer melden",
             "type": "Nutzer",
@@ -365,7 +421,6 @@
             "message": "Bist Du sicher, dass Du den Kommentar von „<b>{name}<\/b>“ melden möchtest?",
             "error": "Du hast den Kommentar bereits gemeldet!"
         },
-        "success": "Vielen Dank für diese Meldung!",
         "reason": {
             "category": {
                 "label": "Wähle eine Kategorie:",
@@ -734,6 +789,10 @@
         "errors-and-feedback": {
             "title": "Fehler und Rückmeldungen",
             "description": "Wir sind sehr bemüht, unser Netzwerk und unsere Daten sicher und abrufbar zu erhalten. Jede neue Version der Software durchläuft sowohl automatisierte als auch manuelle Tests. Es können jedoch unvorhergesehene Fehler auftreten. Deshalb sind wir dankbar für jeden gemeldeten Fehler. Du kannst gerne jeden von Dir entdeckten Fehler dem Support\/der Hilfe-Assistenz mitteilen: support@human-connection.org"
+        },
+        "no-commercial-use" : {
+          "title": "Keine kommerzielle Nutzung",
+          "description": "Die Nutzung des Human Connection Netzwerkes ist nicht gestattet für kommerzielle Nutzung. Darunter fällt unter anderem das Bewerben von Produkten mit kommerzieller Absicht, das Einstellen von Affiliate-Links, direkter Aufruf zu Spenden oder finanzieller Unterstützung für Zwecke, die steuerlich nicht als gemeinnützig anerkannt sind."
         },
         "help-and-questions": {
             "title": "Hilfe und Fragen",

@@ -1,4 +1,4 @@
-import { rule, shield, deny, allow, and, or, not } from 'graphql-shield'
+import { rule, shield, deny, allow, or } from 'graphql-shield'
 import { neode } from '../bootstrap/neo4j'
 import CONFIG from '../config'
 
@@ -41,48 +41,27 @@ const isMySocialMedia = rule({
   return socialMedia.ownedBy.node.id === user.id
 })
 
-const invitationLimitReached = rule({
-  cache: 'no_cache',
-})(async (parent, args, { user, driver }) => {
-  const session = driver.session()
-  try {
-    const result = await session.run(
-      `
-      MATCH (user:User {id:$id})-[:GENERATED]->(i:InvitationCode)
-      RETURN COUNT(i) >= 3 as limitReached
-      `,
-      { id: user.id },
-    )
-    const [limitReached] = result.records.map(record => {
-      return record.get('limitReached')
-    })
-    return limitReached
-  } finally {
-    session.close()
-  }
-})
-
 const isAuthor = rule({
   cache: 'no_cache',
 })(async (_parent, args, { user, driver }) => {
   if (!user) return false
-  const session = driver.session()
   const { id: resourceId } = args
-  const result = await session.run(
-    `
-  MATCH (resource {id: $resourceId})<-[:WROTE]-(author)
-  RETURN author
-  `,
-    {
-      resourceId,
-    },
-  )
-  session.close()
-  const [author] = result.records.map(record => {
-    return record.get('author')
-  })
-  const authorId = author && author.properties && author.properties.id
-  return authorId === user.id
+  const session = driver.session()
+  try {
+    const result = await session.run(
+      `
+      MATCH (resource {id: $resourceId})<-[:WROTE]-(author {id: $userId})
+      RETURN author
+    `,
+      { resourceId, userId: user.id },
+    )
+    const [author] = result.records.map(record => {
+      return record.get('author')
+    })
+    return !!author
+  } finally {
+    session.close()
+  }
 })
 
 const isDeletingOwnAccount = rule({
@@ -129,12 +108,11 @@ export default shield(
       SignupByInvitation: allow,
       Signup: or(publicRegistration, isAdmin),
       SignupVerification: allow,
-      CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
       DeletePost: isAuthor,
-      report: isAuthenticated,
+      fileReport: isAuthenticated,
       CreateSocialMedia: isAuthenticated,
       UpdateSocialMedia: isMySocialMedia,
       DeleteSocialMedia: isMySocialMedia,
@@ -147,8 +125,7 @@ export default shield(
       shout: isAuthenticated,
       unshout: isAuthenticated,
       changePassword: isAuthenticated,
-      enable: isModerator,
-      disable: isModerator,
+      review: isModerator,
       CreateComment: isAuthenticated,
       UpdateComment: isAuthor,
       DeleteComment: isAuthor,

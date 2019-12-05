@@ -3,7 +3,7 @@ import Resolver from './helpers/Resolver'
 import existingEmailAddress from './helpers/existingEmailAddress'
 import { UserInputError } from 'apollo-server'
 import Validator from 'neode/build/Services/Validator.js'
-import { normalizeEmail } from 'validator'
+import normalizeEmail from './helpers/normalizeEmail'
 
 export default {
   Mutation: {

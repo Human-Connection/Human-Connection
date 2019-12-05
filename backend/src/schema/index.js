@@ -10,7 +10,6 @@ export default makeAugmentedSchema({
       exclude: [
         'Badge',
         'Embed',
-        'InvitationCode',
         'EmailAddress',
         'Notfication',
         'Statistics',
@@ -18,7 +17,9 @@ export default makeAugmentedSchema({
         'Location',
         'SocialMedia',
         'NOTIFIED',
-        'REPORTED',
+        'FILED',
+        'REVIEWED',
+        'Report',
         'Donations',
       ],
     },

@@ -9,7 +9,7 @@ open your minikube dashboard:
 $ minikube dashboard
 ```
 
-This will give you an overview. Some of the steps below need some timing to make ressources available to other dependent deployments. Keeping an eye on the dashboard is a great way to check that.
+This will give you an overview. Some of the steps below need some timing to make resources available to other dependent deployments. Keeping an eye on the dashboard is a great way to check that.
 
 Follow the installation instruction for [Human Connection](../human-connection/README.md).
 If all the pods and services have settled and everything looks green in your

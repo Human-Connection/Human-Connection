@@ -5,7 +5,7 @@ const NO_POST_ERR_MESSAGE = 'Comment cannot be created without a post!'
 const NO_CATEGORIES_ERR_MESSAGE =
   'You cannot save a post without at least one category or more than three'
 
-const validateCommentCreation = async (resolve, root, args, context, info) => {
+const validateCreateComment = async (resolve, root, args, context, info) => {
   const content = args.content.replace(/<(?:.|\n)*?>/gm, '').trim()
   const { postId } = args
 
@@ -13,28 +13,30 @@ const validateCommentCreation = async (resolve, root, args, context, info) => {
     throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
   }
   const session = context.driver.session()
-  const postQueryRes = await session.run(
-    `
+  try {
+    const postQueryRes = await session.run(
+      `
     MATCH (post:Post {id: $postId})
     RETURN post`,
-    {
-      postId,
-    },
-  )
-  session.close()
-  const [post] = postQueryRes.records.map(record => {
-    return record.get('post')
-  })
+      {
+        postId,
+      },
+    )
+    const [post] = postQueryRes.records.map(record => {
+      return record.get('post')
+    })
 
-  if (!post) {
-    throw new UserInputError(NO_POST_ERR_MESSAGE)
-  } else {
-    return resolve(root, args, context, info)
+    if (!post) {
+      throw new UserInputError(NO_POST_ERR_MESSAGE)
+    } else {
+      return resolve(root, args, context, info)
+    }
+  } finally {
+    session.close()
   }
 }
 
 const validateUpdateComment = async (resolve, root, args, context, info) => {
-  const COMMENT_MIN_LENGTH = 1
   const content = args.content.replace(/<(?:.|\n)*?>/gm, '').trim()
   if (!args.content || content.length < COMMENT_MIN_LENGTH) {
     throw new UserInputError(`Comment must be at least ${COMMENT_MIN_LENGTH} character long!`)
@@ -59,36 +61,67 @@ const validateUpdatePost = async (resolve, root, args, context, info) => {
 
 const validateReport = async (resolve, root, args, context, info) => {
   const { resourceId } = args
-  const { user, driver } = context
+  const { user } = context
   if (resourceId === user.id) throw new Error('You cannot report yourself!')
-  const session = driver.session()
-  const reportQueryRes = await session.run(
-    `
-      MATCH (:User {id:$submitterId})-[:REPORTED]->(resource {id:$resourceId}) 
-      RETURN labels(resource)[0] as label
-    `,
-    {
-      resourceId,
-      submitterId: user.id,
-    },
-  )
-  session.close()
-  const [existingReportedResource] = reportQueryRes.records.map(record => {
-    return {
-      label: record.get('label'),
-    }
-  })
+  return resolve(root, args, context, info)
+}
 
-  if (existingReportedResource) throw new Error(`${existingReportedResource.label}`)
+const validateReview = async (resolve, root, args, context, info) => {
+  const { resourceId } = args
+  let existingReportedResource
+  const { user, driver } = context
+  if (resourceId === user.id) throw new Error('You cannot review yourself!')
+  const session = driver.session()
+  const reportReadTxPromise = session.writeTransaction(async txc => {
+    const validateReviewTransactionResponse = await txc.run(
+      `
+        MATCH (resource {id: $resourceId})
+        WHERE resource:User OR resource:Post OR resource:Comment
+        OPTIONAL MATCH (:User)-[filed:FILED]->(:Report {closed: false})-[:BELONGS_TO]->(resource)
+        OPTIONAL MATCH (resource)<-[:WROTE]-(author:User)
+        RETURN labels(resource)[0] AS label, author, filed
+      `,
+      {
+        resourceId,
+        submitterId: user.id,
+      },
+    )
+    return validateReviewTransactionResponse.records.map(record => ({
+      label: record.get('label'),
+      author: record.get('author'),
+      filed: record.get('filed'),
+    }))
+  })
+  try {
+    const txResult = await reportReadTxPromise
+    existingReportedResource = txResult
+    if (!existingReportedResource || !existingReportedResource.length)
+      throw new Error(`Resource not found or is not a Post|Comment|User!`)
+    existingReportedResource = existingReportedResource[0]
+    if (!existingReportedResource.filed)
+      throw new Error(
+        `Before starting the review process, please report the ${existingReportedResource.label}!`,
+      )
+    const authorId =
+      existingReportedResource.label !== 'User' && existingReportedResource.author
+        ? existingReportedResource.author.properties.id
+        : null
+    if (authorId && authorId === user.id)
+      throw new Error(`You cannot review your own ${existingReportedResource.label}!`)
+  } finally {
+    session.close()
+  }
+
   return resolve(root, args, context, info)
 }
 
 export default {
   Mutation: {
-    CreateComment: validateCommentCreation,
+    CreateComment: validateCreateComment,
     UpdateComment: validateUpdateComment,
     CreatePost: validatePost,
     UpdatePost: validateUpdatePost,
-    report: validateReport,
+    fileReport: validateReport,
+    review: validateReview,
   },
 }

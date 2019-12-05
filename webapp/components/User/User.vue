@@ -1,6 +1,6 @@
 <template>
   <div class="user" v-if="displayAnonymous">
-    <hc-avatar class="avatar" />
+    <hc-avatar v-if="showAvatar" class="avatar" />
     <div>
       <b class="username">{{ $t('profile.userAnonym') }}</b>
     </div>
@@ -9,21 +9,19 @@
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
         <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
-          <hc-avatar class="avatar" :user="user" />
+          <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
           <div>
             <ds-text class="userinfo">
-              <b class="username">{{ userName | truncate(18) }}</b>
-              <ds-text v-if="dateTime" size="small" color="soft">
-                <base-icon name="clock" />
-                <client-only>
-                  <hc-relative-date-time :date-time="dateTime" />
-                </client-only>
-                <slot name="dateTime"></slot>
-              </ds-text>
+              <b>{{ userSlug }}</b>
             </ds-text>
           </div>
-          <ds-text align="left" size="small" color="soft">
-            {{ userSlug }}
+          <ds-text class="username" align="left" size="small" color="soft">
+            {{ userName | truncate(18) }}
+            <template v-if="dateTime">
+              <base-icon name="clock" />
+              <hc-relative-date-time :date-time="dateTime" />
+              <slot name="dateTime"></slot>
+            </template>
           </ds-text>
         </div>
       </nuxt-link>
@@ -105,7 +103,8 @@ export default {
   },
   props: {
     user: { type: Object, default: null },
-    trunc: { type: Number, default: null },
+    showAvatar: { type: Boolean, default: true },
+    trunc: { type: Number, default: 18 }, // "-1" is no trunc
     dateTime: { type: [Date, String], default: null },
   },
   computed: {
@@ -176,5 +175,9 @@ export default {
   &.active {
     z-index: 999;
   }
+}
+
+.user-slug {
+  margin-bottom: $space-xx-small;
 }
 </style>

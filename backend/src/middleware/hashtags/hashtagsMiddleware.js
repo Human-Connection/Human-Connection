@@ -3,7 +3,6 @@ import extractHashtags from '../hashtags/extractHashtags'
 const updateHashtagsOfPost = async (postId, hashtags, context) => {
   if (!hashtags.length) return
 
-  const session = context.driver.session()
   // We need two Cypher statements, because the 'MATCH' in the 'cypherDeletePreviousRelations' statement
   //  functions as an 'if'. In case there is no previous relation, the rest of the commands are omitted
   //  and no new Hashtags and relations will be created.
@@ -19,14 +18,18 @@ const updateHashtagsOfPost = async (postId, hashtags, context) => {
     MERGE (p)-[:TAGGED]->(t)
     RETURN p, t
     `
-  await session.run(cypherDeletePreviousRelations, {
-    postId,
-  })
-  await session.run(cypherCreateNewTagsAndRelations, {
-    postId,
-    hashtags,
-  })
-  session.close()
+  const session = context.driver.session()
+  try {
+    await session.run(cypherDeletePreviousRelations, {
+      postId,
+    })
+    await session.run(cypherCreateNewTagsAndRelations, {
+      postId,
+      hashtags,
+    })
+  } finally {
+    session.close()
+  }
 }
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {

@@ -9,32 +9,6 @@ Feature: Webfinger discovery
       | Slug           |
       | peter-lustiger |
 
-  Scenario: Search
-    When I send a GET request to "/.well-known/webfinger?resource=acct:peter-lustiger@localhost"
-    Then I receive the following json:
-    """
-    {
-      "subject": "acct:peter-lustiger@localhost:4123",
-      "links": [
-        {
-          "rel": "self",
-          "type": "application/activity+json",
-          "href": "http://localhost:4123/activitypub/users/peter-lustiger"
-        }
-      ]
-    }
-    """
-    And I expect the Content-Type to be "application/jrd+json; charset=utf-8"
-
-  Scenario: User does not exist
-    When I send a GET request to "/.well-known/webfinger?resource=acct:nonexisting@localhost"
-    Then I receive the following json:
-    """
-    {
-      "error": "No record found for nonexisting@localhost."
-    }
-    """
-
   Scenario: Receiving an actor object
     When I send a GET request to "/activitypub/users/peter-lustiger"
     Then I receive the following json:

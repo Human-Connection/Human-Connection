@@ -114,7 +114,7 @@ type Post {
   objectId: String
   author: User @relation(name: "WROTE", direction: "IN")
   title: String!
-  slug: String
+  slug: String!
   content: String!
   contentExcerpt: String
   image: String
@@ -124,7 +124,6 @@ type Post {
   deleted: Boolean
   disabled: Boolean
   pinned: Boolean
-  disabledBy: User @relation(name: "DISABLED", direction: "IN")
   createdAt: String
   updatedAt: String
   language: String

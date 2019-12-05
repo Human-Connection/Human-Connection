@@ -3,7 +3,6 @@
 export default {
   Badge: require('./Badge.js'),
   User: require('./User.js'),
-  InvitationCode: require('./InvitationCode.js'),
   EmailAddress: require('./EmailAddress.js'),
   UnverifiedEmailAddress: require('./UnverifiedEmailAddress.js'),
   SocialMedia: require('./SocialMedia.js'),
@@ -13,4 +12,5 @@ export default {
   Tag: require('./Tag.js'),
   Location: require('./Location.js'),
   Donations: require('./Donations.js'),
+  Report: require('./Report.js'),
 }
