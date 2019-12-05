@@ -13,7 +13,7 @@
     </nuxt-link>
     <ds-space margin-bottom="small" />
     <!-- Username, Image & Date of Post -->
-    <div>
+    <div class="user-wrapper">
       <client-only>
         <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
       </client-only>
@@ -141,10 +141,19 @@ export default {
       this.$emit('unpinPost', post)
     },
   },
+  mounted() {
+    const width = this.$el.offsetWidth
+    const height = Math.min(width / this.post.imageAspectRatio, 2000)
+    const imageElement = this.$el.querySelector('.ds-card-image')
+
+    if (imageElement) {
+      imageElement.style.height = `${height}px`
+    }
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ds-card-image img {
   width: 100%;
   max-height: 2000px;
@@ -159,9 +168,21 @@ export default {
   cursor: pointer;
   position: relative;
   z-index: 1;
+  justify-content: space-between;
 
-  /*.ds-card-footer {
-  }*/
+  > .ds-card-content {
+    flex-grow: 0;
+  }
+
+  /* workaround to avoid jumping layout when footer is rendered */
+  > .ds-card-footer {
+    height: 75px;
+  }
+
+  /* workaround to avoid jumping layout when hc-user is rendered */
+  .user-wrapper {
+    height: 36px;
+  }
 
   .content-menu {
     display: inline-block;

@@ -168,7 +168,7 @@
       </ds-flex-item>
 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
-        <masonry-grid class="user-profile-posts-list">
+        <masonry-grid>
           <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
@@ -232,7 +232,11 @@
           </ds-grid-item>
 
           <template v-if="posts.length">
-            <masonry-grid-item v-for="post in posts" :key="post.id">
+            <masonry-grid-item
+              v-for="post in posts"
+              :key="post.id"
+              :imageAspectRatio="post.imageAspectRatio"
+            >
               <hc-post-card
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"

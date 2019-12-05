@@ -350,15 +350,17 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         author: peterLustig,
         id: 'p0',
         language: sample(languages),
-        image: faker.image.unsplash.food(),
+        image: faker.image.unsplash.food(300, 169),
         categoryIds: ['cat16'],
+        imageAspectRatio: 300 / 169,
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
         id: 'p1',
         language: sample(languages),
-        image: faker.image.unsplash.technology(),
+        image: faker.image.unsplash.technology(300, 1500),
         categoryIds: ['cat1'],
+        imageAspectRatio: 300 / 1500,
       }),
       factory.create('Post', {
         author: huey,
@@ -382,8 +384,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         authorId: 'u1',
         id: 'p6',
         language: sample(languages),
-        image: faker.image.unsplash.buildings(),
+        image: faker.image.unsplash.buildings(300, 857),
         categoryIds: ['cat6'],
+        imageAspectRatio: 300 / 857,
       }),
       factory.create('Post', {
         author: huey,
@@ -400,8 +403,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         author: louie,
         id: 'p11',
         language: sample(languages),
-        image: faker.image.unsplash.people(),
+        image: faker.image.unsplash.people(300, 901),
         categoryIds: ['cat11'],
+        imageAspectRatio: 300 / 901,
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
@@ -413,8 +417,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         author: jennyRostock,
         id: 'p14',
         language: sample(languages),
-        image: faker.image.unsplash.objects(),
+        image: faker.image.unsplash.objects(300, 200),
         categoryIds: ['cat14'],
+        imageAspectRatio: 300 / 450,
       }),
       factory.create('Post', {
         author: huey,
@@ -434,8 +439,20 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     const hashtagAndMention1 =
       'The new physics of <a class="hashtag" data-hashtag-id="QuantenFlussTheorie" href="/?hashtag=QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" data-hashtag-id="QuantumGravity" href="/?hashtag=QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
     const createPostMutation = gql`
-      mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]) {
-        CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+      mutation(
+        $id: ID
+        $title: String!
+        $content: String!
+        $categoryIds: [ID]
+        $imageAspectRatio: Float
+      ) {
+        CreatePost(
+          id: $id
+          title: $title
+          content: $content
+          categoryIds: $categoryIds
+          imageAspectRatio: $imageAspectRatio
+        ) {
           id
         }
       }
@@ -449,6 +466,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Nature Philosophy Yoga`,
           content: hashtag1,
           categoryIds: ['cat2'],
+          imageAspectRatio: 300 / 200,
         },
       }),
       mutate({
@@ -458,6 +476,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #7',
           content: `${mention1} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat7'],
+          imageAspectRatio: 300 / 180,
         },
       }),
       mutate({
@@ -468,6 +487,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Quantum Flow Theory explains Quantum Gravity`,
           content: hashtagAndMention1,
           categoryIds: ['cat8'],
+          imageAspectRatio: 300 / 900,
         },
       }),
       mutate({
@@ -477,6 +497,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #12',
           content: `${mention2} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat12'],
+          imageAspectRatio: 300 / 200,
         },
       }),
     ])

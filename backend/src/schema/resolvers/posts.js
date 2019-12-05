@@ -309,7 +309,15 @@ export default {
   },
   Post: {
     ...Resolver('Post', {
-      undefinedToNull: ['activityId', 'objectId', 'image', 'language', 'pinnedAt', 'pinned'],
+      undefinedToNull: [
+        'activityId',
+        'objectId',
+        'image',
+        'language',
+        'pinnedAt',
+        'pinned',
+        'imageAspectRatio',
+      ],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',

@@ -1,6 +1,5 @@
 <template>
   <ds-grid
-    :min-column-width="300"
     v-on:calculating-item-height="startCalculation"
     v-on:finished-calculating-item-height="endCalculation"
     :class="[itemsCalculating ? 'reset-grid-height' : '']"
@@ -27,7 +26,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+/* dirty fix to override broken styleguide inline-styles */
+.ds-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+  gap: 16px !important;
+  grid-auto-rows: 20px;
+}
+
 .reset-grid-height {
   grid-auto-rows: auto !important;
   align-items: self-start;
