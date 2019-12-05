@@ -5,7 +5,6 @@ module.exports = {
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   updatedAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   rule: { type: 'string', default: 'latestReviewUpdatedAtRules' },
-  disable: { type: 'boolean', default: false },
   closed: { type: 'boolean', default: false },
   belongsTo: {
     type: 'relationship',
