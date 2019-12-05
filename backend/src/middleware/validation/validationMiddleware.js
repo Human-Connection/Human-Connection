@@ -72,7 +72,7 @@ const validateReview = async (resolve, root, args, context, info) => {
   const { user, driver } = context
   if (resourceId === user.id) throw new Error('You cannot review yourself!')
   const session = driver.session()
-  const reportReadTxPromise = session.writeTransaction(async txc => {
+  const reportReadTxPromise = session.readTransaction(async txc => {
     const validateReviewTransactionResponse = await txc.run(
       `
         MATCH (resource {id: $resourceId})
