@@ -115,6 +115,17 @@ const validateReview = async (resolve, root, args, context, info) => {
   return resolve(root, args, context, info)
 }
 
+export const validateNotifyUsers = async (label, reason) => {
+  const reasonsAllowed = ['mentioned_in_post', 'mentioned_in_comment', 'commented_on_post']
+  if (!reasonsAllowed.includes(reason)) throw new Error('Notification reason is not allowed!')
+  if (
+    (label === 'Post' && reason !== 'mentioned_in_post') ||
+    (label === 'Comment' && !['mentioned_in_comment', 'commented_on_post'].includes(reason))
+  ) {
+    throw new Error('Notification does not fit the reason!')
+  }
+}
+
 export default {
   Mutation: {
     CreateComment: validateCreateComment,

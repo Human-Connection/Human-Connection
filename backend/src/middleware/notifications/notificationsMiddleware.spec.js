@@ -35,7 +35,8 @@ const createCommentMutation = gql`
   }
 `
 
-beforeAll(() => {
+beforeAll(async () => {
+  await factory.cleanDatabase()
   const createServerResult = createServer({
     context: () => {
       return {
@@ -169,7 +170,6 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -186,7 +186,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -210,7 +210,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -261,7 +261,7 @@ describe('notifications', () => {
               ],
             },
           })
-          const { query } = createTestClient(server)
+
           await expect(
             query({
               query: notificationQuery,
@@ -405,7 +405,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -463,7 +463,7 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -497,7 +497,7 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -528,7 +528,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
