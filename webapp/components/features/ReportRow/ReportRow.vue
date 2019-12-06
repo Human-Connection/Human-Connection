@@ -40,7 +40,7 @@
           <base-icon :name="statusIconName" :class="isDisabled ? '--disabled' : '--enabled'" />
           {{ statusText }}
         </span>
-        <client-only v-if="report.reviewed">
+        <client-only v-if="isReviewed">
           <hc-user
             :user="moderatorOfLatestReview"
             :showAvatar="false"
@@ -109,6 +109,10 @@ export default {
     isDisabled() {
       return this.report.resource.disabled
     },
+    isReviewed() {
+      const { reviewed } = this.report
+      return reviewed && reviewed.length
+    },
     iconName() {
       if (this.isPost) return 'bookmark'
       else if (this.isComment) return 'comments'
@@ -138,12 +142,13 @@ export default {
       return this.isDisabled ? 'eye-slash' : 'eye'
     },
     statusText() {
-      if (!this.report.reviewed) return this.$t('moderation.reports.enabled')
+      if (!this.isReviewed) return this.$t('moderation.reports.enabled')
       else if (this.isDisabled) return this.$t('moderation.reports.disabledBy')
       else return this.$t('moderation.reports.enabledBy')
     },
     moderatorOfLatestReview() {
-      return this.report.reviewed[0].moderator
+      const [latestReview] = this.report.reviewed
+      return latestReview && latestReview.moderator
     },
   },
 }

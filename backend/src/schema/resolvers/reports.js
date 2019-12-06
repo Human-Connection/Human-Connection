@@ -144,7 +144,6 @@ export default {
       })
       try {
         const txResult = await readTxPromise
-        if (!txResult[0]) return null
         reviewed = txResult.map(reportedRecord => {
           const { review, moderator } = reportedRecord
           const relationshipWithNestedAttributes = {
